@@ -810,7 +810,6 @@ namespace Swig {
 #include "../../../shared/cpp/ObjectModel/UnknownAction.h"
 #include "../../../shared/cpp/ObjectModel/TextElementProperties.h"
 #include "../../../shared/cpp/ObjectModel/Inline.h"
-#include "../../../shared/cpp/ObjectModel/Paragraph.h"
 #include "../../../shared/cpp/ObjectModel/RichTextBlock.h"
 #include "../../../shared/cpp/ObjectModel/TextRun.h"
 
@@ -1663,65 +1662,6 @@ SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Inline > >::value_type s
           throw std::out_of_range("vector index out of range");
       }
 SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Inline_Sg__Sg__doRemoveRange(std::vector< std::shared_ptr< AdaptiveCards::Inline > > *self,jint fromIndex,jint toIndex){
-        jint size = static_cast<jint>(self->size());
-        if (0 <= fromIndex && fromIndex <= toIndex && toIndex <= size) {
-          self->erase(self->begin() + fromIndex, self->begin() + toIndex);
-        } else {
-          throw std::out_of_range("vector index out of range");
-        }
-      }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Paragraph_Sg__Sg___SWIG_2(jint count){
-        if (count < 0)
-          throw std::out_of_range("vector count must be positive");
-        return new std::vector< std::shared_ptr< AdaptiveCards::Paragraph > >(static_cast<std::vector< std::shared_ptr< AdaptiveCards::Paragraph > >::size_type>(count));
-      }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Paragraph_Sg__Sg___SWIG_3(jint count,std::shared_ptr< AdaptiveCards::Paragraph > const &value){
-        if (count < 0)
-          throw std::out_of_range("vector count must be positive");
-        return new std::vector< std::shared_ptr< AdaptiveCards::Paragraph > >(static_cast<std::vector< std::shared_ptr< AdaptiveCards::Paragraph > >::size_type>(count), value);
-      }
-SWIGINTERN jint std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Paragraph_Sg__Sg__doSize(std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > const *self){
-        return SWIG_VectorSize(self->size());
-      }
-SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Paragraph_Sg__Sg__doAdd__SWIG_0(std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *self,std::vector< std::shared_ptr< AdaptiveCards::Paragraph > >::value_type const &value){
-        self->push_back(value);
-      }
-SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Paragraph_Sg__Sg__doAdd__SWIG_1(std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::Paragraph > >::value_type const &value){
-        jint size = static_cast<jint>(self->size());
-        if (0 <= index && index <= size) {
-          self->insert(self->begin() + index, value);
-        } else {
-          throw std::out_of_range("vector index out of range");
-        }
-      }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Paragraph > >::value_type std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Paragraph_Sg__Sg__doRemove(std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *self,jint index){
-        jint size = static_cast<jint>(self->size());
-        if (0 <= index && index < size) {
-          std::shared_ptr< AdaptiveCards::Paragraph > const old_value = (*self)[index];
-          self->erase(self->begin() + index);
-          return old_value;
-        } else {
-          throw std::out_of_range("vector index out of range");
-        }
-      }
-SWIGINTERN std::shared_ptr< AdaptiveCards::Paragraph > const &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Paragraph_Sg__Sg__doGet(std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *self,jint index){
-        jint size = static_cast<jint>(self->size());
-        if (index >= 0 && index < size)
-          return (*self)[index];
-        else
-          throw std::out_of_range("vector index out of range");
-      }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Paragraph > >::value_type std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Paragraph_Sg__Sg__doSet(std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::Paragraph > >::value_type const &value){
-        jint size = static_cast<jint>(self->size());
-        if (index >= 0 && index < size) {
-          std::shared_ptr< AdaptiveCards::Paragraph > const old_value = (*self)[index];
-          (*self)[index] = value;
-          return old_value;
-        }
-        else
-          throw std::out_of_range("vector index out of range");
-      }
-SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Paragraph_Sg__Sg__doRemoveRange(std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *self,jint fromIndex,jint toIndex){
         jint size = static_cast<jint>(self->size());
         if (0 <= fromIndex && fromIndex <= toIndex && toIndex <= size) {
           self->erase(self->begin() + fromIndex, self->begin() + toIndex);
@@ -7614,295 +7554,6 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   (void)jenv;
   (void)jcls;
   arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::Inline > > **)&jarg1; 
-  delete arg1;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ParagraphVector_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
-  jlong jresult = 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  result = (std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *)new std::vector< std::shared_ptr< AdaptiveCards::Paragraph > >();
-  *(std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ParagraphVector_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *arg1 = 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > **)&jarg1;
-  if (!arg1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > const & reference is null");
-    return 0;
-  } 
-  result = (std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *)new std::vector< std::shared_ptr< AdaptiveCards::Paragraph > >((std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > const &)*arg1);
-  *(std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ParagraphVector_1capacity(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *) 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::Paragraph > >::size_type result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > **)&jarg1; 
-  result = ((std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > const *)arg1)->capacity();
-  jresult = (jlong)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ParagraphVector_1reserve(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *) 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::Paragraph > >::size_type arg2 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > **)&jarg1; 
-  arg2 = (std::vector< std::shared_ptr< AdaptiveCards::Paragraph > >::size_type)jarg2; 
-  try {
-    (arg1)->reserve(arg2);
-  } catch(std::length_error &_e) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
-    return ;
-  }
-}
-
-
-SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ParagraphVector_1isEmpty(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jboolean jresult = 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *) 0 ;
-  bool result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > **)&jarg1; 
-  result = (bool)((std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > const *)arg1)->empty();
-  jresult = (jboolean)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ParagraphVector_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *) 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > **)&jarg1; 
-  (arg1)->clear();
-}
-
-
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ParagraphVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1) {
-  jlong jresult = 0 ;
-  jint arg1 ;
-  std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = jarg1; 
-  try {
-    result = (std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Paragraph_Sg__Sg___SWIG_2(arg1);
-  } catch(std::out_of_range &_e) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
-    return 0;
-  }
-  *(std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ParagraphVector_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2, jobject jarg2_) {
-  jlong jresult = 0 ;
-  jint arg1 ;
-  std::shared_ptr< AdaptiveCards::Paragraph > *arg2 = 0 ;
-  std::shared_ptr< AdaptiveCards::Paragraph > tempnull2 ;
-  std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg2_;
-  arg1 = jarg1; 
-  arg2 = jarg2 ? *(std::shared_ptr< AdaptiveCards::Paragraph > **)&jarg2 : &tempnull2; 
-  try {
-    result = (std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Paragraph_Sg__Sg___SWIG_3(arg1,(std::shared_ptr< AdaptiveCards::Paragraph > const &)*arg2);
-  } catch(std::out_of_range &_e) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
-    return 0;
-  }
-  *(std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ParagraphVector_1doSize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jint jresult = 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *) 0 ;
-  jint result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > **)&jarg1; 
-  try {
-    result = std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Paragraph_Sg__Sg__doSize((std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > const *)arg1);
-  } catch(std::out_of_range &_e) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
-    return 0;
-  }
-  jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ParagraphVector_1doAdd_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *) 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::Paragraph > >::value_type *arg2 = 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::Paragraph > >::value_type tempnull2 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  (void)jarg2_;
-  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > **)&jarg1; 
-  arg2 = jarg2 ? *(std::vector< std::shared_ptr< AdaptiveCards::Paragraph > >::value_type **)&jarg2 : &tempnull2; 
-  std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Paragraph_Sg__Sg__doAdd__SWIG_0(arg1,(std::shared_ptr< AdaptiveCards::Paragraph > const &)*arg2);
-}
-
-
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ParagraphVector_1doAdd_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jlong jarg3, jobject jarg3_) {
-  std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *) 0 ;
-  jint arg2 ;
-  std::vector< std::shared_ptr< AdaptiveCards::Paragraph > >::value_type *arg3 = 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::Paragraph > >::value_type tempnull3 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  (void)jarg3_;
-  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > **)&jarg1; 
-  arg2 = jarg2; 
-  arg3 = jarg3 ? *(std::vector< std::shared_ptr< AdaptiveCards::Paragraph > >::value_type **)&jarg3 : &tempnull3; 
-  try {
-    std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Paragraph_Sg__Sg__doAdd__SWIG_1(arg1,arg2,(std::shared_ptr< AdaptiveCards::Paragraph > const &)*arg3);
-  } catch(std::out_of_range &_e) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
-    return ;
-  }
-}
-
-
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ParagraphVector_1doRemove(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
-  jlong jresult = 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *) 0 ;
-  jint arg2 ;
-  std::vector< std::shared_ptr< AdaptiveCards::Paragraph > >::value_type result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > **)&jarg1; 
-  arg2 = jarg2; 
-  try {
-    result = std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Paragraph_Sg__Sg__doRemove(arg1,arg2);
-  } catch(std::out_of_range &_e) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
-    return 0;
-  }
-  *(std::vector< std::shared_ptr< AdaptiveCards::Paragraph > >::value_type **)&jresult = result ? new std::vector< std::shared_ptr< AdaptiveCards::Paragraph > >::value_type(result) : 0; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ParagraphVector_1doGet(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
-  jlong jresult = 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *) 0 ;
-  jint arg2 ;
-  std::shared_ptr< AdaptiveCards::Paragraph > *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > **)&jarg1; 
-  arg2 = jarg2; 
-  try {
-    result = (std::shared_ptr< AdaptiveCards::Paragraph > *) &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Paragraph_Sg__Sg__doGet(arg1,arg2);
-  } catch(std::out_of_range &_e) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
-    return 0;
-  }
-  *(std::shared_ptr< AdaptiveCards::Paragraph > **)&jresult = *result ? new std::shared_ptr< AdaptiveCards::Paragraph >(*result) : 0; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ParagraphVector_1doSet(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jlong jarg3, jobject jarg3_) {
-  jlong jresult = 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *) 0 ;
-  jint arg2 ;
-  std::vector< std::shared_ptr< AdaptiveCards::Paragraph > >::value_type *arg3 = 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::Paragraph > >::value_type tempnull3 ;
-  std::vector< std::shared_ptr< AdaptiveCards::Paragraph > >::value_type result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  (void)jarg3_;
-  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > **)&jarg1; 
-  arg2 = jarg2; 
-  arg3 = jarg3 ? *(std::vector< std::shared_ptr< AdaptiveCards::Paragraph > >::value_type **)&jarg3 : &tempnull3; 
-  try {
-    result = std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Paragraph_Sg__Sg__doSet(arg1,arg2,(std::shared_ptr< AdaptiveCards::Paragraph > const &)*arg3);
-  } catch(std::out_of_range &_e) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
-    return 0;
-  }
-  *(std::vector< std::shared_ptr< AdaptiveCards::Paragraph > >::value_type **)&jresult = result ? new std::vector< std::shared_ptr< AdaptiveCards::Paragraph > >::value_type(result) : 0; 
-  return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ParagraphVector_1doRemoveRange(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jint jarg3) {
-  std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *) 0 ;
-  jint arg2 ;
-  jint arg3 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > **)&jarg1; 
-  arg2 = jarg2; 
-  arg3 = jarg3; 
-  try {
-    std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Paragraph_Sg__Sg__doRemoveRange(arg1,arg2,arg3);
-  } catch(std::out_of_range &_e) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
-    return ;
-  }
-}
-
-
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ParagraphVector(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *) 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > **)&jarg1; 
   delete arg1;
 }
 
@@ -24519,6 +24170,74 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1GetItalic(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  AdaptiveCards::TextBlock *arg1 = (AdaptiveCards::TextBlock *) 0 ;
+  std::shared_ptr< AdaptiveCards::TextBlock const > *smartarg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::TextBlock > **)&jarg1;
+  arg1 = (AdaptiveCards::TextBlock *)(smartarg1 ? smartarg1->get() : 0); 
+  result = (bool)((AdaptiveCards::TextBlock const *)arg1)->GetItalic();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1SetItalic(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
+  AdaptiveCards::TextBlock *arg1 = (AdaptiveCards::TextBlock *) 0 ;
+  bool arg2 ;
+  std::shared_ptr< AdaptiveCards::TextBlock > *smartarg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::TextBlock > **)&jarg1;
+  arg1 = (AdaptiveCards::TextBlock *)(smartarg1 ? smartarg1->get() : 0); 
+  arg2 = jarg2 ? true : false; 
+  (arg1)->SetItalic(arg2);
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1GetStrikethrough(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  AdaptiveCards::TextBlock *arg1 = (AdaptiveCards::TextBlock *) 0 ;
+  std::shared_ptr< AdaptiveCards::TextBlock const > *smartarg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::TextBlock > **)&jarg1;
+  arg1 = (AdaptiveCards::TextBlock *)(smartarg1 ? smartarg1->get() : 0); 
+  result = (bool)((AdaptiveCards::TextBlock const *)arg1)->GetStrikethrough();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1SetStrikethrough(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
+  AdaptiveCards::TextBlock *arg1 = (AdaptiveCards::TextBlock *) 0 ;
+  bool arg2 ;
+  std::shared_ptr< AdaptiveCards::TextBlock > *smartarg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::TextBlock > **)&jarg1;
+  arg1 = (AdaptiveCards::TextBlock *)(smartarg1 ? smartarg1->get() : 0); 
+  arg2 = jarg2 ? true : false; 
+  (arg1)->SetStrikethrough(arg2);
+}
+
+
 SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlock_1GetMaxLines(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::TextBlock *arg1 = (AdaptiveCards::TextBlock *) 0 ;
@@ -26687,6 +26406,74 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextElementProperties_1GetItalic(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  AdaptiveCards::TextElementProperties *arg1 = (AdaptiveCards::TextElementProperties *) 0 ;
+  std::shared_ptr< AdaptiveCards::TextElementProperties const > *smartarg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::TextElementProperties > **)&jarg1;
+  arg1 = (AdaptiveCards::TextElementProperties *)(smartarg1 ? smartarg1->get() : 0); 
+  result = (bool)((AdaptiveCards::TextElementProperties const *)arg1)->GetItalic();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextElementProperties_1SetItalic(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
+  AdaptiveCards::TextElementProperties *arg1 = (AdaptiveCards::TextElementProperties *) 0 ;
+  bool arg2 ;
+  std::shared_ptr< AdaptiveCards::TextElementProperties > *smartarg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::TextElementProperties > **)&jarg1;
+  arg1 = (AdaptiveCards::TextElementProperties *)(smartarg1 ? smartarg1->get() : 0); 
+  arg2 = jarg2 ? true : false; 
+  (arg1)->SetItalic(arg2);
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextElementProperties_1GetStrikethrough(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  AdaptiveCards::TextElementProperties *arg1 = (AdaptiveCards::TextElementProperties *) 0 ;
+  std::shared_ptr< AdaptiveCards::TextElementProperties const > *smartarg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::TextElementProperties > **)&jarg1;
+  arg1 = (AdaptiveCards::TextElementProperties *)(smartarg1 ? smartarg1->get() : 0); 
+  result = (bool)((AdaptiveCards::TextElementProperties const *)arg1)->GetStrikethrough();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextElementProperties_1SetStrikethrough(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
+  AdaptiveCards::TextElementProperties *arg1 = (AdaptiveCards::TextElementProperties *) 0 ;
+  bool arg2 ;
+  std::shared_ptr< AdaptiveCards::TextElementProperties > *smartarg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::TextElementProperties > **)&jarg1;
+  arg1 = (AdaptiveCards::TextElementProperties *)(smartarg1 ? smartarg1->get() : 0); 
+  arg2 = jarg2 ? true : false; 
+  (arg1)->SetStrikethrough(arg2);
+}
+
+
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextElementProperties_1SetLanguage(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::TextElementProperties *arg1 = (AdaptiveCards::TextElementProperties *) 0 ;
   std::string *arg2 = 0 ;
@@ -26963,157 +26750,6 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1Paragraph_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
-  jlong jresult = 0 ;
-  AdaptiveCards::Paragraph *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  result = (AdaptiveCards::Paragraph *)new AdaptiveCards::Paragraph();
-  
-  *(std::shared_ptr<  AdaptiveCards::Paragraph > **)&jresult = result ? new std::shared_ptr<  AdaptiveCards::Paragraph >(result SWIG_NO_NULL_DELETER_1) : 0;
-  
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1Paragraph_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  AdaptiveCards::Paragraph *arg1 = 0 ;
-  AdaptiveCards::Paragraph *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  
-  arg1 = (AdaptiveCards::Paragraph *)((*(std::shared_ptr< const AdaptiveCards::Paragraph > **)&jarg1) ? (*(std::shared_ptr< const AdaptiveCards::Paragraph > **)&jarg1)->get() : 0);
-  if (!arg1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::Paragraph const & reference is null");
-    return 0;
-  } 
-  result = (AdaptiveCards::Paragraph *)new AdaptiveCards::Paragraph((AdaptiveCards::Paragraph const &)*arg1);
-  
-  *(std::shared_ptr<  AdaptiveCards::Paragraph > **)&jresult = result ? new std::shared_ptr<  AdaptiveCards::Paragraph >(result SWIG_NO_NULL_DELETER_1) : 0;
-  
-  return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1Paragraph(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  AdaptiveCards::Paragraph *arg1 = (AdaptiveCards::Paragraph *) 0 ;
-  std::shared_ptr< AdaptiveCards::Paragraph > *smartarg1 = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  
-  smartarg1 = *(std::shared_ptr<  AdaptiveCards::Paragraph > **)&jarg1;
-  arg1 = (AdaptiveCards::Paragraph *)(smartarg1 ? smartarg1->get() : 0); 
-  (void)arg1; delete smartarg1;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Paragraph_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  AdaptiveCards::Paragraph *arg1 = (AdaptiveCards::Paragraph *) 0 ;
-  std::shared_ptr< AdaptiveCards::Paragraph const > *smartarg1 = 0 ;
-  Json::Value result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  
-  smartarg1 = *(std::shared_ptr< const AdaptiveCards::Paragraph > **)&jarg1;
-  arg1 = (AdaptiveCards::Paragraph *)(smartarg1 ? smartarg1->get() : 0); 
-  result = ((AdaptiveCards::Paragraph const *)arg1)->SerializeToJsonValue();
-  *(Json::Value **)&jresult = new Json::Value((const Json::Value &)result); 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Paragraph_1GetInlines_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  AdaptiveCards::Paragraph *arg1 = (AdaptiveCards::Paragraph *) 0 ;
-  std::shared_ptr< AdaptiveCards::Paragraph > *smartarg1 = 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::Inline > > *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  
-  smartarg1 = *(std::shared_ptr<  AdaptiveCards::Paragraph > **)&jarg1;
-  arg1 = (AdaptiveCards::Paragraph *)(smartarg1 ? smartarg1->get() : 0); 
-  result = (std::vector< std::shared_ptr< AdaptiveCards::Inline > > *) &(arg1)->GetInlines();
-  *(std::vector< std::shared_ptr< AdaptiveCards::Inline > > **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Paragraph_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  jlong jresult = 0 ;
-  AdaptiveCards::ParseContext *arg1 = 0 ;
-  Json::Value *arg2 = 0 ;
-  std::shared_ptr< AdaptiveCards::Paragraph > result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  (void)jarg2_;
-  
-  arg1 = (AdaptiveCards::ParseContext *)((*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1) ? (*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1)->get() : 0);
-  if (!arg1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::ParseContext & reference is null");
-    return 0;
-  } 
-  arg2 = *(Json::Value **)&jarg2;
-  if (!arg2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Json::Value const & reference is null");
-    return 0;
-  } 
-  result = AdaptiveCards::Paragraph::Deserialize(*arg1,(Json::Value const &)*arg2);
-  *(std::shared_ptr< AdaptiveCards::Paragraph > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::Paragraph >(result) : 0; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Paragraph_1GetAdditionalProperties(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  AdaptiveCards::Paragraph *arg1 = (AdaptiveCards::Paragraph *) 0 ;
-  std::shared_ptr< AdaptiveCards::Paragraph const > *smartarg1 = 0 ;
-  Json::Value result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  
-  smartarg1 = *(std::shared_ptr< const AdaptiveCards::Paragraph > **)&jarg1;
-  arg1 = (AdaptiveCards::Paragraph *)(smartarg1 ? smartarg1->get() : 0); 
-  result = ((AdaptiveCards::Paragraph const *)arg1)->GetAdditionalProperties();
-  *(Json::Value **)&jresult = new Json::Value((const Json::Value &)result); 
-  return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Paragraph_1SetAdditionalProperties(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::Paragraph *arg1 = (AdaptiveCards::Paragraph *) 0 ;
-  Json::Value *arg2 = 0 ;
-  std::shared_ptr< AdaptiveCards::Paragraph > *smartarg1 = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  (void)jarg2_;
-  
-  smartarg1 = *(std::shared_ptr<  AdaptiveCards::Paragraph > **)&jarg1;
-  arg1 = (AdaptiveCards::Paragraph *)(smartarg1 ? smartarg1->get() : 0); 
-  arg2 = *(Json::Value **)&jarg2;
-  if (!arg2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Json::Value const & reference is null");
-    return ;
-  } 
-  (arg1)->SetAdditionalProperties((Json::Value const &)*arg2);
-}
-
-
 SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1RichTextBlock_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::RichTextBlock *result = 0 ;
@@ -27181,74 +26817,6 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_RichTextBlock_1GetWrap(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jboolean jresult = 0 ;
-  AdaptiveCards::RichTextBlock *arg1 = (AdaptiveCards::RichTextBlock *) 0 ;
-  std::shared_ptr< AdaptiveCards::RichTextBlock const > *smartarg1 = 0 ;
-  bool result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  
-  smartarg1 = *(std::shared_ptr< const AdaptiveCards::RichTextBlock > **)&jarg1;
-  arg1 = (AdaptiveCards::RichTextBlock *)(smartarg1 ? smartarg1->get() : 0); 
-  result = (bool)((AdaptiveCards::RichTextBlock const *)arg1)->GetWrap();
-  jresult = (jboolean)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_RichTextBlock_1SetWrap(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
-  AdaptiveCards::RichTextBlock *arg1 = (AdaptiveCards::RichTextBlock *) 0 ;
-  bool arg2 ;
-  std::shared_ptr< AdaptiveCards::RichTextBlock > *smartarg1 = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  
-  smartarg1 = *(std::shared_ptr<  AdaptiveCards::RichTextBlock > **)&jarg1;
-  arg1 = (AdaptiveCards::RichTextBlock *)(smartarg1 ? smartarg1->get() : 0); 
-  arg2 = jarg2 ? true : false; 
-  (arg1)->SetWrap(arg2);
-}
-
-
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_RichTextBlock_1GetMaxLines(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  AdaptiveCards::RichTextBlock *arg1 = (AdaptiveCards::RichTextBlock *) 0 ;
-  std::shared_ptr< AdaptiveCards::RichTextBlock const > *smartarg1 = 0 ;
-  unsigned int result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  
-  smartarg1 = *(std::shared_ptr< const AdaptiveCards::RichTextBlock > **)&jarg1;
-  arg1 = (AdaptiveCards::RichTextBlock *)(smartarg1 ? smartarg1->get() : 0); 
-  result = (unsigned int)((AdaptiveCards::RichTextBlock const *)arg1)->GetMaxLines();
-  jresult = (jlong)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_RichTextBlock_1SetMaxLines(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  AdaptiveCards::RichTextBlock *arg1 = (AdaptiveCards::RichTextBlock *) 0 ;
-  unsigned int arg2 ;
-  std::shared_ptr< AdaptiveCards::RichTextBlock > *smartarg1 = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  
-  smartarg1 = *(std::shared_ptr<  AdaptiveCards::RichTextBlock > **)&jarg1;
-  arg1 = (AdaptiveCards::RichTextBlock *)(smartarg1 ? smartarg1->get() : 0); 
-  arg2 = (unsigned int)jarg2; 
-  (arg1)->SetMaxLines(arg2);
-}
-
-
 SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_RichTextBlock_1GetHorizontalAlignment(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::RichTextBlock *arg1 = (AdaptiveCards::RichTextBlock *) 0 ;
@@ -27283,11 +26851,11 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_RichTextBlock_1GetParagraphs_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_RichTextBlock_1GetInlines_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::RichTextBlock *arg1 = (AdaptiveCards::RichTextBlock *) 0 ;
   std::shared_ptr< AdaptiveCards::RichTextBlock > *smartarg1 = 0 ;
-  std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *result = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::Inline > > *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -27295,8 +26863,8 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::RichTextBlock > **)&jarg1;
   arg1 = (AdaptiveCards::RichTextBlock *)(smartarg1 ? smartarg1->get() : 0); 
-  result = (std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > *) &(arg1)->GetParagraphs();
-  *(std::vector< std::shared_ptr< AdaptiveCards::Paragraph > > **)&jresult = result; 
+  result = (std::vector< std::shared_ptr< AdaptiveCards::Inline > > *) &(arg1)->GetInlines();
+  *(std::vector< std::shared_ptr< AdaptiveCards::Inline > > **)&jresult = result; 
   return jresult;
 }
 
@@ -27768,6 +27336,74 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   arg1 = (AdaptiveCards::TextRun *)(smartarg1 ? smartarg1->get() : 0); 
   arg2 = jarg2 ? true : false; 
   (arg1)->SetIsSubtle(arg2);
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextRun_1GetItalic(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  AdaptiveCards::TextRun *arg1 = (AdaptiveCards::TextRun *) 0 ;
+  std::shared_ptr< AdaptiveCards::TextRun const > *smartarg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::TextRun > **)&jarg1;
+  arg1 = (AdaptiveCards::TextRun *)(smartarg1 ? smartarg1->get() : 0); 
+  result = (bool)((AdaptiveCards::TextRun const *)arg1)->GetItalic();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextRun_1SetItalic(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
+  AdaptiveCards::TextRun *arg1 = (AdaptiveCards::TextRun *) 0 ;
+  bool arg2 ;
+  std::shared_ptr< AdaptiveCards::TextRun > *smartarg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::TextRun > **)&jarg1;
+  arg1 = (AdaptiveCards::TextRun *)(smartarg1 ? smartarg1->get() : 0); 
+  arg2 = jarg2 ? true : false; 
+  (arg1)->SetItalic(arg2);
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextRun_1GetStrikethrough(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  AdaptiveCards::TextRun *arg1 = (AdaptiveCards::TextRun *) 0 ;
+  std::shared_ptr< AdaptiveCards::TextRun const > *smartarg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::TextRun > **)&jarg1;
+  arg1 = (AdaptiveCards::TextRun *)(smartarg1 ? smartarg1->get() : 0); 
+  result = (bool)((AdaptiveCards::TextRun const *)arg1)->GetStrikethrough();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextRun_1SetStrikethrough(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
+  AdaptiveCards::TextRun *arg1 = (AdaptiveCards::TextRun *) 0 ;
+  bool arg2 ;
+  std::shared_ptr< AdaptiveCards::TextRun > *smartarg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::TextRun > **)&jarg1;
+  arg1 = (AdaptiveCards::TextRun *)(smartarg1 ? smartarg1->get() : 0); 
+  arg2 = jarg2 ? true : false; 
+  (arg1)->SetStrikethrough(arg2);
 }
 
 
