@@ -25,6 +25,7 @@ import io.adaptivecards.objectmodel.ShowCardAction;
 import io.adaptivecards.objectmodel.ToggleVisibilityAction;
 import io.adaptivecards.objectmodel.ToggleVisibilityTarget;
 import io.adaptivecards.objectmodel.ToggleVisibilityTargetVector;
+import io.adaptivecards.objectmodel.WarningStatusCode;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 public abstract class BaseActionElementRenderer implements IBaseActionElementRenderer
@@ -77,13 +78,25 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
     public static class SelectActionOnClickListener implements View.OnClickListener
     {
 
+        protected SelectActionOnClickListener(RenderedAdaptiveCard renderedCard, BaseActionElement action, ICardActionHandler cardActionHandler, boolean isSelectAction)
+        {
+            this(renderedCard, action, cardActionHandler);
+            m_isSelectAction = isSelectAction;
+        }
+
         public SelectActionOnClickListener(RenderedAdaptiveCard renderedCard, BaseActionElement action, ICardActionHandler cardActionHandler)
         {
             m_action = action;
             m_renderedAdaptiveCard = renderedCard;
             m_cardActionHandler = cardActionHandler;
+            m_isSelectAction = true;
 
-            if(m_action.GetElementType() == ActionType.ToggleVisibility)
+            if (m_action.GetElementType() == ActionType.ShowCard)
+            {
+                renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.SELECT_SHOW_CARD_ACTION, "ShowCard not supported for SelectAction"));
+            }
+
+            if (m_action.GetElementType() == ActionType.ToggleVisibility)
             {
                 m_toggleVisibilityAction = null;
                 if (m_action instanceof ToggleVisibilityAction)
@@ -173,6 +186,7 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
         protected RenderedAdaptiveCard m_renderedAdaptiveCard;
         protected ICardActionHandler m_cardActionHandler;
 
+        private boolean m_isSelectAction = true;
         private ToggleVisibilityAction m_toggleVisibilityAction = null;
         private HashMap<String, View> m_viewDictionary = null;
     }
@@ -201,7 +215,7 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
                                      ICardActionHandler cardActionHandler,
                                      HostConfig hostConfig)
         {
-            super(renderedCard, baseActionElement, cardActionHandler);
+            super(renderedCard, baseActionElement, cardActionHandler, false);
             m_isInlineShowCardAction = (baseActionElement.GetElementType() == ActionType.ShowCard) && (hostConfig.GetActions().getShowCard().getActionMode() == ActionMode.Inline);
             if (m_isInlineShowCardAction)
             {
@@ -217,7 +231,7 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
          */
         public ActionOnClickListener(RenderedAdaptiveCard renderedCard, BaseActionElement baseActionElement, ICardActionHandler cardActionHandler)
         {
-            super(renderedCard, baseActionElement, cardActionHandler);
+            super(renderedCard, baseActionElement, cardActionHandler, false);
             m_isInlineShowCardAction = false;
         }
 
