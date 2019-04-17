@@ -321,6 +321,10 @@ export abstract class CardElement implements ICardObject {
 
     abstract getJsonTypeName(): string;
 
+    asString(): string {
+        return "";
+    }
+
     isBleeding(): boolean {
         return false;
     }
@@ -815,6 +819,10 @@ export abstract class BaseTextBlock extends CardElement {
     isSubtle: boolean = false;
     style?: Enums.FontStyle = null;
 
+    asString(): string {
+        return this.text;
+    }
+
     toJSON() {
         let result = super.toJSON();
 
@@ -835,22 +843,7 @@ export abstract class BaseTextBlock extends CardElement {
             targetElement.style.fontFamily = fontStyle.fontFamily;
         }
 
-        let parentContainer = this.getParentContainer();
-        let isRtl = parentContainer ? parentContainer.isRtl() : false;
-
-        switch (this.horizontalAlignment) {
-            case Enums.HorizontalAlignment.Center:
-                targetElement.style.textAlign = "center";
-                break;
-            case Enums.HorizontalAlignment.Right:
-                targetElement.style.textAlign = isRtl ? "left" : "right";
-                break;
-            default:
-                targetElement.style.textAlign = isRtl ? "right" : "left";
-                break;
-        }
-
-        var fontSize: number;
+        let fontSize: number;
 
         switch (this.size) {
             case Enums.TextSize.Small:
@@ -1175,6 +1168,21 @@ export class TextBlock extends BaseTextBlock {
     applyStylesTo(targetElement: HTMLElement) {
         super.applyStylesTo(targetElement);
 
+        let parentContainer = this.getParentContainer();
+        let isRtl = parentContainer ? parentContainer.isRtl() : false;
+
+        switch (this.horizontalAlignment) {
+            case Enums.HorizontalAlignment.Center:
+                targetElement.style.textAlign = "center";
+                break;
+            case Enums.HorizontalAlignment.Right:
+                targetElement.style.textAlign = isRtl ? "left" : "right";
+                break;
+            default:
+                targetElement.style.textAlign = isRtl ? "right" : "left";
+                break;
+        }
+
         let lineHeights = this.hostConfig.lineHeights;
 
         if (lineHeights) {
@@ -1371,6 +1379,21 @@ export class RichTextBlock extends CardElement {
             let element = document.createElement("div");
             element.className = this.hostConfig.makeCssClassName("ac-richTextBlock");
 
+            let parentContainer = this.getParentContainer();
+            let isRtl = parentContainer ? parentContainer.isRtl() : false;
+    
+            switch (this.horizontalAlignment) {
+                case Enums.HorizontalAlignment.Center:
+                    element.style.textAlign = "center";
+                    break;
+                case Enums.HorizontalAlignment.Right:
+                    element.style.textAlign = isRtl ? "left" : "right";
+                    break;
+                default:
+                    element.style.textAlign = isRtl ? "right" : "left";
+                    break;
+            }
+    
             for (let inline of this._inlines) {
                 element.appendChild(inline.render());
             }
@@ -1380,6 +1403,16 @@ export class RichTextBlock extends CardElement {
         else {
             return null;
         }
+    }
+
+    asString(): string {
+        let result = "";
+        
+        for (let inline of this._inlines) {
+            result += inline.asString();
+        }
+
+        return result;
     }
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
@@ -1426,6 +1459,19 @@ export class RichTextBlock extends CardElement {
 
     getJsonTypeName(): string {
         return "RichTextBlock";
+    }
+
+    getInlineCount(): number {
+        return this._inlines.length;
+    }
+
+    getInlineAt(index: number): CardElement {
+        if (index >= 0 && index < this._inlines.length) {
+            return this._inlines[index];
+        }
+        else {
+            throw new Error("RichTextBlock.getInlineAt: Index out of range (" + index + ")");
+        }
     }
 
     addInline(inline: CardElement) {

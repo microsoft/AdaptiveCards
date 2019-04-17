@@ -2440,3 +2440,16 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
         this.cardElement.text = "New TextBlock";
     }
 }
+
+export class RichTextBlockPeer extends TypedCardElementPeer<Adaptive.RichTextBlock> {
+    getTreeItemText(): string {
+        return this.cardElement.asString();
+    }
+
+    initializeCardElement() {
+        let textRun = new Adaptive.TextRun();
+        textRun.text = "New RichTextBlock";
+
+        this.cardElement.addInline(textRun);
+    }
+}
