@@ -111,6 +111,22 @@ public class TextRun extends Inline {
     AdaptiveCardObjectModelJNI.TextRun_SetIsSubtle(swigCPtr, this, value);
   }
 
+  public boolean GetItalic() {
+    return AdaptiveCardObjectModelJNI.TextRun_GetItalic(swigCPtr, this);
+  }
+
+  public void SetItalic(boolean value) {
+    AdaptiveCardObjectModelJNI.TextRun_SetItalic(swigCPtr, this, value);
+  }
+
+  public boolean GetStrikethrough() {
+    return AdaptiveCardObjectModelJNI.TextRun_GetStrikethrough(swigCPtr, this);
+  }
+
+  public void SetStrikethrough(boolean value) {
+    AdaptiveCardObjectModelJNI.TextRun_SetStrikethrough(swigCPtr, this, value);
+  }
+
   public boolean GetHighlight() {
     return AdaptiveCardObjectModelJNI.TextRun_GetHighlight(swigCPtr, this);
   }

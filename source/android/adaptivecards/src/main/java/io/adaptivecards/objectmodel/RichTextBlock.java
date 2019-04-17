@@ -54,22 +54,6 @@ public class RichTextBlock extends BaseCardElement {
     return new JsonValue(AdaptiveCardObjectModelJNI.RichTextBlock_SerializeToJsonValue(swigCPtr, this), true);
   }
 
-  public boolean GetWrap() {
-    return AdaptiveCardObjectModelJNI.RichTextBlock_GetWrap(swigCPtr, this);
-  }
-
-  public void SetWrap(boolean value) {
-    AdaptiveCardObjectModelJNI.RichTextBlock_SetWrap(swigCPtr, this, value);
-  }
-
-  public long GetMaxLines() {
-    return AdaptiveCardObjectModelJNI.RichTextBlock_GetMaxLines(swigCPtr, this);
-  }
-
-  public void SetMaxLines(long value) {
-    AdaptiveCardObjectModelJNI.RichTextBlock_SetMaxLines(swigCPtr, this, value);
-  }
-
   public HorizontalAlignment GetHorizontalAlignment() {
     return HorizontalAlignment.swigToEnum(AdaptiveCardObjectModelJNI.RichTextBlock_GetHorizontalAlignment(swigCPtr, this));
   }
@@ -78,8 +62,8 @@ public class RichTextBlock extends BaseCardElement {
     AdaptiveCardObjectModelJNI.RichTextBlock_SetHorizontalAlignment(swigCPtr, this, value.swigValue());
   }
 
-  public ParagraphVector GetParagraphs() {
-    return new ParagraphVector(AdaptiveCardObjectModelJNI.RichTextBlock_GetParagraphs__SWIG_0(swigCPtr, this), false);
+  public InlineVector GetInlines() {
+    return new InlineVector(AdaptiveCardObjectModelJNI.RichTextBlock_GetInlines__SWIG_0(swigCPtr, this), false);
   }
 
   public static RichTextBlock dynamic_cast(BaseCardElement baseCardElement) {

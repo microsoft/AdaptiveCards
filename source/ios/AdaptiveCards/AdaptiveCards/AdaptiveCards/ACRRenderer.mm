@@ -21,6 +21,7 @@
 #import "ACRContentHoldingUIScrollView.h"
 #import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACRUIImageView.h"
+#import "Util.h"
 
 using namespace AdaptiveCards;
 
@@ -85,6 +86,16 @@ using namespace AdaptiveCards;
                                                                          hostConfig:config];
     }
 
+    if (adaptiveCard->GetMinHeight() > 0) {
+        [NSLayoutConstraint constraintWithItem:rootView
+                                     attribute:NSLayoutAttributeHeight
+                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                        toItem:nil
+                                     attribute:NSLayoutAttributeNotAnAttribute
+                                    multiplier:1
+                                      constant:adaptiveCard->GetMinHeight()].active = YES;
+    }
+    
     auto backgroundImageProperties = adaptiveCard->GetBackgroundImage();
     if((backgroundImageProperties != nullptr) && !(backgroundImageProperties->GetUrl().empty())) {
         ObserverActionBlock observerAction =
@@ -94,7 +105,7 @@ using namespace AdaptiveCards;
                 [view addObserver:rootView forKeyPath:@"image"
                           options:NSKeyValueObservingOptionNew
                           context:backgroundImageProperties.get()];
-                
+
                 // store the image view and card for easy retrieval in ACRView::observeValueForKeyPath
                 [rootView setImageView:key view:view];
             }
@@ -110,7 +121,7 @@ using namespace AdaptiveCards;
                 [view addObserver:rootView forKeyPath:@"image"
                           options:NSKeyValueObservingOptionNew
                           context:nil];
-                
+
                 // store the image view for easy retrieval in ACRView::observeValueForKeyPath
                 [rootView setImageView:key view:view];
             }
@@ -203,27 +214,30 @@ using namespace AdaptiveCards;
 
         [acoElem setElem:elem];
 
-        curStretchableElem = [renderer render:view rootView:rootView inputs:inputs baseCardElement:acoElem hostConfig:config];
+        @try {
+            curStretchableElem = [renderer render:view rootView:rootView inputs:inputs baseCardElement:acoElem hostConfig:config];
+            if(elem->GetHeight() == HeightType::Stretch){
+                if(prevStretchableElem){
+                    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:curStretchableElem
+                                                                                        attribute:NSLayoutAttributeHeight
+                                                                                        relatedBy:NSLayoutRelationEqual
+                                                                                           toItem:prevStretchableElem
+                                                                                        attribute:NSLayoutAttributeHeight
+                                                                                       multiplier:1
+                                                                                         constant:0];
+                    heightConstraint.priority = UILayoutPriorityDefaultLow;
+                    heightConstraint.active = YES;
+                }
 
-        if(elem->GetHeight() == HeightType::Stretch){
-            if(prevStretchableElem){
-                NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:curStretchableElem
-                                             attribute:NSLayoutAttributeHeight
-                                             relatedBy:NSLayoutRelationEqual
-                                                toItem:prevStretchableElem
-                                             attribute:NSLayoutAttributeHeight
-                                            multiplier:1
-                                              constant:0];
-                heightConstraint.priority = UILayoutPriorityDefaultLow;
-                heightConstraint.active = YES;
+                if([view isKindOfClass:[ACRColumnView class]]){
+                    ACRColumnView *columnView = (ACRColumnView*)view;
+                    columnView.hasStretchableView = YES;
+                }
+
+                prevStretchableElem = curStretchableElem;
             }
-
-            if([view isKindOfClass:[ACRColumnView class]]){
-                ACRColumnView *columnView = (ACRColumnView*)view;
-                columnView.hasStretchableView = YES;
-            }
-
-            prevStretchableElem = curStretchableElem;
+        } @catch (ACOFallbackException *e){
+            handleFallbackException(e, view, rootView, inputs, elem, config);
         }
     }
 

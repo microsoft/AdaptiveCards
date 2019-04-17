@@ -802,5 +802,170 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(1, image.AdditionalProperties.Count);
             Assert.AreEqual("cheetah", image.AdditionalProperties["test-image-prop"]);
         }
+
+        [TestMethod]
+        public void BackgroundImageBackCompatWithLegacyUriType()
+        {
+            var testUrl = new Uri("https://bing.com");
+
+            var card = new AdaptiveCard("1.0");
+            card.BackgroundImage = testUrl;
+
+            Assert.AreEqual(card.BackgroundImage.UrlString, testUrl.ToString());
+            Assert.AreEqual(card.BackgroundImage.Url, testUrl);
+        }
+
+        [TestMethod]
+        public void TestParseMinHeight()
+        {
+            var payload =
+                @"{
+                    ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                    ""type"": ""AdaptiveCard"",
+                    ""version"": ""1.2"",
+                    ""minHeight"": ""500px"",
+                    ""body"": [
+                      {
+                        ""type"": ""ColumnSet"",
+                        ""minHeight"": ""100px"",
+                        ""columns"": [
+                          {
+                            ""type"": ""Column"",
+                            ""minHeight"": ""200px"",
+                            ""items"": [
+                              {
+                                ""type"": ""TextBlock"",
+                                ""text"": ""TextBlock""
+                              }
+                            ]
+                          },
+                          {
+                            ""type"": ""Column"",
+                            ""items"": [
+                              {
+                                ""type"": ""Container"",
+                                ""minHeight"": ""300px"",
+                                ""items"": [
+                                  {
+                                    ""type"": ""TextBlock"",
+                                    ""text"": ""TextBlock""
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }";
+
+            var result = AdaptiveCard.FromJson(payload);
+            var card = result?.Card;
+            Assert.AreEqual(500u, card.PixelMinHeight);
+
+            var containers = card.Body;
+            Assert.AreEqual(containers.Count, 1);
+
+            var columnSet = (AdaptiveColumnSet)card.Body[0];
+            Assert.AreEqual(100u, columnSet.PixelMinHeight);
+
+            var columns = columnSet.Columns;
+            Assert.AreEqual(200u, columns[0].PixelMinHeight);
+            Assert.AreEqual(0u, columns[1].PixelMinHeight);
+            
+            var container = (AdaptiveContainer)columns[1].Items[0];
+            Assert.AreEqual(300u, container.PixelMinHeight);
+        }
+
+        [TestMethod]
+        public void TestObjectModelMinHeight()
+        {
+            AdaptiveCard card = new AdaptiveCard(new AdaptiveSchemaVersion("1.2"))
+            {
+                PixelMinHeight = 500,
+                Body = new List<AdaptiveElement>
+                {
+                    new AdaptiveColumnSet()
+                    {
+                        PixelMinHeight = 100,
+                        Columns = new List<AdaptiveColumn>
+                        {
+                            new AdaptiveColumn
+                            {
+                                PixelMinHeight = 200,
+                                Items = new List<AdaptiveElement>
+                                {
+                                    new AdaptiveTextBlock
+                                    {
+                                        Text = "TextBlock"
+                                    }
+                                }
+                            },
+                            new AdaptiveColumn
+                            {
+                               Items = new List<AdaptiveElement>
+                               {
+                                   new AdaptiveContainer
+                                   {
+                                       PixelMinHeight = 300,
+                                       Items = new List<AdaptiveElement>
+                                       {
+                                            new AdaptiveTextBlock
+                                            {
+                                                Text = "TextBlock"
+                                            }
+                                       }
+                                   }
+                               }
+                            }
+                        }
+                    }
+                }
+            };
+
+            // This lines are not indented so the comparisson doesn't fail due to extra spaces
+            var expectedJson =
+@"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.2"",
+  ""body"": [
+    {
+      ""type"": ""ColumnSet"",
+      ""columns"": [
+        {
+          ""type"": ""Column"",
+          ""items"": [
+            {
+              ""type"": ""TextBlock"",
+              ""text"": ""TextBlock""
+            }
+          ],
+          ""minHeight"": ""200px""
+        },
+        {
+          ""type"": ""Column"",
+          ""items"": [
+            {
+              ""type"": ""Container"",
+              ""items"": [
+                {
+                  ""type"": ""TextBlock"",
+                  ""text"": ""TextBlock""
+                }
+              ],
+              ""minHeight"": ""300px""
+            }
+          ]
+        }
+      ],
+      ""minHeight"": ""100px""
+    }
+  ],
+  ""minHeight"": ""500px""
+}";
+            var outputJson = card.ToJson();
+            Assert.AreEqual(outputJson, expectedJson);
+
+        }
     }
 }

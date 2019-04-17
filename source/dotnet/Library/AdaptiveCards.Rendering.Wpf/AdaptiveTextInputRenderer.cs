@@ -17,18 +17,14 @@ namespace AdaptiveCards.Rendering.Wpf
             }
 
             if (input.MaxLength > 0)
+            {
                 textBox.MaxLength = input.MaxLength;
+            }
 
             textBox.SetPlaceholder(input.Placeholder);
             textBox.Style = context.GetStyle($"Adaptive.Input.Text.{input.Style}");
             textBox.SetContext(input);
             context.InputBindings.Add(input.Id, () => textBox.Text);
-
-            if(!input.IsVisible)
-            {
-                textBox.Visibility = Visibility.Collapsed;
-            }
-
             return textBox;
         }
     }

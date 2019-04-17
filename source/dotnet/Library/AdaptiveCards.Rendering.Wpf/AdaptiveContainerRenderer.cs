@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,10 +22,9 @@ namespace AdaptiveCards.Rendering.Wpf
             Border border = new Border();
             border.Child = uiOuterContainer;
 
-            if (!container.IsVisible)
-            {
-                border.Visibility = Visibility.Collapsed;
-            }
+            RendererUtil.ApplyVerticalContentAlignment(uiContainer, container);
+            RendererUtil.ApplyIsVisible(border, container);
+            uiContainer.MinHeight = container.PixelMinHeight;
 
             bool inheritsStyleFromParent = !container.Style.HasValue;
             bool hasPadding = false;
@@ -39,19 +39,6 @@ namespace AdaptiveCards.Rendering.Wpf
                 elementRenderArgs.ForegroundColors = containerStyle.ForegroundColors;
             }
 
-            switch (container.VerticalContentAlignment)
-            {
-                case AdaptiveVerticalContentAlignment.Center:
-                    uiContainer.VerticalAlignment = VerticalAlignment.Center;
-                    break;
-                case AdaptiveVerticalContentAlignment.Bottom:
-                    uiContainer.VerticalAlignment = VerticalAlignment.Bottom;
-                    break;
-                case AdaptiveVerticalContentAlignment.Top:
-                default:
-                    break;
-            }
-
             // Modify context outer parent style so padding necessity can be determined
             elementRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : container.Style.Value;
             elementRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
@@ -59,15 +46,10 @@ namespace AdaptiveCards.Rendering.Wpf
 
             AddContainerElements(uiContainer, container.Items, context);
 
-            if (container.SelectAction != null)
-            {
-                return context.RenderSelectAction(container.SelectAction, border);
-            }
-
             // Revert context's value to that of outside the Container
             context.RenderArgs = parentRenderArgs;
 
-            return border;
+            return RendererUtil.ApplySelectAction(border, container, context);
         }
 
         public static void AddContainerElements(Grid uiContainer, IList<AdaptiveElement> elements, AdaptiveRenderContext context)
@@ -92,9 +74,18 @@ namespace AdaptiveCards.Rendering.Wpf
                                                          renderedMargin.Bottom);
                     }
 
-                    if (cardElement.Height == AdaptiveHeight.Auto)
+                    if (cardElement.Type == "Container" || cardElement.Type == "ColumnSet")
+                    {
+                        AdaptiveCollectionElement collectionElement = (AdaptiveCollectionElement)cardElement;
+                        uiElement.MinHeight = collectionElement.PixelMinHeight;
+                    }
+
+                    if (cardElement.Height != AdaptiveHeight.Stretch)
                     {
                         uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                        Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
+
+                        RendererUtil.ApplyIsVisible(uiElement, cardElement);
                         Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
                         uiContainer.Children.Add(uiElement);
                     }
@@ -102,6 +93,7 @@ namespace AdaptiveCards.Rendering.Wpf
                     {
                         if (cardElement.Type == "Container")
                         {
+                            RendererUtil.ApplyIsVisible(uiElement, cardElement);
                             uiContainer.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
                             Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
                             uiContainer.Children.Add(uiElement);
@@ -109,6 +101,11 @@ namespace AdaptiveCards.Rendering.Wpf
                         else
                         {
                             StackPanel panel = new StackPanel();
+                            RendererUtil.ApplyIsVisible(panel, cardElement);
+                            if (!String.IsNullOrEmpty(cardElement.Id))
+                            {
+                                panel.Name = cardElement.Id;
+                            }
                             panel.Children.Add(uiElement);
 
                             uiContainer.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
