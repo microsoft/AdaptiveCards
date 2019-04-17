@@ -143,214 +143,229 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     }
 }
 
+- (void)processBaseCardElement:(std::shared_ptr<BaseCardElement> const &)elem
+{
+    switch (elem->GetElementType())
+    {
+        case CardElementType::TextBlock:
+        {
+            std::shared_ptr<TextBlock> textBlockElement = std::static_pointer_cast<TextBlock>(elem);
+            TextElementProperties textProp;
+            textProp.SetText(textBlockElement->GetText());
+            textProp.SetTextSize(textBlockElement->GetTextSize());
+            textProp.SetTextWeight(textBlockElement->GetTextWeight());
+            textProp.SetFontStyle(textBlockElement->GetFontStyle());
+            textProp.SetTextColor(textBlockElement->GetTextColor());
+            textProp.SetIsSubtle(textBlockElement->GetIsSubtle());
+            textProp.SetLanguage(textBlockElement->GetLanguage());
+
+            /// tag a base card element with unique key
+            NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)textBlockElement.get()];
+            NSString *key = [number stringValue];
+            [self processTextConcurrently:textProp elementId:key];
+            break;
+        }
+        case CardElementType::RichTextBlock:
+        {
+            std::shared_ptr<RichTextBlock> rTxtBlkElement = std::static_pointer_cast<RichTextBlock>(elem);
+            for(const auto &paragraph : rTxtBlkElement->GetParagraphs()) {
+                for(const auto &inlineText : paragraph->GetInlines()) {
+                    std::shared_ptr<TextRun> textRun = std::static_pointer_cast<TextRun>(inlineText);
+                    if(textRun) {
+                        TextElementProperties textProp;
+                        textProp.SetText(textRun->GetText());
+                        textProp.SetTextSize(textRun->GetTextSize());
+                        textProp.SetTextWeight(textRun->GetTextWeight());
+                        textProp.SetFontStyle(textRun->GetFontStyle());
+                        textProp.SetTextColor(textRun->GetTextColor());
+                        textProp.SetIsSubtle(textRun->GetIsSubtle());
+                        textProp.SetLanguage(textRun->GetLanguage());
+                        NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)textRun.get()];
+                        NSString *key = [number stringValue];
+                        [self processTextConcurrently:textProp elementId:key];
+                    }
+                }
+            }
+            break;
+        }
+        case CardElementType::FactSet:
+        {
+            [self tagBaseCardElement:elem];
+            std::shared_ptr<FactSet> factSet = std::dynamic_pointer_cast<FactSet>(elem);
+            NSString *key = [NSString stringWithCString:elem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
+            key = [key stringByAppendingString:@"*"];
+            int rowFactId = 0;
+            for(auto fact : factSet->GetFacts()) {
+
+                TextElementProperties titleTextProp{[_hostConfig getHostConfig]->GetFactSet().title, fact->GetTitle(), fact->GetLanguage()};
+                [self processTextConcurrently:titleTextProp
+                                    elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]];
+
+
+                TextElementProperties valueTextProp{[_hostConfig getHostConfig]->GetFactSet().value, fact->GetValue(), fact->GetLanguage()};
+                [self processTextConcurrently:valueTextProp
+                                    elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]];
+            }
+            break;
+        }
+        case CardElementType::Image:
+        {
+
+            ObserverActionBlock observerAction =
+            ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseCardElement> const &elem, NSURL* url, ACRView *rootView) {
+                    UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
+                    if(view) {
+                        [view addObserver:self forKeyPath:@"image"
+                                  options:NSKeyValueObservingOptionNew
+                                  context:elem.get()];
+
+                        // store the image view and image element for easy retrieval in ACRView::observeValueForKeyPath
+                        [rootView setImageView:key view:view];
+                        [rootView setImageContext:key context:elem];
+                    }
+            };
+            [self loadImageAccordingToResourceResolverIF:elem key:nil observerAction:observerAction];
+
+            break;
+        }
+        case CardElementType::ImageSet:
+        {
+            std::shared_ptr<ImageSet>imgSetElem = std::static_pointer_cast<ImageSet>(elem);
+            for(auto img :imgSetElem->GetImages()) { // loops through images in image set
+                std::shared_ptr<BaseCardElement> baseImgElem = std::static_pointer_cast<BaseCardElement>(img);
+                img->SetImageSize(imgSetElem->GetImageSize());
+
+                ObserverActionBlock observerAction =
+                ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseCardElement> const &elem, NSURL* url, ACRView *rootView) {
+                    UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
+                    if(view) {
+                        [view addObserver:self forKeyPath:@"image"
+                                  options:NSKeyValueObservingOptionNew
+                                  context:elem.get()];
+
+                        // store the image view and image set element for easy retrieval in ACRView::observeValueForKeyPath
+                        [rootView setImageView:key view:view];
+                        [rootView setImageContext:key context:elem];
+                    }
+                };
+
+                [self loadImageAccordingToResourceResolverIF:baseImgElem key:nil observerAction:observerAction];
+
+            }
+            break;
+        }
+        case CardElementType::Media:
+        {
+            std::shared_ptr<Media> mediaElem = std::static_pointer_cast<Media>(elem);
+            std::string poster =  mediaElem->GetPoster();
+            if(poster.empty()) {
+                poster = [_hostConfig getHostConfig]->GetMedia().defaultPoster;
+            }
+
+            if(!poster.empty()) {
+                ObserverActionBlock observerAction =
+                ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseCardElement> const &imgElem, NSURL* url, ACRView* rootView) {
+                    UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
+                    ACRContentHoldingUIView *contentholdingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];
+                    if(view) {
+                        [contentholdingview addSubview:view];
+                        contentholdingview.isMediaType = YES;
+                        [view addObserver:self forKeyPath:@"image"
+                                  options:NSKeyValueObservingOptionNew
+                                  context:elem.get()];
+
+                        // store the image view and media element for easy retrieval in ACRView::observeValueForKeyPath
+                        [rootView setImageView:key view:contentholdingview];
+                        [rootView setImageContext:key context:elem];
+                    }
+                };
+                [self loadImageAccordingToResourceResolverIF:elem key:nil observerAction:observerAction];
+            }
+
+            break;
+        }
+        case CardElementType::TextInput:
+        {
+            std::shared_ptr<TextInput> textInput = std::static_pointer_cast<TextInput>(elem);
+            std::shared_ptr<BaseActionElement> action = textInput->GetInlineAction();
+            if(action != nullptr && !action->GetIconUrl().empty()) {
+                ObserverActionBlockForBaseAction observerAction =
+                ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseActionElement> const &elem, NSURL* url, ACRView *rootView) {
+                    UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
+                    if(view) {
+                        [view addObserver:self forKeyPath:@"image"
+                                  options:NSKeyValueObservingOptionNew
+                                  context:elem.get()];
+
+                        // store the image view for easy retrieval in ACRView::observeValueForKeyPath
+                        [rootView setImageView:key view:view];
+                    }
+                };
+                [self loadImageAccordingToResourceResolverIFForBaseAction:action key:nil observerAction:observerAction];
+            }
+            break;
+        }
+        // continue on search
+        case CardElementType::Container:
+        {
+            std::shared_ptr<Container> container = std::static_pointer_cast<Container>(elem);
+
+            auto backgroundImageProperties = container->GetBackgroundImage();
+            if((backgroundImageProperties != nullptr) && !(backgroundImageProperties->GetUrl().empty())) {
+                ObserverActionBlock observerAction = generateBackgroundImageObserverAction(backgroundImageProperties, self, container);
+                [self loadBackgroundImageAccordingToResourceResolverIF:backgroundImageProperties key:nil observerAction:observerAction];
+            }
+
+            std::vector<std::shared_ptr<BaseCardElement>> &new_body = container->GetItems();
+            [self addTasksToConcurrentQueue: new_body];
+            break;
+        }
+        // continue on search
+        case CardElementType::ColumnSet:
+        {
+            std::shared_ptr<ColumnSet> columSet = std::static_pointer_cast<ColumnSet>(elem);
+            std::vector<std::shared_ptr<Column>> &columns = columSet->GetColumns();
+            // ColumnSet is vector of Column, instead of vector of BaseCardElement
+            for(auto const &column : columns) { // update serial number that is used for generating unique key for image_map
+                // Handle background image (if necessary)
+                auto backgroundImageProperties = column->GetBackgroundImage();
+                if((backgroundImageProperties != nullptr) && !(backgroundImageProperties->GetUrl().empty())) {
+                    ObserverActionBlock observerAction = generateBackgroundImageObserverAction(backgroundImageProperties, self, column);
+                    [self loadBackgroundImageAccordingToResourceResolverIF:backgroundImageProperties key:nil observerAction:observerAction];
+                }
+
+                [self addTasksToConcurrentQueue: column->GetItems()];
+            }
+            break;
+        }
+        default:
+        {
+            /// no work is needed
+            break;
+        }
+    }
+}
+
 // Walk through adaptive cards elements recursively and if images/images set/TextBlocks are found process them concurrently
 - (void)addTasksToConcurrentQueue:(std::vector<std::shared_ptr<BaseCardElement>> const &)body
 {
     ACRRegistration *rendererRegistration = [ACRRegistration getInstance];
 
-    for(auto &elem : body)
+    for (auto &elem : body)
     {
-        if([rendererRegistration isElementRendererOverridden:(ACRCardElementType) elem->GetElementType()] == YES){
+        if ([rendererRegistration isElementRendererOverridden:(ACRCardElementType) elem->GetElementType()] == YES) {
             continue;
         }
-        switch (elem->GetElementType())
-        {
-            case CardElementType::TextBlock:
-            {
-                std::shared_ptr<TextBlock> textBlockElement = std::static_pointer_cast<TextBlock>(elem);
-                TextElementProperties textProp;
-                textProp.SetText(textBlockElement->GetText());
-                textProp.SetTextSize(textBlockElement->GetTextSize());
-                textProp.SetTextWeight(textBlockElement->GetTextWeight());
-                textProp.SetFontStyle(textBlockElement->GetFontStyle());
-                textProp.SetTextColor(textBlockElement->GetTextColor());
-                textProp.SetIsSubtle(textBlockElement->GetIsSubtle());
-                textProp.SetLanguage(textBlockElement->GetLanguage());
 
-                /// tag a base card element with unique key
-                NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)textBlockElement.get()];
-                NSString *key = [number stringValue];
-                [self processTextConcurrently:textProp elementId:key];
-                break;
+        [self processBaseCardElement:elem];
+        std::shared_ptr<BaseElement> fallbackElem = elem->GetFallbackContent();
+        while (fallbackElem) {
+            std::shared_ptr<BaseCardElement> fallbackElemCard = std::static_pointer_cast<BaseCardElement>(fallbackElem);
+            if (fallbackElemCard) {
+                [self processBaseCardElement:fallbackElemCard];
             }
-            case CardElementType::RichTextBlock:
-            {
-                std::shared_ptr<RichTextBlock> rTxtBlkElement = std::static_pointer_cast<RichTextBlock>(elem);
-                for(const auto &paragraph : rTxtBlkElement->GetParagraphs()) {
-                    for(const auto &inlineText : paragraph->GetInlines()) {
-                        std::shared_ptr<TextRun> textRun = std::static_pointer_cast<TextRun>(inlineText);
-                        if(textRun) {
-                            TextElementProperties textProp;
-                            textProp.SetText(textRun->GetText());
-                            textProp.SetTextSize(textRun->GetTextSize());
-                            textProp.SetTextWeight(textRun->GetTextWeight());
-                            textProp.SetFontStyle(textRun->GetFontStyle());
-                            textProp.SetTextColor(textRun->GetTextColor());
-                            textProp.SetIsSubtle(textRun->GetIsSubtle());
-                            textProp.SetLanguage(textRun->GetLanguage());
-                            NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)textRun.get()];
-                            NSString *key = [number stringValue];
-                            [self processTextConcurrently:textProp elementId:key];
-                        }
-                    }
-                }
-                break;
-            }
-            case CardElementType::FactSet:
-            {
-                [self tagBaseCardElement:elem];
-                std::shared_ptr<FactSet> factSet = std::dynamic_pointer_cast<FactSet>(elem);
-                NSString *key = [NSString stringWithCString:elem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
-                key = [key stringByAppendingString:@"*"];
-                int rowFactId = 0;
-                for(auto fact : factSet->GetFacts()) {
 
-                    TextElementProperties titleTextProp{[_hostConfig getHostConfig]->GetFactSet().title, fact->GetTitle(), fact->GetLanguage()};
-                    [self processTextConcurrently:titleTextProp
-                                        elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]];
-
-
-                    TextElementProperties valueTextProp{[_hostConfig getHostConfig]->GetFactSet().value, fact->GetValue(), fact->GetLanguage()};
-                    [self processTextConcurrently:valueTextProp
-                                        elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]];
-                }
-                break;
-            }
-            case CardElementType::Image:
-            {
-
-                ObserverActionBlock observerAction =
-                ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseCardElement> const &elem, NSURL* url, ACRView *rootView) {
-                        UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
-                        if(view) {
-                            [view addObserver:self forKeyPath:@"image"
-                                      options:NSKeyValueObservingOptionNew
-                                      context:elem.get()];
-                            
-                            // store the image view and image element for easy retrieval in ACRView::observeValueForKeyPath
-                            [rootView setImageView:key view:view];
-                            [rootView setImageContext:key context:elem];
-                        }
-                };
-                [self loadImageAccordingToResourceResolverIF:elem key:nil observerAction:observerAction];
-
-                break;
-            }
-            case CardElementType::ImageSet:
-            {
-                std::shared_ptr<ImageSet>imgSetElem = std::static_pointer_cast<ImageSet>(elem);
-                for(auto img :imgSetElem->GetImages()) { // loops through images in image set
-                    std::shared_ptr<BaseCardElement> baseImgElem = std::static_pointer_cast<BaseCardElement>(img);
-                    img->SetImageSize(imgSetElem->GetImageSize());
-
-                    ObserverActionBlock observerAction =
-                    ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseCardElement> const &elem, NSURL* url, ACRView *rootView) {
-                        UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
-                        if(view) {
-                            [view addObserver:self forKeyPath:@"image"
-                                      options:NSKeyValueObservingOptionNew
-                                      context:elem.get()];
-                            
-                            // store the image view and image set element for easy retrieval in ACRView::observeValueForKeyPath
-                            [rootView setImageView:key view:view];
-                            [rootView setImageContext:key context:elem];
-                        }
-                    };
-
-                    [self loadImageAccordingToResourceResolverIF:baseImgElem key:nil observerAction:observerAction];
-
-                }
-                break;
-            }
-            case CardElementType::Media:
-            {
-                std::shared_ptr<Media> mediaElem = std::static_pointer_cast<Media>(elem);
-                std::string poster =  mediaElem->GetPoster();
-                if(poster.empty()) {
-                    poster = [_hostConfig getHostConfig]->GetMedia().defaultPoster;
-                }
-
-                if(!poster.empty()) {
-                    ObserverActionBlock observerAction =
-                    ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseCardElement> const &imgElem, NSURL* url, ACRView* rootView) {
-                        UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
-                        ACRContentHoldingUIView *contentholdingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];
-                        if(view) {
-                            [contentholdingview addSubview:view];
-                            contentholdingview.isMediaType = YES;
-                            [view addObserver:self forKeyPath:@"image"
-                                      options:NSKeyValueObservingOptionNew
-                                      context:elem.get()];
-                            
-                            // store the image view and media element for easy retrieval in ACRView::observeValueForKeyPath
-                            [rootView setImageView:key view:contentholdingview];
-                            [rootView setImageContext:key context:elem];
-                        }
-                    };
-                    [self loadImageAccordingToResourceResolverIF:elem key:nil observerAction:observerAction];
-                }
-
-                break;
-            }
-            case CardElementType::TextInput:
-            {
-                std::shared_ptr<TextInput> textInput = std::static_pointer_cast<TextInput>(elem);
-                std::shared_ptr<BaseActionElement> action = textInput->GetInlineAction();
-                if(action != nullptr && !action->GetIconUrl().empty()) {
-                    ObserverActionBlockForBaseAction observerAction =
-                    ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseActionElement> const &elem, NSURL* url, ACRView *rootView) {
-                        UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
-                        if(view) {
-                            [view addObserver:self forKeyPath:@"image"
-                                      options:NSKeyValueObservingOptionNew
-                                      context:elem.get()];
-                            
-                            // store the image view for easy retrieval in ACRView::observeValueForKeyPath
-                            [rootView setImageView:key view:view];
-                        }
-                    };
-                    [self loadImageAccordingToResourceResolverIFForBaseAction:action key:nil observerAction:observerAction];
-                }
-                break;
-            }
-            // continue on search
-            case CardElementType::Container:
-            {
-                std::shared_ptr<Container> container = std::static_pointer_cast<Container>(elem);
-                
-                auto backgroundImageProperties = container->GetBackgroundImage();
-                if((backgroundImageProperties != nullptr) && !(backgroundImageProperties->GetUrl().empty())) {
-                    ObserverActionBlock observerAction = generateBackgroundImageObserverAction(backgroundImageProperties, self, container);
-                    [self loadBackgroundImageAccordingToResourceResolverIF:backgroundImageProperties key:nil observerAction:observerAction];
-                }
-                
-                std::vector<std::shared_ptr<BaseCardElement>> &new_body = container->GetItems();
-                [self addTasksToConcurrentQueue: new_body];
-                break;
-            }
-            // continue on search
-            case CardElementType::ColumnSet:
-            {
-                std::shared_ptr<ColumnSet> columSet = std::static_pointer_cast<ColumnSet>(elem);
-                std::vector<std::shared_ptr<Column>> &columns = columSet->GetColumns();
-                // ColumnSet is vector of Column, instead of vector of BaseCardElement
-                for(auto const &column : columns) { // update serial number that is used for generating unique key for image_map
-                    // Handle background image (if necessary)
-                    auto backgroundImageProperties = column->GetBackgroundImage();
-                    if((backgroundImageProperties != nullptr) && !(backgroundImageProperties->GetUrl().empty())) {
-                        ObserverActionBlock observerAction = generateBackgroundImageObserverAction(backgroundImageProperties, self, column);
-                        [self loadBackgroundImageAccordingToResourceResolverIF:backgroundImageProperties key:nil observerAction:observerAction];
-                    }
-                    
-                    [self addTasksToConcurrentQueue: column->GetItems()];
-                }
-                break;
-            }
-            default:
-            {
-                /// no work is needed
-                break;
-            }
+            fallbackElem = fallbackElemCard->GetFallbackContent();
         }
     }
 }
