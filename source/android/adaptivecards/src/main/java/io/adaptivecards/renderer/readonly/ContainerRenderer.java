@@ -13,6 +13,7 @@ import io.adaptivecards.objectmodel.BackgroundImage;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
+import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.BackgroundImageLoaderAsync;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
@@ -106,17 +107,19 @@ public class ContainerRenderer extends BaseCardElementRenderer
 
         if (!container.GetItems().isEmpty())
         {
-            View v = CardRendererRegistration.getInstance().render(renderedCard,
-                                                          context,
-                                                          fragmentManager,
-                                                          containerView,
-                                                          container,
-                                                          container.GetItems(),
-                                                          cardActionHandler,
-                                                          hostConfig,
-                                                          renderArgs);
-
-            if (v == null)
+            try
+            {
+                CardRendererRegistration.getInstance().render(renderedCard,
+                    context,
+                    fragmentManager,
+                    containerView,
+                    container,
+                    container.GetItems(),
+                    cardActionHandler,
+                    hostConfig,
+                    renderArgs);
+            }
+            catch (AdaptiveFallbackException e)
             {
                 return null;
             }

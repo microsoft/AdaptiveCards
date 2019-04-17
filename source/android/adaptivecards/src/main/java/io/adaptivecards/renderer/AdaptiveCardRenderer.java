@@ -149,7 +149,11 @@ public class AdaptiveCardRenderer
 
         RenderArgs renderArgs = new RenderArgs();
         renderArgs.setContainerStyle(style);
-        CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, layout, adaptiveCard, baseCardElementList, cardActionHandler, hostConfig, renderArgs);
+        try
+        {
+            CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, layout, adaptiveCard, baseCardElementList, cardActionHandler, hostConfig, renderArgs);
+        }
+        catch (AdaptiveFallbackException e){}
 
         if (hostConfig.GetSupportsInteractivity())
         {
@@ -163,8 +167,13 @@ public class AdaptiveCardRenderer
                 rootLayout.addView(showCardsLayout);
 
                 IActionLayoutRenderer actionLayoutRenderer = CardRendererRegistration.getInstance().getActionLayoutRenderer();
-                if(actionLayoutRenderer != null) {
-                    actionLayoutRenderer.renderActions(renderedCard, context, fragmentManager, layout, baseActionElementList, cardActionHandler, hostConfig, renderArgs);
+                if(actionLayoutRenderer != null)
+                {
+                    try
+                    {
+                        actionLayoutRenderer.renderActions(renderedCard, context, fragmentManager, layout, baseActionElementList, cardActionHandler, hostConfig, renderArgs);
+                    }
+                    catch (AdaptiveFallbackException e) {}
                 }
             }
         }
