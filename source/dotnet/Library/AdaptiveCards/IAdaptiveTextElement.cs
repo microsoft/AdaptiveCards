@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
-    public interface ITextElement
+    public interface IAdaptiveTextElement
     {
         /// <summary>
         ///     The size of the text
