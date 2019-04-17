@@ -16,6 +16,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    // Enable minSdkVersion to be lower than 26 (since requires Invoke-customs)
+    // https://stackoverflow.com/a/50198499/1454643
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -26,6 +32,9 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support:design:26.1.0'
     implementation 'com.pixplicity.sharp:library:1.1.0'
+    implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
+    implementation 'com.android.volley:volley:1.1.1'
+    implementation 'org.webrtc:google-webrtc:1.0.27306'
     testImplementation 'junit:junit:4.12'
     implementation project(':adaptivecards')
 }

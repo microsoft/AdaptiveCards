@@ -67,21 +67,8 @@ namespace AdaptiveCards.Rendering.Wpf
                     };
                 }
             }
-            if (image.SelectAction != null)
-            {
-                return context.RenderSelectAction(image.SelectAction, uiBorder ?? uiImage);
-            }
 
-            if(uiBorder != null && !image.IsVisible)
-            {
-                uiBorder.Visibility = Visibility.Collapsed;
-            }
-            else if(uiImage != null && !image.IsVisible)
-            {
-                uiImage.Visibility = Visibility.Collapsed;
-            }
-
-            return uiBorder ?? uiImage;
+            return RendererUtil.ApplySelectAction(uiBorder ?? uiImage, image, context);
         }
 
     }

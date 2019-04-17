@@ -109,7 +109,7 @@ namespace AdaptiveCards.Rendering.Wpf
                             uiShowCardContainer.Children.Add(uiShowCardWrapper);
 
                             // Add to the list of show cards in context
-                            context.ActionShowCards.Add(new Tuple<FrameworkElement, Button>(uiShowCardContainer, uiAction));
+                            context.ActionShowCards.Add(uiAction, uiShowCardContainer);
                         }
                     }
                 }

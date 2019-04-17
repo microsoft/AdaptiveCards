@@ -45,7 +45,6 @@ namespace AdaptiveCards.Rendering.Html
             }
         }
 
-
         public string GetColor(AdaptiveTextColor color, bool isSubtle)
         {
             FontColorConfig colorConfig;

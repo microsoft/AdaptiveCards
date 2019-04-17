@@ -202,7 +202,30 @@ namespace AdaptiveCards.Sample.Html
                 }}
             }});
         }}
-               
+
+        // Sample JavaScript code to test showCard action
+        const showCardActions = document.getElementsByClassName('ac-action-showCard');
+        for (var i = 0; i < showCardActions.length; i++)
+        {{
+            const showCardAction = showCardActions[i];
+            showCardAction.addEventListener('click', function() {{
+                if (true) {{
+                    const showCardId = showCardAction.dataset.acShowcardid;
+                    const showCard = document.getElementById(showCardId);
+
+                    if(showCard.style.display == 'none') {{
+                        showCard.style.display = 'inline';
+                    }}
+                    else {{
+                        showCard.style.display = 'none'
+                    }}
+                }} else {{
+                    const showCardId = showCardAction.dataset.acShowCardId;
+                    alert(showCardId);
+                }}
+            }});
+        }}
+
         // Sample JavaScript code to test inlienaction's keyboard event handler 
         const textinputWithInlineAction = document.getElementsByClassName('ac-textinput-inlineaction');
         for (var i = 0; i < textinputWithInlineAction.length; i++)

@@ -110,7 +110,6 @@ namespace AdaptiveCards.Rendering.Html
             return transformers;
         }
 
-
         protected static HtmlTag AddActionAttributes(AdaptiveAction action, HtmlTag tag, AdaptiveRenderContext context)
         {
             tag.AddClass(GetActionCssClass(action))
@@ -268,6 +267,11 @@ namespace AdaptiveCards.Rendering.Html
                 ApplyBackgroundImage(card.BackgroundImage, uiCard, context);
             }
 
+            if (card.PixelMinHeight > 0)
+            {
+                uiCard.Style("min-height", card.PixelMinHeight + "px");
+            }
+
             // Reset the parent style
             context.RenderArgs.ParentStyle = AdaptiveContainerStyle.Default;
 
@@ -302,27 +306,15 @@ namespace AdaptiveCards.Rendering.Html
         {
             if (context.Config.SupportsInteractivity && selectAction != null)
             {
-                tag.AddClass("ac-selectable");
-                AddActionAttributes(selectAction, tag, context);
-
-                // Create the additional card below for showCard actions
-                if (selectAction is AdaptiveShowCardAction showCardAction)
+                // SelectAction doesn't allow showCard actions
+                if (selectAction is AdaptiveShowCardAction)
                 {
-                    var cardId = tag.Attributes["data-ac-showCardId"];
-
-                    var uiShowCard = context.Render(showCardAction.Card);
-                    if (uiShowCard != null)
-                    {
-                        uiShowCard.Attr("id", cardId)
-                            .AddClass("ac-showCard")
-                            .Style("padding", "0")
-                            .Style("display", "none")
-                            .Style("margin-top", $"{context.Config.Actions.ShowCard.InlineTopMargin}px");
-
-                        // Store all showCard tags inside context
-                        context.ShowCardTags.Add(uiShowCard);
-                    }
+                    context.Warnings.Add(new AdaptiveWarning(-1, "Inline ShowCard not supported for SelectAction"));
+                    return;
                 }
+
+                tag.AddClass("ac-selectable");
+                AddActionAttributes(selectAction, tag, context);                
             }
         }
 
@@ -339,6 +331,14 @@ namespace AdaptiveCards.Rendering.Html
                         if (uiContainer.Children.Any())
                         {
                             AddSeparator(uiContainer, cardElement, context);
+                        }
+
+                        if (cardElement is AdaptiveCollectionElement collectionElement)
+                        {
+                            if (collectionElement.PixelMinHeight > 0)
+                            {
+                                uiElement.Style("min-height", collectionElement.PixelMinHeight + "px");
+                            }
                         }
 
                         uiContainer.Children.Add(uiElement);
@@ -512,6 +512,11 @@ namespace AdaptiveCards.Rendering.Html
 
             var parentRenderArgs = context.RenderArgs;
             var elementRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
+
+            if (column.PixelMinHeight > 0)
+            {
+                uiColumn.Style("min-height", column.PixelMinHeight + "px");
+            }
 
             if (!column.IsVisible)
             {
@@ -1011,7 +1016,7 @@ namespace AdaptiveCards.Rendering.Html
                 .Attr("name", image.Id)
                 .Style("display", "block");
 
-            if (image.Height == AdaptiveHeight.Auto)
+            if (image.Height != AdaptiveHeight.Stretch)
             {
                 uiDiv.Style("box-sizing", "border-box");
             }
@@ -1653,7 +1658,10 @@ namespace AdaptiveCards.Rendering.Html
             }
             else
             {
-                uiTextInput.Style("flex", "1 1 auto");
+                if (!input.IsMultiline)
+                {
+                    uiTextInput.Style("flex", "1 1 auto");
+                }
             }
 
             if (!string.IsNullOrEmpty(input.Placeholder))
