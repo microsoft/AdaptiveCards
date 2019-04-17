@@ -145,11 +145,6 @@ namespace AdaptiveCards.Rendering.Wpf
                 }
             };
 
-            if(!media.IsVisible)
-            {
-                uiMedia.Visibility = Visibility.Collapsed;
-            }
-
             return uiMedia;
         }
 
