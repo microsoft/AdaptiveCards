@@ -123,7 +123,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
         [ACOHostConfig getPlatformContainerStyle:style]];
 
     renderBackgroundImage([_adaptiveCard card]->GetBackgroundImage(), newView, self);
-    
+
     [self callDidLoadElementsIfNeeded];
     return newView;
 }
@@ -158,6 +158,8 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
             textProp.SetTextColor(textBlockElement->GetTextColor());
             textProp.SetIsSubtle(textBlockElement->GetIsSubtle());
             textProp.SetLanguage(textBlockElement->GetLanguage());
+            textProp.SetItalic(textBlockElement->GetItalic());
+            textProp.SetStrikethrough(textBlockElement->GetStrikethrough());
 
             /// tag a base card element with unique key
             NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)textBlockElement.get()];
@@ -168,22 +170,22 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
         case CardElementType::RichTextBlock:
         {
             std::shared_ptr<RichTextBlock> rTxtBlkElement = std::static_pointer_cast<RichTextBlock>(elem);
-            for(const auto &paragraph : rTxtBlkElement->GetParagraphs()) {
-                for(const auto &inlineText : paragraph->GetInlines()) {
-                    std::shared_ptr<TextRun> textRun = std::static_pointer_cast<TextRun>(inlineText);
-                    if(textRun) {
-                        TextElementProperties textProp;
-                        textProp.SetText(textRun->GetText());
-                        textProp.SetTextSize(textRun->GetTextSize());
-                        textProp.SetTextWeight(textRun->GetTextWeight());
-                        textProp.SetFontStyle(textRun->GetFontStyle());
-                        textProp.SetTextColor(textRun->GetTextColor());
-                        textProp.SetIsSubtle(textRun->GetIsSubtle());
-                        textProp.SetLanguage(textRun->GetLanguage());
-                        NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)textRun.get()];
-                        NSString *key = [number stringValue];
-                        [self processTextConcurrently:textProp elementId:key];
-                    }
+            for (const auto &inlineText : rTxtBlkElement->GetInlines()) {
+                std::shared_ptr<TextRun> textRun = std::static_pointer_cast<TextRun>(inlineText);
+                if(textRun) {
+                    TextElementProperties textProp;
+                    textProp.SetText(textRun->GetText());
+                    textProp.SetTextSize(textRun->GetTextSize());
+                    textProp.SetTextWeight(textRun->GetTextWeight());
+                    textProp.SetFontStyle(textRun->GetFontStyle());
+                    textProp.SetTextColor(textRun->GetTextColor());
+                    textProp.SetIsSubtle(textRun->GetIsSubtle());
+                    textProp.SetLanguage(textRun->GetLanguage());
+                    textProp.SetItalic(textRun->GetItalic());
+                    textProp.SetStrikethrough(textRun->GetStrikethrough());
+                    NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)textRun.get()];
+                    NSString *key = [number stringValue];
+                    [self processTextConcurrently:textProp elementId:key];
                 }
             }
             break;
@@ -418,13 +420,16 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                 } else {
                     fontFamilyName = [self->_hostConfig getFontFamily:textProp.GetFontStyle()];
                 }
+
+                NSString *font_style = textProp.GetItalic() ? @"italic" :  @"normal";
                 // Font and text size are applied as CSS style by appending it to the html string
-                parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: %@; font-size:%dpx; font-weight: %d;}</style>",
+                parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: %@; font-size:%dpx; font-weight: %d; font-style: %@;}</style>",
                                                                       fontFamilyName,
                                                                       [self->_hostConfig getTextBlockTextSize:textProp.GetFontStyle()
                                                                                                      textSize:textProp.GetTextSize()],
                                                                       [self->_hostConfig getTextBlockFontWeight:textProp.GetFontStyle()
-                                                                                                     textWeight:textProp.GetTextWeight()]]];
+                                                                       textWeight:textProp.GetTextWeight()],
+                                                                      font_style]];
 
                 NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
                 NSDictionary *options = @{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType};
@@ -440,27 +445,38 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                 fontweight -= 100;
                 fontweight /= 100;
 
-                if(![self->_hostConfig getFontFamily:textProp.GetFontStyle()]){
+                if (![self->_hostConfig getFontFamily:textProp.GetFontStyle()]){
                     const NSArray<NSNumber *> *fontweights = @[@(UIFontWeightUltraLight), @(UIFontWeightThin), @(UIFontWeightLight), @(UIFontWeightRegular), @(UIFontWeightMedium),
                        @(UIFontWeightSemibold), @(UIFontWeightBold), @(UIFontWeightHeavy), @(UIFontWeightBlack)];
                     const CGFloat size = [self->_hostConfig getTextBlockTextSize:textProp.GetFontStyle() textSize:textProp.GetTextSize()];
-                    if(textProp.GetFontStyle() == FontStyle::Monospace){
+                    if (textProp.GetFontStyle() == FontStyle::Monospace) {
                         const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
                                                                     @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
                         UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:@{UIFontDescriptorFamilyAttribute: @"Courier New",
-                                                                                                            UIFontDescriptorFaceAttribute:fontweights[fontweight]}];
+                                                               UIFontDescriptorFaceAttribute:fontweights[fontweight]}];
+                        descriptor = getItalicFontDescriptor(descriptor, textProp.GetItalic());
+
                         font = [UIFont fontWithDescriptor:descriptor size:[self->_hostConfig getTextBlockTextSize:textProp.GetFontStyle() textSize:textProp.GetTextSize()]];
-                    }
-                    else{
+                    } else {
                         font = [UIFont systemFontOfSize:size weight:[fontweights[fontweight] floatValue]];
+
+                        if (textProp.GetItalic()) {
+                            font = [UIFont fontWithDescriptor:
+                                    getItalicFontDescriptor(font.fontDescriptor, textProp.GetItalic())
+                                    size:size];
+                        }
                     }
                 } else {
                     // font weight as string since font weight as double doesn't work
                     // normailze fontweight for indexing
                     const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
                                                                 @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
-                    UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:@{UIFontDescriptorFamilyAttribute: [self->_hostConfig getFontFamily:textProp.GetFontStyle()],
-                                                                                            UIFontDescriptorFaceAttribute:fontweights[fontweight]}];
+                    UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:
+                        @{UIFontDescriptorFamilyAttribute: [self->_hostConfig getFontFamily:textProp.GetFontStyle()],
+                          UIFontDescriptorFaceAttribute:fontweights[fontweight]}];
+
+                    descriptor = getItalicFontDescriptor(descriptor, textProp.GetItalic());
+
                     font = [UIFont fontWithDescriptor:descriptor size:[self->_hostConfig getTextBlockTextSize:textProp.GetFontStyle() textSize:textProp.GetTextSize()]];
                 }
 
@@ -573,10 +589,10 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
         if (context) {
             // image that was loaded
             UIImage *image = [change objectForKey:NSKeyValueChangeNewKey];
-            
+
             NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)(context)];
             NSString *key = [number stringValue];
-            
+
             ACOBaseCardElement *baseCardElement = _imageContextMap[key];
             if (baseCardElement) {
                 ACRRegistration *reg = [ACRRegistration getInstance];
@@ -585,7 +601,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                     // remove observer early in case background image must be changed to handle mode = repeat
                     [self removeObserver:self forKeyPath:path onObject:object];
                     observerRemoved = true;
-                    
+
                     [renderer configUpdateForUIImageView:baseCardElement config:_hostConfig image:image imageView:(UIImageView *)object];
                 }
             } else {
@@ -597,11 +613,11 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                     // handle background image for adaptive card that uses resource resolver
                     UIImageView *imageView = (UIImageView *)object;
                     auto backgroundImage = [_adaptiveCard card]->GetBackgroundImage();
-                    
+
                     // remove observer early in case background image must be changed to handle mode = repeat
                     [self removeObserver:self forKeyPath:path onObject:object];
                     observerRemoved = true;
-                    
+
                     renderBackgroundImage(backgroundImage.get(), imageView, image);
                 }
             }
@@ -625,11 +641,11 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 {
     NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)(backgroundImage.get())];
     NSString *nSUrlStr = [NSString stringWithCString:backgroundImage->GetUrl().c_str() encoding:[NSString defaultCStringEncoding]];
-    
+
     if(!key) {
         key = [number stringValue];
     }
-    
+
     [self loadImage:nSUrlStr key:key context:nullptr observerAction:observerAction];
 }
 
@@ -660,14 +676,14 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     if(!key) {
         key = [number stringValue];
     }
-    
+
     [self loadImage:nSUrlStr key:key context:elem observerAction:observerAction];
 }
 
 - (void)loadImage:(NSString *)nSUrlStr key:(NSString *)key context:(std::shared_ptr<BaseCardElement> const &)elem observerAction:(ObserverActionBlock)observerAction
 {
     _numberOfSubscribers++;
-    
+
     NSURL *url = [NSURL URLWithString:nSUrlStr];
     NSObject<ACOIResourceResolver> *imageResourceResolver = [_hostConfig getResourceResolverForScheme:[url scheme]];
     if(imageResourceResolver && ACOImageViewIF == [_hostConfig getResolverIFType:[url scheme]]) {

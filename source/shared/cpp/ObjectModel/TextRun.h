@@ -40,6 +40,12 @@ namespace AdaptiveSharedNamespace
         bool GetIsSubtle() const;
         void SetIsSubtle(const bool value);
 
+        bool GetItalic() const;
+        void SetItalic(const bool value);
+
+        bool GetStrikethrough() const;
+        void SetStrikethrough(const bool value);
+
         bool GetHighlight() const;
         void SetHighlight(const bool value);
 

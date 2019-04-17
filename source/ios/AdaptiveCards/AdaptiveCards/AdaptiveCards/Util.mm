@@ -389,3 +389,12 @@ void handleActionFallbackException(ACOFallbackException *exception,
         }
     }
 }
+
+UIFontDescriptor *getItalicFontDescriptor(UIFontDescriptor *descriptor, bool isItalic)
+{
+    if (isItalic && descriptor) {
+        return [descriptor fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic];
+    }
+
+    return descriptor;
+}
