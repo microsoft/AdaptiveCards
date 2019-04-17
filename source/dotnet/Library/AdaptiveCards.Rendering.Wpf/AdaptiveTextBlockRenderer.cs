@@ -62,11 +62,6 @@ namespace AdaptiveCards.Rendering.Wpf
 
             }
 
-            if (!textBlock.IsVisible)
-            {
-                uiTextBlock.Visibility = Visibility.Collapsed;
-            }
-
             return uiTextBlock;
         }
 
