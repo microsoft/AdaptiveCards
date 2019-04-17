@@ -95,7 +95,7 @@ export default class Renderer extends React.Component {
         } else if (actionObject.type === "Action.OpenUrl") {
             Linking.canOpenURL(actionObject.url).then(supported => {
                 if (supported) {
-                    Linking.openURL(actionObject.url);
+                    Linking.openURL(actionObject.url).catch(()=>console.log("Failed to open URI: " + actionObject.url));
                 } else {
                     console.log("Don't know how to open URI: " + actionObject.url);
                 }

@@ -111,8 +111,10 @@ export class ActionButton extends React.Component {
 
 
 	onOpenURLCalled = () => {
-		let actionObject = { "type": this.payload.type, "url": this.payload.url };
-		this.context.onExecuteAction(actionObject);
+		if(!Utils.isNullOrEmpty(this.payload.url)){
+			let actionObject = { "type": this.payload.type, "url": this.payload.url };
+			this.context.onExecuteAction(actionObject);
+		}
 	}
 
 	changeShowCardState = () => {
