@@ -12,6 +12,11 @@
 #import "Util.h"
 #import "ACRContentStackView.h"
 #import "ACOHostConfigPrivate.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACRBaseCardElementRenderer.h"
+#import "ACRRegistration.h"
+#import "ACOBaseActionElementPrivate.h"
+#import "ACRIBaseActionElementRenderer.h"
 
 using namespace AdaptiveCards;
 
@@ -262,6 +267,127 @@ ObserverActionBlock generateBackgroundImageObserverAction(std::shared_ptr<Backgr
             [rootView setImageContext:key context:context];
         }
     };
+}
+
+void handleFallbackException(ACOFallbackException *exception,
+                             UIView<ACRIContentHoldingView> *view,
+                             ACRView *rootView,
+                             NSMutableArray *inputs,
+                             std::shared_ptr<BaseCardElement> const &givenElem,
+                             ACOHostConfig *config)
+{
+    std::shared_ptr<BaseElement> fallbackBaseElement = nullptr;
+    std::shared_ptr<BaseCardElement> elem = givenElem;
+    bool bCanFallbackToAncestor = elem->CanFallbackToAncestor();
+    FallbackType fallbackType = elem->GetFallbackType();
+    bool bHandled = false;
+    ACRRegistration *reg = [ACRRegistration getInstance];
+
+    do {
+        fallbackType = elem->GetFallbackType();
+        if (fallbackType != FallbackType::Content) {
+            break;
+        }
+
+        fallbackBaseElement = elem->GetFallbackContent();
+        elem = std::static_pointer_cast<BaseCardElement>(fallbackBaseElement);
+        if (!elem) {
+            break;
+        }
+
+        ACOBaseCardElement *acoElem = [[ACOBaseCardElement alloc] init];
+        [acoElem setElem:elem];
+
+        ACRBaseCardElementRenderer *renderer =
+            [reg getRenderer:[NSNumber numberWithInt:(int)elem->GetElementType()]];
+
+        if (renderer) {
+            @try {
+                const CardElementType elemType = givenElem->GetElementType();
+                removeLastViewFromCollectionView(elemType, view);
+                [renderer render:view rootView:rootView inputs:inputs baseCardElement:acoElem hostConfig:config];
+                bHandled = true;
+            } @catch (ACOFallbackException *e){
+                NSLog(@"Fallback Failed, trying different fallback");
+                NSLog(@"%@", e);
+            }
+        }
+
+    } while (!bHandled);
+
+    if (!bHandled) {
+        if (bCanFallbackToAncestor && fallbackType != FallbackType::Drop) {
+            @throw exception;
+        } else {
+            const CardElementType elemType = givenElem->GetElementType();
+            removeLastViewFromCollectionView(elemType, view);
+        }
+    }
+}
+
+void removeLastViewFromCollectionView(const CardElementType elemType, UIView<ACRIContentHoldingView> *view)
+{
+    if (elemType == CardElementType::Container ||
+        elemType == CardElementType::Column ||
+        elemType == CardElementType::ColumnSet) {
+        [view removeLastViewFromArrangedSubview];
+    }
+}
+
+void handleActionFallbackException(ACOFallbackException *exception,
+                                   UIView<ACRIContentHoldingView> *view,
+                                   ACRView *rootView,
+                                   NSMutableArray *inputs,
+                                   ACOBaseActionElement *acoElem,
+                                   ACOHostConfig *config,
+                                   UIView<ACRIContentHoldingView> *actionSet)
+{
+    std::shared_ptr<BaseElement> fallbackBaseElement = nullptr;
+    std::shared_ptr<BaseActionElement> elem = acoElem.element;
+    bool bCanFallbackToAncestor = elem->CanFallbackToAncestor();
+    FallbackType fallbackType = elem->GetFallbackType();
+    bool bHandled = false;
+    ACRRegistration *reg = [ACRRegistration getInstance];
+
+    do {
+        fallbackType = elem->GetFallbackType();
+        if (fallbackType != FallbackType::Content) {
+            break;
+        }
+
+        fallbackBaseElement = elem->GetFallbackContent();
+        elem = std::static_pointer_cast<BaseActionElement>(fallbackBaseElement);
+        if (!elem) {
+            break;
+        }
+
+        ACOBaseActionElement *acoElem = [[ACOBaseActionElement alloc] initWithBaseActionElement:elem];
+
+        ACRBaseActionElementRenderer *renderer =
+            [reg getActionRenderer:[NSNumber numberWithInt:(int)elem->GetElementType()]];
+
+        if (renderer) {
+            @try {
+                UIButton *button = [renderer renderButton:rootView
+                                                   inputs:inputs
+                                                superview:view
+                                        baseActionElement:acoElem
+                                               hostConfig:config];
+                [actionSet addArrangedSubview:button];
+                bHandled = true;
+            } @catch (ACOFallbackException *e) {
+                NSLog(@"Fallabck Failed, trying different fallback");
+                NSLog(@"%@", e);
+            }
+        }
+
+    } while (!bHandled);
+
+    if (!bHandled) {
+        if (bCanFallbackToAncestor && fallbackType != FallbackType::Drop) {
+            @throw exception;
+        }
+    }
 }
 
 UIFontDescriptor *getItalicFontDescriptor(UIFontDescriptor *descriptor, bool isItalic)
