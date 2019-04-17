@@ -55,10 +55,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 uiFactSet.Children.Add(uiValue);
             }
 
-            if(!factSet.IsVisible)
-            {
-                uiFactSet.Visibility = Visibility.Collapsed;
-            }
+            RendererUtil.ApplyIsVisible(uiFactSet, factSet);
 
             return uiFactSet;
         }

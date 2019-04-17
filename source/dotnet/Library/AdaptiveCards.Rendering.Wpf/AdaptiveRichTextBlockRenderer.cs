@@ -27,11 +27,6 @@ namespace AdaptiveCards.Rendering.Wpf
             }
             uiRichTB.Inlines.Add(new LineBreak());
 
-            if (!richTB.IsVisible)
-            {
-                uiRichTB.Visibility = Visibility.Collapsed;
-            }
-
             return uiRichTB;
         }
 
