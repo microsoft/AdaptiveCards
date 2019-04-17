@@ -56,69 +56,73 @@
     if(rootView){
         NSMutableDictionary *textMap = [rootView getTextMap];
 
-        for(const auto &paragraph : rTxtBlck->GetParagraphs()) {
-            for(const auto &inlineText : paragraph->GetInlines()) {
-                std::shared_ptr<TextRun> textRun = std::static_pointer_cast<TextRun>(inlineText);
-                if(textRun) {
-                    NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)textRun.get()];
-                    NSString *key = [number stringValue];
-                    NSDictionary* data = textMap[key];
-                    NSData *htmlData = data[@"html"];
-                    NSDictionary *options = data[@"options"];
-                    NSDictionary *descriptor = data[@"descriptor"];
-                    NSString *text = data[@"nonhtml"];
-
-                    NSMutableAttributedString *textRunContent = nil;
-                    // Initializing NSMutableAttributedString for HTML rendering is very slow
-                    if(htmlData) {
-                        textRunContent = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
-                        lab.selectable = YES;
-                        lab.dataDetectorTypes = UIDataDetectorTypeLink;
-                        lab.userInteractionEnabled = YES;
-                    } else {
-                        textRunContent = [[NSMutableAttributedString alloc] initWithString:text attributes:descriptor];
-                        // text is preprocessed by markdown parser, and will wrapped by <p></P>
-                        // lines below remove the p tags
-                        [textRunContent deleteCharactersInRange:NSMakeRange(0, 3)];
-                        [textRunContent deleteCharactersInRange:NSMakeRange([textRunContent length] -4, 4)];
-                    }
-                    // Set paragraph style such as line break mode and alignment
-                    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-                    paragraphStyle.alignment = [ACOHostConfig getTextBlockAlignment:rTxtBlck->GetHorizontalAlignment()];
-
-                    // Obtain text color to apply to the attributed string
-                    ACRContainerStyle style = lab.style;
-                    auto foregroundColor = [acoConfig getTextBlockColor:style textColor:textRun->GetTextColor() subtleOption:textRun->GetIsSubtle()];
-
-                    // Config and add Select Action
-                    std::shared_ptr<BaseActionElement> baseAction = textRun->GetSelectAction();
-                    if(baseAction) {
-                        NSObject<ACRSelectActionDelegate> *target = [ACRLongPressGestureRecognizerFactory buildTarget:textRun->GetSelectAction() rootView:rootView hostConfig:acoConfig destinationViewForShowCard:nil];
-                        if(target) {
-                            // add target as attribute of the NSAttributedString for rather retrieval when touch event is triggered
-                            [textRunContent addAttribute:@"SelectAction" value:target range:NSMakeRange(0, textRunContent.length - 1)];
-                            [ACRLongPressGestureRecognizerFactory addTapGestureRecognizerToUITextView:lab target:target rootView:rootView hostConfig:acoConfig];
-                        }
-                    }
-
-                    // apply hightlight to textrun
-                    if(textRun->GetHighlight()) {
-                        UIColor *highlightColor = [acoConfig getHighlightColor:style
-                                                               foregroundColor:textRun->GetTextColor()
-                                                                  subtleOption:textRun->GetIsSubtle()];
-                        [textRunContent addAttribute:NSBackgroundColorAttributeName value:highlightColor range:NSMakeRange(0,textRunContent.length - 1)];
-                    }
-
-                    // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
-                    [textRunContent addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:foregroundColor,} range:NSMakeRange(0, textRunContent.length - 1)];
-
-                    [content appendAttributedString:textRunContent];
+        for(const auto &inlineText : rTxtBlck->GetInlines()) {
+            std::shared_ptr<TextRun> textRun = std::static_pointer_cast<TextRun>(inlineText);
+            if (textRun) {
+                NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)textRun.get()];
+                NSString *key = [number stringValue];
+                NSDictionary* data = textMap[key];
+                NSData *htmlData = nil;
+                NSDictionary *options = nil;
+                NSDictionary *descriptor = nil;
+                NSString *text = nil;
+                if (data) {
+                    htmlData = data[@"html"];
+                    options = data[@"options"];
+                    descriptor = data[@"descriptor"];
+                    text = data[@"nonhtml"];
                 }
-            }
 
-            // inserts a new line
-            NSAttributedString * const newline = [[NSAttributedString alloc] initWithString:@"\n"];
-            [content appendAttributedString:newline];
+                NSMutableAttributedString *textRunContent = nil;
+                // Initializing NSMutableAttributedString for HTML rendering is very slow
+                if(htmlData) {
+                    textRunContent = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
+                    lab.selectable = YES;
+                    lab.dataDetectorTypes = UIDataDetectorTypeLink;
+                    lab.userInteractionEnabled = YES;
+                } else {
+                    textRunContent = [[NSMutableAttributedString alloc] initWithString:text attributes:descriptor];
+                    // text is preprocessed by markdown parser, and will wrapped by <p></P>
+                    // lines below remove the p tags
+                    [textRunContent deleteCharactersInRange:NSMakeRange(0, 3)];
+                    [textRunContent deleteCharactersInRange:NSMakeRange([textRunContent length] -4, 4)];
+                }
+                // Set paragraph style such as line break mode and alignment
+                NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+                paragraphStyle.alignment = [ACOHostConfig getTextBlockAlignment:rTxtBlck->GetHorizontalAlignment()];
+
+                // Obtain text color to apply to the attributed string
+                ACRContainerStyle style = lab.style;
+                auto foregroundColor = [acoConfig getTextBlockColor:style textColor:textRun->GetTextColor() subtleOption:textRun->GetIsSubtle()];
+
+                // Config and add Select Action
+                std::shared_ptr<BaseActionElement> baseAction = textRun->GetSelectAction();
+                if(baseAction) {
+                    NSObject<ACRSelectActionDelegate> *target = [ACRLongPressGestureRecognizerFactory buildTarget:textRun->GetSelectAction() rootView:rootView hostConfig:acoConfig destinationViewForShowCard:nil];
+                    if(target) {
+                        // add target as attribute of the NSAttributedString for rather retrieval when touch event is triggered
+                        [textRunContent addAttribute:@"SelectAction" value:target range:NSMakeRange(0, textRunContent.length - 1)];
+                        [ACRLongPressGestureRecognizerFactory addTapGestureRecognizerToUITextView:lab target:target rootView:rootView hostConfig:acoConfig];
+                    }
+                }
+
+                // apply hightlight to textrun
+                if(textRun->GetHighlight()) {
+                    UIColor *highlightColor = [acoConfig getHighlightColor:style
+                                                           foregroundColor:textRun->GetTextColor()
+                                                              subtleOption:textRun->GetIsSubtle()];
+                    [textRunContent addAttribute:NSBackgroundColorAttributeName value:highlightColor range:NSMakeRange(0,textRunContent.length)];
+                }
+                
+                if(textRun->GetStrikethrough()) {
+                    [textRunContent addAttribute:NSStrikethroughStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(0, textRunContent.length)];
+                }
+
+                // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
+                [textRunContent addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:foregroundColor,} range:NSMakeRange(0, textRunContent.length - 1)];
+
+                [content appendAttributedString:textRunContent];
+            }
         }
     }
 
@@ -144,10 +148,7 @@
     [NSLayoutConstraint constraintWithItem:lab attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:wrappingview attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
     [NSLayoutConstraint constraintWithItem:lab attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:wrappingview attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
 
-    lab.textContainer.maximumNumberOfLines = int(rTxtBlck->GetMaxLines());
-    if(!lab.textContainer.maximumNumberOfLines && !rTxtBlck->GetWrap()){
-        lab.textContainer.maximumNumberOfLines = 1;
-    }
+    lab.textContainer.maximumNumberOfLines = 0;
 
     if(rTxtBlck->GetHeight() == HeightType::Auto){
         [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];

@@ -27,7 +27,7 @@ void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage>
     if (backgroundImage == nullptr || backgroundImage->GetUrl().empty()) {
         return;
     }
-    
+
     std::string imageUrl = backgroundImage->GetUrl();
     NSString *key = [NSString stringWithCString:imageUrl.c_str() encoding:[NSString defaultCStringEncoding]];
     if ([key length]) {
@@ -54,12 +54,12 @@ void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage>
                 imgView = [rootView getImageView:@"backgroundImage"];
             }
         }
-        
+
         if (imgView) {
             imgView.translatesAutoresizingMaskIntoConstraints = NO;
             [containerView addSubview:imgView];
             [containerView sendSubviewToBack:imgView];
-            
+
             if (img) {
                 // apply now if image is ready, otherwise wait until it is loaded (ACRView::observeValueForKeyPath)
                 applyBackgroundImageConstraints(backgroundImage.get(), imgView, img);
@@ -84,12 +84,12 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
     if (backgroundImageProperties == nullptr || imageView == nullptr || image == nullptr) {
         return;
     }
-    
+
     UIView *superView = [imageView superview];
     if (superView == nullptr) {
         return;
     }
-    
+
     switch (backgroundImageProperties->GetMode()) {
         case BackgroundImageMode::Repeat:
         {
@@ -97,7 +97,7 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
             [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:superView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
             [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:superView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0].active = YES;
             [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:superView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0].active = YES;
-            
+
             imageView.contentMode = UIViewContentModeScaleAspectFill;
             break;
         }
@@ -106,7 +106,7 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
             [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:image.size.height].active = YES;
             [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:superView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0].active = YES;
             [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:superView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0].active = YES;
-            
+
             switch (backgroundImageProperties->GetVerticalAlignment())
             {
                 case VerticalAlignment::Bottom:
@@ -151,7 +151,7 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
             [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:superView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
             [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:superView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0].active = YES;
             [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:superView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0].active = YES;
-            
+
             imageView.contentMode = UIViewContentModeScaleAspectFill;
             break;
 	}
@@ -200,7 +200,7 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
                     UIView *backgroundView = [[UIView alloc] init];
                     container.backgroundView = backgroundView;
                     backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
-                    
+
                     UIView *marginalView = view.backgroundView? view.backgroundView : view;
                     [marginalView addSubview:backgroundView];
                     [marginalView sendSubviewToBack:backgroundView];
@@ -256,10 +256,19 @@ ObserverActionBlock generateBackgroundImageObserverAction(std::shared_ptr<Backgr
             [view addObserver:observer forKeyPath:@"image"
                       options:NSKeyValueObservingOptionNew
                       context:backgroundImageProperties.get()];
-            
+
             // store the image view and column for easy retrieval in ACRView::observeValueForKeyPath
             [rootView setImageView:key view:view];
             [rootView setImageContext:key context:context];
         }
     };
+}
+
+UIFontDescriptor *getItalicFontDescriptor(UIFontDescriptor *descriptor, bool isItalic)
+{
+    if (isItalic && descriptor) {
+        return [descriptor fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic];
+    }
+
+    return descriptor;
 }
