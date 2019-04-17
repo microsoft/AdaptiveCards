@@ -856,6 +856,16 @@ namespace AdaptiveCards.Rendering.Html
                 uiTextBlock.Style("display", "none");
             }
 
+            if (textBlock.Italic)
+            {
+                uiTextBlock.Style("font-style", "italic");
+            }
+
+            if (textBlock.Strikethrough)
+            {
+                uiTextBlock.Style("text-decoration", "line-through");
+            }
+
             if (textBlock.MaxLines > 0)
                 uiTextBlock = uiTextBlock
                     .Style("max-height", $"{lineHeight * textBlock.MaxLines}px")
@@ -968,6 +978,17 @@ namespace AdaptiveCards.Rendering.Html
                 .Style("font-weight", $"{weight}");
 
             uiTextRun.Text = RendererUtilities.ApplyTextFunctions(textRun.Text, context.Lang);
+
+            if (textRun.Italic)
+            {
+                uiTextRun.Style("font-style", "italic");
+            }
+
+            if (textRun.Strikethrough)
+            {
+                uiTextRun.Style("text-decoration", "line-through");
+            }
+
             return uiTextRun;
         }
 

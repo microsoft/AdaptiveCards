@@ -44,6 +44,16 @@ namespace AdaptiveCards.Rendering.Wpf
             uiInlineElement.FontWeight = FontWeight.FromOpenTypeWeight(context.Config.GetFontWeight(textRun.FontStyle, textRun.Weight));
             uiInlineElement.FontSize = context.Config.GetFontSize(textRun.FontStyle, textRun.Size);
 
+            if (textRun.Italic)
+            {
+                uiInlineElement.FontStyle = FontStyles.Italic;
+            }
+
+            if (textRun.Strikethrough)
+            {
+                uiInlineElement.TextDecorations = TextDecorations.Strikethrough;
+            }
+
             uiInlineElement.SetColor(textRun.Color, textRun.IsSubtle, context);
 
             return uiInlineElement;

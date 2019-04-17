@@ -27,6 +27,16 @@ namespace AdaptiveCards
         bool IsSubtle { get; set; }
 
         /// <summary>
+        ///     Make the text italic
+        /// </summary>
+        bool Italic { get; set; }
+
+        /// <summary>
+        ///     Make the struck through
+        /// </summary>
+        bool Strikethrough { get; set; }
+
+        /// <summary>
         ///     The text to display
         /// </summary>
         string Text { get; set; }
