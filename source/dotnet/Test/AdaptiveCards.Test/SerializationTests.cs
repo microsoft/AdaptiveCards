@@ -502,15 +502,11 @@ namespace AdaptiveCards.Test
             var card = new AdaptiveCard("1.2");
 
             var richTB = new AdaptiveRichTextBlock();
-            richTB.Wrap = true;
-            richTB.MaxLines = 3;
             richTB.HorizontalAlignment = AdaptiveHorizontalAlignment.Center;
 
-            // Build First Paragraph
-            var paragraph1 = new AdaptiveParagraph();
-
-            var textRun1 = new AdaptiveTextRun("Start the first paragraph ");
-            paragraph1.Inlines.Add(textRun1);
+            // Build text runs
+            var textRun1 = new AdaptiveTextRun("Start the rich text block ");
+            richTB.Inlines.Add(textRun1);
 
             var textRun2 = new AdaptiveTextRun("with some cool looking stuff");
             textRun2.Color = AdaptiveTextColor.Accent;
@@ -518,16 +514,11 @@ namespace AdaptiveCards.Test
             textRun2.IsSubtle = true;
             textRun2.Size = AdaptiveTextSize.Large;
             textRun2.Weight = AdaptiveTextWeight.Bolder;
-            paragraph1.Inlines.Add(textRun2);
-
-            richTB.Paragraphs.Add(paragraph1);
-
-            // Build Second Paragraph (Empty inlines)
-            var paragraph2 = new AdaptiveParagraph();
-            richTB.Paragraphs.Add(paragraph2);
+            richTB.Inlines.Add(textRun2);
 
             card.Body.Add(richTB);
 
+            // Indentation needs to be kept as-is to match the result of card.ToJson
             var expected = @"{
   ""type"": ""AdaptiveCard"",
   ""version"": ""1.2"",
@@ -535,28 +526,19 @@ namespace AdaptiveCards.Test
     {
       ""type"": ""RichTextBlock"",
       ""horizontalAlignment"": ""center"",
-      ""wrap"": true,
-      ""maxLines"": 3,
-      ""paragraphs"": [
+      ""inlines"": [
         {
-          ""inlines"": [
-            {
-              ""type"": ""TextRun"",
-              ""text"": ""Start the first paragraph ""
-            },
-            {
-              ""type"": ""TextRun"",
-              ""size"": ""large"",
-              ""weight"": ""bolder"",
-              ""color"": ""accent"",
-              ""isSubtle"": true,
-              ""text"": ""with some cool looking stuff"",
-              ""fontStyle"": ""monospace""
-            }
-          ]
+          ""type"": ""TextRun"",
+          ""text"": ""Start the rich text block ""
         },
         {
-          ""inlines"": []
+          ""type"": ""TextRun"",
+          ""size"": ""large"",
+          ""weight"": ""bolder"",
+          ""color"": ""accent"",
+          ""isSubtle"": true,
+          ""text"": ""with some cool looking stuff"",
+          ""fontStyle"": ""monospace""
         }
       ]
     }
@@ -575,29 +557,20 @@ namespace AdaptiveCards.Test
     {
       ""type"": ""RichTextBlock"",
       ""horizontalAlignment"": ""center"",
-      ""wrap"": true,
-      ""maxLines"": 3,
-      ""paragraphs"": [
-        {
-          ""inlines"": [
-            {
-              ""type"": ""TextRun"",
-              ""text"": ""Start the first paragraph ""
-            },
-            {
-              ""type"": ""TextRun"",
-              ""size"": ""large"",
-              ""weight"": ""bolder"",
-              ""color"": ""accent"",
-              ""isSubtle"": true,
-              ""text"": ""with some cool looking stuff"",
-              ""fontStyle"": ""monospace""
-            }
-          ]
-        },
-        {
-          ""inlines"": []
-        }
+      ""inlines"": [
+          {
+            ""type"": ""TextRun"",
+            ""text"": ""Start the rich text block ""
+          },
+          {
+            ""type"": ""TextRun"",
+            ""size"": ""large"",
+            ""weight"": ""bolder"",
+            ""color"": ""accent"",
+            ""isSubtle"": true,
+            ""text"": ""with some cool looking stuff"",
+            ""fontStyle"": ""monospace""
+          }
       ]
     }
   ]
@@ -607,14 +580,10 @@ namespace AdaptiveCards.Test
 
             var richTB = card.Body[0] as AdaptiveRichTextBlock;
             Assert.AreEqual(richTB.HorizontalAlignment, AdaptiveHorizontalAlignment.Center);
-            Assert.AreEqual(richTB.Wrap, true);
-            Assert.AreEqual(richTB.MaxLines, 3);
 
-            var paragraphs = richTB.Paragraphs;
-
-            var inlines1 = paragraphs[0].Inlines;
+            var inlines1 = richTB.Inlines;
             var run1 = inlines1[0] as AdaptiveTextRun;
-            Assert.AreEqual(run1.Text, "Start the first paragraph ");
+            Assert.AreEqual(run1.Text, "Start the rich text block ");
 
             var run2 = inlines1[1] as AdaptiveTextRun;
             Assert.AreEqual(run2.Text, "with some cool looking stuff");
@@ -629,31 +598,16 @@ namespace AdaptiveCards.Test
   ""body"": [
     {
       ""type"": ""RichTextBlock"",
-      ""paragraphs"": [
-        {
-          ""inlines"": []
-        }
-      ]
-    },
-    {
-      ""type"": ""RichTextBlock"",
-      ""paragraphs"": []
+      ""inlines"": []
     }
   ]
 }";
 
             var card = AdaptiveCard.FromJson(json).Card;
 
-            // Validate first RTB
+            // Validate RTB
             var richTB1 = card.Body[0] as AdaptiveRichTextBlock;
-            Assert.IsTrue(richTB1.Paragraphs.Count == 1);
-
-            var paragraph = richTB1.Paragraphs[0];
-            Assert.IsTrue(paragraph.Inlines.Count == 0);
-
-            // Validate second RTB
-            var richTB2 = card.Body[1] as AdaptiveRichTextBlock;
-            Assert.IsTrue(richTB2.Paragraphs.Count == 0);
+            Assert.IsTrue(richTB1.Inlines.Count == 0);
 
             Assert.AreEqual(json, card.ToJson());
         }
