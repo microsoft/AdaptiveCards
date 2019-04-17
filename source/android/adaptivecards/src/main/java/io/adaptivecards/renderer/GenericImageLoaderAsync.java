@@ -13,9 +13,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLDecoder;
 
-import io.adaptivecards.objectmodel.Paragraph;
 import io.adaptivecards.renderer.http.HttpRequestHelper;
 import io.adaptivecards.renderer.http.HttpRequestResult;
 import io.adaptivecards.objectmodel.CharVector;

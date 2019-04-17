@@ -65,6 +65,30 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    HRESULT AdaptiveTextElement::get_Italic(boolean* italic)
+    {
+        *italic = m_italic;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveTextElement::put_Italic(boolean italic)
+    {
+        m_italic = italic;
+        return S_OK;
+    }
+
+    IFACEMETHODIMP AdaptiveTextElement::get_Strikethrough(boolean* strikethrough)
+    {
+        *strikethrough = m_strikethrough;
+        return S_OK;
+    }
+
+    IFACEMETHODIMP AdaptiveTextElement::put_Strikethrough(boolean strikethrough)
+    {
+        m_strikethrough = strikethrough;
+        return S_OK;
+    }
+
     HRESULT AdaptiveTextElement::get_Language(_Outptr_ HSTRING* language) { return m_language.CopyTo(language); }
 
     HRESULT AdaptiveTextElement::put_Language(_In_ HSTRING language) { return m_language.Set(language); }

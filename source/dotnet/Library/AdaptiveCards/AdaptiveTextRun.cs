@@ -1,18 +1,19 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
 #if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveTextBlock.TypeName)]
 #endif
-    public class AdaptiveTextRun : AdaptiveTypedElement, ITextElement
+    public class AdaptiveTextRun : IAdaptiveTextElement, IAdaptiveInline
     {
         public const string TypeName = "TextRun";
 
-        public override string Type { get; set; } = TypeName;
+        public string Type { get; set; } = TypeName;
 
         public AdaptiveTextRun()
         {

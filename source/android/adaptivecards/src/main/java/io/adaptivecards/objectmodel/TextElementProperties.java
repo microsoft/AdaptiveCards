@@ -107,6 +107,22 @@ public class TextElementProperties {
     AdaptiveCardObjectModelJNI.TextElementProperties_SetIsSubtle(swigCPtr, this, value);
   }
 
+  public boolean GetItalic() {
+    return AdaptiveCardObjectModelJNI.TextElementProperties_GetItalic(swigCPtr, this);
+  }
+
+  public void SetItalic(boolean value) {
+    AdaptiveCardObjectModelJNI.TextElementProperties_SetItalic(swigCPtr, this, value);
+  }
+
+  public boolean GetStrikethrough() {
+    return AdaptiveCardObjectModelJNI.TextElementProperties_GetStrikethrough(swigCPtr, this);
+  }
+
+  public void SetStrikethrough(boolean value) {
+    AdaptiveCardObjectModelJNI.TextElementProperties_SetStrikethrough(swigCPtr, this, value);
+  }
+
   public void SetLanguage(String value) {
     AdaptiveCardObjectModelJNI.TextElementProperties_SetLanguage(swigCPtr, this, value);
   }
