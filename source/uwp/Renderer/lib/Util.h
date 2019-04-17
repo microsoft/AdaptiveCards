@@ -244,6 +244,9 @@ HRESULT GetDateTimeReference(unsigned int year,
 ABI::AdaptiveNamespace::FallbackType MapSharedFallbackTypeToUwp(const AdaptiveSharedNamespace::FallbackType type);
 AdaptiveSharedNamespace::FallbackType MapUwpFallbackTypeToShared(const ABI::AdaptiveNamespace::FallbackType type);
 
+HRESULT CopyTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* textElement,
+                        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveTextElement** copiedTextElement);
+
 namespace AdaptiveNamespace
 {
     class XamlBuilder;

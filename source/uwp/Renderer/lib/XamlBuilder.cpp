@@ -1864,15 +1864,8 @@ namespace AdaptiveNamespace
                 ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> hyperlinkInlines;
                 RETURN_IF_FAILED(hyperlinkAsSpan->get_Inlines(hyperlinkInlines.GetAddressOf()));
 
-                RETURN_IF_FAILED(AddSingleTextInline(adaptiveTextElement.Get(),
-                                                     renderContext,
-                                                     renderArgs,
-                                                     text.Get(),
-                                                     false,
-                                                     false,
-                                                     true,
-                                                     hyperlinkInlines.Get(),
-                                                     &inlineLength));
+                RETURN_IF_FAILED(AddSingleTextInline(
+                    adaptiveTextElement.Get(), renderContext, renderArgs, text.Get(), true, hyperlinkInlines.Get(), &inlineLength));
 
                 ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> hyperlinkAsInline;
                 RETURN_IF_FAILED(hyperlink.As(&hyperlinkAsInline));
@@ -1884,7 +1877,7 @@ namespace AdaptiveNamespace
             {
                 // Add the text to the paragraph's inlines
                 RETURN_IF_FAILED(AddSingleTextInline(
-                    adaptiveTextElement.Get(), renderContext, renderArgs, text.Get(), false, false, false, xamlInlines.Get(), &inlineLength));
+                    adaptiveTextElement.Get(), renderContext, renderArgs, text.Get(), false, xamlInlines.Get(), &inlineLength));
             }
 
             boolean highlight;
