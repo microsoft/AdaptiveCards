@@ -786,6 +786,25 @@ export abstract class BaseTextBlock extends CardElement {
         }
     }
 
+    protected getColorDefinition(colorSet: HostConfig.ColorSetDefinition, color: Enums.TextColor): HostConfig.TextColorDefinition {
+        switch (color) {
+            case Enums.TextColor.Accent:
+                return colorSet.accent;
+            case Enums.TextColor.Dark:
+                return colorSet.dark;
+            case Enums.TextColor.Light:
+                return colorSet.light;
+            case Enums.TextColor.Good:
+                return colorSet.good;
+            case Enums.TextColor.Warning:
+                return colorSet.warning;
+            case Enums.TextColor.Attention:
+                return colorSet.attention;
+            default:
+                return colorSet.default;
+        }
+    }
+
     protected setText(value: string) {
         this._text = value;
     }
@@ -853,34 +872,7 @@ export abstract class BaseTextBlock extends CardElement {
 
         targetElement.style.fontSize = fontSize + "px";
 
-        let styleDefinition = this.getEffectiveStyleDefinition();
-
-        let actualTextColor = this.color ? this.color : Enums.TextColor.Default;
-        let colorDefinition: HostConfig.TextColorDefinition;
-
-        switch (actualTextColor) {
-            case Enums.TextColor.Accent:
-                colorDefinition = styleDefinition.foregroundColors.accent;
-                break;
-            case Enums.TextColor.Dark:
-                colorDefinition = styleDefinition.foregroundColors.dark;
-                break;
-            case Enums.TextColor.Light:
-                colorDefinition = styleDefinition.foregroundColors.light;
-                break;
-            case Enums.TextColor.Good:
-                colorDefinition = styleDefinition.foregroundColors.good;
-                break;
-            case Enums.TextColor.Warning:
-                colorDefinition = styleDefinition.foregroundColors.warning;
-                break;
-            case Enums.TextColor.Attention:
-                colorDefinition = styleDefinition.foregroundColors.attention;
-                break;
-            default:
-                colorDefinition = styleDefinition.foregroundColors.default;
-                break;
-        }
+        let colorDefinition = this.getColorDefinition(this.getEffectiveStyleDefinition().foregroundColors, this.effectiveColor);
 
         targetElement.style.color = Utils.stringToCssColor(this.isSubtle ? colorDefinition.subtle : colorDefinition.default);
 
@@ -943,6 +935,10 @@ export abstract class BaseTextBlock extends CardElement {
         this.color = Utils.getEnumValue(Enums.TextColor, json["color"], this.color);
         this.isSubtle = Utils.getBoolValue(json["isSubtle"], this.isSubtle);
         this.style = Utils.getEnumValue(Enums.FontStyle, json["style"], this.style);
+    }
+
+    get effectiveColor(): Enums.TextColor {
+        return  this.color ? this.color : Enums.TextColor.Default;
     }
 
     get text(): string {
@@ -1305,15 +1301,9 @@ export class TextRun extends BaseTextBlock {
         }
 
         if (this.highlight) {
-            let effectiveStyle = this.getEffectiveStyleDefinition();
+            let colorDefinition = this.getColorDefinition(this.getEffectiveStyleDefinition().highlightColors, this.effectiveColor);
 
-            if (effectiveStyle.highlightBackgroundColor) {
-                targetElement.style.backgroundColor = effectiveStyle.highlightBackgroundColor;
-            }
-
-            if (effectiveStyle.highlightForegroundColor && this.color != Enums.TextColor.Default) {
-                targetElement.style.color = effectiveStyle.highlightForegroundColor;
-            }
+            targetElement.style.backgroundColor = Utils.stringToCssColor(this.isSubtle ? colorDefinition.subtle : colorDefinition.default);
         }
     }
 
@@ -1416,6 +1406,22 @@ export class RichTextBlock extends CardElement {
                 }
             }
         }
+    }
+
+    toJSON() {
+        let result = super.toJSON();
+
+        if (this._inlines.length > 0) {
+            let jsonInlines: any[] = [];
+
+            for (let inline of this._inlines) {
+                jsonInlines.push(inline.toJSON());
+            }
+
+            Utils.setProperty(result, "inlines", jsonInlines);
+        }
+
+        return result;
     }
 
     getJsonTypeName(): string {
