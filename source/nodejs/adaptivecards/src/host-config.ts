@@ -257,13 +257,13 @@ export class ContainerStyleDefinition {
     );
     readonly highlightColors: ColorSetDefinition = new ColorSetDefinition(
         {
-            "default": "#AA000000",
-            "dark": "#AA000000",
-            "light": "#AA000000",
-            "accent": "#AA000000",
-            "good": "#AA000000",
-            "warning": "#AA000000",
-            "attention": "#AA000000"
+            "default": "#22000000",
+            "dark": "#22000000",
+            "light": "#22000000",
+            "accent": "#22000000",
+            "good": "#22000000",
+            "warning": "#22000000",
+            "attention": "#22000000"
         }
     );
 

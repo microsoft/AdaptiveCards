@@ -25,7 +25,7 @@ export function appendChild(node: Node, child: Node) {
 }
 
 export function setProperty(target: any, propertyName: string, propertyValue: any, defaultValue: any = undefined) {
-	if (propertyValue && (!defaultValue || defaultValue !== propertyValue)) {
+	if (propertyValue !== undefined && propertyValue !== null && (defaultValue === undefined || defaultValue !== propertyValue)) {
 		target[propertyName] = propertyValue;
 	}
 	else {

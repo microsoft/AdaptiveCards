@@ -334,6 +334,7 @@ export abstract class CardElement implements ICardObject {
 
         Utils.setProperty(result, "type", this.getJsonTypeName());
         Utils.setProperty(result, "id", this.id);
+        Utils.setProperty(result, "isVisible", this.isVisible, true);
 
         if (this.horizontalAlignment !== null) {
             Utils.setEnumProperty(Enums.HorizontalAlignment, result, "horizontalAlignment", this.horizontalAlignment);
@@ -427,7 +428,6 @@ export abstract class CardElement implements ICardObject {
         this.requires.parse(json["requires"], errors);
         this.id = Utils.getStringValue(json["id"]);
         this.isVisible = Utils.getBoolValue(json["isVisible"], this.isVisible);
-        // this.speak = Utils.getStringValue(json["speak"]);
         this.horizontalAlignment = Utils.getEnumValue(Enums.HorizontalAlignment, json["horizontalAlignment"], this.horizontalAlignment);
 
         this.spacing = Utils.getEnumValue(Enums.Spacing, json["spacing"], Enums.Spacing.Default);
@@ -3828,6 +3828,30 @@ export class ToggleVisibilityAction extends Action {
                 }
             }
         }
+    }
+
+    toJSON() {
+        let result = super.toJSON();
+
+        let targetElements: any[] = [];
+
+        for (let id of Object.keys(this.targetElements)) {
+            if (typeof this.targetElements[id] === "boolean") {
+                targetElements.push(
+                    {
+                        elementId: id,
+                        isVisible: this.targetElements[id]
+                    }
+                );
+            }
+            else {
+                targetElements.push(id);
+            }
+        }
+
+        result["targetElements"] = targetElements;
+
+        return result;
     }
 
     addTargetElement(elementId: string, isVisible: boolean = undefined) {

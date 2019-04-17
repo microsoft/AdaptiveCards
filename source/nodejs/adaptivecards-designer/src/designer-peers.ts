@@ -1054,6 +1054,15 @@ export class CardElementPeer extends DesignerPeer {
             }
         }
 
+        if (getExcludedProperties.indexOf("isVisible") < 0) {
+            let isVisible = addLabelAndInput(card, "Initially visible:", Adaptive.ToggleInput);
+            isVisible.input.defaultValue = String(this.cardElement.isVisible);
+            isVisible.input.onValueChanged = () => {
+                this.cardElement.isVisible = isVisible.input.value == "true";
+
+                this.changed(false);
+            }
+        }
 
         if (getExcludedProperties.indexOf("spacing") < 0) {
             let spacing = addLabelAndInput(card, "Spacing:", Adaptive.ChoiceSetInput);
@@ -1186,7 +1195,7 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
     }
 
     protected getExcludedProperties(): Array<string> {
-        return [ "id", "horizontalAlignment", "separator", "height", "spacing" ];
+        return [ "id", "isVisible", "horizontalAlignment", "separator", "height", "spacing" ];
     }
 
     isDraggable(): boolean {
@@ -2339,7 +2348,7 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.internalAddPropertySheetEntries(card, includeHeader);
 
-        var text = addLabelAndInput(card, "Text:", Adaptive.TextInput);
+        let text = addLabelAndInput(card, "Text:", Adaptive.TextInput);
         text.input.defaultValue = this.cardElement.text;
         text.input.isMultiline = true;
         text.input.onValueChanged = () => {
@@ -2348,7 +2357,7 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
             this.changed(false);
         }
 
-        var wrap = addLabelAndInput(card, "Wrap:", Adaptive.ToggleInput);
+        let wrap = addLabelAndInput(card, "Wrap:", Adaptive.ToggleInput);
         wrap.input.defaultValue = String(this.cardElement.wrap);
         wrap.input.onValueChanged = () => {
             this.cardElement.wrap = wrap.input.value == "true";
@@ -2356,12 +2365,12 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
             this.changed(false);
         }
 
-        var maxLines = addLabelAndInput(card, "Maximum lines:", Adaptive.NumberInput);
+        let maxLines = addLabelAndInput(card, "Maximum lines:", Adaptive.NumberInput);
         maxLines.input.placeholder = "(not set)";
         maxLines.input.defaultValue = String(this.cardElement.maxLines);
         maxLines.input.onValueChanged = () => {
             try {
-                var newMaxLines = parseInt(maxLines.input.value);
+                let newMaxLines = parseInt(maxLines.input.value);
 
                 this.cardElement.maxLines = newMaxLines;
 
@@ -2372,7 +2381,7 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
             }
         }
 
-        var fontFamily = addLabelAndInput(card, "Font family:", Adaptive.ChoiceSetInput);
+        let fontFamily = addLabelAndInput(card, "Font family:", Adaptive.ChoiceSetInput);
         fontFamily.input.placeholder = "Default";
         fontFamily.input.isCompact = true;
         fontFamily.input.choices.push(new Adaptive.Choice("Default", Adaptive.FontFamily.Default.toString()));
@@ -2384,7 +2393,7 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
             this.changed(false);
         }
 
-        var size = addLabelAndInput(card, "Size:", Adaptive.ChoiceSetInput);
+        let size = addLabelAndInput(card, "Size:", Adaptive.ChoiceSetInput);
         size.input.isCompact = true;
         size.input.choices.push(new Adaptive.Choice("Small", Adaptive.TextSize.Small.toString()));
         size.input.choices.push(new Adaptive.Choice("Default", Adaptive.TextSize.Default.toString()));
@@ -2398,7 +2407,7 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
             this.changed(false);
         }
 
-        var weight = addLabelAndInput(card, "Weight:", Adaptive.ChoiceSetInput);
+        let weight = addLabelAndInput(card, "Weight:", Adaptive.ChoiceSetInput);
         weight.input.isCompact = true;
         weight.input.choices.push(new Adaptive.Choice("Lighter", Adaptive.TextWeight.Lighter.toString()));
         weight.input.choices.push(new Adaptive.Choice("Default", Adaptive.TextWeight.Default.toString()));
@@ -2410,7 +2419,7 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
             this.changed(false);
         }
 
-        var color = addLabelAndInput(card, "Color:", Adaptive.ChoiceSetInput);
+        let color = addLabelAndInput(card, "Color:", Adaptive.ChoiceSetInput);
         color.input.isCompact = true;
         color.input.choices.push(new Adaptive.Choice("Default", Adaptive.TextColor.Default.toString()));
         color.input.choices.push(new Adaptive.Choice("Dark", Adaptive.TextColor.Dark.toString()));
@@ -2426,7 +2435,7 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
             this.changed(false);
         }
 
-        var isSubtle = addLabelAndInput(card, "Subtle:", Adaptive.ToggleInput);
+        let isSubtle = addLabelAndInput(card, "Subtle:", Adaptive.ToggleInput);
         isSubtle.input.defaultValue = String(this.cardElement.isSubtle);
         isSubtle.input.title = "";
         isSubtle.input.onValueChanged = () => {
@@ -2444,6 +2453,19 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
 export class RichTextBlockPeer extends TypedCardElementPeer<Adaptive.RichTextBlock> {
     getTreeItemText(): string {
         return this.cardElement.asString();
+    }
+
+    internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
+        super.internalAddPropertySheetEntries(card, includeHeader);
+
+        let infoTextBlock = new Adaptive.TextBlock();
+        infoTextBlock.text = "Use the **JSON editor** to edit the text of this RichTextBlock element.";
+        infoTextBlock.wrap = true;
+        infoTextBlock.spacing = Adaptive.Spacing.Large;
+        infoTextBlock.separator = true;
+        infoTextBlock.horizontalAlignment = Adaptive.HorizontalAlignment.Center;
+
+        card.addItem(infoTextBlock);
     }
 
     initializeCardElement() {
