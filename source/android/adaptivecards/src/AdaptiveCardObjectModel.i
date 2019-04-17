@@ -108,7 +108,6 @@ struct tm {
 #include "../../../shared/cpp/ObjectModel/UnknownAction.h"
 #include "../../../shared/cpp/ObjectModel/TextElementProperties.h"
 #include "../../../shared/cpp/ObjectModel/Inline.h"
-#include "../../../shared/cpp/ObjectModel/Paragraph.h"
 #include "../../../shared/cpp/ObjectModel/RichTextBlock.h"
 #include "../../../shared/cpp/ObjectModel/TextRun.h"
 %}
@@ -178,7 +177,6 @@ struct tm {
 %shared_ptr(AdaptiveCards::UnknownAction)
 %shared_ptr(AdaptiveCards::UnknownActionParser)
 %shared_ptr(AdaptiveCards::Inline)
-%shared_ptr(AdaptiveCards::Paragraph)
 %shared_ptr(AdaptiveCards::RichTextBlock)
 %shared_ptr(AdaptiveCards::RichTextBlockParser)
 %shared_ptr(AdaptiveCards::TextRun)
@@ -359,7 +357,6 @@ namespace Json {
 %template(StringVector) std::vector<std::string>;
 %template(CharVector) std::vector<char>;
 %template(InlineVector) std::vector<std::shared_ptr<AdaptiveCards::Inline>>;
-%template(ParagraphVector) std::vector<std::shared_ptr<AdaptiveCards::Paragraph>>;
 
 %template(EnableSharedFromThisContainer) std::enable_shared_from_this<AdaptiveCards::Container>;
 
@@ -772,6 +769,5 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/UnknownAction.h"
 %include "../../../shared/cpp/ObjectModel/TextElementProperties.h"
 %include "../../../shared/cpp/ObjectModel/Inline.h"
-%include "../../../shared/cpp/ObjectModel/Paragraph.h"
 %include "../../../shared/cpp/ObjectModel/RichTextBlock.h"
 %include "../../../shared/cpp/ObjectModel/TextRun.h"

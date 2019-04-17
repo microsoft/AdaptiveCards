@@ -113,7 +113,6 @@ public enum AdaptiveCardSchemaKey {
   Monospace,
   NumberInput,
   Padding,
-  Paragraphs,
   Placeholder,
   PlayButton,
   Poster,
