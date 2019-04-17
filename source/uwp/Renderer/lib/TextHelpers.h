@@ -46,7 +46,7 @@ HRESULT StyleXamlTextBlockProperties(_In_ ABI::AdaptiveNamespace::IAdaptiveTextB
                                      _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock);
 
 template<typename TAdaptiveType, typename TXamlTextBlockType>
-HRESULT SetHorizontalAlignment(TAdaptiveType* adaptiveTextBlock, TXamlTextBlockType* xamlTextBlock)
+HRESULT SetHorizontalAlignment(_In_ TAdaptiveType* adaptiveTextBlock, _In_ TXamlTextBlockType* xamlTextBlock)
 {
     HAlignment horizontalAlignment;
     RETURN_IF_FAILED(adaptiveTextBlock->get_HorizontalAlignment(&horizontalAlignment));

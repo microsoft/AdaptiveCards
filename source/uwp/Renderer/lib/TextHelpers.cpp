@@ -43,11 +43,7 @@ HRESULT StyleXamlTextBlockProperties(_In_ ABI::AdaptiveNamespace::IAdaptiveTextB
     ComPtr<IAdaptiveTextBlock> localAdaptiveTextBlock(adaptiveTextBlock);
     ComPtr<IAdaptiveTextElement> adaptiveTextElement;
     RETURN_IF_FAILED(localAdaptiveTextBlock.As(&adaptiveTextElement));
-
-    if (adaptiveTextElement)
-    {
-        RETURN_IF_FAILED(StyleTextElement(adaptiveTextElement.Get(), renderContext, renderArgs, false, xamlTextBlock));
-    }
+    RETURN_IF_FAILED(StyleTextElement(adaptiveTextElement.Get(), renderContext, renderArgs, false, xamlTextBlock));
 
     return S_OK;
 }
@@ -125,7 +121,7 @@ HRESULT SetXamlInlinesWithTextConfig(_In_ IAdaptiveRenderContext* renderContext,
     return S_OK;
 }
 
-HRESULT SetWrapProperties(ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock, bool wrap)
+HRESULT SetWrapProperties(_In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock, bool wrap)
 {
     // Set whether the text wraps
     RETURN_IF_FAILED(xamlTextBlock->put_TextWrapping(wrap ? TextWrapping::TextWrapping_WrapWholeWords : TextWrapping::TextWrapping_NoWrap));
@@ -364,7 +360,7 @@ HRESULT AddSingleTextInline(_In_ IAdaptiveTextElement* adaptiveTextElement,
     RETURN_IF_FAILED(adaptiveTextElement->get_Language(language.GetAddressOf()));
 
     DateTimeParser parser(HStringToUTF8(language.Get()));
-    auto textWithParsedDates = parser.GenerateString(HStringToUTF8(string));
+    const auto textWithParsedDates = parser.GenerateString(HStringToUTF8(string));
 
     HString textWithParsedDatesHString;
     UTF8ToHString(textWithParsedDates, textWithParsedDatesHString.GetAddressOf());
