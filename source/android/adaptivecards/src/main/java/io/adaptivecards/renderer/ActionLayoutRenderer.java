@@ -189,7 +189,7 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
                 }
                 else if (renderArgs.getAncestorHasFallback())
                 {
-                    // There's an ancestor with fallback so we throw to test it
+                    // There's an ancestor with fallback so we throw to trigger it
                     throw e;
                 }
                 else
