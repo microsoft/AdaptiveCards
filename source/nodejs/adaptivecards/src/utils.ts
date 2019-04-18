@@ -25,21 +25,43 @@ export function appendChild(node: Node, child: Node) {
 }
 
 export function setProperty(target: any, propertyName: string, propertyValue: any, defaultValue: any = undefined) {
-	if (propertyValue !== undefined && propertyValue !== null && (defaultValue === undefined || defaultValue !== propertyValue)) {
+    let targetIsAlreadySet = target[propertyName] !== undefined;
+
+    if (propertyValue === undefined || propertyValue === null) {
+        if (!targetIsAlreadySet) {
+            delete target[propertyName];
+        }
+    }
+    else if (propertyValue !== defaultValue) {
 		target[propertyName] = propertyValue;
 	}
 	else {
-		delete target[propertyName];
+        if (!targetIsAlreadySet) {
+            delete target[propertyName];
+        }
 	}
 }
 
-export function setEnumProperty(enumType: { [s: number]: string }, target: any, propertyName: string, propertyValue: number, defaultValue?: number) {
-	if (defaultValue === undefined || defaultValue !== propertyValue) {
-		target[propertyName] = enumType[propertyValue];
-	}
-	else {
-		delete target[propertyName];
-	}
+export function setEnumProperty(enumType: { [s: number]: string }, target: any, propertyName: string, propertyValue: number, defaultValue: number = undefined) {
+    let targetValue = target[propertyName];
+
+    let canDeleteTarget = targetValue == undefined ? true : enumType[targetValue] !== undefined;
+    
+    if (propertyValue == defaultValue) {
+        if (canDeleteTarget) {
+            delete target[propertyName];
+        }
+    }
+    else {
+        if (propertyValue == undefined) {
+            if (canDeleteTarget) {
+                delete target[propertyName];
+            }
+        }
+        else {
+            target[propertyName] = enumType[propertyValue];
+        }
+    }
 }
 
 export function getBoolValue(value: any, defaultValue: boolean): boolean {

@@ -5179,7 +5179,7 @@ export class Container extends StylableCardElementContainer {
             Utils.setProperty(result, this.getItemsCollectionPropertyName(), elements);
         }
 
-        Utils.setProperty(result, "bleed", this.bleed);
+        Utils.setProperty(result, "bleed", this.bleed, false);
 
         return result;
     }
@@ -5655,7 +5655,7 @@ export class ColumnSet extends StylableCardElementContainer {
             Utils.setProperty(result, "columns", columns);
         }
 
-        Utils.setProperty(result, "bleed", this.bleed);
+        Utils.setProperty(result, "bleed", this.bleed, false);
 
         return result;
     }
