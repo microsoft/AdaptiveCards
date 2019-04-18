@@ -52,7 +52,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         BaseCardElement baseCardElement,
         ICardActionHandler cardActionHandler,
         HostConfig hostConfig,
-        RenderArgs renderArgs)
+        RenderArgs renderArgs) throws AdaptiveFallbackException
     {
         ColumnSet columnSet = null;
         if (baseCardElement instanceof ColumnSet)
@@ -101,14 +101,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
                 rendererAsColumnRenderer.setIsRenderingLastColumn(i == (columnVectorSize - 1));
             }
 
-            try
-            {
-                columnRenderer.render(renderedCard, context, fragmentManager, layout, column, cardActionHandler, hostConfig, renderArgs);
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
+            columnRenderer.render(renderedCard, context, fragmentManager, layout, column, cardActionHandler, hostConfig, renderArgs);
         }
 
         if (columnSet.GetSelectAction() != null)

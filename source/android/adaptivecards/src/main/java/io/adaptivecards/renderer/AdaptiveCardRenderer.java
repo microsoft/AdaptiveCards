@@ -153,6 +153,8 @@ public class AdaptiveCardRenderer
         {
             CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, layout, adaptiveCard, baseCardElementList, cardActionHandler, hostConfig, renderArgs);
         }
+        // Catches the exception as the method throws it for performing fallback with elements inside the card,
+        // no fallback should be performed here so we just catch the exception
         catch (AdaptiveFallbackException e){}
 
         if (hostConfig.GetSupportsInteractivity())
@@ -173,6 +175,8 @@ public class AdaptiveCardRenderer
                     {
                         actionLayoutRenderer.renderActions(renderedCard, context, fragmentManager, layout, baseActionElementList, cardActionHandler, hostConfig, renderArgs);
                     }
+                    // Catches the exception as the method throws it for performing fallback with elements inside the card,
+                    // no fallback should be performed here so we just catch the exception
                     catch (AdaptiveFallbackException e) {}
                 }
             }

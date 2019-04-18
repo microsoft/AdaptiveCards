@@ -53,7 +53,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws AdaptiveFallbackException
     {
         Container container = null;
         if (baseCardElement instanceof Container)
@@ -107,9 +107,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
 
         if (!container.GetItems().isEmpty())
         {
-            try
-            {
-                CardRendererRegistration.getInstance().render(renderedCard,
+            CardRendererRegistration.getInstance().render(renderedCard,
                     context,
                     fragmentManager,
                     containerView,
@@ -118,11 +116,6 @@ public class ContainerRenderer extends BaseCardElementRenderer
                     cardActionHandler,
                     hostConfig,
                     renderArgs);
-            }
-            catch (AdaptiveFallbackException e)
-            {
-                return null;
-            }
         }
 
         if (styleForThis != containerStyle)

@@ -249,7 +249,6 @@ public class CardRendererRegistration
         {
             BaseCardElement cardElement = baseCardElementList.get(i);
 
-
             IBaseCardElementRenderer renderer = m_typeToRendererMap.get(cardElement.GetElementTypeString());
 
             boolean elementHasFallback = (cardElement.GetFallbackType() != FallbackType.None);
@@ -260,7 +259,7 @@ public class CardRendererRegistration
             {
                 if (renderer == null)
                 {
-                    throw new AdaptiveFallbackException();
+                    throw new AdaptiveFallbackException(cardElement);
                 }
 
                 renderer.render(renderedCard, context, fragmentManager, layout, cardElement, cardActionHandler, hostConfig, childRenderArgs);
@@ -292,7 +291,7 @@ public class CardRendererRegistration
 
                                 if (fallbackRenderer == null)
                                 {
-                                    throw new AdaptiveFallbackException();
+                                    throw new AdaptiveFallbackException(fallbackCardElement);
                                 }
 
                                 fallbackRenderer.render(renderedCard, context, fragmentManager, layout, fallbackCardElement, cardActionHandler, hostConfig, childRenderArgs);
@@ -304,6 +303,11 @@ public class CardRendererRegistration
                                 if (fallbackElement.GetFallbackType() == FallbackType.Content)
                                 {
                                     fallbackElement = fallbackElement.GetFallbackContent();
+                                }
+                                else
+                                {
+                                    // The element has no fallback, just clear the element so the cycle ends
+                                    fallbackElement = null;
                                 }
                             }
                         }
@@ -357,11 +361,6 @@ public class CardRendererRegistration
         }
 
         return layout;
-    }
-
-    public static <T> void renderElement(T element)
-    {
-
     }
 
     private static CardRendererRegistration s_instance = null;

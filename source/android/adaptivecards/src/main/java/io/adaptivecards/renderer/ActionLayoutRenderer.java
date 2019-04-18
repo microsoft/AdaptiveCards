@@ -132,7 +132,7 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
             {
                 if (actionRenderer == null)
                 {
-                    throw new AdaptiveFallbackException();
+                    throw new AdaptiveFallbackException(actionElement);
                 }
 
                 actionRenderer.render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, cardActionHandler, hostConfig, renderArgs);
@@ -165,16 +165,23 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
 
                                 if (fallbackActionRenderer == null)
                                 {
-                                    throw new AdaptiveFallbackException();
+                                    throw new AdaptiveFallbackException(fallbackElement);
                                 }
 
                                 fallbackActionRenderer.render(renderedCard, context, fragmentManager, actionButtonsLayout, fallbackActionElement, cardActionHandler, hostConfig, renderArgs);
+                                break;
                             }
                             catch (AdaptiveFallbackException e2)
                             {
+                                // As the fallback element didn't exist, go back to trying
                                 if (fallbackElement.GetFallbackType() == FallbackType.Content)
                                 {
                                     fallbackElement = fallbackElement.GetFallbackContent();
+                                }
+                                else
+                                {
+                                    // The element has no fallback, just clear the element so the cycle ends
+                                    fallbackElement = null;
                                 }
                             }
                         }

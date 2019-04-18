@@ -88,7 +88,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
         returnedView.setClipChildren(false);
         returnedView.setClipToPadding(false);
 
-        if(!baseCardElement.GetIsVisible())
+        if (!baseCardElement.GetIsVisible())
         {
             returnedView.setVisibility(View.GONE);
         }
