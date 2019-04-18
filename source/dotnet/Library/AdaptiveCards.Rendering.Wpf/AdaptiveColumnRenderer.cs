@@ -50,33 +50,14 @@ namespace AdaptiveCards.Rendering.Wpf
 
             AdaptiveContainerRenderer.AddContainerElements(uiContainer, column.Items, context);
 
-            if (column.SelectAction != null)
-            {
-                return context.RenderSelectAction(column.SelectAction, border);
-            }
-            
-            switch(column.VerticalContentAlignment)
-            {
-                case AdaptiveVerticalContentAlignment.Center:
-                    uiContainer.VerticalAlignment = VerticalAlignment.Center;
-                    break;
-                case AdaptiveVerticalContentAlignment.Bottom:
-                    uiContainer.VerticalAlignment = VerticalAlignment.Bottom;
-                    break;
-                case AdaptiveVerticalContentAlignment.Top:
-                default:
-                    break;
-            }
-
-            if(!column.IsVisible)
-            {
-                uiContainer.Visibility = Visibility.Collapsed;
-            }
+            RendererUtil.ApplyVerticalContentAlignment(uiContainer, column);
+            RendererUtil.ApplyIsVisible(uiContainer, column);
+            uiContainer.MinHeight = column.PixelMinHeight;
             
             // Revert context's value to that of outside the Column
             context.RenderArgs = parentRenderArgs;
 
-            return border;
+            return RendererUtil.ApplySelectAction(border, column, context);
         }
     }
 }

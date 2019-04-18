@@ -118,6 +118,26 @@ void TextBlock::SetIsSubtle(const bool value)
     m_textElementProperties->SetIsSubtle(value);
 }
 
+bool TextBlock::GetItalic() const
+{
+    return m_textElementProperties->GetItalic();
+}
+
+void TextBlock::SetItalic(const bool value)
+{
+    m_textElementProperties->SetItalic(value);
+}
+
+bool TextBlock::GetStrikethrough() const
+{
+    return m_textElementProperties->GetStrikethrough();
+}
+
+void TextBlock::SetStrikethrough(const bool value)
+{
+    m_textElementProperties->SetStrikethrough(value);
+}
+
 unsigned int TextBlock::GetMaxLines() const
 {
     return m_maxLines;

@@ -44,6 +44,7 @@ namespace AdaptiveCards.Rendering.Wpf
             ElementRenderers.Set<AdaptiveColumnSet>(AdaptiveColumnSetRenderer.Render);
             ElementRenderers.Set<AdaptiveFactSet>(AdaptiveFactSetRenderer.Render);
             ElementRenderers.Set<AdaptiveImageSet>(AdaptiveImageSetRenderer.Render);
+            ElementRenderers.Set<AdaptiveActionSet>(AdaptiveActionSetRenderer.Render);
 
             ElementRenderers.Set<AdaptiveChoiceSetInput>(AdaptiveChoiceSetRenderer.Render);
             ElementRenderers.Set<AdaptiveTextInput>(AdaptiveTextInputRenderer.Render);
@@ -156,6 +157,8 @@ namespace AdaptiveCards.Rendering.Wpf
                 default:
                     break;
             }
+
+            outerGrid.MinHeight = card.PixelMinHeight;
 
             AdaptiveContainerRenderer.AddContainerElements(grid, card.Body, context);
             AdaptiveActionSetRenderer.AddActions(grid, card.Actions, context);

@@ -80,6 +80,7 @@ namespace AdaptiveCards.Rendering.Html
             ElementRenderers.Set<AdaptiveColumnSet>(ColumnSetRender);
             ElementRenderers.Set<AdaptiveFactSet>(FactSetRender);
             ElementRenderers.Set<AdaptiveImageSet>(ImageSetRender);
+            ElementRenderers.Set<AdaptiveActionSet>(ActionSetRender);
 
             ElementRenderers.Set<AdaptiveChoiceSetInput>(ChoiceSetRender);
             ElementRenderers.Set<AdaptiveTextInput>(TextInputRender);
@@ -267,6 +268,11 @@ namespace AdaptiveCards.Rendering.Html
                 ApplyBackgroundImage(card.BackgroundImage, uiCard, context);
             }
 
+            if (card.PixelMinHeight > 0)
+            {
+                uiCard.Style("min-height", card.PixelMinHeight + "px");
+            }
+
             // Reset the parent style
             context.RenderArgs.ParentStyle = AdaptiveContainerStyle.Default;
 
@@ -284,7 +290,8 @@ namespace AdaptiveCards.Rendering.Html
                     break;
             }
 
-            AddContainerElements(uiCard, card.Body, card.Actions, context);
+            AddContainerElements(uiCard, card.Body, context);
+            AddActions(uiCard, card.Actions, context);
 
             AddSelectAction(uiCard, card.SelectAction, context);
 
@@ -313,26 +320,8 @@ namespace AdaptiveCards.Rendering.Html
             }
         }
 
-        protected static void AddContainerElements(HtmlTag uiContainer, IList<AdaptiveElement> elements, IList<AdaptiveAction> actions, AdaptiveRenderContext context)
+        protected static void AddActions(HtmlTag uiContainer, IList<AdaptiveAction> actions, AdaptiveRenderContext context)
         {
-            if (elements != null)
-            {
-                foreach (var cardElement in elements)
-                {
-                    // each element has a row
-                    var uiElement = context.Render(cardElement);
-                    if (uiElement != null)
-                    {
-                        if (uiContainer.Children.Any())
-                        {
-                            AddSeparator(uiContainer, cardElement, context);
-                        }
-
-                        uiContainer.Children.Add(uiElement);
-                    }
-                }
-            }
-
             if (context.Config.SupportsInteractivity && actions != null)
             {
                 var uiButtonStrip = new DivTag()
@@ -460,6 +449,35 @@ namespace AdaptiveCards.Rendering.Html
             }
         }
 
+        protected static void AddContainerElements(HtmlTag uiContainer, IList<AdaptiveElement> elements, AdaptiveRenderContext context)
+        {
+            if (elements != null)
+            {
+                foreach (var cardElement in elements)
+                {
+                    // each element has a row
+                    var uiElement = context.Render(cardElement);
+                    if (uiElement != null)
+                    {
+                        if (uiContainer.Children.Any())
+                        {
+                            AddSeparator(uiContainer, cardElement, context);
+                        }
+
+                        if (cardElement is AdaptiveCollectionElement collectionElement)
+                        {
+                            if (collectionElement.PixelMinHeight > 0)
+                            {
+                                uiElement.Style("min-height", collectionElement.PixelMinHeight + "px");
+                            }
+                        }
+
+                        uiContainer.Children.Add(uiElement);
+                    }
+                }
+            }           
+        }
+
         protected static void AddSeparator(HtmlTag uiContainer, AdaptiveElement adaptiveElement, AdaptiveRenderContext context)
         {
             if (!adaptiveElement.Separator && adaptiveElement.Spacing == AdaptiveSpacing.None)
@@ -500,6 +518,11 @@ namespace AdaptiveCards.Rendering.Html
 
             var parentRenderArgs = context.RenderArgs;
             var childRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
+
+            if (column.PixelMinHeight > 0)
+            {
+                uiColumn.Style("min-height", column.PixelMinHeight + "px");
+            }
 
             if (!column.IsVisible)
             {
@@ -551,7 +574,7 @@ namespace AdaptiveCards.Rendering.Html
             childRenderArgs.HasParentWithPadding = hasPadding;
             context.RenderArgs = childRenderArgs;
 
-            AddContainerElements(uiColumn, column.Items, null, context);
+            AddContainerElements(uiColumn, column.Items, context);
 
             AddSelectAction(uiColumn, column.SelectAction, context);
 
@@ -786,7 +809,7 @@ namespace AdaptiveCards.Rendering.Html
             childRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : container.Style.Value;
             context.RenderArgs = childRenderArgs;
 
-            AddContainerElements(uiContainer, container.Items, null, context);
+            AddContainerElements(uiContainer, container.Items, context);
 
             AddSelectAction(uiContainer, container.SelectAction, context);
 
@@ -948,39 +971,17 @@ namespace AdaptiveCards.Rendering.Html
                 uiTextBlock.Style("display", "none");
             }
 
-            uiTextBlock = richTextBlock.Wrap ?
-                uiTextBlock.Style("word-wrap", "break-word") :
-                uiTextBlock.Style("white-space", "nowrap");
+            uiTextBlock = uiTextBlock.Style("word-wrap", "break-word");
 
-            Action<HtmlTag> removeParagraphTag = null;
-            removeParagraphTag = (HtmlTag htmlTag) =>
+            var uiParagraph = new HtmlTag("p");
+            foreach (var inlineRun in richTextBlock.Inlines)
             {
-                var child = htmlTag.Children[0];
-                if (child.Element?.ToLowerInvariant() == "p")
-                {
-                    var grandChildren = new List<HtmlTag>(child.Children);
-                    htmlTag.Children.Remove(child);
-                    htmlTag.Children.AddRange(grandChildren);
-                }
-            };
+                AdaptiveTextRun textRun = inlineRun as AdaptiveTextRun;
 
-            int maxFontSize = 0;
-            foreach (var paragraph in richTextBlock.Paragraphs)
-            {
-                var uiParagraph = new HtmlTag("p");
-                foreach (var inlineRun in paragraph.Inlines)
-                {
-                    // keep track of max font size for MaxLines rendering
-                    var size = inlineRun.Size;
-                    var style = inlineRun.FontStyle;
-                    maxFontSize = Math.Max(maxFontSize, context.Config.GetFontSize(style, size));
-
-                    var uiInlineRun = TextRunRender(inlineRun, context);
-                    removeParagraphTag(uiInlineRun);
-                    uiParagraph.Children.Add(uiInlineRun);
-                }
-                uiTextBlock.Children.Add(uiParagraph);
+                var uiInlineRun = TextRunRender(textRun, context);
+                uiParagraph.Children.Add(uiInlineRun);
             }
+            uiTextBlock.Children.Add(uiParagraph);
 
             Action<HtmlTag> setParagraphStyles = null;
             setParagraphStyles = (HtmlTag htmlTag) =>
@@ -990,12 +991,6 @@ namespace AdaptiveCards.Rendering.Html
                     htmlTag.Style("margin-top", "0px");
                     htmlTag.Style("margin-bottom", "0px");
                     htmlTag.Style("width", "100%");
-
-                    if (!richTextBlock.Wrap)
-                    {
-                        htmlTag.Style("text-overflow", "ellipsis");
-                        htmlTag.Style("overflow", "hidden");
-                    }
                 }
 
                 foreach (var child in htmlTag.Children)
@@ -1005,15 +1000,6 @@ namespace AdaptiveCards.Rendering.Html
             };
 
             setParagraphStyles(uiTextBlock);
-
-            if (richTextBlock.MaxLines > 0)
-            {
-                var lineHeight = maxFontSize * 1.33;
-                uiTextBlock = uiTextBlock
-                    .Style("max-height", $"{lineHeight * richTextBlock.MaxLines}px")
-                    .Style("overflow", "hidden");
-
-            }
 
             return uiTextBlock;
         }
@@ -1034,8 +1020,7 @@ namespace AdaptiveCards.Rendering.Html
                 .Style("font-size", $"{fontSize}px")
                 .Style("font-weight", $"{weight}");
 
-            var textTags = MarkdownToHtmlTagConverter.Convert(RendererUtilities.ApplyTextFunctions(textRun.Text, context.Lang));
-            uiTextRun.Children.AddRange(textTags);
+            uiTextRun.Text = RendererUtilities.ApplyTextFunctions(textRun.Text, context.Lang);
             return uiTextRun;
         }
 
@@ -1046,7 +1031,7 @@ namespace AdaptiveCards.Rendering.Html
                 .Attr("name", image.Id)
                 .Style("display", "block");
 
-            if (image.Height == AdaptiveHeight.Auto)
+            if (image.Height != AdaptiveHeight.Stretch)
             {
                 uiDiv.Style("box-sizing", "border-box");
             }
@@ -1439,6 +1424,15 @@ namespace AdaptiveCards.Rendering.Html
             return uiImageSet;
         }
 
+        protected static HtmlTag ActionSetRender(AdaptiveActionSet actionSet, AdaptiveRenderContext context)
+        {
+            var outerContainer = new DivTag()
+                .Style("box-sizing", "border-box")
+                .Style("width", "100%");
+            AddActions(outerContainer, actionSet.Actions, context);
+            return outerContainer;
+        }
+
         /// <summary>
         /// 1. IsMultiSelect == false && IsCompact == true => render as a drop down select element
         /// 2. IsMultiSelect == false && IsCompact == false => render as a list of radio buttons
@@ -1688,7 +1682,10 @@ namespace AdaptiveCards.Rendering.Html
             }
             else
             {
-                uiTextInput.Style("flex", "1 1 auto");
+                if (!input.IsMultiline)
+                {
+                    uiTextInput.Style("flex", "1 1 auto");
+                }
             }
 
             if (!string.IsNullOrEmpty(input.Placeholder))

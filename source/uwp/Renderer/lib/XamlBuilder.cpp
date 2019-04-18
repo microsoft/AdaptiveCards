@@ -75,7 +75,7 @@ namespace AdaptiveNamespace
         ComPtr<IFrameworkElement> separatorAsFrameworkElement;
         THROW_IF_FAILED(separator.As(&separatorAsFrameworkElement));
 
-        ComPtr<IBrush> lineColorBrush = GetSolidColorBrush(separatorColor);
+        ComPtr<IBrush> lineColorBrush = XamlHelpers::GetSolidColorBrush(separatorColor);
         ComPtr<IPanel> separatorAsPanel;
         THROW_IF_FAILED(separator.As(&separatorAsPanel));
         separatorAsPanel->put_Background(lineColorBrush.Get());
@@ -403,7 +403,7 @@ namespace AdaptiveNamespace
         ABI::Windows::UI::Color backgroundColor;
         if (SUCCEEDED(GetBackgroundColorFromStyle(containerStyle, hostConfig.Get(), &backgroundColor)))
         {
-            ComPtr<IBrush> backgroundColorBrush = GetSolidColorBrush(backgroundColor);
+            ComPtr<IBrush> backgroundColorBrush = XamlHelpers::GetSolidColorBrush(backgroundColor);
             THROW_IF_FAILED(rootAsPanel->put_Background(backgroundColorBrush.Get()));
         }
 
@@ -415,6 +415,15 @@ namespace AdaptiveNamespace
         {
             ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImage.Get(), renderContext, renderArgs);
         }
+
+        ComPtr<IAdaptiveSpacingConfig> spacingConfig;
+        THROW_IF_FAILED(hostConfig->get_Spacing(&spacingConfig));
+
+        UINT32 padding;
+        THROW_IF_FAILED(spacingConfig->get_Padding(&padding));
+
+        // Configure WholeItemsPanel to not clip bleeding containers
+        WholeItemsPanel::SetBleedMargin(padding);
 
         // Now create the inner stack panel to serve as the root host for all the
         // body elements and apply padding from host configuration
@@ -1771,16 +1780,6 @@ namespace AdaptiveNamespace
         *separatorColor = localColor;
     }
 
-    ComPtr<IBrush> XamlBuilder::GetSolidColorBrush(ABI::Windows::UI::Color color)
-    {
-        ComPtr<ISolidColorBrush> solidColorBrush =
-            XamlHelpers::CreateXamlClass<ISolidColorBrush>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_SolidColorBrush));
-        THROW_IF_FAILED(solidColorBrush->put_Color(color));
-        ComPtr<IBrush> solidColorBrushAsBrush;
-        THROW_IF_FAILED(solidColorBrush.As(&solidColorBrushAsBrush));
-        return solidColorBrushAsBrush;
-    }
-
     HRESULT XamlBuilder::BuildRichTextBlock(ABI::AdaptiveNamespace::IAdaptiveCardElement* adaptiveCardElement,
                                             ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                             ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
@@ -1794,115 +1793,111 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveRichTextBlock> adaptiveRichTextBlock;
         RETURN_IF_FAILED(localAdaptiveCardElement.As(&adaptiveRichTextBlock));
 
-        // Style the top level text block properties. Don't pass in a TextElement here, the TextElement properties will
-        // be styled on the individual inlines by SetXamlInlines.
-        RETURN_IF_FAILED(StyleXamlTextBlockProperties(
-            adaptiveRichTextBlock.Get(), nullptr, renderContext, renderArgs, false, xamlRichTextBlock.Get()));
+        // Set the horizontal Alingment
+        RETURN_IF_FAILED(SetHorizontalAlignment(adaptiveRichTextBlock.Get(), xamlRichTextBlock.Get()));
 
-        // Add the paragraphs
+        // Get the highlighters
+        ComPtr<IRichTextBlock5> xamlRichTextBlock5;
+        RETURN_IF_FAILED(xamlRichTextBlock.As(&xamlRichTextBlock5));
+
+        ComPtr<IVector<TextHighlighter*>> textHighlighters;
+        RETURN_IF_FAILED(xamlRichTextBlock5->get_TextHighlighters(&textHighlighters));
+
+        // Add a paragraph for the inlines
         ComPtr<IVector<Block*>> xamlBlocks;
         RETURN_IF_FAILED(xamlRichTextBlock->get_Blocks(&xamlBlocks));
 
-        ComPtr<IVector<AdaptiveParagraph*>> paragraphs;
-        RETURN_IF_FAILED(adaptiveRichTextBlock->get_Paragraphs(&paragraphs));
+        ComPtr<IParagraph> xamlParagraph =
+            XamlHelpers::CreateXamlClass<IParagraph>(HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Paragraph));
 
-        ComPtr<IRichTextBlock5> xamlRichTextBlock5;
-        xamlRichTextBlock.As(&xamlRichTextBlock5);
+        ComPtr<IBlock> paragraphAsBlock;
+        RETURN_IF_FAILED(xamlParagraph.As(&paragraphAsBlock));
+        RETURN_IF_FAILED(xamlBlocks->Append(paragraphAsBlock.Get()));
 
-        ComPtr<IVector<TextHighlighter*>> textHighlighters;
-        xamlRichTextBlock5->get_TextHighlighters(&textHighlighters);
+        // Add the Inlines
+        ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> xamlInlines;
+        RETURN_IF_FAILED(xamlParagraph->get_Inlines(&xamlInlines));
+
+        ComPtr<IVector<IAdaptiveInline*>> adaptiveInlines;
+        RETURN_IF_FAILED(adaptiveRichTextBlock->get_Inlines(&adaptiveInlines));
 
         UINT currentOffset = 0;
-        XamlHelpers::IterateOverVector<AdaptiveParagraph, IAdaptiveParagraph>(paragraphs.Get(), [&](IAdaptiveParagraph* paragraph) {
-            ComPtr<IParagraph> xamlParagraph =
-                XamlHelpers::CreateXamlClass<IParagraph>(HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Paragraph));
+        XamlHelpers::IterateOverVector<IAdaptiveInline>(adaptiveInlines.Get(), [&](IAdaptiveInline* adaptiveInline) {
+            // We only support TextRun inlines for now
+            ComPtr<IAdaptiveInline> localInline(adaptiveInline);
+            ComPtr<IAdaptiveTextRun> adaptiveTextRun;
+            RETURN_IF_FAILED(localInline.As(&adaptiveTextRun));
 
-            ComPtr<IBlock> paragraphAsBlock;
-            RETURN_IF_FAILED(xamlParagraph.As(&paragraphAsBlock));
-            RETURN_IF_FAILED(xamlBlocks->Append(paragraphAsBlock.Get()));
+            ComPtr<IAdaptiveActionElement> selectAction;
+            RETURN_IF_FAILED(adaptiveTextRun->get_SelectAction(&selectAction));
 
-            // Add the Inlines
-            ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> xamlInlines;
-            RETURN_IF_FAILED(xamlParagraph->get_Inlines(&xamlInlines));
+            ComPtr<IAdaptiveTextElement> adaptiveTextElement;
+            RETURN_IF_FAILED(localInline.As(&adaptiveTextElement));
 
-            ComPtr<IVector<IAdaptiveInline*>> adaptiveInlines;
-            RETURN_IF_FAILED(paragraph->get_Inlines(&adaptiveInlines));
+            HString text;
+            RETURN_IF_FAILED(adaptiveTextElement->get_Text(text.GetAddressOf()));
 
-            XamlHelpers::IterateOverVector<IAdaptiveInline>(adaptiveInlines.Get(), [&](IAdaptiveInline* adaptiveInline) {
-                // We only support TextRun inlines for now
-                ComPtr<IAdaptiveInline> localInline(adaptiveInline);
-                ComPtr<IAdaptiveTextRun> adaptiveTextRun;
-                RETURN_IF_FAILED(localInline.As(&adaptiveTextRun));
+            UINT inlineLength;
+            if (selectAction != nullptr)
+            {
+                // If there's a select action, create a hyperlink that triggers the action
+                ComPtr<ABI::Windows::UI::Xaml::Documents::IHyperlink> hyperlink =
+                    XamlHelpers::CreateXamlClass<ABI::Windows::UI::Xaml::Documents::IHyperlink>(
+                        HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Hyperlink));
 
-                ComPtr<IAdaptiveActionElement> selectAction;
-                RETURN_IF_FAILED(adaptiveTextRun->get_SelectAction(&selectAction));
+                ComPtr<IAdaptiveActionInvoker> actionInvoker;
+                renderContext->get_ActionInvoker(&actionInvoker);
 
-                ComPtr<IAdaptiveTextElement> adaptiveTextElement;
-                RETURN_IF_FAILED(localInline.As(&adaptiveTextElement));
+                EventRegistrationToken clickToken;
+                RETURN_IF_FAILED(
+                    hyperlink->add_Click(Callback<ABI::Windows::Foundation::ITypedEventHandler<Hyperlink*, HyperlinkClickEventArgs*>>(
+                                             [selectAction, actionInvoker](IInspectable*, IHyperlinkClickEventArgs*) -> HRESULT {
+                                                 return actionInvoker->SendActionEvent(selectAction.Get());
+                                             })
+                                             .Get(),
+                                         &clickToken));
 
-                UINT inlineLength;
-                if (selectAction != nullptr)
-                {
-                    // If there's a select action, create a hyperlink that triggers the action
-                    ComPtr<ABI::Windows::UI::Xaml::Documents::IHyperlink> hyperlink =
-                        XamlHelpers::CreateXamlClass<ABI::Windows::UI::Xaml::Documents::IHyperlink>(
-                            HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Hyperlink));
+                // Add the run text to the hyperlink's inlines
+                ComPtr<ABI::Windows::UI::Xaml::Documents::ISpan> hyperlinkAsSpan;
+                RETURN_IF_FAILED(hyperlink.As(&hyperlinkAsSpan));
 
-                    ComPtr<IAdaptiveActionInvoker> actionInvoker;
-                    renderContext->get_ActionInvoker(&actionInvoker);
+                ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> hyperlinkInlines;
+                RETURN_IF_FAILED(hyperlinkAsSpan->get_Inlines(hyperlinkInlines.GetAddressOf()));
 
-                    EventRegistrationToken clickToken;
-                    RETURN_IF_FAILED(hyperlink->add_Click(
-                        Callback<ABI::Windows::Foundation::ITypedEventHandler<Hyperlink*, HyperlinkClickEventArgs*>>(
-                            [selectAction, actionInvoker](IInspectable*, IHyperlinkClickEventArgs*) -> HRESULT {
-                                return actionInvoker->SendActionEvent(selectAction.Get());
-                            })
-                            .Get(),
-                        &clickToken));
+                RETURN_IF_FAILED(AddSingleTextInline(
+                    adaptiveTextElement.Get(), renderContext, renderArgs, text.Get(), true, hyperlinkInlines.Get(), &inlineLength));
 
-                    // Add the run text to the hyperlink's inlines
-                    ComPtr<ABI::Windows::UI::Xaml::Documents::ISpan> hyperlinkAsSpan;
-                    RETURN_IF_FAILED(hyperlink.As(&hyperlinkAsSpan));
+                ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> hyperlinkAsInline;
+                RETURN_IF_FAILED(hyperlink.As(&hyperlinkAsInline));
 
-                    ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> hyperlinkInlines;
-                    RETURN_IF_FAILED(hyperlinkAsSpan->get_Inlines(hyperlinkInlines.GetAddressOf()));
+                // Add the hyperlink to the paragraph's inlines
+                RETURN_IF_FAILED(xamlInlines->Append(hyperlinkAsInline.Get()));
+            }
+            else
+            {
+                // Add the text to the paragraph's inlines
+                RETURN_IF_FAILED(AddSingleTextInline(
+                    adaptiveTextElement.Get(), renderContext, renderArgs, text.Get(), false, xamlInlines.Get(), &inlineLength));
+            }
 
-                    RETURN_IF_FAILED(
-                        SetXamlInlines(adaptiveTextElement.Get(), renderContext, renderArgs, true, hyperlinkInlines.Get(), &inlineLength));
+            boolean highlight;
+            RETURN_IF_FAILED(adaptiveTextRun->get_Highlight(&highlight));
 
-                    ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> hyperlinkAsInline;
-                    RETURN_IF_FAILED(hyperlink.As(&hyperlinkAsInline));
+            if (highlight)
+            {
+                ComPtr<ITextHighlighter> textHighlighter;
+                RETURN_IF_FAILED(GetHighlighter(adaptiveTextElement.Get(), renderContext, renderArgs, &textHighlighter));
 
-                    // Add the hyperlink to the paragraph's inlines
-                    RETURN_IF_FAILED(xamlInlines->Append(hyperlinkAsInline.Get()));
-                }
-                else
-                {
-                    // Add the text to the paragraph's inlines
-                    RETURN_IF_FAILED(
-                        SetXamlInlines(adaptiveTextElement.Get(), renderContext, renderArgs, false, xamlInlines.Get(), &inlineLength));
-                }
+                ComPtr<IVector<TextRange>> ranges;
+                RETURN_IF_FAILED(textHighlighter->get_Ranges(&ranges));
 
-                boolean highlight;
-                RETURN_IF_FAILED(adaptiveTextRun->get_Highlight(&highlight));
+                TextRange textRange = {(INT32)currentOffset, (INT32)inlineLength};
+                RETURN_IF_FAILED(ranges->Append(textRange));
 
-                if (highlight)
-                {
-                    ComPtr<ITextHighlighter> textHighlighter;
-                    RETURN_IF_FAILED(GetHighlighter(adaptiveTextElement.Get(), renderContext, renderArgs, &textHighlighter));
+                RETURN_IF_FAILED(textHighlighters->Append(textHighlighter.Get()));
+            }
 
-                    ComPtr<IVector<TextRange>> ranges;
-                    RETURN_IF_FAILED(textHighlighter->get_Ranges(&ranges));
-
-                    TextRange textRange = {(INT32)currentOffset, (INT32)inlineLength};
-                    RETURN_IF_FAILED(ranges->Append(textRange));
-
-                    RETURN_IF_FAILED(textHighlighters->Append(textHighlighter.Get()));
-                }
-
-                currentOffset += inlineLength;
-                return S_OK;
-            });
+            currentOffset += inlineLength;
             return S_OK;
         });
 
@@ -1924,8 +1919,7 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveTextElement> adaptiveTextElement;
         RETURN_IF_FAILED(adaptiveTextBlock.As(&adaptiveTextElement));
 
-        RETURN_IF_FAILED(StyleXamlTextBlockProperties(
-            adaptiveTextBlock.Get(), adaptiveTextElement.Get(), renderContext, renderArgs, true, xamlTextBlock.Get()));
+        RETURN_IF_FAILED(StyleXamlTextBlockProperties(adaptiveTextBlock.Get(), renderContext, renderArgs, xamlTextBlock.Get()));
 
         ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> inlines;
         RETURN_IF_FAILED(xamlTextBlock->get_Inlines(&inlines));
@@ -2195,7 +2189,7 @@ namespace AdaptiveNamespace
                 // Fill the background ellipse with solid color brush
                 ABI::Windows::UI::Color color;
                 RETURN_IF_FAILED(GetColorFromString(HStringToUTF8(backgroundColor), &color));
-                ComPtr<IBrush> backgroundColorBrush = GetSolidColorBrush(color);
+                ComPtr<IBrush> backgroundColorBrush = XamlHelpers::GetSolidColorBrush(color);
                 RETURN_IF_FAILED(backgroundEllipseAsShape->put_Fill(backgroundColorBrush.Get()));
 
                 // Create a grid to contain the background color ellipse and the image ellipse
@@ -2228,7 +2222,7 @@ namespace AdaptiveNamespace
 
                 ABI::Windows::UI::Color color;
                 RETURN_IF_FAILED(GetColorFromString(HStringToUTF8(backgroundColor), &color));
-                ComPtr<IBrush> backgroundColorBrush = GetSolidColorBrush(color);
+                ComPtr<IBrush> backgroundColorBrush = XamlHelpers::GetSolidColorBrush(color);
                 RETURN_IF_FAILED(border->put_Background(backgroundColorBrush.Get()));
 
                 ComPtr<IUIElement> imageAsUiElement;
@@ -2382,6 +2376,82 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    HRESULT HandleStylingAndPadding(_In_ IAdaptiveContainerBase* adaptiveContainer,
+                                    _In_ IBorder* containerBorder,
+                                    _In_ IAdaptiveRenderContext* renderContext,
+                                    _In_ IAdaptiveRenderArgs* renderArgs,
+                                    _Out_ ABI::AdaptiveNamespace::ContainerStyle* containerStyle)
+    {
+        ABI::AdaptiveNamespace::ContainerStyle localContainerStyle;
+        RETURN_IF_FAILED(adaptiveContainer->get_Style(&localContainerStyle));
+
+        ABI::AdaptiveNamespace::ContainerStyle parentContainerStyle;
+        RETURN_IF_FAILED(renderArgs->get_ContainerStyle(&parentContainerStyle));
+
+        bool hasExplicitContainerStyle{true};
+        if (localContainerStyle == ABI::AdaptiveNamespace::ContainerStyle::None)
+        {
+            hasExplicitContainerStyle = false;
+            localContainerStyle = parentContainerStyle;
+        }
+
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+
+        ComPtr<IAdaptiveSpacingConfig> spacingConfig;
+        RETURN_IF_FAILED(hostConfig->get_Spacing(&spacingConfig));
+
+        UINT32 padding;
+        RETURN_IF_FAILED(spacingConfig->get_Padding(&padding));
+        DOUBLE paddingAsDouble = static_cast<DOUBLE>(padding);
+
+        // If container style was explicitly assigned, apply background color and padding
+        if (hasExplicitContainerStyle)
+        {
+            ABI::Windows::UI::Color backgroundColor;
+            RETURN_IF_FAILED(GetBackgroundColorFromStyle(localContainerStyle, hostConfig.Get(), &backgroundColor));
+            ComPtr<IBrush> backgroundColorBrush = XamlHelpers::GetSolidColorBrush(backgroundColor);
+            RETURN_IF_FAILED(containerBorder->put_Background(backgroundColorBrush.Get()));
+
+            // If the container style doesn't match its parent apply padding.
+            if (localContainerStyle != parentContainerStyle)
+            {
+                Thickness paddingThickness = {paddingAsDouble, paddingAsDouble, paddingAsDouble, paddingAsDouble};
+                RETURN_IF_FAILED(containerBorder->put_Padding(paddingThickness));
+            }
+        }
+
+        // Find out which direction(s) we bleed in, and apply a negative margin to cause the
+        // container to bleed
+        ABI::AdaptiveNamespace::BleedDirection bleedDirection;
+        RETURN_IF_FAILED(adaptiveContainer->get_BleedDirection(&bleedDirection));
+
+        Thickness marginThickness = {0};
+        if (bleedDirection != ABI::AdaptiveNamespace::BleedDirection::None)
+        {
+            if (bleedDirection == ABI::AdaptiveNamespace::BleedDirection::Left ||
+                bleedDirection == ABI::AdaptiveNamespace::BleedDirection::Both)
+            {
+                marginThickness.Left = -paddingAsDouble;
+            }
+
+            if (bleedDirection == ABI::AdaptiveNamespace::BleedDirection::Right ||
+                bleedDirection == ABI::AdaptiveNamespace::BleedDirection::Both)
+            {
+                marginThickness.Right = -paddingAsDouble;
+            }
+
+            ComPtr<IBorder> localContainerBorder(containerBorder);
+            ComPtr<IFrameworkElement> containerBorderAsFrameworkElement;
+            RETURN_IF_FAILED(localContainerBorder.As(&containerBorderAsFrameworkElement));
+            RETURN_IF_FAILED(containerBorderAsFrameworkElement->put_Margin(marginThickness));
+        }
+
+        *containerStyle = localContainerStyle;
+
+        return S_OK;
+    }
+
     HRESULT XamlBuilder::BuildContainer(_In_ IAdaptiveCardElement* adaptiveCardElement,
                                         _In_ IAdaptiveRenderContext* renderContext,
                                         _In_ IAdaptiveRenderArgs* renderArgs,
@@ -2406,25 +2476,23 @@ namespace AdaptiveNamespace
             RETURN_IF_FAILED(containerPanelAsFrameWorkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment_Top));
         }
 
+        ComPtr<IAdaptiveContainerBase> containerAsContainerBase;
+        RETURN_IF_FAILED(adaptiveContainer.As(&containerAsContainerBase));
+
         UINT32 containerMinHeight{};
-        RETURN_IF_FAILED(adaptiveContainer->get_MinHeight(&containerMinHeight));
+        RETURN_IF_FAILED(containerAsContainerBase->get_MinHeight(&containerMinHeight));
         if (containerMinHeight > 0)
         {
             RETURN_IF_FAILED(containerPanelAsFrameWorkElement->put_MinHeight(containerMinHeight));
         }
 
+        ComPtr<IBorder> containerBorder =
+            XamlHelpers::CreateXamlClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
+
         ABI::AdaptiveNamespace::ContainerStyle containerStyle;
-        RETURN_IF_FAILED(adaptiveContainer->get_Style(&containerStyle));
+        RETURN_IF_FAILED(
+            HandleStylingAndPadding(containerAsContainerBase.Get(), containerBorder.Get(), renderContext, renderArgs, &containerStyle));
 
-        ABI::AdaptiveNamespace::ContainerStyle parentContainerStyle;
-        RETURN_IF_FAILED(renderArgs->get_ContainerStyle(&parentContainerStyle));
-
-        bool hasExplicitContainerStyle{true};
-        if (containerStyle == ABI::AdaptiveNamespace::ContainerStyle::None)
-        {
-            hasExplicitContainerStyle = false;
-            containerStyle = parentContainerStyle;
-        }
         ComPtr<IFrameworkElement> parentElement;
         RETURN_IF_FAILED(renderArgs->get_ParentElement(&parentElement));
         ComPtr<IAdaptiveRenderArgs> newRenderArgs;
@@ -2436,34 +2504,6 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(adaptiveContainer->get_Items(&childItems));
         RETURN_IF_FAILED(
             BuildPanelChildren(childItems.Get(), containerPanelAsPanel.Get(), renderContext, newRenderArgs.Get(), [](IUIElement*) {}));
-
-        ComPtr<IBorder> containerBorder =
-            XamlHelpers::CreateXamlClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
-        ComPtr<IAdaptiveHostConfig> hostConfig;
-        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-
-        // If container style was explicitly assigned, apply background
-        if (hasExplicitContainerStyle)
-        {
-            ABI::Windows::UI::Color backgroundColor;
-            RETURN_IF_FAILED(GetBackgroundColorFromStyle(containerStyle, hostConfig.Get(), &backgroundColor));
-            ComPtr<IBrush> backgroundColorBrush = GetSolidColorBrush(backgroundColor);
-            RETURN_IF_FAILED(containerBorder->put_Background(backgroundColorBrush.Get()));
-
-            // If the container style doesn't match its parent, apply padding.
-            if (containerStyle != parentContainerStyle)
-            {
-                ComPtr<IAdaptiveSpacingConfig> spacingConfig;
-                RETURN_IF_FAILED(hostConfig->get_Spacing(&spacingConfig));
-
-                UINT32 padding;
-                RETURN_IF_FAILED(spacingConfig->get_Padding(&padding));
-                DOUBLE paddingAsDouble = static_cast<DOUBLE>(padding);
-
-                Thickness paddingThickness = {paddingAsDouble, paddingAsDouble, paddingAsDouble, paddingAsDouble};
-                RETURN_IF_FAILED(containerBorder->put_Padding(paddingThickness));
-            }
-        }
 
         ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment;
         RETURN_IF_FAILED(adaptiveContainer->get_VerticalContentAlignment(&verticalContentAlignment));
@@ -2506,10 +2546,13 @@ namespace AdaptiveNamespace
             SetStyleFromResourceDictionary(renderContext, L"Adaptive.Container", containerPanelAsFrameWorkElement.Get()));
 
         ComPtr<IAdaptiveActionElement> selectAction;
-        RETURN_IF_FAILED(adaptiveContainer->get_SelectAction(&selectAction));
+        RETURN_IF_FAILED(containerAsContainerBase->get_SelectAction(&selectAction));
 
         ComPtr<IUIElement> containerBorderAsUIElement;
         RETURN_IF_FAILED(containerBorder.As(&containerBorderAsUIElement));
+
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
         HandleSelectAction(adaptiveCardElement,
                            selectAction.Get(),
@@ -2530,19 +2573,22 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveColumn> adaptiveColumn;
         RETURN_IF_FAILED(cardElement.As(&adaptiveColumn));
 
+        ComPtr<IBorder> columnBorder =
+            XamlHelpers::CreateXamlClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
+
         ComPtr<WholeItemsPanel> columnPanel;
         RETURN_IF_FAILED(MakeAndInitialize<WholeItemsPanel>(&columnPanel));
 
+        ComPtr<IUIElement> columnPanelAsUIElement;
+        RETURN_IF_FAILED(columnPanel.As(&columnPanelAsUIElement));
+
+        RETURN_IF_FAILED(columnBorder->put_Child(columnPanelAsUIElement.Get()));
+
+        ComPtr<IAdaptiveContainerBase> columnAsContainerBase;
+        RETURN_IF_FAILED(adaptiveColumn.As(&columnAsContainerBase));
+
         ABI::AdaptiveNamespace::ContainerStyle containerStyle;
-        RETURN_IF_FAILED(adaptiveColumn->get_Style(&containerStyle));
-        bool hasExplicitContainerStyle = true;
-        if (containerStyle == ABI::AdaptiveNamespace::ContainerStyle::None)
-        {
-            hasExplicitContainerStyle = false;
-            ABI::AdaptiveNamespace::ContainerStyle parentContainerStyle;
-            RETURN_IF_FAILED(renderArgs->get_ContainerStyle(&parentContainerStyle));
-            containerStyle = parentContainerStyle;
-        }
+        RETURN_IF_FAILED(HandleStylingAndPadding(columnAsContainerBase.Get(), columnBorder.Get(), renderContext, renderArgs, &containerStyle));
 
         ComPtr<IFrameworkElement> parentElement;
         RETURN_IF_FAILED(renderArgs->get_ParentElement(&parentElement));
@@ -2551,16 +2597,6 @@ namespace AdaptiveNamespace
 
         ComPtr<IPanel> columnAsPanel;
         THROW_IF_FAILED(columnPanel.As(&columnAsPanel));
-
-        // If container style was explicitly assigned, apply background
-        ComPtr<IAdaptiveHostConfig> hostConfig;
-        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-        ABI::Windows::UI::Color backgroundColor;
-        if (hasExplicitContainerStyle && SUCCEEDED(GetBackgroundColorFromStyle(containerStyle, hostConfig.Get(), &backgroundColor)))
-        {
-            ComPtr<IBrush> backgroundColorBrush = GetSolidColorBrush(backgroundColor);
-            RETURN_IF_FAILED(columnAsPanel->put_Background(backgroundColorBrush.Get()));
-        }
 
         ComPtr<IVector<IAdaptiveCardElement*>> childItems;
         RETURN_IF_FAILED(adaptiveColumn->get_Items(&childItems));
@@ -2581,14 +2617,14 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Column", columnPanelAsFrameworkElement.Get()));
 
         UINT32 columnMinHeight{};
-        RETURN_IF_FAILED(adaptiveColumn->get_MinHeight(&columnMinHeight));
+        RETURN_IF_FAILED(columnAsContainerBase->get_MinHeight(&columnMinHeight));
         if (columnMinHeight > 0)
         {
             RETURN_IF_FAILED(columnPanelAsFrameworkElement->put_MinHeight(columnMinHeight));
         }
 
         ComPtr<IAdaptiveActionElement> selectAction;
-        RETURN_IF_FAILED(adaptiveColumn->get_SelectAction(&selectAction));
+        RETURN_IF_FAILED(columnAsContainerBase->get_SelectAction(&selectAction));
 
         // Define columnAsUIElement based on the existence of a backgroundImage
         ComPtr<IUIElement> columnAsUIElement;
@@ -2609,17 +2645,20 @@ namespace AdaptiveNamespace
             ABI::AdaptiveNamespace::HeightType columnHeightType{};
             RETURN_IF_FAILED(cardElement->get_Height(&columnHeightType));
 
-            // Add columnPanel to rootElement
-            ComPtr<IFrameworkElement> columnPanelAsFElement;
-            RETURN_IF_FAILED(columnPanel.As(&columnPanelAsFElement));
-            XamlHelpers::AppendXamlElementToPanel(columnPanelAsFElement.Get(), rootAsPanel.Get(), columnHeightType);
+            // Add columnBorder to rootElement
+            ComPtr<IFrameworkElement> columnBorderAsFElement;
+            RETURN_IF_FAILED(columnBorder.As(&columnBorderAsFElement));
+            XamlHelpers::AppendXamlElementToPanel(columnBorderAsFElement.Get(), rootAsPanel.Get(), columnHeightType);
 
             RETURN_IF_FAILED(rootElement.As(&columnAsUIElement));
         }
         else
         {
-            RETURN_IF_FAILED(columnPanel.As(&columnAsUIElement));
+            RETURN_IF_FAILED(columnBorder.As(&columnAsUIElement));
         }
+
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
         HandleSelectAction(adaptiveCardElement,
                            selectAction.Get(),
@@ -2640,37 +2679,28 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveColumnSet> adaptiveColumnSet;
         RETURN_IF_FAILED(cardElement.As(&adaptiveColumnSet));
 
+        ComPtr<IBorder> columnSetBorder =
+            XamlHelpers::CreateXamlClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
+
         ComPtr<WholeItemsPanel> gridContainer;
         RETURN_IF_FAILED(MakeAndInitialize<WholeItemsPanel>(&gridContainer));
 
+        ComPtr<IUIElement> gridContainerAsUIElement;
+        RETURN_IF_FAILED(gridContainer.As(&gridContainerAsUIElement));
+
+        RETURN_IF_FAILED(columnSetBorder->put_Child(gridContainerAsUIElement.Get()));
+
+        ComPtr<IAdaptiveContainerBase> columnSetAsContainerBase;
+        RETURN_IF_FAILED(adaptiveColumnSet.As(&columnSetAsContainerBase));
+
         ABI::AdaptiveNamespace::ContainerStyle containerStyle;
-        RETURN_IF_FAILED(adaptiveColumnSet->get_Style(&containerStyle));
-        bool hasExplicitContainerStyle{true};
-        if (containerStyle == ABI::AdaptiveNamespace::ContainerStyle::None)
-        {
-            hasExplicitContainerStyle = false;
-            ABI::AdaptiveNamespace::ContainerStyle parentContainerStyle;
-            RETURN_IF_FAILED(renderArgs->get_ContainerStyle(&parentContainerStyle));
-            containerStyle = parentContainerStyle;
-        }
+        RETURN_IF_FAILED(
+            HandleStylingAndPadding(columnSetAsContainerBase.Get(), columnSetBorder.Get(), renderContext, renderArgs, &containerStyle));
 
         ComPtr<IFrameworkElement> parentElement;
         RETURN_IF_FAILED(renderArgs->get_ParentElement(&parentElement));
         ComPtr<IAdaptiveRenderArgs> newRenderArgs;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&newRenderArgs, containerStyle, parentElement.Get(), renderArgs));
-
-        // If container style was explicitly assigned, apply background
-        ComPtr<IAdaptiveHostConfig> hostConfig;
-        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-        ABI::Windows::UI::Color backgroundColor;
-        if (hasExplicitContainerStyle && SUCCEEDED(GetBackgroundColorFromStyle(containerStyle, hostConfig.Get(), &backgroundColor)))
-        {
-            ComPtr<IPanel> columnSetAsPanel;
-            RETURN_IF_FAILED(gridContainer.As(&columnSetAsPanel));
-
-            ComPtr<IBrush> backgroundColorBrush = GetSolidColorBrush(backgroundColor);
-            RETURN_IF_FAILED(columnSetAsPanel->put_Background(backgroundColorBrush.Get()));
-        }
 
         ComPtr<IGrid> xamlGrid =
             XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
@@ -2693,13 +2723,16 @@ namespace AdaptiveNamespace
             return S_OK;
         }
 
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+
         boolean ancestorHasFallback;
         RETURN_IF_FAILED(renderArgs->get_AncestorHasFallback(&ancestorHasFallback));
 
         HRESULT hrColumns = XamlHelpers::IterateOverVector<AdaptiveColumn, IAdaptiveColumn>(
             columns.Get(),
             ancestorHasFallback,
-            [xamlGrid, gridStatics, &currentColumn, renderContext, renderArgs, columnRenderer, hostConfig](IAdaptiveColumn* column) {
+            [xamlGrid, gridStatics, &currentColumn, renderContext, newRenderArgs, columnRenderer, hostConfig](IAdaptiveColumn* column) {
                 ComPtr<IAdaptiveCardElement> columnAsCardElement;
                 ComPtr<IAdaptiveColumn> localColumn(column);
                 RETURN_IF_FAILED(localColumn.As(&columnAsCardElement));
@@ -2781,14 +2814,9 @@ namespace AdaptiveNamespace
                 RETURN_IF_FAILED(columnDefinition->put_Width(columnWidth));
                 RETURN_IF_FAILED(columnDefinitions->Append(columnDefinition.Get()));
 
-                ComPtr<IAdaptiveRenderArgs> columnRenderArgs;
-                ABI::AdaptiveNamespace::ContainerStyle style;
-                RETURN_IF_FAILED(renderArgs->get_ContainerStyle(&style));
-                RETURN_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&columnRenderArgs, style, columnDefinition.Get(), renderArgs));
-
                 // Build the Column
                 ComPtr<IUIElement> xamlColumn;
-                RETURN_IF_FAILED(columnRenderer->Render(columnAsCardElement.Get(), renderContext, columnRenderArgs.Get(), &xamlColumn));
+                RETURN_IF_FAILED(columnRenderer->Render(columnAsCardElement.Get(), renderContext, newRenderArgs.Get(), &xamlColumn));
 
                 // Mark the column container with the current column
                 ComPtr<IFrameworkElement> columnAsFrameworkElement;
@@ -2808,12 +2836,11 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(columnSetAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Stretch));
 
         ComPtr<IAdaptiveActionElement> selectAction;
-        RETURN_IF_FAILED(adaptiveColumnSet->get_SelectAction(&selectAction));
+        RETURN_IF_FAILED(columnSetAsContainerBase->get_SelectAction(&selectAction));
 
         ComPtr<IPanel> gridContainerAsPanel;
         RETURN_IF_FAILED(gridContainer.As(&gridContainerAsPanel));
-        ComPtr<IUIElement> gridContainerAsUIElement;
-        RETURN_IF_FAILED(gridContainer.As(&gridContainerAsUIElement));
+
         ComPtr<IFrameworkElement> gridContainerAsFrameworkElement;
         RETURN_IF_FAILED(gridContainer.As(&gridContainerAsFrameworkElement));
 
@@ -2826,18 +2853,25 @@ namespace AdaptiveNamespace
         ABI::AdaptiveNamespace::HeightType columnSetHeightType;
         RETURN_IF_FAILED(columnSetAsCardElement->get_Height(&columnSetHeightType));
 
+        ComPtr<IAdaptiveContainerBase> columnAsContainerBase;
+        RETURN_IF_FAILED(adaptiveColumnSet.As(&columnAsContainerBase));
+
         UINT32 columnSetMinHeight{};
-        RETURN_IF_FAILED(adaptiveColumnSet->get_MinHeight(&columnSetMinHeight));
+        RETURN_IF_FAILED(columnAsContainerBase->get_MinHeight(&columnSetMinHeight));
         if (columnSetMinHeight > 0)
         {
             RETURN_IF_FAILED(gridContainerAsFrameworkElement->put_MinHeight(columnSetMinHeight));
         }
 
         XamlHelpers::AppendXamlElementToPanel(xamlGrid.Get(), gridContainerAsPanel.Get(), columnSetHeightType);
+
+        ComPtr<IUIElement> columnSetBorderAsUIElement;
+        RETURN_IF_FAILED(columnSetBorder.As(&columnSetBorderAsUIElement));
+
         HandleSelectAction(adaptiveCardElement,
                            selectAction.Get(),
                            renderContext,
-                           gridContainerAsUIElement.Get(),
+                           columnSetBorderAsUIElement.Get(),
                            SupportsInteractivity(hostConfig.Get()),
                            true,
                            columnSetControl);
