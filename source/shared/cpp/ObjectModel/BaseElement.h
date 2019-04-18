@@ -43,8 +43,10 @@ namespace AdaptiveSharedNamespace
     {
     public:
         BaseElement() :
-            m_additionalProperties{}, m_typeString{}, m_requires(0), m_fallbackContent(nullptr),
-            m_fallbackType(FallbackType::None), m_id{}, m_internalId{InternalId::Current()}, m_canFallbackToAncestor(false)
+            m_additionalProperties{}, m_typeString{},
+            m_requires{std::make_shared<std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>>()},
+            m_fallbackContent(nullptr), m_fallbackType(FallbackType::None), m_id{}, m_internalId{InternalId::Current()},
+            m_canFallbackToAncestor(false)
         {
             PopulateKnownPropertiesSet();
         }
