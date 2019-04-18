@@ -46,6 +46,9 @@ namespace AdaptiveCards.Rendering
 
             if (adaptiveElement is AdaptiveMedia media)
                 Visit(media);
+
+            if (adaptiveElement is AdaptiveActionSet actionSet)
+                Visit(actionSet);
         }
 
         public virtual void Visit(AdaptiveCard card)
@@ -117,6 +120,12 @@ namespace AdaptiveCards.Rendering
         {
         }
 
+        public virtual void Visit(AdaptiveActionSet actionSet)
+        {
+            foreach (var action in actionSet.Actions)
+                Visit(action);
+        }
+
         public virtual void Visit(AdaptiveAction action)
         {
             if (action is AdaptiveOpenUrlAction urlAction)
@@ -127,6 +136,9 @@ namespace AdaptiveCards.Rendering
 
             if (action is AdaptiveShowCardAction cardAction)
                 Visit(cardAction);
+
+            if (action is AdaptiveToggleVisibilityAction toggleVisibilityAction)
+                Visit(toggleVisibilityAction);
         }
 
         public virtual void Visit(AdaptiveSubmitAction action)
