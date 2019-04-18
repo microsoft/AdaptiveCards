@@ -105,7 +105,6 @@
     <ClCompile Include="lib\AdaptiveUnsupportedAction.cpp" />
     <ClCompile Include="lib\AdaptiveRichTextBlock.cpp" />
     <ClCompile Include="lib\AdaptiveRichTextBlockRenderer.cpp" />
-    <ClCompile Include="lib\AdaptiveParagraph.cpp" />
     <ClCompile Include="lib\AdaptiveTextRun.cpp" />
     <ClCompile Include="lib\AdaptiveTextElement.cpp" />
     <ClCompile Include="lib\TextHelpers.cpp" />
@@ -223,7 +222,6 @@
     <ClInclude Include="lib\AdaptiveUnsupportedAction.h" />
     <ClInclude Include="lib\AdaptiveRichTextBlock.h" />
     <ClInclude Include="lib\AdaptiveRichTextBlockRenderer.h" />
-    <ClInclude Include="lib\AdaptiveParagraph.h" />
     <ClInclude Include="lib\AdaptiveTextRun.h" />
     <ClInclude Include="lib\AdaptiveTextElement.h" />
     <ClInclude Include="lib\TextHelpers.h" />

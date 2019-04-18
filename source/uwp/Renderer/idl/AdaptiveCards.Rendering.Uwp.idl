@@ -709,6 +709,12 @@ AdaptiveNamespaceStart
         [propget] HRESULT IsSubtle([out, retval] boolean * value);
         [propput] HRESULT IsSubtle([in] boolean value);
 
+        [propget] HRESULT Italic([out, retval] boolean * value);
+        [propput] HRESULT Italic([in] boolean value);
+
+        [propget] HRESULT Strikethrough([out, retval] boolean * value);
+        [propput] HRESULT Strikethrough([in] boolean value);
+
         [propget] HRESULT Language([out, retval] HSTRING * value);
         [propput] HRESULT Language([in] HSTRING value);
 
@@ -804,36 +810,6 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveParagraph),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(08EBC76C-BC30-4CC4-BBC7-EEEBDF40ADBF),
-        contract(InternalContract, 1),
-        internal
-#else
-        uuid(B462F8E9-E64F-4698-923B-0E7A9676BEEE)
-#endif
-    ] 
-    interface IAdaptiveParagraph : IInspectable
-    {
-        [propget] HRESULT Inlines([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveInline*>** value);
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ] 
-    runtimeclass AdaptiveParagraph 
-    {
-        [default] interface IAdaptiveParagraph;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
         exclusiveto(AdaptiveRichTextBlock),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(E3858144-63F3-4625-A986-AADD40DAE0BE),
@@ -842,18 +818,13 @@ AdaptiveNamespaceStart
 #else
         uuid(6095E4E2-BFA7-41C6-B12E-887F980196A9)
 #endif
-    ] interface IAdaptiveRichTextBlock : IInspectable
+    ] 
+    interface IAdaptiveRichTextBlock : IInspectable
     {
-        [propget] HRESULT Wrap([out, retval] boolean* value);
-        [propput] HRESULT Wrap([in] boolean value);
-
         [propget] HRESULT HorizontalAlignment([out, retval] HAlignment* value);
         [propput] HRESULT HorizontalAlignment([in] HAlignment value);
 
-        [propget] HRESULT MaxLines([out, retval] UINT32* value);
-        [propput] HRESULT MaxLines([in] UINT32 value);
-
-        [propget] HRESULT Paragraphs([out, retval] Windows.Foundation.Collections.IVector<AdaptiveParagraph*>** value);
+        [propget] HRESULT Inlines([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveInline*>** value);
     };
 
     [
