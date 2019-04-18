@@ -17,5 +17,5 @@ public interface IActionLayoutRenderer {
                               BaseActionElementVector baseActionElementList,
                               ICardActionHandler cardActionHandler,
                               HostConfig hostConfig,
-                              RenderArgs renderArgs);
+                              RenderArgs renderArgs) throws AdaptiveFallbackException;
 }

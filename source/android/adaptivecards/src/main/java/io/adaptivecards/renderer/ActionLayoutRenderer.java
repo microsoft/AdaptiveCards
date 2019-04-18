@@ -51,7 +51,8 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
                 BaseActionElementVector baseActionElementList,
                 ICardActionHandler cardActionHandler,
                 HostConfig hostConfig,
-                RenderArgs renderArgs) {
+                RenderArgs renderArgs) throws AdaptiveFallbackException
+    {
         long size;
         if (baseActionElementList == null || (size = baseActionElementList.size()) <= 0)
         {
@@ -122,77 +123,98 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
             }
         }
 
+        if (i >= maxActions && size != maxActions)
+        {
+            renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.MAX_ACTIONS_EXCEEDED, "A maximum of " + maxActions + " actions are allowed"));
+        }
+
         FeatureRegistration featureRegistration = CardRendererRegistration.getInstance().getFeatureRegistration();
         for (i = 0; i < size && i < maxActions; i++)
         {
             BaseActionElement actionElement = baseActionElementList.get(i);
 
             IBaseActionElementRenderer actionRenderer = CardRendererRegistration.getInstance().getActionRenderer(actionElement.GetElementTypeString());
-            View returnedView = null;
-            if (actionRenderer != null)
-            {
-                if (actionElement.MeetsRequirements(featureRegistration))
-                {
-                    returnedView = actionRenderer.render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, cardActionHandler, hostConfig, renderArgs);
-                }
-            }
 
-            boolean elementHasFallback = (actionElement.GetFallbackType() != FallbackType.None);
-            if (actionRenderer == null || returnedView == null)
+            try
             {
+                if (actionRenderer == null)
+                {
+                    throw new AdaptiveFallbackException(actionElement);
+                }
+
+                if (!actionElement.MeetsRequirements(featureRegistration))
+                {
+                    throw new AdaptiveFallbackException(actionElement, featureRegistration);
+                }
+
+                actionRenderer.render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, cardActionHandler, hostConfig, renderArgs);
+            }
+            catch (AdaptiveFallbackException e)
+            {
+                boolean elementHasFallback = (actionElement.GetFallbackType() != FallbackType.None);
+
                 if (elementHasFallback)
                 {
-                    if(actionElement.GetFallbackType() == FallbackType.Content)
+                    if (actionElement.GetFallbackType() == FallbackType.Content)
                     {
                         BaseElement fallbackElement = actionElement.GetFallbackContent();
 
                         while (fallbackElement != null)
                         {
-                            BaseActionElement fallbackActionElement = null;
-                            if (fallbackElement instanceof BaseActionElement)
+                            try
                             {
-                                fallbackActionElement = (BaseActionElement) fallbackElement;
-                            }
-                            else if ((fallbackActionElement = BaseActionElement.dynamic_cast(fallbackElement)) == null)
-                            {
-                                throw new InternalError("Unable to convert BaseElement to BaseActionElement object model.");
-                            }
-
-                            IBaseActionElementRenderer fallbackActionRenderer = CardRendererRegistration.getInstance().getActionRenderer(fallbackActionElement.GetElementTypeString());;
-
-                            if (fallbackActionRenderer != null)
-                            {
-                                if (fallbackActionElement.MeetsRequirements(featureRegistration))
+                                BaseActionElement fallbackActionElement = null;
+                                if (fallbackElement instanceof BaseActionElement)
                                 {
-                                    fallbackActionRenderer.render(renderedCard, context, fragmentManager, actionButtonsLayout, fallbackActionElement, cardActionHandler, hostConfig, renderArgs);
-                                    break;
+                                    fallbackActionElement = (BaseActionElement) fallbackElement;
                                 }
-                            }
+                                else if ((fallbackActionElement = BaseActionElement.dynamic_cast(fallbackElement)) == null)
+                                {
+                                    throw new InternalError("Unable to convert BaseElement to BaseActionElement object model.");
+                                }
 
-                            if (fallbackActionElement.GetFallbackType() == FallbackType.Content)
-                            {
-                                fallbackElement = fallbackActionElement.GetFallbackContent();
-                            }
-                            else
-                            {
-                                // Either fallback is "drop" or not defined, in that case, stop trying
+                                IBaseActionElementRenderer fallbackActionRenderer = CardRendererRegistration.getInstance().getActionRenderer(fallbackActionElement.GetElementTypeString());
+
+                                if (fallbackActionRenderer == null)
+                                {
+                                    throw new AdaptiveFallbackException(fallbackElement);
+                                }
+
+                                if (!fallbackElement.MeetsRequirements(featureRegistration))
+                                {
+                                    throw new AdaptiveFallbackException(fallbackElement, featureRegistration);
+                                }
+
+                                fallbackActionRenderer.render(renderedCard, context, fragmentManager, actionButtonsLayout, fallbackActionElement, cardActionHandler, hostConfig, renderArgs);
                                 break;
+                            }
+                            catch (AdaptiveFallbackException e2)
+                            {
+                                // As the fallback element didn't exist, go back to trying
+                                if (fallbackElement.GetFallbackType() == FallbackType.Content)
+                                {
+                                    fallbackElement = fallbackElement.GetFallbackContent();
+                                }
+                                else
+                                {
+                                    // The element has no fallback, just clear the element so the cycle ends
+                                    fallbackElement = null;
+                                }
                             }
                         }
                     }
                 }
+                else if (renderArgs.getAncestorHasFallback())
+                {
+                    // There's an ancestor with fallback so we throw to trigger it
+                    throw e;
+                }
                 else
                 {
-                    renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.UNKNOWN_ELEMENT_TYPE,"Unsupported card element type: " + actionElement.GetElementTypeString()));
+                    renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.UNKNOWN_ELEMENT_TYPE, "Unsupported card element type: " + actionElement.GetElementTypeString()));
                     continue;
                 }
             }
-
-        }
-
-        if (i >= maxActions && size != maxActions)
-        {
-            renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.MAX_ACTIONS_EXCEEDED, "A maximum of " + maxActions + " actions are allowed"));
         }
 
         return actionButtonsLayout;
