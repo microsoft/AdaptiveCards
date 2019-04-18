@@ -85,8 +85,15 @@ namespace AdaptiveCards
             Content = elem;
         }
 
+        public AdaptiveFallbackElement()
+        {
+            Type = AdaptiveFallbackType.None;
+        }
+
+        [JsonIgnore]
         public AdaptiveFallbackType Type { get; set; }
 
+        [JsonIgnore]
         public AdaptiveTypedElement Content { get; set; }
     }
 }

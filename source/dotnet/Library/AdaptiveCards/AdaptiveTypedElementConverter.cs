@@ -17,7 +17,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Default types to support, register any new types to this list
         /// </summary>
-        private static readonly Lazy<Dictionary<string, Type>> TypedElementTypes = new Lazy<Dictionary<string, Type>>(() =>
+        public static readonly Lazy<Dictionary<string, Type>> TypedElementTypes = new Lazy<Dictionary<string, Type>>(() =>
         {
             // TODO: Should this be a static? It makes it impossible to have diff renderers support different elements
             var types = new Dictionary<string, Type>
@@ -120,17 +120,7 @@ namespace AdaptiveCards
                 {
                     serializer.Populate(jObject.CreateReader(), result);
                 }
-                catch (JsonSerializationException e) { }
-
-                // handle fallback and ID Collision
-                if (type != typeof(AdaptiveCard))
-                {
-                    var fallbackJson = jObject.GetValue("fallback");
-                    if (fallbackJson != null)
-                    {
-                        result.Fallback = AdaptiveFallbackConverter.ParseFallback(jObject.GetValue("fallback"), serializer, objectId, internalID);
-                    }
-                }
+                catch (JsonSerializationException) { }
 
                 // remove id of element from ParseContext
                 if (type != typeof(AdaptiveCard))
@@ -166,13 +156,6 @@ namespace AdaptiveCards
                     catch (JsonSerializationException) { }
                 }
                 ParseContext.PopElement();
-
-                // handle fallback for unknown element
-                var fallbackJson = jObject.GetValue("fallback");
-                if (fallbackJson != null)
-                {
-                    result.Fallback = AdaptiveFallbackConverter.ParseFallback(jObject.GetValue("fallback"), serializer, objectId, internalID);
-                }
 
                 Warnings.Add(new AdaptiveWarning(-1, $"Unknown element '{typeName}'"));
                 return result;

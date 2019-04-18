@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace AdaptiveCards
 {
@@ -21,13 +22,13 @@ namespace AdaptiveCards
         private static Stack<Tuple<string, AdaptiveInternalID, bool>> IDStack = new Stack<Tuple<string, AdaptiveInternalID, bool>>();
 
         // Push the provided state on to our ID stack
-        public static void PushElement(string idJsonProperty, AdaptiveInternalID internalId, bool isFallback = false)
+        public static void PushElement(string idJsonProperty, AdaptiveInternalID internalId)
         {
             if (internalId.Equals(AdaptiveInternalID.Invalid))
             {
                 throw new AdaptiveSerializationException($"Attemping to push an element on to the stack with an invalid ID");
             }
-            IDStack.Push(new Tuple<string, AdaptiveInternalID, bool>(idJsonProperty, internalId, isFallback));
+            IDStack.Push(new Tuple<string, AdaptiveInternalID, bool>(idJsonProperty, internalId, AdaptiveFallbackConverter.IsInFallback));
         }
 
         // Pop the last id off our stack and perform validation 

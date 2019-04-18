@@ -1,9 +1,9 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml;
 using System.Xml.Serialization;
-using Newtonsoft.Json;
 
 namespace AdaptiveCards
 {

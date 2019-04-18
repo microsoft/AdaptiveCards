@@ -148,7 +148,6 @@ namespace AdaptiveCards.Rendering
             }
             catch (JsonException ex)
             {
-                Debugger.Break();
                 throw new AdaptiveSerializationException(ex.Message, ex);
             }
         }

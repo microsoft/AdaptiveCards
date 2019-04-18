@@ -139,7 +139,7 @@ namespace AdaptiveCards.Test
   	  }
   	}
   ]
-})";
+}";
 
             AdaptiveCard.FromJson(json);
         }
@@ -154,13 +154,13 @@ namespace AdaptiveCards.Test
     {
       ""type"": ""TextBlock"",
       ""text"": ""This element requires version 1.2"",
-      ""requires"": {
-        ""adaptiveCards"": ""1.2"",
-        ""foobar"": ""2.0""
-      },
       ""fallback"": {
         ""type"": ""TextBlock"",
         ""text"": ""This element has no version requirement""
+      },
+      ""requires"": {
+        ""adaptiveCards"": ""1.2"",
+        ""foobar"": ""2.0""
       }
     }
   ]
@@ -249,6 +249,21 @@ namespace AdaptiveCards.Test
         [TestMethod]
         public void DropFallbacksSerialization()
         {
+            string expected = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.2"",
+  ""body"": [
+    {
+      ""type"": ""TextBlock"",
+      ""text"": ""text here"",
+      ""fallback"": ""drop""
+    }
+  ]
+}";
+
+            var parseResult = AdaptiveCard.FromJson(expected);
+            Assert.AreEqual(expected, parseResult.Card.ToJson());
+
             var card = new AdaptiveCard("1.2")
             {
                 Body =
@@ -259,22 +274,7 @@ namespace AdaptiveCards.Test
                     }
                 }
             };
-
-            string expected = @"{
-  ""type"": ""AdaptiveCard"",
-  ""version"": ""1.2"",
-  ""body"": [
-    {
-      ""type"": ""TextBlock"",
-      ""text"": ""text here"",
-      ""fallback"": ""drop""
-      }
-    }
-  ]
-}";
-
             var serializedCard = card.ToJson();
-
             Assert.AreEqual(expected, serializedCard);
         }
 

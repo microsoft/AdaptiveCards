@@ -1,12 +1,9 @@
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Serialization;
 using System.Xml.Serialization;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace AdaptiveCards
 {
@@ -32,7 +29,8 @@ namespace AdaptiveCards
 #endif
         public IDictionary<string, object> AdditionalProperties { get; set; } = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
 
-        [JsonIgnore]
+        [JsonConverter(typeof(AdaptiveFallbackConverter))]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlElement]
 #endif
@@ -52,9 +50,12 @@ namespace AdaptiveCards
         [DefaultValue(null)]
         public string Id { get; set; }
 
+        /// <summary>
+        ///  A collection representing features and feature versions that this element is declared as requiring
+        /// </summary>
         [JsonProperty(Order = 1, DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
-        [XmlElement]
+        [XmlIgnore]
 #endif
         [DefaultValue(null)]
         public IDictionary<string, AdaptiveSchemaVersion> Requires;
