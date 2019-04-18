@@ -14,9 +14,9 @@ import io.adaptivecards.objectmodel.AdaptiveCardObjectModel;
 import io.adaptivecards.objectmodel.BaseElement;
 import io.adaptivecards.objectmodel.Column;
 import io.adaptivecards.objectmodel.Container;
-import io.adaptivecards.objectmodel.FactSet;
 import io.adaptivecards.objectmodel.FallbackType;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
+import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.IResourceResolver;
@@ -207,7 +207,7 @@ public class CardRendererRegistration
             BaseCardElementVector baseCardElementList,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws AdaptiveFallbackException
     {
         long size;
         if (baseCardElementList == null || (size = baseCardElementList.size()) <= 0)
@@ -248,64 +248,83 @@ public class CardRendererRegistration
         for (int i = 0; i < size; i++)
         {
             BaseCardElement cardElement = baseCardElementList.get(i);
+
             IBaseCardElementRenderer renderer = m_typeToRendererMap.get(cardElement.GetElementTypeString());
 
             boolean elementHasFallback = (cardElement.GetFallbackType() != FallbackType.None);
             RenderArgs childRenderArgs = new RenderArgs(renderArgs);
             childRenderArgs.setAncestorHasFallback(elementHasFallback || renderArgs.getAncestorHasFallback());
 
-            View returnedView = null;
-            if (renderer != null)
+            try
             {
-                returnedView = renderer.render(renderedCard, context, fragmentManager, layout, cardElement, cardActionHandler, hostConfig, childRenderArgs);
-            }
+                if (renderer == null)
+                {
+                    throw new AdaptiveFallbackException(cardElement);
+                }
 
-            // If there's no renderer or the rendering failed, then try the fallback
-            if (renderer == null || returnedView == null)
+                renderer.render(renderedCard, context, fragmentManager, layout, cardElement, cardActionHandler, hostConfig, childRenderArgs);
+            }
+            catch (AdaptiveFallbackException e)
             {
                 if (elementHasFallback)
                 {
-                    if(cardElement.GetFallbackType() == FallbackType.Content)
+                    if (cardElement.GetFallbackType() == FallbackType.Content)
                     {
                         BaseElement fallbackElement = cardElement.GetFallbackContent();
 
                         while (fallbackElement != null)
                         {
-                            BaseCardElement fallbackCardElement = null;
-                            if (fallbackElement instanceof BaseCardElement)
+                            // Try to render the fallback element
+                            try
                             {
-                                fallbackCardElement = (BaseCardElement) fallbackElement;
-                            }
-                            else if ((fallbackCardElement = BaseCardElement.dynamic_cast(fallbackElement)) == null)
-                            {
-                                throw new InternalError("Unable to convert BaseElement to BaseCardElement object model.");
-                            }
+                                BaseCardElement fallbackCardElement = null;
+                                if (fallbackElement instanceof BaseCardElement)
+                                {
+                                    fallbackCardElement = (BaseCardElement) fallbackElement;
+                                }
+                                else if ((fallbackCardElement = BaseCardElement.dynamic_cast(fallbackElement)) == null)
+                                {
+                                    throw new InternalError("Unable to convert BaseElement to BaseCardElement object model.");
+                                }
 
-                            IBaseCardElementRenderer fallbackRenderer = m_typeToRendererMap.get(fallbackElement.GetElementTypeString());
+                                IBaseCardElementRenderer fallbackRenderer = m_typeToRendererMap.get(fallbackElement.GetElementTypeString());
 
-                            if (fallbackRenderer != null)
-                            {
+                                if (fallbackRenderer == null)
+                                {
+                                    throw new AdaptiveFallbackException(fallbackCardElement);
+                                }
+
                                 fallbackRenderer.render(renderedCard, context, fragmentManager, layout, fallbackCardElement, cardActionHandler, hostConfig, childRenderArgs);
                                 break;
                             }
-
-                            if (fallbackElement.GetFallbackType() == FallbackType.Content)
+                            catch (AdaptiveFallbackException e2)
                             {
-                                fallbackElement = fallbackElement.GetFallbackContent();
+                                // As the fallback element didn't exist, go back to trying
+                                if (fallbackElement.GetFallbackType() == FallbackType.Content)
+                                {
+                                    fallbackElement = fallbackElement.GetFallbackContent();
+                                }
+                                else
+                                {
+                                    // The element has no fallback, just clear the element so the cycle ends
+                                    fallbackElement = null;
+                                }
                             }
                         }
                     }
                 }
                 else if (renderArgs.getAncestorHasFallback())
                 {
-                    // There's nothing else to do, go back and try the ancestor fallback
-                    return null;
+                    // There's an ancestor with fallback so we throw to trigger it
+                    throw e;
                 }
                 else
                 {
+                    // The element doesn't have a fallback, so the element can't be rendered and it's dropped
                     renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.UNKNOWN_ELEMENT_TYPE,"Unsupported card element type: " + cardElement.GetElementTypeString()));
                     continue;
                 }
+
             }
         }
 

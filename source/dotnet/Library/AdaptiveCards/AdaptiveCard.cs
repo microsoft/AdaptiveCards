@@ -175,6 +175,7 @@ namespace AdaptiveCards
         [XmlElement(typeof(AdaptiveToggleInput))]
         [XmlElement(typeof(AdaptiveChoiceSetInput))]
         [XmlElement(typeof(AdaptiveMedia))]
+        [XmlElement(typeof(AdaptiveActionSet))]
 #endif
         public List<AdaptiveElement> Body { get; set; } = new List<AdaptiveElement>();
 

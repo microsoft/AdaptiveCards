@@ -13,6 +13,7 @@ import io.adaptivecards.objectmodel.BackgroundImage;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
+import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.BackgroundImageLoaderAsync;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
@@ -52,7 +53,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws AdaptiveFallbackException
     {
         Container container = null;
         if (baseCardElement instanceof Container)
@@ -106,20 +107,15 @@ public class ContainerRenderer extends BaseCardElementRenderer
 
         if (!container.GetItems().isEmpty())
         {
-            View v = CardRendererRegistration.getInstance().render(renderedCard,
-                                                          context,
-                                                          fragmentManager,
-                                                          containerView,
-                                                          container,
-                                                          container.GetItems(),
-                                                          cardActionHandler,
-                                                          hostConfig,
-                                                          renderArgs);
-
-            if (v == null)
-            {
-                return null;
-            }
+            CardRendererRegistration.getInstance().render(renderedCard,
+                    context,
+                    fragmentManager,
+                    containerView,
+                    container,
+                    container.GetItems(),
+                    cardActionHandler,
+                    hostConfig,
+                    renderArgs);
         }
 
         if (styleForThis != containerStyle)
