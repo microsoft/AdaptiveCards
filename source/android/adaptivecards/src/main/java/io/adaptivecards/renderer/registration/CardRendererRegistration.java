@@ -312,7 +312,7 @@ public class CardRendererRegistration
                                     throw new AdaptiveFallbackException(fallbackCardElement);
                                 }
 
-                                if (!cardElement.MeetsRequirements(featureRegistration))
+                                if (!fallbackElement.MeetsRequirements(featureRegistration))
                                 {
                                     throw new AdaptiveFallbackException(fallbackCardElement, featureRegistration);
                                 }
