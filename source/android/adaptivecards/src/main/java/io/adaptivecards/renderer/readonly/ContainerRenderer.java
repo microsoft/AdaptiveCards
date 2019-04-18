@@ -15,6 +15,7 @@ import io.adaptivecards.objectmodel.ContainerBleedDirection;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
+import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.BackgroundImageLoaderAsync;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
@@ -54,7 +55,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws AdaptiveFallbackException
     {
         Container container = null;
         if (baseCardElement instanceof Container)
@@ -113,20 +114,15 @@ public class ContainerRenderer extends BaseCardElementRenderer
         containerRenderArgs.setContainerStyle(styleForThis);
         if (!container.GetItems().isEmpty())
         {
-            View v = CardRendererRegistration.getInstance().render(renderedCard,
-                                                                  context,
-                                                                  fragmentManager,
-                                                                  containerView,
-                                                                  container,
-                                                                  container.GetItems(),
-                                                                  cardActionHandler,
-                                                                  hostConfig,
-                                                                  containerRenderArgs);
-
-            if (v == null)
-            {
-                return null;
-            }
+            CardRendererRegistration.getInstance().render(renderedCard,
+                                                          context,
+                                                          fragmentManager,
+                                                          containerView,
+                                                          container,
+                                                          container.GetItems(),
+                                                          cardActionHandler,
+                                                          hostConfig,
+                                                          containerRenderArgs);
         }
 
         BackgroundImage backgroundImageProperties = container.GetBackgroundImage();
@@ -172,7 +168,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
                 marginLeft = -padding;
             }
 
-            if(bleedDirection == ContainerBleedDirection.BleedToTrailing || bleedDirection == ContainerBleedDirection.BleedToBothEdges)
+            if (bleedDirection == ContainerBleedDirection.BleedToTrailing || bleedDirection == ContainerBleedDirection.BleedToBothEdges)
             {
                 marginRight = -padding;
             }

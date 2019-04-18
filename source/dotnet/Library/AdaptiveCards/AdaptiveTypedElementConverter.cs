@@ -35,7 +35,6 @@ namespace AdaptiveCards
                 [AdaptiveCard.TypeName] = typeof(AdaptiveCard),
                 [AdaptiveTextBlock.TypeName] = typeof(AdaptiveTextBlock),
                 [AdaptiveRichTextBlock.TypeName] = typeof(AdaptiveRichTextBlock),
-                [AdaptiveTextRun.TypeName] = typeof(AdaptiveTextRun),
                 [AdaptiveImage.TypeName] = typeof(AdaptiveImage),
                 [AdaptiveContainer.TypeName] = typeof(AdaptiveContainer),
                 [AdaptiveColumn.TypeName] = typeof(AdaptiveColumn),
@@ -52,7 +51,8 @@ namespace AdaptiveCards
                 [AdaptiveOpenUrlAction.TypeName] = typeof(AdaptiveOpenUrlAction),
                 [AdaptiveShowCardAction.TypeName] = typeof(AdaptiveShowCardAction),
                 [AdaptiveMedia.TypeName] = typeof(AdaptiveMedia),
-                [AdaptiveToggleVisibilityAction.TypeName] = typeof(AdaptiveToggleVisibilityAction)
+                [AdaptiveToggleVisibilityAction.TypeName] = typeof(AdaptiveToggleVisibilityAction),
+                [AdaptiveActionSet.TypeName] = typeof(AdaptiveActionSet)
             };
             return types;
         });

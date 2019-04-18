@@ -13,6 +13,7 @@ import io.adaptivecards.objectmodel.BackgroundImage;
 import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
+import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.BackgroundImageLoaderAsync;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
@@ -54,7 +55,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws AdaptiveFallbackException
     {
         Column column;
         if (baseCardElement instanceof Column)
@@ -77,7 +78,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
         returnedView.setClipChildren(false);
         returnedView.setClipToPadding(false);
 
-        if(!baseCardElement.GetIsVisible())
+        if (!baseCardElement.GetIsVisible())
         {
             returnedView.setVisibility(View.GONE);
         }
@@ -112,7 +113,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
         columnRenderArgs.setContainerStyle(styleForThis);
         if (!column.GetItems().isEmpty())
         {
-            View v = CardRendererRegistration.getInstance().render(renderedCard,
+            CardRendererRegistration.getInstance().render(renderedCard,
                                                           context,
                                                           fragmentManager,
                                                           verticalContentAlignmentLayout,
@@ -121,12 +122,6 @@ public class ColumnRenderer extends BaseCardElementRenderer
                                                           cardActionHandler,
                                                           hostConfig,
                                                           columnRenderArgs);
-
-            // This failed to render, so return null
-            if (v == null)
-            {
-                return null;
-            }
         }
 
         BackgroundImage backgroundImageProperties = column.GetBackgroundImage();

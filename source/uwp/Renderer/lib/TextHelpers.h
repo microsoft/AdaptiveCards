@@ -13,8 +13,6 @@ HRESULT AddTextInlines(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adapti
                        _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                        _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
                        _In_ ABI::Windows::Data::Xml::Dom::IXmlNode* node,
-                       BOOL isBold,
-                       BOOL isItalic,
                        bool isInHyperlink,
                        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines,
                        _Out_ UINT* characterLength);
@@ -23,8 +21,6 @@ HRESULT AddSingleTextInline(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* a
                             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
                             _In_ HSTRING string,
-                            bool isBold,
-                            bool isItalic,
                             bool isInHyperlink,
                             _In_ ABI::Windows::Foundation::Collections::IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines,
                             _Out_ UINT* characterLength);
@@ -43,42 +39,15 @@ HRESULT SetXamlInlinesWithTextConfig(_In_ ABI::AdaptiveNamespace::IAdaptiveRende
                                      _In_ HSTRING text,
                                      _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* textBlock);
 
-HRESULT SetMaxLines(ABI::Windows::UI::Xaml::Controls::ITextBlock* textBlock, UINT maxLines);
-HRESULT SetMaxLines(ABI::Windows::UI::Xaml::Controls::IRichTextBlock* textBlock, UINT maxLines);
-
-template<typename TXamlTextBlockType>
-HRESULT SetWrapProperties(_In_ TXamlTextBlockType* xamlTextBlock, bool wrap, bool useTextTrimmingEllipsis)
-{
-    // Set whether the text wraps
-    RETURN_IF_FAILED(xamlTextBlock->put_TextWrapping(wrap ? TextWrapping::TextWrapping_WrapWholeWords : TextWrapping::TextWrapping_NoWrap));
-
-    // Set what happens in the case text doesn't wrap (or the case where maxlines is set). Most callers will pass true
-    // for useTextTrimmingEllipsis to use Ellipsis, but RichTextBlock doesn't use ellipsis to avoid inconsistency issues
-    // between the styling of the inlines and the styling of the ellipsis.
-    RETURN_IF_FAILED(xamlTextBlock->put_TextTrimming(useTextTrimmingEllipsis ? TextTrimming::TextTrimming_CharacterEllipsis :
-                                                                               TextTrimming::TextTrimming_Clip));
-    return S_OK;
-}
-
-template<typename TAdaptiveType, typename TXamlTextBlockType>
-HRESULT StyleXamlTextBlockProperties(_In_ TAdaptiveType* adaptiveTextBlock,
-                                     _In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adaptiveTextElement,
+HRESULT SetWrapProperties(_In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock, bool wrap);
+HRESULT StyleXamlTextBlockProperties(_In_ ABI::AdaptiveNamespace::IAdaptiveTextBlock* adaptiveTextBlock,
                                      _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                      _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
-                                     bool useTextTrimmingEllipsis,
-                                     _In_ TXamlTextBlockType* xamlTextBlock)
+                                     _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock);
+
+template<typename TAdaptiveType, typename TXamlTextBlockType>
+HRESULT SetHorizontalAlignment(_In_ TAdaptiveType* adaptiveTextBlock, _In_ TXamlTextBlockType* xamlTextBlock)
 {
-    boolean wrap;
-    RETURN_IF_FAILED(adaptiveTextBlock->get_Wrap(&wrap));
-    RETURN_IF_FAILED(SetWrapProperties(xamlTextBlock, wrap, useTextTrimmingEllipsis));
-
-    UINT32 maxLines;
-    RETURN_IF_FAILED(adaptiveTextBlock->get_MaxLines(&maxLines));
-    if (maxLines != MAXUINT32)
-    {
-        RETURN_IF_FAILED(SetMaxLines(xamlTextBlock, maxLines));
-    }
-
     HAlignment horizontalAlignment;
     RETURN_IF_FAILED(adaptiveTextBlock->get_HorizontalAlignment(&horizontalAlignment));
 
@@ -95,13 +64,11 @@ HRESULT StyleXamlTextBlockProperties(_In_ TAdaptiveType* adaptiveTextBlock,
         break;
     }
 
-    if (adaptiveTextElement)
-    {
-        RETURN_IF_FAILED(StyleTextElement(adaptiveTextElement, renderContext, renderArgs, false, xamlTextBlock));
-    }
-
     return S_OK;
 }
+
+HRESULT SetStrikethrough(_In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* textBlock);
+HRESULT SetStrikethrough(_In_ ABI::Windows::UI::Xaml::Documents::ITextElement* textBlock);
 
 template<typename TXamlTextBlockType>
 HRESULT StyleTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adaptiveTextElement,
@@ -111,7 +78,21 @@ HRESULT StyleTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adap
                          _In_ TXamlTextBlockType* xamlTextElement)
 {
     Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveHostConfig> hostConfig;
-    renderContext->get_HostConfig(&hostConfig);
+    RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+
+    boolean strikethrough;
+    RETURN_IF_FAILED(adaptiveTextElement->get_Strikethrough(&strikethrough));
+    if (strikethrough)
+    {
+        RETURN_IF_FAILED(SetStrikethrough(xamlTextElement));
+    }
+
+    boolean italic;
+    RETURN_IF_FAILED(adaptiveTextElement->get_Italic(&italic));
+    if (italic)
+    {
+        RETURN_IF_FAILED(xamlTextElement->put_FontStyle(ABI::Windows::UI::Text::FontStyle::FontStyle_Italic));
+    }
 
     // Get the forground color based on text color, subtle, and container style
     ABI::AdaptiveNamespace::ForegroundColor adaptiveTextColor;
