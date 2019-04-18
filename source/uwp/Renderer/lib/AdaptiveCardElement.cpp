@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "AdaptiveCardElement.h"
+#include "AdaptiveFeatureRegistration.h"
 #include "SemanticVersion.h"
 #include "Util.h"
 
@@ -135,38 +136,21 @@ namespace AdaptiveNamespace
     }
 
     IFACEMETHODIMP AdaptiveCardElementBase::MeetsRequirements(_In_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration* featureRegistration,
-                                                              _Out_ boolean* value)
+                                                              _Out_ boolean* value) try
     {
         *value = true;
-        for (const auto& requirement : *m_requires)
-        {
-            HString requirementName;
-            RETURN_IF_FAILED(UTF8ToHString(requirement.first, requirementName.GetAddressOf()));
 
-            const auto& requirementVersion = requirement.second;
+        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedModel;
+        RETURN_IF_FAILED(GetSharedModel(sharedModel));
 
-            HString featureVersion;
-            RETURN_IF_FAILED(featureRegistration->Get(requirementName.Get(), featureVersion.GetAddressOf()));
-            if (!featureVersion.IsValid())
-            {
-                // host doesn't provide this requirement
-                *value = false;
-                return S_OK;
-            }
-            else
-            {
-                // host provides this requirement, but does it provide an acceptible version?
-                const SemanticVersion providesVersion{HStringToUTF8(featureVersion.Get())};
-                if (providesVersion < requirementVersion)
-                {
-                    // host's provided version is too low
-                    *value = false;
-                    return S_OK;
-                }
-            }
-        }
+        ComPtr<AdaptiveFeatureRegistration> featureRegistrationImpl = PeekInnards<AdaptiveFeatureRegistration>(featureRegistration);
+        std::shared_ptr<AdaptiveSharedNamespace::FeatureRegistration> sharedFeatureRegistration =
+            featureRegistrationImpl->GetSharedFeatureRegistration();
+
+        *value = sharedModel->MeetsRequirements(*sharedFeatureRegistration);
         return S_OK;
     }
+    CATCH_RETURN;
 
     IFACEMETHODIMP AdaptiveCardElementBase::ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
     {
