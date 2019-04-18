@@ -19,7 +19,6 @@
 #include "AdaptiveMediaSource.h"
 #include "AdaptiveNumberInput.h"
 #include "AdaptiveOpenUrlAction.h"
-#include "AdaptiveParagraph.h"
 #include "AdaptiveRichTextBlock.h"
 #include "AdaptiveSeparator.h"
 #include "AdaptiveShowCardAction.h"
@@ -406,29 +405,6 @@ HRESULT GenerateSharedInlines(ABI::Windows::Foundation::Collections::IVector<ABI
     return S_OK;
 }
 
-HRESULT GenerateSharedParagraphs(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveParagraph*>* paragraphs,
-                                 std::vector<std::shared_ptr<AdaptiveSharedNamespace::Paragraph>>& containedElements)
-{
-    containedElements.clear();
-
-    XamlHelpers::IterateOverVector<ABI::AdaptiveNamespace::AdaptiveParagraph, ABI::AdaptiveNamespace::IAdaptiveParagraph>(
-        paragraphs, [&](ABI::AdaptiveNamespace::IAdaptiveParagraph* paragraph) {
-            ComPtr<AdaptiveNamespace::AdaptiveParagraph> adaptiveElement =
-                PeekInnards<AdaptiveNamespace::AdaptiveParagraph>(paragraph);
-            if (adaptiveElement == nullptr)
-            {
-                return E_INVALIDARG;
-            }
-
-            std::shared_ptr<AdaptiveSharedNamespace::Paragraph> sharedParagraph;
-            RETURN_IF_FAILED(adaptiveElement->GetSharedModel(sharedParagraph));
-            containedElements.push_back(std::AdaptivePointerCast<AdaptiveSharedNamespace::Paragraph>(sharedParagraph));
-            return S_OK;
-        });
-
-    return S_OK;
-}
-
 HRESULT GenerateSharedToggleElements(
     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveToggleVisibilityTarget*>* targets,
     std::vector<std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityTarget>>& containedElements)
@@ -666,22 +642,6 @@ HRESULT GenerateInlinesProjection(const std::vector<std::shared_ptr<AdaptiveShar
         ComPtr<ABI::AdaptiveNamespace::IAdaptiveInline> projectedContainedElement;
         RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveTextRun>(
             &projectedContainedElement, std::static_pointer_cast<AdaptiveSharedNamespace::TextRun>(containedElement)));
-
-        RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
-    }
-    return S_OK;
-}
-CATCH_RETURN;
-
-HRESULT GenerateParagraphsProjection(
-    const std::vector<std::shared_ptr<AdaptiveSharedNamespace::Paragraph>>& containedElements,
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveParagraph*>* projectedParentContainer) noexcept try
-{
-    for (auto& containedElement : containedElements)
-    {
-        ComPtr<ABI::AdaptiveNamespace::IAdaptiveParagraph> projectedContainedElement;
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveParagraph>(
-            &projectedContainedElement, std::static_pointer_cast<AdaptiveSharedNamespace::Paragraph>(containedElement)));
 
         RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
     }
@@ -1574,3 +1534,51 @@ AdaptiveSharedNamespace::FallbackType MapUwpFallbackTypeToShared(const ABI::Adap
     }
     }
 }
+
+HRESULT CopyTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* textElement,
+                        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveTextElement** copiedTextElement)
+{
+
+    ComPtr<AdaptiveNamespace::AdaptiveTextElement> localCopiedTextElement;
+    RETURN_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveTextRun>(&localCopiedTextElement));
+
+    ABI::AdaptiveNamespace::ForegroundColor color;
+    RETURN_IF_FAILED(textElement->get_Color(&color));
+    RETURN_IF_FAILED(localCopiedTextElement->put_Color(color));
+
+    ABI::AdaptiveNamespace::FontStyle fontStyle;
+    RETURN_IF_FAILED(textElement->get_FontStyle(&fontStyle));
+    RETURN_IF_FAILED(localCopiedTextElement->put_FontStyle(fontStyle));
+
+    boolean isSubtle;
+    RETURN_IF_FAILED(textElement->get_IsSubtle(&isSubtle));
+    RETURN_IF_FAILED(localCopiedTextElement->put_IsSubtle(isSubtle));
+
+    boolean italic;
+    RETURN_IF_FAILED(textElement->get_Italic(&italic));
+    RETURN_IF_FAILED(localCopiedTextElement->put_Italic(italic));
+
+    HString language;
+    RETURN_IF_FAILED(textElement->get_Language(language.GetAddressOf()));
+    RETURN_IF_FAILED(localCopiedTextElement->put_Language(language.Get()));
+
+    ABI::AdaptiveNamespace::TextSize size;
+    RETURN_IF_FAILED(textElement->get_Size(&size));
+    RETURN_IF_FAILED(localCopiedTextElement->put_Size(size));
+
+    boolean strikethrough;
+    RETURN_IF_FAILED(textElement->get_Strikethrough(&strikethrough));
+    RETURN_IF_FAILED(localCopiedTextElement->put_Strikethrough(strikethrough));
+
+    ABI::AdaptiveNamespace::TextWeight weight;
+    RETURN_IF_FAILED(textElement->get_Weight(&weight));
+    RETURN_IF_FAILED(localCopiedTextElement->put_Weight(weight));
+
+    HString text;
+    RETURN_IF_FAILED(textElement->get_Text(text.GetAddressOf()));
+    RETURN_IF_FAILED(localCopiedTextElement->put_Text(text.Get()));
+
+    RETURN_IF_FAILED(localCopiedTextElement.CopyTo(copiedTextElement));
+    return S_OK;
+}
+

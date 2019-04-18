@@ -57,7 +57,6 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/MediaSource.cpp
              ../../shared/cpp/ObjectModel/NumberInput.cpp
              ../../shared/cpp/ObjectModel/OpenUrlAction.cpp
-             ../../shared/cpp/ObjectModel/Paragraph.cpp
              ../../shared/cpp/ObjectModel/ParseContext.cpp
              ../../shared/cpp/ObjectModel/ParseResult.cpp
              ../../shared/cpp/ObjectModel/ParseUtil.cpp

@@ -64,7 +64,7 @@ namespace AdaptiveSharedNamespace
         ParseUtil::ThrowIfNotJsonObject(json);
 
         baseCardElement->DeserializeBase<BaseCardElement>(context, json);
-
+        baseCardElement->SetCanFallbackToAncestor(context.GetCanFallbackToAncestor());
         baseCardElement->SetHeight(
             ParseUtil::GetEnumValue<HeightType>(json, AdaptiveCardSchemaKey::Height, HeightType::Auto, HeightTypeFromString));
         baseCardElement->SetIsVisible(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsVisible, true));

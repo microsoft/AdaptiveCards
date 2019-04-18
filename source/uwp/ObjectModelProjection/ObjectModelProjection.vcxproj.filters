@@ -57,7 +57,6 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseElement.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\CollectionTypeElement.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Inline.cpp" />
-    <ClCompile Include="..\..\shared\cpp\ObjectModel\Paragraph.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\RichTextBlock.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\TextRun.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\TextElementProperties.cpp" />
@@ -124,7 +123,6 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\CollectionTypeElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Inline.h" />
-    <ClInclude Include="..\..\shared\cpp\ObjectModel\Paragraph.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\RichTextBlock.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TextRun.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TextElementProperties.h" />

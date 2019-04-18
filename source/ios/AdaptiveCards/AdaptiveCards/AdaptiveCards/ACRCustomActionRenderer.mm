@@ -11,7 +11,7 @@
 #import "ACOBaseActionElementPrivate.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACOHostConfigPrivate.h"
-
+#import "Util.h"
 #import "ACRRegistration.h"
 
 @implementation ACRCustomActionRenderer
@@ -39,7 +39,9 @@
     if(reg) {
         NSString *type = [NSString stringWithCString:customAction->GetElementTypeString().c_str() encoding:NSUTF8StringEncoding];
         NSObject<ACOIBaseActionElementParser> *parser = [reg getCustomActionElementParser:type];
-
+        if (!parser) {
+            @throw [ACOFallbackException fallbackException];
+        }
         Json::Value blob = customAction->GetAdditionalProperties();
         Json::FastWriter fastWriter;
         NSString *jsonString = [[NSString alloc] initWithCString:fastWriter.write(blob).c_str() encoding:NSUTF8StringEncoding];
