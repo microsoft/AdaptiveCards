@@ -44,6 +44,7 @@ namespace AdaptiveCards.Rendering.Wpf
             ElementRenderers.Set<AdaptiveColumnSet>(AdaptiveColumnSetRenderer.Render);
             ElementRenderers.Set<AdaptiveFactSet>(AdaptiveFactSetRenderer.Render);
             ElementRenderers.Set<AdaptiveImageSet>(AdaptiveImageSetRenderer.Render);
+            ElementRenderers.Set<AdaptiveActionSet>(AdaptiveActionSetRenderer.Render);
 
             ElementRenderers.Set<AdaptiveChoiceSetInput>(AdaptiveChoiceSetRenderer.Render);
             ElementRenderers.Set<AdaptiveTextInput>(AdaptiveTextInputRenderer.Render);
