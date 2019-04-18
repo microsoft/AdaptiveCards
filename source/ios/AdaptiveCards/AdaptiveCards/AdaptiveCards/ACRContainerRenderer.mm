@@ -65,6 +65,16 @@
     }
 
     [container setClipsToBounds:TRUE];
+    
+    if (containerElem->GetMinHeight() > 0) {
+        [NSLayoutConstraint constraintWithItem:container
+                                     attribute:NSLayoutAttributeHeight
+                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                        toItem:nil
+                                     attribute:NSLayoutAttributeNotAnAttribute
+                                    multiplier:1
+                                      constant:containerElem->GetMinHeight()].active = YES;
+    }
 
     if (leadingBlankSpace != nil && trailingBlankSpace != nil) {
         [NSLayoutConstraint constraintWithItem:leadingBlankSpace

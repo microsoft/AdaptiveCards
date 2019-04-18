@@ -67,7 +67,9 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::IsTrue(TextWeight::Default == textBlock.GetTextWeight());
         Assert::IsTrue(fontStyle == textBlock.GetFontStyle());
         Assert::IsFalse(textBlock.GetIsSubtle());
+        Assert::IsTrue(textBlock.GetItalic());
         Assert::IsFalse(textBlock.GetSeparator());
+        Assert::IsTrue(textBlock.GetStrikethrough());
         Assert::IsFalse(textBlock.GetWrap());
     }
 
@@ -370,45 +372,39 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual(CardElementTypeToString(CardElementType::RichTextBlock), richTextBlock.GetElementTypeString());
         Assert::AreEqual("RichTextBlock_id"s, richTextBlock.GetId());
         Assert::IsTrue(HorizontalAlignment::Right == richTextBlock.GetHorizontalAlignment());
-        Assert::AreEqual(5U, richTextBlock.GetMaxLines());
-        Assert::IsTrue(richTextBlock.GetWrap());
 
-        auto paragraphs = richTextBlock.GetParagraphs();
-        Assert::AreEqual(size_t(2), paragraphs.size());
-
-        auto inlines = paragraphs[0]->GetInlines();
-        Assert::AreEqual(size_t(2), inlines.size());
+        auto inlines = richTextBlock.GetInlines();
+        Assert::AreEqual(size_t(3), inlines.size());
 
         Assert::IsTrue(InlineElementType::TextRun == inlines[0]->GetInlineType());
         Assert::AreEqual("TextRun"s, inlines[0]->GetInlineTypeString());
 
         auto inlineTextElement = std::static_pointer_cast<TextRun>(inlines[0]);
 
-        Assert::AreEqual("This is a text run in paragraph 1"s, inlineTextElement->GetText());
+        Assert::AreEqual("This is a text run"s, inlineTextElement->GetText());
         Assert::IsTrue(ForegroundColor::Dark == inlineTextElement->GetTextColor());
         Assert::AreEqual("en"s, inlineTextElement->GetLanguage());
         Assert::IsTrue(TextSize::Large == inlineTextElement->GetTextSize());
         Assert::IsTrue(TextWeight::Bolder == inlineTextElement->GetTextWeight());
         Assert::IsTrue(FontStyle::Monospace == inlineTextElement->GetFontStyle());
         Assert::IsTrue(inlineTextElement->GetIsSubtle());
+        Assert::IsTrue(inlineTextElement->GetItalic());
         Assert::IsTrue(inlineTextElement->GetHighlight());
+        Assert::IsTrue(inlineTextElement->GetStrikethrough());
 
         Assert::IsTrue(InlineElementType::TextRun == inlines[1]->GetInlineType());
         Assert::AreEqual("TextRun"s, inlines[1]->GetInlineTypeString());
 
-        inlines = paragraphs[1]->GetInlines();
-        Assert::AreEqual(size_t(2), inlines.size());
-
-        Assert::IsTrue(InlineElementType::TextRun == inlines[0]->GetInlineType());
-        Assert::AreEqual("TextRun"s, inlines[0]->GetInlineTypeString());
-
-        inlineTextElement = std::static_pointer_cast<TextRun>(inlines[0]);
+        inlineTextElement = std::static_pointer_cast<TextRun>(inlines[1]);
         auto selectAction = inlineTextElement->GetSelectAction();
         Assert::IsTrue(selectAction != nullptr);
         Assert::IsTrue(ActionType::Submit == selectAction->GetElementType());
 
         Assert::IsTrue(InlineElementType::TextRun == inlines[1]->GetInlineType());
         Assert::AreEqual("TextRun"s, inlines[1]->GetInlineTypeString());
+
+        inlineTextElement = std::static_pointer_cast<TextRun>(inlines[2]);
+        Assert::AreEqual("This is a text run specified as a string"s, inlineTextElement->GetText());
     }
 
     void ValidateBody(const AdaptiveCard &everythingBagel)

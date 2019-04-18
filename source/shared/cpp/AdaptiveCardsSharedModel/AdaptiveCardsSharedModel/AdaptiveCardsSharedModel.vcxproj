@@ -153,7 +153,6 @@
     <ClCompile Include="..\..\ObjectModel\Inline.cpp" />
     <ClCompile Include="..\..\ObjectModel\TextElementProperties.cpp" />
     <ClCompile Include="..\..\ObjectModel\TextRun.cpp" />
-    <ClCompile Include="..\..\ObjectModel\Paragraph.cpp" />
     <ClCompile Include="..\..\ObjectModel\ParseContext.cpp" />
     <ClCompile Include="..\..\ObjectModel\BackgroundImage.cpp" />
     <ClCompile Include="..\..\ObjectModel\RichTextBlock.cpp" />
@@ -219,7 +218,6 @@
     <ClInclude Include="..\..\ObjectModel\Inline.h" />
     <ClInclude Include="..\..\ObjectModel\TextElementProperties.h" />
     <ClInclude Include="..\..\ObjectModel\TextRun.h" />
-    <ClInclude Include="..\..\ObjectModel\Paragraph.h" />
     <ClInclude Include="..\..\ObjectModel\ParseContext.h" />
     <ClInclude Include="..\..\ObjectModel\BackgroundImage.h" />
     <ClInclude Include="..\..\ObjectModel\RichTextBlock.h" />

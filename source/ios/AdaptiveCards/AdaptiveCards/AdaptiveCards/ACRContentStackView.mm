@@ -150,18 +150,44 @@ using namespace AdaptiveCards;
     [self.stackView addArrangedSubview:view];
 }
 
+- (void)removeLastViewFromArrangedSubview
+{
+    if ([self subviewsCounts]) {
+        UIView *view = [self getLastSubview];
+        if (view) {
+            [self.stackView removeArrangedSubview:view];
+            [view removeFromSuperview];
+        }
+    }
+}
+
+- (UIView *)getLastSubview
+{
+    UIView *view = nil;
+    const NSUInteger subviewsCounts = [self subviewsCounts];
+    if (subviewsCounts) {
+        view = self.stackView.subviews[subviewsCounts - 1];
+    }
+    return view;
+}
+
+- (NSUInteger)subviewsCounts
+{
+    return [self.stackView.subviews count];
+}
+
 - (void)addTarget:(NSObject *)target
 {
     [_targets addObject:target];
 
-    if([target isKindOfClass:[ACRShowCardTarget class]]){
+    if ([target isKindOfClass:[ACRShowCardTarget class]]) {
         [_showcardTargets addObject:(ACRShowCardTarget *)target];
     }
 }
 
 - (void)hideAllShowCards
 {
-    for(ACRShowCardTarget *target in _showcardTargets){
+    for (ACRShowCardTarget *target in _showcardTargets) {
         [target hideShowCard];
     }
 }
@@ -169,10 +195,10 @@ using namespace AdaptiveCards;
 // let the last element to strech
 - (void)adjustHuggingForLastElement
 {
-    if([self.stackView.arrangedSubviews count])
-        [[self.stackView.arrangedSubviews objectAtIndex:[self.stackView.arrangedSubviews count ] -1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-    if([self.stackView.arrangedSubviews count])
-        [[self.stackView.arrangedSubviews objectAtIndex:[self.stackView.arrangedSubviews count ] -1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+    if ([self.stackView.arrangedSubviews count])
+         [[self.stackView.arrangedSubviews objectAtIndex:[self.stackView.arrangedSubviews count ] -1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+    if ([self.stackView.arrangedSubviews count])
+         [[self.stackView.arrangedSubviews objectAtIndex:[self.stackView.arrangedSubviews count ] -1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
 }
 
 - (void)applyPadding:(unsigned int)padding priority:(unsigned int)priority
@@ -203,7 +229,7 @@ using namespace AdaptiveCards;
     [self.stackView.widthAnchor constraintEqualToAnchor:target.widthAnchor constant:padding * -2.0].active = YES;
 }
 
-- (UILayoutConstraintAxis) getAxis
+- (UILayoutConstraintAxis)getAxis
 {
     return self.stackView.axis;
 }

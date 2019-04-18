@@ -68,6 +68,15 @@
         trailingBlankSpace = [column addPaddingSpace];
     }
 
+    if (columnElem->GetMinHeight() > 0) {
+        [NSLayoutConstraint constraintWithItem:column
+                                     attribute:NSLayoutAttributeHeight
+                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                        toItem:nil
+                                     attribute:NSLayoutAttributeNotAnAttribute
+                                    multiplier:1
+                                      constant:columnElem->GetMinHeight()].active = YES;
+    }
 
     [column setClipsToBounds:TRUE];
 

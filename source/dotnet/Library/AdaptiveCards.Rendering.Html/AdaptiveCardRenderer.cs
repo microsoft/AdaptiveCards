@@ -923,39 +923,17 @@ namespace AdaptiveCards.Rendering.Html
                 uiTextBlock.Style("display", "none");
             }
 
-            uiTextBlock = richTextBlock.Wrap ?
-                uiTextBlock.Style("word-wrap", "break-word") :
-                uiTextBlock.Style("white-space", "nowrap");
+            uiTextBlock = uiTextBlock.Style("word-wrap", "break-word");
 
-            Action<HtmlTag> removeParagraphTag = null;
-            removeParagraphTag = (HtmlTag htmlTag) =>
+            var uiParagraph = new HtmlTag("p");
+            foreach (var inlineRun in richTextBlock.Inlines)
             {
-                var child = htmlTag.Children[0];
-                if (child.Element?.ToLowerInvariant() == "p")
-                {
-                    var grandChildren = new List<HtmlTag>(child.Children);
-                    htmlTag.Children.Remove(child);
-                    htmlTag.Children.AddRange(grandChildren);
-                }
-            };
+                AdaptiveTextRun textRun = inlineRun as AdaptiveTextRun;
 
-            int maxFontSize = 0;
-            foreach (var paragraph in richTextBlock.Paragraphs)
-            {
-                var uiParagraph = new HtmlTag("p");
-                foreach (var inlineRun in paragraph.Inlines)
-                {
-                    // keep track of max font size for MaxLines rendering
-                    var size = inlineRun.Size;
-                    var style = inlineRun.FontStyle;
-                    maxFontSize = Math.Max(maxFontSize, context.Config.GetFontSize(style, size));
-
-                    var uiInlineRun = TextRunRender(inlineRun, context);
-                    removeParagraphTag(uiInlineRun);
-                    uiParagraph.Children.Add(uiInlineRun);
-                }
-                uiTextBlock.Children.Add(uiParagraph);
+                var uiInlineRun = TextRunRender(textRun, context);
+                uiParagraph.Children.Add(uiInlineRun);
             }
+            uiTextBlock.Children.Add(uiParagraph);
 
             Action<HtmlTag> setParagraphStyles = null;
             setParagraphStyles = (HtmlTag htmlTag) =>
@@ -965,12 +943,6 @@ namespace AdaptiveCards.Rendering.Html
                     htmlTag.Style("margin-top", "0px");
                     htmlTag.Style("margin-bottom", "0px");
                     htmlTag.Style("width", "100%");
-
-                    if (!richTextBlock.Wrap)
-                    {
-                        htmlTag.Style("text-overflow", "ellipsis");
-                        htmlTag.Style("overflow", "hidden");
-                    }
                 }
 
                 foreach (var child in htmlTag.Children)
@@ -980,15 +952,6 @@ namespace AdaptiveCards.Rendering.Html
             };
 
             setParagraphStyles(uiTextBlock);
-
-            if (richTextBlock.MaxLines > 0)
-            {
-                var lineHeight = maxFontSize * 1.33;
-                uiTextBlock = uiTextBlock
-                    .Style("max-height", $"{lineHeight * richTextBlock.MaxLines}px")
-                    .Style("overflow", "hidden");
-
-            }
 
             return uiTextBlock;
         }
@@ -1009,8 +972,7 @@ namespace AdaptiveCards.Rendering.Html
                 .Style("font-size", $"{fontSize}px")
                 .Style("font-weight", $"{weight}");
 
-            var textTags = MarkdownToHtmlTagConverter.Convert(RendererUtilities.ApplyTextFunctions(textRun.Text, context.Lang));
-            uiTextRun.Children.AddRange(textTags);
+            uiTextRun.Text = RendererUtilities.ApplyTextFunctions(textRun.Text, context.Lang);
             return uiTextRun;
         }
 

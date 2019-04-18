@@ -95,10 +95,14 @@ namespace AdaptiveSharedNamespace
     std::shared_ptr<T> CollectionTypeElement::Deserialize(ParseContext& context, const Json::Value& value)
     {
         auto collection = BaseCardElement::Deserialize<T>(context, value);
-
+        
         auto backgroundImage = ParseUtil::GetBackgroundImage(value);
         collection->SetBackgroundImage(backgroundImage);
 
+        bool canFallbackToAncestor = context.GetCanFallbackToAncestor();
+        context.SetCanFallbackToAncestor(canFallbackToAncestor || (collection->GetFallbackType() != FallbackType::None));
+        collection->SetCanFallbackToAncestor(canFallbackToAncestor);
+        
         collection->SetStyle(
             ParseUtil::GetEnumValue<ContainerStyle>(value, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
 
@@ -119,9 +123,11 @@ namespace AdaptiveSharedNamespace
 
         // Parse Items
         collection->DeserializeChildren(context, value);
-
+        
         // since we are walking dfs, we have to restore the style before we back up
         context.RestoreContextForCollectionTypeElement(*collection);
+        
+        context.SetCanFallbackToAncestor(canFallbackToAncestor);
 
         // Parse optional selectAction
         collection->SetSelectAction(ParseUtil::GetAction(context, value, AdaptiveCardSchemaKey::SelectAction, false));
