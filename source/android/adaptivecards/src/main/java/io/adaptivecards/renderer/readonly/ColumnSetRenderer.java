@@ -2,7 +2,6 @@ package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.nfc.Tag;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +9,13 @@ import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
+import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
-import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.CardElementType;
 import io.adaptivecards.objectmodel.Column;
@@ -27,8 +25,6 @@ import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 import io.adaptivecards.renderer.IBaseCardElementRenderer;
-
-import java.util.Vector;
 
 
 public class ColumnSetRenderer extends BaseCardElementRenderer
@@ -56,7 +52,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         BaseCardElement baseCardElement,
         ICardActionHandler cardActionHandler,
         HostConfig hostConfig,
-        RenderArgs renderArgs)
+        RenderArgs renderArgs) throws AdaptiveFallbackException
     {
         ColumnSet columnSet = null;
         if (baseCardElement instanceof ColumnSet)
@@ -93,25 +89,23 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         }
 
         ContainerStyle containerStyle = renderArgs.getContainerStyle();
-        for (int i = 0; i < columnVectorSize; i++) {
+        for (int i = 0; i < columnVectorSize; i++)
+        {
             Column column = columnVector.get(i);
 
             ColumnRenderer rendererAsColumnRenderer = null;
             if (columnRenderer instanceof ColumnRenderer)
             {
-                rendererAsColumnRenderer = (ColumnRenderer)columnRenderer;
+                rendererAsColumnRenderer = (ColumnRenderer) columnRenderer;
                 rendererAsColumnRenderer.setIsRenderingFirstColumn(i == 0);
                 rendererAsColumnRenderer.setIsRenderingLastColumn(i == (columnVectorSize - 1));
             }
 
-            View v = columnRenderer.render(renderedCard, context, fragmentManager, layout, column, cardActionHandler, hostConfig, renderArgs);
-            if (v == null)
-            {
-                return null;
-            }
+            columnRenderer.render(renderedCard, context, fragmentManager, layout, column, cardActionHandler, hostConfig, renderArgs);
         }
 
-        if (columnSet.GetSelectAction() != null) {
+        if (columnSet.GetSelectAction() != null)
+        {
             layout.setClickable(true);
             layout.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, columnSet.GetSelectAction(), cardActionHandler));
         }
