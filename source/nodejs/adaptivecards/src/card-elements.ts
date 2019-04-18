@@ -363,7 +363,7 @@ export abstract class CardElement extends CardObject {
 
     readonly requires = new HostConfig.HostCapabilities();
 
-    speak: string;
+    id: string;
     horizontalAlignment?: Enums.HorizontalAlignment = null;
     spacing: Enums.Spacing = Enums.Spacing.Default;
     separator: boolean = false;
@@ -371,7 +371,11 @@ export abstract class CardElement extends CardObject {
     height: CardElementHeight = "auto";
     minPixelHeight?: number = null;
 
-    abstract renderSpeech(): string;
+    abstract getJsonTypeName(): string;
+
+    asString(): string {
+        return "";
+    }
 
     isBleeding(): boolean {
         return false;
@@ -379,6 +383,10 @@ export abstract class CardElement extends CardObject {
 
 	toJSON(): any {
 		let result = super.toJSON();
+
+        Utils.setProperty(result, "type", this.getJsonTypeName());
+        Utils.setProperty(result, "id", this.id);
+        Utils.setProperty(result, "isVisible", this.isVisible, true);
 
         if (this.horizontalAlignment !== null) {
             Utils.setEnumProperty(Enums.HorizontalAlignment, result, "horizontalAlignment", this.horizontalAlignment);
@@ -474,7 +482,6 @@ export abstract class CardElement extends CardObject {
         this.requires.parse(json["requires"], errors);
         this.id = Utils.getStringValue(json["id"]);
         this.isVisible = Utils.getBoolValue(json["isVisible"], this.isVisible);
-        this.speak = Utils.getStringValue(json["speak"]);
         this.horizontalAlignment = Utils.getEnumValue(Enums.HorizontalAlignment, json["horizontalAlignment"], this.horizontalAlignment);
 
         this.spacing = Utils.getEnumValue(Enums.Spacing, json["spacing"], Enums.Spacing.Default);
@@ -763,6 +770,10 @@ export abstract class CardElement extends CardObject {
         return true;
     }
 
+    get isInline(): boolean {
+        return false;
+    }
+
     get parent(): CardElement {
         return this._parent;
     }
@@ -810,13 +821,199 @@ export abstract class CardElement extends CardObject {
     }
 }
 
-export class TextBlock extends CardElement {
+export abstract class BaseTextBlock extends CardElement {
+    private _text: string;
+    private _selectAction: Action = null;
+
+    protected getEffectiveStyleDefinition() {
+        return this.hostConfig.containerStyles.getStyleByName(this.getEffectiveStyle());
+    }
+
+    protected getFontSize(fontStyle: HostConfig.FontStyleDefinition): number {
+        switch (this.size) {
+            case Enums.TextSize.Small:
+                return fontStyle.fontSizes.small;
+            case Enums.TextSize.Medium:
+                return fontStyle.fontSizes.medium;
+            case Enums.TextSize.Large:
+                return fontStyle.fontSizes.large;
+            case Enums.TextSize.ExtraLarge:
+                return fontStyle.fontSizes.extraLarge;
+            default:
+                return fontStyle.fontSizes.default;
+        }
+    }
+
+    protected getColorDefinition(colorSet: HostConfig.ColorSetDefinition, color: Enums.TextColor): HostConfig.TextColorDefinition {
+        switch (color) {
+            case Enums.TextColor.Accent:
+                return colorSet.accent;
+            case Enums.TextColor.Dark:
+                return colorSet.dark;
+            case Enums.TextColor.Light:
+                return colorSet.light;
+            case Enums.TextColor.Good:
+                return colorSet.good;
+            case Enums.TextColor.Warning:
+                return colorSet.warning;
+            case Enums.TextColor.Attention:
+                return colorSet.attention;
+            default:
+                return colorSet.default;
+        }
+    }
+
+    protected setText(value: string) {
+        this._text = value;
+    }
+
+    size: Enums.TextSize = Enums.TextSize.Default;
+    weight: Enums.TextWeight = Enums.TextWeight.Default;
+    color: Enums.TextColor = Enums.TextColor.Default;
+    isSubtle: boolean = false;
+    fontFamily?: Enums.FontFamily = null;
+
+    asString(): string {
+        return this.text;
+    }
+
+    toJSON() {
+        let result = super.toJSON();
+
+        Utils.setEnumProperty(Enums.TextSize, result, "size", this.size, Enums.TextSize.Default);
+        Utils.setEnumProperty(Enums.TextWeight, result, "weight", this.weight, Enums.TextWeight.Default);
+        Utils.setEnumProperty(Enums.TextColor, result, "color", this.color, Enums.TextColor.Default);
+        Utils.setProperty(result, "text", this.text);
+        Utils.setProperty(result, "isSubtle", this.isSubtle, false);
+        Utils.setEnumProperty(Enums.FontFamily, result, "fontFamily", this.fontFamily, Enums.FontFamily.Default);
+
+        return result;
+    }
+
+    applyStylesTo(targetElement: HTMLElement) {
+        let fontStyle = this.hostConfig.getFontStyleDefinition(this.fontFamily);
+
+        if (fontStyle.fontFamily) {
+            targetElement.style.fontFamily = fontStyle.fontFamily;
+        }
+
+        let fontSize: number;
+
+        switch (this.size) {
+            case Enums.TextSize.Small:
+                fontSize = fontStyle.fontSizes.small;
+                break;
+            case Enums.TextSize.Medium:
+                fontSize = fontStyle.fontSizes.medium;
+                break;
+            case Enums.TextSize.Large:
+                fontSize = fontStyle.fontSizes.large;
+                break;
+            case Enums.TextSize.ExtraLarge:
+                fontSize = fontStyle.fontSizes.extraLarge;
+                break;
+            default:
+                fontSize = fontStyle.fontSizes.default;
+                break;
+        }
+
+        targetElement.style.fontSize = fontSize + "px";
+
+        let colorDefinition = this.getColorDefinition(this.getEffectiveStyleDefinition().foregroundColors, this.effectiveColor);
+
+        targetElement.style.color = Utils.stringToCssColor(this.isSubtle ? colorDefinition.subtle : colorDefinition.default);
+
+        let fontWeight: number;
+
+        switch (this.weight) {
+            case Enums.TextWeight.Lighter:
+                fontWeight = fontStyle.fontWeights.lighter;
+                break;
+            case Enums.TextWeight.Bolder:
+                fontWeight = fontStyle.fontWeights.bolder;
+                break;
+            default:
+                fontWeight = fontStyle.fontWeights.default;
+                break;
+        }
+
+        targetElement.style.fontWeight = fontWeight.toString();
+    }
+
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+        super.parse(json, errors);
+
+        this.text = Utils.getStringValue(json["text"]);
+
+        let sizeString = Utils.getStringValue(json["size"]);
+
+        if (sizeString && sizeString.toLowerCase() === "normal") {
+            this.size = Enums.TextSize.Default;
+
+            raiseParseError(
+                {
+                    error: Enums.ValidationError.Deprecated,
+                    message: "The TextBlock.size value \"normal\" is deprecated and will be removed. Use \"default\" instead."
+                },
+                errors
+            );
+        }
+        else {
+            this.size = Utils.getEnumValue(Enums.TextSize, sizeString, this.size);
+        }
+
+        let weightString = Utils.getStringValue(json["weight"]);
+
+        if (weightString && weightString.toLowerCase() === "normal") {
+            this.weight = Enums.TextWeight.Default;
+
+            raiseParseError(
+                {
+                    error: Enums.ValidationError.Deprecated,
+                    message: "The TextBlock.weight value \"normal\" is deprecated and will be removed. Use \"default\" instead."
+                },
+                errors
+            );
+        }
+        else {
+            this.weight = Utils.getEnumValue(Enums.TextWeight, weightString, this.weight);
+        }
+
+        this.color = Utils.getEnumValue(Enums.TextColor, json["color"], this.color);
+        this.isSubtle = Utils.getBoolValue(json["isSubtle"], this.isSubtle);
+        this.fontFamily = Utils.getEnumValue(Enums.FontFamily, json["fontFamily"], this.fontFamily);
+    }
+
+    get effectiveColor(): Enums.TextColor {
+        return  this.color ? this.color : Enums.TextColor.Default;
+    }
+
+    get text(): string {
+        return this._text;
+    }
+
+    set text(value: string) {
+        this.setText(value);
+    }
+
+    get selectAction(): Action {
+        return this._selectAction;
+    }
+
+    set selectAction(value: Action) {
+        this._selectAction = value;
+
+        if (this._selectAction) {
+            this._selectAction.setParent(this);
+        }
+    }
+}
+
+export class TextBlock extends BaseTextBlock {
     private _computedLineHeight: number;
     private _originalInnerHtml: string;
-    private _text: string;
     private _processedText: string = null;
     private _treatAsPlainText: boolean = true;
-    private _selectAction: Action = null;
 
     private restoreOriginalContent() {
         var maxHeight = this.maxLines
@@ -849,8 +1046,10 @@ export class TextBlock extends CardElement {
         return false;
     }
 
-    private getEffectiveStyleDefinition() {
-        return this.hostConfig.containerStyles.getStyleByName(this.getEffectiveStyle());
+    protected serText(value: string) {
+        super.setText(value);
+
+        this._processedText = null;
     }
 
     protected getRenderedDomElementType(): string {
@@ -874,6 +1073,13 @@ export class TextBlock extends CardElement {
                     this.selectAction.execute();
 
                     e.cancelBubble = true;
+                }
+
+                if (hostConfig.supportsInteractivity) {
+                    element.tabIndex = 0
+                    element.setAttribute("role", "button");
+                    element.setAttribute("aria-label", this.selectAction.title);
+                    element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
                 }
             }
 
@@ -950,7 +1156,7 @@ export class TextBlock extends CardElement {
 
             for (let i = 0; i < anchors.length; i++) {
                 let anchor = <HTMLAnchorElement>anchors[i];
-                anchor.classList.add(this.hostConfig.makeCssClassName("ac-anchor"));
+                anchor.classList.add(hostConfig.makeCssClassName("ac-anchor"));
                 anchor.target = "_blank";
                 anchor.onclick = (e) => {
                     if (raiseAnchorClickedEvent(this, e.target as HTMLAnchorElement)) {
@@ -974,13 +1180,6 @@ export class TextBlock extends CardElement {
 
             if (AdaptiveCard.useAdvancedTextBlockTruncation || AdaptiveCard.useAdvancedCardBottomTruncation) {
                 this._originalInnerHtml = element.innerHTML;
-            }
-
-            if (this.selectAction != null && hostConfig.supportsInteractivity) {
-                element.tabIndex = 0
-                element.setAttribute("role", "button");
-                element.setAttribute("aria-label", this.selectAction.title);
-                element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
             }
 
             return element;
@@ -1007,36 +1206,21 @@ export class TextBlock extends CardElement {
         }
     }
 
-    size: Enums.TextSize = Enums.TextSize.Default;
-    weight: Enums.TextWeight = Enums.TextWeight.Default;
-    color: Enums.TextColor = Enums.TextColor.Default;
-    isSubtle: boolean = false;
     wrap: boolean = false;
     maxLines: number;
     useMarkdown: boolean = true;
-    style?: Enums.FontStyle = null;
 
     toJSON(): any {
         let result = super.toJSON();
 
-        Utils.setEnumProperty(Enums.TextSize, result, "size", this.size, Enums.TextSize.Default);
-        Utils.setEnumProperty(Enums.TextWeight, result, "weight", this.weight, Enums.TextWeight.Default);
-        Utils.setEnumProperty(Enums.TextColor, result, "color", this.color, Enums.TextColor.Default);
-        Utils.setProperty(result, "text", this.text);
-        Utils.setProperty(result, "isSubtle", this.isSubtle, false);
         Utils.setProperty(result, "wrap", this.wrap, false);
         Utils.setProperty(result, "maxLines", this.maxLines, 0);
-        Utils.setEnumProperty(Enums.FontStyle, result, "style", this.style, Enums.FontStyle.Default);
 
         return result;
     }
 
     applyStylesTo(targetElement: HTMLElement) {
-        let fontStyle = this.hostConfig.getFontStyleDefinition(this.style);
-
-        if (fontStyle.fontFamily) {
-            targetElement.style.fontFamily = fontStyle.fontFamily;
-        }
+        super.applyStylesTo(targetElement);
 
         let parentContainer = this.getParentContainer();
         let isRtl = parentContainer ? parentContainer.isRtl() : false;
@@ -1053,145 +1237,40 @@ export class TextBlock extends CardElement {
                 break;
         }
 
-        var fontSize: number;
+        let lineHeights = this.hostConfig.lineHeights;
 
-        switch (this.size) {
-            case Enums.TextSize.Small:
-                fontSize = fontStyle.fontSizes.small;
-                break;
-            case Enums.TextSize.Medium:
-                fontSize = fontStyle.fontSizes.medium;
-                break;
-            case Enums.TextSize.Large:
-                fontSize = fontStyle.fontSizes.large;
-                break;
-            case Enums.TextSize.ExtraLarge:
-                fontSize = fontStyle.fontSizes.extraLarge;
-                break;
-            default:
-                fontSize = fontStyle.fontSizes.default;
-                break;
-        }
-
-        if (this.hostConfig.lineHeights) {
+        if (lineHeights) {
             switch (this.size) {
                 case Enums.TextSize.Small:
-                    this._computedLineHeight = this.hostConfig.lineHeights.small;
+                    this._computedLineHeight = lineHeights.small;
                     break;
                 case Enums.TextSize.Medium:
-                    this._computedLineHeight = this.hostConfig.lineHeights.medium;
+                    this._computedLineHeight = lineHeights.medium;
                     break;
                 case Enums.TextSize.Large:
-                    this._computedLineHeight = this.hostConfig.lineHeights.large;
+                    this._computedLineHeight = lineHeights.large;
                     break;
                 case Enums.TextSize.ExtraLarge:
-                    this._computedLineHeight = this.hostConfig.lineHeights.extraLarge;
+                    this._computedLineHeight = lineHeights.extraLarge;
                     break;
                 default:
-                    this._computedLineHeight = this.hostConfig.lineHeights.default;
+                    this._computedLineHeight = lineHeights.default;
                     break;
             }
         }
         else {
             // Looks like 1.33 is the magic number to compute line-height
             // from font size.
-            this._computedLineHeight = fontSize * 1.33;
+            this._computedLineHeight = this.getFontSize(this.hostConfig.getFontStyleDefinition(this.fontFamily)) * 1.33;
         }
 
-        targetElement.style.fontSize = fontSize + "px";
         targetElement.style.lineHeight = this._computedLineHeight + "px";
-
-        let styleDefinition = this.getEffectiveStyleDefinition();
-
-        let actualTextColor = this.color ? this.color : Enums.TextColor.Default;
-        let colorDefinition: HostConfig.TextColorDefinition;
-
-        switch (actualTextColor) {
-            case Enums.TextColor.Accent:
-                colorDefinition = styleDefinition.foregroundColors.accent;
-                break;
-            case Enums.TextColor.Dark:
-                colorDefinition = styleDefinition.foregroundColors.dark;
-                break;
-            case Enums.TextColor.Light:
-                colorDefinition = styleDefinition.foregroundColors.light;
-                break;
-            case Enums.TextColor.Good:
-                colorDefinition = styleDefinition.foregroundColors.good;
-                break;
-            case Enums.TextColor.Warning:
-                colorDefinition = styleDefinition.foregroundColors.warning;
-                break;
-            case Enums.TextColor.Attention:
-                colorDefinition = styleDefinition.foregroundColors.attention;
-                break;
-            default:
-                colorDefinition = styleDefinition.foregroundColors.default;
-                break;
-        }
-
-        targetElement.style.color = Utils.stringToCssColor(this.isSubtle ? colorDefinition.subtle : colorDefinition.default);
-
-        let fontWeight: number;
-
-        switch (this.weight) {
-            case Enums.TextWeight.Lighter:
-                fontWeight = fontStyle.fontWeights.lighter;
-                break;
-            case Enums.TextWeight.Bolder:
-                fontWeight = fontStyle.fontWeights.bolder;
-                break;
-            default:
-                fontWeight = fontStyle.fontWeights.default;
-                break;
-        }
-
-        targetElement.style.fontWeight = fontWeight.toString();
     }
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
-        this.text = Utils.getStringValue(json["text"]);
-
-        let sizeString = Utils.getStringValue(json["size"]);
-
-        if (sizeString && sizeString.toLowerCase() === "normal") {
-            this.size = Enums.TextSize.Default;
-
-            raiseParseError(
-                {
-                    error: Enums.ValidationError.Deprecated,
-                    message: "The TextBlock.size value \"normal\" is deprecated and will be removed. Use \"default\" instead."
-                },
-                errors
-            );
-        }
-        else {
-            this.size = Utils.getEnumValue(Enums.TextSize, sizeString, this.size);
-        }
-
-        let weightString = Utils.getStringValue(json["weight"]);
-
-        if (weightString && weightString.toLowerCase() === "normal") {
-            this.weight = Enums.TextWeight.Default;
-
-            raiseParseError(
-                {
-                    error: Enums.ValidationError.Deprecated,
-                    message: "The TextBlock.weight value \"normal\" is deprecated and will be removed. Use \"default\" instead."
-                },
-                errors
-            );
-        }
-        else {
-            this.weight = Utils.getEnumValue(Enums.TextWeight, weightString, this.weight);
-        }
-
-        this.color = Utils.getEnumValue(Enums.TextColor, json["color"], this.color);
-        this.isSubtle = Utils.getBoolValue(json["isSubtle"], this.isSubtle);
         this.wrap = Utils.getBoolValue(json["wrap"], this.wrap);
-        this.style = Utils.getEnumValue(Enums.FontStyle, json["style"], this.style);
 
         if (typeof json["maxLines"] === "number") {
             this.maxLines = json["maxLines"];
@@ -1202,16 +1281,6 @@ export class TextBlock extends CardElement {
         return "TextBlock";
     }
 
-    renderSpeech(): string {
-        if (this.speak != null)
-            return this.speak + '\n';
-
-        if (this.text)
-            return '<s>' + this.text + '</s>\n';
-
-        return null;
-    }
-
     updateLayout(processChildren: boolean = false) {
         super.updateLayout(processChildren);
 
@@ -1219,32 +1288,7 @@ export class TextBlock extends CardElement {
             // Reset the element's innerHTML in case the available room for
             // content has increased
             this.restoreOriginalContent();
-            var maxHeight = this._computedLineHeight * this.maxLines;
-            this.truncateIfSupported(maxHeight);
-        }
-    }
-
-    get text(): string {
-        return this._text;
-    }
-
-    set text(value: string) {
-        if (this._text != value) {
-            this._text = value;
-
-            this._processedText = null;
-        }
-    }
-
-    get selectAction(): Action {
-        return this._selectAction;
-    }
-
-    set selectAction(value: Action) {
-        this._selectAction = value;
-
-        if (this._selectAction) {
-            this._selectAction.setParent(this);
+            this.truncateIfSupported(this._computedLineHeight * this.maxLines);
         }
     }
 }
@@ -1267,10 +1311,244 @@ class Label extends TextBlock {
     forElementId: string;
 }
 
+export class TextRun extends BaseTextBlock {
+    protected internalRender(): HTMLElement {
+        if (!Utils.isNullOrEmpty(this.text)) {
+            let hostConfig = this.hostConfig;
+
+            let element = document.createElement("span");
+            element.classList.add(hostConfig.makeCssClassName("ac-textRun"));
+
+            this.applyStylesTo(element);
+
+            if (this.selectAction && hostConfig.supportsInteractivity) {
+                let anchor = document.createElement("a");
+                anchor.classList.add(hostConfig.makeCssClassName("ac-anchor"));
+                anchor.href = this.selectAction.getHref();
+                anchor.target = "_blank";
+                anchor.onclick = (e) => {
+                    e.preventDefault();
+
+                    this.selectAction.execute();
+                }
+
+                anchor.innerText = this.text;
+
+                element.appendChild(anchor);
+            }
+            else {
+                element.innerText = this.text;
+            }
+
+            return element;
+        }
+        else {
+            return null;
+        }
+    }
+
+    italic: boolean = false;
+    strikethrough: boolean = false;
+    highlight: boolean = false;
+
+    applyStylesTo(targetElement: HTMLElement) {
+        super.applyStylesTo(targetElement);
+
+        if (this.italic) {
+            targetElement.style.fontStyle = "italic";
+        }
+
+        if (this.strikethrough) {
+            targetElement.style.textDecoration = "line-through";
+        }
+
+        if (this.highlight) {
+            let colorDefinition = this.getColorDefinition(this.getEffectiveStyleDefinition().highlightColors, this.effectiveColor);
+
+            targetElement.style.backgroundColor = Utils.stringToCssColor(this.isSubtle ? colorDefinition.subtle : colorDefinition.default);
+        }
+    }
+
+    toJSON() {
+        let result = super.toJSON();
+
+        Utils.setProperty(result, "italic", this.italic, false);
+        Utils.setProperty(result, "strikethrough", this.strikethrough, false);
+        Utils.setProperty(result, "highlight", this.highlight, false);
+
+        if (this.selectAction) {
+            Utils.setProperty(result, "selectAction", this.selectAction.toJSON());
+        }
+    
+        return result;
+    }
+
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+        super.parse(json, errors);
+
+        this.italic = Utils.getBoolValue(json["italic"], this.italic);
+        this.strikethrough = Utils.getBoolValue(json["strikethrough"], this.strikethrough);
+        this.highlight = Utils.getBoolValue(json["highlight"], this.highlight);
+        this.selectAction = createActionInstance(
+            this,
+            json["selectAction"],
+            errors);
+    }
+    
+    getJsonTypeName(): string {
+        return "TextRun";
+    }
+
+    get isStandalone(): boolean {
+        return false;
+    }
+
+    get isInline(): boolean {
+        return true;
+    }
+}
+
+export class RichTextBlock extends CardElement {
+    private _inlines: CardElement[] = [];
+
+    private internalAddInline(inline: CardElement, forceAdd: boolean = false) {
+        if (!inline.isInline) {
+            throw new Error("RichTextBlock.addInline: the specified card element cannot be used as a RichTextBlock inline.");
+        }
+
+        let doAdd: boolean = inline.parent == null || forceAdd;
+
+        if (!doAdd && inline.parent != this) {
+            throw new Error("RichTextBlock.addInline: the specified inline already belongs to another RichTextBlock.");
+        }
+        else {
+            inline.setParent(this);
+
+            this._inlines.push(inline);
+        }
+    }
+
+    protected internalRender(): HTMLElement {
+        if (this._inlines.length > 0) {
+            let element = document.createElement("div");
+            element.className = this.hostConfig.makeCssClassName("ac-richTextBlock");
+
+            let parentContainer = this.getParentContainer();
+            let isRtl = parentContainer ? parentContainer.isRtl() : false;
+    
+            switch (this.horizontalAlignment) {
+                case Enums.HorizontalAlignment.Center:
+                    element.style.textAlign = "center";
+                    break;
+                case Enums.HorizontalAlignment.Right:
+                    element.style.textAlign = isRtl ? "left" : "right";
+                    break;
+                default:
+                    element.style.textAlign = isRtl ? "right" : "left";
+                    break;
+            }
+    
+            for (let inline of this._inlines) {
+                element.appendChild(inline.render());
+            }
+
+            return element;
+        }
+        else {
+            return null;
+        }
+    }
+
+    asString(): string {
+        let result = "";
+        
+        for (let inline of this._inlines) {
+            result += inline.asString();
+        }
+
+        return result;
+    }
+
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+        super.parse(json, errors);
+
+        this._inlines = [];
+
+        if (Array.isArray(json["inlines"])) {
+            for (let jsonInline of json["inlines"]) {
+                let inline: CardElement;
+
+                if (typeof jsonInline === "string") {
+                    let textRun = new TextRun();
+                    textRun.text = jsonInline;
+
+                    inline = textRun;
+                }
+                else {
+                    inline = createElementInstance(this, jsonInline, errors);
+                }
+
+                if (inline) {
+                    this.internalAddInline(inline, true);
+                }
+            }
+        }
+    }
+
+    toJSON() {
+        let result = super.toJSON();
+
+        if (this._inlines.length > 0) {
+            let jsonInlines: any[] = [];
+
+            for (let inline of this._inlines) {
+                jsonInlines.push(inline.toJSON());
+            }
+
+            Utils.setProperty(result, "inlines", jsonInlines);
+        }
+
+        return result;
+    }
+
+    getJsonTypeName(): string {
+        return "RichTextBlock";
+    }
+
+    getInlineCount(): number {
+        return this._inlines.length;
+    }
+
+    getInlineAt(index: number): CardElement {
+        if (index >= 0 && index < this._inlines.length) {
+            return this._inlines[index];
+        }
+        else {
+            throw new Error("RichTextBlock.getInlineAt: Index out of range (" + index + ")");
+        }
+    }
+
+    addInline(inline: CardElement) {
+        this.internalAddInline(inline);
+    }
+
+    removeInline(inline: CardElement): boolean {
+        let index = this._inlines.indexOf(inline);
+
+        if (index >= 0) {
+            this._inlines[index].setParent(null);
+            this._inlines.splice(index, 1);
+
+            return true;
+        }
+
+        return false;
+    }
+}
+
 export class Fact {
     name: string;
     value: string;
-    speak: string;
 
     constructor(name: string = undefined, value: string = undefined) {
         this.name = name;
@@ -1280,19 +1558,10 @@ export class Fact {
     parse(json: any) {
         this.name = Utils.getStringValue(json["title"]);
         this.value = Utils.getStringValue(json["value"]);
-        this.speak = Utils.getStringValue(json["speak"]);
     }
 
     toJSON() {
         return { title: this.name, value: this.value };
-    }
-
-    renderSpeech(): string {
-        if (this.speak != null) {
-            return this.speak + '\n';
-        }
-
-        return '<s>' + this.name + ' ' + this.value + '</s>\n';
     }
 }
 
@@ -1414,29 +1683,6 @@ export class FactSet extends CardElement {
 				this.facts.push(fact);
 			}
 		}
-    }
-
-    renderSpeech(): string {
-        if (this.speak != null) {
-            return this.speak + '\n';
-        }
-
-        // render each fact
-        let speak = null;
-
-		if (this.facts && this.facts.length > 0) {
-            speak = '';
-
-            for (var i = 0; i < this.facts.length; i++) {
-                let speech = this.facts[i].renderSpeech();
-
-                if (speech) {
-                    speak += speech;
-                }
-            }
-        }
-
-        return '<p>' + speak + '\n</p>\n';
     }
 }
 
@@ -1726,14 +1972,6 @@ export class Image extends CardElement {
         else {
             return [];
         }
-    }
-
-    renderSpeech(): string {
-        if (this.speak != null) {
-            return this.speak + '\n';
-        }
-
-        return null;
     }
 
     get selectAction(): Action {
@@ -2034,24 +2272,6 @@ export class ImageSet extends CardElementContainer {
     indexOf(cardElement: CardElement): number {
         return cardElement instanceof Image ? this._images.indexOf(cardElement) : -1;
     }
-
-    renderSpeech(): string {
-        if (this.speak != null) {
-            return this.speak;
-        }
-
-        var speak = null;
-
-        if (this._images.length > 0) {
-            speak = '';
-
-            for (var i = 0; i < this._images.length; i++) {
-                speak += this._images[i].renderSpeech();
-            }
-        }
-
-        return speak;
-    }
 }
 
 export class MediaSource {
@@ -2309,10 +2529,6 @@ export class Media extends CardElement {
         return result;
     }
 
-    renderSpeech(): string {
-        return this.altText;
-    }
-
     get selectedMediaType(): string {
         return this._selectedMediaType;
     }
@@ -2468,18 +2684,6 @@ export abstract class Input extends CardElement implements Shared.IInput {
         if (jsonValidation) {
             this.validation.parse(jsonValidation);
         }
-    }
-
-    renderSpeech(): string {
-        if (this.speak != null) {
-            return this.speak;
-        }
-
-        if (this.title) {
-            return '<s>' + this.title + '</s>\n';
-        }
-
-        return null;
     }
 
     getAllInputs(): Array<Input> {
@@ -3321,6 +3525,10 @@ export abstract class Action extends CardObject {
 
     onExecute: (sender: Action) => void;
 
+    getHref(): string {
+        return "";
+    }
+
     toJSON(): any {
 		let result = super.toJSON();
 
@@ -3498,6 +3706,10 @@ export abstract class Action extends CardObject {
         return this.internalValidateInputs(this.getReferencedInputs());
     }
 
+    shouldFallback(): boolean {
+        return this._shouldFallback || !this.requires.areAllMet(this.parent.hostConfig.hostCapabilities);
+    }
+
     get isPrimary(): boolean {
         return this.sentiment == Enums.ActionSentiment.Positive;
     }
@@ -3523,10 +3735,6 @@ export abstract class Action extends CardObject {
 
     get renderedElement(): HTMLElement {
         return this._renderedElement;
-    }
-
-    shouldFallback(): boolean {
-        return this._shouldFallback || !this.requires.areAllMet(this.parent.hostConfig.hostCapabilities);
     }
 }
 
@@ -3632,6 +3840,10 @@ export class OpenUrlAction extends Action {
 
         this.url = Utils.getStringValue(json["url"]);
     }
+
+    getHref(): string {
+        return this.url;
+    }
 }
 
 export class ToggleVisibilityAction extends Action {
@@ -3677,6 +3889,30 @@ export class ToggleVisibilityAction extends Action {
                 }
             }
         }
+    }
+
+    toJSON() {
+        let result = super.toJSON();
+
+        let targetElements: any[] = [];
+
+        for (let id of Object.keys(this.targetElements)) {
+            if (typeof this.targetElements[id] === "boolean") {
+                targetElements.push(
+                    {
+                        elementId: id,
+                        isVisible: this.targetElements[id]
+                    }
+                );
+            }
+            else {
+                targetElements.push(id);
+            }
+        }
+
+        result["targetElements"] = targetElements;
+
+        return result;
     }
 
     addTargetElement(elementId: string, isVisible: boolean = undefined) {
@@ -4504,11 +4740,6 @@ export class ActionSet extends CardElement {
         return this._actionCollection.getResourceInformation();
     }
 
-    renderSpeech(): string {
-        // There is nothing that can be spoken in an ActionSet
-        return "";
-    }
-
     get isInteractive(): boolean {
         return true;
     }
@@ -5009,7 +5240,7 @@ export class Container extends StylableCardElementContainer {
             Utils.setProperty(result, this.getItemsCollectionPropertyName(), elements);
         }
 
-        Utils.setProperty(result, "bleed", this.bleed);
+        Utils.setProperty(result, "bleed", this.bleed, false);
 
         return result;
     }
@@ -5226,29 +5457,6 @@ export class Container extends StylableCardElementContainer {
         }
 
         return result;
-    }
-
-    renderSpeech(): string {
-        if (this.speak != null) {
-            return this.speak;
-        }
-
-        // render each item
-        let speak = null;
-
-        if (this._items.length > 0) {
-            speak = '';
-
-            for (var i = 0; i < this._items.length; i++) {
-                var result = this._items[i].renderSpeech();
-
-                if (result) {
-                    speak += result;
-                }
-            }
-        }
-
-        return speak;
     }
 
     get bleed(): boolean {
@@ -5508,7 +5716,7 @@ export class ColumnSet extends StylableCardElementContainer {
             Utils.setProperty(result, "columns", columns);
         }
 
-        Utils.setProperty(result, "bleed", this.bleed);
+        Utils.setProperty(result, "bleed", this.bleed, false);
 
         return result;
     }
@@ -5691,23 +5899,6 @@ export class ColumnSet extends StylableCardElementContainer {
         }
 
         return result;
-    }
-
-    renderSpeech(): string {
-        if (this.speak != null) {
-            return this.speak;
-        }
-
-        // render each item
-        let speak = '';
-
-        if (this._columns.length > 0) {
-            for (var i = 0; i < this._columns.length; i++) {
-                speak += this._columns[i].renderSpeech();
-            }
-        }
-
-        return speak;
     }
 
     get bleed(): boolean {
@@ -6038,6 +6229,8 @@ export class ElementTypeRegistry extends TypeRegistry<CardElement> {
 
         this.registerType("Container", () => { return new Container(); });
         this.registerType("TextBlock", () => { return new TextBlock(); });
+        this.registerType("RichTextBlock", () => { return new RichTextBlock(); });
+        this.registerType("TextRun", () => { return new TextRun(); });
         this.registerType("Image", () => { return new Image(); });
         this.registerType("ImageSet", () => { return new ImageSet(); });
         this.registerType("Media", () => { return new Media(); });
@@ -6196,6 +6389,7 @@ export class AdaptiveCard extends ContainerWithActions {
 
     version?: HostConfig.Version = new HostConfig.Version(1, 0);
     fallbackText: string;
+    speak: string;
     designMode: boolean = false;
 
     getJsonTypeName(): string {
@@ -6251,6 +6445,7 @@ export class AdaptiveCard extends ContainerWithActions {
         this._fallbackCard = null;
 
         this._cardTypeName = Utils.getStringValue(json["type"]);
+        this.speak = Utils.getStringValue(json["speak"]);
 
 		var langId = Utils.getStringValue(json["lang"]);
 

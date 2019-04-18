@@ -251,6 +251,10 @@
     content: "\E8E9";
 }
 
+.acd-icon-richTextBlock::before {
+    content: "\EDC2";
+}
+
 .acd-icon-chevronDown::before {
     content: "\E70D";
 }
