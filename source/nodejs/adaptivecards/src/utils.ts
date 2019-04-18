@@ -36,9 +36,7 @@ export function setProperty(target: any, propertyName: string, propertyValue: an
         target[propertyName] = propertyValue;
     }
     else {
-        if (!targetIsAlreadySet) {
-            delete target[propertyName];
-        }
+        delete target[propertyName];
     }
 }
 
