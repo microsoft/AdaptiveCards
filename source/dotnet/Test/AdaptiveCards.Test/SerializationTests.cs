@@ -508,7 +508,7 @@ namespace AdaptiveCards.Test
             var textRun1 = new AdaptiveTextRun("Start the rich text block ");
             richTB.Inlines.Add(textRun1);
 
-            var textRun2 = new AdaptiveTextRun("with some cool looking stuff");
+            var textRun2 = new AdaptiveTextRun("with some cool looking stuff. ");
             textRun2.Color = AdaptiveTextColor.Accent;
             textRun2.FontStyle = AdaptiveFontStyle.Monospace;
             textRun2.IsSubtle = true;
@@ -517,6 +517,14 @@ namespace AdaptiveCards.Test
             textRun2.Size = AdaptiveTextSize.Large;
             textRun2.Weight = AdaptiveTextWeight.Bolder;
             richTB.Inlines.Add(textRun2);
+
+            var textRun3 = new AdaptiveTextRun("This run has a link!");
+            textRun3.SelectAction = new AdaptiveOpenUrlAction()
+            {
+                Title = "Open URL",
+                UrlString = "http://adaptivecards.io/"
+            };
+            richTB.Inlines.Add(textRun3);
 
             card.Body.Add(richTB);
 
@@ -541,8 +549,17 @@ namespace AdaptiveCards.Test
           ""isSubtle"": true,
           ""italic"": true,
           ""strikethrough"": true,
-          ""text"": ""with some cool looking stuff"",
+          ""text"": ""with some cool looking stuff. "",
           ""fontStyle"": ""monospace""
+        },
+        {
+          ""type"": ""TextRun"",
+          ""text"": ""This run has a link!"",
+          ""selectAction"": {
+            ""type"": ""Action.OpenUrl"",
+            ""url"": ""http://adaptivecards.io/"",
+            ""title"": ""Open URL""
+          }
         }
       ]
     }
@@ -574,9 +591,18 @@ namespace AdaptiveCards.Test
                           ""isSubtle"": true,
                           ""italic"": true,
                           ""strikethrough"": true,
-                          ""text"": ""with some cool looking stuff"",
+                          ""text"": ""with some cool looking stuff. "",
                           ""fontStyle"": ""monospace""
+                      },
+                      {
+                        ""type"": ""TextRun"",
+                        ""text"": ""This run has a link!"",
+                        ""selectAction"": {
+                          ""type"": ""Action.OpenUrl"",
+                          ""url"": ""http://adaptivecards.io/"",
+                          ""title"": ""Open URL""
                       }
+                  }
                   ]
                 }
               ]
@@ -592,9 +618,15 @@ namespace AdaptiveCards.Test
             Assert.AreEqual("Start the rich text block ", run1.Text);
 
             var run2 = inlines1[1] as AdaptiveTextRun;
-            Assert.AreEqual(run2.Text, "with some cool looking stuff");
+            Assert.AreEqual(run2.Text, "with some cool looking stuff. ");
             Assert.IsTrue(run2.Italic);
             Assert.IsTrue(run2.Strikethrough);
+
+            var run3 = inlines1[2] as AdaptiveTextRun;
+            Assert.AreEqual(run3.Text, "This run has a link!");
+            Assert.AreEqual("Action.OpenUrl", run3.SelectAction.Type);
+            Assert.AreEqual("Open URL", run3.SelectAction.Title);
+            Assert.AreEqual("http://adaptivecards.io/", (run3.SelectAction as AdaptiveOpenUrlAction).UrlString); ;
         }
 
         [TestMethod]

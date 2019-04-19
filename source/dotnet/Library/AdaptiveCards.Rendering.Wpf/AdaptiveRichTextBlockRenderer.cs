@@ -22,41 +22,55 @@ namespace AdaptiveCards.Rendering.Wpf
             foreach (var inlineElement in richTB.Inlines)
             {
                 AdaptiveTextRun textRun = inlineElement as AdaptiveTextRun;
-                Inline uiInlineText = FormatInlineTextRun(textRun, context);
-                uiRichTB.Inlines.Add(uiInlineText);
+                AddInlineTextRun(uiRichTB, textRun, context);
             }
-            uiRichTB.Inlines.Add(new LineBreak());
 
             return uiRichTB;
         }
 
-        private static Inline FormatInlineTextRun(AdaptiveTextRun textRun, AdaptiveRenderContext context)
+        private static void AddInlineTextRun(TextBlock uiRichTB, AdaptiveTextRun textRun, AdaptiveRenderContext context)
         {
+            Span textRunSpan;
+            if (textRun.SelectAction != null && context.Config.SupportsInteractivity)
+            {
+                Hyperlink selectActionLink = new Hyperlink();
+                selectActionLink.Click += (sender, e) =>
+                {
+                    context.InvokeAction(uiRichTB, new AdaptiveActionEventArgs(textRun.SelectAction));
+                    e.Handled = true;
+                };
+
+                textRunSpan = selectActionLink as Span;
+            }
+            else
+            {
+                textRunSpan = new Span();
+            }
+
             // Handle Date/Time parsing
             string text = RendererUtilities.ApplyTextFunctions(textRun.Text, context.Lang);
 
-            Span uiInlineElement = new Span();
-            uiInlineElement.Inlines.Add(text);
+            textRunSpan.Inlines.Add(text);
 
-            uiInlineElement.Style = context.GetStyle($"Adaptive.{textRun.Type}");
+            textRunSpan.Style = context.GetStyle($"Adaptive.{textRun.Type}");
 
-            uiInlineElement.FontFamily = new FontFamily(context.Config.GetFontFamily(textRun.FontStyle));
-            uiInlineElement.FontWeight = FontWeight.FromOpenTypeWeight(context.Config.GetFontWeight(textRun.FontStyle, textRun.Weight));
-            uiInlineElement.FontSize = context.Config.GetFontSize(textRun.FontStyle, textRun.Size);
+            textRunSpan.FontFamily = new FontFamily(context.Config.GetFontFamily(textRun.FontStyle));
+            textRunSpan.FontWeight = FontWeight.FromOpenTypeWeight(context.Config.GetFontWeight(textRun.FontStyle, textRun.Weight));
+            textRunSpan.FontSize = context.Config.GetFontSize(textRun.FontStyle, textRun.Size);
 
             if (textRun.Italic)
             {
-                uiInlineElement.FontStyle = FontStyles.Italic;
+                textRunSpan.FontStyle = FontStyles.Italic;
             }
 
             if (textRun.Strikethrough)
             {
-                uiInlineElement.TextDecorations = TextDecorations.Strikethrough;
+                textRunSpan.TextDecorations = TextDecorations.Strikethrough;
             }
 
-            uiInlineElement.SetColor(textRun.Color, textRun.IsSubtle, context);
+            textRunSpan.SetColor(textRun.Color, textRun.IsSubtle, context);
 
-            return uiInlineElement;
+            uiRichTB.Inlines.Add(textRunSpan);
         }
 
         private static TextBlock CreateControl(AdaptiveRichTextBlock richTB, AdaptiveRenderContext context)
