@@ -2673,7 +2673,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
         let result = super.toJSON();
 
         Utils.setProperty(result, "title", this.title);
-        Utils.setProperty(result, "value", this.renderedElement ? this.value : this.defaultValue);
+        Utils.setProperty(result, "value", this.defaultValue);
         Utils.setProperty(result, "validation", this.validation.toJSON());
 
         return result;
@@ -3234,10 +3234,7 @@ export class ChoiceSetInput extends Input {
             Utils.setProperty(result, "choices", choices);
         }
 
-        if (!this.isCompact) {
-            Utils.setProperty(result, "style", "expanded", false);
-        }
-
+        Utils.setProperty(result, "style", this.isCompact ? null : "expanded");
         Utils.setProperty(result, "isMultiSelect", this.isMultiSelect, false);
         Utils.setProperty(result, "wrap", this.wrap, false);
 

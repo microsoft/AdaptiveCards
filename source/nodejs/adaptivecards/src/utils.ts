@@ -25,18 +25,11 @@ export function appendChild(node: Node, child: Node) {
 }
 
 export function setProperty(target: any, propertyName: string, propertyValue: any, defaultValue: any = undefined) {
-    let targetIsAlreadySet = target[propertyName] !== undefined;
-
-    if (propertyValue === undefined || propertyValue === null) {
-        if (!targetIsAlreadySet) {
-            delete target[propertyName];
-        }
-    }
-    else if (propertyValue !== defaultValue) {
-        target[propertyName] = propertyValue;
+    if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue) {
+        delete target[propertyName];
     }
     else {
-        delete target[propertyName];
+        target[propertyName] = propertyValue;
     }
 }
 
