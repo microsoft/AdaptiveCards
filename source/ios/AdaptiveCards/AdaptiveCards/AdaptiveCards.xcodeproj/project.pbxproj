@@ -25,6 +25,7 @@
 		300ECB64219A12D100371DC5 /* AdaptiveBase64Util.h in Headers */ = {isa = PBXBuildFile; fileRef = 300ECB62219A12D100371DC5 /* AdaptiveBase64Util.h */; };
 		6B096D4E225431D0006CC034 /* ACRRichTextBlockRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B096D4C225431D0006CC034 /* ACRRichTextBlockRenderer.h */; };
 		6B096D4F225431D0006CC034 /* ACRRichTextBlockRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B096D4D225431D0006CC034 /* ACRRichTextBlockRenderer.mm */; };
+		6B096D7E22694776006CC034 /* ACRRegistrationPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B096D7D22694775006CC034 /* ACRRegistrationPrivate.h */; };
 		6B1147D11F32E53A008846EC /* ACRActionDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B1147D01F32E53A008846EC /* ACRActionDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B1147D81F32F922008846EC /* ACRShowCardTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B1147D61F32F922008846EC /* ACRShowCardTarget.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B1147D91F32F922008846EC /* ACRShowCardTarget.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B1147D71F32F922008846EC /* ACRShowCardTarget.mm */; };
@@ -113,6 +114,8 @@
 		7EDC0F68213878E800077A13 /* SemanticVersion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7EDC0F66213878E800077A13 /* SemanticVersion.cpp */; };
 		7EF8879D21F14CDD00BAFF02 /* BackgroundImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 7EF8879B21F14CDD00BAFF02 /* BackgroundImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7EF8879E21F14CDD00BAFF02 /* BackgroundImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7EF8879C21F14CDD00BAFF02 /* BackgroundImage.cpp */; };
+		8404BA8E226697800091A0AD /* FeatureRegistration.h in Headers */ = {isa = PBXBuildFile; fileRef = 8404BA8C226697800091A0AD /* FeatureRegistration.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8404BA8F226697800091A0AD /* FeatureRegistration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8404BA8D226697800091A0AD /* FeatureRegistration.cpp */; };
 		C8DEDF39220CDEB00001AAED /* ActionSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8DEDF37220CDEB00001AAED /* ActionSet.cpp */; };
 		C8DEDF3A220CDEB00001AAED /* ActionSet.h in Headers */ = {isa = PBXBuildFile; fileRef = C8DEDF38220CDEB00001AAED /* ActionSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CA1218C621C4509400152EA8 /* ToggleVisibilityTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = CA1218C221C4509300152EA8 /* ToggleVisibilityTarget.h */; };
@@ -347,6 +350,7 @@
 		300ECB62219A12D100371DC5 /* AdaptiveBase64Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AdaptiveBase64Util.h; path = ../../../../shared/cpp/ObjectModel/AdaptiveBase64Util.h; sourceTree = "<group>"; };
 		6B096D4C225431D0006CC034 /* ACRRichTextBlockRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRRichTextBlockRenderer.h; sourceTree = "<group>"; };
 		6B096D4D225431D0006CC034 /* ACRRichTextBlockRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRRichTextBlockRenderer.mm; sourceTree = "<group>"; };
+		6B096D7D22694775006CC034 /* ACRRegistrationPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRRegistrationPrivate.h; sourceTree = "<group>"; };
 		6B1147D01F32E53A008846EC /* ACRActionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRActionDelegate.h; sourceTree = "<group>"; };
 		6B1147D61F32F922008846EC /* ACRShowCardTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRShowCardTarget.h; sourceTree = "<group>"; };
 		6B1147D71F32F922008846EC /* ACRShowCardTarget.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRShowCardTarget.mm; sourceTree = "<group>"; };
@@ -433,6 +437,8 @@
 		7EDC0F66213878E800077A13 /* SemanticVersion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SemanticVersion.cpp; path = ../../../../shared/cpp/ObjectModel/SemanticVersion.cpp; sourceTree = "<group>"; };
 		7EF8879B21F14CDD00BAFF02 /* BackgroundImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BackgroundImage.h; path = ../../../../shared/cpp/ObjectModel/BackgroundImage.h; sourceTree = "<group>"; };
 		7EF8879C21F14CDD00BAFF02 /* BackgroundImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BackgroundImage.cpp; path = ../../../../shared/cpp/ObjectModel/BackgroundImage.cpp; sourceTree = "<group>"; };
+		8404BA8C226697800091A0AD /* FeatureRegistration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FeatureRegistration.h; path = ../../../../shared/cpp/ObjectModel/FeatureRegistration.h; sourceTree = "<group>"; };
+		8404BA8D226697800091A0AD /* FeatureRegistration.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FeatureRegistration.cpp; path = ../../../../shared/cpp/ObjectModel/FeatureRegistration.cpp; sourceTree = "<group>"; };
 		C8DEDF37220CDEB00001AAED /* ActionSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ActionSet.cpp; path = ../../../../shared/cpp/ObjectModel/ActionSet.cpp; sourceTree = "<group>"; };
 		C8DEDF38220CDEB00001AAED /* ActionSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ActionSet.h; path = ../../../../shared/cpp/ObjectModel/ActionSet.h; sourceTree = "<group>"; };
 		CA1218C221C4509300152EA8 /* ToggleVisibilityTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ToggleVisibilityTarget.h; path = ../../../../shared/cpp/ObjectModel/ToggleVisibilityTarget.h; sourceTree = "<group>"; };
@@ -755,6 +761,7 @@
 				F4F6BA37204F2954003741B6 /* ACRParseWarningPrivate.h */,
 				F427411A1EF8A25200399FBB /* ACRRegistration.h */,
 				F427411B1EF8A25200399FBB /* ACRRegistration.mm */,
+				6B096D7D22694775006CC034 /* ACRRegistrationPrivate.h */,
 				F496834E1F6CA24600DF0D3A /* ACRRenderer.h */,
 				F496834F1F6CA24600DF0D3A /* ACRRenderer.mm */,
 				F4CAE7851F75B25C00545555 /* ACRRendererPrivate.h */,
@@ -791,6 +798,8 @@
 		F423C0D71EE1FF2F00905679 /* SharedLib */ = {
 			isa = PBXGroup;
 			children = (
+				8404BA8D226697800091A0AD /* FeatureRegistration.cpp */,
+				8404BA8C226697800091A0AD /* FeatureRegistration.h */,
 				F4071C781FCCBAEF00AF4FEA /* ActionParserRegistration.cpp */,
 				F4071C741FCCBAEF00AF4FEA /* ActionParserRegistration.h */,
 				C8DEDF37220CDEB00001AAED /* ActionSet.cpp */,
@@ -1084,6 +1093,7 @@
 				6B2242B022334452000ACDA1 /* Inline.h in Headers */,
 				7EDC0F67213878E800077A13 /* SemanticVersion.h in Headers */,
 				F4F44B8020478C6F00A2F24C /* Util.h in Headers */,
+				8404BA8E226697800091A0AD /* FeatureRegistration.h in Headers */,
 				6B224279220BAC8B000ACDA1 /* BaseElement.h in Headers */,
 				F448732A1EE2261F00FCAFAE /* ToggleInput.h in Headers */,
 				6BC30F7621E5750A00B9FAAE /* EnumMagic.h in Headers */,
@@ -1225,6 +1235,7 @@
 				6B9D650E21095CBF00BB5C7B /* ACRMediaTarget.h in Headers */,
 				6BCE4B222108EB4E00021A62 /* ACRAVPlayerViewHoldingUIView.h in Headers */,
 				F4C1F5EB1F2ABD6B0018CB78 /* ACRBaseActionElementRenderer.h in Headers */,
+				6B096D7E22694776006CC034 /* ACRRegistrationPrivate.h in Headers */,
 				6B1147D11F32E53A008846EC /* ACRActionDelegate.h in Headers */,
 				F423C0C61EE1FBAA00905679 /* ACFramework.h in Headers */,
 				6B616C4321CB20D2003E29CE /* ACRActionToggleVisibilityRenderer.h in Headers */,
@@ -1300,6 +1311,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				global,
 			);
@@ -1398,6 +1410,7 @@
 				F44872FB1EE2261F00FCAFAE /* BaseInputElement.cpp in Sources */,
 				F42979431F322C3E00E89914 /* ACRErrors.mm in Sources */,
 				F44873251EE2261F00FCAFAE /* TextInput.cpp in Sources */,
+				8404BA8F226697800091A0AD /* FeatureRegistration.cpp in Sources */,
 				F44873091EE2261F00FCAFAE /* Enums.cpp in Sources */,
 				F44873171EE2261F00FCAFAE /* jsoncpp.cpp in Sources */,
 				F42E51781FEC3840008F9642 /* MarkDownHtmlGenerator.cpp in Sources */,

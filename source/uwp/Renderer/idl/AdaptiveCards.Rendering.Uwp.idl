@@ -89,6 +89,7 @@ AdaptiveNamespaceStart
 
     runtimeclass AdaptiveElementParserRegistration;
     runtimeclass AdaptiveActionParserRegistration;
+    runtimeclass AdaptiveFeatureRegistration;
     runtimeclass AdaptiveElementRendererRegistration;
     runtimeclass AdaptiveActionRendererRegistration;
     runtimeclass AdaptiveCardRenderer;
@@ -172,6 +173,7 @@ AdaptiveNamespaceStart
 
     interface IAdaptiveElementParserRegistration;
     interface IAdaptiveActionParserRegistration;
+    interface IAdaptiveFeatureRegistration;
     interface IAdaptiveElementParser;
     interface IAdaptiveActionParser;
 
@@ -592,6 +594,8 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT AdditionalProperties([out, retval] Windows.Data.Json.JsonObject** json);
         [propput] HRESULT AdditionalProperties([in] Windows.Data.Json.JsonObject* json);
+
+        HRESULT MeetsRequirements([in] AdaptiveFeatureRegistration * featureRegistration, [out, retval] boolean * value);
 
         HRESULT ToJson([out, retval] Windows.Data.Json.JsonObject** value);
     };
@@ -1812,6 +1816,9 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT OverrideStyles([out, retval] Windows.UI.Xaml.ResourceDictionary** overrideDictionary);
         [propput] HRESULT OverrideStyles([in] Windows.UI.Xaml.ResourceDictionary* overrideDictionary);
+
+        [propget] HRESULT FeatureRegistration([out, retval] AdaptiveFeatureRegistration * *featureRegistration);
+        [propput] HRESULT FeatureRegistration([in] AdaptiveFeatureRegistration * featureRegistration);
 
         HRESULT SetFixedDimensions([in] UINT32 desiredWidth, [in] UINT32 desiredHeight);
         HRESULT ResetFixedDimensions();
@@ -3138,6 +3145,38 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveFeatureRegistration),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(b2a455fd-385c-45eb-89ce-007b7ed0a815),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(5b639a4d-898a-4c63-8cfe-592437201830)
+#endif
+    ] interface IAdaptiveFeatureRegistration : IInspectable
+    {
+        HRESULT Set([in] HSTRING name, [in] HSTRING version);
+        HRESULT Get([in] HSTRING name, [out, retval] HSTRING * version);
+        HRESULT Remove([in] HSTRING name);
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif
+    ] 
+    runtimeclass AdaptiveFeatureRegistration 
+    {
+        [default] interface IAdaptiveFeatureRegistration; 
+    };
+
+
+    [
+        version(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(3324e9f6-86f0-4d59-a06f-6bb464ffd558),
         contract(InternalContract, 1),
@@ -3395,6 +3434,8 @@ AdaptiveNamespaceStart
     {
         [propget] HRESULT HostConfig([out, retval] AdaptiveHostConfig** value);
 
+        [propget] HRESULT FeatureRegistration([out, retval] AdaptiveFeatureRegistration** value);
+
         [propget] HRESULT ElementRenderers([out, retval] AdaptiveElementRendererRegistration** value);
 
         [propget] HRESULT ActionRenderers([out, retval] AdaptiveActionRendererRegistration** value);
@@ -3407,7 +3448,7 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT OverrideStyles([out, retval] Windows.UI.Xaml.ResourceDictionary** overrideDictionary);
 
-        [propget] HRESULT UserInputs([out, retval] AdaptiveInputs * *value);
+        [propget] HRESULT UserInputs([out, retval] AdaptiveInputs** value);
 
         HRESULT AddInputValue([in] IAdaptiveInputValue* inputValue);
 

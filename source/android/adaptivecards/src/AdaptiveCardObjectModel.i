@@ -73,6 +73,7 @@ struct tm {
 #include "../../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.h"
 #include "../../../shared/cpp/ObjectModel/ActionParserRegistration.h"
 #include "../../../shared/cpp/ObjectModel/ElementParserRegistration.h"
+#include "../../../shared/cpp/ObjectModel/FeatureRegistration.h"
 #include "../../../shared/cpp/ObjectModel/Container.h"
 #include "../../../shared/cpp/ObjectModel/Image.h"
 #include "../../../shared/cpp/ObjectModel/ImageSet.h"
@@ -86,6 +87,7 @@ struct tm {
 #include "../../../shared/cpp/ObjectModel/TimeInput.h"
 #include "../../../shared/cpp/ObjectModel/ToggleInput.h"
 #include "../../../shared/cpp/ObjectModel/OpenUrlAction.h"
+#include "../../../shared/cpp/ObjectModel/SemanticVersion.h"
 #include "../../../shared/cpp/ObjectModel/ShowCardAction.h"
 #include "../../../shared/cpp/ObjectModel/SubmitAction.h"
 #include "../../../shared/cpp/ObjectModel/ParseContext.h"
@@ -124,6 +126,7 @@ struct tm {
 %shared_ptr(AdaptiveCards::CollectionTypeElement)
 %shared_ptr(AdaptiveCards::ElementParserRegistration)
 %shared_ptr(AdaptiveCards::ActionParserRegistration)
+%shared_ptr(AdaptiveCards::FeatureRegistration)
 %shared_ptr(AdaptiveCards::Container)
 %shared_ptr(AdaptiveCards::TextBlock)
 %shared_ptr(AdaptiveCards::Image)
@@ -188,9 +191,15 @@ namespace Json {
 
     %extend Value {
         std::string getString() {
-            Json::FastWriter fastWriter;
-            std::string jsonString = fastWriter.write(*self);
-            return jsonString;
+            Json::StreamWriterBuilder builder;
+            builder["commentStyle"] = "None";
+            builder["indentation"] = "";
+            std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
+
+            std::ostringstream outStream;
+            writer->write(*self, &outStream);
+            outStream << std::endl;
+            return outStream.str();
         }
     }
 }
@@ -316,6 +325,22 @@ namespace Json {
 
 %typemap(javadirectorout) std::shared_ptr<AdaptiveCards::ElementParserRegistration> "$typemap(jstype, AdaptiveCards::ElementParserRegistration).getCPtr($javacall)";
 %typemap(directorout) std::shared_ptr<AdaptiveCards::ElementParserRegistration> %{
+  $&1_type tmp = NULL;
+  *($&1_type*)&tmp = *($&1_type*)&$input;
+  if (!tmp) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null $1_type");
+    return NULL;
+  }
+  $result = *tmp;
+%}
+
+%typemap(javadirectorin) std::shared_ptr<AdaptiveCards::FeatureRegistration> "new $typemap(jstype, AdaptiveCards::FeatureRegistration)($1,true)";
+%typemap(directorin,descriptor="Lio/adaptivecards/objectmodel/FeatureRegistration;") std::shared_ptr<AdaptiveCards::FeatureRegistration> %{
+  *($&1_type*)&j$1 = new $1_type($1);
+%}
+
+%typemap(javadirectorout) std::shared_ptr<AdaptiveCards::FeatureRegistration> "$typemap(jstype, AdaptiveCards::FeatureRegistration).getCPtr($javacall)";
+%typemap(directorout) std::shared_ptr<AdaptiveCards::FeatureRegistration> %{
   $&1_type tmp = NULL;
   *($&1_type*)&tmp = *($&1_type*)&$input;
   if (!tmp) {
@@ -734,6 +759,8 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.h"
 %include "../../../shared/cpp/ObjectModel/ActionParserRegistration.h"
 %include "../../../shared/cpp/ObjectModel/ElementParserRegistration.h"
+%include "../../../shared/cpp/ObjectModel/FeatureRegistration.h"
+%include "../../../shared/cpp/ObjectModel/SemanticVersion.h"
 %include "../../../shared/cpp/ObjectModel/Container.h"
 %include "../../../shared/cpp/ObjectModel/Image.h"
 %include "../../../shared/cpp/ObjectModel/ImageSet.h"

@@ -33,6 +33,8 @@
                hostConfig:(ACOHostConfig *)config
 {
     ACRRegistration *reg = [ACRRegistration getInstance];
+    ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
+    
     UIView<ACRIContentHoldingView> *childview = nil;
     NSDictionary<NSString *, NSNumber*> *attributes =
     @{@"spacing":[NSNumber numberWithInt:[config getHostConfig]->GetActions().buttonSpacing],
@@ -68,6 +70,9 @@
         UIButton *button = nil;
 
         @try {
+            if([acoElem meetsRequirements:featureReg] == NO) {
+                @throw [ACOFallbackException fallbackException];
+            }
             button = [actionRenderer renderButton:rootView inputs:inputs superview:superview baseActionElement:acoElem hostConfig:config];
             [childview addArrangedSubview:button];
         } @catch (ACOFallbackException *exception) {
