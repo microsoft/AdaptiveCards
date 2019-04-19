@@ -106,22 +106,14 @@ export function createElementInstance(
         errors);
 }
 
-export abstract class CardObject {
+export abstract class SerializableObject {
 	private _customProperties = {};
 	private _parsedPayload: any;
-
-	abstract getJsonTypeName(): string;
-	abstract shouldFallback(): boolean;
-	abstract setParent(parent: CardElement);
-
-	id: string;
 
 	parse(json: any, errors?: Array<HostConfig.IValidationError>) {
 		if (AdaptiveCard.enableFullJsonRoundTrip) {
 			this._parsedPayload = json;
 		}
-
-		this.id = Utils.getStringValue(json["id"]);
 	}
 
 	toJSON(): any {
@@ -138,9 +130,6 @@ export abstract class CardObject {
 			result[key] = this._customProperties[key];
 		};
 
-		Utils.setProperty(result, "type", this.getJsonTypeName());
-		Utils.setProperty(result, "id", this.id);
-
 		return result;
 	}
 
@@ -150,6 +139,29 @@ export abstract class CardObject {
 
 	getCustomProperty(name: string): any {
 		return this._customProperties[name];
+	}
+}
+
+export abstract class CardObject extends SerializableObject {
+	abstract getJsonTypeName(): string;
+	abstract shouldFallback(): boolean;
+	abstract setParent(parent: CardElement);
+
+	id: string;
+
+	parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+        super.parse(json, errors);
+
+		this.id = Utils.getStringValue(json["id"]);
+	}
+
+	toJSON(): any {
+        let result = super.toJSON();
+
+		Utils.setProperty(result, "type", this.getJsonTypeName());
+		Utils.setProperty(result, "id", this.id);
+
+		return result;
 	}
 }
 
@@ -1546,22 +1558,31 @@ export class RichTextBlock extends CardElement {
     }
 }
 
-export class Fact {
+export class Fact extends SerializableObject {
     name: string;
     value: string;
 
     constructor(name: string = undefined, value: string = undefined) {
+        super();
+
         this.name = name;
         this.value = value;
     }
 
     parse(json: any) {
+        super.parse(json);
+
         this.name = Utils.getStringValue(json["title"]);
         this.value = Utils.getStringValue(json["value"]);
     }
 
     toJSON() {
-        return { title: this.name, value: this.value };
+        let result = super.toJSON();
+
+        Utils.setProperty(result, "title", this.name);
+        Utils.setProperty(result, "value", this.value);
+
+        return result;
     }
 }
 
@@ -2274,25 +2295,31 @@ export class ImageSet extends CardElementContainer {
     }
 }
 
-export class MediaSource {
+export class MediaSource extends SerializableObject {
     mimeType: string;
     url: string;
 
     constructor(url: string = undefined, mimeType: string = undefined) {
+        super();
+
         this.url = url;
         this.mimeType = mimeType;
     }
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+        super.parse(json, errors);
+
 		this.mimeType = Utils.getStringValue(json["mimeType"]);
 		this.url = Utils.getStringValue(json["url"]);
 	}
 
 	toJSON(): any {
-        return {
-            mimeType: this.mimeType,
-            url: this.url
-        }
+        let result = super.toJSON();
+
+        Utils.setProperty(result, "mimeType", this.mimeType);
+        Utils.setProperty(result, "url", this.url);
+
+        return result;
     }
 }
 
@@ -2534,18 +2561,20 @@ export class Media extends CardElement {
     }
 }
 
-export class InputValidationOptions {
+export class InputValidationOptions extends SerializableObject {
     necessity: Enums.InputValidationNecessity = Enums.InputValidationNecessity.Optional;
     errorMessage: string = undefined;
 
     parse(json: any) {
+        super.parse(json);
+
         this.necessity = Utils.getEnumValue(Enums.InputValidationNecessity, json["necessity"], this.necessity);
         this.errorMessage = Utils.getStringValue(json["errorMessage"]);
     }
 
     toJSON() {
         if (this.necessity != Enums.InputValidationNecessity.Optional || !Utils.isNullOrEmpty(this.errorMessage)) {
-            let result = {}
+            let result = super.toJSON();
 
             Utils.setEnumProperty(Enums.InputValidationNecessity, result, "necessity", this.necessity, Enums.InputValidationNecessity.Optional);
             Utils.setProperty(result, "errorMessage", this.errorMessage);
@@ -2977,22 +3006,31 @@ export class ToggleInput extends Input {
     }
 }
 
-export class Choice {
+export class Choice extends SerializableObject {
     title: string;
     value: string;
 
     constructor(title: string = undefined, value: string = undefined) {
+        super();
+
         this.title = title;
         this.value = value;
     }
 
     parse(json: any) {
+        super.parse(json);
+
         this.title = Utils.getStringValue(json["title"]);
         this.value = Utils.getStringValue(json["value"]);
     }
 
     toJSON(): any {
-        return { title: this.title, value: this.value };
+        let result = super.toJSON();
+
+        Utils.setProperty(result, "title", this.title);
+        Utils.setProperty(result, "value", this.value);
+
+        return result;
     }
 }
 
@@ -3924,23 +3962,32 @@ export class ToggleVisibilityAction extends Action {
     }
 }
 
-export class HttpHeader {
+export class HttpHeader extends SerializableObject {
     private _value = new Shared.StringWithSubstitutions();
 
     name: string;
 
     constructor(name: string = "", value: string = "") {
+        super();
+
         this.name = name;
         this.value = value;
     }
 
     parse(json: any) {
+        super.parse(json);
+
         this.name = Utils.getStringValue(json["name"]);
         this.value = Utils.getStringValue(json["value"]);
     }
 
     toJSON(): any {
-        return { name: this.name, value: this._value.getOriginal() };
+        let result = super.toJSON();
+
+        Utils.setProperty(result, "name", this.name);
+        Utils.setProperty(result, "value", this._value.getOriginal());
+
+        return result;
     }
 
     getReferencedInputs(inputs: Array<Input>, referencedInputs: Shared.Dictionary<Input>) {
@@ -4944,7 +4991,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
     }
 }
 
-export class BackgroundImage {
+export class BackgroundImage extends SerializableObject {
     private static readonly defaultFillMode = Enums.FillMode.Cover;
     private static readonly defaultHorizontalAlignment = Enums.HorizontalAlignment.Left;
     private static readonly defaultVerticalAlignment = Enums.VerticalAlignment.Top;
@@ -4962,6 +5009,8 @@ export class BackgroundImage {
     }
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+        super.parse(json, errors);
+
         this.url = Utils.getStringValue(json["url"]);
         this.fillMode = Utils.getEnumValue(Enums.FillMode, json["fillMode"], this.fillMode);
         this.horizontalAlignment = Utils.getEnumValue(Enums.HorizontalAlignment, json["horizontalAlignment"], this.horizontalAlignment);
@@ -4976,10 +5025,11 @@ export class BackgroundImage {
         if (this.fillMode == BackgroundImage.defaultFillMode &&
             this.horizontalAlignment == BackgroundImage.defaultHorizontalAlignment &&
             this.verticalAlignment == BackgroundImage.defaultVerticalAlignment) {
+
             return this.url;
         }
         else {
-            let result = {};
+            let result = super.toJSON();
 
             Utils.setProperty(result, "url", this.url);
             Utils.setEnumProperty(Enums.FillMode, result, "fillMode", this.fillMode, BackgroundImage.defaultFillMode);
