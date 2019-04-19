@@ -68,6 +68,11 @@ namespace AdaptiveCards.Rendering.Wpf
                 textRunSpan.TextDecorations = TextDecorations.Strikethrough;
             }
 
+            if (textRun.Highlight)
+            {
+                textRunSpan.SetHighlightColor(textRun.Color, textRun.IsSubtle, context);
+            }
+
             textRunSpan.SetColor(textRun.Color, textRun.IsSubtle, context);
 
             uiRichTB.Inlines.Add(textRunSpan);
