@@ -1,9 +1,9 @@
-using System;
-using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace AdaptiveCards
 {
@@ -19,7 +19,6 @@ namespace AdaptiveCards
         /// </summary>
         public static readonly Lazy<Dictionary<string, Type>> TypedElementTypes = new Lazy<Dictionary<string, Type>>(() =>
         {
-            // TODO: Should this be a static? It makes it impossible to have diff renderers support different elements
             var types = new Dictionary<string, Type>
             {
                 [AdaptiveCard.TypeName] = typeof(AdaptiveCard),
@@ -56,45 +55,23 @@ namespace AdaptiveCards
             TypedElementTypes.Value[typeName] = typeof(T);
         }
 
-        public override bool CanRead => true;
-
-        public override bool CanWrite => false;
-
         public override bool CanConvert(Type objectType)
         {
             return typeof(AdaptiveTypedElement).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
         }
 
+        public override bool CanWrite => false;
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             throw new NotImplementedException();
         }
 
+        public override bool CanRead => true;
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var jObject = JObject.Load(reader);
 
-            var typeName = jObject["type"]?.Value<string>() ?? jObject["@type"]?.Value<string>();
-            if (typeName == null)
-            {
-                // Get value of this objectType's "Type" JsonProperty(Required)
-                var typeJsonPropertyRequiredValue = objectType.GetRuntimeProperty("Type")
-                    .CustomAttributes.Where(a => a.AttributeType == typeof(JsonPropertyAttribute)).FirstOrDefault()?
-                    .NamedArguments.Where(a => a.TypedValue.ArgumentType == typeof(Required)).FirstOrDefault()
-                    .TypedValue.Value.ToString();
-
-                // If this objectType does not require "Type" attribute, use the objectType's XML "TypeName" attribute
-                if (typeJsonPropertyRequiredValue == "0")
-                {
-                    typeName = objectType
-                        .GetRuntimeFields().Where(x => x.Name == "TypeName").FirstOrDefault()?
-                        .GetValue("TypeName").ToString();
-                }
-                else
-                {
-                    throw new AdaptiveSerializationException("Required property 'type' not found on adaptive card element");
-                }
-            }
+            string typeName = GetElementTypeName(objectType, jObject);
 
             if (TypedElementTypes.Value.TryGetValue(typeName, out var type))
             {
@@ -160,6 +137,33 @@ namespace AdaptiveCards
                 Warnings.Add(new AdaptiveWarning(-1, $"Unknown element '{typeName}'"));
                 return result;
             }
+        }
+
+        public static string GetElementTypeName(Type objectType, JObject jObject)
+        {
+            var typeName = jObject["type"]?.Value<string>() ?? jObject["@type"]?.Value<string>();
+            if (typeName == null)
+            {
+                // Get value of this objectType's "Type" JsonProperty(Required)
+                var typeJsonPropertyRequiredValue = objectType.GetRuntimeProperty("Type")
+                    .CustomAttributes.Where(a => a.AttributeType == typeof(JsonPropertyAttribute)).FirstOrDefault()?
+                    .NamedArguments.Where(a => a.TypedValue.ArgumentType == typeof(Required)).FirstOrDefault()
+                    .TypedValue.Value.ToString();
+
+                // If this objectType does not require "Type" attribute, use the objectType's XML "TypeName" attribute
+                if (typeJsonPropertyRequiredValue == "0")
+                {
+                    typeName = objectType
+                        .GetRuntimeFields().Where(x => x.Name == "TypeName").FirstOrDefault()?
+                        .GetValue("TypeName").ToString();
+                }
+                else
+                {
+                    throw new AdaptiveSerializationException("Required property 'type' not found on adaptive card element");
+                }
+            }
+
+            return typeName;
         }
 
         private void HandleAdditionalProperties(AdaptiveTypedElement te)

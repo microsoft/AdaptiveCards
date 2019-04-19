@@ -2,8 +2,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 
 namespace AdaptiveCards
 {
@@ -11,6 +9,7 @@ namespace AdaptiveCards
     {
         public List<AdaptiveWarning> Warnings { get; set; } = new List<AdaptiveWarning>();
 
+        public override bool CanWrite => true;
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             AdaptiveFallbackElement fallback = (AdaptiveFallbackElement)value;
@@ -27,12 +26,9 @@ namespace AdaptiveCards
             }
         }
 
-        public override bool CanRead => true;
-
-        public override bool CanWrite => true;
-
         public static bool IsInFallback = false;
 
+        public override bool CanRead => true;
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var token = reader.TokenType;
@@ -56,31 +52,9 @@ namespace AdaptiveCards
 
                 case JsonToken.StartObject:
                     {
-
                         var jObject = JObject.Load(reader);
 
-                        var typeName = jObject["type"]?.Value<string>() ?? jObject["@type"]?.Value<string>();
-                        if (typeName == null)
-                        {
-                            // Get value of this objectType's "Type" JsonProperty(Required)
-                            var typeJsonPropertyRequiredValue = objectType.GetRuntimeProperty("Type")
-                                .CustomAttributes.Where(a => a.AttributeType == typeof(JsonPropertyAttribute)).FirstOrDefault()?
-                                .NamedArguments.Where(a => a.TypedValue.ArgumentType == typeof(Required)).FirstOrDefault()
-                                .TypedValue.Value.ToString();
-
-                            // If this objectType does not require "Type" attribute, use the objectType's XML "TypeName" attribute
-                            if (typeJsonPropertyRequiredValue == "0")
-                            {
-                                typeName = objectType
-                                    .GetRuntimeFields().Where(x => x.Name == "TypeName").FirstOrDefault()?
-                                    .GetValue("TypeName").ToString();
-                            }
-                            else
-                            {
-                                throw new AdaptiveSerializationException("Required property 'type' not found on adaptive card element");
-                            }
-                        }
-
+                        var typeName = AdaptiveTypedElementConverter.GetElementTypeName(objectType, jObject);
                         Type type;
                         if (!AdaptiveTypedElementConverter.TypedElementTypes.Value.TryGetValue(typeName, out type))
                         {
