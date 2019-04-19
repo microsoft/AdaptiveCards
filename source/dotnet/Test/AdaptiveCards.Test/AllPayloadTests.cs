@@ -127,9 +127,9 @@ namespace AdaptiveCards.Test
                     "Action.CustomParsing",
 
                     // These are cards that features haven't been implemented yet
+                    // <this space intentionally blank>
 
-
-                    // These cards have AdpativeCards with styles on them
+                    // These cards have AdaptiveCards with styles on them
                     "ColumnColumnSetContainer.Bleed",
                 });
         }
