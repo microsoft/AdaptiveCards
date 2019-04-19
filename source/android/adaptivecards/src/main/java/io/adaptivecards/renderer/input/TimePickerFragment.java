@@ -26,25 +26,7 @@ public class TimePickerFragment extends DialogFragment
         m_context = context;
     }
 
-    private long getTimeInMiliseconds(long hours, long minutes)
-    {
-        return (hours * 60 + minutes) * 10000000 * 60;
-    }
 
-    private Calendar getTime(String s)
-    {
-        Calendar calendar = new GregorianCalendar();
-        long[] hour = {0}, minutes = {0};
-
-        if (DateTimePreparser.TryParseSimpleTime(s, hour, minutes))
-        {
-            Date date = new Date();
-            date.setTime(getTimeInMiliseconds(hour[0], minutes[0]));
-            calendar.setTime(date);
-        }
-
-        return calendar;
-    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
@@ -53,7 +35,10 @@ public class TimePickerFragment extends DialogFragment
 
         try
         {
-            calendar = getTime(m_editText.getText().toString());
+            // Get current value shown to user in the TextEdit
+            Date value = DateFormat.getTimeInstance().parse(m_editText.getText().toString());
+            calendar = new GregorianCalendar();
+            calendar.setTime(value);
         }
         catch (Exception excep)
         {
@@ -61,9 +46,9 @@ public class TimePickerFragment extends DialogFragment
             calendar = Calendar.getInstance();
         }
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog(m_context, this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false);
+        // Android doesn't support min or max time in a timeDialogPicker
 
-        return timePickerDialog;
+        return new TimePickerDialog(m_context, this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false);
     }
 
     @Override

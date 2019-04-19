@@ -19,6 +19,7 @@ import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.TimeInput;
 import io.adaptivecards.renderer.inputhandler.TimeInputHandler;
+import io.adaptivecards.renderer.readonly.RendererUtil;
 
 import java.sql.Time;
 import java.text.DateFormat;
@@ -74,17 +75,7 @@ public class TimeInputRenderer extends TextInputRenderer
         setSpacingAndSeparator(context, viewGroup, timeInput.GetSpacing(), timeInput.GetSeparator(), hostConfig, true /* horizontal line */);
 
         TimeInputHandler timeInputHandler = new TimeInputHandler(timeInput, fragmentManager);
-        String time = timeInput.GetValue();
-
-        try
-        {
-            Date date = TimeInputHandler.s_simpleDateFormat.parse(timeInput.GetValue());
-            time = DateFormat.getTimeInstance().format(date);
-        }
-        catch (ParseException e)
-        {
-            //TODO: Log this
-        }
+        String time = DateFormat.getTimeInstance().format(RendererUtil.getTime(timeInput.GetValue()).getTime());
 
         EditText editText = renderInternal(
                 renderedCard,

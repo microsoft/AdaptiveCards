@@ -8,6 +8,7 @@ import android.text.Spanned;
 import org.xml.sax.XMLReader;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import io.adaptivecards.objectmodel.DateTimePreparser;
@@ -23,8 +24,23 @@ public class RendererUtil
         long[] year = {0}, month = {0}, day = {0};
         if (DateTimePreparser.TryParseSimpleDate(s, year, month, day))
         {
-            // The month must be deducted one as java.util.Calendar class starts indexing the months at 0
+            // The month must be subtracted one as java.util.Calendar class starts indexing the months at 0
             calendar.set((int)year[0], (int)month[0] - 1, (int)day[0]);
+        }
+
+        return calendar;
+    }
+
+    public static Calendar getTime(String s)
+    {
+        Calendar calendar = new GregorianCalendar();
+        long[] hour = {0}, minutes = {0};
+
+        if (DateTimePreparser.TryParseSimpleTime(s, hour, minutes))
+        {
+            calendar.set(Calendar.HOUR_OF_DAY, (int)hour[0]);
+            calendar.set(Calendar.MINUTE, (int)minutes[0]);
+            calendar.set(Calendar.SECOND, 0);
         }
 
         return calendar;
