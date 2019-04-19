@@ -61,7 +61,7 @@ namespace AdaptiveCards
         public IDictionary<string, string> Requires;
 
         // Given a map of what our host provides, determine if this element's requirements are satisfied.
-        public bool MeetsRequirements(IDictionary<string, string> hostProvides)
+        public bool MeetsRequirements(AdaptiveFeatureRegistration featureRegistration)
         {
             if (Requires != null)
             {
@@ -70,32 +70,24 @@ namespace AdaptiveCards
                     // special case for adaptive cards version
                     var requirementName = requirement.Key;
                     var requirementVersion = requirement.Value;
-                    if (requirementName.Equals("adaptiveCards"))
+                    string provides = featureRegistration.Get(requirementName);
+                    if (provides.Length == 0)
                     {
-                        AdaptiveSchemaVersion currentAdaptiveCardsVersion = new AdaptiveSchemaVersion("1.2");
-                        if (currentAdaptiveCardsVersion > requirementVersion)
-                        {
-                            return false;
-                        }
+                        return false;
                     }
-                    else
+
+                    if (requirementVersion == "*")
                     {
-                        string provides;
-                        if (!hostProvides.TryGetValue(requirementName, out provides))
-                        {
-                            // host doesn't provide this requirement
-                            return false;
-                        }
-                        else
-                        {
-                            // host provides this requirement, but does it provide an acceptible version?
-                            var providesVersion = new AdaptiveSchemaVersion(provides);
-                            if (providesVersion < requirementVersion)
-                            {
-                                // host's provided version is too low
-                                return false;
-                            }
-                        }
+                        // any version is sufficient to satisfy the requirement
+                        return true;
+                    }
+
+                    // host provides this requirement, but does it provide an acceptible version?
+                    var providesVersion = new AdaptiveSchemaVersion(provides);
+                    if (providesVersion < requirementVersion)
+                    {
+                        // host's provided version is too low
+                        return false;
                     }
                 }
             }

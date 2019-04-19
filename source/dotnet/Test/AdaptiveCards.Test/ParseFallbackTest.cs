@@ -200,23 +200,23 @@ namespace AdaptiveCards.Test
 
             var textBlock = (AdaptiveTextBlock)card.Body[0];
             var textBlockNoRequires = (AdaptiveTextBlock)card.Body[1];
-            var hostProvides = new Dictionary<string, string>() { { "foobar", "2" } };
+            AdaptiveFeatureRegistration featureRegistration = new AdaptiveFeatureRegistration();
+            featureRegistration.Set("foobar", "2");
 
-            Assert.IsTrue(textBlock.MeetsRequirements(hostProvides));
-            Assert.IsTrue(textBlockNoRequires.MeetsRequirements(hostProvides));
+            Assert.IsTrue(textBlock.MeetsRequirements(featureRegistration));
+            Assert.IsTrue(textBlockNoRequires.MeetsRequirements(featureRegistration));
 
-            hostProvides.Clear();
-            Assert.IsFalse(textBlock.MeetsRequirements(hostProvides));
-            Assert.IsTrue(textBlockNoRequires.MeetsRequirements(hostProvides));
+            featureRegistration.Remove("foobar");
+            Assert.IsFalse(textBlock.MeetsRequirements(featureRegistration));
+            Assert.IsTrue(textBlockNoRequires.MeetsRequirements(featureRegistration));
 
-            hostProvides.Add("foobar", "1.9.9.9");
-            Assert.IsFalse(textBlock.MeetsRequirements(hostProvides));
-            Assert.IsTrue(textBlockNoRequires.MeetsRequirements(hostProvides));
+            featureRegistration.Set("foobar", "1.9.9.9");
+            Assert.IsFalse(textBlock.MeetsRequirements(featureRegistration));
+            Assert.IsTrue(textBlockNoRequires.MeetsRequirements(featureRegistration));
 
-            hostProvides.Clear();
-            hostProvides.Add("foobar", "99");
-            Assert.IsTrue(textBlock.MeetsRequirements(hostProvides));
-            Assert.IsTrue(textBlockNoRequires.MeetsRequirements(hostProvides));
+            featureRegistration.Set("foobar", "99");
+            Assert.IsTrue(textBlock.MeetsRequirements(featureRegistration));
+            Assert.IsTrue(textBlockNoRequires.MeetsRequirements(featureRegistration));
         }
 
         [TestMethod]

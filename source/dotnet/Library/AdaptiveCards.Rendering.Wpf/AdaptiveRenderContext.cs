@@ -43,6 +43,8 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public AdaptiveActionHandlers ActionHandlers { get; set; }
 
+        public AdaptiveFeatureRegistration FeatureRegistration { get; set; }
+
         public ResourceResolver ResourceResolvers { get; set; }
 
         public bool IsRenderingSelectAction { get; set; }
@@ -172,6 +174,11 @@ namespace AdaptiveCards.Rendering.Wpf
 
             try
             {
+                if (AncestorHasFallback && !element.MeetsRequirements(FeatureRegistration))
+                {
+                    throw new AdaptiveFallbackException("Element requirements aren't met");
+                }
+
                 // Inputs should render read-only if interactivity is false
                 if (!Config.SupportsInteractivity && element is AdaptiveInput input)
                 {
@@ -222,7 +229,6 @@ namespace AdaptiveCards.Rendering.Wpf
             if (frameworkElementOut == null)
             {
                 // Since no renderer exists for this element, add warning and render fallback (if available)
-                Warnings.Add(new AdaptiveWarning(-1, $"No renderer for element '{element.Type}'"));
                 if (element.Fallback != null && element.Fallback.Type != AdaptiveFallbackElement.AdaptiveFallbackType.None)
                 {
                     if (element.Fallback.Type == AdaptiveFallbackElement.AdaptiveFallbackType.Drop)
@@ -238,6 +244,10 @@ namespace AdaptiveCards.Rendering.Wpf
                 else if (AncestorHasFallback)
                 {
                     throw new AdaptiveFallbackException();
+                }
+                else
+                {
+                    Warnings.Add(new AdaptiveWarning(-1, $"No renderer for element '{element.Type}'"));
                 }
             }
 

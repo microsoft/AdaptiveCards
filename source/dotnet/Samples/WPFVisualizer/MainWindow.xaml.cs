@@ -56,7 +56,8 @@ namespace WpfVisualizer
 
             Renderer = new AdaptiveCardRenderer()
             {
-                Resources = Resources
+                Resources = Resources,
+                
             };
 
             // Use the Xceed rich input controls

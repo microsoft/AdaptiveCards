@@ -26,6 +26,7 @@ namespace AdaptiveCards.Rendering.Wpf
         public AdaptiveCardRenderer(AdaptiveHostConfig hostConfig)
         {
             HostConfig = hostConfig;
+            FeatureRegistration.Set("acTest", "1.0");
             SetObjectTypes();
         }
 
@@ -56,6 +57,7 @@ namespace AdaptiveCards.Rendering.Wpf
             ElementRenderers.Set<AdaptiveAction>(AdaptiveActionRenderer.Render);
         }
 
+        public AdaptiveFeatureRegistration FeatureRegistration { get; } = new AdaptiveFeatureRegistration();
 
         /// <summary>
         /// A path to a XAML resource dictionary
@@ -237,6 +239,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 Config = HostConfig ?? new AdaptiveHostConfig(),
                 Resources = Resources,
                 ElementRenderers = ElementRenderers,
+                FeatureRegistration = FeatureRegistration,
                 Lang = card.Lang,
                 RenderArgs = new AdaptiveRenderArgs { ForegroundColors = (HostConfig != null) ? HostConfig.ContainerStyles.Default.ForegroundColors : new ContainerStylesConfig().Default.ForegroundColors }
             };

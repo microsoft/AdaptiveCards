@@ -18,6 +18,8 @@ namespace AdaptiveCards.Rendering.Html
 
         public AdaptiveElementRenderers<HtmlTag, AdaptiveRenderContext> ElementRenderers { get; set; }
 
+        public AdaptiveFeatureRegistration FeatureRegistration { get; set; }
+
         public IList<AdaptiveWarning> Warnings { get; } = new List<AdaptiveWarning>();
 
         public IList<HtmlTag> ShowCardTags { get; } = new List<HtmlTag>();
@@ -33,6 +35,11 @@ namespace AdaptiveCards.Rendering.Html
 
             try
             {
+                if (AncestorHasFallback && !element.MeetsRequirements(FeatureRegistration))
+                {
+                    throw new AdaptiveFallbackException("Element requirements aren't met");
+                }
+
                 // If non-interactive, inputs should just render text
                 if (!Config.SupportsInteractivity && element is AdaptiveInput input)
                 {
@@ -62,7 +69,6 @@ namespace AdaptiveCards.Rendering.Html
             if (htmlTagOut == null)
             {
                 // Since no renderer exists for this element, add warning and render fallback (if available)
-                Warnings.Add(new AdaptiveWarning(-1, $"No renderer for element '{element.Type}'"));
                 if (element.Fallback != null && element.Fallback.Type != AdaptiveFallbackElement.AdaptiveFallbackType.None)
                 {
                     if (element.Fallback.Type == AdaptiveFallbackElement.AdaptiveFallbackType.Drop)
@@ -78,6 +84,10 @@ namespace AdaptiveCards.Rendering.Html
                 else if (AncestorHasFallback)
                 {
                     throw new AdaptiveFallbackException();
+                }
+                else
+                {
+                    Warnings.Add(new AdaptiveWarning(-1, $"No renderer for element '{element.Type}'"));
                 }
             }
 
