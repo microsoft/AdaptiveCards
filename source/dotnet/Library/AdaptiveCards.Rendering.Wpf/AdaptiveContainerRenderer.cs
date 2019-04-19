@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
@@ -15,7 +16,8 @@ namespace AdaptiveCards.Rendering.Wpf
 
             // Keep track of ContainerStyle.ForegroundColors before Container is rendered
             var parentRenderArgs = context.RenderArgs;
-            var elementRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
+            // This is the renderArgs that will be passed down to the children
+            var childRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
             
             Grid uiOuterContainer = new Grid();
             
@@ -37,13 +39,31 @@ namespace AdaptiveCards.Rendering.Wpf
                 ContainerStyleConfig containerStyle = context.Config.ContainerStyles.GetContainerStyleConfig(container.Style);
                 border.Background = context.GetColorBrush(containerStyle.BackgroundColor);
 
-                elementRenderArgs.ForegroundColors = containerStyle.ForegroundColors;
+                childRenderArgs.ForegroundColors = containerStyle.ForegroundColors;
+            }
+
+            switch (container.VerticalContentAlignment)
+            {
+                case AdaptiveVerticalContentAlignment.Center:
+                    uiContainer.VerticalAlignment = VerticalAlignment.Center;
+                    break;
+                case AdaptiveVerticalContentAlignment.Bottom:
+                    uiContainer.VerticalAlignment = VerticalAlignment.Bottom;
+                    break;
+                case AdaptiveVerticalContentAlignment.Top:
+                default:
+                    break;
+            }
+
+            if (hasPadding)
+            {
+                childRenderArgs.BleedDirection = BleedDirection.Both;
             }
 
             // Modify context outer parent style so padding necessity can be determined
-            elementRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : container.Style.Value;
-            elementRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-            context.RenderArgs = elementRenderArgs;
+            childRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : container.Style.Value;
+            childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
+            context.RenderArgs = childRenderArgs;
 
             AddContainerElements(uiContainer, container.Items, context);
 
@@ -160,28 +180,20 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 uiElement.Margin = new Thickness { Left = padding, Top = padding, Right = padding, Bottom = padding };
 
-                if (element.Bleed && context.RenderArgs.HasParentWithPadding)
+                if (element.Bleed)
                 {
-                    // Columns have a special rendering behaviour, only the leftmost and rightmost columns must bleed
-                    if (element is AdaptiveColumn column)
+                    int leftMargin = 0, rightMargin = 0;
+                    if (parentRenderArgs.BleedDirection == BleedDirection.Left || parentRenderArgs.BleedDirection == BleedDirection.Both)
                     {
-                        if (parentRenderArgs.ColumnRelativePosition == ColumnPositionEnum.Begin)
-                        {
-                            border.Margin = new Thickness { Left = -padding };
-                        }
-                        else if (parentRenderArgs.ColumnRelativePosition == ColumnPositionEnum.End)
-                        {
-                            border.Margin = new Thickness { Right = -padding };
-                        }
-                        else if (parentRenderArgs.ColumnRelativePosition == ColumnPositionEnum.Only)
-                        {
-                            border.Margin = new Thickness { Left = -padding, Right = -padding };
-                        }
+                        leftMargin = -padding;
                     }
-                    else
+
+                    if (parentRenderArgs.BleedDirection == BleedDirection.Right || parentRenderArgs.BleedDirection == BleedDirection.Both)
                     {
-                        border.Margin = new Thickness { Left = -padding, Right = -padding };
+                        rightMargin = -padding;
                     }
+
+                    border.Margin = new Thickness { Left = leftMargin, Right = rightMargin };
                 }
             }
 

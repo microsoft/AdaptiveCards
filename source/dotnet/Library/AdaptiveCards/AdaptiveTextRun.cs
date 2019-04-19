@@ -66,6 +66,26 @@ namespace AdaptiveCards
         public bool IsSubtle { get; set; }
 
         /// <summary>
+        ///     Make the text italic
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(false)]
+        public bool Italic { get; set; }
+
+        /// <summary>
+        ///     Make the struck through
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(false)]
+        public bool Strikethrough { get; set; }
+
+        /// <summary>
         ///     The text to display
         /// </summary>
         [JsonRequired]
@@ -83,5 +103,15 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(typeof(AdaptiveFontStyle), "default")]
         public AdaptiveFontStyle FontStyle { get; set; }
+
+        /// <summary>
+        ///     Action for this text run
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        [DefaultValue(null)]
+        public AdaptiveAction SelectAction { get; set; }
     }
 }
