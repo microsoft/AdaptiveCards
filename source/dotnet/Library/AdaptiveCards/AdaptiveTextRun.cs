@@ -83,5 +83,15 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(typeof(AdaptiveFontStyle), "default")]
         public AdaptiveFontStyle FontStyle { get; set; }
+
+        /// <summary>
+        ///     Action for this text run
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        [DefaultValue(null)]
+        public AdaptiveAction SelectAction { get; set; }
     }
 }

@@ -71,7 +71,6 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         }
 
         setSpacingAndSeparator(context, viewGroup, columnSet.GetSpacing(), columnSet.GetSeparator(), hostConfig, true);
-        ContainerStyle styleForThis = columnSet.GetStyle().swigValue() == ContainerStyle.None.swigValue() ? renderArgs.getContainerStyle() : columnSet.GetStyle();
 
         ColumnVector columnVector = columnSet.GetColumns();
         long columnVectorSize = columnVector.size();
@@ -83,25 +82,22 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         layout.setClipChildren(false);
         layout.setClipToPadding(false);
 
-        if(!baseCardElement.GetIsVisible())
+        ContainerStyle parentContainerStyle = renderArgs.getContainerStyle();
+        ContainerStyle styleForThis = ContainerRenderer.GetLocalContainerStyle(columnSet, parentContainerStyle);
+
+        if (!baseCardElement.GetIsVisible())
         {
             layout.setVisibility(View.GONE);
         }
 
-        ContainerStyle containerStyle = renderArgs.getContainerStyle();
         for (int i = 0; i < columnVectorSize; i++)
         {
             Column column = columnVector.get(i);
 
-            ColumnRenderer rendererAsColumnRenderer = null;
-            if (columnRenderer instanceof ColumnRenderer)
-            {
-                rendererAsColumnRenderer = (ColumnRenderer) columnRenderer;
-                rendererAsColumnRenderer.setIsRenderingFirstColumn(i == 0);
-                rendererAsColumnRenderer.setIsRenderingLastColumn(i == (columnVectorSize - 1));
-            }
+            RenderArgs columnRenderArgs = new RenderArgs(renderArgs);
+            columnRenderArgs.setContainerStyle(styleForThis);
 
-            columnRenderer.render(renderedCard, context, fragmentManager, layout, column, cardActionHandler, hostConfig, renderArgs);
+            columnRenderer.render(renderedCard, context, fragmentManager, layout, column, cardActionHandler, hostConfig, columnRenderArgs);
         }
 
         if (columnSet.GetSelectAction() != null)
@@ -110,7 +106,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             layout.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, columnSet.GetSelectAction(), cardActionHandler));
         }
 
-        if(columnSet.GetHeight() == HeightType.Stretch)
+        if (columnSet.GetHeight() == HeightType.Stretch)
         {
             LinearLayout stretchLayout = new LinearLayout(context);
             stretchLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1));
@@ -127,23 +123,8 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             viewGroup.addView(layout);
         }
 
-        if (columnSet.GetBleed() && (columnSet.GetCanBleed() || (styleForThis != containerStyle || columnSet.GetBackgroundImage() != null)))
-        {
-            long padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
-            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) layout.getLayoutParams();
-            layoutParams.setMargins((int)-padding, layoutParams.topMargin, (int)-padding, layoutParams.bottomMargin);
-            layout.setLayoutParams(layoutParams);
-        }
-
-        if (styleForThis != containerStyle)
-        {
-            int padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
-            layout.setPadding(padding, padding, padding, padding);
-            String color = styleForThis == containerStyle.Emphasis ?
-                hostConfig.GetContainerStyles().getEmphasisPalette().getBackgroundColor() :
-                hostConfig.GetContainerStyles().getDefaultPalette().getBackgroundColor();
-            layout.setBackgroundColor(Color.parseColor(color));
-        }
+        ContainerRenderer.ApplyPadding(styleForThis, parentContainerStyle, layout, context, hostConfig);
+        ContainerRenderer.ApplyBleed(columnSet, layout, context, hostConfig);
 
         if (columnSet.GetMinHeight() != 0)
         {
