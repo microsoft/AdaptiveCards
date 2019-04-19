@@ -596,6 +596,11 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
                 CardRendererRegistration.getInstance().registerOnlineMediaLoader(new OnlineMediaLoader());
             }
 
+            // Sample on how to register a feature registration object
+            FeatureRegistration myFeatureRegistration = new FeatureRegistration();
+            myFeatureRegistration.AddFeature("acTest", "1.0");
+            CardRendererRegistration.getInstance().registerFeatureRegistration(myFeatureRegistration);
+
             ParseContext context = new ParseContext(elementParserRegistration, actionParserRegistration);
 
             ParseResult parseResult = AdaptiveCard.DeserializeFromString(jsonText, AdaptiveCardRenderer.VERSION, context);

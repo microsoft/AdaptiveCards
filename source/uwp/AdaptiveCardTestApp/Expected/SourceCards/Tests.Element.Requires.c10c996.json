@@ -1,0 +1,101 @@
+{
+	"version": "1.2",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Requires Test",
+			"weight": "bolder",
+			"size": "large"
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "✓: This textblock requires adaptiveCards 1.2",
+							"color": "good",
+							"wrap": true,
+							"requires": {
+								"adaptiveCards": "1.2"
+							}
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "✓: This textblock requires adaptiveCards 1.2 and acTest 1.0",
+							"color": "good",
+							"wrap": true,
+							"requires": {
+								"adaptiveCards": "1.2",
+								"acTest": "1.0"
+							}
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "✗: This textblock requires acTest 2.0",
+							"color": "attention",
+							"wrap": true,
+							"requires": {
+								"acTest": "2.0"
+							},
+							"fallback": {
+								"type": "TextBlock",
+								"color": "good",
+								"text": "✓:We don't support acTest 2.0",
+								"wrap": true
+							}
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "✓: This textblock requires any version of acTest",
+							"color": "good",
+							"wrap": true,
+							"requires": {
+								"acTest": "*"
+							}
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "✗: This textblock requires adaptiveCards 5.0",
+							"color": "attention",
+							"wrap": true,
+							"requires": {
+								"adaptiveCards": "5"
+							},
+							"fallback": {
+								"type": "TextBlock",
+								"color": "good",
+								"text": "✓:We don't support adaptiveCards 5.0",
+								"wrap": true
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}

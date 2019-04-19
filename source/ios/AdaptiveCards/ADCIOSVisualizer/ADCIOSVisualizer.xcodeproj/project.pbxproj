@@ -42,6 +42,7 @@
 		6B096D74225FC51F006CC034 /* SimpleFallback.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B096D73225FC51F006CC034 /* SimpleFallback.json */; };
 		6B096D76225FF465006CC034 /* DeepFallback.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B096D75225FF465006CC034 /* DeepFallback.json */; };
 		6B096D7822601A5A006CC034 /* ActionFallback.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B096D7722601A5A006CC034 /* ActionFallback.json */; };
+		6B096D8022694C25006CC034 /* Element.Requires.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B096D7F22694C24006CC034 /* Element.Requires.json */; };
 		6B14FC5D2113BC2200A11CC5 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		6B22426621E92AF9000ACDA1 /* CustomActionNewType.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B22426521E92AF9000ACDA1 /* CustomActionNewType.mm */; };
 		6B22426821E94AD0000ACDA1 /* Action.CustomParsing.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B22426721E94AD0000ACDA1 /* Action.CustomParsing.json */; };
@@ -221,6 +222,7 @@
 		6B096D73225FC51F006CC034 /* SimpleFallback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = SimpleFallback.json; path = ../../../../samples/v1.2/Scenarios/SimpleFallback.json; sourceTree = "<group>"; };
 		6B096D75225FF465006CC034 /* DeepFallback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = DeepFallback.json; path = ../../../../samples/Tests/DeepFallback.json; sourceTree = "<group>"; };
 		6B096D7722601A5A006CC034 /* ActionFallback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ActionFallback.json; path = ../../../../samples/v1.2/Elements/ActionFallback.json; sourceTree = "<group>"; };
+		6B096D7F22694C24006CC034 /* Element.Requires.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Element.Requires.json; path = ../../../../samples/Tests/Element.Requires.json; sourceTree = "<group>"; };
 		6B22426421E92AF9000ACDA1 /* CustomActionNewType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomActionNewType.h; sourceTree = "<group>"; };
 		6B22426521E92AF9000ACDA1 /* CustomActionNewType.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomActionNewType.mm; sourceTree = "<group>"; };
 		6B22426721E94AD0000ACDA1 /* Action.CustomParsing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.CustomParsing.json; path = ../../../../samples/Tests/Action.CustomParsing.json; sourceTree = "<group>"; };
@@ -532,6 +534,7 @@
 				F4F44BA6204CF97100A2F24C /* CustomParsingTestUsingProgressBar.json */,
 				F4F44B8220478E1100A2F24C /* DateTimeTestTranslation.json */,
 				6B096D75225FF465006CC034 /* DeepFallback.json */,
+				6B096D7F22694C24006CC034 /* Element.Requires.json */,
 				F4933CA61F79852C00F6EBFD /* FactSet.json */,
 				6B2630DE2151A22F00ED9207 /* FactSetWrapping.json */,
 				6B5D2412212E15740010EB07 /* Feedback.json */,
@@ -734,6 +737,7 @@
 				30A3885E20D315AA00AAEE59 /* NotificationCard.json in Resources */,
 				F4933CE81F79852C00F6EBFD /* TextBlock.Markdown.json in Resources */,
 				6B616C3C21CB0B6D003E29CE /* Action.ToggleVisibility.json in Resources */,
+				6B096D8022694C25006CC034 /* Element.Requires.json in Resources */,
 				F4933D021F79853B00F6EBFD /* InputForm.json in Resources */,
 				C8D7215E220CFBAF00E903B3 /* AdaptiveCard.BackgroundImage.Mode.RepeatVertically.json in Resources */,
 				6B9AB30620D9857B005C8E15 /* Image.Explicit.Size.json in Resources */,

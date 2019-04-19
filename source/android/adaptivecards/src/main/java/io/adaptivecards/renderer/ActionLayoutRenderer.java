@@ -15,6 +15,7 @@ import io.adaptivecards.objectmodel.BaseActionElementVector;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.BaseElement;
 import io.adaptivecards.objectmodel.FallbackType;
+import io.adaptivecards.objectmodel.FeatureRegistration;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.IconPlacement;
 import io.adaptivecards.objectmodel.Spacing;
@@ -122,6 +123,12 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
             }
         }
 
+        if (i >= maxActions && size != maxActions)
+        {
+            renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.MAX_ACTIONS_EXCEEDED, "A maximum of " + maxActions + " actions are allowed"));
+        }
+
+        FeatureRegistration featureRegistration = CardRendererRegistration.getInstance().getFeatureRegistration();
         for (i = 0; i < size && i < maxActions; i++)
         {
             BaseActionElement actionElement = baseActionElementList.get(i);
@@ -133,6 +140,11 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
                 if (actionRenderer == null)
                 {
                     throw new AdaptiveFallbackException(actionElement);
+                }
+
+                if (!actionElement.MeetsRequirements(featureRegistration))
+                {
+                    throw new AdaptiveFallbackException(actionElement, featureRegistration);
                 }
 
                 actionRenderer.render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, cardActionHandler, hostConfig, renderArgs);
@@ -168,6 +180,11 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
                                     throw new AdaptiveFallbackException(fallbackElement);
                                 }
 
+                                if (!fallbackElement.MeetsRequirements(featureRegistration))
+                                {
+                                    throw new AdaptiveFallbackException(fallbackElement, featureRegistration);
+                                }
+
                                 fallbackActionRenderer.render(renderedCard, context, fragmentManager, actionButtonsLayout, fallbackActionElement, cardActionHandler, hostConfig, renderArgs);
                                 break;
                             }
@@ -198,12 +215,6 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
                     continue;
                 }
             }
-
-        }
-
-        if (i >= maxActions && size != maxActions)
-        {
-            renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.MAX_ACTIONS_EXCEEDED, "A maximum of " + maxActions + " actions are allowed"));
         }
 
         return actionButtonsLayout;
