@@ -15,7 +15,8 @@ namespace AdaptiveCards.Rendering.Wpf
 
             // Keep track of ContainerStyle.ForegroundColors before Container is rendered
             var parentRenderArgs = context.RenderArgs;
-            var elementRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
+            // This is the renderArgs that will be passed down to the children
+            var childRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
 
             Border border = new Border();
             border.Child = uiContainer;
@@ -31,18 +32,21 @@ namespace AdaptiveCards.Rendering.Wpf
                 ContainerStyleConfig containerStyle = context.Config.ContainerStyles.GetContainerStyleConfig(column.Style);
                 border.Background = context.GetColorBrush(containerStyle.BackgroundColor);
 
-                elementRenderArgs.ForegroundColors = containerStyle.ForegroundColors;
+                childRenderArgs.ForegroundColors = containerStyle.ForegroundColors;
             }
 
-            elementRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : column.Style.Value;
-            if ((parentRenderArgs.ColumnRelativePosition == ColumnPositionEnum.Begin) ||
-                (parentRenderArgs.ColumnRelativePosition == ColumnPositionEnum.End))
+            childRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : column.Style.Value;
+
+            // If the column has no padding or has padding and doesn't bleed, then the children can bleed
+            // to the side the column would have bled
+            if (columnHasPadding)
             {
-                elementRenderArgs.ColumnRelativePosition = ColumnPositionEnum.Intermediate;
+                childRenderArgs.BleedDirection = BleedDirection.Both;
             }
 
-            elementRenderArgs.HasParentWithPadding = columnHasPadding;
-            context.RenderArgs = elementRenderArgs;
+            // If either this column or an ancestor had padding, then the children will have an ancestor with padding
+            childRenderArgs.HasParentWithPadding = (columnHasPadding || parentRenderArgs.HasParentWithPadding);
+            context.RenderArgs = childRenderArgs;
 
             AdaptiveContainerRenderer.AddContainerElements(uiContainer, column.Items, context);
 
