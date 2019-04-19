@@ -109,6 +109,10 @@ public class BaseElement {
     return (cPtr == 0) ? null : new BaseElement(cPtr, true);
   }
 
+  public boolean CanFallbackToAncestor() {
+    return AdaptiveCardObjectModelJNI.BaseElement_CanFallbackToAncestor(swigCPtr, this);
+  }
+
   public void SetFallbackType(FallbackType type) {
     AdaptiveCardObjectModelJNI.BaseElement_SetFallbackType(swigCPtr, this, type.swigValue());
   }

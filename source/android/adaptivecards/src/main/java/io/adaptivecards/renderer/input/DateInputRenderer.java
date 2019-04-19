@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.DateTimePreparser;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
@@ -18,10 +19,13 @@ import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.DateInput;
 import io.adaptivecards.objectmodel.HostConfig;
+import io.adaptivecards.renderer.readonly.RendererUtil;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Vector;
 
 import static android.text.InputType.TYPE_NULL;
@@ -74,17 +78,7 @@ public class DateInputRenderer extends TextInputRenderer
 
         DateInputHandler dateInputHandler = new DateInputHandler(dateInput, fragmentManager);
 
-        String dateString = dateInput.GetValue();
-
-        try
-        {
-            Date date = DateInputHandler.s_simpleDateFormat.parse(dateInput.GetValue());
-            dateString = DateFormat.getDateInstance().format(date);
-        }
-        catch (ParseException e)
-        {
-            //TODO: Log this
-        }
+        String dateString = DateFormat.getDateInstance().format(RendererUtil.getDate(dateInput.GetValue()).getTime());
 
         EditText editText = renderInternal(
                 renderedCard,

@@ -7,10 +7,28 @@ import android.text.Spanned;
 
 import org.xml.sax.XMLReader;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+import io.adaptivecards.objectmodel.DateTimePreparser;
 import io.adaptivecards.objectmodel.MarkDownParser;
 
 public class RendererUtil
 {
+
+    public static Calendar getDate(String s)
+    {
+        Calendar calendar = new GregorianCalendar();
+
+        long[] year = {0}, month = {0}, day = {0};
+        if (DateTimePreparser.TryParseSimpleDate(s, year, month, day))
+        {
+            // The month must be deducted one as java.util.Calendar class starts indexing the months at 0
+            calendar.set((int)year[0], (int)month[0] - 1, (int)day[0]);
+        }
+
+        return calendar;
+    }
 
     public static CharSequence handleSpecialText(String textWithFormattedDates)
     {

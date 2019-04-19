@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.DateInput;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
@@ -19,6 +20,7 @@ import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.TimeInput;
 import io.adaptivecards.renderer.inputhandler.TimeInputHandler;
 
+import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
@@ -102,8 +104,9 @@ public class TimeInputRenderer extends TextInputRenderer
             {
                 TagContent tagContent = (TagContent) v.getTag();
                 TimeInputHandler timeInputHandler = (TimeInputHandler) tagContent.GetInputHandler();
+                TimeInput timeInput = (TimeInput) timeInputHandler.getBaseInputElement();
                 TimePickerFragment timePickerFragment = new TimePickerFragment();
-                timePickerFragment.initialize((EditText) v, context);
+                timePickerFragment.initialize(timeInput, (EditText) v, context);
                 Bundle args = new Bundle();
                 args.putString("title", TITLE);
                 timePickerFragment.setArguments(args);

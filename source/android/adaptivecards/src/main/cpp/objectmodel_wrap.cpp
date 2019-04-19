@@ -9410,6 +9410,24 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 }
 
 
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseElement_1CanFallbackToAncestor(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  AdaptiveCards::BaseElement *arg1 = (AdaptiveCards::BaseElement *) 0 ;
+  std::shared_ptr< AdaptiveCards::BaseElement const > *smartarg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::BaseElement > **)&jarg1;
+  arg1 = (AdaptiveCards::BaseElement *)(smartarg1 ? smartarg1->get() : 0); 
+  result = (bool)((AdaptiveCards::BaseElement const *)arg1)->CanFallbackToAncestor();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseElement_1SetFallbackType(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::BaseElement *arg1 = (AdaptiveCards::BaseElement *) 0 ;
   AdaptiveCards::FallbackType arg2 ;
@@ -17660,6 +17678,40 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ParseContext_1GetCanFallbackToAncestor(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  AdaptiveCards::ParseContext *arg1 = (AdaptiveCards::ParseContext *) 0 ;
+  std::shared_ptr< AdaptiveCards::ParseContext const > *smartarg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::ParseContext > **)&jarg1;
+  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0); 
+  result = (bool)((AdaptiveCards::ParseContext const *)arg1)->GetCanFallbackToAncestor();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ParseContext_1SetCanFallbackToAncestor(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
+  AdaptiveCards::ParseContext *arg1 = (AdaptiveCards::ParseContext *) 0 ;
+  bool arg2 ;
+  std::shared_ptr< AdaptiveCards::ParseContext > *smartarg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1;
+  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0); 
+  arg2 = jarg2 ? true : false; 
+  (arg1)->SetCanFallbackToAncestor(arg2);
+}
+
+
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ParseContext_1SetLanguage(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::ParseContext *arg1 = (AdaptiveCards::ParseContext *) 0 ;
   std::string *arg2 = 0 ;
@@ -23208,7 +23260,7 @@ SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObject
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateTimePreparser_1TryParseSimpleTime(JNIEnv *jenv, jclass jcls, jstring jarg1, jlong jarg2, jlong jarg3) {
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateTimePreparser_1TryParseSimpleTime(JNIEnv *jenv, jclass jcls, jstring jarg1, jlongArray jarg2, jlongArray jarg3) {
   jboolean jresult = 0 ;
   std::string *arg1 = 0 ;
   unsigned int *arg2 = 0 ;
@@ -23226,23 +23278,43 @@ SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObject
   std::string arg1_str(arg1_pstr);
   arg1 = &arg1_str;
   jenv->ReleaseStringUTFChars(jarg1, arg1_pstr); 
-  arg2 = *(unsigned int **)&jarg2;
-  if (!arg2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "unsigned int & reference is null");
-    return 0;
-  } 
-  arg3 = *(unsigned int **)&jarg3;
-  if (!arg3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "unsigned int & reference is null");
-    return 0;
-  } 
+  {
+    if (!jarg2) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "array null");
+      return 0;
+    }
+    if (jenv->GetArrayLength(jarg2) == 0) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, "Array must contain at least 1 element");
+      return 0;
+    }
+    arg2 = (unsigned int *) jenv->GetLongArrayElements(jarg2, 0); 
+  }
+  {
+    if (!jarg3) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "array null");
+      return 0;
+    }
+    if (jenv->GetArrayLength(jarg3) == 0) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, "Array must contain at least 1 element");
+      return 0;
+    }
+    arg3 = (unsigned int *) jenv->GetLongArrayElements(jarg3, 0); 
+  }
   result = (bool)AdaptiveCards::DateTimePreparser::TryParseSimpleTime((std::string const &)*arg1,*arg2,*arg3);
   jresult = (jboolean)result; 
+  {
+    jenv->ReleaseLongArrayElements(jarg2, (jlong *)arg2, 0); 
+  }
+  {
+    jenv->ReleaseLongArrayElements(jarg3, (jlong *)arg3, 0); 
+  }
+  
+  
   return jresult;
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateTimePreparser_1TryParseSimpleDate(JNIEnv *jenv, jclass jcls, jstring jarg1, jlong jarg2, jlong jarg3, jlong jarg4) {
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateTimePreparser_1TryParseSimpleDate(JNIEnv *jenv, jclass jcls, jstring jarg1, jlongArray jarg2, jlongArray jarg3, jlongArray jarg4) {
   jboolean jresult = 0 ;
   std::string *arg1 = 0 ;
   unsigned int *arg2 = 0 ;
@@ -23261,23 +23333,53 @@ SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObject
   std::string arg1_str(arg1_pstr);
   arg1 = &arg1_str;
   jenv->ReleaseStringUTFChars(jarg1, arg1_pstr); 
-  arg2 = *(unsigned int **)&jarg2;
-  if (!arg2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "unsigned int & reference is null");
-    return 0;
-  } 
-  arg3 = *(unsigned int **)&jarg3;
-  if (!arg3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "unsigned int & reference is null");
-    return 0;
-  } 
-  arg4 = *(unsigned int **)&jarg4;
-  if (!arg4) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "unsigned int & reference is null");
-    return 0;
-  } 
+  {
+    if (!jarg2) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "array null");
+      return 0;
+    }
+    if (jenv->GetArrayLength(jarg2) == 0) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, "Array must contain at least 1 element");
+      return 0;
+    }
+    arg2 = (unsigned int *) jenv->GetLongArrayElements(jarg2, 0); 
+  }
+  {
+    if (!jarg3) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "array null");
+      return 0;
+    }
+    if (jenv->GetArrayLength(jarg3) == 0) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, "Array must contain at least 1 element");
+      return 0;
+    }
+    arg3 = (unsigned int *) jenv->GetLongArrayElements(jarg3, 0); 
+  }
+  {
+    if (!jarg4) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "array null");
+      return 0;
+    }
+    if (jenv->GetArrayLength(jarg4) == 0) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, "Array must contain at least 1 element");
+      return 0;
+    }
+    arg4 = (unsigned int *) jenv->GetLongArrayElements(jarg4, 0); 
+  }
   result = (bool)AdaptiveCards::DateTimePreparser::TryParseSimpleDate((std::string const &)*arg1,*arg2,*arg3,*arg4);
   jresult = (jboolean)result; 
+  {
+    jenv->ReleaseLongArrayElements(jarg2, (jlong *)arg2, 0); 
+  }
+  {
+    jenv->ReleaseLongArrayElements(jarg3, (jlong *)arg3, 0); 
+  }
+  {
+    jenv->ReleaseLongArrayElements(jarg4, (jlong *)arg4, 0); 
+  }
+  
+  
+  
   return jresult;
 }
 

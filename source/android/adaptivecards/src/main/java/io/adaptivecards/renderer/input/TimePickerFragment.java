@@ -13,13 +13,37 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import io.adaptivecards.objectmodel.DateTimePreparser;
+import io.adaptivecards.objectmodel.TimeInput;
+
 public class TimePickerFragment extends DialogFragment
         implements TimePickerDialog.OnTimeSetListener
 {
-    public void initialize(EditText editText, Context context)
+    public void initialize(TimeInput timeInput, EditText editText, Context context)
     {
+        m_timeInput = timeInput;
         m_editText = editText;
         m_context = context;
+    }
+
+    private long getTimeInMiliseconds(long hours, long minutes)
+    {
+        return (hours * 60 + minutes) * 10000000 * 60;
+    }
+
+    private Calendar getTime(String s)
+    {
+        Calendar calendar = new GregorianCalendar();
+        long[] hour = {0}, minutes = {0};
+
+        if (DateTimePreparser.TryParseSimpleTime(s, hour, minutes))
+        {
+            Date date = new Date();
+            date.setTime(getTimeInMiliseconds(hour[0], minutes[0]));
+            calendar.setTime(date);
+        }
+
+        return calendar;
     }
 
     @Override
@@ -29,9 +53,7 @@ public class TimePickerFragment extends DialogFragment
 
         try
         {
-            Date value = DateFormat.getTimeInstance().parse(m_editText.getText().toString());
-            calendar = new GregorianCalendar();
-            calendar.setTime(value);
+            calendar = getTime(m_editText.getText().toString());
         }
         catch (Exception excep)
         {
@@ -39,7 +61,9 @@ public class TimePickerFragment extends DialogFragment
             calendar = Calendar.getInstance();
         }
 
-        return new TimePickerDialog(m_context, this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false);
+        TimePickerDialog timePickerDialog = new TimePickerDialog(m_context, this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false);
+
+        return timePickerDialog;
     }
 
     @Override
@@ -50,6 +74,7 @@ public class TimePickerFragment extends DialogFragment
         m_editText.setText(value);
     }
 
+    private TimeInput m_timeInput;
     private EditText m_editText;
     private Context m_context;
 }

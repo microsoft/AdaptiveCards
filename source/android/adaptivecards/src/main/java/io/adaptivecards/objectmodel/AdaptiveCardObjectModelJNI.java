@@ -381,6 +381,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void BaseElement_SetAdditionalProperties(long jarg1, BaseElement jarg1_, long jarg2, JsonValue jarg2_);
   public final static native int BaseElement_GetFallbackType(long jarg1, BaseElement jarg1_);
   public final static native long BaseElement_GetFallbackContent(long jarg1, BaseElement jarg1_);
+  public final static native boolean BaseElement_CanFallbackToAncestor(long jarg1, BaseElement jarg1_);
   public final static native void BaseElement_SetFallbackType(long jarg1, BaseElement jarg1_, int jarg2);
   public final static native void BaseElement_SetFallbackContent(long jarg1, BaseElement jarg1_, long jarg2, BaseElement jarg2_);
   public final static native boolean BaseElement_MeetsRequirements(long jarg1, BaseElement jarg1_, long jarg2);
@@ -792,6 +793,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void ParseContext_PushElement__SWIG_0(long jarg1, ParseContext jarg1_, String jarg2, long jarg3, InternalId jarg3_, boolean jarg4);
   public final static native void ParseContext_PushElement__SWIG_1(long jarg1, ParseContext jarg1_, String jarg2, long jarg3, InternalId jarg3_);
   public final static native void ParseContext_PopElement(long jarg1, ParseContext jarg1_);
+  public final static native boolean ParseContext_GetCanFallbackToAncestor(long jarg1, ParseContext jarg1_);
+  public final static native void ParseContext_SetCanFallbackToAncestor(long jarg1, ParseContext jarg1_, boolean jarg2);
   public final static native void ParseContext_SetLanguage(long jarg1, ParseContext jarg1_, String jarg2);
   public final static native String ParseContext_GetLanguage(long jarg1, ParseContext jarg1_);
   public final static native int ParseContext_GetParentalContainerStyle(long jarg1, ParseContext jarg1_);
@@ -1110,8 +1113,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long new_DateTimePreparser__SWIG_1(String jarg1);
   public final static native long DateTimePreparser_GetTextTokens(long jarg1, DateTimePreparser jarg1_);
   public final static native boolean DateTimePreparser_HasDateTokens(long jarg1, DateTimePreparser jarg1_);
-  public final static native boolean DateTimePreparser_TryParseSimpleTime(String jarg1, long jarg2, long jarg3);
-  public final static native boolean DateTimePreparser_TryParseSimpleDate(String jarg1, long jarg2, long jarg3, long jarg4);
+  public final static native boolean DateTimePreparser_TryParseSimpleTime(String jarg1, long[] jarg2, long[] jarg3);
+  public final static native boolean DateTimePreparser_TryParseSimpleDate(String jarg1, long[] jarg2, long[] jarg3, long[] jarg4);
   public final static native void delete_DateTimePreparser(long jarg1);
   public final static native long new_Fact__SWIG_0();
   public final static native long new_Fact__SWIG_1(String jarg1, String jarg2);
