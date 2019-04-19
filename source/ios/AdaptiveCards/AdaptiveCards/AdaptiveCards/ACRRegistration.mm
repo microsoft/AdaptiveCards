@@ -36,6 +36,7 @@
 #import "BaseCardElement.h"
 #import "HostConfig.h"
 #import "ACOParseContextPrivate.h"
+#import "FeatureRegistration.h"
 
 using namespace AdaptiveCards;
 
@@ -236,3 +237,49 @@ using namespace AdaptiveCards;
 }
 
 @end
+
+@implementation ACOFeatureRegistration
+{
+    std::shared_ptr<FeatureRegistration> _featureRegistration;
+}
+
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _featureRegistration = std::make_shared<FeatureRegistration>();
+    }
+    return self;
+}
+
++ (ACOFeatureRegistration *)getInstance
+{
+    static ACOFeatureRegistration *singletonInstance = [[self alloc] init];
+    return singletonInstance;
+}
+
+- (void)addFeature:(NSString *)featureName featureVersion:(NSString *)version
+{
+    const std::string cstringFN = [featureName cStringUsingEncoding:NSUTF8StringEncoding];
+    const std::string cstringFV = [version cStringUsingEncoding:NSUTF8StringEncoding];
+    _featureRegistration->AddFeature(cstringFN, cstringFV);
+}
+
+- (void)removeFeature:(NSString *)featureName
+{
+    const std::string cstringFN = [featureName cStringUsingEncoding:NSUTF8StringEncoding];
+    _featureRegistration->RemoveFeature(cstringFN);
+}
+
+- (NSString *)getFeatureVersion:(NSString *)featureName
+{
+    const std::string cstringFN = [featureName cStringUsingEncoding:NSUTF8StringEncoding];
+    std::string version = _featureRegistration->GetFeatureVersion(cstringFN);
+    return [NSString stringWithCString:version.c_str() encoding:NSUTF8StringEncoding];
+}
+- (std::shared_ptr<FeatureRegistration>)getSharedFeatureRegistration
+{
+    return _featureRegistration;
+}
+@end;
