@@ -120,6 +120,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="lib\AdaptiveHighlightColorConfig.cpp" />
     <ClCompile Include="lib\XamlHelpers.cpp" />
     <ClInclude Include="lib\AdaptiveActionElement.h" />
     <ClInclude Include="lib\AdaptiveActionInvoker.h" />
@@ -141,6 +142,7 @@
     <ClInclude Include="lib\AdaptiveFeatureRegistration.h" />
     <ClInclude Include="lib\AdaptiveFontStyleDefinition.h" />
     <ClInclude Include="lib\AdaptiveFontStylesDefinition.h" />
+    <ClInclude Include="lib\AdaptiveHighlightColorConfig.h" />
     <ClInclude Include="lib\AdaptiveHostConfigParseResult.h" />
     <ClInclude Include="lib\AdaptiveCardParseResult.h" />
     <ClInclude Include="lib\AdaptiveContainerStyleDefinition.h" />
