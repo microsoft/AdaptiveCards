@@ -22,23 +22,44 @@ namespace AdaptiveCards.Rendering.Html
 
         public IList<HtmlTag> ShowCardTags { get; } = new List<HtmlTag>();
 
+        private bool AncestorHasFallback = false;
+
         public HtmlTag Render(AdaptiveTypedElement element)
         {
-            // If non-inertactive, inputs should just render text
-            if (!Config.SupportsInteractivity && element is AdaptiveInput input)
+            HtmlTag htmlTagOut = null;
+            var oldAncestorHasFallback = AncestorHasFallback;
+            var elementHasFallback = element != null && element.Fallback != null && (element.Fallback.Type != AdaptiveFallbackElement.AdaptiveFallbackType.None);
+            AncestorHasFallback = AncestorHasFallback || elementHasFallback;
+
+            try
             {
-                var tb = new AdaptiveTextBlock();
-                tb.Text = input.GetNonInteractiveValue();
-                Warnings.Add(new AdaptiveWarning(-1, $"Rendering non-interactive input element '{element.Type}'"));
-                return Render(tb);
+                // If non-interactive, inputs should just render text
+                if (!Config.SupportsInteractivity && element is AdaptiveInput input)
+                {
+                    var tb = new AdaptiveTextBlock();
+                    tb.Text = input.GetNonInteractiveValue();
+                    Warnings.Add(new AdaptiveWarning(-1, $"Rendering non-interactive input element '{element.Type}'"));
+                    htmlTagOut = Render(tb);
+                }
+
+                if (htmlTagOut == null)
+                {
+                    var renderer = ElementRenderers.Get(element.GetType());
+                    if (renderer != null)
+                    {
+                        htmlTagOut = renderer.Invoke(element, this);
+                    }
+                }
+            }
+            catch (AdaptiveFallbackException e)
+            {
+                if (!elementHasFallback)
+                {
+                    throw e;
+                }
             }
 
-            var renderer = ElementRenderers.Get(element.GetType());
-            if (renderer != null)
-            {
-                return renderer.Invoke(element, this);
-            }
-            else
+            if (htmlTagOut == null)
             {
                 // Since no renderer exists for this element, add warning and render fallback (if available)
                 Warnings.Add(new AdaptiveWarning(-1, $"No renderer for element '{element.Type}'"));
@@ -46,16 +67,22 @@ namespace AdaptiveCards.Rendering.Html
                 {
                     if (element.Fallback.Type == AdaptiveFallbackElement.AdaptiveFallbackType.Drop)
                     {
-                        throw new NotImplementedException("Don't know how to handle when fallback = drop");
+                        Warnings.Add(new AdaptiveWarning(-1, $"Dropping element for fallback '{element.Type}'"));
                     }
                     else if (element.Fallback.Type == AdaptiveFallbackElement.AdaptiveFallbackType.Content && element.Fallback.Content != null)
                     {
                         // Render fallback content
-                        return Render(element.Fallback.Content);
+                        htmlTagOut = Render(element.Fallback.Content);
                     }
                 }
-                return null;
+                else if (AncestorHasFallback)
+                {
+                    throw new AdaptiveFallbackException();
+                }
             }
+
+            AncestorHasFallback = oldAncestorHasFallback;
+            return htmlTagOut;
         }
 
         public string GetColor(AdaptiveTextColor color, bool isSubtle)

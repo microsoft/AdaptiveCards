@@ -58,7 +58,7 @@ namespace AdaptiveCards
         [XmlIgnore]
 #endif
         [DefaultValue(null)]
-        public IDictionary<string, AdaptiveSchemaVersion> Requires;
+        public IDictionary<string, string> Requires;
 
         // Given a map of what our host provides, determine if this element's requirements are satisfied.
         public bool MeetsRequirements(IDictionary<string, string> hostProvides)

@@ -165,59 +165,87 @@ namespace AdaptiveCards.Rendering.Wpf
         /// </summary>
         public FrameworkElement Render(AdaptiveTypedElement element)
         {
-            // Inputs should render read-only if interactivity is false
-            if (!Config.SupportsInteractivity && element is AdaptiveInput input)
+            FrameworkElement frameworkElementOut = null;
+            var oldAncestorHasFallback = AncestorHasFallback;
+            var elementHasFallback = element != null && element.Fallback != null && (element.Fallback.Type != AdaptiveFallbackElement.AdaptiveFallbackType.None);
+            AncestorHasFallback = AncestorHasFallback || elementHasFallback;
+
+            try
             {
-                var tb = AdaptiveTypedElementConverter.CreateElement<AdaptiveTextBlock>();
-                tb.Text = input.GetNonInteractiveValue() ?? "*[Input]*";
-                tb.Color = AdaptiveTextColor.Accent;
-                tb.Wrap = true;
-                Warnings.Add(new AdaptiveWarning(-1, $"Rendering non-interactive input element '{element.Type}'"));
-                return Render(tb);
-            }
-
-            var renderer = ElementRenderers.Get(element.GetType());
-            if (renderer != null)
-            {
-                // Increment card depth before rendering the inner card
-                if (element is AdaptiveCard)
+                // Inputs should render read-only if interactivity is false
+                if (!Config.SupportsInteractivity && element is AdaptiveInput input)
                 {
-                    CardDepth += 1;
+                    var tb = AdaptiveTypedElementConverter.CreateElement<AdaptiveTextBlock>();
+                    tb.Text = input.GetNonInteractiveValue() ?? "*[Input]*";
+                    tb.Color = AdaptiveTextColor.Accent;
+                    tb.Wrap = true;
+                    Warnings.Add(new AdaptiveWarning(-1, $"Rendering non-interactive input element '{element.Type}'"));
+                    frameworkElementOut = Render(tb);
                 }
 
-                var rendered = renderer.Invoke(element, this);
-
-                if (!String.IsNullOrEmpty(element.Id))
+                if (frameworkElementOut == null)
                 {
-                    rendered.Name = element.Id;
-                }
+                    var renderer = ElementRenderers.Get(element.GetType());
+                    if (renderer != null)
+                    {
+                        // Increment card depth before rendering the inner card
+                        if (element is AdaptiveCard)
+                        {
+                            CardDepth += 1;
+                        }
 
-                // Decrement card depth after inner card is rendered
-                if (element is AdaptiveCard)
-                {
-                    CardDepth -= 1;
-                }
+                        var rendered = renderer.Invoke(element, this);
 
-                return rendered;
-            }
+                        if (!String.IsNullOrEmpty(element.Id))
+                        {
+                            rendered.Name = element.Id;
+                        }
 
-            // Since no renderer exists for this element, add warning and render fallback (if available)
-            Warnings.Add(new AdaptiveWarning(-1, $"No renderer for element '{element.Type}'"));
-            if (element.Fallback != null && element.Fallback.Type != AdaptiveFallbackElement.AdaptiveFallbackType.None)
-            {
-                if (element.Fallback.Type == AdaptiveFallbackElement.AdaptiveFallbackType.Drop)
-                {
-                    throw new NotImplementedException("Don't know how to handle when fallback = drop");
-                }
-                else if (element.Fallback.Type == AdaptiveFallbackElement.AdaptiveFallbackType.Content && element.Fallback.Content != null)
-                {
-                    // Render fallback content
-                    return Render(element.Fallback.Content);
+                        // Decrement card depth after inner card is rendered
+                        if (element is AdaptiveCard)
+                        {
+                            CardDepth -= 1;
+                        }
+
+                        frameworkElementOut = rendered;
+                    }
                 }
             }
+            catch (AdaptiveFallbackException e)
+            {
+                if (!elementHasFallback)
+                {
+                    throw e;
+                }
+            }
 
-            return null;
+            if (frameworkElementOut == null)
+            {
+                // Since no renderer exists for this element, add warning and render fallback (if available)
+                Warnings.Add(new AdaptiveWarning(-1, $"No renderer for element '{element.Type}'"));
+                if (element.Fallback != null && element.Fallback.Type != AdaptiveFallbackElement.AdaptiveFallbackType.None)
+                {
+                    if (element.Fallback.Type == AdaptiveFallbackElement.AdaptiveFallbackType.Drop)
+                    {
+                        Warnings.Add(new AdaptiveWarning(-1, $"Dropping element for fallback '{element.Type}'"));
+                    }
+                    else if (element.Fallback.Type == AdaptiveFallbackElement.AdaptiveFallbackType.Content && element.Fallback.Content != null)
+                    {
+                        // Render fallback content
+                        frameworkElementOut = Render(element.Fallback.Content);
+                    }
+                }
+                else if (AncestorHasFallback)
+                {
+                    throw new AdaptiveFallbackException();
+                }
+            }
+
+            AncestorHasFallback = oldAncestorHasFallback;
+            return frameworkElementOut;
         }
+
+        private bool AncestorHasFallback = false;
 
         public string Lang { get; set; }
 
