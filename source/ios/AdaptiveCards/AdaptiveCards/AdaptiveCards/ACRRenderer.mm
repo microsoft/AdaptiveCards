@@ -95,7 +95,7 @@ using namespace AdaptiveCards;
                                     multiplier:1
                                       constant:adaptiveCard->GetMinHeight()].active = YES;
     }
-    
+
     auto backgroundImageProperties = adaptiveCard->GetBackgroundImage();
     if((backgroundImageProperties != nullptr) && !(backgroundImageProperties->GetUrl().empty())) {
         ObserverActionBlock observerAction =
@@ -193,6 +193,7 @@ using namespace AdaptiveCards;
 {
     ACRRegistration *reg = [ACRRegistration getInstance];
     ACOBaseCardElement *acoElem = [[ACOBaseCardElement alloc] init];
+    ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
 
     UIView *prevStretchableElem = nil, *curStretchableElem = nil;
 
@@ -215,6 +216,9 @@ using namespace AdaptiveCards;
         [acoElem setElem:elem];
 
         @try {
+            if([acoElem meetsRequirements:featureReg] == NO) {
+                @throw [ACOFallbackException fallbackException];
+            }
             curStretchableElem = [renderer render:view rootView:rootView inputs:inputs baseCardElement:acoElem hostConfig:config];
             if(elem->GetHeight() == HeightType::Stretch){
                 if(prevStretchableElem){
