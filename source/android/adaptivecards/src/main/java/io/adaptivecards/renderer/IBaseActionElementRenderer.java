@@ -22,5 +22,5 @@ public interface IBaseActionElementRenderer
             BaseActionElement baseActionElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs);
+            RenderArgs renderArgs) throws AdaptiveFallbackException;
 }

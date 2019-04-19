@@ -13,6 +13,7 @@
 #import "ACRContentHoldingUIView.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRRegistration.h"
+#import "ACRErrors.h"
 
 @implementation ACRCustomRenderer
 
@@ -46,6 +47,9 @@
             NSData *jsonPayload = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
             ACOParseContext *context = [reg getParseContext];
             NSObject<ACOIBaseCardElementParser> *parser = [reg getCustomElementParser:type];
+            if(!parser) {
+                @throw [ACOFallbackException fallbackException];
+            }
             ACOBaseCardElement *element = [parser deserialize:jsonPayload parseContext:context];
             ACRBaseCardElementRenderer *renderer = [reg getRenderer:[NSNumber numberWithLong:type.hash]];;
             if(renderer) {
