@@ -530,15 +530,17 @@ AdaptiveNamespaceStart
         Content
     } FallbackType;
 
-    [version(NTDDI_WIN10_RS1)]
+    [version(NTDDI_WIN10_RS1), flags]
 #ifdef ADAPTIVE_CARDS_WINDOWS
     [contract(InternalContract, 1)][internal]
 #endif
     typedef[v1_enum] enum BleedDirection {
-        None = 0,
-        Left,
-        Right,
-        Both
+        None = 0x0000,
+        Left = 0x0001,
+        Right = 0x0010,
+        Up = 0x0100,
+        Down = 0x1000,
+        All = Left | Right | Up | Down
     } BleedDirection;
 
     declare

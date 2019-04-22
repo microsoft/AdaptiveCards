@@ -306,8 +306,8 @@ namespace AdaptiveNamespace
 
         // Now set the clipping region to ensure that items moved away will never be rendered
         // But we allow the items to slightly expand above the panel because we explicitly set negative
-        // margins for text on the first line of a tile. Additionally, leave space on the left and right
-        // according to the value set by s_bleedMargin.
+        // margins for text on the first line of a tile. Additionally, leave at least as much space on all
+        // sides as specified by s_bleedMargin.
         ComPtr<IFrameworkElement> spThisAsIFrameworkElement;
         Thickness margin;
         RETURN_IF_FAILED(QueryInterface(IID_PPV_ARGS(&spThisAsIFrameworkElement)));
@@ -319,10 +319,10 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(QueryInterface(IID_PPV_ARGS(&spThisAsIUIElement)));
         RETURN_IF_FAILED(spThisAsIUIElement->put_Clip(spClip.Get()));
 
-        float x0 = static_cast<float>(-margin.Left - s_bleedMargin);
-        float y0 = static_cast<float>(-margin.Top);
-        float x1 = static_cast<float>(2 * s_bleedMargin + margin.Left + finalSize.Width + margin.Right);
-        float y1 = static_cast<float>(margin.Top + finalSize.Height + margin.Bottom);
+        float x0 = static_cast<float>(-max(margin.Left, s_bleedMargin));
+        float y0 = static_cast<float>(-max(margin.Top, s_bleedMargin));
+        float x1 = static_cast<float>(max(margin.Left, s_bleedMargin) + finalSize.Width + max(margin.Right, s_bleedMargin));
+        float y1 = static_cast<float>(max(margin.Top, s_bleedMargin) + finalSize.Height + max(margin.Bottom, s_bleedMargin));
         RETURN_IF_FAILED(spClip->put_Rect({x0, y0, x1, y1}));
 
         *returnValue = {finalSize.Width, finalSize.Height};

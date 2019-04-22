@@ -111,7 +111,7 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveColumnSet::get_ElementType(_Out_ ElementType* elementType)
+    HRESULT AdaptiveColumnSet::get_ElementType(_Out_ ElementType* elementType)
     {
         *elementType = ElementType::ColumnSet;
         return S_OK;
