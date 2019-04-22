@@ -894,7 +894,7 @@ namespace AdaptiveCards.Rendering.Html
                 .Attr("name", textBlock.Id)
                 .Style("box-sizing", "border-box")
                 .Style("text-align", textBlock.HorizontalAlignment.ToString().ToLower())
-                .Style("color", context.GetColor(textBlock.Color, textBlock.IsSubtle))
+                .Style("color", context.GetColor(textBlock.Color, textBlock.IsSubtle, false))
                 .Style("line-height", $"{lineHeight.ToString("F")}px")
                 .Style("font-size", $"{fontSize}px")
                 .Style("font-weight", $"{weight}");
@@ -1025,7 +1025,7 @@ namespace AdaptiveCards.Rendering.Html
 
             var uiTextRun = new HtmlTag("span", true)
                 .AddClass($"ac-{textRun.Type.Replace(".", "").ToLower()}")
-                .Style("color", context.GetColor(textRun.Color, textRun.IsSubtle))
+                .Style("color", context.GetColor(textRun.Color, textRun.IsSubtle, false))
                 .Style("line-height", $"{lineHeight.ToString("F")}px")
                 .Style("font-size", $"{fontSize}px")
                 .Style("font-weight", $"{weight}");
@@ -1040,6 +1040,11 @@ namespace AdaptiveCards.Rendering.Html
             if (textRun.Strikethrough)
             {
                 uiTextRun.Style("text-decoration", "line-through");
+            }
+
+            if (textRun.Highlight)
+            {
+                uiTextRun.Style("background-color", context.GetColor(textRun.Color, textRun.IsSubtle, true));
             }
 
             return uiTextRun;
@@ -1588,7 +1593,7 @@ namespace AdaptiveCards.Rendering.Html
 
         private static void ApplyDefaultTextAttributes(HtmlTag tag, AdaptiveRenderContext context)
         {
-            tag.Style("color", context.GetColor(AdaptiveTextColor.Default, false))
+            tag.Style("color", context.GetColor(AdaptiveTextColor.Default, false, false))
                 .Style("font-size", $"{context.Config.FontSizes.Default}px")
                 .Style("display", "inline-block")
                 .Style("margin-left", "6px")
