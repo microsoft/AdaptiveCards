@@ -15,6 +15,7 @@ import io.adaptivecards.objectmodel.BaseElement;
 import io.adaptivecards.objectmodel.Column;
 import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.FallbackType;
+import io.adaptivecards.objectmodel.FeatureRegistration;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.AdaptiveWarning;
@@ -198,6 +199,16 @@ public class CardRendererRegistration
         return m_actionLayoutRenderer;
     }
 
+    public void registerFeatureRegistration(FeatureRegistration featureRegistration)
+    {
+        m_featureRegistration = featureRegistration;
+    }
+
+    public FeatureRegistration getFeatureRegistration()
+    {
+        return m_featureRegistration;
+    }
+
     public View render(
             RenderedAdaptiveCard renderedCard,
             Context context,
@@ -245,6 +256,8 @@ public class CardRendererRegistration
             verticalContentAlignment = adaptiveCard.GetVerticalContentAlignment();
         }
 
+        FeatureRegistration featureRegistration = CardRendererRegistration.getInstance().getFeatureRegistration();
+
         for (int i = 0; i < size; i++)
         {
             BaseCardElement cardElement = baseCardElementList.get(i);
@@ -260,6 +273,11 @@ public class CardRendererRegistration
                 if (renderer == null)
                 {
                     throw new AdaptiveFallbackException(cardElement);
+                }
+
+                if (!cardElement.MeetsRequirements(featureRegistration))
+                {
+                    throw new AdaptiveFallbackException(cardElement, featureRegistration);
                 }
 
                 renderer.render(renderedCard, context, fragmentManager, layout, cardElement, cardActionHandler, hostConfig, childRenderArgs);
@@ -292,6 +310,11 @@ public class CardRendererRegistration
                                 if (fallbackRenderer == null)
                                 {
                                     throw new AdaptiveFallbackException(fallbackCardElement);
+                                }
+
+                                if (!fallbackElement.MeetsRequirements(featureRegistration))
+                                {
+                                    throw new AdaptiveFallbackException(fallbackCardElement, featureRegistration);
                                 }
 
                                 fallbackRenderer.render(renderedCard, context, fragmentManager, layout, fallbackCardElement, cardActionHandler, hostConfig, childRenderArgs);
@@ -329,7 +352,7 @@ public class CardRendererRegistration
         }
 
         // This is made as the last operation so we can assure the contents were rendered properly
-        if(verticalContentAlignment != VerticalContentAlignment.Top)
+        if (verticalContentAlignment != VerticalContentAlignment.Top)
         {
             LinearLayout verticalAlignmentLayout = new LinearLayout(context);
             verticalAlignmentLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -347,7 +370,7 @@ public class CardRendererRegistration
 
             verticalAlignmentLayout.addView(layout);
 
-            if(viewGroup != null)
+            if (viewGroup != null)
             {
                 viewGroup.addView(verticalAlignmentLayout);
             }
@@ -371,4 +394,5 @@ public class CardRendererRegistration
     private IOnlineImageLoader m_onlineImageLoader = null;
     private HashMap<String, IResourceResolver> m_resourceResolvers = new HashMap<>();
     private IOnlineMediaLoader m_onlineMediaLoader = null;
+    private FeatureRegistration m_featureRegistration = null;
 }

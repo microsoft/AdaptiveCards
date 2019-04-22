@@ -7,20 +7,36 @@ export interface IValidationError {
     message: string;
 }
 
-export class TextColorDefinition {
+export class ColorDefinition {
     default: string = "#000000";
     subtle: string = "#666666";
 
-    constructor(obj?: any) {
+    constructor(defaultColor?: string, subtleColor?: string) {
+        if (defaultColor) {
+            this.default = defaultColor;
+        }
+
+        if (subtleColor) {
+            this.subtle = subtleColor;
+        }
+    }
+
+    parse(obj?: any) {
         if (obj) {
-            if (typeof obj === "string") {
-                this.default = obj;
-                this.subtle = obj;
-            }
-            else {
-                this.default = obj["default"] || this.default;
-                this.subtle = obj["subtle"] || this.subtle;
-            }
+            this.default = obj["default"] || this.default;
+            this.subtle = obj["subtle"] || this.subtle;
+        }
+    }
+}
+
+export class TextColorDefinition extends ColorDefinition {
+    readonly highlightColors = new ColorDefinition("#22000000", "#11000000");
+
+    parse(obj?: any) {
+        super.parse(obj);
+
+        if (obj) {
+            this.highlightColors.parse(obj["highlightColors"]);
         }
     }
 }
@@ -212,7 +228,7 @@ export class ActionsConfig {
 export class ColorSetDefinition {
     private parseSingleColor(obj: any, propertyName: string) {
         if (obj) {
-            this[propertyName] = new TextColorDefinition(obj[propertyName]);
+            (this[propertyName] as TextColorDefinition).parse(obj[propertyName]);
         }
     }
 
@@ -255,17 +271,6 @@ export class ContainerStyleDefinition {
             "attention": { default: "#CC3300", subtle: "#DDCC3300" }
         }
     );
-    readonly highlightColors: ColorSetDefinition = new ColorSetDefinition(
-        {
-            "default": "#22000000",
-            "dark": "#22000000",
-            "light": "#22000000",
-            "accent": "#22000000",
-            "good": "#22000000",
-            "warning": "#22000000",
-            "attention": "#22000000"
-        }
-    );
 
     highlightBackgroundColor?: string;
     highlightForegroundColor?: string;
@@ -275,7 +280,6 @@ export class ContainerStyleDefinition {
             this.backgroundColor = obj["backgroundColor"];
 
             this.foregroundColors.parse(obj["foregroundColors"]);
-            this.highlightColors.parse(obj["highlightColors"]);
             
             this.highlightBackgroundColor = obj["highlightBackgroundColor"];
             this.highlightForegroundColor = obj["highlightForegroundColor"];

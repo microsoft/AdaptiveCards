@@ -226,6 +226,9 @@ namespace AdaptiveCardVisualizer.ViewModel
                     _renderer.HostConfig = hostConfig;
                 }
 
+                // Add a feature representing this version of the visualizer. used for test cards.
+                _renderer.FeatureRegistration.Set("acTest", "1.0");
+
                 if (Settings.UseFixedDimensions)
                 {
                     _renderer.SetFixedDimensions(320, 180);

@@ -12,6 +12,7 @@
 #include "AdaptiveDateInputRenderer.h"
 #include "AdaptiveElementRendererRegistration.h"
 #include "AdaptiveFactSetRenderer.h"
+#include "AdaptiveFeatureRegistration.h"
 #include "AdaptiveHostConfig.h"
 #include "AdaptiveImageRenderer.h"
 #include "AdaptiveImageSetRenderer.h"
@@ -60,6 +61,7 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveElementRendererRegistration>(&m_elementRendererRegistration));
         RETURN_IF_FAILED(RegisterDefaultElementRenderers(m_elementRendererRegistration, m_xamlBuilder));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionRendererRegistration>(&m_actionRendererRegistration));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFeatureRegistration>(&m_featureRegistration));
         RETURN_IF_FAILED(RegisterDefaultActionRenderers(m_actionRendererRegistration));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveHostConfig>(&m_hostConfig));
         InitializeDefaultResourceDictionary();
@@ -88,6 +90,22 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveCardRenderer::get_HostConfig(_COM_Outptr_ IAdaptiveHostConfig** hostConfig)
     {
         return m_hostConfig.CopyTo(hostConfig);
+    }
+
+    HRESULT AdaptiveCardRenderer::put_FeatureRegistration(_In_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration* featureRegistration)
+    {
+        m_featureRegistration = featureRegistration;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveCardRenderer::get_FeatureRegistration(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration** featureRegistration)
+    {
+        if (!m_featureRegistration)
+        {
+            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFeatureRegistration>(m_featureRegistration.GetAddressOf()));
+        }
+
+        return m_featureRegistration.CopyTo(featureRegistration);
     }
 
     HRESULT AdaptiveCardRenderer::SetFixedDimensions(UINT32 desiredWidth, UINT32 desiredHeight)
@@ -124,6 +142,7 @@ namespace AdaptiveNamespace
             ComPtr<AdaptiveRenderContext> renderContext;
             RETURN_IF_FAILED(MakeAndInitialize<AdaptiveRenderContext>(&renderContext,
                                                                       m_hostConfig.Get(),
+                                                                      m_featureRegistration.Get(),
                                                                       m_elementRendererRegistration.Get(),
                                                                       m_actionRendererRegistration.Get(),
                                                                       m_resourceResolvers.Get(),

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.BackgroundImage;
+import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.AdaptiveFallbackException;
@@ -45,16 +46,6 @@ public class ColumnRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    public void setIsRenderingFirstColumn(boolean isRenderingFirstColumn)
-    {
-        m_isRenderingFirstColumn = isRenderingFirstColumn;
-    }
-
-    public void setIsRenderingLastColumn(boolean isRenderingLastColumn)
-    {
-        m_isRenderingLastColumn = isRenderingLastColumn;
-    }
-
     @Override
     public View render(
             RenderedAdaptiveCard renderedCard,
@@ -79,7 +70,6 @@ public class ColumnRenderer extends BaseCardElementRenderer
         LinearLayout.LayoutParams layoutParams;
         setSpacingAndSeparator(context, viewGroup, column.GetSpacing(), column.GetSeparator(), hostConfig, false);
 
-        ContainerStyle styleForThis = column.GetStyle().swigValue() == ContainerStyle.None.swigValue() ? renderArgs.getContainerStyle() : column.GetStyle();
         LinearLayout returnedView = new LinearLayout(context);
         returnedView.setOrientation(LinearLayout.VERTICAL);
         returnedView.setTag(new TagContent(column));
@@ -97,6 +87,9 @@ public class ColumnRenderer extends BaseCardElementRenderer
         verticalContentAlignmentLayout.setOrientation(LinearLayout.HORIZONTAL);
         verticalContentAlignmentLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
+        verticalContentAlignmentLayout.setClipChildren(false);
+        verticalContentAlignmentLayout.setClipToPadding(false);
+
         VerticalContentAlignment contentAlignment = column.GetVerticalContentAlignment();
         switch (contentAlignment)
         {
@@ -113,8 +106,11 @@ public class ColumnRenderer extends BaseCardElementRenderer
         }
         returnedView.addView(verticalContentAlignmentLayout);
 
-        RenderArgs renderArgs1 = new RenderArgs(renderArgs);
-        renderArgs1.setContainerStyle(styleForThis);
+        ContainerStyle containerStyle = renderArgs.getContainerStyle();
+        ContainerStyle styleForThis = ContainerRenderer.GetLocalContainerStyle(column, containerStyle);
+
+        RenderArgs columnRenderArgs = new RenderArgs(renderArgs);
+        columnRenderArgs.setContainerStyle(styleForThis);
         if (!column.GetItems().isEmpty())
         {
             CardRendererRegistration.getInstance().render(renderedCard,
@@ -125,15 +121,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
                                                           column.GetItems(),
                                                           cardActionHandler,
                                                           hostConfig,
-                                                          renderArgs1);
-        }
-
-        if (styleForThis != renderArgs.getContainerStyle())
-        {
-            int padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
-            returnedView.setPadding(padding, padding, padding, padding);
-            String color = hostConfig.GetBackgroundColor(styleForThis);
-            returnedView.setBackgroundColor(Color.parseColor(color));
+                                                          columnRenderArgs);
         }
 
         BackgroundImage backgroundImageProperties = column.GetBackgroundImage();
@@ -161,8 +149,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
         {
             if (TextUtils.isEmpty(columnSize) || columnSize.equals(g_columnSizeStretch))
             {
-                layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-                layoutParams.weight = 1;
+                layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1);
                 returnedView.setLayoutParams(layoutParams);
             }
             else if (columnSize.equals(g_columnSizeAuto))
@@ -188,28 +175,8 @@ public class ColumnRenderer extends BaseCardElementRenderer
             }
         }
 
-        if (column.GetBleed() && column.GetCanBleed())
-        {
-            long padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
-            int leftPadding = 0, rightPadding = 0;
-
-            if (m_isRenderingFirstColumn)
-            {
-                leftPadding = (int)-padding;
-                // Reset the flag just in case
-                setIsRenderingFirstColumn(false);
-            }
-
-            if (m_isRenderingLastColumn)
-            {
-                rightPadding = (int)-padding;
-                // Reset the flag just in case
-                setIsRenderingLastColumn(false);
-            }
-
-            layoutParams.setMargins(leftPadding, 0, rightPadding, 0);
-            returnedView.setLayoutParams(layoutParams);
-        }
+        ContainerRenderer.ApplyPadding(styleForThis, renderArgs.getContainerStyle(), returnedView, context, hostConfig);
+        ContainerRenderer.ApplyBleed(column, returnedView, context, hostConfig);
 
         if (column.GetSelectAction() != null)
         {
@@ -229,7 +196,4 @@ public class ColumnRenderer extends BaseCardElementRenderer
     private static ColumnRenderer s_instance = null;
     private final String g_columnSizeAuto = "auto";
     private final String g_columnSizeStretch = "stretch";
-
-    private boolean m_isRenderingFirstColumn = false;
-    private boolean m_isRenderingLastColumn = false;
 }

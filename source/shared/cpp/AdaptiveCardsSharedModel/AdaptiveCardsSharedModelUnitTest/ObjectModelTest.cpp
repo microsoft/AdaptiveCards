@@ -4,6 +4,7 @@
 #include "Column.h"
 #include "ColumnSet.h"
 #include "Container.h"
+#include "FeatureRegistration.h"
 #include "Media.h"
 #include "OpenUrlAction.h"
 #include "ParseContext.h"
@@ -1009,19 +1010,25 @@ namespace AdaptiveCardsSharedModelUnitTest
             auto body = card->GetBody();
             auto textBlock = std::static_pointer_cast<TextBlock>(body[0]);
             auto textBlockNoRequires = std::static_pointer_cast<TextBlock>(body[1]);
-            std::unordered_map<std::string, std::string> hostProvides { { "foobar", "2" } };
-            Assert::IsTrue(textBlock->MeetsRequirements(hostProvides));
-            Assert::IsTrue(textBlockNoRequires->MeetsRequirements(hostProvides));
-            hostProvides.clear();
-            Assert::IsFalse(textBlock->MeetsRequirements(hostProvides));
-            Assert::IsTrue(textBlockNoRequires->MeetsRequirements(hostProvides));
-            hostProvides.insert({ "foobar", "1.9.9.9" });
-            Assert::IsFalse(textBlock->MeetsRequirements(hostProvides));
-            Assert::IsTrue(textBlockNoRequires->MeetsRequirements(hostProvides));
-            hostProvides.clear();
-            hostProvides.insert({ "foobar", "99" });
-            Assert::IsTrue(textBlock->MeetsRequirements(hostProvides));
-            Assert::IsTrue(textBlockNoRequires->MeetsRequirements(hostProvides));
+
+            FeatureRegistration featureRegistration;
+
+            featureRegistration.AddFeature("foobar", "2");
+            Assert::IsTrue(textBlock->MeetsRequirements(featureRegistration));
+            Assert::IsTrue(textBlockNoRequires->MeetsRequirements(featureRegistration));
+
+            featureRegistration.RemoveFeature("foobar");
+            Assert::IsFalse(textBlock->MeetsRequirements(featureRegistration));
+            Assert::IsTrue(textBlockNoRequires->MeetsRequirements(featureRegistration));
+
+            featureRegistration.AddFeature("foobar", "1.9.9.9");
+            Assert::IsFalse(textBlock->MeetsRequirements(featureRegistration));
+            Assert::IsTrue(textBlockNoRequires->MeetsRequirements(featureRegistration));
+
+            featureRegistration.RemoveFeature("foobar");
+            featureRegistration.AddFeature("foobar", "99");
+            Assert::IsTrue(textBlock->MeetsRequirements(featureRegistration));
+            Assert::IsTrue(textBlockNoRequires->MeetsRequirements(featureRegistration));
         }
 
         TEST_METHOD(NestedFallbacksSerialization)

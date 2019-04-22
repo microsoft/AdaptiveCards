@@ -6,12 +6,14 @@
 #include "AdaptiveCardResourceResolvers.h"
 #include "AdaptiveColorsConfig.h"
 #include "AdaptiveColorConfig.h"
+#include "AdaptiveFeatureRegistration.h"
 #include "AdaptiveHostConfig.h"
 #include "AdaptiveImage.h"
 #include "AdaptiveRenderArgs.h"
 #include "AdaptiveShowCardAction.h"
 #include "AdaptiveTextRun.h"
 #include "DateTimeParser.h"
+#include "FeatureRegistration.h"
 #include "TextHelpers.h"
 #include "json/json.h"
 #include "MarkDownParser.h"
@@ -886,47 +888,73 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    void XamlBuilder::AddSeparatorIfNeeded(int& currentElement,
+                                           ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* element,
+                                           Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig>& hostConfig,
+                                           ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                                           ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel)
+    {
+        // First element does not need a separator added
+        if (currentElement++ > 0)
+        {
+            bool needsSeparator;
+            UINT spacing;
+            UINT separatorThickness;
+            ABI::Windows::UI::Color separatorColor;
+            GetSeparationConfigForElement(element, hostConfig.Get(), &spacing, &separatorThickness, &separatorColor, &needsSeparator);
+            if (needsSeparator)
+            {
+                auto separator = CreateSeparator(renderContext, spacing, separatorThickness, separatorColor);
+                XamlHelpers::AppendXamlElementToPanel(separator.Get(), parentPanel);
+            }
+        }
+    }
+
     HRESULT XamlBuilder::BuildPanelChildren(_In_ IVector<IAdaptiveCardElement*>* children,
                                             _In_ IPanel* parentPanel,
                                             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
                                             std::function<void(IUIElement* child)> childCreatedCallback)
     {
-        int currentElement = 0;
+        int iElement = 0;
         unsigned int childrenSize;
         RETURN_IF_FAILED(children->get_Size(&childrenSize));
         boolean ancestorHasFallback;
         RETURN_IF_FAILED(renderArgs->get_AncestorHasFallback(&ancestorHasFallback));
+
+        ComPtr<IAdaptiveFeatureRegistration> featureRegistration;
+        RETURN_IF_FAILED(renderContext->get_FeatureRegistration(&featureRegistration));
+        ComPtr<AdaptiveFeatureRegistration> featureRegistrationImpl = PeekInnards<AdaptiveFeatureRegistration>(featureRegistration);
+        std::shared_ptr<FeatureRegistration> sharedFeatureRegistration = featureRegistrationImpl->GetSharedFeatureRegistration();
+
         HRESULT hr = XamlHelpers::IterateOverVector<IAdaptiveCardElement>(children, ancestorHasFallback, [&](IAdaptiveCardElement* element) {
             HRESULT hr = S_OK;
-            HString elementType;
-            RETURN_IF_FAILED(element->get_ElementTypeString(elementType.GetAddressOf()));
+
+            // Get fallback state
+            ABI::AdaptiveNamespace::FallbackType elementFallback;
+            RETURN_IF_FAILED(element->get_FallbackType(&elementFallback));
+            const bool elementHasFallback = (elementFallback != FallbackType_None);
+            RETURN_IF_FAILED(renderArgs->put_AncestorHasFallback(elementHasFallback || ancestorHasFallback));
+
+            // Check to see if element's requirements are being met
+            boolean requirementsMet;
+            RETURN_IF_FAILED(element->MeetsRequirements(featureRegistration.Get(), &requirementsMet));
+            hr = requirementsMet ? S_OK : E_PERFORM_FALLBACK;
+
+            // Get element renderer
             ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
             RETURN_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
             ComPtr<IAdaptiveElementRenderer> elementRenderer;
+            HString elementType;
+            RETURN_IF_FAILED(element->get_ElementTypeString(elementType.GetAddressOf()));
             RETURN_IF_FAILED(elementRenderers->Get(elementType.Get(), &elementRenderer));
-            ABI::AdaptiveNamespace::FallbackType elementFallback;
-            element->get_FallbackType(&elementFallback);
-            const bool elementHasFallback = (elementFallback != FallbackType_None);
-            renderArgs->put_AncestorHasFallback(elementHasFallback || ancestorHasFallback);
-            if (elementRenderer != nullptr)
+
+            ComPtr<IAdaptiveHostConfig> hostConfig;
+            RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+
+            if (SUCCEEDED(hr) && elementRenderer != nullptr)
             {
-                ComPtr<IAdaptiveHostConfig> hostConfig;
-                RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-                // First element does not need a separator added
-                if (currentElement++ > 0)
-                {
-                    bool needsSeparator;
-                    UINT spacing;
-                    UINT separatorThickness;
-                    ABI::Windows::UI::Color separatorColor;
-                    GetSeparationConfigForElement(element, hostConfig.Get(), &spacing, &separatorThickness, &separatorColor, &needsSeparator);
-                    if (needsSeparator)
-                    {
-                        auto separator = CreateSeparator(renderContext, spacing, separatorThickness, separatorColor);
-                        XamlHelpers::AppendXamlElementToPanel(separator.Get(), parentPanel);
-                    }
-                }
+                AddSeparatorIfNeeded(iElement, element, hostConfig, renderContext, parentPanel);
 
                 ComPtr<IUIElement> newControl;
                 hr = elementRenderer->Render(element, renderContext, renderArgs, newControl.GetAddressOf());
@@ -935,7 +963,7 @@ namespace AdaptiveNamespace
 
             if (elementRenderer == nullptr || hr == E_PERFORM_FALLBACK)
             {
-                // unknown element.
+                // unknown element or requirements unmet
                 if (elementHasFallback)
                 {
                     if (elementFallback == FallbackType_Content)
@@ -954,6 +982,8 @@ namespace AdaptiveNamespace
 
                             if (fallbackElementRenderer)
                             {
+                                AddSeparatorIfNeeded(iElement, element, hostConfig, renderContext, parentPanel);
+
                                 // perform this element's fallback
                                 ComPtr<IUIElement> newControl;
                                 fallbackElementRenderer->Render(fallbackElement.Get(), renderContext, renderArgs, &newControl);
@@ -3478,7 +3508,6 @@ namespace AdaptiveNamespace
     }
 
     static bool WarnForInlineShowCard(_In_ IAdaptiveRenderContext* renderContext,
-                                      _In_ IAdaptiveHostConfig* hostConfig,
                                       _In_ IAdaptiveActionElement* action,
                                       const std::wstring& warning)
     {
@@ -3489,18 +3518,9 @@ namespace AdaptiveNamespace
 
             if (actionType == ABI::AdaptiveNamespace::ActionType::ShowCard)
             {
-                ComPtr<IAdaptiveActionsConfig> actionsConfig;
-                THROW_IF_FAILED(hostConfig->get_Actions(actionsConfig.GetAddressOf()));
-                ComPtr<IAdaptiveShowCardActionConfig> showCardActionConfig;
-                THROW_IF_FAILED(actionsConfig->get_ShowCard(&showCardActionConfig));
-                ABI::AdaptiveNamespace::ActionMode showCardActionMode;
-                THROW_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
-                if (showCardActionMode == ABI::AdaptiveNamespace::ActionMode::Inline)
-                {
-                    THROW_IF_FAILED(renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::UnsupportedValue,
-                                                              HStringReference(warning.c_str()).Get()));
-                    return true;
-                }
+                THROW_IF_FAILED(renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::UnsupportedValue,
+                                                          HStringReference(warning.c_str()).Get()));
+                return true;
             }
         }
 
@@ -3523,7 +3543,7 @@ namespace AdaptiveNamespace
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
         // Inline ShowCards are not supported for inline actions
-        if (WarnForInlineShowCard(renderContext, hostConfig.Get(), localInlineAction.Get(), L"Inline ShowCard not supported for InlineAction"))
+        if (WarnForInlineShowCard(renderContext, localInlineAction.Get(), L"Inline ShowCard not supported for InlineAction"))
         {
             THROW_IF_FAILED(localTextBox.CopyTo(textBoxWithInlineAction));
             return;
@@ -4052,7 +4072,7 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveHostConfig> hostConfig;
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
-        if (WarnForInlineShowCard(renderContext, hostConfig.Get(), action, L"Inline ShowCard not supported for SelectAction"))
+        if (WarnForInlineShowCard(renderContext, action, L"Inline ShowCard not supported for SelectAction"))
         {
             // Was inline show card, so don't wrap the element and just return
             ComPtr<IUIElement> localElementToWrap(elementToWrap);

@@ -8,6 +8,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+@class ACOFeatureRegistration;
+
 @interface ACOBaseCardElement:NSObject
 
 - (NSData *)additionalProperty;
@@ -55,6 +57,8 @@ typedef NS_ENUM(NSInteger, ACRBleedDirection) {
 };
 
 @property ACRCardElementType type;
+
+- (BOOL)meetsRequirements:(ACOFeatureRegistration *)featureReg;
 
 @end
 
