@@ -66,6 +66,36 @@ namespace AdaptiveCards
         public bool IsSubtle { get; set; }
 
         /// <summary>
+        ///     Make the text italic
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(false)]
+        public bool Italic { get; set; }
+
+        /// <summary>
+        ///     Make the struck through
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(false)]
+        public bool Strikethrough { get; set; }
+
+        /// <summary>
+        ///     Make the text highlighted
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(false)]
+        public bool Highlight { get; set; }
+
+        /// <summary>
         ///     The text to display
         /// </summary>
         [JsonRequired]

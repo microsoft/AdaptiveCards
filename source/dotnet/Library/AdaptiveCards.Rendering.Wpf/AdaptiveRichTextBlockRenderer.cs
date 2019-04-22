@@ -58,6 +58,21 @@ namespace AdaptiveCards.Rendering.Wpf
             textRunSpan.FontWeight = FontWeight.FromOpenTypeWeight(context.Config.GetFontWeight(textRun.FontStyle, textRun.Weight));
             textRunSpan.FontSize = context.Config.GetFontSize(textRun.FontStyle, textRun.Size);
 
+            if (textRun.Italic)
+            {
+                textRunSpan.FontStyle = FontStyles.Italic;
+            }
+
+            if (textRun.Strikethrough)
+            {
+                textRunSpan.TextDecorations = TextDecorations.Strikethrough;
+            }
+
+            if (textRun.Highlight)
+            {
+                textRunSpan.SetHighlightColor(textRun.Color, textRun.IsSubtle, context);
+            }
+
             textRunSpan.SetColor(textRun.Color, textRun.IsSubtle, context);
 
             uiRichTB.Inlines.Add(textRunSpan);

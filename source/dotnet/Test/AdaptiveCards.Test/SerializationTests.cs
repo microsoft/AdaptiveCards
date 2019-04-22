@@ -512,6 +512,9 @@ namespace AdaptiveCards.Test
             textRun2.Color = AdaptiveTextColor.Accent;
             textRun2.FontStyle = AdaptiveFontStyle.Monospace;
             textRun2.IsSubtle = true;
+            textRun2.Italic = true;
+            textRun2.Strikethrough = true;
+            textRun2.Highlight = true;
             textRun2.Size = AdaptiveTextSize.Large;
             textRun2.Weight = AdaptiveTextWeight.Bolder;
             richTB.Inlines.Add(textRun2);
@@ -545,6 +548,9 @@ namespace AdaptiveCards.Test
           ""weight"": ""bolder"",
           ""color"": ""accent"",
           ""isSubtle"": true,
+          ""italic"": true,
+          ""strikethrough"": true,
+          ""highlight"": true,
           ""text"": ""with some cool looking stuff. "",
           ""fontStyle"": ""monospace""
         },
@@ -568,39 +574,42 @@ namespace AdaptiveCards.Test
         public void RichTextBlockFromJson()
         {
             var json = @"{
-  ""type"": ""AdaptiveCard"",
-  ""version"": ""1.2"",
-  ""body"": [
-    {
-      ""type"": ""RichTextBlock"",
-      ""horizontalAlignment"": ""center"",
-      ""inlines"": [
-          {
-            ""type"": ""TextRun"",
-            ""text"": ""Start the rich text block ""
-          },
-          {
-            ""type"": ""TextRun"",
-            ""size"": ""large"",
-            ""weight"": ""bolder"",
-            ""color"": ""accent"",
-            ""isSubtle"": true,
-            ""text"": ""with some cool looking stuff. "",
-            ""fontStyle"": ""monospace""
-          },
-          {
-            ""type"": ""TextRun"",
-            ""text"": ""This run has a link!"",
-            ""selectAction"": {
-              ""type"": ""Action.OpenUrl"",
-              ""url"": ""http://adaptivecards.io/"",
-              ""title"": ""Open URL""
-            }
-          }
-        ]
-    }
-  ]
-}";
+              ""type"": ""AdaptiveCard"",
+              ""version"": ""1.2"",
+              ""body"": [
+                {
+                  ""type"": ""RichTextBlock"",
+                  ""horizontalAlignment"": ""center"",
+                  ""inlines"": [
+                      {
+                        ""type"": ""TextRun"",
+                        ""text"": ""Start the rich text block ""
+                      },
+                      {
+                          ""type"": ""TextRun"",
+                          ""size"": ""large"",
+                          ""weight"": ""bolder"",
+                          ""color"": ""accent"",
+                          ""isSubtle"": true,
+                          ""italic"": true,
+                          ""highlight"": true,
+                          ""strikethrough"": true,
+                          ""text"": ""with some cool looking stuff. "",
+                          ""fontStyle"": ""monospace""
+                      },
+                      {
+                        ""type"": ""TextRun"",
+                        ""text"": ""This run has a link!"",
+                        ""selectAction"": {
+                          ""type"": ""Action.OpenUrl"",
+                          ""url"": ""http://adaptivecards.io/"",
+                          ""title"": ""Open URL""
+                      }
+                  }
+                  ]
+                }
+              ]
+            }";
 
             var card = AdaptiveCard.FromJson(json).Card;
 
@@ -609,10 +618,13 @@ namespace AdaptiveCards.Test
 
             var inlines1 = richTB.Inlines;
             var run1 = inlines1[0] as AdaptiveTextRun;
-            Assert.AreEqual(run1.Text, "Start the rich text block ");
+            Assert.AreEqual("Start the rich text block ", run1.Text);
 
             var run2 = inlines1[1] as AdaptiveTextRun;
             Assert.AreEqual(run2.Text, "with some cool looking stuff. ");
+            Assert.IsTrue(run2.Italic);
+            Assert.IsTrue(run2.Strikethrough);
+            Assert.IsTrue(run2.Highlight);
 
             var run3 = inlines1[2] as AdaptiveTextRun;
             Assert.AreEqual(run3.Text, "This run has a link!");

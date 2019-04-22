@@ -8,18 +8,18 @@
 
 package io.adaptivecards.objectmodel;
 
-public class SWIGTYPE_p_ParseContext {
+public class SWIGTYPE_p_std__shared_ptrT_std__unordered_mapT_std__string_SemanticVersion_t_t {
   private transient long swigCPtr;
 
-  protected SWIGTYPE_p_ParseContext(long cPtr, @SuppressWarnings("unused") boolean futureUse) {
+  protected SWIGTYPE_p_std__shared_ptrT_std__unordered_mapT_std__string_SemanticVersion_t_t(long cPtr, @SuppressWarnings("unused") boolean futureUse) {
     swigCPtr = cPtr;
   }
 
-  protected SWIGTYPE_p_ParseContext() {
+  protected SWIGTYPE_p_std__shared_ptrT_std__unordered_mapT_std__string_SemanticVersion_t_t() {
     swigCPtr = 0;
   }
 
-  protected static long getCPtr(SWIGTYPE_p_ParseContext obj) {
+  protected static long getCPtr(SWIGTYPE_p_std__shared_ptrT_std__unordered_mapT_std__string_SemanticVersion_t_t obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 }
