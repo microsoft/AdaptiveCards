@@ -93,7 +93,7 @@ export class RichTextBlock extends React.Component {
      */
     getTextRunElements = (paragraph) => {
         var textRunElements = [];
-        paragraph.inlines.forEach((textRun, index) => {
+        paragraph.inlines && paragraph.inlines.forEach((textRun, index) => {
             if (textRun.type.toLowerCase() == Constants.TextRunString) {
                 index > 0 && textRunElements.push(<Text key={"white-sapce-text" + index}>{" "}</Text>);
                 let textRunStyle = textRun.highlight ? [styles.text, { backgroundColor: this.hostConfig.richTextBlock.highlightColor }] : styles.text;
