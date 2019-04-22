@@ -46,6 +46,13 @@ namespace AdaptiveCards.Rendering.Wpf
             inlineRun.Foreground = context.GetColorBrush(colorCode);
         }
 
+        public static void SetHighlightColor(this Span inlineRun, AdaptiveTextColor color, bool isSubtle, AdaptiveRenderContext context)
+        {
+            FontColorConfig colorOption = context.GetForegroundColors(color);
+            string colorCode = isSubtle ? colorOption.HighlightColors.Subtle : colorOption.HighlightColors.Default;
+            inlineRun.Background = context.GetColorBrush(colorCode);
+        }
+
         public static void SetHorizontalAlignment(this Image image, AdaptiveHorizontalAlignment alignment)
         {
             if (Enum.TryParse(alignment.ToString(), out HorizontalAlignment a))

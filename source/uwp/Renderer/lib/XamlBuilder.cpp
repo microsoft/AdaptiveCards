@@ -3505,7 +3505,6 @@ namespace AdaptiveNamespace
     }
 
     static bool WarnForInlineShowCard(_In_ IAdaptiveRenderContext* renderContext,
-                                      _In_ IAdaptiveHostConfig* hostConfig,
                                       _In_ IAdaptiveActionElement* action,
                                       const std::wstring& warning)
     {
@@ -3516,18 +3515,9 @@ namespace AdaptiveNamespace
 
             if (actionType == ABI::AdaptiveNamespace::ActionType::ShowCard)
             {
-                ComPtr<IAdaptiveActionsConfig> actionsConfig;
-                THROW_IF_FAILED(hostConfig->get_Actions(actionsConfig.GetAddressOf()));
-                ComPtr<IAdaptiveShowCardActionConfig> showCardActionConfig;
-                THROW_IF_FAILED(actionsConfig->get_ShowCard(&showCardActionConfig));
-                ABI::AdaptiveNamespace::ActionMode showCardActionMode;
-                THROW_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
-                if (showCardActionMode == ABI::AdaptiveNamespace::ActionMode::Inline)
-                {
-                    THROW_IF_FAILED(renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::UnsupportedValue,
-                                                              HStringReference(warning.c_str()).Get()));
-                    return true;
-                }
+                THROW_IF_FAILED(renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::UnsupportedValue,
+                                                          HStringReference(warning.c_str()).Get()));
+                return true;
             }
         }
 
@@ -3550,7 +3540,7 @@ namespace AdaptiveNamespace
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
         // Inline ShowCards are not supported for inline actions
-        if (WarnForInlineShowCard(renderContext, hostConfig.Get(), localInlineAction.Get(), L"Inline ShowCard not supported for InlineAction"))
+        if (WarnForInlineShowCard(renderContext, localInlineAction.Get(), L"Inline ShowCard not supported for InlineAction"))
         {
             THROW_IF_FAILED(localTextBox.CopyTo(textBoxWithInlineAction));
             return;
@@ -4079,7 +4069,7 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveHostConfig> hostConfig;
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
-        if (WarnForInlineShowCard(renderContext, hostConfig.Get(), action, L"Inline ShowCard not supported for SelectAction"))
+        if (WarnForInlineShowCard(renderContext, action, L"Inline ShowCard not supported for SelectAction"))
         {
             // Was inline show card, so don't wrap the element and just return
             ComPtr<IUIElement> localElementToWrap(elementToWrap);
