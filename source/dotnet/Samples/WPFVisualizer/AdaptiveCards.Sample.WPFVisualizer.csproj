@@ -149,6 +149,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\..\..\samples\HostConfig\**">
+      <Link>HostConfigs\%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\Library\AdaptiveCards.Rendering.Wpf.Xceed\AdaptiveCards.Rendering.Wpf.Xceed.csproj">
       <Project>{4741abec-33b0-424f-b5f1-464ec31aeebd}</Project>
       <Name>AdaptiveCards.Rendering.Wpf.Xceed</Name>
