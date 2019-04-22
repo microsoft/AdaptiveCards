@@ -514,6 +514,7 @@ namespace AdaptiveCards.Test
             textRun2.IsSubtle = true;
             textRun2.Italic = true;
             textRun2.Strikethrough = true;
+            textRun2.Highlight = true;
             textRun2.Size = AdaptiveTextSize.Large;
             textRun2.Weight = AdaptiveTextWeight.Bolder;
             richTB.Inlines.Add(textRun2);
@@ -549,6 +550,7 @@ namespace AdaptiveCards.Test
           ""isSubtle"": true,
           ""italic"": true,
           ""strikethrough"": true,
+          ""highlight"": true,
           ""text"": ""with some cool looking stuff. "",
           ""fontStyle"": ""monospace""
         },
@@ -590,6 +592,7 @@ namespace AdaptiveCards.Test
                           ""color"": ""accent"",
                           ""isSubtle"": true,
                           ""italic"": true,
+                          ""highlight"": true,
                           ""strikethrough"": true,
                           ""text"": ""with some cool looking stuff. "",
                           ""fontStyle"": ""monospace""
@@ -621,6 +624,7 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(run2.Text, "with some cool looking stuff. ");
             Assert.IsTrue(run2.Italic);
             Assert.IsTrue(run2.Strikethrough);
+            Assert.IsTrue(run2.Highlight);
 
             var run3 = inlines1[2] as AdaptiveTextRun;
             Assert.AreEqual(run3.Text, "This run has a link!");
