@@ -50,13 +50,13 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveColorConfig::get_HighlightColors(IAdaptiveHighlightColorConfig** highlightColors)
+    HRESULT AdaptiveColorConfig::get_HighlightColors(_COM_Outptr_ IAdaptiveHighlightColorConfig** highlightColors)
     {
         return m_highlightColors.CopyTo(highlightColors);
     }
 
 
-    HRESULT AdaptiveColorConfig::put_HighlightColors(IAdaptiveHighlightColorConfig* highlightColors)
+    HRESULT AdaptiveColorConfig::put_HighlightColors(_In_ IAdaptiveHighlightColorConfig* highlightColors)
     {
         m_highlightColors = highlightColors;
         return S_OK; 
