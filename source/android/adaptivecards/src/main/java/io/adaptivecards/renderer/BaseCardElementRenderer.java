@@ -59,7 +59,7 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
         return android.graphics.Color.parseColor(colorCode);
     }
 
-    protected static void setSpacingAndSeparator(Context context,
+    protected static View setSpacingAndSeparator(Context context,
                                                ViewGroup viewGroup,
                                                Spacing spacing,
                                                boolean separator,
@@ -70,7 +70,7 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
         if (viewGroup.getChildCount() <= 0)
         {
             //Do not add space to the first element of a viewgroup
-            return;
+            return null;
         }
         int spacingSize = Util.dpToPixels(context, getSpacingSize(spacing, hostConfig.GetSpacing()));
         int separatorThickness = Util.dpToPixels(context, hostConfig.GetSeparator().getLineThickness());
@@ -100,6 +100,7 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
         }
         view.setLayoutParams(params);
         viewGroup.addView(view);
+        return view;
     }
 
     protected static void setSpacingAndSeparator(
