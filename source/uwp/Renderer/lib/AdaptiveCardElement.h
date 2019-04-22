@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
+#include "SemanticVersion.h"
 #include "Enums.h"
 
 namespace AdaptiveNamespace
@@ -25,10 +26,10 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_IsVisible(_Out_ boolean* separator);
         IFACEMETHODIMP put_IsVisible(boolean separator);
 
-        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveNamespace::FallbackType * fallback);
+        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveNamespace::FallbackType* fallback);
         IFACEMETHODIMP put_FallbackType(ABI::AdaptiveNamespace::FallbackType fallback);
-        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement ** content);
-        IFACEMETHODIMP put_FallbackContent(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement * content);
+        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** content);
+        IFACEMETHODIMP put_FallbackContent(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* content);
 
         IFACEMETHODIMP get_ElementTypeString(_Outptr_ HSTRING* type);
 
@@ -37,6 +38,9 @@ namespace AdaptiveNamespace
 
         IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveNamespace::HeightType* height);
         IFACEMETHODIMP put_Height(ABI::AdaptiveNamespace::HeightType height);
+
+        IFACEMETHODIMP MeetsRequirements(_In_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration* featureRegistration,
+                                         _Out_ boolean* value);
 
         IFACEMETHODIMP ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
 
@@ -55,5 +59,6 @@ namespace AdaptiveNamespace
         InternalId m_internalId;
         ABI::AdaptiveNamespace::FallbackType m_fallbackType;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardElement> m_fallbackContent;
+        std::shared_ptr<std::unordered_map<std::string, SemanticVersion>> m_requires;
     };
 }

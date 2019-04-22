@@ -67,6 +67,18 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_IsSubtle(_Out_ boolean* isSubtle) { return AdaptiveTextElement::get_IsSubtle(isSubtle); }
         IFACEMETHODIMP put_IsSubtle(boolean isSubtle) { return AdaptiveTextElement::put_IsSubtle(isSubtle); }
 
+        IFACEMETHODIMP get_Italic(_Out_ boolean* italic) { return AdaptiveTextElement::get_Italic(italic); }
+        IFACEMETHODIMP put_Italic(boolean italic) { return AdaptiveTextElement::put_Italic(italic); }
+
+        IFACEMETHODIMP get_Strikethrough(_Out_ boolean* strikethrough)
+        {
+            return AdaptiveTextElement::get_Strikethrough(strikethrough);
+        }
+        IFACEMETHODIMP put_Strikethrough(boolean strikethrough)
+        {
+            return AdaptiveTextElement::put_Strikethrough(strikethrough);
+        }
+
         IFACEMETHODIMP get_Language(_Outptr_ HSTRING* language) { return AdaptiveTextElement::get_Language(language); }
         IFACEMETHODIMP put_Language(_In_ HSTRING language) { return AdaptiveTextElement::put_Language(language); }
 
@@ -137,6 +149,12 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* value)
         {
             return AdaptiveCardElementBase::put_AdditionalProperties(value);
+        }
+
+        IFACEMETHODIMP MeetsRequirements(_In_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration* featureRegistration,
+                                         _Out_ boolean* value)
+        {
+            return AdaptiveCardElementBase::MeetsRequirements(featureRegistration, value);
         }
 
         IFACEMETHODIMP ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)

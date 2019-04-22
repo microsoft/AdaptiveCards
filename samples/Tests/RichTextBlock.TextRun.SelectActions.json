@@ -40,54 +40,50 @@
 		},
 		{
 			"type": "RichTextBlock",
-			"wrap": true,
-			"paragraphs": [
+			"inlines": [
 				{
-					"inlines": [
-						{
-							"type": "TextRun",
-							"text": "Interacting with the text in the good color will open a web page. ",
-							"color": "good",
-							"selectAction": {
-								"type": "Action.OpenURL",
-								"url": "http://adaptivecards.io",
-								"title": "Default"
-							}
-						},
-						{
-							"type": "TextRun",
-							"text": " **-Should not trigger any actions-** "
-						},
-						{
-							"type": "TextRun",
-							"text": " Interacting with the text in the warning color will submit. ",
-							"color": "warning",
-							"selectAction": {
-								"type": "Action.Submit",
-								"title": "Action.Submit",
-								"data": {
-									"x": "hello world!"
-								}
-							}
-						},
-						{
-							"type": "TextRun",
-							"text": " **-Should not trigger any actions-** "
-						},
-						{
-							"type": "TextRun",
-							"text": "Interacting with the text in the accent color will toggle visibility ",
-							"color": "accent",
-							"selectAction":{
-								"type": "Action.ToggleVisibility",
-								"title": "Toggle!",
-								"targetElements": [ "textToToggle", "imageToToggle", "imageToToggle2" ]
-							}
+					"type": "TextRun",
+					"text": "Interacting with the text in the good color will open a web page. ",
+					"color": "good",
+					"selectAction": {
+						"type": "Action.OpenUrl",
+						"url": "http://adaptivecards.io",
+						"title": "Default"
+					}
+				},
+				{
+					"type": "TextRun",
+					"text": " -Should not trigger any actions- ",
+					"weight": "bolder"
+				},
+				{
+					"type": "TextRun",
+					"text": " Interacting with the text in the warning color will submit. ",
+					"color": "warning",
+					"selectAction": {
+						"type": "Action.Submit",
+						"title": "Action.Submit",
+						"data": {
+							"x": "hello world!"
 						}
-					]
+					}
+				},
+				{
+					"type": "TextRun",
+					"text": " -Should not trigger any actions- ",
+					"weight": "bolder"
+				},
+				{
+					"type": "TextRun",
+					"text": "Interacting with the text in the accent color will toggle visibility ",
+					"color": "accent",
+					"selectAction": {
+						"type": "Action.ToggleVisibility",
+						"title": "Toggle!",
+						"targetElements": [ "textToToggle", "imageToToggle", "imageToToggle2" ]
+					}
 				}
 			]
 		}
 	]
 }
-

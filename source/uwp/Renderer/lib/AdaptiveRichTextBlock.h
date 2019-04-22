@@ -23,17 +23,10 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::RichTextBlock>& sharedRichTextBlock) noexcept;
 
         // IAdaptiveRichTextBlock
-        IFACEMETHODIMP get_Wrap(_Out_ boolean* wrap);
-        IFACEMETHODIMP put_Wrap(boolean wrap);
-
-        IFACEMETHODIMP get_MaxLines(_Out_ UINT32* value);
-        IFACEMETHODIMP put_MaxLines(UINT32 value);
-
         IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveNamespace::HAlignment* HorizontalAlignment);
         IFACEMETHODIMP put_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment HorizontalAlignment);
 
-        IFACEMETHODIMP get_Paragraphs(
-            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveParagraph*>** paragraphs);
+        IFACEMETHODIMP get_Inlines(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveInline*>** inlines);
 
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespace::ElementType* elementType);
@@ -94,6 +87,12 @@ namespace AdaptiveNamespace
             return AdaptiveCardElementBase::put_FallbackContent(content);
         }
 
+        IFACEMETHODIMP MeetsRequirements(_In_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration* featureRegistration,
+                                         _Out_ boolean* value)
+        {
+            return AdaptiveCardElementBase::MeetsRequirements(featureRegistration, value);
+        }
+
         IFACEMETHODIMP ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
         {
             return AdaptiveCardElementBase::ToJson(result);
@@ -114,10 +113,8 @@ namespace AdaptiveNamespace
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
     private:
-        boolean m_wrap;
-        UINT32 m_maxLines;
         ABI::AdaptiveNamespace::HAlignment m_horizontalAlignment;
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveParagraph*>> m_paragraphs;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveInline*>> m_inlines;
     };
 
     ActivatableClass(AdaptiveRichTextBlock);

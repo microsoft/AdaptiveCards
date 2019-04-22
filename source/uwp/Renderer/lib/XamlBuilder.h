@@ -214,6 +214,11 @@ namespace AdaptiveNamespace
                                                                                           bool isHorizontal = true);
         static void ApplyMarginToXamlElement(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
                                              _In_ ABI::Windows::UI::Xaml::IFrameworkElement* element);
+        static void AddSeparatorIfNeeded(int& currentElement,
+                                         ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* element,
+                                         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig>& hostConfig,
+                                         ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                                         ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel);
         static HRESULT BuildPanelChildren(
             _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveCardElement*>* children,
             _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,
