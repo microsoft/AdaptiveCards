@@ -78,7 +78,8 @@ namespace AdaptiveCards.Rendering.Html.Test
                             {
                                 Text = "Inline 4",
                                 Italic = true,
-                                Strikethrough = true
+                                Strikethrough = true,
+                                Highlight = true
                             }
                         }
                     }
@@ -90,7 +91,7 @@ namespace AdaptiveCards.Rendering.Html.Test
             var generatedHtml = result.Html.ToString();
 
             Assert.AreEqual(
-                "<div class='ac-adaptivecard' style='width: 100%;background-color: rgba(255, 255, 255, 1.00);padding: 15px;box-sizing: border-box;justify-content: flex-start;'><div class='ac-richtextblock' style='box-sizing: border-box;text-align: left;word-wrap: break-word;'><p style='margin-top: 0px;margin-bottom: 0px;width: 100%;'><span class='ac-textrun' style='color: rgba(0, 0, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;'>Inline 1</span><span class='ac-textrun' style='color: rgba(0, 0, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;'>Inline 2</span><span class='ac-textrun' style='color: rgba(0, 0, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;'>Inline 3</span><span class='ac-textrun' style='color: rgba(0, 0, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;font-style: italic;text-decoration: line-through;'>Inline 4</span></p></div></div>",
+                "<div class='ac-adaptivecard' style='width: 100%;background-color: rgba(255, 255, 255, 1.00);padding: 15px;box-sizing: border-box;justify-content: flex-start;'><div class='ac-richtextblock' style='box-sizing: border-box;text-align: left;word-wrap: break-word;'><p style='margin-top: 0px;margin-bottom: 0px;width: 100%;'><span class='ac-textrun' style='color: rgba(0, 0, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;'>Inline 1</span><span class='ac-textrun' style='color: rgba(0, 0, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;'>Inline 2</span><span class='ac-textrun' style='color: rgba(0, 0, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;'>Inline 3</span><span class='ac-textrun' style='color: rgba(0, 0, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;font-style: italic;text-decoration: line-through;background-color: rgba(255, 255, 0, 1.00);'>Inline 4</span></p></div></div>",
                 generatedHtml);
         }
 
