@@ -402,11 +402,33 @@ namespace AdaptiveSharedNamespace
 
     enum class ContainerBleedDirection
     {
-        BleedRestricted = 0,
-        BleedToLeading,
-        BleedToTrailing,
-        BleedToBothEdges,
+        BleedRestricted = 0x0000,
+        BleedLeft = 0x0001,
+        BleedRight = 0x0010,
+        BleedUp = 0x0100,
+        BleedDown = 0x1000,
+        BleedAll = BleedLeft | BleedRight | BleedUp | BleedDown
     };
+
+    // Define bit operators so we can use ContainerBleedDirection as a bitmask
+    inline ContainerBleedDirection operator~(ContainerBleedDirection a) { return (ContainerBleedDirection) ~(int)a; }
+    inline ContainerBleedDirection operator|(ContainerBleedDirection a, ContainerBleedDirection b)
+    {
+        return (ContainerBleedDirection)((int)a | (int)b);
+    }
+    inline ContainerBleedDirection operator&(ContainerBleedDirection a, ContainerBleedDirection b)
+    {
+        return (ContainerBleedDirection)((int)a & (int)b);
+    }
+    inline ContainerBleedDirection& operator|=(ContainerBleedDirection& a, ContainerBleedDirection b)
+    {
+        return (ContainerBleedDirection&)((int&)a |= (int)b);
+    }
+    inline ContainerBleedDirection& operator&=(ContainerBleedDirection& a, ContainerBleedDirection b)
+    {
+        return (ContainerBleedDirection&)((int&)a &= (int)b);
+    }
+
     // No mapping to string needed
 
     enum class IconPlacement
