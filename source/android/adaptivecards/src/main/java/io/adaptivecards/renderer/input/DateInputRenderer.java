@@ -70,7 +70,7 @@ public class DateInputRenderer extends TextInputRenderer
             throw new InternalError("Unable to convert BaseCardElement to DateInput object model.");
         }
 
-        setSpacingAndSeparator(context, viewGroup, dateInput.GetSpacing(), dateInput.GetSeparator(), hostConfig, true /* horizontal line */);
+        View separator = setSpacingAndSeparator(context, viewGroup, dateInput.GetSpacing(), dateInput.GetSeparator(), hostConfig, true /* horizontal line */);
 
         DateInputHandler dateInputHandler = new DateInputHandler(dateInput, fragmentManager);
 
@@ -116,12 +116,9 @@ public class DateInputRenderer extends TextInputRenderer
 
             }
         });
-        editText.setTag(new TagContent(dateInput, dateInputHandler));
 
-        if (!baseCardElement.GetIsVisible())
-        {
-            editText.setVisibility(View.GONE);
-        }
+        editText.setTag(new TagContent(dateInput, dateInputHandler, separator, viewGroup));
+        setVisibility(baseCardElement.GetIsVisible(), editText);
 
         return editText;
     }

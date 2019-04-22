@@ -69,7 +69,7 @@ public class TimeInputRenderer extends TextInputRenderer
             throw new InternalError("Unable to convert BaseCardElement to TimeInput object model.");
         }
 
-        setSpacingAndSeparator(context, viewGroup, timeInput.GetSpacing(), timeInput.GetSeparator(), hostConfig, true /* horizontal line */);
+        View separator = setSpacingAndSeparator(context, viewGroup, timeInput.GetSpacing(), timeInput.GetSeparator(), hostConfig, true /* horizontal line */);
 
         TimeInputHandler timeInputHandler = new TimeInputHandler(timeInput, fragmentManager);
         String time = timeInput.GetValue();
@@ -113,11 +113,9 @@ public class TimeInputRenderer extends TextInputRenderer
 
             }
         });
-        editText.setTag(new TagContent(timeInput, timeInputHandler));
-        if(!baseCardElement.GetIsVisible())
-        {
-            editText.setVisibility(View.GONE);
-        }
+
+        editText.setTag(new TagContent(timeInput, timeInputHandler, separator, viewGroup));
+        setVisibility(baseCardElement.GetIsVisible(), editText);
 
         return editText;
     }

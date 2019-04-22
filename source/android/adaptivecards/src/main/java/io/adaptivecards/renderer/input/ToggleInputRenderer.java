@@ -72,7 +72,7 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
             throw new InternalError("Unable to convert BaseCardElement to ToggleInput object model.");
         }
 
-        setSpacingAndSeparator(context, viewGroup, toggleInput.GetSpacing(), toggleInput.GetSeparator(), hostConfig, true /* horizontal line */);
+        View separator = setSpacingAndSeparator(context, viewGroup, toggleInput.GetSpacing(), toggleInput.GetSeparator(), hostConfig, true /* horizontal line */);
 
         final ToggleInputHandler toggleInputHandler = new ToggleInputHandler(toggleInput);
         CheckBox checkBox = new CheckBox(context);
@@ -82,11 +82,8 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
             checkBox.setEllipsize(TextUtils.TruncateAt.END);
         }
         toggleInputHandler.setView(checkBox);
-        checkBox.setTag(new TagContent(toggleInput, toggleInputHandler));
-        if(!baseCardElement.GetIsVisible())
-        {
-            checkBox.setVisibility(View.GONE);
-        }
+        checkBox.setTag(new TagContent(toggleInput, toggleInputHandler, separator, viewGroup));
+        setVisibility(baseCardElement.GetIsVisible(), checkBox);
 
         checkBox.setText(toggleInput.GetTitle());
         renderedCard.registerInputHandler(toggleInputHandler);

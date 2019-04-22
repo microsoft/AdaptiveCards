@@ -157,11 +157,6 @@ public class TextInputRenderer extends BaseCardElementRenderer
     {
         EditText editText = new EditText(context);
         textInputHandler.setView(editText);
-        editText.setTag(new TagContent(baseInputElement, textInputHandler));
-        if(!baseInputElement.GetIsVisible())
-        {
-            editText.setVisibility(View.GONE);
-        }
         renderedCard.registerInputHandler(textInputHandler);
 
         if (!TextUtils.isEmpty(value))
@@ -337,7 +332,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
         }
 
         TextInputHandler textInputHandler = new TextInputHandler(textInput);
-        setSpacingAndSeparator(context, viewGroup, textInput.GetSpacing(), textInput.GetSeparator(), hostConfig, true /* horizontal line */);
+        View separator = setSpacingAndSeparator(context, viewGroup, textInput.GetSpacing(), textInput.GetSeparator(), hostConfig, true /* horizontal line */);
         final EditText editText = renderInternal(
                 renderedCard,
                 context,
@@ -348,7 +343,9 @@ public class TextInputRenderer extends BaseCardElementRenderer
                 textInputHandler,
                 hostConfig);
         editText.setSingleLine(!textInput.GetIsMultiline());
-        editText.setTag(new TagContent(textInput, textInputHandler));
+        editText.setTag(new TagContent(textInput, textInputHandler, separator, viewGroup));
+        setVisibility(baseCardElement.GetIsVisible(), editText);
+
         BaseActionElement action = textInput.GetInlineAction();
 
         if (textInput.GetIsMultiline())

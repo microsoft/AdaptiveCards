@@ -70,25 +70,23 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             throw new UnknownError(CardElementType.Column.toString() + " is not a registered renderer.");
         }
 
-        setSpacingAndSeparator(context, viewGroup, columnSet.GetSpacing(), columnSet.GetSeparator(), hostConfig, true);
+        View separator = setSpacingAndSeparator(context, viewGroup, columnSet.GetSpacing(), columnSet.GetSeparator(), hostConfig, true);
 
         ColumnVector columnVector = columnSet.GetColumns();
         long columnVectorSize = columnVector.size();
 
         LinearLayout layout = new LinearLayout(context);
-        layout.setTag(new TagContent(columnSet));
+        layout.setTag(new TagContent(columnSet, separator, viewGroup));
 
         // Add this two for allowing children to bleed
         layout.setClipChildren(false);
         layout.setClipToPadding(false);
 
+        setVisibility(baseCardElement.GetIsVisible(), layout);
+        setMinHeight(columnSet.GetMinHeight(), layout, context);
+
         ContainerStyle parentContainerStyle = renderArgs.getContainerStyle();
         ContainerStyle styleForThis = ContainerRenderer.GetLocalContainerStyle(columnSet, parentContainerStyle);
-
-        if (!baseCardElement.GetIsVisible())
-        {
-            layout.setVisibility(View.GONE);
-        }
 
         for (int i = 0; i < columnVectorSize; i++)
         {
@@ -125,11 +123,6 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
 
         ContainerRenderer.ApplyPadding(styleForThis, parentContainerStyle, layout, context, hostConfig);
         ContainerRenderer.ApplyBleed(columnSet, layout, context, hostConfig);
-
-        if (columnSet.GetMinHeight() != 0)
-        {
-            layout.setMinimumHeight(Util.dpToPixels(context, (int)columnSet.GetMinHeight()));
-        }
 
         return layout;
     }

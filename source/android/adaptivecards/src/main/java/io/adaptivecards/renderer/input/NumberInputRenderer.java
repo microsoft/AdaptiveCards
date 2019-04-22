@@ -63,7 +63,7 @@ public class NumberInputRenderer extends TextInputRenderer
         {
             throw new InternalError("Unable to convert BaseCardElement to NumberInput object model.");
         }
-        setSpacingAndSeparator(context, viewGroup, numberInput.GetSpacing(), numberInput.GetSeparator(), hostConfig, true /* horizontal line */);
+        View separator = setSpacingAndSeparator(context, viewGroup, numberInput.GetSpacing(), numberInput.GetSeparator(), hostConfig, true /* horizontal line */);
 
         TextInputHandler numberInputHandler = new TextInputHandler(numberInput);
         EditText editText = renderInternal(
@@ -77,12 +77,8 @@ public class NumberInputRenderer extends TextInputRenderer
                 hostConfig);
         editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
-        editText.setTag(new TagContent(numberInput, numberInputHandler));
-        if(!baseCardElement.GetIsVisible())
-        {
-            editText.setVisibility(View.GONE);
-        }
-
+        editText.setTag(new TagContent(numberInput, numberInputHandler, separator, viewGroup));
+        setVisibility(baseCardElement.GetIsVisible(), editText);
 
         return editText;
     }
