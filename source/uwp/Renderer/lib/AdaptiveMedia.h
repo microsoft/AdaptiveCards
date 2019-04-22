@@ -84,6 +84,12 @@ namespace AdaptiveNamespace
             return AdaptiveCardElementBase::put_Height(height);
         }
 
+        IFACEMETHODIMP MeetsRequirements(_In_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration* featureRegistration,
+                                         _Out_ boolean* value)
+        {
+            return AdaptiveCardElementBase::MeetsRequirements(featureRegistration, value);
+        }
+
         IFACEMETHODIMP ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
         {
             return AdaptiveCardElementBase::ToJson(result);

@@ -267,6 +267,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void InlineVector_doRemoveRange(long jarg1, InlineVector jarg1_, int jarg2, int jarg3);
   public final static native void delete_InlineVector(long jarg1);
   public final static native long EnableSharedFromThisContainer_shared_from_this(long jarg1, EnableSharedFromThisContainer jarg1_);
+  public final static native String c_sharedModelVersion_get();
   public final static native long new_CaseInsensitiveEqualTo();
   public final static native void delete_CaseInsensitiveEqualTo(long jarg1);
   public final static native long new_CaseInsensitiveHash();
@@ -383,7 +384,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long BaseElement_GetFallbackContent(long jarg1, BaseElement jarg1_);
   public final static native void BaseElement_SetFallbackType(long jarg1, BaseElement jarg1_, int jarg2);
   public final static native void BaseElement_SetFallbackContent(long jarg1, BaseElement jarg1_, long jarg2, BaseElement jarg2_);
-  public final static native boolean BaseElement_MeetsRequirements(long jarg1, BaseElement jarg1_, long jarg2);
+  public final static native boolean BaseElement_MeetsRequirements(long jarg1, BaseElement jarg1_, long jarg2, FeatureRegistration jarg2_);
+  public final static native long BaseElement_GetRequirements(long jarg1, BaseElement jarg1_);
   public final static native void BaseElement_GetResourceInformation(long jarg1, BaseElement jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native void BaseElement_GetResourceInformationSwigExplicitBaseElement(long jarg1, BaseElement jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native void BaseElement_PopulateKnownPropertiesSet(long jarg1, BaseElement jarg1_);
@@ -528,6 +530,19 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void ElementParserRegistration_RemoveParser(long jarg1, ElementParserRegistration jarg1_, String jarg2);
   public final static native long ElementParserRegistration_GetParser(long jarg1, ElementParserRegistration jarg1_, String jarg2);
   public final static native void delete_ElementParserRegistration(long jarg1);
+  public final static native String c_adaptiveCardsFeature_get();
+  public final static native long new_FeatureRegistration();
+  public final static native void FeatureRegistration_AddFeature(long jarg1, FeatureRegistration jarg1_, String jarg2, String jarg3);
+  public final static native void FeatureRegistration_RemoveFeature(long jarg1, FeatureRegistration jarg1_, String jarg2);
+  public final static native long FeatureRegistration_GetAdaptiveCardsVersion(long jarg1, FeatureRegistration jarg1_);
+  public final static native String FeatureRegistration_GetFeatureVersion(long jarg1, FeatureRegistration jarg1_, String jarg2);
+  public final static native void delete_FeatureRegistration(long jarg1);
+  public final static native long new_SemanticVersion(String jarg1);
+  public final static native long SemanticVersion_GetMajor(long jarg1, SemanticVersion jarg1_);
+  public final static native long SemanticVersion_GetMinor(long jarg1, SemanticVersion jarg1_);
+  public final static native long SemanticVersion_GetBuild(long jarg1, SemanticVersion jarg1_);
+  public final static native long SemanticVersion_GetRevision(long jarg1, SemanticVersion jarg1_);
+  public final static native void delete_SemanticVersion(long jarg1);
   public final static native long new_Container__SWIG_0();
   public final static native long new_Container__SWIG_1(long jarg1, Container jarg1_);
   public final static native void delete_Container(long jarg1);
