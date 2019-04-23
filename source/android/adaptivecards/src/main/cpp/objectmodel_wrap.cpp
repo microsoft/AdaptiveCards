@@ -23577,7 +23577,7 @@ SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObject
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateTimePreparser_1TryParseSimpleTime(JNIEnv *jenv, jclass jcls, jstring jarg1, jlong jarg2, jlong jarg3) {
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateTimePreparser_1TryParseSimpleTime(JNIEnv *jenv, jclass jcls, jstring jarg1, jlongArray jarg2, jlongArray jarg3) {
   jboolean jresult = 0 ;
   std::string *arg1 = 0 ;
   unsigned int *arg2 = 0 ;
@@ -23595,23 +23595,43 @@ SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObject
   std::string arg1_str(arg1_pstr);
   arg1 = &arg1_str;
   jenv->ReleaseStringUTFChars(jarg1, arg1_pstr); 
-  arg2 = *(unsigned int **)&jarg2;
-  if (!arg2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "unsigned int & reference is null");
-    return 0;
-  } 
-  arg3 = *(unsigned int **)&jarg3;
-  if (!arg3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "unsigned int & reference is null");
-    return 0;
-  } 
+  {
+    if (!jarg2) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "array null");
+      return 0;
+    }
+    if (jenv->GetArrayLength(jarg2) == 0) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, "Array must contain at least 1 element");
+      return 0;
+    }
+    arg2 = (unsigned int *) jenv->GetLongArrayElements(jarg2, 0); 
+  }
+  {
+    if (!jarg3) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "array null");
+      return 0;
+    }
+    if (jenv->GetArrayLength(jarg3) == 0) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, "Array must contain at least 1 element");
+      return 0;
+    }
+    arg3 = (unsigned int *) jenv->GetLongArrayElements(jarg3, 0); 
+  }
   result = (bool)AdaptiveCards::DateTimePreparser::TryParseSimpleTime((std::string const &)*arg1,*arg2,*arg3);
   jresult = (jboolean)result; 
+  {
+    jenv->ReleaseLongArrayElements(jarg2, (jlong *)arg2, 0); 
+  }
+  {
+    jenv->ReleaseLongArrayElements(jarg3, (jlong *)arg3, 0); 
+  }
+  
+  
   return jresult;
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateTimePreparser_1TryParseSimpleDate(JNIEnv *jenv, jclass jcls, jstring jarg1, jlong jarg2, jlong jarg3, jlong jarg4) {
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateTimePreparser_1TryParseSimpleDate(JNIEnv *jenv, jclass jcls, jstring jarg1, jlongArray jarg2, jlongArray jarg3, jlongArray jarg4) {
   jboolean jresult = 0 ;
   std::string *arg1 = 0 ;
   unsigned int *arg2 = 0 ;
@@ -23630,23 +23650,53 @@ SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObject
   std::string arg1_str(arg1_pstr);
   arg1 = &arg1_str;
   jenv->ReleaseStringUTFChars(jarg1, arg1_pstr); 
-  arg2 = *(unsigned int **)&jarg2;
-  if (!arg2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "unsigned int & reference is null");
-    return 0;
-  } 
-  arg3 = *(unsigned int **)&jarg3;
-  if (!arg3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "unsigned int & reference is null");
-    return 0;
-  } 
-  arg4 = *(unsigned int **)&jarg4;
-  if (!arg4) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "unsigned int & reference is null");
-    return 0;
-  } 
+  {
+    if (!jarg2) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "array null");
+      return 0;
+    }
+    if (jenv->GetArrayLength(jarg2) == 0) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, "Array must contain at least 1 element");
+      return 0;
+    }
+    arg2 = (unsigned int *) jenv->GetLongArrayElements(jarg2, 0); 
+  }
+  {
+    if (!jarg3) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "array null");
+      return 0;
+    }
+    if (jenv->GetArrayLength(jarg3) == 0) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, "Array must contain at least 1 element");
+      return 0;
+    }
+    arg3 = (unsigned int *) jenv->GetLongArrayElements(jarg3, 0); 
+  }
+  {
+    if (!jarg4) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "array null");
+      return 0;
+    }
+    if (jenv->GetArrayLength(jarg4) == 0) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, "Array must contain at least 1 element");
+      return 0;
+    }
+    arg4 = (unsigned int *) jenv->GetLongArrayElements(jarg4, 0); 
+  }
   result = (bool)AdaptiveCards::DateTimePreparser::TryParseSimpleDate((std::string const &)*arg1,*arg2,*arg3,*arg4);
   jresult = (jboolean)result; 
+  {
+    jenv->ReleaseLongArrayElements(jarg2, (jlong *)arg2, 0); 
+  }
+  {
+    jenv->ReleaseLongArrayElements(jarg3, (jlong *)arg3, 0); 
+  }
+  {
+    jenv->ReleaseLongArrayElements(jarg4, (jlong *)arg4, 0); 
+  }
+  
+  
+  
   return jresult;
 }
 
