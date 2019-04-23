@@ -89,6 +89,16 @@ namespace AdaptiveCards.Rendering.Wpf
 
             uiTextBlock.TextTrimming = TextTrimming.CharacterEllipsis;
 
+            if (textBlock.Italic)
+            {
+                uiTextBlock.FontStyle = FontStyles.Italic;
+            }
+
+            if (textBlock.Strikethrough)
+            {
+                uiTextBlock.TextDecorations = TextDecorations.Strikethrough;
+            }
+
             if (textBlock.HorizontalAlignment != AdaptiveHorizontalAlignment.Left)
             {
                 System.Windows.TextAlignment alignment;

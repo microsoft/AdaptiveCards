@@ -14,10 +14,7 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    AdaptiveRichTextBlock::AdaptiveRichTextBlock()
-    {
-        m_paragraphs = Microsoft::WRL::Make<Vector<AdaptiveParagraph*>>();
-    }
+    AdaptiveRichTextBlock::AdaptiveRichTextBlock() { m_inlines = Microsoft::WRL::Make<Vector<IAdaptiveInline*>>(); }
 
     HRESULT AdaptiveRichTextBlock::RuntimeClassInitialize() noexcept try
     {
@@ -34,40 +31,14 @@ namespace AdaptiveNamespace
             return E_INVALIDARG;
         }
 
-        m_wrap = sharedRichTextBlock->GetWrap();
-        m_maxLines = sharedRichTextBlock->GetMaxLines();
         m_horizontalAlignment = static_cast<ABI::AdaptiveNamespace::HAlignment>(sharedRichTextBlock->GetHorizontalAlignment());
 
-        GenerateParagraphsProjection(sharedRichTextBlock->GetParagraphs(), m_paragraphs.Get());
+        GenerateInlinesProjection(sharedRichTextBlock->GetInlines(), m_inlines.Get());
 
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedRichTextBlock));
         return S_OK;
     }
     CATCH_RETURN;
-
-    HRESULT AdaptiveRichTextBlock::get_Wrap(_Out_ boolean* wrap)
-    {
-        *wrap = m_wrap;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveRichTextBlock::put_Wrap(boolean wrap)
-    {
-        m_wrap = wrap;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveRichTextBlock::get_MaxLines(_Out_ UINT32* maxLines)
-    {
-        *maxLines = m_maxLines;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveRichTextBlock::put_MaxLines(UINT32 maxLines)
-    {
-        m_maxLines = maxLines;
-        return S_OK;
-    }
 
     HRESULT AdaptiveRichTextBlock::get_HorizontalAlignment(_Out_ ABI::AdaptiveNamespace::HAlignment* alignment)
     {
@@ -81,10 +52,10 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveRichTextBlock::get_Paragraphs(
-        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveParagraph*>** paragraphs)
+    HRESULT AdaptiveRichTextBlock::get_Inlines(
+        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveInline*>** inlines)
     {
-        return m_paragraphs.CopyTo(paragraphs);
+        return m_inlines.CopyTo(inlines);
     }
 
     HRESULT AdaptiveRichTextBlock::get_ElementType(_Out_ ElementType* elementType)
@@ -100,11 +71,9 @@ namespace AdaptiveNamespace
 
         RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(richTextBlock)));
 
-        richTextBlock->SetWrap(m_wrap);
-        richTextBlock->SetMaxLines(m_maxLines);
         richTextBlock->SetHorizontalAlignment(static_cast<AdaptiveSharedNamespace::HorizontalAlignment>(m_horizontalAlignment));
 
-        RETURN_IF_FAILED(GenerateSharedParagraphs(m_paragraphs.Get(), richTextBlock->GetParagraphs()));
+        RETURN_IF_FAILED(GenerateSharedInlines(m_inlines.Get(), richTextBlock->GetInlines()));
 
         sharedRichTextBlock = richTextBlock;
         return S_OK;

@@ -9,6 +9,7 @@
 #import "BaseActionElement.h"
 #import "OpenUrlAction.h"
 #import "SubmitAction.h"
+#import "ACRRegistrationPrivate.h"
 
 using namespace AdaptiveCards;
 
@@ -89,6 +90,15 @@ using namespace AdaptiveCards;
         return [NSString stringWithCString:submitAction->GetDataJson().c_str() encoding:NSUTF8StringEncoding];
     }
     return @"";
+}
+
+- (BOOL)meetsRequirements:(ACOFeatureRegistration *)featureReg
+{
+    if (_elem) {
+        const std::shared_ptr<FeatureRegistration> sharedFReg = [featureReg getSharedFeatureRegistration];
+        return _elem->MeetsRequirements(*sharedFReg.get());
+    }
+    return false;
 }
 
 @end

@@ -10,9 +10,12 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.BackgroundImage;
+import io.adaptivecards.objectmodel.CollectionTypeElement;
+import io.adaptivecards.objectmodel.ContainerBleedDirection;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
+import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.BackgroundImageLoaderAsync;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
@@ -52,7 +55,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws AdaptiveFallbackException
     {
         Container container = null;
         if (baseCardElement instanceof Container)
@@ -64,22 +67,20 @@ public class ContainerRenderer extends BaseCardElementRenderer
             throw new InternalError("Unable to convert BaseCardElement to Container object model.");
         }
 
-        ContainerStyle containerStyle = renderArgs.getContainerStyle();
         setSpacingAndSeparator(context, viewGroup, container.GetSpacing(),container.GetSeparator(), hostConfig, true /* horizontal line */);
-        ContainerStyle styleForThis = container.GetStyle().swigValue() == ContainerStyle.None.swigValue() ? containerStyle : container.GetStyle();
         LinearLayout containerView = new LinearLayout(context);
         containerView.setTag(new TagContent(container));
+        containerView.setOrientation(LinearLayout.VERTICAL);
 
         // Add this two for allowing children to bleed
         containerView.setClipChildren(false);
         containerView.setClipToPadding(false);
 
-        if(!baseCardElement.GetIsVisible())
+        if (!baseCardElement.GetIsVisible())
         {
             containerView.setVisibility(View.GONE);
         }
 
-        containerView.setOrientation(LinearLayout.VERTICAL);
         if (container.GetHeight() == HeightType.Stretch)
         {
             containerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
@@ -104,9 +105,16 @@ public class ContainerRenderer extends BaseCardElementRenderer
                 break;
         }
 
+        ContainerStyle containerStyle = renderArgs.getContainerStyle();
+        ContainerStyle styleForThis = GetLocalContainerStyle(container, containerStyle);
+        ApplyPadding(styleForThis, containerStyle, containerView, context, hostConfig);
+        ApplyBleed(container, containerView, context, hostConfig);
+
+        RenderArgs containerRenderArgs = new RenderArgs(renderArgs);
+        containerRenderArgs.setContainerStyle(styleForThis);
         if (!container.GetItems().isEmpty())
         {
-            View v = CardRendererRegistration.getInstance().render(renderedCard,
+            CardRendererRegistration.getInstance().render(renderedCard,
                                                           context,
                                                           fragmentManager,
                                                           containerView,
@@ -114,20 +122,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
                                                           container.GetItems(),
                                                           cardActionHandler,
                                                           hostConfig,
-                                                          renderArgs);
-
-            if (v == null)
-            {
-                return null;
-            }
-        }
-
-        if (styleForThis != containerStyle)
-        {
-            int padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
-            containerView.setPadding(padding, padding, padding, padding);
-            String color = hostConfig.GetBackgroundColor(styleForThis);
-            containerView.setBackgroundColor(Color.parseColor(color));
+                                                          containerRenderArgs);
         }
 
         BackgroundImage backgroundImageProperties = container.GetBackgroundImage();
@@ -144,14 +139,6 @@ public class ContainerRenderer extends BaseCardElementRenderer
             loaderAsync.execute(backgroundImageProperties.GetUrl());
         }
 
-        if (container.GetBleed() && (container.GetCanBleed() || (styleForThis != containerStyle || container.GetBackgroundImage() != null)))
-        {
-            long padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
-            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) containerView.getLayoutParams();
-            layoutParams.setMargins((int)-padding, layoutParams.topMargin, (int)-padding, layoutParams.bottomMargin);
-            containerView.setLayoutParams(layoutParams);
-        }
-
         if (container.GetSelectAction() != null)
         {
             containerView.setClickable(true);
@@ -165,6 +152,46 @@ public class ContainerRenderer extends BaseCardElementRenderer
 
         viewGroup.addView(containerView);
         return containerView;
+    }
+
+    public static void ApplyBleed(CollectionTypeElement collectionElement, LinearLayout collectionElementView, Context context, HostConfig hostConfig)
+    {
+        if (collectionElement.GetBleed() && collectionElement.GetCanBleed())
+        {
+            int padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) collectionElementView.getLayoutParams();
+            int marginLeft = layoutParams.leftMargin, marginRight = layoutParams.rightMargin;
+
+            ContainerBleedDirection bleedDirection = collectionElement.GetBleedDirection();
+            if (bleedDirection == ContainerBleedDirection.BleedToLeading || bleedDirection == ContainerBleedDirection.BleedToBothEdges)
+            {
+                marginLeft = -padding;
+            }
+
+            if (bleedDirection == ContainerBleedDirection.BleedToTrailing || bleedDirection == ContainerBleedDirection.BleedToBothEdges)
+            {
+                marginRight = -padding;
+            }
+
+            layoutParams.setMargins(marginLeft, layoutParams.topMargin, marginRight, layoutParams.bottomMargin);
+            collectionElementView.setLayoutParams(layoutParams);
+        }
+    }
+
+    public static void ApplyPadding(ContainerStyle elementContainerStyle, ContainerStyle parentContainerStyle, LinearLayout collectionElementView, Context context, HostConfig hostConfig)
+    {
+        if (elementContainerStyle != parentContainerStyle)
+        {
+            int padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
+            collectionElementView.setPadding(padding, padding, padding, padding);
+            String color = hostConfig.GetBackgroundColor(elementContainerStyle);
+            collectionElementView.setBackgroundColor(Color.parseColor(color));
+        }
+    }
+
+    public static ContainerStyle GetLocalContainerStyle(CollectionTypeElement collectionElement, ContainerStyle parentContainerStyle)
+    {
+        return (collectionElement.GetStyle().swigValue() == ContainerStyle.None.swigValue() ? parentContainerStyle : collectionElement.GetStyle());
     }
 
     private static ContainerRenderer s_instance = null;
