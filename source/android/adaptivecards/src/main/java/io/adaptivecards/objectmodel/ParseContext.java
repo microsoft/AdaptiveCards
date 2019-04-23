@@ -86,6 +86,14 @@ public class ParseContext {
     AdaptiveCardObjectModelJNI.ParseContext_PopElement(swigCPtr, this);
   }
 
+  public boolean GetCanFallbackToAncestor() {
+    return AdaptiveCardObjectModelJNI.ParseContext_GetCanFallbackToAncestor(swigCPtr, this);
+  }
+
+  public void SetCanFallbackToAncestor(boolean value) {
+    AdaptiveCardObjectModelJNI.ParseContext_SetCanFallbackToAncestor(swigCPtr, this, value);
+  }
+
   public void SetLanguage(String value) {
     AdaptiveCardObjectModelJNI.ParseContext_SetLanguage(swigCPtr, this, value);
   }
