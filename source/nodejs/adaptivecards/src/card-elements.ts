@@ -1309,9 +1309,9 @@ export class TextRun extends BaseTextBlock {
         }
 
         if (this.highlight) {
-            let colorDefinition = this.getColorDefinition(this.getEffectiveStyleDefinition().highlightColors, this.effectiveColor);
+            let colorDefinition = this.getColorDefinition(this.getEffectiveStyleDefinition().foregroundColors, this.effectiveColor);
 
-            targetElement.style.backgroundColor = Utils.stringToCssColor(this.isSubtle ? colorDefinition.subtle : colorDefinition.default);
+            targetElement.style.backgroundColor = Utils.stringToCssColor(this.isSubtle ? colorDefinition.highlightColors.subtle : colorDefinition.highlightColors.default);
         }
     }
 
@@ -2502,6 +2502,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
     private _inputControlContainerElement: HTMLElement;
     private _errorMessageElement: HTMLElement;
     private _renderedInputControlElement: HTMLElement;
+    private _defaultValue: string;
 
     protected get isNullable(): boolean {
         return true;
@@ -2570,6 +2571,10 @@ export abstract class Input extends CardElement implements Shared.IInput {
         }
     }
 
+    protected parseDefaultValue(value: string): string {
+        return value;
+    }
+
     abstract get value(): string;
 
     onValueChanged: (sender: Input) => void;
@@ -2577,7 +2582,6 @@ export abstract class Input extends CardElement implements Shared.IInput {
     readonly validation = new InputValidationOptions();
 
     title: string;
-    defaultValue: string;
 
     toJSON() {
         let result = super.toJSON();
@@ -2627,6 +2631,14 @@ export abstract class Input extends CardElement implements Shared.IInput {
 
     getAllInputs(): Array<Input> {
         return [this];
+    }
+
+    get defaultValue(): string {
+        return this._defaultValue;
+    }
+
+    set defaultValue(value: string) {
+        this._defaultValue = this.parseDefaultValue(value);
     }
 
     get isInteractive(): boolean {
@@ -3188,7 +3200,11 @@ export class ChoiceSetInput extends Input {
     get value(): string {
         if (!this.isMultiSelect) {
             if (this.isCompact) {
-                return this._selectElement ? this._selectElement.value : null;
+                if (this._selectElement) {
+                    return this._selectElement.selectedIndex > 0 ? this._selectElement.value : null;
+                }
+
+                return null;
             }
             else {
                 if (!this._toggleInputs || this._toggleInputs.length == 0) {
@@ -3324,6 +3340,15 @@ export class TimeInput extends Input {
         }
 
         return this._timeInputElement;
+    }
+
+    protected parseDefaultValue(value: string): string {
+        if (/^[0-9]{2}:[0-9]{2}$/.test(value)) {
+            return value;
+        }
+        else {
+            return null;
+        }
     }
 
     getJsonTypeName(): string {
