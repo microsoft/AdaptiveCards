@@ -51,12 +51,17 @@ public class ColorConfig {
     return AdaptiveCardObjectModelJNI.ColorConfig_subtleColor_get(swigCPtr, this);
   }
 
-  public static ColorConfig Deserialize(JsonValue json, ColorConfig defaultValue) {
-    return new ColorConfig(AdaptiveCardObjectModelJNI.ColorConfig_Deserialize(JsonValue.getCPtr(json), json, ColorConfig.getCPtr(defaultValue), defaultValue), true);
+  public void setHighlightColors(HighlightColorConfig value) {
+    AdaptiveCardObjectModelJNI.ColorConfig_highlightColors_set(swigCPtr, this, HighlightColorConfig.getCPtr(value), value);
   }
 
-  public void SetBaseColor(String baseColor) {
-    AdaptiveCardObjectModelJNI.ColorConfig_SetBaseColor(swigCPtr, this, baseColor);
+  public HighlightColorConfig getHighlightColors() {
+    long cPtr = AdaptiveCardObjectModelJNI.ColorConfig_highlightColors_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new HighlightColorConfig(cPtr, false);
+  }
+
+  public static ColorConfig Deserialize(JsonValue json, ColorConfig defaultValue) {
+    return new ColorConfig(AdaptiveCardObjectModelJNI.ColorConfig_Deserialize(JsonValue.getCPtr(json), json, ColorConfig.getCPtr(defaultValue), defaultValue), true);
   }
 
   public ColorConfig() {

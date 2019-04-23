@@ -898,12 +898,20 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long FontStylesDefinition_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, FontStylesDefinition jarg2_);
   public final static native long new_FontStylesDefinition();
   public final static native void delete_FontStylesDefinition(long jarg1);
+  public final static native void HighlightColorConfig_defaultColor_set(long jarg1, HighlightColorConfig jarg1_, String jarg2);
+  public final static native String HighlightColorConfig_defaultColor_get(long jarg1, HighlightColorConfig jarg1_);
+  public final static native void HighlightColorConfig_subtleColor_set(long jarg1, HighlightColorConfig jarg1_, String jarg2);
+  public final static native String HighlightColorConfig_subtleColor_get(long jarg1, HighlightColorConfig jarg1_);
+  public final static native long HighlightColorConfig_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, HighlightColorConfig jarg2_);
+  public final static native long new_HighlightColorConfig();
+  public final static native void delete_HighlightColorConfig(long jarg1);
   public final static native void ColorConfig_defaultColor_set(long jarg1, ColorConfig jarg1_, String jarg2);
   public final static native String ColorConfig_defaultColor_get(long jarg1, ColorConfig jarg1_);
   public final static native void ColorConfig_subtleColor_set(long jarg1, ColorConfig jarg1_, String jarg2);
   public final static native String ColorConfig_subtleColor_get(long jarg1, ColorConfig jarg1_);
+  public final static native void ColorConfig_highlightColors_set(long jarg1, ColorConfig jarg1_, long jarg2, HighlightColorConfig jarg2_);
+  public final static native long ColorConfig_highlightColors_get(long jarg1, ColorConfig jarg1_);
   public final static native long ColorConfig_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, ColorConfig jarg2_);
-  public final static native void ColorConfig_SetBaseColor(long jarg1, ColorConfig jarg1_, String jarg2);
   public final static native long new_ColorConfig();
   public final static native void delete_ColorConfig(long jarg1);
   public final static native void ColorsConfig_defaultColor_set(long jarg1, ColorsConfig jarg1_, long jarg2, ColorConfig jarg2_);
@@ -921,7 +929,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void ColorsConfig_attention_set(long jarg1, ColorsConfig jarg1_, long jarg2, ColorConfig jarg2_);
   public final static native long ColorsConfig_attention_get(long jarg1, ColorsConfig jarg1_);
   public final static native long ColorsConfig_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, ColorsConfig jarg2_);
-  public final static native void ColorsConfig_SetBaseColor(long jarg1, ColorsConfig jarg1_, String jarg2);
   public final static native long new_ColorsConfig();
   public final static native void delete_ColorsConfig(long jarg1);
   public final static native void TextConfig_weight_set(long jarg1, TextConfig jarg1_, int jarg2);
@@ -1006,10 +1013,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long ContainerStyleDefinition_borderThickness_get(long jarg1, ContainerStyleDefinition jarg1_);
   public final static native void ContainerStyleDefinition_foregroundColors_set(long jarg1, ContainerStyleDefinition jarg1_, long jarg2, ColorsConfig jarg2_);
   public final static native long ContainerStyleDefinition_foregroundColors_get(long jarg1, ContainerStyleDefinition jarg1_);
-  public final static native void ContainerStyleDefinition_highlightColors_set(long jarg1, ContainerStyleDefinition jarg1_, long jarg2, ColorsConfig jarg2_);
-  public final static native long ContainerStyleDefinition_highlightColors_get(long jarg1, ContainerStyleDefinition jarg1_);
   public final static native long ContainerStyleDefinition_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, ContainerStyleDefinition jarg2_);
-  public final static native void ContainerStyleDefinition_SetBaseStyle(long jarg1, ContainerStyleDefinition jarg1_, long jarg2, JsonValue jarg2_);
   public final static native long new_ContainerStyleDefinition();
   public final static native void delete_ContainerStyleDefinition(long jarg1);
   public final static native void ContainerStylesDefinition_defaultPalette_set(long jarg1, ContainerStylesDefinition jarg1_, long jarg2, ContainerStyleDefinition jarg2_);
@@ -1025,7 +1029,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void ContainerStylesDefinition_accentPalette_set(long jarg1, ContainerStylesDefinition jarg1_, long jarg2, ContainerStyleDefinition jarg2_);
   public final static native long ContainerStylesDefinition_accentPalette_get(long jarg1, ContainerStylesDefinition jarg1_);
   public final static native long ContainerStylesDefinition_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, ContainerStylesDefinition jarg2_);
-  public final static native void ContainerStylesDefinition_SetBaseStyle(long jarg1, ContainerStylesDefinition jarg1_, long jarg2, JsonValue jarg2_);
   public final static native long new_ContainerStylesDefinition();
   public final static native void delete_ContainerStylesDefinition(long jarg1);
   public final static native void ShowCardActionConfig_actionMode_set(long jarg1, ShowCardActionConfig jarg1_, int jarg2);
