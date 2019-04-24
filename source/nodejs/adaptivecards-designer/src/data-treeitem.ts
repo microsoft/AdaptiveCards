@@ -50,6 +50,10 @@ export class DataTreeItem extends BaseTreeItem {
         }
     }
 
+    isDraggable(): boolean {
+        return true;
+    }
+
     getChildCount(): number {
         this.buildChildList();
 

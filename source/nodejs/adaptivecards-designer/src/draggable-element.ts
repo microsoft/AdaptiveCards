@@ -64,6 +64,12 @@ export abstract class DraggableElement {
         }
     }
 
+    protected click(e: MouseEvent) {
+        if (this.onClick) {
+            this.onDoubleClick(this);
+        }
+    }
+
     protected doubleClick(e: MouseEvent) {
         if (this.onDoubleClick) {
             this.onDoubleClick(this);
@@ -86,6 +92,7 @@ export abstract class DraggableElement {
 
     onStartDrag: (sender: DraggableElement) => void;
     onEndDrag: (sender: DraggableElement) => void;
+    onClick: (sender: DraggableElement) => void;
     onDoubleClick: (sender: DraggableElement) => void;
 
     isDraggable(): boolean {
@@ -111,14 +118,16 @@ export abstract class DraggableElement {
         this._renderedElement = this.internalRender();
 
         let dragSourceElement = this.getDragSourceElement();
-        dragSourceElement.onmousedown = (e: MouseEvent) => { e.preventDefault(); };
+        dragSourceElement.onclick = (e: MouseEvent) => { this.click(e); };
         dragSourceElement.ondblclick = (e: MouseEvent) => { this.doubleClick(e); };
 
-        dragSourceElement.onpointerenter = () => { this.isPointerOver = true; };
-        dragSourceElement.onpointerleave = () => { this.isPointerOver = false; };
-        dragSourceElement.onpointerdown = (e: PointerEvent) => { this.pointerDown(e); };
-        dragSourceElement.onpointerup = (e: PointerEvent) => { this.pointerUp(e); };
-        dragSourceElement.onpointermove = (e: PointerEvent) => { this.pointerMove(e); };
+        if (this.isDraggable()) {
+            dragSourceElement.onpointerenter = () => { this.isPointerOver = true; };
+            dragSourceElement.onpointerleave = () => { this.isPointerOver = false; };
+            dragSourceElement.onpointerdown = (e: PointerEvent) => { this.pointerDown(e); };
+            dragSourceElement.onpointerup = (e: PointerEvent) => { this.pointerUp(e); };
+            dragSourceElement.onpointermove = (e: PointerEvent) => { this.pointerMove(e); };
+        }
 
         return this._renderedElement;
     }

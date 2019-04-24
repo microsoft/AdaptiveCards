@@ -12,6 +12,10 @@ export class DesignerPeerTreeItem extends BaseTreeItem {
 
             peer = peer.parent;
         }
+
+        for (let i = 0; i < this.getChildCount(); i++) {
+            (this.getChildAt(i) as DesignerPeerTreeItem).computeLevel();
+        }
     }
 
     protected getIconClass(): string {

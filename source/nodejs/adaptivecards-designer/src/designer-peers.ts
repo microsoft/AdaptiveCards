@@ -284,6 +284,12 @@ export abstract class DesignerPeer extends DraggableElement {
         return false;
     }
 
+    protected click(e: MouseEvent) {
+        super.click(e);
+
+        this.isSelected = true;
+    }
+
     protected doubleClick(e: MouseEvent) {
         super.doubleClick(e);
 
@@ -296,12 +302,6 @@ export abstract class DesignerPeer extends DraggableElement {
 
     protected getToolTip(): string {
         return null;
-    }
-
-    protected pointerDown(e: PointerEvent) {
-        super.pointerDown(e);
-
-        this.isSelected = true;
     }
 
     protected internalAddCommands(commands: Array<PeerCommand>) {

@@ -10,7 +10,7 @@ import { adaptiveCardSchema } from "./adaptive-card-schema";
 import { FullScreenHandler } from "./fullscreen-handler";
 import { Toolbar, ToolbarButton, ToolbarChoicePicker, ToolbarElementAlignment } from "./toolbar";
 import { IPoint, Utils, defaultHostConfig } from "./miscellaneous";
-import { BasePaletteItem, ElementPaletteItem, DataPaletteItem } from "./tool-palette";
+import { BasePaletteItem, ElementPaletteItem, DataPaletteItem, SnippetPaletteItem, CustomPaletteItem } from "./tool-palette";
 import { DefaultContainer } from "./containers/default/default-container";
 import { SidePanel, SidePanelAlignment } from "./side-panel";
 import { Toolbox, IToolboxCommand } from "./tool-box";
@@ -36,6 +36,7 @@ export class CardDesigner {
 
     private static MAX_UNDO_STACK_SIZE = 50;
 
+    private _isAttached: boolean = false;
     private _cardEditor: monaco.editor.IStandaloneCodeEditor;
     private _sampleDataEditor: monaco.editor.IStandaloneCodeEditor;
     private _hostContainers: Array<HostContainer>;
@@ -59,6 +60,7 @@ export class CardDesigner {
     private _assetPath: string;
     private _dataStructure: FieldDefinition;
     private _sampleData: any;
+    private _customPeletteItems: CustomPaletteItem[];
 
     private togglePreview() {
         this._designerSurface.isPreviewMode = !this._designerSurface.isPreviewMode;
@@ -184,6 +186,10 @@ export class CardDesigner {
     }
 
     private buildPalette() {
+        if (!this._isAttached) {
+            return;
+        }
+
         this._toolPaletteToolbox.content.innerHTML = "";
 
         let categorizedTypes: Object = {};
@@ -206,6 +212,16 @@ export class CardDesigner {
             }
         }
 
+        if (this.customPaletteItems) {
+            for (let item of this.customPaletteItems) {
+                if (!categorizedTypes.hasOwnProperty(item.category)) {
+                    categorizedTypes[item.category] = [];
+                }
+
+                categorizedTypes[item.category].push(item);
+            }
+        }
+
         for (let category in categorizedTypes) {
             let node = document.createElement('li');
             node.innerText = category;
@@ -217,45 +233,6 @@ export class CardDesigner {
                 this.addPaletteItem(categorizedTypes[category][i], this._toolPaletteToolbox.content);
             }
         }
-
-        /* This is to test "snippet" support. Snippets are not yet fully baked
-        let personaHeaderSnippet = new SnippetPaletteItem("Persona header");
-        personaHeaderSnippet.snippet = {
-            type: "ColumnSet",
-            columns: [
-                {
-                    width: "auto",
-                    items: [
-                        {
-                            type: "Image",
-                            size: "Small",
-                            style: "Person",
-                            url: "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
-                        }
-                    ]
-                },
-                {
-                    width: "stretch",
-                    items: [
-                        {
-                            type: "TextBlock",
-                            text: "John Doe",
-                            weight: "Bolder",
-                            wrap: true
-                        },
-                        {
-                            type: "TextBlock",
-                            spacing: "None",
-                            text: "Additional information",
-                            wrap: true
-                        }
-                    ]
-                }
-            ]
-        };
-
-        this.addPaletteItem(personaHeaderSnippet);
-        */
     }
 
     private endDrag() {
@@ -920,11 +897,13 @@ export class CardDesigner {
 
         this._designerHostElement = document.getElementById("designerHost");
 
-        this.recreateDesignerSurface();
-
         window.addEventListener("pointermove", (e: PointerEvent) => { this.handlePointerMove(e); });
         window.addEventListener("resize", () => { this.scheduleLayoutUpdate(); });
         window.addEventListener("pointerup", (e: PointerEvent) => { this.handlePointerUp(e); });
+
+        this._isAttached = true;
+
+        this.recreateDesignerSurface();
 
         let card = new Adaptive.AdaptiveCard();
         card.onImageLoaded = (image: Adaptive.Image) => {
@@ -1080,7 +1059,17 @@ export class CardDesigner {
 		
 	set assetPath(value: string) {
 		this._assetPath = value;
-	}
+    }
+    
+    get customPaletteItems(): CustomPaletteItem[] {
+        return this._customPeletteItems;
+    }
+
+    set customPaletteItems(value: CustomPaletteItem[]) {
+        this._customPeletteItems = value;
+
+        this.buildPalette();
+    }
 }
 
 export module CardDesigner {

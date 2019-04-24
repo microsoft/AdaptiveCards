@@ -96,26 +96,35 @@ export class DataPaletteItem extends BasePaletteItem {
     }
 }
 
-/* DO NOT REMOVE - future feature
-class SnippetPaletteItem extends BasePaletteItem {
-    protected getText(): string {
-        return this.name;
-    }
+export abstract class CustomPaletteItem extends BasePaletteItem {
+    readonly category: string;
 
     protected getIconClass(): string {
-        return null;
+        return "acd-icon-customPaletteItem";
+    }
+
+    constructor(category: string) {
+        super();
+
+        this.category = category;
+    }
+}
+
+export class SnippetPaletteItem extends CustomPaletteItem {
+    protected getText(): string {
+        return this.name;
     }
 
     readonly name: string;
     snippet: object;
 
-    constructor(name: string) {
-        super();
+    constructor(category: string, name: string) {
+        super(category);
 
         this.name = name;
     }
 
-    createPeer(designer: Designer.CardDesigner): Designer.CardElementPeer {
+    createPeer(designer: DesignerSurface.CardDesignerSurface): DesignerPeers.CardElementPeer {
         if (this.snippet) {
             let rootElementTypeName = this.snippet["type"];
 
@@ -125,7 +134,7 @@ class SnippetPaletteItem extends BasePaletteItem {
                 if (adaptiveElement) {
                     adaptiveElement.parse(this.snippet);
 
-                    let peer = Designer.CardDesigner.cardElementPeerRegistry.createPeerInstance(designer, null, adaptiveElement);
+                    let peer = DesignerSurface.CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(designer, null, adaptiveElement);
                     peer.initializeCardElement();
 
                     return peer;
@@ -134,4 +143,3 @@ class SnippetPaletteItem extends BasePaletteItem {
         }
     }
 }
-*/

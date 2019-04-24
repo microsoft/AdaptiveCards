@@ -29,7 +29,47 @@ window.onload = function() {
 
     let designer = new ACDesigner.CardDesigner(hostContainers);
     designer.sampleCatalogueUrl = window.location.origin + "/sample-catalogue.json";
-	designer.attachTo(document.getElementById("designerRootHost"));
+    designer.attachTo(document.getElementById("designerRootHost"));
+    
+    /*
+    let personaHeaderSnippet = new ACDesigner.SnippetPaletteItem("Custom", "Example");
+    personaHeaderSnippet.snippet = {
+        type: "ColumnSet",
+        columns: [
+            {
+                width: "auto",
+                items: [
+                    {
+                        type: "Image",
+                        size: "Small",
+                        style: "Person",
+                        url: "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+                    }
+                ]
+            },
+            {
+                width: "stretch",
+                items: [
+                    {
+                        type: "TextBlock",
+                        text: "John Doe",
+                        weight: "Bolder",
+                        wrap: true
+                    },
+                    {
+                        type: "TextBlock",
+                        spacing: "None",
+                        text: "Additional information",
+                        wrap: true
+                    }
+                ]
+            }
+        ]
+    };
+
+    designer.customPaletteItems = [ personaHeaderSnippet ];
+    */
+
 	designer.monacoModuleLoaded(monaco);
 
 	let sampleData = {

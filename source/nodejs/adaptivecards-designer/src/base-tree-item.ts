@@ -12,6 +12,12 @@ export abstract class BaseTreeItem extends DraggableElement {
 
     protected abstract getLabelText(): string;
 
+    protected click(e: MouseEvent) {
+        super.click(e);
+
+        this.selected();
+    }
+
     protected getIconClass(): string {
         return null;
     }
@@ -44,7 +50,12 @@ export abstract class BaseTreeItem extends DraggableElement {
         this._treeItemElement.style.display = "flex";
         this._treeItemElement.style.alignItems = "center";
         this._treeItemElement.style.paddingLeft = this.getIndentationLevelIncrement() * (1 + this.level) + "px";
-        this._treeItemElement.onclick = (e: MouseEvent) => {
+
+        this._expandCollapseElement = document.createElement("div");
+        this._expandCollapseElement.classList.add("acd-tree-item-expandCollapseButton");
+        this._expandCollapseElement.style.flex = "0 0 auto";
+        this._expandCollapseElement.style.visibility = this.getChildCount() > 0 ? "visible" : "hidden";
+        this._expandCollapseElement.onclick = (e: MouseEvent) => {
             this._isExpanded = !this._isExpanded;
 
             this.updateLayout();
@@ -52,11 +63,6 @@ export abstract class BaseTreeItem extends DraggableElement {
             e.cancelBubble = true;
             e.preventDefault();
         }
-
-        this._expandCollapseElement = document.createElement("div");
-        this._expandCollapseElement.classList.add("acd-tree-item-expandCollapseButton");
-        this._expandCollapseElement.style.flex = "0 0 auto";
-        this._expandCollapseElement.style.visibility = this.getChildCount() > 0 ? "visible" : "hidden";
 
         this._treeItemElement.appendChild(this._expandCollapseElement);
 
@@ -68,12 +74,6 @@ export abstract class BaseTreeItem extends DraggableElement {
         textElement.style.whiteSpace = "nowrap";
         textElement.style.textOverflow = "ellipsis";
         textElement.style.overflow = "hidden";
-        textElement.onclick = (e: MouseEvent) => {
-            this.selected();
-
-            e.cancelBubble = true;
-            e.preventDefault();
-        }
 
         if (this.getIconClass()) {
             let iconElement = document.createElement("div");
@@ -143,6 +143,10 @@ export abstract class BaseTreeItem extends DraggableElement {
         this._isExpanded = true;
 
         this.updateLayout();
+    }
+
+    isDraggable(): boolean {
+        return false;
     }
 
     get level(): number {

@@ -339,6 +339,10 @@
     content: "\ED25";
 }
 
+.acd-icon-customPaletteItem::before {
+    content: "\ECAA";
+}
+
 /*
     Side panes
 */
