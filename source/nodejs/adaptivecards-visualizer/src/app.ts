@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import * as AdaptiveCards from "adaptivecards";
 import * as MarkdownIt from "markdown-it";
 import * as Constants from "./constants";

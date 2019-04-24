@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
 import * as Controls from "adaptivecards-controls";
 import { DraggableElement } from "./draggable-element";

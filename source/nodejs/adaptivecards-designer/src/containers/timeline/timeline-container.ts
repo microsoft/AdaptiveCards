@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
 import * as Designer from "../../adaptivecards-designer";
 
@@ -7,7 +9,7 @@ export class TimelineContainer extends Designer.HostContainer {
     public initialize() {
         Adaptive.AdaptiveCard.elementTypeRegistry.reset();
         Adaptive.AdaptiveCard.actionTypeRegistry.reset();
-        
+
         Adaptive.AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = true;
         Adaptive.AdaptiveCard.useAdvancedCardBottomTruncation = true;
         Adaptive.AdaptiveCard.useAdvancedTextBlockTruncation = true;

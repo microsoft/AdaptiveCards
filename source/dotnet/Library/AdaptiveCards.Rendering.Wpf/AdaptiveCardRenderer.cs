@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -208,7 +210,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
                 return outerGridWithSelectAction;
             }
-            
+
             return outerGrid;
         }
 
@@ -252,7 +254,7 @@ namespace AdaptiveCards.Rendering.Wpf
             Resources["Adaptive.Action.Positive.Button.MouseOver.Background"] = context.GetColorBrush(lighterAccentColor);
             Resources["Adaptive.Action.Destructive.Button.Foreground"] = context.GetColorBrush(attentionColor);
             Resources["Adaptive.Action.Destructive.Button.MouseOver.Foreground"] = context.GetColorBrush(lighterAttentionColor);
-            
+
             var element = context.Render(card);
 
             renderCard = new RenderedAdaptiveCard(element, card, context.Warnings, context.InputBindings);

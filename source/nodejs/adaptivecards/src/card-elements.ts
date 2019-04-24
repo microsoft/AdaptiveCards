@@ -1,4 +1,6 @@
-﻿import * as Enums from "./enums";
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+import * as Enums from "./enums";
 import * as Shared from "./shared";
 import * as Utils from "./utils";
 import * as HostConfig from "./host-config";
