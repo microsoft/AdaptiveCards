@@ -122,6 +122,7 @@ export abstract class DraggableElement {
         dragSourceElement.ondblclick = (e: MouseEvent) => { this.doubleClick(e); };
 
         if (this.isDraggable()) {
+            dragSourceElement.onmousedown = (e: MouseEvent) => { e.preventDefault(); };
             dragSourceElement.onpointerenter = () => { this.isPointerOver = true; };
             dragSourceElement.onpointerleave = () => { this.isPointerOver = false; };
             dragSourceElement.onpointerdown = (e: PointerEvent) => { this.pointerDown(e); };

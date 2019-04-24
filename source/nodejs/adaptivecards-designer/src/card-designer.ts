@@ -17,6 +17,7 @@ import { Toolbox, IToolboxCommand } from "./tool-box";
 import { FieldDefinition } from "./data";
 import { DataTreeItem } from "./data-treeitem";
 import { BaseTreeItem } from "./base-tree-item";
+import * as Shared from "./shared";
 
 export class CardDesigner {
     private static internalProcessMarkdown(text: string, result: Adaptive.IMarkdownProcessingResult) {
@@ -112,7 +113,7 @@ export class CardDesigner {
     }
 
     private buildDataExplorer() {
-        if (this._dataToolbox.content) {
+        if (this._dataToolbox && this._dataToolbox.content) {
             this._dataToolbox.content.innerHTML = "";
 
             if (this._dataStructure) {
@@ -340,9 +341,11 @@ export class CardDesigner {
     }
 
     private updateToolboxLayout(toolbox: Toolbox, hostPanelRect: ClientRect | DOMRect) {
-        let jsonEditorHeaderRect = toolbox.getHeaderBoundingRect();
+        if (toolbox) {
+            let jsonEditorHeaderRect = toolbox.getHeaderBoundingRect();
 
-        toolbox.content.style.height = (hostPanelRect.height - jsonEditorHeaderRect.height) + "px";
+            toolbox.content.style.height = (hostPanelRect.height - jsonEditorHeaderRect.height) + "px";
+        }
     }
 
     public updateJsonEditorsLayout() {
@@ -350,10 +353,12 @@ export class CardDesigner {
             let jsonEditorsPaneRect = this._jsonEditorsPanel.contentHost.getBoundingClientRect();
 
             this.updateToolboxLayout(this._cardEditorToolbox, jsonEditorsPaneRect);
-            this.updateToolboxLayout(this._sampleDataEditorToolbox, jsonEditorsPaneRect);
-
             this._cardEditor.layout();
-            this._sampleDataEditor.layout();
+
+            if (this._sampleDataEditorToolbox) {
+                this.updateToolboxLayout(this._sampleDataEditorToolbox, jsonEditorsPaneRect);
+                this._sampleDataEditor.layout();
+            }
         }
     }
     
@@ -375,7 +380,7 @@ export class CardDesigner {
     }
 
     private setSampleDataPayload(payload: any) {
-        if (this._isMonacoEditorLoaded) {
+        if (this._isMonacoEditorLoaded && this._sampleDataEditor) {
             this._sampleDataEditor.setValue(JSON.stringify(payload, null, 4));
         }
     }
@@ -414,7 +419,7 @@ export class CardDesigner {
     }
 
     private getCurrentSampleDataEditorPayload(): string {
-        return this._isMonacoEditorLoaded ? this._sampleDataEditor.getValue() : "";
+        return this._isMonacoEditorLoaded && this._sampleDataEditor ? this._sampleDataEditor.getValue() : "";
     }
 
     private updateCardFromJson() {
@@ -589,7 +594,10 @@ export class CardDesigner {
 
     private onResize() {
         this._cardEditor.layout();
-        this._sampleDataEditor.layout();
+
+        if (this._sampleDataEditor) {
+            this._sampleDataEditor.layout();
+        }
     }
 
     private updateSampleData() {
@@ -640,26 +648,28 @@ export class CardDesigner {
         
         this._cardEditor.onDidChangeModelContent(() => { this.scheduleUpdateCardFromJson(); });
 
-        // Setup sample data JSON editor
-        this._sampleDataEditorToolbox.content = document.createElement("div");
-        this._sampleDataEditorToolbox.content.style.overflow = "hidden";
-		
-        this._sampleDataEditor = monaco.editor.create(
-            this._sampleDataEditorToolbox.content,
-            {
-                folding: true,
-                fontSize: 13.5,
-                language: 'json',
-                minimap: {
-                    enabled: false
+        if (this._sampleDataEditorToolbox) {
+            // Setup sample data JSON editor
+            this._sampleDataEditorToolbox.content = document.createElement("div");
+            this._sampleDataEditorToolbox.content.style.overflow = "hidden";
+            
+            this._sampleDataEditor = monaco.editor.create(
+                this._sampleDataEditorToolbox.content,
+                {
+                    folding: true,
+                    fontSize: 13.5,
+                    language: 'json',
+                    minimap: {
+                        enabled: false
+                    }
                 }
-            }
-        );
-        
-        this._sampleDataEditor.onDidChangeModelContent(
-            () => {
-                this.updateSampleData();
-            });
+            );
+            
+            this._sampleDataEditor.onDidChangeModelContent(
+                () => {
+                    this.updateSampleData();
+                });
+        }
 
         window.addEventListener('resize', () => { this.onResize(); });
 
@@ -819,20 +829,6 @@ export class CardDesigner {
         this._cardEditorToolbox.content.style.padding = "8px";
         this._cardEditorToolbox.content.innerText = "Loading editor...";
 
-        this._sampleDataEditorToolbox = new Toolbox("sampleDataEditor", "Sample Data Editor");
-        this._sampleDataEditorToolbox.content = document.createElement("div");
-        this._sampleDataEditorToolbox.content.style.padding = "8px";
-        this._sampleDataEditorToolbox.content.innerText = "Loading editor...";
-        this._sampleDataEditorToolbox.commands = [
-            {
-                title: "Copy the structure of this data into the Data Structure toolbox",
-                iconClass: "acd-icon-dataStructure",
-                execute: (sender: IToolboxCommand) => {
-                    this.dataStructure = FieldDefinition.create(JSON.parse(this.getCurrentSampleDataEditorPayload()));
-                }
-            }
-        ]
-
         this._jsonEditorsPanel = new SidePanel(
             "jsonEditorPanel",
             SidePanelAlignment.Bottom,
@@ -848,7 +844,24 @@ export class CardDesigner {
         }
 
         this._jsonEditorsPanel.addToolbox(this._cardEditorToolbox);
-        this._jsonEditorsPanel.addToolbox(this._sampleDataEditorToolbox);
+
+        if (Shared.GlobalSettings.previewFeaturesEnabled) {
+            this._sampleDataEditorToolbox = new Toolbox("sampleDataEditor", "Sample Data Editor");
+            this._sampleDataEditorToolbox.content = document.createElement("div");
+            this._sampleDataEditorToolbox.content.style.padding = "8px";
+            this._sampleDataEditorToolbox.content.innerText = "Loading editor...";
+            this._sampleDataEditorToolbox.commands = [
+                {
+                    title: "Copy the structure of this data into the Data Structure toolbox",
+                    iconClass: "acd-icon-dataStructure",
+                    execute: (sender: IToolboxCommand) => {
+                        this.dataStructure = FieldDefinition.create(JSON.parse(this.getCurrentSampleDataEditorPayload()));
+                    }
+                }
+            ];
+
+            this._jsonEditorsPanel.addToolbox(this._sampleDataEditorToolbox);
+        }
 
         this._jsonEditorsPanel.attachTo(document.getElementById("jsonEditorPanel"));
 
@@ -886,13 +899,16 @@ export class CardDesigner {
             this.scheduleLayoutUpdate();
         }
 
-        let dataExplorerHost = document.createElement("div");
-        dataExplorerHost.className = "acd-treeView-host";
+        if (Shared.GlobalSettings.previewFeaturesEnabled) {
+            let dataExplorerHost = document.createElement("div");
+            dataExplorerHost.className = "acd-treeView-host";
 
-        this._dataToolbox = new Toolbox("data", "Data Structure");
-        this._dataToolbox.content = dataExplorerHost;
+            this._dataToolbox = new Toolbox("data", "Data Structure");
+            this._dataToolbox.content = dataExplorerHost;
 
-        treeViewPanel.addToolbox(this._dataToolbox);
+            treeViewPanel.addToolbox(this._dataToolbox);
+        }
+
         treeViewPanel.attachTo(document.getElementById("treeViewPanel"));
 
         this._designerHostElement = document.getElementById("designerHost");

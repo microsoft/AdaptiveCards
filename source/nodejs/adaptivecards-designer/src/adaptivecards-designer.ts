@@ -1,3 +1,4 @@
+export * from "./shared";
 export * from "./containers/host-container";
 export * from "./card-designer-surface";
 export * from "./card-designer";

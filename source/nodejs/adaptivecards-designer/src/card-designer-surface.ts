@@ -5,6 +5,7 @@ import { IPoint } from "./miscellaneous";
 import * as DesignerPeers from "./designer-peers";
 import { Template } from "./template-engine/template-engine";
 import { EvaluationContext } from "./template-engine/expression-parser";
+import * as Shared from "./shared";
 
 export type CardElementType = { new(): Adaptive.CardElement };
 export type ActionType = { new(): Adaptive.Action };
@@ -269,25 +270,29 @@ export class CardDesignerSurface {
             let cardToRender: Adaptive.AdaptiveCard;
 
             if (this.isPreviewMode) {
-                let cardPayload = this.card.toJSON();
+                if (Shared.GlobalSettings.previewFeaturesEnabled) {
+                    let cardPayload = this.card.toJSON();
 
-                try {
-                    let template = new Template(cardPayload);
-        
-                    let context = new EvaluationContext();
-                    context.$root = this.sampleData;
+                    try {
+                        let template = new Template(cardPayload);
+            
+                        let context = new EvaluationContext();
+                        context.$root = this.sampleData;
 
-                    let expandedCardPayload = template.expand(context);
+                        let expandedCardPayload = template.expand(context);
 
-                    cardToRender = new Adaptive.AdaptiveCard();
-                    cardToRender.hostConfig = this.card.hostConfig;
-                    cardToRender.parse(expandedCardPayload);
+                        cardToRender = new Adaptive.AdaptiveCard();
+                        cardToRender.hostConfig = this.card.hostConfig;
+                        cardToRender.parse(expandedCardPayload);
+                    }
+                    catch (e) {
+                        console.log("Template expansion error: " + e.message);
+                    }
                 }
-                catch (e) {
+
+                if (!cardToRender) {
                     cardToRender = this.card;
                     cardToRender.designMode = false;
-
-                    alert("Error: " + e.message);
                 }
             }
             else {

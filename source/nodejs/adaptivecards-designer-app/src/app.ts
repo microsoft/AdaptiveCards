@@ -8,6 +8,9 @@ import "adaptivecards-designer/lib/adaptivecards-designer.css";
 import "adaptivecards-designer/node_modules/adaptivecards-controls/lib/adaptivecards-controls.css";
 
 window.onload = function() {
+    // Uncomment to enable preview features (data binding)
+    // ACDesigner.GlobalSettings.previewFeaturesEnabled = true;
+
 	ACDesigner.CardDesigner.onProcessMarkdown = (text: string, result: { didProcess: boolean, outputHtml: string }) => {
 		result.outputHtml = new markdownit().render(text);
 		result.didProcess = true;
@@ -31,7 +34,7 @@ window.onload = function() {
     designer.sampleCatalogueUrl = window.location.origin + "/sample-catalogue.json";
     designer.attachTo(document.getElementById("designerRootHost"));
     
-    /*
+    /* Uncomment to test a custom palette item example
     let personaHeaderSnippet = new ACDesigner.SnippetPaletteItem("Custom", "Example");
     personaHeaderSnippet.snippet = {
         type: "ColumnSet",
