@@ -997,7 +997,7 @@ export abstract class BaseTextBlock extends CardElement {
     }
 
     get effectiveColor(): Enums.TextColor {
-        return  this.color ? this.color : Enums.TextColor.Default;
+        return this.color ? this.color : Enums.TextColor.Default;
     }
 
     get text(): string {
@@ -1082,9 +1082,10 @@ export class TextBlock extends BaseTextBlock {
 
             if (this.selectAction) {
                 element.onclick = (e) => {
-                    this.selectAction.execute();
-
+                    e.preventDefault();
                     e.cancelBubble = true;
+
+                    this.selectAction.execute();
                 }
 
                 if (hostConfig.supportsInteractivity) {
@@ -1173,6 +1174,7 @@ export class TextBlock extends BaseTextBlock {
                 anchor.onclick = (e) => {
                     if (raiseAnchorClickedEvent(this, e.target as HTMLAnchorElement)) {
                         e.preventDefault();
+                        e.cancelBubble = true;
                     }
                 }
             }
@@ -1340,6 +1342,7 @@ export class TextRun extends BaseTextBlock {
                 anchor.target = "_blank";
                 anchor.onclick = (e) => {
                     e.preventDefault();
+                    e.cancelBubble = true;
 
                     this.selectAction.execute();
                 }
@@ -1391,7 +1394,7 @@ export class TextRun extends BaseTextBlock {
         if (this.selectAction) {
             Utils.setProperty(result, "selectAction", this.selectAction.toJSON());
         }
-    
+
         return result;
     }
 
@@ -1406,7 +1409,7 @@ export class TextRun extends BaseTextBlock {
             json["selectAction"],
             errors);
     }
-    
+
     getJsonTypeName(): string {
         return "TextRun";
     }
@@ -1447,7 +1450,7 @@ export class RichTextBlock extends CardElement {
 
             let parentContainer = this.getParentContainer();
             let isRtl = parentContainer ? parentContainer.isRtl() : false;
-    
+
             switch (this.horizontalAlignment) {
                 case Enums.HorizontalAlignment.Center:
                     element.style.textAlign = "center";
@@ -1459,7 +1462,7 @@ export class RichTextBlock extends CardElement {
                     element.style.textAlign = isRtl ? "right" : "left";
                     break;
             }
-    
+
             for (let inline of this._inlines) {
                 element.appendChild(inline.render());
             }
@@ -1473,7 +1476,7 @@ export class RichTextBlock extends CardElement {
 
     asString(): string {
         let result = "";
-        
+
         for (let inline of this._inlines) {
             result += inline.asString();
         }
@@ -1781,17 +1784,20 @@ export class Image extends CardElement {
             element.style.alignItems = "flex-start";
 
             element.onkeypress = (e) => {
-                if (this.selectAction) {
-                    if (e.keyCode == 13 || e.keyCode == 32) { // enter or space pressed
-                        this.selectAction.execute();
-                    }
+                if (this.selectAction && (e.keyCode == 13 || e.keyCode == 32)) { // enter or space pressed
+                    e.preventDefault();
+                    e.cancelBubble = true;
+
+                    this.selectAction.execute();
                 }
             }
 
             element.onclick = (e) => {
                 if (this.selectAction) {
-                    this.selectAction.execute();
+                    e.preventDefault();
                     e.cancelBubble = true;
+
+                    this.selectAction.execute();
                 }
             }
 
@@ -2109,17 +2115,20 @@ export abstract class CardElementContainer extends CardElement {
 
             element.onclick = (e) => {
                 if (this._selectAction != null) {
-                    this._selectAction.execute();
+                    e.preventDefault();
                     e.cancelBubble = true;
+
+                    this._selectAction.execute();
                 }
             }
 
             element.onkeypress = (e) => {
-                if (this._selectAction != null) {
+                if (this._selectAction != null && (e.keyCode == 13 || e.keyCode == 32)) {
                     // Enter or space pressed
-                    if (e.keyCode == 13 || e.keyCode == 32) {
-                        this._selectAction.execute();
-                    }
+                    e.preventDefault();
+                    e.cancelBubble = true;
+
+                    this._selectAction.execute();
                 }
             }
         }
@@ -2398,6 +2407,9 @@ export class Media extends CardElement {
             playButtonOuterElement.style.justifyContent = "center";
             playButtonOuterElement.onclick = (e) => {
                 if (this.hostConfig.media.allowInlinePlayback) {
+                    e.preventDefault();
+                    e.cancelBubble = true;
+
                     let mediaPlayerElement = this.renderMediaPlayer();
 
                     this.renderedElement.innerHTML = "";
@@ -2407,6 +2419,9 @@ export class Media extends CardElement {
                 }
                 else {
                     if (Media.onPlay) {
+                        e.preventDefault();
+                        e.cancelBubble = true;
+
                         Media.onPlay(this);
                     }
                 }
@@ -2807,7 +2822,12 @@ export class TextInput extends Input {
         if (this.inlineAction) {
             let button = document.createElement("button");
             button.className = this.hostConfig.makeCssClassName("ac-inlineActionButton");
-            button.onclick = () => { this.inlineAction.execute(); };
+            button.onclick = (e) => {
+                e.preventDefault();
+                e.cancelBubble = true;
+
+                this.inlineAction.execute();
+            };
 
             if (!Utils.isNullOrEmpty(this.inlineAction.iconUrl)) {
                 button.classList.add("iconOnly");
@@ -3514,7 +3534,12 @@ class ActionButton {
     render(alignment: Enums.ActionAlignment) {
         this.action.render();
         this.action.renderedElement.style.flex = alignment === Enums.ActionAlignment.Stretch ? "0 1 100%" : "0 1 auto";
-        this.action.renderedElement.onclick = (e) => { this.click(); };
+        this.action.renderedElement.onclick = (e) => {
+            e.preventDefault();
+            e.cancelBubble = true;
+
+            this.click();
+        };
 
         this.updateCssStyle();
     }
@@ -4899,8 +4924,12 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
         let currentElement: CardElement = this.parent;
 
         while (currentElement) {
+            let currentElementHasBackgroundImage = currentElement instanceof Container ? currentElement.backgroundImage.isValid() : false;
+
             if (currentElement instanceof StylableCardElementContainer) {
-                return this.hasExplicitStyle && currentElement.getEffectiveStyle() != this.getEffectiveStyle();
+                if (this.hasExplicitStyle && (currentElement.getEffectiveStyle() != this.getEffectiveStyle() || currentElementHasBackgroundImage)) {
+                    return true;
+                }
             }
 
             currentElement = currentElement.parent;

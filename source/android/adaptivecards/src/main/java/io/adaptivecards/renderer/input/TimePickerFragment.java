@@ -12,13 +12,19 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import io.adaptivecards.objectmodel.DateTimePreparser;
+import io.adaptivecards.objectmodel.TimeInput;
+
 public class TimePickerFragment extends DialogFragment
         implements TimePickerDialog.OnTimeSetListener
 {
-    public void initialize(EditText editText)
+    public void initialize(TimeInput timeInput, EditText editText, Context context)
     {
+        m_timeInput = timeInput;
         m_editText = editText;
     }
+
+
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
@@ -27,6 +33,7 @@ public class TimePickerFragment extends DialogFragment
 
         try
         {
+            // Get current value shown to user in the TextEdit
             Date value = DateFormat.getTimeInstance().parse(m_editText.getText().toString());
             calendar = new GregorianCalendar();
             calendar.setTime(value);
@@ -37,7 +44,9 @@ public class TimePickerFragment extends DialogFragment
             calendar = Calendar.getInstance();
         }
 
-        return new TimePickerDialog(getActivity(), this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false);
+        // Android doesn't support min or max time in a timeDialogPicker
+
+        return new TimePickerDialog(m_context, this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false);
     }
 
     @Override
@@ -48,5 +57,6 @@ public class TimePickerFragment extends DialogFragment
         m_editText.setText(value);
     }
 
+    private TimeInput m_timeInput;
     private EditText m_editText;
 }
