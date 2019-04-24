@@ -122,6 +122,26 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
     }
 
     /**
+     * This method retrieves and parses the TagContent object associated to a rendered element
+     * @param view defines the rendered element to grab the TagContent from
+     * @return TagContent form view
+     */
+    protected static TagContent getTagContent(View view)
+    {
+        if (view != null)
+        {
+            Object tag = view.getTag();
+
+            if (tag != null && tag instanceof TagContent)
+            {
+                return (TagContent) tag;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      *  This method sets the visibility for a rendered element view and its separator. It must be called after setting the view tag as it contains the separator view
      * @param isVisible defines whether the view should be visible or not
      * @param elementView defines the element view (layout, editText, button, etc)
@@ -129,13 +149,11 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
      */
     protected static void setVisibility(boolean isVisible, View elementView, Set<ViewGroup> viewGroupsToUpdate)
     {
-        TagContent tagContent = null;
         View separator = null;
+        TagContent tagContent = getTagContent(elementView);
 
-        Object tag = elementView.getTag();
-        if (tag != null && tag instanceof TagContent)
+        if (tagContent != null)
         {
-            tagContent = (TagContent) elementView.getTag();
             separator = tagContent.GetSeparator();
 
             ViewGroup viewGroup = tagContent.GetViewContainer();

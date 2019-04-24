@@ -130,12 +130,10 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
             for (int i = 0; i < viewGroup.getChildCount(); ++i)
             {
                 View element = viewGroup.getChildAt(i);
-                Object tag = element.getTag();
+                TagContent tagContent = BaseCardElementRenderer.getTagContent(element);
 
-                if (tag != null && tag instanceof TagContent)
+                if (tagContent != null)
                 {
-                    TagContent tagContent = (TagContent)tag;
-
                     if (!tagContent.IsSeparator() && element.getVisibility() == View.VISIBLE)
                     {
                         View separator = tagContent.GetSeparator();
