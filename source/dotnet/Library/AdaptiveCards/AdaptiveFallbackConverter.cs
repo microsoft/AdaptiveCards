@@ -12,17 +12,24 @@ namespace AdaptiveCards
         public override bool CanWrite => true;
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            AdaptiveFallbackElement fallback = (AdaptiveFallbackElement)value;
-            if (fallback.Type != AdaptiveFallbackElement.AdaptiveFallbackType.None)
+            AdaptiveFallbackElement fallback = value as AdaptiveFallbackElement;
+            if (fallback != null)
             {
-                if (fallback.Type == AdaptiveFallbackElement.AdaptiveFallbackType.Drop)
+                if (fallback.Type != AdaptiveFallbackElement.AdaptiveFallbackType.None)
                 {
-                    writer.WriteValue(AdaptiveFallbackElement.drop);
+                    if (fallback.Type == AdaptiveFallbackElement.AdaptiveFallbackType.Drop)
+                    {
+                        writer.WriteValue(AdaptiveFallbackElement.drop);
+                    }
+                    else
+                    {
+                        serializer.Serialize(writer, fallback.Content);
+                    }
                 }
-                else
-                {
-                    serializer.Serialize(writer, fallback.Content);
-                }
+            }
+            else
+            {
+                throw new AdaptiveSerializationException("Unable to safely cast to AdaptiveFallbackElement");
             }
         }
 

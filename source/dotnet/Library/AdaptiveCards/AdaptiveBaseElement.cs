@@ -30,12 +30,13 @@ namespace AdaptiveCards
 
         public static AdaptiveInternalID Next()
         {
-            CurrentInternalID++;
-
-            // handle overflow case
-            if (CurrentInternalID == AdaptiveInternalID.Invalid)
+            try
             {
                 CurrentInternalID++;
+            }
+            catch (System.OverflowException)
+            {
+                CurrentInternalID = 1;
             }
 
             return Current();

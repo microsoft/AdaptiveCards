@@ -1,8 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdaptiveCards
 {
@@ -10,7 +6,7 @@ namespace AdaptiveCards
     {
         public AdaptiveFeatureRegistration()
         {
-            features[adaptiveCardFeature] = "1.2";
+            features[adaptiveCardFeature] = Globals.ObjectModelVersion;
         }
 
         public string Get(string feature)
@@ -49,7 +45,7 @@ namespace AdaptiveCards
             }
         }
 
-        private readonly string adaptiveCardFeature = "adaptiveCards";
+        private const string adaptiveCardFeature = "adaptiveCards";
         private Dictionary<string, string> features = new Dictionary<string, string>();
     }
 }

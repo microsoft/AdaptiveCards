@@ -101,7 +101,9 @@ namespace AdaptiveCards
 
                 // remove id of element from ParseContext
                 if (type != typeof(AdaptiveCard))
+                {
                     ParseContext.PopElement();
+                }
 
                 HandleAdditionalProperties(result);
                 return result;
@@ -116,21 +118,13 @@ namespace AdaptiveCards
                 AdaptiveTypedElement result = null;
                 if (ParseContext.Type == ParseContext.ContextType.Element)
                 {
-                    try
-                    {
-                        result = (AdaptiveTypedElement)Activator.CreateInstance(typeof(AdaptiveUnknownElement));
-                        serializer.Populate(jObject.CreateReader(), result);
-                    }
-                    catch (JsonSerializationException) { }
+                    result = (AdaptiveTypedElement)Activator.CreateInstance(typeof(AdaptiveUnknownElement));
+                    serializer.Populate(jObject.CreateReader(), result);
                 }
                 else // ParseContext.Type == ParseContext.ContextType.Action
                 {
-                    try
-                    {
-                        result = (AdaptiveTypedElement)Activator.CreateInstance(typeof(AdaptiveUnknownAction));
-                        serializer.Populate(jObject.CreateReader(), result);
-                    }
-                    catch (JsonSerializationException) { }
+                    result = (AdaptiveTypedElement)Activator.CreateInstance(typeof(AdaptiveUnknownAction));
+                    serializer.Populate(jObject.CreateReader(), result);
                 }
                 ParseContext.PopElement();
 
@@ -141,11 +135,11 @@ namespace AdaptiveCards
 
         public static string GetElementTypeName(Type objectType, JObject jObject)
         {
-            var typeName = jObject["type"]?.Value<string>() ?? jObject["@type"]?.Value<string>();
+            string typeName = jObject["type"]?.Value<string>() ?? jObject["@type"]?.Value<string>();
             if (typeName == null)
             {
                 // Get value of this objectType's "Type" JsonProperty(Required)
-                var typeJsonPropertyRequiredValue = objectType.GetRuntimeProperty("Type")
+                string typeJsonPropertyRequiredValue = objectType.GetRuntimeProperty("Type")
                     .CustomAttributes.Where(a => a.AttributeType == typeof(JsonPropertyAttribute)).FirstOrDefault()?
                     .NamedArguments.Where(a => a.TypedValue.ArgumentType == typeof(Required)).FirstOrDefault()
                     .TypedValue.Value.ToString();
@@ -175,8 +169,8 @@ namespace AdaptiveCards
 
             // Create a list of known property names
             List<String> knownPropertyNames = new List<String>();
-            var runtimeProperties = te.GetType().GetRuntimeProperties();
-            foreach (var runtimeProperty in runtimeProperties)
+            IEnumerable<PropertyInfo> runtimeProperties = te.GetType().GetRuntimeProperties();
+            foreach (PropertyInfo runtimeProperty in runtimeProperties)
             {
                 // Check if the property has a JsonPropertyAttribute with the value set
                 String jsonPropertyName = null;
@@ -203,7 +197,7 @@ namespace AdaptiveCards
 
             foreach (var prop in te.AdditionalProperties)
             {
-                Warnings.Add(new AdaptiveWarning(-1, $"Unknown property '{prop.Key}' on '{te.Type}'"));
+                Warnings.Add(new AdaptiveWarning((int)WarningStatusCode.UnknownElementType, $"Unknown property '{prop.Key}' on '{te.Type}'"));
             }
         }
 
@@ -211,7 +205,9 @@ namespace AdaptiveCards
             where T : AdaptiveTypedElement
         {
             if (typeName == null)
+            {
                 typeName = ((T)Activator.CreateInstance(typeof(T))).Type;
+            }
 
             if (TypedElementTypes.Value.TryGetValue(typeName, out var type))
             {
@@ -219,5 +215,7 @@ namespace AdaptiveCards
             }
             return null;
         }
+
+        private enum WarningStatusCode { UnknownElementType = 0 };
     }
 }
