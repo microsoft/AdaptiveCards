@@ -51,12 +51,12 @@ public class DateTimePreparser {
     return AdaptiveCardObjectModelJNI.DateTimePreparser_HasDateTokens(swigCPtr, this);
   }
 
-  public static boolean TryParseSimpleTime(String string, SWIGTYPE_p_unsigned_int hours, SWIGTYPE_p_unsigned_int minutes) {
-    return AdaptiveCardObjectModelJNI.DateTimePreparser_TryParseSimpleTime(string, SWIGTYPE_p_unsigned_int.getCPtr(hours), SWIGTYPE_p_unsigned_int.getCPtr(minutes));
+  public static boolean TryParseSimpleTime(String string, long[] hours, long[] minutes) {
+    return AdaptiveCardObjectModelJNI.DateTimePreparser_TryParseSimpleTime(string, hours, minutes);
   }
 
-  public static boolean TryParseSimpleDate(String string, SWIGTYPE_p_unsigned_int year, SWIGTYPE_p_unsigned_int month, SWIGTYPE_p_unsigned_int day) {
-    return AdaptiveCardObjectModelJNI.DateTimePreparser_TryParseSimpleDate(string, SWIGTYPE_p_unsigned_int.getCPtr(year), SWIGTYPE_p_unsigned_int.getCPtr(month), SWIGTYPE_p_unsigned_int.getCPtr(day));
+  public static boolean TryParseSimpleDate(String string, long[] year, long[] month, long[] day) {
+    return AdaptiveCardObjectModelJNI.DateTimePreparser_TryParseSimpleDate(string, year, month, day);
   }
 
 }
