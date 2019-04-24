@@ -4,8 +4,11 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import io.adaptivecards.objectmodel.TextBlock;
 
 import static org.junit.Assert.*;
 
@@ -16,6 +19,20 @@ import static org.junit.Assert.*;
  */
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest {
+
+    static {
+        System.loadLibrary("adaptivecards-native-lib");
+    }
+
+    @Test
+    public void testSomething() throws Exception
+    {
+        TextBlock textBlock = new TextBlock();
+        textBlock.SetText("Text");
+
+        Assert.assertEquals("not the same", "Text", textBlock.GetText());
+    }
+
     @Test
     public void useAppContext() throws Exception {
         // Context of the app under test.
@@ -23,4 +40,6 @@ public class ExampleInstrumentedTest {
 
         assertEquals("io.adaptivecards.test", appContext.getPackageName());
     }
+
+
 }
