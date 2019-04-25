@@ -11,7 +11,7 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveTextBlock.TypeName)]
 #endif
-    public class AdaptiveTextBlock : AdaptiveElement, ITextElement
+    public class AdaptiveTextBlock : AdaptiveElement, IAdaptiveTextElement
     {
         public const string TypeName = "TextBlock";
 
@@ -69,6 +69,26 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(false)]
         public bool IsSubtle { get; set; }
+
+        /// <summary>
+        ///     Make the text italic
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(false)]
+        public bool Italic { get; set; }
+
+        /// <summary>
+        ///     Make the struck through
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(false)]
+        public bool Strikethrough { get; set; }
 
         /// <summary>
         ///     The text to display

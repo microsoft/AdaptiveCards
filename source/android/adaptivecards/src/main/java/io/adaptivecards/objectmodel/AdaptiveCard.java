@@ -43,20 +43,20 @@ public class AdaptiveCard {
     this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_0(), true);
   }
 
-  public AdaptiveCard(String version, String fallbackText, String backgroundImageUrl, ContainerStyle style, String speak, String language, VerticalContentAlignment verticalContentAlignment, HeightType height) {
-    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_1(version, fallbackText, backgroundImageUrl, style.swigValue(), speak, language, verticalContentAlignment.swigValue(), height.swigValue()), true);
+  public AdaptiveCard(String version, String fallbackText, String backgroundImageUrl, ContainerStyle style, String speak, String language, VerticalContentAlignment verticalContentAlignment, HeightType height, long minHeight) {
+    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_1(version, fallbackText, backgroundImageUrl, style.swigValue(), speak, language, verticalContentAlignment.swigValue(), height.swigValue(), minHeight), true);
   }
 
-  public AdaptiveCard(String version, String fallbackText, String backgroundImageUrl, ContainerStyle style, String speak, String language, VerticalContentAlignment verticalContentAlignment, HeightType height, BaseCardElementVector body, BaseActionElementVector actions) {
-    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_2(version, fallbackText, backgroundImageUrl, style.swigValue(), speak, language, verticalContentAlignment.swigValue(), height.swigValue(), BaseCardElementVector.getCPtr(body), body, BaseActionElementVector.getCPtr(actions), actions), true);
+  public AdaptiveCard(String version, String fallbackText, String backgroundImageUrl, ContainerStyle style, String speak, String language, VerticalContentAlignment verticalContentAlignment, HeightType height, long minHeight, BaseCardElementVector body, BaseActionElementVector actions) {
+    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_2(version, fallbackText, backgroundImageUrl, style.swigValue(), speak, language, verticalContentAlignment.swigValue(), height.swigValue(), minHeight, BaseCardElementVector.getCPtr(body), body, BaseActionElementVector.getCPtr(actions), actions), true);
   }
 
-  public AdaptiveCard(String version, String fallbackText, BackgroundImage backgroundImage, ContainerStyle style, String speak, String language, VerticalContentAlignment verticalContentAlignment, HeightType height) {
-    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_3(version, fallbackText, BackgroundImage.getCPtr(backgroundImage), backgroundImage, style.swigValue(), speak, language, verticalContentAlignment.swigValue(), height.swigValue()), true);
+  public AdaptiveCard(String version, String fallbackText, BackgroundImage backgroundImage, ContainerStyle style, String speak, String language, VerticalContentAlignment verticalContentAlignment, HeightType height, long minHeight) {
+    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_3(version, fallbackText, BackgroundImage.getCPtr(backgroundImage), backgroundImage, style.swigValue(), speak, language, verticalContentAlignment.swigValue(), height.swigValue(), minHeight), true);
   }
 
-  public AdaptiveCard(String version, String fallbackText, BackgroundImage backgroundImage, ContainerStyle style, String speak, String language, VerticalContentAlignment verticalContentAlignment, HeightType height, BaseCardElementVector body, BaseActionElementVector actions) {
-    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_4(version, fallbackText, BackgroundImage.getCPtr(backgroundImage), backgroundImage, style.swigValue(), speak, language, verticalContentAlignment.swigValue(), height.swigValue(), BaseCardElementVector.getCPtr(body), body, BaseActionElementVector.getCPtr(actions), actions), true);
+  public AdaptiveCard(String version, String fallbackText, BackgroundImage backgroundImage, ContainerStyle style, String speak, String language, VerticalContentAlignment verticalContentAlignment, HeightType height, long minHeight, BaseCardElementVector body, BaseActionElementVector actions) {
+    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_4(version, fallbackText, BackgroundImage.getCPtr(backgroundImage), backgroundImage, style.swigValue(), speak, language, verticalContentAlignment.swigValue(), height.swigValue(), minHeight, BaseCardElementVector.getCPtr(body), body, BaseActionElementVector.getCPtr(actions), actions), true);
   }
 
   public String GetVersion() {
@@ -122,6 +122,14 @@ public class AdaptiveCard {
 
   public void SetHeight(HeightType value) {
     AdaptiveCardObjectModelJNI.AdaptiveCard_SetHeight(swigCPtr, this, value.swigValue());
+  }
+
+  public long GetMinHeight() {
+    return AdaptiveCardObjectModelJNI.AdaptiveCard_GetMinHeight(swigCPtr, this);
+  }
+
+  public void SetMinHeight(long value) {
+    AdaptiveCardObjectModelJNI.AdaptiveCard_SetMinHeight(swigCPtr, this, value);
   }
 
   public BaseActionElement GetSelectAction() {

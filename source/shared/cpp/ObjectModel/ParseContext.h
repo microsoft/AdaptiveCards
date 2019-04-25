@@ -26,7 +26,11 @@ namespace AdaptiveSharedNamespace
                          const AdaptiveSharedNamespace::InternalId& internalId,
                          const bool isFallback = false);
         void PopElement();
-
+        
+        // tells if it's possible to fallback to ancestor
+        bool GetCanFallbackToAncestor() const { return m_canFallbackToAncestor; }
+        void SetCanFallbackToAncestor(bool value) { m_canFallbackToAncestor = value; }
+        
         void SetLanguage(const std::string& value);
         std::string GetLanguage() const;
 
@@ -70,6 +74,7 @@ namespace AdaptiveSharedNamespace
         std::vector<AdaptiveSharedNamespace::InternalId> m_parentalPadding;
         std::vector<ContainerBleedDirection> m_parentalBleedDirection;
 
+        bool m_canFallbackToAncestor;
         std::string m_language;
     };
 }

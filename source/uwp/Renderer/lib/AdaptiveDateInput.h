@@ -71,12 +71,6 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Id(_Outptr_ HSTRING* id) { return AdaptiveCardElementBase::get_Id(id); }
         IFACEMETHODIMP put_Id(_In_ HSTRING id) { return AdaptiveCardElementBase::put_Id(id); }
 
-        IFACEMETHODIMP get_MinHeight(_Out_ UINT32* minHeight)
-        {
-            return AdaptiveCardElementBase::get_MinHeight(minHeight);
-        }
-        IFACEMETHODIMP put_MinHeight(UINT32 minHeight) { return AdaptiveCardElementBase::put_MinHeight(minHeight); }
-
         IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveNamespace::FallbackType* fallback)
         {
             return AdaptiveCardElementBase::get_FallbackType(fallback);
@@ -108,6 +102,12 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* value)
         {
             return AdaptiveCardElementBase::put_AdditionalProperties(value);
+        }
+
+        IFACEMETHODIMP MeetsRequirements(_In_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration* featureRegistration,
+                                         _Out_ boolean* value)
+        {
+            return AdaptiveCardElementBase::MeetsRequirements(featureRegistration, value);
         }
 
         IFACEMETHODIMP ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)

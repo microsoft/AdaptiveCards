@@ -1,0 +1,13 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.2",
+	"minHeight": "100px",
+	"body": [
+		{
+			"type": "TextBlock",
+			"wrap": true,
+			"text": "This card has a minHeight of 100px"
+		}
+	]
+}

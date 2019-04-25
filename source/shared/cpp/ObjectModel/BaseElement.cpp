@@ -2,6 +2,7 @@
 
 #include "BaseElement.h"
 #include "ParseUtil.h"
+#include "SemanticVersion.h"
 
 namespace AdaptiveSharedNamespace
 {
@@ -53,42 +54,37 @@ namespace AdaptiveSharedNamespace
     void BaseElement::SetAdditionalProperties(Json::Value const& value) { m_additionalProperties = value; }
 
     // Given a map of what our host provides, determine if this element's requirements are satisfied.
-    bool BaseElement::MeetsRequirements(const std::unordered_map<std::string, std::string>& hostProvides) const
+    bool BaseElement::MeetsRequirements(const AdaptiveSharedNamespace::FeatureRegistration& featureRegistration) const
     {
-        for (const auto& requirement : m_requires)
+        for (const auto& requirement : *m_requires)
         {
             // special case for adaptive cards version
             const auto& requirementName = requirement.first;
             const auto& requirementVersion = requirement.second;
-            if (requirementName == "adaptiveCards")
+            const auto& featureVersion = featureRegistration.GetFeatureVersion(requirementName);
+            if (featureVersion.empty())
             {
-                static const SemanticVersion currentAdaptiveCardsVersion{"1.2"};
-                if (currentAdaptiveCardsVersion > requirementVersion)
-                {
-                    return false;
-                }
+                // host doesn't provide this requirement
+                return false;
             }
             else
             {
-                const auto& provides = hostProvides.find(requirementName);
-                if (provides == hostProvides.end())
+                // host provides this requirement, but does it provide an acceptible version?
+                const SemanticVersion providesVersion{featureVersion};
+                if (providesVersion < requirementVersion)
                 {
-                    // host doesn't provide this requirement
+                    // host's provided version is too low
                     return false;
-                }
-                else
-                {
-                    // host provides this requirement, but does it provide an acceptible version?
-                    const SemanticVersion providesVersion{provides->second};
-                    if (providesVersion < requirementVersion)
-                    {
-                        // host's provided version is too low
-                        return false;
-                    }
                 }
             }
         }
+
         return true;
+    }
+
+    std::shared_ptr<std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>> BaseElement::GetRequirements() const
+    {
+        return m_requires;
     }
 
     Json::Value BaseElement::SerializeToJsonValue() const
@@ -115,10 +111,10 @@ namespace AdaptiveSharedNamespace
         }
 
         // Handle requires
-        if (!m_requires.empty())
+        if (!m_requires->empty())
         {
             Json::Value jsonRequires{};
-            for (const auto& requirement : m_requires)
+            for (const auto& requirement : *m_requires)
             {
                 jsonRequires[requirement.first] = static_cast<std::string>(requirement.second);
             }
@@ -145,15 +141,24 @@ namespace AdaptiveSharedNamespace
                 {
                     const auto& memberName = memberNames.at(i);
                     const auto& memberValue = requiresValue[memberName].asString();
-                    try
+
+                    if (memberValue == "*")
                     {
-                        SemanticVersion memberVersion(memberValue);
-                        m_requires.emplace(memberName, memberVersion);
+                        // * means any version.
+                        m_requires->emplace(memberName, "0");
                     }
-                    catch (const AdaptiveCardParseException&)
+                    else
                     {
-                        throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
-                                                         "Invalid version in requires value: '" + memberValue + "'");
+                        try
+                        {
+                            SemanticVersion memberVersion(memberValue);
+                            m_requires->emplace(memberName, memberVersion);
+                        }
+                        catch (const AdaptiveCardParseException&)
+                        {
+                            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
+                                                             "Invalid version in requires value: '" + memberValue + "'");
+                        }
                     }
                 }
                 return;
