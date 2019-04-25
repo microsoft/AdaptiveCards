@@ -9,6 +9,10 @@
 package io.adaptivecards.objectmodel;
 
 public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants {
+  public static String getC_sharedModelVersion() {
+    return AdaptiveCardObjectModelJNI.c_sharedModelVersion_get();
+  }
+
   public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__AdaptiveCardSchemaKey_t getAdaptiveCardSchemaKeyEnum() {
     return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__AdaptiveCardSchemaKey_t(AdaptiveCardObjectModelJNI.getAdaptiveCardSchemaKeyEnum(), false);
   }
@@ -299,6 +303,10 @@ public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants
 
   public static void HandleUnknownProperties(JsonValue json, SWIGTYPE_p_std__unordered_setT_std__string_t knownProperties, JsonValue unknownProperties) {
     AdaptiveCardObjectModelJNI.HandleUnknownProperties(JsonValue.getCPtr(json), json, SWIGTYPE_p_std__unordered_setT_std__string_t.getCPtr(knownProperties), JsonValue.getCPtr(unknownProperties), unknownProperties);
+  }
+
+  public static String getC_adaptiveCardsFeature() {
+    return AdaptiveCardObjectModelJNI.c_adaptiveCardsFeature_get();
   }
 
 }

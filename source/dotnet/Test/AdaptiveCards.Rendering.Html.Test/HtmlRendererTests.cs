@@ -5,6 +5,31 @@ namespace AdaptiveCards.Rendering.Html.Test
     [TestClass]
     public class HtmlRendererTests
     {
+
+        [TestMethod]
+        public void TextBlockRender_ItalicAndStrikethrough()
+        {
+            AdaptiveCard card = new AdaptiveCard("1.2")
+            {
+                Body = new System.Collections.Generic.List<AdaptiveElement>()
+                {
+                    new AdaptiveTextBlock("Some italic struck-through text")
+                    {
+                        Italic = true,
+                        Strikethrough = true
+                    }
+                }
+            };
+
+
+            var renderer = new AdaptiveCardRenderer();
+            var result = renderer.RenderCard(card);
+            var generatedHtml = result.Html.ToString();
+
+            Assert.AreEqual("<div class='ac-adaptivecard' style='width: 100%;background-color: rgba(255, 255, 255, 1.00);padding: 15px;box-sizing: border-box;justify-content: flex-start;'><div class='ac-textblock' style='box-sizing: border-box;text-align: left;color: rgba(0, 0, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;font-style: italic;text-decoration: line-through;white-space: nowrap;'><p style='margin-top: 0px;margin-bottom: 0px;width: 100%;text-overflow: ellipsis;overflow: hidden;'>Some italic struck-through text</p></div></div>",
+                generatedHtml);
+        }
+
         [TestMethod]
         public void TextBlockRender_ParagraphElementStylesAdded()
         {
@@ -28,7 +53,7 @@ namespace AdaptiveCards.Rendering.Html.Test
         }
 
         [TestMethod]
-        public void RichTextBlockRender_MultipleParagraphs()
+        public void RichTextBlockRender_MultipleInlines()
         {
             var card = new AdaptiveCard("1.2")
             {
@@ -36,30 +61,25 @@ namespace AdaptiveCards.Rendering.Html.Test
                 {
                     new AdaptiveRichTextBlock()
                     {
-                        Paragraphs = {
-                            new AdaptiveParagraph() {
-                                Inlines = {
-                                    new AdaptiveTextRun
-                                    {
-                                        Text = "Paragraph 1 Inline 1"
-                                    },
-                                    new AdaptiveTextRun
-                                    {
-                                        Text = "Paragraph 1 Inline 2"
-                                    }
-                                }
+                        Inlines = {
+                            new AdaptiveTextRun
+                            {
+                                Text = "Inline 1"
                             },
-                            new AdaptiveParagraph() {
-                                Inlines = {
-                                    new AdaptiveTextRun
-                                    {
-                                        Text = "Paragraph 2 Inline 1"
-                                    },
-                                    new AdaptiveTextRun
-                                    {
-                                        Text = "Paragraph 2 Inline 2"
-                                    }
-                                }
+                            new AdaptiveTextRun
+                            {
+                                Text = "Inline 2"
+                            },
+                            new AdaptiveTextRun
+                            {
+                                Text = "Inline 3"
+                            },
+                            new AdaptiveTextRun
+                            {
+                                Text = "Inline 4",
+                                Italic = true,
+                                Strikethrough = true,
+                                Highlight = true
                             }
                         }
                     }
@@ -71,7 +91,39 @@ namespace AdaptiveCards.Rendering.Html.Test
             var generatedHtml = result.Html.ToString();
 
             Assert.AreEqual(
-                "<div class='ac-adaptivecard' style='width: 100%;background-color: rgba(255, 255, 255, 1.00);padding: 15px;box-sizing: border-box;justify-content: flex-start;'><div class='ac-richtextblock' style='box-sizing: border-box;text-align: left;white-space: nowrap;'><p style='margin-top: 0px;margin-bottom: 0px;width: 100%;text-overflow: ellipsis;overflow: hidden;'><span class='ac-textrun' style='color: rgba(0, 0, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;'>Paragraph 1 Inline 1</span><span class='ac-textrun' style='color: rgba(0, 0, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;'>Paragraph 1 Inline 2</span></p><p style='margin-top: 0px;margin-bottom: 0px;width: 100%;text-overflow: ellipsis;overflow: hidden;'><span class='ac-textrun' style='color: rgba(0, 0, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;'>Paragraph 2 Inline 1</span><span class='ac-textrun' style='color: rgba(0, 0, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;'>Paragraph 2 Inline 2</span></p></div></div>",
+                "<div class='ac-adaptivecard' style='width: 100%;background-color: rgba(255, 255, 255, 1.00);padding: 15px;box-sizing: border-box;justify-content: flex-start;'><div class='ac-richtextblock' style='box-sizing: border-box;text-align: left;word-wrap: break-word;'><p style='margin-top: 0px;margin-bottom: 0px;width: 100%;'><span class='ac-textrun' style='color: rgba(0, 0, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;'>Inline 1</span><span class='ac-textrun' style='color: rgba(0, 0, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;'>Inline 2</span><span class='ac-textrun' style='color: rgba(0, 0, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;'>Inline 3</span><span class='ac-textrun' style='color: rgba(0, 0, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;font-style: italic;text-decoration: line-through;background-color: rgba(255, 255, 0, 1.00);'>Inline 4</span></p></div></div>",
+                generatedHtml);
+        }
+
+        [TestMethod]
+        public void TextBlocks_Markdown()
+        {
+            var card = new AdaptiveCard("1.2")
+            {
+                Body = new System.Collections.Generic.List<AdaptiveElement>()
+                {
+                    new AdaptiveRichTextBlock()
+                    {
+                        Inlines = {
+                            new AdaptiveTextRun
+                            {
+                                Text = "The RichTextBlock should not support **markdown**"
+                            }
+                        }
+                    },
+                    new AdaptiveTextBlock()
+                    {
+                        Text = "The TextBlock should support **markdown**"
+                    }
+                }
+            };
+
+            var renderer = new AdaptiveCardRenderer();
+            var result = renderer.RenderCard(card);
+            var generatedHtml = result.Html.ToString();
+
+            Assert.AreEqual(
+                "<div class='ac-adaptivecard' style='width: 100%;background-color: rgba(255, 255, 255, 1.00);padding: 15px;box-sizing: border-box;justify-content: flex-start;'><div class='ac-richtextblock' style='box-sizing: border-box;text-align: left;word-wrap: break-word;'><p style='margin-top: 0px;margin-bottom: 0px;width: 100%;'><span class='ac-textrun' style='color: rgba(0, 0, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;'>The RichTextBlock should not support **markdown**</span></p></div><div class='ac-separator' style='height: 8px;'></div><div class='ac-textblock' style='box-sizing: border-box;text-align: left;color: rgba(0, 0, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;white-space: nowrap;'><p style='margin-top: 0px;margin-bottom: 0px;width: 100%;text-overflow: ellipsis;overflow: hidden;'>The TextBlock should support <strong>markdown</strong></p></div></div>",
                 generatedHtml);
         }
 

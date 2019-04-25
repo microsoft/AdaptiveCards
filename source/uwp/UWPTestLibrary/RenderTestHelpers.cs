@@ -80,9 +80,13 @@ namespace UWPTestLibrary
                         roundTrippedJsonString = card.ToJson().ToString();
                         card = AdaptiveCard.FromJsonString(roundTrippedJsonString).AdaptiveCard;
 
+                        AdaptiveFeatureRegistration featureRegistration = new AdaptiveFeatureRegistration();
+                        featureRegistration.Set("acTest", "1.0");
+
                         var renderer = new AdaptiveCardRenderer()
                         {
-                            HostConfig = hostConfig
+                            HostConfig = hostConfig,
+                            FeatureRegistration = featureRegistration
                         };
 
                         foreach (var resourceResolver in resourceResolvers)

@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
+import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.IBaseCardElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
@@ -90,24 +91,21 @@ public class ImageSetRenderer extends BaseCardElementRenderer
 
             // TODO: temporary - this will be handled in the object model
             image.SetImageSize(imageSize);
-            View imageView = imageRenderer.render(renderedCard, context, fragmentManager, horizFlowLayout, image, cardActionHandler, hostConfig, renderArgs);
-            ((ImageView) imageView).setMaxHeight(Util.dpToPixels(context, hostConfig.GetImageSet().getMaxImageHeight()));
+
+            try
+            {
+                View imageView = imageRenderer.render(renderedCard, context, fragmentManager, horizFlowLayout, image, cardActionHandler, hostConfig, renderArgs);
+                ((ImageView) imageView).setMaxHeight(Util.dpToPixels(context, hostConfig.GetImageSet().getMaxImageHeight()));
+            }
+            catch (AdaptiveFallbackException e)
+            {
+                continue;
+            }
         }
 
-        if (imageSet.GetHeight() == HeightType.Stretch || imageSet.GetMinHeight() != 0)
+        if (imageSet.GetHeight() == HeightType.Stretch)
         {
-            if (imageSet.GetHeight() == HeightType.Stretch)
-            {
-                viewGroup.addView(horizFlowLayout, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1));
-            }
-            else
-            {
-                LinearLayout minHeightLayout = new LinearLayout(context);
-                minHeightLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                minHeightLayout.setMinimumHeight(Util.dpToPixels(context, (int)imageSet.GetMinHeight()));
-                minHeightLayout.addView(horizFlowLayout, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                viewGroup.addView(minHeightLayout);
-            }
+            viewGroup.addView(horizFlowLayout, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1));
         }
         else
         {

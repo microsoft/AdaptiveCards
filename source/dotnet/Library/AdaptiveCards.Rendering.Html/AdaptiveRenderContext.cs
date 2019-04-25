@@ -45,8 +45,7 @@ namespace AdaptiveCards.Rendering.Html
             }
         }
 
-
-        public string GetColor(AdaptiveTextColor color, bool isSubtle)
+        public string GetColor(AdaptiveTextColor color, bool isSubtle, bool isHighlight)
         {
             FontColorConfig colorConfig;
             switch (color)
@@ -73,7 +72,15 @@ namespace AdaptiveCards.Rendering.Html
                     colorConfig = RenderArgs.ForegroundColors.Default;
                     break;
             }
-            return GetRGBColor(isSubtle ? colorConfig.Subtle : colorConfig.Default);
+
+            if (isHighlight)
+            {
+                return GetRGBColor(isSubtle ? colorConfig.HighlightColors.Subtle : colorConfig.HighlightColors.Default);
+            }
+            else
+            {
+                return GetRGBColor(isSubtle ? colorConfig.Subtle : colorConfig.Default);
+            }
         }
 
         public string GetRGBColor(string color)
@@ -92,7 +99,7 @@ namespace AdaptiveCards.Rendering.Html
         }
 
         public string Lang { get; set; }
-        
+
         public AdaptiveRenderArgs RenderArgs { get; set; }
     }
 }

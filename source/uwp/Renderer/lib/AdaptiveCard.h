@@ -52,6 +52,9 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveNamespace::HeightType* heightType);
         IFACEMETHODIMP put_Height(ABI::AdaptiveNamespace::HeightType heightType);
 
+        IFACEMETHODIMP get_MinHeight(_Out_ UINT32* minHeight);
+        IFACEMETHODIMP put_MinHeight(UINT32 minHeight);
+
         IFACEMETHODIMP ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
 
         IFACEMETHODIMP GetResourceInformation(
@@ -72,6 +75,7 @@ namespace AdaptiveNamespace
         Microsoft::WRL::Wrappers::HString m_speak;
         ABI::AdaptiveNamespace::HeightType m_height;
         Microsoft::WRL::Wrappers::HString m_language;
+        UINT32 m_minHeight;
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveBackgroundImage> m_backgroundImage;
 

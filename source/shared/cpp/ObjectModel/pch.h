@@ -46,3 +46,8 @@
 
 #include "Enums.h"
 #include "json/json.h"
+
+namespace AdaptiveSharedNamespace
+{
+    constexpr const char * const c_sharedModelVersion = "1.2";
+}

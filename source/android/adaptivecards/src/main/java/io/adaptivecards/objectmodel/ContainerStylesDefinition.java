@@ -93,10 +93,6 @@ public class ContainerStylesDefinition {
     return new ContainerStylesDefinition(AdaptiveCardObjectModelJNI.ContainerStylesDefinition_Deserialize(JsonValue.getCPtr(json), json, ContainerStylesDefinition.getCPtr(defaultValue), defaultValue), true);
   }
 
-  public void SetBaseStyle(JsonValue json) {
-    AdaptiveCardObjectModelJNI.ContainerStylesDefinition_SetBaseStyle(swigCPtr, this, JsonValue.getCPtr(json), json);
-  }
-
   public ContainerStylesDefinition() {
     this(AdaptiveCardObjectModelJNI.new_ContainerStylesDefinition(), true);
   }

@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "AdaptiveCardElement.h"
+#include "AdaptiveFeatureRegistration.h"
+#include "SemanticVersion.h"
 #include "Util.h"
 
 using namespace Microsoft::WRL;
@@ -21,16 +23,18 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetElementTypeString(), m_typeString.GetAddressOf()));
         m_height = static_cast<ABI::AdaptiveNamespace::HeightType>(sharedModel->GetHeight());
         m_internalId = sharedModel->GetInternalId();
-        m_minHeight = sharedModel->GetMinHeight();
         m_fallbackType = MapSharedFallbackTypeToUwp(sharedModel->GetFallbackType());
         if (m_fallbackType == ABI::AdaptiveNamespace::FallbackType::Content)
         {
-            const auto fallbackObject = std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(sharedModel->GetFallbackContent());
+            const auto fallbackObject =
+                std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(sharedModel->GetFallbackContent());
             if (fallbackObject)
             {
                 RETURN_IF_FAILED(GenerateElementProjection(fallbackObject, m_fallbackContent.GetAddressOf()));
             }
         }
+
+        m_requires = sharedModel->GetRequirements();
 
         return S_OK;
     }
@@ -71,25 +75,13 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveCardElementBase::get_MinHeight(_Out_ UINT32* minHeight)
-    {
-        *minHeight = m_minHeight;
-        return S_OK;
-    }
-
-    IFACEMETHODIMP AdaptiveCardElementBase::put_MinHeight(UINT32 minHeight)
-    {
-        m_minHeight = minHeight;
-        return S_OK;
-    }
-
-    IFACEMETHODIMP AdaptiveCardElementBase::get_FallbackType(_Out_ ABI::AdaptiveNamespace::FallbackType * fallback)
+    IFACEMETHODIMP AdaptiveCardElementBase::get_FallbackType(_Out_ ABI::AdaptiveNamespace::FallbackType* fallback)
     {
         *fallback = m_fallbackType;
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveCardElementBase::get_FallbackContent(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement ** content)
+    IFACEMETHODIMP AdaptiveCardElementBase::get_FallbackContent(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** content)
     {
         return m_fallbackContent.CopyTo(content);
     }
@@ -105,7 +97,7 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveCardElementBase::put_FallbackContent(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement * content)
+    IFACEMETHODIMP AdaptiveCardElementBase::put_FallbackContent(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* content)
     {
         m_fallbackContent = content;
         return S_OK;
@@ -143,6 +135,23 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    IFACEMETHODIMP AdaptiveCardElementBase::MeetsRequirements(_In_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration* featureRegistration,
+                                                              _Out_ boolean* value) try
+    {
+        *value = true;
+
+        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedModel;
+        RETURN_IF_FAILED(GetSharedModel(sharedModel));
+
+        ComPtr<AdaptiveFeatureRegistration> featureRegistrationImpl = PeekInnards<AdaptiveFeatureRegistration>(featureRegistration);
+        std::shared_ptr<AdaptiveSharedNamespace::FeatureRegistration> sharedFeatureRegistration =
+            featureRegistrationImpl->GetSharedFeatureRegistration();
+
+        *value = sharedModel->MeetsRequirements(*sharedFeatureRegistration);
+        return S_OK;
+    }
+    CATCH_RETURN;
+
     IFACEMETHODIMP AdaptiveCardElementBase::ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
     {
         std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedModel;
@@ -158,8 +167,16 @@ namespace AdaptiveNamespace
         sharedCardElement->SetIsVisible(m_isVisible);
         sharedCardElement->SetSpacing(static_cast<AdaptiveSharedNamespace::Spacing>(m_spacing));
         sharedCardElement->SetHeight(static_cast<AdaptiveSharedNamespace::HeightType>(m_height));
-        sharedCardElement->SetMinHeight(m_minHeight);
         sharedCardElement->SetFallbackType(MapUwpFallbackTypeToShared(m_fallbackType));
+
+        if (!m_requires->empty())
+        {
+            auto requirements = sharedCardElement->GetRequirements();
+            for (const auto& requirement : *m_requires)
+            {
+                requirements->emplace(requirement);
+            }
+        }
 
         if (m_fallbackType == ABI::AdaptiveNamespace::FallbackType::Content)
         {

@@ -12,6 +12,7 @@ namespace AdaptiveNamespace
     class DECLSPEC_UUID("d674610a-a76b-4283-bd09-b5a25c41433d") AdaptiveColumn
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
                                               ABI::AdaptiveNamespace::IAdaptiveColumn,
+                                              ABI::AdaptiveNamespace::IAdaptiveContainerBase,
                                               ABI::AdaptiveNamespace::IAdaptiveCardElement,
                                               Microsoft::WRL::CloakedIid<ITypePeek>,
                                               Microsoft::WRL::CloakedIid<AdaptiveNamespace::AdaptiveCardElementBase>>
@@ -30,20 +31,29 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_PixelWidth(_Out_ UINT32* pixelWidth);
         IFACEMETHODIMP put_PixelWidth(UINT32 pixelWidth);
 
-        IFACEMETHODIMP get_Style(_Out_ ABI::AdaptiveNamespace::ContainerStyle* style);
-        IFACEMETHODIMP put_Style(ABI::AdaptiveNamespace::ContainerStyle style);
-
         IFACEMETHODIMP get_Items(
             _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveCardElement*>** items);
-
-        IFACEMETHODIMP get_SelectAction(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** action);
-        IFACEMETHODIMP put_SelectAction(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action);
 
         IFACEMETHODIMP get_VerticalContentAlignment(_Out_ ABI::AdaptiveNamespace::VerticalContentAlignment* verticalAlignment);
         IFACEMETHODIMP put_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment verticalAlignment);
 
         IFACEMETHODIMP get_BackgroundImage(_Outptr_ ABI::AdaptiveNamespace::IAdaptiveBackgroundImage** backgroundImage);
         IFACEMETHODIMP put_BackgroundImage(_In_ ABI::AdaptiveNamespace::IAdaptiveBackgroundImage* backgroundImage);
+
+        // IAdaptiveContainerBase
+        IFACEMETHODIMP get_Style(_Out_ ABI::AdaptiveNamespace::ContainerStyle* style);
+        IFACEMETHODIMP put_Style(ABI::AdaptiveNamespace::ContainerStyle style);
+
+        IFACEMETHODIMP get_SelectAction(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** action);
+        IFACEMETHODIMP put_SelectAction(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action);
+
+        IFACEMETHODIMP get_Bleed(_Out_ boolean* bleed);
+        IFACEMETHODIMP put_Bleed(boolean bleed);
+
+        IFACEMETHODIMP get_BleedDirection(_Out_ ABI::AdaptiveNamespace::BleedDirection* bleedDirection);
+
+        IFACEMETHODIMP get_MinHeight(_Out_ UINT32* minHeight);
+        IFACEMETHODIMP put_MinHeight(UINT32 minHeight);
 
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespace::ElementType* elementType);
@@ -71,12 +81,6 @@ namespace AdaptiveNamespace
 
         IFACEMETHODIMP get_Id(_Outptr_ HSTRING* id) { return AdaptiveCardElementBase::get_Id(id); }
         IFACEMETHODIMP put_Id(_In_ HSTRING id) { return AdaptiveCardElementBase::put_Id(id); }
-
-        IFACEMETHODIMP get_MinHeight(_Out_ UINT32* minHeight)
-        {
-            return AdaptiveCardElementBase::get_MinHeight(minHeight);
-        }
-        IFACEMETHODIMP put_MinHeight(UINT32 minHeight) { return AdaptiveCardElementBase::put_MinHeight(minHeight); }
 
         IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveNamespace::FallbackType* fallback)
         {
@@ -111,6 +115,12 @@ namespace AdaptiveNamespace
             return AdaptiveCardElementBase::put_AdditionalProperties(value);
         }
 
+        IFACEMETHODIMP MeetsRequirements(_In_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration* featureRegistration,
+                                         _Out_ boolean* value)
+        {
+            return AdaptiveCardElementBase::MeetsRequirements(featureRegistration, value);
+        }
+
         IFACEMETHODIMP ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
         {
             return AdaptiveCardElementBase::ToJson(result);
@@ -139,6 +149,9 @@ namespace AdaptiveNamespace
         ABI::AdaptiveNamespace::ContainerStyle m_style;
         ABI::AdaptiveNamespace::VerticalContentAlignment m_verticalAlignment;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveBackgroundImage> m_backgroundImage;
+        UINT32 m_minHeight;
+        boolean m_bleed;
+        ABI::AdaptiveNamespace::BleedDirection m_bleedDirection;
     };
 
     ActivatableClass(AdaptiveColumn);

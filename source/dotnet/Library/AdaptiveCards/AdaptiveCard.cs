@@ -134,6 +134,17 @@ namespace AdaptiveCards
         public AdaptiveHeight Height { get; set; }
 
         /// <summary>
+        ///    Explicit card minimum height in pixels
+        /// </summary>
+        [JsonConverter(typeof(StringSizeWithUnitConverter), false)]
+        [JsonProperty("minHeight", DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(0)]
+        public uint PixelMinHeight { get; set; }
+
+        /// <summary>
         /// The Body elements for this card
         /// </summary>
         [JsonProperty(Order = -3)]
@@ -152,6 +163,7 @@ namespace AdaptiveCards
         [XmlElement(typeof(AdaptiveToggleInput))]
         [XmlElement(typeof(AdaptiveChoiceSetInput))]
         [XmlElement(typeof(AdaptiveMedia))]
+        [XmlElement(typeof(AdaptiveActionSet))]
 #endif
         public List<AdaptiveElement> Body { get; set; } = new List<AdaptiveElement>();
 

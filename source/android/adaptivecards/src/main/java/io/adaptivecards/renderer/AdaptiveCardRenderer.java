@@ -94,13 +94,18 @@ public class AdaptiveCardRenderer
         layout.setClipChildren(false);
         layout.setClipToPadding(false);
 
-        if( adaptiveCard.GetHeight() == HeightType.Stretch )
+        if (adaptiveCard.GetHeight() == HeightType.Stretch)
         {
             layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
         }
         else
         {
             layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        }
+
+        if (adaptiveCard.GetMinHeight() != 0)
+        {
+            rootLayout.setMinimumHeight(Util.dpToPixels(context, (int)adaptiveCard.GetMinHeight()));
         }
 
         VerticalContentAlignment contentAlignment = adaptiveCard.GetVerticalContentAlignment();
@@ -144,7 +149,13 @@ public class AdaptiveCardRenderer
 
         RenderArgs renderArgs = new RenderArgs();
         renderArgs.setContainerStyle(style);
-        CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, layout, adaptiveCard, baseCardElementList, cardActionHandler, hostConfig, renderArgs);
+        try
+        {
+            CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, layout, adaptiveCard, baseCardElementList, cardActionHandler, hostConfig, renderArgs);
+        }
+        // Catches the exception as the method throws it for performing fallback with elements inside the card,
+        // no fallback should be performed here so we just catch the exception
+        catch (AdaptiveFallbackException e){}
 
         if (hostConfig.GetSupportsInteractivity())
         {
@@ -158,8 +169,15 @@ public class AdaptiveCardRenderer
                 rootLayout.addView(showCardsLayout);
 
                 IActionLayoutRenderer actionLayoutRenderer = CardRendererRegistration.getInstance().getActionLayoutRenderer();
-                if(actionLayoutRenderer != null) {
-                    actionLayoutRenderer.renderActions(renderedCard, context, fragmentManager, layout, baseActionElementList, cardActionHandler, hostConfig, renderArgs);
+                if(actionLayoutRenderer != null)
+                {
+                    try
+                    {
+                        actionLayoutRenderer.renderActions(renderedCard, context, fragmentManager, layout, baseActionElementList, cardActionHandler, hostConfig, renderArgs);
+                    }
+                    // Catches the exception as the method throws it for performing fallback with elements inside the card,
+                    // no fallback should be performed here so we just catch the exception
+                    catch (AdaptiveFallbackException e) {}
                 }
             }
         }

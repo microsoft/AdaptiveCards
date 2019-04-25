@@ -36,6 +36,7 @@ struct tm {
     int tm_isdst;
 };
 
+%include <typemaps.i>
 %include <std_string.i>
 %include <std_shared_ptr.i>
 %include <std_vector.i>
@@ -73,6 +74,7 @@ struct tm {
 #include "../../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.h"
 #include "../../../shared/cpp/ObjectModel/ActionParserRegistration.h"
 #include "../../../shared/cpp/ObjectModel/ElementParserRegistration.h"
+#include "../../../shared/cpp/ObjectModel/FeatureRegistration.h"
 #include "../../../shared/cpp/ObjectModel/Container.h"
 #include "../../../shared/cpp/ObjectModel/Image.h"
 #include "../../../shared/cpp/ObjectModel/ImageSet.h"
@@ -86,6 +88,7 @@ struct tm {
 #include "../../../shared/cpp/ObjectModel/TimeInput.h"
 #include "../../../shared/cpp/ObjectModel/ToggleInput.h"
 #include "../../../shared/cpp/ObjectModel/OpenUrlAction.h"
+#include "../../../shared/cpp/ObjectModel/SemanticVersion.h"
 #include "../../../shared/cpp/ObjectModel/ShowCardAction.h"
 #include "../../../shared/cpp/ObjectModel/SubmitAction.h"
 #include "../../../shared/cpp/ObjectModel/ParseContext.h"
@@ -108,7 +111,6 @@ struct tm {
 #include "../../../shared/cpp/ObjectModel/UnknownAction.h"
 #include "../../../shared/cpp/ObjectModel/TextElementProperties.h"
 #include "../../../shared/cpp/ObjectModel/Inline.h"
-#include "../../../shared/cpp/ObjectModel/Paragraph.h"
 #include "../../../shared/cpp/ObjectModel/RichTextBlock.h"
 #include "../../../shared/cpp/ObjectModel/TextRun.h"
 %}
@@ -125,6 +127,7 @@ struct tm {
 %shared_ptr(AdaptiveCards::CollectionTypeElement)
 %shared_ptr(AdaptiveCards::ElementParserRegistration)
 %shared_ptr(AdaptiveCards::ActionParserRegistration)
+%shared_ptr(AdaptiveCards::FeatureRegistration)
 %shared_ptr(AdaptiveCards::Container)
 %shared_ptr(AdaptiveCards::TextBlock)
 %shared_ptr(AdaptiveCards::Image)
@@ -178,11 +181,12 @@ struct tm {
 %shared_ptr(AdaptiveCards::UnknownAction)
 %shared_ptr(AdaptiveCards::UnknownActionParser)
 %shared_ptr(AdaptiveCards::Inline)
-%shared_ptr(AdaptiveCards::Paragraph)
 %shared_ptr(AdaptiveCards::RichTextBlock)
 %shared_ptr(AdaptiveCards::RichTextBlockParser)
 %shared_ptr(AdaptiveCards::TextRun)
 %shared_ptr(AdaptiveCards::TextElementProperties)
+
+%apply unsigned int& INOUT { unsigned int& }; 
 
 namespace Json {
     %rename(JsonValue) Value;
@@ -190,9 +194,15 @@ namespace Json {
 
     %extend Value {
         std::string getString() {
-            Json::FastWriter fastWriter;
-            std::string jsonString = fastWriter.write(*self);
-            return jsonString;
+            Json::StreamWriterBuilder builder;
+            builder["commentStyle"] = "None";
+            builder["indentation"] = "";
+            std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
+
+            std::ostringstream outStream;
+            writer->write(*self, &outStream);
+            outStream << std::endl;
+            return outStream.str();
         }
     }
 }
@@ -327,6 +337,22 @@ namespace Json {
   $result = *tmp;
 %}
 
+%typemap(javadirectorin) std::shared_ptr<AdaptiveCards::FeatureRegistration> "new $typemap(jstype, AdaptiveCards::FeatureRegistration)($1,true)";
+%typemap(directorin,descriptor="Lio/adaptivecards/objectmodel/FeatureRegistration;") std::shared_ptr<AdaptiveCards::FeatureRegistration> %{
+  *($&1_type*)&j$1 = new $1_type($1);
+%}
+
+%typemap(javadirectorout) std::shared_ptr<AdaptiveCards::FeatureRegistration> "$typemap(jstype, AdaptiveCards::FeatureRegistration).getCPtr($javacall)";
+%typemap(directorout) std::shared_ptr<AdaptiveCards::FeatureRegistration> %{
+  $&1_type tmp = NULL;
+  *($&1_type*)&tmp = *($&1_type*)&$input;
+  if (!tmp) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null $1_type");
+    return NULL;
+  }
+  $result = *tmp;
+%}
+
 // Allow C++ exceptions to be handled in Java
 %typemap(throws, throws="java.io.IOException") AdaptiveCards::AdaptiveCardParseException {
   jclass excep = jenv->FindClass("java/io/IOException");
@@ -359,7 +385,6 @@ namespace Json {
 %template(StringVector) std::vector<std::string>;
 %template(CharVector) std::vector<char>;
 %template(InlineVector) std::vector<std::shared_ptr<AdaptiveCards::Inline>>;
-%template(ParagraphVector) std::vector<std::shared_ptr<AdaptiveCards::Paragraph>>;
 
 %template(EnableSharedFromThisContainer) std::enable_shared_from_this<AdaptiveCards::Container>;
 
@@ -737,6 +762,8 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.h"
 %include "../../../shared/cpp/ObjectModel/ActionParserRegistration.h"
 %include "../../../shared/cpp/ObjectModel/ElementParserRegistration.h"
+%include "../../../shared/cpp/ObjectModel/FeatureRegistration.h"
+%include "../../../shared/cpp/ObjectModel/SemanticVersion.h"
 %include "../../../shared/cpp/ObjectModel/Container.h"
 %include "../../../shared/cpp/ObjectModel/Image.h"
 %include "../../../shared/cpp/ObjectModel/ImageSet.h"
@@ -772,6 +799,5 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/UnknownAction.h"
 %include "../../../shared/cpp/ObjectModel/TextElementProperties.h"
 %include "../../../shared/cpp/ObjectModel/Inline.h"
-%include "../../../shared/cpp/ObjectModel/Paragraph.h"
 %include "../../../shared/cpp/ObjectModel/RichTextBlock.h"
 %include "../../../shared/cpp/ObjectModel/TextRun.h"
