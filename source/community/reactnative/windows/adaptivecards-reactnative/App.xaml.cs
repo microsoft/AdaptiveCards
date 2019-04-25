@@ -1,6 +1,6 @@
 ﻿using ReactNative;
 
-namespace rnadaptivecards
+namespace RNAdaptiveCards
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.

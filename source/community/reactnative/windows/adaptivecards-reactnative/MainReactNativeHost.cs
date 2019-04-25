@@ -4,11 +4,11 @@ using ReactNative.Shell;
 using ReactNativeVideo;
 using System.Collections.Generic;
 
-namespace rnadaptivecards
+namespace RNAdaptiveCards
 {
     class MainReactNativeHost : ReactNativeHost
     {
-        public override string MainComponentName => "rnadaptivecards";
+        public override string MainComponentName => "adaptivecards-reactnative";
 
 #if !BUNDLE || DEBUG
         public override bool UseDeveloperSupport => true;

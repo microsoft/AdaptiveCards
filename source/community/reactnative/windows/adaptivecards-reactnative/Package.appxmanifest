@@ -7,14 +7,14 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="b98a5a79-c0de-4dde-8ec9-f5ccf09b3d2a"
+    Name="c72b4a7b-49f0-467d-b422-6dfc2f3a3203"
     Publisher="CN=muralikrishnan"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="b98a5a79-c0de-4dde-8ec9-f5ccf09b3d2a" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="c72b4a7b-49f0-467d-b422-6dfc2f3a3203" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>rnadaptivecards</DisplayName>
+    <DisplayName>adaptivecards-reactnative</DisplayName>
     <PublisherDisplayName>React Native for UWP</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -30,12 +30,12 @@
   <Applications>
     <Application Id="App"
       Executable="$targetnametoken$.exe"
-      EntryPoint="rnadaptivecards.App">
+      EntryPoint="RNAdaptiveCards.App">
       <uap:VisualElements
-        DisplayName="rnadaptivecards"
+        DisplayName="adaptivecards-reactnative"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="rnadaptivecards"
+        Description="adaptivecards-reactnative"
         BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
