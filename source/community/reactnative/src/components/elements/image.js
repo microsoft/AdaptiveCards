@@ -17,7 +17,8 @@ import * as Constants from '../../utils/constants';
 import ElementWrapper from '../elements/element-wrapper';
 import { SelectAction } from '../actions';
 import { StyleManager } from '../../styles/style-config';
-import { InputContext } from '../../utils/context';
+import { InputContext,
+		InputContextConsumer } from '../../utils/context';
 
 const ContainResizeMode = 'contain';
 
