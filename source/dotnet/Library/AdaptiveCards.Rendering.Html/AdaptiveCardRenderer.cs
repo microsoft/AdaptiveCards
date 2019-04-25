@@ -47,11 +47,14 @@ namespace AdaptiveCards.Rendering.Html
             HostConfig = config;
         }
 
+        public AdaptiveFeatureRegistration FeatureRegistration { get; } = new AdaptiveFeatureRegistration();
+
         public RenderedAdaptiveCard RenderCard(AdaptiveCard card)
         {
             try
             {
                 var context = new AdaptiveRenderContext(HostConfig, ElementRenderers);
+                context.FeatureRegistration = FeatureRegistration;
                 context.Lang = card.Lang;
                 var tag = context.Render(card);
                 return new RenderedAdaptiveCard(tag, card, context.Warnings);
@@ -1072,7 +1075,7 @@ namespace AdaptiveCards.Rendering.Html
                 uiDiv.Style("display", "none");
             }
 
-            // if explicit image size is not used, use Adpative Image size
+            // if explicit image size is not used, use Adaptive Image size
             if (image.PixelWidth == 0 && image.PixelHeight == 0)
             {
                 switch (image.Size)
