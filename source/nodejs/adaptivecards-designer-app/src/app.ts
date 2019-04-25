@@ -8,8 +8,8 @@ import "adaptivecards-designer/lib/adaptivecards-designer.css";
 import "adaptivecards-designer/node_modules/adaptivecards-controls/lib/adaptivecards-controls.css";
 
 window.onload = function() {
-    // Uncomment to enable preview features (data binding)
-    // ACDesigner.GlobalSettings.previewFeaturesEnabled = true;
+    // Comment to disable preview features (data binding)
+    ACDesigner.GlobalSettings.previewFeaturesEnabled = true;
 
 	ACDesigner.CardDesigner.onProcessMarkdown = (text: string, result: { didProcess: boolean, outputHtml: string }) => {
 		result.outputHtml = new markdownit().render(text);
