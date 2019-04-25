@@ -27,7 +27,6 @@ namespace WpfVisualizer
     {
         private bool _dirty;
         private readonly SpeechSynthesizer _synth;
-        private DocumentLine _errorLine;
 
         public MainWindow()
         {
@@ -36,6 +35,8 @@ namespace WpfVisualizer
                 TypeDescriptor.AddAttributes(type, new ExpandableObjectAttribute());
 
             InitializeComponent();
+
+            textBox.SetLanguage("json");
 
             _synth = new SpeechSynthesizer();
             _synth.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
@@ -84,6 +85,26 @@ namespace WpfVisualizer
             }
         }
 
+        public string CardPayload
+        {
+            get { return (string)GetValue(CardPayloadProperty); }
+            set { SetValue(CardPayloadProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for CardPayload.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CardPayloadProperty =
+            DependencyProperty.Register("CardPayload", typeof(string), typeof(MainWindow), new PropertyMetadata("", OnCardPayloadChanged));
+
+        private static void OnCardPayloadChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            (sender as MainWindow).OnCardPayloadChanged(e);
+        }
+
+        private void OnCardPayloadChanged(DependencyPropertyChangedEventArgs e)
+        {
+            _dirty = true;
+        }
+
         private void RenderCard()
         {
             cardError.Children.Clear();
@@ -92,7 +113,7 @@ namespace WpfVisualizer
             try
             {
 
-                AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(textBox.Text);
+                AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(CardPayload);
 
                 AdaptiveCard card = parseResult.Card;
 
@@ -193,44 +214,13 @@ namespace WpfVisualizer
                 TextWrapping = TextWrapping.Wrap,
                 Style = Resources["Error"] as Style
             };
-            var button = new Button { Content = textBlock };
-            button.Click += Button_Click;
-            cardError.Children.Add(button);
-
-            var iPos = err.Message.IndexOf("line ");
-            if (iPos > 0)
-            {
-                iPos += 5;
-                var iEnd = err.Message.IndexOf(",", iPos);
-
-                var line = 1;
-                if (int.TryParse(err.Message.Substring(iPos, iEnd - iPos), out line))
-                {
-                    if (line == 0) line = 1;
-                    iPos = err.Message.IndexOf("position ");
-                    if (iPos > 0)
-                    {
-                        iPos += 9;
-                        iEnd = err.Message.IndexOf(".", iPos);
-                        var position = 0;
-                        if (int.TryParse(err.Message.Substring(iPos, iEnd - iPos), out position))
-                            _errorLine = textBox.Document.GetLineByNumber(Math.Min(line, textBox.Document.LineCount));
-                    }
-                }
-            }
+            cardError.Children.Add(textBlock);
         }
 
         private void _OnMissingInput(object sender, MissingInputEventArgs args)
         {
             MessageBox.Show("Required input is missing.");
             args.FrameworkElement.Focus();
-        }
-
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (_errorLine != null)
-                textBox.Select(_errorLine.Offset, _errorLine.Length);
         }
 
         private void loadButton_Click(object sender, RoutedEventArgs e)
@@ -241,7 +231,7 @@ namespace WpfVisualizer
             var result = dlg.ShowDialog();
             if (result == true)
             {
-                textBox.Text = File.ReadAllText(dlg.FileName).Replace("\t", "  ");
+                textBox.Value = File.ReadAllText(dlg.FileName).Replace("\t", "  ");
                 _dirty = true;
             }
         }
@@ -275,7 +265,7 @@ namespace WpfVisualizer
             var supportsInteractivity = Renderer.HostConfig.SupportsInteractivity;
             Renderer.HostConfig.SupportsInteractivity = false;
 
-            var renderedCard = await Renderer.RenderCardToImageAsync(AdaptiveCard.FromJson(textBox.Text).Card, false);
+            var renderedCard = await Renderer.RenderCardToImageAsync(AdaptiveCard.FromJson(CardPayload).Card, false);
             Renderer.HostConfig.SupportsInteractivity = supportsInteractivity;
 
             var path = Path.GetRandomFileName() + ".png";
@@ -288,7 +278,7 @@ namespace WpfVisualizer
 
         private void speak_Click(object sender, RoutedEventArgs e)
         {
-            var result = AdaptiveCard.FromJson(textBox.Text);
+            var result = AdaptiveCard.FromJson(CardPayload);
             var card = result.Card;
 
             _synth.SpeakAsyncCancelAll();
