@@ -1926,9 +1926,6 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT ForegroundColors([out, retval] AdaptiveColorsConfig** value);
         [propput] HRESULT ForegroundColors([in] AdaptiveColorsConfig* value);
-
-        [propget] HRESULT HighlightColors([out, retval] AdaptiveColorsConfig * *value);
-        [propput] HRESULT HighlightColors([in] AdaptiveColorsConfig * value);
     };
 
     [
@@ -2144,6 +2141,40 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveHighlightColorConfig),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(DAF30E1C-8437-4A88-B711-1F4574CE3C94),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(7E71F583-1DAD-4A87-B2F9-1118476BB848)
+#endif
+    ] 
+    interface IAdaptiveHighlightColorConfig : IInspectable
+    {
+        [propget] HRESULT Default([out][retval] Windows.UI.Color * value);
+        [propput] HRESULT Default([in] Windows.UI.Color value);
+
+        [propget] HRESULT Subtle([out][retval] Windows.UI.Color * value);
+        [propput] HRESULT Subtle([in] Windows.UI.Color value);
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif
+    ] 
+    runtimeclass AdaptiveHighlightColorConfig 
+    { 
+        [default] interface IAdaptiveHighlightColorConfig; 
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
         exclusiveto(AdaptiveColorConfig),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(743e6ad3-c0ab-497d-a9c9-3dcf69e6a5a1),
@@ -2160,6 +2191,9 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT Subtle([out][retval] Windows.UI.Color* value);
         [propput] HRESULT Subtle([in] Windows.UI.Color value);
+        
+        [propget] HRESULT HighlightColors([out, retval] AdaptiveHighlightColorConfig * *value);
+        [propput] HRESULT HighlightColors([in] AdaptiveHighlightColorConfig * value);
     };
 
     [

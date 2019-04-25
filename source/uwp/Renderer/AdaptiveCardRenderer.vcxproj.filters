@@ -110,6 +110,7 @@
     <ClCompile Include="lib\TextHelpers.cpp" />
     <ClCompile Include="lib\XamlHelpers.cpp" />
     <ClCompile Include="lib\AdaptiveFeatureRegistration.cpp" />
+    <ClCompile Include="lib\AdaptiveHighlightColorConfig.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -226,6 +227,7 @@
     <ClInclude Include="lib\AdaptiveTextElement.h" />
     <ClInclude Include="lib\TextHelpers.h" />
     <ClInclude Include="lib\AdaptiveFeatureRegistration.h" />
+    <ClInclude Include="lib\AdaptiveHighlightColorConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />

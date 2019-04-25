@@ -46,7 +46,7 @@
 					"text": "Interacting with the text in the good color will open a web page. ",
 					"color": "good",
 					"selectAction": {
-						"type": "Action.OpenURL",
+						"type": "Action.OpenUrl",
 						"url": "http://adaptivecards.io",
 						"title": "Default"
 					}
