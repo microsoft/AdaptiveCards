@@ -26,6 +26,15 @@ Adaptive Cards are designed to render anywhere that your users are. The followin
 | iOS | [![CocoaPods](https://img.shields.io/cocoapods/v/AdaptiveCards.svg)](https://cocoapods.org/pods/AdaptiveCards) | [Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/ios) | [Docs](https://docs.microsoft.com/en-us/adaptive-cards/display/libraries/ios) |  ![Build status](https://img.shields.io/vso/build/Microsoft/8d47e068-03c8-4cdc-aa9b-fc6929290322/16990.svg) |
 | Card Designer | [![npm install](https://img.shields.io/npm/v/adaptivecards-designer.svg)](https://www.npmjs.com/package/adaptivecards-designer) | [Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/nodejs/adaptivecards-designer)| [Docs](https://www.npmjs.com/package/adaptivecards-designer) | ![Build Status](https://img.shields.io/vso/build/Microsoft/56cf629e-8f3a-4412-acbc-bf69366c552c/20564.svg) |
 
+### Community SDKs
+
+The following SDKs are lovingly maintained by the Adaptive Cards community. Their contributions are sincerely appreciated! 🎉
+
+|Platform|Install|Build|Docs|Status|Maintainer|
+|---|---|---|---|---|---|
+| ReactNative | [![npm install](https://img.shields.io/npm/v/adaptivecards-reactnative.svg)](https://www.npmjs.com/package/adaptivecards-reactnative) | [Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/community/reactnative)| [Docs](https://github.com/Microsoft/AdaptiveCards/blob/master/source/community/reactnative/README.md) | [![Build status](https://dev.azure.com/microsoft/AdaptiveCards/_apis/build/status/PR%20Validation/AdaptiveCards-ReactNative-Android-CI)](https://dev.azure.com/microsoft/AdaptiveCards/_build/latest?definitionId=38416) | [Imaginea](https://github.com/Microsoft/AdaptiveCards/blob/master/source/community/reactnative/Contributors.md)
+
+
 ## Contribute
 
 There are many ways to [contribute](https://github.com/Microsoft/AdaptiveCards/blob/master/.github/CONTRIBUTING.md) to Adaptive Cards.
