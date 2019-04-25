@@ -843,14 +843,7 @@ HRESULT GetColorFromAdaptiveColor(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConf
     GetContainerStyleDefinition(containerStyle, hostConfig, &styleDefinition);
 
     ComPtr<ABI::AdaptiveNamespace::IAdaptiveColorsConfig> colorsConfig;
-    if (highlight)
-    {
-        RETURN_IF_FAILED(styleDefinition->get_HighlightColors(&colorsConfig));
-    }
-    else
-    {
-        RETURN_IF_FAILED(styleDefinition->get_ForegroundColors(&colorsConfig));
-    }
+    RETURN_IF_FAILED(styleDefinition->get_ForegroundColors(&colorsConfig));
 
     ComPtr<ABI::AdaptiveNamespace::IAdaptiveColorConfig> colorConfig;
     switch (adaptiveColor)
@@ -879,7 +872,16 @@ HRESULT GetColorFromAdaptiveColor(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConf
         break;
     }
 
-    RETURN_IF_FAILED(isSubtle ? colorConfig->get_Subtle(uiColor) : colorConfig->get_Default(uiColor));
+    if (highlight)
+    {
+        ComPtr<ABI::AdaptiveNamespace::IAdaptiveHighlightColorConfig> highlightColorConfig;
+        RETURN_IF_FAILED(colorConfig->get_HighlightColors(&highlightColorConfig));
+        RETURN_IF_FAILED(isSubtle ? highlightColorConfig->get_Subtle(uiColor) : highlightColorConfig->get_Default(uiColor));
+    }
+    else
+    {
+        RETURN_IF_FAILED(isSubtle ? colorConfig->get_Subtle(uiColor) : colorConfig->get_Default(uiColor));
+    }
 
     return S_OK;
 }
@@ -1538,7 +1540,6 @@ AdaptiveSharedNamespace::FallbackType MapUwpFallbackTypeToShared(const ABI::Adap
 HRESULT CopyTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* textElement,
                         _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveTextElement** copiedTextElement)
 {
-
     ComPtr<AdaptiveNamespace::AdaptiveTextElement> localCopiedTextElement;
     RETURN_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveTextRun>(&localCopiedTextElement));
 
@@ -1581,4 +1582,3 @@ HRESULT CopyTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* textE
     RETURN_IF_FAILED(localCopiedTextElement.CopyTo(copiedTextElement));
     return S_OK;
 }
-
