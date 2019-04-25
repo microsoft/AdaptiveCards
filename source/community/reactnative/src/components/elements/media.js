@@ -48,10 +48,19 @@ export class Media extends React.Component {
         }
     }
 
-    getMediaSources = (sources) => {
-        if (this.payload.sources && this.payload.sources.length > 0) {
+    /**
+     * @description Return the MediaSources from the payload 
+     * @returns {Array} Updated sources from the payload
+     */
+    getMediaSources = () => {
+        let sources = this.payload.sources;
+        if (sources && sources.length > 0) {
             sources.forEach(source => {
                 this.addUriAttribute(source);
+                //removing the source if its uri is empty
+                if (Utils.isNullOrEmpty(source.uri)) {
+                    sources.splice(source, 1);
+                }
             })
             return sources;
         } else {
@@ -59,24 +68,36 @@ export class Media extends React.Component {
         }
     }
 
+    /**
+     * @description Add the uri attribute to the source
+     * @param {object} source - source from the sources array
+     * @returns {object} source with trimmed uri attribute
+     */
     addUriAttribute = (source) => {
         if (source.url) {
             source.uri = source.url
         }
+        source.uri = source.uri ? source.uri.trim() : ""
         return source;
     }
 
-    videoError = (onParseError) => {
+    /**
+     * @description Error handler for the video component
+     */
+    videoError = () => {
         if (this.state.currentSourceIndex < (this.sources.length - 1)) {
             this.setState({
                 currentSourceIndex: this.state.currentSourceIndex + 1
             })
         } else {
             let error = { "error": Enums.ValidationError.InvalidPropertyValue, "message": `Not able to play the source` };
-            onParseError(error);
+            this.context.onParseError(error);
         }
     }
 
+    /**
+     * @description Handler for the video component onLoad
+     */
     videoLoadSuccess = () => {
         this.setState({
             onLoad: true
@@ -123,7 +144,7 @@ const styles = StyleSheet.create({
         width: Constants.FullWidth,
     },
     nativeVideoControls: {
-        position: 'absolute',
+        position: Constants.Absolute,
         top: 0,
         left: 0,
         bottom: 0,
