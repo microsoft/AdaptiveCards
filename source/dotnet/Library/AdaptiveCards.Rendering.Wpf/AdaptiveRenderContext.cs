@@ -218,11 +218,11 @@ namespace AdaptiveCards.Rendering.Wpf
                     }
                 }
             }
-            catch (AdaptiveFallbackException e)
+            catch (AdaptiveFallbackException)
             {
                 if (!elementHasFallback)
                 {
-                    throw e;
+                    throw;
                 }
             }
 

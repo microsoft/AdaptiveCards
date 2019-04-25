@@ -167,7 +167,7 @@ namespace AdaptiveCards.Rendering
             // Value saved in FontStyles.<desiredStyle>
             string fontFamilyValue = FontStyles.GetFontStyle(fontStyle).FontFamily;
 
-            if (string.IsNullOrEmpty(fontFamilyValue))
+            if (string.IsNullOrWhiteSpace(fontFamilyValue))
             {
                 if (fontStyle == AdaptiveFontStyle.Monospace)
                 {

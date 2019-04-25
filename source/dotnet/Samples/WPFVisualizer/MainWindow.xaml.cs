@@ -56,9 +56,10 @@ namespace WpfVisualizer
 
             Renderer = new AdaptiveCardRenderer()
             {
-                Resources = Resources,
-                
+                Resources = Resources
             };
+
+            Renderer.FeatureRegistration.Set("acTest", "1.0");
 
             // Use the Xceed rich input controls
             Renderer.UseXceedElementRenderers();

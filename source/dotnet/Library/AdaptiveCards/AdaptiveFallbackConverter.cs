@@ -83,8 +83,6 @@ namespace AdaptiveCards
                         adaptiveFallbackElement.Type = AdaptiveFallbackElement.AdaptiveFallbackType.Content;
                         adaptiveFallbackElement.Content = result;
                         return adaptiveFallbackElement;
-
-                        //return null;
                     }
 
                 default:

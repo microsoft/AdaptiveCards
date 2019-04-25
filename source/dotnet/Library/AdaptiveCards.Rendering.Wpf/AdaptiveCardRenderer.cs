@@ -26,7 +26,6 @@ namespace AdaptiveCards.Rendering.Wpf
         public AdaptiveCardRenderer(AdaptiveHostConfig hostConfig)
         {
             HostConfig = hostConfig;
-            FeatureRegistration.Set("acTest", "1.0");
             SetObjectTypes();
         }
 

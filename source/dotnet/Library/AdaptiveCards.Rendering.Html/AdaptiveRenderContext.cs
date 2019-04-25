@@ -58,11 +58,11 @@ namespace AdaptiveCards.Rendering.Html
                     }
                 }
             }
-            catch (AdaptiveFallbackException e)
+            catch (AdaptiveFallbackException)
             {
                 if (!elementHasFallback)
                 {
-                    throw e;
+                    throw;
                 }
             }
 
