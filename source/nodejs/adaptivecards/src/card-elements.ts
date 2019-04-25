@@ -5418,14 +5418,6 @@ export class Container extends StylableCardElementContainer {
         return result;
     }
 
-    get bleed(): boolean {
-        return this.getBleed();
-    }
-
-    set bleed(value: boolean) {
-        this.setBleed(value);
-    }
-
     get padding(): Shared.PaddingDefinition {
         return this.getPadding();
     }
@@ -5441,12 +5433,32 @@ export class Container extends StylableCardElementContainer {
     set selectAction(value: Action) {
         this.setSelectAction(value);
     }
+
+    get bleed(): boolean {
+        return this.getBleed();
+    }
+
+    set bleed(value: boolean) {
+        this.setBleed(value);
+    }
 }
 
 export type ColumnWidth = Shared.SizeAndUnit | "auto" | "stretch";
 
 export class Column extends Container {
     private _computedWeight: number = 0;
+
+    private doesAnyColumnInSetHaveBackground(): boolean {
+        let parent = this.parent as ColumnSet;
+
+        for (let i = 0; i < parent.getCount(); i++) {
+            if (parent.getColumnAt(i).getHasBackground()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     protected adjustRenderedElementSize(renderedElement: HTMLElement) {
         const minDesignTimeColumnHeight = 20;
@@ -5492,6 +5504,21 @@ export class Column extends Container {
         super();
 
         this.width = width;
+    }
+
+    getEffectivePadding(): Shared.PaddingDefinition {
+        let result = super.getEffectivePadding();
+
+        if (this.doesAnyColumnInSetHaveBackground()) {
+            result.top = Enums.Spacing.Padding;
+            result.bottom = Enums.Spacing.Padding;
+        }
+
+        return result;
+    }
+
+    isBleeding(): boolean {
+        return this.doesAnyColumnInSetHaveBackground();
     }
 
     getJsonTypeName(): string {
@@ -5571,6 +5598,17 @@ export class Column extends Container {
 
     get isStandalone(): boolean {
         return false;
+    }
+
+    get bleed(): boolean {
+        return true;
+    }
+
+    set bleed(value: boolean) {
+        // No effect in Column.
+        // Although unfortunate, there is no easy way to hide the bleed property from Column given
+        // Column extends Container, and it is not an option to change the class hierarchy as it
+        // would potentially break a lot of existing code
     }
 }
 
