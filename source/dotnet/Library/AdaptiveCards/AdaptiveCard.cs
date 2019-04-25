@@ -18,10 +18,6 @@ namespace AdaptiveCards
     [XmlRoot(ElementName = "Card")]
 #endif
     public class AdaptiveCard : AdaptiveTypedElement
-#if WINDOWS_UWP
-      // TODO: uncomment when I figure out the Windows build
-       //   , Windows.UI.Shell.IAdaptiveCard
-#endif
     {
         public const string ContentType = "application/vnd.microsoft.card.adaptive";
 
