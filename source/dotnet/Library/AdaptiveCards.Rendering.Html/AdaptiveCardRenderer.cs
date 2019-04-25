@@ -1075,7 +1075,7 @@ namespace AdaptiveCards.Rendering.Html
                 uiDiv.Style("display", "none");
             }
 
-            // if explicit image size is not used, use Adpative Image size
+            // if explicit image size is not used, use Adaptive Image size
             if (image.PixelWidth == 0 && image.PixelHeight == 0)
             {
                 switch (image.Size)
