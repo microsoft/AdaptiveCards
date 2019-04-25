@@ -36,7 +36,9 @@ namespace WpfVisualizer
 
             InitializeComponent();
 
-            textBox.SetLanguage("json");
+            CardPayload = File.ReadAllText("Samples\\ActivityUpdate.json");
+
+            InitializeMonaco();
 
             _synth = new SpeechSynthesizer();
             _synth.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
@@ -72,6 +74,25 @@ namespace WpfVisualizer
 
             // This seems unecessary?
             Renderer.ActionHandlers.AddSupportedAction<MyCustomAction>();
+        }
+
+        private async void InitializeMonaco()
+        {
+            try
+            {
+                // Monaco control seems to load better if we initialize it after the rest of the controls have loaded.
+                // Otherwise, if we initialize it with the rest of the XAML, it sometimes hangs on the loading screen.
+                await System.Threading.Tasks.Task.Delay(10);
+
+                var editor = new Monaco.Wpf.MonacoEditor();
+                editor.SetLanguage("json");
+                editor.SetBinding(Monaco.Wpf.MonacoEditor.ValueProperty, new System.Windows.Data.Binding(nameof(CardPayload))
+                {
+                    Source = this
+                });
+                MonacoContainer.Child = editor;
+            }
+            catch { }
         }
 
         public AdaptiveCardRenderer Renderer { get; set; }
@@ -231,7 +252,7 @@ namespace WpfVisualizer
             var result = dlg.ShowDialog();
             if (result == true)
             {
-                textBox.Value = File.ReadAllText(dlg.FileName).Replace("\t", "  ");
+                CardPayload = File.ReadAllText(dlg.FileName).Replace("\t", "  ");
                 _dirty = true;
             }
         }
