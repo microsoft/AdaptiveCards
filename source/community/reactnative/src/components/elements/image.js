@@ -30,8 +30,8 @@ export class Img extends React.Component {
 
 	constructor(props) {
 		super(props);
-
 		this.payload = props.json;
+		this.addResourceInformation = undefined;
 		this.state = {
 			imageWidth: 0,
 			imageHeight: 0,
@@ -39,7 +39,7 @@ export class Img extends React.Component {
 	}
 
 	componentDidMount() {
-		this.context.addResourceInformation(this.payload.url, "");
+		this.addResourceInformation(this.payload.url, "");
 	}
 
     /**
@@ -321,12 +321,18 @@ export class Img extends React.Component {
 
 		let imageUrl = Utils.getImageUrl(url);
 
-		var containerContent = (<ElementWrapper json={this.payload} isFirst={this.props.isFirst}
-			style={wrapperComputedStyle}
-			onPageLayout={this.onPageLayoutHandler}>
-			<Image resizeMode="contain" style={imageComputedStyle}
-				source={{ uri: imageUrl }} />
-		</ElementWrapper>);
+		var containerContent = (<InputContextConsumer>
+			{({ addResourceInformation }) => {
+				this.addResourceInformation = addResourceInformation;
+				return <ElementWrapper json={this.payload} isFirst={this.props.isFirst}
+					style={wrapperComputedStyle}
+					onPageLayout={this.onPageLayoutHandler}>
+
+					<Image style={imageComputedStyle}
+						source={{ uri: imageUrl }} />
+				</ElementWrapper>
+			}}
+		</InputContextConsumer>);
 
 		if ((this.payload.selectAction === undefined)
 			|| (HostConfigManager.getHostConfig().supportsInteractivity === false)) {

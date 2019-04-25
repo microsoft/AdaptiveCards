@@ -35,6 +35,7 @@ export const BottomString = "bottom";
 export const BoldWeight = 'bold';
 
 export const PlatformIOS = 'ios';
+export const PlatformAndroid = 'android';
 
 export const LightGreyColor = 'lightgrey';
 export const EmphasisColor = '#dcdcdc';
