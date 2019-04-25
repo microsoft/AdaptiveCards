@@ -30,12 +30,22 @@ namespace AdaptiveCards.Rendering
 
         public Func<AdaptiveTypedElement, TContext, TUIElement> Get(Type type)
         {
+            // AdaptiveUnknownElements and AdaptiveUnknownActions don't have a renderer
+            if (type == typeof(AdaptiveUnknownElement) || type == typeof(AdaptiveUnknownAction))
+            {
+                return null;
+            }
+
             if (_dictionary.ContainsKey(type))
+            {
                 return _dictionary[type];
+            }
 
             // For Actions we can render the base AdaptiveAction type
             if (typeof(AdaptiveAction).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()))
+            {
                 return _dictionary[typeof(AdaptiveAction)];
+            }
 
             throw new ArgumentOutOfRangeException(nameof(type), $"Unable to locate renderer for {type}");
         }
