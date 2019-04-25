@@ -244,40 +244,7 @@ function actionExecuted(action: AdaptiveCards.Action) {
         message += "    Type: <unknown>";
     }
 
-    // Uncomment to test the action's setStatus method:
-    /*
-    action.setStatus(
-        {
-            "type": "AdaptiveCard",
-            "body": [
-                {
-                    "type": "TextBlock",
-                    "text": "Working on it...",
-                    "weight": "normal",
-                    "size": "small"
-                }
-            ]
-        });
-
-    window.setTimeout(actionCompletedCallback, 2000, action);
-    */
-
     alert(message);
-}
-
-function actionCompletedCallback(action: AdaptiveCards.Action) {
-    action.setStatus(
-        {
-            "type": "AdaptiveCard",
-            "body": [
-                {
-                    "type": "TextBlock",
-                    "text": "Success!",
-                    "weight": "normal",
-                    "size": "small"
-                }
-            ]
-        });
 }
 
 function showPopupCard(action: AdaptiveCards.ShowCardAction) {
