@@ -31,7 +31,7 @@ export enum TextWeight {
     Bolder
 }
 
-export enum FontFamily {
+export enum FontStyle {
     Default,
     Monospace
 }

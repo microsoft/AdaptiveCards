@@ -2,7 +2,6 @@
 
 #include "pch.h"
 #include "json/json.h"
-#include "FeatureRegistration.h"
 #include "ParseContext.h"
 #include "ParseUtil.h"
 #include "SemanticVersion.h"
@@ -43,10 +42,8 @@ namespace AdaptiveSharedNamespace
     {
     public:
         BaseElement() :
-            m_additionalProperties{}, m_typeString{},
-            m_requires{std::make_shared<std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>>()},
-            m_fallbackContent(nullptr), m_fallbackType(FallbackType::None), m_id{}, m_internalId{InternalId::Current()},
-            m_canFallbackToAncestor(false)
+            m_additionalProperties{}, m_typeString{}, m_requires(0), m_fallbackContent(nullptr),
+            m_fallbackType(FallbackType::None), m_id{}, m_internalId{InternalId::Current()}
         {
             PopulateKnownPropertiesSet();
         }
@@ -87,12 +84,13 @@ namespace AdaptiveSharedNamespace
         // Fallback and Requires support
         FallbackType GetFallbackType() const { return m_fallbackType; }
         std::shared_ptr<BaseElement> GetFallbackContent() const { return m_fallbackContent; }
-        bool CanFallbackToAncestor() const { return m_canFallbackToAncestor; }
         void SetFallbackType(FallbackType type) { m_fallbackType = type; }
-        void SetFallbackContent(std::shared_ptr<BaseElement> element) { m_fallbackContent = element; }
+        void SetFallbackContent(std::shared_ptr<BaseElement> element)
+        {
+            m_fallbackContent = element;
+        }
 
-        bool MeetsRequirements(const AdaptiveSharedNamespace::FeatureRegistration& hostProvides) const;
-        std::shared_ptr<std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>> GetRequirements() const;
+        bool MeetsRequirements(const std::unordered_map<std::string, std::string>& hostProvides) const;
 
         // Misc.
         virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris);
@@ -100,8 +98,6 @@ namespace AdaptiveSharedNamespace
     protected:
         virtual void PopulateKnownPropertiesSet();
         void SetTypeString(const std::string& type) { m_typeString = type; }
-        void SetCanFallbackToAncestor(bool value) { m_canFallbackToAncestor = value; }
-
         std::string m_typeString;
         std::unordered_set<std::string> m_knownProperties;
         Json::Value m_additionalProperties;
@@ -110,11 +106,10 @@ namespace AdaptiveSharedNamespace
         template<typename T> void ParseFallback(ParseContext& context, const Json::Value& json);
         void ParseRequires(ParseContext& context, const Json::Value& json);
 
-        std::shared_ptr<std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>> m_requires;
+        std::unordered_map<std::string, SemanticVersion> m_requires;
         std::shared_ptr<BaseElement> m_fallbackContent;
         InternalId m_internalId;
         FallbackType m_fallbackType;
-        bool m_canFallbackToAncestor;
         std::string m_id;
     };
 

@@ -9,8 +9,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 
 import io.adaptivecards.objectmodel.DateInput;
-import io.adaptivecards.objectmodel.DateTimePreparser;
-import io.adaptivecards.renderer.readonly.RendererUtil;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -44,19 +42,7 @@ public class DatePickerFragment extends DialogFragment
             calendar = Calendar.getInstance();
         }
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(m_context, this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-
-        if (!m_dateInput.GetMin().isEmpty())
-        {
-            datePickerDialog.getDatePicker().setMinDate(RendererUtil.getDate(m_dateInput.GetMin()).getTime().getTime());
-        }
-
-        if (!m_dateInput.GetMax().isEmpty())
-        {
-            datePickerDialog.getDatePicker().setMaxDate(RendererUtil.getDate(m_dateInput.GetMax()).getTime().getTime());
-        }
-
-        return datePickerDialog;
+        return new DatePickerDialog(m_context, this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
     }
 
     @Override

@@ -55,16 +55,5 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(false)]
         public bool Bleed { get; set; }
-
-        /// <summary>
-        ///    Explicit container element minimum height
-        /// </summary>
-        [JsonConverter(typeof(StringSizeWithUnitConverter), false)]
-        [JsonProperty("minHeight", DefaultValueHandling = DefaultValueHandling.Ignore)]
-#if !NETSTANDARD1_3
-        [XmlAttribute]
-#endif
-        [DefaultValue(0)]
-        public uint PixelMinHeight { get; set; }
     }
 }

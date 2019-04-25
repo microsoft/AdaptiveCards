@@ -42,12 +42,7 @@ namespace AdaptiveCards.Rendering
                 this.Subtle = $"#{opacity.ToString("x")}{defaultColor.Substring(3)}";
             }
             else
-            {
                 this.Subtle = subtle;
-            }
-
-            this.HighlightColors = new HighlightColorConfig();
-
         }
 
         /// <summary>
@@ -58,8 +53,5 @@ namespace AdaptiveCards.Rendering
 
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string Subtle { get; set; }
-
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public HighlightColorConfig HighlightColors { get; set; }
     }
 }

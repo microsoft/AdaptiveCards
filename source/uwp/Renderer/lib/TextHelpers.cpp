@@ -19,50 +19,21 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml;
 
-HRESULT StyleXamlTextBlockProperties(_In_ ABI::AdaptiveNamespace::IAdaptiveTextBlock* adaptiveTextBlock,
-                                     _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                                     _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
-                                     _In_ ITextBlock* xamlTextBlock)
-{
-    boolean wrap;
-    RETURN_IF_FAILED(adaptiveTextBlock->get_Wrap(&wrap));
-    RETURN_IF_FAILED(SetWrapProperties(xamlTextBlock, wrap));
-
-    UINT32 maxLines;
-    RETURN_IF_FAILED(adaptiveTextBlock->get_MaxLines(&maxLines));
-    if (maxLines != MAXUINT32)
-    {
-        ComPtr<ITextBlock> localXamlTextBlock(xamlTextBlock);
-        ComPtr<ITextBlock2> xamlTextBlock2;
-        RETURN_IF_FAILED(localXamlTextBlock.As(&xamlTextBlock2));
-        RETURN_IF_FAILED(xamlTextBlock2->put_MaxLines(maxLines));
-    }
-
-    RETURN_IF_FAILED(SetHorizontalAlignment(adaptiveTextBlock, xamlTextBlock));
-
-    ComPtr<IAdaptiveTextBlock> localAdaptiveTextBlock(adaptiveTextBlock);
-    ComPtr<IAdaptiveTextElement> adaptiveTextElement;
-    RETURN_IF_FAILED(localAdaptiveTextBlock.As(&adaptiveTextElement));
-    RETURN_IF_FAILED(StyleTextElement(adaptiveTextElement.Get(), renderContext, renderArgs, false, xamlTextBlock));
-
-    return S_OK;
-}
-
-HRESULT SetStrikethrough(_In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* textBlock)
+HRESULT SetMaxLines(ITextBlock* textBlock, UINT maxLines)
 {
     ComPtr<ITextBlock> localTextBlock(textBlock);
-    ComPtr<ITextBlock5> textBlock5;
-    RETURN_IF_FAILED(localTextBlock.As(&textBlock5));
-    RETURN_IF_FAILED(textBlock5->put_TextDecorations(ABI::Windows::UI::Text::TextDecorations::TextDecorations_Strikethrough));
+    ComPtr<ITextBlock2> xamlTextBlock2;
+    localTextBlock.As(&xamlTextBlock2);
+    RETURN_IF_FAILED(xamlTextBlock2->put_MaxLines(maxLines));
     return S_OK;
 }
 
-HRESULT SetStrikethrough(_In_ ABI::Windows::UI::Xaml::Documents::ITextElement* textElement)
+HRESULT SetMaxLines(IRichTextBlock* textBlock, UINT maxLines)
 {
-    ComPtr<ABI::Windows::UI::Xaml::Documents::ITextElement> localTextElement(textElement);
-    ComPtr<ABI::Windows::UI::Xaml::Documents::ITextElement4> textElement4;
-    RETURN_IF_FAILED(localTextElement.As(&textElement4));
-    RETURN_IF_FAILED(textElement4->put_TextDecorations(ABI::Windows::UI::Text::TextDecorations::TextDecorations_Strikethrough));
+    ComPtr<IRichTextBlock> localTextBlock(textBlock);
+    ComPtr<IRichTextBlock2> xamlTextBlock2;
+    localTextBlock.As(&xamlTextBlock2);
+    RETURN_IF_FAILED(xamlTextBlock2->put_MaxLines(maxLines));
     return S_OK;
 }
 
@@ -108,7 +79,7 @@ HRESULT SetXamlInlinesWithTextConfig(_In_ IAdaptiveRenderContext* renderContext,
     // Set wrap and maxwidth
     boolean wrap;
     RETURN_IF_FAILED(textConfig->get_Wrap(&wrap));
-    RETURN_IF_FAILED(SetWrapProperties(textBlock, wrap));
+    RETURN_IF_FAILED(SetWrapProperties(textBlock, wrap, true));
 
     ComPtr<IFrameworkElement> textBlockAsFrameworkElement;
     ComPtr<ITextBlock> localTextBlock(textBlock);
@@ -118,14 +89,6 @@ HRESULT SetXamlInlinesWithTextConfig(_In_ IAdaptiveRenderContext* renderContext,
     RETURN_IF_FAILED(textConfig->get_MaxWidth(&maxWidth));
     textBlockAsFrameworkElement->put_MaxWidth(maxWidth);
 
-    return S_OK;
-}
-
-HRESULT SetWrapProperties(_In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock, bool wrap)
-{
-    // Set whether the text wraps
-    RETURN_IF_FAILED(xamlTextBlock->put_TextWrapping(wrap ? TextWrapping::TextWrapping_WrapWholeWords : TextWrapping::TextWrapping_NoWrap));
-    RETURN_IF_FAILED(xamlTextBlock->put_TextTrimming(TextTrimming::TextTrimming_CharacterEllipsis));
     return S_OK;
 }
 
@@ -142,7 +105,10 @@ HRESULT SetXamlInlines(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adapti
     HString language;
     RETURN_IF_FAILED(adaptiveTextElement->get_Language(language.GetAddressOf()));
 
-    MarkDownParser markdownParser(HStringToUTF8(text.Get()));
+    DateTimeParser parser(HStringToUTF8(language.Get()));
+    auto textWithParsedDates = parser.GenerateString(HStringToUTF8(text.Get()));
+
+    MarkDownParser markdownParser(textWithParsedDates);
     auto htmlString = markdownParser.TransformToHtml();
 
     bool handledAsHtml = false;
@@ -173,7 +139,9 @@ HRESULT SetXamlInlines(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adapti
 
     if (!handledAsHtml)
     {
-        AddSingleTextInline(adaptiveTextElement, renderContext, renderArgs, text.Get(), isInHyperlink, inlines, &localCharacterLength);
+        HString hString;
+        UTF8ToHString(textWithParsedDates, hString.GetAddressOf());
+        AddSingleTextInline(adaptiveTextElement, renderContext, renderArgs, hString.Get(), false, false, isInHyperlink, inlines, &localCharacterLength);
     }
 
     if (characterLength)
@@ -283,7 +251,7 @@ HRESULT AddListInlines(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adapti
 
         UINT textCharacterLength = 0;
         RETURN_IF_FAILED(
-            AddTextInlines(adaptiveTextElement, renderContext, renderArgs, listChild.Get(), isInHyperlink, inlines, &textCharacterLength));
+            AddTextInlines(adaptiveTextElement, renderContext, renderArgs, listChild.Get(), false, false, isInHyperlink, inlines, &textCharacterLength));
         totalCharacterLength += textCharacterLength;
 
         ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> nextListChild;
@@ -302,6 +270,8 @@ HRESULT AddLinkInline(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adaptiv
                       _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                       _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
                       _In_ ABI::Windows::Data::Xml::Dom::IXmlNode* node,
+                      BOOL isBold,
+                      BOOL isItalic,
                       _In_ IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines,
                       _Out_ UINT* characterLength)
 {
@@ -336,7 +306,8 @@ HRESULT AddLinkInline(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adaptiv
     ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> hyperlinkInlines;
     RETURN_IF_FAILED(hyperlinkAsSpan->get_Inlines(hyperlinkInlines.GetAddressOf()));
 
-    RETURN_IF_FAILED(AddTextInlines(adaptiveTextElement, renderContext, renderArgs, node, true, hyperlinkInlines.Get(), characterLength));
+    RETURN_IF_FAILED(
+        AddTextInlines(adaptiveTextElement, renderContext, renderArgs, node, isBold, isItalic, true, hyperlinkInlines.Get(), characterLength));
 
     ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> hyperLinkAsInline;
     RETURN_IF_FAILED(hyperlink.As(&hyperLinkAsInline));
@@ -349,28 +320,39 @@ HRESULT AddSingleTextInline(_In_ IAdaptiveTextElement* adaptiveTextElement,
                             _In_ IAdaptiveRenderContext* renderContext,
                             _In_ IAdaptiveRenderArgs* renderArgs,
                             _In_ HSTRING string,
+                            bool isBold,
+                            bool isItalic,
                             bool isInHyperlink,
                             _In_ IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines,
                             _Out_ UINT* characterLength)
 {
     ComPtr<ABI::Windows::UI::Xaml::Documents::IRun> run = XamlHelpers::CreateXamlClass<ABI::Windows::UI::Xaml::Documents::IRun>(
         HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Run));
-
-    HString language;
-    RETURN_IF_FAILED(adaptiveTextElement->get_Language(language.GetAddressOf()));
-
-    DateTimeParser parser(HStringToUTF8(language.Get()));
-    const auto textWithParsedDates = parser.GenerateString(HStringToUTF8(string));
-
-    HString textWithParsedDatesHString;
-    UTF8ToHString(textWithParsedDates, textWithParsedDatesHString.GetAddressOf());
-
-    RETURN_IF_FAILED(run->put_Text(textWithParsedDatesHString.Get()));
+    RETURN_IF_FAILED(run->put_Text(string));
 
     ComPtr<ABI::Windows::UI::Xaml::Documents::ITextElement> runAsTextElement;
     RETURN_IF_FAILED(run.As(&runAsTextElement));
 
     RETURN_IF_FAILED(StyleTextElement(adaptiveTextElement, renderContext, renderArgs, isInHyperlink, runAsTextElement.Get()));
+
+    if (isBold)
+    {
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+
+        ABI::AdaptiveNamespace::FontStyle fontStyle;
+        RETURN_IF_FAILED(adaptiveTextElement->get_FontStyle(&fontStyle));
+
+        ABI::Windows::UI::Text::FontWeight boldFontWeight;
+        RETURN_IF_FAILED(GetFontWeightFromStyle(hostConfig.Get(), fontStyle, ABI::AdaptiveNamespace::TextWeight::Bolder, &boldFontWeight));
+
+        RETURN_IF_FAILED(runAsTextElement->put_FontWeight(boldFontWeight));
+    }
+
+    if (isItalic)
+    {
+        RETURN_IF_FAILED(runAsTextElement->put_FontStyle(ABI::Windows::UI::Text::FontStyle::FontStyle_Italic));
+    }
 
     ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> runAsInline;
     RETURN_IF_FAILED(run.As(&runAsInline));
@@ -385,6 +367,8 @@ HRESULT AddTextInlines(_In_ IAdaptiveTextElement* adaptiveTextElement,
                        _In_ IAdaptiveRenderContext* renderContext,
                        _In_ IAdaptiveRenderArgs* renderArgs,
                        _In_ ABI::Windows::Data::Xml::Dom::IXmlNode* node,
+                       BOOL isBold,
+                       BOOL isItalic,
                        bool isInHyperlink,
                        _In_ IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines,
                        _Out_ UINT* characterLength)
@@ -413,36 +397,27 @@ HRESULT AddTextInlines(_In_ IAdaptiveTextElement* adaptiveTextElement,
         UINT nodeCharacterLength = 0;
         if (isLinkResult == 0)
         {
-            RETURN_IF_FAILED(AddLinkInline(adaptiveTextElement, renderContext, renderArgs, childNode.Get(), inlines, &nodeCharacterLength));
+            RETURN_IF_FAILED(
+                AddLinkInline(adaptiveTextElement, renderContext, renderArgs, childNode.Get(), isBold, isItalic, inlines, &nodeCharacterLength));
         }
         else if (isTextResult == 0)
         {
             HString text;
             RETURN_IF_FAILED(GetTextFromXmlNode(childNode.Get(), text.GetAddressOf()));
-            RETURN_IF_FAILED(
-                AddSingleTextInline(adaptiveTextElement, renderContext, renderArgs, text.Get(), isInHyperlink, inlines, &nodeCharacterLength));
+            RETURN_IF_FAILED(AddSingleTextInline(
+                adaptiveTextElement, renderContext, renderArgs, text.Get(), isBold, isItalic, isInHyperlink, inlines, &nodeCharacterLength));
         }
         else
         {
-            ComPtr<IAdaptiveTextElement> textElementToUse(adaptiveTextElement);
-            if ((isBoldResult == 0) || (isItalicResult == 0))
-            {
-                // Make a copy of the element so we can apply bold or italics
-                RETURN_IF_FAILED(CopyTextElement(adaptiveTextElement, &textElementToUse));
-
-                if (isBoldResult == 0)
-                {
-                    RETURN_IF_FAILED(textElementToUse->put_Weight(ABI::AdaptiveNamespace::TextWeight::Bolder));
-                }
-
-                if (isItalicResult == 0)
-                {
-                    RETURN_IF_FAILED(textElementToUse->put_Italic(true));
-                }
-            }
-
-            RETURN_IF_FAILED(
-                AddTextInlines(textElementToUse.Get(), renderContext, renderArgs, childNode.Get(), isInHyperlink, inlines, &nodeCharacterLength));
+            RETURN_IF_FAILED(AddTextInlines(adaptiveTextElement,
+                                            renderContext,
+                                            renderArgs,
+                                            childNode.Get(),
+                                            isBold || (isBoldResult == 0),
+                                            isItalic || (isItalicResult == 0),
+                                            isInHyperlink,
+                                            inlines,
+                                            &nodeCharacterLength));
         }
 
         ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> nextChildNode;
@@ -490,8 +465,8 @@ HRESULT AddHtmlInlines(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adapti
         }
         else if (isParagraphResult == 0)
         {
-            RETURN_IF_FAILED(
-                AddTextInlines(adaptiveTextElement, renderContext, renderArgs, childNode.Get(), isInHyperlink, inlines, &nodeCharacterLength));
+            RETURN_IF_FAILED(AddTextInlines(
+                adaptiveTextElement, renderContext, renderArgs, childNode.Get(), false, false, isInHyperlink, inlines, &nodeCharacterLength));
         }
         else
         {

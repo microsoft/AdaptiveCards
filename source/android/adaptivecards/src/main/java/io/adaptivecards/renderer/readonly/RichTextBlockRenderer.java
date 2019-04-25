@@ -1,6 +1,8 @@
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
+import android.drm.DrmStore;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.text.Spannable;
@@ -12,7 +14,6 @@ import android.text.style.AbsoluteSizeSpan;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.StrikethroughSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
 import android.view.View;
@@ -20,13 +21,17 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import io.adaptivecards.objectmodel.ActionElementParser;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseCardElement;
+import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.Inline;
 import io.adaptivecards.objectmodel.InlineElementType;
 import io.adaptivecards.objectmodel.InlineVector;
+import io.adaptivecards.objectmodel.Paragraph;
+import io.adaptivecards.objectmodel.ParagraphVector;
 import io.adaptivecards.objectmodel.RichTextBlock;
 import io.adaptivecards.objectmodel.TextBlock;
 import io.adaptivecards.objectmodel.TextRun;
@@ -35,6 +40,8 @@ import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
+import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 public class RichTextBlockRenderer extends BaseCardElementRenderer
@@ -109,12 +116,6 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
                     paragraph.setSpan(new BackgroundColorSpan(highlightColor), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
                 }
 
-                if (textRun.GetStrikethrough())
-                {
-                    paragraph.setSpan(new StrikethroughSpan(), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                }
-
-                // This line sets the bold or italic weight
                 paragraph.setSpan(new StyleSpan(TextRendererUtil.getTextWeight(textRun.GetTextWeight())), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 
                 long textSize = TextRendererUtil.getTextSize(textRun.GetFontStyle(), textRun.GetTextSize(), hostConfig);
@@ -170,6 +171,7 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
         // Height
         // IsVisible
         // Spacing
+        // MinHeight
         setSpacingAndSeparator(context, viewGroup, richTextBlock.GetSpacing(), richTextBlock.GetSeparator(), hostConfig, true);
 
         if (!baseCardElement.GetIsVisible())
@@ -186,20 +188,55 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
             textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         }
 
+        if (richTextBlock.GetMinHeight() != 0)
+        {
+            textView.setMinimumHeight(Util.dpToPixels(context, (int)richTextBlock.GetMinHeight()));
+        }
+
         // RichTextBlock properties
+        // Wrap
+        // MaxLines
         // HorizontalAlignment
-        // Inlines
+        // Paragraphs
+        if (!richTextBlock.GetWrap())
+        {
+            textView.setMaxLines(1);
+        }
+
+        int maxLines = (int)richTextBlock.GetMaxLines();
+        if (maxLines > 0 && richTextBlock.GetWrap())
+        {
+            textView.setMaxLines(maxLines);
+        }
+        else if (!richTextBlock.GetWrap())
+        {
+            textView.setMaxLines(1);
+        }
 
         textView.setGravity(TextRendererUtil.getTextAlignment(richTextBlock.GetHorizontalAlignment()));
 
         // This is the section for rendering the paragraphs
         // Every paragraph may contain contains any number of inlines
         // The current inline element types are TextRun
-        InlineVector inlines = richTextBlock.GetInlines();
+        ParagraphVector paragraphs = richTextBlock.GetParagraphs();
+        int paragraphCount = (int)paragraphs.size();
 
         textView.setText("");
-        SpannableStringBuilder convertedString = buildSpannableParagraph(renderedCard, inlines, cardActionHandler, hostConfig, renderArgs);
-        textView.append(convertedString);
+
+        for (int i = 0; i < paragraphCount; ++i)
+        {
+            Paragraph p = paragraphs.get(i);
+            InlineVector inlines = p.GetInlines();
+
+            if ((i != 0) && (inlines.size() != 0))
+            {
+                textView.append(System.getProperty("line.separator"));
+            }
+
+            SpannableStringBuilder convertedString = buildSpannableParagraph(renderedCard, inlines, cardActionHandler, hostConfig, renderArgs);
+
+            textView.append(convertedString);
+        }
 
         // Properties required for actions to fire onClick event
         textView.setMovementMethod(LinkMovementMethod.getInstance());

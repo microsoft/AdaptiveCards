@@ -23,8 +23,6 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_OverrideStyles(_COM_Outptr_ ABI::Windows::UI::Xaml::IResourceDictionary** overrideDictionary);
         IFACEMETHODIMP put_HostConfig(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig);
         IFACEMETHODIMP get_HostConfig(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveHostConfig** hostConfig);
-        IFACEMETHODIMP put_FeatureRegistration(_In_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration* featureRegistration);
-        IFACEMETHODIMP get_FeatureRegistration(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration** featureRegistration);
         IFACEMETHODIMP SetFixedDimensions(UINT32 desiredWidth, UINT32 desiredHeight);
         IFACEMETHODIMP ResetFixedDimensions();
 
@@ -65,7 +63,6 @@ namespace AdaptiveNamespace
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_mergedResourceDictionary;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_actionSentimentResourceDictionary;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveHostConfig> m_hostConfig;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration> m_featureRegistration;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers> m_resourceResolvers;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveElementRendererRegistration> m_elementRendererRegistration;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionRendererRegistration> m_actionRendererRegistration;

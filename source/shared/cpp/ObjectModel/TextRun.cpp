@@ -97,32 +97,12 @@ void TextRun::SetIsSubtle(const bool value)
     m_textElementProperties->SetIsSubtle(value);
 }
 
-bool TextRun::GetItalic() const
-{
-    return m_textElementProperties->GetItalic();
-}
-
-void TextRun::SetItalic(const bool value)
-{
-    m_textElementProperties->SetItalic(value);
-}
-
-bool TextRun::GetStrikethrough() const
-{
-    return m_textElementProperties->GetStrikethrough();
-}
-
-void TextRun::SetStrikethrough(const bool value)
-{
-    m_textElementProperties->SetStrikethrough(value);
-}
-
 bool TextRun::GetHighlight() const
 {
     return m_highlight;
 }
 
-void TextRun::SetHighlight(const bool value)
+void AdaptiveSharedNamespace::TextRun::SetHighlight(const bool value)
 {
     m_highlight = value;
 }
@@ -151,20 +131,13 @@ std::shared_ptr<Inline> TextRun::Deserialize(ParseContext& context, const Json::
 {
     std::shared_ptr<TextRun> inlineTextRun = std::make_shared<TextRun>();
 
-    if (json.isString())
-    {
-        inlineTextRun->SetText(json.asString());
-    }
-    else
-    {
-        ParseUtil::ExpectTypeString(json, InlineElementTypeToString(InlineElementType::TextRun));
-        inlineTextRun->m_textElementProperties->Deserialize(context, json);
+    ParseUtil::ExpectTypeString(json, InlineElementTypeToString(InlineElementType::TextRun));
+    inlineTextRun->m_textElementProperties->Deserialize(context, json);
 
-        inlineTextRun->SetHighlight(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Highlight, false));
-        inlineTextRun->SetSelectAction(ParseUtil::GetAction(context, json, AdaptiveCardSchemaKey::SelectAction, false));
+    inlineTextRun->SetHighlight(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Highlight, false));
+    inlineTextRun->SetSelectAction(ParseUtil::GetAction(context, json, AdaptiveCardSchemaKey::SelectAction, false));
 
-        HandleUnknownProperties(json, inlineTextRun->m_knownProperties, inlineTextRun->m_additionalProperties);
-    }
+    HandleUnknownProperties(json, inlineTextRun->m_knownProperties, inlineTextRun->m_additionalProperties);
 
     return inlineTextRun;
 }

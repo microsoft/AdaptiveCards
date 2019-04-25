@@ -4,7 +4,7 @@
 #include "BaseCardElement.h"
 #include "ElementParserRegistration.h"
 #include "DateTimePreparser.h"
-#include "Inline.h"
+#include "Paragraph.h"
 
 namespace AdaptiveSharedNamespace
 {
@@ -22,17 +22,25 @@ namespace AdaptiveSharedNamespace
 
         Json::Value SerializeToJsonValue() const override;
 
+        bool GetWrap() const;
+        void SetWrap(const bool value);
+
+        unsigned int GetMaxLines() const;
+        void SetMaxLines(const unsigned int value);
+
         HorizontalAlignment GetHorizontalAlignment() const;
         void SetHorizontalAlignment(const HorizontalAlignment value);
 
-        std::vector<std::shared_ptr<Inline>>& GetInlines();
-        const std::vector<std::shared_ptr<Inline>>& GetInlines() const;
+        std::vector<std::shared_ptr<Paragraph>>& GetParagraphs();
+        const std::vector<std::shared_ptr<Paragraph>>& GetParagraphs() const;
 
     private:
+        bool m_wrap;
+        unsigned int m_maxLines;
         HorizontalAlignment m_hAlignment;
         void PopulateKnownPropertiesSet() override;
 
-        std::vector<std::shared_ptr<Inline>> m_inlines;
+        std::vector<std::shared_ptr<Paragraph>> m_paragraphs;
     };
 
     class RichTextBlockParser : public BaseCardElementParser

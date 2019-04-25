@@ -13,15 +13,13 @@
 			"color": "default",
 			"horizontalAlignment": "left",
 			"isSubtle": false,
-			"italic": true,
 			"maxLines": 1,
 			"size": "default",
 			"weight": "default",
 			"wrap": false,
 			"id": "TextBlock_id",
 			"spacing": "default",
-			"separator": false,
-			"strikethrough": true
+			"separator": false
 		},
 		{
 			"type": "TextBlock",
@@ -29,7 +27,6 @@
 			"color": "default",
 			"horizontalAlignment": "left",
 			"isSubtle": false,
-			"italic": true,
 			"maxLines": 1,
 			"size": "default",
 			"weight": "normAl",
@@ -37,7 +34,6 @@
 			"id": "TextBlock_id_mono",
 			"spacing": "default",
 			"separator": false,
-			"strikethrough": true,
 			"fontStyle": "monospace"
 		},
 		{
@@ -46,7 +42,6 @@
 			"color": "default",
 			"horizontalAlignment": "left",
 			"isSubtle": false,
-			"italic": true,
 			"maxLines": 1,
 			"size": "default",
 			"weight": "default",
@@ -54,7 +49,6 @@
 			"id": "TextBlock_id_def",
 			"spacing": "default",
 			"separator": false,
-			"strikethrough": true,
 			"fontStyle": "default"
 		},
 		{
@@ -281,26 +275,41 @@
 		{
 			"type": "RichTextBlock",
 			"id": "RichTextBlock_id",
+			"wrap": true,
 			"horizontalAlignment": "right",
-			"inlines": [
+			"maxLines": 5,
+			"paragraphs": [
 				{
-					"color": "Dark",
-					"fontStyle": "Monospace",
-					"highlight": true,
-					"isSubtle": true,
-					"italic": true,
-					"size": "large",
-					"strikethrough": true,
-					"text": "This is a text run",
-					"type": "TextRun",
-					"weight": "Bolder"
+					"inlines": [
+						{
+							"type": "TextRun",
+							"text": "This is a text run in paragraph 1",
+							"color": "Dark",
+							"isSubtle": true,
+							"size": "large",
+							"weight": "Bolder",
+							"fontStyle": "Monospace",
+							"highlight": true
+						},
+						{
+							"type": "TextRun",
+							"text": "This is another text run in paragraph 1"
+						}
+					]
 				},
 				{
-					"type": "TextRun",
-					"text": "This is another text run",
-					"selectAction": { "type": "Action.Submit" }
-				},
-				"This is a text run specified as a string"
+					"inlines": [
+						{
+							"type": "TextRun",
+							"text": "This is a text run in paragraph 2",
+							"selectAction": { "type": "Action.Submit" }
+						},
+						{
+							"type": "TextRun",
+							"text": "This is another text run in paragraph 2"
+						}
+					]
+				}
 			]
 		}
 	],

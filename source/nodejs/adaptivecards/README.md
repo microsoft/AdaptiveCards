@@ -20,7 +20,6 @@ Please be aware of the following **breaking changes** in particular versions.
 
 | In version | Change description |
 |---|---|
-| **1.2** | The default `value` of an Input.Time **no longer accepts seconds**. 08:25:32 will now be treated as an invalid value and ignored; it should be replaced with 08:25. This behavior is consistent with other Adaptive Card renderers.|
 | **1.1** | Due to a security concern, the `processMarkdown` event handler has been **REMOVED**. Setting it will throw an exception that will halt your code. Please change your code to set the `onProcessMarkdown(text, result)` event handler instead (see example below.) |
 | **1.0** | The standalone `renderCard()` helper function was removed as it was redundant with the class methods. Please use `adaptiveCard.render()` as described below. |
 

@@ -62,12 +62,7 @@ export interface IContainer extends ICardElement {
     items?: ICardElement[];
 }
 
-export interface IColumn extends ICardElement {
-    backgroundImage?: IBackgroundImage | string;
-    style?: ContainerStyle;
-    verticalContentAlignment?: VerticalAlignment;
-    selectAction?: IAction;
-    items?: ICardElement[];
+export interface IColumn extends IContainer {
     width?: number | "auto" | "stretch" | "auto";
 }
 
