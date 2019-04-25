@@ -15,7 +15,10 @@ import * as Constants from "../../utils/constants";
 import * as Enums from '../../utils/enums';
 import Video from "react-native-video";
 import ElementWrapper from './element-wrapper'
-import { InputContextConsumer, InputContext } from '../../utils/context';
+import {
+    InputContextConsumer,
+    InputContext
+} from '../../utils/context';
 import * as Utils from '../../utils/util';
 
 
@@ -26,7 +29,8 @@ export class Media extends React.Component {
     constructor(props) {
         super(props);
         this.payload = props.json;
-        this.sources = this.getMediaSources(this.payload.sources)
+        this.sources = this.getMediaSources(this.payload.sources);
+        this.addResourceInformation = undefined;
         this.state = {
             currentSourceIndex: 0,
             onLoad: false,
@@ -36,11 +40,11 @@ export class Media extends React.Component {
     componentDidMount() {
         if (this.payload.sources && this.payload.sources.length > 0) {
             this.payload.sources.forEach(source => {
-                this.context.addResourceInformation(source.url, source.mimeType);
+                this.addResourceInformation(source.url, source.mimeType);
             })
         }
-        if(!Utils.isNullOrEmpty(this.payload.poster)){
-            this.context.addResourceInformation(this.payload.poster, "");
+        if (!Utils.isNullOrEmpty(this.payload.poster)) {
+            this.addResourceInformation(this.payload.poster, "");
         }
     }
 
@@ -82,28 +86,28 @@ export class Media extends React.Component {
     render() {
         return (
             <InputContextConsumer>
-                {({ onParseError }) =>
-                    (
-                        <ElementWrapper json={this.payload} isFirst={this.props.isFirst}>
-                            <View style={styles.container}>
-                                {
-                                    this.sources &&
-                                    <Video
-                                        source={this.sources[this.state.currentSourceIndex]}
-                                        fullscreen={true}
-                                        controls={true}
-                                        id={this.payload.id ? this.payload.id : "video"}
-                                        paused={false}
-                                        onError={() => { this.videoError(onParseError) }}
-                                        onLoad={this.videoLoadSuccess}
-                                        style={styles.nativeVideoControls}
-                                    />
-                                }
-                                {(!this.state.onLoad && this.payload.poster) && <Image source={{ uri: this.payload.poster }} style={styles.nativeVideoControls}></Image>}
-                            </View>
-                        </ElementWrapper>
-                    )
-                }
+                {({ onParseError, addResourceInformation }) => {
+                    this.addResourceInformation = addResourceInformation
+
+                    return <ElementWrapper json={this.payload} isFirst={this.props.isFirst}>
+                        <View style={styles.container}>
+                            {
+                                this.sources &&
+                                <Video
+                                    source={this.sources[this.state.currentSourceIndex]}
+                                    fullscreen={true}
+                                    controls={true}
+                                    id={this.payload.id ? this.payload.id : "video"}
+                                    paused={false}
+                                    onError={() => { this.videoError(onParseError) }}
+                                    onLoad={this.videoLoadSuccess}
+                                    style={styles.nativeVideoControls}
+                                />
+                            }
+                            {(!this.state.onLoad && this.payload.poster) && <Image source={{ uri: this.payload.poster }} style={styles.nativeVideoControls}></Image>}
+                        </View>
+                    </ElementWrapper>
+                }}
             </InputContextConsumer>
         );
     }

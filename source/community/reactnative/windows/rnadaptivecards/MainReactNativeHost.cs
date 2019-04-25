@@ -4,11 +4,11 @@ using ReactNative.Shell;
 using ReactNativeVideo;
 using System.Collections.Generic;
 
-namespace adaptivecards-reactnative
+namespace rnadaptivecards
 {
     class MainReactNativeHost : ReactNativeHost
     {
-        public override string MainComponentName => "adaptivecards-reactnative";
+        public override string MainComponentName => "rnadaptivecards";
 
 #if !BUNDLE || DEBUG
         public override bool UseDeveloperSupport => true;
@@ -25,7 +25,7 @@ namespace adaptivecards-reactnative
         protected override List<IReactPackage> Packages => new List<IReactPackage>
         {
             new MainReactPackage(),
-            new ReactVideoPackage(),
+            new ReactVideoPackage()
         };
     }
 }

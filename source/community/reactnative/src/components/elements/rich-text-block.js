@@ -11,7 +11,10 @@ import {
 } from 'react-native';
 
 import { Label } from './';
-import { InputContext } from '../../utils/context';
+import {
+    InputContext,
+    InputContextConsumer
+} from '../../utils/context';
 import { HostConfigManager } from '../../utils/host-config';
 import ElementWrapper from '../elements/element-wrapper';
 import * as Constants from '../../utils/constants';
@@ -26,6 +29,7 @@ export class RichTextBlock extends React.Component {
     constructor(props) {
         super(props);
         this.payload = props.json;
+        this.onExecuteAction = undefined;
     }
 
     /**
@@ -79,10 +83,10 @@ export class RichTextBlock extends React.Component {
     onClickHandle(selectAction) {
         if (selectAction.type === Constants.ActionSubmit) {
             let actionObject = { "type": Constants.ActionSubmit, "data": selectAction.data };
-            this.context.onExecuteAction(actionObject);
+            this.onExecuteAction(actionObject);
         } else if (selectAction.type === Constants.ActionOpenUrl && !Utils.isNullOrEmpty(selectAction.url)) {
             let actionObject = { "type": Constants.ActionOpenUrl, "url": selectAction.url };
-            this.context.onExecuteAction(actionObject);
+            this.onExecuteAction(actionObject);
         }
     }
 
@@ -118,11 +122,14 @@ export class RichTextBlock extends React.Component {
     }
 
     render() {
-        return (
-            <ElementWrapper json={this.payload} style={styles.textContainer} isFirst={this.props.isFirst}>
-                {this.getParagraphElements()}
-            </ElementWrapper>
-        );
+        return (<InputContextConsumer>
+            {({ onExecuteAction }) => {
+                this.onExecuteAction = onExecuteAction;
+                return <ElementWrapper json={this.payload} style={styles.textContainer} isFirst={this.props.isFirst}>
+                    {this.getParagraphElements()}
+                </ElementWrapper>
+            }}
+        </InputContextConsumer>);
     }
 }
 
