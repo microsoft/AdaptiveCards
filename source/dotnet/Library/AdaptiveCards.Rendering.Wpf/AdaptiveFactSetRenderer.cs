@@ -55,8 +55,6 @@ namespace AdaptiveCards.Rendering.Wpf
                 uiFactSet.Children.Add(uiValue);
             }
 
-            RendererUtil.ApplyIsVisible(uiFactSet, factSet);
-
             return uiFactSet;
         }
     }

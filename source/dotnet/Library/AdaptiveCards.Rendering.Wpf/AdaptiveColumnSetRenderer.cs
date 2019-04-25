@@ -97,12 +97,13 @@ namespace AdaptiveCards.Rendering.Wpf
 
                 FrameworkElement uiContainer = context.Render(column);
 
-                // Add vertical Seperator
+                TagContent tag = new TagContent(AdaptiveSpacing.None, uiColumnSet);
+
+                // Add vertical Separator
                 if (uiColumnSet.ColumnDefinitions.Count > 0)
                 {
                     if (column.Separator || column.Spacing != AdaptiveSpacing.None)
                     {
-
                         var uiSep = new Grid();
                         uiSep.Style = context.GetStyle($"Adaptive.VerticalSeparator");
 
@@ -113,7 +114,11 @@ namespace AdaptiveCards.Rendering.Wpf
 
                         uiSep.Width = context.Config.Separator.LineThickness;
                         if (column.Separator && context.Config.Separator.LineColor != null)
+                        {
                             uiSep.Background = context.GetColorBrush(context.Config.Separator.LineColor);
+                        }
+
+                        tag = new TagContent(uiSep, uiColumnSet);
 
                         uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
                         Grid.SetColumn(uiSep, uiColumnSet.ColumnDefinitions.Count - 1);
@@ -129,29 +134,48 @@ namespace AdaptiveCards.Rendering.Wpf
                     width = column.Size?.ToLower();
 #pragma warning restore CS0618 // Type or member is obsolete
                 if (width == null || width == AdaptiveColumnWidth.Stretch.ToLower())
-                    uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                {
+                    ColumnDefinition columnDefinition = new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) };
+                    tag.NotAutoWidthColumnDefinition = columnDefinition;
+                    tag.ViewIndex = uiColumnSet.ColumnDefinitions.Count;
+                    uiColumnSet.ColumnDefinitions.Add(columnDefinition);
+                }
                 else if (width == AdaptiveColumnWidth.Auto.ToLower())
                     uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
                 else
                 {
                     if (double.TryParse(width, out double val) && val >= 0)
+                    {
                         // Weighted proportion (number only)
-                        uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(val, GridUnitType.Star) });
-                    else if (width.EndsWith("px") && double.TryParse(width.Substring(0, width.Length-2), out double pxVal) && pxVal >= 0)
+                        ColumnDefinition columnDefinition = new ColumnDefinition() { Width = new GridLength(val, GridUnitType.Star) };
+                        tag.NotAutoWidthColumnDefinition = columnDefinition;
+                        tag.ViewIndex = uiColumnSet.ColumnDefinitions.Count;
+                        uiColumnSet.ColumnDefinitions.Add(columnDefinition);
+                    }
+                    else if (width.EndsWith("px") && double.TryParse(width.Substring(0, width.Length - 2), out double pxVal) && pxVal >= 0)
+                    {
                         // Exact pixel (number followed by "px")
-                        uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength((int)pxVal, GridUnitType.Pixel) });
+                        ColumnDefinition columnDefinition = new ColumnDefinition() { Width = new GridLength((int)pxVal, GridUnitType.Pixel) };
+                        tag.NotAutoWidthColumnDefinition = columnDefinition;
+                        tag.ViewIndex = uiColumnSet.ColumnDefinitions.Count;
+                        uiColumnSet.ColumnDefinitions.Add(columnDefinition);
+                    }
                     else
                         uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
                 }
+
+                uiContainer.Tag = tag;
+                context.SetVisibility(uiContainer, column.IsVisible, tag);
 
                 Grid.SetColumn(uiContainer, uiColumnSet.ColumnDefinitions.Count - 1);
                 uiColumnSet.Children.Add(uiContainer);
             }
 
+            context.ResetSeparatorVisibilityInsideContainer(uiColumnSet);
+
             // Revert context's value to that of outside the Container
             context.RenderArgs = parentRenderArgs;
 
-            RendererUtil.ApplyIsVisible(uiColumnSet, columnSet);
             uiColumnSet.MinHeight = columnSet.PixelMinHeight;
 
             return RendererUtil.ApplySelectAction(border, columnSet, context);

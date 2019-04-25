@@ -26,7 +26,6 @@ namespace AdaptiveCards.Rendering.Wpf
             border.Child = uiOuterContainer;
 
             RendererUtil.ApplyVerticalContentAlignment(uiContainer, container);
-            RendererUtil.ApplyIsVisible(border, container);
             uiContainer.MinHeight = container.PixelMinHeight;
 
             bool inheritsStyleFromParent = !container.Style.HasValue;
@@ -81,9 +80,12 @@ namespace AdaptiveCards.Rendering.Wpf
                 FrameworkElement uiElement = context.Render(cardElement);
                 if (uiElement != null)
                 {
+                    TagContent tag = new TagContent(AdaptiveSpacing.None, uiContainer);
+
                     if (cardElement.Separator && uiContainer.Children.Count > 0)
                     {
-                        AddSeparator(context, cardElement, uiContainer);
+                        Grid separator = AddSeparator(context, cardElement, uiContainer);
+                        tag = new TagContent(separator, uiContainer);
                     }
                     else if (uiContainer.Children.Count > 0)
                     {
@@ -93,7 +95,10 @@ namespace AdaptiveCards.Rendering.Wpf
                                                          renderedMargin.Top + spacing,
                                                          renderedMargin.Right,
                                                          renderedMargin.Bottom);
+                        tag = new TagContent(cardElement.Spacing, uiContainer);
                     }
+
+                    uiElement.Tag = tag;
 
                     if (cardElement.Type == "Container" || cardElement.Type == "ColumnSet")
                     {
@@ -103,10 +108,8 @@ namespace AdaptiveCards.Rendering.Wpf
 
                     if (cardElement.Height != AdaptiveHeight.Stretch)
                     {
+                        context.SetVisibility(uiElement, cardElement.IsVisible, tag);
                         uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-                        Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
-
-                        RendererUtil.ApplyIsVisible(uiElement, cardElement);
                         Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
                         uiContainer.Children.Add(uiElement);
                     }
@@ -114,7 +117,7 @@ namespace AdaptiveCards.Rendering.Wpf
                     {
                         if (cardElement.Type == "Container")
                         {
-                            RendererUtil.ApplyIsVisible(uiElement, cardElement);
+                            context.SetVisibility(uiElement, cardElement.IsVisible, tag);
                             uiContainer.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
                             Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
                             uiContainer.Children.Add(uiElement);
@@ -122,12 +125,14 @@ namespace AdaptiveCards.Rendering.Wpf
                         else
                         {
                             StackPanel panel = new StackPanel();
-                            RendererUtil.ApplyIsVisible(panel, cardElement);
+                            context.SetVisibility(panel, cardElement.IsVisible, tag);
                             if (!String.IsNullOrEmpty(cardElement.Id))
                             {
                                 panel.Name = cardElement.Id;
                             }
                             panel.Children.Add(uiElement);
+
+                            panel.Tag = tag;
 
                             uiContainer.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
                             Grid.SetRow(panel, uiContainer.RowDefinitions.Count - 1);
@@ -137,12 +142,14 @@ namespace AdaptiveCards.Rendering.Wpf
 
                 }
             }
+
+            context.ResetSeparatorVisibilityInsideContainer(uiContainer);
         }
 
-        public static void AddSeparator(AdaptiveRenderContext context, AdaptiveElement element, Grid uiContainer)
+        public static Grid AddSeparator(AdaptiveRenderContext context, AdaptiveElement element, Grid uiContainer)
         {
             if (element.Spacing == AdaptiveSpacing.None && !element.Separator)
-                return;
+                return null;
 
             var uiSep = new Grid();
             uiSep.Style = context.GetStyle($"Adaptive.Separator");
@@ -157,6 +164,8 @@ namespace AdaptiveCards.Rendering.Wpf
             uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
             Grid.SetRow(uiSep, uiContainer.RowDefinitions.Count - 1);
             uiContainer.Children.Add(uiSep);
+
+            return uiSep;
         }
         
         // For applying bleeding, we must know if the element has padding, so both properties are applied in the same method
