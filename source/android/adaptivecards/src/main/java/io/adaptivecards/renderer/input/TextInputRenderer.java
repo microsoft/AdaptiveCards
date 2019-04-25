@@ -271,7 +271,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
             }
         }
 
-        if(baseInputElement.GetHeight() == HeightType.Stretch)
+        if(baseInputElement.GetHeight() == HeightType.Stretch || baseInputElement.GetMinHeight() != 0)
         {
             LinearLayout containerLayout = new LinearLayout(context);
 
@@ -283,6 +283,8 @@ public class TextInputRenderer extends BaseCardElementRenderer
             {
                 containerLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             }
+
+            containerLayout.setMinimumHeight(Util.dpToPixels(context, (int)baseInputElement.GetMinHeight()));
 
             if (textInputViewGroup != null)
             {

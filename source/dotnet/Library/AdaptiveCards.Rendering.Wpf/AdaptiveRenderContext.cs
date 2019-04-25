@@ -65,13 +65,7 @@ namespace AdaptiveCards.Rendering.Wpf
             // ToggleVisibility is a renderer-handled action
             if (args.Action is AdaptiveToggleVisibilityAction toggleVisibilityAction)
             {
-                ToggleVisibility(toggleVisibilityAction.TargetElements);
-                return;
-            }
-            else if (args.Action is AdaptiveShowCardAction
-                && Config.Actions.ShowCard.ActionMode == ShowCardActionMode.Inline)
-            {
-                ToggleShowCardVisibility((Button)ui);
+                this.ToggleVisibility(toggleVisibilityAction.TargetElements);
                 return;
             }
 
@@ -141,7 +135,7 @@ namespace AdaptiveCards.Rendering.Wpf
         // Flag to distinuish the main card and action show cards
         public int CardDepth = 0;
 
-        public IDictionary<Button, FrameworkElement> ActionShowCards = new Dictionary<Button, FrameworkElement>();
+        public IList<Tuple<FrameworkElement, Button>> ActionShowCards = new List<Tuple<FrameworkElement, Button>>();
 
         public virtual Style GetStyle(string styleName)
         {
@@ -251,22 +245,6 @@ namespace AdaptiveCards.Rendering.Wpf
                     {
                         elementFrameworkElement.Visibility = Visibility.Collapsed;
                     }
-                }
-            }
-        }
-
-        public void ToggleShowCardVisibility(Button uiAction)
-        {
-            FrameworkElement card = ActionShowCards[uiAction];
-            if (card != null)
-            {
-                if (card.Visibility != Visibility.Visible)
-                {
-                    card.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    card.Visibility = Visibility.Collapsed;
                 }
             }
         }

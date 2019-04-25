@@ -319,6 +319,11 @@ public class MediaRenderer extends BaseCardElementRenderer
         posterLayout.setOnClickListener(new PosterOnClickListener(posterView, playButtonView, mediaView, hostConfig.GetMedia().getAllowInlinePlayback(), media, renderedCard, cardActionHandler));
         mediaView.setOnCompletionListener(new MediaOnCompletionListener(media, renderedCard, cardActionHandler));
 
+        if (media.GetMinHeight() != 0)
+        {
+            mediaLayout.setMinimumHeight(Util.dpToPixels(context, (int)media.GetMinHeight()));
+        }
+
         mediaLayout.addView(posterLayout);
         viewGroup.addView(mediaLayout);
 

@@ -79,11 +79,7 @@ public class ActionSetRenderer extends BaseCardElementRenderer
 
         BaseActionElementVector baseActionElementList = actionSet.GetActions();
 
-        try
-        {
-            ActionLayoutRenderer.getInstance().renderActions(renderedCard, context, fragmentManager, actionsLayout, baseActionElementList, cardActionHandler, hostConfig, renderArgs);
-        }
-        catch (Exception e) {}
+        ActionLayoutRenderer.getInstance().renderActions(renderedCard, context, fragmentManager, actionsLayout, baseActionElementList, cardActionHandler, hostConfig, renderArgs);
 
         viewGroup.addView(rootLayout);
         return rootLayout;

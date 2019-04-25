@@ -17,6 +17,7 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveContainerStyleDefinition::RuntimeClassInitialize(ContainerStyleDefinition styleDefinition) noexcept
     {
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveColorsConfig>(m_foregroundColors.GetAddressOf(), styleDefinition.foregroundColors));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveColorsConfig>(m_highlightColors.GetAddressOf(), styleDefinition.highlightColors));
         RETURN_IF_FAILED(GetColorFromString(styleDefinition.backgroundColor, &m_backgroundColor));
         return S_OK;
     }

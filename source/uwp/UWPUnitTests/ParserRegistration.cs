@@ -89,11 +89,6 @@ namespace UWPUnitTests
             public UInt32 MinHeight { get; set; }
             IAdaptiveCardElement IAdaptiveCardElement.FallbackContent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
             FallbackType IAdaptiveCardElement.FallbackType { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-            public bool MeetsRequirements(AdaptiveFeatureRegistration featureRegistration)
-            {
-                return true;
-            }
         };
         class TestElementParser : IAdaptiveElementParser
         {

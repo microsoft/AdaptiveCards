@@ -32,10 +32,10 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BackgroundImage.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseElement.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\CollectionTypeElement.cpp" />
-    <ClCompile Include="..\..\shared\cpp\ObjectModel\FeatureRegistration.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Inline.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Media.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\MediaSource.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\Paragraph.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ParseContext.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
@@ -107,7 +107,6 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\EnumMagic.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Fact.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\FactSet.h" />
-    <ClInclude Include="..\..\shared\cpp\ObjectModel\FeatureRegistration.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\HostConfig.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Image.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ImageSet.h" />
@@ -120,6 +119,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Media.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MediaSource.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\NumberInput.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\Paragraph.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ParseContext.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ParseResult.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\RemoteResourceInformation.h" />

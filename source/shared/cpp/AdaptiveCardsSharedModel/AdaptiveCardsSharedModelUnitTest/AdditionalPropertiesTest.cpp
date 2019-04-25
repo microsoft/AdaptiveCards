@@ -1,6 +1,6 @@
 #include "stdafx.h"
+#include "Paragraph.h"
 #include "ParseUtil.h"
-#include "TextRun.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AdaptiveCards;
@@ -61,19 +61,28 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual("{\"MyAdditionalProperty\":\"Foo\"}\n"s, ParseUtil::JsonToString(value));
         }
 
-        TEST_METHOD(CanGetAdditionalProperitesTest_Inlines)
+        TEST_METHOD(CanGetAdditionalProperitesTest_ParagraphAndInlines)
         {
             std::string testJsonString =
             "{\
-                \"type\":\"TextRun\",\
-                \"text\":\"Here is some text\",\
-                \"MyAdditionalProperty\": \"Bar\"\
+                \"type\": \"Paragraph\",\
+                \"inlines\": [\
+                    {\
+                        \"type\":\"TextRun\",\
+                        \"text\":\"Here is some text\",\
+                        \"MyAdditionalProperty\": \"Bar\"\
+                    }\
+                ],\
+                \"MyAdditionalProperty\": \"Foo\"\
             }";
 
             ParseContext parseContext;
-            auto textRun = TextRun::Deserialize(parseContext, ParseUtil::GetJsonValueFromString(testJsonString));
+            auto paragraph = Paragraph::Deserialize(parseContext, ParseUtil::GetJsonValueFromString(testJsonString));
 
-            Json::Value value = textRun->GetAdditionalProperties();
+            Json::Value value = paragraph->GetAdditionalProperties();
+            Assert::AreEqual("{\"MyAdditionalProperty\":\"Foo\"}\n"s, ParseUtil::JsonToString(value));
+
+            value = paragraph->GetInlines()[0]->GetAdditionalProperties();
             Assert::AreEqual("{\"MyAdditionalProperty\":\"Bar\"}\n"s, ParseUtil::JsonToString(value));
         }
 

@@ -8,8 +8,6 @@
 #import <Foundation/Foundation.h>
 #import "ACOParseContext.h"
 
-@class ACOFeatureRegistration;
-
 @interface ACOBaseActionElement:NSObject
 
 typedef NS_ENUM(NSInteger, ACRActionType) {
@@ -34,8 +32,6 @@ typedef NS_ENUM(NSInteger, ACRIconPlacement) {
 - (NSString *)url;
 - (NSString *)data;
 - (NSData *)additionalProperty;
-
-- (BOOL)meetsRequirements:(ACOFeatureRegistration *)featureReg;
 
 @end
 

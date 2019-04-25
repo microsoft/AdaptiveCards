@@ -11,7 +11,9 @@
 
 using namespace AdaptiveSharedNamespace;
 
-RichTextBlock::RichTextBlock() : BaseCardElement(CardElementType::RichTextBlock), m_hAlignment(HorizontalAlignment::Left)
+RichTextBlock::RichTextBlock() :
+    BaseCardElement(CardElementType::RichTextBlock), m_wrap(false), m_maxLines(0),
+    m_hAlignment(HorizontalAlignment::Left)
 {
     PopulateKnownPropertiesSet();
 }
@@ -25,14 +27,44 @@ Json::Value RichTextBlock::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] = HorizontalAlignmentToString(m_hAlignment);
     }
 
-    std::string inlinesPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Inlines);
-    root[inlinesPropertyName] = Json::Value(Json::arrayValue);
-    for (const auto& currentInline : GetInlines())
+    if (m_maxLines != 0)
     {
-        root[inlinesPropertyName].append(currentInline->SerializeToJsonValue());
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MaxLines)] = m_maxLines;
+    }
+
+    if (m_wrap)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap)] = true;
+    }
+
+    std::string paragraphsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Paragraphs);
+    root[paragraphsPropertyName] = Json::Value(Json::arrayValue);
+    for (const auto& paragraph : GetParagraphs())
+    {
+        root[paragraphsPropertyName].append(paragraph->SerializeToJsonValue());
     }
 
     return root;
+}
+
+bool RichTextBlock::GetWrap() const
+{
+    return m_wrap;
+}
+
+void RichTextBlock::SetWrap(const bool value)
+{
+    m_wrap = value;
+}
+
+unsigned int RichTextBlock::GetMaxLines() const
+{
+    return m_maxLines;
+}
+
+void RichTextBlock::SetMaxLines(const unsigned int value)
+{
+    m_maxLines = value;
 }
 
 HorizontalAlignment RichTextBlock::GetHorizontalAlignment() const
@@ -45,14 +77,14 @@ void RichTextBlock::SetHorizontalAlignment(const HorizontalAlignment value)
     m_hAlignment = value;
 }
 
-std::vector<std::shared_ptr<Inline>>& RichTextBlock::GetInlines()
+std::vector<std::shared_ptr<Paragraph>>& RichTextBlock::GetParagraphs()
 {
-    return m_inlines;
+    return m_paragraphs;
 }
 
-const std::vector<std::shared_ptr<Inline>>& RichTextBlock::GetInlines() const
+const std::vector<std::shared_ptr<Paragraph>>& RichTextBlock::GetParagraphs() const
 {
-    return m_inlines;
+    return m_paragraphs;
 }
 
 std::shared_ptr<BaseCardElement> RichTextBlockParser::Deserialize(ParseContext& context, const Json::Value& json)
@@ -60,13 +92,15 @@ std::shared_ptr<BaseCardElement> RichTextBlockParser::Deserialize(ParseContext& 
     ParseUtil::ExpectTypeString(json, CardElementType::RichTextBlock);
 
     std::shared_ptr<RichTextBlock> richTextBlock = BaseCardElement::Deserialize<RichTextBlock>(context, json);
+    richTextBlock->SetWrap(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Wrap, false));
+    richTextBlock->SetMaxLines(ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::MaxLines, 0));
     richTextBlock->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(
         json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
 
-    auto inlines =
-        ParseUtil::GetElementCollectionOfSingleType<Inline>(context, json, AdaptiveCardSchemaKey::Inlines, Inline::Deserialize, false);
-    richTextBlock->m_inlines = std::move(inlines);
-
+    auto paragraphs =
+        ParseUtil::GetElementCollectionOfSingleType<Paragraph>(context, json, AdaptiveCardSchemaKey::Paragraphs, Paragraph::Deserialize, true);
+    richTextBlock->m_paragraphs = std::move(paragraphs);
+    
     return richTextBlock;
 }
 
@@ -78,5 +112,7 @@ std::shared_ptr<BaseCardElement> RichTextBlockParser::DeserializeFromString(Pars
 void RichTextBlock::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Inlines)});
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Paragraphs),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MaxLines),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap)});
 }

@@ -44,7 +44,6 @@ namespace AdaptiveCards.Rendering.Wpf
             ElementRenderers.Set<AdaptiveColumnSet>(AdaptiveColumnSetRenderer.Render);
             ElementRenderers.Set<AdaptiveFactSet>(AdaptiveFactSetRenderer.Render);
             ElementRenderers.Set<AdaptiveImageSet>(AdaptiveImageSetRenderer.Render);
-            ElementRenderers.Set<AdaptiveActionSet>(AdaptiveActionSetRenderer.Render);
 
             ElementRenderers.Set<AdaptiveChoiceSetInput>(AdaptiveChoiceSetRenderer.Render);
             ElementRenderers.Set<AdaptiveTextInput>(AdaptiveTextInputRenderer.Render);
@@ -158,8 +157,6 @@ namespace AdaptiveCards.Rendering.Wpf
                     break;
             }
 
-            outerGrid.MinHeight = card.PixelMinHeight;
-
             AdaptiveContainerRenderer.AddContainerElements(grid, card.Body, context);
             AdaptiveActionSetRenderer.AddActions(grid, card.Actions, context);
 
@@ -174,8 +171,8 @@ namespace AdaptiveCards.Rendering.Wpf
 
                 foreach (var showCardTuple in context.ActionShowCards)
                 {
-                    var currentShowCard = showCardTuple.Value;
-                    var uiButton = showCardTuple.Key;
+                    var currentShowCard = showCardTuple.Item1;
+                    var uiButton = showCardTuple.Item2;
 
                     Grid.SetRow(currentShowCard, grid.RowDefinitions.Count - 1);
                     grid.Children.Add(currentShowCard);
@@ -188,7 +185,7 @@ namespace AdaptiveCards.Rendering.Wpf
                         // Collapse all the show cards
                         foreach (var t in context.ActionShowCards)
                         {
-                            var showCard = t.Value;
+                            var showCard = t.Item1;
                             showCard.Visibility = Visibility.Collapsed;
                         }
 

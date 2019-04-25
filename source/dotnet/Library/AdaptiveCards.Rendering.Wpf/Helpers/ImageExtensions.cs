@@ -16,15 +16,13 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public class AdaptiveConverterParameters
         {
-            public AdaptiveConverterParameters(Image image, AdaptiveImage adaptiveImage, AdaptiveRenderContext context)
+            public AdaptiveConverterParameters(Image image, AdaptiveImage adaptiveImage)
             {
                 Image = image;
                 AdaptiveImage = adaptiveImage;
-                AdaptiveContext = context;
             }
             public Image Image {get; set;}
             public AdaptiveImage AdaptiveImage {get; set;}
-            public AdaptiveRenderContext AdaptiveContext {get; set;}
         }
         /// <summary>
         /// Renders the element to a bitmap
@@ -60,7 +58,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             image.Source = await context.ResolveImageSource(url);
 
-            var parameters = new AdaptiveConverterParameters(image, adaptiveImage, context);
+            var parameters = new AdaptiveConverterParameters(image, adaptiveImage);
             var binding = new Binding
             {
                 RelativeSource = RelativeSource.Self,
@@ -82,10 +80,11 @@ namespace AdaptiveCards.Rendering.Wpf
                 var image = adaptiveParameters.Image;
                 var adaptiveImage = adaptiveParameters.AdaptiveImage;
                 var imageWidth = ((BitmapImage) image.Source)?.PixelWidth;
-                var imageHeight = ((BitmapImage)image.Source)?.PixelHeight;
 
-                if (adaptiveImage.PixelWidth != 0 || adaptiveImage.PixelHeight != 0)
+                if(adaptiveImage.PixelWidth != 0 || adaptiveImage.PixelHeight != 0)
                 {
+                    var imageHeight = ((BitmapImage) image.Source)?.PixelHeight;
+
                     if(adaptiveImage.PixelWidth == 0)
                     {
                         adaptiveImage.PixelWidth = (uint) ((imageWidth / (float)imageHeight) * adaptiveImage.PixelHeight);
@@ -101,7 +100,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
                     return Stretch.Fill;
                 }
-                else if (imageWidth >= parentWidth || imageSourceIsLargerThanExpectedRenderingSize(imageWidth, imageHeight, adaptiveImage.Size, adaptiveParameters.AdaptiveContext))
+                else if (imageWidth >= parentWidth)
                 {
                     return Stretch.Uniform;
                 }
@@ -109,31 +108,6 @@ namespace AdaptiveCards.Rendering.Wpf
                 {
                     return Stretch.None;
                 }
-            }
-
-            bool imageSourceIsLargerThanExpectedRenderingSize(int? imageSourceWidth, int? imageSourceHeight, AdaptiveImageSize imageSize, AdaptiveRenderContext context)
-            {
-                // No size provided, let's keep previous behaviour
-                if (!imageSourceWidth.HasValue || !imageSourceHeight.HasValue)
-                {
-                    return false;
-                }
-
-                int imageSizeInPixels = int.MaxValue;
-                switch (imageSize)
-                {
-                    case AdaptiveImageSize.Small:
-                        imageSizeInPixels = context.Config.ImageSizes.Small;
-                        break;
-                    case AdaptiveImageSize.Medium:
-                        imageSizeInPixels = context.Config.ImageSizes.Medium;
-                        break;
-                    case AdaptiveImageSize.Large:
-                        imageSizeInPixels = context.Config.ImageSizes.Large;
-                        break;
-                }
-
-                return ((imageSourceWidth.Value > imageSizeInPixels) || (imageSourceHeight.Value > imageSizeInPixels));
             }
 
             public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

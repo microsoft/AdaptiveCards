@@ -6,7 +6,7 @@ using namespace AdaptiveSharedNamespace;
 
 CollectionTypeElement::CollectionTypeElement(CardElementType type, ContainerStyle style, VerticalContentAlignment alignment) :
     BaseCardElement(type), m_style(style), m_verticalContentAlignment(alignment), m_hasPadding(false),
-    m_hasBleed(false), m_parentalId(), m_bleedDirection(ContainerBleedDirection::BleedToBothEdges), m_minHeight(0)
+    m_hasBleed(false), m_parentalId(), m_bleedDirection(ContainerBleedDirection::BleedToBothEdges)
 {
 }
 
@@ -44,7 +44,7 @@ void CollectionTypeElement::SetPadding(const bool value)
 void CollectionTypeElement::ConfigPadding(const ParseContext& context)
 {
     // We set padding when child's style is set explicitly (not None) and is different than the parental style
-    const bool padding = (GetStyle() != ContainerStyle::None) && (context.GetParentalContainerStyle() != GetStyle());
+    bool padding = (GetStyle() != ContainerStyle::None) && (context.GetParentalContainerStyle() != GetStyle());
     SetPadding(padding);
 }
 
@@ -103,16 +103,6 @@ void CollectionTypeElement::SetBackgroundImage(const std::shared_ptr<BackgroundI
     m_backgroundImage = value;
 }
 
-unsigned int CollectionTypeElement::GetMinHeight() const
-{
-    return m_minHeight;
-}
-
-void CollectionTypeElement::SetMinHeight(const unsigned int value)
-{
-    m_minHeight = value;
-}
-
 std::shared_ptr<BaseActionElement> CollectionTypeElement::GetSelectAction() const
 {
     return m_selectAction;
@@ -152,11 +142,6 @@ Json::Value CollectionTypeElement::SerializeToJsonValue() const
     if (GetBleed())
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Bleed)] = true;
-    }
-
-    if (m_minHeight)
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MinHeight)] = std::to_string(GetMinHeight()) + "px";
     }
 
     return root;

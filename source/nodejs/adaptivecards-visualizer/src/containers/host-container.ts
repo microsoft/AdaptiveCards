@@ -213,7 +213,7 @@ export abstract class HostContainer {
                 element.appendChild(separator);
             }
 
-            var renderedSpeech = this.renderSpeech(adaptiveCard.speak);
+            var renderedSpeech = this.renderSpeech(adaptiveCard.renderSpeech());
 
             if (renderedSpeech) {
                 element.appendChild(renderedSpeech);

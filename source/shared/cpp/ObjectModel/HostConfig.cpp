@@ -36,6 +36,9 @@ HostConfig HostConfig::Deserialize(const Json::Value& json)
     result._fontStyles = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontStylesDefinition>(
         json, AdaptiveCardSchemaKey::FontStyles, result._fontStyles, FontStylesDefinition::Deserialize);
 
+    // If the base style definition is set, it serves as the default for all not-specified container styles. Update
+    // _containerStyles based on the base style definition to update the defaults.
+    result._containerStyles.SetBaseStyle(json);
     result._containerStyles = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStylesDefinition>(
         json, AdaptiveCardSchemaKey::ContainerStyles, result._containerStyles, ContainerStylesDefinition::Deserialize);
 
@@ -118,18 +121,6 @@ FontStylesDefinition FontStylesDefinition::Deserialize(const Json::Value& json, 
     return result;
 }
 
-HighlightColorConfig HighlightColorConfig::Deserialize(const Json::Value& json, const HighlightColorConfig& defaultValue)
-{
-    HighlightColorConfig result;
-    std::string defaultColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Default);
-    result.defaultColor = defaultColor == "" ? defaultValue.defaultColor : defaultColor;
-
-    std::string subtleColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Subtle);
-    result.subtleColor = subtleColor == "" ? defaultValue.subtleColor : subtleColor;
-
-    return result;
-}
-
 ColorConfig ColorConfig::Deserialize(const Json::Value& json, const ColorConfig& defaultValue)
 {
     ColorConfig result;
@@ -139,51 +130,55 @@ ColorConfig ColorConfig::Deserialize(const Json::Value& json, const ColorConfig&
     std::string subtleColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Subtle);
     result.subtleColor = subtleColor == "" ? defaultValue.subtleColor : subtleColor;
 
-    result.highlightColors = ParseUtil::ExtractJsonValueAndMergeWithDefault<HighlightColorConfig>(
-        json, AdaptiveCardSchemaKey::HighlightColors, defaultValue.highlightColors, HighlightColorConfig::Deserialize);
-
     return result;
+}
+
+void ColorConfig::SetBaseColor(const std::string& baseColor)
+{
+    defaultColor = baseColor;
+    subtleColor = baseColor;
+}
+
+ColorConfig GetColorConfig(const Json::Value& json, AdaptiveCardSchemaKey key, const ColorConfig& defaultValue)
+{
+    const std::string stringResult = ParseUtil::TryGetString(json, key);
+    if (!stringResult.empty())
+    {
+        // If the host sets the color config to a single string, use that string for both default and subtle
+        ColorConfig result = {stringResult, stringResult};
+        return result;
+    }
+    else
+    {
+        // If it's not a string, parse it as a ColorConfig
+        return ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json, key, defaultValue, &ColorConfig::Deserialize);
+    }
 }
 
 ColorsConfig ColorsConfig::Deserialize(const Json::Value& json, const ColorsConfig& defaultValue)
 {
     ColorsConfig result;
 
-    result.defaultColor = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json,
-                                                                                      AdaptiveCardSchemaKey::Default,
-                                                                                      defaultValue.defaultColor,
-                                                                                      &ColorConfig::Deserialize);
+    result.defaultColor = GetColorConfig(json, AdaptiveCardSchemaKey::Default, defaultValue.defaultColor);
+    result.accent = GetColorConfig(json, AdaptiveCardSchemaKey::Accent, defaultValue.accent);
+    result.dark = GetColorConfig(json, AdaptiveCardSchemaKey::Dark, defaultValue.dark);
+    result.light = GetColorConfig(json, AdaptiveCardSchemaKey::Light, defaultValue.light);
+    result.good = GetColorConfig(json, AdaptiveCardSchemaKey::Good, defaultValue.good);
+    result.warning = GetColorConfig(json, AdaptiveCardSchemaKey::Warning, defaultValue.warning);
+    result.attention = GetColorConfig(json, AdaptiveCardSchemaKey::Attention, defaultValue.attention);
 
-    result.accent = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json,
-                                                                                AdaptiveCardSchemaKey::Accent,
-                                                                                defaultValue.accent,
-                                                                                &ColorConfig::Deserialize);
-
-    result.dark = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json,
-                                                                              AdaptiveCardSchemaKey::Dark,
-                                                                              defaultValue.dark,
-                                                                              &ColorConfig::Deserialize);
-
-    result.light = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json,
-                                                                               AdaptiveCardSchemaKey::Light,
-                                                                               defaultValue.light,
-                                                                               &ColorConfig::Deserialize);
-
-    result.good = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json,
-                                                                              AdaptiveCardSchemaKey::Good,
-                                                                              defaultValue.good,
-                                                                              &ColorConfig::Deserialize);
-
-    result.warning = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json,
-                                                                                 AdaptiveCardSchemaKey::Warning,
-                                                                                 defaultValue.warning,
-                                                                                 &ColorConfig::Deserialize);
-
-    result.attention = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json,
-                                                                                   AdaptiveCardSchemaKey::Attention,
-                                                                                   defaultValue.attention,
-                                                                                   &ColorConfig::Deserialize);
     return result;
+}
+
+void ColorsConfig::SetBaseColor(const std::string& baseColor)
+{
+    defaultColor.SetBaseColor(baseColor);
+    accent.SetBaseColor(baseColor);
+    dark.SetBaseColor(baseColor);
+    light.SetBaseColor(baseColor);
+    good.SetBaseColor(baseColor);
+    warning.SetBaseColor(baseColor);
+    attention.SetBaseColor(baseColor);
 }
 
 TextConfig TextConfig::Deserialize(const Json::Value& json, const TextConfig& defaultValue)
@@ -342,7 +337,36 @@ ContainerStyleDefinition ContainerStyleDefinition::Deserialize(const Json::Value
     result.foregroundColors = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorsConfig>(
         json, AdaptiveCardSchemaKey::ForegroundColors, defaultValue.foregroundColors, ColorsConfig::Deserialize);
 
+    result.highlightColors = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorsConfig>(json,
+                                                                                          AdaptiveCardSchemaKey::HighlightColors,
+                                                                                          defaultValue.highlightColors,
+                                                                                          ColorsConfig::Deserialize);
+
     return result;
+}
+
+void ContainerStyleDefinition::SetBaseStyle(const Json::Value& json)
+{
+    Json::Value baseContainterStyleJson =
+        json.get(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BaseContainerStyle), Json::Value());
+
+    std::string baseBackgroundColor = ParseUtil::TryGetString(baseContainterStyleJson, AdaptiveCardSchemaKey::BackgroundColor);
+    if (!baseBackgroundColor.empty())
+    {
+        backgroundColor = baseBackgroundColor;
+    }
+
+    std::string baseForegroundColor = ParseUtil::TryGetString(baseContainterStyleJson, AdaptiveCardSchemaKey::ForegroundColor);
+    if (!baseForegroundColor.empty())
+    {
+        foregroundColors.SetBaseColor(baseForegroundColor);
+    }
+
+    std::string baseHighlightColor = ParseUtil::TryGetString(baseContainterStyleJson, AdaptiveCardSchemaKey::HighlightColor);
+    if (!baseHighlightColor.empty())
+    {
+        highlightColors.SetBaseColor(baseHighlightColor);
+    }
 }
 
 ContainerStylesDefinition ContainerStylesDefinition::Deserialize(const Json::Value& json, const ContainerStylesDefinition& defaultValue)
@@ -368,6 +392,16 @@ ContainerStylesDefinition ContainerStylesDefinition::Deserialize(const Json::Val
         json, AdaptiveCardSchemaKey::Accent, defaultValue.accentPalette, ContainerStyleDefinition::Deserialize);
 
     return result;
+}
+
+void ContainerStylesDefinition::SetBaseStyle(const Json::Value& json)
+{
+    defaultPalette.SetBaseStyle(json);
+    emphasisPalette.SetBaseStyle(json);
+    goodPalette.SetBaseStyle(json);
+    attentionPalette.SetBaseStyle(json);
+    warningPalette.SetBaseStyle(json);
+    accentPalette.SetBaseStyle(json);
 }
 
 FontWeightsConfig FontWeightsConfig::Deserialize(const Json::Value& json, const FontWeightsConfig& defaultValue)
@@ -616,43 +650,38 @@ std::string HostConfig::GetBackgroundColor(ContainerStyle style) const
     return GetContainerStyle(style).backgroundColor;
 }
 
-template<typename T> std::string GetColorFromColorConfig(T colorConfig, bool isSubtle)
-{
-    return (isSubtle) ? (colorConfig.subtleColor) : (colorConfig.defaultColor);
-}
-
-const ColorConfig& HostConfig::GetContainerColorConfig(const ColorsConfig& colors, ForegroundColor color) const
+std::string HostConfig::GetContainerColor(const ColorsConfig& colors, ForegroundColor color, bool isSubtle) const
 {
     switch (color)
     {
     case ForegroundColor::Accent:
-        return colors.accent;
+        return (isSubtle) ? (colors.accent.subtleColor) : (colors.accent.defaultColor);
     case ForegroundColor::Attention:
-        return colors.attention;
+        return (isSubtle) ? (colors.attention.subtleColor) : (colors.attention.defaultColor);
     case ForegroundColor::Dark:
-        return colors.dark;
+        return (isSubtle) ? (colors.dark.subtleColor) : (colors.dark.defaultColor);
     case ForegroundColor::Good:
-        return colors.good;
+        return (isSubtle) ? (colors.good.subtleColor) : (colors.good.defaultColor);
     case ForegroundColor::Light:
-        return colors.light;
+        return (isSubtle) ? (colors.light.subtleColor) : (colors.light.defaultColor);
     case ForegroundColor::Warning:
-        return colors.warning;
+        return (isSubtle) ? (colors.warning.subtleColor) : (colors.warning.defaultColor);
     case ForegroundColor::Default:
     default:
-        return colors.defaultColor;
+        return (isSubtle) ? (colors.defaultColor.subtleColor) : (colors.defaultColor.defaultColor);
     }
 }
 
 std::string HostConfig::GetForegroundColor(ContainerStyle style, ForegroundColor color, bool isSubtle) const
 {
-    auto colorConfig = GetContainerColorConfig(GetContainerStyle(style).foregroundColors, color);
-    return GetColorFromColorConfig(colorConfig, isSubtle);
+    auto foregroundColors = GetContainerStyle(style).foregroundColors;
+    return GetContainerColor(foregroundColors, color, isSubtle);
 }
 
 std::string HostConfig::GetHighlightColor(ContainerStyle style, ForegroundColor color, bool isSubtle) const
 {
-    auto colorConfig = GetContainerColorConfig(GetContainerStyle(style).foregroundColors, color).highlightColors;
-    return GetColorFromColorConfig(colorConfig, isSubtle);
+    auto highlightColors = GetContainerStyle(style).highlightColors;
+    return GetContainerColor(highlightColors, color, isSubtle);
 }
 
 std::string HostConfig::GetBorderColor(ContainerStyle style) const

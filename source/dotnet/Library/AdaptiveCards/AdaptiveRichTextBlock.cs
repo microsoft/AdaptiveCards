@@ -32,11 +32,31 @@ namespace AdaptiveCards
         [DefaultValue(typeof(AdaptiveHorizontalAlignment), "left")]
         public AdaptiveHorizontalAlignment HorizontalAlignment { get; set; }
 
-        [JsonRequired]
-        [JsonConverter(typeof(AdaptiveInlinesConverter))]
+        /// <summary>
+        ///     Is it allowed for the text to wrap
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
-        [XmlElement(typeof(AdaptiveTextRun))]
+        [XmlAttribute]
 #endif
-        public List<IAdaptiveInline> Inlines { get; set; } = new List<IAdaptiveInline>();
+        [DefaultValue(false)]
+        public bool Wrap { get; set; }
+
+        /// <summary>
+        ///     When Wrap is true, you can specify the maximum number of lines to allow the textBlock to use.
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(0)]
+        public int MaxLines { get; set; }
+
+        [JsonRequired]
+        [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveParagraph>))]
+#if !NETSTANDARD1_3
+        [XmlElement(typeof(AdaptiveParagraph))]
+#endif
+        public List<AdaptiveParagraph> Paragraphs { get; set; } = new List<AdaptiveParagraph>();
     }
 }

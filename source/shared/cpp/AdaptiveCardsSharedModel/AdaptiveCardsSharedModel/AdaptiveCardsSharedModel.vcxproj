@@ -150,10 +150,10 @@
     <ClCompile Include="..\..\ObjectModel\AdaptiveBase64Util.cpp" />
     <ClCompile Include="..\..\ObjectModel\BaseElement.cpp" />
     <ClCompile Include="..\..\ObjectModel\CollectionTypeElement.cpp" />
-    <ClCompile Include="..\..\ObjectModel\FeatureRegistration.cpp" />
     <ClCompile Include="..\..\ObjectModel\Inline.cpp" />
     <ClCompile Include="..\..\ObjectModel\TextElementProperties.cpp" />
     <ClCompile Include="..\..\ObjectModel\TextRun.cpp" />
+    <ClCompile Include="..\..\ObjectModel\Paragraph.cpp" />
     <ClCompile Include="..\..\ObjectModel\ParseContext.cpp" />
     <ClCompile Include="..\..\ObjectModel\BackgroundImage.cpp" />
     <ClCompile Include="..\..\ObjectModel\RichTextBlock.cpp" />
@@ -216,10 +216,10 @@
     <ClInclude Include="..\..\ObjectModel\AdaptiveCardParseWarning.h" />
     <ClInclude Include="..\..\ObjectModel\BaseElement.h" />
     <ClInclude Include="..\..\ObjectModel\CollectionTypeElement.h" />
-    <ClInclude Include="..\..\ObjectModel\FeatureRegistration.h" />
     <ClInclude Include="..\..\ObjectModel\Inline.h" />
     <ClInclude Include="..\..\ObjectModel\TextElementProperties.h" />
     <ClInclude Include="..\..\ObjectModel\TextRun.h" />
+    <ClInclude Include="..\..\ObjectModel\Paragraph.h" />
     <ClInclude Include="..\..\ObjectModel\ParseContext.h" />
     <ClInclude Include="..\..\ObjectModel\BackgroundImage.h" />
     <ClInclude Include="..\..\ObjectModel\RichTextBlock.h" />

@@ -18,7 +18,6 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveRenderContext::RuntimeClassInitialize() noexcept { return S_OK; }
 
     HRESULT AdaptiveRenderContext::RuntimeClassInitialize(_In_ IAdaptiveHostConfig* hostConfig,
-                                                          _In_ IAdaptiveFeatureRegistration* featureRegistration,
                                                           _In_ IAdaptiveElementRendererRegistration* elementRendererRegistration,
                                                           _In_ IAdaptiveActionRendererRegistration* actionRendererRegistration,
                                                           _In_ IAdaptiveCardResourceResolvers* resourceResolvers,
@@ -27,7 +26,6 @@ namespace AdaptiveNamespace
                                                           _In_ RenderedAdaptiveCard* renderResult) noexcept try
     {
         m_hostConfig = hostConfig;
-        m_featureRegistration = featureRegistration;
         m_elementRendererRegistration = elementRendererRegistration;
         m_actionRendererRegistration = actionRendererRegistration;
         m_resourceResolvers = resourceResolvers;
@@ -47,11 +45,6 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveRenderContext::get_HostConfig(_COM_Outptr_ IAdaptiveHostConfig** value)
     {
         return m_hostConfig.CopyTo(value);
-    }
-
-    HRESULT AdaptiveRenderContext::get_FeatureRegistration(_COM_Outptr_ IAdaptiveFeatureRegistration** value)
-    {
-        return m_featureRegistration.CopyTo(value);
     }
 
     HRESULT AdaptiveRenderContext::get_ElementRenderers(_COM_Outptr_ IAdaptiveElementRendererRegistration** value)

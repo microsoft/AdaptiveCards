@@ -5,8 +5,6 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 extern NSString *const ACRInputErrorDomain;
 extern NSString *const ACRParseErrorDomain;
 
@@ -18,9 +16,3 @@ typedef NS_ENUM(NSUInteger, ACRInputError)
     ACRInputErrorLessThanMinDate,
     ACRInputErrorGreaterThanMaxDate,
 };
-
-@interface ACOFallbackException:NSObject
-
-+ (ACOFallbackException *)fallbackException;
-
-@end

@@ -71,7 +71,6 @@
 {
     _enableCustomRenderer = !_enableCustomRenderer;
     ACRRegistration *registration = [ACRRegistration getInstance];
-
     if(_enableCustomRenderer){
         // enum will be part of API in next iterations when custom renderer extended to non-action type - tracked by issue #809
         [registration setActionRenderer:[CustomActionOpenURLRenderer getInstance] cardElementType:@3];
@@ -208,9 +207,6 @@
          @"H:|-[buttonLayout]-|", @"H:|-[scrollview]-|", nil];
 
     [ViewController applyConstraints:formats variables:viewMap];
-    
-    ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
-    [featureReg addFeature:@"acTest" featureVersion:@"1.0"];
 
     [self update:self.ACVTabVC.userSelectedJSon];
     

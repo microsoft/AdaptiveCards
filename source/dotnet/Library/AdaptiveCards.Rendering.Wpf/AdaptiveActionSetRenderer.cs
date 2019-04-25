@@ -9,24 +9,6 @@ namespace AdaptiveCards.Rendering.Wpf
 {
     public static class AdaptiveActionSetRenderer
     {
-        public static FrameworkElement Render(AdaptiveActionSet actionSet, AdaptiveRenderContext context)
-        {
-            var outerActionSet = new Grid();
-
-            if (!context.Config.SupportsInteractivity)
-                return outerActionSet;
-
-            outerActionSet.Style = context.GetStyle("Adaptive.Container");
-
-            // Keep track of ContainerStyle.ForegroundColors before Container is rendered
-            var parentRenderArgs = context.RenderArgs;
-            var elementRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
-
-            AddActions(outerActionSet, actionSet.Actions, context);
-
-            return outerActionSet;
-        }
-
         public static void AddActions(Grid uiContainer, IList<AdaptiveAction> actions, AdaptiveRenderContext context)
         {
             if (!context.Config.SupportsInteractivity)
@@ -127,7 +109,7 @@ namespace AdaptiveCards.Rendering.Wpf
                             uiShowCardContainer.Children.Add(uiShowCardWrapper);
 
                             // Add to the list of show cards in context
-                            context.ActionShowCards.Add(uiAction, uiShowCardContainer);
+                            context.ActionShowCards.Add(new Tuple<FrameworkElement, Button>(uiShowCardContainer, uiAction));
                         }
                     }
                 }

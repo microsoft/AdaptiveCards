@@ -62,6 +62,11 @@ namespace AdaptiveCards.Rendering.Wpf
 
             }
 
+            if (!textBlock.IsVisible)
+            {
+                uiTextBlock.Visibility = Visibility.Collapsed;
+            }
+
             return uiTextBlock;
         }
 
@@ -88,16 +93,6 @@ namespace AdaptiveCards.Rendering.Wpf
             uiTextBlock.FontSize = context.Config.GetFontSize(textBlock.FontStyle, textBlock.Size);
 
             uiTextBlock.TextTrimming = TextTrimming.CharacterEllipsis;
-
-            if (textBlock.Italic)
-            {
-                uiTextBlock.FontStyle = FontStyles.Italic;
-            }
-
-            if (textBlock.Strikethrough)
-            {
-                uiTextBlock.TextDecorations = TextDecorations.Strikethrough;
-            }
 
             if (textBlock.HorizontalAlignment != AdaptiveHorizontalAlignment.Left)
             {

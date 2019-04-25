@@ -7,7 +7,6 @@
 #import <Foundation/Foundation.h>
 #import "ACOBaseCardElement.h"
 #import "BaseCardElement.h"
-#import "ACRRegistrationPrivate.h"
 
 using namespace AdaptiveCards;
 
@@ -53,14 +52,4 @@ using namespace AdaptiveCards;
     }
     return nil;
 }
-
-- (BOOL)meetsRequirements:(ACOFeatureRegistration *)featureReg
-{
-    if (_elem) {
-        const std::shared_ptr<FeatureRegistration> sharedFReg = [featureReg getSharedFeatureRegistration];
-        return _elem->MeetsRequirements(*sharedFReg.get());
-    }
-    return false;
-}
-
 @end

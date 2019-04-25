@@ -16,7 +16,6 @@
 #import "ACOBaseActionElementPrivate.h"
 #import "ACRIContentHoldingView.h"
 #import "ACRRenderer.h"
-#import "Util.h"
 
 @implementation ACRActionSetRenderer
 
@@ -33,8 +32,6 @@
                hostConfig:(ACOHostConfig *)config
 {
     ACRRegistration *reg = [ACRRegistration getInstance];
-    ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
-    
     UIView<ACRIContentHoldingView> *childview = nil;
     NSDictionary<NSString *, NSNumber*> *attributes =
     @{@"spacing":[NSNumber numberWithInt:[config getHostConfig]->GetActions().buttonSpacing],
@@ -64,38 +61,14 @@
         }
 
         [acoElem setElem:elem];
-
-        NSUInteger numElem = [childview subviewsCounts];
-
-        UIButton *button = nil;
-
-        @try {
-            if([acoElem meetsRequirements:featureReg] == NO) {
-                @throw [ACOFallbackException fallbackException];
-            }
-            button = [actionRenderer renderButton:rootView inputs:inputs superview:superview baseActionElement:acoElem hostConfig:config];
-            [childview addArrangedSubview:button];
-        } @catch (ACOFallbackException *exception) {
-            handleActionFallbackException(exception,
-                                          superview,
-                                          rootView,
-                                          inputs,
-                                          acoElem,
-                                          config,
-                                          childview);
-            NSUInteger count = [childview subviewsCounts];
-            if (count > numElem) {
-                UIView *view = [childview getLastSubview];
-                if (view && [view isKindOfClass:[UIButton class]]) {
-                    button = (UIButton *)view;
-                }
-            }
-        }
+        UIButton *button = [actionRenderer renderButton:rootView inputs:inputs superview:superview baseActionElement:acoElem hostConfig:config];
 
         accumulatedWidth += [button intrinsicContentSize].width;
         accumulatedHeight += [button intrinsicContentSize].height;
         maxWidth = MAX(maxWidth, [button intrinsicContentSize].width);
         maxHeight = MAX(maxHeight, [button intrinsicContentSize].height);
+
+        [childview addArrangedSubview:button];
     }
 
     float contentWidth = accumulatedWidth, contentHeight = accumulatedHeight;

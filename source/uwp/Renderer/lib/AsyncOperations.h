@@ -83,8 +83,6 @@ protected:
                     THROW_IF_FAILED(m_renderer->get_ActionRenderers(&actionRenderers));
                     ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers> resourceResolvers;
                     THROW_IF_FAILED(m_renderer->get_ResourceResolvers(&resourceResolvers));
-                    ComPtr<ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration> featureRegistration;
-                    THROW_IF_FAILED(m_renderer->get_FeatureRegistration(&featureRegistration));
                     ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> overrideDictionary = m_renderer->GetMergedDictionary();
                     ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> actionSentimentDefaultDictionary =
                         m_renderer->GetActionSentimentResourceDictionary();
@@ -93,7 +91,6 @@ protected:
                     THROW_IF_FAILED(
                         MakeAndInitialize<AdaptiveNamespace::AdaptiveRenderContext>(&renderContext,
                                                                                     m_renderer->GetHostConfig(),
-                                                                                    featureRegistration.Get(),
                                                                                     elementRenderers.Get(),
                                                                                     actionRenderers.Get(),
                                                                                     resourceResolvers.Get(),

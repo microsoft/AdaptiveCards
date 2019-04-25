@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
@@ -16,8 +14,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             // Keep track of ContainerStyle.ForegroundColors before Container is rendered
             var parentRenderArgs = context.RenderArgs;
-            // This is the renderArgs that will be passed down to the children
-            var childRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
+            var elementRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
             
             Grid uiOuterContainer = new Grid();
             
@@ -25,9 +22,10 @@ namespace AdaptiveCards.Rendering.Wpf
             Border border = new Border();
             border.Child = uiOuterContainer;
 
-            RendererUtil.ApplyVerticalContentAlignment(uiContainer, container);
-            RendererUtil.ApplyIsVisible(border, container);
-            uiContainer.MinHeight = container.PixelMinHeight;
+            if (!container.IsVisible)
+            {
+                border.Visibility = Visibility.Collapsed;
+            }
 
             bool inheritsStyleFromParent = !container.Style.HasValue;
             bool hasPadding = false;
@@ -39,7 +37,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 ContainerStyleConfig containerStyle = context.Config.ContainerStyles.GetContainerStyleConfig(container.Style);
                 border.Background = context.GetColorBrush(containerStyle.BackgroundColor);
 
-                childRenderArgs.ForegroundColors = containerStyle.ForegroundColors;
+                elementRenderArgs.ForegroundColors = containerStyle.ForegroundColors;
             }
 
             switch (container.VerticalContentAlignment)
@@ -55,22 +53,22 @@ namespace AdaptiveCards.Rendering.Wpf
                     break;
             }
 
-            if (hasPadding)
-            {
-                childRenderArgs.BleedDirection = BleedDirection.Both;
-            }
-
             // Modify context outer parent style so padding necessity can be determined
-            childRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : container.Style.Value;
-            childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-            context.RenderArgs = childRenderArgs;
+            elementRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : container.Style.Value;
+            elementRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
+            context.RenderArgs = elementRenderArgs;
 
             AddContainerElements(uiContainer, container.Items, context);
+
+            if (container.SelectAction != null)
+            {
+                return context.RenderSelectAction(container.SelectAction, border);
+            }
 
             // Revert context's value to that of outside the Container
             context.RenderArgs = parentRenderArgs;
 
-            return RendererUtil.ApplySelectAction(border, container, context);
+            return border;
         }
 
         public static void AddContainerElements(Grid uiContainer, IList<AdaptiveElement> elements, AdaptiveRenderContext context)
@@ -95,18 +93,9 @@ namespace AdaptiveCards.Rendering.Wpf
                                                          renderedMargin.Bottom);
                     }
 
-                    if (cardElement.Type == "Container" || cardElement.Type == "ColumnSet")
-                    {
-                        AdaptiveCollectionElement collectionElement = (AdaptiveCollectionElement)cardElement;
-                        uiElement.MinHeight = collectionElement.PixelMinHeight;
-                    }
-
-                    if (cardElement.Height != AdaptiveHeight.Stretch)
+                    if (cardElement.Height == AdaptiveHeight.Auto)
                     {
                         uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-                        Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
-
-                        RendererUtil.ApplyIsVisible(uiElement, cardElement);
                         Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
                         uiContainer.Children.Add(uiElement);
                     }
@@ -114,7 +103,6 @@ namespace AdaptiveCards.Rendering.Wpf
                     {
                         if (cardElement.Type == "Container")
                         {
-                            RendererUtil.ApplyIsVisible(uiElement, cardElement);
                             uiContainer.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
                             Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
                             uiContainer.Children.Add(uiElement);
@@ -122,11 +110,6 @@ namespace AdaptiveCards.Rendering.Wpf
                         else
                         {
                             StackPanel panel = new StackPanel();
-                            RendererUtil.ApplyIsVisible(panel, cardElement);
-                            if (!String.IsNullOrEmpty(cardElement.Id))
-                            {
-                                panel.Name = cardElement.Id;
-                            }
                             panel.Children.Add(uiElement);
 
                             uiContainer.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
@@ -180,20 +163,28 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 uiElement.Margin = new Thickness { Left = padding, Top = padding, Right = padding, Bottom = padding };
 
-                if (element.Bleed)
+                if (element.Bleed && context.RenderArgs.HasParentWithPadding)
                 {
-                    int leftMargin = 0, rightMargin = 0;
-                    if (parentRenderArgs.BleedDirection == BleedDirection.Left || parentRenderArgs.BleedDirection == BleedDirection.Both)
+                    // Columns have a special rendering behaviour, only the leftmost and rightmost columns must bleed
+                    if (element is AdaptiveColumn column)
                     {
-                        leftMargin = -padding;
+                        if (parentRenderArgs.ColumnRelativePosition == ColumnPositionEnum.Begin)
+                        {
+                            border.Margin = new Thickness { Left = -padding };
+                        }
+                        else if (parentRenderArgs.ColumnRelativePosition == ColumnPositionEnum.End)
+                        {
+                            border.Margin = new Thickness { Right = -padding };
+                        }
+                        else if (parentRenderArgs.ColumnRelativePosition == ColumnPositionEnum.Only)
+                        {
+                            border.Margin = new Thickness { Left = -padding, Right = -padding };
+                        }
                     }
-
-                    if (parentRenderArgs.BleedDirection == BleedDirection.Right || parentRenderArgs.BleedDirection == BleedDirection.Both)
+                    else
                     {
-                        rightMargin = -padding;
+                        border.Margin = new Thickness { Left = -padding, Right = -padding };
                     }
-
-                    border.Margin = new Thickness { Left = leftMargin, Right = rightMargin };
                 }
             }
 

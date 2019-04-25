@@ -17,72 +17,106 @@ namespace AdaptiveCards.Rendering.Wpf
     {
         public static FrameworkElement Render(AdaptiveRichTextBlock richTB, AdaptiveRenderContext context)
         {
+            // used to define MaxLines
+            StringBuilder totalText = new StringBuilder();
+            FontWeight maxTextWeight = FontWeight.FromOpenTypeWeight(context.Config.GetFontWeight(AdaptiveFontStyle.Default, AdaptiveTextWeight.Lighter));
+            double maxTextSize = context.Config.GetFontSize(AdaptiveFontStyle.Default, AdaptiveTextSize.Small);
+
             var uiRichTB = CreateControl(richTB, context);
 
-            foreach (var inlineElement in richTB.Inlines)
+            foreach (var paragraph in richTB.Paragraphs)
             {
-                AdaptiveTextRun textRun = inlineElement as AdaptiveTextRun;
-                AddInlineTextRun(uiRichTB, textRun, context);
+                foreach (var inlineElement in paragraph.Inlines)
+                {
+                    Inline uiInlineText = FormatInlineTextRun(inlineElement, context);
+                    uiRichTB.Inlines.Add(uiInlineText);
+
+                    // Extract data for MaxLines
+                    totalText.Append(inlineElement.Text);
+                    maxTextWeight = SelectMaxTextWeight(maxTextWeight, uiInlineText.FontWeight);
+                    maxTextSize = Math.Max(maxTextSize, uiInlineText.FontSize);
+                }
+                uiRichTB.Inlines.Add(new LineBreak());
+            }
+
+            if (richTB.MaxLines > 0)
+            {
+                var uiGrid = new Grid();
+                uiGrid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+
+                // create hidden textBlock with appropriate linebreaks that we can use to measure the ActualHeight
+                // using same style, fontWeight settings as original textblock
+                var measureBlock = new TextBlock()
+                {
+                    Style = uiRichTB.Style,
+                    FontWeight = maxTextWeight,
+                    FontSize = maxTextSize,
+                    Visibility = Visibility.Hidden,
+                    TextWrapping = TextWrapping.NoWrap,
+                    HorizontalAlignment = System.Windows.HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    DataContext = richTB.MaxLines
+                };
+
+                measureBlock.Inlines.Add(totalText.ToString());
+
+                // bind the real textBlock's Height => MeasureBlock.ActualHeight
+                uiRichTB.SetBinding(FrameworkElement.MaxHeightProperty, new Binding()
+                {
+                    Path = new PropertyPath("ActualHeight"),
+                    Source = measureBlock,
+                    Mode = BindingMode.OneWay,
+                    Converter = new MultiplyConverter(richTB.MaxLines)
+                });
+
+                // Add both to a grid so they go as a unit
+                uiGrid.Children.Add(measureBlock);
+
+                uiGrid.Children.Add(uiRichTB);
+                return uiGrid;
+
+            }
+
+            if (!richTB.IsVisible)
+            {
+                uiRichTB.Visibility = Visibility.Collapsed;
             }
 
             return uiRichTB;
         }
 
-        private static void AddInlineTextRun(TextBlock uiRichTB, AdaptiveTextRun textRun, AdaptiveRenderContext context)
+        private static Inline FormatInlineTextRun(AdaptiveTextRun textRun, AdaptiveRenderContext context)
         {
-            Span textRunSpan;
-            if (textRun.SelectAction != null && context.Config.SupportsInteractivity)
-            {
-                Hyperlink selectActionLink = new Hyperlink();
-                selectActionLink.Click += (sender, e) =>
-                {
-                    context.InvokeAction(uiRichTB, new AdaptiveActionEventArgs(textRun.SelectAction));
-                    e.Handled = true;
-                };
-
-                textRunSpan = selectActionLink as Span;
-            }
-            else
-            {
-                textRunSpan = new Span();
-            }
+            Marked marked = new Marked();
+            marked.Options.Renderer = new AdaptiveXamlMarkdownRenderer();
+            marked.Options.Mangle = false;
+            marked.Options.Sanitize = true;
 
             // Handle Date/Time parsing
             string text = RendererUtilities.ApplyTextFunctions(textRun.Text, context.Lang);
 
-            textRunSpan.Inlines.Add(text);
+            // Handle markdown
+            string xaml = $"<Span  xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"  xml:space=\"preserve\">{marked.Parse(text)}</Span>";
+            StringReader stringReader = new StringReader(xaml);
+            XmlReader xmlReader = XmlReader.Create(stringReader);
 
-            textRunSpan.Style = context.GetStyle($"Adaptive.{textRun.Type}");
+            Span uiInlineElement = XamlReader.Load(xmlReader) as Span;
+            uiInlineElement.Style = context.GetStyle($"Adaptive.{textRun.Type}");
 
-            textRunSpan.FontFamily = new FontFamily(context.Config.GetFontFamily(textRun.FontStyle));
-            textRunSpan.FontWeight = FontWeight.FromOpenTypeWeight(context.Config.GetFontWeight(textRun.FontStyle, textRun.Weight));
-            textRunSpan.FontSize = context.Config.GetFontSize(textRun.FontStyle, textRun.Size);
+            uiInlineElement.FontFamily = new FontFamily(context.Config.GetFontFamily(textRun.FontStyle));
+            uiInlineElement.FontWeight = FontWeight.FromOpenTypeWeight(context.Config.GetFontWeight(textRun.FontStyle, textRun.Weight));
+            uiInlineElement.FontSize = context.Config.GetFontSize(textRun.FontStyle, textRun.Size);
 
-            if (textRun.Italic)
-            {
-                textRunSpan.FontStyle = FontStyles.Italic;
-            }
+            uiInlineElement.SetColor(textRun.Color, textRun.IsSubtle, context);
 
-            if (textRun.Strikethrough)
-            {
-                textRunSpan.TextDecorations = TextDecorations.Strikethrough;
-            }
-
-            if (textRun.Highlight)
-            {
-                textRunSpan.SetHighlightColor(textRun.Color, textRun.IsSubtle, context);
-            }
-
-            textRunSpan.SetColor(textRun.Color, textRun.IsSubtle, context);
-
-            uiRichTB.Inlines.Add(textRunSpan);
+            return uiInlineElement;
         }
 
         private static TextBlock CreateControl(AdaptiveRichTextBlock richTB, AdaptiveRenderContext context)
         {
             TextBlock uiTextBlock = new TextBlock();
             uiTextBlock.Style = context.GetStyle($"Adaptive.{richTB.Type}");
-            uiTextBlock.TextWrapping = TextWrapping.Wrap;
+            uiTextBlock.TextWrapping = richTB.Wrap ? TextWrapping.Wrap : TextWrapping.NoWrap;
             uiTextBlock.TextTrimming = TextTrimming.CharacterEllipsis;
 
             if (richTB.HorizontalAlignment != AdaptiveHorizontalAlignment.Left)

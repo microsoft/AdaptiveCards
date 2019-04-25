@@ -61,13 +61,15 @@ public:
     virtual void SetSpacing(AdaptiveCards::Spacing const value);
     virtual bool GetIsVisible() const;
     virtual void SetIsVisible(bool const value);
+    virtual unsigned int GetMinHeight() const;
+    virtual void SetMinHeight(unsigned int const value);
     virtual AdaptiveCards::CardElementType const GetElementType() const;
 public:
     bool swig_overrides(int n) {
-      return (n < 13 ? swig_override[n] : false);
+      return (n < 15 ? swig_override[n] : false);
     }
 protected:
-    Swig::BoolArray<13> swig_override;
+    Swig::BoolArray<15> swig_override;
 };
 
 class SwigDirector_BaseActionElement : public AdaptiveCards::BaseActionElement, public Swig::Director {

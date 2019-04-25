@@ -13,8 +13,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             // Keep track of ContainerStyle.ForegroundColors before Container is rendered
             var parentRenderArgs = context.RenderArgs;
-            // This is the renderArgs that will be the base for all the columns renderArgs
-            var childrenRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
+            var elementRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
 
             Border border = new Border();
             border.Child = uiColumnSet;
@@ -29,71 +28,37 @@ namespace AdaptiveCards.Rendering.Wpf
                 var columnSetStyle = context.Config.ContainerStyles.GetContainerStyleConfig(columnSet.Style);
 
                 border.Background = context.GetColorBrush(columnSetStyle.BackgroundColor);
-                childrenRenderArgs.ForegroundColors = columnSetStyle.ForegroundColors;
+                elementRenderArgs.ForegroundColors = columnSetStyle.ForegroundColors;
             }
 
-            childrenRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : columnSet.Style.Value;
+            elementRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : columnSet.Style.Value;
+            elementRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
             
             for (int i = 0; i < columnSet.Columns.Count; ++i)
             {
                 AdaptiveColumn column = columnSet.Columns[i];
 
-                var childRenderArgs = new AdaptiveRenderArgs(childrenRenderArgs);
-
-                if (hasPadding)
+                var columnRenderArgs = new AdaptiveRenderArgs(elementRenderArgs);
+                if (columnSet.Columns.Count == 1)
                 {
-                    if (columnSet.Columns.Count == 1)
-                    {
-                        childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-                        childRenderArgs.BleedDirection = BleedDirection.Both;
-                    }
-                    else
-                    {
-                        if (i == 0)
-                        {
-                            childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-                            childRenderArgs.BleedDirection = BleedDirection.Left;
-                        }
-                        else if (i == (columnSet.Columns.Count - 1))
-                        {
-                            childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-                            childRenderArgs.BleedDirection = BleedDirection.Right;
-                        }
-                        else
-                        {
-                            childRenderArgs.BleedDirection = BleedDirection.None;
-                        }
-                    }
+                    columnRenderArgs.ColumnRelativePosition = ColumnPositionEnum.Only;
                 }
                 else
                 {
-                    if (columnSet.Columns.Count == 1)
+                    if (i == 0)
                     {
-                        childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-                        childRenderArgs.BleedDirection = parentRenderArgs.BleedDirection;
+                        columnRenderArgs.ColumnRelativePosition = ColumnPositionEnum.Begin;
+                    }
+                    else if (i == (columnSet.Columns.Count - 1))
+                    {
+                        columnRenderArgs.ColumnRelativePosition = ColumnPositionEnum.End;
                     }
                     else
                     {
-                        if (i == 0 &&
-                            (childRenderArgs.BleedDirection == BleedDirection.Left || childRenderArgs.BleedDirection == BleedDirection.Both))
-                        {
-                            childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-                            childRenderArgs.BleedDirection = BleedDirection.Left;
-                        }
-                        else if (i == (columnSet.Columns.Count - 1) &&
-                            (childRenderArgs.BleedDirection == BleedDirection.Right || childRenderArgs.BleedDirection == BleedDirection.Both))
-                        {
-                            childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-                            childRenderArgs.BleedDirection = BleedDirection.Right;
-                        }
-                        else
-                        {
-                            childRenderArgs.BleedDirection = BleedDirection.None;
-                        }
+                        columnRenderArgs.ColumnRelativePosition = ColumnPositionEnum.Intermediate;
                     }
                 }
-
-                context.RenderArgs = childRenderArgs;
+                context.RenderArgs = columnRenderArgs;
 
                 FrameworkElement uiContainer = context.Render(column);
 
@@ -148,13 +113,20 @@ namespace AdaptiveCards.Rendering.Wpf
                 uiColumnSet.Children.Add(uiContainer);
             }
 
+            if (columnSet.SelectAction != null)
+            {
+                return context.RenderSelectAction(columnSet.SelectAction, border);
+            }
+
+            if(!columnSet.IsVisible)
+            {
+                uiColumnSet.Visibility = Visibility.Collapsed;
+            }
+
             // Revert context's value to that of outside the Container
             context.RenderArgs = parentRenderArgs;
 
-            RendererUtil.ApplyIsVisible(uiColumnSet, columnSet);
-            uiColumnSet.MinHeight = columnSet.PixelMinHeight;
-
-            return RendererUtil.ApplySelectAction(border, columnSet, context);
+            return border;
         }
     }
 }

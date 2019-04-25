@@ -14,10 +14,7 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    AdaptiveColumn::AdaptiveColumn() : m_bleedDirection(ABI::AdaptiveNamespace::BleedDirection::None)
-    {
-        m_items = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
-    }
+    AdaptiveColumn::AdaptiveColumn() { m_items = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>(); }
 
     HRESULT AdaptiveColumn::RuntimeClassInitialize() noexcept try
     {
@@ -34,16 +31,9 @@ namespace AdaptiveNamespace
         m_style = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedColumn->GetStyle());
         m_verticalAlignment =
             static_cast<ABI::AdaptiveNamespace::VerticalContentAlignment>(sharedColumn->GetVerticalContentAlignment());
-        m_bleed = sharedColumn->GetBleed();
-
-        if (sharedColumn->GetCanBleed())
-        {
-            m_bleedDirection = static_cast<ABI::AdaptiveNamespace::BleedDirection>(sharedColumn->GetBleedDirection());
-        }
 
         RETURN_IF_FAILED(UTF8ToHString(sharedColumn->GetWidth(), m_width.GetAddressOf()));
         m_pixelWidth = sharedColumn->GetPixelWidth();
-        m_minHeight = sharedColumn->GetMinHeight();
 
         auto backgroundImage = sharedColumn->GetBackgroundImage();
         if (backgroundImage != nullptr && !backgroundImage->GetUrl().empty())
@@ -105,18 +95,6 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveColumn::get_MinHeight(_Out_ UINT32* minHeight)
-    {
-        *minHeight = m_minHeight;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveColumn::put_MinHeight(UINT32 minHeight)
-    {
-        m_minHeight = minHeight;
-        return S_OK;
-    }
-
     HRESULT AdaptiveColumn::get_Items(_COM_Outptr_ IVector<IAdaptiveCardElement*>** items)
     {
         return m_items.CopyTo(items);
@@ -130,26 +108,6 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveColumn::put_SelectAction(_In_ IAdaptiveActionElement* action)
     {
         m_selectAction = action;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveColumn::get_Bleed(_Out_ boolean* isBleed)
-    {
-        *isBleed = m_bleed;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveColumn::put_Bleed(boolean isBleed)
-    {
-        m_bleed = isBleed;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveColumn::get_BleedDirection(ABI::AdaptiveNamespace::BleedDirection* bleedDirection)
-    {
-        // TODO: Current behavior is broken because it doesn't update when bleed updates. Unfortunately, neither does
-        // the shared model logic.
-        *bleedDirection = m_bleedDirection;
         return S_OK;
     }
 
@@ -168,9 +126,7 @@ namespace AdaptiveNamespace
         column->SetVerticalContentAlignment(static_cast<AdaptiveSharedNamespace::VerticalContentAlignment>(m_verticalAlignment));
         column->SetWidth(HStringToUTF8(m_width.Get()));
         column->SetPixelWidth(m_pixelWidth);
-        column->SetMinHeight(m_minHeight);
-        column->SetBleed(m_bleed);
-		
+
         ComPtr<AdaptiveBackgroundImage> adaptiveBackgroundImage = PeekInnards<AdaptiveBackgroundImage>(m_backgroundImage);
         std::shared_ptr<AdaptiveSharedNamespace::BackgroundImage> sharedBackgroundImage;
         if (adaptiveBackgroundImage && SUCCEEDED(adaptiveBackgroundImage->GetSharedModel(sharedBackgroundImage)))

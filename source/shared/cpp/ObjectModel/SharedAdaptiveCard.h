@@ -22,8 +22,7 @@ namespace AdaptiveSharedNamespace
                      std::string const& speak,
                      std::string const& language,
                      VerticalContentAlignment verticalContentAlignment,
-                     HeightType height,
-                     unsigned int minHeight);
+                     HeightType height);
 
         AdaptiveCard(std::string const& version,
                      std::string const& fallbackText,
@@ -33,7 +32,6 @@ namespace AdaptiveSharedNamespace
                      std::string const& language,
                      VerticalContentAlignment verticalContentAlignment,
                      HeightType height,
-                     unsigned int minHeight,
                      std::vector<std::shared_ptr<BaseCardElement>>& body,
                      std::vector<std::shared_ptr<BaseActionElement>>& actions);
 
@@ -44,8 +42,7 @@ namespace AdaptiveSharedNamespace
                      std::string const& speak,
                      std::string const& language,
                      VerticalContentAlignment verticalContentAlignment,
-                     HeightType height,
-                     unsigned int minHeight);
+                     HeightType height);
 
         AdaptiveCard(std::string const& version,
                      std::string const& fallbackText,
@@ -55,7 +52,6 @@ namespace AdaptiveSharedNamespace
                      std::string const& language,
                      VerticalContentAlignment verticalContentAlignment,
                      HeightType height,
-                     unsigned int minHeight,
                      std::vector<std::shared_ptr<BaseCardElement>>& body,
                      std::vector<std::shared_ptr<BaseActionElement>>& actions);
 
@@ -75,8 +71,6 @@ namespace AdaptiveSharedNamespace
         void SetVerticalContentAlignment(const VerticalContentAlignment value);
         HeightType GetHeight() const;
         void SetHeight(const HeightType value);
-        unsigned int GetMinHeight() const;
-        void SetMinHeight(const unsigned int value);
 
         std::shared_ptr<BaseActionElement> GetSelectAction() const;
         void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
@@ -142,7 +136,6 @@ namespace AdaptiveSharedNamespace
         std::string m_language;
         VerticalContentAlignment m_verticalContentAlignment;
         HeightType m_height;
-        unsigned int m_minHeight;
 
         std::vector<std::shared_ptr<BaseCardElement>> m_body;
         std::vector<std::shared_ptr<BaseActionElement>> m_actions;

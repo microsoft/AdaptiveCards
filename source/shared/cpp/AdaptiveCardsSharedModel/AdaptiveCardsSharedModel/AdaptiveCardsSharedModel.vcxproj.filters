@@ -180,13 +180,13 @@
     <ClCompile Include="..\..\ObjectModel\Inline.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\ObjectModel\Paragraph.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\ObjectModel\TextRun.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\ObjectModel\TextElementProperties.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\ObjectModel\FeatureRegistration.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -380,13 +380,13 @@
     <ClInclude Include="..\..\ObjectModel\Inline.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\ObjectModel\Paragraph.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\ObjectModel\TextRun.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\ObjectModel\TextElementProperties.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ObjectModel\FeatureRegistration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
