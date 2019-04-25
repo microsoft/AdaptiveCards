@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-// This class contais all proterties that are used for rendering and need to be passed down between parent and child elements 
+// This class contais all properties that are used for rendering and need to be passed down between parent and child elements 
 namespace AdaptiveCards.Rendering
 {
     public enum BleedDirection { Left, Both, Right, None };
