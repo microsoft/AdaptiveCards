@@ -35,8 +35,8 @@ window.onload = function() {
     designer.attachTo(document.getElementById("designerRootHost"));
     
     /* Uncomment to test a custom palette item example
-    let personaHeaderSnippet = new ACDesigner.SnippetPaletteItem("Custom", "Example");
-    personaHeaderSnippet.snippet = {
+    let exampleSnippet = new ACDesigner.SnippetPaletteItem("Custom", "Example");
+    exampleSnippet.snippet = {
         type: "ColumnSet",
         columns: [
             {
@@ -70,7 +70,7 @@ window.onload = function() {
         ]
     };
 
-    designer.customPaletteItems = [ personaHeaderSnippet ];
+    designer.customPaletteItems = [ exampleSnippet ];
     */
 
 	designer.monacoModuleLoaded(monaco);
