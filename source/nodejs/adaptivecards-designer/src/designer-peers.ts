@@ -1260,6 +1260,7 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
         let actionSelector = createActionSelector(
             "Select action",
             card,
+            [ Adaptive.ShowCardAction.JsonTypeName ],
             this.cardElement.selectAction ? this.cardElement.selectAction.getJsonTypeName() : "none");
 
         actionSelector.input.onValueChanged = () => {
@@ -1431,6 +1432,7 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
         let actionSelector = createActionSelector(
             "Select action",
             card,
+            [ Adaptive.ShowCardAction.JsonTypeName ],
             this.cardElement.selectAction ? this.cardElement.selectAction.getJsonTypeName() : "none");
 
         actionSelector.input.onValueChanged = () => {
@@ -1535,6 +1537,7 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
         var actionSelector = createActionSelector(
             "Select action",
             card,
+            [ Adaptive.ShowCardAction.JsonTypeName ],
             this.cardElement.selectAction ? this.cardElement.selectAction.getJsonTypeName() : "none");
 
         actionSelector.input.onValueChanged = () => {
@@ -1624,6 +1627,7 @@ export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
         let actionSelector = createActionSelector(
             "Select action",
             card,
+            [ Adaptive.ShowCardAction.JsonTypeName ],
             this.cardElement.selectAction ? this.cardElement.selectAction.getJsonTypeName() : "none");
 
         actionSelector.input.onValueChanged = () => {
@@ -1685,7 +1689,11 @@ export class ActionSetPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard> {
     }
 }
 
-function createActionSelector(title: string, card: Adaptive.AdaptiveCard, defaultValue: string): ILabelAndInput<Adaptive.ChoiceSetInput> {
+function createActionSelector(
+    title: string,
+    card: Adaptive.AdaptiveCard,
+    forbiddenActionTypes: string[],
+    defaultValue: string): ILabelAndInput<Adaptive.ChoiceSetInput> {
     let header = addHeader(card, title);
     header.separator = true;
 
@@ -1694,9 +1702,14 @@ function createActionSelector(title: string, card: Adaptive.AdaptiveCard, defaul
     actionSelector.input.choices.push(new Adaptive.Choice("(not set)", "none"));
 
     for (var i = 0; i < Adaptive.AdaptiveCard.actionTypeRegistry.getItemCount(); i++) {
-        let choice = new Adaptive.Choice(Adaptive.AdaptiveCard.actionTypeRegistry.getItemAt(i).typeName, Adaptive.AdaptiveCard.actionTypeRegistry.getItemAt(i).typeName);
+        let actionType = Adaptive.AdaptiveCard.actionTypeRegistry.getItemAt(i).typeName;
+        let doAddActionType = forbiddenActionTypes ? forbiddenActionTypes.indexOf(actionType) < 0 : true;
 
-        actionSelector.input.choices.push(choice);
+        if (doAddActionType) {
+            let choice = new Adaptive.Choice(actionType, actionType);
+
+            actionSelector.input.choices.push(choice);
+        }
     }
 
     actionSelector.input.defaultValue = defaultValue;
@@ -1864,6 +1877,7 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
             let actionSelector = createActionSelector(
                 "Select action",
                 card,
+                [ Adaptive.ShowCardAction.JsonTypeName ],
                 this.cardElement.selectAction ? this.cardElement.selectAction.getJsonTypeName() : "none");
 
             actionSelector.input.onValueChanged = () => {
@@ -2099,6 +2113,7 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
         let actionSelector = createActionSelector(
             "Inline action",
             card,
+            [ Adaptive.ShowCardAction.JsonTypeName ],
             this.cardElement.inlineAction ? this.cardElement.inlineAction.getJsonTypeName() : "none");
 
         actionSelector.input.onValueChanged = () => {

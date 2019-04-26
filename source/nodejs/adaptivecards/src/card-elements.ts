@@ -25,11 +25,17 @@ function isActionAllowed(action: Action, forbiddenActionTypes: Array<string>): b
     return true;
 }
 
+enum InstanceCreationErrorType {
+    UnknownType,
+    ForbiddenType
+}
+
 function createCardObjectInstance<T extends ICardObject>(
     parent: CardElement,
     json: any,
+    forbiddenTypeNames: string[],
     createInstanceCallback: (typeName: string) => T,
-    createValidationErrorCallback: (typeName: string) => HostConfig.IValidationError,
+    createValidationErrorCallback: (typeName: string, errorType: InstanceCreationErrorType) => HostConfig.IValidationError,
     errors: Array<HostConfig.IValidationError>): T {
     let result: T = null;
 
@@ -37,36 +43,42 @@ function createCardObjectInstance<T extends ICardObject>(
         let tryToFallback = false;
         let typeName = json["type"];
 
-        result = createInstanceCallback(typeName);
-
-        if (!result) {
-            tryToFallback = true;
-
-            raiseParseError(createValidationErrorCallback(typeName), errors);
+        if (forbiddenTypeNames && forbiddenTypeNames.indexOf(typeName) >= 0) {
+            raiseParseError(createValidationErrorCallback(typeName, InstanceCreationErrorType.ForbiddenType), errors);
         }
         else {
-            result.setParent(parent);
-            result.parse(json, errors);
+            result = createInstanceCallback(typeName);
 
-            tryToFallback = result.shouldFallback();
-        }
+            if (!result) {
+                tryToFallback = true;
 
-        if (tryToFallback) {
-            let fallback = json["fallback"];
-
-            if (!fallback) {
-                parent.setShouldFallback(true);
+                raiseParseError(createValidationErrorCallback(typeName, InstanceCreationErrorType.UnknownType), errors);
             }
-            if (typeof fallback === "string" && fallback.toLowerCase() === "drop") {
-                result = null;
+            else {
+                result.setParent(parent);
+                result.parse(json, errors);
+
+                tryToFallback = result.shouldFallback();
             }
-            else if (typeof fallback === "object") {
-                result = createCardObjectInstance<T>(
-                    parent,
-                    fallback,
-                    createInstanceCallback,
-                    createValidationErrorCallback,
-                    errors);
+
+            if (tryToFallback) {
+                let fallback = json["fallback"];
+
+                if (!fallback) {
+                    parent.setShouldFallback(true);
+                }
+                if (typeof fallback === "string" && fallback.toLowerCase() === "drop") {
+                    result = null;
+                }
+                else if (typeof fallback === "object") {
+                    result = createCardObjectInstance<T>(
+                        parent,
+                        fallback,
+                        forbiddenTypeNames,
+                        createInstanceCallback,
+                        createValidationErrorCallback,
+                        errors);
+                }
             }
         }
     }
@@ -77,15 +89,25 @@ function createCardObjectInstance<T extends ICardObject>(
 export function createActionInstance(
     parent: CardElement,
     json: any,
+    forbiddenActionTypes: string[],
     errors: Array<HostConfig.IValidationError>): Action {
     return createCardObjectInstance<Action>(
         parent,
         json,
+        forbiddenActionTypes,
         (typeName: string) => { return AdaptiveCard.actionTypeRegistry.createInstance(typeName); },
-        (typeName: string) => {
-            return {
-                error: Enums.ValidationError.UnknownActionType,
-                message: "Unknown action type: " + typeName + ". Attempting to fall back."
+        (typeName: string, errorType: InstanceCreationErrorType) => {
+            if (errorType == InstanceCreationErrorType.UnknownType) {
+                return {
+                    error: Enums.ValidationError.UnknownActionType,
+                    message: "Unknown action type: " + typeName + ". Attempting to fall back."
+                }
+            }
+            else {
+                return {
+                    error: Enums.ValidationError.ActionTypeNotAllowed,
+                    message: "Action type " + typeName + " is not allowed in this context."
+                }
             }
         },
         errors);
@@ -98,11 +120,20 @@ export function createElementInstance(
     return createCardObjectInstance<CardElement>(
         parent,
         json,
+        [], // Forbidden types not supported for elements for now
         (typeName: string) => { return AdaptiveCard.elementTypeRegistry.createInstance(typeName); },
-        (typeName: string) => {
-            return {
-                error: Enums.ValidationError.UnknownElementType,
-                message: "Unknown element type: " + typeName + ". Attempting to fall back."
+        (typeName: string, errorType: InstanceCreationErrorType) => {
+            if (errorType == InstanceCreationErrorType.UnknownType) {
+                return {
+                    error: Enums.ValidationError.UnknownElementType,
+                    message: "Unknown element type: " + typeName + ". Attempting to fall back."
+                }
+            }
+            else {
+                return {
+                    error: Enums.ValidationError.ElementTypeNotAllowed,
+                    message: "Element type " + typeName + " is not allowed in this context."
+                }
             }
         },
         errors);
@@ -1351,6 +1382,7 @@ export class TextRun extends BaseTextBlock {
         this.selectAction = createActionInstance(
             this,
             json["selectAction"],
+            [ ShowCardAction.JsonTypeName ],
             errors);
     }
 
@@ -1924,6 +1956,7 @@ export class Image extends CardElement {
         this.selectAction = createActionInstance(
             this,
             json["selectAction"],
+            [ ShowCardAction.JsonTypeName ],
             errors);
     }
 
@@ -2003,6 +2036,7 @@ export abstract class CardElementContainer extends CardElement {
             this._selectAction = createActionInstance(
                 this,
                 json["selectAction"],
+                [ ShowCardAction.JsonTypeName ],
                 errors);
         }
     }
@@ -2834,6 +2868,7 @@ export class TextInput extends Input {
         this.inlineAction = createActionInstance(
             this,
             json["inlineAction"],
+            [ ShowCardAction.JsonTypeName ],
             errors);
     }
 
@@ -3721,6 +3756,8 @@ export abstract class Action implements ICardObject {
 }
 
 export class SubmitAction extends Action {
+    static readonly JsonTypeName = "Action.Submit";
+
     private _isPrepared: boolean = false;
     private _originalData: Object;
     private _processedData: Object;
@@ -3756,7 +3793,7 @@ export class SubmitAction extends Action {
     }
 
     getJsonTypeName(): string {
-        return "Action.Submit";
+        return SubmitAction.JsonTypeName;
     }
 
     toJSON() {
@@ -3794,10 +3831,12 @@ export class SubmitAction extends Action {
 }
 
 export class OpenUrlAction extends Action {
+    static readonly JsonTypeName = "Action.OpenUrl";
+
     url: string;
 
     getJsonTypeName(): string {
-        return "Action.OpenUrl";
+        return OpenUrlAction.JsonTypeName;
     }
 
     toJSON() {
@@ -3829,10 +3868,12 @@ export class OpenUrlAction extends Action {
 }
 
 export class ToggleVisibilityAction extends Action {
+    static readonly JsonTypeName = "Action.ToggleVisibility";
+
     targetElements = {}
 
     getJsonTypeName(): string {
-        return "Action.ToggleVisibility";
+        return ToggleVisibilityAction.JsonTypeName;
     }
 
     execute() {
@@ -3943,6 +3984,8 @@ export class HttpHeader {
 }
 
 export class HttpAction extends Action {
+    static readonly JsonTypeName = "Action.Http";
+
     private _url = new Shared.StringWithSubstitutions();
     private _body = new Shared.StringWithSubstitutions();
     private _headers: Array<HttpHeader> = [];
@@ -3981,7 +4024,7 @@ export class HttpAction extends Action {
     method: string;
 
     getJsonTypeName(): string {
-        return "Action.Http";
+        return HttpAction.JsonTypeName;
     }
 
     toJSON() {
@@ -4080,6 +4123,8 @@ export class HttpAction extends Action {
 }
 
 export class ShowCardAction extends Action {
+    static readonly JsonTypeName = "Action.ShowCard";
+
     protected addCssClasses(element: HTMLElement) {
         super.addCssClasses(element);
 
@@ -4089,7 +4134,7 @@ export class ShowCardAction extends Action {
     readonly card: AdaptiveCard = new InlineAdaptiveCard();
 
     getJsonTypeName(): string {
-        return "Action.ShowCard";
+        return ShowCardAction.JsonTypeName;
     }
 
     toJSON() {
@@ -4311,6 +4356,7 @@ class ActionCollection {
                 let action = createActionInstance(
                     this._owner,
                     jsonAction,
+                    [],
                     errors);
 
                 if (action) {
@@ -6257,10 +6303,10 @@ export class ActionTypeRegistry extends TypeRegistry<Action> {
     reset() {
         this.clear();
 
-        this.registerType("Action.OpenUrl", () => { return new OpenUrlAction(); });
-        this.registerType("Action.Submit", () => { return new SubmitAction(); });
-        this.registerType("Action.ShowCard", () => { return new ShowCardAction(); });
-        this.registerType("Action.ToggleVisibility", () => { return new ToggleVisibilityAction(); });
+        this.registerType(OpenUrlAction.JsonTypeName, () => { return new OpenUrlAction(); });
+        this.registerType(SubmitAction.JsonTypeName, () => { return new SubmitAction(); });
+        this.registerType(ShowCardAction.JsonTypeName, () => { return new ShowCardAction(); });
+        this.registerType(ToggleVisibilityAction.JsonTypeName, () => { return new ToggleVisibilityAction(); });
     }
 }
 
