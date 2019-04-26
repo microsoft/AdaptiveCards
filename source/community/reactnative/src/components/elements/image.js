@@ -329,7 +329,7 @@ export class Img extends React.Component {
 					style={wrapperComputedStyle}
 					onPageLayout={this.onPageLayoutHandler}>
 
-					<Image style={imageComputedStyle}
+					<Image resizeMode="contain" style={imageComputedStyle}
 						source={{ uri: imageUrl }} />
 				</ElementWrapper>
 			}}
