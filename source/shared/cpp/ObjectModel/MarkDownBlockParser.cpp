@@ -367,29 +367,33 @@ bool LinkParser::MatchAtLinkTextRun(std::stringstream& lookahead)
     }
     else
     {
+        // Block() will process the inline items within Link Text block
+        ParseBlock(lookahead);
+        m_linkTextParsedResult.AppendParseResult(GetParsedResult());
+
         if (lookahead.peek() == '[')
         {
-            m_parsedResult.AppendParseResult(m_linkTextParsedResult);
-            return false;
+            LinkParser linkParser;
+            // do syntax check of link
+            linkParser.Match(lookahead);
+            // append link result to the rest
+            linkParser.ParseBlock(lookahead);
+            m_linkTextParsedResult.AppendParseResult(linkParser.GetParsedResult());
         }
-        else
+
+        m_linkTextParsedResult.AppendParseResult(m_parsedResult);
+
+        if (lookahead.peek() == ']')
         {
-            // Block() will process the inline items within Link Text block
-            ParseBlock(lookahead);
-            m_linkTextParsedResult.AppendParseResult(m_parsedResult);
+            // move code gen objects to link text list to further process it
+            char streamChar;
+            lookahead.get(streamChar);
+            m_linkTextParsedResult.AddNewTokenToParsedResult(streamChar);
+            return true;
+        } 
 
-            if (lookahead.peek() == ']')
-            {
-                // move code gen objects to link text list to further process it
-                char streamChar;
-                lookahead.get(streamChar);
-                m_linkTextParsedResult.AddNewTokenToParsedResult(streamChar);
-                return true;
-            }
-
-            m_parsedResult.AppendParseResult(m_linkTextParsedResult);
-            return false;
-        }
+        m_parsedResult.AppendParseResult(m_linkTextParsedResult);
+        return false;
     }
 }
 

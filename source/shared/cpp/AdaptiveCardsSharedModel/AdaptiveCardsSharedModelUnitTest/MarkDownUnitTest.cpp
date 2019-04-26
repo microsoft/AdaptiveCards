@@ -321,6 +321,18 @@ namespace AdaptiveCardsSharedModelUnitTest
             MarkDownParser parser("[[[[hello](www.naver.com)");
             Assert::AreEqual<std::string>("<p>[[[<a href=\"www.naver.com\">hello</a></p>", parser.TransformToHtml());
         }
+
+        TEST_METHOD(LinkBasicValidationTest_ValidLinkTestWithMatchingInnerBrackets)
+        {
+            MarkDownParser parser("[[hello]](www.naver.com)");
+            Assert::AreEqual<std::string>("<p><a href=\"www.naver.com\">[hello]</a></p>", parser.TransformToHtml());
+        }
+
+        TEST_METHOD(LinkBasicValidationTest_ValidLinkTestWithMatchingInnerBrackets2)
+        {
+            MarkDownParser parser("[*[hello]*](www.naver.com)");
+            Assert::AreEqual<std::string>("<p><a href=\"www.naver.com\"><em>[hello]</em></a></p>", parser.TransformToHtml());
+        }
         TEST_METHOD(LinkBasicValidationTest_InvalidLinkTest)
         {
             MarkDownParser parser("[hello(www.naver.com)");
