@@ -733,26 +733,30 @@ namespace AdaptiveCards.Rendering.Html
                     int spacing = context.Config.GetSpacing(column.Spacing) / 2;
                     int lineThickness = column.Separator ? sep.LineThickness : 0;
 
-                    if (sep != null)
-                    {
-                        separator = new DivTag()
+                    separator = new DivTag()
                             .AddClass($"ac-columnseparator")
                             .Style("flex", "0 0 auto")
                             .Style("padding-left", $"{spacing}px")
                             .Style("margin-left", $"{spacing}px")
-                            .Style("border-left-color", $"{context.GetRGBColor(sep.LineColor)}")
-                            .Style("border-left-width", $"{lineThickness}px")
                             .Style("border-left-style", $"solid");
 
-                        if (column.IsVisible && isFirstVisibleColumn)
-                        {
-                            separator.Style("display", "none");
-
-                            isFirstVisibleColumn = false;
-                        }
-
-                        uiColumnSet.Children.Add(separator);
+                    // This are the only two properties for separator
+                    if (sep != null)
+                    {
+                        separator.Style("border-left-color", $"{context.GetRGBColor(sep.LineColor)}")
+                                 .Style("border-left-width", $"{lineThickness}px");
                     }
+
+                    uiColumnSet.Children.Add(separator);
+                }
+
+                if (column.IsVisible && isFirstVisibleColumn)
+                {
+                    if (separator != null)
+                    {
+                        separator.Style("display", "none");
+                    }
+                    isFirstVisibleColumn = false;
                 }
 
                 // do some sizing magic
