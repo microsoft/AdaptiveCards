@@ -333,6 +333,24 @@ namespace AdaptiveCardsSharedModelUnitTest
             MarkDownParser parser("[*[hello]*](www.naver.com)");
             Assert::AreEqual<std::string>("<p><a href=\"www.naver.com\"><em>[hello]</em></a></p>", parser.TransformToHtml());
         }
+
+        TEST_METHOD(LinkBasicValidationTest_ValidLinkTestWithMatchingInnerBrackets3)
+        {
+            MarkDownParser parser("[*[hello[hello]hello]*](www.naver.com)");
+            Assert::AreEqual<std::string>("<p><a href=\"www.naver.com\"><em>[hello[hello]hello]</em></a></p>", parser.TransformToHtml());
+        }
+
+        TEST_METHOD(LinkBasicValidationTest_ValidLinkTestWithMatchingInnerBrackets4)
+        {
+            MarkDownParser parser("[*hello[hello]hello](www.naver.com)");
+            Assert::AreEqual<std::string>("<p><a href=\"www.naver.com\">*hello[hello]hello</a></p>", parser.TransformToHtml());
+        }
+
+        TEST_METHOD(LinkBasicValidationTest_ValidLinkTestWithMatchingInnerBrackets5)
+        {
+            MarkDownParser parser("[*hellohello]hello](www.naver.com)");
+            Assert::AreEqual<std::string>("<p>[*hellohello]hello](www.naver.com)</p>", parser.TransformToHtml());
+        }
         TEST_METHOD(LinkBasicValidationTest_InvalidLinkTest)
         {
             MarkDownParser parser("[hello(www.naver.com)");
