@@ -5664,6 +5664,31 @@ export class ColumnSet extends StylableCardElementContainer {
     private _columns: Array<Column> = [];
     private _renderedColumns: Array<Column>;
 
+    private createColumnInstance(json: any, errors: Array<HostConfig.IValidationError>): Column {
+        return createCardObjectInstance<Column>(
+            this,
+            json,
+            [], // Forbidden types not supported for elements for now
+            (typeName: string) => {
+                return !typeName || typeName === "Column" ? new Column() : null;
+            },
+            (typeName: string, errorType: InstanceCreationErrorType) => {
+                if (errorType == InstanceCreationErrorType.UnknownType) {
+                    return {
+                        error: Enums.ValidationError.UnknownElementType,
+                        message: "Invalid element type " + typeName + " in a ColumnSet. Attempting to fall back."
+                    }
+                }
+                else {
+                    return {
+                        error: Enums.ValidationError.ElementTypeNotAllowed,
+                        message: "Element type " + typeName + " is not allowed in this context."
+                    }
+                }
+            },
+            errors);
+    }
+
     protected internalRender(): HTMLElement {
         this._renderedColumns = [];
 
@@ -5855,9 +5880,7 @@ export class ColumnSet extends StylableCardElementContainer {
             this._columns = [];
 
             for (let i = 0; i < jsonColumns.length; i++) {
-                let column = new Column();
-                column.setParent(this);
-                column.parse(jsonColumns[i], errors);
+                let column = this.createColumnInstance(jsonColumns[i], errors);
 
                 this._columns.push(column);
             }
@@ -6316,7 +6339,7 @@ export interface IMarkdownProcessingResult {
 }
 
 export class AdaptiveCard extends ContainerWithActions {
-    private static currentVersion: HostConfig.Version = new HostConfig.Version(1, 1);
+    private static currentVersion: HostConfig.Version = new HostConfig.Version(1, 2);
 
     static useAdvancedTextBlockTruncation: boolean = true;
     static useAdvancedCardBottomTruncation: boolean = false;
@@ -6533,38 +6556,10 @@ export class AdaptiveCard extends ContainerWithActions {
     render(target?: HTMLElement): HTMLElement {
         let renderedCard: HTMLElement;
 
-        if (this.shouldFallback()) {
-            if (this._fallbackCard) {
-                this._fallbackCard.hostConfig = this.hostConfig;
+        if (this.shouldFallback() && this._fallbackCard) {
+            this._fallbackCard.hostConfig = this.hostConfig;
 
-                renderedCard = this._fallbackCard.render();
-            }
-            else {
-                let errorText = !Utils.isNullOrEmpty(this.fallbackText) ? this.fallbackText : "The card could not be rendered. It is either malformed or uses features not supported by this host.";
-
-                try {
-                    let fallbackCard = new AdaptiveCard();
-                    fallbackCard.hostConfig = this.hostConfig;
-                    fallbackCard.parse(
-                        {
-                            type: "AdaptiveCard",
-                            version: "1.0",
-                            body: [
-                                {
-                                    type: "TextBlock",
-                                    text: errorText,
-                                    wrap: true
-                                }
-                            ]
-                        });
-
-                    renderedCard = fallbackCard.render();
-                }
-                catch (e) {
-                    renderedCard = document.createElement("div");
-                    renderedCard.innerHTML = errorText;
-                }
-            }
+            renderedCard = this._fallbackCard.render();
         }
         else {
             renderedCard = super.render();
