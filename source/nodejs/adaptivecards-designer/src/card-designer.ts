@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import * as Clipboard from "clipboard";
 import * as Adaptive from "adaptivecards";
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
@@ -258,7 +260,7 @@ export class CardDesigner {
 
         styleSheetLinkElement.rel = "stylesheet";
 		styleSheetLinkElement.type = "text/css";
-		
+
 		if(Utils.isAbsoluteUrl(this.activeHostContainer.styleSheet))
         {
 			styleSheetLinkElement.href = this.activeHostContainer.styleSheet;
@@ -361,16 +363,16 @@ export class CardDesigner {
             }
         }
     }
-    
+
     private updateFullLayout() {
         this.scheduleLayoutUpdate();
         this.updateJsonEditorsLayout();
     }
-    
+
     private jsonUpdateTimer: any;
     private cardUpdateTimer: any;
     private updateLayoutTimer: any;
-    
+
     private preventCardUpdate: boolean = false;
     
     private setCardPayload(payload: object) {
@@ -388,10 +390,10 @@ export class CardDesigner {
     private updateJsonFromCard(addToUndoStack: boolean = true) {
         try {
             this.preventCardUpdate = true;
-    
+
             if (!this.preventJsonUpdate && this._isMonacoEditorLoaded) {
                 let cardPayload = this.card.toJSON();
-    
+
                 if (addToUndoStack) {
                     this.addToUndoStack(cardPayload);
                 }
@@ -403,15 +405,15 @@ export class CardDesigner {
             this.preventCardUpdate = false;
         }
     }
-    
+
     private scheduleUpdateJsonFromCard() {
         clearTimeout(this.jsonUpdateTimer);
-    
+
         if (!this.preventJsonUpdate) {
             this.jsonUpdateTimer = setTimeout(() => { this.updateJsonFromCard(); }, 100);
         }
     }
-    
+
     private preventJsonUpdate: boolean = false;
     
     private getCurrentCardEditorPayload(): string {
@@ -425,7 +427,7 @@ export class CardDesigner {
     private updateCardFromJson() {
         try {
             this.preventJsonUpdate = true;
-    
+
             if (!this.preventCardUpdate) {
                 this.designerSurface.setCardPayloadAsString(this.getCurrentCardEditorPayload());
             }
@@ -434,21 +436,21 @@ export class CardDesigner {
             this.preventJsonUpdate = false;
         }
     }
-    
+
     private scheduleUpdateCardFromJson() {
         clearTimeout(this.cardUpdateTimer);
-    
+
         if (!this.preventCardUpdate) {
             this.cardUpdateTimer = setTimeout(() => { this.updateCardFromJson(); }, 100);
         }
     }
-    
+
     private scheduleLayoutUpdate() {
         clearTimeout(this.updateLayoutTimer);
-    
+
         this.updateLayoutTimer = setTimeout(() => { this.designerSurface.updateLayout(false); }, 50);
     }
-    
+
     private _fullScreenHandler = new FullScreenHandler();
     private _fullScreenButton: ToolbarButton;
     private _hostContainerChoicePicker: ToolbarChoicePicker;
@@ -587,7 +589,7 @@ export class CardDesigner {
         this._fullScreenHandler = new FullScreenHandler();
         this._fullScreenHandler.onFullScreenChanged = (isFullScreen: boolean) => {
             this._fullScreenButton.toolTip = isFullScreen ? "Exit full screen" : "Enter full screen";
-    
+
             this.updateFullLayout();
         }
     }
@@ -678,7 +680,7 @@ export class CardDesigner {
         this.updateJsonEditorsLayout();
         this.updateJsonFromCard(false);
     }
-    
+
     private updateToolbar() {
         this._undoButton.isEnabled = this.canUndo;
         this._redoButton.isEnabled = this.canRedo;
@@ -760,7 +762,7 @@ export class CardDesigner {
         let styleSheetLinkElement = document.createElement("link");
         styleSheetLinkElement.id = "__ac-designer";
         styleSheetLinkElement.rel = "stylesheet";
-		styleSheetLinkElement.type = "text/css";		
+		styleSheetLinkElement.type = "text/css";
         styleSheetLinkElement.href = Utils.joinPaths(this._assetPath, "adaptivecards-designer.css");
 
         document.getElementsByTagName("head")[0].appendChild(styleSheetLinkElement);
@@ -777,7 +779,7 @@ export class CardDesigner {
         root.style.flexDirection = "column";
         root.style.overflow = "hidden";
 
-        root.innerHTML = 
+        root.innerHTML =
             '<div id="toolbarHost"></div>' +
             '<div class="content" style="display: flex; flex: 1 1 auto; overflow-y: hidden;">' +
                 '<div id="leftCollapsedPaneTabHost" class="acd-verticalCollapsedTabContainer acd-dockedLeft" style="border-right: 1px solid #D2D2D2;"></div>' +
@@ -967,7 +969,7 @@ export class CardDesigner {
     setCard(payload: object) {
         try {
             this.preventJsonUpdate = true;
-    
+
             if (!this.preventCardUpdate) {
                 this.designerSurface.setCardPayloadAsObject(payload);
             }
@@ -1068,11 +1070,11 @@ export class CardDesigner {
     get dataToolbox(): Toolbox {
         return this._dataToolbox;
 	}
-	
+
 	get assetPath(): string {
 		return this._assetPath;
 	}
-		
+
 	set assetPath(value: string) {
 		this._assetPath = value;
     }

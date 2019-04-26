@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -17,9 +19,9 @@ namespace AdaptiveCards.Rendering.Wpf
             var parentRenderArgs = context.RenderArgs;
             // This is the renderArgs that will be passed down to the children
             var childRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
-            
+
             Grid uiOuterContainer = new Grid();
-            
+
             uiOuterContainer.Children.Add(uiContainer);
             Border border = new Border();
             border.Child = uiOuterContainer;
@@ -157,7 +159,7 @@ namespace AdaptiveCards.Rendering.Wpf
             Grid.SetRow(uiSep, uiContainer.RowDefinitions.Count - 1);
             uiContainer.Children.Add(uiSep);
         }
-        
+
         // For applying bleeding, we must know if the element has padding, so both properties are applied in the same method
         public static bool ApplyPadding(Border border, Grid uiElement, AdaptiveCollectionElement element, AdaptiveRenderArgs parentRenderArgs, AdaptiveRenderContext context)
         {

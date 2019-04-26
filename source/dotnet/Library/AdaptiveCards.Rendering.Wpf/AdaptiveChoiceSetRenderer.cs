@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
@@ -110,7 +112,7 @@ namespace AdaptiveCards.Rendering.Wpf
                     }
                 }
             });
-            
+
             if (!input.IsMultiSelect && input.Style == AdaptiveChoiceInputStyle.Compact)
             {
                 Grid.SetRow(uiComboBox, 1);
@@ -125,7 +127,7 @@ namespace AdaptiveCards.Rendering.Wpf
             }
         }
         public static void SetContent(ContentControl uiControl, string text, bool wrap)
-        { 
+        {
             if (wrap)
             {
                 uiControl.Content = new TextBlock { Text = text, TextWrapping = TextWrapping.Wrap };

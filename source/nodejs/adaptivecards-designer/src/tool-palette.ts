@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import * as DesignerSurface from "./card-designer-surface";
 import * as DesignerPeers from "./designer-peers";
 import * as Adaptive from "adaptivecards";

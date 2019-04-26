@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import * as Enums from "./enums";
 import * as Utils from "./utils";
 import * as Shared from "./shared";
@@ -280,7 +282,7 @@ export class ContainerStyleDefinition {
             this.backgroundColor = obj["backgroundColor"];
 
             this.foregroundColors.parse(obj["foregroundColors"]);
-            
+
             this.highlightBackgroundColor = obj["highlightBackgroundColor"];
             this.highlightForegroundColor = obj["highlightForegroundColor"];
         }
@@ -445,7 +447,7 @@ export class Version {
             return -1;
         }
         else if (this.minor > otherVersion.minor) {
-            return 1; 
+            return 1;
         }
         else if (this.minor < otherVersion.minor) {
             return -1;
@@ -559,7 +561,7 @@ export class FontStyleDefinition {
         default: 400,
         bolder: 600
     };
-    
+
     constructor(fontFamily?: string) {
         if (fontFamily) {
             this.fontFamily = fontFamily;
@@ -737,7 +739,7 @@ export class HostConfig {
 			this.getEffectiveSpacing(paddingDefinition.bottom),
 			this.getEffectiveSpacing(paddingDefinition.left));
     }
-    
+
     makeCssClassNames(...classNames: string[]): string[] {
         let result: string[] = [];
 

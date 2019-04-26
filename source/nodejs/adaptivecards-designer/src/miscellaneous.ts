@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
 
 export interface IPoint {
@@ -40,7 +42,7 @@ export class Rect {
 
 export class Utils {
 	public static isAbsoluteUrl(urlString: string): boolean {
-		return urlString.indexOf('http://') === 0 
+		return urlString.indexOf('http://') === 0
 		|| urlString.indexOf('https://') === 0;
 	}
 
@@ -50,7 +52,7 @@ export class Utils {
 				if (!part) {
 					part = "";
 				}
-			
+
 				if (i === 0) {
 					return part.trim().replace(/[\/]*$/g, '')
 				} else {

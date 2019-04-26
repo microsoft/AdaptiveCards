@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import { IPoint } from "./miscellaneous";
 
 export const DRAG_THRESHOLD = 10;
