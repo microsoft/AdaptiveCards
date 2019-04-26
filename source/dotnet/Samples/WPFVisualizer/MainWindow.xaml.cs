@@ -107,7 +107,7 @@ namespace WpfVisualizer
         private void RenderCard()
         {
             cardError.Children.Clear();
-            cardGrid.Children.Clear();
+            cardGrid.Opacity = 0.65;
 
             try
             {
@@ -136,6 +136,8 @@ namespace WpfVisualizer
 
                 renderedCard.OnMediaClicked += OnMediaClick;
 
+                cardGrid.Opacity = 1;
+                cardGrid.Children.Clear();
                 cardGrid.Children.Add(renderedCard.FrameworkElement);
 
                 // Report any warnings
