@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import { HostContainer } from "./host-container";
 import * as Adaptive from "adaptivecards";
 import * as outlookConfiguration from "../../../../../samples/HostConfig/outlook-desktop.json";

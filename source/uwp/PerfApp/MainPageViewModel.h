@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "pch.h"
@@ -10,7 +12,7 @@ namespace PerfApp
         public:
         MainPageViewModel() { Reset(); }
 
-        property Platform::String^ CurrentFile 
+        property Platform::String^ CurrentFile
         {
             Platform::String^ get();
         }
@@ -87,7 +89,7 @@ namespace PerfApp
         void DoneRunning();
 
         virtual event Windows::UI::Xaml::Data::PropertyChangedEventHandler^ PropertyChanged;
-	
+
     private:
 
         Platform::String^ m_currentFile;

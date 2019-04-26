@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
 
 var sampleConfiguration = require("../../../../../samples/HostConfig/sample.json");
@@ -20,7 +22,7 @@ export abstract class HostContainer {
     public initialize() {
         Adaptive.AdaptiveCard.elementTypeRegistry.reset();
         Adaptive.AdaptiveCard.actionTypeRegistry.reset();
-        
+
         Adaptive.AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = true;
         Adaptive.AdaptiveCard.useAdvancedCardBottomTruncation = false;
         Adaptive.AdaptiveCard.useAdvancedTextBlockTruncation = true;
