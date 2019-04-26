@@ -118,6 +118,39 @@ namespace AdaptiveCards.Rendering.Html
                 .Attr("aria-label", action.Title ?? "")
                 .Attr("tabindex", "0");
 
+
+            AdaptiveToggleVisibilityAction toggleVisibilityAction = null;
+            if ((toggleVisibilityAction = action as AdaptiveToggleVisibilityAction) != null)
+            {
+                string targetElements = string.Empty;
+
+                foreach (var targetElement in toggleVisibilityAction.TargetElements)
+                {
+                    // If the string is not empty, append a comma in preparation to add the new target element
+                    if (!String.IsNullOrWhiteSpace(targetElements))
+                    {
+                        targetElements += ",";
+                    }
+
+                    string targetElementId = null;
+                    string targetElementToggleAction = "Toggle";
+
+                    if (targetElement != null)
+                    {
+                        targetElementId = targetElement.ElementId;
+
+                        if (targetElement.IsVisible.HasValue)
+                        {
+                            targetElementToggleAction = targetElement.IsVisible.Value.ToString();
+                        }
+                    }
+
+                    targetElements += (targetElementId + ":" + targetElementToggleAction);
+                }
+
+                tag.Attr("data-ac-targetelements", targetElements);
+            }
+
             ActionTransformers.Apply(action, tag, context);
 
             return tag;
@@ -210,38 +243,6 @@ namespace AdaptiveCards.Rendering.Html
                     }
 
                     buttonElement.Append(iconElement);
-                }
-
-                AdaptiveToggleVisibilityAction toggleVisibilityAction = null;
-                if ((toggleVisibilityAction = action as AdaptiveToggleVisibilityAction) != null)
-                {
-                    string targetElements = string.Empty;
-
-                    foreach (var targetElement in toggleVisibilityAction.TargetElements)
-                    {
-                        // If the string is not empty, append a comma in preparation to add the new target element
-                        if (!String.IsNullOrWhiteSpace(targetElements))
-                        {
-                            targetElements += ",";
-                        }
-
-                        string targetElementId = null;
-                        string targetElementToggleAction = "Toggle";
-
-                        if (targetElement != null)
-                        {
-                            targetElementId = targetElement.ElementId;
-
-                            if (targetElement.IsVisible.HasValue)
-                            {
-                                targetElementToggleAction = targetElement.IsVisible.Value.ToString();
-                            }
-                        }
-
-                        targetElements += (targetElementId + ":" + targetElementToggleAction);
-                    }
-
-                    buttonElement.Attr("data-ac-targetelements", targetElements);
                 }
 
                 var titleElement = new HtmlTag("div", false) { Text = action.Title };
