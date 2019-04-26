@@ -369,21 +369,27 @@ bool LinkParser::MatchAtLinkTextRun(std::stringstream& lookahead)
     }
     else
     {
-        // Block() will process the inline items within Link Text block
+        // parses recursively to the right
         ParseBlock(lookahead);
         m_linkTextParsedResult.AppendParseResult(GetParsedResult());
 
+        // check if the special token that wasn't handled was '['
         if (lookahead.peek() == '[')
         {
+            // begin new syntax check of link
             LinkParser linkParser;
             // do syntax check of link
             linkParser.Match(lookahead);
-            // append link result to the rest
-            linkParser.ParseBlock(lookahead);
+            // this check is needed because if this token is n't handled, 
+            // it will be treated as occurred outside of link text
+            if (lookahead.peek() != ']')
+            {
+                // continute parsing of the right side it recursively
+                linkParser.ParseBlock(lookahead);
+            }
+            // append link parsing result
             m_linkTextParsedResult.AppendParseResult(linkParser.GetParsedResult());
         }
-
-        m_linkTextParsedResult.AppendParseResult(m_parsedResult);
 
         if (lookahead.peek() == ']')
         {
