@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -11,7 +13,7 @@ namespace AdaptiveCards
     {
         public List<AdaptiveWarning> Warnings { get; set; } = new List<AdaptiveWarning>();
 
-        // TODO: temporary warning code for fallback card. Remove when common set of error codes created and integrated.
+        // TODO #2749: temporary warning code for fallback card. Remove when common set of error codes created and integrated.
         private enum WarningStatusCode { UnsupportedSchemaVersion = 7, InvalidLanguage = 12 };
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
@@ -30,7 +32,8 @@ namespace AdaptiveCards
 
             if (reader.Depth == 0)
             {
-                AdaptiveTypedElementConverter.BeginCard();
+                // Needed for ID collision detection after fallback was introduced
+                ParseContext.Initialize();
 
                 if (jObject.Value<string>("version") == null)
                 {

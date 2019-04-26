@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "Enums.h"
 #include "pch.h"
 #include "BackgroundImage.h"

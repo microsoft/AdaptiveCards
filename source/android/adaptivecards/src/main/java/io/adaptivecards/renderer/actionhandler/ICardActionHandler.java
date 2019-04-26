@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer.actionhandler;
 
 import io.adaptivecards.objectmodel.BaseActionElement;

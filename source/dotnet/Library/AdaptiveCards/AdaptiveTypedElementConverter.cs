@@ -1,9 +1,11 @@
-using System;
-using System.Reflection;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace AdaptiveCards
 {
@@ -13,23 +15,12 @@ namespace AdaptiveCards
     public class AdaptiveTypedElementConverter : JsonConverter, ILogWarnings
     {
         public List<AdaptiveWarning> Warnings { get; set; } = new List<AdaptiveWarning>();
-        private static HashSet<string> Ids { get; set; } = new HashSet<string>();
-        public static void BeginCard()
-        {
-            Ids.Clear();
-        }
-
-        public static void EndCard()
-        {
-            Ids.Clear();
-        }
 
         /// <summary>
         /// Default types to support, register any new types to this list
         /// </summary>
-        private static readonly Lazy<Dictionary<string, Type>> TypedElementTypes = new Lazy<Dictionary<string, Type>>(() =>
+        public static readonly Lazy<Dictionary<string, Type>> TypedElementTypes = new Lazy<Dictionary<string, Type>>(() =>
         {
-            // TODO: Should this be a static? It makes it impossible to have diff renderers support different elements
             var types = new Dictionary<string, Type>
             {
                 [AdaptiveCard.TypeName] = typeof(AdaptiveCard),
@@ -66,29 +57,91 @@ namespace AdaptiveCards
             TypedElementTypes.Value[typeName] = typeof(T);
         }
 
-        public override bool CanRead => true;
-
-        public override bool CanWrite => false;
-
         public override bool CanConvert(Type objectType)
         {
             return typeof(AdaptiveTypedElement).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
         }
 
+        public override bool CanWrite => false;
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             throw new NotImplementedException();
         }
 
+        public override bool CanRead => true;
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var jObject = JObject.Load(reader);
 
-            var typeName = jObject["type"]?.Value<string>() ?? jObject["@type"]?.Value<string>();
+            string typeName = GetElementTypeName(objectType, jObject);
+
+            if (TypedElementTypes.Value.TryGetValue(typeName, out var type))
+            {
+                string objectId = jObject.Value<string>("id");
+                if (objectId == null)
+                {
+                    if (typeof(AdaptiveInput).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()))
+                    {
+                        throw new AdaptiveSerializationException($"Required property 'id' not found on '{typeName}'");
+                    }
+                }
+
+                // add id of element to ParseContext
+                AdaptiveInternalID internalID = AdaptiveInternalID.Current();
+                if (type != typeof(AdaptiveCard))
+                {
+                    internalID = AdaptiveInternalID.Next();
+                    ParseContext.PushElement(objectId, internalID);
+                }
+
+                var result = (AdaptiveTypedElement)Activator.CreateInstance(type);
+                try
+                {
+                    serializer.Populate(jObject.CreateReader(), result);
+                }
+                catch (JsonSerializationException) { }
+
+                // remove id of element from ParseContext
+                if (type != typeof(AdaptiveCard))
+                {
+                    ParseContext.PopElement();
+                }
+
+                HandleAdditionalProperties(result);
+                return result;
+            }
+            else // We're looking at an unknown element
+            {
+                string objectId = jObject.Value<string>("id");
+                AdaptiveInternalID internalID = AdaptiveInternalID.Next();
+
+                // Handle deserializing unknown element
+                ParseContext.PushElement(objectId, internalID);
+                AdaptiveTypedElement result = null;
+                if (ParseContext.Type == ParseContext.ContextType.Element)
+                {
+                    result = (AdaptiveTypedElement)Activator.CreateInstance(typeof(AdaptiveUnknownElement));
+                    serializer.Populate(jObject.CreateReader(), result);
+                }
+                else // ParseContext.Type == ParseContext.ContextType.Action
+                {
+                    result = (AdaptiveTypedElement)Activator.CreateInstance(typeof(AdaptiveUnknownAction));
+                    serializer.Populate(jObject.CreateReader(), result);
+                }
+                ParseContext.PopElement();
+
+                Warnings.Add(new AdaptiveWarning(-1, $"Unknown element '{typeName}'"));
+                return result;
+            }
+        }
+
+        public static string GetElementTypeName(Type objectType, JObject jObject)
+        {
+            string typeName = jObject["type"]?.Value<string>() ?? jObject["@type"]?.Value<string>();
             if (typeName == null)
             {
                 // Get value of this objectType's "Type" JsonProperty(Required)
-                var typeJsonPropertyRequiredValue = objectType.GetRuntimeProperty("Type")
+                string typeJsonPropertyRequiredValue = objectType.GetRuntimeProperty("Type")
                     .CustomAttributes.Where(a => a.AttributeType == typeof(JsonPropertyAttribute)).FirstOrDefault()?
                     .NamedArguments.Where(a => a.TypedValue.ArgumentType == typeof(Required)).FirstOrDefault()
                     .TypedValue.Value.ToString();
@@ -106,44 +159,7 @@ namespace AdaptiveCards
                 }
             }
 
-            if (TypedElementTypes.Value.TryGetValue(typeName, out var type))
-            {
-                if (jObject.Value<string>("id") == null)
-                {
-                    if (typeof(AdaptiveInput).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()))
-                    {
-                        throw new AdaptiveSerializationException($"Required property 'id' not found on '{typeName}'");
-                    }
-                }
-                else
-                {
-                    string objectId = jObject.Value<string>("id");
-                    if (Ids.Contains(objectId))
-                    {
-                        throw new AdaptiveSerializationException($"Duplicate 'id' found: '{objectId}'");
-                    }
-                    else
-                    {
-                        Ids.Add(objectId);
-                    }
-                }
-
-                var result = (AdaptiveTypedElement)Activator.CreateInstance(type);
-                try
-                {
-                    serializer.Populate(jObject.CreateReader(), result);
-                }
-                catch (JsonSerializationException)
-                {
-                    return result;
-                }
-
-                HandleAdditionalProperties(result);
-                return result;
-            }
-
-            Warnings.Add(new AdaptiveWarning(-1, $"Unknown element '{typeName}'"));
-            return null;
+            return typeName;
         }
 
         private void HandleAdditionalProperties(AdaptiveTypedElement te)
@@ -155,8 +171,8 @@ namespace AdaptiveCards
 
             // Create a list of known property names
             List<String> knownPropertyNames = new List<String>();
-            var runtimeProperties = te.GetType().GetRuntimeProperties();
-            foreach (var runtimeProperty in runtimeProperties)
+            IEnumerable<PropertyInfo> runtimeProperties = te.GetType().GetRuntimeProperties();
+            foreach (PropertyInfo runtimeProperty in runtimeProperties)
             {
                 // Check if the property has a JsonPropertyAttribute with the value set
                 String jsonPropertyName = null;
@@ -183,7 +199,7 @@ namespace AdaptiveCards
 
             foreach (var prop in te.AdditionalProperties)
             {
-                Warnings.Add(new AdaptiveWarning(-1, $"Unknown property '{prop.Key}' on '{te.Type}'"));
+                Warnings.Add(new AdaptiveWarning((int)WarningStatusCode.UnknownElementType, $"Unknown property '{prop.Key}' on '{te.Type}'"));
             }
         }
 
@@ -191,7 +207,9 @@ namespace AdaptiveCards
             where T : AdaptiveTypedElement
         {
             if (typeName == null)
+            {
                 typeName = ((T)Activator.CreateInstance(typeof(T))).Type;
+            }
 
             if (TypedElementTypes.Value.TryGetValue(typeName, out var type))
             {
@@ -199,5 +217,7 @@ namespace AdaptiveCards
             }
             return null;
         }
+
+        private enum WarningStatusCode { UnknownElementType = 0 };
     }
 }

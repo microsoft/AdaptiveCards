@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 
@@ -147,11 +149,11 @@ namespace AdaptiveCards.Test
             AdaptiveTargetElement targetElement = targetElements[0];
             Assert.AreEqual("id1", targetElement.ElementId);
             Assert.IsNull(targetElement.IsVisible);
-            
+
             targetElement = targetElements[1];
             Assert.AreEqual("id2", targetElement.ElementId);
             Assert.IsTrue(targetElement.IsVisible == false);
-            
+
             targetElement = targetElements[2];
             Assert.AreEqual("id3", targetElement.ElementId);
             Assert.IsTrue(targetElement.IsVisible == true);

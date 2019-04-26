@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,7 +50,7 @@ namespace AdaptiveCards.Test
         }
 
         [TestMethod]
-        public void TestSkippingUnknownElements()
+        public void TestKeepingUnknownElements()
         {
             var json = @"{
   ""type"": ""AdaptiveCard"",
@@ -78,9 +80,19 @@ namespace AdaptiveCards.Test
             var result = AdaptiveCard.FromJson(json);
 
             Assert.IsNotNull(result.Card);
-            Assert.AreEqual(1, result.Card.Body.Count);
-            Assert.AreEqual(1, result.Card.Actions.Count);
+            Assert.AreEqual(2, result.Card.Body.Count);
+            Assert.AreEqual(2, result.Card.Actions.Count);
             Assert.AreEqual(2, result.Warnings.Count);
+
+            // check first unknown element
+            var unknown_elem = (AdaptiveUnknownElement)result.Card.Body[0];
+            Assert.AreEqual(unknown_elem.Type, "IDunno");
+            Assert.AreEqual(unknown_elem.AdditionalProperties["text"], "Hello");
+
+            // check second unknown element
+            var unknown_action = result.Card.Actions[0];
+            Assert.AreEqual(unknown_action.Type, "Action.IDunno");
+            Assert.AreEqual(unknown_action.Title, "Action 1");
         }
 
         [TestMethod]
@@ -133,6 +145,57 @@ namespace AdaptiveCards.Test
     }
   ],
   ""-ms-test"": ""Card extension data""
+}";
+            Assert.AreEqual(expected, card.ToJson());
+
+            var deserializedCard = AdaptiveCard.FromJson(expected).Card;
+            Assert.AreEqual(expected, deserializedCard.ToJson());
+        }
+
+        [TestMethod]
+        public void TestSerializingUnknownItems()
+        {
+            var card = new AdaptiveCard("1.2")
+            {
+                Body =
+                {
+                    new AdaptiveUnknownElement()
+                    {
+                        Type = "Graph",
+                        AdditionalProperties =
+                        {
+                            ["UnknownProperty1"] = "UnknownValue1"
+                        }
+                    }
+                },
+                Actions =
+                {
+                    new AdaptiveUnknownAction()
+                    {
+                        Type = "Action.Graph",
+                        AdditionalProperties =
+                        {
+                            ["UnknownProperty2"] = "UnknownValue2"
+                        }
+                    }
+                }
+            };
+
+            var expected = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.2"",
+  ""body"": [
+    {
+      ""type"": ""Graph"",
+      ""UnknownProperty1"": ""UnknownValue1""
+    }
+  ],
+  ""actions"": [
+    {
+      ""type"": ""Action.Graph"",
+      ""UnknownProperty2"": ""UnknownValue2""
+    }
+  ]
 }";
             Assert.AreEqual(expected, card.ToJson());
 
@@ -980,6 +1043,6 @@ namespace AdaptiveCards.Test
         }
 
 
-        
+
     }
 }

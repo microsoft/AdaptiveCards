@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import { SettingsManager } from "./settings-manager";
 
 export enum SidePaneOrientation {
@@ -38,7 +40,7 @@ export class SidePane {
             this.onToggled(this);
         }
     }
-    
+
     readonly attachedTo: HTMLElement = null;
     readonly id: string;
     readonly title: string;
@@ -109,7 +111,7 @@ export class SidePane {
         this._headerRootElement.appendChild(this._headerContentElement);
 
         this.attachedTo.insertBefore(this._headerRootElement, this.attachedTo.firstChild);
-        
+
         let dimensionSetting = SettingsManager.tryLoadNumberSetting(this.getDimensionSettingName());
 
         if (dimensionSetting.succeeded && dimensionSetting.value != undefined) {
@@ -120,9 +122,9 @@ export class SidePane {
                 this.attachedTo.style.height = dimensionSetting.value + "px";
             }
         }
-    
+
         let isExpandedSetting = SettingsManager.tryLoadBooleanSetting(this.id + "IsExpanded", true);
-    
+
         if (isExpandedSetting.succeeded && !isExpandedSetting.value) {
             this.toggle();
         }

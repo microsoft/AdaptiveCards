@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -33,7 +35,7 @@ namespace AdaptiveCards.Rendering.Wpf
             }
 
             childrenRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : columnSet.Style.Value;
-            
+
             for (int i = 0; i < columnSet.Columns.Count; ++i)
             {
                 AdaptiveColumn column = columnSet.Columns[i];

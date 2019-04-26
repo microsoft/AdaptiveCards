@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 
 #if defined(__ANDROID__) || (__APPLE__) || (__linux__)
