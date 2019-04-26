@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import { InputWithPopup, PopupControl } from "./inputwithpopup";
 import { Calendar } from "./calendar";
 

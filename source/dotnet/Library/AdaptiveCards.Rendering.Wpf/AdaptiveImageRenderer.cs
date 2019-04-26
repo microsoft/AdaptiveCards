@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.IO;
 using System.Windows;
@@ -22,7 +24,7 @@ namespace AdaptiveCards.Rendering.Wpf
             }
 
             uiImage.SetSource(image, finalUri, context);
-            
+
             uiImage.SetHorizontalAlignment(image.HorizontalAlignment);
 
             string style = $"Adaptive.{image.Type}";

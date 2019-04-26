@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +10,7 @@ namespace AdaptiveCards
 {
     public class ColorUtil
     {
-        // We need to have a string in the format #AARRGGBB or #RRGGBB  
+        // We need to have a string in the format #AARRGGBB or #RRGGBB
         public static bool IsValidColor(string color)
         {
             if (!string.IsNullOrEmpty(color) && (color.Length == 7 || color.Length == 9) && color[0] == '#')
@@ -62,7 +64,7 @@ namespace AdaptiveCards
             {
                 // Reset to black as original color was not valid
                 return "#FF000000";
-            }           
+            }
         }
 
     }
