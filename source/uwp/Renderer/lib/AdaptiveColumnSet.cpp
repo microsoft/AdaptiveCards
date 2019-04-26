@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveColumnSet.h"
 
@@ -87,7 +89,7 @@ namespace AdaptiveNamespace
     {
         m_minHeight = minHeight;
         return S_OK;
-    }	
+    }
 
     HRESULT AdaptiveColumnSet::get_Bleed(_Out_ boolean* isBleed)
     {

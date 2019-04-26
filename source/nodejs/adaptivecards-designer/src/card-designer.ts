@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import * as Clipboard from "clipboard";
 import * as Adaptive from "adaptivecards";
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
@@ -215,7 +217,7 @@ export class CardDesigner {
 
         styleSheetLinkElement.rel = "stylesheet";
 		styleSheetLinkElement.type = "text/css";
-		
+
 		if(Utils.isAbsoluteUrl(this.activeHostContainer.styleSheet))
         {
 			styleSheetLinkElement.href = this.activeHostContainer.styleSheet;
@@ -297,24 +299,24 @@ export class CardDesigner {
             // its direct container has an explicit height.
             let jsonEditorPaneRect = this._jsonEditorPane.attachedTo.getBoundingClientRect();
             let jsonEditorHeaderRect = this._jsonEditorPane.getHeaderBoundingRect();
-   
+
             this._jsonEditorPane.content.style.height = (jsonEditorPaneRect.height - jsonEditorHeaderRect.height) + "px";
-   
+
             this._monacoEditor.layout();
         }
     }
-    
+
     private updateFullLayout() {
         this.scheduleLayoutUpdate();
         this.updateJsonEditorLayout();
     }
-    
+
     private jsonUpdateTimer: any;
     private cardUpdateTimer: any;
     private updateLayoutTimer: any;
-    
+
     private preventCardUpdate: boolean = false;
-    
+
     private setJsonPayload(payload: object) {
         this._monacoEditor.setValue(JSON.stringify(payload, null, 4));
     }
@@ -322,14 +324,14 @@ export class CardDesigner {
     private updateJsonFromCard(addToUndoStack: boolean = true) {
         try {
             this.preventCardUpdate = true;
-    
+
             if (!this.preventJsonUpdate && this._isMonacoEditorLoaded) {
                 let cardPayload = this.card.toJSON();
-    
+
                 if (addToUndoStack) {
                     this.addToUndoStack(cardPayload);
                 }
-    
+
                 this.setJsonPayload(cardPayload);
             }
         }
@@ -337,17 +339,17 @@ export class CardDesigner {
             this.preventCardUpdate = false;
         }
     }
-    
+
     private scheduleUpdateJsonFromCard() {
         clearTimeout(this.jsonUpdateTimer);
-    
+
         if (!this.preventJsonUpdate) {
             this.jsonUpdateTimer = setTimeout(() => { this.updateJsonFromCard(); }, 100);
         }
     }
-    
+
     private preventJsonUpdate: boolean = false;
-    
+
     private getCurrentJsonPayload(): string {
         return this._isMonacoEditorLoaded ? this._monacoEditor.getValue() : Constants.defaultPayload;
     }
@@ -355,7 +357,7 @@ export class CardDesigner {
     private updateCardFromJson() {
         try {
             this.preventJsonUpdate = true;
-    
+
             if (!this.preventCardUpdate) {
                 this.designerSurface.setCardPayloadAsString(this.getCurrentJsonPayload());
             }
@@ -364,21 +366,21 @@ export class CardDesigner {
             this.preventJsonUpdate = false;
         }
     }
-    
+
     private scheduleUpdateCardFromJson() {
         clearTimeout(this.cardUpdateTimer);
-    
+
         if (!this.preventCardUpdate) {
             this.cardUpdateTimer = setTimeout(() => { this.updateCardFromJson(); }, 100);
         }
     }
-    
+
     private scheduleLayoutUpdate() {
         clearTimeout(this.updateLayoutTimer);
-    
+
         this.updateLayoutTimer = setTimeout(() => { this.designerSurface.updateLayout(false); }, 50);
     }
-    
+
     private _fullScreenHandler = new FullScreenHandler();
     private _fullScreenButton: ToolbarButton;
     private _hostContainerChoicePicker: ToolbarChoicePicker;
@@ -464,7 +466,7 @@ export class CardDesigner {
         this._fullScreenHandler = new FullScreenHandler();
         this._fullScreenHandler.onFullScreenChanged = (isFullScreen: boolean) => {
             this._fullScreenButton.toolTip = isFullScreen ? "Exit full screen" : "Enter full screen";
-    
+
             this.updateFullLayout();
         }
     }
@@ -480,10 +482,10 @@ export class CardDesigner {
         //     function () {
         //         callback();
 		//     });
-		
+
 		// If loaded using WebPack this should work, but it's not right now...
 		//callback();
-    }	
+    }
 
     public monacoModuleLoaded(monaco: any = null) {
 		if (!monaco) {
@@ -501,9 +503,9 @@ export class CardDesigner {
             validate: false,
             allowComments: true
         }
-    
+
 		this._jsonEditorPane.content = document.createElement("div");
-		
+
 		// TODO: set this in our editor instead of defaults
         monaco.languages.json.jsonDefaults.setDiagnosticsOptions(monacoConfiguration);
 
@@ -519,7 +521,7 @@ export class CardDesigner {
                 }
             }
         );
-        
+
         this._monacoEditor.onDidChangeModelContent(() => { this.scheduleUpdateCardFromJson(); });
 
         window.addEventListener('resize', () => { this.onResize(); });
@@ -529,7 +531,7 @@ export class CardDesigner {
         this.updateJsonEditorLayout();
         this.updateJsonFromCard(false);
     }
-    
+
     private updateToolbar() {
         this._undoButton.isEnabled = this.canUndo;
         this._redoButton.isEnabled = this.canRedo;
@@ -889,7 +891,7 @@ export class CardDesigner {
         let styleSheetLinkElement = document.createElement("link");
         styleSheetLinkElement.id = "__ac-designer";
         styleSheetLinkElement.rel = "stylesheet";
-		styleSheetLinkElement.type = "text/css";		
+		styleSheetLinkElement.type = "text/css";
         styleSheetLinkElement.href = Utils.joinPaths(this._assetPath, "adaptivecards-designer.css");
 
         document.getElementsByTagName("head")[0].appendChild(styleSheetLinkElement);
@@ -906,7 +908,7 @@ export class CardDesigner {
         root.style.flexDirection = "column";
         root.style.overflow = "hidden";
 
-        root.innerHTML = 
+        root.innerHTML =
             '<div id="toolbarHost"></div>' +
             '<div class="content" style="display: flex; flex: 1 1 auto; overflow-y: hidden;">' +
                 '<div id="leftCollapsedPaneTabHost" class="acd-verticalCollapsedTabContainer" style="border-right: 1px solid #D2D2D2;"></div>' +
@@ -944,7 +946,7 @@ export class CardDesigner {
             {
                 text: (trigger) => { return JSON.stringify(this.card.toJSON(), null, 4); }
             });
-        
+
         // Tool palette pane
         this._toolPalettePane = new SidePane(
             document.getElementById("toolPalettePane"),
@@ -967,7 +969,7 @@ export class CardDesigner {
 
             this._jsonEditorPane.saveState();
         }
-        
+
         // JSON editor pane
         this._jsonEditorPane = new SidePane(
             document.getElementById("jsonEditorPane"),
@@ -995,7 +997,7 @@ export class CardDesigner {
 
             this._propertySheetPane.saveState();
         }
-        
+
         // Property sheet pane
         this._propertySheetPane = new SidePane(
             document.getElementById("propertySheetPane"),
@@ -1016,10 +1018,10 @@ export class CardDesigner {
         treeViewSplitter.minimum = 140;
         treeViewSplitter.onResized = (splitter: Splitter, newSize: number) => {
             this.scheduleLayoutUpdate();
-    
+
             this._treeViewPane.saveState();
         }
-    
+
         // Tree view pane
         this._treeViewPane = new SidePane(
             document.getElementById("treeViewPane"),
@@ -1031,12 +1033,12 @@ export class CardDesigner {
             this.updateFullLayout();
         };
         this._treeViewPane.content = document.getElementById("treeViewHost");
-    
+
         this._designerHostElement = document.getElementById("designerHost")
 
         this.recreateDesignerSurface();
 
-		
+
         this.loadMonaco(() => { this.monacoModuleLoaded(); });
 
         window.addEventListener("pointermove", (e: PointerEvent) => { this.handlePointerMove(e); });
@@ -1089,7 +1091,7 @@ export class CardDesigner {
     setCard(payload: object) {
         try {
             this.preventJsonUpdate = true;
-    
+
             if (!this.preventCardUpdate) {
                 this.designerSurface.setCardPayloadAsObject(payload);
             }
@@ -1104,7 +1106,7 @@ export class CardDesigner {
     getCard(): object {
         return this.designerSurface.card.toJSON();
     }
-    
+
     get activeHostContainer(): HostContainer {
         return this._activeHostContainer;
     }
@@ -1166,11 +1168,11 @@ export class CardDesigner {
     get toolPalettePane(): SidePane {
         return this._toolPalettePane;
 	}
-	
+
 	get assetPath(): string {
 		return this._assetPath;
 	}
-		
+
 	set assetPath(value: string) {
 		this._assetPath = value;
 	}

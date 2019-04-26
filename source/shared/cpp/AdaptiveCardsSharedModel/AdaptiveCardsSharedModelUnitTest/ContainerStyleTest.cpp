@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "stdafx.h"
 #include "Container.h"
 #include "Column.h"
@@ -484,7 +486,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             auto items = column1->GetItems();
             shared_ptr<Container> container = static_pointer_cast<Container>(items.back());
             Assert::IsTrue(container->GetCanBleed());
-            Assert::IsTrue(column1->GetInternalId() == container->GetParentalId()); 
+            Assert::IsTrue(column1->GetInternalId() == container->GetParentalId());
 
             shared_ptr<Column> column2 = static_pointer_cast<Column>(columns.at(1));
             Assert::IsTrue(column2->GetStyle() == ContainerStyle::Default);
@@ -502,7 +504,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             auto items3 = column3->GetItems();
             shared_ptr<Container> container3 = static_pointer_cast<Container>(items3.back());
             Assert::IsTrue(container3->GetCanBleed());
-            Assert::IsTrue(column3->GetInternalId() == container3->GetParentalId()); 
+            Assert::IsTrue(column3->GetInternalId() == container3->GetParentalId());
         }
 
         TEST_METHOD(BleedPropertyNestedColumnSetTest)

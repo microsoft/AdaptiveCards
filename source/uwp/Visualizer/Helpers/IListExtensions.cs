@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +18,7 @@ namespace AdaptiveCardVisualizer.Helpers
 
             // Remove any of the items that aren't there anymore
             for (int i = 0; i < list.Count; i++)
-            { 
+            {
                 if (!desired.Contains(list[i]))
                 {
                     list.RemoveAt(i);

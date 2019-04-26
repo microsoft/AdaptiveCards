@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "MainPageViewModel.h"
 
@@ -83,7 +85,7 @@ namespace PerfApp
         PropertyChangedEventArgs^ args = ref new PropertyChangedEventArgs(prop);
         PropertyChanged(this, args);
     }
-	
+
     String^ MainPageViewModel::CurrentFile::get()
     {
         return m_currentFile;

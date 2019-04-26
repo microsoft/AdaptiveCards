@@ -78,7 +78,11 @@ There are lot of sample JSON payloads covering all element types with few real c
 To see the visualizer,
 * Clone the repo https://github.com/Imaginea/AdaptiveCards
 * Navigate to source/reactnative/ **>** Run **`npm install`**
-* Run **> `react-native run-ios` OR `run-android`**
+* iOS **> `react-native run-ios`**
+* Android **> `react-native run-android`**
+* Windows **> `react-native start`**  and  **`Launch Simulator from Visual Studio`**
+
+**Notes:** Follow https://github.com/Microsoft/react-native-windows/blob/master/RNWCS/docs/GettingStarted.md for react-native-windows setup
 
 
 ##  About Adaptive Card

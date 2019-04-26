@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -56,6 +58,7 @@ namespace AdaptiveCards.Rendering.Wpf
             ElementRenderers.Set<AdaptiveAction>(AdaptiveActionRenderer.Render);
         }
 
+        public AdaptiveFeatureRegistration FeatureRegistration { get; } = new AdaptiveFeatureRegistration();
 
         /// <summary>
         /// A path to a XAML resource dictionary
@@ -207,7 +210,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
                 return outerGridWithSelectAction;
             }
-            
+
             return outerGrid;
         }
 
@@ -237,6 +240,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 Config = HostConfig ?? new AdaptiveHostConfig(),
                 Resources = Resources,
                 ElementRenderers = ElementRenderers,
+                FeatureRegistration = FeatureRegistration,
                 Lang = card.Lang,
                 RenderArgs = new AdaptiveRenderArgs { ForegroundColors = (HostConfig != null) ? HostConfig.ContainerStyles.Default.ForegroundColors : new ContainerStylesConfig().Default.ForegroundColors }
             };
@@ -250,7 +254,7 @@ namespace AdaptiveCards.Rendering.Wpf
             Resources["Adaptive.Action.Positive.Button.MouseOver.Background"] = context.GetColorBrush(lighterAccentColor);
             Resources["Adaptive.Action.Destructive.Button.Foreground"] = context.GetColorBrush(attentionColor);
             Resources["Adaptive.Action.Destructive.Button.MouseOver.Foreground"] = context.GetColorBrush(lighterAttentionColor);
-            
+
             var element = context.Render(card);
 
             renderCard = new RenderedAdaptiveCard(element, card, context.Warnings, context.InputBindings);

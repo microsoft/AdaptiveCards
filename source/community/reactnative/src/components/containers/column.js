@@ -213,10 +213,12 @@ export class Column extends React.Component {
 			spacingStyle.push({ marginLeft: this.spacing })
 		}
 		spacingStyle.push({ flexGrow: 1 });
-
+		
 		let widthPercentage = this.calculateWidthPercentage(containerViewStyle);
 		if (!Utils.isNullOrEmpty(widthPercentage)) {
-			const spacePercentage = ((this.spacing / deviceWidth) * 100 + widthPercentage)
+			let spacePercentage = widthPercentage;
+			if (!this.isForemostElement()) 
+				spacePercentage = (this.spacing / deviceWidth) * 100 +spacePercentage;
 			containerViewStyle.push({ width: spacePercentage.toString() + '%' });
 		}
 

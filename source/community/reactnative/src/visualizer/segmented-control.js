@@ -87,7 +87,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#0078D7',
     },
     title: {
-        fontSize: 16
+        fontSize: 16,
+        color: 'black'
     },
     activeTitle: {
         color: 'white'

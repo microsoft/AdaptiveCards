@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveColumn.h"
 
@@ -170,7 +172,7 @@ namespace AdaptiveNamespace
         column->SetPixelWidth(m_pixelWidth);
         column->SetMinHeight(m_minHeight);
         column->SetBleed(m_bleed);
-		
+
         ComPtr<AdaptiveBackgroundImage> adaptiveBackgroundImage = PeekInnards<AdaptiveBackgroundImage>(m_backgroundImage);
         std::shared_ptr<AdaptiveSharedNamespace::BackgroundImage> sharedBackgroundImage;
         if (adaptiveBackgroundImage && SUCCEEDED(adaptiveBackgroundImage->GetSharedModel(sharedBackgroundImage)))

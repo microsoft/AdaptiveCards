@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -53,7 +55,7 @@ namespace AdaptiveCards.Rendering.Wpf
             RendererUtil.ApplyVerticalContentAlignment(uiContainer, column);
             RendererUtil.ApplyIsVisible(uiContainer, column);
             uiContainer.MinHeight = column.PixelMinHeight;
-            
+
             // Revert context's value to that of outside the Column
             context.RenderArgs = parentRenderArgs;
 

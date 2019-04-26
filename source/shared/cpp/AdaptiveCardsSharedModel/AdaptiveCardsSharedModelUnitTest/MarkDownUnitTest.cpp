@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "stdafx.h"
 #include "MarkDownParser.h"
 
@@ -72,7 +74,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             MarkDownParser parser("foo-_(bar)_");
             Assert::AreEqual<std::string>("<p>foo-<em>(bar)</em></p>", parser.TransformToHtml());
         }
-    
+
         TEST_METHOD(EmphasisDelimiterTest_MatchingRightDelimiterTest)
         {
             MarkDownParser parser("_foo_");
@@ -118,7 +120,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             MarkDownParser parser("_(bar)_.");
             Assert::AreEqual<std::string>("<p><em>(bar)</em>.</p>", parser.TransformToHtml());
         }
-    
+
         TEST_METHOD(StrongDelimiterTest_SimpleValidCaseTest)
         {
             MarkDownParser parser("**foo bar**");
