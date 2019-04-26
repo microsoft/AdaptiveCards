@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.DateInput;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
@@ -18,7 +19,9 @@ import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.TimeInput;
 import io.adaptivecards.renderer.inputhandler.TimeInputHandler;
+import io.adaptivecards.renderer.readonly.RendererUtil;
 
+import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
@@ -72,17 +75,7 @@ public class TimeInputRenderer extends TextInputRenderer
         setSpacingAndSeparator(context, viewGroup, timeInput.GetSpacing(), timeInput.GetSeparator(), hostConfig, true /* horizontal line */);
 
         TimeInputHandler timeInputHandler = new TimeInputHandler(timeInput, fragmentManager);
-        String time = timeInput.GetValue();
-
-        try
-        {
-            Date date = TimeInputHandler.s_simpleDateFormat.parse(timeInput.GetValue());
-            time = DateFormat.getTimeInstance().format(date);
-        }
-        catch (ParseException e)
-        {
-            //TODO: Log this
-        }
+        String time = DateFormat.getTimeInstance().format(RendererUtil.getTime(timeInput.GetValue()).getTime());
 
         EditText editText = renderInternal(
                 renderedCard,
@@ -102,8 +95,9 @@ public class TimeInputRenderer extends TextInputRenderer
             {
                 TagContent tagContent = (TagContent) v.getTag();
                 TimeInputHandler timeInputHandler = (TimeInputHandler) tagContent.GetInputHandler();
+                TimeInput timeInput = (TimeInput) timeInputHandler.getBaseInputElement();
                 TimePickerFragment timePickerFragment = new TimePickerFragment();
-                timePickerFragment.initialize((EditText) v, context);
+                timePickerFragment.initialize(timeInput, (EditText) v, context);
                 Bundle args = new Bundle();
                 args.putString("title", TITLE);
                 timePickerFragment.setArguments(args);

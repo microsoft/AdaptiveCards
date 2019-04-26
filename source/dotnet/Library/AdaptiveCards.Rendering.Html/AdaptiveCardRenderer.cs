@@ -47,11 +47,14 @@ namespace AdaptiveCards.Rendering.Html
             HostConfig = config;
         }
 
+        public AdaptiveFeatureRegistration FeatureRegistration { get; } = new AdaptiveFeatureRegistration();
+
         public RenderedAdaptiveCard RenderCard(AdaptiveCard card)
         {
             try
             {
                 var context = new AdaptiveRenderContext(HostConfig, ElementRenderers);
+                context.FeatureRegistration = FeatureRegistration;
                 context.Lang = card.Lang;
                 var tag = context.Render(card);
                 return new RenderedAdaptiveCard(tag, card, context.Warnings);

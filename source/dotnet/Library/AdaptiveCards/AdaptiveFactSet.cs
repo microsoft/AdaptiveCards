@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 namespace AdaptiveCards
 {
     /// <summary>
-    ///     The FactSet element makes it simple to display a se ries of "facts" (e.g. name/value pairs) in a tabular form.
+    ///     The FactSet element makes it simple to display a series of "facts" (e.g. name/value pairs) in a tabular form.
     /// </summary>
 #if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveFactSet.TypeName)]

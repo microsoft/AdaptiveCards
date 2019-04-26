@@ -60,13 +60,12 @@ namespace AdaptiveCards.Test
                     {
                         // If the card was excluded but parsed, then it would have warnings
                         // If it doesn't then it shouldn't be excluded
-                        Assert.AreNotEqual(0, parseResult.Warnings.Count);
-                        Assert.IsNotNull(parseResult.Card.Body);
+                        Assert.AreNotEqual(0, parseResult.Warnings.Count, "If an excluded card parsed correctly, it should have warnings");
+                        Assert.IsNotNull(parseResult.Card.Body, "A parsed card should have a body");
                     }
                     else
                     {
-                        Assert.AreEqual(0, parseResult.Warnings.Count);
-                        Assert.IsNotNull(parseResult.Card.Body);
+                        Assert.IsNotNull(parseResult.Card.Body, "A passing card should have a body");
                     }
 
                     // Make sure JsonConvert works also
@@ -74,8 +73,8 @@ namespace AdaptiveCards.Test
                     {
                         Converters = { new StrictIntConverter() }
                     });
-                    Assert.AreEqual(parseResult.Card.Body.Count, card.Body.Count);
-                    Assert.AreEqual(parseResult.Card.Actions.Count, card.Actions.Count);
+                    Assert.AreEqual(parseResult.Card.Body.Count, card.Body.Count, "A converted card should have the same number of body elements as the parsed card");
+                    Assert.AreEqual(parseResult.Card.Actions.Count, card.Actions.Count, "A converted card should have the same number of actions as the parsed card");
                 }
                 catch (Exception ex)
                 {
@@ -128,12 +127,9 @@ namespace AdaptiveCards.Test
                     "Action.CustomParsing",
 
                     // These are cards that features haven't been implemented yet
-                    "FallbackParsing",
-                    "DeepFallback",
-                    "EmptyFallbackCard",
-                    "Element.Requires",
+                    // <this space intentionally blank>
 
-                    // These cards have AdpativeCards with styles on them
+                    // These cards have AdaptiveCards with styles on them
                     "ColumnColumnSetContainer.Bleed",
                 });
         }

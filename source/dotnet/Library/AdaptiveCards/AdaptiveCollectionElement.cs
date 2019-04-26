@@ -27,7 +27,7 @@ namespace AdaptiveCards
         public AdaptiveContainerStyle? Style { get; set; }
 
         /// <summary>
-        ///     The content alignment for the eelment inside the container.
+        ///     The content alignment for the element inside the container.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
