@@ -42,6 +42,7 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
+        [DefaultValue(typeof(AdaptiveChoiceInputStyle), "compact")]
         public AdaptiveChoiceInputStyle Style { get; set; }
 
         /// <summary>
