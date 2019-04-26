@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:avalon="http://icsharpcode.net/sharpdevelop/avalonedit"
         mc:Ignorable="d" Loaded="Window_Loaded" 
-        Title="MainWindow" Height="1000" Width="1000"
-        x:Name="ThisWindow">
+        Title="Adaptive Cards WPF Visualizer" Height="1000" Width="1000">
 
     <Window.Resources>
 
@@ -51,7 +51,13 @@
             <Button Name="toggleOptions" Content="Edit" Margin="4" Click="toggleOptions_Click" HorizontalAlignment="Right"/>
         </StackPanel>
 
-        <Border x:Name="MonacoContainer" Grid.Row="1"/>
+        <avalon:TextEditor
+            Grid.Row="1"
+            x:Name="textBox"
+            FontFamily="Consolas"
+            FontSize="10pt"
+            ShowLineNumbers="true"
+            TextChanged="textBox_TextChanged"/>
         
         <GridSplitter Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" ResizeDirection="Columns"/>
 
