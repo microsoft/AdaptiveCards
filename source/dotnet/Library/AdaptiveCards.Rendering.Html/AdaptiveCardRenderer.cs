@@ -457,6 +457,8 @@ namespace AdaptiveCards.Rendering.Html
         {
             if (elements != null)
             {
+                bool isFirstElement = true;
+
                 foreach (var cardElement in elements)
                 {
                     // each element has a row
@@ -485,6 +487,19 @@ namespace AdaptiveCards.Rendering.Html
                             if (uiSeparator != null)
                             {
                                 uiSeparator.Style("display", "none");
+                            }
+                        }
+                        else
+                        {
+                            // if it's visible and it's the first element, hide the separator
+                            if (isFirstElement)
+                            {
+                                if (uiSeparator != null)
+                                {
+                                    uiSeparator.Style("display", "none");
+                                }
+
+                                isFirstElement = false;
                             }
                         }
 
@@ -646,6 +661,7 @@ namespace AdaptiveCards.Rendering.Html
                 return 0;
             }).Sum());
 
+            bool isFirstVisibleColumn = true;
             for (int i = 0; i < columnSet.Columns.Count; ++i)
             {
                 var column = columnSet.Columns[i];
@@ -727,6 +743,13 @@ namespace AdaptiveCards.Rendering.Html
                             .Style("border-left-color", $"{context.GetRGBColor(sep.LineColor)}")
                             .Style("border-left-width", $"{lineThickness}px")
                             .Style("border-left-style", $"solid");
+
+                        if (column.IsVisible && isFirstVisibleColumn)
+                        {
+                            separator.Style("display", "none");
+
+                            isFirstVisibleColumn = false;
+                        }
 
                         uiColumnSet.Children.Add(separator);
                     }
