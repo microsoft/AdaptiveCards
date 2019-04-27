@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -47,11 +49,14 @@ namespace AdaptiveCards.Rendering.Html
             HostConfig = config;
         }
 
+        public AdaptiveFeatureRegistration FeatureRegistration { get; } = new AdaptiveFeatureRegistration();
+
         public RenderedAdaptiveCard RenderCard(AdaptiveCard card)
         {
             try
             {
                 var context = new AdaptiveRenderContext(HostConfig, ElementRenderers);
+                context.FeatureRegistration = FeatureRegistration;
                 context.Lang = card.Lang;
                 var tag = context.Render(card);
                 return new RenderedAdaptiveCard(tag, card, context.Warnings);
@@ -316,7 +321,7 @@ namespace AdaptiveCards.Rendering.Html
                 }
 
                 tag.AddClass("ac-selectable");
-                AddActionAttributes(selectAction, tag, context);                
+                AddActionAttributes(selectAction, tag, context);
             }
         }
 
@@ -475,7 +480,7 @@ namespace AdaptiveCards.Rendering.Html
                         uiContainer.Children.Add(uiElement);
                     }
                 }
-            }           
+            }
         }
 
         protected static void AddSeparator(HtmlTag uiContainer, AdaptiveElement adaptiveElement, AdaptiveRenderContext context)
@@ -1072,7 +1077,7 @@ namespace AdaptiveCards.Rendering.Html
                 uiDiv.Style("display", "none");
             }
 
-            // if explicit image size is not used, use Adpative Image size
+            // if explicit image size is not used, use Adaptive Image size
             if (image.PixelWidth == 0 && image.PixelHeight == 0)
             {
                 switch (image.Size)
@@ -1733,7 +1738,7 @@ namespace AdaptiveCards.Rendering.Html
             {
                 uiTextInput.Style("display", "none");
             }
-            
+
             if (context.Config.SupportsInteractivity && input.InlineAction != null)
             {
                 // ShowCard Inline Action Mode is not supported
@@ -1799,7 +1804,7 @@ namespace AdaptiveCards.Rendering.Html
                     return uiContainer;
                 }
             }
-           
+
             return uiTextInput;
         }
 

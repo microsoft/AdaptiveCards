@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include <sdkddkver.h>
 
 import "inspectable.idl";
@@ -751,7 +753,7 @@ AdaptiveNamespaceStart
      internal,
      activatable(InternalContract, 1)
 #endif
-    ] runtimeclass AdaptiveTextBlock 
+    ] runtimeclass AdaptiveTextBlock
     {
         [default] interface IAdaptiveTextBlock;
         interface IAdaptiveTextElement;
@@ -767,7 +769,7 @@ AdaptiveNamespaceStart
 #else
         uuid(0AC70C29-FA90-4C28-A6D1-A6EF58126085)
 #endif
-    ] 
+    ]
     interface IAdaptiveInline : IInspectable
     {
     };
@@ -782,7 +784,7 @@ AdaptiveNamespaceStart
 #else
         uuid(09BBE759-0754-441D-B808-3CE2C188D521)
 #endif
-    ] 
+    ]
     interface IAdaptiveTextRun : IInspectable requires IAdaptiveTextElement
     {
         [propget] HRESULT Highlight([out, retval] boolean * value);
@@ -800,11 +802,11 @@ AdaptiveNamespaceStart
         internal,
         activatable(InternalContract, 1)
 #endif
-    ] 
+    ]
     runtimeclass AdaptiveTextRun
-    { 
+    {
         [default] interface IAdaptiveTextRun;
-        interface IAdaptiveInline; 
+        interface IAdaptiveInline;
         interface IAdaptiveTextElement;
     };
 
@@ -818,7 +820,7 @@ AdaptiveNamespaceStart
 #else
         uuid(6095E4E2-BFA7-41C6-B12E-887F980196A9)
 #endif
-    ] 
+    ]
     interface IAdaptiveRichTextBlock : IInspectable
     {
         [propget] HRESULT HorizontalAlignment([out, retval] HAlignment* value);
@@ -1530,7 +1532,7 @@ AdaptiveNamespaceStart
 #else
         uuid(ba90da3f-556c-4e3a-9d01-11f2ce78dcd7)
 #endif
-    ] 
+    ]
     interface IAdaptiveContainer : IInspectable requires IAdaptiveContainerBase
     {
         [propget] HRESULT VerticalContentAlignment([out, retval] VerticalContentAlignment* value);
@@ -1568,7 +1570,7 @@ AdaptiveNamespaceStart
 #else
         uuid(91e03800-d239-43bc-b5fb-2ccfe0cc7fcb)
 #endif
-    ] 
+    ]
     interface IAdaptiveColumn : IInspectable requires IAdaptiveContainerBase
     {
         [propget] HRESULT Width([out, retval] HSTRING* value);
@@ -2149,7 +2151,7 @@ AdaptiveNamespaceStart
 #else
         uuid(7E71F583-1DAD-4A87-B2F9-1118476BB848)
 #endif
-    ] 
+    ]
     interface IAdaptiveHighlightColorConfig : IInspectable
     {
         [propget] HRESULT Default([out][retval] Windows.UI.Color * value);
@@ -2167,10 +2169,10 @@ AdaptiveNamespaceStart
         internal,
         activatable(InternalContract, 1)
 #endif
-    ] 
-    runtimeclass AdaptiveHighlightColorConfig 
-    { 
-        [default] interface IAdaptiveHighlightColorConfig; 
+    ]
+    runtimeclass AdaptiveHighlightColorConfig
+    {
+        [default] interface IAdaptiveHighlightColorConfig;
     };
 
     [
@@ -2191,7 +2193,7 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT Subtle([out][retval] Windows.UI.Color* value);
         [propput] HRESULT Subtle([in] Windows.UI.Color value);
-        
+
         [propget] HRESULT HighlightColors([out, retval] AdaptiveHighlightColorConfig * *value);
         [propput] HRESULT HighlightColors([in] AdaptiveHighlightColorConfig * value);
     };
@@ -3202,10 +3204,10 @@ AdaptiveNamespaceStart
         internal,
         activatable(InternalContract, 1)
 #endif
-    ] 
-    runtimeclass AdaptiveFeatureRegistration 
+    ]
+    runtimeclass AdaptiveFeatureRegistration
     {
-        [default] interface IAdaptiveFeatureRegistration; 
+        [default] interface IAdaptiveFeatureRegistration;
     };
 
 
@@ -3563,7 +3565,7 @@ AdaptiveNamespaceStart
      internal,
      activatable(InternalContract, 1)
 #endif
-    ] runtimeclass AdaptiveRichTextBlockRenderer 
+    ] runtimeclass AdaptiveRichTextBlockRenderer
     {
         [default] interface IAdaptiveElementRenderer;
         interface IAdaptiveElementParser;

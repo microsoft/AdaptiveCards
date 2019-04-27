@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import * as Adaptive  from "adaptivecards";
 import * as Controls  from "adaptivecards-controls";
 import { DraggableElement } from "./draggable-element";
@@ -855,7 +857,7 @@ export class CardElementPeer extends DesignerPeer {
 
                 this.changed(false);
             }
-            
+
             let horizontalAlignment = addLabelAndInput(card, "Horizontal alignment:", Adaptive.ChoiceSetInput);
             horizontalAlignment.input.isCompact = true;
             horizontalAlignment.input.placeholder = "(not set)";
@@ -874,7 +876,7 @@ export class CardElementPeer extends DesignerPeer {
 
                 this.changed(false);
             }
-            
+
             let verticalAlignment = addLabelAndInput(card, "Vertical alignment:", Adaptive.ChoiceSetInput);
             verticalAlignment.input.isCompact = true;
             verticalAlignment.input.placeholder = "(not set)";
@@ -892,7 +894,7 @@ export class CardElementPeer extends DesignerPeer {
                 }
 
                 this.changed(false);
-            }        
+            }
         }
     }
 
@@ -1254,7 +1256,7 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
         }
 
         this.internalAddBackgroundImageProperties(card, this.cardElement.backgroundImage);
-        
+
         let actionSelector = createActionSelector(
             "Select action",
             card,
@@ -1420,14 +1422,6 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
             else {
                 this.cardElement.style = style.input.value;
             }
-
-            this.changed(false);
-        }
-
-        let bleed = addLabelAndInput(card, "Bleed:", Adaptive.ToggleInput);
-        bleed.input.defaultValue = String(this.cardElement.bleed);
-        bleed.input.onValueChanged = () => {
-            this.cardElement.bleed = bleed.input.value == "true";
 
             this.changed(false);
         }

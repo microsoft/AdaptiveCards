@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 export type Size = "auto" | "stretch" | "small" | "medium" | "large";
 export type TextSize  = "small" | "default" | "medium" | "large" | "extraLarge";
 export type HorizontalAlignment = "left" | "center" | "right";
