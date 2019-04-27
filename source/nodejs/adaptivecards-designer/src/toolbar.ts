@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import { DropDown, DropDownItem } from "adaptivecards-controls";
 import { Utils } from "./miscellaneous";
 

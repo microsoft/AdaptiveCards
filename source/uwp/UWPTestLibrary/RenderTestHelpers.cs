@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using AdaptiveCards.Rendering.Uwp;
 using System;
 using System.Collections.Generic;
@@ -48,7 +50,7 @@ namespace UWPTestLibrary
                 }
             }
         }
-        
+
         public static async Task<RenderedTestResult> RenderCard(FileViewModel cardFile, FileViewModel hostConfigFile, Dictionary<string, IAdaptiveCardResourceResolver> resourceResolvers)
         {
             string error = null;
