@@ -171,6 +171,13 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
         {
             separator.setVisibility(visibility);
         }
+
+        View stretchContainer = tagContent.GetStretchContainer();
+        if (stretchContainer != null)
+        {
+            stretchContainer.setVisibility(visibility);
+        }
+
         elementView.setVisibility(visibility);
     }
 

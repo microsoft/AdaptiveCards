@@ -11,6 +11,7 @@ import android.widget.EditText;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.DateTimePreparser;
+import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
@@ -82,6 +83,7 @@ public class DateInputRenderer extends TextInputRenderer
 
         String dateString = DateFormat.getDateInstance().format(RendererUtil.getDate(dateInput.GetValue()).getTime());
 
+        TagContent tagContent = new TagContent(dateInput, dateInputHandler, separator, viewGroup);
         EditText editText = renderInternal(
                 renderedCard,
                 context,
@@ -90,7 +92,8 @@ public class DateInputRenderer extends TextInputRenderer
                 dateString,
                 dateInput.GetPlaceholder(),
                 dateInputHandler,
-                hostConfig);
+                hostConfig,
+                tagContent);
         editText.setRawInputType(TYPE_NULL);
         editText.setFocusable(false);
         editText.setOnClickListener(new View.OnClickListener()
@@ -113,7 +116,7 @@ public class DateInputRenderer extends TextInputRenderer
             }
         });
 
-        editText.setTag(new TagContent(dateInput, dateInputHandler, separator, viewGroup));
+        editText.setTag(tagContent);
         setVisibility(baseCardElement.GetIsVisible(), editText);
 
         return editText;

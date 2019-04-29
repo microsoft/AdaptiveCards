@@ -79,6 +79,7 @@ public class TimeInputRenderer extends TextInputRenderer
         TimeInputHandler timeInputHandler = new TimeInputHandler(timeInput, fragmentManager);
         String time = DateFormat.getTimeInstance().format(RendererUtil.getTime(timeInput.GetValue()).getTime());
 
+        TagContent tagContent = new TagContent(timeInput, timeInputHandler, separator, viewGroup);
         EditText editText = renderInternal(
                 renderedCard,
                 context,
@@ -87,7 +88,8 @@ public class TimeInputRenderer extends TextInputRenderer
                 time,
                 timeInput.GetPlaceholder(),
                 timeInputHandler,
-                hostConfig);
+                hostConfig,
+                tagContent);
         editText.setRawInputType(TYPE_NULL);
         editText.setFocusable(false);
         editText.setOnClickListener(new View.OnClickListener()
@@ -110,7 +112,7 @@ public class TimeInputRenderer extends TextInputRenderer
             }
         });
 
-        editText.setTag(new TagContent(timeInput, timeInputHandler, separator, viewGroup));
+        editText.setTag(tagContent);
         setVisibility(baseCardElement.GetIsVisible(), editText);
 
         return editText;

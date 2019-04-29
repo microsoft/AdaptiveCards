@@ -84,8 +84,8 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
             checkBox.setEllipsize(TextUtils.TruncateAt.END);
         }
         toggleInputHandler.setView(checkBox);
-        checkBox.setTag(new TagContent(toggleInput, toggleInputHandler, separator, viewGroup));
-        setVisibility(baseCardElement.GetIsVisible(), checkBox);
+
+        TagContent tagContent = new TagContent(toggleInput, toggleInputHandler, separator, viewGroup);
 
         checkBox.setText(toggleInput.GetTitle());
         renderedCard.registerInputHandler(toggleInputHandler);
@@ -126,6 +126,7 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
                 toggleInputContainer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             }
 
+            tagContent.SetStretchContainer(toggleInputContainer);
             toggleInputContainer.addView(checkBox);
             viewGroup.addView(toggleInputContainer);
         }
@@ -133,6 +134,10 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
         {
             viewGroup.addView(checkBox);
         }
+
+        checkBox.setTag(tagContent);
+        setVisibility(baseCardElement.GetIsVisible(), checkBox);
+
         return checkBox;
     }
 

@@ -68,6 +68,7 @@ public class NumberInputRenderer extends TextInputRenderer
         View separator = setSpacingAndSeparator(context, viewGroup, numberInput.GetSpacing(), numberInput.GetSeparator(), hostConfig, true /* horizontal line */);
 
         TextInputHandler numberInputHandler = new TextInputHandler(numberInput);
+        TagContent tagContent = new TagContent(numberInput, numberInputHandler, separator, viewGroup);
         EditText editText = renderInternal(
                 renderedCard,
                 context,
@@ -76,10 +77,11 @@ public class NumberInputRenderer extends TextInputRenderer
                 String.valueOf(numberInput.GetValue()),
                 String.valueOf(numberInput.GetPlaceholder()),
                 numberInputHandler,
-                hostConfig);
+                hostConfig,
+                tagContent);
         editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
-        editText.setTag(new TagContent(numberInput, numberInputHandler, separator, viewGroup));
+        editText.setTag(tagContent);
         setVisibility(baseCardElement.GetIsVisible(), editText);
 
         return editText;

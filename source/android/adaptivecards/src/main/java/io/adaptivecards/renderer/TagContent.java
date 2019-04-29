@@ -80,6 +80,16 @@ public class TagContent
         return m_viewContainer;
     }
 
+    public View GetStretchContainer()
+    {
+        return m_stretchContainer;
+    }
+
+    public void SetStretchContainer(View stretchContainer)
+    {
+        m_stretchContainer = stretchContainer;
+    }
+
     @Override
     public boolean equals(Object o)
     {
@@ -114,4 +124,5 @@ public class TagContent
     private IInputHandler m_inputHandler = null;
     private ViewGroup m_viewContainer = null;
     private View m_separatorView = null;
+    private View m_stretchContainer = null;
 }

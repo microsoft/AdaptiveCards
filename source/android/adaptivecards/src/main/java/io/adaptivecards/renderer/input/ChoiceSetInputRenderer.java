@@ -83,7 +83,6 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         checkBoxSetInputHandler.setView(layout);
 
         layout.setTag(new TagContent(choiceSetInput, checkBoxSetInputHandler, separator, viewGroup));
-        setVisibility(choiceSetInput.GetIsVisible(), layout);
 
         for (int i = 0; i < size; i++)
         {
@@ -129,7 +128,6 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         radioGroupInputHandler.setView(radioGroup);
 
         radioGroup.setTag(new TagContent(choiceSetInput, radioGroupInputHandler, separator, viewGroup));
-        setVisibility(choiceSetInput.GetIsVisible(), radioGroup);
 
         radioGroup.setOrientation(RadioGroup.VERTICAL);
         ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
@@ -194,7 +192,6 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         comboBoxInputHandler.setView(spinner);
 
         spinner.setTag(new TagContent(choiceSetInput, comboBoxInputHandler, separator, viewGroup));
-        setVisibility(choiceSetInput.GetIsVisible(), spinner);
 
         renderedCard.registerInputHandler(comboBoxInputHandler);
 
@@ -302,10 +299,13 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             }
         }
 
-        if(choiceSetInput.GetHeight() == HeightType.Stretch)
+        if (choiceSetInput.GetHeight() == HeightType.Stretch)
         {
             LinearLayout containerLayout = new LinearLayout(context);
             containerLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+
+            TagContent tagContent = (TagContent)view.getTag();
+            tagContent.SetStretchContainer(containerLayout);
 
             containerLayout.addView(view);
             viewGroup.addView(containerLayout);
@@ -314,6 +314,8 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         {
             viewGroup.addView(view);
         }
+
+        setVisibility(choiceSetInput.GetIsVisible(), view);
 
         return view;
     }

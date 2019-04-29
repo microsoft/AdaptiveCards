@@ -155,7 +155,8 @@ public class TextInputRenderer extends BaseCardElementRenderer
             String value,
             String placeHolder,
             final TextInputHandler textInputHandler,
-            HostConfig hostConfig)
+            HostConfig hostConfig,
+            TagContent tagContent)
     {
         EditText editText = new EditText(context);
         textInputHandler.setView(editText);
@@ -268,7 +269,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
             }
         }
 
-        if(baseInputElement.GetHeight() == HeightType.Stretch)
+        if (baseInputElement.GetHeight() == HeightType.Stretch)
         {
             LinearLayout containerLayout = new LinearLayout(context);
 
@@ -281,6 +282,9 @@ public class TextInputRenderer extends BaseCardElementRenderer
                 containerLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             }
 
+            tagContent.SetStretchContainer(containerLayout);
+
+            // TextInputViewGroup is only used when there's an inline action
             if (textInputViewGroup != null)
             {
                 containerLayout.addView(textInputViewGroup);
@@ -289,11 +293,12 @@ public class TextInputRenderer extends BaseCardElementRenderer
             {
                 containerLayout.addView(editText);
             }
+
             viewGroup.addView(containerLayout);
         }
         else
         {
-            if(textInputViewGroup != null)
+            if (textInputViewGroup != null)
             {
                 viewGroup.addView(textInputViewGroup);
             }
@@ -335,6 +340,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
 
         TextInputHandler textInputHandler = new TextInputHandler(textInput);
         View separator = setSpacingAndSeparator(context, viewGroup, textInput.GetSpacing(), textInput.GetSeparator(), hostConfig, true /* horizontal line */);
+        TagContent tagContent = new TagContent(textInput, textInputHandler, separator, viewGroup);
         final EditText editText = renderInternal(
                 renderedCard,
                 context,
@@ -343,9 +349,10 @@ public class TextInputRenderer extends BaseCardElementRenderer
                 textInput.GetValue(),
                 textInput.GetPlaceholder(),
                 textInputHandler,
-                hostConfig);
+                hostConfig,
+                tagContent);
         editText.setSingleLine(!textInput.GetIsMultiline());
-        editText.setTag(new TagContent(textInput, textInputHandler, separator, viewGroup));
+        editText.setTag(tagContent);
         setVisibility(baseCardElement.GetIsVisible(), editText);
 
         BaseActionElement action = textInput.GetInlineAction();
