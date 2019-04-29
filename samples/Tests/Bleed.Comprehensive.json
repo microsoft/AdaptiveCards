@@ -158,6 +158,7 @@
 							"size": "Small"
 						}
 					],
+					"bleed": true,
 					"width": "stretch"
 				},
 				{
