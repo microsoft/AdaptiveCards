@@ -235,15 +235,18 @@ namespace AdaptiveCards.Rendering.Wpf
                 {
                     if (element.Fallback.Type == AdaptiveFallbackElement.AdaptiveFallbackType.Drop)
                     {
-                        Warnings.Add(new AdaptiveWarning(-1, $"Dropping element for fallback '{element.Type}'"));
+                        Warnings.Add(new AdaptiveWarning(-1, $"Dropping element '{element.Type}' for fallback"));
                     }
                     else if (element.Fallback.Type == AdaptiveFallbackElement.AdaptiveFallbackType.Content && element.Fallback.Content != null)
                     {
                         // Render fallback content
+                        Warnings.Add(new AdaptiveWarning(-1, $"Performing fallback for '{element.Type}' (fallback element type '{element.Fallback.Content.Type}')"));
+                        RenderingFallback = true;
                         frameworkElementOut = Render(element.Fallback.Content);
+                        RenderingFallback = false;
                     }
                 }
-                else if (AncestorHasFallback)
+                else if (AncestorHasFallback && !RenderingFallback)
                 {
                     throw new AdaptiveFallbackException();
                 }
@@ -258,6 +261,7 @@ namespace AdaptiveCards.Rendering.Wpf
         }
 
         private bool AncestorHasFallback = false;
+        private bool RenderingFallback = false;
 
         public string Lang { get; set; }
 
