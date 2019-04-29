@@ -4795,22 +4795,6 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
                 this.renderedElement.style.marginBottom = "-" + surroundingPadding.bottom + "px";
             }
 
-            if (physicalPadding.left == 0) {
-                this.renderedElement.style.paddingLeft = surroundingPadding.left + "px";
-            }
-
-            if (physicalPadding.right == 0) {
-                this.renderedElement.style.paddingRight = surroundingPadding.right + "px";
-            }
-
-            if (physicalPadding.top == 0) {
-                this.renderedElement.style.paddingTop = surroundingPadding.top + "px";
-            }
-
-            if (physicalPadding.bottom == 0) {
-                this.renderedElement.style.paddingBottom = surroundingPadding.bottom + "px";
-            }
-
             if (this.separatorElement && this.separatorOrientation == Enums.Orientation.Horizontal) {
                 this.separatorElement.style.marginLeft = "-" + surroundingPadding.left + "px";
                 this.separatorElement.style.marginRight = "-" + surroundingPadding.right + "px";
@@ -5496,18 +5480,6 @@ export type ColumnWidth = Shared.SizeAndUnit | "auto" | "stretch";
 export class Column extends Container {
     private _computedWeight: number = 0;
 
-    private doesAnyColumnInSetHaveBackground(): boolean {
-        let parent = this.parent as ColumnSet;
-
-        for (let i = 0; i < parent.getCount(); i++) {
-            if (parent.getColumnAt(i).getHasBackground()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     protected adjustRenderedElementSize(renderedElement: HTMLElement) {
         const minDesignTimeColumnHeight = 20;
 
@@ -5552,21 +5524,6 @@ export class Column extends Container {
         super();
 
         this.width = width;
-    }
-
-    getEffectivePadding(): Shared.PaddingDefinition {
-        let result = super.getEffectivePadding();
-
-        if (this.doesAnyColumnInSetHaveBackground()) {
-            result.top = Enums.Spacing.Padding;
-            result.bottom = Enums.Spacing.Padding;
-        }
-
-        return result;
-    }
-
-    isBleeding(): boolean {
-        return this.doesAnyColumnInSetHaveBackground();
     }
 
     getJsonTypeName(): string {
@@ -5646,17 +5603,6 @@ export class Column extends Container {
 
     get isStandalone(): boolean {
         return false;
-    }
-
-    get bleed(): boolean {
-        return true;
-    }
-
-    set bleed(value: boolean) {
-        // No effect in Column.
-        // Although unfortunate, there is no easy way to hide the bleed property from Column given
-        // Column extends Container, and it is not an option to change the class hierarchy as it
-        // would potentially break a lot of existing code
     }
 }
 

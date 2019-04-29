@@ -1427,6 +1427,14 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
             this.changed(false);
         }
 
+        let bleed = addLabelAndInput(card, "Bleed:", Adaptive.ToggleInput);
+        bleed.input.defaultValue = String(this.cardElement.bleed);
+        bleed.input.onValueChanged = () => {
+            this.cardElement.bleed = bleed.input.value == "true";
+
+            this.changed(false);
+        }
+
         this.internalAddBackgroundImageProperties(card, this.cardElement.backgroundImage);
 
         let actionSelector = createActionSelector(
