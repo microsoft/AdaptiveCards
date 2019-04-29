@@ -296,19 +296,30 @@ namespace WpfVisualizer
 
         private async void viewImage_Click(object sender, RoutedEventArgs e)
         {
-            //Disable interactivity to remove inputs and actions from the image
             var supportsInteractivity = Renderer.HostConfig.SupportsInteractivity;
-            Renderer.HostConfig.SupportsInteractivity = false;
 
-            var renderedCard = await Renderer.RenderCardToImageAsync(AdaptiveCard.FromJson(CardPayload).Card, false);
-            Renderer.HostConfig.SupportsInteractivity = supportsInteractivity;
-
-            var path = Path.GetRandomFileName() + ".png";
-            using (var fileStream = new FileStream(path, FileMode.Create))
+            try
             {
-                await renderedCard.ImageStream.CopyToAsync(fileStream);
+                this.IsEnabled = false;
+
+                //Disable interactivity to remove inputs and actions from the image
+                Renderer.HostConfig.SupportsInteractivity = false;
+
+                var renderedCard = await Renderer.RenderCardToImageAsync(AdaptiveCard.FromJson(CardPayload).Card, false);
+                using (var imageStream = renderedCard.ImageStream)
+                {
+                    new ViewImageWindow(renderedCard.ImageStream).Show();
+                }
             }
-            Process.Start(path);
+            catch
+            {
+                MessageBox.Show("Failed to render image");
+            }
+            finally
+            {
+                Renderer.HostConfig.SupportsInteractivity = supportsInteractivity;
+                this.IsEnabled = true;
+            }
         }
 
         private void speak_Click(object sender, RoutedEventArgs e)
