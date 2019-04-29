@@ -834,67 +834,65 @@ export class CardElementPeer extends DesignerPeer {
         url.input.onValueChanged = () => {
             backgroundImage.url = url.input.value;
 
-            this.changed(true);
+            this.changed(false);
         }
 
-        if (backgroundImage.isValid()) {
-            let fillMode = addLabelAndInput(card, "Fill mode:", Adaptive.ChoiceSetInput);
-            fillMode.input.isCompact = true;
-            fillMode.input.placeholder = "(not set)";
-            fillMode.input.choices.push(new Adaptive.Choice("Cover", Adaptive.FillMode.Cover.toString()));
-            fillMode.input.choices.push(new Adaptive.Choice("Repeat horizontally", Adaptive.FillMode.RepeatHorizontally.toString()));
-            fillMode.input.choices.push(new Adaptive.Choice("Repeat vertically", Adaptive.FillMode.RepeatVertically.toString()));
-            fillMode.input.choices.push(new Adaptive.Choice("Repeat", Adaptive.FillMode.Repeat.toString()));
+        let fillMode = addLabelAndInput(card, "Fill mode:", Adaptive.ChoiceSetInput);
+        fillMode.input.isCompact = true;
+        fillMode.input.placeholder = "(not set)";
+        fillMode.input.choices.push(new Adaptive.Choice("Cover", Adaptive.FillMode.Cover.toString()));
+        fillMode.input.choices.push(new Adaptive.Choice("Repeat horizontally", Adaptive.FillMode.RepeatHorizontally.toString()));
+        fillMode.input.choices.push(new Adaptive.Choice("Repeat vertically", Adaptive.FillMode.RepeatVertically.toString()));
+        fillMode.input.choices.push(new Adaptive.Choice("Repeat", Adaptive.FillMode.Repeat.toString()));
 
-            if (backgroundImage) {
-                fillMode.input.defaultValue = backgroundImage.fillMode.toString();
+        if (backgroundImage) {
+            fillMode.input.defaultValue = backgroundImage.fillMode.toString();
+        }
+
+        fillMode.input.onValueChanged = () => {
+            if (horizontalAlignment.input.value) {
+                backgroundImage.fillMode = <Adaptive.FillMode>parseInt(fillMode.input.value);
             }
 
-            fillMode.input.onValueChanged = () => {
-                if (horizontalAlignment.input.value) {
-                    backgroundImage.fillMode = <Adaptive.FillMode>parseInt(fillMode.input.value);
-                }
+            this.changed(false);
+        }
 
-                this.changed(false);
+        let horizontalAlignment = addLabelAndInput(card, "Horizontal alignment:", Adaptive.ChoiceSetInput);
+        horizontalAlignment.input.isCompact = true;
+        horizontalAlignment.input.placeholder = "(not set)";
+        horizontalAlignment.input.choices.push(new Adaptive.Choice("Left", Adaptive.HorizontalAlignment.Left.toString()));
+        horizontalAlignment.input.choices.push(new Adaptive.Choice("Center", Adaptive.HorizontalAlignment.Center.toString()));
+        horizontalAlignment.input.choices.push(new Adaptive.Choice("Right", Adaptive.HorizontalAlignment.Right.toString()));
+
+        if (backgroundImage) {
+            horizontalAlignment.input.defaultValue = backgroundImage.horizontalAlignment.toString();
+        }
+
+        horizontalAlignment.input.onValueChanged = () => {
+            if (horizontalAlignment.input.value) {
+                backgroundImage.horizontalAlignment = <Adaptive.HorizontalAlignment>parseInt(horizontalAlignment.input.value);
             }
 
-            let horizontalAlignment = addLabelAndInput(card, "Horizontal alignment:", Adaptive.ChoiceSetInput);
-            horizontalAlignment.input.isCompact = true;
-            horizontalAlignment.input.placeholder = "(not set)";
-            horizontalAlignment.input.choices.push(new Adaptive.Choice("Left", Adaptive.HorizontalAlignment.Left.toString()));
-            horizontalAlignment.input.choices.push(new Adaptive.Choice("Center", Adaptive.HorizontalAlignment.Center.toString()));
-            horizontalAlignment.input.choices.push(new Adaptive.Choice("Right", Adaptive.HorizontalAlignment.Right.toString()));
+            this.changed(false);
+        }
 
-            if (backgroundImage) {
-                horizontalAlignment.input.defaultValue = backgroundImage.horizontalAlignment.toString();
+        let verticalAlignment = addLabelAndInput(card, "Vertical alignment:", Adaptive.ChoiceSetInput);
+        verticalAlignment.input.isCompact = true;
+        verticalAlignment.input.placeholder = "(not set)";
+        verticalAlignment.input.choices.push(new Adaptive.Choice("Top", Adaptive.VerticalAlignment.Top.toString()));
+        verticalAlignment.input.choices.push(new Adaptive.Choice("Center", Adaptive.VerticalAlignment.Center.toString()));
+        verticalAlignment.input.choices.push(new Adaptive.Choice("Bottom", Adaptive.VerticalAlignment.Bottom.toString()));
+
+        if (backgroundImage) {
+            verticalAlignment.input.defaultValue = backgroundImage.verticalAlignment.toString();
+        }
+
+        verticalAlignment.input.onValueChanged = () => {
+            if (verticalAlignment.input.value) {
+                backgroundImage.verticalAlignment = <Adaptive.VerticalAlignment>parseInt(verticalAlignment.input.value);
             }
 
-            horizontalAlignment.input.onValueChanged = () => {
-                if (horizontalAlignment.input.value) {
-                    backgroundImage.horizontalAlignment = <Adaptive.HorizontalAlignment>parseInt(horizontalAlignment.input.value);
-                }
-
-                this.changed(false);
-            }
-
-            let verticalAlignment = addLabelAndInput(card, "Vertical alignment:", Adaptive.ChoiceSetInput);
-            verticalAlignment.input.isCompact = true;
-            verticalAlignment.input.placeholder = "(not set)";
-            verticalAlignment.input.choices.push(new Adaptive.Choice("Top", Adaptive.VerticalAlignment.Top.toString()));
-            verticalAlignment.input.choices.push(new Adaptive.Choice("Center", Adaptive.VerticalAlignment.Center.toString()));
-            verticalAlignment.input.choices.push(new Adaptive.Choice("Bottom", Adaptive.VerticalAlignment.Bottom.toString()));
-
-            if (backgroundImage) {
-                verticalAlignment.input.defaultValue = backgroundImage.verticalAlignment.toString();
-            }
-
-            verticalAlignment.input.onValueChanged = () => {
-                if (verticalAlignment.input.value) {
-                    backgroundImage.verticalAlignment = <Adaptive.VerticalAlignment>parseInt(verticalAlignment.input.value);
-                }
-
-                this.changed(false);
-            }
+            this.changed(false);
         }
     }
 
