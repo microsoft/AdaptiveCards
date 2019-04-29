@@ -24,11 +24,11 @@ namespace AdaptiveCards.Test
 
             Assert.IsNotNull(result);
 
-            Assert.AreEqual(25, result.FontSizes.Small);
-            Assert.AreEqual(26, result.FontSizes.Default);
-            Assert.AreEqual(27, result.FontSizes.Medium);
-            Assert.AreEqual(28, result.FontSizes.Large);
-            Assert.AreEqual(29, result.FontSizes.ExtraLarge);
+            Assert.AreEqual(25, result.FontStyles.Default.FontSizes.Small);
+            Assert.AreEqual(26, result.FontStyles.Default.FontSizes.Default);
+            Assert.AreEqual(27, result.FontStyles.Default.FontSizes.Medium);
+            Assert.AreEqual(28, result.FontStyles.Default.FontSizes.Large);
+            Assert.AreEqual(29, result.FontStyles.Default.FontSizes.ExtraLarge);
         }
 
         [TestMethod]
@@ -184,13 +184,13 @@ namespace AdaptiveCards.Test
 
             Assert.AreEqual(true, hostConfig.SupportsInteractivity);
 
-            Assert.AreEqual("Segoe UI", hostConfig.FontFamily);
+            Assert.AreEqual("Segoe UI", hostConfig.FontStyles.Default.FontFamily);
 
-            Assert.AreEqual(12, hostConfig.FontSizes.Small);
-            Assert.AreEqual(14, hostConfig.FontSizes.Default);
-            Assert.AreEqual(17, hostConfig.FontSizes.Medium);
-            Assert.AreEqual(21, hostConfig.FontSizes.Large);
-            Assert.AreEqual(26, hostConfig.FontSizes.ExtraLarge);
+            Assert.AreEqual(12, hostConfig.FontStyles.Default.FontSizes.Small);
+            Assert.AreEqual(14, hostConfig.FontStyles.Default.FontSizes.Default);
+            Assert.AreEqual(17, hostConfig.FontStyles.Default.FontSizes.Medium);
+            Assert.AreEqual(21, hostConfig.FontStyles.Default.FontSizes.Large);
+            Assert.AreEqual(26, hostConfig.FontStyles.Default.FontSizes.ExtraLarge);
 
             // TODO: FontWeights aren't supported
 
