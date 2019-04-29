@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -226,7 +228,7 @@ namespace AdaptiveCards.Sample.Html
             }});
         }}
 
-        // Sample JavaScript code to test inlienaction's keyboard event handler 
+        // Sample JavaScript code to test inlienaction's keyboard event handler
         const textinputWithInlineAction = document.getElementsByClassName('ac-textinput-inlineaction');
         for (var i = 0; i < textinputWithInlineAction.length; i++)
         {{
@@ -250,7 +252,7 @@ namespace AdaptiveCards.Sample.Html
                             }}
                         }}
                     }}
-                }} 
+                }}
             }});
         }}
 

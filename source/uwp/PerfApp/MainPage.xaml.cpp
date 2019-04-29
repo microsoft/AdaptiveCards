@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 //
 // MainPage.xaml.cpp
 // Implementation of the MainPage class.
@@ -8,8 +10,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <errno.h>
-#include <iostream> 
-#include <sstream> 
+#include <iostream>
+#include <sstream>
 
 // warning C4691: '...': type referenced was expected in unreferenced assembly '...', type defined in current translation unit used instead
 #pragma warning(disable : 4691)
@@ -37,7 +39,7 @@ using namespace Windows::Data::Json;
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 // Custom renderer for text block used to get performance data from text block rendering
-ref class MyTextBlockRenderer sealed : public IAdaptiveElementRenderer 
+ref class MyTextBlockRenderer sealed : public IAdaptiveElementRenderer
 {
 public:
     MyTextBlockRenderer(MainPageViewModel^ viewModel)

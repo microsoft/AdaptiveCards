@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 export interface ILoadSettingResult<T> {
     succeeded: boolean;
     value?: T;
@@ -41,7 +43,7 @@ export class SettingsManager {
     static tryLoadNumberSetting(name: string): ILoadSettingResult<number> {
         if (SettingsManager.isLocalStorageAvailable) {
             let returnValue = localStorage.getItem(name);
-    
+
             return {
                 succeeded: true,
                 value: returnValue ? parseFloat(returnValue) : undefined
@@ -51,11 +53,11 @@ export class SettingsManager {
             return { succeeded: false };
         }
     }
-    
+
     static tryLoadBooleanSetting(name: string, defaultValue: boolean): ILoadSettingResult<boolean> {
         if (SettingsManager.isLocalStorageAvailable) {
             let returnValue = localStorage.getItem(name);
-    
+
             return {
                 succeeded: true,
                 value: returnValue ? returnValue == "true" : defaultValue
@@ -64,8 +66,8 @@ export class SettingsManager {
         else {
             return { succeeded: false };
         }
-    }    
-    
+    }
+
     static get isLocalStorageAvailable(): boolean {
         if (!SettingsManager._isLocalStorageAvailable) {
             SettingsManager._isLocalStorageAvailable = SettingsManager.determineIfStorageIsAvailable("localStorage");
