@@ -5676,13 +5676,13 @@ export class ColumnSet extends StylableCardElementContainer {
                 if (errorType == InstanceCreationErrorType.UnknownType) {
                     return {
                         error: Enums.ValidationError.UnknownElementType,
-                        message: "Invalid element type " + typeName + " in a ColumnSet. Attempting to fall back."
+                        message: "Unknown element type: " + typeName + ". Attempting to fall back."
                     }
                 }
                 else {
                     return {
                         error: Enums.ValidationError.ElementTypeNotAllowed,
-                        message: "Element type " + typeName + " is not allowed in this context."
+                        message: "Element type " + typeName + " isn't allowed in a ColumnSet."
                     }
                 }
             },
