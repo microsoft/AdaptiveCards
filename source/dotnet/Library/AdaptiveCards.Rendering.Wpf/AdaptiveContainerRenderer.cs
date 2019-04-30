@@ -110,35 +110,42 @@ namespace AdaptiveCards.Rendering.Wpf
 
                     if (cardElement.Height != AdaptiveHeight.Stretch)
                     {
-                        context.SetVisibility(uiElement, cardElement.IsVisible, tag);
                         uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
                         Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
                         uiContainer.Children.Add(uiElement);
+
+                        context.SetVisibility(uiElement, cardElement.IsVisible, tag);
                     }
                     else
                     {
+                        RowDefinition rowDefinition = new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) };
+                        tag.NotAutoHeightRowDefinition = rowDefinition;
+                        tag.ViewIndex = uiContainer.RowDefinitions.Count;
+                        uiContainer.RowDefinitions.Add(rowDefinition);
+
                         if (cardElement.Type == "Container")
                         {
-                            context.SetVisibility(uiElement, cardElement.IsVisible, tag);
-                            uiContainer.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
                             Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
                             uiContainer.Children.Add(uiElement);
+
+                            context.SetVisibility(uiElement, cardElement.IsVisible, tag);
                         }
                         else
                         {
                             StackPanel panel = new StackPanel();
-                            context.SetVisibility(panel, cardElement.IsVisible, tag);
+                            
                             if (!String.IsNullOrEmpty(cardElement.Id))
                             {
                                 panel.Name = cardElement.Id;
                             }
-                            panel.Children.Add(uiElement);
 
+                            panel.Children.Add(uiElement);
                             panel.Tag = tag;
 
-                            uiContainer.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
                             Grid.SetRow(panel, uiContainer.RowDefinitions.Count - 1);
                             uiContainer.Children.Add(panel);
+
+                            context.SetVisibility(panel, cardElement.IsVisible, tag);
                         }
                     }
 

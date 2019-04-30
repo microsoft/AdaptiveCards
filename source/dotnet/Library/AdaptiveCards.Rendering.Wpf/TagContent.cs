@@ -35,6 +35,8 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public ColumnDefinition NotAutoWidthColumnDefinition { get; set; } = null;
 
+        public RowDefinition NotAutoHeightRowDefinition { get; set; } = null;
+
         public int ViewIndex { get; set; }
     }
 }

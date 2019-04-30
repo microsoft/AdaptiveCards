@@ -305,6 +305,22 @@ namespace AdaptiveCards.Rendering.Wpf
 
             element.Visibility = isVisible ? Visibility.Visible : Visibility.Collapsed;
 
+            // Elements (Rows) with RowDefinition having stars won't hide so we have to set the width to auto
+            if (tagContent.NotAutoHeightRowDefinition != null)
+            {
+                RowDefinition rowDefinition = new RowDefinition() { Height = GridLength.Auto };
+                if (isVisible)
+                {
+                    rowDefinition = tagContent.NotAutoHeightRowDefinition;
+                }
+
+                // Trying to set the same rowDefinition twice to the same element is not valid, so we have to make a check first
+                if (!(elementIsCurrentlyVisible && isVisible))
+                {
+                    tagContent.ElementContainer.RowDefinitions[tagContent.ViewIndex] = rowDefinition;
+                }
+            }
+
             // Columns with ColumnDefinition having stars won't hide so we have to set the width to auto
             if (tagContent.NotAutoWidthColumnDefinition != null)
             {
