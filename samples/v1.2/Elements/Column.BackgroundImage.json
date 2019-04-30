@@ -37,7 +37,7 @@
 					"width": "auto",
 					"backgroundImage": {
 						"url": "https://picsum.photos/30/30?image=101",
-						"mode": "repeat"
+						"fillMode": "repeat"
 					},
 
 					"items": [
@@ -67,7 +67,7 @@
 					"width": "auto",
 					"backgroundImage": {
 						"url": "https://picsum.photos/30/30?image=101",
-						"mode": "repeatHorizontally"
+						"fillMode": "repeatHorizontally"
 					},
 					"items": [
 						{
@@ -81,7 +81,7 @@
 					"width": "auto",
 					"backgroundImage": {
 						"url": "https://picsum.photos/30/30?image=101",
-						"mode": "repeatHorizontally",
+						"fillMode": "repeatHorizontally",
 						"verticalAlignment": "center"
 					},
 					"items": [
@@ -96,7 +96,7 @@
 					"width": "auto",
 					"backgroundImage": {
 						"url": "https://picsum.photos/30/30?image=101",
-						"mode": "repeatHorizontally",
+						"fillMode": "repeatHorizontally",
 						"verticalAlignment": "bottom"
 					},
 					"items": [
@@ -116,7 +116,7 @@
 					"width": "auto",
 					"backgroundImage": {
 						"url": "https://picsum.photos/30/30?image=101",
-						"mode": "repeatVertically"
+						"fillMode": "repeatVertically"
 					},
 					"items": [
 						{
@@ -130,7 +130,7 @@
 					"width": "auto",
 					"backgroundImage": {
 						"url": "https://picsum.photos/30/30?image=101",
-						"mode": "repeatVertically",
+						"fillMode": "repeatVertically",
 						"horizontalAlignment": "center"
 					},
 					"items": [
@@ -145,7 +145,7 @@
 					"width": "auto",
 					"backgroundImage": {
 						"url": "https://picsum.photos/30/30?image=101",
-						"mode": "repeatVertically",
+						"fillMode": "repeatVertically",
 						"horizontalAlignment": "right"
 					},
 					"items": [
