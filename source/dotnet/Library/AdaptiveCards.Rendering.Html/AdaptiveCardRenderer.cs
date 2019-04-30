@@ -1913,7 +1913,8 @@ namespace AdaptiveCards.Rendering.Html
                 default:
                     uiContainer.Style("background-image", $"url('{context.Config.ResolveFinalAbsoluteUri(backgroundImage.Url)}')")
                             .Style("background-repeat", "no-repeat")
-                            .Style("background-size", "cover");
+                            .Style("background-size", "cover")
+                            .Style("background-position", backgroundImage.HorizontalAlignment.ToString().ToLower() + " " + backgroundImage.VerticalAlignment.ToString().ToLower());
                     break;
             }
         }
