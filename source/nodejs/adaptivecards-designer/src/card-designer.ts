@@ -15,6 +15,8 @@ import { Splitter } from "./splitter";
 import { IPoint, Utils } from "./miscellaneous";
 import { BasePaletteItem, ElementPaletteItem } from "./tool-palette";
 import { DefaultContainer } from "./containers/default/default-container";
+import { ShareDialog } from "./share-dialog";
+import { ICardData } from "./card-hub";
 
 export class CardDesigner {
     private static internalProcessMarkdown(text: string, result: Adaptive.IMarkdownProcessingResult) {
@@ -34,6 +36,7 @@ export class CardDesigner {
 
     private static MAX_UNDO_STACK_SIZE = 50;
 
+    private _root: HTMLElement;
     private _monacoEditor: monaco.editor.IStandaloneCodeEditor;
     private _hostContainers: Array<HostContainer>;
     private _isMonacoEditorLoaded: boolean = false;
@@ -52,6 +55,7 @@ export class CardDesigner {
     private _propertySheetPane: SidePane;
 	private _treeViewPane: SidePane;
 	private _assetPath: string;
+	private _shareDialog?: ShareDialog;
 
     private buildTreeView() {
         if (this._treeViewPane.content) {
@@ -318,7 +322,8 @@ export class CardDesigner {
     private preventCardUpdate: boolean = false;
 
     private setJsonPayload(payload: object) {
-        this._monacoEditor.setValue(JSON.stringify(payload, null, 4));
+		this._monacoEditor.setValue(JSON.stringify(payload, null, 4));
+		this.onCardPayloadChanged();
     }
 
     private updateJsonFromCard(addToUndoStack: boolean = true) {
@@ -359,7 +364,8 @@ export class CardDesigner {
             this.preventJsonUpdate = true;
 
             if (!this.preventCardUpdate) {
-                this.designerSurface.setCardPayloadAsString(this.getCurrentJsonPayload());
+				this.designerSurface.setCardPayloadAsString(this.getCurrentJsonPayload());
+				this.onCardPayloadChanged();
             }
         }
         finally {
@@ -388,8 +394,19 @@ export class CardDesigner {
     private _redoButton: ToolbarButton;
     private _newCardButton: ToolbarButton;
     private _copyJSONButton: ToolbarButton;
+    private _shareButton: ToolbarButton;
 
     private prepareToolbar() {
+        this._shareButton = new ToolbarButton(
+            CardDesigner.ToolbarCommands.FullScreen,
+            "Share",
+            "acd-icon-share",
+            (sender) => { this.share(); });
+        this._shareButton.displayCaption = true;
+        this._shareButton.toolTip = "Share";
+		this._shareButton.alignment = ToolbarElementAlignment.Right;
+		
+		this.toolbar.addElement(this._shareButton);
         this._fullScreenButton = new ToolbarButton(
             CardDesigner.ToolbarCommands.FullScreen,
             "Enter Full Screen",
@@ -470,6 +487,32 @@ export class CardDesigner {
             this.updateFullLayout();
         }
     }
+	
+	private async share() {
+		if (this._shareDialog == undefined) {
+			this._shareDialog = new ShareDialog(this._root);
+			try {
+				await this._shareDialog.shareAsync(this.getCardShareData());
+			} catch (err) {
+				this._shareDialog = undefined;
+			}
+		} else {
+			this._shareDialog.show();
+		}
+	}
+
+	private getCardShareData() : ICardData {
+		var answer: ICardData = {
+			CardJson: this.getCurrentJsonPayload()
+		};
+		return answer;
+	}
+
+	private onCardPayloadChanged() {
+		if (this._shareDialog) {
+			this._shareDialog.sendUpdate(this.getCardShareData());
+		}
+	}
 
     private onResize() {
         this._monacoEditor.layout();
@@ -902,6 +945,8 @@ export class CardDesigner {
         else {
             this._activeHostContainer = new DefaultContainer("Default", "default-container.css");
         }
+
+        this._root = root;
 
         root.style.flex = "1 1 auto";
         root.style.display = "flex";

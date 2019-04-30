@@ -1,4 +1,5 @@
 using CardHub.Interfaces;
+using MiniGuids;
 using Newtonsoft.Json;
 using ServerSentEvent4Net;
 using System;
@@ -13,11 +14,19 @@ namespace CardHub.Models
     {
         private ServerSentEvent _serverSentEvent;
 
-        public StoredCard(CardData cardData)
+        public StoredCard(string cardId, CardData cardData)
         {
+            CardId = cardId;
             CardData = cardData;
             _serverSentEvent = new ServerSentEvent(2);
         }
+
+        public string CardId { get; private set; }
+
+        /// <summary>
+        /// The unique token that only the host knows, so that only host can update
+        /// </summary>
+        public string Token { get; private set; } = MiniGuid.NewGuid() + MiniGuid.NewGuid() + MiniGuid.NewGuid() + MiniGuid.NewGuid() + MiniGuid.NewGuid() + MiniGuid.NewGuid();
 
         public CardData CardData { get; private set; }
 
@@ -27,7 +36,7 @@ namespace CardHub.Models
         {
             CardData = cardData;
             LastUpdated = DateTime.Now;
-            _serverSentEvent.Send(JsonConvert.ToString(cardData));
+            _serverSentEvent.Send(JsonConvert.SerializeObject(cardData));
         }
 
         public HttpResponseMessage AddSubscriber(HttpRequestMessage request)

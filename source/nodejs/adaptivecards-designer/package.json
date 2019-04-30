@@ -25,7 +25,8 @@
 		"adaptivecards": "^1.2.0-beta1",
 		"adaptivecards-controls": "^0.1.7",
 		"clipboard": "^2.0.1",
-		"monaco-editor": "^0.15.6"
+		"monaco-editor": "^0.15.6",
+		"qrcode-generator-ts": "0.0.4"
 	},
 	"devDependencies": {
 		"rimraf": "^2.6.2",

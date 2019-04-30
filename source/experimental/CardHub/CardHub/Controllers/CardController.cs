@@ -59,10 +59,11 @@ namespace CardHub.Controllers
         /// <returns></returns>
         public CreateCardResponse Post([FromBody]CardData value)
         {
-            string id = StoredCards.Current.Create(value);
+            var storedCard = StoredCards.Current.Create(value);
             return new CreateCardResponse()
             {
-                CardId = id
+                CardId = storedCard.CardId,
+                Token = storedCard.Token
             };
         }
 
@@ -72,9 +73,9 @@ namespace CardHub.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <param name="value"></param>
-        public void Put(string id, [FromBody]CardData value)
+        public void Put(string id, [FromBody]UpdateCardRequest value)
         {
-            StoredCards.Current.Update(id, value);
+            StoredCards.Current.Update(id, value.Token, value.CardData);
         }
 
         // DELETE: api/Card/5

@@ -5,10 +5,10 @@ using System.Web;
 
 namespace CardHub.Interfaces
 {
-    public class CreateCardResponse
+    public class UpdateCardRequest
     {
-        public string CardId { get; set; }
-
         public string Token { get; set; }
+
+        public CardData CardData { get; set; }
     }
 }

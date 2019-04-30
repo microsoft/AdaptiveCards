@@ -14,7 +14,7 @@ namespace CardHub.Models
 
         private Dictionary<string, StoredCard> _cards = new Dictionary<string, StoredCard>();
 
-        public string Create(CardData cardData)
+        public StoredCard Create(CardData cardData)
         {
             // First we'll clean up old cards
             CleanupOldCards();
@@ -29,8 +29,9 @@ namespace CardHub.Models
                 {
                     if (!_cards.ContainsKey(id))
                     {
-                        _cards[id] = new StoredCard(cardData);
-                        return id;
+                        var answer = new StoredCard(id, cardData);
+                        _cards[id] = answer;
+                        return answer;
                     }
                 }
 
@@ -74,12 +75,17 @@ namespace CardHub.Models
             }
         }
 
-        public void Update(string id, CardData cardData)
+        public void Update(string id, string token, CardData cardData)
         {
             lock (_cards)
             {
                 if (_cards.TryGetValue(id, out StoredCard storedCard))
                 {
+                    if (token != storedCard.Token)
+                    {
+                        throw new UnauthorizedAccessException();
+                    }
+
                     storedCard.Update(cardData);
                 }
                 else

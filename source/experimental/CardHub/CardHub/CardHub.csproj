@@ -233,6 +233,7 @@
     </Compile>
     <Compile Include="Interfaces\CardData.cs" />
     <Compile Include="Interfaces\CreateCardResponse.cs" />
+    <Compile Include="Interfaces\UpdateCardRequest.cs" />
     <Compile Include="Models\StoredCard.cs" />
     <Compile Include="Models\StoredCards.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
