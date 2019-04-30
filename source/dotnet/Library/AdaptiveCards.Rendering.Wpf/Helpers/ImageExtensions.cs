@@ -172,9 +172,9 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 // bi.Pixel{Width, Height}: dimensions of image
                 // grid.Actual{Width, Height}: dimensions of grid containing background image
-                switch (adaptiveBackgroundImage.Mode)
+                switch (adaptiveBackgroundImage.FillMode)
                 {
-                    case AdaptiveBackgroundImageMode.Repeat:
+                    case AdaptiveImageFillMode.Repeat:
                         grid.Background = new ImageBrush(bi)
                         {
                             TileMode = TileMode.Tile,
@@ -182,7 +182,7 @@ namespace AdaptiveCards.Rendering.Wpf
                             ViewportUnits = BrushMappingMode.Absolute
                         };
                         break;
-                    case AdaptiveBackgroundImageMode.RepeatHorizontally:
+                    case AdaptiveImageFillMode.RepeatHorizontally:
                         grid.Background = new ImageBrush(bi)
                         {
                             TileMode = TileMode.FlipY,
@@ -192,7 +192,7 @@ namespace AdaptiveCards.Rendering.Wpf
                             ViewportUnits = BrushMappingMode.Absolute
                         };
                         break;
-                    case AdaptiveBackgroundImageMode.RepeatVertically:
+                    case AdaptiveImageFillMode.RepeatVertically:
                         grid.Background = new ImageBrush(bi)
                         {
                             TileMode = TileMode.FlipX,
@@ -202,7 +202,7 @@ namespace AdaptiveCards.Rendering.Wpf
                             ViewportUnits = BrushMappingMode.Absolute
                         };
                         break;
-                    case AdaptiveBackgroundImageMode.Stretch:
+                    case AdaptiveImageFillMode.Cover:
                     default:
                         grid.Background = new ImageBrush(bi)
                         {
