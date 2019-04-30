@@ -207,7 +207,8 @@ namespace AdaptiveCards.Rendering.Wpf
                         grid.Background = new ImageBrush(bi)
                         {
                             Stretch = Stretch.UniformToFill,
-                            AlignmentY = AlignmentY.Top
+                            AlignmentY = (AlignmentY)adaptiveBackgroundImage.VerticalAlignment,
+                            AlignmentX = (AlignmentX)adaptiveBackgroundImage.HorizontalAlignment
                         };
                         break;
                 }
