@@ -18,6 +18,7 @@ export class ShareDialog {
 	
 	private _successfullyShared: boolean;
 	private _cardId?: string;
+	private _token?: string;
 
     constructor(
         attachedTo: HTMLElement) {
@@ -93,7 +94,9 @@ export class ShareDialog {
 
     async shareAsync(cardData: ICardData) {
 		try {
-			var cardId: string = await CardHub.createCardAsync(cardData);
+			var createCardResponse = await CardHub.createCardAsync(cardData);
+			var cardId = createCardResponse.CardId;
+			this._token = createCardResponse.Token;
 
 			// Show QR code
 			var qr = new QRCode();
@@ -133,7 +136,7 @@ export class ShareDialog {
 	private async actuallySendUpdateAsync(cardData: ICardData) {
 		this._isUpdating = true;
 		try {
-			await CardHub.updateCardAsync(this._cardId!, cardData);
+			await CardHub.updateCardAsync(this._cardId!, this._token!, cardData);
 		} catch (err) {
 			console.log("Failed to send update: " + err);
 		}

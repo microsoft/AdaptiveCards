@@ -2,11 +2,16 @@ export interface ICardData {
 	CardJson: string;
 }
 
+export interface ICreateCardResponse {
+	CardId: string;
+	Token: string;
+}
+
 export class CardHub {
 	private static _baseUrl = "https://cardhub.azurewebsites.net/api/";
 
 	// Creates a card and returns the CardId.
-	static async createCardAsync(cardData: ICardData) {
+	static async createCardAsync(cardData: ICardData) : Promise<ICreateCardResponse> {
 		var response = await fetch(this._baseUrl + "card", {
 			method: "POST",
 			headers: {
@@ -20,16 +25,19 @@ export class CardHub {
 		}
 		
 		var createCardResponse = await response.json();
-		return createCardResponse.CardId;
+		return createCardResponse;
 	}
 
-	static async updateCardAsync(cardId: string, cardData: ICardData) {
+	static async updateCardAsync(cardId: string, token: string, cardData: ICardData) {
 		var response = await fetch(this._baseUrl + "card/" + cardId, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json"
 			},
-			body: JSON.stringify(cardData)
+			body: JSON.stringify({
+				Token: token,
+				CardData: cardData
+			})
 		});
 
 		if (!response.ok) {
