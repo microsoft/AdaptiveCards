@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include <iostream>
 #include "MarkDownBlockParser.h"
@@ -367,29 +369,39 @@ bool LinkParser::MatchAtLinkTextRun(std::stringstream& lookahead)
     }
     else
     {
+        // parses recursively to the right
+        ParseBlock(lookahead);
+        m_linkTextParsedResult.AppendParseResult(GetParsedResult());
+
+        // check if the special token that wasn't handled was '['
         if (lookahead.peek() == '[')
         {
-            m_parsedResult.AppendParseResult(m_linkTextParsedResult);
-            return false;
-        }
-        else
-        {
-            // Block() will process the inline items within Link Text block
-            ParseBlock(lookahead);
-            m_linkTextParsedResult.AppendParseResult(m_parsedResult);
-
-            if (lookahead.peek() == ']')
+            // begin new syntax check of link
+            LinkParser linkParser;
+            // do syntax check of link
+            linkParser.Match(lookahead);
+            // this check is needed because if this token is n't handled, 
+            // it will be treated as occurred outside of link text
+            if (lookahead.peek() != ']')
             {
-                // move code gen objects to link text list to further process it
-                char streamChar;
-                lookahead.get(streamChar);
-                m_linkTextParsedResult.AddNewTokenToParsedResult(streamChar);
-                return true;
+                // continute parsing of the right side it recursively
+                linkParser.ParseBlock(lookahead);
             }
-
-            m_parsedResult.AppendParseResult(m_linkTextParsedResult);
-            return false;
+            // append link parsing result
+            m_linkTextParsedResult.AppendParseResult(linkParser.GetParsedResult());
         }
+
+        if (lookahead.peek() == ']')
+        {
+            // move code gen objects to link text list to further process it
+            char streamChar;
+            lookahead.get(streamChar);
+            m_linkTextParsedResult.AddNewTokenToParsedResult(streamChar);
+            return true;
+        } 
+
+        m_parsedResult.AppendParseResult(m_linkTextParsedResult);
+        return false;
     }
 }
 

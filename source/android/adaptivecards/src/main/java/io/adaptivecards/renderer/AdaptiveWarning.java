@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer;
 
 public class AdaptiveWarning {
@@ -6,6 +8,7 @@ public class AdaptiveWarning {
     public static final int INTERACTIVITY_DISALLOWED = 3;
     public static final int MAX_ACTIONS_EXCEEDED = 4;
     public static final int TOGGLE_MISSING_VALUE = 5;
+    public static final int SELECT_SHOW_CARD_ACTION = 6;
 
     private int code;
     private String message;

@@ -6,8 +6,7 @@ import React from 'react';
 import {
 	StyleSheet,
 	Text,
-	Linking,
-	View
+	Linking
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -351,7 +350,7 @@ export default class MarkdownFormatter extends React.PureComponent {
 
 			} else {
 				if (partialJsx.length !== 0) {
-					fullJsx.push(<View key={key + "_list"} style={this.userStyles}><Text key={key + partialJsx.length + "_list"}>{partialJsx}</Text></View>);
+					fullJsx.push(<Text key={key + "_list"} style={this.userStyles}><Text key={key + partialJsx.length + "_list"}>{partialJsx}</Text></Text>);
 					partialJsx = [];
 				}
 				if (eachWord.trim() != "")

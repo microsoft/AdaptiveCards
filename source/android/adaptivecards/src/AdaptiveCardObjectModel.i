@@ -1,3 +1,5 @@
+/* Copyright (c) Microsoft Corporation. All rights reserved. */
+/* Licensed under the MIT License. */
 /* File : AdaptiveCardObjectModel.i */
 
 namespace std {
@@ -36,6 +38,7 @@ struct tm {
     int tm_isdst;
 };
 
+%include <typemaps.i>
 %include <std_string.i>
 %include <std_shared_ptr.i>
 %include <std_vector.i>
@@ -184,6 +187,8 @@ struct tm {
 %shared_ptr(AdaptiveCards::RichTextBlockParser)
 %shared_ptr(AdaptiveCards::TextRun)
 %shared_ptr(AdaptiveCards::TextElementProperties)
+
+%apply unsigned int& INOUT { unsigned int& };
 
 namespace Json {
     %rename(JsonValue) Value;

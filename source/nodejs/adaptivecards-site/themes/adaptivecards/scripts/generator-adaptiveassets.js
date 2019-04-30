@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 "use strict";
 
 // Copy various adaptive card assets from elsehwere in the repo into the output folder

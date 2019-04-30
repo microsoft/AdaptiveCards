@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using AdaptiveCards;
 using AdaptiveCards.Rendering;
 using AdaptiveCards.Rendering.Wpf;
@@ -58,6 +60,8 @@ namespace WpfVisualizer
             {
                 Resources = Resources
             };
+
+            Renderer.FeatureRegistration.Set("acTest", "1.0");
 
             // Use the Xceed rich input controls
             Renderer.UseXceedElementRenderers();
