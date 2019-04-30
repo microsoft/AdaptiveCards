@@ -62,6 +62,7 @@ public class RemoteClientConnection
     }
 
     private static final String LOG_TAG = "RemoteClientConnection";
+    private static final String BASE_URL = "https://cardhub.azurewebsites.net/api/";
     private Observer m_observer;
     private Context m_context;
     private PeerConnection m_conn;
@@ -117,6 +118,12 @@ public class RemoteClientConnection
     public void connect(String hostId)
     {
         m_hostId = hostId;
+
+        // Need to connect via server sent events
+        // https://stackoverflow.com/questions/18903760/server-sent-events-in-android
+
+        // THEN, get the initial card
+
         RequestQueue queue = Volley.newRequestQueue(m_context);
         String url = "https://signalingserver.azurewebsites.net/api/subscriptions/" + hostId;
 
