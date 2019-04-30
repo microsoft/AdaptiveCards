@@ -290,24 +290,148 @@ namespace AdaptiveCards.Rendering.Wpf
             }
         }
 
+        private TagContent GetTagContent(FrameworkElement element)
+        {
+            if (element != null)
+            {
+                if (element.Tag != null && element.Tag is TagContent tagContent)
+                {
+                    return tagContent;
+                }
+            }
+
+            return null;
+        }
+
+        public void SetVisibility(FrameworkElement element, bool isVisible, TagContent tagContent)
+        {
+            bool elementIsCurrentlyVisible = (element.Visibility == Visibility.Visible);
+
+            element.Visibility = isVisible ? Visibility.Visible : Visibility.Collapsed;
+
+            // Columns with ColumnDefinition having stars won't hide so we have to set the width to auto
+            if (tagContent.NotAutoWidthColumnDefinition != null)
+            {
+                ColumnDefinition columnDefinition = new ColumnDefinition() { Width = GridLength.Auto };
+                if (isVisible)
+                {
+                    columnDefinition = tagContent.NotAutoWidthColumnDefinition;
+                }
+
+                // Trying to set the same columnDefinition twice to the same element is not valid, so we have to make a check first
+                if (!(elementIsCurrentlyVisible && isVisible))
+                {
+                    tagContent.ElementContainer.ColumnDefinitions[tagContent.ViewIndex] = columnDefinition;
+                }
+            }
+
+        }
+
         public void ToggleVisibility(IEnumerable<AdaptiveTargetElement> targetElements)
         {
+            HashSet<Grid> elementContainers = new HashSet<Grid>();
+
             foreach (AdaptiveTargetElement targetElement in targetElements)
             {
                 var element = LogicalTreeHelper.FindLogicalNode(CardRoot, targetElement.ElementId);
 
                 if (element != null && element is FrameworkElement elementFrameworkElement)
                 {
-                    Visibility visibility = elementFrameworkElement.Visibility;
+                    bool isCurrentlyVisible = (elementFrameworkElement.Visibility == Visibility.Visible);
+
                     // if we read something with the format {"elementId": <id>", "isVisible": true} or we just read the id and the element is not visible
-                    if ((targetElement.IsVisible.HasValue && targetElement.IsVisible.Value) || (!targetElement.IsVisible.HasValue && visibility != Visibility.Visible))
-                    {
-                        elementFrameworkElement.Visibility = Visibility.Visible;
-                    }
                     // otherwise if we read something with the format {"elementId": <id>", "isVisible": false} or we just read the id and the element is visible
-                    else if ((targetElement.IsVisible.HasValue && !targetElement.IsVisible.Value) || (!targetElement.IsVisible.HasValue && visibility == Visibility.Visible))
+                    bool newVisibility = (targetElement.IsVisible.HasValue && targetElement.IsVisible.Value) || (!targetElement.IsVisible.HasValue && !isCurrentlyVisible);
+
+                    TagContent tagContent = GetTagContent(elementFrameworkElement);
+
+                    SetVisibility(elementFrameworkElement, newVisibility, tagContent);
+
+                    if (tagContent != null)
                     {
-                        elementFrameworkElement.Visibility = Visibility.Collapsed;
+                        elementContainers.Add(tagContent.ElementContainer);
+                    }
+                }
+            }
+
+            foreach (Grid elementContainer in elementContainers)
+            {
+                ResetSeparatorVisibilityInsideContainer(elementContainer);
+            }
+
+        }
+
+        /// <summary>
+        /// Elements are adde to the container in two ways: if the height is auto or the inserted element is a container, then the element
+        /// is added as is, if the element has height stretch, then we add an extra stack panel so it can take the remaining space
+        /// </summary>
+        /// <param name="element"></param>
+        /// <returns></returns>
+        private FrameworkElement GetRenderedElement(FrameworkElement element)
+        {
+            if (element is StackPanel containerPanel)
+            {
+                UIElement uiElement = containerPanel.Children[0];
+
+                if (uiElement is FrameworkElement frameworkElement)
+                {
+                    return frameworkElement;
+                }
+            }
+
+            return element;
+        }
+
+        private void HandleSeparatorAndSpacing(bool isFirstVisible, FrameworkElement element, TagContent tagContent)
+        {
+            // Hide the spacing / separator for the first element
+            // Separators are added as a grid
+            Grid separator = tagContent.Separator;
+
+            if (separator != null)
+            {
+                separator.Visibility = isFirstVisible ? Visibility.Collapsed : Visibility.Visible;
+            }
+            else
+            {
+                bool mustHideSpacing = (isFirstVisible && !(tagContent.SpacingHasBeenHidden));
+                bool mustShowSpacing = (!isFirstVisible && tagContent.SpacingHasBeenHidden);
+
+                if (mustHideSpacing || mustShowSpacing)
+                {
+                    FrameworkElement renderedElement = GetRenderedElement(element);
+                    var spacing = Config.GetSpacing(tagContent.Spacing);
+
+                    // The spacings are added as a margin in the top, so we have to deduct that value
+                    if (mustHideSpacing)
+                    {
+                        spacing = -spacing;
+                    }
+
+                    Thickness renderedMargin = renderedElement.Margin;
+                    renderedElement.Margin = new Thickness(renderedMargin.Left,
+                                                           renderedMargin.Top + spacing,
+                                                           renderedMargin.Right,
+                                                           renderedMargin.Bottom);
+
+                    tagContent.SpacingHasBeenHidden = mustHideSpacing;
+                }
+            }
+        }
+
+        public void ResetSeparatorVisibilityInsideContainer(Grid uiContainer)
+        {
+            bool isFirstVisible = true;
+            foreach (FrameworkElement element in uiContainer.Children)
+            {
+                if (element.Visibility == Visibility.Visible)
+                {
+                    TagContent tagContent = GetTagContent(element);
+
+                    if (tagContent != null)
+                    {
+                        HandleSeparatorAndSpacing(isFirstVisible, element, tagContent);
+                        isFirstVisible = false;
                     }
                 }
             }
