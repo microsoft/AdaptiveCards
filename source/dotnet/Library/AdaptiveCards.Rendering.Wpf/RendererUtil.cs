@@ -11,14 +11,6 @@ namespace AdaptiveCards.Rendering.Wpf
 {
     static class RendererUtil
     {
-        public static void ApplyIsVisible(FrameworkElement uiElement, AdaptiveElement element)
-        {
-            if (!element.IsVisible)
-            {
-                uiElement.Visibility = Visibility.Collapsed;
-            }
-        }
-
         public static void ApplyVerticalContentAlignment(FrameworkElement uiElement, AdaptiveCollectionElement element)
         {
             switch (element.VerticalContentAlignment)
