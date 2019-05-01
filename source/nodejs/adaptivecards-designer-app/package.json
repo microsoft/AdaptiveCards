@@ -12,9 +12,14 @@
 		"release": "npm run build"
 	},
 	"dependencies": {
+		"@types/jquery": "^3.3.29",
 		"adaptivecards-designer": "^0.5.0",
+		"handlebars": "^4.1.2",
+		"jquery": "^3.4.0",
 		"markdown-it": "^8.4.0",
-		"monaco-editor": "^0.15.6"
+		"monaco-editor": "^0.15.6",
+		"navigo": "^7.1.2",
+		"vanilla-router": "^1.2.7"
 	},
 	"devDependencies": {
 		"@azure/storage-blob": "^10.0.0-preview",
