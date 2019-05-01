@@ -24,7 +24,7 @@ using namespace AdaptiveCards;
 }
 
 - (instancetype)init:(std::shared_ptr<ImageSet> const&)imageSet
-      WithHostConfig:(std::shared_ptr<HostConfig> const&)hostConfig
+      WithHostConfig:(ACOHostConfig *)hostConfig
        WithSuperview:(UIView *)view
   rootView:(ACRView *)rootView
 {
@@ -35,7 +35,7 @@ using namespace AdaptiveCards;
         self.delegate = self;
         self.backgroundColor = UIColor.clearColor;
         _acoElem = [[ACOBaseCardElement alloc] initWithBaseCardElement:imageSet];
-        _acoConfig = [[ACOHostConfig alloc] initWithConfig:hostConfig];
+        _acoConfig = hostConfig;
         _imgSet = imageSet;
         _rootView = rootView;
         _imageSize = _imgSet->GetImageSize();
@@ -64,22 +64,29 @@ using namespace AdaptiveCards;
     static NSString *identifier = @"cellId";
     [_acoElem setElem:_imgSet->GetImages()[indexPath.row]];
     ImageSize cellSize = _imgSet->GetImageSize();
-    if(cellSize  == ImageSize::Auto || cellSize  == ImageSize::Stretch || cellSize  == ImageSize::None){
+    
+    if (cellSize  == ImageSize::Auto || cellSize  == ImageSize::Stretch || cellSize  == ImageSize::None){
         _imgSet->GetImages()[indexPath.row]->SetImageSize(_imageSize);
     }
 
     ACRBaseCardElementRenderer *imageRenderer = [[ACRRegistration getInstance] getRenderer:[NSNumber numberWithInteger:ACRImage]];
+    
     UIView *content = [imageRenderer render:nil rootView:_rootView inputs:nil baseCardElement:_acoElem hostConfig:_acoConfig];
 
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-    if(!cell) {
+    
+    if (!cell) {
         cell = [[UICollectionViewCell alloc] initWithFrame:content.frame];
     } else {
         cell.contentView.frame = content.frame;
     }
+    
     [cell.contentView addSubview:content];
+    
     [NSLayoutConstraint constraintWithItem:cell.contentView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:content attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
+    
     [NSLayoutConstraint constraintWithItem:cell.contentView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:content attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
+    
     return cell;
 }
 
