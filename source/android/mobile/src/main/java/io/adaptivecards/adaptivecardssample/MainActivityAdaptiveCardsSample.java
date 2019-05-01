@@ -1067,7 +1067,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(getApplicationContext(), finalErrorMessage, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), finalErrorMessage, Toast.LENGTH_LONG).show();
                             }
                         });
                     }
