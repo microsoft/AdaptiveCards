@@ -1,0 +1,32 @@
+{
+	"name": "adaptivecards-receiver",
+	"version": "1.1.6",
+	"description": "Adaptive Card Receiver for HTML renderer",
+	"author": "AdaptiveCards",
+	"license": "MIT",
+	"main": "lib/app.js",
+	"private": true,
+	"scripts": {
+		"clean": "rimraf lib dist",
+		"prebuild": "tsc",
+		"prebuild-css": "node-sass ./scss/ -o ./css --output-style expanded",
+		"build-css": "postcss ./css/*.css --use autoprefixer --replace --no-map",
+		"build": "webpack",
+		"watch": "webpack --watch",
+		"start": "webpack-dev-server --open",
+		"release": "npm run clean && npm run build && webpack --mode=production"
+	},
+	"dependencies": {
+		"adaptivecards": "^1.2.0-beta1",
+		"markdown-it": "^8.4.0",
+		"monaco-editor": "^0.15.6",
+		"vkbeautify": "^0.99.3"
+	},
+	"devDependencies": {
+		"rimraf": "^2.6.2",
+		"typescript": "^3.2.2",
+		"webpack": "^4.27.1",
+		"webpack-cli": "^3.1.2",
+		"webpack-dev-server": "^3.1.14"
+	}
+}
