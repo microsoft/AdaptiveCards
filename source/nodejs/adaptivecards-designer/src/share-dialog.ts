@@ -12,7 +12,8 @@ export class ShareDialog {
     private _modalDescriptionElement: HTMLElement;
     private _qrCodeElement: HTMLElement;
     private _progressElement: HTMLElement;
-    private _manualJoinContainerElement: HTMLElement;
+	private _manualJoinContainerElement: HTMLElement;
+	private _manualJoinRespondLinkElement: HTMLElement;
     private _manualJoinRespondIdElement: HTMLElement;
 	private _errorElement: HTMLElement;
 	
@@ -71,10 +72,16 @@ export class ShareDialog {
                 {
                     var manualJoinExplanation = document.createElement("p");
                     manualJoinExplanation.innerText = "You can also join from another web browser by using the following respond ID...";
-                    this._manualJoinContainerElement.appendChild(manualJoinExplanation);
-
-                    this._manualJoinRespondIdElement = document.createElement("code");
-                    this._manualJoinContainerElement.appendChild(this._manualJoinRespondIdElement);
+					this._manualJoinContainerElement.appendChild(manualJoinExplanation);
+					
+					this._manualJoinRespondLinkElement = document.createElement("a");
+					this._manualJoinRespondLinkElement.style.textDecoration = "none";
+					this._manualJoinRespondLinkElement.style.color = "unset";
+					{
+						this._manualJoinRespondIdElement = document.createElement("code");
+						this._manualJoinRespondLinkElement.appendChild(this._manualJoinRespondIdElement);
+					}
+                    this._manualJoinContainerElement.appendChild(this._manualJoinRespondLinkElement);
                 }
                 this._modalContentElement.appendChild(this._manualJoinContainerElement);
             }
@@ -109,6 +116,7 @@ export class ShareDialog {
 			this._progressElement.style.display = "none";
 
 			// And also the manual respond ID
+			this._manualJoinRespondLinkElement.setAttribute("href", "/receiver?remoteId=" + cardId);
 			this._manualJoinRespondIdElement.innerText = cardId;
 			this._manualJoinContainerElement.style.display = "block";
 			this._successfullyShared = true;
