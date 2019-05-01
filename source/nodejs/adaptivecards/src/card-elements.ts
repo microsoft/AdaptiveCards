@@ -34,6 +34,7 @@ function createCardObjectInstance<T extends ICardObject>(
     parent: CardElement,
     json: any,
     forbiddenTypeNames: string[],
+    allowFallback: boolean,
     createInstanceCallback: (typeName: string) => T,
     createValidationErrorCallback: (typeName: string, errorType: InstanceCreationErrorType) => HostConfig.IValidationError,
     errors: Array<HostConfig.IValidationError>): T {
@@ -50,7 +51,7 @@ function createCardObjectInstance<T extends ICardObject>(
             result = createInstanceCallback(typeName);
 
             if (!result) {
-                tryToFallback = true;
+                tryToFallback = allowFallback;
 
                 raiseParseError(createValidationErrorCallback(typeName, InstanceCreationErrorType.UnknownType), errors);
             }
@@ -58,7 +59,7 @@ function createCardObjectInstance<T extends ICardObject>(
                 result.setParent(parent);
                 result.parse(json, errors);
 
-                tryToFallback = result.shouldFallback();
+                tryToFallback = result.shouldFallback() && allowFallback;
             }
 
             if (tryToFallback) {
@@ -75,6 +76,7 @@ function createCardObjectInstance<T extends ICardObject>(
                         parent,
                         fallback,
                         forbiddenTypeNames,
+                        true,
                         createInstanceCallback,
                         createValidationErrorCallback,
                         errors);
@@ -90,11 +92,13 @@ export function createActionInstance(
     parent: CardElement,
     json: any,
     forbiddenActionTypes: string[],
+    allowFallback: boolean,
     errors: Array<HostConfig.IValidationError>): Action {
     return createCardObjectInstance<Action>(
         parent,
         json,
         forbiddenActionTypes,
+        allowFallback,
         (typeName: string) => { return AdaptiveCard.actionTypeRegistry.createInstance(typeName); },
         (typeName: string, errorType: InstanceCreationErrorType) => {
             if (errorType == InstanceCreationErrorType.UnknownType) {
@@ -116,11 +120,13 @@ export function createActionInstance(
 export function createElementInstance(
     parent: CardElement,
     json: any,
+    allowFallback: boolean,
     errors: Array<HostConfig.IValidationError>): CardElement {
     return createCardObjectInstance<CardElement>(
         parent,
         json,
         [], // Forbidden types not supported for elements for now
+        allowFallback,
         (typeName: string) => { return AdaptiveCard.elementTypeRegistry.createInstance(typeName); },
         (typeName: string, errorType: InstanceCreationErrorType) => {
             if (errorType == InstanceCreationErrorType.UnknownType) {
@@ -173,8 +179,10 @@ export abstract class CardElement implements ICardObject {
     }
 
     private updateRenderedElementVisibility() {
+        let displayMode = this.isDesignMode() || this.isVisible ? this._defaultRenderedElementDisplayMode : "none";
+
         if (this._renderedElement) {
-            this._renderedElement.style.display = this._isVisible ? this._defaultRenderedElementDisplayMode : "none";
+            this._renderedElement.style.display = displayMode;
         }
 
         if (this._separatorElement) {
@@ -182,23 +190,23 @@ export abstract class CardElement implements ICardObject {
                 this._separatorElement.style.display = "none";
             }
             else {
-                this._separatorElement.style.display = this._isVisible ? this._defaultRenderedElementDisplayMode : "none";
+                this._separatorElement.style.display = displayMode;
             }
         }
     }
 
     private hideElementDueToOverflow() {
-        if (this._renderedElement && this._isVisible) {
+        if (this._renderedElement && this.isVisible) {
             this._renderedElement.style.visibility = 'hidden';
-            this._isVisible = false;
+            this.isVisible = false;
             raiseElementVisibilityChangedEvent(this, false);
         }
     }
 
     private showElementHiddenDueToOverflow() {
-        if (this._renderedElement && !this._isVisible) {
+        if (this._renderedElement && !this.isVisible) {
             this._renderedElement.style.visibility = null;
-            this._isVisible = true;
+            this.isVisible = true;
             raiseElementVisibilityChangedEvent(this, false);
         }
     }
@@ -215,7 +223,7 @@ export abstract class CardElement implements ICardObject {
             if (!handled) {
                 this.hideElementDueToOverflow();
             }
-            else if (handled && !this._isVisible) {
+            else if (handled && !this.isVisible) {
                 this.showElementHiddenDueToOverflow();
             }
         }
@@ -770,10 +778,8 @@ export abstract class CardElement implements ICardObject {
     }
 
     get hasVisibleSeparator(): boolean {
-        var parentContainer = this.getParentContainer();
-
-        if (parentContainer) {
-            return this.separatorElement && !parentContainer.isFirstElement(this);
+        if (this.parent && this.separatorElement) {
+            return !this.parent.isFirstElement(this) && (this.isVisible || this.isDesignMode());
         }
         else {
             return false;
@@ -1383,6 +1389,7 @@ export class TextRun extends BaseTextBlock {
             this,
             json["selectAction"],
             [ ShowCardAction.JsonTypeName ],
+            !this.isDesignMode(),
             errors);
     }
 
@@ -1476,7 +1483,11 @@ export class RichTextBlock extends CardElement {
                     inline = textRun;
                 }
                 else {
-                    inline = createElementInstance(this, jsonInline, errors);
+                    inline = createElementInstance(
+                        this,
+                        jsonInline,
+                        false, // No fallback for inlines in 1.2
+                        errors);
                 }
 
                 if (inline) {
@@ -1957,6 +1968,7 @@ export class Image extends CardElement {
             this,
             json["selectAction"],
             [ ShowCardAction.JsonTypeName ],
+            !this.isDesignMode(),
             errors);
     }
 
@@ -2037,6 +2049,7 @@ export abstract class CardElementContainer extends CardElement {
                 this,
                 json["selectAction"],
                 [ ShowCardAction.JsonTypeName ],
+                !this.isDesignMode(),
                 errors);
         }
     }
@@ -2869,6 +2882,7 @@ export class TextInput extends Input {
             this,
             json["inlineAction"],
             [ ShowCardAction.JsonTypeName ],
+            !this.isDesignMode(),
             errors);
     }
 
@@ -4357,6 +4371,7 @@ class ActionCollection {
                     this._owner,
                     jsonAction,
                     [],
+                    !this._owner.isDesignMode(),
                     errors);
 
                 if (action) {
@@ -5273,8 +5288,10 @@ export class Container extends StylableCardElementContainer {
     }
 
     isFirstElement(element: CardElement): boolean {
+        let designMode = this.isDesignMode();
+
         for (var i = 0; i < this._items.length; i++) {
-            if (this._items[i].isVisible) {
+            if (this._items[i].isVisible || designMode) {
                 return this._items[i] == element;
             }
         }
@@ -5283,8 +5300,10 @@ export class Container extends StylableCardElementContainer {
     }
 
     isLastElement(element: CardElement): boolean {
+        let designMode = this.isDesignMode();
+
         for (var i = this._items.length - 1; i >= 0; i--) {
-            if (this._items[i].isVisible) {
+            if (this._items[i].isVisible || designMode) {
                 return this._items[i] == element;
             }
         }
@@ -5371,7 +5390,11 @@ export class Container extends StylableCardElementContainer {
             this.clear();
 
             for (let i = 0; i < items.length; i++) {
-                let element = createElementInstance(this, items[i], errors);
+                let element = createElementInstance(
+                    this,
+                    items[i],
+                    !this.isDesignMode(),
+                    errors);
 
                 if (element) {
                     this.insertItemAt(element, -1, true);
@@ -5615,6 +5638,7 @@ export class ColumnSet extends StylableCardElementContainer {
             this,
             json,
             [], // Forbidden types not supported for elements for now
+            !this.isDesignMode(),
             (typeName: string) => {
                 return !typeName || typeName === "Column" ? new Column() : null;
             },
@@ -6489,7 +6513,11 @@ export class AdaptiveCard extends ContainerWithActions {
 
         this.fallbackText = Utils.getStringValue(json["fallbackText"]);
 
-        let fallbackElement = createElementInstance(null, json["fallback"], errors);
+        let fallbackElement = createElementInstance(
+            null,
+            json["fallback"],
+            !this.isDesignMode(),
+            errors);
 
         if (fallbackElement) {
             this._fallbackCard = new AdaptiveCard();
