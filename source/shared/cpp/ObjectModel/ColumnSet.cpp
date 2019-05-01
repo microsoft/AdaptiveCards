@@ -41,7 +41,12 @@ Json::Value ColumnSet::SerializeToJsonValue() const
 
 void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& value)
 {
-    m_columns = ParseUtil::GetElementCollection<Column>(false, context, value, AdaptiveCardSchemaKey::Columns, false, "Column");
+    m_columns = ParseUtil::GetElementCollection<Column>(false, // isTopToBottomContainer
+                                                        context,
+                                                        value,
+                                                        AdaptiveCardSchemaKey::Columns,
+                                                        false,     // isRequired
+                                                        "Column"); // impliedType
 }
 
 void ColumnSet::PopulateKnownPropertiesSet()

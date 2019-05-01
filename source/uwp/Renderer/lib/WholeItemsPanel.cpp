@@ -243,12 +243,12 @@ namespace AdaptiveNamespace
     HRESULT WholeItemsPanel::ArrangeOverride(Size finalSize, __RPC__out Size* returnValue)
     {
         float currentHeight{};
-        ComPtr<IVector<UIElement*>> spChildren;
+        ComPtr<IVector<UIElement*>> children;
 
         ComPtr<IPanel> spThisAsPanel;
         RETURN_IF_FAILED(QueryInterface(__uuidof(IPanel), reinterpret_cast<void**>(spThisAsPanel.GetAddressOf())));
-        RETURN_IF_FAILED(spThisAsPanel->get_Children(spChildren.GetAddressOf()));
-        RETURN_IF_FAILED(spChildren->get_Size(&m_measuredCount));
+        RETURN_IF_FAILED(spThisAsPanel->get_Children(children.GetAddressOf()));
+        RETURN_IF_FAILED(children->get_Size(&m_measuredCount));
 
         float extraPaddingPerItem{};
         if (!m_stretchableItems.empty())
@@ -268,20 +268,20 @@ namespace AdaptiveNamespace
             }
         }
 
-        for (unsigned int i{}; i < m_measuredCount; ++i)
+        for (unsigned int i = 0; i < m_measuredCount; ++i)
         {
-            ComPtr<IUIElement> spChild;
-            RETURN_IF_FAILED(spChildren->GetAt(i, spChild.GetAddressOf()));
+            ComPtr<IUIElement> child;
+            RETURN_IF_FAILED(children->GetAt(i, child.GetAddressOf()));
 
             Size childSize;
-            RETURN_IF_FAILED(spChild->get_DesiredSize(&childSize));
+            RETURN_IF_FAILED(child->get_DesiredSize(&childSize));
 
             if (i < m_visibleCount)
             {
                 float childHeight = childSize.Height;
                 float newHeight = currentHeight + childSize.Height;
 
-                if (m_allElementsRendered && IsUIElementInStretchableList(spChild.Get()))
+                if (m_allElementsRendered && IsUIElementInStretchableList(child.Get()))
                 {
                     childHeight += extraPaddingPerItem;
                     newHeight += extraPaddingPerItem;
@@ -292,7 +292,7 @@ namespace AdaptiveNamespace
                     newHeight = finalSize.Height;
                 }
                 const Rect rc = {0.0f, currentHeight, finalSize.Width, childHeight}; // childSize.Width does not respect Text alignment
-                RETURN_IF_FAILED(spChild->Arrange(rc));
+                RETURN_IF_FAILED(child->Arrange(rc));
 
                 currentHeight = newHeight;
             }
@@ -300,7 +300,7 @@ namespace AdaptiveNamespace
             {
                 // Arrange the child outside the panel
                 const Rect rc = {0.0f, OutsidePanelY - childSize.Height, childSize.Width, childSize.Height};
-                RETURN_IF_FAILED(spChild->Arrange(rc));
+                RETURN_IF_FAILED(child->Arrange(rc));
             }
         }
 
@@ -361,7 +361,7 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT WholeItemsPanel::GetAltText(__RPC__out HSTRING* pResult)
+    HRESULT WholeItemsPanel::GetAltText(__RPC__out HSTRING* pResult) noexcept
     {
         try
         {

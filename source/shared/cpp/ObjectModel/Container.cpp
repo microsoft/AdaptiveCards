@@ -49,8 +49,11 @@ std::shared_ptr<BaseCardElement> ContainerParser::Deserialize(ParseContext& cont
 void Container::DeserializeChildren(ParseContext& context, const Json::Value& value)
 {
     // Parse items
-    auto cardElements =
-        ParseUtil::GetElementCollection<BaseCardElement>(true, context, value, AdaptiveCardSchemaKey::Items, false);
+    auto cardElements = ParseUtil::GetElementCollection<BaseCardElement>(true, // isTopToBottomContainer
+                                                                         context,
+                                                                         value,
+                                                                         AdaptiveCardSchemaKey::Items,
+                                                                         false); // isRequired
     m_items = std::move(cardElements);
 }
 
