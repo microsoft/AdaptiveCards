@@ -123,6 +123,39 @@ namespace AdaptiveCards.Rendering.Html
                 .Attr("aria-label", action.Title ?? "")
                 .Attr("tabindex", "0");
 
+
+            AdaptiveToggleVisibilityAction toggleVisibilityAction = null;
+            if ((toggleVisibilityAction = action as AdaptiveToggleVisibilityAction) != null)
+            {
+                string targetElements = string.Empty;
+
+                foreach (var targetElement in toggleVisibilityAction.TargetElements)
+                {
+                    // If the string is not empty, append a comma in preparation to add the new target element
+                    if (!String.IsNullOrWhiteSpace(targetElements))
+                    {
+                        targetElements += ",";
+                    }
+
+                    string targetElementId = null;
+                    string targetElementToggleAction = "Toggle";
+
+                    if (targetElement != null)
+                    {
+                        targetElementId = targetElement.ElementId;
+
+                        if (targetElement.IsVisible.HasValue)
+                        {
+                            targetElementToggleAction = targetElement.IsVisible.Value.ToString();
+                        }
+                    }
+
+                    targetElements += (targetElementId + ":" + targetElementToggleAction);
+                }
+
+                tag.Attr("data-ac-targetelements", targetElements);
+            }
+
             ActionTransformers.Apply(action, tag, context);
 
             return tag;
@@ -215,38 +248,6 @@ namespace AdaptiveCards.Rendering.Html
                     }
 
                     buttonElement.Append(iconElement);
-                }
-
-                AdaptiveToggleVisibilityAction toggleVisibilityAction = null;
-                if ((toggleVisibilityAction = action as AdaptiveToggleVisibilityAction) != null)
-                {
-                    string targetElements = string.Empty;
-
-                    foreach (var targetElement in toggleVisibilityAction.TargetElements)
-                    {
-                        // If the string is not empty, append a comma in preparation to add the new target element
-                        if (!String.IsNullOrWhiteSpace(targetElements))
-                        {
-                            targetElements += ",";
-                        }
-
-                        string targetElementId = null;
-                        string targetElementToggleAction = "Toggle";
-
-                        if (targetElement != null)
-                        {
-                            targetElementId = targetElement.ElementId;
-
-                            if (targetElement.IsVisible.HasValue)
-                            {
-                                targetElementToggleAction = targetElement.IsVisible.Value.ToString();
-                            }
-                        }
-
-                        targetElements += (targetElementId + ":" + targetElementToggleAction);
-                    }
-
-                    buttonElement.Attr("data-ac-targetelements", targetElements);
                 }
 
                 var titleElement = new HtmlTag("div", false) { Text = action.Title };
@@ -464,9 +465,11 @@ namespace AdaptiveCards.Rendering.Html
                     var uiElement = context.Render(cardElement);
                     if (uiElement != null)
                     {
+                        HtmlTag uiSeparator = null;
+
                         if (uiContainer.Children.Any())
                         {
-                            AddSeparator(uiContainer, cardElement, context);
+                            uiSeparator = AddSeparator(uiContainer, cardElement, context);
                         }
 
                         if (cardElement is AdaptiveCollectionElement collectionElement)
@@ -477,40 +480,61 @@ namespace AdaptiveCards.Rendering.Html
                             }
                         }
 
+                        if (!cardElement.IsVisible)
+                        {
+                            uiElement.Style("display", "none");
+
+                            if (uiSeparator != null)
+                            {
+                                uiSeparator.Style("display", "none");
+                            }
+                        }
+
+                        if (!String.IsNullOrEmpty(cardElement.Id))
+                        {
+                            uiElement.Attr("name", cardElement.Id);
+                        }
+
+                        if (uiSeparator != null)
+                        {
+                            string separatorId = GenerateRandomId();
+                            uiSeparator.Attr("id", separatorId);
+                            uiElement.Attr("data-ac-separatorId", separatorId);
+                        }
+
                         uiContainer.Children.Add(uiElement);
                     }
                 }
             }
         }
 
-        protected static void AddSeparator(HtmlTag uiContainer, AdaptiveElement adaptiveElement, AdaptiveRenderContext context)
+        protected static HtmlTag AddSeparator(HtmlTag uiContainer, AdaptiveElement adaptiveElement, AdaptiveRenderContext context)
         {
             if (!adaptiveElement.Separator && adaptiveElement.Spacing == AdaptiveSpacing.None)
             {
-                return;
+                return null;
             }
 
             int spacing = context.Config.GetSpacing(adaptiveElement.Spacing);
+            var uiSep = new DivTag().AddClass("ac-separator");
 
             if (adaptiveElement.Separator)
             {
                 SeparatorConfig sep = context.Config.Separator;
-                var uiSep = new DivTag()
-                        .AddClass("ac-separator")
-                        .Style("padding-top", $"{spacing / 2}px")
-                        .Style("margin-top", $"{spacing / 2}px")
-                        .Style("border-top-color", $"{context.GetRGBColor(sep.LineColor)}")
-                        .Style("border-top-width", $"{sep.LineThickness}px")
-                        .Style("border-top-style", "solid");
-                uiContainer.Children.Add(uiSep);
+
+                uiSep.Style("padding-top", $"{spacing / 2}px")
+                     .Style("margin-top", $"{spacing / 2}px")
+                     .Style("border-top-color", $"{context.GetRGBColor(sep.LineColor)}")
+                     .Style("border-top-width", $"{sep.LineThickness}px")
+                     .Style("border-top-style", "solid");
             }
             else
             {
-                var uiSep = new DivTag()
-                    .AddClass("ac-separator")
-                    .Style("height", $"{spacing}px");
-                uiContainer.Children.Add(uiSep);
+                uiSep.Style("height", $"{spacing}px");
             }
+
+            uiContainer.Children.Add(uiSep);
+            return uiSep;
         }
 
         protected static HtmlTag ColumnRender(AdaptiveColumn column, AdaptiveRenderContext context)
@@ -593,11 +617,6 @@ namespace AdaptiveCards.Rendering.Html
             var uiColumnSet = new DivTag()
                 .AddClass($"ac-{columnSet.Type.Replace(".", "").ToLower()}")
                 .Style("display", "flex");
-
-            if (!columnSet.IsVisible)
-            {
-                uiColumnSet.Style("display", "none");
-            }
 
             AddSelectAction(uiColumnSet, columnSet.SelectAction, context);
 
@@ -691,6 +710,7 @@ namespace AdaptiveCards.Rendering.Html
 
                 var uiColumn = context.Render(column);
 
+                HtmlTag separator = null;
                 // Add horizontal Seperator
                 if (uiColumnSet.Children.Any() && (column.Separator || column.Spacing != AdaptiveSpacing.None))
                 {
@@ -701,14 +721,16 @@ namespace AdaptiveCards.Rendering.Html
 
                     if (sep != null)
                     {
-                        uiColumnSet.Children.Add(new DivTag()
+                        separator = new DivTag()
                             .AddClass($"ac-columnseparator")
                             .Style("flex", "0 0 auto")
                             .Style("padding-left", $"{spacing}px")
                             .Style("margin-left", $"{spacing}px")
                             .Style("border-left-color", $"{context.GetRGBColor(sep.LineColor)}")
                             .Style("border-left-width", $"{lineThickness}px")
-                            .Style("border-left-style", $"solid"));
+                            .Style("border-left-style", $"solid");
+
+                        uiColumnSet.Children.Add(separator);
                     }
                 }
 
@@ -743,6 +765,28 @@ namespace AdaptiveCards.Rendering.Html
                     }
                 }
 
+                if (!column.IsVisible)
+                {
+                    uiColumn.Style("display", "none");
+
+                    if (separator != null)
+                    {
+                        separator.Style("display", "none");
+                    }
+                }
+
+                if (!String.IsNullOrEmpty(column.Id))
+                {
+                    uiColumn.Attr("name", column.Id);
+                }
+
+                if (separator != null)
+                {
+                    string separatorId = GenerateRandomId();
+                    separator.Attr("id", separatorId);
+                    uiColumn.Attr("data-ac-separatorId", separatorId);
+                }
+
                 uiColumnSet.Children.Add(uiColumn);
             }
 
@@ -766,11 +810,6 @@ namespace AdaptiveCards.Rendering.Html
                 uiContainer.Style("display", "flex")
                 .Style("flex-direction", "column")
                 .Style("flex", "1 1 100%");
-            }
-
-            if (!container.IsVisible)
-            {
-                uiContainer.Style("display", "none");
             }
 
             // Keep track of ContainerStyle.ForegroundColors before Container is rendered
@@ -835,11 +874,6 @@ namespace AdaptiveCards.Rendering.Html
             {
                 uiFactSet.Style("display", "block")
                     .Style("flex", "1 1 100%");
-            }
-
-            if (!factSet.IsVisible)
-            {
-                uiFactSet.Style("display", "none");
             }
 
             foreach (var fact in factSet.Facts)
@@ -909,11 +943,6 @@ namespace AdaptiveCards.Rendering.Html
                 uiTextBlock.Style("flex", "1 1 100%");
             }
 
-            if (!textBlock.IsVisible)
-            {
-                uiTextBlock.Style("display", "none");
-            }
-
             if (textBlock.Italic)
             {
                 uiTextBlock.Style("font-style", "italic");
@@ -979,11 +1008,6 @@ namespace AdaptiveCards.Rendering.Html
             if (richTextBlock.Height == AdaptiveHeight.Stretch)
             {
                 uiTextBlock.Style("flex", "1 1 100%");
-            }
-
-            if (!richTextBlock.IsVisible)
-            {
-                uiTextBlock.Style("display", "none");
             }
 
             uiTextBlock = uiTextBlock.Style("word-wrap", "break-word");
@@ -1072,12 +1096,7 @@ namespace AdaptiveCards.Rendering.Html
                     .Style("flex", "1 1 100%");
             }
 
-            if (!image.IsVisible)
-            {
-                uiDiv.Style("display", "none");
-            }
-
-            // if explicit image size is not used, use Adaptive Image size
+            // if explicit image size is not used, use Adpative Image size
             if (image.PixelWidth == 0 && image.PixelHeight == 0)
             {
                 switch (image.Size)
@@ -1234,11 +1253,6 @@ namespace AdaptiveCards.Rendering.Html
             var uiMedia = new DivTag()
                 .Style("width", "100%")
                 .Attr("alt", media.AltText ?? "card media");
-
-            if (!media.IsVisible)
-            {
-                uiMedia.Style("display", "none");
-            }
 
             string posterUrl = null;
             if (!string.IsNullOrEmpty(media.Poster) && context.Config.ResolveFinalAbsoluteUri(media.Poster) != null)
@@ -1436,11 +1450,6 @@ namespace AdaptiveCards.Rendering.Html
                     .Style("flex", "1 1 100%");
             }
 
-            if (!imageSet.IsVisible)
-            {
-                uiImageSet.Style("display", "none");
-            }
-
             foreach (var image in imageSet.Images)
             {
                 if (imageSet.ImageSize != AdaptiveImageSize.Auto)
@@ -1484,11 +1493,6 @@ namespace AdaptiveCards.Rendering.Html
                     if (adaptiveChoiceSetInput.Height == AdaptiveHeight.Stretch)
                     {
                         uiSelectElement.Style("flex", "1 1 100%");
-                    }
-
-                    if (!adaptiveChoiceSetInput.IsVisible)
-                    {
-                        uiSelectElement.Style("display", "none");
                     }
 
                     var defaultValues = ParseChoiceSetInputDefaultValues(adaptiveChoiceSetInput.Value);
@@ -1635,11 +1639,6 @@ namespace AdaptiveCards.Rendering.Html
                 uiDateInput.Style("flex", "1 1 100%");
             }
 
-            if (!input.IsVisible)
-            {
-                uiDateInput.Style("display", "none");
-            }
-
             return uiDateInput;
         }
 
@@ -1670,11 +1669,6 @@ namespace AdaptiveCards.Rendering.Html
             if (input.Height == AdaptiveHeight.Stretch)
             {
                 uiNumberInput.Style("flex", "1 1 100%");
-            }
-
-            if (!input.IsVisible)
-            {
-                uiNumberInput.Style("display", "none");
             }
 
             return uiNumberInput;
@@ -1732,11 +1726,6 @@ namespace AdaptiveCards.Rendering.Html
             if (input.Height == AdaptiveHeight.Stretch)
             {
                 uiTextInput.Style("flex", "1 1 100%");
-            }
-
-            if (!input.IsVisible)
-            {
-                uiTextInput.Style("display", "none");
             }
 
             if (context.Config.SupportsInteractivity && input.InlineAction != null)
@@ -1837,11 +1826,6 @@ namespace AdaptiveCards.Rendering.Html
                 uiTimeInput.Style("flex", "1 1 100%");
             }
 
-            if (!input.IsVisible)
-            {
-                uiTimeInput.Style("display", "none");
-            }
-
             return uiTimeInput;
         }
 
@@ -1857,11 +1841,6 @@ namespace AdaptiveCards.Rendering.Html
             if (toggleInput.Height == AdaptiveHeight.Stretch)
             {
                 uiElement.Style("flex", "1 1 100%");
-            }
-
-            if (!toggleInput.IsVisible)
-            {
-                uiElement.Style("display", "none");
             }
 
             var uiCheckboxInput = new HtmlTag("input")
