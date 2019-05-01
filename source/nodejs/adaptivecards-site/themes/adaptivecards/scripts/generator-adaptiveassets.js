@@ -58,6 +58,26 @@ var assets = [
         // visualizer monaco loader
         path: "node_modules/adaptivecards-visualizer/src/monaco-loader.js",
         dest: function (p) { return "visualizer/monaco-loader.js" }
+	},
+    {
+        // receiver script
+        path: "node_modules/adaptivecards-receiver/dist/adaptivecards-receiver.min.js",
+        dest: function (p) { return "receiver/adaptivecards-receiver.min.js"; }
+    },
+    {
+        // receiver css
+        path: "node_modules/adaptivecards-receiver/css/*.css",
+        dest: function (p) { return "receiver/css/" + path.basename(p); }
+    },
+    {
+        // receiver assets
+        path: "node_modules/adaptivecards-receiver/assets/*",
+        dest: function (p) { return "receiver/assets/" + path.basename(p); }
+    },
+    {
+        // receiver monaco loader
+        path: "node_modules/adaptivecards-receiver/src/monaco-loader.js",
+        dest: function (p) { return "receiver/monaco-loader.js" }
 	}
 ];
 
