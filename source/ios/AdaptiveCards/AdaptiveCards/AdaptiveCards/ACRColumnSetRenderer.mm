@@ -83,10 +83,12 @@
 
     ACOBaseCardElement *acoColumn = [[ACOBaseCardElement alloc] init];
     auto firstColumn = columns.begin();
+    auto prevColumn = *firstColumn;
     for(std::shared_ptr<Column> column:columns)
     {
         if(*firstColumn != column) {
-            [ACRSeparator renderSeparation:column forSuperview:columnSetView withHostConfig:config];
+            ACRSeparator *separator = [ACRSeparator renderSeparation:column forSuperview:columnSetView withHostConfig:config];
+            configSeparatorVisibility(separator, prevColumn);
         }
         [acoColumn setElem:column];
         curView = (ACRColumnView *)[columnRenderer render:columnSetView rootView:rootView inputs:inputs baseCardElement:acoColumn hostConfig:acoConfig];
@@ -145,6 +147,7 @@
                 NSLog(@"unexpected column width property is given");
             }
         }
+        prevColumn = column;
     }
 
     castedRenderer.fillAlignment = NO;
