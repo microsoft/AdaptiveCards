@@ -6,8 +6,11 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
+import android.view.Gravity;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.BackgroundImage;
@@ -41,6 +44,7 @@ public class BackgroundImageLoaderAsync extends GenericImageLoaderAsync
     void onSuccessfulPostExecute(Bitmap bitmap)
     {
         BitmapDrawable background = new BackgroundImageDrawable(m_context.getResources(), bitmap, m_backgroundImageProperties);
+        background.set
         m_layout.setBackground(background);
         m_layout.bringChildToFront(m_layout.getChildAt(0));
     }
@@ -58,7 +62,7 @@ public class BackgroundImageLoaderAsync extends GenericImageLoaderAsync
         @Override
         public void draw(Canvas canvas)
         {
-            switch (m_backgroundImageProperties.GetMode())
+            switch (m_backgroundImageProperties.GetFillMode())
             {
                 case Repeat:
                     setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
@@ -70,11 +74,84 @@ public class BackgroundImageLoaderAsync extends GenericImageLoaderAsync
                 case RepeatHorizontally:
                     tileHorizontally(canvas);
                     break;
-                case Stretch:
+                case Cover:
                 default:
+                    Bitmap bitmap = resizeBitmapForCover(canvas);
+                    setGravity(getCoverAlignmentGravity());
                     super.draw(canvas);
                     break;
             }
+        }
+
+        /**
+         *
+         * @param containerCanvas
+         * @param originalSizeBitmap
+         * @return
+         */
+        private double getScaleFactorForCover(Canvas containerCanvas, Bitmap originalSizeBitmap)
+        {
+            double xScaleFactor = (double)containerCanvas.getWidth() / (double)originalSizeBitmap.getWidth();
+            double yScaleFactor = (double)containerCanvas.getHeight() / (double)originalSizeBitmap.getHeight();
+
+            return Math.max(xScaleFactor, yScaleFactor);
+        }
+
+        // Taken from here https://stackoverflow.com/questions/35276834/scale-bitmap-maintaining-aspect-ratio-and-fitting-both-width-and-height 
+        /**
+         * Resizes the bitmap so the bitmap will completely fill the container where it is inserted
+         * @return
+         */
+        private Bitmap resizeBitmapForCover(Canvas canvas, Bitmap bitmap)
+        {
+            double originalWidth = bitmap.getWidth(), originalHeight = bitmap.getHeight();
+            double scale = getScaleFactorForCover(canvas, bitmap);
+            float xTranslation = 0.0f, yTranslation = 0.0f;
+
+            Bitmap background = Bitmap.createBitmap((int)(scale * originalWidth), (int)(scale * originalHeight), Bitmap.Config.ARGB_8888);
+
+            Matrix transformation = new Matrix();
+            transformation.postTranslate(xTranslation, yTranslation);
+            transformation.preScale((float)scale, (float)scale);
+            Paint paint = new Paint();
+            paint.setFilterBitmap(true);
+            canvas.drawBitmap(bitmap, transformation, paint);
+            return background;
+        }
+
+        private int getCoverAlignmentGravity()
+        {
+            int verticalAlignment = Gravity.TOP, horizontalAlignment = Gravity.LEFT;
+
+            switch (m_backgroundImageProperties.GetVerticalAlignment())
+            {
+                case Center:
+                    verticalAlignment = Gravity.CENTER_VERTICAL;
+                    break;
+                case Bottom:
+                    verticalAlignment = Gravity.BOTTOM;
+                    break;
+                case Top:
+                default:
+                    verticalAlignment = Gravity.TOP;
+                    break;
+            }
+
+            switch (m_backgroundImageProperties.GetHorizontalAlignment())
+            {
+                case Center:
+                    horizontalAlignment = Gravity.CENTER_HORIZONTAL;
+                    break;
+                case Right:
+                    horizontalAlignment = Gravity.RIGHT;
+                    break;
+                case Left:
+                default:
+                    horizontalAlignment = Gravity.LEFT;
+                    break;
+            }
+
+            return (verticalAlignment | horizontalAlignment);
         }
 
         private void tileHorizontally(Canvas canvas)
