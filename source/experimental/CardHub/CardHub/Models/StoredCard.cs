@@ -36,7 +36,7 @@ namespace CardHub.Models
         {
             CardData = cardData;
             LastUpdated = DateTime.Now;
-            _serverSentEvent.Send(JsonConvert.SerializeObject(cardData));
+            _serverSentEvent.Send("updated");
         }
 
         public HttpResponseMessage AddSubscriber(HttpRequestMessage request)
