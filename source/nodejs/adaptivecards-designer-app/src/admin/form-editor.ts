@@ -31,9 +31,10 @@ export class FormEditor {
 		}
 
 		let hostContainers: Array<ACDesigner.HostContainer> = [];
-		hostContainers.push(new ACDesigner.WebChatContainer("ContosoMedical", "containers/webchat-container.css"));
+		hostContainers.push(new ACDesigner.WebChatContainer("ContosoMedical", "../../containers/webchat-container.css"));
 
 		this.designer = new ACDesigner.CardDesigner(hostContainers);
+		this.designer.assetPath = "/";
 		this.designer.sampleCatalogueUrl = window.location.origin + "/sample-catalogue.json";
 		this.designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.HostAppPicker).isVisible = false;
 		//designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.CopyJSON).isVisible = false;

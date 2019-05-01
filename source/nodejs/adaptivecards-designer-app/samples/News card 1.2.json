@@ -1,0 +1,37 @@
+{
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "Container",
+            "minHeight": "190px",
+            "backgroundImage": {
+                "url": "http://scottwagnerdds.com/images/root1web.jpg",
+                "horizontalAlignment": "Center",
+                "verticalAlignment": "Center"
+            },
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "height": "stretch",
+                    "color": "Light",
+                    "text": "Wednesday, January 29th, 2019"
+                },
+                {
+                    "type": "RichTextBlock",
+                    "inlines": [
+                        {
+                            "type": "TextRun",
+                            "color": "Light",
+                            "size": "Large",
+                            "weight": "Bolder",
+                            "text": "The Unnecessary Root Canal Scam - Why you should always get a 2nd opinion."
+                        }
+                    ]
+                }
+            ],
+            "bleed": true
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+}

@@ -1,0 +1,114 @@
+{
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Name: {name}"
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "Image",
+							"style": "Person",
+							"url": "https://avatars1.githubusercontent.com/u/1334689?s=460&amp;v=4",
+							"size": "Small",
+							"width": "50px",
+							"height": "50px"
+						}
+					],
+					"width": "auto"
+				},
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"weight": "Bolder",
+							"text": "{doctor.name}",
+							"wrap": true,
+							"size": "Large"
+						},
+						{
+							"type": "TextBlock",
+							"spacing": "None",
+							"text": "Available now",
+							"isSubtle": true,
+							"wrap": true,
+							"color": "Good",
+							"weight": "Bolder"
+						}
+					],
+					"width": "stretch",
+					"verticalContentAlignment": "Center"
+				},
+				{
+					"type": "Column",
+					"selectAction": {
+						"type": "Action.ToggleVisibility",
+						"targetElements": [
+							"details",
+							"chevronUp",
+							"chevronDown"
+						]
+					},
+					"verticalContentAlignment": "Center",
+					"items": [
+						{
+							"type": "Image",
+							"url": "https://maxcdn.icons8.com/Share/icon/win8/Arrows/chevron_down1600.png",
+							"id": "",
+							"height": "16px"
+						}
+					],
+					"width": "auto",
+					"id": "chevronDown"
+				},
+				{
+					"type": "Column",
+					"verticalContentAlignment": "Center",
+					"selectAction": {
+						"type": "Action.ToggleVisibility",
+						"targetElements": [
+							"details",
+							"chevronUp",
+							"chevronDown"
+						]
+					},
+					"items": [
+						{
+							"type": "Image",
+							"url": "https://maxcdn.icons8.com/Share/icon/win8/Arrows/chevron_up1600.png",
+							"id": "",
+							"height": "16px"
+						}
+					],
+					"width": "auto",
+					"id": "chevronUp",
+					"isVisible": false
+				}
+			]
+		},
+		{
+			"type": "Container",
+			"id": "details",
+			"items": [
+				{
+					"type": "FactSet",
+					"facts": [
+						{
+							"$data": "{doctor.contact}",
+							"title": "{name}:",
+							"value": "{number}"
+						}
+					]
+				}
+			],
+			"isVisible": false
+		}
+	]
+}

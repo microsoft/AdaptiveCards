@@ -1,0 +1,248 @@
+{
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "Container",
+            "id": "today",
+            "items": [
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "style": "accent",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "horizontalAlignment": "Center",
+                                    "text": "**TODAY**"
+                                }
+                            ],
+                            "bleed": true,
+                            "width": "stretch"
+                        },
+                        {
+                            "type": "Column",
+                            "verticalContentAlignment": "Center",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "horizontalAlignment": "Center",
+                                    "text": "TOMORROW"
+                                }
+                            ],
+                            "width": "stretch",
+                            "spacing": "None",
+                            "style": "emphasis",
+                            "bleed": true,
+                            "selectAction": {
+                                "type": "Action.ToggleVisibility",
+                                "targetElements": [
+                                    "today",
+                                    "tomorrow"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "Container",
+                    "spacing": "None",
+                    "backgroundImage": {
+                        "url": "http://images.mentalfloss.com/sites/default/files/styles/mf_image_3x2/public/iStock-104472907.jpg?itok=p5EoOim5&amp;resize=1100x740",
+                        "horizontalAlignment": "Center",
+                        "verticalAlignment": "Center"
+                    },
+                    "bleed": true,
+                    "items": [
+                        {
+                            "type": "ColumnSet",
+                            "columns": [
+                                {
+                                    "type": "Column",
+                                    "items": [
+                                        {
+                                            "type": "TextBlock",
+                                            "size": "ExtraLarge",
+                                            "color": "Light",
+                                            "text": "**REDMOND, WA**"
+                                        },
+                                        {
+                                            "type": "TextBlock",
+                                            "spacing": "None",
+                                            "color": "Light",
+                                            "text": "Wednesday, May 1st"
+                                        },
+                                        {
+                                            "type": "RichTextBlock",
+                                            "inlines": [
+                                                {
+                                                    "type": "TextRun",
+                                                    "text": "65º",
+                                                    "color": "Light",
+                                                    "size": "ExtraLarge"
+                                                },
+                                                {
+                                                    "type": "TextRun",
+                                                    "text": "/46º",
+                                                    "color": "Light"
+                                                }
+                                            ],
+                                            "height": "stretch"
+                                        },
+                                        {
+                                            "type": "TextBlock",
+                                            "horizontalAlignment": "Left",
+                                            "spacing": "None",
+                                            "color": "Light",
+                                            "text": "**Mostly Sunny**"
+                                        }
+                                    ],
+                                    "width": "stretch",
+                                    "height": "stretch"
+                                },
+                                {
+                                    "type": "Column",
+                                    "items": [
+                                        {
+                                            "type": "Image",
+                                            "url": "http://clipart-library.com/images/rcLnpjgbi.png"
+                                        }
+                                    ],
+                                    "width": "140px"
+                                }
+                            ],
+                            "height": "stretch"
+                        }
+                    ],
+                    "minHeight": "170px"
+                }
+            ]
+        },
+        {
+            "type": "Container",
+            "id": "tomorrow",
+            "items": [
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "style": "emphasis",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "horizontalAlignment": "Center",
+                                    "text": "TODAY"
+                                }
+                            ],
+                            "bleed": true,
+                            "width": "stretch",
+                            "verticalContentAlignment": "Center",
+                            "selectAction": {
+                                "type": "Action.ToggleVisibility",
+                                "targetElements": [
+                                    "today",
+                                    "tomorrow"
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Column",
+                            "verticalContentAlignment": "Center",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "horizontalAlignment": "Center",
+                                    "text": "**TOMORROW**"
+                                }
+                            ],
+                            "width": "stretch",
+                            "style": "accent",
+                            "bleed": true,
+                            "spacing": "None"
+                        }
+                    ],
+                    "bleed": true
+                },
+                {
+                    "type": "Container",
+                    "spacing": "None",
+                    "backgroundImage": {
+                        "url": "https://ak2.picdn.net/shutterstock/videos/2845792/thumb/1.jpg",
+                        "horizontalAlignment": "Center",
+                        "verticalAlignment": "Center"
+                    },
+                    "bleed": true,
+                    "items": [
+                        {
+                            "type": "ColumnSet",
+                            "columns": [
+                                {
+                                    "type": "Column",
+                                    "items": [
+                                        {
+                                            "type": "TextBlock",
+                                            "size": "ExtraLarge",
+                                            "color": "Light",
+                                            "text": "**REDMOND, WA**"
+                                        },
+                                        {
+                                            "type": "TextBlock",
+                                            "spacing": "None",
+                                            "color": "Light",
+                                            "text": "Thursday, May 2nd"
+                                        },
+                                        {
+                                            "type": "RichTextBlock",
+                                            "inlines": [
+                                                {
+                                                    "type": "TextRun",
+                                                    "text": "56º",
+                                                    "color": "Light",
+                                                    "size": "ExtraLarge"
+                                                },
+                                                {
+                                                    "type": "TextRun",
+                                                    "text": "/41º",
+                                                    "color": "Light"
+                                                }
+                                            ],
+                                            "height": "stretch"
+                                        },
+                                        {
+                                            "type": "TextBlock",
+                                            "horizontalAlignment": "Left",
+                                            "spacing": "None",
+                                            "color": "Light",
+                                            "text": "**Overcast**"
+                                        }
+                                    ],
+                                    "width": "stretch"
+                                },
+                                {
+                                    "type": "Column",
+                                    "items": [
+                                        {
+                                            "type": "Image",
+                                            "url": "http://icons.iconarchive.com/icons/icons-land/weather/256/Overcast-icon.png",
+                                            "width": "80px",
+                                            "horizontalAlignment": "Center"
+                                        }
+                                    ],
+                                    "width": "140px",
+                                    "verticalContentAlignment": "Center"
+                                }
+                            ],
+                            "height": "stretch"
+                        }
+                    ],
+                    "minHeight": "170px"
+                }
+            ],
+            "isVisible": false
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+}

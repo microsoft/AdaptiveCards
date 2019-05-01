@@ -7,6 +7,8 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Contoso Clinic</title>
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<link rel="stylesheet" href="dist/containers/webchat-container.css">
+	<script type="text/javascript" src="https://unpkg.com/markdown-it/dist/markdown-it.min.js"></script>
 </head>
 
 <body>
@@ -35,8 +37,24 @@
 
 	<!-- Home -->
 	<script id="home-template" type="text/x-handlebars-template">
-		<h1 class="ui header">Home</h1>
+		<div class="w3-container">
+			<h1 class="ui header">Home</h1>
 
+			<div class="w3-third w3-container">
+				<h2>Pending Referrals</h2>
+				<div id="pendingReferrals"></div>
+			</div>
+
+			<div class="w3-third w3-container">
+				<h2>Today's Patients</h2>
+				<div id="appointmentCards"></div>
+			</div>
+
+			<div class="w3-third w3-container">
+				<h2>Cards</h2>
+				<div id="homeCards"></div>
+			</div>
+		</div>
 	</script>
 
 

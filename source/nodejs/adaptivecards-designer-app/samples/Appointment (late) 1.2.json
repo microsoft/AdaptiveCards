@@ -1,0 +1,78 @@
+{
+    "type": "AdaptiveCard",
+    "body": [
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "horizontalAlignment": "Center",
+                            "size": "ExtraLarge",
+                            "weight": "Bolder",
+                            "color": "Attention",
+                            "text": "11:45 AM"
+                        }
+                    ],
+                    "width": "150px",
+                    "bleed": true,
+                    "style": "attention"
+                },
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "weight": "Bolder",
+                            "text": "Matt Hidinger",
+                            "wrap": true,
+                            "size": "Large"
+                        }
+                    ],
+                    "width": "stretch",
+                    "bleed": true,
+                    "verticalContentAlignment": "Center",
+                    "spacing": "Medium"
+                }
+            ],
+            "style": "emphasis",
+            "bleed": true
+        },
+        {
+            "type": "FactSet",
+            "facts": [
+                {
+                    "title": "Physician:",
+                    "value": "Dr. David Claux"
+                },
+                {
+                    "title": "Room:",
+                    "value": "5"
+                },
+                {
+                    "title": "Comment:",
+                    "value": "Patient says bottom left molar has been painful for the last few days. Has trouble chewing on that side."
+                }
+            ]
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "title": "Check-in",
+            "sentiment": "Positive"
+        },
+        {
+            "type": "Action.Submit",
+            "title": "Reschedule"
+        },
+        {
+            "type": "Action.Submit",
+            "title": "Cancel"
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.0"
+}

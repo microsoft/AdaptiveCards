@@ -1,0 +1,24 @@
+{
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "Image",
+            "url": "http://scottwagnerdds.com/images/root1web.jpg",
+            "altText": ""
+        },
+        {
+            "type": "TextBlock",
+            "size": "Large",
+            "weight": "Bolder",
+            "text": "The Unnecessary Root Canal Scam - Why you should always get a 2nd opinion.",
+            "wrap": true
+        },
+        {
+            "type": "TextBlock",
+            "spacing": "None",
+            "text": "Wednesday, January 29th, 2019"
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+}

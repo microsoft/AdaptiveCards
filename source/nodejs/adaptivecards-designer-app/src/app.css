@@ -18,3 +18,10 @@ body {
 #designerRootHost {
 	height: 80vh;
 }
+
+.card {
+    background-color: #eceff1;
+    border: 1px solid #e6e6e6;
+    padding: 8px;
+    border-radius: 4px;
+}

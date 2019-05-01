@@ -16,16 +16,16 @@ window.addEventListener("load", async () => {
 	// var root = null;
 	var router = new Navigo();
 
-	const homePage = new HomePage();
+	const homePage = new HomePage(appElement);
 	const formEditor = new FormEditor(appElement);
 	const formPage = new FormPage(appElement);
 
 	await Api.init();
 
 	router
-		.on("/", () => {
-			var html = homePage.render();
-			appElement.html(html);
+		.on("/", async () => {
+			await homePage.render();
+			homePage.show();
 		})
 		.on("/forms/:id", async (params) => {
 			await formPage.render();

@@ -1,9 +1,15 @@
 import * as Azure from "@azure/storage-blob";
 import { AZURE_STORAGE_ACCOUNT_NAME, AZURE_STORAGE_SAS } from "./secrets";
 import { generateUuid } from "ms-rest-js";
+//import { ListBlobsIncludeItem } from "@azure/storage-blob/typings/lib/generated/models";
 
 
 export class Api {
+
+	static pipeline = Azure.StorageURL.newPipeline(new Azure.AnonymousCredential());
+	static serviceURL = new Azure.ServiceURL(`https://${AZURE_STORAGE_ACCOUNT_NAME}.blob.core.windows.net?${AZURE_STORAGE_SAS}`, Api.pipeline);
+	static formsContainerURL = Azure.ContainerURL.fromServiceURL(Api.serviceURL, "forms");
+	static submittedFormsContainerURL = Azure.ContainerURL.fromServiceURL(Api.serviceURL, "submittedforms");
 
 	static async init(): Promise<void> {
 
@@ -55,37 +61,35 @@ export class Api {
 	}
 
 	static getForms() {
-		return Api.showBlobNames(Azure.Aborter.None, Api.formsContainerURL);
+		return Api.listBlobs(Azure.Aborter.None, Api.formsContainerURL);
 	}
 
-	static pipeline = Azure.StorageURL.newPipeline(new Azure.AnonymousCredential());
-	static serviceURL = new Azure.ServiceURL(`https://${AZURE_STORAGE_ACCOUNT_NAME}.blob.core.windows.net?${AZURE_STORAGE_SAS}`, Api.pipeline);
-	static formsContainerURL = Azure.ContainerURL.fromServiceURL(Api.serviceURL, "forms");
-	static submittedFormsContainerURL = Azure.ContainerURL.fromServiceURL(Api.serviceURL, "submittedforms");
+	static async getSubmmitedForms() {
+		var submittedForms = await Api.listBlobs(Azure.Aborter.None, Api.submittedFormsContainerURL);
+		submittedForms.filter(m => m.metadata["formid"] === "a8021bbc-684a-440f-984e-9b8813f86b04")
+	}
+
 
 	static loadForm(formId: string): Promise<string> {
+		return Api.loadBlob(Azure.Aborter.timeout(3000), Api.formsContainerURL, formId);
+	}
+
+	private static loadBlob(aborter: Azure.Aborter, containerURL: Azure.ContainerURL, blob: string): Promise<string> {
 		return new Promise(async (resolve, reject) => {
-			let blobUrl = Azure.BlockBlobURL.fromBlobURL(Azure.BlobURL.fromContainerURL(Api.formsContainerURL, formId))
+			let blobUrl = Azure.BlockBlobURL.fromBlobURL(Azure.BlobURL.fromContainerURL(containerURL, blob))
 
 			let response = await blobUrl.download(Azure.Aborter.None, 0);
 			let content = await response.blobBody;
+
 			let fr = new FileReader();
-
-			fr.addEventListener("load", () => {
-
-				resolve(<string>fr.result);
-			});
-
-			fr.addEventListener("error", () => {
-				reject("Failed to load form");
-			})
-
+			fr.addEventListener("load", () => resolve(<string>fr.result));
+			fr.addEventListener("error", () => reject("Failed to load form"));
 			fr.readAsText(content);
 		});
 	}
 
 
-	private static async showBlobNames(aborter, containerURL) {
+	private static async listBlobs(aborter: Azure.Aborter, containerURL: any) {
 
 		let response;
 		let marker;

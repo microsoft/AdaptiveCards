@@ -1,0 +1,74 @@
+{
+    "type": "AdaptiveCard",
+    "body": [
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "Image",
+                            "style": "Person",
+                            "url": "https://avatars1.githubusercontent.com/u/1334689?s=460&amp;v=4",
+                            "size": "Small",
+                            "width": "50px",
+                            "height": "50px"
+                        }
+                    ],
+                    "width": "auto"
+                },
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "weight": "Bolder",
+                            "text": "DR. DAVID CLAUX",
+                            "wrap": true,
+                            "size": "Large"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "spacing": "None",
+                            "text": "Available now",
+                            "isSubtle": true,
+                            "wrap": true,
+                            "color": "Good",
+                            "weight": "Bolder"
+                        }
+                    ],
+                    "width": "stretch",
+                    "verticalContentAlignment": "Center"
+                }
+            ]
+        },
+        {
+            "type": "Container",
+            "id": "details",
+            "items": [
+                {
+                    "type": "FactSet",
+                    "facts": [
+                        {
+                            "title": "Phone number:",
+                            "value": "(555) 123 4567"
+                        },
+                        {
+                            "title": "Emergency number:",
+                            "value": "(555) 987 6543"
+                        },
+                        {
+                            "title": "Pager:",
+                            "value": "(555) 111 2233"
+                        }
+                    ]
+                }
+            ],
+            "separator": true,
+            "spacing": "Medium"
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.0"
+}
