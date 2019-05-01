@@ -46,6 +46,7 @@ namespace CardHub.Controllers
         /// <param name="cardId"></param>
         /// <returns></returns>
         [Route("api/card/{cardId}/subscribe")]
+        [HttpGet]
         public HttpResponseMessage Subscribe(string cardId)
         {
             return StoredCards.Current.AddSubscriber(cardId, base.Request);
