@@ -75,6 +75,7 @@ export class ShareDialog {
 					this._manualJoinContainerElement.appendChild(manualJoinExplanation);
 					
 					this._manualJoinRespondLinkElement = document.createElement("a");
+					this._manualJoinRespondLinkElement.setAttribute("target", "_blank");
 					this._manualJoinRespondLinkElement.style.textDecoration = "none";
 					this._manualJoinRespondLinkElement.style.color = "unset";
 					{
