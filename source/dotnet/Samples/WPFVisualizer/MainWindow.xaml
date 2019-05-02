@@ -25,63 +25,108 @@
 
     </Window.Resources>
 
-    <Grid Margin="8" >
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="5"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="5"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-
-        <StackPanel Orientation="Horizontal" Grid.ColumnSpan="5">
-            <Button Name="loadButton" Click="loadButton_Click" Content="Load Card..." Margin="4"/>
-            <Button Name="viewImage" Click="viewImage_Click" Content="View as Image" Margin="4"/>
-            <Button Name="speak" Click="speak_Click" Content="Speak" Margin="4"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Grid.ColumnSpan="5" HorizontalAlignment="Right">
-            <Label>HostConfig:</Label>
-            <Button Name="loadConfig" Content="Load..." Margin="4" Click="loadConfig_Click" HorizontalAlignment="Right"/>
-            <Button Name="saveConfig" Content="Save..." Margin="4" Click="saveConfig_Click" HorizontalAlignment="Right"/>
-            <ComboBox Name="hostConfigs" IsEditable="False" Width="150" SelectionChanged="hostConfigs_Selected" HorizontalAlignment="Right"/>
-            <Button Name="toggleOptions" Content="Edit" Margin="4" Click="toggleOptions_Click" HorizontalAlignment="Right"/>
-        </StackPanel>
-
-        <avalon:TextEditor
-            Grid.Row="1"
-            x:Name="textBox"
-            FontFamily="Consolas"
-            FontSize="10pt"
-            ShowLineNumbers="true"
-            TextChanged="textBox_TextChanged"/>
-        
-        <GridSplitter Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" ResizeDirection="Columns"/>
-
-        <Grid Grid.Row="1" Grid.Column="2" Background="LightGray">
-            <Grid Name="cardGrid" MaxWidth="700" VerticalAlignment="Top" Margin="10" Background="WhiteSmoke" >
-                <Grid.Effect>
-                    <DropShadowEffect BlurRadius="15" ShadowDepth="2" RenderingBias="Quality" Direction="-90"/>
-                </Grid.Effect>
-
-            </Grid>
+    <Grid>
+        <Grid x:Name="ConnectView" Margin="12">
+            <StackPanel
+                VerticalAlignment="Center"
+                HorizontalAlignment="Stretch"
+                MaxWidth="400">
+                <TextBlock
+                    Text="Please enter a connection code to connect to the host's card!"
+                    FontSize="14"
+                    TextWrapping="Wrap"
+                    TextAlignment="Center"
+                    Margin="0,0,0,12"/>
+                <TextBox
+                    x:Name="TextBoxConnectCode"
+                    FontSize="18"
+                    KeyUp="TextBoxConnectCode_KeyUp"
+                    Margin="0,0,0,12"/>
+                <Button
+                    x:Name="ButtonConnect"
+                    Content="Connect"
+                    HorizontalAlignment="Stretch"
+                    Click="ButtonConnect_Click"
+                    Height="30"
+                    FontSize="14"/>
+            </StackPanel>
         </Grid>
 
-        <GridSplitter Grid.Row="1" Grid.Column="3" HorizontalAlignment="Stretch" ResizeDirection="Columns"/>
+        <Grid x:Name="ConnectingView" Margin="12">
+            <StackPanel
+                VerticalAlignment="Center"
+                HorizontalAlignment="Stretch"
+                MaxWidth="400">
+                <TextBlock
+                    Text="Connecting..."
+                    FontSize="14"
+                    TextWrapping="Wrap"
+                    TextAlignment="Center"
+                    Margin="0,0,0,12"/>
+                <ProgressBar
+                    IsIndeterminate="True"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid x:Name="ConnectedView" Margin="8" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Horizontal" Grid.ColumnSpan="5">
+                <Button Name="loadButton" Click="loadButton_Click" Content="Load Card..." Margin="4" Visibility="Collapsed"/>
+                <Button Name="viewImage" Click="viewImage_Click" Content="View as Image" Margin="4"/>
+                <Button Name="speak" Click="speak_Click" Content="Speak" Margin="4" Visibility="Collapsed"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.ColumnSpan="5" HorizontalAlignment="Right">
+                <Label>HostConfig:</Label>
+                <Button Name="loadConfig" Content="Load..." Margin="4" Click="loadConfig_Click" HorizontalAlignment="Right"/>
+                <Button Name="saveConfig" Content="Save..." Margin="4" Click="saveConfig_Click" HorizontalAlignment="Right"/>
+                <ComboBox Name="hostConfigs" IsEditable="False" Width="150" SelectionChanged="hostConfigs_Selected" HorizontalAlignment="Right"/>
+                <Button Name="toggleOptions" Content="Edit" Margin="4" Click="toggleOptions_Click" HorizontalAlignment="Right"/>
+            </StackPanel>
+
+            <avalon:TextEditor
+                Grid.Row="1"
+                x:Name="textBox"
+                FontFamily="Consolas"
+                FontSize="10pt"
+                ShowLineNumbers="true"
+                TextChanged="textBox_TextChanged"
+                IsReadOnly="True"/>
+
+            <GridSplitter Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" ResizeDirection="Columns"/>
+
+            <Grid Grid.Row="1" Grid.Column="2" Background="LightGray">
+                <Grid Name="cardGrid" MaxWidth="700" VerticalAlignment="Top" Margin="10" Background="WhiteSmoke" >
+                    <Grid.Effect>
+                        <DropShadowEffect BlurRadius="15" ShadowDepth="2" RenderingBias="Quality" Direction="-90"/>
+                    </Grid.Effect>
+
+                </Grid>
+            </Grid>
+
+            <GridSplitter Grid.Row="1" Grid.Column="3" HorizontalAlignment="Stretch" ResizeDirection="Columns"/>
 
 
-        <GridSplitter Grid.Row="1" Grid.Column="4" VerticalAlignment="Stretch" ResizeDirection="Columns" Name="optionsSplitter" />
+            <GridSplitter Grid.Row="1" Grid.Column="4" VerticalAlignment="Stretch" ResizeDirection="Columns" Name="optionsSplitter" />
 
-        <xctk:PropertyGrid Grid.Row="1" Grid.Column="4"  Name="hostConfigEditor" PropertyValueChanged="HostConfigEditor_OnPropertyValueChanged"  Visibility="Visible" >
-        </xctk:PropertyGrid>
+            <xctk:PropertyGrid Grid.Row="1" Grid.Column="4"  Name="hostConfigEditor" PropertyValueChanged="HostConfigEditor_OnPropertyValueChanged"  Visibility="Visible" >
+            </xctk:PropertyGrid>
 
-        <StackPanel Grid.Row="2" Grid.Column="0" Name="cardError" />
+            <StackPanel Grid.Row="2" Grid.Column="0" Name="cardError" />
 
-        <StackPanel Grid.Row="2" Grid.Column="4" Name="hostConfigerror" />
+            <StackPanel Grid.Row="2" Grid.Column="4" Name="hostConfigerror" />
 
+        </Grid>
     </Grid>
 </Window>

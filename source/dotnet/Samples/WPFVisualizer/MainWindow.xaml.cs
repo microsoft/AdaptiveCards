@@ -41,9 +41,9 @@ namespace WpfVisualizer
 
             InitializeComponent();
 
-            LoadJsonSyntaxHighlighting();
+            SwitchState(States.Connect);
 
-            CardPayload = File.ReadAllText("Samples\\ActivityUpdate.json");
+            LoadJsonSyntaxHighlighting();
 
             _synth = new SpeechSynthesizer();
             _synth.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
@@ -81,6 +81,43 @@ namespace WpfVisualizer
 
             // This seems unecessary?
             Renderer.ActionHandlers.AddSupportedAction<MyCustomAction>();
+        }
+
+        private enum States
+        {
+            Connect,
+            Connecting,
+            Connected
+        }
+
+        private States? _currState;
+        private void SwitchState(States state)
+        {
+            if (_currState != null && _currState.Value == state)
+            {
+                return;
+            }
+
+            _currState = state;
+
+            ConnectView.Visibility = Visibility.Collapsed;
+            ConnectingView.Visibility = Visibility.Collapsed;
+            ConnectedView.Visibility = Visibility.Collapsed;
+
+            switch (state)
+            {
+                case States.Connect:
+                    ConnectView.Visibility = Visibility.Visible;
+                    break;
+
+                case States.Connecting:
+                    ConnectingView.Visibility = Visibility.Visible;
+                    break;
+
+                case States.Connected:
+                    ConnectedView.Visibility = Visibility.Visible;
+                    break;
+            }
         }
 
         private void LoadJsonSyntaxHighlighting()
@@ -347,7 +384,8 @@ namespace WpfVisualizer
 
         private void textBox_TextChanged(object sender, EventArgs e)
         {
-            _dirty = true;
+            //_dirty = true;
+            RenderCard();
         }
 
         private void toggleOptions_Click(object sender, RoutedEventArgs e)
@@ -417,6 +455,80 @@ namespace WpfVisualizer
         private void HostConfigEditor_OnPropertyValueChanged(object sender, PropertyValueChangedEventArgs e)
         {
             _dirty = true;
+        }
+
+        private void TextBoxConnectCode_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                e.Handled = true;
+                Connect();
+            }
+        }
+
+        private void ButtonConnect_Click(object sender, RoutedEventArgs e)
+        {
+            Connect();
+        }
+
+        private HostConnection _hostConnection;
+        private void Connect()
+        {
+            SwitchState(States.Connecting);
+
+            string hostId = TextBoxConnectCode.Text.Trim();
+
+            _hostConnection = new HostConnection(hostId);
+            _hostConnection.OnConnected += _hostConnection_OnConnected;
+            _hostConnection.OnCardJsonReceived += _hostConnection_OnCardJsonReceived;
+            _hostConnection.OnClosed += _hostConnection_OnClosed;
+            _hostConnection.OnError += _hostConnection_OnError;
+            _hostConnection.StartConnect();
+        }
+
+        private void _hostConnection_OnError(object sender, string e)
+        {
+            // TODO: Display error at bottom of screen
+        }
+
+        private void ClearError()
+        {
+            // TODO: Clear displayed error
+        }
+
+        private void _hostConnection_OnClosed(object sender, EventArgs e)
+        {
+            DestroyHostConnection();
+            Dispatcher.Invoke(delegate
+            {
+                SwitchState(States.Connect);
+            });
+        }
+
+        private void _hostConnection_OnCardJsonReceived(object sender, string cardJson)
+        {
+            Dispatcher.Invoke(delegate
+            {
+                ClearError();
+                CardPayload = cardJson;
+            });
+        }
+
+        private void _hostConnection_OnConnected(object sender, EventArgs e)
+        {
+            Dispatcher.Invoke(delegate
+            {
+                SwitchState(States.Connected);
+            });
+        }
+
+        private void DestroyHostConnection()
+        {
+            _hostConnection.OnError -= _hostConnection_OnError;
+            _hostConnection.OnConnected -= _hostConnection_OnConnected;
+            _hostConnection.OnClosed -= _hostConnection_OnClosed;
+            _hostConnection.OnCardJsonReceived -= _hostConnection_OnCardJsonReceived;
+            _hostConnection = null;
         }
     }
 }
