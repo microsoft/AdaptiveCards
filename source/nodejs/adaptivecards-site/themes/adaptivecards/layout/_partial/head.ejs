@@ -36,6 +36,9 @@
 	<% if(is_current("visualizer")) { %>
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 		<%- css("visualizer/css/visualizer.css") %>
+	<% } else if(is_current("receiver")) { %>
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+		<%- css("receiver/css/visualizer.css") %>
 	<% } else if(is_current("designer")) { %>
 		<style type="text/css">
 			.content {
@@ -79,6 +82,11 @@
 		<%- js('node_modules/monaco-editor/min/vs/loader.js') %>  
 		<%- js("visualizer/monaco-loader.js") %>
 		<%- js("visualizer/adaptivecards-visualizer.min.js") %>
+	<% } else if(is_current("receiver")) { %>
+		<%- js('node_modules/adaptivecards/dist/adaptivecards.min.js') %>  
+		<%- js('node_modules/monaco-editor/min/vs/loader.js') %>  
+		<%- js("receiver/monaco-loader.js") %>
+		<%- js("receiver/adaptivecards-receiver.min.js") %>
 	<% } else if(is_current("designer")) { %>
 		<%- js('node_modules/monaco-editor/min/vs/loader.js') %>  
 		<%- js("node_modules/adaptivecards-designer/dist/adaptivecards-designer.min.js") %>
