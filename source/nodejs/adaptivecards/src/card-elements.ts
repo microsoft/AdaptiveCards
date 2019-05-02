@@ -2611,17 +2611,19 @@ export abstract class Input extends CardElement implements Shared.IInput {
     }
 
     protected resetValidationFailureCue() {
-        this._renderedInputControlElement.classList.remove(this.hostConfig.makeCssClassName("ac-input-validation-failed"));
+        if (AdaptiveCard.useBuiltInInputValidation && this.renderedElement) {
+            this._renderedInputControlElement.classList.remove(this.hostConfig.makeCssClassName("ac-input-validation-failed"));
 
-        if (this._errorMessageElement) {
-            this._outerContainerElement.removeChild(this._errorMessageElement);
+            if (this._errorMessageElement) {
+                this._outerContainerElement.removeChild(this._errorMessageElement);
 
-            this._errorMessageElement = null;
+                this._errorMessageElement = null;
+            }
         }
     }
 
     protected showValidationErrorMessage() {
-        if (AdaptiveCard.displayInputValidationErrors && !Utils.isNullOrEmpty(this.validation.errorMessage)) {
+        if (this.renderedElement && AdaptiveCard.useBuiltInInputValidation && AdaptiveCard.displayInputValidationErrors && !Utils.isNullOrEmpty(this.validation.errorMessage)) {
             this._errorMessageElement = document.createElement("span");
             this._errorMessageElement.className = this.hostConfig.makeCssClassName("ac-input-validation-error-message");
             this._errorMessageElement.textContent = this.validation.errorMessage;
@@ -2630,7 +2632,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
         }
     }
 
-    protected parseDefaultValue(value: string): string {
+    protected parseInputValue(value: string): string {
         return value;
     }
 
@@ -2646,7 +2648,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
         let result = super.toJSON();
 
         Utils.setProperty(result, "title", this.title);
-        Utils.setProperty(result, "value", this.renderedElement ? this.value : this.defaultValue);
+        Utils.setProperty(result, "value", this.renderedElement && !Utils.isNullOrEmpty(this.value) ? this.value : this.defaultValue);
         Utils.setProperty(result, "validation", this.validation.toJSON());
 
         return result;
@@ -2662,17 +2664,22 @@ export abstract class Input extends CardElement implements Shared.IInput {
     }
 
     validateValue(): boolean {
-        this.resetValidationFailureCue();
+        if (AdaptiveCard.useBuiltInInputValidation) {
+            this.resetValidationFailureCue();
 
-        let result = this.validation.necessity != Enums.InputValidationNecessity.Optional ? !Utils.isNullOrEmpty(this.value) : true;
+            let result = this.validation.necessity != Enums.InputValidationNecessity.Optional ? !Utils.isNullOrEmpty(this.value) : true;
 
-        if (!result) {
-            this._renderedInputControlElement.classList.add(this.hostConfig.makeCssClassName("ac-input-validation-failed"));
+            if (!result && this.renderedElement) {
+                this._renderedInputControlElement.classList.add(this.hostConfig.makeCssClassName("ac-input-validation-failed"));
 
-            this.showValidationErrorMessage();
+                this.showValidationErrorMessage();
+            }
+
+            return result;
         }
-
-        return result;
+        else {
+            return true;
+        }
     }
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
@@ -2697,7 +2704,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
     }
 
     set defaultValue(value: string) {
-        this._defaultValue = this.parseDefaultValue(value);
+        this._defaultValue = this.parseInputValue(value);
     }
 
     get isInteractive(): boolean {
@@ -3309,13 +3316,15 @@ export class ChoiceSetInput extends Input {
 
 export class NumberInput extends Input {
     private _numberInputElement: HTMLInputElement;
+    private _min: string;
+    private _max: string;
 
     protected internalRender(): HTMLElement {
         this._numberInputElement = document.createElement("input");
         this._numberInputElement.setAttribute("type", "number");
-        this._numberInputElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-numberInput");
         this._numberInputElement.setAttribute("min", this.min);
         this._numberInputElement.setAttribute("max", this.max);
+        this._numberInputElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-numberInput");
         this._numberInputElement.style.width = "100%";
         this._numberInputElement.tabIndex = 0;
 
@@ -3333,8 +3342,6 @@ export class NumberInput extends Input {
         return this._numberInputElement;
     }
 
-    min: string;
-    max: string;
     placeholder: string;
 
     getJsonTypeName(): string {
@@ -3359,6 +3366,22 @@ export class NumberInput extends Input {
         this.max = Utils.getStringValue(json["max"]);
     }
 
+    get min(): string {
+        return this._min;
+    }
+
+    set min(value: string) {
+        this._min = this.parseInputValue(value);
+    }
+
+    get max(): string {
+        return this._max;
+    }
+
+    set max(value: string) {
+        this._max = this.parseInputValue(value);
+    }
+
     get value(): string {
         return this._numberInputElement ? this._numberInputElement.value : null;
     }
@@ -3366,12 +3389,17 @@ export class NumberInput extends Input {
 
 export class DateInput extends Input {
     private _dateInputElement: HTMLInputElement;
+    private _min: string;
+    private _max: string;
 
     protected internalRender(): HTMLElement {
         this._dateInputElement = document.createElement("input");
         this._dateInputElement.setAttribute("type", "date");
+        this._dateInputElement.setAttribute("min", this.min);
+        this._dateInputElement.setAttribute("max", this.max);
         this._dateInputElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-dateInput");
         this._dateInputElement.style.width = "100%";
+
         this._dateInputElement.oninput = () => { this.valueChanged(); }
 
         if (!Utils.isNullOrEmpty(this.defaultValue)) {
@@ -3385,6 +3413,38 @@ export class DateInput extends Input {
         return "Input.Date";
     }
 
+    toJSON() {
+        let result = super.toJSON();
+
+        Utils.setProperty(result, "min", this.min);
+        Utils.setProperty(result, "max", this.max);
+
+        return result;
+    }
+
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+        super.parse(json, errors);
+
+        this.min = Utils.getStringValue(json["min"]);
+        this.max = Utils.getStringValue(json["max"]);
+    }
+
+    get min(): string {
+        return this._min;
+    }
+
+    set min(value: string) {
+        this._min = this.parseInputValue(value);
+    }
+
+    get max(): string {
+        return this._max;
+    }
+
+    set max(value: string) {
+        this._max = this.parseInputValue(value);
+    }
+
     get value(): string {
         return this._dateInputElement ? this._dateInputElement.value : null;
     }
@@ -3392,10 +3452,14 @@ export class DateInput extends Input {
 
 export class TimeInput extends Input {
     private _timeInputElement: HTMLInputElement;
+    private _min: string;
+    private _max: string;
 
     protected internalRender(): HTMLElement {
         this._timeInputElement = document.createElement("input");
         this._timeInputElement.setAttribute("type", "time");
+        this._timeInputElement.setAttribute("min", this.min);
+        this._timeInputElement.setAttribute("max", this.max);
         this._timeInputElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-timeInput");
         this._timeInputElement.style.width = "100%";
         this._timeInputElement.oninput = () => { this.valueChanged(); }
@@ -3407,7 +3471,7 @@ export class TimeInput extends Input {
         return this._timeInputElement;
     }
 
-    protected parseDefaultValue(value: string): string {
+    protected parseInputValue(value: string): string {
         if (/^[0-9]{2}:[0-9]{2}$/.test(value)) {
             return value;
         }
@@ -3418,6 +3482,38 @@ export class TimeInput extends Input {
 
     getJsonTypeName(): string {
         return "Input.Time";
+    }
+
+    toJSON() {
+        let result = super.toJSON();
+
+        Utils.setProperty(result, "min", this.min);
+        Utils.setProperty(result, "max", this.max);
+
+        return result;
+    }
+
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+        super.parse(json, errors);
+
+        this.min = Utils.getStringValue(json["min"]);
+        this.max = Utils.getStringValue(json["max"]);
+    }
+
+    get min(): string {
+        return this._min;
+    }
+
+    set min(value: string) {
+        this._min = this.parseInputValue(value);
+    }
+
+    get max(): string {
+        return this._max;
+    }
+
+    set max(value: string) {
+        this._max = this.parseInputValue(value);
     }
 
     get value(): string {
@@ -6292,7 +6388,7 @@ export class AdaptiveCard extends ContainerWithActions {
     static useMarkdownInRadioButtonAndCheckbox: boolean = true;
     static allowMarkForTextHighlighting: boolean = false;
     static alwaysBleedSeparators: boolean = false;
-    static useBuiltInInputValidation: boolean = true;
+    static useBuiltInInputValidation: boolean = false;
     static displayInputValidationErrors: boolean = true;
 
     static readonly elementTypeRegistry = new ElementTypeRegistry();
