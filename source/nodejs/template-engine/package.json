@@ -1,15 +1,31 @@
 {
 	"name": "template-engine",
-	"version": "1.0.0",
-	"description": "",
-	"main": "app.js",
+	"version": "0.5.0",
+	"description": "Template engine for transforming JSON",
+	"author": "AdaptiveCards",
+	"license": "MIT",
+	"main": "lib/template-engine.js",
+	"types": "lib/template-engine.d.ts",
+	"files": [
+		"lib",
+		"dist",
+		"src"
+	],
 	"scripts": {
-		"build": "tsc",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"clean": "rimraf build lib dist",
+		"prebuild": "tsc",
+		"build": "webpack",
+		"watch": "webpack --watch",
+		"start": "webpack-dev-server --open",
+		"dts": "dts-generator --name template-engine --project . --out dist/template-engine.d.ts",
+		"lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
+		"release": "npm run build && webpack --mode=production && npm run dts"
 	},
-	"author": "",
-	"license": "ISC",
 	"devDependencies": {
-		"typescript": "^3.2.4"
+		"typescript": "^3.2.2",
+		"webpack": "^4.27.1",
+		"webpack-cli": "^3.1.2",
+		"webpack-concat-plugin": "^3.0.0",
+		"webpack-dev-server": "^3.1.14"
 	}
 }

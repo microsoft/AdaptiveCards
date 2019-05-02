@@ -1,0 +1,8 @@
+{
+	"target": "es5",
+	"extends": "../tsconfig.json",
+	"compilerOptions": {
+        "outDir": "./lib"
+	},
+	"files": ["./src/template-engine.ts"]
+}
