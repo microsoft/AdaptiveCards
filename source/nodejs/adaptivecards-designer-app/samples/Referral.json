@@ -184,7 +184,6 @@
 		{
 			"type": "Container",
 			"id": "details",
-			
 			"items": [
 				{
 					"type": "FactSet",
@@ -223,8 +222,7 @@
 										"id": "date"
 									}
 								],
-								"width": "stretch",
-								"bleed": true
+								"width": "stretch"
 							},
 							{
 								"type": "Column",
@@ -234,8 +232,68 @@
 										"id": "time"
 									}
 								],
-								"width": "stretch",
-								"bleed": true
+								"width": "stretch"
+							}
+						]
+					},
+					{
+						"type": "ColumnSet",
+						"columns": [
+							{
+								"type": "Column",
+								"items": [
+									{
+										"type": "Input.ChoiceSet",
+										"id": "room",
+										"title": "Room",
+										"placeholder": "Room",
+										"choices": [
+											{
+												"title": "1",
+												"value": "1"
+											},
+											{
+												"title": "2",
+												"value": "2"
+											},
+											{
+												"title": "3",
+												"value": "3"
+											},
+											{
+												"title": "4",
+												"value": "4"
+											},
+											{
+												"title": "5",
+												"value": "5"
+											}
+										]
+									}
+								],
+								"width": "stretch"
+							},
+							{
+								"type": "Column",
+								"items": [
+									{
+										"type": "Input.ChoiceSet",
+										"id": "provider",
+										"value": "Dr. David Claux",
+										"placeholder": "Provider",
+										"choices": [
+											{
+												"title": "Dr. David Claux",
+												"value": "Dr. David Claux"
+											},
+											{
+												"title": "Dr. Kati Pinardi",
+												"value": "Dr. Kati Pinardi"
+											}
+										]
+									}
+								],
+								"width": "stretch"
 							}
 						]
 					}
@@ -243,11 +301,11 @@
 				"actions": [
 					{
 						"type": "Action.Submit",
+						"id": "scheduleSubmit",
 						"title": "OK",
 						"sentiment": "Positive"
 					}
-				],
-				"$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+				]
 			}
 		},
 		{
@@ -266,17 +324,13 @@
 				"actions": [
 					{
 						"type": "Action.Submit",
+						"id": "commentSubmit",
 						"title": "OK",
 						"sentiment": "Positive"
 					}
 				],
 				"$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
 			}
-		},
-		{
-			"type": "Action.Submit",
-			"title": "OK",
-			"sentiment": "Positive"
 		}
 	],
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json"

@@ -1,8 +1,42 @@
 import * as Azure from "@azure/storage-blob";
 import { AZURE_STORAGE_ACCOUNT_NAME, AZURE_STORAGE_SAS } from "./secrets";
 import { generateUuid } from "ms-rest-js";
+import { Uri } from "monaco-editor";
 //import { ListBlobsIncludeItem } from "@azure/storage-blob/typings/lib/generated/models";
 
+export interface Contact {
+	name: string;
+	photo?: string;
+	contact?: ContactMethod[];
+}
+
+export interface Patient extends Contact {
+	isInsured: boolean;
+}
+export interface Appointment {
+	patient: Patient;
+	referral?: Referral;
+	appointmentTime: string;
+	provider: Provider;
+	room: string;
+	patientNeed: string;
+}
+
+export interface Provider extends Contact {
+}
+
+export interface ContactMethod {
+	name: string;
+	number: string;
+}
+export interface Referral {
+	patient: Patient;
+	referredBy: Provider;
+	referredTo: Provider;
+	referralNeed: string;
+	comments: string;
+	requestedDate: string;
+}
 
 export class Api {
 
@@ -10,8 +44,28 @@ export class Api {
 	static serviceURL = new Azure.ServiceURL(`https://${AZURE_STORAGE_ACCOUNT_NAME}.blob.core.windows.net?${AZURE_STORAGE_SAS}`, Api.pipeline);
 	static formsContainerURL = Azure.ContainerURL.fromServiceURL(Api.serviceURL, "forms");
 	static submittedFormsContainerURL = Azure.ContainerURL.fromServiceURL(Api.serviceURL, "submittedforms");
+	static appContainerURL = Azure.ContainerURL.fromServiceURL(Api.serviceURL, "appcontainer");
 
 	static async init(): Promise<void> {
+
+		try {
+			await Api.appContainerURL.create(Azure.Aborter.timeout(5000));
+		}
+		catch (e) {
+		}
+
+		//await Api.addReferral(newRef);
+		//let referrals = await Api.getReferrals();
+		
+
+		// await Api.addReferral(referral)
+		// await Api.updateReferral(referral)
+		// await Api.deleteReferral(referral)
+
+		// await Api.getAppointments()
+		// await Api.addAppointment(referral)
+		// await Api.updateAppointment(appointment)
+		// await Api.deleteAppointment(appointment)
 
 		try {
 			await Api.formsContainerURL.create(Azure.Aborter.timeout(5000));
@@ -24,6 +78,44 @@ export class Api {
 		}
 		catch (e) {
 		}
+	}
+
+	static async getReferrals() : Promise<Referral[]>	{
+		let referrals = await Api.listBlobs(Azure.Aborter.None, this.appContainerURL, "referrals");
+		let response: Referral[] = [];
+		for(let referral of referrals) {
+			let r = await Api.loadBlobAs<Referral>(Azure.Aborter.None, this.appContainerURL, referral.name);
+			response.push(r);
+		}
+		return response;
+	}
+
+	static async getAppointments() : Promise<Appointment[]>	{
+		let referrals = await Api.listBlobs(Azure.Aborter.None, this.appContainerURL, "appointments");
+		let response: Appointment[] = [];
+		for(let referral of referrals) {
+			let r = await Api.loadBlobAs<Appointment>(Azure.Aborter.None, this.appContainerURL, referral.name);
+			response.push(r);
+		}
+		return response;
+	}
+
+	static async addReferral(referral: Referral) : Promise<void>	{
+		const blobURL = Azure.BlockBlobURL.fromContainerURL(Api.appContainerURL, `referrals/${generateUuid()}`);
+		var blob = new Blob([JSON.stringify(referral)]);
+
+		await Azure.uploadBrowserDataToBlockBlob(Azure.Aborter.timeout(3000), blob, blobURL, {
+			blobHTTPHeaders: { blobContentType: "application/json" }
+		});
+	}
+	
+	static async addAppointment(appointment: Appointment) : Promise<void>	{
+		const blobURL = Azure.BlockBlobURL.fromContainerURL(Api.appContainerURL, `appointments/${generateUuid()}`);
+		var blob = new Blob([JSON.stringify(appointment)]);
+
+		await Azure.uploadBrowserDataToBlockBlob(Azure.Aborter.timeout(3000), blob, blobURL, {
+			blobHTTPHeaders: { blobContentType: "application/json" }
+		});
 	}
 
 	static async submitForm(id: any, data: Object): Promise<void> {
@@ -61,17 +153,31 @@ export class Api {
 	}
 
 	static getForms() {
-		return Api.listBlobs(Azure.Aborter.None, Api.formsContainerURL);
+		return Api.listBlobs(Azure.Aborter.None, Api.formsContainerURL, "forms");
 	}
 
 	static async getSubmmitedForms() {
-		var submittedForms = await Api.listBlobs(Azure.Aborter.None, Api.submittedFormsContainerURL);
+		var submittedForms = await Api.listBlobs(Azure.Aborter.None, Api.submittedFormsContainerURL, "submittedforms");
 		submittedForms.filter(m => m.metadata["formid"] === "a8021bbc-684a-440f-984e-9b8813f86b04")
 	}
 
 
 	static loadForm(formId: string): Promise<string> {
 		return Api.loadBlob(Azure.Aborter.timeout(3000), Api.formsContainerURL, formId);
+	}
+
+	private static loadBlobAs<T>(aborter: Azure.Aborter, containerURL: Azure.ContainerURL, blob: string): Promise<T> {
+		return new Promise(async (resolve, reject) => {
+			let blobUrl = Azure.BlockBlobURL.fromBlobURL(Azure.BlobURL.fromContainerURL(containerURL, blob))
+
+			let response = await blobUrl.download(Azure.Aborter.None, 0);
+			let content = await response.blobBody;
+
+			let fr = new FileReader();
+			fr.addEventListener("load", () => resolve(JSON.parse(<string>fr.result)));
+			fr.addEventListener("error", () => reject("Failed to load form"));
+			fr.readAsText(content);
+		});
 	}
 
 	private static loadBlob(aborter: Azure.Aborter, containerURL: Azure.ContainerURL, blob: string): Promise<string> {
@@ -88,15 +194,14 @@ export class Api {
 		});
 	}
 
-
-	private static async listBlobs(aborter: Azure.Aborter, containerURL: any) {
+	private static async listBlobs(aborter: Azure.Aborter, containerURL: any, folder: string) {
 
 		let response;
 		let marker;
 		let blobs = [];
 
 		do {
-			response = await containerURL.listBlobFlatSegment(aborter, undefined, { include: ["metadata"] });
+			response = await containerURL.listBlobFlatSegment(aborter, undefined, { prefix: `${folder}/`, include: ["metadata"] });
 			marker = response.marker;
 			for (let blob of response.segment.blobItems) {
 				blobs.push(blob);

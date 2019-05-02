@@ -8,6 +8,16 @@
 		"referralNeed": "Patient reported concerns about their tacos",
 		"comments": "This should be treated as high-priority",
 		"requestedDate": "2019-05-08",
+		"referredTo": {
+			"name": "DR. THOMAS FENNEL",
+			"photo": "",
+			"contact": [
+				{
+					"name": "Phone number",
+					"number": "(555) 123-4567"
+				}
+			]
+		},
 		"referredBy": {
 			"name": "DR. DAVID CLAUX",
 			"photo": "https://avatars1.githubusercontent.com/u/1334689?s=460&amp;v=4",

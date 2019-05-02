@@ -2,12 +2,95 @@
 <html>
 
 <head>
-	<title>Contoso Clinic</title>    
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Contoso Clinic</title>
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<link rel="stylesheet" href="dist/containers/webchat-container.css">
+	<script type="text/javascript" src="https://unpkg.com/markdown-it/dist/markdown-it.min.js"></script>
 </head>
 
 <body>
-	<div id="designerRootHost"></div>
-<script type="text/javascript" src="adaptivecards-designer-app.js"></script></body>
+	<div class="w3-bar w3-light-grey">
+		<a href="/" data-navigo class="w3-bar-item w3-button">Home</a>
+		<a href="/admin/forms" data-navigo class="w3-bar-item w3-button">Form Editor</a>
+		<a href="/forms" data-navigo class="w3-bar-item w3-button">Form Browser</a>
+
+		<a href="#" class="w3-bar-item w3-button w3-green w3-right">Go</a>
+		<input type="text" class="w3-bar-item w3-input w3-right" placeholder="Search..">
+	</div>
+
+	<!-- Error Template -->
+	<script id="error-template" type="text/x-handlebars-template">
+		<div class="ui {{color}} inverted segment" style="height:250px;">
+			<br>
+			<h2 class="ui center aligned icon header">
+			<i class="exclamation triangle icon"></i>
+			<div class="content">
+				{{title}}
+				<div class="sub header">{{message}}</div>
+			</div>
+			</h2>
+		</div>
+	</script>
+
+	<!-- Home -->
+	<script id="home-template" type="text/x-handlebars-template">
+		<div class="w3-container">
+			<h1 class="ui header">Home</h1>
+
+			<div class="w3-third w3-container">
+				<h2>Pending Referrals</h2>
+				<div id="pendingReferrals"></div>
+			</div>
+
+			<div class="w3-third w3-container">
+				<h2>Today's Appointments</h2>
+				<div id="appointmentCards"></div>
+			</div>
+
+			<div class="w3-third w3-container">
+				<h2>Cards</h2>
+				<div id="homeCards"></div>
+			</div>
+		</div>
+	</script>
+
+
+	<!-- Form Editor -->
+	<script id="form-editor-template" type="text/x-handlebars-template">
+		<h1 class="ui header">Form Editor</h1>
+		Items
+		<ul>
+			{{#each items}}
+				<li><a href="/admin/forms/{{this.name}}" data-navigo>{{this.metadata.displayname}}</a></li>
+			{{/each}}
+		</ul>
+		<div class="">
+			<div id="designerRootHost"></div>
+
+		</div>
+		
+	</script>
+
+	<!-- Form Editor -->
+	<script id="form-template" type="text/x-handlebars-template">
+		<h1 class="ui header">Form Browser</h1>
+		Items
+		<ul>
+			{{#each items}}
+				<li><a href="/forms/{{this.name}}" data-navigo>{{this.metadata.displayname}}</a></li>
+			{{/each}}
+		</ul>
+		<div id="cardHolder">
+
+		</div>
+		
+	</script>
+
+
+	<div id="app">App loading...</div>
+<script type="text/javascript" src="/adaptivecards-designer-app.js"></script></body>
 
 </html>
