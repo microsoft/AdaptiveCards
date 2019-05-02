@@ -128,12 +128,12 @@ namespace AdaptiveCards.Rendering.Wpf
                     }
                     else
                     {
-                        tag = new TagContent(AdaptiveSpacing.None, uiColumnSet);
+                        tag = new TagContent(null, uiColumnSet);
                     }
                 }
                 else
                 {
-                    tag = new TagContent(AdaptiveSpacing.None, uiColumnSet);
+                    tag = new TagContent(null, uiColumnSet);
                 }
 
                 // do some sizing magic using the magic GridUnitType.Star
@@ -171,12 +171,9 @@ namespace AdaptiveCards.Rendering.Wpf
                     }
                 }
 
-                // If the column width is not auto, then store it in the tag so we can toggle the visibility later
-                if (columnDefinition.Width.GridUnitType != GridUnitType.Auto)
-                {
-                    tag.ColumnDefinition = columnDefinition;
-                    tag.ViewIndex = uiColumnSet.ColumnDefinitions.Count;
-                }
+                // Store the column definition in the tag so we can toggle the visibility later
+                tag.ColumnDefinition = columnDefinition;
+                tag.ViewIndex = uiColumnSet.ColumnDefinitions.Count;
 
                 uiColumnSet.ColumnDefinitions.Add(columnDefinition);
 

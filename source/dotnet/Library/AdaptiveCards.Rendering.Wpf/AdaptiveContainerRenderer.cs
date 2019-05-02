@@ -83,26 +83,17 @@ namespace AdaptiveCards.Rendering.Wpf
                 if (uiElement != null)
                 {
                     TagContent tag = null;
-
+                    Grid separator = null;
                     if (cardElement.Separator && uiContainer.Children.Count > 0)
                     {
-                        Grid separator = AddSeparator(context, cardElement, uiContainer);
-                        tag = new TagContent(separator, uiContainer);
+                        separator = AddSeparator(context, cardElement, uiContainer);
                     }
                     else if (uiContainer.Children.Count > 0)
                     {
-                        var spacing = context.Config.GetSpacing(cardElement.Spacing);
-                        Thickness renderedMargin = uiElement.Margin;
-                        uiElement.Margin = new Thickness(renderedMargin.Left,
-                                                         renderedMargin.Top + spacing,
-                                                         renderedMargin.Right,
-                                                         renderedMargin.Bottom);
-                        tag = new TagContent(cardElement.Spacing, uiContainer);
+                        separator = AddSpacing(context, cardElement, uiContainer);
                     }
-                    else
-                    {
-                        tag = new TagContent(AdaptiveSpacing.None, uiContainer);
-                    }
+
+                    tag = new TagContent(separator, uiContainer);
 
                     uiElement.Tag = tag;
 
@@ -113,14 +104,21 @@ namespace AdaptiveCards.Rendering.Wpf
                         uiElement.MinHeight = collectionElement.PixelMinHeight;
                     }
 
+                    int rowDefinitionIndex = uiContainer.RowDefinitions.Count;
                     RowDefinition rowDefinition = null;
                     if (cardElement.Height != AdaptiveHeight.Stretch)
                     {
                         rowDefinition = new RowDefinition() { Height = GridLength.Auto };
 
                         uiContainer.RowDefinitions.Add(rowDefinition);
-                        Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
+                        Grid.SetRow(uiElement, rowDefinitionIndex);
                         uiContainer.Children.Add(uiElement);
+
+                        // Row definition is stored in the tag for containers and elements that stretch
+                        // so when the elements are shown, the row can have it's original definition,
+                        // while when the element is hidden, the extra space is not reserved in the layout
+                        tag.RowDefinition = rowDefinition;
+                        tag.ViewIndex = rowDefinitionIndex;
 
                         context.SetVisibility(uiElement, cardElement.IsVisible, tag);
                     }
@@ -132,8 +130,14 @@ namespace AdaptiveCards.Rendering.Wpf
 
                         if (cardElement.Type == "Container")
                         {
-                            Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
+                            Grid.SetRow(uiElement, rowDefinitionIndex);
                             uiContainer.Children.Add(uiElement);
+
+                            // Row definition is stored in the tag for containers and elements that stretch
+                            // so when the elements are shown, the row can have it's original definition,
+                            // while when the element is hidden, the extra space is not reserved in the layout
+                            tag.RowDefinition = rowDefinition;
+                            tag.ViewIndex = rowDefinitionIndex;
 
                             context.SetVisibility(uiElement, cardElement.IsVisible, tag);
                         }
@@ -149,22 +153,41 @@ namespace AdaptiveCards.Rendering.Wpf
                             panel.Children.Add(uiElement);
                             panel.Tag = tag;
 
-                            Grid.SetRow(panel, uiContainer.RowDefinitions.Count - 1);
+                            Grid.SetRow(panel, rowDefinitionIndex);
                             uiContainer.Children.Add(panel);
+
+                            // Row definition is stored in the tag for containers and elements that stretch
+                            // so when the elements are shown, the row can have it's original definition,
+                            // while when the element is hidden, the extra space is not reserved in the layout
+                            tag.RowDefinition = rowDefinition;
+                            tag.ViewIndex = rowDefinitionIndex;
 
                             context.SetVisibility(panel, cardElement.IsVisible, tag);
                         }
                     }
 
-                    // Row definition is stored in the tag for containers and elements that stretch
-                    // so when the elements are shown, the row can have it's original definition,
-                    // while when the element is hidden, the extra space is not reserved in the layout
-                    tag.RowDefinition = rowDefinition;
-                    tag.ViewIndex = uiContainer.RowDefinitions.Count;
                 }
             }
 
             context.ResetSeparatorVisibilityInsideContainer(uiContainer);
+        }
+
+        public static Grid AddSpacing(AdaptiveRenderContext context, AdaptiveElement element, Grid uiContainer)
+        {
+            if (element.Spacing == AdaptiveSpacing.None)
+                return null;
+
+            var uiSpa = new Grid();
+            uiSpa.Style = context.GetStyle($"Adaptive.Spacing");
+            int spacing = context.Config.GetSpacing(element.Spacing);
+
+            uiSpa.SetHeight(spacing);
+
+            uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+            Grid.SetRow(uiSpa, uiContainer.RowDefinitions.Count - 1);
+            uiContainer.Children.Add(uiSpa);
+
+            return uiSpa;
         }
 
         public static Grid AddSeparator(AdaptiveRenderContext context, AdaptiveElement element, Grid uiContainer)

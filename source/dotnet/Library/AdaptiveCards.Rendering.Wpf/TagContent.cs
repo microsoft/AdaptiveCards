@@ -21,22 +21,12 @@ namespace AdaptiveCards.Rendering.Wpf
             ParentContainerElement = elementContainer;
         }
 
-        public TagContent(AdaptiveSpacing spacing, Grid elementContainer)
-        {
-            Spacing = spacing;
-            ParentContainerElement = elementContainer;
-        }
-
         public Grid Separator { get; set; } = null;
-
-        public AdaptiveSpacing Spacing { get; set; } = AdaptiveSpacing.None;
 
         /// <summary>
         /// Grid that contains the rendered element
         /// </summary>
         public Grid ParentContainerElement { get; set; }
-
-        public bool SpacingHasBeenHidden { get; set; } = false;
 
         /// <summary>
         /// Column Definition for the rendered column in the columnset

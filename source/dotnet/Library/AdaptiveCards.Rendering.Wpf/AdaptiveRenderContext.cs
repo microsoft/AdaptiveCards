@@ -428,31 +428,6 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 separator.Visibility = isFirstVisible ? Visibility.Collapsed : Visibility.Visible;
             }
-            else
-            {
-                bool mustHideSpacing = (isFirstVisible && !(tagContent.SpacingHasBeenHidden));
-                bool mustShowSpacing = (!isFirstVisible && tagContent.SpacingHasBeenHidden);
-
-                if (mustHideSpacing || mustShowSpacing)
-                {
-                    FrameworkElement renderedElement = GetRenderedElement(element);
-                    var spacing = Config.GetSpacing(tagContent.Spacing);
-
-                    // The spacings are added as a margin in the top, so we have to deduct that value
-                    if (mustHideSpacing)
-                    {
-                        spacing = -spacing;
-                    }
-
-                    Thickness renderedMargin = renderedElement.Margin;
-                    renderedElement.Margin = new Thickness(renderedMargin.Left,
-                                                           renderedMargin.Top + spacing,
-                                                           renderedMargin.Right,
-                                                           renderedMargin.Bottom);
-
-                    tagContent.SpacingHasBeenHidden = mustHideSpacing;
-                }
-            }
         }
 
         /// <summary>
