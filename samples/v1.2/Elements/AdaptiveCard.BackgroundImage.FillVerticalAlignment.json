@@ -4,7 +4,8 @@
 	"version": "1.2",
 	"backgroundImage": {
 		"url": "https://picsum.photos/60/60?image=101",
-		"mode": "repeat"
+		"fillMode": "repeatHorizontally",
+		"verticalAlignment": "center"
 	},
 	"body": [
 		{
