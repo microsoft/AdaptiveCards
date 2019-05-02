@@ -2068,15 +2068,6 @@ export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCard
             this.changed(false);
         }
 
-        let defaultValue = addLabelAndInput(card, "Default value:", Adaptive.TextInput);
-        defaultValue.input.placeholder = "(not set)";
-        defaultValue.input.defaultValue = this.cardElement.defaultValue;
-        defaultValue.input.onValueChanged = () => {
-            this.cardElement.defaultValue = defaultValue.input.value;
-
-            this.changed(false);
-        }
-
         let validationNecessity = addLabelAndInput(card, "Necessity:", Adaptive.ChoiceSetInput);
         validationNecessity.input.isCompact = true;
         validationNecessity.input.choices.push(new Adaptive.Choice("Optional", Adaptive.InputValidationNecessity.Optional.toString()));
@@ -2170,6 +2161,15 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
             inlineActionPeer.internalAddPropertySheetEntries(card, false);
             inlineActionPeer.onChanged = (sender: DesignerPeer, updatePropertySheet: boolean) => { this.changed(updatePropertySheet); };
         }
+
+        let defaultValue = addLabelAndInput(card, "Default value:", Adaptive.TextInput);
+        defaultValue.input.placeholder = "(not set)";
+        defaultValue.input.defaultValue = this.cardElement.defaultValue;
+        defaultValue.input.onValueChanged = () => {
+            this.cardElement.defaultValue = defaultValue.input.value;
+
+            this.changed(false);
+        }
     }
 }
 
@@ -2183,7 +2183,7 @@ export class NumberInputPeer extends InputPeer<Adaptive.NumberInput> {
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.internalAddPropertySheetEntries(card, includeHeader);
 
-        var placeholder = addLabelAndInput(card, "Placeholder:", Adaptive.TextInput);
+        let placeholder = addLabelAndInput(card, "Placeholder:", Adaptive.TextInput);
         placeholder.input.placeholder = "(not set)";
         placeholder.input.defaultValue = this.cardElement.placeholder;
         placeholder.input.onValueChanged = () => {
@@ -2192,7 +2192,16 @@ export class NumberInputPeer extends InputPeer<Adaptive.NumberInput> {
             this.changed(false);
         }
 
-        var min = addLabelAndInput(card, "Minimum value:", Adaptive.NumberInput);
+        let defaultValue = addLabelAndInput(card, "Default value:", Adaptive.TextInput);
+        defaultValue.input.placeholder = "(not set)";
+        defaultValue.input.defaultValue = this.cardElement.defaultValue;
+        defaultValue.input.onValueChanged = () => {
+            this.cardElement.defaultValue = defaultValue.input.value;
+
+            this.changed(false);
+        }
+
+        let min = addLabelAndInput(card, "Minimum value:", Adaptive.TextInput);
         min.input.placeholder = "(not set)";
         min.input.defaultValue = this.cardElement.min;
         min.input.onValueChanged = () => {
@@ -2201,7 +2210,7 @@ export class NumberInputPeer extends InputPeer<Adaptive.NumberInput> {
             this.changed(false);
         }
 
-        var max = addLabelAndInput(card, "Maximum value:", Adaptive.NumberInput);
+        let max = addLabelAndInput(card, "Maximum value:", Adaptive.TextInput);
         max.input.placeholder = "(not set)";
         max.input.defaultValue = this.cardElement.max;
         max.input.onValueChanged = () => {
@@ -2213,16 +2222,76 @@ export class NumberInputPeer extends InputPeer<Adaptive.NumberInput> {
 }
 
 export class DateInputPeer extends InputPeer<Adaptive.DateInput> {
+    internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
+        super.internalAddPropertySheetEntries(card, includeHeader);
+
+        let defaultValue = addLabelAndInput(card, "Default value:", Adaptive.TextInput);
+        defaultValue.input.placeholder = "(not set)";
+        defaultValue.input.defaultValue = this.cardElement.defaultValue;
+        defaultValue.input.onValueChanged = () => {
+            this.cardElement.defaultValue = defaultValue.input.value;
+
+            this.changed(false);
+        }
+
+        let min = addLabelAndInput(card, "Minimum value:", Adaptive.TextInput);
+        min.input.placeholder = "(not set)";
+        min.input.defaultValue = this.cardElement.min;
+        min.input.onValueChanged = () => {
+            this.cardElement.min = min.input.value;
+
+            this.changed(false);
+        }
+
+        let max = addLabelAndInput(card, "Maximum value:", Adaptive.TextInput);
+        max.input.placeholder = "(not set)";
+        max.input.defaultValue = this.cardElement.max;
+        max.input.onValueChanged = () => {
+            this.cardElement.max = max.input.value;
+
+            this.changed(false);
+        }
+    }
 }
 
 export class TimeInputPeer extends InputPeer<Adaptive.TimeInput> {
+    internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
+        super.internalAddPropertySheetEntries(card, includeHeader);
+
+        let defaultValue = addLabelAndInput(card, "Default value:", Adaptive.TextInput);
+        defaultValue.input.placeholder = "(not set)";
+        defaultValue.input.defaultValue = this.cardElement.defaultValue;
+        defaultValue.input.onValueChanged = () => {
+            this.cardElement.defaultValue = defaultValue.input.value;
+
+            this.changed(false);
+        }
+
+        let min = addLabelAndInput(card, "Minimum value:", Adaptive.TextInput);
+        min.input.placeholder = "(not set)";
+        min.input.defaultValue = this.cardElement.min;
+        min.input.onValueChanged = () => {
+            this.cardElement.min = min.input.value;
+
+            this.changed(false);
+        }
+
+        let max = addLabelAndInput(card, "Maximum value:", Adaptive.TextInput);
+        max.input.placeholder = "(not set)";
+        max.input.defaultValue = this.cardElement.max;
+        max.input.onValueChanged = () => {
+            this.cardElement.max = max.input.value;
+
+            this.changed(false);
+        }
+    }
 }
 
 export class ToggleInputPeer extends InputPeer<Adaptive.ToggleInput> {
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.internalAddPropertySheetEntries(card, includeHeader);
 
-        var valueOn = addLabelAndInput(card, "Value when on:", Adaptive.TextInput);
+        let valueOn = addLabelAndInput(card, "Value when on:", Adaptive.TextInput);
         valueOn.input.placeholder = "(not set)";
         valueOn.input.defaultValue = this.cardElement.valueOn;
         valueOn.input.onValueChanged = () => {
@@ -2231,7 +2300,7 @@ export class ToggleInputPeer extends InputPeer<Adaptive.ToggleInput> {
             this.changed(false);
         }
 
-        var valueOff = addLabelAndInput(card, "Value when off:", Adaptive.TextInput);
+        let valueOff = addLabelAndInput(card, "Value when off:", Adaptive.TextInput);
         valueOff.input.placeholder = "(not set)";
         valueOff.input.defaultValue = this.cardElement.valueOff;
         valueOff.input.onValueChanged = () => {
@@ -2244,6 +2313,15 @@ export class ToggleInputPeer extends InputPeer<Adaptive.ToggleInput> {
         wrap.input.defaultValue = String(this.cardElement.wrap);
         wrap.input.onValueChanged = () => {
             this.cardElement.wrap = wrap.input.value == "true";
+
+            this.changed(false);
+        }
+
+        let defaultValue = addLabelAndInput(card, "Default value:", Adaptive.TextInput);
+        defaultValue.input.placeholder = "(not set)";
+        defaultValue.input.defaultValue = this.cardElement.defaultValue;
+        defaultValue.input.onValueChanged = () => {
+            this.cardElement.defaultValue = defaultValue.input.value;
 
             this.changed(false);
         }
@@ -2289,6 +2367,15 @@ export class ChoiceSetInputPeer extends InputPeer<Adaptive.ChoiceSetInput> {
 
                 this.changed(false);
             }
+        }
+        
+        let defaultValue = addLabelAndInput(card, "Default value:", Adaptive.TextInput);
+        defaultValue.input.placeholder = "(not set)";
+        defaultValue.input.defaultValue = this.cardElement.defaultValue;
+        defaultValue.input.onValueChanged = () => {
+            this.cardElement.defaultValue = defaultValue.input.value;
+
+            this.changed(false);
         }
 
         let choicesEditor = new NameValuePairEditor();
