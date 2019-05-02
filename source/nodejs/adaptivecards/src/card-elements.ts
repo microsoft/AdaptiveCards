@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Enums from "./enums";
 import * as Shared from "./shared";
@@ -25,11 +25,17 @@ function isActionAllowed(action: Action, forbiddenActionTypes: Array<string>): b
     return true;
 }
 
+enum InstanceCreationErrorType {
+    UnknownType,
+    ForbiddenType
+}
+
 function createCardObjectInstance<T extends CardObject>(
     parent: CardElement,
     json: any,
+    forbiddenTypeNames: string[],
     createInstanceCallback: (typeName: string) => T,
-    createValidationErrorCallback: (typeName: string) => HostConfig.IValidationError,
+    createValidationErrorCallback: (typeName: string, errorType: InstanceCreationErrorType) => HostConfig.IValidationError,
     errors: Array<HostConfig.IValidationError>): T {
     let result: T = null;
 
@@ -37,36 +43,42 @@ function createCardObjectInstance<T extends CardObject>(
         let tryToFallback = false;
 		let typeName = Utils.getStringValue(json["type"]);
 
-        result = createInstanceCallback(typeName);
-
-        if (!result) {
-            tryToFallback = true;
-
-            raiseParseError(createValidationErrorCallback(typeName), errors);
+        if (forbiddenTypeNames && forbiddenTypeNames.indexOf(typeName) >= 0) {
+            raiseParseError(createValidationErrorCallback(typeName, InstanceCreationErrorType.ForbiddenType), errors);
         }
         else {
-            result.setParent(parent);
-            result.parse(json, errors);
+            result = createInstanceCallback(typeName);
 
-            tryToFallback = result.shouldFallback();
-        }
+            if (!result) {
+                tryToFallback = true;
 
-        if (tryToFallback) {
-            let fallback = json["fallback"];
-
-            if (!fallback) {
-                parent.setShouldFallback(true);
+                raiseParseError(createValidationErrorCallback(typeName, InstanceCreationErrorType.UnknownType), errors);
             }
-            if (typeof fallback === "string" && fallback.toLowerCase() === "drop") {
-                result = null;
+            else {
+                result.setParent(parent);
+                result.parse(json, errors);
+
+                tryToFallback = result.shouldFallback();
             }
-            else if (typeof fallback === "object") {
-                result = createCardObjectInstance<T>(
-                    parent,
-                    fallback,
-                    createInstanceCallback,
-                    createValidationErrorCallback,
-                    errors);
+
+            if (tryToFallback) {
+                let fallback = json["fallback"];
+
+                if (!fallback) {
+                    parent.setShouldFallback(true);
+                }
+                if (typeof fallback === "string" && fallback.toLowerCase() === "drop") {
+                    result = null;
+                }
+                else if (typeof fallback === "object") {
+                    result = createCardObjectInstance<T>(
+                        parent,
+                        fallback,
+                        forbiddenTypeNames,
+                        createInstanceCallback,
+                        createValidationErrorCallback,
+                        errors);
+                }
             }
         }
     }
@@ -77,15 +89,25 @@ function createCardObjectInstance<T extends CardObject>(
 export function createActionInstance(
     parent: CardElement,
     json: any,
+    forbiddenActionTypes: string[],
     errors: Array<HostConfig.IValidationError>): Action {
     return createCardObjectInstance<Action>(
         parent,
         json,
+        forbiddenActionTypes,
         (typeName: string) => { return AdaptiveCard.actionTypeRegistry.createInstance(typeName); },
-        (typeName: string) => {
-            return {
-                error: Enums.ValidationError.UnknownActionType,
-                message: "Unknown action type: " + typeName + ". Attempting to fall back."
+        (typeName: string, errorType: InstanceCreationErrorType) => {
+            if (errorType == InstanceCreationErrorType.UnknownType) {
+                return {
+                    error: Enums.ValidationError.UnknownActionType,
+                    message: "Unknown action type: " + typeName + ". Attempting to fall back."
+                }
+            }
+            else {
+                return {
+                    error: Enums.ValidationError.ActionTypeNotAllowed,
+                    message: "Action type " + typeName + " is not allowed in this context."
+                }
             }
         },
         errors);
@@ -98,11 +120,20 @@ export function createElementInstance(
     return createCardObjectInstance<CardElement>(
         parent,
         json,
+        [], // Forbidden types not supported for elements for now
         (typeName: string) => { return AdaptiveCard.elementTypeRegistry.createInstance(typeName); },
-        (typeName: string) => {
-            return {
-                error: Enums.ValidationError.UnknownElementType,
-                message: "Unknown element type: " + typeName + ". Attempting to fall back."
+        (typeName: string, errorType: InstanceCreationErrorType) => {
+            if (errorType == InstanceCreationErrorType.UnknownType) {
+                return {
+                    error: Enums.ValidationError.UnknownElementType,
+                    message: "Unknown element type: " + typeName + ". Attempting to fall back."
+                }
+            }
+            else {
+                return {
+                    error: Enums.ValidationError.ElementTypeNotAllowed,
+                    message: "Element type " + typeName + " is not allowed in this context."
+                }
             }
         },
         errors);
@@ -1417,6 +1448,7 @@ export class TextRun extends BaseTextBlock {
         this.selectAction = createActionInstance(
             this,
             json["selectAction"],
+            [ ShowCardAction.JsonTypeName ],
             errors);
     }
 
@@ -1999,6 +2031,7 @@ export class Image extends CardElement {
         this.selectAction = createActionInstance(
             this,
             json["selectAction"],
+            [ ShowCardAction.JsonTypeName ],
             errors);
     }
 
@@ -2080,6 +2113,7 @@ export abstract class CardElementContainer extends CardElement {
             this._selectAction = createActionInstance(
                 this,
                 json["selectAction"],
+                [ ShowCardAction.JsonTypeName ],
                 errors);
         }
     }
@@ -2667,17 +2701,19 @@ export abstract class Input extends CardElement implements Shared.IInput {
     }
 
     protected resetValidationFailureCue() {
-        this._renderedInputControlElement.classList.remove(this.hostConfig.makeCssClassName("ac-input-validation-failed"));
+        if (this.renderedElement) {
+            this._renderedInputControlElement.classList.remove(this.hostConfig.makeCssClassName("ac-input-validation-failed"));
 
-        if (this._errorMessageElement) {
-            this._outerContainerElement.removeChild(this._errorMessageElement);
+            if (this._errorMessageElement) {
+                this._outerContainerElement.removeChild(this._errorMessageElement);
 
-            this._errorMessageElement = null;
+                this._errorMessageElement = null;
+            }
         }
     }
 
     protected showValidationErrorMessage() {
-        if (AdaptiveCard.displayInputValidationErrors && !Utils.isNullOrEmpty(this.validation.errorMessage)) {
+        if (this.renderedElement && AdaptiveCard.displayInputValidationErrors && !Utils.isNullOrEmpty(this.validation.errorMessage)) {
             this._errorMessageElement = document.createElement("span");
             this._errorMessageElement.className = this.hostConfig.makeCssClassName("ac-input-validation-error-message");
             this._errorMessageElement.textContent = this.validation.errorMessage;
@@ -2722,7 +2758,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
 
         let result = this.validation.necessity != Enums.InputValidationNecessity.Optional ? !Utils.isNullOrEmpty(this.value) : true;
 
-        if (!result) {
+        if (!result && this.renderedElement) {
             this._renderedInputControlElement.classList.add(this.hostConfig.makeCssClassName("ac-input-validation-failed"));
 
             this.showValidationErrorMessage();
@@ -2924,6 +2960,7 @@ export class TextInput extends Input {
         this.inlineAction = createActionInstance(
             this,
             json["inlineAction"],
+            [ ShowCardAction.JsonTypeName ],
             errors);
     }
 
@@ -3817,6 +3854,8 @@ export abstract class Action extends CardObject {
 }
 
 export class SubmitAction extends Action {
+    static readonly JsonTypeName = "Action.Submit";
+
     private _isPrepared: boolean = false;
     private _originalData: Object;
     private _processedData: Object;
@@ -3852,7 +3891,7 @@ export class SubmitAction extends Action {
     }
 
     getJsonTypeName(): string {
-        return "Action.Submit";
+        return SubmitAction.JsonTypeName;
     }
 
     toJSON() {
@@ -3890,10 +3929,12 @@ export class SubmitAction extends Action {
 }
 
 export class OpenUrlAction extends Action {
+    static readonly JsonTypeName = "Action.OpenUrl";
+
     url: string;
 
     getJsonTypeName(): string {
-        return "Action.OpenUrl";
+        return OpenUrlAction.JsonTypeName;
     }
 
     toJSON(): any {
@@ -3925,10 +3966,12 @@ export class OpenUrlAction extends Action {
 }
 
 export class ToggleVisibilityAction extends Action {
+    static readonly JsonTypeName = "Action.ToggleVisibility";
+
     targetElements = {}
 
     getJsonTypeName(): string {
-        return "Action.ToggleVisibility";
+        return ToggleVisibilityAction.JsonTypeName;
     }
 
     execute() {
@@ -4048,6 +4091,8 @@ export class HttpHeader extends SerializableObject {
 }
 
 export class HttpAction extends Action {
+    static readonly JsonTypeName = "Action.Http";
+
     private _url = new Shared.StringWithSubstitutions();
     private _body = new Shared.StringWithSubstitutions();
     private _headers: Array<HttpHeader> = [];
@@ -4086,7 +4131,7 @@ export class HttpAction extends Action {
     method: string;
 
     getJsonTypeName(): string {
-        return "Action.Http";
+        return HttpAction.JsonTypeName;
     }
 
     toJSON(): any {
@@ -4185,6 +4230,8 @@ export class HttpAction extends Action {
 }
 
 export class ShowCardAction extends Action {
+    static readonly JsonTypeName = "Action.ShowCard";
+
     protected addCssClasses(element: HTMLElement) {
         super.addCssClasses(element);
 
@@ -4194,7 +4241,7 @@ export class ShowCardAction extends Action {
     readonly card: AdaptiveCard = new InlineAdaptiveCard();
 
     getJsonTypeName(): string {
-        return "Action.ShowCard";
+        return ShowCardAction.JsonTypeName;
     }
 
     toJSON(): any {
@@ -4416,6 +4463,7 @@ class ActionCollection {
                 let action = createActionInstance(
                     this._owner,
                     jsonAction,
+                    [],
                     errors);
 
                 if (action) {
@@ -4852,22 +4900,6 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
             if (!this.isDesignMode()) {
                 this.renderedElement.style.marginTop = "-" + surroundingPadding.top + "px";
                 this.renderedElement.style.marginBottom = "-" + surroundingPadding.bottom + "px";
-            }
-
-            if (physicalPadding.left == 0) {
-                this.renderedElement.style.paddingLeft = surroundingPadding.left + "px";
-            }
-
-            if (physicalPadding.right == 0) {
-                this.renderedElement.style.paddingRight = surroundingPadding.right + "px";
-            }
-
-            if (physicalPadding.top == 0) {
-                this.renderedElement.style.paddingTop = surroundingPadding.top + "px";
-            }
-
-            if (physicalPadding.bottom == 0) {
-                this.renderedElement.style.paddingBottom = surroundingPadding.bottom + "px";
             }
 
             if (this.separatorElement && this.separatorOrientation == Enums.Orientation.Horizontal) {
@@ -5558,18 +5590,6 @@ export type ColumnWidth = Shared.SizeAndUnit | "auto" | "stretch";
 export class Column extends Container {
     private _computedWeight: number = 0;
 
-    private doesAnyColumnInSetHaveBackground(): boolean {
-        let parent = this.parent as ColumnSet;
-
-        for (let i = 0; i < parent.getCount(); i++) {
-            if (parent.getColumnAt(i).getHasBackground()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     protected adjustRenderedElementSize(renderedElement: HTMLElement) {
         const minDesignTimeColumnHeight = 20;
 
@@ -5616,21 +5636,6 @@ export class Column extends Container {
         this.width = width;
     }
 
-    getEffectivePadding(): Shared.PaddingDefinition {
-        let result = super.getEffectivePadding();
-
-        if (this.doesAnyColumnInSetHaveBackground()) {
-            result.top = Enums.Spacing.Padding;
-            result.bottom = Enums.Spacing.Padding;
-        }
-
-        return result;
-    }
-
-    isBleeding(): boolean {
-        return this.doesAnyColumnInSetHaveBackground();
-    }
-
     getJsonTypeName(): string {
         return "Column";
     }
@@ -5672,28 +5677,30 @@ export class Column extends Container {
             }
         }
 
-        var invalidWidth = false;
+        if (jsonWidth) {
+            var invalidWidth = false;
 
-        try {
-            this.width = Shared.SizeAndUnit.parse(jsonWidth);
-        }
-        catch (e) {
-            if (typeof jsonWidth === "string" && (jsonWidth === "auto" || jsonWidth === "stretch")) {
-                this.width = jsonWidth;
+            try {
+                this.width = Shared.SizeAndUnit.parse(jsonWidth);
             }
-            else {
-                invalidWidth = true;
+            catch (e) {
+                if (typeof jsonWidth === "string" && (jsonWidth === "auto" || jsonWidth === "stretch")) {
+                    this.width = jsonWidth;
+                }
+                else {
+                    invalidWidth = true;
+                }
             }
-        }
 
-        if (invalidWidth) {
-            raiseParseError(
-                {
-                    error: Enums.ValidationError.InvalidPropertyValue,
-                    message: "Invalid column width:" + jsonWidth + " - defaulting to \"auto\""
-                },
-                errors
-            );
+            if (invalidWidth) {
+                raiseParseError(
+                    {
+                        error: Enums.ValidationError.InvalidPropertyValue,
+                        message: "Invalid column width:" + jsonWidth + " - defaulting to \"auto\""
+                    },
+                    errors
+                );
+            }
         }
     }
 
@@ -5709,22 +5716,36 @@ export class Column extends Container {
     get isStandalone(): boolean {
         return false;
     }
-
-    get bleed(): boolean {
-        return true;
-    }
-
-    set bleed(value: boolean) {
-        // No effect in Column.
-        // Although unfortunate, there is no easy way to hide the bleed property from Column given
-        // Column extends Container, and it is not an option to change the class hierarchy as it
-        // would potentially break a lot of existing code
-    }
 }
 
 export class ColumnSet extends StylableCardElementContainer {
     private _columns: Array<Column> = [];
     private _renderedColumns: Array<Column>;
+
+    private createColumnInstance(json: any, errors: Array<HostConfig.IValidationError>): Column {
+        return createCardObjectInstance<Column>(
+            this,
+            json,
+            [], // Forbidden types not supported for elements for now
+            (typeName: string) => {
+                return !typeName || typeName === "Column" ? new Column() : null;
+            },
+            (typeName: string, errorType: InstanceCreationErrorType) => {
+                if (errorType == InstanceCreationErrorType.UnknownType) {
+                    return {
+                        error: Enums.ValidationError.UnknownElementType,
+                        message: "Unknown element type: " + typeName + ". Attempting to fall back."
+                    }
+                }
+                else {
+                    return {
+                        error: Enums.ValidationError.ElementTypeNotAllowed,
+                        message: "Element type " + typeName + " isn't allowed in a ColumnSet."
+                    }
+                }
+            },
+            errors);
+    }
 
     protected internalRender(): HTMLElement {
         this._renderedColumns = [];
@@ -5917,9 +5938,7 @@ export class ColumnSet extends StylableCardElementContainer {
             this._columns = [];
 
             for (let i = 0; i < jsonColumns.length; i++) {
-                let column = new Column();
-                column.setParent(this);
-                column.parse(jsonColumns[i], errors);
+                let column = this.createColumnInstance(jsonColumns[i], errors);
 
                 this._columns.push(column);
             }
@@ -6365,10 +6384,10 @@ export class ActionTypeRegistry extends TypeRegistry<Action> {
     reset() {
         this.clear();
 
-        this.registerType("Action.OpenUrl", () => { return new OpenUrlAction(); });
-        this.registerType("Action.Submit", () => { return new SubmitAction(); });
-        this.registerType("Action.ShowCard", () => { return new ShowCardAction(); });
-        this.registerType("Action.ToggleVisibility", () => { return new ToggleVisibilityAction(); });
+        this.registerType(OpenUrlAction.JsonTypeName, () => { return new OpenUrlAction(); });
+        this.registerType(SubmitAction.JsonTypeName, () => { return new SubmitAction(); });
+        this.registerType(ShowCardAction.JsonTypeName, () => { return new ShowCardAction(); });
+        this.registerType(ToggleVisibilityAction.JsonTypeName, () => { return new ToggleVisibilityAction(); });
     }
 }
 
@@ -6378,7 +6397,7 @@ export interface IMarkdownProcessingResult {
 }
 
 export class AdaptiveCard extends ContainerWithActions {
-    private static currentVersion: HostConfig.Version = new HostConfig.Version(1, 1);
+    private static currentVersion: HostConfig.Version = new HostConfig.Version(1, 2);
 
     static useAdvancedTextBlockTruncation: boolean = true;
     static useAdvancedCardBottomTruncation: boolean = false;
@@ -6596,38 +6615,10 @@ export class AdaptiveCard extends ContainerWithActions {
     render(target?: HTMLElement): HTMLElement {
         let renderedCard: HTMLElement;
 
-        if (this.shouldFallback()) {
-            if (this._fallbackCard) {
-                this._fallbackCard.hostConfig = this.hostConfig;
+        if (this.shouldFallback() && this._fallbackCard) {
+            this._fallbackCard.hostConfig = this.hostConfig;
 
-                renderedCard = this._fallbackCard.render();
-            }
-            else {
-                let errorText = !Utils.isNullOrEmpty(this.fallbackText) ? this.fallbackText : "The card could not be rendered. It is either malformed or uses features not supported by this host.";
-
-                try {
-                    let fallbackCard = new AdaptiveCard();
-                    fallbackCard.hostConfig = this.hostConfig;
-                    fallbackCard.parse(
-                        {
-                            type: "AdaptiveCard",
-                            version: "1.0",
-                            body: [
-                                {
-                                    type: "TextBlock",
-                                    text: errorText,
-                                    wrap: true
-                                }
-                            ]
-                        });
-
-                    renderedCard = fallbackCard.render();
-                }
-                catch (e) {
-                    renderedCard = document.createElement("div");
-                    renderedCard.innerHTML = errorText;
-                }
-            }
+            renderedCard = this._fallbackCard.render();
         }
         else {
             renderedCard = super.render();
