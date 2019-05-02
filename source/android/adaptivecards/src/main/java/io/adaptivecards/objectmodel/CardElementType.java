@@ -9,27 +9,29 @@
 package io.adaptivecards.objectmodel;
 
 public enum CardElementType {
-  ActionSet(0),
+  Unsupported(0),
   AdaptiveCard,
-  ChoiceInput,
-  ChoiceSetInput,
+  TextBlock,
+  Image,
+  Container,
   Column,
   ColumnSet,
-  Container,
-  Custom,
-  DateInput,
-  Fact,
   FactSet,
-  Image,
+  Fact,
   ImageSet,
-  Media,
+  ChoiceInput,
+  ChoiceSetInput,
+  DateInput,
   NumberInput,
   RichTextBlock,
   TextBlock,
   TextInput,
   TimeInput,
   ToggleInput,
-  Unknown;
+  Custom,
+  Unknown,
+  Media,
+  ActionSet;
 
   public final int swigValue() {
     return swigValue;

@@ -9,7 +9,6 @@
 #include "ShowCardAction.h"
 #include "SubmitAction.h"
 #include "ToggleVisibilityAction.h"
-#include "UnknownAction.h"
 
 namespace AdaptiveSharedNamespace
 {
@@ -41,7 +40,6 @@ namespace AdaptiveSharedNamespace
             ActionTypeToString(ActionType::ShowCard),
             ActionTypeToString(ActionType::Submit),
             ActionTypeToString(ActionType::ToggleVisibility),
-            ActionTypeToString(ActionType::UnknownAction),
         });
 
         m_cardElementParsers.insert(

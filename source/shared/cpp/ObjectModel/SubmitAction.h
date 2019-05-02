@@ -4,6 +4,7 @@
 
 #include "pch.h"
 #include "BaseActionElement.h"
+#include "Enums.h"
 #include "ActionParserRegistration.h"
 
 namespace AdaptiveSharedNamespace
@@ -39,7 +40,7 @@ namespace AdaptiveSharedNamespace
         SubmitActionParser(SubmitActionParser&&) = default;
         SubmitActionParser& operator=(const SubmitActionParser&) = default;
         SubmitActionParser& operator=(SubmitActionParser&&) = default;
-        virtual ~SubmitActionParser() = default;
+        ~SubmitActionParser() = default;
 
         std::shared_ptr<BaseActionElement> Deserialize(ParseContext& context, const Json::Value& value) override;
         std::shared_ptr<BaseActionElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;

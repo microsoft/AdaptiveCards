@@ -3,6 +3,7 @@
 	"packages": [
 		"adaptivecards*/**"
 	],
+
 	"command": {
 		"publish": {
 			"ignoreChanges": [

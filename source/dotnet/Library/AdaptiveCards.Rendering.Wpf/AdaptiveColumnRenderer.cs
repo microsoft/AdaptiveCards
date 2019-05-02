@@ -13,7 +13,6 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             var uiContainer = new Grid();
             uiContainer.Style = context.GetStyle("Adaptive.Column");
-            uiContainer.SetBackgroundSource(column.BackgroundImage, context);
 
             // Keep track of ContainerStyle.ForegroundColors before Container is rendered
             var parentRenderArgs = context.RenderArgs;

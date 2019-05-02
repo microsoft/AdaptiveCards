@@ -4,7 +4,6 @@ package io.adaptivecards.renderer.input;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.widget.EditText;
@@ -25,7 +24,6 @@ public class TimePickerFragment extends DialogFragment
     {
         m_timeInput = timeInput;
         m_editText = editText;
-        m_context = context;
     }
 
 
@@ -63,5 +61,4 @@ public class TimePickerFragment extends DialogFragment
 
     private TimeInput m_timeInput;
     private EditText m_editText;
-    private Context m_context;
 }

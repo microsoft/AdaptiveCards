@@ -4,6 +4,10 @@
 
 #include "pch.h"
 #include "BaseCardElement.h"
+#include "Enums.h"
+#include <time.h>
+#include "ElementParserRegistration.h"
+#include "DateTimePreparser.h"
 
 namespace AdaptiveSharedNamespace
 {
@@ -11,7 +15,6 @@ namespace AdaptiveSharedNamespace
     {
     public:
         UnknownElement();
-        Json::Value SerializeToJsonValue() const override;
     };
 
     class UnknownElementParser : public BaseCardElementParser
@@ -22,7 +25,7 @@ namespace AdaptiveSharedNamespace
         UnknownElementParser(UnknownElementParser&&) = default;
         UnknownElementParser& operator=(const UnknownElementParser&) = default;
         UnknownElementParser& operator=(UnknownElementParser&&) = default;
-        virtual ~UnknownElementParser() = default;
+        ~UnknownElementParser() = default;
 
         std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
         std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;

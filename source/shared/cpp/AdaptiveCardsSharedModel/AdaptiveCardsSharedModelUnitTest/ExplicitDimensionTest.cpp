@@ -1,8 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "stdafx.h"
-
+#include "CppUnitTest.h"
+#include <Windows.h>
+#include <StrSafe.h>
+#include "SharedAdaptiveCard.h"
 #include "AdaptiveCardParseException.h"
+#include "BaseCardElement.h"
+#include "Image.h"
 #include "Column.h"
 #include "ColumnSet.h"
 #include "Container.h"
@@ -20,6 +25,7 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AdaptiveCards;
+using namespace std;
 
 namespace AdaptiveCardsSharedModelUnitTest
 {
@@ -531,7 +537,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::shared_ptr<ColumnSet> columnSet = std::static_pointer_cast<ColumnSet>(element);
             std::shared_ptr<Column> column = columnSet->GetColumns().front();
             Assert::AreEqual<int>(0, column->GetPixelWidth());
-            Assert::AreEqual<std::string>("20px20", column->GetWidth());
+            Assert::AreEqual<string>("20px20", column->GetWidth());
         }
 
         TEST_METHOD(ExplicitWidthMalformedValueTest)
@@ -563,7 +569,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::shared_ptr<ColumnSet> columnSet = std::static_pointer_cast<ColumnSet>(element);
             std::shared_ptr<Column> column = columnSet->GetColumns().front();
             Assert::AreEqual<int>(0, column->GetPixelWidth());
-            Assert::AreEqual<std::string>("-20px", column->GetWidth());
+            Assert::AreEqual<string>("-20px", column->GetWidth());
         }
 
         TEST_METHOD(ExplicitWidthFloatValueTest)

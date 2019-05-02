@@ -8,7 +8,3 @@
 #include "CppUnitTest.h"
 #include <CodeCoverage\CodeCoverage.h>
 #include "Enums.h"
-#include "json/json.h"
-
-#include "SharedAdaptiveCard.h"
-#include "BaseCardElement.h"

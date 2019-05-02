@@ -50,7 +50,7 @@ std::string ValidateColor(const std::string& backgroundColor, std::vector<std::s
 void ValidateUserInputForDimensionWithUnit(const std::string& unit,
                                            const std::string& requestedDimension,
                                            int& parsedDimension,
-                                           std::vector<std::shared_ptr<AdaptiveCardParseWarning>>* warnings)
+                                           std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings)
 {
     const std::string warningMessage = "expected input arugment to be specified as \\d+(\\.\\d+)?px with no spaces, but received ";
     parsedDimension = 0;
@@ -68,28 +68,19 @@ void ValidateUserInputForDimensionWithUnit(const std::string& unit,
         }
         catch (const std::invalid_argument&)
         {
-            if (warnings)
-            {
-                warnings->emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
-                                                                                  warningMessage + requestedDimension));
-            }
+            warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
+                                                                             warningMessage + requestedDimension));
         }
         catch (const std::out_of_range&)
         {
-            if (warnings)
-            {
-                warnings->emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
-                                                                                  "out of range: " + requestedDimension));
-            }
+            warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
+                                                                             "out of range: " + requestedDimension));
         }
     }
     else
     {
-        if (warnings)
-        {
-            warnings->emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
-                                                                              warningMessage + requestedDimension));
-        }
+        warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
+                                                                         warningMessage + requestedDimension));
     }
 }
 

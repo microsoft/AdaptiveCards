@@ -1,12 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #pragma once
-
-#include "pch.h"
+#include <string>
+#include <vector>
+#include "Enums.h"
 #include "DateTimePreparsedToken.h"
 
 namespace AdaptiveSharedNamespace
 {
+    // Still have to rename this thing
     class DateTimePreparser
     {
     public:

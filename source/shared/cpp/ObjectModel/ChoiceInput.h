@@ -3,6 +3,8 @@
 #pragma once
 
 #include "pch.h"
+#include "Enums.h"
+#include "json/json.h"
 #include "ParseContext.h"
 
 namespace AdaptiveSharedNamespace

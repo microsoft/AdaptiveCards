@@ -166,11 +166,11 @@ namespace AdaptiveCardsSharedModelUnitTest
         {
             auto jsonObj = s_GetValidJsonObject();
             Assert::ExpectException<AdaptiveCardParseException>([&]() { ParseUtil::GetCardElementType(jsonObj); });
-            Assert::IsTrue(ParseUtil::TryGetCardElementType(jsonObj) == CardElementType::Unknown);
+            Assert::IsTrue(ParseUtil::TryGetCardElementType(jsonObj) == CardElementType::Unsupported);
 
             auto jsonObjWithInvalidType = s_GetJsonObjectWithType("Invalid"s);
-            Assert::IsTrue(ParseUtil::GetCardElementType(jsonObjWithInvalidType) == CardElementType::Unknown);
-            Assert::IsTrue(ParseUtil::TryGetCardElementType(jsonObjWithInvalidType) == CardElementType::Unknown);
+            Assert::IsTrue(ParseUtil::GetCardElementType(jsonObjWithInvalidType) == CardElementType::Unsupported);
+            Assert::IsTrue(ParseUtil::TryGetCardElementType(jsonObjWithInvalidType) == CardElementType::Unsupported);
 
             auto jsonObjWithValidType = s_GetJsonObjectWithType("AdaptiveCard"s);
             Assert::IsTrue(ParseUtil::GetCardElementType(jsonObjWithValidType) == CardElementType::AdaptiveCard);

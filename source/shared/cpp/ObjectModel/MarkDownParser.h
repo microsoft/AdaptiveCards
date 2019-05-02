@@ -2,8 +2,11 @@
 // Licensed under the MIT License.
 #pragma once
 
+#include <iomanip>
+#include <list>
 #include "pch.h"
 #include "BaseCardElement.h"
+#include "Enums.h"
 #include "MarkDownParsedResult.h"
 #include "MarkDownBlockParser.h"
 #include "MarkDownHtmlGenerator.h"

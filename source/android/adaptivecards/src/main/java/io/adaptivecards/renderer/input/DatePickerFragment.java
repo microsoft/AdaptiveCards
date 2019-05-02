@@ -4,7 +4,6 @@ package io.adaptivecards.renderer.input;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.widget.DatePicker;
@@ -22,11 +21,10 @@ import java.util.GregorianCalendar;
 public class DatePickerFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener
 {
-    public void initialize(DateInput dateInput, EditText editText, Context context)
+    public void initialize(DateInput dateInput, EditText editText)
     {
         m_dateInput = dateInput;
         m_editText = editText;
-        m_context = context;
     }
 
     @Override
@@ -72,5 +70,4 @@ public class DatePickerFragment extends DialogFragment
 
     private DateInput m_dateInput;
     private EditText m_editText;
-    private Context m_context;
 }

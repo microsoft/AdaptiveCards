@@ -3,6 +3,8 @@
 #pragma once
 
 #include "pch.h"
+#include "Enums.h"
+#include "json/json.h"
 #include "BaseActionElement.h"
 #include "BaseElement.h"
 #include "ElementParserRegistration.h"

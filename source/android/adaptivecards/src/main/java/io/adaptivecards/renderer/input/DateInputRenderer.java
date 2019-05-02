@@ -51,7 +51,7 @@ public class DateInputRenderer extends TextInputRenderer
     @Override
     public View render(
             RenderedAdaptiveCard renderedCard,
-            final Context context,
+            Context context,
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
@@ -102,7 +102,7 @@ public class DateInputRenderer extends TextInputRenderer
                 DateInputHandler dateInputHandler = (DateInputHandler) tagContent.GetInputHandler();
                 DateInput dateInput = (DateInput) dateInputHandler.getBaseInputElement();
                 DatePickerFragment datePickerFragment = new DatePickerFragment();
-                datePickerFragment.initialize(dateInput, (EditText) v, context);
+                datePickerFragment.initialize(dateInput, (EditText) v);
                 Bundle args = new Bundle();
                 args.putString("title", TITLE);
                 datePickerFragment.setArguments(args);

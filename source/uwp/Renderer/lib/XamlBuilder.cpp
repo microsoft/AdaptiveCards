@@ -383,7 +383,7 @@ namespace AdaptiveNamespace
     ComPtr<IUIElement> XamlBuilder::CreateRootCardElement(_In_ IAdaptiveCard* adaptiveCard,
                                                           _In_ IAdaptiveRenderContext* renderContext,
                                                           _In_ IAdaptiveRenderArgs* renderArgs,
-                                                          ComPtr<XamlBuilder> xamlBuilder,
+                                                          std::shared_ptr<XamlBuilder> xamlBuilder,
                                                           _Outptr_ IPanel** bodyElementContainer)
     {
         // The root of an adaptive card is a composite of several elements, depending on the card
@@ -912,6 +912,42 @@ namespace AdaptiveNamespace
         }
     }
 
+    static inline HRESULT WarnFallbackString(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                             const std::string& warning)
+    {
+        HString warningMsg;
+        RETURN_IF_FAILED(UTF8ToHString(warning, warningMsg.GetAddressOf()));
+
+        RETURN_IF_FAILED(
+            renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::PerformingFallback, warningMsg.Get()));
+        return S_OK;
+    }
+
+    static inline HRESULT WarnForFallbackContentElement(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                                        _In_ HSTRING parentElementType,
+                                                        _In_ HSTRING fallbackElementType) try
+    {
+        std::string warning = "Performing fallback for element of type \"";
+        warning.append(HStringToUTF8(parentElementType));
+        warning.append("\" (fallback element type \"");
+        warning.append(HStringToUTF8(fallbackElementType));
+        warning.append("\")");
+
+        return WarnFallbackString(renderContext, warning);
+    }
+    CATCH_RETURN;
+
+    static inline HRESULT WarnForFallbackDrop(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                              _In_ HSTRING elementType) try
+    {
+        std::string warning = "Dropping element of type \"";
+        warning.append(HStringToUTF8(elementType));
+        warning.append("\" for fallback");
+
+        return WarnFallbackString(renderContext, warning);
+    }
+    CATCH_RETURN;
+
     HRESULT XamlBuilder::BuildPanelChildren(_In_ IVector<IAdaptiveCardElement*>* children,
                                             _In_ IPanel* parentPanel,
                                             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
@@ -970,14 +1006,20 @@ namespace AdaptiveNamespace
                 {
                     if (elementFallback == FallbackType_Content)
                     {
+                        HString parentElementType;
+                        RETURN_IF_FAILED(elementType.CopyTo(parentElementType.GetAddressOf()));
                         ComPtr<IAdaptiveCardElement> currentElement = element;
                         do
                         {
                             ComPtr<IAdaptiveCardElement> fallbackElement;
-                            currentElement->get_FallbackContent(&fallbackElement);
+                            RETURN_IF_FAILED(currentElement->get_FallbackContent(&fallbackElement));
 
                             HString fallbackElementType;
                             RETURN_IF_FAILED(fallbackElement->get_ElementTypeString(fallbackElementType.GetAddressOf()));
+
+                            RETURN_IF_FAILED(WarnForFallbackContentElement(renderContext,
+                                                                           parentElementType.Get(),
+                                                                           fallbackElementType.Get()));
 
                             ComPtr<IAdaptiveElementRenderer> fallbackElementRenderer;
                             RETURN_IF_FAILED(elementRenderers->Get(fallbackElementType.Get(), &fallbackElementRenderer));
@@ -990,29 +1032,48 @@ namespace AdaptiveNamespace
                                 ComPtr<IUIElement> newControl;
                                 fallbackElementRenderer->Render(fallbackElement.Get(), renderContext, renderArgs, &newControl);
                                 RETURN_IF_FAILED(AddRenderedControl(newControl, element, parentPanel, childCreatedCallback));
-                                hr = S_OK;
-                                break;
+                                return S_OK;
                             }
 
+                            RETURN_IF_FAILED(fallbackElementType.CopyTo(parentElementType.ReleaseAndGetAddressOf()));
+
+                            // Fallback content was of unknown type. We need to perform its fallback (if present).
+                            // Otherwise, we need to fallback through ancestors (if available).
                             ABI::AdaptiveNamespace::FallbackType fallbackElementFallbackType;
                             fallbackElement->get_FallbackType(&fallbackElementFallbackType);
                             if (fallbackElementFallbackType == ABI::AdaptiveNamespace::FallbackType::Content)
                             {
+                                // Fallback element is unknown, but has fallback content. Follow the chain to see if
+                                // fallback's fallback content will render.
                                 currentElement = fallbackElement;
+                            }
+                            else if (fallbackElementFallbackType == ABI::AdaptiveNamespace::FallbackType::Drop)
+                            {
+                                // Fallback element is unknown, but has fallback drop. Drop it.
+                                return S_OK;
+                            }
+                            else
+                            {
+                                // Fallback element is unknown, and itself has no fallback content. Fallback through
+                                // ancestors if possible.
+                                break;
                             }
                         } while (currentElement);
                     }
                     else if (elementFallback == FallbackType_Drop)
                     {
+                        RETURN_IF_FAILED(WarnForFallbackDrop(renderContext, elementType.Get()));
                         return S_OK;
                     }
                 }
-                else if (ancestorHasFallback)
+
+                if (ancestorHasFallback)
                 {
                     // return fallback error code so ancestors know to perform fallback
                     hr = E_PERFORM_FALLBACK;
                 }
-                else
+
+                if (hr != E_PERFORM_FALLBACK)
                 {
                     // standard unknown element handling
                     std::wstring errorString = L"No Renderer found for type: ";
@@ -1495,11 +1556,21 @@ namespace AdaptiveNamespace
                         switch (actionFallbackType)
                         {
                         case ABI::AdaptiveNamespace::FallbackType::Drop:
+                        {
+                            RETURN_IF_FAILED(WarnForFallbackDrop(renderContext, actionTypeString.Get()));
                             return S_OK;
+                        }
+
                         case ABI::AdaptiveNamespace::FallbackType::Content:
                         {
                             ComPtr<IAdaptiveActionElement> actionFallback;
                             RETURN_IF_FAILED(action->get_FallbackContent(&actionFallback));
+
+                            HString fallbackTypeString;
+                            RETURN_IF_FAILED(actionFallback->get_ActionTypeString(fallbackTypeString.GetAddressOf()));
+                            RETURN_IF_FAILED(
+                                WarnForFallbackContentElement(renderContext, actionTypeString.Get(), fallbackTypeString.Get()));
+
                             action = actionFallback;
                             break;
                         }
@@ -2080,13 +2151,15 @@ namespace AdaptiveNamespace
     }
 
     template<typename T>
-    void XamlBuilder::SetAutoSize(T* destination, IInspectable* parentElement, IInspectable* /* imageContainer */, bool isVisible, bool imageFiresOpenEvent)
+    void XamlBuilder::SetAutoSize(T* destination, IInspectable* parentElement, IInspectable* imageContainer, bool isVisible, bool imageFiresOpenEvent)
     {
         if (parentElement != nullptr && m_enableXamlImageHandling)
         {
+            ComPtr<IInspectable> container(imageContainer);
+            ComPtr<IFrameworkElement> frameworkElement;
+            THROW_IF_FAILED(container.As(&frameworkElement));
+
             ComPtr<IImage> xamlImage(destination);
-            ComPtr<IFrameworkElement> imageAsFrameworkElement;
-            THROW_IF_FAILED(xamlImage.As(&imageAsFrameworkElement));
             ComPtr<IImageSource> imageSource;
             THROW_IF_FAILED(xamlImage->get_Source(&imageSource));
             ComPtr<IBitmapSource> imageSourceAsBitmap;
@@ -2246,6 +2319,7 @@ namespace AdaptiveNamespace
             ComPtr<IImage> xamlImage =
                 XamlHelpers::CreateXamlClass<IImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Image));
 
+            
             if (backgroundColor != nullptr)
             {
                 // Create a surrounding border with solid color background to contain the image

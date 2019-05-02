@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Enums from "./enums";
 import * as Shared from "./shared";
@@ -30,7 +30,7 @@ enum InstanceCreationErrorType {
     ForbiddenType
 }
 
-function createCardObjectInstance<T extends ICardObject>(
+function createCardObjectInstance<T extends CardObject>(
     parent: CardElement,
     json: any,
     forbiddenTypeNames: string[],
@@ -41,7 +41,7 @@ function createCardObjectInstance<T extends ICardObject>(
 
     if (json && typeof json === "object") {
         let tryToFallback = false;
-        let typeName = json["type"];
+		let typeName = Utils.getStringValue(json["type"]);
 
         if (forbiddenTypeNames && forbiddenTypeNames.indexOf(typeName) >= 0) {
             raiseParseError(createValidationErrorCallback(typeName, InstanceCreationErrorType.ForbiddenType), errors);
@@ -139,15 +139,68 @@ export function createElementInstance(
         errors);
 }
 
-export interface ICardObject {
-    shouldFallback(): boolean;
-    setParent(parent: CardElement);
-    parse(json: any, errors?: Array<HostConfig.IValidationError>);
+export abstract class SerializableObject {
+	private _customProperties = {};
+	private _parsedPayload: any;
+
+	parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+		if (AdaptiveCard.enableFullJsonRoundTrip) {
+			this._parsedPayload = json;
+		}
+	}
+
+	toJSON(): any {
+		let result: any;
+		
+		if (AdaptiveCard.enableFullJsonRoundTrip && this._parsedPayload && typeof this._parsedPayload === "object") {
+			result = this._parsedPayload;
+		}
+		else {
+			result = {};
+		}
+
+		for (let key of Object.keys(this._customProperties)) {
+			result[key] = this._customProperties[key];
+		};
+
+		return result;
+	}
+
+	setCustomProperty(name: string, value: any) {
+		this._customProperties[name] = value;
+	}
+
+	getCustomProperty(name: string): any {
+		return this._customProperties[name];
+	}
+}
+
+export abstract class CardObject extends SerializableObject {
+	abstract getJsonTypeName(): string;
+	abstract shouldFallback(): boolean;
+	abstract setParent(parent: CardElement);
+
+	id: string;
+
+	parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+        super.parse(json, errors);
+
+		this.id = Utils.getStringValue(json["id"]);
+	}
+
+	toJSON(): any {
+        let result = super.toJSON();
+
+		Utils.setProperty(result, "type", this.getJsonTypeName());
+		Utils.setProperty(result, "id", this.id);
+
+		return result;
+	}
 }
 
 export type CardElementHeight = "auto" | "stretch";
 
-export abstract class CardElement implements ICardObject {
+export abstract class CardElement extends CardObject {
     private _shouldFallback: boolean = false;
     private _lang: string = undefined;
     private _hostConfig?: HostConfig.HostConfig = null;
@@ -169,7 +222,18 @@ export abstract class CardElement implements ICardObject {
             },
             this.separatorOrientation);
 
-        return renderedSeparator;
+            if (AdaptiveCard.alwaysBleedSeparators && renderedSeparator && this.separatorOrientation == Enums.Orientation.Horizontal) {
+                let parentContainer = this.getParentContainer();
+    
+                if (parentContainer && parentContainer.getEffectivePadding()) {
+                    let parentPhysicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(parentContainer.getEffectivePadding());
+    
+                    renderedSeparator.style.marginLeft = "-" + parentPhysicalPadding.left + "px";
+                    renderedSeparator.style.marginRight = "-" + parentPhysicalPadding.right + "px";
+                }
+            }
+    
+            return renderedSeparator;
     }
 
     private updateRenderedElementVisibility() {
@@ -356,8 +420,8 @@ export abstract class CardElement implements ICardObject {
         return false;
     }
 
-    toJSON() {
-        let result = {};
+	toJSON(): any {
+		let result = super.toJSON();
 
         Utils.setProperty(result, "type", this.getJsonTypeName());
         Utils.setProperty(result, "id", this.id);
@@ -450,6 +514,8 @@ export abstract class CardElement implements ICardObject {
     }
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+		super.parse(json, errors);
+
         raiseParseElementEvent(this, json, errors);
 
         this.requires.parse(json["requires"], errors);
@@ -1199,7 +1265,7 @@ export class TextBlock extends BaseTextBlock {
     maxLines: number;
     useMarkdown: boolean = true;
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         Utils.setProperty(result, "wrap", this.wrap, false);
@@ -1537,22 +1603,31 @@ export class RichTextBlock extends CardElement {
     }
 }
 
-export class Fact {
+export class Fact extends SerializableObject {
     name: string;
     value: string;
 
     constructor(name: string = undefined, value: string = undefined) {
+        super();
+
         this.name = name;
         this.value = value;
     }
 
     parse(json: any) {
+        super.parse(json);
+
         this.name = Utils.getStringValue(json["title"]);
         this.value = Utils.getStringValue(json["value"]);
     }
 
     toJSON() {
-        return { title: this.name, value: this.value };
+        let result = super.toJSON();
+
+        Utils.setProperty(result, "title", this.name);
+        Utils.setProperty(result, "value", this.value);
+
+        return result;
     }
 }
 
@@ -1643,16 +1718,18 @@ export class FactSet extends CardElement {
         return "FactSet";
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
-        let facts = []
+		if (this.facts.length > 0) {
+			let facts = []
 
-        for (let fact of this.facts) {
-            facts.push(fact.toJSON());
-        }
+			for (let fact of this.facts) {
+				facts.push(fact.toJSON());
+			}
 
-        Utils.setProperty(result, "facts", facts);
+			Utils.setProperty(result, "facts", facts);
+		}
 
         return result;
     }
@@ -1662,18 +1739,16 @@ export class FactSet extends CardElement {
 
         this.facts = [];
 
-        if (json["facts"] != null) {
-            var jsonFacts = json["facts"] as Array<any>;
+		let jsonFacts = json["facts"];
 
-            this.facts = [];
+		if (Array.isArray(jsonFacts)) {
+			for (let jsonFact of jsonFacts) {
+				let fact = new Fact();
+				fact.parse(jsonFact);
 
-            for (var i = 0; i < jsonFacts.length; i++) {
-                let fact = new Fact();
-                fact.parse(jsonFacts[i]);
-
-                this.facts.push(fact);
-            }
-        }
+				this.facts.push(fact);
+			}
+		}
     }
 }
 
@@ -1850,7 +1925,7 @@ export class Image extends CardElement {
     pixelHeight?: number = null;
     altText: string = "";
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         if (this._selectAction) {
@@ -1913,7 +1988,7 @@ export class Image extends CardElement {
         }
 
         this.size = Utils.getEnumValue(Enums.Size, json["size"], this.size);
-        this.altText = json["altText"];
+		this.altText = Utils.getStringValue(json["altText"]);
 
         // pixelWidth and pixelHeight are only parsed for backwards compatibility.
         // Payloads should use the width and height proerties instead.
@@ -2029,6 +2104,8 @@ export abstract class CardElementContainer extends CardElement {
     abstract getLastVisibleRenderedItem(): CardElement;
     abstract removeItem(item: CardElement): boolean;
 
+    allowVerticalOverflow: boolean = false;
+
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
@@ -2041,7 +2118,7 @@ export abstract class CardElementContainer extends CardElement {
         }
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         if (this._selectAction && this.isSelectable) {
@@ -2068,6 +2145,11 @@ export abstract class CardElementContainer extends CardElement {
     render(): HTMLElement {
         let element = super.render();
         let hostConfig = this.hostConfig;
+
+        if (this.allowVerticalOverflow) {
+            element.style.overflowX = "hidden";
+            element.style.overflowY = "auto";
+        }
 
         if (this.isSelectable && this._selectAction && hostConfig.supportsInteractivity) {
             element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
@@ -2213,7 +2295,7 @@ export class ImageSet extends CardElementContainer {
         return "ImageSet";
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         Utils.setEnumProperty(Enums.Size, result, "imageSize", this.imageSize, Enums.Size.Medium);
@@ -2266,25 +2348,31 @@ export class ImageSet extends CardElementContainer {
     }
 }
 
-export class MediaSource {
+export class MediaSource extends SerializableObject {
     mimeType: string;
     url: string;
 
     constructor(url: string = undefined, mimeType: string = undefined) {
+        super();
+
         this.url = url;
         this.mimeType = mimeType;
     }
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
-        this.mimeType = Utils.getStringValue(json["mimeType"]);
-        this.url = Utils.getStringValue(json["url"]);
-    }
+        super.parse(json, errors);
 
-    toJSON() {
-        return {
-            mimeType: this.mimeType,
-            url: this.url
-        }
+		this.mimeType = Utils.getStringValue(json["mimeType"]);
+		this.url = Utils.getStringValue(json["url"]);
+	}
+
+	toJSON(): any {
+        let result = super.toJSON();
+
+        Utils.setProperty(result, "mimeType", this.mimeType);
+        Utils.setProperty(result, "url", this.url);
+
+        return result;
     }
 }
 
@@ -2469,8 +2557,8 @@ export class Media extends CardElement {
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
-        this.poster = Utils.getStringValue(json["poster"]);
-        this.altText = Utils.getStringValue(json["altText"]);
+		this.poster = Utils.getStringValue(json["poster"]);
+		this.altText = Utils.getStringValue(json["altText"]);
 
         if (json["sources"] != null) {
             let jsonSources = json["sources"] as Array<any>;
@@ -2486,7 +2574,7 @@ export class Media extends CardElement {
         }
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         Utils.setProperty(result, "poster", this.poster);
@@ -2532,18 +2620,20 @@ export class Media extends CardElement {
     }
 }
 
-export class InputValidationOptions {
+export class InputValidationOptions extends SerializableObject {
     necessity: Enums.InputValidationNecessity = Enums.InputValidationNecessity.Optional;
     errorMessage: string = undefined;
 
     parse(json: any) {
+        super.parse(json);
+
         this.necessity = Utils.getEnumValue(Enums.InputValidationNecessity, json["necessity"], this.necessity);
         this.errorMessage = Utils.getStringValue(json["errorMessage"]);
     }
 
     toJSON() {
         if (this.necessity != Enums.InputValidationNecessity.Optional || !Utils.isNullOrEmpty(this.errorMessage)) {
-            let result = {}
+            let result = super.toJSON();
 
             Utils.setEnumProperty(Enums.InputValidationNecessity, result, "necessity", this.necessity, Enums.InputValidationNecessity.Optional);
             Utils.setProperty(result, "errorMessage", this.errorMessage);
@@ -2611,17 +2701,19 @@ export abstract class Input extends CardElement implements Shared.IInput {
     }
 
     protected resetValidationFailureCue() {
-        this._renderedInputControlElement.classList.remove(this.hostConfig.makeCssClassName("ac-input-validation-failed"));
+        if (AdaptiveCard.useBuiltInInputValidation && this.renderedElement) {
+            this._renderedInputControlElement.classList.remove(this.hostConfig.makeCssClassName("ac-input-validation-failed"));
 
-        if (this._errorMessageElement) {
-            this._outerContainerElement.removeChild(this._errorMessageElement);
+            if (this._errorMessageElement) {
+                this._outerContainerElement.removeChild(this._errorMessageElement);
 
-            this._errorMessageElement = null;
+                this._errorMessageElement = null;
+            }
         }
     }
 
     protected showValidationErrorMessage() {
-        if (AdaptiveCard.displayInputValidationErrors && !Utils.isNullOrEmpty(this.validation.errorMessage)) {
+        if (this.renderedElement && AdaptiveCard.useBuiltInInputValidation && AdaptiveCard.displayInputValidationErrors && !Utils.isNullOrEmpty(this.validation.errorMessage)) {
             this._errorMessageElement = document.createElement("span");
             this._errorMessageElement.className = this.hostConfig.makeCssClassName("ac-input-validation-error-message");
             this._errorMessageElement.textContent = this.validation.errorMessage;
@@ -2630,7 +2722,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
         }
     }
 
-    protected parseDefaultValue(value: string): string {
+    protected parseInputValue(value: string): string {
         return value;
     }
 
@@ -2642,11 +2734,11 @@ export abstract class Input extends CardElement implements Shared.IInput {
 
     title: string;
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         Utils.setProperty(result, "title", this.title);
-        Utils.setProperty(result, "value", this.renderedElement ? this.value : this.defaultValue);
+        Utils.setProperty(result, "value", this.renderedElement && !Utils.isNullOrEmpty(this.value) ? this.value : this.defaultValue);
         Utils.setProperty(result, "validation", this.validation.toJSON());
 
         return result;
@@ -2662,17 +2754,22 @@ export abstract class Input extends CardElement implements Shared.IInput {
     }
 
     validateValue(): boolean {
-        this.resetValidationFailureCue();
+        if (AdaptiveCard.useBuiltInInputValidation) {
+            this.resetValidationFailureCue();
 
-        let result = this.validation.necessity != Enums.InputValidationNecessity.Optional ? !Utils.isNullOrEmpty(this.value) : true;
+            let result = this.validation.necessity != Enums.InputValidationNecessity.Optional ? !Utils.isNullOrEmpty(this.value) : true;
 
-        if (!result) {
-            this._renderedInputControlElement.classList.add(this.hostConfig.makeCssClassName("ac-input-validation-failed"));
+            if (!result && this.renderedElement) {
+                this._renderedInputControlElement.classList.add(this.hostConfig.makeCssClassName("ac-input-validation-failed"));
 
-            this.showValidationErrorMessage();
+                this.showValidationErrorMessage();
+            }
+
+            return result;
         }
-
-        return result;
+        else {
+            return true;
+        }
     }
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
@@ -2697,7 +2794,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
     }
 
     set defaultValue(value: string) {
-        this._defaultValue = this.parseDefaultValue(value);
+        this._defaultValue = this.parseInputValue(value);
     }
 
     get isInteractive(): boolean {
@@ -2843,7 +2940,7 @@ export class TextInput extends Input {
         return result;
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         Utils.setProperty(result, "placeholder", this.placeholder);
@@ -2964,7 +3061,7 @@ export class ToggleInput extends Input {
         return "Input.Toggle";
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         Utils.setProperty(result, "valueOn", this.valueOn, "true");
@@ -2993,22 +3090,31 @@ export class ToggleInput extends Input {
     }
 }
 
-export class Choice {
+export class Choice extends SerializableObject {
     title: string;
     value: string;
 
     constructor(title: string = undefined, value: string = undefined) {
+        super();
+
         this.title = title;
         this.value = value;
     }
 
     parse(json: any) {
+        super.parse(json);
+
         this.title = Utils.getStringValue(json["title"]);
         this.value = Utils.getStringValue(json["value"]);
     }
 
-    toJSON() {
-        return { title: this.title, value: this.value };
+    toJSON(): any {
+        let result = super.toJSON();
+
+        Utils.setProperty(result, "title", this.title);
+        Utils.setProperty(result, "value", this.value);
+
+        return result;
     }
 }
 
@@ -3197,7 +3303,7 @@ export class ChoiceSetInput extends Input {
         return "Input.ChoiceSet";
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         Utils.setProperty(result, "placeholder", this.placeholder);
@@ -3212,10 +3318,7 @@ export class ChoiceSetInput extends Input {
             Utils.setProperty(result, "choices", choices);
         }
 
-        if (!this.isCompact) {
-            Utils.setProperty(result, "style", "expanded", false);
-        }
-
+        Utils.setProperty(result, "style", this.isCompact ? null : "expanded");
         Utils.setProperty(result, "isMultiSelect", this.isMultiSelect, false);
         Utils.setProperty(result, "wrap", this.wrap, false);
 
@@ -3309,13 +3412,15 @@ export class ChoiceSetInput extends Input {
 
 export class NumberInput extends Input {
     private _numberInputElement: HTMLInputElement;
+    private _min: string;
+    private _max: string;
 
     protected internalRender(): HTMLElement {
         this._numberInputElement = document.createElement("input");
         this._numberInputElement.setAttribute("type", "number");
-        this._numberInputElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-numberInput");
         this._numberInputElement.setAttribute("min", this.min);
         this._numberInputElement.setAttribute("max", this.max);
+        this._numberInputElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-numberInput");
         this._numberInputElement.style.width = "100%";
         this._numberInputElement.tabIndex = 0;
 
@@ -3333,15 +3438,13 @@ export class NumberInput extends Input {
         return this._numberInputElement;
     }
 
-    min: string;
-    max: string;
     placeholder: string;
 
     getJsonTypeName(): string {
         return "Input.Number";
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         Utils.setProperty(result, "placeholder", this.placeholder);
@@ -3359,6 +3462,22 @@ export class NumberInput extends Input {
         this.max = Utils.getStringValue(json["max"]);
     }
 
+    get min(): string {
+        return this._min;
+    }
+
+    set min(value: string) {
+        this._min = this.parseInputValue(value);
+    }
+
+    get max(): string {
+        return this._max;
+    }
+
+    set max(value: string) {
+        this._max = this.parseInputValue(value);
+    }
+
     get value(): string {
         return this._numberInputElement ? this._numberInputElement.value : null;
     }
@@ -3366,12 +3485,17 @@ export class NumberInput extends Input {
 
 export class DateInput extends Input {
     private _dateInputElement: HTMLInputElement;
+    private _min: string;
+    private _max: string;
 
     protected internalRender(): HTMLElement {
         this._dateInputElement = document.createElement("input");
         this._dateInputElement.setAttribute("type", "date");
+        this._dateInputElement.setAttribute("min", this.min);
+        this._dateInputElement.setAttribute("max", this.max);
         this._dateInputElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-dateInput");
         this._dateInputElement.style.width = "100%";
+
         this._dateInputElement.oninput = () => { this.valueChanged(); }
 
         if (!Utils.isNullOrEmpty(this.defaultValue)) {
@@ -3385,6 +3509,38 @@ export class DateInput extends Input {
         return "Input.Date";
     }
 
+    toJSON() {
+        let result = super.toJSON();
+
+        Utils.setProperty(result, "min", this.min);
+        Utils.setProperty(result, "max", this.max);
+
+        return result;
+    }
+
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+        super.parse(json, errors);
+
+        this.min = Utils.getStringValue(json["min"]);
+        this.max = Utils.getStringValue(json["max"]);
+    }
+
+    get min(): string {
+        return this._min;
+    }
+
+    set min(value: string) {
+        this._min = this.parseInputValue(value);
+    }
+
+    get max(): string {
+        return this._max;
+    }
+
+    set max(value: string) {
+        this._max = this.parseInputValue(value);
+    }
+
     get value(): string {
         return this._dateInputElement ? this._dateInputElement.value : null;
     }
@@ -3392,10 +3548,14 @@ export class DateInput extends Input {
 
 export class TimeInput extends Input {
     private _timeInputElement: HTMLInputElement;
+    private _min: string;
+    private _max: string;
 
     protected internalRender(): HTMLElement {
         this._timeInputElement = document.createElement("input");
         this._timeInputElement.setAttribute("type", "time");
+        this._timeInputElement.setAttribute("min", this.min);
+        this._timeInputElement.setAttribute("max", this.max);
         this._timeInputElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-timeInput");
         this._timeInputElement.style.width = "100%";
         this._timeInputElement.oninput = () => { this.valueChanged(); }
@@ -3407,7 +3567,7 @@ export class TimeInput extends Input {
         return this._timeInputElement;
     }
 
-    protected parseDefaultValue(value: string): string {
+    protected parseInputValue(value: string): string {
         if (/^[0-9]{2}:[0-9]{2}$/.test(value)) {
             return value;
         }
@@ -3418,6 +3578,38 @@ export class TimeInput extends Input {
 
     getJsonTypeName(): string {
         return "Input.Time";
+    }
+
+    toJSON() {
+        let result = super.toJSON();
+
+        Utils.setProperty(result, "min", this.min);
+        Utils.setProperty(result, "max", this.max);
+
+        return result;
+    }
+
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+        super.parse(json, errors);
+
+        this.min = Utils.getStringValue(json["min"]);
+        this.max = Utils.getStringValue(json["max"]);
+    }
+
+    get min(): string {
+        return this._min;
+    }
+
+    set min(value: string) {
+        this._min = this.parseInputValue(value);
+    }
+
+    get max(): string {
+        return this._max;
+    }
+
+    set max(value: string) {
+        this._max = this.parseInputValue(value);
     }
 
     get value(): string {
@@ -3510,7 +3702,7 @@ class ActionButton {
     }
 }
 
-export abstract class Action implements ICardObject {
+export abstract class Action extends CardObject {
     private _shouldFallback: boolean = false;
     private _parent: CardElement = null;
     private _actionCollection: ActionCollection = null; // hold the reference to its action collection
@@ -3563,8 +3755,8 @@ export abstract class Action implements ICardObject {
         return "";
     }
 
-    toJSON() {
-        let result = {};
+    toJSON(): any {
+		let result = super.toJSON();
 
         Utils.setProperty(result, "type", this.getJsonTypeName());
         Utils.setProperty(result, "id", this.id);
@@ -3667,11 +3859,11 @@ export abstract class Action implements ICardObject {
     };
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+		super.parse(json, errors);
+
         raiseParseActionEvent(this, json, errors);
 
         this.requires.parse(json["requires"], errors);
-
-        this.id = Utils.getStringValue(json["id"]);
 
         if (!json["title"] && json["title"] !== "") {
             raiseParseError(
@@ -3839,7 +4031,7 @@ export class OpenUrlAction extends Action {
         return OpenUrlAction.JsonTypeName;
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         Utils.setProperty(result, "url", this.url);
@@ -3947,23 +4139,32 @@ export class ToggleVisibilityAction extends Action {
     }
 }
 
-export class HttpHeader {
+export class HttpHeader extends SerializableObject {
     private _value = new Shared.StringWithSubstitutions();
 
     name: string;
 
     constructor(name: string = "", value: string = "") {
+        super();
+
         this.name = name;
         this.value = value;
     }
 
     parse(json: any) {
+        super.parse(json);
+
         this.name = Utils.getStringValue(json["name"]);
         this.value = Utils.getStringValue(json["value"]);
     }
 
-    toJSON() {
-        return { name: this.name, value: this._value.getOriginal() };
+    toJSON(): any {
+        let result = super.toJSON();
+
+        Utils.setProperty(result, "name", this.name);
+        Utils.setProperty(result, "value", this._value.getOriginal());
+
+        return result;
     }
 
     getReferencedInputs(inputs: Array<Input>, referencedInputs: Shared.Dictionary<Input>) {
@@ -4027,7 +4228,7 @@ export class HttpAction extends Action {
         return HttpAction.JsonTypeName;
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         Utils.setProperty(result, "method", this.method);
@@ -4137,7 +4338,7 @@ export class ShowCardAction extends Action {
         return ShowCardAction.JsonTypeName;
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         if (this.card) {
@@ -4366,7 +4567,7 @@ class ActionCollection {
         }
     }
 
-    toJSON() {
+    toJSON(): any {
         if (this.items.length > 0) {
             let result = [];
 
@@ -4676,7 +4877,7 @@ export class ActionSet extends CardElement {
         this._actionCollection = new ActionCollection(this);
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         Utils.setEnumProperty(Enums.Orientation, result, "orientation", this.orientation);
@@ -4869,10 +5070,10 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
     }
 
     isBleeding(): boolean {
-        return this.getHasBackground() && this.getBleed();
+		return (this.getHasBackground() || this.hostConfig.alwaysAllowBleed) && this.getBleed();
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         Utils.setProperty(result, "style", this.style);
@@ -4935,7 +5136,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
     }
 }
 
-export class BackgroundImage {
+export class BackgroundImage extends SerializableObject {
     private static readonly defaultFillMode = Enums.FillMode.Cover;
     private static readonly defaultHorizontalAlignment = Enums.HorizontalAlignment.Left;
     private static readonly defaultVerticalAlignment = Enums.VerticalAlignment.Top;
@@ -4953,13 +5154,15 @@ export class BackgroundImage {
     }
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+        super.parse(json, errors);
+
         this.url = Utils.getStringValue(json["url"]);
         this.fillMode = Utils.getEnumValue(Enums.FillMode, json["fillMode"], this.fillMode);
         this.horizontalAlignment = Utils.getEnumValue(Enums.HorizontalAlignment, json["horizontalAlignment"], this.horizontalAlignment);
         this.verticalAlignment = Utils.getEnumValue(Enums.VerticalAlignment, json["verticalAlignment"], this.verticalAlignment);
     }
 
-    toJSON() {
+    toJSON(): any {
         if (!this.isValid()) {
             return null;
         }
@@ -4967,10 +5170,11 @@ export class BackgroundImage {
         if (this.fillMode == BackgroundImage.defaultFillMode &&
             this.horizontalAlignment == BackgroundImage.defaultHorizontalAlignment &&
             this.verticalAlignment == BackgroundImage.defaultVerticalAlignment) {
+
             return this.url;
         }
         else {
-            let result = {};
+            let result = super.toJSON();
 
             Utils.setProperty(result, "url", this.url);
             Utils.setEnumProperty(Enums.FillMode, result, "fillMode", this.fillMode, BackgroundImage.defaultFillMode);
@@ -5214,7 +5418,7 @@ export class Container extends StylableCardElementContainer {
     verticalContentAlignment: Enums.VerticalAlignment = Enums.VerticalAlignment.Top;
     rtl?: boolean = null;
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         Utils.setProperty(result, "backgroundImage", this.backgroundImage.toJSON());
@@ -5530,7 +5734,7 @@ export class Column extends Container {
         return "Column";
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         if (this.width instanceof Shared.SizeAndUnit) {
@@ -5567,28 +5771,30 @@ export class Column extends Container {
             }
         }
 
-        var invalidWidth = false;
+        if (jsonWidth) {
+            var invalidWidth = false;
 
-        try {
-            this.width = Shared.SizeAndUnit.parse(jsonWidth);
-        }
-        catch (e) {
-            if (typeof jsonWidth === "string" && (jsonWidth === "auto" || jsonWidth === "stretch")) {
-                this.width = jsonWidth;
+            try {
+                this.width = Shared.SizeAndUnit.parse(jsonWidth);
             }
-            else {
-                invalidWidth = true;
+            catch (e) {
+                if (typeof jsonWidth === "string" && (jsonWidth === "auto" || jsonWidth === "stretch")) {
+                    this.width = jsonWidth;
+                }
+                else {
+                    invalidWidth = true;
+                }
             }
-        }
 
-        if (invalidWidth) {
-            raiseParseError(
-                {
-                    error: Enums.ValidationError.InvalidPropertyValue,
-                    message: "Invalid column width:" + jsonWidth + " - defaulting to \"auto\""
-                },
-                errors
-            );
+            if (invalidWidth) {
+                raiseParseError(
+                    {
+                        error: Enums.ValidationError.InvalidPropertyValue,
+                        message: "Invalid column width:" + jsonWidth + " - defaulting to \"auto\""
+                    },
+                    errors
+                );
+            }
         }
     }
 
@@ -5719,7 +5925,7 @@ export class ColumnSet extends StylableCardElementContainer {
         return true;
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         if (this._columns.length > 0) {
@@ -6097,7 +6303,7 @@ export abstract class ContainerWithActions extends Container {
         this._actionCollection = new ActionCollection(this);
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         Utils.setProperty(result, "actions", this._actionCollection.toJSON());
@@ -6292,7 +6498,8 @@ export class AdaptiveCard extends ContainerWithActions {
     static useMarkdownInRadioButtonAndCheckbox: boolean = true;
     static allowMarkForTextHighlighting: boolean = false;
     static alwaysBleedSeparators: boolean = false;
-    static useBuiltInInputValidation: boolean = true;
+    static enableFullJsonRoundTrip: boolean = false;
+    static useBuiltInInputValidation: boolean = false;
     static displayInputValidationErrors: boolean = true;
 
     static readonly elementTypeRegistry = new ElementTypeRegistry();
@@ -6417,7 +6624,7 @@ export class AdaptiveCard extends ContainerWithActions {
         return "AdaptiveCard";
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         Utils.setProperty(result, "$schema", "http://adaptivecards.io/schemas/adaptive-card.json");
@@ -6468,7 +6675,7 @@ export class AdaptiveCard extends ContainerWithActions {
         this._cardTypeName = Utils.getStringValue(json["type"]);
         this.speak = Utils.getStringValue(json["speak"]);
 
-        let langId = json["lang"];
+		var langId = Utils.getStringValue(json["lang"]);
 
         if (langId && typeof langId === "string") {
             try {

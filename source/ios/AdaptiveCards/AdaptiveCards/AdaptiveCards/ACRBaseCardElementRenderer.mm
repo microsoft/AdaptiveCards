@@ -11,7 +11,7 @@
 
 + (ACRCardElementType)elemType
 {
-    return ACRUnknown;
+    return ACRUnsupported;
 }
 
 /* not implemented ATM */

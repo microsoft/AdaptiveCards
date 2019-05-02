@@ -6,7 +6,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ACOParseContext.h"
 
 @class ACOFeatureRegistration;
 
@@ -17,7 +16,6 @@ typedef NS_ENUM(NSInteger, ACRActionType) {
     ACRSubmit,
     ACROpenUrl,
     ACRToggleVisibility,
-    ACRUnknownAction,
 };
 
 typedef NS_ENUM(NSInteger, ACRIconPlacement) {
@@ -36,11 +34,5 @@ typedef NS_ENUM(NSInteger, ACRIconPlacement) {
 - (NSData *)additionalProperty;
 
 - (BOOL)meetsRequirements:(ACOFeatureRegistration *)featureReg;
-
-@end
-
-@protocol ACOIBaseActionElementParser
-
-- (ACOBaseActionElement *)deserialize:(NSData *)json parseContext:(ACOParseContext* )parseContext;
 
 @end

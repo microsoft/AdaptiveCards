@@ -52,8 +52,10 @@
     parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
 
     // if correctly initialized, fontFamilyNames array is bigger than zero
-    NSString *fontFamilyName = [acoConfig getFontFamily:textConfigForBlock.style];
- 
+    NSMutableString *fontFamilyName = [[NSMutableString alloc] initWithString:@"'"];
+    [fontFamilyName appendString:[acoConfig getFontFamily:textConfigForBlock.style]];
+    [fontFamilyName appendString:@"'"];
+
     // Font and text size are applied as CSS style by appending it to the html string
     parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: %@; font-size:%dpx; font-weight: %d;}</style>",
                                                           fontFamilyName,

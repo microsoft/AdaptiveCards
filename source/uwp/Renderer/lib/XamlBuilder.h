@@ -19,12 +19,11 @@ namespace AdaptiveNamespace
     class XamlBuilder
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, Microsoft::WRL::FtmBase, AdaptiveNamespace::IImageLoadTrackerListener>
     {
-        friend HRESULT Microsoft::WRL::Details::MakeAndInitialize<AdaptiveNamespace::XamlBuilder, AdaptiveNamespace::XamlBuilder>(
-            AdaptiveNamespace::XamlBuilder**);
-
         AdaptiveRuntimeStringClass(XamlBuilder);
 
     public:
+        XamlBuilder();
+
         // IImageLoadTrackerListener
         STDMETHODIMP AllImagesLoaded();
         STDMETHODIMP ImagesLoadingHadError();
@@ -132,8 +131,6 @@ namespace AdaptiveNamespace
                                                    _In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action);
 
     private:
-        XamlBuilder();
-
         ImageLoadTracker m_imageLoadTracker;
         std::set<Microsoft::WRL::ComPtr<IXamlBuilderListener>> m_listeners;
         Microsoft::WRL::ComPtr<ABI::Windows::Storage::Streams::IRandomAccessStreamStatics> m_randomAccessStreamStatics;
@@ -151,7 +148,7 @@ namespace AdaptiveNamespace
         CreateRootCardElement(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
                               _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                               _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
-                              Microsoft::WRL::ComPtr<XamlBuilder> xamlBuilder,
+                              std::shared_ptr<XamlBuilder> xamlBuilder,
                               _Outptr_ ABI::Windows::UI::Xaml::Controls::IPanel** bodyElementContainer);
 
         static void ApplyBackgroundToRoot(_In_ ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel,
@@ -160,7 +157,11 @@ namespace AdaptiveNamespace
                                           _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);
 
         template<typename T>
-        void SetAutoSize(T* destination, IInspectable* parentElement, IInspectable* imageContainer, bool isVisible, bool imageFiresOpenEvent);
+        void SetAutoSize(T* destination,
+                         IInspectable* parentElement,
+                         IInspectable* imageContainer,
+                         bool isVisible,
+                         bool imageFiresOpenEvent);
 
         template<typename T>
         void SetImageSource(T* destination,

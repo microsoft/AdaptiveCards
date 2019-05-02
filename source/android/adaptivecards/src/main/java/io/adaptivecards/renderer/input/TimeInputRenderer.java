@@ -50,7 +50,7 @@ public class TimeInputRenderer extends TextInputRenderer
     @Override
     public View render(
             RenderedAdaptiveCard renderedCard,
-            final Context context,
+            Context context,
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,

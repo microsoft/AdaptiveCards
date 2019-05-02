@@ -3,11 +3,13 @@
 #pragma once
 
 #include "pch.h"
+#include "Enums.h"
 #include "BaseCardElement.h"
 #include "ElementParserRegistration.h"
 
 namespace AdaptiveSharedNamespace
 {
+    class BaseCardElement;
     class Fact;
 
     class FactSet : public BaseCardElement
@@ -41,7 +43,7 @@ namespace AdaptiveSharedNamespace
         FactSetParser(FactSetParser&&) = default;
         FactSetParser& operator=(const FactSetParser&) = default;
         FactSetParser& operator=(FactSetParser&&) = default;
-        virtual ~FactSetParser() = default;
+        ~FactSetParser() = default;
 
         std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
         std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;

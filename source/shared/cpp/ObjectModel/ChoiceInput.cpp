@@ -4,6 +4,7 @@
 #include "ChoiceInput.h"
 #include "ParseContext.h"
 #include "ParseUtil.h"
+#include "Enums.h"
 
 using namespace AdaptiveSharedNamespace;
 

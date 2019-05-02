@@ -20,12 +20,6 @@ std::string Column::GetWidth() const
 
 void Column::SetWidth(const std::string& value)
 {
-    SetWidth(value, nullptr);
-}
-
-void Column::SetWidth(const std::string& value,
-                      std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>>* warnings)
-{
     m_width = ParseUtil::ToLowercase(value);
     const int parsedDimension = ParseSizeForPixelSize(m_width, warnings);
     SetPixelWidth(parsedDimension);

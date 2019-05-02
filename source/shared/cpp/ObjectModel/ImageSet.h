@@ -3,6 +3,7 @@
 #pragma once
 
 #include "pch.h"
+#include "Enums.h"
 #include "Image.h"
 #include "BaseCardElement.h"
 
@@ -46,7 +47,7 @@ namespace AdaptiveSharedNamespace
         ImageSetParser(ImageSetParser&&) = default;
         ImageSetParser& operator=(const ImageSetParser&) = default;
         ImageSetParser& operator=(ImageSetParser&&) = default;
-        virtual ~ImageSetParser() = default;
+        ~ImageSetParser() = default;
 
         std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
         std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;

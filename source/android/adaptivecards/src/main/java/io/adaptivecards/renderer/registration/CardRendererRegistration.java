@@ -103,7 +103,7 @@ public class CardRendererRegistration
     {
         if (TextUtils.isEmpty(cardElementType))
         {
-            throw new IllegalArgumentException("cardElementType is null");
+            throw new IllegalArgumentException("cardElementType is null or unsupported");
         }
         if (renderer == null)
         {

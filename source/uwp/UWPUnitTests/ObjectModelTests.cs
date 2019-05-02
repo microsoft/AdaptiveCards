@@ -274,7 +274,7 @@ namespace UWPUnitTests
                 Height = HeightType.Stretch,
                 Id = "ColumnId",
                 IsVisible = false,
-                Width = "50px",
+                PixelWidth = 50,
                 Separator = true,
                 Spacing = Spacing.Small,
                 Style = ContainerStyle.Emphasis,

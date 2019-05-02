@@ -137,9 +137,6 @@ namespace AdaptiveCards
         ///    Explicit Image Height
         /// </summary>
         [JsonIgnore]
-#if !NETSTANDARD1_3
-        [XmlIgnore]
-#endif
         public uint PixelHeight
         {
             get

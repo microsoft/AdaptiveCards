@@ -39,7 +39,7 @@ namespace AdaptiveCards.Rendering.Html
         /// <summary>
         /// A set of transforms that are applied to the HtmlTags for specific types
         /// </summary>
-        public static AdaptiveRenderTransformers<HtmlTag, AdaptiveRenderContext> ActionTransformers { get; } = InitActionTransformers();
+        public static AdaptiveRenderTransformers<HtmlTag, AdaptiveRenderContext> ActionTransformers { get; } = new AdaptiveRenderTransformers<HtmlTag, AdaptiveRenderContext>();
 
         public AdaptiveCardRenderer() : this(new AdaptiveHostConfig()) { }
 
@@ -100,20 +100,15 @@ namespace AdaptiveCards.Rendering.Html
             ElementRenderers.Set<AdaptiveToggleVisibilityAction>(AdaptiveActionRender);
         }
 
-        private static AdaptiveRenderTransformers<HtmlTag, AdaptiveRenderContext> InitActionTransformers()
-        {
-            var transformers = new AdaptiveRenderTransformers<HtmlTag, AdaptiveRenderContext>();
-            transformers.Register<AdaptiveOpenUrlAction>((action, tag, context) => tag.Attr("data-ac-url", action.Url));
-            transformers.Register<AdaptiveSubmitAction>((action, tag, context) => tag.Attr("data-ac-submitData", JsonConvert.SerializeObject(action.Data, Formatting.None)));
-            transformers.Register<AdaptiveShowCardAction>((action, tag, context) =>
+            ActionTransformers.Register<AdaptiveOpenUrlAction>((action, tag, context) => tag.Attr("data-ac-url", action.Url));
+            ActionTransformers.Register<AdaptiveSubmitAction>((action, tag, context) => tag.Attr("data-ac-submitData", JsonConvert.SerializeObject(action.Data, Formatting.None)));
+            ActionTransformers.Register<AdaptiveShowCardAction>((action, tag, context) =>
             {
                 var showCardId = GenerateRandomId();
                 tag.Attr("data-ac-showCardId", showCardId);
                 tag.Attr("aria-controls", showCardId);
                 tag.Attr("aria-expanded", bool.FalseString);
             });
-
-            return transformers;
         }
 
         protected static HtmlTag AddActionAttributes(AdaptiveAction action, HtmlTag tag, AdaptiveRenderContext context)
@@ -270,9 +265,9 @@ namespace AdaptiveCards.Rendering.Html
                 .Style("box-sizing", "border-box");
 
             if (card.BackgroundImage != null)
-            {
-                ApplyBackgroundImage(card.BackgroundImage, uiCard, context);
-            }
+                uiCard.Style("background-image", $"url('{context.Config.ResolveFinalAbsoluteUri(card.BackgroundImage)}')")
+                    .Style("background-repeat", "no-repeat")
+                    .Style("background-size", "cover");
 
             if (card.PixelMinHeight > 0)
             {
@@ -755,7 +750,7 @@ namespace AdaptiveCards.Rendering.Html
                         var percent = Convert.ToInt32(100 * (val / max));
                         uiColumn = uiColumn.Style("flex", $"1 1 {percent}%");
                     }
-                    else if (width.EndsWith("px") && double.TryParse(width.Substring(0, width.Length - 2), out double pxVal) && pxVal >= 0)
+                    else if (width.EndsWith("px") && double.TryParse(width.Substring(0, width.Length-2), out double pxVal) && pxVal >= 0)
                     {
                         uiColumn = uiColumn.Style("flex", $"0 0 {(int)pxVal}px");
                     }
@@ -800,12 +795,7 @@ namespace AdaptiveCards.Rendering.Html
             var uiContainer = new DivTag()
                 .AddClass($"ac-{container.Type.Replace(".", "").ToLower()}");
 
-            if (container.BackgroundImage != null)
-            {
-                ApplyBackgroundImage(container.BackgroundImage, uiContainer, context);
-            }
-
-            if (container.Height == AdaptiveHeight.Stretch)
+            if(container.Height == AdaptiveHeight.Stretch)
             {
                 uiContainer.Style("display", "flex")
                 .Style("flex-direction", "column")
@@ -835,7 +825,7 @@ namespace AdaptiveCards.Rendering.Html
 
             childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
 
-            switch (container.VerticalContentAlignment)
+            switch(container.VerticalContentAlignment)
             {
                 case AdaptiveVerticalContentAlignment.Center:
                     uiContainer.Style("justify-content", "center");
@@ -1444,7 +1434,7 @@ namespace AdaptiveCards.Rendering.Html
                 .Attr("name", imageSet.Id)
                 .AddClass(imageSet.Type.ToLower());
 
-            if (imageSet.Height == AdaptiveHeight.Stretch)
+            if(imageSet.Height == AdaptiveHeight.Stretch)
             {
                 uiImageSet.Style("display", "flex")
                     .Style("flex", "1 1 100%");
@@ -1490,7 +1480,7 @@ namespace AdaptiveCards.Rendering.Html
                         .AddClass("ac-multichoiceInput")
                         .Style("width", "100%");
 
-                    if (adaptiveChoiceSetInput.Height == AdaptiveHeight.Stretch)
+                    if(adaptiveChoiceSetInput.Height == AdaptiveHeight.Stretch)
                     {
                         uiSelectElement.Style("flex", "1 1 100%");
                     }
@@ -1634,7 +1624,7 @@ namespace AdaptiveCards.Rendering.Html
                 uiDateInput.Attr("max", input.Max);
             }
 
-            if (input.Height == AdaptiveHeight.Stretch)
+            if(input.Height == AdaptiveHeight.Stretch)
             {
                 uiDateInput.Style("flex", "1 1 100%");
             }
@@ -1666,7 +1656,7 @@ namespace AdaptiveCards.Rendering.Html
                 uiNumberInput.Attr("value", input.Value.ToString());
             }
 
-            if (input.Height == AdaptiveHeight.Stretch)
+            if(input.Height == AdaptiveHeight.Stretch)
             {
                 uiNumberInput.Style("flex", "1 1 100%");
             }
@@ -1702,7 +1692,7 @@ namespace AdaptiveCards.Rendering.Html
                 .AddClass("ac-input");
 
             if (input.InlineAction != null)
-            {
+            { 
                 uiTextInput.Style("width", "100%");
             }
             else
@@ -1723,7 +1713,7 @@ namespace AdaptiveCards.Rendering.Html
                 uiTextInput.Attr("maxLength", input.MaxLength.ToString());
             }
 
-            if (input.Height == AdaptiveHeight.Stretch)
+            if(input.Height == AdaptiveHeight.Stretch)
             {
                 uiTextInput.Style("flex", "1 1 100%");
             }
@@ -1731,7 +1721,7 @@ namespace AdaptiveCards.Rendering.Html
             if (context.Config.SupportsInteractivity && input.InlineAction != null)
             {
                 // ShowCard Inline Action Mode is not supported
-                if (input.InlineAction.Type == AdaptiveShowCardAction.TypeName &&
+                if(input.InlineAction.Type == AdaptiveShowCardAction.TypeName &&
                      context.Config.Actions.ShowCard.ActionMode == ShowCardActionMode.Inline)
                 {
                     context.Warnings.Add(new AdaptiveWarning(-1, "Inline ShowCard not supported for InlineAction"));
@@ -1777,8 +1767,8 @@ namespace AdaptiveCards.Rendering.Html
                             .Style("max-height", $"{actionsConfig.IconSize}px");
 
                         buttonElement.Append(iconElement);
-                    }
-                    else
+                    } 
+                    else 
                     {
                         var titleElement = new HtmlTag("div", false) { Text = input.InlineAction.Title };
                         buttonElement.Append(titleElement);
@@ -1821,7 +1811,7 @@ namespace AdaptiveCards.Rendering.Html
                 uiTimeInput.Attr("max", input.Max);
             }
 
-            if (input.Height == AdaptiveHeight.Stretch)
+            if(input.Height == AdaptiveHeight.Stretch)
             {
                 uiTimeInput.Style("flex", "1 1 100%");
             }
@@ -1838,7 +1828,7 @@ namespace AdaptiveCards.Rendering.Html
                 .Style("width", "100%")
                 .Attr("name", toggleInput.Id);
 
-            if (toggleInput.Height == AdaptiveHeight.Stretch)
+            if(toggleInput.Height == AdaptiveHeight.Stretch)
             {
                 uiElement.Style("flex", "1 1 100%");
             }

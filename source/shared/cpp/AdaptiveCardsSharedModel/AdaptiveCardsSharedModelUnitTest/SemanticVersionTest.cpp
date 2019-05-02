@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "stdafx.h"
+#include "CppUnitTest.h"
 #include "SemanticVersion.h"
 #include "AdaptiveCardParseException.h"
 

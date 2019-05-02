@@ -33,8 +33,3 @@ UnknownElementParser::DeserializeFromString(ParseContext& context, const std::st
 {
     return UnknownElementParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }
-
-Json::Value UnknownElement::SerializeToJsonValue() const
-{
-    return GetAdditionalProperties();
-}
