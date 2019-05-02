@@ -83,8 +83,6 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     private RemoteClientConnection m_remoteClientConnection;
     private Button m_buttonScanQr;
     private Button m_buttonDisconnect;
-    private View m_adaptiveCardPickerGroup;
-    private View m_hostConfigPickerGroup;
     private EditText m_jsonEditText;
     private EditText m_configEditText;
     private Timer m_timer=new Timer();
@@ -97,8 +95,6 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
         m_buttonScanQr = (Button)findViewById(R.id.buttonScanQr);
         m_buttonDisconnect = (Button)findViewById(R.id.buttonDisconnect);
-        m_adaptiveCardPickerGroup = findViewById(R.id.adaptiveCardPickerGroup);
-        m_hostConfigPickerGroup = findViewById(R.id.hostConfigPickerGroup);
 
         setupTabs();
         setupImageLoader();
@@ -620,25 +616,6 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         }
     }
 
-    private static final int FILE_SELECT_CARD = 0;
-    private static final int FILE_SELECT_CONFIG = 1;
-    public void onClickFileBrowser(View view)
-    {
-        Intent fileBrowserIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        fileBrowserIntent.setType("*/*");
-        fileBrowserIntent.addCategory(Intent.CATEGORY_OPENABLE);
-        fileBrowserIntent.putExtra(IS_CARD, view.getId() == R.id.loadCardButton);
-
-        try {
-            startActivityForResult(
-                    Intent.createChooser(fileBrowserIntent, "Select a JSON File to Open"),
-                    view.getId() == R.id.loadCardButton ? FILE_SELECT_CARD : FILE_SELECT_CONFIG);
-        } catch (android.content.ActivityNotFoundException ex) {
-            // Potentially direct the user to the Market with a Dialog
-            Toast.makeText(this, "Please install a File Manager.", Toast.LENGTH_SHORT).show();
-        }
-    }
-
     private String loadFile(Uri uri)
     {
         // Get the Uri of the selected file
@@ -675,45 +652,12 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         return null;
     }
 
-    private void loadAdaptiveCard(Intent data)
-    {
-
-        String fullString = loadFile(data.getData());
-        if (fullString.isEmpty())
-        {
-            return;
-        }
-        loadAdaptiveCard(fullString);
-
-        EditText fileEditText = (EditText) findViewById(R.id.fileEditText);
-        List path = data.getData().getPathSegments();
-        fileEditText.setText((String)path.get(path.size()-1));
-
-    }
-
     private void loadAdaptiveCard(String payload)
     {
         m_jsonEditText.setText(payload);
 
         // Render it immediately
         renderAdaptiveCard(true);
-    }
-
-
-    private void loadHostConfig(Intent data)
-    {
-        String fullString = loadFile(data.getData());
-        if (fullString.isEmpty())
-        {
-            return;
-        }
-
-        loadHostConfig(fullString);
-
-        EditText fileEditText = (EditText) findViewById(R.id.hostConfigFileEditText);
-        List path = data.getData().getPathSegments();
-        fileEditText.setText((String)path.get(path.size()-1));
-
     }
 
     private void loadHostConfig(String hostConfigStr)
@@ -730,20 +674,6 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             return;
         }
 
-        switch (requestCode) {
-            case FILE_SELECT_CARD:
-                if (resultCode == RESULT_OK)
-                {
-                    loadAdaptiveCard(data);
-                }
-                break;
-            case FILE_SELECT_CONFIG:
-                if (resultCode == RESULT_OK)
-                {
-                    loadHostConfig(data);
-                }
-                break;
-        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -1133,7 +1063,6 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         m_buttonScanQr.setVisibility(View.VISIBLE);
         m_buttonScanQr.setEnabled(false);
         m_buttonDisconnect.setVisibility(View.GONE);
-        goToReadOnlyState();
     }
 
     private void goToConnectedState()
@@ -1141,7 +1070,6 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         m_buttonScanQr.setVisibility(View.GONE);
         m_buttonDisconnect.setVisibility(View.VISIBLE);
         m_buttonDisconnect.setText("Connected! Click to disconnect");
-        goToReadOnlyState();
     }
 
     private void goToReconnectingState()
@@ -1149,7 +1077,6 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         m_buttonScanQr.setVisibility(View.GONE);
         m_buttonDisconnect.setVisibility(View.VISIBLE);
         m_buttonDisconnect.setText("Reconnecting... Tap to disconnect");
-        goToReadOnlyState();
     }
 
     private void goToDisconnectedState()
@@ -1158,22 +1085,5 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         m_buttonScanQr.setVisibility(View.VISIBLE);
         m_buttonScanQr.setEnabled(true);
         m_buttonDisconnect.setVisibility(View.GONE);
-        goToEditableState();
-    }
-
-    private void goToReadOnlyState()
-    {
-        m_adaptiveCardPickerGroup.setVisibility(View.GONE);
-        m_hostConfigPickerGroup.setVisibility(View.GONE);
-        m_jsonEditText.setEnabled(false);
-        m_configEditText.setEnabled(false);
-    }
-
-    private void goToEditableState()
-    {
-        m_adaptiveCardPickerGroup.setVisibility(View.VISIBLE);
-        m_hostConfigPickerGroup.setVisibility(View.VISIBLE);
-        m_jsonEditText.setEnabled(true);
-        m_configEditText.setEnabled(true);
     }
 }
