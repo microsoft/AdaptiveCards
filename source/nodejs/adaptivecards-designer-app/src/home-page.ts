@@ -1,13 +1,12 @@
 import * as $ from "jquery";
 import * as Handlebars from "handlebars";
-import * as referral from "../samples/Referral.json"
 import * as AdaptiveCards from "adaptivecards";
 import { Template } from "./template-engine/template-engine";
 import { EvaluationContext } from "./template-engine/expression-parser";
 import * as weather from "../samples/Weather.json";
-import * as appointment from "../samples/Appointment.json";
 import * as HostConfig from "../samples/HostConfig.json";
 import * as Api from "./api";
+import { DataPaletteItem } from "adaptivecards-designer";
 
 export class HomePage {
 
@@ -44,16 +43,19 @@ export class HomePage {
 		$("#appointmentCards").empty();
 
 		let appointments = await Api.Api.getAppointments();
+		let template = await Api.Api.getTemplate("appointments");
 		appointments.forEach(item => {
-			this.renderCard($("#appointmentCards"), appointment, item);
+			this.renderCard($("#appointmentCards"), template, item);
 		});
 	}
 
 	private async loadReferrals() {
 		$("#pendingReferrals").empty();
 		let referralData = await Api.Api.getReferrals();
+		let template = await Api.Api.getTemplate("referrals");
+
 		referralData.forEach(item => {
-			this.renderCard($("#pendingReferrals"), referral, item, {
+			this.renderCard($("#pendingReferrals"), template, item, {
 				"scheduleSubmit": async (action) => {
 					let appointment: Api.Appointment = {
 						patient: item.patient,
@@ -73,7 +75,7 @@ export class HomePage {
 		});
 	}
 
-	private renderCard(el, json, data?, actionMap?) {
+	private renderCard(el: JQuery<HTMLElement>, json: object, data?: object, actionMap?) {
 
 		let cardPayload = json;
 		if (data !== undefined) {

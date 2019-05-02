@@ -69,7 +69,7 @@
 		},
 		{
 			"type": "TextBlock",
-			"text": "Requested appointment date: **{requestedDate}**"
+			"text": "Requested appointment date: **{{DATE({requestedDate})}}**"
 		},
 		{
 			"type": "TextBlock",

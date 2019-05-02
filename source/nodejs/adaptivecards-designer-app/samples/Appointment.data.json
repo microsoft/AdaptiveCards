@@ -13,7 +13,7 @@
     "referral": {
         "referralNeed": "Patient reported concerns about their tacos",
         "comments": "This should be treated as high-priority",
-        "requestedDate": "2019-05-08",
+        "requestedDate": "2019-05-08T20:00:00Z",
         "referredBy": {
             "name": "DR. DAVID CLAUX",
             "photo": "https://avatars1.githubusercontent.com/u/1334689?s=460&amp;v=4",

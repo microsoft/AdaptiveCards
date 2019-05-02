@@ -33,10 +33,10 @@ export class FormPage {
 	}
 
 	public async loadForm(id: any) {
-		var json = await Api.loadForm(id);
+		var json = await Api.getTemplate(id);
 
 		var card = new AdaptiveCards.AdaptiveCard();
-		card.parse(JSON.parse(json));
+		card.parse(json);
 
 		card.onExecuteAction = (action) => {
 			var submitAction = <AdaptiveCards.SubmitAction>action;

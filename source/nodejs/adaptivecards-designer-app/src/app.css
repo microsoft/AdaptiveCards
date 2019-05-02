@@ -26,3 +26,7 @@ body {
 	border-radius: 4px;
 	margin-bottom: 10px;
 }
+
+.acd-icon-save::before {
+    content: "\E74E";
+}

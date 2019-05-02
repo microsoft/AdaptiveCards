@@ -4,8 +4,10 @@ import * as Handlebars from "handlebars";
 import * as $ from "jquery";
 import { FormEditor } from "./admin/form-editor";
 import { HomePage } from "./home-page";
-import { FormPage} from "./form-page";
+import { FormPage } from "./form-page";
 import { Api } from "./api";
+import * as DefaultReferralData from "../samples/Referral.data.json";
+
 
 window.addEventListener("load", async () => {
 	const appElement = $('#app');
@@ -20,12 +22,10 @@ window.addEventListener("load", async () => {
 	const formEditor = new FormEditor(appElement);
 	const formPage = new FormPage(appElement);
 
-	await Api.init();
-
 	router
 		.on("/", async () => {
 			await homePage.render();
-			homePage.show();
+			await homePage.show();
 		})
 		.on("/forms/:id", async (params) => {
 			await formPage.render();
@@ -53,6 +53,23 @@ window.addEventListener("load", async () => {
 		})
 		.resolve();
 
+
+	$("#resetDemo").click(async () => {
+		var reset = confirm("Please OK to reset the demo");
+		if (reset) {
+			await Api.reset();
+			alert("Demo reset");
+			router.navigate("/")
+		}
+	});
+
+	$("#generateReferral").click(async () => {
+		var ref = DefaultReferralData;
+		ref.patient.name = "Random";
+		ref.patient.isInsured = false;
+		await Api.addReferral(ref);
+		router.navigate("/");
+	});
 
 	// Highlight Active Menu on Refresh/Page Reload
 	const link = $(`a[href$='${window.location.pathname}']`);

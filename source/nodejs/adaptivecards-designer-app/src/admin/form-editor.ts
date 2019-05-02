@@ -2,9 +2,12 @@ import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import * as markdownit from "markdown-it";
 import * as ACDesigner from "adaptivecards-designer";
 import "adaptivecards-designer/dist/adaptivecards-designer.css";
+import "../app.css";
 import * as $ from "jquery";
 import * as Handlebars from "handlebars";
-import { Api } from "../api";
+import * as Api from "../api";
+import * as ReferralSampleData from "../../samples/Referral.data.json";
+import * as AppointmentSampleData from "../../samples/Appointment.data.json";
 
 export class FormEditor {
 
@@ -15,6 +18,22 @@ export class FormEditor {
 	private designer: ACDesigner.CardDesigner;
 	private isLoaded = false;
 	private html: string;
+	private formId?: string;
+
+	private templates = {
+		referrals: {
+			sampleData: ReferralSampleData,
+			metadata: {
+				displayname: "Referral Template"
+			},
+		},
+		appointments: {
+			sampleData: AppointmentSampleData,
+			metadata: {
+				displayname: "Appiontment Template"
+			}
+		}
+	};
 
 	public async render(): Promise<void> {
 		if (this.html) {
@@ -37,39 +56,45 @@ export class FormEditor {
 		this.designer.assetPath = "/";
 		this.designer.sampleCatalogueUrl = window.location.origin + "/sample-catalogue.json";
 		this.designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.HostAppPicker).isVisible = false;
+		this.designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.OpenPayload).isVisible = false;
+		this.designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.NewCard).isVisible = false;
 		//designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.CopyJSON).isVisible = false;
 
 		let saveButton = new ACDesigner.ToolbarButton(
 			"saveButton",
 			"Save",
-			null,
+			"acd-icon-save",
 			(sender) => { this.saveCard(); });
 		saveButton.separator = true;
 		this.designer.toolbar.insertElementAfter(saveButton, ACDesigner.CardDesigner.ToolbarCommands.HostAppPicker);
 
-
-		let items = await Api.getForms();
-
 		const formEditorTemplate = Handlebars.compile($('#form-editor-template').html());
 
-		this.html = formEditorTemplate({ items: items });
+		this.html = formEditorTemplate({ items: this.templates });
 		this.isLoaded = true;
 	}
 
 	public show() {
 		this.appElement.html(this.html);
-		this.designer.attachTo(document.getElementById("designerRootHost"));
-
-		this.designer.jsonEditorToolbox.collapse();
-
-		this.designer.monacoModuleLoaded(monaco);
-
 
 	}
 
 	public async loadForm(formId: string) {
-		let json = await Api.loadForm(formId);
-		this.designer.setCard(JSON.parse(json));
+		this.formId = formId;
+		let json = await Api.Api.getTemplate(formId);
+
+
+
+		this.designer.attachTo(document.getElementById("designerRootHost"));
+		this.designer.setCard(json);
+
+
+		//this.designer.jsonEditorToolbox.collapse();
+
+		this.designer.monacoModuleLoaded(monaco);
+		this.designer.sampleData = this.templates[formId].sampleData;
+		this.designer.dataStructure = ACDesigner.FieldDefinition.create(this.templates[formId].sampleData);
+
 
 		/* Uncomment to test a custom palette item example */
 		let exampleSnippet = new ACDesigner.SnippetPaletteItem("Data Fields", "Patient Referrer");
@@ -82,39 +107,8 @@ export class FormEditor {
 
 	private async saveCard() {
 
-		await Api.saveCard(this.designer.getCard());
+		await Api.Api.saveTemplate(this.formId, this.designer.getCard());
 		alert("Saved!");
 
-	}
-
-
-	private loadSampleData() {
-		let sampleData = {
-			firstName: "John",
-			lastName: "Doe",
-			age: 45,
-			isMarried: true,
-			address: {
-				street: "1234 555th Ave NE",
-				city: "Redmond",
-				state: "WA",
-				countryOrRegion: "USA"
-			},
-			children: [
-				{
-					firstName: "Jennifer",
-					lastName: "Doe",
-					age: 9
-				},
-				{
-					firstName: "James",
-					lastName: "Doe",
-					age: 13
-				}
-			]
-		};
-
-		// designer.dataStructure = ACDesigner.FieldDefinition.create(sampleData);
-		// designer.sampleData = sampleData;
 	}
 }

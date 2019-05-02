@@ -1,0 +1,31 @@
+{
+	"rooms": [
+		"1",
+		"2",
+		"3",
+		"4",
+		"5"
+	],
+	"providers": {
+		"dclaux": {
+			"name": "Dr. David Claux",
+			"contact": [
+				{
+					"type": "Phone number",
+					"number": "(425) 555-2221"
+				}
+			]
+		},
+		"katip": {
+			"name": "Dr. Kati Pinardi",
+			"contact": [
+				{
+					"type": "Phone number",
+					"number": "(123) 555-4302"
+				}
+			]
+		}
+	},
+	"initialReferalls": 1,
+	"initialAppointments": 0
+}
