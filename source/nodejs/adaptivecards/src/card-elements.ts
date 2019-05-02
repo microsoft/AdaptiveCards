@@ -2611,17 +2611,19 @@ export abstract class Input extends CardElement implements Shared.IInput {
     }
 
     protected resetValidationFailureCue() {
-        this._renderedInputControlElement.classList.remove(this.hostConfig.makeCssClassName("ac-input-validation-failed"));
+        if (AdaptiveCard.useBuiltInInputValidation && this.renderedElement) {
+            this._renderedInputControlElement.classList.remove(this.hostConfig.makeCssClassName("ac-input-validation-failed"));
 
-        if (this._errorMessageElement) {
-            this._outerContainerElement.removeChild(this._errorMessageElement);
+            if (this._errorMessageElement) {
+                this._outerContainerElement.removeChild(this._errorMessageElement);
 
-            this._errorMessageElement = null;
+                this._errorMessageElement = null;
+            }
         }
     }
 
     protected showValidationErrorMessage() {
-        if (AdaptiveCard.displayInputValidationErrors && !Utils.isNullOrEmpty(this.validation.errorMessage)) {
+        if (this.renderedElement && AdaptiveCard.useBuiltInInputValidation && AdaptiveCard.displayInputValidationErrors && !Utils.isNullOrEmpty(this.validation.errorMessage)) {
             this._errorMessageElement = document.createElement("span");
             this._errorMessageElement.className = this.hostConfig.makeCssClassName("ac-input-validation-error-message");
             this._errorMessageElement.textContent = this.validation.errorMessage;
@@ -2662,17 +2664,22 @@ export abstract class Input extends CardElement implements Shared.IInput {
     }
 
     validateValue(): boolean {
-        this.resetValidationFailureCue();
+        if (AdaptiveCard.useBuiltInInputValidation) {
+            this.resetValidationFailureCue();
 
-        let result = this.validation.necessity != Enums.InputValidationNecessity.Optional ? !Utils.isNullOrEmpty(this.value) : true;
+            let result = this.validation.necessity != Enums.InputValidationNecessity.Optional ? !Utils.isNullOrEmpty(this.value) : true;
 
-        if (!result) {
-            this._renderedInputControlElement.classList.add(this.hostConfig.makeCssClassName("ac-input-validation-failed"));
+            if (!result && this.renderedElement) {
+                this._renderedInputControlElement.classList.add(this.hostConfig.makeCssClassName("ac-input-validation-failed"));
 
-            this.showValidationErrorMessage();
+                this.showValidationErrorMessage();
+            }
+
+            return result;
         }
-
-        return result;
+        else {
+            return true;
+        }
     }
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
@@ -6381,7 +6388,7 @@ export class AdaptiveCard extends ContainerWithActions {
     static useMarkdownInRadioButtonAndCheckbox: boolean = true;
     static allowMarkForTextHighlighting: boolean = false;
     static alwaysBleedSeparators: boolean = false;
-    static useBuiltInInputValidation: boolean = true;
+    static useBuiltInInputValidation: boolean = false;
     static displayInputValidationErrors: boolean = true;
 
     static readonly elementTypeRegistry = new ElementTypeRegistry();
