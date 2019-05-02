@@ -17,10 +17,10 @@
                       forSuperview:(UIView *) view
                     withHostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const &) config;
 
-+ (void) renderActionsSeparator:(UIView *)view
-                     hostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const &)config;
++ (void)renderActionsSeparator:(UIView *)view
+                    hostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const &)config;
 
-+ (ACRSeparator *)renderSeparationWithFrame:(CGRect)frame
++ (void)renderSeparationWithFrame:(CGRect)frame
                                   superview:(UIView<ACRIContentHoldingView> *)superview
                                        axis:(UILayoutConstraintAxis)huggingAxis;
 

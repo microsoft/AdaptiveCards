@@ -124,8 +124,7 @@ using namespace AdaptiveCards;
     ACRSeparator *separator = nil;
     Spacing requestedSpacing = Spacing::None;
     
-    if (elem)
-    {
+    if (elem) {
         requestedSpacing = elem->GetSpacing();
     } else {
         requestedSpacing = spacing;
