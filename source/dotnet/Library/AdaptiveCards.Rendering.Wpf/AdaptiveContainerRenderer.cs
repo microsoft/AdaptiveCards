@@ -144,7 +144,7 @@ namespace AdaptiveCards.Rendering.Wpf
                         else
                         {
                             StackPanel panel = new StackPanel();
-                            
+
                             if (!String.IsNullOrEmpty(cardElement.Id))
                             {
                                 panel.Name = cardElement.Id;
@@ -171,7 +171,14 @@ namespace AdaptiveCards.Rendering.Wpf
 
             context.ResetSeparatorVisibilityInsideContainer(uiContainer);
         }
-
+        
+        /// <summary>
+        /// Adds spacing as a grid element to the container
+        /// </summary>
+        /// <param name="context">Context</param>
+        /// <param name="element">Element to render spacing for</param>
+        /// <param name="uiContainer">Container of rendered elements</param>
+        /// <returns>Spacing grid</returns>
         public static Grid AddSpacing(AdaptiveRenderContext context, AdaptiveElement element, Grid uiContainer)
         {
             if (element.Spacing == AdaptiveSpacing.None)

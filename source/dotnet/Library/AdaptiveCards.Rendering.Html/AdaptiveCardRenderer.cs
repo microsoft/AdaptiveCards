@@ -736,11 +736,11 @@ namespace AdaptiveCards.Rendering.Html
                     int lineThickness = column.Separator ? sep.LineThickness : 0;
 
                     separator = new DivTag()
-                            .AddClass($"ac-columnseparator")
-                            .Style("flex", "0 0 auto")
-                            .Style("padding-left", $"{spacing}px")
-                            .Style("margin-left", $"{spacing}px")
-                            .Style("border-left-style", $"solid");
+                        .AddClass($"ac-columnseparator")
+                        .Style("flex", "0 0 auto")
+                        .Style("padding-left", $"{spacing}px")
+                        .Style("margin-left", $"{spacing}px")
+                        .Style("border-left-style", $"solid");
 
                     // This are the only two properties for separator
                     if (sep != null)
