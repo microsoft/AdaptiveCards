@@ -85,6 +85,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     private Button m_buttonDisconnect;
     private EditText m_jsonEditText;
     private EditText m_configEditText;
+    private EditText m_dataEditText;
     private Timer m_timer=new Timer();
     private final long DELAY = 1000; // milliseconds
 
@@ -95,9 +96,11 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
         m_buttonScanQr = (Button)findViewById(R.id.buttonScanQr);
         m_buttonDisconnect = (Button)findViewById(R.id.buttonDisconnect);
+        m_dataEditText = (EditText)findViewById(R.id.editTextData);
 
         setupTabs();
         setupImageLoader();
+        setupData();
 
         // Add text change handler
         m_jsonEditText = (EditText) findViewById(R.id.jsonAdaptiveCard);
@@ -152,6 +155,19 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         tabHost.addTab(tabHost.newTabSpec("tab_data").setIndicator("DATA").setContent(R.id.data));
         tabHost.addTab(tabHost.newTabSpec("tab_config").setIndicator("Config").setContent(R.id.config));
         tabHost.setCurrentTab(0);
+    }
+
+    private void setupData()
+    {
+        JSONObject data = new JSONObject();
+        try {
+            data.put("Platform", "Android");
+            data.put("Manufacturer", Build.MANUFACTURER);
+            data.put("Model", Build.MODEL);
+            m_dataEditText.setText(data.toString(2));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public class CustomRedActionElement extends BaseActionElement
