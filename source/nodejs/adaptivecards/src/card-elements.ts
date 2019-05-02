@@ -140,38 +140,31 @@ export function createElementInstance(
 }
 
 export abstract class SerializableObject {
-	private _customProperties = {};
-	private _parsedPayload: any;
+	private _rawProperties = {};
 
 	parse(json: any, errors?: Array<HostConfig.IValidationError>) {
-		if (AdaptiveCard.enableFullJsonRoundTrip) {
-			this._parsedPayload = json;
-		}
+        this._rawProperties = AdaptiveCard.enableFullJsonRoundTrip ? json : {};
 	}
 
 	toJSON(): any {
 		let result: any;
 		
-		if (AdaptiveCard.enableFullJsonRoundTrip && this._parsedPayload && typeof this._parsedPayload === "object") {
-			result = this._parsedPayload;
+		if (AdaptiveCard.enableFullJsonRoundTrip && this._rawProperties && typeof this._rawProperties === "object") {
+			result = this._rawProperties;
 		}
 		else {
 			result = {};
 		}
 
-		for (let key of Object.keys(this._customProperties)) {
-			result[key] = this._customProperties[key];
-		};
-
 		return result;
 	}
 
 	setCustomProperty(name: string, value: any) {
-		this._customProperties[name] = value;
+		this._rawProperties[name] = value;
 	}
 
 	getCustomProperty(name: string): any {
-		return this._customProperties[name];
+		return this._rawProperties[name];
 	}
 }
 
