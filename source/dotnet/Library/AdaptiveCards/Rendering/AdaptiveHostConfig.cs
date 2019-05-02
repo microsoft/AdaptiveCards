@@ -163,6 +163,8 @@ namespace AdaptiveCards.Rendering
             return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
 
+// Ignore deprecation warnings for Font[Family|Weights|Sizes]
+#pragma warning disable 0618
         // Handles inheritance behavior for retrieving the name of the font family given the desired AdaptiveFontStyle
         public string GetFontFamily(AdaptiveFontStyle fontStyle)
         {
@@ -204,6 +206,7 @@ namespace AdaptiveCards.Rendering
                 ?? FontSizes.GetFontSize(requestedSize)
                 ?? FontSizesConfig.GetDefaultFontSize(requestedSize);
         }
+#pragma warning restore 0618
 
         private string GetDefaultFontFamily(AdaptiveFontStyle fontStyle)
         {
