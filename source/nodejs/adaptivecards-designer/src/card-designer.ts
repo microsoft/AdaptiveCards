@@ -578,7 +578,7 @@ export class CardDesigner {
         this.toolbar.addElement(this._copyJSONButton);
 
         this._togglePreviewButton = new ToolbarButton(
-            CardDesigner.ToolbarCommands.CopyJSON,
+            CardDesigner.ToolbarCommands.TogglePreview,
             "Preview mode",
             "acd-icon-preview",
             (sender: ToolbarButton) => { this.togglePreview(); });
@@ -803,11 +803,13 @@ export class CardDesigner {
 
         this.toolbar.attachTo(document.getElementById("toolbarHost"));
 
-        new Clipboard(
-            this._copyJSONButton.renderedElement,
-            {
-                text: (trigger) => { return JSON.stringify(this.card.toJSON(), null, 4); }
-            });
+        if (this._copyJSONButton.isVisible) {
+            new Clipboard(
+                this._copyJSONButton.renderedElement,
+                {
+                    text: (trigger) => { return JSON.stringify(this.card.toJSON(), null, 4); }
+                });
+        }
         
         // Tool palette panel
         let toolPaletteHost = document.createElement("div");
