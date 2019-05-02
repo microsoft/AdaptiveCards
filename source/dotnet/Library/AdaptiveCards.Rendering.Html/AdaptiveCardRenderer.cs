@@ -505,7 +505,7 @@ namespace AdaptiveCards.Rendering.Html
                             }
                         }
 
-                        if (!String.IsNullOrEmpty(cardElement.Id))
+                        if (!String.IsNullOrWhiteSpace(cardElement.Id))
                         {
                             uiElement.Attr("name", cardElement.Id);
                         }
@@ -1123,7 +1123,7 @@ namespace AdaptiveCards.Rendering.Html
                     .Style("flex", "1 1 100%");
             }
 
-            // if explicit image size is not used, use Adpative Image size
+            // if explicit image size is not used, use Adaptive Image size
             if (image.PixelWidth == 0 && image.PixelHeight == 0)
             {
                 switch (image.Size)

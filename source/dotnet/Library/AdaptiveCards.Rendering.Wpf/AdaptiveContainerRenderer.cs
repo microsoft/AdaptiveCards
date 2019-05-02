@@ -82,7 +82,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 FrameworkElement uiElement = context.Render(cardElement);
                 if (uiElement != null)
                 {
-                    TagContent tag = new TagContent(AdaptiveSpacing.None, uiContainer);
+                    TagContent tag = null;
 
                     if (cardElement.Separator && uiContainer.Children.Count > 0)
                     {
@@ -99,18 +99,26 @@ namespace AdaptiveCards.Rendering.Wpf
                                                          renderedMargin.Bottom);
                         tag = new TagContent(cardElement.Spacing, uiContainer);
                     }
+                    else
+                    {
+                        tag = new TagContent(AdaptiveSpacing.None, uiContainer);
+                    }
 
                     uiElement.Tag = tag;
 
+                    // Sets the minHeight property for Container and ColumnSet
                     if (cardElement.Type == "Container" || cardElement.Type == "ColumnSet")
                     {
                         AdaptiveCollectionElement collectionElement = (AdaptiveCollectionElement)cardElement;
                         uiElement.MinHeight = collectionElement.PixelMinHeight;
                     }
 
+                    RowDefinition rowDefinition = null;
                     if (cardElement.Height != AdaptiveHeight.Stretch)
                     {
-                        uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                        rowDefinition = new RowDefinition() { Height = GridLength.Auto };
+
+                        uiContainer.RowDefinitions.Add(rowDefinition);
                         Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
                         uiContainer.Children.Add(uiElement);
 
@@ -118,9 +126,8 @@ namespace AdaptiveCards.Rendering.Wpf
                     }
                     else
                     {
-                        RowDefinition rowDefinition = new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) };
-                        tag.NotAutoHeightRowDefinition = rowDefinition;
-                        tag.ViewIndex = uiContainer.RowDefinitions.Count;
+                        rowDefinition = new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) };
+                        
                         uiContainer.RowDefinitions.Add(rowDefinition);
 
                         if (cardElement.Type == "Container")
@@ -149,6 +156,11 @@ namespace AdaptiveCards.Rendering.Wpf
                         }
                     }
 
+                    // Row definition is stored in the tag for containers and elements that stretch
+                    // so when the elements are shown, the row can have it's original definition,
+                    // while when the element is hidden, the extra space is not reserved in the layout
+                    tag.RowDefinition = rowDefinition;
+                    tag.ViewIndex = uiContainer.RowDefinitions.Count;
                 }
             }
 

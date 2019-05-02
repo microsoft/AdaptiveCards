@@ -99,7 +99,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
                 FrameworkElement uiContainer = context.Render(column);
 
-                TagContent tag = new TagContent(AdaptiveSpacing.None, uiColumnSet);
+                TagContent tag = null;
 
                 // Add vertical Separator
                 if (uiColumnSet.ColumnDefinitions.Count > 0)
@@ -126,7 +126,14 @@ namespace AdaptiveCards.Rendering.Wpf
                         Grid.SetColumn(uiSep, uiColumnSet.ColumnDefinitions.Count - 1);
                         uiColumnSet.Children.Add(uiSep);
                     }
-
+                    else
+                    {
+                        tag = new TagContent(AdaptiveSpacing.None, uiColumnSet);
+                    }
+                }
+                else
+                {
+                    tag = new TagContent(AdaptiveSpacing.None, uiColumnSet);
                 }
 
                 // do some sizing magic using the magic GridUnitType.Star
@@ -145,7 +152,6 @@ namespace AdaptiveCards.Rendering.Wpf
                 else if (width == AdaptiveColumnWidth.Auto.ToLower())
                 {
                     columnDefinition = new ColumnDefinition() { Width = GridLength.Auto };
-                    
                 }
                 else
                 {
@@ -163,13 +169,12 @@ namespace AdaptiveCards.Rendering.Wpf
                     {
                         columnDefinition = new ColumnDefinition() { Width = GridLength.Auto };
                     }
-                        
                 }
 
                 // If the column width is not auto, then store it in the tag so we can toggle the visibility later
                 if (columnDefinition.Width.GridUnitType != GridUnitType.Auto)
                 {
-                    tag.NotAutoWidthColumnDefinition = columnDefinition;
+                    tag.ColumnDefinition = columnDefinition;
                     tag.ViewIndex = uiColumnSet.ColumnDefinitions.Count;
                 }
 

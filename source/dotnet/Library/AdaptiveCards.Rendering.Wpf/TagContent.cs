@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,26 +18,35 @@ namespace AdaptiveCards.Rendering.Wpf
         public TagContent(Grid separator, Grid elementContainer)
         {
             Separator = separator;
-            ElementContainer = elementContainer;
+            ParentContainerElement = elementContainer;
         }
 
         public TagContent(AdaptiveSpacing spacing, Grid elementContainer)
         {
             Spacing = spacing;
-            ElementContainer = elementContainer;
+            ParentContainerElement = elementContainer;
         }
 
         public Grid Separator { get; set; } = null;
 
         public AdaptiveSpacing Spacing { get; set; } = AdaptiveSpacing.None;
 
-        public Grid ElementContainer { get; set; }
+        /// <summary>
+        /// Grid that contains the rendered element
+        /// </summary>
+        public Grid ParentContainerElement { get; set; }
 
         public bool SpacingHasBeenHidden { get; set; } = false;
 
-        public ColumnDefinition NotAutoWidthColumnDefinition { get; set; } = null;
+        /// <summary>
+        /// Column Definition for the rendered column in the columnset
+        /// </summary>
+        public ColumnDefinition ColumnDefinition { get; set; } = null;
 
-        public RowDefinition NotAutoHeightRowDefinition { get; set; } = null;
+        /// <summary>
+        /// Row Definition for the rendered element in the container
+        /// </summary>
+        public RowDefinition RowDefinition { get; set; } = null;
 
         public int ViewIndex { get; set; }
     }
