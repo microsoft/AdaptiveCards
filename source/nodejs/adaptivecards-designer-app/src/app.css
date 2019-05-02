@@ -23,5 +23,6 @@ body {
     background-color: #eceff1;
     border: 1px solid #e6e6e6;
     padding: 8px;
-    border-radius: 4px;
+	border-radius: 4px;
+	margin-bottom: 10px;
 }

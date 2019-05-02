@@ -38,15 +38,14 @@ export class FormPage {
 		var card = new AdaptiveCards.AdaptiveCard();
 		card.parse(JSON.parse(json));
 
-		card.onExecuteAction = async (action) => {
+		card.onExecuteAction = (action) => {
 			var submitAction = <AdaptiveCards.SubmitAction>action;
 			//console.log(JSON.stringify(submitAction.data));
-			await Api.submitForm(id, submitAction.data)
+			//await Api.submitForm(id, submitAction.data)
+			alert(action.title);
 		};
 	
-		var html = card.render();
-		this.appElement.append(html);
-
+		this.appElement.append(card.render());
 	}
 
 }

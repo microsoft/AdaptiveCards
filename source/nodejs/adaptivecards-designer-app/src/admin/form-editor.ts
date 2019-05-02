@@ -23,7 +23,7 @@ export class FormEditor {
 
 
 		// Comment to disable preview features (data binding)
-		ACDesigner.GlobalSettings.previewFeaturesEnabled = false;
+		ACDesigner.GlobalSettings.previewFeaturesEnabled = true;
 
 		ACDesigner.CardDesigner.onProcessMarkdown = (text: string, result: { didProcess: boolean, outputHtml: string }) => {
 			result.outputHtml = new markdownit().render(text);

@@ -13,7 +13,7 @@
                             "size": "ExtraLarge",
                             "weight": "Bolder",
                             "color": "Accent",
-                            "text": "11:45 AM"
+                            "text": "{{TIME({appointmentTime})}}"
                         }
                     ],
                     "width": "150px",
@@ -26,7 +26,7 @@
                         {
                             "type": "TextBlock",
                             "weight": "Bolder",
-                            "text": "Matt Hidinger",
+                            "text": "{patient.name}",
                             "wrap": true,
                             "size": "Large"
                         }
@@ -37,23 +37,22 @@
                     "spacing": "Medium"
                 }
             ],
-            "style": "emphasis",
             "bleed": true
         },
         {
             "type": "FactSet",
             "facts": [
                 {
-                    "title": "Physician:",
-                    "value": "Dr. David Claux"
+                    "title": "Provider:",
+                    "value": "{provider.name}"
                 },
                 {
                     "title": "Room:",
-                    "value": "5"
+                    "value": "{room}"
                 },
                 {
                     "title": "Comment:",
-                    "value": "Patient says bottom left molar has been painful for the last few days. Has trouble chewing on that side."
+                    "value": "{patientNeed}"
                 }
             ]
         }
@@ -64,14 +63,57 @@
             "title": "Check-in",
             "sentiment": "Positive"
         },
+		{
+			"type": "Action.ShowCard",
+			"title": "Reschedule",
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "TextBlock",
+						"text": "Enter appointment time:"
+					},
+					{
+						"type": "ColumnSet",
+						"columns": [
+							{
+								"type": "Column",
+								"items": [
+									{
+										"type": "Input.Date",
+										"id": "date"
+									}
+								],
+								"width": "stretch",
+								"bleed": true
+							},
+							{
+								"type": "Column",
+								"items": [
+									{
+										"type": "Input.Time",
+										"id": "time"
+									}
+								],
+								"width": "stretch",
+								"bleed": true
+							}
+						]
+					}
+				],
+				"actions": [
+					{
+						"type": "Action.Submit",
+						"title": "OK",
+						"sentiment": "Positive"
+					}
+				]
+			}
+		},
         {
             "type": "Action.Submit",
-            "title": "Reschedule"
-        },
-        {
-            "type": "Action.Submit",
-			"title": "Cancel",
-			"sentiment": "destructive"
+            "title": "Cancel appointment",
+            "sentiment": "Destructive"
         }
     ],
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
