@@ -149,6 +149,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         tabHost.setup();
         tabHost.addTab(tabHost.newTabSpec("tab_visual").setIndicator("Visual").setContent(R.id.Visual));
         tabHost.addTab(tabHost.newTabSpec("tab_json").setIndicator("JSON").setContent(R.id.JSON));
+        tabHost.addTab(tabHost.newTabSpec("tab_data").setIndicator("DATA").setContent(R.id.data));
         tabHost.addTab(tabHost.newTabSpec("tab_config").setIndicator("Config").setContent(R.id.config));
         tabHost.setCurrentTab(0);
     }
