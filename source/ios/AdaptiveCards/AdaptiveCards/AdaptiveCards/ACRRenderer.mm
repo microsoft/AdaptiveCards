@@ -198,9 +198,9 @@ using namespace AdaptiveCards;
     UIView *prevStretchableElem = nil, *curStretchableElem = nil;
 
     auto firstelem = elems.begin();
-    auto prevElem = *firstelem;
+    auto prevElem = elems.empty() ? nullptr : *firstelem;
     
-    for (const auto &elem:elems)
+    for (const auto &elem : elems)
     {
         if (*firstelem != elem) {
             ACRSeparator *separator = [ACRSeparator renderSeparation:elem
