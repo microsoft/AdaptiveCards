@@ -36,8 +36,15 @@ body {
 }
 
 #editor {
-    height: calc(100vh - 103px);
+	height: 100%;
     border: 1px solid #EEEEEE;
+	overflow: hidden;
+}
+
+#dataEditor {
+	height: 100%;
+	border: 1px solid #EEEEEE;
+	border-top: 6px solid rgb(197, 197, 197);
 	overflow: hidden;
 }
 
@@ -97,7 +104,7 @@ select.host-picker {
 }
 
 @media (max-width: 600px) {
-	#editor {
+	#editorsContainer {
 		display: none;
 	}
 }

@@ -3,6 +3,7 @@
 import * as AdaptiveCards from "adaptivecards";
 import * as MarkdownIt from "markdown-it";
 import * as Constants from "./constants";
+import * as platform from "platform.js";
 
 import { HostContainer } from "./containers/host-container";
 import { SkypeContainer } from "./containers/skype";
@@ -456,6 +457,7 @@ function elementVisibilityChanged(element: AdaptiveCards.CardElement) {
 }
 
 declare var monacoEditor: any;
+declare var monacoDataEditor: any;
 
 // Monaco loads asynchronously via a call to require() from index.html
 // App initialization needs to happen after.
@@ -519,7 +521,23 @@ function monacoEditorLoaded() {
             tryRenderCard();
         });
 
-    setCurrentCardPayload(Constants.defaultPayload)
+	setCurrentCardPayload(Constants.defaultPayload);
+
+	var manufacturer = "Unknown";
+	if (platform.name === "Chrome") {
+		manufacturer = "Google"
+	} else if (platform.name === "Microsoft Edge") {
+		manufacturer = "Microsoft";
+	}
+
+	let sampleData = {
+		platform: "HTML JS",
+		manufacturer: manufacturer,
+		model: platform.name || "Unknown",
+		osVersion: platform.version || "Unknown"
+	};
+	
+	monacoDataEditor.setValue(JSON.stringify(sampleData, null, 2));
 
     var initialCardLaodedAsynchronously = false;
     var cardUrl = getParameterByName("card", null);

@@ -33,8 +33,23 @@ function loadMonacoEditor(jsonSchema, callback) {
             }
         );
 
+        monacoDataEditor = monaco.editor.create(
+            document.getElementById('dataEditor'),
+            {
+                folding: true,
+                validate: false,
+                fontSize: 13.5,
+                language: 'json',
+                minimap: {
+                    enabled: false
+				},
+				readOnly: true
+            }
+        );
+
         window.addEventListener('resize', function () {
-            monacoEditor.layout();
+			monacoEditor.layout();
+			monacoDataEditor.layout();
         });
 
         //monacoEditor.layout();

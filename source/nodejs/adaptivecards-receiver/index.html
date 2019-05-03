@@ -18,37 +18,48 @@
 </head>
 <body>
 
-    <div class="w3-row w3-light-grey w3-padding">
-        <div class="w3-col s12 m6 l7">
-            <div id="editCard" class="button" style="display: none">Card editor</div>
-            <div id="editConfig" class="button subdued" style="margin-left: 4px; display: none;">Host Config editor</div>
-        
-            <div style="display: none"><input type="file" id="filePicker"></div>
-            <div id="loadSample" class="button w3-hide-small w3-hide-medium" style="margin-left: 4px; display: none">Load from file...</div>
-        </div>    
-    
-        <div class="w3-col s12 m6 l5">
-            <span style="margin-right: 6px;" class="w3-hide-small w3-hide-medium">Select Host App:</span>
-            <select id="hostContainerPicker" class="host-picker"></select>
-            <div class="button" onclick="window.open('https://docs.microsoft.com/en-us/adaptive-cards/resources/partners')" style="display: none">Partner Status</div>
-        </div>
-    </div>
-        
-    <div class="w3-row">
-    
-        <div id="editor" class="w3-col s12 m6 l7">
-        </div>
-    
-        <div class="w3-col s12 m6 l5 w3-padding w3-padding-16">
-            <div id="errorContainer" class="errorContainer"></div>
-            <div id="content"></div>
-        </div>
-    </div>
+	<div style="display: flex; flex-direction: column; position: absolute; top: 0; right: 0; bottom: 0; left: 0;">
 
-    <div class="w3-container w3-light-grey">
+		<div class="w3-light-grey w3-padding">
+			<div class="w3-col s12 m6 l7">
+				<div id="editCard" class="button" style="display: none">Card editor</div>
+				<div id="editConfig" class="button subdued" style="margin-left: 4px; display: none;">Host Config editor</div>
+			
+				<div style="display: none"><input type="file" id="filePicker"></div>
+				<div id="loadSample" class="button w3-hide-small w3-hide-medium" style="margin-left: 4px; display: none">Load from file...</div>
+			</div>    
+		
+			<div class="w3-col s12 m6 l5">
+				<span style="margin-right: 6px;" class="w3-hide-small w3-hide-medium">Select Host App:</span>
+				<select id="hostContainerPicker" class="host-picker"></select>
+				<div class="button" onclick="window.open('https://docs.microsoft.com/en-us/adaptive-cards/resources/partners')" style="display: none">Partner Status</div>
+			</div>
+		</div>
+			
+		<div style="position: relative; flex-grow: 1;">
+		
+			<div id="editorsContainer" class="w3-col s12 m6 l7" style="position: relative; height: 100%;">
+				<div style="position: absolute; height: 70%; top: 0; right: 0; left: 0; display: block">
+					<div id="editor">
+					</div>
+				</div>
+				<div style="position: absolute; height: 30%; bottom: 0; right: 0; left: 0;">
+					<div id="dataEditor">
+					</div>
+				</div>
+			</div>
+		
+			<div class="w3-col s12 m6 l5 w3-padding w3-padding-16">
+				<div id="errorContainer" class="errorContainer"></div>
+				<div id="content"></div>
+			</div>
+		</div>
+
+    <!-- <div class="w3-container w3-light-grey">
         <h3>This gap is intentional on the standalone Visualizer</h3>
         <p>It accounts for the header when deployed to https://adaptivecards.io</p>
-    </div>
+	</div> -->
+	</div>
 
 </body>
 </html>
