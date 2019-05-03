@@ -44,10 +44,16 @@
     BOOL hasExplicitMeasurements = (pixelWidth || pixelHeight);
     BOOL isAspectRatioNeeded = !(pixelWidth && pixelHeight);
     CGSize cgsize = [acoConfig getImageSize:imgElem->GetImageSize()];
-
-    NSMutableDictionary *imageViewMap = [rootView getImageMap];
-    // Syncronize access to imageViewMap
+    
     NSString *key = [NSString stringWithCString:imgElem->GetUrl().c_str() encoding:[NSString defaultCStringEncoding]];
+    NSMutableDictionary *imageViewMap = [rootView getImageMap];
+    NSURL *url = [NSURL URLWithString:key];
+    
+    if (ACOImageViewIF == [acoConfig getResolverIFType:[url scheme]]) {
+        NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)(elem.get())];
+        key = [number stringValue];
+    }
+    
     UIImage *img = imageViewMap[key];
     ImageSize size = ImageSize::None;
     if (!hasExplicitMeasurements){
@@ -156,7 +162,7 @@
     BOOL isAspectRatioNeeded = !(pixelWidth && pixelHeight);
     CGSize cgsize = [acoConfig getImageSize:imageElem->GetImageSize()];
     CGFloat heightToWidthRatio = 0.0f, widthToHeightRatio = 0.0f;
-
+    
     if(image){
         if(image.size.width > 0) {
             heightToWidthRatio = image.size.height / image.size.width;
