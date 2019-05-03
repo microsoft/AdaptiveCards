@@ -70,16 +70,15 @@
 
         <Grid x:Name="ConnectedView" Margin="8" Visibility="Collapsed">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/> <!--Top toolbar-->
+                <RowDefinition Height="*"/> <!--Main content region-->
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="5"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="5"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/> <!--Card payload-->
+                <ColumnDefinition Width="5"/> <!--Draggable divider-->
+                <ColumnDefinition Width="*"/> <!--Card preview-->
+                <ColumnDefinition Width="5"/> <!--Draggable divider-->
+                <ColumnDefinition Width="Auto"/> <!--Host config editor-->
             </Grid.ColumnDefinitions>
 
             <StackPanel Orientation="Horizontal" Grid.ColumnSpan="5">
@@ -95,14 +94,25 @@
                 <Button Name="toggleOptions" Content="Edit" Margin="4" Click="toggleOptions_Click" HorizontalAlignment="Right"/>
             </StackPanel>
 
-            <avalon:TextEditor
+            <Grid
                 Grid.Row="1"
-                x:Name="textBox"
-                FontFamily="Consolas"
-                FontSize="10pt"
-                ShowLineNumbers="true"
-                TextChanged="textBox_TextChanged"
-                IsReadOnly="True"/>
+                Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <avalon:TextEditor
+                    Grid.Row="0"
+                    x:Name="textBox"
+                    FontFamily="Consolas"
+                    FontSize="10pt"
+                    ShowLineNumbers="true"
+                    TextChanged="textBox_TextChanged"
+                    IsReadOnly="True"/>
+                
+                <StackPanel Grid.Row="1" Name="cardError" />
+            </Grid>
 
             <GridSplitter Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" ResizeDirection="Columns"/>
 
@@ -120,12 +130,19 @@
 
             <GridSplitter Grid.Row="1" Grid.Column="4" VerticalAlignment="Stretch" ResizeDirection="Columns" Name="optionsSplitter" />
 
-            <xctk:PropertyGrid Grid.Row="1" Grid.Column="4"  Name="hostConfigEditor" PropertyValueChanged="HostConfigEditor_OnPropertyValueChanged"  Visibility="Visible" >
-            </xctk:PropertyGrid>
+            <Grid
+                Grid.Row="1"
+                Grid.Column="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="2" Grid.Column="0" Name="cardError" />
+                <xctk:PropertyGrid Grid.Row="0" Name="hostConfigEditor" PropertyValueChanged="HostConfigEditor_OnPropertyValueChanged"  Visibility="Visible" >
+                </xctk:PropertyGrid>
 
-            <StackPanel Grid.Row="2" Grid.Column="4" Name="hostConfigerror" />
+                <StackPanel Grid.Row="1" Name="hostConfigerror" />
+            </Grid>
 
         </Grid>
     </Grid>
