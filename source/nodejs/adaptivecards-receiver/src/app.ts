@@ -16,6 +16,10 @@ import { BotFrameworkImageContainer } from "./containers/bf-image";
 import { adaptiveCardSchema } from "./adaptive-card-schema";
 import { CortanaContainer } from "./containers/cortana";
 
+import { NativeEventSource, EventSourcePolyfill } from "event-source-polyfill";
+
+const EventSource = NativeEventSource || EventSourcePolyfill;
+
 var hostContainerOptions: Array<HostContainerOption> = [];
 var hostContainerPicker: HTMLSelectElement;
 var lastValidationErrors: Array<AdaptiveCards.IValidationError> = [];
@@ -234,6 +238,11 @@ function remoteIdChanged() {
 		return;
 	}
 
+	connect(false);
+}
+
+function connect(secondAttempt: boolean) {
+	showConnectingCard();
 	remoteEventSource = new EventSource(baseRemoteUrl + "card/" + remoteId + "/subscribe");
 	remoteEventSource.onmessage = function(event) {
 		console.log("Received message");
@@ -242,32 +251,87 @@ function remoteIdChanged() {
 	remoteEventSource.onerror = function() {
 		console.log("Disconnected");
 		remoteEventSource = undefined;
-		showErrorCard("Disconnected");
+		if (!secondAttempt) {
+			console.log("Attempting reconnect");
+			connect(true);
+		} else {
+			showErrorCard("Disconnected");
+		}
 	};
 	updateFromRemoteCard();
 }
 
+var gettingCard = false;
+var needsAnotherCard = false;
 async function updateFromRemoteCard() {
+	if (gettingCard) {
+		needsAnotherCard = true;
+		return;
+	}
+
 	var response = await fetch(baseRemoteUrl + "card/" + remoteId);
 	if (!response.ok) {
 		showErrorStatus("Failed to get latest card");
-		return;
+	} else {
+		var cardData = await response.json();
+		currentCardPayload = cardData.CardJson;
+		tryRenderCard();
 	}
-	var cardData = await response.json();
-	currentCardPayload = cardData.CardJson;
-	tryRenderCard();
+
+	gettingCard = false;
+	if (needsAnotherCard) {
+		needsAnotherCard = false;
+		updateFromRemoteCard();
+	}
 }
 
 function showConnectingCard() {
-
+	currentCardPayload = `{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "Connecting...",
+					"weight": "bolder",
+					"size": "medium"
+				}
+			]
+		}
+	]
+}`;
+	tryRenderCard();
 }
 
 function showErrorCard(message: string) {
-
+	currentCardPayload = `{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "${message}",
+					"weight": "bolder",
+					"size": "medium",
+					"wrap": "true"
+				}
+			]
+		}
+	]
+}`;
+	tryRenderCard();
 }
 
 function showErrorStatus(message: string) {
-
+	console.log("Error: " + message);
 }
 
 function setupFilePicker() {
