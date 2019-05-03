@@ -38,6 +38,7 @@ dependencies {
     implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'com.tylerjroach:eventsource:1.2.11'
+    implementation 'com.github.LiquidPlayer:LiquidCore:0.6.1'
     testImplementation 'junit:junit:4.12'
     implementation project(':adaptivecards')
 }

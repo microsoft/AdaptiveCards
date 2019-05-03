@@ -274,7 +274,6 @@ export function transform(cardJson: string, dataJson: string) {
 
     var context = new EvaluationContext();
 	context.$root = JSON.parse(dataJson);
-	alert(context.$root);
 
     var transformedCard = template.expand(context);
     return JSON.stringify(transformedCard);

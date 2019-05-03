@@ -18,7 +18,8 @@ module.exports = (env, argv) => {
 			path: path.resolve(__dirname, "./dist"),
 			filename: devMode ? "[name].js" : "[name].min.js",
 			library: "TemplateEngine",
-			libraryTarget: "umd",
+			libraryTarget: "var",
+			globalObject: "this"
 			//umdNamedDefine: true
 		},
 		devtool: devMode ? "inline-source-map" : "source-map",

@@ -47,6 +47,8 @@ import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.liquidplayer.javascript.JSContext;
+import org.liquidplayer.javascript.JSValue;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -81,6 +83,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
     private static String IS_CARD = "isCard";
     private RemoteClientConnection m_remoteClientConnection;
+    private JSContext m_scriptContext;
     private Button m_buttonScanQr;
     private Button m_buttonDisconnect;
     private EditText m_jsonEditText;
@@ -101,6 +104,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         setupTabs();
         setupImageLoader();
         setupData();
+        setupTemplatingScript();
 
         // Add text change handler
         m_jsonEditText = (EditText) findViewById(R.id.jsonAdaptiveCard);
@@ -157,13 +161,32 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         tabHost.setCurrentTab(0);
     }
 
+    private String getRawAsString(int id)
+    {
+        InputStream stream = getResources().openRawResource(id);
+        java.util.Scanner s = new java.util.Scanner(stream).useDelimiter("\\A");
+        String scriptStr = s.hasNext() ? s.next() : "";
+        return scriptStr;
+    }
+
+    private void setupTemplatingScript()
+    {
+        try {
+            JSContext context = new JSContext();
+            context.evaluateScript(getRawAsString(R.raw.templateengine));
+            m_scriptContext = context;
+        } catch (Exception ex) {
+            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
     private void setupData()
     {
         JSONObject data = new JSONObject();
         try {
-            data.put("Platform", "Android");
-            data.put("Manufacturer", Build.MANUFACTURER);
-            data.put("Model", Build.MODEL);
+            data.put("platform", "Android");
+            data.put("manufacturer", Build.MANUFACTURER);
+            data.put("model", Build.MODEL);
             m_dataEditText.setText(data.toString(2));
         } catch (JSONException e) {
             e.printStackTrace();
@@ -568,6 +591,30 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         }, DELAY);
     }
 
+    private String getTransformedAdaptiveCard()
+    {
+        String jsonText = m_jsonEditText.getText().toString();
+        if (jsonText == null)
+        {
+            return null;
+        }
+
+        String dataJson = m_dataEditText.getText().toString();
+        if (dataJson == null)
+        {
+            return jsonText;
+        }
+
+        m_scriptContext.property("cardJson", jsonText);
+        m_scriptContext.property("dataJson", dataJson);
+        JSValue result = m_scriptContext.evaluateScript("TemplateEngine.transform(cardJson, dataJson)");
+        if (result.isString()) {
+            return result.toString();
+        } else {
+            return jsonText;
+        }
+    }
+
     private void renderAdaptiveCard(boolean showErrorToast)
     {
         // Cancel any existing timer, in case we were rendered on-demand while a
@@ -576,7 +623,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
         try
         {
-            String jsonText = m_jsonEditText.getText().toString();
+            String jsonText = getTransformedAdaptiveCard();
             if (jsonText == null)
             {
                 return;
