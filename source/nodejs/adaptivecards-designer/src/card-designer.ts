@@ -631,7 +631,15 @@ export class CardDesigner {
 		return answer;
 	}
 
+	private _prevCardPayload = "";
 	private onCardPayloadChanged() {
+		// Prevent duplicate update when switching from preview back to edit
+		var newPayload = this.getCurrentCardEditorPayload();
+		if (this._prevCardPayload === newPayload) {
+			return;
+		}
+		this._prevCardPayload = newPayload;
+
 		if (this._shareDialog) {
 			this._shareDialog.sendUpdate(this.getCardShareData());
 		}
