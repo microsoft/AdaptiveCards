@@ -95,3 +95,9 @@ select.host-picker {
     max-width: 200px;
     vertical-align: top;
 }
+
+@media (max-width: 600px) {
+	#editor {
+		display: none;
+	}
+}
