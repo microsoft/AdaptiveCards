@@ -78,28 +78,10 @@ window.onload = function() {
 	designer.monacoModuleLoaded(monaco);
 
 	let sampleData = {
-		firstName: "John",
-		lastName: "Doe",
-		age: 45,
-		isMarried: true,
-		address: {
-			street: "1234 555th Ave NE",
-			city: "Redmond",
-			state: "WA",
-			countryOrRegion: "USA"
-		},
-		children: [
-			{
-				firstName: "Jennifer",
-				lastName: "Doe",
-				age: 9
-			},
-			{
-				firstName: "James",
-				lastName: "Doe",
-				age: 13
-			}
-		]
+		platform: "HTML JS",
+		manufacturer: "Unknown",
+		model: "Unknown",
+		osVersion: "Unknown"
 	};
 	
 	designer.dataStructure = ACDesigner.FieldDefinition.create(sampleData);

@@ -47,24 +47,65 @@ export const otherTestPayload: string = `{
 
 export const defaultPayload: string = `{
     "type": "AdaptiveCard",
+    "version": "1.0",
     "body": [
         {
             "type": "TextBlock",
-            "size": "Medium",
+            "size": "Large",
             "weight": "Bolder",
-            "text": "Publish Adaptive Card schema"
+            "text": "Welcome to Build 2019!",
+            "wrap": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "Local device information..."
+        },
+        {
+            "type": "FactSet",
+            "facts": [
+                {
+                    "title": "Platform",
+                    "value": "{platform}"
+                },
+                {
+                    "title": "Manufacturer",
+                    "value": "{manufacturer}"
+                },
+                {
+                    "title": "Model",
+                    "value": "{model}"
+                },
+                {
+                    "title": "OS Version",
+                    "value": "{osVersion}"
+                }
+            ]
         },
         {
             "type": "ColumnSet",
+            "spacing": "Large",
             "columns": [
                 {
                     "type": "Column",
                     "items": [
                         {
+                            "type": "TextBlock",
+                            "size": "Small",
+                            "weight": "Bolder",
+                            "text": "This card was natively rendered on {platform} using the Adaptive Cards {platform} library",
+                            "wrap": true
+                        }
+                    ],
+                    "width": "stretch",
+                    "verticalContentAlignment": "Bottom"
+                },
+                {
+                    "type": "Column",
+                    "items": [
+                        {
                             "type": "Image",
-                            "style": "Person",
-                            "url": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
-                            "size": "Small"
+                            "url": "https://raw.githubusercontent.com/Microsoft/AdaptiveCards/master/assets/adaptive-card-200.png",
+                            "height": "40px"
                         }
                     ],
                     "width": "auto"
@@ -73,84 +114,28 @@ export const defaultPayload: string = `{
                     "type": "Column",
                     "items": [
                         {
-                            "type": "TextBlock",
-                            "weight": "Bolder",
-                            "text": "Matt Hidinger",
-                            "wrap": true
+                            "$when": "{platform == 'Android'}",
+                            "type": "Image",
+                            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Android_robot.svg/872px-Android_robot.svg.png",
+                            "height": "40px"
                         },
                         {
-                            "type": "TextBlock",
-                            "spacing": "None",
-                            "text": "Created {{DATE(2017-02-14T06:08:39Z,SHORT)}}",
-                            "isSubtle": true,
-                            "wrap": true
+                            "$when": "{platform == 'WPF'}",
+                            "type": "Image",
+                            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Windows_logo_-_2012.svg/768px-Windows_logo_-_2012.svg.png",
+                            "height": "40px"
+                        },
+                        {
+                            "$when": "{platform == 'HTML JS'}",
+                            "type": "Image",
+                            "url": "https://www.w3.org/html/logo/downloads/HTML5_Logo_512.png",
+                            "height": "40px"
                         }
                     ],
-                    "width": "stretch"
-                }
-            ]
-        },
-        {
-            "type": "TextBlock",
-            "text": "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
-            "wrap": true
-        },
-        {
-            "type": "FactSet",
-            "facts": [
-                {
-                    "title": "Board:",
-                    "value": "Adaptive Card"
-                },
-                {
-                    "title": "List:",
-                    "value": "Backlog"
-                },
-                {
-                    "title": "Assigned to:",
-                    "value": "Matt Hidinger"
-                },
-                {
-                    "title": "Due date:",
-                    "value": "Not set"
+                    "width": "auto"
                 }
             ]
         }
     ],
-    "actions": [
-        {
-            "type": "Action.ShowCard",
-            "title": "Set due date",
-            "card": {
-                "type": "AdaptiveCard",
-                "body": [
-                    {
-                        "type": "Input.Date",
-                        "id": "dueDate"
-                    },
-                    {
-                        "type": "Input.Text",
-                        "id": "comment",
-                        "placeholder": "Add a comment",
-                        "isMultiline": true
-                    }
-                ],
-                "actions": [
-                    {
-                        "type": "Action.OpenUrl",
-                        "title": "OK",
-                        "url": "http://adaptivecards.io"
-                    }
-                ],
-                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
-            }
-        },
-        {
-            "type": "Action.OpenUrl",
-            "title": "View",
-            "url": "http://adaptivecards.io"
-        }
-    ],
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "version": "1.0"
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
 }`;
