@@ -105,10 +105,11 @@ export const defaultPayload: string = `{
                         {
                             "type": "Image",
                             "url": "https://raw.githubusercontent.com/Microsoft/AdaptiveCards/master/assets/adaptive-card-200.png",
-                            "height": "40px"
+                            "size": "Stretch"
                         }
                     ],
-                    "width": "auto"
+                    "width": "40px",
+                    "verticalContentAlignment": "Bottom"
                 },
                 {
                     "type": "Column",
@@ -132,7 +133,8 @@ export const defaultPayload: string = `{
                             "height": "40px"
                         }
                     ],
-                    "width": "auto"
+                    "width": "40px",
+                    "verticalContentAlignment": "Bottom"
                 }
             ]
         }
