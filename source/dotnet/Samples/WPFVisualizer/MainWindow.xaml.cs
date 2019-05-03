@@ -24,6 +24,9 @@ using System.Windows.Media;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Document;
+using Jurassic;
+using System.Dynamic;
+using Windows.Security.ExchangeActiveSyncProvisioning;
 
 namespace WpfVisualizer
 {
@@ -32,6 +35,7 @@ namespace WpfVisualizer
         private bool _dirty;
         private readonly SpeechSynthesizer _synth;
         private DocumentLine _errorLine;
+        private ScriptEngine _scriptEngine;
 
         public MainWindow()
         {
@@ -40,6 +44,9 @@ namespace WpfVisualizer
                 TypeDescriptor.AddAttributes(type, new ExpandableObjectAttribute());
 
             InitializeComponent();
+
+            InitializeDataPayload();
+            InitializeScriptEngine();
 
             SwitchState(States.Connect);
 
@@ -81,6 +88,25 @@ namespace WpfVisualizer
 
             // This seems unecessary?
             Renderer.ActionHandlers.AddSupportedAction<MyCustomAction>();
+        }
+
+        private void InitializeDataPayload()
+        {
+            var clientDeviceInfo = new EasClientDeviceInformation();
+
+            dynamic data = new ExpandoObject();
+            data.platform = "WPF";
+            data.manufacturer = clientDeviceInfo.SystemManufacturer;
+            data.model = clientDeviceInfo.SystemProductName;
+            data.osVersion = Environment.OSVersion.Version.ToString();
+
+            DataPayload = JsonConvert.SerializeObject(data, Formatting.Indented);
+        }
+
+        private void InitializeScriptEngine()
+        {
+            _scriptEngine = new ScriptEngine();
+            _scriptEngine.ExecuteFile("Scripts\\templateengine.js");
         }
 
         private enum States
@@ -145,15 +171,26 @@ namespace WpfVisualizer
             set { textBox.Text = value; }
         }
 
+        public string DataPayload { get; private set; }
+
         private void RenderCard()
         {
             cardError.Children.Clear();
             cardGrid.Opacity = 0.65;
 
+            string transformedCard = CardPayload;
+            try
+            {
+                _scriptEngine.SetGlobalValue("cardJson", CardPayload);
+                _scriptEngine.SetGlobalValue("dataJson", DataPayload);
+                transformedCard = _scriptEngine.Evaluate<string>("TemplateEngine.transform(cardJson, dataJson)");
+            }
+            catch { }
+
             try
             {
 
-                AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(CardPayload);
+                AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(transformedCard);
 
                 AdaptiveCard card = parseResult.Card;
 
