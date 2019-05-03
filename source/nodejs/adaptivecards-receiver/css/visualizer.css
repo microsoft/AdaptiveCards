@@ -39,7 +39,6 @@ body {
     height: calc(100vh - 103px);
     border: 1px solid #EEEEEE;
 	overflow: hidden;
-	display: none; /* Hiding editor on the receiver app */
 }
 
 div.markupRender {

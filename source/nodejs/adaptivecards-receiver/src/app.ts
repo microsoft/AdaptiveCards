@@ -40,7 +40,7 @@ function renderCard(target: HTMLElement): HTMLElement {
     document.getElementById("errorContainer").hidden = true;
     lastValidationErrors = [];
 
-    let json = JSON.parse(currentCardPayload);
+    let json = JSON.parse(getCurrentCardPayload());
     let adaptiveCard = new AdaptiveCards.AdaptiveCard();
     adaptiveCard.hostConfig = new AdaptiveCards.HostConfig(currentConfigPayload);
 
@@ -69,7 +69,7 @@ function tryRenderCard() {
     }
 
     try {
-		sessionStorage.setItem("AdaptivePayload", currentCardPayload);
+		sessionStorage.setItem("AdaptivePayload", getCurrentCardPayload());
 		history.replaceState(hostContainerPicker.value, `Visualizer - ${hostContainerPicker.value}`, "index.html" + `?hostApp=${hostContainerPicker.value}&remoteId=${remoteId}`);
     }
     catch (e) {
@@ -95,7 +95,7 @@ function filePickerChanged(evt) {
             let downloadedPayload = (e.target as FileReader).result;
 
             if (typeof downloadedPayload === "string") {
-                currentCardPayload = downloadedPayload;
+                setCurrentCardPayload(downloadedPayload);
             }
 
             switchToCardEditor();
@@ -162,7 +162,12 @@ class HostContainerOption {
     }
 }
 
-var currentCardPayload: string = "";
+function getCurrentCardPayload() { 
+	return monacoEditor.getValue();
+}
+function setCurrentCardPayload(value: string) {
+	monacoEditor.setValue(value);
+}
 var currentConfigPayload: string = "";
 var isLoaded = false;;
 
@@ -277,7 +282,7 @@ async function updateFromRemoteCard() {
 		showErrorStatus("Failed to get latest card");
 	} else {
 		var cardData = await response.json();
-		currentCardPayload = cardData.CardJson;
+		setCurrentCardPayload(cardData.CardJson);
 		tryRenderCard();
 	}
 
@@ -289,7 +294,7 @@ async function updateFromRemoteCard() {
 }
 
 function showConnectingCard() {
-	currentCardPayload = `{
+	setCurrentCardPayload(`{
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"version": "1.0",
@@ -306,12 +311,12 @@ function showConnectingCard() {
 			]
 		}
 	]
-}`;
+}`);
 	tryRenderCard();
 }
 
 function showErrorCard(message: string) {
-	currentCardPayload = `{
+	setCurrentCardPayload(`{
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"version": "1.0",
@@ -329,7 +334,7 @@ function showErrorCard(message: string) {
 			]
 		}
 	]
-}`;
+}`);
 	tryRenderCard();
 }
 
@@ -428,7 +433,7 @@ function switchToCardEditor() {
     document.getElementById("editCard").classList.remove("subdued");
     document.getElementById("editConfig").classList.add("subdued");
 
-    monacoEditor.setValue(currentCardPayload);
+    monacoEditor.setValue(getCurrentCardPayload());
     monacoEditor.focus();
 }
 
@@ -505,7 +510,7 @@ function monacoEditorLoaded() {
     monacoEditor.onDidChangeModelContent(
         function (e) {
             if (isCardEditor) {
-                currentCardPayload = monacoEditor.getValue();
+                // setCurrentCardPayload(monacoEditor.getValue());
             }
             else {
                 currentConfigPayload = monacoEditor.getValue();
@@ -514,7 +519,7 @@ function monacoEditorLoaded() {
             tryRenderCard();
         });
 
-    currentCardPayload = Constants.defaultPayload;
+    setCurrentCardPayload(Constants.defaultPayload)
 
     var initialCardLaodedAsynchronously = false;
     var cardUrl = getParameterByName("card", null);
@@ -526,7 +531,7 @@ function monacoEditorLoaded() {
 
         xhttp.onload = function () {
             if (xhttp.responseText && xhttp.responseText != "") {
-                currentCardPayload = xhttp.responseText;
+                setCurrentCardPayload(xhttp.responseText);
             }
 
             switchToCardEditor();

@@ -28,7 +28,8 @@ function loadMonacoEditor(jsonSchema, callback) {
                 language: 'json',
                 minimap: {
                     enabled: false
-                }
+				},
+				readOnly: true
             }
         );
 
