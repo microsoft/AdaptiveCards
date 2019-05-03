@@ -164,7 +164,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <xctk:PropertyGrid Grid.Row="0" Name="hostConfigEditor" PropertyValueChanged="HostConfigEditor_OnPropertyValueChanged"  Visibility="Visible" >
+                <xctk:PropertyGrid Grid.Row="0" Name="hostConfigEditor" PropertyValueChanged="HostConfigEditor_OnPropertyValueChanged"  Visibility="Collapsed" >
                 </xctk:PropertyGrid>
 
                 <StackPanel Grid.Row="1" Name="hostConfigerror" />
