@@ -187,6 +187,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             data.put("platform", "Android");
             data.put("manufacturer", Build.MANUFACTURER);
             data.put("model", Build.MODEL);
+            data.put("osVersion", Build.VERSION.RELEASE);
             m_dataEditText.setText(data.toString(2));
         } catch (JSONException e) {
             e.printStackTrace();
