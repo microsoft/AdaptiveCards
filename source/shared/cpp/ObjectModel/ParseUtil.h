@@ -101,7 +101,6 @@ namespace AdaptiveSharedNamespace
         void ExpectKeyAndValueType(const Json::Value& json, const char* expectedKey, std::function<void(const Json::Value&)> throwIfWrongType);
 
         std::string ToLowercase(const std::string& value);
-
     };
 
     template<typename T>
@@ -217,14 +216,16 @@ namespace AdaptiveSharedNamespace
             if (currentIndex != 0)
             {
                 // In a top to bottom container (Container, Column) only the first item can bleed up, in a left
-                // to right container (ColumnSet) only the first item can bleed left
+                // to right container (ColumnSet) only the first item can bleed left. If we're not the first item,
+                // turn off the relavent bit.
                 currentBleedState &= isTopToBottomContainer ? ~ContainerBleedDirection::BleedUp : ~ContainerBleedDirection::BleedLeft;
             }
 
             if (currentIndex != (elemSize - 1))
             {
                 // In a top to bottom container (Container, Column) only the last item can bleed down, in a left
-                // to right container (ColumnSet) only the last item can bleed right
+                // to right container (ColumnSet) only the last item can bleed right. If we're not the last item,
+                // turn off the relavent bit.
                 currentBleedState &=
                     isTopToBottomContainer ? ~ContainerBleedDirection::BleedDown : ~ContainerBleedDirection::BleedRight;
             }
