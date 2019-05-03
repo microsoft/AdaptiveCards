@@ -3,6 +3,7 @@
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import * as markdownit from "markdown-it";
 import * as ACDesigner from "adaptivecards-designer";
+import * as platform from "platform";
 import "./app.css";
 
 // TODO: should this be necessary?
@@ -77,11 +78,18 @@ window.onload = function() {
 
 	designer.monacoModuleLoaded(monaco);
 
+	var manufacturer = "Unknown";
+	if (platform.name === "Chrome") {
+		manufacturer = "Google"
+	} else if (platform.name === "Microsoft Edge") {
+		manufacturer = "Microsoft";
+	}
+
 	let sampleData = {
 		platform: "HTML JS",
-		manufacturer: "Unknown",
-		model: "Unknown",
-		osVersion: "Unknown"
+		manufacturer: manufacturer,
+		model: platform.name || "Unknown",
+		osVersion: platform.version
 	};
 	
 	designer.dataStructure = ACDesigner.FieldDefinition.create(sampleData);
