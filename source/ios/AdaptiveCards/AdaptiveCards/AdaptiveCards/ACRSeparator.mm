@@ -109,49 +109,45 @@ using namespace AdaptiveCards;
                            spacing:config->GetActions().spacing];
 }
 
-+ (void)renderSeparation:(std::shared_ptr<BaseCardElement> const &)elem
-            forSuperview:(UIView *)view
-          withHostConfig:(std::shared_ptr<HostConfig> const &)config
++ (ACRSeparator *)renderSeparation:(std::shared_ptr<BaseCardElement> const &)elem
+                      forSuperview:(UIView *)view
+                    withHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    [ACRSeparator renderSeparation:elem superview:view hostConfig:config spacing:Spacing::None];
+    return [ACRSeparator renderSeparation:elem superview:view hostConfig:config spacing:Spacing::None];
 }
 
-+ (void)renderSeparation:(std::shared_ptr<BaseCardElement> const &)elem
-               superview:(UIView *)view
-              hostConfig:(std::shared_ptr<HostConfig> const &)config
-                 spacing:(Spacing)spacing
++ (ACRSeparator *)renderSeparation:(std::shared_ptr<BaseCardElement> const &)elem
+                         superview:(UIView *)view
+                        hostConfig:(std::shared_ptr<HostConfig> const &)config
+                           spacing:(Spacing)spacing
 {
     ACRSeparator *separator = nil;
     Spacing requestedSpacing = Spacing::None;
-    if(elem)
-    {
+    
+    if (elem) {
         requestedSpacing = elem->GetSpacing();
-    }
-    else
-    {
+    } else {
         requestedSpacing = spacing;
     }
-    if(Spacing::None != requestedSpacing)
-    {
+    
+    if (Spacing::None != requestedSpacing) {
         UIStackView *superview = nil;
 
         //clean-up in progress -- need to clean this up
-        if([view isKindOfClass:[UIStackView class]])
-        {
+        if ([view isKindOfClass:[UIStackView class]]) {
             superview = (UIStackView *) view;
-        } else
-        {
+        } else {
             superview = ((ACRContentStackView *) view).stackView;
         }
+        
         unsigned int spacing = [ACRSeparator getSpacing:requestedSpacing hostConfig:config];
         separator = [[ACRSeparator alloc] initWithFrame:CGRectMake(0, 0, spacing, spacing)];
-        if(separator)
-        {
+        
+        if (separator) {
             // Shared model has not implemented support
             separator->width = spacing;
             separator->height = spacing;
-            if(elem && elem->GetSeparator())
-            {
+            if (elem && elem->GetSeparator()) {
                 separator->rgb = std::stoul(config->GetSeparator().lineColor.substr(1), nullptr, 16);
                 separator->lineWidth = config->GetSeparator().lineThickness;;
             }
@@ -165,9 +161,13 @@ using namespace AdaptiveCards;
                                                               havingAxis:superview.axis
                                                                   toAxis:superview.axis];
 
-            if(constraint) [superview addConstraint:constraint];
+            if (constraint) {
+                [superview addConstraint:constraint];
+            }
         }
     }
+    
+    return separator;
 }
 
 + (unsigned int)getSpacing:(Spacing)spacing hostConfig:(std::shared_ptr<HostConfig> const &)config
