@@ -88,6 +88,10 @@ namespace AdaptiveCards.Rendering.Wpf
                     // add actions
                     var uiAction = (Button)context.Render(action);
 
+                    if (uiAction == null)
+                    {
+                        continue;
+                    }
 
                     if (actionsConfig.ActionsOrientation == ActionsOrientation.Horizontal)
                     {
@@ -141,8 +145,8 @@ namespace AdaptiveCards.Rendering.Wpf
         private static List<AdaptiveAction> GetActionsToProcess(IList<AdaptiveAction> actions, int maxActions)
         {
             // only consider known actions for ActionsToProcess
-            var actionsToProcess = actions.Where(obj => obj.GetType() != typeof(AdaptiveUnknownAction)).ToList();
-            return actionsToProcess.Take(maxActions).ToList();
+            // var actionsToProcess = actions.ToList();
+            return actions.Take(maxActions).ToList();
         }
     }
 }
