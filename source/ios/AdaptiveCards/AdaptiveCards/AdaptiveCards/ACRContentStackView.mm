@@ -212,21 +212,29 @@ using namespace AdaptiveCards;
                                                                 options:0
                                                                 metrics:nil
                                                                   views:dictionary];
-    NSArray *vertConst = [NSLayoutConstraint constraintsWithVisualFormat:verString
-                                                                 options:0
-                                                                 metrics:nil
-                                                                   views:dictionary];
+    _heightconstraint = [NSLayoutConstraint constraintsWithVisualFormat:verString
+                                                                options:0
+                                                                metrics:nil
+                                                                  views:dictionary];
 
     [self addConstraints:_widthconstraint];
-    [self addConstraints:vertConst];
+    [self addConstraints:_heightconstraint];
 }
 
 - (void)bleed:(unsigned int)padding priority:(unsigned int)priority target:(UIView *)target
-    direction:(ACRBleedDirection)direction
 {
     [self removeConstraints:_widthconstraint];
+    [self removeConstraints:_heightconstraint];
+    [self applyPadding:0 priority:1000];
     // new width will be bleed target - padding left and right
-    [self.stackView.widthAnchor constraintEqualToAnchor:target.widthAnchor constant:padding * -2.0].active = YES;
+    //[self.stackView.widthAnchor constraintEqualToAnchor:target.widthAnchor constant:padding * -2.0].active = YES;
+}
+
+- (void)bleedVertically:(unsigned int)padding priority:(unsigned int)priority target:(UIView *)target
+{
+    [self removeConstraints:_heightconstraint];
+    // new width will be bleed target - padding left and right
+    //[self.stackView.heightAnchor constraintEqualToAnchor:target.heightAnchor constant:padding * -2.0].active = YES;
 }
 
 - (UILayoutConstraintAxis)getAxis

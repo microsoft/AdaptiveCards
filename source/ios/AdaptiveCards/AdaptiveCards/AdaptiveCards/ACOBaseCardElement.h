@@ -54,7 +54,9 @@ typedef NS_ENUM(NSInteger, ACRBleedDirection) {
     ACRRestricted,
     ACRToLeadingEdge,
     ACRToTrailingEdge,
-    ACRToBothEdges    
+    ACRToTopEdge,
+    ACRToBottomEdge,
+    ACRToAll
 };
 
 @property ACRCardElementType type;

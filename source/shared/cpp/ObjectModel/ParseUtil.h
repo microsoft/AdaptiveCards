@@ -5,6 +5,7 @@
 #include "pch.h"
 #include "AdaptiveCardParseException.h"
 #include "ParseContext.h"
+//#include "BaseCardElement.h"
 
 namespace AdaptiveSharedNamespace
 {
@@ -187,6 +188,18 @@ namespace AdaptiveSharedNamespace
         T result = jsonObject.empty() ? defaultValue : deserializer(jsonObject, defaultValue);
         return result;
     }
+    
+    // Element [de]serialization
+    
+    // A little template jiu-jitsu here -- given the provided parameters, we need BaseElement::ParseJsonObject to
+    // call either BaseCardElement::ParseJsonObject or BaseActionElement::ParseJsonObject.
+    template<typename T>
+    static void ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context,
+                                const Json::Value& json,
+                                std::shared_ptr<BaseElement>& baseElement)
+    {
+        T::ParseJsonObject(context, json, baseElement);
+    }
 
     template<typename T>
     std::vector<std::shared_ptr<T>> ParseUtil::GetElementCollection(bool isTopToBottomContainer,
@@ -246,7 +259,7 @@ namespace AdaptiveSharedNamespace
             }
 
             std::shared_ptr<BaseElement> curElement;
-            BaseElement::ParseJsonObject<T>(context, curJsonValue, curElement);
+            ParseJsonObject<T>(context, curJsonValue, curElement);
             elements.push_back(std::static_pointer_cast<T>(curElement));
 
             // restores the parent's bleed state
