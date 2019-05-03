@@ -217,7 +217,7 @@ namespace AdaptiveSharedNamespace
             {
                 // In a top to bottom container (Container, Column) only the first item can bleed up, in a left
                 // to right container (ColumnSet) only the first item can bleed left. If we're not the first item,
-                // turn off the relavent bit.
+                // turn off the relevant bit.
                 currentBleedState &= isTopToBottomContainer ? ~ContainerBleedDirection::BleedUp : ~ContainerBleedDirection::BleedLeft;
             }
 
@@ -225,7 +225,7 @@ namespace AdaptiveSharedNamespace
             {
                 // In a top to bottom container (Container, Column) only the last item can bleed down, in a left
                 // to right container (ColumnSet) only the last item can bleed right. If we're not the last item,
-                // turn off the relavent bit.
+                // turn off the relevant bit.
                 currentBleedState &=
                     isTopToBottomContainer ? ~ContainerBleedDirection::BleedDown : ~ContainerBleedDirection::BleedRight;
             }
