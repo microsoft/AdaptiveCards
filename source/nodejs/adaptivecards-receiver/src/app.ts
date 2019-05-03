@@ -4,6 +4,7 @@ import * as AdaptiveCards from "adaptivecards";
 import * as MarkdownIt from "markdown-it";
 import * as Constants from "./constants";
 import * as platform from "platform.js";
+import { Template } from "./template-engine/template-engine";
 
 import { HostContainer } from "./containers/host-container";
 import { SkypeContainer } from "./containers/skype";
@@ -18,6 +19,7 @@ import { adaptiveCardSchema } from "./adaptive-card-schema";
 import { CortanaContainer } from "./containers/cortana";
 
 import { NativeEventSource, EventSourcePolyfill } from "event-source-polyfill";
+import { EvaluationContext } from "./template-engine/expression-parser";
 
 const EventSource = NativeEventSource || EventSourcePolyfill;
 
@@ -41,7 +43,14 @@ function renderCard(target: HTMLElement): HTMLElement {
     document.getElementById("errorContainer").hidden = true;
     lastValidationErrors = [];
 
-    let json = JSON.parse(getCurrentCardPayload());
+	var json = JSON.parse(getCurrentCardPayload());
+	let data = JSON.parse(monacoDataEditor.getValue());
+	
+	var template = new Template(json);
+	var context = new EvaluationContext();
+	context.$root = data;
+	json = template.expand(context);
+
     let adaptiveCard = new AdaptiveCards.AdaptiveCard();
     adaptiveCard.hostConfig = new AdaptiveCards.HostConfig(currentConfigPayload);
 
