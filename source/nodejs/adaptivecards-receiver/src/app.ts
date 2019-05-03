@@ -242,7 +242,10 @@ function remoteIdChanged() {
 }
 
 function connect(secondAttempt: boolean) {
-	showConnectingCard();
+	if (!secondAttempt) {
+		showConnectingCard();
+	}
+
 	remoteEventSource = new EventSource(baseRemoteUrl + "card/" + remoteId + "/subscribe");
 	remoteEventSource.onmessage = function(event) {
 		console.log("Received message");
