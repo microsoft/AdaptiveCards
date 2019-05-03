@@ -280,6 +280,12 @@ namespace WpfVisualizer
 
         private void ShowWarning(string message)
         {
+            // Ignore these
+            if (message.Contains("'$when'"))
+            {
+                return;
+            }
+
             var textBlock = new TextBlock
             {
                 Text = "WARNING: " + message,
