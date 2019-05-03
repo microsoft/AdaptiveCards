@@ -6,7 +6,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:avalon="http://icsharpcode.net/sharpdevelop/avalonedit"
         mc:Ignorable="d" Loaded="Window_Loaded" 
-        Title="Adaptive Cards WPF Visualizer" Height="1000" Width="1000">
+        Title="Adaptive Cards WPF Visualizer" Height="1000" Width="1000"
+        x:Name="ThisWindow">
 
     <Window.Resources>
 
@@ -94,6 +95,7 @@
                 <Button Name="toggleOptions" Content="Edit" Margin="4" Click="toggleOptions_Click" HorizontalAlignment="Right"/>
             </StackPanel>
 
+            <!--Card payload editor-->
             <Grid
                 Grid.Row="1"
                 Grid.Column="0">
@@ -116,13 +118,37 @@
 
             <GridSplitter Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" ResizeDirection="Columns"/>
 
-            <Grid Grid.Row="1" Grid.Column="2" Background="LightGray">
-                <Grid Name="cardGrid" MaxWidth="700" VerticalAlignment="Top" Margin="10" Background="WhiteSmoke" >
-                    <Grid.Effect>
-                        <DropShadowEffect BlurRadius="15" ShadowDepth="2" RenderingBias="Quality" Direction="-90"/>
-                    </Grid.Effect>
+            <!--Card preview-->
+            <Grid
+                Grid.Row="1"
+                Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/> <!--Card preview-->
+                    <RowDefinition Height="5"/> <!--Draggable divider-->
+                    <RowDefinition Height="0.5*"/> <!--Data payload-->
+                </Grid.RowDefinitions>
+                
+                <!--Card preview-->
+                <Grid Grid.Row="0" Background="LightGray">
+                    <Grid Name="cardGrid" MaxWidth="700" VerticalAlignment="Top" Margin="10" Background="WhiteSmoke" >
+                        <Grid.Effect>
+                            <DropShadowEffect BlurRadius="15" ShadowDepth="2" RenderingBias="Quality" Direction="-90"/>
+                        </Grid.Effect>
 
+                    </Grid>
                 </Grid>
+
+                <!--Draggable divider-->
+                <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" ResizeDirection="Rows"/>
+
+                <!--Data payload-->
+                <avalon:TextEditor
+                    Grid.Row="2"
+                    x:Name="textBoxDataPayload"
+                    FontFamily="Consolas"
+                    FontSize="10pt"
+                    ShowLineNumbers="true"
+                    IsReadOnly="True"/>
             </Grid>
 
             <GridSplitter Grid.Row="1" Grid.Column="3" HorizontalAlignment="Stretch" ResizeDirection="Columns"/>

@@ -101,6 +101,7 @@ namespace WpfVisualizer
             data.osVersion = Environment.OSVersion.Version.ToString();
 
             DataPayload = JsonConvert.SerializeObject(data, Formatting.Indented);
+            textBoxDataPayload.Text = DataPayload;
         }
 
         private void InitializeScriptEngine()
@@ -151,6 +152,10 @@ namespace WpfVisualizer
             using (var xmlReader = new System.Xml.XmlTextReader("SyntaxHighlighting\\JSON.xml"))
             {
                 textBox.SyntaxHighlighting = HighlightingLoader.Load(xmlReader, HighlightingManager.Instance);
+            }
+            using (var xmlReader = new System.Xml.XmlTextReader("SyntaxHighlighting\\JSON.xml"))
+            {
+                textBoxDataPayload.SyntaxHighlighting = HighlightingLoader.Load(xmlReader, HighlightingManager.Instance);
             }
         }
 
