@@ -8,6 +8,7 @@ import * as Handlebars from "handlebars";
 import * as Api from "../api";
 import * as ReferralSampleData from "../../samples/Referral.data.json";
 import * as AppointmentSampleData from "../../samples/Appointment.data.json";
+import { AdaptiveCard } from "adaptivecards";
 
 export class FormEditor {
 
@@ -43,7 +44,9 @@ export class FormEditor {
 
 		// Comment to disable preview features (data binding)
 		ACDesigner.GlobalSettings.previewFeaturesEnabled = true;
-
+		AdaptiveCard.useBuiltInInputValidation = true;
+		AdaptiveCard.displayInputValidationErrors = true;
+		
 		ACDesigner.CardDesigner.onProcessMarkdown = (text: string, result: { didProcess: boolean, outputHtml: string }) => {
 			result.outputHtml = new markdownit().render(text);
 			result.didProcess = true;

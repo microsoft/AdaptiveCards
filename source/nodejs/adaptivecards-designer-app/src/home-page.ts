@@ -57,6 +57,7 @@ export class HomePage {
 		referralData.forEach(item => {
 			this.renderCard($("#pendingReferrals"), template, item, {
 				"scheduleSubmit": async (action) => {
+					let timeZoneOffset = ("0" + new Date().getTimezoneOffset() / 60).slice(-2)
 					let appointment: Api.Appointment = {
 						patient: item.patient,
 						referral: item,
@@ -65,7 +66,7 @@ export class HomePage {
 						provider: {
 							name: action.data.provider
 						},
-						appointmentTime: `${action.data.date}T${action.data.time}:00Z`
+						appointmentTime: `${action.data.date}T${action.data.time}:00-${timeZoneOffset}:00`
 					};
 					await Api.Api.addAppointment(appointment);
 					await this.loadAppointments();
