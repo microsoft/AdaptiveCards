@@ -22,6 +22,7 @@ import { BaseTreeItem } from "./base-tree-item";
 import * as Shared from "./shared";
 import { ShareDialog } from "./share-dialog";
 import { ICardData } from "./card-hub";
+import * as browserInfo from "browser-info";
 
 export class CardDesigner {
     private static internalProcessMarkdown(text: string, result: Adaptive.IMarkdownProcessingResult) {
@@ -726,7 +727,24 @@ export class CardDesigner {
 
         window.addEventListener('resize', () => { this.onResize(); });
 
-        this._isMonacoEditorLoaded = true;
+		this._isMonacoEditorLoaded = true;
+		
+		var info = browserInfo();
+		var manufacturer = "Unknown";
+		if (info.name === "Chrome") {
+			manufacturer = "Google"
+		} else if (info.name === "Microsoft Edge") {
+			manufacturer = "Microsoft";
+		}
+
+		var sampleData = {
+			platform: "HTML JS",
+			manufacturer: manufacturer,
+			model: info.name || "Unknown",
+			osVersion: info.fullVersion || "Unknown"
+		};
+		this.dataStructure = FieldDefinition.create(sampleData);
+		this.sampleData = sampleData;
 
         this.updateJsonEditorsLayout();
         this.updateJsonFromCard(false);

@@ -77,21 +77,4 @@ window.onload = function() {
     */
 
 	designer.monacoModuleLoaded(monaco);
-
-	var manufacturer = "Unknown";
-	if (platform.name === "Chrome") {
-		manufacturer = "Google"
-	} else if (platform.name === "Microsoft Edge") {
-		manufacturer = "Microsoft";
-	}
-
-	let sampleData = {
-		platform: "HTML JS",
-		manufacturer: manufacturer,
-		model: platform.name || "Unknown",
-		osVersion: platform.version
-	};
-	
-	designer.dataStructure = ACDesigner.FieldDefinition.create(sampleData);
-	designer.sampleData = sampleData;
 }

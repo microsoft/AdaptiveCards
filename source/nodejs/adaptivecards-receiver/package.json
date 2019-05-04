@@ -21,10 +21,10 @@
 		"event-source-polyfill": "^1.0.5",
 		"markdown-it": "^8.4.0",
 		"monaco-editor": "^0.15.6",
-		"platform.js": "^1.0.0",
 		"vkbeautify": "^0.99.3"
 	},
 	"devDependencies": {
+		"browser-info": "^1.2.0",
 		"rimraf": "^2.6.2",
 		"typescript": "^3.2.2",
 		"webpack": "^4.27.1",

@@ -29,6 +29,7 @@
 		"qrcode-generator-ts": "0.0.4"
 	},
 	"devDependencies": {
+		"browser-info": "^1.2.0",
 		"rimraf": "^2.6.2",
 		"typescript": "^3.2.2",
 		"webpack": "^4.27.1",

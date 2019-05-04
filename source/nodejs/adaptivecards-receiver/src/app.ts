@@ -3,8 +3,8 @@
 import * as AdaptiveCards from "adaptivecards";
 import * as MarkdownIt from "markdown-it";
 import * as Constants from "./constants";
-import * as platform from "platform.js";
 import { Template } from "./template-engine/template-engine";
+import * as browserInfo from "browser-info";
 
 import { HostContainer } from "./containers/host-container";
 import { SkypeContainer } from "./containers/skype";
@@ -532,18 +532,19 @@ function monacoEditorLoaded() {
 
 	setCurrentCardPayload(Constants.defaultPayload);
 
+	var info = browserInfo();
 	var manufacturer = "Unknown";
-	if (platform.name === "Chrome") {
+	if (info.name === "Chrome") {
 		manufacturer = "Google"
-	} else if (platform.name === "Microsoft Edge") {
+	} else if (info.name === "Microsoft Edge") {
 		manufacturer = "Microsoft";
 	}
 
-	let sampleData = {
+	var sampleData = {
 		platform: "HTML JS",
 		manufacturer: manufacturer,
-		model: platform.name || "Unknown",
-		osVersion: platform.version || "Unknown"
+		model: info.name || "Unknown",
+		osVersion: info.fullVersion || "Unknown"
 	};
 	
 	monacoDataEditor.setValue(JSON.stringify(sampleData, null, 2));
