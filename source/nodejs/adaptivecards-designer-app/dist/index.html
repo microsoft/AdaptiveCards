@@ -7,18 +7,19 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Contoso Clinic</title>
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-	<link rel="stylesheet" href="dist/containers/webchat-container.css">
+	<!-- <link rel="stylesheet" href="/dist/containers/webchat-container.css"> -->
+	<link rel="stylesheet" href="/dist/adaptivecards-designer-app.css">
 	<script type="text/javascript" src="https://unpkg.com/markdown-it/dist/markdown-it.min.js"></script>
 </head>
 
 <body>
 	<div class="w3-bar w3-light-grey">
 		<a href="/" data-navigo class="w3-bar-item w3-button">Home</a>
-		<a href="/admin/forms" data-navigo class="w3-bar-item w3-button">Form Editor</a>
+		<a href="/admin/forms" data-navigo class="w3-bar-item w3-button">Admin</a>
 		<a href="/forms" data-navigo class="w3-bar-item w3-button">Form Browser</a>
 
-		<a href="#" class="w3-bar-item w3-button w3-green w3-right">Go</a>
-		<input type="text" class="w3-bar-item w3-input w3-right" placeholder="Search..">
+		<a href="#" id="resetDemo" data-navigo class="w3-bar-item w3-button w3-orange w3-right">Reset</a>
+		<a href="#" id="generateReferral" data-navigo class="w3-bar-item w3-button w3-green w3-right">Generate Referral</a>
 	</div>
 
 	<!-- Error Template -->
@@ -64,7 +65,7 @@
 		Items
 		<ul>
 			{{#each items}}
-				<li><a href="/admin/forms/{{this.name}}" data-navigo>{{this.metadata.displayname}}</a></li>
+				<li><a href="/admin/forms/{{@key}}" data-navigo>{{this.metadata.displayname}}</a></li>
 			{{/each}}
 		</ul>
 		<div class="">
@@ -90,7 +91,7 @@
 	</script>
 
 
-	<div id="app">App loading...</div>
+	<div id="app" style="height: calc(100vh - 37px); overflow: auto">App loading...</div>
 <script type="text/javascript" src="/adaptivecards-designer-app.js"></script></body>
 
 </html>

@@ -104,13 +104,11 @@ a.ac-anchor:visited:active {
 }
 
 .ac-pushButton.sentiment-destructive {
-    background-color: #ee3737bd;
-    color: white;
+    background-color: #E50000;
 }
 
 .ac-pushButton.sentiment-destructive:hover, .ac-pushButton.sentiment-destructive:active {
-    background-color: #ee2020bd;
-    color: white;
+    background-color: #BF0000;
 }
 
 .ac-quickActionButton {

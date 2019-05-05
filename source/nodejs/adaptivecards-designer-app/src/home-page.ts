@@ -1,12 +1,9 @@
 import * as $ from "jquery";
 import * as Handlebars from "handlebars";
 import * as AdaptiveCards from "adaptivecards";
-import { Template } from "./template-engine/template-engine";
-import { EvaluationContext } from "./template-engine/expression-parser";
 import * as weather from "../samples/Weather.json";
-import * as HostConfig from "../samples/HostConfig.json";
 import * as Api from "./api";
-import { DataPaletteItem } from "adaptivecards-designer";
+import * as Utils from "./utils";
 
 export class HomePage {
 
@@ -38,7 +35,7 @@ export class HomePage {
 		await this.loadReferrals();
 
 		await this.loadAppointments();
-		this.renderCard($("#homeCards"), weather);
+		Utils.renderCard($("#homeCards"), weather);
 	}
 
 	private async loadAppointments() {
@@ -47,7 +44,7 @@ export class HomePage {
 		let appointments = await Api.Api.getAppointments();
 		let template = await Api.Api.getTemplate("appointments");
 		appointments.forEach(item => {
-			this.renderCard($("#appointmentCards"), template, item);
+			Utils.renderCard($("#appointmentCards"), template, item);
 		});
 	}
 
@@ -57,7 +54,7 @@ export class HomePage {
 		let template = await Api.Api.getTemplate("referrals");
 
 		referralData.forEach(item => {
-			this.renderCard($("#pendingReferrals"), template, item, {
+			Utils.renderCard($("#pendingReferrals"), template, item, {
 				"scheduleSubmit": async (action) => {
 					let timeZoneOffset = ("0" + new Date().getTimezoneOffset() / 60).slice(-2)
 					let appointment: Api.Appointment = {
@@ -78,27 +75,4 @@ export class HomePage {
 		});
 	}
 
-	private renderCard(el: JQuery<HTMLElement>, json: object, data?: object, actionMap?) {
-
-		let cardPayload = json;
-		if (data !== undefined) {
-			let template = new Template(json);
-			let context = new EvaluationContext();
-			context.$root = data;
-			cardPayload = template.expand(context)
-		}
-
-		let card = new AdaptiveCards.AdaptiveCard();
-		card.hostConfig = new AdaptiveCards.HostConfig(HostConfig);
-		card.onExecuteAction = (action) => {
-			var submitAction = <AdaptiveCards.SubmitAction>action;
-			//console.log(JSON.stringify(submitAction.data));
-			if (actionMap && actionMap[submitAction.id]) {
-				actionMap[submitAction.id](submitAction);
-			}
-		};
-		card.parse(cardPayload);
-		el.append($("<div class='card'>").append(card.render()));
-
-	}
 }

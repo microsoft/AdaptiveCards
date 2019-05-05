@@ -32,24 +32,15 @@ window.addEventListener("load", async () => {
 			formPage.show();
 			await formPage.loadForm(params.id);
 			router.updatePageLinks();
-
 		})
 		.on("/forms", async () => {
 			await formPage.render();
 			formPage.show();
 			router.updatePageLinks();
 		})
-		.on("/admin/forms/:id", async (params) => {
-			await formEditor.render();
-			formEditor.show();
-			await formEditor.loadForm(params.id);
-			router.updatePageLinks();
-
-		})
 		.on("/admin/forms", async () => {
 			await formEditor.render();
 			formEditor.show();
-			router.updatePageLinks();
 		})
 		.resolve();
 

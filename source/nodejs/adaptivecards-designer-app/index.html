@@ -61,21 +61,27 @@
 
 	<!-- Form Editor -->
 	<script id="form-editor-template" type="text/x-handlebars-template">
-		<h1 class="ui header">Form Editor</h1>
-		Items
-		<ul>
-			{{#each items}}
-				<li><a href="/admin/forms/{{@key}}" data-navigo>{{this.metadata.displayname}}</a></li>
-			{{/each}}
-		</ul>
-		<div class="">
-			<div id="designerRootHost"></div>
-
+		<div id="designerContainer" class="overlay">
+			<div id="designerRootHost" class="overlay-content"></div>
 		</div>
 		
+		<div class="w3-container">
+			<h1 class="ui header">Admin</h1>
+			<div class="w3-cell-row">
+				{{#each items}}
+					<div class="w3-card w3-hover w3-cell w3-container" style="width: 400px; max-height: 400px; overflow: hidden">
+						<header>
+							<button id="editCard-{{this.id}}" class="w3-button">{{this.metadata.displayname}}</a>
+						</header>
+						<div id="cardContainer-{{this.id}}"></div>
+					</div>
+				{{/each}}
+			</div>
+		
+		</div>
 	</script>
 
-	<!-- Form Editor -->
+	<!-- Form Browser -->
 	<script id="form-template" type="text/x-handlebars-template">
 		<h1 class="ui header">Form Browser</h1>
 		Items
