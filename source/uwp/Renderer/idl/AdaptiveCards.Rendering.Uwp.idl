@@ -473,7 +473,8 @@ AdaptiveNamespaceStart
         UnsupportedSchemaVersion,
         UnsupportedMediaType,
         InvalidMediaMix,
-        UnsupportedValue
+        UnsupportedValue,
+        PerformingFallback
     } WarningStatusCode;
 
     [version(NTDDI_WIN10_RS1)]
