@@ -4,6 +4,7 @@ import { generateUuid } from "ms-rest-js";
 //import { ListBlobsIncludeItem } from "@azure/storage-blob/typings/lib/generated/models";
 import * as DefaultReferralTemplate from "../samples/Referral.json";
 import * as DefaultAppointmentTemplate from "../samples/Appointment.json";
+import * as DefaultPatientIntakeTemplate from "../samples/PatientIntake.json";
 import * as DefaultReferralData from "../samples/Referral.data.json";
 import * as AppSettings from "../samples/app.json";
 
@@ -62,6 +63,7 @@ export class Api {
 
 		await Api.saveTemplate("referrals", DefaultReferralTemplate);
 		await Api.saveTemplate("appointments", DefaultAppointmentTemplate);
+		await Api.saveTemplate("patients", DefaultPatientIntakeTemplate);
 		await Api.addReferral(DefaultReferralData);
 	}
 
@@ -116,7 +118,7 @@ export class Api {
 		return response;
 	}
 
-	static async getTemplate(id: string): Promise<object> {
+	static async getTemplate(id: string): Promise<any> {
 		return await Api.loadBlobAs<object>(Azure.Aborter.None, this.appContainerURL, `${id}/template`);
 	}
 

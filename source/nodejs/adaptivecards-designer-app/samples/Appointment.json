@@ -59,7 +59,7 @@
     ],
     "actions": [
         {
-            "type": "Action.Submit",
+            "type": "Contoso.Action.CheckIn",
             "title": "Check-in",
             "sentiment": "Positive"
         },

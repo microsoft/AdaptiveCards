@@ -31,6 +31,8 @@ export class HomePage {
 	}
 
 	public async show() {
+		AdaptiveCards.AdaptiveCard.actionTypeRegistry.unregisterType("Contoso.Action.CheckIn");
+
 		this.appElement.html(this.html);
 
 		await this.loadReferrals();
