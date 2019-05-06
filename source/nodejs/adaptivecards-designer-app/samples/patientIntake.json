@@ -1,98 +1,185 @@
 {
-	"type": "AdaptiveCard",
-	"body": [
-		{
-			"type": "TextBlock",
-			"size": "Large",
-			"text": "Please complete this referral request",
-			"wrap": true
-		},
-		{
-			"type": "TextBlock",
-			"color": "Accent",
-			"text": "Patient Name"
-		},
-		{
-			"type": "Input.Text",
-			"id": "PatientName",
-			"placeholder": "Placeholder text"
-		},
-		{
-			"type": "Input.Toggle",
-			"id": "HasInsurance",
-			"title": "Does this patient have insurance?",
-			"value": "false",
-			"wrap": false
-		},
-		{
-			"type": "TextBlock",
-			"color": "Accent",
-			"text": "Referring To"
-		},
-		{
-			"type": "Input.Text",
-			"id": "DoctorName",
-			"placeholder": "Placeholder text"
-		},
-		{
-			"type": "TextBlock",
-			"color": "Accent",
-			"text": "Referral Need"
-		},
-		{
-			"type": "Input.Text",
-			"id": "ReferralNeed",
-			"placeholder": "Placeholder text"
-		},
-		{
-			"type": "TextBlock",
-			"color": "Accent",
-			"text": "Are you the referring physician?"
-		},
-		{
-			"type": "Input.ChoiceSet",
-			"id": "Rating",
-			"placeholder": "Placeholder text",
-			"choices": [
-				{
-					"title": "Yes",
-					"value": "yes"
-				},
-				{
-					"title": "No",
-					"value": "no"
-				}
-			],
-			"style": "expanded"
-		},
-		{
-			"type": "TextBlock",
-			"color": "Accent",
-			"text": "Requested Date for Appointment"
-		},
-		{
-			"type": "Input.Date",
-			"id": "RequestedDate"
-		},
-		{
-			"type": "TextBlock",
-			"color": "Accent",
-			"text": "Any notes we should add for the doctor?"
-		},
-		{
-			"type": "Input.Text",
-			"id": "Notes",
-			"placeholder": "Let us know!",
-			"isMultiline": true
-		}
-	],
-	"actions": [
-		{
-			"type": "Action.Submit",
-			"id": "Submit",
-			"title": "Submit Referral"
-		}
-	],
-	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-	"version": "1.0"
+    "type": "AdaptiveCard",
+    "body": [
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "size": "Large",
+                    "text": "Welcome to Contoso Clinic",
+                    "wrap": true
+                }
+            ],
+            "style": "good",
+            "bleed": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "Patient Name"
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "Input.Text",
+                            "title": "",
+                            "placeholder": "First",
+                            "id": "firstName"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "Input.Text",
+                            "title": "New Input.Toggle",
+                            "placeholder": "Middle initial",
+                            "id": "middleName"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "Input.Text",
+                            "title": "New Input.Toggle",
+                            "placeholder": "Last",
+                            "id": "lastName"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "Date of birth"
+        },
+        {
+            "type": "Input.Date",
+            "title": "New Input.Toggle",
+            "id": "dateOfBirth"
+        },
+        {
+            "type": "TextBlock",
+            "text": "Phone number"
+        },
+        {
+            "type": "Input.Text",
+            "title": "New Input.Toggle",
+            "placeholder": "(###) ###-####",
+            "style": "Tel",
+            "id": "phoneNumber"
+        },
+        {
+            "type": "TextBlock",
+            "text": "Occupation"
+        },
+        {
+            "type": "Input.Text",
+            "title": "New Input.Toggle",
+            "placeholder": "Occupation",
+            "id": "occupation"
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "width": "auto",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Do you smoke?",
+                                    "wrap": true
+                                },
+                                {
+                                    "type": "Input.ChoiceSet",
+                                    "placeholder": "Placeholder text",
+                                    "choices": [
+                                        {
+                                            "title": "No",
+                                            "value": "no"
+                                        },
+                                        {
+                                            "title": "Yes",
+                                            "value": "yes"
+                                        }
+                                    ],
+                                    "style": "expanded",
+                                    "id": "doesSmoke"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "width": "stretch",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "How many years did you smoke?",
+                                    "wrap": true
+                                },
+                                {
+                                    "type": "Input.Number",
+                                    "title": "New Input.Toggle",
+                                    "placeholder": "",
+                                    "id": "smokeYears"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "width": "stretch",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "How many packs per day?",
+                                    "wrap": true
+                                },
+                                {
+                                    "type": "Input.Number",
+                                    "title": "New Input.Toggle",
+                                    "placeholder": "",
+                                    "id": "smokePacks"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "style": "emphasis",
+            "bleed": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "Any notes we should add for the doctor?"
+        },
+        {
+            "type": "Input.Text",
+            "id": "notes",
+            "placeholder": "Let us know!",
+            "isMultiline": true
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "id": "Submit",
+            "title": "Save"
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.0"
 }

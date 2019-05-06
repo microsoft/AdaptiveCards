@@ -32,42 +32,49 @@ export class HomePage {
 
 		this.appElement.html(this.html);
 
-		await this.loadReferrals();
+		this.loadReferrals();
 
-		await this.loadAppointments();
+		this.loadAppointments();
 		Utils.renderCard($("#homeCards"), weather);
 	}
 
 	private async loadAppointments() {
 		$("#appointmentCards").empty();
 
-		let appointments = await Api.Api.getAppointments();
-		let template = await Api.Api.getTemplate("appointments");
+		let appointments = await Api.Api.getItems<Api.Appointment>("appointments");
+		let template = await Api.Api.getItemAs<object>("appointments/template");
 		appointments.forEach(item => {
-			Utils.renderCard($("#appointmentCards"), template, item);
+			Utils.renderCard($("#appointmentCards"), template, item, {
+				"cancelSubmit": async () => {
+					await Api.Api.deleteItem(item.blobId);
+					await this.loadAppointments();
+				}
+			});
 		});
 	}
 
 	private async loadReferrals() {
 		$("#pendingReferrals").empty();
-		let referralData = await Api.Api.getReferrals();
-		let template = await Api.Api.getTemplate("referrals");
+		let referralData = await Api.Api.getItems<Api.Referral>("referrals");
+		let template = await Api.Api.getItemAs<object>("referrals/template");
 
-		referralData.forEach(item => {
-			Utils.renderCard($("#pendingReferrals"), template, item, {
+		referralData.forEach(referral => {
+			Utils.renderCard($("#pendingReferrals"), template, referral, {
 				"scheduleSubmit": async (action) => {
 					let timeZoneOffset = ("0" + new Date().getTimezoneOffset() / 60).slice(-2)
 					let appointment: Api.Appointment = {
-						patient: item.patient,
-						referral: item,
-						patientNeed: item.referralNeed,
+						patient: referral.patient,
+						referral: referral,
+						patientNeed: referral.referralNeed,
 						room: action.data.room,
 						provider: {
 							name: action.data.provider
 						},
 						appointmentTime: `${action.data.date}T${action.data.time}:00-${timeZoneOffset}:00`
 					};
-					await Api.Api.addAppointment(appointment);
+					await Api.Api.save(`appointments/${Api.Api.generateId()}`, appointment);
+					await Api.Api.deleteItem(referral.blobId);
+					await this.loadReferrals();
 					await this.loadAppointments();
 				},
 				"commentSubmit": (action) => alert("Add Comment " + action.data.comments)

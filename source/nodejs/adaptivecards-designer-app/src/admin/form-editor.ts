@@ -21,29 +21,42 @@ export class FormEditor {
 	private designer: ACDesigner.CardDesigner;
 	private isLoaded = false;
 	private html: string;
-	private formId?: string;
+	private currentTemplateId?: string;
 
 	private templates = [
 		{
-			id: "patients",
+			id: "referrals/intakeForm",
+			htmlId: "referrals-intakeForm",
+			sampleData: {},
 			metadata: {
-				displayname: "Patient Intake Template"
+				displayname: "Referral Intake Form"
 			},
 		},
 		{
-			id: "referrals",
+			id: "referrals/template",
+			htmlId: "referrals-template",
 			sampleData: ReferralSampleData,
 			metadata: {
-				displayname: "Referral Template"
+				displayname: "Referral"
 			},
 		},
 		{
-			id: "appointments",
+			id: "appointments/template",
+			htmlId: "appointments-template",
 			sampleData: AppointmentSampleData,
 			metadata: {
-				displayname: "Appiontment Template"
+				displayname: "Appointment"
 			}
-		}
+		},
+		{
+			id: "patients/intakeForm",
+			htmlId: "patients-intakeForm",
+			sampleData: {},
+			metadata: {
+				displayname: "Patient Intake Form"
+			},
+		},
+
 	];
 
 	public async render(): Promise<void> {
@@ -94,21 +107,41 @@ export class FormEditor {
 
 		const formEditorTemplate = Handlebars.compile($('#form-editor-template').html());
 
-		this.templates.forEach(async t => {
-			var tCard = await Api.Api.getTemplate(t.id)
-			Utils.renderCard($(`#cardContainer-${t.id}`), tCard, t.sampleData);
-			$(`#editCard-${t.id}`).click(() => {
-				this.showDesigner();
-				
-				this.designer.setCard(tCard);
-				this.designer.sampleData = t.sampleData;
-				this.designer.dataStructure = ACDesigner.FieldDefinition.create(t.sampleData);
-				
-			});
-		});
+
 		this.html = formEditorTemplate({ items: this.templates });
 
 		this.isLoaded = true;
+	}
+
+	public refresh(id?: string): Promise<void> {
+		return new Promise(async resolve => {
+
+			for (let t of this.templates) {
+				// if (id && t.id !== id)
+				// 	continue;
+
+				try {
+					let cardContainer = $(`#cardContainer-${t.htmlId}`);
+					cardContainer.empty();
+					let tCard = await Api.Api.getItemAs<object>(t.id);
+					Utils.renderCard(cardContainer, tCard, t.sampleData);
+					$(`#editCard-${t.htmlId}`).click(() => {
+
+						this.currentTemplateId = t.id;
+						this.designer.setCard(tCard);
+						this.designer.sampleData = t.sampleData;
+						this.designer.dataStructure = ACDesigner.FieldDefinition.create(t.sampleData);
+
+						this.showDesigner();
+
+					});
+				} catch (ex) {
+					console.error(ex.message);
+					continue;
+				}
+			}
+			resolve();
+		});
 	}
 
 	public show() {
@@ -116,13 +149,14 @@ export class FormEditor {
 		Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Contoso.Action.CheckIn", () => { return new CheckInAction(); });
 		this.designer.attachTo(document.getElementById("designerRootHost"));
 		this.designer.monacoModuleLoaded(monaco);
-	
+		this.refresh();
+
 		//this.designer.setCard(json);
 
 
-		//this.designer.jsonEditorToolbox.collapse();
+		this.designer.jsonEditorToolbox.collapse();
 
-	
+
 
 		//this.designer.designerSurface.rootPeer
 		/* Uncomment to test a custom palette item example */
@@ -136,18 +170,17 @@ export class FormEditor {
 
 	private async saveCard() {
 
-		await Api.Api.saveTemplate(this.formId, this.designer.getCard());
+		await Api.Api.save(this.currentTemplateId, this.designer.getCard());
+		await this.refresh(this.currentTemplateId);
 		this.hideDesigner();
-		alert("Saved!");
-
+		this.currentTemplateId = null;
 	}
 
 	private showDesigner() {
-		$("#designerContainer").css("height", "100%");
+		$("#designerContainer").show();
 	}
 
-	/* Close */
 	private hideDesigner() {
-		$("#designerContainer").css("height", "0%");
+		$("#designerContainer").hide();
 	}
 }

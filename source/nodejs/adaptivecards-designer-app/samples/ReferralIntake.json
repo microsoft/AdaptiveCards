@@ -1,0 +1,98 @@
+{
+	"type": "AdaptiveCard",
+	"body": [
+		{
+			"type": "TextBlock",
+			"size": "Large",
+			"text": "Please complete this referral request",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"color": "Accent",
+			"text": "Patient Name"
+		},
+		{
+			"type": "Input.Text",
+			"id": "PatientName",
+			"placeholder": "Placeholder text"
+		},
+		{
+			"type": "Input.Toggle",
+			"id": "HasInsurance",
+			"title": "Does this patient have insurance?",
+			"value": "false",
+			"wrap": false
+		},
+		{
+			"type": "TextBlock",
+			"color": "Accent",
+			"text": "Referring To"
+		},
+		{
+			"type": "Input.Text",
+			"id": "DoctorName",
+			"placeholder": "Placeholder text"
+		},
+		{
+			"type": "TextBlock",
+			"color": "Accent",
+			"text": "Referral Need"
+		},
+		{
+			"type": "Input.Text",
+			"id": "ReferralNeed",
+			"placeholder": "Placeholder text"
+		},
+		{
+			"type": "TextBlock",
+			"color": "Accent",
+			"text": "Are you the referring physician?"
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "Rating",
+			"placeholder": "Placeholder text",
+			"choices": [
+				{
+					"title": "Yes",
+					"value": "yes"
+				},
+				{
+					"title": "No",
+					"value": "no"
+				}
+			],
+			"style": "expanded"
+		},
+		{
+			"type": "TextBlock",
+			"color": "Accent",
+			"text": "Requested Date for Appointment"
+		},
+		{
+			"type": "Input.Date",
+			"id": "RequestedDate"
+		},
+		{
+			"type": "TextBlock",
+			"color": "Accent",
+			"text": "Any notes we should add for the doctor?"
+		},
+		{
+			"type": "Input.Text",
+			"id": "Notes",
+			"placeholder": "Let us know!",
+			"isMultiline": true
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"id": "Submit",
+			"title": "Submit Referral"
+		}
+	],
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.0"
+}

@@ -19,11 +19,11 @@ export class FormPage {
 			return;
 		}
 
-		let items = await Api.getForms();
+		// let items = await Api.getForms();
 
-		const formEditorTemplate = Handlebars.compile($('#form-template').html());
+		// const formEditorTemplate = Handlebars.compile($('#form-template').html());
 
-		this.html = formEditorTemplate({ items: items });
+		// this.html = formEditorTemplate({ items: items });
 		this.isLoaded = true;
 	}
 
@@ -32,8 +32,8 @@ export class FormPage {
 
 	}
 
-	public async loadForm(id: any) {
-		var json = await Api.getTemplate(id);
+	public async loadForm(id: string) {
+		var json = await Api.getItem(id);
 
 		var card = new AdaptiveCards.AdaptiveCard();
 		card.parse(json);

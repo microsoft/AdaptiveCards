@@ -63,7 +63,7 @@
 							"text": "Not insured"
 						}
 					],
-					"$when": "{!patient.isInsured}"
+					"$when": "{patient.isInsured == false}"
 				}
 			]
 		},
@@ -190,6 +190,127 @@
 					"facts": [
 						{
 							"$data": "{referredBy.contact}",
+							"title": "{name}:",
+							"value": "{number}"
+						}
+					]
+				}
+			],
+			"isVisible": false
+		},
+		{
+			"type": "TextBlock",
+			"spacing": "Large",
+			"size": "Medium",
+			"text": "Referred To"
+		},
+		{
+			"type": "Container",
+			"style": "emphasis",
+			"items": [
+				{
+					"type": "ColumnSet",
+					"columns": [
+						{
+							"type": "Column",
+							"items": [
+								{
+									"type": "Image",
+									"style": "Person",
+									"url": "{referredTo.photo}",
+									"size": "Small",
+									"width": "50px",
+									"height": "50px"
+								}
+							],
+							"width": "auto",
+							"bleed": true
+						},
+						{
+							"type": "Column",
+							"items": [
+								{
+									"type": "TextBlock",
+									"weight": "Bolder",
+									"text": "{referredTo.name}",
+									"wrap": true,
+									"size": "Large"
+								},
+								{
+									"type": "TextBlock",
+									"spacing": "None",
+									"text": "Available now",
+									"isSubtle": true,
+									"wrap": true,
+									"color": "Good",
+									"weight": "Bolder"
+								}
+							],
+							"width": "stretch",
+							"verticalContentAlignment": "Center",
+							"bleed": true
+						},
+						{
+							"type": "Column",
+							"selectAction": {
+								"type": "Action.ToggleVisibility",
+								"targetElements": [
+									"details",
+									"chevronUp",
+									"chevronDown"
+								]
+							},
+							"verticalContentAlignment": "Center",
+							"items": [
+								{
+									"type": "Image",
+									"url": "https://maxcdn.icons8.com/Share/icon/win8/Arrows/chevron_down1600.png",
+									"height": "16px"
+								}
+							],
+							"width": "auto",
+							"id": "chevronDown",
+							"bleed": true
+						},
+						{
+							"type": "Column",
+							"verticalContentAlignment": "Center",
+							"selectAction": {
+								"type": "Action.ToggleVisibility",
+								"targetElements": [
+									"details",
+									"chevronUp",
+									"chevronDown"
+								]
+							},
+							"items": [
+								{
+									"type": "Image",
+									"url": "https://maxcdn.icons8.com/Share/icon/win8/Arrows/chevron_up1600.png",
+									"height": "16px"
+								}
+							],
+							"width": "auto",
+							"id": "chevronUp",
+							"isVisible": false,
+							"bleed": true
+						}
+					],
+					"style": "emphasis",
+					"bleed": true
+				}
+			],
+			"bleed": true
+		},
+		{
+			"type": "Container",
+			"id": "details",
+			"items": [
+				{
+					"type": "FactSet",
+					"facts": [
+						{
+							"$data": "{referredTo.contact}",
 							"title": "{name}:",
 							"value": "{number}"
 						}

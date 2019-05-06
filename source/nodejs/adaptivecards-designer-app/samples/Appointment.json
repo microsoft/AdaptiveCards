@@ -111,8 +111,9 @@
 			}
 		},
         {
-            "type": "Action.Submit",
-            "title": "Cancel appointment",
+			"type": "Action.Submit",
+			"id": "cancelSubmit",
+            "title": "Cancel",
             "sentiment": "Destructive"
         }
     ],

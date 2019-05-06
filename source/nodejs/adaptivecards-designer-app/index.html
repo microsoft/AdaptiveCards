@@ -16,7 +16,7 @@
 	<div class="w3-bar w3-light-grey">
 		<a href="/" data-navigo class="w3-bar-item w3-button">Home</a>
 		<a href="/admin/forms" data-navigo class="w3-bar-item w3-button">Admin</a>
-		<a href="/forms" data-navigo class="w3-bar-item w3-button">Form Browser</a>
+		<!-- <a href="/forms" data-navigo class="w3-bar-item w3-button">Form Browser</a> -->
 
 		<a href="#" id="resetDemo" data-navigo class="w3-bar-item w3-button w3-orange w3-right">Reset</a>
 		<a href="#" id="generateReferral" data-navigo class="w3-bar-item w3-button w3-green w3-right">Generate Referral</a>
@@ -38,7 +38,7 @@
 
 	<!-- Home -->
 	<script id="home-template" type="text/x-handlebars-template">
-		<div class="w3-container">
+		<div class="w3-container home">
 			<h1 class="ui header">Home</h1>
 
 			<div class="w3-third w3-container">
@@ -61,19 +61,24 @@
 
 	<!-- Form Editor -->
 	<script id="form-editor-template" type="text/x-handlebars-template">
-		<div id="designerContainer" class="overlay">
-			<div id="designerRootHost" class="overlay-content"></div>
+		<div id="designerContainer" class="w3-modal" style="padding-top: 0">
+			<div id="designerRootHost" class="w3-modal-content"></div>
 		</div>
 		
 		<div class="w3-container">
 			<h1 class="ui header">Admin</h1>
-			<div class="w3-cell-row">
+			<div class="w3-row-padding w3-stretch ">
 				{{#each items}}
-					<div class="w3-card w3-hover w3-cell w3-container" style="width: 400px; max-height: 400px; overflow: hidden">
-						<header>
-							<button id="editCard-{{this.id}}" class="w3-button">{{this.metadata.displayname}}</a>
-						</header>
-						<div id="cardContainer-{{this.id}}"></div>
+					<div class="w3-col m4 w3-padding-small" >
+						
+						<div class="w3-card w3-hover" style="overflow: hidden">
+						
+							<button id="editCard-{{this.htmlId}}" class="w3-button w3-blue w3-block">{{this.metadata.displayname}}</button>
+							
+				
+							<div id="cardContainer-{{this.htmlId}}" class="dimmed" style="height: 200px"></div>
+						
+						</div>
 					</div>
 				{{/each}}
 			</div>

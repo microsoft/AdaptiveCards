@@ -15,7 +15,6 @@ window.addEventListener("load", async () => {
 	// Compile Handlebar Templates
 	const errorTemplate = Handlebars.compile($('#error-template').html());
 
-	// var root = null;
 	var router = new Navigo();
 
 	const homePage = new HomePage(appElement);
@@ -49,16 +48,16 @@ window.addEventListener("load", async () => {
 		var reset = confirm("Please OK to reset the demo");
 		if (reset) {
 			await Api.reset();
-			alert("Demo reset");
 			router.navigate("/")
+			alert("Demo reset");
 		}
 	});
 
 	$("#generateReferral").click(async () => {
 		var ref = DefaultReferralData;
 		ref.patient.name = "Random";
-		ref.patient.isInsured = false;
-		await Api.addReferral(ref);
+		ref.patient.isInsured = Math.random() < 0.5;
+		await Api.save(`referrals/${Api.generateId()}`, ref);
 		router.navigate("/");
 	});
 
