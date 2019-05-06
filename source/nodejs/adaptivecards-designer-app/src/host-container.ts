@@ -34,6 +34,9 @@ export class CheckInActionPeer extends Designer.TypedActionPeer<CheckInAction> {
 
 export class ContosoHostContainer extends Designer.HostContainer {
 
+	constructor() {
+		super("ContosoMedical", "");		
+	}
 	public initialize() {
         super.initialize();
 

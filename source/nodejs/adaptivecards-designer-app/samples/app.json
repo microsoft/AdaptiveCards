@@ -26,6 +26,13 @@
 			]
 		}
 	},
+	"homeCards": [
+		{
+			"id": "stock",
+			"url": "https://api.iextrading.com/1.0/stock/msft/quote",
+			"template": ""
+		}
+	],
 	"initialReferalls": 1,
 	"initialAppointments": 0
 }

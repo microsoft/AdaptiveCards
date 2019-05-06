@@ -8,18 +8,17 @@
 	<title>Contoso Clinic</title>
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 	<!-- <link rel="stylesheet" href="/dist/containers/webchat-container.css"> -->
-	<link rel="stylesheet" href="/dist/adaptivecards-designer-app.css">
+	<link rel="stylesheet" href="adaptivecards-designer-app.css">
 	<script type="text/javascript" src="https://unpkg.com/markdown-it/dist/markdown-it.min.js"></script>
 </head>
 
 <body>
-	<div class="w3-bar w3-light-grey">
+	<div id="menu" class="w3-bar w3-light-grey">
 		<a href="/" data-navigo class="w3-bar-item w3-button">Home</a>
 		<a href="/admin/forms" data-navigo class="w3-bar-item w3-button">Admin</a>
-		<a href="/forms" data-navigo class="w3-bar-item w3-button">Form Browser</a>
+		<!-- <a href="/forms" data-navigo class="w3-bar-item w3-button">Form Browser</a> -->
 
 		<a href="#" id="resetDemo" data-navigo class="w3-bar-item w3-button w3-orange w3-right">Reset</a>
-		<a href="#" id="generateReferral" data-navigo class="w3-bar-item w3-button w3-green w3-right">Generate Referral</a>
 	</div>
 
 	<!-- Error Template -->
@@ -38,11 +37,11 @@
 
 	<!-- Home -->
 	<script id="home-template" type="text/x-handlebars-template">
-		<div class="w3-container">
+		<div class="w3-container home">
 			<h1 class="ui header">Home</h1>
 
 			<div class="w3-third w3-container">
-				<h2>Pending Referrals</h2>
+				<h2>Pending Referrals </h2>
 				<div id="pendingReferrals"></div>
 			</div>
 
@@ -56,26 +55,38 @@
 				<div id="homeCards"></div>
 			</div>
 		</div>
+		<button id="generateReferral" class="w3-button w3-xlarge w3-circle w3-green w3-card-4 w3-display-bottomright" style="margin-right: 50px;margin-bottom: 25px;height:  50px;width: 50px;padding: 0;">+</button>
 	</script>
 
 
 	<!-- Form Editor -->
 	<script id="form-editor-template" type="text/x-handlebars-template">
-		<h1 class="ui header">Form Editor</h1>
-		Items
-		<ul>
-			{{#each items}}
-				<li><a href="/admin/forms/{{@key}}" data-navigo>{{this.metadata.displayname}}</a></li>
-			{{/each}}
-		</ul>
-		<div class="">
-			<div id="designerRootHost"></div>
-
+		<div id="designerContainer" class="w3-modal" style="padding-top: 0">
+			<div id="designerRootHost" class="w3-modal-content"></div>
 		</div>
 		
+		<div class="w3-container">
+			<h1 class="ui header">Admin</h1>
+			<div class="w3-row-padding w3-stretch ">
+				{{#each items}}
+					<div class="w3-col m4 w3-padding-small" >
+						
+						<div class="w3-card w3-hover" style="overflow: hidden">
+						
+							<button id="editCard-{{this.htmlId}}" class="w3-button w3-blue w3-block">{{this.metadata.displayname}}</button>
+							
+				
+							<div id="cardContainer-{{this.htmlId}}" class="dimmed" style="height: 200px"></div>
+						
+						</div>
+					</div>
+				{{/each}}
+			</div>
+		
+		</div>
 	</script>
 
-	<!-- Form Editor -->
+	<!-- Form Browser -->
 	<script id="form-template" type="text/x-handlebars-template">
 		<h1 class="ui header">Form Browser</h1>
 		Items

@@ -4,6 +4,10 @@ import * as AdaptiveCards from "adaptivecards";
 import * as weather from "../samples/Weather.json";
 import * as Api from "./api";
 import * as Utils from "./utils";
+import * as DefaultReferralData from "../samples/Referral.data.json";
+import * as faker from "faker";
+import * as StockTemplate from "../samples/StockUpdate.json";
+import * as DefaultStockData from "../samples/StockUpdate.data.json";
 
 export class HomePage {
 
@@ -32,11 +36,22 @@ export class HomePage {
 
 		this.appElement.html(this.html);
 
+		$("#generateReferral").click(async () => {
+			var ref = DefaultReferralData;
+			ref.patient.name = faker.name.findName();
+			
+			ref.patient.isInsured = Math.random() < 0.5;
+			await Api.Api.save(`referrals/${Api.Api.generateId()}`, ref);
+			await this.loadReferrals();
+		});
 		this.loadReferrals();
 
 		this.loadAppointments();
 		Utils.renderCard($("#homeCards"), weather);
+
+		Utils.renderCard($("#homeCards"), StockTemplate, DefaultStockData);
 	}
+	
 
 	private async loadAppointments() {
 		$("#appointmentCards").empty();

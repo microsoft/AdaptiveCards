@@ -1,4 +1,3 @@
-import "./app.css";
 import * as Navigo from "navigo";
 import * as Handlebars from "handlebars";
 import * as $ from "jquery";
@@ -6,7 +5,7 @@ import { FormEditor } from "./admin/form-editor";
 import { HomePage } from "./home-page";
 import { FormPage } from "./form-page";
 import { Api } from "./api";
-import * as DefaultReferralData from "../samples/Referral.data.json";
+import "./app.css";
 
 
 window.addEventListener("load", async () => {
@@ -26,6 +25,10 @@ window.addEventListener("load", async () => {
 			await homePage.render();
 			await homePage.show();
 		})
+		.on("/admin/forms", async () => {
+			await formEditor.render();
+			formEditor.show();
+		})
 		.on("/forms/:id", async (params) => {
 			await formPage.render();
 			formPage.show();
@@ -37,12 +40,11 @@ window.addEventListener("load", async () => {
 			formPage.show();
 			router.updatePageLinks();
 		})
-		.on("/admin/forms", async () => {
-			await formEditor.render();
-			formEditor.show();
-		})
-		.resolve();
-
+	.resolve();
+	
+	router.hooks({
+		after: () => updateMenu()
+	});
 
 	$("#resetDemo").click(async () => {
 		var reset = confirm("Please OK to reset the demo");
@@ -53,31 +55,14 @@ window.addEventListener("load", async () => {
 		}
 	});
 
-	$("#generateReferral").click(async () => {
-		var ref = DefaultReferralData;
-		ref.patient.name = "Random";
-		ref.patient.isInsured = Math.random() < 0.5;
-		await Api.save(`referrals/${Api.generateId()}`, ref);
-		router.navigate("/");
-	});
 
+	updateMenu();
+
+});
+
+function updateMenu() {
+	$('a', $("#menu")).removeClass("w3-teal");
 	// Highlight Active Menu on Refresh/Page Reload
 	const link = $(`a[href$='${window.location.pathname}']`);
 	link.addClass('w3-teal');
-
-	// $('a').on('click', (event) => {
-	// 	// Block browser page load
-	// 	event.preventDefault();
-
-	// 	// Highlight Active Menu on Click
-	// 	const target = $(event.target);
-	// 	$('.w3-bar-item').removeClass('w3-teal');
-	// 	target.addClass('w3-teal');
-
-	// 	// Navigate to clicked url
-	// 	const href = target.attr('href');
-	// 	const path = href.substr(href.lastIndexOf('/'));
-	// 	router.navigateTo(path);
-	// });
-
-});
+}

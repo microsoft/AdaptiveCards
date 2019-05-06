@@ -20,6 +20,9 @@ module.exports = (env, argv) => {
 			}
 		  },
 		devtool: devMode ? "inline-source-map" : "source-map",
+		// devServer: {
+		// 	contentBase: './dist'
+		// },
 		entry: {
 			"adaptivecards-designer-app": "./src/app.ts",
 		},
@@ -32,6 +35,11 @@ module.exports = (env, argv) => {
 			extensions: [".ts", ".tsx", ".js"],
 			alias: {
 				handlebars: 'handlebars/dist/handlebars.min.js'
+			},
+		},
+		externals: {
+			"mardown-it": {
+				var: "markdownit"
 			}
 		},
 		module: {
@@ -52,11 +60,6 @@ module.exports = (env, argv) => {
 		},
 		plugins: [
 			//new CleanWebpackPlugin(['dist']),
-			new CopyWebpackPlugin([{
-				from: 'node_modules/adaptivecards-designer/dist/containers/*',
-				to: 'containers/',
-				flatten: true
-			}]),
 			new HtmlWebpackPlugin({
 				title: "Adaptive Cards Designer",
 				template: "./index.html",

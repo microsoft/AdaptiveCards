@@ -2,7 +2,6 @@ import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import * as markdownit from "markdown-it";
 import * as ACDesigner from "adaptivecards-designer";
 import "adaptivecards-designer/dist/adaptivecards-designer.css";
-import "../app.css";
 import * as $ from "jquery";
 import * as Handlebars from "handlebars";
 import * as Api from "../api";
@@ -78,7 +77,7 @@ export class FormEditor {
 		}
 
 		let hostContainers: Array<ACDesigner.HostContainer> = [];
-		hostContainers.push(new ContosoHostContainer("ContosoMedical", "../../containers/webchat-container.css"));
+		hostContainers.push(new ContosoHostContainer());
 
 		this.designer = new ACDesigner.CardDesigner(hostContainers);
 
