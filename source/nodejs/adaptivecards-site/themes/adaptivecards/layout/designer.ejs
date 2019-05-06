@@ -20,6 +20,10 @@
 		if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
 			console.log("Local storage is not available.");
 		}
+		
+		// Enable data binding preview features
+		ACDesigner.GlobalSettings.previewFeaturesEnabled = true;
+
 
 		let hostContainers = [];
 		hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
