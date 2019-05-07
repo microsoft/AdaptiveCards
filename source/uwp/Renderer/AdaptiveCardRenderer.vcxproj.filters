@@ -108,7 +108,6 @@
     <ClCompile Include="lib\AdaptiveTextRun.cpp" />
     <ClCompile Include="lib\AdaptiveTextElement.cpp" />
     <ClCompile Include="lib\TextHelpers.cpp" />
-    <ClCompile Include="lib\XamlHelpers.cpp" />
     <ClCompile Include="lib\AdaptiveFeatureRegistration.cpp" />
     <ClCompile Include="lib\AdaptiveHighlightColorConfig.cpp" />
   </ItemGroup>

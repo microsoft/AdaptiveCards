@@ -375,6 +375,13 @@ body {
     border: 1px solid transparent;
 }
 
+.acd-peer.invisible {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjEuNv1OCegAAAAwSURBVChTY/j//z8cA0EDOh+vJJjGJwll45YE81E4WBTjlQTT+CShbNyS////ZwAAVxKXcckJBiYAAAAASUVORK5CYII=');
+    background-repeat: repeat;
+    background-color: white;
+    opacity: 0.4;
+}
+
 .acd-peer:hover {
     border: 1px solid blue;
 }

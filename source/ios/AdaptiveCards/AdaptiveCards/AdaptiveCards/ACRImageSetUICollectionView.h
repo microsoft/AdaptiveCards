@@ -13,7 +13,7 @@
 
 @interface ACRImageSetUICollectionView:UICollectionView<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 - (instancetype)init:(std::shared_ptr<AdaptiveCards::ImageSet> const&)imageSet
-      WithHostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const&)hostConfig
+      WithHostConfig:(ACOHostConfig *)hostConfig
        WithSuperview:(UIView *)superview
   rootView:(ACRView *)rootView;
 @end
