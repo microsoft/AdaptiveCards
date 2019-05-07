@@ -144,7 +144,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
         private static List<AdaptiveAction> GetActionsToProcess(IList<AdaptiveAction> actions, int maxActions)
         {
-            // only consider known actions for ActionsToProcess
+            // just take the first maxActions actions
             return actions.Take(maxActions).ToList();
         }
     }
