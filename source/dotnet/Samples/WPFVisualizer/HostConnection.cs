@@ -21,6 +21,7 @@ namespace WpfVisualizer
         public event EventHandler<string> OnError;
         public event EventHandler OnConnected;
         public event EventHandler OnReconnecting;
+        public event EventHandler OnFailed;
         public event EventHandler<string> OnCardJsonReceived;
 
         public HostConnection(string hostId)
@@ -43,6 +44,12 @@ namespace WpfVisualizer
             switch (e.State)
             {
                 case EventSourceState.CLOSED:
+                    if (!_hasReceivedFirstCard)
+                    {
+                        OnFailed?.Invoke(this, new EventArgs());
+                        return;
+                    }
+
                     AttemptReconnect();
                     break;
             }
@@ -52,6 +59,8 @@ namespace WpfVisualizer
         {
             try
             {
+                OnReconnecting?.Invoke(this, new EventArgs());
+
                 // Unhook from old
                 _eventSource.EventReceived -= _eventSource_EventReceived;
                 _eventSource.StateChanged -= _eventSource_StateChanged;

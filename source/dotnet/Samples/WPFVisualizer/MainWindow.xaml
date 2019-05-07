@@ -46,6 +46,14 @@
                     FontSize="18"
                     KeyUp="TextBoxConnectCode_KeyUp"
                     Margin="0,0,0,12"/>
+                <TextBlock
+                    x:Name="FailedConnectError"
+                    Text="Failed to connect. Maybe the code is incorrect?"
+                    FontWeight="Bold"
+                    TextWrapping="Wrap"
+                    Margin="0,0,0,12"
+                    Foreground="Red"
+                    Visibility="Collapsed"/>
                 <Button
                     x:Name="ButtonConnect"
                     Content="Connect"

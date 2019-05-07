@@ -135,6 +135,8 @@ namespace WpfVisualizer
             {
                 case States.Connect:
                     ConnectView.Visibility = Visibility.Visible;
+                    TextBoxConnectCode.SelectAll();
+                    TextBoxConnectCode.Focus();
                     break;
 
                 case States.Connecting:
@@ -542,7 +544,18 @@ namespace WpfVisualizer
             _hostConnection.OnClosed += _hostConnection_OnClosed;
             _hostConnection.OnError += _hostConnection_OnError;
             _hostConnection.OnReconnecting += _hostConnection_OnReconnecting;
+            _hostConnection.OnFailed += _hostConnection_OnFailed;
             _hostConnection.StartConnect();
+        }
+
+        private void _hostConnection_OnFailed(object sender, EventArgs e)
+        {
+            DestroyHostConnection();
+            Dispatcher.Invoke(delegate
+            {
+                FailedConnectError.Visibility = Visibility.Visible;
+                SwitchState(States.Connect);
+            });
         }
 
         private void _hostConnection_OnReconnecting(object sender, EventArgs e)
@@ -599,6 +612,8 @@ namespace WpfVisualizer
             _hostConnection.OnConnected -= _hostConnection_OnConnected;
             _hostConnection.OnClosed -= _hostConnection_OnClosed;
             _hostConnection.OnCardJsonReceived -= _hostConnection_OnCardJsonReceived;
+            _hostConnection.OnReconnecting -= _hostConnection_OnReconnecting;
+            _hostConnection.OnFailed -= _hostConnection_OnFailed;
             _hostConnection = null;
         }
     }
