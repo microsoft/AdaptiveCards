@@ -145,7 +145,6 @@ namespace AdaptiveCards.Rendering.Wpf
         private static List<AdaptiveAction> GetActionsToProcess(IList<AdaptiveAction> actions, int maxActions)
         {
             // only consider known actions for ActionsToProcess
-            // var actionsToProcess = actions.ToList();
             return actions.Take(maxActions).ToList();
         }
     }
