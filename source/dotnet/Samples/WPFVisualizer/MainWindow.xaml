@@ -5,6 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:avalon="http://icsharpcode.net/sharpdevelop/avalonedit"
+        xmlns:converters="clr-namespace:WpfVisualizer.Converters"
         mc:Ignorable="d" Loaded="Window_Loaded" 
         Title="Adaptive Cards WPF Visualizer" Height="1000" Width="1000"
         x:Name="ThisWindow">
@@ -23,6 +24,8 @@
         <Style x:Key="Hidden" TargetType="FrameworkElement">
             <Setter Property="Visibility" Value="Collapsed"/>
         </Style>
+
+        <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
 
     </Window.Resources>
 
@@ -73,6 +76,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/> <!--Top toolbar-->
                 <RowDefinition Height="*"/> <!--Main content region-->
+                <RowDefinition Height="Auto"/> <!--Temporary connection error status-->
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/> <!--Card payload-->
@@ -169,6 +173,20 @@
 
                 <StackPanel Grid.Row="1" Name="hostConfigerror" />
             </Grid>
+
+            <!--Temporary connection error status-->
+            <Border
+                Grid.Row="2"
+                Grid.ColumnSpan="5"
+                Background="Red"
+                Visibility="{Binding ConnectionError, ElementName=ThisWindow, Converter={StaticResource StringToVisibilityConverter}}">
+                <TextBlock
+                    Text="{Binding ConnectionError, ElementName=ThisWindow}"
+                    FontWeight="Bold"
+                    Foreground="White"
+                    TextWrapping="Wrap"
+                    Margin="6"/>
+            </Border>
 
         </Grid>
     </Grid>

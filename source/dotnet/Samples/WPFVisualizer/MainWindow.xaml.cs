@@ -178,6 +178,16 @@ namespace WpfVisualizer
 
         public string DataPayload { get; private set; }
 
+        public string ConnectionError
+        {
+            get { return (string)GetValue(ConnectionErrorProperty); }
+            set { SetValue(ConnectionErrorProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ConnectionError.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ConnectionErrorProperty =
+            DependencyProperty.Register("ConnectionError", typeof(string), typeof(MainWindow), new PropertyMetadata(null));
+
         private void RenderCard()
         {
             cardError.Children.Clear();
@@ -537,17 +547,23 @@ namespace WpfVisualizer
 
         private void _hostConnection_OnReconnecting(object sender, EventArgs e)
         {
-            // TODO: Display reconnecting at bottom of screen
+            Dispatcher.Invoke(delegate
+            {
+                ConnectionError = "Reconnecting...";
+            });
         }
 
-        private void _hostConnection_OnError(object sender, string e)
+        private void _hostConnection_OnError(object sender, string error)
         {
-            // TODO: Display error at bottom of screen
+            Dispatcher.Invoke(delegate
+            {
+                ConnectionError = error;
+            });
         }
 
         private void ClearError()
         {
-            // TODO: Clear displayed error
+            ConnectionError = null;
         }
 
         private void _hostConnection_OnClosed(object sender, EventArgs e)
@@ -572,6 +588,7 @@ namespace WpfVisualizer
         {
             Dispatcher.Invoke(delegate
             {
+                ClearError();
                 SwitchState(States.Connected);
             });
         }

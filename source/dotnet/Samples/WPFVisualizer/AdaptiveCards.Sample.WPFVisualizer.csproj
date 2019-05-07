@@ -85,6 +85,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\StringToVisibilityConverter.cs" />
     <Compile Include="CustomElements\MyCustomAction.cs" />
     <Compile Include="CustomElements\MyCustomRating.cs" />
     <Compile Include="HostConnection.cs" />
