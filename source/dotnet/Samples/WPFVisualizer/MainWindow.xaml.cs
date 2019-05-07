@@ -531,7 +531,13 @@ namespace WpfVisualizer
             _hostConnection.OnCardJsonReceived += _hostConnection_OnCardJsonReceived;
             _hostConnection.OnClosed += _hostConnection_OnClosed;
             _hostConnection.OnError += _hostConnection_OnError;
+            _hostConnection.OnReconnecting += _hostConnection_OnReconnecting;
             _hostConnection.StartConnect();
+        }
+
+        private void _hostConnection_OnReconnecting(object sender, EventArgs e)
+        {
+            // TODO: Display reconnecting at bottom of screen
         }
 
         private void _hostConnection_OnError(object sender, string e)
