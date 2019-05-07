@@ -138,7 +138,7 @@
         view.userInteractionEnabled = YES;
     }
 
-    configVisibility(view, elem);
+    configVisibility(contentholdingview, elem);
 
     return view;
 }

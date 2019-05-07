@@ -601,7 +601,8 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                     // remove observer early in case background image must be changed to handle mode = repeat
                     [self removeObserver:self forKeyPath:path onObject:object];
                     observerRemoved = true;
-
+                    NSMutableDictionary *imageViewMap = [self getImageMap];
+                    imageViewMap[key] = image;
                     [renderer configUpdateForUIImageView:baseCardElement config:_hostConfig image:image imageView:(UIImageView *)object];
                 }
             } else {
@@ -711,9 +712,8 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 
     NSURL *url = [NSURL URLWithString:nSUrlStr];
     NSObject<ACOIResourceResolver> *imageResourceResolver = [_hostConfig getResourceResolverForScheme:[url scheme]];
-    if(ACOImageViewIF == [_hostConfig getResolverIFType:[url scheme]])
-    {
-        if(observerAction) {
+    if (ACOImageViewIF == [_hostConfig getResolverIFType:[url scheme]]) {
+        if (observerAction) {
             observerAction(imageResourceResolver, key, elem, url, self);
         }
     } else {
