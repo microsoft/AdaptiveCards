@@ -59,6 +59,8 @@ namespace WpfVisualizer
             timer.Tick += Timer_Tick;
             timer.Start();
 
+            int hostConfigIndex = 0;
+            int webChatIndex = -1;
             foreach (var config in Directory.GetFiles("HostConfigs", "*.json"))
             {
                 hostConfigs.Items.Add(new ComboBoxItem
@@ -66,6 +68,13 @@ namespace WpfVisualizer
                     Content = Path.GetFileNameWithoutExtension(config),
                     Tag = config
                 });
+
+                if (config.Contains("webchat"))
+                {
+                    webChatIndex = hostConfigIndex;
+                }
+
+                hostConfigIndex++;
             }
 
 
@@ -88,6 +97,11 @@ namespace WpfVisualizer
 
             // This seems unecessary?
             Renderer.ActionHandlers.AddSupportedAction<MyCustomAction>();
+
+            if (webChatIndex != -1)
+            {
+                hostConfigs.SelectedIndex = webChatIndex;
+            }
         }
 
         private void InitializeDataPayload()
