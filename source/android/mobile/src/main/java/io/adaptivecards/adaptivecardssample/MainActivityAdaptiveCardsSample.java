@@ -4,6 +4,7 @@ package io.adaptivecards.adaptivecardssample;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -131,6 +132,14 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
         m_jsonEditText.addTextChangedListener(watcher);
         m_configEditText.addTextChangedListener(watcher);
+
+        SharedPreferences pref = this.getPreferences(Context.MODE_PRIVATE);
+        String connCode = pref.getString("ConnectionCode", null);
+        if (connCode != null || connCode.length() > 0)
+        {
+            goToConnectingState();
+            connectToCode(connCode);
+        }
     }
 
     public class CustomCardElement extends BaseCardElement
@@ -1026,6 +1035,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         alertDialog.setPositiveButton("Connect",
             new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
+                    goToConnectingState();
                     connectToCode(input.getText().toString());
                 }
             });
@@ -1065,6 +1075,10 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
     private void connectToCode(String code)
     {
+        SharedPreferences.Editor pref = this.getPreferences(Context.MODE_PRIVATE).edit();
+        pref.putString("ConnectionCode", code);
+        pref.commit();
+
         m_remoteClientConnection = new RemoteClientConnection(this, new RemoteClientConnection.Observer()
         {
             @Override
