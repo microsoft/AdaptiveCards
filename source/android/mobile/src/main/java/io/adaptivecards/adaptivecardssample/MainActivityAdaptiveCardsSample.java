@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package io.adaptivecards.adaptivecardssample;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -85,6 +87,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     private RemoteClientConnection m_remoteClientConnection;
     private JSContext m_scriptContext;
     private Button m_buttonScanQr;
+    private Button m_buttonTypeCode;
     private Button m_buttonDisconnect;
     private EditText m_jsonEditText;
     private EditText m_configEditText;
@@ -98,6 +101,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         setContentView(R.layout.activity_main_adaptive_cards_sample);
 
         m_buttonScanQr = (Button)findViewById(R.id.buttonScanQr);
+        m_buttonTypeCode = (Button)findViewById(R.id.buttonTypeCode);
         m_buttonDisconnect = (Button)findViewById(R.id.buttonDisconnect);
         m_dataEditText = (EditText)findViewById(R.id.editTextData);
 
@@ -1006,6 +1010,36 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         integrator.initiateScan();
     }
 
+    public void onTypeCodeClicked(View view)
+    {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("CONNECT");
+        alertDialog.setMessage("Enter connect code");
+
+        final EditText input = new EditText(this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);
+        alertDialog.setView(input);
+
+        alertDialog.setPositiveButton("Connect",
+            new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    connectToCode(input.getText().toString());
+                }
+            });
+
+        alertDialog.setNegativeButton("Cancel",
+            new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+        alertDialog.show();
+    }
+
     private boolean handleQrActivityResult(int requestCode, int resultCode, Intent data)
     {
         IntentResult qrResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
@@ -1014,85 +1048,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             String contents = qrResult.getContents();
             if (contents != null)
             {
-                m_remoteClientConnection = new RemoteClientConnection(this, new RemoteClientConnection.Observer()
-                {
-                    @Override
-                    public void onConnecting(String status)
-                    {
-                        final String finalStatus = status;
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(getApplicationContext(), finalStatus, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onStateChanged(RemoteClientConnection.State state)
-                    {
-                        final RemoteClientConnection.State s = state;
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                switch (s) {
-                                    // Connecting omitted because that's never hit, it's already
-                                    // connecting by the time we started observing
-                                    case CONNECTED:
-                                        goToConnectedState();
-                                        break;
-
-                                    case RECONNECTING:
-                                        goToReconnectingState();
-                                        break;
-
-                                    case CLOSED:
-                                        goToDisconnectedState();
-                                        break;
-                                }
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onConnectFailed(String errorMessage)
-                    {
-                        m_remoteClientConnection = null;
-                        final String finalErrorMessage = errorMessage;
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(getApplicationContext(), finalErrorMessage, Toast.LENGTH_LONG).show();
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onCardPayload(String cardPayload)
-                    {
-                        final String cPayload = cardPayload;
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                loadAdaptiveCard(cPayload);
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onHostConfigPayload(String hostConfigPayload)
-                    {
-                        final String hPayload = hostConfigPayload;
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                loadHostConfig(hPayload);
-                            }
-                        });
-                    }
-                });
-
-                m_remoteClientConnection.connect(contents);
+                connectToCode(contents);
             }
 
             else
@@ -1105,6 +1061,89 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         }
 
         return false;
+    }
+
+    private void connectToCode(String code)
+    {
+        m_remoteClientConnection = new RemoteClientConnection(this, new RemoteClientConnection.Observer()
+        {
+            @Override
+            public void onConnecting(String status)
+            {
+                final String finalStatus = status;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), finalStatus, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onStateChanged(RemoteClientConnection.State state)
+            {
+                final RemoteClientConnection.State s = state;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        switch (s) {
+                            // Connecting omitted because that's never hit, it's already
+                            // connecting by the time we started observing
+                            case CONNECTED:
+                                goToConnectedState();
+                                break;
+
+                            case RECONNECTING:
+                                goToReconnectingState();
+                                break;
+
+                            case CLOSED:
+                                goToDisconnectedState();
+                                break;
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onConnectFailed(String errorMessage)
+            {
+                m_remoteClientConnection = null;
+                final String finalErrorMessage = errorMessage;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), finalErrorMessage, Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onCardPayload(String cardPayload)
+            {
+                final String cPayload = cardPayload;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadAdaptiveCard(cPayload);
+                    }
+                });
+            }
+
+            @Override
+            public void onHostConfigPayload(String hostConfigPayload)
+            {
+                final String hPayload = hostConfigPayload;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadHostConfig(hPayload);
+                    }
+                });
+            }
+        });
+
+        m_remoteClientConnection.connect(code);
     }
 
     public void onDisconnectClicked(View view)
@@ -1127,12 +1166,14 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         m_buttonScanQr.setText("Connecting...");
         m_buttonScanQr.setVisibility(View.VISIBLE);
         m_buttonScanQr.setEnabled(false);
+        m_buttonTypeCode.setVisibility(View.GONE);
         m_buttonDisconnect.setVisibility(View.GONE);
     }
 
     private void goToConnectedState()
     {
         m_buttonScanQr.setVisibility(View.GONE);
+        m_buttonTypeCode.setVisibility(View.GONE);
         m_buttonDisconnect.setVisibility(View.VISIBLE);
         m_buttonDisconnect.setText("Connected! Click to disconnect");
     }
@@ -1140,6 +1181,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     private void goToReconnectingState()
     {
         m_buttonScanQr.setVisibility(View.GONE);
+        m_buttonTypeCode.setVisibility(View.GONE);
         m_buttonDisconnect.setVisibility(View.VISIBLE);
         m_buttonDisconnect.setText("Reconnecting... Tap to disconnect");
     }
@@ -1149,6 +1191,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         m_buttonScanQr.setText("Connect via QR Code");
         m_buttonScanQr.setVisibility(View.VISIBLE);
         m_buttonScanQr.setEnabled(true);
+        m_buttonTypeCode.setVisibility(View.VISIBLE);
         m_buttonDisconnect.setVisibility(View.GONE);
     }
 }

@@ -14,12 +14,29 @@
     tools:showIn="@layout/activity_main_adaptive_cards_sample"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/buttonScanQr"
+    <LinearLayout
+        android:id="@+id/connectButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="onScanQrClicked"
-        android:text="Connect via QR Code"/>
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/buttonScanQr"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onScanQrClicked"
+            android:text="QR Code"/>
+
+        <Button
+            android:id="@+id/buttonTypeCode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onTypeCodeClicked"
+            android:text="Text Code"/>
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/buttonDisconnect"
