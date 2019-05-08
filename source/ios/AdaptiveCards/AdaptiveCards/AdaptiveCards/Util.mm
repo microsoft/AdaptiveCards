@@ -178,12 +178,9 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
                 ACRContentStackView *view = (ACRContentStackView *)[rootView getBleedTarget:internalId];
                 // c++ to object-c enum conversion
                 ContainerBleedDirection adaptiveBleedDirection = collection->GetBleedDirection();
+                ACRBleedDirection direction = (ACRBleedDirection) adaptiveBleedDirection;
                 view = view ? view : rootView;
-                if (((adaptiveBleedDirection & ContainerBleedDirection::BleedLeft) == ContainerBleedDirection::BleedLeft) ||
-                    ((adaptiveBleedDirection & ContainerBleedDirection::BleedRight) == ContainerBleedDirection::BleedRight)) {
-                    [container bleed:config->GetSpacing().paddingSpacing priority:1000 target:nil];
-                }
-                /*
+
                 if (view) {
                     // 1. create a background view (bv).
                     // 2. bv is added to bleed target view (tv), which is also a parent view.
@@ -193,7 +190,7 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
                     // bv's container style will be diplayed.
                     // container view's stack view (csv) holds content views, and bv dislpays container style
                     // we transpose them, and get the final result
-                    
+
                     UIView *backgroundView = [[UIView alloc] init];
                     container.backgroundView = backgroundView;
                     backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -203,13 +200,8 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
                     [marginalView sendSubviewToBack:backgroundView];
                     backgroundView.backgroundColor = container.backgroundColor;
                     container.backgroundColor = UIColor.clearColor;
-                    
-                    // reset current width constraints and update them with new one according to bleed specification
 
-                    if (((adaptiveBleedDirection & ContainerBleedDirection::BleedLeft) == ContainerBleedDirection::BleedLeft) ||
-                        ((adaptiveBleedDirection & ContainerBleedDirection::BleedRight) == ContainerBleedDirection::BleedRight)) {
-                            [container bleed:config->GetSpacing().paddingSpacing priority:1000 target:backgroundView];
-                        }
+                    [container bleed:config->GetSpacing().paddingSpacing priority:1000 target:backgroundView direction:direction parentView:marginalView];
 
                     if([container layer].borderWidth) {
                         [backgroundView layer].borderWidth = [container layer].borderWidth;
@@ -220,44 +212,8 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
                         [backgroundView layer].borderColor = [container layer].borderColor;
                         [container layer].borderColor = 0;
                     }
-
-                    if ((ContainerBleedDirection::BleedLeft & adaptiveBleedDirection) == ContainerBleedDirection::BleedLeft) {
-                        [backgroundView.leadingAnchor constraintEqualToAnchor:marginalView.leadingAnchor].active = YES;
-                        if ((ContainerBleedDirection::BleedRight & adaptiveBleedDirection) == ContainerBleedDirection::BleedRestricted) {
-                            [backgroundView.trailingAnchor constraintEqualToAnchor:container.trailingAnchor].active = YES;
-                        }
-                    }
-
-                    if ((ContainerBleedDirection::BleedRight & adaptiveBleedDirection) == ContainerBleedDirection::BleedRight) {
-                        [backgroundView.trailingAnchor constraintEqualToAnchor:marginalView.trailingAnchor].active = YES;
-
-                        if ((ContainerBleedDirection::BleedLeft & adaptiveBleedDirection) == ContainerBleedDirection::BleedRestricted) {
-                            [backgroundView.leadingAnchor constraintEqualToAnchor:container.leadingAnchor].active = YES;
-                        }
-                    }
-
-                    if ((ContainerBleedDirection::BleedUp & adaptiveBleedDirection) == ContainerBleedDirection::BleedUp) {
-                        [backgroundView.topAnchor constraintEqualToAnchor:marginalView.topAnchor].active = YES;
-
-                    } else {
-                        [backgroundView.topAnchor constraintEqualToAnchor:container.topAnchor].active = YES;
-                    }
-
-                    if ((ContainerBleedDirection::BleedDown & adaptiveBleedDirection) == ContainerBleedDirection::BleedDown) {
-                        [backgroundView.bottomAnchor constraintEqualToAnchor:marginalView.bottomAnchor].active = YES;
-                    } else {
-                        [backgroundView.bottomAnchor constraintEqualToAnchor:container.bottomAnchor].active = YES;
-
-                    }
-
-                    // recenters content view
-                    if ((ContainerBleedDirection::BleedRestricted & adaptiveBleedDirection) ==
-                         ContainerBleedDirection::BleedRestricted) {
-                        [container.stackView.centerXAnchor constraintEqualToAnchor:backgroundView.centerXAnchor].active = YES;
-                    }
                 }
-                 */
-            }                 
+            }
         }
     }
 }

@@ -31,8 +31,6 @@
 
 - (void)applyPadding:(unsigned int)padding priority:(unsigned int)priority;
 
-- (void)bleed:(unsigned int)padding priority:(unsigned int)priority target:(UIView *_Nonnull)target;
-
-- (void)bleedVertically:(unsigned int)padding priority:(unsigned int)priority target:(UIView *)target;
+- (void)bleed:(unsigned int)padding priority:(unsigned int)priority target:(UIView *)target direction:(ACRBleedDirection)direction parentView:(UIView *)parent;
 
 @end

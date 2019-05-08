@@ -99,8 +99,6 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
         }
         self.acrActionDelegate = acrActionDelegate;
         [self render];
-
-
     }
     return self;
 }
