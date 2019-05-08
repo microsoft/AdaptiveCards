@@ -135,7 +135,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
         SharedPreferences pref = this.getPreferences(Context.MODE_PRIVATE);
         String connCode = pref.getString("ConnectionCode", null);
-        if (connCode != null || connCode.length() > 0)
+        if (connCode != null && connCode.length() > 0)
         {
             goToConnectingState();
             connectToCode(connCode);
