@@ -281,3 +281,6 @@ source/nodejs/adaptivecards-visualizer/built/visualizer-with-renderer.js
 source/nodejs/adaptivecards/built/card-elements.js
 source/nodejs/adaptivecards/built/card-elements.js.map
 *.tgz
+
+# Ignore C# designer files
+*.Designer.cs

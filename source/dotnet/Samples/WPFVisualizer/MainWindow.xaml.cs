@@ -102,6 +102,12 @@ namespace WpfVisualizer
             {
                 hostConfigs.SelectedIndex = webChatIndex;
             }
+
+            if (!string.IsNullOrWhiteSpace(AppSettings.Default.LastUsedConnectionId))
+            {
+                TextBoxConnectCode.Text = AppSettings.Default.LastUsedConnectionId;
+                Connect();
+            }
         }
 
         private void InitializeDataPayload()
@@ -615,6 +621,8 @@ namespace WpfVisualizer
         {
             Dispatcher.Invoke(delegate
             {
+                AppSettings.Default.LastUsedConnectionId = TextBoxConnectCode.Text;
+                AppSettings.Default.Save();
                 ClearError();
                 SwitchState(States.Connected);
             });
@@ -629,6 +637,11 @@ namespace WpfVisualizer
             _hostConnection.OnReconnecting -= _hostConnection_OnReconnecting;
             _hostConnection.OnFailed -= _hostConnection_OnFailed;
             _hostConnection = null;
+        }
+
+        private void Disconnect_Click(object sender, RoutedEventArgs e)
+        {
+            _hostConnection_OnClosed(this, new EventArgs());
         }
     }
 }

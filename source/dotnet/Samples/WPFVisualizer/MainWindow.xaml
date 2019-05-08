@@ -97,6 +97,7 @@
             <StackPanel Orientation="Horizontal" Grid.ColumnSpan="5">
                 <Button Name="loadButton" Click="loadButton_Click" Content="Load Card..." Margin="4" Visibility="Collapsed"/>
                 <Button Name="viewImage" Click="viewImage_Click" Content="View as Image" Margin="4"/>
+                <Button Name="disconnect" Click="Disconnect_Click" Content="Disconnect" Margin="4"/>
                 <Button Name="speak" Click="speak_Click" Content="Speak" Margin="4" Visibility="Collapsed"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.ColumnSpan="5" HorizontalAlignment="Right">
