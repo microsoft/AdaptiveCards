@@ -5,7 +5,6 @@
 #include "pch.h"
 #include "AdaptiveCardParseException.h"
 #include "ParseContext.h"
-//#include "BaseCardElement.h"
 
 namespace AdaptiveSharedNamespace
 {
