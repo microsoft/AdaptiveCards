@@ -86,11 +86,16 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
             delegate:(id<ACRActionDelegate>)acrActionDelegate
 {
     self = [self initWithFrame:CGRectMake(0, 0, width, 0)];
-    if(self){
+    if (self) {
         self.accessibilityLabel = @"ACR Root View";
         _adaptiveCard = card;
-        if(config){
+        if (config) {
             _hostConfig = config;
+        }
+        unsigned int padding = [_hostConfig getHostConfig]->GetSpacing().paddingSpacing;
+        [self removeConstraints:self.constraints];
+        if (padding) {
+            [self applyPadding:padding priority:1000];
         }
         self.acrActionDelegate = acrActionDelegate;
         [self render];

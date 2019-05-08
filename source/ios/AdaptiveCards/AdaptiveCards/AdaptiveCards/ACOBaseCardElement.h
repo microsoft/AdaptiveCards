@@ -51,10 +51,12 @@ typedef NS_ENUM(NSInteger, ACRContainerStyle) {
 };
 
 typedef NS_ENUM(NSInteger, ACRBleedDirection) {
-    ACRRestricted,
-    ACRToLeadingEdge,
-    ACRToTrailingEdge,
-    ACRToBothEdges    
+    ACRBleedRestricted = 0x0000,
+    ACRBleedToLeadingEdge = 0x0001,
+    ACRBleedToTrailingEdge = 0x0010,
+    ACRBleedToTopEdge = 0x0100,
+    ACRBleedToBottomEdge = 0x1000,
+    ACRBleedToAll = ACRBleedToLeadingEdge | ACRBleedToTrailingEdge | ACRBleedToTopEdge | ACRBleedToBottomEdge
 };
 
 @property ACRCardElementType type;
