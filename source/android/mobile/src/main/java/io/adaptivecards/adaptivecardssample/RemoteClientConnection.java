@@ -106,6 +106,7 @@ public class RemoteClientConnection
         m_eventSource = new EventSource.Builder(BASE_URL + "card/" + hostId + "/subscribe").eventHandler(new EventSourceHandler() {
             @Override
             public void onConnect() throws Exception {
+                m_reconnectAttempts = 0;
                 // This doesn't trigger until first message received, which won't happen till changes occur
             }
 
@@ -123,17 +124,36 @@ public class RemoteClientConnection
             public void onError(Throwable t) {
                 m_observer.onConnectFailed(t.getMessage());
                 m_eventSource.close();
+                reconnect();
+                //m_observer.onConnectFailed(t.getMessage());
+                //m_eventSource.close();
             }
 
             @Override
             public void onClosed(boolean willReconnect) {
-                changeStateToClosed();
+                //changeStateToClosed();
             }
         }).build();
 
         m_eventSource.connect();
 
         getCard();
+    }
+
+    private int m_reconnectAttempts = 0;
+
+    private void reconnect()
+    {
+        if (m_reconnectAttempts >= 2)
+        {
+            changeStateToClosed();
+            return;
+        }
+
+        m_reconnectAttempts++;
+        changeState(State.RECONNECTING);
+
+        connect(m_hostId);
     }
 
     private void onCardDataReceived(JSONObject cardData)
