@@ -16,10 +16,13 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import io.adaptivecards.objectmodel.ActionMode;
 import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.BaseActionElement;
+import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.IsVisible;
@@ -164,6 +167,45 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
             }
         }
 
+        /**
+         * Resets the visibility of all separators in this viewGroup hiding, if it has, the separator for the first visible element and showing the separator for all other elements
+         * @param viewGroup
+         */
+        private void resetSeparatorVisibilities(ViewGroup viewGroup)
+        {
+            boolean isFirstElement = true;
+            for (int i = 0; i < viewGroup.getChildCount(); ++i)
+            {
+                View element = viewGroup.getChildAt(i);
+                TagContent tagContent = BaseCardElementRenderer.getTagContent(element);
+
+                if (tagContent != null)
+                {
+                    if (!tagContent.IsSeparator() && element.getVisibility() == View.VISIBLE)
+                    {
+                        View separator = tagContent.GetSeparator();
+
+                        if (separator != null)
+                        {
+                            // Only the first element must hide its separator
+                            if (isFirstElement)
+                            {
+                                separator.setVisibility(View.GONE);
+                            }
+                            else
+                            {
+                                separator.setVisibility(View.VISIBLE);
+                            }
+                        }
+
+                        // Reset this so all the other elements can have their separators visible
+                        isFirstElement = false;
+                    }
+                }
+
+            }
+        }
+
         private void renderHiddenCard(Context context, FragmentManager fragmentManager, ViewGroup viewGroup, HostConfig hostConfig)
         {
             ShowCardAction showCardAction = null;
@@ -278,6 +320,9 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
                 populateViewsDictionary();
             }
 
+            // Store the viewgroups to update to avoid updating the same one multiple times
+            Set<ViewGroup> viewGroupsToUpdate = new HashSet<>();
+
             for (int i = 0; i < toggleVisibilityTargetVector.size(); ++i)
             {
                 ToggleVisibilityTarget target = toggleVisibilityTargetVector.get(i);
@@ -288,27 +333,24 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
                     View foundView = m_viewDictionary.get(elementId);
                     IsVisible isVisible = target.GetIsVisible();
 
-                    if (isVisible == IsVisible.IsVisibleFalse)
+                    boolean elementWillBeVisible = true;
+
+                    // If the visibility changes to not visible or the visibility toggles and the element is currently visible then the element will not be visible
+                    // Otherwise it will be visible (default value)
+                    if ((isVisible == IsVisible.IsVisibleFalse) ||
+                        (isVisible == IsVisible.IsVisibleToggle && foundView.getVisibility() == View.VISIBLE))
                     {
-                        foundView.setVisibility(View.GONE);
+                        elementWillBeVisible = false;
                     }
-                    else if (isVisible == IsVisible.IsVisibleTrue)
-                    {
-                        foundView.setVisibility(View.VISIBLE);
-                    }
-                    else
-                    {
-                        // Toggle
-                        if (foundView.getVisibility() == View.GONE)
-                        {
-                            foundView.setVisibility(View.VISIBLE);
-                        }
-                        else
-                        {
-                            foundView.setVisibility(View.GONE);
-                        }
-                    }
+
+                    BaseCardElementRenderer.setVisibility(elementWillBeVisible, foundView, viewGroupsToUpdate);
+
                 }
+            }
+
+            for (ViewGroup container : viewGroupsToUpdate)
+            {
+                resetSeparatorVisibilities(container);
             }
         }
 

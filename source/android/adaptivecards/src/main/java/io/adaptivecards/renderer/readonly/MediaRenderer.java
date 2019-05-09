@@ -294,14 +294,12 @@ public class MediaRenderer extends BaseCardElementRenderer
             throw new InternalError("Unable to convert BaseCardElement to Media object model.");
         }
 
-        setSpacingAndSeparator(context, viewGroup, media.GetSpacing(), media.GetSeparator(), hostConfig, true);
+        View separator = setSpacingAndSeparator(context, viewGroup, media.GetSpacing(), media.GetSeparator(), hostConfig, true);
 
         LinearLayout mediaLayout = new LinearLayout(context);
-        mediaLayout.setTag(new TagContent(media));
-        if(!baseCardElement.GetIsVisible())
-        {
-            mediaLayout.setVisibility(View.GONE);
-        }
+        mediaLayout.setTag(new TagContent(media, separator, viewGroup));
+
+        setVisibility(baseCardElement.GetIsVisible(), mediaLayout);
 
         if( media.GetHeight() == HeightType.Stretch )
         {
