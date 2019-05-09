@@ -70,20 +70,18 @@ public class ColumnRenderer extends BaseCardElementRenderer
         }
 
         LinearLayout.LayoutParams layoutParams;
-        setSpacingAndSeparator(context, viewGroup, column.GetSpacing(), column.GetSeparator(), hostConfig, false);
+        View separator = setSpacingAndSeparator(context, viewGroup, column.GetSpacing(), column.GetSeparator(), hostConfig, false);
 
         LinearLayout returnedView = new LinearLayout(context);
         returnedView.setOrientation(LinearLayout.VERTICAL);
-        returnedView.setTag(new TagContent(column));
+        returnedView.setTag(new TagContent(column, separator, viewGroup));
 
         // Add this two for allowing children to bleed
         returnedView.setClipChildren(false);
         returnedView.setClipToPadding(false);
 
-        if (!baseCardElement.GetIsVisible())
-        {
-            returnedView.setVisibility(View.GONE);
-        }
+        setVisibility(baseCardElement.GetIsVisible(), returnedView);
+        setMinHeight(column.GetMinHeight(), returnedView, context);
 
         LinearLayout verticalContentAlignmentLayout = new LinearLayout(context);
         verticalContentAlignmentLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -184,11 +182,6 @@ public class ColumnRenderer extends BaseCardElementRenderer
         {
             returnedView.setClickable(true);
             returnedView.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, column.GetSelectAction(), cardActionHandler));
-        }
-
-        if (column.GetMinHeight() != 0)
-        {
-            returnedView.setMinimumHeight(Util.dpToPixels(context, (int)column.GetMinHeight()));
         }
 
         viewGroup.addView(returnedView);
