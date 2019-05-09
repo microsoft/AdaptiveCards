@@ -46,6 +46,7 @@
 										},
 										{
 											"type": "Graph",
+											"id": "firstGraph",
 											"someProperty": "blah"
 										}
 									]
@@ -93,7 +94,8 @@
 										},
 										{
 											"type": "Graph",
-											"someProperty": "blah"
+											"id": "secondGraph",
+											"someOtherProperty": "blah"
 										}
 									]
 								}
@@ -110,8 +112,10 @@
 		},
 		{
 			"type": "GraphV2",
+			"id": "firstGraphVTwo",
 			"fallback": {
 				"type": "Graph",
+				"id": "thirdGraph",
 				"fallback": {
 					"type": "TextBlock",
 					"text": "Multiply-nested fallback works!",
@@ -119,6 +123,47 @@
 					"color": "good"
 				}
 			}
+		},
+		{
+			"type": "Container",
+			"style": "emphasis",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "There should be nothing between here...",
+					"wrap": true,
+					"weight": "lighter"
+				},
+				{
+					"type": "GraphV2",
+					"id": "secondGraphVTwo",
+					"fallback": {
+						"type": "Graph",
+						"id": "fourthGraph",
+						"fallback": {
+							"type": "MakeSomethingUp"
+						}
+					}
+				},
+				{
+					"type": "GraphV2",
+					"id": "thirdGraphVTwo",
+					"fallback": {
+						"type": "Graph",
+						"id": "fifthGraph",
+						"fallback": {
+							"type": "MakeSomethingElseUp",
+							"fallback": "drop"
+						}
+					}
+				},
+				{
+					"type": "TextBlock",
+					"text": "...and here",
+					"wrap": true,
+					"weight": "lighter"
+				}
+			]
 		}
 	]
 }

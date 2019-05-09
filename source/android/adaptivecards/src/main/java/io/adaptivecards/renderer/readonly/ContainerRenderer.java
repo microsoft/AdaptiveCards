@@ -69,19 +69,17 @@ public class ContainerRenderer extends BaseCardElementRenderer
             throw new InternalError("Unable to convert BaseCardElement to Container object model.");
         }
 
-        setSpacingAndSeparator(context, viewGroup, container.GetSpacing(),container.GetSeparator(), hostConfig, true /* horizontal line */);
+        View separator = setSpacingAndSeparator(context, viewGroup, container.GetSpacing(),container.GetSeparator(), hostConfig, true /* horizontal line */);
         LinearLayout containerView = new LinearLayout(context);
-        containerView.setTag(new TagContent(container));
+        containerView.setTag(new TagContent(container, separator, viewGroup));
         containerView.setOrientation(LinearLayout.VERTICAL);
+
+        setVisibility(container.GetIsVisible(), containerView);
+        setMinHeight(container.GetMinHeight(), containerView, context);
 
         // Add this two for allowing children to bleed
         containerView.setClipChildren(false);
         containerView.setClipToPadding(false);
-
-        if (!baseCardElement.GetIsVisible())
-        {
-            containerView.setVisibility(View.GONE);
-        }
 
         if (container.GetHeight() == HeightType.Stretch)
         {
@@ -145,11 +143,6 @@ public class ContainerRenderer extends BaseCardElementRenderer
         {
             containerView.setClickable(true);
             containerView.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, container.GetSelectAction(), cardActionHandler));
-        }
-
-        if (container.GetMinHeight() != 0)
-        {
-            containerView.setMinimumHeight(Util.dpToPixels(context, (int)container.GetMinHeight()));
         }
 
         viewGroup.addView(containerView);
