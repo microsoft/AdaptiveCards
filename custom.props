@@ -4,6 +4,12 @@
     <VersionMajor>1</VersionMajor>
     <VersionMinor>1</VersionMinor>
     <!-- The nuget package version should be incremented when we produce QFEs -->
+    <!-- Everytime we release we must update this value depending on the platform that is being released -->
+	<!-- Current released versions -->
+	<!-- .NET:    1.1.4 -->
+	<!-- Android: 1.1.1 -->
+	<!-- UWP:     1.1.0 -->
+	<!-- iOS:     1.1.0 -->
     <NuGetPackVersion>1.1.1</NuGetPackVersion>
     <VersionInfoProductName>AdaptiveCards</VersionInfoProductName>
   </PropertyGroup>
