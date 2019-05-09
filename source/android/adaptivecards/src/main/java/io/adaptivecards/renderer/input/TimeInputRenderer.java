@@ -43,7 +43,7 @@ public class TimeInputRenderer extends TextInputRenderer
     @Override
     public View render(
             RenderedAdaptiveCard renderedCard,
-            Context context,
+            final Context context,
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
@@ -100,7 +100,7 @@ public class TimeInputRenderer extends TextInputRenderer
             {
                 TimeInputHandler timeInputHandler = (TimeInputHandler) v.getTag();
                 TimePickerFragment timePickerFragment = new TimePickerFragment();
-                timePickerFragment.initialize((EditText) v);
+                timePickerFragment.initialize((EditText) v, context);
                 Bundle args = new Bundle();
                 args.putString("title", TITLE);
                 timePickerFragment.setArguments(args);
