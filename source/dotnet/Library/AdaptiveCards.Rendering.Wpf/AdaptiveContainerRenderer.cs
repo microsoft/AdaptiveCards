@@ -58,7 +58,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             if (hasPadding)
             {
-                childRenderArgs.BleedDirection = BleedDirection.Both;
+                childRenderArgs.BleedDirection = BleedDirection.BleedAll;
             }
 
             // Modify context outer parent style so padding necessity can be determined
@@ -76,8 +76,24 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public static void AddContainerElements(Grid uiContainer, IList<AdaptiveElement> elements, AdaptiveRenderContext context)
         {
+            // Keeping track of the index so we don't have to call IndexOf function on every iteration
+            int index = 0;
             foreach (var cardElement in elements)
             {
+                if (index != 0)
+                {
+                    // Only the first element can bleed to the top
+                    context.RenderArgs.BleedDirection &= ~BleedDirection.BleedUp;
+                }
+
+                if (index != elements.Count - 1)
+                {
+                    // Only the last element can bleed to the bottom
+                    context.RenderArgs.BleedDirection &= ~BleedDirection.BleedDown;
+                }
+
+                index++;
+
                 // each element has a row
                 FrameworkElement uiElement = context.Render(cardElement);
                 if (uiElement != null)
@@ -242,18 +258,28 @@ namespace AdaptiveCards.Rendering.Wpf
 
                 if (element.Bleed)
                 {
-                    int leftMargin = 0, rightMargin = 0;
-                    if (parentRenderArgs.BleedDirection == BleedDirection.Left || parentRenderArgs.BleedDirection == BleedDirection.Both)
+                    int leftMargin = 0, rightMargin = 0, topMargin = 0, bottomMargin = 0;
+                    if ((parentRenderArgs.BleedDirection & BleedDirection.BleedLeft) != BleedDirection.BleedNone)
                     {
                         leftMargin = -padding;
                     }
 
-                    if (parentRenderArgs.BleedDirection == BleedDirection.Right || parentRenderArgs.BleedDirection == BleedDirection.Both)
+                    if ((parentRenderArgs.BleedDirection & BleedDirection.BleedRight) != BleedDirection.BleedNone)
                     {
                         rightMargin = -padding;
                     }
 
-                    border.Margin = new Thickness { Left = leftMargin, Right = rightMargin };
+                    if ((parentRenderArgs.BleedDirection & BleedDirection.BleedUp) != BleedDirection.BleedNone)
+                    {
+                        topMargin = -padding;
+                    }
+
+                    if ((parentRenderArgs.BleedDirection & BleedDirection.BleedDown) != BleedDirection.BleedNone)
+                    {
+                        bottomMargin = -padding;
+                    }
+
+                    border.Margin = new Thickness { Left = leftMargin, Top = topMargin, Right = rightMargin, Bottom = bottomMargin };
                 }
             }
 

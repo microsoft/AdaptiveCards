@@ -612,7 +612,7 @@ namespace AdaptiveCards.Rendering.Html
             // to the side the column would have bled
             if (hasPadding)
             {
-                childRenderArgs.BleedDirection = BleedDirection.Both;
+                childRenderArgs.BleedDirection = BleedDirection.BleedAll;
             }
 
             childRenderArgs.HasParentWithPadding = hasPadding;
@@ -672,54 +672,16 @@ namespace AdaptiveCards.Rendering.Html
 
                 if (hasPadding)
                 {
-                    if (columnSet.Columns.Count == 1)
+                    if (i != 0)
                     {
-                        childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-                        childRenderArgs.BleedDirection = BleedDirection.Both;
+                        // Only the first column can bleed to the left
+                        childRenderArgs.BleedDirection &= ~BleedDirection.BleedLeft;
                     }
-                    else
+
+                    if (i != columnSet.Columns.Count)
                     {
-                        if (i == 0)
-                        {
-                            childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-                            childRenderArgs.BleedDirection = BleedDirection.Left;
-                        }
-                        else if (i == (columnSet.Columns.Count - 1))
-                        {
-                            childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-                            childRenderArgs.BleedDirection = BleedDirection.Right;
-                        }
-                        else
-                        {
-                            childRenderArgs.BleedDirection = BleedDirection.None;
-                        }
-                    }
-                }
-                else
-                {
-                    if (columnSet.Columns.Count == 1)
-                    {
-                        childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-                        childRenderArgs.BleedDirection = parentRenderArgs.BleedDirection;
-                    }
-                    else
-                    {
-                        if (i == 0 &&
-                            (childRenderArgs.BleedDirection == BleedDirection.Left || childRenderArgs.BleedDirection == BleedDirection.Both))
-                        {
-                            childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-                            childRenderArgs.BleedDirection = BleedDirection.Left;
-                        }
-                        else if (i == (columnSet.Columns.Count - 1) &&
-                            (childRenderArgs.BleedDirection == BleedDirection.Right || childRenderArgs.BleedDirection == BleedDirection.Both))
-                        {
-                            childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-                            childRenderArgs.BleedDirection = BleedDirection.Right;
-                        }
-                        else
-                        {
-                            childRenderArgs.BleedDirection = BleedDirection.None;
-                        }
+                        // Only the last column can bleed to the right
+                        childRenderArgs.BleedDirection &= ~BleedDirection.BleedRight;
                     }
                 }
                 context.RenderArgs = childRenderArgs;
@@ -857,7 +819,7 @@ namespace AdaptiveCards.Rendering.Html
 
             if (hasPadding)
             {
-                childRenderArgs.BleedDirection = BleedDirection.Both;
+                childRenderArgs.BleedDirection = BleedDirection.BleedAll;
             }
 
             childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
@@ -1969,19 +1931,31 @@ namespace AdaptiveCards.Rendering.Html
 
                 if (element.Bleed)
                 {
-                    int leftMargin = 0, rightMargin = 0;
-                    if (parentRenderArgs.BleedDirection == BleedDirection.Left || parentRenderArgs.BleedDirection == BleedDirection.Both)
+                    int leftMargin = 0, rightMargin = 0, topMargin = 0, bottomMargin = 0;
+                    if ((parentRenderArgs.BleedDirection & BleedDirection.BleedLeft) != BleedDirection.BleedNone)
                     {
                         leftMargin = -padding;
                     }
 
-                    if (parentRenderArgs.BleedDirection == BleedDirection.Right || parentRenderArgs.BleedDirection == BleedDirection.Both)
+                    if ((parentRenderArgs.BleedDirection & BleedDirection.BleedRight) != BleedDirection.BleedNone)
                     {
                         rightMargin = -padding;
                     }
 
+                    if ((parentRenderArgs.BleedDirection & BleedDirection.BleedUp) != BleedDirection.BleedNone)
+                    {
+                        topMargin = -padding;
+                    }
+
+                    if ((parentRenderArgs.BleedDirection & BleedDirection.BleedDown) != BleedDirection.BleedNone)
+                    {
+                        bottomMargin = -padding;
+                    }
+
                     uiElement.Style("margin-right", rightMargin + "px")
-                                .Style("margin-left", leftMargin + "px");
+                                .Style("margin-left", leftMargin + "px")
+                                .Style("margin-top", topMargin + "px")
+                                .Style("margin-bottom", bottomMargin + "px");
                 }
             }
 

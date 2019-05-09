@@ -41,58 +41,19 @@ namespace AdaptiveCards.Rendering.Wpf
                 AdaptiveColumn column = columnSet.Columns[i];
 
                 var childRenderArgs = new AdaptiveRenderArgs(childrenRenderArgs);
+                // Reset up and down bleed for columns as that behaviour shouldn't be changed
+                childRenderArgs.BleedDirection |= (BleedDirection.BleedUp | BleedDirection.BleedDown);
 
-                if (hasPadding)
+                if (i != 0)
                 {
-                    if (columnSet.Columns.Count == 1)
-                    {
-                        childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-                        childRenderArgs.BleedDirection = BleedDirection.Both;
-                    }
-                    else
-                    {
-                        if (i == 0)
-                        {
-                            childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-                            childRenderArgs.BleedDirection = BleedDirection.Left;
-                        }
-                        else if (i == (columnSet.Columns.Count - 1))
-                        {
-                            childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-                            childRenderArgs.BleedDirection = BleedDirection.Right;
-                        }
-                        else
-                        {
-                            childRenderArgs.BleedDirection = BleedDirection.None;
-                        }
-                    }
+                    // Only the first column can bleed to the left
+                    childRenderArgs.BleedDirection &= ~BleedDirection.BleedLeft;
                 }
-                else
+
+                if (i != columnSet.Columns.Count - 1)
                 {
-                    if (columnSet.Columns.Count == 1)
-                    {
-                        childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-                        childRenderArgs.BleedDirection = parentRenderArgs.BleedDirection;
-                    }
-                    else
-                    {
-                        if (i == 0 &&
-                            (childRenderArgs.BleedDirection == BleedDirection.Left || childRenderArgs.BleedDirection == BleedDirection.Both))
-                        {
-                            childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-                            childRenderArgs.BleedDirection = BleedDirection.Left;
-                        }
-                        else if (i == (columnSet.Columns.Count - 1) &&
-                            (childRenderArgs.BleedDirection == BleedDirection.Right || childRenderArgs.BleedDirection == BleedDirection.Both))
-                        {
-                            childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-                            childRenderArgs.BleedDirection = BleedDirection.Right;
-                        }
-                        else
-                        {
-                            childRenderArgs.BleedDirection = BleedDirection.None;
-                        }
-                    }
+                    // Only the last column can bleed to the right
+                    childRenderArgs.BleedDirection &= ~BleedDirection.BleedRight;
                 }
 
                 context.RenderArgs = childRenderArgs;
