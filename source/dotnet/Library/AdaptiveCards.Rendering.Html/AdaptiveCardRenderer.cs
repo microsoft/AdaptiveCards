@@ -460,9 +460,24 @@ namespace AdaptiveCards.Rendering.Html
             if (elements != null)
             {
                 bool isFirstElement = true;
+                int index = 0;
 
                 foreach (var cardElement in elements)
                 {
+                    if (index != 0)
+                    {
+                        // Only the first element can bleed to the top
+                        context.RenderArgs.BleedDirection &= ~BleedDirection.BleedUp;
+                    }
+
+                    if (index != elements.Count - 1)
+                    {
+                        // Only the last element can bleed to the bottom
+                        context.RenderArgs.BleedDirection &= ~BleedDirection.BleedDown;
+                    }
+
+                    index++;
+
                     // each element has a row
                     var uiElement = context.Render(cardElement);
                     if (uiElement != null)
@@ -669,20 +684,19 @@ namespace AdaptiveCards.Rendering.Html
                 var column = columnSet.Columns[i];
 
                 var childRenderArgs = new AdaptiveRenderArgs(childrenRenderArgs);
+                // Reset up and down bleed for columns as that behaviour shouldn't be changed
+                childRenderArgs.BleedDirection |= (BleedDirection.BleedUp | BleedDirection.BleedDown);
 
-                if (hasPadding)
+                if (i != 0)
                 {
-                    if (i != 0)
-                    {
-                        // Only the first column can bleed to the left
-                        childRenderArgs.BleedDirection &= ~BleedDirection.BleedLeft;
-                    }
+                    // Only the first column can bleed to the left
+                    childRenderArgs.BleedDirection &= ~BleedDirection.BleedLeft;
+                }
 
-                    if (i != columnSet.Columns.Count)
-                    {
-                        // Only the last column can bleed to the right
-                        childRenderArgs.BleedDirection &= ~BleedDirection.BleedRight;
-                    }
+                if (i != columnSet.Columns.Count - 1)
+                {
+                    // Only the last column can bleed to the right
+                    childRenderArgs.BleedDirection &= ~BleedDirection.BleedRight;
                 }
                 context.RenderArgs = childRenderArgs;
 
