@@ -15,6 +15,7 @@
 #include "AdaptiveShowCardAction.h"
 #include "AdaptiveTextRun.h"
 #include "DateTimeParser.h"
+#include "ElementTagContent.h"
 #include "FeatureRegistration.h"
 #include "TextHelpers.h"
 #include "json/json.h"
@@ -856,9 +857,11 @@ namespace AdaptiveNamespace
         }
     }
 
-    static HRESULT AddRenderedControl(ComPtr<IUIElement> newControl,
-                                      IAdaptiveCardElement* element,
-                                      IPanel* parentPanel,
+    static HRESULT AddRenderedControl(_In_ IUIElement* newControl,
+                                      _In_ IAdaptiveCardElement* element,
+                                      _In_ IPanel* parentPanel,
+                                      _In_ IUIElement* separator,
+                                      _In_ IColumnDefinition* columnDefinition,
                                       std::function<void(IUIElement* child)> childCreatedCallback)
     {
         if (newControl != nullptr)
@@ -871,30 +874,37 @@ namespace AdaptiveNamespace
                 RETURN_IF_FAILED(newControl->put_Visibility(Visibility_Collapsed));
             }
 
+            ComPtr<IUIElement> localControl(newControl);
+            ComPtr<IFrameworkElement> newControlAsFrameworkElement;
+            RETURN_IF_FAILED(localControl.As(&newControlAsFrameworkElement));
+
             HString id;
             RETURN_IF_FAILED(element->get_Id(id.GetAddressOf()));
 
             if (id.IsValid())
             {
-                ComPtr<IFrameworkElement> newControlAsFrameworkElement;
-                RETURN_IF_FAILED(newControl.As(&newControlAsFrameworkElement));
                 RETURN_IF_FAILED(newControlAsFrameworkElement->put_Name(id.Get()));
             }
 
+            ComPtr<ElementTagContent> tagContent;
+            RETURN_IF_FAILED(MakeAndInitialize<ElementTagContent>(&tagContent, element, parentPanel, separator, columnDefinition));
+            RETURN_IF_FAILED(newControlAsFrameworkElement->put_Tag(tagContent.Get()));
+
             ABI::AdaptiveNamespace::HeightType heightType{};
             RETURN_IF_FAILED(element->get_Height(&heightType));
-            XamlHelpers::AppendXamlElementToPanel(newControl.Get(), parentPanel, heightType);
+            XamlHelpers::AppendXamlElementToPanel(newControl, parentPanel, heightType);
 
-            childCreatedCallback(newControl.Get());
+            childCreatedCallback(newControl);
         }
         return S_OK;
     }
 
     void XamlBuilder::AddSeparatorIfNeeded(int& currentElement,
-                                           ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* element,
-                                           Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig>& hostConfig,
-                                           ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                                           ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel)
+                                           _In_ IAdaptiveCardElement* element,
+                                           _In_ IAdaptiveHostConfig* hostConfig,
+                                           _In_ IAdaptiveRenderContext* renderContext,
+                                           _In_ IPanel* parentPanel,
+                                           _Outptr_ IUIElement** addedSeparator)
     {
         // First element does not need a separator added
         if (currentElement++ > 0)
@@ -903,11 +913,12 @@ namespace AdaptiveNamespace
             UINT spacing;
             UINT separatorThickness;
             ABI::Windows::UI::Color separatorColor;
-            GetSeparationConfigForElement(element, hostConfig.Get(), &spacing, &separatorThickness, &separatorColor, &needsSeparator);
+            GetSeparationConfigForElement(element, hostConfig, &spacing, &separatorThickness, &separatorColor, &needsSeparator);
             if (needsSeparator)
             {
                 auto separator = CreateSeparator(renderContext, spacing, separatorThickness, separatorColor);
                 XamlHelpers::AppendXamlElementToPanel(separator.Get(), parentPanel);
+                THROW_IF_FAILED(separator.CopyTo(addedSeparator));
             }
         }
     }
@@ -948,6 +959,57 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
+    HRESULT SetSeparatorVisibility(_In_ IPanel* parentPanel)
+    {
+        // Iterate over the elements in a container and ensure that the correct separators are marked as visible
+        ComPtr<IVector<UIElement*>> children;
+        RETURN_IF_FAILED(parentPanel->get_Children(&children));
+
+        bool foundPreviousVisibleElement = false;
+        XamlHelpers::IterateOverVector<UIElement, IUIElement>(children.Get(), [&](IUIElement* child) {
+            ComPtr<IUIElement> localChild(child);
+
+            ComPtr<IFrameworkElement> childAsFrameworkElement;
+            RETURN_IF_FAILED(localChild.As(&childAsFrameworkElement));
+
+            // Get the tag for the element. The separators themselves will not have tags.
+            ComPtr<IInspectable> tag;
+            RETURN_IF_FAILED(childAsFrameworkElement->get_Tag(&tag));
+
+            if (tag)
+            {
+                ComPtr<IElementTagContent> elementTagContent;
+                RETURN_IF_FAILED(tag.As(&elementTagContent));
+
+                ComPtr<IUIElement> separator;
+                RETURN_IF_FAILED(elementTagContent->get_Separator(&separator));
+
+                Visibility visibility;
+                RETURN_IF_FAILED(child->get_Visibility(&visibility));
+
+                if (separator)
+                {
+                    if (visibility == Visibility_Collapsed || !foundPreviousVisibleElement)
+                    {
+                        // If the element is collapsed, or if it's the first visible element, collapse the separator
+                        RETURN_IF_FAILED(separator->put_Visibility(Visibility_Collapsed));
+                    }
+                    else
+                    {
+                        // Otherwise show the separator
+                        RETURN_IF_FAILED(separator->put_Visibility(Visibility_Visible));
+                    }
+                }
+
+                foundPreviousVisibleElement |= (visibility == Visibility_Visible);
+            }
+
+            return S_OK;
+        });
+
+        return S_OK;
+    }
+
     HRESULT XamlBuilder::BuildPanelChildren(_In_ IVector<IAdaptiveCardElement*>* children,
                                             _In_ IPanel* parentPanel,
                                             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
@@ -965,7 +1027,7 @@ namespace AdaptiveNamespace
         ComPtr<AdaptiveFeatureRegistration> featureRegistrationImpl = PeekInnards<AdaptiveFeatureRegistration>(featureRegistration);
         std::shared_ptr<FeatureRegistration> sharedFeatureRegistration = featureRegistrationImpl->GetSharedFeatureRegistration();
 
-        HRESULT hr = XamlHelpers::IterateOverVector<IAdaptiveCardElement>(children, ancestorHasFallback, [&](IAdaptiveCardElement* element) {
+        HRESULT hr = XamlHelpers::IterateOverVectorWithFailure<IAdaptiveCardElement>(children, ancestorHasFallback, [&](IAdaptiveCardElement* element) {
             HRESULT hr = S_OK;
 
             // Get fallback state
@@ -992,11 +1054,12 @@ namespace AdaptiveNamespace
 
             if (SUCCEEDED(hr) && elementRenderer != nullptr)
             {
-                AddSeparatorIfNeeded(iElement, element, hostConfig, renderContext, parentPanel);
+                ComPtr<IUIElement> separator;
+                AddSeparatorIfNeeded(iElement, element, hostConfig.Get(), renderContext, parentPanel, &separator);
 
                 ComPtr<IUIElement> newControl;
                 hr = elementRenderer->Render(element, renderContext, renderArgs, newControl.GetAddressOf());
-                RETURN_IF_FAILED(AddRenderedControl(newControl.Get(), element, parentPanel, childCreatedCallback));
+                RETURN_IF_FAILED(AddRenderedControl(newControl.Get(), element, parentPanel, separator.Get(), nullptr, childCreatedCallback));
             }
 
             if (elementRenderer == nullptr || hr == E_PERFORM_FALLBACK)
@@ -1026,12 +1089,14 @@ namespace AdaptiveNamespace
 
                             if (fallbackElementRenderer)
                             {
-                                AddSeparatorIfNeeded(iElement, element, hostConfig, renderContext, parentPanel);
+                                ComPtr<IUIElement> separator;
+                                AddSeparatorIfNeeded(iElement, element, hostConfig.Get(), renderContext, parentPanel, &separator);
 
                                 // perform this element's fallback
                                 ComPtr<IUIElement> newControl;
                                 fallbackElementRenderer->Render(fallbackElement.Get(), renderContext, renderArgs, &newControl);
-                                RETURN_IF_FAILED(AddRenderedControl(newControl, element, parentPanel, childCreatedCallback));
+                                RETURN_IF_FAILED(
+                                    AddRenderedControl(newControl.Get(), element, parentPanel, separator.Get(), nullptr, childCreatedCallback));
                                 return S_OK;
                             }
 
@@ -1087,6 +1152,7 @@ namespace AdaptiveNamespace
         });
         renderArgs->put_AncestorHasFallback(ancestorHasFallback);
 
+        RETURN_IF_FAILED(SetSeparatorVisibility(parentPanel));
         return hr;
     }
 
@@ -1284,6 +1350,57 @@ namespace AdaptiveNamespace
         }
     }
 
+    HRESULT HandleColumnWidth(_In_ IAdaptiveColumn* column, boolean isVisible, _In_ IColumnDefinition* columnDefinition)
+    {
+        HString adaptiveColumnWidth;
+        RETURN_IF_FAILED(column->get_Width(adaptiveColumnWidth.GetAddressOf()));
+
+        INT32 isStretchResult;
+        RETURN_IF_FAILED(WindowsCompareStringOrdinal(adaptiveColumnWidth.Get(), HStringReference(L"stretch").Get(), &isStretchResult));
+        const boolean isStretch = (isStretchResult == 0);
+
+        INT32 isAutoResult;
+        RETURN_IF_FAILED(WindowsCompareStringOrdinal(adaptiveColumnWidth.Get(), HStringReference(L"auto").Get(), &isAutoResult));
+        const boolean isAuto = (isAutoResult == 0);
+
+        double widthAsDouble = _wtof(adaptiveColumnWidth.GetRawBuffer(nullptr));
+        UINT32 pixelWidth = 0;
+        RETURN_IF_FAILED(column->get_PixelWidth(&pixelWidth));
+
+        // Valid widths are "auto", "stretch", a pixel width ("50px"), unset, or a value greater than 0 to use as a star value ("2")
+        const boolean isValidWidth = isAuto || isStretch || pixelWidth || !adaptiveColumnWidth.IsValid() || (widthAsDouble > 0);
+
+        GridLength columnWidth;
+        if (!isVisible || isAuto || !isValidWidth)
+        {
+            // If the column isn't visible, or is set to "auto" or an invalid value ("-1", "foo"), set it to Auto
+            columnWidth.GridUnitType = GridUnitType::GridUnitType_Auto;
+            columnWidth.Value = 0;
+        }
+        else if (pixelWidth)
+        {
+            // If it's visible and pixel width is specified, use pixel width
+            columnWidth.GridUnitType = GridUnitType::GridUnitType_Pixel;
+            columnWidth.Value = pixelWidth;
+        }
+        else if (isStretch || !adaptiveColumnWidth.IsValid())
+        {
+            // If it's visible and stretch is specified, or width is unset, use stretch with default of 1
+            columnWidth.GridUnitType = GridUnitType::GridUnitType_Star;
+            columnWidth.Value = 1;
+        }
+        else
+        {
+            // If it's visible and the user specified a valid non-pixel width, use that as a star width
+            columnWidth.GridUnitType = GridUnitType::GridUnitType_Star;
+            columnWidth.Value = _wtof(adaptiveColumnWidth.GetRawBuffer(nullptr));
+        }
+
+        RETURN_IF_FAILED(columnDefinition->put_Width(columnWidth));
+
+        return S_OK;
+    }
+
     HRESULT XamlBuilder::HandleToggleVisibilityClick(_In_ IFrameworkElement* cardFrameworkElement, _In_ IAdaptiveActionElement* action)
     {
         ComPtr<IAdaptiveActionElement> localAction(action);
@@ -1301,6 +1418,7 @@ namespace AdaptiveNamespace
         HRESULT hr = targetsIterable->First(&targetIterator);
         RETURN_IF_FAILED(targetIterator->get_HasCurrent(&hasCurrent));
 
+        std::unordered_set<IPanel*> parentPanels;
         while (SUCCEEDED(hr) && hasCurrent)
         {
             ComPtr<IAdaptiveToggleVisibilityTarget> currentTarget;
@@ -1337,9 +1455,41 @@ namespace AdaptiveNamespace
                 }
 
                 RETURN_IF_FAILED(toggleElementAsUIElement->put_Visibility(visibilityToSet));
+
+                ComPtr<IFrameworkElement> toggleElementAsFrameworkElement;
+                RETURN_IF_FAILED(toggleElement.As(&toggleElementAsFrameworkElement));
+
+                ComPtr<IInspectable> tag;
+                RETURN_IF_FAILED(toggleElementAsFrameworkElement->get_Tag(&tag));
+
+                ComPtr<IElementTagContent> elementTagContent;
+                RETURN_IF_FAILED(tag.As(&elementTagContent));
+
+                ComPtr<IPanel> parentPanel;
+                RETURN_IF_FAILED(elementTagContent->get_ParentPanel(&parentPanel));
+                parentPanels.insert(parentPanel.Get());
+
+                ComPtr<IAdaptiveCardElement> cardElement;
+                RETURN_IF_FAILED(elementTagContent->get_AdaptiveCardElement(&cardElement));
+
+                // If the element we're toggling is a column, we'll need to change the width on the column definition
+                ComPtr<IAdaptiveColumn> cardElementAsColumn;
+                if (SUCCEEDED(cardElement.As(&cardElementAsColumn)))
+                {
+                    ComPtr<IColumnDefinition> columnDefinition;
+                    RETURN_IF_FAILED(elementTagContent->get_ColumnDefinition(&columnDefinition));
+                    RETURN_IF_FAILED(HandleColumnWidth(cardElementAsColumn.Get(),
+                                                       (visibilityToSet == Visibility_Visible),
+                                                       columnDefinition.Get()));
+                }
             }
 
             hr = targetIterator->MoveNext(&hasCurrent);
+        }
+
+        for (auto parentPanel : parentPanels)
+        {
+            SetSeparatorVisibility(parentPanel);
         }
 
         return S_OK;
@@ -2832,19 +2982,23 @@ namespace AdaptiveNamespace
         boolean ancestorHasFallback;
         RETURN_IF_FAILED(renderArgs->get_AncestorHasFallback(&ancestorHasFallback));
 
-        HRESULT hrColumns = XamlHelpers::IterateOverVector<AdaptiveColumn, IAdaptiveColumn>(
-            columns.Get(),
-            ancestorHasFallback,
-            [xamlGrid, gridStatics, &currentColumn, renderContext, newRenderArgs, columnRenderer, hostConfig](IAdaptiveColumn* column) {
+        ComPtr<IPanel> gridAsPanel;
+        RETURN_IF_FAILED(xamlGrid.As(&gridAsPanel));
+
+        HRESULT hrColumns = XamlHelpers::IterateOverVectorWithFailure<AdaptiveColumn, IAdaptiveColumn>(
+            columns.Get(), ancestorHasFallback, [&](IAdaptiveColumn* column) {
                 ComPtr<IAdaptiveCardElement> columnAsCardElement;
                 ComPtr<IAdaptiveColumn> localColumn(column);
                 RETURN_IF_FAILED(localColumn.As(&columnAsCardElement));
+
+                ComPtr<IAdaptiveColumn> testColumn;
+                columnAsCardElement.As(&testColumn);
+
                 ComPtr<IVector<ColumnDefinition*>> columnDefinitions;
                 RETURN_IF_FAILED(xamlGrid->get_ColumnDefinitions(&columnDefinitions));
-                ComPtr<IPanel> gridAsPanel;
-                RETURN_IF_FAILED(xamlGrid.As(&gridAsPanel));
 
                 // If not the first column
+                ComPtr<IUIElement> separator;
                 if (currentColumn > 0)
                 {
                     // Add Separator to the columnSet
@@ -2863,7 +3017,7 @@ namespace AdaptiveNamespace
                         RETURN_IF_FAILED(separatorColumnDefinition->put_Width({1.0, GridUnitType::GridUnitType_Auto}));
                         RETURN_IF_FAILED(columnDefinitions->Append(separatorColumnDefinition.Get()));
 
-                        auto separator = CreateSeparator(renderContext, spacing, separatorThickness, separatorColor, false);
+                        separator = CreateSeparator(renderContext, spacing, separatorThickness, separatorColor, false);
                         ComPtr<IFrameworkElement> separatorAsFrameworkElement;
                         RETURN_IF_FAILED(separator.As(&separatorAsFrameworkElement));
                         gridStatics->SetColumn(separatorAsFrameworkElement.Get(), currentColumn++);
@@ -2875,46 +3029,11 @@ namespace AdaptiveNamespace
                 ComPtr<IColumnDefinition> columnDefinition = XamlHelpers::CreateXamlClass<IColumnDefinition>(
                     HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
 
-                HString adaptiveColumnWidth;
-                RETURN_IF_FAILED(column->get_Width(adaptiveColumnWidth.GetAddressOf()));
+                boolean isVisible;
+                RETURN_IF_FAILED(columnAsCardElement->get_IsVisible(&isVisible));
 
-                INT32 isStretchResult;
-                RETURN_IF_FAILED(WindowsCompareStringOrdinal(adaptiveColumnWidth.Get(), HStringReference(L"stretch").Get(), &isStretchResult));
+                RETURN_IF_FAILED(HandleColumnWidth(column, isVisible, columnDefinition.Get()));
 
-                INT32 isAutoResult;
-                RETURN_IF_FAILED(WindowsCompareStringOrdinal(adaptiveColumnWidth.Get(), HStringReference(L"auto").Get(), &isAutoResult));
-
-                double widthAsDouble = _wtof(adaptiveColumnWidth.GetRawBuffer(nullptr));
-                UINT32 pixelWidth = 0;
-                RETURN_IF_FAILED(localColumn->get_PixelWidth(&pixelWidth));
-
-                GridLength columnWidth;
-                if (pixelWidth)
-                {
-                    // If pixel width specified, use pixel width
-                    columnWidth.GridUnitType = GridUnitType::GridUnitType_Pixel;
-                    columnWidth.Value = pixelWidth;
-                }
-                else if (isStretchResult == 0 || !adaptiveColumnWidth.IsValid())
-                {
-                    // If stretch specified, use stretch with default of 1
-                    columnWidth.GridUnitType = GridUnitType::GridUnitType_Star;
-                    columnWidth.Value = 1;
-                }
-                else if ((isAutoResult == 0) || (widthAsDouble <= 0))
-                {
-                    // If auto specified or column width invalid or set to non-positive, use auto width
-                    columnWidth.GridUnitType = GridUnitType::GridUnitType_Auto;
-                    columnWidth.Value = 0;
-                }
-                else
-                {
-                    // If user specified specific valid width, use that star width
-                    columnWidth.GridUnitType = GridUnitType::GridUnitType_Star;
-                    columnWidth.Value = _wtof(adaptiveColumnWidth.GetRawBuffer(nullptr));
-                }
-
-                RETURN_IF_FAILED(columnDefinition->put_Width(columnWidth));
                 RETURN_IF_FAILED(columnDefinitions->Append(columnDefinition.Get()));
 
                 // Build the Column
@@ -2927,10 +3046,17 @@ namespace AdaptiveNamespace
                 gridStatics->SetColumn(columnAsFrameworkElement.Get(), currentColumn++);
 
                 // Finally add the column container to the grid
-                XamlHelpers::AppendXamlElementToPanel(xamlColumn.Get(), gridAsPanel.Get());
+                RETURN_IF_FAILED(AddRenderedControl(xamlColumn.Get(),
+                                                    columnAsCardElement.Get(),
+                                                    gridAsPanel.Get(),
+                                                    separator.Get(),
+                                                    columnDefinition.Get(),
+                                                    [](IUIElement*) {}));
                 return S_OK;
             });
         RETURN_IF_FAILED(hrColumns);
+
+        RETURN_IF_FAILED(SetSeparatorVisibility(gridAsPanel.Get()));
 
         ComPtr<IFrameworkElement> columnSetAsFrameworkElement;
         RETURN_IF_FAILED(xamlGrid.As(&columnSetAsFrameworkElement));
