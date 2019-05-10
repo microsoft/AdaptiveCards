@@ -170,12 +170,48 @@ namespace AdaptiveCards.Rendering.Wpf
 
             if (bi != null)
             {
-                grid.Background = new ImageBrush(bi)
+                // bi.Pixel{Width, Height}: dimensions of image
+                // grid.Actual{Width, Height}: dimensions of grid containing background image
+                switch (adaptiveBackgroundImage.FillMode)
                 {
-                    Stretch = Stretch.UniformToFill,
-                    AlignmentX = AlignmentX.Left,
-                    AlignmentY = AlignmentY.Top
-                };
+                    case AdaptiveImageFillMode.Repeat:
+                        grid.Background = new ImageBrush(bi)
+                        {
+                            TileMode = TileMode.Tile,
+                            Viewport = new Rect(0, 0, bi.PixelWidth, bi.PixelHeight),
+                            ViewportUnits = BrushMappingMode.Absolute
+                        };
+                        break;
+                    case AdaptiveImageFillMode.RepeatHorizontally:
+                        grid.Background = new ImageBrush(bi)
+                        {
+                            TileMode = TileMode.FlipY,
+                            Stretch = Stretch.Uniform,
+                            AlignmentY = (AlignmentY) adaptiveBackgroundImage.VerticalAlignment,
+                            Viewport = new Rect(0, 0, bi.PixelWidth, grid.ActualHeight + 1),
+                            ViewportUnits = BrushMappingMode.Absolute
+                        };
+                        break;
+                    case AdaptiveImageFillMode.RepeatVertically:
+                        grid.Background = new ImageBrush(bi)
+                        {
+                            TileMode = TileMode.FlipX,
+                            Stretch = Stretch.Uniform,
+                            AlignmentX = (AlignmentX)adaptiveBackgroundImage.HorizontalAlignment,
+                            Viewport = new Rect(0, 0, grid.ActualWidth + 1, bi.PixelWidth),
+                            ViewportUnits = BrushMappingMode.Absolute
+                        };
+                        break;
+                    case AdaptiveImageFillMode.Cover:
+                    default:
+                        grid.Background = new ImageBrush(bi)
+                        {
+                            Stretch = Stretch.UniformToFill,
+                            AlignmentY = (AlignmentY)adaptiveBackgroundImage.VerticalAlignment,
+                            AlignmentX = (AlignmentX)adaptiveBackgroundImage.HorizontalAlignment
+                        };
+                        break;
+                }
             }
         }
 
