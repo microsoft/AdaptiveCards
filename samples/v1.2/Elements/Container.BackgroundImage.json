@@ -25,7 +25,7 @@
 			"type": "Container",
 			"backgroundImage": {
 				"url": "https://picsum.photos/30/30?image=101",
-				"mode": "repeat"
+				"fillMode": "repeat"
 			},
 			"items": [
 				{
@@ -46,7 +46,7 @@
 			"type": "Container",
 			"backgroundImage": {
 				"url": "https://picsum.photos/30/30?image=101",
-				"mode": "repeatHorizontally"
+				"fillMode": "repeatHorizontally"
 			},
 			"items": [
 				{
@@ -63,7 +63,7 @@
 			"type": "Container",
 			"backgroundImage": {
 				"url": "https://picsum.photos/30/30?image=101",
-				"mode": "repeatHorizontally",
+				"fillMode": "repeatHorizontally",
 				"verticalAlignment": "center"
 			},
 			"items": [
@@ -81,7 +81,7 @@
 			"type": "Container",
 			"backgroundImage": {
 				"url": "https://picsum.photos/30/30?image=101",
-				"mode": "repeatHorizontally",
+				"fillMode": "repeatHorizontally",
 				"verticalAlignment": "bottom"
 			},
 			"items": [
@@ -99,7 +99,7 @@
 			"type": "Container",
 			"backgroundImage": {
 				"url": "https://picsum.photos/30/30?image=101",
-				"mode": "repeatVertically"
+				"fillMode": "repeatVertically"
 			},
 			"items": [
 				{
@@ -120,7 +120,7 @@
 			"type": "Container",
 			"backgroundImage": {
 				"url": "https://picsum.photos/30/30?image=101",
-				"mode": "repeatVertically",
+				"fillMode": "repeatVertically",
 				"horizontalAlignment": "center"
 			},
 			"items": [
@@ -142,7 +142,7 @@
 			"type": "Container",
 			"backgroundImage": {
 				"url": "https://picsum.photos/30/30?image=101",
-				"mode": "repeatVertically",
+				"fillMode": "repeatVertically",
 				"horizontalAlignment": "right"
 			},
 			"items": [

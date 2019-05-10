@@ -7,9 +7,9 @@ using Newtonsoft.Json.Converters;
 namespace AdaptiveCards
 {
     [JsonConverter(typeof(StringEnumConverter), true)]
-    public enum AdaptiveBackgroundImageMode
+    public enum AdaptiveImageFillMode
     {
-        Stretch,
+        Cover,
         RepeatHorizontally,
         RepeatVertically,
         Repeat
