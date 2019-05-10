@@ -11,10 +11,13 @@
 #import "CollectionTypeElement.h"
 #import "TextElementProperties.h"
 #import "ACRErrors.h"
+#import "ACRSeparator.h"
 
 using namespace AdaptiveCards;
 
 void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visibilityInfo);
+
+void configSeparatorVisibility(ACRSeparator *view, std::shared_ptr<BaseCardElement> const &visibilityInfo);
 
 void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem, ACRContentStackView *container, ACOHostConfig *acoConfig);
 

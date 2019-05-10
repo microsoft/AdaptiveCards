@@ -1920,27 +1920,28 @@ namespace AdaptiveCards.Rendering.Html
 
         private static void ApplyBackgroundImage(AdaptiveBackgroundImage backgroundImage, HtmlTag uiContainer, AdaptiveRenderContext context)
         {
-            switch (backgroundImage.Mode)
+            switch (backgroundImage.FillMode)
             {
-                case AdaptiveBackgroundImageMode.Repeat:
+                case AdaptiveImageFillMode.Repeat:
                     uiContainer.Style("background-image", $"url('{context.Config.ResolveFinalAbsoluteUri(backgroundImage.Url)}')")
                             .Style("background-repeat", "repeat");
                     break;
-                case AdaptiveBackgroundImageMode.RepeatHorizontally:
+                case AdaptiveImageFillMode.RepeatHorizontally:
                     uiContainer.Style("background-image", $"url('{context.Config.ResolveFinalAbsoluteUri(backgroundImage.Url)}')")
                             .Style("background-repeat", "repeat-x")
                             .Style("background-position", "left " + backgroundImage.VerticalAlignment.ToString());
                     break;
-                case AdaptiveBackgroundImageMode.RepeatVertically:
+                case AdaptiveImageFillMode.RepeatVertically:
                     uiContainer.Style("background-image", $"url('{context.Config.ResolveFinalAbsoluteUri(backgroundImage.Url)}')")
                             .Style("background-repeat", "repeat-y")
                             .Style("background-position", backgroundImage.HorizontalAlignment.ToString() + " top");
                     break;
-                case AdaptiveBackgroundImageMode.Stretch:
+                case AdaptiveImageFillMode.Cover:
                 default:
                     uiContainer.Style("background-image", $"url('{context.Config.ResolveFinalAbsoluteUri(backgroundImage.Url)}')")
                             .Style("background-repeat", "no-repeat")
-                            .Style("background-size", "cover");
+                            .Style("background-size", "cover")
+                            .Style("background-position", backgroundImage.HorizontalAlignment.ToString().ToLower() + " " + backgroundImage.VerticalAlignment.ToString().ToLower());
                     break;
             }
         }
