@@ -965,7 +965,7 @@ namespace AdaptiveNamespace
         ComPtr<AdaptiveFeatureRegistration> featureRegistrationImpl = PeekInnards<AdaptiveFeatureRegistration>(featureRegistration);
         std::shared_ptr<FeatureRegistration> sharedFeatureRegistration = featureRegistrationImpl->GetSharedFeatureRegistration();
 
-        HRESULT hr = XamlHelpers::IterateOverVector<IAdaptiveCardElement>(children, ancestorHasFallback, [&](IAdaptiveCardElement* element) {
+        HRESULT hr = XamlHelpers::IterateOverVectorWithFailure<IAdaptiveCardElement>(children, ancestorHasFallback, [&](IAdaptiveCardElement* element) {
             HRESULT hr = S_OK;
 
             // Get fallback state
@@ -2835,7 +2835,7 @@ namespace AdaptiveNamespace
         boolean ancestorHasFallback;
         RETURN_IF_FAILED(renderArgs->get_AncestorHasFallback(&ancestorHasFallback));
 
-        HRESULT hrColumns = XamlHelpers::IterateOverVector<AdaptiveColumn, IAdaptiveColumn>(
+        HRESULT hrColumns = XamlHelpers::IterateOverVectorWithFailure<AdaptiveColumn, IAdaptiveColumn>(
             columns.Get(),
             ancestorHasFallback,
             [xamlGrid, gridStatics, &currentColumn, renderContext, newRenderArgs, columnRenderer, hostConfig](IAdaptiveColumn* column) {

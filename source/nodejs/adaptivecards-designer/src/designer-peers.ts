@@ -416,8 +416,12 @@ export abstract class DesignerPeer extends DraggableElement {
     abstract getBoundingRect(): Rect;
     abstract getCardObjectBoundingRect(): Rect;
 
-    getTreeItemText(): string {
+    protected internalGetTreeItemText(): string {
         return null;
+    }
+
+    getTreeItemText(): string {
+        return this.internalGetTreeItemText();
     }
 
     canDrop(peer: DesignerPeer): boolean {
@@ -605,17 +609,17 @@ export class ActionPeer extends DesignerPeer {
         this._action = action;
     }
 
-    getCardObjectTypeName(): string {
-        return this.action.getJsonTypeName();
-    }
-
-    getTreeItemText(): string {
+    protected internalGetTreeItemText(): string {
         if (this.action.title && this.action.title != "") {
             return this.action.title;
         }
         else {
-            return super.getTreeItemText();
+            return super.internalGetTreeItemText();
         }
+    }
+
+    getCardObjectTypeName(): string {
+        return this.action.getJsonTypeName();
     }
 
     isDraggable(): boolean {
@@ -938,6 +942,17 @@ export class CardElementPeer extends DesignerPeer {
         }
     }
 
+    protected internalUpdateCssStyles() {
+        super.internalUpdateCssStyles();
+
+        if (this.cardElement.isVisible) {
+            this.renderedElement.classList.remove("invisible");
+        }
+        else {
+            this.renderedElement.classList.add("invisible");
+        }
+    }
+    
     constructor(
         parent: DesignerPeer,
         designerSurface: CardDesignerSurface,
@@ -955,6 +970,23 @@ export class CardElementPeer extends DesignerPeer {
 
         for (var i = 0; i < this.cardElement.getActionCount(); i++) {
             this.insertChild(CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, this, cardElement.getActionAt(i)));
+        }
+    }
+
+    getTreeItemText(): string {
+        let text = super.getTreeItemText();
+        
+        if (this.cardElement.isVisible) {
+            return text;
+        }
+        else {
+            let result = "Hidden";
+            
+            if (text) {
+                result += " - " + text;
+            }
+
+            return result;
         }
     }
 
@@ -1333,7 +1365,7 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
         return true;
     }
 
-    getTreeItemText(): string {
+    protected internalGetTreeItemText(): string {
         if (this.cardElement.width instanceof Adaptive.SizeAndUnit) {
             switch (this.cardElement.width.unit) {
                 case Adaptive.SizeUnit.Weight:
@@ -1534,7 +1566,7 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
         );
     }
 
-    getTreeItemText(): string {
+    protected internalGetTreeItemText(): string {
         let columnCount = this.cardElement.getCount();
 
         switch (columnCount) {
@@ -1955,7 +1987,7 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
 }
 
 export class MediaPeer extends TypedCardElementPeer<Adaptive.Media> {
-    getTreeItemText(): string {
+    protected internalGetTreeItemText(): string {
         if (this.cardElement.selectedMediaType == "audio") {
             return "audio";
         }
@@ -1963,7 +1995,7 @@ export class MediaPeer extends TypedCardElementPeer<Adaptive.Media> {
             return "video";
         }
         else {
-            return super.getTreeItemText();
+            return super.internalGetTreeItemText();
         }
     }
 
@@ -2018,7 +2050,7 @@ export class FactSetPeer extends TypedCardElementPeer<Adaptive.FactSet> {
         return [ "horizontalAlignment" ];
     }
 
-    getTreeItemText(): string {
+    protected internalGetTreeItemText(): string {
         if (this.cardElement.facts.length == 0) {
             return "No fact";
         }
@@ -2030,6 +2062,15 @@ export class FactSetPeer extends TypedCardElementPeer<Adaptive.FactSet> {
         )
 
         return allNames.join(", ");
+    }
+
+    initializeCardElement() {
+        super.initializeCardElement();
+
+        this.cardElement.facts.push(
+            new Adaptive.Fact("Fact 1", "Value 1"),
+            new Adaptive.Fact("Fact 2", "Value 2")
+        );
     }
 
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
@@ -2471,12 +2512,12 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
         return new TextBlockPeerInplaceEditor(this.cardElement);
     }
 
-    getToolTip(): string {
-        return "Double click to edit";
+    protected internalGetTreeItemText(): string {
+        return this.cardElement.text;
     }
 
-    getTreeItemText(): string {
-        return this.cardElement.text;
+    getToolTip(): string {
+        return "Double click to edit";
     }
 
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
@@ -2587,7 +2628,7 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
 }
 
 export class RichTextBlockPeer extends TypedCardElementPeer<Adaptive.RichTextBlock> {
-    getTreeItemText(): string {
+    protected internalGetTreeItemText(): string {
         return this.cardElement.asString();
     }
 
