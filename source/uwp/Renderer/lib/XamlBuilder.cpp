@@ -1357,18 +1357,18 @@ namespace AdaptiveNamespace
 
         INT32 isStretchResult;
         RETURN_IF_FAILED(WindowsCompareStringOrdinal(adaptiveColumnWidth.Get(), HStringReference(L"stretch").Get(), &isStretchResult));
-        boolean isStretch = (isStretchResult == 0);
+        const boolean isStretch = (isStretchResult == 0);
 
         INT32 isAutoResult;
         RETURN_IF_FAILED(WindowsCompareStringOrdinal(adaptiveColumnWidth.Get(), HStringReference(L"auto").Get(), &isAutoResult));
-        boolean isAuto = (isAutoResult == 0);
+        const boolean isAuto = (isAutoResult == 0);
 
         double widthAsDouble = _wtof(adaptiveColumnWidth.GetRawBuffer(nullptr));
         UINT32 pixelWidth = 0;
         RETURN_IF_FAILED(column->get_PixelWidth(&pixelWidth));
 
         // Valid widths are "auto", "stretch", a pixel width ("50px"), unset, or a value greater than 0 to use as a star value ("2")
-        boolean isValidWidth = isAuto || isStretch || pixelWidth || !adaptiveColumnWidth.IsValid() || (widthAsDouble > 0);
+        const boolean isValidWidth = isAuto || isStretch || pixelWidth || !adaptiveColumnWidth.IsValid() || (widthAsDouble > 0);
 
         GridLength columnWidth;
         if (!isVisible || isAuto || !isValidWidth)
