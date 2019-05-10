@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Enums from "./enums";
 import * as Shared from "./shared";
@@ -1311,6 +1311,8 @@ export class TextRun extends BaseTextBlock {
         if (!Utils.isNullOrEmpty(this.text)) {
             let hostConfig = this.hostConfig;
 
+            let formattedText = TextFormatters.formatText(this.lang, this.text);
+
             let element = document.createElement("span");
             element.classList.add(hostConfig.makeCssClassName("ac-textRun"));
 
@@ -1328,12 +1330,12 @@ export class TextRun extends BaseTextBlock {
                     this.selectAction.execute();
                 }
 
-                anchor.innerText = this.text;
+                anchor.innerText = formattedText;
 
                 element.appendChild(anchor);
             }
             else {
-                element.innerText = this.text;
+                element.innerText = formattedText;
             }
 
             return element;
@@ -6578,6 +6580,27 @@ export class AdaptiveCard extends ContainerWithActions {
                     message: "The specified card version (" + this.version + ") is not supported. The maximum supported card version is " + AdaptiveCard.currentVersion
                 });
         }
+
+        let allInputs = this.getAllInputs();
+        let inputIds: Object = {};
+
+        allInputs.forEach(
+            (input: Input) => {
+                if (inputIds.hasOwnProperty(input.id)) {
+                    if (inputIds[input.id] == 1) {
+                        result.push(
+                            {
+                                error: Enums.ValidationError.DuplicateId,
+                                message: "Duplicate input Id: " + input.id
+                            });
+                    }
+
+                    inputIds[input.id] += 1;
+                }
+                else {
+                    inputIds[input.id] = 1;
+                }
+            });
 
         return result.concat(super.validate());
     }

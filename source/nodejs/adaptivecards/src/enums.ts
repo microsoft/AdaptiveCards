@@ -152,7 +152,8 @@ export enum ValidationError {
     TooManyActions,
     UnknownActionType,
     UnknownElementType,
-    UnsupportedCardVersion
+    UnsupportedCardVersion,
+    DuplicateId
 }
 
 export enum ContainerFitStatus {

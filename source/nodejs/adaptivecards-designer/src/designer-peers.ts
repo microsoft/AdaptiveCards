@@ -807,6 +807,9 @@ export class ShowCardActionPeer extends TypedActionPeer<Adaptive.ShowCardAction>
     }
 }
 
+export class ToggleVisibilityActionPeer extends TypedActionPeer<Adaptive.ToggleVisibilityAction> {
+}
+
 export class CardElementPeer extends DesignerPeer {
     protected _cardElement: Adaptive.CardElement;
 
