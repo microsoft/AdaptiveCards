@@ -442,13 +442,18 @@ namespace AdaptiveCards.Rendering.Wpf
             FrameworkElement card = ActionShowCards[uiAction];
             if (card != null)
             {
-                if (card.Visibility != Visibility.Visible)
+                if (card.Visibility == Visibility.Visible)
                 {
-                    card.Visibility = Visibility.Visible;
+                    card.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
-                    card.Visibility = Visibility.Collapsed;
+                    // need to make sure we collapse all showcards before showing this one
+                    foreach(var showCard in ActionShowCards)
+                    {
+                        showCard.Value.Visibility = Visibility.Collapsed;
+                    }
+                    card.Visibility = Visibility.Visible;
                 }
             }
         }
