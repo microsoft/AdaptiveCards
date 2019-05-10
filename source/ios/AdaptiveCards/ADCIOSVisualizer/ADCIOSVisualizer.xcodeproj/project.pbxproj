@@ -17,8 +17,6 @@
 		3016455A225E602A0032E11C /* Container.MinHeight.json in Resources */ = {isa = PBXBuildFile; fileRef = 30164556225E60290032E11C /* Container.MinHeight.json */; };
 		3016455B225E602A0032E11C /* Column.MinHeight.json in Resources */ = {isa = PBXBuildFile; fileRef = 30164557225E602A0032E11C /* Column.MinHeight.json */; };
 		3016455C225E602A0032E11C /* ColumnSet.MinHeight.json in Resources */ = {isa = PBXBuildFile; fileRef = 30164558225E602A0032E11C /* ColumnSet.MinHeight.json */; };
-		3016457E2282491A0032E11C /* AdaptiveCard.BackgroundImage.VerticalAlignment.json in Resources */ = {isa = PBXBuildFile; fileRef = 301645782282491A0032E11C /* AdaptiveCard.BackgroundImage.VerticalAlignment.json */; };
-		3016458422824B8B0032E11C /* AdaptiveCard.BackgroundImage.FillMode.json in Resources */ = {isa = PBXBuildFile; fileRef = 3016457F22824B890032E11C /* AdaptiveCard.BackgroundImage.FillMode.json */; };
 		3016458522824B8B0032E11C /* AdaptiveCard.BackgroundImage.FillMode.RepeatHorizontally.json in Resources */ = {isa = PBXBuildFile; fileRef = 3016458022824B8A0032E11C /* AdaptiveCard.BackgroundImage.FillMode.RepeatHorizontally.json */; };
 		3016458622824B8B0032E11C /* AdaptiveCard.BackgroundImage.FillMode.Repeat.json in Resources */ = {isa = PBXBuildFile; fileRef = 3016458122824B8A0032E11C /* AdaptiveCard.BackgroundImage.FillMode.Repeat.json */; };
 		3016458722824B8B0032E11C /* AdaptiveCard.BackgroundImage.FillMode.Cover.json in Resources */ = {isa = PBXBuildFile; fileRef = 3016458222824B8A0032E11C /* AdaptiveCard.BackgroundImage.FillMode.Cover.json */; };
@@ -204,8 +202,6 @@
 		30164556225E60290032E11C /* Container.MinHeight.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Container.MinHeight.json; path = ../../../../samples/v1.2/Elements/Container.MinHeight.json; sourceTree = "<group>"; };
 		30164557225E602A0032E11C /* Column.MinHeight.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Column.MinHeight.json; path = ../../../../samples/v1.2/Elements/Column.MinHeight.json; sourceTree = "<group>"; };
 		30164558225E602A0032E11C /* ColumnSet.MinHeight.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.MinHeight.json; path = ../../../../samples/v1.2/Elements/ColumnSet.MinHeight.json; sourceTree = "<group>"; };
-		301645782282491A0032E11C /* AdaptiveCard.BackgroundImage.VerticalAlignment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = AdaptiveCard.BackgroundImage.VerticalAlignment.json; path = ../../../../samples/v1.2/Elements/AdaptiveCard.BackgroundImage.VerticalAlignment.json; sourceTree = "<group>"; };
-		3016457F22824B890032E11C /* AdaptiveCard.BackgroundImage.FillMode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = AdaptiveCard.BackgroundImage.FillMode.json; path = ../../../../samples/v1.2/Elements/AdaptiveCard.BackgroundImage.FillMode.json; sourceTree = "<group>"; };
 		3016458022824B8A0032E11C /* AdaptiveCard.BackgroundImage.FillMode.RepeatHorizontally.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = AdaptiveCard.BackgroundImage.FillMode.RepeatHorizontally.json; path = ../../../../samples/v1.2/Elements/AdaptiveCard.BackgroundImage.FillMode.RepeatHorizontally.json; sourceTree = "<group>"; };
 		3016458122824B8A0032E11C /* AdaptiveCard.BackgroundImage.FillMode.Repeat.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = AdaptiveCard.BackgroundImage.FillMode.Repeat.json; path = ../../../../samples/v1.2/Elements/AdaptiveCard.BackgroundImage.FillMode.Repeat.json; sourceTree = "<group>"; };
 		3016458222824B8A0032E11C /* AdaptiveCard.BackgroundImage.FillMode.Cover.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = AdaptiveCard.BackgroundImage.FillMode.Cover.json; path = ../../../../samples/v1.2/Elements/AdaptiveCard.BackgroundImage.FillMode.Cover.json; sourceTree = "<group>"; };
@@ -488,11 +484,9 @@
 			isa = PBXGroup;
 			children = (
 				3016458222824B8A0032E11C /* AdaptiveCard.BackgroundImage.FillMode.Cover.json */,
-				3016457F22824B890032E11C /* AdaptiveCard.BackgroundImage.FillMode.json */,
 				3016458122824B8A0032E11C /* AdaptiveCard.BackgroundImage.FillMode.Repeat.json */,
 				3016458022824B8A0032E11C /* AdaptiveCard.BackgroundImage.FillMode.RepeatHorizontally.json */,
 				3016458322824B8A0032E11C /* AdaptiveCard.BackgroundImage.FillMode.RepeatVertically.json */,
-				301645782282491A0032E11C /* AdaptiveCard.BackgroundImage.VerticalAlignment.json */,
 				6B096D832273D10A006CC034 /* ToggleVisibility.AllElements.json */,
 				6B096D812273CE0A006CC034 /* ColumnSet.AllElements.Stretch.ToggleVisibility.json */,
 				6B22426721E94AD0000ACDA1 /* Action.CustomParsing.json */,
@@ -732,7 +726,6 @@
 				6B98094F216573F00024B79B /* VerticalContentAlignment_ForcedContainer.json in Resources */,
 				F4933CD41F79852C00F6EBFD /* Image.HorizontalAlignment.json in Resources */,
 				F4933CC51F79852C00F6EBFD /* Action.Submit.json in Resources */,
-				3016457E2282491A0032E11C /* AdaptiveCard.BackgroundImage.VerticalAlignment.json in Resources */,
 				6BC30F6721DFE8EA00B9FAAE /* Media.Sources.json in Resources */,
 				6B268FE520CEF89100D99C1B /* (null) in Resources */,
 				6B9AB30C20DC4FB3005C8E15 /* IconsInSomeActions.json in Resources */,
@@ -823,7 +816,6 @@
 				6B096D7822601A5A006CC034 /* ActionFallback.json in Resources */,
 				7EF887CD21FBCEF900BAFF02 /* Container.Style.json in Resources */,
 				F4933CEE1F79852C00F6EBFD /* TextBlock.Wrap.json in Resources */,
-				3016458422824B8B0032E11C /* AdaptiveCard.BackgroundImage.FillMode.json in Resources */,
 				6B096D582257DA0C006CC034 /* Action.IconUrl.TwoActions.json in Resources */,
 				3016455B225E602A0032E11C /* Column.MinHeight.json in Resources */,
 				F4933CE71F79852C00F6EBFD /* TextBlock.IsSubtle.json in Resources */,
