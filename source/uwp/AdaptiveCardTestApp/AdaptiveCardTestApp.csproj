@@ -184,13 +184,13 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="DiffPlex">
-      <Version>1.4.1</Version>
+      <Version>1.4.4</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.1.5</Version>
+      <Version>6.2.8</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>11.0.2</Version>
+      <Version>12.0.2</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
