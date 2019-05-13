@@ -27,6 +27,14 @@ void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visi
     view.tag = hashkey.hash;
 }
 
+void configSeparatorVisibility(ACRSeparator *view, std::shared_ptr<BaseCardElement> const &visibilityInfo)
+{
+    view.hidden = !(visibilityInfo->GetIsVisible());
+    NSMutableString *hashkey = [NSMutableString stringWithCString:visibilityInfo->GetId().c_str() encoding:NSUTF8StringEncoding];
+    [hashkey appendString:@"-separator"];
+    view.tag = hashkey.hash;
+}
+
 void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage> backgroundImage, UIView *containerView, ACRView *rootView)
 {
     if (backgroundImage == nullptr || backgroundImage->GetUrl().empty()) {

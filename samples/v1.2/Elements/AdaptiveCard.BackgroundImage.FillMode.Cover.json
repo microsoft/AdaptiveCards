@@ -3,9 +3,9 @@
 	"type": "AdaptiveCard",
 	"version": "1.2",
 	"backgroundImage": {
-		"url": "https://picsum.photos/60/60?image=101",
-		"mode": "repeatHorizontally",
-		"verticalAlignment": "center"
+		"url": "https://picsum.photos/id/237/200/200",
+		"verticalAlignment": "center",
+		"horizontalAlignment": "center"
 	},
 	"body": [
 		{
