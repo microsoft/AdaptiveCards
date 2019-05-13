@@ -459,7 +459,7 @@ namespace AdaptiveCards.Rendering.Html
         {
             if (elements != null)
             {
-                bool isFirstElement = true;
+                bool isFirstVisibleElement = true;
                 int index = 0;
 
                 foreach (var cardElement in elements)
@@ -470,7 +470,7 @@ namespace AdaptiveCards.Rendering.Html
                         context.RenderArgs.BleedDirection &= ~BleedDirection.BleedUp;
                     }
 
-                    if (index != elements.Count - 1)
+                    if (index != (elements.Count - 1))
                     {
                         // Only the last element can bleed to the bottom
                         context.RenderArgs.BleedDirection &= ~BleedDirection.BleedDown;
@@ -509,14 +509,14 @@ namespace AdaptiveCards.Rendering.Html
                         else
                         {
                             // if it's visible and it's the first element, hide the separator
-                            if (isFirstElement)
+                            if (isFirstVisibleElement)
                             {
                                 if (uiSeparator != null)
                                 {
                                     uiSeparator.Style("display", "none");
                                 }
 
-                                isFirstElement = false;
+                                isFirstVisibleElement = false;
                             }
                         }
 
