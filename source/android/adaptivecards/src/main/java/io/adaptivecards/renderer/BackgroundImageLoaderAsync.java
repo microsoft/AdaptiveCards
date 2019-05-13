@@ -44,6 +44,8 @@ public class BackgroundImageLoaderAsync extends GenericImageLoaderAsync
 
     void onSuccessfulPostExecute(Bitmap bitmap)
     {
+        int originalWidth = m_layout.getWidth();
+        int originalHeight = m_layout.getHeight();
         BitmapDrawable background = new BackgroundImageDrawable(m_context.getResources(), bitmap, m_backgroundImageProperties);
         m_layout.setBackground(background);
         m_layout.bringChildToFront(m_layout.getChildAt(0));
@@ -51,11 +53,15 @@ public class BackgroundImageLoaderAsync extends GenericImageLoaderAsync
 
     private class BackgroundImageDrawable extends BitmapDrawable
     {
+        private Bitmap m_bitmap;
         private BackgroundImage m_backgroundImageProperties;
 
         public BackgroundImageDrawable(Resources resources, Bitmap bitmap, BackgroundImage backgroundImageProperties)
         {
-            super(resources, bitmap);
+            // A 1x1 bitmap is created to avoid the container to have a minimum width/height defined by the actual image
+            // When the background is set with setBackground, the layout may grow if the original image is larger than the layout
+            super(resources, Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888));
+            m_bitmap = bitmap;
             m_backgroundImageProperties = backgroundImageProperties;
         }
 
@@ -83,9 +89,8 @@ public class BackgroundImageLoaderAsync extends GenericImageLoaderAsync
 
         /**
          *
-         * @param containerCanvas
-         * @param originalSizeBitmap
-         * @return
+         * @param originalSizeBitmap Bitmap to be drawn in the container
+         * @return Max scale factor between x and y scale factor
          */
         private double getScaleFactorForCover(Canvas containerCanvas, Bitmap originalSizeBitmap)
         {
@@ -103,7 +108,7 @@ public class BackgroundImageLoaderAsync extends GenericImageLoaderAsync
          */
         private void resizeBitmapForCover(Canvas canvas)
         {
-            Bitmap bitmap = getBitmap();
+            Bitmap bitmap = m_bitmap;
             double originalWidth = bitmap.getWidth(), originalHeight = bitmap.getHeight();
             double scale = getScaleFactorForCover(canvas, bitmap);
 
@@ -114,9 +119,9 @@ public class BackgroundImageLoaderAsync extends GenericImageLoaderAsync
 
             Matrix transformation = new Matrix();
             transformation.preScale((float)scale, (float)scale);
-            Paint paint = new Paint();
-            paint.setFilterBitmap(true);
-            backgroundCanvas.drawBitmap(bitmap, transformation, paint);
+            Paint scaledImagePaint = new Paint();
+            scaledImagePaint.setFilterBitmap(true);
+            backgroundCanvas.drawBitmap(bitmap, transformation, scaledImagePaint);
 
             // canvasWidth <= scaledBitmapWidth and canvasHeight <= scaledBitmapHeight
             int canvasWidth = canvas.getWidth(), canvasHeight = canvas.getHeight();
@@ -141,19 +146,23 @@ public class BackgroundImageLoaderAsync extends GenericImageLoaderAsync
                     break;
             }
 
-            canvas.drawBitmap(background, new Rect(origX, origY, origX + canvasWidth, origY + canvasHeight), canvas.getClipBounds(), paint);
+            canvas.drawBitmap(background,
+                                new Rect(origX, origY, origX + canvasWidth, origY + canvasHeight),
+                                new Rect(0, 0, canvasWidth, canvasHeight),
+                                scaledImagePaint);
         }
 
         private void tileHorizontally(Canvas canvas)
         {
             float verticalOffset;
+            Bitmap bitmap = m_bitmap;
             switch (m_backgroundImageProperties.GetVerticalAlignment())
             {
                 case Bottom:
-                    verticalOffset = canvas.getHeight() - getBitmap().getHeight();
+                    verticalOffset = canvas.getHeight() - bitmap.getHeight();
                     break;
                 case Center:
-                    verticalOffset = (canvas.getHeight() - getBitmap().getHeight()) / (float) 2;
+                    verticalOffset = (canvas.getHeight() - bitmap.getHeight()) / (float) 2;
                     break;
                 case Top:
                 default:
@@ -161,22 +170,38 @@ public class BackgroundImageLoaderAsync extends GenericImageLoaderAsync
                     break;
             }
 
-            for (int x = 0; x < canvas.getWidth(); x += getBitmap().getWidth())
+            int imageWidth  = bitmap.getWidth();
+            int canvasWidth = canvas.getWidth();
+            for (int x = 0; x < canvasWidth; x += imageWidth)
             {
-                canvas.drawBitmap(getBitmap(), x, verticalOffset, getPaint());
+                int remainingWidth = canvasWidth - x;
+                // If the image can be drawn completely, then do it
+                if (imageWidth <= remainingWidth)
+                {
+                    canvas.drawBitmap(bitmap, x, verticalOffset, getPaint());
+                }
+                else
+                {
+                    int imageHeight = bitmap.getHeight();
+                    canvas.drawBitmap(bitmap,
+                                        new Rect(0, 0, remainingWidth, imageHeight),
+                                        new Rect(x, (int)verticalOffset, canvasWidth, imageHeight),
+                                        getPaint());
+                }
             }
         }
 
         private void tileVertically(Canvas canvas)
         {
+            Bitmap bitmap = m_bitmap;
             float horizontalOffset;
             switch (m_backgroundImageProperties.GetHorizontalAlignment())
             {
                 case Right:
-                    horizontalOffset = canvas.getWidth() - getBitmap().getWidth();
+                    horizontalOffset = canvas.getWidth() - bitmap.getWidth();
                     break;
                 case Center:
-                    horizontalOffset = (canvas.getWidth() - getBitmap().getWidth()) / (float) 2;
+                    horizontalOffset = (canvas.getWidth() - bitmap.getWidth()) / (float) 2;
                     break;
                 case Left:
                 default:
@@ -184,9 +209,24 @@ public class BackgroundImageLoaderAsync extends GenericImageLoaderAsync
                     break;
             }
 
-            for (int y = 0; y < canvas.getHeight(); y += getBitmap().getHeight())
+            int imageHeight  = bitmap.getHeight();
+            int canvasHeight = canvas.getHeight();
+            for (int y = 0; y < canvasHeight; y += imageHeight)
             {
-                canvas.drawBitmap(getBitmap(), horizontalOffset, y, getPaint());
+                int remainingHeight = canvasHeight - y;
+                // If the image can be drawn completely, then do it
+                if (imageHeight <= remainingHeight)
+                {
+                    canvas.drawBitmap(bitmap, horizontalOffset, y, getPaint());
+                }
+                else
+                {
+                    int imageWidth = bitmap.getWidth();
+                    canvas.drawBitmap(bitmap,
+                        new Rect(0, 0, imageWidth, remainingHeight),
+                        new Rect((int)horizontalOffset, y, imageWidth, canvasHeight),
+                        getPaint());
+                }
             }
         }
     }
