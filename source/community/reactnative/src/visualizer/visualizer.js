@@ -7,31 +7,37 @@ import React from 'react';
 import {
     FlatList,
     View,
+    Text,
     StyleSheet,
+    BackHandler,
     Modal
 } from 'react-native';
 
 import Renderer from './renderer';
 import { PayloadItem } from './payload-item.js';
 import SegmentedControl from './segmented-control';
+import * as Constants from './constants';
+import * as AdaptiveCardBuilder from "../../experimental/adaptive-card-builder/AdaptiveCardBuilder";
 
-// sample scenarios
-const calendarReminderPayload = require('./payloads/scenarios/calendar-reminder.json');
-const flightUpdatePayload = require('./payloads/scenarios/flight-update.json');
-const inputFormPayload = require('./payloads/scenarios/input-form.json');
-const restaturantPayload = require('./payloads/scenarios/restaurant.json');
-const containerPayload = require('./payloads/scenarios/container-item.json');
-const weatherPayload = require('./payloads/scenarios/weather-large.json');
-const activityUpdatePayload = require('./payloads/scenarios/activity-update.json');
-const foodOrderPayload = require('./payloads/scenarios/food-order.json');
-const imageGalleryPayload = require('./payloads/scenarios/image-gallery.json');
-const sportingEventPayload = require('./payloads/scenarios/sporting-event.json');
-const mediaPayload = require('./payloads/scenarios/media.json');
-const markdownPayload = require('./payloads/scenarios/markdown.json');
-
-import payloads from '../visualizer/payloads/payloads/';
+const HEIGHT = 40;
 
 export default class Visualizer extends React.Component {
+
+    static navigationOptions = props => {
+        return {
+            title: Constants.NavigationTitle,
+            headerStyle: {
+                height: HEIGHT,
+                backgroundColor: '#0078D7'
+            },
+            headerTitleStyle: { color: "white", alignSelf: "center" },
+            headerLeft: (<Text
+                style={{ color: "white", paddingLeft: 10, fontSize: 15 }}
+                onPress={() => props.navigation.goBack()}
+            >Back</Text>)
+        }
+    }
+
     state = {
         isModalVisible: false,
         selectedPayload: null,
@@ -41,90 +47,28 @@ export default class Visualizer extends React.Component {
     constructor(props) {
         super(props);
 
-        this.scenarios = [{
-            title: 'Calendar reminder',
-            json: calendarReminderPayload,
-            tags: this.getTags(calendarReminderPayload),
-            icon: require('./assets/calendar.png')
-        }, {
-            title: 'Flight update',
-            json: flightUpdatePayload,
-            tags: this.getTags(flightUpdatePayload),
-            icon: require('./assets/flight.png')
-        }, {
-            title: 'Weather Large',
-            json: weatherPayload,
-            tags: this.getTags(weatherPayload),
-            icon: require('./assets/cloud.png')
-        }, {
-            title: 'Activity Update',
-            json: activityUpdatePayload,
-            tags: this.getTags(activityUpdatePayload),
-            icon: require('./assets/done.png')
-        },
-        {
-            title: 'Food order',
-            json: foodOrderPayload,
-            tags: this.getTags(foodOrderPayload),
-            icon: require('./assets/fastfood.png')
-        },
-        {
-            title: 'Image gallery',
-            json: imageGalleryPayload,
-            tags: this.getTags(imageGalleryPayload),
-            icon: require('./assets/photo_library.png')
-        },
-        {
-            title: 'Sporting event',
-            json: sportingEventPayload,
-            tags: this.getTags(sportingEventPayload),
-            icon: require('./assets/run.png')
-        }, {
-            title: 'Restaurant',
-            json: restaturantPayload,
-            tags: this.getTags(restaturantPayload),
-            icon: require('./assets/restaurant.png')
-        },
-        {
-            title: 'Input form',
-            json: inputFormPayload,
-            tags: this.getTags(inputFormPayload),
-            icon: require('./assets/form.png')
-        },
-        {
-            title: 'Media',
-            json: mediaPayload,
-            tags: this.getTags(mediaPayload),
-            icon: require('./assets/video_library.png')
-        },
-        {
-            title: 'Stock Update',
-            json: containerPayload,
-            tags: this.getTags(containerPayload),
-            icon: require('./assets/square.png')
-        },
-        {
-            title: 'Markdown',
-            json: markdownPayload,
-            tags: this.getTags(markdownPayload),
-            icon: require('./assets/code.png')
-        }];
+        this.scenarios = this.props.navigation.state.params.scenarios;
+        this.payloads = this.props.navigation.state.params.payloads;
     }
 
+    componentWillMount() {
+        BackHandler.addEventListener("hardwareBackPress", this.onBackPress);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
+    }
+
+    onBackPress = () => {
+        this.props.navigation.goBack();
+        return true;
+    };
+
     render() {
-        const segmentedItems = [
-            { title: 'Payloads', value: 'payloads' },
-            { title: 'Scenarios', value: 'scenarios' }
-        ];
-
-        const items = this.state.activeIndex === 0 ? payloads : this.scenarios;
-
+        const items = this.state.activeIndex === 0 ? this.payloads : this.scenarios;
         return (
             <View style={styles.container}>
-                <SegmentedControl
-                    items={segmentedItems}
-                    onStatusChange={(index) => this.segmentedControlStatusDidChange(index)}
-                />
+                {this.scenarios && this.scenarios.length > 0 && this.segmentedControl()}
                 <FlatList
                     data={items}
                     keyExtractor={(item, index) => index.toString()}
@@ -148,7 +92,23 @@ export default class Visualizer extends React.Component {
                     />
                 </Modal>
             </View>
-        )
+        );
+    }
+
+    /**
+     * @description Segment control for payloads and scenarios.
+     */
+    segmentedControl = () => {
+        const segmentedItems = [
+            { title: 'Payloads', value: 'payloads' },
+            { title: 'Scenarios', value: 'scenarios' }
+        ];
+        return (
+            <SegmentedControl
+                items={segmentedItems}
+                onStatusChange={(index) => this.segmentedControlStatusDidChange(index)}
+            />
+        );
     }
 
     /**
@@ -156,9 +116,14 @@ export default class Visualizer extends React.Component {
      * @param {object} payload - Selected payload
      */
     payloadDidSelect = (payload) => {
+        /*  Check if the payload is HeroCard / ThumbnailCard */
+        const notAdaptiveCard = payload.json.contentType &&
+            (payload.json.contentType === "application/vnd.microsoft.card.hero" ||
+                payload.json.contentType === "application/vnd.microsoft.card.thumbnail");
+
         this.setState({
             isModalVisible: true,
-            selectedPayload: payload.json
+            selectedPayload: notAdaptiveCard ? AdaptiveCardBuilder.buildAdaptiveCard(payload.json.content, payload.json.contentType) : payload.json
         })
     }
 
@@ -169,24 +134,6 @@ export default class Visualizer extends React.Component {
         this.setState({
             isModalVisible: false
         })
-    }
-
-    /**
-     * @description Return the unique element types present in the given payload json
-     * @param {object} json - payload json
-     * @return {Array} - Array of element types
-     */
-    getTags = (json) => {
-        let tags = new Set();
-        // elements
-        json.body.map(element => {
-            tags.add(element.type);
-        });
-        // actions
-        if (json.actions && json.actions.length > 0) {
-            tags.add("Actions");
-        }
-        return Array.from(tags);
     }
 
     /**
@@ -202,7 +149,8 @@ export default class Visualizer extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        padding: 10
     },
     payloadPicker: {
         width: '100%',
