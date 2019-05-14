@@ -6,8 +6,12 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
+import android.view.Gravity;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.BackgroundImage;
@@ -58,7 +62,7 @@ public class BackgroundImageLoaderAsync extends GenericImageLoaderAsync
         @Override
         public void draw(Canvas canvas)
         {
-            switch (m_backgroundImageProperties.GetMode())
+            switch (m_backgroundImageProperties.GetFillMode())
             {
                 case Repeat:
                     setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
@@ -70,11 +74,74 @@ public class BackgroundImageLoaderAsync extends GenericImageLoaderAsync
                 case RepeatHorizontally:
                     tileHorizontally(canvas);
                     break;
-                case Stretch:
+                case Cover:
                 default:
-                    super.draw(canvas);
+                    resizeBitmapForCover(canvas);
                     break;
             }
+        }
+
+        /**
+         *
+         * @param containerCanvas
+         * @param originalSizeBitmap
+         * @return
+         */
+        private double getScaleFactorForCover(Canvas containerCanvas, Bitmap originalSizeBitmap)
+        {
+            double xScaleFactor = (double)containerCanvas.getWidth() / (double)originalSizeBitmap.getWidth();
+            double yScaleFactor = (double)containerCanvas.getHeight() / (double)originalSizeBitmap.getHeight();
+
+            return Math.max(xScaleFactor, yScaleFactor);
+        }
+
+        // TODO: Optimize the rendering as drawBitmap source rectangle can scale images automatically
+        // Taken from here https://stackoverflow.com/questions/35276834/scale-bitmap-maintaining-aspect-ratio-and-fitting-both-width-and-height
+        /**
+         * Resizes the bitmap so the bitmap will completely fill the container where it is inserted
+         * @param canvas
+         */
+        private void resizeBitmapForCover(Canvas canvas)
+        {
+            Bitmap bitmap = getBitmap();
+            double originalWidth = bitmap.getWidth(), originalHeight = bitmap.getHeight();
+            double scale = getScaleFactorForCover(canvas, bitmap);
+
+            int scaledWidth = (int)(scale * originalWidth);
+            int scaledHeight = (int)(scale * originalHeight);
+            Bitmap background = Bitmap.createBitmap(scaledWidth, scaledHeight, Bitmap.Config.ARGB_8888);
+            Canvas backgroundCanvas = new Canvas(background);
+
+            Matrix transformation = new Matrix();
+            transformation.preScale((float)scale, (float)scale);
+            Paint paint = new Paint();
+            paint.setFilterBitmap(true);
+            backgroundCanvas.drawBitmap(bitmap, transformation, paint);
+
+            // canvasWidth <= scaledBitmapWidth and canvasHeight <= scaledBitmapHeight
+            int canvasWidth = canvas.getWidth(), canvasHeight = canvas.getHeight();
+            int origX = 0, origY = 0;
+            switch (m_backgroundImageProperties.GetHorizontalAlignment())
+            {
+                case Center:
+                    origX = (scaledWidth - canvasWidth) / 2;
+                    break;
+                case Right:
+                    origX = scaledWidth - canvasWidth;
+                    break;
+            }
+
+            switch (m_backgroundImageProperties.GetVerticalAlignment())
+            {
+                case Center:
+                    origY = (scaledHeight - canvasHeight) / 2;
+                    break;
+                case Bottom:
+                    origY = scaledHeight - canvasHeight;
+                    break;
+            }
+
+            canvas.drawBitmap(background, new Rect(origX, origY, origX + canvasWidth, origY + canvasHeight), canvas.getClipBounds(), paint);
         }
 
         private void tileHorizontally(Canvas canvas)

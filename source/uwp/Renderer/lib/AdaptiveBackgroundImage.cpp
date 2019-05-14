@@ -37,7 +37,7 @@ namespace AdaptiveNamespace
             RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetUrl(), m_url.GetAddressOf()));
         }
 
-        m_mode = static_cast<ABI::AdaptiveNamespace::BackgroundImageMode>(sharedImage->GetMode());
+        m_mode = static_cast<ABI::AdaptiveNamespace::BackgroundImageMode>(sharedImage->GetFillMode());
         m_horizontalAlignment = static_cast<ABI::AdaptiveNamespace::HAlignment>(sharedImage->GetHorizontalAlignment());
         m_verticalAlignment = static_cast<ABI::AdaptiveNamespace::VAlignment>(sharedImage->GetVerticalAlignment());
 
@@ -91,7 +91,7 @@ namespace AdaptiveNamespace
             std::make_shared<AdaptiveSharedNamespace::BackgroundImage>();
 
         image->SetUrl(HStringToUTF8(m_url.Get()));
-        image->SetMode(static_cast<AdaptiveSharedNamespace::BackgroundImageMode>(m_mode));
+        image->SetFillMode(static_cast<AdaptiveSharedNamespace::ImageFillMode>(m_mode));
         image->SetHorizontalAlignment(static_cast<AdaptiveSharedNamespace::HorizontalAlignment>(m_horizontalAlignment));
         image->SetVerticalAlignment(static_cast<AdaptiveSharedNamespace::VerticalAlignment>(m_verticalAlignment));
 
