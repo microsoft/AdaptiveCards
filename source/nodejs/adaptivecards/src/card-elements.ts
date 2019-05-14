@@ -42,7 +42,7 @@ function createCardObjectInstance<T extends CardObject>(
 
     if (json && typeof json === "object") {
         let tryToFallback = false;
-		let typeName = Utils.getStringValue(json["type"]);
+        let typeName = Utils.getStringValue(json["type"]);
 
         if (forbiddenTypeNames && forbiddenTypeNames.indexOf(typeName) >= 0) {
             raiseParseError(createValidationErrorCallback(typeName, InstanceCreationErrorType.ForbiddenType), errors);
@@ -146,32 +146,32 @@ export function createElementInstance(
 }
 
 export abstract class SerializableObject {
-	private _rawProperties = {};
+    private _rawProperties = {};
 
-	parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         this._rawProperties = AdaptiveCard.enableFullJsonRoundTrip ? json : {};
-	}
+    }
 
-	toJSON(): any {
-		let result: any;
-		
-		if (AdaptiveCard.enableFullJsonRoundTrip && this._rawProperties && typeof this._rawProperties === "object") {
-			result = this._rawProperties;
-		}
-		else {
-			result = {};
-		}
+    toJSON(): any {
+        let result: any;
 
-		return result;
-	}
+        if (AdaptiveCard.enableFullJsonRoundTrip && this._rawProperties && typeof this._rawProperties === "object") {
+            result = this._rawProperties;
+        }
+        else {
+            result = {};
+        }
 
-	setCustomProperty(name: string, value: any) {
-		this._rawProperties[name] = value;
-	}
+        return result;
+    }
 
-	getCustomProperty(name: string): any {
-		return this._rawProperties[name];
-	}
+    setCustomProperty(name: string, value: any) {
+        this._rawProperties[name] = value;
+    }
+
+    getCustomProperty(name: string): any {
+        return this._rawProperties[name];
+    }
 }
 
 export class ValidationFailure {
@@ -213,12 +213,12 @@ export class ValidationContext {
 }
 
 export abstract class CardObject extends SerializableObject {
-	abstract getJsonTypeName(): string;
-	abstract shouldFallback(): boolean;
-	abstract setParent(parent: CardElement);
+    abstract getJsonTypeName(): string;
+    abstract shouldFallback(): boolean;
+    abstract setParent(parent: CardElement);
 
-	id: string;
-    
+    id: string;
+
     internalValidateProperties(context: ValidationContext) {
         if (!Utils.isNullOrEmpty(this.id)) {
             if (context.allIds.hasOwnProperty(this.id)) {
@@ -239,19 +239,19 @@ export abstract class CardObject extends SerializableObject {
         }
     }
 
-	parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
-		this.id = Utils.getStringValue(json["id"]);
-	}
+        this.id = Utils.getStringValue(json["id"]);
+    }
 
-	toJSON(): any {
+    toJSON(): any {
         let result = super.toJSON();
 
-		Utils.setProperty(result, "type", this.getJsonTypeName());
-		Utils.setProperty(result, "id", this.id);
+        Utils.setProperty(result, "type", this.getJsonTypeName());
+        Utils.setProperty(result, "id", this.id);
 
-		return result;
+        return result;
     }
 
     validateProperties(): ValidationContext {
@@ -571,7 +571,7 @@ export abstract class CardElement extends CardObject {
     }
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
-		super.parse(json, errors);
+        super.parse(json, errors);
 
         raiseParseElementEvent(this, json, errors);
 
@@ -1496,7 +1496,7 @@ export class TextRun extends BaseTextBlock {
         this.selectAction = createActionInstance(
             this,
             json["selectAction"],
-            [ ShowCardAction.JsonTypeName ],
+            [ShowCardAction.JsonTypeName],
             !this.isDesignMode(),
             errors);
     }
@@ -2075,7 +2075,7 @@ export class Image extends CardElement {
         this.selectAction = createActionInstance(
             this,
             json["selectAction"],
-            [ ShowCardAction.JsonTypeName ],
+            [ShowCardAction.JsonTypeName],
             !this.isDesignMode(),
             errors);
     }
@@ -2172,7 +2172,7 @@ export abstract class CardElementContainer extends CardElement {
             this._selectAction = createActionInstance(
                 this,
                 json["selectAction"],
-                [ ShowCardAction.JsonTypeName ],
+                [ShowCardAction.JsonTypeName],
                 !this.isDesignMode(),
                 errors);
         }
@@ -2202,7 +2202,7 @@ export abstract class CardElementContainer extends CardElement {
                         message: "Interactivity is not allowed."
                     });
             }
-    
+
             if (!this.isElementAllowed(item, this.getForbiddenElementTypes())) {
                 context.addFailure(
                     this,
@@ -2211,7 +2211,7 @@ export abstract class CardElementContainer extends CardElement {
                         message: "Elements of type " + item.getJsonTypeName() + " are not allowed in this container."
                     });
             }
-    
+
             item.internalValidateProperties(context);
         }
 
@@ -2811,7 +2811,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
 
     internalValidateProperties(context: ValidationContext) {
         super.internalValidateProperties(context);
-        
+
         if (Utils.isNullOrEmpty(this.id)) {
             context.addFailure(
                 this,
@@ -2855,7 +2855,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
     }
 
     getAllInputs(): Array<Input> {
-        return [ this ];
+        return [this];
     }
 
     get defaultValue(): string {
@@ -3034,7 +3034,7 @@ export class TextInput extends Input {
         this.inlineAction = createActionInstance(
             this,
             json["inlineAction"],
-            [ ShowCardAction.JsonTypeName ],
+            [ShowCardAction.JsonTypeName],
             !this.isDesignMode(),
             errors);
     }
@@ -3391,7 +3391,7 @@ export class ChoiceSetInput extends Input {
 
     internalValidateProperties(context: ValidationContext) {
         super.internalValidateProperties(context);
-        
+
         if (this.choices.length == 0) {
             context.addFailure(
                 this,
@@ -4106,7 +4106,7 @@ export class OpenUrlAction extends Action {
 
     internalValidateProperties(context: ValidationContext) {
         super.internalValidateProperties(context);
-        
+
         if (Utils.isNullOrEmpty(this.url)) {
             context.addFailure(
                 this,
@@ -4311,7 +4311,7 @@ export class HttpAction extends Action {
 
     internalValidateProperties(context: ValidationContext) {
         super.internalValidateProperties(context);
-        
+
         if (Utils.isNullOrEmpty(this.url)) {
             context.addFailure(
                 this,
@@ -4417,7 +4417,7 @@ export class ShowCardAction extends Action {
 
     internalValidateProperties(context: ValidationContext) {
         super.internalValidateProperties(context);
-        
+
         this.card.internalValidateProperties(context);
     }
 
@@ -4985,7 +4985,7 @@ export class ActionSet extends CardElement {
 
     internalValidateProperties(context: ValidationContext) {
         super.internalValidateProperties(context);
-        
+
         this._actionCollection.validateProperties(context);
     }
 
@@ -5151,7 +5151,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 
     internalValidateProperties(context: ValidationContext) {
         super.internalValidateProperties(context);
-        
+
         if (this._style) {
             let styleDefinition = this.hostConfig.containerStyles.getStyleByName(this._style);
 
