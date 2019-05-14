@@ -27,7 +27,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "This is a textblock that doesn't stretch, but the input text does",
+							"text": "FactSet (id1)",
 							"wrap": true
 						},
 						{
@@ -47,7 +47,7 @@
 						},
 						{
 							"type": "TextBlock",
-							"text": "id1",
+							"text": "Image (id2)",
 							"wrap": true
 						},
 						{
@@ -59,7 +59,7 @@
 						},
 						{
 							"type": "TextBlock",
-							"text": "id2",
+							"text": "ImageSet (id3)",
 							"wrap": true
 						},
 						{
@@ -80,7 +80,7 @@
 						},
 						{
 							"type": "TextBlock",
-							"text": "id3",
+							"text": "Input.Date (id4)",
 							"wrap": true
 						},
 						{
@@ -91,7 +91,7 @@
 						},
 						{
 							"type": "TextBlock",
-							"text": "id4",
+							"text": "Input.Number (id5)",
 							"wrap": true
 						},
 						{
@@ -103,7 +103,7 @@
 						},
 						{
 							"type": "TextBlock",
-							"text": "id5",
+							"text": "Input.Text with inlineAction (id6)",
 							"wrap": true
 						},
 						{
@@ -120,7 +120,7 @@
 						},
 						{
 							"type": "TextBlock",
-							"text": "id6",
+							"text": "Input.Text (id7)",
 							"wrap": true
 						},
 						{
@@ -132,7 +132,7 @@
 						},
 						{
 							"type": "TextBlock",
-							"text": "id7",
+							"text": "Input.Time (id8)",
 							"wrap": true
 						},
 						{
@@ -143,7 +143,7 @@
 						},
 						{
 							"type": "TextBlock",
-							"text": "id8",
+							"text": "Input.Toggle (id9)",
 							"wrap": true
 						},
 						{
@@ -154,7 +154,7 @@
 						},
 						{
 							"type": "TextBlock",
-							"text": "id9",
+							"text": "TextBlock (id10)",
 							"wrap": true
 						},
 						{
@@ -165,7 +165,100 @@
 						},
 						{
 							"type": "TextBlock",
-							"text": "id10",
+							"text": "Container (id11)",
+							"wrap": true
+						},
+						{
+							"type": "Container",
+							"id": "id11",
+							"height": "stretch",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "TextBlock inside a container"
+								}
+							]
+						},
+						{
+							"type": "TextBlock",
+							"text": "ColumnSet (id12)",
+							"wrap": true
+						},
+						{
+							"type": "ColumnSet",
+							"id": "id12",
+							"height": "stretch",
+							"columns": [
+								{
+									"type": "Column",
+									"items": [
+										{
+											"type": "TextBlock",
+											"text": "This is for testing columnset"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "TextBlock",
+							"text": "Column (id13)",
+							"wrap": true
+						},
+						{
+							"type": "ColumnSet",
+							"columns": [
+								{
+									"type": "Column",
+									"id": "id13",
+									"height": "stretch",
+									"items": [
+										{
+											"type": "TextBlock",
+											"text": "This is for testing column"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "TextBlock",
+							"text": "Media (id14)",
+							"wrap": true
+						},
+						{
+							"type": "Media",
+							"id": "id14",
+							"height": "stretch",
+							"poster": "https://adaptivecards.io/content/poster-video.png",
+							"sources": [
+								{
+									"mimeType": "video/mp4",
+									"url": "https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4"
+								}
+							]
+						},
+						{
+							"type": "TextBlock",
+							"text": "RichTextBlock (id15)",
+							"wrap": true
+						},
+						{
+							"type": "RichTextBlock",
+							"id": "id15",
+							"height": "stretch",
+							"inlines": [
+								"This is the first inline. ",
+								{
+									"type": "TextRun",
+									"text": "We support colors, ",
+									"color": "good"
+								}
+							]
+						},
+						{
+							"type": "TextBlock",
+							"text": "TextBlock at the bottom",
 							"wrap": true
 						}
 					]
@@ -200,7 +293,7 @@
 						},
 						{
 							"type": "Input.ChoiceSet",
-							"id": "id11",
+							"id": "id16",
 							"height": "stretch",
 							"choices": [
 								{
@@ -219,7 +312,7 @@
 						},
 						{
 							"type": "Input.ChoiceSet",
-							"id": "id12",
+							"id": "id17",
 							"style": "expanded",
 							"isMultiSelect": false,
 							"value": "1",
@@ -259,7 +352,7 @@
 						},
 						{
 							"type": "Input.ChoiceSet",
-							"id": "id13",
+							"id": "id18",
 							"isMultiSelect": true,
 							"value": "1,3",
 							"style": "compact",
@@ -281,7 +374,7 @@
 						},
 						{
 							"type": "Input.ChoiceSet",
-							"id": "id14",
+							"id": "id19",
 							"isMultiSelect": true,
 							"value": "1",
 							"style": "expanded",
@@ -315,7 +408,7 @@
 		{
 			"type": "Action.ToggleVisibility",
 			"title": "Toggle!",
-			"targetElements": [ "id1", "id2", "id3", "id4", "id5", "id6", "id7", "id8", "id9", "id10", "id11", "id12", "id13", "id14" ]
+			"targetElements": [ "id1", "id2", "id3", "id4", "id5", "id6", "id7", "id8", "id9", "id10", "id11", "id12", "id13", "id14", "id15", "id16", "id17", "id18", "id19" ]
 		}
 	]
 }
