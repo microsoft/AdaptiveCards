@@ -163,7 +163,6 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
         }
 
         TextView textView = new TextView(context);
-        textView.setTag(new TagContent(richTextBlock));
         textView.setEllipsize(TextUtils.TruncateAt.END);
         textView.setHorizontallyScrolling(false);
 
@@ -172,12 +171,10 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
         // Height
         // IsVisible
         // Spacing
-        setSpacingAndSeparator(context, viewGroup, richTextBlock.GetSpacing(), richTextBlock.GetSeparator(), hostConfig, true);
+        View separator = setSpacingAndSeparator(context, viewGroup, richTextBlock.GetSpacing(), richTextBlock.GetSeparator(), hostConfig, true);
 
-        if (!baseCardElement.GetIsVisible())
-        {
-            textView.setVisibility(View.GONE);
-        }
+        textView.setTag(new TagContent(richTextBlock, separator, viewGroup));
+        setVisibility(baseCardElement.GetIsVisible(), textView);
 
         if (richTextBlock.GetHeight() == HeightType.Stretch)
         {
