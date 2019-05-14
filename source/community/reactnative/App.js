@@ -6,14 +6,10 @@
  * @flow
  */
 
-import React from 'react';
-import {
-    StyleSheet,
-    View,
-    Platform
-} from 'react-native';
+import { createStackNavigator, createAppContainer } from 'react-navigation';
 import * as Enums from './src/utils/enums';
 import Visualizer from './src/visualizer/visualizer';
+import VisualizerHome from './src/visualizer/visualizer-home';
 
 export const myHostConfig =
 {
@@ -154,26 +150,14 @@ export const myHostConfig =
     }
 };
 
+const navigator = createStackNavigator({
+    Home: { screen: VisualizerHome },
+    Visualizer: { screen: Visualizer }
+},
+    { headerLayoutPreset: 'center' }
+);
 
-export default class App extends React.Component {
-    render() {
-        return (
-            <View style={styles.container}>
-                <Visualizer />
-            </View>
-        );
-    }
-}
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'white',
-        padding: 10,
-        ...Platform.select({
-            ios: {
-                paddingTop: 50,
-            }
-        })
-    }
-});
+const App = createAppContainer(navigator);
+
+export default App;
