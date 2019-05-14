@@ -257,9 +257,21 @@ export class CardDesignerSurface {
         this._cardHost.innerHTML = "";
 
         if (this.card) {
+            let allErrors = [];
+            
+            allErrors = allErrors.concat(this._lastParseErrors);
+
+            let validationResults = this.card.validateProperties();
+
+            for (let failure of validationResults.failures) {
+                allErrors = allErrors.concat(failure.errors);
+            }
+
+            /*
             let validationErrors = this.card.validate();
 
             let allErrors = validationErrors.concat(this._lastParseErrors);
+            */
 
             if (this.onCardValidated) {
                 this.onCardValidated(allErrors);
