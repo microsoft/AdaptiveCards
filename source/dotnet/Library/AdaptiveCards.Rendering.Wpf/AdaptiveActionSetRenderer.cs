@@ -24,12 +24,24 @@ namespace AdaptiveCards.Rendering.Wpf
             var parentRenderArgs = context.RenderArgs;
             var elementRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
 
-            AddActions(outerActionSet, actionSet.Actions, context);
+            context.ActionShowCards = new Dictionary<Button, FrameworkElement>();
+            RenderActions(outerActionSet, actionSet.Actions, context);
 
             return outerActionSet;
         }
 
-        public static void AddActions(Grid uiContainer, IList<AdaptiveAction> actions, AdaptiveRenderContext context)
+        public static void AddRenderedActions(Grid uiContainer, IList<AdaptiveAction> actions, AdaptiveRenderContext context)
+        {
+            var showcards = context.ActionShowCards;
+            context.ActionShowCards = new Dictionary<Button, FrameworkElement>();
+            RenderActions(uiContainer, actions, context);
+            AddActionsToRoot(context);
+            foreach (var action in showcards)
+            {
+                context.ActionShowCards.Add(action.Key, action.Value);
+            }
+        }
+        public static void RenderActions(Grid uiContainer, IList<AdaptiveAction> actions, AdaptiveRenderContext context)
         {
             if (!context.Config.SupportsInteractivity)
                 return;
@@ -135,6 +147,46 @@ namespace AdaptiveCards.Rendering.Wpf
 
                 // Restore the iconPlacement for the context.
                 actionsConfig.IconPlacement = oldConfigIconPlacement;
+            }
+        }
+
+        public static void AddActionsToRoot(AdaptiveRenderContext context)
+        {
+            // Only handle Action show cards for the main card
+            if (context.CardDepth == 1)
+            {
+                var root = (Grid)((Grid)context.CardRoot).Children[0];
+                // Define a new row to contain all the show cards
+                if (context.ActionShowCards.Count > 0)
+                {
+                    root.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                }
+
+                foreach (var showCardTuple in context.ActionShowCards)
+                {
+                    var currentShowCard = showCardTuple.Value;
+                    var uiButton = showCardTuple.Key;
+
+                    Grid.SetRow(currentShowCard, root.RowDefinitions.Count - 1);
+                    root.Children.Add(currentShowCard);
+
+                    // Assign on click function to all button elements
+                    uiButton.Click += (sender, e) =>
+                    {
+                        bool isCardCollapsed = (currentShowCard.Visibility != Visibility.Visible);
+
+                        // Collapse all the show cards
+                        foreach (var t in context.ActionShowCards)
+                        {
+                            var showCard = t.Value;
+                            showCard.Visibility = Visibility.Collapsed;
+                        }
+
+                        // If current card is previously collapsed, show it
+                        if (isCardCollapsed)
+                            currentShowCard.Visibility = Visibility.Visible;
+                    };
+                }
             }
         }
 

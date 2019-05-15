@@ -145,7 +145,7 @@ namespace AdaptiveCards.Rendering.Wpf
         // Flag to distinuish the main card and action show cards
         public int CardDepth = 0;
 
-        public IDictionary<Button, FrameworkElement> ActionShowCards = new Dictionary<Button, FrameworkElement>();
+        public IDictionary<Button, FrameworkElement> ActionShowCards;
 
         public virtual Style GetStyle(string styleName)
         {
@@ -440,6 +440,11 @@ namespace AdaptiveCards.Rendering.Wpf
         public void ToggleShowCardVisibility(Button uiAction)
         {
             FrameworkElement card = ActionShowCards[uiAction];
+            if (card == null)
+            {
+                card = ActionShowCards[uiAction];
+            }
+
             if (card != null)
             {
                 if (card.Visibility == Visibility.Visible)
@@ -449,6 +454,11 @@ namespace AdaptiveCards.Rendering.Wpf
                 else
                 {
                     // need to make sure we collapse all showcards before showing this one
+                    foreach(var showCard in ActionShowCards)
+                    {
+                        showCard.Value.Visibility = Visibility.Collapsed;
+                    }
+
                     foreach(var showCard in ActionShowCards)
                     {
                         showCard.Value.Visibility = Visibility.Collapsed;
