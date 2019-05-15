@@ -63,34 +63,27 @@ namespace AdaptiveCards.Rendering.Wpf
                 TagContent tag = null;
 
                 // Add vertical Separator
-                if (uiColumnSet.ColumnDefinitions.Count > 0)
+                if (uiColumnSet.ColumnDefinitions.Count > 0 && (column.Separator || column.Spacing != AdaptiveSpacing.None))
                 {
-                    if (column.Separator || column.Spacing != AdaptiveSpacing.None)
+                    var uiSep = new Grid();
+                    uiSep.Style = context.GetStyle($"Adaptive.VerticalSeparator");
+
+                    uiSep.VerticalAlignment = VerticalAlignment.Stretch;
+
+                    int spacing = context.Config.GetSpacing(column.Spacing);
+                    uiSep.Margin = new Thickness(spacing / 2.0, 0, spacing / 2.0, 0);
+
+                    uiSep.Width = context.Config.Separator.LineThickness;
+                    if (column.Separator && context.Config.Separator.LineColor != null)
                     {
-                        var uiSep = new Grid();
-                        uiSep.Style = context.GetStyle($"Adaptive.VerticalSeparator");
-
-                        uiSep.VerticalAlignment = VerticalAlignment.Stretch;
-
-                        int spacing = context.Config.GetSpacing(column.Spacing);
-                        uiSep.Margin = new Thickness(spacing / 2.0, 0, spacing / 2.0, 0);
-
-                        uiSep.Width = context.Config.Separator.LineThickness;
-                        if (column.Separator && context.Config.Separator.LineColor != null)
-                        {
-                            uiSep.Background = context.GetColorBrush(context.Config.Separator.LineColor);
-                        }
-
-                        tag = new TagContent(uiSep, uiColumnSet);
-
-                        uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
-                        Grid.SetColumn(uiSep, uiColumnSet.ColumnDefinitions.Count - 1);
-                        uiColumnSet.Children.Add(uiSep);
+                        uiSep.Background = context.GetColorBrush(context.Config.Separator.LineColor);
                     }
-                    else
-                    {
-                        tag = new TagContent(null, uiColumnSet);
-                    }
+
+                    tag = new TagContent(uiSep, uiColumnSet);
+
+                    uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
+                    Grid.SetColumn(uiSep, uiColumnSet.ColumnDefinitions.Count - 1);
+                    uiColumnSet.Children.Add(uiSep);
                 }
                 else
                 {

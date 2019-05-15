@@ -144,17 +144,16 @@ namespace AdaptiveCards.Rendering.Wpf
                         
                         uiContainer.RowDefinitions.Add(rowDefinition);
 
+                        // Row definition is stored in the tag for containers and elements that stretch
+                        // so when the elements are shown, the row can have it's original definition,
+                        // while when the element is hidden, the extra space is not reserved in the layout
+                        tag.RowDefinition = rowDefinition;
+                        tag.ViewIndex = rowDefinitionIndex;
+
                         if (cardElement.Type == "Container")
                         {
                             Grid.SetRow(uiElement, rowDefinitionIndex);
                             uiContainer.Children.Add(uiElement);
-
-                            // Row definition is stored in the tag for containers and elements that stretch
-                            // so when the elements are shown, the row can have it's original definition,
-                            // while when the element is hidden, the extra space is not reserved in the layout
-                            tag.RowDefinition = rowDefinition;
-                            tag.ViewIndex = rowDefinitionIndex;
-
                             context.SetVisibility(uiElement, cardElement.IsVisible, tag);
                         }
                         else
@@ -171,13 +170,6 @@ namespace AdaptiveCards.Rendering.Wpf
 
                             Grid.SetRow(panel, rowDefinitionIndex);
                             uiContainer.Children.Add(panel);
-
-                            // Row definition is stored in the tag for containers and elements that stretch
-                            // so when the elements are shown, the row can have it's original definition,
-                            // while when the element is hidden, the extra space is not reserved in the layout
-                            tag.RowDefinition = rowDefinition;
-                            tag.ViewIndex = rowDefinitionIndex;
-
                             context.SetVisibility(panel, cardElement.IsVisible, tag);
                         }
                     }
@@ -198,7 +190,9 @@ namespace AdaptiveCards.Rendering.Wpf
         public static Grid AddSpacing(AdaptiveRenderContext context, AdaptiveElement element, Grid uiContainer)
         {
             if (element.Spacing == AdaptiveSpacing.None)
+            {
                 return null;
+            }
 
             var uiSpa = new Grid();
             uiSpa.Style = context.GetStyle($"Adaptive.Spacing");
@@ -216,7 +210,9 @@ namespace AdaptiveCards.Rendering.Wpf
         public static Grid AddSeparator(AdaptiveRenderContext context, AdaptiveElement element, Grid uiContainer)
         {
             if (element.Spacing == AdaptiveSpacing.None && !element.Separator)
+            {
                 return null;
+            }
 
             var uiSep = new Grid();
             uiSep.Style = context.GetStyle($"Adaptive.Separator");
@@ -233,6 +229,33 @@ namespace AdaptiveCards.Rendering.Wpf
             uiContainer.Children.Add(uiSep);
 
             return uiSep;
+        }
+
+        private static Thickness GetBleedMargin(AdaptiveRenderArgs parentRenderArgs, int padding)
+        {
+            Thickness bleedMargin = new Thickness(0);
+
+            if ((parentRenderArgs.BleedDirection & BleedDirection.BleedLeft) != BleedDirection.BleedNone)
+            {
+                bleedMargin.Left = padding;
+            }
+
+            if ((parentRenderArgs.BleedDirection & BleedDirection.BleedRight) != BleedDirection.BleedNone)
+            {
+                bleedMargin.Right = padding;
+            }
+
+            if ((parentRenderArgs.BleedDirection & BleedDirection.BleedUp) != BleedDirection.BleedNone)
+            {
+                bleedMargin.Top = padding;
+            }
+
+            if ((parentRenderArgs.BleedDirection & BleedDirection.BleedDown) != BleedDirection.BleedNone)
+            {
+                bleedMargin.Bottom = padding;
+            }
+
+            return bleedMargin;
         }
 
         // For applying bleeding, we must know if the element has padding, so both properties are applied in the same method
@@ -254,32 +277,11 @@ namespace AdaptiveCards.Rendering.Wpf
 
             if (canApplyPadding)
             {
-                uiElement.Margin = new Thickness { Left = padding, Top = padding, Right = padding, Bottom = padding };
+                uiElement.Margin = new Thickness(padding);
 
                 if (element.Bleed)
                 {
-                    int leftMargin = 0, rightMargin = 0, topMargin = 0, bottomMargin = 0;
-                    if ((parentRenderArgs.BleedDirection & BleedDirection.BleedLeft) != BleedDirection.BleedNone)
-                    {
-                        leftMargin = -padding;
-                    }
-
-                    if ((parentRenderArgs.BleedDirection & BleedDirection.BleedRight) != BleedDirection.BleedNone)
-                    {
-                        rightMargin = -padding;
-                    }
-
-                    if ((parentRenderArgs.BleedDirection & BleedDirection.BleedUp) != BleedDirection.BleedNone)
-                    {
-                        topMargin = -padding;
-                    }
-
-                    if ((parentRenderArgs.BleedDirection & BleedDirection.BleedDown) != BleedDirection.BleedNone)
-                    {
-                        bottomMargin = -padding;
-                    }
-
-                    border.Margin = new Thickness { Left = leftMargin, Top = topMargin, Right = rightMargin, Bottom = bottomMargin };
+                    border.Margin = GetBleedMargin(parentRenderArgs, -padding);
                 }
             }
 
