@@ -145,7 +145,9 @@ namespace AdaptiveCards.Rendering.Wpf
         // Flag to distinuish the main card and action show cards
         public int CardDepth = 0;
 
-        public IDictionary<Button, FrameworkElement> ActionShowCards;
+        public IDictionary<Button, FrameworkElement> ActionShowCards = new Dictionary<Button, FrameworkElement>();
+
+        public Queue<Button> ActionShowCardsKeys = new Queue<Button>();
 
         public virtual Style GetStyle(string styleName)
         {
