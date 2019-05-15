@@ -629,7 +629,7 @@ export class CardDesigner {
                     medium: 80,
                     large: 160
                 },
-                fontStyles: {
+                fontTypes: {
                     default: {
                         fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
                         fontSizes: {

@@ -2511,14 +2511,14 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
             }
         }
 
-        let fontFamily = addLabelAndInput(card, "Font family:", Adaptive.ChoiceSetInput);
-        fontFamily.input.placeholder = "Default";
-        fontFamily.input.isCompact = true;
-        fontFamily.input.choices.push(new Adaptive.Choice("Default", Adaptive.FontFamily.Default.toString()));
-        fontFamily.input.choices.push(new Adaptive.Choice("Monospace", Adaptive.FontFamily.Monospace.toString()));
-        fontFamily.input.defaultValue = this.cardElement.fontFamily ? this.cardElement.fontFamily.toString() : "Default";
-        fontFamily.input.onValueChanged = () => {
-            this.cardElement.fontFamily = <Adaptive.FontFamily>parseInt(fontFamily.input.value);
+        let fontType = addLabelAndInput(card, "Font type:", Adaptive.ChoiceSetInput);
+        fontType.input.placeholder = "Default";
+        fontType.input.isCompact = true;
+        fontType.input.choices.push(new Adaptive.Choice("Default", Adaptive.FontType.Default.toString()));
+        fontType.input.choices.push(new Adaptive.Choice("Monospace", Adaptive.FontType.Monospace.toString()));
+        fontType.input.defaultValue = this.cardElement.fontType ? this.cardElement.fontType.toString() : "Default";
+        fontType.input.onValueChanged = () => {
+            this.cardElement.fontType = <Adaptive.FontType>parseInt(fontType.input.value);
 
             this.changed(false);
         }

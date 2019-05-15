@@ -928,18 +928,18 @@ export abstract class BaseTextBlock extends CardElement {
         return this.hostConfig.containerStyles.getStyleByName(this.getEffectiveStyle());
     }
 
-    protected getFontSize(fontStyle: HostConfig.FontStyleDefinition): number {
+    protected getFontSize(fontType: HostConfig.FontTypeDefinition): number {
         switch (this.size) {
             case Enums.TextSize.Small:
-                return fontStyle.fontSizes.small;
+                return fontType.fontSizes.small;
             case Enums.TextSize.Medium:
-                return fontStyle.fontSizes.medium;
+                return fontType.fontSizes.medium;
             case Enums.TextSize.Large:
-                return fontStyle.fontSizes.large;
+                return fontType.fontSizes.large;
             case Enums.TextSize.ExtraLarge:
-                return fontStyle.fontSizes.extraLarge;
+                return fontType.fontSizes.extraLarge;
             default:
-                return fontStyle.fontSizes.default;
+                return fontType.fontSizes.default;
         }
     }
 
@@ -970,7 +970,7 @@ export abstract class BaseTextBlock extends CardElement {
     weight: Enums.TextWeight = Enums.TextWeight.Default;
     color: Enums.TextColor = Enums.TextColor.Default;
     isSubtle: boolean = false;
-    fontFamily?: Enums.FontFamily = null;
+    fontType?: Enums.FontType = null;
 
     asString(): string {
         return this.text;
@@ -984,35 +984,35 @@ export abstract class BaseTextBlock extends CardElement {
         Utils.setEnumProperty(Enums.TextColor, result, "color", this.color, Enums.TextColor.Default);
         Utils.setProperty(result, "text", this.text);
         Utils.setProperty(result, "isSubtle", this.isSubtle, false);
-        Utils.setEnumProperty(Enums.FontFamily, result, "fontFamily", this.fontFamily, Enums.FontFamily.Default);
+        Utils.setEnumProperty(Enums.FontType, result, "fontType", this.fontType, Enums.FontType.Default);
 
         return result;
     }
 
     applyStylesTo(targetElement: HTMLElement) {
-        let fontStyle = this.hostConfig.getFontStyleDefinition(this.fontFamily);
+        let fontType = this.hostConfig.getFontTypeDefinition(this.fontType);
 
-        if (fontStyle.fontFamily) {
-            targetElement.style.fontFamily = fontStyle.fontFamily;
+        if (fontType.fontFamily) {
+            targetElement.style.fontFamily = fontType.fontFamily;
         }
 
         let fontSize: number;
 
         switch (this.size) {
             case Enums.TextSize.Small:
-                fontSize = fontStyle.fontSizes.small;
+                fontSize = fontType.fontSizes.small;
                 break;
             case Enums.TextSize.Medium:
-                fontSize = fontStyle.fontSizes.medium;
+                fontSize = fontType.fontSizes.medium;
                 break;
             case Enums.TextSize.Large:
-                fontSize = fontStyle.fontSizes.large;
+                fontSize = fontType.fontSizes.large;
                 break;
             case Enums.TextSize.ExtraLarge:
-                fontSize = fontStyle.fontSizes.extraLarge;
+                fontSize = fontType.fontSizes.extraLarge;
                 break;
             default:
-                fontSize = fontStyle.fontSizes.default;
+                fontSize = fontType.fontSizes.default;
                 break;
         }
 
@@ -1026,13 +1026,13 @@ export abstract class BaseTextBlock extends CardElement {
 
         switch (this.weight) {
             case Enums.TextWeight.Lighter:
-                fontWeight = fontStyle.fontWeights.lighter;
+                fontWeight = fontType.fontWeights.lighter;
                 break;
             case Enums.TextWeight.Bolder:
-                fontWeight = fontStyle.fontWeights.bolder;
+                fontWeight = fontType.fontWeights.bolder;
                 break;
             default:
-                fontWeight = fontStyle.fontWeights.default;
+                fontWeight = fontType.fontWeights.default;
                 break;
         }
 
@@ -1080,7 +1080,7 @@ export abstract class BaseTextBlock extends CardElement {
 
         this.color = Utils.getEnumValue(Enums.TextColor, json["color"], this.color);
         this.isSubtle = Utils.getBoolValue(json["isSubtle"], this.isSubtle);
-        this.fontFamily = Utils.getEnumValue(Enums.FontFamily, json["fontFamily"], this.fontFamily);
+        this.fontType = Utils.getEnumValue(Enums.FontType, json["fontType"], this.fontType);
     }
 
     get effectiveColor(): Enums.TextColor {
@@ -1362,7 +1362,7 @@ export class TextBlock extends BaseTextBlock {
         else {
             // Looks like 1.33 is the magic number to compute line-height
             // from font size.
-            this._computedLineHeight = this.getFontSize(this.hostConfig.getFontStyleDefinition(this.fontFamily)) * 1.33;
+            this._computedLineHeight = this.getFontSize(this.hostConfig.getFontTypeDefinition(this.fontType)) * 1.33;
         }
 
         targetElement.style.lineHeight = this._computedLineHeight + "px";
@@ -6841,7 +6841,7 @@ const defaultHostConfig: HostConfig.HostConfig = new HostConfig.HostConfig(
             lineThickness: 1,
             lineColor: "#EEEEEE"
         },
-        fontStyles: {
+        fontTypes: {
             default: {
                 fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
                 fontSizes: {
