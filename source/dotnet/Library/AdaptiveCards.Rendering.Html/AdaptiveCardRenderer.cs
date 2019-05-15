@@ -378,6 +378,13 @@ namespace AdaptiveCards.Rendering.Html
                     }
                 }
 
+                // If the number of actions is bigger than maxActions, then log warning for it
+                if (actions.Count > actionsConfig.MaxActions)
+                {
+                    context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.MaxActionsExceeded,
+                        "Some actions were not rendered due to exceeding the maximum number of actions allowed"));
+                }
+
                 var maxActions = Math.Min(actionsConfig.MaxActions, actions.Count);
                 // See if all actions have icons, otherwise force the icon placement to the left
                 var oldConfigIconPlacement = actionsConfig.IconPlacement;
@@ -515,7 +522,7 @@ namespace AdaptiveCards.Rendering.Html
                                 {
                                     uiSeparator.Style("display", "none");
                                 }
-
+                                
                                 isFirstVisibleElement = false;
                             }
                         }
