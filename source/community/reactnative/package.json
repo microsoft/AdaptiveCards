@@ -40,10 +40,8 @@
     "rnpm-plugin-windows": "^0.2.8"
   },
   "dependencies": {
-    "react-native-gesture-handler": "^1.2.1",
     "react-native-video": "^4.2.0",
-    "react-native-windows": "0.57.1",
-    "react-navigation": "^3.9.1"
+    "react-native-windows": "0.57.1"
   },
   "jest": {
     "preset": "react-native"
