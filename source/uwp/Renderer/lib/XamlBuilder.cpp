@@ -2682,16 +2682,24 @@ namespace AdaptiveNamespace
         Thickness marginThickness = {0};
         if (bleedDirection != ABI::AdaptiveNamespace::BleedDirection::None)
         {
-            if (bleedDirection == ABI::AdaptiveNamespace::BleedDirection::Left ||
-                bleedDirection == ABI::AdaptiveNamespace::BleedDirection::Both)
+            if ((bleedDirection & ABI::AdaptiveNamespace::BleedDirection::Left) != ABI::AdaptiveNamespace::BleedDirection::None)
             {
                 marginThickness.Left = -paddingAsDouble;
             }
 
-            if (bleedDirection == ABI::AdaptiveNamespace::BleedDirection::Right ||
-                bleedDirection == ABI::AdaptiveNamespace::BleedDirection::Both)
+            if ((bleedDirection & ABI::AdaptiveNamespace::BleedDirection::Right) != ABI::AdaptiveNamespace::BleedDirection::None)
             {
                 marginThickness.Right = -paddingAsDouble;
+            }
+
+            if ((bleedDirection & ABI::AdaptiveNamespace::BleedDirection::Up) != ABI::AdaptiveNamespace::BleedDirection::None)
+            {
+                marginThickness.Top = -paddingAsDouble;
+            }
+
+            if ((bleedDirection & ABI::AdaptiveNamespace::BleedDirection::Down) != ABI::AdaptiveNamespace::BleedDirection::None)
+            {
+                marginThickness.Bottom = -paddingAsDouble;
             }
 
             ComPtr<IBorder> localContainerBorder(containerBorder);

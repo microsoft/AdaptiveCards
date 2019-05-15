@@ -14,7 +14,8 @@
 using namespace AdaptiveSharedNamespace;
 
 AdaptiveCard::AdaptiveCard() :
-    m_style(ContainerStyle::None), m_verticalContentAlignment(VerticalContentAlignment::Top), m_height(HeightType::Auto), m_minHeight(0)
+    m_style(ContainerStyle::None), m_verticalContentAlignment(VerticalContentAlignment::Top),
+    m_height(HeightType::Auto), m_minHeight(0)
 {
 }
 
@@ -47,8 +48,8 @@ AdaptiveCard::AdaptiveCard(std::string const& version,
                            std::vector<std::shared_ptr<BaseActionElement>>& actions) :
     m_version(version),
     m_fallbackText(fallbackText), m_speak(speak), m_style(style), m_language(language),
-    m_verticalContentAlignment(verticalContentAlignment), m_height(height), m_minHeight(minHeight),
-    m_body(body), m_actions(actions)
+    m_verticalContentAlignment(verticalContentAlignment), m_height(height), m_minHeight(minHeight), m_body(body),
+    m_actions(actions)
 {
     m_backgroundImage = std::make_shared<BackgroundImage>(backgroundImageUrl);
 }
@@ -80,8 +81,9 @@ AdaptiveCard::AdaptiveCard(std::string const& version,
                            std::vector<std::shared_ptr<BaseCardElement>>& body,
                            std::vector<std::shared_ptr<BaseActionElement>>& actions) :
     m_version(version),
-    m_fallbackText(fallbackText), m_backgroundImage(backgroundImage), m_speak(speak), m_style(style), m_language(language),
-    m_verticalContentAlignment(verticalContentAlignment), m_height(height), m_minHeight(minHeight), m_body(body), m_actions(actions)
+    m_fallbackText(fallbackText), m_backgroundImage(backgroundImage), m_speak(speak), m_style(style),
+    m_language(language), m_verticalContentAlignment(verticalContentAlignment), m_height(height),
+    m_minHeight(minHeight), m_body(body), m_actions(actions)
 {
 }
 
@@ -207,7 +209,7 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json, 
         ParseSizeForPixelSize(ParseUtil::GetString(json, AdaptiveCardSchemaKey::MinHeight), &context.warnings);
 
     // Parse body
-    auto body = ParseUtil::GetElementCollection(context, json, AdaptiveCardSchemaKey::Body, false);
+    auto body = ParseUtil::GetElementCollection<BaseCardElement>(true, context, json, AdaptiveCardSchemaKey::Body, false);
     // Parse actions if present
     auto actions = ParseUtil::GetActionCollection(context, json, AdaptiveCardSchemaKey::Actions, false);
 

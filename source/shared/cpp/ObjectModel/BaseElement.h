@@ -67,18 +67,6 @@ namespace AdaptiveSharedNamespace
 
         const InternalId GetInternalId() const { return m_internalId; }
 
-        // Element [de]serialization
-
-        // A little template jiu-jitsu here -- given the provided parameters, we need BaseElement::ParseJsonObject to
-        // call either BaseCardElement::ParseJsonObject or BaseActionElement::ParseJsonObject.
-        template<typename T>
-        static void ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context,
-                                    const Json::Value& json,
-                                    std::shared_ptr<BaseElement>& baseElement)
-        {
-            T::ParseJsonObject(context, json, baseElement);
-        }
-
         template<typename T> void DeserializeBase(ParseContext& context, const Json::Value& json);
 
         virtual std::string Serialize() const;
