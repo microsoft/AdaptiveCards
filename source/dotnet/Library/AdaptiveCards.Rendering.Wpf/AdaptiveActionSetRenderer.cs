@@ -83,11 +83,12 @@ namespace AdaptiveCards.Rendering.Wpf
                     actionsConfig.IconPlacement = IconPlacement.LeftOfTitle;
                 }
 
+                int showCardActionCount = 0;
+
                 foreach (var action in actionsToProcess)
                 {
                     // add actions
                     var uiAction = (Button)context.Render(action);
-
 
                     if (actionsConfig.ActionsOrientation == ActionsOrientation.Horizontal)
                     {
@@ -107,6 +108,14 @@ namespace AdaptiveCards.Rendering.Wpf
 
                     if (action is AdaptiveShowCardAction showCardAction)
                     {
+                        // If there are no showCards yet, create the dictionary for hosting the <button, card> mapping
+                        if (!context.ActionShowCardsInContainer.ContainsKey(uiContainer))
+                        {
+                            context.ActionShowCardsInContainer.Add(uiContainer, new List<Button>());
+                        }
+
+                        showCardActionCount++;
+
                         // Only support 1 level of showCard
                         if (isInline && context.CardDepth == 1)
                         {
@@ -128,9 +137,49 @@ namespace AdaptiveCards.Rendering.Wpf
                             uiShowCardContainer.Children.Add(uiShowCardWrapper);
 
                             // Add to the list of show cards in context
-                            context.ActionShowCards.Add(uiAction, uiShowCardContainer);
+                            context.ActionShowCards[uiAction] = uiShowCardContainer;
+
+                            // Tie rendered button to container of showCards 
+                            context.ShowCardContainerForButton[uiAction] = uiContainer;
+
+                            // Tie rendered card to its container
+                            context.ActionShowCardsInContainer[uiContainer].Add(uiAction);
                         }
                     }
+                }
+
+                // If there are any showCard actions, then create a row to host the hidden cards
+                if (showCardActionCount > 0)
+                {
+                    uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                }
+
+                foreach (var showCardAction in context.ActionShowCardsInContainer[uiContainer])
+                {
+                    var uiButton = showCardAction;
+                    var currentShowCard = context.ActionShowCards[uiButton];
+
+                    Grid.SetRow(currentShowCard, uiContainer.RowDefinitions.Count - 1);
+                    uiContainer.Children.Add(currentShowCard);
+
+                    // Assign on click function to all button elements
+                    uiButton.Click += (sender, e) =>
+                    {
+                        bool isCardCollapsed = (currentShowCard.Visibility != Visibility.Visible);
+
+                        // Collapse all the show cards
+                        foreach (var actionShowCard in context.ActionShowCardsInContainer[uiContainer])
+                        {
+                            var showCard = context.ActionShowCards[actionShowCard];
+                            showCard.Visibility = Visibility.Collapsed;
+                        }
+
+                        // If current card is previously collapsed, show it
+                        if (isCardCollapsed)
+                        {
+                            currentShowCard.Visibility = Visibility.Visible;
+                        }
+                    };
                 }
 
                 // Restore the iconPlacement for the context.
