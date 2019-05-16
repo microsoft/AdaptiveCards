@@ -257,24 +257,8 @@ export class CardDesignerSurface {
         this._cardHost.innerHTML = "";
 
         if (this.card) {
-            let allErrors = [];
-            
-            allErrors = allErrors.concat(this._lastParseErrors);
-
-            let validationResults = this.card.validateProperties();
-
-            for (let failure of validationResults.failures) {
-                allErrors = allErrors.concat(failure.errors);
-            }
-
-            /*
-            let validationErrors = this.card.validate();
-
-            let allErrors = validationErrors.concat(this._lastParseErrors);
-            */
-
             if (this.onCardValidated) {
-                this.onCardValidated(allErrors);
+                this.onCardValidated(this._lastParseErrors, this.card.validateProperties());
             }
 
             let renderedCard = this.card.render();
@@ -487,7 +471,7 @@ export class CardDesignerSurface {
         this.parentElement.appendChild(rootElement);
     }
 
-    onCardValidated: (errors: Array<Adaptive.IValidationError>) => void;
+    onCardValidated: (parseErrors: Array<Adaptive.IValidationError>, validationResults: Adaptive.ValidationResults) => void;
     onSelectedPeerChanged: (peer: DesignerPeers.DesignerPeer) => void;
     onLayoutUpdated: (isFullRefresh: boolean) => void;
 
@@ -501,6 +485,16 @@ export class CardDesignerSurface {
 
     findDropTarget(pointerPosition: IPoint, peer: DesignerPeers.DesignerPeer): DesignerPeers.DesignerPeer {
         return this.internalFindDropTarget(pointerPosition, this._rootPeer, peer);
+    }
+
+    findPeer(cardObject: Adaptive.CardObject) {
+        for (let peer of this._allPeers) {
+            if (peer.getCardObject() === cardObject) {
+                return peer;
+            }
+        }
+
+        return undefined;
     }
 
     beginUpdate() {

@@ -104,7 +104,7 @@ export function createActionInstance(
             if (errorType == InstanceCreationErrorType.UnknownType) {
                 return {
                     error: Enums.ValidationError.UnknownActionType,
-                    message: "Unknown action type: " + typeName + ". Attempting to fall back."
+                    message: "Unknown action type: " + typeName + ". Fallback will be used if present."
                 }
             }
             else {
@@ -132,7 +132,7 @@ export function createElementInstance(
             if (errorType == InstanceCreationErrorType.UnknownType) {
                 return {
                     error: Enums.ValidationError.UnknownElementType,
-                    message: "Unknown element type: " + typeName + ". Attempting to fall back."
+                    message: "Unknown element type: " + typeName + ". Fallback will be used if present."
                 }
             }
             else {
@@ -180,8 +180,7 @@ export class ValidationFailure {
     constructor(readonly cardObject: CardObject) { }
 }
 
-export class ValidationContext {
-
+export class ValidationResults {
     private getFailureIndex(cardObject: CardObject) {
         for (let i = 0; i < this.failures.length; i++) {
             if (this.failures[i].cardObject === cardObject) {
@@ -219,7 +218,7 @@ export abstract class CardObject extends SerializableObject {
 
     id: string;
 
-    internalValidateProperties(context: ValidationContext) {
+    internalValidateProperties(context: ValidationResults) {
         if (!Utils.isNullOrEmpty(this.id)) {
             if (context.allIds.hasOwnProperty(this.id)) {
                 if (context.allIds[this.id] == 1) {
@@ -254,8 +253,8 @@ export abstract class CardObject extends SerializableObject {
         return result;
     }
 
-    validateProperties(): ValidationContext {
-        let result = new ValidationContext();
+    validateProperties(): ValidationResults {
+        let result = new ValidationResults();
 
         this.internalValidateProperties(result);
 
@@ -2188,7 +2187,7 @@ export abstract class CardElementContainer extends CardElement {
         return result;
     }
 
-    internalValidateProperties(context: ValidationContext) {
+    internalValidateProperties(context: ValidationResults) {
         super.internalValidateProperties(context);
 
         for (let i = 0; i < this.getItemCount(); i++) {
@@ -2809,7 +2808,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
         return result;
     }
 
-    internalValidateProperties(context: ValidationContext) {
+    internalValidateProperties(context: ValidationResults) {
         super.internalValidateProperties(context);
 
         if (Utils.isNullOrEmpty(this.id)) {
@@ -3389,7 +3388,7 @@ export class ChoiceSetInput extends Input {
         return result;
     }
 
-    internalValidateProperties(context: ValidationContext) {
+    internalValidateProperties(context: ValidationResults) {
         super.internalValidateProperties(context);
 
         if (this.choices.length == 0) {
@@ -4104,7 +4103,7 @@ export class OpenUrlAction extends Action {
         return result;
     }
 
-    internalValidateProperties(context: ValidationContext) {
+    internalValidateProperties(context: ValidationResults) {
         super.internalValidateProperties(context);
 
         if (Utils.isNullOrEmpty(this.url)) {
@@ -4309,7 +4308,7 @@ export class HttpAction extends Action {
         return result;
     }
 
-    internalValidateProperties(context: ValidationContext) {
+    internalValidateProperties(context: ValidationResults) {
         super.internalValidateProperties(context);
 
         if (Utils.isNullOrEmpty(this.url)) {
@@ -4415,7 +4414,7 @@ export class ShowCardAction extends Action {
         return result;
     }
 
-    internalValidateProperties(context: ValidationContext) {
+    internalValidateProperties(context: ValidationResults) {
         super.internalValidateProperties(context);
 
         this.card.internalValidateProperties(context);
@@ -4666,7 +4665,7 @@ class ActionCollection {
         return result;
     }
 
-    validateProperties(context: ValidationContext) {
+    validateProperties(context: ValidationResults) {
         if (this._owner.hostConfig.actions.maxActions && this.items.length > this._owner.hostConfig.actions.maxActions) {
             context.addFailure(
                 this._owner,
@@ -4983,7 +4982,7 @@ export class ActionSet extends CardElement {
         }
     }
 
-    internalValidateProperties(context: ValidationContext) {
+    internalValidateProperties(context: ValidationResults) {
         super.internalValidateProperties(context);
 
         this._actionCollection.validateProperties(context);
@@ -5149,7 +5148,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
         return result;
     }
 
-    internalValidateProperties(context: ValidationContext) {
+    internalValidateProperties(context: ValidationResults) {
         super.internalValidateProperties(context);
 
         if (this._style) {
@@ -5857,7 +5856,7 @@ export class ColumnSet extends StylableCardElementContainer {
                 if (errorType == InstanceCreationErrorType.UnknownType) {
                     return {
                         error: Enums.ValidationError.UnknownElementType,
-                        message: "Unknown element type: " + typeName + ". Attempting to fall back."
+                        message: "Unknown element type: " + typeName + ". Fallback will be used if present."
                     }
                 }
                 else {
@@ -6070,7 +6069,7 @@ export class ColumnSet extends StylableCardElementContainer {
         this.bleed = Utils.getBoolValue(json["bleed"], this.bleed);
     }
 
-    internalValidateProperties(context: ValidationContext) {
+    internalValidateProperties(context: ValidationResults) {
         super.internalValidateProperties(context);
 
         let weightedColumns: number = 0;
@@ -6365,7 +6364,7 @@ export abstract class ContainerWithActions extends Container {
         this._actionCollection.parse(json["actions"], errors);
     }
 
-    internalValidateProperties(context: ValidationContext) {
+    internalValidateProperties(context: ValidationResults) {
         super.internalValidateProperties(context);
 
         if (this._actionCollection) {
@@ -6668,7 +6667,7 @@ export class AdaptiveCard extends ContainerWithActions {
         return result;
     }
 
-    internalValidateProperties(context: ValidationContext) {
+    internalValidateProperties(context: ValidationResults) {
         super.internalValidateProperties(context);
 
         if (this._cardTypeName != "AdaptiveCard") {

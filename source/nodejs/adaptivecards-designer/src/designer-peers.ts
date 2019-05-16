@@ -396,7 +396,7 @@ export abstract class DesignerPeer extends DraggableElement {
     onPeerRemoved: (sender: DesignerPeer) => void;
     onPeerAdded: (sender: DesignerPeer, newPeer: DesignerPeer) => void;
 
-    abstract getCardObjectTypeName(): string;
+    abstract getCardObject(): Adaptive.CardObject;
     abstract internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean);
 
     constructor(designerSurface: CardDesignerSurface, registration: DesignerPeerRegistrationBase) {
@@ -554,6 +554,16 @@ export abstract class DesignerPeer extends DraggableElement {
         return result;
     }
 
+    scrollIntoView() {
+        if (this.renderedElement) {
+            this.renderedElement.scrollIntoView();
+        }
+
+        if (this.treeItem && this.treeItem.renderedElement) {
+            this.treeItem.renderedElement.scrollIntoView();
+        }
+    }
+
     get isSelected(): boolean {
         return this._isSelected;
     }
@@ -600,8 +610,8 @@ export class ActionPeer extends DesignerPeer {
         }
     }
 
-    getCardObjectTypeName(): string {
-        return this.action.getJsonTypeName();
+    getCardObject(): Adaptive.CardObject {
+        return this.action;
     }
 
     isDraggable(): boolean {
@@ -967,8 +977,8 @@ export class CardElementPeer extends DesignerPeer {
         }
     }
 
-    getCardObjectTypeName(): string {
-        return this.cardElement.getJsonTypeName();
+    getCardObject(): Adaptive.CardObject {
+        return this.cardElement;
     }
 
     initializeCardElement() {
