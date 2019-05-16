@@ -378,6 +378,13 @@ namespace AdaptiveCards.Rendering.Html
                     }
                 }
 
+                // If the number of actions is bigger than maxActions, then log warning for it
+                if (actions.Count > actionsConfig.MaxActions)
+                {
+                    context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.MaxActionsExceeded,
+                        "Some actions were not rendered due to exceeding the maximum number of actions allowed"));
+                }
+
                 var maxActions = Math.Min(actionsConfig.MaxActions, actions.Count);
                 // See if all actions have icons, otherwise force the icon placement to the left
                 var oldConfigIconPlacement = actionsConfig.IconPlacement;
@@ -459,6 +466,8 @@ namespace AdaptiveCards.Rendering.Html
         {
             if (elements != null)
             {
+                bool isFirstElement = true;
+
                 foreach (var cardElement in elements)
                 {
                     // each element has a row
@@ -489,8 +498,21 @@ namespace AdaptiveCards.Rendering.Html
                                 uiSeparator.Style("display", "none");
                             }
                         }
+                        else
+                        {
+                            // if it's visible and it's the first element, hide the separator
+                            if (isFirstElement)
+                            {
+                                if (uiSeparator != null)
+                                {
+                                    uiSeparator.Style("display", "none");
+                                }
 
-                        if (!String.IsNullOrEmpty(cardElement.Id))
+                                isFirstElement = false;
+                            }
+                        }
+
+                        if (!String.IsNullOrWhiteSpace(cardElement.Id))
                         {
                             uiElement.Attr("name", cardElement.Id);
                         }
@@ -648,6 +670,7 @@ namespace AdaptiveCards.Rendering.Html
                 return 0;
             }).Sum());
 
+            bool isFirstVisibleColumn = true;
             for (int i = 0; i < columnSet.Columns.Count; ++i)
             {
                 var column = columnSet.Columns[i];
@@ -719,19 +742,30 @@ namespace AdaptiveCards.Rendering.Html
                     int spacing = context.Config.GetSpacing(column.Spacing) / 2;
                     int lineThickness = column.Separator ? sep.LineThickness : 0;
 
+                    separator = new DivTag()
+                        .AddClass($"ac-columnseparator")
+                        .Style("flex", "0 0 auto")
+                        .Style("padding-left", $"{spacing}px")
+                        .Style("margin-left", $"{spacing}px")
+                        .Style("border-left-style", $"solid");
+
+                    // This are the only two properties for separator
                     if (sep != null)
                     {
-                        separator = new DivTag()
-                            .AddClass($"ac-columnseparator")
-                            .Style("flex", "0 0 auto")
-                            .Style("padding-left", $"{spacing}px")
-                            .Style("margin-left", $"{spacing}px")
-                            .Style("border-left-color", $"{context.GetRGBColor(sep.LineColor)}")
-                            .Style("border-left-width", $"{lineThickness}px")
-                            .Style("border-left-style", $"solid");
-
-                        uiColumnSet.Children.Add(separator);
+                        separator.Style("border-left-color", $"{context.GetRGBColor(sep.LineColor)}")
+                                 .Style("border-left-width", $"{lineThickness}px");
                     }
+
+                    uiColumnSet.Children.Add(separator);
+                }
+
+                if (column.IsVisible && isFirstVisibleColumn)
+                {
+                    if (separator != null)
+                    {
+                        separator.Style("display", "none");
+                    }
+                    isFirstVisibleColumn = false;
                 }
 
                 // do some sizing magic
@@ -1096,7 +1130,7 @@ namespace AdaptiveCards.Rendering.Html
                     .Style("flex", "1 1 100%");
             }
 
-            // if explicit image size is not used, use Adpative Image size
+            // if explicit image size is not used, use Adaptive Image size
             if (image.PixelWidth == 0 && image.PixelHeight == 0)
             {
                 switch (image.Size)
@@ -1893,27 +1927,28 @@ namespace AdaptiveCards.Rendering.Html
 
         private static void ApplyBackgroundImage(AdaptiveBackgroundImage backgroundImage, HtmlTag uiContainer, AdaptiveRenderContext context)
         {
-            switch (backgroundImage.Mode)
+            switch (backgroundImage.FillMode)
             {
-                case AdaptiveBackgroundImageMode.Repeat:
+                case AdaptiveImageFillMode.Repeat:
                     uiContainer.Style("background-image", $"url('{context.Config.ResolveFinalAbsoluteUri(backgroundImage.Url)}')")
                             .Style("background-repeat", "repeat");
                     break;
-                case AdaptiveBackgroundImageMode.RepeatHorizontally:
+                case AdaptiveImageFillMode.RepeatHorizontally:
                     uiContainer.Style("background-image", $"url('{context.Config.ResolveFinalAbsoluteUri(backgroundImage.Url)}')")
                             .Style("background-repeat", "repeat-x")
                             .Style("background-position", "left " + backgroundImage.VerticalAlignment.ToString());
                     break;
-                case AdaptiveBackgroundImageMode.RepeatVertically:
+                case AdaptiveImageFillMode.RepeatVertically:
                     uiContainer.Style("background-image", $"url('{context.Config.ResolveFinalAbsoluteUri(backgroundImage.Url)}')")
                             .Style("background-repeat", "repeat-y")
                             .Style("background-position", backgroundImage.HorizontalAlignment.ToString() + " top");
                     break;
-                case AdaptiveBackgroundImageMode.Stretch:
+                case AdaptiveImageFillMode.Cover:
                 default:
                     uiContainer.Style("background-image", $"url('{context.Config.ResolveFinalAbsoluteUri(backgroundImage.Url)}')")
                             .Style("background-repeat", "no-repeat")
-                            .Style("background-size", "cover");
+                            .Style("background-size", "cover")
+                            .Style("background-position", backgroundImage.HorizontalAlignment.ToString().ToLower() + " " + backgroundImage.VerticalAlignment.ToString().ToLower());
                     break;
             }
         }

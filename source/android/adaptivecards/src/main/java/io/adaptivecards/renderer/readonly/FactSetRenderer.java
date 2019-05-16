@@ -80,14 +80,12 @@ public class FactSetRenderer extends BaseCardElementRenderer
             throw new InternalError("Unable to convert BaseCardElement to FactSet object model.");
         }
 
-        setSpacingAndSeparator(context, viewGroup, factSet.GetSpacing(), factSet.GetSeparator(), hostConfig, true);
+        View separator = setSpacingAndSeparator(context, viewGroup, factSet.GetSpacing(), factSet.GetSeparator(), hostConfig, true);
 
         TableLayout tableLayout = new TableLayout(context);
-        tableLayout.setTag(new TagContent(factSet));
-        if(!baseCardElement.GetIsVisible())
-        {
-            tableLayout.setVisibility(View.GONE);
-        }
+        tableLayout.setTag(new TagContent(factSet, separator, viewGroup));
+
+        setVisibility(baseCardElement.GetIsVisible(), tableLayout);
 
         tableLayout.setColumnShrinkable(1, true);
         HeightType height = factSet.GetHeight();

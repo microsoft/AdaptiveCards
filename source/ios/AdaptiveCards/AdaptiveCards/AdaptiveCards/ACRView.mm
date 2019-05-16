@@ -86,11 +86,16 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
             delegate:(id<ACRActionDelegate>)acrActionDelegate
 {
     self = [self initWithFrame:CGRectMake(0, 0, width, 0)];
-    if(self){
+    if (self) {
         self.accessibilityLabel = @"ACR Root View";
         _adaptiveCard = card;
-        if(config){
+        if (config) {
             _hostConfig = config;
+        }
+        unsigned int padding = [_hostConfig getHostConfig]->GetSpacing().paddingSpacing;
+        [self removeConstraints:self.constraints];
+        if (padding) {
+            [self applyPadding:padding priority:1000];
         }
         self.acrActionDelegate = acrActionDelegate;
         [self render];
@@ -601,7 +606,8 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                     // remove observer early in case background image must be changed to handle mode = repeat
                     [self removeObserver:self forKeyPath:path onObject:object];
                     observerRemoved = true;
-
+                    NSMutableDictionary *imageViewMap = [self getImageMap];
+                    imageViewMap[key] = image;
                     [renderer configUpdateForUIImageView:baseCardElement config:_hostConfig image:image imageView:(UIImageView *)object];
                 }
             } else {
@@ -711,9 +717,8 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 
     NSURL *url = [NSURL URLWithString:nSUrlStr];
     NSObject<ACOIResourceResolver> *imageResourceResolver = [_hostConfig getResourceResolverForScheme:[url scheme]];
-    if(ACOImageViewIF == [_hostConfig getResolverIFType:[url scheme]])
-    {
-        if(observerAction) {
+    if (ACOImageViewIF == [_hostConfig getResolverIFType:[url scheme]]) {
+        if (observerAction) {
             observerAction(imageResourceResolver, key, elem, url, self);
         }
     } else {
