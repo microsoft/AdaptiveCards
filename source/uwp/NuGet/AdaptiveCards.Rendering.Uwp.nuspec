@@ -32,6 +32,11 @@
         <file src="..\ARM\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.pri" target="runtimes\win10-arm\native"/>
         <file src="..\ARM\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.pdb" target="runtimes\win10-arm\native"/>
 
+        <file src="..\ARM64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.dll" target="runtimes\win10-arm64\native"/>
+        <file src="..\ARM64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.lib" target="runtimes\win10-arm64\native"/>
+        <file src="..\ARM64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.pri" target="runtimes\win10-arm64\native"/>
+        <file src="..\ARM64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.pdb" target="runtimes\win10-arm64\native"/>
+
         <file src="AdaptiveCards.Rendering.Uwp.targets" target="build\uap10.0"/>
         <file src="AdaptiveCards.Rendering.Uwp.native.targets" target="build\native\AdaptiveCards.Rendering.Uwp.targets"/>
     </files>
