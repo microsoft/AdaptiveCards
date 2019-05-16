@@ -1350,6 +1350,13 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long TextRun_GetSelectAction(long jarg1, TextRun jarg1_);
   public final static native void TextRun_SetSelectAction(long jarg1, TextRun jarg1_, long jarg2, BaseActionElement jarg2_);
   public final static native long TextRun_dynamic_cast(long jarg1, Inline jarg1_);
+  public final static native long new_RichTextElementProperties__SWIG_0();
+  public final static native long new_RichTextElementProperties__SWIG_1(long jarg1, TextConfig jarg1_, String jarg2, String jarg3);
+  public final static native long new_RichTextElementProperties__SWIG_2(long jarg1, RichTextElementProperties jarg1_);
+  public final static native void delete_RichTextElementProperties(long jarg1);
+  public final static native long RichTextElementProperties_SerializeToJsonValue(long jarg1, RichTextElementProperties jarg1_, long jarg2, JsonValue jarg2_);
+  public final static native void RichTextElementProperties_Deserialize(long jarg1, RichTextElementProperties jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
+  public final static native void RichTextElementProperties_PopulateKnownPropertiesSet(long jarg1, RichTextElementProperties jarg1_, long jarg2);
   public final static native long BaseCardElement_SWIGSmartPtrUpcast(long jarg1);
   public final static native long BaseActionElement_SWIGSmartPtrUpcast(long jarg1);
   public final static native long BaseInputElement_SWIGSmartPtrUpcast(long jarg1);
@@ -1401,6 +1408,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long RichTextBlock_SWIGSmartPtrUpcast(long jarg1);
   public final static native long RichTextBlockParser_SWIGSmartPtrUpcast(long jarg1);
   public final static native long TextRun_SWIGSmartPtrUpcast(long jarg1);
+  public final static native long RichTextElementProperties_SWIGSmartPtrUpcast(long jarg1);
 
   public static String SwigDirector_BaseElement_GetId(BaseElement jself) {
     return jself.GetId();
