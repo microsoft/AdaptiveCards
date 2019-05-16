@@ -396,7 +396,7 @@ export abstract class DesignerPeer extends DraggableElement {
     onPeerRemoved: (sender: DesignerPeer) => void;
     onPeerAdded: (sender: DesignerPeer, newPeer: DesignerPeer) => void;
 
-    abstract getCardObjectTypeName(): string;
+    abstract getCardObject(): Adaptive.CardObject;
     abstract internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean);
 
     constructor(parent: DesignerPeer, designerSurface: CardDesignerSurface, registration: DesignerPeerRegistrationBase) {
@@ -556,6 +556,16 @@ export abstract class DesignerPeer extends DraggableElement {
         return result;
     }
 
+    scrollIntoView() {
+        if (this.renderedElement) {
+            this.renderedElement.scrollIntoView();
+        }
+
+        if (this.treeItem && this.treeItem.renderedElement) {
+            this.treeItem.renderedElement.scrollIntoView();
+        }
+    }
+
     get parent(): DesignerPeer {
         return this._parent;
     }
@@ -618,8 +628,8 @@ export class ActionPeer extends DesignerPeer {
         }
     }
 
-    getCardObjectTypeName(): string {
-        return this.action.getJsonTypeName();
+    getCardObject(): Adaptive.CardObject {
+        return this.action;
     }
 
     isDraggable(): boolean {
@@ -829,6 +839,9 @@ export class ShowCardActionPeer extends TypedActionPeer<Adaptive.ShowCardAction>
     }
 }
 
+export class ToggleVisibilityActionPeer extends TypedActionPeer<Adaptive.ToggleVisibilityAction> {
+}
+
 export class CardElementPeer extends DesignerPeer {
     protected _cardElement: Adaptive.CardElement;
 
@@ -990,8 +1003,8 @@ export class CardElementPeer extends DesignerPeer {
         }
     }
 
-    getCardObjectTypeName(): string {
-        return this.cardElement.getJsonTypeName();
+    getCardObject(): Adaptive.CardObject {
+        return this.cardElement;
     }
 
     initializeCardElement() {
@@ -2556,14 +2569,14 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
             }
         }
 
-        let fontFamily = addLabelAndInput(card, "Font family:", Adaptive.ChoiceSetInput);
-        fontFamily.input.placeholder = "Default";
-        fontFamily.input.isCompact = true;
-        fontFamily.input.choices.push(new Adaptive.Choice("Default", Adaptive.FontFamily.Default.toString()));
-        fontFamily.input.choices.push(new Adaptive.Choice("Monospace", Adaptive.FontFamily.Monospace.toString()));
-        fontFamily.input.defaultValue = this.cardElement.fontFamily ? this.cardElement.fontFamily.toString() : "Default";
-        fontFamily.input.onValueChanged = () => {
-            this.cardElement.fontFamily = <Adaptive.FontFamily>parseInt(fontFamily.input.value);
+        let fontType = addLabelAndInput(card, "Font type:", Adaptive.ChoiceSetInput);
+        fontType.input.placeholder = "Default";
+        fontType.input.isCompact = true;
+        fontType.input.choices.push(new Adaptive.Choice("Default", Adaptive.FontType.Default.toString()));
+        fontType.input.choices.push(new Adaptive.Choice("Monospace", Adaptive.FontType.Monospace.toString()));
+        fontType.input.defaultValue = this.cardElement.fontType ? this.cardElement.fontType.toString() : "Default";
+        fontType.input.onValueChanged = () => {
+            this.cardElement.fontType = <Adaptive.FontType>parseInt(fontType.input.value);
 
             this.changed(false);
         }

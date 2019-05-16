@@ -90,10 +90,24 @@
     color: white;
     background-color: #3a96dd;
     border-top: 1px solid #D2D2D2;
-    padding: 4px 8px;
     overflow-x: hidden;
     overflow-y: auto;
     white-space: nowrap;
+}
+
+.acd-error-pane-message {
+    padding: 1px 4px 2px 4px;
+    cursor: default;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.acd-error-pane-message.selectable {
+    cursor: pointer;
+}
+
+.acd-error-pane-message.selectable:hover {
+    background-color: navy;
 }
 
 /*
