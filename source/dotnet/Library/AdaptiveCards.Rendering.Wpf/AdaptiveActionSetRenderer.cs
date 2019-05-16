@@ -36,7 +36,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             var actionsConfig = context.Config.Actions;
             var maxActions = actionsConfig.MaxActions;
-            var actionsToProcess = GetActionsToProcess(actions, maxActions);
+            var actionsToProcess = GetActionsToProcess(actions, maxActions, context);
 
             if (actionsToProcess.Any())
             {
@@ -142,8 +142,14 @@ namespace AdaptiveCards.Rendering.Wpf
             }
         }
 
-        private static List<AdaptiveAction> GetActionsToProcess(IList<AdaptiveAction> actions, int maxActions)
+        private static List<AdaptiveAction> GetActionsToProcess(IList<AdaptiveAction> actions, int maxActions, AdaptiveRenderContext context)
         {
+            // If the number of actions is bigger than maxActions, then log warning for it
+            if (actions.Count > maxActions)
+            {
+                context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.MaxActionsExceeded, "Some actions were not rendered due to exceeding the maximum number of actions allowed"));
+            }
+
             // just take the first maxActions actions
             return actions.Take(maxActions).ToList();
         }
