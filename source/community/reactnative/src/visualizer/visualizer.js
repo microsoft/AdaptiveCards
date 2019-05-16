@@ -7,68 +7,55 @@ import React from 'react';
 import {
     FlatList,
     View,
-    Text,
     StyleSheet,
-    BackHandler,
+    Image,
+    Text,
+    Platform,
+    TouchableOpacity,
     Modal
 } from 'react-native';
 
 import Renderer from './renderer';
 import { PayloadItem } from './payload-item.js';
 import SegmentedControl from './segmented-control';
+import MoreOptions from './more-options';
 import * as Constants from './constants';
+import * as Payloads from './payloads';
 import * as AdaptiveCardBuilder from "../../experimental/adaptive-card-builder/AdaptiveCardBuilder";
 
-const HEIGHT = 40;
+
+const moreIcon = Platform.select({
+    ios: require("./assets/more-ios.png"),
+    android: require("./assets/more-android.png")
+})
+
 
 export default class Visualizer extends React.Component {
 
-    static navigationOptions = props => {
-        return {
-            title: Constants.NavigationTitle,
-            headerStyle: {
-                height: HEIGHT,
-                backgroundColor: '#0078D7'
-            },
-            headerTitleStyle: { color: "white", alignSelf: "center" },
-            headerLeft: (<Text
-                style={{ color: "white", paddingLeft: 10, fontSize: 15 }}
-                onPress={() => props.navigation.goBack()}
-            >Back</Text>)
-        }
-    }
-
     state = {
         isModalVisible: false,
+        isMoreVisible: false,
         selectedPayload: null,
+        activeOption: Constants.AdaptiveCards,
+        payloads: Payloads.AdaptiveCardPayloads,
+        scenarios: Payloads.AdaptiveCardScenarios,
         activeIndex: 0 // payload - scenarios selector
     };
 
     constructor(props) {
         super(props);
-
-        this.scenarios = this.props.navigation.state.params.scenarios;
-        this.payloads = this.props.navigation.state.params.payloads;
     }
-
-    componentWillMount() {
-        BackHandler.addEventListener("hardwareBackPress", this.onBackPress);
-    }
-
-    componentWillUnmount() {
-        BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
-    }
-
-    onBackPress = () => {
-        this.props.navigation.goBack();
-        return true;
-    };
 
     render() {
-        const items = this.state.activeIndex === 0 ? this.payloads : this.scenarios;
+        const { activeIndex, payloads, scenarios } = this.state;
+
+        const items = activeIndex === 0 ? payloads : scenarios;
         return (
             <View style={styles.container}>
-                {this.scenarios && this.scenarios.length > 0 && this.segmentedControl()}
+                <TouchableOpacity onPress={() => this.onMoreOptionsClick()} style={styles.moreContainer}>
+                    <Image source={moreIcon} style={styles.moreIcon} />
+                </TouchableOpacity>
+                {scenarios && scenarios.length > 0 ? this.segmentedControl() : this.header()}
                 <FlatList
                     data={items}
                     keyExtractor={(item, index) => index.toString()}
@@ -91,6 +78,14 @@ export default class Visualizer extends React.Component {
                         onModalClose={this.closeModal}
                     />
                 </Modal>
+                <Modal
+                    animationType="none"
+                    transparent={true}
+                    supportedOrientations={['portrait', 'landscape']}
+                    visible={this.state.isMoreVisible}
+                    onRequestClose={() => this.closeMoreOptions()}>
+                    {this.modalLayout()}
+                </Modal>
             </View>
         );
     }
@@ -110,6 +105,17 @@ export default class Visualizer extends React.Component {
             />
         );
     }
+
+    /**
+     * @description Add header for payloads as there is no scenarios
+     */
+    header = () => (
+        <View style={styles.header}>
+            <Text style={styles.title}>
+                {Constants.PayloadHeader}
+            </Text>
+        </View>
+    );
 
     /**
      * @description Present the modal
@@ -145,21 +151,121 @@ export default class Visualizer extends React.Component {
             activeIndex: index
         });
     }
+
+    /**
+     * @description Layout of the more option modal
+     */
+    modalLayout = () => (
+        <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => this.closeMoreOptions()}
+            style={styles.moreOptionsModal}
+        >
+            <MoreOptions
+                closeMoreOptions={this.closeMoreOptions}
+                moreOptionClick={this.moreOptionClick}
+            />
+        </TouchableOpacity>
+    );
+
+    /**
+     * @description Click action for more option
+     * @param option - selected option
+     */
+    moreOptionClick = (option) => {
+        const { activeOption } = this.state;
+        switch (option) {
+            case Constants.AdaptiveCards:
+                if (activeOption !== Constants.AdaptiveCards)
+                    this.setState({
+                        isMoreVisible: false,
+                        activeOption: Constants.AdaptiveCards,
+                        payloads: Payloads.AdaptiveCardPayloads,
+                        scenarios: Payloads.AdaptiveCardScenarios,
+                    });
+                else this.closeMoreOptions();
+                break;
+            case Constants.OtherCards:
+                if (activeOption !== Constants.OtherCards)
+                    this.setState({
+                        isMoreVisible: false,
+                        activeOption: Constants.OtherCards,
+                        payloads: Payloads.OtherCardPayloads,
+                        scenarios: [],
+                    });
+                else this.closeMoreOptions();
+                break;
+            default:
+                if (activeOption !== Constants.AdaptiveCards)
+                    this.setState({
+                        isMoreVisible: false,
+                        activeOption: Constants.AdaptiveCards,
+                        payloads: Payloads.AdaptiveCardPayloads,
+                        scenarios: Payloads.AdaptiveCardScenarios,
+                    });
+                else this.closeMoreOptions();
+                break;
+        }
+    }
+
+    /**
+     * @description Click action for more icon, shows the options modal
+     */
+    onMoreOptionsClick = () => {
+        this.setState({
+            isMoreVisible: true
+        })
+    }
+
+    /**
+     * @description Dismiss the more options modal
+     */
+    closeMoreOptions = () => {
+        this.setState({
+            isMoreVisible: false
+        })
+    }
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        padding: 10
+        flex: 1
     },
     payloadPicker: {
         width: '100%',
         height: 150,
         backgroundColor: '#f7f7f7',
     },
-    title: {
-        fontSize: 20,
-        fontWeight: 'bold',
+    header: {
         marginVertical: 12,
+        justifyContent: "center",
+        height: 34,
+        backgroundColor: '#0078D7'
+    },
+    title: {
+        fontSize: 17,
+        fontWeight: '400',
+        color: "white",
+        alignSelf: "center"
+    },
+    moreContainer: {
+        alignSelf: "flex-end"
+    },
+    moreIcon: {
+        padding: 10,
+        width: 25,
+        height: 25
+    },
+    moreOptionsModal: {
+        flex: 1,
+        backgroundColor: "rgba(0, 0, 0, 0.1)"
+    },
+    more: {
+        marginTop: 50,
+        marginRight: 10,
+        alignSelf: "flex-end",
+        width: 100,
+        height: 100,
+        backgroundColor: "white"
     }
 });
