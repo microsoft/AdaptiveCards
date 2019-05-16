@@ -377,31 +377,6 @@ namespace AdaptiveSharedNamespace
         return new_value;
     }
 
-    std::vector<std::shared_ptr<BaseCardElement>> ParseUtil::GetElementCollection(ParseContext& context,
-                                                                                  const Json::Value& json,
-                                                                                  AdaptiveCardSchemaKey key,
-                                                                                  bool isRequired)
-    {
-        auto elementArray = GetArray(json, key, isRequired);
-
-        std::vector<std::shared_ptr<BaseCardElement>> elements;
-        if (elementArray.empty())
-        {
-            return std::move(elements);
-        }
-
-        elements.reserve(elementArray.size());
-
-        for (const auto& curJsonValue : elementArray)
-        {
-            std::shared_ptr<BaseElement> curElement;
-            BaseElement::ParseJsonObject<BaseCardElement>(context, curJsonValue, curElement);
-            elements.push_back(std::static_pointer_cast<BaseCardElement>(curElement));
-        }
-
-        return std::move(elements);
-    }
-
     std::shared_ptr<BaseActionElement> ParseUtil::GetActionFromJsonValue(ParseContext& context, const Json::Value& json)
     {
         if (json.empty() || !json.isObject())
