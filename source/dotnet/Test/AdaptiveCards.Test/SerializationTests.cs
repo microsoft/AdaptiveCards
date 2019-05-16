@@ -615,7 +615,7 @@ namespace AdaptiveCards.Test
           ""strikethrough"": true,
           ""highlight"": true,
           ""text"": ""with some cool looking stuff. "",
-          ""fontStyle"": ""monospace""
+          ""fontType"": ""monospace""
         },
         {
           ""type"": ""TextRun"",
