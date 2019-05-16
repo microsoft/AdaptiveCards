@@ -5,7 +5,7 @@
 #include "pch.h"
 #include "ElementParserRegistration.h"
 #include "Inline.h"
-#include "TextElementProperties.h"
+#include "RichTextElementProperties.h"
 
 namespace AdaptiveSharedNamespace
 {
@@ -58,7 +58,7 @@ namespace AdaptiveSharedNamespace
         void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
 
     protected:
-        std::shared_ptr<TextElementProperties> m_textElementProperties;
+        std::shared_ptr<RichTextElementProperties> m_textElementProperties;
         void PopulateKnownPropertiesSet() override;
         std::shared_ptr<BaseActionElement> m_selectAction;
         bool m_highlight;
