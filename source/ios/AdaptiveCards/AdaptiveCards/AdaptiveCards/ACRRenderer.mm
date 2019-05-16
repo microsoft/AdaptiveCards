@@ -170,7 +170,6 @@ using namespace AdaptiveCards;
         [card setCard:adaptiveCard];
         [ACRRenderer renderActions:rootView inputs:inputs superview:verticalView card:card hostConfig:config];
     }
-    [verticalView adjustHuggingForLastElement];
 
     return verticalView;
 }

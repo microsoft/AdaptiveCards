@@ -203,30 +203,59 @@ using namespace AdaptiveCards;
 
 - (void)applyPadding:(unsigned int)padding priority:(unsigned int)priority
 {
+    [self applyPadding:padding priority:priority location:ACRBleedToAll];
+}
+
+- (void)applyPadding:(unsigned int)amount priority:(unsigned int)priority location:(ACRBleedDirection)location
+{
+    unsigned int leadingPadding = (location & ACRBleedToLeadingEdge) ? amount : 0;
+    unsigned int trailingPadding = (location & ACRBleedToTrailingEdge) ? amount : 0;
+    unsigned int topPadding = (location & ACRBleedToTopEdge) ? amount : 0;
+    unsigned int bottomPadding = (location & ACRBleedToBottomEdge) ? amount : 0;
+
     NSString *horString = [[NSString alloc] initWithFormat:@"H:|-(%u@%u)-[_stackView]-(%u@%u)-|",
-                           padding, priority, padding, priority];
+                           leadingPadding, priority, trailingPadding, priority];
     NSString *verString = [[NSString alloc] initWithFormat:@"V:|-(%u@%u)-[_stackView]-(%u@%u)-|",
-                           padding, priority, padding, priority];
+                           topPadding, priority, bottomPadding, priority];
+
     NSDictionary *dictionary = NSDictionaryOfVariableBindings(_stackView);
+
     _widthconstraint = [NSLayoutConstraint constraintsWithVisualFormat:horString
                                                                 options:0
                                                                 metrics:nil
                                                                   views:dictionary];
-    NSArray *vertConst = [NSLayoutConstraint constraintsWithVisualFormat:verString
-                                                                 options:0
-                                                                 metrics:nil
-                                                                   views:dictionary];
+    _heightconstraint = [NSLayoutConstraint constraintsWithVisualFormat:verString
+                                                                options:0
+                                                                metrics:nil
+                                                                  views:dictionary];
 
     [self addConstraints:_widthconstraint];
-    [self addConstraints:vertConst];
+    [self addConstraints:_heightconstraint];
 }
 
+// target is the background view, it will be pinned to parent according to the direction set by bleed,
+// constraints that are specified by the direction, those will be set to the view that is bleeding
 - (void)bleed:(unsigned int)padding priority:(unsigned int)priority target:(UIView *)target
-    direction:(ACRBleedDirection)direction
+    direction:(ACRBleedDirection)direction parentView:(UIView *)parent
 {
+    // remove existing constraints
     [self removeConstraints:_widthconstraint];
-    // new width will be bleed target - padding left and right
-    [self.stackView.widthAnchor constraintEqualToAnchor:target.widthAnchor constant:padding * -2.0].active = YES;
+    [self removeConstraints:_heightconstraint];
+
+    UIView *leadingView = (direction & ACRBleedToLeadingEdge) ? parent : self;
+    UIView *trailingView = (direction & ACRBleedToTrailingEdge) ? parent : self;
+    UIView *topView = (direction & ACRBleedToTopEdge) ? parent : self;
+    UIView *bottomView = (direction & ACRBleedToBottomEdge) ? parent : self;
+
+    [target.leadingAnchor constraintEqualToAnchor:leadingView.leadingAnchor].active = YES;
+    [target.trailingAnchor constraintEqualToAnchor:trailingView.trailingAnchor].active = YES;
+    [target.topAnchor constraintEqualToAnchor:topView.topAnchor].active = YES;
+    [target.bottomAnchor constraintEqualToAnchor:bottomView.bottomAnchor].active = YES;
+
+    // inverse the bit pattern that are set by ACRBleedDirection enums
+    NSInteger bleedDirection = ~(~0 & direction);
+
+    [self applyPadding:padding priority:1000 location:(ACRBleedDirection)bleedDirection];
 }
 
 - (UILayoutConstraintAxis)getAxis
