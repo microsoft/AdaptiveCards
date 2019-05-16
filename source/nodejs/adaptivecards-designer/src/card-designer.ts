@@ -940,8 +940,8 @@ export class CardDesigner {
             '<div id="toolbarHost"></div>' +
             '<div class="content" style="display: flex; flex: 1 1 auto; overflow-y: hidden;">' +
                 '<div id="leftCollapsedPaneTabHost" class="acd-verticalCollapsedTabContainer" style="border-right: 1px solid #D2D2D2;"></div>' +
-                '<div id="toolPalettePane" class="selector-toolPalette" style="background-color: white; border-right: 1px solid #D2D2D2;">' +
-                    '<div id="toolPaletteHost" class="acd-dockedPane"></div>' +
+                '<div id="toolPalettePane" class="selector-toolPalette" style="display: flex; flex-direction: column; background-color: white; border-right: 1px solid #D2D2D2;">' +
+                    '<div id="toolPaletteHost" class="acd-dockedPane" style="overflow: auto"></div>' +
                 '</div>' +
                 '<div style="display: flex; flex-direction: column; flex: 1 1 100%; overflow: hidden;">' +
                     '<div style="display: flex; flex: 1 1 100%; overflow: hidden;">' +
