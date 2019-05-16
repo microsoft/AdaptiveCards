@@ -26,7 +26,8 @@ import * as AdaptiveCardBuilder from "../../experimental/adaptive-card-builder/A
 
 const moreIcon = Platform.select({
     ios: require("./assets/more-ios.png"),
-    android: require("./assets/more-android.png")
+    android: require("./assets/more-android.png"),
+    windows: require("./assets/more-android.png")
 })
 
 
