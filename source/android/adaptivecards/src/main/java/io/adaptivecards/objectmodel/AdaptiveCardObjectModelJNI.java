@@ -301,9 +301,9 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long getVerticalAlignmentEnum();
   public final static native String VerticalAlignmentToString(int jarg1);
   public final static native int VerticalAlignmentFromString(String jarg1);
-  public final static native long getBackgroundImageModeEnum();
-  public final static native String BackgroundImageModeToString(int jarg1);
-  public final static native int BackgroundImageModeFromString(String jarg1);
+  public final static native long getImageFillModeEnum();
+  public final static native String ImageFillModeToString(int jarg1);
+  public final static native int ImageFillModeFromString(String jarg1);
   public final static native long getImageStyleEnum();
   public final static native String ImageStyleToString(int jarg1);
   public final static native int ImageStyleFromString(String jarg1);
@@ -458,8 +458,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long new_BackgroundImage__SWIG_2(String jarg1, int jarg2, int jarg3, int jarg4);
   public final static native String BackgroundImage_GetUrl(long jarg1, BackgroundImage jarg1_);
   public final static native void BackgroundImage_SetUrl(long jarg1, BackgroundImage jarg1_, String jarg2);
-  public final static native int BackgroundImage_GetMode(long jarg1, BackgroundImage jarg1_);
-  public final static native void BackgroundImage_SetMode(long jarg1, BackgroundImage jarg1_, int jarg2);
+  public final static native int BackgroundImage_GetFillMode(long jarg1, BackgroundImage jarg1_);
+  public final static native void BackgroundImage_SetFillMode(long jarg1, BackgroundImage jarg1_, int jarg2);
   public final static native int BackgroundImage_GetHorizontalAlignment(long jarg1, BackgroundImage jarg1_);
   public final static native void BackgroundImage_SetHorizontalAlignment(long jarg1, BackgroundImage jarg1_, int jarg2);
   public final static native int BackgroundImage_GetVerticalAlignment(long jarg1, BackgroundImage jarg1_);

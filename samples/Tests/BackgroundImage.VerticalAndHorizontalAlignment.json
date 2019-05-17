@@ -77,7 +77,7 @@
 					"width": "auto",
 					"backgroundImage": {
 						"url": "https://picsum.photos/id/237/200/200",
-						"horizontalAlignment": "left",
+						"horizontalAlignment": "left"
 					},
 					"items": [
 						{
