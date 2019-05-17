@@ -180,10 +180,10 @@ namespace AdaptiveNamespace
 
     void TileControl::RefreshContainerTile()
     {
-        ABI::AdaptiveNamespace::BackgroundImageMode mode;
+        ABI::AdaptiveNamespace::BackgroundImageFillMode fillMode;
         ABI::AdaptiveNamespace::HAlignment hAlignment;
         ABI::AdaptiveNamespace::VAlignment vAlignment;
-        THROW_IF_FAILED(ExtractBackgroundImageData(&mode, &hAlignment, &vAlignment));
+        THROW_IF_FAILED(ExtractBackgroundImageData(&fillMode, &hAlignment, &vAlignment));
 
         INT numberSpriteToInstanciate = 1;
         INT numberImagePerColumn = 1;
@@ -196,9 +196,9 @@ namespace AdaptiveNamespace
         // the container until we get the right dimensions.
         if (m_imageSize.Width != 0 && m_imageSize.Height != 0)
         {
-            switch (mode)
+            switch (fillMode)
             {
-            case ABI::AdaptiveNamespace::BackgroundImageMode::RepeatHorizontally:
+            case ABI::AdaptiveNamespace::BackgroundImageFillMode::RepeatHorizontally:
                 numberImagePerRow = (INT)ceil(m_containerSize.Width / m_imageSize.Width);
                 numberImagePerColumn = 1;
 
@@ -216,7 +216,7 @@ namespace AdaptiveNamespace
                 }
                 break;
 
-            case ABI::AdaptiveNamespace::BackgroundImageMode::RepeatVertically:
+            case ABI::AdaptiveNamespace::BackgroundImageFillMode::RepeatVertically:
                 numberImagePerRow = 1;
                 numberImagePerColumn = (INT)ceil(m_containerSize.Height / m_imageSize.Height);
 
@@ -234,7 +234,7 @@ namespace AdaptiveNamespace
                 }
                 break;
 
-            case ABI::AdaptiveNamespace::BackgroundImageMode::Repeat:
+            case ABI::AdaptiveNamespace::BackgroundImageFillMode::Repeat:
                 numberImagePerColumn = (INT)ceil(m_containerSize.Height / m_imageSize.Height);
                 numberImagePerRow = (INT)ceil(m_containerSize.Width / m_imageSize.Width);
                 break;
@@ -309,11 +309,11 @@ namespace AdaptiveNamespace
         }
     }
 
-    HRESULT TileControl::ExtractBackgroundImageData(ABI::AdaptiveNamespace::BackgroundImageMode* mode,
+    HRESULT TileControl::ExtractBackgroundImageData(ABI::AdaptiveNamespace::BackgroundImageFillMode* fillMode,
                                                     ABI::AdaptiveNamespace::HAlignment* hAlignment,
                                                     ABI::AdaptiveNamespace::VAlignment* vAlignment)
     {
-        THROW_IF_FAILED(m_adaptiveBackgroundImage->get_Mode(mode));
+        THROW_IF_FAILED(m_adaptiveBackgroundImage->get_FillMode(fillMode));
         THROW_IF_FAILED(m_adaptiveBackgroundImage->get_HorizontalAlignment(hAlignment));
         THROW_IF_FAILED(m_adaptiveBackgroundImage->get_VerticalAlignment(vAlignment));
         return S_OK;

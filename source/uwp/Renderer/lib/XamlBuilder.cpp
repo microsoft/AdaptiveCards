@@ -502,23 +502,23 @@ namespace AdaptiveNamespace
         ComPtr<IImage> xamlImage;
         THROW_IF_FAILED(background.As(&xamlImage));
 
-        ABI::AdaptiveNamespace::BackgroundImageMode mode;
-        backgroundImage->get_Mode(&mode);
+        ABI::AdaptiveNamespace::BackgroundImageFillMode fillMode;
+        THROW_IF_FAILED(backgroundImage->get_FillMode(&fillMode));
 
         // Apply Background Image Mode
         ComPtr<IFrameworkElement> backgroundAsFrameworkElement;
-        switch (mode)
+        switch (fillMode)
         {
-        case ABI::AdaptiveNamespace::BackgroundImageMode::Stretch:
+        case ABI::AdaptiveNamespace::BackgroundImageFillMode::Cover:
             // Ignored: horizontalAlignment, verticalAlignment
             THROW_IF_FAILED(xamlImage->put_Stretch(Stretch::Stretch_UniformToFill));
 
             THROW_IF_FAILED(xamlImage.As(&backgroundAsFrameworkElement));
             THROW_IF_FAILED(backgroundAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Stretch));
             break;
-        case ABI::AdaptiveNamespace::BackgroundImageMode::Repeat:
-        case ABI::AdaptiveNamespace::BackgroundImageMode::RepeatHorizontally:
-        case ABI::AdaptiveNamespace::BackgroundImageMode::RepeatVertically:
+        case ABI::AdaptiveNamespace::BackgroundImageFillMode::Repeat:
+        case ABI::AdaptiveNamespace::BackgroundImageFillMode::RepeatHorizontally:
+        case ABI::AdaptiveNamespace::BackgroundImageFillMode::RepeatVertically:
         default:
             ComPtr<TileControl> tileControl;
             MakeAndInitialize<TileControl>(&tileControl);
@@ -2682,16 +2682,24 @@ namespace AdaptiveNamespace
         Thickness marginThickness = {0};
         if (bleedDirection != ABI::AdaptiveNamespace::BleedDirection::None)
         {
-            if (bleedDirection == ABI::AdaptiveNamespace::BleedDirection::Left ||
-                bleedDirection == ABI::AdaptiveNamespace::BleedDirection::Both)
+            if ((bleedDirection & ABI::AdaptiveNamespace::BleedDirection::Left) != ABI::AdaptiveNamespace::BleedDirection::None)
             {
                 marginThickness.Left = -paddingAsDouble;
             }
 
-            if (bleedDirection == ABI::AdaptiveNamespace::BleedDirection::Right ||
-                bleedDirection == ABI::AdaptiveNamespace::BleedDirection::Both)
+            if ((bleedDirection & ABI::AdaptiveNamespace::BleedDirection::Right) != ABI::AdaptiveNamespace::BleedDirection::None)
             {
                 marginThickness.Right = -paddingAsDouble;
+            }
+
+            if ((bleedDirection & ABI::AdaptiveNamespace::BleedDirection::Up) != ABI::AdaptiveNamespace::BleedDirection::None)
+            {
+                marginThickness.Top = -paddingAsDouble;
+            }
+
+            if ((bleedDirection & ABI::AdaptiveNamespace::BleedDirection::Down) != ABI::AdaptiveNamespace::BleedDirection::None)
+            {
+                marginThickness.Bottom = -paddingAsDouble;
             }
 
             ComPtr<IBorder> localContainerBorder(containerBorder);
