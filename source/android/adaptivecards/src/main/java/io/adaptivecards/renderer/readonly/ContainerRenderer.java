@@ -155,20 +155,31 @@ public class ContainerRenderer extends BaseCardElementRenderer
         {
             int padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) collectionElementView.getLayoutParams();
-            int marginLeft = layoutParams.leftMargin, marginRight = layoutParams.rightMargin;
+            int marginLeft = layoutParams.leftMargin, marginRight = layoutParams.rightMargin, marginTop = layoutParams.topMargin, marginBottom = layoutParams.bottomMargin;
 
             ContainerBleedDirection bleedDirection = collectionElement.GetBleedDirection();
-            if (bleedDirection == ContainerBleedDirection.BleedToLeading || bleedDirection == ContainerBleedDirection.BleedToBothEdges)
+
+            if ((bleedDirection.swigValue() & ContainerBleedDirection.BleedLeft.swigValue()) != ContainerBleedDirection.BleedRestricted.swigValue())
             {
                 marginLeft = -padding;
             }
 
-            if (bleedDirection == ContainerBleedDirection.BleedToTrailing || bleedDirection == ContainerBleedDirection.BleedToBothEdges)
+            if ((bleedDirection.swigValue() & ContainerBleedDirection.BleedRight.swigValue()) != ContainerBleedDirection.BleedRestricted.swigValue())
             {
                 marginRight = -padding;
             }
 
-            layoutParams.setMargins(marginLeft, layoutParams.topMargin, marginRight, layoutParams.bottomMargin);
+            if ((bleedDirection.swigValue() & ContainerBleedDirection.BleedUp.swigValue()) != ContainerBleedDirection.BleedRestricted.swigValue())
+            {
+                marginTop = -padding;
+            }
+
+            if ((bleedDirection.swigValue() & ContainerBleedDirection.BleedDown.swigValue()) != ContainerBleedDirection.BleedRestricted.swigValue())
+            {
+                marginBottom = -padding;
+            }
+
+            layoutParams.setMargins(marginLeft, marginTop, marginRight, marginBottom);
             collectionElementView.setLayoutParams(layoutParams);
         }
     }
