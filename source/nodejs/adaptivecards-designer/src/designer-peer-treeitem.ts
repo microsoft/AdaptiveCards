@@ -23,7 +23,7 @@ export class DesignerPeerTreeItem extends BaseTreeItem {
     }
 
     protected getLabelText(): string {
-        return this.owner.getCardObjectTypeName();
+        return this.owner.getCardObject().getJsonTypeName();
     }
 
     protected getAdditionalText(): string {

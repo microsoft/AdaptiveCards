@@ -166,7 +166,14 @@ export abstract class SerializableObject {
     }
 
     setCustomProperty(name: string, value: any) {
-        this._rawProperties[name] = value;
+        let deleteProperty = (typeof value === "string" && Utils.isNullOrEmpty(value)) || value === undefined || value === null;
+
+        if (deleteProperty) {
+            delete this._rawProperties[name];
+        }
+        else {
+            this._rawProperties[name] = value;
+        }
     }
 
     getCustomProperty(name: string): any {
