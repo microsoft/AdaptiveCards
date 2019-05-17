@@ -16,7 +16,7 @@ namespace AdaptiveCards.Rendering.Wpf
         /// Checks if any of the fonts to be used for the TexBlock is installed, and if so, returns it
         /// </summary>
         /// <param name="fontList">Font list to check if any exist</param>
-        /// <returns>First font in list that is installed, otherwise, first element</returns>
+        /// <returns>First font in list that is installed, otherwise, default system font</returns>
         public static string GetFontFamilyFromList(string fontList)
         {
             var installedFonts = new InstalledFontCollection();
@@ -35,7 +35,8 @@ namespace AdaptiveCards.Rendering.Wpf
                 }
             }
 
-            return fontFamilies[0].Trim();
+            // If no valid font was found in list, return the system default font
+            return SystemFonts.MessageFontFamily.ToString();
         }
 
         public static void ApplyVerticalContentAlignment(FrameworkElement uiElement, AdaptiveCollectionElement element)
