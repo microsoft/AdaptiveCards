@@ -144,7 +144,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
                     if (cardElement.Type == "ActionSet")
                     {
-                        AdaptiveActionSetRenderer.AddActionsToRoot(context);
+                        AdaptiveActionSetRenderer.AddShowCardsViewsToRoot(context);
                     }
 
                 }

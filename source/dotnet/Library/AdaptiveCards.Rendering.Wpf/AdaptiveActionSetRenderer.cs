@@ -32,7 +32,7 @@ namespace AdaptiveCards.Rendering.Wpf
         public static void AddRenderedActions(Grid uiContainer, IList<AdaptiveAction> actions, AdaptiveRenderContext context)
         {
             RenderActions(uiContainer, actions, context);
-            AddActionsToRoot(context);
+            AddShowCardsViewsToRoot(context);
         }
 
         public static void RenderActions(Grid uiContainer, IList<AdaptiveAction> actions, AdaptiveRenderContext context)
@@ -145,15 +145,18 @@ namespace AdaptiveCards.Rendering.Wpf
             }
         }
 
-        public static void AddActionsToRoot(AdaptiveRenderContext context)
+        /// <summary>
+        /// adds showcards views to the root view
+        /// </summary>
+        /// <param name="context"></param>
+        public static void AddShowCardsViewsToRoot(AdaptiveRenderContext context)
         {
             // Only handle Action show cards for the main card
             if (context.CardDepth == 1)
             {
-                if (context.CardRoot is Grid)
+                if (context.CardRoot is Grid cardRoot)
                 {
-                    UIElement child = ((Grid)context.CardRoot).Children[0];
-                    if (child is Grid root)
+                    if (cardRoot.Children.Count > 0 && cardRoot.Children[0] is Grid root)
                     {
                         // Define a new row to contain all the show cards
                         if (context.ActionShowCardsKeys.Count > 0)
