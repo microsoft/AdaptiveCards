@@ -47,14 +47,14 @@ void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage>
         UIImageView *imgView = nil;
         UIImage *img = [rootView getImageMap][key];
         if (img) {
-            switch (backgroundImage->GetMode()) {
-                case BackgroundImageMode::Repeat:
-                case BackgroundImageMode::RepeatHorizontally:
-                case BackgroundImageMode::RepeatVertically:
+            switch (backgroundImage->GetFillMode()) {
+                case ImageFillMode::Repeat:
+                case ImageFillMode::RepeatHorizontally:
+                case ImageFillMode::RepeatVertically:
                     imgView = [[ACRUIImageView alloc] init];
                     imgView.backgroundColor = [UIColor colorWithPatternImage:img];
                     break;
-                case BackgroundImageMode::Stretch:
+                case ImageFillMode::Cover:
                 default:
                     imgView = [[ACRUIImageView alloc] initWithImage:img];
                     break;
@@ -83,9 +83,9 @@ void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage>
 
 void renderBackgroundImage(const BackgroundImage *backgroundImageProperties, UIImageView *imageView, UIImage *image)
 {
-    if (backgroundImageProperties->GetMode() == BackgroundImageMode::Repeat
-        || backgroundImageProperties->GetMode() == BackgroundImageMode::RepeatHorizontally
-        || backgroundImageProperties->GetMode() == BackgroundImageMode::RepeatVertically) {
+    if (backgroundImageProperties->GetFillMode() == ImageFillMode::Repeat
+        || backgroundImageProperties->GetFillMode() == ImageFillMode::RepeatHorizontally
+        || backgroundImageProperties->GetFillMode() == ImageFillMode::RepeatVertically) {
         imageView.backgroundColor = [UIColor colorWithPatternImage:image];
         imageView.image = nil;
     }
@@ -103,8 +103,8 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
         return;
     }
 
-    switch (backgroundImageProperties->GetMode()) {
-        case BackgroundImageMode::Repeat:
+    switch (backgroundImageProperties->GetFillMode()) {
+        case ImageFillMode::Repeat:
         {
             [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:superView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
             [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:superView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
@@ -114,7 +114,7 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
             imageView.contentMode = UIViewContentModeScaleAspectFill;
             break;
         }
-        case BackgroundImageMode::RepeatHorizontally:
+        case ImageFillMode::RepeatHorizontally:
         {
             [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:image.size.height].active = YES;
             [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:superView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0].active = YES;
@@ -135,7 +135,7 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
             }
             break;
         }
-        case BackgroundImageMode::RepeatVertically:
+        case ImageFillMode::RepeatVertically:
         {
             [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:image.size.width].active = YES;
             [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:superView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
@@ -155,19 +155,32 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
             }
             break;
         }
-        case BackgroundImageMode::Stretch:
+        case ImageFillMode::Cover:
         default:
         {
-            [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:superView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
-            [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:superView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
-            [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:superView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
-            [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:superView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
-            [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:superView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0].active = YES;
-            [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:superView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0].active = YES;
-
             imageView.contentMode = UIViewContentModeScaleAspectFill;
+
+            if (superView.frame.size.width > imageView.frame.size.width) {
+                [imageView.widthAnchor constraintEqualToAnchor:superView.widthAnchor].active = YES;
+            } else if (superView.frame.size.height > imageView.frame.size.height) {
+                [imageView.heightAnchor constraintEqualToAnchor:superView.heightAnchor].active = YES;
+            }
+
+            switch (backgroundImageProperties->GetHorizontalAlignment()) {
+                case HorizontalAlignment::Right:
+                    [superView.trailingAnchor constraintEqualToAnchor:imageView.trailingAnchor].active = YES;
+                    break;
+                case HorizontalAlignment::Left:
+                    [superView.leadingAnchor constraintEqualToAnchor:imageView.leadingAnchor].active = YES;
+                    break;
+                case HorizontalAlignment::Center:
+                    [superView.centerXAnchor constraintEqualToAnchor:imageView.centerXAnchor].active = YES;
+                    break;
+            }
+
+            superView.clipsToBounds = YES;
             break;
-	}
+        }
     }
 }
 
