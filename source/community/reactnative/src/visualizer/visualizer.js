@@ -183,6 +183,7 @@ export default class Visualizer extends React.Component {
                         activeOption: Constants.AdaptiveCards,
                         payloads: Payloads.AdaptiveCardPayloads,
                         scenarios: Payloads.AdaptiveCardScenarios,
+                        activeIndex : 0
                     });
                 else this.closeMoreOptions();
                 break;
@@ -193,6 +194,7 @@ export default class Visualizer extends React.Component {
                         activeOption: Constants.OtherCards,
                         payloads: Payloads.OtherCardPayloads,
                         scenarios: [],
+                        activeIndex : 0
                     });
                 else this.closeMoreOptions();
                 break;
@@ -203,6 +205,7 @@ export default class Visualizer extends React.Component {
                         activeOption: Constants.AdaptiveCards,
                         payloads: Payloads.AdaptiveCardPayloads,
                         scenarios: Payloads.AdaptiveCardScenarios,
+                        activeIndex : 0
                     });
                 else this.closeMoreOptions();
                 break;
