@@ -543,8 +543,8 @@ export interface IFontWeightDefinitions {
     bolder: number;
 }
 
-export class FontStyleDefinition {
-    static readonly monospace =  new FontStyleDefinition("'Courier New', Courier, monospace");
+export class FontTypeDefinition {
+    static readonly monospace =  new FontTypeDefinition("'Courier New', Courier, monospace");
 
     fontFamily?: string = "Segoe UI,Segoe,Segoe WP,Helvetica Neue,Helvetica,sans-serif";
 
@@ -585,13 +585,13 @@ export class FontStyleDefinition {
     }
 }
 
-export class FontStyleSet {
-    default: FontStyleDefinition;
-    monospace: FontStyleDefinition;
+export class FontTypeSet {
+    default: FontTypeDefinition;
+    monospace: FontTypeDefinition;
 
     constructor(obj?: any) {
-        this.default = new FontStyleDefinition();
-        this.monospace = new FontStyleDefinition("'Courier New', Courier, monospace");
+        this.default = new FontTypeDefinition();
+        this.monospace = new FontTypeDefinition("'Courier New', Courier, monospace");
 
         if (obj) {
             this.default.parse(obj["default"]);
@@ -599,11 +599,11 @@ export class FontStyleSet {
         }
     }
 
-    getStyleDefinition(style: Enums.FontFamily): FontStyleDefinition {
+    getStyleDefinition(style: Enums.FontType): FontTypeDefinition {
         switch (style) {
-            case Enums.FontFamily.Monospace:
+            case Enums.FontType.Monospace:
                 return this.monospace;
-            case Enums.FontFamily.Default:
+            case Enums.FontType.Default:
             default:
                 return this.default;
         }
@@ -613,12 +613,12 @@ export class FontStyleSet {
 export class HostConfig {
     readonly hostCapabilities = new HostCapabilities();
 
-    private _legacyFontStyle: FontStyleDefinition;
+    private _legacyFontType: FontTypeDefinition;
 
     choiceSetInputValueSeparator: string = ",";
     supportsInteractivity: boolean = true;
     lineHeights?: ILineHeightDefinitions;
-    fontStyles: FontStyleSet = null;
+    fontTypes: FontTypeSet = null;
 
     readonly spacing = {
         small: 3,
@@ -658,11 +658,11 @@ export class HostConfig {
             this.choiceSetInputValueSeparator = (obj && typeof obj["choiceSetInputValueSeparator"] === "string") ? obj["choiceSetInputValueSeparator"] : this.choiceSetInputValueSeparator;
             this.supportsInteractivity = (obj && typeof obj["supportsInteractivity"] === "boolean") ? obj["supportsInteractivity"] : this.supportsInteractivity;
 
-            this._legacyFontStyle = new FontStyleDefinition();
-            this._legacyFontStyle.parse(obj);
+            this._legacyFontType = new FontTypeDefinition();
+            this._legacyFontType.parse(obj);
 
-            if (obj.fontStyles) {
-                this.fontStyles = new FontStyleSet(obj.fontStyles);
+            if (obj.fontTypes) {
+                this.fontTypes = new FontTypeSet(obj.fontTypes);
             }
 
             if (obj.lineHeights) {
@@ -703,12 +703,12 @@ export class HostConfig {
         }
     }
 
-    getFontStyleDefinition(style?: Enums.FontFamily): FontStyleDefinition {
-        if (this.fontStyles) {
-            return this.fontStyles.getStyleDefinition(style);
+    getFontTypeDefinition(style?: Enums.FontType): FontTypeDefinition {
+        if (this.fontTypes) {
+            return this.fontTypes.getStyleDefinition(style);
         }
         else {
-            return style == Enums.FontFamily.Monospace ? FontStyleDefinition.monospace : this._legacyFontStyle;
+            return style == Enums.FontType.Monospace ? FontTypeDefinition.monospace : this._legacyFontType;
         }
     }
 
@@ -756,18 +756,18 @@ export class HostConfig {
     }
 
     get fontFamily(): string {
-        return this._legacyFontStyle.fontFamily;
+        return this._legacyFontType.fontFamily;
     }
 
     set fontFamily(value: string) {
-        this._legacyFontStyle.fontFamily = value;
+        this._legacyFontType.fontFamily = value;
     }
 
     get fontSizes(): IFontSizeDefinitions {
-        return this._legacyFontStyle.fontSizes;
+        return this._legacyFontType.fontSizes;
     }
 
     get fontWeights(): IFontWeightDefinitions {
-        return this._legacyFontStyle.fontWeights;
+        return this._legacyFontType.fontWeights;
     }
 }

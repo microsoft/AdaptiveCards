@@ -8091,36 +8091,36 @@ SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_getBackgroundImageModeEnum(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_getImageFillModeEnum(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  AdaptiveCards::EnumHelpers::EnumMapping< AdaptiveCards::BackgroundImageMode > *result = 0 ;
+  AdaptiveCards::EnumHelpers::EnumMapping< AdaptiveCards::ImageFillMode > *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (AdaptiveCards::EnumHelpers::EnumMapping< AdaptiveCards::BackgroundImageMode > *) &AdaptiveCards::EnumHelpers::getBackgroundImageModeEnum();
-  *(AdaptiveCards::EnumHelpers::EnumMapping< AdaptiveCards::BackgroundImageMode > **)&jresult = result; 
+  result = (AdaptiveCards::EnumHelpers::EnumMapping< AdaptiveCards::ImageFillMode > *) &AdaptiveCards::EnumHelpers::getImageFillModeEnum();
+  *(AdaptiveCards::EnumHelpers::EnumMapping< AdaptiveCards::ImageFillMode > **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BackgroundImageModeToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageFillModeToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
   jstring jresult = 0 ;
-  AdaptiveCards::BackgroundImageMode arg1 ;
+  AdaptiveCards::ImageFillMode arg1 ;
   std::string result;
   
   (void)jenv;
   (void)jcls;
-  arg1 = (AdaptiveCards::BackgroundImageMode)jarg1; 
-  result = AdaptiveCards::BackgroundImageModeToString(arg1);
+  arg1 = (AdaptiveCards::ImageFillMode)jarg1; 
+  result = AdaptiveCards::ImageFillModeToString(arg1);
   jresult = jenv->NewStringUTF((&result)->c_str()); 
   return jresult;
 }
 
 
-SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BackgroundImageModeFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageFillModeFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
   jint jresult = 0 ;
   std::string *arg1 = 0 ;
-  AdaptiveCards::BackgroundImageMode result;
+  AdaptiveCards::ImageFillMode result;
   
   (void)jenv;
   (void)jcls;
@@ -8133,7 +8133,7 @@ SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   std::string arg1_str(arg1_pstr);
   arg1 = &arg1_str;
   jenv->ReleaseStringUTFChars(jarg1, arg1_pstr); 
-  result = (AdaptiveCards::BackgroundImageMode)AdaptiveCards::BackgroundImageModeFromString((std::string const &)*arg1);
+  result = (AdaptiveCards::ImageFillMode)AdaptiveCards::ImageFillModeFromString((std::string const &)*arg1);
   jresult = (jint)result; 
   return jresult;
 }
@@ -10778,7 +10778,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1BackgroundImage_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jstring jarg1, jint jarg2, jint jarg3, jint jarg4) {
   jlong jresult = 0 ;
   std::string *arg1 = 0 ;
-  AdaptiveCards::BackgroundImageMode arg2 ;
+  AdaptiveCards::ImageFillMode arg2 ;
   AdaptiveCards::HorizontalAlignment arg3 ;
   AdaptiveCards::VerticalAlignment arg4 ;
   AdaptiveCards::BackgroundImage *result = 0 ;
@@ -10794,7 +10794,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   std::string arg1_str(arg1_pstr);
   arg1 = &arg1_str;
   jenv->ReleaseStringUTFChars(jarg1, arg1_pstr); 
-  arg2 = (AdaptiveCards::BackgroundImageMode)jarg2; 
+  arg2 = (AdaptiveCards::ImageFillMode)jarg2; 
   arg3 = (AdaptiveCards::HorizontalAlignment)jarg3; 
   arg4 = (AdaptiveCards::VerticalAlignment)jarg4; 
   result = (AdaptiveCards::BackgroundImage *)new AdaptiveCards::BackgroundImage((std::string const &)*arg1,arg2,arg3,arg4);
@@ -10847,11 +10847,11 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
-SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BackgroundImage_1GetMode(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BackgroundImage_1GetFillMode(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::BackgroundImage *arg1 = (AdaptiveCards::BackgroundImage *) 0 ;
   std::shared_ptr< AdaptiveCards::BackgroundImage const > *smartarg1 = 0 ;
-  AdaptiveCards::BackgroundImageMode result;
+  AdaptiveCards::ImageFillMode result;
   
   (void)jenv;
   (void)jcls;
@@ -10859,17 +10859,17 @@ SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::BackgroundImage > **)&jarg1;
   arg1 = (AdaptiveCards::BackgroundImage *)(smartarg1 ? smartarg1->get() : 0); 
-  result = (AdaptiveCards::BackgroundImageMode)((AdaptiveCards::BackgroundImage const *)arg1)->GetMode();
+  result = (AdaptiveCards::ImageFillMode)((AdaptiveCards::BackgroundImage const *)arg1)->GetFillMode();
   jresult = (jint)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BackgroundImage_1SetMode(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BackgroundImage_1SetFillMode(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::BackgroundImage *arg1 = (AdaptiveCards::BackgroundImage *) 0 ;
-  AdaptiveCards::BackgroundImageMode *arg2 = 0 ;
+  AdaptiveCards::ImageFillMode *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::BackgroundImage > *smartarg1 = 0 ;
-  AdaptiveCards::BackgroundImageMode temp2 ;
+  AdaptiveCards::ImageFillMode temp2 ;
   
   (void)jenv;
   (void)jcls;
@@ -10877,9 +10877,9 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::BackgroundImage > **)&jarg1;
   arg1 = (AdaptiveCards::BackgroundImage *)(smartarg1 ? smartarg1->get() : 0); 
-  temp2 = (AdaptiveCards::BackgroundImageMode)jarg2; 
+  temp2 = (AdaptiveCards::ImageFillMode)jarg2; 
   arg2 = &temp2; 
-  (arg1)->SetMode((AdaptiveCards::BackgroundImageMode const &)*arg2);
+  (arg1)->SetFillMode((AdaptiveCards::ImageFillMode const &)*arg2);
 }
 
 
