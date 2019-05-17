@@ -18,8 +18,8 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveFontTypesDefinition::RuntimeClassInitialize(FontTypesDefinition typesDefinition) noexcept
     {
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontTypeDefinition>(m_default.GetAddressOf(), typesDefinition.defaultStyle));
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontTypeDefinition>(m_monospace.GetAddressOf(), typesDefinition.monospaceStyle));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontTypeDefinition>(m_default.GetAddressOf(), typesDefinition.defaultFontType));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontTypeDefinition>(m_monospace.GetAddressOf(), typesDefinition.monospaceFontType));
 
         return S_OK;
     }

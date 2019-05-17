@@ -130,7 +130,7 @@ HRESULT StyleTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adap
     UINT32 fontSize;
     Microsoft::WRL::Wrappers::HString fontFamilyName;
     ABI::Windows::UI::Text::FontWeight xamlFontWeight;
-    RETURN_IF_FAILED(GetFontDataFromStyle(
+    RETURN_IF_FAILED(GetFontDataFromFontType(
         hostConfig.Get(), fontType, adaptiveTextSize, adaptiveTextWeight, fontFamilyName.GetAddressOf(), &fontSize, &xamlFontWeight));
 
     // Apply font size

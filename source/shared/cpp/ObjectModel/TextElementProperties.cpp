@@ -19,7 +19,7 @@ TextElementProperties::TextElementProperties() :
 }
 
 TextElementProperties::TextElementProperties(const TextConfig& config, const std::string& text, const std::string& language) :
-    m_textSize(config.size), m_textWeight(config.weight), m_fontType(config.style), m_textColor(config.color),
+    m_textSize(config.size), m_textWeight(config.weight), m_fontType(config.fontType), m_textColor(config.color),
     m_isSubtle(config.isSubtle), m_italic(false), m_text(text), m_strikethrough(false), m_language(language)
 {
 }

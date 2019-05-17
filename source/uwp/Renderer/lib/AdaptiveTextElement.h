@@ -34,8 +34,8 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Language(_Outptr_ HSTRING* language);
         IFACEMETHODIMP put_Language(_In_ HSTRING language);
 
-        IFACEMETHODIMP get_FontType(_Out_ ABI::AdaptiveNamespace::FontType* style);
-        IFACEMETHODIMP put_FontType(ABI::AdaptiveNamespace::FontType style);
+        IFACEMETHODIMP get_FontType(_Out_ ABI::AdaptiveNamespace::FontType* fontType);
+        IFACEMETHODIMP put_FontType(ABI::AdaptiveNamespace::FontType fontType);
 
     protected:
         template<typename T> HRESULT InitializeTextElement(const std::shared_ptr<T>& sharedModel)

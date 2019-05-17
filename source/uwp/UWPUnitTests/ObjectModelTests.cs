@@ -133,7 +133,7 @@ namespace UWPUnitTests
             Assert.IsTrue(textBlock.Wrap);
 
             var jsonString = textBlock.ToJson().ToString();
-            Assert.AreEqual("{\"color\":\"Accent\",\"fontStyle\":\"Monospace\",\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"TextBlockId\",\"isSubtle\":true,\"isVisible\":false,\"italic\":true,\"maxLines\":3,\"separator\":true,\"size\":\"Large\",\"spacing\":\"large\",\"strikethrough\":true,\"text\":\"This is a text block\",\"type\":\"TextBlock\",\"weight\":\"Bolder\",\"wrap\":true}", jsonString);
+            Assert.AreEqual("{\"color\":\"Accent\",\"fontType\":\"Monospace\",\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"TextBlockId\",\"isSubtle\":true,\"isVisible\":false,\"italic\":true,\"maxLines\":3,\"separator\":true,\"size\":\"Large\",\"spacing\":\"large\",\"strikethrough\":true,\"text\":\"This is a text block\",\"type\":\"TextBlock\",\"weight\":\"Bolder\",\"wrap\":true}", jsonString);
         }
 
         [TestMethod]
@@ -823,7 +823,7 @@ namespace UWPUnitTests
             Assert.AreEqual("This is text run number 3", (richTextBlock.Inlines[2] as AdaptiveTextRun).Text);
 
             var jsonString = richTextBlock.ToJson().ToString();
-            Assert.AreEqual("{\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"RichTextBlockId\",\"inlines\":[{\"color\":\"Accent\",\"fontStyle\":\"Monospace\",\"highlight\":true,\"isSubtle\":true,\"italic\":true,\"selectAction\":{\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"size\":\"Large\",\"strikethrough\":true,\"text\":\"This is text run number 1\",\"type\":\"TextRun\",\"weight\":\"Bolder\"},{\"text\":\"This is text run number 2\",\"type\":\"TextRun\"},{\"text\":\"This is text run number 3\",\"type\":\"TextRun\"}],\"isVisible\":false,\"separator\":true,\"spacing\":\"large\",\"type\":\"RichTextBlock\"}", jsonString);
+            Assert.AreEqual("{\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"RichTextBlockId\",\"inlines\":[{\"color\":\"Accent\",\"fontType\":\"Monospace\",\"highlight\":true,\"isSubtle\":true,\"italic\":true,\"selectAction\":{\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"size\":\"Large\",\"strikethrough\":true,\"text\":\"This is text run number 1\",\"type\":\"TextRun\",\"weight\":\"Bolder\"},{\"text\":\"This is text run number 2\",\"type\":\"TextRun\"},{\"text\":\"This is text run number 3\",\"type\":\"TextRun\"}],\"isVisible\":false,\"separator\":true,\"spacing\":\"large\",\"type\":\"RichTextBlock\"}", jsonString);
         }
     }
 }

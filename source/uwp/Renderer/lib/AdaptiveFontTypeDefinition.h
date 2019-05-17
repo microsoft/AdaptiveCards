@@ -15,7 +15,7 @@ namespace AdaptiveNamespace
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(FontTypeDefinition styleDefinition) noexcept;
+        HRESULT RuntimeClassInitialize(FontTypeDefinition fontTypeDefinition) noexcept;
 
         IFACEMETHODIMP get_FontFamily(_Outptr_ HSTRING* value);
         IFACEMETHODIMP put_FontFamily(_In_ HSTRING value);

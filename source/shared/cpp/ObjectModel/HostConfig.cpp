@@ -113,10 +113,10 @@ FontTypesDefinition FontTypesDefinition::Deserialize(const Json::Value& json, co
 {
     FontTypesDefinition result;
 
-    result.defaultStyle = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontTypeDefinition>(
-        json, AdaptiveCardSchemaKey::Default, defaultValue.defaultStyle, FontTypeDefinition::Deserialize);
-    result.monospaceStyle = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontTypeDefinition>(
-        json, AdaptiveCardSchemaKey::Monospace, defaultValue.defaultStyle, FontTypeDefinition::Deserialize);
+    result.defaultFontType = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontTypeDefinition>(
+        json, AdaptiveCardSchemaKey::Default, defaultValue.defaultFontType, FontTypeDefinition::Deserialize);
+    result.monospaceFontType = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontTypeDefinition>(
+        json, AdaptiveCardSchemaKey::Monospace, defaultValue.monospaceFontType, FontTypeDefinition::Deserialize);
     return result;
 }
 
@@ -195,7 +195,7 @@ TextConfig TextConfig::Deserialize(const Json::Value& json, const TextConfig& de
 
     result.size = ParseUtil::GetEnumValue<TextSize>(json, AdaptiveCardSchemaKey::Size, defaultValue.size, TextSizeFromString);
 
-    result.style = ParseUtil::GetEnumValue<FontType>(json, AdaptiveCardSchemaKey::FontType, defaultValue.style, FontTypeFromString);
+    result.fontType = ParseUtil::GetEnumValue<FontType>(json, AdaptiveCardSchemaKey::FontType, defaultValue.fontType, FontTypeFromString);
 
     result.color = ParseUtil::GetEnumValue<ForegroundColor>(json, AdaptiveCardSchemaKey::Color, defaultValue.color, ForegroundColorFromString);
 
@@ -416,10 +416,10 @@ FontTypeDefinition HostConfig::GetFontType(FontType type) const
     switch (type)
     {
     case FontType::Monospace:
-        return _fontTypes.monospaceStyle;
+        return _fontTypes.monospaceFontType;
     case FontType::Default:
     default:
-        return _fontTypes.defaultStyle;
+        return _fontTypes.defaultFontType;
     }
 }
 
@@ -519,14 +519,14 @@ unsigned int FontWeightsConfig::GetDefaultFontWeight(TextWeight weight)
     }
 }
 
-std::string HostConfig::GetFontFamily(FontType style) const
+std::string HostConfig::GetFontFamily(FontType fontType) const
 {
     // desired font family
-    auto fontFamilyValue = GetFontType(style).fontFamily;
+    auto fontFamilyValue = GetFontType(fontType).fontFamily;
 
     if (fontFamilyValue.empty())
     {
-        if (style == FontType::Monospace)
+        if (fontType == FontType::Monospace)
         {
             // pass empty string for renderer to handle appropriate const default font family for Monospace
             fontFamilyValue = "";
@@ -545,16 +545,16 @@ std::string HostConfig::GetFontFamily(FontType style) const
     return fontFamilyValue;
 }
 
-unsigned int HostConfig::GetFontSize(FontType style, TextSize size) const
+unsigned int HostConfig::GetFontSize(FontType fontType, TextSize size) const
 {
     // desired font size
-    auto result = GetFontType(style).fontSizes.GetFontSize(size);
+    auto result = GetFontType(fontType).fontSizes.GetFontSize(size);
 
     // UINT_MAX used to check if value was defined
     if (result == UINT_MAX)
     {
         // default font size
-        result = _fontTypes.defaultStyle.fontSizes.GetFontSize(size);
+        result = _fontTypes.defaultFontType.fontSizes.GetFontSize(size);
         if (result == UINT_MAX)
         {
             // deprecated font size
@@ -569,16 +569,16 @@ unsigned int HostConfig::GetFontSize(FontType style, TextSize size) const
     return result;
 }
 
-unsigned int HostConfig::GetFontWeight(FontType style, TextWeight weight) const
+unsigned int HostConfig::GetFontWeight(FontType fontType, TextWeight weight) const
 {
     // desired font weight
-    auto result = GetFontType(style).fontWeights.GetFontWeight(weight);
+    auto result = GetFontType(fontType).fontWeights.GetFontWeight(weight);
 
     // UINT_MAX used to check if value was defined
     if (result == UINT_MAX)
     {
         // default font weight
-        result = _fontTypes.defaultStyle.fontWeights.GetFontWeight(weight);
+        result = _fontTypes.defaultFontType.fontWeights.GetFontWeight(weight);
         if (result == UINT_MAX)
         {
             // deprecated font weight

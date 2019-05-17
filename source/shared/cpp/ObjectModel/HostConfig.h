@@ -60,8 +60,8 @@ namespace AdaptiveSharedNamespace
 
     struct FontTypesDefinition
     {
-        FontTypeDefinition defaultStyle;
-        FontTypeDefinition monospaceStyle;
+        FontTypeDefinition defaultFontType;
+        FontTypeDefinition monospaceFontType;
 
         static FontTypesDefinition Deserialize(const Json::Value& json, const FontTypesDefinition& defaultValue);
     };
@@ -101,7 +101,7 @@ namespace AdaptiveSharedNamespace
     {
         TextWeight weight = TextWeight::Default;
         TextSize size = TextSize::Default;
-        FontType style = FontType::Default;
+        FontType fontType = FontType::Default;
         ForegroundColor color = ForegroundColor::Default;
         bool isSubtle = false;
         bool wrap = true;
@@ -221,19 +221,21 @@ namespace AdaptiveSharedNamespace
                                                     {"#FFA60000", "#B2FFA600", {"#FFFFFF00", "#FFFFFFE0"}}, // warning
                                                     {"#FF8B0000", "#B28B0000", {"#FFFFFF00", "#FFFFFFE0"}}  // attention
                                                 }};
-        ContainerStyleDefinition attentionPalette = {"#F7E9E9",
-                                                     "#FF7F7F7F7F",
-                                                     0,
-                                                     {
-                                                         // Foreground Colors
-                                                         {"#FF000000", "#B2000000", {"#FFFFFF00", "#FFFFFFE0"}}, // defaultColor
-                                                         {"#FF0000FF", "#B20000FF", {"#FFFFFF00", "#FFFFFFE0"}}, // accent
-                                                         {"#FF101010", "#B2101010", {"#FFFFFF00", "#FFFFFFE0"}}, // dark
-                                                         {"#FFFFFFFF", "#B2FFFFFF", {"#FFFFFF00", "#FFFFFFE0"}}, // light
-                                                         {"#FF008000", "#B2008000", {"#FFFFFF00", "#FFFFFFE0"}}, // good
-                                                         {"#FFA60000", "#B2FFA600", {"#FFFFFF00", "#FFFFFFE0"}}, // warning
-                                                         {"#FF8B0000", "#B28B0000", {"#FFFFFF00", "#FFFFFFE0"}} // attention
-                                                     },};
+        ContainerStyleDefinition attentionPalette = {
+            "#F7E9E9",
+            "#FF7F7F7F7F",
+            0,
+            {
+                // Foreground Colors
+                {"#FF000000", "#B2000000", {"#FFFFFF00", "#FFFFFFE0"}}, // defaultColor
+                {"#FF0000FF", "#B20000FF", {"#FFFFFF00", "#FFFFFFE0"}}, // accent
+                {"#FF101010", "#B2101010", {"#FFFFFF00", "#FFFFFFE0"}}, // dark
+                {"#FFFFFFFF", "#B2FFFFFF", {"#FFFFFF00", "#FFFFFFE0"}}, // light
+                {"#FF008000", "#B2008000", {"#FFFFFF00", "#FFFFFFE0"}}, // good
+                {"#FFA60000", "#B2FFA600", {"#FFFFFF00", "#FFFFFFE0"}}, // warning
+                {"#FF8B0000", "#B28B0000", {"#FFFFFF00", "#FFFFFFE0"}}  // attention
+            },
+        };
         ContainerStyleDefinition warningPalette = {"#F7F7DF",
                                                    "#FF7F7F7F7F",
                                                    0,
@@ -303,10 +305,10 @@ namespace AdaptiveSharedNamespace
         static HostConfig Deserialize(const Json::Value& json);
         static HostConfig DeserializeFromString(const std::string& jsonString);
 
-        FontTypeDefinition GetFontType(FontType type) const;
-        std::string GetFontFamily(FontType style) const;
-        unsigned int GetFontSize(FontType style, TextSize size) const;
-        unsigned int GetFontWeight(FontType style, TextWeight weight) const;
+        FontTypeDefinition GetFontType(FontType fontType) const;
+        std::string GetFontFamily(FontType fontType) const;
+        unsigned int GetFontSize(FontType fontType, TextSize size) const;
+        unsigned int GetFontWeight(FontType fontType, TextWeight weight) const;
 
         std::string GetBackgroundColor(ContainerStyle style) const;
         std::string GetForegroundColor(ContainerStyle style, ForegroundColor color, bool isSubtle) const;
