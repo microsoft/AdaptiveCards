@@ -33,7 +33,6 @@ namespace AdaptiveSharedNamespace
         void PopulateKnownPropertiesSet() override;
 
         std::vector<std::shared_ptr<Column>> m_columns;
-        std::shared_ptr<BaseActionElement> m_selectAction;
     };
 
     class ColumnSetParser : public BaseCardElementParser

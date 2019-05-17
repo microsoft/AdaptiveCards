@@ -33,7 +33,7 @@ export enum TextWeight {
     Bolder
 }
 
-export enum FontFamily {
+export enum FontType {
     Default,
     Monospace
 }
@@ -152,7 +152,8 @@ export enum ValidationError {
     TooManyActions,
     UnknownActionType,
     UnknownElementType,
-    UnsupportedCardVersion
+    UnsupportedCardVersion,
+    DuplicateId
 }
 
 export enum ContainerFitStatus {
