@@ -85,7 +85,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             uiTextBlock.TextWrapping = TextWrapping.NoWrap;
 
-            uiTextBlock.FontFamily = new FontFamily(context.Config.GetFontFamily(textBlock.FontStyle));
+            uiTextBlock.FontFamily = new FontFamily(RendererUtil.GetFontFamilyFromList(context.Config.GetFontFamily(textBlock.FontStyle)));
             uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(context.Config.GetFontWeight(textBlock.FontStyle, textBlock.Weight));
             uiTextBlock.FontSize = context.Config.GetFontSize(textBlock.FontStyle, textBlock.Size);
 

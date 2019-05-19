@@ -205,6 +205,28 @@ export class CardDesigner {
         }
     }
 
+    private renderErrorPaneElement(message: string, cardObject?: Adaptive.CardObject): HTMLElement {
+        let errorElement = document.createElement("div");
+        errorElement.className = "acd-error-pane-message";
+
+        if (cardObject) {
+            errorElement.classList.add("selectable");
+            errorElement.title = "Click to select this element";
+            errorElement.onclick = (e) => {
+                let peer = this.designerSurface.findPeer(cardObject);
+
+                if (peer) {
+                    peer.isSelected = true;
+                    peer.scrollIntoView();
+                }
+            }
+        }
+
+        errorElement.innerText = message;
+
+        return errorElement;
+    }
+
     private recreateDesignerSurface() {
         let styleSheetLinkElement = <HTMLLinkElement>document.getElementById("adaptiveCardStylesheet");
 
@@ -240,7 +262,7 @@ export class CardDesigner {
 
         this._designerSurface = new Designer.CardDesignerSurface(this.activeHostContainer.cardHost);
         this._designerSurface.fixedHeightCard = this.activeHostContainer.isFixedHeight;
-        this._designerSurface.onSelectedPeerChanged = (peer: DesignerPeers.CardElementPeer) => {
+        this._designerSurface.onSelectedPeerChanged = (peer: DesignerPeers.DesignerPeer) => {
             this.buildPropertySheet(peer);
         };
         this._designerSurface.onLayoutUpdated = (isFullRefresh: boolean) => {
@@ -250,28 +272,33 @@ export class CardDesigner {
 
             this.buildTreeView();
         };
-        this._designerSurface.onCardValidated = (errors: Array<Adaptive.IValidationError>) => {
+        this._designerSurface.onCardValidated = (parseErrors: Array<Adaptive.IValidationError>, validationResults: Adaptive.ValidationResults) => {
             let errorPane = document.getElementById("errorPane");
             errorPane.innerHTML = "";
 
-            if (errors.length > 0) {
+            if (parseErrors.length > 0) {
                 let errorMessages: Array<string> = [];
 
-                for (let error of errors) {
+                for (let error of parseErrors) {
                     if (errorMessages.indexOf(error.message) < 0) {
                         errorMessages.push(error.message);
                     }
                 }
 
                 for (let message of errorMessages) {
-                    let errorElement = document.createElement("div");
-                    errorElement.style.overflow = "hidden";
-                    errorElement.style.textOverflow = "ellipsis";
-                    errorElement.innerText = message;
-
-                    errorPane.appendChild(errorElement);
+                    errorPane.appendChild(this.renderErrorPaneElement("[Error] " + message));
                 }
+            }
 
+            if (validationResults.failures.length > 0) {
+                for (let failure of validationResults.failures) {
+                    for (let error of failure.errors) {
+                        errorPane.appendChild(this.renderErrorPaneElement("[" + failure.cardObject.getJsonTypeName() + "] " + error.message, failure.cardObject));
+                    }
+                }
+            }
+
+            if (errorPane.childElementCount > 0) {
                 errorPane.classList.remove("acd-hidden");
             }
             else {
@@ -505,6 +532,7 @@ export class CardDesigner {
         }
 
 		this._jsonEditorPane.content = document.createElement("div");
+		this._jsonEditorPane.content.style.overflow = "hidden";
 
 		// TODO: set this in our editor instead of defaults
         monaco.languages.json.jsonDefaults.setDiagnosticsOptions(monacoConfiguration);
@@ -513,7 +541,7 @@ export class CardDesigner {
             this._jsonEditorPane.content,
             {
                 folding: true,
-                //validate: false,
+                // validate: false,
                 fontSize: 13.5,
                 language: 'json',
                 minimap: {
@@ -629,7 +657,7 @@ export class CardDesigner {
                     medium: 80,
                     large: 160
                 },
-                fontStyles: {
+                fontTypes: {
                     default: {
                         fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
                         fontSizes: {
@@ -912,8 +940,8 @@ export class CardDesigner {
             '<div id="toolbarHost"></div>' +
             '<div class="content" style="display: flex; flex: 1 1 auto; overflow-y: hidden;">' +
                 '<div id="leftCollapsedPaneTabHost" class="acd-verticalCollapsedTabContainer" style="border-right: 1px solid #D2D2D2;"></div>' +
-                '<div id="toolPalettePane" class="selector-toolPalette" style="background-color: white; border-right: 1px solid #D2D2D2;">' +
-                    '<div id="toolPaletteHost" class="acd-dockedPane"></div>' +
+                '<div id="toolPalettePane" class="selector-toolPalette" style="display: flex; flex-direction: column; background-color: white; border-right: 1px solid #D2D2D2;">' +
+                    '<div id="toolPaletteHost" class="acd-dockedPane" style="overflow: auto"></div>' +
                 '</div>' +
                 '<div style="display: flex; flex-direction: column; flex: 1 1 100%; overflow: hidden;">' +
                     '<div style="display: flex; flex: 1 1 100%; overflow: hidden;">' +
