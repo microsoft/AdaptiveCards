@@ -7,6 +7,7 @@ export class TreeItem {
     private static expandedIconClass = "acd-icon-chevronDown";
 
     private _isExpanded: boolean = true;
+    private _renderedElement: HTMLElement;
     private _treeItemElement: HTMLElement;
     private _expandCollapseElement: HTMLElement;
     private _childContainerElement: HTMLElement;
@@ -18,7 +19,7 @@ export class TreeItem {
     }
 
     render(indentationLevel: number = 0): HTMLElement {
-        let rootElement = document.createElement("div");
+        this._renderedElement = document.createElement("div");
 
         this._treeItemElement = document.createElement("div");
         this._treeItemElement.classList.add("acd-tree-item");
@@ -63,7 +64,7 @@ export class TreeItem {
 
         let typeNameSpan = document.createElement("span");
         typeNameSpan.classList.add("acd-tree-item-typeName");
-        typeNameSpan.innerText = this.owner.getCardObjectTypeName();
+        typeNameSpan.innerText = this.owner.getCardObject().getJsonTypeName();
 
         textElement.appendChild(typeNameSpan);
 
@@ -79,7 +80,7 @@ export class TreeItem {
 
         this._treeItemElement.appendChild(textElement);
 
-        rootElement.appendChild(this._treeItemElement);
+        this._renderedElement.appendChild(this._treeItemElement);
 
         this._childContainerElement = document.createElement("div");
 
@@ -89,11 +90,11 @@ export class TreeItem {
             this._childContainerElement.appendChild(renderedChildItem);
         }
 
-        rootElement.appendChild(this._childContainerElement);
+        this._renderedElement.appendChild(this._childContainerElement);
 
         this.updateLayout();
 
-        return rootElement;
+        return this._renderedElement;
     }
 
     updateLayout() {
@@ -120,5 +121,9 @@ export class TreeItem {
         this._isExpanded = true;
 
         this.updateLayout();
+    }
+
+    get renderedElement(): HTMLElement {
+        return this._renderedElement;
     }
 }
