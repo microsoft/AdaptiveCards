@@ -56,6 +56,7 @@ namespace AdaptiveSharedNamespace
         Facts,
         Fallback,
         FallbackText,
+        FillMode,
         FontFamily,
         FontSizes,
         FontStyle,
@@ -109,7 +110,6 @@ namespace AdaptiveSharedNamespace
         MimeType,
         Min,
         MinHeight,
-        Mode,
         Monospace,
         NumberInput,
         Padding,
@@ -251,14 +251,14 @@ namespace AdaptiveSharedNamespace
     };
     DECLARE_ADAPTIVECARD_ENUM(VerticalAlignment);
 
-    enum class BackgroundImageMode
+    enum class ImageFillMode
     {
-        Stretch = 0,
+        Cover = 0,
         RepeatHorizontally,
         RepeatVertically,
         Repeat
     };
-    DECLARE_ADAPTIVECARD_ENUM(BackgroundImageMode);
+    DECLARE_ADAPTIVECARD_ENUM(ImageFillMode);
 
     enum class ImageStyle
     {

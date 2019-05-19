@@ -12,6 +12,7 @@ using System.Windows.Media;
 using Microsoft.MarkedNet;
 using System.IO;
 using System.Xml;
+using System.Drawing.Text;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
@@ -56,8 +57,10 @@ namespace AdaptiveCards.Rendering.Wpf
 
             textRunSpan.Style = context.GetStyle($"Adaptive.{textRun.Type}");
 
-            textRunSpan.FontFamily = new FontFamily(context.Config.GetFontFamily(textRun.FontStyle));
+            textRunSpan.FontFamily = new FontFamily(RendererUtil.GetFontFamilyFromList(context.Config.GetFontFamily(textRun.FontStyle)));
+
             textRunSpan.FontWeight = FontWeight.FromOpenTypeWeight(context.Config.GetFontWeight(textRun.FontStyle, textRun.Weight));
+            
             textRunSpan.FontSize = context.Config.GetFontSize(textRun.FontStyle, textRun.Size);
 
             if (textRun.Italic)
