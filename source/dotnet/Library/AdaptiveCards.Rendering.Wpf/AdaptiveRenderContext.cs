@@ -132,6 +132,9 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public SolidColorBrush GetColorBrush(string color)
         {
+            if (String.IsNullOrWhiteSpace(color))
+                return null;
+
             lock (_colors)
             {
                 if (_colors.TryGetValue(color, out var brush))

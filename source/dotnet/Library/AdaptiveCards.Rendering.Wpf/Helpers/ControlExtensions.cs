@@ -38,21 +38,24 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             FontColorConfig colorOption = context.GetForegroundColors(color);
             string colorCode = isSubtle ? colorOption.Subtle : colorOption.Default;
-            textBlock.Foreground = context.GetColorBrush(colorCode);
+            if (!String.IsNullOrWhiteSpace(colorCode))
+                textBlock.Foreground = context.GetColorBrush(colorCode);
         }
 
         public static void SetColor(this Span inlineRun, AdaptiveTextColor color, bool isSubtle, AdaptiveRenderContext context)
         {
             FontColorConfig colorOption = context.GetForegroundColors(color);
             string colorCode = isSubtle ? colorOption.Subtle : colorOption.Default;
-            inlineRun.Foreground = context.GetColorBrush(colorCode);
+            if (!String.IsNullOrWhiteSpace(colorCode))
+                inlineRun.Foreground = context.GetColorBrush(colorCode);
         }
 
         public static void SetHighlightColor(this Span inlineRun, AdaptiveTextColor color, bool isSubtle, AdaptiveRenderContext context)
         {
             FontColorConfig colorOption = context.GetForegroundColors(color);
             string colorCode = isSubtle ? colorOption.HighlightColors.Subtle : colorOption.HighlightColors.Default;
-            inlineRun.Background = context.GetColorBrush(colorCode);
+            if (!String.IsNullOrWhiteSpace(colorCode))
+                inlineRun.Background = context.GetColorBrush(colorCode);
         }
 
         public static void SetHorizontalAlignment(this Image image, AdaptiveHorizontalAlignment alignment)
@@ -63,7 +66,8 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public static void SetBackgroundColor(this Panel panel, string color, AdaptiveRenderContext context)
         {
-            panel.Background = context.GetColorBrush(color);
+            if (!String.IsNullOrWhiteSpace(color))
+                panel.Background = context.GetColorBrush(color);
         }
 
         public static void SetHeight(this FrameworkElement element, double height)
@@ -73,12 +77,14 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public static void SetBackgroundColor(this Button panel, string color, AdaptiveRenderContext context)
         {
-            panel.Background = context.GetColorBrush(color);
+            if (!String.IsNullOrWhiteSpace(color))
+                panel.Background = context.GetColorBrush(color);
         }
 
         public static void SetBorderColor(this Button view, string color, AdaptiveRenderContext context)
         {
-            view.BorderBrush = context.GetColorBrush(color);
+            if (!String.IsNullOrWhiteSpace(color))
+                view.BorderBrush = context.GetColorBrush(color);
         }
 
         public static void SetBorderThickness(this Button view, double thickness)
