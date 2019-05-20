@@ -47,8 +47,8 @@ public class BackgroundImage {
     this(AdaptiveCardObjectModelJNI.new_BackgroundImage__SWIG_1(url), true);
   }
 
-  public BackgroundImage(String url, BackgroundImageMode mode, HorizontalAlignment hAlignment, VerticalAlignment vAlignment) {
-    this(AdaptiveCardObjectModelJNI.new_BackgroundImage__SWIG_2(url, mode.swigValue(), hAlignment.swigValue(), vAlignment.swigValue()), true);
+  public BackgroundImage(String url, ImageFillMode fillMode, HorizontalAlignment hAlignment, VerticalAlignment vAlignment) {
+    this(AdaptiveCardObjectModelJNI.new_BackgroundImage__SWIG_2(url, fillMode.swigValue(), hAlignment.swigValue(), vAlignment.swigValue()), true);
   }
 
   public String GetUrl() {
@@ -59,12 +59,12 @@ public class BackgroundImage {
     AdaptiveCardObjectModelJNI.BackgroundImage_SetUrl(swigCPtr, this, value);
   }
 
-  public BackgroundImageMode GetMode() {
-    return BackgroundImageMode.swigToEnum(AdaptiveCardObjectModelJNI.BackgroundImage_GetMode(swigCPtr, this));
+  public ImageFillMode GetFillMode() {
+    return ImageFillMode.swigToEnum(AdaptiveCardObjectModelJNI.BackgroundImage_GetFillMode(swigCPtr, this));
   }
 
-  public void SetMode(BackgroundImageMode value) {
-    AdaptiveCardObjectModelJNI.BackgroundImage_SetMode(swigCPtr, this, value.swigValue());
+  public void SetFillMode(ImageFillMode value) {
+    AdaptiveCardObjectModelJNI.BackgroundImage_SetFillMode(swigCPtr, this, value.swigValue());
   }
 
   public HorizontalAlignment GetHorizontalAlignment() {

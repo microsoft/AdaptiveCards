@@ -21,7 +21,7 @@ namespace AdaptiveSharedNamespace
         TextElementProperties& operator=(TextElementProperties&&) = default;
         ~TextElementProperties() = default;
 
-        Json::Value SerializeToJsonValue(Json::Value& root) const;
+        virtual Json::Value SerializeToJsonValue(Json::Value& root) const;
 
         std::string GetText() const;
         void SetText(const std::string& value);
@@ -51,8 +51,8 @@ namespace AdaptiveSharedNamespace
         void SetLanguage(const std::string& value);
         std::string GetLanguage() const;
 
-        void Deserialize(const ParseContext& context, const Json::Value& root);
-        void PopulateKnownPropertiesSet(std::unordered_set<std::string>& knownProperties);
+        virtual void Deserialize(const ParseContext& context, const Json::Value& root);
+        virtual void PopulateKnownPropertiesSet(std::unordered_set<std::string>& knownProperties);
 
     private:
         std::string m_text;
