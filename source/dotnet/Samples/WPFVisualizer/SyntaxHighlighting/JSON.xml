@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. -->
+<!-- From https://stackoverflow.com/a/33309923 -->
+
+<SyntaxDefinition name="Json" extensions=".js" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+  <Color name="Digits" foreground="#8700FF" exampleText="3.14" />
+  <Color name="Value" foreground="#000CFF" exampleText="var text = &quot;Hello, World!&quot;;" />
+  <Color name="ParamName" foreground="#057500"  exampleText="var text = &quot;Hello, World!&quot;;" />
+  <RuleSet ignoreCase="false">
+    <Keywords color="Digits" >
+      <Word>true</Word>
+      <Word>false</Word>
+    </Keywords>
+    <Span color="ParamName">
+      <Begin>"</Begin>
+      <End>(?=:)</End>
+    </Span>
+    <Span color="Value" multiline="true">
+      <Begin>
+        (?&lt;=:)\040"[^"]*
+      </Begin>
+      <End>"</End>
+    </Span>
+    <Rule color="Digits">\b0[xX][0-9a-fA-F]+|(\b\d+(\.[0-9]+)?|\.[0-9]+)([eE][+-]?[0-9]+)?</Rule>
+  </RuleSet>
+</SyntaxDefinition>
