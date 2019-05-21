@@ -44,8 +44,6 @@ public class BackgroundImageLoaderAsync extends GenericImageLoaderAsync
 
     void onSuccessfulPostExecute(Bitmap bitmap)
     {
-        int originalWidth = m_layout.getWidth();
-        int originalHeight = m_layout.getHeight();
         BitmapDrawable background = new BackgroundImageDrawable(m_context.getResources(), bitmap, m_backgroundImageProperties);
         m_layout.setBackground(background);
         m_layout.bringChildToFront(m_layout.getChildAt(0));
@@ -71,8 +69,7 @@ public class BackgroundImageLoaderAsync extends GenericImageLoaderAsync
             switch (m_backgroundImageProperties.GetFillMode())
             {
                 case Repeat:
-                    setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
-                    super.draw(canvas);
+                    tileHorizontallyAndVertically(canvas);
                     break;
                 case RepeatVertically:
                     tileVertically(canvas);
@@ -185,7 +182,7 @@ public class BackgroundImageLoaderAsync extends GenericImageLoaderAsync
                     int imageHeight = bitmap.getHeight();
                     canvas.drawBitmap(bitmap,
                                         new Rect(0, 0, remainingWidth, imageHeight),
-                                        new Rect(x, (int)verticalOffset, canvasWidth, imageHeight),
+                                        new Rect(x, (int)verticalOffset, canvasWidth, (int)verticalOffset + imageHeight),
                                         getPaint());
                 }
             }
@@ -224,8 +221,42 @@ public class BackgroundImageLoaderAsync extends GenericImageLoaderAsync
                     int imageWidth = bitmap.getWidth();
                     canvas.drawBitmap(bitmap,
                         new Rect(0, 0, imageWidth, remainingHeight),
-                        new Rect((int)horizontalOffset, y, imageWidth, canvasHeight),
+                        new Rect((int)horizontalOffset, y, (int)horizontalOffset + imageWidth, canvasHeight),
                         getPaint());
+                }
+            }
+        }
+
+        private void tileHorizontallyAndVertically(Canvas canvas)
+        {
+            Bitmap bitmap = m_bitmap;
+
+            int imageHeight = bitmap.getHeight();
+            int imageWidth  = bitmap.getWidth();
+            int canvasHeight = canvas.getHeight();
+            int canvasWidth = canvas.getWidth();
+            for (int y = 0; y < canvasHeight; y += imageHeight)
+            {
+                int remainingHeight = canvasHeight - y;
+                for (int x = 0; x < canvasWidth; x += imageWidth)
+                {
+                    int remainingWidth = canvasWidth - x;
+                    // If the image can be drawn completely, then do it
+                    if (imageWidth <= remainingWidth && imageHeight <= remainingHeight)
+                    {
+                        canvas.drawBitmap(bitmap, x, y, getPaint());
+                    }
+                    else
+                    {
+                        // If the image can't be drawn completely, then draw as much of the image as possible
+                        int drawableWidth = Math.min(remainingWidth, imageWidth);
+                        int drawableHeight = Math.min(remainingHeight, imageHeight);
+
+                        canvas.drawBitmap(bitmap,
+                            new Rect(0, 0, drawableWidth, drawableHeight),
+                            new Rect(x, y, x + drawableWidth, y + drawableHeight),
+                            getPaint());
+                    }
                 }
             }
         }

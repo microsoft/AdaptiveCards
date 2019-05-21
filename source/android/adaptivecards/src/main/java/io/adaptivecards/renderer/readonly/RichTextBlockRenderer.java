@@ -3,6 +3,7 @@
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.text.Spannable;
@@ -116,15 +117,20 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
                     paragraph.setSpan(new StrikethroughSpan(), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
                 }
 
-                // This line sets the bold or italic weight
+                // This line sets the bold or lighter weight
                 paragraph.setSpan(new StyleSpan(TextRendererUtil.getTextWeight(textRun.GetTextWeight())), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+
+                if (textRun.GetItalic())
+                {
+                    paragraph.setSpan(new StyleSpan(Typeface.ITALIC), spanStart, spanEnd, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                }
 
                 long textSize = TextRendererUtil.getTextSize(textRun.GetFontStyle(), textRun.GetTextSize(), hostConfig);
                 paragraph.setSpan(new AbsoluteSizeSpan((int)textSize, true), spanStart, spanEnd, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
 
                 // On API 28, TypefaceSpan(Typeface) was added so we don't have to use the TypefaceSpan(String) constructor
                 String fontName = hostConfig.GetFontFamily(textRun.GetFontStyle());
-                if(fontName.isEmpty())
+                if (fontName.isEmpty())
                 {
                     fontName = "monospace";
                 }
