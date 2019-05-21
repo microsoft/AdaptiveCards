@@ -49,21 +49,21 @@ namespace AdaptiveSharedNamespace
         unsigned int _bolder = UINT_MAX;
     };
 
-    struct FontStyleDefinition
+    struct FontTypeDefinition
     {
         std::string fontFamily;
         FontSizesConfig fontSizes;
         FontWeightsConfig fontWeights;
 
-        static FontStyleDefinition Deserialize(const Json::Value& json, const FontStyleDefinition& defaultValue);
+        static FontTypeDefinition Deserialize(const Json::Value& json, const FontTypeDefinition& defaultValue);
     };
 
-    struct FontStylesDefinition
+    struct FontTypesDefinition
     {
-        FontStyleDefinition defaultStyle;
-        FontStyleDefinition monospaceStyle;
+        FontTypeDefinition defaultStyle;
+        FontTypeDefinition monospaceStyle;
 
-        static FontStylesDefinition Deserialize(const Json::Value& json, const FontStylesDefinition& defaultValue);
+        static FontTypesDefinition Deserialize(const Json::Value& json, const FontTypesDefinition& defaultValue);
     };
 
     struct HighlightColorConfig
@@ -101,7 +101,7 @@ namespace AdaptiveSharedNamespace
     {
         TextWeight weight = TextWeight::Default;
         TextSize size = TextSize::Default;
-        FontStyle style = FontStyle::Default;
+        FontType style = FontType::Default;
         ForegroundColor color = ForegroundColor::Default;
         bool isSubtle = false;
         bool wrap = true;
@@ -163,8 +163,8 @@ namespace AdaptiveSharedNamespace
 
     struct FactSetConfig
     {
-        TextConfig title{TextWeight::Bolder, TextSize::Default, FontStyle::Default, ForegroundColor::Default, false, true, 150};
-        TextConfig value{TextWeight::Default, TextSize::Default, FontStyle::Default, ForegroundColor::Default, false, true, ~0U};
+        TextConfig title{TextWeight::Bolder, TextSize::Default, FontType::Default, ForegroundColor::Default, false, true, 150};
+        TextConfig value{TextWeight::Default, TextSize::Default, FontType::Default, ForegroundColor::Default, false, true, ~0U};
         unsigned int spacing = 10;
 
         static FactSetConfig Deserialize(const Json::Value& json, const FactSetConfig& defaultValue);
@@ -303,10 +303,10 @@ namespace AdaptiveSharedNamespace
         static HostConfig Deserialize(const Json::Value& json);
         static HostConfig DeserializeFromString(const std::string& jsonString);
 
-        FontStyleDefinition GetFontStyle(FontStyle style) const;
-        std::string GetFontFamily(FontStyle style) const;
-        unsigned int GetFontSize(FontStyle style, TextSize size) const;
-        unsigned int GetFontWeight(FontStyle style, TextWeight weight) const;
+        FontTypeDefinition GetFontType(FontType type) const;
+        std::string GetFontFamily(FontType style) const;
+        unsigned int GetFontSize(FontType style, TextSize size) const;
+        unsigned int GetFontWeight(FontType style, TextWeight weight) const;
 
         std::string GetBackgroundColor(ContainerStyle style) const;
         std::string GetForegroundColor(ContainerStyle style, ForegroundColor color, bool isSubtle) const;
@@ -323,8 +323,8 @@ namespace AdaptiveSharedNamespace
         FontWeightsConfig GetFontWeights() const;
         void SetFontWeights(const FontWeightsConfig value);
 
-        FontStylesDefinition GetFontStyles() const;
-        void SetFontStyles(const FontStylesDefinition value);
+        FontTypesDefinition GetFontTypes() const;
+        void SetFontTypes(const FontTypesDefinition value);
 
         bool GetSupportsInteractivity() const;
         void SetSupportsInteractivity(const bool value);
@@ -369,7 +369,7 @@ namespace AdaptiveSharedNamespace
         std::string _fontFamily;
         FontSizesConfig _fontSizes;
         FontWeightsConfig _fontWeights;
-        FontStylesDefinition _fontStyles;
+        FontTypesDefinition _fontTypes;
         bool _supportsInteractivity = true;
         std::string _imageBaseUrl;
         ImageSizesConfig _imageSizes;

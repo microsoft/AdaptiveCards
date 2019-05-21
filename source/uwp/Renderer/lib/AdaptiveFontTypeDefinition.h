@@ -8,14 +8,14 @@
 
 namespace AdaptiveNamespace
 {
-    class AdaptiveFontStyleDefinition
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, ABI::AdaptiveNamespace::IAdaptiveFontStyleDefinition>
+    class AdaptiveFontTypeDefinition
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, ABI::AdaptiveNamespace::IAdaptiveFontTypeDefinition>
     {
-        AdaptiveRuntime(AdaptiveFontStyleDefinition);
+        AdaptiveRuntime(AdaptiveFontTypeDefinition);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(FontStyleDefinition styleDefinition) noexcept;
+        HRESULT RuntimeClassInitialize(FontTypeDefinition styleDefinition) noexcept;
 
         IFACEMETHODIMP get_FontFamily(_Outptr_ HSTRING* value);
         IFACEMETHODIMP put_FontFamily(_In_ HSTRING value);
@@ -32,5 +32,5 @@ namespace AdaptiveNamespace
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveFontSizesConfig> m_fontSizes;
     };
 
-    ActivatableClass(AdaptiveFontStyleDefinition);
+    ActivatableClass(AdaptiveFontTypeDefinition);
 }

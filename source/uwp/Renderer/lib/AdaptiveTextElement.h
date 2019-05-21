@@ -34,8 +34,8 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Language(_Outptr_ HSTRING* language);
         IFACEMETHODIMP put_Language(_In_ HSTRING language);
 
-        IFACEMETHODIMP get_FontStyle(_Out_ ABI::AdaptiveNamespace::FontStyle* style);
-        IFACEMETHODIMP put_FontStyle(ABI::AdaptiveNamespace::FontStyle style);
+        IFACEMETHODIMP get_FontType(_Out_ ABI::AdaptiveNamespace::FontType* style);
+        IFACEMETHODIMP put_FontType(ABI::AdaptiveNamespace::FontType style);
 
     protected:
         template<typename T> HRESULT InitializeTextElement(const std::shared_ptr<T>& sharedModel)
@@ -43,7 +43,7 @@ namespace AdaptiveNamespace
             m_subtle = sharedModel->GetIsSubtle();
             m_italic = sharedModel->GetItalic();
             m_strikethrough = sharedModel->GetStrikethrough();
-            m_fontStyle = static_cast<ABI::AdaptiveNamespace::FontStyle>(sharedModel->GetFontStyle());
+            m_fontType = static_cast<ABI::AdaptiveNamespace::FontType>(sharedModel->GetFontType());
             m_textSize = static_cast<ABI::AdaptiveNamespace::TextSize>(sharedModel->GetTextSize());
             m_textWeight = static_cast<ABI::AdaptiveNamespace::TextWeight>(sharedModel->GetTextWeight());
             m_foregroundColor = static_cast<ABI::AdaptiveNamespace::ForegroundColor>(sharedModel->GetTextColor());
@@ -58,7 +58,7 @@ namespace AdaptiveNamespace
             sharedCardElement->SetIsSubtle(m_subtle);
             sharedCardElement->SetItalic(m_italic);
             sharedCardElement->SetStrikethrough(m_strikethrough);
-            sharedCardElement->SetFontStyle(static_cast<AdaptiveSharedNamespace::FontStyle>(m_fontStyle));
+            sharedCardElement->SetFontType(static_cast<AdaptiveSharedNamespace::FontType>(m_fontType));
             sharedCardElement->SetTextSize(static_cast<AdaptiveSharedNamespace::TextSize>(m_textSize));
             sharedCardElement->SetTextWeight(static_cast<AdaptiveSharedNamespace::TextWeight>(m_textWeight));
             sharedCardElement->SetTextColor(static_cast<AdaptiveSharedNamespace::ForegroundColor>(m_foregroundColor));
@@ -82,7 +82,7 @@ namespace AdaptiveNamespace
         boolean m_strikethrough;
         Microsoft::WRL::Wrappers::HString m_text;
         Microsoft::WRL::Wrappers::HString m_language;
-        ABI::AdaptiveNamespace::FontStyle m_fontStyle;
+        ABI::AdaptiveNamespace::FontType m_fontType;
         ABI::AdaptiveNamespace::TextSize m_textSize;
         ABI::AdaptiveNamespace::TextWeight m_textWeight;
         ABI::AdaptiveNamespace::ForegroundColor m_foregroundColor;

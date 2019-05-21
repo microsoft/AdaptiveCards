@@ -64,7 +64,7 @@ HRESULT GetHighlighter(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adapti
                        _Out_ ABI::Windows::UI::Xaml::Documents::ITextHighlighter** textHighlighter) noexcept;
 
 HRESULT GetFontDataFromStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
-                             ABI::AdaptiveNamespace::FontStyle style,
+                             ABI::AdaptiveNamespace::FontType style,
                              ABI::AdaptiveNamespace::TextSize desiredSize,
                              ABI::AdaptiveNamespace::TextWeight desiredWeight,
                              _Outptr_ HSTRING* resultFontFamilyName,
@@ -72,22 +72,22 @@ HRESULT GetFontDataFromStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* h
                              _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept;
 
 HRESULT GetFontFamilyFromStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
-                               ABI::AdaptiveNamespace::FontStyle style,
+                               ABI::AdaptiveNamespace::FontType style,
                                _Outptr_ HSTRING* resultFontFamilyName) noexcept;
 
 HRESULT GetFontSizeFromStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
-                             ABI::AdaptiveNamespace::FontStyle style,
+                             ABI::AdaptiveNamespace::FontType style,
                              ABI::AdaptiveNamespace::TextSize desiredSize,
                              _Out_ UINT32* resultSize) noexcept;
 
 HRESULT GetFontWeightFromStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
-                               ABI::AdaptiveNamespace::FontStyle style,
+                               ABI::AdaptiveNamespace::FontType style,
                                ABI::AdaptiveNamespace::TextWeight desiredWeight,
                                _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept;
 
-HRESULT GetFontStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
-                     ABI::AdaptiveNamespace::FontStyle style,
-                     _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveFontStyleDefinition** styleDefinition) noexcept;
+HRESULT GetFontType(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+                     ABI::AdaptiveNamespace::FontType style,
+                     _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveFontTypeDefinition** styleDefinition) noexcept;
 
 HRESULT GetFontSize(_In_ ABI::AdaptiveNamespace::IAdaptiveFontSizesConfig* sizesConfig,
                     ABI::AdaptiveNamespace::TextSize desiredSize,

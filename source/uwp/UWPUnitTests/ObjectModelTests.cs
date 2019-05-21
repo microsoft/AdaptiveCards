@@ -99,7 +99,7 @@ namespace UWPUnitTests
             AdaptiveTextBlock textBlock = new AdaptiveTextBlock
             {
                 Color = ForegroundColor.Accent,
-                FontStyle = FontStyle.Monospace,
+                FontType = FontType.Monospace,
                 Height = HeightType.Stretch,
                 HorizontalAlignment = HAlignment.Center,
                 Id = "TextBlockId",
@@ -120,7 +120,7 @@ namespace UWPUnitTests
             ValidateBaseElementProperties(textBlock, "TextBlockId", false, true, Spacing.Large, HeightType.Stretch);
 
             Assert.AreEqual(ForegroundColor.Accent, textBlock.Color);
-            Assert.AreEqual(FontStyle.Monospace, textBlock.FontStyle);
+            Assert.AreEqual(FontType.Monospace, textBlock.FontType);
             Assert.AreEqual(HAlignment.Center, textBlock.HorizontalAlignment);
             Assert.IsTrue(textBlock.IsSubtle);
             Assert.IsTrue(textBlock.Italic);
@@ -768,7 +768,7 @@ namespace UWPUnitTests
             AdaptiveTextRun textRun1 = new AdaptiveTextRun
             {
                 Color = ForegroundColor.Accent,
-                FontStyle = FontStyle.Monospace,
+                FontType = FontType.Monospace,
                 Highlight = true,
                 IsSubtle = true,
                 Italic = true,
@@ -780,7 +780,7 @@ namespace UWPUnitTests
             };
 
             Assert.AreEqual(ForegroundColor.Accent, textRun1.Color);
-            Assert.AreEqual(FontStyle.Monospace, textRun1.FontStyle);
+            Assert.AreEqual(FontType.Monospace, textRun1.FontType);
             Assert.IsTrue(textRun1.Highlight);
             Assert.IsTrue(textRun1.IsSubtle);
             Assert.IsTrue(textRun1.Italic);
