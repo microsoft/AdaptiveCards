@@ -8,7 +8,7 @@
 
 package io.adaptivecards.objectmodel;
 
-public enum FontStyle {
+public enum FontType {
   Default(0),
   Monospace;
 
@@ -16,29 +16,29 @@ public enum FontStyle {
     return swigValue;
   }
 
-  public static FontStyle swigToEnum(int swigValue) {
-    FontStyle[] swigValues = FontStyle.class.getEnumConstants();
+  public static FontType swigToEnum(int swigValue) {
+    FontType[] swigValues = FontType.class.getEnumConstants();
     if (swigValue < swigValues.length && swigValue >= 0 && swigValues[swigValue].swigValue == swigValue)
       return swigValues[swigValue];
-    for (FontStyle swigEnum : swigValues)
+    for (FontType swigEnum : swigValues)
       if (swigEnum.swigValue == swigValue)
         return swigEnum;
-    throw new IllegalArgumentException("No enum " + FontStyle.class + " with value " + swigValue);
+    throw new IllegalArgumentException("No enum " + FontType.class + " with value " + swigValue);
   }
 
   @SuppressWarnings("unused")
-  private FontStyle() {
+  private FontType() {
     this.swigValue = SwigNext.next++;
   }
 
   @SuppressWarnings("unused")
-  private FontStyle(int swigValue) {
+  private FontType(int swigValue) {
     this.swigValue = swigValue;
     SwigNext.next = swigValue+1;
   }
 
   @SuppressWarnings("unused")
-  private FontStyle(FontStyle swigEnum) {
+  private FontType(FontType swigEnum) {
     this.swigValue = swigEnum.swigValue;
     SwigNext.next = this.swigValue+1;
   }
