@@ -302,8 +302,12 @@ namespace AdaptiveNamespace
                 ComPtr<IUIElement> rectangleAsUIElement;
                 THROW_IF_FAILED(rectangleAsShape.As(&rectangleAsUIElement));
 
-                double originPositionX = (fillMode == BackgroundImageFillMode::Cover) ?  0.0 : (x * m_imageSize.Width) + offsetHorizontalAlignment;
-                double originPositionY = (fillMode == BackgroundImageFillMode::Cover) ? 0.0 : (y * m_imageSize.Height) + offsetVerticalAlignment;
+                double originPositionX{}, originPositionY{};
+                if (fillMode != BackgroundImageFillMode::Cover)
+                {
+                    originPositionX = (x * m_imageSize.Width) + offsetHorizontalAlignment;
+                    originPositionY = (y * m_imageSize.Height) + offsetVerticalAlignment;
+                }
 
                 // Set Left and Top for rectangle
                 ComPtr<ICanvasStatics> canvasStatics;
@@ -312,8 +316,17 @@ namespace AdaptiveNamespace
                 THROW_IF_FAILED(canvasStatics->SetLeft(rectangleAsUIElement.Get(), originPositionX));
                 THROW_IF_FAILED(canvasStatics->SetTop(rectangleAsUIElement.Get(), originPositionY));
 
-                double imageWidth = (fillMode == BackgroundImageFillMode::Cover) ? m_containerSize.Width : m_imageSize.Width;
-                double imageHeight = (fillMode == BackgroundImageFillMode::Cover) ? m_containerSize.Height : m_imageSize.Height;
+                double imageWidth{}, imageHeight{};
+                if (fillMode == BackgroundImageFillMode::Cover)
+                {
+                    imageWidth = m_containerSize.Width;
+                    imageHeight = m_containerSize.Height;
+                }
+                else
+                {
+                    imageWidth = m_imageSize.Width;
+                    imageHeight = m_imageSize.Height;
+                }
 
                 ComPtr<IFrameworkElement> rectangleAsFElement;
                 THROW_IF_FAILED(rectangle.As(&rectangleAsFElement));
