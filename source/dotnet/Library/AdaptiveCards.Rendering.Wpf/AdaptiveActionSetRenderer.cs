@@ -88,6 +88,10 @@ namespace AdaptiveCards.Rendering.Wpf
                     // add actions
                     var uiAction = (Button)context.Render(action);
 
+                    if (uiAction == null)
+                    {
+                        continue;
+                    }
 
                     if (actionsConfig.ActionsOrientation == ActionsOrientation.Horizontal)
                     {
@@ -146,9 +150,8 @@ namespace AdaptiveCards.Rendering.Wpf
                 context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.MaxActionsExceeded, "Some actions were not rendered due to exceeding the maximum number of actions allowed"));
             }
 
-            // only consider known actions for ActionsToProcess
-            var actionsToProcess = actions.Where(obj => obj.GetType() != typeof(AdaptiveUnknownAction)).ToList();
-            return actionsToProcess.Take(maxActions).ToList();
+            // just take the first maxActions actions
+            return actions.Take(maxActions).ToList();
         }
     }
 }
