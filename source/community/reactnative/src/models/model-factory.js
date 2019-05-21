@@ -10,6 +10,8 @@ export class ModelFactory {
         switch (payload.type) {
             case ElementType.Image:
                 return new Models.ImageModel(parent, payload);
+            case ElementType.Media:
+                return new Models.MediaModel(parent, payload);
             case ElementType.TextBlock:
                 return new Models.TextBlockModel(parent, payload);
             case ElementType.RichTextBlock:
