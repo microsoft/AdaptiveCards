@@ -38,7 +38,7 @@
     {
         .weight = textBlockElement->GetTextWeight(),
         .size = textBlockElement->GetTextSize(),
-        .style = textBlockElement->GetFontStyle(),
+        .style = textBlockElement->GetFontType(),
         .color = textBlockElement->GetTextColor(),
         .isSubtle = textBlockElement->GetIsSubtle(),
         .wrap = textBlockElement->GetWrap()
