@@ -13,7 +13,7 @@ namespace AdaptiveCards.Rendering.Wpf
     {
         public static FrameworkElement Render(AdaptiveActionSet actionSet, AdaptiveRenderContext context)
         {
-            Grid outerActionSet = new Grid();
+            var outerActionSet = new Grid();
 
             if (!context.Config.SupportsInteractivity)
                 return outerActionSet;
@@ -42,11 +42,11 @@ namespace AdaptiveCards.Rendering.Wpf
 
             ActionsConfig actionsConfig = context.Config.Actions;
             int maxActions = actionsConfig.MaxActions;
-            List<AdaptiveAction> actionsToProcess = GetActionsToProcess(actions, maxActions);
+            List<AdaptiveAction> actionsToProcess = GetActionsToProcess(actions, maxActions, context);
 
             if (actionsToProcess.Any())
             {
-                UniformGrid uiActionBar = new UniformGrid();
+                var uiActionBar = new UniformGrid();
 
                 if (actionsConfig.ActionsOrientation == ActionsOrientation.Horizontal)
                     uiActionBar.Columns = actionsToProcess.Count();
@@ -92,8 +92,12 @@ namespace AdaptiveCards.Rendering.Wpf
                 foreach (AdaptiveAction action in actionsToProcess)
                 {
                     // add actions
-                    Button uiAction = (Button)context.Render(action);
+                    var uiAction = (Button)context.Render(action);
 
+                    if (uiAction == null)
+                    {
+                        continue;
+                    }
 
                     if (actionsConfig.ActionsOrientation == ActionsOrientation.Horizontal)
                     {
@@ -123,12 +127,12 @@ namespace AdaptiveCards.Rendering.Wpf
                             uiShowCardContainer.Visibility = Visibility.Collapsed;
 
                             // render the card
-                            Grid uiShowCardWrapper = (Grid)context.Render(showCardAction.Card);
+                            var uiShowCardWrapper = (Grid)context.Render(showCardAction.Card);
                             uiShowCardWrapper.Background = context.GetColorBrush("Transparent");
                             uiShowCardWrapper.DataContext = showCardAction;
 
                             // Remove the card padding
-                            Grid innerCard = (Grid)uiShowCardWrapper.Children[0];
+                            var innerCard = (Grid)uiShowCardWrapper.Children[0];
                             innerCard.Margin = new Thickness(0);
 
                             uiShowCardContainer.Children.Add(uiShowCardWrapper);
@@ -194,11 +198,16 @@ namespace AdaptiveCards.Rendering.Wpf
             }
         }
 
-        private static List<AdaptiveAction> GetActionsToProcess(IList<AdaptiveAction> actions, int maxActions)
+        private static List<AdaptiveAction> GetActionsToProcess(IList<AdaptiveAction> actions, int maxActions, AdaptiveRenderContext context)
         {
-            // only consider known actions for ActionsToProcess
-            List<AdaptiveAction> actionsToProcess = actions.Where(obj => obj.GetType() != typeof(AdaptiveUnknownAction)).ToList();
-            return actionsToProcess.Take(maxActions).ToList();
+            // If the number of actions is bigger than maxActions, then log warning for it
+            if (actions.Count > maxActions)
+            {
+                context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.MaxActionsExceeded, "Some actions were not rendered due to exceeding the maximum number of actions allowed"));
+            }
+
+            // just take the first maxActions actions
+            return actions.Take(maxActions).ToList();
         }
     }
 }

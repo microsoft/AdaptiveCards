@@ -292,43 +292,81 @@ namespace AdaptiveCards.Rendering.Wpf
             }
         }
 
+        /// <summary>
+        /// Casts framework element to a TagContent element
+        /// </summary>
+        /// <param name="element">Rendered element that contains tag</param>
+        /// <returns>Casted tag content</returns>
         private TagContent GetTagContent(FrameworkElement element)
         {
-            if (element != null)
+            if ((element != null) && (element.Tag != null) && (element.Tag is TagContent tagContent))
             {
-                if (element.Tag != null && element.Tag is TagContent tagContent)
-                {
-                    return tagContent;
-                }
+                return tagContent;
             }
-
             return null;
         }
 
-        public void SetVisibility(FrameworkElement element, bool isVisible, TagContent tagContent)
+        /// <summary>
+        /// Changes the visibility for the rendered element
+        /// </summary>
+        /// <param name="element">Rendered element to apply visibility</param>
+        /// <param name="desiredVisibility">Visibility to be applied to the element</param>
+        /// <param name="tagContent">Rendered element tag</param>
+        public void SetVisibility(FrameworkElement element, bool desiredVisibility, TagContent tagContent)
         {
             bool elementIsCurrentlyVisible = (element.Visibility == Visibility.Visible);
 
-            element.Visibility = isVisible ? Visibility.Visible : Visibility.Collapsed;
+            element.Visibility = desiredVisibility ? Visibility.Visible : Visibility.Collapsed;
 
-            // Columns with ColumnDefinition having stars won't hide so we have to set the width to auto
-            if (tagContent.NotAutoWidthColumnDefinition != null)
+            // Hides the separator if any was rendered
+            Grid separator = tagContent.Separator;
+            if (separator != null)
             {
-                ColumnDefinition columnDefinition = new ColumnDefinition() { Width = GridLength.Auto };
-                if (isVisible)
-                {
-                    columnDefinition = tagContent.NotAutoWidthColumnDefinition;
-                }
-
-                // Trying to set the same columnDefinition twice to the same element is not valid, so we have to make a check first
-                if (!(elementIsCurrentlyVisible && isVisible))
-                {
-                    tagContent.ElementContainer.ColumnDefinitions[tagContent.ViewIndex] = columnDefinition;
-                }
+                separator.Visibility = desiredVisibility ? Visibility.Visible : Visibility.Collapsed;
             }
 
+            // Elements (Rows) with RowDefinition having stars won't hide so we have to set the width to auto
+            // Also, trying to set the same rowDefinition twice to the same element is not valid,
+            // so we have to make a check first
+            if ((tagContent.RowDefinition != null) && !(elementIsCurrentlyVisible && desiredVisibility))
+            {
+                RowDefinition rowDefinition = null;
+                if (desiredVisibility)
+                {
+                    rowDefinition = tagContent.RowDefinition;
+                }
+                else
+                {
+                    // When the visibility is set to false, then set the row definition to auto
+                    rowDefinition = new RowDefinition() { Height = GridLength.Auto };
+                }
+
+                tagContent.ParentContainerElement.RowDefinitions[tagContent.ViewIndex] = rowDefinition;
+            }
+
+            // Columns with ColumnDefinition having stars won't hide so we have to set the width to auto
+            // Also, trying to set the same columnDefinition twice to the same element is not valid,
+            // so we have to make a check first
+            if ((tagContent.ColumnDefinition != null) && !(elementIsCurrentlyVisible && desiredVisibility))
+            {
+                ColumnDefinition columnDefinition = null;
+                if (desiredVisibility)
+                {
+                    columnDefinition = tagContent.ColumnDefinition;
+                }
+                else
+                {
+                    columnDefinition = new ColumnDefinition() { Width = GridLength.Auto };
+                }
+
+                tagContent.ParentContainerElement.ColumnDefinitions[tagContent.ViewIndex] = columnDefinition;
+            }
         }
 
+        /// <summary>
+        /// Changes the visibility of the specified elements as defined
+        /// </summary>
+        /// <param name="targetElements">Taget elements to change visibility</param>
         public void ToggleVisibility(IEnumerable<AdaptiveTargetElement> targetElements)
         {
             HashSet<Grid> elementContainers = new HashSet<Grid>();
@@ -341,9 +379,12 @@ namespace AdaptiveCards.Rendering.Wpf
                 {
                     bool isCurrentlyVisible = (elementFrameworkElement.Visibility == Visibility.Visible);
 
-                    // if we read something with the format {"elementId": <id>", "isVisible": true} or we just read the id and the element is not visible
-                    // otherwise if we read something with the format {"elementId": <id>", "isVisible": false} or we just read the id and the element is visible
-                    bool newVisibility = (targetElement.IsVisible.HasValue && targetElement.IsVisible.Value) || (!targetElement.IsVisible.HasValue && !isCurrentlyVisible);
+                    // if we read something with the format {"elementId": <id>", "isVisible": true} or
+                    // we just read the id and the element is not visible;
+                    // otherwise if we read something with the format {"elementId": <id>", "isVisible": false} or
+                    // we just read the id and the element is visible
+                    bool newVisibility = (targetElement.IsVisible.HasValue && targetElement.IsVisible.Value) ||
+                                         (!targetElement.IsVisible.HasValue && !isCurrentlyVisible);
 
                     TagContent tagContent = GetTagContent(elementFrameworkElement);
 
@@ -351,7 +392,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
                     if (tagContent != null)
                     {
-                        elementContainers.Add(tagContent.ElementContainer);
+                        elementContainers.Add(tagContent.ParentContainerElement);
                     }
                 }
             }
@@ -364,11 +405,10 @@ namespace AdaptiveCards.Rendering.Wpf
         }
 
         /// <summary>
-        /// Elements are adde to the container in two ways: if the height is auto or the inserted element is a container, then the element
-        /// is added as is, if the element has height stretch, then we add an extra stack panel so it can take the remaining space
+        /// Gets the actual rendered element as elements with 'stretch' height are contained inside a StackPanel
         /// </summary>
-        /// <param name="element"></param>
-        /// <returns></returns>
+        /// <param name="element">Element or StackPanel that contains rendered element</param>
+        /// <returns>Actual rendered element</returns>
         private FrameworkElement GetRenderedElement(FrameworkElement element)
         {
             if (element is StackPanel containerPanel)
@@ -387,40 +427,19 @@ namespace AdaptiveCards.Rendering.Wpf
         private void HandleSeparatorAndSpacing(bool isFirstVisible, FrameworkElement element, TagContent tagContent)
         {
             // Hide the spacing / separator for the first element
-            // Separators are added as a grid
+            // Separators and spacings are added as a grid
             Grid separator = tagContent.Separator;
 
             if (separator != null)
             {
                 separator.Visibility = isFirstVisible ? Visibility.Collapsed : Visibility.Visible;
             }
-            else
-            {
-                bool mustHideSpacing = (isFirstVisible && !(tagContent.SpacingHasBeenHidden));
-                bool mustShowSpacing = (!isFirstVisible && tagContent.SpacingHasBeenHidden);
-
-                if (mustHideSpacing || mustShowSpacing)
-                {
-                    FrameworkElement renderedElement = GetRenderedElement(element);
-                    var spacing = Config.GetSpacing(tagContent.Spacing);
-
-                    // The spacings are added as a margin in the top, so we have to deduct that value
-                    if (mustHideSpacing)
-                    {
-                        spacing = -spacing;
-                    }
-
-                    Thickness renderedMargin = renderedElement.Margin;
-                    renderedElement.Margin = new Thickness(renderedMargin.Left,
-                                                           renderedMargin.Top + spacing,
-                                                           renderedMargin.Right,
-                                                           renderedMargin.Bottom);
-
-                    tagContent.SpacingHasBeenHidden = mustHideSpacing;
-                }
-            }
         }
 
+        /// <summary>
+        /// Hides the first separator and fixes the visibility for the other visible separators
+        /// </summary>
+        /// <param name="uiContainer">Renderered element container</param>
         public void ResetSeparatorVisibilityInsideContainer(Grid uiContainer)
         {
             bool isFirstVisible = true;

@@ -74,10 +74,10 @@
 			"columns": [
 				{
 					"type": "Column",
-					"width": "auto",
+					"width": "stretch",
 					"backgroundImage": {
 						"url": "https://picsum.photos/id/237/200/200",
-						"horizontalAlignment": "left",
+						"horizontalAlignment": "left"
 					},
 					"items": [
 						{
@@ -114,7 +114,7 @@
 				},
 				{
 					"type": "Column",
-					"width": "auto",
+					"width": "stretch",
 					"backgroundImage": {
 						"url": "https://picsum.photos/id/237/200/200",
 						"horizontalAlignment": "center"
@@ -129,7 +129,7 @@
 				},
 				{
 					"type": "Column",
-					"width": "auto",
+					"width": "stretch",
 					"backgroundImage": {
 						"url": "https://picsum.photos/id/237/200/200",
 						"horizontalAlignment": "right"
