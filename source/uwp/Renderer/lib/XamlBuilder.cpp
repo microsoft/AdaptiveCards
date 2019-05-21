@@ -483,13 +483,14 @@ namespace AdaptiveNamespace
 
         ComPtr<IAdaptiveCardElement> adaptiveCardElement;
         THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));
-        ComPtr<IUIElement> background;
 
         ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
         THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
 
         ComPtr<IAdaptiveElementRenderer> elementRenderer;
         THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Image").Get(), &elementRenderer));
+
+        ComPtr<IUIElement> background;
         if (elementRenderer != nullptr)
         {
             elementRenderer->Render(adaptiveCardElement.Get(), renderContext, renderArgs, &background);
@@ -505,34 +506,19 @@ namespace AdaptiveNamespace
         ABI::AdaptiveNamespace::BackgroundImageFillMode fillMode;
         THROW_IF_FAILED(backgroundImage->get_FillMode(&fillMode));
 
-        // Apply Background Image Mode
+        // Creates the background image for all fill modes
+        ComPtr<TileControl> tileControl;
+        THROW_IF_FAILED(MakeAndInitialize<TileControl>(&tileControl));
+        THROW_IF_FAILED(tileControl->put_BackgroundImage(backgroundImage));
+
+        ComPtr<IFrameworkElement> rootElement;
+        THROW_IF_FAILED(rootPanel->QueryInterface(rootElement.GetAddressOf()));
+        THROW_IF_FAILED(tileControl->put_RootElement(rootElement.Get()));
+
+        THROW_IF_FAILED(tileControl->LoadImageBrush(background.Get()));
+
         ComPtr<IFrameworkElement> backgroundAsFrameworkElement;
-        switch (fillMode)
-        {
-        case ABI::AdaptiveNamespace::BackgroundImageFillMode::Cover:
-            // Ignored: horizontalAlignment, verticalAlignment
-            THROW_IF_FAILED(xamlImage->put_Stretch(Stretch::Stretch_UniformToFill));
-
-            THROW_IF_FAILED(xamlImage.As(&backgroundAsFrameworkElement));
-            THROW_IF_FAILED(backgroundAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Stretch));
-            break;
-        case ABI::AdaptiveNamespace::BackgroundImageFillMode::Repeat:
-        case ABI::AdaptiveNamespace::BackgroundImageFillMode::RepeatHorizontally:
-        case ABI::AdaptiveNamespace::BackgroundImageFillMode::RepeatVertically:
-        default:
-            ComPtr<TileControl> tileControl;
-            MakeAndInitialize<TileControl>(&tileControl);
-            tileControl->put_BackgroundImage(backgroundImage);
-
-            ComPtr<IFrameworkElement> rootElement;
-            rootPanel->QueryInterface(rootElement.GetAddressOf());
-            tileControl->put_RootElement(rootElement.Get());
-
-            tileControl->LoadImageBrush(background.Get());
-
-            tileControl.As(&backgroundAsFrameworkElement);
-            break;
-        }
+        THROW_IF_FAILED(tileControl.As(&backgroundAsFrameworkElement));
 
         XamlHelpers::AppendXamlElementToPanel(backgroundAsFrameworkElement.Get(), rootPanel);
 
