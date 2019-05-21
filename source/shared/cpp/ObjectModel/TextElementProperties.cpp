@@ -51,16 +51,6 @@ Json::Value TextElementProperties::SerializeToJsonValue(Json::Value& root) const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsSubtle)] = true;
     }
 
-    if (m_italic)
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Italic)] = true;
-    }
-
-    if (m_strikethrough)
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Strikethrough)] = true;
-    }
-
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Text)] = GetText();
 
     return root;
@@ -169,8 +159,8 @@ void TextElementProperties::Deserialize(const ParseContext& context, const Json:
     SetTextWeight(ParseUtil::GetEnumValue<TextWeight>(json, AdaptiveCardSchemaKey::TextWeight, TextWeight::Default, TextWeightFromString));
     SetFontStyle(ParseUtil::GetEnumValue<FontStyle>(json, AdaptiveCardSchemaKey::FontStyle, FontStyle::Default, FontStyleFromString));
     SetIsSubtle(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsSubtle, false));
-    SetItalic(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Italic, false));
-    SetStrikethrough(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Strikethrough, false));
+    SetItalic(false);
+    SetStrikethrough(false);
     SetLanguage(context.GetLanguage());
 }
 
@@ -181,7 +171,5 @@ void TextElementProperties::PopulateKnownPropertiesSet(std::unordered_set<std::s
                             AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color),
                             AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::TextWeight),
                             AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::FontStyle),
-                            AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsSubtle),
-                            AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Italic),
-                            AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Strikethrough)});
+                            AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsSubtle)});
 }
