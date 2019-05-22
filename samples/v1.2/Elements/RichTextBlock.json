@@ -65,7 +65,7 @@
 				{
 					"type": "TextRun",
 					"text": "Monospace too!",
-					"fontStyle": "monospace"
+					"fontType": "monospace"
 				}
 			]
 		},

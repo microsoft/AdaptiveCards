@@ -8,16 +8,16 @@
 
 package io.adaptivecards.objectmodel;
 
-public class FontStyleDefinition {
+public class FontTypeDefinition {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
-  protected FontStyleDefinition(long cPtr, boolean cMemoryOwn) {
+  protected FontTypeDefinition(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;
   }
 
-  protected static long getCPtr(FontStyleDefinition obj) {
+  protected static long getCPtr(FontTypeDefinition obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
@@ -29,44 +29,44 @@ public class FontStyleDefinition {
     if (swigCPtr != 0) {
       if (swigCMemOwn) {
         swigCMemOwn = false;
-        AdaptiveCardObjectModelJNI.delete_FontStyleDefinition(swigCPtr);
+        AdaptiveCardObjectModelJNI.delete_FontTypeDefinition(swigCPtr);
       }
       swigCPtr = 0;
     }
   }
 
   public void setFontFamily(String value) {
-    AdaptiveCardObjectModelJNI.FontStyleDefinition_fontFamily_set(swigCPtr, this, value);
+    AdaptiveCardObjectModelJNI.FontTypeDefinition_fontFamily_set(swigCPtr, this, value);
   }
 
   public String getFontFamily() {
-    return AdaptiveCardObjectModelJNI.FontStyleDefinition_fontFamily_get(swigCPtr, this);
+    return AdaptiveCardObjectModelJNI.FontTypeDefinition_fontFamily_get(swigCPtr, this);
   }
 
   public void setFontSizes(FontSizesConfig value) {
-    AdaptiveCardObjectModelJNI.FontStyleDefinition_fontSizes_set(swigCPtr, this, FontSizesConfig.getCPtr(value), value);
+    AdaptiveCardObjectModelJNI.FontTypeDefinition_fontSizes_set(swigCPtr, this, FontSizesConfig.getCPtr(value), value);
   }
 
   public FontSizesConfig getFontSizes() {
-    long cPtr = AdaptiveCardObjectModelJNI.FontStyleDefinition_fontSizes_get(swigCPtr, this);
+    long cPtr = AdaptiveCardObjectModelJNI.FontTypeDefinition_fontSizes_get(swigCPtr, this);
     return (cPtr == 0) ? null : new FontSizesConfig(cPtr, false);
   }
 
   public void setFontWeights(FontWeightsConfig value) {
-    AdaptiveCardObjectModelJNI.FontStyleDefinition_fontWeights_set(swigCPtr, this, FontWeightsConfig.getCPtr(value), value);
+    AdaptiveCardObjectModelJNI.FontTypeDefinition_fontWeights_set(swigCPtr, this, FontWeightsConfig.getCPtr(value), value);
   }
 
   public FontWeightsConfig getFontWeights() {
-    long cPtr = AdaptiveCardObjectModelJNI.FontStyleDefinition_fontWeights_get(swigCPtr, this);
+    long cPtr = AdaptiveCardObjectModelJNI.FontTypeDefinition_fontWeights_get(swigCPtr, this);
     return (cPtr == 0) ? null : new FontWeightsConfig(cPtr, false);
   }
 
-  public static FontStyleDefinition Deserialize(JsonValue json, FontStyleDefinition defaultValue) {
-    return new FontStyleDefinition(AdaptiveCardObjectModelJNI.FontStyleDefinition_Deserialize(JsonValue.getCPtr(json), json, FontStyleDefinition.getCPtr(defaultValue), defaultValue), true);
+  public static FontTypeDefinition Deserialize(JsonValue json, FontTypeDefinition defaultValue) {
+    return new FontTypeDefinition(AdaptiveCardObjectModelJNI.FontTypeDefinition_Deserialize(JsonValue.getCPtr(json), json, FontTypeDefinition.getCPtr(defaultValue), defaultValue), true);
   }
 
-  public FontStyleDefinition() {
-    this(AdaptiveCardObjectModelJNI.new_FontStyleDefinition(), true);
+  public FontTypeDefinition() {
+    this(AdaptiveCardObjectModelJNI.new_FontTypeDefinition(), true);
   }
 
 }

@@ -6,18 +6,18 @@ using Newtonsoft.Json;
 namespace AdaptiveCards
 {
     /// <summary>
-    ///     Controls the font style of the TextBlock Elements
+    ///     Controls the font type of the TextBlock Elements
     /// </summary>
-    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveFontStyle>), true)]
-    public enum AdaptiveFontStyle
+    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveFontType>), true)]
+    public enum AdaptiveFontType
     {
         /// <summary>
-        ///     The default font style for general use
+        ///     The default font type for general use
         /// </summary>
         Default,
 
         /// <summary>
-        ///     The monospace font style
+        ///     The monospace font type
         /// </summary>
         Monospace
     }

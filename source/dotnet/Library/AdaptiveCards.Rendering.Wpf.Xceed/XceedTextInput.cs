@@ -96,7 +96,7 @@ namespace AdaptiveCards.Rendering.Wpf
                             }
                             else
                             {
-                                uiTitle.FontSize = context.Config.GetFontSize(AdaptiveFontStyle.Default, AdaptiveTextSize.Default);
+                                uiTitle.FontSize = context.Config.GetFontSize(AdaptiveFontType.Default, AdaptiveTextSize.Default);
                                 uiTitle.Style = context.GetStyle($"Adaptive.Input.Text.InlineAction.Title");
                                 uiButton.Content = uiTitle;
                             }

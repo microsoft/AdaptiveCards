@@ -140,8 +140,8 @@
     <ClInclude Include="lib\AdaptiveCardResourceResolvers.h" />
     <ClInclude Include="lib\AdaptiveError.h" />
     <ClInclude Include="lib\AdaptiveFeatureRegistration.h" />
-    <ClInclude Include="lib\AdaptiveFontStyleDefinition.h" />
-    <ClInclude Include="lib\AdaptiveFontStylesDefinition.h" />
+    <ClInclude Include="lib\AdaptiveFontTypeDefinition.h" />
+    <ClInclude Include="lib\AdaptiveFontTypesDefinition.h" />
     <ClInclude Include="lib\AdaptiveHighlightColorConfig.h" />
     <ClInclude Include="lib\AdaptiveHostConfigParseResult.h" />
     <ClInclude Include="lib\AdaptiveCardParseResult.h" />
@@ -240,8 +240,8 @@
     <ClCompile Include="lib\AdaptiveActionRendererRegistration.cpp" />
     <ClCompile Include="lib\AdaptiveBackgroundImage.cpp" />
     <ClCompile Include="lib\AdaptiveFeatureRegistration.cpp" />
-    <ClCompile Include="lib\AdaptiveFontStyleDefinition.cpp" />
-    <ClCompile Include="lib\AdaptiveFontStylesDefinition.cpp" />
+    <ClCompile Include="lib\AdaptiveFontTypeDefinition.cpp" />
+    <ClCompile Include="lib\AdaptiveFontTypesDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveMedia.cpp" />
     <ClCompile Include="lib\AdaptiveMediaConfig.cpp" />
     <ClCompile Include="lib\AdaptiveMediaEventInvoker.cpp" />

@@ -57,11 +57,11 @@ namespace AdaptiveCards.Rendering.Wpf
 
             textRunSpan.Style = context.GetStyle($"Adaptive.{textRun.Type}");
 
-            textRunSpan.FontFamily = new FontFamily(RendererUtil.GetFontFamilyFromList(context.Config.GetFontFamily(textRun.FontStyle)));
+            textRunSpan.FontFamily = new FontFamily(RendererUtil.GetFontFamilyFromList(context.Config.GetFontFamily(textRun.FontType)));
 
-            textRunSpan.FontWeight = FontWeight.FromOpenTypeWeight(context.Config.GetFontWeight(textRun.FontStyle, textRun.Weight));
+            textRunSpan.FontWeight = FontWeight.FromOpenTypeWeight(context.Config.GetFontWeight(textRun.FontType, textRun.Weight));
             
-            textRunSpan.FontSize = context.Config.GetFontSize(textRun.FontStyle, textRun.Size);
+            textRunSpan.FontSize = context.Config.GetFontSize(textRun.FontType, textRun.Size);
 
             if (textRun.Italic)
             {
