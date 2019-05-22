@@ -6,7 +6,7 @@ using Newtonsoft.Json.Serialization;
 namespace AdaptiveCards.Rendering
 {
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class FontStylesConfig
+    public class FontTypesConfig
     {
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public FontStyleConfig Default { get; set; } = new FontStyleConfig();
@@ -14,13 +14,13 @@ namespace AdaptiveCards.Rendering
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public FontStyleConfig Monospace { get; set; } = new FontStyleConfig();
 
-        public FontStyleConfig GetFontStyle(AdaptiveFontStyle fontStyle)
+        public FontStyleConfig GetFontType(AdaptiveFontType fontType)
         {
-            switch (fontStyle)
+            switch (fontType)
             {
-                case AdaptiveFontStyle.Monospace:
+                case AdaptiveFontType.Monospace:
                     return Monospace;
-                case AdaptiveFontStyle.Default:
+                case AdaptiveFontType.Default:
                 default:
                     return Default;
             }

@@ -69,14 +69,14 @@ void TextRun::SetTextWeight(const TextWeight value)
     m_textElementProperties->SetTextWeight(value);
 }
 
-FontStyle TextRun::GetFontStyle() const
+FontType TextRun::GetFontType() const
 {
-    return m_textElementProperties->GetFontStyle();
+    return m_textElementProperties->GetFontType();
 }
 
-void TextRun::SetFontStyle(const FontStyle value)
+void TextRun::SetFontType(const FontType value)
 {
-    m_textElementProperties->SetFontStyle(value);
+    m_textElementProperties->SetFontType(value);
 }
 
 ForegroundColor TextRun::GetTextColor() const

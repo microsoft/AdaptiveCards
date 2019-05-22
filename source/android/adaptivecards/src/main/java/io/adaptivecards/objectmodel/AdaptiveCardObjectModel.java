@@ -73,16 +73,16 @@ public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants
     return TextWeight.swigToEnum(AdaptiveCardObjectModelJNI.TextWeightFromString(t));
   }
 
-  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__FontStyle_t getFontStyleEnum() {
-    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__FontStyle_t(AdaptiveCardObjectModelJNI.getFontStyleEnum(), false);
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__FontType_t getFontTypeEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__FontType_t(AdaptiveCardObjectModelJNI.getFontTypeEnum(), false);
   }
 
-  public static String FontStyleToString(FontStyle t) {
-    return AdaptiveCardObjectModelJNI.FontStyleToString(t.swigValue());
+  public static String FontTypeToString(FontType t) {
+    return AdaptiveCardObjectModelJNI.FontTypeToString(t.swigValue());
   }
 
-  public static FontStyle FontStyleFromString(String t) {
-    return FontStyle.swigToEnum(AdaptiveCardObjectModelJNI.FontStyleFromString(t));
+  public static FontType FontTypeFromString(String t) {
+    return FontType.swigToEnum(AdaptiveCardObjectModelJNI.FontTypeFromString(t));
   }
 
   public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ForegroundColor_t getForegroundColorEnum() {
