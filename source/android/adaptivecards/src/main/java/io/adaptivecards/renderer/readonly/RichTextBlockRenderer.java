@@ -125,11 +125,11 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
                     paragraph.setSpan(new StyleSpan(Typeface.ITALIC), spanStart, spanEnd, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                 }
 
-                long textSize = TextRendererUtil.getTextSize(textRun.GetFontStyle(), textRun.GetTextSize(), hostConfig);
+                long textSize = TextRendererUtil.getTextSize(textRun.GetFontType(), textRun.GetTextSize(), hostConfig);
                 paragraph.setSpan(new AbsoluteSizeSpan((int)textSize, true), spanStart, spanEnd, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
 
                 // On API 28, TypefaceSpan(Typeface) was added so we don't have to use the TypefaceSpan(String) constructor
-                String fontName = hostConfig.GetFontFamily(textRun.GetFontStyle());
+                String fontName = hostConfig.GetFontFamily(textRun.GetFontType());
                 if (fontName.isEmpty())
                 {
                     fontName = "monospace";
