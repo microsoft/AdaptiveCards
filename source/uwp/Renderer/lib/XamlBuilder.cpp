@@ -2419,11 +2419,20 @@ namespace AdaptiveNamespace
             ComPtr<IShape> backgroundEllipseAsShape;
             RETURN_IF_FAILED(backgroundEllipse.As(&backgroundEllipseAsShape));
 
-            // Set the stretch for the ellipse - this is different to the stretch used for the image brush above.
-            // This will force the ellipse to conform to fit within the confines of its parent.
-            Stretch ellipseStretch = Stretch::Stretch_UniformToFill;
-            RETURN_IF_FAILED(ellipseAsShape->put_Stretch(ellipseStretch));
-            RETURN_IF_FAILED(backgroundEllipseAsShape->put_Stretch(ellipseStretch));
+            if (size == ABI::AdaptiveNamespace::ImageSize::None || size == ABI::AdaptiveNamespace::ImageSize::Stretch ||
+                size == ABI::AdaptiveNamespace::ImageSize::Auto || hasExplicitMeasurements)
+            {
+                RETURN_IF_FAILED(ellipseAsShape->put_Stretch(imageStretch));
+                RETURN_IF_FAILED(backgroundEllipseAsShape->put_Stretch(imageStretch));
+            }
+            else
+            {
+                // Set the stretch for the ellipse - this is different to the stretch used for the image brush above.
+                // This will force the ellipse to conform to fit within the confines of its parent.
+                Stretch ellipseStretch = Stretch::Stretch_UniformToFill;
+                RETURN_IF_FAILED(ellipseAsShape->put_Stretch(ellipseStretch));
+                RETURN_IF_FAILED(backgroundEllipseAsShape->put_Stretch(ellipseStretch));
+            }
 
             if (backgroundColor != nullptr)
             {
@@ -2504,68 +2513,68 @@ namespace AdaptiveNamespace
         {
             if (pixelWidth)
             {
-                RETURN_IF_FAILED(frameworkElement->put_MaxWidth(pixelWidth));
+                if (imageStyle == ImageStyle_Person)
+                {
+                    RETURN_IF_FAILED(frameworkElement->put_Width(pixelWidth));
+                }
+                else
+                {
+                    RETURN_IF_FAILED(frameworkElement->put_MaxWidth(pixelWidth));
+                }
             }
 
             if (pixelHeight)
             {
-                RETURN_IF_FAILED(frameworkElement->put_MaxHeight(pixelHeight));
+                if (imageStyle == ImageStyle_Person)
+                {
+                    RETURN_IF_FAILED(frameworkElement->put_Height(pixelHeight));
+                }
+                else
+                {
+                    RETURN_IF_FAILED(frameworkElement->put_MaxHeight(pixelHeight));
+                }
             }
         }
         else
         {
-            switch (size)
-            {
-            case ABI::AdaptiveNamespace::ImageSize::Small:
+            if (size == ABI::AdaptiveNamespace::ImageSize::Small || size == ABI::AdaptiveNamespace::ImageSize::Medium ||
+                size == ABI::AdaptiveNamespace::ImageSize::Large)
             {
                 UINT32 imageSize;
-                RETURN_IF_FAILED(sizeOptions->get_Small(&imageSize));
+                switch (size)
+                {
+                case ABI::AdaptiveNamespace::ImageSize::Small:
+                {
+                    RETURN_IF_FAILED(sizeOptions->get_Small(&imageSize));
+                    break;
+                }
+
+                case ABI::AdaptiveNamespace::ImageSize::Medium:
+                {
+                    RETURN_IF_FAILED(sizeOptions->get_Medium(&imageSize));
+                    break;
+                }
+
+                case ABI::AdaptiveNamespace::ImageSize::Large:
+                {
+                    RETURN_IF_FAILED(sizeOptions->get_Large(&imageSize));
+
+                    break;
+                }
+                default:
+                {
+                    return E_UNEXPECTED;
+                }
+                }
 
                 RETURN_IF_FAILED(frameworkElement->put_MaxWidth(imageSize));
 
                 // We don't want to set a max height on the person ellipse as ellipses do not understand preserving
-                // aspect ratio when constrained on both axes. In adaptive cards person images will always be 1:1 aspect
-                // ratio and will always be width constrained (as you can't limit heights in adaptive cards) so only
-                // setting MaxWidth is ok.
+                // aspect ratio when constrained on both axes.
                 if (imageStyle != ImageStyle_Person)
+                {
                     RETURN_IF_FAILED(frameworkElement->put_MaxHeight(imageSize));
-
-                break;
-            }
-
-            case ABI::AdaptiveNamespace::ImageSize::Medium:
-            {
-                UINT32 imageSize;
-                RETURN_IF_FAILED(sizeOptions->get_Medium(&imageSize));
-
-                RETURN_IF_FAILED(frameworkElement->put_MaxWidth(imageSize));
-
-                // We don't want to set a max height on the person ellipse as ellipses do not understand preserving
-                // aspect ratio when constrained on both axes. In adaptive cards person images will always be 1:1 aspect
-                // ratio and will always be width constrained (as you can't limit heights in adaptive cards) so only
-                // setting MaxWidth is ok.
-                if (imageStyle != ImageStyle_Person)
-                    RETURN_IF_FAILED(frameworkElement->put_MaxHeight(imageSize));
-
-                break;
-            }
-
-            case ABI::AdaptiveNamespace::ImageSize::Large:
-            {
-                UINT32 imageSize;
-                RETURN_IF_FAILED(sizeOptions->get_Large(&imageSize));
-
-                RETURN_IF_FAILED(frameworkElement->put_MaxWidth(imageSize));
-
-                // We don't want to set a max height on the person ellipse as ellipses do not understand preserving
-                // aspect ratio when constrained on both axes. In adaptive cards person images will always be 1:1 aspect
-                // ratio and will always be width constrained (as you can't limit heights in adaptive cards) so only
-                // setting MaxWidth is ok.
-                if (imageStyle != ImageStyle_Person)
-                    RETURN_IF_FAILED(frameworkElement->put_MaxHeight(imageSize));
-
-                break;
-            }
+                }
             }
         }
 

@@ -99,7 +99,7 @@ namespace UWPUnitTests
             AdaptiveTextBlock textBlock = new AdaptiveTextBlock
             {
                 Color = ForegroundColor.Accent,
-                FontStyle = FontStyle.Monospace,
+                FontType = FontType.Monospace,
                 Height = HeightType.Stretch,
                 HorizontalAlignment = HAlignment.Center,
                 Id = "TextBlockId",
@@ -120,7 +120,7 @@ namespace UWPUnitTests
             ValidateBaseElementProperties(textBlock, "TextBlockId", false, true, Spacing.Large, HeightType.Stretch);
 
             Assert.AreEqual(ForegroundColor.Accent, textBlock.Color);
-            Assert.AreEqual(FontStyle.Monospace, textBlock.FontStyle);
+            Assert.AreEqual(FontType.Monospace, textBlock.FontType);
             Assert.AreEqual(HAlignment.Center, textBlock.HorizontalAlignment);
             Assert.IsTrue(textBlock.IsSubtle);
             Assert.IsTrue(textBlock.Italic);
@@ -133,7 +133,7 @@ namespace UWPUnitTests
             Assert.IsTrue(textBlock.Wrap);
 
             var jsonString = textBlock.ToJson().ToString();
-            Assert.AreEqual("{\"color\":\"Accent\",\"fontStyle\":\"Monospace\",\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"TextBlockId\",\"isSubtle\":true,\"isVisible\":false,\"italic\":true,\"maxLines\":3,\"separator\":true,\"size\":\"Large\",\"spacing\":\"large\",\"strikethrough\":true,\"text\":\"This is a text block\",\"type\":\"TextBlock\",\"weight\":\"Bolder\",\"wrap\":true}", jsonString);
+            Assert.AreEqual("{\"color\":\"Accent\",\"fontType\":\"Monospace\",\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"TextBlockId\",\"isSubtle\":true,\"isVisible\":false,\"italic\":true,\"maxLines\":3,\"separator\":true,\"size\":\"Large\",\"spacing\":\"large\",\"strikethrough\":true,\"text\":\"This is a text block\",\"type\":\"TextBlock\",\"weight\":\"Bolder\",\"wrap\":true}", jsonString);
         }
 
         [TestMethod]
@@ -768,7 +768,7 @@ namespace UWPUnitTests
             AdaptiveTextRun textRun1 = new AdaptiveTextRun
             {
                 Color = ForegroundColor.Accent,
-                FontStyle = FontStyle.Monospace,
+                FontType = FontType.Monospace,
                 Highlight = true,
                 IsSubtle = true,
                 Italic = true,
@@ -780,7 +780,7 @@ namespace UWPUnitTests
             };
 
             Assert.AreEqual(ForegroundColor.Accent, textRun1.Color);
-            Assert.AreEqual(FontStyle.Monospace, textRun1.FontStyle);
+            Assert.AreEqual(FontType.Monospace, textRun1.FontType);
             Assert.IsTrue(textRun1.Highlight);
             Assert.IsTrue(textRun1.IsSubtle);
             Assert.IsTrue(textRun1.Italic);
@@ -823,7 +823,7 @@ namespace UWPUnitTests
             Assert.AreEqual("This is text run number 3", (richTextBlock.Inlines[2] as AdaptiveTextRun).Text);
 
             var jsonString = richTextBlock.ToJson().ToString();
-            Assert.AreEqual("{\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"RichTextBlockId\",\"inlines\":[{\"color\":\"Accent\",\"fontStyle\":\"Monospace\",\"highlight\":true,\"isSubtle\":true,\"italic\":true,\"selectAction\":{\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"size\":\"Large\",\"strikethrough\":true,\"text\":\"This is text run number 1\",\"type\":\"TextRun\",\"weight\":\"Bolder\"},{\"text\":\"This is text run number 2\",\"type\":\"TextRun\"},{\"text\":\"This is text run number 3\",\"type\":\"TextRun\"}],\"isVisible\":false,\"separator\":true,\"spacing\":\"large\",\"type\":\"RichTextBlock\"}", jsonString);
+            Assert.AreEqual("{\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"RichTextBlockId\",\"inlines\":[{\"color\":\"Accent\",\"fontType\":\"Monospace\",\"highlight\":true,\"isSubtle\":true,\"italic\":true,\"selectAction\":{\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"size\":\"Large\",\"strikethrough\":true,\"text\":\"This is text run number 1\",\"type\":\"TextRun\",\"weight\":\"Bolder\"},{\"text\":\"This is text run number 2\",\"type\":\"TextRun\"},{\"text\":\"This is text run number 3\",\"type\":\"TextRun\"}],\"isVisible\":false,\"separator\":true,\"spacing\":\"large\",\"type\":\"RichTextBlock\"}", jsonString);
         }
     }
 }

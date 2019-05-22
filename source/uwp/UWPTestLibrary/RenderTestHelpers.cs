@@ -101,11 +101,6 @@ namespace UWPTestLibrary
                             renderer.SetFixedDimensions(320, 180);
                             cardWidth = 320;
                         }
-                        else if (hostConfigFile.Name.Contains("windows-live-tile"))
-                        {
-                            renderer.SetFixedDimensions(310, 310);
-                            cardWidth = 310;
-                        }
 
                         RenderedAdaptiveCard renderedCard = renderer.RenderAdaptiveCard(card);
                         weakRefCard = new WeakReference(renderedCard);

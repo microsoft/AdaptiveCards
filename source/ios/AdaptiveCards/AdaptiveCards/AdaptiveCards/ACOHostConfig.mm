@@ -36,8 +36,8 @@ using namespace AdaptiveCards;
         _fontFamilyNames = [NSMutableDictionary dictionary];
 
         // check if requested font family name is supported by iOS, if so save it for future uses
-        [self importFontFamily: AdaptiveCards::FontStyle::Default];
-        [self importFontFamily: AdaptiveCards::FontStyle::Monospace];
+        [self importFontFamily: AdaptiveCards::FontType::Default];
+        [self importFontFamily: AdaptiveCards::FontType::Monospace];
 
         _allActionsHaveIcons = YES;
         _buttonPadding = 5;
@@ -49,11 +49,11 @@ using namespace AdaptiveCards;
     return self;
 }
 
-- (void) importFontFamily:(AdaptiveCards::FontStyle)style
+- (void) importFontFamily:(AdaptiveCards::FontType)type
 {
-    NSString *requestedFontFamilyName = [NSString stringWithCString:_config->GetFontFamily(style).c_str() encoding:NSUTF8StringEncoding];
+    NSString *requestedFontFamilyName = [NSString stringWithCString:_config->GetFontFamily(type).c_str() encoding:NSUTF8StringEncoding];
     if([UIFont.familyNames containsObject:requestedFontFamilyName]){
-        NSString *key = [NSString stringWithCString:FontStyleToString(style).c_str() encoding:NSUTF8StringEncoding];
+        NSString *key = [NSString stringWithCString:FontTypeToString(type).c_str() encoding:NSUTF8StringEncoding];
         _fontFamilyNames[key] = requestedFontFamilyName;
     }
 }
@@ -127,10 +127,10 @@ using namespace AdaptiveCards;
     return [ACOHostConfig convertHexColorCodeToUIColor:str];
 }
 
-- (int)getTextBlockTextSize:(FontStyle)style
+- (int)getTextBlockTextSize:(FontType)type
                    textSize:(TextSize)txtSz
 {
-    return _config->GetFontSize(style, txtSz);
+    return _config->GetFontSize(type, txtSz);
 }
 
 + (NSTextAlignment)getTextBlockAlignment:(HorizontalAlignment) alignment
@@ -159,10 +159,10 @@ using namespace AdaptiveCards;
     }
 }
 
-- (int)getTextBlockFontWeight:(FontStyle) style
+- (int)getTextBlockFontWeight:(FontType) type
                    textWeight:(TextWeight)weight
 {
-    return _config->GetFontWeight(style, weight);
+    return _config->GetFontWeight(type, weight);
 }
 
 - (CGSize)getImageSize:(ImageSize)imageSize
@@ -400,9 +400,9 @@ using namespace AdaptiveCards;
     return containerStyle;
 }
 
-- (NSString *)getFontFamily:(AdaptiveCards::FontStyle)style
+- (NSString *)getFontFamily:(AdaptiveCards::FontType)type
 {
-    NSString *key = [NSString stringWithCString:FontStyleToString(style).c_str() encoding:NSUTF8StringEncoding];
+    NSString *key = [NSString stringWithCString:FontTypeToString(type).c_str() encoding:NSUTF8StringEncoding];
     return _fontFamilyNames[key];
 }
 
