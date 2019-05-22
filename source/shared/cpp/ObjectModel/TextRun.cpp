@@ -6,7 +6,7 @@
 using namespace AdaptiveSharedNamespace;
 
 TextRun::TextRun() :
-    Inline(InlineElementType::TextRun), m_textElementProperties(std::make_shared<TextElementProperties>()), m_highlight(false)
+    Inline(InlineElementType::TextRun), m_textElementProperties(std::make_shared<RichTextElementProperties>()), m_highlight(false)
 {
     PopulateKnownPropertiesSet();
 }
@@ -69,14 +69,14 @@ void TextRun::SetTextWeight(const TextWeight value)
     m_textElementProperties->SetTextWeight(value);
 }
 
-FontStyle TextRun::GetFontStyle() const
+FontType TextRun::GetFontType() const
 {
-    return m_textElementProperties->GetFontStyle();
+    return m_textElementProperties->GetFontType();
 }
 
-void TextRun::SetFontStyle(const FontStyle value)
+void TextRun::SetFontType(const FontType value)
 {
-    m_textElementProperties->SetFontStyle(value);
+    m_textElementProperties->SetFontType(value);
 }
 
 ForegroundColor TextRun::GetTextColor() const

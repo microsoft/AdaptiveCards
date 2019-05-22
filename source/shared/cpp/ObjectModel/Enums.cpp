@@ -54,10 +54,11 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Facts, "facts"},
             {AdaptiveCardSchemaKey::Fallback, "fallback"},
             {AdaptiveCardSchemaKey::FallbackText, "fallbackText"},
+            {AdaptiveCardSchemaKey::FillMode, "fillMode"},
             {AdaptiveCardSchemaKey::FontFamily, "fontFamily"},
             {AdaptiveCardSchemaKey::FontSizes, "fontSizes"},
-            {AdaptiveCardSchemaKey::FontStyle, "fontStyle"},
-            {AdaptiveCardSchemaKey::FontStyles, "fontStyles"},
+            {AdaptiveCardSchemaKey::FontType, "fontType"},
+            {AdaptiveCardSchemaKey::FontTypes, "fontTypes"},
             {AdaptiveCardSchemaKey::FontWeights, "fontWeights"},
             {AdaptiveCardSchemaKey::ForegroundColor, "foregroundColor"},
             {AdaptiveCardSchemaKey::ForegroundColors, "foregroundColors"},
@@ -107,7 +108,6 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::MimeType, "mimeType"},
             {AdaptiveCardSchemaKey::Min, "min"},
             {AdaptiveCardSchemaKey::MinHeight, "minHeight"},
-            {AdaptiveCardSchemaKey::Mode, "mode"},
             {AdaptiveCardSchemaKey::Monospace, "monospace"},
             {AdaptiveCardSchemaKey::NumberInput, "numberInput"},
             {AdaptiveCardSchemaKey::Padding, "padding"},
@@ -223,11 +223,11 @@ namespace AdaptiveSharedNamespace
         { VerticalAlignment::Center, "center" },
         { VerticalAlignment::Bottom, "bottom" }});
 
-    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(BackgroundImageMode, BackgroundImageMode::Stretch, {
-        { BackgroundImageMode::Stretch, "stretch" },
-        { BackgroundImageMode::RepeatHorizontally, "repeatHorizontally" },
-        { BackgroundImageMode::RepeatVertically, "repeatVertically" },
-        { BackgroundImageMode::Repeat, "repeat" }});
+    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ImageFillMode, ImageFillMode::Cover, {
+        { ImageFillMode::Cover, "cover" },
+        { ImageFillMode::RepeatHorizontally, "repeatHorizontally" },
+        { ImageFillMode::RepeatVertically, "repeatVertically" },
+        { ImageFillMode::Repeat, "repeat" }});
 
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ImageSize, ImageSize::Auto, {
             {ImageSize::Auto, "Auto"},
@@ -272,9 +272,9 @@ namespace AdaptiveSharedNamespace
                 {"Normal", TextSize::Default} // Back compat to support "Normal" for "Default" for pre V1.0 payloads
             }});
 
-    DEFINE_ADAPTIVECARD_ENUM(FontStyle, {
-            {FontStyle::Default, "Default"},
-            {FontStyle::Monospace, "Monospace"}});
+    DEFINE_ADAPTIVECARD_ENUM(FontType, {
+            {FontType::Default, "Default"},
+            {FontType::Monospace, "Monospace"}});
 
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ActionsOrientation, ActionsOrientation::Horizontal, {
             {ActionsOrientation::Horizontal, "Horizontal"},

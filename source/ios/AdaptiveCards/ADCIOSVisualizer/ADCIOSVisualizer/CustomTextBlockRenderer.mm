@@ -38,7 +38,7 @@
     {
         .weight = textBlockElement->GetTextWeight(),
         .size = textBlockElement->GetTextSize(),
-        .style = textBlockElement->GetFontStyle(),
+        .fontType = textBlockElement->GetFontType(),
         .color = textBlockElement->GetTextColor(),
         .isSubtle = textBlockElement->GetIsSubtle(),
         .wrap = textBlockElement->GetWrap()
@@ -52,14 +52,14 @@
     parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
 
     // if correctly initialized, fontFamilyNames array is bigger than zero
-    NSString *fontFamilyName = [acoConfig getFontFamily:textConfigForBlock.style];
+    NSString *fontFamilyName = [acoConfig getFontFamily:textConfigForBlock.fontType];
  
     // Font and text size are applied as CSS style by appending it to the html string
     parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: %@; font-size:%dpx; font-weight: %d;}</style>",
                                                           fontFamilyName,
-                                                          [acoConfig getTextBlockTextSize:textConfigForBlock.style
+                                                          [acoConfig getTextBlockTextSize:textConfigForBlock.fontType
                                                                                  textSize:textConfigForBlock.size],
-                                                          [acoConfig getTextBlockFontWeight:textConfigForBlock.style
+                                                          [acoConfig getTextBlockFontWeight:textConfigForBlock.fontType
                                                                                  textWeight:textConfigForBlock.weight]]];
     // Convert html string to NSMutableAttributedString, NSAttributedString knows how to apply html tags
     NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];

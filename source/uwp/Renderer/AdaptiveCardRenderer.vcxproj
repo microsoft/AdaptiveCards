@@ -121,7 +121,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="lib\AdaptiveHighlightColorConfig.cpp" />
-    <ClCompile Include="lib\XamlHelpers.cpp" />
+    <ClCompile Include="lib\ElementTagContent.cpp" />
     <ClInclude Include="lib\AdaptiveActionElement.h" />
     <ClInclude Include="lib\AdaptiveActionInvoker.h" />
     <ClInclude Include="lib\AdaptiveActionParserRegistration.h" />
@@ -140,8 +140,8 @@
     <ClInclude Include="lib\AdaptiveCardResourceResolvers.h" />
     <ClInclude Include="lib\AdaptiveError.h" />
     <ClInclude Include="lib\AdaptiveFeatureRegistration.h" />
-    <ClInclude Include="lib\AdaptiveFontStyleDefinition.h" />
-    <ClInclude Include="lib\AdaptiveFontStylesDefinition.h" />
+    <ClInclude Include="lib\AdaptiveFontTypeDefinition.h" />
+    <ClInclude Include="lib\AdaptiveFontTypesDefinition.h" />
     <ClInclude Include="lib\AdaptiveHighlightColorConfig.h" />
     <ClInclude Include="lib\AdaptiveHostConfigParseResult.h" />
     <ClInclude Include="lib\AdaptiveCardParseResult.h" />
@@ -190,6 +190,7 @@
     <ClInclude Include="lib\CustomActionWrapper.h" />
     <ClInclude Include="lib\CustomElementWrapper.h" />
     <ClInclude Include="lib\DateTimeParser.h" />
+    <ClInclude Include="lib\ElementTagContent.h" />
     <ClInclude Include="lib\TextHelpers.h" />
     <ClInclude Include="lib\InputValue.h" />
     <ClInclude Include="lib\MediaHelpers.h" />
@@ -239,8 +240,8 @@
     <ClCompile Include="lib\AdaptiveActionRendererRegistration.cpp" />
     <ClCompile Include="lib\AdaptiveBackgroundImage.cpp" />
     <ClCompile Include="lib\AdaptiveFeatureRegistration.cpp" />
-    <ClCompile Include="lib\AdaptiveFontStyleDefinition.cpp" />
-    <ClCompile Include="lib\AdaptiveFontStylesDefinition.cpp" />
+    <ClCompile Include="lib\AdaptiveFontTypeDefinition.cpp" />
+    <ClCompile Include="lib\AdaptiveFontTypesDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveMedia.cpp" />
     <ClCompile Include="lib\AdaptiveMediaConfig.cpp" />
     <ClCompile Include="lib\AdaptiveMediaEventInvoker.cpp" />

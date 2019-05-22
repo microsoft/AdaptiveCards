@@ -9,21 +9,21 @@ using namespace AdaptiveCards;
 
 namespace AdaptiveCardsSharedModelUnitTest
 {
-    TEST_CLASS(FontStyle)
+    TEST_CLASS(FontType)
     {
     public:
         TEST_METHOD(DefineFromEmptyConstructor)
         {
             TextBlock emptyTB;
-            Assert::IsTrue(emptyTB.GetFontStyle() == AdaptiveCards::FontStyle::Default);
+            Assert::IsTrue(emptyTB.GetFontType() == AdaptiveCards::FontType::Default);
 
-            // Set FontStyle to Display
-            emptyTB.SetFontStyle(AdaptiveCards::FontStyle::Default);
-            Assert::IsTrue(emptyTB.GetFontStyle() == AdaptiveCards::FontStyle::Default);
+            // Set FontType to Display
+            emptyTB.SetFontType(AdaptiveCards::FontType::Default);
+            Assert::IsTrue(emptyTB.GetFontType() == AdaptiveCards::FontType::Default);
 
-            // Set FontStyle to Monospace
-            emptyTB.SetFontStyle(AdaptiveCards::FontStyle::Monospace);
-            Assert::IsTrue(emptyTB.GetFontStyle() == AdaptiveCards::FontStyle::Monospace);
+            // Set FontType to Monospace
+            emptyTB.SetFontType(AdaptiveCards::FontType::Monospace);
+            Assert::IsTrue(emptyTB.GetFontType() == AdaptiveCards::FontType::Monospace);
         }
 
         TEST_METHOD(EmptyTextBlockSerialization)
@@ -37,7 +37,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             TextBlockParser parser;
             auto parsedObject = parser.DeserializeFromString(context, json_data);
 
-            Assert::IsTrue(emptyTB.GetFontStyle() == std::dynamic_pointer_cast<TextBlock>(parsedObject)->GetFontStyle());
+            Assert::IsTrue(emptyTB.GetFontType() == std::dynamic_pointer_cast<TextBlock>(parsedObject)->GetFontType());
         }
     };
 }

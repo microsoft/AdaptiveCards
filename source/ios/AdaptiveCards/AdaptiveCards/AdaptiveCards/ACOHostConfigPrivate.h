@@ -21,13 +21,13 @@ using namespace AdaptiveCards;
 
 + (NSNumber *)getTextStrokeWidthForWeight:(TextWeight)weight;
 
-- (int)getTextBlockFontWeight:(FontStyle) style
+- (int)getTextBlockFontWeight:(FontType) type
                    textWeight:(TextWeight)weight;
 
-- (int)getTextBlockTextSize:(FontStyle) style
+- (int)getTextBlockTextSize:(FontType) type
                  textSize:(TextSize)txtSz;
 
-- (NSString *)getFontFamily:(AdaptiveCards::FontStyle)style;
+- (NSString *)getFontFamily:(AdaptiveCards::FontType)type;
 
 - (UIColor *)getTextBlockColor:(ACRContainerStyle)style
                      textColor:(ForegroundColor)txtClr

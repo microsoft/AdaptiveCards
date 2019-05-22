@@ -95,7 +95,11 @@ void Column::GetResourceInformation(std::vector<RemoteResourceInformation>& reso
 void Column::DeserializeChildren(ParseContext& context, const Json::Value& value)
 {
     // Parse Items
-    auto cardElements = ParseUtil::GetElementCollection(context, value, AdaptiveCardSchemaKey::Items, false);
+    auto cardElements = ParseUtil::GetElementCollection<BaseCardElement>(true, // isTopToBottomContainer
+                                                                         context,
+                                                                         value,
+                                                                         AdaptiveCardSchemaKey::Items,
+                                                                         false); // isRequired
     m_items = std::move(cardElements);
 }
 

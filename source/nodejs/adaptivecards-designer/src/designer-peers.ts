@@ -396,7 +396,7 @@ export abstract class DesignerPeer extends DraggableElement {
     onPeerRemoved: (sender: DesignerPeer) => void;
     onPeerAdded: (sender: DesignerPeer, newPeer: DesignerPeer) => void;
 
-    abstract getCardObjectTypeName(): string;
+    abstract getCardObject(): Adaptive.CardObject;
     abstract internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean);
 
     constructor(designerSurface: CardDesignerSurface, registration: DesignerPeerRegistrationBase) {
@@ -414,8 +414,12 @@ export abstract class DesignerPeer extends DraggableElement {
     abstract getBoundingRect(): Rect;
     abstract getCardObjectBoundingRect(): Rect;
 
-    getTreeItemText(): string {
+    protected internalGetTreeItemText(): string {
         return null;
+    }
+
+    getTreeItemText(): string {
+        return this.internalGetTreeItemText();
     }
 
     canDrop(peer: DesignerPeer): boolean {
@@ -550,6 +554,16 @@ export abstract class DesignerPeer extends DraggableElement {
         return result;
     }
 
+    scrollIntoView() {
+        if (this.renderedElement) {
+            this.renderedElement.scrollIntoView();
+        }
+
+        if (this.treeItem && this.treeItem.renderedElement) {
+            this.treeItem.renderedElement.scrollIntoView();
+        }
+    }
+
     get isSelected(): boolean {
         return this._isSelected;
     }
@@ -587,17 +601,17 @@ export class ActionPeer extends DesignerPeer {
         this._action = action;
     }
 
-    getCardObjectTypeName(): string {
-        return this.action.getJsonTypeName();
-    }
-
-    getTreeItemText(): string {
+    protected internalGetTreeItemText(): string {
         if (this.action.title && this.action.title != "") {
             return this.action.title;
         }
         else {
-            return super.getTreeItemText();
+            return super.internalGetTreeItemText();
         }
+    }
+
+    getCardObject(): Adaptive.CardObject {
+        return this.action;
     }
 
     isDraggable(): boolean {
@@ -803,6 +817,9 @@ export class ShowCardActionPeer extends TypedActionPeer<Adaptive.ShowCardAction>
     }
 }
 
+export class ToggleVisibilityActionPeer extends TypedActionPeer<Adaptive.ToggleVisibilityAction> {
+}
+
 export class CardElementPeer extends DesignerPeer {
     protected _cardElement: Adaptive.CardElement;
 
@@ -916,6 +933,17 @@ export class CardElementPeer extends DesignerPeer {
         }
     }
 
+    protected internalUpdateCssStyles() {
+        super.internalUpdateCssStyles();
+
+        if (this.cardElement.isVisible) {
+            this.renderedElement.classList.remove("invisible");
+        }
+        else {
+            this.renderedElement.classList.add("invisible");
+        }
+    }
+    
     constructor(designerSurface: CardDesignerSurface, registration: DesignerPeerRegistrationBase, cardElement: Adaptive.CardElement) {
         super(designerSurface, registration);
 
@@ -932,8 +960,25 @@ export class CardElementPeer extends DesignerPeer {
         }
     }
 
-    getCardObjectTypeName(): string {
-        return this.cardElement.getJsonTypeName();
+    getTreeItemText(): string {
+        let text = super.getTreeItemText();
+        
+        if (this.cardElement.isVisible) {
+            return text;
+        }
+        else {
+            let result = "Hidden";
+            
+            if (text) {
+                result += " - " + text;
+            }
+
+            return result;
+        }
+    }
+
+    getCardObject(): Adaptive.CardObject {
+        return this.cardElement;
     }
 
     initializeCardElement() {
@@ -1285,7 +1330,7 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
         return true;
     }
 
-    getTreeItemText(): string {
+    protected internalGetTreeItemText(): string {
         if (this.cardElement.width instanceof Adaptive.SizeAndUnit) {
             switch (this.cardElement.width.unit) {
                 case Adaptive.SizeUnit.Weight:
@@ -1486,7 +1531,7 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
         );
     }
 
-    getTreeItemText(): string {
+    protected internalGetTreeItemText(): string {
         let columnCount = this.cardElement.getCount();
 
         switch (columnCount) {
@@ -1907,7 +1952,7 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
 }
 
 export class MediaPeer extends TypedCardElementPeer<Adaptive.Media> {
-    getTreeItemText(): string {
+    protected internalGetTreeItemText(): string {
         if (this.cardElement.selectedMediaType == "audio") {
             return "audio";
         }
@@ -1915,7 +1960,7 @@ export class MediaPeer extends TypedCardElementPeer<Adaptive.Media> {
             return "video";
         }
         else {
-            return super.getTreeItemText();
+            return super.internalGetTreeItemText();
         }
     }
 
@@ -1970,16 +2015,7 @@ export class FactSetPeer extends TypedCardElementPeer<Adaptive.FactSet> {
         return [ "horizontalAlignment" ];
     }
 
-    initializeCardElement() {
-        super.initializeCardElement();
-
-        this.cardElement.facts.push(
-            new Adaptive.Fact("Fact 1", "Value 1"),
-            new Adaptive.Fact("Fact 2", "Value 2")
-        );
-    }
-
-    getTreeItemText(): string {
+    protected internalGetTreeItemText(): string {
         if (this.cardElement.facts.length == 0) {
             return "No fact";
         }
@@ -1991,6 +2027,15 @@ export class FactSetPeer extends TypedCardElementPeer<Adaptive.FactSet> {
         )
 
         return allNames.join(", ");
+    }
+
+    initializeCardElement() {
+        super.initializeCardElement();
+
+        this.cardElement.facts.push(
+            new Adaptive.Fact("Fact 1", "Value 1"),
+            new Adaptive.Fact("Fact 2", "Value 2")
+        );
     }
 
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
@@ -2032,15 +2077,6 @@ export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCard
         title.input.defaultValue = this.cardElement.title;
         title.input.onValueChanged = () => {
             this.cardElement.title = title.input.value;
-
-            this.changed(false);
-        }
-
-        let defaultValue = addLabelAndInput(card, "Default value:", Adaptive.TextInput);
-        defaultValue.input.placeholder = "(not set)";
-        defaultValue.input.defaultValue = this.cardElement.defaultValue;
-        defaultValue.input.onValueChanged = () => {
-            this.cardElement.defaultValue = defaultValue.input.value;
 
             this.changed(false);
         }
@@ -2138,6 +2174,15 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
             inlineActionPeer.internalAddPropertySheetEntries(card, false);
             inlineActionPeer.onChanged = (sender: DesignerPeer, updatePropertySheet: boolean) => { this.changed(updatePropertySheet); };
         }
+
+        let defaultValue = addLabelAndInput(card, "Default value:", Adaptive.TextInput);
+        defaultValue.input.placeholder = "(not set)";
+        defaultValue.input.defaultValue = this.cardElement.defaultValue;
+        defaultValue.input.onValueChanged = () => {
+            this.cardElement.defaultValue = defaultValue.input.value;
+
+            this.changed(false);
+        }
     }
 }
 
@@ -2151,7 +2196,7 @@ export class NumberInputPeer extends InputPeer<Adaptive.NumberInput> {
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.internalAddPropertySheetEntries(card, includeHeader);
 
-        var placeholder = addLabelAndInput(card, "Placeholder:", Adaptive.TextInput);
+        let placeholder = addLabelAndInput(card, "Placeholder:", Adaptive.TextInput);
         placeholder.input.placeholder = "(not set)";
         placeholder.input.defaultValue = this.cardElement.placeholder;
         placeholder.input.onValueChanged = () => {
@@ -2160,7 +2205,16 @@ export class NumberInputPeer extends InputPeer<Adaptive.NumberInput> {
             this.changed(false);
         }
 
-        var min = addLabelAndInput(card, "Minimum value:", Adaptive.NumberInput);
+        let defaultValue = addLabelAndInput(card, "Default value:", Adaptive.TextInput);
+        defaultValue.input.placeholder = "(not set)";
+        defaultValue.input.defaultValue = this.cardElement.defaultValue;
+        defaultValue.input.onValueChanged = () => {
+            this.cardElement.defaultValue = defaultValue.input.value;
+
+            this.changed(false);
+        }
+
+        let min = addLabelAndInput(card, "Minimum value:", Adaptive.TextInput);
         min.input.placeholder = "(not set)";
         min.input.defaultValue = this.cardElement.min;
         min.input.onValueChanged = () => {
@@ -2169,7 +2223,7 @@ export class NumberInputPeer extends InputPeer<Adaptive.NumberInput> {
             this.changed(false);
         }
 
-        var max = addLabelAndInput(card, "Maximum value:", Adaptive.NumberInput);
+        let max = addLabelAndInput(card, "Maximum value:", Adaptive.TextInput);
         max.input.placeholder = "(not set)";
         max.input.defaultValue = this.cardElement.max;
         max.input.onValueChanged = () => {
@@ -2181,16 +2235,76 @@ export class NumberInputPeer extends InputPeer<Adaptive.NumberInput> {
 }
 
 export class DateInputPeer extends InputPeer<Adaptive.DateInput> {
+    internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
+        super.internalAddPropertySheetEntries(card, includeHeader);
+
+        let defaultValue = addLabelAndInput(card, "Default value:", Adaptive.TextInput);
+        defaultValue.input.placeholder = "(not set)";
+        defaultValue.input.defaultValue = this.cardElement.defaultValue;
+        defaultValue.input.onValueChanged = () => {
+            this.cardElement.defaultValue = defaultValue.input.value;
+
+            this.changed(false);
+        }
+
+        let min = addLabelAndInput(card, "Minimum value:", Adaptive.TextInput);
+        min.input.placeholder = "(not set)";
+        min.input.defaultValue = this.cardElement.min;
+        min.input.onValueChanged = () => {
+            this.cardElement.min = min.input.value;
+
+            this.changed(false);
+        }
+
+        let max = addLabelAndInput(card, "Maximum value:", Adaptive.TextInput);
+        max.input.placeholder = "(not set)";
+        max.input.defaultValue = this.cardElement.max;
+        max.input.onValueChanged = () => {
+            this.cardElement.max = max.input.value;
+
+            this.changed(false);
+        }
+    }
 }
 
 export class TimeInputPeer extends InputPeer<Adaptive.TimeInput> {
+    internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
+        super.internalAddPropertySheetEntries(card, includeHeader);
+
+        let defaultValue = addLabelAndInput(card, "Default value:", Adaptive.TextInput);
+        defaultValue.input.placeholder = "(not set)";
+        defaultValue.input.defaultValue = this.cardElement.defaultValue;
+        defaultValue.input.onValueChanged = () => {
+            this.cardElement.defaultValue = defaultValue.input.value;
+
+            this.changed(false);
+        }
+
+        let min = addLabelAndInput(card, "Minimum value:", Adaptive.TextInput);
+        min.input.placeholder = "(not set)";
+        min.input.defaultValue = this.cardElement.min;
+        min.input.onValueChanged = () => {
+            this.cardElement.min = min.input.value;
+
+            this.changed(false);
+        }
+
+        let max = addLabelAndInput(card, "Maximum value:", Adaptive.TextInput);
+        max.input.placeholder = "(not set)";
+        max.input.defaultValue = this.cardElement.max;
+        max.input.onValueChanged = () => {
+            this.cardElement.max = max.input.value;
+
+            this.changed(false);
+        }
+    }
 }
 
 export class ToggleInputPeer extends InputPeer<Adaptive.ToggleInput> {
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.internalAddPropertySheetEntries(card, includeHeader);
 
-        var valueOn = addLabelAndInput(card, "Value when on:", Adaptive.TextInput);
+        let valueOn = addLabelAndInput(card, "Value when on:", Adaptive.TextInput);
         valueOn.input.placeholder = "(not set)";
         valueOn.input.defaultValue = this.cardElement.valueOn;
         valueOn.input.onValueChanged = () => {
@@ -2199,7 +2313,7 @@ export class ToggleInputPeer extends InputPeer<Adaptive.ToggleInput> {
             this.changed(false);
         }
 
-        var valueOff = addLabelAndInput(card, "Value when off:", Adaptive.TextInput);
+        let valueOff = addLabelAndInput(card, "Value when off:", Adaptive.TextInput);
         valueOff.input.placeholder = "(not set)";
         valueOff.input.defaultValue = this.cardElement.valueOff;
         valueOff.input.onValueChanged = () => {
@@ -2212,6 +2326,15 @@ export class ToggleInputPeer extends InputPeer<Adaptive.ToggleInput> {
         wrap.input.defaultValue = String(this.cardElement.wrap);
         wrap.input.onValueChanged = () => {
             this.cardElement.wrap = wrap.input.value == "true";
+
+            this.changed(false);
+        }
+
+        let defaultValue = addLabelAndInput(card, "Default value:", Adaptive.TextInput);
+        defaultValue.input.placeholder = "(not set)";
+        defaultValue.input.defaultValue = this.cardElement.defaultValue;
+        defaultValue.input.onValueChanged = () => {
+            this.cardElement.defaultValue = defaultValue.input.value;
 
             this.changed(false);
         }
@@ -2257,6 +2380,15 @@ export class ChoiceSetInputPeer extends InputPeer<Adaptive.ChoiceSetInput> {
 
                 this.changed(false);
             }
+        }
+        
+        let defaultValue = addLabelAndInput(card, "Default value:", Adaptive.TextInput);
+        defaultValue.input.placeholder = "(not set)";
+        defaultValue.input.defaultValue = this.cardElement.defaultValue;
+        defaultValue.input.onValueChanged = () => {
+            this.cardElement.defaultValue = defaultValue.input.value;
+
+            this.changed(false);
         }
 
         let choicesEditor = new NameValuePairEditor();
@@ -2345,12 +2477,12 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
         return new TextBlockPeerInplaceEditor(this.cardElement);
     }
 
-    getToolTip(): string {
-        return "Double click to edit";
+    protected internalGetTreeItemText(): string {
+        return this.cardElement.text;
     }
 
-    getTreeItemText(): string {
-        return this.cardElement.text;
+    getToolTip(): string {
+        return "Double click to edit";
     }
 
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
@@ -2389,14 +2521,14 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
             }
         }
 
-        let fontFamily = addLabelAndInput(card, "Font family:", Adaptive.ChoiceSetInput);
-        fontFamily.input.placeholder = "Default";
-        fontFamily.input.isCompact = true;
-        fontFamily.input.choices.push(new Adaptive.Choice("Default", Adaptive.FontFamily.Default.toString()));
-        fontFamily.input.choices.push(new Adaptive.Choice("Monospace", Adaptive.FontFamily.Monospace.toString()));
-        fontFamily.input.defaultValue = this.cardElement.fontFamily ? this.cardElement.fontFamily.toString() : "Default";
-        fontFamily.input.onValueChanged = () => {
-            this.cardElement.fontFamily = <Adaptive.FontFamily>parseInt(fontFamily.input.value);
+        let fontType = addLabelAndInput(card, "Font type:", Adaptive.ChoiceSetInput);
+        fontType.input.placeholder = "Default";
+        fontType.input.isCompact = true;
+        fontType.input.choices.push(new Adaptive.Choice("Default", Adaptive.FontType.Default.toString()));
+        fontType.input.choices.push(new Adaptive.Choice("Monospace", Adaptive.FontType.Monospace.toString()));
+        fontType.input.defaultValue = this.cardElement.fontType ? this.cardElement.fontType.toString() : "Default";
+        fontType.input.onValueChanged = () => {
+            this.cardElement.fontType = <Adaptive.FontType>parseInt(fontType.input.value);
 
             this.changed(false);
         }
@@ -2459,7 +2591,7 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
 }
 
 export class RichTextBlockPeer extends TypedCardElementPeer<Adaptive.RichTextBlock> {
-    getTreeItemText(): string {
+    protected internalGetTreeItemText(): string {
         return this.cardElement.asString();
     }
 

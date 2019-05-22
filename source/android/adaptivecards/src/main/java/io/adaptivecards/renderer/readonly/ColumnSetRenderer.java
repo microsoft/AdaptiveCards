@@ -72,25 +72,22 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             throw new UnknownError(CardElementType.Column.toString() + " is not a registered renderer.");
         }
 
-        setSpacingAndSeparator(context, viewGroup, columnSet.GetSpacing(), columnSet.GetSeparator(), hostConfig, true);
+        View separator = setSpacingAndSeparator(context, viewGroup, columnSet.GetSpacing(), columnSet.GetSeparator(), hostConfig, true);
 
         ColumnVector columnVector = columnSet.GetColumns();
         long columnVectorSize = columnVector.size();
 
         LinearLayout layout = new LinearLayout(context);
-        layout.setTag(new TagContent(columnSet));
+
 
         // Add this two for allowing children to bleed
         layout.setClipChildren(false);
         layout.setClipToPadding(false);
 
+        setMinHeight(columnSet.GetMinHeight(), layout, context);
+
         ContainerStyle parentContainerStyle = renderArgs.getContainerStyle();
         ContainerStyle styleForThis = ContainerRenderer.GetLocalContainerStyle(columnSet, parentContainerStyle);
-
-        if (!baseCardElement.GetIsVisible())
-        {
-            layout.setVisibility(View.GONE);
-        }
 
         for (int i = 0; i < columnVectorSize; i++)
         {
@@ -108,6 +105,8 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             layout.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, columnSet.GetSelectAction(), cardActionHandler));
         }
 
+        TagContent tagContent = new TagContent(columnSet, separator, viewGroup);
+
         if (columnSet.GetHeight() == HeightType.Stretch)
         {
             LinearLayout stretchLayout = new LinearLayout(context);
@@ -115,6 +114,8 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             stretchLayout.setOrientation(LinearLayout.VERTICAL);
 
             layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1));
+
+            tagContent.SetStretchContainer(stretchLayout);
 
             stretchLayout.addView(layout);
             viewGroup.addView(stretchLayout);
@@ -125,13 +126,11 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             viewGroup.addView(layout);
         }
 
+        layout.setTag(tagContent);
+        setVisibility(baseCardElement.GetIsVisible(), layout);
+
         ContainerRenderer.ApplyPadding(styleForThis, parentContainerStyle, layout, context, hostConfig);
         ContainerRenderer.ApplyBleed(columnSet, layout, context, hostConfig);
-
-        if (columnSet.GetMinHeight() != 0)
-        {
-            layout.setMinimumHeight(Util.dpToPixels(context, (int)columnSet.GetMinHeight()));
-        }
 
         return layout;
     }
