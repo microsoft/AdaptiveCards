@@ -5,8 +5,11 @@ import * as Controls from "adaptivecards-controls";
 import { DraggableElement } from "./draggable-element";
 import { IPoint } from "./miscellaneous";
 import * as DesignerPeers from "./designer-peers";
+/*
 import { Template } from "./template-engine/template-engine";
 import { EvaluationContext } from "./template-engine/expression-parser";
+*/
+import * as ACData from "../../adaptivecards-data/src/adaptivecards-data";
 import * as Shared from "./shared";
 
 export type CardElementType = { new(): Adaptive.CardElement };
@@ -273,9 +276,9 @@ export class CardDesignerSurface {
                     let cardPayload = this.card.toJSON();
 
                     try {
-                        let template = new Template(cardPayload);
+                        let template = new ACData.Template(cardPayload);
             
-                        let context = new EvaluationContext();
+                        let context = new ACData.EvaluationContext();
                         context.$root = this.sampleData;
 
                         let expandedCardPayload = template.expand(context);

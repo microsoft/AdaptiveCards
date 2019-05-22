@@ -1,11 +1,11 @@
 {
-	"name": "adaptivecards-designer",
-	"version": "0.5.0",
-	"description": "Adaptive Card designer embeddable control",
+	"name": "adaptivecards-data",
+	"version": "0.1.0-alpha1",
+	"description": "Adaptive Card data binding abd tmeplating engine for JavaScript",
 	"author": "AdaptiveCards",
 	"license": "MIT",
-	"main": "lib/adaptivecards-designer.js",
-	"types": "lib/adaptivecards-designer.d.ts",
+	"main": "lib/adaptivecards-data.js",
+	"types": "lib/adaptivecards-data.d.ts",
 	"files": [
 		"lib",
 		"dist",
@@ -17,15 +17,9 @@
 		"build": "webpack",
 		"watch": "webpack --watch",
 		"start": "webpack-dev-server --open",
-		"dts": "dts-generator --name adaptivecards-designer --project . --out dist/adaptivecards-designer.d.ts",
+		"dts": "dts-generator --name adaptivecards-data --project . --out dist/adaptivecards-data.d.ts",
 		"lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
 		"release": "npm run build && webpack --mode=production && npm run dts"
-	},
-	"dependencies": {
-		"adaptivecards": "^1.3.0-alpha1",
-		"adaptivecards-controls": "^0.1.7",
-		"clipboard": "^2.0.1",
-		"monaco-editor": "^0.15.6"
 	},
 	"devDependencies": {
 		"rimraf": "^2.6.2",

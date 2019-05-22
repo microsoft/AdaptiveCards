@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 type TokenType =
     "{" |
     "?#" |
@@ -142,7 +144,7 @@ function ensureValueType(value: any): LiteralValue {
     throw new Error("Invalid value type: " + typeof value);
 }
 
-type FunctionCallback = (params: any[]) => any;
+type FunctionCallback = (...params: any[]) => any;
 type FunctionDictionary = { [key: string]: FunctionCallback };
 
 interface EvaluationContextState {
@@ -155,14 +157,71 @@ export class EvaluationContext {
     private static _builtInFunctions: FunctionDictionary = {}
 
     static init() {
-        EvaluationContext._builtInFunctions["substr"] = (params: any[]) => {
-            return (<string>params[0]).substr(<number>params[1], <number>params[2]);
+        EvaluationContext._builtInFunctions["substr"] = (s, index, count) => {
+            if (typeof s === "string" && typeof index === "number" && typeof count === "number") {
+                return (s.substr(index, count));
+            }
+            else {
+                return "";
+            }
         };
-        EvaluationContext._builtInFunctions["JSON.parse"] = (params: any[]) => {
-            return JSON.parse(params[0]);
+        EvaluationContext._builtInFunctions["JSON.parse"] = (input) => {
+            return JSON.parse(input);
         };
-        EvaluationContext._builtInFunctions["if"] = (params: any[]) => {
-            return params[0] ? params[1] : params[2];
+        EvaluationContext._builtInFunctions["if"] = (condition, ifTrue, ifFalse) => {
+            return condition ? ifTrue : ifFalse;
+        };
+        EvaluationContext._builtInFunctions["toUpper"] = (input) => {
+            return typeof input === "string" ? input.toUpperCase() : input;
+        };
+        EvaluationContext._builtInFunctions["toLower"] = (input) => {
+            return typeof input === "string" ? input.toLowerCase() : input;
+        };
+        EvaluationContext._builtInFunctions["Date.format"] = (input, format) => {
+            const acceptedFormats = [ "long", "short", "compact" ];
+
+            let inputAsNumber: number;
+
+            if (typeof input === "string") {
+                inputAsNumber = Date.parse(input);
+            }
+            else if (typeof input === "number") {
+                inputAsNumber = input;
+            }
+            else {
+                return input;
+            }
+
+            let date = new Date(inputAsNumber);
+
+            let effectiveFormat: string = "compact";
+
+            if (typeof format === "string") {
+                effectiveFormat = format.toLowerCase();
+
+                if (acceptedFormats.indexOf(effectiveFormat) < 0) {
+                    effectiveFormat = "compact";
+                }
+            }
+
+            return effectiveFormat === "compact" ? date.toLocaleDateString() : date.toLocaleDateString(undefined, { day: "numeric", weekday: effectiveFormat, month: effectiveFormat, year: "numeric" });
+        };
+        EvaluationContext._builtInFunctions["Time.format"] = (input) => {
+            let inputAsNumber: number;
+
+            if (typeof input === "string") {
+                inputAsNumber = Date.parse(input);
+            }
+            else if (typeof input === "number") {
+                inputAsNumber = input;
+            }
+            else {
+                return input;
+            }
+
+            let date = new Date(inputAsNumber);
+
+            return date.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
         };
     }
 
@@ -341,7 +400,7 @@ class FunctionCallNode extends EvaluationNode {
                 evaluatedParams.push(param.evaluate(context));
             }
 
-            return callback(evaluatedParams);
+            return callback(...evaluatedParams);
         }
 
         throw new Error("Undefined function: " + this.functionName);

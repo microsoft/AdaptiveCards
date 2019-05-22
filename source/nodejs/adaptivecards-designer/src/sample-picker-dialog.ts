@@ -1,6 +1,5 @@
 import { parseCatalogue, CatalogueEntry } from "./catalogue";
-import { Template } from "./template-engine/template-engine";
-import { EvaluationContext } from "./template-engine/expression-parser";
+import * as ACData from "../../adaptivecards-data/src/adaptivecards-data";
 import * as Adaptive from "adaptivecards";
 import { Dialog } from "./dialog";
 import { defaultHostConfig } from "./miscellaneous";
@@ -47,9 +46,9 @@ export class SamplePickerDialog extends Dialog {
             ]
         };
 
-        let template = new Template(templatePayload);
+        let template = new ACData.Template(templatePayload);
         
-        let context = new EvaluationContext();
+        let context = new ACData.EvaluationContext();
         context.$root = {
             title: this.title,
             message: message
@@ -125,9 +124,9 @@ export class SamplePickerDialog extends Dialog {
             ]
         };
 
-        let template = new Template(templatePayload);
+        let template = new ACData.Template(templatePayload);
         
-        let context = new EvaluationContext();
+        let context = new ACData.EvaluationContext();
         context.$root = {
             title: this.title,
             catalogue: catalogue

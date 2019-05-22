@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import { Binding, ExpressionParser, EvaluationContext } from "./expression-parser";
 
 class TemplatizedString {
