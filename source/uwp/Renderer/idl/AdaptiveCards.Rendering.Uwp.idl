@@ -261,14 +261,13 @@ AdaptiveNamespaceStart
         [contract(InternalContract, 1)]
         [internal]
 #endif
-        typedef [v1_enum] enum
-            Mode
+        typedef [v1_enum] enum BackgroundImageFillMode
         {
-            Stretch = 0,
+            Cover = 0,
             RepeatHorizontally,
             RepeatVertically,
             Repeat
-        } BackgroundImageMode;
+        } BackgroundImageFillMode;
 
     [version(NTDDI_WIN10_RS1)]
 #ifdef ADAPTIVE_CARDS_WINDOWS
@@ -933,8 +932,8 @@ AdaptiveNamespaceStart
         [propget] HRESULT Url([out, retval] HSTRING * value);
         [propput] HRESULT Url([in] HSTRING value);
 
-        [propget] HRESULT Mode([out, retval] BackgroundImageMode * value);
-        [propput] HRESULT Mode([in] BackgroundImageMode value);
+        [propget] HRESULT FillMode([out, retval] BackgroundImageFillMode * value);
+        [propput] HRESULT FillMode([in] BackgroundImageFillMode value);
 
         [propget] HRESULT HorizontalAlignment([out, retval] HAlignment * value);
         [propput] HRESULT HorizontalAlignment([in] HAlignment value);

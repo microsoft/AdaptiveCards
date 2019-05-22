@@ -147,6 +147,8 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public IDictionary<Button, FrameworkElement> ActionShowCards = new Dictionary<Button, FrameworkElement>();
 
+        public Queue<Button> ActionShowCardsKeys = new Queue<Button>();
+
         public virtual Style GetStyle(string styleName)
         {
             while (!String.IsNullOrEmpty(styleName))

@@ -321,7 +321,7 @@
 				"type": "AdaptiveCard",
 				"backgroundImage": {
 					"url": "https://adaptivecards.io/content/cats/1.png",
-					"mode": "repeat",
+					"fillMode": "repeat",
 					"verticalAlignment": "center",
 					"horizontalAlignment": "right"
 				},

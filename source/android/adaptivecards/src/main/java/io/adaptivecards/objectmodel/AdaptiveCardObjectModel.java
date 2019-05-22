@@ -121,16 +121,16 @@ public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants
     return VerticalAlignment.swigToEnum(AdaptiveCardObjectModelJNI.VerticalAlignmentFromString(t));
   }
 
-  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__BackgroundImageMode_t getBackgroundImageModeEnum() {
-    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__BackgroundImageMode_t(AdaptiveCardObjectModelJNI.getBackgroundImageModeEnum(), false);
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ImageFillMode_t getImageFillModeEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ImageFillMode_t(AdaptiveCardObjectModelJNI.getImageFillModeEnum(), false);
   }
 
-  public static String BackgroundImageModeToString(BackgroundImageMode t) {
-    return AdaptiveCardObjectModelJNI.BackgroundImageModeToString(t.swigValue());
+  public static String ImageFillModeToString(ImageFillMode t) {
+    return AdaptiveCardObjectModelJNI.ImageFillModeToString(t.swigValue());
   }
 
-  public static BackgroundImageMode BackgroundImageModeFromString(String t) {
-    return BackgroundImageMode.swigToEnum(AdaptiveCardObjectModelJNI.BackgroundImageModeFromString(t));
+  public static ImageFillMode ImageFillModeFromString(String t) {
+    return ImageFillMode.swigToEnum(AdaptiveCardObjectModelJNI.ImageFillModeFromString(t));
   }
 
   public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ImageStyle_t getImageStyleEnum() {

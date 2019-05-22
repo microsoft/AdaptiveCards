@@ -915,6 +915,7 @@ namespace AdaptiveCards.Test
             };
             actionSet.Actions.Add(openUrlAction);
 
+#pragma warning disable 0618
             AdaptiveShowCardAction showCardAction = new AdaptiveShowCardAction
             {
                 Title = "ShowCard",
@@ -929,6 +930,7 @@ namespace AdaptiveCards.Test
                     }
                 }
             };
+#pragma warning restore 0618
 
             actionSet.Actions.Add(showCardAction);
 

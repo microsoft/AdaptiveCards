@@ -166,6 +166,11 @@ namespace AdaptiveCards.Rendering.Wpf
                         }
                     }
 
+                    if (cardElement.Type == "ActionSet")
+                    {
+                        AdaptiveActionSetRenderer.AddShowCardsViewsToRoot(context);
+                    }
+
                 }
             }
 

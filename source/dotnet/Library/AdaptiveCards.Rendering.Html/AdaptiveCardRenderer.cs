@@ -1636,11 +1636,14 @@ namespace AdaptiveCards.Rendering.Html
 
         private static void ApplyDefaultTextAttributes(HtmlTag tag, AdaptiveRenderContext context)
         {
+// Ignore deprecation warning for FontSizes
+#pragma warning disable 0618
             tag.Style("color", context.GetColor(AdaptiveTextColor.Default, false, false))
                 .Style("font-size", $"{context.Config.FontSizes.Default}px")
                 .Style("display", "inline-block")
                 .Style("margin-left", "6px")
                 .Style("vertical-align", "middle");
+#pragma warning restore 0618
         }
 
         protected static HtmlTag DateInputRender(AdaptiveDateInput input, AdaptiveRenderContext context)
