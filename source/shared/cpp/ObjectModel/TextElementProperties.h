@@ -33,8 +33,8 @@ namespace AdaptiveSharedNamespace
         TextWeight GetTextWeight() const;
         void SetTextWeight(const TextWeight value);
 
-        FontStyle GetFontStyle() const;
-        void SetFontStyle(const FontStyle value);
+        FontType GetFontType() const;
+        void SetFontType(const FontType value);
 
         ForegroundColor GetTextColor() const;
         void SetTextColor(const ForegroundColor value);
@@ -58,7 +58,7 @@ namespace AdaptiveSharedNamespace
         std::string m_text;
         TextSize m_textSize;
         TextWeight m_textWeight;
-        FontStyle m_fontStyle;
+        FontType m_fontType;
         ForegroundColor m_textColor;
         bool m_isSubtle;
         bool m_italic;

@@ -47,19 +47,19 @@ public class HostConfig {
     return new HostConfig(AdaptiveCardObjectModelJNI.HostConfig_DeserializeFromString(jsonString), true);
   }
 
-  public FontStyleDefinition GetFontStyle(FontStyle style) {
-    return new FontStyleDefinition(AdaptiveCardObjectModelJNI.HostConfig_GetFontStyle(swigCPtr, this, style.swigValue()), true);
+  public FontTypeDefinition GetFontType(FontType type) {
+    return new FontTypeDefinition(AdaptiveCardObjectModelJNI.HostConfig_GetFontType(swigCPtr, this, type.swigValue()), true);
   }
 
-  public String GetFontFamily(FontStyle style) {
+  public String GetFontFamily(FontType style) {
     return AdaptiveCardObjectModelJNI.HostConfig_GetFontFamily__SWIG_0(swigCPtr, this, style.swigValue());
   }
 
-  public long GetFontSize(FontStyle style, TextSize size) {
+  public long GetFontSize(FontType style, TextSize size) {
     return AdaptiveCardObjectModelJNI.HostConfig_GetFontSize(swigCPtr, this, style.swigValue(), size.swigValue());
   }
 
-  public long GetFontWeight(FontStyle style, TextWeight weight) {
+  public long GetFontWeight(FontType style, TextWeight weight) {
     return AdaptiveCardObjectModelJNI.HostConfig_GetFontWeight(swigCPtr, this, style.swigValue(), weight.swigValue());
   }
 
@@ -107,12 +107,12 @@ public class HostConfig {
     AdaptiveCardObjectModelJNI.HostConfig_SetFontWeights(swigCPtr, this, FontWeightsConfig.getCPtr(value), value);
   }
 
-  public FontStylesDefinition GetFontStyles() {
-    return new FontStylesDefinition(AdaptiveCardObjectModelJNI.HostConfig_GetFontStyles(swigCPtr, this), true);
+  public FontTypesDefinition GetFontTypes() {
+    return new FontTypesDefinition(AdaptiveCardObjectModelJNI.HostConfig_GetFontTypes(swigCPtr, this), true);
   }
 
-  public void SetFontStyles(FontStylesDefinition value) {
-    AdaptiveCardObjectModelJNI.HostConfig_SetFontStyles(swigCPtr, this, FontStylesDefinition.getCPtr(value), value);
+  public void SetFontTypes(FontTypesDefinition value) {
+    AdaptiveCardObjectModelJNI.HostConfig_SetFontTypes(swigCPtr, this, FontTypesDefinition.getCPtr(value), value);
   }
 
   public boolean GetSupportsInteractivity() {
