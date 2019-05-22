@@ -35,21 +35,21 @@ public class FontTypesDefinition {
     }
   }
 
-  public void setDefaultStyle(FontTypeDefinition value) {
-    AdaptiveCardObjectModelJNI.FontTypesDefinition_defaultStyle_set(swigCPtr, this, FontTypeDefinition.getCPtr(value), value);
+  public void setDefaultFontType(FontTypeDefinition value) {
+    AdaptiveCardObjectModelJNI.FontTypesDefinition_defaultFontType_set(swigCPtr, this, FontTypeDefinition.getCPtr(value), value);
   }
 
-  public FontTypeDefinition getDefaultStyle() {
-    long cPtr = AdaptiveCardObjectModelJNI.FontTypesDefinition_defaultStyle_get(swigCPtr, this);
+  public FontTypeDefinition getDefaultFontType() {
+    long cPtr = AdaptiveCardObjectModelJNI.FontTypesDefinition_defaultFontType_get(swigCPtr, this);
     return (cPtr == 0) ? null : new FontTypeDefinition(cPtr, false);
   }
 
-  public void setMonospaceStyle(FontTypeDefinition value) {
-    AdaptiveCardObjectModelJNI.FontTypesDefinition_monospaceStyle_set(swigCPtr, this, FontTypeDefinition.getCPtr(value), value);
+  public void setMonospaceFontType(FontTypeDefinition value) {
+    AdaptiveCardObjectModelJNI.FontTypesDefinition_monospaceFontType_set(swigCPtr, this, FontTypeDefinition.getCPtr(value), value);
   }
 
-  public FontTypeDefinition getMonospaceStyle() {
-    long cPtr = AdaptiveCardObjectModelJNI.FontTypesDefinition_monospaceStyle_get(swigCPtr, this);
+  public FontTypeDefinition getMonospaceFontType() {
+    long cPtr = AdaptiveCardObjectModelJNI.FontTypesDefinition_monospaceFontType_get(swigCPtr, this);
     return (cPtr == 0) ? null : new FontTypeDefinition(cPtr, false);
   }
 

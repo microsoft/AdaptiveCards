@@ -47,20 +47,20 @@ public class HostConfig {
     return new HostConfig(AdaptiveCardObjectModelJNI.HostConfig_DeserializeFromString(jsonString), true);
   }
 
-  public FontTypeDefinition GetFontType(FontType type) {
-    return new FontTypeDefinition(AdaptiveCardObjectModelJNI.HostConfig_GetFontType(swigCPtr, this, type.swigValue()), true);
+  public FontTypeDefinition GetFontType(FontType fontType) {
+    return new FontTypeDefinition(AdaptiveCardObjectModelJNI.HostConfig_GetFontType(swigCPtr, this, fontType.swigValue()), true);
   }
 
-  public String GetFontFamily(FontType style) {
-    return AdaptiveCardObjectModelJNI.HostConfig_GetFontFamily__SWIG_0(swigCPtr, this, style.swigValue());
+  public String GetFontFamily(FontType fontType) {
+    return AdaptiveCardObjectModelJNI.HostConfig_GetFontFamily__SWIG_0(swigCPtr, this, fontType.swigValue());
   }
 
-  public long GetFontSize(FontType style, TextSize size) {
-    return AdaptiveCardObjectModelJNI.HostConfig_GetFontSize(swigCPtr, this, style.swigValue(), size.swigValue());
+  public long GetFontSize(FontType fontType, TextSize size) {
+    return AdaptiveCardObjectModelJNI.HostConfig_GetFontSize(swigCPtr, this, fontType.swigValue(), size.swigValue());
   }
 
-  public long GetFontWeight(FontType style, TextWeight weight) {
-    return AdaptiveCardObjectModelJNI.HostConfig_GetFontWeight(swigCPtr, this, style.swigValue(), weight.swigValue());
+  public long GetFontWeight(FontType fontType, TextWeight weight) {
+    return AdaptiveCardObjectModelJNI.HostConfig_GetFontWeight(swigCPtr, this, fontType.swigValue(), weight.swigValue());
   }
 
   public String GetBackgroundColor(ContainerStyle style) {

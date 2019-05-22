@@ -19804,7 +19804,7 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontTypesDefinition_1defaultStyle_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontTypesDefinition_1defaultFontType_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::FontTypesDefinition *arg1 = (AdaptiveCards::FontTypesDefinition *) 0 ;
   AdaptiveCards::FontTypeDefinition *arg2 = (AdaptiveCards::FontTypeDefinition *) 0 ;
   
@@ -19814,11 +19814,11 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   (void)jarg2_;
   arg1 = *(AdaptiveCards::FontTypesDefinition **)&jarg1; 
   arg2 = *(AdaptiveCards::FontTypeDefinition **)&jarg2; 
-  if (arg1) (arg1)->defaultStyle = *arg2;
+  if (arg1) (arg1)->defaultFontType = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontTypesDefinition_1defaultStyle_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontTypesDefinition_1defaultFontType_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::FontTypesDefinition *arg1 = (AdaptiveCards::FontTypesDefinition *) 0 ;
   AdaptiveCards::FontTypeDefinition *result = 0 ;
@@ -19827,13 +19827,13 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   (void)jcls;
   (void)jarg1_;
   arg1 = *(AdaptiveCards::FontTypesDefinition **)&jarg1; 
-  result = (AdaptiveCards::FontTypeDefinition *)& ((arg1)->defaultStyle);
+  result = (AdaptiveCards::FontTypeDefinition *)& ((arg1)->defaultFontType);
   *(AdaptiveCards::FontTypeDefinition **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontTypesDefinition_1monospaceStyle_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontTypesDefinition_1monospaceFontType_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::FontTypesDefinition *arg1 = (AdaptiveCards::FontTypesDefinition *) 0 ;
   AdaptiveCards::FontTypeDefinition *arg2 = (AdaptiveCards::FontTypeDefinition *) 0 ;
   
@@ -19843,11 +19843,11 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   (void)jarg2_;
   arg1 = *(AdaptiveCards::FontTypesDefinition **)&jarg1; 
   arg2 = *(AdaptiveCards::FontTypeDefinition **)&jarg2; 
-  if (arg1) (arg1)->monospaceStyle = *arg2;
+  if (arg1) (arg1)->monospaceFontType = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontTypesDefinition_1monospaceStyle_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontTypesDefinition_1monospaceFontType_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::FontTypesDefinition *arg1 = (AdaptiveCards::FontTypesDefinition *) 0 ;
   AdaptiveCards::FontTypeDefinition *result = 0 ;
@@ -19856,7 +19856,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   (void)jcls;
   (void)jarg1_;
   arg1 = *(AdaptiveCards::FontTypesDefinition **)&jarg1; 
-  result = (AdaptiveCards::FontTypeDefinition *)& ((arg1)->monospaceStyle);
+  result = (AdaptiveCards::FontTypeDefinition *)& ((arg1)->monospaceFontType);
   *(AdaptiveCards::FontTypeDefinition **)&jresult = result; 
   return jresult;
 }
@@ -20486,7 +20486,7 @@ SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1style_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1fontType_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::TextConfig *arg1 = (AdaptiveCards::TextConfig *) 0 ;
   AdaptiveCards::FontType arg2 ;
   
@@ -20495,11 +20495,11 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   (void)jarg1_;
   arg1 = *(AdaptiveCards::TextConfig **)&jarg1; 
   arg2 = (AdaptiveCards::FontType)jarg2; 
-  if (arg1) (arg1)->style = arg2;
+  if (arg1) (arg1)->fontType = arg2;
 }
 
 
-SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1style_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1fontType_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   AdaptiveCards::TextConfig *arg1 = (AdaptiveCards::TextConfig *) 0 ;
   AdaptiveCards::FontType result;
@@ -20508,7 +20508,7 @@ SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   (void)jcls;
   (void)jarg1_;
   arg1 = *(AdaptiveCards::TextConfig **)&jarg1; 
-  result = (AdaptiveCards::FontType) ((arg1)->style);
+  result = (AdaptiveCards::FontType) ((arg1)->fontType);
   jresult = (jint)result; 
   return jresult;
 }

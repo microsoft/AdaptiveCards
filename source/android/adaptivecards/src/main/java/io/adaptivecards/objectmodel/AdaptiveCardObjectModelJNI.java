@@ -891,10 +891,10 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long FontTypeDefinition_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, FontTypeDefinition jarg2_);
   public final static native long new_FontTypeDefinition();
   public final static native void delete_FontTypeDefinition(long jarg1);
-  public final static native void FontTypesDefinition_defaultStyle_set(long jarg1, FontTypesDefinition jarg1_, long jarg2, FontTypeDefinition jarg2_);
-  public final static native long FontTypesDefinition_defaultStyle_get(long jarg1, FontTypesDefinition jarg1_);
-  public final static native void FontTypesDefinition_monospaceStyle_set(long jarg1, FontTypesDefinition jarg1_, long jarg2, FontTypeDefinition jarg2_);
-  public final static native long FontTypesDefinition_monospaceStyle_get(long jarg1, FontTypesDefinition jarg1_);
+  public final static native void FontTypesDefinition_defaultFontType_set(long jarg1, FontTypesDefinition jarg1_, long jarg2, FontTypeDefinition jarg2_);
+  public final static native long FontTypesDefinition_defaultFontType_get(long jarg1, FontTypesDefinition jarg1_);
+  public final static native void FontTypesDefinition_monospaceFontType_set(long jarg1, FontTypesDefinition jarg1_, long jarg2, FontTypeDefinition jarg2_);
+  public final static native long FontTypesDefinition_monospaceFontType_get(long jarg1, FontTypesDefinition jarg1_);
   public final static native long FontTypesDefinition_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, FontTypesDefinition jarg2_);
   public final static native long new_FontTypesDefinition();
   public final static native void delete_FontTypesDefinition(long jarg1);
@@ -935,8 +935,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native int TextConfig_weight_get(long jarg1, TextConfig jarg1_);
   public final static native void TextConfig_size_set(long jarg1, TextConfig jarg1_, int jarg2);
   public final static native int TextConfig_size_get(long jarg1, TextConfig jarg1_);
-  public final static native void TextConfig_style_set(long jarg1, TextConfig jarg1_, int jarg2);
-  public final static native int TextConfig_style_get(long jarg1, TextConfig jarg1_);
+  public final static native void TextConfig_fontType_set(long jarg1, TextConfig jarg1_, int jarg2);
+  public final static native int TextConfig_fontType_get(long jarg1, TextConfig jarg1_);
   public final static native void TextConfig_color_set(long jarg1, TextConfig jarg1_, int jarg2);
   public final static native int TextConfig_color_get(long jarg1, TextConfig jarg1_);
   public final static native void TextConfig_isSubtle_set(long jarg1, TextConfig jarg1_, boolean jarg2);
