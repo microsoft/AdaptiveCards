@@ -2420,16 +2420,16 @@ namespace AdaptiveNamespace
             if (size == ABI::AdaptiveNamespace::ImageSize::None || size == ABI::AdaptiveNamespace::ImageSize::Stretch ||
                 size == ABI::AdaptiveNamespace::ImageSize::Auto || hasExplicitMeasurements)
             {
-                THROW_IF_FAILED(ellipseAsShape->put_Stretch(imageStretch));
-                THROW_IF_FAILED(backgroundEllipseAsShape->put_Stretch(imageStretch));
+                RETURN_IF_FAILED(ellipseAsShape->put_Stretch(imageStretch));
+                RETURN_IF_FAILED(backgroundEllipseAsShape->put_Stretch(imageStretch));
             }
             else
             {
                 // Set the stretch for the ellipse - this is different to the stretch used for the image brush above.
                 // This will force the ellipse to conform to fit within the confines of its parent.
                 Stretch ellipseStretch = Stretch::Stretch_UniformToFill;
-                THROW_IF_FAILED(ellipseAsShape->put_Stretch(ellipseStretch));
-                THROW_IF_FAILED(backgroundEllipseAsShape->put_Stretch(ellipseStretch));
+                RETURN_IF_FAILED(ellipseAsShape->put_Stretch(ellipseStretch));
+                RETURN_IF_FAILED(backgroundEllipseAsShape->put_Stretch(ellipseStretch));
             }
 
             if (backgroundColor != nullptr)
@@ -2567,9 +2567,7 @@ namespace AdaptiveNamespace
                 RETURN_IF_FAILED(frameworkElement->put_MaxWidth(imageSize));
 
                 // We don't want to set a max height on the person ellipse as ellipses do not understand preserving
-                // aspect ratio when constrained on both axes. In adaptive cards person images will always be 1:1 aspect
-                // ratio and will always be width constrained (as you can't limit heights in adaptive cards) so only
-                // setting MaxWidth is ok.
+                // aspect ratio when constrained on both axes.
                 if (imageStyle != ImageStyle_Person)
                 {
                     RETURN_IF_FAILED(frameworkElement->put_MaxHeight(imageSize));
