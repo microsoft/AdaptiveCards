@@ -87,7 +87,7 @@
       </AdditionalDependencies>
     </Link>
     <CustomBuildStep>
-      <Command>mdmerge -partial -i "$(OutDir)$(TargetName).winmd" -o "$(OutDir)Output" -metadata_dir "$(FrameworkSdkDir)UnionMetadata" &amp;&amp; copy /y "$(OutDir)Output\*" "$(OutDir)"</Command>
+      <Command>mdmerge -partial -i "$(OutDir)$(TargetName).winmd" -o "$(OutDir)Output" -metadata_dir "$(WindowsSDK_MetadataFoundationPath)" -metadata_dir "$(WindowsSDK_MetadataPathVersioned)\Windows.Foundation.UniversalApiContract\7.0.0.0" &amp;&amp; copy /y "$(OutDir)Output\*" "$(OutDir)"</Command>
       <Outputs>$(OutDir)%(TargetName).winmd</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
