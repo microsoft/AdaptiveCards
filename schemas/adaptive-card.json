@@ -432,7 +432,14 @@
 						"bottom"
 					],
 					"version": "1.1"
-				}
+        },
+        "bleed": {
+          "type": "boolean",
+          "description": "Determines whether the element should bleed through its ancestor's padding.",
+          "default": false,
+          "version": "1.2",
+          "features": [ 2109 ]
+        }
 			},
 			"required": [
 				"type",
@@ -529,7 +536,8 @@
 			"additionalProperties": true,
 			"type": "object",
 			"description": "Displays a media player for audio or video content.",
-			"version": "1.1",
+      "version": "1.1",
+      "features": [ 196 ],
 			"allOf": [
 				{
 					"$ref": "#/definitions/CardElement"
@@ -577,7 +585,7 @@
 			"properties": {
 				"altText": {
 					"type": "string",
-					"description": "Alternate text describing the image."
+					"description": "Alternate text describing the image!"
 				},
 				"backgroundColor": {
 					"type": "string",

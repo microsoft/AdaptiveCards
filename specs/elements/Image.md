@@ -1,21 +1,24 @@
-# Image element
+<!-- AUTO-GENERATED: This section is auto-generated from schemas/adaptive-card.json. Do NOT add anything above this or edit anything inside, it MUST be the first thing in the document and will be overwritten. -->
 
-Displays an image.
+# Image
 
-**Inherits from BaseElement**.
+|Property|Type|Required|Description|Version|
+|--------|----|--------|-----------|-------|
+|**altText**|`string`| No|Alternate text describing the image!|1.0
+|**backgroundColor**|`string`| No|Applies a background to a transparent image. This property will respect the image style.|1.1
+|**height**|`string`| No|The desired on-screen height of the image, ending in 'px'. E.g., 50px. This overrides the `size` property.|1.1
+|**horizontalAlignment**|`string`| No, default: `"left"`|Controls how elements are horizontally positioned within their container.|1.0
+|**selectAction**|`object`| No|An Action that will be invoked when the `Image` is tapped or selected. `Action.ShowCard` is not supported.|1.1
+|**size**|`string`| No, default: `"auto"`|Controls the approximate size of the image. The physical dimensions will vary per host. Specify `"auto"` for true image dimension, or `"stretch"` to force it to fill the container.|1.0
+|**style**|`string`| No|Controls how this `Image` is displayed.|1.0
+|**type**|`"Image"`|Yes|Must be `"Image"`.|1.0
+|**url**|`string`|Yes|The URL to the image.|1.0
+|**width**|`string`| No|The desired on-screen width of the image, ending in 'px'. E.g., 50px. This overrides the `size` property.|1.1
+|**id**|`string`| No|A unique identifier associated with the element.|1.0
+|**spacing**|`string`| No|Controls the amount of spacing between this element and the preceding element.|1.0
+|**separator**|`boolean`| No, default: `false`|When `true`, draw a separating line at the top of the element.|1.0
 
-| Property | Type | Required | Description | Version |
-|--|--|--|--|--|
-| type | `"Image"` | Yes | Must be `Image` | 1.0 |
-| url | `string` | Yes | The URL to the image | 1.0 |
-| altText | `string` | No, default `null` | Alternate text describing the image | 1.0 |
-| selectAction | `Action` | No, default `null` | An action invoked when the image is tapped or selected. | 1.1 |
-| size | `ImageSize` | No, default `"auto"` | Controls the approximate size of the image. Physical dimensions will vary per host. Specify `"auto"` to prevent the image from scaling up (but will scale down to fit), or `"stretch"` to scale the image so that its width fits its container. All options will preserve aspect ratio. | 1.0 |
-| width | `string` | No, default `null` | The desired width of the image, ending in 'px'. Ex: `50px`. If specified, `size` property will be ignored. | 1.1 |
-| height | `string` | No, default `null` | The desired height of the image | 1.1 |
-| style | `ImageStyle` | No, default `default` | Controls the style of the image. | 1.0 |
-| backgroundColor | `string` | No, default `null` | Applies a background to the image. Only relevant to transparent images. Valid formats are #AARRGGBB and #RRGGBB (upper or lower case). | 1.1 |
-| horizontalAlignment | `HorizontalAlignment` | No, default `"left"` | Controls how the image is horizontally positioned within the parent container. | 1.0 |
+<!-- END AUTO-GENERATED -->
 
 ## Rendering
 

@@ -1,3 +1,3 @@
-import wetzel from "wetzel-for-spec";
+// import wetzel from "wetzel-for-spec";
 
-console.log("Ran spec generator");
+// console.log("Ran spec generator");
