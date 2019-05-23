@@ -1,7 +1,8 @@
 {
 	"version": "independent",
 	"packages": [
-		"adaptivecards*/**"
+    "adaptivecards*/**",
+    "marked-schema/**"
 	],
 	"command": {
 		"publish": {

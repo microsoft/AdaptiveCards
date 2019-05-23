@@ -2,5 +2,13 @@
 	"editor.insertSpaces": false,
 	"editor.formatOnSave": false, // only if you want auto fomattting on saving the file
 	"editor.detectIndentation": false,
-	"C_Cpp.default.cppStandard": "c++17"
+	"C_Cpp.default.cppStandard": "c++17",
+	"emeraldwalk.runonsave": {
+		"commands": [
+			{
+				"match": ".*schemas\\\\adaptive-card.json",
+				"cmd": "echo 'cool'"
+			}
+		]
+	}
 }
