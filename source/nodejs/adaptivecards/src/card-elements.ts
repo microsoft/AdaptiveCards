@@ -1144,7 +1144,7 @@ export class TextBlock extends BaseTextBlock {
         return false;
     }
 
-    protected serText(value: string) {
+    protected setText(value: string) {
         super.setText(value);
 
         this._processedText = null;
@@ -5578,11 +5578,11 @@ export class Container extends StylableCardElementContainer {
         this._items = [];
         this._renderedItems = [];
 
+        this.backgroundImage.reset();
+
         let jsonBackgroundImage = json["backgroundImage"];
 
         if (jsonBackgroundImage) {
-            this.backgroundImage.reset();
-
             if (typeof jsonBackgroundImage === "string") {
                 this.backgroundImage.url = jsonBackgroundImage;
                 this.backgroundImage.fillMode = Enums.FillMode.Cover;
