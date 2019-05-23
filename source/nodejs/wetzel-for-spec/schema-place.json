@@ -1,0 +1,226 @@
+{
+  "id": "ci-pipeline-environment",
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "CI Pipeline Environment Definition",
+  "description": "Weever Apps CI pipeline environment definition",
+  "definitions": {
+    
+  },
+  "type": "object",
+  "properties": {
+    "chef_type": {
+      "$schema": "http://json-schema.org/draft-04/schema",
+      "title": "CI Environment - chef_type",
+      "description": "Always `environment`.",
+      "examples": [
+        "environment"
+      ],
+      "type": "string",
+      "enum": [
+        "environment"
+      ]
+    },
+    "default_attributes": {
+      "$schema": "http://json-schema.org/draft-04/schema",
+      "title": "CI Environment - default_attributes",
+      "description": "Not currently in use",
+      "type": "object",
+      "properties": {
+        
+      },
+      "additionalProperties": false
+    },
+    "schedule": {
+      "$schema": "http://json-schema.org/draft-04/schema",
+      "title": "CI Environment - schedule",
+      "description": "When to start and stop the environment. Times are in UTC.",
+      "type": "object",
+      "properties": {
+        "start": {
+          "title": "Cron string",
+          "description": "A valid AWS cron string. See [Schedule Expressions for Rules](http://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html) for details.",
+          "examples": [
+            "30 8 ? * MON,TUE,WED,THU,FRI *"
+          ],
+          "type": "string",
+          "pattern": "^([0-5]?[0-9]) ([0-1]?[0-9]|2[0-3]) ([1-2]?[0-9]|3[0-1]|\\?) ([1-9]|1[0-2]|\\*) ((MON|TUE|WED|THU|FRI|SAT|SUN)?,?)+ (201[7-8]|\\*)$"
+        },
+        "stop": {
+          "title": "Cron string",
+          "description": "A valid AWS cron string. See [Schedule Expressions for Rules](http://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html) for details.",
+          "examples": [
+            "30 8 ? * MON,TUE,WED,THU,FRI *"
+          ],
+          "type": "string",
+          "pattern": "^([0-5]?[0-9]) ([0-1]?[0-9]|2[0-3]) ([1-2]?[0-9]|3[0-1]|\\?) ([1-9]|1[0-2]|\\*) ((MON|TUE|WED|THU|FRI|SAT|SUN)?,?)+ (201[7-8]|\\*)$"
+        }
+      },
+      "required": [
+        "start",
+        "stop"
+      ],
+      "additionalProperties": false
+    },
+    "description": {
+      "title": "Environment description",
+      "description": "A human-friendly description of the environment",
+      "example": "Offline testing",
+      "type": "string"
+    },
+    "name": {
+      "title": "Environment name",
+      "description": "The name of the environment",
+      "type": "string",
+      "enum": [
+        "aries",
+        "blowfish",
+        "cephalopod",
+        "cetus",
+        "coelacanth",
+        "devna1",
+        "enceladus",
+        "nautilus",
+        "oberon",
+        "optimus",
+        "orion",
+        "phobos",
+        "scorpius",
+        "titan",
+        "urchin"
+      ]
+    },
+    "environment_config": {
+      "title": "chef_type",
+      "description": "Type of environment. `v51` is limited to Nodeapps, Postgres, and Redis. `kitchenSink` includes AppGenerator, MySQL, SFTP (wxCron), and CouchDB as well.",
+      "type": "string",
+      "enum": [
+        "v51",
+        "kitchenSink"
+      ]
+    },
+    "couch_keep_data": {
+      "$schema": "http://json-schema.org/draft-04/schema",
+      "title": "CI Environment - mysql_keep_data",
+      "description": "Whether or not to preserve MySQL data when cycling the environment.",
+      "type": "boolean"
+    },
+    "mysql_keep_data": {
+      "$schema": "http://json-schema.org/draft-04/schema",
+      "title": "CI Environment - couch_keep_data",
+      "description": "Whether or not to preserve CouchDB data when cycling the environment.",
+      "type": "boolean"
+    },
+    "postgres_keep_data": {
+      "$schema": "http://json-schema.org/draft-04/schema",
+      "title": "CI Environment - postgres_keep_data",
+      "description": "Whether or not to preserve Postgres data when cycling the environment.",
+      "type": "boolean"
+    },
+    "override_attributes": {
+      "title": "Attribute Overrides",
+      "description": "Overrides specific to this environment.",
+      "type": "object",
+      "properties": {
+        "weeverapps": {
+          "title": "WeeverApps Overrides",
+          "description": "Overrides specific to WeeverApps.",
+          "type": "object",
+          "properties": {
+            "docker": {
+              "title": "Docker Overrides",
+              "description": "Overrides specific to Docker.",
+              "type": "object",
+              "properties": {
+                "images": {
+                  "title": "Docker Image Overrides",
+                  "description": "Overrides specific to individual Docker images.",
+                  "type": "object",
+                  "patternProperties": {
+                    "^[a-z\\-]+$": {
+                      "title": "Repo",
+                      "description": "Simplified repository name (lower-case and hyphens).",
+                      "type": "object",
+                      "properties": {
+                        "branch": {
+                          "$schema": "http://json-schema.org/draft-04/schema",
+                          "title": "Branch",
+                          "description": "A valid CI branch on the specified repo in the format `repo:branch-prefix/branch-name` where `branch-prefix` is either `release` or `project`",
+                          "type": "string",
+                          "pattern": "^[a-zA-Z0-9\\-]+\\:(release|project)\\/[a-zA-Z0-9\\-\\.]+$"
+                        },
+                        "repo": {
+                          "title": "Simplified Organization",
+                          "description": "Lower-case organization name. For now, always `weeverapps`.",
+                          "type": "string",
+                          "enum": [
+                            "weeverapps"
+                          ]
+                        },
+                        "tag": {
+                          "$schema": "http://json-schema.org/draft-04/schema",
+                          "title": "Tag",
+                          "description": "The branch name, without repo, and with slashes replaced by hyphens.",
+                          "examples": [
+                            "release-offline"
+                          ],
+                          "type": "string",
+                          "pattern": "^[a-zA-Z0-9\\-\\.]+$"
+                        }
+                      },
+                      "required": [
+                        "branch",
+                        "repo",
+                        "tag"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "node_apps": {
+                  "title": "Nodeapps overrides",
+                  "description": "I don't really know why we need this.",
+                  "type": "object",
+                  "patternProperties": {
+                    "^[a-z\\-]+$": {
+                      "title": "Repo",
+                      "description": "Simplified repository name (lower-case and hyphens).",
+                      "type": "object",
+                      "properties": {
+                        "tag": {
+                          "$schema": "http://json-schema.org/draft-04/schema",
+                          "title": "Tag",
+                          "description": "The branch name, without repo, and with slashes replaced by hyphens.",
+                          "examples": [
+                            "release-offline"
+                          ],
+                          "type": "string",
+                          "pattern": "^[a-zA-Z0-9\\-\\.]+$"
+                        }
+                      },
+                      "required": [
+                        "tag"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "chef_type",
+    "description",
+    "name",
+    "environment_config"
+  ],
+  "additionalProperties": false
+}

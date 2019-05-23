@@ -1,1 +1,3 @@
-import markedschema from "marked-schema";
+import wetzel from "wetzel-for-spec";
+
+console.log("Ran spec generator");

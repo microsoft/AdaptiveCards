@@ -2,7 +2,8 @@
 	"version": "independent",
 	"packages": [
     "adaptivecards*/**",
-    "marked-schema/**"
+	"wetzel-for-spec/**",
+	"spec-generator/**"
 	],
 	"command": {
 		"publish": {

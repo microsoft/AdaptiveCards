@@ -15,12 +15,14 @@
 		"clean": "rimraf build lib dist",
 		"prebuild": "tsc",
 		"build": "webpack",
-		"dts": "dts-generator --name adaptivecards-designer --project . --out dist/adaptivecards-designer.d.ts",
+		"watch": "webpack --watch",
+		"start": "webpack && node dist/spec-generator.js",
+		"dts": "dts-generator --name spec-generator --project . --out dist/spec-generator.d.ts",
 		"lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
 		"release": "npm run build && webpack --mode=production && npm run dts"
 	},
 	"dependencies": {
-		"marked-schema": "^0.1.4"
+		"wetzel-for-spec": "^0.1.4"
 	},
 	"devDependencies": {
 		"rimraf": "^2.6.2",

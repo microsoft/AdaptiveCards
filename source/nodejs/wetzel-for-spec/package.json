@@ -1,0 +1,32 @@
+{
+  "name": "wetzel-for-spec",
+  "version": "0.1.4",
+  "description": "Generate Markdown documentation from JSON Schema",
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "keywords": [
+    "json schema",
+    "markdown"
+  ],
+  "scripts": {
+    "jshint": "./node_modules/jshint/bin/jshint *.js **/*.js --exclude build/**/*.js"
+  },
+  "directories": {
+    "bin": "./bin",
+    "lib": "./lib"
+  },
+  "dependencies": {
+    "json-schema-ref-parser": "^3.3.1",
+    "minimist": "1.1.0"
+  },
+  "devDependencies": {
+    "jshint": "^2.6.0"
+  },
+  "jshintConfig": {
+    "node": true
+  },
+  "bin": {
+    "wetzel-for-spec": "./bin/wetzel-for-spec.js"
+  },
+  "preferGlobal": true
+}
