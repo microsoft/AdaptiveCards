@@ -6,6 +6,7 @@
   - Media
   - MediaSource
 - Containers:
+  - ActionSet
   - Container
   - ColumnSet
   - Column

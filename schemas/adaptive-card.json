@@ -251,9 +251,33 @@
 						},
 						{
 							"$ref": "#/definitions/Input.ChoiceSet"
+						},
+						{
+							"$ref": "#/definitions/ActionSet"
 						}
 					]
 				}
+			]
+		},
+		"ActionSet": {
+			"additionalProperties": true,
+			"type": "object",
+			"description": "Allow authors to place one or more 'action bars' anywhere within the card body",
+			"version": "1.2",
+			"allOf": [
+				{
+					"$ref": "#/definitions/CardElement"
+				}
+			],
+			"properties": {
+				"items": {
+					"description": "The actions to include in the `ActionSet`",
+					"$ref": "#/definitions/Actions"
+				}
+			},
+			"required": [
+				"type",
+				"items"
 			]
 		},
 		"Input.Choice": {
