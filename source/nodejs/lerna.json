@@ -3,7 +3,8 @@
 	"packages": [
     "adaptivecards*/**",
     "marked-schema/**",
-    "spec-generator/**"
+    "spec-generator/**",
+    "spec-generator-script/**"
 	],
 	"command": {
 		"publish": {

@@ -8,11 +8,12 @@ module.exports = (env, argv) => {
 
 	return {
 		mode: mode,
+		target: "node",
 		entry: {
-			"spec-generator": "./src/spec-generator.ts",
+			"spec-generator-script": "./src/spec-generator-script.ts",
 		},
 		output: {
-			path: path.resolve(__dirname, "dist"),
+			path: path.resolve(__dirname, "precompiled"),
 			filename: devMode ? "[name].js" : "[name].min.js",
 		},
 		externals: {
