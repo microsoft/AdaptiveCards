@@ -1902,7 +1902,7 @@ namespace AdaptiveNamespace
                                              _In_ IAdaptiveRenderContext* renderContext)
     {
         HString actionSentiment;
-        RETURN_IF_FAILED(adaptiveActionElement->get_Sentiment(actionSentiment.GetAddressOf()));
+        RETURN_IF_FAILED(adaptiveActionElement->get_Style(actionSentiment.GetAddressOf()));
 
         INT32 isSentimentPositive{}, isSentimentDestructive{}, isSentimentDefault{};
 
