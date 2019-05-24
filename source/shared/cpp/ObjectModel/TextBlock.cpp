@@ -80,14 +80,14 @@ void TextBlock::SetTextWeight(const TextWeight value)
     m_textElementProperties->SetTextWeight(value);
 }
 
-FontStyle TextBlock::GetFontStyle() const
+FontType TextBlock::GetFontType() const
 {
-    return m_textElementProperties->GetFontStyle();
+    return m_textElementProperties->GetFontType();
 }
 
-void TextBlock::SetFontStyle(const FontStyle value)
+void TextBlock::SetFontType(const FontType value)
 {
-    m_textElementProperties->SetFontStyle(value);
+    m_textElementProperties->SetFontType(value);
 }
 
 ForegroundColor TextBlock::GetTextColor() const

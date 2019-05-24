@@ -57,8 +57,8 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::FillMode, "fillMode"},
             {AdaptiveCardSchemaKey::FontFamily, "fontFamily"},
             {AdaptiveCardSchemaKey::FontSizes, "fontSizes"},
-            {AdaptiveCardSchemaKey::FontStyle, "fontStyle"},
-            {AdaptiveCardSchemaKey::FontStyles, "fontStyles"},
+            {AdaptiveCardSchemaKey::FontType, "fontType"},
+            {AdaptiveCardSchemaKey::FontTypes, "fontTypes"},
             {AdaptiveCardSchemaKey::FontWeights, "fontWeights"},
             {AdaptiveCardSchemaKey::ForegroundColor, "foregroundColor"},
             {AdaptiveCardSchemaKey::ForegroundColors, "foregroundColors"},
@@ -272,9 +272,9 @@ namespace AdaptiveSharedNamespace
                 {"Normal", TextSize::Default} // Back compat to support "Normal" for "Default" for pre V1.0 payloads
             }});
 
-    DEFINE_ADAPTIVECARD_ENUM(FontStyle, {
-            {FontStyle::Default, "Default"},
-            {FontStyle::Monospace, "Monospace"}});
+    DEFINE_ADAPTIVECARD_ENUM(FontType, {
+            {FontType::Default, "Default"},
+            {FontType::Monospace, "Monospace"}});
 
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ActionsOrientation, ActionsOrientation::Horizontal, {
             {ActionsOrientation::Horizontal, "Horizontal"},

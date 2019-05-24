@@ -41,58 +41,19 @@ namespace AdaptiveCards.Rendering.Wpf
                 AdaptiveColumn column = columnSet.Columns[i];
 
                 var childRenderArgs = new AdaptiveRenderArgs(childrenRenderArgs);
+                // Reset up and down bleed for columns as that behaviour shouldn't be changed
+                childRenderArgs.BleedDirection |= (BleedDirection.BleedUp | BleedDirection.BleedDown);
 
-                if (hasPadding)
+                if (i != 0)
                 {
-                    if (columnSet.Columns.Count == 1)
-                    {
-                        childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-                        childRenderArgs.BleedDirection = BleedDirection.Both;
-                    }
-                    else
-                    {
-                        if (i == 0)
-                        {
-                            childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-                            childRenderArgs.BleedDirection = BleedDirection.Left;
-                        }
-                        else if (i == (columnSet.Columns.Count - 1))
-                        {
-                            childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-                            childRenderArgs.BleedDirection = BleedDirection.Right;
-                        }
-                        else
-                        {
-                            childRenderArgs.BleedDirection = BleedDirection.None;
-                        }
-                    }
+                    // Only the first column can bleed to the left
+                    childRenderArgs.BleedDirection &= ~BleedDirection.BleedLeft;
                 }
-                else
+
+                if (i != columnSet.Columns.Count - 1)
                 {
-                    if (columnSet.Columns.Count == 1)
-                    {
-                        childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-                        childRenderArgs.BleedDirection = parentRenderArgs.BleedDirection;
-                    }
-                    else
-                    {
-                        if (i == 0 &&
-                            (childRenderArgs.BleedDirection == BleedDirection.Left || childRenderArgs.BleedDirection == BleedDirection.Both))
-                        {
-                            childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-                            childRenderArgs.BleedDirection = BleedDirection.Left;
-                        }
-                        else if (i == (columnSet.Columns.Count - 1) &&
-                            (childRenderArgs.BleedDirection == BleedDirection.Right || childRenderArgs.BleedDirection == BleedDirection.Both))
-                        {
-                            childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-                            childRenderArgs.BleedDirection = BleedDirection.Right;
-                        }
-                        else
-                        {
-                            childRenderArgs.BleedDirection = BleedDirection.None;
-                        }
-                    }
+                    // Only the last column can bleed to the right
+                    childRenderArgs.BleedDirection &= ~BleedDirection.BleedRight;
                 }
 
                 context.RenderArgs = childRenderArgs;
@@ -102,34 +63,27 @@ namespace AdaptiveCards.Rendering.Wpf
                 TagContent tag = null;
 
                 // Add vertical Separator
-                if (uiColumnSet.ColumnDefinitions.Count > 0)
+                if (uiColumnSet.ColumnDefinitions.Count > 0 && (column.Separator || column.Spacing != AdaptiveSpacing.None))
                 {
-                    if (column.Separator || column.Spacing != AdaptiveSpacing.None)
+                    var uiSep = new Grid();
+                    uiSep.Style = context.GetStyle($"Adaptive.VerticalSeparator");
+
+                    uiSep.VerticalAlignment = VerticalAlignment.Stretch;
+
+                    int spacing = context.Config.GetSpacing(column.Spacing);
+                    uiSep.Margin = new Thickness(spacing / 2.0, 0, spacing / 2.0, 0);
+
+                    uiSep.Width = context.Config.Separator.LineThickness;
+                    if (column.Separator && context.Config.Separator.LineColor != null)
                     {
-                        var uiSep = new Grid();
-                        uiSep.Style = context.GetStyle($"Adaptive.VerticalSeparator");
-
-                        uiSep.VerticalAlignment = VerticalAlignment.Stretch;
-
-                        int spacing = context.Config.GetSpacing(column.Spacing);
-                        uiSep.Margin = new Thickness(spacing / 2.0, 0, spacing / 2.0, 0);
-
-                        uiSep.Width = context.Config.Separator.LineThickness;
-                        if (column.Separator && context.Config.Separator.LineColor != null)
-                        {
-                            uiSep.Background = context.GetColorBrush(context.Config.Separator.LineColor);
-                        }
-
-                        tag = new TagContent(uiSep, uiColumnSet);
-
-                        uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
-                        Grid.SetColumn(uiSep, uiColumnSet.ColumnDefinitions.Count - 1);
-                        uiColumnSet.Children.Add(uiSep);
+                        uiSep.Background = context.GetColorBrush(context.Config.Separator.LineColor);
                     }
-                    else
-                    {
-                        tag = new TagContent(null, uiColumnSet);
-                    }
+
+                    tag = new TagContent(uiSep, uiColumnSet);
+
+                    uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
+                    Grid.SetColumn(uiSep, uiColumnSet.ColumnDefinitions.Count - 1);
+                    uiColumnSet.Children.Add(uiSep);
                 }
                 else
                 {

@@ -71,15 +71,15 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveTextElement::put_Language(_In_ HSTRING language) { return m_language.Set(language); }
 
-    HRESULT AdaptiveTextElement::get_FontStyle(_Out_ ABI::AdaptiveNamespace::FontStyle* fontStyle)
+    HRESULT AdaptiveTextElement::get_FontType(_Out_ ABI::AdaptiveNamespace::FontType* fontType)
     {
-        *fontStyle = m_fontStyle;
+        *fontType = m_fontType;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextElement::put_FontStyle(ABI::AdaptiveNamespace::FontStyle fontStyle)
+    HRESULT AdaptiveTextElement::put_FontType(ABI::AdaptiveNamespace::FontType fontType)
     {
-        m_fontStyle = fontStyle;
+        m_fontType = fontType;
         return S_OK;
     }
 }

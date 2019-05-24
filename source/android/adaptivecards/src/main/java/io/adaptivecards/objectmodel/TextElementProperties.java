@@ -83,12 +83,12 @@ public class TextElementProperties {
     AdaptiveCardObjectModelJNI.TextElementProperties_SetTextWeight(swigCPtr, this, value.swigValue());
   }
 
-  public FontStyle GetFontStyle() {
-    return FontStyle.swigToEnum(AdaptiveCardObjectModelJNI.TextElementProperties_GetFontStyle(swigCPtr, this));
+  public FontType GetFontType() {
+    return FontType.swigToEnum(AdaptiveCardObjectModelJNI.TextElementProperties_GetFontType(swigCPtr, this));
   }
 
-  public void SetFontStyle(FontStyle value) {
-    AdaptiveCardObjectModelJNI.TextElementProperties_SetFontStyle(swigCPtr, this, value.swigValue());
+  public void SetFontType(FontType value) {
+    AdaptiveCardObjectModelJNI.TextElementProperties_SetFontType(swigCPtr, this, value.swigValue());
   }
 
   public ForegroundColor GetTextColor() {
