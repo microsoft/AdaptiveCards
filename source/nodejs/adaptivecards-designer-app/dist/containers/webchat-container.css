@@ -105,6 +105,7 @@ a.ac-anchor:visited:active {
 
 .ac-pushButton.style-destructive {
     background-color: #E50000;
+    color: white;
 }
 
 .ac-pushButton.style-destructive:hover, .ac-pushButton.style-destructive:active {
