@@ -1,0 +1,24 @@
+- Cards:
+  - AdaptiveCard
+- Card Elements:
+  - TextBlock
+  - Image
+- Containers:
+  - Container
+  - ColumnSet
+  - Column
+  - FactSet
+  - Fact
+  - ImageSet
+- Actions:
+  - Action.OpenUrl
+  - Action.Submit
+  - Action.ShowCard
+- Inputs:
+  - Input.Text
+  - Input.Number
+  - Input.Date
+  - Input.Time
+  - Input.Toggle
+  - Input.ChoiceSet
+  - Input.Choice

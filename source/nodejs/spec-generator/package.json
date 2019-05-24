@@ -22,7 +22,7 @@
 		"release": "npm run build && webpack --mode=production && npm run dts"
 	},
 	"dependencies": {
-		"wetzel-for-spec": "^0.1.4"
+		"marked-schema": "0.1.5"
 	},
 	"devDependencies": {
 		"rimraf": "^2.6.2",
