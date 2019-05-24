@@ -622,11 +622,11 @@ namespace UWPUnitTests
             string iconUrl,
             string id,
             string title,
-            string sentiment)
+            string style)
         {
             Assert.AreEqual(iconUrl, element.IconUrl);
             Assert.AreEqual(id, element.Id);
-            Assert.AreEqual(sentiment, element.Sentiment);
+            Assert.AreEqual(style, element.Style);
             Assert.AreEqual(title, element.Title);
         }
 
@@ -639,7 +639,7 @@ namespace UWPUnitTests
                 Url = url,
                 IconUrl = "http://www.stuff.com/icon.jpg",
                 Id = "OpenUrlId",
-                Sentiment = "Destructive",
+                Style = "Destructive",
                 Title = "Title"
             };
 
@@ -647,7 +647,7 @@ namespace UWPUnitTests
             Assert.AreEqual(url, openUrlAction.Url);
 
             var jsonString = openUrlAction.ToJson().ToString();
-            Assert.AreEqual("{\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"sentiment\":\"Destructive\",\"title\":\"Title\",\"type\":\"Action.OpenUrl\",\"url\":\"http://www.stuff.com/\"}", jsonString);
+            Assert.AreEqual("{\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"style\":\"Destructive\",\"title\":\"Title\",\"type\":\"Action.OpenUrl\",\"url\":\"http://www.stuff.com/\"}", jsonString);
         }
 
         [TestMethod]
@@ -659,7 +659,7 @@ namespace UWPUnitTests
                 DataJson = dataJson,
                 IconUrl = "http://www.stuff.com/icon.jpg",
                 Id = "OpenUrlId",
-                Sentiment = "Destructive",
+                Style = "Destructive",
                 Title = "Title"
             };
 
@@ -667,7 +667,7 @@ namespace UWPUnitTests
             Assert.AreEqual(dataJson, submitAction.DataJson);
 
             var jsonString = submitAction.ToJson().ToString();
-            Assert.AreEqual("{\"data\":\"foo\",\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"sentiment\":\"Destructive\",\"title\":\"Title\",\"type\":\"Action.Submit\"}", jsonString);
+            Assert.AreEqual("{\"data\":\"foo\",\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"style\":\"Destructive\",\"title\":\"Title\",\"type\":\"Action.Submit\"}", jsonString);
         }
 
         [TestMethod]
@@ -677,7 +677,7 @@ namespace UWPUnitTests
             {
                 IconUrl = "http://www.stuff.com/icon.jpg",
                 Id = "OpenUrlId",
-                Sentiment = "Destructive",
+                Style = "Destructive",
                 Title = "Title"
             };
 
@@ -688,7 +688,7 @@ namespace UWPUnitTests
             Assert.IsNotNull(showCardAction.Card);
 
             var jsonString = showCardAction.ToJson().ToString();
-            Assert.AreEqual("{\"card\":{\"actions\":[],\"body\":[],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"},\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"sentiment\":\"Destructive\",\"title\":\"Title\",\"type\":\"Action.ShowCard\"}", jsonString);
+            Assert.AreEqual("{\"card\":{\"actions\":[],\"body\":[],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"},\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"style\":\"Destructive\",\"title\":\"Title\",\"type\":\"Action.ShowCard\"}", jsonString);
         }
 
         [TestMethod]
@@ -713,7 +713,7 @@ namespace UWPUnitTests
             {
                 IconUrl = "http://www.stuff.com/icon.jpg",
                 Id = "ToggleVisibilityId",
-                Sentiment = "Destructive",
+                Style = "Destructive",
                 Title = "Title"
             };
 
@@ -726,7 +726,7 @@ namespace UWPUnitTests
             Assert.AreEqual("element2Id", toggleAction.TargetElements[1].ElementId);
 
             var jsonString = toggleAction.ToJson().ToString();
-            Assert.AreEqual("{\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"ToggleVisibilityId\",\"sentiment\":\"Destructive\",\"targetElements\":[\"elementId\",{\"elementId\":\"element2Id\",\"isVisible\":true}],\"title\":\"Title\",\"type\":\"Action.ToggleVisibility\"}", jsonString);
+            Assert.AreEqual("{\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"ToggleVisibilityId\",\"style\":\"Destructive\",\"targetElements\":[\"elementId\",{\"elementId\":\"element2Id\",\"isVisible\":true}],\"title\":\"Title\",\"type\":\"Action.ToggleVisibility\"}", jsonString);
         }
 
         [TestMethod]

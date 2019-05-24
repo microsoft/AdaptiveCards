@@ -12,18 +12,23 @@
 	"actions": [
 		{
 			"type": "Action.Submit",
-			"sentiment": "default",
-			"title": "Action.Default"
+			"style": "default",
+			"title": "Default"
 		},
 		{
 			"type": "Action.Submit",
-			"sentiment": "positive",
-			"title": "Action.Pawsitive"
+			"style": "positive",
+			"title": "Pawsitive"
 		},
 		{
 			"type": "Action.Submit",
-			"sentiment": "destructive",
-			"title": "Action.Destructive"
+			"style": "destructive",
+			"title": "Destructive"
+		},
+		{
+			"type": "Action.Submit",
+			"style": "other",
+			"title": "Other"
 		}
 	]
 }
