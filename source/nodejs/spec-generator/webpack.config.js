@@ -15,6 +15,9 @@ module.exports = (env, argv) => {
 			path: path.resolve(__dirname, "dist"),
 			filename: devMode ? "[name].js" : "[name].min.js",
 		},
+		externals: {
+			fs: "commonjs fs"
+		},
 		resolve: {
 			extensions: [".ts", ".tsx", ".js"]
 		},

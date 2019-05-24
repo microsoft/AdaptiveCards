@@ -22,7 +22,8 @@
 		"release": "npm run build && webpack --mode=production && npm run dts"
 	},
 	"dependencies": {
-		"marked-schema": "0.1.5"
+    "marked-schema": "0.1.5",
+		"p-iteration": "^1.1.8"
 	},
 	"devDependencies": {
 		"rimraf": "^2.6.2",
