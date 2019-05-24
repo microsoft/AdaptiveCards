@@ -69,9 +69,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::IsTrue(TextWeight::Default == textBlock.GetTextWeight());
         Assert::IsTrue(fontType == textBlock.GetFontType());
         Assert::IsFalse(textBlock.GetIsSubtle());
-        Assert::IsFalse(textBlock.GetItalic());
         Assert::IsFalse(textBlock.GetSeparator());
-        Assert::IsFalse(textBlock.GetStrikethrough());
         Assert::IsFalse(textBlock.GetWrap());
     }
 

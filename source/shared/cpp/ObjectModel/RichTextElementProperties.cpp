@@ -5,12 +5,13 @@
 #include "RichTextElementProperties.h"
 
 using namespace AdaptiveSharedNamespace;
-RichTextElementProperties::RichTextElementProperties() : TextElementProperties()
+RichTextElementProperties::RichTextElementProperties()
+    : TextElementProperties(), m_italic(false), m_strikethrough(false)
 {
 }
 
-RichTextElementProperties::RichTextElementProperties(const TextConfig& config, const std::string& text, const std::string& language) :
-    TextElementProperties(config, text, language)
+RichTextElementProperties::RichTextElementProperties(const TextConfig& config, const std::string& text, const std::string& language)
+    : TextElementProperties(config, text, language), m_italic(false), m_strikethrough(false)
 {
 }
 
@@ -28,6 +29,26 @@ Json::Value RichTextElementProperties::SerializeToJsonValue(Json::Value& root) c
     }
 
     return root;
+}
+
+bool RichTextElementProperties::GetItalic() const
+{
+    return m_italic;
+}
+
+void RichTextElementProperties::SetItalic(const bool value)
+{
+    m_italic = value;
+}
+
+bool RichTextElementProperties::GetStrikethrough() const
+{
+    return m_strikethrough;
+}
+
+void RichTextElementProperties::SetStrikethrough(const bool value)
+{
+    m_strikethrough = value;
 }
 
 void RichTextElementProperties::Deserialize(const ParseContext& context, const Json::Value& json)

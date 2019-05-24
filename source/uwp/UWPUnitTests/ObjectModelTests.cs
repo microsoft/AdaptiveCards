@@ -105,13 +105,11 @@ namespace UWPUnitTests
                 Id = "TextBlockId",
                 IsSubtle = true,
                 IsVisible = false,
-                Italic = true,
                 Language = "en",
                 MaxLines = 3,
                 Separator = true,
                 Size = TextSize.Large,
                 Spacing = Spacing.Large,
-                Strikethrough = true,
                 Text = "This is a text block",
                 Weight = TextWeight.Bolder,
                 Wrap = true
@@ -123,8 +121,6 @@ namespace UWPUnitTests
             Assert.AreEqual(FontType.Monospace, textBlock.FontType);
             Assert.AreEqual(HAlignment.Center, textBlock.HorizontalAlignment);
             Assert.IsTrue(textBlock.IsSubtle);
-            Assert.IsTrue(textBlock.Italic);
-            Assert.IsTrue(textBlock.Strikethrough);
             Assert.AreEqual("en", textBlock.Language);
             Assert.AreEqual<uint>(3, textBlock.MaxLines);
             Assert.AreEqual(TextSize.Large, textBlock.Size);
@@ -133,7 +129,7 @@ namespace UWPUnitTests
             Assert.IsTrue(textBlock.Wrap);
 
             var jsonString = textBlock.ToJson().ToString();
-            Assert.AreEqual("{\"color\":\"Accent\",\"fontType\":\"Monospace\",\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"TextBlockId\",\"isSubtle\":true,\"isVisible\":false,\"italic\":true,\"maxLines\":3,\"separator\":true,\"size\":\"Large\",\"spacing\":\"large\",\"strikethrough\":true,\"text\":\"This is a text block\",\"type\":\"TextBlock\",\"weight\":\"Bolder\",\"wrap\":true}", jsonString);
+            Assert.AreEqual("{\"color\":\"Accent\",\"fontType\":\"Monospace\",\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"TextBlockId\",\"isSubtle\":true,\"isVisible\":false,\"maxLines\":3,\"separator\":true,\"size\":\"Large\",\"spacing\":\"large\",\"text\":\"This is a text block\",\"type\":\"TextBlock\",\"weight\":\"Bolder\",\"wrap\":true}", jsonString);
         }
 
         [TestMethod]

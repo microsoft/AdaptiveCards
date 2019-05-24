@@ -45,8 +45,6 @@
 		6B096D74225FC51F006CC034 /* SimpleFallback.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B096D73225FC51F006CC034 /* SimpleFallback.json */; };
 		6B096D76225FF465006CC034 /* DeepFallback.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B096D75225FF465006CC034 /* DeepFallback.json */; };
 		6B096D7822601A5A006CC034 /* ActionFallback.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B096D7722601A5A006CC034 /* ActionFallback.json */; };
-		6B096D7B2266A13A006CC034 /* TextBlock.Strikethrough.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B096D792266A139006CC034 /* TextBlock.Strikethrough.json */; };
-		6B096D7C2266A13A006CC034 /* TextBlock.Italic.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B096D7A2266A13A006CC034 /* TextBlock.Italic.json */; };
 		6B096D8022694C25006CC034 /* Element.Requires.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B096D7F22694C24006CC034 /* Element.Requires.json */; };
 		6B096D822273CE0A006CC034 /* ColumnSet.AllElements.Stretch.ToggleVisibility.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B096D812273CE0A006CC034 /* ColumnSet.AllElements.Stretch.ToggleVisibility.json */; };
 		6B096D842273D10A006CC034 /* ToggleVisibility.AllElements.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B096D832273D10A006CC034 /* ToggleVisibility.AllElements.json */; };
@@ -233,8 +231,6 @@
 		6B096D73225FC51F006CC034 /* SimpleFallback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = SimpleFallback.json; path = ../../../../samples/v1.2/Scenarios/SimpleFallback.json; sourceTree = "<group>"; };
 		6B096D75225FF465006CC034 /* DeepFallback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = DeepFallback.json; path = ../../../../samples/Tests/DeepFallback.json; sourceTree = "<group>"; };
 		6B096D7722601A5A006CC034 /* ActionFallback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ActionFallback.json; path = ../../../../samples/v1.2/Elements/ActionFallback.json; sourceTree = "<group>"; };
-		6B096D792266A139006CC034 /* TextBlock.Strikethrough.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.Strikethrough.json; path = ../../../../samples/v1.2/Elements/TextBlock.Strikethrough.json; sourceTree = "<group>"; };
-		6B096D7A2266A13A006CC034 /* TextBlock.Italic.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.Italic.json; path = ../../../../samples/v1.2/Elements/TextBlock.Italic.json; sourceTree = "<group>"; };
 		6B096D7F22694C24006CC034 /* Element.Requires.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Element.Requires.json; path = ../../../../samples/Tests/Element.Requires.json; sourceTree = "<group>"; };
 		6B096D812273CE0A006CC034 /* ColumnSet.AllElements.Stretch.ToggleVisibility.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.AllElements.Stretch.ToggleVisibility.json; path = ../../../../samples/Tests/ColumnSet.AllElements.Stretch.ToggleVisibility.json; sourceTree = "<group>"; };
 		6B096D832273D10A006CC034 /* ToggleVisibility.AllElements.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ToggleVisibility.AllElements.json; path = ../../../../samples/Tests/ToggleVisibility.AllElements.json; sourceTree = "<group>"; };
@@ -615,12 +611,10 @@
 				F4933CB81F79852C00F6EBFD /* TextBlock.DateTimeFormatting.json */,
 				F4933CB91F79852C00F6EBFD /* TextBlock.HorizontalAlignment.json */,
 				F4933CBA1F79852C00F6EBFD /* TextBlock.IsSubtle.json */,
-				6B096D7A2266A13A006CC034 /* TextBlock.Italic.json */,
 				F4933CBB1F79852C00F6EBFD /* TextBlock.Markdown.json */,
 				F4933CBC1F79852C00F6EBFD /* TextBlock.MaxLines.json */,
 				F4933CBD1F79852C00F6EBFD /* TextBlock.Size.json */,
 				F4933CBE1F79852C00F6EBFD /* TextBlock.Spacing.json */,
-				6B096D792266A139006CC034 /* TextBlock.Strikethrough.json */,
 				F4933CC01F79852C00F6EBFD /* TextBlock.Weight.json */,
 				F4933CC11F79852C00F6EBFD /* TextBlock.Wrap.json */,
 				6B096D832273D10A006CC034 /* ToggleVisibility.AllElements.json */,
@@ -752,7 +746,6 @@
 				6BC30F6721DFE8EA00B9FAAE /* Media.Sources.json in Resources */,
 				6B268FE520CEF89100D99C1B /* (null) in Resources */,
 				6B9AB30C20DC4FB3005C8E15 /* IconsInSomeActions.json in Resources */,
-				6B096D7B2266A13A006CC034 /* TextBlock.Strikethrough.json in Resources */,
 				F4933CED1F79852C00F6EBFD /* TextBlock.Weight.json in Resources */,
 				3016455A225E602A0032E11C /* Container.MinHeight.json in Resources */,
 				F4933D061F79853B00F6EBFD /* StockUpdate.json in Resources */,
@@ -793,7 +786,6 @@
 				6BAC0F242284D52B00E42DEB /* AdaptiveCard.BackgroundImage.FillMode.Cover.json in Resources */,
 				300ECB72219A53B800371DC5 /* Action.Submit.Sentiment.json in Resources */,
 				F4933CE31F79852C00F6EBFD /* Stylesheet.json in Resources */,
-				6B096D7C2266A13A006CC034 /* TextBlock.Italic.json in Resources */,
 				F4933D011F79853B00F6EBFD /* ImageGallery.json in Resources */,
 				F4933D001F79853B00F6EBFD /* FoodOrder.json in Resources */,
 				F4933CE21F79852C00F6EBFD /* Input.Toggle.json in Resources */,
