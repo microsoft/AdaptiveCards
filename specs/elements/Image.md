@@ -12,7 +12,7 @@
 | **size** | `string` |  No, default: `"auto"` | Controls the approximate size of the image. The physical dimensions will vary per host. Specify `"auto"` for true image dimension, or `"stretch"` to force it to fill the container. | 1.0 |
 | **style** | `string` |  No | Controls how this `Image` is displayed. | 1.0 |
 | **type** | `"Image"` | Yes | Must be `"Image"`. | 1.0 |
-| **url** | `string` | Yes | The URL to the image. | 1.0 |
+| **url** | `string` | Yes | The URL to the image. Supports data URI in version 1.2+ | 1.0 |
 | **width** | `string` |  No | The desired on-screen width of the image, ending in 'px'. E.g., 50px. This overrides the `size` property. | 1.1 |
 | **id** | `string` |  No | A unique identifier associated with the element. | 1.0 |
 | **spacing** | `string` |  No | Controls the amount of spacing between this element and the preceding element. | 1.0 |

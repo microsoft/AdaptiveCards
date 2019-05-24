@@ -5,6 +5,7 @@
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
 | **color** | `string` |  No | Controls the color of `TextBlock` elements. | 1.0 |
+| **fontType** | `string` |  No | Type of font to use for rendering | 1.0 |
 | **horizontalAlignment** | `string` |  No, default: `"left"` | Controls how elements are horizontally positioned within their container. | 1.0 |
 | **isSubtle** | `boolean` |  No, default: `false` | If `true`, displays text slightly toned down to appear less prominent. | 1.0 |
 | **maxLines** | `number` |  No | Specifies the maximum number of lines to display. | 1.0 |

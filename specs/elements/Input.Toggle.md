@@ -10,6 +10,7 @@
 | **value** | `string` |  No, default: `"false"` | The current selected value. If the item is selected that "valueOn" will be used, otherwise "valueOff" | 1.0 |
 | **valueOff** | `string` |  No, default: `"false"` | The value when toggle is off | 1.0 |
 | **valueOn** | `string` |  No, default: `"true"` | The value when toggle is on | 1.0 |
+| **wrap** | `boolean` |  No, default: `false` | If `true`, allow text to wrap. Otherwise, text is clipped. | 1.0 |
 | **spacing** | `string` |  No | Controls the amount of spacing between this element and the preceding element. | 1.0 |
 | **separator** | `boolean` |  No, default: `false` | When `true`, draw a separating line at the top of the element. | 1.0 |
 <!-- END AUTO-GENERATED -->

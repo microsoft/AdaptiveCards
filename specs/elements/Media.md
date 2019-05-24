@@ -8,7 +8,7 @@
 | -------- | ---- | -------- | ----------- | ------- |
 | **type** | `"Media"` | Yes | Must be `"Media"`. | 1.1 |
 | **sources** | `object` `[]` | Yes | Array of media sources to attempt to play. | 1.1 |
-| **poster** | `string` |  No | URL of an image to display before playing. | 1.1 |
+| **poster** | `string` |  No | URL of an image to display before playing. Supports data URI in version 1.2+ | 1.1 |
 | **altText** | `string` |  No | Alternate text describing the audio or video. | 1.1 |
 | **id** | `string` |  No | A unique identifier associated with the element. | 1.1 |
 | **spacing** | `string` |  No | Controls the amount of spacing between this element and the preceding element. | 1.1 |
