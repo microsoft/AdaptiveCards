@@ -751,6 +751,7 @@
 					"description": "The initial choice (or set of choices) that should be selected. For multi-select, specify a comma-separated string of values."
 				},
 				"wrap": {
+					"version": "1.2",
 					"$ref": "#/definitions/Wrap"
 				}
 			},
@@ -997,6 +998,7 @@
 					"default": "true"
 				},
 				"wrap": {
+					"version": "1.2",
 					"$ref": "#/definitions/Wrap"
 				}
 			},
@@ -1008,6 +1010,7 @@
 		},
 		"FontType": {
 			"type": "string",
+			"version": "1.2",
 			"description": "Type of font to use for rendering",
 			"enum": [
 				"default",
