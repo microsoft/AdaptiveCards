@@ -3770,15 +3770,14 @@ class ActionButton {
                 break;
         }
 
-        switch (this.action.sentiment) {
-            case Enums.ActionSentiment.Positive:
-                this.action.renderedElement.classList.add(...hostConfig.makeCssClassNames("primary", "sentiment-positive"));
-                break;
-            case Enums.ActionSentiment.Destructive:
-                this.action.renderedElement.classList.add(...hostConfig.makeCssClassNames("sentiment-destructive"));
-                break;
+        if (!Utils.isNullOrEmpty(this.action.style)) {
+            if (this.action.style === Enums.ActionStyle.Positive) {
+                this.action.renderedElement.classList.add(...hostConfig.makeCssClassNames("primary", "style-positive"));
+            }
+            else {
+                this.action.renderedElement.classList.add(...hostConfig.makeCssClassNames("style-" + this.action.style.toLowerCase()));
+             }
         }
-
     }
 
     readonly action: Action;
@@ -3864,7 +3863,7 @@ export abstract class Action extends CardObject {
 
     title: string;
     iconUrl: string;
-    sentiment: Enums.ActionSentiment = Enums.ActionSentiment.Default;
+    style: string = Enums.ActionStyle.Default;
 
     onExecute: (sender: Action) => void;
 
@@ -3878,7 +3877,7 @@ export abstract class Action extends CardObject {
         Utils.setProperty(result, "type", this.getJsonTypeName());
         Utils.setProperty(result, "title", this.title);
         Utils.setProperty(result, "iconUrl", this.iconUrl);
-        Utils.setEnumProperty(Enums.ActionSentiment, result, "sentiment", this.sentiment, Enums.ActionSentiment.Default);
+        Utils.setProperty(result, "style", this.style, Enums.ActionStyle.Default);
 
         return result;
     }
@@ -3989,7 +3988,7 @@ export abstract class Action extends CardObject {
 
         this.title = Utils.getStringValue(json["title"]);
         this.iconUrl = Utils.getStringValue(json["iconUrl"]);
-        this.sentiment = Utils.getEnumValue(Enums.ActionSentiment, json["sentiment"], this.sentiment);
+        this.style = Utils.getStringValue(json["style"], this.style);
     }
 
     remove(): boolean {
@@ -4032,16 +4031,16 @@ export abstract class Action extends CardObject {
     }
 
     get isPrimary(): boolean {
-        return this.sentiment == Enums.ActionSentiment.Positive;
+        return this.style == Enums.ActionStyle.Positive;
     }
 
     set isPrimary(value: boolean) {
         if (value) {
-            this.sentiment = Enums.ActionSentiment.Positive;
+            this.style = Enums.ActionStyle.Positive;
         }
         else {
-            if (this.sentiment == Enums.ActionSentiment.Positive) {
-                this.sentiment = Enums.ActionSentiment.Default;
+            if (this.style == Enums.ActionStyle.Positive) {
+                this.style = Enums.ActionStyle.Default;
             }
         }
     }

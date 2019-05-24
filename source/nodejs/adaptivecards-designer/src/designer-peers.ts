@@ -685,14 +685,14 @@ export class ActionPeer extends DesignerPeer {
             this.changed(false);
         }
 
-        let sentiment = addLabelAndInput(card, "Sentiment:", Adaptive.ChoiceSetInput);
-        sentiment.input.isCompact = true;
-        sentiment.input.choices.push(new Adaptive.Choice("Default", Adaptive.ActionSentiment.Default.toString()));
-        sentiment.input.choices.push(new Adaptive.Choice("Positive", Adaptive.ActionSentiment.Positive.toString()));
-        sentiment.input.choices.push(new Adaptive.Choice("Destructive", Adaptive.ActionSentiment.Destructive.toString()));
-        sentiment.input.defaultValue = this.action.sentiment.toString();
-        sentiment.input.onValueChanged = () => {
-            this.action.sentiment = <Adaptive.ActionSentiment>parseInt(sentiment.input.value);
+        let style = addLabelAndInput(card, "Style:", Adaptive.ChoiceSetInput);
+        style.input.isCompact = true;
+        style.input.choices.push(new Adaptive.Choice("Default", Adaptive.ActionStyle.Default));
+        style.input.choices.push(new Adaptive.Choice("Positive", Adaptive.ActionStyle.Positive));
+        style.input.choices.push(new Adaptive.Choice("Destructive", Adaptive.ActionStyle.Destructive));
+        style.input.defaultValue = this.action.style;
+        style.input.onValueChanged = () => {
+            this.action.style = style.input.value;
 
             this.changed(false);
         }
