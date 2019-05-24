@@ -391,6 +391,10 @@
 				"bleed": {
 					"$ref": "#/definitions/Bleed"
 				},
+				"style": {
+					"version": "1.2",
+					"$ref": "#/definitions/ContainerStyle"
+				},
 				"selectAction": {
 					"description": "An Action that will be invoked when the `ColumnSet` is tapped or selected. `Action.ShowCard` is not supported.",
 					"type": "object",
