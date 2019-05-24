@@ -16,3 +16,15 @@
 <!-- END AUTO-GENERATED -->
 
 ## Rendering
+
+1. First check that all required properties are present and valid. If not, return a rendering error.
+1. Then, check the `version` value. It is formatted as a string like `1.2`. If the `version` value is greater than your current Adaptive Cards supported version of your renderer...
+	1. Display the `fallbackText` instead. Use the same markdown and text processing support as described in `TextBlock`.
+	1. If the `fallbackText` wasn't provided, return a rendering error.
+1. Else, start creating the card...
+1. Create a native UI container with the padding specified in `hostConfig.spacing.padding`.
+1. If `body` is specified, render each element following the same rules as `Container`.
+1. If `actions` is specified, render each action following the same rules as `ActionSet`. Typically the actions should be rendered BELOW the `body`, but renderers can choose where to render them depending on what makes the most sense.
+1. If both `body` and `actions` were rendered, ensure spacing between the `body` and `actions` is set to the value specified in `hostConfig.actions.spacing`.
+1. If `selectAction` was specified and valid, make the entire card clickable, invoking that action when clicked.
+1. If supporting reading cards aloud, use the `speak` tag if specified and process it as SSML fragment text.
