@@ -51,7 +51,6 @@ void RichTextElementProperties::SetStrikethrough(const bool value)
     m_strikethrough = value;
 }
 
-
 void RichTextElementProperties::Deserialize(const ParseContext& context, const Json::Value& json)
 {
     TextElementProperties::Deserialize(context, json);

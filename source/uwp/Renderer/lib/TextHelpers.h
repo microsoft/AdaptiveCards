@@ -98,7 +98,6 @@ HRESULT StyleTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adap
         RETURN_IF_FAILED(xamlTextElement->put_FontStyle(ABI::Windows::UI::Text::FontStyle::FontStyle_Italic));
     }
 
-
     // Get the forground color based on text color, subtle, and container style
     ABI::AdaptiveNamespace::ForegroundColor adaptiveTextColor;
     RETURN_IF_FAILED(adaptiveTextElement->get_Color(&adaptiveTextColor));
