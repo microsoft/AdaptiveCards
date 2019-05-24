@@ -29,6 +29,9 @@
 			"type": "string",
 			"description": "Specifies what should be spoken for this entire card. This is simple text or SSML fragment."
 		},
+		"style": {
+			"$ref": "#/definitions/ContainerStyle"
+		},
 		"lang": {
 			"type": "string",
 			"description": "The 2-letter ISO-639-1 language used in the card. Used to localize any date/time functions.",
@@ -338,12 +341,7 @@
 					]
 				},
 				"style": {
-					"type": "string",
-					"description": "Style hint for `Column`.",
-					"enum": [
-						"default",
-						"emphasis"
-					]
+					"$ref": "#/definitions/ContainerStyle"
 				},
 				"width": {
 					"type": [
@@ -439,12 +437,7 @@
 					]
 				},
 				"style": {
-					"type": "string",
-					"description": "Style hint for `Container`.",
-					"enum": [
-						"default",
-						"emphasis"
-					]
+					"$ref": "#/definitions/ContainerStyle"
 				},
 				"verticalContentAlignment": {
 					"type": "string",
@@ -1098,6 +1091,18 @@
 			"required": [
 				"type",
 				"text"
+			]
+		},
+		"ContainerStyle": {
+			"type": "string",
+			"description": "Style to apply to this element.",
+			"enum": [
+				"default",
+				"emphasis",
+				"good",
+				"attention",
+				"warning",
+				"accent"
 			]
 		},
 		"SeparatorStyle": {
