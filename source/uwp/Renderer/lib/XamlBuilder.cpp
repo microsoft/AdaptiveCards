@@ -2076,6 +2076,12 @@ namespace AdaptiveNamespace
             HString text;
             RETURN_IF_FAILED(adaptiveTextElement->get_Text(text.GetAddressOf()));
 
+            boolean isStrikethrough{false};
+            RETURN_IF_FAILED(adaptiveTextRun->get_Strikethrough(&isStrikethrough));
+
+            boolean isItalic{false};
+            RETURN_IF_FAILED(adaptiveTextRun->get_Italic(&isItalic));
+
             UINT inlineLength;
             if (selectAction != nullptr)
             {
@@ -2102,9 +2108,8 @@ namespace AdaptiveNamespace
 
                 ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> hyperlinkInlines;
                 RETURN_IF_FAILED(hyperlinkAsSpan->get_Inlines(hyperlinkInlines.GetAddressOf()));
-
                 RETURN_IF_FAILED(AddSingleTextInline(
-                    adaptiveTextElement.Get(), renderContext, renderArgs, text.Get(), true, hyperlinkInlines.Get(), &inlineLength));
+                    adaptiveTextElement.Get(), renderContext, renderArgs, text.Get(), isStrikethrough, isItalic, true, hyperlinkInlines.Get(), &inlineLength));
 
                 ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> hyperlinkAsInline;
                 RETURN_IF_FAILED(hyperlink.As(&hyperlinkAsInline));
@@ -2116,7 +2121,7 @@ namespace AdaptiveNamespace
             {
                 // Add the text to the paragraph's inlines
                 RETURN_IF_FAILED(AddSingleTextInline(
-                    adaptiveTextElement.Get(), renderContext, renderArgs, text.Get(), false, xamlInlines.Get(), &inlineLength));
+                    adaptiveTextElement.Get(), renderContext, renderArgs, text.Get(), isStrikethrough, isItalic, false, xamlInlines.Get(), &inlineLength));
             }
 
             boolean highlight;

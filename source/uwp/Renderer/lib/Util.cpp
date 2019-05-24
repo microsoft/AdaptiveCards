@@ -1557,10 +1557,6 @@ HRESULT CopyTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* textE
     RETURN_IF_FAILED(textElement->get_IsSubtle(&isSubtle));
     RETURN_IF_FAILED(localCopiedTextElement->put_IsSubtle(isSubtle));
 
-    boolean italic;
-    RETURN_IF_FAILED(textElement->get_Italic(&italic));
-    RETURN_IF_FAILED(localCopiedTextElement->put_Italic(italic));
-
     HString language;
     RETURN_IF_FAILED(textElement->get_Language(language.GetAddressOf()));
     RETURN_IF_FAILED(localCopiedTextElement->put_Language(language.Get()));
@@ -1568,10 +1564,6 @@ HRESULT CopyTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* textE
     ABI::AdaptiveNamespace::TextSize size;
     RETURN_IF_FAILED(textElement->get_Size(&size));
     RETURN_IF_FAILED(localCopiedTextElement->put_Size(size));
-
-    boolean strikethrough;
-    RETURN_IF_FAILED(textElement->get_Strikethrough(&strikethrough));
-    RETURN_IF_FAILED(localCopiedTextElement->put_Strikethrough(strikethrough));
 
     ABI::AdaptiveNamespace::TextWeight weight;
     RETURN_IF_FAILED(textElement->get_Weight(&weight));

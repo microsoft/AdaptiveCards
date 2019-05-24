@@ -149,8 +149,86 @@
     <Content Include="..\..\..\samples\v1.1\Elements\*.json">
       <Link>LinkedCards\v1.1\Elements\%(FileName)</Link>
     </Content>
-    <Content Include="..\..\..\samples\v1.2\Elements\*.json">
-      <Link>LinkedCards\v1.2\Elements\%(FileName)</Link>
+    <Content Include="..\..\..\samples\v1.2\Elements\Action.OpenUrl.Sentiment.json">
+      <Link>LinkedCards\v1.2\Elements\Action.OpenUrl.Sentiment</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Elements\Action.ShowCard.Sentiment.json">
+      <Link>LinkedCards\v1.2\Elements\Action.ShowCard.Sentiment</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Elements\Action.Submit.Sentiment.json">
+      <Link>LinkedCards\v1.2\Elements\Action.Submit.Sentiment</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Elements\Action.ToggleVisibility.json">
+      <Link>LinkedCards\v1.2\Elements\Action.ToggleVisibility</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Elements\ActionFallback.json">
+      <Link>LinkedCards\v1.2\Elements\ActionFallback</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Elements\ActionSet.json">
+      <Link>LinkedCards\v1.2\Elements\ActionSet</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Elements\AdaptiveCard.BackgroundImage.FillMode.Cover.json">
+      <Link>LinkedCards\v1.2\Elements\AdaptiveCard.BackgroundImage.FillMode.Cover</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Elements\AdaptiveCard.BackgroundImage.FillMode.json">
+      <Link>LinkedCards\v1.2\Elements\AdaptiveCard.BackgroundImage.FillMode</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Elements\AdaptiveCard.BackgroundImage.FillMode.Repeat.json">
+      <Link>LinkedCards\v1.2\Elements\AdaptiveCard.BackgroundImage.FillMode.Repeat</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Elements\AdaptiveCard.BackgroundImage.FillMode.RepeatHorizontally.json">
+      <Link>LinkedCards\v1.2\Elements\AdaptiveCard.BackgroundImage.FillMode.RepeatHorizontally</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Elements\AdaptiveCard.BackgroundImage.FillMode.RepeatVertically.json">
+      <Link>LinkedCards\v1.2\Elements\AdaptiveCard.BackgroundImage.FillMode.RepeatVertically</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Elements\AdaptiveCard.BackgroundImage.FillVerticalAlignment.json">
+      <Link>LinkedCards\v1.2\Elements\AdaptiveCard.BackgroundImage.FillVerticalAlignment</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Elements\AdaptiveCard.MinHeight.json">
+      <Link>LinkedCards\v1.2\Elements\AdaptiveCard.MinHeight</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Elements\Column.BackgroundImage.json">
+      <Link>LinkedCards\v1.2\Elements\Column.BackgroundImage</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Elements\Column.Bleed.json">
+      <Link>LinkedCards\v1.2\Elements\Column.Bleed</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Elements\Column.MinHeight.json">
+      <Link>LinkedCards\v1.2\Elements\Column.MinHeight</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Elements\Column.Weighted.Image.json">
+      <Link>LinkedCards\v1.2\Elements\Column.Weighted.Image</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Elements\ColumnSet.Bleed.json">
+      <Link>LinkedCards\v1.2\Elements\ColumnSet.Bleed</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Elements\ColumnSet.MinHeight.json">
+      <Link>LinkedCards\v1.2\Elements\ColumnSet.MinHeight</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Elements\ColumnSet.Style.json">
+      <Link>LinkedCards\v1.2\Elements\ColumnSet.Style</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Elements\Container.BackgroundImage.json">
+      <Link>LinkedCards\v1.2\Elements\Container.BackgroundImage</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Elements\Container.Bleed.json">
+      <Link>LinkedCards\v1.2\Elements\Container.Bleed</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Elements\Container.MinHeight.json">
+      <Link>LinkedCards\v1.2\Elements\Container.MinHeight</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Elements\Container.Style.json">
+      <Link>LinkedCards\v1.2\Elements\Container.Style</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Elements\Input.Text.InlineAction.json">
+      <Link>LinkedCards\v1.2\Elements\Input.Text.InlineAction</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Elements\RichTextBlock.json">
+      <Link>LinkedCards\v1.2\Elements\RichTextBlock</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Elements\TextBlock.FontStyles.json">
+      <Link>LinkedCards\v1.2\Elements\TextBlock.FontStyles</Link>
     </Content>
     <Content Include="..\..\..\samples\HostConfig\*.json">
       <Link>LinkedHostConfigs\%(FileName)</Link>
