@@ -7,7 +7,7 @@
 		"commands": [
 			{
 				"match": ".*schemas\\\\adaptive-card.json",
-				"cmd": "echo 'cool'"
+				"cmd": "cd /D ${fileDirname}\\..\\source\\nodejs\\spec-generator-script\\precompiled & node .\\spec-generator-script.js"
 			}
 		]
 	}

@@ -585,7 +585,7 @@
 			"properties": {
 				"altText": {
 					"type": "string",
-					"description": "Alternate text describing the image!"
+					"description": "Alternate text describing the image."
 				},
 				"backgroundColor": {
 					"type": "string",

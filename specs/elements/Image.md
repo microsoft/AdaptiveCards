@@ -4,7 +4,7 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **altText** | `string` |  No | Alternate text describing the image! | 1.0 |
+| **altText** | `string` |  No | Alternate text describing the image. | 1.0 |
 | **backgroundColor** | `string` |  No | Applies a background to a transparent image. This property will respect the image style. | 1.1 |
 | **height** | `string` |  No | The desired on-screen height of the image, ending in 'px'. E.g., 50px. This overrides the `size` property. | 1.1 |
 | **horizontalAlignment** | `string` |  No, default: `"left"` | Controls how elements are horizontally positioned within their container. | 1.0 |
