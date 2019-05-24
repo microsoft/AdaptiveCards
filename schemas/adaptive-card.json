@@ -749,6 +749,9 @@
 				"value": {
 					"type": "string",
 					"description": "The initial choice (or set of choices) that should be selected. For multi-select, specify a comma-separated string of values."
+				},
+				"wrap": {
+					"$ref": "#/definitions/Wrap"
 				}
 			},
 			"required": [
@@ -992,6 +995,9 @@
 					"type": "string",
 					"description": "The value when toggle is on",
 					"default": "true"
+				},
+				"wrap": {
+					"$ref": "#/definitions/Wrap"
 				}
 			},
 			"required": [
@@ -1007,6 +1013,11 @@
 				"default",
 				"monospace"
 			]
+		},
+		"Wrap": {
+			"type": "boolean",
+			"description": "If `true`, allow text to wrap. Otherwise, text is clipped.",
+			"default": false
 		},
 		"TextBlock": {
 			"additionalProperties": true,
@@ -1078,9 +1089,7 @@
 					]
 				},
 				"wrap": {
-					"type": "boolean",
-					"description": "If `true`, allow text to wrap. Otherwise, text is clipped.",
-					"default": false
+					"$ref": "#/definitions/Wrap"
 				}
 			},
 			"required": [
