@@ -1000,6 +1000,14 @@
 				"title"
 			]
 		},
+		"FontType": {
+			"type": "string",
+			"description": "Type of font to use for rendering",
+			"enum": [
+				"default",
+				"monospace"
+			]
+		},
 		"TextBlock": {
 			"additionalProperties": true,
 			"type": "object",
@@ -1022,6 +1030,9 @@
 						"warning",
 						"attention"
 					]
+				},
+				"fontType": {
+					"$ref": "#/definitions/FontType"
 				},
 				"horizontalAlignment": {
 					"$ref": "#/definitions/HorizontalAlignment"
