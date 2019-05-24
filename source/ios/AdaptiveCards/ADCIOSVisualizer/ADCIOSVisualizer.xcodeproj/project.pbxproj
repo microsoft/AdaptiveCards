@@ -107,7 +107,6 @@
 		F423C0881EE1FB6100905679 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F423C0861EE1FB6100905679 /* LaunchScreen.storyboard */; };
 		F423C0931EE1FB6100905679 /* ADCIOSVisualizerTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = F423C0921EE1FB6100905679 /* ADCIOSVisualizerTests.mm */; };
 		F4933CC31F79852C00F6EBFD /* Action.ShowCard.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C961F79852C00F6EBFD /* Action.ShowCard.json */; };
-		F4933CC41F79852C00F6EBFD /* Action.ShowCard.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C971F79852C00F6EBFD /* Action.ShowCard.Style.json */; };
 		F4933CC51F79852C00F6EBFD /* Action.Submit.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C981F79852C00F6EBFD /* Action.Submit.json */; };
 		F4933CC61F79852C00F6EBFD /* Column.SelectAction.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C991F79852C00F6EBFD /* Column.SelectAction.json */; };
 		F4933CC71F79852C00F6EBFD /* Column.Spacing.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C9A1F79852C00F6EBFD /* Column.Spacing.json */; };
@@ -301,7 +300,6 @@
 		F423C0991EE1FB6100905679 /* ADCIOSVisualizerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ADCIOSVisualizerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F423C09F1EE1FB6100905679 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4933C961F79852C00F6EBFD /* Action.ShowCard.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.ShowCard.json; path = ../../../../samples/v1.0/Elements/Action.ShowCard.json; sourceTree = "<group>"; };
-		F4933C971F79852C00F6EBFD /* Action.ShowCard.Style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.ShowCard.Style.json; path = ../../../../samples/v1.0/Elements/Action.ShowCard.Style.json; sourceTree = "<group>"; };
 		F4933C981F79852C00F6EBFD /* Action.Submit.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.Submit.json; path = ../../../../samples/v1.0/Elements/Action.Submit.json; sourceTree = "<group>"; };
 		F4933C991F79852C00F6EBFD /* Column.SelectAction.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Column.SelectAction.json; path = ../../../../samples/v1.0/Elements/Column.SelectAction.json; sourceTree = "<group>"; };
 		F4933C9A1F79852C00F6EBFD /* Column.Spacing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Column.Spacing.json; path = ../../../../samples/v1.0/Elements/Column.Spacing.json; sourceTree = "<group>"; };
@@ -508,7 +506,6 @@
 				6BAC0F37229871DF00E42DEB /* Action.OpenUrl.Style.json */,
 				F4933C961F79852C00F6EBFD /* Action.ShowCard.json */,
 				6BAC0F39229871E000E42DEB /* Action.ShowCard.Style.json */,
-				F4933C971F79852C00F6EBFD /* Action.ShowCard.Style.json */,
 				F4933C981F79852C00F6EBFD /* Action.Submit.json */,
 				6BAC0F38229871E000E42DEB /* Action.Submit.Style.json */,
 				6B616C3B21CB0B6C003E29CE /* Action.ToggleVisibility.json */,
@@ -837,7 +834,6 @@
 				6B096D582257DA0C006CC034 /* Action.IconUrl.TwoActions.json in Resources */,
 				3016455B225E602A0032E11C /* Column.MinHeight.json in Resources */,
 				F4933CE71F79852C00F6EBFD /* TextBlock.IsSubtle.json in Resources */,
-				F4933CC41F79852C00F6EBFD /* Action.ShowCard.Style.json in Resources */,
 				F4F44B852048CDB300A2F24C /* AdditionalProperty.json in Resources */,
 				30860BC820C9B5C9009F9D99 /* ColumnSet.Input.Toggle.VerticalStretch.json in Resources */,
 				30860BCC20C9B5C9009F9D99 /* ColumnSet_Container.VerticalStretch.json in Resources */,
