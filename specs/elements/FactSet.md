@@ -2,14 +2,13 @@
 
 # FactSet
 
-|Property|Type|Required|Description|Version|
-|--------|----|--------|-----------|-------|
-|**facts**|`Fact[]`|Yes|The array of `Fact`s.|1.0
-|**type**|`"FactSet"`|Yes|Must be `"FactSet"`.|1.0
-|**id**|`string`| No|A unique identifier associated with the element.|1.0
-|**spacing**|`string`| No|Controls the amount of spacing between this element and the preceding element.|1.0
-|**separator**|`boolean`| No, default: `false`|When `true`, draw a separating line at the top of the element.|1.0
-
+| Property | Type | Required | Description | Version |
+| -------- | ---- | -------- | ----------- | ------- |
+| **facts** | `Fact[]` | Yes | The array of `Fact`s. | 1.0 |
+| **type** | `"FactSet"` | Yes | Must be `"FactSet"`. | 1.0 |
+| **id** | `string` |  No | A unique identifier associated with the element. | 1.0 |
+| **spacing** | `string` |  No | Controls the amount of spacing between this element and the preceding element. | 1.0 |
+| **separator** | `boolean` |  No, default: `false` | When `true`, draw a separating line at the top of the element. | 1.0 |
 <!-- END AUTO-GENERATED -->
 
 ## Rendering
