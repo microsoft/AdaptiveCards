@@ -12,9 +12,9 @@
 	"properties": {
 		"version": {
 			"type": "string",
-			"description": "Schema version that this card requires. If a client is **lower** than this version, the `fallbackText` will be rendered. NOTE: Version is not required for cards within an `Action.ShowCard`",
+			"description": "Schema version that this card requires. If a client is **lower** than this version, the `fallbackText` will be rendered. NOTE: Version is not required for cards within an `Action.ShowCard`. However, it *is* required for the top-level card.",
 			"examples": [
-				"1.0", "1.1"
+				"1.0", "1.1", "1.2"
 			]
 		},
 		"fallbackText": {
@@ -23,7 +23,7 @@
 		},
 		"backgroundImage": {
 			"type": "string",
-			"description": "An image to use as the background of the card."
+			"description": "URL specifying the image to use as the background of the card. Supports data URI in version 1.2+"
 		},
 		"speak": {
 			"type": "string",
@@ -69,7 +69,7 @@
 				"iconUrl": {
 					"type": "string",
 					"format": "uri",
-					"description": "Optional icon to be shown on the action in conjunction with the title",
+					"description": "Optional icon to be shown on the action in conjunction with the title. Supports data URI in version 1.2+",
 					"version": "1.1"
 				},
 				"url": {
@@ -100,7 +100,7 @@
 				"iconUrl": {
 					"type": "string",
 					"format": "uri",
-					"description": "Optional icon to be shown on the action in conjunction with the title",
+					"description": "Optional icon URL to be shown on the action in conjunction with the title. Supports data URI in version 1.2+",
 					"version": "1.1"
 				},
 				"card": {
@@ -128,7 +128,7 @@
 				"iconUrl": {
 					"type": "string",
 					"format": "uri",
-					"description": "Optional icon to be shown on the action in conjunction with the title",
+					"description": "Optional icon URL to be shown on the action in conjunction with the title. Supports data URI in version 1.2+",
 					"version": "1.1"
 				},
 				"data": {
@@ -251,9 +251,33 @@
 						},
 						{
 							"$ref": "#/definitions/Input.ChoiceSet"
+						},
+						{
+							"$ref": "#/definitions/ActionSet"
 						}
 					]
 				}
+			]
+		},
+		"ActionSet": {
+			"additionalProperties": true,
+			"type": "object",
+			"description": "Allow authors to place one or more 'action bars' anywhere within the card body",
+			"version": "1.2",
+			"allOf": [
+				{
+					"$ref": "#/definitions/CardElement"
+				}
+			],
+			"properties": {
+				"items": {
+					"description": "The actions to include in the `ActionSet`",
+					"$ref": "#/definitions/Actions"
+				}
+			},
+			"required": [
+				"type",
+				"items"
 			]
 		},
 		"Input.Choice": {
@@ -561,7 +585,7 @@
 				"poster": {
 					"type": "string",
 					"format": "uri",
-					"description": "URL of an image to display before playing."
+					"description": "URL of an image to display before playing. Supports data URI in version 1.2+"
 				},
 				"altText": {
 					"type": "string",
@@ -627,7 +651,7 @@
 				"url": {
 					"type": "string",
 					"format": "uri",
-					"description": "The URL to the image."
+					"description": "The URL to the image. Supports data URI in version 1.2+"
 				},
 				"width": {
 					"type": "string",
@@ -733,6 +757,9 @@
 				"value": {
 					"type": "string",
 					"description": "The initial choice (or set of choices) that should be selected. For multi-select, specify a comma-separated string of values."
+				},
+				"wrap": {
+					"$ref": "#/definitions/Wrap"
 				}
 			},
 			"required": [
@@ -857,6 +884,9 @@
 				"style": {
 					"$ref": "#/definitions/TextInputStyle"
 				},
+				"inlineAction": {
+					"$ref": "#/definitions/InlineAction"
+				},
 				"type": {
 					"type": "string",
 					"description": "Must be `\"Input.Text\"`.",
@@ -872,6 +902,23 @@
 			"required": [
 				"type",
 				"id"
+			]
+		},
+		"InlineAction": {
+			"additionalProperties": true,
+			"type": "object",
+			"version": "1.2",
+			"description": "The inline action for the input. Typically displayed to the right of the input. It is strongly recommended that an icon on the action (which will be displayed instead of the title of the action).",
+			"oneOf": [
+				{
+					"$ref": "#/definitions/Action.Submit"
+				},
+				{
+					"$ref": "#/definitions/Action.ShowCard"
+				},
+				{
+					"$ref": "#/definitions/Action.OpenUrl"
+				}
 			]
 		},
 		"Input.Time": {
@@ -956,6 +1003,9 @@
 					"type": "string",
 					"description": "The value when toggle is on",
 					"default": "true"
+				},
+				"wrap": {
+					"$ref": "#/definitions/Wrap"
 				}
 			},
 			"required": [
@@ -963,6 +1013,19 @@
 				"id",
 				"title"
 			]
+		},
+		"FontType": {
+			"type": "string",
+			"description": "Type of font to use for rendering",
+			"enum": [
+				"default",
+				"monospace"
+			]
+		},
+		"Wrap": {
+			"type": "boolean",
+			"description": "If `true`, allow text to wrap. Otherwise, text is clipped.",
+			"default": false
 		},
 		"TextBlock": {
 			"additionalProperties": true,
@@ -986,6 +1049,9 @@
 						"warning",
 						"attention"
 					]
+				},
+				"fontType": {
+					"$ref": "#/definitions/FontType"
 				},
 				"horizontalAlignment": {
 					"$ref": "#/definitions/HorizontalAlignment"
@@ -1031,9 +1097,7 @@
 					]
 				},
 				"wrap": {
-					"type": "boolean",
-					"description": "If `true`, allow text to wrap. Otherwise, text is clipped.",
-					"default": false
+					"$ref": "#/definitions/Wrap"
 				}
 			},
 			"required": [

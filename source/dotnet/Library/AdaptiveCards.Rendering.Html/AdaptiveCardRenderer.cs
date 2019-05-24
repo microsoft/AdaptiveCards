@@ -955,9 +955,9 @@ namespace AdaptiveCards.Rendering.Html
 
         protected static HtmlTag TextBlockRender(AdaptiveTextBlock textBlock, AdaptiveRenderContext context)
         {
-            string fontFamily = context.Config.GetFontFamily(textBlock.FontStyle);
-            int fontSize = context.Config.GetFontSize(textBlock.FontStyle, textBlock.Size);
-            int weight = context.Config.GetFontWeight(textBlock.FontStyle, textBlock.Weight);
+            string fontFamily = context.Config.GetFontFamily(textBlock.FontType);
+            int fontSize = context.Config.GetFontSize(textBlock.FontType, textBlock.Size);
+            int weight = context.Config.GetFontWeight(textBlock.FontType, textBlock.Weight);
 
             // Not sure where this magic value comes from?
             var lineHeight = fontSize * 1.33;
@@ -1079,9 +1079,9 @@ namespace AdaptiveCards.Rendering.Html
 
         protected static HtmlTag TextRunRender(AdaptiveTextRun textRun, AdaptiveRenderContext context)
         {
-            string fontFamily = context.Config.GetFontFamily(textRun.FontStyle);
-            int fontSize = context.Config.GetFontSize(textRun.FontStyle, textRun.Size);
-            int weight = context.Config.GetFontWeight(textRun.FontStyle, textRun.Weight);
+            string fontFamily = context.Config.GetFontFamily(textRun.FontType);
+            int fontSize = context.Config.GetFontSize(textRun.FontType, textRun.Size);
+            int weight = context.Config.GetFontWeight(textRun.FontType, textRun.Weight);
 
             // Not sure where this magic value comes from?
             var lineHeight = fontSize * 1.33;
@@ -1636,11 +1636,14 @@ namespace AdaptiveCards.Rendering.Html
 
         private static void ApplyDefaultTextAttributes(HtmlTag tag, AdaptiveRenderContext context)
         {
+// Ignore deprecation warning for FontSizes
+#pragma warning disable 0618
             tag.Style("color", context.GetColor(AdaptiveTextColor.Default, false, false))
                 .Style("font-size", $"{context.Config.FontSizes.Default}px")
                 .Style("display", "inline-block")
                 .Style("margin-left", "6px")
                 .Style("vertical-align", "middle");
+#pragma warning restore 0618
         }
 
         protected static HtmlTag DateInputRender(AdaptiveDateInput input, AdaptiveRenderContext context)

@@ -281,3 +281,9 @@ source/nodejs/adaptivecards-visualizer/built/visualizer-with-renderer.js
 source/nodejs/adaptivecards/built/card-elements.js
 source/nodejs/adaptivecards/built/card-elements.js.map
 *.tgz
+
+#cscope files
+cscope.files
+cscope.out
+cscope.in.out
+cscope.po.out

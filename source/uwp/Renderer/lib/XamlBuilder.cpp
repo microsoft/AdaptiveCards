@@ -483,13 +483,14 @@ namespace AdaptiveNamespace
 
         ComPtr<IAdaptiveCardElement> adaptiveCardElement;
         THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));
-        ComPtr<IUIElement> background;
 
         ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
         THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
 
         ComPtr<IAdaptiveElementRenderer> elementRenderer;
         THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Image").Get(), &elementRenderer));
+
+        ComPtr<IUIElement> background;
         if (elementRenderer != nullptr)
         {
             elementRenderer->Render(adaptiveCardElement.Get(), renderContext, renderArgs, &background);
@@ -505,34 +506,19 @@ namespace AdaptiveNamespace
         ABI::AdaptiveNamespace::BackgroundImageFillMode fillMode;
         THROW_IF_FAILED(backgroundImage->get_FillMode(&fillMode));
 
-        // Apply Background Image Mode
+        // Creates the background image for all fill modes
+        ComPtr<TileControl> tileControl;
+        THROW_IF_FAILED(MakeAndInitialize<TileControl>(&tileControl));
+        THROW_IF_FAILED(tileControl->put_BackgroundImage(backgroundImage));
+
+        ComPtr<IFrameworkElement> rootElement;
+        THROW_IF_FAILED(rootPanel->QueryInterface(rootElement.GetAddressOf()));
+        THROW_IF_FAILED(tileControl->put_RootElement(rootElement.Get()));
+
+        THROW_IF_FAILED(tileControl->LoadImageBrush(background.Get()));
+
         ComPtr<IFrameworkElement> backgroundAsFrameworkElement;
-        switch (fillMode)
-        {
-        case ABI::AdaptiveNamespace::BackgroundImageFillMode::Cover:
-            // Ignored: horizontalAlignment, verticalAlignment
-            THROW_IF_FAILED(xamlImage->put_Stretch(Stretch::Stretch_UniformToFill));
-
-            THROW_IF_FAILED(xamlImage.As(&backgroundAsFrameworkElement));
-            THROW_IF_FAILED(backgroundAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Stretch));
-            break;
-        case ABI::AdaptiveNamespace::BackgroundImageFillMode::Repeat:
-        case ABI::AdaptiveNamespace::BackgroundImageFillMode::RepeatHorizontally:
-        case ABI::AdaptiveNamespace::BackgroundImageFillMode::RepeatVertically:
-        default:
-            ComPtr<TileControl> tileControl;
-            MakeAndInitialize<TileControl>(&tileControl);
-            tileControl->put_BackgroundImage(backgroundImage);
-
-            ComPtr<IFrameworkElement> rootElement;
-            rootPanel->QueryInterface(rootElement.GetAddressOf());
-            tileControl->put_RootElement(rootElement.Get());
-
-            tileControl->LoadImageBrush(background.Get());
-
-            tileControl.As(&backgroundAsFrameworkElement);
-            break;
-        }
+        THROW_IF_FAILED(tileControl.As(&backgroundAsFrameworkElement));
 
         XamlHelpers::AppendXamlElementToPanel(backgroundAsFrameworkElement.Get(), rootPanel);
 
@@ -2431,11 +2417,20 @@ namespace AdaptiveNamespace
             ComPtr<IShape> backgroundEllipseAsShape;
             RETURN_IF_FAILED(backgroundEllipse.As(&backgroundEllipseAsShape));
 
-            // Set the stretch for the ellipse - this is different to the stretch used for the image brush above.
-            // This will force the ellipse to conform to fit within the confines of its parent.
-            Stretch ellipseStretch = Stretch::Stretch_UniformToFill;
-            RETURN_IF_FAILED(ellipseAsShape->put_Stretch(ellipseStretch));
-            RETURN_IF_FAILED(backgroundEllipseAsShape->put_Stretch(ellipseStretch));
+            if (size == ABI::AdaptiveNamespace::ImageSize::None || size == ABI::AdaptiveNamespace::ImageSize::Stretch ||
+                size == ABI::AdaptiveNamespace::ImageSize::Auto || hasExplicitMeasurements)
+            {
+                RETURN_IF_FAILED(ellipseAsShape->put_Stretch(imageStretch));
+                RETURN_IF_FAILED(backgroundEllipseAsShape->put_Stretch(imageStretch));
+            }
+            else
+            {
+                // Set the stretch for the ellipse - this is different to the stretch used for the image brush above.
+                // This will force the ellipse to conform to fit within the confines of its parent.
+                Stretch ellipseStretch = Stretch::Stretch_UniformToFill;
+                RETURN_IF_FAILED(ellipseAsShape->put_Stretch(ellipseStretch));
+                RETURN_IF_FAILED(backgroundEllipseAsShape->put_Stretch(ellipseStretch));
+            }
 
             if (backgroundColor != nullptr)
             {
@@ -2515,68 +2510,68 @@ namespace AdaptiveNamespace
         {
             if (pixelWidth)
             {
-                RETURN_IF_FAILED(frameworkElement->put_MaxWidth(pixelWidth));
+                if (imageStyle == ImageStyle_Person)
+                {
+                    RETURN_IF_FAILED(frameworkElement->put_Width(pixelWidth));
+                }
+                else
+                {
+                    RETURN_IF_FAILED(frameworkElement->put_MaxWidth(pixelWidth));
+                }
             }
 
             if (pixelHeight)
             {
-                RETURN_IF_FAILED(frameworkElement->put_MaxHeight(pixelHeight));
+                if (imageStyle == ImageStyle_Person)
+                {
+                    RETURN_IF_FAILED(frameworkElement->put_Height(pixelHeight));
+                }
+                else
+                {
+                    RETURN_IF_FAILED(frameworkElement->put_MaxHeight(pixelHeight));
+                }
             }
         }
         else
         {
-            switch (size)
-            {
-            case ABI::AdaptiveNamespace::ImageSize::Small:
+            if (size == ABI::AdaptiveNamespace::ImageSize::Small || size == ABI::AdaptiveNamespace::ImageSize::Medium ||
+                size == ABI::AdaptiveNamespace::ImageSize::Large)
             {
                 UINT32 imageSize;
-                RETURN_IF_FAILED(sizeOptions->get_Small(&imageSize));
+                switch (size)
+                {
+                case ABI::AdaptiveNamespace::ImageSize::Small:
+                {
+                    RETURN_IF_FAILED(sizeOptions->get_Small(&imageSize));
+                    break;
+                }
+
+                case ABI::AdaptiveNamespace::ImageSize::Medium:
+                {
+                    RETURN_IF_FAILED(sizeOptions->get_Medium(&imageSize));
+                    break;
+                }
+
+                case ABI::AdaptiveNamespace::ImageSize::Large:
+                {
+                    RETURN_IF_FAILED(sizeOptions->get_Large(&imageSize));
+
+                    break;
+                }
+                default:
+                {
+                    return E_UNEXPECTED;
+                }
+                }
 
                 RETURN_IF_FAILED(frameworkElement->put_MaxWidth(imageSize));
 
                 // We don't want to set a max height on the person ellipse as ellipses do not understand preserving
-                // aspect ratio when constrained on both axes. In adaptive cards person images will always be 1:1 aspect
-                // ratio and will always be width constrained (as you can't limit heights in adaptive cards) so only
-                // setting MaxWidth is ok.
+                // aspect ratio when constrained on both axes.
                 if (imageStyle != ImageStyle_Person)
+                {
                     RETURN_IF_FAILED(frameworkElement->put_MaxHeight(imageSize));
-
-                break;
-            }
-
-            case ABI::AdaptiveNamespace::ImageSize::Medium:
-            {
-                UINT32 imageSize;
-                RETURN_IF_FAILED(sizeOptions->get_Medium(&imageSize));
-
-                RETURN_IF_FAILED(frameworkElement->put_MaxWidth(imageSize));
-
-                // We don't want to set a max height on the person ellipse as ellipses do not understand preserving
-                // aspect ratio when constrained on both axes. In adaptive cards person images will always be 1:1 aspect
-                // ratio and will always be width constrained (as you can't limit heights in adaptive cards) so only
-                // setting MaxWidth is ok.
-                if (imageStyle != ImageStyle_Person)
-                    RETURN_IF_FAILED(frameworkElement->put_MaxHeight(imageSize));
-
-                break;
-            }
-
-            case ABI::AdaptiveNamespace::ImageSize::Large:
-            {
-                UINT32 imageSize;
-                RETURN_IF_FAILED(sizeOptions->get_Large(&imageSize));
-
-                RETURN_IF_FAILED(frameworkElement->put_MaxWidth(imageSize));
-
-                // We don't want to set a max height on the person ellipse as ellipses do not understand preserving
-                // aspect ratio when constrained on both axes. In adaptive cards person images will always be 1:1 aspect
-                // ratio and will always be width constrained (as you can't limit heights in adaptive cards) so only
-                // setting MaxWidth is ok.
-                if (imageStyle != ImageStyle_Person)
-                    RETURN_IF_FAILED(frameworkElement->put_MaxHeight(imageSize));
-
-                break;
-            }
+                }
             }
         }
 

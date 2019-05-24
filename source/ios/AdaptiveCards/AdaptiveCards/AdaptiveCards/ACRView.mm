@@ -159,7 +159,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
             textProp.SetText(textBlockElement->GetText());
             textProp.SetTextSize(textBlockElement->GetTextSize());
             textProp.SetTextWeight(textBlockElement->GetTextWeight());
-            textProp.SetFontStyle(textBlockElement->GetFontStyle());
+            textProp.SetFontType(textBlockElement->GetFontType());
             textProp.SetTextColor(textBlockElement->GetTextColor());
             textProp.SetIsSubtle(textBlockElement->GetIsSubtle());
             textProp.SetLanguage(textBlockElement->GetLanguage());
@@ -182,7 +182,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                     textProp.SetText(textRun->GetText());
                     textProp.SetTextSize(textRun->GetTextSize());
                     textProp.SetTextWeight(textRun->GetTextWeight());
-                    textProp.SetFontStyle(textRun->GetFontStyle());
+                    textProp.SetFontType(textRun->GetFontType());
                     textProp.SetTextColor(textRun->GetTextColor());
                     textProp.SetIsSubtle(textRun->GetIsSubtle());
                     textProp.SetLanguage(textRun->GetLanguage());
@@ -416,23 +416,23 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
             if(markDownParser->HasHtmlTags() || markDownParser->IsEscaped()) {
                 NSString *fontFamilyName = nil;
 
-                if(![self->_hostConfig getFontFamily:textProp.GetFontStyle()]){
-                    if(textProp.GetFontStyle() == FontStyle::Monospace){
+                if(![self->_hostConfig getFontFamily:textProp.GetFontType()]){
+                    if(textProp.GetFontType() == FontType::Monospace){
                         fontFamilyName = @"'Courier New'";
                     } else{
                         fontFamilyName = @"'-apple-system',  'San Francisco'";
                     }
                 } else {
-                    fontFamilyName = [self->_hostConfig getFontFamily:textProp.GetFontStyle()];
+                    fontFamilyName = [self->_hostConfig getFontFamily:textProp.GetFontType()];
                 }
 
                 NSString *font_style = textProp.GetItalic() ? @"italic" :  @"normal";
                 // Font and text size are applied as CSS style by appending it to the html string
                 parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: %@; font-size:%dpx; font-weight: %d; font-style: %@;}</style>",
                                                                       fontFamilyName,
-                                                                      [self->_hostConfig getTextBlockTextSize:textProp.GetFontStyle()
+                                                                      [self->_hostConfig getTextBlockTextSize:textProp.GetFontType()
                                                                                                      textSize:textProp.GetTextSize()],
-                                                                      [self->_hostConfig getTextBlockFontWeight:textProp.GetFontStyle()
+                                                                      [self->_hostConfig getTextBlockFontWeight:textProp.GetFontType()
                                                                        textWeight:textProp.GetTextWeight()],
                                                                       font_style]];
 
@@ -440,7 +440,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                 NSDictionary *options = @{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType};
                 data = @{@"html" : htmlData, @"options" : options};
             } else {
-                int fontweight = [self->_hostConfig getTextBlockFontWeight:textProp.GetFontStyle()
+                int fontweight = [self->_hostConfig getTextBlockFontWeight:textProp.GetFontType()
                                                                 textWeight:textProp.GetTextWeight()];
                 // sanity check, 400 is the normal font;
                 if(fontweight <= 0 || fontweight > 900){
@@ -450,18 +450,18 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                 fontweight -= 100;
                 fontweight /= 100;
 
-                if (![self->_hostConfig getFontFamily:textProp.GetFontStyle()]){
+                if (![self->_hostConfig getFontFamily:textProp.GetFontType()]){
                     const NSArray<NSNumber *> *fontweights = @[@(UIFontWeightUltraLight), @(UIFontWeightThin), @(UIFontWeightLight), @(UIFontWeightRegular), @(UIFontWeightMedium),
                        @(UIFontWeightSemibold), @(UIFontWeightBold), @(UIFontWeightHeavy), @(UIFontWeightBlack)];
-                    const CGFloat size = [self->_hostConfig getTextBlockTextSize:textProp.GetFontStyle() textSize:textProp.GetTextSize()];
-                    if (textProp.GetFontStyle() == FontStyle::Monospace) {
+                    const CGFloat size = [self->_hostConfig getTextBlockTextSize:textProp.GetFontType() textSize:textProp.GetTextSize()];
+                    if (textProp.GetFontType() == FontType::Monospace) {
                         const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
                                                                     @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
                         UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:@{UIFontDescriptorFamilyAttribute: @"Courier New",
                                                                UIFontDescriptorFaceAttribute:fontweights[fontweight]}];
                         descriptor = getItalicFontDescriptor(descriptor, textProp.GetItalic());
 
-                        font = [UIFont fontWithDescriptor:descriptor size:[self->_hostConfig getTextBlockTextSize:textProp.GetFontStyle() textSize:textProp.GetTextSize()]];
+                        font = [UIFont fontWithDescriptor:descriptor size:[self->_hostConfig getTextBlockTextSize:textProp.GetFontType() textSize:textProp.GetTextSize()]];
                     } else {
                         font = [UIFont systemFontOfSize:size weight:[fontweights[fontweight] floatValue]];
 
@@ -477,12 +477,12 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                     const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
                                                                 @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
                     UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:
-                        @{UIFontDescriptorFamilyAttribute: [self->_hostConfig getFontFamily:textProp.GetFontStyle()],
+                        @{UIFontDescriptorFamilyAttribute: [self->_hostConfig getFontFamily:textProp.GetFontType()],
                           UIFontDescriptorFaceAttribute:fontweights[fontweight]}];
 
                     descriptor = getItalicFontDescriptor(descriptor, textProp.GetItalic());
 
-                    font = [UIFont fontWithDescriptor:descriptor size:[self->_hostConfig getTextBlockTextSize:textProp.GetFontStyle() textSize:textProp.GetTextSize()]];
+                    font = [UIFont fontWithDescriptor:descriptor size:[self->_hostConfig getTextBlockTextSize:textProp.GetFontType() textSize:textProp.GetTextSize()]];
                 }
 
                 NSDictionary *attributeDictionary = @{NSFontAttributeName:font};
