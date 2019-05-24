@@ -14,3 +14,16 @@
 <!-- END AUTO-GENERATED -->
 
 ## Rendering
+
+### Determining icon style of buttons
+
+1. If ALL actions have a valid `iconUrl`...
+	1. Respect the `hostConfig.actions.iconPlacement` property.
+	1. If `iconPlacement` is `aboveTitle` then the `iconSize` should be used as the **height** of the image, while maintaining aspect ratio. Card Authors should use square images for ideal portability between Hosts.
+	1. If `iconPlacement` is `leftOfTitle` then the image **SHOULD BE** as close as possible to the height of the text in the action. If that isn't reasonable then `iconSize` should be used.
+1. Else if only SOME have a valid `iconUrl`...
+	1. Use `leftOfTitle` to ensure that all buttons are rendered with the same height.
+1. Else if NONE have a valid `iconUrl`...
+	1. Display as text-only buttons
+
+Renderers must set the per-platform styling name corresponding to the style chosen, so that hosts can style accordingly. For example, if the style ended up being `aboveTitle`, then the platform style should be something like `ActionWithIconAboveTitle`.
