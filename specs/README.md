@@ -16,6 +16,8 @@ The property table in the spec documents is **auto-generated**. Do NOT hand-edit
 
 Instead, open `schemas\adaptive-card.json` and update the **schema**. If you followed the instructions in [Setup](#setup), after you save your changes to the schema, the specs will be auto-updated in about 5-10 seconds.
 
+![Spec auto-updating](assets/SpecAutoUpdate.gif)
+
 
 ### Re-naming an element
 
