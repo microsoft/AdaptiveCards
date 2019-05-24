@@ -1179,10 +1179,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void TextBlock_SetWrap(long jarg1, TextBlock jarg1_, boolean jarg2);
   public final static native boolean TextBlock_GetIsSubtle(long jarg1, TextBlock jarg1_);
   public final static native void TextBlock_SetIsSubtle(long jarg1, TextBlock jarg1_, boolean jarg2);
-  public final static native boolean TextBlock_GetItalic(long jarg1, TextBlock jarg1_);
-  public final static native void TextBlock_SetItalic(long jarg1, TextBlock jarg1_, boolean jarg2);
-  public final static native boolean TextBlock_GetStrikethrough(long jarg1, TextBlock jarg1_);
-  public final static native void TextBlock_SetStrikethrough(long jarg1, TextBlock jarg1_, boolean jarg2);
   public final static native long TextBlock_GetMaxLines(long jarg1, TextBlock jarg1_);
   public final static native void TextBlock_SetMaxLines(long jarg1, TextBlock jarg1_, long jarg2);
   public final static native int TextBlock_GetHorizontalAlignment(long jarg1, TextBlock jarg1_);
@@ -1290,10 +1286,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void TextElementProperties_SetTextColor(long jarg1, TextElementProperties jarg1_, int jarg2);
   public final static native boolean TextElementProperties_GetIsSubtle(long jarg1, TextElementProperties jarg1_);
   public final static native void TextElementProperties_SetIsSubtle(long jarg1, TextElementProperties jarg1_, boolean jarg2);
-  public final static native boolean TextElementProperties_GetItalic(long jarg1, TextElementProperties jarg1_);
-  public final static native void TextElementProperties_SetItalic(long jarg1, TextElementProperties jarg1_, boolean jarg2);
-  public final static native boolean TextElementProperties_GetStrikethrough(long jarg1, TextElementProperties jarg1_);
-  public final static native void TextElementProperties_SetStrikethrough(long jarg1, TextElementProperties jarg1_, boolean jarg2);
   public final static native void TextElementProperties_SetLanguage(long jarg1, TextElementProperties jarg1_, String jarg2);
   public final static native String TextElementProperties_GetLanguage(long jarg1, TextElementProperties jarg1_);
   public final static native void TextElementProperties_Deserialize(long jarg1, TextElementProperties jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
@@ -1354,6 +1346,10 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long new_RichTextElementProperties__SWIG_1(long jarg1, TextConfig jarg1_, String jarg2, String jarg3);
   public final static native long new_RichTextElementProperties__SWIG_2(long jarg1, RichTextElementProperties jarg1_);
   public final static native void delete_RichTextElementProperties(long jarg1);
+  public final static native boolean RichTextElementProperties_GetItalic(long jarg1, RichTextElementProperties jarg1_);
+  public final static native void RichTextElementProperties_SetItalic(long jarg1, RichTextElementProperties jarg1_, boolean jarg2);
+  public final static native boolean RichTextElementProperties_GetStrikethrough(long jarg1, RichTextElementProperties jarg1_);
+  public final static native void RichTextElementProperties_SetStrikethrough(long jarg1, RichTextElementProperties jarg1_, boolean jarg2);
   public final static native long RichTextElementProperties_SerializeToJsonValue(long jarg1, RichTextElementProperties jarg1_, long jarg2, JsonValue jarg2_);
   public final static native void RichTextElementProperties_Deserialize(long jarg1, RichTextElementProperties jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
   public final static native void RichTextElementProperties_PopulateKnownPropertiesSet(long jarg1, RichTextElementProperties jarg1_, long jarg2);
