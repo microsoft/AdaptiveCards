@@ -7,14 +7,43 @@ export async function generateAsync() {
 	// First find the top-level directory
 	var relativeTopDir = findRelativeTopDirectory();
 
+	await generateHostConfigAsync(relativeTopDir);
+
+	await generateElementsAsync(relativeTopDir);
+	
+}
+
+async function generateHostConfigAsync(relativeTopDir: string) {
+
+	var schemaModel = await markedschema.buildModel({
+		schema: relativeTopDir + "schemas/host-config.json",
+		toc: relativeTopDir + "source/nodejs/adaptivecards-site/schema-hostconfig-toc.yml",
+		rootDefinition: "AdaptiveCardConfig"
+	});
+
+	var finalContents = "# Host config";
+
+	await forEach(schemaModel, async (root: any) => {
+		await forEach(root.children, async (child: any) => {
+
+			finalContents += "\n\n## " + child.name;
+
+			finalContents += markedschema.generateMarkdown.createPropertiesSummary(child.properties, null, true, true, child.version);
+		});
+	});
+
+	await writeFileAsync(relativeTopDir + "specs/HostConfig.md", finalContents);
+
+}
+
+async function generateElementsAsync(relativeTopDir: string) {
+
 	var schemaModel = await markedschema.buildModel({
 		schema: relativeTopDir + "schemas/adaptive-card.json",
 		toc: relativeTopDir + "source/nodejs/adaptivecards-site/schema-explorer-toc.yml",
 		rootDefinition: "AdaptiveCard",
 		examplesPath: relativeTopDir + "samples/v1.*"
 	});
-	
-	var pages = [];
 
 	await forEach(schemaModel, async (root: any) => {
 		await forEach(root.children, async (child: any) => {
@@ -51,6 +80,7 @@ export async function generateAsync() {
 			await writeFileAsync(fileName, finalFileContents);
 		});
 	});
+
 }
 
 function readFileAsync(fileName: string, encoding: string) : Promise<string> {
