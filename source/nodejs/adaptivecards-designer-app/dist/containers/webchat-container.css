@@ -94,20 +94,20 @@ a.ac-anchor:visited:active {
     background-color: #BABABA;
 }
 
-.ac-pushButton.sentiment-positive {
+.ac-pushButton.style-positive {
     background-color: #0078D7;
     color: white;
 }
 
-.ac-pushButton.sentiment-positive:hover, .ac-pushButton.sentiment-positive:active {
+.ac-pushButton.style-positive:hover, .ac-pushButton.style-positive:active {
     background-color: #006ABC;
 }
 
-.ac-pushButton.sentiment-destructive {
+.ac-pushButton.style-destructive {
     background-color: #E50000;
 }
 
-.ac-pushButton.sentiment-destructive:hover, .ac-pushButton.sentiment-destructive:active {
+.ac-pushButton.style-destructive:hover, .ac-pushButton.style-destructive:active {
     background-color: #BF0000;
 }
 
