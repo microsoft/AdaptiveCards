@@ -114,22 +114,6 @@ public class TextBlock extends BaseCardElement {
     AdaptiveCardObjectModelJNI.TextBlock_SetIsSubtle(swigCPtr, this, value);
   }
 
-  public boolean GetItalic() {
-    return AdaptiveCardObjectModelJNI.TextBlock_GetItalic(swigCPtr, this);
-  }
-
-  public void SetItalic(boolean value) {
-    AdaptiveCardObjectModelJNI.TextBlock_SetItalic(swigCPtr, this, value);
-  }
-
-  public boolean GetStrikethrough() {
-    return AdaptiveCardObjectModelJNI.TextBlock_GetStrikethrough(swigCPtr, this);
-  }
-
-  public void SetStrikethrough(boolean value) {
-    AdaptiveCardObjectModelJNI.TextBlock_SetStrikethrough(swigCPtr, this, value);
-  }
-
   public long GetMaxLines() {
     return AdaptiveCardObjectModelJNI.TextBlock_GetMaxLines(swigCPtr, this);
   }
