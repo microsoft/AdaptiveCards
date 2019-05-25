@@ -4199,6 +4199,12 @@ namespace AdaptiveNamespace
             ComPtr<IMediaElement2> mediaElement2;
             RETURN_IF_FAILED(mediaElement.As(&mediaElement2));
             RETURN_IF_FAILED(mediaElement2->put_AreTransportControlsEnabled(true));
+            ComPtr<IMediaElement3> mediaElement3;
+            RETURN_IF_FAILED(mediaElement.As(&mediaElement3));
+            ComPtr<IMediaTransportControls> mediaTransportControl;
+            RETURN_IF_FAILED(mediaElement3->get_TransportControls(&mediaTransportControl));
+            RETURN_IF_FAILED(mediaTransportControl->put_IsCompact(true));
+            RETURN_IF_FAILED(mediaTransportControl->put_IsZoomButtonVisible(false));
 
             ComPtr<IUIElement> mediaUIElement;
             RETURN_IF_FAILED(mediaElement.As(&mediaUIElement));
