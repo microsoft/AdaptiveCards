@@ -14,4 +14,4 @@
 
 Only allowed inside an `ActionSet` or `card.actions`. If anywhere else, drop and trigger warning.
 
-Render as a normal button. When clicked, see `ActionSet` for how to render the show card.
+See `ActionSet` for rendering.

@@ -11,3 +11,7 @@
 <!-- END AUTO-GENERATED -->
 
 ## Rendering
+
+See `ActionSet`.
+
+When user invokes this action, invoke the `ActionInvoked` event, passing along this action, so that host can take the appropriate action.

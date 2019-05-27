@@ -29,6 +29,27 @@
 Renderers must set the per-platform styling name corresponding to the style chosen, so that hosts can style accordingly. For example, if the style ended up being `aboveTitle`, then the platform style should be something like `ActionWithIconAboveTitle`.
 
 
+#### Text-only buttons
+
+Text-only buttons should be rendered something like below. Prefer to mimick the native button styles on the platform rather than replicating anything seen below. The only requirement is that the text from `Action.Title` must be displayed in the button.
+
+![img](assets/ActionSet/Horizontal.Stretch.PNG)
+
+
+#### Icon above text buttons
+
+Icon above text buttons should be rendered something like below. Prefer to mimick the native button styles on the platform rather than replicating anything seen below. The only requirement is that the text from `Action.Title` must be displayed in the button, and the `Action.iconUrl` must be displayed above the text.
+
+![img](https://user-images.githubusercontent.com/13246069/30493475-153a4d50-99f9-11e7-83d6-1cd3c476e504.png)
+
+
+#### Icon left of text buttons
+
+Icon left of text buttons should be rendered something like below. Prefer to mimick the native button styles on the platform rather than replicating anything seen below. The only requirement is that the text from `Action.Title` must be displayed in the button, and the `Action.iconUrl` must be displayed to the left of the text. Notice how not all buttons might have an icon, but with this style, it ensures that the height of all buttons remains consistent.
+
+![img](assets/ActionSet/IconLeftOfTitle.PNG)
+
+
 ### Orientation and alignment of buttons
 
 The orientation and alignment is determined by a combination of `hostConfig.actions.actionsOrientation` and `hostConfig.actions.actionAlignment`.
