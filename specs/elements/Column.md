@@ -15,3 +15,20 @@
 <!-- END AUTO-GENERATED -->
 
 ## Rendering
+
+
+### Column widths
+
+#### Fixed pixel width
+
+The width is assigned by a specific author-specificied width. These colums are first in terms of priority of getting space allocated.
+
+#### Auto
+
+The width is determined by the content inside the column, but limited by the total remaining space. These columns are second in terms of priority of getting space allocated.
+
+![img](assets/Column/Width.Auto.PNG)
+
+#### Stretch / weighted number
+
+These columns distribute the final remaining space according to their weighted number. If simply set to `stretch`, assign a weight of `1`. These colums are last in terms of priority of getting space allocated.
