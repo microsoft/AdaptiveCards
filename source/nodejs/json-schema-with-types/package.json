@@ -12,17 +12,18 @@
 	],
 	"scripts": {
 		"clean": "rimraf build lib dist",
-		"prebuild": "tsc",
 		"build": "tsc",
 		"dts": "dts-generator --name json-schema-with-types --project . --out dist/json-schema-with-types.d.ts",
 		"lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
-		"release": "npm run build && npm run dts"
+		"release": "npm run build && npm run dts",
+    "test": "mocha",
+    "build-and-test": "npm run build && npm run test"
 	},
 	"dependencies": {
-    "marked-schema": "0.1.5",
 		"p-iteration": "^1.1.8"
 	},
 	"devDependencies": {
+		"mocha": "^6.1.4",
 		"rimraf": "^2.6.2",
 		"typescript": "^3.2.2"
 	}
