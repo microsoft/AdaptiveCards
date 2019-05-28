@@ -41,7 +41,7 @@ using namespace AdaptiveCards;
 {
     if(element){
         _type = (ACRActionType)element->GetElementType();
-        _sentiment = [NSString stringWithCString:element->GetSentiment().c_str() encoding:NSUTF8StringEncoding];
+        _sentiment = [NSString stringWithCString:element->GetStyle().c_str() encoding:NSUTF8StringEncoding];
     }
     _elem = element;
 }
