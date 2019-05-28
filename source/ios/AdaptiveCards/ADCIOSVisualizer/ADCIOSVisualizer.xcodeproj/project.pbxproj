@@ -10,9 +10,6 @@
 		300ECB68219A234D00371DC5 /* Image.DataUri.Style.Person.json in Resources */ = {isa = PBXBuildFile; fileRef = 300ECB65219A234C00371DC5 /* Image.DataUri.Style.Person.json */; };
 		300ECB69219A234D00371DC5 /* Image.DataUri.json in Resources */ = {isa = PBXBuildFile; fileRef = 300ECB66219A234D00371DC5 /* Image.DataUri.json */; };
 		300ECB6A219A234D00371DC5 /* AdaptiveCard.BackgroundImage.DataUri.json in Resources */ = {isa = PBXBuildFile; fileRef = 300ECB67219A234D00371DC5 /* AdaptiveCard.BackgroundImage.DataUri.json */; };
-		300ECB72219A53B800371DC5 /* Action.Submit.Sentiment.json in Resources */ = {isa = PBXBuildFile; fileRef = 300ECB6F219A53B800371DC5 /* Action.Submit.Sentiment.json */; };
-		300ECB73219A53B800371DC5 /* Action.OpenUrl.Sentiment.json in Resources */ = {isa = PBXBuildFile; fileRef = 300ECB70219A53B800371DC5 /* Action.OpenUrl.Sentiment.json */; };
-		300ECB74219A53B800371DC5 /* Action.ShowCard.Sentiment.json in Resources */ = {isa = PBXBuildFile; fileRef = 300ECB71219A53B800371DC5 /* Action.ShowCard.Sentiment.json */; };
 		30164559225E602A0032E11C /* AdaptiveCard.MinHeight.json in Resources */ = {isa = PBXBuildFile; fileRef = 30164555225E60290032E11C /* AdaptiveCard.MinHeight.json */; };
 		3016455A225E602A0032E11C /* Container.MinHeight.json in Resources */ = {isa = PBXBuildFile; fileRef = 30164556225E60290032E11C /* Container.MinHeight.json */; };
 		3016455B225E602A0032E11C /* Column.MinHeight.json in Resources */ = {isa = PBXBuildFile; fileRef = 30164557225E602A0032E11C /* Column.MinHeight.json */; };
@@ -86,6 +83,9 @@
 		6BAC0F262284D52B00E42DEB /* AdaptiveCard.BackgroundImage.FillMode.RepeatVertically.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BAC0F202284D52B00E42DEB /* AdaptiveCard.BackgroundImage.FillMode.RepeatVertically.json */; };
 		6BAC0F272284D52B00E42DEB /* AdaptiveCard.BackgroundImage.FillVerticalAlignment.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BAC0F212284D52B00E42DEB /* AdaptiveCard.BackgroundImage.FillVerticalAlignment.json */; };
 		6BAC0F282284D52B00E42DEB /* AdaptiveCard.BackgroundImage.FillMode.RepeatHorizontally.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BAC0F222284D52B00E42DEB /* AdaptiveCard.BackgroundImage.FillMode.RepeatHorizontally.json */; };
+		6BAC0F3A229871E000E42DEB /* Action.OpenUrl.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BAC0F37229871DF00E42DEB /* Action.OpenUrl.Style.json */; };
+		6BAC0F3B229871E000E42DEB /* Action.Submit.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BAC0F38229871E000E42DEB /* Action.Submit.Style.json */; };
+		6BAC0F3C229871E000E42DEB /* Action.ShowCard.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BAC0F39229871E000E42DEB /* Action.ShowCard.Style.json */; };
 		6BC30F6021DD69D800B9FAAE /* ActionSet.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BC30F5F21DD69D800B9FAAE /* ActionSet.json */; };
 		6BC30F6721DFE8EA00B9FAAE /* Media.Sources.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BC30F6521DFE8E900B9FAAE /* Media.Sources.json */; };
 		6BC30F6821DFE8EA00B9FAAE /* Media.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BC30F6621DFE8E900B9FAAE /* Media.json */; };
@@ -107,7 +107,6 @@
 		F423C0881EE1FB6100905679 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F423C0861EE1FB6100905679 /* LaunchScreen.storyboard */; };
 		F423C0931EE1FB6100905679 /* ADCIOSVisualizerTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = F423C0921EE1FB6100905679 /* ADCIOSVisualizerTests.mm */; };
 		F4933CC31F79852C00F6EBFD /* Action.ShowCard.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C961F79852C00F6EBFD /* Action.ShowCard.json */; };
-		F4933CC41F79852C00F6EBFD /* Action.ShowCard.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C971F79852C00F6EBFD /* Action.ShowCard.Style.json */; };
 		F4933CC51F79852C00F6EBFD /* Action.Submit.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C981F79852C00F6EBFD /* Action.Submit.json */; };
 		F4933CC61F79852C00F6EBFD /* Column.SelectAction.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C991F79852C00F6EBFD /* Column.SelectAction.json */; };
 		F4933CC71F79852C00F6EBFD /* Column.Spacing.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C9A1F79852C00F6EBFD /* Column.Spacing.json */; };
@@ -198,9 +197,6 @@
 		300ECB65219A234C00371DC5 /* Image.DataUri.Style.Person.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.DataUri.Style.Person.json; path = ../../../../samples/v1.1/Elements/Image.DataUri.Style.Person.json; sourceTree = "<group>"; };
 		300ECB66219A234D00371DC5 /* Image.DataUri.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.DataUri.json; path = ../../../../samples/v1.1/Elements/Image.DataUri.json; sourceTree = "<group>"; };
 		300ECB67219A234D00371DC5 /* AdaptiveCard.BackgroundImage.DataUri.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = AdaptiveCard.BackgroundImage.DataUri.json; path = ../../../../samples/v1.1/Elements/AdaptiveCard.BackgroundImage.DataUri.json; sourceTree = "<group>"; };
-		300ECB6F219A53B800371DC5 /* Action.Submit.Sentiment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.Submit.Sentiment.json; path = ../../../../samples/v1.2/Elements/Action.Submit.Sentiment.json; sourceTree = "<group>"; };
-		300ECB70219A53B800371DC5 /* Action.OpenUrl.Sentiment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.OpenUrl.Sentiment.json; path = ../../../../samples/v1.2/Elements/Action.OpenUrl.Sentiment.json; sourceTree = "<group>"; };
-		300ECB71219A53B800371DC5 /* Action.ShowCard.Sentiment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.ShowCard.Sentiment.json; path = ../../../../samples/v1.2/Elements/Action.ShowCard.Sentiment.json; sourceTree = "<group>"; };
 		30164555225E60290032E11C /* AdaptiveCard.MinHeight.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = AdaptiveCard.MinHeight.json; path = ../../../../samples/v1.2/Elements/AdaptiveCard.MinHeight.json; sourceTree = "<group>"; };
 		30164556225E60290032E11C /* Container.MinHeight.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Container.MinHeight.json; path = ../../../../samples/v1.2/Elements/Container.MinHeight.json; sourceTree = "<group>"; };
 		30164557225E602A0032E11C /* Column.MinHeight.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Column.MinHeight.json; path = ../../../../samples/v1.2/Elements/Column.MinHeight.json; sourceTree = "<group>"; };
@@ -272,6 +268,9 @@
 		6BAC0F202284D52B00E42DEB /* AdaptiveCard.BackgroundImage.FillMode.RepeatVertically.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = AdaptiveCard.BackgroundImage.FillMode.RepeatVertically.json; path = ../../../../samples/v1.2/Elements/AdaptiveCard.BackgroundImage.FillMode.RepeatVertically.json; sourceTree = "<group>"; };
 		6BAC0F212284D52B00E42DEB /* AdaptiveCard.BackgroundImage.FillVerticalAlignment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = AdaptiveCard.BackgroundImage.FillVerticalAlignment.json; path = ../../../../samples/v1.2/Elements/AdaptiveCard.BackgroundImage.FillVerticalAlignment.json; sourceTree = "<group>"; };
 		6BAC0F222284D52B00E42DEB /* AdaptiveCard.BackgroundImage.FillMode.RepeatHorizontally.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = AdaptiveCard.BackgroundImage.FillMode.RepeatHorizontally.json; path = ../../../../samples/v1.2/Elements/AdaptiveCard.BackgroundImage.FillMode.RepeatHorizontally.json; sourceTree = "<group>"; };
+		6BAC0F37229871DF00E42DEB /* Action.OpenUrl.Style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.OpenUrl.Style.json; path = ../../../../samples/v1.2/Elements/Action.OpenUrl.Style.json; sourceTree = "<group>"; };
+		6BAC0F38229871E000E42DEB /* Action.Submit.Style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.Submit.Style.json; path = ../../../../samples/v1.2/Elements/Action.Submit.Style.json; sourceTree = "<group>"; };
+		6BAC0F39229871E000E42DEB /* Action.ShowCard.Style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.ShowCard.Style.json; path = ../../../../samples/v1.2/Elements/Action.ShowCard.Style.json; sourceTree = "<group>"; };
 		6BC30F5F21DD69D800B9FAAE /* ActionSet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ActionSet.json; path = ../../../../samples/v1.2/Elements/ActionSet.json; sourceTree = "<group>"; };
 		6BC30F6521DFE8E900B9FAAE /* Media.Sources.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Media.Sources.json; path = ../../../../samples/v1.1/Elements/Media.Sources.json; sourceTree = "<group>"; };
 		6BC30F6621DFE8E900B9FAAE /* Media.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Media.json; path = ../../../../samples/v1.1/Elements/Media.json; sourceTree = "<group>"; };
@@ -301,7 +300,6 @@
 		F423C0991EE1FB6100905679 /* ADCIOSVisualizerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ADCIOSVisualizerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F423C09F1EE1FB6100905679 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4933C961F79852C00F6EBFD /* Action.ShowCard.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.ShowCard.json; path = ../../../../samples/v1.0/Elements/Action.ShowCard.json; sourceTree = "<group>"; };
-		F4933C971F79852C00F6EBFD /* Action.ShowCard.Style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.ShowCard.Style.json; path = ../../../../samples/v1.0/Elements/Action.ShowCard.Style.json; sourceTree = "<group>"; };
 		F4933C981F79852C00F6EBFD /* Action.Submit.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.Submit.json; path = ../../../../samples/v1.0/Elements/Action.Submit.json; sourceTree = "<group>"; };
 		F4933C991F79852C00F6EBFD /* Column.SelectAction.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Column.SelectAction.json; path = ../../../../samples/v1.0/Elements/Column.SelectAction.json; sourceTree = "<group>"; };
 		F4933C9A1F79852C00F6EBFD /* Column.Spacing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Column.Spacing.json; path = ../../../../samples/v1.0/Elements/Column.Spacing.json; sourceTree = "<group>"; };
@@ -502,16 +500,14 @@
 		F4D33E341F045B6E00941E44 /* Jsons */ = {
 			isa = PBXGroup;
 			children = (
-				301645892294BD080032E11C /* TextBlock.FontTypes.json */,
 				6B22426721E94AD0000ACDA1 /* Action.CustomParsing.json */,
 				6B096D572257DA0B006CC034 /* Action.IconUrl.TwoActions.json */,
 				6B980944216573EF0024B79B /* Action.OpenUrl.IconUrl.json */,
-				300ECB70219A53B800371DC5 /* Action.OpenUrl.Sentiment.json */,
+				6BAC0F37229871DF00E42DEB /* Action.OpenUrl.Style.json */,
 				F4933C961F79852C00F6EBFD /* Action.ShowCard.json */,
-				300ECB71219A53B800371DC5 /* Action.ShowCard.Sentiment.json */,
-				F4933C971F79852C00F6EBFD /* Action.ShowCard.Style.json */,
+				6BAC0F39229871E000E42DEB /* Action.ShowCard.Style.json */,
 				F4933C981F79852C00F6EBFD /* Action.Submit.json */,
-				300ECB6F219A53B800371DC5 /* Action.Submit.Sentiment.json */,
+				6BAC0F38229871E000E42DEB /* Action.Submit.Style.json */,
 				6B616C3B21CB0B6C003E29CE /* Action.ToggleVisibility.json */,
 				6B096D7722601A5A006CC034 /* ActionFallback.json */,
 				6BC30F5F21DD69D800B9FAAE /* ActionSet.json */,
@@ -609,6 +605,7 @@
 				F4933CB61F79852C00F6EBFD /* Stylesheet.json */,
 				F4933CB71F79852C00F6EBFD /* TextBlock.Color.json */,
 				F4933CB81F79852C00F6EBFD /* TextBlock.DateTimeFormatting.json */,
+				301645892294BD080032E11C /* TextBlock.FontTypes.json */,
 				F4933CB91F79852C00F6EBFD /* TextBlock.HorizontalAlignment.json */,
 				F4933CBA1F79852C00F6EBFD /* TextBlock.IsSubtle.json */,
 				F4933CBB1F79852C00F6EBFD /* TextBlock.Markdown.json */,
@@ -743,6 +740,7 @@
 				6B98094F216573F00024B79B /* VerticalContentAlignment_ForcedContainer.json in Resources */,
 				F4933CD41F79852C00F6EBFD /* Image.HorizontalAlignment.json in Resources */,
 				F4933CC51F79852C00F6EBFD /* Action.Submit.json in Resources */,
+				6BAC0F3C229871E000E42DEB /* Action.ShowCard.Style.json in Resources */,
 				6BC30F6721DFE8EA00B9FAAE /* Media.Sources.json in Resources */,
 				6B268FE520CEF89100D99C1B /* (null) in Resources */,
 				6B9AB30C20DC4FB3005C8E15 /* IconsInSomeActions.json in Resources */,
@@ -770,7 +768,6 @@
 				6B096D53225585DD006CC034 /* RichTextBlock.Highlights.json in Resources */,
 				F4933CD81F79852C00F6EBFD /* Image.Style.json in Resources */,
 				6B980947216573F00024B79B /* VerticalContentAlignment_ForcedColumn.json in Resources */,
-				300ECB73219A53B800371DC5 /* Action.OpenUrl.Sentiment.json in Resources */,
 				6B5D23F3212393480010EB07 /* Image.BackgroundColor.json in Resources */,
 				30860BC720C9B5C9009F9D99 /* ColumnSet.ImageSet.VerticalStretch.json in Resources */,
 				6B616C4621CB2493003E29CE /* AutoImageSet.json in Resources */,
@@ -784,7 +781,6 @@
 				F4933CFD1F79853B00F6EBFD /* CalendarReminder.json in Resources */,
 				6B616C4A21D6B8D4003E29CE /* SearchResults.json in Resources */,
 				6BAC0F242284D52B00E42DEB /* AdaptiveCard.BackgroundImage.FillMode.Cover.json in Resources */,
-				300ECB72219A53B800371DC5 /* Action.Submit.Sentiment.json in Resources */,
 				F4933CE31F79852C00F6EBFD /* Stylesheet.json in Resources */,
 				F4933D011F79853B00F6EBFD /* ImageGallery.json in Resources */,
 				F4933D001F79853B00F6EBFD /* FoodOrder.json in Resources */,
@@ -799,6 +795,7 @@
 				3016458722824B8B0032E11C /* AdaptiveCard.BackgroundImage.FillMode.Cover.json in Resources */,
 				F4933CDB1F79852C00F6EBFD /* ImageSet.json in Resources */,
 				F4933CC61F79852C00F6EBFD /* Column.SelectAction.json in Resources */,
+				6BAC0F3B229871E000E42DEB /* Action.Submit.Style.json in Resources */,
 				F4933D041F79853B00F6EBFD /* Restaurant.json in Resources */,
 				30860BC220C9B5C9009F9D99 /* (null) in Resources */,
 				F423C0881EE1FB6100905679 /* LaunchScreen.storyboard in Resources */,
@@ -822,6 +819,7 @@
 				3016458522824B8B0032E11C /* AdaptiveCard.BackgroundImage.FillMode.RepeatHorizontally.json in Resources */,
 				6B2630E32152CF1500ED9207 /* ColumnSet.json in Resources */,
 				6B2630DF2151A23000ED9207 /* FactSetWrapping.json in Resources */,
+				6BAC0F3A229871E000E42DEB /* Action.OpenUrl.Style.json in Resources */,
 				F4933CFF1F79853B00F6EBFD /* FlightUpdate.json in Resources */,
 				F4933D071F79853B00F6EBFD /* WeatherCompact.json in Resources */,
 				F4933CE11F79852C00F6EBFD /* Input.Time.json in Resources */,
@@ -836,7 +834,6 @@
 				6B096D582257DA0C006CC034 /* Action.IconUrl.TwoActions.json in Resources */,
 				3016455B225E602A0032E11C /* Column.MinHeight.json in Resources */,
 				F4933CE71F79852C00F6EBFD /* TextBlock.IsSubtle.json in Resources */,
-				F4933CC41F79852C00F6EBFD /* Action.ShowCard.Style.json in Resources */,
 				F4F44B852048CDB300A2F24C /* AdditionalProperty.json in Resources */,
 				30860BC820C9B5C9009F9D99 /* ColumnSet.Input.Toggle.VerticalStretch.json in Resources */,
 				30860BCC20C9B5C9009F9D99 /* ColumnSet_Container.VerticalStretch.json in Resources */,
@@ -852,7 +849,6 @@
 				6B096D6C225EB726006CC034 /* Bleed.Comprehensive.json in Resources */,
 				6B096D70225EB73C006CC034 /* Container.Bleed.json in Resources */,
 				C8D72161220CFBAF00E903B3 /* Container.BackgroundImage.json in Resources */,
-				300ECB74219A53B800371DC5 /* Action.ShowCard.Sentiment.json in Resources */,
 				6B096D822273CE0A006CC034 /* ColumnSet.AllElements.Stretch.ToggleVisibility.json in Resources */,
 				6B5D23FB2124ADAC0010EB07 /* Image.ImageBaseUrl.json in Resources */,
 				3016458A2294BD090032E11C /* TextBlock.FontTypes.json in Resources */,
