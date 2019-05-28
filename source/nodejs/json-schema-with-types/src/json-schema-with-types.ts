@@ -42,7 +42,21 @@ export function transformTypes(types: any[], primaryTypeName: string) : any {
 function transformType(type: any, typeDictionary: any) {
 	var transformed: any = { ...type };
 	transformed.type = "object";
+
+	if (transformed.properties) {
+		for (var key in transformed.properties) {
+			transformPropertyValue(transformed.properties[key], typeDictionary);
+		}
+	}
+
 	return transformed;
+}
+
+function transformPropertyValue(propertyValue: any, typeDictionary: any) {
+	if (propertyValue.type === "uri") {
+		propertyValue.type = "string";
+		propertyValue.format = "uri";
+	}
 }
 
 function readFileAsync(fileName: string, encoding: string) : Promise<string> {
