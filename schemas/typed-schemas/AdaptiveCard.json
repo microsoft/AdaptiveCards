@@ -2,13 +2,13 @@
 	"type": "AdaptiveCard",
 	"description": "An Adaptive Card",
 	"properties": {
-		"actions": {
-			"description": "The Actions to show in the card's action bar.",
-			"$ref": "#/definitions/Actions"
-		},
 		"body": {
-			"description": "The card elements to show in the primary card region.",
-			"$ref": "#/definitions/CardElements"
+			"type": "CardElement[]",
+			"description": "The card elements to show in the primary card region."
+		},
+		"actions": {
+			"type": "Action[]",
+			"description": "The Actions to show in the card's action bar."
 		},
 		"selectAction": {
 			"description": "An Action that will be invoked when the card is tapped or selected. `Action.ShowCard` is not supported.",

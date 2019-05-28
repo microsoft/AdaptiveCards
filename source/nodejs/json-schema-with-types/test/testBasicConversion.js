@@ -437,6 +437,55 @@ describe("Test transform", function () {
 			}
 		})
 	});
+
+
+	it("Test array of objects property", function () {
+		assertTransform({
+			types: [
+				{
+					"type": "AdaptiveCard",
+					"properties": {
+						"actions": {
+							"type": "Action.OpenUrl[]"
+						}
+					}
+				},
+				{
+					"type": "Action.OpenUrl",
+					"properties": {
+						"url": {
+							"type": "uri"
+						}
+					}
+				}
+			],
+			primaryTypeName: "AdaptiveCard",
+			expected: {
+				"$schema": "http://json-schema.org/draft-06/schema#",
+				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
+				"type": "object",
+				"properties": {
+					"actions": {
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/Action.OpenUrl"
+						}
+					}
+				},
+				"definitions": {
+					"Action.OpenUrl": {
+						"type": "object",
+						"properties": {
+							"url": {
+								"type": "string",
+								"format": "uri"
+							}
+						}
+					}
+				}
+			}
+		})
+	});
 });
 
 

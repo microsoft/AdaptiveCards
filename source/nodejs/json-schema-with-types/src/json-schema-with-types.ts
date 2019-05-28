@@ -166,6 +166,10 @@ class Transformer {
 
 		typeNames.forEach(typeName => {
 			var transformedValue: any = {};
+			var isArray = typeName.endsWith("[]");
+			if (isArray) {
+				typeName = typeName.substr(0, typeName.length - 2);
+			}
 			switch (typeName) {
 				case "uri":
 					transformedValue.type = "string";
@@ -183,6 +187,12 @@ class Transformer {
 
 					transformedValue.$ref = "#/definitions/" + ((typeName in this._implementationsOf) ? "ImplementationsOf." : "") + typeName;
 					break;
+			}
+			if (isArray) {
+				transformedValue = {
+					"type": "array",
+					"items": { ...transformedValue }
+				};
 			}
 			values.push(transformedValue);
 		});
