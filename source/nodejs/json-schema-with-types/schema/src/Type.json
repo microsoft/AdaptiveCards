@@ -1,4 +1,5 @@
 {
+  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/andrewleader/specing-with-types/source/nodejs/json-schema-with-types/schema/lib/Type.json",
   "type": "Type",
   "description": "Expresses a typed object",
   "properties": {
@@ -14,6 +15,10 @@
     "properties": {
       "type": "Dictionary<Property>",
       "description": "Properties of the object"
+    },
+    "isAbstract": {
+      "type": "boolean",
+      "description": "Specifies whether this type is abstract"
     }
   }
 }

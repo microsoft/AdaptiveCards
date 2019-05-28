@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/andrewleader/specing-with-types/source/nodejs/json-schema-with-types/schema/lib/Type.json",
   "id": "http://adaptivecards.io/schemas/adaptive-card.json",
   "type": "object",
   "description": "Expresses a typed object",
@@ -18,6 +18,10 @@
         "$ref": "#/definitions/Property"
       },
       "description": "Properties of the object"
+    },
+    "isAbstract": {
+      "type": "boolean",
+      "description": "Specifies whether this type is abstract"
     }
   },
   "required": [
@@ -25,6 +29,7 @@
   ],
   "definitions": {
     "Property": {
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/andrewleader/specing-with-types/source/nodejs/json-schema-with-types/schema/lib/Type.json",
       "type": "object",
       "properties": {
         "type": {

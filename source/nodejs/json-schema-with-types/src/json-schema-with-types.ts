@@ -183,6 +183,7 @@ class Transformer {
 		
 				case "string":
 				case "number":
+				case "boolean":
 					transformedValue.type = typeName;
 					break;
 		

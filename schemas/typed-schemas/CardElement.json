@@ -1,4 +1,5 @@
 {
+  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/andrewleader/specing-with-types/source/nodejs/json-schema-with-types/schema/lib/Type.json",
 	"type": "CardElement",
 	"properties": {
 		"id": {
