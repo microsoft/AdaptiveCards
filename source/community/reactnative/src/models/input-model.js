@@ -2,8 +2,8 @@ import {BaseModel} from './base-model'
 import { ElementType } from '../utils/enums'
 
 export class BaseInputModel extends BaseModel{
-    constructor(parent, payload) {
-        super(parent, payload);
+    constructor(payload, parent) {
+        super(payload, parent);
         this.placeholder = payload.placeholder;
         this.value = payload.value;
         this.inlineAction = payload.inlineAction;
@@ -14,8 +14,8 @@ export class BaseInputModel extends BaseModel{
 export class TextInputModel extends BaseInputModel {
     type = ElementType.TextInput;
 
-    constructor(parent, payload) {
-        super(parent, payload);
+    constructor(payload, parent) {
+        super(payload, parent);
         this.isMultiline = payload.isMultiline || false;
         this.maxLength = payload.maxLength;
         this.style = payload.style;
@@ -26,8 +26,8 @@ export class TextInputModel extends BaseInputModel {
 export class NumberInputModel extends BaseInputModel {
     type = ElementType.NumberInput;
 
-    constructor(parent, payload) {
-        super(parent, payload);            
+    constructor(payload, parent) {
+        super(payload, parent);            
         this.max = payload.max;
         this.min = payload.min;
     }
@@ -36,8 +36,8 @@ export class NumberInputModel extends BaseInputModel {
 export class DateInputModel extends BaseInputModel {
     type = ElementType.DateInput;
 
-    constructor(parent, payload) {
-        super(parent, payload);
+    constructor(payload, parent) {
+        super(payload, parent);
         this.max = payload.max;
         this.min = payload.min;
     }
@@ -46,8 +46,8 @@ export class DateInputModel extends BaseInputModel {
 export class TimeInputModel extends BaseInputModel {
     type = ElementType.TimeInput;
 
-    constructor(parent, payload) {
-        super(parent, payload);
+    constructor(payload, parent) {
+        super(payload, parent);
         this.max = payload.max;
         this.min = payload.min;
     }
@@ -57,8 +57,8 @@ export class TimeInputModel extends BaseInputModel {
 export class ToggleInputModel extends BaseInputModel {
     type = ElementType.ToggleInput;
 
-    constructor(parent, payload) {
-        super(parent, payload);
+    constructor(payload, parent) {
+        super(payload, parent);
         this.title = payload.title;
         this.valueOff = payload.valueOff;
         this.valueOn = payload.valueOn;
@@ -70,14 +70,14 @@ export class ToggleInputModel extends BaseInputModel {
 export class ChoiceSetModel extends BaseInputModel {
     type = ElementType.ChoiceSetInput;
 
-    constructor(parent, payload) {
-        super(parent, payload);
+    constructor(payload, parent) {
+        super(payload, parent);
         this.isMultiSelect = payload.isMultiSelect;
         this.style = payload.style;
         this.wrap = payload.wrap;
         if (payload.choices) {
             payload.choices.forEach((item, index) => {
-                let choice = new ChoiceModel(this, item);
+                let choice = new ChoiceModel(item, this);
                 if (choice) {
                     this.children.push(choice);
                 }
@@ -111,8 +111,8 @@ export class ChoiceModel extends BaseInputModel {
     value;
     selected;
 
-    constructor(parent, payload) {
-        super(parent, payload);
+    constructor(payload, parent) {
+        super(payload, parent);
 
         this.title = payload.title;
         this.value = payload.value;

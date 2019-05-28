@@ -5,8 +5,8 @@ import { ElementType } from '../utils/enums'
 export class TextBlockModel extends BaseModel {
     type = ElementType.TextBlock;
 
-    constructor(parent, payload) {
-        super(parent, payload);
+    constructor(payload, parent) {
+        super(payload, parent);
         this.text = payload.text;
         this.color = payload.color;
         this.horizontalAlignment = payload.horizontalAlignment;
@@ -22,8 +22,8 @@ export class TextBlockModel extends BaseModel {
 export class ImageModel extends BaseModel {
     type = ElementType.Image;
 
-    constructor(parent, payload) {
-        super(parent, payload);
+    constructor(payload, parent) {
+        super(payload, parent);
         this.url = payload.url;
         this.altText = payload.altText;
         this.horizontalAlignment = payload.horizontalAlignment;
@@ -40,8 +40,8 @@ export class MediaModel extends BaseModel {
     type = ElementType.Media;
     sources = [];
 
-    constructor(parent, payload) {
-        super(parent, payload);
+    constructor(payload, parent) {
+        super(payload, parent);
 
         if (payload.sources) {
             payload.sources.forEach((item) => {
@@ -58,8 +58,8 @@ export class MediaModel extends BaseModel {
 export class RichTextBlockModel extends BaseModel {
     type = ElementType.RichTextBlock;
 
-    constructor(parent, payload) {
-        super(parent, payload);
+    constructor(payload, parent) {
+        super(payload, parent);
         this.text = payload.text;
         this.color = payload.color;
         this.horizontalAlignment = payload.horizontalAlignment;

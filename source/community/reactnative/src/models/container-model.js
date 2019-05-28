@@ -4,8 +4,8 @@ import { ElementType } from '../utils/enums'
 import {ImageModel} from './element-model'
 
 class BaseContainerModel extends BaseModel {
-    constructor(parent, payload) {
-        super(parent, payload);
+    constructor(payload, parent) {
+        super(payload, parent);
         if (payload.backgroundImage) {
             this.backgroundImage = payload.backgroundImage;;
         }
@@ -16,26 +16,26 @@ class BaseContainerModel extends BaseModel {
 }
 
 export class AdaptiveCardModel extends BaseContainerModel {
-    constructor(parent, payload) {
-        super(parent, payload);
+    constructor(payload, parent) {
+        super(payload, parent);
         this.type = ElementType.AdaptiveCard;
         this.fallbackText = payload.fallbackText;
         this.version = payload.version;
         this.speak = payload.speak;
         this.children = [];
         this.actions = [];
-        this.children.push(...ModelFactory.createGroup(this, payload.body));
-        this.actions.push(...ModelFactory.createGroup(this, payload.actions));
+        this.children.push(...ModelFactory.createGroup(payload.body, this));
+        this.actions.push(...ModelFactory.createGroup(payload.actions, this));
         this.show = true;
     }
 }
 
 export class ContainerModel extends BaseContainerModel {
-    constructor(parent, payload) {
-        super(parent, payload);
+    constructor(payload, parent) {
+        super(payload, parent);
         this.type = ElementType.Container;
         this.children = [];
-        this.children.push(...ModelFactory.createGroup(this, payload.items));
+        this.children.push(...ModelFactory.createGroup(payload.items, this));
         this.height = payload.height;
     }
 
@@ -45,13 +45,13 @@ export class ContainerModel extends BaseContainerModel {
 }
 
 export class ColumnSetModel extends BaseContainerModel {
-    constructor(parent, payload) {
-        super(parent, payload);
+    constructor(payload, parent) {
+        super(payload, parent);
         this.type = ElementType.ColumnSet;
         this.children = [];
         if (payload.columns) {
             payload.columns.forEach((item) => {
-                let column = new ColumnModel(this, item);
+                let column = new ColumnModel(item, this);
                 if (column) {
                     this.children.push(column);
                 }
@@ -65,11 +65,11 @@ export class ColumnSetModel extends BaseContainerModel {
 }
 
 export class ColumnModel extends BaseContainerModel {
-    constructor(parent, payload) {
-        super(parent, payload);
+    constructor(payload, parent) {
+        super(payload, parent);
         this.type = ElementType.Column;
         this.children = [];
-        this.children.push(...ModelFactory.createGroup(this, payload.items));
+        this.children.push(...ModelFactory.createGroup(payload.items, this));
         this.height = payload.height;
         if (payload.width) {
             if (payload.width === 'auto' || payload.width === 'stretch') {
@@ -98,8 +98,8 @@ export class FactModel {
 }
 
 export class FactSetModel extends BaseContainerModel {
-    constructor(parent, payload) {
-        super(parent, payload);
+    constructor(payload, parent) {
+        super(payload, parent);
         this.type = ElementType.FactSet;
         this.children = [];
         if (payload.facts) {
@@ -117,14 +117,14 @@ export class FactSetModel extends BaseContainerModel {
 }
 
 export class ImageSetModel extends BaseContainerModel {
-    constructor(parent, payload) {
-        super(parent, payload);
+    constructor(payload, parent) {
+        super(payload, parent);
         this.type = ElementType.ImageSet;
         this.children = [];
         this.imageSize = payload.imageSize;
         if (payload.images) {
             payload.images.forEach((item) => {
-                let image = new ImageModel(this, item);
+                let image = new ImageModel(item, this);
                 if (image) {
                     this.children.push(image);
                 }
@@ -137,11 +137,11 @@ export class ImageSetModel extends BaseContainerModel {
 }
 
 export class ActionSetModel extends BaseContainerModel{
-    constructor(parent, payload) {
-        super(parent, payload);
+    constructor(payload, parent) {
+        super(payload, parent);
         this.type = ElementType.ActionSet;
         this.children = [];
-        this.children.push(...ModelFactory.createGroup(this, payload.actions));
+        this.children.push(...ModelFactory.createGroup(payload.actions, this));
         this.height = payload.height;
     }
 

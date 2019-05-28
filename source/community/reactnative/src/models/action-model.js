@@ -3,8 +3,8 @@ import { ElementType } from '../utils/enums'
 import { ModelFactory } from './model-factory'
 
 export class BaseActionModel extends BaseModel{
-    constructor(parent, payload) {
-        super(parent, payload);
+    constructor(payload, parent) {
+        super(payload, parent);
         this.title = payload.title;
         this.iconUrl = payload.iconUrl;
         this.sentiment = payload.sentiment;
@@ -15,8 +15,8 @@ export class BaseActionModel extends BaseModel{
 export class SubmitActionModel extends BaseActionModel{
     data;
     type = ElementType.ActionSubmit;
-    constructor(parent, payload) {
-        super(parent, payload);
+    constructor(payload, parent) {
+        super(payload, parent);
         this.data = payload.data;
     }
 }
@@ -24,8 +24,8 @@ export class SubmitActionModel extends BaseActionModel{
 export class OpenUrlActionModel extends BaseActionModel{
     url;
     type = ElementType.ActionOpenUrl;
-    constructor(parent, payload) {
-        super(parent, payload);
+    constructor(payload, parent) {
+        super(payload, parent);
         this.url = payload.url;
     }
 }
@@ -33,9 +33,9 @@ export class OpenUrlActionModel extends BaseActionModel{
 export class ShowCardActionModel extends BaseActionModel{
     card;
     type = ElementType.ActionShowCard;
-    constructor(parent, payload) {
-        super(parent, payload);
-        this.card = ModelFactory.createElement(this,payload.card);
+    constructor(payload, parent) {
+        super(payload, parent);
+        this.card = ModelFactory.createElement(payload.card, this);
         this.children = [this.card];
     }
 }
@@ -43,8 +43,8 @@ export class ShowCardActionModel extends BaseActionModel{
 export class ToggleVisibilityActionModel extends BaseActionModel{
     targetElements;
     type = ElementType.ActionToggleVisibility;
-    constructor(parent, payload) {
-        super(parent, payload);
+    constructor(payload, parent) {
+        super(payload, parent);
         this.targetElements = payload.targetElements;
     }
 }

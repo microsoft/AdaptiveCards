@@ -36,7 +36,7 @@ export default class AdaptiveCard extends React.Component {
 		if (this.props.isActionShowCard) {
 			this.cardModel = props.payload;
 		}else{
-			this.cardModel = ModelFactory.createElement(undefined,props.payload);
+			this.cardModel = ModelFactory.createElement(props.payload);
 		}
 		this.state = {
 			showErrors: false,
