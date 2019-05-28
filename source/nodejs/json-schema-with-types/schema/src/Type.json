@@ -19,6 +19,14 @@
     "isAbstract": {
       "type": "boolean",
       "description": "Specifies whether this type is abstract"
+    },
+    "extends": {
+      "type": "string",
+      "description": "Type that this type extends from"
+    },
+    "$schema": {
+      "type": "uri",
+      "description": "JSON schema for the JSON file"
     }
   }
 }
