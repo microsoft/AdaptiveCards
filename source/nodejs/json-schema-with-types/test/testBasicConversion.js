@@ -383,6 +383,60 @@ describe("Test transform", function () {
 			}
 		})
 	});
+
+
+	it("Test uri or object property", function () {
+		assertTransform({
+			types: [
+				{
+					"type": "AdaptiveCard",
+					"properties": {
+						"backgroundImage": {
+							"type": "uri|BackgroundImage"
+						}
+					}
+				},
+				{
+					"type": "BackgroundImage",
+					"properties": {
+						"url": {
+							"type": "uri"
+						}
+					}
+				}
+			],
+			primaryTypeName: "AdaptiveCard",
+			expected: {
+				"$schema": "http://json-schema.org/draft-06/schema#",
+				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
+				"type": "object",
+				"properties": {
+					"backgroundImage": {
+						"anyOf": [
+							{
+								"type": "string",
+								"format": "uri"
+							},
+							{
+								"$ref": "#/definitions/BackgroundImage"
+							}
+						]
+					}
+				},
+				"definitions": {
+					"BackgroundImage": {
+						"type": "object",
+						"properties": {
+							"url": {
+								"type": "string",
+								"format": "uri"
+							}
+						}
+					}
+				}
+			}
+		})
+	});
 });
 
 

@@ -119,7 +119,7 @@ class Transformer {
 	
 				var propVal = transformed.properties[key];
 	
-				this.transformPropertyValue(propVal);
+				propVal = this.transformPropertyValue(propVal);
 	
 				if (propVal.required) {
 					delete propVal.required;
@@ -128,6 +128,8 @@ class Transformer {
 					}
 					transformed.required.push(key);
 				}
+
+				transformed.properties[key] = propVal;
 			}
 		}
 
@@ -156,24 +158,45 @@ class Transformer {
 	}
 
 	private transformPropertyValue(propertyValue: any) {
-		var typeName = propertyValue.type;
-		switch (typeName) {
-			case "uri":
-				propertyValue.type = "string";
-				propertyValue.format = "uri";
-				break;
-	
-			case "string":
-			case "number":
-				break;
-	
-			default:
-				// Must be an object reference
-				this.defineTypeIfNeeded(typeName);
-				delete propertyValue.type;
+		var cleanPropertyValue = { ... propertyValue };
+		delete cleanPropertyValue.type;
 
-				propertyValue.$ref = "#/definitions/" + ((typeName in this._implementationsOf) ? "ImplementationsOf." : "") + typeName;
-				break;
+		var typeNames = propertyValue.type.split("|");
+		var values = [];
+
+		typeNames.forEach(typeName => {
+			var transformedValue: any = {};
+			switch (typeName) {
+				case "uri":
+					transformedValue.type = "string";
+					transformedValue.format = "uri";
+					break;
+		
+				case "string":
+				case "number":
+					transformedValue.type = typeName;
+					break;
+		
+				default:
+					// Must be an object reference
+					this.defineTypeIfNeeded(typeName);
+
+					transformedValue.$ref = "#/definitions/" + ((typeName in this._implementationsOf) ? "ImplementationsOf." : "") + typeName;
+					break;
+			}
+			values.push(transformedValue);
+		});
+
+		if (values.length == 1) {
+			return {
+				...values[0],
+				...cleanPropertyValue
+			};
+		} else {
+			return {
+				anyOf: values,
+				...cleanPropertyValue
+			};
 		}
 	}
 
