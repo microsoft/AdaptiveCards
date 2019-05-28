@@ -40,6 +40,7 @@ class Transformer {
 	private _typeDictionary: any;
 	private _primaryType: any;
 	private _definitions: any = {};
+	private _implementationsOf: any = {};
 
 	constructor (types: any[], primaryTypeName: string) {
 		this._typeDictionary = {};
@@ -52,6 +53,14 @@ class Transformer {
 	}
 
 	transform() {
+
+		// First create all definitions
+		for (var key in this._typeDictionary) {
+			if (key !== this._primaryType.type) {
+				this.defineTypeIfNeeded(key);
+			}
+		}
+
 		var answer: any = {
 			"$schema": "http://json-schema.org/draft-06/schema#",
 			"id": "http://adaptivecards.io/schemas/adaptive-card.json"
@@ -66,7 +75,34 @@ class Transformer {
 		};
 
 		if (!isObjectEmpty(this._definitions)) {
-			answer.definitions = this._definitions;
+			answer.definitions = { ...this._definitions };
+		}
+
+		if (!isObjectEmpty(this._implementationsOf)) {
+			for (var key in this._implementationsOf) {
+
+				var anyOfValue = [];
+
+				this._implementationsOf[key].forEach(implementationTypeName => {
+					anyOfValue.push({
+						"properties": {
+							"type": {
+								"enum": [ implementationTypeName ]
+							}
+						},
+						"required": [ "type" ],
+						"allOf": [
+							{
+								"$ref": "#/definitions/" + implementationTypeName
+							}
+						]
+					});
+				});
+
+				answer.definitions["ImplementationsOf." + key] = {
+					"anyOf": anyOfValue
+				};
+			}
 		}
 	
 		return answer;
@@ -75,6 +111,8 @@ class Transformer {
 	private transformType(type: any) {
 		var transformed: any = { ...type };
 		transformed.type = "object";
+
+		delete transformed.isAbstract;
 	
 		if (transformed.properties) {
 			for (var key in transformed.properties) {
@@ -101,6 +139,17 @@ class Transformer {
 				}
 			];
 			delete transformed.extends;
+
+			// Keep track of implementations
+			if (!this._implementationsOf[type.extends]) {
+				this._implementationsOf[type.extends] = [];
+				
+				// If extending type isn't abstract, add that as an implementation
+				if (!this._typeDictionary[type.extends].isAbstract) {
+					this._implementationsOf[type.extends].push(type.extends);
+				}
+			}
+			this._implementationsOf[type.extends].push(type.type);
 		}
 	
 		return transformed;
@@ -122,7 +171,8 @@ class Transformer {
 				// Must be an object reference
 				this.defineTypeIfNeeded(typeName);
 				delete propertyValue.type;
-				propertyValue.$ref = "#/definitions/" + typeName;
+
+				propertyValue.$ref = "#/definitions/" + ((typeName in this._implementationsOf) ? "ImplementationsOf." : "") + typeName;
 				break;
 		}
 	}

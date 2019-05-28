@@ -190,6 +190,7 @@ describe("Test transform", function () {
 				},
 				{
 					"type": "Action",
+					"isAbstract": true,
 					"description": "An action to invoke",
 					"properties": {
 						"title": {
@@ -236,6 +237,147 @@ describe("Test transform", function () {
 								"description": "The title"
 							}
 						}
+					},
+					"ImplementationsOf.Action": {
+						"anyOf": [
+							{
+								"properties": {
+									"type": {
+										"enum": [ "Action.OpenUrl" ]
+									}
+								},
+								"required": [ "type" ],
+								"allOf": [
+									{
+										"$ref": "#/definitions/Action.OpenUrl"
+									}
+								]
+							}
+						]
+					}
+				}
+			}
+		})
+	});
+
+
+
+	it("Test referencing base classes", function () {
+		assertTransform({
+			types: [
+				{
+					"type": "AdaptiveCard",
+					"properties": {
+						"moreInfoAction": {
+							"type": "Action",
+							"description": "Action to invoke when user wants more info"
+						}
+					}
+				},
+				{
+					"type": "Action.OpenUrl",
+					"extends": "Action",
+					"properties": {
+						"url": {
+							"type": "uri"
+						}
+					}
+				},
+				{
+					"type": "Action.Submit",
+					"extends": "Action",
+					"properties": {
+						"data": {
+							"type": "string"
+						}
+					}
+				},
+				{
+					"type": "Action",
+					"isAbstract": true,
+					"properties": {
+						"title": {
+							"type": "string"
+						}
+					}
+				}
+			],
+			primaryTypeName: "AdaptiveCard",
+			expected: {
+				"$schema": "http://json-schema.org/draft-06/schema#",
+				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
+				"type": "object",
+				"properties": {
+					"moreInfoAction": {
+						"description": "Action to invoke when user wants more info",
+						"$ref": "#/definitions/ImplementationsOf.Action"
+					}
+				},
+				"definitions": {
+					"Action.OpenUrl": {
+						"type": "object",
+						"properties": {
+							"url": {
+								"type": "string",
+								"format": "uri"
+							}
+						},
+						"allOf": [
+							{
+								"$ref": "#/definitions/Action"
+							}
+						]
+					},
+					"Action.Submit": {
+						"type": "object",
+						"properties": {
+							"data": {
+								"type": "string"
+							}
+						},
+						"allOf": [
+							{
+								"$ref": "#/definitions/Action"
+							}
+						]
+					},
+					"Action": {
+						"type": "object",
+						"properties": {
+							"title": {
+								"type": "string"
+							}
+						}
+					},
+					"ImplementationsOf.Action": {
+						"anyOf": [
+							{
+								"properties": {
+									"type": {
+										"enum": [ "Action.OpenUrl" ]
+									}
+								},
+								"required": [ "type" ],
+								"allOf": [
+									{
+										"$ref": "#/definitions/Action.OpenUrl"
+									}
+								]
+							},
+							{
+								"properties": {
+									"type": {
+										"enum": [ "Action.Submit" ]
+									}
+								},
+								"required": [ "type" ],
+								"allOf": [
+									{
+										"$ref": "#/definitions/Action.Submit"
+									}
+								]
+							}
+						]
 					}
 				}
 			}
