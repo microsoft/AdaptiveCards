@@ -22,8 +22,7 @@
 			"description": "Text shown when the client doesn't support the version specified (may contain markdown)."
 		},
 		"backgroundImage": {
-			"type": "string",
-			"description": "URL specifying the image to use as the background of the card. Supports data URI in version 1.2+"
+			"$ref": "#/definitions/BackgroundImage"
 		},
 		"speak": {
 			"type": "string",
@@ -182,6 +181,60 @@
 			},
 			"required": [
 				"type"
+			]
+		},
+		"BackgroundImage": {
+			"type": [
+				"string",
+				"object"
+			],
+			"description": "Specifies the background image.",
+			"oneOf": [
+				{
+					"type": "string",
+					"description": "The URL (or data url) of the image."
+				},
+				{
+					"type": "object",
+					"properties": {
+						"url": {
+							"type": "string",
+							"description": "The URL (or data url) of the image."
+						},
+						"fillMode": {
+							"type": "string",
+							"default": "cover",
+							"enum": [
+								"cover",
+								"repeatHorizontally",
+								"repeatVertically",
+								"repeat"
+							]
+						},
+						"horizontalAlignment": {
+							"type": "string",
+							"default": "left",
+							"enum": [
+								"left",
+								"center",
+								"right"
+							]
+						},
+						"verticalAlignment": {
+							"type": "string",
+							"default": "top",
+							"enum": [
+								"top",
+								"center",
+								"bottom"
+							]
+						}
+					},
+					"required": [
+						"url"
+					],
+					"version": "1.2"
+				}
 			]
 		},
 		"CardElement": {
@@ -364,6 +417,12 @@
 					"enum": [
 						"Column"
 					]
+				},
+				"bleed": {
+					"$ref": "#/definitions/Bleed"
+				},
+				"backgroundImage": {
+					"$ref": "#/definitions/BackgroundImage"
 				}
 			},
 			"required": [
@@ -402,6 +461,9 @@
 					"enum": [
 						"ColumnSet"
 					]
+				},
+				"bleed": {
+					"$ref": "#/definitions/Bleed"
 				}
 			},
 			"required": [
@@ -456,14 +518,13 @@
 						"bottom"
 					],
 					"version": "1.1"
-        },
-        "bleed": {
-          "type": "boolean",
-          "description": "Determines whether the element should bleed through its ancestor's padding.",
-          "default": false,
-          "version": "1.2",
-          "features": [ 2109 ]
-        }
+				},
+				"bleed": {
+					"$ref": "#/definitions/Bleed"
+				},
+				"backgroundImage": {
+					"$ref": "#/definitions/BackgroundImage"
+				}
 			},
 			"required": [
 				"type",
@@ -1150,6 +1211,13 @@
 				"url",
 				"email"
 			]
+		},
+		"Bleed": {
+			"type": "boolean",
+			"description": "Determines whether the element should bleed through its ancestor's padding.",
+			"default": false,
+			"version": "1.2",
+			"features": [ 2109 ]
 		}
 	}
 }

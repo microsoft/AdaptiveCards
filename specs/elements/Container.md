@@ -10,9 +10,13 @@
 | **style** | `string` |  No | Style hint for `Container`. | 1.0 |
 | **verticalContentAlignment** | `string` |  No, default: `"top"` | Defines how the content should be aligned vertically within the container. | 1.1 |
 | **bleed** | `boolean` |  No, default: `false` | Determines whether the element should bleed through its ancestor's padding. | 1.2 |
+| **backgroundImage** | `string,object` |  No | Specifies the background image. | 1.0 |
 | **id** | `string` |  No | A unique identifier associated with the element. | 1.0 |
 | **spacing** | `string` |  No | Controls the amount of spacing between this element and the preceding element. | 1.0 |
 | **separator** | `boolean` |  No, default: `false` | When `true`, draw a separating line at the top of the element. | 1.0 |
 <!-- END AUTO-GENERATED -->
 
 ## Rendering
+
+1. Determine the padding...
+	1. If 

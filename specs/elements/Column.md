@@ -9,6 +9,8 @@
 | **style** | `string` |  No | Style hint for `Column`. | 1.0 |
 | **width** | `string,number` |  No | The width of the column. Can be `"auto"`, `"stretch"`, a weighted number relative to other columns, or a string specifying pixel width (50px). NOTE: Pixel-sized columns were introduced in version 1.1 | 1.0 |
 | **type** | `"Column"` |  No | Must be `"Column"`. | 1.0 |
+| **bleed** | `boolean` |  No, default: `false` | Determines whether the element should bleed through its ancestor's padding. | 1.2 |
+| **backgroundImage** | `string,object` |  No | Specifies the background image. | 1.0 |
 | **id** | `string` |  No | A unique identifier associated with the element. | 1.0 |
 | **spacing** | `string` |  No | Controls the amount of spacing between this element and the preceding element. | 1.0 |
 | **separator** | `boolean` |  No, default: `false` | When `true`, draw a separating line at the top of the element. | 1.0 |
@@ -16,6 +18,7 @@
 
 ## Rendering
 
+Render the column itself just like a `Container`.
 
 ### Column widths
 
