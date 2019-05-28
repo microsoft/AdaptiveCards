@@ -29,9 +29,17 @@ function readFileAsync(fileName: string, encoding: string) : Promise<string> {
 	});
 }
 
+function isObjectEmpty(obj: any) {
+	for (var key in obj) {
+		return false;
+	}
+	return true;
+}
+
 class Transformer {
 	private _typeDictionary: any;
 	private _primaryType: any;
+	private _definitions: any = {};
 
 	constructor (types: any[], primaryTypeName: string) {
 		this._typeDictionary = {};
@@ -56,6 +64,10 @@ class Transformer {
 			"id": "http://adaptivecards.io/schemas/adaptive-card.json",
 			...answer
 		};
+
+		if (!isObjectEmpty(this._definitions)) {
+			answer.definitions = this._definitions;
+		}
 	
 		return answer;
 	}
@@ -85,7 +97,8 @@ class Transformer {
 	}
 
 	private transformPropertyValue(propertyValue: any) {
-		switch (propertyValue.type) {
+		var typeName = propertyValue.type;
+		switch (typeName) {
 			case "uri":
 				propertyValue.type = "string";
 				propertyValue.format = "uri";
@@ -97,8 +110,17 @@ class Transformer {
 	
 			default:
 				// Must be an object reference
-	
+				this.defineTypeIfNeeded(typeName);
+				delete propertyValue.type;
+				propertyValue.$ref = "#/definitions/" + typeName;
 				break;
+		}
+	}
+
+	private defineTypeIfNeeded(typeName: string) {
+		if (!(typeName in this._definitions)) {
+			var transformedType = this.transformType(this._typeDictionary[typeName]);
+			this._definitions[typeName] = transformedType;
 		}
 	}
 }

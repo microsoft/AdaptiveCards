@@ -153,6 +153,7 @@ describe("Test transform", function () {
 				"definitions": {
 					"Action.OpenUrl": {
 						"type": "object",
+						"description": "An open URL action",
 						"properties": {
 							"url": {
 								"type": "string",
