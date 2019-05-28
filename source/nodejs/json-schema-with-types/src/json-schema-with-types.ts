@@ -92,6 +92,16 @@ class Transformer {
 				}
 			}
 		}
+
+		if (type.extends) {
+			this.defineTypeIfNeeded(type.extends);
+			transformed.allOf = [
+				{
+					$ref: "#/definitions/" + type.extends
+				}
+			];
+			delete transformed.extends;
+		}
 	
 		return transformed;
 	}

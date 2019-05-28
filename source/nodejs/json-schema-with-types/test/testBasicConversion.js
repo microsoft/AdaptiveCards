@@ -113,10 +113,6 @@ describe("Test transform", function () {
 	});
 	
 	it("Test object property", function () {
-		/*
-			Things to call out...
-				- Descriptions on types (in definitions) are explicitly dropped, since JSON schema doesn't support the concept of types vs properties
-		*/
 		assertTransform({
 			types: [
 				{
@@ -159,6 +155,85 @@ describe("Test transform", function () {
 								"type": "string",
 								"format": "uri",
 								"description": "The url to open"
+							}
+						}
+					}
+				}
+			}
+		})
+	});
+
+	
+	
+	it("Test extending classes", function () {
+		assertTransform({
+			types: [
+				{
+					"type": "AdaptiveCard",
+					"properties": {
+						"moreInfoAction": {
+							"type": "Action.OpenUrl",
+							"description": "Action to invoke when user wants more info"
+						}
+					}
+				},
+				{
+					"type": "Action.OpenUrl",
+					"extends": "Action",
+					"description": "An open URL action",
+					"properties": {
+						"url": {
+							"type": "uri",
+							"description": "The url to open"
+						}
+					}
+				},
+				{
+					"type": "Action",
+					"description": "An action to invoke",
+					"properties": {
+						"title": {
+							"type": "string",
+							"description": "The title"
+						}
+					}
+				}
+			],
+			primaryTypeName: "AdaptiveCard",
+			expected: {
+				"$schema": "http://json-schema.org/draft-06/schema#",
+				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
+				"type": "object",
+				"properties": {
+					"moreInfoAction": {
+						"description": "Action to invoke when user wants more info",
+						"$ref": "#/definitions/Action.OpenUrl"
+					}
+				},
+				"definitions": {
+					"Action.OpenUrl": {
+						"type": "object",
+						"description": "An open URL action",
+						"properties": {
+							"url": {
+								"type": "string",
+								"format": "uri",
+								"description": "The url to open"
+							}
+						},
+						"allOf": [
+							{
+								"$ref": "#/definitions/Action"
+							}
+						]
+					},
+					"Action": {
+						"type": "object",
+						"description": "An action to invoke",
+						"properties": {
+							"title": {
+								"type": "string",
+								"description": "The title"
 							}
 						}
 					}
