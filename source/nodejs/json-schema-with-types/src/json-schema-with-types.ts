@@ -14,60 +14,7 @@ export function transformFolder(pathToTypeFiles: string, primaryTypeName: string
 }
 
 export function transformTypes(types: any[], primaryTypeName: string) : any {
-	
-	var typeDictionary: any = {};
-
-	types.forEach(type => {
-		typeDictionary[type.type] = type;
-	});
-
-	var primaryType = typeDictionary[primaryTypeName];
-
-	var answer: any = {
-		"$schema": "http://json-schema.org/draft-06/schema#",
-		"id": "http://adaptivecards.io/schemas/adaptive-card.json"
-	};
-
-	var answer = transformType(primaryType, typeDictionary);
-
-	answer = {
-		"$schema": "http://json-schema.org/draft-06/schema#",
-		"id": "http://adaptivecards.io/schemas/adaptive-card.json",
-		...answer
-	};
-
-	return answer;
-}
-
-function transformType(type: any, typeDictionary: any) {
-	var transformed: any = { ...type };
-	transformed.type = "object";
-
-	if (transformed.properties) {
-		for (var key in transformed.properties) {
-
-			var propVal = transformed.properties[key];
-
-			transformPropertyValue(propVal, typeDictionary);
-
-			if (propVal.required) {
-				delete propVal.required;
-				if (!transformed.required) {
-					transformed.required = [];
-				}
-				transformed.required.push(key);
-			}
-		}
-	}
-
-	return transformed;
-}
-
-function transformPropertyValue(propertyValue: any, typeDictionary: any) {
-	if (propertyValue.type === "uri") {
-		propertyValue.type = "string";
-		propertyValue.format = "uri";
-	}
+	return new Transformer(types, primaryTypeName).transform();
 }
 
 function readFileAsync(fileName: string, encoding: string) : Promise<string> {
@@ -80,4 +27,78 @@ function readFileAsync(fileName: string, encoding: string) : Promise<string> {
 			}
 		});
 	});
+}
+
+class Transformer {
+	private _typeDictionary: any;
+	private _primaryType: any;
+
+	constructor (types: any[], primaryTypeName: string) {
+		this._typeDictionary = {};
+
+		types.forEach(type => {
+			this._typeDictionary[type.type] = type;
+		});
+
+		this._primaryType = this._typeDictionary[primaryTypeName];
+	}
+
+	transform() {
+		var answer: any = {
+			"$schema": "http://json-schema.org/draft-06/schema#",
+			"id": "http://adaptivecards.io/schemas/adaptive-card.json"
+		};
+	
+		var answer = this.transformType(this._primaryType);
+	
+		answer = {
+			"$schema": "http://json-schema.org/draft-06/schema#",
+			"id": "http://adaptivecards.io/schemas/adaptive-card.json",
+			...answer
+		};
+	
+		return answer;
+	}
+
+	private transformType(type: any) {
+		var transformed: any = { ...type };
+		transformed.type = "object";
+	
+		if (transformed.properties) {
+			for (var key in transformed.properties) {
+	
+				var propVal = transformed.properties[key];
+	
+				this.transformPropertyValue(propVal);
+	
+				if (propVal.required) {
+					delete propVal.required;
+					if (!transformed.required) {
+						transformed.required = [];
+					}
+					transformed.required.push(key);
+				}
+			}
+		}
+	
+		return transformed;
+	}
+
+	private transformPropertyValue(propertyValue: any) {
+		switch (propertyValue.type) {
+			case "uri":
+				propertyValue.type = "string";
+				propertyValue.format = "uri";
+				break;
+	
+			case "string":
+			case "number":
+				break;
+	
+			default:
+				// Must be an object reference
+	
+				break;
+		}
+	}
 }

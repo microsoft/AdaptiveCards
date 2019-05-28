@@ -111,6 +111,60 @@ describe("Test transform", function () {
 			}
 		})
 	});
+	
+	it("Test object property", function () {
+		/*
+			Things to call out...
+				- Descriptions on types (in definitions) are explicitly dropped, since JSON schema doesn't support the concept of types vs properties
+		*/
+		assertTransform({
+			types: [
+				{
+					"type": "AdaptiveCard",
+					"properties": {
+						"moreInfoAction": {
+							"type": "Action.OpenUrl",
+							"description": "Action to invoke when user wants more info"
+						}
+					}
+				},
+				{
+					"type": "Action.OpenUrl",
+					"description": "An open URL action",
+					"properties": {
+						"url": {
+							"type": "uri",
+							"description": "The url to open"
+						}
+					}
+				}
+			],
+			primaryTypeName: "AdaptiveCard",
+			expected: {
+				"$schema": "http://json-schema.org/draft-06/schema#",
+				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
+				"type": "object",
+				"properties": {
+					"moreInfoAction": {
+						"description": "Action to invoke when user wants more info",
+						"$ref": "#/definitions/Action.OpenUrl"
+					}
+				},
+				"definitions": {
+					"Action.OpenUrl": {
+						"type": "object",
+						"properties": {
+							"url": {
+								"type": "string",
+								"format": "uri",
+								"description": "The url to open"
+							}
+						}
+					}
+				}
+			}
+		})
+	});
 });
 
 
