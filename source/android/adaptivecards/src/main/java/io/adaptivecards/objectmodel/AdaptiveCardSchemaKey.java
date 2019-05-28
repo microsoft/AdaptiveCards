@@ -124,7 +124,6 @@ public enum AdaptiveCardSchemaKey {
   RichTextBlock,
   Right,
   SelectAction,
-  Sentiment,
   Separator,
   ShowActionMode,
   ShowCard,

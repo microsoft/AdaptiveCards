@@ -436,10 +436,10 @@ public class AdaptiveCardObjectModelJNI {
   public final static native String BaseActionElement_GetIconUrlSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_);
   public final static native void BaseActionElement_SetIconUrl(long jarg1, BaseActionElement jarg1_, String jarg2);
   public final static native void BaseActionElement_SetIconUrlSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_, String jarg2);
-  public final static native String BaseActionElement_GetSentiment(long jarg1, BaseActionElement jarg1_);
-  public final static native String BaseActionElement_GetSentimentSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_);
-  public final static native void BaseActionElement_SetSentiment(long jarg1, BaseActionElement jarg1_, String jarg2);
-  public final static native void BaseActionElement_SetSentimentSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_, String jarg2);
+  public final static native String BaseActionElement_GetStyle(long jarg1, BaseActionElement jarg1_);
+  public final static native String BaseActionElement_GetStyleSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_);
+  public final static native void BaseActionElement_SetStyle(long jarg1, BaseActionElement jarg1_, String jarg2);
+  public final static native void BaseActionElement_SetStyleSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_, String jarg2);
   public final static native int BaseActionElement_GetElementType(long jarg1, BaseActionElement jarg1_);
   public final static native int BaseActionElement_GetElementTypeSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_);
   public final static native void BaseActionElement_GetResourceInformation(long jarg1, BaseActionElement jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
@@ -1493,11 +1493,11 @@ public class AdaptiveCardObjectModelJNI {
   public static void SwigDirector_BaseActionElement_SetIconUrl(BaseActionElement jself, String value) {
     jself.SetIconUrl(value);
   }
-  public static String SwigDirector_BaseActionElement_GetSentiment(BaseActionElement jself) {
-    return jself.GetSentiment();
+  public static String SwigDirector_BaseActionElement_GetStyle(BaseActionElement jself) {
+    return jself.GetStyle();
   }
-  public static void SwigDirector_BaseActionElement_SetSentiment(BaseActionElement jself, String value) {
-    jself.SetSentiment(value);
+  public static void SwigDirector_BaseActionElement_SetStyle(BaseActionElement jself, String value) {
+    jself.SetStyle(value);
   }
   public static int SwigDirector_BaseActionElement_GetElementType(BaseActionElement jself) {
     return (jself.GetElementType()).swigValue();

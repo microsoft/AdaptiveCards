@@ -11,27 +11,23 @@
 	],
 	"actions": [
 		{
-			"type": "Action.OpenUrl",
-			"sentiment": "default",
-			"url": "http://adaptivecards.io",
+			"type": "Action.Submit",
+			"style": "default",
 			"title": "Default"
 		},
 		{
-			"type": "Action.OpenUrl",
-			"sentiment": "positive",
-			"url": "http://adaptivecards.io",
+			"type": "Action.Submit",
+			"style": "positive",
 			"title": "Pawsitive"
 		},
 		{
-			"type": "Action.OpenUrl",
-			"sentiment": "destructive",
-			"url": "http://adaptivecards.io",
+			"type": "Action.Submit",
+			"style": "destructive",
 			"title": "Destructive"
 		},
 		{
-			"type": "Action.OpenUrl",
-			"sentiment": "other",
-			"url": "http://adaptivecards.io",
+			"type": "Action.Submit",
+			"style": "other",
 			"title": "Other"
 		}
 	]
