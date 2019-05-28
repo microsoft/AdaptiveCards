@@ -1,0 +1,56 @@
+{
+	"type": "Container",
+	"extends": "CardElement",
+	"description": "Containers group items together.",
+	"properties": {
+		"type": {
+			"type": "string",
+			"description": "Must be `\"Container\"`.",
+			"enum": [
+				"Container"
+			]
+		},
+		"items": {
+			"description": "The card elements to render inside the `Container`.",
+			"$ref": "#/definitions/CardElements"
+		},
+		"selectAction": {
+			"description": "An Action that will be invoked when the `Container` is tapped or selected. `Action.ShowCard` is not supported.",
+			"type": "object",
+			"version": "1.1",
+			"oneOf": [
+				{ "$ref": "#/definitions/Action.Submit" },
+				{ "$ref": "#/definitions/Action.OpenUrl" }
+			]
+		},
+		"style": {
+			"type": "string",
+			"description": "Style hint for `Container`.",
+			"enum": [
+				"default",
+				"emphasis"
+			]
+		},
+		"verticalContentAlignment": {
+			"type": "string",
+			"description": "Defines how the content should be aligned vertically within the container.",
+			"default": "top",
+			"enum:": [
+				"top",
+				"center",
+				"bottom"
+			],
+			"version": "1.1"
+		},
+		"bleed": {
+			"$ref": "#/definitions/Bleed"
+		},
+		"backgroundImage": {
+			"$ref": "#/definitions/BackgroundImage"
+		}
+	},
+	"required": [
+		"type",
+		"items"
+	]
+}
