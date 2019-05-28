@@ -45,7 +45,18 @@ function transformType(type: any, typeDictionary: any) {
 
 	if (transformed.properties) {
 		for (var key in transformed.properties) {
-			transformPropertyValue(transformed.properties[key], typeDictionary);
+
+			var propVal = transformed.properties[key];
+
+			transformPropertyValue(propVal, typeDictionary);
+
+			if (propVal.required) {
+				delete propVal.required;
+				if (!transformed.required) {
+					transformed.required = [];
+				}
+				transformed.required.push(key);
+			}
 		}
 	}
 

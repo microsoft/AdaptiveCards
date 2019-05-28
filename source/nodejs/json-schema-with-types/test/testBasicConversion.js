@@ -79,6 +79,38 @@ describe("Test transform", function () {
 			}
 		})
 	});
+	
+	it("Test required property", function () {
+		assertTransform({
+			types: [
+				{
+					"type": "AdaptiveCard",
+					"properties": {
+						"version": {
+							"type": "string",
+							"description": "Minimum version this card requires.",
+							"required": true
+						}
+					}
+				}
+			],
+			primaryTypeName: "AdaptiveCard",
+			expected: {
+				"$schema": "http://json-schema.org/draft-06/schema#",
+				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
+				"type": "object",
+				"properties": {
+					"version": {
+						"type": "string",
+						"description": "Minimum version this card requires."
+					}
+				},
+				"required": [
+					"version"
+				]
+			}
+		})
+	});
 });
 
 
