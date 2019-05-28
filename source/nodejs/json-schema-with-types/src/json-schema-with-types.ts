@@ -170,6 +170,11 @@ class Transformer {
 			if (isArray) {
 				typeName = typeName.substr(0, typeName.length - 2);
 			}
+			var isDictionary = typeName.startsWith("Dictionary<") && typeName.endsWith(">");
+			if (isDictionary) {
+				typeName = typeName.substr("Dictionary<".length);
+				typeName = typeName.substr(0, typeName.length - 1);
+			}
 			switch (typeName) {
 				case "uri":
 					transformedValue.type = "string";
@@ -187,6 +192,14 @@ class Transformer {
 
 					transformedValue.$ref = "#/definitions/" + ((typeName in this._implementationsOf) ? "ImplementationsOf." : "") + typeName;
 					break;
+			}
+			if (isDictionary) {
+				transformedValue = {
+					"type": "object",
+					"additionalProperties": {
+						...transformedValue
+					}
+				};
 			}
 			if (isArray) {
 				transformedValue = {

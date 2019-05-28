@@ -1,0 +1,19 @@
+{
+  "type": "Type",
+  "description": "Expresses a typed object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "The type of the object",
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "description": "A description of the object"
+    },
+    "properties": {
+      "type": "Dictionary<Property>",
+      "description": "Properties of the object"
+    }
+  }
+}

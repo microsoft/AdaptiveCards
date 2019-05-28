@@ -1,0 +1,14 @@
+{
+  "type": "Property",
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "The type of the property",
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "description": "A description of the property"
+    }
+  }
+}
