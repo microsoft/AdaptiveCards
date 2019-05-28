@@ -1,9 +1,9 @@
 import * as tschema from "./json-schema-with-types";
 
-let process;
+declare var process;
 
-var folderToTransform = process.argv[0];
-var primaryTypeName = process.argv[1];
+var folderToTransform = process.argv[2];
+var primaryTypeName = process.argv[3];
 
 var transformed = tschema.transformFolder(folderToTransform, primaryTypeName);
 

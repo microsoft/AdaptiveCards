@@ -17,7 +17,8 @@
 		"lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
 		"release": "npm run build && npm run dts",
     "test": "mocha",
-    "build-and-test": "npm run build && npm run test"
+    "build-and-test": "npm run build && npm run test",
+    "generate-schema": "node ./lib/command-line.js ./schema/src Type > ./schema/lib/Type.json"
 	},
 	"dependencies": {
 		"p-iteration": "^1.1.8"
