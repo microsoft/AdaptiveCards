@@ -1,4 +1,5 @@
 {
+	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/20b913022a7a02898729acf7aaed5abc34e9e158/source/nodejs/json-schema-with-types/schema/lib/Type.json",
 	"type": "Container",
 	"extends": "CardElement",
 	"description": "Containers group items together.",

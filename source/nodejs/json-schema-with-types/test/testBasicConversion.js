@@ -16,6 +16,7 @@ describe("Test transform", function () {
 				"$schema": "http://json-schema.org/draft-06/schema#",
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
 				"type": "object",
+				"additionalProperties": false,
 				"description": "An Adaptive Card."
 			}
 		})
@@ -40,6 +41,7 @@ describe("Test transform", function () {
 				"$schema": "http://json-schema.org/draft-06/schema#",
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
 				"type": "object",
+				"additionalProperties": false,
 				"properties": {
 					"version": {
 						"type": "string",
@@ -69,6 +71,7 @@ describe("Test transform", function () {
 				"$schema": "http://json-schema.org/draft-06/schema#",
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
 				"type": "object",
+				"additionalProperties": false,
 				"properties": {
 					"source": {
 						"type": "string",
@@ -99,6 +102,7 @@ describe("Test transform", function () {
 				"$schema": "http://json-schema.org/draft-06/schema#",
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
 				"type": "object",
+				"additionalProperties": false,
 				"properties": {
 					"version": {
 						"type": "string",
@@ -140,6 +144,7 @@ describe("Test transform", function () {
 				"$schema": "http://json-schema.org/draft-06/schema#",
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
 				"type": "object",
+				"additionalProperties": false,
 				"properties": {
 					"moreInfoAction": {
 						"description": "Action to invoke when user wants more info",
@@ -149,6 +154,7 @@ describe("Test transform", function () {
 				"definitions": {
 					"Action.OpenUrl": {
 						"type": "object",
+						"additionalProperties": false,
 						"description": "An open URL action",
 						"properties": {
 							"url": {
@@ -205,6 +211,7 @@ describe("Test transform", function () {
 				"$schema": "http://json-schema.org/draft-06/schema#",
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
 				"type": "object",
+				"additionalProperties": false,
 				"properties": {
 					"moreInfoAction": {
 						"description": "Action to invoke when user wants more info",
@@ -214,6 +221,7 @@ describe("Test transform", function () {
 				"definitions": {
 					"Action.OpenUrl": {
 						"type": "object",
+						"additionalProperties": false,
 						"description": "An open URL action",
 						"properties": {
 							"url": {
@@ -230,6 +238,7 @@ describe("Test transform", function () {
 					},
 					"Action": {
 						"type": "object",
+						"additionalProperties": false,
 						"description": "An action to invoke",
 						"properties": {
 							"title": {
@@ -307,6 +316,7 @@ describe("Test transform", function () {
 				"$schema": "http://json-schema.org/draft-06/schema#",
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
 				"type": "object",
+				"additionalProperties": false,
 				"properties": {
 					"moreInfoAction": {
 						"description": "Action to invoke when user wants more info",
@@ -316,6 +326,7 @@ describe("Test transform", function () {
 				"definitions": {
 					"Action.OpenUrl": {
 						"type": "object",
+						"additionalProperties": false,
 						"properties": {
 							"url": {
 								"type": "string",
@@ -330,6 +341,7 @@ describe("Test transform", function () {
 					},
 					"Action.Submit": {
 						"type": "object",
+						"additionalProperties": false,
 						"properties": {
 							"data": {
 								"type": "string"
@@ -343,6 +355,7 @@ describe("Test transform", function () {
 					},
 					"Action": {
 						"type": "object",
+						"additionalProperties": false,
 						"properties": {
 							"title": {
 								"type": "string"
@@ -410,6 +423,7 @@ describe("Test transform", function () {
 				"$schema": "http://json-schema.org/draft-06/schema#",
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
 				"type": "object",
+				"additionalProperties": false,
 				"properties": {
 					"backgroundImage": {
 						"anyOf": [
@@ -426,6 +440,7 @@ describe("Test transform", function () {
 				"definitions": {
 					"BackgroundImage": {
 						"type": "object",
+						"additionalProperties": false,
 						"properties": {
 							"url": {
 								"type": "string",
@@ -464,6 +479,7 @@ describe("Test transform", function () {
 				"$schema": "http://json-schema.org/draft-06/schema#",
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
 				"type": "object",
+				"additionalProperties": false,
 				"properties": {
 					"actions": {
 						"type": "array",
@@ -475,6 +491,7 @@ describe("Test transform", function () {
 				"definitions": {
 					"Action.OpenUrl": {
 						"type": "object",
+						"additionalProperties": false,
 						"properties": {
 							"url": {
 								"type": "string",
@@ -505,6 +522,7 @@ describe("Test transform", function () {
 				"$schema": "http://json-schema.org/draft-06/schema#",
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
 				"type": "object",
+				"additionalProperties": false,
 				"properties": {
 					"titles": {
 						"type": "array",
@@ -562,6 +580,7 @@ describe("Test transform", function () {
 				"$schema": "http://json-schema.org/draft-06/schema#",
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
 				"type": "object",
+				"additionalProperties": false,
 				"properties": {
 					"actions": {
 						"type": "array",
@@ -573,6 +592,7 @@ describe("Test transform", function () {
 				"definitions": {
 					"Action.OpenUrl": {
 						"type": "object",
+						"additionalProperties": false,
 						"properties": {
 							"url": {
 								"type": "string",
@@ -587,6 +607,7 @@ describe("Test transform", function () {
 					},
 					"Action.Submit": {
 						"type": "object",
+						"additionalProperties": false,
 						"properties": {
 							"data": {
 								"type": "string"
@@ -600,6 +621,7 @@ describe("Test transform", function () {
 					},
 					"Action": {
 						"type": "object",
+						"additionalProperties": false,
 						"properties": {
 							"title": {
 								"type": "string"
@@ -666,6 +688,7 @@ describe("Test transform", function () {
 			expected: {
 				"$schema": "http://json-schema.org/draft-06/schema#",
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
+				"additionalProperties": false,
 				"type": "object",
 				"properties": {
 					"actions": {
@@ -678,6 +701,7 @@ describe("Test transform", function () {
 				"definitions": {
 					"Action.OpenUrl": {
 						"type": "object",
+						"additionalProperties": false,
 						"properties": {
 							"url": {
 								"type": "string",

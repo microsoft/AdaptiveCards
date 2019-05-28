@@ -60,11 +60,6 @@ class Transformer {
 				this.defineTypeIfNeeded(key);
 			}
 		}
-
-		var answer: any = {
-			"$schema": "http://json-schema.org/draft-06/schema#",
-			"id": "http://adaptivecards.io/schemas/adaptive-card.json"
-		};
 	
 		var answer = this.transformType(this._primaryType);
 	
@@ -111,6 +106,7 @@ class Transformer {
 	private transformType(type: any) {
 		var transformed: any = { ...type };
 		transformed.type = "object";
+		transformed.additionalProperties = false;
 
 		delete transformed.isAbstract;
 	

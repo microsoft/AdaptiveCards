@@ -24,6 +24,7 @@
       "description": "Specifies whether this type is abstract"
     }
   },
+  "additionalProperties": false,
   "required": [
     "type"
   ],
@@ -41,6 +42,7 @@
           "description": "A description of the property"
         }
       },
+      "additionalProperties": false,
       "required": [
         "type"
       ]
