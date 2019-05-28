@@ -1,0 +1,9 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/80a5e9bef9cd1023f00dd1a1c276dbdba7abd466/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+  "extends": "enum",
+  "description": "Style hint for containers",
+  "values": [
+    "default",
+    "emphasis"
+  ]
+}

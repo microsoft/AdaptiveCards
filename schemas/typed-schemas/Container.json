@@ -1,36 +1,21 @@
 {
-	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/8c701356d775e140009735f35b2a266e1238436f/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/80a5e9bef9cd1023f00dd1a1c276dbdba7abd466/source/nodejs/json-schema-with-types/schema/lib/Type.json",
 	"type": "Container",
 	"extends": "CardElement",
 	"description": "Containers group items together.",
 	"properties": {
-		"type": {
-			"type": "string",
-			"description": "Must be `\"Container\"`.",
-			"enum": [
-				"Container"
-			]
-		},
 		"items": {
-			"description": "The card elements to render inside the `Container`.",
-			"$ref": "#/definitions/CardElements"
+			"type": "CardElement",
+			"description": "The card elements to render inside the `Container`."
 		},
 		"selectAction": {
+			"type": "ISelectAction",
 			"description": "An Action that will be invoked when the `Container` is tapped or selected. `Action.ShowCard` is not supported.",
-			"type": "object",
-			"version": "1.1",
-			"oneOf": [
-				{ "$ref": "#/definitions/Action.Submit" },
-				{ "$ref": "#/definitions/Action.OpenUrl" }
-			]
+			"version": "1.1"
 		},
 		"style": {
-			"type": "string",
-			"description": "Style hint for `Container`.",
-			"enum": [
-				"default",
-				"emphasis"
-			]
+			"type": "ContainerStyle",
+			"description": "Style hint for `Container`."
 		},
 		"verticalContentAlignment": {
 			"type": "string",
