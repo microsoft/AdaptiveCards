@@ -5,10 +5,6 @@ import * as Controls from "adaptivecards-controls";
 import { DraggableElement } from "./draggable-element";
 import { IPoint } from "./miscellaneous";
 import * as DesignerPeers from "./designer-peers";
-/*
-import { Template } from "./template-engine/template-engine";
-import { EvaluationContext } from "./template-engine/expression-parser";
-*/
 import * as ACData from "../../adaptivecards-data/src/adaptivecards-data";
 import * as Shared from "./shared";
 
