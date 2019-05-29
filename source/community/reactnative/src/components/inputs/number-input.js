@@ -24,7 +24,7 @@ export class NumberInput extends React.Component {
 		this.parse();
 		this.state = {
 			isError: this.isInvalid(this.payload.value),
-			numberValue: this.payload.value.toString(),
+			numberValue: this.payload.value ? this.payload.value.toString() : Constants.EmptyString
 		}
 	}
 

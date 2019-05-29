@@ -145,11 +145,11 @@ export class Column extends React.Component {
 					widthPercentage = (pixelWidth / deviceWidth) * 100
 				}
 				else if (width == Constants.AlignStretch) {
-					containerStyle.push({ flex: 1 })
+					containerStyle.push({ flex: 2});
 				}
 				else if (width == Constants.Auto) {
 					if (!containsNumber) {
-						containerStyle.push({ alignSelf: 'auto' })
+						containerStyle.push({ flex: 1 })
 					} else {
 						widthPercentage = defaultWidthPercentage
 					}
