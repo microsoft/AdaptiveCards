@@ -5,6 +5,8 @@
   - Image
   - Media
   - MediaSource
+  - RichTextBlock
+  - TextRun
 - Containers:
   - ActionSet
   - Container

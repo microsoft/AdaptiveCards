@@ -271,7 +271,8 @@
 					"version": "1.1",
 					"oneOf": [
 						{ "$ref": "#/definitions/Action.Submit" },
-						{ "$ref": "#/definitions/Action.OpenUrl" }
+						{ "$ref": "#/definitions/Action.OpenUrl" },
+						{ "$ref": "#/definitions/Action.ToggleVisibility" }
 					]
 				}
 			},
@@ -391,6 +392,9 @@
 						},
 						{
 							"$ref": "#/definitions/ActionSet"
+						},
+						{
+							"$ref": "#/definitions/RichTextBlock"
 						}
 					]
 				}
@@ -474,7 +478,8 @@
 					"version": "1.1",
 					"oneOf": [
 						{ "$ref": "#/definitions/Action.Submit" },
-						{ "$ref": "#/definitions/Action.OpenUrl" }
+						{ "$ref": "#/definitions/Action.OpenUrl" },
+						{ "$ref": "#/definitions/Action.ToggleVisibility" }
 					]
 				},
 				"style": {
@@ -539,7 +544,8 @@
 					"version": "1.1",
 					"oneOf": [
 						{ "$ref": "#/definitions/Action.Submit" },
-						{ "$ref": "#/definitions/Action.OpenUrl" }
+						{ "$ref": "#/definitions/Action.OpenUrl" },
+						{ "$ref": "#/definitions/Action.ToggleVisibility" }
 					]
 				},
 				"type": {
@@ -588,7 +594,8 @@
 					"version": "1.1",
 					"oneOf": [
 						{ "$ref": "#/definitions/Action.Submit" },
-						{ "$ref": "#/definitions/Action.OpenUrl" }
+						{ "$ref": "#/definitions/Action.OpenUrl" },
+						{ "$ref": "#/definitions/Action.ToggleVisibility" }
 					]
 				},
 				"style": {
@@ -776,7 +783,8 @@
 					"version": "1.1",
 					"oneOf": [
 						{ "$ref": "#/definitions/Action.Submit" },
-						{ "$ref": "#/definitions/Action.OpenUrl" }
+						{ "$ref": "#/definitions/Action.OpenUrl" },
+						{ "$ref": "#/definitions/Action.ToggleVisibility" }
 					]
 				},
 				"size": {
@@ -1063,6 +1071,9 @@
 				},
 				{
 					"$ref": "#/definitions/Action.OpenUrl"
+				},
+				{
+					"$ref": "#/definitions/Action.ToggleVisibility"
 				}
 			]
 		},
@@ -1167,12 +1178,54 @@
 			"enum": [
 				"default",
 				"monospace"
-			]
+			],
+			"default": "default"
 		},
 		"Wrap": {
 			"type": "boolean",
 			"description": "If `true`, allow text to wrap. Otherwise, text is clipped.",
 			"default": false
+		},
+		"TextColor": {
+			"type": "string",
+			"description": "Controls the color of text elements.",
+			"enum": [
+				"default",
+				"dark",
+				"light",
+				"accent",
+				"good",
+				"warning",
+				"attention"
+			],
+			"default": "default"
+		},
+		"IsSubtle": {
+			"type": "boolean",
+			"description": "If `true`, displays text slightly toned down to appear less prominent.",
+			"default": false
+		},
+		"TextSize": {
+			"type": "string",
+			"description": "Controls size of text.",
+			"enum": [
+				"small",
+				"default",
+				"medium",
+				"large",
+				"extraLarge"
+			],
+			"default": "default"
+		},
+		"TextWeight": {
+			"type": "string",
+			"description": "Controls the weight of the text.",
+			"enum": [
+				"lighter",
+				"default",
+				"bolder"
+			],
+			"default": "default"
 		},
 		"TextBlock": {
 			"additionalProperties": true,
@@ -1185,17 +1238,7 @@
 			],
 			"properties": {
 				"color": {
-					"type": "string",
-					"description": "Controls the color of `TextBlock` elements.",
-					"enum": [
-						"default",
-						"dark",
-						"light",
-						"accent",
-						"good",
-						"warning",
-						"attention"
-					]
+					"$ref": "#/definitions/TextColor"
 				},
 				"fontType": {
 					"$ref": "#/definitions/FontType"
@@ -1204,24 +1247,14 @@
 					"$ref": "#/definitions/HorizontalAlignment"
 				},
 				"isSubtle": {
-					"type": "boolean",
-					"description": "If `true`, displays text slightly toned down to appear less prominent.",
-					"default": false
+					"$ref": "#/definitions/IsSubtle"
 				},
 				"maxLines": {
 					"type": "number",
 					"description": "Specifies the maximum number of lines to display."
 				},
 				"size": {
-					"type": "string",
-					"description": "Controls size of text.",
-					"enum": [
-						"small",
-						"default",
-						"medium",
-						"large",
-						"extraLarge"
-					]
+					"$ref": "#/definitions/TextSize"
 				},
 				"text": {
 					"type": "string",
@@ -1235,13 +1268,7 @@
 					]
 				},
 				"weight": {
-					"type": "string",
-					"description": "Controls the weight of `TextBlock` elements.",
-					"enum": [
-						"lighter",
-						"default",
-						"bolder"
-					]
+					"$ref": "#/definitions/TextWeight"
 				},
 				"wrap": {
 					"$ref": "#/definitions/Wrap"
@@ -1250,6 +1277,102 @@
 			"required": [
 				"type",
 				"text"
+			]
+		},
+		"TextRun": {
+			"additionalProperties": true,
+			"type": "object",
+			"description": "Defines a single run of formatted text",
+			"version": "1.2",
+			"properties": {
+				"type": {
+					"type": "string",
+					"description": "Must be `\"TextRun\"`.",
+					"enum": [
+						"TextRun"
+					]
+				},
+				"color": {
+					"$ref": "#/definitions/TextColor"
+				},
+				"fontType": {
+					"$ref": "#/definitions/FontType"
+				},
+				"horizontalAlignment": {
+					"$ref": "#/definitions/HorizontalAlignment"
+				},
+				"isSubtle": {
+					"$ref": "#/definitions/IsSubtle"
+				},
+				"size": {
+					"$ref": "#/definitions/TextSize"
+				},
+				"text": {
+					"type": "string",
+					"description": "Text to display."
+				},
+				"weight": {
+					"$ref": "#/definitions/TextWeight"
+				},
+				"strikethrough": {
+					"type": "boolean",
+					"description": "If `true`, displays the text with strikethrough.",
+					"default": false
+				},
+				"italic": {
+					"type": "boolean",
+					"description": "If `true`, displays the text using italic font.",
+					"default": false
+				},
+				"highlight": {
+					"type": "boolean",
+					"description": "If `true`, displays the text highlighted.",
+					"default": false
+				},
+				"selectAction": {
+					"description": "Action to invoke when this text run is clicked. Visually changes the text run into a hyperlink. `Action.ShowCard` is not supported.",
+					"type": "object",
+					"oneOf": [
+						{ "$ref": "#/definitions/Action.Submit" },
+						{ "$ref": "#/definitions/Action.OpenUrl" },
+						{ "$ref": "#/definitions/Action.ToggleVisibility" }
+					]
+				}
+			},
+			"required": [
+				"type",
+				"text"
+			]
+		},
+		"RichTextBlock": {
+			"additionalProperties": true,
+			"type": "object",
+			"description": "Defines an array of inlines, allowing for inline text formatting.",
+			"version": "1.2",
+			"allOf": [
+				{
+					"$ref": "#/definitions/CardElement"
+				}
+			],
+			"properties": {
+				"type": {
+					"type": "string",
+					"description": "Must be `\"RichTextBlock\"`.",
+					"enum": [
+						"RichTextBlock"
+					]
+				},
+				"inlines": {
+					"type": "array",
+					"description": "The array of `TextRun`s.",
+					"items": {
+						"$ref": "#/definitions/TextRun"
+					}
+				}
+			},
+			"required": [
+				"type",
+				"inlines"
 			]
 		},
 		"ContainerStyle": {
