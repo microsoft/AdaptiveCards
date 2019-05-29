@@ -21,7 +21,7 @@
 		},
 		{
 			"type": "Action.ShowCard",
-			"sentiment": "positive",
+			"style": "positive",
 			"title": "Pawsitive",
 			"card": {
 				"type": "AdaptiveCard",
@@ -31,7 +31,7 @@
 		},
 		{
 			"type": "Action.ShowCard",
-			"sentiment": "destructive",
+			"style": "destructive",
 			"title": "Destructive",
 			"card": {
 				"type": "AdaptiveCard",
@@ -41,7 +41,7 @@
 		},
 		{
 			"type": "Action.ShowCard",
-			"sentiment": "other",
+			"style": "other",
 			"title": "Other",
 			"card": {
 				"type": "AdaptiveCard",

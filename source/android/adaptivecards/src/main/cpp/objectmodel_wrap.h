@@ -92,8 +92,8 @@ public:
     virtual void SetTitle(std::string const &value);
     virtual std::string GetIconUrl() const;
     virtual void SetIconUrl(std::string const &value);
-    virtual std::string GetSentiment() const;
-    virtual void SetSentiment(std::string const &value);
+    virtual std::string GetStyle() const;
+    virtual void SetStyle(std::string const &value);
     virtual AdaptiveCards::ActionType const GetElementType() const;
 public:
     bool swig_overrides(int n) {

@@ -123,7 +123,6 @@ namespace AdaptiveSharedNamespace
         RichTextBlock,
         Right,
         SelectAction,
-        Sentiment,
         Separator,
         ShowActionMode,
         ShowCard,
