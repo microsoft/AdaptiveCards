@@ -59,8 +59,8 @@ namespace AdaptiveSharedNamespace
         FillMode,
         FontFamily,
         FontSizes,
-        FontStyle,
-        FontStyles,
+        FontType,
+        FontTypes,
         FontWeights,
         ForegroundColor,
         ForegroundColors,
@@ -123,7 +123,6 @@ namespace AdaptiveSharedNamespace
         RichTextBlock,
         Right,
         SelectAction,
-        Sentiment,
         Separator,
         ShowActionMode,
         ShowCard,
@@ -216,12 +215,12 @@ namespace AdaptiveSharedNamespace
     };
     DECLARE_ADAPTIVECARD_ENUM(TextWeight);
 
-    enum class FontStyle
+    enum class FontType
     {
         Default = 0,
         Monospace
     };
-    DECLARE_ADAPTIVECARD_ENUM(FontStyle);
+    DECLARE_ADAPTIVECARD_ENUM(FontType);
 
     enum class ForegroundColor
     {

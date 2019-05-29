@@ -65,13 +65,13 @@ namespace AdaptiveNamespace
         }
         IFACEMETHODIMP put_IconUrl(_In_ HSTRING iconUrl) { return AdaptiveActionElementBase::put_IconUrl(iconUrl); }
 
-        IFACEMETHODIMP get_Sentiment(_Outptr_ HSTRING* sentiment)
+        IFACEMETHODIMP get_Style(_Outptr_ HSTRING* style)
         {
-            return AdaptiveActionElementBase::get_Sentiment(sentiment);
+            return AdaptiveActionElementBase::get_Style(style);
         }
-        IFACEMETHODIMP put_Sentiment(_In_ HSTRING sentiment)
+        IFACEMETHODIMP put_Style(_In_ HSTRING style)
         {
-            return AdaptiveActionElementBase::put_Sentiment(sentiment);
+            return AdaptiveActionElementBase::put_Style(style);
         }
 
         IFACEMETHODIMP get_AdditionalProperties(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)

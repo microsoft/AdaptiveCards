@@ -82,12 +82,12 @@ public class TextBlock extends BaseCardElement {
     AdaptiveCardObjectModelJNI.TextBlock_SetTextWeight(swigCPtr, this, value.swigValue());
   }
 
-  public FontStyle GetFontStyle() {
-    return FontStyle.swigToEnum(AdaptiveCardObjectModelJNI.TextBlock_GetFontStyle(swigCPtr, this));
+  public FontType GetFontType() {
+    return FontType.swigToEnum(AdaptiveCardObjectModelJNI.TextBlock_GetFontType(swigCPtr, this));
   }
 
-  public void SetFontStyle(FontStyle value) {
-    AdaptiveCardObjectModelJNI.TextBlock_SetFontStyle(swigCPtr, this, value.swigValue());
+  public void SetFontType(FontType value) {
+    AdaptiveCardObjectModelJNI.TextBlock_SetFontType(swigCPtr, this, value.swigValue());
   }
 
   public ForegroundColor GetTextColor() {
@@ -112,22 +112,6 @@ public class TextBlock extends BaseCardElement {
 
   public void SetIsSubtle(boolean value) {
     AdaptiveCardObjectModelJNI.TextBlock_SetIsSubtle(swigCPtr, this, value);
-  }
-
-  public boolean GetItalic() {
-    return AdaptiveCardObjectModelJNI.TextBlock_GetItalic(swigCPtr, this);
-  }
-
-  public void SetItalic(boolean value) {
-    AdaptiveCardObjectModelJNI.TextBlock_SetItalic(swigCPtr, this, value);
-  }
-
-  public boolean GetStrikethrough() {
-    return AdaptiveCardObjectModelJNI.TextBlock_GetStrikethrough(swigCPtr, this);
-  }
-
-  public void SetStrikethrough(boolean value) {
-    AdaptiveCardObjectModelJNI.TextBlock_SetStrikethrough(swigCPtr, this, value);
   }
 
   public long GetMaxLines() {

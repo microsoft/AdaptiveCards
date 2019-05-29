@@ -11,23 +11,19 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ClickableSpan;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import io.adaptivecards.objectmodel.ContainerStyle;
-import io.adaptivecards.objectmodel.FontStyle;
+import io.adaptivecards.objectmodel.FontType;
 import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
-import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.HorizontalAlignment;
@@ -64,14 +60,14 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         textView.setGravity(TextRendererUtil.getTextAlignment(textAlignment));
     }
 
-    static void setTextSize(TextView textView, FontStyle style, TextSize textSize, HostConfig hostConfig)
+    static void setTextSize(TextView textView, FontType type, TextSize textSize, HostConfig hostConfig)
     {
-        textView.setTextSize(TextRendererUtil.getTextSize(style, textSize, hostConfig));
+        textView.setTextSize(TextRendererUtil.getTextSize(type, textSize, hostConfig));
     }
 
-    void setTextFormat(TextView textView, HostConfig hostConfig, FontStyle style, TextWeight textWeight)
+    void setTextFormat(TextView textView, HostConfig hostConfig, FontType type, TextWeight textWeight)
     {
-        textView.setTypeface(TextRendererUtil.getTextFormat(hostConfig, style), m_textWeightMap.get(textWeight));
+        textView.setTypeface(TextRendererUtil.getTextFormat(hostConfig, type), m_textWeightMap.get(textWeight));
     }
 
     static void setTextColor(TextView textView, ForegroundColor foregroundColor, HostConfig hostConfig, boolean isSubtle, ContainerStyle containerStyle)
@@ -182,8 +178,8 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         textView.setEllipsize(TextUtils.TruncateAt.END);
         textView.setOnTouchListener(new TouchTextView(new SpannableString(text)));
         textView.setHorizontallyScrolling(false);
-        setTextFormat(textView, hostConfig, textBlock.GetFontStyle(), textBlock.GetTextWeight());
-        setTextSize(textView, textBlock.GetFontStyle(), textBlock.GetTextSize(), hostConfig);
+        setTextFormat(textView, hostConfig, textBlock.GetFontType(), textBlock.GetTextWeight());
+        setTextSize(textView, textBlock.GetFontType(), textBlock.GetTextSize(), hostConfig);
         setTextColor(textView, textBlock.GetTextColor(), hostConfig, textBlock.GetIsSubtle(), renderArgs.getContainerStyle());
         setTextAlignment(textView, textBlock.GetHorizontalAlignment());
 

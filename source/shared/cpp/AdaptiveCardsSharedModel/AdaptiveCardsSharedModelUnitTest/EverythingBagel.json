@@ -38,7 +38,7 @@
 			"spacing": "default",
 			"separator": false,
 			"strikethrough": true,
-			"fontStyle": "monospace"
+			"fontType": "monospace"
 		},
 		{
 			"type": "TextBlock",
@@ -55,7 +55,7 @@
 			"spacing": "default",
 			"separator": false,
 			"strikethrough": true,
-			"fontStyle": "default"
+			"fontType": "default"
 		},
 		{
 			"type": "Image",
@@ -130,7 +130,7 @@
 									"type": "TextBlock",
 									"text": "Column3_TextBlock_text",
 									"id": "Column3_TextBlock_id",
-									"fontStyle": "display"
+									"fontType": "display"
 								}
 							]
 						}
@@ -285,7 +285,7 @@
 			"inlines": [
 				{
 					"color": "Dark",
-					"fontStyle": "Monospace",
+					"fontType": "Monospace",
 					"highlight": true,
 					"isSubtle": true,
 					"italic": true,

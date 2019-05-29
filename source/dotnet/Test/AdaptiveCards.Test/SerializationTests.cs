@@ -573,7 +573,7 @@ namespace AdaptiveCards.Test
 
             var textRun2 = new AdaptiveTextRun("with some cool looking stuff. ");
             textRun2.Color = AdaptiveTextColor.Accent;
-            textRun2.FontStyle = AdaptiveFontStyle.Monospace;
+            textRun2.FontType = AdaptiveFontType.Monospace;
             textRun2.IsSubtle = true;
             textRun2.Italic = true;
             textRun2.Strikethrough = true;
@@ -615,7 +615,7 @@ namespace AdaptiveCards.Test
           ""strikethrough"": true,
           ""highlight"": true,
           ""text"": ""with some cool looking stuff. "",
-          ""fontStyle"": ""monospace""
+          ""fontType"": ""monospace""
         },
         {
           ""type"": ""TextRun"",

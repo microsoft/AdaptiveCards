@@ -86,6 +86,8 @@
 		6B9D650B21095C7A00BB5C7B /* ACOMediaEvent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B9D650821095C7A00BB5C7B /* ACOMediaEvent.mm */; };
 		6B9D650E21095CBF00BB5C7B /* ACRMediaTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B9D650C21095CBE00BB5C7B /* ACRMediaTarget.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B9D650F21095CBF00BB5C7B /* ACRMediaTarget.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B9D650D21095CBE00BB5C7B /* ACRMediaTarget.mm */; };
+		6BAC0F2D228E2D7300E42DEB /* RichTextElementProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BAC0F2B228E2D7200E42DEB /* RichTextElementProperties.h */; };
+		6BAC0F2E228E2D7300E42DEB /* RichTextElementProperties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6BAC0F2C228E2D7300E42DEB /* RichTextElementProperties.cpp */; };
 		6BB211FC20FF9FEA009EA1BA /* ACRActionSetRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BB211FA20FF9FE9009EA1BA /* ACRActionSetRenderer.mm */; };
 		6BB211FD20FF9FEA009EA1BA /* ACRActionSetRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BB211FB20FF9FEA009EA1BA /* ACRActionSetRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6BB211FF20FFF9C0009EA1BA /* ACRIMedia.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BB211FE20FFF9C0009EA1BA /* ACRIMedia.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -409,6 +411,8 @@
 		6B9D650821095C7A00BB5C7B /* ACOMediaEvent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACOMediaEvent.mm; sourceTree = "<group>"; };
 		6B9D650C21095CBE00BB5C7B /* ACRMediaTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRMediaTarget.h; sourceTree = "<group>"; };
 		6B9D650D21095CBE00BB5C7B /* ACRMediaTarget.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRMediaTarget.mm; sourceTree = "<group>"; };
+		6BAC0F2B228E2D7200E42DEB /* RichTextElementProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RichTextElementProperties.h; path = ../../../../shared/cpp/ObjectModel/RichTextElementProperties.h; sourceTree = "<group>"; };
+		6BAC0F2C228E2D7300E42DEB /* RichTextElementProperties.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RichTextElementProperties.cpp; path = ../../../../shared/cpp/ObjectModel/RichTextElementProperties.cpp; sourceTree = "<group>"; };
 		6BB211FA20FF9FE9009EA1BA /* ACRActionSetRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRActionSetRenderer.mm; sourceTree = "<group>"; };
 		6BB211FB20FF9FEA009EA1BA /* ACRActionSetRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRActionSetRenderer.h; sourceTree = "<group>"; };
 		6BB211FE20FFF9C0009EA1BA /* ACRIMedia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRIMedia.h; sourceTree = "<group>"; };
@@ -798,8 +802,6 @@
 		F423C0D71EE1FF2F00905679 /* SharedLib */ = {
 			isa = PBXGroup;
 			children = (
-				8404BA8D226697800091A0AD /* FeatureRegistration.cpp */,
-				8404BA8C226697800091A0AD /* FeatureRegistration.h */,
 				F4071C781FCCBAEF00AF4FEA /* ActionParserRegistration.cpp */,
 				F4071C741FCCBAEF00AF4FEA /* ActionParserRegistration.h */,
 				C8DEDF37220CDEB00001AAED /* ActionSet.cpp */,
@@ -847,6 +849,8 @@
 				F44872D41EE2261F00FCAFAE /* Fact.h */,
 				F44872D51EE2261F00FCAFAE /* FactSet.cpp */,
 				F44872D61EE2261F00FCAFAE /* FactSet.h */,
+				8404BA8D226697800091A0AD /* FeatureRegistration.cpp */,
+				8404BA8C226697800091A0AD /* FeatureRegistration.h */,
 				F452CD571F68CD6F005394B2 /* HostConfig.cpp */,
 				F44872D71EE2261F00FCAFAE /* HostConfig.h */,
 				F44872DA1EE2261F00FCAFAE /* Image.cpp */,
@@ -884,6 +888,8 @@
 				6B268FE620CF19E100D99C1B /* RemoteResourceInformation.h */,
 				6B2242A52233442C000ACDA1 /* RichTextBlock.cpp */,
 				6B2242A62233442C000ACDA1 /* RichTextBlock.h */,
+				6BAC0F2C228E2D7300E42DEB /* RichTextElementProperties.cpp */,
+				6BAC0F2B228E2D7200E42DEB /* RichTextElementProperties.h */,
 				7EDC0F66213878E800077A13 /* SemanticVersion.cpp */,
 				7EDC0F65213878E800077A13 /* SemanticVersion.h */,
 				F4CAE7791F7325DF00545555 /* Separator.cpp */,
@@ -1117,6 +1123,7 @@
 				F44873061EE2261F00FCAFAE /* Container.h in Headers */,
 				F44873041EE2261F00FCAFAE /* ColumnSet.h in Headers */,
 				F44873001EE2261F00FCAFAE /* ChoiceSetInput.h in Headers */,
+				6BAC0F2D228E2D7300E42DEB /* RichTextElementProperties.h in Headers */,
 				F44872FE1EE2261F00FCAFAE /* ChoiceInput.h in Headers */,
 				F44872FC1EE2261F00FCAFAE /* BaseInputElement.h in Headers */,
 				F4071C7A1FCCBAEF00AF4FEA /* ElementParserRegistration.h in Headers */,
@@ -1442,6 +1449,7 @@
 				F44872F51EE2261F00FCAFAE /* AdaptiveCardParseException.cpp in Sources */,
 				F429794D1F32684900E89914 /* ACRDateTextField.mm in Sources */,
 				F4F44B8120478C6F00A2F24C /* Util.cpp in Sources */,
+				6BAC0F2E228E2D7300E42DEB /* RichTextElementProperties.cpp in Sources */,
 				6B6840F91F25EC2D008A933F /* ACRInputChoiceSetRenderer.mm in Sources */,
 				F42741131EF873A600399FBB /* ACRImageRenderer.mm in Sources */,
 				F448730B1EE2261F00FCAFAE /* Fact.cpp in Sources */,
