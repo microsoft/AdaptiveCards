@@ -8,123 +8,55 @@ import {
     FlatList,
     View,
     StyleSheet,
+    Image,
+    Text,
+    Platform,
+    TouchableOpacity,
     Modal
 } from 'react-native';
 
 import Renderer from './renderer';
 import { PayloadItem } from './payload-item.js';
 import SegmentedControl from './segmented-control';
+import MoreOptions from './more-options';
+import * as Constants from './constants';
+import * as Payloads from './payloads';
+import * as AdaptiveCardBuilder from "../../experimental/adaptive-card-builder/AdaptiveCardBuilder";
 
-// sample scenarios
-const calendarReminderPayload = require('./payloads/scenarios/calendar-reminder.json');
-const flightUpdatePayload = require('./payloads/scenarios/flight-update.json');
-const inputFormPayload = require('./payloads/scenarios/input-form.json');
-const restaturantPayload = require('./payloads/scenarios/restaurant.json');
-const containerPayload = require('./payloads/scenarios/container-item.json');
-const weatherPayload = require('./payloads/scenarios/weather-large.json');
-const activityUpdatePayload = require('./payloads/scenarios/activity-update.json');
-const foodOrderPayload = require('./payloads/scenarios/food-order.json');
-const imageGalleryPayload = require('./payloads/scenarios/image-gallery.json');
-const sportingEventPayload = require('./payloads/scenarios/sporting-event.json');
-const mediaPayload = require('./payloads/scenarios/media.json');
-const markdownPayload = require('./payloads/scenarios/markdown.json');
 
-import payloads from '../visualizer/payloads/payloads/';
+const moreIcon = Platform.select({
+    ios: require("./assets/more-ios.png"),
+    android: require("./assets/more-android.png"),
+    windows: require("./assets/more-android.png")
+})
+
 
 export default class Visualizer extends React.Component {
+
     state = {
         isModalVisible: false,
+        isMoreVisible: false,
         selectedPayload: null,
+        activeOption: Constants.AdaptiveCards,
+        payloads: Payloads.AdaptiveCardPayloads,
+        scenarios: Payloads.AdaptiveCardScenarios,
         activeIndex: 0 // payload - scenarios selector
     };
 
     constructor(props) {
         super(props);
-
-        this.scenarios = [{
-            title: 'Calendar reminder',
-            json: calendarReminderPayload,
-            tags: this.getTags(calendarReminderPayload),
-            icon: require('./assets/calendar.png')
-        }, {
-            title: 'Flight update',
-            json: flightUpdatePayload,
-            tags: this.getTags(flightUpdatePayload),
-            icon: require('./assets/flight.png')
-        }, {
-            title: 'Weather Large',
-            json: weatherPayload,
-            tags: this.getTags(weatherPayload),
-            icon: require('./assets/cloud.png')
-        }, {
-            title: 'Activity Update',
-            json: activityUpdatePayload,
-            tags: this.getTags(activityUpdatePayload),
-            icon: require('./assets/done.png')
-        },
-        {
-            title: 'Food order',
-            json: foodOrderPayload,
-            tags: this.getTags(foodOrderPayload),
-            icon: require('./assets/fastfood.png')
-        },
-        {
-            title: 'Image gallery',
-            json: imageGalleryPayload,
-            tags: this.getTags(imageGalleryPayload),
-            icon: require('./assets/photo_library.png')
-        },
-        {
-            title: 'Sporting event',
-            json: sportingEventPayload,
-            tags: this.getTags(sportingEventPayload),
-            icon: require('./assets/run.png')
-        }, {
-            title: 'Restaurant',
-            json: restaturantPayload,
-            tags: this.getTags(restaturantPayload),
-            icon: require('./assets/restaurant.png')
-        },
-        {
-            title: 'Input form',
-            json: inputFormPayload,
-            tags: this.getTags(inputFormPayload),
-            icon: require('./assets/form.png')
-        },
-        {
-            title: 'Media',
-            json: mediaPayload,
-            tags: this.getTags(mediaPayload),
-            icon: require('./assets/video_library.png')
-        },
-        {
-            title: 'Stock Update',
-            json: containerPayload,
-            tags: this.getTags(containerPayload),
-            icon: require('./assets/square.png')
-        },
-        {
-            title: 'Markdown',
-            json: markdownPayload,
-            tags: this.getTags(markdownPayload),
-            icon: require('./assets/code.png')
-        }];
     }
 
     render() {
-        const segmentedItems = [
-            { title: 'Payloads', value: 'payloads' },
-            { title: 'Scenarios', value: 'scenarios' }
-        ];
+        const { activeIndex, payloads, scenarios } = this.state;
 
-        const items = this.state.activeIndex === 0 ? payloads : this.scenarios;
-
+        const items = activeIndex === 0 ? payloads : scenarios;
         return (
             <View style={styles.container}>
-                <SegmentedControl
-                    items={segmentedItems}
-                    onStatusChange={(index) => this.segmentedControlStatusDidChange(index)}
-                />
+                <TouchableOpacity onPress={() => this.onMoreOptionsClick()} style={styles.moreContainer}>
+                    <Image source={moreIcon} style={styles.moreIcon} />
+                </TouchableOpacity>
+                {scenarios && scenarios.length > 0 ? this.segmentedControl() : this.header()}
                 <FlatList
                     data={items}
                     keyExtractor={(item, index) => index.toString()}
@@ -147,18 +79,58 @@ export default class Visualizer extends React.Component {
                         onModalClose={this.closeModal}
                     />
                 </Modal>
+                <Modal
+                    animationType="none"
+                    transparent={true}
+                    supportedOrientations={['portrait', 'landscape']}
+                    visible={this.state.isMoreVisible}
+                    onRequestClose={() => this.closeMoreOptions()}>
+                    {this.modalLayout()}
+                </Modal>
             </View>
-        )
+        );
     }
+
+    /**
+     * @description Segment control for payloads and scenarios.
+     */
+    segmentedControl = () => {
+        const segmentedItems = [
+            { title: 'Payloads', value: 'payloads' },
+            { title: 'Scenarios', value: 'scenarios' }
+        ];
+        return (
+            <SegmentedControl
+                items={segmentedItems}
+                onStatusChange={(index) => this.segmentedControlStatusDidChange(index)}
+            />
+        );
+    }
+
+    /**
+     * @description Add header for payloads as there is no scenarios
+     */
+    header = () => (
+        <View style={styles.header}>
+            <Text style={styles.title}>
+                {Constants.PayloadHeader}
+            </Text>
+        </View>
+    );
 
     /**
      * @description Present the modal
      * @param {object} payload - Selected payload
      */
     payloadDidSelect = (payload) => {
+        /*  Check if the payload is HeroCard / ThumbnailCard */
+        const notAdaptiveCard = payload.json.contentType &&
+            (payload.json.contentType === "application/vnd.microsoft.card.hero" ||
+                payload.json.contentType === "application/vnd.microsoft.card.thumbnail");
+
         this.setState({
             isModalVisible: true,
-            selectedPayload: payload.json
+            selectedPayload: notAdaptiveCard ? AdaptiveCardBuilder.buildAdaptiveCard(payload.json.content, payload.json.contentType) : payload.json
         })
     }
 
@@ -172,24 +144,6 @@ export default class Visualizer extends React.Component {
     }
 
     /**
-     * @description Return the unique element types present in the given payload json
-     * @param {object} json - payload json
-     * @return {Array} - Array of element types
-     */
-    getTags = (json) => {
-        let tags = new Set();
-        // elements
-        json.body.map(element => {
-            tags.add(element.type);
-        });
-        // actions
-        if (json.actions && json.actions.length > 0) {
-            tags.add("Actions");
-        }
-        return Array.from(tags);
-    }
-
-    /**
      * @description Invoked on payload type segmented control status change
      * @param {number} index - index of the selected item
      */
@@ -197,6 +151,83 @@ export default class Visualizer extends React.Component {
         this.setState({
             activeIndex: index
         });
+    }
+
+    /**
+     * @description Layout of the more option modal
+     */
+    modalLayout = () => (
+        <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => this.closeMoreOptions()}
+            style={styles.moreOptionsModal}
+        >
+            <MoreOptions
+                closeMoreOptions={this.closeMoreOptions}
+                moreOptionClick={this.moreOptionClick}
+            />
+        </TouchableOpacity>
+    );
+
+    /**
+     * @description Click action for more option
+     * @param option - selected option
+     */
+    moreOptionClick = (option) => {
+        const { activeOption } = this.state;
+        switch (option) {
+            case Constants.AdaptiveCards:
+                if (activeOption !== Constants.AdaptiveCards)
+                    this.setState({
+                        isMoreVisible: false,
+                        activeOption: Constants.AdaptiveCards,
+                        payloads: Payloads.AdaptiveCardPayloads,
+                        scenarios: Payloads.AdaptiveCardScenarios,
+                        activeIndex : 0
+                    });
+                else this.closeMoreOptions();
+                break;
+            case Constants.OtherCards:
+                if (activeOption !== Constants.OtherCards)
+                    this.setState({
+                        isMoreVisible: false,
+                        activeOption: Constants.OtherCards,
+                        payloads: Payloads.OtherCardPayloads,
+                        scenarios: [],
+                        activeIndex : 0
+                    });
+                else this.closeMoreOptions();
+                break;
+            default:
+                if (activeOption !== Constants.AdaptiveCards)
+                    this.setState({
+                        isMoreVisible: false,
+                        activeOption: Constants.AdaptiveCards,
+                        payloads: Payloads.AdaptiveCardPayloads,
+                        scenarios: Payloads.AdaptiveCardScenarios,
+                        activeIndex : 0
+                    });
+                else this.closeMoreOptions();
+                break;
+        }
+    }
+
+    /**
+     * @description Click action for more icon, shows the options modal
+     */
+    onMoreOptionsClick = () => {
+        this.setState({
+            isMoreVisible: true
+        })
+    }
+
+    /**
+     * @description Dismiss the more options modal
+     */
+    closeMoreOptions = () => {
+        this.setState({
+            isMoreVisible: false
+        })
     }
 }
 
@@ -209,9 +240,36 @@ const styles = StyleSheet.create({
         height: 150,
         backgroundColor: '#f7f7f7',
     },
-    title: {
-        fontSize: 20,
-        fontWeight: 'bold',
+    header: {
         marginVertical: 12,
+        justifyContent: "center",
+        height: 34,
+        backgroundColor: '#0078D7'
+    },
+    title: {
+        fontSize: 17,
+        fontWeight: '400',
+        color: "white",
+        alignSelf: "center"
+    },
+    moreContainer: {
+        alignSelf: "flex-end"
+    },
+    moreIcon: {
+        padding: 10,
+        width: 25,
+        height: 25
+    },
+    moreOptionsModal: {
+        flex: 1,
+        backgroundColor: "rgba(0, 0, 0, 0.1)"
+    },
+    more: {
+        marginTop: 50,
+        marginRight: 10,
+        alignSelf: "flex-end",
+        width: 100,
+        height: 100,
+        backgroundColor: "white"
     }
 });
