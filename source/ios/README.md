@@ -18,8 +18,8 @@ Terminal
 $pod install
 ```
 
-please note Podfile and Xcode project file have to be in the same directory
-please remember to run pod repo update to get latest patches 
+Please note Podfile and Xcode project file have to be in the same directory
+Please remember to run pod repo update to get latest patches 
 
 
 ## Example Code in Objective-C, Swift
@@ -96,10 +96,10 @@ Please be sure to add exceptions for specific domains to info.plist or add the f
      <true/>
     </dict>
 ```
-for more information on NSAppTransportSecurity plese check here https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW33
+For more information on NSAppTransportSecurity plese check here https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW33
 
 ### Step 3
-add SafariServices.framework for openning web pages
+Add SafariServices.framework for openning web pages
 project file -> Targets -> Linked Frameworks and Libraries -> add
 
 ## Example Code in Swift: Bridging Header
