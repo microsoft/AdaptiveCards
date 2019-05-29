@@ -14,7 +14,9 @@
 			"type": "string",
 			"description": "Schema version that this card requires. If a client is **lower** than this version, the `fallbackText` will be rendered. NOTE: Version is not required for cards within an `Action.ShowCard`. However, it *is* required for the top-level card.",
 			"examples": [
-				"1.0", "1.1", "1.2"
+				"1.0",
+				"1.1",
+				"1.2"
 			]
 		},
 		"fallbackText": {
@@ -36,7 +38,9 @@
 			"type": "string",
 			"description": "The 2-letter ISO-639-1 language used in the card. Used to localize any date/time functions.",
 			"examples": [
-				"en", "fr", "es"
+				"en",
+				"fr",
+				"es"
 			]
 		}
 	},
@@ -224,6 +228,9 @@
 					"items": {
 						"$ref": "#/definitions/TargetElement"
 					}
+				},
+				"style": {
+					"$ref": "#/definitions/ActionStyle"
 				}
 			},
 			"required": [
@@ -703,7 +710,7 @@
 				"height": {
 					"type": "string",
 					"description": "The desired on-screen height of the image, ending in 'px'. E.g., 50px. This overrides the `size` property.",
-					"examples": ["50px"],
+					"examples": [ "50px" ],
 					"version": "1.1"
 				},
 				"horizontalAlignment": {
@@ -739,7 +746,7 @@
 				"width": {
 					"type": "string",
 					"description": "The desired on-screen width of the image, ending in 'px'. E.g., 50px. This overrides the `size` property.",
-					"examples": ["50px"],
+					"examples": [ "50px" ],
 					"version": "1.1"
 				}
 			},
