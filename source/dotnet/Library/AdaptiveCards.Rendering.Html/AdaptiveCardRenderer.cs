@@ -190,9 +190,9 @@ namespace AdaptiveCards.Rendering.Html
                     .AddClass("ac-pushButton");
 
 
-                if (!String.IsNullOrWhiteSpace(action.Sentiment) && !String.Equals(action.Sentiment, "default", StringComparison.OrdinalIgnoreCase))
+                if (!String.IsNullOrWhiteSpace(action.Style) && !String.Equals(action.Style, "default", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (String.Equals(action.Sentiment, "positive", StringComparison.OrdinalIgnoreCase))
+                    if (String.Equals(action.Style, "positive", StringComparison.OrdinalIgnoreCase))
                     {
                         string accentColor = context.Config.ContainerStyles.Default.ForegroundColors.Accent.Default;
                         string lighterAccentColor = ColorUtil.GenerateLighterColor(accentColor);
@@ -202,7 +202,7 @@ namespace AdaptiveCards.Rendering.Html
                         buttonElement.Style("color", "#FFFFFF");
                         buttonElement.AddClass("ac-action-positive");
                     }
-                    else if (String.Equals(action.Sentiment, "destructive", StringComparison.OrdinalIgnoreCase))
+                    else if (String.Equals(action.Style, "destructive", StringComparison.OrdinalIgnoreCase))
                     {
                         string attentionColor = context.Config.ContainerStyles.Default.ForegroundColors.Attention.Default;
                         string lighterAttentionColor = ColorUtil.GenerateLighterColor(attentionColor);
@@ -213,7 +213,7 @@ namespace AdaptiveCards.Rendering.Html
                     }
                     else
                     {
-                        buttonElement.AddClass("ac-action-" + action.Sentiment);
+                        buttonElement.AddClass("ac-action-" + action.Style);
                     }
                 }
 

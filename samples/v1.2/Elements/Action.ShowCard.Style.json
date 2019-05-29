@@ -12,8 +12,7 @@
 	"actions": [
 		{
 			"type": "Action.ShowCard",
-			"sentiment": "default",
-			"title": "Action.Default",
+			"title": "Default",
 			"card": {
 				"type": "AdaptiveCard",
 				"body": [],
@@ -22,8 +21,8 @@
 		},
 		{
 			"type": "Action.ShowCard",
-			"sentiment": "positive",
-			"title": "Action.Pawsitive",
+			"style": "positive",
+			"title": "Pawsitive",
 			"card": {
 				"type": "AdaptiveCard",
 				"body": [],
@@ -32,8 +31,18 @@
 		},
 		{
 			"type": "Action.ShowCard",
-			"sentiment": "destructive",
-			"title": "Action.Destructive",
+			"style": "destructive",
+			"title": "Destructive",
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [],
+				"actions": []
+			}
+		},
+		{
+			"type": "Action.ShowCard",
+			"style": "other",
+			"title": "Other",
 			"card": {
 				"type": "AdaptiveCard",
 				"body": [],
