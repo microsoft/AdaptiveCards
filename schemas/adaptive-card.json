@@ -342,6 +342,28 @@
 				"spacing": {
 					"$ref": "#/definitions/SpacingStyle"
 				},
+				"requires": {
+					"type": "object",
+					"description": "A series of key/value pairs indicating features that the element requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered.",
+					"version": "1.2"
+				},
+				"fallback": {
+					"description": "Describes how to adapt a card when unknown elements are encountered.",
+					"version": "1.2",
+					"anyOf": [
+						{
+							"type": "string",
+							"description": "Causes this element to be dropped when unknown elements are encountered.",
+							"enum": [
+								"drop"
+							]
+						},
+						{
+							"type": "object",
+							"description": "Any Adaptive Cards element"
+						}
+					]
+				},
 				"separator": {
 					"type": "boolean",
 					"description": "When `true`, draw a separating line at the top of the element.",
