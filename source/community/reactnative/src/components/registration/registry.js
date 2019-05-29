@@ -102,11 +102,11 @@ export class Registry {
 		}
 	}
 	RequiredPropertySchema = {
-		'Container': { 'type': 'Container', 'items': 'Array' },
+		'Container': { 'type': 'Container', 'children': 'Array' },
 		'ColumnSet': { 'type': 'ColumnSet' },
 		'Column': { 'items': 'Array' },
-		'FactSet': { 'type': 'FactSet', 'facts': 'Array' },
-		'ImageSet': { 'type': 'ImageSet', 'images': 'Array' },
+		'FactSet': { 'type': 'FactSet', 'children': 'Array' },
+		'ImageSet': { 'type': 'ImageSet', 'children': 'Array' },
 
 		'TextBlock': { 'type': 'TextBlock' },
 		'Image': { 'type': 'Image', 'url': 'String' },
@@ -123,7 +123,7 @@ export class Registry {
 		'Action.ShowCard': { 'type': 'Action.ShowCard', 'card': 'Object' },
 		'Action.Submit': { 'type': 'Action.Submit' },
 		'Action.OpenUrl': { 'type': 'Action.OpenUrl', 'url': 'String' },
-		'ActionSet': { 'type': 'ActionSet', 'actions': 'Array' },
+		'ActionSet': { 'type': 'ActionSet' },
 	};
 
 	/**
@@ -143,12 +143,33 @@ export class Registry {
 		if (!componentArray)
 			return parsedElement;
 		componentArray.map((element, index) => {
-			const Element = this.getComponentOfType(element.type);
+			const currentElement = this.parseComponent(element,onParseError,index);
+			if (currentElement){
+				parsedElement.push(currentElement);
+			}
+		});
+		return parsedElement;
+	}
+
+	/**
+	 * @description Parse an individual component
+	 * @param {Array} element - Json
+	 */
+	parseComponent = (element, onParseError, index = 0) => {
+		const Element = this.getComponentOfType(element.type);
+
 			if (Element) {
                 /**
                  * Validate the schema and invoke onParseError handler incase of any error.
                  */
 				let isValid = true;
+				if (element.isFallbackActivated){
+					if(element.fallbackType == "drop"){
+						return null;
+					}else if(!Utils.isNullOrEmpty(element.fallback)){
+						return this.parseComponent(element.fallback,onParseError);
+					}
+				}
 				for (var key in this.validateSchemaForType(element.type)) {
 					if (!element.hasOwnProperty(key)) {
 						let error = { "error": Enums.ValidationError.PropertyCantBeNull, "message": `Required property ${key} for ${element.type} is missing` };
@@ -159,7 +180,7 @@ export class Registry {
 				if (isValid) {
 					if (element.isVisible !== false) {
 						const elementKey = Utils.isNullOrEmpty(element.id) ? `${element.type}-${index}` : `${element.type}-${index}-${element.id}`;
-						parsedElement.push(<Element json={element} key={elementKey} />);
+						return (<Element json={element} key={elementKey} />);
 					}
 				}
 			} else {
@@ -167,8 +188,6 @@ export class Registry {
 				onParseError(error);
 				return null;
 			}
-		});
-		return parsedElement;
 	}
 }
 
