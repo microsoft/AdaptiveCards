@@ -226,7 +226,14 @@
 					"type": "array",
 					"description": "The array of TargetElements",
 					"items": {
-						"$ref": "#/definitions/TargetElement"
+						"anyOf": [
+							{
+								"$ref": "#/definitions/TargetElement"
+							},
+							{
+								"type": "string"
+							}
+						]
 					}
 				},
 				"style": {
@@ -271,7 +278,8 @@
 					"version": "1.1",
 					"oneOf": [
 						{ "$ref": "#/definitions/Action.Submit" },
-						{ "$ref": "#/definitions/Action.OpenUrl" }
+						{ "$ref": "#/definitions/Action.OpenUrl" },
+						{ "$ref": "#/definitions/Action.ToggleVisibility" }
 					]
 				}
 			},
@@ -474,7 +482,8 @@
 					"version": "1.1",
 					"oneOf": [
 						{ "$ref": "#/definitions/Action.Submit" },
-						{ "$ref": "#/definitions/Action.OpenUrl" }
+						{ "$ref": "#/definitions/Action.OpenUrl" },
+						{ "$ref": "#/definitions/Action.ToggleVisibility" }
 					]
 				},
 				"style": {
@@ -539,7 +548,8 @@
 					"version": "1.1",
 					"oneOf": [
 						{ "$ref": "#/definitions/Action.Submit" },
-						{ "$ref": "#/definitions/Action.OpenUrl" }
+						{ "$ref": "#/definitions/Action.OpenUrl" },
+						{ "$ref": "#/definitions/Action.ToggleVisibility" }
 					]
 				},
 				"type": {
@@ -588,7 +598,8 @@
 					"version": "1.1",
 					"oneOf": [
 						{ "$ref": "#/definitions/Action.Submit" },
-						{ "$ref": "#/definitions/Action.OpenUrl" }
+						{ "$ref": "#/definitions/Action.OpenUrl" },
+						{ "$ref": "#/definitions/Action.ToggleVisibility" }
 					]
 				},
 				"style": {
@@ -776,7 +787,8 @@
 					"version": "1.1",
 					"oneOf": [
 						{ "$ref": "#/definitions/Action.Submit" },
-						{ "$ref": "#/definitions/Action.OpenUrl" }
+						{ "$ref": "#/definitions/Action.OpenUrl" },
+						{ "$ref": "#/definitions/Action.ToggleVisibility" }
 					]
 				},
 				"size": {
@@ -1063,6 +1075,9 @@
 				},
 				{
 					"$ref": "#/definitions/Action.OpenUrl"
+				},
+				{
+					"$ref": "#/definitions/Action.ToggleVisibility"
 				}
 			]
 		},
