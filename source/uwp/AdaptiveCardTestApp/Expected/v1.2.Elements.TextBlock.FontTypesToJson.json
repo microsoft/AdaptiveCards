@@ -1,0 +1,1 @@
+{"actions":[],"body":[{"text":"Font type not set.","type":"TextBlock"},{"text":"Font type set to *default*.","type":"TextBlock"},{"fontType":"Monospace","text":"Font type set to *monospace*.","type":"TextBlock"}],"type":"AdaptiveCard","version":"1.2"}

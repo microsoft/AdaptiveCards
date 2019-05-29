@@ -36,17 +36,32 @@
 
 - (void)doSelectAction
 {
-    for(const auto &target : _action->GetTargetElements()) {
+    for (const auto &target : _action->GetTargetElements()) {
         NSString *hashString = [NSString stringWithCString:target->GetElementId().c_str() encoding:NSUTF8StringEncoding];
         NSUInteger tag = hashString.hash;
         UIView *view = [_rootView viewWithTag:tag];
+        
+        NSMutableString *hashStringForSeparator = [NSMutableString stringWithCString:target->GetElementId().c_str() encoding:NSUTF8StringEncoding];
+        [hashStringForSeparator appendString:@"-separator"];
+        NSUInteger separatorTag = hashStringForSeparator.hash;
+        UIView *separator = [_rootView viewWithTag:separatorTag];
 
-        if(target->GetIsVisible() == AdaptiveCards::IsVisibleToggle){
+        AdaptiveCards::IsVisible toggleEnum = target->GetIsVisible();
+        if (toggleEnum == AdaptiveCards::IsVisibleToggle) {
             view.hidden = !(view.hidden);
-        } else if(target->GetIsVisible() == AdaptiveCards::IsVisibleTrue) {
+            if (separator) {
+                separator.hidden = view.hidden;
+            }
+        } else if (toggleEnum == AdaptiveCards::IsVisibleTrue) {
             view.hidden = NO;
+            if (separator) {
+                separator.hidden = NO;
+            }
         } else {
             view.hidden = YES;
+            if (separator) {
+                separator.hidden = YES;
+            }
         }
     }
 }

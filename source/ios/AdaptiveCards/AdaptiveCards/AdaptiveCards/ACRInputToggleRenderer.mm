@@ -64,20 +64,6 @@
     } else {
         [viewGroup addArrangedSubview:inputTableView];
     }
-    [NSLayoutConstraint constraintWithItem:inputTableView
-                                 attribute:NSLayoutAttributeLeading
-                                 relatedBy:NSLayoutRelationLessThanOrEqual
-                                    toItem:viewGroup
-                                 attribute:NSLayoutAttributeLeading
-                                multiplier:1.0
-                                  constant:0].active = YES;
-    [NSLayoutConstraint constraintWithItem:inputTableView
-                                 attribute:NSLayoutAttributeTrailing
-                                 relatedBy:NSLayoutRelationLessThanOrEqual
-                                    toItem:viewGroup
-                                 attribute:NSLayoutAttributeTrailing
-                                multiplier:1.0
-                                  constant:0].active = YES;
 
     configVisibility(inputTableView, elem);
 

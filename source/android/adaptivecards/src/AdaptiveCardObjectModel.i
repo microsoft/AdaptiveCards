@@ -115,6 +115,7 @@ struct tm {
 #include "../../../shared/cpp/ObjectModel/Inline.h"
 #include "../../../shared/cpp/ObjectModel/RichTextBlock.h"
 #include "../../../shared/cpp/ObjectModel/TextRun.h"
+#include "../../../shared/cpp/ObjectModel/RichTextElementProperties.h"
 %}
 
 %shared_ptr(AdaptiveCards::BackgroundImage)
@@ -187,6 +188,7 @@ struct tm {
 %shared_ptr(AdaptiveCards::RichTextBlockParser)
 %shared_ptr(AdaptiveCards::TextRun)
 %shared_ptr(AdaptiveCards::TextElementProperties)
+%shared_ptr(AdaptiveCards::RichTextElementProperties)
 
 %apply unsigned int& INOUT { unsigned int& };
 
@@ -803,3 +805,4 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/Inline.h"
 %include "../../../shared/cpp/ObjectModel/RichTextBlock.h"
 %include "../../../shared/cpp/ObjectModel/TextRun.h"
+%include "../../../shared/cpp/ObjectModel/RichTextElementProperties.h"

@@ -32,17 +32,17 @@ using namespace AdaptiveCards;
 
 namespace AdaptiveCardsSharedModelUnitTest
 {
-    void ValidateBackgroundImage(const BackgroundImage& backImage, BackgroundImageMode mode, HorizontalAlignment hAlignment, VerticalAlignment vAlignment)
+    void ValidateBackgroundImage(const BackgroundImage& backImage, ImageFillMode mode, HorizontalAlignment hAlignment, VerticalAlignment vAlignment)
     {
         Assert::AreEqual("https://adaptivecards.io/content/cats/1.png"s, backImage.GetUrl());
-        Assert::IsTrue(mode == backImage.GetMode());
+        Assert::IsTrue(mode == backImage.GetFillMode());
         Assert::IsTrue(hAlignment == backImage.GetHorizontalAlignment());
         Assert::IsTrue(vAlignment == backImage.GetVerticalAlignment());
     }
 
     void ValidateTopLevelProperties(const AdaptiveCard &everythingBagel)
     {
-        ValidateBackgroundImage(*everythingBagel.GetBackgroundImage(), BackgroundImageMode::Stretch, HorizontalAlignment::Left, VerticalAlignment::Top);
+        ValidateBackgroundImage(*everythingBagel.GetBackgroundImage(), ImageFillMode::Cover, HorizontalAlignment::Left, VerticalAlignment::Top);
         Assert::IsTrue(CardElementType::AdaptiveCard == everythingBagel.GetElementType());
         Assert::AreEqual("fallbackText"s, everythingBagel.GetFallbackText());
         Assert::IsTrue(HeightType::Auto == everythingBagel.GetHeight());
@@ -54,7 +54,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::IsTrue(VerticalContentAlignment::Top == everythingBagel.GetVerticalContentAlignment());
     }
 
-    void ValidateTextBlock(const TextBlock &textBlock, FontStyle fontStyle, std::string id)
+    void ValidateTextBlock(const TextBlock &textBlock, FontType fontType, std::string id)
     {
         Assert::IsTrue(textBlock.GetElementType() == CardElementType::TextBlock);
         Assert::AreEqual(CardElementTypeToString(CardElementType::TextBlock), textBlock.GetElementTypeString());
@@ -67,11 +67,9 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual("en"s, textBlock.GetLanguage());
         Assert::IsTrue(TextSize::Default == textBlock.GetTextSize());
         Assert::IsTrue(TextWeight::Default == textBlock.GetTextWeight());
-        Assert::IsTrue(fontStyle == textBlock.GetFontStyle());
+        Assert::IsTrue(fontType == textBlock.GetFontType());
         Assert::IsFalse(textBlock.GetIsSubtle());
-        Assert::IsTrue(textBlock.GetItalic());
         Assert::IsFalse(textBlock.GetSeparator());
-        Assert::IsTrue(textBlock.GetStrikethrough());
         Assert::IsFalse(textBlock.GetWrap());
     }
 
@@ -388,7 +386,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual("en"s, inlineTextElement->GetLanguage());
         Assert::IsTrue(TextSize::Large == inlineTextElement->GetTextSize());
         Assert::IsTrue(TextWeight::Bolder == inlineTextElement->GetTextWeight());
-        Assert::IsTrue(FontStyle::Monospace == inlineTextElement->GetFontStyle());
+        Assert::IsTrue(FontType::Monospace == inlineTextElement->GetFontType());
         Assert::IsTrue(inlineTextElement->GetIsSubtle());
         Assert::IsTrue(inlineTextElement->GetItalic());
         Assert::IsTrue(inlineTextElement->GetHighlight());
@@ -414,17 +412,17 @@ namespace AdaptiveCardsSharedModelUnitTest
         auto body = everythingBagel.GetBody();
         Assert::AreEqual(size_t{ 10 }, body.size());
 
-        // validate textblock (no style)
+        // validate textblock (no fontType)
         auto textBlock = std::static_pointer_cast<TextBlock>(body.at(0));
-        ValidateTextBlock(*textBlock, FontStyle::Default, "TextBlock_id");
+        ValidateTextBlock(*textBlock, FontType::Default, "TextBlock_id");
 
         // validate textblock (monospace)
         textBlock = std::static_pointer_cast<TextBlock>(body.at(1));
-        ValidateTextBlock(*textBlock, FontStyle::Monospace, "TextBlock_id_mono");
+        ValidateTextBlock(*textBlock, FontType::Monospace, "TextBlock_id_mono");
 
         // validate textblock (default)
         textBlock = std::static_pointer_cast<TextBlock>(body.at(2));
-        ValidateTextBlock(*textBlock, FontStyle::Default, "TextBlock_id_def");
+        ValidateTextBlock(*textBlock, FontType::Default, "TextBlock_id_def");
 
         // validate image
         auto image = std::static_pointer_cast<Image>(body.at(3));
@@ -498,7 +496,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             {
                 auto subCard = std::static_pointer_cast<AdaptiveCard>(showCardAction->GetCard());
                 Assert::AreEqual(size_t{ 0 }, subCard->GetActions().size());
-                ValidateBackgroundImage(*subCard->GetBackgroundImage(), BackgroundImageMode::Repeat, HorizontalAlignment::Right, VerticalAlignment::Center);
+                ValidateBackgroundImage(*subCard->GetBackgroundImage(), ImageFillMode::Repeat, HorizontalAlignment::Right, VerticalAlignment::Center);
                 Assert::IsTrue(CardElementType::AdaptiveCard == subCard->GetElementType());
                 Assert::AreEqual(""s, subCard->GetFallbackText());
                 Assert::IsTrue(HeightType::Auto == subCard->GetHeight());
@@ -510,7 +508,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                 Assert::IsTrue(VerticalContentAlignment::Top == subCard->GetVerticalContentAlignment());
 
                 //Logger::WriteMessage("Submit Data: '"s.append(subCard->Serialize()).append("'").c_str());
-                Assert::AreEqual("{\"actions\":[],\"backgroundImage\":{\"horizontalAlignment\":\"right\",\"mode\":\"repeat\",\"url\":\"https://adaptivecards.io/content/cats/1.png\",\"verticalAlignment\":\"center\"},\"body\":[{\"isSubtle\":true,\"text\":\"Action.ShowCard text\",\"type\":\"TextBlock\"}],\"lang\":\"en\",\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}\n"s,
+                Assert::AreEqual("{\"actions\":[],\"backgroundImage\":{\"fillMode\":\"repeat\",\"horizontalAlignment\":\"right\",\"url\":\"https://adaptivecards.io/content/cats/1.png\",\"verticalAlignment\":\"center\"},\"body\":[{\"isSubtle\":true,\"text\":\"Action.ShowCard text\",\"type\":\"TextBlock\"}],\"lang\":\"en\",\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}\n"s,
                     subCard->Serialize());
             }
         }

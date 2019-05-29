@@ -43,7 +43,13 @@ function renderCard(target: HTMLElement): HTMLElement {
 
     adaptiveCard.parse(json, lastValidationErrors);
 
-    lastValidationErrors = lastValidationErrors.concat(adaptiveCard.validate());
+    let validationResults = adaptiveCard.validateProperties();
+
+    for (let failure of validationResults.failures) {
+        lastValidationErrors = lastValidationErrors.concat(failure.errors);
+    }
+
+    // lastValidationErrors = lastValidationErrors.concat(adaptiveCard.validate());
 
     showValidationErrors();
 
