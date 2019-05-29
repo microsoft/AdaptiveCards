@@ -1142,6 +1142,64 @@ namespace AdaptiveCardsSharedModelUnitTest
             }
         }
 
+        TEST_METHOD(ImplicitColumnTypeTest)
+        {
+            // Columns set to type "Column" or with type unset should parse correctly
+            std::string columnTypeSetOrEmpty =
+            "{\
+                \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
+                \"type\": \"AdaptiveCard\",\
+                \"version\": \"1.0\",\
+                \"body\": [\
+                    {\
+                        \"type\":\"ColumnSet\",\
+                        \"columns\": [\
+                            {\
+                                \"type\": \"Column\",\
+                                \"items\": [\
+                                ]\
+                            },\
+                            {\
+                                \"items\": [\
+                                ]\
+                            }\
+                        ]\
+                    }\
+                ]\
+            }";
 
+            // Columns set to a bogus type should not parse correctly
+            std::string columnTypeInvalid =
+            "{\
+                \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
+                \"type\": \"AdaptiveCard\",\
+                \"version\": \"1.0\",\
+                \"body\": [\
+                    {\
+                        \"type\":\"ColumnSet\",\
+                        \"columns\": [\
+                            {\
+                                \"type\": \"Elephant\",\
+                                \"items\": [\
+                                ]\
+                            }\
+                        ]\
+                    }\
+                ]\
+            }";
+
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(columnTypeSetOrEmpty, "1.0");
+
+            try
+            {
+                parseResult = AdaptiveCard::DeserializeFromString(columnTypeInvalid, "1.0");
+                Assert::IsTrue(false, L"Deserializing should throw an exception");
+            }
+            catch (const AdaptiveCardParseException& e)
+            {
+                Assert::IsTrue(ErrorStatusCode::InvalidPropertyValue == e.GetStatusCode(), L"ErrorStatusCode incorrect");
+                Assert::AreEqual("Unable to parse element of type Elephant", e.GetReason().c_str(), L"GetReason incorrect");
+            }
+        }
     };
 }

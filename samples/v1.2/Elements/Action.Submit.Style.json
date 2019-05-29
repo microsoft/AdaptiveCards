@@ -1,0 +1,34 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.2",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "This card has two actions, one of which has an icon. The icon is always placed to the left of title.",
+			"wrap": true
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"style": "default",
+			"title": "Default"
+		},
+		{
+			"type": "Action.Submit",
+			"style": "positive",
+			"title": "Pawsitive"
+		},
+		{
+			"type": "Action.Submit",
+			"style": "destructive",
+			"title": "Destructive"
+		},
+		{
+			"type": "Action.Submit",
+			"style": "other",
+			"title": "Other"
+		}
+	]
+}

@@ -51,7 +51,7 @@ namespace UWPUnitTests
             public ActionType ActionType { get { return ActionType.Custom; } }
             public string ActionTypeString { get { return "TestCustomAction"; } }
             public string IconUrl { get { return ""; } set { } }
-            public string Sentiment { get; set; }
+            public string Style { get; set; }
             public string Title { get; set; }
 
             public IAdaptiveActionElement FallbackContent => throw new NotImplementedException();

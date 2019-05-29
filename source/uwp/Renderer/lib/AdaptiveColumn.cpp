@@ -37,11 +37,7 @@ namespace AdaptiveNamespace
         m_verticalAlignment =
             static_cast<ABI::AdaptiveNamespace::VerticalContentAlignment>(sharedColumn->GetVerticalContentAlignment());
         m_bleed = sharedColumn->GetBleed();
-
-        if (sharedColumn->GetCanBleed())
-        {
-            m_bleedDirection = static_cast<ABI::AdaptiveNamespace::BleedDirection>(sharedColumn->GetBleedDirection());
-        }
+        m_bleedDirection = static_cast<ABI::AdaptiveNamespace::BleedDirection>(sharedColumn->GetBleedDirection());
 
         RETURN_IF_FAILED(UTF8ToHString(sharedColumn->GetWidth(), m_width.GetAddressOf()));
         m_pixelWidth = sharedColumn->GetPixelWidth();

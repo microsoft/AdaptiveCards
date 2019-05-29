@@ -15,6 +15,8 @@ HRESULT AddTextInlines(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adapti
                        _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                        _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
                        _In_ ABI::Windows::Data::Xml::Dom::IXmlNode* node,
+                       bool isStrikethrough,
+                       bool isItalic,
                        bool isInHyperlink,
                        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines,
                        _Out_ UINT* characterLength);
@@ -23,6 +25,8 @@ HRESULT AddSingleTextInline(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* a
                             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
                             _In_ HSTRING string,
+                            bool isStrikethrough,
+                            bool isItalic,
                             bool isInHyperlink,
                             _In_ ABI::Windows::Foundation::Collections::IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines,
                             _Out_ UINT* characterLength);
@@ -76,22 +80,20 @@ template<typename TXamlTextBlockType>
 HRESULT StyleTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adaptiveTextElement,
                          _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                          _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+                         bool isStrikethrough,
+                         bool isItalic,
                          bool isInHyperlink,
                          _In_ TXamlTextBlockType* xamlTextElement)
 {
     Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveHostConfig> hostConfig;
     RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
-    boolean strikethrough;
-    RETURN_IF_FAILED(adaptiveTextElement->get_Strikethrough(&strikethrough));
-    if (strikethrough)
+    if (isStrikethrough)
     {
         RETURN_IF_FAILED(SetStrikethrough(xamlTextElement));
     }
 
-    boolean italic;
-    RETURN_IF_FAILED(adaptiveTextElement->get_Italic(&italic));
-    if (italic)
+    if (isItalic)
     {
         RETURN_IF_FAILED(xamlTextElement->put_FontStyle(ABI::Windows::UI::Text::FontStyle::FontStyle_Italic));
     }
@@ -124,14 +126,14 @@ HRESULT StyleTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adap
     ABI::AdaptiveNamespace::TextWeight adaptiveTextWeight;
     RETURN_IF_FAILED(adaptiveTextElement->get_Weight(&adaptiveTextWeight));
 
-    ABI::AdaptiveNamespace::FontStyle fontStyle;
-    RETURN_IF_FAILED(adaptiveTextElement->get_FontStyle(&fontStyle));
+    ABI::AdaptiveNamespace::FontType fontType;
+    RETURN_IF_FAILED(adaptiveTextElement->get_FontType(&fontType));
 
     UINT32 fontSize;
     Microsoft::WRL::Wrappers::HString fontFamilyName;
     ABI::Windows::UI::Text::FontWeight xamlFontWeight;
-    RETURN_IF_FAILED(GetFontDataFromStyle(
-        hostConfig.Get(), fontStyle, adaptiveTextSize, adaptiveTextWeight, fontFamilyName.GetAddressOf(), &fontSize, &xamlFontWeight));
+    RETURN_IF_FAILED(GetFontDataFromFontType(
+        hostConfig.Get(), fontType, adaptiveTextSize, adaptiveTextWeight, fontFamilyName.GetAddressOf(), &fontSize, &xamlFontWeight));
 
     // Apply font size
     RETURN_IF_FAILED(xamlTextElement->put_FontSize((double)fontSize));

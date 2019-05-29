@@ -63,6 +63,7 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\NumberInput.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ParseResult.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\RichTextBlock.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\RichTextElementProperties.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\SemanticVersion.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Separator.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\DateTimePreparser.cpp" />
@@ -124,6 +125,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ParseResult.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\RemoteResourceInformation.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\RichTextBlock.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\RichTextElementProperties.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\SemanticVersion.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Separator.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\DateTimePreparser.h" />
