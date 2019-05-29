@@ -54,6 +54,9 @@
 				},
 				{
 					"$ref": "#/definitions/Action.OpenUrl"
+				},
+				{
+					"$ref": "#/definitions/Action.ToggleVisibility"
 				}
 			]
 		},
@@ -63,7 +66,10 @@
 			"properties": {
 				"type": {
 					"type": "string",
-					"description": "Must be `\"Action.OpenUrl\"`."
+					"description": "Must be `\"Action.OpenUrl\"`.",
+					"enum": [
+						"Action.OpenUrl"
+					]
 				},
 				"title": {
 					"type": "string",
@@ -94,7 +100,10 @@
 			"properties": {
 				"type": {
 					"type": "string",
-					"description": "Must be `\"Action.ShowCard\"`."
+					"description": "Must be `\"Action.ShowCard\"`.",
+					"enum": [
+						"Action.ShowCard"
+					]
 				},
 				"title": {
 					"type": "string",
@@ -122,7 +131,10 @@
 			"properties": {
 				"type": {
 					"type": "string",
-					"description": "Must be `\"Action.Submit\"`."
+					"description": "Must be `\"Action.Submit\"`.",
+					"enum": [
+						"Action.Submit"
+					]
 				},
 				"title": {
 					"type": "string",
@@ -144,6 +156,60 @@
 			},
 			"required": [
 				"type"
+			]
+		},
+		"TargetElement": {
+			"additionalProperties": true,
+			"type": "object",
+			"version": "1.2",
+			"description": "Represents an entry for Action.ToggleVisibility's targetElements property",
+			"properties": {
+				"elementId": {
+					"type": "string",
+					"description": "Element ID of element to toggle"
+				},
+				"isVisible": {
+					"type": "boolean",
+					"description": "If `true`, always show target element. If `false`, always hide target element. If not supplied, toggle target element's visibility. "
+				}
+			},
+			"required": [
+				"elementId"
+			]
+		},
+		"Action.ToggleVisibility": {
+			"type": "object",
+			"additionalProperties": true,
+			"description": "An action that toggles the visibility of associated card elements.",
+			"version": "1.2",
+			"properties": {
+				"type": {
+					"type": "string",
+					"description": "Must be `\"Action.ToggleVisibility\"`.",
+					"enum": [
+						"Action.ToggleVisibility"
+					]
+				},
+				"title": {
+					"type": "string",
+					"description": "Label for button or link that represents this action."
+				},
+				"iconUrl": {
+					"type": "string",
+					"format": "uri",
+					"description": "Optional icon URL to be shown on the action in conjunction with the title. Supports data URI."
+				},
+				"targetElements": {
+					"type": "array",
+					"description": "The array of TargetElements",
+					"items": {
+						"$ref": "#/definitions/TargetElement"
+					}
+				}
+			},
+			"required": [
+				"type",
+				"targetElements"
 			]
 		},
 		"Actions": {
