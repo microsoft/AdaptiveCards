@@ -13,6 +13,7 @@
   - FactSet
   - Fact
   - ImageSet
+  - BackgroundImage
 - Actions:
   - Action.OpenUrl
   - Action.Submit

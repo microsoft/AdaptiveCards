@@ -24,8 +24,8 @@
 			"description": "Text shown when the client doesn't support the version specified (may contain markdown)."
 		},
 		"backgroundImage": {
-			"type": "string",
-			"description": "URL specifying the image to use as the background of the card. Supports data URI in version 1.2+"
+			"description": "Background image for the adaptive card",
+			"$ref": "#/definitions/BackgroundImage"
 		},
 		"speak": {
 			"type": "string",
@@ -279,6 +279,48 @@
 				"type"
 			]
 		},
+		"BackgroundImage": {
+			"type": "object",
+			"description": "Background image for the card or container.",
+			"properties": {
+				"url": {
+					"type": "string",
+					"description": "URL specifying the image to use as the background. Supports data URI."
+				},
+				"fillMode": {
+					"type": "string",
+					"description": "Controls how the background image fills the container or card.",
+					"enum": [
+						"cover",
+						"repeatHorizontally",
+						"repeatVertically",
+						"repeat"
+					]
+				},
+				"HorizontalAlignment": {
+					"type": "string",
+					"description": "Defines how the image should be aligned horizontally.",
+					"enum": [
+						"left",
+						"center",
+						"right"
+					]
+				},
+				"VerticalAlignment": {
+					"type": "string",
+					"description": "Defines how the image should be aligned vertically.",
+					"enum": [
+						"top",
+						"center",
+						"bottom"
+					]
+				}
+			},
+			"required": [
+				"url"
+			],
+			"version": "1.2"
+		},
 		"CardElement": {
 			"additionalProperties": true,
 			"properties": {
@@ -457,6 +499,10 @@
 					"enum": [
 						"Column"
 					]
+				},
+				"backgroundImage": {
+					"description": "Background image for the column.",
+					"$ref": "#/definitions/BackgroundImage"
 				}
 			},
 			"required": [
@@ -502,6 +548,10 @@
 					"enum": [
 						"ColumnSet"
 					]
+				},
+				"backgroundImage": {
+					"description": "Background image for the column set.",
+					"$ref": "#/definitions/BackgroundImage"
 				}
 			},
 			"required": [
@@ -554,6 +604,10 @@
 						"bottom"
 					],
 					"version": "1.1"
+				},
+				"backgroundImage": {
+					"description": "Background image for the container.",
+					"$ref": "#/definitions/BackgroundImage"
 				}
 			},
 			"required": [
