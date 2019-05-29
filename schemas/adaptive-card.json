@@ -57,6 +57,16 @@
 				}
 			]
 		},
+		"ActionStyle": {
+			"type": "string",
+			"description": "Controls the style of an Action, which influences how the action is displayed, spoken, etc.",
+			"enum": [
+				"default",
+				"positive",
+				"destructive"
+			],
+			"version": "1.2"
+		},
 		"Action.OpenUrl": {
 			"additionalProperties": true,
 			"description": "When invoked, show the given url either by launching it in an external web browser or showing in-situ with embedded web browser.",
@@ -79,6 +89,9 @@
 					"type": "string",
 					"format": "uri",
 					"description": "The URL to open."
+				},
+				"style": {
+					"$ref": "#/definitions/ActionStyle"
 				}
 			},
 			"required": [
@@ -108,6 +121,9 @@
 				},
 				"card": {
 					"$ref": "#/definitions/AdaptiveCard"
+				},
+				"style": {
+					"$ref": "#/definitions/ActionStyle"
 				}
 			},
 			"required": [
@@ -140,6 +156,9 @@
 						"object"
 					],
 					"description": "Initial data that input fields will be combined with. These are essentially 'hidden' properties."
+				},
+				"style": {
+					"$ref": "#/definitions/ActionStyle"
 				}
 			},
 			"required": [
