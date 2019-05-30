@@ -1041,11 +1041,91 @@ describe("Test transform", function () {
 			typePropertyName: "classType"
 		})
 	});
+
+	it("Test multiple primary types with default", function () {
+
+		assertTransform({
+			types: [
+				{
+					"type": "Class",
+					"properties": {
+						"type": {
+						  "type": "string",
+						  "required": true
+						},
+					}
+				},
+				{
+					"type": "Property",
+					"properties": {
+						"propertyType": {
+						  "type": "string",
+						  "required": true
+						}
+					}
+				}
+			],
+			primaryTypeName: [ "Class", "Property" ],
+			defaultPrimaryTypeName: "Class",
+			typePropertyName: "classType",
+			expected: {
+				"$schema": "http://json-schema.org/draft-06/schema#",
+				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
+				"anyOf": [
+					{
+						"allOf": [
+							{
+								"$ref": "#/definitions/Class"
+							}
+						]
+					},
+					{
+						"required": [ "classType" ],
+						"allOf": [
+							{
+								"$ref": "#/definitions/Property"
+							}
+						]
+					}
+				],
+				"definitions": {
+					"Class": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"classType": {
+								"enum": [ "Class" ],
+								"description": "Must be `Class`"
+							},
+							"type": {
+								"type": "string"
+							}
+						},
+						"required": [ "type" ]
+					},
+					"Property": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"classType": {
+								"enum": [ "Property" ],
+								"description": "Must be `Property`"
+							},
+							"propertyType": {
+								"type": "string"
+							}
+						},
+						"required": [ "propertyType" ]
+					}
+				}
+			}
+		})
+	});
 });
 
 
 function assertTransform(options) {
-	var transformed = tschema.transformTypes(options.types, options.primaryTypeName, options.typePropertyName);
+	var transformed = tschema.transformTypes(options.types, options.primaryTypeName, options.defaultPrimaryTypeName, options.typePropertyName);
 
 	assert.deepStrictEqual(transformed, options.expected, "Transform wasn't equal to expected");
 }

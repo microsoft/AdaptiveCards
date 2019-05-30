@@ -1,6 +1,6 @@
 var fs = require("fs");
 
-export function transformFolder(pathToTypeFiles: string, primaryTypeName: string|string[], typePropertyName: string = "type") : any {
+export function transformFolder(pathToTypeFiles: string, primaryTypeName: string|string[], defaultPrimaryTypeName: string|null = null, typePropertyName: string = "type") : any {
 	var files = fs.readdirSync(pathToTypeFiles);
 	var types: any[] = [];
 	files.forEach((filePath) => {
@@ -10,11 +10,11 @@ export function transformFolder(pathToTypeFiles: string, primaryTypeName: string
 		types[type.type] = type;
 	});
 
-	return transformTypes(types, primaryTypeName);
+	return transformTypes(types, primaryTypeName, defaultPrimaryTypeName, typePropertyName);
 }
 
-export function transformTypes(types: any[], primaryTypeName: string|string[], typePropertyName: string = "type") : any {
-	return new Transformer(types, primaryTypeName, typePropertyName).transform();
+export function transformTypes(types: any[], primaryTypeName: string|string[], defaultPrimaryTypeName: string|null = null, typePropertyName: string = "type") : any {
+	return new Transformer(types, primaryTypeName, defaultPrimaryTypeName, typePropertyName).transform();
 }
 
 function readFileAsync(fileName: string, encoding: string) : Promise<string> {
@@ -43,10 +43,12 @@ class Transformer {
 	private _implementationsOf: any = {};
 	private _extendables: any = {};
 	private _typePropertyName: string;
+	private _defaultPrimaryTypeName: string|null;
 
-	constructor (types: any[], primaryTypeName: string|string[], typePropertyName: string) {
+	constructor (types: any[], primaryTypeName: string|string[], defaultPrimaryTypeName: string|null, typePropertyName: string) {
 		this._typeDictionary = {};
 		this._typePropertyName = typePropertyName;
+		this._defaultPrimaryTypeName = defaultPrimaryTypeName;
 
 		types.forEach(type => {
 			this._typeDictionary[type.type] = type;
@@ -77,14 +79,20 @@ class Transformer {
 		var anyOf = [];
 
 		this._primaryTypes.forEach(primaryType => {
-			anyOf.push({
-				"required": [ this._typePropertyName ],
+			var definition:any = {
 				"allOf": [
 					{
 						"$ref": "#/definitions/" + primaryType.type
 					}
 				]
-			});
+			};
+
+			// If it's not the default primary type name, make type required
+			if (primaryType.type !== this._defaultPrimaryTypeName) {
+				definition.required = [ this._typePropertyName ];
+			}
+
+			anyOf.push(definition);
 		});
 
 		answer.anyOf = anyOf;
