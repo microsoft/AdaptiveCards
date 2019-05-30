@@ -15,9 +15,29 @@ describe("Test transform", function () {
 			expected: {
 				"$schema": "http://json-schema.org/draft-06/schema#",
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
-				"type": "object",
-				"additionalProperties": false,
-				"description": "An Adaptive Card."
+				"anyOf": [
+					{
+						"required": [ "type" ],
+						"allOf": [
+							{
+								"$ref": "#/definitions/AdaptiveCard"
+							}
+						]
+					}
+				],
+				"definitions": {
+					"AdaptiveCard": {
+						"type": "object",
+						"additionalProperties": false,
+						"description": "An Adaptive Card.",
+						"properties": {
+							"type": {
+								"enum": [ "AdaptiveCard" ],
+								"description": "Must be `AdaptiveCard`"
+							}
+						}
+					}
+				}
 			}
 		})
 	});
@@ -40,13 +60,31 @@ describe("Test transform", function () {
 			expected: {
 				"$schema": "http://json-schema.org/draft-06/schema#",
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
-				"type": "object",
-				"additionalProperties": false,
-				"properties": {
-					"version": {
-						"type": "string",
-						"description": "Minimum version this card requires.",
-						"examples": [ "1.0", "1.1", "1.2" ]
+				"anyOf": [
+					{
+						"required": [ "type" ],
+						"allOf": [
+							{
+								"$ref": "#/definitions/AdaptiveCard"
+							}
+						]
+					}
+				],
+				"definitions": {
+					"AdaptiveCard": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"type": {
+								"enum": [ "AdaptiveCard" ],
+								"description": "Must be `AdaptiveCard`"
+							},
+							"version": {
+								"type": "string",
+								"description": "Minimum version this card requires.",
+								"examples": [ "1.0", "1.1", "1.2" ]
+							}
+						}
 					}
 				}
 			}
@@ -70,13 +108,31 @@ describe("Test transform", function () {
 			expected: {
 				"$schema": "http://json-schema.org/draft-06/schema#",
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
-				"type": "object",
-				"additionalProperties": false,
-				"properties": {
-					"source": {
-						"type": "string",
-						"format": "uri",
-						"description": "The source of the card."
+				"anyOf": [
+					{
+						"required": [ "type" ],
+						"allOf": [
+							{
+								"$ref": "#/definitions/AdaptiveCard"
+							}
+						]
+					}
+				],
+				"definitions": {
+					"AdaptiveCard": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"type": {
+								"enum": [ "AdaptiveCard" ],
+								"description": "Must be `AdaptiveCard`"
+							},
+							"source": {
+								"type": "string",
+								"format": "uri",
+								"description": "The source of the card."
+							}
+						}
 					}
 				}
 			}
@@ -101,17 +157,35 @@ describe("Test transform", function () {
 			expected: {
 				"$schema": "http://json-schema.org/draft-06/schema#",
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
-				"type": "object",
-				"additionalProperties": false,
-				"properties": {
-					"version": {
-						"type": "string",
-						"description": "Minimum version this card requires."
+				"anyOf": [
+					{
+						"required": [ "type" ],
+						"allOf": [
+							{
+								"$ref": "#/definitions/AdaptiveCard"
+							}
+						]
 					}
-				},
-				"required": [
-					"version"
-				]
+				],
+				"definitions": {
+					"AdaptiveCard": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"type": {
+								"enum": [ "AdaptiveCard" ],
+								"description": "Must be `AdaptiveCard`"
+							},
+							"version": {
+								"type": "string",
+								"description": "Minimum version this card requires."
+							}
+						},
+						"required": [
+							"version"
+						]
+					}
+				}
 			}
 		})
 	});
@@ -143,20 +217,40 @@ describe("Test transform", function () {
 			expected: {
 				"$schema": "http://json-schema.org/draft-06/schema#",
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
-				"type": "object",
-				"additionalProperties": false,
-				"properties": {
-					"moreInfoAction": {
-						"description": "Action to invoke when user wants more info",
-						"$ref": "#/definitions/Action.OpenUrl"
+				"anyOf": [
+					{
+						"required": [ "type" ],
+						"allOf": [
+							{
+								"$ref": "#/definitions/AdaptiveCard"
+							}
+						]
 					}
-				},
+				],
 				"definitions": {
+					"AdaptiveCard": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"type": {
+								"enum": [ "AdaptiveCard" ],
+								"description": "Must be `AdaptiveCard`"
+							},
+							"moreInfoAction": {
+								"description": "Action to invoke when user wants more info",
+								"$ref": "#/definitions/Action.OpenUrl"
+							}
+						}
+					},
 					"Action.OpenUrl": {
 						"type": "object",
 						"additionalProperties": false,
 						"description": "An open URL action",
 						"properties": {
+							"type": {
+								"enum": [ "Action.OpenUrl" ],
+								"description": "Must be `Action.OpenUrl`"
+							},
 							"url": {
 								"type": "string",
 								"format": "uri",
@@ -210,20 +304,40 @@ describe("Test transform", function () {
 			expected: {
 				"$schema": "http://json-schema.org/draft-06/schema#",
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
-				"type": "object",
-				"additionalProperties": false,
-				"properties": {
-					"moreInfoAction": {
-						"description": "Action to invoke when user wants more info",
-						"$ref": "#/definitions/Action.OpenUrl"
+				"anyOf": [
+					{
+						"required": [ "type" ],
+						"allOf": [
+							{
+								"$ref": "#/definitions/AdaptiveCard"
+							}
+						]
 					}
-				},
+				],
 				"definitions": {
+					"AdaptiveCard": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"type": {
+								"enum": [ "AdaptiveCard" ],
+								"description": "Must be `AdaptiveCard`"
+							},
+							"moreInfoAction": {
+								"description": "Action to invoke when user wants more info",
+								"$ref": "#/definitions/Action.OpenUrl"
+							}
+						}
+					},
 					"Action.OpenUrl": {
 						"type": "object",
 						"additionalProperties": false,
 						"description": "An open URL action",
 						"properties": {
+							"type": {
+								"enum": [ "Action.OpenUrl" ],
+								"description": "Must be `Action.OpenUrl`"
+							},
 							"url": {
 								"type": "string",
 								"format": "uri",
@@ -250,11 +364,6 @@ describe("Test transform", function () {
 					"ImplementationsOf.Action": {
 						"anyOf": [
 							{
-								"properties": {
-									"type": {
-										"enum": [ "Action.OpenUrl" ]
-									}
-								},
 								"required": [ "type" ],
 								"allOf": [
 									{
@@ -315,19 +424,39 @@ describe("Test transform", function () {
 			expected: {
 				"$schema": "http://json-schema.org/draft-06/schema#",
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
-				"type": "object",
-				"additionalProperties": false,
-				"properties": {
-					"moreInfoAction": {
-						"description": "Action to invoke when user wants more info",
-						"$ref": "#/definitions/ImplementationsOf.Action"
+				"anyOf": [
+					{
+						"required": [ "type" ],
+						"allOf": [
+							{
+								"$ref": "#/definitions/AdaptiveCard"
+							}
+						]
 					}
-				},
+				],
 				"definitions": {
+					"AdaptiveCard": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"type": {
+								"enum": [ "AdaptiveCard" ],
+								"description": "Must be `AdaptiveCard`"
+							},
+							"moreInfoAction": {
+								"description": "Action to invoke when user wants more info",
+								"$ref": "#/definitions/ImplementationsOf.Action"
+							}
+						}
+					},
 					"Action.OpenUrl": {
 						"type": "object",
 						"additionalProperties": false,
 						"properties": {
+							"type": {
+								"enum": [ "Action.OpenUrl" ],
+								"description": "Must be `Action.OpenUrl`"
+							},
 							"url": {
 								"type": "string",
 								"format": "uri"
@@ -343,6 +472,10 @@ describe("Test transform", function () {
 						"type": "object",
 						"additionalProperties": false,
 						"properties": {
+							"type": {
+								"enum": [ "Action.Submit" ],
+								"description": "Must be `Action.Submit`"
+							},
 							"data": {
 								"type": "string"
 							}
@@ -365,11 +498,6 @@ describe("Test transform", function () {
 					"ImplementationsOf.Action": {
 						"anyOf": [
 							{
-								"properties": {
-									"type": {
-										"enum": [ "Action.OpenUrl" ]
-									}
-								},
 								"required": [ "type" ],
 								"allOf": [
 									{
@@ -378,11 +506,6 @@ describe("Test transform", function () {
 								]
 							},
 							{
-								"properties": {
-									"type": {
-										"enum": [ "Action.Submit" ]
-									}
-								},
 								"required": [ "type" ],
 								"allOf": [
 									{
@@ -422,26 +545,46 @@ describe("Test transform", function () {
 			expected: {
 				"$schema": "http://json-schema.org/draft-06/schema#",
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
-				"type": "object",
-				"additionalProperties": false,
-				"properties": {
-					"backgroundImage": {
-						"anyOf": [
+				"anyOf": [
+					{
+						"required": [ "type" ],
+						"allOf": [
 							{
-								"type": "string",
-								"format": "uri"
-							},
-							{
-								"$ref": "#/definitions/BackgroundImage"
+								"$ref": "#/definitions/AdaptiveCard"
 							}
 						]
 					}
-				},
+				],
 				"definitions": {
+					"AdaptiveCard": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"type": {
+								"enum": [ "AdaptiveCard" ],
+								"description": "Must be `AdaptiveCard`"
+							},
+							"backgroundImage": {
+								"anyOf": [
+									{
+										"type": "string",
+										"format": "uri"
+									},
+									{
+										"$ref": "#/definitions/BackgroundImage"
+									}
+								]
+							}
+						}
+					},
 					"BackgroundImage": {
 						"type": "object",
 						"additionalProperties": false,
 						"properties": {
+							"type": {
+								"enum": [ "BackgroundImage" ],
+								"description": "Must be `BackgroundImage`"
+							},
 							"url": {
 								"type": "string",
 								"format": "uri"
@@ -478,21 +621,41 @@ describe("Test transform", function () {
 			expected: {
 				"$schema": "http://json-schema.org/draft-06/schema#",
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
-				"type": "object",
-				"additionalProperties": false,
-				"properties": {
-					"actions": {
-						"type": "array",
-						"items": {
-							"$ref": "#/definitions/Action.OpenUrl"
-						}
+				"anyOf": [
+					{
+						"required": [ "type" ],
+						"allOf": [
+							{
+								"$ref": "#/definitions/AdaptiveCard"
+							}
+						]
 					}
-				},
+				],
 				"definitions": {
+					"AdaptiveCard": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"type": {
+								"enum": [ "AdaptiveCard" ],
+								"description": "Must be `AdaptiveCard`"
+							},
+							"actions": {
+								"type": "array",
+								"items": {
+									"$ref": "#/definitions/Action.OpenUrl"
+								}
+							}
+						}
+					},
 					"Action.OpenUrl": {
 						"type": "object",
 						"additionalProperties": false,
 						"properties": {
+							"type": {
+								"enum": [ "Action.OpenUrl" ],
+								"description": "Must be `Action.OpenUrl`"
+							},
 							"url": {
 								"type": "string",
 								"format": "uri"
@@ -521,13 +684,31 @@ describe("Test transform", function () {
 			expected: {
 				"$schema": "http://json-schema.org/draft-06/schema#",
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
-				"type": "object",
-				"additionalProperties": false,
-				"properties": {
-					"titles": {
-						"type": "array",
-						"items": {
-							"type": "string"
+				"anyOf": [
+					{
+						"required": [ "type" ],
+						"allOf": [
+							{
+								"$ref": "#/definitions/AdaptiveCard"
+							}
+						]
+					}
+				],
+				"definitions": {
+					"AdaptiveCard": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"type": {
+								"enum": [ "AdaptiveCard" ],
+								"description": "Must be `AdaptiveCard`"
+							},
+							"titles": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								}
+							}
 						}
 					}
 				}
@@ -579,21 +760,41 @@ describe("Test transform", function () {
 			expected: {
 				"$schema": "http://json-schema.org/draft-06/schema#",
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
-				"type": "object",
-				"additionalProperties": false,
-				"properties": {
-					"actions": {
-						"type": "array",
-						"items": {
-							"$ref": "#/definitions/ImplementationsOf.Action"
-						}
+				"anyOf": [
+					{
+						"required": [ "type" ],
+						"allOf": [
+							{
+								"$ref": "#/definitions/AdaptiveCard"
+							}
+						]
 					}
-				},
+				],
 				"definitions": {
+					"AdaptiveCard": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"type": {
+								"enum": [ "AdaptiveCard" ],
+								"description": "Must be `AdaptiveCard`"
+							},
+							"actions": {
+								"type": "array",
+								"items": {
+									"$ref": "#/definitions/ImplementationsOf.Action"
+								}
+							}
+						}
+					},
 					"Action.OpenUrl": {
 						"type": "object",
 						"additionalProperties": false,
 						"properties": {
+							"type": {
+								"enum": [ "Action.OpenUrl" ],
+								"description": "Must be `Action.OpenUrl`"
+							},
 							"url": {
 								"type": "string",
 								"format": "uri"
@@ -609,6 +810,10 @@ describe("Test transform", function () {
 						"type": "object",
 						"additionalProperties": false,
 						"properties": {
+							"type": {
+								"enum": [ "Action.Submit" ],
+								"description": "Must be `Action.Submit`"
+							},
 							"data": {
 								"type": "string"
 							}
@@ -631,11 +836,6 @@ describe("Test transform", function () {
 					"ImplementationsOf.Action": {
 						"anyOf": [
 							{
-								"properties": {
-									"type": {
-										"enum": [ "Action.OpenUrl" ]
-									}
-								},
 								"required": [ "type" ],
 								"allOf": [
 									{
@@ -644,11 +844,6 @@ describe("Test transform", function () {
 								]
 							},
 							{
-								"properties": {
-									"type": {
-										"enum": [ "Action.Submit" ]
-									}
-								},
 								"required": [ "type" ],
 								"allOf": [
 									{
@@ -688,24 +883,121 @@ describe("Test transform", function () {
 			expected: {
 				"$schema": "http://json-schema.org/draft-06/schema#",
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
-				"additionalProperties": false,
-				"type": "object",
-				"properties": {
-					"actions": {
-						"type": "object",
-						"additionalProperties": {
-							"$ref": "#/definitions/Action.OpenUrl"
-						}
+				"anyOf": [
+					{
+						"required": [ "type" ],
+						"allOf": [
+							{
+								"$ref": "#/definitions/AdaptiveCard"
+							}
+						]
 					}
-				},
+				],
 				"definitions": {
+					"AdaptiveCard": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"type": {
+								"enum": [ "AdaptiveCard" ],
+								"description": "Must be `AdaptiveCard`"
+							},
+							"actions": {
+								"type": "object",
+								"additionalProperties": {
+									"$ref": "#/definitions/Action.OpenUrl"
+								}
+							}
+						}
+					},
 					"Action.OpenUrl": {
 						"type": "object",
 						"additionalProperties": false,
 						"properties": {
+							"type": {
+								"enum": [ "Action.OpenUrl" ],
+								"description": "Must be `Action.OpenUrl`"
+							},
 							"url": {
 								"type": "string",
 								"format": "uri"
+							}
+						}
+					}
+				}
+			}
+		})
+	});
+
+
+	
+    it("Test any object as top level", function () {
+
+		assertTransform({
+			types: [
+				{
+					"type": "AdaptiveCard",
+					"properties": {
+						"version": {
+							"type": "string"
+						}
+					}
+				},
+				{
+					"type": "BasicCard",
+					"properties": {
+						"title": {
+							"type": "string"
+						}
+					}
+				}
+			],
+			primaryTypeName: ["AdaptiveCard","BasicCard"],
+			expected: {
+				"$schema": "http://json-schema.org/draft-06/schema#",
+				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
+				"anyOf": [
+					{
+						"required": [ "type" ],
+						"allOf": [
+							{
+								"$ref": "#/definitions/AdaptiveCard"
+							}
+						]
+					},
+					{
+						"required": [ "type" ],
+						"allOf": [
+							{
+								"$ref": "#/definitions/BasicCard"
+							}
+						]
+					}
+				],
+				"definitions": {
+					"AdaptiveCard": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"type": {
+								"enum": [ "AdaptiveCard" ],
+								"description": "Must be `AdaptiveCard`"
+							},
+							"version": {
+								"type": "string"
+							}
+						}
+					},
+					"BasicCard": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"type": {
+								"enum": [ "BasicCard" ],
+								"description": "Must be `BasicCard`"
+							},
+							"title": {
+								"type": "string"
 							}
 						}
 					}

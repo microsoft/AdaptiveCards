@@ -1,6 +1,6 @@
 var fs = require("fs");
 
-export function transformFolder(pathToTypeFiles: string, primaryTypeName: string) : any {
+export function transformFolder(pathToTypeFiles: string, primaryTypeName: string|string[]) : any {
 	var files = fs.readdirSync(pathToTypeFiles);
 	var types: any[] = [];
 	files.forEach((filePath) => {
@@ -13,7 +13,7 @@ export function transformFolder(pathToTypeFiles: string, primaryTypeName: string
 	return transformTypes(types, primaryTypeName);
 }
 
-export function transformTypes(types: any[], primaryTypeName: string) : any {
+export function transformTypes(types: any[], primaryTypeName: string|string[]) : any {
 	return new Transformer(types, primaryTypeName).transform();
 }
 
@@ -38,36 +38,52 @@ function isObjectEmpty(obj: any) {
 
 class Transformer {
 	private _typeDictionary: any;
-	private _primaryType: any;
+	private _primaryTypes: any[] = [];
 	private _definitions: any = {};
 	private _implementationsOf: any = {};
 
-	constructor (types: any[], primaryTypeName: string) {
+	constructor (types: any[], primaryTypeName: string|string[]) {
 		this._typeDictionary = {};
 
 		types.forEach(type => {
 			this._typeDictionary[type.type] = type;
 		});
 
-		this._primaryType = this._typeDictionary[primaryTypeName];
+		if (!Array.isArray(primaryTypeName)) {
+			primaryTypeName = [ primaryTypeName ];
+		}
+
+		primaryTypeName.forEach(value => {
+			this._primaryTypes.push(this._typeDictionary[value]);
+		});
 	}
 
 	transform() {
 
-		// First create all definitions
+		// First create all definitions for all types
 		for (var key in this._typeDictionary) {
-			if (key !== this._primaryType.type) {
-				this.defineTypeIfNeeded(key);
-			}
+			this.defineTypeIfNeeded(key);
 		}
 	
-		var answer = this.transformType(this._primaryType);
-	
-		answer = {
+		var answer:any = {
 			"$schema": "http://json-schema.org/draft-06/schema#",
-			"id": "http://adaptivecards.io/schemas/adaptive-card.json",
-			...answer
+			"id": "http://adaptivecards.io/schemas/adaptive-card.json"
 		};
+
+		var anyOf = [];
+
+		this._primaryTypes.forEach(primaryType => {
+			anyOf.push({
+				"required": [ "type" ],
+				"allOf": [
+					{
+						"$ref": "#/definitions/" + primaryType.type
+					}
+				]
+			});
+		});
+
+		answer.anyOf = anyOf;
 
 		if (!isObjectEmpty(this._definitions)) {
 			answer.definitions = { ...this._definitions };
@@ -80,11 +96,6 @@ class Transformer {
 
 				this._implementationsOf[key].forEach(implementationTypeName => {
 					anyOfValue.push({
-						"properties": {
-							"type": {
-								"enum": [ implementationTypeName ]
-							}
-						},
 						"required": [ "type" ],
 						"allOf": [
 							{
@@ -109,14 +120,18 @@ class Transformer {
 		transformed.additionalProperties = false;
 
 		delete transformed.isAbstract;
+
+		if (!transformed.properties) {
+			transformed.properties = [];
+		}
 	
 		if (transformed.properties) {
 			for (var key in transformed.properties) {
-	
+
 				var propVal = transformed.properties[key];
-	
+
 				propVal = this.transformPropertyValue(propVal);
-	
+
 				if (propVal.required) {
 					delete propVal.required;
 					if (!transformed.required) {
@@ -127,6 +142,18 @@ class Transformer {
 
 				transformed.properties[key] = propVal;
 			}
+		}
+
+		if (!type.isAbstract) {
+			// If it's not abstract, we add the type property
+			// Note that we don't require it though, it's optional
+			transformed.properties = {
+				"type": {
+					"enum": [ type.type ],
+					"description": "Must be `" + type.type + "`"
+				},
+				...transformed.properties
+			};
 		}
 
 		if (type.extends) {
@@ -186,8 +213,10 @@ class Transformer {
 				default:
 					// Must be an object reference
 					this.defineTypeIfNeeded(typeName);
-
-					transformedValue.$ref = "#/definitions/" + ((typeName in this._implementationsOf) ? "ImplementationsOf." : "") + typeName;
+					
+					// Note that we can't check _implementationsOf, since that isn't fully populated till we've
+					// processed all types
+					transformedValue.$ref = "#/definitions/" + (this.hasMultipleImplementations(typeName) ? "ImplementationsOf." : "") + typeName;
 					break;
 			}
 			if (isDictionary) {
@@ -218,6 +247,15 @@ class Transformer {
 				...cleanPropertyValue
 			};
 		}
+	}
+
+	private hasMultipleImplementations(typeName: string) {
+		for (var key in this._typeDictionary) {
+			if (this._typeDictionary[key].extends === typeName) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private defineTypeIfNeeded(typeName: string) {
