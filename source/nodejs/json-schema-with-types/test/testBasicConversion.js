@@ -1002,11 +1002,50 @@ describe("Test transform", function () {
 			}
 		})
 	});
+
+	it("Test custom type property name", function () {
+
+		assertTransform({
+			types: [
+				{
+					"type": "Class"
+				}
+			],
+			primaryTypeName: "Class",
+			expected: {
+				"$schema": "http://json-schema.org/draft-06/schema#",
+				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
+				"anyOf": [
+					{
+						"required": [ "classType" ],
+						"allOf": [
+							{
+								"$ref": "#/definitions/Class"
+							}
+						]
+					}
+				],
+				"definitions": {
+					"Class": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"classType": {
+								"enum": [ "Class" ],
+								"description": "Must be `Class`"
+							}
+						}
+					}
+				}
+			},
+			typePropertyName: "classType"
+		})
+	});
 });
 
 
 function assertTransform(options) {
-	var transformed = tschema.transformTypes(options.types, options.primaryTypeName);
+	var transformed = tschema.transformTypes(options.types, options.primaryTypeName, options.typePropertyName);
 
 	assert.deepStrictEqual(transformed, options.expected, "Transform wasn't equal to expected");
 }

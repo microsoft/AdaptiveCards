@@ -1,6 +1,6 @@
 var fs = require("fs");
 
-export function transformFolder(pathToTypeFiles: string, primaryTypeName: string|string[]) : any {
+export function transformFolder(pathToTypeFiles: string, primaryTypeName: string|string[], typePropertyName: string = "type") : any {
 	var files = fs.readdirSync(pathToTypeFiles);
 	var types: any[] = [];
 	files.forEach((filePath) => {
@@ -13,8 +13,8 @@ export function transformFolder(pathToTypeFiles: string, primaryTypeName: string
 	return transformTypes(types, primaryTypeName);
 }
 
-export function transformTypes(types: any[], primaryTypeName: string|string[]) : any {
-	return new Transformer(types, primaryTypeName).transform();
+export function transformTypes(types: any[], primaryTypeName: string|string[], typePropertyName: string = "type") : any {
+	return new Transformer(types, primaryTypeName, typePropertyName).transform();
 }
 
 function readFileAsync(fileName: string, encoding: string) : Promise<string> {
@@ -42,9 +42,11 @@ class Transformer {
 	private _definitions: any = {};
 	private _implementationsOf: any = {};
 	private _extendables: any = {};
+	private _typePropertyName: string;
 
-	constructor (types: any[], primaryTypeName: string|string[]) {
+	constructor (types: any[], primaryTypeName: string|string[], typePropertyName: string) {
 		this._typeDictionary = {};
+		this._typePropertyName = typePropertyName;
 
 		types.forEach(type => {
 			this._typeDictionary[type.type] = type;
@@ -76,7 +78,7 @@ class Transformer {
 
 		this._primaryTypes.forEach(primaryType => {
 			anyOf.push({
-				"required": [ "type" ],
+				"required": [ this._typePropertyName ],
 				"allOf": [
 					{
 						"$ref": "#/definitions/" + primaryType.type
@@ -98,7 +100,7 @@ class Transformer {
 
 				this._implementationsOf[key].forEach(implementationTypeName => {
 					anyOfValue.push({
-						"required": [ "type" ],
+						"required": [ this._typePropertyName ],
 						"allOf": [
 							{
 								"$ref": "#/definitions/" + implementationTypeName
@@ -155,11 +157,13 @@ class Transformer {
 		if (!type.isAbstract) {
 			// If it's not abstract, we add the type property
 			// Note that we don't require it though, it's optional
+			var newProperties:any = {};
+			newProperties[this._typePropertyName] = {
+				"enum": [ type.type ],
+				"description": "Must be `" + type.type + "`"
+			};
 			transformed.properties = {
-				"type": {
-					"enum": [ type.type ],
-					"description": "Must be `" + type.type + "`"
-				},
+				...newProperties,
 				...transformed.properties
 			};
 		}
