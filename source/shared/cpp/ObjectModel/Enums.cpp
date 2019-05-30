@@ -121,7 +121,6 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::RichTextBlock, "richTextBlock"},
             {AdaptiveCardSchemaKey::Right, "right"},
             {AdaptiveCardSchemaKey::SelectAction, "selectAction"},
-            {AdaptiveCardSchemaKey::Sentiment, "sentiment"},
             {AdaptiveCardSchemaKey::Separator, "separator"},
             {AdaptiveCardSchemaKey::ShowActionMode, "showActionMode"},
             {AdaptiveCardSchemaKey::ShowCard, "showCard"},

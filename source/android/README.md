@@ -38,13 +38,9 @@ If you get a build failure similar to "UnsupportedClassVersionError 52.0" then f
 1. add the following to the build.gradle of a project that will use the library
     compile 'io.adaptivecards:adaptivecards-android:1.2.0'
 For more information, please go to http://search.maven.org/ and search adaptivecards-android
-TODO:
-1. AdaptiveCard
-    a. version
-    b. minVersion
-    c. fallbackText
-3. TextBlock
-    a. Font Family
-4. Image
-    a. altText
 
+# To test
+1. Follow steps 1 and 2 from [To compile](#to-compile) section
+2. Select "mobile" or "mobilechatapp" project
+3. Click "Run" button and select device (physical or virtual)
+    3.1 If running the mobile app, you must copy the samples to the device

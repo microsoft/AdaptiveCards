@@ -54,6 +54,22 @@ public class RichTextElementProperties extends TextElementProperties {
     this(AdaptiveCardObjectModelJNI.new_RichTextElementProperties__SWIG_2(RichTextElementProperties.getCPtr(arg0), arg0), true);
   }
 
+  public boolean GetItalic() {
+    return AdaptiveCardObjectModelJNI.RichTextElementProperties_GetItalic(swigCPtr, this);
+  }
+
+  public void SetItalic(boolean value) {
+    AdaptiveCardObjectModelJNI.RichTextElementProperties_SetItalic(swigCPtr, this, value);
+  }
+
+  public boolean GetStrikethrough() {
+    return AdaptiveCardObjectModelJNI.RichTextElementProperties_GetStrikethrough(swigCPtr, this);
+  }
+
+  public void SetStrikethrough(boolean value) {
+    AdaptiveCardObjectModelJNI.RichTextElementProperties_SetStrikethrough(swigCPtr, this, value);
+  }
+
   public JsonValue SerializeToJsonValue(JsonValue root) {
     return new JsonValue(AdaptiveCardObjectModelJNI.RichTextElementProperties_SerializeToJsonValue(swigCPtr, this, JsonValue.getCPtr(root), root), true);
   }

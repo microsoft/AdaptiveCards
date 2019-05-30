@@ -44,6 +44,13 @@ export class Column extends React.Component {
 		if (!this.column)
 			return children;
 
+		if (this.column.isFallbackActivated) {
+			if (this.column.fallbackType == "drop") {
+				return null;
+			} else if (!Utils.isNullOrEmpty(element.fallback)) {
+				return Registry.getManager().parseComponent(this.column.fallback, this.context.onParseError);
+			}
+		}
 		// parse elements
 		if (!Utils.isNullOrEmpty(this.column.items) && (this.column.isVisible !== false)) {
 			children = Registry.getManager().parseRegistryComponents(this.column.items, this.context.onParseError);
@@ -138,11 +145,11 @@ export class Column extends React.Component {
 					widthPercentage = (pixelWidth / deviceWidth) * 100
 				}
 				else if (width == Constants.AlignStretch) {
-					containerStyle.push({ flex: 1 })
+					containerStyle.push({ flex: 2});
 				}
 				else if (width == Constants.Auto) {
 					if (!containsNumber) {
-						containerStyle.push({ alignSelf: 'auto' })
+						containerStyle.push({ flex: 1 })
 					} else {
 						widthPercentage = defaultWidthPercentage
 					}
@@ -213,12 +220,12 @@ export class Column extends React.Component {
 			spacingStyle.push({ marginLeft: this.spacing })
 		}
 		spacingStyle.push({ flexGrow: 1 });
-		
+
 		let widthPercentage = this.calculateWidthPercentage(containerViewStyle);
 		if (!Utils.isNullOrEmpty(widthPercentage)) {
 			let spacePercentage = widthPercentage;
-			if (!this.isForemostElement()) 
-				spacePercentage = (this.spacing / deviceWidth) * 100 +spacePercentage;
+			if (!this.isForemostElement())
+				spacePercentage = (this.spacing / deviceWidth) * 100 + spacePercentage;
 			containerViewStyle.push({ width: spacePercentage.toString() + '%' });
 		}
 
