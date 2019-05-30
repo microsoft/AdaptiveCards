@@ -41,6 +41,7 @@ class Transformer {
 	private _primaryTypes: any[] = [];
 	private _definitions: any = {};
 	private _implementationsOf: any = {};
+	private _extendables: any = {};
 
 	constructor (types: any[], primaryTypeName: string|string[]) {
 		this._typeDictionary = {};
@@ -62,12 +63,13 @@ class Transformer {
 
 		// First create all definitions for all types
 		for (var key in this._typeDictionary) {
-			this.defineTypeIfNeeded(key);
+			this.defineType(this._typeDictionary[key]);
 		}
 	
 		var answer:any = {
 			"$schema": "http://json-schema.org/draft-06/schema#",
-			"id": "http://adaptivecards.io/schemas/adaptive-card.json"
+			"id": "http://adaptivecards.io/schemas/adaptive-card.json",
+			"definitions": {}
 		};
 
 		var anyOf = [];
@@ -108,6 +110,12 @@ class Transformer {
 				answer.definitions["ImplementationsOf." + key] = {
 					"anyOf": anyOfValue
 				};
+			}
+		}
+
+		if (!isObjectEmpty(this._extendables)) {
+			for (var key in this._extendables) {
+				answer.definitions["Extendable." + key] = this._extendables[key];
 			}
 		}
 	
@@ -157,10 +165,9 @@ class Transformer {
 		}
 
 		if (type.extends) {
-			this.defineTypeIfNeeded(type.extends);
 			transformed.allOf = [
 				{
-					$ref: "#/definitions/" + type.extends
+					$ref: "#/definitions/Extendable." + type.extends
 				}
 			];
 			delete transformed.extends;
@@ -211,9 +218,6 @@ class Transformer {
 					break;
 		
 				default:
-					// Must be an object reference
-					this.defineTypeIfNeeded(typeName);
-					
 					// Note that we can't check _implementationsOf, since that isn't fully populated till we've
 					// processed all types
 					transformedValue.$ref = "#/definitions/" + (this.hasMultipleImplementations(typeName) ? "ImplementationsOf." : "") + typeName;
@@ -258,9 +262,20 @@ class Transformer {
 		return false;
 	}
 
-	private defineTypeIfNeeded(typeName: string) {
-		if (!(typeName in this._definitions)) {
-			var transformedType = this.transformType(this._typeDictionary[typeName]);
+	private defineType(type: any) {
+		var typeName: string = type.type;
+		var transformedType = this.transformType(type);
+
+		// If there's multiple implementations of this type
+		if (this.hasMultipleImplementations(typeName)) {
+			// Then we must define an extendable flavor that doesn't have the additionalProperties = false
+			var extendableType = { ...transformedType };
+			delete extendableType.additionalProperties;
+			this._extendables[typeName] = extendableType;
+		}
+
+		// As long as it's not abstract (no reason to define those, they'll be defined as extendable if used)
+		if (!type.isAbstract) {
 			this._definitions[typeName] = transformedType;
 		}
 	}

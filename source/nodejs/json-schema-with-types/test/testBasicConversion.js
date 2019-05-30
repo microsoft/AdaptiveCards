@@ -346,13 +346,12 @@ describe("Test transform", function () {
 						},
 						"allOf": [
 							{
-								"$ref": "#/definitions/Action"
+								"$ref": "#/definitions/Extendable.Action"
 							}
 						]
 					},
-					"Action": {
+					"Extendable.Action": {
 						"type": "object",
-						"additionalProperties": false,
 						"description": "An action to invoke",
 						"properties": {
 							"title": {
@@ -464,7 +463,7 @@ describe("Test transform", function () {
 						},
 						"allOf": [
 							{
-								"$ref": "#/definitions/Action"
+								"$ref": "#/definitions/Extendable.Action"
 							}
 						]
 					},
@@ -482,13 +481,12 @@ describe("Test transform", function () {
 						},
 						"allOf": [
 							{
-								"$ref": "#/definitions/Action"
+								"$ref": "#/definitions/Extendable.Action"
 							}
 						]
 					},
-					"Action": {
+					"Extendable.Action": {
 						"type": "object",
-						"additionalProperties": false,
 						"properties": {
 							"title": {
 								"type": "string"
@@ -802,7 +800,7 @@ describe("Test transform", function () {
 						},
 						"allOf": [
 							{
-								"$ref": "#/definitions/Action"
+								"$ref": "#/definitions/Extendable.Action"
 							}
 						]
 					},
@@ -820,13 +818,12 @@ describe("Test transform", function () {
 						},
 						"allOf": [
 							{
-								"$ref": "#/definitions/Action"
+								"$ref": "#/definitions/Extendable.Action"
 							}
 						]
 					},
-					"Action": {
+					"Extendable.Action": {
 						"type": "object",
-						"additionalProperties": false,
 						"properties": {
 							"title": {
 								"type": "string"
