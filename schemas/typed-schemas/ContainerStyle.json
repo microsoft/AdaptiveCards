@@ -1,7 +1,7 @@
 {
-  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/80a5e9bef9cd1023f00dd1a1c276dbdba7abd466/source/nodejs/json-schema-with-types/schema/lib/Type.json",
-  "extends": "enum",
-  "description": "Style hint for containers",
+  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/25a3e22d649ad071e83cbf64a012a2ec4cc6c7b2/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+  "type": "ContainerStyle",
+  "classType": "Enum",
   "values": [
     "default",
     "emphasis"
