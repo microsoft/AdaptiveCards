@@ -202,9 +202,16 @@ class Transformer {
 	private transformPropertyValue(propertyValue: any) {
 		var cleanPropertyValue = { ... propertyValue };
 		delete cleanPropertyValue.type;
+		delete cleanPropertyValue.shorthands;
 
 		var typeNames = propertyValue.type.split("|");
 		var values = [];
+
+		if (propertyValue.shorthands) {
+			propertyValue.shorthands.forEach(shorthand => {
+				typeNames.push(shorthand.type);
+			});
+		}
 
 		typeNames.forEach(typeName => {
 			var transformedValue: any = {};
@@ -262,6 +269,16 @@ class Transformer {
 					// Any types don't need type definitions
 					delete transformedValue.items;
 				}
+			}
+
+			if (propertyValue.shorthands) {
+				propertyValue.shorthands.forEach(shorthand => {
+					if (shorthand.type === typeName) {
+						var cleanShorthandValue = { ...shorthand };
+						delete cleanShorthandValue.type;
+						transformedValue = { ...transformedValue, ...cleanShorthandValue };
+					}
+				});
 			}
 
 			values.push(transformedValue);

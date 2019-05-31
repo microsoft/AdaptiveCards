@@ -735,6 +735,74 @@ describe("Test transform", function () {
 		})
 	});
 
+	
+
+
+	it("Test shorthands", function () {
+		assertTransform({
+			types: [
+				{
+					"type": "AdaptiveCard",
+					"properties": {
+						"backgroundImage": {
+							"type": "string",
+							"description": "URL to image",
+							"version": "1.2",
+							"shorthands": [
+								{
+									"type": "number",
+									"description": "ID of image from assets",
+									"version": "1.1" // Yes, this shorthand property came BEFORE the other
+								}
+							]
+						}
+					}
+				}
+			],
+			primaryTypeName: "AdaptiveCard",
+			expected: {
+				"$schema": "http://json-schema.org/draft-06/schema#",
+				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
+				"anyOf": [
+					{
+						"required": [ "type" ],
+						"allOf": [
+							{
+								"$ref": "#/definitions/AdaptiveCard"
+							}
+						]
+					}
+				],
+				"definitions": {
+					"AdaptiveCard": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"type": {
+								"enum": [ "AdaptiveCard" ],
+								"description": "Must be `AdaptiveCard`"
+							},
+							"backgroundImage": {
+								"description": "URL to image",
+								"version": "1.2",
+								"anyOf": [
+									{
+										"type": "string"
+									},
+									{
+										"type": "number",
+										"description": "ID of image from assets",
+										"version": "1.1"
+									}
+								]
+							}
+						}
+					}
+				}
+			}
+		})
+	});
+
 
 	it("Test array of objects property", function () {
 		assertTransform({

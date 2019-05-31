@@ -16,6 +16,10 @@
 			"description": "Specifies whether the property is required",
 			"default": false
 		},
+		"shorthands": {
+			"type": "Property[]",
+			"description": "Shorthand alternatives for this property"
+		},
 		"default": {
 			"type": "any",
 			"description": "The default value of this property"

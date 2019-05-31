@@ -24,10 +24,22 @@
 			"version": "1.1"
 		},
 		"bleed": {
-			"$ref": "#/definitions/Bleed"
+			"type": "boolean",
+			"description": "Determines whether the element should bleed through its parent's padding.",
+			"version": "1.2",
+			"features": [ 2109 ]
 		},
 		"backgroundImage": {
-			"$ref": "#/definitions/BackgroundImage"
+			"type": "BackgroundImage",
+			"description": "Specifies the background image.",
+			"version": "1.2",
+			"shorthands": [
+				{
+					"type": "string",
+					"description": "The URL (or data url) to use as the background image.",
+					"version": "1.0"
+				}
+			]
 		}
 	},
 	"required": [

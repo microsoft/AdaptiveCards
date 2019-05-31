@@ -3,7 +3,7 @@
   "id": "http://adaptivecards.io/schemas/adaptive-card.json",
   "definitions": {
     "Class": {
-      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/2e844bd4e84f255fbcc3e09d7ffd352fad6c8752/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
       "type": "object",
       "description": "Expresses a class",
       "properties": {
@@ -48,7 +48,7 @@
       ]
     },
     "Enum": {
-      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/2e844bd4e84f255fbcc3e09d7ffd352fad6c8752/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
       "type": "object",
       "description": "Expresses an enum",
       "properties": {
@@ -82,7 +82,7 @@
       ]
     },
     "Property": {
-      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/2e844bd4e84f255fbcc3e09d7ffd352fad6c8752/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
       "type": "object",
       "properties": {
         "classType": {
@@ -103,6 +103,13 @@
           "type": "boolean",
           "description": "Specifies whether the property is required",
           "default": false
+        },
+        "shorthands": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Property"
+          },
+          "description": "Shorthand alternatives for this property"
         },
         "default": {
           "description": "The default value of this property"
