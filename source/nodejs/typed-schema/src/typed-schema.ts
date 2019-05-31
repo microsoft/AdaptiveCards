@@ -93,7 +93,7 @@ class Transformer {
 				var extendsNames = type.extends.split(",");
 				type.extends = [];
 				extendsNames.forEach(extendedTypeName => {
-					type.extends.push(this._typeDictionary[extendedTypeName.trim()]);
+					type.extends.push(this.getType(extendedTypeName.trim()));
 				});
 			} else {
 				type.extends = [];
@@ -105,7 +105,7 @@ class Transformer {
 		}
 
 		primaryTypeName.forEach(value => {
-			this._primaryTypes.push(this._typeDictionary[value]);
+			this._primaryTypes.push(this.getType(value));
 		});
 	}
 
@@ -178,6 +178,14 @@ class Transformer {
 			}
 		}
 	
+		return answer;
+	}
+
+	private getType(typeName: string) {
+		var answer = this._typeDictionary[typeName];
+		if (answer === undefined) {
+			throw new Error("Type " + typeName + " could not be found.");
+		}
 		return answer;
 	}
 
@@ -268,7 +276,7 @@ class Transformer {
 						this._implementationsOf[extended.type] = [];
 						
 						// If extending type isn't abstract, add that as an implementation
-						if (!this._typeDictionary[extended.type].isAbstract) {
+						if (!this.getType(extended.type).isAbstract) {
 							this._implementationsOf[extended.type].push(extended.type);
 						}
 					}
