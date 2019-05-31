@@ -653,6 +653,40 @@
         }
       ]
     },
+    "ImageSet": {
+      "description": "The ImageSet displays a collection of Images similar to a gallery.",
+      "properties": {
+        "type": {
+          "enum": [
+            "ImageSet"
+          ],
+          "description": "Must be `ImageSet`"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Image"
+          },
+          "description": "The array of `Image` elements to show."
+        },
+        "imageSize": {
+          "$ref": "#/definitions/ImageSize"
+        },
+        "id": {},
+        "spacing": {},
+        "separator": {}
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "images"
+      ],
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.BlockElement"
+        }
+      ]
+    },
     "Media": {
       "description": "Displays a media player for audio or video content.",
       "version": "1.1",
@@ -905,6 +939,16 @@
           ],
           "allOf": [
             {
+              "$ref": "#/definitions/ImageSet"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
               "$ref": "#/definitions/Media"
             }
           ]
@@ -960,6 +1004,16 @@
           "allOf": [
             {
               "$ref": "#/definitions/Image"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/ImageSet"
             }
           ]
         },
