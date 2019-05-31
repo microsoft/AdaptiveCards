@@ -1,28 +1,28 @@
 {
   "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/andrewleader/specing-with-types/source/nodejs/json-schema-with-types/schema/lib/Type.json",
-  "type": "Type",
-  "description": "Expresses a typed object",
+  "type": "Class",
+  "description": "Expresses a class",
   "properties": {
     "type": {
       "type": "string",
-      "description": "The type of the object",
+      "description": "The name of the class",
       "required": true
     },
     "description": {
       "type": "string",
-      "description": "A description of the object"
+      "description": "A description of the class"
     },
     "properties": {
       "type": "Dictionary<Property>",
-      "description": "Properties of the object"
+      "description": "Properties of the class"
     },
     "isAbstract": {
       "type": "boolean",
-      "description": "Specifies whether this type is abstract"
+      "description": "Specifies whether this class is abstract"
     },
     "extends": {
       "type": "string",
-      "description": "Type that this type extends from"
+      "description": "Class that this class extends from"
     },
     "$schema": {
       "type": "uri",

@@ -16,9 +16,9 @@
 		"dts": "dts-generator --name json-schema-with-types --project . --out dist/json-schema-with-types.d.ts",
 		"lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
 		"release": "npm run build && npm run dts",
-    "test": "mocha",
-    "build-and-test": "npm run build && npm run test",
-    "generate-schema": "node ./lib/command-line.js ./schema/src Type > ./schema/lib/Type.json"
+		"test": "mocha",
+		"build-and-test": "npm run build && npm run test",
+		"generate-schema": "node ./lib/command-line.js ./schema/src Class,Enum Class classType > ./schema/lib/Type.json"
 	},
 	"dependencies": {
 		"p-iteration": "^1.1.8"

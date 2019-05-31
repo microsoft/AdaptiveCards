@@ -1,47 +1,96 @@
 {
-  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/andrewleader/specing-with-types/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+  "$schema": "http://json-schema.org/draft-06/schema#",
   "id": "http://adaptivecards.io/schemas/adaptive-card.json",
-  "type": "object",
-  "description": "Expresses a typed object",
-  "properties": {
-    "type": {
-      "type": "string",
-      "description": "The type of the object"
-    },
-    "description": {
-      "type": "string",
-      "description": "A description of the object"
-    },
-    "properties": {
-      "type": "object",
-      "additionalProperties": {
-        "$ref": "#/definitions/Property"
-      },
-      "description": "Properties of the object"
-    },
-    "isAbstract": {
-      "type": "boolean",
-      "description": "Specifies whether this type is abstract"
-    },
-    "extends": {
-      "type": "string",
-      "description": "Type that this type extends from"
-    },
-    "$schema": {
-      "type": "string",
-      "format": "uri",
-      "description": "JSON schema for the JSON file"
-    }
-  },
-  "additionalProperties": false,
-  "required": [
-    "type"
-  ],
   "definitions": {
+    "Class": {
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/andrewleader/specing-with-types/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "type": "object",
+      "description": "Expresses a class",
+      "properties": {
+        "classType": {
+          "enum": [
+            "Class"
+          ],
+          "description": "Must be `Class`"
+        },
+        "type": {
+          "type": "string",
+          "description": "The name of the class"
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the class"
+        },
+        "properties": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/Property"
+          },
+          "description": "Properties of the class"
+        },
+        "isAbstract": {
+          "type": "boolean",
+          "description": "Specifies whether this class is abstract"
+        },
+        "extends": {
+          "type": "string",
+          "description": "Class that this class extends from"
+        },
+        "$schema": {
+          "type": "string",
+          "format": "uri",
+          "description": "JSON schema for the JSON file"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ]
+    },
+    "Enum": {
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/andrewleader/specing-with-types/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "type": "object",
+      "description": "Expresses an enum",
+      "properties": {
+        "classType": {
+          "enum": [
+            "Enum"
+          ],
+          "description": "Must be `Enum`"
+        },
+        "type": {
+          "type": "string",
+          "description": "The name of the enum"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The values in the enum"
+        },
+        "$schema": {
+          "type": "string",
+          "format": "uri",
+          "description": "JSON schema for the JSON file"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "values"
+      ]
+    },
     "Property": {
       "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/andrewleader/specing-with-types/source/nodejs/json-schema-with-types/schema/lib/Type.json",
       "type": "object",
       "properties": {
+        "classType": {
+          "enum": [
+            "Property"
+          ],
+          "description": "Must be `Property`"
+        },
         "type": {
           "type": "string",
           "description": "The type of the property"
@@ -56,5 +105,24 @@
         "type"
       ]
     }
-  }
+  },
+  "anyOf": [
+    {
+      "allOf": [
+        {
+          "$ref": "#/definitions/Class"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "$ref": "#/definitions/Enum"
+        }
+      ],
+      "required": [
+        "classType"
+      ]
+    }
+  ]
 }
