@@ -1,0 +1,871 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "id": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "definitions": {
+    "Action.OpenUrl": {
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "description": "When invoked, show the given url either by launching it in an external web browser or showing within an embedded web browser.",
+      "properties": {
+        "type": {
+          "enum": [
+            "Action.OpenUrl"
+          ],
+          "description": "Must be `Action.OpenUrl`"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "The URL to open."
+        }
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "url"
+      ],
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.Action"
+        }
+      ]
+    },
+    "Action.ShowCard": {
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "description": "Defines an AdaptiveCard which is shown to the user when the button or link is clicked.",
+      "properties": {
+        "type": {
+          "enum": [
+            "Action.ShowCard"
+          ],
+          "description": "Must be `Action.ShowCard`"
+        },
+        "card": {
+          "$ref": "#/definitions/AdaptiveCard",
+          "description": "The Adaptive Card to show."
+        }
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.Action"
+        }
+      ]
+    },
+    "Action.Submit": {
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "description": "Gathers input fields, merges with optional data field, and sends an event to the client. It is up to the client to determine how this data is processed. For example: With BotFramework bots, the client would send an activity through the messaging medium to the bot.",
+      "properties": {
+        "type": {
+          "enum": [
+            "Action.Submit"
+          ],
+          "description": "Must be `Action.Submit`"
+        },
+        "data": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object"
+            }
+          ],
+          "description": "Initial data that input fields will be combined with. These are essentially ‘hidden’ properties."
+        }
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.Action"
+        }
+      ]
+    },
+    "AdaptiveCard": {
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "description": "An Adaptive Card",
+      "properties": {
+        "type": {
+          "enum": [
+            "AdaptiveCard"
+          ],
+          "description": "Must be `AdaptiveCard`"
+        },
+        "body": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ImplementationsOf.CardElement"
+          },
+          "description": "The card elements to show in the primary card region."
+        },
+        "actions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ImplementationsOf.Action"
+          },
+          "description": "The Actions to show in the card's action bar."
+        },
+        "selectAction": {
+          "$ref": "#/definitions/ImplementationsOf.IActionExceptShowCard",
+          "description": "An Action that will be invoked when the card is tapped or selected. `Action.ShowCard` is not supported.",
+          "version": "1.1"
+        },
+        "version": {
+          "type": "string",
+          "description": "Schema version that this card requires. If a client is **lower** than this version, the `fallbackText` will be rendered. NOTE: Version is not required for cards within an `Action.ShowCard`. However, it *is* required for the top-level card.",
+          "examples": [
+            "1.0",
+            "1.1",
+            "1.2"
+          ]
+        },
+        "fallbackText": {
+          "type": "string",
+          "description": "Text shown when the client doesn't support the version specified (may contain markdown)."
+        },
+        "backgroundImage": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/BackgroundImage"
+            },
+            {
+              "type": "string",
+              "format": "uri",
+              "description": "The URL (or data url) to use as the background image.",
+              "version": "1.0"
+            }
+          ],
+          "description": "Specifies the background image of the card.",
+          "version": "1.2"
+        },
+        "speak": {
+          "type": "string",
+          "description": "Specifies what should be spoken for this entire card. This is simple text or SSML fragment."
+        },
+        "lang": {
+          "type": "string",
+          "description": "The 2-letter ISO-639-1 language used in the card. Used to localize any date/time functions.",
+          "examples": [
+            "en",
+            "fr",
+            "es"
+          ]
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "BackgroundImage": {
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "description": "Specifies a background image.",
+      "properties": {
+        "type": {
+          "enum": [
+            "BackgroundImage"
+          ],
+          "description": "Must be `BackgroundImage`"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "The URL (or data url) of the image."
+        },
+        "fillMode": {
+          "$ref": "#/definitions/ImageFillMode",
+          "description": "Describes how the image should fill the area."
+        },
+        "horizontalAlignment": {
+          "$ref": "#/definitions/HorizontalAlignment",
+          "description": "Describes how the image should be aligned if it must be cropped or if using repeat fill mode."
+        },
+        "verticalAlignment": {
+          "$ref": "#/definitions/VerticalAlignment",
+          "description": "Describes how the image should be aligned if it must be cropped or if using repeat fill mode."
+        }
+      },
+      "version": "1.2",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "url"
+      ]
+    },
+    "Container": {
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "description": "Containers group items together.",
+      "properties": {
+        "type": {
+          "enum": [
+            "Container"
+          ],
+          "description": "Must be `Container`"
+        },
+        "items": {
+          "$ref": "#/definitions/ImplementationsOf.CardElement",
+          "description": "The card elements to render inside the `Container`."
+        },
+        "selectAction": {
+          "$ref": "#/definitions/ISelectAction",
+          "description": "An Action that will be invoked when the `Container` is tapped or selected. `Action.ShowCard` is not supported.",
+          "version": "1.1"
+        },
+        "style": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ContainerStyle"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Style hint for `Container`."
+        },
+        "verticalContentAlignment": {
+          "$ref": "#/definitions/VerticalContentAlignment",
+          "description": "Defines how the content should be aligned vertically within the container.",
+          "default": "top",
+          "version": "1.1"
+        },
+        "bleed": {
+          "type": "boolean",
+          "description": "Determines whether the element should bleed through its parent's padding.",
+          "version": "1.2",
+          "features": [
+            2109
+          ]
+        },
+        "backgroundImage": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/BackgroundImage"
+            },
+            {
+              "type": "string",
+              "format": "uri",
+              "description": "The URL (or data url) to use as the background image.",
+              "version": "1.0"
+            }
+          ],
+          "description": "Specifies the background image.",
+          "version": "1.2"
+        }
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "items"
+      ],
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.CardElement"
+        }
+      ]
+    },
+    "Colors": {
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "classType": "Enum",
+      "values": [
+        "default",
+        "dark",
+        "light",
+        "accent",
+        "good",
+        "warning",
+        "attention"
+      ],
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "Colors"
+          ],
+          "description": "Must be `Colors`"
+        }
+      }
+    },
+    "ContainerStyle": {
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "classType": "Enum",
+      "values": [
+        "default",
+        "emphasis"
+      ],
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "ContainerStyle"
+          ],
+          "description": "Must be `ContainerStyle`"
+        }
+      }
+    },
+    "FontSize": {
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "classType": "Enum",
+      "values": [
+        "default",
+        "small",
+        "medium",
+        "large",
+        "extraLarge"
+      ],
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "FontSize"
+          ],
+          "description": "Must be `FontSize`"
+        }
+      }
+    },
+    "FontType": {
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "classType": "Enum",
+      "values": [
+        "default",
+        "monospace"
+      ],
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "FontType"
+          ],
+          "description": "Must be `FontType`"
+        }
+      }
+    },
+    "FontWeight": {
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "classType": "Enum",
+      "values": [
+        "default",
+        "lighter",
+        "bolder"
+      ],
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "FontWeight"
+          ],
+          "description": "Must be `FontWeight`"
+        }
+      }
+    },
+    "HorizontalAlignment": {
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "classType": "Enum",
+      "description": "Controls how content is horizontally positioned within its container.",
+      "values": [
+        "left",
+        "center",
+        "right"
+      ],
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "HorizontalAlignment"
+          ],
+          "description": "Must be `HorizontalAlignment`"
+        }
+      }
+    },
+    "ImageFillMode": {
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "classType": "Enum",
+      "values": [
+        "cover",
+        "repeatHorizontally",
+        "repeatVertically",
+        "repeat"
+      ],
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "ImageFillMode"
+          ],
+          "description": "Must be `ImageFillMode`"
+        }
+      }
+    },
+    "ImageSize": {
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "classType": "Enum",
+      "description": "Controls the approximate size of the image. The physical dimensions will vary per host. Specify `\"auto\"` for true image dimension, or `\"stretch\"` to force it to fill the container.",
+      "values": [
+        "auto",
+        "stretch",
+        "small",
+        "medium",
+        "large"
+      ],
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "ImageSize"
+          ],
+          "description": "Must be `ImageSize`"
+        }
+      }
+    },
+    "ImageStyle": {
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "classType": "Enum",
+      "description": "Controls how this `Image` is displayed.",
+      "values": [
+        "default",
+        "person"
+      ],
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "ImageStyle"
+          ],
+          "description": "Must be `ImageStyle`"
+        }
+      }
+    },
+    "Spacing": {
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "classType": "Enum",
+      "description": "Specifies how much spacing. Hosts pick the exact pixel amounts for each of these.",
+      "values": [
+        "default",
+        "none",
+        "small",
+        "medium",
+        "large",
+        "extraLarge",
+        "padding"
+      ],
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "Spacing"
+          ],
+          "description": "Must be `Spacing`"
+        }
+      }
+    },
+    "VerticalAlignment": {
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "classType": "Enum",
+      "values": [
+        "top",
+        "center",
+        "bottom"
+      ],
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "VerticalAlignment"
+          ],
+          "description": "Must be `VerticalAlignment`"
+        }
+      }
+    },
+    "VerticalContentAlignment": {
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "classType": "Enum",
+      "values": [
+        "top",
+        "center",
+        "bottom"
+      ],
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "VerticalContentAlignment"
+          ],
+          "description": "Must be `VerticalContentAlignment`"
+        }
+      }
+    },
+    "Image": {
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "description": "Displays an image.",
+      "properties": {
+        "type": {
+          "enum": [
+            "Image"
+          ],
+          "description": "Must be `Image`"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "The URL to the image. Supports data URI in version 1.2+"
+        },
+        "altText": {
+          "type": "string",
+          "description": "Alternate text describing the image."
+        },
+        "backgroundColor": {
+          "type": "string",
+          "description": "Applies a background to a transparent image. This property will respect the image style.",
+          "example": "#DDDDDD",
+          "version": "1.1"
+        },
+        "height": {
+          "type": "string",
+          "description": "The desired on-screen height of the image, ending in 'px'. E.g., 50px. This overrides the `size` property.",
+          "examples": [
+            "50px"
+          ],
+          "version": "1.1"
+        },
+        "horizontalAlignment": {
+          "$ref": "#/definitions/HorizontalAlignment",
+          "description": "Controls how this element is horizontally positioned within its parent."
+        },
+        "selectAction": {
+          "$ref": "#/definitions/IActionWithinElement",
+          "description": "An Action that will be invoked when the `Image` is tapped or selected. `Action.ShowCard` is not supported.",
+          "version": "1.1"
+        },
+        "size": {
+          "$ref": "#/definitions/ImageSize",
+          "description": "Controls the approximate size of the image. The physical dimensions will vary per host. Specify `\"auto\"` for true image dimension, or `\"stretch\"` to force it to fill the container."
+        },
+        "style": {
+          "$ref": "#/definitions/ImageStyle",
+          "description": "Controls how this `Image` is displayed."
+        },
+        "width": {
+          "type": "string",
+          "description": "The desired on-screen width of the image, ending in 'px'. E.g., 50px. This overrides the `size` property.",
+          "examples": [
+            "50px"
+          ],
+          "version": "1.1"
+        }
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "url"
+      ],
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.CardElement"
+        }
+      ]
+    },
+    "Media": {
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "description": "Displays a media player for audio or video content.",
+      "version": "1.1",
+      "features": [
+        196
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "Media"
+          ],
+          "description": "Must be `Media`"
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MediaSource"
+          },
+          "description": "Array of media sources to attempt to play."
+        },
+        "poster": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL of an image to display before playing. Supports data URI in version 1.2+"
+        },
+        "altText": {
+          "type": "string",
+          "description": "Alternate text describing the audio or video."
+        }
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sources"
+      ],
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.CardElement"
+        }
+      ]
+    },
+    "MediaSource": {
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "description": "Defines a source for a Media element",
+      "version": "1.1",
+      "features": [
+        196
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "MediaSource"
+          ],
+          "description": "Must be `MediaSource`"
+        },
+        "mimeType": {
+          "type": "string",
+          "description": "Mime type of associated media (e.g. `\"video/mp4\"`)."
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to media."
+        }
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mimeType",
+        "url"
+      ],
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.CardElement"
+        }
+      ]
+    },
+    "TextBlock": {
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "description": "Displays text, allowing control over font sizes, weight, and color.",
+      "properties": {
+        "type": {
+          "enum": [
+            "TextBlock"
+          ],
+          "description": "Must be `TextBlock`"
+        },
+        "text": {
+          "type": "string",
+          "description": "Text to display"
+        },
+        "color": {
+          "$ref": "#/definitions/Colors",
+          "description": "Controls the color of `TextBlock` elements."
+        },
+        "fontType": {
+          "$ref": "#/definitions/FontType",
+          "description": "Type of font to use for rendering"
+        },
+        "horizontalAlignment": {
+          "$ref": "#/definitions/HorizontalAlignment",
+          "description": "Controls how this element is horizontally positioned within its parent."
+        },
+        "isSubtle": {
+          "type": "boolean",
+          "description": "If `true`, displays text slightly toned down to appear less prominent.",
+          "default": false
+        },
+        "maxLines": {
+          "type": "number",
+          "description": "Specifies the maximum number of lines to display."
+        },
+        "size": {
+          "$ref": "#/definitions/FontSize",
+          "description": "Controls size of text."
+        },
+        "weight": {
+          "$ref": "#/definitions/FontWeight",
+          "description": "Controls the weight of `TextBlock` elements."
+        },
+        "wrap": {
+          "type": "boolean",
+          "description": "If `true`, allow text to wrap. Otherwise, text is clipped.",
+          "default": false
+        }
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text"
+      ],
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.CardElement"
+        }
+      ]
+    },
+    "ImplementationsOf.Action": {
+      "anyOf": [
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Action.OpenUrl"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Action.ShowCard"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Action.Submit"
+            }
+          ]
+        }
+      ]
+    },
+    "ImplementationsOf.IActionExceptShowCard": {
+      "anyOf": [
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Action.OpenUrl"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Action.Submit"
+            }
+          ]
+        }
+      ]
+    },
+    "ImplementationsOf.CardElement": {
+      "anyOf": [
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Container"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Image"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Media"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/MediaSource"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/TextBlock"
+            }
+          ]
+        }
+      ]
+    },
+    "Extendable.Action": {
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Label for button or link that represents this action."
+        },
+        "iconUrl": {
+          "type": "string",
+          "format": "uri",
+          "description": "Optional icon to be shown on the action in conjunction with the title.",
+          "version": "1.1"
+        }
+      },
+      "type": "object"
+    },
+    "Extendable.CardElement": {
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "A unique identifier associated with the element."
+        },
+        "spacing": {
+          "$ref": "#/definitions/Spacing",
+          "description": "Controls the amount of spacing between this element and the preceding element."
+        },
+        "separator": {
+          "type": "boolean",
+          "description": "When `true`, draw a separating line at the top of the element."
+        }
+      },
+      "type": "object"
+    }
+  },
+  "anyOf": [
+    {
+      "allOf": [
+        {
+          "$ref": "#/definitions/AdaptiveCard"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+	"isAbstract": true,
+	"properties": {
+    "title": {
+      "type": "string",
+      "description": "Label for button or link that represents this action."
+    },
+    "iconUrl": {
+      "type": "uri",
+      "description": "Optional icon to be shown on the action in conjunction with the title.",
+      "version": "1.1"
+    }
+	}
+}

@@ -11,17 +11,9 @@
 			"description": "The Actions to show in the card's action bar."
 		},
 		"selectAction": {
+			"type": "IActionExceptShowCard",
 			"description": "An Action that will be invoked when the card is tapped or selected. `Action.ShowCard` is not supported.",
-			"type": "object",
-			"version": "1.1",
-			"oneOf": [
-				{
-					"$ref": "#/definitions/Action.Submit"
-				},
-				{
-					"$ref": "#/definitions/Action.OpenUrl"
-				}
-			]
+			"version": "1.1"
 		},
 		"version": {
 			"type": "string",
@@ -37,7 +29,16 @@
 			"description": "Text shown when the client doesn't support the version specified (may contain markdown)."
 		},
 		"backgroundImage": {
-			"$ref": "#/definitions/BackgroundImage"
+			"type": "BackgroundImage",
+			"description": "Specifies the background image of the card.",
+			"version": "1.2",
+			"shorthands": [
+				{
+					"type": "uri",
+					"description": "The URL (or data url) to use as the background image.",
+					"version": "1.0"
+				}
+			]
 		},
 		"speak": {
 			"type": "string",
