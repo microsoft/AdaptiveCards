@@ -10,49 +10,11 @@ var fs = require("fs");
 var path = require("path");
 
 export function transformFolder(pathToTypeFiles: string, primaryTypeName: string|string[], defaultPrimaryTypeName: string|null = null, typePropertyName: string = "type") : any {
-	var files = getAllFiles(pathToTypeFiles);
-	var types: any[] = [];
-	files.forEach((filePath) => {
-		if (filePath.endsWith(".json")) {
-			var fileTxt = fs.readFileSync(filePath, "utf8");
-			var type = JSON.parse(fileTxt);
-
-			// Infer type name from file name if not specified
-			if (!type.type) {
-				var stat = fs.statSync(filePath);
-				if (stat) {
-					type.type = path.basename(filePath, ".json");
-				}
-			}
-
-			types.push(type);
-			types[type.type] = type;
-		}
-	});
-
-	return transformTypes(types, primaryTypeName, defaultPrimaryTypeName, typePropertyName);
-}
-
-function getAllFiles(dir: string) {
-	// https://stackoverflow.com/questions/5827612/node-js-fs-readdir-recursive-directory-search
-	var results = [];
-	var list = fs.readdirSync(dir);
-	list.forEach(function(file) {
-		file = dir + '/' + file;
-		var stat = fs.statSync(file);
-		if (stat && stat.isDirectory()) { 
-			/* Recurse into a subdirectory */
-			results = results.concat(getAllFiles(file));
-		} else { 
-			/* Is a file */
-			results.push(file);
-		}
-	});
-	return results;
+	return new Transformer(Schema.fromFolder(pathToTypeFiles), primaryTypeName, defaultPrimaryTypeName, typePropertyName).transform();
 }
 
 export function transformTypes(types: any[], primaryTypeName: string|string[], defaultPrimaryTypeName: string|null = null, typePropertyName: string = "type") : any {
-	return new Transformer(types, primaryTypeName, defaultPrimaryTypeName, typePropertyName).transform();
+	return new Transformer(new Schema(types), primaryTypeName, defaultPrimaryTypeName, typePropertyName).transform();
 }
 
 function readFileAsync(fileName: string, encoding: string) : Promise<string> {
@@ -86,8 +48,8 @@ class Transformer {
 	private _typePropertyName: string;
 	private _defaultPrimaryTypeName: string|null;
 
-	constructor (types: any[], primaryTypeName: string|string[], defaultPrimaryTypeName: string|null, typePropertyName: string) {
-		this._schema = new Schema(types);
+	constructor (schema: Schema, primaryTypeName: string|string[], defaultPrimaryTypeName: string|null, typePropertyName: string) {
+		this._schema = schema;
 		this._typePropertyName = typePropertyName;
 		this._defaultPrimaryTypeName = defaultPrimaryTypeName;
 
