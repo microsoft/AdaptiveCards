@@ -4,10 +4,18 @@ export function transformFolder(pathToTypeFiles: string, primaryTypeName: string
 	var files = fs.readdirSync(pathToTypeFiles);
 	var types: any[] = [];
 	files.forEach((filePath) => {
-		var fileTxt = fs.readFileSync(pathToTypeFiles + "/" + filePath, "utf8");
-		var type = JSON.parse(fileTxt);
-		types.push(type);
-		types[type.type] = type;
+		if (filePath.endsWith(".json")) {
+			var fileTxt = fs.readFileSync(pathToTypeFiles + "/" + filePath, "utf8");
+			var type = JSON.parse(fileTxt);
+
+			// Infer type name from file name if not specified
+			if (!type.type) {
+				type.type = filePath.substr(0, filePath.length - ".json".length);
+			}
+
+			types.push(type);
+			types[type.type] = type;
+		}
 	});
 
 	return transformTypes(types, primaryTypeName, defaultPrimaryTypeName, typePropertyName);
