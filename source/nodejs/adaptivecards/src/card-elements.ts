@@ -5878,6 +5878,7 @@ export class ColumnSet extends StylableCardElementContainer {
             let element = document.createElement("div");
             element.className = hostConfig.makeCssClassName("ac-columnSet");
             element.style.display = "flex";
+            element.style.overflowX = "hidden";
 
             if (AdaptiveCard.useAdvancedCardBottomTruncation) {
                 // See comment in Container.internalRender()
