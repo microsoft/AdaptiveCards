@@ -1,16 +1,20 @@
 var fs = require("fs");
+var path = require("path");
 
 export function transformFolder(pathToTypeFiles: string, primaryTypeName: string|string[], defaultPrimaryTypeName: string|null = null, typePropertyName: string = "type") : any {
-	var files = fs.readdirSync(pathToTypeFiles);
+	var files = getAllFiles(pathToTypeFiles);
 	var types: any[] = [];
 	files.forEach((filePath) => {
 		if (filePath.endsWith(".json")) {
-			var fileTxt = fs.readFileSync(pathToTypeFiles + "/" + filePath, "utf8");
+			var fileTxt = fs.readFileSync(filePath, "utf8");
 			var type = JSON.parse(fileTxt);
 
 			// Infer type name from file name if not specified
 			if (!type.type) {
-				type.type = filePath.substr(0, filePath.length - ".json".length);
+				var stat = fs.statSync(filePath);
+				if (stat) {
+					type.type = path.basename(filePath, ".json");
+				}
 			}
 
 			types.push(type);
@@ -19,6 +23,24 @@ export function transformFolder(pathToTypeFiles: string, primaryTypeName: string
 	});
 
 	return transformTypes(types, primaryTypeName, defaultPrimaryTypeName, typePropertyName);
+}
+
+function getAllFiles(dir: string) {
+	// https://stackoverflow.com/questions/5827612/node-js-fs-readdir-recursive-directory-search
+	var results = [];
+	var list = fs.readdirSync(dir);
+	list.forEach(function(file) {
+		file = dir + '/' + file;
+		var stat = fs.statSync(file);
+		if (stat && stat.isDirectory()) { 
+			/* Recurse into a subdirectory */
+			results = results.concat(getAllFiles(file));
+		} else { 
+			/* Is a file */
+			results.push(file);
+		}
+	});
+	return results;
 }
 
 export function transformTypes(types: any[], primaryTypeName: string|string[], defaultPrimaryTypeName: string|null = null, typePropertyName: string = "type") : any {
