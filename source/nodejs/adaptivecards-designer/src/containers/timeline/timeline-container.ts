@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
-import * as Designer from "../../adaptivecards-designer";
+import { HostContainer } from "../host-container";
 
 var windowsTimelineConfiguration = require("../../../../../../samples/HostConfig/windows-timeline.json");
 
-export class TimelineContainer extends Designer.HostContainer {
+export class TimelineContainer extends HostContainer {
     public initialize() {
         Adaptive.AdaptiveCard.elementTypeRegistry.reset();
         Adaptive.AdaptiveCard.actionTypeRegistry.reset();

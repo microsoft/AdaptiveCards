@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
-import * as Designer from "../../adaptivecards-designer";
+import { HostContainer } from "../host-container";
 
 var cortanaSkillsConfiguration = require("../../../../../../samples/HostConfig/cortana-skills.json");
 
-export class CortanaContainer extends Designer.HostContainer {
+export class CortanaContainer extends HostContainer {
     public renderTo(hostElement: HTMLElement) {
         this.cardHost.classList.add("cortana-card");
 

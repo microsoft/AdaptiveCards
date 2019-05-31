@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
-import * as Designer from "../../adaptivecards-designer";
+import { HostContainer } from "../host-container";
 
 var windowsNotificationConfiguration = require("../../../../../../samples/HostConfig/windows-notification.json");
 
-export class ToastContainer extends Designer.HostContainer {
+export class ToastContainer extends HostContainer {
     public renderTo(hostElement: HTMLElement) {
         this.cardHost.classList.add("toast-card");
 

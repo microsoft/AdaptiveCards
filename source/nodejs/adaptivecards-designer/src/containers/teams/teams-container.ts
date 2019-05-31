@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
-import * as Designer from "../../adaptivecards-designer";
+import { HostContainer } from "../host-container";
 
 var teamsDarkConfiguration = require("../../../../../../samples/HostConfig/microsoft-teams-dark.json");
 var teamsLightConfiguration = require("../../../../../../samples/HostConfig/microsoft-teams-light.json");
 
-export abstract class BaseTeamsContainer extends Designer.HostContainer {
+export abstract class BaseTeamsContainer extends HostContainer {
     public renderTo(hostElement: HTMLElement) {
         var outerFrame = document.createElement("div");
         outerFrame.className = "teams-frame";

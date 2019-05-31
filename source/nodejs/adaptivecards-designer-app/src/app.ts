@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import * as markdownit from "markdown-it";
-import * as ACDesigner from "adaptivecards-designer";
+import * as ACDesigner from "../../adaptivecards-designer/src/adaptivecards-designer";
 import "./app.css";
 
 // TODO: should this be necessary?

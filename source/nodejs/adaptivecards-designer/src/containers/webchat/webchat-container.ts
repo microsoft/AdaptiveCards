@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
-import * as Designer from "../../adaptivecards-designer";
+import { HostContainer } from "../host-container";
 
 var webChatConfiguration = require("../../../../../../samples/HostConfig/webchat.json");
 
-export class WebChatContainer extends Designer.HostContainer {
+export class WebChatContainer extends HostContainer {
     public renderTo(hostElement: HTMLElement) {
         this.cardHost.classList.add("webChatOuterContainer");
 
