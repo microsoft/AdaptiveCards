@@ -427,6 +427,13 @@
         }
       ]
     },
+    "ChoiceInputStyle": {
+      "description": "Style hint for `Input.ChoiceSet`.",
+      "enum": [
+        "compact",
+        "expanded"
+      ]
+    },
     "Colors": {
       "enum": [
         "default",
@@ -696,6 +703,153 @@
         }
       ]
     },
+    "Input.Choice": {
+      "description": "Describes a choice for use in a ChoiceSet.",
+      "properties": {
+        "type": {
+          "enum": [
+            "Input.Choice"
+          ],
+          "description": "Must be `Input.Choice`"
+        },
+        "title": {
+          "type": "string",
+          "description": "Text to display."
+        },
+        "value": {
+          "type": "string",
+          "description": "The raw value for the choice. **NOTE:** do not use a `,` in the value, since a `ChoiceSet` with `isMultiSelect` set to `true` returns a comma-delimited string of choice values."
+        }
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "value"
+      ]
+    },
+    "Input.ChoiceSet": {
+      "description": "Allows a user to input a Choice.",
+      "properties": {
+        "type": {
+          "enum": [
+            "Input.ChoiceSet"
+          ],
+          "description": "Must be `Input.ChoiceSet`"
+        },
+        "choices": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Input.Choice"
+          },
+          "description": "`Choice` options."
+        },
+        "isMultiSelect": {
+          "type": "boolean",
+          "description": "Allow multiple choices to be selected.",
+          "default": false
+        },
+        "style": {
+          "$ref": "#/definitions/ChoiceInputStyle"
+        },
+        "value": {
+          "type": "string",
+          "description": "The initial choice (or set of choices) that should be selected. For multi-select, specify a comma-separated string of values."
+        },
+        "wrap": {
+          "type": "boolean",
+          "description": "If `true`, allow text to wrap. Otherwise, text is clipped.",
+          "default": false
+        },
+        "id": {},
+        "spacing": {},
+        "separator": {}
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "choices"
+      ],
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.Input"
+        }
+      ]
+    },
+    "Input.Date": {
+      "description": "Lets a user choose a date.",
+      "properties": {
+        "type": {
+          "enum": [
+            "Input.Date"
+          ],
+          "description": "Must be `Input.Date`"
+        },
+        "max": {
+          "type": "string",
+          "description": "Hint of maximum value expressed in ISO-8601 format (may be ignored by some clients)."
+        },
+        "min": {
+          "type": "string",
+          "description": "Hint of minimum value expressed in ISO-8601 format (may be ignored by some clients)."
+        },
+        "placeholder": {
+          "type": "string",
+          "description": "Description of the input desired. Displayed when no selection has been made."
+        },
+        "value": {
+          "type": "string",
+          "description": "The initial value for this field expressed in ISO-8601 format."
+        },
+        "id": {},
+        "spacing": {},
+        "separator": {}
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.Input"
+        }
+      ]
+    },
+    "Input.Number": {
+      "description": "Allows a user to enter a number.",
+      "properties": {
+        "type": {
+          "enum": [
+            "Input.Number"
+          ],
+          "description": "Must be `Input.Number`"
+        },
+        "max": {
+          "type": "number",
+          "description": "Hint of maximum value (may be ignored by some clients)."
+        },
+        "min": {
+          "type": "number",
+          "description": "Hint of minimum value (may be ignored by some clients)."
+        },
+        "placeholder": {
+          "type": "string",
+          "description": "Description of the input desired. Displayed when no selection has been made."
+        },
+        "value": {
+          "type": "number",
+          "description": "Initial value for this field."
+        },
+        "id": {},
+        "spacing": {},
+        "separator": {}
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.Input"
+        }
+      ]
+    },
     "Input.Text": {
       "description": "Lets a user enter text.",
       "properties": {
@@ -735,6 +889,91 @@
       },
       "type": "object",
       "additionalProperties": false,
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.Input"
+        }
+      ]
+    },
+    "Input.Time": {
+      "description": "Lets a user select a time.",
+      "properties": {
+        "type": {
+          "enum": [
+            "Input.Time"
+          ],
+          "description": "Must be `Input.Time`"
+        },
+        "max": {
+          "type": "string",
+          "description": "Hint of maximum value (may be ignored by some clients)."
+        },
+        "min": {
+          "type": "string",
+          "description": "Hint of minimum value (may be ignored by some clients)."
+        },
+        "placeholder": {
+          "type": "string",
+          "description": "Description of the input desired. Displayed when no time has been selected."
+        },
+        "value": {
+          "type": "string",
+          "description": "The initial value for this field expressed in ISO-8601 format."
+        },
+        "id": {},
+        "spacing": {},
+        "separator": {}
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.Input"
+        }
+      ]
+    },
+    "Input.Toggle": {
+      "description": "Lets a user choose between two options.",
+      "properties": {
+        "type": {
+          "enum": [
+            "Input.Toggle"
+          ],
+          "description": "Must be `Input.Toggle`"
+        },
+        "title": {
+          "type": "string",
+          "description": "Title for the toggle"
+        },
+        "value": {
+          "type": "string",
+          "description": "The current selected value. If the item is selected that \"valueOn\" will be used, otherwise \"valueOff\"",
+          "default": "false"
+        },
+        "valueOff": {
+          "type": "string",
+          "description": "The value when toggle is off",
+          "default": "false"
+        },
+        "valueOn": {
+          "type": "string",
+          "description": "The value when toggle is on",
+          "default": "true"
+        },
+        "wrap": {
+          "type": "boolean",
+          "description": "If `true`, allow text to wrap. Otherwise, text is clipped.",
+          "default": false
+        },
+        "id": {},
+        "spacing": {},
+        "separator": {}
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title"
+      ],
       "allOf": [
         {
           "$ref": "#/definitions/Extendable.Input"
@@ -1003,7 +1242,57 @@
           ],
           "allOf": [
             {
+              "$ref": "#/definitions/Input.ChoiceSet"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Date"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Number"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
               "$ref": "#/definitions/Input.Text"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Time"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Toggle"
             }
           ]
         },
@@ -1087,7 +1376,57 @@
           ],
           "allOf": [
             {
+              "$ref": "#/definitions/Input.ChoiceSet"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Date"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Number"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
               "$ref": "#/definitions/Input.Text"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Time"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Toggle"
             }
           ]
         },
@@ -1121,7 +1460,57 @@
           ],
           "allOf": [
             {
+              "$ref": "#/definitions/Input.ChoiceSet"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Date"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Number"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
               "$ref": "#/definitions/Input.Text"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Time"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Toggle"
             }
           ]
         }

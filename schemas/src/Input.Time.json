@@ -1,0 +1,23 @@
+{
+	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+	"extends": "Input",
+	"description": "Lets a user select a time.",
+	"properties": {
+		"max": {
+      "type": "string",
+      "description": "Hint of maximum value (may be ignored by some clients)."
+    },
+    "min": {
+      "type": "string",
+      "description": "Hint of minimum value (may be ignored by some clients)."
+    },
+    "placeholder": {
+      "type": "string",
+      "description": "Description of the input desired. Displayed when no time has been selected."
+    },
+    "value": {
+      "type": "string",
+      "description": "The initial value for this field expressed in ISO-8601 format."
+    }
+	}
+}

@@ -1,0 +1,32 @@
+{
+	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+	"extends": "Input",
+	"description": "Lets a user choose between two options.",
+	"properties": {
+		"title": {
+      "type": "string",
+      "description": "Title for the toggle",
+      "required": true
+    },
+    "value": {
+      "type": "string",
+      "description": "The current selected value. If the item is selected that \"valueOn\" will be used, otherwise \"valueOff\"",
+      "default": "false"
+    },
+    "valueOff": {
+      "type": "string",
+      "description": "The value when toggle is off",
+      "default": "false"
+    },
+    "valueOn": {
+      "type": "string",
+      "description": "The value when toggle is on",
+      "default": "true"
+    },
+    "wrap": {
+      "type": "boolean",
+			"description": "If `true`, allow text to wrap. Otherwise, text is clipped.",
+			"default": false
+    }
+	}
+}

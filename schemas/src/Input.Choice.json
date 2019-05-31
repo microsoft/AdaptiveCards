@@ -1,0 +1,16 @@
+{
+	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+	"description": "Describes a choice for use in a ChoiceSet.",
+	"properties": {
+		"title": {
+			"type": "string",
+      "description": "Text to display.",
+      "required": true
+    },
+    "value": {
+      "type": "string",
+      "description": "The raw value for the choice. **NOTE:** do not use a `,` in the value, since a `ChoiceSet` with `isMultiSelect` set to `true` returns a comma-delimited string of choice values.",
+      "required": true
+    }
+	}
+}

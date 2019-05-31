@@ -1,0 +1,29 @@
+{
+	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+	"extends": "Input",
+	"description": "Allows a user to input a Choice.",
+	"properties": {
+		"choices": {
+      "type": "Input.Choice[]",
+      "description": "`Choice` options.",
+      "required": true
+    },
+    "isMultiSelect": {
+      "type": "boolean",
+      "description": "Allow multiple choices to be selected.",
+      "default": false
+    },
+    "style": {
+      "type": "ChoiceInputStyle"
+    },
+    "value": {
+      "type": "string",
+      "description": "The initial choice (or set of choices) that should be selected. For multi-select, specify a comma-separated string of values."
+    },
+    "wrap": {
+      "type": "boolean",
+			"description": "If `true`, allow text to wrap. Otherwise, text is clipped.",
+			"default": false
+    }
+	}
+}
