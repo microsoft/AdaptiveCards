@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/25a3e22d649ad071e83cbf64a012a2ec4cc6c7b2/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/2e844bd4e84f255fbcc3e09d7ffd352fad6c8752/source/nodejs/json-schema-with-types/schema/lib/Type.json",
   "type": "VerticalContentAlignment",
   "classType": "Enum",
   "values": [

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/andrewleader/specing-with-types/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/2e844bd4e84f255fbcc3e09d7ffd352fad6c8752/source/nodejs/json-schema-with-types/schema/lib/Type.json",
   "type": "Enum",
   "description": "Expresses an enum",
   "properties": {

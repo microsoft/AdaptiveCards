@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/20b913022a7a02898729acf7aaed5abc34e9e158/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/2e844bd4e84f255fbcc3e09d7ffd352fad6c8752/source/nodejs/json-schema-with-types/schema/lib/Type.json",
 	"type": "CardElement",
 	"isAbstract": true,
 	"properties": {
