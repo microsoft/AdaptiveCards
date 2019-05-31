@@ -24,12 +24,13 @@
 			"description": "Text shown when the client doesn't support the version specified (may contain markdown)."
 		},
 		"backgroundImage": {
-			"description": "Background image for the adaptive card",
 			"anyOf": [
 				{
+					"description": "Background image for the adaptive card.",
 					"$ref": "#/definitions/BackgroundImage"
 				},
 				{
+					"description": "Background image for the adaptive card. Supports data URI in version 1.2+.",
 					"type": "string"
 				}
 			]
@@ -99,7 +100,7 @@
 				"iconUrl": {
 					"type": "string",
 					"format": "uri",
-					"description": "Optional icon to be shown on the action in conjunction with the title. Supports data URI in version 1.2+",
+					"description": "Optional icon to be shown on the action in conjunction with the title. Supports data URI in version 1.2+.",
 					"version": "1.1"
 				},
 				"url": {
@@ -136,7 +137,7 @@
 				"iconUrl": {
 					"type": "string",
 					"format": "uri",
-					"description": "Optional icon URL to be shown on the action in conjunction with the title. Supports data URI in version 1.2+",
+					"description": "Optional icon URL to be shown on the action in conjunction with the title. Supports data URI in version 1.2+.",
 					"version": "1.1"
 				},
 				"card": {
@@ -170,7 +171,7 @@
 				"iconUrl": {
 					"type": "string",
 					"format": "uri",
-					"description": "Optional icon URL to be shown on the action in conjunction with the title. Supports data URI in version 1.2+",
+					"description": "Optional icon URL to be shown on the action in conjunction with the title. Supports data URI in version 1.2+.",
 					"version": "1.1"
 				},
 				"data": {
@@ -542,12 +543,13 @@
 					]
 				},
 				"backgroundImage": {
-					"description": "Background image for the column.",
 					"anyOf": [
 						{
+							"description": "Background image for the column.",
 							"$ref": "#/definitions/BackgroundImage"
 						},
 						{
+							"description": "Background image for the column. Supports data URI in version 1.2+.",
 							"type": "string"
 						}
 					]
@@ -599,12 +601,13 @@
 					]
 				},
 				"backgroundImage": {
-					"description": "Background image for the column set.",
 					"anyOf": [
 						{
+							"description": "Background image for the column set",
 							"$ref": "#/definitions/BackgroundImage"
 						},
 						{
+							"description": "Background image for the column set. Supports data URI in version 1.2+.",
 							"type": "string"
 						}
 					]
@@ -663,12 +666,13 @@
 					"version": "1.1"
 				},
 				"backgroundImage": {
-					"description": "Background image for the container.",
 					"anyOf": [
 						{
+							"description": "Background image for the container.",
 							"$ref": "#/definitions/BackgroundImage"
 						},
 						{
+							"description": "Background image for the container. Supports data URI in version 1.2+.",
 							"type": "string"
 						}
 					]
@@ -793,7 +797,7 @@
 				"poster": {
 					"type": "string",
 					"format": "uri",
-					"description": "URL of an image to display before playing. Supports data URI in version 1.2+"
+					"description": "URL of an image to display before playing. Supports data URI in version 1.2+."
 				},
 				"altText": {
 					"type": "string",
@@ -860,7 +864,7 @@
 				"url": {
 					"type": "string",
 					"format": "uri",
-					"description": "The URL to the image. Supports data URI in version 1.2+"
+					"description": "The URL to the image. Supports data URI in version 1.2+."
 				},
 				"width": {
 					"type": "string",
