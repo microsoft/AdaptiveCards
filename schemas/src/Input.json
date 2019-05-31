@@ -1,0 +1,13 @@
+{
+	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+  "extends": "BlockElement",
+  "isAbstract": true,
+	"description": "Base input class",
+	"properties": {
+    "id": {
+      "type": "string",
+      "required": true,
+      "description": "Unique identifier for the value. Used to identify collected input when the Submit action is performed."
+    }
+	}
+}

@@ -1,0 +1,31 @@
+{
+	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+	"extends": "Input",
+	"description": "Lets a user enter text.",
+	"properties": {
+		"isMultiline": {
+      "type": "boolean",
+      "description": "If `true`, allow multiple lines of input.",
+      "default": false
+    },
+    "maxLength": {
+      "type": "number",
+      "description": "Hint of maximum length characters to collect (may be ignored by some clients)."
+    },
+    "placeholder": {
+      "type": "string",
+      "description": "Description of the input desired. Displayed when no text has been input."
+    },
+    "style": {
+      "type": "TextInputStyle"
+    },
+    "inlineAction": {
+      "type": "Action",
+      "description": "The inline action for the input. Typically displayed to the right of the input. It is strongly recommended that an icon on the action (which will be displayed instead of the title of the action)."
+    },
+    "value": {
+      "type": "string",
+      "description": "The initial value for this field."
+    }
+	}
+}

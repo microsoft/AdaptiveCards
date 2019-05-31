@@ -511,6 +511,15 @@
         "padding"
       ]
     },
+    "TextInputStyle": {
+      "description": "Style hint for text input.",
+      "enum": [
+        "text",
+        "tel",
+        "url",
+        "email"
+      ]
+    },
     "VerticalAlignment": {
       "enum": [
         "top",
@@ -684,6 +693,51 @@
       "allOf": [
         {
           "$ref": "#/definitions/Extendable.BlockElement"
+        }
+      ]
+    },
+    "Input.Text": {
+      "description": "Lets a user enter text.",
+      "properties": {
+        "type": {
+          "enum": [
+            "Input.Text"
+          ],
+          "description": "Must be `Input.Text`"
+        },
+        "isMultiline": {
+          "type": "boolean",
+          "description": "If `true`, allow multiple lines of input.",
+          "default": false
+        },
+        "maxLength": {
+          "type": "number",
+          "description": "Hint of maximum length characters to collect (may be ignored by some clients)."
+        },
+        "placeholder": {
+          "type": "string",
+          "description": "Description of the input desired. Displayed when no text has been input."
+        },
+        "style": {
+          "$ref": "#/definitions/TextInputStyle"
+        },
+        "inlineAction": {
+          "$ref": "#/definitions/ImplementationsOf.Action",
+          "description": "The inline action for the input. Typically displayed to the right of the input. It is strongly recommended that an icon on the action (which will be displayed instead of the title of the action)."
+        },
+        "value": {
+          "type": "string",
+          "description": "The initial value for this field."
+        },
+        "id": {},
+        "spacing": {},
+        "separator": {}
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.Input"
         }
       ]
     },
@@ -949,6 +1003,16 @@
           ],
           "allOf": [
             {
+              "$ref": "#/definitions/Input.Text"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
               "$ref": "#/definitions/Media"
             }
           ]
@@ -1023,6 +1087,16 @@
           ],
           "allOf": [
             {
+              "$ref": "#/definitions/Input.Text"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
               "$ref": "#/definitions/Media"
             }
           ]
@@ -1034,6 +1108,20 @@
           "allOf": [
             {
               "$ref": "#/definitions/TextBlock"
+            }
+          ]
+        }
+      ]
+    },
+    "ImplementationsOf.Input": {
+      "anyOf": [
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Text"
             }
           ]
         }
@@ -1083,6 +1171,23 @@
         }
       },
       "type": "object"
+    },
+    "Extendable.Input": {
+      "description": "Base input class",
+      "properties": {
+        "id": {},
+        "spacing": {},
+        "separator": {}
+      },
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.BlockElement"
+        }
+      ]
     }
   },
   "anyOf": [
