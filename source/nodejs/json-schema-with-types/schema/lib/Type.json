@@ -105,7 +105,6 @@
           "default": false
         },
         "default": {
-          "type": "object",
           "description": "The default value of this property"
         }
       },

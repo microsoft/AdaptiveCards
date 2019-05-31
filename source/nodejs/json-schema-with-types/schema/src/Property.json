@@ -17,7 +17,7 @@
       "default": false
     },
     "default": {
-      "type": "object",
+      "type": "any",
       "description": "The default value of this property"
     }
   }

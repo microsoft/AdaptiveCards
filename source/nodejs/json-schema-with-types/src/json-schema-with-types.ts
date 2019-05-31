@@ -229,6 +229,10 @@ class Transformer {
 				case "object":
 					transformedValue.type = typeName;
 					break;
+
+				case "any":
+					// Don't set a type
+					break;
 		
 				default:
 					// Note that we can't check _implementationsOf, since that isn't fully populated till we've
