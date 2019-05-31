@@ -169,75 +169,83 @@ class Transformer {
 	}
 
 	private transformType(type: any) {
-		var transformed: any = { ...type };
-		transformed.type = "object";
-		transformed.additionalProperties = false;
+		try {
+			var transformed: any = { ...type };
+			transformed.type = "object";
+			transformed.additionalProperties = false;
 
-		delete transformed.isAbstract;
+			delete transformed.isAbstract;
 
-		if (!transformed.properties) {
-			transformed.properties = [];
-		}
-	
-		if (transformed.properties) {
-			for (var key in transformed.properties) {
-
-				var propVal = transformed.properties[key];
-
-				propVal = this.transformPropertyValue(propVal);
-
-				if (propVal.required) {
-					delete propVal.required;
-					if (!transformed.required) {
-						transformed.required = [];
-					}
-					transformed.required.push(key);
-				}
-
-				transformed.properties[key] = propVal;
+			if (!transformed.properties) {
+				transformed.properties = [];
 			}
-		}
+		
+			if (transformed.properties) {
+				for (var key in transformed.properties) {
 
-		if (!type.isAbstract) {
-			// If it's not abstract, we add the type property
-			// Note that we don't require it though, it's optional
-			var newProperties:any = {};
-			newProperties[this._typePropertyName] = {
-				"enum": [ type.type ],
-				"description": "Must be `" + type.type + "`"
-			};
-			transformed.properties = {
-				...newProperties,
-				...transformed.properties
-			};
-		}
+					var propVal = transformed.properties[key];
 
-		if (type.extends) {
-			transformed.allOf = [];
-			type.extends.split(",").forEach(extended => {
-				extended = extended.trim();
-				if (!isObjectEmpty(this._typeDictionary[extended].properties)) {
-					transformed.allOf.push({
-						$ref: "#/definitions/Extendable." + extended
-					});
-				}
-				
-				// Keep track of implementations
-				if (!this._implementationsOf[extended]) {
-					this._implementationsOf[extended] = [];
-					
-					// If extending type isn't abstract, add that as an implementation
-					if (!this._typeDictionary[extended].isAbstract) {
-						this._implementationsOf[extended].push(extended);
+					try {
+						propVal = this.transformPropertyValue(propVal);
+					} catch (err) {
+						throw new Error("Failed transforming property " + key + "\n\n" + err.stack);
 					}
-				}
-				this._implementationsOf[extended].push(type.type);
-			});
-			delete transformed.extends;
 
+					if (propVal.required) {
+						delete propVal.required;
+						if (!transformed.required) {
+							transformed.required = [];
+						}
+						transformed.required.push(key);
+					}
+
+					transformed.properties[key] = propVal;
+				}
+			}
+
+			if (!type.isAbstract) {
+				// If it's not abstract, we add the type property
+				// Note that we don't require it though, it's optional
+				var newProperties:any = {};
+				newProperties[this._typePropertyName] = {
+					"enum": [ type.type ],
+					"description": "Must be `" + type.type + "`"
+				};
+				transformed.properties = {
+					...newProperties,
+					...transformed.properties
+				};
+			}
+
+			if (type.extends) {
+				transformed.allOf = [];
+				type.extends.split(",").forEach(extended => {
+					extended = extended.trim();
+					if (!isObjectEmpty(this._typeDictionary[extended].properties)) {
+						transformed.allOf.push({
+							$ref: "#/definitions/Extendable." + extended
+						});
+					}
+					
+					// Keep track of implementations
+					if (!this._implementationsOf[extended]) {
+						this._implementationsOf[extended] = [];
+						
+						// If extending type isn't abstract, add that as an implementation
+						if (!this._typeDictionary[extended].isAbstract) {
+							this._implementationsOf[extended].push(extended);
+						}
+					}
+					this._implementationsOf[extended].push(type.type);
+				});
+				delete transformed.extends;
+
+			}
+		
+			return transformed;
+		} catch (err) {
+			throw "Failed transforming type " + type.type + "\n\n" + err.stack;
 		}
-	
-		return transformed;
 	}
 
 	private transformPropertyValue(propertyValue: any) {

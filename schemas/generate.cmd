@@ -1,1 +1,1 @@
-npm run 
+node ../source/nodejs/typed-schema/lib/command-line.js ./lib AdaptiveCard > ./adaptive-card-new.json
