@@ -87,9 +87,12 @@ class Transformer {
 				]
 			};
 
-			// If it's not the default primary type name, make type required
-			if (primaryType.type !== this._defaultPrimaryTypeName) {
-				definition.required = [ this._typePropertyName ];
+			// If there's multiple primary types, we have to enforce type at top level to differentiate
+			if (this._primaryTypes.length > 1) {
+				// If it's not the default primary type name, make type required
+				if (primaryType.type !== this._defaultPrimaryTypeName) {
+					definition.required = [ this._typePropertyName ];
+				}
 			}
 
 			anyOf.push(definition);

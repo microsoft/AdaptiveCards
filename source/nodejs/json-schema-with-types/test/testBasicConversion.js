@@ -17,7 +17,6 @@ describe("Test transform", function () {
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
 				"anyOf": [
 					{
-						"required": [ "type" ],
 						"allOf": [
 							{
 								"$ref": "#/definitions/AdaptiveCard"
@@ -62,7 +61,6 @@ describe("Test transform", function () {
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
 				"anyOf": [
 					{
-						"required": [ "type" ],
 						"allOf": [
 							{
 								"$ref": "#/definitions/AdaptiveCard"
@@ -109,7 +107,6 @@ describe("Test transform", function () {
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
 				"anyOf": [
 					{
-						"required": [ "type" ],
 						"allOf": [
 							{
 								"$ref": "#/definitions/AdaptiveCard"
@@ -153,7 +150,6 @@ describe("Test transform", function () {
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
 				"anyOf": [
 					{
-						"required": [ "type" ],
 						"allOf": [
 							{
 								"$ref": "#/definitions/AdaptiveCard"
@@ -198,7 +194,6 @@ describe("Test transform", function () {
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
 				"anyOf": [
 					{
-						"required": [ "type" ],
 						"allOf": [
 							{
 								"$ref": "#/definitions/AdaptiveCard"
@@ -251,7 +246,6 @@ describe("Test transform", function () {
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
 				"anyOf": [
 					{
-						"required": [ "type" ],
 						"allOf": [
 							{
 								"$ref": "#/definitions/AdaptiveCard"
@@ -300,7 +294,6 @@ describe("Test transform", function () {
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
 				"anyOf": [
 					{
-						"required": [ "type" ],
 						"allOf": [
 							{
 								"$ref": "#/definitions/AdaptiveCard"
@@ -360,7 +353,6 @@ describe("Test transform", function () {
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
 				"anyOf": [
 					{
-						"required": [ "type" ],
 						"allOf": [
 							{
 								"$ref": "#/definitions/AdaptiveCard"
@@ -447,7 +439,6 @@ describe("Test transform", function () {
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
 				"anyOf": [
 					{
-						"required": [ "type" ],
 						"allOf": [
 							{
 								"$ref": "#/definitions/AdaptiveCard"
@@ -566,7 +557,6 @@ describe("Test transform", function () {
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
 				"anyOf": [
 					{
-						"required": [ "type" ],
 						"allOf": [
 							{
 								"$ref": "#/definitions/AdaptiveCard"
@@ -686,7 +676,6 @@ describe("Test transform", function () {
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
 				"anyOf": [
 					{
-						"required": [ "type" ],
 						"allOf": [
 							{
 								"$ref": "#/definitions/AdaptiveCard"
@@ -765,7 +754,6 @@ describe("Test transform", function () {
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
 				"anyOf": [
 					{
-						"required": [ "type" ],
 						"allOf": [
 							{
 								"$ref": "#/definitions/AdaptiveCard"
@@ -830,7 +818,6 @@ describe("Test transform", function () {
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
 				"anyOf": [
 					{
-						"required": [ "type" ],
 						"allOf": [
 							{
 								"$ref": "#/definitions/AdaptiveCard"
@@ -893,7 +880,6 @@ describe("Test transform", function () {
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
 				"anyOf": [
 					{
-						"required": [ "type" ],
 						"allOf": [
 							{
 								"$ref": "#/definitions/AdaptiveCard"
@@ -969,7 +955,6 @@ describe("Test transform", function () {
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
 				"anyOf": [
 					{
-						"required": [ "type" ],
 						"allOf": [
 							{
 								"$ref": "#/definitions/AdaptiveCard"
@@ -1091,7 +1076,6 @@ describe("Test transform", function () {
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
 				"anyOf": [
 					{
-						"required": [ "type" ],
 						"allOf": [
 							{
 								"$ref": "#/definitions/AdaptiveCard"
@@ -1218,9 +1202,12 @@ describe("Test transform", function () {
 			types: [
 				{
 					"type": "Class"
+				},
+				{
+					"type": "Enum"
 				}
 			],
-			primaryTypeName: "Class",
+			primaryTypeName: [ "Class", "Enum" ],
 			expected: {
 				"$schema": "http://json-schema.org/draft-06/schema#",
 				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
@@ -1230,6 +1217,14 @@ describe("Test transform", function () {
 						"allOf": [
 							{
 								"$ref": "#/definitions/Class"
+							}
+						]
+					},
+					{
+						"required": [ "classType" ],
+						"allOf": [
+							{
+								"$ref": "#/definitions/Enum"
 							}
 						]
 					}
@@ -1242,6 +1237,16 @@ describe("Test transform", function () {
 							"classType": {
 								"enum": [ "Class" ],
 								"description": "Must be `Class`"
+							}
+						}
+					},
+					"Enum": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"classType": {
+								"enum": [ "Enum" ],
+								"description": "Must be `Enum`"
 							}
 						}
 					}
