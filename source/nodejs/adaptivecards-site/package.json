@@ -1,6 +1,6 @@
 {
 	"name": "adaptivecards-site",
-	"version": "0.3.4",
+	"version": "0.4.0",
 	"private": true,
 	"scripts": {
 		"build": "hexo generate",
@@ -36,9 +36,9 @@
 		"webpack-dev-server": "^3.1.14"
 	},
 	"dependencies": {
-		"adaptivecards": "^1.2.0-beta1",
-		"adaptivecards-designer": "^0.5.0",
-		"adaptivecards-visualizer": "^1.1.6",
+		"adaptivecards": "^1.2.0",
+		"adaptivecards-designer": "^0.6.0",
+		"adaptivecards-visualizer": "^1.2.0",
 		"markdown-it": "^8.4.0",
 		"monaco-editor": "^0.15.6"
 	}
