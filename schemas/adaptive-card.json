@@ -25,7 +25,14 @@
 		},
 		"backgroundImage": {
 			"description": "Background image for the adaptive card",
-			"$ref": "#/definitions/BackgroundImage"
+			"anyOf": [
+				{
+					"$ref": "#/definitions/BackgroundImage"
+				},
+				{
+					"type": "string"
+				}
+			]
 		},
 		"speak": {
 			"type": "string",
@@ -536,7 +543,14 @@
 				},
 				"backgroundImage": {
 					"description": "Background image for the column.",
-					"$ref": "#/definitions/BackgroundImage"
+					"anyOf": [
+						{
+							"$ref": "#/definitions/BackgroundImage"
+						},
+						{
+							"type": "string"
+						}
+					]
 				}
 			},
 			"required": [
@@ -586,7 +600,14 @@
 				},
 				"backgroundImage": {
 					"description": "Background image for the column set.",
-					"$ref": "#/definitions/BackgroundImage"
+					"anyOf": [
+						{
+							"$ref": "#/definitions/BackgroundImage"
+						},
+						{
+							"type": "string"
+						}
+					]
 				}
 			},
 			"required": [
@@ -643,7 +664,14 @@
 				},
 				"backgroundImage": {
 					"description": "Background image for the container.",
-					"$ref": "#/definitions/BackgroundImage"
+					"anyOf": [
+						{
+							"$ref": "#/definitions/BackgroundImage"
+						},
+						{
+							"type": "string"
+						}
+					]
 				}
 			},
 			"required": [
@@ -1395,7 +1423,14 @@
 					"type": "array",
 					"description": "The array of `TextRun`s.",
 					"items": {
-						"$ref": "#/definitions/TextRun"
+						"anyOf": [
+							{
+								"$ref": "#/definitions/TextRun"
+							},
+							{
+								"type": "string"
+							}
+						]
 					}
 				}
 			},
