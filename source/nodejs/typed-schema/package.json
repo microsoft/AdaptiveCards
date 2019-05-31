@@ -1,11 +1,11 @@
 {
-	"name": "json-schema-with-types",
+	"name": "typed-schema",
 	"version": "0.5.0",
 	"description": "Generates the element/property tables for our specs based on the schema file.",
 	"author": "AdaptiveCards",
 	"license": "MIT",
-	"main": "lib/json-schema-with-types.js",
-	"types": "lib/json-schema-with-types.d.ts",
+	"main": "lib/typed-schema.js",
+	"types": "lib/typed-schema.d.ts",
 	"files": [
 		"lib",
 		"src"
@@ -13,7 +13,7 @@
 	"scripts": {
 		"clean": "rimraf build lib dist",
 		"build": "tsc",
-		"dts": "dts-generator --name json-schema-with-types --project . --out dist/json-schema-with-types.d.ts",
+		"dts": "dts-generator --name typed-schema --project . --out dist/typed-schema.d.ts",
 		"lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
 		"release": "npm run build && npm run dts",
 		"test": "mocha",

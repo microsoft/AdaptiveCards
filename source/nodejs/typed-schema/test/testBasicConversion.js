@@ -1,5 +1,5 @@
 var assert = require("assert");
-var tschema = require("../lib/json-schema-with-types");
+var tschema = require("../lib/typed-schema");
 
 describe("Test transform", function () {
     it("Test description", function () {

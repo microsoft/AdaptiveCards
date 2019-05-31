@@ -1,4 +1,4 @@
-import * as tschema from "./json-schema-with-types";
+import * as tschema from "./typed-schema";
 
 declare var process;
 
