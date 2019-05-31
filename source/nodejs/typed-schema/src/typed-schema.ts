@@ -170,11 +170,23 @@ class Transformer {
 
 	private transformType(type: any) {
 		try {
+			if (type.classType === "Enum") {
+				var transformed: any = { ...type };
+				delete transformed.type;
+				delete transformed.values;
+				delete transformed.classType;
+				transformed.enum = type.values;
+				return transformed;
+			} else if (type.classType && type.classType !== "Class") {
+				throw new Error("Unknown class type " + type.classType);
+			}
+
 			var transformed: any = { ...type };
 			transformed.type = "object";
 			transformed.additionalProperties = false;
 
 			delete transformed.isAbstract;
+			delete transformed.classType;
 
 			if (!transformed.properties) {
 				transformed.properties = [];
