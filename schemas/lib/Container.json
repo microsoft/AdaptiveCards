@@ -4,7 +4,7 @@
 	"description": "Containers group items together.",
 	"properties": {
 		"items": {
-			"type": "CardElement",
+			"type": "CardElement[]",
 			"description": "The card elements to render inside the `Container`.",
 			"required": true
 		},

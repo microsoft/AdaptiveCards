@@ -201,7 +201,10 @@
           "description": "Must be `Container`"
         },
         "items": {
-          "$ref": "#/definitions/ImplementationsOf.CardElement",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ImplementationsOf.CardElement"
+          },
           "description": "The card elements to render inside the `Container`."
         },
         "selectAction": {
