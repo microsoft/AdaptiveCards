@@ -525,6 +525,62 @@
         "bottom"
       ]
     },
+    "Fact": {
+      "description": "Describes a Fact in a FactSet as a key/value pair.",
+      "properties": {
+        "type": {
+          "enum": [
+            "Fact"
+          ],
+          "description": "Must be `Fact`"
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the fact."
+        },
+        "value": {
+          "type": "string",
+          "description": "The value of the fact."
+        }
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "value"
+      ]
+    },
+    "FactSet": {
+      "description": "The FactSet element displays a series of facts (i.e. name/value pairs) in a tabular form.",
+      "properties": {
+        "type": {
+          "enum": [
+            "FactSet"
+          ],
+          "description": "Must be `FactSet`"
+        },
+        "facts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Fact"
+          },
+          "description": "The array of `Fact`'s."
+        },
+        "id": {},
+        "spacing": {},
+        "separator": {}
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "facts"
+      ],
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.BlockElement"
+        }
+      ]
+    },
     "Image": {
       "description": "Displays an image.",
       "properties": {
@@ -829,6 +885,16 @@
           ],
           "allOf": [
             {
+              "$ref": "#/definitions/FactSet"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
               "$ref": "#/definitions/Image"
             }
           ]
@@ -874,6 +940,16 @@
           "allOf": [
             {
               "$ref": "#/definitions/Container"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/FactSet"
             }
           ]
         },
