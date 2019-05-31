@@ -511,6 +511,154 @@ describe("Test transform", function () {
 	});
 
 
+	
+
+	
+	
+	it("Test multiple depths of extending classes", function () {
+		assertTransform({
+			types: [
+				{
+					"type": "AdaptiveCard",
+					"properties": {
+						"moreInfoAction": {
+							"type": "Action.OpenUrl",
+							"description": "Action to invoke when user wants more info"
+						}
+					}
+				},
+				{
+					"type": "Action.OpenUrl",
+					"extends": "Action",
+					"description": "An open URL action",
+					"properties": {
+						"url": {
+							"type": "uri",
+							"description": "The url to open"
+						}
+					}
+				},
+				{
+					"type": "Action",
+					"extends": "Element",
+					"isAbstract": true,
+					"description": "An action to invoke",
+					"properties": {
+						"title": {
+							"type": "string",
+							"description": "The title"
+						}
+					}
+				},
+				{
+					"type": "Element",
+					"isAbstract": true,
+					"properties": {
+						"id": {
+							"type": "string"
+						}
+					}
+				}
+			],
+			primaryTypeName: "AdaptiveCard",
+			expected: {
+				"$schema": "http://json-schema.org/draft-06/schema#",
+				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
+				"anyOf": [
+					{
+						"allOf": [
+							{
+								"$ref": "#/definitions/AdaptiveCard"
+							}
+						]
+					}
+				],
+				"definitions": {
+					"AdaptiveCard": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"type": {
+								"enum": [ "AdaptiveCard" ],
+								"description": "Must be `AdaptiveCard`"
+							},
+							"moreInfoAction": {
+								"description": "Action to invoke when user wants more info",
+								"$ref": "#/definitions/Action.OpenUrl"
+							}
+						}
+					},
+					"Action.OpenUrl": {
+						"type": "object",
+						"additionalProperties": false,
+						"description": "An open URL action",
+						"properties": {
+							"type": {
+								"enum": [ "Action.OpenUrl" ],
+								"description": "Must be `Action.OpenUrl`"
+							},
+							"url": {
+								"type": "string",
+								"format": "uri",
+								"description": "The url to open"
+							},
+							"title": {}, // We have to specify placeholders since additionalProperties=false doesn't allow extended properties
+							"id": {}
+						},
+						"allOf": [
+							{
+								"$ref": "#/definitions/Extendable.Action"
+							}
+						]
+					},
+					"Extendable.Action": {
+						"type": "object",
+						"description": "An action to invoke",
+						"properties": {
+							"title": {
+								"type": "string",
+								"description": "The title"
+							}
+						}
+					},
+					"Extendable.Element": {
+						"type": "object",
+						"properties": {
+							"id": {
+								"type": "string"
+							}
+						}
+					},
+					"ImplementationsOf.Action": {
+						"anyOf": [
+							{
+								"required": [ "type" ],
+								"allOf": [
+									{
+										"$ref": "#/definitions/Action.OpenUrl"
+									}
+								]
+							}
+						]
+					},
+					"ImplementationsOf.Element": {
+						"anyOf": [
+							{
+								"required": [ "type" ],
+								"allOf": [
+									{
+										"$ref": "#/definitions/Action.OpenUrl"
+									}
+								]
+							}
+						]
+					}
+				}
+			}
+		})
+	});
+
+
 
 	it("Test referencing base classes", function () {
 		assertTransform({

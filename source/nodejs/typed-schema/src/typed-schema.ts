@@ -87,6 +87,19 @@ class Transformer {
 			this._typeDictionary[type.type] = type;
 		});
 
+		// Resolve extends
+		types.forEach(type => {
+			if (type.extends) {
+				var extendsNames = type.extends.split(",");
+				type.extends = [];
+				extendsNames.forEach(extendedTypeName => {
+					type.extends.push(this._typeDictionary[extendedTypeName.trim()]);
+				});
+			} else {
+				type.extends = [];
+			}
+		});
+
 		if (!Array.isArray(primaryTypeName)) {
 			primaryTypeName = [ primaryTypeName ];
 		}
@@ -176,6 +189,7 @@ class Transformer {
 				delete transformed.values;
 				delete transformed.classType;
 				delete transformed.$schema;
+				delete transformed.extends;
 				transformed.enum = type.values;
 				return transformed;
 			} else if (type.classType && type.classType !== "Class") {
@@ -189,6 +203,7 @@ class Transformer {
 			delete transformed.isAbstract;
 			delete transformed.classType;
 			delete transformed.$schema;
+			delete transformed.extends;
 
 			if (!transformed.properties) {
 				transformed.properties = [];
@@ -231,31 +246,30 @@ class Transformer {
 				};
 			}
 
-			if (type.extends) {
+			if (type.extends.length > 0) {
 				transformed.allOf = [];
-				type.extends.split(",").forEach(extended => {
-					extended = extended.trim();
-					if (!isObjectEmpty(this._typeDictionary[extended].properties)) {
+				type.extends.forEach(extended => {
+					if (!isObjectEmpty(extended.properties)) {
 						transformed.allOf.push({
-							$ref: "#/definitions/Extendable." + extended
+							$ref: "#/definitions/Extendable." + extended.type
 						});
 
 						// Have to add placeholders for all the properties
-						for (var extendedPropKey in this._typeDictionary[extended].properties) {
+						for (var extendedPropKey in extended.properties) {
 							transformed.properties[extendedPropKey] = {};
 						}
 					}
 					
 					// Keep track of implementations
-					if (!this._implementationsOf[extended]) {
-						this._implementationsOf[extended] = [];
+					if (!this._implementationsOf[extended.type]) {
+						this._implementationsOf[extended.type] = [];
 						
 						// If extending type isn't abstract, add that as an implementation
-						if (!this._typeDictionary[extended].isAbstract) {
-							this._implementationsOf[extended].push(extended);
+						if (!this._typeDictionary[extended.type].isAbstract) {
+							this._implementationsOf[extended.type].push(extended.type);
 						}
 					}
-					this._implementationsOf[extended].push(type.type);
+					this._implementationsOf[extended.type].push(type.type);
 				});
 				delete transformed.extends;
 
@@ -373,12 +387,10 @@ class Transformer {
 
 	private hasMultipleImplementations(typeName: string) {
 		for (var key in this._typeDictionary) {
-			if (this._typeDictionary[key].extends) {
-				var extendedTypes = this._typeDictionary[key].extends.split(",");
-				for (var i = 0; i < extendedTypes.length; i++) {
-					if (extendedTypes[i].trim() === typeName) {
-						return true;
-					}
+			var extensions = this._typeDictionary[key].extends;
+			for (var i = 0; i < extensions.length; i++) {
+				if (extensions[i].type === typeName) {
+					return true;
 				}
 			}
 		}
