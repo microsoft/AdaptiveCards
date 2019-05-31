@@ -1,3 +1,10 @@
+import {SchemaType} from "./SchemaType";
+import {SchemaClass} from "./SchemaClass";
+import {SchemaEnum} from "./SchemaEnum";
+import {SchemaProperty} from "./SchemaProperty";
+import {SchemaPropertyType} from "./SchemaPropertyType";
+import {SchemaLiteral} from "./SchemaLiteral";
+
 var fs = require("fs");
 var path = require("path");
 
@@ -70,8 +77,8 @@ function isObjectEmpty(obj: any) {
 }
 
 class Transformer {
-	private _typeDictionary: any;
-	private _primaryTypes: any[] = [];
+	private _typeDictionary: Map<string, SchemaType> = new Map<string, SchemaType>();
+	private _primaryTypes: SchemaClass[] = [];
 	private _definitions: any = {};
 	private _implementationsOf: any = {};
 	private _extendables: any = {};
@@ -79,24 +86,21 @@ class Transformer {
 	private _defaultPrimaryTypeName: string|null;
 
 	constructor (types: any[], primaryTypeName: string|string[], defaultPrimaryTypeName: string|null, typePropertyName: string) {
-		this._typeDictionary = {};
 		this._typePropertyName = typePropertyName;
 		this._defaultPrimaryTypeName = defaultPrimaryTypeName;
 
 		types.forEach(type => {
-			this._typeDictionary[type.type] = type;
+			this._typeDictionary.set(type.type, this.parse(type));
 		});
 
-		// Resolve extends
-		types.forEach(type => {
-			if (type.extends) {
-				var extendsNames = type.extends.split(",");
-				type.extends = [];
-				extendsNames.forEach(extendedTypeName => {
-					type.extends.push(this.getType(extendedTypeName.trim()));
-				});
-			} else {
-				type.extends = [];
+		// Resolve types
+		this._typeDictionary.forEach(type => {
+			type.resolve(this._typeDictionary);
+		});
+
+		this._typeDictionary.forEach(type => {
+			if (type instanceof SchemaClass) {
+				type.resolveImplementations(this._typeDictionary);
 			}
 		});
 
@@ -105,16 +109,26 @@ class Transformer {
 		}
 
 		primaryTypeName.forEach(value => {
-			this._primaryTypes.push(this.getType(value));
+			this._primaryTypes.push(this.getType(value) as SchemaClass);
 		});
+	}
+
+	parse(sourceObj: any) : SchemaType {
+		if (sourceObj.classType === "Enum") {
+			return new SchemaEnum(sourceObj);
+		} else if (sourceObj.classType === "Class" || sourceObj.classType === undefined) {
+			return new SchemaClass(sourceObj);
+		} else {
+			throw new Error("Unknown classType " + sourceObj.classType);
+		}
 	}
 
 	transform() {
 
 		// First create all definitions for all types
-		for (var key in this._typeDictionary) {
-			this.defineType(this._typeDictionary[key]);
-		}
+		this._typeDictionary.forEach(type => {
+			this.defineType(type);
+		});
 	
 		var answer:any = {
 			"$schema": "http://json-schema.org/draft-06/schema#",
@@ -181,30 +195,38 @@ class Transformer {
 		return answer;
 	}
 
-	private getType(typeName: string) {
-		var answer = this._typeDictionary[typeName];
+	private getType(typeName: string) : SchemaType {
+		var answer = this._typeDictionary.get(typeName);
 		if (answer === undefined) {
-			throw new Error("Type " + typeName + " could not be found.");
+			var knownTypes = "";
+			this._typeDictionary.forEach((value, key) => {
+				if (knownTypes.length > 0) {
+					knownTypes += ", ";
+				}
+				knownTypes += key;
+			});
+			throw new Error("Type " + typeName + " could not be found. Known types: " + knownTypes);
 		}
 		return answer;
 	}
 
-	private transformType(type: any) {
+	private transformType(type: SchemaType) {
 		try {
-			if (type.classType === "Enum") {
-				var transformed: any = { ...type };
+			if (type instanceof SchemaEnum) {
+				var enumType = type as SchemaEnum;
+				var transformed: any = { ...type.original };
 				delete transformed.type;
 				delete transformed.values;
 				delete transformed.classType;
 				delete transformed.$schema;
 				delete transformed.extends;
-				transformed.enum = type.values;
+				transformed.enum = enumType.values;
 				return transformed;
-			} else if (type.classType && type.classType !== "Class") {
-				throw new Error("Unknown class type " + type.classType);
+			} else if (!(type instanceof SchemaClass)) {
+				throw new Error("Unknown class type " + type);
 			}
 
-			var transformed: any = { ...type };
+			var transformed: any = { ...type.original };
 			transformed.type = "object";
 			transformed.additionalProperties = false;
 
@@ -217,27 +239,26 @@ class Transformer {
 				transformed.properties = [];
 			}
 		
-			if (transformed.properties) {
-				for (var key in transformed.properties) {
+			if (type.properties.size > 0) {
+				type.properties.forEach((propVal, key) => {
 
-					var propVal = transformed.properties[key];
-
+					var transformedPropVal: any;
 					try {
-						propVal = this.transformPropertyValue(propVal);
+						transformedPropVal = this.transformPropertyValue(propVal);
 					} catch (err) {
 						throw new Error("Failed transforming property " + key + "\n\n" + err.stack);
 					}
 
-					if (propVal.required) {
-						delete propVal.required;
+					if (transformedPropVal.required) {
+						delete transformedPropVal.required;
 						if (!transformed.required) {
 							transformed.required = [];
 						}
 						transformed.required.push(key);
 					}
 
-					transformed.properties[key] = propVal;
-				}
+					transformed.properties[key] = transformedPropVal;
+				});
 			}
 
 			if (!type.isAbstract) {
@@ -257,13 +278,13 @@ class Transformer {
 			if (type.extends.length > 0) {
 
 				// Have to add placeholders for all the properties
-				this.getAllExtendedProperties(type).forEach(extendedPropKey => {
+				type.getAllExtendedProperties().forEach(extendedPropKey => {
 					transformed.properties[extendedPropKey] = {};
 				});
 
 				transformed.allOf = [];
 				type.extends.forEach(extended => {
-					if (!isObjectEmpty(extended.properties)) {
+					if (extended.properties.size > 0) {
 						transformed.allOf.push({
 							$ref: "#/definitions/Extendable." + extended.type
 						});
@@ -271,12 +292,12 @@ class Transformer {
 				});
 
 				// Keep track of implementations
-				this.getAllExtended(type).forEach(extended => {
+				type.getAllExtended().forEach(extended => {
 					if (!this._implementationsOf[extended.type]) {
 						this._implementationsOf[extended.type] = [];
 						
 						// If extending type isn't abstract, add that as an implementation
-						if (!this.getType(extended.type).isAbstract) {
+						if (!extended.isAbstract) {
 							this._implementationsOf[extended.type].push(extended.type);
 						}
 					}
@@ -296,84 +317,40 @@ class Transformer {
 		}
 	}
 
-	private getAllExtended(type) {
-		var extended = [];
-		type.extends.forEach(extendedType => {
-			extended.push(extendedType);
-
-			// Recursively get lower
-			var recursiveExtended = this.getAllExtended(extendedType);
-			extended = extended.concat(recursiveExtended);
-		});
-		return extended;
-	}
-
-	private getAllExtendedProperties(type) {
-		var props = [];
-		this.getAllExtended(type).forEach(extendedType => {
-			if (!isObjectEmpty(extendedType.properties)) {
-				for (var key in extendedType.properties) {
-					props.push(key);
-				}
-			}
-		});
-		return props;
-	}
-
-	private transformPropertyValue(propertyValue: any) {
-		var cleanPropertyValue = { ... propertyValue };
+	private transformPropertyValue(propertyValue: SchemaProperty) {
+		var cleanPropertyValue = { ... propertyValue.original };
 		delete cleanPropertyValue.type;
 		delete cleanPropertyValue.shorthands;
 
-		var typeNames = propertyValue.type.split("|");
+		var types: SchemaPropertyType[] = [];
 		var values = [];
 
-		if (propertyValue.shorthands) {
-			propertyValue.shorthands.forEach(shorthand => {
-				typeNames.push(shorthand.type);
+		propertyValue.types.forEach(type => {
+			types.push(type);
+		});
+
+		propertyValue.shorthands.forEach(shorthand => {
+			shorthand.types.forEach(type => {
+				types.push(type);
 			});
-		}
+		});
 
-		typeNames.forEach(typeName => {
+		types.forEach(type => {
 			var transformedValue: any = {};
-			var isNullable = typeName.endsWith("?");
-			if (isNullable) {
-				typeName = typeName.substr(0, typeName.length - 1);
-			}
-			var isArray = typeName.endsWith("[]");
-			if (isArray) {
-				typeName = typeName.substr(0, typeName.length - 2);
-			}
-			var isDictionary = typeName.startsWith("Dictionary<") && typeName.endsWith(">");
-			if (isDictionary) {
-				typeName = typeName.substr("Dictionary<".length);
-				typeName = typeName.substr(0, typeName.length - 1);
-			}
-			switch (typeName) {
-				case "uri":
-					transformedValue.type = "string";
-					transformedValue.format = "uri";
-					break;
-		
-				case "string":
-				case "number":
-				case "boolean":
-				case "object":
-					transformedValue.type = typeName;
-					break;
 
-				case "any":
-					// Don't set a type
-					break;
-		
-				default:
-					// Must be an object reference
-					// Note that we can't check _implementationsOf, since that isn't fully populated till we've
-					// processed all types
-					transformedValue.$ref = "#/definitions/" + (this.hasMultipleImplementations(typeName) ? "ImplementationsOf." : "") + typeName;
-					break;
+			if (type.type instanceof SchemaLiteral) {
+				if (type.type.schemaType) {
+					transformedValue.type = type.type.schemaType;
+				}
+				if (type.type.schemaFormat) {
+					transformedValue.format = type.type.schemaFormat;
+				}
+			} else {
+				// Must be an object reference
+				transformedValue.$ref = "#/definitions/" + (this.hasMultipleImplementations(type.type.type) ? "ImplementationsOf." : "") + type.type.type;
 			}
-			if (isDictionary) {
+
+			if (type.isDictionary) {
 				transformedValue = {
 					"type": "object",
 					"additionalProperties": {
@@ -381,30 +358,28 @@ class Transformer {
 					}
 				};
 			}
-			if (isArray) {
+			if (type.isArray) {
 				transformedValue = {
 					"type": "array",
 					"items": { ...transformedValue }
 				};
-				if (typeName === "any") {
+				if (type.type == SchemaLiteral.any) {
 					// Any types don't need type definitions
 					delete transformedValue.items;
 				}
 			}
 
-			if (propertyValue.shorthands) {
-				propertyValue.shorthands.forEach(shorthand => {
-					if (shorthand.type === typeName) {
-						var cleanShorthandValue = { ...shorthand };
-						delete cleanShorthandValue.type;
-						transformedValue = { ...transformedValue, ...cleanShorthandValue };
-					}
-				});
-			}
+			propertyValue.shorthands.forEach(shorthand => {
+				if (shorthand.types.indexOf(type) != -1) {
+					var cleanShorthandValue = { ...shorthand.original };
+					delete cleanShorthandValue.type;
+					transformedValue = { ...transformedValue, ...cleanShorthandValue };
+				}
+			});
 
 			values.push(transformedValue);
 
-			if (isNullable) {
+			if (type.isNullable) {
 				values.push({
 					"type": "null"
 				});
@@ -425,23 +400,19 @@ class Transformer {
 	}
 
 	private hasMultipleImplementations(typeName: string) {
-		for (var key in this._typeDictionary) {
-			var extensions = this._typeDictionary[key].extends;
-			for (var i = 0; i < extensions.length; i++) {
-				if (extensions[i].type === typeName) {
-					return true;
-				}
-			}
+		var type = this._typeDictionary.get(typeName);
+		if (type instanceof SchemaClass && type.implementations.length > 0) {
+			return true;
 		}
 		return false;
 	}
 
-	private defineType(type: any) {
+	private defineType(type: SchemaType) {
 		var typeName: string = type.type;
 		var transformedType = this.transformType(type);
 
 		// If there's multiple implementations of this type
-		if (this.hasMultipleImplementations(typeName) && type.properties && !isObjectEmpty(type.properties)) {
+		if (this.hasMultipleImplementations(typeName) && type instanceof SchemaClass && type.properties.size > 0) {
 			// Then we must define an extendable flavor that doesn't have the additionalProperties = false
 			var extendableType = { ...transformedType };
 			delete extendableType.additionalProperties;
@@ -449,7 +420,7 @@ class Transformer {
 		}
 
 		// As long as it's not abstract (no reason to define those, they'll be defined as extendable if used)
-		if (!type.isAbstract) {
+		if (!(type instanceof SchemaClass && type.isAbstract)) {
 			this._definitions[typeName] = transformedType;
 		}
 	}
