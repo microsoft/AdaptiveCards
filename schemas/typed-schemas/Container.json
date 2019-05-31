@@ -6,7 +6,8 @@
 	"properties": {
 		"items": {
 			"type": "CardElement",
-			"description": "The card elements to render inside the `Container`."
+			"description": "The card elements to render inside the `Container`.",
+			"required": true
 		},
 		"selectAction": {
 			"type": "ISelectAction",
@@ -35,15 +36,11 @@
 			"version": "1.2",
 			"shorthands": [
 				{
-					"type": "string",
+					"type": "uri",
 					"description": "The URL (or data url) to use as the background image.",
 					"version": "1.0"
 				}
 			]
 		}
-	},
-	"required": [
-		"type",
-		"items"
-	]
+	}
 }

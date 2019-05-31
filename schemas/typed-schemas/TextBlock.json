@@ -1,0 +1,47 @@
+{
+	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+	"type": "TextBlock",
+	"extends": "CardElement",
+	"description": "Displays text, allowing control over font sizes, weight, and color.",
+	"properties": {
+        "text": {
+            "type": "string",
+            "description": "Text to display",
+            "required": true
+        },
+        "color": {
+            "type": "Colors",
+            "description": "Controls the color of `TextBlock` elements."
+        },
+        "fontType": {
+            "type": "FontType",
+			"description": "Type of font to use for rendering"
+        },
+        "horizontalAlignment": {
+            "type": "HorizontalAlignment",
+            "description": "Controls how this element is horizontally positioned within its parent."
+        },
+        "isSubtle": {
+            "type": "boolean",
+            "description": "If `true`, displays text slightly toned down to appear less prominent.",
+            "default": false
+        },
+        "maxLines": {
+            "type": "number",
+            "description": "Specifies the maximum number of lines to display."
+        },
+        "size": {
+            "type": "FontSize",
+            "description": "Controls size of text."
+        },
+        "weight": {
+            "type": "FontWeight",
+            "description": "Controls the weight of `TextBlock` elements."
+        },
+        "wrap": {
+			"type": "boolean",
+			"description": "If `true`, allow text to wrap. Otherwise, text is clipped.",
+			"default": false
+		}
+	}
+}
