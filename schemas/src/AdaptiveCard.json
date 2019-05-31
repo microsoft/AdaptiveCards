@@ -3,7 +3,7 @@
 	"description": "An Adaptive Card",
 	"properties": {
 		"body": {
-			"type": "CardElement[]",
+			"type": "BlockElement[]",
 			"description": "The card elements to show in the primary card region."
 		},
 		"actions": {

@@ -97,7 +97,7 @@
         "body": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ImplementationsOf.CardElement"
+            "$ref": "#/definitions/ImplementationsOf.BlockElement"
           },
           "description": "The card elements to show in the primary card region."
         },
@@ -209,7 +209,7 @@
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ImplementationsOf.CardElement"
+            "$ref": "#/definitions/ImplementationsOf.BlockElement"
           },
           "description": "The card elements to render inside the `Column`."
         },
@@ -280,7 +280,7 @@
       ],
       "allOf": [
         {
-          "$ref": "#/definitions/Extendable.CardElement"
+          "$ref": "#/definitions/Extendable.Element"
         }
       ]
     },
@@ -347,7 +347,7 @@
       "additionalProperties": false,
       "allOf": [
         {
-          "$ref": "#/definitions/Extendable.CardElement"
+          "$ref": "#/definitions/Extendable.BlockElement"
         }
       ]
     },
@@ -363,7 +363,7 @@
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ImplementationsOf.CardElement"
+            "$ref": "#/definitions/ImplementationsOf.BlockElement"
           },
           "description": "The card elements to render inside the `Container`."
         },
@@ -423,7 +423,7 @@
       ],
       "allOf": [
         {
-          "$ref": "#/definitions/Extendable.CardElement"
+          "$ref": "#/definitions/Extendable.BlockElement"
         }
       ]
     },
@@ -593,7 +593,7 @@
       ],
       "allOf": [
         {
-          "$ref": "#/definitions/Extendable.CardElement"
+          "$ref": "#/definitions/Extendable.BlockElement"
         }
       ]
     },
@@ -637,7 +637,7 @@
       ],
       "allOf": [
         {
-          "$ref": "#/definitions/Extendable.CardElement"
+          "$ref": "#/definitions/Extendable.BlockElement"
         }
       ]
     },
@@ -729,7 +729,7 @@
       ],
       "allOf": [
         {
-          "$ref": "#/definitions/Extendable.CardElement"
+          "$ref": "#/definitions/Extendable.BlockElement"
         }
       ]
     },
@@ -791,7 +791,7 @@
         }
       ]
     },
-    "ImplementationsOf.CardElement": {
+    "ImplementationsOf.Element": {
       "anyOf": [
         {
           "required": [
@@ -803,6 +803,60 @@
             }
           ]
         },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/ColumnSet"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Container"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Image"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Media"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/TextBlock"
+            }
+          ]
+        }
+      ]
+    },
+    "ImplementationsOf.BlockElement": {
+      "anyOf": [
         {
           "required": [
             "type"
@@ -870,7 +924,20 @@
       },
       "type": "object"
     },
-    "Extendable.CardElement": {
+    "Extendable.BlockElement": {
+      "properties": {
+        "id": {},
+        "spacing": {},
+        "separator": {}
+      },
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.Element"
+        }
+      ]
+    },
+    "Extendable.Element": {
       "properties": {
         "id": {
           "type": "string",
