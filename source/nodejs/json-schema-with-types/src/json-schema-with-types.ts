@@ -226,6 +226,7 @@ class Transformer {
 				case "string":
 				case "number":
 				case "boolean":
+				case "object":
 					transformedValue.type = typeName;
 					break;
 		

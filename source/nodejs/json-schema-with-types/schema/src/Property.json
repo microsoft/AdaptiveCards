@@ -10,6 +10,15 @@
     "description": {
       "type": "string",
       "description": "A description of the property"
+    },
+    "required": {
+      "type": "boolean",
+      "description": "Specifies whether the property is required",
+      "default": false
+    },
+    "default": {
+      "type": "object",
+      "description": "The default value of this property"
     }
   }
 }
