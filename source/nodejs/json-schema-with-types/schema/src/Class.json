@@ -1,32 +1,32 @@
 {
-  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/2e844bd4e84f255fbcc3e09d7ffd352fad6c8752/source/nodejs/json-schema-with-types/schema/lib/Type.json",
-  "type": "Class",
-  "description": "Expresses a class",
-  "properties": {
-    "type": {
-      "type": "string",
-      "description": "The name of the class",
-      "required": true
-    },
-    "description": {
-      "type": "string",
-      "description": "A description of the class"
-    },
-    "properties": {
-      "type": "Dictionary<Property>",
-      "description": "Properties of the class"
-    },
-    "isAbstract": {
-      "type": "boolean",
-      "description": "Specifies whether this class is abstract"
-    },
-    "extends": {
-      "type": "string",
-      "description": "Class that this class extends from"
-    },
-    "$schema": {
-      "type": "uri",
-      "description": "JSON schema for the JSON file"
-    }
-  }
+	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/2e844bd4e84f255fbcc3e09d7ffd352fad6c8752/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+	"type": "Class",
+	"description": "Expresses a class",
+	"properties": {
+		"type": {
+			"type": "string",
+			"description": "The name of the class",
+			"required": true
+		},
+		"description": {
+			"type": "string",
+			"description": "A description of the class"
+		},
+		"properties": {
+			"type": "Dictionary<Property>",
+			"description": "Properties of the class"
+		},
+		"isAbstract": {
+			"type": "boolean",
+			"description": "Specifies whether this class is abstract"
+		},
+		"extends": {
+			"type": "string",
+			"description": "Class that this class extends from"
+		},
+		"$schema": {
+			"type": "uri",
+			"description": "JSON schema for the JSON file"
+		}
+	}
 }

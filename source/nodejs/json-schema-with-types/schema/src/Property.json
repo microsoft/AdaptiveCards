@@ -1,24 +1,28 @@
 {
-  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/2e844bd4e84f255fbcc3e09d7ffd352fad6c8752/source/nodejs/json-schema-with-types/schema/lib/Type.json",
-  "type": "Property",
-  "properties": {
-    "type": {
-      "type": "string",
-      "description": "The type of the property",
-      "required": true
-    },
-    "description": {
-      "type": "string",
-      "description": "A description of the property"
-    },
-    "required": {
-      "type": "boolean",
-      "description": "Specifies whether the property is required",
-      "default": false
-    },
-    "default": {
-      "type": "any",
-      "description": "The default value of this property"
-    }
-  }
+	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/2e844bd4e84f255fbcc3e09d7ffd352fad6c8752/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+	"type": "Property",
+	"properties": {
+		"type": {
+			"type": "string",
+			"description": "The type of the property",
+			"required": true
+		},
+		"description": {
+			"type": "string",
+			"description": "A description of the property"
+		},
+		"required": {
+			"type": "boolean",
+			"description": "Specifies whether the property is required",
+			"default": false
+		},
+		"default": {
+			"type": "any",
+			"description": "The default value of this property"
+		},
+		"examples": {
+			"type": "any[]",
+			"description": "Examples of this value"
+		}
+	}
 }

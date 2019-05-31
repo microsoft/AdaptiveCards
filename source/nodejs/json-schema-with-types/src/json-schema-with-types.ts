@@ -258,6 +258,10 @@ class Transformer {
 					"type": "array",
 					"items": { ...transformedValue }
 				};
+				if (typeName === "any") {
+					// Any types don't need type definitions
+					delete transformedValue.items;
+				}
 			}
 
 			values.push(transformedValue);

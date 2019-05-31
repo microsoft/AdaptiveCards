@@ -1,21 +1,21 @@
 {
-  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/2e844bd4e84f255fbcc3e09d7ffd352fad6c8752/source/nodejs/json-schema-with-types/schema/lib/Type.json",
-  "type": "Enum",
-  "description": "Expresses an enum",
-  "properties": {
-    "type": {
-      "type": "string",
-      "description": "The name of the enum",
-      "required": true
-    },
-    "values": {
-      "type": "string[]",
-      "description": "The values in the enum",
-      "required": true
-    },
-    "$schema": {
-      "type": "uri",
-      "description": "JSON schema for the JSON file"
-    }
-  }
+	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/2e844bd4e84f255fbcc3e09d7ffd352fad6c8752/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+	"type": "Enum",
+	"description": "Expresses an enum",
+	"properties": {
+		"type": {
+			"type": "string",
+			"description": "The name of the enum",
+			"required": true
+		},
+		"values": {
+			"type": "string[]",
+			"description": "The values in the enum",
+			"required": true
+		},
+		"$schema": {
+			"type": "uri",
+			"description": "JSON schema for the JSON file"
+		}
+	}
 }

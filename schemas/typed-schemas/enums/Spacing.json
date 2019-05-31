@@ -3,9 +3,9 @@
 	"extends": "enum",
 	"description": "Specifies how much spacing. Hosts pick the exact pixel amounts for each of these.",
 	"values": [
+		"default",
 		"none",
 		"small",
-		"default",
 		"medium",
 		"large",
 		"extraLarge",

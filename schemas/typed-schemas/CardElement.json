@@ -13,8 +13,7 @@
 		},
 		"separator": {
 			"type": "boolean",
-			"description": "When `true`, draw a separating line at the top of the element.",
-			"default": false
+			"description": "When `true`, draw a separating line at the top of the element."
 		}
 	}
 }

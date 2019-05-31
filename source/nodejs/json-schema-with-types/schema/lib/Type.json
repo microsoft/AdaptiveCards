@@ -3,7 +3,7 @@
   "id": "http://adaptivecards.io/schemas/adaptive-card.json",
   "definitions": {
     "Class": {
-      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/andrewleader/specing-with-types/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/2e844bd4e84f255fbcc3e09d7ffd352fad6c8752/source/nodejs/json-schema-with-types/schema/lib/Type.json",
       "type": "object",
       "description": "Expresses a class",
       "properties": {
@@ -48,7 +48,7 @@
       ]
     },
     "Enum": {
-      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/andrewleader/specing-with-types/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/2e844bd4e84f255fbcc3e09d7ffd352fad6c8752/source/nodejs/json-schema-with-types/schema/lib/Type.json",
       "type": "object",
       "description": "Expresses an enum",
       "properties": {
@@ -82,7 +82,7 @@
       ]
     },
     "Property": {
-      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/andrewleader/specing-with-types/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/2e844bd4e84f255fbcc3e09d7ffd352fad6c8752/source/nodejs/json-schema-with-types/schema/lib/Type.json",
       "type": "object",
       "properties": {
         "classType": {
@@ -106,6 +106,10 @@
         },
         "default": {
           "description": "The default value of this property"
+        },
+        "examples": {
+          "type": "array",
+          "description": "Examples of this value"
         }
       },
       "additionalProperties": false,
