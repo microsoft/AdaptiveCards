@@ -208,6 +208,10 @@ class Transformer {
 
 		typeNames.forEach(typeName => {
 			var transformedValue: any = {};
+			var isNullable = typeName.endsWith("?");
+			if (isNullable) {
+				typeName = typeName.substr(0, typeName.length - 1);
+			}
 			var isArray = typeName.endsWith("[]");
 			if (isArray) {
 				typeName = typeName.substr(0, typeName.length - 2);
@@ -235,6 +239,7 @@ class Transformer {
 					break;
 		
 				default:
+					// Must be an object reference
 					// Note that we can't check _implementationsOf, since that isn't fully populated till we've
 					// processed all types
 					transformedValue.$ref = "#/definitions/" + (this.hasMultipleImplementations(typeName) ? "ImplementationsOf." : "") + typeName;
@@ -254,7 +259,14 @@ class Transformer {
 					"items": { ...transformedValue }
 				};
 			}
+
 			values.push(transformedValue);
+
+			if (isNullable) {
+				values.push({
+					"type": "null"
+				});
+			}
 		});
 
 		if (values.length == 1) {
