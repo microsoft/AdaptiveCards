@@ -11,7 +11,7 @@
 			"description": "The Actions to show in the card's action bar."
 		},
 		"selectAction": {
-			"type": "IActionExceptShowCard",
+			"type": "ISelectAction",
 			"description": "An Action that will be invoked when the card is tapped or selected. `Action.ShowCard` is not supported.",
 			"version": "1.1"
 		},
@@ -52,6 +52,10 @@
 				"fr",
 				"es"
 			]
+		},
+		"$schema": {
+			"type": "uri",
+			"description": "The Adaptive Card schema."
 		}
 	}
 }

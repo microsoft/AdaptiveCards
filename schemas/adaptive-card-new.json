@@ -3,7 +3,6 @@
   "id": "http://adaptivecards.io/schemas/adaptive-card.json",
   "definitions": {
     "Action.OpenUrl": {
-      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
       "description": "When invoked, show the given url either by launching it in an external web browser or showing within an embedded web browser.",
       "properties": {
         "type": {
@@ -30,7 +29,6 @@
       ]
     },
     "Action.ShowCard": {
-      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
       "description": "Defines an AdaptiveCard which is shown to the user when the button or link is clicked.",
       "properties": {
         "type": {
@@ -53,7 +51,6 @@
       ]
     },
     "Action.Submit": {
-      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
       "description": "Gathers input fields, merges with optional data field, and sends an event to the client. It is up to the client to determine how this data is processed. For example: With BotFramework bots, the client would send an activity through the messaging medium to the bot.",
       "properties": {
         "type": {
@@ -83,7 +80,6 @@
       ]
     },
     "AdaptiveCard": {
-      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
       "description": "An Adaptive Card",
       "properties": {
         "type": {
@@ -107,7 +103,7 @@
           "description": "The Actions to show in the card's action bar."
         },
         "selectAction": {
-          "$ref": "#/definitions/ImplementationsOf.IActionExceptShowCard",
+          "$ref": "#/definitions/ImplementationsOf.ISelectAction",
           "description": "An Action that will be invoked when the card is tapped or selected. `Action.ShowCard` is not supported.",
           "version": "1.1"
         },
@@ -151,13 +147,17 @@
             "fr",
             "es"
           ]
+        },
+        "$schema": {
+          "type": "string",
+          "format": "uri",
+          "description": "The Adaptive Card schema."
         }
       },
       "type": "object",
       "additionalProperties": false
     },
     "BackgroundImage": {
-      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
       "description": "Specifies a background image.",
       "properties": {
         "type": {
@@ -192,7 +192,6 @@
       ]
     },
     "Container": {
-      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
       "description": "Containers group items together.",
       "properties": {
         "type": {
@@ -206,7 +205,7 @@
           "description": "The card elements to render inside the `Container`."
         },
         "selectAction": {
-          "$ref": "#/definitions/ISelectAction",
+          "$ref": "#/definitions/ImplementationsOf.ISelectAction",
           "description": "An Action that will be invoked when the `Container` is tapped or selected. `Action.ShowCard` is not supported.",
           "version": "1.1"
         },
@@ -263,9 +262,7 @@
       ]
     },
     "Colors": {
-      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
-      "classType": "Enum",
-      "values": [
+      "enum": [
         "default",
         "dark",
         "light",
@@ -273,180 +270,72 @@
         "good",
         "warning",
         "attention"
-      ],
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "type": {
-          "enum": [
-            "Colors"
-          ],
-          "description": "Must be `Colors`"
-        }
-      }
+      ]
     },
     "ContainerStyle": {
-      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
-      "classType": "Enum",
-      "values": [
+      "enum": [
         "default",
         "emphasis"
-      ],
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "type": {
-          "enum": [
-            "ContainerStyle"
-          ],
-          "description": "Must be `ContainerStyle`"
-        }
-      }
+      ]
     },
     "FontSize": {
-      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
-      "classType": "Enum",
-      "values": [
+      "enum": [
         "default",
         "small",
         "medium",
         "large",
         "extraLarge"
-      ],
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "type": {
-          "enum": [
-            "FontSize"
-          ],
-          "description": "Must be `FontSize`"
-        }
-      }
+      ]
     },
     "FontType": {
-      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
-      "classType": "Enum",
-      "values": [
+      "enum": [
         "default",
         "monospace"
-      ],
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "type": {
-          "enum": [
-            "FontType"
-          ],
-          "description": "Must be `FontType`"
-        }
-      }
+      ]
     },
     "FontWeight": {
-      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
-      "classType": "Enum",
-      "values": [
+      "enum": [
         "default",
         "lighter",
         "bolder"
-      ],
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "type": {
-          "enum": [
-            "FontWeight"
-          ],
-          "description": "Must be `FontWeight`"
-        }
-      }
+      ]
     },
     "HorizontalAlignment": {
-      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
-      "classType": "Enum",
       "description": "Controls how content is horizontally positioned within its container.",
-      "values": [
+      "enum": [
         "left",
         "center",
         "right"
-      ],
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "type": {
-          "enum": [
-            "HorizontalAlignment"
-          ],
-          "description": "Must be `HorizontalAlignment`"
-        }
-      }
+      ]
     },
     "ImageFillMode": {
-      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
-      "classType": "Enum",
-      "values": [
+      "enum": [
         "cover",
         "repeatHorizontally",
         "repeatVertically",
         "repeat"
-      ],
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "type": {
-          "enum": [
-            "ImageFillMode"
-          ],
-          "description": "Must be `ImageFillMode`"
-        }
-      }
+      ]
     },
     "ImageSize": {
-      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
-      "classType": "Enum",
       "description": "Controls the approximate size of the image. The physical dimensions will vary per host. Specify `\"auto\"` for true image dimension, or `\"stretch\"` to force it to fill the container.",
-      "values": [
+      "enum": [
         "auto",
         "stretch",
         "small",
         "medium",
         "large"
-      ],
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "type": {
-          "enum": [
-            "ImageSize"
-          ],
-          "description": "Must be `ImageSize`"
-        }
-      }
+      ]
     },
     "ImageStyle": {
-      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
-      "classType": "Enum",
       "description": "Controls how this `Image` is displayed.",
-      "values": [
+      "enum": [
         "default",
         "person"
-      ],
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "type": {
-          "enum": [
-            "ImageStyle"
-          ],
-          "description": "Must be `ImageStyle`"
-        }
-      }
+      ]
     },
     "Spacing": {
-      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
-      "classType": "Enum",
       "description": "Specifies how much spacing. Hosts pick the exact pixel amounts for each of these.",
-      "values": [
+      "enum": [
         "default",
         "none",
         "small",
@@ -454,58 +343,23 @@
         "large",
         "extraLarge",
         "padding"
-      ],
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "type": {
-          "enum": [
-            "Spacing"
-          ],
-          "description": "Must be `Spacing`"
-        }
-      }
+      ]
     },
     "VerticalAlignment": {
-      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
-      "classType": "Enum",
-      "values": [
+      "enum": [
         "top",
         "center",
         "bottom"
-      ],
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "type": {
-          "enum": [
-            "VerticalAlignment"
-          ],
-          "description": "Must be `VerticalAlignment`"
-        }
-      }
+      ]
     },
     "VerticalContentAlignment": {
-      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
-      "classType": "Enum",
-      "values": [
+      "enum": [
         "top",
         "center",
         "bottom"
-      ],
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "type": {
-          "enum": [
-            "VerticalContentAlignment"
-          ],
-          "description": "Must be `VerticalContentAlignment`"
-        }
-      }
+      ]
     },
     "Image": {
-      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
       "description": "Displays an image.",
       "properties": {
         "type": {
@@ -542,7 +396,7 @@
           "description": "Controls how this element is horizontally positioned within its parent."
         },
         "selectAction": {
-          "$ref": "#/definitions/IActionWithinElement",
+          "$ref": "#/definitions/ImplementationsOf.ISelectAction",
           "description": "An Action that will be invoked when the `Image` is tapped or selected. `Action.ShowCard` is not supported.",
           "version": "1.1"
         },
@@ -575,7 +429,6 @@
       ]
     },
     "Media": {
-      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
       "description": "Displays a media player for audio or video content.",
       "version": "1.1",
       "features": [
@@ -617,7 +470,6 @@
       ]
     },
     "MediaSource": {
-      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
       "description": "Defines a source for a Media element",
       "version": "1.1",
       "features": [
@@ -645,15 +497,9 @@
       "required": [
         "mimeType",
         "url"
-      ],
-      "allOf": [
-        {
-          "$ref": "#/definitions/Extendable.CardElement"
-        }
       ]
     },
     "TextBlock": {
-      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
       "description": "Displays text, allowing control over font sizes, weight, and color.",
       "properties": {
         "type": {
@@ -746,7 +592,7 @@
         }
       ]
     },
-    "ImplementationsOf.IActionExceptShowCard": {
+    "ImplementationsOf.ISelectAction": {
       "anyOf": [
         {
           "required": [
@@ -808,16 +654,6 @@
           ],
           "allOf": [
             {
-              "$ref": "#/definitions/MediaSource"
-            }
-          ]
-        },
-        {
-          "required": [
-            "type"
-          ],
-          "allOf": [
-            {
               "$ref": "#/definitions/TextBlock"
             }
           ]
@@ -825,7 +661,6 @@
       ]
     },
     "Extendable.Action": {
-      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
       "properties": {
         "title": {
           "type": "string",
@@ -841,7 +676,6 @@
       "type": "object"
     },
     "Extendable.CardElement": {
-      "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
       "properties": {
         "id": {
           "type": "string",

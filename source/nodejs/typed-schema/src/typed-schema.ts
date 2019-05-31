@@ -175,6 +175,7 @@ class Transformer {
 				delete transformed.type;
 				delete transformed.values;
 				delete transformed.classType;
+				delete transformed.$schema;
 				transformed.enum = type.values;
 				return transformed;
 			} else if (type.classType && type.classType !== "Class") {
@@ -187,6 +188,7 @@ class Transformer {
 
 			delete transformed.isAbstract;
 			delete transformed.classType;
+			delete transformed.$schema;
 
 			if (!transformed.properties) {
 				transformed.properties = [];

@@ -29,7 +29,7 @@
             "description": "Controls how this element is horizontally positioned within its parent."
         },
         "selectAction": {
-            "type": "IActionWithinElement",
+            "type": "ISelectAction",
             "description": "An Action that will be invoked when the `Image` is tapped or selected. `Action.ShowCard` is not supported.",
             "version": "1.1"
         },
