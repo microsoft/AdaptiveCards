@@ -239,6 +239,11 @@ class Transformer {
 						transformed.allOf.push({
 							$ref: "#/definitions/Extendable." + extended
 						});
+
+						// Have to add placeholders for all the properties
+						for (var extendedPropKey in this._typeDictionary[extended].properties) {
+							transformed.properties[extendedPropKey] = {};
+						}
 					}
 					
 					// Keep track of implementations

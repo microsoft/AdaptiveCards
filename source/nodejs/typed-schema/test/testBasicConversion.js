@@ -474,7 +474,8 @@ describe("Test transform", function () {
 								"type": "string",
 								"format": "uri",
 								"description": "The url to open"
-							}
+							},
+							"title": {} // We have to specify placeholders since additionalProperties=false doesn't allow extended properties
 						},
 						"allOf": [
 							{
@@ -590,7 +591,8 @@ describe("Test transform", function () {
 							"url": {
 								"type": "string",
 								"format": "uri"
-							}
+							},
+							"title": {}
 						},
 						"allOf": [
 							{
@@ -608,7 +610,8 @@ describe("Test transform", function () {
 							},
 							"data": {
 								"type": "string"
-							}
+							},
+							"title": {}
 						},
 						"allOf": [
 							{
@@ -990,7 +993,8 @@ describe("Test transform", function () {
 							"url": {
 								"type": "string",
 								"format": "uri"
-							}
+							},
+							"title": {}
 						},
 						"allOf": [
 							{
@@ -1008,7 +1012,8 @@ describe("Test transform", function () {
 							},
 							"data": {
 								"type": "string"
-							}
+							},
+							"title": {}
 						},
 						"allOf": [
 							{
@@ -1417,7 +1422,8 @@ describe("Test transform", function () {
 								"type": "string",
 								"format": "uri",
 								"description": "The url to open"
-							}
+							},
+							"title": {}
 						},
 						"allOf": [
 							{
