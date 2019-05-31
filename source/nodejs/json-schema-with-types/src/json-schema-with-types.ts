@@ -38,6 +38,9 @@ function readFileAsync(fileName: string, encoding: string) : Promise<string> {
 }
 
 function isObjectEmpty(obj: any) {
+	if (!obj) {
+		return true;
+	}
 	for (var key in obj) {
 		return false;
 	}
@@ -188,23 +191,28 @@ class Transformer {
 		}
 
 		if (type.extends) {
-			transformed.allOf = [
-				{
-					$ref: "#/definitions/Extendable." + type.extends
+			transformed.allOf = [];
+			type.extends.split(",").forEach(extended => {
+				extended = extended.trim();
+				if (!isObjectEmpty(this._typeDictionary[extended].properties)) {
+					transformed.allOf.push({
+						$ref: "#/definitions/Extendable." + extended
+					});
 				}
-			];
+				
+				// Keep track of implementations
+				if (!this._implementationsOf[extended]) {
+					this._implementationsOf[extended] = [];
+					
+					// If extending type isn't abstract, add that as an implementation
+					if (!this._typeDictionary[extended].isAbstract) {
+						this._implementationsOf[extended].push(extended);
+					}
+				}
+				this._implementationsOf[extended].push(type.type);
+			});
 			delete transformed.extends;
 
-			// Keep track of implementations
-			if (!this._implementationsOf[type.extends]) {
-				this._implementationsOf[type.extends] = [];
-				
-				// If extending type isn't abstract, add that as an implementation
-				if (!this._typeDictionary[type.extends].isAbstract) {
-					this._implementationsOf[type.extends].push(type.extends);
-				}
-			}
-			this._implementationsOf[type.extends].push(type.type);
 		}
 	
 		return transformed;
@@ -316,8 +324,13 @@ class Transformer {
 
 	private hasMultipleImplementations(typeName: string) {
 		for (var key in this._typeDictionary) {
-			if (this._typeDictionary[key].extends === typeName) {
-				return true;
+			if (this._typeDictionary[key].extends) {
+				var extendedTypes = this._typeDictionary[key].extends.split(",");
+				for (var i = 0; i < extendedTypes.length; i++) {
+					if (extendedTypes[i].trim() === typeName) {
+						return true;
+					}
+				}
 			}
 		}
 		return false;
@@ -328,7 +341,7 @@ class Transformer {
 		var transformedType = this.transformType(type);
 
 		// If there's multiple implementations of this type
-		if (this.hasMultipleImplementations(typeName)) {
+		if (this.hasMultipleImplementations(typeName) && type.properties && !isObjectEmpty(type.properties)) {
 			// Then we must define an extendable flavor that doesn't have the additionalProperties = false
 			var extendableType = { ...transformedType };
 			delete extendableType.additionalProperties;

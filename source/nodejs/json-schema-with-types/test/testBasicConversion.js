@@ -1335,6 +1335,134 @@ describe("Test transform", function () {
 			}
 		})
 	});
+
+	it("Test marker interfaces", function () {
+		assertTransform({
+			types: [
+				{
+					"type": "AdaptiveCard",
+					"properties": {
+						"moreInfoAction": {
+							"type": "IActionWithinElement",
+							"description": "Action to invoke when user wants more info"
+						}
+					}
+				},
+				{
+					"type": "Action.OpenUrl",
+					"extends": "Action, IActionWithinElement",
+					"description": "An open URL action",
+					"properties": {
+						"url": {
+							"type": "uri",
+							"description": "The url to open"
+						}
+					}
+				},
+				{
+					"type": "Action",
+					"isAbstract": true,
+					"description": "An action to invoke",
+					"properties": {
+						"title": {
+							"type": "string",
+							"description": "The title"
+						}
+					}
+				},
+				{
+					"type": "IActionWithinElement",
+					"isAbstract": true,
+					"description": "Actions supported within elements"
+				}
+			],
+			primaryTypeName: "AdaptiveCard",
+			expected: {
+				"$schema": "http://json-schema.org/draft-06/schema#",
+				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
+				"anyOf": [
+					{
+						"allOf": [
+							{
+								"$ref": "#/definitions/AdaptiveCard"
+							}
+						]
+					}
+				],
+				"definitions": {
+					"AdaptiveCard": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"type": {
+								"enum": [ "AdaptiveCard" ],
+								"description": "Must be `AdaptiveCard`"
+							},
+							"moreInfoAction": {
+								"description": "Action to invoke when user wants more info",
+								"$ref": "#/definitions/ImplementationsOf.IActionWithinElement"
+							}
+						}
+					},
+					"Action.OpenUrl": {
+						"type": "object",
+						"additionalProperties": false,
+						"description": "An open URL action",
+						"properties": {
+							"type": {
+								"enum": [ "Action.OpenUrl" ],
+								"description": "Must be `Action.OpenUrl`"
+							},
+							"url": {
+								"type": "string",
+								"format": "uri",
+								"description": "The url to open"
+							}
+						},
+						"allOf": [
+							{
+								"$ref": "#/definitions/Extendable.Action"
+							}
+						]
+					},
+					"Extendable.Action": {
+						"type": "object",
+						"description": "An action to invoke",
+						"properties": {
+							"title": {
+								"type": "string",
+								"description": "The title"
+							}
+						}
+					},
+					"ImplementationsOf.Action": {
+						"anyOf": [
+							{
+								"required": [ "type" ],
+								"allOf": [
+									{
+										"$ref": "#/definitions/Action.OpenUrl"
+									}
+								]
+							}
+						]
+					},
+					"ImplementationsOf.IActionWithinElement": {
+						"anyOf": [
+							{
+								"required": [ "type" ],
+								"allOf": [
+									{
+										"$ref": "#/definitions/Action.OpenUrl"
+									}
+								]
+							}
+						]
+					}
+				}
+			}
+		})
+	});
 });
 
 
