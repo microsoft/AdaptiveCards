@@ -15,7 +15,9 @@
           "type": "string",
           "format": "uri",
           "description": "The URL to open."
-        }
+        },
+        "title": {},
+        "iconUrl": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -40,7 +42,9 @@
         "card": {
           "$ref": "#/definitions/AdaptiveCard",
           "description": "The Adaptive Card to show."
-        }
+        },
+        "title": {},
+        "iconUrl": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -69,7 +73,9 @@
             }
           ],
           "description": "Initial data that input fields will be combined with. These are essentially ‘hidden’ properties."
-        }
+        },
+        "title": {},
+        "iconUrl": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -251,7 +257,10 @@
           ],
           "description": "Specifies the background image.",
           "version": "1.2"
-        }
+        },
+        "id": {},
+        "spacing": {},
+        "separator": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -418,7 +427,10 @@
             "50px"
           ],
           "version": "1.1"
-        }
+        },
+        "id": {},
+        "spacing": {},
+        "separator": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -459,7 +471,10 @@
         "altText": {
           "type": "string",
           "description": "Alternate text describing the audio or video."
-        }
+        },
+        "id": {},
+        "spacing": {},
+        "separator": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -548,7 +563,10 @@
           "type": "boolean",
           "description": "If `true`, allow text to wrap. Otherwise, text is clipped.",
           "default": false
-        }
+        },
+        "id": {},
+        "spacing": {},
+        "separator": {}
       },
       "type": "object",
       "additionalProperties": false,

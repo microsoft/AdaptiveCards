@@ -1,1 +1,1 @@
-node ../source/nodejs/typed-schema/lib/command-line.js ./lib AdaptiveCard > ./adaptive-card-new.json
+node ../source/nodejs/typed-schema/lib/command-line.js ./src AdaptiveCard > ./adaptive-card-new.json
