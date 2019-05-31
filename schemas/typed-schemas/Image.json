@@ -39,7 +39,7 @@
         },
         "style": {
             "type": "ImageStyle",
-			"description": "Controls how this `Image` is displayed.",
+			"description": "Controls how this `Image` is displayed."
         },
         "width": {
             "type": "string",
