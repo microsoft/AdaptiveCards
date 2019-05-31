@@ -4,6 +4,7 @@ import {SchemaEnum} from "./SchemaEnum";
 import {SchemaProperty} from "./SchemaProperty";
 import {SchemaPropertyType} from "./SchemaPropertyType";
 import {SchemaLiteral} from "./SchemaLiteral";
+import { Schema } from "./Schema";
 
 var fs = require("fs");
 var path = require("path");
@@ -77,7 +78,7 @@ function isObjectEmpty(obj: any) {
 }
 
 class Transformer {
-	private _typeDictionary: Map<string, SchemaType> = new Map<string, SchemaType>();
+	private _schema: Schema;
 	private _primaryTypes: SchemaClass[] = [];
 	private _definitions: any = {};
 	private _implementationsOf: any = {};
@@ -86,23 +87,9 @@ class Transformer {
 	private _defaultPrimaryTypeName: string|null;
 
 	constructor (types: any[], primaryTypeName: string|string[], defaultPrimaryTypeName: string|null, typePropertyName: string) {
+		this._schema = new Schema(types);
 		this._typePropertyName = typePropertyName;
 		this._defaultPrimaryTypeName = defaultPrimaryTypeName;
-
-		types.forEach(type => {
-			this._typeDictionary.set(type.type, this.parse(type));
-		});
-
-		// Resolve types
-		this._typeDictionary.forEach(type => {
-			type.resolve(this._typeDictionary);
-		});
-
-		this._typeDictionary.forEach(type => {
-			if (type instanceof SchemaClass) {
-				type.resolveImplementations(this._typeDictionary);
-			}
-		});
 
 		if (!Array.isArray(primaryTypeName)) {
 			primaryTypeName = [ primaryTypeName ];
@@ -113,20 +100,10 @@ class Transformer {
 		});
 	}
 
-	parse(sourceObj: any) : SchemaType {
-		if (sourceObj.classType === "Enum") {
-			return new SchemaEnum(sourceObj);
-		} else if (sourceObj.classType === "Class" || sourceObj.classType === undefined) {
-			return new SchemaClass(sourceObj);
-		} else {
-			throw new Error("Unknown classType " + sourceObj.classType);
-		}
-	}
-
 	transform() {
 
 		// First create all definitions for all types
-		this._typeDictionary.forEach(type => {
+		this._schema.typeDictionary.forEach(type => {
 			this.defineType(type);
 		});
 	
@@ -196,18 +173,7 @@ class Transformer {
 	}
 
 	private getType(typeName: string) : SchemaType {
-		var answer = this._typeDictionary.get(typeName);
-		if (answer === undefined) {
-			var knownTypes = "";
-			this._typeDictionary.forEach((value, key) => {
-				if (knownTypes.length > 0) {
-					knownTypes += ", ";
-				}
-				knownTypes += key;
-			});
-			throw new Error("Type " + typeName + " could not be found. Known types: " + knownTypes);
-		}
-		return answer;
+		return this._schema.getType(typeName);
 	}
 
 	private transformType(type: SchemaType) {
@@ -400,7 +366,7 @@ class Transformer {
 	}
 
 	private hasMultipleImplementations(typeName: string) {
-		var type = this._typeDictionary.get(typeName);
+		var type = this._schema.typeDictionary.get(typeName);
 		if (type instanceof SchemaClass && type.implementations.length > 0) {
 			return true;
 		}
