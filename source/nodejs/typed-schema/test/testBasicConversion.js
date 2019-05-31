@@ -618,8 +618,14 @@ describe("Test transform", function () {
 							"title": {
 								"type": "string",
 								"description": "The title"
+							},
+							"id": {}
+						},
+						"allOf": [
+							{
+								"$ref": "#/definitions/Extendable.Element"
 							}
-						}
+						]
 					},
 					"Extendable.Element": {
 						"type": "object",

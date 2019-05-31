@@ -247,20 +247,23 @@ class Transformer {
 			}
 
 			if (type.extends.length > 0) {
+
+				// Have to add placeholders for all the properties
+				this.getAllExtendedProperties(type).forEach(extendedPropKey => {
+					transformed.properties[extendedPropKey] = {};
+				});
+
 				transformed.allOf = [];
 				type.extends.forEach(extended => {
 					if (!isObjectEmpty(extended.properties)) {
 						transformed.allOf.push({
 							$ref: "#/definitions/Extendable." + extended.type
 						});
-
-						// Have to add placeholders for all the properties
-						for (var extendedPropKey in extended.properties) {
-							transformed.properties[extendedPropKey] = {};
-						}
 					}
-					
-					// Keep track of implementations
+				});
+
+				// Keep track of implementations
+				this.getAllExtended(type).forEach(extended => {
 					if (!this._implementationsOf[extended.type]) {
 						this._implementationsOf[extended.type] = [];
 						
@@ -269,8 +272,12 @@ class Transformer {
 							this._implementationsOf[extended.type].push(extended.type);
 						}
 					}
-					this._implementationsOf[extended.type].push(type.type);
+
+					if (!type.isAbstract) {
+						this._implementationsOf[extended.type].push(type.type);
+					}
 				});
+
 				delete transformed.extends;
 
 			}
@@ -279,6 +286,30 @@ class Transformer {
 		} catch (err) {
 			throw "Failed transforming type " + type.type + "\n\n" + err.stack;
 		}
+	}
+
+	private getAllExtended(type) {
+		var extended = [];
+		type.extends.forEach(extendedType => {
+			extended.push(extendedType);
+
+			// Recursively get lower
+			var recursiveExtended = this.getAllExtended(extendedType);
+			extended = extended.concat(recursiveExtended);
+		});
+		return extended;
+	}
+
+	private getAllExtendedProperties(type) {
+		var props = [];
+		this.getAllExtended(type).forEach(extendedType => {
+			if (!isObjectEmpty(extendedType.properties)) {
+				for (var key in extendedType.properties) {
+					props.push(key);
+				}
+			}
+		});
+		return props;
 	}
 
 	private transformPropertyValue(propertyValue: any) {
