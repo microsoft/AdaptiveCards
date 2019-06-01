@@ -56,7 +56,7 @@ export class Schema {
 	}
 
 	static fromFolder(folder: string) {
-		var files = this.getAllFiles(folder);
+		var files = Schema.getAllFiles(folder);
 		var types: any[] = [];
 		files.forEach((filePath) => {
 			if (filePath.endsWith(".json")) {
@@ -87,7 +87,7 @@ export class Schema {
 			var stat = fs.statSync(file);
 			if (stat && stat.isDirectory()) { 
 				/* Recurse into a subdirectory */
-				results = results.concat(this.getAllFiles(file));
+				results = results.concat(Schema.getAllFiles(file));
 			} else { 
 				/* Is a file */
 				results.push(file);

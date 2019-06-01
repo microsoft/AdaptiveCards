@@ -1,4 +1,5 @@
 import * as markedschema from "marked-schema";
+import * as markedtypedschema from "typed-schema-markdown";
 var fs = require("fs");
 import { forEach } from "p-iteration";
 
@@ -38,8 +39,8 @@ async function generateHostConfigAsync(relativeTopDir: string) {
 
 async function generateElementsAsync(relativeTopDir: string) {
 
-	var schemaModel = await markedschema.buildModel({
-		schema: relativeTopDir + "schemas/adaptive-card.json",
+	var schemaModel = await markedtypedschema.buildModel({
+		schema: relativeTopDir + "schemas/src",
 		toc: relativeTopDir + "source/nodejs/adaptivecards-site/schema-explorer-toc.yml",
 		rootDefinition: "AdaptiveCard",
 		examplesPath: relativeTopDir + "samples/v1.*"

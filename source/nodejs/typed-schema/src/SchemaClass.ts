@@ -58,6 +58,24 @@ export class SchemaClass extends SchemaType {
 		return answer;
 	}
 
+	// Gets all properties, including inherited properties
+	getAllProperties() {
+		var answer = new Map<string, SchemaProperty>();
+		this.properties.forEach((value, key) => {
+			answer.set(key, value);
+		});
+		this.getAllExtended().forEach(extended => {
+			extended.properties.forEach((value, key) => {
+				if (answer.has(key)) {
+					// Skip. TODO: Maybe should merge values?
+				} else {
+					answer.set(key, value);
+				}
+			});
+		});
+		return answer;
+	}
+
 	resolve(types: Map<string, SchemaType>) {
 
 		// Resolve extends

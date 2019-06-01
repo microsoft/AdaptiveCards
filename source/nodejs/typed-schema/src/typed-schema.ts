@@ -9,6 +9,15 @@ import { Schema } from "./Schema";
 var fs = require("fs");
 var path = require("path");
 
+
+export * from "./SchemaType";
+export * from "./SchemaClass";
+export * from "./SchemaEnum";
+export * from "./SchemaProperty";
+export * from "./SchemaPropertyType";
+export * from "./SchemaLiteral";
+export * from "./Schema";
+
 export function transformFolder(pathToTypeFiles: string, primaryTypeName: string|string[], defaultPrimaryTypeName: string|null = null, typePropertyName: string = "type") : any {
 	return new Transformer(Schema.fromFolder(pathToTypeFiles), primaryTypeName, defaultPrimaryTypeName, typePropertyName).transform();
 }

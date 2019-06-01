@@ -4,7 +4,9 @@
     "adaptivecards*/**",
     "marked-schema/**",
     "spec-generator/**",
-    "spec-generator-script/**"
+    "spec-generator-script/**",
+    "typed-schema/**",
+    "typed-schema-markdown/**"
 	],
 	"command": {
 		"publish": {
