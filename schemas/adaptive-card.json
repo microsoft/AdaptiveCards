@@ -134,7 +134,7 @@
 				},
 				"iconUrl": {
 					"type": "string",
-					"description": "Optional icon URL to be shown on the action in conjunction with the title. Supports data URI in version 1.2+.",
+					"description": "Optional icon to be shown on the action in conjunction with the title. Supports data URI in version 1.2+.",
 					"version": "1.1"
 				},
 				"card": {
@@ -435,7 +435,7 @@
 		"ActionSet": {
 			"additionalProperties": true,
 			"type": "object",
-			"description": "Allow authors to place one or more 'action bars' anywhere within the card body",
+			"description": "Displays a set of actions anywhere within the card body",
 			"version": "1.2",
 			"allOf": [
 				{
@@ -443,14 +443,14 @@
 				}
 			],
 			"properties": {
-				"items": {
+				"actions": {
 					"description": "The actions to include in the `ActionSet`",
 					"$ref": "#/definitions/Actions"
 				}
 			},
 			"required": [
 				"type",
-				"items"
+				"actions"
 			]
 		},
 		"Input.Choice": {
@@ -1114,13 +1114,10 @@
 			"additionalProperties": true,
 			"type": "object",
 			"version": "1.2",
-			"description": "The inline action for the input. Typically displayed to the right of the input. It is strongly recommended that an icon on the action (which will be displayed instead of the title of the action).",
+			"description": "The inline action for the input. Typically displayed to the right of the input. It is strongly recommended to provide an icon on the action (which will be displayed instead of the title of the action).",
 			"oneOf": [
 				{
 					"$ref": "#/definitions/Action.Submit"
-				},
-				{
-					"$ref": "#/definitions/Action.ShowCard"
 				},
 				{
 					"$ref": "#/definitions/Action.OpenUrl"
@@ -1227,7 +1224,7 @@
 		"FontType": {
 			"type": "string",
 			"version": "1.2",
-			"description": "Type of font to use for rendering",
+			"description": "The type of font to use",
 			"enum": [
 				"default",
 				"monospace"
