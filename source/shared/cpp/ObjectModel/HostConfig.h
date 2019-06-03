@@ -132,9 +132,9 @@ namespace AdaptiveSharedNamespace
 
     struct ImageSizesConfig
     {
-        unsigned int smallSize = 80;
-        unsigned int mediumSize = 120;
-        unsigned int largeSize = 180;
+        unsigned int smallSize = 40;
+        unsigned int mediumSize = 80;
+        unsigned int largeSize = 160;
 
         static ImageSizesConfig Deserialize(const Json::Value& json, const ImageSizesConfig& defaultValue);
     };
