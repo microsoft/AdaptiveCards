@@ -1,46 +1,43 @@
 # Adaptive Cards in iOS
---------------------------------------------------------------------------------
-Cocoapods Resources
---------------------------------------------------------------------------------
+
+## Cocoapods Resources
 To learn more about AdaptiveCards pod  here https://cocoapods.org/?q=ADaptiveCArds
 To learn more about cocoapods in general check here https://guides.cocoapods.org
 To learn more about cocoapods installation check here https://guides.cocoapods.org/using/getting-started.html
 To learn more about pod integration with xcode projects check here https://guides.cocoapods.org/using/using-cocoapods.html
---------------------------------------------------------------------------------
 
---------------------------------------------------------------------------------
-Adding AdaptiveCards Pod
---------------------------------------------------------------------------------
+
+## Adding AdaptiveCards Pod
+
 Podfile
---------------------------------------------------------------------------------
+```
 pod 'AdaptiveCards'
-
---------------------------------------------------------------------------------
-terminal
---------------------------------------------------------------------------------
+```
+Terminal
+```
 $pod install
---------------------------------------------------------------------------------
-please note Podfile and Xcode project file have to be in the same directory
-please remember to run pod repo update to get latest patches 
+```
 
---------------------------------------------------------------------------------
-Example Code in Objective-C, Swift
---------------------------------------------------------------------------------
-** Step 1 
---------------------------------------------------------------------------------
+Please note Podfile and Xcode project file have to be in the same directory
+Please remember to run pod repo update to get latest patches 
+
+
+## Example Code in Objective-C, Swift
+
+### Step 1 
+
 ViewController.h
---------------------------------------------------------------------------------
+```
 #import <UIKit/UIKit.h>
 #import <AdaptiveCards/ACFramework.h>
 @interface ViewController : UIViewController<ACRActionDelegate>
 
 
 @end
+```
 
-
---------------------------------------------------------------------------------
 ViewController.m
---------------------------------------------------------------------------------
+```
 #import "ViewController.h"
 #import <SafariServices/SafariServices.h>
 
@@ -86,38 +83,37 @@ ViewController.m
 }
 
 @end
---------------------------------------------------------------------------------
+```
 
-** Step 2 
+### Step 2 
 Allow Image Downloading
 
 Please be sure to add exceptions for specific domains to info.plist or add the following to info.plist 
+```
 <key>NSAppTransportSecurity</key>
     <dict>
      <key>NSAllowsArbitraryLoads</key>
      <true/>
     </dict>
-for more information on NSAppTransportSecurity plese check here https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW33
+```
+For more information on NSAppTransportSecurity plese check here https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW33
 
-** Step 3
-add SafariServices.framework for openning web pages
+### Step 3
+Add SafariServices.framework for openning web pages
 project file -> Targets -> Linked Frameworks and Libraries -> add
 
---------------------------------------------------------------------------------
-Example Code in Swift: Bridging Header
---------------------------------------------------------------------------------
-** Step 1 
---------------------------------------------------------------------------------
-add AdaptiveCards pod to Podfile
-create and add a bridge header 
-    helpful guide: https://mycodetips.com/ios/manually-adding-swift-bridging-header-1290.html
+## Example Code in Swift: Bridging Header
 
---------------------------------------------------------------------------------
-** Step 2 
---------------------------------------------------------------------------------
+### Step 1 
+Add AdaptiveCards pod to Podfile
+Create and add a bridge header 
+Helpful guide: https://mycodetips.com/ios/manually-adding-swift-bridging-header-1290.html
+
+
+### Step 2 
 ViewController.swft
---------------------------------------------------------------------------------
 
+```
 import UIKit
 import SafariServices
 
@@ -156,19 +152,21 @@ class ViewController: UIViewController, ACRActionDelegate{
     }
 
 }
-
-** Step 3 
+```
+### Step 3 
 Allow Image Downloading
 
 Please be sure to add exceptions for specific domains to info.plist or add the following to info.plist 
+```
 <key>NSAppTransportSecurity</key>
     <dict>
      <key>NSAllowsArbitraryLoads</key>
      <true/>
     </dict>
-for more information on NSAppTransportSecurity plese check here https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW33
+ ```
+For more information on NSAppTransportSecurity plese check here https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW33
 
-** Step 4
-add SafariServices.framework for openning web pages
+### Step 4
+Add SafariServices.framework for openning web pages
 project file -> Targets -> Linked Frameworks and Libraries -> add
 
