@@ -2,6 +2,7 @@ import { defined } from "./defined";
 import { defaultValue } from "./defaultValue";
 import { SchemaProperty, SchemaClass } from "typed-schema";
 import * as mdTable from "markdown-table";
+import * as style from "./style";
 
 export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes, autoLink, includeVersion, elementVersion) {
 	var md = '';
@@ -14,8 +15,8 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 		}
 		
 		var formattedTypeProperty:any = {
-			Property: "type",
-			Type: "string",
+			Property: "**type**",
+			Type: "`string`",
 			Required: "Depends",
 			Description: "Must be `\"" + classDefinition.type + "\"`."
 		};
@@ -30,9 +31,9 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 			var summary = getPropertySummary(property, knownTypes, autoLink);
 			
 			var formattedProperty:any = {
-				Property: name,
+				Property: style.propertyNameSummary(name),
 				Type: summary.formattedType,
-				Required: (summary.required === 'Yes' ? "Yes" : ' ') + summary.required,
+				Required: summary.required,
 				Description: summary.description
 			};
 
@@ -79,7 +80,7 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 
 function getPropertySummary(property: SchemaProperty, knownTypes, autoLink) {
     var type:string = property.original.type;
-    var formattedType = type;
+    var formattedType = "`" + type + "`";
 
     var description = property.description;
 
