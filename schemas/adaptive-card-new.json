@@ -85,35 +85,70 @@
         }
       ]
     },
-    "ActionSet": {
-      "description": "Displays a set of actions.",
+    "Action.ToggleVisibility": {
+      "description": "An action that toggles the visibility of associated card elements.",
+      "version": "1.2",
       "properties": {
         "type": {
           "enum": [
-            "ActionSet"
+            "Action.ToggleVisibility"
           ],
-          "description": "Must be `ActionSet`"
+          "description": "Must be `Action.ToggleVisibility`"
         },
-        "actions": {
+        "targetElements": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ImplementationsOf.Action"
+            "$ref": "#/definitions/TargetElement"
           },
-          "description": "The array of `Image` elements to show."
+          "description": "The array of TargetElements"
         },
-        "id": {},
-        "spacing": {},
-        "separator": {}
+        "title": {},
+        "iconUrl": {}
       },
-      "version": "1.2",
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "actions"
-      ],
       "allOf": [
         {
-          "$ref": "#/definitions/Extendable.BlockElement"
+          "$ref": "#/definitions/Extendable.Action"
+        }
+      ]
+    },
+    "TargetElement": {
+      "description": "Represents an entry for Action.ToggleVisibility's targetElements property",
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "Element ID of element to toggle"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "enum": [
+                "TargetElement"
+              ],
+              "description": "Must be `TargetElement`"
+            },
+            "elementId": {
+              "type": "string",
+              "description": "Element ID of element to toggle"
+            },
+            "isVisible": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "If `true`, always show target element. If `false`, always hide target element. If not supplied, toggle target element's visibility. "
+            }
+          },
+          "required": [
+            "elementId"
+          ],
+          "additionalProperties": false
         }
       ]
     },
@@ -145,6 +180,10 @@
           "description": "An Action that will be invoked when the card is tapped or selected. `Action.ShowCard` is not supported.",
           "version": "1.1"
         },
+        "style": {
+          "$ref": "#/definitions/ContainerStyle",
+          "description": "Style hint for the Adaptive Card."
+        },
         "version": {
           "type": "string",
           "description": "Schema version that this card requires. If a client is **lower** than this version, the `fallbackText` will be rendered. NOTE: Version is not required for cards within an `Action.ShowCard`. However, it *is* required for the top-level card.",
@@ -165,8 +204,7 @@
             },
             {
               "type": "string",
-              "format": "uri",
-              "description": "The URL (or data url) to use as the background image.",
+              "description": "The URL (or data url) to use as the background image. Supports data URI in version 1.2+",
               "version": "1.0"
             }
           ],
@@ -195,38 +233,36 @@
       "type": "object",
       "additionalProperties": false
     },
-    "BackgroundImage": {
-      "description": "Specifies a background image.",
+    "ActionSet": {
+      "description": "Displays a set of actions.",
       "properties": {
         "type": {
           "enum": [
-            "BackgroundImage"
+            "ActionSet"
           ],
-          "description": "Must be `BackgroundImage`"
+          "description": "Must be `ActionSet`"
         },
-        "url": {
-          "type": "string",
-          "format": "uri",
-          "description": "The URL (or data url) of the image."
+        "actions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ImplementationsOf.Action"
+          },
+          "description": "The array of `Image` elements to show."
         },
-        "fillMode": {
-          "$ref": "#/definitions/ImageFillMode",
-          "description": "Describes how the image should fill the area."
-        },
-        "horizontalAlignment": {
-          "$ref": "#/definitions/HorizontalAlignment",
-          "description": "Describes how the image should be aligned if it must be cropped or if using repeat fill mode."
-        },
-        "verticalAlignment": {
-          "$ref": "#/definitions/VerticalAlignment",
-          "description": "Describes how the image should be aligned if it must be cropped or if using repeat fill mode."
-        }
+        "id": {},
+        "spacing": {},
+        "separator": {}
       },
       "version": "1.2",
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "url"
+        "actions"
+      ],
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.BlockElement"
+        }
       ]
     },
     "Column": {
@@ -282,8 +318,7 @@
             },
             {
               "type": "string",
-              "format": "uri",
-              "description": "The URL (or data url) to use as the background image.",
+              "description": "The URL (or data url) to use as the background image. Supports data URI in version 1.2+",
               "version": "1.0"
             }
           ],
@@ -364,8 +399,7 @@
             },
             {
               "type": "string",
-              "format": "uri",
-              "description": "The URL (or data url) to use as the background image."
+              "description": "The URL (or data url) to use as the background image. Supports data URI in version 1.2+"
             }
           ],
           "description": "Specifies the background image.",
@@ -436,8 +470,7 @@
             },
             {
               "type": "string",
-              "format": "uri",
-              "description": "The URL (or data url) to use as the background image.",
+              "description": "The URL (or data url) to use as the background image. Supports data URI in version 1.2+",
               "version": "1.0"
             }
           ],
@@ -457,120 +490,6 @@
         {
           "$ref": "#/definitions/Extendable.BlockElement"
         }
-      ]
-    },
-    "ChoiceInputStyle": {
-      "description": "Style hint for `Input.ChoiceSet`.",
-      "enum": [
-        "compact",
-        "expanded"
-      ]
-    },
-    "Colors": {
-      "enum": [
-        "default",
-        "dark",
-        "light",
-        "accent",
-        "good",
-        "warning",
-        "attention"
-      ]
-    },
-    "ContainerStyle": {
-      "enum": [
-        "default",
-        "emphasis"
-      ]
-    },
-    "FontSize": {
-      "enum": [
-        "default",
-        "small",
-        "medium",
-        "large",
-        "extraLarge"
-      ]
-    },
-    "FontType": {
-      "enum": [
-        "default",
-        "monospace"
-      ]
-    },
-    "FontWeight": {
-      "enum": [
-        "default",
-        "lighter",
-        "bolder"
-      ]
-    },
-    "HorizontalAlignment": {
-      "description": "Controls how content is horizontally positioned within its container.",
-      "enum": [
-        "left",
-        "center",
-        "right"
-      ]
-    },
-    "ImageFillMode": {
-      "enum": [
-        "cover",
-        "repeatHorizontally",
-        "repeatVertically",
-        "repeat"
-      ]
-    },
-    "ImageSize": {
-      "description": "Controls the approximate size of the image. The physical dimensions will vary per host. Specify `\"auto\"` for true image dimension, or `\"stretch\"` to force it to fill the container.",
-      "enum": [
-        "auto",
-        "stretch",
-        "small",
-        "medium",
-        "large"
-      ]
-    },
-    "ImageStyle": {
-      "description": "Controls how this `Image` is displayed.",
-      "enum": [
-        "default",
-        "person"
-      ]
-    },
-    "Spacing": {
-      "description": "Specifies how much spacing. Hosts pick the exact pixel amounts for each of these.",
-      "enum": [
-        "default",
-        "none",
-        "small",
-        "medium",
-        "large",
-        "extraLarge",
-        "padding"
-      ]
-    },
-    "TextInputStyle": {
-      "description": "Style hint for text input.",
-      "enum": [
-        "text",
-        "tel",
-        "url",
-        "email"
-      ]
-    },
-    "VerticalAlignment": {
-      "enum": [
-        "top",
-        "center",
-        "bottom"
-      ]
-    },
-    "VerticalContentAlignment": {
-      "enum": [
-        "top",
-        "center",
-        "bottom"
       ]
     },
     "Fact": {
@@ -640,7 +559,6 @@
         },
         "url": {
           "type": "string",
-          "format": "uri",
           "description": "The URL to the image. Supports data URI in version 1.2+"
         },
         "altText": {
@@ -1101,7 +1019,6 @@
         },
         "poster": {
           "type": "string",
-          "format": "uri",
           "description": "URL of an image to display before playing. Supports data URI in version 1.2+"
         },
         "altText": {
@@ -1142,8 +1059,7 @@
         },
         "url": {
           "type": "string",
-          "format": "uri",
-          "description": "URL to media."
+          "description": "URL to media. Supports data URI in version 1.2+"
         }
       },
       "type": "object",
@@ -1250,6 +1166,153 @@
         }
       ]
     },
+    "ChoiceInputStyle": {
+      "description": "Style hint for `Input.ChoiceSet`.",
+      "enum": [
+        "compact",
+        "expanded"
+      ]
+    },
+    "Colors": {
+      "enum": [
+        "default",
+        "dark",
+        "light",
+        "accent",
+        "good",
+        "warning",
+        "attention"
+      ]
+    },
+    "ContainerStyle": {
+      "enum": [
+        "default",
+        "emphasis"
+      ]
+    },
+    "FontSize": {
+      "enum": [
+        "default",
+        "small",
+        "medium",
+        "large",
+        "extraLarge"
+      ]
+    },
+    "FontType": {
+      "enum": [
+        "default",
+        "monospace"
+      ]
+    },
+    "FontWeight": {
+      "enum": [
+        "default",
+        "lighter",
+        "bolder"
+      ]
+    },
+    "HorizontalAlignment": {
+      "description": "Controls how content is horizontally positioned within its container.",
+      "enum": [
+        "left",
+        "center",
+        "right"
+      ]
+    },
+    "ImageFillMode": {
+      "enum": [
+        "cover",
+        "repeatHorizontally",
+        "repeatVertically",
+        "repeat"
+      ]
+    },
+    "ImageSize": {
+      "description": "Controls the approximate size of the image. The physical dimensions will vary per host. Specify `\"auto\"` for true image dimension, or `\"stretch\"` to force it to fill the container.",
+      "enum": [
+        "auto",
+        "stretch",
+        "small",
+        "medium",
+        "large"
+      ]
+    },
+    "ImageStyle": {
+      "description": "Controls how this `Image` is displayed.",
+      "enum": [
+        "default",
+        "person"
+      ]
+    },
+    "Spacing": {
+      "description": "Specifies how much spacing. Hosts pick the exact pixel amounts for each of these.",
+      "enum": [
+        "default",
+        "none",
+        "small",
+        "medium",
+        "large",
+        "extraLarge",
+        "padding"
+      ]
+    },
+    "TextInputStyle": {
+      "description": "Style hint for text input.",
+      "enum": [
+        "text",
+        "tel",
+        "url",
+        "email"
+      ]
+    },
+    "VerticalAlignment": {
+      "enum": [
+        "top",
+        "center",
+        "bottom"
+      ]
+    },
+    "VerticalContentAlignment": {
+      "enum": [
+        "top",
+        "center",
+        "bottom"
+      ]
+    },
+    "BackgroundImage": {
+      "description": "Specifies a background image.",
+      "properties": {
+        "type": {
+          "enum": [
+            "BackgroundImage"
+          ],
+          "description": "Must be `BackgroundImage`"
+        },
+        "url": {
+          "type": "string",
+          "description": "The URL (or data url) of the image."
+        },
+        "fillMode": {
+          "$ref": "#/definitions/ImageFillMode",
+          "description": "Describes how the image should fill the area."
+        },
+        "horizontalAlignment": {
+          "$ref": "#/definitions/HorizontalAlignment",
+          "description": "Describes how the image should be aligned if it must be cropped or if using repeat fill mode."
+        },
+        "verticalAlignment": {
+          "$ref": "#/definitions/VerticalAlignment",
+          "description": "Describes how the image should be aligned if it must be cropped or if using repeat fill mode."
+        }
+      },
+      "version": "1.2",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "url"
+      ]
+    },
     "ImplementationsOf.Action": {
       "anyOf": [
         {
@@ -1281,6 +1344,16 @@
               "$ref": "#/definitions/Action.Submit"
             }
           ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Action.ToggleVisibility"
+            }
+          ]
         }
       ]
     },
@@ -1303,6 +1376,16 @@
           "allOf": [
             {
               "$ref": "#/definitions/Action.Submit"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Action.ToggleVisibility"
             }
           ]
         }
@@ -1712,8 +1795,7 @@
         },
         "iconUrl": {
           "type": "string",
-          "format": "uri",
-          "description": "Optional icon to be shown on the action in conjunction with the title.",
+          "description": "Optional icon to be shown on the action in conjunction with the title. Supports data URI in version 1.2+",
           "version": "1.1"
         }
       },
