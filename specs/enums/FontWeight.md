@@ -2,10 +2,10 @@
 
 # FontWeight enum
 
-| Value |
-| ----- |
-| `"default"` |
-| `"lighter"` |
-| `"bolder"` |
+| Value | Description |
+| ----- | ----------- |
+| `"default"` |  |
+| `"lighter"` |  |
+| `"bolder"` |  |
 <!-- END AUTO-GENERATED -->
 

@@ -2,11 +2,11 @@
 
 # ImageFillMode enum
 
-| Value |
-| ----- |
-| `"cover"` |
-| `"repeatHorizontally"` |
-| `"repeatVertically"` |
-| `"repeat"` |
+| Value | Description |
+| ----- | ----------- |
+| `"cover"` |  |
+| `"repeatHorizontally"` |  |
+| `"repeatVertically"` |  |
+| `"repeat"` |  |
 <!-- END AUTO-GENERATED -->
 

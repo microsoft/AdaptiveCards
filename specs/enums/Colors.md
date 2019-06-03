@@ -2,14 +2,14 @@
 
 # Colors enum
 
-| Value |
-| ----- |
-| `"default"` |
-| `"dark"` |
-| `"light"` |
-| `"accent"` |
-| `"good"` |
-| `"warning"` |
-| `"attention"` |
+| Value | Description |
+| ----- | ----------- |
+| `"default"` |  |
+| `"dark"` |  |
+| `"light"` |  |
+| `"accent"` |  |
+| `"good"` |  |
+| `"warning"` |  |
+| `"attention"` |  |
 <!-- END AUTO-GENERATED -->
 

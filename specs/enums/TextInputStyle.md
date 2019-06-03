@@ -2,11 +2,11 @@
 
 # TextInputStyle enum
 
-| Value |
-| ----- |
-| `"text"` |
-| `"tel"` |
-| `"url"` |
-| `"email"` |
+| Value | Description |
+| ----- | ----------- |
+| `"text"` |  |
+| `"tel"` |  |
+| `"url"` |  |
+| `"email"` |  |
 <!-- END AUTO-GENERATED -->
 

@@ -2,9 +2,9 @@
 
 # FontType enum
 
-| Value |
-| ----- |
-| `"default"` |
-| `"monospace"` |
+| Value | Description |
+| ----- | ----------- |
+| `"default"` |  |
+| `"monospace"` |  |
 <!-- END AUTO-GENERATED -->
 

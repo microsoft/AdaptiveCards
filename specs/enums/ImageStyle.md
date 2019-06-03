@@ -2,9 +2,9 @@
 
 # ImageStyle enum
 
-| Value |
-| ----- |
-| `"default"` |
-| `"person"` |
+| Value | Description |
+| ----- | ----------- |
+| `"default"` |  |
+| `"person"` |  |
 <!-- END AUTO-GENERATED -->
 

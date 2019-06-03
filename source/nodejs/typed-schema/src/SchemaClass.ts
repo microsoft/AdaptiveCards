@@ -6,13 +6,14 @@ export class SchemaClass extends SchemaType {
 	private _isAbstract: boolean = false;
 	private _extends: SchemaClass[] = [];
 	private _implementations: SchemaClass[] = [];
+	private _shorthand?: SchemaProperty;
 
 	constructor(sourceObj: any) {
 		super(sourceObj);
 
 		if (sourceObj.properties) {
 			for (var key in sourceObj.properties) {
-				this._properties.set(key, new SchemaProperty(sourceObj.properties[key]));
+				this._properties.set(key, new SchemaProperty(key, sourceObj.properties[key]));
 			}
 		}
 		if (sourceObj.isAbstract) {
@@ -34,6 +35,10 @@ export class SchemaClass extends SchemaType {
 
 	get implementations() {
 		return this._implementations;
+	}
+
+	get shorthand() {
+		return this._shorthand;
 	}
 
 	getAllExtended() {
@@ -96,6 +101,14 @@ export class SchemaClass extends SchemaType {
 		this.properties.forEach(prop => {
 			prop.resolve(types);
 		});
+
+		if (this.original.shorthand) {
+			var shorthandProp = this.properties.get(this.original.shorthand);
+			if (shorthandProp === undefined) {
+				throw new Error(`Shorthand property ${this.original.shorthand} wasn't found`);
+			}
+			this._shorthand = shorthandProp;
+		}
 	}
 
 	resolveImplementations(types: Map<string, SchemaType>) {

@@ -3,6 +3,7 @@ import {SchemaPropertyType} from "./SchemaPropertyType";
 
 export class SchemaProperty {
 	private _original: any;
+	private _name: string;
 	private _types: SchemaPropertyType[] = [];
 	private _description?: string;
 	private _required: boolean = false;
@@ -10,8 +11,9 @@ export class SchemaProperty {
 	private _default: any;
 	private _examples: any[] = [];
 
-	constructor(sourceObj: any) {
+	constructor(name: string, sourceObj: any) {
 		this._original = sourceObj;
+		this._name = name;
 
 		if (sourceObj.description) {
 			this._description = sourceObj.description;
@@ -23,7 +25,7 @@ export class SchemaProperty {
 
 		if (sourceObj.shorthands) {
 			sourceObj.shorthands.forEach(shorthand => {
-				this._shorthands.push(new SchemaProperty(shorthand));
+				this._shorthands.push(new SchemaProperty(name, shorthand));
 			});
 		}
 
@@ -34,6 +36,10 @@ export class SchemaProperty {
 		if (sourceObj.examples) {
 			this._examples = sourceObj.examples;
 		}
+	}
+
+	get name() {
+		return this._name;
 	}
 
 	get original() {

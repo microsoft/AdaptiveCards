@@ -2,12 +2,12 @@
 
 # ImageSize enum
 
-| Value |
-| ----- |
-| `"auto"` |
-| `"stretch"` |
-| `"small"` |
-| `"medium"` |
-| `"large"` |
+| Value | Description |
+| ----- | ----------- |
+| `"auto"` |  |
+| `"stretch"` |  |
+| `"small"` |  |
+| `"medium"` |  |
+| `"large"` |  |
 <!-- END AUTO-GENERATED -->
 

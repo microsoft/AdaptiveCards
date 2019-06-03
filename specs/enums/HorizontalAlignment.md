@@ -2,10 +2,10 @@
 
 # HorizontalAlignment enum
 
-| Value |
-| ----- |
-| `"left"` |
-| `"center"` |
-| `"right"` |
+| Value | Description |
+| ----- | ----------- |
+| `"left"` |  |
+| `"center"` |  |
+| `"right"` |  |
 <!-- END AUTO-GENERATED -->
 

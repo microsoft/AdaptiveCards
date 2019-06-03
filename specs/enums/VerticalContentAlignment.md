@@ -2,10 +2,10 @@
 
 # VerticalContentAlignment enum
 
-| Value |
-| ----- |
-| `"top"` |
-| `"center"` |
-| `"bottom"` |
+| Value | Description |
+| ----- | ----------- |
+| `"top"` |  |
+| `"center"` |  |
+| `"bottom"` |  |
 <!-- END AUTO-GENERATED -->
 

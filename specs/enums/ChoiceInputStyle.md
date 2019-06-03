@@ -2,9 +2,9 @@
 
 # ChoiceInputStyle enum
 
-| Value |
-| ----- |
-| `"compact"` |
-| `"expanded"` |
+| Value | Description |
+| ----- | ----------- |
+| `"compact"` |  |
+| `"expanded"` |  |
 <!-- END AUTO-GENERATED -->
 

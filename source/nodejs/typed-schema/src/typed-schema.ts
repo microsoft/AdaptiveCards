@@ -174,6 +174,7 @@ class Transformer {
 			delete transformed.classType;
 			delete transformed.$schema;
 			delete transformed.extends;
+			delete transformed.shorthand;
 
 			if (!transformed.properties) {
 				transformed.properties = [];
@@ -249,6 +250,24 @@ class Transformer {
 
 				delete transformed.extends;
 
+			}
+
+			if (type.shorthand) {
+				transformed.anyOf = [
+					{
+						...transformed.properties[type.shorthand.name]
+					},
+					{
+						type: transformed.type,
+						properties: transformed.properties,
+						required: transformed.required,
+						additionalProperties: false
+					}
+				];
+				delete transformed.type;
+				delete transformed.properties;
+				delete transformed.required;
+				delete transformed.additionalProperties;
 			}
 		
 			return transformed;

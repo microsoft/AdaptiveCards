@@ -2,12 +2,12 @@
 
 # FontSize enum
 
-| Value |
-| ----- |
-| `"default"` |
-| `"small"` |
-| `"medium"` |
-| `"large"` |
-| `"extraLarge"` |
+| Value | Description |
+| ----- | ----------- |
+| `"default"` |  |
+| `"small"` |  |
+| `"medium"` |  |
+| `"large"` |  |
+| `"extraLarge"` |  |
 <!-- END AUTO-GENERATED -->
 

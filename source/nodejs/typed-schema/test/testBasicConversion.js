@@ -948,6 +948,93 @@ describe("Test transform", function () {
 		})
 	});
 
+	it("Test object shorthands", function () {
+		assertTransform({
+			types: [
+				{
+					"type": "AdaptiveCard",
+					"properties": {
+						"backgroundImage": {
+							"type": "BackgroundImage",
+							"description": "The background image to use"
+						}
+					}
+				},
+				{
+					"type": "BackgroundImage",
+					"properties": {
+						"url": {
+							"type": "string",
+							"description": "The URL",
+							"required": true
+						},
+						"fillMode": {
+							"type": "string"
+						}
+					},
+					"shorthand": "url"
+				}
+			],
+			primaryTypeName: "AdaptiveCard",
+			expected: {
+				"$schema": "http://json-schema.org/draft-06/schema#",
+				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
+				"anyOf": [
+					{
+						"allOf": [
+							{
+								"$ref": "#/definitions/AdaptiveCard"
+							}
+						]
+					}
+				],
+				"definitions": {
+					"AdaptiveCard": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"type": {
+								"enum": [ "AdaptiveCard" ],
+								"description": "Must be `AdaptiveCard`"
+							},
+							"backgroundImage": {
+								"$ref": "#/definitions/BackgroundImage",
+								"description": "The background image to use"
+							}
+						}
+					},
+					"BackgroundImage": {
+						"anyOf": [
+							{
+								"type": "string",
+								"description": "The URL"
+							},
+							{
+								"type": "object",
+								"additionalProperties": false,
+								"properties": {
+									"type": {
+										"enum": [ "BackgroundImage" ],
+										"description": "Must be `BackgroundImage`"
+									},
+									"url": {
+										"type": "string",
+										"description": "The URL"
+									}, "fillMode": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"url"
+								]
+							}
+						]
+					}
+				}
+			}
+		})
+	});
+
 
 	it("Test array of objects property", function () {
 		assertTransform({

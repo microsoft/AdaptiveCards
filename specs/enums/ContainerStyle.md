@@ -2,9 +2,9 @@
 
 # ContainerStyle enum
 
-| Value |
-| ----- |
-| `"default"` |
-| `"emphasis"` |
+| Value | Description |
+| ----- | ----------- |
+| `"default"` |  |
+| `"emphasis"` |  |
 <!-- END AUTO-GENERATED -->
 

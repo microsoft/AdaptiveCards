@@ -2,14 +2,14 @@
 
 # Spacing enum
 
-| Value |
-| ----- |
-| `"default"` |
-| `"none"` |
-| `"small"` |
-| `"medium"` |
-| `"large"` |
-| `"extraLarge"` |
-| `"padding"` |
+| Value | Description |
+| ----- | ----------- |
+| `"default"` |  |
+| `"none"` |  |
+| `"small"` |  |
+| `"medium"` |  |
+| `"large"` |  |
+| `"extraLarge"` |  |
+| `"padding"` |  |
 <!-- END AUTO-GENERATED -->
 
