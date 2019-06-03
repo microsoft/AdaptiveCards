@@ -61,14 +61,18 @@ namespace UWPTestLibrary
 
             try
             {
-                AdaptiveHostConfig hostConfig = AdaptiveHostConfig.FromJsonString(hostConfigFile.Contents).HostConfig;
-
-                if (hostConfig == null)
+                AdaptiveHostConfig hostConfig = null;
+                if (hostConfigFile.Contents != null)
                 {
-                    error = "Parsing hostConfig failed";
+                    hostConfig = AdaptiveHostConfig.FromJsonString(hostConfigFile.Contents).HostConfig;
+
+                    if (hostConfig == null)
+                    {
+                        error = "Parsing hostConfig failed";
+                    }
                 }
 
-                else
+                if (error == null)
                 {
                     AdaptiveCard card = AdaptiveCard.FromJsonString(cardFile.Contents).AdaptiveCard;
 
@@ -87,19 +91,25 @@ namespace UWPTestLibrary
 
                         var renderer = new AdaptiveCardRenderer()
                         {
-                            HostConfig = hostConfig,
                             FeatureRegistration = featureRegistration
                         };
+
+                        if (hostConfig != null)
+                        {
+                            renderer.HostConfig = hostConfig;
+                        }
 
                         foreach (var resourceResolver in resourceResolvers)
                         {
                             renderer.ResourceResolvers.Set(resourceResolver.Key, resourceResolver.Value);
                         }
 
-                        if (hostConfigFile.Name.Contains("windows-timeline"))
+                        if (hostConfigFile.Name.Contains(FileLoadHelpers.fixedNonInteractiveName))
                         {
                             renderer.SetFixedDimensions(320, 180);
                             cardWidth = 320;
+
+                            renderer.HostConfig.SupportsInteractivity = false;
                         }
 
                         RenderedAdaptiveCard renderedCard = renderer.RenderAdaptiveCard(card);
@@ -122,7 +132,7 @@ namespace UWPTestLibrary
                             };
 
                             // The theme is important to set since it'll ensure buttons/inputs appear correctly
-                            if (hostConfigFile.Name.Contains("windows-notification"))
+                            if (hostConfigFile.Name.Contains(FileLoadHelpers.testVarientHostConfigName))
                             {
                                 xaml.RequestedTheme = ElementTheme.Dark;
                             }
