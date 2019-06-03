@@ -3,7 +3,7 @@
 	"description": "Specifies a background image.",
 	"properties": {
 		"url": {
-            "type": "uri",
+            "type": "string",
             "description": "The URL (or data url) of the image.",
             "required": true
         },

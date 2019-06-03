@@ -10,8 +10,8 @@
             "required": true
         },
         "url": {
-            "type": "uri",
-            "description": "URL to media.",
+            "type": "string",
+            "description": "URL to media. Supports data URI in version 1.2+",
             "required": true
         }
     }
