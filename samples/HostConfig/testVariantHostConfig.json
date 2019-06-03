@@ -1,21 +1,20 @@
 {
-	"preExpandSingleShowCardAction": false,
 	"spacing": {
-		"small": 3,
-		"default": 8,
-		"medium": 20,
-		"large": 30,
-		"extraLarge": 40,
-		"padding": 20
+		"small": 5,
+		"default": 10,
+		"medium": 15,
+		"large": 20,
+		"extraLarge": 25,
+		"padding": 15
 	},
 	"separator": {
-		"lineThickness": 1,
+		"lineThickness": 2,
 		"lineColor": "#EEEEEE"
 	},
 	"supportsInteractivity": true,
 	"fontTypes": {
 		"default": {
-			"fontFamily": "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+			"fontFamily": "Times New Roman",
 			"fontSizes": {
 				"small": 12,
 				"default": 14,
@@ -24,13 +23,13 @@
 				"extraLarge": 26
 			},
 			"fontWeights": {
-				"lighter": 200,
+				"lighter": 100,
 				"default": 400,
-				"bolder": 600
+				"bolder": 1000
 			}
 		},
 		"monospace": {
-			"fontFamily": "'Courier New', Courier, monospace",
+			"fontFamily": "Consolas",
 			"fontSizes": {
 				"small": 12,
 				"default": 14,
@@ -39,11 +38,52 @@
 				"extraLarge": 26
 			},
 			"fontWeights": {
-				"lighter": 200,
+				"lighter": 100,
 				"default": 400,
-				"bolder": 600
+				"bolder": 1000
 			}
 		}
+	},
+	"imageSizes": {
+		"small": 20,
+		"medium": 40,
+		"large": 80
+	},
+	"actions": {
+		"maxActions": 3,
+		"spacing": "small",
+		"buttonSpacing": 20,
+		"showCard": {
+			"actionMode": "popup",
+			"inlineTopMargin": 10
+		},
+		"actionsOrientation": "vertical",
+		"actionAlignment": "left"
+	},
+	"adaptiveCard": {
+		"allowCustomStyle": false
+	},
+	"imageSet": {
+		"imageSize": "medium",
+		"maxImageHeight": 100
+	},
+	"factSet": {
+		"title": {
+			"color": "attention",
+			"size": "small",
+			"isSubtle": false,
+			"weight": "bolder",
+			"wrap": true,
+			"maxWidth": 100
+		},
+		"value": {
+			"color": "warning",
+			"size": "small",
+			"isSubtle": false,
+			"weight": "lighter",
+			"wrap": true
+		},
+		"spacing": 5
 	},
 	"containerStyles": {
 		"default": {
@@ -244,47 +284,5 @@
 				}
 			}
 		}
-	},
-	"imageSizes": {
-		"small": 40,
-		"medium": 80,
-		"large": 160
-	},
-	"actions": {
-		"maxActions": 5,
-		"spacing": "default",
-		"buttonSpacing": 20,
-		"showCard": {
-			"actionMode": "inline",
-			"inlineTopMargin": 16,
-			"style": "emphasis"
-		},
-		"actionsOrientation": "horizontal",
-		"actionAlignment": "left"
-	},
-	"adaptiveCard": {
-		"allowCustomStyle": false
-	},
-	"imageSet": {
-		"imageSize": "medium",
-		"maxImageHeight": 100
-	},
-	"factSet": {
-		"title": {
-			"color": "default",
-			"size": "default",
-			"isSubtle": false,
-			"weight": "bolder",
-			"wrap": true,
-			"maxWidth": 150
-		},
-		"value": {
-			"color": "default",
-			"size": "default",
-			"isSubtle": false,
-			"weight": "default",
-			"wrap": true
-		},
-		"spacing": 10
 	}
 }
