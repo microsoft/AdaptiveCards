@@ -1684,6 +1684,70 @@ describe("Test transform", function () {
 			}
 		})
 	});
+
+	it("Test enums with descriptions", function () {
+
+		assertTransform({
+			types: [
+				{
+					"type": "TextBlock",
+					"properties": {
+						"size": {
+							"type": "FontSize"
+						}
+					}
+				},
+				{
+					"type": "FontSize",
+					"classType": "Enum",
+					"values": [
+						"default",
+						{
+							"value": "small",
+							"description": "Small font size"
+						},
+						"large"
+					]
+				}
+			],
+			primaryTypeName: "TextBlock",
+			expected: {
+				"$schema": "http://json-schema.org/draft-06/schema#",
+				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
+				"anyOf": [
+					{
+						"allOf": [
+							{
+								"$ref": "#/definitions/TextBlock"
+							}
+						]
+					}
+				],
+				"definitions": {
+					"TextBlock": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"type": {
+								"enum": [ "TextBlock" ],
+								"description": "Must be `TextBlock`"
+							},
+							"size": {
+								"$ref": "#/definitions/FontSize"
+							}
+						}
+					},
+					"FontSize": {
+						"enum": [
+							"default",
+							"small",
+							"large"
+						]
+					}
+				}
+			}
+		})
+	});
 });
 
 

@@ -157,7 +157,10 @@ class Transformer {
 				delete transformed.classType;
 				delete transformed.$schema;
 				delete transformed.extends;
-				transformed.enum = enumType.values;
+				transformed.enum = [];
+				enumType.values.forEach(val => {
+					transformed.enum.push(val.value);
+				});
 				return transformed;
 			} else if (!(type instanceof SchemaClass)) {
 				throw new Error("Unknown class type " + type);
