@@ -2223,7 +2223,7 @@ export abstract class CardElementContainer extends CardElement {
         let element = super.render();
         let hostConfig = this.hostConfig;
 
-        if (this.isSelectable && this._selectAction && hostConfig.supportsInteractivity) {
+        if (element && this.isSelectable && this._selectAction && hostConfig.supportsInteractivity) {
             element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
             element.tabIndex = 0;
             element.setAttribute("role", "button");
@@ -5878,6 +5878,7 @@ export class ColumnSet extends StylableCardElementContainer {
             let element = document.createElement("div");
             element.className = hostConfig.makeCssClassName("ac-columnSet");
             element.style.display = "flex";
+            element.style.overflowX = "hidden";
 
             if (AdaptiveCard.useAdvancedCardBottomTruncation) {
                 // See comment in Container.internalRender()
