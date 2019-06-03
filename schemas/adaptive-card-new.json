@@ -85,6 +85,38 @@
         }
       ]
     },
+    "ActionSet": {
+      "description": "Displays a set of actions.",
+      "properties": {
+        "type": {
+          "enum": [
+            "ActionSet"
+          ],
+          "description": "Must be `ActionSet`"
+        },
+        "actions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ImplementationsOf.Action"
+          },
+          "description": "The array of `Image` elements to show."
+        },
+        "id": {},
+        "spacing": {},
+        "separator": {}
+      },
+      "version": "1.2",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "actions"
+      ],
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.BlockElement"
+        }
+      ]
+    },
     "AdaptiveCard": {
       "description": "An Adaptive Card",
       "properties": {
@@ -1174,7 +1206,7 @@
         }
       ]
     },
-    "ImplementationsOf.Element": {
+    "ImplementationsOf.BlockElement": {
       "anyOf": [
         {
           "required": [
@@ -1182,7 +1214,7 @@
           ],
           "allOf": [
             {
-              "$ref": "#/definitions/Column"
+              "$ref": "#/definitions/ActionSet"
             }
           ]
         },
@@ -1318,8 +1350,28 @@
         }
       ]
     },
-    "ImplementationsOf.BlockElement": {
+    "ImplementationsOf.Element": {
       "anyOf": [
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/ActionSet"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Column"
+            }
+          ]
+        },
         {
           "required": [
             "type"

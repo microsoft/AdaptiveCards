@@ -1,0 +1,13 @@
+{
+	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+	"extends": "BlockElement",
+	"description": "Displays a set of actions.",
+	"properties": {
+		"actions": {
+			"type": "Action[]",
+      "description": "The array of `Image` elements to show.",
+      "required": true
+    }
+  },
+  "version": "1.2"
+}
