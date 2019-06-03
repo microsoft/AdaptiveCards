@@ -1,19 +1,5 @@
 {
 	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
 	"extends": "Element",
-	"isAbstract": true,
-	"properties": {
-		"id": {
-			"type": "string",
-			"description": "A unique identifier associated with the element."
-		},
-		"spacing": {
-			"type": "Spacing",
-			"description": "Controls the amount of spacing between this element and the preceding element."
-		},
-		"separator": {
-			"type": "boolean",
-			"description": "When `true`, draw a separating line at the top of the element."
-		}
-	}
+	"isAbstract": true
 }

@@ -176,9 +176,7 @@ class Transformer {
 			delete transformed.extends;
 			delete transformed.shorthand;
 
-			if (!transformed.properties) {
-				transformed.properties = [];
-			}
+			transformed.properties = {};
 		
 			if (type.properties.size > 0) {
 				type.properties.forEach((propVal, key) => {
@@ -225,7 +223,7 @@ class Transformer {
 
 				transformed.allOf = [];
 				type.extends.forEach(extended => {
-					if (extended.properties.size > 0) {
+					if (extended.getAllProperties().size > 0) {
 						transformed.allOf.push({
 							$ref: "#/definitions/Extendable." + extended.type
 						});
@@ -371,7 +369,7 @@ class Transformer {
 		var transformedType = this.transformType(type);
 
 		// If there's multiple implementations of this type
-		if (this.hasMultipleImplementations(typeName) && type instanceof SchemaClass && type.properties.size > 0) {
+		if (this.hasMultipleImplementations(typeName) && type instanceof SchemaClass && type.getAllProperties().size > 0) {
 			// Then we must define an extendable flavor that doesn't have the additionalProperties = false
 			var extendableType = { ...transformedType };
 			delete extendableType.additionalProperties;
