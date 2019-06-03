@@ -15,7 +15,9 @@
 
 Adaptive Cards are designed to render anywhere that your users are. The following native platform renderers are under development right now.
 
-|Platform|Install|Build|Docs|Status|
+PS: Latest Build Status is against master branch.
+
+|Platform|Latest Release|Source|Docs|Latest Build Status|
 |---|---|---|---|---|
 | JavaScript | [![npm install](https://img.shields.io/npm/v/adaptivecards.svg)](https://www.npmjs.com/package/adaptivecards) | [Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/nodejs/adaptivecards)| [Docs](https://docs.microsoft.com/en-us/adaptive-cards/display/libraries/htmlclient) | ![Build Status](https://img.shields.io/vso/build/Microsoft/56cf629e-8f3a-4412-acbc-bf69366c552c/20564.svg) |
 | .NET | [![Nuget install](https://img.shields.io/nuget/vpre/AdaptiveCards.svg)](https://www.nuget.org/packages/AdaptiveCards) | [Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/dotnet)| [Docs](https://docs.microsoft.com/en-us/adaptive-cards/create/libraries/net) | ![Build status](https://img.shields.io/vso/build/Microsoft/56cf629e-8f3a-4412-acbc-bf69366c552c/20596.svg) |
