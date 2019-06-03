@@ -17,7 +17,8 @@
           "description": "The URL to open."
         },
         "title": {},
-        "iconUrl": {}
+        "iconUrl": {},
+        "style": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -44,7 +45,8 @@
           "description": "The Adaptive Card to show."
         },
         "title": {},
-        "iconUrl": {}
+        "iconUrl": {},
+        "style": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -75,7 +77,8 @@
           "description": "Initial data that input fields will be combined with. These are essentially ‘hidden’ properties."
         },
         "title": {},
-        "iconUrl": {}
+        "iconUrl": {},
+        "style": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -103,7 +106,8 @@
           "description": "The array of TargetElements"
         },
         "title": {},
-        "iconUrl": {}
+        "iconUrl": {},
+        "style": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -1166,6 +1170,18 @@
         }
       ]
     },
+    "ActionStyle": {
+      "description": "Controls the style of an Action, which influences how the action is displayed, spoken, etc.",
+      "features": [
+        861
+      ],
+      "version": "1.2",
+      "enum": [
+        "default",
+        "positive",
+        "destructive"
+      ]
+    },
     "ChoiceInputStyle": {
       "description": "Style hint for `Input.ChoiceSet`.",
       "enum": [
@@ -1797,6 +1813,11 @@
           "type": "string",
           "description": "Optional icon to be shown on the action in conjunction with the title. Supports data URI in version 1.2+",
           "version": "1.1"
+        },
+        "style": {
+          "$ref": "#/definitions/ActionStyle",
+          "description": "Controls the style of an Action, which influences how the action is displayed, spoken, etc.",
+          "version": "1.2"
         }
       },
       "type": "object"

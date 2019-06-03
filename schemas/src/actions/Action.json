@@ -10,6 +10,11 @@
       "type": "string",
       "description": "Optional icon to be shown on the action in conjunction with the title. Supports data URI in version 1.2+",
       "version": "1.1"
+    },
+    "style": {
+      "type": "ActionStyle",
+      "description": "Controls the style of an Action, which influences how the action is displayed, spoken, etc.",
+      "version": "1.2"
     }
 	}
 }
