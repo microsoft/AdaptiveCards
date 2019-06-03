@@ -1,6 +1,6 @@
 import { defined } from "./defined";
 import { defaultValue } from "./defaultValue";
-import { SchemaProperty, SchemaClass } from "typed-schema";
+import { SchemaProperty, SchemaClass, SchemaEnum } from "typed-schema";
 import * as mdTable from "markdown-table";
 import * as style from "./style";
 
@@ -74,6 +74,52 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 
         md += '\n';
     }
+
+    return md;
+}
+
+export function createEnumSummary(enumType: SchemaEnum) {
+	var md = '';
+
+	var rows = [ ];
+
+	enumType.values.forEach(val => {
+		var row = {
+			Value: "`\"" + val + "\"`"
+		};
+
+		rows.push(row);
+	});
+
+	// Data needs to be formatted as follows for use with markdown library
+	/*
+		table([
+		['Branch', 'Commit'],
+		['master', '0123456789abcdef'],
+		['staging', 'fedcba9876543210']
+		])
+	*/
+	var tableData = [];
+	var headerRow = [];
+	for (var propName in rows[0]) {
+		headerRow.push(propName);
+	}
+	tableData.push(headerRow);
+
+	rows.forEach((row) => {
+		var dataRow = [];
+		for (var propName in row) {
+			dataRow.push(row[propName]);
+		}
+		tableData.push(dataRow);
+	});
+	
+	// Format as markdown table
+	md += mdTable(tableData, {
+		pad: false
+	});
+
+	md += '\n';
 
     return md;
 }
