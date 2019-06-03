@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
 using System.Collections;
@@ -913,6 +915,7 @@ namespace AdaptiveCards.Test
             };
             actionSet.Actions.Add(openUrlAction);
 
+#pragma warning disable 0618
             AdaptiveShowCardAction showCardAction = new AdaptiveShowCardAction
             {
                 Title = "ShowCard",
@@ -927,6 +930,7 @@ namespace AdaptiveCards.Test
                     }
                 }
             };
+#pragma warning restore 0618
 
             actionSet.Actions.Add(showCardAction);
 

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveHostConfig.h"
 #include "Util.h"
@@ -8,8 +10,8 @@
 #include "AdaptiveFactSetConfig.h"
 #include "AdaptiveFontSizesConfig.h"
 #include "AdaptiveFontWeightsConfig.h"
-#include "AdaptiveFontStyleDefinition.h"
-#include "AdaptiveFontStylesDefinition.h"
+#include "AdaptiveFontTypeDefinition.h"
+#include "AdaptiveFontTypesDefinition.h"
 #include "AdaptiveHostConfigParseResult.h"
 #include "AdaptiveImageConfig.h"
 #include "AdaptiveImageSetConfig.h"
@@ -75,8 +77,7 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontSizesConfig>(m_fontSizes.GetAddressOf(), sharedHostConfig.GetFontSizes()));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontWeightsConfig>(m_fontWeights.GetAddressOf(),
                                                                       sharedHostConfig.GetFontWeights()));
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontStylesDefinition>(m_fontStyles.GetAddressOf(),
-                                                                         sharedHostConfig.GetFontStyles()));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontTypesDefinition>(m_fontTypes.GetAddressOf(), sharedHostConfig.GetFontTypes()));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveContainerStylesDefinition>(m_containerStyles.GetAddressOf(),
                                                                               sharedHostConfig.GetContainerStyles()));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveImageSizesConfig>(m_imageSizes.GetAddressOf(), sharedHostConfig.GetImageSizes()));
@@ -247,14 +248,14 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveHostConfig::get_FontStyles(_COM_Outptr_ IAdaptiveFontStylesDefinition** value)
+    HRESULT AdaptiveHostConfig::get_FontTypes(_COM_Outptr_ IAdaptiveFontTypesDefinition** value)
     {
-        return m_fontStyles.CopyTo(value);
+        return m_fontTypes.CopyTo(value);
     }
 
-    HRESULT AdaptiveHostConfig::put_FontStyles(_In_ IAdaptiveFontStylesDefinition* value)
+    HRESULT AdaptiveHostConfig::put_FontTypes(_In_ IAdaptiveFontTypesDefinition* value)
     {
-        m_fontStyles = value;
+        m_fontTypes = value;
         return S_OK;
     }
 }

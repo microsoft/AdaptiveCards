@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "HostConfig.h"
 #include "ParseUtil.h"
@@ -33,12 +35,9 @@ HostConfig HostConfig::Deserialize(const Json::Value& json)
     result._fontWeights = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontWeightsConfig>(
         json, AdaptiveCardSchemaKey::FontWeights, result._fontWeights, FontWeightsConfig::Deserialize);
 
-    result._fontStyles = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontStylesDefinition>(
-        json, AdaptiveCardSchemaKey::FontStyles, result._fontStyles, FontStylesDefinition::Deserialize);
+    result._fontTypes = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontTypesDefinition>(
+        json, AdaptiveCardSchemaKey::FontTypes, result._fontTypes, FontTypesDefinition::Deserialize);
 
-    // If the base style definition is set, it serves as the default for all not-specified container styles. Update
-    // _containerStyles based on the base style definition to update the defaults.
-    result._containerStyles.SetBaseStyle(json);
     result._containerStyles = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStylesDefinition>(
         json, AdaptiveCardSchemaKey::ContainerStyles, result._containerStyles, ContainerStylesDefinition::Deserialize);
 
@@ -90,9 +89,9 @@ FontSizesConfig FontSizesConfig::Deserialize(const Json::Value& json, const Font
     return result;
 }
 
-FontStyleDefinition FontStyleDefinition::Deserialize(const Json::Value& json, const FontStyleDefinition& defaultValue)
+FontTypeDefinition FontTypeDefinition::Deserialize(const Json::Value& json, const FontTypeDefinition& defaultValue)
 {
-    FontStyleDefinition result;
+    FontTypeDefinition result;
 
     const std::string fontFamily = ParseUtil::GetString(json, AdaptiveCardSchemaKey::FontFamily);
     result.fontFamily = (fontFamily == "") ? defaultValue.fontFamily : fontFamily;
@@ -110,14 +109,26 @@ FontStyleDefinition FontStyleDefinition::Deserialize(const Json::Value& json, co
     return result;
 }
 
-FontStylesDefinition FontStylesDefinition::Deserialize(const Json::Value& json, const FontStylesDefinition& defaultValue)
+FontTypesDefinition FontTypesDefinition::Deserialize(const Json::Value& json, const FontTypesDefinition& defaultValue)
 {
-    FontStylesDefinition result;
+    FontTypesDefinition result;
 
-    result.defaultStyle = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontStyleDefinition>(
-        json, AdaptiveCardSchemaKey::Default, defaultValue.defaultStyle, FontStyleDefinition::Deserialize);
-    result.monospaceStyle = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontStyleDefinition>(
-        json, AdaptiveCardSchemaKey::Monospace, defaultValue.defaultStyle, FontStyleDefinition::Deserialize);
+    result.defaultFontType = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontTypeDefinition>(
+        json, AdaptiveCardSchemaKey::Default, defaultValue.defaultFontType, FontTypeDefinition::Deserialize);
+    result.monospaceFontType = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontTypeDefinition>(
+        json, AdaptiveCardSchemaKey::Monospace, defaultValue.monospaceFontType, FontTypeDefinition::Deserialize);
+    return result;
+}
+
+HighlightColorConfig HighlightColorConfig::Deserialize(const Json::Value& json, const HighlightColorConfig& defaultValue)
+{
+    HighlightColorConfig result;
+    std::string defaultColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Default);
+    result.defaultColor = defaultColor == "" ? defaultValue.defaultColor : defaultColor;
+
+    std::string subtleColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Subtle);
+    result.subtleColor = subtleColor == "" ? defaultValue.subtleColor : subtleColor;
+
     return result;
 }
 
@@ -130,55 +141,51 @@ ColorConfig ColorConfig::Deserialize(const Json::Value& json, const ColorConfig&
     std::string subtleColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Subtle);
     result.subtleColor = subtleColor == "" ? defaultValue.subtleColor : subtleColor;
 
+    result.highlightColors = ParseUtil::ExtractJsonValueAndMergeWithDefault<HighlightColorConfig>(
+        json, AdaptiveCardSchemaKey::HighlightColors, defaultValue.highlightColors, HighlightColorConfig::Deserialize);
+
     return result;
-}
-
-void ColorConfig::SetBaseColor(const std::string& baseColor)
-{
-    defaultColor = baseColor;
-    subtleColor = baseColor;
-}
-
-ColorConfig GetColorConfig(const Json::Value& json, AdaptiveCardSchemaKey key, const ColorConfig& defaultValue)
-{
-    const std::string stringResult = ParseUtil::TryGetString(json, key);
-    if (!stringResult.empty())
-    {
-        // If the host sets the color config to a single string, use that string for both default and subtle
-        ColorConfig result = {stringResult, stringResult};
-        return result;
-    }
-    else
-    {
-        // If it's not a string, parse it as a ColorConfig
-        return ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json, key, defaultValue, &ColorConfig::Deserialize);
-    }
 }
 
 ColorsConfig ColorsConfig::Deserialize(const Json::Value& json, const ColorsConfig& defaultValue)
 {
     ColorsConfig result;
 
-    result.defaultColor = GetColorConfig(json, AdaptiveCardSchemaKey::Default, defaultValue.defaultColor);
-    result.accent = GetColorConfig(json, AdaptiveCardSchemaKey::Accent, defaultValue.accent);
-    result.dark = GetColorConfig(json, AdaptiveCardSchemaKey::Dark, defaultValue.dark);
-    result.light = GetColorConfig(json, AdaptiveCardSchemaKey::Light, defaultValue.light);
-    result.good = GetColorConfig(json, AdaptiveCardSchemaKey::Good, defaultValue.good);
-    result.warning = GetColorConfig(json, AdaptiveCardSchemaKey::Warning, defaultValue.warning);
-    result.attention = GetColorConfig(json, AdaptiveCardSchemaKey::Attention, defaultValue.attention);
+    result.defaultColor = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json,
+                                                                                      AdaptiveCardSchemaKey::Default,
+                                                                                      defaultValue.defaultColor,
+                                                                                      &ColorConfig::Deserialize);
 
+    result.accent = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json,
+                                                                                AdaptiveCardSchemaKey::Accent,
+                                                                                defaultValue.accent,
+                                                                                &ColorConfig::Deserialize);
+
+    result.dark = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json,
+                                                                              AdaptiveCardSchemaKey::Dark,
+                                                                              defaultValue.dark,
+                                                                              &ColorConfig::Deserialize);
+
+    result.light = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json,
+                                                                               AdaptiveCardSchemaKey::Light,
+                                                                               defaultValue.light,
+                                                                               &ColorConfig::Deserialize);
+
+    result.good = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json,
+                                                                              AdaptiveCardSchemaKey::Good,
+                                                                              defaultValue.good,
+                                                                              &ColorConfig::Deserialize);
+
+    result.warning = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json,
+                                                                                 AdaptiveCardSchemaKey::Warning,
+                                                                                 defaultValue.warning,
+                                                                                 &ColorConfig::Deserialize);
+
+    result.attention = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json,
+                                                                                   AdaptiveCardSchemaKey::Attention,
+                                                                                   defaultValue.attention,
+                                                                                   &ColorConfig::Deserialize);
     return result;
-}
-
-void ColorsConfig::SetBaseColor(const std::string& baseColor)
-{
-    defaultColor.SetBaseColor(baseColor);
-    accent.SetBaseColor(baseColor);
-    dark.SetBaseColor(baseColor);
-    light.SetBaseColor(baseColor);
-    good.SetBaseColor(baseColor);
-    warning.SetBaseColor(baseColor);
-    attention.SetBaseColor(baseColor);
 }
 
 TextConfig TextConfig::Deserialize(const Json::Value& json, const TextConfig& defaultValue)
@@ -188,7 +195,7 @@ TextConfig TextConfig::Deserialize(const Json::Value& json, const TextConfig& de
 
     result.size = ParseUtil::GetEnumValue<TextSize>(json, AdaptiveCardSchemaKey::Size, defaultValue.size, TextSizeFromString);
 
-    result.style = ParseUtil::GetEnumValue<FontStyle>(json, AdaptiveCardSchemaKey::FontStyle, defaultValue.style, FontStyleFromString);
+    result.fontType = ParseUtil::GetEnumValue<FontType>(json, AdaptiveCardSchemaKey::FontType, defaultValue.fontType, FontTypeFromString);
 
     result.color = ParseUtil::GetEnumValue<ForegroundColor>(json, AdaptiveCardSchemaKey::Color, defaultValue.color, ForegroundColorFromString);
 
@@ -337,36 +344,7 @@ ContainerStyleDefinition ContainerStyleDefinition::Deserialize(const Json::Value
     result.foregroundColors = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorsConfig>(
         json, AdaptiveCardSchemaKey::ForegroundColors, defaultValue.foregroundColors, ColorsConfig::Deserialize);
 
-    result.highlightColors = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorsConfig>(json,
-                                                                                          AdaptiveCardSchemaKey::HighlightColors,
-                                                                                          defaultValue.highlightColors,
-                                                                                          ColorsConfig::Deserialize);
-
     return result;
-}
-
-void ContainerStyleDefinition::SetBaseStyle(const Json::Value& json)
-{
-    Json::Value baseContainterStyleJson =
-        json.get(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BaseContainerStyle), Json::Value());
-
-    std::string baseBackgroundColor = ParseUtil::TryGetString(baseContainterStyleJson, AdaptiveCardSchemaKey::BackgroundColor);
-    if (!baseBackgroundColor.empty())
-    {
-        backgroundColor = baseBackgroundColor;
-    }
-
-    std::string baseForegroundColor = ParseUtil::TryGetString(baseContainterStyleJson, AdaptiveCardSchemaKey::ForegroundColor);
-    if (!baseForegroundColor.empty())
-    {
-        foregroundColors.SetBaseColor(baseForegroundColor);
-    }
-
-    std::string baseHighlightColor = ParseUtil::TryGetString(baseContainterStyleJson, AdaptiveCardSchemaKey::HighlightColor);
-    if (!baseHighlightColor.empty())
-    {
-        highlightColors.SetBaseColor(baseHighlightColor);
-    }
 }
 
 ContainerStylesDefinition ContainerStylesDefinition::Deserialize(const Json::Value& json, const ContainerStylesDefinition& defaultValue)
@@ -392,16 +370,6 @@ ContainerStylesDefinition ContainerStylesDefinition::Deserialize(const Json::Val
         json, AdaptiveCardSchemaKey::Accent, defaultValue.accentPalette, ContainerStyleDefinition::Deserialize);
 
     return result;
-}
-
-void ContainerStylesDefinition::SetBaseStyle(const Json::Value& json)
-{
-    defaultPalette.SetBaseStyle(json);
-    emphasisPalette.SetBaseStyle(json);
-    goodPalette.SetBaseStyle(json);
-    attentionPalette.SetBaseStyle(json);
-    warningPalette.SetBaseStyle(json);
-    accentPalette.SetBaseStyle(json);
 }
 
 FontWeightsConfig FontWeightsConfig::Deserialize(const Json::Value& json, const FontWeightsConfig& defaultValue)
@@ -443,15 +411,15 @@ MediaConfig MediaConfig::Deserialize(const Json::Value& json, const MediaConfig&
     return result;
 }
 
-FontStyleDefinition HostConfig::GetFontStyle(FontStyle style) const
+FontTypeDefinition HostConfig::GetFontType(FontType type) const
 {
-    switch (style)
+    switch (type)
     {
-    case FontStyle::Monospace:
-        return _fontStyles.monospaceStyle;
-    case FontStyle::Default:
+    case FontType::Monospace:
+        return _fontTypes.monospaceFontType;
+    case FontType::Default:
     default:
-        return _fontStyles.defaultStyle;
+        return _fontTypes.defaultFontType;
     }
 }
 
@@ -551,14 +519,14 @@ unsigned int FontWeightsConfig::GetDefaultFontWeight(TextWeight weight)
     }
 }
 
-std::string HostConfig::GetFontFamily(FontStyle style) const
+std::string HostConfig::GetFontFamily(FontType fontType) const
 {
     // desired font family
-    auto fontFamilyValue = GetFontStyle(style).fontFamily;
+    auto fontFamilyValue = GetFontType(fontType).fontFamily;
 
     if (fontFamilyValue.empty())
     {
-        if (style == FontStyle::Monospace)
+        if (fontType == FontType::Monospace)
         {
             // pass empty string for renderer to handle appropriate const default font family for Monospace
             fontFamilyValue = "";
@@ -577,16 +545,16 @@ std::string HostConfig::GetFontFamily(FontStyle style) const
     return fontFamilyValue;
 }
 
-unsigned int HostConfig::GetFontSize(FontStyle style, TextSize size) const
+unsigned int HostConfig::GetFontSize(FontType fontType, TextSize size) const
 {
     // desired font size
-    auto result = GetFontStyle(style).fontSizes.GetFontSize(size);
+    auto result = GetFontType(fontType).fontSizes.GetFontSize(size);
 
     // UINT_MAX used to check if value was defined
     if (result == UINT_MAX)
     {
         // default font size
-        result = _fontStyles.defaultStyle.fontSizes.GetFontSize(size);
+        result = _fontTypes.defaultFontType.fontSizes.GetFontSize(size);
         if (result == UINT_MAX)
         {
             // deprecated font size
@@ -601,16 +569,16 @@ unsigned int HostConfig::GetFontSize(FontStyle style, TextSize size) const
     return result;
 }
 
-unsigned int HostConfig::GetFontWeight(FontStyle style, TextWeight weight) const
+unsigned int HostConfig::GetFontWeight(FontType fontType, TextWeight weight) const
 {
     // desired font weight
-    auto result = GetFontStyle(style).fontWeights.GetFontWeight(weight);
+    auto result = GetFontType(fontType).fontWeights.GetFontWeight(weight);
 
     // UINT_MAX used to check if value was defined
     if (result == UINT_MAX)
     {
         // default font weight
-        result = _fontStyles.defaultStyle.fontWeights.GetFontWeight(weight);
+        result = _fontTypes.defaultFontType.fontWeights.GetFontWeight(weight);
         if (result == UINT_MAX)
         {
             // deprecated font weight
@@ -650,38 +618,43 @@ std::string HostConfig::GetBackgroundColor(ContainerStyle style) const
     return GetContainerStyle(style).backgroundColor;
 }
 
-std::string HostConfig::GetContainerColor(const ColorsConfig& colors, ForegroundColor color, bool isSubtle) const
+template<typename T> std::string GetColorFromColorConfig(T colorConfig, bool isSubtle)
+{
+    return (isSubtle) ? (colorConfig.subtleColor) : (colorConfig.defaultColor);
+}
+
+const ColorConfig& HostConfig::GetContainerColorConfig(const ColorsConfig& colors, ForegroundColor color) const
 {
     switch (color)
     {
     case ForegroundColor::Accent:
-        return (isSubtle) ? (colors.accent.subtleColor) : (colors.accent.defaultColor);
+        return colors.accent;
     case ForegroundColor::Attention:
-        return (isSubtle) ? (colors.attention.subtleColor) : (colors.attention.defaultColor);
+        return colors.attention;
     case ForegroundColor::Dark:
-        return (isSubtle) ? (colors.dark.subtleColor) : (colors.dark.defaultColor);
+        return colors.dark;
     case ForegroundColor::Good:
-        return (isSubtle) ? (colors.good.subtleColor) : (colors.good.defaultColor);
+        return colors.good;
     case ForegroundColor::Light:
-        return (isSubtle) ? (colors.light.subtleColor) : (colors.light.defaultColor);
+        return colors.light;
     case ForegroundColor::Warning:
-        return (isSubtle) ? (colors.warning.subtleColor) : (colors.warning.defaultColor);
+        return colors.warning;
     case ForegroundColor::Default:
     default:
-        return (isSubtle) ? (colors.defaultColor.subtleColor) : (colors.defaultColor.defaultColor);
+        return colors.defaultColor;
     }
 }
 
 std::string HostConfig::GetForegroundColor(ContainerStyle style, ForegroundColor color, bool isSubtle) const
 {
-    auto foregroundColors = GetContainerStyle(style).foregroundColors;
-    return GetContainerColor(foregroundColors, color, isSubtle);
+    auto colorConfig = GetContainerColorConfig(GetContainerStyle(style).foregroundColors, color);
+    return GetColorFromColorConfig(colorConfig, isSubtle);
 }
 
 std::string HostConfig::GetHighlightColor(ContainerStyle style, ForegroundColor color, bool isSubtle) const
 {
-    auto highlightColors = GetContainerStyle(style).highlightColors;
-    return GetContainerColor(highlightColors, color, isSubtle);
+    auto colorConfig = GetContainerColorConfig(GetContainerStyle(style).foregroundColors, color).highlightColors;
+    return GetColorFromColorConfig(colorConfig, isSubtle);
 }
 
 std::string HostConfig::GetBorderColor(ContainerStyle style) const
@@ -724,14 +697,14 @@ void HostConfig::SetFontWeights(const FontWeightsConfig value)
     _fontWeights = value;
 }
 
-FontStylesDefinition HostConfig::GetFontStyles() const
+FontTypesDefinition HostConfig::GetFontTypes() const
 {
-    return _fontStyles;
+    return _fontTypes;
 }
 
-void HostConfig::SetFontStyles(const FontStylesDefinition value)
+void HostConfig::SetFontTypes(const FontTypesDefinition value)
 {
-    _fontStyles = value;
+    _fontTypes = value;
 }
 
 bool HostConfig::GetSupportsInteractivity() const

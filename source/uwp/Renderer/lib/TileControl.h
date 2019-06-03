@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "pch.h"
@@ -55,7 +57,7 @@ namespace AdaptiveNamespace
 
     private:
         void RefreshContainerTile();
-        HRESULT ExtractBackgroundImageData(_Out_ ABI::AdaptiveNamespace::BackgroundImageMode* mode,
+        HRESULT ExtractBackgroundImageData(_Out_ ABI::AdaptiveNamespace::BackgroundImageFillMode* fillMode,
                                            _Out_ ABI::AdaptiveNamespace::HAlignment* hAlignment,
                                            _Out_ ABI::AdaptiveNamespace::VAlignment* vAlignment);
 

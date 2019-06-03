@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +17,11 @@ namespace UWPTestLibrary
             ObservableCollection<FileViewModel> hostConfigs)
         {
             await LoadFilesAsync("LinkedCards", cards);
-            await LoadFilesAsync("LinkedHostConfigs", hostConfigs);
+
+            // Load two host configs to test
+            var hostConfigFolder = await Package.Current.InstalledLocation.GetFolderAsync("LinkedHostConfigs");
+            hostConfigs.Add(await FileViewModel.LoadAsync(await hostConfigFolder.GetFileAsync("sample")));
+            hostConfigs.Add(await FileViewModel.LoadAsync(await hostConfigFolder.GetFileAsync("windows-timeline")));
 
             // Remove the WeatherLarge card since it contains a background image and often fails image comparisons
             var weatherLarge = cards.FirstOrDefault(i => i.Name.EndsWith("WeatherLarge"));

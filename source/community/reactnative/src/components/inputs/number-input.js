@@ -10,7 +10,7 @@ import { HostConfigManager } from '../../utils/host-config';
 import { Input } from './input';
 import * as Enums from '../../utils/enums';
 
-const NUM_REGEX = /^\-?[1-9]\d*(\.\d*)?$/;
+const NUM_REGEX = /^\-?[0-9]\d*(\.\d*)?$/;
 
 export class NumberInput extends React.Component {
 
@@ -21,21 +21,17 @@ export class NumberInput extends React.Component {
 		this.id = Constants.EmptyString;
 		this.styleValue = Enums.InputTextStyle.Number;
 
-		this.isValidationRequired = !!this.payload.validation &&
-			(Enums.ValidationNecessity.Required == this.payload.validation.necessity ||
-				Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
-
+		this.parse();
 		this.state = {
-			isError: this.isValidationRequired,
-			numberValue: Constants.EmptyString,
+			isError: this.isInvalid(this.payload.value),
+			numberValue: this.payload.value ? this.payload.value.toString() : Constants.EmptyString
 		}
 	}
 
 	render() {
-		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
+		if (HostConfigManager.supportsInteractivity() === false) {
 			return null;
 		}
-		this.parseHostConfig();
 
 		return (
 			<Input
@@ -51,12 +47,12 @@ export class NumberInput extends React.Component {
 	}
 
     /**
-     * @description Parse hostConfig specific to this element
+     * @description Parse payload specific to this element
      */
-	parseHostConfig() {
+	parse() {
 		this.id = this.payload.id;
-		this.min = this.payload.min;
-		this.max = this.payload.max;
+		this.min = this.payload.min ? this.payload.min : Number.MIN_VALUE;
+		this.max = this.payload.max ? this.payload.max : Number.MAX_VALUE;
 	}
 
     /**
@@ -80,7 +76,7 @@ export class NumberInput extends React.Component {
      */
 	validate = (numberValue) => {
 		this.setState({
-			isError: this.checkRangeValue(numberValue)
+			isError: this.isInvalid(numberValue)
 		})
 	};
 
@@ -92,14 +88,15 @@ export class NumberInput extends React.Component {
 		this.setState({
 			numberValue: text
 		})
-		addInputItem(this.id, { value: text, errorState: this.state.isError });
+		addInputItem(this.id, { value: text, errorState: this.isInvalid(text) });
 	}
 
-
-	checkRangeValue = (numberValue) => {
-		if (!this.isValidationRequired) {
-			return false
-		}
+	/**
+     * @description Invoked to check whether the entered number falls
+	 * within the range mentioned in the payload.
+     * @param {Integer} value
+     */
+	isInvalid = (numberValue) => {
 		if (NUM_REGEX.test(numberValue)) {
 			var parsedValue = parseFloat(numberValue);
 			if (parsedValue < this.min || parsedValue > this.max) {

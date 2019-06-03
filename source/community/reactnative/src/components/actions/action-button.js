@@ -17,7 +17,10 @@ import {
 
 import { StyleManager } from '../../styles/style-config';
 import * as Utils from '../../utils/util';
-import { InputContext } from '../../utils/context';
+import {
+	InputContext,
+	InputContextConsumer
+} from '../../utils/context';
 import * as Constants from '../../utils/constants';
 import { HostConfigManager } from '../../utils/host-config';
 import * as Enums from '../../utils/enums';
@@ -35,6 +38,10 @@ export class ActionButton extends React.Component {
 		this.title = Constants.EmptyString;
 		this.type = Constants.EmptyString;
 		this.iconUrl = Constants.EmptyString;
+		this.inputArray = undefined;
+		this.onExecuteAction = undefined;
+		this.addResourceInformation = undefined;
+		this.toggleVisibilityForElementWithID = undefined;
 		this.data = {};
 		if (props.json.type === 'Action.ShowCard') {
 			this.showCardHandler = props.onShowCardTapped;
@@ -43,7 +50,7 @@ export class ActionButton extends React.Component {
 
 	componentDidMount() {
 		if (!Utils.isNullOrEmpty(this.payload.iconUrl)) {
-			this.context.addResourceInformation(this.payload.iconUrl, "");
+			this.addResourceInformation(this.payload.iconUrl, "");
 		}
 	}
 
@@ -53,13 +60,22 @@ export class ActionButton extends React.Component {
 		}
 		this.parseHostConfig();
 
-		const ButtonComponent = Platform.OS === Constants.PlatformIOS ? TouchableOpacity : TouchableNativeFeedback;
+		const ButtonComponent = Platform.OS === Constants.PlatformAndroid ? TouchableNativeFeedback : TouchableOpacity;
 
-		return (<ButtonComponent
-			style={{ flexGrow: 1 }}
-			onPress={this.onActionButtonTapped}>
-			{this.buttonContent()}
-		</ButtonComponent>)
+		return (<InputContextConsumer>
+			{({ onExecuteAction, inputArray, addResourceInformation, toggleVisibilityForElementWithID }) => {
+				this.inputArray = inputArray;
+				this.onExecuteAction = onExecuteAction;
+				this.addResourceInformation = addResourceInformation;
+				this.toggleVisibilityForElementWithID = toggleVisibilityForElementWithID;
+
+				return <ButtonComponent
+					style={{ flexGrow: 1 }}
+					onPress={this.onActionButtonTapped}>
+					{this.buttonContent()}
+				</ButtonComponent>
+			}}
+		</InputContextConsumer>);
 	}
 
 	/**
@@ -89,8 +105,8 @@ export class ActionButton extends React.Component {
      */
 	onSubmitActionCalled() {
 		let mergedObject = {};
-		for (const key in this.context.inputArray) {
-			mergedObject[key] = this.context.inputArray[key].value;
+		for (const key in this.inputArray) {
+			mergedObject[key] = this.inputArray[key].value;
 		}
 		if (this.data !== null) {
 			if (this.data instanceof Object)
@@ -99,24 +115,24 @@ export class ActionButton extends React.Component {
 				mergedObject["actionData"] = this.data;
 		}
 		let actionObject = { "type": this.payload.type, "data": mergedObject };
-		this.context.onExecuteAction(actionObject, this.payload.ignoreInputValidation === true);
+		this.onExecuteAction(actionObject, this.payload.ignoreInputValidation === true);
 	}
 
 	/**
      * @description Invoked for the action type Constants.ActionToggleVisibility
      */
 	onToggleActionCalled() {
-		this.context.toggleVisibilityForElementWithID(this.payload.targetElements);
+		this.toggleVisibilityForElementWithID(this.payload.targetElements);
 	}
 
 
 	onOpenURLCalled = () => {
 		let actionObject = { "type": this.payload.type, "url": this.payload.url };
-		this.context.onExecuteAction(actionObject);
+		this.onExecuteAction(actionObject);
 	}
 
 	changeShowCardState = () => {
-		this.showCardHandler(this.payload.card);
+		this.showCardHandler(this.payload.children[0]);
 	}
 
 	parseHostConfig() {

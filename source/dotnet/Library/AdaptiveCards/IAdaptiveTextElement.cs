@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using Newtonsoft.Json;
 using System.ComponentModel;
 using System.Xml.Serialization;
@@ -44,6 +46,6 @@ namespace AdaptiveCards
         /// <summary>
         ///     The font style of the TextBlock
         /// </summary>
-        AdaptiveFontStyle FontStyle { get; set; }
+        AdaptiveFontType FontType { get; set; }
     }
 }

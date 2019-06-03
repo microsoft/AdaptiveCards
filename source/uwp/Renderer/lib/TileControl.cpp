@@ -1,7 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 
 #include "enums.h"
-#include <math.h>
+#include <cmath>
 #include "AdaptiveBackgroundImage.h"
 #include "TileControl.h"
 #include "XamlHelpers.h"
@@ -69,7 +71,7 @@ namespace AdaptiveNamespace
         return m_resolvedImage.CopyTo(value);
     }
 
-    _Use_decl_annotations_ HRESULT TileControl::put_ImageSize(_In_ ABI::Windows::Foundation::Size value)
+    _Use_decl_annotations_ HRESULT TileControl::put_ImageSize(_In_ Size value)
     {
         m_imageSize = value;
         return S_OK;
@@ -80,7 +82,7 @@ namespace AdaptiveNamespace
         m_resolvedImage = uielement;
 
         ComPtr<IImage> image;
-        m_resolvedImage.As(&image);
+        RETURN_IF_FAILED(m_resolvedImage.As(&image));
 
         if (image != nullptr)
         {
@@ -104,14 +106,14 @@ namespace AdaptiveNamespace
                                                                  THROW_IF_FAILED(imageSource.As(&bitmapSource));
 
                                                                  // Extract Size from Image
-                                                                 INT32 height, width;
+                                                                 int height{}, width{};
                                                                  THROW_IF_FAILED(bitmapSource->get_PixelHeight(&height));
                                                                  THROW_IF_FAILED(bitmapSource->get_PixelWidth(&width));
 
                                                                  // Save size to member variable
-                                                                 Size imageSize;
-                                                                 imageSize.Height = (FLOAT)height;
-                                                                 imageSize.Width = (FLOAT)width;
+                                                                 Size imageSize{};
+                                                                 imageSize.Height = static_cast<float>(height);
+                                                                 imageSize.Width = static_cast<float>(width);
                                                                  THROW_IF_FAILED(put_ImageSize(imageSize));
 
                                                                  RefreshContainerTile();
@@ -152,9 +154,7 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(GetComposableBase()->QueryInterface(__uuidof(IFrameworkElementOverrides),
                                                              reinterpret_cast<void**>(base.GetAddressOf())));
 
-        HRESULT hr2 = base->ArrangeOverride(arrangeBounds, pReturnValue);
-        RETURN_IF_FAILED(hr2);
-
+        RETURN_IF_FAILED(base->ArrangeOverride(arrangeBounds, pReturnValue));
         m_containerSize = *pReturnValue;
 
         // Define clip properties for m_containerElement
@@ -173,74 +173,81 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(containerAsUIElement->put_Clip(clip.Get()));
 
         RefreshContainerTile();
-        return hr2;
+        return S_OK;
     }
 
     void TileControl::RefreshContainerTile()
     {
-        ABI::AdaptiveNamespace::BackgroundImageMode mode;
-        ABI::AdaptiveNamespace::HAlignment hAlignment;
-        ABI::AdaptiveNamespace::VAlignment vAlignment;
-        THROW_IF_FAILED(ExtractBackgroundImageData(&mode, &hAlignment, &vAlignment));
+        BackgroundImageFillMode fillMode{};
+        HAlignment hAlignment{};
+        VAlignment vAlignment{};
+        THROW_IF_FAILED(ExtractBackgroundImageData(&fillMode, &hAlignment, &vAlignment));
 
-        INT numberSpriteToInstanciate = 1;
-        INT numberImagePerColumn = 1;
-        INT numberImagePerRow = 1;
+        int numberSpriteToInstanciate{1};
+        int numberImagePerColumn{1};
+        int numberImagePerRow{1};
 
-        FLOAT offsetVerticalAlignment = 0;
-        FLOAT offsetHorizontalAlignment = 0;
+        float offsetVerticalAlignment{};
+        float offsetHorizontalAlignment{};
 
         // If we don't have dimensions yet, just make the image the size of
         // the container until we get the right dimensions.
-        if (m_imageSize.Width != 0 && m_imageSize.Height != 0)
+        if (m_imageSize.Width && m_imageSize.Height)
         {
-            switch (mode)
+            switch (fillMode)
             {
-            case ABI::AdaptiveNamespace::BackgroundImageMode::RepeatHorizontally:
-                numberImagePerRow = (INT)ceil(m_containerSize.Width / m_imageSize.Width);
+            case BackgroundImageFillMode::RepeatHorizontally:
+                numberImagePerRow = static_cast<int>(ceil(m_containerSize.Width / m_imageSize.Width));
                 numberImagePerColumn = 1;
 
                 switch (vAlignment)
                 {
-                case ABI::AdaptiveNamespace::VAlignment::Bottom:
+                case VAlignment::Bottom:
                     offsetVerticalAlignment = m_containerSize.Height - m_imageSize.Height;
                     break;
-                case ABI::AdaptiveNamespace::VAlignment::Center:
-                    offsetVerticalAlignment = (m_containerSize.Height - m_imageSize.Height) / FLOAT(2);
+                case VAlignment::Center:
+                    offsetVerticalAlignment = static_cast<float>((m_containerSize.Height - m_imageSize.Height) / 2.0f);
                     break;
-                case ABI::AdaptiveNamespace::VAlignment::Top:
+                case VAlignment::Top:
                 default:
                     break;
                 }
                 break;
 
-            case ABI::AdaptiveNamespace::BackgroundImageMode::RepeatVertically:
+            case BackgroundImageFillMode::RepeatVertically:
                 numberImagePerRow = 1;
-                numberImagePerColumn = (INT)ceil(m_containerSize.Height / m_imageSize.Height);
+                numberImagePerColumn = static_cast<int>(ceil(m_containerSize.Height / m_imageSize.Height));
 
                 switch (hAlignment)
                 {
-                case ABI::AdaptiveNamespace::HAlignment::Right:
+                case HAlignment::Right:
                     offsetHorizontalAlignment = m_containerSize.Width - m_imageSize.Width;
                     break;
-                case ABI::AdaptiveNamespace::HAlignment::Center:
-                    offsetHorizontalAlignment = (m_containerSize.Width - m_imageSize.Width) / FLOAT(2);
+                case HAlignment::Center:
+                    offsetHorizontalAlignment = static_cast<float>((m_containerSize.Width - m_imageSize.Width) / 2.0f);
                     break;
-                case ABI::AdaptiveNamespace::HAlignment::Left:
+                case HAlignment::Left:
                 default:
                     break;
                 }
                 break;
 
-            case ABI::AdaptiveNamespace::BackgroundImageMode::Repeat:
-                numberImagePerColumn = (INT)ceil(m_containerSize.Height / m_imageSize.Height);
-                numberImagePerRow = (INT)ceil(m_containerSize.Width / m_imageSize.Width);
+            case BackgroundImageFillMode::Repeat:
+                numberImagePerColumn = static_cast<int>(ceil(m_containerSize.Height / m_imageSize.Height));
+                numberImagePerRow = static_cast<int>(ceil(m_containerSize.Width / m_imageSize.Width));
                 break;
+
+            case BackgroundImageFillMode::Cover:
+            default:
+                numberImagePerColumn = 1;
+                numberImagePerRow = 1;
+                offsetHorizontalAlignment = 0;
+                offsetVerticalAlignment = 0;
             }
         }
         numberSpriteToInstanciate = numberImagePerColumn * numberImagePerRow;
 
-        INT count = (INT)(m_xamlChildren.size());
+        int count = static_cast<int>(m_xamlChildren.size());
 
         // Get containerElement.Children
         ComPtr<IVector<UIElement*>> children;
@@ -248,24 +255,29 @@ namespace AdaptiveNamespace
         THROW_IF_FAILED(m_containerElement.As(&containerElementAsPanel));
         THROW_IF_FAILED(containerElementAsPanel->get_Children(&children));
 
-        // instanciate all elements not created yet
-        for (INT x = 0; x < numberSpriteToInstanciate - count; x++)
+        if (numberSpriteToInstanciate > count)
         {
-            ComPtr<IRectangle> rectangle = AdaptiveNamespace::XamlHelpers::CreateXamlClass<IRectangle>(
-                HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Rectangle));
+            // instanciate all elements not created yet
+            for (int x{}; x < (numberSpriteToInstanciate - count); x++)
+            {
+                ComPtr<IRectangle> rectangle = AdaptiveNamespace::XamlHelpers::CreateXamlClass<IRectangle>(
+                    HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Rectangle));
 
-            ComPtr<IUIElement> rectangleAsUIElement;
-            THROW_IF_FAILED(rectangle.As(&rectangleAsUIElement));
-            THROW_IF_FAILED(children->Append(rectangleAsUIElement.Get()));
+                ComPtr<IUIElement> rectangleAsUIElement;
+                THROW_IF_FAILED(rectangle.As(&rectangleAsUIElement));
+                THROW_IF_FAILED(children->Append(rectangleAsUIElement.Get()));
 
-            m_xamlChildren.push_back(rectangle);
+                m_xamlChildren.push_back(rectangle);
+            }
         }
-
-        // remove elements not used now
-        for (INT x = 0; x < count - numberSpriteToInstanciate; x++)
+        else
         {
-            THROW_IF_FAILED(children->RemoveAtEnd());
-            m_xamlChildren.pop_back();
+            // remove elements not used now
+            for (int x{}; x < (count - numberSpriteToInstanciate); ++x)
+            {
+                THROW_IF_FAILED(children->RemoveAtEnd());
+                m_xamlChildren.pop_back();
+            }
         }
 
         // Convert ImageBrush to Brush
@@ -273,15 +285,14 @@ namespace AdaptiveNamespace
         THROW_IF_FAILED(m_brushXaml.As(&brushXamlAsBrush));
 
         // Change positions+brush for all actives elements
-        for (INT x = 0; x < numberImagePerRow; x++)
+        for (int x = 0, index = 0; x < numberImagePerRow; x++)
         {
-            for (INT y = 0; y < numberImagePerColumn; y++)
+            for (int y = 0; y < numberImagePerColumn; y++, index++)
             {
-                INT index = (y * numberImagePerRow) + x;
-
                 // Get Rectangle
                 auto rectangle = m_xamlChildren[index];
 
+                // For cover, the bitmapimage must be scaled to fill the container and then clipped to only the necessary section
                 // Set rectangle.Fill
                 ComPtr<IShape> rectangleAsShape;
                 THROW_IF_FAILED(rectangle.As(&rectangleAsShape));
@@ -291,29 +302,60 @@ namespace AdaptiveNamespace
                 ComPtr<IUIElement> rectangleAsUIElement;
                 THROW_IF_FAILED(rectangleAsShape.As(&rectangleAsUIElement));
 
+                double originPositionX{}, originPositionY{};
+                if (fillMode != BackgroundImageFillMode::Cover)
+                {
+                    originPositionX = (x * m_imageSize.Width) + offsetHorizontalAlignment;
+                    originPositionY = (y * m_imageSize.Height) + offsetVerticalAlignment;
+                }
+
                 // Set Left and Top for rectangle
                 ComPtr<ICanvasStatics> canvasStatics;
                 ABI::Windows::Foundation::GetActivationFactory(
                     HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Canvas).Get(), &canvasStatics);
-                THROW_IF_FAILED(canvasStatics->SetLeft(rectangleAsUIElement.Get(), (x * m_imageSize.Width) + offsetHorizontalAlignment));
-                THROW_IF_FAILED(canvasStatics->SetTop(rectangleAsUIElement.Get(), (y * m_imageSize.Height) + offsetVerticalAlignment));
+                THROW_IF_FAILED(canvasStatics->SetLeft(rectangleAsUIElement.Get(), originPositionX));
+                THROW_IF_FAILED(canvasStatics->SetTop(rectangleAsUIElement.Get(), originPositionY));
+
+                double imageWidth{}, imageHeight{};
+                if (fillMode == BackgroundImageFillMode::Cover)
+                {
+                    imageWidth = m_containerSize.Width;
+                    imageHeight = m_containerSize.Height;
+                }
+                else
+                {
+                    imageWidth = m_imageSize.Width;
+                    imageHeight = m_imageSize.Height;
+                }
 
                 ComPtr<IFrameworkElement> rectangleAsFElement;
-                rectangle.As(&rectangleAsFElement);
+                THROW_IF_FAILED(rectangle.As(&rectangleAsFElement));
                 // Set Width and Height for Rectangle
-                THROW_IF_FAILED(rectangleAsFElement->put_Width(m_imageSize.Width));
-                THROW_IF_FAILED(rectangleAsFElement->put_Height(m_imageSize.Height));
+                THROW_IF_FAILED(rectangleAsFElement->put_Width(imageWidth));
+                THROW_IF_FAILED(rectangleAsFElement->put_Height(imageHeight));
+
+                if (fillMode == BackgroundImageFillMode::Cover)
+                {
+                    ComPtr<ITileBrush> brushXamlAsTileBrush;
+                    THROW_IF_FAILED(m_brushXaml.As(&brushXamlAsTileBrush));
+
+                    THROW_IF_FAILED(brushXamlAsTileBrush->put_Stretch(Stretch_UniformToFill));
+
+                    // Vertical and Horizontal Alignments map to the same values in our shared model and UWP, so we just cast
+                    THROW_IF_FAILED(brushXamlAsTileBrush->put_AlignmentX(static_cast<AlignmentX>(hAlignment)));
+                    THROW_IF_FAILED(brushXamlAsTileBrush->put_AlignmentY(static_cast<AlignmentY>(vAlignment)));
+                }
             }
         }
     }
 
-    HRESULT TileControl::ExtractBackgroundImageData(ABI::AdaptiveNamespace::BackgroundImageMode* mode,
-                                                    ABI::AdaptiveNamespace::HAlignment* hAlignment,
-                                                    ABI::AdaptiveNamespace::VAlignment* vAlignment)
+    HRESULT TileControl::ExtractBackgroundImageData(BackgroundImageFillMode* fillMode,
+                                                    HAlignment* hAlignment,
+                                                    VAlignment* vAlignment)
     {
-        THROW_IF_FAILED(m_adaptiveBackgroundImage->get_Mode(mode));
-        THROW_IF_FAILED(m_adaptiveBackgroundImage->get_HorizontalAlignment(hAlignment));
-        THROW_IF_FAILED(m_adaptiveBackgroundImage->get_VerticalAlignment(vAlignment));
+        RETURN_IF_FAILED(m_adaptiveBackgroundImage->get_FillMode(fillMode));
+        RETURN_IF_FAILED(m_adaptiveBackgroundImage->get_HorizontalAlignment(hAlignment));
+        RETURN_IF_FAILED(m_adaptiveBackgroundImage->get_VerticalAlignment(vAlignment));
         return S_OK;
     }
 }

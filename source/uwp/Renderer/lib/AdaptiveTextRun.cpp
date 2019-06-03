@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveTextRun.h"
 #include "Util.h"
@@ -22,6 +24,8 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveTextRun::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TextRun>& sharedTextRun) noexcept try
     {
         m_highlight = sharedTextRun->GetHighlight();
+        m_italic = sharedTextRun->GetItalic();
+        m_strikethrough = sharedTextRun->GetStrikethrough();
 
         RETURN_IF_FAILED(GenerateActionProjection(sharedTextRun->GetSelectAction(), &m_selectAction));
         RETURN_IF_FAILED(AdaptiveTextElement::InitializeTextElement(sharedTextRun));
@@ -52,11 +56,38 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    HRESULT AdaptiveTextRun::get_Italic(boolean* italic)
+    {
+        *italic = m_italic;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveTextRun::put_Italic(boolean italic)
+    {
+        m_italic = italic;
+        return S_OK;
+    }
+
+    IFACEMETHODIMP AdaptiveTextRun::get_Strikethrough(boolean* strikethrough)
+    {
+        *strikethrough = m_strikethrough;
+        return S_OK;
+    }
+
+    IFACEMETHODIMP AdaptiveTextRun::put_Strikethrough(boolean strikethrough)
+    {
+        m_strikethrough = strikethrough;
+        return S_OK;
+    }
+
+
     HRESULT AdaptiveTextRun::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::TextRun>& sharedModel) noexcept try
     {
         std::shared_ptr<AdaptiveSharedNamespace::TextRun> textRun = std::make_shared<AdaptiveSharedNamespace::TextRun>();
         RETURN_IF_FAILED(AdaptiveTextElement::SetTextElementProperties(textRun));
 
+        textRun->SetItalic(m_italic);
+        textRun->SetStrikethrough(m_strikethrough);
         textRun->SetHighlight(m_highlight);
 
         if (m_selectAction != nullptr)

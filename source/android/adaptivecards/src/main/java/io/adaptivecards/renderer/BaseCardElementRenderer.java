@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer;
 
 import android.content.Context;
@@ -6,7 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import java.util.Set;
+
 import io.adaptivecards.objectmodel.ColorsConfig;
+import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.HostConfig;
@@ -59,7 +64,7 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
         return android.graphics.Color.parseColor(colorCode);
     }
 
-    protected static void setSpacingAndSeparator(Context context,
+    protected static View setSpacingAndSeparator(Context context,
                                                ViewGroup viewGroup,
                                                Spacing spacing,
                                                boolean separator,
@@ -70,7 +75,7 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
         if (viewGroup.getChildCount() <= 0)
         {
             //Do not add space to the first element of a viewgroup
-            return;
+            return null;
         }
         int spacingSize = Util.dpToPixels(context, getSpacingSize(spacing, hostConfig.GetSpacing()));
         int separatorThickness = Util.dpToPixels(context, hostConfig.GetSeparator().getLineThickness());
@@ -99,10 +104,15 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
                     horizontalLine ? spacingSize : (isImageSet ? 0 : LinearLayout.LayoutParams.MATCH_PARENT));
         }
         view.setLayoutParams(params);
+
+        // If the element has no tag, then we know it's a separator
+        view.setTag(new TagContent(true /* isSeparator */));
+
         viewGroup.addView(view);
+        return view;
     }
 
-    protected static void setSpacingAndSeparator(
+    protected static View setSpacingAndSeparator(
             Context context,
             ViewGroup viewGroup,
             Spacing spacing,
@@ -110,6 +120,88 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
             HostConfig hostConfig,
             boolean horizontalLine)
     {
-        setSpacingAndSeparator(context, viewGroup, spacing, separator, hostConfig, horizontalLine, false /* isImageSet */);
+        return setSpacingAndSeparator(context, viewGroup, spacing, separator, hostConfig, horizontalLine, false /* isImageSet */);
+    }
+
+    /**
+     * This method retrieves and parses the TagContent object associated to a rendered element
+     * @param view defines the rendered element to grab the TagContent from
+     * @return TagContent form view
+     */
+    protected static TagContent getTagContent(View view)
+    {
+        if (view != null)
+        {
+            Object tag = view.getTag();
+
+            if (tag != null && tag instanceof TagContent)
+            {
+                return (TagContent) tag;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     *  This method sets the visibility for a rendered element view and its separator. It must be called after setting the view tag as it contains the separator view
+     * @param isVisible defines whether the view should be visible or not
+     * @param elementView defines the element view (layout, editText, button, etc)
+     * @param viewGroupsToUpdate defines the list of viewGroups to update once all the elements have changed visibility
+     */
+    protected static void setVisibility(boolean isVisible, View elementView, Set<ViewGroup> viewGroupsToUpdate)
+    {
+        View separator = null;
+        TagContent tagContent = getTagContent(elementView);
+
+        if (tagContent != null)
+        {
+            separator = tagContent.GetSeparator();
+
+            ViewGroup viewGroup = tagContent.GetViewContainer();
+            if (viewGroupsToUpdate != null && viewGroup != null)
+            {
+                viewGroupsToUpdate.add(viewGroup);
+            }
+        }
+
+        int visibility = isVisible ? View.VISIBLE : View.GONE;
+
+        if (separator != null)
+        {
+            separator.setVisibility(visibility);
+        }
+
+        View stretchContainer = tagContent.GetStretchContainer();
+        if (stretchContainer != null)
+        {
+            stretchContainer.setVisibility(visibility);
+        }
+
+        elementView.setVisibility(visibility);
+    }
+
+    /**
+     *  This method sets the visibility for a rendered element view and its separator. It must be called after setting the view tag as it contains the separator view
+     * @param isVisible defines whether the view should be visible or not
+     * @param elementView defines the element view (layout, editText, button, etc)
+     */
+    protected static void setVisibility(boolean isVisible, View elementView)
+    {
+        setVisibility(isVisible, elementView, null);
+    }
+
+    /**
+     * Sets the minimum height for Collection elements
+     * @param minHeight minimum height in pixels. Retrieved from minHeight property
+     * @param view Collection element view to apply minimum height to
+     * @param context Context for calculating actual height to render
+     */
+    protected static void setMinHeight(long minHeight, View view, Context context)
+    {
+        if (minHeight != 0)
+        {
+            view.setMinimumHeight(Util.dpToPixels(context, (int)minHeight));
+        }
     }
 }

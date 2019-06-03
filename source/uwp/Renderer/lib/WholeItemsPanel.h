@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
@@ -27,7 +29,7 @@ namespace AdaptiveNamespace
 
         virtual HRESULT STDMETHODCALLTYPE OnApplyTemplate(void);
 
-        virtual HRESULT STDMETHODCALLTYPE GetAltText(__RPC__out HSTRING* pResult);
+        virtual HRESULT STDMETHODCALLTYPE GetAltText(__RPC__out HSTRING* pResult) noexcept;
 
         // Method used inside the component to reduce the number of temporary allocations
         _Check_return_ HRESULT AppendAltText(_Inout_ std::wstring& buffer);

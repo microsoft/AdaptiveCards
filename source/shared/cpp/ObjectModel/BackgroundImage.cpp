@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "Enums.h"
 #include "pch.h"
 #include "BackgroundImage.h"
@@ -8,9 +10,9 @@ namespace AdaptiveSharedNamespace
 
     void BackgroundImage::SetUrl(const std::string& value) { m_url = value; }
 
-    BackgroundImageMode BackgroundImage::GetMode() const { return m_mode; }
+    ImageFillMode BackgroundImage::GetFillMode() const { return m_fillMode; }
 
-    void BackgroundImage::SetMode(const BackgroundImageMode& value) { m_mode = value; }
+    void BackgroundImage::SetFillMode(const ImageFillMode& value) { m_fillMode = value; }
 
     HorizontalAlignment BackgroundImage::GetHorizontalAlignment() const { return m_hAlignment; }
 
@@ -25,7 +27,7 @@ namespace AdaptiveSharedNamespace
         Json::Value root;
 
         // if BackgroundImage has a url and the rest as default values
-        if (!m_url.empty() && m_mode == BackgroundImageMode::Stretch && m_hAlignment == HorizontalAlignment::Left &&
+        if (!m_url.empty() && m_fillMode == ImageFillMode::Cover && m_hAlignment == HorizontalAlignment::Left &&
             m_vAlignment == VerticalAlignment::Top)
         {
             root = m_url;
@@ -39,10 +41,10 @@ namespace AdaptiveSharedNamespace
                 root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Url)] = m_url;
             }
 
-            if (m_mode != BackgroundImageMode::Stretch)
+            if (m_fillMode != ImageFillMode::Cover)
             {
-                root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Mode)] =
-                    BackgroundImageModeToString(m_mode);
+                root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::FillMode)] =
+                    ImageFillModeToString(m_fillMode);
             }
 
             if (m_hAlignment != HorizontalAlignment::Left)
@@ -66,8 +68,8 @@ namespace AdaptiveSharedNamespace
 
         image->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url, true));
 
-        image->SetMode(ParseUtil::GetEnumValue<BackgroundImageMode>(
-            json, AdaptiveCardSchemaKey::Mode, BackgroundImageMode::Stretch, BackgroundImageModeFromString));
+        image->SetFillMode(ParseUtil::GetEnumValue<ImageFillMode>(
+            json, AdaptiveCardSchemaKey::FillMode, ImageFillMode::Cover, ImageFillModeFromString));
 
         image->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(
             json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));

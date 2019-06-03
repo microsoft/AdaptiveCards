@@ -153,15 +153,25 @@ export function parseVersion(versionString) {
 }
 
 /**
- * @description Validate the given url
+ * @description Validate the given url for proper remote URL / data: format
  * @param {url} url of the image 
- * @return {boolean} If url is absolute or not
+ * @return {boolean}
  */
 export function validateUrl(url) {
-	let urlRegEx = /^(?:[a-z]+:)?\/\//i;
+	let urlRegEx = /^(?:[a-z]+:)?\/\/[\w.]+/i;
 	let dataregex = /^\s*data:([a-z]+\/[a-z]+(;[a-z\-]+\=[a-z\-]+)?)?(;base64)?,[a-z0-9\!\$\&\'\,\(\)\*\+\,\;\=\-\.\_\~\:\@\/\?\%\s]*\s*$/i;
 
 	return urlRegEx.test(url) || dataregex.test(url);
+}
+
+/**
+ * @description Check whether the given image path format is a proper remote URL / data URI / local asset
+ * @param {string} input - Image path
+ * @returns {boolean}
+ */
+export function isValidImageURI(input) {
+	const assetRegex = /^Assets\//;
+	return validateUrl(input) || assetRegex.test(input);
 }
 
 /**
@@ -201,4 +211,15 @@ export function hexToRGB(color) {
 	else {
 		return color;
 	}
+}
+
+/**
+ * @description Generates an unique ID for the element if its not part of the payload
+ * @return {string} ID as string
+ */
+/**
+ * argb in hex to css rgba
+ */
+export function generateID() {
+	return Math.random().toString(36).substr(2, 9);
 }

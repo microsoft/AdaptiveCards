@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using AdaptiveCards.Rendering.Uwp;
 using System;
 using System.Collections.Generic;
@@ -48,7 +50,7 @@ namespace UWPTestLibrary
                 }
             }
         }
-        
+
         public static async Task<RenderedTestResult> RenderCard(FileViewModel cardFile, FileViewModel hostConfigFile, Dictionary<string, IAdaptiveCardResourceResolver> resourceResolvers)
         {
             string error = null;
@@ -98,11 +100,6 @@ namespace UWPTestLibrary
                         {
                             renderer.SetFixedDimensions(320, 180);
                             cardWidth = 320;
-                        }
-                        else if (hostConfigFile.Name.Contains("windows-live-tile"))
-                        {
-                            renderer.SetFixedDimensions(310, 310);
-                            cardWidth = 310;
                         }
 
                         RenderedAdaptiveCard renderedCard = renderer.RenderAdaptiveCard(card);

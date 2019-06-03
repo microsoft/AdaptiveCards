@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
@@ -215,10 +217,11 @@ namespace AdaptiveNamespace
         static void ApplyMarginToXamlElement(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
                                              _In_ ABI::Windows::UI::Xaml::IFrameworkElement* element);
         static void AddSeparatorIfNeeded(int& currentElement,
-                                         ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* element,
-                                         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig>& hostConfig,
-                                         ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                                         ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel);
+                                         _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* element,
+                                         _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
+                                         _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                                         _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,
+                                         _Outptr_ ABI::Windows::UI::Xaml::IUIElement** addedSeparator);
         static HRESULT BuildPanelChildren(
             _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveCardElement*>* children,
             _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,

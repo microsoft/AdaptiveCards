@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer.input;
 
 import android.content.Context;
@@ -63,9 +65,10 @@ public class NumberInputRenderer extends TextInputRenderer
         {
             throw new InternalError("Unable to convert BaseCardElement to NumberInput object model.");
         }
-        setSpacingAndSeparator(context, viewGroup, numberInput.GetSpacing(), numberInput.GetSeparator(), hostConfig, true /* horizontal line */);
+        View separator = setSpacingAndSeparator(context, viewGroup, numberInput.GetSpacing(), numberInput.GetSeparator(), hostConfig, true /* horizontal line */);
 
         TextInputHandler numberInputHandler = new TextInputHandler(numberInput);
+        TagContent tagContent = new TagContent(numberInput, numberInputHandler, separator, viewGroup);
         EditText editText = renderInternal(
                 renderedCard,
                 context,
@@ -74,15 +77,12 @@ public class NumberInputRenderer extends TextInputRenderer
                 String.valueOf(numberInput.GetValue()),
                 String.valueOf(numberInput.GetPlaceholder()),
                 numberInputHandler,
-                hostConfig);
+                hostConfig,
+                tagContent);
         editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
-        editText.setTag(new TagContent(numberInput, numberInputHandler));
-        if(!baseCardElement.GetIsVisible())
-        {
-            editText.setVisibility(View.GONE);
-        }
-
+        editText.setTag(tagContent);
+        setVisibility(baseCardElement.GetIsVisible(), editText);
 
         return editText;
     }

@@ -1,7 +1,9 @@
-export enum ActionSentiment {
-    Default,
-    Positive,
-    Destructive
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+export class ActionStyle {
+    static readonly Default = "default";
+    static readonly Positive = "positive";
+    static readonly Destructive = "destructive";
 }
 
 export enum Size {
@@ -31,7 +33,7 @@ export enum TextWeight {
     Bolder
 }
 
-export enum FontFamily {
+export enum FontType {
     Default,
     Monospace
 }
@@ -150,7 +152,8 @@ export enum ValidationError {
     TooManyActions,
     UnknownActionType,
     UnknownElementType,
-    UnsupportedCardVersion
+    UnsupportedCardVersion,
+    DuplicateId
 }
 
 export enum ContainerFitStatus {

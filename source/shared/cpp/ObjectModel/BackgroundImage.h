@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "Enums.h"
@@ -10,19 +12,19 @@ namespace AdaptiveSharedNamespace
     {
     public:
         BackgroundImage() :
-            m_mode(BackgroundImageMode::Stretch), m_hAlignment(HorizontalAlignment::Left), m_vAlignment(VerticalAlignment::Top)
+            m_fillMode(ImageFillMode::Cover), m_hAlignment(HorizontalAlignment::Left), m_vAlignment(VerticalAlignment::Top)
         {
         }
         BackgroundImage(std::string const& url) : m_url(url) {}
-        BackgroundImage(std::string const& url, BackgroundImageMode mode, HorizontalAlignment hAlignment, VerticalAlignment vAlignment) :
-            m_url(url), m_mode(mode), m_hAlignment(hAlignment), m_vAlignment(vAlignment)
+        BackgroundImage(std::string const& url, ImageFillMode fillMode, HorizontalAlignment hAlignment, VerticalAlignment vAlignment) :
+            m_url(url), m_fillMode(fillMode), m_hAlignment(hAlignment), m_vAlignment(vAlignment)
         {
         }
 
         std::string GetUrl() const;
         void SetUrl(const std::string& value);
-        BackgroundImageMode GetMode() const;
-        void SetMode(const BackgroundImageMode& value);
+        ImageFillMode GetFillMode() const;
+        void SetFillMode(const ImageFillMode& value);
         HorizontalAlignment GetHorizontalAlignment() const;
         void SetHorizontalAlignment(const HorizontalAlignment& value);
         VerticalAlignment GetVerticalAlignment() const;
@@ -34,7 +36,7 @@ namespace AdaptiveSharedNamespace
 
     private:
         std::string m_url;
-        BackgroundImageMode m_mode = BackgroundImageMode::Stretch;
+        ImageFillMode m_fillMode = ImageFillMode::Cover;
         HorizontalAlignment m_hAlignment = HorizontalAlignment::Left;
         VerticalAlignment m_vAlignment = VerticalAlignment::Top;
     };

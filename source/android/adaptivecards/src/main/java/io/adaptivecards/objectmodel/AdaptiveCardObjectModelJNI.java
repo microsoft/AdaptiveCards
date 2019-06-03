@@ -289,9 +289,9 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long getTextWeightEnum();
   public final static native String TextWeightToString(int jarg1);
   public final static native int TextWeightFromString(String jarg1);
-  public final static native long getFontStyleEnum();
-  public final static native String FontStyleToString(int jarg1);
-  public final static native int FontStyleFromString(String jarg1);
+  public final static native long getFontTypeEnum();
+  public final static native String FontTypeToString(int jarg1);
+  public final static native int FontTypeFromString(String jarg1);
   public final static native long getForegroundColorEnum();
   public final static native String ForegroundColorToString(int jarg1);
   public final static native int ForegroundColorFromString(String jarg1);
@@ -301,9 +301,9 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long getVerticalAlignmentEnum();
   public final static native String VerticalAlignmentToString(int jarg1);
   public final static native int VerticalAlignmentFromString(String jarg1);
-  public final static native long getBackgroundImageModeEnum();
-  public final static native String BackgroundImageModeToString(int jarg1);
-  public final static native int BackgroundImageModeFromString(String jarg1);
+  public final static native long getImageFillModeEnum();
+  public final static native String ImageFillModeToString(int jarg1);
+  public final static native int ImageFillModeFromString(String jarg1);
   public final static native long getImageStyleEnum();
   public final static native String ImageStyleToString(int jarg1);
   public final static native int ImageStyleFromString(String jarg1);
@@ -382,6 +382,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void BaseElement_SetAdditionalProperties(long jarg1, BaseElement jarg1_, long jarg2, JsonValue jarg2_);
   public final static native int BaseElement_GetFallbackType(long jarg1, BaseElement jarg1_);
   public final static native long BaseElement_GetFallbackContent(long jarg1, BaseElement jarg1_);
+  public final static native boolean BaseElement_CanFallbackToAncestor(long jarg1, BaseElement jarg1_);
   public final static native void BaseElement_SetFallbackType(long jarg1, BaseElement jarg1_, int jarg2);
   public final static native void BaseElement_SetFallbackContent(long jarg1, BaseElement jarg1_, long jarg2, BaseElement jarg2_);
   public final static native boolean BaseElement_MeetsRequirements(long jarg1, BaseElement jarg1_, long jarg2, FeatureRegistration jarg2_);
@@ -435,10 +436,10 @@ public class AdaptiveCardObjectModelJNI {
   public final static native String BaseActionElement_GetIconUrlSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_);
   public final static native void BaseActionElement_SetIconUrl(long jarg1, BaseActionElement jarg1_, String jarg2);
   public final static native void BaseActionElement_SetIconUrlSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_, String jarg2);
-  public final static native String BaseActionElement_GetSentiment(long jarg1, BaseActionElement jarg1_);
-  public final static native String BaseActionElement_GetSentimentSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_);
-  public final static native void BaseActionElement_SetSentiment(long jarg1, BaseActionElement jarg1_, String jarg2);
-  public final static native void BaseActionElement_SetSentimentSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_, String jarg2);
+  public final static native String BaseActionElement_GetStyle(long jarg1, BaseActionElement jarg1_);
+  public final static native String BaseActionElement_GetStyleSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_);
+  public final static native void BaseActionElement_SetStyle(long jarg1, BaseActionElement jarg1_, String jarg2);
+  public final static native void BaseActionElement_SetStyleSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_, String jarg2);
   public final static native int BaseActionElement_GetElementType(long jarg1, BaseActionElement jarg1_);
   public final static native int BaseActionElement_GetElementTypeSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_);
   public final static native void BaseActionElement_GetResourceInformation(long jarg1, BaseActionElement jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
@@ -457,8 +458,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long new_BackgroundImage__SWIG_2(String jarg1, int jarg2, int jarg3, int jarg4);
   public final static native String BackgroundImage_GetUrl(long jarg1, BackgroundImage jarg1_);
   public final static native void BackgroundImage_SetUrl(long jarg1, BackgroundImage jarg1_, String jarg2);
-  public final static native int BackgroundImage_GetMode(long jarg1, BackgroundImage jarg1_);
-  public final static native void BackgroundImage_SetMode(long jarg1, BackgroundImage jarg1_, int jarg2);
+  public final static native int BackgroundImage_GetFillMode(long jarg1, BackgroundImage jarg1_);
+  public final static native void BackgroundImage_SetFillMode(long jarg1, BackgroundImage jarg1_, int jarg2);
   public final static native int BackgroundImage_GetHorizontalAlignment(long jarg1, BackgroundImage jarg1_);
   public final static native void BackgroundImage_SetHorizontalAlignment(long jarg1, BackgroundImage jarg1_, int jarg2);
   public final static native int BackgroundImage_GetVerticalAlignment(long jarg1, BackgroundImage jarg1_);
@@ -807,6 +808,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void ParseContext_PushElement__SWIG_0(long jarg1, ParseContext jarg1_, String jarg2, long jarg3, InternalId jarg3_, boolean jarg4);
   public final static native void ParseContext_PushElement__SWIG_1(long jarg1, ParseContext jarg1_, String jarg2, long jarg3, InternalId jarg3_);
   public final static native void ParseContext_PopElement(long jarg1, ParseContext jarg1_);
+  public final static native boolean ParseContext_GetCanFallbackToAncestor(long jarg1, ParseContext jarg1_);
+  public final static native void ParseContext_SetCanFallbackToAncestor(long jarg1, ParseContext jarg1_, boolean jarg2);
   public final static native void ParseContext_SetLanguage(long jarg1, ParseContext jarg1_, String jarg2);
   public final static native String ParseContext_GetLanguage(long jarg1, ParseContext jarg1_);
   public final static native int ParseContext_GetParentalContainerStyle(long jarg1, ParseContext jarg1_);
@@ -879,28 +882,36 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long FontWeightsConfig_GetFontWeight(long jarg1, FontWeightsConfig jarg1_, int jarg2);
   public final static native void FontWeightsConfig_SetFontWeight(long jarg1, FontWeightsConfig jarg1_, int jarg2, long jarg3);
   public final static native void delete_FontWeightsConfig(long jarg1);
-  public final static native void FontStyleDefinition_fontFamily_set(long jarg1, FontStyleDefinition jarg1_, String jarg2);
-  public final static native String FontStyleDefinition_fontFamily_get(long jarg1, FontStyleDefinition jarg1_);
-  public final static native void FontStyleDefinition_fontSizes_set(long jarg1, FontStyleDefinition jarg1_, long jarg2, FontSizesConfig jarg2_);
-  public final static native long FontStyleDefinition_fontSizes_get(long jarg1, FontStyleDefinition jarg1_);
-  public final static native void FontStyleDefinition_fontWeights_set(long jarg1, FontStyleDefinition jarg1_, long jarg2, FontWeightsConfig jarg2_);
-  public final static native long FontStyleDefinition_fontWeights_get(long jarg1, FontStyleDefinition jarg1_);
-  public final static native long FontStyleDefinition_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, FontStyleDefinition jarg2_);
-  public final static native long new_FontStyleDefinition();
-  public final static native void delete_FontStyleDefinition(long jarg1);
-  public final static native void FontStylesDefinition_defaultStyle_set(long jarg1, FontStylesDefinition jarg1_, long jarg2, FontStyleDefinition jarg2_);
-  public final static native long FontStylesDefinition_defaultStyle_get(long jarg1, FontStylesDefinition jarg1_);
-  public final static native void FontStylesDefinition_monospaceStyle_set(long jarg1, FontStylesDefinition jarg1_, long jarg2, FontStyleDefinition jarg2_);
-  public final static native long FontStylesDefinition_monospaceStyle_get(long jarg1, FontStylesDefinition jarg1_);
-  public final static native long FontStylesDefinition_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, FontStylesDefinition jarg2_);
-  public final static native long new_FontStylesDefinition();
-  public final static native void delete_FontStylesDefinition(long jarg1);
+  public final static native void FontTypeDefinition_fontFamily_set(long jarg1, FontTypeDefinition jarg1_, String jarg2);
+  public final static native String FontTypeDefinition_fontFamily_get(long jarg1, FontTypeDefinition jarg1_);
+  public final static native void FontTypeDefinition_fontSizes_set(long jarg1, FontTypeDefinition jarg1_, long jarg2, FontSizesConfig jarg2_);
+  public final static native long FontTypeDefinition_fontSizes_get(long jarg1, FontTypeDefinition jarg1_);
+  public final static native void FontTypeDefinition_fontWeights_set(long jarg1, FontTypeDefinition jarg1_, long jarg2, FontWeightsConfig jarg2_);
+  public final static native long FontTypeDefinition_fontWeights_get(long jarg1, FontTypeDefinition jarg1_);
+  public final static native long FontTypeDefinition_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, FontTypeDefinition jarg2_);
+  public final static native long new_FontTypeDefinition();
+  public final static native void delete_FontTypeDefinition(long jarg1);
+  public final static native void FontTypesDefinition_defaultFontType_set(long jarg1, FontTypesDefinition jarg1_, long jarg2, FontTypeDefinition jarg2_);
+  public final static native long FontTypesDefinition_defaultFontType_get(long jarg1, FontTypesDefinition jarg1_);
+  public final static native void FontTypesDefinition_monospaceFontType_set(long jarg1, FontTypesDefinition jarg1_, long jarg2, FontTypeDefinition jarg2_);
+  public final static native long FontTypesDefinition_monospaceFontType_get(long jarg1, FontTypesDefinition jarg1_);
+  public final static native long FontTypesDefinition_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, FontTypesDefinition jarg2_);
+  public final static native long new_FontTypesDefinition();
+  public final static native void delete_FontTypesDefinition(long jarg1);
+  public final static native void HighlightColorConfig_defaultColor_set(long jarg1, HighlightColorConfig jarg1_, String jarg2);
+  public final static native String HighlightColorConfig_defaultColor_get(long jarg1, HighlightColorConfig jarg1_);
+  public final static native void HighlightColorConfig_subtleColor_set(long jarg1, HighlightColorConfig jarg1_, String jarg2);
+  public final static native String HighlightColorConfig_subtleColor_get(long jarg1, HighlightColorConfig jarg1_);
+  public final static native long HighlightColorConfig_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, HighlightColorConfig jarg2_);
+  public final static native long new_HighlightColorConfig();
+  public final static native void delete_HighlightColorConfig(long jarg1);
   public final static native void ColorConfig_defaultColor_set(long jarg1, ColorConfig jarg1_, String jarg2);
   public final static native String ColorConfig_defaultColor_get(long jarg1, ColorConfig jarg1_);
   public final static native void ColorConfig_subtleColor_set(long jarg1, ColorConfig jarg1_, String jarg2);
   public final static native String ColorConfig_subtleColor_get(long jarg1, ColorConfig jarg1_);
+  public final static native void ColorConfig_highlightColors_set(long jarg1, ColorConfig jarg1_, long jarg2, HighlightColorConfig jarg2_);
+  public final static native long ColorConfig_highlightColors_get(long jarg1, ColorConfig jarg1_);
   public final static native long ColorConfig_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, ColorConfig jarg2_);
-  public final static native void ColorConfig_SetBaseColor(long jarg1, ColorConfig jarg1_, String jarg2);
   public final static native long new_ColorConfig();
   public final static native void delete_ColorConfig(long jarg1);
   public final static native void ColorsConfig_defaultColor_set(long jarg1, ColorsConfig jarg1_, long jarg2, ColorConfig jarg2_);
@@ -918,15 +929,14 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void ColorsConfig_attention_set(long jarg1, ColorsConfig jarg1_, long jarg2, ColorConfig jarg2_);
   public final static native long ColorsConfig_attention_get(long jarg1, ColorsConfig jarg1_);
   public final static native long ColorsConfig_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, ColorsConfig jarg2_);
-  public final static native void ColorsConfig_SetBaseColor(long jarg1, ColorsConfig jarg1_, String jarg2);
   public final static native long new_ColorsConfig();
   public final static native void delete_ColorsConfig(long jarg1);
   public final static native void TextConfig_weight_set(long jarg1, TextConfig jarg1_, int jarg2);
   public final static native int TextConfig_weight_get(long jarg1, TextConfig jarg1_);
   public final static native void TextConfig_size_set(long jarg1, TextConfig jarg1_, int jarg2);
   public final static native int TextConfig_size_get(long jarg1, TextConfig jarg1_);
-  public final static native void TextConfig_style_set(long jarg1, TextConfig jarg1_, int jarg2);
-  public final static native int TextConfig_style_get(long jarg1, TextConfig jarg1_);
+  public final static native void TextConfig_fontType_set(long jarg1, TextConfig jarg1_, int jarg2);
+  public final static native int TextConfig_fontType_get(long jarg1, TextConfig jarg1_);
   public final static native void TextConfig_color_set(long jarg1, TextConfig jarg1_, int jarg2);
   public final static native int TextConfig_color_get(long jarg1, TextConfig jarg1_);
   public final static native void TextConfig_isSubtle_set(long jarg1, TextConfig jarg1_, boolean jarg2);
@@ -1003,10 +1013,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long ContainerStyleDefinition_borderThickness_get(long jarg1, ContainerStyleDefinition jarg1_);
   public final static native void ContainerStyleDefinition_foregroundColors_set(long jarg1, ContainerStyleDefinition jarg1_, long jarg2, ColorsConfig jarg2_);
   public final static native long ContainerStyleDefinition_foregroundColors_get(long jarg1, ContainerStyleDefinition jarg1_);
-  public final static native void ContainerStyleDefinition_highlightColors_set(long jarg1, ContainerStyleDefinition jarg1_, long jarg2, ColorsConfig jarg2_);
-  public final static native long ContainerStyleDefinition_highlightColors_get(long jarg1, ContainerStyleDefinition jarg1_);
   public final static native long ContainerStyleDefinition_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, ContainerStyleDefinition jarg2_);
-  public final static native void ContainerStyleDefinition_SetBaseStyle(long jarg1, ContainerStyleDefinition jarg1_, long jarg2, JsonValue jarg2_);
   public final static native long new_ContainerStyleDefinition();
   public final static native void delete_ContainerStyleDefinition(long jarg1);
   public final static native void ContainerStylesDefinition_defaultPalette_set(long jarg1, ContainerStylesDefinition jarg1_, long jarg2, ContainerStyleDefinition jarg2_);
@@ -1022,7 +1029,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void ContainerStylesDefinition_accentPalette_set(long jarg1, ContainerStylesDefinition jarg1_, long jarg2, ContainerStyleDefinition jarg2_);
   public final static native long ContainerStylesDefinition_accentPalette_get(long jarg1, ContainerStylesDefinition jarg1_);
   public final static native long ContainerStylesDefinition_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, ContainerStylesDefinition jarg2_);
-  public final static native void ContainerStylesDefinition_SetBaseStyle(long jarg1, ContainerStylesDefinition jarg1_, long jarg2, JsonValue jarg2_);
   public final static native long new_ContainerStylesDefinition();
   public final static native void delete_ContainerStylesDefinition(long jarg1);
   public final static native void ShowCardActionConfig_actionMode_set(long jarg1, ShowCardActionConfig jarg1_, int jarg2);
@@ -1065,7 +1071,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long new_HostConfig();
   public final static native long HostConfig_Deserialize(long jarg1, JsonValue jarg1_);
   public final static native long HostConfig_DeserializeFromString(String jarg1);
-  public final static native long HostConfig_GetFontStyle(long jarg1, HostConfig jarg1_, int jarg2);
+  public final static native long HostConfig_GetFontType(long jarg1, HostConfig jarg1_, int jarg2);
   public final static native String HostConfig_GetFontFamily__SWIG_0(long jarg1, HostConfig jarg1_, int jarg2);
   public final static native long HostConfig_GetFontSize(long jarg1, HostConfig jarg1_, int jarg2, int jarg3);
   public final static native long HostConfig_GetFontWeight(long jarg1, HostConfig jarg1_, int jarg2, int jarg3);
@@ -1080,8 +1086,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void HostConfig_SetFontSizes(long jarg1, HostConfig jarg1_, long jarg2, FontSizesConfig jarg2_);
   public final static native long HostConfig_GetFontWeights(long jarg1, HostConfig jarg1_);
   public final static native void HostConfig_SetFontWeights(long jarg1, HostConfig jarg1_, long jarg2, FontWeightsConfig jarg2_);
-  public final static native long HostConfig_GetFontStyles(long jarg1, HostConfig jarg1_);
-  public final static native void HostConfig_SetFontStyles(long jarg1, HostConfig jarg1_, long jarg2, FontStylesDefinition jarg2_);
+  public final static native long HostConfig_GetFontTypes(long jarg1, HostConfig jarg1_);
+  public final static native void HostConfig_SetFontTypes(long jarg1, HostConfig jarg1_, long jarg2, FontTypesDefinition jarg2_);
   public final static native boolean HostConfig_GetSupportsInteractivity(long jarg1, HostConfig jarg1_);
   public final static native void HostConfig_SetSupportsInteractivity(long jarg1, HostConfig jarg1_, boolean jarg2);
   public final static native String HostConfig_GetImageBaseUrl(long jarg1, HostConfig jarg1_);
@@ -1125,8 +1131,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long new_DateTimePreparser__SWIG_1(String jarg1);
   public final static native long DateTimePreparser_GetTextTokens(long jarg1, DateTimePreparser jarg1_);
   public final static native boolean DateTimePreparser_HasDateTokens(long jarg1, DateTimePreparser jarg1_);
-  public final static native boolean DateTimePreparser_TryParseSimpleTime(String jarg1, long jarg2, long jarg3);
-  public final static native boolean DateTimePreparser_TryParseSimpleDate(String jarg1, long jarg2, long jarg3, long jarg4);
+  public final static native boolean DateTimePreparser_TryParseSimpleTime(String jarg1, long[] jarg2, long[] jarg3);
+  public final static native boolean DateTimePreparser_TryParseSimpleDate(String jarg1, long[] jarg2, long[] jarg3, long[] jarg4);
   public final static native void delete_DateTimePreparser(long jarg1);
   public final static native long new_Fact__SWIG_0();
   public final static native long new_Fact__SWIG_1(String jarg1, String jarg2);
@@ -1165,18 +1171,14 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void TextBlock_SetTextSize(long jarg1, TextBlock jarg1_, int jarg2);
   public final static native int TextBlock_GetTextWeight(long jarg1, TextBlock jarg1_);
   public final static native void TextBlock_SetTextWeight(long jarg1, TextBlock jarg1_, int jarg2);
-  public final static native int TextBlock_GetFontStyle(long jarg1, TextBlock jarg1_);
-  public final static native void TextBlock_SetFontStyle(long jarg1, TextBlock jarg1_, int jarg2);
+  public final static native int TextBlock_GetFontType(long jarg1, TextBlock jarg1_);
+  public final static native void TextBlock_SetFontType(long jarg1, TextBlock jarg1_, int jarg2);
   public final static native int TextBlock_GetTextColor(long jarg1, TextBlock jarg1_);
   public final static native void TextBlock_SetTextColor(long jarg1, TextBlock jarg1_, int jarg2);
   public final static native boolean TextBlock_GetWrap(long jarg1, TextBlock jarg1_);
   public final static native void TextBlock_SetWrap(long jarg1, TextBlock jarg1_, boolean jarg2);
   public final static native boolean TextBlock_GetIsSubtle(long jarg1, TextBlock jarg1_);
   public final static native void TextBlock_SetIsSubtle(long jarg1, TextBlock jarg1_, boolean jarg2);
-  public final static native boolean TextBlock_GetItalic(long jarg1, TextBlock jarg1_);
-  public final static native void TextBlock_SetItalic(long jarg1, TextBlock jarg1_, boolean jarg2);
-  public final static native boolean TextBlock_GetStrikethrough(long jarg1, TextBlock jarg1_);
-  public final static native void TextBlock_SetStrikethrough(long jarg1, TextBlock jarg1_, boolean jarg2);
   public final static native long TextBlock_GetMaxLines(long jarg1, TextBlock jarg1_);
   public final static native void TextBlock_SetMaxLines(long jarg1, TextBlock jarg1_, long jarg2);
   public final static native int TextBlock_GetHorizontalAlignment(long jarg1, TextBlock jarg1_);
@@ -1278,16 +1280,12 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void TextElementProperties_SetTextSize(long jarg1, TextElementProperties jarg1_, int jarg2);
   public final static native int TextElementProperties_GetTextWeight(long jarg1, TextElementProperties jarg1_);
   public final static native void TextElementProperties_SetTextWeight(long jarg1, TextElementProperties jarg1_, int jarg2);
-  public final static native int TextElementProperties_GetFontStyle(long jarg1, TextElementProperties jarg1_);
-  public final static native void TextElementProperties_SetFontStyle(long jarg1, TextElementProperties jarg1_, int jarg2);
+  public final static native int TextElementProperties_GetFontType(long jarg1, TextElementProperties jarg1_);
+  public final static native void TextElementProperties_SetFontType(long jarg1, TextElementProperties jarg1_, int jarg2);
   public final static native int TextElementProperties_GetTextColor(long jarg1, TextElementProperties jarg1_);
   public final static native void TextElementProperties_SetTextColor(long jarg1, TextElementProperties jarg1_, int jarg2);
   public final static native boolean TextElementProperties_GetIsSubtle(long jarg1, TextElementProperties jarg1_);
   public final static native void TextElementProperties_SetIsSubtle(long jarg1, TextElementProperties jarg1_, boolean jarg2);
-  public final static native boolean TextElementProperties_GetItalic(long jarg1, TextElementProperties jarg1_);
-  public final static native void TextElementProperties_SetItalic(long jarg1, TextElementProperties jarg1_, boolean jarg2);
-  public final static native boolean TextElementProperties_GetStrikethrough(long jarg1, TextElementProperties jarg1_);
-  public final static native void TextElementProperties_SetStrikethrough(long jarg1, TextElementProperties jarg1_, boolean jarg2);
   public final static native void TextElementProperties_SetLanguage(long jarg1, TextElementProperties jarg1_, String jarg2);
   public final static native String TextElementProperties_GetLanguage(long jarg1, TextElementProperties jarg1_);
   public final static native void TextElementProperties_Deserialize(long jarg1, TextElementProperties jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
@@ -1327,8 +1325,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void TextRun_SetTextSize(long jarg1, TextRun jarg1_, int jarg2);
   public final static native int TextRun_GetTextWeight(long jarg1, TextRun jarg1_);
   public final static native void TextRun_SetTextWeight(long jarg1, TextRun jarg1_, int jarg2);
-  public final static native int TextRun_GetFontStyle(long jarg1, TextRun jarg1_);
-  public final static native void TextRun_SetFontStyle(long jarg1, TextRun jarg1_, int jarg2);
+  public final static native int TextRun_GetFontType(long jarg1, TextRun jarg1_);
+  public final static native void TextRun_SetFontType(long jarg1, TextRun jarg1_, int jarg2);
   public final static native int TextRun_GetTextColor(long jarg1, TextRun jarg1_);
   public final static native void TextRun_SetTextColor(long jarg1, TextRun jarg1_, int jarg2);
   public final static native boolean TextRun_GetIsSubtle(long jarg1, TextRun jarg1_);
@@ -1344,6 +1342,17 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long TextRun_GetSelectAction(long jarg1, TextRun jarg1_);
   public final static native void TextRun_SetSelectAction(long jarg1, TextRun jarg1_, long jarg2, BaseActionElement jarg2_);
   public final static native long TextRun_dynamic_cast(long jarg1, Inline jarg1_);
+  public final static native long new_RichTextElementProperties__SWIG_0();
+  public final static native long new_RichTextElementProperties__SWIG_1(long jarg1, TextConfig jarg1_, String jarg2, String jarg3);
+  public final static native long new_RichTextElementProperties__SWIG_2(long jarg1, RichTextElementProperties jarg1_);
+  public final static native void delete_RichTextElementProperties(long jarg1);
+  public final static native boolean RichTextElementProperties_GetItalic(long jarg1, RichTextElementProperties jarg1_);
+  public final static native void RichTextElementProperties_SetItalic(long jarg1, RichTextElementProperties jarg1_, boolean jarg2);
+  public final static native boolean RichTextElementProperties_GetStrikethrough(long jarg1, RichTextElementProperties jarg1_);
+  public final static native void RichTextElementProperties_SetStrikethrough(long jarg1, RichTextElementProperties jarg1_, boolean jarg2);
+  public final static native long RichTextElementProperties_SerializeToJsonValue(long jarg1, RichTextElementProperties jarg1_, long jarg2, JsonValue jarg2_);
+  public final static native void RichTextElementProperties_Deserialize(long jarg1, RichTextElementProperties jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
+  public final static native void RichTextElementProperties_PopulateKnownPropertiesSet(long jarg1, RichTextElementProperties jarg1_, long jarg2);
   public final static native long BaseCardElement_SWIGSmartPtrUpcast(long jarg1);
   public final static native long BaseActionElement_SWIGSmartPtrUpcast(long jarg1);
   public final static native long BaseInputElement_SWIGSmartPtrUpcast(long jarg1);
@@ -1395,6 +1404,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long RichTextBlock_SWIGSmartPtrUpcast(long jarg1);
   public final static native long RichTextBlockParser_SWIGSmartPtrUpcast(long jarg1);
   public final static native long TextRun_SWIGSmartPtrUpcast(long jarg1);
+  public final static native long RichTextElementProperties_SWIGSmartPtrUpcast(long jarg1);
 
   public static String SwigDirector_BaseElement_GetId(BaseElement jself) {
     return jself.GetId();
@@ -1483,11 +1493,11 @@ public class AdaptiveCardObjectModelJNI {
   public static void SwigDirector_BaseActionElement_SetIconUrl(BaseActionElement jself, String value) {
     jself.SetIconUrl(value);
   }
-  public static String SwigDirector_BaseActionElement_GetSentiment(BaseActionElement jself) {
-    return jself.GetSentiment();
+  public static String SwigDirector_BaseActionElement_GetStyle(BaseActionElement jself) {
+    return jself.GetStyle();
   }
-  public static void SwigDirector_BaseActionElement_SetSentiment(BaseActionElement jself, String value) {
-    jself.SetSentiment(value);
+  public static void SwigDirector_BaseActionElement_SetStyle(BaseActionElement jself, String value) {
+    jself.SetStyle(value);
   }
   public static int SwigDirector_BaseActionElement_GetElementType(BaseActionElement jself) {
     return (jself.GetElementType()).swigValue();

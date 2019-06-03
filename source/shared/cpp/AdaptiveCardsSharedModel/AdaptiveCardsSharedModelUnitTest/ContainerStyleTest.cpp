@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "stdafx.h"
 #include "Container.h"
 #include "Column.h"
@@ -473,35 +475,46 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::IsTrue(!parseResult->GetAdaptiveCard()->GetBody().empty());
 
             shared_ptr<BaseCardElement> elem =  parseResult->GetAdaptiveCard()->GetBody().front();
-            shared_ptr<ColumnSet> columnset= static_pointer_cast<ColumnSet>(elem);
+            shared_ptr<ColumnSet> columnset = static_pointer_cast<ColumnSet>(elem);
             Assert::IsTrue(columnset->GetStyle() == ContainerStyle::Emphasis);
 
             auto columns = columnset->GetColumns();
             shared_ptr<Column> column1 = static_pointer_cast<Column>(columns.at(0));
             Assert::IsTrue(column1->GetStyle() == ContainerStyle::Default);
-            Assert::IsTrue(column1->GetCanBleed());
+            Assert::IsTrue((ContainerBleedDirection::BleedDown |
+                            ContainerBleedDirection::BleedLeft |
+                            ContainerBleedDirection::BleedUp) == column1->GetBleedDirection());
 
             auto items = column1->GetItems();
             shared_ptr<Container> container = static_pointer_cast<Container>(items.back());
-            Assert::IsTrue(container->GetCanBleed());
+            Assert::IsTrue((ContainerBleedDirection::BleedDown |
+                            ContainerBleedDirection::BleedLeft |
+                            ContainerBleedDirection::BleedRight) == container->GetBleedDirection());
             Assert::IsTrue(column1->GetInternalId() == container->GetParentalId()); 
 
             shared_ptr<Column> column2 = static_pointer_cast<Column>(columns.at(1));
             Assert::IsTrue(column2->GetStyle() == ContainerStyle::Default);
             Assert::IsTrue(column2->GetPadding());
-            Assert::IsFalse(column2->GetCanBleed());
+            Assert::IsTrue((ContainerBleedDirection::BleedDown |
+                            ContainerBleedDirection::BleedUp) == column2->GetBleedDirection());
 
             auto items2 = column2->GetItems();
             shared_ptr<Container> container2 = static_pointer_cast<Container>(items2.back());
-            Assert::IsTrue(container2->GetCanBleed());
+            Assert::IsTrue((ContainerBleedDirection::BleedDown |
+                            ContainerBleedDirection::BleedLeft |
+                            ContainerBleedDirection::BleedRight) == container2->GetBleedDirection());
 
             shared_ptr<Column> column3 = static_pointer_cast<Column>(columns.at(2));
             Assert::IsTrue(column3->GetStyle() == ContainerStyle::Default);
-            Assert::IsTrue(column3->GetCanBleed());
+            Assert::IsTrue((ContainerBleedDirection::BleedDown |
+                            ContainerBleedDirection::BleedRight |
+                            ContainerBleedDirection::BleedUp) == column3->GetBleedDirection());
 
             auto items3 = column3->GetItems();
             shared_ptr<Container> container3 = static_pointer_cast<Container>(items3.back());
-            Assert::IsTrue(container3->GetCanBleed());
+            Assert::IsTrue((ContainerBleedDirection::BleedDown |
+                            ContainerBleedDirection::BleedRight|
+                            ContainerBleedDirection::BleedLeft) == container3->GetBleedDirection());
             Assert::IsTrue(column3->GetInternalId() == container3->GetParentalId()); 
         }
 
@@ -663,12 +676,14 @@ namespace AdaptiveCardsSharedModelUnitTest
             auto items = column1->GetItems();
             shared_ptr<ColumnSet> innerconlumnset = static_pointer_cast<ColumnSet>(items.back());
             auto innercolumns = innerconlumnset->GetColumns();
-            Assert::IsTrue(innercolumns.at(0)->GetCanBleed());
+            Assert::IsTrue((ContainerBleedDirection::BleedDown |
+                            ContainerBleedDirection::BleedLeft) == innercolumns.at(0)->GetBleedDirection());
             Assert::IsTrue(innercolumns.at(0)->GetParentalId() == column1->GetInternalId());
 
-            Assert::IsFalse(innercolumns.at(1)->GetCanBleed());
+            Assert::IsTrue(ContainerBleedDirection::BleedDown == innercolumns.at(1)->GetBleedDirection());
 
-            Assert::IsTrue(innercolumns.at(2)->GetCanBleed());
+            Assert::IsTrue((ContainerBleedDirection::BleedDown |
+                            ContainerBleedDirection::BleedRight) == innercolumns.at(2)->GetBleedDirection());
             Assert::IsTrue(innercolumns.at(2)->GetParentalId() == column1->GetInternalId());
 
             shared_ptr<Column> column2 = static_pointer_cast<Column>(columns.at(1));
@@ -680,16 +695,18 @@ namespace AdaptiveCardsSharedModelUnitTest
             auto innercolumns2 = innerconlumnset2->GetColumns();
             shared_ptr<Column> innercolumn0 = static_pointer_cast<Column>(innercolumns2.at(0));
             shared_ptr<Container> innercontainer = static_pointer_cast<Container>(innercolumn0->GetItems().at(0));
-            Assert::IsTrue(innercontainer->GetCanBleed());
+            Assert::IsTrue((ContainerBleedDirection::BleedDown |
+                            ContainerBleedDirection::BleedLeft) == innercontainer->GetBleedDirection());
             Assert::IsTrue(innercontainer->GetParentalId() == column2->GetInternalId());
 
             shared_ptr<Column> innercolumn1 = static_pointer_cast<Column>(innercolumns2.at(1));
             shared_ptr<Container> innercontainer1 = static_pointer_cast<Container>(innercolumn1->GetItems().at(0));
-            Assert::IsFalse(innercontainer1->GetCanBleed());
+            Assert::IsTrue(ContainerBleedDirection::BleedDown == innercontainer1->GetBleedDirection());
 
             shared_ptr<Column> innercolumn2 = static_pointer_cast<Column>(innercolumns2.at(2));
             shared_ptr<Container> innercontainer2 = static_pointer_cast<Container>(innercolumn2->GetItems().at(0));
-            Assert::IsTrue(innercontainer2->GetCanBleed());
+            Assert::IsTrue((ContainerBleedDirection::BleedDown |
+                            ContainerBleedDirection::BleedRight) == innercontainer2->GetBleedDirection());
             Assert::IsTrue(innercontainer2->GetParentalId() == column2->GetInternalId());
         }
 
@@ -803,15 +820,17 @@ namespace AdaptiveCardsSharedModelUnitTest
             shared_ptr<Container> innercontainer = static_pointer_cast<Container>(innercolumns.at(0)->GetItems().at(0));
             Assert::IsTrue(innercontainer->GetPadding());
             Assert::IsTrue(innercontainer->GetBleed());
-            Assert::IsFalse(innercontainer->GetCanBleed());
+            Assert::IsTrue((ContainerBleedDirection::BleedDown |
+                            ContainerBleedDirection::BleedUp) == innercontainer->GetBleedDirection());
 
             Assert::IsFalse(innercolumns.at(2)->GetCanBleed());
 
             shared_ptr<Container> innercontainerRight = static_pointer_cast<Container>(innercolumns.at(2)->GetItems().at(0));
             Assert::IsTrue(innercontainerRight->GetPadding());
             Assert::IsTrue(innercontainerRight->GetBleed());
-            Assert::IsTrue(innercontainerRight->GetCanBleed());
-            Assert::IsTrue(innercontainerRight->GetBleedDirection() == ContainerBleedDirection::BleedToTrailing);
+            Assert::IsTrue((ContainerBleedDirection::BleedDown |
+                            ContainerBleedDirection::BleedRight|
+                            ContainerBleedDirection::BleedUp) == innercontainerRight->GetBleedDirection());
             Assert::IsTrue(innercontainerRight->GetParentalId() == columnset->GetInternalId());
 
             Assert::IsFalse(innercolumns.at(1)->GetCanBleed());
@@ -908,7 +927,8 @@ namespace AdaptiveCardsSharedModelUnitTest
             // The first column in the second column set should bleed to the left
             auto secondColumnSet = std::static_pointer_cast<ColumnSet>(adaptiveCard->GetBody()[1]);
             Assert::IsTrue(secondColumnSet->GetColumns()[0]->GetCanBleed());
-            Assert::IsTrue(secondColumnSet->GetColumns()[0]->GetBleedDirection() == ContainerBleedDirection::BleedToLeading);
+            Assert::IsTrue((ContainerBleedDirection::BleedDown |
+                            ContainerBleedDirection::BleedLeft) == secondColumnSet->GetColumns()[0]->GetBleedDirection());
         }
     };
 }

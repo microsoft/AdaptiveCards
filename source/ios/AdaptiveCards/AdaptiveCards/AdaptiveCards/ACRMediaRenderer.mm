@@ -114,11 +114,6 @@
 
     [viewGroup addArrangedSubview:contentholdingview];
 
-    [NSLayoutConstraint constraintWithItem:contentholdingview
-                                 attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual
-                                    toItem:viewGroup attribute:NSLayoutAttributeWidth
-                                multiplier:1.0 constant:0].active = YES;
-
     if([acoConfig getHostConfig]->GetSupportsInteractivity()){
         ACRMediaTarget *mediaTarget = nil;
         ACOMediaEvent *mediaEvent = [[ACOMediaEvent alloc] initWithMedia:mediaElem];
@@ -138,7 +133,7 @@
         view.userInteractionEnabled = YES;
     }
 
-    configVisibility(view, elem);
+    configVisibility(contentholdingview, elem);
 
     return view;
 }
