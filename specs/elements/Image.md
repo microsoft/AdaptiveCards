@@ -4,19 +4,19 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **altText** | `string` |  No | Alternate text describing the image. | 1.0 |
-| **backgroundColor** | `string` |  No | Applies a background to a transparent image. This property will respect the image style. | 1.1 |
-| **height** | `string` |  No | The desired on-screen height of the image, ending in 'px'. E.g., 50px. This overrides the `size` property. | 1.1 |
-| **horizontalAlignment** | `string` |  No, default: `"left"` | Controls how elements are horizontally positioned within their container. | 1.0 |
-| **selectAction** | `object` |  No | An Action that will be invoked when the `Image` is tapped or selected. `Action.ShowCard` is not supported. | 1.1 |
-| **size** | `string` |  No, default: `"auto"` | Controls the approximate size of the image. The physical dimensions will vary per host. Specify `"auto"` for true image dimension, or `"stretch"` to force it to fill the container. | 1.0 |
-| **style** | `string` |  No | Controls how this `Image` is displayed. | 1.0 |
-| **type** | `"Image"` | Yes | Must be `"Image"`. | 1.0 |
-| **url** | `string` | Yes | The URL to the image. Supports data URI in version 1.2+ | 1.0 |
-| **width** | `string` |  No | The desired on-screen width of the image, ending in 'px'. E.g., 50px. This overrides the `size` property. | 1.1 |
-| **id** | `string` |  No | A unique identifier associated with the element. | 1.0 |
-| **spacing** | `string` |  No | Controls the amount of spacing between this element and the preceding element. | 1.0 |
-| **separator** | `boolean` |  No, default: `false` | When `true`, draw a separating line at the top of the element. | 1.0 |
+| **type** | `string` | Depends | Must be `"Image"`. | 1.0 |
+| **url** | `uri` | Yes | The URL to the image. Supports data URI in version 1.2+ | 1.0 |
+| **altText** | `string` | No | Alternate text describing the image. | 1.0 |
+| **backgroundColor** | `string` | No | Applies a background to a transparent image. This property will respect the image style. | 1.0 |
+| **height** | `string` | No | The desired on-screen height of the image, ending in 'px'. E.g., 50px. This overrides the `size` property. | 1.0 |
+| **horizontalAlignment** | `HorizontalAlignment` | No | Controls how this element is horizontally positioned within its parent. | 1.0 |
+| **selectAction** | `ISelectAction` | No | An Action that will be invoked when the `Image` is tapped or selected. `Action.ShowCard` is not supported. | 1.0 |
+| **size** | `ImageSize` | No | Controls the approximate size of the image. The physical dimensions will vary per host. Specify `"auto"` for true image dimension, or `"stretch"` to force it to fill the container. | 1.0 |
+| **style** | `ImageStyle` | No | Controls how this `Image` is displayed. | 1.0 |
+| **width** | `string` | No | The desired on-screen width of the image, ending in 'px'. E.g., 50px. This overrides the `size` property. | 1.0 |
+| **id** | `string` | No | A unique identifier associated with the element. | 1.0 |
+| **spacing** | `Spacing` | No | Controls the amount of spacing between this element and the preceding element. | 1.0 |
+| **separator** | `boolean` | No | When `true`, draw a separating line at the top of the element. | 1.0 |
 <!-- END AUTO-GENERATED -->
 
 ## Rendering

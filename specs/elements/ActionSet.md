@@ -2,15 +2,13 @@
 
 # ActionSet
 
-#### Introduced in version 1.2
-
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **items** | `array[]` | Yes | The actions to include in the `ActionSet` | 1.2 |
-| **type** | `string` | Yes | &nbsp; | 1.2 |
-| **id** | `string` |  No | A unique identifier associated with the element. | 1.2 |
-| **spacing** | `string` |  No | Controls the amount of spacing between this element and the preceding element. | 1.2 |
-| **separator** | `boolean` |  No, default: `false` | When `true`, draw a separating line at the top of the element. | 1.2 |
+| **type** | `string` | Depends | Must be `"ActionSet"`. | 1.0 |
+| **actions** | `Action[]` | Yes | The array of `Image` elements to show. | 1.0 |
+| **id** | `string` | No | A unique identifier associated with the element. | 1.0 |
+| **spacing** | `Spacing` | No | Controls the amount of spacing between this element and the preceding element. | 1.0 |
+| **separator** | `boolean` | No | When `true`, draw a separating line at the top of the element. | 1.0 |
 <!-- END AUTO-GENERATED -->
 
 ## Rendering

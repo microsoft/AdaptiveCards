@@ -4,10 +4,10 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **type** | `string` | Yes | Must be `"Action.OpenUrl"`. | 1.0 |
-| **title** | `string` |  No | Label for button or link that represents this action. | 1.0 |
-| **iconUrl** | `string` |  No | Optional icon to be shown on the action in conjunction with the title. Supports data URI in version 1.2+ | 1.1 |
-| **url** | `string` | Yes | The URL to open. | 1.0 |
+| **type** | `string` | Depends | Must be `"Action.OpenUrl"`. | 1.0 |
+| **url** | `uri` | Yes | The URL to open. | 1.0 |
+| **title** | `string` | No | Label for button or link that represents this action. | 1.0 |
+| **iconUrl** | `uri` | No | Optional icon to be shown on the action in conjunction with the title. | 1.0 |
 <!-- END AUTO-GENERATED -->
 
 ## Rendering

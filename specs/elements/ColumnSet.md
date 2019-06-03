@@ -4,13 +4,15 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **columns** | `Column[]` |  No | The array of `Columns` to divide the region into. | 1.0 |
-| **selectAction** | `object` |  No | An Action that will be invoked when the `ColumnSet` is tapped or selected. `Action.ShowCard` is not supported. | 1.1 |
-| **type** | `"ColumnSet"` | Yes | Must be `"ColumnSet"`. | 1.0 |
-| **bleed** | `boolean` |  No, default: `false` | Determines whether the element should bleed through its ancestor's padding. | 1.2 |
-| **id** | `string` |  No | A unique identifier associated with the element. | 1.0 |
-| **spacing** | `string` |  No | Controls the amount of spacing between this element and the preceding element. | 1.0 |
-| **separator** | `boolean` |  No, default: `false` | When `true`, draw a separating line at the top of the element. | 1.0 |
+| **type** | `string` | Depends | Must be `"ColumnSet"`. | 1.0 |
+| **columns** | `Column[]` | No | The array of `Columns` to divide the region into. | 1.0 |
+| **selectAction** | `ISelectAction` | No | An Action that will be invoked when the `ColumnSet` is tapped or selected. `Action.ShowCard` is not supported. | 1.0 |
+| **style** | `ContainerStyle?` | No | Style hint for `ColumnSet`. | 1.0 |
+| **bleed** | `boolean` | No | Determines whether the element should bleed through its parent's padding. | 1.0 |
+| **backgroundImage** | `BackgroundImage` | No | Specifies the background image. | 1.0 |
+| **id** | `string` | No | A unique identifier associated with the element. | 1.0 |
+| **spacing** | `Spacing` | No | Controls the amount of spacing between this element and the preceding element. | 1.0 |
+| **separator** | `boolean` | No | When `true`, draw a separating line at the top of the element. | 1.0 |
 <!-- END AUTO-GENERATED -->
 
 

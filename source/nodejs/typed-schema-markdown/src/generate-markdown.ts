@@ -85,7 +85,8 @@ export function createEnumSummary(enumType: SchemaEnum) {
 
 	enumType.values.forEach(val => {
 		var row = {
-			Value: "`\"" + val + "\"`"
+			Value: "`\"" + val.value + "\"`",
+			Description: val.description
 		};
 
 		rows.push(row);

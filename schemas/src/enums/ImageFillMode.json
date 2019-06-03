@@ -2,7 +2,10 @@
 	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
     "classType": "Enum",
     "values": [
-        "cover",
+        {
+            "value": "cover",
+            "description": "	The background image covers the entire width of the container. Its aspect ratio is preserved. Content may be clipped if the aspect ratio of the image doesn't match the aspect ratio of the container. **verticalAlignment** is respected (**horizontalAlignment** is meaningless since it's stretched width). This is the default mode and is the equivalent to the current model."
+        },
         "repeatHorizontally",
         "repeatVertically",
         "repeat"

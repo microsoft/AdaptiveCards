@@ -1,0 +1,16 @@
+{
+	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/c5318f460c665a02ea0482f114c4afb7d8acbee6/source/nodejs/json-schema-with-types/schema/lib/Type.json",
+	"description": "Expresses an enum value",
+	"properties": {
+		"value": {
+			"type": "string",
+			"description": "The name of the enum value",
+      "required": true
+		},
+		"description": {
+			"type": "string",
+			"description": "A description of the enum value"
+		}
+  },
+  "shorthand": "value"
+}
