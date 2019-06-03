@@ -1,38 +1,47 @@
 import { defined } from "./defined";
 import { defaultValue } from "./defaultValue";
-import { SchemaProperty } from "typed-schema";
-import mdTable from "markdown-table";
+import { SchemaProperty, SchemaClass } from "typed-schema";
+import * as mdTable from "markdown-table";
 
-export function createPropertiesSummary(properties, knownTypes, autoLink, includeVersion, elementVersion) {
+export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes, autoLink, includeVersion, elementVersion) {
 	var md = '';
 
-    if (properties !== undefined && Object.keys(properties).length > 0) {
+	var properties = classDefinition.getAllProperties();
+    if (properties !== undefined && properties.size > 0) {
 
         if (includeVersion && defined(elementVersion) && elementVersion != "1.0") {
             md += "#### Introduced in version " + elementVersion + "\n\n";
 		}
 		
-		var formattedProperties = [];
+		var formattedTypeProperty:any = {
+			Property: "type",
+			Type: "string",
+			Required: "Depends",
+			Description: "Must be `\"" + classDefinition.type + "\"`."
+		};
 
-        for (var name in properties) {
-            if (properties.hasOwnProperty(name)) {
-                var property = properties[name];
-				var summary = getPropertySummary(property, knownTypes, autoLink);
-				
-				var formattedProperty:any = {
-					Property: name,
-					Type: summary.formattedType,
-					Required: (summary.required === 'Yes' ? "Yes" : ' ') + summary.required,
-					Description: summary.description
-				};
-
-				if (includeVersion) {
-					formattedProperty.Version = defaultValue(defaultValue(property.version, elementVersion), "1.0");
-				}
-
-				formattedProperties.push(formattedProperty);
-            }
+		if (includeVersion) {
+			formattedTypeProperty.Version = "1.0";
 		}
+		var formattedProperties = [ formattedTypeProperty ];
+
+        properties.forEach((property, name) => {
+			var propertyAny: any = property;
+			var summary = getPropertySummary(property, knownTypes, autoLink);
+			
+			var formattedProperty:any = {
+				Property: name,
+				Type: summary.formattedType,
+				Required: (summary.required === 'Yes' ? "Yes" : ' ') + summary.required,
+				Description: summary.description
+			};
+
+			if (includeVersion) {
+				formattedProperty.Version = defaultValue(defaultValue(propertyAny.version, elementVersion), "1.0");
+			}
+
+			formattedProperties.push(formattedProperty);
+		});
 
 		// Data needs to be formatted as follows for use with markdown library
 		/*

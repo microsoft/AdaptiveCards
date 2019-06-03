@@ -4,8 +4,8 @@
 	"description": "Generates the element/property tables for our specs based on the schema file.",
 	"author": "AdaptiveCards",
 	"license": "MIT",
-	"main": "lib/typed-schema-markdown.js",
-	"types": "lib/typed-schema-markdown.d.ts",
+	"main": "lib/index.js",
+	"types": "lib/index.d.ts",
 	"files": [
 		"lib",
 		"src"
@@ -18,7 +18,8 @@
 		"release": "npm run build && npm run dts",
 		"test": "mocha",
 		"build-and-test": "npm run build && npm run test",
-		"generate-schema": "node ./lib/command-line.js ./schema/src Class,Enum Class classType > ./schema/lib/Type.json"
+    "generate-schema": "node ./lib/command-line.js ./schema/src Class,Enum Class classType > ./schema/lib/Type.json",
+    "build-all": "cd ../typed-schema && npm run build && cd ../typed-schema-markdown && npm run build"
 	},
 	"dependencies": {
 		"glob": "^7.1.4",

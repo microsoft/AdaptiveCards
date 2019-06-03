@@ -14,12 +14,15 @@
 	"scripts": {
 		"clean": "rimraf build lib dist",
 		"prebuild": "tsc",
-		"build": "webpack",
+    "build": "webpack",
+    "run": "node ./precompiled/spec-generator-script.js",
 		"watch": "webpack --watch",
 		"start": "webpack && node dist/spec-generator-script.js",
 		"dts": "dts-generator --name spec-generator-script --project . --out dist/spec-generator-script.d.ts",
 		"lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
-		"release": "npm run build && webpack --mode=production && npm run dts"
+    "release": "npm run build && webpack --mode=production && npm run dts",
+    "build-all": "cd ../spec-generator && npm run build-all && cd ../spec-generator-script && npm run build",
+    "build-all-and-run": "npm run build-all && npm run run"
 	},
 	"dependencies": {
     "spec-generator": "0.5.0"

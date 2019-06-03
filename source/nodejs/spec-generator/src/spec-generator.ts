@@ -2,6 +2,7 @@ import * as markedschema from "marked-schema";
 import * as markedtypedschema from "typed-schema-markdown";
 var fs = require("fs");
 import { forEach } from "p-iteration";
+import { SchemaType, SchemaClass } from "../../typed-schema-markdown/node_modules/typed-schema";
 
 export async function generateAsync() {
 
@@ -48,8 +49,8 @@ async function generateElementsAsync(relativeTopDir: string) {
 
 	await forEach(schemaModel, async (root: any) => {
 		await forEach(root.children, async (child: any) => {
-
-			var markdown = markedschema.generateMarkdown.createPropertiesSummary(child.properties, null, true, true, child.version);
+			var type: SchemaClass = child.type;
+			var markdown = markedtypedschema.createPropertiesSummary(type, null, true, true, child.version);
 
 			markdown = "# " + child.name + "\n\n" + markdown;
 

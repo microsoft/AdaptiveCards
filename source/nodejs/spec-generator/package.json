@@ -12,11 +12,11 @@
 	],
 	"scripts": {
 		"clean": "rimraf build lib dist",
-		"prebuild": "tsc",
 		"build": "tsc",
 		"dts": "dts-generator --name spec-generator --project . --out dist/spec-generator.d.ts",
 		"lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
-		"release": "npm run build && npm run dts"
+		"release": "npm run build && npm run dts",
+    "build-all": "cd ../typed-schema-markdown && npm run build-all && cd ../spec-generator && npm run build"
 	},
 	"dependencies": {
     "marked-schema": "0.1.5",
