@@ -12,7 +12,7 @@ namespace AdaptiveSharedNamespace
     class MarkDownParsedResult
     {
     public:
-        MarkDownParsedResult() : m_isHTMLTagsAdded(false){};
+        MarkDownParsedResult() : m_isHTMLTagsAdded(false), m_isCaptured(false) {};
 
         // Translate Intermediate Parsing Result to a form that can be written to html string
         void Translate();
@@ -45,12 +45,15 @@ namespace AdaptiveSharedNamespace
         void Clear();
         bool HasHtmlTags();
         void FoundHtmlTags();
+        bool GetIsCaptured() const { return m_isCaptured; }
+        void SetIsCaptured(const bool val) { m_isCaptured = val; }
 
     private:
         void MarkTags(MarkDownHtmlGenerator&);
         std::list<std::shared_ptr<MarkDownHtmlGenerator>> m_codeGenTokens;
         std::list<std::shared_ptr<MarkDownEmphasisHtmlGenerator>> m_emphasisLookUpTable;
         bool m_isHTMLTagsAdded;
+        bool m_isCaptured;
 
         // take m_emphasisLookUpTable and matches left and right emphasises
         void MatchLeftAndRightEmphasises();
