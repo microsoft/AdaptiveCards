@@ -735,6 +735,73 @@
         }
       ]
     },
+    "TextRun": {
+      "description": "Defines a single run of formatted text",
+      "version": "1.2",
+      "allOf": [],
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "Text to display"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "enum": [
+                "TextRun"
+              ],
+              "description": "Must be `TextRun`"
+            },
+            "text": {
+              "type": "string",
+              "description": "Text to display"
+            },
+            "color": {
+              "$ref": "#/definitions/Colors",
+              "description": "Controls the color of the text."
+            },
+            "fontType": {
+              "$ref": "#/definitions/FontType",
+              "description": "The type of font to use"
+            },
+            "highlight": {
+              "type": "boolean",
+              "description": "If `true`, displays the text highlighted."
+            },
+            "isSubtle": {
+              "type": "boolean",
+              "description": "If `true`, displays text slightly toned down to appear less prominent.",
+              "default": false
+            },
+            "italic": {
+              "type": "boolean",
+              "description": "If `true`, displays the text using italic font."
+            },
+            "selectAction": {
+              "$ref": "#/definitions/ImplementationsOf.ISelectAction",
+              "description": "Action to invoke when this text run is clicked. Visually changes the text run into a hyperlink. `Action.ShowCard` is not supported."
+            },
+            "size": {
+              "$ref": "#/definitions/FontSize",
+              "description": "Controls size of text."
+            },
+            "strikethrough": {
+              "type": "boolean",
+              "description": "If `true`, displays the text with strikethrough."
+            },
+            "weight": {
+              "$ref": "#/definitions/FontWeight",
+              "description": "Controls the weight of the text."
+            }
+          },
+          "required": [
+            "text"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
     "Input.Choice": {
       "description": "Describes a choice for use in a ChoiceSet.",
       "properties": {
@@ -1086,6 +1153,41 @@
         "url"
       ]
     },
+    "RichTextBlock": {
+      "description": "Defines an array of inlines, allowing for inline text formatting.",
+      "version": "1.2",
+      "features": [
+        1933
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "RichTextBlock"
+          ],
+          "description": "Must be `RichTextBlock`"
+        },
+        "inlines": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ImplementationsOf.Inline"
+          },
+          "description": "The array of inlines."
+        },
+        "id": {},
+        "spacing": {},
+        "separator": {}
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "inlines"
+      ],
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.BlockElement"
+        }
+      ]
+    },
     "TextBlock": {
       "description": "Displays text, allowing control over font sizes, weight, and color.",
       "properties": {
@@ -1344,6 +1446,16 @@
           ],
           "allOf": [
             {
+              "$ref": "#/definitions/RichTextBlock"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
               "$ref": "#/definitions/TextBlock"
             }
           ]
@@ -1498,7 +1610,31 @@
           ],
           "allOf": [
             {
+              "$ref": "#/definitions/RichTextBlock"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
               "$ref": "#/definitions/TextBlock"
+            }
+          ]
+        }
+      ]
+    },
+    "ImplementationsOf.Inline": {
+      "anyOf": [
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/TextRun"
             }
           ]
         }
