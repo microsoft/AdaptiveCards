@@ -19,9 +19,11 @@
             "version": "1.1"
         },
         "height": {
-            "type": "string",
-            "description": "The desired on-screen height of the image, ending in 'px'. E.g., 50px. This overrides the `size` property.",
+            "type": "string|BlockElementHeight",
+            "description": "The desired height of the image. If specified as a pixel value, ending in 'px', E.g., 50px, the image will distort to fit that exact height. This overrides the `size` property.",
             "examples": ["50px"],
+            "default": "auto",
+            "override": true,
             "version": "1.1"
         },
         "horizontalAlignment": {

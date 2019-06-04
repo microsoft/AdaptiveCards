@@ -662,7 +662,22 @@
           "example": "#DDDDDD",
           "version": "1.1"
         },
-        "height": {},
+        "height": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/BlockElementHeight"
+            }
+          ],
+          "description": "The desired height of the image. If specified as a pixel value, ending in 'px', E.g., 50px, the image will distort to fit that exact height. This overrides the `size` property.",
+          "examples": [
+            "50px"
+          ],
+          "default": "auto",
+          "version": "1.1"
+        },
         "horizontalAlignment": {
           "$ref": "#/definitions/HorizontalAlignment",
           "description": "Controls how this element is horizontally positioned within its parent."
@@ -2051,7 +2066,10 @@
     "Extendable.Input": {
       "description": "Base input class",
       "properties": {
-        "id": {},
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the value. Used to identify collected input when the Submit action is performed."
+        },
         "fallback": {},
         "height": {},
         "isVisible": {},

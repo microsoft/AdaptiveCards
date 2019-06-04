@@ -7,7 +7,8 @@
     "id": {
       "type": "string",
       "required": true,
-      "description": "Unique identifier for the value. Used to identify collected input when the Submit action is performed."
+      "description": "Unique identifier for the value. Used to identify collected input when the Submit action is performed.",
+      "override": true
     }
 	}
 }
