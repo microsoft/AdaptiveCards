@@ -41,6 +41,54 @@ describe("Test transform", function () {
 		})
 	});
 	
+	it("Test allow additional properties", function () {
+		assertTransform({
+			types: [
+				{
+					"type": "AdaptiveCard",
+					"properties": {
+						"version": {
+							"type": "string",
+							"description": "Minimum version this card requires.",
+							"examples": [ "1.0", "1.1", "1.2" ]
+						}
+					}
+				}
+			],
+			primaryTypeName: "AdaptiveCard",
+			allowAdditionalProperties: true,
+			expected: {
+				"$schema": "http://json-schema.org/draft-06/schema#",
+				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
+				"anyOf": [
+					{
+						"allOf": [
+							{
+								"$ref": "#/definitions/AdaptiveCard"
+							}
+						]
+					}
+				],
+				"definitions": {
+					"AdaptiveCard": {
+						"type": "object",
+						"properties": {
+							"type": {
+								"enum": [ "AdaptiveCard" ],
+								"description": "Must be `AdaptiveCard`"
+							},
+							"version": {
+								"type": "string",
+								"description": "Minimum version this card requires.",
+								"examples": [ "1.0", "1.1", "1.2" ]
+							}
+						}
+					}
+				}
+			}
+		})
+	});
+	
 	it("Test string property", function () {
 		assertTransform({
 			types: [
@@ -2017,7 +2065,17 @@ describe("Test transform", function () {
 
 
 function assertTransform(options) {
-	var transformed = tschema.transformTypes(options.types, options.primaryTypeName, options.defaultPrimaryTypeName, options.typePropertyName);
+
+	if (!Array.isArray(options.primaryTypeName)) {
+		options.primaryTypeName = [ options.primaryTypeName ];
+	}
+
+	var transformed = tschema.transformTypes(options.types, {
+		primaryTypeNames: options.primaryTypeName,
+		defaultPrimaryTypeName: options.defaultPrimaryTypeName,
+		typePropertyName: options.typePropertyName,
+		allowAdditionalProperties: options.allowAdditionalProperties
+	});
 
 	assert.deepStrictEqual(transformed, options.expected, "Transform wasn't equal to expected");
 }

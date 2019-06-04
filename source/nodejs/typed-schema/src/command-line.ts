@@ -1,4 +1,5 @@
 import * as tschema from "./typed-schema";
+import { TransformOptions } from "./TransformOptions";
 
 declare var process;
 
@@ -12,7 +13,16 @@ var typePropertyName:string|undefined = undefined;
 if (process.argv.length > 5) {
 	typePropertyName = process.argv[5];
 }
+var allowAdditionalProperties:boolean = false;
+if (process.argv.length > 6 && process.argv[5] === "true") {
+	allowAdditionalProperties = true;
+}
 
-var transformed = tschema.transformFolder(folderToTransform, primaryTypeName, defaultPrimaryType, typePropertyName);
+var transformed = tschema.transformFolder(folderToTransform, {
+	primaryTypeNames: primaryTypeName,
+	defaultPrimaryTypeName: defaultPrimaryType,
+	typePropertyName: typePropertyName,
+	allowAdditionalProperties: allowAdditionalProperties
+});
 
 console.log(JSON.stringify(transformed, null, 2));

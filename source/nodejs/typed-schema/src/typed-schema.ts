@@ -5,6 +5,7 @@ import {SchemaProperty} from "./SchemaProperty";
 import {SchemaPropertyType} from "./SchemaPropertyType";
 import {SchemaLiteral} from "./SchemaLiteral";
 import { Schema } from "./Schema";
+import { TransformOptions } from "./TransformOptions";
 
 var fs = require("fs");
 var path = require("path");
@@ -17,25 +18,14 @@ export * from "./SchemaProperty";
 export * from "./SchemaPropertyType";
 export * from "./SchemaLiteral";
 export * from "./Schema";
+export * from "./TransformOptions";
 
-export function transformFolder(pathToTypeFiles: string, primaryTypeName: string|string[], defaultPrimaryTypeName: string|null = null, typePropertyName: string = "type") : any {
-	return new Transformer(Schema.fromFolder(pathToTypeFiles), primaryTypeName, defaultPrimaryTypeName, typePropertyName).transform();
+export function transformFolder(pathToTypeFiles: string, options: TransformOptions) : any {
+	return new Transformer(Schema.fromFolder(pathToTypeFiles), options).transform();
 }
 
-export function transformTypes(types: any[], primaryTypeName: string|string[], defaultPrimaryTypeName: string|null = null, typePropertyName: string = "type") : any {
-	return new Transformer(new Schema(types), primaryTypeName, defaultPrimaryTypeName, typePropertyName).transform();
-}
-
-function readFileAsync(fileName: string, encoding: string) : Promise<string> {
-	return new Promise(function(resolve, reject) {
-		fs.readFile(fileName, encoding, (err, data) => {
-			if (err) {
-				reject(err);
-			} else {
-				resolve(data);
-			}
-		});
-	});
+export function transformTypes(types: any[], options: TransformOptions) : any {
+	return new Transformer(new Schema(types), options).transform();
 }
 
 function isObjectEmpty(obj: any) {
@@ -55,20 +45,20 @@ class Transformer {
 	private _implementationsOf: any = {};
 	private _extendables: any = {};
 	private _typePropertyName: string;
-	private _defaultPrimaryTypeName: string|null;
+	private _defaultPrimaryTypeName?: string;
+	private _allowAdditionalProperties: boolean;
 
-	constructor (schema: Schema, primaryTypeName: string|string[], defaultPrimaryTypeName: string|null, typePropertyName: string) {
+	constructor (schema: Schema, options: TransformOptions) {
 		this._schema = schema;
-		this._typePropertyName = typePropertyName;
-		this._defaultPrimaryTypeName = defaultPrimaryTypeName;
+		this._typePropertyName = options.typePropertyName || "type";
+		this._defaultPrimaryTypeName = options.defaultPrimaryTypeName;
+		this._allowAdditionalProperties = options.allowAdditionalProperties;
 
-		if (!Array.isArray(primaryTypeName)) {
-			primaryTypeName = [ primaryTypeName ];
+		if (options.primaryTypeNames) {
+			options.primaryTypeNames.forEach(value => {
+				this._primaryTypes.push(this.getType(value) as SchemaClass);
+			});
 		}
-
-		primaryTypeName.forEach(value => {
-			this._primaryTypes.push(this.getType(value) as SchemaClass);
-		});
 	}
 
 	transform() {
@@ -168,7 +158,10 @@ class Transformer {
 
 			var transformed: any = { ...type.original };
 			transformed.type = "object";
-			transformed.additionalProperties = false;
+
+			if (!this._allowAdditionalProperties) {
+				transformed.additionalProperties = false;
+			}
 
 			delete transformed.isAbstract;
 			delete transformed.classType;
