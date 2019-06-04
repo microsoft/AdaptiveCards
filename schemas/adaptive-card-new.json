@@ -247,6 +247,11 @@
             "es"
           ]
         },
+        "verticalContentAlignment": {
+          "$ref": "#/definitions/VerticalContentAlignment",
+          "description": "Defines how the content should be aligned vertically within the container. Only relevant for fixed-height cards, or cards with a `minHeight` specified.",
+          "version": "1.1"
+        },
         "$schema": {
           "type": "string",
           "format": "uri",
