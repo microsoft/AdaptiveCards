@@ -393,6 +393,13 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual<bool>(true, parser.HasHtmlTags());
         }
 
+        TEST_METHOD(LinkBasicValidationTest_LinkTextWithNumberAndPunchuations)
+        {
+            MarkDownParser parser("[1234.5](www.naver.com)");
+            Assert::AreEqual<std::string>("<p><a href=\"www.naver.com\">1234.5</a></p>", parser.TransformToHtml());
+            Assert::AreEqual<bool>(true, parser.HasHtmlTags());
+        }
+
         TEST_METHOD(LinkBasicValidationTest_InvalidCharsBetweenLinkTextAndDestination)
         {
             MarkDownParser parser("[hello]a(www.naver.com)");

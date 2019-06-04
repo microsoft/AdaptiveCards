@@ -370,25 +370,15 @@ bool LinkParser::MatchAtLinkTextRun(std::stringstream& lookahead)
     else
     {
         // parses recursively to the right
-        ParseBlock(lookahead);
-        m_linkTextParsedResult.AppendParseResult(GetParsedResult());
-
-        // check if the special token that wasn't handled was '['
-        if (lookahead.peek() == '[')
+        while (lookahead.peek() != EOF && lookahead.peek() != ']')
         {
-            // begin new syntax check of link
-            LinkParser linkParser;
-            // do syntax check of link
-            linkParser.Match(lookahead);
-            // this check is needed because if this token is n't handled, 
-            // it will be treated as occurred outside of link text
-            if (lookahead.peek() != ']')
+            MarkDownBlockParser::ParseBlock(lookahead);
+            m_linkTextParsedResult.AppendParseResult(GetParsedResult());
+
+            if (m_linkTextParsedResult.GetIsCaptured())
             {
-                // continute parsing of the right side it recursively
-                linkParser.ParseBlock(lookahead);
+                break;
             }
-            // append link parsing result
-            m_linkTextParsedResult.AppendParseResult(linkParser.GetParsedResult());
         }
 
         if (lookahead.peek() == ']')
@@ -504,6 +494,7 @@ void LinkParser::CaptureLinkToken()
     m_parsedResult.Clear();
     m_parsedResult.FoundHtmlTags();
     m_parsedResult.AppendToTokens(codeGen);
+    m_parsedResult.SetIsCaptured(true);
 }
 
 // list marker have form of ^-\s+ or \r-\s+
