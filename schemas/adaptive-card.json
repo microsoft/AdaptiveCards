@@ -1,5 +1,5 @@
 {
-	"$schema": "http://json-schema.org/draft-06/schema#",
+	"$schema": "http://json-schema.org/draft-07/schema#",
 	"id": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "object",
 	"title": "Microsoft Adaptive Card Schema",
@@ -39,8 +39,15 @@
 			"type": "string",
 			"description": "Specifies what should be spoken for this entire card. This is simple text or SSML fragment."
 		},
+		"minHeight": {
+			"$ref": "#/definitions/MinHeight"
+		},
 		"style": {
 			"$ref": "#/definitions/ContainerStyle"
+		},
+		"verticalContentAlignment": {
+			"$ref": "#/definitions/VerticalContentAlignment",
+			"description": "Defines how the content should be aligned vertically within the container. Only relevant for fixed-height cards, or cards with a minHeight specified."
 		},
 		"lang": {
 			"type": "string",
@@ -70,7 +77,31 @@
 				{
 					"$ref": "#/definitions/Action.ToggleVisibility"
 				}
-			]
+			],
+			"properties": {
+				"requires": {
+					"type": "object",
+					"description": "A series of key/value pairs indicating features that the element requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered.",
+					"version": "1.2"
+				},
+				"fallback": {
+					"description": "Describes how to adapt a card when unknown elements are encountered.",
+					"version": "1.2",
+					"anyOf": [
+						{
+							"type": "string",
+							"description": "Causes this element to be dropped when unknown elements are encountered.",
+							"enum": [
+								"drop"
+							]
+						},
+						{
+							"type": "object",
+							"description": "Any Adaptive Cards element"
+						}
+					]
+				}
+			}
 		},
 		"ActionStyle": {
 			"type": "string",
@@ -345,6 +376,20 @@
 				"spacing": {
 					"$ref": "#/definitions/SpacingStyle"
 				},
+				"isVisible": {
+					"type": "boolean",
+					"description": "Controls the element's initial visible state."
+				},
+				"height": {
+					"type": "string",
+					"description": "Specifies the height of the element.",
+					"version": "1.1",
+					"default": "auto",
+					"enum": [
+						"auto",
+						"stretch"
+					]
+				},
 				"requires": {
 					"type": "object",
 					"description": "A series of key/value pairs indicating features that the element requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered.",
@@ -504,6 +549,9 @@
 				"bleed": {
 					"$ref": "#/definitions/Bleed"
 				},
+				"minHeight": {
+					"$ref": "#/definitions/MinHeight"
+				},
 				"selectAction": {
 					"description": "An Action that will be invoked when the `Column` is tapped or selected. `Action.ShowCard` is not supported.",
 					"type": "object",
@@ -549,10 +597,7 @@
 						}
 					]
 				}
-			},
-			"required": [
-				"items"
-			]
+			}
 		},
 		"ColumnSet": {
 			"additionalProperties": true,
@@ -573,6 +618,9 @@
 				},
 				"bleed": {
 					"$ref": "#/definitions/Bleed"
+				},
+				"minHeight": {
+					"$ref": "#/definitions/MinHeight"
 				},
 				"style": {
 					"version": "1.2",
@@ -636,6 +684,9 @@
 				"bleed": {
 					"$ref": "#/definitions/Bleed"
 				},
+				"minHeight": {
+					"$ref": "#/definitions/MinHeight"
+				},
 				"selectAction": {
 					"description": "An Action that will be invoked when the `Container` is tapped or selected. `Action.ShowCard` is not supported.",
 					"type": "object",
@@ -650,15 +701,7 @@
 					"$ref": "#/definitions/ContainerStyle"
 				},
 				"verticalContentAlignment": {
-					"type": "string",
-					"description": "Defines how the content should be aligned vertically within the container.",
-					"default": "top",
-					"enum:": [
-						"top",
-						"center",
-						"bottom"
-					],
-					"version": "1.1"
+					"$ref": "#/definitions/VerticalContentAlignment"
 				},
 				"backgroundImage": {
 					"anyOf": [
@@ -677,6 +720,17 @@
 				"type",
 				"items"
 			]
+		},
+		"VerticalContentAlignment": {
+			"type": "string",
+			"description": "Defines how the content should be aligned vertically within the container.",
+			"default": "top",
+			"enum:": [
+				"top",
+				"center",
+				"bottom"
+			],
+			"version": "1.1"
 		},
 		"Fact": {
 			"additionalProperties": true,
@@ -825,7 +879,8 @@
 				"height": {
 					"type": "string",
 					"description": "The desired on-screen height of the image, ending in 'px'. E.g., 50px. This overrides the `size` property.",
-					"examples": [ "50px" ],
+					"examples": [ "50px", "auto", "stretch" ],
+					"default": "auto",
 					"version": "1.1"
 				},
 				"horizontalAlignment": {
@@ -1348,9 +1403,6 @@
 				"fontType": {
 					"$ref": "#/definitions/FontType"
 				},
-				"horizontalAlignment": {
-					"$ref": "#/definitions/HorizontalAlignment"
-				},
 				"isSubtle": {
 					"$ref": "#/definitions/IsSubtle"
 				},
@@ -1412,6 +1464,9 @@
 						"RichTextBlock"
 					]
 				},
+				"horizontalAlignment": {
+					"$ref": "#/definitions/HorizontalAlignment"
+				},
 				"inlines": {
 					"type": "array",
 					"description": "The array of `TextRun`s.",
@@ -1431,6 +1486,12 @@
 				"type",
 				"inlines"
 			]
+		},
+		"MinHeight": {
+			"type": "string",
+			"description": "Specifies the minimum height of the element.",
+			"examples": [ "50px" ],
+			"version": "1.2"
 		},
 		"ContainerStyle": {
 			"type": "string",
