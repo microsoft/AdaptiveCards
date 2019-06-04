@@ -218,6 +218,16 @@ class Transformer {
 
 				// Have to add placeholders for all the properties
 				type.getAllExtendedProperties().forEach(extendedPropKey => {
+
+					// If there's an existing property defined, skip
+					var existingProp = type.properties.get(extendedPropKey);
+					if (existingProp !== undefined) {
+						if (!existingProp.override) {
+							console.warn(`Overriding extended property ${extendedPropKey} on type ${type.type}. If this was intentional, add "override": "true" to this property to prevent this warning from appearing.`);
+						}
+						return;
+					}
+
 					transformed.properties[extendedPropKey] = {};
 				});
 
@@ -281,6 +291,7 @@ class Transformer {
 		var cleanPropertyValue = { ... propertyValue.original };
 		delete cleanPropertyValue.type;
 		delete cleanPropertyValue.shorthands;
+		delete cleanPropertyValue.override;
 
 		var types: SchemaPropertyType[] = [];
 		var values = [];

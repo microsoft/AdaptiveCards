@@ -510,6 +510,133 @@ describe("Test transform", function () {
 		})
 	});
 
+	it("Test extending classes with overriding property", function () {
+		assertTransform({
+			types: [
+				{
+					"type": "AdaptiveCard",
+					"properties": {
+						"moreInfoAction": {
+							"type": "Action.OpenUrl",
+							"description": "Action to invoke when user wants more info"
+						}
+					}
+				},
+				{
+					"type": "Action.OpenUrl",
+					"extends": "Action",
+					"description": "An open URL action",
+					"properties": {
+						"url": {
+							"type": "uri",
+							"description": "The url to open"
+						},
+						"title": {
+							"type": "string|number",
+							"description": "The title or number",
+							"override": true
+						}
+					}
+				},
+				{
+					"type": "Action",
+					"isAbstract": true,
+					"description": "An action to invoke",
+					"properties": {
+						"title": {
+							"type": "string",
+							"description": "The title"
+						}
+					}
+				}
+			],
+			primaryTypeName: "AdaptiveCard",
+			expected: {
+				"$schema": "http://json-schema.org/draft-06/schema#",
+				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
+				"anyOf": [
+					{
+						"allOf": [
+							{
+								"$ref": "#/definitions/AdaptiveCard"
+							}
+						]
+					}
+				],
+				"definitions": {
+					"AdaptiveCard": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"type": {
+								"enum": [ "AdaptiveCard" ],
+								"description": "Must be `AdaptiveCard`"
+							},
+							"moreInfoAction": {
+								"description": "Action to invoke when user wants more info",
+								"$ref": "#/definitions/Action.OpenUrl"
+							}
+						}
+					},
+					"Action.OpenUrl": {
+						"type": "object",
+						"additionalProperties": false,
+						"description": "An open URL action",
+						"properties": {
+							"type": {
+								"enum": [ "Action.OpenUrl" ],
+								"description": "Must be `Action.OpenUrl`"
+							},
+							"url": {
+								"type": "string",
+								"format": "uri",
+								"description": "The url to open"
+							},
+							"title": {
+								"description": "The title or number",
+								"anyOf": [
+									{
+										"type": "string"
+									},
+									{
+										"type": "number"
+									}
+								]
+							}
+						},
+						"allOf": [
+							{
+								"$ref": "#/definitions/Extendable.Action"
+							}
+						]
+					},
+					"Extendable.Action": {
+						"type": "object",
+						"description": "An action to invoke",
+						"properties": {
+							"title": {
+								"type": "string",
+								"description": "The title"
+							}
+						}
+					},
+					"ImplementationsOf.Action": {
+						"anyOf": [
+							{
+								"required": [ "type" ],
+								"allOf": [
+									{
+										"$ref": "#/definitions/Action.OpenUrl"
+									}
+								]
+							}
+						]
+					}
+				}
+			}
+		})
+	});
+
 
 	
 

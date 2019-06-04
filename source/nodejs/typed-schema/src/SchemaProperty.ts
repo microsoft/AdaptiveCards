@@ -10,6 +10,7 @@ export class SchemaProperty {
 	private _shorthands: SchemaProperty[] = [];
 	private _default: any;
 	private _examples: any[] = [];
+	private _override: boolean;
 
 	constructor(name: string, sourceObj: any) {
 		this._original = sourceObj;
@@ -35,6 +36,10 @@ export class SchemaProperty {
 
 		if (sourceObj.examples) {
 			this._examples = sourceObj.examples;
+		}
+
+		if (sourceObj.override) {
+			this._override = true;
 		}
 	}
 
@@ -68,6 +73,10 @@ export class SchemaProperty {
 
 	get examples() {
 		return this._examples;
+	}
+
+	get override() {
+		return this._override;
 	}
 
 	resolve(types: Map<string, SchemaType>) {
