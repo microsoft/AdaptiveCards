@@ -461,6 +461,11 @@
           "description": "Specifies the background image.",
           "version": "1.2"
         },
+        "height": {
+          "$ref": "#/definitions/ContainerHeight",
+          "description": "Specifies the height of the container.",
+          "version": "1.1"
+        },
         "minHeight": {
           "type": "string",
           "description": "Specifies the minimum height of the column set.",
@@ -546,6 +551,11 @@
           ],
           "description": "Specifies the background image.",
           "version": "1.2"
+        },
+        "height": {
+          "$ref": "#/definitions/ContainerHeight",
+          "description": "Specifies the height of the container.",
+          "version": "1.1"
         },
         "minHeight": {
           "type": "string",
@@ -1319,6 +1329,12 @@
         "good",
         "warning",
         "attention"
+      ]
+    },
+    "ContainerHeight": {
+      "enum": [
+        "auto",
+        "stretch"
       ]
     },
     "ContainerStyle": {
