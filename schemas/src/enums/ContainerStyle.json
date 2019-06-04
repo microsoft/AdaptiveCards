@@ -3,6 +3,22 @@
   "classType": "Enum",
   "values": [
     "default",
-    "emphasis"
+    "emphasis",
+    {
+      "value": "good",
+      "version": "1.2"
+    },
+    {
+      "value": "attention",
+      "version": "1.2"
+    },
+    {
+      "value": "warning",
+      "version": "1.2"
+    },
+    {
+      "value": "accent",
+      "version": "1.2"
+    }
   ]
 }

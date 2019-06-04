@@ -813,7 +813,7 @@
         "wrap": {
           "type": "boolean",
           "description": "If `true`, allow text to wrap. Otherwise, text is clipped.",
-          "default": false
+          "version": "1.2"
         },
         "id": {},
         "fallback": {},
@@ -1177,7 +1177,8 @@
         },
         "fontType": {
           "$ref": "#/definitions/FontType",
-          "description": "Type of font to use for rendering"
+          "description": "Type of font to use for rendering",
+          "version": "1.2"
         },
         "horizontalAlignment": {
           "$ref": "#/definitions/HorizontalAlignment",
@@ -1255,7 +1256,11 @@
     "ContainerStyle": {
       "enum": [
         "default",
-        "emphasis"
+        "emphasis",
+        "good",
+        "attention",
+        "warning",
+        "accent"
       ]
     },
     "FallbackOption": {

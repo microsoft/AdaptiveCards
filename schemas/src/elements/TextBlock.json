@@ -14,7 +14,8 @@
         },
         "fontType": {
             "type": "FontType",
-			"description": "Type of font to use for rendering"
+            "description": "Type of font to use for rendering",
+            "version": "1.2"
         },
         "horizontalAlignment": {
             "type": "HorizontalAlignment",
