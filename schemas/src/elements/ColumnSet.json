@@ -33,6 +33,15 @@
 					"description": "The URL (or data url) to use as the background image. Supports data URI in version 1.2+"
 				}
 			]
+		},
+		"minHeight": {
+			"type": "string",
+			"description": "Specifies the minimum height of the column set.",
+			"examples": [
+				"50px"
+			],
+			"version": "1.2",
+			"features": [ 2293 ]
 		}
 	}
 }

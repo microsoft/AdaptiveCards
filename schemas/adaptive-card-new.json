@@ -329,6 +329,17 @@
           "description": "Describes what to do when an unknown element is encountered or the requires of this or any children can't be met.",
           "version": "1.2"
         },
+        "minHeight": {
+          "type": "string",
+          "description": "Specifies the minimum height of the column.",
+          "examples": [
+            "50px"
+          ],
+          "version": "1.2",
+          "features": [
+            2293
+          ]
+        },
         "selectAction": {
           "$ref": "#/definitions/ImplementationsOf.ISelectAction",
           "description": "An Action that will be invoked when the `Column` is tapped or selected. `Action.ShowCard` is not supported.",
@@ -432,6 +443,17 @@
           "description": "Specifies the background image.",
           "version": "1.2"
         },
+        "minHeight": {
+          "type": "string",
+          "description": "Specifies the minimum height of the column set.",
+          "examples": [
+            "50px"
+          ],
+          "version": "1.2",
+          "features": [
+            2293
+          ]
+        },
         "fallback": {},
         "id": {},
         "requires": {},
@@ -505,6 +527,17 @@
           ],
           "description": "Specifies the background image.",
           "version": "1.2"
+        },
+        "minHeight": {
+          "type": "string",
+          "description": "Specifies the minimum height of the container.",
+          "examples": [
+            "50px"
+          ],
+          "version": "1.2",
+          "features": [
+            2293
+          ]
         },
         "fallback": {},
         "id": {},
