@@ -399,9 +399,6 @@
       },
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "items"
-      ],
       "allOf": [
         {
           "$ref": "#/definitions/Extendable.Element"

@@ -5,8 +5,7 @@
 	"properties": {
 		"items": {
 			"type": "BlockElement[]",
-			"description": "The card elements to render inside the `Column`.",
-			"required": true
+			"description": "The card elements to render inside the `Column`."
 		},
 		"backgroundImage": {
 			"type": "BackgroundImage",
