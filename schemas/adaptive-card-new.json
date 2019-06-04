@@ -13,7 +13,7 @@
         },
         "url": {
           "type": "string",
-          "format": "uri",
+          "format": "uri-reference",
           "description": "The URL to open."
         },
         "title": {},
@@ -216,6 +216,7 @@
             },
             {
               "type": "string",
+              "format": "uri-reference",
               "description": "The URL (or data url) to use as the background image. Supports data URI in version 1.2+",
               "version": "1.0"
             }
@@ -320,6 +321,7 @@
             },
             {
               "type": "string",
+              "format": "uri-reference",
               "description": "The URL (or data url) to use as the background image. Supports data URI in version 1.2+",
               "version": "1.0"
             }
@@ -453,6 +455,7 @@
             },
             {
               "type": "string",
+              "format": "uri-reference",
               "description": "The URL (or data url) to use as the background image. Supports data URI in version 1.2+"
             }
           ],
@@ -539,6 +542,7 @@
             },
             {
               "type": "string",
+              "format": "uri-reference",
               "description": "The URL (or data url) to use as the background image. Supports data URI in version 1.2+",
               "version": "1.0"
             }
@@ -647,6 +651,7 @@
         },
         "url": {
           "type": "string",
+          "format": "uri-reference",
           "description": "The URL to the image. Supports data URI in version 1.2+"
         },
         "altText": {
@@ -1173,6 +1178,7 @@
         },
         "poster": {
           "type": "string",
+          "format": "uri-reference",
           "description": "URL of an image to display before playing. Supports data URI in version 1.2+"
         },
         "altText": {
@@ -1217,6 +1223,7 @@
         },
         "url": {
           "type": "string",
+          "format": "uri-reference",
           "description": "URL to media. Supports data URI in version 1.2+"
         }
       },
@@ -1489,6 +1496,7 @@
         },
         "url": {
           "type": "string",
+          "format": "uri-reference",
           "description": "The URL (or data url) of the image."
         },
         "fillMode": {
@@ -1993,6 +2001,7 @@
         },
         "iconUrl": {
           "type": "string",
+          "format": "uri-reference",
           "description": "Optional icon to be shown on the action in conjunction with the title. Supports data URI in version 1.2+",
           "version": "1.1"
         },

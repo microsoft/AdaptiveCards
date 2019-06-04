@@ -8,13 +8,17 @@
 | **text** | `string` | Yes | Text to display | 1.0 |
 | **color** | `Colors` | No | Controls the color of `TextBlock` elements. | 1.0 |
 | **fontType** | `FontType` | No | Type of font to use for rendering | 1.0 |
-| **horizontalAlignment** | `HorizontalAlignment` | No | Controls how this element is horizontally positioned within its parent. | 1.0 |
+| **horizontalAlignment** | `HorizontalAlignment` | No | Controls the horizontal text alignment. | 1.0 |
 | **isSubtle** | `boolean` | No | If `true`, displays text slightly toned down to appear less prominent. | 1.0 |
 | **maxLines** | `number` | No | Specifies the maximum number of lines to display. | 1.0 |
 | **size** | `FontSize` | No | Controls size of text. | 1.0 |
 | **weight** | `FontWeight` | No | Controls the weight of `TextBlock` elements. | 1.0 |
 | **wrap** | `boolean` | No | If `true`, allow text to wrap. Otherwise, text is clipped. | 1.0 |
+| **fallback** | `BlockElement|FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.0 |
+| **height** | `BlockElementHeight` | No | Specifies the height of the element. | 1.0 |
 | **id** | `string` | No | A unique identifier associated with the element. | 1.0 |
+| **isVisible** | `boolean` | No, default: true | If `false`, this element will be removed from the visual tree. | 1.0 |
+| **requires** | `Dictionary<string>` | No | A series of key/value pairs indicating features that the element requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered. | 1.0 |
 | **spacing** | `Spacing` | No | Controls the amount of spacing between this element and the preceding element. | 1.0 |
 | **separator** | `boolean` | No | When `true`, draw a separating line at the top of the element. | 1.0 |
 <!-- END AUTO-GENERATED -->

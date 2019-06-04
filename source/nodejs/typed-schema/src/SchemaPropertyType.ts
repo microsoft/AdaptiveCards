@@ -27,6 +27,10 @@ export class SchemaPropertyType {
 			case "uri":
 				this._type = SchemaLiteral.uri;
 				break;
+
+			case "uri-reference":
+				this._type = SchemaLiteral.uriReference;
+				break;
 	
 			case "string":
 				this._type = SchemaLiteral.string;

@@ -28,6 +28,7 @@ export class SchemaLiteral extends SchemaType {
 	private static _object = new SchemaLiteral("object");
 	private static _boolean = new SchemaLiteral("boolean");
 	private static _uri = new SchemaLiteral("string", "uri");
+	private static _uriReference = new SchemaLiteral("string", "uri-reference");
 	private static _any = new SchemaLiteral();
 
 	static get string() {
@@ -48,6 +49,10 @@ export class SchemaLiteral extends SchemaType {
 
 	static get uri() {
 		return this._uri;
+	}
+
+	static get uriReference() {
+		return this._uriReference;
 	}
 
 	static get any() {

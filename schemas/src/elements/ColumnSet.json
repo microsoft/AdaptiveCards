@@ -29,7 +29,7 @@
 			"version": "1.2",
 			"shorthands": [
 				{
-					"type": "string",
+					"type": "uri-reference",
 					"description": "The URL (or data url) to use as the background image. Supports data URI in version 1.2+"
 				}
 			]

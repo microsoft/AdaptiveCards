@@ -11,7 +11,7 @@
             "required": true
         },
         "poster": {
-            "type": "string",
+            "type": "uri-reference",
             "description": "URL of an image to display before playing. Supports data URI in version 1.2+"
         },
         "altText": {

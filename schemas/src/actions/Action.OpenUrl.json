@@ -4,7 +4,7 @@
     "description": "When invoked, show the given url either by launching it in an external web browser or showing within an embedded web browser.",
 	"properties": {
         "url": {
-            "type": "uri",
+            "type": "uri-reference",
             "description": "The URL to open.",
             "required": true
         }

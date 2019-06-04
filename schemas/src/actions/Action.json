@@ -7,7 +7,7 @@
       "description": "Label for button or link that represents this action."
     },
     "iconUrl": {
-      "type": "string",
+      "type": "uri-reference",
       "description": "Optional icon to be shown on the action in conjunction with the title. Supports data URI in version 1.2+",
       "version": "1.1"
     },

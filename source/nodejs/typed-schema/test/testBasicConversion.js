@@ -274,6 +274,53 @@ describe("Test transform", function () {
 		})
 	});
 	
+	it("Test uri reference property", function () {
+		assertTransform({
+			types: [
+				{
+					"type": "AdaptiveCard",
+					"properties": {
+						"source": {
+							"type": "uri-reference",
+							"description": "The source of the card."
+						}
+					}
+				}
+			],
+			primaryTypeName: "AdaptiveCard",
+			expected: {
+				"$schema": "http://json-schema.org/draft-06/schema#",
+				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
+				"anyOf": [
+					{
+						"allOf": [
+							{
+								"$ref": "#/definitions/AdaptiveCard"
+							}
+						]
+					}
+				],
+				"definitions": {
+					"AdaptiveCard": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"type": {
+								"enum": [ "AdaptiveCard" ],
+								"description": "Must be `AdaptiveCard`"
+							},
+							"source": {
+								"type": "string",
+								"format": "uri-reference",
+								"description": "The source of the card."
+							}
+						}
+					}
+				}
+			}
+		})
+	});
+	
 	it("Test required property", function () {
 		assertTransform({
 			types: [
