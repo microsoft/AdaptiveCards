@@ -14,13 +14,13 @@ using namespace AdaptiveSharedNamespace;
 
 TextElementProperties::TextElementProperties() :
     m_textSize(TextSize::Default), m_textWeight(TextWeight::Default), m_fontType(FontType::Default),
-    m_textColor(ForegroundColor::Default), m_isSubtle(false), m_italic(false), m_strikethrough(false), m_language()
+    m_textColor(ForegroundColor::Default), m_isSubtle(false), m_language()
 {
 }
 
 TextElementProperties::TextElementProperties(const TextConfig& config, const std::string& text, const std::string& language) :
     m_textSize(config.size), m_textWeight(config.weight), m_fontType(config.fontType), m_textColor(config.color),
-    m_isSubtle(config.isSubtle), m_italic(false), m_text(text), m_strikethrough(false), m_language(language)
+    m_isSubtle(config.isSubtle), m_text(text), m_language(language)
 {
 }
 
@@ -121,26 +121,6 @@ void TextElementProperties::SetIsSubtle(const bool value)
     m_isSubtle = value;
 }
 
-bool TextElementProperties::GetItalic() const
-{
-    return m_italic;
-}
-
-void TextElementProperties::SetItalic(const bool value)
-{
-    m_italic = value;
-}
-
-bool TextElementProperties::GetStrikethrough() const
-{
-    return m_strikethrough;
-}
-
-void TextElementProperties::SetStrikethrough(const bool value)
-{
-    m_strikethrough = value;
-}
-
 std::string TextElementProperties::GetLanguage() const
 {
     return m_language;
@@ -159,8 +139,6 @@ void TextElementProperties::Deserialize(const ParseContext& context, const Json:
     SetTextWeight(ParseUtil::GetEnumValue<TextWeight>(json, AdaptiveCardSchemaKey::TextWeight, TextWeight::Default, TextWeightFromString));
     SetFontType(ParseUtil::GetEnumValue<FontType>(json, AdaptiveCardSchemaKey::FontType, FontType::Default, FontTypeFromString));
     SetIsSubtle(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsSubtle, false));
-    SetItalic(false);
-    SetStrikethrough(false);
     SetLanguage(context.GetLanguage());
 }
 

@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-export enum ActionSentiment {
-    Default,
-    Positive,
-    Destructive
+export class ActionStyle {
+    static readonly Default = "default";
+    static readonly Positive = "positive";
+    static readonly Destructive = "destructive";
 }
 
 export enum Size {

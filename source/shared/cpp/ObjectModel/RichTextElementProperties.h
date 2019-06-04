@@ -17,8 +17,18 @@ namespace AdaptiveSharedNamespace
         RichTextElementProperties& operator=(RichTextElementProperties&&) = default;
         ~RichTextElementProperties() = default;
 
+        bool GetItalic() const;
+        void SetItalic(const bool value);
+
+        bool GetStrikethrough() const;
+        void SetStrikethrough(const bool value);
+
         Json::Value SerializeToJsonValue(Json::Value& root) const override;
         void Deserialize(const ParseContext& context, const Json::Value& root) override;
         void PopulateKnownPropertiesSet(std::unordered_set<std::string>& knownProperties) override;
+
+    private:
+        bool m_italic;
+        bool m_strikethrough;
     };
 }

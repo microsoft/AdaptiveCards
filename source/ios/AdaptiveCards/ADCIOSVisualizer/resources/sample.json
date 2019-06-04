@@ -1,7 +1,7 @@
 {
 	"supportsInteractivity": true,
 	"imageBaseUrl": "https://pbs.twimg.com/profile_images/3647943215/",
-	"fontStyles": {
+	"fontTypes": {
 		"default": {
 			"fontFamily": "San Francisco",
 			"fontSizes": {

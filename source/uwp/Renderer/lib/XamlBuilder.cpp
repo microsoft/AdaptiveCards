@@ -1902,7 +1902,7 @@ namespace AdaptiveNamespace
                                              _In_ IAdaptiveRenderContext* renderContext)
     {
         HString actionSentiment;
-        RETURN_IF_FAILED(adaptiveActionElement->get_Sentiment(actionSentiment.GetAddressOf()));
+        RETURN_IF_FAILED(adaptiveActionElement->get_Style(actionSentiment.GetAddressOf()));
 
         INT32 isSentimentPositive{}, isSentimentDestructive{}, isSentimentDefault{};
 
@@ -2076,6 +2076,12 @@ namespace AdaptiveNamespace
             HString text;
             RETURN_IF_FAILED(adaptiveTextElement->get_Text(text.GetAddressOf()));
 
+            boolean isStrikethrough{false};
+            RETURN_IF_FAILED(adaptiveTextRun->get_Strikethrough(&isStrikethrough));
+
+            boolean isItalic{false};
+            RETURN_IF_FAILED(adaptiveTextRun->get_Italic(&isItalic));
+
             UINT inlineLength;
             if (selectAction != nullptr)
             {
@@ -2102,9 +2108,8 @@ namespace AdaptiveNamespace
 
                 ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> hyperlinkInlines;
                 RETURN_IF_FAILED(hyperlinkAsSpan->get_Inlines(hyperlinkInlines.GetAddressOf()));
-
                 RETURN_IF_FAILED(AddSingleTextInline(
-                    adaptiveTextElement.Get(), renderContext, renderArgs, text.Get(), true, hyperlinkInlines.Get(), &inlineLength));
+                    adaptiveTextElement.Get(), renderContext, renderArgs, text.Get(), isStrikethrough, isItalic, true, hyperlinkInlines.Get(), &inlineLength));
 
                 ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> hyperlinkAsInline;
                 RETURN_IF_FAILED(hyperlink.As(&hyperlinkAsInline));
@@ -2116,7 +2121,7 @@ namespace AdaptiveNamespace
             {
                 // Add the text to the paragraph's inlines
                 RETURN_IF_FAILED(AddSingleTextInline(
-                    adaptiveTextElement.Get(), renderContext, renderArgs, text.Get(), false, xamlInlines.Get(), &inlineLength));
+                    adaptiveTextElement.Get(), renderContext, renderArgs, text.Get(), isStrikethrough, isItalic, false, xamlInlines.Get(), &inlineLength));
             }
 
             boolean highlight;
@@ -4194,6 +4199,12 @@ namespace AdaptiveNamespace
             ComPtr<IMediaElement2> mediaElement2;
             RETURN_IF_FAILED(mediaElement.As(&mediaElement2));
             RETURN_IF_FAILED(mediaElement2->put_AreTransportControlsEnabled(true));
+            ComPtr<IMediaElement3> mediaElement3;
+            RETURN_IF_FAILED(mediaElement.As(&mediaElement3));
+            ComPtr<IMediaTransportControls> mediaTransportControl;
+            RETURN_IF_FAILED(mediaElement3->get_TransportControls(&mediaTransportControl));
+            RETURN_IF_FAILED(mediaTransportControl->put_IsCompact(true));
+            RETURN_IF_FAILED(mediaTransportControl->put_IsZoomButtonVisible(false));
 
             ComPtr<IUIElement> mediaUIElement;
             RETURN_IF_FAILED(mediaElement.As(&mediaUIElement));

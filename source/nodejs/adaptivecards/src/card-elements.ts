@@ -1144,7 +1144,7 @@ export class TextBlock extends BaseTextBlock {
         return false;
     }
 
-    protected serText(value: string) {
+    protected setText(value: string) {
         super.setText(value);
 
         this._processedText = null;
@@ -2223,7 +2223,7 @@ export abstract class CardElementContainer extends CardElement {
         let element = super.render();
         let hostConfig = this.hostConfig;
 
-        if (this.isSelectable && this._selectAction && hostConfig.supportsInteractivity) {
+        if (element && this.isSelectable && this._selectAction && hostConfig.supportsInteractivity) {
             element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
             element.tabIndex = 0;
             element.setAttribute("role", "button");
@@ -3722,15 +3722,14 @@ class ActionButton {
                 break;
         }
 
-        switch (this.action.sentiment) {
-            case Enums.ActionSentiment.Positive:
-                this.action.renderedElement.classList.add(...hostConfig.makeCssClassNames("primary", "sentiment-positive"));
-                break;
-            case Enums.ActionSentiment.Destructive:
-                this.action.renderedElement.classList.add(...hostConfig.makeCssClassNames("sentiment-destructive"));
-                break;
+        if (!Utils.isNullOrEmpty(this.action.style)) {
+            if (this.action.style === Enums.ActionStyle.Positive) {
+                this.action.renderedElement.classList.add(...hostConfig.makeCssClassNames("primary", "style-positive"));
+            }
+            else {
+                this.action.renderedElement.classList.add(...hostConfig.makeCssClassNames("style-" + this.action.style.toLowerCase()));
+             }
         }
-
     }
 
     readonly action: Action;
@@ -3816,7 +3815,7 @@ export abstract class Action extends CardObject {
 
     title: string;
     iconUrl: string;
-    sentiment: Enums.ActionSentiment = Enums.ActionSentiment.Default;
+    style: string = Enums.ActionStyle.Default;
 
     onExecute: (sender: Action) => void;
 
@@ -3830,7 +3829,7 @@ export abstract class Action extends CardObject {
         Utils.setProperty(result, "type", this.getJsonTypeName());
         Utils.setProperty(result, "title", this.title);
         Utils.setProperty(result, "iconUrl", this.iconUrl);
-        Utils.setEnumProperty(Enums.ActionSentiment, result, "sentiment", this.sentiment, Enums.ActionSentiment.Default);
+        Utils.setProperty(result, "style", this.style, Enums.ActionStyle.Default);
 
         return result;
     }
@@ -3941,7 +3940,7 @@ export abstract class Action extends CardObject {
 
         this.title = Utils.getStringValue(json["title"]);
         this.iconUrl = Utils.getStringValue(json["iconUrl"]);
-        this.sentiment = Utils.getEnumValue(Enums.ActionSentiment, json["sentiment"], this.sentiment);
+        this.style = Utils.getStringValue(json["style"], this.style);
     }
 
     remove(): boolean {
@@ -3984,16 +3983,16 @@ export abstract class Action extends CardObject {
     }
 
     get isPrimary(): boolean {
-        return this.sentiment == Enums.ActionSentiment.Positive;
+        return this.style == Enums.ActionStyle.Positive;
     }
 
     set isPrimary(value: boolean) {
         if (value) {
-            this.sentiment = Enums.ActionSentiment.Positive;
+            this.style = Enums.ActionStyle.Positive;
         }
         else {
-            if (this.sentiment == Enums.ActionSentiment.Positive) {
-                this.sentiment = Enums.ActionSentiment.Default;
+            if (this.style == Enums.ActionStyle.Positive) {
+                this.style = Enums.ActionStyle.Default;
             }
         }
     }
@@ -5578,11 +5577,11 @@ export class Container extends StylableCardElementContainer {
         this._items = [];
         this._renderedItems = [];
 
+        this.backgroundImage.reset();
+
         let jsonBackgroundImage = json["backgroundImage"];
 
         if (jsonBackgroundImage) {
-            this.backgroundImage.reset();
-
             if (typeof jsonBackgroundImage === "string") {
                 this.backgroundImage.url = jsonBackgroundImage;
                 this.backgroundImage.fillMode = Enums.FillMode.Cover;
@@ -5879,6 +5878,7 @@ export class ColumnSet extends StylableCardElementContainer {
             let element = document.createElement("div");
             element.className = hostConfig.makeCssClassName("ac-columnSet");
             element.style.display = "flex";
+            element.style.overflowX = "hidden";
 
             if (AdaptiveCard.useAdvancedCardBottomTruncation) {
                 // See comment in Container.internalRender()
