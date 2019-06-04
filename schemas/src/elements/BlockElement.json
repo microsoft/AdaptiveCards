@@ -7,6 +7,11 @@
 			"type": "BlockElement|FallbackOption",
 			"description": "Describes what to do when an unknown element is encountered or the requires of this or any children can't be met.",
 			"version": "1.2"
+		},
+		"height": {
+			"type": "BlockElementHeight",
+			"description": "Specifies the height of the element.",
+			"version": "1.1"
 		}
 	}
 }

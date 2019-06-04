@@ -278,6 +278,7 @@
           "description": "The array of `Image` elements to show."
         },
         "fallback": {},
+        "height": {},
         "id": {},
         "isVisible": {},
         "requires": {},
@@ -345,11 +346,6 @@
           ],
           "description": "Describes what to do when an unknown element is encountered or the requires of this or any children can't be met.",
           "version": "1.2"
-        },
-        "height": {
-          "$ref": "#/definitions/ContainerHeight",
-          "description": "Specifies the height of the column.",
-          "version": "1.1"
         },
         "minHeight": {
           "type": "string",
@@ -466,11 +462,6 @@
           "description": "Specifies the background image.",
           "version": "1.2"
         },
-        "height": {
-          "$ref": "#/definitions/ContainerHeight",
-          "description": "Specifies the height of the container.",
-          "version": "1.1"
-        },
         "minHeight": {
           "type": "string",
           "description": "Specifies the minimum height of the column set.",
@@ -483,6 +474,7 @@
           ]
         },
         "fallback": {},
+        "height": {},
         "id": {},
         "isVisible": {},
         "requires": {},
@@ -557,11 +549,6 @@
           "description": "Specifies the background image.",
           "version": "1.2"
         },
-        "height": {
-          "$ref": "#/definitions/ContainerHeight",
-          "description": "Specifies the height of the container.",
-          "version": "1.1"
-        },
         "minHeight": {
           "type": "string",
           "description": "Specifies the minimum height of the container.",
@@ -574,6 +561,7 @@
           ]
         },
         "fallback": {},
+        "height": {},
         "id": {},
         "isVisible": {},
         "requires": {},
@@ -633,6 +621,7 @@
           "description": "The array of `Fact`'s."
         },
         "fallback": {},
+        "height": {},
         "id": {},
         "isVisible": {},
         "requires": {},
@@ -673,14 +662,7 @@
           "example": "#DDDDDD",
           "version": "1.1"
         },
-        "height": {
-          "type": "string",
-          "description": "The desired on-screen height of the image, ending in 'px'. E.g., 50px. This overrides the `size` property.",
-          "examples": [
-            "50px"
-          ],
-          "version": "1.1"
-        },
+        "height": {},
         "horizontalAlignment": {
           "$ref": "#/definitions/HorizontalAlignment",
           "description": "Controls how this element is horizontally positioned within its parent."
@@ -744,6 +726,7 @@
           "$ref": "#/definitions/ImageSize"
         },
         "fallback": {},
+        "height": {},
         "id": {},
         "isVisible": {},
         "requires": {},
@@ -887,6 +870,7 @@
         },
         "id": {},
         "fallback": {},
+        "height": {},
         "isVisible": {},
         "requires": {},
         "spacing": {},
@@ -930,6 +914,7 @@
         },
         "id": {},
         "fallback": {},
+        "height": {},
         "isVisible": {},
         "requires": {},
         "spacing": {},
@@ -970,6 +955,7 @@
         },
         "id": {},
         "fallback": {},
+        "height": {},
         "isVisible": {},
         "requires": {},
         "spacing": {},
@@ -1019,6 +1005,7 @@
         },
         "id": {},
         "fallback": {},
+        "height": {},
         "isVisible": {},
         "requires": {},
         "spacing": {},
@@ -1059,6 +1046,7 @@
         },
         "id": {},
         "fallback": {},
+        "height": {},
         "isVisible": {},
         "requires": {},
         "spacing": {},
@@ -1107,6 +1095,7 @@
         },
         "id": {},
         "fallback": {},
+        "height": {},
         "isVisible": {},
         "requires": {},
         "spacing": {},
@@ -1152,6 +1141,7 @@
           "description": "Alternate text describing the audio or video."
         },
         "fallback": {},
+        "height": {},
         "id": {},
         "isVisible": {},
         "requires": {},
@@ -1223,6 +1213,7 @@
           "description": "Controls the horizontal text alignment."
         },
         "fallback": {},
+        "height": {},
         "id": {},
         "isVisible": {},
         "requires": {},
@@ -1289,6 +1280,7 @@
           "default": false
         },
         "fallback": {},
+        "height": {},
         "id": {},
         "isVisible": {},
         "requires": {},
@@ -1318,6 +1310,12 @@
         "destructive"
       ]
     },
+    "BlockElementHeight": {
+      "enum": [
+        "auto",
+        "stretch"
+      ]
+    },
     "ChoiceInputStyle": {
       "description": "Style hint for `Input.ChoiceSet`.",
       "enum": [
@@ -1334,12 +1332,6 @@
         "good",
         "warning",
         "attention"
-      ]
-    },
-    "ContainerHeight": {
-      "enum": [
-        "auto",
-        "stretch"
       ]
     },
     "ContainerStyle": {
@@ -2007,6 +1999,11 @@
           "description": "Describes what to do when an unknown element is encountered or the requires of this or any children can't be met.",
           "version": "1.2"
         },
+        "height": {
+          "$ref": "#/definitions/BlockElementHeight",
+          "description": "Specifies the height of the element.",
+          "version": "1.1"
+        },
         "id": {},
         "isVisible": {},
         "requires": {},
@@ -2056,6 +2053,7 @@
       "properties": {
         "id": {},
         "fallback": {},
+        "height": {},
         "isVisible": {},
         "requires": {},
         "spacing": {},
