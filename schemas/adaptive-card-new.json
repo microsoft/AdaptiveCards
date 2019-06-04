@@ -274,6 +274,7 @@
         },
         "fallback": {},
         "id": {},
+        "isVisible": {},
         "requires": {},
         "spacing": {},
         "separator": {}
@@ -385,6 +386,7 @@
           "description": "`\"auto\"`, `\"stretch\"`, or a number representing relative width of the column in the column group."
         },
         "id": {},
+        "isVisible": {},
         "requires": {},
         "spacing": {},
         "separator": {}
@@ -467,6 +469,7 @@
         },
         "fallback": {},
         "id": {},
+        "isVisible": {},
         "requires": {},
         "spacing": {},
         "separator": {}
@@ -552,6 +555,7 @@
         },
         "fallback": {},
         "id": {},
+        "isVisible": {},
         "requires": {},
         "spacing": {},
         "separator": {}
@@ -610,6 +614,7 @@
         },
         "fallback": {},
         "id": {},
+        "isVisible": {},
         "requires": {},
         "spacing": {},
         "separator": {}
@@ -683,6 +688,7 @@
         },
         "fallback": {},
         "id": {},
+        "isVisible": {},
         "requires": {},
         "spacing": {},
         "separator": {}
@@ -719,6 +725,7 @@
         },
         "fallback": {},
         "id": {},
+        "isVisible": {},
         "requires": {},
         "spacing": {},
         "separator": {}
@@ -860,6 +867,7 @@
         },
         "id": {},
         "fallback": {},
+        "isVisible": {},
         "requires": {},
         "spacing": {},
         "separator": {}
@@ -902,6 +910,7 @@
         },
         "id": {},
         "fallback": {},
+        "isVisible": {},
         "requires": {},
         "spacing": {},
         "separator": {}
@@ -941,6 +950,7 @@
         },
         "id": {},
         "fallback": {},
+        "isVisible": {},
         "requires": {},
         "spacing": {},
         "separator": {}
@@ -989,6 +999,7 @@
         },
         "id": {},
         "fallback": {},
+        "isVisible": {},
         "requires": {},
         "spacing": {},
         "separator": {}
@@ -1028,6 +1039,7 @@
         },
         "id": {},
         "fallback": {},
+        "isVisible": {},
         "requires": {},
         "spacing": {},
         "separator": {}
@@ -1075,6 +1087,7 @@
         },
         "id": {},
         "fallback": {},
+        "isVisible": {},
         "requires": {},
         "spacing": {},
         "separator": {}
@@ -1120,6 +1133,7 @@
         },
         "fallback": {},
         "id": {},
+        "isVisible": {},
         "requires": {},
         "spacing": {},
         "separator": {}
@@ -1190,6 +1204,7 @@
         },
         "fallback": {},
         "id": {},
+        "isVisible": {},
         "requires": {},
         "spacing": {},
         "separator": {}
@@ -1255,6 +1270,7 @@
         },
         "fallback": {},
         "id": {},
+        "isVisible": {},
         "requires": {},
         "spacing": {},
         "separator": {}
@@ -1966,6 +1982,7 @@
           "version": "1.2"
         },
         "id": {},
+        "isVisible": {},
         "requires": {},
         "spacing": {},
         "separator": {}
@@ -1982,6 +1999,12 @@
         "id": {
           "type": "string",
           "description": "A unique identifier associated with the element."
+        },
+        "isVisible": {
+          "type": "boolean",
+          "description": "If `false`, this element will be removed from the visual tree.",
+          "default": true,
+          "version": "1.2"
         },
         "requires": {
           "type": "object",
@@ -2007,6 +2030,7 @@
       "properties": {
         "id": {},
         "fallback": {},
+        "isVisible": {},
         "requires": {},
         "spacing": {},
         "separator": {}

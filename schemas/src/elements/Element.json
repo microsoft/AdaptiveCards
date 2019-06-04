@@ -6,6 +6,12 @@
 			"type": "string",
 			"description": "A unique identifier associated with the element."
 		},
+		"isVisible": {
+			"type": "boolean",
+			"description": "If `false`, this element will be removed from the visual tree.",
+			"default": true,
+			"version": "1.2"
+		},
 		"requires": {
 			"type": "Dictionary<string>",
 			"description": "A series of key/value pairs indicating features that the element requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered.",
