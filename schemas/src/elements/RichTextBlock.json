@@ -11,6 +11,10 @@
       "type": "Inline[]",
       "description": "The array of inlines.",
       "required": true
+    },
+    "horizontalAlignment": {
+      "type": "HorizontalAlignment",
+      "description": "Controls the horizontal text alignment."
     }
   }
 }

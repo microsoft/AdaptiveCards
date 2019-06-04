@@ -1140,6 +1140,10 @@
           },
           "description": "The array of inlines."
         },
+        "horizontalAlignment": {
+          "$ref": "#/definitions/HorizontalAlignment",
+          "description": "Controls the horizontal text alignment."
+        },
         "fallback": {},
         "id": {},
         "requires": {},
@@ -1181,7 +1185,7 @@
         },
         "horizontalAlignment": {
           "$ref": "#/definitions/HorizontalAlignment",
-          "description": "Controls how this element is horizontally positioned within its parent."
+          "description": "Controls the horizontal text alignment."
         },
         "isSubtle": {
           "type": "boolean",
