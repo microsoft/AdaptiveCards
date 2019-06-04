@@ -703,22 +703,49 @@
           ],
           "version": "1.1"
         },
-        "fallback": {},
-        "id": {},
-        "isVisible": {},
-        "requires": {},
-        "spacing": {},
-        "separator": {}
+        "fallback": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ImplementationsOf.BlockElement"
+            },
+            {
+              "$ref": "#/definitions/FallbackOption"
+            }
+          ],
+          "description": "Describes what to do when an unknown element is encountered or the requires of this or any children can't be met.",
+          "version": "1.2"
+        },
+        "id": {
+          "type": "string",
+          "description": "A unique identifier associated with the element."
+        },
+        "isVisible": {
+          "type": "boolean",
+          "description": "If `false`, this element will be removed from the visual tree.",
+          "default": true,
+          "version": "1.2"
+        },
+        "requires": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "A series of key/value pairs indicating features that the element requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered.",
+          "version": "1.2"
+        },
+        "spacing": {
+          "$ref": "#/definitions/Spacing",
+          "description": "Controls the amount of spacing between this element and the preceding element."
+        },
+        "separator": {
+          "type": "boolean",
+          "description": "When `true`, draw a separating line at the top of the element."
+        }
       },
       "type": "object",
       "additionalProperties": false,
       "required": [
         "url"
-      ],
-      "allOf": [
-        {
-          "$ref": "#/definitions/Extendable.BlockElement"
-        }
       ]
     },
     "ImageSet": {
@@ -2070,21 +2097,49 @@
           "type": "string",
           "description": "Unique identifier for the value. Used to identify collected input when the Submit action is performed."
         },
-        "fallback": {},
-        "height": {},
-        "isVisible": {},
-        "requires": {},
-        "spacing": {},
-        "separator": {}
+        "fallback": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ImplementationsOf.BlockElement"
+            },
+            {
+              "$ref": "#/definitions/FallbackOption"
+            }
+          ],
+          "description": "Describes what to do when an unknown element is encountered or the requires of this or any children can't be met.",
+          "version": "1.2"
+        },
+        "height": {
+          "$ref": "#/definitions/BlockElementHeight",
+          "description": "Specifies the height of the element.",
+          "version": "1.1"
+        },
+        "isVisible": {
+          "type": "boolean",
+          "description": "If `false`, this element will be removed from the visual tree.",
+          "default": true,
+          "version": "1.2"
+        },
+        "requires": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "A series of key/value pairs indicating features that the element requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered.",
+          "version": "1.2"
+        },
+        "spacing": {
+          "$ref": "#/definitions/Spacing",
+          "description": "Controls the amount of spacing between this element and the preceding element."
+        },
+        "separator": {
+          "type": "boolean",
+          "description": "When `true`, draw a separating line at the top of the element."
+        }
       },
       "type": "object",
       "required": [
         "id"
-      ],
-      "allOf": [
-        {
-          "$ref": "#/definitions/Extendable.BlockElement"
-        }
       ]
     }
   },
