@@ -25,8 +25,8 @@
     },
     "wrap": {
       "type": "boolean",
-			"description": "If `true`, allow text to wrap. Otherwise, text is clipped.",
-			"default": false
+      "description": "If `true`, allow text to wrap. Otherwise, text is clipped.",
+      "version": "1.2"
     }
 	}
 }
