@@ -194,7 +194,8 @@
         },
         "style": {
           "$ref": "#/definitions/ContainerStyle",
-          "description": "Style hint for the Adaptive Card."
+          "description": "Style hint for the Adaptive Card.",
+          "version": "1.2"
         },
         "version": {
           "type": "string",

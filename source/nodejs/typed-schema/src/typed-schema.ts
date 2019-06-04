@@ -48,6 +48,7 @@ class Transformer {
 	private _defaultPrimaryTypeName?: string;
 	private _allowAdditionalProperties: boolean;
 	private _allowCustomEnums: boolean;
+	private _allowCustomTypes: boolean;
 
 	constructor (schema: Schema, options: TransformOptions) {
 		this._schema = schema;
@@ -55,6 +56,7 @@ class Transformer {
 		this._defaultPrimaryTypeName = options.defaultPrimaryTypeName;
 		this._allowAdditionalProperties = options.allowAdditionalProperties;
 		this._allowCustomEnums = options.allowCustomEnums;
+		this._allowCustomTypes = options.allowCustomTypes;
 
 		if (options.primaryTypeNames) {
 			options.primaryTypeNames.forEach(value => {
