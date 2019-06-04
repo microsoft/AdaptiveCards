@@ -15,29 +15,12 @@ namespace UWPTestLibrary
         private int _imageCountRemaining = 0;
         private int _loopsUnchanged = 0;
 
-        /// <summary>
-        /// This method expands all inline show cards so that changes in how show cards are rendered can be covered by this test suite
-        /// </summary>
-        /// <param name="el"></param>
-        private static void ExpandShowCards(UIElement el)
-        {
-            foreach (var card in UWPTestLibrary.RenderTestHelpers.GetAllDescendants(el).OfType<Grid>())
-            {
-                if (card.Visibility == Visibility.Collapsed)
-                {
-                    card.Visibility = Visibility.Visible;
-                }
-            }
-        }
-
         public ImageWaiter(UIElement el)
         {
             if (el == null)
             {
                 return;
             }
-
-            ExpandShowCards(el);
 
             ExceptionRoutedEventHandler failedHandler = new ExceptionRoutedEventHandler(delegate
             {
