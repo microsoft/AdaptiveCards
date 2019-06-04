@@ -543,6 +543,9 @@ describe("Test transform", function () {
 					"isAbstract": true,
 					"description": "An action to invoke",
 					"properties": {
+						"id": {
+							"type": "string"
+						},
 						"title": {
 							"type": "string",
 							"description": "The title"
@@ -587,6 +590,9 @@ describe("Test transform", function () {
 								"enum": [ "Action.OpenUrl" ],
 								"description": "Must be `Action.OpenUrl`"
 							},
+							"id": {
+								"type": "string"
+							},
 							"url": {
 								"type": "string",
 								"format": "uri",
@@ -603,17 +609,15 @@ describe("Test transform", function () {
 									}
 								]
 							}
-						},
-						"allOf": [
-							{
-								"$ref": "#/definitions/Extendable.Action"
-							}
-						]
+						} // It can't use #definition since JSON schema doesn't support overriding properties
 					},
 					"Extendable.Action": {
 						"type": "object",
 						"description": "An action to invoke",
 						"properties": {
+							"id": {
+								"type": "string"
+							},
 							"title": {
 								"type": "string",
 								"description": "The title"

@@ -177,9 +177,40 @@ class Transformer {
 			delete transformed.shorthand;
 
 			transformed.properties = {};
+			var overridesProperties = false;
+			var properties = new Map<string, SchemaProperty>();
+
+			if (type.extends.length > 0) {
+
+				type.properties.forEach(prop => {
+					if (prop.override) {
+						// If property exists in base classes
+						if (type.getAllExtendedProperties().indexOf(prop.name) !== -1) {
+							// Note that JSON schema doesn't support the concept of overriding properties, so instead
+							// we need to copy all the properties and NOT inherit.
+							overridesProperties = true;
+						} else {
+							console.warn(`${type.type}.${prop.name} has override set to true, but it doesn't override any base class properties.`);
+						}
+					} else {
+						// If property exists in base classes
+						if (type.getAllExtendedProperties().indexOf(prop.name) !== -1) {
+							console.warn(`Ignoring ${type.type}.${prop.name} as there's already this property specified in a base class. If you want to keep this property, add "override": "true".`);
+						}
+					}
+				});
+			}
+
+			if (overridesProperties) {
+				type.getAllProperties().forEach((propVal, key) => {
+					properties.set(key, propVal);
+				});
+			} else {
+				properties = type.properties;
+			}
 		
-			if (type.properties.size > 0) {
-				type.properties.forEach((propVal, key) => {
+			if (properties.size > 0) {
+				properties.forEach((propVal, key) => {
 
 					var transformedPropVal: any;
 					try {
@@ -216,31 +247,33 @@ class Transformer {
 
 			if (type.extends.length > 0) {
 
-				// Have to add placeholders for all the properties
-				type.getAllExtendedProperties().forEach(extendedPropKey => {
+				if (!overridesProperties) {
+					// Have to add placeholders for all the properties
+					type.getAllExtendedProperties().forEach(extendedPropKey => {
 
-					// If there's an existing property defined, skip
-					var existingProp = type.properties.get(extendedPropKey);
-					if (existingProp !== undefined) {
-						if (!existingProp.override) {
-							console.warn(`Overriding extended property ${extendedPropKey} on type ${type.type}. If this was intentional, add "override": "true" to this property to prevent this warning from appearing.`);
+						// If there's an existing property defined, skip
+						var existingProp = type.properties.get(extendedPropKey);
+						if (existingProp !== undefined) {
+							if (!existingProp.override) {
+								console.warn(`Overriding extended property ${extendedPropKey} on type ${type.type}. If this was intentional, add "override": "true" to this property to prevent this warning from appearing.`);
+							}
+							return;
 						}
-						return;
-					}
 
-					transformed.properties[extendedPropKey] = {};
-				});
+						transformed.properties[extendedPropKey] = {};
+					});
 
-				transformed.allOf = [];
-				type.extends.forEach(extended => {
-					if (extended.getAllProperties().size > 0) {
-						transformed.allOf.push({
-							$ref: "#/definitions/Extendable." + extended.type
-						});
+					transformed.allOf = [];
+					type.extends.forEach(extended => {
+						if (extended.getAllProperties().size > 0) {
+							transformed.allOf.push({
+								$ref: "#/definitions/Extendable." + extended.type
+							});
+						}
+					});
+					if (transformed.allOf.length == 0) {
+						delete transformed.allOf;
 					}
-				});
-				if (transformed.allOf.length == 0) {
-					delete transformed.allOf;
 				}
 
 				// Keep track of implementations
@@ -260,7 +293,6 @@ class Transformer {
 				});
 
 				delete transformed.extends;
-
 			}
 
 			if (type.shorthand) {

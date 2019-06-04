@@ -72,7 +72,10 @@ export class SchemaClass extends SchemaType {
 		this.getAllExtended().forEach(extended => {
 			extended.properties.forEach((value, key) => {
 				if (answer.has(key)) {
-					// Skip. TODO: Maybe should merge values?
+					// If the property didn't have override on it, it gets overwritten by base property
+					if (!answer.get(key).override) {
+						answer.set(key, value);
+					}
 				} else {
 					answer.set(key, value);
 				}
