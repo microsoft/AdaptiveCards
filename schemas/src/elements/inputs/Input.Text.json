@@ -20,8 +20,9 @@
       "type": "TextInputStyle"
     },
     "inlineAction": {
-      "type": "Action",
-      "description": "The inline action for the input. Typically displayed to the right of the input. It is strongly recommended that an icon on the action (which will be displayed instead of the title of the action)."
+      "type": "ISelectAction",
+      "description": "The inline action for the input. Typically displayed to the right of the input. It is strongly recommended that an icon on the action (which will be displayed instead of the title of the action).",
+      "version": "1.2"
     },
     "value": {
       "type": "string",

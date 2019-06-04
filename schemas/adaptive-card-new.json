@@ -936,7 +936,7 @@
           "$ref": "#/definitions/TextInputStyle"
         },
         "inlineAction": {
-          "$ref": "#/definitions/ImplementationsOf.Action",
+          "$ref": "#/definitions/ImplementationsOf.ISelectAction",
           "description": "The inline action for the input. Typically displayed to the right of the input. It is strongly recommended that an icon on the action (which will be displayed instead of the title of the action)."
         },
         "value": {
