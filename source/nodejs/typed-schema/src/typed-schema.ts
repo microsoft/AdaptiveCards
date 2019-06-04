@@ -229,6 +229,9 @@ class Transformer {
 						});
 					}
 				});
+				if (transformed.allOf.length == 0) {
+					delete transformed.allOf;
+				}
 
 				// Keep track of implementations
 				type.getAllExtended().forEach(extended => {

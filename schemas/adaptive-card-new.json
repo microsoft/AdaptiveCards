@@ -693,7 +693,6 @@
     "TextRun": {
       "description": "Defines a single run of formatted text",
       "version": "1.2",
-      "allOf": [],
       "anyOf": [
         {
           "type": "string",
