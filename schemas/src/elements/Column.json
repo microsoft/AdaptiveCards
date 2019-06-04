@@ -8,6 +8,29 @@
 			"description": "The card elements to render inside the `Column`.",
 			"required": true
 		},
+		"backgroundImage": {
+			"type": "BackgroundImage",
+			"description": "Specifies the background image.",
+			"version": "1.2",
+			"shorthands": [
+				{
+					"type": "string",
+					"description": "The URL (or data url) to use as the background image. Supports data URI in version 1.2+",
+					"version": "1.0"
+				}
+			]
+		},
+		"bleed": {
+			"type": "boolean",
+			"description": "Determines whether the column should bleed through its parent's padding.",
+			"version": "1.2",
+			"features": [ 2109 ]
+		},
+		"fallback": {
+			"type": "Column|FallbackOption",
+			"description": "Describes what to do when an unknown element is encountered or the requires of this or any children can't be met.",
+			"version": "1.2"
+		},
 		"selectAction": {
 			"type": "ISelectAction",
 			"description": "An Action that will be invoked when the `Column` is tapped or selected. `Action.ShowCard` is not supported.",
@@ -22,24 +45,6 @@
 			"description": "Defines how the content should be aligned vertically within the column.",
 			"default": "top",
 			"version": "1.1"
-		},
-		"bleed": {
-			"type": "boolean",
-			"description": "Determines whether the column should bleed through its parent's padding.",
-			"version": "1.2",
-			"features": [ 2109 ]
-		},
-		"backgroundImage": {
-			"type": "BackgroundImage",
-			"description": "Specifies the background image.",
-			"version": "1.2",
-			"shorthands": [
-				{
-					"type": "string",
-					"description": "The URL (or data url) to use as the background image. Supports data URI in version 1.2+",
-					"version": "1.0"
-				}
-			]
 		},
     "width": {
       "type": "string|number",

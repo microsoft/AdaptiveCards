@@ -18,7 +18,9 @@
         },
         "title": {},
         "iconUrl": {},
-        "style": {}
+        "requires": {},
+        "style": {},
+        "fallback": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -46,7 +48,9 @@
         },
         "title": {},
         "iconUrl": {},
-        "style": {}
+        "requires": {},
+        "style": {},
+        "fallback": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -78,7 +82,9 @@
         },
         "title": {},
         "iconUrl": {},
-        "style": {}
+        "requires": {},
+        "style": {},
+        "fallback": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -107,7 +113,9 @@
         },
         "title": {},
         "iconUrl": {},
-        "style": {}
+        "requires": {},
+        "style": {},
+        "fallback": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -253,7 +261,9 @@
           },
           "description": "The array of `Image` elements to show."
         },
+        "fallback": {},
         "id": {},
+        "requires": {},
         "spacing": {},
         "separator": {}
       },
@@ -285,6 +295,40 @@
           },
           "description": "The card elements to render inside the `Column`."
         },
+        "backgroundImage": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/BackgroundImage"
+            },
+            {
+              "type": "string",
+              "description": "The URL (or data url) to use as the background image. Supports data URI in version 1.2+",
+              "version": "1.0"
+            }
+          ],
+          "description": "Specifies the background image.",
+          "version": "1.2"
+        },
+        "bleed": {
+          "type": "boolean",
+          "description": "Determines whether the column should bleed through its parent's padding.",
+          "version": "1.2",
+          "features": [
+            2109
+          ]
+        },
+        "fallback": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Column"
+            },
+            {
+              "$ref": "#/definitions/FallbackOption"
+            }
+          ],
+          "description": "Describes what to do when an unknown element is encountered or the requires of this or any children can't be met.",
+          "version": "1.2"
+        },
         "selectAction": {
           "$ref": "#/definitions/ImplementationsOf.ISelectAction",
           "description": "An Action that will be invoked when the `Column` is tapped or selected. `Action.ShowCard` is not supported.",
@@ -307,28 +351,6 @@
           "default": "top",
           "version": "1.1"
         },
-        "bleed": {
-          "type": "boolean",
-          "description": "Determines whether the column should bleed through its parent's padding.",
-          "version": "1.2",
-          "features": [
-            2109
-          ]
-        },
-        "backgroundImage": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/BackgroundImage"
-            },
-            {
-              "type": "string",
-              "description": "The URL (or data url) to use as the background image. Supports data URI in version 1.2+",
-              "version": "1.0"
-            }
-          ],
-          "description": "Specifies the background image.",
-          "version": "1.2"
-        },
         "width": {
           "anyOf": [
             {
@@ -341,6 +363,7 @@
           "description": "`\"auto\"`, `\"stretch\"`, or a number representing relative width of the column in the column group."
         },
         "id": {},
+        "requires": {},
         "spacing": {},
         "separator": {}
       },
@@ -409,7 +432,9 @@
           "description": "Specifies the background image.",
           "version": "1.2"
         },
+        "fallback": {},
         "id": {},
+        "requires": {},
         "spacing": {},
         "separator": {}
       },
@@ -481,7 +506,9 @@
           "description": "Specifies the background image.",
           "version": "1.2"
         },
+        "fallback": {},
         "id": {},
+        "requires": {},
         "spacing": {},
         "separator": {}
       },
@@ -537,7 +564,9 @@
           },
           "description": "The array of `Fact`'s."
         },
+        "fallback": {},
         "id": {},
+        "requires": {},
         "spacing": {},
         "separator": {}
       },
@@ -608,7 +637,9 @@
           ],
           "version": "1.1"
         },
+        "fallback": {},
         "id": {},
+        "requires": {},
         "spacing": {},
         "separator": {}
       },
@@ -642,7 +673,9 @@
         "imageSize": {
           "$ref": "#/definitions/ImageSize"
         },
+        "fallback": {},
         "id": {},
+        "requires": {},
         "spacing": {},
         "separator": {}
       },
@@ -783,6 +816,8 @@
           "default": false
         },
         "id": {},
+        "fallback": {},
+        "requires": {},
         "spacing": {},
         "separator": {}
       },
@@ -823,6 +858,8 @@
           "description": "The initial value for this field expressed in ISO-8601 format."
         },
         "id": {},
+        "fallback": {},
+        "requires": {},
         "spacing": {},
         "separator": {}
       },
@@ -860,6 +897,8 @@
           "description": "Initial value for this field."
         },
         "id": {},
+        "fallback": {},
+        "requires": {},
         "spacing": {},
         "separator": {}
       },
@@ -905,6 +944,8 @@
           "description": "The initial value for this field."
         },
         "id": {},
+        "fallback": {},
+        "requires": {},
         "spacing": {},
         "separator": {}
       },
@@ -942,6 +983,8 @@
           "description": "The initial value for this field expressed in ISO-8601 format."
         },
         "id": {},
+        "fallback": {},
+        "requires": {},
         "spacing": {},
         "separator": {}
       },
@@ -987,6 +1030,8 @@
           "default": false
         },
         "id": {},
+        "fallback": {},
+        "requires": {},
         "spacing": {},
         "separator": {}
       },
@@ -1029,7 +1074,9 @@
           "type": "string",
           "description": "Alternate text describing the audio or video."
         },
+        "fallback": {},
         "id": {},
+        "requires": {},
         "spacing": {},
         "separator": {}
       },
@@ -1093,7 +1140,9 @@
           },
           "description": "The array of inlines."
         },
+        "fallback": {},
         "id": {},
+        "requires": {},
         "spacing": {},
         "separator": {}
       },
@@ -1155,7 +1204,9 @@
           "description": "If `true`, allow text to wrap. Otherwise, text is clipped.",
           "default": false
         },
+        "fallback": {},
         "id": {},
+        "requires": {},
         "spacing": {},
         "separator": {}
       },
@@ -1204,6 +1255,11 @@
       "enum": [
         "default",
         "emphasis"
+      ]
+    },
+    "FallbackOption": {
+      "enum": [
+        "drop"
       ]
     },
     "FontSize": {
@@ -1814,21 +1870,54 @@
           "description": "Optional icon to be shown on the action in conjunction with the title. Supports data URI in version 1.2+",
           "version": "1.1"
         },
+        "requires": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "A series of key/value pairs indicating features that the element requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered.",
+          "version": "1.2"
+        },
         "style": {
           "$ref": "#/definitions/ActionStyle",
           "description": "Controls the style of an Action, which influences how the action is displayed, spoken, etc.",
+          "version": "1.2"
+        },
+        "fallback": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ImplementationsOf.Action"
+            },
+            {
+              "$ref": "#/definitions/FallbackOption"
+            }
+          ],
+          "description": "Describes what to do when an unknown element is encountered or the requires of this or any children can't be met.",
           "version": "1.2"
         }
       },
       "type": "object"
     },
     "Extendable.BlockElement": {
-      "type": "object",
       "properties": {
+        "fallback": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ImplementationsOf.BlockElement"
+            },
+            {
+              "$ref": "#/definitions/FallbackOption"
+            }
+          ],
+          "description": "Describes what to do when an unknown element is encountered or the requires of this or any children can't be met.",
+          "version": "1.2"
+        },
         "id": {},
+        "requires": {},
         "spacing": {},
         "separator": {}
       },
+      "type": "object",
       "allOf": [
         {
           "$ref": "#/definitions/Extendable.Element"
@@ -1840,6 +1929,14 @@
         "id": {
           "type": "string",
           "description": "A unique identifier associated with the element."
+        },
+        "requires": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "A series of key/value pairs indicating features that the element requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered.",
+          "version": "1.2"
         },
         "spacing": {
           "$ref": "#/definitions/Spacing",
@@ -1856,6 +1953,8 @@
       "description": "Base input class",
       "properties": {
         "id": {},
+        "fallback": {},
+        "requires": {},
         "spacing": {},
         "separator": {}
       },
