@@ -1027,7 +1027,7 @@
         "wrap": {
           "type": "boolean",
           "description": "If `true`, allow text to wrap. Otherwise, text is clipped.",
-          "default": false
+          "version": "1.2"
         },
         "id": {},
         "fallback": {},
