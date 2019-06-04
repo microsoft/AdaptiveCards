@@ -47,12 +47,14 @@ class Transformer {
 	private _typePropertyName: string;
 	private _defaultPrimaryTypeName?: string;
 	private _allowAdditionalProperties: boolean;
+	private _allowCustomEnums: boolean;
 
 	constructor (schema: Schema, options: TransformOptions) {
 		this._schema = schema;
 		this._typePropertyName = options.typePropertyName || "type";
 		this._defaultPrimaryTypeName = options.defaultPrimaryTypeName;
 		this._allowAdditionalProperties = options.allowAdditionalProperties;
+		this._allowCustomEnums = options.allowCustomEnums;
 
 		if (options.primaryTypeNames) {
 			options.primaryTypeNames.forEach(value => {
@@ -151,6 +153,18 @@ class Transformer {
 				enumType.values.forEach(val => {
 					transformed.enum.push(val.value);
 				});
+
+				if (this._allowCustomEnums) {
+					transformed = {
+						anyOf: [
+							transformed,
+							{
+								"type": "string"
+							}
+						]
+					};
+				}
+
 				return transformed;
 			} else if (!(type instanceof SchemaClass)) {
 				throw new Error("Unknown class type " + type);

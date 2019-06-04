@@ -3,4 +3,5 @@ export interface TransformOptions {
 	defaultPrimaryTypeName?: string;
 	typePropertyName?: string;
 	allowAdditionalProperties?: boolean;
+	allowCustomEnums?: boolean;
 }

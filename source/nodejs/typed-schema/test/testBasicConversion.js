@@ -1998,6 +1998,77 @@ describe("Test transform", function () {
 		})
 	});
 
+	
+
+	it("Test extendable enums", function () {
+
+		assertTransform({
+			types: [
+				{
+					"type": "TextBlock",
+					"properties": {
+						"size": {
+							"type": "FontSize"
+						}
+					}
+				},
+				{
+					"type": "FontSize",
+					"classType": "Enum",
+					"values": [
+						"default",
+						"small",
+						"large"
+					]
+				}
+			],
+			primaryTypeName: "TextBlock",
+			allowCustomEnums: true,
+			expected: {
+				"$schema": "http://json-schema.org/draft-06/schema#",
+				"id": "http://adaptivecards.io/schemas/adaptive-card.json",
+				"anyOf": [
+					{
+						"allOf": [
+							{
+								"$ref": "#/definitions/TextBlock"
+							}
+						]
+					}
+				],
+				"definitions": {
+					"TextBlock": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"type": {
+								"enum": [ "TextBlock" ],
+								"description": "Must be `TextBlock`"
+							},
+							"size": {
+								"$ref": "#/definitions/FontSize"
+							}
+						}
+					},
+					"FontSize": {
+						"anyOf": [
+							{
+								"enum": [
+									"default",
+									"small",
+									"large"
+								]
+							},
+							{
+								"type": "string"
+							}
+						]
+					}
+				}
+			}
+		})
+	});
+
 	it("Test enums with descriptions", function () {
 
 		assertTransform({
@@ -2074,7 +2145,8 @@ function assertTransform(options) {
 		primaryTypeNames: options.primaryTypeName,
 		defaultPrimaryTypeName: options.defaultPrimaryTypeName,
 		typePropertyName: options.typePropertyName,
-		allowAdditionalProperties: options.allowAdditionalProperties
+		allowAdditionalProperties: options.allowAdditionalProperties,
+		allowCustomEnums: options.allowCustomEnums
 	});
 
 	assert.deepStrictEqual(transformed, options.expected, "Transform wasn't equal to expected");
