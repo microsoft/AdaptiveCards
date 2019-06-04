@@ -42,7 +42,7 @@
 				{
 					"type": "TextRun",
 					"text": "Good highlight!",
-					"color": "Good",
+					"color": "good",
 					"highlight": true
 				}
 			]
@@ -88,7 +88,7 @@
 		{
 			"type": "TextBlock",
 			"text": "Highlights with colors and containers:",
-			"size": "Large",
+			"size": "large",
 			"wrap": true
 		},
 		{

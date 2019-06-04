@@ -33,8 +33,7 @@
 			"choices": [
 				{
 					"title": "5 minutes",
-					"value": "5",
-					"isSelected": true
+					"value": "5"
 				},
 				{
 					"title": "15 minutes",

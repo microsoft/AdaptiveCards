@@ -60,7 +60,6 @@
 	"actions": [
 		{
 			"type": "Action.Submit",
-			"id": "SendAction",
 			"title": "Send",
 			"data": {
 				"CardType": "FeedbackCard",

@@ -1,7 +1,6 @@
 {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
-	"height": "stretch",
 	"version": "1.0",
 	"body": [
 		{
@@ -211,7 +210,6 @@
 								{
 									"type": "Column",
 									"id": "id13",
-									"height": "stretch",
 									"items": [
 										{
 											"type": "TextBlock",

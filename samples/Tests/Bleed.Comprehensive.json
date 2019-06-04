@@ -103,20 +103,20 @@
 					"items": [
 						{
 							"type": "Image",
-							"style": "Person",
+							"style": "person",
 							"url": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
-							"size": "Small"
+							"size": "small"
 						}
 					],
 					"width": "stretch"
 				},
 				{
 					"type": "Column",
-					"verticalContentAlignment": "Center",
+					"verticalContentAlignment": "center",
 					"items": [
 						{
 							"type": "TextBlock",
-							"horizontalAlignment": "Center",
+							"horizontalAlignment": "center",
 							"text": "Middle column",
 							"wrap": true
 						}
@@ -125,11 +125,11 @@
 				},
 				{
 					"type": "Column",
-					"verticalContentAlignment": "Center",
+					"verticalContentAlignment": "center",
 					"items": [
 						{
 							"type": "TextBlock",
-							"horizontalAlignment": "Right",
+							"horizontalAlignment": "right",
 							"text": "Right column",
 							"wrap": true
 						}
@@ -153,9 +153,9 @@
 					"items": [
 						{
 							"type": "Image",
-							"style": "Person",
+							"style": "person",
 							"url": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
-							"size": "Small"
+							"size": "small"
 						}
 					],
 					"bleed": true,
@@ -164,22 +164,22 @@
 				{
 					"type": "Column",
 					"style": "default",
-					"verticalContentAlignment": "Center",
+					"verticalContentAlignment": "center",
 					"items": [
 						{
 							"type": "TextBlock",
-							"horizontalAlignment": "Center",
+							"horizontalAlignment": "center",
 							"text": "Middle column",
 							"wrap": true
 						},
 						{
 							"type": "Container",
-							"spacing": "None",
+							"spacing": "none",
 							"style": "emphasis",
 							"items": [
 								{
 									"type": "TextBlock",
-									"horizontalAlignment": "Center",
+									"horizontalAlignment": "center",
 									"text": "Bleeding sub-container in center column",
 									"wrap": true
 								},
@@ -204,11 +204,11 @@
 				{
 					"type": "Column",
 					"style": "default",
-					"verticalContentAlignment": "Center",
+					"verticalContentAlignment": "center",
 					"items": [
 						{
 							"type": "TextBlock",
-							"horizontalAlignment": "Right",
+							"horizontalAlignment": "right",
 							"text": "Right column",
 							"wrap": true
 						}
@@ -267,20 +267,20 @@
 													"items": [
 														{
 															"type": "Image",
-															"style": "Person",
+															"style": "person",
 															"url": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
-															"size": "Small"
+															"size": "small"
 														}
 													],
 													"width": "stretch"
 												},
 												{
 													"type": "Column",
-													"verticalContentAlignment": "Center",
+													"verticalContentAlignment": "center",
 													"items": [
 														{
 															"type": "TextBlock",
-															"horizontalAlignment": "Center",
+															"horizontalAlignment": "center",
 															"text": "Middle column",
 															"wrap": true
 														}
@@ -289,11 +289,11 @@
 												},
 												{
 													"type": "Column",
-													"verticalContentAlignment": "Center",
+													"verticalContentAlignment": "center",
 													"items": [
 														{
 															"type": "TextBlock",
-															"horizontalAlignment": "Right",
+															"horizontalAlignment": "right",
 															"text": "Right column",
 															"wrap": true
 														}
@@ -353,20 +353,20 @@
 													"items": [
 														{
 															"type": "Image",
-															"style": "Person",
+															"style": "person",
 															"url": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
-															"size": "Small"
+															"size": "small"
 														}
 													],
 													"width": "stretch"
 												},
 												{
 													"type": "Column",
-													"verticalContentAlignment": "Center",
+													"verticalContentAlignment": "center",
 													"items": [
 														{
 															"type": "TextBlock",
-															"horizontalAlignment": "Center",
+															"horizontalAlignment": "center",
 															"text": "Middle column",
 															"wrap": true
 														}
@@ -375,11 +375,11 @@
 												},
 												{
 													"type": "Column",
-													"verticalContentAlignment": "Center",
+													"verticalContentAlignment": "center",
 													"items": [
 														{
 															"type": "TextBlock",
-															"horizontalAlignment": "Right",
+															"horizontalAlignment": "right",
 															"text": "Right column",
 															"wrap": true
 														}
@@ -425,7 +425,7 @@
 													"items": [
 														{
 															"type": "TextBlock",
-															"horizontalAlignment": "Center",
+															"horizontalAlignment": "center",
 															"text": "Y"
 														}
 													],
@@ -443,7 +443,7 @@
 													"items": [
 														{
 															"type": "TextBlock",
-															"horizontalAlignment": "Center",
+															"horizontalAlignment": "center",
 															"text": "N",
 															"wrap": true
 														}
@@ -462,7 +462,7 @@
 													"items": [
 														{
 															"type": "TextBlock",
-															"horizontalAlignment": "Center",
+															"horizontalAlignment": "center",
 															"text": "N"
 														}
 													]
@@ -490,7 +490,7 @@
 													"items": [
 														{
 															"type": "TextBlock",
-															"horizontalAlignment": "Center",
+															"horizontalAlignment": "center",
 															"text": "N"
 														}
 													],
@@ -508,7 +508,7 @@
 													"items": [
 														{
 															"type": "TextBlock",
-															"horizontalAlignment": "Center",
+															"horizontalAlignment": "center",
 															"text": "N"
 														}
 													],
@@ -526,7 +526,7 @@
 													"items": [
 														{
 															"type": "TextBlock",
-															"horizontalAlignment": "Center",
+															"horizontalAlignment": "center",
 															"text": "Y"
 														}
 													],
@@ -561,7 +561,7 @@
 									"items": [
 										{
 											"type": "TextBlock",
-											"horizontalAlignment": "Center",
+											"horizontalAlignment": "center",
 											"text": "Y",
 											"wrap": true
 										}
@@ -575,7 +575,7 @@
 									"items": [
 										{
 											"type": "TextBlock",
-											"horizontalAlignment": "Center",
+											"horizontalAlignment": "center",
 											"text": "N",
 											"wrap": true
 										}
@@ -589,7 +589,7 @@
 									"items": [
 										{
 											"type": "TextBlock",
-											"horizontalAlignment": "Center",
+											"horizontalAlignment": "center",
 											"text": "Y"
 										}
 									],
@@ -617,7 +617,7 @@
 											"items": [
 												{
 													"type": "TextBlock",
-													"horizontalAlignment": "Center",
+													"horizontalAlignment": "center",
 													"text": "Y",
 													"wrap": true
 												}
@@ -636,7 +636,7 @@
 											"items": [
 												{
 													"type": "TextBlock",
-													"horizontalAlignment": "Center",
+													"horizontalAlignment": "center",
 													"text": "N",
 													"wrap": true
 												}
@@ -655,7 +655,7 @@
 											"items": [
 												{
 													"type": "TextBlock",
-													"horizontalAlignment": "Center",
+													"horizontalAlignment": "center",
 													"text": "N",
 													"wrap": true
 												}
