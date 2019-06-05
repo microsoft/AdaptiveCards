@@ -11,7 +11,7 @@
 | **style** | `ContainerStyle` | No | Style hint for the Adaptive Card. | 1.2 |
 | **version** | `string` | No | Schema version that this card requires. If a client is **lower** than this version, the `fallbackText` will be rendered. NOTE: Version is not required for cards within an `Action.ShowCard`. However, it *is* required for the top-level card. | 1.0 |
 | **fallbackText** | `string` | No | Text shown when the client doesn't support the version specified (may contain markdown). | 1.0 |
-| **backgroundImage** | `BackgroundImage|uri-reference` | No | Specifies the background image of the card. | 1.2, 1.0 |
+| **backgroundImage** | `BackgroundImage, uri-reference` | No | Specifies the background image of the card. | 1.2, 1.0 |
 | **minHeight** | `string` | No | Specifies the minimum height of the card. | 1.2 |
 | **speak** | `string` | No | Specifies what should be spoken for this entire card. This is simple text or SSML fragment. | 1.0 |
 | **lang** | `string` | No | The 2-letter ISO-639-1 language used in the card. Used to localize any date/time functions. | 1.0 |

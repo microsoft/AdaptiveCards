@@ -141,7 +141,7 @@ function getPropertySummary(property: SchemaProperty, knownTypes, autoLink) {
 		type += `|${shorthand.original.type}`;
 	});
 
-    var formattedType = "`" + type + "`";
+    var formattedType = "`" + replacePipes(type) + "`";
 
     var description = property.description;
 
@@ -172,4 +172,8 @@ function getPropertySummary(property: SchemaProperty, knownTypes, autoLink) {
         description: description,
         required: required
     };
+}
+
+function replacePipes(type: string) {
+	return type.replace("|", ", ");
 }

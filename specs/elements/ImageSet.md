@@ -7,7 +7,7 @@
 | **type** | `string` | Depends | Must be `"ImageSet"`. | 1.0 |
 | **images** | `Image[]` | Yes | The array of `Image` elements to show. | 1.0 |
 | **imageSize** | `ImageSize` | No |  | 1.0 |
-| **fallback** | `BlockElement|FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
+| **fallback** | `BlockElement, FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
 | **height** | `BlockElementHeight` | No | Specifies the height of the element. | 1.1 |
 | **id** | `string` | No | A unique identifier associated with the element. | 1.0 |
 | **isVisible** | `boolean` | No, default: true | If `false`, this element will be removed from the visual tree. | 1.2 |

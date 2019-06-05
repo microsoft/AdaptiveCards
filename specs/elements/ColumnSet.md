@@ -9,9 +9,9 @@
 | **selectAction** | `ISelectAction` | No | An Action that will be invoked when the `ColumnSet` is tapped or selected. `Action.ShowCard` is not supported. | 1.1 |
 | **style** | `ContainerStyle?` | No | Style hint for `ColumnSet`. | 1.2 |
 | **bleed** | `boolean` | No | Determines whether the element should bleed through its parent's padding. | 1.2 |
-| **backgroundImage** | `BackgroundImage|uri-reference` | No | Specifies the background image. | 1.2 |
+| **backgroundImage** | `BackgroundImage, uri-reference` | No | Specifies the background image. | 1.2 |
 | **minHeight** | `string` | No | Specifies the minimum height of the column set. | 1.2 |
-| **fallback** | `BlockElement|FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
+| **fallback** | `BlockElement, FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
 | **height** | `BlockElementHeight` | No | Specifies the height of the element. | 1.1 |
 | **id** | `string` | No | A unique identifier associated with the element. | 1.0 |
 | **isVisible** | `boolean` | No, default: true | If `false`, this element will be removed from the visual tree. | 1.2 |

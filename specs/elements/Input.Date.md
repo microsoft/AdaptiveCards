@@ -10,7 +10,7 @@
 | **placeholder** | `string` | No | Description of the input desired. Displayed when no selection has been made. | 1.0 |
 | **value** | `string` | No | The initial value for this field expressed in ISO-8601 format. | 1.0 |
 | **id** | `string` | Yes | Unique identifier for the value. Used to identify collected input when the Submit action is performed. | 1.0 |
-| **fallback** | `BlockElement|FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
+| **fallback** | `BlockElement, FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
 | **height** | `BlockElementHeight` | No | Specifies the height of the element. | 1.1 |
 | **isVisible** | `boolean` | No, default: true | If `false`, this element will be removed from the visual tree. | 1.2 |
 | **requires** | `Dictionary<string>` | No | A series of key/value pairs indicating features that the element requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered. | 1.2 |
