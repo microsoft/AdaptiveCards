@@ -41,6 +41,7 @@ export class SchemaClass extends SchemaType {
 		return this._shorthand;
 	}
 
+	// Gets all extended, including descendants
 	getAllExtended() {
 		var answer: SchemaClass[] = [];
 		this.extends.forEach(extended => {

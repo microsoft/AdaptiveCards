@@ -4,7 +4,7 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **type** | `string` | Depends | Must be `"FactSet"`. | 1.0 |
+| **type** | `string` | Yes | Must be `"FactSet"`. | 1.0 |
 | **facts** | `Fact[]` | Yes | The array of `Fact`'s. | 1.0 |
 | **fallback** | `BlockElement, FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
 | **height** | `BlockElementHeight` | No | Specifies the height of the element. | 1.1 |

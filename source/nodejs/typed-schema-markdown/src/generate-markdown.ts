@@ -13,18 +13,32 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
         if (includeVersion && defined(elementVersion) && elementVersion != "1.0") {
             md += "#### Introduced in version " + elementVersion + "\n\n";
 		}
-		
-		var formattedTypeProperty:any = {
-			Property: "**type**",
-			Type: "`string`",
-			Required: "Depends",
-			Description: "Must be `\"" + classDefinition.type + "\"`."
-		};
 
-		if (includeVersion) {
-			formattedTypeProperty.Version = "1.0";
+		var formattedProperties = [];
+		
+		var needsType = classDefinition.type == "AdaptiveCard";
+		if (!needsType) {
+			classDefinition.getAllExtended().forEach(extended => {
+				if (extended.type == "BlockElement" || extended.type == "Action") {
+					needsType = true;
+				}
+			});
 		}
-		var formattedProperties = [ formattedTypeProperty ];
+
+		if (needsType) {
+			var formattedTypeProperty:any = {
+				Property: "**type**",
+				Type: "`string`",
+				Required: "Yes",
+				Description: "Must be `\"" + classDefinition.type + "\"`."
+			};
+
+			if (includeVersion) {
+				formattedTypeProperty.Version = elementVersion;
+			}
+
+			formattedProperties.push(formattedTypeProperty);
+		}
 
         properties.forEach((property, name) => {
 			var summary = getPropertySummary(property, knownTypes, autoLink, elementVersion);
@@ -35,6 +49,13 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 				Required: summary.required,
 				Description: summary.description
 			};
+
+			// Special case version property on Adaptive Card to be required.
+			// It's actually not required in ShowCard, so in schema it's not required,
+			// but for docs we want to show it as required
+			if (classDefinition.type == "AdaptiveCard" && name == "version") {
+				formattedProperty.Required = "Yes";
+			}
 
 			if (includeVersion) {
 				formattedProperty.Version = summary.version;

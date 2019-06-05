@@ -4,7 +4,6 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **type** | `string` | Depends | Must be `"Column"`. | 1.0 |
 | **items** | `BlockElement[]` | No | The card elements to render inside the `Column`. | 1.0 |
 | **backgroundImage** | `BackgroundImage, uri-reference` | No | Specifies the background image. | 1.2 |
 | **bleed** | `boolean` | No | Determines whether the column should bleed through its parent's padding. | 1.2 |

@@ -4,7 +4,6 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **type** | `string` | Depends | Must be `"Input.Choice"`. | 1.0 |
 | **title** | `string` | Yes | Text to display. | 1.0 |
 | **value** | `string` | Yes | The raw value for the choice. **NOTE:** do not use a `,` in the value, since a `ChoiceSet` with `isMultiSelect` set to `true` returns a comma-delimited string of choice values. | 1.0 |
 <!-- END AUTO-GENERATED -->

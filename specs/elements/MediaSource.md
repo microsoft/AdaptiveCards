@@ -2,11 +2,12 @@
 
 # MediaSource
 
+#### Introduced in version 1.1
+
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **type** | `string` | Depends | Must be `"MediaSource"`. | 1.0 |
-| **mimeType** | `string` | Yes | Mime type of associated media (e.g. `"video/mp4"`). | 1.0 |
-| **url** | `uri-reference` | Yes | URL to media. Supports data URI in version 1.2+ | 1.0 |
+| **mimeType** | `string` | Yes | Mime type of associated media (e.g. `"video/mp4"`). | 1.1 |
+| **url** | `uri-reference` | Yes | URL to media. Supports data URI in version 1.2+ | 1.1 |
 <!-- END AUTO-GENERATED -->
 
 ## Rendering

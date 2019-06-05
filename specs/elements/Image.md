@@ -4,7 +4,7 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **type** | `string` | Depends | Must be `"Image"`. | 1.0 |
+| **type** | `string` | Yes | Must be `"Image"`. | 1.0 |
 | **url** | `uri-reference` | Yes | The URL to the image. Supports data URI in version 1.2+ | 1.0 |
 | **altText** | `string` | No | Alternate text describing the image. | 1.0 |
 | **backgroundColor** | `string` | No | Applies a background to a transparent image. This property will respect the image style. | 1.1 |

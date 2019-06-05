@@ -4,7 +4,6 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **type** | `string` | Depends | Must be `"Fact"`. | 1.0 |
 | **title** | `string` | Yes | The title of the fact. | 1.0 |
 | **value** | `string` | Yes | The value of the fact. | 1.0 |
 <!-- END AUTO-GENERATED -->

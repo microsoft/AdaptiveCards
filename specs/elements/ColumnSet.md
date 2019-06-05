@@ -4,7 +4,7 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **type** | `string` | Depends | Must be `"ColumnSet"`. | 1.0 |
+| **type** | `string` | Yes | Must be `"ColumnSet"`. | 1.0 |
 | **columns** | `Column[]` | No | The array of `Columns` to divide the region into. | 1.0 |
 | **selectAction** | `ISelectAction` | No | An Action that will be invoked when the `ColumnSet` is tapped or selected. `Action.ShowCard` is not supported. | 1.1 |
 | **style** | `ContainerStyle?` | No | Style hint for `ColumnSet`. | 1.2 |
