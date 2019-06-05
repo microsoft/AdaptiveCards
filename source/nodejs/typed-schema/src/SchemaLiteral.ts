@@ -5,8 +5,10 @@ export class SchemaLiteral extends SchemaType {
 	private _schemaType?: string;
 	private _schemaFormat?: string;
 
-	constructor(schemaType?: string, schemaFormat?: string) {
-		super(null);
+	constructor(type: string, schemaType?: string, schemaFormat?: string) {
+		super({
+			type: type
+		});
 		this._schemaType = schemaType;
 		this._schemaFormat = schemaFormat;
 	}
@@ -23,13 +25,13 @@ export class SchemaLiteral extends SchemaType {
 		// Nothing to do
 	}
 
-	private static _string = new SchemaLiteral("string");
-	private static _number = new SchemaLiteral("number");
-	private static _object = new SchemaLiteral("object");
-	private static _boolean = new SchemaLiteral("boolean");
-	private static _uri = new SchemaLiteral("string", "uri");
-	private static _uriReference = new SchemaLiteral("string", "uri-reference");
-	private static _any = new SchemaLiteral();
+	private static _string = new SchemaLiteral("string", "string");
+	private static _number = new SchemaLiteral("number", "number");
+	private static _object = new SchemaLiteral("object", "object");
+	private static _boolean = new SchemaLiteral("boolean", "boolean");
+	private static _uri = new SchemaLiteral("uri", "string", "uri");
+	private static _uriReference = new SchemaLiteral("uri-reference", "string", "uri-reference");
+	private static _any = new SchemaLiteral("any");
 
 	static get string() {
 		return this._string;
