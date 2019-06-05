@@ -29,10 +29,10 @@ We use lerna to manage package linking and building.
 # Start the documentation site (http://adaptivecards.io)
 
 1. `cd adaptivecards-site`
-2. `npm install hexo-cli -g`
-3. `hexo generate`
-4. `hexo server`
-5. `Open up the browser to point to localhost:[portnumber] printed after the command above returns under "Hexo is running at".`
+2. `npx lerna run release`
+3. `npm install hexo-cli -g`
+5. `hexo server`
+6. `Open up the browser to point to localhost:[portnumber] printed after the command above returns under "Hexo is running at".`
 
 ## Adding a new package
 

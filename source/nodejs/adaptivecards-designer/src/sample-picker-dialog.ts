@@ -1,5 +1,5 @@
 import { parseCatalogue, CatalogueEntry } from "./catalogue";
-import * as ACData from "../../adaptivecards-data/src/adaptivecards-data";
+import * as ACData from "adaptivecards-data";
 import * as Adaptive from "adaptivecards";
 import { Dialog } from "./dialog";
 import { defaultHostConfig } from "./miscellaneous";

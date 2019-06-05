@@ -12,6 +12,8 @@
 		"release": "npm run build"
 	},
 	"dependencies": {
+		"adaptivecards": "^1.2.0-beta1",
+		"adaptivecards-controls": "^0.2.0",
 		"adaptivecards-designer": "^0.6.0",
 		"markdown-it": "^8.4.0",
 		"monaco-editor": "^0.15.6"
