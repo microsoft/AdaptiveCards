@@ -9,6 +9,18 @@ export function propertyNameSummary(content: string) {
 	return styleBold(content);
 }
 
+export function propertyDetails(content: string) {
+	return styleBold(content);
+}
+
+export function enumValue(enumValue: string) {
+	return styleCode(`"${enumValue}"`);
+}
+
+export function type(typeName: string) {
+	return styleCode(typeName);
+}
+
 /**
 * @function getHeaderMarkdown
 * Gets the markdown syntax for the start of a header.

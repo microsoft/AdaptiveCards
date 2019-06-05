@@ -1,6 +1,6 @@
 import { defined } from "./defined";
 import { defaultValue } from "./defaultValue";
-import { SchemaProperty, SchemaClass, SchemaEnum } from "typed-schema";
+import { SchemaProperty, SchemaClass, SchemaEnum, SchemaPropertyType, SchemaLiteral } from "typed-schema";
 import * as mdTable from "markdown-table";
 import * as style from "./style";
 
@@ -176,4 +176,107 @@ function getPropertySummary(property: SchemaProperty, knownTypes, autoLink) {
 
 function replacePipes(type: string) {
 	return type.replace("|", ", ");
+}
+
+export function createPropertiesDetails(classDefinition: SchemaClass, headerLevel: number, knownTypes, autoLink) {
+    var md = '';
+
+	var properties = classDefinition.getAllProperties();
+	properties.forEach((property, name) => {
+		md += createPropertyDetails(property, headerLevel, knownTypes, autoLink);
+	});
+
+    return md + '\n';
+}
+
+export function createPropertyDetails(property: SchemaProperty, headerLevel: number, knownTypes, autoLink) {
+    var md = '';
+
+    var summary = getPropertySummary(property, knownTypes, autoLink);
+    var type = summary.type;
+
+    md += style.getHeaderMarkdown(property.name, headerLevel) + '\n\n';
+
+    // TODO: Add plugin point for custom JSON schema properties like gltf_*
+    var detailedDescription = property.description;
+    if (defined(detailedDescription)) {
+        md += detailedDescription + '\n';
+    } else if (defined(summary.description)) {
+        md += summary.description + '\n';
+    }
+
+    md += '* ' + style.propertyDetails('Type') + ': ' + summary.formattedType + '\n';
+
+    md += '* ' + style.propertyDetails('Required') + ': ' + summary.required + '\n';
+
+    // var minimum = property.minimum;
+    // if (defined(minimum)) {
+    //     var exclusiveMinimum = (defined(property.exclusiveMinimum) && property.exclusiveMinimum);
+    //     md += '* ' + style.propertyDetails('Minimum') + ': ' + style.minMax((exclusiveMinimum ? ' > ' : ' >= ') + minimum) + '\n';
+    // }
+
+    // var maximum = property.maximum;
+    // if (defined(maximum)) {
+    //     var exclusiveMaximum = (defined(property.exclusiveMaximum) && property.exclusiveMaximum);
+    //     md += '* ' + style.propertyDetails('Maximum') + ': ' + style.minMax((exclusiveMaximum ? ' < ' : ' <= ') + maximum) + '\n';
+    // }
+
+    // var format = property.format;
+    // if (defined(format)) {
+    //     md += '* ' + style.propertyDetails('Format') + ': ' + format + '\n';
+    // }
+
+    // TODO: maxLength
+    // var minLength = property.minLength;
+    // if (defined(minLength)) {
+    //     md += '* ' + style.propertyDetails('Minimum Length') + style.minMax(': >= ' + minLength) + '\n';
+	// }
+	
+	var hasComplexTypes = false;
+
+	var allTypes:SchemaPropertyType[] = property.getAllTypes();
+	allTypes.forEach(propertyType => {
+		if (propertyType.type instanceof SchemaClass || propertyType.type instanceof SchemaEnum) {
+			hasComplexTypes = true;
+		}
+	});
+
+	if (hasComplexTypes) {
+		var allowedValues:string[] = [];
+		allTypes.forEach(propertyType => {
+			if (propertyType.type instanceof SchemaEnum) {
+				propertyType.type.values.forEach(enumValue => {
+					if (enumValue.description && enumValue.description.length > 0) {
+						allowedValues.push(style.enumValue(enumValue.value) + ": " + enumValue.description);
+					} else {
+						allowedValues.push(style.enumValue(enumValue.value));
+					}
+				});
+			} else if (propertyType.type instanceof SchemaClass) {
+				allowedValues.push(style.type(propertyType.type.type));
+			} else if (propertyType.type instanceof SchemaLiteral) {
+				allowedValues.push(style.type(propertyType.type.type));
+			} else {
+				throw new Error("Unknown type");
+			}
+		});
+		if (allowedValues.length > 0) {
+			md += '* ' + style.propertyDetails('Allowed values') + ':';
+			allowedValues.forEach(allowedValue => {
+				md += `\n  * ${allowedValue}`;
+			});
+		}
+	}
+
+    // TODO: fix adding samples later
+    // property.examples.forEach(function (example, i) {
+    //     if (i == 0) {
+    //         md += "\n" + style.getHeaderMarkdown("Example", 3);
+    //     }
+
+    //     md += getExampleForProperty(example);
+    // });
+
+
+    return md + '\n';
 }

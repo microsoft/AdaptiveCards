@@ -93,7 +93,19 @@ export class SchemaProperty {
 		this._shorthands.forEach(shorthand => {
 			shorthand.resolve(types);
 		});
-		
 
+	}
+
+	getAllTypes() {
+		var answer = [];
+		this.types.forEach(type => {
+			answer.push(type);
+		});
+		this.shorthands.forEach(shorthand => {
+			shorthand.types.forEach(type => {
+				answer.push(type);
+			});
+		});
+		return answer;
 	}
 }
