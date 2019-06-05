@@ -6,7 +6,7 @@
 | -------- | ---- | -------- | ----------- | ------- |
 | **type** | `string` | Depends | Must be `"Column"`. | 1.0 |
 | **items** | `BlockElement[]` | No | The card elements to render inside the `Column`. | 1.0 |
-| **backgroundImage** | `BackgroundImage` | No | Specifies the background image. | 1.2 |
+| **backgroundImage** | `BackgroundImage|uri-reference` | No | Specifies the background image. | 1.2 |
 | **bleed** | `boolean` | No | Determines whether the column should bleed through its parent's padding. | 1.2 |
 | **fallback** | `Column|FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
 | **minHeight** | `string` | No | Specifies the minimum height of the column. | 1.2 |

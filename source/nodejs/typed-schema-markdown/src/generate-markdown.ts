@@ -27,7 +27,6 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 		var formattedProperties = [ formattedTypeProperty ];
 
         properties.forEach((property, name) => {
-			var propertyOriginal: any = property.original;
 			var summary = getPropertySummary(property, knownTypes, autoLink);
 			
 			var formattedProperty:any = {
@@ -38,7 +37,17 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 			};
 
 			if (includeVersion) {
-				formattedProperty.Version = defaultValue(defaultValue(propertyOriginal.version, elementVersion), "1.0");
+				formattedProperty.Version = defaultValue(defaultValue(property.original.version, elementVersion), "1.0");
+				var topLevelVersion = formattedProperty.Version;
+
+				var includeShorthandVersions = false;
+				property.shorthands.forEach(shorthand => {
+					var shorthandVersion = defaultValue(shorthand.original.version, topLevelVersion);
+					if (includeShorthandVersions || topLevelVersion != shorthandVersion) {
+						formattedProperty.Version += `, ${shorthandVersion}`;
+						includeShorthandVersions = true;
+					}
+				});
 			}
 
 			formattedProperties.push(formattedProperty);
@@ -126,7 +135,12 @@ export function createEnumSummary(enumType: SchemaEnum) {
 }
 
 function getPropertySummary(property: SchemaProperty, knownTypes, autoLink) {
-    var type:string = property.original.type;
+	var type:string = property.original.type;
+	
+	property.shorthands.forEach(shorthand => {
+		type += `|${shorthand.original.type}`;
+	});
+
     var formattedType = "`" + type + "`";
 
     var description = property.description;

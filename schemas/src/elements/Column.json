@@ -14,8 +14,7 @@
 			"shorthands": [
 				{
 					"type": "uri-reference",
-					"description": "The URL (or data url) to use as the background image. Supports data URI in version 1.2+",
-					"version": "1.0"
+					"description": "The URL (or data url) to use as the background image. Supports data URI."
 				}
 			]
 		},
