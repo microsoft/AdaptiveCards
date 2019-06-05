@@ -7,7 +7,7 @@ var marked = require("marked");
 var fs = require("fs");
 var path = require("path");
 
-hexo.extend.helper.register('propertiesDetails', function (properties, isSpec) {
+hexo.extend.helper.register('propertiesDetails', function (properties, elementVersion, isSpec) {
   var html = '<h2 class="w3-container">Properties</h2>';
 
   properties.forEach((property, name) => {
@@ -15,13 +15,13 @@ hexo.extend.helper.register('propertiesDetails', function (properties, isSpec) {
 	// Get the markdown for the property and turn it into HTML
 	html += '<div class="w3-container">';
 
-	html += marked(typedschemamarkdown.createPropertyDetails(property, 3), { headerPrefix: "dedupe-header" });
+	html += marked(typedschemamarkdown.createPropertyDetails(property, 3, null, false, true, elementVersion), { headerPrefix: "dedupe-header" });
 	html += '</div>'
 
 
 	// Load card example file into a div, using JS to render it later
 	if (!isSpec) {
-		property.examples.forEach(function (example, i) {
+		property.cardExamples.forEach(function (example, i) {
 			var sampleHtml = "";
 			try {
 				if (i === 0) {

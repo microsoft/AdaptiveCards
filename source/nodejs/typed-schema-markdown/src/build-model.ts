@@ -1,6 +1,7 @@
 import * as yaml from "js-yaml";
 import { Schema, SchemaClass, SchemaProperty } from "typed-schema";
 import * as glob from "glob";
+import { defaultValue } from "./defaultValue";
 
 var fs = require('fs');
 var path = require('path');
@@ -45,6 +46,7 @@ export function buildModel(options: BuildModelOptions) {
 				type: objSchema
 			};
 			definition.name = name;
+			definition.version = defaultValue(objSchema.original.version, "1.0");
 			definition.examples = [];
 
 			// definition.title = objSchema.title;
@@ -57,8 +59,8 @@ export function buildModel(options: BuildModelOptions) {
 				definition.examples = glob.sync(path.join(options.examplesPath, "/**/" + definition.name + ".json"), { nocase: false })
 			}
 
-			if (objSchema instanceof SchemaClass) {
-				var properties: Map<string, SchemaProperty> = objSchema.properties;
+			if (definition.properties) {
+				var properties: Map<string, SchemaProperty> = definition.properties;
 				properties.forEach((property, name) => {
 
 					var anyProperty: any = property;
@@ -67,7 +69,6 @@ export function buildModel(options: BuildModelOptions) {
 						anyProperty.cardExamples = glob.sync(path.join(options.examplesPath, "**/" + definition.name + "." + name + ".json"), { nocase: false });
 					}
 				});
-				definition.properties = properties;
 			}
 
 			root.children.push(definition);

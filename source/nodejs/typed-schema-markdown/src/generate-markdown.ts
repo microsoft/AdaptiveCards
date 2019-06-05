@@ -27,7 +27,7 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 		var formattedProperties = [ formattedTypeProperty ];
 
         properties.forEach((property, name) => {
-			var summary = getPropertySummary(property, knownTypes, autoLink);
+			var summary = getPropertySummary(property, knownTypes, autoLink, elementVersion);
 			
 			var formattedProperty:any = {
 				Property: style.propertyNameSummary(name),
@@ -37,17 +37,7 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 			};
 
 			if (includeVersion) {
-				formattedProperty.Version = defaultValue(defaultValue(property.original.version, elementVersion), "1.0");
-				var topLevelVersion = formattedProperty.Version;
-
-				var includeShorthandVersions = false;
-				property.shorthands.forEach(shorthand => {
-					var shorthandVersion = defaultValue(shorthand.original.version, topLevelVersion);
-					if (includeShorthandVersions || topLevelVersion != shorthandVersion) {
-						formattedProperty.Version += `, ${shorthandVersion}`;
-						includeShorthandVersions = true;
-					}
-				});
+				formattedProperty.Version = summary.version;
 			}
 
 			formattedProperties.push(formattedProperty);
@@ -134,7 +124,7 @@ export function createEnumSummary(enumType: SchemaEnum) {
     return md;
 }
 
-function getPropertySummary(property: SchemaProperty, knownTypes, autoLink) {
+function getPropertySummary(property: SchemaProperty, knownTypes, autoLink, elementVersion: string) {
 	var type:string = property.original.type;
 	
 	property.shorthands.forEach(shorthand => {
@@ -164,13 +154,26 @@ function getPropertySummary(property: SchemaProperty, knownTypes, autoLink) {
         } else {
             required = 'No';
         }
-    }
+	}
+	
+	var version = defaultValue(defaultValue(property.original.version, elementVersion), "1.0");
+	var topLevelVersion = version;
+
+	var includeShorthandVersions = false;
+	property.shorthands.forEach(shorthand => {
+		var shorthandVersion = defaultValue(shorthand.original.version, topLevelVersion);
+		if (includeShorthandVersions || topLevelVersion != shorthandVersion) {
+			version += `, ${shorthandVersion}`;
+			includeShorthandVersions = true;
+		}
+	});
 
     return {
         type: type,
         formattedType: formattedType,
         description: description,
-        required: required
+		required: required,
+		version: version
     };
 }
 
@@ -178,21 +181,21 @@ function replacePipes(type: string) {
 	return type.replace("|", ", ");
 }
 
-export function createPropertiesDetails(classDefinition: SchemaClass, headerLevel: number, knownTypes, autoLink) {
+export function createPropertiesDetails(classDefinition: SchemaClass, headerLevel: number, knownTypes, autoLink, includeVersion: boolean, elementVersion: string) {
     var md = '';
 
 	var properties = classDefinition.getAllProperties();
 	properties.forEach((property, name) => {
-		md += createPropertyDetails(property, headerLevel, knownTypes, autoLink);
+		md += createPropertyDetails(property, headerLevel, knownTypes, autoLink, includeVersion, elementVersion);
 	});
 
     return md + '\n';
 }
 
-export function createPropertyDetails(property: SchemaProperty, headerLevel: number, knownTypes, autoLink) {
+export function createPropertyDetails(property: SchemaProperty, headerLevel: number, knownTypes, autoLink, includeVersion: boolean, elementVersion: string) {
     var md = '';
 
-    var summary = getPropertySummary(property, knownTypes, autoLink);
+    var summary = getPropertySummary(property, knownTypes, autoLink, elementVersion);
     var type = summary.type;
 
     md += style.getHeaderMarkdown(property.name, headerLevel) + '\n\n';
@@ -205,7 +208,13 @@ export function createPropertyDetails(property: SchemaProperty, headerLevel: num
         md += summary.description + '\n';
     }
 
-    md += '* ' + style.propertyDetails('Type') + ': ' + summary.formattedType + '\n';
+	md += '* ' + style.propertyDetails('Type') + ': ' + summary.formattedType + '\n';
+	
+	if (includeVersion) {
+		if (summary.version != elementVersion) {
+			md += `* ${style.propertyDetails("Version")} : ${summary.version}\n`;
+		}
+	}
 
     md += '* ' + style.propertyDetails('Required') + ': ' + summary.required + '\n';
 
@@ -253,7 +262,13 @@ export function createPropertyDetails(property: SchemaProperty, headerLevel: num
 					}
 				});
 			} else if (propertyType.type instanceof SchemaClass) {
-				allowedValues.push(style.type(propertyType.type.type));
+				if (propertyType.type.implementations.length > 0) {
+					propertyType.type.implementations.forEach(implementation => {
+						allowedValues.push(style.type(implementation.type));
+					});
+				} else {
+					allowedValues.push(style.type(propertyType.type.type));
+				}
 			} else if (propertyType.type instanceof SchemaLiteral) {
 				allowedValues.push(style.type(propertyType.type.type));
 			} else {
