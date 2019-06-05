@@ -13,3 +13,6 @@ export * from "./checkbox";
 export * from "./radiobutton";
 export * from "./textbox";
 export * from "./popupmenu";
+export * from "./thumbpanel";
+export * from "./colorpicker-panel";
+export * from "./colorpicker";

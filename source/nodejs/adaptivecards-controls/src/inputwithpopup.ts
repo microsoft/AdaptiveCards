@@ -50,7 +50,7 @@ export abstract class PopupControl {
 
 export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue> extends InputControl {
     private _isOpen: boolean;
-    private _labelElement: HTMLElement;
+    private _contentElement: HTMLElement;
     private _dropDownButtonElement: HTMLElement;
     private _overlayElement: HTMLElement;
     private _popupControl: TPopupControl;
@@ -66,25 +66,34 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
         }
     }
 
-    private updateLabel() {
-        if (this._labelElement) {
+    private updateContent() {
+        if (this._contentElement) {
             if (this._value) {
-                this._labelElement.innerHTML = this.getValueAsString();
-                this._labelElement.classList.remove("placeholder");
+                let renderedValue = this.renderValue();
+
+                if (typeof renderedValue === "string") {
+                    this._contentElement.innerText = renderedValue;
+                }
+                else {
+                    this._contentElement.innerHTML = "";
+                    this._contentElement.appendChild(renderedValue);
+                }
+
+                this._contentElement.classList.remove("placeholder");
             }
             else {
-                this._labelElement.innerText = this._placeholderText ? this._placeholderText : "";
-                this._labelElement.classList.add("placeholder");
+                this._contentElement.innerText = this._placeholderText ? this._placeholderText : "";
+                this._contentElement.classList.add("placeholder");
             }
         }
     }
 
-    protected get popupControl(): TPopupControl {
-        return this._popupControl;
-    }
-
     protected abstract createPopupControl(): TPopupControl;
     protected abstract getCssClassName(): string;
+
+    protected renderValue(): string | HTMLElement {
+        return this._value ? this.getValueAsString() : "";
+    }
 
     protected getButtonIconCssClassName(): string {
         return "ms-icon-chevronDown";
@@ -98,6 +107,10 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
         if (this.onValueChanged) {
             this.onValueChanged(this);
         }
+    }
+
+    protected get popupControl(): TPopupControl {
+        return this._popupControl;
     }
 
     onValueChanged: (sender: InputControl) => void;
@@ -125,16 +138,16 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
             this._placeholderText = placeHolderDomItem.value;
         }
 
-        this._labelElement = document.createElement("span");
-        this._labelElement.className = "ms-ctrl ms-dropdown-label";
+        this._contentElement = document.createElement("div");
+        this._contentElement.className = "ms-ctrl ms-dropdown-content";
 
         this._dropDownButtonElement = document.createElement("i");
         this._dropDownButtonElement.className = "ms-icon ms-ctrl-dropdown-button " + this.getButtonIconCssClassName();;
 
-        this.rootElement.appendChild(this._labelElement);
+        this.rootElement.appendChild(this._contentElement);
         this.rootElement.appendChild(this._dropDownButtonElement);
 
-        this.updateLabel();
+        this.updateContent();
     }
 
     popup() {
@@ -269,7 +282,7 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
         if (this._value != newValue) {
             this._value = newValue;
 
-            this.updateLabel();
+            this.updateContent();
             this.valueChanged();
         }
     }
