@@ -6,17 +6,17 @@
 | -------- | ---- | -------- | ----------- | ------- |
 | **type** | `string` | Depends | Must be `"Container"`. | 1.0 |
 | **items** | `BlockElement[]` | Yes | The card elements to render inside the `Container`. | 1.0 |
-| **selectAction** | `ISelectAction` | No | An Action that will be invoked when the `Container` is tapped or selected. `Action.ShowCard` is not supported. | 1.0 |
+| **selectAction** | `ISelectAction` | No | An Action that will be invoked when the `Container` is tapped or selected. `Action.ShowCard` is not supported. | 1.1 |
 | **style** | `ContainerStyle?` | No | Style hint for `Container`. | 1.0 |
-| **verticalContentAlignment** | `VerticalContentAlignment` | No, default: top | Defines how the content should be aligned vertically within the container. | 1.0 |
-| **bleed** | `boolean` | No | Determines whether the element should bleed through its parent's padding. | 1.0 |
-| **backgroundImage** | `BackgroundImage` | No | Specifies the background image. | 1.0 |
-| **minHeight** | `string` | No | Specifies the minimum height of the container. | 1.0 |
-| **fallback** | `BlockElement|FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.0 |
-| **height** | `BlockElementHeight` | No | Specifies the height of the element. | 1.0 |
+| **verticalContentAlignment** | `VerticalContentAlignment` | No, default: top | Defines how the content should be aligned vertically within the container. | 1.1 |
+| **bleed** | `boolean` | No | Determines whether the element should bleed through its parent's padding. | 1.2 |
+| **backgroundImage** | `BackgroundImage` | No | Specifies the background image. | 1.2 |
+| **minHeight** | `string` | No | Specifies the minimum height of the container. | 1.2 |
+| **fallback** | `BlockElement|FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
+| **height** | `BlockElementHeight` | No | Specifies the height of the element. | 1.1 |
 | **id** | `string` | No | A unique identifier associated with the element. | 1.0 |
-| **isVisible** | `boolean` | No, default: true | If `false`, this element will be removed from the visual tree. | 1.0 |
-| **requires** | `Dictionary<string>` | No | A series of key/value pairs indicating features that the element requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered. | 1.0 |
+| **isVisible** | `boolean` | No, default: true | If `false`, this element will be removed from the visual tree. | 1.2 |
+| **requires** | `Dictionary<string>` | No | A series of key/value pairs indicating features that the element requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered. | 1.2 |
 | **spacing** | `Spacing` | No | Controls the amount of spacing between this element and the preceding element. | 1.0 |
 | **separator** | `boolean` | No | When `true`, draw a separating line at the top of the element. | 1.0 |
 <!-- END AUTO-GENERATED -->

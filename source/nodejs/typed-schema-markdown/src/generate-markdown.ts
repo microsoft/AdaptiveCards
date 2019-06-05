@@ -27,7 +27,7 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 		var formattedProperties = [ formattedTypeProperty ];
 
         properties.forEach((property, name) => {
-			var propertyAny: any = property;
+			var propertyOriginal: any = property.original;
 			var summary = getPropertySummary(property, knownTypes, autoLink);
 			
 			var formattedProperty:any = {
@@ -38,7 +38,7 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 			};
 
 			if (includeVersion) {
-				formattedProperty.Version = defaultValue(defaultValue(propertyAny.version, elementVersion), "1.0");
+				formattedProperty.Version = defaultValue(defaultValue(propertyOriginal.version, elementVersion), "1.0");
 			}
 
 			formattedProperties.push(formattedProperty);
