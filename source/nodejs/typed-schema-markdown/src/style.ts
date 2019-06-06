@@ -18,6 +18,10 @@ export function enumValue(enumValue: string) {
 }
 
 export function type(typeName: string) {
+	// For simplicity, we're re-mapping uri-reference to just be uri
+	if (typeName == "uri-reference") {
+		typeName = "uri";
+	}
 	return styleCode(typeName);
 }
 

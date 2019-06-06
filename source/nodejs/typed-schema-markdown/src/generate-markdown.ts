@@ -172,13 +172,19 @@ export function createEnumSummary(enumType: SchemaEnum) {
 }
 
 function getPropertySummary(property: SchemaProperty, knownTypes, autoLink, elementVersion: string) {
-	var type:string = property.original.type;
+	var types:string[] = property.original.type.split("|");
 	
 	property.shorthands.forEach(shorthand => {
-		type += `|${shorthand.original.type}`;
+		types.push(...shorthand.original.type.split("|"));
 	});
 
-    var formattedType = "`" + replacePipes(type) + "`";
+	// Format the types
+	var formattedTypes:string[] = [];
+	types.forEach(type => {
+		formattedTypes.push(style.type(type));
+	});
+
+    var formattedType = formattedTypes.join(", ");
 
     var description = property.description;
 
@@ -207,7 +213,7 @@ function getPropertySummary(property: SchemaProperty, knownTypes, autoLink, elem
 	});
 
     return {
-        type: type,
+		type: types.join("|"),
         formattedType: formattedType,
         description: description,
 		required: required,

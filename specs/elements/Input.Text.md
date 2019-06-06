@@ -12,7 +12,7 @@
 | **style** | `TextInputStyle` | No |  | 1.0 |
 | **inlineAction** | `ISelectAction` | No | The inline action for the input. Typically displayed to the right of the input. It is strongly recommended to provide an icon on the action (which will be displayed instead of the title of the action). | 1.2 |
 | **value** | `string` | No | The initial value for this field. | 1.0 |
-| **fallback** | `Element, FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
+| **fallback** | `Element`, `FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
 | **height** | `BlockElementHeight` | No | Specifies the height of the element. | 1.1 |
 | **separator** | `boolean` | No | When `true`, draw a separating line at the top of the element. | 1.0 |
 | **spacing** | `Spacing` | No | Controls the amount of spacing between this element and the preceding element. | 1.0 |

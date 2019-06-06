@@ -11,7 +11,7 @@
 | **selectAction** | `ISelectAction` | No | An Action that will be invoked when the card is tapped or selected. `Action.ShowCard` is not supported. | 1.1 |
 | **style** | `ContainerStyle` | No | Style hint for the Adaptive Card. | 1.2 |
 | **fallbackText** | `string` | No | Text shown when the client doesn't support the version specified (may contain markdown). | 1.0 |
-| **backgroundImage** | `BackgroundImage, uri-reference` | No | Specifies the background image of the card. | 1.2, 1.0 |
+| **backgroundImage** | `BackgroundImage`, `uri` | No | Specifies the background image of the card. | 1.2, 1.0 |
 | **minHeight** | `string` | No | Specifies the minimum height of the card. | 1.2 |
 | **speak** | `string` | No | Specifies what should be spoken for this entire card. This is simple text or SSML fragment. | 1.0 |
 | **lang** | `string` | No | The 2-letter ISO-639-1 language used in the card. Used to localize any date/time functions. | 1.0 |
