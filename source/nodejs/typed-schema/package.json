@@ -18,7 +18,8 @@
 		"release": "npm run build && npm run dts",
 		"test": "mocha",
 		"build-and-test": "npm run build && npm run test",
-		"generate-schema": "node ./lib/command-line.js ./schema/src Class,Enum Class classType > ./schema/lib/Type.json"
+    "generate-schema": "node ./lib/command-line.js ./schema/src Class,Enum Class classType > ./schema/lib/Type.json",
+    "generate-adaptive-schema": "node ./lib/command-line.js ../../../schemas/src AdaptiveCard > ../../../schemas/adaptive-card.json"
 	},
 	"dependencies": {
 		"p-iteration": "^1.1.8"
