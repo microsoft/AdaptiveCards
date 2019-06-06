@@ -3,5 +3,5 @@
 	"compilerOptions": {
         "outDir": "./lib"
 	},
-	"files": ["./src/adaptivecards-data.ts"]
+	"files": ["./src/adaptivecards-templating.ts"]
 }

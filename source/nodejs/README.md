@@ -4,7 +4,7 @@ This directory contains all the JS packages for adaptive cards:
 
 * `adaptivecards` - The renderer library
 * `adaptivecards-controls` - A controls library useful for the designer
-* `adaptivecards-data` - A JSON-to-JSON templating and data binding library for use with Adaptive Cards
+* `adaptivecards-templating` - A JSON-to-JSON templating and data binding library for use with Adaptive Cards
 * `adaptivecards-designer` - The drag-drop designer component
 * `adaptivecards-designer-app` - The designer app that consumes the designer component
 * `adaptivecards-site` - The generated website that is currently hosted at adaptivecards.io

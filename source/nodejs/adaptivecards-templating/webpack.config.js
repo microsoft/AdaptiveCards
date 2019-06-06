@@ -9,7 +9,7 @@ module.exports = (env, argv) => {
 	return {
 		mode: mode,
 		entry: {
-			"adaptivecards-data": "./src/adaptivecards-data.ts"
+			"adaptivecards-templating": "./src/adaptivecards-templating.ts"
 		},
 		output: {
 			path: path.resolve(__dirname, "./dist"),
