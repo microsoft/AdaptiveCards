@@ -1,6 +1,6 @@
 "use strict";
 import { defined } from "./defined";
-import { defaultValue } from "./defaultValue";
+import { defaultValue as defaultValueHelper } from "./defaultValue";
 import * as enums from "./enums";
 
 const REFERENCE = "schema-";
@@ -22,13 +22,23 @@ export function type(typeName: string) {
 }
 
 /**
+* @function defaultValue
+* Format a defaultValue for display in markdown
+* @param  {any} value - The default value
+* @return {string} The default value styled for display in markdown.
+*/
+export function defaultValue(value: any) {
+	return styleCode(JSON.stringify(value));
+}
+
+/**
 * @function getHeaderMarkdown
 * Gets the markdown syntax for the start of a header.
 * @param  {int} level - The header lever that is being requested
 * @return {string} The markdown string that should be placed prior to the title of the header
 */
 export function getHeaderMarkdown(content, level) {
-    level = defaultValue(level, 2);
+    level = defaultValueHelper(level, 2);
 
     var md = '';
     for (var i = 0; i < level; ++i) {
@@ -63,7 +73,7 @@ export function getSectionMarkdown(section, level) {
 * @return {string} The markdown string representing the item as a bulleted item at the proper indentation.
 */
 export function bulletItem(item, indentationLevel) {
-    indentationLevel = defaultValue(indentationLevel, 0);
+    indentationLevel = defaultValueHelper(indentationLevel, 0);
     return (' '.repeat(indentationLevel * 3)) + '* ' + item + '\n';
 }
 
@@ -150,7 +160,7 @@ export function styleCodeType(string, type) {
 * @return {string} The updated string, with any occurrences of the @type string linked via markdown.
 */
 export function linkType(string, type, autoLink) {
-    if (defaultValue(autoLink, enums.autoLinkOption.off) === enums.autoLinkOption.off) {
+    if (defaultValueHelper(autoLink, enums.autoLinkOption.off) === enums.autoLinkOption.off) {
         return string;
     } else if ((!defined(string) || string.length === 0)) {
         return string;

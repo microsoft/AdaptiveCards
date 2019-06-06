@@ -11,10 +11,10 @@
 | **minHeight** | `string` | No | Specifies the minimum height of the column. | 1.2 |
 | **selectAction** | `ISelectAction` | No | An Action that will be invoked when the `Column` is tapped or selected. `Action.ShowCard` is not supported. | 1.1 |
 | **style** | `ContainerStyle?` | No | Style hint for `Column`. | 1.0 |
-| **verticalContentAlignment** | `VerticalContentAlignment` | No, default: top | Defines how the content should be aligned vertically within the column. | 1.1 |
+| **verticalContentAlignment** | `VerticalContentAlignment` | No, default: `"top"` | Defines how the content should be aligned vertically within the column. | 1.1 |
 | **width** | `string, number` | No | `"auto"`, `"stretch"`, or a number representing relative width of the column in the column group. | 1.0 |
 | **id** | `string` | No | A unique identifier associated with the element. | 1.0 |
-| **isVisible** | `boolean` | No, default: true | If `false`, this element will be removed from the visual tree. | 1.2 |
+| **isVisible** | `boolean` | No, default: `true` | If `false`, this element will be removed from the visual tree. | 1.2 |
 | **requires** | `Dictionary<string>` | No | A series of key/value pairs indicating features that the element requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered. | 1.2 |
 | **spacing** | `Spacing` | No | Controls the amount of spacing between this element and the preceding element. | 1.0 |
 | **separator** | `boolean` | No | When `true`, draw a separating line at the top of the element. | 1.0 |

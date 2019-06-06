@@ -162,16 +162,7 @@ function getPropertySummary(property: SchemaProperty, knownTypes, autoLink, elem
     } else {
         var propertyDefault = property.default;
         if (defined(propertyDefault)) {
-            var defaultString;
-            if (Array.isArray(propertyDefault)) {
-                defaultString = '[' + propertyDefault.toString() + ']';
-            } else if (typeof propertyDefault === 'object') {
-                defaultString = JSON.stringify(propertyDefault);
-            } else {
-                defaultString = propertyDefault;
-            }
-
-            required = 'No, default: ' + defaultString;
+            required = 'No, default: ' + style.defaultValue(propertyDefault);
         } else {
             required = 'No';
         }
