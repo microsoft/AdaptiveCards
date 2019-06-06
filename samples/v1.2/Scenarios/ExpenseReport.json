@@ -1,6 +1,6 @@
 {
   "type": "AdaptiveCard",
-  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/8b0c89c286d4721f9c8a9d48587a49f126702131/schemas/adaptive-card-new.json",
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
   "version": "1.0",
   "body": [
       {
