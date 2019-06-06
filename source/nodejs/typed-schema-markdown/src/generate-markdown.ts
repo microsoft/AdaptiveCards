@@ -265,42 +265,7 @@ export function createPropertyDetails(property: SchemaProperty, headerLevel: num
 	});
 
 	if (hasComplexTypes) {
-		var allowedValues:string[] = [];
-		allTypes.forEach(propertyType => {
-			if (propertyType.type instanceof SchemaEnum) {
-				propertyType.type.values.forEach(enumValue => {
-					var descriptions:string[] = [];
-
-					if (includeVersion) {
-						if (enumValue.original.version && enumValue.original.version !== summary.version) {
-							descriptions.push(`Added in version ${enumValue.original.version}.`);
-						}
-					}
-
-					if (enumValue.description && enumValue.description.length > 0) {
-						descriptions.push(enumValue.description);
-					}
-					
-					if (descriptions.length > 0) {
-						allowedValues.push(style.enumValue(enumValue.value) + ": " + descriptions.join(" "));
-					} else {
-						allowedValues.push(style.enumValue(enumValue.value));
-					}
-				});
-			} else if (propertyType.type instanceof SchemaClass) {
-				if (propertyType.type.implementations.length > 0) {
-					propertyType.type.implementations.forEach(implementation => {
-						allowedValues.push(style.type(implementation.type));
-					});
-				} else {
-					allowedValues.push(style.type(propertyType.type.type));
-				}
-			} else if (propertyType.type instanceof SchemaLiteral) {
-				allowedValues.push(style.type(propertyType.type.type));
-			} else {
-				throw new Error("Unknown type");
-			}
-		});
+		var allowedValues:string[] = getAllowedValuesForProperty(property, summary, includeVersion);
 		if (allowedValues.length > 0) {
 			md += '* ' + style.propertyDetails('Allowed values') + ':';
 			allowedValues.forEach(allowedValue => {
@@ -320,4 +285,63 @@ export function createPropertyDetails(property: SchemaProperty, headerLevel: num
 
 
     return md + '\n';
+}
+
+function getAllowedValuesForProperty(property: SchemaProperty, summary: any, includeVersion: boolean) {
+	var allowedValues:string[] = [];
+
+	property.getAllTypes().forEach(propertyType => {
+		allowedValues.push(...getAllowedValuesForPropertyType(propertyType, summary, includeVersion));
+	});
+
+	return allowedValues;
+}
+
+function getAllowedValuesForPropertyType(propertyType: SchemaPropertyType, summary: any, includeVersion: boolean) {
+	var allowedValues:string[] = [];
+
+	if (propertyType.type instanceof SchemaEnum) {
+		propertyType.type.values.forEach(enumValue => {
+			var descriptions:string[] = [];
+
+			if (includeVersion) {
+				if (enumValue.original.version && enumValue.original.version !== summary.version) {
+					descriptions.push(`Added in version ${enumValue.original.version}.`);
+				}
+			}
+
+			if (enumValue.description && enumValue.description.length > 0) {
+				descriptions.push(enumValue.description);
+			}
+			
+			if (descriptions.length > 0) {
+				allowedValues.push(style.enumValue(enumValue.value) + ": " + descriptions.join(" "));
+			} else {
+				allowedValues.push(style.enumValue(enumValue.value));
+			}
+		});
+	} else if (propertyType.type instanceof SchemaClass) {
+		allowedValues.push(...getAllowedValuesForClass(propertyType.type, summary, includeVersion));
+	} else if (propertyType.type instanceof SchemaLiteral) {
+		allowedValues.push(style.type(propertyType.type.type));
+	} else {
+		throw new Error("Unknown type");
+	}
+
+	return allowedValues;
+}
+
+function getAllowedValuesForClass(classType: SchemaClass, summary: any, includeVersion: boolean) {
+	var answer:string[] = [];
+	if (classType.implementations.length > 0) {
+		classType.implementations.forEach(implementation => {
+			answer.push(...getAllowedValuesForClass(implementation, summary, includeVersion));
+		});
+	} else {
+		answer.push(style.type(classType.type));
+		if (classType.shorthand) {
+			answer.push(...getAllowedValuesForProperty(classType.shorthand, summary, includeVersion));
+		}
+	}
+	return answer;
 }
