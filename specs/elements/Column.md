@@ -4,20 +4,20 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **items** | `BlockElement[]` | No | The card elements to render inside the `Column`. | 1.0 |
+| **items** | `Element[]` | No | The card elements to render inside the `Column`. | 1.0 |
 | **backgroundImage** | `BackgroundImage, uri-reference` | No | Specifies the background image. | 1.2 |
 | **bleed** | `boolean` | No | Determines whether the column should bleed through its parent's padding. | 1.2 |
-| **fallback** | `Column, FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
+| **fallback** | `Column, FallbackOption` | No | Describes what to do when an unknown item is encountered or the requires of this or any children can't be met. | 1.2 |
 | **minHeight** | `string` | No | Specifies the minimum height of the column. | 1.2 |
+| **separator** | `boolean` | No | When `true`, draw a separating line between this column and the previous column. | 1.0 |
+| **spacing** | `Spacing` | No | Controls the amount of spacing between this column and the preceding column. | 1.0 |
 | **selectAction** | `ISelectAction` | No | An Action that will be invoked when the `Column` is tapped or selected. `Action.ShowCard` is not supported. | 1.1 |
 | **style** | `ContainerStyle?` | No | Style hint for `Column`. | 1.0 |
 | **verticalContentAlignment** | `VerticalContentAlignment` | No, default: `"top"` | Defines how the content should be aligned vertically within the column. | 1.1 |
 | **width** | `string, number` | No | `"auto"`, `"stretch"`, or a number representing relative width of the column in the column group. | 1.0 |
-| **id** | `string` | No | A unique identifier associated with the element. | 1.0 |
-| **isVisible** | `boolean` | No, default: `true` | If `false`, this element will be removed from the visual tree. | 1.2 |
-| **requires** | `Dictionary<string>` | No | A series of key/value pairs indicating features that the element requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered. | 1.2 |
-| **spacing** | `Spacing` | No | Controls the amount of spacing between this element and the preceding element. | 1.0 |
-| **separator** | `boolean` | No | When `true`, draw a separating line at the top of the element. | 1.0 |
+| **id** | `string` | No | A unique identifier associated with the item. | 1.0 |
+| **isVisible** | `boolean` | No, default: `true` | If `false`, this item will be removed from the visual tree. | 1.2 |
+| **requires** | `Dictionary<string>` | No | A series of key/value pairs indicating features that the item requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered. | 1.2 |
 <!-- END AUTO-GENERATED -->
 
 ## Rendering

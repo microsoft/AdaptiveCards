@@ -18,9 +18,9 @@
         },
         "title": {},
         "iconUrl": {},
-        "requires": {},
         "style": {},
-        "fallback": {}
+        "fallback": {},
+        "requires": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -48,9 +48,9 @@
         },
         "title": {},
         "iconUrl": {},
-        "requires": {},
         "style": {},
-        "fallback": {}
+        "fallback": {},
+        "requires": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -82,9 +82,9 @@
         },
         "title": {},
         "iconUrl": {},
-        "requires": {},
         "style": {},
-        "fallback": {}
+        "fallback": {},
+        "requires": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -113,9 +113,9 @@
         },
         "title": {},
         "iconUrl": {},
-        "requires": {},
         "style": {},
-        "fallback": {}
+        "fallback": {},
+        "requires": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -185,7 +185,7 @@
         "body": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ImplementationsOf.BlockElement"
+            "$ref": "#/definitions/ImplementationsOf.Element"
           },
           "description": "The card elements to show in the primary card region."
         },
@@ -281,11 +281,11 @@
         },
         "fallback": {},
         "height": {},
+        "separator": {},
+        "spacing": {},
         "id": {},
         "isVisible": {},
-        "requires": {},
-        "spacing": {},
-        "separator": {}
+        "requires": {}
       },
       "version": "1.2",
       "type": "object",
@@ -295,7 +295,7 @@
       ],
       "allOf": [
         {
-          "$ref": "#/definitions/Extendable.BlockElement"
+          "$ref": "#/definitions/Extendable.Element"
         }
       ]
     },
@@ -311,7 +311,7 @@
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ImplementationsOf.BlockElement"
+            "$ref": "#/definitions/ImplementationsOf.Element"
           },
           "description": "The card elements to render inside the `Column`."
         },
@@ -346,7 +346,7 @@
               "$ref": "#/definitions/FallbackOption"
             }
           ],
-          "description": "Describes what to do when an unknown element is encountered or the requires of this or any children can't be met.",
+          "description": "Describes what to do when an unknown item is encountered or the requires of this or any children can't be met.",
           "version": "1.2"
         },
         "minHeight": {
@@ -359,6 +359,14 @@
           "features": [
             2293
           ]
+        },
+        "separator": {
+          "type": "boolean",
+          "description": "When `true`, draw a separating line between this column and the previous column."
+        },
+        "spacing": {
+          "$ref": "#/definitions/Spacing",
+          "description": "Controls the amount of spacing between this column and the preceding column."
         },
         "selectAction": {
           "$ref": "#/definitions/ImplementationsOf.ISelectAction",
@@ -395,15 +403,13 @@
         },
         "id": {},
         "isVisible": {},
-        "requires": {},
-        "spacing": {},
-        "separator": {}
+        "requires": {}
       },
       "type": "object",
       "additionalProperties": false,
       "allOf": [
         {
-          "$ref": "#/definitions/Extendable.Element"
+          "$ref": "#/definitions/Extendable.ToggleableItem"
         }
       ]
     },
@@ -475,17 +481,17 @@
         },
         "fallback": {},
         "height": {},
+        "separator": {},
+        "spacing": {},
         "id": {},
         "isVisible": {},
-        "requires": {},
-        "spacing": {},
-        "separator": {}
+        "requires": {}
       },
       "type": "object",
       "additionalProperties": false,
       "allOf": [
         {
-          "$ref": "#/definitions/Extendable.BlockElement"
+          "$ref": "#/definitions/Extendable.Element"
         }
       ]
     },
@@ -501,7 +507,7 @@
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ImplementationsOf.BlockElement"
+            "$ref": "#/definitions/ImplementationsOf.Element"
           },
           "description": "The card elements to render inside the `Container`."
         },
@@ -562,11 +568,11 @@
         },
         "fallback": {},
         "height": {},
+        "separator": {},
+        "spacing": {},
         "id": {},
         "isVisible": {},
-        "requires": {},
-        "spacing": {},
-        "separator": {}
+        "requires": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -575,7 +581,7 @@
       ],
       "allOf": [
         {
-          "$ref": "#/definitions/Extendable.BlockElement"
+          "$ref": "#/definitions/Extendable.Element"
         }
       ]
     },
@@ -622,11 +628,11 @@
         },
         "fallback": {},
         "height": {},
+        "separator": {},
+        "spacing": {},
         "id": {},
         "isVisible": {},
-        "requires": {},
-        "spacing": {},
-        "separator": {}
+        "requires": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -635,7 +641,7 @@
       ],
       "allOf": [
         {
-          "$ref": "#/definitions/Extendable.BlockElement"
+          "$ref": "#/definitions/Extendable.Element"
         }
       ]
     },
@@ -707,7 +713,7 @@
         "fallback": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ImplementationsOf.BlockElement"
+              "$ref": "#/definitions/ImplementationsOf.Element"
             },
             {
               "$ref": "#/definitions/FallbackOption"
@@ -716,13 +722,21 @@
           "description": "Describes what to do when an unknown element is encountered or the requires of this or any children can't be met.",
           "version": "1.2"
         },
+        "separator": {
+          "type": "boolean",
+          "description": "When `true`, draw a separating line at the top of the element."
+        },
+        "spacing": {
+          "$ref": "#/definitions/Spacing",
+          "description": "Controls the amount of spacing between this element and the preceding element."
+        },
         "id": {
           "type": "string",
-          "description": "A unique identifier associated with the element."
+          "description": "A unique identifier associated with the item."
         },
         "isVisible": {
           "type": "boolean",
-          "description": "If `false`, this element will be removed from the visual tree.",
+          "description": "If `false`, this item will be removed from the visual tree.",
           "default": true,
           "version": "1.2"
         },
@@ -731,16 +745,8 @@
           "additionalProperties": {
             "type": "string"
           },
-          "description": "A series of key/value pairs indicating features that the element requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered.",
+          "description": "A series of key/value pairs indicating features that the item requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered.",
           "version": "1.2"
-        },
-        "spacing": {
-          "$ref": "#/definitions/Spacing",
-          "description": "Controls the amount of spacing between this element and the preceding element."
-        },
-        "separator": {
-          "type": "boolean",
-          "description": "When `true`, draw a separating line at the top of the element."
         }
       },
       "type": "object",
@@ -771,11 +777,11 @@
         },
         "fallback": {},
         "height": {},
+        "separator": {},
+        "spacing": {},
         "id": {},
         "isVisible": {},
-        "requires": {},
-        "spacing": {},
-        "separator": {}
+        "requires": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -784,7 +790,7 @@
       ],
       "allOf": [
         {
-          "$ref": "#/definitions/Extendable.BlockElement"
+          "$ref": "#/definitions/Extendable.Element"
         }
       ]
     },
@@ -915,10 +921,10 @@
         "id": {},
         "fallback": {},
         "height": {},
-        "isVisible": {},
-        "requires": {},
+        "separator": {},
         "spacing": {},
-        "separator": {}
+        "isVisible": {},
+        "requires": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -959,10 +965,10 @@
         "id": {},
         "fallback": {},
         "height": {},
-        "isVisible": {},
-        "requires": {},
+        "separator": {},
         "spacing": {},
-        "separator": {}
+        "isVisible": {},
+        "requires": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -1000,10 +1006,10 @@
         "id": {},
         "fallback": {},
         "height": {},
-        "isVisible": {},
-        "requires": {},
+        "separator": {},
         "spacing": {},
-        "separator": {}
+        "isVisible": {},
+        "requires": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -1050,10 +1056,10 @@
         "id": {},
         "fallback": {},
         "height": {},
-        "isVisible": {},
-        "requires": {},
+        "separator": {},
         "spacing": {},
-        "separator": {}
+        "isVisible": {},
+        "requires": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -1091,10 +1097,10 @@
         "id": {},
         "fallback": {},
         "height": {},
-        "isVisible": {},
-        "requires": {},
+        "separator": {},
         "spacing": {},
-        "separator": {}
+        "isVisible": {},
+        "requires": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -1140,10 +1146,10 @@
         "id": {},
         "fallback": {},
         "height": {},
-        "isVisible": {},
-        "requires": {},
+        "separator": {},
         "spacing": {},
-        "separator": {}
+        "isVisible": {},
+        "requires": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -1187,11 +1193,11 @@
         },
         "fallback": {},
         "height": {},
+        "separator": {},
+        "spacing": {},
         "id": {},
         "isVisible": {},
-        "requires": {},
-        "spacing": {},
-        "separator": {}
+        "requires": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -1200,7 +1206,7 @@
       ],
       "allOf": [
         {
-          "$ref": "#/definitions/Extendable.BlockElement"
+          "$ref": "#/definitions/Extendable.Element"
         }
       ]
     },
@@ -1260,11 +1266,11 @@
         },
         "fallback": {},
         "height": {},
+        "separator": {},
+        "spacing": {},
         "id": {},
         "isVisible": {},
-        "requires": {},
-        "spacing": {},
-        "separator": {}
+        "requires": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -1273,7 +1279,7 @@
       ],
       "allOf": [
         {
-          "$ref": "#/definitions/Extendable.BlockElement"
+          "$ref": "#/definitions/Extendable.Element"
         }
       ]
     },
@@ -1327,11 +1333,11 @@
         },
         "fallback": {},
         "height": {},
+        "separator": {},
+        "spacing": {},
         "id": {},
         "isVisible": {},
-        "requires": {},
-        "spacing": {},
-        "separator": {}
+        "requires": {}
       },
       "type": "object",
       "additionalProperties": false,
@@ -1340,7 +1346,7 @@
       ],
       "allOf": [
         {
-          "$ref": "#/definitions/Extendable.BlockElement"
+          "$ref": "#/definitions/Extendable.Element"
         }
       ]
     },
@@ -1519,6 +1525,210 @@
         "url"
       ]
     },
+    "ImplementationsOf.Item": {
+      "anyOf": [
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Action.OpenUrl"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Action.ShowCard"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Action.Submit"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Action.ToggleVisibility"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/ActionSet"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Column"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/ColumnSet"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Container"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/FactSet"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Image"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/ImageSet"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.ChoiceSet"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Date"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Number"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Text"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Time"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Toggle"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Media"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/RichTextBlock"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/TextBlock"
+            }
+          ]
+        }
+      ]
+    },
     "ImplementationsOf.Action": {
       "anyOf": [
         {
@@ -1597,7 +1807,7 @@
         }
       ]
     },
-    "ImplementationsOf.BlockElement": {
+    "ImplementationsOf.Element": {
       "anyOf": [
         {
           "required": [
@@ -1751,7 +1961,7 @@
         }
       ]
     },
-    "ImplementationsOf.Element": {
+    "ImplementationsOf.ToggleableItem": {
       "anyOf": [
         {
           "required": [
@@ -2005,14 +2215,6 @@
           "description": "Optional icon to be shown on the action in conjunction with the title. Supports data URI in version 1.2+",
           "version": "1.1"
         },
-        "requires": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          },
-          "description": "A series of key/value pairs indicating features that the element requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered.",
-          "version": "1.2"
-        },
         "style": {
           "$ref": "#/definitions/ActionStyle",
           "description": "Controls the style of an Action, which influences how the action is displayed, spoken, etc.",
@@ -2029,16 +2231,22 @@
           ],
           "description": "Describes what to do when an unknown element is encountered or the requires of this or any children can't be met.",
           "version": "1.2"
-        }
+        },
+        "requires": {}
       },
-      "type": "object"
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.Item"
+        }
+      ]
     },
-    "Extendable.BlockElement": {
+    "Extendable.Element": {
       "properties": {
         "fallback": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ImplementationsOf.BlockElement"
+              "$ref": "#/definitions/ImplementationsOf.Element"
             },
             {
               "$ref": "#/definitions/FallbackOption"
@@ -2052,49 +2260,24 @@
           "description": "Specifies the height of the element.",
           "version": "1.1"
         },
-        "id": {},
-        "isVisible": {},
-        "requires": {},
-        "spacing": {},
-        "separator": {}
-      },
-      "type": "object",
-      "allOf": [
-        {
-          "$ref": "#/definitions/Extendable.Element"
-        }
-      ]
-    },
-    "Extendable.Element": {
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "A unique identifier associated with the element."
-        },
-        "isVisible": {
+        "separator": {
           "type": "boolean",
-          "description": "If `false`, this element will be removed from the visual tree.",
-          "default": true,
-          "version": "1.2"
-        },
-        "requires": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          },
-          "description": "A series of key/value pairs indicating features that the element requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered.",
-          "version": "1.2"
+          "description": "When `true`, draw a separating line at the top of the element."
         },
         "spacing": {
           "$ref": "#/definitions/Spacing",
           "description": "Controls the amount of spacing between this element and the preceding element."
         },
-        "separator": {
-          "type": "boolean",
-          "description": "When `true`, draw a separating line at the top of the element."
-        }
+        "id": {},
+        "isVisible": {},
+        "requires": {}
       },
-      "type": "object"
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.ToggleableItem"
+        }
+      ]
     },
     "Extendable.Input": {
       "description": "Base input class",
@@ -2106,7 +2289,7 @@
         "fallback": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ImplementationsOf.BlockElement"
+              "$ref": "#/definitions/ImplementationsOf.Element"
             },
             {
               "$ref": "#/definitions/FallbackOption"
@@ -2120,9 +2303,17 @@
           "description": "Specifies the height of the element.",
           "version": "1.1"
         },
+        "separator": {
+          "type": "boolean",
+          "description": "When `true`, draw a separating line at the top of the element."
+        },
+        "spacing": {
+          "$ref": "#/definitions/Spacing",
+          "description": "Controls the amount of spacing between this element and the preceding element."
+        },
         "isVisible": {
           "type": "boolean",
-          "description": "If `false`, this element will be removed from the visual tree.",
+          "description": "If `false`, this item will be removed from the visual tree.",
           "default": true,
           "version": "1.2"
         },
@@ -2131,21 +2322,47 @@
           "additionalProperties": {
             "type": "string"
           },
-          "description": "A series of key/value pairs indicating features that the element requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered.",
+          "description": "A series of key/value pairs indicating features that the item requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered.",
           "version": "1.2"
-        },
-        "spacing": {
-          "$ref": "#/definitions/Spacing",
-          "description": "Controls the amount of spacing between this element and the preceding element."
-        },
-        "separator": {
-          "type": "boolean",
-          "description": "When `true`, draw a separating line at the top of the element."
         }
       },
       "type": "object",
       "required": [
         "id"
+      ]
+    },
+    "Extendable.Item": {
+      "properties": {
+        "requires": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "A series of key/value pairs indicating features that the item requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered.",
+          "version": "1.2"
+        }
+      },
+      "type": "object"
+    },
+    "Extendable.ToggleableItem": {
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "A unique identifier associated with the item."
+        },
+        "isVisible": {
+          "type": "boolean",
+          "description": "If `false`, this item will be removed from the visual tree.",
+          "default": true,
+          "version": "1.2"
+        },
+        "requires": {}
+      },
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.Item"
+        }
       ]
     }
   },
