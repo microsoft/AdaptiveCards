@@ -19,7 +19,9 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 		var needsType = classDefinition.type == "AdaptiveCard";
 		if (!needsType) {
 			classDefinition.getAllExtended().forEach(extended => {
-				if (extended.type == "BlockElement" || extended.type == "Action") {
+				if (extended.type == "BlockElement"
+					|| extended.type == "Action"
+					|| extended.type == "Inline") {
 					needsType = true;
 				}
 			});
