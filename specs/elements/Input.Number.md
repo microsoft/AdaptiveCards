@@ -5,11 +5,11 @@
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
 | **type** | `"Input.Number"` | Yes | Must be `"Input.Number"`. | 1.0 |
+| **id** | `string` | Yes | Unique identifier for the value. Used to identify collected input when the Submit action is performed. | 1.0 |
 | **max** | `number` | No | Hint of maximum value (may be ignored by some clients). | 1.0 |
 | **min** | `number` | No | Hint of minimum value (may be ignored by some clients). | 1.0 |
 | **placeholder** | `string` | No | Description of the input desired. Displayed when no selection has been made. | 1.0 |
 | **value** | `number` | No | Initial value for this field. | 1.0 |
-| **id** | `string` | Yes | Unique identifier for the value. Used to identify collected input when the Submit action is performed. | 1.0 |
 | **fallback** | `BlockElement, FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
 | **height** | `BlockElementHeight` | No | Specifies the height of the element. | 1.1 |
 | **isVisible** | `boolean` | No, default: `true` | If `false`, this element will be removed from the visual tree. | 1.2 |

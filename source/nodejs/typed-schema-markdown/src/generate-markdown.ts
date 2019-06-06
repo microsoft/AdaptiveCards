@@ -7,8 +7,12 @@ import * as style from "./style";
 export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes, autoLink, includeVersion, elementVersion) {
 	var md = '';
 
-	var properties = classDefinition.getAllProperties();
+	var properties:Map<string, SchemaProperty> = classDefinition.getAllProperties();
     if (properties !== undefined && properties.size > 0) {
+
+		// Re-order so that required properties are up front
+		// (Otherwise if there's an inherited required property, it'll be at bottom)
+		properties = sortProperties(properties);
 
         if (includeVersion && defined(elementVersion) && elementVersion != "1.0") {
             md += "#### Introduced in version " + elementVersion + "\n\n";
@@ -98,6 +102,26 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
     }
 
     return md;
+}
+
+function sortProperties(properties: Map<string, SchemaProperty>) {
+	var sorted = new Map<string, SchemaProperty>();
+
+	// Place required properties first
+	properties.forEach((prop, name) => {
+		if (prop.required) {
+			sorted.set(name, prop);
+		}
+	});
+
+	// Then place non-required properties
+	properties.forEach((prop, name) => {
+		if (!prop.required) {
+			sorted.set(name, prop);
+		}
+	});
+
+	return sorted;
 }
 
 export function createEnumSummary(enumType: SchemaEnum) {
