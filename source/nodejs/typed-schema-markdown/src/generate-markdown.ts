@@ -276,8 +276,20 @@ export function createPropertyDetails(property: SchemaProperty, headerLevel: num
 		allTypes.forEach(propertyType => {
 			if (propertyType.type instanceof SchemaEnum) {
 				propertyType.type.values.forEach(enumValue => {
+					var descriptions:string[] = [];
+
+					if (includeVersion) {
+						if (enumValue.original.version && enumValue.original.version !== summary.version) {
+							descriptions.push(`Added in version ${enumValue.original.version}.`);
+						}
+					}
+
 					if (enumValue.description && enumValue.description.length > 0) {
-						allowedValues.push(style.enumValue(enumValue.value) + ": " + enumValue.description);
+						descriptions.push(enumValue.description);
+					}
+					
+					if (descriptions.length > 0) {
+						allowedValues.push(style.enumValue(enumValue.value) + ": " + descriptions.join(" "));
 					} else {
 						allowedValues.push(style.enumValue(enumValue.value));
 					}

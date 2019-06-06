@@ -24,4 +24,8 @@ export class SchemaEnumValue {
 	get description() {
 		return this._description;
 	}
+
+	get original() {
+		return this._original;
+	}
 }
