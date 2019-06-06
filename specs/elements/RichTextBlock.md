@@ -6,7 +6,7 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **type** | `string` | Yes | Must be `"RichTextBlock"`. | 1.2 |
+| **type** | `"RichTextBlock"` | Yes | Must be `"RichTextBlock"`. | 1.2 |
 | **inlines** | `Inline[]` | Yes | The array of inlines. | 1.2 |
 | **horizontalAlignment** | `HorizontalAlignment` | No | Controls the horizontal text alignment. | 1.2 |
 | **fallback** | `BlockElement, FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |

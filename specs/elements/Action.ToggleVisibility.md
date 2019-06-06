@@ -6,7 +6,7 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **type** | `string` | Yes | Must be `"Action.ToggleVisibility"`. | 1.2 |
+| **type** | `"Action.ToggleVisibility"` | Yes | Must be `"Action.ToggleVisibility"`. | 1.2 |
 | **targetElements** | `TargetElement[]` | No | The array of TargetElements | 1.2 |
 | **title** | `string` | No | Label for button or link that represents this action. | 1.2 |
 | **iconUrl** | `uri-reference` | No | Optional icon to be shown on the action in conjunction with the title. Supports data URI in version 1.2+ | 1.1 |

@@ -4,7 +4,7 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **type** | `string` | Yes | Must be `"Action.ShowCard"`. | 1.0 |
+| **type** | `"Action.ShowCard"` | Yes | Must be `"Action.ShowCard"`. | 1.0 |
 | **card** | `AdaptiveCard` | No | The Adaptive Card to show. | 1.0 |
 | **title** | `string` | No | Label for button or link that represents this action. | 1.0 |
 | **iconUrl** | `uri-reference` | No | Optional icon to be shown on the action in conjunction with the title. Supports data URI in version 1.2+ | 1.1 |

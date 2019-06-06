@@ -4,7 +4,7 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **type** | `string` | Yes | Must be `"AdaptiveCard"`. | 1.0 |
+| **type** | `"AdaptiveCard"` | Yes | Must be `"AdaptiveCard"`. | 1.0 |
 | **version** | `string` | Yes | Schema version that this card requires. If a client is **lower** than this version, the `fallbackText` will be rendered. NOTE: Version is not required for cards within an `Action.ShowCard`. However, it *is* required for the top-level card. | 1.0 |
 | **body** | `BlockElement[]` | No | The card elements to show in the primary card region. | 1.0 |
 | **actions** | `Action[]` | No | The Actions to show in the card's action bar. | 1.0 |

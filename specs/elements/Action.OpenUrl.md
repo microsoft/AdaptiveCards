@@ -4,7 +4,7 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **type** | `string` | Yes | Must be `"Action.OpenUrl"`. | 1.0 |
+| **type** | `"Action.OpenUrl"` | Yes | Must be `"Action.OpenUrl"`. | 1.0 |
 | **url** | `uri-reference` | Yes | The URL to open. | 1.0 |
 | **title** | `string` | No | Label for button or link that represents this action. | 1.0 |
 | **iconUrl** | `uri-reference` | No | Optional icon to be shown on the action in conjunction with the title. Supports data URI in version 1.2+ | 1.1 |

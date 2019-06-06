@@ -4,7 +4,7 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **type** | `string` | Yes | Must be `"Input.Text"`. | 1.0 |
+| **type** | `"Input.Text"` | Yes | Must be `"Input.Text"`. | 1.0 |
 | **isMultiline** | `boolean` | No | If `true`, allow multiple lines of input. | 1.0 |
 | **maxLength** | `number` | No | Hint of maximum length characters to collect (may be ignored by some clients). | 1.0 |
 | **placeholder** | `string` | No | Description of the input desired. Displayed when no text has been input. | 1.0 |

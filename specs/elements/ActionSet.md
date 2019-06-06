@@ -6,7 +6,7 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **type** | `string` | Yes | Must be `"ActionSet"`. | 1.2 |
+| **type** | `"ActionSet"` | Yes | Must be `"ActionSet"`. | 1.2 |
 | **actions** | `Action[]` | Yes | The array of `Image` elements to show. | 1.2 |
 | **fallback** | `BlockElement, FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
 | **height** | `BlockElementHeight` | No | Specifies the height of the element. | 1.1 |

@@ -4,7 +4,7 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **type** | `string` | Yes | Must be `"Input.ChoiceSet"`. | 1.0 |
+| **type** | `"Input.ChoiceSet"` | Yes | Must be `"Input.ChoiceSet"`. | 1.0 |
 | **choices** | `Input.Choice[]` | Yes | `Choice` options. | 1.0 |
 | **isMultiSelect** | `boolean` | No | Allow multiple choices to be selected. | 1.0 |
 | **style** | `ChoiceInputStyle` | No |  | 1.0 |

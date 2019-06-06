@@ -4,7 +4,7 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **type** | `string` | Yes | Must be `"Input.Time"`. | 1.0 |
+| **type** | `"Input.Time"` | Yes | Must be `"Input.Time"`. | 1.0 |
 | **max** | `string` | No | Hint of maximum value (may be ignored by some clients). | 1.0 |
 | **min** | `string` | No | Hint of minimum value (may be ignored by some clients). | 1.0 |
 | **placeholder** | `string` | No | Description of the input desired. Displayed when no time has been selected. | 1.0 |

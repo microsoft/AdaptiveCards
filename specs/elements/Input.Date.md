@@ -4,7 +4,7 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **type** | `string` | Yes | Must be `"Input.Date"`. | 1.0 |
+| **type** | `"Input.Date"` | Yes | Must be `"Input.Date"`. | 1.0 |
 | **max** | `string` | No | Hint of maximum value expressed in ISO-8601 format (may be ignored by some clients). | 1.0 |
 | **min** | `string` | No | Hint of minimum value expressed in ISO-8601 format (may be ignored by some clients). | 1.0 |
 | **placeholder** | `string` | No | Description of the input desired. Displayed when no selection has been made. | 1.0 |

@@ -4,7 +4,7 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **type** | `string` | Yes | Must be `"TextBlock"`. | 1.0 |
+| **type** | `"TextBlock"` | Yes | Must be `"TextBlock"`. | 1.0 |
 | **text** | `string` | Yes | Text to display | 1.0 |
 | **color** | `Colors` | No | Controls the color of `TextBlock` elements. | 1.0 |
 | **fontType** | `FontType` | No | Type of font to use for rendering | 1.2 |

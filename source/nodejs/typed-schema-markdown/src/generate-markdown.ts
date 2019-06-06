@@ -28,7 +28,7 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 		if (needsType) {
 			var formattedTypeProperty:any = {
 				Property: "**type**",
-				Type: "`string`",
+				Type: "`\"" + classDefinition.type + "\"`",
 				Required: "Yes",
 				Description: "Must be `\"" + classDefinition.type + "\"`."
 			};

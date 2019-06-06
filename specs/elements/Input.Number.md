@@ -4,7 +4,7 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **type** | `string` | Yes | Must be `"Input.Number"`. | 1.0 |
+| **type** | `"Input.Number"` | Yes | Must be `"Input.Number"`. | 1.0 |
 | **max** | `number` | No | Hint of maximum value (may be ignored by some clients). | 1.0 |
 | **min** | `number` | No | Hint of minimum value (may be ignored by some clients). | 1.0 |
 | **placeholder** | `string` | No | Description of the input desired. Displayed when no selection has been made. | 1.0 |

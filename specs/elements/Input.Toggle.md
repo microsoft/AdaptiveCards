@@ -4,7 +4,7 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **type** | `string` | Yes | Must be `"Input.Toggle"`. | 1.0 |
+| **type** | `"Input.Toggle"` | Yes | Must be `"Input.Toggle"`. | 1.0 |
 | **title** | `string` | Yes | Title for the toggle | 1.0 |
 | **value** | `string` | No, default: false | The current selected value. If the item is selected that "valueOn" will be used, otherwise "valueOff" | 1.0 |
 | **valueOff** | `string` | No, default: false | The value when toggle is off | 1.0 |

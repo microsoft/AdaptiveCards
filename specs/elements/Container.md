@@ -4,7 +4,7 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **type** | `string` | Yes | Must be `"Container"`. | 1.0 |
+| **type** | `"Container"` | Yes | Must be `"Container"`. | 1.0 |
 | **items** | `BlockElement[]` | Yes | The card elements to render inside the `Container`. | 1.0 |
 | **selectAction** | `ISelectAction` | No | An Action that will be invoked when the `Container` is tapped or selected. `Action.ShowCard` is not supported. | 1.1 |
 | **style** | `ContainerStyle?` | No | Style hint for `Container`. | 1.0 |

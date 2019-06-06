@@ -4,7 +4,7 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **type** | `string` | Yes | Must be `"ImageSet"`. | 1.0 |
+| **type** | `"ImageSet"` | Yes | Must be `"ImageSet"`. | 1.0 |
 | **images** | `Image[]` | Yes | The array of `Image` elements to show. | 1.0 |
 | **imageSize** | `ImageSize` | No |  | 1.0 |
 | **fallback** | `BlockElement, FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
