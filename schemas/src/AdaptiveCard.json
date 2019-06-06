@@ -2,6 +2,15 @@
 	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
 	"description": "An Adaptive Card",
 	"properties": {
+		"version": {
+			"type": "string",
+			"description": "Schema version that this card requires. If a client is **lower** than this version, the `fallbackText` will be rendered. NOTE: Version is not required for cards within an `Action.ShowCard`. However, it *is* required for the top-level card.",
+			"examples": [
+				"1.0",
+				"1.1",
+				"1.2"
+			]
+		},
 		"body": {
 			"type": "BlockElement[]",
 			"description": "The card elements to show in the primary card region."
@@ -19,15 +28,6 @@
 			"type": "ContainerStyle",
 			"description": "Style hint for the Adaptive Card.",
 			"version": "1.2"
-		},
-		"version": {
-			"type": "string",
-			"description": "Schema version that this card requires. If a client is **lower** than this version, the `fallbackText` will be rendered. NOTE: Version is not required for cards within an `Action.ShowCard`. However, it *is* required for the top-level card.",
-			"examples": [
-				"1.0",
-				"1.1",
-				"1.2"
-			]
 		},
 		"fallbackText": {
 			"type": "string",
