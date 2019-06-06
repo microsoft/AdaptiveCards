@@ -6,7 +6,7 @@ import { HomePage } from "./home-page";
 import { FormPage } from "./form-page";
 import { Api } from "./api";
 import "./app.css";
-
+import * as AdaptiveCards from "adaptivecards";
 
 window.addEventListener("load", async () => {
 	const appElement = $('#app');
@@ -65,4 +65,11 @@ function updateMenu() {
 	// Highlight Active Menu on Refresh/Page Reload
 	const link = $(`a[href$='${window.location.pathname}']`);
 	link.addClass('w3-teal');
+}
+
+AdaptiveCards.AdaptiveCard.onProcessMarkdown = function(text, result) {
+    var p = document.createElement("p");
+    p.innerText = text;
+    result.outputHtml = p.innerHTML;
+    result.didProcess = true;
 }

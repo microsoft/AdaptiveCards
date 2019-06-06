@@ -134,7 +134,8 @@
                                 {
                                     "type": "Input.Number",
                                     "title": "New Input.Toggle",
-                                    "placeholder": "",
+									"placeholder": "",
+									"value": "0",
                                     "id": "smokeYears"
                                 }
                             ]
@@ -150,7 +151,8 @@
                                 },
                                 {
                                     "type": "Input.Number",
-                                    "title": "New Input.Toggle",
+									"title": "New Input.Toggle",
+									"value": "0",
                                     "placeholder": "",
                                     "id": "smokePacks"
                                 }

@@ -1,0 +1,188 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"width": "stretch",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "{hourly_forecast[0].condition}",
+							"weight": "bolder"
+						},
+						{
+							"type": "TextBlock",
+							"text": "San Francisco",
+							"isSubtle": true,
+							"spacing": "none"
+						},
+						{
+							"type": "TextBlock",
+							"text": "High: 68° Low: 49°",
+							"isSubtle": true,
+							"spacing": "none"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": "auto",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "{hourly_forecast[0].temp.english}°",
+							"size": "large",
+							"weight": "bolder"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": "auto",
+					"items": [
+						{
+							"type": "Image",
+							"url": "{hourly_forecast[0].icon_url}",
+							"size": "small"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "{hourly_forecast[1].temp.english}°",
+							"size": "small",
+							"horizontalAlignment": "center"
+						},
+						{
+							"type": "Image",
+							"url": "{hourly_forecast[1].icon_url}",
+							"size": "small",
+							"spacing": "none"
+						},
+						{
+							"type": "TextBlock",
+							"text": "{hourly_forecast[1].FCTTIME.hour}",
+							"size": "small",
+							"isSubtle": true,
+							"horizontalAlignment": "center",
+							"spacing": "none"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "{hourly_forecast[2].temp.english}°",
+							"size": "small",
+							"horizontalAlignment": "center"
+						},
+						{
+							"type": "Image",
+							"url": "{hourly_forecast[2].icon_url}",
+							"size": "small",
+							"spacing": "none"
+						},
+						{
+							"type": "TextBlock",
+							"text": "{hourly_forecast[2].FCTTIME.hour}",
+							"size": "small",
+							"isSubtle": true,
+							"horizontalAlignment": "center",
+							"spacing": "none"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "{hourly_forecast[3].temp.english}°",
+							"size": "small",
+							"horizontalAlignment": "center"
+						},
+						{
+							"type": "Image",
+							"url": "{hourly_forecast[3].icon_url}",
+							"size": "small",
+							"spacing": "none"
+						},
+						{
+							"type": "TextBlock",
+							"text": "{hourly_forecast[3].FCTTIME.hour}",
+							"size": "small",
+							"isSubtle": true,
+							"horizontalAlignment": "center",
+							"spacing": "none"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "{hourly_forecast[4].temp.english}°",
+							"size": "small",
+							"horizontalAlignment": "center"
+						},
+						{
+							"type": "Image",
+							"url": "{hourly_forecast[4].icon_url}",
+							"size": "small",
+							"spacing": "none"
+						},
+						{
+							"type": "TextBlock",
+							"text": "{hourly_forecast[4].FCTTIME.hour}",
+							"size": "small",
+							"isSubtle": true,
+							"horizontalAlignment": "center",
+							"spacing": "none"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "{hourly_forecast[5].temp.english}°",
+							"size": "small",
+							"horizontalAlignment": "center"
+						},
+						{
+							"type": "Image",
+							"url": "{hourly_forecast[5].icon_url}",
+							"size": "small",
+							"spacing": "none"
+						},
+						{
+							"type": "TextBlock",
+							"text": "{hourly_forecast[5].FCTTIME.hour}",
+							"size": "small",
+							"isSubtle": true,
+							"horizontalAlignment": "center",
+							"spacing": "none"
+						}
+					]
+				}
+			]
+		}
+	]
+}

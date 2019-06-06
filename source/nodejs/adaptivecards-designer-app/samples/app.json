@@ -28,9 +28,16 @@
 	},
 	"homeCards": [
 		{
-			"id": "stock",
-			"url": "https://api.iextrading.com/1.0/stock/msft/quote",
-			"template": ""
+			"dataUrl": "https://api.iextrading.com/1.0/stock/msft/quote",
+			"templateUrl": "https://contosomedicalstorage.blob.core.windows.net/public/StockUpdate.json"
+		},
+		{
+			"dataUrl": "https://contosomedicalstorage.blob.core.windows.net/public/Wunderground.data.json",
+			"templateUrl": "https://contosomedicalstorage.blob.core.windows.net/public/WundergroundTemplate.json"
+		},
+		{
+			"dataUrl": "https://api.iextrading.com/1.0/stock/tsla/quote",
+			"templateUrl": "https://contosomedicalstorage.blob.core.windows.net/public/StockUpdate.json"
 		}
 	],
 	"initialReferalls": 1,

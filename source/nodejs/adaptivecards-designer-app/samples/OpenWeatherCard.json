@@ -1,0 +1,193 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "{current.weather[0].main}",
+                            "weight": "Bolder"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "{current.name}",
+                            "isSubtle": true,
+                            "spacing": "None"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "High: {current.main.temp_max}° Low: {current.main.temp_min}°",
+                            "isSubtle": true,
+                            "spacing": "None"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "auto",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "{current.main.temp}°",
+                            "size": "Large",
+                            "weight": "Bolder"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "auto",
+                    "items": [
+                        {
+                            "type": "Image",
+                            "url": "http://openweathermap.org/img/w/{current.weather[0].icon}.png",
+                            "size": "Small"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "{list[0].main.temp}°",
+                            "size": "Small",
+                            "horizontalAlignment": "Center"
+                        },
+                        {
+                            "type": "Image",
+                            "url": "http://openweathermap.org/img/w/{list[0].weather[0].icon}.png",
+                            "size": "Small",
+                            "spacing": "None"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "{{DATE({parseDateFromEpoch(list[0].dt * 1000)})}}",
+                            "size": "Small",
+                            "isSubtle": true,
+                            "horizontalAlignment": "Center",
+                            "spacing": "None"
+                        }
+                    ],
+                    "width": "auto"
+                },
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "{list[1].main.temp}°",
+                            "size": "Small",
+                            "horizontalAlignment": "Center"
+                        },
+                        {
+                            "type": "Image",
+                            "url": "http://openweathermap.org/img/w/{list[1].weather[0].icon}.png",
+                            "size": "Small",
+                            "spacing": "None"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "{list[1].dt}",
+                            "size": "Small",
+                            "isSubtle": true,
+                            "horizontalAlignment": "Center",
+                            "spacing": "None"
+                        }
+                    ],
+                    "width": "auto"
+                },
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "{list[2].main.temp}°",
+                            "size": "Small",
+                            "horizontalAlignment": "Center"
+                        },
+                        {
+                            "type": "Image",
+                            "url": "http://openweathermap.org/img/w/{list[2].weather[0].icon}.png",
+                            "size": "Small",
+                            "spacing": "None"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "{list[2].dt}",
+                            "size": "Small",
+                            "isSubtle": true,
+                            "horizontalAlignment": "Center",
+                            "spacing": "None"
+                        }
+                    ],
+                    "width": "auto"
+                },
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "{list[3].main.temp}°",
+                            "size": "Small",
+                            "horizontalAlignment": "Center"
+                        },
+                        {
+                            "type": "Image",
+                            "url": "http://openweathermap.org/img/w/{list[3].weather[0].icon}.png",
+                            "size": "Small",
+                            "spacing": "None"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "{list[3].dt}",
+                            "size": "Small",
+                            "isSubtle": true,
+                            "horizontalAlignment": "Center",
+                            "spacing": "None"
+                        }
+                    ],
+                    "width": "auto"
+                },
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "{list[4].main.temp}°",
+                            "size": "Small",
+                            "horizontalAlignment": "Center"
+                        },
+                        {
+                            "type": "Image",
+                            "url": "http://openweathermap.org/img/w/{list[4].weather[0].icon}.png",
+                            "size": "Small",
+                            "spacing": "None"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "{list[4].dt}",
+                            "size": "Small",
+                            "isSubtle": true,
+                            "horizontalAlignment": "Center",
+                            "spacing": "None"
+                        }
+                    ],
+                    "width": "auto"
+                }
+            ]
+        }
+    ]
+}

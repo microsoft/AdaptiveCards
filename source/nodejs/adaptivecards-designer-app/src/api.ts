@@ -2,7 +2,7 @@ import * as Azure from "@azure/storage-blob";
 import { AZURE_STORAGE_ACCOUNT_NAME, AZURE_STORAGE_SAS } from "./secrets";
 import { generateUuid } from "ms-rest-js";
 //import { ListBlobsIncludeItem } from "@azure/storage-blob/typings/lib/generated/models";
-import * as DefaultReferralIntakeForm from "../samples/PatientIntake.json";
+import * as DefaultReferralIntakeForm from "../samples/ReferralIntake.json";
 import * as DefaultReferralTemplate from "../samples/Referral.json";
 import * as DefaultAppointmentTemplate from "../samples/Appointment.json";
 import * as DefaultPatientIntakeForm from "../samples/PatientIntake.json";

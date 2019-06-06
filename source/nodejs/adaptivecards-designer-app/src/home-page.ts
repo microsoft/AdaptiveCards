@@ -8,6 +8,7 @@ import * as DefaultReferralData from "../samples/Referral.data.json";
 import * as faker from "faker";
 import * as StockTemplate from "../samples/StockUpdate.json";
 import * as DefaultStockData from "../samples/StockUpdate.data.json";
+import * as AppSettings from "../samples/app.json";
 
 export class HomePage {
 
@@ -47,11 +48,21 @@ export class HomePage {
 		this.loadReferrals();
 
 		this.loadAppointments();
-		Utils.renderCard($("#homeCards"), weather);
 
-		Utils.renderCard($("#homeCards"), StockTemplate, DefaultStockData);
+		this.loadCustomCards();
 	}
 	
+
+	private loadCustomCards() {
+
+		for(let card of AppSettings.homeCards) {
+			$.getJSON(card.templateUrl, templateRes => {
+				$.getJSON(card.dataUrl, dataRes => {
+					Utils.renderCard($("#homeCards"), templateRes, dataRes);
+				})
+			});
+		}
+	}
 
 	private async loadAppointments() {
 		$("#appointmentCards").empty();

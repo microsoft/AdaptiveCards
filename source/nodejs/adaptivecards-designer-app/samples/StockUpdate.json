@@ -45,7 +45,7 @@
 								{
 									"type": "TextBlock",
 									"text": "{if(change >= 0, '▲', '▼')} USD {change} ({format(changePercent, '%')})",
-									"color": "{if(change >= 0, 'good', 'default')}",
+									"color": "{if(change >= 0, 'good', 'attention')}",
 									"spacing": "None"
 								}
 							]
