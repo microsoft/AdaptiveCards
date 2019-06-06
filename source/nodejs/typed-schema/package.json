@@ -15,7 +15,7 @@
 		"build": "tsc",
 		"dts": "dts-generator --name typed-schema --project . --out dist/typed-schema.d.ts",
 		"lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
-		"release": "npm run build && npm run dts",
+		"release": "npm run build && npm run dts && npm run generate-adaptive-schema",
 		"test": "mocha",
 		"build-and-test": "npm run build && npm run test",
     "generate-schema": "node ./lib/command-line.js ./schema/src Class,Enum Class classType > ./schema/lib/Type.json",
