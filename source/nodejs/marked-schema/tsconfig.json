@@ -1,9 +1,0 @@
-{
-	"extends": "../tsconfig.json",
-	"compilerOptions": {
-		"outDir": "./lib",
-		"allowJs": true,
-		"declaration": false
-	},
-	"files": ["./src/index.js"]
-}
