@@ -5,4 +5,5 @@ export interface TransformOptions {
 	allowAdditionalProperties?: boolean;
 	allowCustomEnums?: boolean;
 	allowCustomTypes?: boolean;
+	enforceEnumCaseSensitivity?: boolean;
 }

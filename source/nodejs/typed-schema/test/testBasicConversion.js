@@ -1987,10 +1987,17 @@ describe("Test transform", function () {
 						}
 					},
 					"FontSize": {
-						"enum": [
-							"default",
-							"small",
-							"large"
+						"anyOf": [
+							{
+								"enum": [
+									"default",
+									"small",
+									"large"
+								]
+							},
+							{
+								"pattern": "^([d|D][e|E][f|F][a|A][u|U][l|L][t|T])|([s|S][m|M][a|A][l|L][l|L])|([l|L][a|A][r|R][g|G][e|E])$"
+							}
 						]
 					}
 				}
@@ -2122,10 +2129,17 @@ describe("Test transform", function () {
 						}
 					},
 					"FontSize": {
-						"enum": [
-							"default",
-							"small",
-							"large"
+						"anyOf": [
+							{
+								"enum": [
+									"default",
+									"small",
+									"large"
+								]
+							},
+							{
+								"pattern": "^([d|D][e|E][f|F][a|A][u|U][l|L][t|T])|([s|S][m|M][a|A][l|L][l|L])|([l|L][a|A][r|R][g|G][e|E])$"
+							}
 						]
 					}
 				}

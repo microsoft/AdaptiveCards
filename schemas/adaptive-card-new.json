@@ -1356,139 +1356,258 @@
         861
       ],
       "version": "1.2",
-      "enum": [
-        "default",
-        "positive",
-        "destructive"
+      "anyOf": [
+        {
+          "enum": [
+            "default",
+            "positive",
+            "destructive"
+          ]
+        },
+        {
+          "pattern": "^([d|D][e|E][f|F][a|A][u|U][l|L][t|T])|([p|P][o|O][s|S][i|I][t|T][i|I][v|V][e|E])|([d|D][e|E][s|S][t|T][r|R][u|U][c|C][t|T][i|I][v|V][e|E])$"
+        }
       ]
     },
     "BlockElementHeight": {
-      "enum": [
-        "auto",
-        "stretch"
+      "anyOf": [
+        {
+          "enum": [
+            "auto",
+            "stretch"
+          ]
+        },
+        {
+          "pattern": "^([a|A][u|U][t|T][o|O])|([s|S][t|T][r|R][e|E][t|T][c|C][h|H])$"
+        }
       ]
     },
     "ChoiceInputStyle": {
       "description": "Style hint for `Input.ChoiceSet`.",
-      "enum": [
-        "compact",
-        "expanded"
+      "anyOf": [
+        {
+          "enum": [
+            "compact",
+            "expanded"
+          ]
+        },
+        {
+          "pattern": "^([c|C][o|O][m|M][p|P][a|A][c|C][t|T])|([e|E][x|X][p|P][a|A][n|N][d|D][e|E][d|D])$"
+        }
       ]
     },
     "Colors": {
-      "enum": [
-        "default",
-        "dark",
-        "light",
-        "accent",
-        "good",
-        "warning",
-        "attention"
+      "anyOf": [
+        {
+          "enum": [
+            "default",
+            "dark",
+            "light",
+            "accent",
+            "good",
+            "warning",
+            "attention"
+          ]
+        },
+        {
+          "pattern": "^([d|D][e|E][f|F][a|A][u|U][l|L][t|T])|([d|D][a|A][r|R][k|K])|([l|L][i|I][g|G][h|H][t|T])|([a|A][c|C][c|C][e|E][n|N][t|T])|([g|G][o|O][o|O][d|D])|([w|W][a|A][r|R][n|N][i|I][n|N][g|G])|([a|A][t|T][t|T][e|E][n|N][t|T][i|I][o|O][n|N])$"
+        }
       ]
     },
     "ContainerStyle": {
-      "enum": [
-        "default",
-        "emphasis",
-        "good",
-        "attention",
-        "warning",
-        "accent"
+      "anyOf": [
+        {
+          "enum": [
+            "default",
+            "emphasis",
+            "good",
+            "attention",
+            "warning",
+            "accent"
+          ]
+        },
+        {
+          "pattern": "^([d|D][e|E][f|F][a|A][u|U][l|L][t|T])|([e|E][m|M][p|P][h|H][a|A][s|S][i|I][s|S])|([g|G][o|O][o|O][d|D])|([a|A][t|T][t|T][e|E][n|N][t|T][i|I][o|O][n|N])|([w|W][a|A][r|R][n|N][i|I][n|N][g|G])|([a|A][c|C][c|C][e|E][n|N][t|T])$"
+        }
       ]
     },
     "FallbackOption": {
-      "enum": [
-        "drop"
+      "anyOf": [
+        {
+          "enum": [
+            "drop"
+          ]
+        },
+        {
+          "pattern": "^([d|D][r|R][o|O][p|P])$"
+        }
       ]
     },
     "FontSize": {
-      "enum": [
-        "default",
-        "small",
-        "medium",
-        "large",
-        "extraLarge"
+      "anyOf": [
+        {
+          "enum": [
+            "default",
+            "small",
+            "medium",
+            "large",
+            "extraLarge"
+          ]
+        },
+        {
+          "pattern": "^([d|D][e|E][f|F][a|A][u|U][l|L][t|T])|([s|S][m|M][a|A][l|L][l|L])|([m|M][e|E][d|D][i|I][u|U][m|M])|([l|L][a|A][r|R][g|G][e|E])|([e|E][x|X][t|T][r|R][a|A][l|L][a|A][r|R][g|G][e|E])$"
+        }
       ]
     },
     "FontType": {
-      "enum": [
-        "default",
-        "monospace"
+      "anyOf": [
+        {
+          "enum": [
+            "default",
+            "monospace"
+          ]
+        },
+        {
+          "pattern": "^([d|D][e|E][f|F][a|A][u|U][l|L][t|T])|([m|M][o|O][n|N][o|O][s|S][p|P][a|A][c|C][e|E])$"
+        }
       ]
     },
     "FontWeight": {
-      "enum": [
-        "default",
-        "lighter",
-        "bolder"
+      "anyOf": [
+        {
+          "enum": [
+            "default",
+            "lighter",
+            "bolder"
+          ]
+        },
+        {
+          "pattern": "^([d|D][e|E][f|F][a|A][u|U][l|L][t|T])|([l|L][i|I][g|G][h|H][t|T][e|E][r|R])|([b|B][o|O][l|L][d|D][e|E][r|R])$"
+        }
       ]
     },
     "HorizontalAlignment": {
       "description": "Controls how content is horizontally positioned within its container.",
-      "enum": [
-        "left",
-        "center",
-        "right"
+      "anyOf": [
+        {
+          "enum": [
+            "left",
+            "center",
+            "right"
+          ]
+        },
+        {
+          "pattern": "^([l|L][e|E][f|F][t|T])|([c|C][e|E][n|N][t|T][e|E][r|R])|([r|R][i|I][g|G][h|H][t|T])$"
+        }
       ]
     },
     "ImageFillMode": {
-      "enum": [
-        "cover",
-        "repeatHorizontally",
-        "repeatVertically",
-        "repeat"
+      "anyOf": [
+        {
+          "enum": [
+            "cover",
+            "repeatHorizontally",
+            "repeatVertically",
+            "repeat"
+          ]
+        },
+        {
+          "pattern": "^([c|C][o|O][v|V][e|E][r|R])|([r|R][e|E][p|P][e|E][a|A][t|T][h|H][o|O][r|R][i|I][z|Z][o|O][n|N][t|T][a|A][l|L][l|L][y|Y])|([r|R][e|E][p|P][e|E][a|A][t|T][v|V][e|E][r|R][t|T][i|I][c|C][a|A][l|L][l|L][y|Y])|([r|R][e|E][p|P][e|E][a|A][t|T])$"
+        }
       ]
     },
     "ImageSize": {
       "description": "Controls the approximate size of the image. The physical dimensions will vary per host. Every option preserves aspect ratio.",
-      "enum": [
-        "auto",
-        "stretch",
-        "small",
-        "medium",
-        "large"
+      "anyOf": [
+        {
+          "enum": [
+            "auto",
+            "stretch",
+            "small",
+            "medium",
+            "large"
+          ]
+        },
+        {
+          "pattern": "^([a|A][u|U][t|T][o|O])|([s|S][t|T][r|R][e|E][t|T][c|C][h|H])|([s|S][m|M][a|A][l|L][l|L])|([m|M][e|E][d|D][i|I][u|U][m|M])|([l|L][a|A][r|R][g|G][e|E])$"
+        }
       ]
     },
     "ImageStyle": {
       "description": "Controls how this `Image` is displayed.",
-      "enum": [
-        "default",
-        "person"
+      "anyOf": [
+        {
+          "enum": [
+            "default",
+            "person"
+          ]
+        },
+        {
+          "pattern": "^([d|D][e|E][f|F][a|A][u|U][l|L][t|T])|([p|P][e|E][r|R][s|S][o|O][n|N])$"
+        }
       ]
     },
     "Spacing": {
       "description": "Specifies how much spacing. Hosts pick the exact pixel amounts for each of these.",
-      "enum": [
-        "default",
-        "none",
-        "small",
-        "medium",
-        "large",
-        "extraLarge",
-        "padding"
+      "anyOf": [
+        {
+          "enum": [
+            "default",
+            "none",
+            "small",
+            "medium",
+            "large",
+            "extraLarge",
+            "padding"
+          ]
+        },
+        {
+          "pattern": "^([d|D][e|E][f|F][a|A][u|U][l|L][t|T])|([n|N][o|O][n|N][e|E])|([s|S][m|M][a|A][l|L][l|L])|([m|M][e|E][d|D][i|I][u|U][m|M])|([l|L][a|A][r|R][g|G][e|E])|([e|E][x|X][t|T][r|R][a|A][l|L][a|A][r|R][g|G][e|E])|([p|P][a|A][d|D][d|D][i|I][n|N][g|G])$"
+        }
       ]
     },
     "TextInputStyle": {
       "description": "Style hint for text input.",
-      "enum": [
-        "text",
-        "tel",
-        "url",
-        "email"
+      "anyOf": [
+        {
+          "enum": [
+            "text",
+            "tel",
+            "url",
+            "email"
+          ]
+        },
+        {
+          "pattern": "^([t|T][e|E][x|X][t|T])|([t|T][e|E][l|L])|([u|U][r|R][l|L])|([e|E][m|M][a|A][i|I][l|L])$"
+        }
       ]
     },
     "VerticalAlignment": {
-      "enum": [
-        "top",
-        "center",
-        "bottom"
+      "anyOf": [
+        {
+          "enum": [
+            "top",
+            "center",
+            "bottom"
+          ]
+        },
+        {
+          "pattern": "^([t|T][o|O][p|P])|([c|C][e|E][n|N][t|T][e|E][r|R])|([b|B][o|O][t|T][t|T][o|O][m|M])$"
+        }
       ]
     },
     "VerticalContentAlignment": {
-      "enum": [
-        "top",
-        "center",
-        "bottom"
+      "anyOf": [
+        {
+          "enum": [
+            "top",
+            "center",
+            "bottom"
+          ]
+        },
+        {
+          "pattern": "^([t|T][o|O][p|P])|([c|C][e|E][n|N][t|T][e|E][r|R])|([b|B][o|O][t|T][t|T][o|O][m|M])$"
+        }
       ]
     },
     "BackgroundImage": {

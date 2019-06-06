@@ -49,6 +49,7 @@ class Transformer {
 	private _allowAdditionalProperties: boolean;
 	private _allowCustomEnums: boolean;
 	private _allowCustomTypes: boolean;
+	private _enforceEnumCaseSensitivity: boolean;
 
 	constructor (schema: Schema, options: TransformOptions) {
 		this._schema = schema;
@@ -57,6 +58,7 @@ class Transformer {
 		this._allowAdditionalProperties = options.allowAdditionalProperties;
 		this._allowCustomEnums = options.allowCustomEnums;
 		this._allowCustomTypes = options.allowCustomTypes;
+		this._enforceEnumCaseSensitivity = options.enforceEnumCaseSensitivity;
 
 		if (options.primaryTypeNames) {
 			options.primaryTypeNames.forEach(value => {
@@ -151,20 +153,41 @@ class Transformer {
 				delete transformed.classType;
 				delete transformed.$schema;
 				delete transformed.extends;
-				transformed.enum = [];
+
+				var enums:string[] = [];
 				enumType.values.forEach(val => {
-					transformed.enum.push(val.value);
+					enums.push(val.value);
 				});
 
-				if (this._allowCustomEnums) {
-					transformed = {
-						anyOf: [
-							transformed,
-							{
-								"type": "string"
-							}
-						]
-					};
+				// If only allows strict enums but case-insensitive...
+				if (!this._enforceEnumCaseSensitivity && !this._allowCustomEnums) {
+					var enumRegexs:string[] = [];
+					enums.forEach(enumVal => {
+						enumRegexs.push("(" + this.toCaseInsensitiveRegex(enumVal) + ")");
+					});
+					var regex = "^" + enumRegexs.join("|") + "$";
+
+					transformed.anyOf = [
+						{
+							"enum": enums
+						},
+						{
+							"pattern": regex
+						}
+					];
+				} else if (!this._allowCustomEnums) {
+					// Else strict and sensitive
+					transformed.enum = enums;
+				} else {
+					// Else allows any enums, so no need for the regex
+					transformed.anyOf = [
+						{
+							"enum": enums
+						},
+						{
+							"type": "string"
+						}
+					];
 				}
 
 				return transformed;
@@ -326,6 +349,15 @@ class Transformer {
 		} catch (err) {
 			throw "Failed transforming type " + type.type + "\n\n" + err.stack;
 		}
+	}
+
+	private toCaseInsensitiveRegex(enumValue: string) {
+		var answer = "";
+		for (var i = 0; i < enumValue.length; i++) {
+			var c = enumValue.charAt(i);
+			answer += `[${c.toLowerCase()}|${c.toUpperCase()}]`;
+		}
+		return answer;
 	}
 
 	private transformPropertyValue(propertyValue: SchemaProperty) {
