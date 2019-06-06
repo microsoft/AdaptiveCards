@@ -9,7 +9,8 @@
       "required": true
     },
     "imageSize": {
-      "type": "ImageSize"
+			"type": "ImageSize",
+			"description": "Controls the approximate size of each image. The physical dimensions will vary per host."
     }
 	}
 }

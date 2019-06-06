@@ -11,7 +11,7 @@
 | **height** | `string, BlockElementHeight` | No, default: `"auto"` | The desired height of the image. If specified as a pixel value, ending in 'px', E.g., 50px, the image will distort to fit that exact height. This overrides the `size` property. | 1.1 |
 | **horizontalAlignment** | `HorizontalAlignment` | No | Controls how this element is horizontally positioned within its parent. | 1.0 |
 | **selectAction** | `ISelectAction` | No | An Action that will be invoked when the `Image` is tapped or selected. `Action.ShowCard` is not supported. | 1.1 |
-| **size** | `ImageSize` | No | Controls the approximate size of the image. The physical dimensions will vary per host. Specify `"auto"` for true image dimension, or `"stretch"` to force it to fill the container. | 1.0 |
+| **size** | `ImageSize` | No | Controls the approximate size of the image. The physical dimensions will vary per host. | 1.0 |
 | **style** | `ImageStyle` | No | Controls how this `Image` is displayed. | 1.0 |
 | **width** | `string` | No | The desired on-screen width of the image, ending in 'px'. E.g., 50px. This overrides the `size` property. | 1.1 |
 | **fallback** | `BlockElement, FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |

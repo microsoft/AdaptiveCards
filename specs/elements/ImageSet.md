@@ -6,7 +6,7 @@
 | -------- | ---- | -------- | ----------- | ------- |
 | **type** | `"ImageSet"` | Yes | Must be `"ImageSet"`. | 1.0 |
 | **images** | `Image[]` | Yes | The array of `Image` elements to show. | 1.0 |
-| **imageSize** | `ImageSize` | No |  | 1.0 |
+| **imageSize** | `ImageSize` | No | Controls the approximate size of each image. The physical dimensions will vary per host. | 1.0 |
 | **fallback** | `BlockElement, FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
 | **height** | `BlockElementHeight` | No | Specifies the height of the element. | 1.1 |
 | **id** | `string` | No | A unique identifier associated with the element. | 1.0 |

@@ -690,7 +690,7 @@
         },
         "size": {
           "$ref": "#/definitions/ImageSize",
-          "description": "Controls the approximate size of the image. The physical dimensions will vary per host. Specify `\"auto\"` for true image dimension, or `\"stretch\"` to force it to fill the container."
+          "description": "Controls the approximate size of the image. The physical dimensions will vary per host."
         },
         "style": {
           "$ref": "#/definitions/ImageStyle",
@@ -766,7 +766,8 @@
           "description": "The array of `Image` elements to show."
         },
         "imageSize": {
-          "$ref": "#/definitions/ImageSize"
+          "$ref": "#/definitions/ImageSize",
+          "description": "Controls the approximate size of each image. The physical dimensions will vary per host."
         },
         "fallback": {},
         "height": {},
@@ -1433,7 +1434,7 @@
       ]
     },
     "ImageSize": {
-      "description": "Controls the approximate size of the image. The physical dimensions will vary per host. Specify `\"auto\"` for true image dimension, or `\"stretch\"` to force it to fill the container.",
+      "description": "Controls the approximate size of the image. The physical dimensions will vary per host. Every option preserves aspect ratio.",
       "enum": [
         "auto",
         "stretch",
