@@ -1,7 +1,6 @@
 {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
-	"height": "stretch",
 	"version": "1.0",
 	"body": [
 		{
@@ -31,10 +30,16 @@
 							"wrap": true
 						},
 						{
-							"type": "Input.Toggle",
+							"type": "Input.Text",
 							"id": "input1",
-							"title": "Placeholder title",
-							"height": "stretch"
+							"placeholder": "enter comment",
+							"maxLength": 500,
+							"height": "stretch",
+							"inlineAction": {
+								"type": "Action.OpenUrl",
+								"title": "Reply",
+								"url": "http://adaptivecards.io"
+							}
 						},
 						{
 							"type": "TextBlock",

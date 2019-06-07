@@ -1,7 +1,6 @@
 {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
-	"height": "stretch",
 	"version": "1.0",
 	"body": [
 		{
@@ -31,10 +30,15 @@
 							"wrap": true
 						},
 						{
-							"type": "Image",
-							"url": "http://adaptivecards.io/content/cats/1.png",
-							"height": "stretch",
-							"size": "small"
+							"type": "Media",
+							"poster": "http://adaptivecards.io/content/cats/1.png",
+							"sources": [
+								{
+									"mimeType": "video/mp4",
+									"url": "https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4"
+								}
+							],
+							"height": "stretch"
 						},
 						{
 							"type": "TextBlock",

@@ -1,7 +1,6 @@
 {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
-	"height": "stretch",
 	"version": "1.0",
 	"body": [
 		{
@@ -31,11 +30,18 @@
 							"wrap": true
 						},
 						{
-							"type": "Input.Text",
-							"id": "input1",
-							"placeholder": "enter comment",
-							"maxLength": 500,
-							"height": "stretch"
+							"type": "FactSet",
+							"height": "stretch",
+							"facts": [
+								{
+									"title": "Fact 1",
+									"value": "Value 1"
+								},
+								{
+									"title": "Fact 2",
+									"value": "Value 2"
+								}
+							]
 						},
 						{
 							"type": "TextBlock",

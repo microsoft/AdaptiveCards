@@ -1,7 +1,6 @@
 {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
-	"height": "stretch",
 	"version": "1.0",
 	"body": [
 		{
@@ -31,19 +30,10 @@
 							"wrap": true
 						},
 						{
-							"type": "ImageSet",
-							"imageSize": "small",
-							"height": "stretch",
-							"images": [
-								{
-									"type": "Image",
-									"url": "http://adaptivecards.io/content/cats/1.png"
-								},
-								{
-									"type": "Image",
-									"url": "http://adaptivecards.io/content/cats/2.png"
-								}
-							]
+							"type": "Input.Date",
+							"id": "input1",
+							"placeholder": "enter date",
+							"height": "stretch"
 						},
 						{
 							"type": "TextBlock",

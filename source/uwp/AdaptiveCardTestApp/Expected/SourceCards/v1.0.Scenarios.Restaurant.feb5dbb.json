@@ -4,7 +4,6 @@
 	"version": "1.0",
 	"body": [
 		{
-			"speak": "<s>Tom's Pie is a Pizza restaurant which is rated 9.3 by customers.</s>",
 			"type": "ColumnSet",
 			"columns": [
 				{

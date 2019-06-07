@@ -2,18 +2,8 @@
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"version": "1.1",
-	"height": "stretch",
 	"verticalContentAlignment": "center",
 	"body": [
-		{
-			"type": "TextBlock",
-			"text": "Hi,"
-		},
-		{
-			"type": "TextBlock",
-			"text": "MasterHip",
-			"isSubtle": true
-		},
 		{
 			"type": "ColumnSet",
 			"height": "stretch",
@@ -32,36 +22,54 @@
 				{
 					"type": "Column",
 					"width": 1,
-					"verticalContentAlignment": "top",
 					"items": [
 						{
-							"type": "TextBlock",
-							"text": "This text should be at the top",
-							"wrap": true
+							"type": "Container",
+							"height": "stretch",
+							"verticalContentAlignment": "top",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "This text should be at the top",
+									"wrap": true
+								}
+							]
 						}
 					]
 				},
 				{
 					"type": "Column",
 					"width": 1,
-					"verticalContentAlignment": "center",
 					"items": [
 						{
-							"type": "TextBlock",
-							"text": "This text should be at the vertical center",
-							"wrap": true
+							"type": "Container",
+							"height": "stretch",
+							"verticalContentAlignment": "center",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "This text should be at the vertical center",
+									"wrap": true
+								}
+							]
 						}
 					]
 				},
 				{
 					"type": "Column",
 					"width": 1,
-					"verticalContentAlignment": "bottom",
 					"items": [
 						{
-							"type": "TextBlock",
-							"text": "This text should be at the bottom",
-							"wrap": true
+							"type": "Container",
+							"height": "stretch",
+							"verticalContentAlignment": "bottom",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "This text should be at the bottom",
+									"wrap": true
+								}
+							]
 						}
 					]
 				}

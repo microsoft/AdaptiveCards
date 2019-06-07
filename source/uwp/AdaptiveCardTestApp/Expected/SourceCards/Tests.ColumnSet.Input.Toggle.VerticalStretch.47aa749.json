@@ -1,7 +1,6 @@
 {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
-	"height": "stretch",
 	"version": "1.0",
 	"body": [
 		{
@@ -31,9 +30,9 @@
 							"wrap": true
 						},
 						{
-							"type": "Input.Date",
+							"type": "Input.Toggle",
 							"id": "input1",
-							"placeholder": "enter date",
+							"title": "Placeholder title",
 							"height": "stretch"
 						},
 						{

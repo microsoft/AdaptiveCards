@@ -1,7 +1,6 @@
 {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
-	"height": "stretch",
 	"version": "1.0",
 	"body": [
 		{
@@ -27,13 +26,13 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "FactSet",
+							"text": "FactSet (id1)",
 							"wrap": true
 						},
 						{
 							"type": "FactSet",
+							"id": "id1",
 							"height": "stretch",
-							"isVisible": false,
 							"facts": [
 								{
 									"title": "Fact 1",
@@ -47,26 +46,26 @@
 						},
 						{
 							"type": "TextBlock",
-							"text": "Image",
+							"text": "Image (id2)",
 							"wrap": true
 						},
 						{
 							"type": "Image",
+							"id": "id2",
 							"url": "http://adaptivecards.io/content/cats/1.png",
 							"height": "stretch",
-							"isVisible": false,
 							"size": "small"
 						},
 						{
 							"type": "TextBlock",
-							"text": "ImageSet",
+							"text": "ImageSet (id3)",
 							"wrap": true
 						},
 						{
 							"type": "ImageSet",
+							"id": "id3",
 							"imageSize": "small",
 							"height": "stretch",
-							"isVisible": false,
 							"images": [
 								{
 									"type": "Image",
@@ -80,41 +79,38 @@
 						},
 						{
 							"type": "TextBlock",
-							"text": "Input.Date",
+							"text": "Input.Date (id4)",
 							"wrap": true
 						},
 						{
 							"type": "Input.Date",
-							"id": "id1",
+							"id": "id4",
 							"placeholder": "enter date",
-							"isVisible": false,
 							"height": "stretch"
 						},
 						{
 							"type": "TextBlock",
-							"text": "Input.Number",
+							"text": "Input.Number (id5)",
 							"wrap": true
 						},
 						{
 							"type": "Input.Number",
-							"id": "id2",
+							"id": "id5",
 							"placeholder": "enter comment",
-							"isVisible": false,
 							"max": 500,
 							"height": "stretch"
 						},
 						{
 							"type": "TextBlock",
-							"text": "Input.Text with inlineAction",
+							"text": "Input.Text with inlineAction (id6)",
 							"wrap": true
 						},
 						{
 							"type": "Input.Text",
-							"id": "id3",
+							"id": "id6",
 							"placeholder": "enter comment",
 							"maxLength": 500,
 							"height": "stretch",
-							"isVisible": false,
 							"inlineAction": {
 								"type": "Action.OpenUrl",
 								"title": "Reply",
@@ -123,61 +119,58 @@
 						},
 						{
 							"type": "TextBlock",
-							"text": "Input.Text",
+							"text": "Input.Text (id7)",
 							"wrap": true
 						},
 						{
 							"type": "Input.Text",
-							"id": "id4",
+							"id": "id7",
 							"placeholder": "enter comment",
 							"maxLength": 500,
-							"isVisible": false,
 							"height": "stretch"
 						},
 						{
 							"type": "TextBlock",
-							"text": "Input.Time",
+							"text": "Input.Time (id8)",
 							"wrap": true
 						},
 						{
 							"type": "Input.Time",
-							"id": "id5",
+							"id": "id8",
 							"placeholder": "enter time",
-							"isVisible": false,
 							"height": "stretch"
 						},
 						{
 							"type": "TextBlock",
-							"text": "Input.Toggle",
+							"text": "Input.Toggle (id9)",
 							"wrap": true
 						},
 						{
 							"type": "Input.Toggle",
-							"id": "id6",
+							"id": "id9",
 							"title": "Placeholder title",
-							"isVisible": false,
 							"height": "stretch"
 						},
 						{
 							"type": "TextBlock",
-							"text": "TextBlock",
+							"text": "TextBlock (id10)",
 							"wrap": true
 						},
 						{
 							"type": "TextBlock",
+							"id": "id10",
 							"text": "Regular textblock",
-							"isVisible": false,
 							"height": "stretch"
 						},
 						{
 							"type": "TextBlock",
-							"text": "Container",
+							"text": "Container (id11)",
 							"wrap": true
 						},
 						{
 							"type": "Container",
+							"id": "id11",
 							"height": "stretch",
-							"isVisible": false,
 							"items": [
 								{
 									"type": "TextBlock",
@@ -187,13 +180,13 @@
 						},
 						{
 							"type": "TextBlock",
-							"text": "ColumnSet",
+							"text": "ColumnSet (id12)",
 							"wrap": true
 						},
 						{
 							"type": "ColumnSet",
+							"id": "id12",
 							"height": "stretch",
-							"isVisible": false,
 							"columns": [
 								{
 									"type": "Column",
@@ -208,7 +201,7 @@
 						},
 						{
 							"type": "TextBlock",
-							"text": "Column",
+							"text": "Column (id13)",
 							"wrap": true
 						},
 						{
@@ -216,8 +209,7 @@
 							"columns": [
 								{
 									"type": "Column",
-									"height": "stretch",
-									"isVisible": false,
+									"id": "id13",
 									"items": [
 										{
 											"type": "TextBlock",
@@ -229,13 +221,13 @@
 						},
 						{
 							"type": "TextBlock",
-							"text": "Media",
+							"text": "Media (id14)",
 							"wrap": true
 						},
 						{
 							"type": "Media",
+							"id": "id14",
 							"height": "stretch",
-							"isVisible": false,
 							"poster": "https://adaptivecards.io/content/poster-video.png",
 							"sources": [
 								{
@@ -246,13 +238,13 @@
 						},
 						{
 							"type": "TextBlock",
-							"text": "RichTextBlock",
+							"text": "RichTextBlock (id15)",
 							"wrap": true
 						},
 						{
 							"type": "RichTextBlock",
+							"id": "id15",
 							"height": "stretch",
-							"isVisible": false,
 							"inlines": [
 								"This is the first inline. ",
 								{
@@ -299,9 +291,8 @@
 						},
 						{
 							"type": "Input.ChoiceSet",
-							"id": "id7",
+							"id": "id16",
 							"height": "stretch",
-							"isVisible": false,
 							"choices": [
 								{
 									"title": "Red",
@@ -319,12 +310,11 @@
 						},
 						{
 							"type": "Input.ChoiceSet",
-							"id": "id8",
+							"id": "id17",
 							"style": "expanded",
 							"isMultiSelect": false,
 							"value": "1",
 							"height": "stretch",
-							"isVisible": false,
 							"choices": [
 								{
 									"title": "Red",
@@ -360,12 +350,11 @@
 						},
 						{
 							"type": "Input.ChoiceSet",
-							"id": "id9",
+							"id": "id18",
 							"isMultiSelect": true,
 							"value": "1,3",
 							"style": "compact",
 							"height": "stretch",
-							"isVisible": false,
 							"choices": [
 								{
 									"title": "Red",
@@ -383,12 +372,11 @@
 						},
 						{
 							"type": "Input.ChoiceSet",
-							"id": "id10",
+							"id": "id19",
 							"isMultiSelect": true,
 							"value": "1",
 							"style": "expanded",
 							"height": "stretch",
-							"isVisible": false,
 							"choices": [
 								{
 									"title": "Red",
@@ -412,6 +400,13 @@
 					]
 				}
 			]
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.ToggleVisibility",
+			"title": "Toggle!",
+			"targetElements": [ "id1", "id2", "id3", "id4", "id5", "id6", "id7", "id8", "id9", "id10", "id11", "id12", "id13", "id14", "id15", "id16", "id17", "id18", "id19" ]
 		}
 	]
 }

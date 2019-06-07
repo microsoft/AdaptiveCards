@@ -1,7 +1,6 @@
 {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
-	"height": "stretch",
 	"version": "1.0",
 	"body": [
 		{
@@ -31,16 +30,10 @@
 							"wrap": true
 						},
 						{
-							"type": "Input.Text",
-							"id": "input1",
-							"placeholder": "enter comment",
-							"maxLength": 500,
+							"type": "Image",
+							"url": "http://adaptivecards.io/content/cats/1.png",
 							"height": "stretch",
-							"inlineAction": {
-								"type": "Action.OpenUrl",
-								"title": "Reply",
-								"url": "http://adaptivecards.io"
-							}
+							"size": "small"
 						},
 						{
 							"type": "TextBlock",
