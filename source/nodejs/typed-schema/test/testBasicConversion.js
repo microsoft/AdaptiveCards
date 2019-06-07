@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 var assert = require("assert");
 var tschema = require("../lib/typed-schema");
 

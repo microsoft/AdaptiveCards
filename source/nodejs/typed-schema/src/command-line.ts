@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import * as tschema from "./typed-schema";
 import { TransformOptions } from "./TransformOptions";
 

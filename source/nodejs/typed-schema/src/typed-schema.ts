@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import { SchemaType } from "./SchemaType";
 import { SchemaClass } from "./SchemaClass";
 import { SchemaEnum } from "./SchemaEnum";

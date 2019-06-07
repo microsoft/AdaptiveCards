@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import { defined } from "./defined";
 import { defaultValue } from "./defaultValue";
 import { SchemaProperty, SchemaClass, SchemaEnum, SchemaPropertyType, SchemaLiteral } from "typed-schema";

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import * as yaml from "js-yaml";
 import { Schema, SchemaClass, SchemaProperty } from "typed-schema";
 import * as glob from "glob";

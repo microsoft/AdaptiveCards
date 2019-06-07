@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 var fs = require("fs");
 import * as Ajv from "ajv";
 

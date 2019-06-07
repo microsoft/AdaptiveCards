@@ -1,4 +1,7 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 "use strict";
+
 import { defined } from "./defined";
 import { defaultValue as defaultValueHelper } from "./defaultValue";
 import * as enums from "./enums";

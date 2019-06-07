@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 export class SchemaEnumValue {
 	private _original: any;
 	private _value: string;
