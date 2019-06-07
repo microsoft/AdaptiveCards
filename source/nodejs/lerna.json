@@ -2,8 +2,6 @@
 	"version": "independent",
 	"packages": [
     "adaptivecards*/**",
-    "spec-generator/**",
-    "spec-generator-script/**",
     "typed-schema/**",
     "typed-schema-markdown/**"
 	],
