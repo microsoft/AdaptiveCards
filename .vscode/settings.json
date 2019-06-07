@@ -2,13 +2,5 @@
 	"editor.insertSpaces": false,
 	"editor.formatOnSave": false, // only if you want auto fomattting on saving the file
 	"editor.detectIndentation": false,
-	"C_Cpp.default.cppStandard": "c++17",
-	"emeraldwalk.runonsave": {
-		"commands": [
-			{
-				"match": ".*schemas\\\\adaptive-card.json",
-				"cmd": "cd /D ${fileDirname}\\..\\source\\nodejs\\spec-generator-script\\precompiled & node .\\spec-generator-script.js"
-			}
-		]
-	}
+	"C_Cpp.default.cppStandard": "c++17"
 }
