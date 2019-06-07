@@ -2,7 +2,7 @@ var fs = require("fs");
 import * as Ajv from "ajv";
 
 var allCards = getAllFiles("../../../samples");
-var schemaTxt = fs.readFileSync("../../../schemas/adaptive-card-new.json", "utf8");
+var schemaTxt = fs.readFileSync("../../../schemas/adaptive-card.json", "utf8");
 
 var ajv = new Ajv();
 ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'));
