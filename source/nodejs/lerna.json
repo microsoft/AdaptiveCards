@@ -1,7 +1,9 @@
 {
 	"version": "independent",
 	"packages": [
-		"adaptivecards*/**"
+    "adaptivecards*/**",
+    "typed-schema/**",
+    "typed-schema-markdown/**"
 	],
 	"command": {
 		"publish": {

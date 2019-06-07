@@ -1,0 +1,12 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+  "extends": "Action, ISelectAction",
+  "description": "An action that toggles the visibility of associated card elements.",
+  "version": "1.2",
+  "properties": {
+    "targetElements": {
+      "type": "TargetElement[]",
+      "description": "The array of TargetElements"
+    }
+  }
+}
