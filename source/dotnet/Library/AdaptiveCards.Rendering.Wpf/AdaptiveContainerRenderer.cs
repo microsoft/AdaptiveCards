@@ -158,7 +158,7 @@ namespace AdaptiveCards.Rendering.Wpf
                         }
                         else
                         {
-                            StackPanel panel = new StackPanel();
+                            DockPanel panel = new DockPanel();
 
                             if (!String.IsNullOrEmpty(cardElement.Id))
                             {
