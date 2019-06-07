@@ -5,7 +5,9 @@
 - Murali Krishnan Govindarajulu <murali.govindarajulu@imaginea.com>, 
 - Raghunandhan Chikoti <raghunandhan.chikoti@imaginea.com>, 
 - Siva Prasad Gottapu <sivaprasad.gottapu@imaginea.com>, 
-- Chaithanya Veeramachaneni <chaithanya.veeramachaneni@imaginea.com>
+- Pragadeesh Kanagavel <pragadeesh.kanagavel@imaginea.com>
+- Vivek Kozhisseri <vivek.kozhisseri@imaginea.com>
+- Ibrahim Sulaiman <ibrahim.sulaiman@imaginea.com>
 
 # Project Management:
 - Vasanthakumar S <vasanth.s@imaginea.com>
