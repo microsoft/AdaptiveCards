@@ -1,9 +1,9 @@
-import {SchemaType} from "./SchemaType";
-import {SchemaClass} from "./SchemaClass";
-import {SchemaEnum} from "./SchemaEnum";
-import {SchemaProperty} from "./SchemaProperty";
-import {SchemaPropertyType} from "./SchemaPropertyType";
-import {SchemaLiteral} from "./SchemaLiteral";
+import { SchemaType } from "./SchemaType";
+import { SchemaClass } from "./SchemaClass";
+import { SchemaEnum } from "./SchemaEnum";
+import { SchemaProperty } from "./SchemaProperty";
+import { SchemaPropertyType } from "./SchemaPropertyType";
+import { SchemaLiteral } from "./SchemaLiteral";
 import { Schema } from "./Schema";
 import { TransformOptions } from "./TransformOptions";
 
@@ -20,11 +20,11 @@ export * from "./SchemaLiteral";
 export * from "./Schema";
 export * from "./TransformOptions";
 
-export function transformFolder(pathToTypeFiles: string, options: TransformOptions) : any {
+export function transformFolder(pathToTypeFiles: string, options: TransformOptions): any {
 	return new Transformer(Schema.fromFolder(pathToTypeFiles), options).transform();
 }
 
-export function transformTypes(types: any[], options: TransformOptions) : any {
+export function transformTypes(types: any[], options: TransformOptions): any {
 	return new Transformer(new Schema(types), options).transform();
 }
 
@@ -51,7 +51,7 @@ class Transformer {
 	private _allowCustomTypes: boolean;
 	private _enforceEnumCaseSensitivity: boolean;
 
-	constructor (schema: Schema, options: TransformOptions) {
+	constructor(schema: Schema, options: TransformOptions) {
 		this._schema = schema;
 		this._typePropertyName = options.typePropertyName || "type";
 		this._defaultPrimaryTypeName = options.defaultPrimaryTypeName;
@@ -73,8 +73,8 @@ class Transformer {
 		this._schema.typeDictionary.forEach(type => {
 			this.defineType(type);
 		});
-	
-		var answer:any = {
+
+		var answer: any = {
 			"$schema": "http://json-schema.org/draft-06/schema#",
 			"id": "http://adaptivecards.io/schemas/adaptive-card.json",
 			"definitions": {}
@@ -83,7 +83,7 @@ class Transformer {
 		var anyOf = [];
 
 		this._primaryTypes.forEach(primaryType => {
-			var definition:any = {
+			var definition: any = {
 				"allOf": [
 					{
 						"$ref": "#/definitions/" + primaryType.type
@@ -95,7 +95,7 @@ class Transformer {
 			if (this._primaryTypes.length > 1) {
 				// If it's not the default primary type name, make type required
 				if (primaryType.type !== this._defaultPrimaryTypeName) {
-					definition.required = [ this._typePropertyName ];
+					definition.required = [this._typePropertyName];
 				}
 			}
 
@@ -115,7 +115,7 @@ class Transformer {
 
 				this._implementationsOf[key].forEach(implementationTypeName => {
 					anyOfValue.push({
-						"required": [ this._typePropertyName ],
+						"required": [this._typePropertyName],
 						"allOf": [
 							{
 								"$ref": "#/definitions/" + implementationTypeName
@@ -135,11 +135,11 @@ class Transformer {
 				answer.definitions["Extendable." + key] = this._extendables[key];
 			}
 		}
-	
+
 		return answer;
 	}
 
-	private getType(typeName: string) : SchemaType {
+	private getType(typeName: string): SchemaType {
 		return this._schema.getType(typeName);
 	}
 
@@ -154,14 +154,14 @@ class Transformer {
 				delete transformed.$schema;
 				delete transformed.extends;
 
-				var enums:string[] = [];
+				var enums: string[] = [];
 				enumType.values.forEach(val => {
 					enums.push(val.value);
 				});
 
 				// If only allows strict enums but case-insensitive...
 				if (!this._enforceEnumCaseSensitivity && !this._allowCustomEnums) {
-					var enumRegexs:string[] = [];
+					var enumRegexs: string[] = [];
 					enums.forEach(enumVal => {
 						enumRegexs.push("(" + this.toCaseInsensitiveRegex(enumVal) + ")");
 					});
@@ -240,7 +240,7 @@ class Transformer {
 			} else {
 				properties = type.properties;
 			}
-		
+
 			if (properties.size > 0) {
 				properties.forEach((propVal, key) => {
 
@@ -266,9 +266,9 @@ class Transformer {
 			if (!type.isAbstract) {
 				// If it's not abstract, we add the type property
 				// Note that we don't require it though, it's optional
-				var newProperties:any = {};
+				var newProperties: any = {};
 				newProperties[this._typePropertyName] = {
-					"enum": [ type.type ],
+					"enum": [type.type],
 					"description": "Must be `" + type.type + "`"
 				};
 				transformed.properties = {
@@ -312,7 +312,7 @@ class Transformer {
 				type.getAllExtended().forEach(extended => {
 					if (!this._implementationsOf[extended.type]) {
 						this._implementationsOf[extended.type] = [];
-						
+
 						// If extending type isn't abstract, add that as an implementation
 						if (!extended.isAbstract) {
 							this._implementationsOf[extended.type].push(extended.type);
@@ -344,7 +344,7 @@ class Transformer {
 				delete transformed.required;
 				delete transformed.additionalProperties;
 			}
-		
+
 			return transformed;
 		} catch (err) {
 			throw "Failed transforming type " + type.type + "\n\n" + err.stack;
@@ -361,7 +361,7 @@ class Transformer {
 	}
 
 	private transformPropertyValue(propertyValue: SchemaProperty) {
-		var cleanPropertyValue = { ... propertyValue.original };
+		var cleanPropertyValue = { ...propertyValue.original };
 		delete cleanPropertyValue.type;
 		delete cleanPropertyValue.shorthands;
 		delete cleanPropertyValue.override;

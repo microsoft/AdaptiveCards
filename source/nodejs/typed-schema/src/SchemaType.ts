@@ -28,5 +28,5 @@ export abstract class SchemaType {
 		return this._original;
 	}
 
-	abstract resolve(types: Map<string, SchemaType>) : void;
+	abstract resolve(types: Map<string, SchemaType>): void;
 }

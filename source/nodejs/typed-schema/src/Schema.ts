@@ -7,8 +7,8 @@ var path = require("path");
 
 export class Schema {
 	private _typeDictionary: Map<string, SchemaType> = new Map<string, SchemaType>();
-	
-	constructor (types: any[]) {
+
+	constructor(types: any[]) {
 
 		types.forEach(type => {
 			this._typeDictionary.set(type.type, this.parse(type));
@@ -26,7 +26,7 @@ export class Schema {
 		});
 	}
 
-	parse(sourceObj: any) : SchemaType {
+	parse(sourceObj: any): SchemaType {
 		if (sourceObj.classType === "Enum") {
 			return new SchemaEnum(sourceObj);
 		} else if (sourceObj.classType === "Class" || sourceObj.classType === undefined) {
@@ -40,7 +40,7 @@ export class Schema {
 		return this._typeDictionary;
 	}
 
-	getType(typeName: string) : SchemaType {
+	getType(typeName: string): SchemaType {
 		var answer = this._typeDictionary.get(typeName);
 		if (answer === undefined) {
 			var knownTypes = "";
@@ -82,13 +82,13 @@ export class Schema {
 		// https://stackoverflow.com/questions/5827612/node-js-fs-readdir-recursive-directory-search
 		var results = [];
 		var list = fs.readdirSync(dir);
-		list.forEach(function(file) {
+		list.forEach(function (file) {
 			file = dir + '/' + file;
 			var stat = fs.statSync(file);
-			if (stat && stat.isDirectory()) { 
+			if (stat && stat.isDirectory()) {
 				/* Recurse into a subdirectory */
 				results = results.concat(Schema.getAllFiles(file));
-			} else { 
+			} else {
 				/* Is a file */
 				results.push(file);
 			}

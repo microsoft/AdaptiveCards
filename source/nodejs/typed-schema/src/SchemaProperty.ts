@@ -1,5 +1,5 @@
-import {SchemaType} from "./SchemaType";
-import {SchemaPropertyType} from "./SchemaPropertyType";
+import { SchemaType } from "./SchemaType";
+import { SchemaPropertyType } from "./SchemaPropertyType";
 
 export class SchemaProperty {
 	private _original: any;
@@ -80,7 +80,7 @@ export class SchemaProperty {
 	}
 
 	resolve(types: Map<string, SchemaType>) {
-		
+
 		// Resolve type
 		if (!this.original.type) {
 			throw new Error("type property on property wasn't provided.");

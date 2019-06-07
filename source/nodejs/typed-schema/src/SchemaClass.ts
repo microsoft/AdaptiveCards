@@ -1,5 +1,5 @@
-import {SchemaType} from "./SchemaType";
-import {SchemaProperty} from "./SchemaProperty";
+import { SchemaType } from "./SchemaType";
+import { SchemaProperty } from "./SchemaProperty";
 
 export class SchemaClass extends SchemaType {
 	private _properties: Map<string, SchemaProperty> = new Map<string, SchemaProperty>();

@@ -7,19 +7,19 @@ import * as style from "./style";
 export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes, autoLink, includeVersion, elementVersion) {
 	var md = '';
 
-	var properties:Map<string, SchemaProperty> = classDefinition.getAllProperties();
-    if (properties !== undefined && properties.size > 0) {
+	var properties: Map<string, SchemaProperty> = classDefinition.getAllProperties();
+	if (properties !== undefined && properties.size > 0) {
 
 		// Re-order so that required properties are up front
 		// (Otherwise if there's an inherited required property, it'll be at bottom)
 		properties = sortProperties(properties);
 
-        if (includeVersion && defined(elementVersion) && elementVersion != "1.0") {
-            md += "#### Introduced in version " + elementVersion + "\n\n";
+		if (includeVersion && defined(elementVersion) && elementVersion != "1.0") {
+			md += "#### Introduced in version " + elementVersion + "\n\n";
 		}
 
 		var formattedProperties = [];
-		
+
 		var needsType = classDefinition.type == "AdaptiveCard";
 		if (!needsType) {
 			classDefinition.getAllExtended().forEach(extended => {
@@ -32,7 +32,7 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 		}
 
 		if (needsType) {
-			var formattedTypeProperty:any = {
+			var formattedTypeProperty: any = {
 				Property: "**type**",
 				Type: "`\"" + classDefinition.type + "\"`",
 				Required: "Yes",
@@ -46,10 +46,10 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 			formattedProperties.push(formattedTypeProperty);
 		}
 
-        properties.forEach((property, name) => {
+		properties.forEach((property, name) => {
 			var summary = getPropertySummary(property, knownTypes, autoLink, elementVersion);
-			
-			var formattedProperty:any = {
+
+			var formattedProperty: any = {
 				Property: style.propertyNameSummary(name),
 				Type: summary.formattedType,
 				Required: summary.required,
@@ -92,16 +92,16 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 			}
 			tableData.push(dataRow);
 		});
-		
+
 		// Format as markdown table
 		md += mdTable(tableData, {
 			pad: false
 		});
 
-        md += '\n';
-    }
+		md += '\n';
+	}
 
-    return md;
+	return md;
 }
 
 function sortProperties(properties: Map<string, SchemaProperty>) {
@@ -126,8 +126,7 @@ function sortProperties(properties: Map<string, SchemaProperty>) {
 
 export function createEnumSummary(enumType: SchemaEnum) {
 	var md = '';
-
-	var rows = [ ];
+	var rows = [];
 
 	enumType.values.forEach(val => {
 		var row = {
@@ -160,7 +159,7 @@ export function createEnumSummary(enumType: SchemaEnum) {
 		}
 		tableData.push(dataRow);
 	});
-	
+
 	// Format as markdown table
 	md += mdTable(tableData, {
 		pad: false
@@ -168,38 +167,38 @@ export function createEnumSummary(enumType: SchemaEnum) {
 
 	md += '\n';
 
-    return md;
+	return md;
 }
 
 function getPropertySummary(property: SchemaProperty, knownTypes, autoLink, elementVersion: string) {
-	var types:string[] = property.original.type.split("|");
-	
+	var types: string[] = property.original.type.split("|");
+
 	property.shorthands.forEach(shorthand => {
 		types.push(...shorthand.original.type.split("|"));
 	});
 
 	// Format the types
-	var formattedTypes:string[] = [];
+	var formattedTypes: string[] = [];
 	types.forEach(type => {
 		formattedTypes.push(style.type(type));
 	});
 
-    var formattedType = formattedTypes.join(", ");
+	var formattedType = formattedTypes.join(", ");
 
-    var description = property.description;
+	var description = property.description;
 
-    var required;
-    if (defined(property.required) && (property.required)) {
-        required = 'Yes';
-    } else {
-        var propertyDefault = property.default;
-        if (defined(propertyDefault)) {
-            required = 'No, default: ' + style.defaultValue(propertyDefault);
-        } else {
-            required = 'No';
-        }
+	var required;
+	if (defined(property.required) && (property.required)) {
+		required = 'Yes';
+	} else {
+		var propertyDefault = property.default;
+		if (defined(propertyDefault)) {
+			required = 'No, default: ' + style.defaultValue(propertyDefault);
+		} else {
+			required = 'No';
+		}
 	}
-	
+
 	var version = defaultValue(defaultValue(property.original.version, elementVersion), "1.0");
 	var topLevelVersion = version;
 
@@ -212,13 +211,13 @@ function getPropertySummary(property: SchemaProperty, knownTypes, autoLink, elem
 		}
 	});
 
-    return {
+	return {
 		type: types.join("|"),
-        formattedType: formattedType,
-        description: description,
+		formattedType: formattedType,
+		description: description,
 		required: required,
 		version: version
-    };
+	};
 }
 
 function replacePipes(type: string) {
@@ -226,68 +225,45 @@ function replacePipes(type: string) {
 }
 
 export function createPropertiesDetails(classDefinition: SchemaClass, headerLevel: number, knownTypes, autoLink, includeVersion: boolean, elementVersion: string) {
-    var md = '';
+	var md = '';
 
 	var properties = classDefinition.getAllProperties();
 	properties.forEach((property, name) => {
 		md += createPropertyDetails(property, headerLevel, knownTypes, autoLink, includeVersion, elementVersion);
 	});
 
-    return md + '\n';
+	return md + '\n';
 }
 
 export function createPropertyDetails(property: SchemaProperty, headerLevel: number, knownTypes, autoLink, includeVersion: boolean, elementVersion: string) {
-    var md = '';
+	var md = '';
 
-    var summary = getPropertySummary(property, knownTypes, autoLink, elementVersion);
-    var type = summary.type;
+	var summary = getPropertySummary(property, knownTypes, autoLink, elementVersion);
+	var type = summary.type;
 
-    md += style.getHeaderMarkdown(property.name, headerLevel) + '\n\n';
+	md += style.getHeaderMarkdown(property.name, headerLevel) + '\n\n';
 
-    // TODO: Add plugin point for custom JSON schema properties like gltf_*
-    var detailedDescription = property.description;
-    if (defined(detailedDescription)) {
-        md += detailedDescription + '\n';
-    } else if (defined(summary.description)) {
-        md += summary.description + '\n';
-    }
+	// TODO: Add plugin point for custom JSON schema properties like gltf_*
+	var detailedDescription = property.description;
+	if (defined(detailedDescription)) {
+		md += detailedDescription + '\n';
+	} else if (defined(summary.description)) {
+		md += summary.description + '\n';
+	}
 
 	md += '* ' + style.propertyDetails('Type') + ': ' + summary.formattedType + '\n';
-	
+
 	if (includeVersion) {
 		if (summary.version != elementVersion) {
 			md += `* ${style.propertyDetails("Version")} : ${summary.version}\n`;
 		}
 	}
 
-    md += '* ' + style.propertyDetails('Required') + ': ' + summary.required + '\n';
+	md += '* ' + style.propertyDetails('Required') + ': ' + summary.required + '\n';
 
-    // var minimum = property.minimum;
-    // if (defined(minimum)) {
-    //     var exclusiveMinimum = (defined(property.exclusiveMinimum) && property.exclusiveMinimum);
-    //     md += '* ' + style.propertyDetails('Minimum') + ': ' + style.minMax((exclusiveMinimum ? ' > ' : ' >= ') + minimum) + '\n';
-    // }
-
-    // var maximum = property.maximum;
-    // if (defined(maximum)) {
-    //     var exclusiveMaximum = (defined(property.exclusiveMaximum) && property.exclusiveMaximum);
-    //     md += '* ' + style.propertyDetails('Maximum') + ': ' + style.minMax((exclusiveMaximum ? ' < ' : ' <= ') + maximum) + '\n';
-    // }
-
-    // var format = property.format;
-    // if (defined(format)) {
-    //     md += '* ' + style.propertyDetails('Format') + ': ' + format + '\n';
-    // }
-
-    // TODO: maxLength
-    // var minLength = property.minLength;
-    // if (defined(minLength)) {
-    //     md += '* ' + style.propertyDetails('Minimum Length') + style.minMax(': >= ' + minLength) + '\n';
-	// }
-	
 	var hasComplexTypes = false;
 
-	var allTypes:SchemaPropertyType[] = property.getAllTypes();
+	var allTypes: SchemaPropertyType[] = property.getAllTypes();
 	allTypes.forEach(propertyType => {
 		if (propertyType.type instanceof SchemaClass || propertyType.type instanceof SchemaEnum) {
 			hasComplexTypes = true;
@@ -295,7 +271,7 @@ export function createPropertyDetails(property: SchemaProperty, headerLevel: num
 	});
 
 	if (hasComplexTypes) {
-		var allowedValues:string[] = getAllowedValuesForProperty(property, summary, includeVersion);
+		var allowedValues: string[] = getAllowedValuesForProperty(property, summary, includeVersion);
 		if (allowedValues.length > 0) {
 			md += '* ' + style.propertyDetails('Allowed values') + ':';
 			allowedValues.forEach(allowedValue => {
@@ -304,21 +280,11 @@ export function createPropertyDetails(property: SchemaProperty, headerLevel: num
 		}
 	}
 
-    // TODO: fix adding samples later
-    // property.examples.forEach(function (example, i) {
-    //     if (i == 0) {
-    //         md += "\n" + style.getHeaderMarkdown("Example", 3);
-    //     }
-
-    //     md += getExampleForProperty(example);
-    // });
-
-
-    return md + '\n';
+	return md + '\n';
 }
 
 function getAllowedValuesForProperty(property: SchemaProperty, summary: any, includeVersion: boolean) {
-	var allowedValues:string[] = [];
+	var allowedValues: string[] = [];
 
 	property.getAllTypes().forEach(propertyType => {
 		allowedValues.push(...getAllowedValuesForPropertyType(propertyType, summary, includeVersion));
@@ -328,11 +294,11 @@ function getAllowedValuesForProperty(property: SchemaProperty, summary: any, inc
 }
 
 function getAllowedValuesForPropertyType(propertyType: SchemaPropertyType, summary: any, includeVersion: boolean) {
-	var allowedValues:string[] = [];
+	var allowedValues: string[] = [];
 
 	if (propertyType.type instanceof SchemaEnum) {
 		propertyType.type.values.forEach(enumValue => {
-			var descriptions:string[] = [];
+			var descriptions: string[] = [];
 
 			if (includeVersion) {
 				if (enumValue.original.version && enumValue.original.version !== summary.version) {
@@ -343,7 +309,7 @@ function getAllowedValuesForPropertyType(propertyType: SchemaPropertyType, summa
 			if (enumValue.description && enumValue.description.length > 0) {
 				descriptions.push(enumValue.description);
 			}
-			
+
 			if (descriptions.length > 0) {
 				allowedValues.push(style.enumValue(enumValue.value) + ": " + descriptions.join(" "));
 			} else {
@@ -362,7 +328,7 @@ function getAllowedValuesForPropertyType(propertyType: SchemaPropertyType, summa
 }
 
 function getAllowedValuesForClass(classType: SchemaClass, summary: any, includeVersion: boolean) {
-	var answer:string[] = [];
+	var answer: string[] = [];
 	if (classType.implementations.length > 0) {
 		classType.implementations.forEach(implementation => {
 			answer.push(...getAllowedValuesForClass(implementation, summary, includeVersion));

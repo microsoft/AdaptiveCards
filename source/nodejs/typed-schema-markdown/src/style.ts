@@ -42,15 +42,15 @@ export function defaultValue(value: any) {
 * @return {string} The markdown string that should be placed prior to the title of the header
 */
 export function getHeaderMarkdown(content, level) {
-    level = defaultValueHelper(level, 2);
+	level = defaultValueHelper(level, 2);
 
-    var md = '';
-    for (var i = 0; i < level; ++i) {
-        md += '#';
-    }
+	var md = '';
+	for (var i = 0; i < level; ++i) {
+		md += '#';
+	}
 
-    md += " " + content + "\n\n";
-    return md;
+	md += " " + content + "\n\n";
+	return md;
 }
 
 /**
@@ -61,12 +61,12 @@ export function getHeaderMarkdown(content, level) {
 * @return {string} The markdown string that should be placed as the start of the section
 */
 export function getSectionMarkdown(section, level) {
-    var md = '';
+	var md = '';
 
-    md += '<a name="' + REFERENCE + section.toLowerCase().replace(/ /g, '-') + '"></a>\n';
-    md += getHeaderMarkdown(section, level);
+	md += '<a name="' + REFERENCE + section.toLowerCase().replace(/ /g, '-') + '"></a>\n';
+	md += getHeaderMarkdown(section, level);
 
-    return md;
+	return md;
 }
 
 /**
@@ -77,8 +77,8 @@ export function getSectionMarkdown(section, level) {
 * @return {string} The markdown string representing the item as a bulleted item at the proper indentation.
 */
 export function bulletItem(item, indentationLevel) {
-    indentationLevel = defaultValueHelper(indentationLevel, 0);
-    return (' '.repeat(indentationLevel * 3)) + '* ' + item + '\n';
+	indentationLevel = defaultValueHelper(indentationLevel, 0);
+	return (' '.repeat(indentationLevel * 3)) + '* ' + item + '\n';
 }
 
 /**
@@ -89,13 +89,13 @@ export function bulletItem(item, indentationLevel) {
 * @return {string} The markdown with the specified string hyperlinked to the specified link.
 */
 export function getLinkMarkdown(string, link) {
-    if ((!defined(string) || string.length === 0)) {
-        return '';
-    } else if ((!defined(link) || link.length === 0)) {
-        return string;
-    } else {
-        return '[' + string + '](' + link + ')';
-    }
+	if ((!defined(string) || string.length === 0)) {
+		return '';
+	} else if ((!defined(link) || link.length === 0)) {
+		return string;
+	} else {
+		return '[' + string + '](' + link + ')';
+	}
 }
 
 /**
@@ -105,11 +105,11 @@ export function getLinkMarkdown(string, link) {
 * @return {string} The bolded string in markdown syntax
 */
 export function styleBold(string) {
-    if (defined(string) && string.length > 0) {
-        return '**' + string + '**';
-    }
+	if (defined(string) && string.length > 0) {
+		return '**' + string + '**';
+	}
 
-    return '';
+	return '';
 }
 
 /**
@@ -120,22 +120,22 @@ export function styleBold(string) {
 * @return {string} The code in markdown code syntax
 */
 export function styleCode(code, codeLang?) {
-    if (defined(code)) {
-        // The object might be a string or it might be a number or something else.
-        // Let's make sure it's a string first.
-        var stringified = code.toString();
+	if (defined(code)) {
+		// The object might be a string or it might be a number or something else.
+		// Let's make sure it's a string first.
+		var stringified = code.toString();
 
-        if (stringified.length > 0) {
-            if (defined(codeLang)) {
-                return '```' + codeLang + '\n' + stringified + '```\n'; 
-            }
-            else {
-                return '`' + stringified + '`';
-            }
-        }
-    }
+		if (stringified.length > 0) {
+			if (defined(codeLang)) {
+				return '```' + codeLang + '\n' + stringified + '```\n';
+			}
+			else {
+				return '`' + stringified + '`';
+			}
+		}
+	}
 
-    return '';
+	return '';
 }
 
 /**
@@ -146,13 +146,13 @@ export function styleCode(code, codeLang?) {
 * @return {string} The string in markdown code syntax
 */
 export function styleCodeType(string, type) {
-    if (!defined(string) || string.length === 0) {
-        return '';
-    } else if (type === 'string') {
-        return styleCode('"' + string + '"');
-    }
+	if (!defined(string) || string.length === 0) {
+		return '';
+	} else if (type === 'string') {
+		return styleCode('"' + string + '"');
+	}
 
-    return styleCode(string);
+	return styleCode(string);
 }
 
 /**
@@ -164,23 +164,23 @@ export function styleCodeType(string, type) {
 * @return {string} The updated string, with any occurrences of the @type string linked via markdown.
 */
 export function linkType(string, type, autoLink) {
-    if (defaultValueHelper(autoLink, enums.autoLinkOption.off) === enums.autoLinkOption.off) {
-        return string;
-    } else if ((!defined(string) || string.length === 0)) {
-        return string;
-    } else if ((!defined(type) || type.length === 0)) {
-        return string;
-    } else {
-        var typeLink = '#' + REFERENCE + type.toLowerCase().replace(/ /g, '-');
+	if (defaultValueHelper(autoLink, enums.autoLinkOption.off) === enums.autoLinkOption.off) {
+		return string;
+	} else if ((!defined(string) || string.length === 0)) {
+		return string;
+	} else if ((!defined(type) || type.length === 0)) {
+		return string;
+	} else {
+		var typeLink = '#' + REFERENCE + type.toLowerCase().replace(/ /g, '-');
 
-        if (autoLink === enums.autoLinkOption.aggressive) {
-            var regExp = new RegExp('([^`\.]|^)' + type + '([ \.]|$)');
-            return string.replace(regExp, "$1" + getLinkMarkdown(styleCode(type), typeLink) + "$2");
-        } else {
-            var regExp = new RegExp('`' + type + '`');
-            return string.replace(regExp, getLinkMarkdown(styleCode(type), typeLink));
-        }
-    }
+		if (autoLink === enums.autoLinkOption.aggressive) {
+			var regExp = new RegExp('([^`\.]|^)' + type + '([ \.]|$)');
+			return string.replace(regExp, "$1" + getLinkMarkdown(styleCode(type), typeLink) + "$2");
+		} else {
+			var regExp = new RegExp('`' + type + '`');
+			return string.replace(regExp, getLinkMarkdown(styleCode(type), typeLink));
+		}
+	}
 }
 
 /**
@@ -190,12 +190,12 @@ export function linkType(string, type, autoLink) {
 * @return {string} The markdown for a link with displayString text targeted at type.
 */
 export function getTOCLink(displayString, type) {
-    if ((!defined(displayString) || displayString.length === 0)) {
-        return displayString;
-    } else if ((!defined(type) || type.length === 0)) {
-        return displayString;
-    } else {
-        var typeLink = '#' + REFERENCE + type.toLowerCase().replace(/ /g, '-');
-        return getLinkMarkdown(styleCode(displayString), typeLink);
-    }
+	if ((!defined(displayString) || displayString.length === 0)) {
+		return displayString;
+	} else if ((!defined(type) || type.length === 0)) {
+		return displayString;
+	} else {
+		var typeLink = '#' + REFERENCE + type.toLowerCase().replace(/ /g, '-');
+		return getLinkMarkdown(styleCode(displayString), typeLink);
+	}
 }

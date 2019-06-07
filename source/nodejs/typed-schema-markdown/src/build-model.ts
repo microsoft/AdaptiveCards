@@ -22,7 +22,7 @@ export function buildModel(options: BuildModelOptions) {
 
 	var items = [];
 
-	var schema:Schema = Schema.fromFolder(schemaFolder);
+	var schema: Schema = Schema.fromFolder(schemaFolder);
 
 	for (var index in toc) {
 		var rootObj = toc[index];
@@ -42,14 +42,13 @@ export function buildModel(options: BuildModelOptions) {
 				continue;
 			}
 
-			var definition:any = {
+			var definition: any = {
 				type: objSchema
 			};
 			definition.name = name;
 			definition.version = defaultValue(objSchema.original.version, "1.0");
 			definition.examples = [];
 
-			// definition.title = objSchema.title;
 			definition.description = objSchema.description;
 			if (objSchema instanceof SchemaClass) {
 				definition.properties = objSchema.getAllProperties();
@@ -72,16 +71,16 @@ export function buildModel(options: BuildModelOptions) {
 			}
 
 			root.children.push(definition);
-			
+
 		}
 
 		items.push(root);
 	}
-	
+
 	return items;
 }
 
 function getObjectName(obj) {
-    for (var property in obj)
-        return property;
+	for (var property in obj)
+		return property;
 }

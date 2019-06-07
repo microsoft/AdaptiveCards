@@ -5,5 +5,5 @@
 * @return {boolean} true if value exists and is not null; false otherwise
 */
 export function defined(value) {
-    return (value !== undefined) && (value !== null);
+	return (value !== undefined) && (value !== null);
 }

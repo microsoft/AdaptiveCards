@@ -1,9 +1,9 @@
 {
-	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
-	"extends": "Input",
-	"description": "Lets a user choose between two options.",
-	"properties": {
-		"title": {
+  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+  "extends": "Input",
+  "description": "Lets a user choose between two options.",
+  "properties": {
+    "title": {
       "type": "string",
       "description": "Title for the toggle",
       "required": true
@@ -28,5 +28,5 @@
       "description": "If `true`, allow text to wrap. Otherwise, text is clipped.",
       "version": "1.2"
     }
-	}
+  }
 }

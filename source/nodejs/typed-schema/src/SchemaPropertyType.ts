@@ -1,5 +1,5 @@
-import {SchemaType} from "./SchemaType";
-import {SchemaLiteral} from "./SchemaLiteral";
+import { SchemaType } from "./SchemaType";
+import { SchemaLiteral } from "./SchemaLiteral";
 
 export class SchemaPropertyType {
 	private _type: SchemaType;
@@ -31,7 +31,7 @@ export class SchemaPropertyType {
 			case "uri-reference":
 				this._type = SchemaLiteral.uriReference;
 				break;
-	
+
 			case "string":
 				this._type = SchemaLiteral.string;
 				break;
@@ -51,7 +51,7 @@ export class SchemaPropertyType {
 			case "any":
 				this._type = SchemaLiteral.any;
 				break;
-	
+
 			default:
 				// Must be an object reference
 				var foundType = types.get(typeName);
@@ -61,7 +61,7 @@ export class SchemaPropertyType {
 				this._type = foundType;
 				break;
 		}
-		
+
 	}
 
 	get type() {

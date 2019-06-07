@@ -3,9 +3,9 @@
   "classType": "Enum",
   "description": "Style hint for text input.",
   "values": [
-      "text",
-      "tel",
-      "url",
-      "email"
+    "text",
+    "tel",
+    "url",
+    "email"
   ]
 }

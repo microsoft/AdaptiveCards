@@ -8,7 +8,7 @@ var ajv = new Ajv();
 ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'));
 var validate = ajv.compile(JSON.parse(schemaTxt));
 
-var shouldFail:string[] = [
+var shouldFail: string[] = [
 	"v1.2/Scenarios/SimpleFallback.json", // Uses custom types
 	"v1.2/Elements/ActionFallback.json", // Uses custom types
 	"v1.2/Elements/Action.Submit.Style.json", // Uses custom "other" style
@@ -65,19 +65,19 @@ function getAllFiles(dir: string) {
 	// https://stackoverflow.com/questions/5827612/node-js-fs-readdir-recursive-directory-search
 	var results = [];
 	var list = fs.readdirSync(dir);
-	list.forEach(function(file) {
+	list.forEach(function (file) {
 		var filePath = dir + '/' + file;
 		var stat = fs.statSync(filePath);
-		if (stat && stat.isDirectory()) { 
+		if (stat && stat.isDirectory()) {
 
 			// If HostConfig folder, ignore
 			if (file == "HostConfig") {
 				return;
 			}
-			
+
 			/* Recurse into a subdirectory */
 			results = results.concat(getAllFiles(filePath));
-		} else { 
+		} else {
 
 			// If doesn't end in .json, ignore
 			if (!file.endsWith(".json")) {

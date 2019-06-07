@@ -1,5 +1,5 @@
-import {SchemaType} from "./SchemaType";
-import {SchemaEnumValue} from "./SchemaEnumValue";
+import { SchemaType } from "./SchemaType";
+import { SchemaEnumValue } from "./SchemaEnumValue";
 
 export class SchemaEnum extends SchemaType {
 
