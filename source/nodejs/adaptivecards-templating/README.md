@@ -98,7 +98,7 @@ substr(s: string, index: number, count: number)
 |Parameter|Description|
 |---|---|
 |s|The input string|
-|index|The index (zero based) where to strat the extraction|
+|index|The index (zero based) where to start the extraction|
 |count|The number of characters to extract|
 
 #### JSON.parse
@@ -110,7 +110,7 @@ JSON.parse(input: string)
 
 |Parameter|Description|
 |---|---|
-|input|The input string. Must be a valid JSOJN payload.|
+|input|The input string. Must be a valid JSON payload.|
 
 #### if
 Returns a value that depends on whether a condition evaluates to true or false.
