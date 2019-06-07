@@ -21,3 +21,9 @@ For the first time (or whenever modifying package.json), run `npm install`
 
 1. Make sure you've built first
 1. `npm run generate-schema`
+
+
+## Generating schema for Adaptive Cards
+
+1. Make sure you've built first
+1. `npm run generate-adaptive-schema`
