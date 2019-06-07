@@ -509,8 +509,8 @@ export abstract class CardElement extends CardObject {
         Utils.setProperty(result, "separator", this.separator, false);
         Utils.setProperty(result, "height", this.height, "auto");
 
-        if (this.minPixelHeight) {
-            Utils.setProperty(result, "minHeight", this.minPixelHeight + "px");
+        if (this.supportsMinHeight) {
+            Utils.setProperty(result, "minHeight", !isNaN(this.minPixelHeight) ? this.minPixelHeight + "px" : undefined);
         }
 
         return result;
@@ -659,6 +659,9 @@ export abstract class CardElement extends CardObject {
                     );
                 }
             }
+        }
+        else {
+            this.minPixelHeight = null;
         }
     }
 
@@ -1791,15 +1794,19 @@ export class FactSet extends CardElement {
     toJSON(): any {
         let result = super.toJSON();
 
-		if (this.facts.length > 0) {
-			let facts = []
+        Utils.setArrayProperty(result, "facts", this.facts);
 
+        /*
+        let facts = [];
+
+		if (this.facts) {
 			for (let fact of this.facts) {
 				facts.push(fact.toJSON());
 			}
-
-			Utils.setProperty(result, "facts", facts);
 		}
+
+        Utils.setProperty(result, "facts", facts);
+        */
 
         return result;
     }
@@ -2497,7 +2504,7 @@ export class Media extends CardElement {
         this._selectedMediaType = undefined;
 
         for (let source of this.sources) {
-            let mimeComponents = source.mimeType.split('/');
+            let mimeComponents = source.mimeType ? source.mimeType.split('/') : [];
 
             if (mimeComponents.length == 2) {
                 if (!this._selectedMediaType) {
@@ -2666,14 +2673,12 @@ export class Media extends CardElement {
 		this.poster = Utils.getStringValue(json["poster"]);
 		this.altText = Utils.getStringValue(json["altText"]);
 
-        if (json["sources"] != null) {
-            let jsonSources = json["sources"] as Array<any>;
+        this.sources = [];
 
-            this.sources = [];
-
-            for (let i = 0; i < jsonSources.length; i++) {
+        if (Array.isArray(json["sources"])) {
+            for (let jsonSource of json["sources"]) {
                 let source = new MediaSource();
-                source.parse(jsonSources[i], errors);
+                source.parse(jsonSource, errors);
 
                 this.sources.push(source);
             }
@@ -2686,6 +2691,7 @@ export class Media extends CardElement {
         Utils.setProperty(result, "poster", this.poster);
         Utils.setProperty(result, "altText", this.altText);
 
+        /*
         if (this.sources.length > 0) {
             let serializedSources = [];
 
@@ -2695,6 +2701,9 @@ export class Media extends CardElement {
 
             Utils.setProperty(result, "sources", serializedSources);
         }
+        */
+
+        Utils.setArrayProperty(result, "sources", this.sources);
 
         return result;
     }
@@ -3215,8 +3224,8 @@ export class Choice extends SerializableObject {
     parse(json: any) {
         super.parse(json);
 
-        this.title = Utils.getStringValue(json["title"]);
-        this.value = Utils.getStringValue(json["value"]);
+        this.title = Utils.getStringValue(json["title"], "");
+        this.value = Utils.getStringValue(json["value"], "");
     }
 
     toJSON(): any {
@@ -3419,15 +3428,19 @@ export class ChoiceSetInput extends Input {
 
         Utils.setProperty(result, "placeholder", this.placeholder);
 
-        if (this.choices.length > 0) {
-            var choices = [];
+        /*
+        let choices = [];
 
+        if (this.choices) {
             for (let choice of this.choices) {
                 choices.push(choice.toJSON());
             }
-
-            Utils.setProperty(result, "choices", choices);
         }
+
+        Utils.setProperty(result, "choices", choices);
+        */
+
+        Utils.setArrayProperty(result, "choices", this.choices);
 
         Utils.setProperty(result, "style", this.isCompact ? null : "expanded");
         Utils.setProperty(result, "isMultiSelect", this.isMultiSelect, false);
@@ -3469,12 +3482,10 @@ export class ChoiceSetInput extends Input {
 
         this.choices = [];
 
-        if (json["choices"] != undefined) {
-            let choiceArray = json["choices"] as Array<any>;
-
-            for (let i = 0; i < choiceArray.length; i++) {
+        if (Array.isArray(json["choices"])) {
+            for (let jsonChoice of json["choices"]) {
                 let choice = new Choice();
-                choice.parse(choiceArray[i]);
+                choice.parse(jsonChoice);
 
                 this.choices.push(choice);
             }
@@ -4351,15 +4362,17 @@ export class HttpAction extends Action {
         Utils.setProperty(result, "body", this._body.getOriginal());
         Utils.setProperty(result, "ignoreInputValidation", this.ignoreInputValidation, false);
 
-        if (this._headers.length > 0) {
-            let headers = [];
+        /*
+        let headers = [];
 
-            for (let header of this._headers) {
-                headers.push(header.toJSON());
-            }
-
-            Utils.setProperty(result, "headers", headers);
+        for (let header of this.headers) {
+            headers.push(header.toJSON());
         }
+
+        Utils.setProperty(result, "headers", headers);
+        */
+
+        Utils.setArrayProperty(result, "headers", this.headers);
 
         return result;
     }
@@ -4400,12 +4413,10 @@ export class HttpAction extends Action {
 
         this._headers = [];
 
-        if (json["headers"] != null) {
-            var jsonHeaders = json["headers"] as Array<any>;
-
-            for (var i = 0; i < jsonHeaders.length; i++) {
+        if (Array.isArray(json["headers"])) {
+            for (let jsonHeader of json["headers"]) {
                 let httpHeader = new HttpHeader();
-                httpHeader.parse(jsonHeaders[i]);
+                httpHeader.parse(jsonHeader);
 
                 this.headers.push(httpHeader);
             }
