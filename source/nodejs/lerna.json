@@ -1,16 +1,16 @@
 {
-	"version": "independent",
-	"packages": [
+  "version": "independent",
+  "packages": [
     "adaptivecards*/**",
     "typed-schema/**",
     "typed-schema-markdown/**"
-	],
-	"command": {
-		"publish": {
-			"ignoreChanges": [
-				"**/__tests__/**",
-				"*.md"
-			]
-		}
-	}
+  ],
+  "command": {
+    "publish": {
+      "ignoreChanges": [
+        "**/__tests__/**",
+        "*.md"
+      ]
+    }
+  }
 }
