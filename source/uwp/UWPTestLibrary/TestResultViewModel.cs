@@ -139,7 +139,7 @@ namespace UWPTestLibrary
                     answer.Status = TestStatus.Failed;
                 }
 
-                // See if the source chagned by checking
+                // See if the source changed by checking
                 // if the hashes have changed since the stored info
                 if (storedInfo.HostConfigHash != hostConfigFile.Hash
                     || storedInfo.CardHash != cardFile.Hash)
