@@ -27,6 +27,7 @@
     "src/components",
     "src/styles",
     "src/utils",
+		"src/models",
     "src/adaptive-card.js"
   ],
   "main": "./src/adaptive-card",
