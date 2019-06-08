@@ -155,8 +155,11 @@ namespace UWPUnitTests
                 sourceHostConfigsFolder: _sourceHostConfigsFolder,
                 sourceCardsFolder: _sourceCardsFolder);
 
-            if ((result.Status != TestStatus.Passed) &&
-                (result.Status != TestStatus.PassedButSourceWasChanged))
+            // We pass if it's not a new or changed card, and if either the image and json match or they match via error 
+            bool testPass = !result.Status.NewCard && !result.Status.OriginalMatched &&
+                ((result.Status.ImageMatched && result.Status.JsonRoundTripMatched) || result.Status.MatchedViaError);
+
+            if (!testPass)
             {
                 throw new Exception(result.Status.ToString() + ": " + result.HostConfigName + "\\" + result.CardName);
             }
