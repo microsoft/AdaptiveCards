@@ -275,6 +275,10 @@ export abstract class DesignerPeer extends DraggableElement {
         return null;
     }
 
+    protected renderEditor(propertyEditor: PropertyEditor, updatePropertySheet: boolean = false, target: object = undefined): Adaptive.CardElement {
+        return propertyEditor.render(new PropertyEditorContext(this, target), updatePropertySheet);
+    }
+
     protected abstract internalRemove(): boolean;
 
     readonly registration: DesignerPeerRegistrationBase;
@@ -489,22 +493,38 @@ export abstract class DesignerPeer extends DraggableElement {
     }
 }
 
+export class PropertyEditorContext {
+    private _target: object = undefined;
+
+    constructor(readonly peer: DesignerPeer, target: object = undefined) {
+        this._target = target;
+    }
+
+    changed(updatePropertySheet: boolean) {
+        this.peer.changed(updatePropertySheet);
+    }
+
+    get target(): object {
+        return this._target != undefined ? this._target : this.peer.getCardObject();
+    }
+}
+
 export abstract class PropertyEditor {
-    abstract render(peer: DesignerPeer): Adaptive.CardElement;
+    abstract render(context: PropertyEditorContext, updatePropertySheet: boolean): Adaptive.CardElement;
 }
 
 export abstract class SingleInputPropertyEditor extends PropertyEditor {
     protected abstract createInput(): Adaptive.Input;
 
-    protected getPropertyValue(peer: DesignerPeer): any {
-        return peer.getCardObject()[this.propertyName];
+    protected getPropertyValue(context: PropertyEditorContext): any {
+        return context.target[this.propertyName];
     }
 
-    protected setPropertyValue(peer: DesignerPeer, value: string) {
-        peer.getCardObject()[this.propertyName] = value;        
+    protected setPropertyValue(context: PropertyEditorContext, value: string) {
+        context.target[this.propertyName] = value;        
     }
 
-    render(peer: DesignerPeer, updatePropertySheet: boolean = false): Adaptive.CardElement {
+    render(context: PropertyEditorContext, updatePropertySheet: boolean = false): Adaptive.CardElement {
         let leftColumn = new Adaptive.Column();
         leftColumn.width = new Adaptive.SizeAndUnit(100, Adaptive.SizeUnit.Pixel);
         leftColumn.verticalContentAlignment = Adaptive.VerticalAlignment.Center;
@@ -536,11 +556,11 @@ export abstract class SingleInputPropertyEditor extends PropertyEditor {
         label.text = this.label;
 
         let input = this.createInput();
-        input.defaultValue = this.getPropertyValue(peer);
+        input.defaultValue = this.getPropertyValue(context);
         input.onValueChanged = () => {
-            this.setPropertyValue(peer, input.value);
+            this.setPropertyValue(context, input.value);
 
-            peer.changed(updatePropertySheet);
+            context.changed(updatePropertySheet);
         }
     
         leftColumn.addItem(label);
@@ -573,12 +593,12 @@ export class StringPropertyEditor extends SingleInputPropertyEditor {
 }
 
 export class NumberPropertyEditor extends SingleInputPropertyEditor {
-    protected setPropertyValue(peer: DesignerPeer, value: string) {
+    protected setPropertyValue(context: PropertyEditorContext, value: string) {
         try {
-            peer.getCardObject()[this.propertyName] = parseFloat(value);
+            context.target[this.propertyName] = parseFloat(value);
         }
         catch {
-            peer.getCardObject()[this.propertyName] = this.defaultValue;
+            context.target[this.propertyName] = this.defaultValue;
         }
     }
 
@@ -599,34 +619,34 @@ export class NumberPropertyEditor extends SingleInputPropertyEditor {
 }
 
 export class ObjectPropertyEditor extends StringPropertyEditor {
-    protected getPropertyValue(peer: DesignerPeer): any {
-        return JSON.stringify(peer.getCardObject()[this.propertyName]);
+    protected getPropertyValue(context: PropertyEditorContext): any {
+        return JSON.stringify(context.target[this.propertyName]);
     }
 
-    protected setPropertyValue(peer: DesignerPeer, value: string) {
-        peer.getCardObject()[this.propertyName] = JSON.parse(value);
+    protected setPropertyValue(context: PropertyEditorContext, value: string) {
+        context.target[this.propertyName] = JSON.parse(value);
     }
 }
 
 export class CustomCardObjectPropertyEditor extends StringPropertyEditor {
-    protected getPropertyValue(peer: DesignerPeer): any {
-        return peer.getCardObject().getCustomProperty(this.propertyName);
+    protected getPropertyValue(context: PropertyEditorContext): any {
+        return context.peer.getCardObject().getCustomProperty(this.propertyName);
     }
 
-    protected setPropertyValue(peer: DesignerPeer, value: string) {
-        peer.getCardObject().setCustomProperty(this.propertyName, value);
+    protected setPropertyValue(context: PropertyEditorContext, value: string) {
+        context.peer.getCardObject().setCustomProperty(this.propertyName, value);
     }
 }
 
 export class BooleanPropertyEditor extends SingleInputPropertyEditor {
-    protected getPropertyValue(peer: DesignerPeer): any {
-        let v = peer.getCardObject()[this.propertyName];
+    protected getPropertyValue(context: PropertyEditorContext): any {
+        let v = context.target[this.propertyName];
 
         return typeof v === "boolean" ? v.toString() : "false";
     }
 
-    protected setPropertyValue(peer: DesignerPeer, value: string) {
-        peer.getCardObject()[this.propertyName] = value == "true"; 
+    protected setPropertyValue(context: PropertyEditorContext, value: string) {
+        context.target[this.propertyName] = value == "true"; 
     }
 
     protected createInput(): Adaptive.Input {
@@ -657,7 +677,7 @@ export class ChoicePropertyEditor extends SingleInputPropertyEditor {
 }
 
 export class HeightPropertyEditor extends ChoicePropertyEditor {
-    protected setPropertyValue(peer: DesignerPeer, value: string) {
+    protected setPropertyValue(context: PropertyEditorContext, value: string) {
         let processedValue: string;
 
         switch (value) {
@@ -670,25 +690,25 @@ export class HeightPropertyEditor extends ChoicePropertyEditor {
                 break;
         }
 
-        peer.getCardObject()[this.propertyName] = processedValue; 
+        context.target[this.propertyName] = processedValue; 
     }
 }
 
 export class ActionPropertyEditor extends SingleInputPropertyEditor {
-    protected getPropertyValue(peer: DesignerPeer): any {
-        let action = <Adaptive.Action>peer.getCardObject()[this.propertyName];
+    protected getPropertyValue(context: PropertyEditorContext): any {
+        let action = <Adaptive.Action>context.target[this.propertyName];
 
         return action ? action.getJsonTypeName() : "none";
     }
 
-    protected setPropertyValue(peer: DesignerPeer, value: string) {
-        peer.getCardObject()[this.propertyName] = parseInt(value, 10);
+    protected setPropertyValue(context: PropertyEditorContext, value: string) {
+        context.target[this.propertyName] = parseInt(value, 10);
 
         if (value == "none") {
-            peer.getCardObject()[this.propertyName] = null;
+            context.target[this.propertyName] = null;
         }
         else {
-            peer.getCardObject()[this.propertyName] = Adaptive.AdaptiveCard.actionTypeRegistry.createInstance(value);
+            context.target[this.propertyName] = Adaptive.AdaptiveCard.actionTypeRegistry.createInstance(value);
         }
     }
 
@@ -713,8 +733,8 @@ export class ActionPropertyEditor extends SingleInputPropertyEditor {
         return input;
     }
 
-    render(peer: DesignerPeer, updatePropertySheet: boolean = false): Adaptive.CardElement {
-        let renderedSingleInput = super.render(peer, updatePropertySheet);
+    render(context: PropertyEditorContext, updatePropertySheet: boolean = false): Adaptive.CardElement {
+        let renderedSingleInput = super.render(context, updatePropertySheet);
 
         let container = new Adaptive.Container();
 
@@ -736,9 +756,30 @@ export class ActionPropertyEditor extends SingleInputPropertyEditor {
     }
 }
 
+export class CompoundPropertyEditor extends PropertyEditor {
+    render(context: PropertyEditorContext, updatePropertySheet: boolean = false): Adaptive.CardElement {
+        let container = new Adaptive.Container();
+        let header = addHeader(container, this.title);
+        header.separator = true;
+
+        for (let propertyEditor of this.propertyEditors) {
+            container.addItem(propertyEditor.render(new PropertyEditorContext(context.peer, context.target[this.propertyName]), false));
+        }
+
+        return container;
+    }
+
+    constructor(
+        readonly title: string,
+        readonly propertyName: string,
+        readonly propertyEditors: PropertyEditor[] = []) {
+        super();
+    }
+}
+
 export class EnumPropertyEditor extends SingleInputPropertyEditor {
-    protected setPropertyValue(peer: DesignerPeer, value: string) {
-        peer.getCardObject()[this.propertyName] = parseInt(value, 10);
+    protected setPropertyValue(context: PropertyEditorContext, value: string) {
+        context.target[this.propertyName] = parseInt(value, 10);
     }
 
     protected createInput(): Adaptive.Input {
@@ -772,19 +813,19 @@ interface INameValuePair {
 }
 
 class NameValuePairPropertyEditor extends PropertyEditor {
-    private changed(peer: DesignerPeer, nameValuePairs: INameValuePair[], refreshPropertySheet: boolean) {
-        peer.getCardObject()[this.collectionPropertyName] = [];
+    private changed(context: PropertyEditorContext, nameValuePairs: INameValuePair[], refreshPropertySheet: boolean) {
+        context.target[this.collectionPropertyName] = [];
 
         for (let nameValuePair of nameValuePairs) {
             let item = this.createCollectionItem(nameValuePair.name, nameValuePair.value);
 
-            peer.getCardObject()[this.collectionPropertyName].push(item);
+            context.target[this.collectionPropertyName].push(item);
         }
 
-        peer.changed(refreshPropertySheet);
+        context.changed(refreshPropertySheet);
     }
 
-    render(peer: DesignerPeer): Adaptive.CardElement {
+    render(context: PropertyEditorContext): Adaptive.CardElement {
         let result = new Adaptive.Container();
 
         let titleTextBlock = new Adaptive.TextBlock();
@@ -792,10 +833,10 @@ class NameValuePairPropertyEditor extends PropertyEditor {
 
         result.addItem(titleTextBlock);
 
-        let collection = peer.getCardObject()[this.collectionPropertyName];
+        let collection = context.target[this.collectionPropertyName];
 
         if (!Array.isArray(collection)) {
-            throw new Error("The " + this.collectionPropertyName + " property on " + peer.getCardObject().getJsonTypeName() + " either doesn't exist or isn't an array.")
+            throw new Error("The " + this.collectionPropertyName + " property on " + context.peer.getCardObject().getJsonTypeName() + " either doesn't exist or isn't an array.")
         }
 
         let nameValuePairs: INameValuePair[] = [];
@@ -824,7 +865,7 @@ class NameValuePairPropertyEditor extends PropertyEditor {
                 textInput.onValueChanged = (sender) => {
                     nameValuePairs[i].name = sender.value;
 
-                    this.changed(peer, nameValuePairs, false);
+                    this.changed(context, nameValuePairs, false);
                 };
 
                 let nameColumn = new Adaptive.Column("stretch");
@@ -836,7 +877,7 @@ class NameValuePairPropertyEditor extends PropertyEditor {
                 textInput.onValueChanged = (sender) => {
                     nameValuePairs[i].value = sender.value;
 
-                    this.changed(peer, nameValuePairs, false);
+                    this.changed(context, nameValuePairs, false);
                 };
 
                 let valueColumn = new Adaptive.Column("stretch");
@@ -848,7 +889,7 @@ class NameValuePairPropertyEditor extends PropertyEditor {
                 removeAction.onExecute = (sender) => {
                     nameValuePairs.splice(i, 1);
 
-                    this.changed(peer, nameValuePairs, true);
+                    this.changed(context, nameValuePairs, true);
                 }
 
                 let actionSet = new Adaptive.ActionSet();
@@ -873,7 +914,7 @@ class NameValuePairPropertyEditor extends PropertyEditor {
         addAction.onExecute = (sender) => {
             nameValuePairs.push({ name: "", value: "" });
 
-            this.changed(peer, nameValuePairs, true);
+            this.changed(context, nameValuePairs, true);
         }
 
         let actionSet = new Adaptive.ActionSet();
@@ -982,10 +1023,10 @@ export class ActionPeer extends DesignerPeer {
             card.addItem(actionType);
         }
 
-        card.addItem(ActionPeer.idProperty.render(this));
-        card.addItem(ActionPeer.titleProperty.render(this));
-        card.addItem(ActionPeer.styleProperty.render(this));
-        card.addItem(ActionPeer.iconUrlProperty.render(this));
+        card.addItem(this.renderEditor(ActionPeer.idProperty));
+        card.addItem(this.renderEditor(ActionPeer.titleProperty));
+        card.addItem(this.renderEditor(ActionPeer.styleProperty));
+        card.addItem(this.renderEditor(ActionPeer.iconUrlProperty));
     }
 
     get action(): Adaptive.Action {
@@ -1033,17 +1074,17 @@ export class HttpActionPeer extends TypedActionPeer<Adaptive.HttpAction> {
         super.internalAddPropertySheetEntries(card, includeHeader);
 
         if (Adaptive.AdaptiveCard.useBuiltInInputValidation) {
-            card.addItem(HttpActionPeer.ignoreInputValidationProperty.render(this));
+            card.addItem(this.renderEditor(HttpActionPeer.ignoreInputValidationProperty));
         }
 
-        card.addItem(HttpActionPeer.methodProperty.render(this, true));
-        card.addItem(HttpActionPeer.urlProperty.render(this));
+        card.addItem(this.renderEditor(HttpActionPeer.methodProperty, true));
+        card.addItem(this.renderEditor(HttpActionPeer.urlProperty));
 
         if (this.action.method && this.action.method.toLowerCase() == "post") {
-            card.addItem(HttpActionPeer.bodyProperty.render(this));
+            card.addItem(this.renderEditor(HttpActionPeer.bodyProperty));
         }
 
-        card.addItem(HttpActionPeer.headersProperty.render(this));
+        card.addItem(this.renderEditor(HttpActionPeer.headersProperty));
     }
 }
 
@@ -1054,8 +1095,8 @@ export class SubmitActionPeer extends TypedActionPeer<Adaptive.SubmitAction> {
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.internalAddPropertySheetEntries(card, includeHeader);
 
-        card.addItem(SubmitActionPeer.ignoreInputValidationProperty.render(this));
-        card.addItem(SubmitActionPeer.dataProperty.render(this));
+        card.addItem(this.renderEditor(SubmitActionPeer.ignoreInputValidationProperty));
+        card.addItem(this.renderEditor(SubmitActionPeer.dataProperty));
     }
 }
 
@@ -1065,7 +1106,7 @@ export class OpenUrlActionPeer extends TypedActionPeer<Adaptive.OpenUrlAction> {
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.internalAddPropertySheetEntries(card, includeHeader);
 
-        card.addItem(OpenUrlActionPeer.urlProperty.render(this));
+        card.addItem(this.renderEditor(OpenUrlActionPeer.urlProperty));
     }
 }
 
@@ -1093,82 +1134,6 @@ export class CardElementPeer extends DesignerPeer {
 
     protected internalRemove(): boolean {
         return this.cardElement.remove();
-    }
-
-    protected internalAddBackgroundImageProperties(card: Adaptive.AdaptiveCard, backgroundImage: Adaptive.BackgroundImage) {
-        let header = addHeader(card, "Background image");
-        header.separator = true;
-
-        let url = addLabelAndInput(card, "URL:", Adaptive.TextInput);
-        url.input.placeholder = "(not set)";
-
-        if (backgroundImage) {
-            url.input.defaultValue = backgroundImage.url;
-        }
-
-        url.input.onValueChanged = () => {
-            backgroundImage.url = url.input.value;
-
-            this.changed(false);
-        }
-
-        let fillMode = addLabelAndInput(card, "Fill mode:", Adaptive.ChoiceSetInput);
-        fillMode.input.isCompact = true;
-        fillMode.input.placeholder = "(not set)";
-        fillMode.input.choices.push(new Adaptive.Choice("Cover", Adaptive.FillMode.Cover.toString()));
-        fillMode.input.choices.push(new Adaptive.Choice("Repeat horizontally", Adaptive.FillMode.RepeatHorizontally.toString()));
-        fillMode.input.choices.push(new Adaptive.Choice("Repeat vertically", Adaptive.FillMode.RepeatVertically.toString()));
-        fillMode.input.choices.push(new Adaptive.Choice("Repeat", Adaptive.FillMode.Repeat.toString()));
-
-        if (backgroundImage) {
-            fillMode.input.defaultValue = backgroundImage.fillMode.toString();
-        }
-
-        fillMode.input.onValueChanged = () => {
-            if (horizontalAlignment.input.value) {
-                backgroundImage.fillMode = <Adaptive.FillMode>parseInt(fillMode.input.value);
-            }
-
-            this.changed(false);
-        }
-
-        let horizontalAlignment = addLabelAndInput(card, "Horizontal alignment:", Adaptive.ChoiceSetInput);
-        horizontalAlignment.input.isCompact = true;
-        horizontalAlignment.input.placeholder = "(not set)";
-        horizontalAlignment.input.choices.push(new Adaptive.Choice("Left", Adaptive.HorizontalAlignment.Left.toString()));
-        horizontalAlignment.input.choices.push(new Adaptive.Choice("Center", Adaptive.HorizontalAlignment.Center.toString()));
-        horizontalAlignment.input.choices.push(new Adaptive.Choice("Right", Adaptive.HorizontalAlignment.Right.toString()));
-
-        if (backgroundImage) {
-            horizontalAlignment.input.defaultValue = backgroundImage.horizontalAlignment.toString();
-        }
-
-        horizontalAlignment.input.onValueChanged = () => {
-            if (horizontalAlignment.input.value) {
-                backgroundImage.horizontalAlignment = <Adaptive.HorizontalAlignment>parseInt(horizontalAlignment.input.value);
-            }
-
-            this.changed(false);
-        }
-
-        let verticalAlignment = addLabelAndInput(card, "Vertical alignment:", Adaptive.ChoiceSetInput);
-        verticalAlignment.input.isCompact = true;
-        verticalAlignment.input.placeholder = "(not set)";
-        verticalAlignment.input.choices.push(new Adaptive.Choice("Top", Adaptive.VerticalAlignment.Top.toString()));
-        verticalAlignment.input.choices.push(new Adaptive.Choice("Center", Adaptive.VerticalAlignment.Center.toString()));
-        verticalAlignment.input.choices.push(new Adaptive.Choice("Bottom", Adaptive.VerticalAlignment.Bottom.toString()));
-
-        if (backgroundImage) {
-            verticalAlignment.input.defaultValue = backgroundImage.verticalAlignment.toString();
-        }
-
-        verticalAlignment.input.onValueChanged = () => {
-            if (verticalAlignment.input.value) {
-                backgroundImage.verticalAlignment = <Adaptive.VerticalAlignment>parseInt(verticalAlignment.input.value);
-            }
-
-            this.changed(false);
-        }
     }
 
     protected internalUpdateCssStyles() {
@@ -1343,33 +1308,33 @@ export class CardElementPeer extends DesignerPeer {
             addHeader(card, this.cardElement.getJsonTypeName());
         }
 
-        card.addItem(CardElementPeer.dataContextProperty.render(this));
-        card.addItem(CardElementPeer.whenProperty.render(this));
+        card.addItem(this.renderEditor(CardElementPeer.dataContextProperty));
+        card.addItem(this.renderEditor(CardElementPeer.whenProperty));
 
         let getExcludedProperties = this.getExcludedProperties();
 
         if (getExcludedProperties.indexOf("id") < 0) {
-            card.addItem(CardElementPeer.idProperty.render(this));
+            card.addItem(this.renderEditor(CardElementPeer.idProperty));
         }
 
         if (getExcludedProperties.indexOf("isVisible") < 0) {
-            card.addItem(CardElementPeer.isVisibleProperty.render(this));
+            card.addItem(this.renderEditor(CardElementPeer.isVisibleProperty));
         }
 
         if (getExcludedProperties.indexOf("spacing") < 0) {
-            card.addItem(CardElementPeer.spacingProperty.render(this));
+            card.addItem(this.renderEditor(CardElementPeer.spacingProperty));
         }
 
         if (getExcludedProperties.indexOf("separator") < 0) {
-            card.addItem(CardElementPeer.separatorProperty.render(this));
+            card.addItem(this.renderEditor(CardElementPeer.separatorProperty));
         }
 
         if (getExcludedProperties.indexOf("horizontalAlignment") < 0) {
-            card.addItem(CardElementPeer.horizontalAlignmentProperty.render(this));
+            card.addItem(this.renderEditor(CardElementPeer.horizontalAlignmentProperty));
         }
 
         if (getExcludedProperties.indexOf("height") < 0) {
-            card.addItem(CardElementPeer.heightProperty.render(this));
+            card.addItem(this.renderEditor(CardElementPeer.heightProperty));
         }
     }
 
@@ -1393,6 +1358,10 @@ export abstract class TypedCardElementPeer<TCardElement extends Adaptive.CardEle
 }
 
 export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard> {
+    static readonly langProperty = new StringPropertyEditor("lang", "Language");
+    static readonly fallbackTextProperty = new StringPropertyEditor("fallbackText", "Fallback text", true);
+    static readonly speakProperty = new StringPropertyEditor("speak", "Speak");
+
     protected addAction(action: Adaptive.Action) {
         this.cardElement.addAction(action);
 
@@ -1447,22 +1416,16 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
         return false;
     }
 
-    static readonly langProperty = new StringPropertyEditor("lang", "Language");
-    static readonly fallbackTextProperty = new StringPropertyEditor("fallbackText", "Fallback text", true);
-    static readonly speakProperty = new StringPropertyEditor("speak", "Speak");
-
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, updatePropertySheet: boolean) {
         super.internalAddPropertySheetEntries(card, updatePropertySheet);
 
-        card.addItem(AdaptiveCardPeer.langProperty.render(this));
-        card.addItem(AdaptiveCardPeer.fallbackTextProperty.render(this));
-        card.addItem(AdaptiveCardPeer.speakProperty.render(this));
-        card.addItem(ContainerPeer.minHeightProperty.render(this));
-        card.addItem(ContainerPeer.verticalContentAlignmentProperty.render(this));
-
-        this.internalAddBackgroundImageProperties(card, this.cardElement.backgroundImage);
-
-        card.addItem(ContainerPeer.selectActionProperty.render(this, true));
+        card.addItem(this.renderEditor(AdaptiveCardPeer.langProperty));
+        card.addItem(this.renderEditor(AdaptiveCardPeer.fallbackTextProperty));
+        card.addItem(this.renderEditor(AdaptiveCardPeer.speakProperty));
+        card.addItem(this.renderEditor(ContainerPeer.minHeightProperty));
+        card.addItem(this.renderEditor(ContainerPeer.verticalContentAlignmentProperty));
+        card.addItem(this.renderEditor(ContainerPeer.backgroundImageProperty));
+        card.addItem(this.renderEditor(ContainerPeer.selectActionProperty, true));
 
         if (this.cardElement.selectAction) {
             let selectActionPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, null, this.cardElement.selectAction);
@@ -1473,18 +1436,18 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
 }
 
 export class ContainerStylePropertyEditor extends ChoicePropertyEditor {
-    protected getPropertyValue(peer: DesignerPeer): any {
-        let currentStyle = peer.getCardObject()[this.propertyName];
+    protected getPropertyValue(context: PropertyEditorContext): any {
+        let currentStyle = context.target[this.propertyName];
 
         return currentStyle ? currentStyle.toString() : "not_set";
     }
 
-    protected setPropertyValue(peer: DesignerPeer, value: string) {
+    protected setPropertyValue(context: PropertyEditorContext, value: string) {
         if (value == "not_set") {
-            peer.getCardObject()[this.propertyName] = null;
+            context.target[this.propertyName] = null;
         }
         else {
-            peer.getCardObject()[this.propertyName] = value;
+            context.target[this.propertyName] = value;
         }
     }
 
@@ -1610,14 +1573,12 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
             this.changed(true);
         }
 
-        card.addItem(ContainerPeer.minHeightProperty.render(this));
-        card.addItem(ContainerPeer.verticalContentAlignmentProperty.render(this));
-        card.addItem(ContainerPeer.styleProperty.render(this));
-        card.addItem(ContainerPeer.bleedProperty.render(this));
-
-        this.internalAddBackgroundImageProperties(card, this.cardElement.backgroundImage);
-
-        card.addItem(ContainerPeer.selectActionProperty.render(this, true));
+        card.addItem(this.renderEditor(ContainerPeer.minHeightProperty));
+        card.addItem(this.renderEditor(ContainerPeer.verticalContentAlignmentProperty));
+        card.addItem(this.renderEditor(ContainerPeer.styleProperty));
+        card.addItem(this.renderEditor(ContainerPeer.bleedProperty));
+        card.addItem(this.renderEditor(ContainerPeer.backgroundImageProperty));
+        card.addItem(this.renderEditor(ContainerPeer.selectActionProperty, true));
 
         if (this.cardElement.selectAction) {
             let selectActionPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, null, this.cardElement.selectAction);
@@ -1669,10 +1630,10 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.internalAddPropertySheetEntries(card, includeHeader);
 
-        card.addItem(ContainerPeer.minHeightProperty.render(this));
-        card.addItem(ContainerPeer.styleProperty.render(this));
-        card.addItem(ContainerPeer.bleedProperty.render(this));
-        card.addItem(ContainerPeer.selectActionProperty.render(this, true));
+        card.addItem(this.renderEditor(ContainerPeer.minHeightProperty));
+        card.addItem(this.renderEditor(ContainerPeer.styleProperty));
+        card.addItem(this.renderEditor(ContainerPeer.bleedProperty));
+        card.addItem(this.renderEditor(ContainerPeer.selectActionProperty, true));
 
         if (this.cardElement.selectAction) {
             let selectActionPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, null, this.cardElement.selectAction);
@@ -1692,6 +1653,16 @@ export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
     static readonly verticalContentAlignmentProperty = new EnumPropertyEditor("verticalContentAlignment", "Vertical content alignment", Adaptive.VerticalAlignment);
     static readonly styleProperty = new ContainerStylePropertyEditor("style", "Style");
     static readonly bleedProperty = new BooleanPropertyEditor("bleed", "Bleed");
+    static readonly backgroundImageProperty = new CompoundPropertyEditor(
+        "Background image",
+        "backgroundImage",
+        [
+            new StringPropertyEditor("url", "URL"),
+            new EnumPropertyEditor("fillMode", "Fill mode", Adaptive.FillMode),
+            new EnumPropertyEditor("horizontalAlignment", "Horizontal alignment", Adaptive.HorizontalAlignment),
+            new EnumPropertyEditor("verticalAlignment", "Vertical alignment", Adaptive.VerticalAlignment)
+        ]
+    );
 
     protected isContainer(): boolean {
         return true;
@@ -1700,14 +1671,12 @@ export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.internalAddPropertySheetEntries(card, includeHeader);
 
-        card.addItem(ContainerPeer.minHeightProperty.render(this));
-        card.addItem(ContainerPeer.verticalContentAlignmentProperty.render(this));
-        card.addItem(ContainerPeer.styleProperty.render(this));
-        card.addItem(ContainerPeer.bleedProperty.render(this));
-
-        this.internalAddBackgroundImageProperties(card, this.cardElement.backgroundImage);
-
-        card.addItem(ContainerPeer.selectActionProperty.render(this, true));
+        card.addItem(this.renderEditor(ContainerPeer.minHeightProperty));
+        card.addItem(this.renderEditor(ContainerPeer.verticalContentAlignmentProperty));
+        card.addItem(this.renderEditor(ContainerPeer.styleProperty));
+        card.addItem(this.renderEditor(ContainerPeer.bleedProperty));
+        card.addItem(this.renderEditor(ContainerPeer.backgroundImageProperty));
+        card.addItem(this.renderEditor(ContainerPeer.selectActionProperty, true));
 
         if (this.cardElement.selectAction) {
             let selectActionPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, null, this.cardElement.selectAction);
@@ -1763,7 +1732,7 @@ export class ImageSetPeer extends TypedCardElementPeer<Adaptive.ImageSet> {
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.internalAddPropertySheetEntries(card, includeHeader);
 
-        card.addItem(ImageSetPeer.ImageSizeProperty.render(this));
+        card.addItem(this.renderEditor(ImageSetPeer.ImageSizeProperty));
     }
 
     protected internalAddCommands(commands: Array<PeerCommand>) {
@@ -1788,6 +1757,14 @@ export class ImageSetPeer extends TypedCardElementPeer<Adaptive.ImageSet> {
 }
 
 export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
+    static readonly urlProperty = new StringPropertyEditor("url", "Url");
+    static readonly altTextProperty = new StringPropertyEditor("altText", "Alternate text");
+    static readonly sizeProperty = new EnumPropertyEditor("size", "Size", Adaptive.Size);
+    static readonly pixelWidthProperty = new NumberPropertyEditor("pixelWidth", "Width in pixels");
+    static readonly pixelHeightProperty = new NumberPropertyEditor("pixelHeight", "Height in pixels");
+    static readonly styleProperty = new EnumPropertyEditor("style", "Style", Adaptive.ImageStyle);
+    static readonly backgroundColorProperty = new StringPropertyEditor("backgroundColor", "Background color");
+
     private get isParentImageSet(): boolean {
         return this.parent && this.parent instanceof ImageSetPeer;
     }
@@ -1816,95 +1793,16 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.internalAddPropertySheetEntries(card, includeHeader);
 
-        let url = addLabelAndInput(card, "Url:", Adaptive.TextInput);
-        url.input.defaultValue = this.cardElement.url;
-        url.input.onValueChanged = () => {
-            this.cardElement.url = url.input.value;
-
-            this.changed(false);
-        }
-
-        let altText = addLabelAndInput(card, "Alternate text:", Adaptive.TextInput);
-        altText.input.placeholder = "(not set)";
-        altText.input.defaultValue = this.cardElement.altText;
-        altText.input.onValueChanged = () => {
-            this.cardElement.altText = altText.input.value;
-
-            this.changed(false);
-        }
+        card.addItem(this.renderEditor(ImagePeer.urlProperty));
+        card.addItem(this.renderEditor(ImagePeer.altTextProperty));
 
         if (!this.isParentImageSet) {
-            let size = addLabelAndInput(card, "Size:", Adaptive.ChoiceSetInput);
-            size.input.isCompact = true;
-            size.input.choices.push(new Adaptive.Choice("Automatic", Adaptive.Size.Auto.toString()));
-            size.input.choices.push(new Adaptive.Choice("Small", Adaptive.Size.Small.toString()));
-            size.input.choices.push(new Adaptive.Choice("Medium", Adaptive.Size.Medium.toString()));
-            size.input.choices.push(new Adaptive.Choice("Large", Adaptive.Size.Large.toString()));
-            size.input.choices.push(new Adaptive.Choice("Stretch", Adaptive.Size.Stretch.toString()));
-            size.input.defaultValue = this.cardElement.size.toString();
-            size.input.onValueChanged = () => {
-                this.cardElement.size = <Adaptive.Size>parseInt(size.input.value);
-
-                this.changed(false);
-            }
-
-            let width = addLabelAndInput(card, "Width in pixels:", Adaptive.TextInput);
-            width.input.placeholder = "(not set)";
-
-            if (this.cardElement.pixelWidth) {
-                width.input.defaultValue = this.cardElement.pixelWidth.toString();
-            }
-
-            width.input.onValueChanged = () => {
-                try {
-                    this.cardElement.pixelWidth = parseInt(width.input.value);
-                }
-                catch (e) {
-                    this.cardElement.pixelWidth = null;
-                }
-
-                this.changed(false);
-            }
-
-            let height = addLabelAndInput(card, "Height in pixels:", Adaptive.TextInput);
-            height.input.placeholder = "(not set)";
-
-            if (this.cardElement.pixelHeight) {
-                height.input.defaultValue = this.cardElement.pixelHeight.toString();
-            }
-
-            height.input.onValueChanged = () => {
-                try {
-                    this.cardElement.pixelHeight = parseInt(height.input.value);
-                }
-                catch (e) {
-                    this.cardElement.pixelHeight = null;
-                }
-
-                this.changed(false);
-            }
-
-            let style = addLabelAndInput(card, "Style:", Adaptive.ChoiceSetInput);
-            style.input.isCompact = true;
-            style.input.choices.push(new Adaptive.Choice("Default", Adaptive.ImageStyle.Default.toString()));
-            style.input.choices.push(new Adaptive.Choice("Person", Adaptive.ImageStyle.Person.toString()));
-            style.input.defaultValue = this.cardElement.style.toString();
-            style.input.onValueChanged = () => {
-                this.cardElement.style = <Adaptive.ImageStyle>parseInt(style.input.value);
-
-                this.changed(false);
-            }
-
-            let backgroundColor = addLabelAndInput(card, "Background color:", Adaptive.TextInput);
-            backgroundColor.input.placeholder = "(not set) Format: #RRGGBB";
-            backgroundColor.input.defaultValue = this.cardElement.backgroundColor;
-            backgroundColor.input.onValueChanged = () => {
-                this.cardElement.backgroundColor = backgroundColor.input.value;
-
-                this.changed(false);
-            }
-
-            card.addItem(ContainerPeer.selectActionProperty.render(this, true));
+            card.addItem(this.renderEditor(ImagePeer.sizeProperty));
+            card.addItem(this.renderEditor(ImagePeer.pixelWidthProperty));
+            card.addItem(this.renderEditor(ImagePeer.pixelHeightProperty));
+            card.addItem(this.renderEditor(ImagePeer.styleProperty));
+            card.addItem(this.renderEditor(ImagePeer.backgroundColorProperty));
+            card.addItem(this.renderEditor(ContainerPeer.selectActionProperty, true));
 
             if (this.cardElement.selectAction) {
                 let selectActionPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, null, this.cardElement.selectAction);
@@ -1944,9 +1842,9 @@ export class MediaPeer extends TypedCardElementPeer<Adaptive.Media> {
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.internalAddPropertySheetEntries(card, includeHeader);
 
-        card.addItem(MediaPeer.altTextProperty.render(this));
-        card.addItem(MediaPeer.posterUrlProperty.render(this));
-        card.addItem(MediaPeer.sourcesProperty.render(this));
+        card.addItem(this.renderEditor(MediaPeer.altTextProperty));
+        card.addItem(this.renderEditor(MediaPeer.posterUrlProperty));
+        card.addItem(this.renderEditor(MediaPeer.sourcesProperty));
     }
 }
 
@@ -1992,12 +1890,14 @@ export class FactSetPeer extends TypedCardElementPeer<Adaptive.FactSet> {
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.internalAddPropertySheetEntries(card, includeHeader);
 
-        card.addItem(FactSetPeer.factsProperty.render(this));
+        card.addItem(this.renderEditor(FactSetPeer.factsProperty));
     }
 }
 
 export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCardElementPeer<TInput> {
     static readonly titleProperty = new StringPropertyEditor("title", "Title");
+    static readonly validationNecessityProperty = new EnumPropertyEditor("necessity", "Necessity", Adaptive.InputValidationNecessity);
+    static readonly validationErrorMessageProperty = new StringPropertyEditor("errorMessage", "Error message");
 
     protected getExcludedProperties(): Array<string> {
         return [ "horizontalAlignment", "height" ];
@@ -2006,28 +1906,9 @@ export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCard
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.internalAddPropertySheetEntries(card, includeHeader);
 
-        card.addItem(InputPeer.titleProperty.render(this));
-
-        let validationNecessity = addLabelAndInput(card, "Necessity:", Adaptive.ChoiceSetInput);
-        validationNecessity.input.isCompact = true;
-        validationNecessity.input.choices.push(new Adaptive.Choice("Optional", Adaptive.InputValidationNecessity.Optional.toString()));
-        validationNecessity.input.choices.push(new Adaptive.Choice("Required", Adaptive.InputValidationNecessity.Required.toString()));
-        validationNecessity.input.choices.push(new Adaptive.Choice("Required with visual cue", Adaptive.InputValidationNecessity.RequiredWithVisualCue.toString()));
-        validationNecessity.input.defaultValue = this.cardElement.validation.necessity.toString();
-        validationNecessity.input.onValueChanged = () => {
-            this.cardElement.validation.necessity = <Adaptive.InputValidationNecessity>parseInt(validationNecessity.input.value);
-
-            this.changed(false);
-        }
-
-        let validationErrorMessage = addLabelAndInput(card, "Error message:", Adaptive.TextInput);
-        validationErrorMessage.input.placeholder = "(not set)";
-        validationErrorMessage.input.defaultValue = this.cardElement.validation.errorMessage;
-        validationErrorMessage.input.onValueChanged = () => {
-            this.cardElement.validation.errorMessage = validationErrorMessage.input.value;
-
-            this.changed(false);
-        }
+        card.addItem(this.renderEditor(InputPeer.titleProperty));
+        card.addItem(this.renderEditor(InputPeer.validationNecessityProperty, false, this.cardElement.validation));
+        card.addItem(this.renderEditor(InputPeer.validationErrorMessageProperty, false, this.cardElement.validation));
     }
 
     initializeCardElement() {
@@ -2053,14 +1934,14 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.internalAddPropertySheetEntries(card, includeHeader);
 
-        card.addItem(TextInputPeer.placeholderProperty.render(this));
-        card.addItem(TextInputPeer.isMultilineProperty.render(this, true));
+        card.addItem(this.renderEditor(TextInputPeer.placeholderProperty));
+        card.addItem(this.renderEditor(TextInputPeer.isMultilineProperty, true));
 
         if (!this.cardElement.isMultiline) {
-            card.addItem(TextInputPeer.styleProperty.render(this));
+            card.addItem(this.renderEditor(TextInputPeer.styleProperty));
         }
 
-        card.addItem(TextInputPeer.inlineActionProperty.render(this, true));
+        card.addItem(this.renderEditor(TextInputPeer.inlineActionProperty, true));
 
         if (this.cardElement.inlineAction) {
             let inlineActionPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, null, this.cardElement.inlineAction);
@@ -2068,7 +1949,7 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
             inlineActionPeer.onChanged = (sender: DesignerPeer, updatePropertySheet: boolean) => { this.changed(updatePropertySheet); };
         }
 
-        card.addItem(TextInputPeer.defaultValueProperty.render(this));
+        card.addItem(this.renderEditor(TextInputPeer.defaultValueProperty));
     }
 }
 
@@ -2087,10 +1968,10 @@ export class NumberInputPeer extends InputPeer<Adaptive.NumberInput> {
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.internalAddPropertySheetEntries(card, includeHeader);
 
-        card.addItem(NumberInputPeer.placeholderProperty.render(this));
-        card.addItem(NumberInputPeer.defaultValueProperty.render(this));
-        card.addItem(NumberInputPeer.minProperty.render(this));
-        card.addItem(NumberInputPeer.maxProperty.render(this));
+        card.addItem(this.renderEditor(NumberInputPeer.placeholderProperty));
+        card.addItem(this.renderEditor(NumberInputPeer.defaultValueProperty));
+        card.addItem(this.renderEditor(NumberInputPeer.minProperty));
+        card.addItem(this.renderEditor(NumberInputPeer.maxProperty));
     }
 }
 
@@ -2102,9 +1983,9 @@ export class DateInputPeer extends InputPeer<Adaptive.DateInput> {
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.internalAddPropertySheetEntries(card, includeHeader);
 
-        card.addItem(DateInputPeer.defaultValueProperty.render(this));
-        card.addItem(DateInputPeer.minProperty.render(this));
-        card.addItem(DateInputPeer.maxProperty.render(this));
+        card.addItem(this.renderEditor(DateInputPeer.defaultValueProperty));
+        card.addItem(this.renderEditor(DateInputPeer.minProperty));
+        card.addItem(this.renderEditor(DateInputPeer.maxProperty));
     }
 }
 
@@ -2116,9 +1997,9 @@ export class TimeInputPeer extends InputPeer<Adaptive.TimeInput> {
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.internalAddPropertySheetEntries(card, includeHeader);
 
-        card.addItem(TimeInputPeer.defaultValueProperty.render(this));
-        card.addItem(TimeInputPeer.minProperty.render(this));
-        card.addItem(TimeInputPeer.maxProperty.render(this));
+        card.addItem(this.renderEditor(TimeInputPeer.defaultValueProperty));
+        card.addItem(this.renderEditor(TimeInputPeer.minProperty));
+        card.addItem(this.renderEditor(TimeInputPeer.maxProperty));
     }
 }
 
@@ -2131,10 +2012,10 @@ export class ToggleInputPeer extends InputPeer<Adaptive.ToggleInput> {
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.internalAddPropertySheetEntries(card, includeHeader);
 
-        card.addItem(ToggleInputPeer.valueOnProperty.render(this));
-        card.addItem(ToggleInputPeer.valueOffProperty.render(this));
-        card.addItem(ToggleInputPeer.wrapProperty.render(this));
-        card.addItem(ToggleInputPeer.defaultValueProperty.render(this));
+        card.addItem(this.renderEditor(ToggleInputPeer.valueOnProperty));
+        card.addItem(this.renderEditor(ToggleInputPeer.valueOffProperty));
+        card.addItem(this.renderEditor(ToggleInputPeer.wrapProperty));
+        card.addItem(this.renderEditor(ToggleInputPeer.defaultValueProperty));
     }
 }
 
@@ -2158,12 +2039,12 @@ export class ChoiceSetInputPeer extends InputPeer<Adaptive.ChoiceSetInput> {
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.internalAddPropertySheetEntries(card, includeHeader);
 
-        card.addItem(ChoiceSetInputPeer.placeholderProperty.render(this));
-        card.addItem(ChoiceSetInputPeer.isMultiselectProperty.render(this));
-        card.addItem(ChoiceSetInputPeer.isCompactProperty.render(this));
-        card.addItem(ChoiceSetInputPeer.wrapProperty.render(this));
-        card.addItem(ChoiceSetInputPeer.defaultValueProperty.render(this));
-        card.addItem(ChoiceSetInputPeer.choicesProperty.render(this));
+        card.addItem(this.renderEditor(ChoiceSetInputPeer.placeholderProperty));
+        card.addItem(this.renderEditor(ChoiceSetInputPeer.isMultiselectProperty));
+        card.addItem(this.renderEditor(ChoiceSetInputPeer.isCompactProperty));
+        card.addItem(this.renderEditor(ChoiceSetInputPeer.wrapProperty));
+        card.addItem(this.renderEditor(ChoiceSetInputPeer.defaultValueProperty));
+        card.addItem(this.renderEditor(ChoiceSetInputPeer.choicesProperty));
     }
 
     initializeCardElement() {
@@ -2225,6 +2106,15 @@ class TextBlockPeerInplaceEditor extends CardElementPeerInplaceEditor<Adaptive.T
 }
 
 export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
+    static readonly textProperty = new StringPropertyEditor("text", "Text", true);
+    static readonly wrapProperty = new BooleanPropertyEditor("wrap", "Wrap");
+    static readonly maxLinesProperty = new NumberPropertyEditor("maxLines", "Maximum lines", 0);
+    static readonly fontTypeProperty = new EnumPropertyEditor("fontType", "Font type", Adaptive.FontType);
+    static readonly sizeProperty = new EnumPropertyEditor("size", "Size", Adaptive.TextSize);
+    static readonly weightProperty = new EnumPropertyEditor("weight", "Weight", Adaptive.TextWeight);
+    static readonly colorProperty = new EnumPropertyEditor("color", "Color", Adaptive.TextColor);
+    static readonly subtleProperty = new BooleanPropertyEditor("subtle", "Subtle");
+
     protected createInplaceEditor(): DesignerPeerInplaceEditor {
         return new TextBlockPeerInplaceEditor(this.cardElement);
     }
@@ -2237,27 +2127,17 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
         return "Double click to edit";
     }
 
-    static readonly textProperty = new StringPropertyEditor("text", "Text", true);
-    static readonly wrapProperty = new BooleanPropertyEditor("wrap", "Wrap");
-    static readonly maxLinesProperty = new NumberPropertyEditor("maxLines", "Maximum lines", 0);
-    static readonly fontTypeProperty = new EnumPropertyEditor("fontType", "Font type", Adaptive.FontType);
-    static readonly sizeProperty = new EnumPropertyEditor("size", "Size", Adaptive.TextSize);
-    static readonly weightProperty = new EnumPropertyEditor("weight", "Weight", Adaptive.TextWeight);
-    static readonly colorProperty = new EnumPropertyEditor("color", "Color", Adaptive.TextColor);
-    static readonly subtleProperty = new BooleanPropertyEditor("subtle", "Subtle");
-
-
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.internalAddPropertySheetEntries(card, includeHeader);
 
-        card.addItem(TextBlockPeer.textProperty.render(this));
-        card.addItem(TextBlockPeer.wrapProperty.render(this));
-        card.addItem(TextBlockPeer.maxLinesProperty.render(this));
-        card.addItem(TextBlockPeer.fontTypeProperty.render(this));
-        card.addItem(TextBlockPeer.sizeProperty.render(this));
-        card.addItem(TextBlockPeer.weightProperty.render(this));
-        card.addItem(TextBlockPeer.colorProperty.render(this));
-        card.addItem(TextBlockPeer.subtleProperty.render(this));
+        card.addItem(this.renderEditor(TextBlockPeer.textProperty));
+        card.addItem(this.renderEditor(TextBlockPeer.wrapProperty));
+        card.addItem(this.renderEditor(TextBlockPeer.maxLinesProperty));
+        card.addItem(this.renderEditor(TextBlockPeer.fontTypeProperty));
+        card.addItem(this.renderEditor(TextBlockPeer.sizeProperty));
+        card.addItem(this.renderEditor(TextBlockPeer.weightProperty));
+        card.addItem(this.renderEditor(TextBlockPeer.colorProperty));
+        card.addItem(this.renderEditor(TextBlockPeer.subtleProperty));
     }
 
     initializeCardElement() {
