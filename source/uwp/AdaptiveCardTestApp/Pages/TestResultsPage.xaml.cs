@@ -119,19 +119,19 @@ namespace AdaptiveCardTestApp.Pages
             bool updateJson = false;
 
             Button buttonSender = sender as Button;
-            if (buttonSender.Name == "ButtonUpdateOriginals")
+            if (buttonSender == ButtonUpdateOriginals)
             {
                 updateOriginals = true;
             }
-            else if (buttonSender.Name == "ButtonUpdateJson")
+            else if (buttonSender == ButtonUpdateJson)
             {
                 updateJson = true;
             }
-            else if (buttonSender.Name == "ButtonUpdateImage")
+            else if (buttonSender == ButtonUpdateImage)
             {
                 updateImage = true;
             }
-            else if (buttonSender.Name == "ButtonUpdateAll")
+            else if (buttonSender == ButtonUpdateAll)
             {
                 updateOriginals = updateJson = updateImage = true;
             }

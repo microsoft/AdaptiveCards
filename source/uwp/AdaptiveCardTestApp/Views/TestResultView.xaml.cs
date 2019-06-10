@@ -25,47 +25,46 @@ namespace AdaptiveCardTestApp.Views
             {
                 _currModel = model;
 
+                ButtonUpdateImage.Visibility = Visibility.Collapsed;
+                ButtonUpdateJson.Visibility = Visibility.Collapsed;
+                ButtonUpdateOriginals.Visibility = Visibility.Collapsed;
+                ButtonUpdateAll.Visibility = Visibility.Collapsed;
+
                 if (model.Status.NewCard)
                 {
                     // For a new card, only let them update "all"
-                    ButtonUpdateImage.Visibility = Visibility.Collapsed;
-                    ButtonUpdateJson.Visibility = Visibility.Collapsed;
-                    ButtonUpdateOriginals.Visibility = Visibility.Collapsed;
                     ButtonUpdateAll.Visibility = Visibility.Visible;
 
                 }
-                if (model.Status.MatchedViaError)
+                else if (model.Status.MatchedViaError)
                 {
                     // If they matched via error nothing to update except possibly the original
-                    ButtonUpdateImage.Visibility = Visibility.Collapsed;
-                    ButtonUpdateJson.Visibility = Visibility.Collapsed;
-                    ButtonUpdateAll.Visibility = Visibility.Collapsed;
                     ButtonUpdateOriginals.Visibility = model.Status.OriginalMatched ? Visibility.Collapsed : Visibility.Visible;
                 }
                 else
                 {
                     // Provide the appropriate buttons to update as needed
-                    uint buttonsShown = 3;
-                    if (model.Status.ImageMatched)
+                    uint buttonsShown = 0;
+                    if (!model.Status.ImageMatched)
                     {
-                        ButtonUpdateImage.Visibility = Visibility.Collapsed;
-                        buttonsShown--;
+                        ButtonUpdateImage.Visibility = Visibility.Visible;
+                        buttonsShown++;
                     }
-                    if (model.Status.JsonRoundTripMatched)
+                    if (!model.Status.JsonRoundTripMatched)
                     {
-                        ButtonUpdateJson.Visibility = Visibility.Collapsed;
-                        buttonsShown--;
+                        ButtonUpdateJson.Visibility = Visibility.Visible;
+                        buttonsShown++;
                     }
-                    if (model.Status.OriginalMatched)
+                    if (!model.Status.OriginalMatched)
                     {
-                        ButtonUpdateOriginals.Visibility = Visibility.Collapsed;
-                        buttonsShown--;
+                        ButtonUpdateOriginals.Visibility = Visibility.Visible;
+                        buttonsShown++;
                     }
 
                     // Only show the update all button if we have more than one thing to update
-                    if (buttonsShown < 2)
+                    if (buttonsShown > 1)
                     {
-                        ButtonUpdateAll.Visibility = Visibility.Collapsed;
+                        ButtonUpdateAll.Visibility = Visibility.Visible;
                     }
                 }
 
@@ -82,19 +81,19 @@ namespace AdaptiveCardTestApp.Views
             bool updateJson = false;
 
             Button buttonSender = sender as Button;
-            if (buttonSender.Name == "ButtonUpdateOriginals")
+            if (buttonSender == ButtonUpdateOriginals)
             {
                 updateOriginals = true;
             }
-            else if (buttonSender.Name == "ButtonUpdateJson")
+            else if (buttonSender == ButtonUpdateJson)
             {
                 updateJson = true;
             }
-            else if (buttonSender.Name == "ButtonUpdateImage")
+            else if (buttonSender == ButtonUpdateImage)
             {
                 updateImage = true;
             }
-            else if (buttonSender.Name == "ButtonUpdateAll")
+            else if (buttonSender == ButtonUpdateAll)
             {
                 updateOriginals = updateJson = updateImage = true;
             }

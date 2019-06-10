@@ -448,22 +448,22 @@ namespace UWPTestLibrary
 
     public class TestStatus
     {
-        // The error results match (either both pass or both fail with the same result)
+        /// <summary>The error results match (either both pass or both fail with the same result)</summary>
         public bool MatchedViaError { get; set; } = false;
 
-        // The original card and host config json matches
+        /// <summary> The original card and host config json matches </summary>
         public bool OriginalMatched { get; set; } = false;
 
-        // The rendered image matches
+        /// <summary> The rendered image matches</summary>
         public bool ImageMatched { get; set; } = false;
 
-        // The round tripped json matches
+        /// <summary> The round tripped json matches</summary>
         public bool JsonRoundTripMatched { get; set; } = false;
 
-        // This is a new card
+        /// <summary> This is a new card</summary>
         public bool NewCard { get; set; } = false;
 
-        // Set the status to a passing result
+        /// <summary> Set the status to a passing result</summary>
         public void SetToPassingStatus(bool matchedViaError)
         {
             NewCard = false;
