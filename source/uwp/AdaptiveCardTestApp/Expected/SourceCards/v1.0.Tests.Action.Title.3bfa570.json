@@ -1,0 +1,29 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Action.Title is highly recommended, but for the time being not enforced",
+			"wrap": true
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "Good"
+		},
+		{
+			"type": "Action.Submit"
+		},
+		{
+			"type": "Action.Submit",
+			"title": ""
+		},
+		{
+			"type": "Action.Submit",
+			"title": " "
+		}
+	]
+}
