@@ -26,7 +26,7 @@ namespace UWPTestLibrary
 
             foreach (var shape in RenderTestHelpers.GetAllDescendants(el).OfType<Shape>())
             {
-                if (shape.Fill is ImageBrush imgBrush && IsVisible(shape))
+                if (shape.Fill is ImageBrush imgBrush)
                 {
                     _allWaitTasks.Add(imgBrush.WaitForLoadedAsync());
                 }
@@ -34,10 +34,7 @@ namespace UWPTestLibrary
 
             foreach (var img in RenderTestHelpers.GetAllDescendants(el).OfType<Image>())
             {
-                if (IsVisible(img))
-                {
-                    _allWaitTasks.Add(img.WaitForLoadedAsync());
-                }
+                _allWaitTasks.Add(img.WaitForLoadedAsync());
             }
 
             foreach (var tileControl in RenderTestHelpers.GetAllDescendants(el).OfType<TileControl>())
@@ -45,7 +42,7 @@ namespace UWPTestLibrary
                 // Tile controls hold onto an image (but don't drop it into the visual tree) and they listen
                 // to the bitmap's load event, so we have to listen to that too, and then when that triggers,
                 // they finally update the UI with rectangles
-                if (tileControl.ResolvedImage is Image img && img.Source is BitmapImage bmp && IsVisible(tileControl))
+                if (tileControl.ResolvedImage is Image img && img.Source is BitmapImage bmp)
                 {
                     _allWaitTasks.Add(bmp.WaitForLoadedAsync());
                 }
@@ -149,6 +146,12 @@ namespace UWPTestLibrary
 
         public static Task WaitForLoadedAsync(this Image img)
         {
+            // Using the bitmap directly handles most hidden visibility cases
+            if (img.Source is BitmapImage bmp)
+            {
+                return bmp.WaitForLoadedAsync();
+            }
+
             return new SingleImageWaiter(img).WaitAsync();
         }
 
