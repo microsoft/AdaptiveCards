@@ -7,7 +7,6 @@ var allCards = getAllFiles("../../../samples");
 var schemaTxt = fs.readFileSync("../../../schemas/adaptive-card.json", "utf8");
 
 var ajv = new Ajv();
-ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'));
 var validate = ajv.compile(JSON.parse(schemaTxt));
 
 var shouldFail: string[] = [
