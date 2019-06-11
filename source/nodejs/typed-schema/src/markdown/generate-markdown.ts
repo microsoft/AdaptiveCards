@@ -2,7 +2,11 @@
 // Licensed under the MIT License.
 import { defined } from "./defined";
 import { defaultValue } from "./defaultValue";
-import { SchemaProperty, SchemaClass, SchemaEnum, SchemaPropertyType, SchemaLiteral } from "typed-schema";
+import { SchemaClass } from "../SchemaClass";
+import { SchemaEnum } from "../SchemaEnum";
+import { SchemaLiteral } from "../SchemaLiteral";
+import { SchemaProperty } from "../SchemaProperty";
+import { SchemaPropertyType } from "../SchemaPropertyType";
 import * as mdTable from "markdown-table";
 import * as style from "./style";
 

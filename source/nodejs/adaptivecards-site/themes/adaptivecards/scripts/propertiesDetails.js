@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 "use strict";
 
-var typedschemamarkdown = require("typed-schema-markdown");
+var typedschema = require("typed-schema");
 var marked = require("marked");
 var fs = require("fs");
 var path = require("path");
@@ -15,7 +15,7 @@ hexo.extend.helper.register('propertiesDetails', function (properties, elementVe
 	// Get the markdown for the property and turn it into HTML
 	html += '<div class="w3-container">';
 
-	html += marked(typedschemamarkdown.createPropertyDetails(property, 3, null, false, true, elementVersion), { headerPrefix: "dedupe-header" });
+	html += marked(typedschema.markdown.createPropertyDetails(property, 3, null, false, true, elementVersion), { headerPrefix: "dedupe-header" });
 	html += '</div>'
 
 

@@ -3,8 +3,8 @@
 var fs = require("fs");
 import * as Ajv from "ajv";
 
-var allCards = getAllFiles("../../../samples");
-var schemaTxt = fs.readFileSync("../../../schemas/adaptive-card.json", "utf8");
+var allCards = getAllFiles("../../../../samples");
+var schemaTxt = fs.readFileSync("../../../../schemas/adaptive-card.json", "utf8");
 
 var ajv = new Ajv();
 var validate = ajv.compile(JSON.parse(schemaTxt));

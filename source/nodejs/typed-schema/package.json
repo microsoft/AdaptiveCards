@@ -22,6 +22,9 @@
     "generate-adaptive-schema": "node ./lib/command-line.js ../../../schemas/src AdaptiveCard > ../../../schemas/adaptive-card.json"
   },
   "dependencies": {
+    "glob": "^7.1.4",
+    "js-yaml": "^3.13.1",
+    "markdown-table": "^1.1.3",
     "p-iteration": "^1.1.8"
   },
   "devDependencies": {

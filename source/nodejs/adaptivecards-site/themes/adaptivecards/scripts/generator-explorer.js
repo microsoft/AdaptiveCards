@@ -3,7 +3,7 @@
 "use strict";
 
 var markedschema = require("marked-schema");
-var typedschemamarkdown = require("typed-schema-markdown");
+var typedschema = require("typed-schema");
 var marked = require("marked");
 var fs = require("hexo-fs");
 
@@ -12,7 +12,7 @@ hexo.extend.generator.register("generator-explorer", function (locals) {
     return new Promise(function (resolve, reject) {
 
 		try {
-			var schemaModel = typedschemamarkdown.buildModel({
+			var schemaModel = typedschema.markdown.buildModel({
 				schema: "../../../schemas/src",
 				toc: "./schema-explorer-toc.yml",
 				rootDefinition: "AdaptiveCard",
@@ -32,7 +32,7 @@ hexo.extend.generator.register("generator-explorer", function (locals) {
 							schema: schemaModel,
 							element: child,
 							childPath: child.htmlPath,
-							propertiesSummary: typedschemamarkdown.createPropertiesSummary(child.type, null, true, true, child.version)
+							propertiesSummary: typedschema.markdown.createPropertiesSummary(child.type, null, true, true, child.version)
 						}
 					}
 
@@ -48,7 +48,7 @@ hexo.extend.generator.register("generator-explorer", function (locals) {
 								schema: schemaModel,
 								element: child,
 								childPath: child.htmlPath,
-								propertiesSummary: typedschemamarkdown.createPropertiesSummary(child.type, null, false, true)
+								propertiesSummary: typedschema.markdown.createPropertiesSummary(child.type, null, false, true)
 							}
 						});
 					}

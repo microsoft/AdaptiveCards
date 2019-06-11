@@ -8,6 +8,7 @@ import { SchemaPropertyType } from "./SchemaPropertyType";
 import { SchemaLiteral } from "./SchemaLiteral";
 import { Schema } from "./Schema";
 import { TransformOptions } from "./TransformOptions";
+import * as markdown from "./markdown/index";
 
 var fs = require("fs");
 var path = require("path");
@@ -21,6 +22,8 @@ export * from "./SchemaPropertyType";
 export * from "./SchemaLiteral";
 export * from "./Schema";
 export * from "./TransformOptions";
+export * from "./markdown/index";
+export { markdown as markdown };
 
 export function transformFolder(pathToTypeFiles: string, options: TransformOptions): any {
 	return new Transformer(Schema.fromFolder(pathToTypeFiles), options).transform();
