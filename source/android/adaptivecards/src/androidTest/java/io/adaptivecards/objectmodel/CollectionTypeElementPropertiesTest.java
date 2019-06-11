@@ -47,7 +47,7 @@ public class CollectionTypeElementPropertiesTest
         container.SetBackgroundImage(TestUtil.createMockBackgroundImage());
         container.SetBleed(true);
         container.SetMinHeight(1);
-        container.SetSelectAction(SubmitActionPropertiesTest.createMockSubmitAction());
+        container.SetSelectAction(TestUtil.createSampleSubmitAction());
         container.SetStyle(ContainerStyle.Attention);
         container.SetVerticalContentAlignment(VerticalContentAlignment.Center);
 
@@ -66,7 +66,7 @@ public class CollectionTypeElementPropertiesTest
             Assert.assertEquals(s_defaultContainerJson, container.Serialize());
 
             ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(s_defaultContainerJson), "1.0");
-            Container parsedContainer = TestUtil.cast(result.GetAdaptiveCard().GetBody().get(0));
+            Container parsedContainer = TestUtil.castToContainer(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals(null, parsedContainer.GetBackgroundImage());
         }
 
@@ -77,7 +77,7 @@ public class CollectionTypeElementPropertiesTest
             Assert.assertEquals(containerBackgroundImage, container.Serialize());
 
             ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(containerBackgroundImage), "1.0");
-            Container parsedContainer = TestUtil.cast(result.GetAdaptiveCard().GetBody().get(0));
+            Container parsedContainer = TestUtil.castToContainer(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals("http://", parsedContainer.GetBackgroundImage().GetUrl());
         }
     }
@@ -101,7 +101,7 @@ public class CollectionTypeElementPropertiesTest
             Assert.assertEquals(testTuple.second, container.Serialize());
 
             ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(testTuple.second), "1.0");
-            Container parsedContainer = TestUtil.cast(result.GetAdaptiveCard().GetBody().get(0));
+            Container parsedContainer = TestUtil.castToContainer(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals((boolean)testTuple.first, parsedContainer.GetBleed());
         }
     }
@@ -126,7 +126,7 @@ public class CollectionTypeElementPropertiesTest
             Assert.assertEquals(testTuple.second, container.Serialize());
 
             ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(testTuple.second), "1.0");
-            Container parsedContainer = TestUtil.cast(result.GetAdaptiveCard().GetBody().get(0));
+            Container parsedContainer = TestUtil.castToContainer(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals(testTuple.first.intValue(), parsedContainer.GetMinHeight());
         }
     }
@@ -146,12 +146,12 @@ public class CollectionTypeElementPropertiesTest
         }
 
         Container container = TestUtil.createMockContainer();
-        container.SetSelectAction(SubmitActionPropertiesTest.createMockSubmitAction());
+        container.SetSelectAction(TestUtil.createSampleSubmitAction());
         Assert.assertEquals(containerSelectAction, container.Serialize());
 
         ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(containerSelectAction), "1.0");
-        Container parsedContainer = TestUtil.cast(result.GetAdaptiveCard().GetBody().get(0));
-        Assert.assertEquals(SubmitActionPropertiesTest.createMockSubmitAction().Serialize(), parsedContainer.GetSelectAction().Serialize());
+        Container parsedContainer = TestUtil.castToContainer(result.GetAdaptiveCard().GetBody().get(0));
+        Assert.assertEquals(TestUtil.createSampleSubmitAction().Serialize(), parsedContainer.GetSelectAction().Serialize());
     }
 
     @Test
@@ -178,7 +178,7 @@ public class CollectionTypeElementPropertiesTest
             Assert.assertEquals(testTuple.second, container.Serialize());
 
             ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(testTuple.second), "1.0");
-            Container parsedContainer = TestUtil.cast(result.GetAdaptiveCard().GetBody().get(0));
+            Container parsedContainer = TestUtil.castToContainer(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals(testTuple.first, parsedContainer.GetStyle());
         }
     }
@@ -203,7 +203,7 @@ public class CollectionTypeElementPropertiesTest
             Assert.assertEquals(testTuple.second, container.Serialize());
 
             ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(testTuple.second), "1.0");
-            Container parsedContainer = TestUtil.cast(result.GetAdaptiveCard().GetBody().get(0));
+            Container parsedContainer = TestUtil.castToContainer(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals(testTuple.first, parsedContainer.GetVerticalContentAlignment());
         }
     }

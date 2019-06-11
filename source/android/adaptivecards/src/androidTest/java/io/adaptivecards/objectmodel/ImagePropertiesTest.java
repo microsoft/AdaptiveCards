@@ -18,29 +18,6 @@ public class ImagePropertiesTest
         System.loadLibrary("adaptivecards-native-lib");
     }
 
-    public static Image cast(BaseCardElement baseCardElement)
-    {
-        Image image = null;
-
-        if (baseCardElement instanceof Image)
-        {
-            image = (Image) baseCardElement;
-        }
-        else if ((image = Image.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to Image object model.");
-        }
-
-        return image;
-    }
-
-    public Image createMockImage()
-    {
-        Image image = new Image();
-        image.SetUrl("http://");
-        return image;
-    }
-
     @Test
     public void AllPropertiesTest()
     {
@@ -55,7 +32,7 @@ public class ImagePropertiesTest
             "\"url\":\"http://\"," +
             "\"width\":\"50px\"}\n";
 
-        Image image = createMockImage();
+        Image image = TestUtil.createMockImage();
 
         image.SetAltText("altText");
         image.SetBackgroundColor("#FF128192");
@@ -63,7 +40,7 @@ public class ImagePropertiesTest
         image.SetImageStyle(ImageStyle.Person);
         image.SetPixelHeight(50);
         image.SetPixelWidth(50);
-        image.SetSelectAction(SubmitActionPropertiesTest.createMockSubmitAction());
+        image.SetSelectAction(TestUtil.createMockSubmitAction());
 
         Assert.assertEquals(ImageNoDefaultValuesExplicitSize, image.Serialize());
 
@@ -77,14 +54,14 @@ public class ImagePropertiesTest
                 "\"type\":\"Image\"," +
                 "\"url\":\"http://\"}\n";
 
-        image = createMockImage();
+        image = TestUtil.createMockImage();
 
         image.SetAltText("altText");
         image.SetBackgroundColor("#FF128192");
         image.SetHorizontalAlignment(HorizontalAlignment.Center);
         image.SetImageSize(ImageSize.Medium);
         image.SetImageStyle(ImageStyle.Person);
-        image.SetSelectAction(SubmitActionPropertiesTest.createMockSubmitAction());
+        image.SetSelectAction(TestUtil.createSampleSubmitAction());
 
         Assert.assertEquals(ImageNoDefaultValuesNonExplicitSize, image.Serialize());
     }
@@ -94,33 +71,33 @@ public class ImagePropertiesTest
     {
         final String imageAltText = "{\"altText\":\"Alternative Text\",\"type\":\"Image\",\"url\":\"http://\"}\n";
 
-        Image image = createMockImage();
+        Image image = TestUtil.createMockImage();
 
         image.SetAltText("");
         Assert.assertEquals(s_defaultImage, image.Serialize());
 
         ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(s_defaultImage), "1.0");
-        Image parsedImage = ImagePropertiesTest.cast(result.GetAdaptiveCard().GetBody().get(0));
+        Image parsedImage = TestUtil.castToImage(result.GetAdaptiveCard().GetBody().get(0));
         Assert.assertEquals("", parsedImage.GetAltText());
 
         image.SetAltText("Alternative Text");
         Assert.assertEquals(imageAltText, image.Serialize());
 
         result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(imageAltText), "1.0");
-        parsedImage = ImagePropertiesTest.cast(result.GetAdaptiveCard().GetBody().get(0));
+        parsedImage = TestUtil.castToImage(result.GetAdaptiveCard().GetBody().get(0));
         Assert.assertEquals("Alternative Text", parsedImage.GetAltText());
     }
 
     @Test
     public void BackgroundColorTest() throws Exception
     {
-        Image image = createMockImage();
+        Image image = TestUtil.createMockImage();
         image.SetBackgroundColor("");
 
         Assert.assertEquals(s_defaultImage, image.Serialize());
 
         ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(s_defaultImage), "1.0");
-        Image parsedImage = ImagePropertiesTest.cast(result.GetAdaptiveCard().GetBody().get(0));
+        Image parsedImage = TestUtil.castToImage(result.GetAdaptiveCard().GetBody().get(0));
         Assert.assertEquals("", parsedImage.GetBackgroundColor());
 
         final String imageBackgroundColor = "{\"backgroundColor\":\"%s\",\"type\":\"Image\",\"url\":\"http://\"}\n";
@@ -140,7 +117,7 @@ public class ImagePropertiesTest
 
             final String imagePayload = String.format(imageBackgroundColor, inputColor);
             result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(imagePayload), "1.0");
-            parsedImage = ImagePropertiesTest.cast(result.GetAdaptiveCard().GetBody().get(0));
+            parsedImage = TestUtil.castToImage(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals(expectedOutputColor, parsedImage.GetBackgroundColor());
         }
     }
@@ -158,13 +135,13 @@ public class ImagePropertiesTest
 
         for (Pair<HorizontalAlignment, String> testTuple : tests)
         {
-            Image image = createMockImage();
+            Image image = TestUtil.createMockImage();
 
             image.SetHorizontalAlignment(testTuple.first);
             Assert.assertEquals(testTuple.second, image.Serialize());
 
             ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(testTuple.second), "1.0");
-            Image parsedImage = ImagePropertiesTest.cast(result.GetAdaptiveCard().GetBody().get(0));
+            Image parsedImage = TestUtil.castToImage(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals(testTuple.first, parsedImage.GetHorizontalAlignment());
         }
     }
@@ -188,13 +165,13 @@ public class ImagePropertiesTest
 
         for (Pair<ImageSize, String> testTuple : tests)
         {
-            Image image = createMockImage();
+            Image image = TestUtil.createMockImage();
             image.SetImageSize(testTuple.first);
 
             Assert.assertEquals(testTuple.second, image.Serialize());
 
             ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(testTuple.second), "1.0");
-            Image parsedImage = ImagePropertiesTest.cast(result.GetAdaptiveCard().GetBody().get(0));
+            Image parsedImage = TestUtil.castToImage(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals(testTuple.first, parsedImage.GetImageSize());
         }
     }
@@ -210,13 +187,13 @@ public class ImagePropertiesTest
 
         for (Pair<ImageStyle, String> testTuple : tests)
         {
-            Image image = createMockImage();
+            Image image = TestUtil.createMockImage();
             image.SetImageStyle(testTuple.first);
 
             Assert.assertEquals(testTuple.second, image.Serialize());
 
             ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(testTuple.second), "1.0");
-            Image parsedImage = ImagePropertiesTest.cast(result.GetAdaptiveCard().GetBody().get(0));
+            Image parsedImage = TestUtil.castToImage(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals(testTuple.first, parsedImage.GetImageStyle());
         }
     }
@@ -236,7 +213,7 @@ public class ImagePropertiesTest
                 final String heightJson = "\"height\":\"%dpx\",";
                 final String widthJson = ",\"width\":\"%dpx\"";
 
-                Image image = createMockImage();
+                Image image = TestUtil.createMockImage();
                 image.SetPixelWidth(width);
                 image.SetPixelHeight(height);
 
@@ -257,7 +234,7 @@ public class ImagePropertiesTest
                 Assert.assertEquals(expectedJson, image.Serialize());
 
                 ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(expectedJson), "1.0");
-                Image parsedImage = ImagePropertiesTest.cast(result.GetAdaptiveCard().GetBody().get(0));
+                Image parsedImage = TestUtil.castToImage(result.GetAdaptiveCard().GetBody().get(0));
                 Assert.assertEquals(pixelSize[i], parsedImage.GetPixelWidth());
                 Assert.assertEquals(pixelSize[j], parsedImage.GetPixelHeight());
             }
@@ -269,13 +246,13 @@ public class ImagePropertiesTest
     {
         final String imageSelectActionSubmit = "{\"selectAction\":{\"data\":{\"data\":\"Some data\"},\"type\":\"Action.Submit\"},\"type\":\"Image\",\"url\":\"http://\"}\n";
 
-        Image image = createMockImage();
-        image.SetSelectAction(SubmitActionPropertiesTest.createMockSubmitAction());
+        Image image = TestUtil.createMockImage();
+        image.SetSelectAction(TestUtil.createSampleSubmitAction());
 
         Assert.assertEquals(imageSelectActionSubmit, image.Serialize());
 
         ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(imageSelectActionSubmit), "1.0");
-        Image parsedImage = ImagePropertiesTest.cast(result.GetAdaptiveCard().GetBody().get(0));
+        Image parsedImage = TestUtil.castToImage(result.GetAdaptiveCard().GetBody().get(0));
         Assert.assertEquals("{\"data\":{\"data\":\"Some data\"},\"type\":\"Action.Submit\"}\n", parsedImage.GetSelectAction().Serialize());
     }
 
@@ -284,13 +261,13 @@ public class ImagePropertiesTest
     {
         final String imageSelectActionOpenUrl = "{\"selectAction\":{\"type\":\"Action.OpenUrl\",\"url\":\"http://\"},\"type\":\"Image\",\"url\":\"http://\"}\n";
 
-        Image image = createMockImage();
-        image.SetSelectAction(OpenUrlActionPropertiesTest.createMockOpenUrlAction());
+        Image image = TestUtil.createMockImage();
+        image.SetSelectAction(TestUtil.createSampleOpenUrlAction());
 
         Assert.assertEquals(imageSelectActionOpenUrl, image.Serialize());
 
         ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(imageSelectActionOpenUrl), "1.0");
-        Image parsedImage = ImagePropertiesTest.cast(result.GetAdaptiveCard().GetBody().get(0));
+        Image parsedImage = TestUtil.castToImage(result.GetAdaptiveCard().GetBody().get(0));
         Assert.assertEquals("{\"type\":\"Action.OpenUrl\",\"url\":\"http://\"}\n", parsedImage.GetSelectAction().Serialize());
     }
 
@@ -301,13 +278,13 @@ public class ImagePropertiesTest
             "{\"selectAction\":{\"targetElements\":[\"id1\",{\"elementId\":\"id2\",\"isVisible\":true}," +
             "{\"elementId\":\"id3\",\"isVisible\":false}],\"type\":\"Action.ToggleVisibility\"},\"type\":\"Image\",\"url\":\"http://\"}\n";
 
-        Image image = createMockImage();
+        Image image = TestUtil.createMockImage();
         image.SetSelectAction(ToggleVisibilityActionPropertiesTest.createMockToggleVisibilityAction());
 
         Assert.assertEquals(imageSelectActionSubmit, image.Serialize());
 
         ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(imageSelectActionSubmit), "1.0");
-        Image parsedImage = ImagePropertiesTest.cast(result.GetAdaptiveCard().GetBody().get(0));
+        Image parsedImage = TestUtil.castToImage(result.GetAdaptiveCard().GetBody().get(0));
         Assert.assertEquals("{\"targetElements\":[\"id1\",{\"elementId\":\"id2\",\"isVisible\":true}," +
             "{\"elementId\":\"id3\",\"isVisible\":false}],\"type\":\"Action.ToggleVisibility\"}\n", parsedImage.GetSelectAction().Serialize());
     }
