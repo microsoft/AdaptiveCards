@@ -65,7 +65,7 @@ public class ImageSetPropertiesTest
             imageLarge.SetHorizontalAlignment(HorizontalAlignment.Right);
             imageLarge.SetImageSize(ImageSize.Large);
             imageLarge.SetImageStyle(ImageStyle.Person);
-            imageLarge.SetSelectAction(ToggleVisibilityActionPropertiesTest.createMockToggleVisibilityAction());
+            imageLarge.SetSelectAction(TestUtil.createSampleToggleVisibilityAction());
 
             ImageSet imageSet = TestUtil.createMockImageSet(imageExplicitSize, imageSmall, imageLarge);
             imageSet.SetImageSize(ImageSize.Medium);

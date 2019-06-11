@@ -40,7 +40,7 @@ public class ImagePropertiesTest
         image.SetImageStyle(ImageStyle.Person);
         image.SetPixelHeight(50);
         image.SetPixelWidth(50);
-        image.SetSelectAction(TestUtil.createMockSubmitAction());
+        image.SetSelectAction(TestUtil.createSampleSubmitAction());
 
         Assert.assertEquals(ImageNoDefaultValuesExplicitSize, image.Serialize());
 
@@ -274,16 +274,16 @@ public class ImagePropertiesTest
     @Test
     public void ImageSelectActionToggleVisibility() throws Exception
     {
-        final String imageSelectActionSubmit =
+        final String imageSelectActionToggleVisibility =
             "{\"selectAction\":{\"targetElements\":[\"id1\",{\"elementId\":\"id2\",\"isVisible\":true}," +
             "{\"elementId\":\"id3\",\"isVisible\":false}],\"type\":\"Action.ToggleVisibility\"},\"type\":\"Image\",\"url\":\"http://\"}\n";
 
         Image image = TestUtil.createMockImage();
-        image.SetSelectAction(ToggleVisibilityActionPropertiesTest.createMockToggleVisibilityAction());
+        image.SetSelectAction(TestUtil.createSampleToggleVisibilityAction());
 
-        Assert.assertEquals(imageSelectActionSubmit, image.Serialize());
+        Assert.assertEquals(imageSelectActionToggleVisibility, image.Serialize());
 
-        ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(imageSelectActionSubmit), "1.0");
+        ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(imageSelectActionToggleVisibility), "1.0");
         Image parsedImage = TestUtil.castToImage(result.GetAdaptiveCard().GetBody().get(0));
         Assert.assertEquals("{\"targetElements\":[\"id1\",{\"elementId\":\"id2\",\"isVisible\":true}," +
             "{\"elementId\":\"id3\",\"isVisible\":false}],\"type\":\"Action.ToggleVisibility\"}\n", parsedImage.GetSelectAction().Serialize());
