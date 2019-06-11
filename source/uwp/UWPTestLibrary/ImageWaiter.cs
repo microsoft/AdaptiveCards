@@ -26,7 +26,7 @@ namespace UWPTestLibrary
 
             foreach (var shape in RenderTestHelpers.GetAllDescendants(el).OfType<Shape>())
             {
-                if (shape.Fill is ImageBrush imgBrush)
+                if (shape.Fill is ImageBrush imgBrush && IsVisible(shape))
                 {
                     _allWaitTasks.Add(imgBrush.WaitForLoadedAsync());
                 }
@@ -34,7 +34,10 @@ namespace UWPTestLibrary
 
             foreach (var img in RenderTestHelpers.GetAllDescendants(el).OfType<Image>())
             {
-                _allWaitTasks.Add(img.WaitForLoadedAsync());
+                if (IsVisible(img))
+                {
+                    _allWaitTasks.Add(img.WaitForLoadedAsync());
+                }
             }
 
             foreach (var tileControl in RenderTestHelpers.GetAllDescendants(el).OfType<TileControl>())
@@ -42,11 +45,33 @@ namespace UWPTestLibrary
                 // Tile controls hold onto an image (but don't drop it into the visual tree) and they listen
                 // to the bitmap's load event, so we have to listen to that too, and then when that triggers,
                 // they finally update the UI with rectangles
-                if (tileControl.ResolvedImage is Image img && img.Source is BitmapImage bmp)
+                if (tileControl.ResolvedImage is Image img && img.Source is BitmapImage bmp && IsVisible(tileControl))
                 {
                     _allWaitTasks.Add(bmp.WaitForLoadedAsync());
                 }
             }
+        }
+
+        /// <summary>
+        /// We make sure the element and all of its parents are visible. Invisible elements should be ignored as they'll never load.
+        /// </summary>
+        /// <param name="el"></param>
+        /// <returns></returns>
+        private bool IsVisible(UIElement el)
+        {
+            if (el.Visibility == Visibility.Visible)
+            {
+                var parent = VisualTreeHelper.GetParent(el) as UIElement;
+                if (parent == null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return IsVisible(parent);
+                }
+            }
+            return false;
         }
 
         public async Task WaitOnAllImagesAsync()
