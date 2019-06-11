@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+using AdaptiveCards.Rendering.Uwp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,17 @@ namespace UWPTestLibrary
             foreach (var img in RenderTestHelpers.GetAllDescendants(el).OfType<Image>())
             {
                 _allWaitTasks.Add(img.WaitForLoadedAsync());
+            }
+
+            foreach (var tileControl in RenderTestHelpers.GetAllDescendants(el).OfType<TileControl>())
+            {
+                // Tile controls hold onto an image (but don't drop it into the visual tree) and they listen
+                // to the bitmap's load event, so we have to listen to that too, and then when that triggers,
+                // they finally update the UI with rectangles
+                if (tileControl.ResolvedImage is Image img && img.Source is BitmapImage bmp)
+                {
+                    _allWaitTasks.Add(bmp.WaitForLoadedAsync());
+                }
             }
         }
 
@@ -70,9 +82,16 @@ namespace UWPTestLibrary
                 CheckImageSource(imgBrush.ImageSource);
             }
 
+            public SingleImageWaiter(BitmapImage bmp)
+            {
+                bmp.ImageOpened += Img_ImageOpened;
+                bmp.ImageFailed += Img_ImageFailed;
+                CheckImageSource(bmp);
+            }
+
             private void Img_ImageFailed(object sender, ExceptionRoutedEventArgs e)
             {
-                _waitingSource.SetException(new Exception(e.ErrorMessage));
+                _waitingSource.TrySetException(new Exception(e.ErrorMessage));
             }
 
             private void Img_ImageOpened(object sender, RoutedEventArgs e)
@@ -94,7 +113,7 @@ namespace UWPTestLibrary
 
             private void TriggerLoaded()
             {
-                _waitingSource.SetResult(true);
+                _waitingSource.TrySetResult(true);
             }
 
             public Task WaitAsync()
@@ -111,6 +130,11 @@ namespace UWPTestLibrary
         public static Task WaitForLoadedAsync(this ImageBrush imgBrush)
         {
             return new SingleImageWaiter(imgBrush).WaitAsync();
+        }
+
+        public static Task WaitForLoadedAsync(this BitmapImage bmp)
+        {
+            return new SingleImageWaiter(bmp).WaitAsync();
         }
     }
 }
