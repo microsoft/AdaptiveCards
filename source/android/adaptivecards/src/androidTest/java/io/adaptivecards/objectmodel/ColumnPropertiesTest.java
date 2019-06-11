@@ -60,7 +60,8 @@ public class ColumnPropertiesTest
         final String columnPixelWidthAuto= "{\"columns\":[{\"items\":[],\"type\":\"Column\",\"width\":\"Auto\"}],\"type\":\"ColumnSet\"}\n";
 
         ArrayList<Pair<Integer, String>> tests = new ArrayList<>();
-        tests.add(new Pair<>(new Integer(0), columnPixelWidthAuto));
+        // TODO: Deine what happens here with 0px, should we respect the value or not
+        tests.add(new Pair<>(new Integer(0), String.format(columnPixelWidth, 0)));
         tests.add(new Pair<>(new Integer(25), String.format(columnPixelWidth, 25)));
         tests.add(new Pair<>(new Integer(100), String.format(columnPixelWidth, 100)));
 

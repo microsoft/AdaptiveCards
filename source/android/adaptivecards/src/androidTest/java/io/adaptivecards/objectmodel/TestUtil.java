@@ -15,6 +15,34 @@ public class TestUtil
         return "{ \"type\": \"AdaptiveCard\", \"version\": \"1.0\", \"body\":[], \"actions\": [ "  + actionJson + " ] }";
     }
 
+    public static AdaptiveCard createMockCard()
+    {
+        AdaptiveCard adaptiveCard = new AdaptiveCard();
+        return adaptiveCard;
+    }
+
+    public static AdaptiveCard createSampleCard()
+    {
+        AdaptiveCard adaptiveCard = new AdaptiveCard();
+        adaptiveCard.SetVersion("1.0");
+        adaptiveCard.GetBody().add(createMockTextBlock("Test"));
+        adaptiveCard.GetActions().add(createSampleOpenUrlAction());
+        return adaptiveCard;
+    }
+
+    public static TextBlock createMockTextBlock()
+    {
+        TextBlock textBlock = new TextBlock();
+        return textBlock;
+    }
+
+    public static TextBlock createMockTextBlock(String text)
+    {
+        TextBlock textBlock = createMockTextBlock();
+        textBlock.SetText(text);
+        return textBlock;
+    }
+
     public static Image createMockImage()
     {
         Image image = new Image();
@@ -121,20 +149,94 @@ public class TestUtil
         return createMockSubmitAction("{\"data\":\"Some data\"}");
     }
 
-    /*
     public static OpenUrlAction createMockOpenUrlAction()
     {
         OpenUrlAction openUrlAction = new OpenUrlAction();
-        openUrlAction.SetUrl("http://");
         return openUrlAction;
     }
-    */
 
     public static OpenUrlAction createSampleOpenUrlAction()
     {
-        OpenUrlAction openUrlAction = new OpenUrlAction();
+        OpenUrlAction openUrlAction = createMockOpenUrlAction();
         openUrlAction.SetUrl("http://");
         return openUrlAction;
+    }
+
+    public static ShowCardAction createMockShowCardAction()
+    {
+        ShowCardAction showCardAction = new ShowCardAction();
+        return showCardAction;
+    }
+
+    public static ShowCardAction createMockShowCardAction(AdaptiveCard card)
+    {
+        ShowCardAction showCardAction = createMockShowCardAction();
+        showCardAction.SetCard(card);
+        return showCardAction;
+    }
+
+    public static ToggleVisibilityTarget createTarget(String id, Boolean visibility)
+    {
+        ToggleVisibilityTarget target = new ToggleVisibilityTarget();
+        target.SetElementId(id);
+
+        if (visibility == null)
+        {
+            target.SetIsVisible(IsVisible.IsVisibleToggle);
+        }
+        else if (visibility == true)
+        {
+            target.SetIsVisible(IsVisible.IsVisibleTrue);
+        }
+        else
+        {
+            target.SetIsVisible(IsVisible.IsVisibleFalse);
+        }
+
+        return target;
+    }
+
+    public static ToggleVisibilityAction createMockToggleVisibilityAction()
+    {
+        ToggleVisibilityAction toggleVisibilityAction = new ToggleVisibilityAction();
+        return toggleVisibilityAction;
+    }
+
+    public static ToggleVisibilityAction createMockToggleVisibilityAction(ToggleVisibilityTarget ... targets)
+    {
+        ToggleVisibilityAction toggleVisibilityAction = createMockToggleVisibilityAction();
+        ToggleVisibilityTargetVector actionTargets = toggleVisibilityAction.GetTargetElements();
+        for (ToggleVisibilityTarget target : targets)
+        {
+            actionTargets.add(target);
+        }
+        return toggleVisibilityAction;
+    }
+
+    public static ToggleVisibilityAction createSampleToggleVisibilityAction()
+    {
+        ToggleVisibilityAction toggleVisibilityAction =
+            createMockToggleVisibilityAction(
+                createTarget("id1", null),
+                createTarget("id2", true),
+                createTarget("id3", false));
+        return toggleVisibilityAction;
+    }
+
+    public static TextBlock castToTextBlock(BaseCardElement baseCardElement)
+    {
+        TextBlock textBlock = null;
+
+        if (baseCardElement instanceof TextBlock)
+        {
+            textBlock = (TextBlock) baseCardElement;
+        }
+        else if ((textBlock = TextBlock.dynamic_cast(baseCardElement)) == null)
+        {
+            throw new InternalError("Unable to convert BaseCardElement to TextBlock object model.");
+        }
+
+        return textBlock;
     }
 
     public static Image castToImage(BaseCardElement baseCardElement)
@@ -231,6 +333,22 @@ public class TestUtil
         }
 
         return submitAction;
+    }
+
+    public static ShowCardAction castToShowCardAction(BaseActionElement baseActionElement)
+    {
+        ShowCardAction showCardAction = null;
+
+        if (baseActionElement instanceof ShowCardAction)
+        {
+            showCardAction = (ShowCardAction) baseActionElement;
+        }
+        else if ((showCardAction = ShowCardAction.dynamic_cast(baseActionElement)) == null)
+        {
+            throw new InternalError("Unable to convert BaseActionElement to ShowCardAction object model.");
+        }
+
+        return showCardAction;
     }
 
     public static OpenUrlAction castToOpenUrlAction(BaseActionElement baseActionElement)
