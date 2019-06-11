@@ -510,7 +510,7 @@ export abstract class CardElement extends CardObject {
         Utils.setProperty(result, "height", this.height, "auto");
 
         if (this.supportsMinHeight) {
-            Utils.setProperty(result, "minHeight", !isNaN(this.minPixelHeight) ? this.minPixelHeight + "px" : undefined);
+            Utils.setProperty(result, "minHeight", typeof this.minPixelHeight === "number" && !isNaN(this.minPixelHeight) ? this.minPixelHeight + "px" : undefined);
         }
 
         return result;
