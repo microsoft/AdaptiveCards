@@ -223,6 +223,38 @@ public class TestUtil
         return toggleVisibilityAction;
     }
 
+    public static BaseCardElement castToBaseCardElement(BaseElement baseElement)
+    {
+        BaseCardElement baseCardElement = null;
+
+        if (baseElement instanceof BaseCardElement)
+        {
+            baseCardElement = (BaseCardElement) baseElement;
+        }
+        else if ((baseCardElement = BaseCardElement.dynamic_cast(baseElement)) == null)
+        {
+            throw new InternalError("Unable to convert BaseElement to BaseCardElement object model.");
+        }
+
+        return baseCardElement;
+    }
+
+    public static BaseActionElement castToBaseActionElement(BaseElement baseElement)
+    {
+        BaseActionElement baseActionElement = null;
+
+        if (baseElement instanceof BaseActionElement)
+        {
+            baseActionElement = (BaseActionElement) baseElement;
+        }
+        else if ((baseActionElement = BaseActionElement.dynamic_cast(baseElement)) == null)
+        {
+            throw new InternalError("Unable to convert BaseElement to BaseActionElement object model.");
+        }
+
+        return baseActionElement;
+    }
+
     public static TextBlock castToTextBlock(BaseCardElement baseCardElement)
     {
         TextBlock textBlock = null;
