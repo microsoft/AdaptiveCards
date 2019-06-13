@@ -16,3 +16,14 @@
 <!-- END AUTO-GENERATED -->
 
 ## Rendering
+
+See `ActionSet`.
+
+When the user invokes this action, for each object in `targetElements`...
+
+1. If the object is a string, up-convert it to a new `TargetElement` object, setting `TargetElement.elementId` = string.
+1. Now the object should be a `TargetElement` object...
+1. Look up the element using the `elementId`
+	1. If not found, issue warning and continue to next in loop
+1. If the `isVisible` property is NOT supplied, toggle the element's visibility
+1. Else, if the `isVisible` property is supplied, set the element's visibility to the value of `isVisible`.
