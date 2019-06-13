@@ -19,37 +19,68 @@ public class ColumnSetPropertiesTest
     @Test
     public void AllPropertiesTest() throws Exception
     {
-        {
-            final String columnWidth = "{\"columns\":[{\"items\":[],\"type\":\"Column\",\"width\":\"stretch\"}],\"type\":\"ColumnSet\"}\n";
+        final String columnSetNoDefaultValuesJson =
+            "{\"columns\":[" +
+                "{\"items\":[]," +
+                "\"type\":\"Column\"}]," +
+                "\"backgroundImage\":\"http://\"," +
+                "\"bleed\":true," +
+                "\"items\":[]," +
+                "\"minHeight\":\"1px\"," +
+                "\"selectAction\":{\"data\":{\"data\":\"Some data\"},\"type\":\"Action.Submit\"}," +
+                "\"type\":\"ColumnSet\"," +
+                "\"style\":\"Attention\"," +
+                "\"verticalContentAlignment\":\"Center\"}\n";
 
-            ColumnSet columnSet = TestUtil.createMockColumnSet();
-            Column column = TestUtil.createMockColumn();
-            column.SetPixelWidth(50);
-            column.SetWidth("stretch");
-            columnSet.GetColumns().add(column);
-            Assert.assertEquals(columnWidth, columnSet.Serialize());
+        ColumnSet columnSet = TestUtil.createMockColumnSet(TestUtil.createMockColumn());
+        columnSet.SetBackgroundImage(TestUtil.createMockBackgroundImage());
+        columnSet.SetBleed(true);
+        columnSet.SetMinHeight(1);
+        columnSet.SetSelectAction(TestUtil.createSampleSubmitAction());
+        columnSet.SetStyle(ContainerStyle.Attention);
+        columnSet.SetVerticalContentAlignment(VerticalContentAlignment.Center);
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(columnWidth), "1.0");
-            ColumnSet parsedColumnSet = TestUtil.castToColumnSet(result.GetAdaptiveCard().GetBody().get(0));
-            Assert.assertEquals("stretch", parsedColumnSet.GetColumns().get(0).GetWidth());
-            Assert.assertEquals(0, parsedColumnSet.GetColumns().get(0).GetPixelWidth());
-        }
+        Assert.assertEquals(columnSetNoDefaultValuesJson, columnSet.Serialize());
+    }
 
-        {
-            final String columnPixelWidth = "{\"columns\":[{\"items\":[],\"type\":\"Column\",\"width\":\"50px\"}],\"type\":\"ColumnSet\"}\n";
-            ColumnSet columnSet = TestUtil.createMockColumnSet();
-            Column column = TestUtil.createMockColumn();
-            column.SetWidth("stretch");
-            column.SetPixelWidth(50);
-            columnSet.GetColumns().add(column);
+    @Test
+    public void AllPropertiesWithInheritedTest() throws Exception
+    {
+        final String columnSetNoDefaultValuesJson =
+            "{\"backgroundImage\":\"http://\"," +
+                "\"bleed\":true," +
+                "\"columns\":[" +
+                "{\"items\":[]," +
+                "\"type\":\"Column\"," +
+                "\"width\":\"Auto\"}]," +
+                "\"fallback\":{\"type\":\"Image\",\"url\":\"http://\"}," +
+                "\"height\":\"Stretch\"," +
+                "\"id\":\"Sample id\"," +
+                "\"isVisible\":false," +
+                "\"minHeight\":\"1px\"," +
+                "\"selectAction\":{\"data\":{\"data\":\"Some data\"},\"type\":\"Action.Submit\"}," +
+                "\"separator\":true," +
+                "\"spacing\":\"medium\"," +
+                "\"style\":\"Attention\"," +
+                "\"type\":\"ColumnSet\"," +
+                "\"verticalContentAlignment\":\"Center\"}\n";
 
-            Assert.assertEquals(columnPixelWidth, columnSet.Serialize());
+        ColumnSet columnSet = TestUtil.createMockColumnSet(TestUtil.createMockColumn());
+        columnSet.SetBackgroundImage(TestUtil.createMockBackgroundImage());
+        columnSet.SetBleed(true);
+        columnSet.SetFallbackType(FallbackType.Content);
+        columnSet.SetFallbackContent(TestUtil.createMockImage());
+        columnSet.SetHeight(HeightType.Stretch);
+        columnSet.SetId("Sample id");
+        columnSet.SetIsVisible(false);
+        columnSet.SetMinHeight(1);
+        columnSet.SetSelectAction(TestUtil.createSampleSubmitAction());
+        columnSet.SetSeparator(true);
+        columnSet.SetSpacing(Spacing.Medium);
+        columnSet.SetStyle(ContainerStyle.Attention);
+        columnSet.SetVerticalContentAlignment(VerticalContentAlignment.Center);
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(columnPixelWidth), "1.0");
-            ColumnSet parsedColumnSet = TestUtil.castToColumnSet(result.GetAdaptiveCard().GetBody().get(0));
-            Assert.assertEquals("50px", parsedColumnSet.GetColumns().get(0).GetWidth());
-            Assert.assertEquals(50, parsedColumnSet.GetColumns().get(0).GetPixelWidth());
-        }
+        Assert.assertEquals(columnSetNoDefaultValuesJson, columnSet.Serialize());
     }
 
     @Test

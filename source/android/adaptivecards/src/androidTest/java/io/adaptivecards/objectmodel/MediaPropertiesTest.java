@@ -49,13 +49,46 @@ public class MediaPropertiesTest
     @Test
     public void AllPropertiesTest()
     {
-        final String mediaAltText = "{\"altText\":\"Alternative Text\",\"poster\":\"http://\",\"sources\":[{\"mimeType\":\"video/mp4\",\"url\":\"http://\"}],\"type\":\"Media\"}\n";
+        final String mediaAltText =
+            "{\"altText\":\"Alternative Text\"," +
+                "\"poster\":\"http://\"," +
+                "\"sources\":[{\"mimeType\":\"video/mp4\",\"url\":\"http://\"}]," +
+                "\"type\":\"Media\"}\n";
 
         Media media = createMockMedia();
         media.SetAltText("Alternative Text");
         media.SetPoster("http://");
 
         Assert.assertEquals(mediaAltText, media.Serialize());
+    }
+
+    @Test
+    public void AllPropertiesWithInheritedTest() throws Exception
+    {
+        final String mediaNoDefaultValues =
+            "{\"altText\":\"Alternative Text\"," +
+                "\"fallback\":{\"type\":\"Image\",\"url\":\"http://\"}," +
+                "\"height\":\"Stretch\"," +
+                "\"id\":\"Sample id\"," +
+                "\"isVisible\":false," +
+                "\"poster\":\"http://\"," +
+                "\"separator\":true," +
+                "\"sources\":[{\"mimeType\":\"video/mp4\",\"url\":\"http://\"}]," +
+                "\"spacing\":\"medium\"," +
+                "\"type\":\"Media\"}\n";
+
+        Media media = createMockMedia();
+        media.SetAltText("Alternative Text");
+        media.SetFallbackType(FallbackType.Content);
+        media.SetFallbackContent(TestUtil.createMockImage());
+        media.SetHeight(HeightType.Stretch);
+        media.SetId("Sample id");
+        media.SetIsVisible(false);
+        media.SetPoster("http://");
+        media.SetSeparator(true);
+        media.SetSpacing(Spacing.Medium);
+
+        Assert.assertEquals(mediaNoDefaultValues, media.Serialize());
     }
 
     @Test

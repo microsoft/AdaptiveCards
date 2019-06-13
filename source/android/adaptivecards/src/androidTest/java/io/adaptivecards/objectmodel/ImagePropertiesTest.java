@@ -67,6 +67,119 @@ public class ImagePropertiesTest
     }
 
     @Test
+    public void AllPropertiesWithInheritedTest()
+    {
+        {
+            final String ImageNoDefaultValuesExplicitSize =
+                "{\"altText\":\"altText\"," +
+                    "\"backgroundColor\":\"#FF128192\"," +
+                    "\"fallback\":{\"text\":\"Sample Text\",\"type\":\"TextBlock\"}," +
+                    "\"height\":\"50px\"," +
+                    "\"horizontalAlignment\":\"center\"," +
+                    "\"id\":\"Sample id\"," +
+                    "\"isVisible\":false," +
+                    "\"selectAction\":{\"data\":{\"data\":\"Some data\"},\"type\":\"Action.Submit\"}," +
+                    "\"separator\":true," +
+                    "\"spacing\":\"medium\"," +
+                    "\"style\":\"person\"," +
+                    "\"type\":\"Image\"," +
+                    "\"url\":\"http://\"," +
+                    "\"width\":\"50px\"}\n";
+
+            Image image = TestUtil.createMockImage();
+
+            image.SetAltText("altText");
+            image.SetBackgroundColor("#FF128192");
+            image.SetFallbackType(FallbackType.Content);
+            image.SetFallbackContent(TestUtil.createMockTextBlock("Sample Text"));
+            image.SetHeight(HeightType.Stretch);
+            image.SetHorizontalAlignment(HorizontalAlignment.Center);
+            image.SetId("Sample id");
+            image.SetIsVisible(false);
+            image.SetImageStyle(ImageStyle.Person);
+            image.SetPixelHeight(50);
+            image.SetPixelWidth(50);
+            image.SetSeparator(true);
+            image.SetSpacing(Spacing.Medium);
+            image.SetSelectAction(TestUtil.createSampleSubmitAction());
+
+            Assert.assertEquals(ImageNoDefaultValuesExplicitSize, image.Serialize());
+        }
+
+        {
+            final String ImageNoDefaultValuesExplicitSize =
+                "{\"altText\":\"altText\"," +
+                    "\"backgroundColor\":\"#FF128192\"," +
+                    "\"fallback\":{\"text\":\"Sample Text\",\"type\":\"TextBlock\"}," +
+                    "\"height\":\"Stretch\"," +
+                    "\"horizontalAlignment\":\"center\"," +
+                    "\"id\":\"Sample id\"," +
+                    "\"isVisible\":false," +
+                    "\"selectAction\":{\"data\":{\"data\":\"Some data\"},\"type\":\"Action.Submit\"}," +
+                    "\"separator\":true," +
+                    "\"spacing\":\"medium\"," +
+                    "\"style\":\"person\"," +
+                    "\"type\":\"Image\"," +
+                    "\"url\":\"http://\"," +
+                    "\"width\":\"50px\"}\n";
+
+            Image image = TestUtil.createMockImage();
+
+            image.SetAltText("altText");
+            image.SetBackgroundColor("#FF128192");
+            image.SetFallbackType(FallbackType.Content);
+            image.SetFallbackContent(TestUtil.createMockTextBlock("Sample Text"));
+            image.SetHorizontalAlignment(HorizontalAlignment.Center);
+            image.SetId("Sample id");
+            image.SetIsVisible(false);
+            image.SetImageStyle(ImageStyle.Person);
+            image.SetPixelWidth(50);
+            image.SetHeight(HeightType.Stretch);
+            image.SetSeparator(true);
+            image.SetSpacing(Spacing.Medium);
+            image.SetSelectAction(TestUtil.createSampleSubmitAction());
+
+            Assert.assertEquals(ImageNoDefaultValuesExplicitSize, image.Serialize());
+        }
+
+        {
+            final String ImageNoDefaultValuesNonExplicitSize =
+                "{\"altText\":\"altText\"," +
+                    "\"backgroundColor\":\"#FF128192\"," +
+                    "\"fallback\":{\"text\":\"Sample Text\",\"type\":\"TextBlock\"}," +
+                    "\"height\":\"Stretch\"," +
+                    "\"horizontalAlignment\":\"center\"," +
+                    "\"id\":\"Sample id\"," +
+                    "\"isVisible\":false," +
+                    "\"selectAction\":{\"data\":{\"data\":\"Some data\"},\"type\":\"Action.Submit\"}," +
+                    "\"separator\":true," +
+                    "\"size\":\"Medium\"," +
+                    "\"spacing\":\"medium\"," +
+                    "\"style\":\"person\"," +
+                    "\"type\":\"Image\"," +
+                    "\"url\":\"http://\"}\n";
+
+            Image image = TestUtil.createMockImage();
+
+            image.SetAltText("altText");
+            image.SetBackgroundColor("#FF128192");
+            image.SetHorizontalAlignment(HorizontalAlignment.Center);
+            image.SetFallbackType(FallbackType.Content);
+            image.SetFallbackContent(TestUtil.createMockTextBlock("Sample Text"));
+            image.SetHeight(HeightType.Stretch);
+            image.SetId("Sample id");
+            image.SetImageSize(ImageSize.Medium);
+            image.SetImageStyle(ImageStyle.Person);
+            image.SetIsVisible(false);
+            image.SetSelectAction(TestUtil.createSampleSubmitAction());
+            image.SetSeparator(true);
+            image.SetSpacing(Spacing.Medium);
+
+            Assert.assertEquals(ImageNoDefaultValuesNonExplicitSize, image.Serialize());
+        }
+    }
+
+    @Test
     public void AltTextTest() throws Exception
     {
         final String imageAltText = "{\"altText\":\"Alternative Text\",\"type\":\"Image\",\"url\":\"http://\"}\n";
