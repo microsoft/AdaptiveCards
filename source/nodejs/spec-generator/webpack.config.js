@@ -13,7 +13,7 @@ module.exports = (env, argv) => {
 			"spec-generator-script": "./src/spec-generator-script.ts",
 		},
 		output: {
-			path: path.resolve(__dirname, "precompiled"),
+			path: path.resolve(__dirname, "dist"),
 			filename: devMode ? "[name].js" : "[name].min.js",
 		},
 		externals: {

@@ -1,5 +1,5 @@
 import * as markedschema from "marked-schema";
-import * as markedtypedschema from "typed-schema-markdown";
+import * as typedschema from "typed-schema";
 var fs = require("fs");
 import { forEach } from "p-iteration";
 import { SchemaType, SchemaClass, SchemaEnum } from "../../typed-schema-markdown/node_modules/typed-schema";
@@ -41,7 +41,7 @@ async function generateHostConfigAsync(relativeTopDir: string) {
 
 async function generateElementsAsync(relativeTopDir: string) {
 
-	var schemaModel = await markedtypedschema.buildModel({
+	var schemaModel = await typedschema.markdown.buildModel({
 		schema: relativeTopDir + "schemas/src",
 		toc: relativeTopDir + "source/nodejs/adaptivecards-site/schema-explorer-toc.yml",
 		rootDefinition: "AdaptiveCard",
@@ -51,7 +51,7 @@ async function generateElementsAsync(relativeTopDir: string) {
 	await forEach(schemaModel, async (root: any) => {
 		await forEach(root.children, async (child: any) => {
 			var type: SchemaClass = child.type;
-			var markdown = markedtypedschema.createPropertiesSummary(type, null, true, true, child.version);
+			var markdown = typedschema.markdown.createPropertiesSummary(type, null, true, true, child.version);
 
 			markdown = "# " + child.name + "\n\n" + markdown;
 
@@ -87,7 +87,7 @@ async function generateElementsAsync(relativeTopDir: string) {
 		var schema:Schema = root.schema;
 		schema.typeDictionary.forEach(type => {
 			if (type instanceof SchemaEnum) {
-				var markdown = markedtypedschema.createEnumSummary(type);
+				var markdown = typedschema.markdown.createEnumSummary(type);
 
 				markdown = "# " + type.type + " enum\n\n" + markdown;
 

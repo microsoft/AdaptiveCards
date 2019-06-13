@@ -1,4 +1,4 @@
-import * as specgenerator from "spec-generator";
+import * as specgenerator from "./spec-generator";
 
 console.log("Updating specs...");
 specgenerator.generateAsync().then(function () {
