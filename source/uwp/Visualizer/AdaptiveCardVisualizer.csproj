@@ -71,32 +71,11 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\StockUpdate.json">
-      <Link>Samples\StockUpdate.json</Link>
+    <Content Include="..\..\..\samples\**\Scenarios\*.json">
+      <Link>Samples\%(Filename).json</Link>
     </Content>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\CalendarReminder.json">
-      <Link>Samples\CalendarReminder.json</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\FlightItinerary.json">
-      <Link>Samples\FlightItinerary.json</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\FlightUpdate.json">
-      <Link>Samples\FlightUpdate.json</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\ImageGallery.json">
-      <Link>Samples\ImageGallery.json</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\Inputs.json">
-      <Link>Samples\Inputs.json</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\Restaurant.json">
-      <Link>Samples\Restaurant.json</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\ActivityUpdate.json">
-      <Link>Samples\ActivityUpdate.json</Link>
-    </Content>
-    <Content Include="..\..\..\schemas\adaptive-card.json">
-      <Link>Schemas\adaptive-card.json</Link>
+    <Content Include="..\..\..\schemas\**\adaptive-card.json">
+      <Link>Schemas\%(RecursiveDir)adaptive-card.json</Link>
     </Content>
     <Content Include="..\..\..\schemas\host-config.json">
       <Link>Schemas\renderer-options.json</Link>
