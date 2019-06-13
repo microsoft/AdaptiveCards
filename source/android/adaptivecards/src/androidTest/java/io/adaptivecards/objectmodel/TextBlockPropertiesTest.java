@@ -64,6 +64,49 @@ public class TextBlockPropertiesTest
     }
 
     @Test
+    public void AllPropertiesWithInheritedTest()
+    {
+        final String textBlockNoDefaultValues =
+            "{\"color\":\"Accent\"," +
+                "\"fallback\":{\"type\":\"Image\",\"url\":\"http://\"}," +
+                "\"fontType\":\"Monospace\"," +
+                "\"height\":\"Stretch\"," +
+                "\"horizontalAlignment\":\"center\"," +
+                "\"id\":\"Sample id\"," +
+                "\"isSubtle\":true," +
+                "\"isVisible\":false," +
+                "\"maxLines\":1," +
+                "\"separator\":true," +
+                "\"size\":\"Large\"," +
+                "\"spacing\":\"medium\"," +
+                "\"text\":\"Sample text\"," +
+                "\"type\":\"TextBlock\"," +
+                "\"weight\":\"Bolder\"," +
+                "\"wrap\":true}\n";
+
+        TextBlock textBlock = new TextBlock();
+
+        textBlock.SetFallbackType(FallbackType.Content);
+        textBlock.SetFallbackContent(TestUtil.createMockImage());
+        textBlock.SetFontType(FontType.Monospace);
+        textBlock.SetHeight(HeightType.Stretch);
+        textBlock.SetHorizontalAlignment(HorizontalAlignment.Center);
+        textBlock.SetId("Sample id");
+        textBlock.SetIsSubtle(true);
+        textBlock.SetIsVisible(false);
+        textBlock.SetMaxLines(1);
+        textBlock.SetSeparator(true);
+        textBlock.SetSpacing(Spacing.Medium);
+        textBlock.SetText("Sample text");
+        textBlock.SetTextColor(ForegroundColor.Accent);
+        textBlock.SetTextSize(TextSize.Large);
+        textBlock.SetTextWeight(TextWeight.Bolder);
+        textBlock.SetWrap(true);
+
+        Assert.assertEquals(textBlockNoDefaultValues, textBlock.Serialize());
+    }
+
+    @Test
     public void FontTypeTest() throws Exception
     {
         final String textBlockMonospaceFontType = "{\"fontType\":\"Monospace\",\"text\":\"\",\"type\":\"TextBlock\"}\n";

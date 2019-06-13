@@ -62,6 +62,16 @@ public class TestUtil
         return columnSet;
     }
 
+    public static ColumnSet createMockColumnSet(Column ... columns)
+    {
+        ColumnSet columnSet = createMockColumnSet();
+        for (Column column : columns)
+        {
+            columnSet.GetColumns().add(column);
+        }
+        return columnSet;
+    }
+
     public static Container createMockContainer()
     {
         Container container = new Container();

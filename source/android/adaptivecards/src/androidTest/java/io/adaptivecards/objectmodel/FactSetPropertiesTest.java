@@ -15,9 +15,28 @@ public class FactSetPropertiesTest
     }
 
     @Test
-    public void AllPropertiesTest() throws Exception
+    public void AllPropertiesWithInheritedTest() throws Exception
     {
+        final String factSetNoDefaultValues =
+            "{\"facts\":[{\"title\":\"Title\",\"value\":\"Value\"}]," +
+                "\"fallback\":{\"type\":\"Image\",\"url\":\"http://\"}," +
+                "\"height\":\"Stretch\"," +
+                "\"id\":\"Sample id\"," +
+                "\"isVisible\":false," +
+                "\"separator\":true," +
+                "\"spacing\":\"medium\"," +
+                "\"type\":\"FactSet\"}\n";
 
+        FactSet factSet = TestUtil.createMockFactSet(TestUtil.createMockFact("Title", "Value"));
+        factSet.SetFallbackType(FallbackType.Content);
+        factSet.SetFallbackContent(TestUtil.createMockImage());
+        factSet.SetHeight(HeightType.Stretch);
+        factSet.SetId("Sample id");
+        factSet.SetIsVisible(false);
+        factSet.SetSeparator(true);
+        factSet.SetSpacing(Spacing.Medium);
+
+        Assert.assertEquals(factSetNoDefaultValues, factSet.Serialize());
     }
 
     @Test
