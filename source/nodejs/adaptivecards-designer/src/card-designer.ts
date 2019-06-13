@@ -135,7 +135,7 @@ export class CardDesigner {
             let card: Adaptive.AdaptiveCard;
 
             if (peer) {
-                card = peer.buildPropertySheetCard();
+                card = peer.buildPropertySheetCard(this.currentTargetVersion);
             }
             else {
                 card = new Adaptive.AdaptiveCard();
@@ -481,6 +481,7 @@ export class CardDesigner {
     private _fullScreenHandler = new FullScreenHandler();
     private _fullScreenButton: ToolbarButton;
     private _hostContainerChoicePicker: ToolbarChoicePicker;
+    private _versionChoicePicker: ToolbarChoicePicker;
     private _undoButton: ToolbarButton;
     private _redoButton: ToolbarButton;
     private _newCardButton: ToolbarButton;
@@ -488,6 +489,22 @@ export class CardDesigner {
     private _togglePreviewButton: ToolbarButton;
 
     private prepareToolbar() {
+        this._versionChoicePicker = new ToolbarChoicePicker(CardDesigner.ToolbarCommands.VersionPicker);
+        this._versionChoicePicker.label = "Target version:"
+        this._versionChoicePicker.width = 80;
+        this._versionChoicePicker.alignment = ToolbarElementAlignment.Right;
+        this._versionChoicePicker.separator = true;
+
+        for (let i = 0; i < Shared.SupportedTargetVersions.length; i++) {
+            this._versionChoicePicker.choices.push(
+                {
+                    name: Shared.SupportedTargetVersions[i].label,
+                    value: i.toString()
+                });
+        }
+
+        this.toolbar.addElement(this._versionChoicePicker);
+
         this._fullScreenButton = new ToolbarButton(
             CardDesigner.ToolbarCommands.FullScreen,
             "Enter Full Screen",
@@ -830,6 +847,11 @@ export class CardDesigner {
 
         this.toolbar.attachTo(document.getElementById("toolbarHost"));
 
+        this._versionChoicePicker.selectedIndex = Shared.SupportedTargetVersions.indexOf(Shared.Versions.v1_2);
+        this._versionChoicePicker.onChanged = (sender) => {
+            this.buildPropertySheet(this._designerSurface.selectedPeer);
+        }
+
         if (this._copyJSONButton.isVisible) {
             new Clipboard(
                 this._copyJSONButton.renderedElement,
@@ -1014,6 +1036,10 @@ export class CardDesigner {
         return this.designerSurface.card.toJSON();
     }
 
+    get currentTargetVersion(): Shared.TargetVersion {
+        return Shared.SupportedTargetVersions[parseInt(this._versionChoicePicker.value)];
+    }
+
     get dataStructure(): FieldDefinition {
         return this._dataStructure;
     }
@@ -1124,6 +1150,7 @@ export module CardDesigner {
         static FullScreen = "__fullScreenButton";
         static OpenPayload = "__openPayload";
         static HostAppPicker = "__hostAppPicker";
+        static VersionPicker = "__versionPicker";
         static Undo = "__undoButton";
         static Redo = "__redoButton";
         static NewCard = "__newCardButton";

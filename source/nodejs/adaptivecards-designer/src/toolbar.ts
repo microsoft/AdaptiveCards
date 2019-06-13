@@ -251,6 +251,14 @@ export class ToolbarChoicePicker extends ToolbarElement {
     get value(): string {
         return this._dropDown.value.key;
     }
+
+    get selectedIndex(): number {
+        return this._dropDown.selectedIndex;
+    }
+
+    set selectedIndex(value: number) {
+        this._dropDown.selectedIndex = value;
+    }
 }
 
 export class Toolbar {

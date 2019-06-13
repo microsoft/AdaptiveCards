@@ -394,10 +394,12 @@ export class Version {
     private _major: number;
     private _minor: number;
     private _isValid: boolean = true;
+    private _label: string;
 
-    constructor(major: number = 1, minor: number = 1) {
+    constructor(major: number = 1, minor: number = 1, label?: string) {
         this._major = major;
         this._minor = minor;
+        this._label = label;
     }
 
     static parse(versionString: string, errors?: Array<IValidationError>): Version {
@@ -454,6 +456,10 @@ export class Version {
         }
 
         return 0;
+    }
+
+    get label(): string {
+        return this._label ? this._label : this.toString();
     }
 
     get major(): number {
