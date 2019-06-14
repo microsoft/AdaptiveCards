@@ -20,3 +20,5 @@
 <!-- END AUTO-GENERATED -->
 
 ## Rendering
+
+Display all the properties as described.

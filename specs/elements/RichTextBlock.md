@@ -19,3 +19,5 @@
 <!-- END AUTO-GENERATED -->
 
 ## Rendering
+
+Each inline should be displayed as an inline, so content wraps.
