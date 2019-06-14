@@ -150,6 +150,7 @@ public class RichTextBlockPropertiesTest
             richTextBlock.GetInlines().add(TestUtil.createMockTextRun(tests[i]));
         }
 
+        // TODO: this test is broken due to the Serialize method failing
         richTextBlock.Serialize();
 
         Assert.assertEquals(textBlockMonospaceFontType, "");
