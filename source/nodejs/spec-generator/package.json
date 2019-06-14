@@ -12,11 +12,14 @@
 	],
 	"scripts": {
 		"clean": "rimraf build lib dist",
-		"build": "tsc",
-		"dts": "dts-generator --name spec-generator --project . --out dist/spec-generator.d.ts",
+		"prebuild": "tsc",
+		"build": "webpack",
+		"run": "node ./dist/spec-generator-script.js",
+		"dts": "dts-generator --name spec-generator-script --project . --out dist/spec-generator-script.d.ts",
 		"lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
-		"release": "npm run build && npm run dts",
-		"build-all": "cd ../typed-schema-markdown && npm run build-all && cd ../spec-generator && npm run build"
+		"release": "npm run build && webpack --mode=production && npm run dts",
+		"build-all": "cd ../typed-schema && npm run build && cd ../spec-generator && npm run build",
+		"build-all-and-run": "npm run build-all && npm run run"
 	},
 	"dependencies": {
 		"marked-schema": "^0.1.4",
@@ -25,6 +28,8 @@
 	},
 	"devDependencies": {
 		"rimraf": "^2.6.2",
-		"typescript": "^3.2.2"
+		"typescript": "^3.2.2",
+		"webpack": "^4.27.1",
+		"webpack-cli": "^3.1.2"
 	}
 }

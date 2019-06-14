@@ -2,8 +2,7 @@ import * as markedschema from "marked-schema";
 import * as typedschema from "typed-schema";
 var fs = require("fs");
 import { forEach } from "p-iteration";
-import { SchemaType, SchemaClass, SchemaEnum } from "../../typed-schema-markdown/node_modules/typed-schema";
-import { Schema } from "typed-schema";
+import { Schema, SchemaType, SchemaClass, SchemaEnum } from "typed-schema";
 
 export async function generateAsync() {
 
@@ -161,7 +160,7 @@ function findRelativeTopDirectory(backLevels?: string) : string {
 	}
 
 	try {
-		fs.accessSync(backLevels + "schemas/adaptive-card.json");
+		fs.accessSync(backLevels + "schemas/1.2.0/adaptive-card.json");
 		return backLevels;
 	} catch (err) {
 		if (backLevels.length > 50) {
