@@ -1,11 +1,13 @@
 package io.adaptivecards.objectmodel;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 public class TestUtil
 {
 
-    public static String encloseElementStringInCard(String elementJson)
+    public static String encloseElementJsonInCard(String elementJson)
     {
         return "{ \"type\": \"AdaptiveCard\", \"version\": \"1.0\", \"body\": [ " + elementJson + " ] }";
     }
@@ -23,7 +25,7 @@ public class TestUtil
 
     public static AdaptiveCard createSampleCard()
     {
-        AdaptiveCard adaptiveCard = new AdaptiveCard();
+        AdaptiveCard adaptiveCard = createMockCard();
         adaptiveCard.SetVersion("1.0");
         adaptiveCard.GetBody().add(createMockTextBlock("Test"));
         adaptiveCard.GetActions().add(createSampleOpenUrlAction());
@@ -141,6 +143,45 @@ public class TestUtil
         return imageSet;
     }
 
+    public static RichTextBlock createMockRichTextBlock()
+    {
+        RichTextBlock richTextBlock = new RichTextBlock();
+        return richTextBlock;
+    }
+
+    public static RichTextBlock createMockRichTextBlock(String ... textRuns)
+    {
+        RichTextBlock richTextBlock = createMockRichTextBlock();
+        for (String textRunText : textRuns)
+        {
+            richTextBlock.GetInlines().add(createMockTextRun(textRunText));
+        }
+        return richTextBlock;
+    }
+
+    public static RichTextBlock createMockRichTextBlock(TextRun ... textRuns)
+    {
+        RichTextBlock richTextBlock = createMockRichTextBlock();
+        for (TextRun textRun : textRuns)
+        {
+            richTextBlock.GetInlines().add(textRun);
+        }
+        return richTextBlock;
+    }
+
+    public static TextRun createMockTextRun()
+    {
+        TextRun textRun = new TextRun();
+        return textRun;
+    }
+
+    public static TextRun createMockTextRun(String textRunText)
+    {
+        TextRun textRun = createMockTextRun();
+        textRun.SetText(textRunText);
+        return textRun;
+    }
+
     public static SubmitAction createMockSubmitAction()
     {
         SubmitAction submitAction = new SubmitAction();
@@ -233,6 +274,33 @@ public class TestUtil
         return toggleVisibilityAction;
     }
 
+    public static ActionSet createMockActionSet()
+    {
+        ActionSet actionSet = new ActionSet();
+        return actionSet;
+    }
+
+    public static ActionSet createMockActionSet(BaseActionElement ... actions)
+    {
+        ActionSet actionSet = createMockActionSet();
+        for (BaseActionElement action : actions)
+        {
+            actionSet.GetActions().add(action);
+        }
+        return actionSet;
+    }
+
+    public static ActionSet createSampleActionSet()
+    {
+        ActionSet actionSet = createMockActionSet(
+            createSampleOpenUrlAction(),
+            createMockShowCardAction(createSampleCard()),
+            createSampleSubmitAction(),
+            createSampleToggleVisibilityAction());
+
+        return actionSet;
+    }
+
     public static BaseCardElement castToBaseCardElement(BaseElement baseElement)
     {
         BaseCardElement baseCardElement = null;
@@ -279,6 +347,38 @@ public class TestUtil
         }
 
         return textBlock;
+    }
+
+    public static RichTextBlock castToRichTextBlock(BaseCardElement baseCardElement)
+    {
+        RichTextBlock richTextBlock = null;
+
+        if (baseCardElement instanceof RichTextBlock)
+        {
+            richTextBlock = (RichTextBlock) baseCardElement;
+        }
+        else if ((richTextBlock = RichTextBlock.dynamic_cast(baseCardElement)) == null)
+        {
+            throw new InternalError("Unable to convert BaseCardElement to RichTextBlock object model.");
+        }
+
+        return richTextBlock;
+    }
+
+    public static TextRun castToTextRun(Inline inline)
+    {
+        TextRun textRun = null;
+
+        if (inline instanceof TextRun)
+        {
+            textRun = (TextRun) inline;
+        }
+        else if ((textRun = TextRun.dynamic_cast(inline)) == null)
+        {
+            throw new InternalError("Unable to convert Inline to TextRun object model.");
+        }
+
+        return textRun;
     }
 
     public static Image castToImage(BaseCardElement baseCardElement)
@@ -359,6 +459,22 @@ public class TestUtil
         }
 
         return imageSet;
+    }
+
+    public static ActionSet castToActionSet(BaseCardElement baseCardElement)
+    {
+        ActionSet actionSet = null;
+
+        if (baseCardElement instanceof ActionSet)
+        {
+            actionSet = (ActionSet) baseCardElement;
+        }
+        else if ((actionSet = ActionSet.dynamic_cast(baseCardElement)) == null)
+        {
+            throw new InternalError("Unable to convert BaseCardElement to ActionSet object model.");
+        }
+
+        return actionSet;
     }
 
     public static SubmitAction castToSubmitAction(BaseActionElement baseActionElement)

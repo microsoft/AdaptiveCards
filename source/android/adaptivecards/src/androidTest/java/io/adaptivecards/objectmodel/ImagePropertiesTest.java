@@ -1,6 +1,5 @@
 package io.adaptivecards.objectmodel;
 
-import android.provider.ContactsContract;
 import android.util.Pair;
 
 import junit.framework.Assert;
@@ -8,8 +7,6 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
-
-import static org.junit.Assert.*;
 
 public class ImagePropertiesTest
 {
@@ -189,14 +186,14 @@ public class ImagePropertiesTest
         image.SetAltText("");
         Assert.assertEquals(s_defaultImage, image.Serialize());
 
-        ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(s_defaultImage), "1.0");
+        ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(s_defaultImage), "1.0");
         Image parsedImage = TestUtil.castToImage(result.GetAdaptiveCard().GetBody().get(0));
         Assert.assertEquals("", parsedImage.GetAltText());
 
         image.SetAltText("Alternative Text");
         Assert.assertEquals(imageAltText, image.Serialize());
 
-        result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(imageAltText), "1.0");
+        result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(imageAltText), "1.0");
         parsedImage = TestUtil.castToImage(result.GetAdaptiveCard().GetBody().get(0));
         Assert.assertEquals("Alternative Text", parsedImage.GetAltText());
     }
@@ -209,7 +206,7 @@ public class ImagePropertiesTest
 
         Assert.assertEquals(s_defaultImage, image.Serialize());
 
-        ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(s_defaultImage), "1.0");
+        ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(s_defaultImage), "1.0");
         Image parsedImage = TestUtil.castToImage(result.GetAdaptiveCard().GetBody().get(0));
         Assert.assertEquals("", parsedImage.GetBackgroundColor());
 
@@ -229,7 +226,7 @@ public class ImagePropertiesTest
             Assert.assertEquals(expectedJson, image.Serialize());
 
             final String imagePayload = String.format(imageBackgroundColor, inputColor);
-            result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(imagePayload), "1.0");
+            result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(imagePayload), "1.0");
             parsedImage = TestUtil.castToImage(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals(expectedOutputColor, parsedImage.GetBackgroundColor());
         }
@@ -253,7 +250,7 @@ public class ImagePropertiesTest
             image.SetHorizontalAlignment(testTuple.first);
             Assert.assertEquals(testTuple.second, image.Serialize());
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(testTuple.second), "1.0");
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(testTuple.second), "1.0");
             Image parsedImage = TestUtil.castToImage(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals(testTuple.first, parsedImage.GetHorizontalAlignment());
         }
@@ -283,7 +280,7 @@ public class ImagePropertiesTest
 
             Assert.assertEquals(testTuple.second, image.Serialize());
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(testTuple.second), "1.0");
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(testTuple.second), "1.0");
             Image parsedImage = TestUtil.castToImage(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals(testTuple.first, parsedImage.GetImageSize());
         }
@@ -305,7 +302,7 @@ public class ImagePropertiesTest
 
             Assert.assertEquals(testTuple.second, image.Serialize());
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(testTuple.second), "1.0");
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(testTuple.second), "1.0");
             Image parsedImage = TestUtil.castToImage(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals(testTuple.first, parsedImage.GetImageStyle());
         }
@@ -346,7 +343,7 @@ public class ImagePropertiesTest
 
                 Assert.assertEquals(expectedJson, image.Serialize());
 
-                ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(expectedJson), "1.0");
+                ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(expectedJson), "1.0");
                 Image parsedImage = TestUtil.castToImage(result.GetAdaptiveCard().GetBody().get(0));
                 Assert.assertEquals(pixelSize[i], parsedImage.GetPixelWidth());
                 Assert.assertEquals(pixelSize[j], parsedImage.GetPixelHeight());
@@ -364,7 +361,7 @@ public class ImagePropertiesTest
 
         Assert.assertEquals(imageSelectActionSubmit, image.Serialize());
 
-        ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(imageSelectActionSubmit), "1.0");
+        ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(imageSelectActionSubmit), "1.0");
         Image parsedImage = TestUtil.castToImage(result.GetAdaptiveCard().GetBody().get(0));
         Assert.assertEquals("{\"data\":{\"data\":\"Some data\"},\"type\":\"Action.Submit\"}\n", parsedImage.GetSelectAction().Serialize());
     }
@@ -379,7 +376,7 @@ public class ImagePropertiesTest
 
         Assert.assertEquals(imageSelectActionOpenUrl, image.Serialize());
 
-        ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(imageSelectActionOpenUrl), "1.0");
+        ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(imageSelectActionOpenUrl), "1.0");
         Image parsedImage = TestUtil.castToImage(result.GetAdaptiveCard().GetBody().get(0));
         Assert.assertEquals("{\"type\":\"Action.OpenUrl\",\"url\":\"http://\"}\n", parsedImage.GetSelectAction().Serialize());
     }
@@ -396,7 +393,7 @@ public class ImagePropertiesTest
 
         Assert.assertEquals(imageSelectActionToggleVisibility, image.Serialize());
 
-        ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(imageSelectActionToggleVisibility), "1.0");
+        ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(imageSelectActionToggleVisibility), "1.0");
         Image parsedImage = TestUtil.castToImage(result.GetAdaptiveCard().GetBody().get(0));
         Assert.assertEquals("{\"targetElements\":[\"id1\",{\"elementId\":\"id2\",\"isVisible\":true}," +
             "{\"elementId\":\"id3\",\"isVisible\":false}],\"type\":\"Action.ToggleVisibility\"}\n", parsedImage.GetSelectAction().Serialize());

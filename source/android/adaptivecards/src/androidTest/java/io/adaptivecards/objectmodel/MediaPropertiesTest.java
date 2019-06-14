@@ -3,8 +3,6 @@ package io.adaptivecards.objectmodel;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class MediaPropertiesTest
 {
 
@@ -99,7 +97,7 @@ public class MediaPropertiesTest
             media.SetAltText("");
             Assert.assertEquals(s_defaultMedia, media.Serialize());
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(s_defaultMedia), "1.0");
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(s_defaultMedia), "1.0");
             Media parsedMedia = MediaPropertiesTest.cast(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals("", parsedMedia.GetAltText());
         }
@@ -111,7 +109,7 @@ public class MediaPropertiesTest
             media.SetAltText("Alternative Text");
             Assert.assertEquals(mediaAltText, media.Serialize());
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(mediaAltText), "1.0");
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(mediaAltText), "1.0");
             Media parsedMedia = MediaPropertiesTest.cast(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals("Alternative Text", parsedMedia.GetAltText());
         }
@@ -125,7 +123,7 @@ public class MediaPropertiesTest
             media.SetAltText("");
             Assert.assertEquals(s_defaultMedia, media.Serialize());
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(s_defaultMedia), "1.0");
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(s_defaultMedia), "1.0");
             Media parsedMedia = MediaPropertiesTest.cast(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals("", parsedMedia.GetAltText());
         }
@@ -137,7 +135,7 @@ public class MediaPropertiesTest
             media.SetPoster("http://");
             Assert.assertEquals(mediaPoster, media.Serialize());
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(mediaPoster), "1.0");
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(mediaPoster), "1.0");
             Media parsedMedia = MediaPropertiesTest.cast(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals("http://", parsedMedia.GetPoster());
         }

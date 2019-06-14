@@ -8,8 +8,6 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
-
 public class ColumnPropertiesTest
 {
 
@@ -30,7 +28,7 @@ public class ColumnPropertiesTest
             columnSet.GetColumns().add(column);
             Assert.assertEquals(columnWidth, columnSet.Serialize());
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(columnWidth), "1.0");
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(columnWidth), "1.0");
             ColumnSet parsedColumnSet = TestUtil.castToColumnSet(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals("stretch", parsedColumnSet.GetColumns().get(0).GetWidth());
             Assert.assertEquals(0, parsedColumnSet.GetColumns().get(0).GetPixelWidth());
@@ -46,7 +44,7 @@ public class ColumnPropertiesTest
 
             Assert.assertEquals(columnPixelWidth, columnSet.Serialize());
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(columnPixelWidth), "1.0");
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(columnPixelWidth), "1.0");
             ColumnSet parsedColumnSet = TestUtil.castToColumnSet(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals("50px", parsedColumnSet.GetColumns().get(0).GetWidth());
             Assert.assertEquals(50, parsedColumnSet.GetColumns().get(0).GetPixelWidth());
@@ -97,7 +95,7 @@ public class ColumnPropertiesTest
             columnSet.GetColumns().add(column);
             Assert.assertEquals(columnWidth, columnSet.Serialize());
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(columnWidth), "1.0");
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(columnWidth), "1.0");
             ColumnSet parsedColumnSet = TestUtil.castToColumnSet(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals("stretch", parsedColumnSet.GetColumns().get(0).GetWidth());
             Assert.assertEquals(0, parsedColumnSet.GetColumns().get(0).GetPixelWidth());
@@ -144,7 +142,7 @@ public class ColumnPropertiesTest
 
             Assert.assertEquals(columnPixelWidth, columnSet.Serialize());
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(columnPixelWidth), "1.0");
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(columnPixelWidth), "1.0");
             ColumnSet parsedColumnSet = TestUtil.castToColumnSet(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals("50px", parsedColumnSet.GetColumns().get(0).GetWidth());
             Assert.assertEquals(50, parsedColumnSet.GetColumns().get(0).GetPixelWidth());
@@ -171,7 +169,7 @@ public class ColumnPropertiesTest
             columnSet.GetColumns().add(column);
             Assert.assertEquals(testTuple.second, columnSet.Serialize());
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(testTuple.second), "1.0");
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(testTuple.second), "1.0");
             ColumnSet parsedColumnSet = TestUtil.castToColumnSet(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals(testTuple.first.intValue(), parsedColumnSet.GetColumns().get(0).GetPixelWidth());
         }
@@ -197,7 +195,7 @@ public class ColumnPropertiesTest
             columnSet.GetColumns().add(column);
             Assert.assertEquals(testTuple.second, columnSet.Serialize());
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(testTuple.second), "1.0");
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(testTuple.second), "1.0");
             ColumnSet parsedColumnSet = TestUtil.castToColumnSet(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals(testTuple.first, parsedColumnSet.GetColumns().get(0).GetWidth());
         }
