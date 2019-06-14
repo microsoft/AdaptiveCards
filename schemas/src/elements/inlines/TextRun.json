@@ -45,6 +45,12 @@
     "weight": {
       "type": "FontWeight",
       "description": "Controls the weight of the text."
+    },
+    "underline": {
+      "type": "boolean",
+      "description": "If `true`, displays the text with an underline.",
+      "version": "1.3",
+      "features": [ 3057 ]
     }
   },
   "shorthand": "text"

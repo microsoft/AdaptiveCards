@@ -17,8 +17,11 @@
 | **size** | `FontSize` | No | Controls size of text. | 1.2 |
 | **strikethrough** | `boolean` | No | If `true`, displays the text with strikethrough. | 1.2 |
 | **weight** | `FontWeight` | No | Controls the weight of the text. | 1.2 |
+| **underline** | `boolean` | No | If `true`, displays the text with an underline. | 1.3 |
 <!-- END AUTO-GENERATED -->
 
 ## Rendering
 
 Display all the properties as described.
+
+Add any rendering details
