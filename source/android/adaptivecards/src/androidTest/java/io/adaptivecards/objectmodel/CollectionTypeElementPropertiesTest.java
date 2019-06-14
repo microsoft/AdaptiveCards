@@ -8,8 +8,6 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
-
 /**
  * Class for testing the collection typed elements, as BaseCardElement objects can't be parsed to
  * CollectionTypeElement then we use Container objects for testing, Column and ColumnSet will include
@@ -65,7 +63,7 @@ public class CollectionTypeElementPropertiesTest
             container.SetBackgroundImage(null);
             Assert.assertEquals(s_defaultContainerJson, container.Serialize());
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(s_defaultContainerJson), "1.0");
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(s_defaultContainerJson), "1.0");
             Container parsedContainer = TestUtil.castToContainer(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals(null, parsedContainer.GetBackgroundImage());
         }
@@ -76,7 +74,7 @@ public class CollectionTypeElementPropertiesTest
             container.SetBackgroundImage(TestUtil.createMockBackgroundImage());
             Assert.assertEquals(containerBackgroundImage, container.Serialize());
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(containerBackgroundImage), "1.0");
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(containerBackgroundImage), "1.0");
             Container parsedContainer = TestUtil.castToContainer(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals("http://", parsedContainer.GetBackgroundImage().GetUrl());
         }
@@ -100,7 +98,7 @@ public class CollectionTypeElementPropertiesTest
             container.SetBleed(testTuple.first);
             Assert.assertEquals(testTuple.second, container.Serialize());
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(testTuple.second), "1.0");
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(testTuple.second), "1.0");
             Container parsedContainer = TestUtil.castToContainer(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals((boolean)testTuple.first, parsedContainer.GetBleed());
         }
@@ -125,7 +123,7 @@ public class CollectionTypeElementPropertiesTest
             container.SetMinHeight(testTuple.first.intValue());
             Assert.assertEquals(testTuple.second, container.Serialize());
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(testTuple.second), "1.0");
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(testTuple.second), "1.0");
             Container parsedContainer = TestUtil.castToContainer(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals(testTuple.first.intValue(), parsedContainer.GetMinHeight());
         }
@@ -149,7 +147,7 @@ public class CollectionTypeElementPropertiesTest
         container.SetSelectAction(TestUtil.createSampleSubmitAction());
         Assert.assertEquals(containerSelectAction, container.Serialize());
 
-        ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(containerSelectAction), "1.0");
+        ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(containerSelectAction), "1.0");
         Container parsedContainer = TestUtil.castToContainer(result.GetAdaptiveCard().GetBody().get(0));
         Assert.assertEquals(TestUtil.createSampleSubmitAction().Serialize(), parsedContainer.GetSelectAction().Serialize());
     }
@@ -177,7 +175,7 @@ public class CollectionTypeElementPropertiesTest
             container.SetStyle(testTuple.first);
             Assert.assertEquals(testTuple.second, container.Serialize());
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(testTuple.second), "1.0");
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(testTuple.second), "1.0");
             Container parsedContainer = TestUtil.castToContainer(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals(testTuple.first, parsedContainer.GetStyle());
         }
@@ -202,7 +200,7 @@ public class CollectionTypeElementPropertiesTest
             container.SetVerticalContentAlignment(testTuple.first);
             Assert.assertEquals(testTuple.second, container.Serialize());
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(testTuple.second), "1.0");
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(testTuple.second), "1.0");
             Container parsedContainer = TestUtil.castToContainer(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals(testTuple.first, parsedContainer.GetVerticalContentAlignment());
         }

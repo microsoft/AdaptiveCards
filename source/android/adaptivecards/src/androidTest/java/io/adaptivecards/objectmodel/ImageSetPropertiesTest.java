@@ -8,8 +8,6 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
-
 public class ImageSetPropertiesTest
 {
 
@@ -73,7 +71,7 @@ public class ImageSetPropertiesTest
             Assert.assertEquals(imageSetNoDefaultValuesJson, imageSet.Serialize());
         }
 
-        ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(imageSetNoDefaultValuesJson), "1.0");
+        ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(imageSetNoDefaultValuesJson), "1.0");
         ImageSet parsedImageSet = TestUtil.castToImageSet(result.GetAdaptiveCard().GetBody().get(0));
         Assert.assertEquals(ImageSize.Medium, parsedImageSet.GetImageSize());
         Assert.assertEquals(3, parsedImageSet.GetImages().size());
@@ -197,7 +195,7 @@ public class ImageSetPropertiesTest
             Assert.assertEquals(imageSetNoDefaultValuesJson, imageSet.Serialize());
         }
 
-        ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(imageSetNoDefaultValuesJson), "1.0");
+        ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(imageSetNoDefaultValuesJson), "1.0");
         ImageSet parsedImageSet = TestUtil.castToImageSet(result.GetAdaptiveCard().GetBody().get(0));
         Assert.assertEquals(ImageSize.Medium, parsedImageSet.GetImageSize());
         Assert.assertEquals(3, parsedImageSet.GetImages().size());
@@ -280,7 +278,7 @@ public class ImageSetPropertiesTest
 
             Assert.assertEquals(testTuple.second, imageSet.Serialize());
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(testTuple.second), "1.0");
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(testTuple.second), "1.0");
             ImageSet parsedImage = TestUtil.castToImageSet(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals(testTuple.first, parsedImage.GetImageSize());
         }

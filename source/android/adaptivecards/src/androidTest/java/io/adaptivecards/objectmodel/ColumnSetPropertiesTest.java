@@ -1,14 +1,8 @@
 package io.adaptivecards.objectmodel;
 
-import android.util.Pair;
-
 import junit.framework.Assert;
 
 import org.junit.Test;
-
-import java.util.ArrayList;
-
-import static org.junit.Assert.*;
 
 public class ColumnSetPropertiesTest
 {
@@ -20,17 +14,17 @@ public class ColumnSetPropertiesTest
     public void AllPropertiesTest() throws Exception
     {
         final String columnSetNoDefaultValuesJson =
-            "{\"columns\":[" +
+            "{\"backgroundImage\":\"http://\"," +
+            "\"bleed\":true," +
+            "\"columns\":[" +
                 "{\"items\":[]," +
-                "\"type\":\"Column\"}]," +
-                "\"backgroundImage\":\"http://\"," +
-                "\"bleed\":true," +
-                "\"items\":[]," +
-                "\"minHeight\":\"1px\"," +
-                "\"selectAction\":{\"data\":{\"data\":\"Some data\"},\"type\":\"Action.Submit\"}," +
-                "\"type\":\"ColumnSet\"," +
-                "\"style\":\"Attention\"," +
-                "\"verticalContentAlignment\":\"Center\"}\n";
+                "\"type\":\"Column\"," +
+                "\"width\":\"Auto\"}]," +
+            "\"minHeight\":\"1px\"," +
+            "\"selectAction\":{\"data\":{\"data\":\"Some data\"},\"type\":\"Action.Submit\"}," +
+            "\"style\":\"Attention\"," +
+            "\"type\":\"ColumnSet\"," +
+            "\"verticalContentAlignment\":\"Center\"}\n";
 
         ColumnSet columnSet = TestUtil.createMockColumnSet(TestUtil.createMockColumn());
         columnSet.SetBackgroundImage(TestUtil.createMockBackgroundImage());
@@ -48,22 +42,22 @@ public class ColumnSetPropertiesTest
     {
         final String columnSetNoDefaultValuesJson =
             "{\"backgroundImage\":\"http://\"," +
-                "\"bleed\":true," +
-                "\"columns\":[" +
+            "\"bleed\":true," +
+            "\"columns\":[" +
                 "{\"items\":[]," +
                 "\"type\":\"Column\"," +
                 "\"width\":\"Auto\"}]," +
-                "\"fallback\":{\"type\":\"Image\",\"url\":\"http://\"}," +
-                "\"height\":\"Stretch\"," +
-                "\"id\":\"Sample id\"," +
-                "\"isVisible\":false," +
-                "\"minHeight\":\"1px\"," +
-                "\"selectAction\":{\"data\":{\"data\":\"Some data\"},\"type\":\"Action.Submit\"}," +
-                "\"separator\":true," +
-                "\"spacing\":\"medium\"," +
-                "\"style\":\"Attention\"," +
-                "\"type\":\"ColumnSet\"," +
-                "\"verticalContentAlignment\":\"Center\"}\n";
+            "\"fallback\":{\"type\":\"Image\",\"url\":\"http://\"}," +
+            "\"height\":\"Stretch\"," +
+            "\"id\":\"Sample id\"," +
+            "\"isVisible\":false," +
+            "\"minHeight\":\"1px\"," +
+            "\"selectAction\":{\"data\":{\"data\":\"Some data\"},\"type\":\"Action.Submit\"}," +
+            "\"separator\":true," +
+            "\"spacing\":\"medium\"," +
+            "\"style\":\"Attention\"," +
+            "\"type\":\"ColumnSet\"," +
+            "\"verticalContentAlignment\":\"Center\"}\n";
 
         ColumnSet columnSet = TestUtil.createMockColumnSet(TestUtil.createMockColumn());
         columnSet.SetBackgroundImage(TestUtil.createMockBackgroundImage());
@@ -91,7 +85,7 @@ public class ColumnSetPropertiesTest
             ColumnSet columnSet = TestUtil.createMockColumnSet();
             Assert.assertEquals(columnSetEmptyColumns, columnSet.Serialize());
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(columnSetEmptyColumns), "1.0");
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(columnSetEmptyColumns), "1.0");
             ColumnSet parsedColumnSet = TestUtil.castToColumnSet(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals(0, parsedColumnSet.GetColumns().size());
         }
@@ -104,7 +98,7 @@ public class ColumnSetPropertiesTest
             columnSet.GetColumns().add(column);
             Assert.assertEquals(columnSetWithColumn, columnSet.Serialize());
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(columnSetWithColumn), "1.0");
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(columnSetWithColumn), "1.0");
             ColumnSet parsedColumnSet = TestUtil.castToColumnSet(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals(1, parsedColumnSet.GetColumns().size());
         }

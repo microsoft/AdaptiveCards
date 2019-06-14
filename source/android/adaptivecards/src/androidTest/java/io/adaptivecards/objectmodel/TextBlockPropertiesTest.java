@@ -121,7 +121,7 @@ public class TextBlockPropertiesTest
             textBlock.SetFontType(testTuple.first);
             Assert.assertEquals(testTuple.second, textBlock.Serialize());
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(testTuple.second), "1.0");
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(testTuple.second), "1.0");
             TextBlock parsedTextBlock = TestUtil.castToTextBlock(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals(testTuple.first, parsedTextBlock.GetFontType());
         }
@@ -144,7 +144,7 @@ public class TextBlockPropertiesTest
             textBlock.SetHorizontalAlignment(testTuple.first);
             Assert.assertEquals(testTuple.second, textBlock.Serialize());
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(testTuple.second), "1.0");
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(testTuple.second), "1.0");
             TextBlock parsedTextBlock = TestUtil.castToTextBlock(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals(testTuple.first, parsedTextBlock.GetHorizontalAlignment());
         }
@@ -165,7 +165,7 @@ public class TextBlockPropertiesTest
             textBlock.SetIsSubtle(testTuple.first);
             Assert.assertEquals(testTuple.second, textBlock.Serialize());
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(testTuple.second), "1.0");
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(testTuple.second), "1.0");
             TextBlock parsedTextBlock = TestUtil.castToTextBlock(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals((boolean)testTuple.first, parsedTextBlock.GetIsSubtle());
         }
@@ -178,7 +178,7 @@ public class TextBlockPropertiesTest
         textBlock.SetMaxLines(0);
         Assert.assertEquals(s_defaultTextBlock, textBlock.Serialize());
 
-        ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(s_defaultTextBlock), "1.0");
+        ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(s_defaultTextBlock), "1.0");
         TextBlock parsedTextBlock = TestUtil.castToTextBlock(result.GetAdaptiveCard().GetBody().get(0));
         Assert.assertEquals(0, parsedTextBlock.GetMaxLines());
 
@@ -191,7 +191,7 @@ public class TextBlockPropertiesTest
             textBlock.SetMaxLines(tests[i]);
             Assert.assertEquals(maxLinesJson, textBlock.Serialize());
 
-            result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(maxLinesJson), "1.0");
+            result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(maxLinesJson), "1.0");
             parsedTextBlock = TestUtil.castToTextBlock(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals(tests[i], parsedTextBlock.GetMaxLines());
         }
@@ -204,7 +204,7 @@ public class TextBlockPropertiesTest
         textBlock.SetText("");
         Assert.assertEquals(s_defaultTextBlock, textBlock.Serialize());
 
-        ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(s_defaultTextBlock), "1.0");
+        ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(s_defaultTextBlock), "1.0");
         TextBlock parsedTextBlock = TestUtil.castToTextBlock(result.GetAdaptiveCard().GetBody().get(0));
         Assert.assertEquals("", parsedTextBlock.GetText());
 
@@ -218,7 +218,7 @@ public class TextBlockPropertiesTest
             textBlock.SetText(tests[i]);
             Assert.assertEquals(textBlockJson, textBlock.Serialize());
 
-            result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(textBlockJson), "1.0");
+            result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(textBlockJson), "1.0");
             parsedTextBlock = TestUtil.castToTextBlock(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals(tests[i], parsedTextBlock.GetText());
         }
@@ -249,7 +249,7 @@ public class TextBlockPropertiesTest
             textBlock.SetTextColor(testTuple.first);
             Assert.assertEquals(testTuple.second, textBlock.Serialize());
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(testTuple.second), "1.0");
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(testTuple.second), "1.0");
             TextBlock parsedTextBlock = TestUtil.castToTextBlock(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals(testTuple.first, parsedTextBlock.GetTextColor());
         }
@@ -276,7 +276,7 @@ public class TextBlockPropertiesTest
             textBlock.SetTextSize(testTuple.first);
             Assert.assertEquals(testTuple.second, textBlock.Serialize());
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(testTuple.second), "1.0");
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(testTuple.second), "1.0");
             TextBlock parsedTextBlock = TestUtil.castToTextBlock(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals(testTuple.first, parsedTextBlock.GetTextSize());
         }
@@ -299,7 +299,7 @@ public class TextBlockPropertiesTest
             textBlock.SetTextWeight(testTuple.first);
             Assert.assertEquals(testTuple.second, textBlock.Serialize());
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(testTuple.second), "1.0");
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(testTuple.second), "1.0");
             TextBlock parsedTextBlock = TestUtil.castToTextBlock(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals(testTuple.first, parsedTextBlock.GetTextWeight());
         }
@@ -320,7 +320,7 @@ public class TextBlockPropertiesTest
             textBlock.SetWrap(testTuple.first);
             Assert.assertEquals(testTuple.second, textBlock.Serialize());
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(testTuple.second), "1.0");
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(testTuple.second), "1.0");
             TextBlock parsedTextBlock = TestUtil.castToTextBlock(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals((boolean)testTuple.first, parsedTextBlock.GetWrap());
         }

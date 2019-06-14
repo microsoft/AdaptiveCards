@@ -6,8 +6,6 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static org.junit.Assert.*;
-
 public class FactSetPropertiesTest
 {
     static {
@@ -49,7 +47,7 @@ public class FactSetPropertiesTest
 
             try
             {
-                AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(factSetEmptyFacts), "1.0");
+                AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(factSetEmptyFacts), "1.0");
                 Assert.fail();
             }
             catch (IOException e)
@@ -68,7 +66,7 @@ public class FactSetPropertiesTest
             FactSet factSet = TestUtil.createMockFactSet(TestUtil.createMockFact("Title", "Value"));
             Assert.assertEquals(factSetWithFact, factSet.Serialize());
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementStringInCard(factSetWithFact), "1.0");
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(factSetWithFact), "1.0");
             FactSet parsedFactSet = TestUtil.castToFactSet(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals(1, parsedFactSet.GetFacts().size());
 
