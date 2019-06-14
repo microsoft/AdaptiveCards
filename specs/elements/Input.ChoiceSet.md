@@ -11,6 +11,11 @@
 | **style** | `ChoiceInputStyle` | No |  | 1.0 |
 | **value** | `string` | No | The initial choice (or set of choices) that should be selected. For multi-select, specify a comma-separated string of values. | 1.0 |
 | **wrap** | `boolean` | No | If `true`, allow text to wrap. Otherwise, text is clipped. | 1.2 |
+
+**Inherited properties**
+
+| Property | Type | Required | Description | Version |
+| -------- | ---- | -------- | ----------- | ------- |
 | **fallback** | `Element`, `FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
 | **height** | `BlockElementHeight` | No | Specifies the height of the element. | 1.1 |
 | **separator** | `boolean` | No | When `true`, draw a separating line at the top of the element. | 1.0 |

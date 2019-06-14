@@ -6,6 +6,11 @@
 | -------- | ---- | -------- | ----------- | ------- |
 | **type** | `"Action.ShowCard"` | Yes | Must be `"Action.ShowCard"`. | 1.0 |
 | **card** | `AdaptiveCard` | No | The Adaptive Card to show. | 1.0 |
+
+**Inherited properties**
+
+| Property | Type | Required | Description | Version |
+| -------- | ---- | -------- | ----------- | ------- |
 | **title** | `string` | No | Label for button or link that represents this action. | 1.0 |
 | **iconUrl** | `uri` | No | Optional icon to be shown on the action in conjunction with the title. Supports data URI in version 1.2+ | 1.1 |
 | **style** | `ActionStyle` | No | Controls the style of an Action, which influences how the action is displayed, spoken, etc. | 1.2 |

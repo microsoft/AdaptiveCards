@@ -12,6 +12,11 @@
 | **bleed** | `boolean` | No | Determines whether the element should bleed through its parent's padding. | 1.2 |
 | **backgroundImage** | `BackgroundImage`, `uri` | No | Specifies the background image. | 1.2 |
 | **minHeight** | `string` | No | Specifies the minimum height of the container. | 1.2 |
+
+**Inherited properties**
+
+| Property | Type | Required | Description | Version |
+| -------- | ---- | -------- | ----------- | ------- |
 | **fallback** | `Element`, `FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
 | **height** | `BlockElementHeight` | No | Specifies the height of the element. | 1.1 |
 | **separator** | `boolean` | No | When `true`, draw a separating line at the top of the element. | 1.0 |

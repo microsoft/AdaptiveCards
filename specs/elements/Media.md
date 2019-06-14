@@ -10,6 +10,11 @@
 | **sources** | `MediaSource[]` | Yes | Array of media sources to attempt to play. | 1.1 |
 | **poster** | `uri` | No | URL of an image to display before playing. Supports data URI in version 1.2+ | 1.1 |
 | **altText** | `string` | No | Alternate text describing the audio or video. | 1.1 |
+
+**Inherited properties**
+
+| Property | Type | Required | Description | Version |
+| -------- | ---- | -------- | ----------- | ------- |
 | **fallback** | `Element`, `FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
 | **height** | `BlockElementHeight` | No | Specifies the height of the element. | 1.1 |
 | **separator** | `boolean` | No | When `true`, draw a separating line at the top of the element. | 1.1 |

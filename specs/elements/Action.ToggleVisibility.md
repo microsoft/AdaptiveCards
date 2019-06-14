@@ -8,6 +8,11 @@
 | -------- | ---- | -------- | ----------- | ------- |
 | **type** | `"Action.ToggleVisibility"` | Yes | Must be `"Action.ToggleVisibility"`. | 1.2 |
 | **targetElements** | `TargetElement[]` | No | The array of TargetElements | 1.2 |
+
+**Inherited properties**
+
+| Property | Type | Required | Description | Version |
+| -------- | ---- | -------- | ----------- | ------- |
 | **title** | `string` | No | Label for button or link that represents this action. | 1.2 |
 | **iconUrl** | `uri` | No | Optional icon to be shown on the action in conjunction with the title. Supports data URI in version 1.2+ | 1.1 |
 | **style** | `ActionStyle` | No | Controls the style of an Action, which influences how the action is displayed, spoken, etc. | 1.2 |
