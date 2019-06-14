@@ -10,7 +10,7 @@ module.exports = (env, argv) => {
 		mode: mode,
 		target: "node",
 		entry: {
-			"spec-generator-script": "./src/spec-generator-script.ts",
+			"spec-generator-script.0.5.0.0": "./src/spec-generator-script.ts",
 		},
 		output: {
 			path: path.resolve(__dirname, "dist"),
