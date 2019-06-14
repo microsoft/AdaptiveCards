@@ -35,6 +35,7 @@ The following SDKs are lovingly maintained by the Adaptive Cards community. Thei
 |Platform|Install|Build|Docs|Status|Maintainer|
 |---|---|---|---|---|---|
 | ReactNative | [![npm install](https://img.shields.io/npm/v/adaptivecards-reactnative.svg)](https://www.npmjs.com/package/adaptivecards-reactnative) | [Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/community/reactnative)| [Docs](https://github.com/Microsoft/AdaptiveCards/blob/master/source/community/reactnative/README.md) | [![Build status](https://dev.azure.com/microsoft/AdaptiveCards/_apis/build/status/PR%20Validation/AdaptiveCards-ReactNative-Android-CI)](https://dev.azure.com/microsoft/AdaptiveCards/_build/latest?definitionId=38416) | [Imaginea](https://github.com/Microsoft/AdaptiveCards/blob/master/source/community/reactnative/Contributors.md)
+| Flutter | INSTALL LINK? | [Source](https://github.com/neohelden/Flutter-AdaptiveCards)| [Docs](https://github.com/neohelden/Flutter-AdaptiveCards/blob/master/README.md) | NA | [Neohelden](https://neohelden.com/)
 
 
 ## Contribute
