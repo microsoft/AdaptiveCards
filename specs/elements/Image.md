@@ -25,6 +25,111 @@
 | **id** | `string` | No | A unique identifier associated with the item. | 1.0 |
 | **isVisible** | `boolean` | No, default: `true` | If `false`, this item will be removed from the visual tree. | 1.2 |
 | **requires** | `Dictionary<string>` | No | A series of key/value pairs indicating features that the item requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered. | 1.2 |
+
+
+## height
+
+The desired height of the image. If specified as a pixel value, ending in 'px', E.g., 50px, the image will distort to fit that exact height. This overrides the `size` property.
+
+* **Type**: `string`, `BlockElementHeight`
+* **Version** : 1.1
+* **Required**: No, default: `"auto"`
+* **Allowed values**:
+  * `string`
+  * `"auto"`: The height of the container will be determined by the height of its contents.
+  * `"stretch"`: The container will stretch its height to the available remaining height of the parent container.
+
+
+## horizontalAlignment
+
+Controls how this element is horizontally positioned within its parent.
+
+* **Type**: `HorizontalAlignment`
+* **Required**: No
+* **Allowed values**:
+  * `"left"`
+  * `"center"`
+  * `"right"`
+
+
+## selectAction
+
+An Action that will be invoked when the `Image` is tapped or selected. `Action.ShowCard` is not supported.
+
+* **Type**: `ISelectAction`
+* **Version** : 1.1
+* **Required**: No
+* **Allowed values**:
+  * `Action.OpenUrl`
+  * `Action.Submit`
+  * `Action.ToggleVisibility`
+
+
+## size
+
+Controls the approximate size of the image. The physical dimensions will vary per host.
+
+* **Type**: `ImageSize`
+* **Required**: No
+* **Allowed values**:
+  * `"auto"`: Image will scale down to fit if needed, but will not scale up to fill the area.
+  * `"stretch"`: Image with both scale down and up to fit as needed.
+  * `"small"`: Image is displayed with a fixed small width, where the width is determined by the host.
+  * `"medium"`: Image is displayed with a fixed medium width, where the width is determined by the host.
+  * `"large"`: Image is displayed with a fixed large width, where the width is determined by the host.
+
+
+## style
+
+Controls how this `Image` is displayed.
+
+* **Type**: `ImageStyle`
+* **Required**: No
+* **Allowed values**:
+  * `"default"`
+  * `"person"`
+
+
+## fallback
+
+Describes what to do when an unknown element is encountered or the requires of this or any children can't be met.
+
+* **Type**: `Element`, `FallbackOption`
+* **Version** : 1.2
+* **Required**: No
+* **Allowed values**:
+  * `ActionSet`
+  * `ColumnSet`
+  * `Container`
+  * `FactSet`
+  * `Image`
+  * `ImageSet`
+  * `Input.ChoiceSet`
+  * `Input.Date`
+  * `Input.Number`
+  * `Input.Text`
+  * `Input.Time`
+  * `Input.Toggle`
+  * `Media`
+  * `RichTextBlock`
+  * `TextBlock`
+  * `"drop"`: Causes this element to be dropped immediately when unknown elements are encountered. The unknown element doesn't bubble up any higher.
+
+
+## spacing
+
+Controls the amount of spacing between this element and the preceding element.
+
+* **Type**: `Spacing`
+* **Required**: No
+* **Allowed values**:
+  * `"default"`
+  * `"none"`
+  * `"small"`
+  * `"medium"`
+  * `"large"`
+  * `"extraLarge"`
+  * `"padding"`
 <!-- END AUTO-GENERATED -->
 
 ## Rendering

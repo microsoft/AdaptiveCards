@@ -17,6 +17,97 @@
 | **lang** | `string` | No | The 2-letter ISO-639-1 language used in the card. Used to localize any date/time functions. | 1.0 |
 | **verticalContentAlignment** | `VerticalContentAlignment` | No | Defines how the content should be aligned vertically within the container. Only relevant for fixed-height cards, or cards with a `minHeight` specified. | 1.1 |
 | **$schema** | `uri` | No | The Adaptive Card schema. | 1.0 |
+
+
+## body
+
+The card elements to show in the primary card region.
+
+* **Type**: `Element[]`
+* **Required**: No
+* **Allowed values**:
+  * `ActionSet`
+  * `ColumnSet`
+  * `Container`
+  * `FactSet`
+  * `Image`
+  * `ImageSet`
+  * `Input.ChoiceSet`
+  * `Input.Date`
+  * `Input.Number`
+  * `Input.Text`
+  * `Input.Time`
+  * `Input.Toggle`
+  * `Media`
+  * `RichTextBlock`
+  * `TextBlock`
+
+
+## actions
+
+The Actions to show in the card's action bar.
+
+* **Type**: `Action[]`
+* **Required**: No
+* **Allowed values**:
+  * `Action.OpenUrl`
+  * `Action.ShowCard`
+  * `Action.Submit`
+  * `Action.ToggleVisibility`
+
+
+## selectAction
+
+An Action that will be invoked when the card is tapped or selected. `Action.ShowCard` is not supported.
+
+* **Type**: `ISelectAction`
+* **Version** : 1.1
+* **Required**: No
+* **Allowed values**:
+  * `Action.OpenUrl`
+  * `Action.Submit`
+  * `Action.ToggleVisibility`
+
+
+## style
+
+Style hint for the Adaptive Card.
+
+* **Type**: `ContainerStyle`
+* **Version** : 1.2
+* **Required**: No
+* **Allowed values**:
+  * `"default"`
+  * `"emphasis"`
+  * `"good"`
+  * `"attention"`
+  * `"warning"`
+  * `"accent"`
+
+
+## backgroundImage
+
+Specifies the background image of the card.
+
+* **Type**: `BackgroundImage`, `uri`
+* **Version** : 1.2, 1.0
+* **Required**: No
+* **Allowed values**:
+  * `BackgroundImage`
+  * `uri`
+
+
+## verticalContentAlignment
+
+Defines how the content should be aligned vertically within the container. Only relevant for fixed-height cards, or cards with a `minHeight` specified.
+
+* **Type**: `VerticalContentAlignment`
+* **Version** : 1.1
+* **Required**: No
+* **Allowed values**:
+  * `"top"`
+  * `"center"`
+  * `"bottom"`
 <!-- END AUTO-GENERATED -->
 
 ## Rendering

@@ -280,14 +280,14 @@ export function createPropertyDetails(property: SchemaProperty, headerLevel: num
 	var summary = getPropertySummary(property, knownTypes, autoLink, elementVersion);
 	var type = summary.type;
 
-	md += style.getHeaderMarkdown(property.name, headerLevel) + '\n\n';
+	md += style.getHeaderMarkdown(property.name, headerLevel); // Includes ending newlines
 
 	// TODO: Add plugin point for custom JSON schema properties like gltf_*
 	var detailedDescription = property.description;
 	if (defined(detailedDescription)) {
-		md += detailedDescription + '\n';
+		md += detailedDescription + '\n\n';
 	} else if (defined(summary.description)) {
-		md += summary.description + '\n';
+		md += summary.description + '\n\n';
 	}
 
 	md += '* ' + style.propertyDetails('Type') + ': ' + summary.formattedType + '\n';
@@ -300,14 +300,7 @@ export function createPropertyDetails(property: SchemaProperty, headerLevel: num
 
 	md += '* ' + style.propertyDetails('Required') + ': ' + summary.required + '\n';
 
-	var hasComplexTypes = false;
-
-	var allTypes: SchemaPropertyType[] = property.getAllTypes();
-	allTypes.forEach(propertyType => {
-		if (propertyType.type instanceof SchemaClass || propertyType.type instanceof SchemaEnum) {
-			hasComplexTypes = true;
-		}
-	});
+	var hasComplexTypes = propertyHasComplexTypes(property);
 
 	if (hasComplexTypes) {
 		var allowedValues: string[] = getAllowedValuesForProperty(property, summary, includeVersion);
@@ -320,6 +313,19 @@ export function createPropertyDetails(property: SchemaProperty, headerLevel: num
 	}
 
 	return md + '\n';
+}
+
+export function propertyHasComplexTypes(property: SchemaProperty) {
+	var answer = false;
+
+	var allTypes: SchemaPropertyType[] = property.getAllTypes();
+	allTypes.forEach(propertyType => {
+		if (propertyType.type instanceof SchemaClass || propertyType.type instanceof SchemaEnum) {
+			answer = true;
+		}
+	});
+
+	return answer;
 }
 
 function getAllowedValuesForProperty(property: SchemaProperty, summary: any, includeVersion: boolean) {

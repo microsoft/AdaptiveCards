@@ -23,6 +23,111 @@
 | **id** | `string` | No | A unique identifier associated with the item. | 1.0 |
 | **isVisible** | `boolean` | No, default: `true` | If `false`, this item will be removed from the visual tree. | 1.2 |
 | **requires** | `Dictionary<string>` | No | A series of key/value pairs indicating features that the item requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered. | 1.2 |
+
+
+## items
+
+The card elements to render inside the `Column`.
+
+* **Type**: `Element[]`
+* **Required**: No
+* **Allowed values**:
+  * `ActionSet`
+  * `ColumnSet`
+  * `Container`
+  * `FactSet`
+  * `Image`
+  * `ImageSet`
+  * `Input.ChoiceSet`
+  * `Input.Date`
+  * `Input.Number`
+  * `Input.Text`
+  * `Input.Time`
+  * `Input.Toggle`
+  * `Media`
+  * `RichTextBlock`
+  * `TextBlock`
+
+
+## backgroundImage
+
+Specifies the background image.
+
+* **Type**: `BackgroundImage`, `uri`
+* **Version** : 1.2
+* **Required**: No
+* **Allowed values**:
+  * `BackgroundImage`
+  * `uri`
+
+
+## fallback
+
+Describes what to do when an unknown item is encountered or the requires of this or any children can't be met.
+
+* **Type**: `Column`, `FallbackOption`
+* **Version** : 1.2
+* **Required**: No
+* **Allowed values**:
+  * `Column`
+  * `"drop"`: Causes this element to be dropped immediately when unknown elements are encountered. The unknown element doesn't bubble up any higher.
+
+
+## spacing
+
+Controls the amount of spacing between this column and the preceding column.
+
+* **Type**: `Spacing`
+* **Required**: No
+* **Allowed values**:
+  * `"default"`
+  * `"none"`
+  * `"small"`
+  * `"medium"`
+  * `"large"`
+  * `"extraLarge"`
+  * `"padding"`
+
+
+## selectAction
+
+An Action that will be invoked when the `Column` is tapped or selected. `Action.ShowCard` is not supported.
+
+* **Type**: `ISelectAction`
+* **Version** : 1.1
+* **Required**: No
+* **Allowed values**:
+  * `Action.OpenUrl`
+  * `Action.Submit`
+  * `Action.ToggleVisibility`
+
+
+## style
+
+Style hint for `Column`.
+
+* **Type**: `ContainerStyle?`
+* **Required**: No
+* **Allowed values**:
+  * `"default"`
+  * `"emphasis"`
+  * `"good"`: Added in version 1.2.
+  * `"attention"`: Added in version 1.2.
+  * `"warning"`: Added in version 1.2.
+  * `"accent"`: Added in version 1.2.
+
+
+## verticalContentAlignment
+
+Defines how the content should be aligned vertically within the column.
+
+* **Type**: `VerticalContentAlignment`
+* **Version** : 1.1
+* **Required**: No, default: `"top"`
+* **Allowed values**:
+  * `"top"`
+  * `"center"`
+  * `"bottom"`
 <!-- END AUTO-GENERATED -->
 
 ## Rendering

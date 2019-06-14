@@ -16,6 +16,34 @@
 | **style** | `ActionStyle` | No | Controls the style of an Action, which influences how the action is displayed, spoken, etc. | 1.2 |
 | **fallback** | `Action`, `FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
 | **requires** | `Dictionary<string>` | No | A series of key/value pairs indicating features that the item requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered. | 1.2 |
+
+
+## style
+
+Controls the style of an Action, which influences how the action is displayed, spoken, etc.
+
+* **Type**: `ActionStyle`
+* **Version** : 1.2
+* **Required**: No
+* **Allowed values**:
+  * `"default"`: Action is displayed as normal
+  * `"positive"`: Action is displayed with a positive style (typically the button becomes accent color)
+  * `"destructive"`: Action is displayed with a destructive style (typically the button becomes red)
+
+
+## fallback
+
+Describes what to do when an unknown element is encountered or the requires of this or any children can't be met.
+
+* **Type**: `Action`, `FallbackOption`
+* **Version** : 1.2
+* **Required**: No
+* **Allowed values**:
+  * `Action.OpenUrl`
+  * `Action.ShowCard`
+  * `Action.Submit`
+  * `Action.ToggleVisibility`
+  * `"drop"`: Causes this element to be dropped immediately when unknown elements are encountered. The unknown element doesn't bubble up any higher.
 <!-- END AUTO-GENERATED -->
 
 ## Rendering

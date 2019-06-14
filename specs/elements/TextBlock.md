@@ -26,6 +26,126 @@
 | **id** | `string` | No | A unique identifier associated with the item. | 1.0 |
 | **isVisible** | `boolean` | No, default: `true` | If `false`, this item will be removed from the visual tree. | 1.2 |
 | **requires** | `Dictionary<string>` | No | A series of key/value pairs indicating features that the item requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered. | 1.2 |
+
+
+## color
+
+Controls the color of `TextBlock` elements.
+
+* **Type**: `Colors`
+* **Required**: No
+* **Allowed values**:
+  * `"default"`
+  * `"dark"`
+  * `"light"`
+  * `"accent"`
+  * `"good"`
+  * `"warning"`
+  * `"attention"`
+
+
+## fontType
+
+Type of font to use for rendering
+
+* **Type**: `FontType`
+* **Version** : 1.2
+* **Required**: No
+* **Allowed values**:
+  * `"default"`
+  * `"monospace"`
+
+
+## horizontalAlignment
+
+Controls the horizontal text alignment.
+
+* **Type**: `HorizontalAlignment`
+* **Required**: No
+* **Allowed values**:
+  * `"left"`
+  * `"center"`
+  * `"right"`
+
+
+## size
+
+Controls size of text.
+
+* **Type**: `FontSize`
+* **Required**: No
+* **Allowed values**:
+  * `"default"`
+  * `"small"`
+  * `"medium"`
+  * `"large"`
+  * `"extraLarge"`
+
+
+## weight
+
+Controls the weight of `TextBlock` elements.
+
+* **Type**: `FontWeight`
+* **Required**: No
+* **Allowed values**:
+  * `"default"`
+  * `"lighter"`
+  * `"bolder"`
+
+
+## fallback
+
+Describes what to do when an unknown element is encountered or the requires of this or any children can't be met.
+
+* **Type**: `Element`, `FallbackOption`
+* **Version** : 1.2
+* **Required**: No
+* **Allowed values**:
+  * `ActionSet`
+  * `ColumnSet`
+  * `Container`
+  * `FactSet`
+  * `Image`
+  * `ImageSet`
+  * `Input.ChoiceSet`
+  * `Input.Date`
+  * `Input.Number`
+  * `Input.Text`
+  * `Input.Time`
+  * `Input.Toggle`
+  * `Media`
+  * `RichTextBlock`
+  * `TextBlock`
+  * `"drop"`: Causes this element to be dropped immediately when unknown elements are encountered. The unknown element doesn't bubble up any higher.
+
+
+## height
+
+Specifies the height of the element.
+
+* **Type**: `BlockElementHeight`
+* **Version** : 1.1
+* **Required**: No
+* **Allowed values**:
+  * `"auto"`: The height of the container will be determined by the height of its contents.
+  * `"stretch"`: The container will stretch its height to the available remaining height of the parent container.
+
+
+## spacing
+
+Controls the amount of spacing between this element and the preceding element.
+
+* **Type**: `Spacing`
+* **Required**: No
+* **Allowed values**:
+  * `"default"`
+  * `"none"`
+  * `"small"`
+  * `"medium"`
+  * `"large"`
+  * `"extraLarge"`
+  * `"padding"`
 <!-- END AUTO-GENERATED -->
 
 ## Rendering

@@ -17,6 +17,71 @@
 | **size** | `FontSize` | No | Controls size of text. | 1.2 |
 | **strikethrough** | `boolean` | No | If `true`, displays the text with strikethrough. | 1.2 |
 | **weight** | `FontWeight` | No | Controls the weight of the text. | 1.2 |
+
+
+## color
+
+Controls the color of the text.
+
+* **Type**: `Colors`
+* **Required**: No
+* **Allowed values**:
+  * `"default"`
+  * `"dark"`
+  * `"light"`
+  * `"accent"`
+  * `"good"`
+  * `"warning"`
+  * `"attention"`
+
+
+## fontType
+
+The type of font to use
+
+* **Type**: `FontType`
+* **Required**: No
+* **Allowed values**:
+  * `"default"`
+  * `"monospace"`
+
+
+## selectAction
+
+Action to invoke when this text run is clicked. Visually changes the text run into a hyperlink. `Action.ShowCard` is not supported.
+
+* **Type**: `ISelectAction`
+* **Required**: No
+* **Allowed values**:
+  * `Action.OpenUrl`
+  * `Action.Submit`
+  * `Action.ToggleVisibility`
+
+
+## size
+
+Controls size of text.
+
+* **Type**: `FontSize`
+* **Required**: No
+* **Allowed values**:
+  * `"default"`
+  * `"small"`
+  * `"medium"`
+  * `"large"`
+  * `"extraLarge"`
+
+
+## weight
+
+Controls the weight of the text.
+
+* **Type**: `FontWeight`
+* **Required**: No
+* **Allowed values**:
+  * `"default"`
+  * `"lighter"`
+  * `"bolder"`
 <!-- END AUTO-GENERATED -->
 
 ## Rendering

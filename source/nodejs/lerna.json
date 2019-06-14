@@ -3,8 +3,7 @@
   "packages": [
     "adaptivecards*/**",
     "spec-generator/**",
-    "typed-schema/**",
-    "typed-schema-markdown/**"
+    "typed-schema/**"
   ],
   "command": {
     "publish": {
