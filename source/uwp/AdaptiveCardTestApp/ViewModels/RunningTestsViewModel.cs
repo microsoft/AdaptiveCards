@@ -158,17 +158,36 @@ namespace AdaptiveCardTestApp.ViewModels
             Dictionary<string, IAdaptiveCardResourceResolver> resourceResolvers = new Dictionary<string, IAdaptiveCardResourceResolver>();
             resourceResolvers.Add("symbol", new SampleResourceResolver());
 
-            var renderResult = await RenderCard(cardFile, hostConfigFile, resourceResolvers);
+            uint reruns = 0;
+            TestResultViewModel result = null;
+            bool retryImage = true;
 
-            var result = await TestResultViewModel.CreateAsync(
-                cardFile: cardFile,
-                hostConfigFile: hostConfigFile,
-                renderedTestResult: renderResult.Item1,
-                actualImageFile: renderResult.Item2,
-                actualJsonFile: renderResult.Item3,
-                expectedFolder: _expectedFolder,
-                sourceHostConfigsFolder: _sourceHostConfigsFolder,
-                sourceCardsFolder: _sourceCardsFolder);
+            while (retryImage)
+            {
+                var renderResult = await RenderCard(cardFile, hostConfigFile, resourceResolvers);
+
+                result = await TestResultViewModel.CreateAsync(
+                    cardFile: cardFile,
+                    hostConfigFile: hostConfigFile,
+                    renderedTestResult: renderResult.Item1,
+                    actualImageFile: renderResult.Item2,
+                    actualJsonFile: renderResult.Item3,
+                    expectedFolder: _expectedFolder,
+                    sourceHostConfigsFolder: _sourceHostConfigsFolder,
+                    sourceCardsFolder: _sourceCardsFolder);
+
+                if (!result.Status.IsPassingStatus())
+                {
+                    // Retry if we failed on image matching for an unchanged card to allow for
+                    // occasional differences in image rendering
+                    retryImage = result.Status.OriginalMatched && !result.Status.ImageMatched && (reruns < 3);
+                    reruns++;
+                }
+                else
+                {
+                    retryImage = false;
+                }
+            }
 
             OnSingleTestCompleted?.Invoke(this, result.Status);
             return result;
