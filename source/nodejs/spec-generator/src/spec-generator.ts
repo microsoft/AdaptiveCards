@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import * as markedschema from "marked-schema";
 import * as typedschema from "typed-schema";
 var fs = require("fs");
