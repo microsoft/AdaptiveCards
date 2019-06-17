@@ -67,7 +67,7 @@
     },
     "width": {
       "type": "string|number",
-      "description": "`\"auto\"`, `\"stretch\"`, or a number representing relative width of the column in the column group."
+      "description": "`\"auto\"`, `\"stretch\"`, a number representing relative width of the column in the column group, or in version 1.1 and higher, a specific pixel width, like `\"50px\"`."
     }
   }
 }
