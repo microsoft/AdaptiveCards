@@ -1,0 +1,12 @@
+{
+	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+	"extends": "Element",
+	"description": "The FactSet element displays a series of facts (i.e. name/value pairs) in a tabular form.",
+	"properties": {
+		"facts": {
+			"type": "Fact[]",
+      "description": "The array of `Fact`'s.",
+      "required": true
+		}
+	}
+}
