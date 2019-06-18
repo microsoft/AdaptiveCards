@@ -1,6 +1,6 @@
 # Adaptive Card Samples
 
-This directory contains sample payloads that validate and showcase the schema.
+This directory contains sample payloads that validate and showcase the schema. Updated
 
 ## Interactive Designer
 
