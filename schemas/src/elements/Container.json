@@ -44,7 +44,7 @@
     },
     "minHeight": {
       "type": "string",
-      "description": "Specifies the minimum height of the container.",
+      "description": "Specifies the minimum height of the container in pixels, like `\"80px\"`.",
       "examples": [
         "50px"
       ],
