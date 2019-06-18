@@ -5,7 +5,7 @@
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
 | **type** | `"AdaptiveCard"` | Yes | Must be `"AdaptiveCard"`. | 1.0 |
-| **version** | `string` | Yes | Trigger a re-run. And another. Schema version that this card requires. If a client is **lower** than this version, the `fallbackText` will be rendered. NOTE: Version is not required for cards within an `Action.ShowCard`. However, it *is* required for the top-level card. | 1.0 |
+| **version** | `string` | Yes | Trigger a re-run. And another. And again. Schema version that this card requires. If a client is **lower** than this version, the `fallbackText` will be rendered. NOTE: Version is not required for cards within an `Action.ShowCard`. However, it *is* required for the top-level card. | 1.0 |
 | **body** | `Element[]` | No | The card elements to show in the primary card region. | 1.0 |
 | **actions** | `Action[]` | No | The Actions to show in the card's action bar. | 1.0 |
 | **selectAction** | `ISelectAction` | No | An Action that will be invoked when the card is tapped or selected. `Action.ShowCard` is not supported. | 1.1 |
