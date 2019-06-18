@@ -12,12 +12,4 @@
 			"finishStatusMessage": "Updated specs!"
 		}
 	]
-	// "emeraldwalk.runonsave": {
-	// 	"commands": [
-	// 		{
-	// 			"match": ".*schemas\\\\src\\\\.*.json",
-	// 			"cmd": "cd /D ${cwd}\\source\\nodejs\\spec-generator-script\\precompiled & node .\\spec-generator-script.js"
-	// 		}
-	// 	]
-	// }
 }
