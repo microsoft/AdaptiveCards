@@ -12,9 +12,10 @@
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
 | **title** | `string` | No | Label for button or link that represents this action. | 1.0 |
-| **iconUrl** | `uri` | No | Optional icon to be shown on the action in conjunction with the title. Supports data URI in version 1.2+ | 1.1 |
+| **icon** | `ActionIcon` | No | Optional icon to be shown on the action in conjunction with the title. | 1.3 |
 | **style** | `ActionStyle` | No | Controls the style of an Action, which influences how the action is displayed, spoken, etc. | 1.2 |
 | **fallback** | `Action`, `FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
+| **iconUrl** | `uri` | No | Deprecated, use `icon` instead. Optional icon to be shown on the action in conjunction with the title. Supports data URI in version 1.2+ | 1.1 |
 | **requires** | `Dictionary<string>` | No | A series of key/value pairs indicating features that the item requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered. | 1.2 |
 
 
@@ -26,6 +27,17 @@ The Adaptive Card to show.
 * **Required**: No
 * **Allowed values**:
   * `AdaptiveCard`
+
+
+## icon
+
+Optional icon to be shown on the action in conjunction with the title.
+
+* **Type**: `ActionIcon`
+* **Version** : 1.3
+* **Required**: No
+* **Allowed values**:
+  * `ActionIcon`
 
 
 ## style

@@ -13,6 +13,7 @@
 | **selectAction** | `ISelectAction` | No | An Action that will be invoked when the `Image` is tapped or selected. `Action.ShowCard` is not supported. | 1.1 |
 | **size** | `ImageSize` | No | Controls the approximate size of the image. The physical dimensions will vary per host. | 1.0 |
 | **style** | `ImageStyle` | No | Controls how this `Image` is displayed. | 1.0 |
+| **tint** | `Colors?` | No | If specified, paints all non-transparent pixels the specified tint color. | 1.3 |
 | **width** | `string` | No | The desired on-screen width of the image, ending in 'px'. E.g., 50px. This overrides the `size` property. | 1.1 |
 
 **Inherited properties**
@@ -88,6 +89,23 @@ Controls how this `Image` is displayed.
 * **Allowed values**:
   * `"default"`
   * `"person"`
+
+
+## tint
+
+If specified, paints all non-transparent pixels the specified tint color.
+
+* **Type**: `Colors?`
+* **Version** : 1.3
+* **Required**: No
+* **Allowed values**:
+  * `"default"`
+  * `"dark"`
+  * `"light"`
+  * `"accent"`
+  * `"good"`
+  * `"warning"`
+  * `"attention"`
 
 
 ## fallback
