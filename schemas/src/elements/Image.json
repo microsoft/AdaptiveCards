@@ -45,6 +45,14 @@
       "type": "ImageStyle",
       "description": "Controls how this `Image` is displayed."
     },
+    "tint": {
+      "type": "Colors?",
+      "description": "If specified, paints all non-transparent pixels the specified tint color.",
+      "version": "1.3",
+      "features": [
+        3053
+      ]
+    },
     "width": {
       "type": "string",
       "description": "The desired on-screen width of the image, ending in 'px'. E.g., 50px. This overrides the `size` property.",

@@ -7,10 +7,13 @@
       "type": "string",
       "description": "Label for button or link that represents this action."
     },
-    "iconUrl": {
-      "type": "uri-reference",
-      "description": "Optional icon to be shown on the action in conjunction with the title. Supports data URI in version 1.2+",
-      "version": "1.1"
+    "icon": {
+      "type": "ActionIcon",
+      "description": "Optional icon to be shown on the action in conjunction with the title.",
+      "version": "1.3",
+      "features": [
+        3053
+      ]
     },
     "style": {
       "type": "ActionStyle",
@@ -21,6 +24,12 @@
       "type": "Action|FallbackOption",
       "description": "Describes what to do when an unknown element is encountered or the requires of this or any children can't be met.",
       "version": "1.2"
+    },
+    "iconUrl": {
+      "type": "uri-reference",
+      "description": "Deprecated, use `icon` instead. Optional icon to be shown on the action in conjunction with the title. Supports data URI in version 1.2+",
+      "deprecated": true,
+      "version": "1.1"
     }
   }
 }
