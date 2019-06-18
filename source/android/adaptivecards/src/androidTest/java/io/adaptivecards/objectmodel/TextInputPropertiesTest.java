@@ -21,82 +21,60 @@ public class TextInputPropertiesTest
     @Test
     public void AllPropertiesTest()
     {
-        /*
-        final String actionSetWithActions =
-            "{\"actions\":[" +
-                "{\"type\":\"Action.OpenUrl\",\"url\":\"http://\"}," +
-                "{\"card\":{" +
-                "\"actions\":[" +
-                "{\"type\":\"Action.OpenUrl\",\"url\":\"http://\"}]," +
-                "\"body\":[" +
-                "{\"text\":\"Test\",\"type\":\"TextBlock\"}]," +
-                "\"type\":\"AdaptiveCard\",\"version\":\"1.0\"" +
-                "},\"type\":\"Action.ShowCard\"}," +
-                "{\"data\":{\"data\":\"Some data\"},\"type\":\"Action.Submit\"}," +
-                "{\"targetElements\":[" +
-                "\"id1\"," +
-                "{\"elementId\":\"id2\",\"isVisible\":true}," +
-                "{\"elementId\":\"id3\",\"isVisible\":false}]," +
-                "\"type\":\"Action.ToggleVisibility\"}]," +
-                "\"fallback\":{\"type\":\"Image\",\"url\":\"http://\"}," +
-                "\"height\":\"Stretch\"," +
-                "\"id\":\"Sample id\"," +
-                "\"isVisible\":false," +
-                "\"separator\":true," +
-                "\"spacing\":\"medium\"," +
-                "\"type\":\"ActionSet\"}\n";
+        final String textInputNoDefaultValues =
+            "{\"id\":\"id\"," +
+                "\"inlineAction\":{\"type\":\"Action.OpenUrl\",\"url\":\"http://\"}," +
+                "\"isMultiline\":true," +
+                "\"maxLength\":10," +
+                "\"placeholder\":\"Sample placeholder\"," +
+                "\"style\":\"Email\"," +
+                "\"type\":\"Input.Text\"," +
+                "\"value\":\"samplevalue@contoso.com\"}\n";
 
         TextInput textInput = TestUtil.createMockTextInput();
-        textInput.SetInlineAction();
+        textInput.SetInlineAction(TestUtil.createSampleOpenUrlAction());
         textInput.SetIsMultiline(true);
-        textInput.SetMaxLength();
-        textInput.SetPlaceholder();
-        textInput.SetTextInputStyle();
-        textInput.SetValue();
+        textInput.SetMaxLength(10);
+        textInput.SetPlaceholder("Sample placeholder");
+        textInput.SetTextInputStyle(TextInputStyle.Email);
+        textInput.SetValue("samplevalue@contoso.com");
 
-        Assert.assertEquals(actionSetWithActions, actionSet.Serialize());
-        */
+        Assert.assertEquals(textInputNoDefaultValues, textInput.Serialize());
     }
 
     @Test
     public void AllPropertiesWithInheritedTest()
     {
-        /*
-        final String actionSetWithActions =
-            "{\"actions\":[" +
-                "{\"type\":\"Action.OpenUrl\",\"url\":\"http://\"}," +
-                "{\"card\":{" +
-                "\"actions\":[" +
-                "{\"type\":\"Action.OpenUrl\",\"url\":\"http://\"}]," +
-                "\"body\":[" +
-                "{\"text\":\"Test\",\"type\":\"TextBlock\"}]," +
-                "\"type\":\"AdaptiveCard\",\"version\":\"1.0\"" +
-                "},\"type\":\"Action.ShowCard\"}," +
-                "{\"data\":{\"data\":\"Some data\"},\"type\":\"Action.Submit\"}," +
-                "{\"targetElements\":[" +
-                "\"id1\"," +
-                "{\"elementId\":\"id2\",\"isVisible\":true}," +
-                "{\"elementId\":\"id3\",\"isVisible\":false}]," +
-                "\"type\":\"Action.ToggleVisibility\"}]," +
-                "\"fallback\":{\"type\":\"Image\",\"url\":\"http://\"}," +
+        final String textInputNoDefaultValues =
+            "{\"fallback\":{\"type\":\"Image\",\"url\":\"http://\"}," +
                 "\"height\":\"Stretch\"," +
-                "\"id\":\"Sample id\"," +
+                "\"id\":\"id\"," +
+                "\"inlineAction\":{\"type\":\"Action.OpenUrl\",\"url\":\"http://\"}," +
+                "\"isMultiline\":true," +
                 "\"isVisible\":false," +
+                "\"maxLength\":10," +
+                "\"placeholder\":\"Sample placeholder\"," +
                 "\"separator\":true," +
                 "\"spacing\":\"medium\"," +
-                "\"type\":\"ActionSet\"}\n";
+                "\"style\":\"Email\"," +
+                "\"type\":\"Input.Text\"," +
+                "\"value\":\"samplevalue@contoso.com\"}\n";
 
-        TextInput textInput = TestUtil.createSampleActionSet();
-        tex.SetFallbackType(FallbackType.Content);
-        actionSet.SetFallbackContent(TestUtil.createMockImage());
-        actionSet.SetHeight(HeightType.Stretch);
-        actionSet.SetId("Sample id");
-        actionSet.SetIsVisible(false);
-        actionSet.SetSeparator(true);
-        actionSet.SetSpacing(Spacing.Medium);
+        TextInput textInput = TestUtil.createMockTextInput();
+        textInput.SetFallbackType(FallbackType.Content);
+        textInput.SetFallbackContent(TestUtil.createMockImage());
+        textInput.SetHeight(HeightType.Stretch);
+        textInput.SetInlineAction(TestUtil.createSampleOpenUrlAction());
+        textInput.SetIsMultiline(true);
+        textInput.SetIsVisible(false);
+        textInput.SetMaxLength(10);
+        textInput.SetPlaceholder("Sample placeholder");
+        textInput.SetSeparator(true);
+        textInput.SetSpacing(Spacing.Medium);
+        textInput.SetTextInputStyle(TextInputStyle.Email);
+        textInput.SetValue("samplevalue@contoso.com");
 
-        Assert.assertEquals(actionSetWithActions, actionSet.Serialize());
-        */
+        Assert.assertEquals(textInputNoDefaultValues, textInput.Serialize());
     }
 
     @Test
