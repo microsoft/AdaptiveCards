@@ -12,6 +12,7 @@
 | **isSubtle** | `boolean` | No | If `true`, displays text slightly toned down to appear less prominent. | 1.0 |
 | **maxLines** | `number` | No | Specifies the maximum number of lines to display. | 1.0 |
 | **size** | `FontSize` | No | Controls size of text. | 1.0 |
+| **underline** | `boolean` | No | If `true`, displays the text with an underline. | 1.3 |
 | **weight** | `FontWeight` | No | Controls the weight of `TextBlock` elements. | 1.0 |
 | **wrap** | `boolean` | No | If `true`, allow text to wrap. Otherwise, text is clipped. | 1.0 |
 
