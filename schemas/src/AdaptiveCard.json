@@ -19,6 +19,11 @@
       "type": "Action[]",
       "description": "The Actions to show in the card's action bar."
     },
+	  "tacos": {
+		  "type": "boolean",
+		  "description": "Whether tacos should be delivered upon displaying this card",
+		  "version": "1.3"
+	  },
     "selectAction": {
       "type": "ISelectAction",
       "description": "An Action that will be invoked when the card is tapped or selected. `Action.ShowCard` is not supported.",
