@@ -21,6 +21,7 @@
   - Action.ShowCard
   - Action.ToggleVisibility
   - TargetElement
+  - ActionIcon
 - Inputs:
   - Input.Text
   - Input.Number

@@ -92,13 +92,14 @@ Controls the amount of spacing between this element and the preceding element.
 
 ### Icon style of buttons
 
-1. If ALL actions have a valid `iconUrl`...
+1. For any actions that have the deprecated `iconUrl` property, if they don't have the `icon` property set, up-convert the `iconUrl` to `icon.url`, and then continue with the logic below...
+1. If ALL actions have a valid `icon`...
 	1. Respect the `hostConfig.actions.iconPlacement` property.
 	1. If `iconPlacement` is `aboveTitle` then the `hostConfig.actions.iconSize` should be used as the **height** of the image, while maintaining aspect ratio. Card Authors should use square images for ideal portability between Hosts.
 	1. If `iconPlacement` is `leftOfTitle` then the image **SHOULD BE** as close as possible to the height of the text in the action. If that isn't reasonable then `hostConfig.actions.iconSize` should be used for the height.
-1. Else if only SOME have a valid `iconUrl`...
+1. Else if only SOME have a valid `icon`...
 	1. Use `leftOfTitle` to ensure that all buttons are rendered with the same height.
-1. Else if NONE have a valid `iconUrl`...
+1. Else if NONE have a valid `icon`...
 	1. Display as text-only buttons
 
 Renderers must set the per-platform styling name corresponding to the style chosen, so that hosts can style accordingly. For example, if the style ended up being `aboveTitle`, then the platform style should be something like `ActionWithIconAboveTitle`.
@@ -113,16 +114,23 @@ Text-only buttons should be rendered something like below. Prefer to mimick the 
 
 #### Icon above text buttons
 
-Icon above text buttons should be rendered something like below. Prefer to mimick the native button styles on the platform rather than replicating anything seen below. The only requirement is that the text from `Action.Title` must be displayed in the button, and the `Action.iconUrl` must be displayed above the text.
+Icon above text buttons should be rendered something like below. Prefer to mimick the native button styles on the platform rather than replicating anything seen below. The only requirement is that the text from `Action.Title` must be displayed in the button, and the `Action.icon` must be displayed above the text.
 
 ![img](https://user-images.githubusercontent.com/13246069/30493475-153a4d50-99f9-11e7-83d6-1cd3c476e504.png)
 
 
 #### Icon left of text buttons
 
-Icon left of text buttons should be rendered something like below. Prefer to mimick the native button styles on the platform rather than replicating anything seen below. The only requirement is that the text from `Action.Title` must be displayed in the button, and the `Action.iconUrl` must be displayed to the left of the text. Notice how not all buttons might have an icon, but with this style, it ensures that the height of all buttons remains consistent.
+Icon left of text buttons should be rendered something like below. Prefer to mimick the native button styles on the platform rather than replicating anything seen below. The only requirement is that the text from `Action.Title` must be displayed in the button, and the `Action.icon` must be displayed to the left of the text. Notice how not all buttons might have an icon, but with this style, it ensures that the height of all buttons remains consistent.
 
 ![img](assets/ActionSet/IconLeftOfTitle.PNG)
+
+
+#### Tinting icons
+
+If `icon.tint` is set to true, change the RGB values of all pixels to the value in `hostConfig.actions.iconTint`. If that isn't specified, use the color value of `default` for text.
+
+If the host config color tint value has an alpha channel, for each pixel, multiply the pixel's original alpha channel by the host's tint color alpha channel. For example, if an image's pixel alpha channel is 240 and the host's alpha channel is 245, then the alpha channel should become 230.6.
 
 
 ### Orientation and alignment of buttons

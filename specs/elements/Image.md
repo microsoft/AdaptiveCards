@@ -188,3 +188,10 @@ A host must perform a GET request on the `url` specified to obtain the image.
 ### Select action
 
 1. If `selectAction` is specified and valid, turn the image into a clickable image, and upon user clicking, invoke the `selectAction`. Note that `Action.ShowCard` is not supported (that would be considered invalid), and a warning should be issued if it's used here.
+
+
+### Tint
+
+1. If `tint` is specified and valid, obtain the corresponding hex color from the host config just like when obtaining text colors. For each pixel in the image, tint it using the hex color from the host config. That means...
+	1. Set the RGB values to the RGB values from the host's hex color
+	1. Set the alpha value to `originalAlphaPercent * hostAlphaPercent`
