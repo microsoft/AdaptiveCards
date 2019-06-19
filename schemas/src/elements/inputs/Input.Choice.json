@@ -13,11 +13,13 @@
 		},
 		"iconSelected": {
 			"type": "uri",
-			"description":  "The URL to the image of the selected/hovered icon. If no icon is provided, then the corresponding icon from the previous `Input.Choice` will be used."
+			"description": "The URL to the image of the selected/hovered icon. If no icon is provided, then the corresponding icon from the previous `Input.Choice` will be used.",
+			"version": "1.3"
 		},
 		"iconUnselected": {
 			"type": "uri",
-			"description": "The URL to the image of the unselected/unhovered icon. If no icon is provided, then the corresponding icon from the previous `Input.Choice` will be used."
+			"description": "The URL to the image of the unselected/unhovered icon. If no icon is provided, then the corresponding icon from the previous `Input.Choice` will be used.",
+			"version": "1.3"
 		}
 		}
 }
