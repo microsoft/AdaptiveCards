@@ -170,28 +170,28 @@ $(function() {
 
 			el.text('').append(renderedCard).show();
 		}
-
-		$('.ac-properties table').addClass("w3-table w3-bordered w3-responsive");
-
-		$(document).ready(function () {
-			hljs.configure({
-				tabReplace: '  '
-			});
-			$('pre code').each(function (i, block) {
-				hljs.highlightBlock(block);
-			});
-
-			// weird bug the Visualizer editor isn't loading correctly
-			// window.setTimeout(function() {
-			//   window.dispatchEvent(new Event('resize'));
-			// }, 200);
-
-			$('#menu-nav').on('change', function () {
-				window.location = this.value;
-			});
-		});
 	} catch (err) {
 		console.log(err);
 	}
+
+	$('.ac-properties table').addClass("w3-table w3-bordered w3-responsive");
+
+	$(document).ready(function () {
+		hljs.configure({
+			tabReplace: '  '
+		});
+		$('pre code').each(function (i, block) {
+			hljs.highlightBlock(block);
+		});
+
+		// weird bug the Visualizer editor isn't loading correctly
+		// window.setTimeout(function() {
+		//   window.dispatchEvent(new Event('resize'));
+		// }, 200);
+
+		$('#menu-nav').on('change', function () {
+			window.location = this.value;
+		});
+	});
 
 });
