@@ -52,7 +52,7 @@ The simplest way to get started it to include 3 script tags in your page.
 		// Initialize monaco-editor for the JSON-editor pane. The simplest way to do this is use the code below, since we currently bundle monaco into our CDN distribution. 
 		require.config({ paths: { 'vs': 'https://unpkg.com/adaptivecards-designer@0.1.0/dist/monaco-editor/min/vs' } });
 		require(['vs/editor/editor.main'], function () {
-			designer.monacoEditorLoaded();
+			designer.monacoModuleLoaded();
 		});
 
 		designer.attachTo(document.getElementById("designerRootHost"));
