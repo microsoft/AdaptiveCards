@@ -19,11 +19,11 @@ public class ToggleInputPropertiesTest
         final String dateInputNoDefaultValues =
             "{\"id\":\"id\"," +
                 "\"title\":\"Sample title\"," +
-                "\"type\":\"Input.Toggle\"" +
+                "\"type\":\"Input.Toggle\"," +
                 "\"value\":\"Sample value\"," +
                 "\"valueOff\":\"Sample value off\"," +
                 "\"valueOn\":\"Sample value on\"," +
-                "\"value\":\"2019-01-01\"}\n";
+                "\"wrap\":true}\n";
 
         ToggleInput toggleInput = TestUtil.createMockToggleInput();
         toggleInput.SetTitle("Sample title");
@@ -43,13 +43,14 @@ public class ToggleInputPropertiesTest
                 "\"height\":\"Stretch\"," +
                 "\"id\":\"id\"," +
                 "\"isVisible\":false," +
-                "\"max\":\"2019-07-18\"," +
-                "\"min\":\"2018-06-17\"," +
-                "\"placeholder\":\"Sample placeholder\"," +
                 "\"separator\":true," +
                 "\"spacing\":\"medium\"," +
-                "\"type\":\"Input.Date\"," +
-                "\"value\":\"2019-01-01\"}\n";
+                "\"title\":\"Sample title\"," +
+                "\"type\":\"Input.Toggle\"," +
+                "\"value\":\"Sample value\"," +
+                "\"valueOff\":\"Sample value off\"," +
+                "\"valueOn\":\"Sample value on\"," +
+                "\"wrap\":true}\n";
 
         ToggleInput toggleInput = TestUtil.createMockToggleInput();
         toggleInput.SetFallbackType(FallbackType.Content);
@@ -71,7 +72,7 @@ public class ToggleInputPropertiesTest
     public void TitleTest() throws Exception
     {
         {
-            final String inputToggleDefaultTitle = "{\"id\":\"id\",\"title\":\"\",\"type\":\"Input.Date\"}\n";
+            final String inputToggleDefaultTitle = "{\"id\":\"id\",\"title\":\"\",\"type\":\"Input.Toggle\"}\n";
 
             ToggleInput toggleInput = TestUtil.createMockToggleInput();
             Assert.assertEquals(inputToggleDefaultTitle, toggleInput.Serialize());
@@ -85,7 +86,7 @@ public class ToggleInputPropertiesTest
         }
 
         {
-            final String inputToggleTitleTemplate = "{\"id\":\"id\",\"title\":\"%s\",\"type\":\"Input.Date\"}\n";
+            final String inputToggleTitleTemplate = "{\"id\":\"id\",\"title\":\"%s\",\"type\":\"Input.Toggle\"}\n";
             String tests[] = {"Sample text",
                 "This is just a little bit tiny teeny bit larger than the one before this one a.k.a. index [0]",
                 "The quick brown fox jumps over the lazy dog",
@@ -111,7 +112,7 @@ public class ToggleInputPropertiesTest
     public void ValueTest() throws Exception
     {
         {
-            final String inputToggleDefaultValue = "{\"id\":\"id\",\"type\":\"Input.Toggle\"}\n";
+            final String inputToggleDefaultValue = "{\"id\":\"id\",\"title\":\"\",\"type\":\"Input.Toggle\"}\n";
 
             ToggleInput toggleInput = TestUtil.createMockToggleInput();
             Assert.assertEquals(inputToggleDefaultValue, toggleInput.Serialize());
@@ -125,7 +126,7 @@ public class ToggleInputPropertiesTest
         }
 
         {
-            final String inputToggleValueTemplate = "{\"id\":\"id\",\"type\":\"Input.Toggle\",\"value\":\"%s\"}\n";
+            final String inputToggleValueTemplate = "{\"id\":\"id\",\"title\":\"\",\"type\":\"Input.Toggle\",\"value\":\"%s\"}\n";
             String tests[] = {"Sample text",
                 "This is just a little bit tiny teeny bit larger than the one before this one a.k.a. index [0]",
                 "The quick brown fox jumps over the lazy dog",
@@ -151,21 +152,21 @@ public class ToggleInputPropertiesTest
     public void ValueOffTest() throws Exception
     {
         {
-            final String inputToggleDefaultValue = "{\"id\":\"id\",\"type\":\"Input.Toggle\"}\n";
+            final String inputToggleDefaultValue = "{\"id\":\"id\",\"title\":\"\",\"type\":\"Input.Toggle\"}\n";
 
             ToggleInput toggleInput = TestUtil.createMockToggleInput();
             Assert.assertEquals(inputToggleDefaultValue, toggleInput.Serialize());
 
-            toggleInput.SetValueOff("");
+            toggleInput.SetValueOff("false");
             Assert.assertEquals(inputToggleDefaultValue, toggleInput.Serialize());
 
             ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(inputToggleDefaultValue), "1.0");
             ToggleInput parsedToggleInput = TestUtil.castToToggleInput(result.GetAdaptiveCard().GetBody().get(0));
-            Assert.assertEquals("", parsedToggleInput.GetValueOff());
+            Assert.assertEquals("false", parsedToggleInput.GetValueOff());
         }
 
         {
-            final String inputToggleValueTemplate = "{\"id\":\"id\",\"type\":\"Input.Toggle\",\"valueOff\":\"%s\"}\n";
+            final String inputToggleValueTemplate = "{\"id\":\"id\",\"title\":\"\",\"type\":\"Input.Toggle\",\"valueOff\":\"%s\"}\n";
             String tests[] = {"Sample text",
                 "This is just a little bit tiny teeny bit larger than the one before this one a.k.a. index [0]",
                 "The quick brown fox jumps over the lazy dog",
@@ -191,21 +192,21 @@ public class ToggleInputPropertiesTest
     public void ValueOnTest() throws Exception
     {
         {
-            final String inputToggleDefaultValue = "{\"id\":\"id\",\"type\":\"Input.Toggle\"}\n";
+            final String inputToggleDefaultValue = "{\"id\":\"id\",\"title\":\"\",\"type\":\"Input.Toggle\"}\n";
 
             ToggleInput toggleInput = TestUtil.createMockToggleInput();
             Assert.assertEquals(inputToggleDefaultValue, toggleInput.Serialize());
 
-            toggleInput.SetValueOn("");
+            toggleInput.SetValueOn("true");
             Assert.assertEquals(inputToggleDefaultValue, toggleInput.Serialize());
 
             ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(inputToggleDefaultValue), "1.0");
             ToggleInput parsedToggleInput = TestUtil.castToToggleInput(result.GetAdaptiveCard().GetBody().get(0));
-            Assert.assertEquals("", parsedToggleInput.GetValueOn());
+            Assert.assertEquals("true", parsedToggleInput.GetValueOn());
         }
 
         {
-            final String inputToggleValueTemplate = "{\"id\":\"id\",\"type\":\"Input.Toggle\",\"valueOn\":\"%s\"}\n";
+            final String inputToggleValueTemplate = "{\"id\":\"id\",\"title\":\"\",\"type\":\"Input.Toggle\",\"valueOn\":\"%s\"}\n";
             String tests[] = {"Sample text",
                 "This is just a little bit tiny teeny bit larger than the one before this one a.k.a. index [0]",
                 "The quick brown fox jumps over the lazy dog",
@@ -231,7 +232,7 @@ public class ToggleInputPropertiesTest
     public void WrapTest() throws Exception
     {
         {
-            final String inputToggleDefaultWrap = "{\"id\":\"id\",\"title\":\"\",\"type\":\"Input.Toggle\",\"valueOff\":\"false\",\"valueOn\":\"true\"}\n";
+            final String inputToggleDefaultWrap = "{\"id\":\"id\",\"title\":\"\",\"type\":\"Input.Toggle\"}\n";
 
             ToggleInput toggleInput = TestUtil.createMockToggleInput();
             Assert.assertEquals(inputToggleDefaultWrap, toggleInput.Serialize());
