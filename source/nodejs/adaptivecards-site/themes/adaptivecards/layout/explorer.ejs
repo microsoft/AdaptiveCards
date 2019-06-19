@@ -1,24 +1,26 @@
-<div id="content-wrapper" class="w3-content explorer" style="max-width:1564px">
+<div id="content-wrapper" class="w3-row explorer" style="max-width:1564px">
 
-  <nav id="sidebar-todo" class="toc-todo w3-sidebar w3-cell w3-hide-small w3-hide-medium w3-bar-block w3-padding-16" style="width: 200px">
-	<div class="sidebar__inner">
-		<ul class="toc-tree">
-			<% page.schema.forEach(function(root) { %>
-				<li><span><i class="fa fa-angle-down"></i> <%= root.title %></span>
-				<ul>
-					<% root.children.forEach(function(child) { %>
-					<li class='<%= page.childPath === child.htmlPath ? "selectedHolder" : "" %>'>
-						<a href="<%- url_for(child.htmlPath) %>"><%= child.name %></a>
-					</li>
-					<% }) %>
-				</ul>
+	<div class="sticky">
+  <nav class="toc-todo w3-col w3-hide-small w3-hide-medium w3-bar-block w3-padding-16" style="width: 200px">
+	
+	<ul class="toc-tree">
+		<% page.schema.forEach(function(root) { %>
+			<li><span><i class="fa fa-angle-down"></i> <%= root.title %></span>
+			<ul>
+				<% root.children.forEach(function(child) { %>
+				<li class='<%= page.childPath === child.htmlPath ? "selectedHolder" : "" %>'>
+					<a href="<%- url_for(child.htmlPath) %>"><%= child.name %></a>
 				</li>
-			<% }) %>
-		</ul>
-	</div>
-  </nav>
+				<% }) %>
+			</ul>
+			</li>
+		<% }) %>
+	</ul>
 
-  <div class="w3-main" style="margin-left: 220px">
+  </nav>
+</div>
+
+  <div class="w3-rest">
   
     <div class="w3-container">
       <h1><%= page.title %></h1>

@@ -125,6 +125,19 @@ code {
     max-height: 800px;
 }
 
+.sticky {
+	position: sticky;
+	position: -webkit-sticky;
+	top: 0;
+	height: calc(100vh - 40px);
+    overflow: auto;
+}
+
+.sticky:before,
+.sticky:after {
+    content: '';
+    display: table;
+}
 
 /* Weird conflicts were happening with the docs CSS when it was named toc */
 
@@ -189,7 +202,7 @@ s {
     color: #0078d7;
 }
 
-.toc.todo > ul {
+.toc-todo > ul {
     display: block;
     margin-left: 0;
     padding-left: 0;
