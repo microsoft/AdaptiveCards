@@ -10,6 +10,7 @@ export class Versions {
     static readonly v1_0 = new Adaptive.Version(1, 0);
     static readonly v1_1 = new Adaptive.Version(1, 1);
     static readonly v1_2 = new Adaptive.Version(1, 2);
+    static readonly latest = Versions.v1_2;
     static readonly vNext = new Adaptive.Version(1000, 0, "vNext");
 }
 

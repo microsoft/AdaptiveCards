@@ -489,21 +489,23 @@ export class CardDesigner {
     private _togglePreviewButton: ToolbarButton;
 
     private prepareToolbar() {
-        this._versionChoicePicker = new ToolbarChoicePicker(CardDesigner.ToolbarCommands.VersionPicker);
-        this._versionChoicePicker.label = "Target version:"
-        this._versionChoicePicker.width = 80;
-        this._versionChoicePicker.alignment = ToolbarElementAlignment.Right;
-        this._versionChoicePicker.separator = true;
+        if (Shared.GlobalSettings.previewFeaturesEnabled) {
+            this._versionChoicePicker = new ToolbarChoicePicker(CardDesigner.ToolbarCommands.VersionPicker);
+            this._versionChoicePicker.label = "Target version:"
+            this._versionChoicePicker.width = 80;
+            this._versionChoicePicker.alignment = ToolbarElementAlignment.Right;
+            this._versionChoicePicker.separator = true;
 
-        for (let i = 0; i < Shared.SupportedTargetVersions.length; i++) {
-            this._versionChoicePicker.choices.push(
-                {
-                    name: Shared.SupportedTargetVersions[i].label,
-                    value: i.toString()
-                });
+            for (let i = 0; i < Shared.SupportedTargetVersions.length; i++) {
+                this._versionChoicePicker.choices.push(
+                    {
+                        name: Shared.SupportedTargetVersions[i].label,
+                        value: i.toString()
+                    });
+            }
+
+            this.toolbar.addElement(this._versionChoicePicker);
         }
-
-        this.toolbar.addElement(this._versionChoicePicker);
 
         this._fullScreenButton = new ToolbarButton(
             CardDesigner.ToolbarCommands.FullScreen,
@@ -847,9 +849,11 @@ export class CardDesigner {
 
         this.toolbar.attachTo(document.getElementById("toolbarHost"));
 
-        this._versionChoicePicker.selectedIndex = Shared.SupportedTargetVersions.indexOf(Shared.Versions.v1_2);
-        this._versionChoicePicker.onChanged = (sender) => {
-            this.buildPropertySheet(this._designerSurface.selectedPeer);
+        if (this._versionChoicePicker) {
+            this._versionChoicePicker.selectedIndex = Shared.SupportedTargetVersions.indexOf(Shared.Versions.v1_2);
+            this._versionChoicePicker.onChanged = (sender) => {
+                this.buildPropertySheet(this._designerSurface.selectedPeer);
+            }
         }
 
         if (this._copyJSONButton.isVisible) {
@@ -1037,7 +1041,12 @@ export class CardDesigner {
     }
 
     get currentTargetVersion(): Shared.TargetVersion {
-        return Shared.SupportedTargetVersions[parseInt(this._versionChoicePicker.value)];
+        if (this._versionChoicePicker) {
+            return Shared.SupportedTargetVersions[parseInt(this._versionChoicePicker.value)];
+        }
+        else {
+            return Shared.Versions.latest;
+        }
     }
 
     get dataStructure(): FieldDefinition {

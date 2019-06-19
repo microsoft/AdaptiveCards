@@ -7,9 +7,9 @@ import { PeerCommand } from "./peer-command";
 import { CardDesignerSurface } from "./card-designer-surface";
 import { DesignerPeerTreeItem } from "./designer-peer-treeitem";
 import { Rect, IPoint } from "./miscellaneous";
-import { TargetVersion, Versions, isVersionLessOrEqual } from "./shared";
+import { TargetVersion, Versions, isVersionLessOrEqual, GlobalSettings } from "./shared";
 
-abstract class DesignerPeerInplaceEditor {
+export abstract class DesignerPeerInplaceEditor {
     onClose: (applyChanges: boolean) => void;
 
     abstract initialize();
@@ -17,7 +17,7 @@ abstract class DesignerPeerInplaceEditor {
     abstract render(): HTMLElement;
 }
 
-abstract class CardElementPeerInplaceEditor<TCardElement extends Adaptive.CardElement> extends DesignerPeerInplaceEditor {
+export abstract class CardElementPeerInplaceEditor<TCardElement extends Adaptive.CardElement> extends DesignerPeerInplaceEditor {
     readonly cardElement: TCardElement;
 
     constructor(cardElement: TCardElement) {
@@ -110,10 +110,8 @@ export class PropertySheetCategory {
     }
 }
 
-type PropertySheetCategoryMap = { [key: string]: PropertySheetCategory };
-
 export class PropertySheet {
-    private _categories: PropertySheetCategoryMap = {};
+    private _categories: { [key: string]: PropertySheetCategory } = {};
 
     constructor() {
         this._categories[PropertySheetCategory.DefaultCategory] = new PropertySheetCategory(PropertySheetCategory.DefaultCategory);
@@ -1439,11 +1437,16 @@ export class CardElementPeer extends CardObjectPeer {
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
-        
+
+        if (GlobalSettings.previewFeaturesEnabled) {
+            propertySheet.add(
+                defaultCategory,
+                CardElementPeer.dataContextProperty,
+                CardElementPeer.whenProperty);
+        }
+
         propertySheet.add(
             defaultCategory,
-            CardElementPeer.dataContextProperty,
-            CardElementPeer.whenProperty,
             CardElementPeer.idProperty,
             CardElementPeer.isVisibleProperty);
 
