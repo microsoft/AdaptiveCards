@@ -2,6 +2,7 @@ package io.adaptivecards.objectmodel;
 
 import org.w3c.dom.Text;
 
+import java.sql.Time;
 import java.util.List;
 
 public class TestUtil
@@ -180,6 +181,57 @@ public class TestUtil
         TextRun textRun = createMockTextRun();
         textRun.SetText(textRunText);
         return textRun;
+    }
+
+    public static TextInput createMockTextInput()
+    {
+        TextInput textInput = new TextInput();
+        textInput.SetId("id");
+        return textInput;
+    }
+
+    public static NumberInput createMockNumberInput()
+    {
+        NumberInput numberInput = new NumberInput();
+        numberInput.SetId("id");
+        return numberInput;
+    }
+
+    public static DateInput createMockDateInput()
+    {
+        DateInput dateInput = new DateInput();
+        dateInput.SetId("id");
+        return dateInput;
+    }
+
+    public static TimeInput createMockTimeInput()
+    {
+        TimeInput timeInput = new TimeInput();
+        timeInput.SetId("id");
+        return timeInput;
+    }
+
+    public static ToggleInput createMockToggleInput()
+    {
+        ToggleInput toggleInput = new ToggleInput();
+        toggleInput.SetId("id");
+        return toggleInput;
+    }
+
+    public static ChoiceSetInput createMockChoiceSetInput()
+    {
+        ChoiceSetInput choiceSetInput = new ChoiceSetInput();
+        choiceSetInput.SetId("id");
+        choiceSetInput.GetChoices().add(createChoiceInput("sample title", "sample value"));
+        return choiceSetInput;
+    }
+
+    public static ChoiceInput createChoiceInput(String title, String value)
+    {
+        ChoiceInput choiceInput = new ChoiceInput();
+        choiceInput.SetTitle(title);
+        choiceInput.SetValue(value);
+        return choiceInput;
     }
 
     public static SubmitAction createMockSubmitAction()
@@ -475,6 +527,102 @@ public class TestUtil
         }
 
         return actionSet;
+    }
+
+    public static TextInput castToTextInput(BaseCardElement baseCardElement)
+    {
+        TextInput textInput = null;
+
+        if (baseCardElement instanceof TextInput)
+        {
+            textInput = (TextInput) baseCardElement;
+        }
+        else if ((textInput = TextInput.dynamic_cast(baseCardElement)) == null)
+        {
+            throw new InternalError("Unable to convert BaseCardElement to TextInput object model.");
+        }
+
+        return textInput;
+    }
+
+    public static NumberInput castToNumberInput(BaseCardElement baseCardElement)
+    {
+        NumberInput numberInput = null;
+
+        if (baseCardElement instanceof NumberInput)
+        {
+            numberInput = (NumberInput) baseCardElement;
+        }
+        else if ((numberInput = NumberInput.dynamic_cast(baseCardElement)) == null)
+        {
+            throw new InternalError("Unable to convert BaseCardElement to NumberInput object model.");
+        }
+
+        return numberInput;
+    }
+
+    public static DateInput castToDateInput(BaseCardElement baseCardElement)
+    {
+        DateInput dateInput = null;
+
+        if (baseCardElement instanceof DateInput)
+        {
+            dateInput = (DateInput) baseCardElement;
+        }
+        else if ((dateInput = DateInput.dynamic_cast(baseCardElement)) == null)
+        {
+            throw new InternalError("Unable to convert BaseCardElement to DateInput object model.");
+        }
+
+        return dateInput;
+    }
+
+    public static TimeInput castToTimeInput(BaseCardElement baseCardElement)
+    {
+        TimeInput timeInput = null;
+
+        if (baseCardElement instanceof TimeInput)
+        {
+            timeInput = (TimeInput) baseCardElement;
+        }
+        else if ((timeInput = TimeInput.dynamic_cast(baseCardElement)) == null)
+        {
+            throw new InternalError("Unable to convert BaseCardElement to TimeInput object model.");
+        }
+
+        return timeInput;
+    }
+
+    public static ToggleInput castToToggleInput(BaseCardElement baseCardElement)
+    {
+        ToggleInput toggleInput = null;
+
+        if (baseCardElement instanceof ToggleInput)
+        {
+            toggleInput = (ToggleInput) baseCardElement;
+        }
+        else if ((toggleInput = ToggleInput.dynamic_cast(baseCardElement)) == null)
+        {
+            throw new InternalError("Unable to convert BaseCardElement to ToggleInput object model.");
+        }
+
+        return toggleInput;
+    }
+
+    public static ChoiceSetInput castToChoiceSetInput(BaseCardElement baseCardElement)
+    {
+        ChoiceSetInput choiceSetInput = null;
+
+        if (baseCardElement instanceof ChoiceSetInput)
+        {
+            choiceSetInput = (ChoiceSetInput) baseCardElement;
+        }
+        else if ((choiceSetInput = ChoiceSetInput.dynamic_cast(baseCardElement)) == null)
+        {
+            throw new InternalError("Unable to convert BaseCardElement to ChoiceSetInput object model.");
+        }
+
+        return choiceSetInput;
     }
 
     public static SubmitAction castToSubmitAction(BaseActionElement baseActionElement)
