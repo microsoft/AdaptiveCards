@@ -2794,7 +2794,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
         this._renderedInputControlElement = this.internalRender();
         this._renderedInputControlElement.style.minWidth = "0px";
 
-        if (this.isNullable && this.validation.necessity == Enums.InputValidationNecessity.RequiredWithVisualCue) {
+        if (AdaptiveCard.useBuiltInInputValidation && this.isNullable && this.validation.necessity == Enums.InputValidationNecessity.RequiredWithVisualCue) {
             this._renderedInputControlElement.classList.add(hostConfig.makeCssClassName("ac-input-required"));
         }
 
@@ -2854,7 +2854,10 @@ export abstract class Input extends CardElement implements Shared.IInput {
 
         Utils.setProperty(result, "title", this.title);
         Utils.setProperty(result, "value", this.renderedElement && !Utils.isNullOrEmpty(this.value) ? this.value : this.defaultValue);
-        Utils.setProperty(result, "validation", this.validation.toJSON());
+
+        if (AdaptiveCard.useBuiltInInputValidation) {
+            Utils.setProperty(result, "validation", this.validation.toJSON());
+        }
 
         return result;
     }
@@ -2897,10 +2900,12 @@ export abstract class Input extends CardElement implements Shared.IInput {
         this.id = Utils.getStringValue(json["id"]);
         this.defaultValue = Utils.getStringValue(json["value"]);
 
-        let jsonValidation = json["validation"];
+        if (AdaptiveCard.useBuiltInInputValidation) {
+            let jsonValidation = json["validation"];
 
-        if (jsonValidation) {
-            this.validation.parse(jsonValidation);
+            if (jsonValidation) {
+                this.validation.parse(jsonValidation);
+            }
         }
     }
 
@@ -5951,7 +5956,6 @@ export class ColumnSet extends StylableCardElementContainer {
             let element = document.createElement("div");
             element.className = hostConfig.makeCssClassName("ac-columnSet");
             element.style.display = "flex";
-            element.style.overflowX = "hidden";
 
             if (AdaptiveCard.useAdvancedCardBottomTruncation) {
                 // See comment in Container.internalRender()
