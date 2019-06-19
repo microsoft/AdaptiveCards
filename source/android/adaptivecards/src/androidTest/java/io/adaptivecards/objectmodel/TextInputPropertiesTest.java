@@ -335,5 +335,4 @@ public class TextInputPropertiesTest
         }
     }
 
-
 }

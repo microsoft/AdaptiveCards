@@ -222,7 +222,16 @@ public class TestUtil
     {
         ChoiceSetInput choiceSetInput = new ChoiceSetInput();
         choiceSetInput.SetId("id");
+        choiceSetInput.GetChoices().add(createChoiceInput("sample title", "sample value"));
         return choiceSetInput;
+    }
+
+    public static ChoiceInput createChoiceInput(String title, String value)
+    {
+        ChoiceInput choiceInput = new ChoiceInput();
+        choiceInput.SetTitle(title);
+        choiceInput.SetValue(value);
+        return choiceInput;
     }
 
     public static SubmitAction createMockSubmitAction()
