@@ -79,7 +79,7 @@
                     <RowDefinition Height="0.5*"/>
                 </Grid.RowDefinitions>
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <Grid Name="cardGrid" MaxWidth="700" VerticalAlignment="Top" Margin="10" Background="WhiteSmoke" >
+                    <Grid Name="cardGrid" MaxWidth="700" VerticalAlignment="Top" Margin="10" Background="WhiteSmoke" SizeChanged="CardGrid_SizeChanged">
                         <Grid.Effect>
                             <DropShadowEffect BlurRadius="15" ShadowDepth="2" RenderingBias="Quality" Direction="-90"/>
                         </Grid.Effect>

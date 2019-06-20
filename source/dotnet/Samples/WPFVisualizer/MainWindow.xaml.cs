@@ -479,5 +479,27 @@ namespace WpfVisualizer
                 MessageBox.Show(ex.ToString());
             }
         }
+
+        private JObject GetCardData()
+        {
+            JObject card = new JObject();
+            card.Add("width", cardGrid.ActualWidth);
+
+            JObject newData = new JObject();
+            newData.Add("card", card);
+
+            return newData;
+        }
+
+        private void CardGrid_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            try
+            {
+                _currRenderedCard?.DataUpdater?.UpdateData(_currRenderedCard.OriginatingCard.CurrentData, GetCardData());
+            }
+            catch (Exception ex)
+            {
+            }
+        }
     }
 }
