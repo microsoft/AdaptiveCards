@@ -29,5 +29,7 @@
   - Input.Toggle
   - Input.ChoiceSet
   - Input.Choice
+  - Input.Feedback
+  - Input.FeedbackElt
 - Types:
   - BackgroundImage

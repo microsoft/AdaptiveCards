@@ -34,6 +34,7 @@ The card elements to show in the primary card region.
   * `ImageSet`
   * `Input.ChoiceSet`
   * `Input.Date`
+  * `Input.Feedback`
   * `Input.Number`
   * `Input.Text`
   * `Input.Time`

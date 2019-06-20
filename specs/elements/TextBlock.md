@@ -110,6 +110,7 @@ Describes what to do when an unknown element is encountered or the requires of t
   * `ImageSet`
   * `Input.ChoiceSet`
   * `Input.Date`
+  * `Input.Feedback`
   * `Input.Number`
   * `Input.Text`
   * `Input.Time`

@@ -9,7 +9,7 @@
 		"required": true
 	  },
 	  "style": {
-			  "type": "FeedbackInputStyle",
+			  "type": "Input.Feedback",
 			  "description": "Specifiable options are: `rating` or `horizontal`."
 	  },
 	  "value": {

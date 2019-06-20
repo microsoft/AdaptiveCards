@@ -4,13 +4,12 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **type** | `"Input.ChoiceSet"` | Yes | Must be `"Input.ChoiceSet"`. | 1.0 |
-| **choices** | `Input.Choice[]` | Yes | `Choice` options. | 1.0 |
+| **type** | `"Input.Feedback"` | Yes | Must be `"Input.Feedback"`. | 1.0 |
+| **choices** | `Input.FeedbackElt[]` | Yes | `FeedbackElt` options. | 1.0 |
 | **id** | `string` | Yes | Unique identifier for the value. Used to identify collected input when the Submit action is performed. | 1.0 |
-| **isMultiSelect** | `boolean` | No | Allow multiple choices to be selected. | 1.0 |
-| **style** | `ChoiceInputStyle` | No |  | 1.0 |
-| **value** | `string` | No | The initial choice (or set of choices) that should be selected. For multi-select, specify a comma-separated string of values. | 1.0 |
-| **wrap** | `boolean` | No | If `true`, allow text to wrap. Otherwise, text is clipped. | 1.2 |
+| **style** | `Input.Feedback` | No | Specifiable options are: `rating` or `horizontal`. | 1.0 |
+| **value** | `string` | No | The initial choice (or set of choices) that should be selected.  If style is `rating` but multiple values are given, only the first value will be selected. | 1.0 |
+| **iconHeight** | `string` | No | If icons are used for an `Input.FeedbackElt`, then this property will specify the height of each icon within the `Input.Feedback`. | 1.3 |
 
 **Inherited properties**
 
@@ -26,21 +25,22 @@
 
 ## choices
 
-`Choice` options.
+`FeedbackElt` options.
 
-* **Type**: `Input.Choice[]`
+* **Type**: `Input.FeedbackElt[]`
 * **Required**: Yes
 * **Allowed values**:
-  * `Input.Choice`
+  * `Input.FeedbackElt`
 
 
 ## style
 
-* **Type**: `ChoiceInputStyle`
+Specifiable options are: `rating` or `horizontal`.
+
+* **Type**: `Input.Feedback`
 * **Required**: No
 * **Allowed values**:
-  * `"compact"`
-  * `"expanded"`
+  * `Input.Feedback`
 
 
 ## fallback
@@ -59,6 +59,7 @@ Describes what to do when an unknown element is encountered or the requires of t
   * `ImageSet`
   * `Input.ChoiceSet`
   * `Input.Date`
+  * `Input.Feedback`
   * `Input.Number`
   * `Input.Text`
   * `Input.Time`
