@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer.input;
 
 import android.content.Context;
@@ -34,7 +36,10 @@ import io.adaptivecards.objectmodel.HeightType;
 
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
+import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
@@ -122,7 +127,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
             m_renderedAdaptiveCard = renderedCard;
             m_action = action;
         }
-        
+
         @Override
         public boolean onKey(View view, int i, KeyEvent keyEvent) {
             if(view.getTag() == m_tag) {
@@ -150,11 +155,11 @@ public class TextInputRenderer extends BaseCardElementRenderer
             String value,
             String placeHolder,
             final TextInputHandler textInputHandler,
-            HostConfig hostConfig)
+            HostConfig hostConfig,
+            TagContent tagContent)
     {
         EditText editText = new EditText(context);
         textInputHandler.setView(editText);
-        editText.setTag(textInputHandler);
         renderedCard.registerInputHandler(textInputHandler);
 
         if (!TextUtils.isEmpty(value))
@@ -195,14 +200,14 @@ public class TextInputRenderer extends BaseCardElementRenderer
 
             BaseActionElement action = textInput.GetInlineAction();
 
-            if (action != null) 
+            if (action != null)
             {
-                if ((hostConfig.GetActions().getShowCard().getActionMode() == ActionMode.Inline) && 
-                    (action.GetElementType() == ActionType.ShowCard)) 
+                if ((hostConfig.GetActions().getShowCard().getActionMode() == ActionMode.Inline) &&
+                    (action.GetElementType() == ActionType.ShowCard))
                 {
                     renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.INTERACTIVITY_DISALLOWED, "Inline ShowCard not supported for InlineAction"));
-                } 
-                else 
+                }
+                else
                 {
                     textInputViewGroup = new LinearLayout(context);
                     textInputViewGroup.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -213,16 +218,16 @@ public class TextInputRenderer extends BaseCardElementRenderer
                     TypedValue buttonStyle = new TypedValue();
 
                     String url = action.GetIconUrl();
-                    if (url != null && !url.isEmpty()) 
+                    if (url != null && !url.isEmpty())
                     {
                         ImageButton inlineButton = null;
                         // check for style from resources
-                        if (theme.resolveAttribute(R.attr.adaptiveInlineActionImage, buttonStyle, true)) 
+                        if (theme.resolveAttribute(R.attr.adaptiveInlineActionImage, buttonStyle, true))
                         {
                             Context themedContext = new ContextThemeWrapper(context, R.style.adaptiveInlineActionImage);
                             inlineButton = new ImageButton(themedContext, null, 0);
-                        } 
-                        else 
+                        }
+                        else
                         {
                             inlineButton = new ImageButton(context);
                             inlineButton.setBackgroundColor(Color.TRANSPARENT);
@@ -238,18 +243,18 @@ public class TextInputRenderer extends BaseCardElementRenderer
 
                         imageLoader.execute(url);
                         textInputViewGroup.addView(inlineButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
-                    } 
-                    else 
+                    }
+                    else
                     {
                         String title = action.GetTitle();
                         Button inlineButton = null;
                         // check for styles from references
-                        if (theme.resolveAttribute(R.attr.adaptiveInlineAction, buttonStyle, true)) 
+                        if (theme.resolveAttribute(R.attr.adaptiveInlineAction, buttonStyle, true))
                         {
                             Context themedContext = new ContextThemeWrapper(context, R.style.adaptiveInlineAction);
                             inlineButton = new Button(themedContext, null, 0);
-                        } 
-                        else 
+                        }
+                        else
                         {
                             inlineButton = new Button(context);
                             inlineButton.setBackgroundColor(Color.TRANSPARENT);
@@ -264,12 +269,23 @@ public class TextInputRenderer extends BaseCardElementRenderer
             }
         }
 
-        if(baseInputElement.GetHeight() == HeightType.Stretch)
+        if (baseInputElement.GetHeight() == HeightType.Stretch)
         {
             LinearLayout containerLayout = new LinearLayout(context);
-            containerLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
 
-            if(textInputViewGroup != null)
+            if (baseInputElement.GetHeight() == HeightType.Stretch)
+            {
+                containerLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+            }
+            else
+            {
+                containerLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            }
+
+            tagContent.SetStretchContainer(containerLayout);
+
+            // TextInputViewGroup is only used when there's an inline action
+            if (textInputViewGroup != null)
             {
                 containerLayout.addView(textInputViewGroup);
             }
@@ -277,11 +293,12 @@ public class TextInputRenderer extends BaseCardElementRenderer
             {
                 containerLayout.addView(editText);
             }
+
             viewGroup.addView(containerLayout);
         }
         else
         {
-            if(textInputViewGroup != null)
+            if (textInputViewGroup != null)
             {
                 viewGroup.addView(textInputViewGroup);
             }
@@ -290,6 +307,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
                 viewGroup.addView(editText);
             }
         }
+
         return editText;
     }
 
@@ -302,7 +320,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            ContainerStyle containerStyle)
+            RenderArgs renderArgs)
     {
         if (!hostConfig.GetSupportsInteractivity())
         {
@@ -321,7 +339,8 @@ public class TextInputRenderer extends BaseCardElementRenderer
         }
 
         TextInputHandler textInputHandler = new TextInputHandler(textInput);
-        setSpacingAndSeparator(context, viewGroup, textInput.GetSpacing(), textInput.GetSeparator(), hostConfig, true /* horizontal line */);
+        View separator = setSpacingAndSeparator(context, viewGroup, textInput.GetSpacing(), textInput.GetSeparator(), hostConfig, true /* horizontal line */);
+        TagContent tagContent = new TagContent(textInput, textInputHandler, separator, viewGroup);
         final EditText editText = renderInternal(
                 renderedCard,
                 context,
@@ -330,9 +349,12 @@ public class TextInputRenderer extends BaseCardElementRenderer
                 textInput.GetValue(),
                 textInput.GetPlaceholder(),
                 textInputHandler,
-                hostConfig);
+                hostConfig,
+                tagContent);
         editText.setSingleLine(!textInput.GetIsMultiline());
-        editText.setTag(textInput);
+        editText.setTag(tagContent);
+        setVisibility(baseCardElement.GetIsVisible(), editText);
+
         BaseActionElement action = textInput.GetInlineAction();
 
         if (textInput.GetIsMultiline())
@@ -365,8 +387,9 @@ public class TextInputRenderer extends BaseCardElementRenderer
                 ViewGroup subViewGroup = (ViewGroup) subView;
                 for (int index = 0; index < subViewGroup.getChildCount(); ++index) {
                     View view = subViewGroup.getChildAt(index);
-                    if (view instanceof Button || view instanceof ImageButton) {
-                        view.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(renderedCard, action, cardActionHandler));
+                    if (view instanceof Button || view instanceof ImageButton)
+                    {
+                        view.setOnClickListener(new ActionElementRenderer.SelectActionOnClickListener(renderedCard, action, cardActionHandler));
                     }
                 }
             }
@@ -380,7 +403,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
 
         protected InlineActionIconImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String url, EditText editText)
         {
-            super(renderedCard, containerView, url);
+            super(renderedCard, containerView, url, containerView.getResources().getDisplayMetrics().widthPixels);
             m_editText = editText;
         }
 

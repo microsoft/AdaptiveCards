@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -30,6 +32,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 var uiImage = context.Render(image);
                 uiImageSet.Add(uiImage);
             }
+
             return uiImageSet;
 
         }

@@ -1,6 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "pch.h"
+
+#ifdef USE_CPPCORECHECK
+#pragma warning(disable : ALL_CPPCORECHECK_WARNINGS)
+#endif
 
 namespace AdaptiveSharedNamespace
 {

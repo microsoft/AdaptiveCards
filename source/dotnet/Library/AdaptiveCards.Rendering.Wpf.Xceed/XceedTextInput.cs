@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System.Windows;
 using System.Windows.Controls;
 using Xceed.Wpf.Toolkit;
@@ -56,7 +58,7 @@ namespace AdaptiveCards.Rendering.Wpf
                             parentView.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(spacing, GridUnitType.Pixel) });
                             Grid.SetColumn(uiSep, 1);
 
-                            // adding button 
+                            // adding button
                             var uiButton = new Button();
                             Style style = context.GetStyle($"Adaptive.Input.Text.InlineAction.Button");
                             if(style != null)
@@ -85,16 +87,16 @@ namespace AdaptiveCards.Rendering.Wpf
                                 uiButton.Content = uiIcon;
 
                                 // adjust height
-                                textBox.Loaded += (sender, e) => 
+                                textBox.Loaded += (sender, e) =>
                                 {
                                     uiIcon.Height = textBox.ActualHeight;
                                 };
 
-                                uiButton.ToolTip = uiTitle; 
+                                uiButton.ToolTip = uiTitle;
                             }
                             else
                             {
-                                uiTitle.FontSize = context.Config.GetFontSize(AdaptiveFontStyle.Default, AdaptiveTextSize.Default);
+                                uiTitle.FontSize = context.Config.GetFontSize(AdaptiveFontType.Default, AdaptiveTextSize.Default);
                                 uiTitle.Style = context.GetStyle($"Adaptive.Input.Text.InlineAction.Title");
                                 uiButton.Content = uiTitle;
                             }
@@ -111,7 +113,7 @@ namespace AdaptiveCards.Rendering.Wpf
                             Grid.SetColumn(uiButton, 2);
                             parentView.Children.Add(uiButton);
                             uiButton.VerticalAlignment = VerticalAlignment.Bottom;
-    
+
                             textBox.KeyDown += (sender, e) =>
                             {
                                 if (e.Key == System.Windows.Input.Key.Enter)

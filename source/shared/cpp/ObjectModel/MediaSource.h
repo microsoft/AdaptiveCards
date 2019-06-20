@@ -1,8 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "pch.h"
 #include "BaseCardElement.h"
-#include "Enums.h"
 #include "ElementParserRegistration.h"
 #include "Util.h"
 

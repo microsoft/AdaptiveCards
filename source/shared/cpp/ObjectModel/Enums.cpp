@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 
 // Auto-formatting does terrible things to this file, so turn it off.
@@ -8,8 +10,9 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Accent, "accent"},
             {AdaptiveCardSchemaKey::ActionAlignment, "actionAlignment"},
             {AdaptiveCardSchemaKey::ActionMode, "actionMode"},
-            {AdaptiveCardSchemaKey::Actions, "actions"},
+            {AdaptiveCardSchemaKey::ActionSet, "ActionSet"},
             {AdaptiveCardSchemaKey::ActionSetConfig, "actionSetConfig"},
+            {AdaptiveCardSchemaKey::Actions, "actions"},
             {AdaptiveCardSchemaKey::ActionsOrientation, "actionsOrientation"},
             {AdaptiveCardSchemaKey::AdaptiveCard, "adaptiveCard"},
             {AdaptiveCardSchemaKey::AllowCustomStyle, "allowCustomStyle"},
@@ -20,6 +23,8 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::BackgroundImage, "backgroundImage"},
             {AdaptiveCardSchemaKey::BackgroundImageUrl, "backgroundImageUrl"},
             {AdaptiveCardSchemaKey::BaseCardElement, "baseCardElement"},
+            {AdaptiveCardSchemaKey::BaseContainerStyle, "baseContainerStyle"},
+            {AdaptiveCardSchemaKey::Bleed, "bleed"},
             {AdaptiveCardSchemaKey::Body, "body"},
             {AdaptiveCardSchemaKey::Bolder, "bolder"},
             {AdaptiveCardSchemaKey::BorderColor, "borderColor"},
@@ -28,14 +33,13 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::ButtonSpacing, "buttonSpacing"},
             {AdaptiveCardSchemaKey::Card, "card"},
             {AdaptiveCardSchemaKey::Center, "center"},
-            {AdaptiveCardSchemaKey::Choices, "choices"},
             {AdaptiveCardSchemaKey::ChoiceSet, "choiceSet"},
+            {AdaptiveCardSchemaKey::Choices, "choices"},
             {AdaptiveCardSchemaKey::Color, "color"},
             {AdaptiveCardSchemaKey::ColorConfig, "colorConfig"},
-            {AdaptiveCardSchemaKey::ForegroundColors, "foregroundColors"},
             {AdaptiveCardSchemaKey::Column, "column"},
-            {AdaptiveCardSchemaKey::Columns, "columns"},
             {AdaptiveCardSchemaKey::ColumnSet, "columnSet"},
+            {AdaptiveCardSchemaKey::Columns, "columns"},
             {AdaptiveCardSchemaKey::Container, "container"},
             {AdaptiveCardSchemaKey::ContainerStyles, "containerStyles"},
             {AdaptiveCardSchemaKey::Dark, "dark"},
@@ -43,20 +47,26 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::DateInput, "dateInput"},
             {AdaptiveCardSchemaKey::Default, "default"},
             {AdaptiveCardSchemaKey::DefaultPoster, "defaultPoster"},
-            {AdaptiveCardSchemaKey::Display, "display"},
             {AdaptiveCardSchemaKey::ElementId, "elementId"},
             {AdaptiveCardSchemaKey::Emphasis, "emphasis"},
             {AdaptiveCardSchemaKey::ExtraLarge, "extraLarge"},
-            {AdaptiveCardSchemaKey::Facts, "facts"},
             {AdaptiveCardSchemaKey::FactSet, "factSet"},
+            {AdaptiveCardSchemaKey::Facts, "facts"},
+            {AdaptiveCardSchemaKey::Fallback, "fallback"},
             {AdaptiveCardSchemaKey::FallbackText, "fallbackText"},
+            {AdaptiveCardSchemaKey::FillMode, "fillMode"},
             {AdaptiveCardSchemaKey::FontFamily, "fontFamily"},
             {AdaptiveCardSchemaKey::FontSizes, "fontSizes"},
-            {AdaptiveCardSchemaKey::FontStyle, "fontStyle"},
-            {AdaptiveCardSchemaKey::FontStyles, "fontStyles"},
+            {AdaptiveCardSchemaKey::FontType, "fontType"},
+            {AdaptiveCardSchemaKey::FontTypes, "fontTypes"},
             {AdaptiveCardSchemaKey::FontWeights, "fontWeights"},
+            {AdaptiveCardSchemaKey::ForegroundColor, "foregroundColor"},
+            {AdaptiveCardSchemaKey::ForegroundColors, "foregroundColors"},
             {AdaptiveCardSchemaKey::Good, "good"},
             {AdaptiveCardSchemaKey::Height, "height"},
+            {AdaptiveCardSchemaKey::Highlight, "highlight"},
+            {AdaptiveCardSchemaKey::HighlightColor, "highlightColor"},
+            {AdaptiveCardSchemaKey::HighlightColors, "highlightColors"},
             {AdaptiveCardSchemaKey::HorizontalAlignment, "horizontalAlignment"},
             {AdaptiveCardSchemaKey::IconPlacement, "iconPlacement"},
             {AdaptiveCardSchemaKey::IconSize, "iconSize"},
@@ -64,18 +74,20 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Id, "id"},
             {AdaptiveCardSchemaKey::Image, "image"},
             {AdaptiveCardSchemaKey::ImageBaseUrl, "imageBaseUrl"},
-            {AdaptiveCardSchemaKey::Images, "images"},
             {AdaptiveCardSchemaKey::ImageSet, "imageSet"},
             {AdaptiveCardSchemaKey::ImageSize, "imageSize"},
             {AdaptiveCardSchemaKey::ImageSizes, "imageSizes"},
+            {AdaptiveCardSchemaKey::Images, "images"},
             {AdaptiveCardSchemaKey::InlineAction, "inlineAction"},
+            {AdaptiveCardSchemaKey::Inlines, "inlines"},
             {AdaptiveCardSchemaKey::InlineTopMargin, "inlineTopMargin"},
-            {AdaptiveCardSchemaKey::IsMultiline, "isMultiline"},
             {AdaptiveCardSchemaKey::IsMultiSelect, "isMultiSelect"},
+            {AdaptiveCardSchemaKey::IsMultiline, "isMultiline"},
             {AdaptiveCardSchemaKey::IsRequired, "isRequired"},
             {AdaptiveCardSchemaKey::IsSelected, "isSelected"},
             {AdaptiveCardSchemaKey::IsSubtle, "isSubtle"},
             {AdaptiveCardSchemaKey::IsVisible, "isVisible"},
+            {AdaptiveCardSchemaKey::Italic, "italic"},
             {AdaptiveCardSchemaKey::Items, "items"},
             {AdaptiveCardSchemaKey::Language, "lang"},
             {AdaptiveCardSchemaKey::Large, "large"},
@@ -95,17 +107,21 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Method, "method"},
             {AdaptiveCardSchemaKey::MimeType, "mimeType"},
             {AdaptiveCardSchemaKey::Min, "min"},
+            {AdaptiveCardSchemaKey::MinHeight, "minHeight"},
             {AdaptiveCardSchemaKey::Monospace, "monospace"},
             {AdaptiveCardSchemaKey::NumberInput, "numberInput"},
             {AdaptiveCardSchemaKey::Padding, "padding"},
             {AdaptiveCardSchemaKey::Placeholder, "placeholder"},
             {AdaptiveCardSchemaKey::PlayButton, "playButton"},
             {AdaptiveCardSchemaKey::Poster, "poster"},
+            {AdaptiveCardSchemaKey::Repeat, "repeat"},
+            {AdaptiveCardSchemaKey::RepeatHorizontally, "repeatHorizontally"},
+            {AdaptiveCardSchemaKey::RepeatVertically, "repeatVertically"},
+            {AdaptiveCardSchemaKey::Requires, "requires"},
+            {AdaptiveCardSchemaKey::RichTextBlock, "richTextBlock"},
             {AdaptiveCardSchemaKey::Right, "right"},
             {AdaptiveCardSchemaKey::SelectAction, "selectAction"},
-            {AdaptiveCardSchemaKey::Sentiment, "sentiment"},
             {AdaptiveCardSchemaKey::Separator, "separator"},
-            {AdaptiveCardSchemaKey::Thickness, "thickness"},
             {AdaptiveCardSchemaKey::ShowActionMode, "showActionMode"},
             {AdaptiveCardSchemaKey::ShowCard, "showCard"},
             {AdaptiveCardSchemaKey::ShowCardActionConfig, "showCardActionConfig"},
@@ -116,6 +132,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::SpacingDefinition, "spacingDefinition"},
             {AdaptiveCardSchemaKey::Speak, "speak"},
             {AdaptiveCardSchemaKey::Stretch, "stretch"},
+            {AdaptiveCardSchemaKey::Strikethrough, "strikethrough"},
             {AdaptiveCardSchemaKey::Style, "style"},
             {AdaptiveCardSchemaKey::Subtle, "subtle"},
             {AdaptiveCardSchemaKey::SupportsInteractivity, "supportsInteractivity"},
@@ -125,7 +142,6 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::TextConfig, "textConfig"},
             {AdaptiveCardSchemaKey::TextInput, "textInput"},
             {AdaptiveCardSchemaKey::TextWeight, "weight"},
-            {AdaptiveCardSchemaKey::Thick, "thick"},
             {AdaptiveCardSchemaKey::Thickness, "thickness"},
             {AdaptiveCardSchemaKey::TimeInput, "timeInput"},
             {AdaptiveCardSchemaKey::Title, "title"},
@@ -137,13 +153,14 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::ValueOff, "valueOff"},
             {AdaptiveCardSchemaKey::ValueOn, "valueOn"},
             {AdaptiveCardSchemaKey::Version, "version"},
+            {AdaptiveCardSchemaKey::VerticalAlignment, "verticalAlignment"},
             {AdaptiveCardSchemaKey::VerticalContentAlignment, "verticalContentAlignment"},
             {AdaptiveCardSchemaKey::Warning, "warning"},
             {AdaptiveCardSchemaKey::Weight, "weight"},
             {AdaptiveCardSchemaKey::Width, "width"},
             {AdaptiveCardSchemaKey::Wrap, "wrap"}});
 
-    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(CardElementType, CardElementType::Unsupported, {
+    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(CardElementType, CardElementType::Unknown, {
             {CardElementType::AdaptiveCard, "AdaptiveCard"},
             {CardElementType::Column, "Column"},
             {CardElementType::ColumnSet, "ColumnSet"},
@@ -158,10 +175,12 @@ namespace AdaptiveSharedNamespace
             {CardElementType::TextInput, "Input.Text"},
             {CardElementType::TimeInput, "Input.Time"},
             {CardElementType::ToggleInput, "Input.Toggle"},
+            {CardElementType::RichTextBlock, "RichTextBlock"},
             {CardElementType::TextBlock, "TextBlock"},
             {CardElementType::Custom, "Custom"},
             {CardElementType::Unknown, "Unknown"},
-            {CardElementType::Media, "Media"}});
+            {CardElementType::Media, "Media"},
+            {CardElementType::ActionSet, "ActionSet"}});
 
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ActionType, ActionType::Unsupported, {
             {ActionType::Unsupported, "Unsupported"},
@@ -169,7 +188,8 @@ namespace AdaptiveSharedNamespace
             {ActionType::ShowCard, "Action.ShowCard"},
             {ActionType::Submit, "Action.Submit"},
             {ActionType::ToggleVisibility, "Action.ToggleVisibility"},
-            {ActionType::Custom, "Custom"}});
+            {ActionType::Custom, "Custom"},
+            {ActionType::UnknownAction, "UnknownAction"}});
 
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(HeightType, HeightType::Stretch, {
             {HeightType::Auto, "Auto"},
@@ -197,6 +217,17 @@ namespace AdaptiveSharedNamespace
                 {"normal", ImageStyle::Default} // Back compat to support "Normal" for "Default" for pre V1.0 payloads
             }});
 
+    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(VerticalAlignment, VerticalAlignment::Top, {
+        { VerticalAlignment::Top, "top" },
+        { VerticalAlignment::Center, "center" },
+        { VerticalAlignment::Bottom, "bottom" }});
+
+    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ImageFillMode, ImageFillMode::Cover, {
+        { ImageFillMode::Cover, "cover" },
+        { ImageFillMode::RepeatHorizontally, "repeatHorizontally" },
+        { ImageFillMode::RepeatVertically, "repeatVertically" },
+        { ImageFillMode::Repeat, "repeat" }});
+
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ImageSize, ImageSize::Auto, {
             {ImageSize::Auto, "Auto"},
             {ImageSize::Large, "Large"},
@@ -205,9 +236,9 @@ namespace AdaptiveSharedNamespace
             {ImageSize::Stretch, "Stretch"}});
 
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(HorizontalAlignment, HorizontalAlignment::Left, {
-            {HorizontalAlignment::Center, "Center"},
-            {HorizontalAlignment::Left, "Left"},
-            {HorizontalAlignment::Right, "Right"}});
+            {HorizontalAlignment::Center, "center"},
+            {HorizontalAlignment::Left, "left"},
+            {HorizontalAlignment::Right, "right"}});
 
     DEFINE_ADAPTIVECARD_ENUM(ForegroundColor, {
             {ForegroundColor::Accent, "Accent"},
@@ -240,10 +271,9 @@ namespace AdaptiveSharedNamespace
                 {"Normal", TextSize::Default} // Back compat to support "Normal" for "Default" for pre V1.0 payloads
             }});
 
-    DEFINE_ADAPTIVECARD_ENUM(FontStyle, {
-            {FontStyle::Default, "Default"},
-            {FontStyle::Display, "Display"},
-            {FontStyle::Monospace, "Monospace"}});
+    DEFINE_ADAPTIVECARD_ENUM(FontType, {
+            {FontType::Default, "Default"},
+            {FontType::Monospace, "Monospace"}});
 
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ActionsOrientation, ActionsOrientation::Horizontal, {
             {ActionsOrientation::Horizontal, "Horizontal"},
@@ -265,7 +295,11 @@ namespace AdaptiveSharedNamespace
 
     DEFINE_ADAPTIVECARD_ENUM(ContainerStyle, {
             {ContainerStyle::Default, "Default"},
-            {ContainerStyle::Emphasis, "Emphasis"}});
+            {ContainerStyle::Emphasis, "Emphasis"},
+            {ContainerStyle::Good, "Good"},
+            {ContainerStyle::Attention, "Attention"},
+            {ContainerStyle::Warning, "Warning"},
+            {ContainerStyle::Accent, "Accent"}});
 
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ActionAlignment, ActionAlignment::Left, {
             {ActionAlignment::Left, "Left"},
@@ -282,8 +316,6 @@ namespace AdaptiveSharedNamespace
             {VerticalContentAlignment::Center, "Center"},
             {VerticalContentAlignment::Bottom, "Bottom"}});
 
-    DEFINE_ADAPTIVECARD_ENUM(Sentiment, {
-            {Sentiment::Default, "Default"},
-            {Sentiment::Positive, "Positive"},
-            {Sentiment::Destructive, "Destructive"}});
+    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(InlineElementType, InlineElementType::TextRun, {
+            {InlineElementType::TextRun, "TextRun"}});
 }

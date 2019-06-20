@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "InputValue.h"
 #include "json/json.h"
@@ -109,7 +111,7 @@ std::string InputValue::GetChoiceValue(_In_ IAdaptiveChoiceSetInput* choiceInput
 {
     if (selectedIndex != -1)
     {
-        ComPtr<IVector<IAdaptiveChoiceInput*>> choices;
+        ComPtr<IVector<AdaptiveChoiceInput*>> choices;
         THROW_IF_FAILED(choiceInput->get_Choices(&choices));
 
         ComPtr<IAdaptiveChoiceInput> choice;

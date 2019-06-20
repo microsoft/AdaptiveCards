@@ -1,7 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "ChoiceInput.h"
 #include "ChoiceSetInput.h"
 #include "ParseUtil.h"
+#include "Util.h"
 
 using namespace AdaptiveSharedNamespace;
 
@@ -40,7 +43,7 @@ Json::Value ChoiceSetInput::SerializeToJsonValue() const
 
     if (m_wrap)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap)] = m_wrap; 
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap)] = m_wrap;
     }
 
     std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Choices);
@@ -97,7 +100,7 @@ std::shared_ptr<BaseCardElement> ChoiceSetInputParser::Deserialize(ParseContext&
 {
     ParseUtil::ExpectTypeString(json, CardElementType::ChoiceSetInput);
 
-    auto choiceSet = BaseInputElement::Deserialize<ChoiceSetInput>(json);
+    auto choiceSet = BaseInputElement::Deserialize<ChoiceSetInput>(context, json);
 
     choiceSet->SetChoiceSetStyle(
         ParseUtil::GetEnumValue<ChoiceSetStyle>(json, AdaptiveCardSchemaKey::Style, ChoiceSetStyle::Compact, ChoiceSetStyleFromString));

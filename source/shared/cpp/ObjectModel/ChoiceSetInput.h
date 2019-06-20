@@ -1,8 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "pch.h"
 #include "BaseInputElement.h"
-#include "Enums.h"
 
 namespace AdaptiveSharedNamespace
 {
@@ -14,6 +15,11 @@ namespace AdaptiveSharedNamespace
 
     public:
         ChoiceSetInput();
+        ChoiceSetInput(const ChoiceSetInput&) = default;
+        ChoiceSetInput(ChoiceSetInput&&) = default;
+        ChoiceSetInput& operator=(const ChoiceSetInput&) = default;
+        ChoiceSetInput& operator=(ChoiceSetInput&&) = default;
+        ~ChoiceSetInput() = default;
 
         Json::Value SerializeToJsonValue() const override;
 
@@ -51,7 +57,7 @@ namespace AdaptiveSharedNamespace
         ChoiceSetInputParser(ChoiceSetInputParser&&) = default;
         ChoiceSetInputParser& operator=(const ChoiceSetInputParser&) = default;
         ChoiceSetInputParser& operator=(ChoiceSetInputParser&&) = default;
-        ~ChoiceSetInputParser() = default;
+        virtual ~ChoiceSetInputParser() = default;
 
         std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
         std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;

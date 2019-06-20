@@ -1,18 +1,23 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "Enums.h"
 #include "TextBlock.h"
 #include "AdaptiveCardElement.h"
+#include "AdaptiveTextElement.h"
 
 namespace AdaptiveNamespace
 {
     class DECLSPEC_UUID("0c87566c-a58c-4332-8b3b-79c9714074f6") AdaptiveTextBlock
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
                                               ABI::AdaptiveNamespace::IAdaptiveTextBlock,
+                                              ABI::AdaptiveNamespace::IAdaptiveTextElement,
                                               ABI::AdaptiveNamespace::IAdaptiveCardElement,
                                               Microsoft::WRL::CloakedIid<ITypePeek>,
-                                              Microsoft::WRL::CloakedIid<AdaptiveNamespace::AdaptiveCardElementBase>>
+                                              Microsoft::WRL::CloakedIid<AdaptiveNamespace::AdaptiveCardElementBase>,
+                                              Microsoft::WRL::CloakedIid<AdaptiveNamespace::AdaptiveTextElement>>
     {
         AdaptiveRuntime(AdaptiveTextBlock);
 
@@ -21,35 +26,60 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TextBlock>& sharedTextBlock);
 
         // IAdaptiveTextBlock
-        IFACEMETHODIMP get_Text(_Outptr_ HSTRING* text);
-        IFACEMETHODIMP put_Text(_In_ HSTRING text);
-
-        IFACEMETHODIMP get_Size(_Out_ ABI::AdaptiveNamespace::TextSize* textSize);
-        IFACEMETHODIMP put_Size(ABI::AdaptiveNamespace::TextSize textSize);
-
-        IFACEMETHODIMP get_Weight(_Out_ ABI::AdaptiveNamespace::TextWeight* textWeight);
-        IFACEMETHODIMP put_Weight(ABI::AdaptiveNamespace::TextWeight textWeight);
-
-        IFACEMETHODIMP get_Color(_Out_ ABI::AdaptiveNamespace::ForegroundColor* textColor);
-        IFACEMETHODIMP put_Color(ABI::AdaptiveNamespace::ForegroundColor textColor);
-
         IFACEMETHODIMP get_Wrap(_Out_ boolean* wrap);
         IFACEMETHODIMP put_Wrap(boolean wrap);
-
-        IFACEMETHODIMP get_IsSubtle(_Out_ boolean* isSubtle);
-        IFACEMETHODIMP put_IsSubtle(boolean isSubtle);
 
         IFACEMETHODIMP get_MaxLines(_Out_ UINT32* value);
         IFACEMETHODIMP put_MaxLines(UINT32 value);
 
-        IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveNamespace::HAlignment* hAlignment);
-        IFACEMETHODIMP put_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment hAlignment);
+        IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveNamespace::HAlignment* HorizontalAlignment);
+        IFACEMETHODIMP put_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment HorizontalAlignment);
 
-        IFACEMETHODIMP get_Language(_Outptr_ HSTRING* language);
-        IFACEMETHODIMP put_Language(_In_ HSTRING language);
+        // IAdaptiveTextElement
+        IFACEMETHODIMP get_Text(_Outptr_ HSTRING* text) { return AdaptiveTextElement::get_Text(text); }
+        IFACEMETHODIMP put_Text(_In_ HSTRING text) { return AdaptiveTextElement::put_Text(text); }
 
-        IFACEMETHODIMP get_FontStyle(_Out_ ABI::AdaptiveNamespace::FontStyle* style);
-        IFACEMETHODIMP put_FontStyle(ABI::AdaptiveNamespace::FontStyle style);
+        IFACEMETHODIMP get_Size(_Out_ ABI::AdaptiveNamespace::TextSize* textSize)
+        {
+            return AdaptiveTextElement::get_Size(textSize);
+        }
+        IFACEMETHODIMP put_Size(ABI::AdaptiveNamespace::TextSize textSize)
+        {
+            return AdaptiveTextElement::put_Size(textSize);
+        }
+
+        IFACEMETHODIMP get_Weight(_Out_ ABI::AdaptiveNamespace::TextWeight* textWeight)
+        {
+            return AdaptiveTextElement::get_Weight(textWeight);
+        }
+        IFACEMETHODIMP put_Weight(ABI::AdaptiveNamespace::TextWeight textWeight)
+        {
+            return AdaptiveTextElement::put_Weight(textWeight);
+        }
+
+        IFACEMETHODIMP get_Color(_Out_ ABI::AdaptiveNamespace::ForegroundColor* textColor)
+        {
+            return AdaptiveTextElement::get_Color(textColor);
+        }
+        IFACEMETHODIMP put_Color(ABI::AdaptiveNamespace::ForegroundColor textColor)
+        {
+            return AdaptiveTextElement::put_Color(textColor);
+        }
+
+        IFACEMETHODIMP get_IsSubtle(_Out_ boolean* isSubtle) { return AdaptiveTextElement::get_IsSubtle(isSubtle); }
+        IFACEMETHODIMP put_IsSubtle(boolean isSubtle) { return AdaptiveTextElement::put_IsSubtle(isSubtle); }
+
+        IFACEMETHODIMP get_Language(_Outptr_ HSTRING* language) { return AdaptiveTextElement::get_Language(language); }
+        IFACEMETHODIMP put_Language(_In_ HSTRING language) { return AdaptiveTextElement::put_Language(language); }
+
+        IFACEMETHODIMP get_FontType(_Out_ ABI::AdaptiveNamespace::FontType* type)
+        {
+            return AdaptiveTextElement::get_FontType(type);
+        }
+        IFACEMETHODIMP put_FontType(ABI::AdaptiveNamespace::FontType type)
+        {
+            return AdaptiveTextElement::put_FontType(type);
+        }
 
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespace::ElementType* elementType);
@@ -78,6 +108,25 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Id(_Outptr_ HSTRING* id) { return AdaptiveCardElementBase::get_Id(id); }
         IFACEMETHODIMP put_Id(_In_ HSTRING id) { return AdaptiveCardElementBase::put_Id(id); }
 
+        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveNamespace::FallbackType* fallback)
+        {
+            return AdaptiveCardElementBase::get_FallbackType(fallback);
+        }
+        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** content)
+        {
+            return AdaptiveCardElementBase::get_FallbackContent(content);
+        }
+
+        IFACEMETHODIMP put_FallbackType(ABI::AdaptiveNamespace::FallbackType fallback)
+        {
+            return AdaptiveCardElementBase::put_FallbackType(fallback);
+        }
+
+        IFACEMETHODIMP put_FallbackContent(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* content)
+        {
+            return AdaptiveCardElementBase::put_FallbackContent(content);
+        }
+
         IFACEMETHODIMP get_ElementTypeString(_Outptr_ HSTRING* value)
         {
             return AdaptiveCardElementBase::get_ElementTypeString(value);
@@ -90,6 +139,12 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* value)
         {
             return AdaptiveCardElementBase::put_AdditionalProperties(value);
+        }
+
+        IFACEMETHODIMP MeetsRequirements(_In_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration* featureRegistration,
+                                         _Out_ boolean* value)
+        {
+            return AdaptiveCardElementBase::MeetsRequirements(featureRegistration, value);
         }
 
         IFACEMETHODIMP ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
@@ -113,14 +168,7 @@ namespace AdaptiveNamespace
 
     private:
         boolean m_wrap;
-        boolean m_subtle;
         UINT32 m_maxLines;
-        Microsoft::WRL::Wrappers::HString m_text;
-        Microsoft::WRL::Wrappers::HString m_language;
-        ABI::AdaptiveNamespace::FontStyle m_fontStyle;
-        ABI::AdaptiveNamespace::TextSize m_textSize;
-        ABI::AdaptiveNamespace::TextWeight m_textWeight;
-        ABI::AdaptiveNamespace::ForegroundColor m_foregroundColor;
         ABI::AdaptiveNamespace::HAlignment m_horizontalAlignment;
     };
 

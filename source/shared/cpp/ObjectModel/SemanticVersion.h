@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "pch.h"
@@ -13,6 +15,13 @@ namespace AdaptiveSharedNamespace
         unsigned int GetMinor() const { return _minor; }
         unsigned int GetBuild() const { return _build; }
         unsigned int GetRevision() const { return _revision; }
+
+        operator std::string() const
+        {
+            std::stringstream version{};
+            version << _major << '.' << _minor << '.' << _build << '.'  << _revision;
+            return version.str();
+        }
 
     private:
         unsigned int _major;

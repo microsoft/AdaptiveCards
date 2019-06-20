@@ -11,8 +11,8 @@
     <AssemblyName>XamlCardVisualizer</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.14393.0</TargetPlatformMinVersion>
+    <TargetPlatformVersion>10.0.17763.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -71,36 +71,35 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\StockUpdate.json">
-      <Link>Samples\StockUpdate.json</Link>
+    <Content Include="..\..\..\samples\**\Scenarios\*.json">
+      <Link>Samples\%(Filename).json</Link>
     </Content>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\CalendarReminder.json">
-      <Link>Samples\CalendarReminder.json</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\FlightItinerary.json">
-      <Link>Samples\FlightItinerary.json</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\FlightUpdate.json">
-      <Link>Samples\FlightUpdate.json</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\ImageGallery.json">
-      <Link>Samples\ImageGallery.json</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\Inputs.json">
-      <Link>Samples\Inputs.json</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\Restaurant.json">
-      <Link>Samples\Restaurant.json</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\ActivityUpdate.json">
-      <Link>Samples\ActivityUpdate.json</Link>
-    </Content>
-    <Content Include="..\..\..\schemas\adaptive-card.json">
-      <Link>Schemas\adaptive-card.json</Link>
+    <Content Include="..\..\..\schemas\**\adaptive-card.json">
+      <Link>Schemas\%(RecursiveDir)adaptive-card.json</Link>
     </Content>
     <Content Include="..\..\..\schemas\host-config.json">
       <Link>Schemas\renderer-options.json</Link>
     </Content>
+    <Content Include="Assets\SmallTile.scale-100.png" />
+    <Content Include="Assets\SmallTile.scale-200.png" />
+    <Content Include="Assets\SmallTile.scale-400.png" />
+    <Content Include="Assets\SplashScreen.scale-100.png" />
+    <Content Include="Assets\SplashScreen.scale-400.png" />
+    <Content Include="Assets\Square150x150Logo.scale-100.png" />
+    <Content Include="Assets\Square150x150Logo.scale-400.png" />
+    <Content Include="Assets\Square44x44Logo.altform-unplated_targetsize-16.png" />
+    <Content Include="Assets\Square44x44Logo.altform-unplated_targetsize-256.png" />
+    <Content Include="Assets\Square44x44Logo.altform-unplated_targetsize-48.png" />
+    <Content Include="Assets\Square44x44Logo.scale-100.png" />
+    <Content Include="Assets\Square44x44Logo.scale-400.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-16.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-256.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-48.png" />
+    <Content Include="Assets\StoreLogo.scale-100.png" />
+    <Content Include="Assets\StoreLogo.scale-200.png" />
+    <Content Include="Assets\StoreLogo.scale-400.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-100.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-400.png" />
     <Content Include="HostConfigs\DefaultHostConfig.json" />
     <None Include="AdaptiveCardVisualizer_TemporaryKey.pfx" />
   </ItemGroup>
@@ -112,8 +111,6 @@
     <Content Include="Assets\SplashScreen.scale-200.png" />
     <Content Include="Assets\Square150x150Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.scale-200.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
-    <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>
@@ -154,13 +151,13 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>5.4.0</Version>
+      <Version>6.2.8</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
       <Version>1.5.1</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json.Schema">
-      <Version>3.0.3</Version>
+      <Version>3.0.11</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup />
@@ -193,6 +190,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>false</UseDotNetNativeToolchain>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -206,6 +204,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>false</UseDotNetNativeToolchain>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -219,6 +218,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>false</UseDotNetNativeToolchain>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

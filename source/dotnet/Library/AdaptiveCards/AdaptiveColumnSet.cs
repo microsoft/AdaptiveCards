@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,7 +14,7 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveColumnSet.TypeName)]
 #endif
-    public class AdaptiveColumnSet : AdaptiveElement
+    public class AdaptiveColumnSet : AdaptiveCollectionElement
     {
         public const string TypeName = "ColumnSet";
 

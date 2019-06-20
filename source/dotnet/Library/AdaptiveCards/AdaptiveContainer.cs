@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,7 +15,7 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveContainer.TypeName)]
 #endif
-    public class AdaptiveContainer : AdaptiveElement
+    public class AdaptiveContainer : AdaptiveCollectionElement
     {
         public const string TypeName = "Container";
 
@@ -21,6 +23,11 @@ namespace AdaptiveCards
         [XmlIgnore]
 #endif
         public override string Type { get; set; } = TypeName;
+
+        [JsonConverter(typeof(AdaptiveBackgroundImageConverter))]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [DefaultValue(null)]
+        public AdaptiveBackgroundImage BackgroundImage { get; set; }
 
         /// <summary>
         ///     Elements of the container
@@ -41,6 +48,7 @@ namespace AdaptiveCards
         [XmlElement(typeof(AdaptiveChoiceSetInput))]
         [XmlElement(typeof(AdaptiveToggleInput))]
         [XmlElement(typeof(AdaptiveMedia))]
+        [XmlElement(typeof(AdaptiveActionSet))]
 #endif
         public List<AdaptiveElement> Items { get; set; } = new List<AdaptiveElement>();
 

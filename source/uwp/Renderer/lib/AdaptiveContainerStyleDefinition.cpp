@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveContainerStyleDefinition.h"
 #include "AdaptiveColorsConfig.h"
@@ -41,6 +43,16 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveContainerStyleDefinition::put_ForegroundColors(_In_ ABI::AdaptiveNamespace::IAdaptiveColorsConfig* colorsConfig)
     {
         m_foregroundColors = colorsConfig;
+        return S_OK;
+    }
+    HRESULT AdaptiveContainerStyleDefinition::get_HighlightColors(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveColorsConfig** colorsConfig)
+    {
+        return m_highlightColors.CopyTo(colorsConfig);
+    }
+
+    HRESULT AdaptiveContainerStyleDefinition::put_HighlightColors(_In_ ABI::AdaptiveNamespace::IAdaptiveColorsConfig* colorsConfig)
+    {
+        m_highlightColors = colorsConfig;
         return S_OK;
     }
 }

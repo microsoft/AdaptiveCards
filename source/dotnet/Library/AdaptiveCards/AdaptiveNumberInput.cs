@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System.ComponentModel;
 using System.Globalization;
 using System.Xml.Serialization;
@@ -34,6 +36,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     The initial value for the field
         /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -43,6 +46,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     hint of minimum value(may be ignored by some clients)
         /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -52,6 +56,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     hint of maximum value(may be ignored by some clients)
         /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif

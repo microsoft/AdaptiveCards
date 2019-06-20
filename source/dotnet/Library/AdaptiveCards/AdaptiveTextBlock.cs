@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using Newtonsoft.Json;
 using System.ComponentModel;
 using System.Xml.Serialization;
@@ -11,7 +13,7 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveTextBlock.TypeName)]
 #endif
-    public class AdaptiveTextBlock : AdaptiveElement
+    public class AdaptiveTextBlock : AdaptiveElement, IAdaptiveTextElement
     {
         public const string TypeName = "TextBlock";
 
@@ -71,6 +73,26 @@ namespace AdaptiveCards
         public bool IsSubtle { get; set; }
 
         /// <summary>
+        ///     Make the text italic
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(false)]
+        public bool Italic { get; set; }
+
+        /// <summary>
+        ///     Make the struck through
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(false)]
+        public bool Strikethrough { get; set; }
+
+        /// <summary>
         ///     The text to display
         /// </summary>
         [JsonRequired]
@@ -120,13 +142,13 @@ namespace AdaptiveCards
         public int MaxWidth { get; set; }
 
         /// <summary>
-        ///     The font style of the TextBlock
+        ///     The font types of the TextBlock
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
-        [DefaultValue(typeof(AdaptiveFontStyle), "default")]
-        public AdaptiveFontStyle FontStyle { get; set; }
+        [DefaultValue(typeof(AdaptiveFontType), "default")]
+        public AdaptiveFontType FontType { get; set; }
     }
 }

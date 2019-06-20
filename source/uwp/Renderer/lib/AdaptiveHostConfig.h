@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
@@ -25,8 +27,8 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_FontWeights(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveFontWeightsConfig** fontWeight);
         IFACEMETHODIMP put_FontWeights(_In_ ABI::AdaptiveNamespace::IAdaptiveFontWeightsConfig* fontWeight);
 
-        IFACEMETHODIMP get_FontStyles(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveFontStylesDefinition** value);
-        IFACEMETHODIMP put_FontStyles(_In_ ABI::AdaptiveNamespace::IAdaptiveFontStylesDefinition* value);
+        IFACEMETHODIMP get_FontTypes(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveFontTypesDefinition** value);
+        IFACEMETHODIMP put_FontTypes(_In_ ABI::AdaptiveNamespace::IAdaptiveFontTypesDefinition* value);
 
         IFACEMETHODIMP get_SupportsInteractivity(_Out_ boolean* supportsInteractivity);
         IFACEMETHODIMP put_SupportsInteractivity(boolean supportsInteractivity);
@@ -71,7 +73,7 @@ namespace AdaptiveNamespace
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveFontSizesConfig> m_fontSizes;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveFontWeightsConfig> m_fontWeights;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveFontStylesDefinition> m_fontStyles;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveFontTypesDefinition> m_fontTypes;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveContainerStylesDefinition> m_containerStyles;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveImageSizesConfig> m_imageSizes;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveSpacingConfig> m_spacing;

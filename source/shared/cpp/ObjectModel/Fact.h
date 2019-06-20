@@ -1,8 +1,8 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "pch.h"
-#include "Enums.h"
-#include "json/json.h"
 #include "ElementParserRegistration.h"
 #include "DateTimePreparser.h"
 
@@ -28,8 +28,8 @@ namespace AdaptiveSharedNamespace
         void SetLanguage(const std::string& value);
         std::string GetLanguage() const;
 
-        static std::shared_ptr<Fact> Deserialize(ParseContext& context, const Json::Value& root);
-        static std::shared_ptr<Fact> DeserializeFromString(ParseContext& context, const std::string& jsonString);
+        static std::shared_ptr<Fact> Deserialize(const ParseContext& context, const Json::Value& root);
+        static std::shared_ptr<Fact> DeserializeFromString(const ParseContext& context, const std::string& jsonString);
 
     private:
         std::string m_title;

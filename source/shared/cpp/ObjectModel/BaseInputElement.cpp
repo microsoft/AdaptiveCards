@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "BaseInputElement.h"
 #include "ParseUtil.h"
@@ -11,16 +13,6 @@ BaseInputElement::BaseInputElement(CardElementType elementType) : BaseCardElemen
 BaseInputElement::BaseInputElement(CardElementType elementType, Spacing spacing, bool separator, HeightType height) :
     BaseCardElement(elementType, spacing, separator, height), m_isRequired(false)
 {
-}
-
-std::string BaseInputElement::GetId() const
-{
-    return m_id;
-}
-
-void BaseInputElement::SetId(const std::string& value)
-{
-    m_id = value;
 }
 
 bool BaseInputElement::GetIsRequired() const
@@ -37,7 +29,6 @@ Json::Value BaseInputElement::SerializeToJsonValue() const
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id)] = m_id;
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsRequired)] = m_isRequired;
 
     return root;

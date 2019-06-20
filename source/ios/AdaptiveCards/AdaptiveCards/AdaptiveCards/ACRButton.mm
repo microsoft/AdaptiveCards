@@ -87,11 +87,8 @@
 
     button.sentiment = acoAction.sentiment;
 
-    std::shared_ptr<AdaptiveCards::HostConfig> hostConfig = [config getHostConfig];
-    ColorsConfig colorsConfig = hostConfig->GetContainerStyles().defaultPalette.foregroundColors;
-
-    button.defaultPositiveBackgroundColor = [ACOHostConfig getTextBlockColor:ForegroundColor::Accent colorsConfig:colorsConfig subtleOption:false];
-    button.defaultDestructiveForegroundColor = [ACOHostConfig getTextBlockColor:ForegroundColor::Attention colorsConfig:colorsConfig subtleOption:false];
+    button.defaultPositiveBackgroundColor = [config getTextBlockColor:(ACRContainerStyle::ACRDefault) textColor:(ForegroundColor::Accent) subtleOption:false];
+    button.defaultDestructiveForegroundColor = [config getTextBlockColor:(ACRContainerStyle::ACRDefault) textColor:(ForegroundColor::Attention) subtleOption:false];
     [button applySentimentStyling];
     button.iconPlacement = [config getIconPlacement];
 
@@ -133,36 +130,32 @@
 
 - (void)applySentimentStyling
 {
-    switch (_sentiment) {
-        case ACRSentimentPositive: {
-            BOOL usePositiveDefault = [_positiveUseDefault boolValue];
+    if([@"positive" caseInsensitiveCompare:_sentiment] == NSOrderedSame)
+    {
+        BOOL usePositiveDefault = [_positiveUseDefault boolValue];
 
-            // By default, positive sentiment must have background accentColor and white text/foreground color
-            if(usePositiveDefault) {
-                [self setBackgroundColor:_defaultPositiveBackgroundColor];
-                [self setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
-            } else {
-                [self setBackgroundColor:_positiveBackgroundColor];
-                [self setTitleColor:_positiveForegroundColor forState:UIControlStateNormal];
-            }
-            break;
+        // By default, positive sentiment must have background accentColor and white text/foreground color
+        if(usePositiveDefault) {
+            [self setBackgroundColor:_defaultPositiveBackgroundColor];
+            [self setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+        } else {
+        // Otherwise use the values defined by the user in the ACRButton.xib
+            [self setBackgroundColor:_positiveBackgroundColor];
+            [self setTitleColor:_positiveForegroundColor forState:UIControlStateNormal];
         }
+    }
+    else if([@"destructive" caseInsensitiveCompare:_sentiment] == NSOrderedSame)
+    {
+        BOOL useDestructiveDefault = [_destructiveUseDefault boolValue];
 
-        case ACRSentimentDestructive: {
-            BOOL useDestructiveDefault = [_destructiveUseDefault boolValue];
-
-            if(useDestructiveDefault) {
-                [self setTitleColor:_defaultDestructiveForegroundColor forState:UIControlStateNormal];
-            } else {
-                [self setBackgroundColor:_destructiveBackgroundColor];
-                [self setTitleColor:_destructiveForegroundColor forState:UIControlStateNormal];
-            }
-            break;
+        // By default, destructive sentiment must have a attention text/foreground color
+        if(useDestructiveDefault) {
+            [self setTitleColor:_defaultDestructiveForegroundColor forState:UIControlStateNormal];
+        } else {
+        // Otherwise use the values defined by the user in the ACRButton.xib
+            [self setBackgroundColor:_destructiveBackgroundColor];
+            [self setTitleColor:_destructiveForegroundColor forState:UIControlStateNormal];
         }
-
-        case ACRSentimentDefault:
-        default:
-            break;
     }
 }
 

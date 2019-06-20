@@ -1,7 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "ChoiceInput.h"
+#include "ParseContext.h"
 #include "ParseUtil.h"
-#include "Enums.h"
 
 using namespace AdaptiveSharedNamespace;
 
@@ -9,7 +11,7 @@ ChoiceInput::ChoiceInput()
 {
 }
 
-std::shared_ptr<ChoiceInput> ChoiceInput::Deserialize(ParseContext&, const Json::Value& json)
+std::shared_ptr<ChoiceInput> ChoiceInput::Deserialize(ParseContext& /*context*/, const Json::Value& json)
 {
     auto choice = std::make_shared<ChoiceInput>();
 
@@ -26,8 +28,7 @@ std::shared_ptr<ChoiceInput> ChoiceInput::DeserializeFromString(ParseContext& co
 
 std::string ChoiceInput::Serialize()
 {
-    Json::FastWriter writer;
-    return writer.write(SerializeToJsonValue());
+    return ParseUtil::JsonToString(SerializeToJsonValue());
 }
 
 Json::Value ChoiceInput::SerializeToJsonValue()

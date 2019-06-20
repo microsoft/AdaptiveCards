@@ -1,5 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveCardElement.h"
+#include "AdaptiveFeatureRegistration.h"
+#include "SemanticVersion.h"
+#include "Util.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -19,6 +24,19 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(JsonCppToJsonObject(sharedModel->GetAdditionalProperties(), &m_additionalProperties));
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetElementTypeString(), m_typeString.GetAddressOf()));
         m_height = static_cast<ABI::AdaptiveNamespace::HeightType>(sharedModel->GetHeight());
+        m_internalId = sharedModel->GetInternalId();
+        m_fallbackType = MapSharedFallbackTypeToUwp(sharedModel->GetFallbackType());
+        if (m_fallbackType == ABI::AdaptiveNamespace::FallbackType::Content)
+        {
+            const auto fallbackObject =
+                std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(sharedModel->GetFallbackContent());
+            if (fallbackObject)
+            {
+                RETURN_IF_FAILED(GenerateElementProjection(fallbackObject, m_fallbackContent.GetAddressOf()));
+            }
+        }
+
+        m_requires = sharedModel->GetRequirements();
 
         return S_OK;
     }
@@ -59,6 +77,34 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    IFACEMETHODIMP AdaptiveCardElementBase::get_FallbackType(_Out_ ABI::AdaptiveNamespace::FallbackType* fallback)
+    {
+        *fallback = m_fallbackType;
+        return S_OK;
+    }
+
+    IFACEMETHODIMP AdaptiveCardElementBase::get_FallbackContent(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** content)
+    {
+        return m_fallbackContent.CopyTo(content);
+    }
+
+    IFACEMETHODIMP AdaptiveCardElementBase::put_FallbackType(ABI::AdaptiveNamespace::FallbackType fallback)
+    {
+        if (fallback != ABI::AdaptiveNamespace::FallbackType::Content)
+        {
+            m_fallbackContent.Reset();
+        }
+
+        m_fallbackType = fallback;
+        return S_OK;
+    }
+
+    IFACEMETHODIMP AdaptiveCardElementBase::put_FallbackContent(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* content)
+    {
+        m_fallbackContent = content;
+        return S_OK;
+    }
+
     IFACEMETHODIMP AdaptiveCardElementBase::get_Id(_Outptr_ HSTRING* id) { return m_id.CopyTo(id); }
 
     IFACEMETHODIMP AdaptiveCardElementBase::put_Id(_In_ HSTRING id) { return m_id.Set(id); }
@@ -91,6 +137,23 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    IFACEMETHODIMP AdaptiveCardElementBase::MeetsRequirements(_In_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration* featureRegistration,
+                                                              _Out_ boolean* value) try
+    {
+        *value = true;
+
+        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedModel;
+        RETURN_IF_FAILED(GetSharedModel(sharedModel));
+
+        ComPtr<AdaptiveFeatureRegistration> featureRegistrationImpl = PeekInnards<AdaptiveFeatureRegistration>(featureRegistration);
+        std::shared_ptr<AdaptiveSharedNamespace::FeatureRegistration> sharedFeatureRegistration =
+            featureRegistrationImpl->GetSharedFeatureRegistration();
+
+        *value = sharedModel->MeetsRequirements(*sharedFeatureRegistration);
+        return S_OK;
+    }
+    CATCH_RETURN;
+
     IFACEMETHODIMP AdaptiveCardElementBase::ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
     {
         std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedModel;
@@ -106,6 +169,23 @@ namespace AdaptiveNamespace
         sharedCardElement->SetIsVisible(m_isVisible);
         sharedCardElement->SetSpacing(static_cast<AdaptiveSharedNamespace::Spacing>(m_spacing));
         sharedCardElement->SetHeight(static_cast<AdaptiveSharedNamespace::HeightType>(m_height));
+        sharedCardElement->SetFallbackType(MapUwpFallbackTypeToShared(m_fallbackType));
+
+        if (!m_requires->empty())
+        {
+            auto requirements = sharedCardElement->GetRequirements();
+            for (const auto& requirement : *m_requires)
+            {
+                requirements->emplace(requirement);
+            }
+        }
+
+        if (m_fallbackType == ABI::AdaptiveNamespace::FallbackType::Content)
+        {
+            std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> fallbackSharedModel;
+            RETURN_IF_FAILED(GenerateSharedElement(m_fallbackContent.Get(), fallbackSharedModel));
+            sharedCardElement->SetFallbackContent(std::static_pointer_cast<AdaptiveSharedNamespace::BaseElement>(fallbackSharedModel));
+        }
 
         if (m_additionalProperties != nullptr)
         {

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using Newtonsoft.Json;
 using System;
 using System.ComponentModel;
@@ -5,9 +7,7 @@ using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
-    /// <summary>
-    ///     Base class for all elements in a container
-    /// </summary>
+
     public abstract class AdaptiveElement : AdaptiveTypedElement
     {
         /// <summary>
@@ -67,5 +67,15 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(typeof(AdaptiveHeight), "auto")]
         public AdaptiveHeight Height { get; set; }
+
+        /// <summary>
+        /// Indicates whether the element should be visible when the card has been rendered.
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        [DefaultValue(true)]
+        public bool IsVisible { get; set; } = true;
     }
 }

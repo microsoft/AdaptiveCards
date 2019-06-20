@@ -1,8 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "pch.h"
 #include "BaseInputElement.h"
-#include "Enums.h"
 #include "ElementParserRegistration.h"
 
 namespace AdaptiveSharedNamespace
@@ -11,6 +12,11 @@ namespace AdaptiveSharedNamespace
     {
     public:
         TimeInput();
+        TimeInput(const TimeInput&) = default;
+        TimeInput(TimeInput&&) = default;
+        TimeInput& operator=(const TimeInput&) = default;
+        TimeInput& operator=(TimeInput&&) = default;
+        ~TimeInput() = default;
 
         Json::Value SerializeToJsonValue() const override;
 

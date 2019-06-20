@@ -20,6 +20,8 @@
 #import "ACRViewController.h"
 #import "ACRContentHoldingUIScrollView.h"
 #import "ACRLongPressGestureRecognizerFactory.h"
+#import "ACRUIImageView.h"
+#import "Util.h"
 
 using namespace AdaptiveCards;
 
@@ -84,31 +86,44 @@ using namespace AdaptiveCards;
                                                                          hostConfig:config];
     }
 
-    if(!adaptiveCard->GetBackgroundImage().empty()) {
+    if (adaptiveCard->GetMinHeight() > 0) {
+        [NSLayoutConstraint constraintWithItem:rootView
+                                     attribute:NSLayoutAttributeHeight
+                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                        toItem:nil
+                                     attribute:NSLayoutAttributeNotAnAttribute
+                                    multiplier:1
+                                      constant:adaptiveCard->GetMinHeight()].active = YES;
+    }
+
+    auto backgroundImageProperties = adaptiveCard->GetBackgroundImage();
+    if((backgroundImageProperties != nullptr) && !(backgroundImageProperties->GetUrl().empty())) {
         ObserverActionBlock observerAction =
         ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseCardElement> const &elem, NSURL* url, ACRView* rootView) {
             UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
-            [rootView setImageView:key view:view];
             if(view) {
                 [view addObserver:rootView forKeyPath:@"image"
                           options:NSKeyValueObservingOptionNew
-                          context:nil];
+                          context:backgroundImageProperties.get()];
+
+                // store the image view and card for easy retrieval in ACRView::observeValueForKeyPath
+                [rootView setImageView:key view:view];
             }
         };
-        [rootView
-            loadImageAccordingToResourceResolverIFFromString:adaptiveCard->GetBackgroundImage()
-            key:@"backgroundImage" observerAction:observerAction];
+        [rootView loadBackgroundImageAccordingToResourceResolverIF:backgroundImageProperties key:@"backgroundImage" observerAction:observerAction];
     }
 
     if(![config getHostConfig]->GetMedia().playButton.empty()) {
         ObserverActionBlock observerAction =
         ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseCardElement> const &elem, NSURL* url, ACRView* rootView) {
             UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
-            [rootView setImageView:key view:view];
             if(view) {
                 [view addObserver:rootView forKeyPath:@"image"
                           options:NSKeyValueObservingOptionNew
                           context:nil];
+
+                // store the image view for easy retrieval in ACRView::observeValueForKeyPath
+                [rootView setImageView:key view:view];
             }
         };
         [rootView
@@ -155,7 +170,6 @@ using namespace AdaptiveCards;
         [card setCard:adaptiveCard];
         [ACRRenderer renderActions:rootView inputs:inputs superview:verticalView card:card hostConfig:config];
     }
-    [verticalView adjustHuggingForLastElement];
 
     return verticalView;
 }
@@ -178,20 +192,26 @@ using namespace AdaptiveCards;
 {
     ACRRegistration *reg = [ACRRegistration getInstance];
     ACOBaseCardElement *acoElem = [[ACOBaseCardElement alloc] init];
+    ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
 
     UIView *prevStretchableElem = nil, *curStretchableElem = nil;
 
     auto firstelem = elems.begin();
-    for(const auto &elem:elems)
+    auto prevElem = elems.empty() ? nullptr : *firstelem;
+    
+    for (const auto &elem : elems)
     {
-        if(*firstelem != elem){
-            [ACRSeparator renderSeparation:elem forSuperview:view withHostConfig:[config getHostConfig]];
+        if (*firstelem != elem) {
+            ACRSeparator *separator = [ACRSeparator renderSeparation:elem
+                                                        forSuperview:view
+                                                      withHostConfig:[config getHostConfig]];
+            configSeparatorVisibility(separator, prevElem);
         }
 
         ACRBaseCardElementRenderer *renderer =
             [reg getRenderer:[NSNumber numberWithInt:(int)elem->GetElementType()]];
 
-        if(renderer == nil)
+        if (renderer == nil)
         {
             NSLog(@"Unsupported card element type:%d\n", (int) elem->GetElementType());
             continue;
@@ -199,28 +219,36 @@ using namespace AdaptiveCards;
 
         [acoElem setElem:elem];
 
-        curStretchableElem = [renderer render:view rootView:rootView inputs:inputs baseCardElement:acoElem hostConfig:config];
-
-        if(elem->GetHeight() == HeightType::Stretch){
-            if(prevStretchableElem){
-                NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:curStretchableElem
-                                             attribute:NSLayoutAttributeHeight
-                                             relatedBy:NSLayoutRelationEqual
-                                                toItem:prevStretchableElem
-                                             attribute:NSLayoutAttributeHeight
-                                            multiplier:1
-                                              constant:0];
-                heightConstraint.priority = UILayoutPriorityDefaultLow;
-                heightConstraint.active = YES;
+        @try {
+            if ([acoElem meetsRequirements:featureReg] == NO) {
+                @throw [ACOFallbackException fallbackException];
             }
+            curStretchableElem = [renderer render:view rootView:rootView inputs:inputs baseCardElement:acoElem hostConfig:config];
+            if (elem->GetHeight() == HeightType::Stretch) {
+                if (prevStretchableElem) {
+                    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:curStretchableElem
+                                                                                        attribute:NSLayoutAttributeHeight
+                                                                                        relatedBy:NSLayoutRelationEqual
+                                                                                           toItem:prevStretchableElem
+                                                                                        attribute:NSLayoutAttributeHeight
+                                                                                       multiplier:1
+                                                                                         constant:0];
+                    heightConstraint.priority = UILayoutPriorityDefaultLow;
+                    heightConstraint.active = YES;
+                }
 
-            if([view isKindOfClass:[ACRColumnView class]]){
-                ACRColumnView *columnView = (ACRColumnView*)view;
-                columnView.hasStretchableView = YES;
+                if ([view isKindOfClass:[ACRColumnView class]]) {
+                    ACRColumnView *columnView = (ACRColumnView*)view;
+                    columnView.hasStretchableView = YES;
+                }
+
+                prevStretchableElem = curStretchableElem;
             }
-
-            prevStretchableElem = curStretchableElem;
+        } @catch (ACOFallbackException *e){
+            handleFallbackException(e, view, rootView, inputs, elem, config);
         }
+        
+        prevElem = elem;
     }
 
     return view;

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include <wrl\async.h>
@@ -79,8 +81,12 @@ protected:
                     THROW_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::RenderedAdaptiveCard>(&m_renderResult));
                     ComPtr<ABI::AdaptiveNamespace::IAdaptiveElementRendererRegistration> elementRenderers;
                     THROW_IF_FAILED(m_renderer->get_ElementRenderers(&elementRenderers));
+                    ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionRendererRegistration> actionRenderers;
+                    THROW_IF_FAILED(m_renderer->get_ActionRenderers(&actionRenderers));
                     ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers> resourceResolvers;
                     THROW_IF_FAILED(m_renderer->get_ResourceResolvers(&resourceResolvers));
+                    ComPtr<ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration> featureRegistration;
+                    THROW_IF_FAILED(m_renderer->get_FeatureRegistration(&featureRegistration));
                     ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> overrideDictionary = m_renderer->GetMergedDictionary();
                     ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> actionSentimentDefaultDictionary =
                         m_renderer->GetActionSentimentResourceDictionary();
@@ -89,16 +95,18 @@ protected:
                     THROW_IF_FAILED(
                         MakeAndInitialize<AdaptiveNamespace::AdaptiveRenderContext>(&renderContext,
                                                                                     m_renderer->GetHostConfig(),
+                                                                                    featureRegistration.Get(),
                                                                                     elementRenderers.Get(),
+                                                                                    actionRenderers.Get(),
                                                                                     resourceResolvers.Get(),
                                                                                     overrideDictionary.Get(),
                                                                                     actionSentimentDefaultDictionary.Get(),
                                                                                     m_renderResult.Get()));
 
-                    m_renderer->GetXamlBuilder()->BuildXamlTreeFromAdaptiveCard(m_card.Get(),
-                                                                                &m_rootXamlElement,
-                                                                                m_renderer.Get(),
-                                                                                renderContext.Get());
+                    AdaptiveNamespace::XamlBuilder::BuildXamlTreeFromAdaptiveCard(m_card.Get(),
+                                                                                              &m_rootXamlElement,
+                                                                                              renderContext.Get(),
+                                                                                              m_renderer->GetXamlBuilder());
                 }
                 catch (...)
                 {

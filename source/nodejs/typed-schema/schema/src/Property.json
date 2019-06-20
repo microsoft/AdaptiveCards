@@ -1,0 +1,35 @@
+{
+	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+	"properties": {
+		"type": {
+			"type": "string",
+			"description": "The type of the property",
+			"required": true
+		},
+		"description": {
+			"type": "string",
+			"description": "A description of the property"
+		},
+		"required": {
+			"type": "boolean",
+			"description": "Specifies whether the property is required",
+			"default": false
+		},
+		"shorthands": {
+			"type": "Property[]",
+			"description": "Shorthand alternatives for this property"
+		},
+		"default": {
+			"type": "any",
+			"description": "The default value of this property"
+		},
+		"examples": {
+			"type": "any[]",
+			"description": "Examples of this value"
+    },
+    "override": {
+      "type": "boolean",
+      "description": "Set this to true if you're overriding a property from an extended class. This will prevent a warning from being emitted."
+    }
+	}
+}

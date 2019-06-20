@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveChoiceSetInput.h"
 
@@ -16,7 +18,7 @@ namespace AdaptiveNamespace
 {
     AdaptiveChoiceSetInput::AdaptiveChoiceSetInput()
     {
-        m_choices = Microsoft::WRL::Make<Vector<IAdaptiveChoiceInput*>>();
+        m_choices = Microsoft::WRL::Make<Vector<AdaptiveChoiceInput*>>();
     }
 
     HRESULT AdaptiveChoiceSetInput::RuntimeClassInitialize() noexcept try
@@ -82,7 +84,7 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveChoiceSetInput::get_Choices(_COM_Outptr_ IVector<IAdaptiveChoiceInput*>** choices)
+    HRESULT AdaptiveChoiceSetInput::get_Choices(_COM_Outptr_ IVector<AdaptiveChoiceInput*>** choices)
     {
         return m_choices.CopyTo(choices);
     }

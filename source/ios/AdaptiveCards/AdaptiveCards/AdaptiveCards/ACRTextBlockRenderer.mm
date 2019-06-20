@@ -47,7 +47,6 @@
     NSMutableAttributedString *content = nil;
     if(rootView){
         NSMutableDictionary *textMap = [rootView getTextMap];
-        // Generate key for ImageViewMap
         NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)txtBlck.get()];
         NSString *key = [number stringValue];
         NSDictionary* data = textMap[key];
@@ -81,14 +80,11 @@
 
         // Obtain text color to apply to the attributed string
         ACRContainerStyle style = lab.style;
-        ColorsConfig colorConfig;
-        if (style == ACREmphasis)
-            colorConfig = config->GetContainerStyles().emphasisPalette.foregroundColors;
-        else
-            colorConfig = config->GetContainerStyles().defaultPalette.foregroundColors;
-        // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
-        [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:[ACOHostConfig getTextBlockColor:txtBlck->GetTextColor() colorsConfig:colorConfig subtleOption:txtBlck->GetIsSubtle()],} range:NSMakeRange(0, content.length)];
+        auto foregroundColor = [acoConfig getTextBlockColor:style textColor:txtBlck->GetTextColor() subtleOption:txtBlck->GetIsSubtle()];
 
+        // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
+        [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:foregroundColor,} range:NSMakeRange(0, content.length)];
+        
         lab.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
         lab.attributedText = content;
     }

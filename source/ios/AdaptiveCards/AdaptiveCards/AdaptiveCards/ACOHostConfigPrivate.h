@@ -20,16 +20,27 @@ using namespace AdaptiveCards;
 - (void)setHostConfig:(std::shared_ptr<HostConfig> const &)config;
 
 + (NSNumber *)getTextStrokeWidthForWeight:(TextWeight)weight;
-- (int)getTextBlockFontWeight:(FontStyle) style
+
+- (int)getTextBlockFontWeight:(FontType) type
                    textWeight:(TextWeight)weight;
-- (int)getTextBlockTextSize:(FontStyle) style
+
+- (int)getTextBlockTextSize:(FontType) type
                  textSize:(TextSize)txtSz;
-- (NSString *)getFontFamily:(AdaptiveCards::FontStyle)style;
-+ (UIColor *)getTextBlockColor:(ForegroundColor)txtClr
-                  colorsConfig:(ColorsConfig const &)config
+
+- (NSString *)getFontFamily:(AdaptiveCards::FontType)type;
+
+- (UIColor *)getTextBlockColor:(ACRContainerStyle)style
+                     textColor:(ForegroundColor)txtClr
                   subtleOption:(bool)isSubtle;
+
+- (UIColor *)getHighlightColor:(ACRContainerStyle)style
+               foregroundColor:(ForegroundColor)color
+                  subtleOption:(bool)isSubtle;
+
 + (NSTextAlignment)getTextBlockAlignment:(HorizontalAlignment)alignment;
+
 - (CGSize)getImageSize:(ImageSize)imageSize;
+
 + (NSArray *)getConstraintsForImageAlignment:(HorizontalAlignment)alignment
                                withSuperview:(UIView *)superview
                                       toView:(UIView *)view;
@@ -42,6 +53,8 @@ using namespace AdaptiveCards;
 - (UIColor *)getBackgroundColorForContainerStyle:(ACRContainerStyle)style;
 
 + (ACRContainerStyle)getPlatformContainerStyle:(ContainerStyle)style;
+
++ (ContainerStyle)getSharedContainerStyle:(ACRContainerStyle)style;
 
 - (ACRIconPlacement)getIconPlacement;
 @end

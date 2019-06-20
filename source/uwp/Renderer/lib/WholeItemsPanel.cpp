@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 //
 //  Copyright (c) 2014  Microsoft Corporation
 //
@@ -241,12 +243,12 @@ namespace AdaptiveNamespace
     HRESULT WholeItemsPanel::ArrangeOverride(Size finalSize, __RPC__out Size* returnValue)
     {
         float currentHeight{};
-        ComPtr<IVector<UIElement*>> spChildren;
+        ComPtr<IVector<UIElement*>> children;
 
         ComPtr<IPanel> spThisAsPanel;
         RETURN_IF_FAILED(QueryInterface(__uuidof(IPanel), reinterpret_cast<void**>(spThisAsPanel.GetAddressOf())));
-        RETURN_IF_FAILED(spThisAsPanel->get_Children(spChildren.GetAddressOf()));
-        RETURN_IF_FAILED(spChildren->get_Size(&m_measuredCount));
+        RETURN_IF_FAILED(spThisAsPanel->get_Children(children.GetAddressOf()));
+        RETURN_IF_FAILED(children->get_Size(&m_measuredCount));
 
         float extraPaddingPerItem{};
         if (!m_stretchableItems.empty())
@@ -266,20 +268,20 @@ namespace AdaptiveNamespace
             }
         }
 
-        for (unsigned int i{}; i < m_measuredCount; ++i)
+        for (unsigned int i = 0; i < m_measuredCount; ++i)
         {
-            ComPtr<IUIElement> spChild;
-            RETURN_IF_FAILED(spChildren->GetAt(i, spChild.GetAddressOf()));
+            ComPtr<IUIElement> child;
+            RETURN_IF_FAILED(children->GetAt(i, child.GetAddressOf()));
 
             Size childSize;
-            RETURN_IF_FAILED(spChild->get_DesiredSize(&childSize));
+            RETURN_IF_FAILED(child->get_DesiredSize(&childSize));
 
             if (i < m_visibleCount)
             {
                 float childHeight = childSize.Height;
                 float newHeight = currentHeight + childSize.Height;
 
-                if (m_allElementsRendered && IsUIElementInStretchableList(spChild.Get()))
+                if (m_allElementsRendered && IsUIElementInStretchableList(child.Get()))
                 {
                     childHeight += extraPaddingPerItem;
                     newHeight += extraPaddingPerItem;
@@ -290,7 +292,7 @@ namespace AdaptiveNamespace
                     newHeight = finalSize.Height;
                 }
                 const Rect rc = {0.0f, currentHeight, finalSize.Width, childHeight}; // childSize.Width does not respect Text alignment
-                RETURN_IF_FAILED(spChild->Arrange(rc));
+                RETURN_IF_FAILED(child->Arrange(rc));
 
                 currentHeight = newHeight;
             }
@@ -298,13 +300,14 @@ namespace AdaptiveNamespace
             {
                 // Arrange the child outside the panel
                 const Rect rc = {0.0f, OutsidePanelY - childSize.Height, childSize.Width, childSize.Height};
-                RETURN_IF_FAILED(spChild->Arrange(rc));
+                RETURN_IF_FAILED(child->Arrange(rc));
             }
         }
 
         // Now set the clipping region to ensure that items moved away will never be rendered
         // But we allow the items to slightly expand above the panel because we explicitly set negative
-        // margins for text on the first line of a tile
+        // margins for text on the first line of a tile. Additionally, leave at least as much space on all
+        // sides as specified by s_bleedMargin.
         ComPtr<IFrameworkElement> spThisAsIFrameworkElement;
         Thickness margin;
         RETURN_IF_FAILED(QueryInterface(IID_PPV_ARGS(&spThisAsIFrameworkElement)));
@@ -316,10 +319,10 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(QueryInterface(IID_PPV_ARGS(&spThisAsIUIElement)));
         RETURN_IF_FAILED(spThisAsIUIElement->put_Clip(spClip.Get()));
 
-        float x0 = static_cast<float>(-margin.Left);
-        float y0 = static_cast<float>(-margin.Top);
-        float x1 = static_cast<float>(margin.Left + finalSize.Width + margin.Right);
-        float y1 = static_cast<float>(margin.Top + finalSize.Height + margin.Bottom);
+        float x0 = static_cast<float>(-max(margin.Left, s_bleedMargin));
+        float y0 = static_cast<float>(-max(margin.Top, s_bleedMargin));
+        float x1 = static_cast<float>(max(margin.Left, s_bleedMargin) + finalSize.Width + max(margin.Right, s_bleedMargin));
+        float y1 = static_cast<float>(max(margin.Top, s_bleedMargin) + finalSize.Height + max(margin.Bottom, s_bleedMargin));
         RETURN_IF_FAILED(spClip->put_Rect({x0, y0, x1, y1}));
 
         *returnValue = {finalSize.Width, finalSize.Height};
@@ -358,7 +361,7 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT WholeItemsPanel::GetAltText(__RPC__out HSTRING* pResult)
+    HRESULT WholeItemsPanel::GetAltText(__RPC__out HSTRING* pResult) noexcept
     {
         try
         {
@@ -381,9 +384,17 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    void WholeItemsPanel::SetAdaptiveHeight(_In_ bool value) { m_adaptiveHeight = value; }
+    void WholeItemsPanel::SetAdaptiveHeight(bool value) { m_adaptiveHeight = value; }
 
-    void WholeItemsPanel::SetMainPanel(_In_ bool value) { m_isMainPanel = value; }
+    UINT WholeItemsPanel::s_bleedMargin = 0;
+    void WholeItemsPanel::SetBleedMargin(UINT bleedMargin)
+    {
+        // Bleed margin is the extent to which the content may "bleed" out of the panel on the left and right. It is
+        // used to ensure that the clip rectangle doesn't clip off bleeding content.
+        s_bleedMargin = bleedMargin;
+    }
+
+    void WholeItemsPanel::SetMainPanel(bool value) { m_isMainPanel = value; }
 
     void WholeItemsPanel::AddElementToStretchablesList(_In_ IUIElement* element)
     {
@@ -460,7 +471,7 @@ namespace AdaptiveNamespace
     _Check_return_ HRESULT WholeItemsPanel::LayoutCroppedImage(_In_ IShape* pShape, _In_ double availableWidth, _In_ double availableHeight)
     {
         ComPtr<IFrameworkElement> spFrameworkElement;
-        VerticalAlignment valign;
+        ABI::Windows::UI::Xaml::VerticalAlignment valign;
         ABI::Windows::UI::Xaml::HorizontalAlignment halign;
         Thickness margins;
         RETURN_IF_FAILED(pShape->QueryInterface(spFrameworkElement.GetAddressOf()));
@@ -586,5 +597,4 @@ namespace AdaptiveNamespace
 
         return !isnan(definedImageHeight) || !isnan(definedImageWidth);
     }
-
 }

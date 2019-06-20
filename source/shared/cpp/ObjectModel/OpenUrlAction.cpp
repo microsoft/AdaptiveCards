@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "OpenUrlAction.h"
 #include "ParseContext.h"
@@ -29,9 +31,9 @@ void OpenUrlAction::SetUrl(const std::string& value)
     m_url = value;
 }
 
-std::shared_ptr<BaseActionElement> OpenUrlActionParser::Deserialize(ParseContext&, const Json::Value& json)
+std::shared_ptr<BaseActionElement> OpenUrlActionParser::Deserialize(ParseContext& context, const Json::Value& json)
 {
-    std::shared_ptr<OpenUrlAction> openUrlAction = BaseActionElement::Deserialize<OpenUrlAction>(json);
+    std::shared_ptr<OpenUrlAction> openUrlAction = BaseActionElement::Deserialize<OpenUrlAction>(context, json);
 
     openUrlAction->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url, true));
 

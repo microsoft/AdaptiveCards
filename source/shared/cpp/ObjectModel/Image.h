@@ -1,9 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "pch.h"
 #include "BaseActionElement.h"
 #include "BaseCardElement.h"
-#include "Enums.h"
 #include "ElementParserRegistration.h"
 
 namespace AdaptiveSharedNamespace
@@ -12,6 +13,11 @@ namespace AdaptiveSharedNamespace
     {
     public:
         Image();
+        Image(const Image&) = default;
+        Image(Image&&) = default;
+        Image& operator=(const Image&) = default;
+        Image& operator=(Image&&) = default;
+        ~Image() = default;
 
         Json::Value SerializeToJsonValue() const override;
 
@@ -66,7 +72,7 @@ namespace AdaptiveSharedNamespace
         ImageParser(ImageParser&&) = default;
         ImageParser& operator=(const ImageParser&) = default;
         ImageParser& operator=(ImageParser&&) = default;
-        ~ImageParser() = default;
+        virtual ~ImageParser() = default;
 
         std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
         std::shared_ptr<BaseCardElement> DeserializeWithoutCheckingType(ParseContext& context, const Json::Value& root);

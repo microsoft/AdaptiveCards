@@ -1,8 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "pch.h"
 #include "BaseInputElement.h"
-#include "Enums.h"
 #include "ElementParserRegistration.h"
 
 namespace AdaptiveSharedNamespace
@@ -11,6 +12,11 @@ namespace AdaptiveSharedNamespace
     {
     public:
         ToggleInput();
+        ToggleInput(const ToggleInput&) = default;
+        ToggleInput(ToggleInput&&) = default;
+        ToggleInput& operator=(const ToggleInput&) = default;
+        ToggleInput& operator=(ToggleInput&&) = default;
+        ~ToggleInput() = default;
 
         Json::Value SerializeToJsonValue() const override;
 
@@ -47,7 +53,7 @@ namespace AdaptiveSharedNamespace
         ToggleInputParser(ToggleInputParser&&) = default;
         ToggleInputParser& operator=(const ToggleInputParser&) = default;
         ToggleInputParser& operator=(ToggleInputParser&&) = default;
-        ~ToggleInputParser() = default;
+        virtual ~ToggleInputParser() = default;
 
         std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
         std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;

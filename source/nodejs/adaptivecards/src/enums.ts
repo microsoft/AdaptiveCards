@@ -1,3 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+export class ActionStyle {
+    static readonly Default = "default";
+    static readonly Positive = "positive";
+    static readonly Destructive = "destructive";
+}
+
 export enum Size {
     Auto,
     Stretch,
@@ -19,6 +27,17 @@ export enum TextSize {
     ExtraLarge
 }
 
+export enum TextWeight {
+    Lighter,
+    Default,
+    Bolder
+}
+
+export enum FontType {
+    Default,
+    Monospace
+}
+
 export enum Spacing {
     None,
     Small,
@@ -27,12 +46,6 @@ export enum Spacing {
     Large,
     ExtraLarge,
     Padding
-}
-
-export enum TextWeight {
-    Lighter,
-    Default,
-    Bolder
 }
 
 export enum TextColor {
@@ -79,8 +92,8 @@ export enum Orientation {
     Vertical
 }
 
-export enum BackgroundImageMode {
-    Stretch,
+export enum FillMode {
+    Cover,
     RepeatHorizontally,
     RepeatVertically,
     Repeat
@@ -96,6 +109,12 @@ export enum InputTextStyle {
     Tel,
     Url,
     Email
+}
+
+export enum InputValidationNecessity {
+    Optional,
+    Required,
+    RequiredWithVisualCue
 }
 
 /*
@@ -114,6 +133,10 @@ export enum InputTextStyle {
 export class ContainerStyle {
     static readonly Default = "default";
     static readonly Emphasis = "emphasis";
+    static readonly Accent = "accent";
+    static readonly Good = "good";
+    static readonly Attention = "attention";
+    static readonly Warning = "warning";
 }
 
 export enum ValidationError {
@@ -129,7 +152,8 @@ export enum ValidationError {
     TooManyActions,
     UnknownActionType,
     UnknownElementType,
-    UnsupportedCardVersion
+    UnsupportedCardVersion,
+    DuplicateId
 }
 
 export enum ContainerFitStatus {

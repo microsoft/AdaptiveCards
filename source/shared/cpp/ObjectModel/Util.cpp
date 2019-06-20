@@ -1,53 +1,16 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
-#include "Util.h"
+
 #include "ColumnSet.h"
 #include "Container.h"
 #include "FactSet.h"
-#include "TextBlock.h"
+#include "RichTextBlock.h"
 #include "ShowCardAction.h"
+#include "TextBlock.h"
+#include "Util.h"
 
 using namespace AdaptiveSharedNamespace;
-
-void PropagateLanguage(const std::string& language, const std::vector<std::shared_ptr<BaseCardElement>>& m_body)
-{
-    for (auto& bodyElement : m_body)
-    {
-        const CardElementType elementType = bodyElement->GetElementType();
-
-        if (elementType == CardElementType::ColumnSet)
-        {
-            auto columnSet = std::static_pointer_cast<ColumnSet>(bodyElement);
-            if (columnSet != nullptr)
-            {
-                columnSet->SetLanguage(language);
-            }
-        }
-        else if (elementType == CardElementType::Container)
-        {
-            auto container = std::static_pointer_cast<Container>(bodyElement);
-            if (container != nullptr)
-            {
-                container->SetLanguage(language);
-            }
-        }
-        else if (bodyElement->GetElementType() == CardElementType::TextBlock)
-        {
-            auto textBlock = std::static_pointer_cast<TextBlock>(bodyElement);
-            if (textBlock != nullptr)
-            {
-                textBlock->SetLanguage(language);
-            }
-        }
-        else if (bodyElement->GetElementType() == CardElementType::FactSet)
-        {
-            auto factset = std::static_pointer_cast<FactSet>(bodyElement);
-            if (factset != nullptr)
-            {
-                factset->SetLanguage(language);
-            }
-        }
-    }
-}
 
 std::string ValidateColor(const std::string& backgroundColor, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings)
 {
@@ -87,7 +50,7 @@ std::string ValidateColor(const std::string& backgroundColor, std::vector<std::s
 void ValidateUserInputForDimensionWithUnit(const std::string& unit,
                                            const std::string& requestedDimension,
                                            int& parsedDimension,
-                                           std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings)
+                                           std::vector<std::shared_ptr<AdaptiveCardParseWarning>>* warnings)
 {
     const std::string warningMessage = "expected input arugment to be specified as \\d+(\\.\\d+)?px with no spaces, but received ";
     parsedDimension = 0;
@@ -105,19 +68,28 @@ void ValidateUserInputForDimensionWithUnit(const std::string& unit,
         }
         catch (const std::invalid_argument&)
         {
-            warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
-                                                                             warningMessage + requestedDimension));
+            if (warnings)
+            {
+                warnings->emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
+                                                                                  warningMessage + requestedDimension));
+            }
         }
         catch (const std::out_of_range&)
         {
-            warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
-                                                                             "out of range: " + requestedDimension));
+            if (warnings)
+            {
+                warnings->emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
+                                                                                  "out of range: " + requestedDimension));
+            }
         }
     }
     else
     {
-        warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
-                                                                         warningMessage + requestedDimension));
+        if (warnings)
+        {
+            warnings->emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
+                                                                              warningMessage + requestedDimension));
+        }
     }
 }
 
@@ -149,6 +121,17 @@ bool ShouldParseForExplicitDimension(const std::string& input)
     return false;
 }
 
+int ParseSizeForPixelSize(const std::string& sizeString, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>* warnings)
+{
+    int parsedDimension = 0;
+    if (ShouldParseForExplicitDimension(sizeString))
+    {
+        const std::string unit = "px";
+        ValidateUserInputForDimensionWithUnit(unit, sizeString, parsedDimension, warnings);
+    }
+    return parsedDimension;
+}
+
 void EnsureShowCardVersions(const std::vector<std::shared_ptr<BaseActionElement>>& actions, const std::string& version)
 {
     for (auto& action : actions)
@@ -160,6 +143,18 @@ void EnsureShowCardVersions(const std::vector<std::shared_ptr<BaseActionElement>
             {
                 showCardAction->GetCard()->SetVersion(version);
             }
+        }
+    }
+}
+
+void HandleUnknownProperties(const Json::Value& json, const std::unordered_set<std::string>& knownProperties, Json::Value& unknownProperties)
+{
+    for (auto it = json.begin(); it != json.end(); ++it)
+    {
+        std::string key = it.key().asCString();
+        if (knownProperties.find(key) == knownProperties.end())
+        {
+            unknownProperties[key] = *it;
         }
     }
 }

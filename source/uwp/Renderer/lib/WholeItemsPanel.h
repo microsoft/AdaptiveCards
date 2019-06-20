@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
@@ -27,13 +29,14 @@ namespace AdaptiveNamespace
 
         virtual HRESULT STDMETHODCALLTYPE OnApplyTemplate(void);
 
-        virtual HRESULT STDMETHODCALLTYPE GetAltText(__RPC__out HSTRING* pResult);
+        virtual HRESULT STDMETHODCALLTYPE GetAltText(__RPC__out HSTRING* pResult) noexcept;
 
         // Method used inside the component to reduce the number of temporary allocations
         _Check_return_ HRESULT AppendAltText(_Inout_ std::wstring& buffer);
 
-        void SetMainPanel(_In_ bool value);
-        void SetAdaptiveHeight(_In_ bool value);
+        void SetMainPanel(bool value);
+        void SetAdaptiveHeight(bool value);
+        static void SetBleedMargin(UINT bleedMargin);
 
         virtual HRESULT STDMETHODCALLTYPE IsAllContentClippedOut(__RPC__out boolean* pResult);
         virtual HRESULT STDMETHODCALLTYPE IsTruncated(__RPC__out boolean* pResult);
@@ -46,6 +49,9 @@ namespace AdaptiveNamespace
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
     private:
+
+        static UINT s_bleedMargin;
+
         unsigned int m_visibleCount{};
         unsigned int m_measuredCount{};
 
