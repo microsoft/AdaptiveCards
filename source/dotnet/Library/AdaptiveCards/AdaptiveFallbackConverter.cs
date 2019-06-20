@@ -65,7 +65,7 @@ namespace AdaptiveCards
                         Type type;
                         if (!AdaptiveTypedElementConverter.TypedElementTypes.Value.TryGetValue(typeName, out type))
                         {
-                            type = typeof(AdaptiveUnknownElement);
+                            type = typeof(AdaptiveCustomElement);
                         }
                         IsInFallback = true;
                         string objectId = jObject.Value<string>("id");
