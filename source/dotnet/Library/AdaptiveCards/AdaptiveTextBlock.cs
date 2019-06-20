@@ -149,8 +149,8 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
-        [DefaultValue(typeof(AdaptiveFontStyle), "default")]
-        public AdaptiveFontStyle FontStyle { get; set; }
+        [DefaultValue(typeof(AdaptiveFontType), "default")]
+        public AdaptiveFontType FontType { get; set; }
 
         [JsonProperty(PropertyName = "$bindings")]
         public AdaptiveTextBlockBindings Bindings { get; set; }

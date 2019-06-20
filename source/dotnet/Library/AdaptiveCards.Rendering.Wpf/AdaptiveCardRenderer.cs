@@ -212,7 +212,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 Config = HostConfig ?? new AdaptiveHostConfig(),
                 Resources = Resources,
                 ElementRenderers = ElementRenderers,
-                DataUpdater = new JsonTransformLanguage.JsonTransformerDataUpdater()
+                DataUpdater = new JsonTransformLanguage.JsonTransformerDataUpdater(),
                 FeatureRegistration = FeatureRegistration,
                 Lang = card.Lang,
                 RenderArgs = new AdaptiveRenderArgs { ForegroundColors = (HostConfig != null) ? HostConfig.ContainerStyles.Default.ForegroundColors : new ContainerStylesConfig().Default.ForegroundColors }
