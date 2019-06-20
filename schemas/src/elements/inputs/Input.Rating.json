@@ -1,0 +1,21 @@
+{
+	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+	"extends": "Input",
+	"description": "Allows a user to input a rating.",
+	"properties": {
+	  "choices": {
+		"type": "Input.FeedbackElt[]",
+		"description": "`FeedbackElt` options.",
+		"required": true
+	  },
+	  "value": {
+		"type": "number",
+		"description": "The initial selection. 0 represents unselected."
+	  },
+	  "iconHeight": {
+		  "type": "string",
+		  "description": "If icons are used for an `Input.FeedbackElt`, then this property will specify the height of each icon within the `Input.Feedback`.",
+		  "version":  "1.3"
+	  }
+	}
+}
