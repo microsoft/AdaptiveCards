@@ -1,4 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
+
+#ifdef USE_CPPCORECHECK
+#pragma warning(disable : ALL_CPPCORECHECK_WARNINGS)
+#endif
+
 #include "AdaptiveBase64Util.h"
 #include <map>
 
@@ -107,7 +114,7 @@ unsigned char AdaptiveBase64Util::b64_lookup(unsigned char c)
 }
 
 bool AdaptiveBase64Util::Encode(const std::vector<char>& in, std::string* out)
-{   
+{
     out->resize(EncodedLength(in));
 
     size_t input_len{ in.size() };

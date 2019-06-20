@@ -1,3 +1,5 @@
+/* Copyright (c) Microsoft Corporation. All rights reserved. */
+/* Licensed under the MIT License. */
 /* File : AdaptiveCardObjectModel.i */
 
 namespace std {
@@ -36,6 +38,7 @@ struct tm {
     int tm_isdst;
 };
 
+%include <typemaps.i>
 %include <std_string.i>
 %include <std_shared_ptr.i>
 %include <std_vector.i>
@@ -64,12 +67,16 @@ struct tm {
 #include "../../../shared/cpp/ObjectModel/Enums.h"
 #include "../../../shared/cpp/ObjectModel/AdaptiveBase64Util.h"
 #include "../../../shared/cpp/ObjectModel/RemoteResourceInformation.h"
+#include "../../../shared/cpp/ObjectModel/BaseElement.h"
 #include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 #include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
 #include "../../../shared/cpp/ObjectModel/BaseInputElement.h"
+#include "../../../shared/cpp/ObjectModel/CollectionTypeElement.h"
+#include "../../../shared/cpp/ObjectModel/BackgroundImage.h"
 #include "../../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.h"
 #include "../../../shared/cpp/ObjectModel/ActionParserRegistration.h"
 #include "../../../shared/cpp/ObjectModel/ElementParserRegistration.h"
+#include "../../../shared/cpp/ObjectModel/FeatureRegistration.h"
 #include "../../../shared/cpp/ObjectModel/Container.h"
 #include "../../../shared/cpp/ObjectModel/Image.h"
 #include "../../../shared/cpp/ObjectModel/ImageSet.h"
@@ -83,6 +90,7 @@ struct tm {
 #include "../../../shared/cpp/ObjectModel/TimeInput.h"
 #include "../../../shared/cpp/ObjectModel/ToggleInput.h"
 #include "../../../shared/cpp/ObjectModel/OpenUrlAction.h"
+#include "../../../shared/cpp/ObjectModel/SemanticVersion.h"
 #include "../../../shared/cpp/ObjectModel/ShowCardAction.h"
 #include "../../../shared/cpp/ObjectModel/SubmitAction.h"
 #include "../../../shared/cpp/ObjectModel/ParseContext.h"
@@ -96,19 +104,33 @@ struct tm {
 #include "../../../shared/cpp/ObjectModel/Fact.h"
 #include "../../../shared/cpp/ObjectModel/FactSet.h"
 #include "../../../shared/cpp/ObjectModel/TextBlock.h"
+#include "../../../shared/cpp/ObjectModel/ActionSet.h"
 #include "../../../shared/cpp/ObjectModel/MediaSource.h"
 #include "../../../shared/cpp/ObjectModel/Media.h"
 #include "../../../shared/cpp/ObjectModel/ToggleVisibilityAction.h"
 #include "../../../shared/cpp/ObjectModel/ToggleVisibilityTarget.h"
+#include "../../../shared/cpp/ObjectModel/UnknownElement.h"
+#include "../../../shared/cpp/ObjectModel/UnknownAction.h"
+#include "../../../shared/cpp/ObjectModel/TextElementProperties.h"
+#include "../../../shared/cpp/ObjectModel/Inline.h"
+#include "../../../shared/cpp/ObjectModel/RichTextBlock.h"
+#include "../../../shared/cpp/ObjectModel/TextRun.h"
+#include "../../../shared/cpp/ObjectModel/RichTextElementProperties.h"
 %}
 
+%shared_ptr(AdaptiveCards::BackgroundImage)
+%shared_ptr(AdaptiveCards::BaseElement)
 %shared_ptr(AdaptiveCards::BaseActionElement)
 %shared_ptr(AdaptiveCards::BaseCardElement)
 %shared_ptr(AdaptiveCards::BaseInputElement)
 %shared_ptr(AdaptiveCards::ActionElementParser)
 %shared_ptr(AdaptiveCards::BaseCardElementParser)
+%shared_ptr(AdaptiveCards::ActionElementParserWrapper)
+%shared_ptr(AdaptiveCards::BaseCardElementParserWrapper)
+%shared_ptr(AdaptiveCards::CollectionTypeElement)
 %shared_ptr(AdaptiveCards::ElementParserRegistration)
 %shared_ptr(AdaptiveCards::ActionParserRegistration)
+%shared_ptr(AdaptiveCards::FeatureRegistration)
 %shared_ptr(AdaptiveCards::Container)
 %shared_ptr(AdaptiveCards::TextBlock)
 %shared_ptr(AdaptiveCards::Image)
@@ -135,6 +157,7 @@ struct tm {
 %shared_ptr(AdaptiveCards::ContainerParser)
 %shared_ptr(AdaptiveCards::TextBlockParser)
 %shared_ptr(AdaptiveCards::ImageParser)
+%shared_ptr(AdaptiveCards::ColumnParser)
 %shared_ptr(AdaptiveCards::ColumnSetParser)
 %shared_ptr(AdaptiveCards::FactSetParser)
 %shared_ptr(AdaptiveCards::ChoiceSetInputParser)
@@ -154,6 +177,20 @@ struct tm {
 %shared_ptr(AdaptiveCards::ToggleVisibilityTarget)
 %shared_ptr(AdaptiveCards::ToggleVisibilityAction)
 %shared_ptr(AdaptiveCards::ToggleVisibilityActionParser)
+%shared_ptr(AdaptiveCards::ActionSet)
+%shared_ptr(AdaptiveCards::ActionSetParser)
+%shared_ptr(AdaptiveCards::UnknownElement)
+%shared_ptr(AdaptiveCards::UnknownElementParser)
+%shared_ptr(AdaptiveCards::UnknownAction)
+%shared_ptr(AdaptiveCards::UnknownActionParser)
+%shared_ptr(AdaptiveCards::Inline)
+%shared_ptr(AdaptiveCards::RichTextBlock)
+%shared_ptr(AdaptiveCards::RichTextBlockParser)
+%shared_ptr(AdaptiveCards::TextRun)
+%shared_ptr(AdaptiveCards::TextElementProperties)
+%shared_ptr(AdaptiveCards::RichTextElementProperties)
+
+%apply unsigned int& INOUT { unsigned int& };
 
 namespace Json {
     %rename(JsonValue) Value;
@@ -161,15 +198,23 @@ namespace Json {
 
     %extend Value {
         std::string getString() {
-            Json::FastWriter fastWriter;
-            std::string jsonString = fastWriter.write(*self);
-            return jsonString;
+            Json::StreamWriterBuilder builder;
+            builder["commentStyle"] = "None";
+            builder["indentation"] = "";
+            std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
+
+            std::ostringstream outStream;
+            writer->write(*self, &outStream);
+            outStream << std::endl;
+            return outStream.str();
         }
     }
 }
 
 %feature("director", assumeoverride=1) AdaptiveCards::BaseCardElementParser;
 %feature("director", assumeoverride=1) AdaptiveCards::ActionElementParser;
+
+%feature("director", assumeoverride=1) AdaptiveCards::BaseElement;
 
 %typemap(in,numinputs=0) JNIEnv *jenv "$1 = jenv;"
 %extend AdaptiveCards::BaseCardElement {
@@ -264,6 +309,22 @@ namespace Json {
   $result = *tmp;
 %}
 
+%typemap(javadirectorin) std::shared_ptr<AdaptiveCards::ActionParserRegistration> "new $typemap(jstype, AdaptiveCards::ActionParserRegistration)($1,true)";
+%typemap(directorin,descriptor="Lio/adaptivecards/objectmodel/ActionParserRegistration;") std::shared_ptr<AdaptiveCards::ActionParserRegistration> %{
+  *($&1_type*)&j$1 = new $1_type($1);
+%}
+
+%typemap(javadirectorout) std::shared_ptr<AdaptiveCards::ActionParserRegistration> "$typemap(jstype, AdaptiveCards::ActionParserRegistration).getCPtr($javacall)";
+%typemap(directorout) std::shared_ptr<AdaptiveCards::ActionParserRegistration> %{
+  $&1_type tmp = NULL;
+  *($&1_type*)&tmp = *($&1_type*)&$input;
+  if (!tmp) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null $1_type");
+    return NULL;
+  }
+  $result = *tmp;
+%}
+
 %typemap(javadirectorin) std::shared_ptr<AdaptiveCards::ElementParserRegistration> "new $typemap(jstype, AdaptiveCards::ElementParserRegistration)($1,true)";
 %typemap(directorin,descriptor="Lio/adaptivecards/objectmodel/ElementParserRegistration;") std::shared_ptr<AdaptiveCards::ElementParserRegistration> %{
   *($&1_type*)&j$1 = new $1_type($1);
@@ -271,6 +332,22 @@ namespace Json {
 
 %typemap(javadirectorout) std::shared_ptr<AdaptiveCards::ElementParserRegistration> "$typemap(jstype, AdaptiveCards::ElementParserRegistration).getCPtr($javacall)";
 %typemap(directorout) std::shared_ptr<AdaptiveCards::ElementParserRegistration> %{
+  $&1_type tmp = NULL;
+  *($&1_type*)&tmp = *($&1_type*)&$input;
+  if (!tmp) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null $1_type");
+    return NULL;
+  }
+  $result = *tmp;
+%}
+
+%typemap(javadirectorin) std::shared_ptr<AdaptiveCards::FeatureRegistration> "new $typemap(jstype, AdaptiveCards::FeatureRegistration)($1,true)";
+%typemap(directorin,descriptor="Lio/adaptivecards/objectmodel/FeatureRegistration;") std::shared_ptr<AdaptiveCards::FeatureRegistration> %{
+  *($&1_type*)&j$1 = new $1_type($1);
+%}
+
+%typemap(javadirectorout) std::shared_ptr<AdaptiveCards::FeatureRegistration> "$typemap(jstype, AdaptiveCards::FeatureRegistration).getCPtr($javacall)";
+%typemap(directorout) std::shared_ptr<AdaptiveCards::FeatureRegistration> %{
   $&1_type tmp = NULL;
   *($&1_type*)&tmp = *($&1_type*)&$input;
   if (!tmp) {
@@ -311,8 +388,39 @@ namespace Json {
 %template(ToggleVisibilityTargetVector) std::vector<std::shared_ptr<AdaptiveCards::ToggleVisibilityTarget> >;
 %template(StringVector) std::vector<std::string>;
 %template(CharVector) std::vector<char>;
+%template(InlineVector) std::vector<std::shared_ptr<AdaptiveCards::Inline>>;
 
 %template(EnableSharedFromThisContainer) std::enable_shared_from_this<AdaptiveCards::Container>;
+
+%exception AdaptiveCards::BaseCardElement::dynamic_cast(AdaptiveCards::BaseElement *baseElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::BaseCardElement {
+    static AdaptiveCards::BaseCardElement *dynamic_cast(AdaptiveCards::BaseElement *baseElement) {
+        return dynamic_cast<AdaptiveCards::BaseCardElement *>(baseElement);
+    }
+};
+
+%exception AdaptiveCards::BaseActionElement::dynamic_cast(AdaptiveCards::BaseElement *baseElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::BaseActionElement {
+    static AdaptiveCards::BaseActionElement *dynamic_cast(AdaptiveCards::BaseElement *baseElement) {
+        return dynamic_cast<AdaptiveCards::BaseActionElement *>(baseElement);
+    }
+};
 
 %exception AdaptiveCards::Container::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
     $action
@@ -584,7 +692,7 @@ namespace Json {
     }
 };
 
-%exception AdaptiveCards::ToggleVisibilityAction::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+%exception AdaptiveCards::ToggleVisibilityAction::dynamic_cast(AdaptiveCards::BaseActionElement *baseActionElement) {
     $action
     if (!result) {
         jclass excep = jenv->FindClass("java/lang/ClassCastException");
@@ -594,23 +702,72 @@ namespace Json {
     }
 }
 %extend AdaptiveCards::ToggleVisibilityAction {
-    static AdaptiveCards::ToggleVisibilityAction *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
-        return dynamic_cast<AdaptiveCards::ToggleVisibilityAction *>(baseCardElement);
+    static AdaptiveCards::ToggleVisibilityAction *dynamic_cast(AdaptiveCards::BaseActionElement *baseActionElement) {
+        return dynamic_cast<AdaptiveCards::ToggleVisibilityAction *>(baseActionElement);
     }
 };
 
+%exception AdaptiveCards::ActionSet::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::ActionSet {
+    static AdaptiveCards::ActionSet *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+        return dynamic_cast<AdaptiveCards::ActionSet *>(baseCardElement);
+    }
+};
+
+%exception AdaptiveCards::RichTextBlock::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::RichTextBlock {
+    static AdaptiveCards::RichTextBlock *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+        return dynamic_cast<AdaptiveCards::RichTextBlock *>(baseCardElement);
+    }
+};
+
+%exception AdaptiveCards::TextRun::dynamic_cast(AdaptiveCards::Inline *inlineVar) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::TextRun {
+    static AdaptiveCards::TextRun *dynamic_cast(AdaptiveCards::Inline *inlineVar) {
+        return dynamic_cast<AdaptiveCards::TextRun *>(inlineVar);
+    }
+};
 
 %include "../../../shared/cpp/ObjectModel/pch.h"
 %include "../../../shared/cpp/ObjectModel/EnumMagic.h"
 %include "../../../shared/cpp/ObjectModel/Enums.h"
 %include "../../../shared/cpp/ObjectModel/AdaptiveBase64Util.h"
 %include "../../../shared/cpp/ObjectModel/RemoteResourceInformation.h"
+%include "../../../shared/cpp/ObjectModel/BaseElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
+%include "../../../shared/cpp/ObjectModel/BackgroundImage.h"
 %include "../../../shared/cpp/ObjectModel/BaseInputElement.h"
+%include "../../../shared/cpp/ObjectModel/CollectionTypeElement.h"
 %include "../../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.h"
 %include "../../../shared/cpp/ObjectModel/ActionParserRegistration.h"
 %include "../../../shared/cpp/ObjectModel/ElementParserRegistration.h"
+%include "../../../shared/cpp/ObjectModel/FeatureRegistration.h"
+%include "../../../shared/cpp/ObjectModel/SemanticVersion.h"
 %include "../../../shared/cpp/ObjectModel/Container.h"
 %include "../../../shared/cpp/ObjectModel/Image.h"
 %include "../../../shared/cpp/ObjectModel/ImageSet.h"
@@ -641,3 +798,11 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/Media.h"
 %include "../../../shared/cpp/ObjectModel/ToggleVisibilityTarget.h"
 %include "../../../shared/cpp/ObjectModel/ToggleVisibilityAction.h"
+%include "../../../shared/cpp/ObjectModel/ActionSet.h"
+%include "../../../shared/cpp/ObjectModel/UnknownElement.h"
+%include "../../../shared/cpp/ObjectModel/UnknownAction.h"
+%include "../../../shared/cpp/ObjectModel/TextElementProperties.h"
+%include "../../../shared/cpp/ObjectModel/Inline.h"
+%include "../../../shared/cpp/ObjectModel/RichTextBlock.h"
+%include "../../../shared/cpp/ObjectModel/TextRun.h"
+%include "../../../shared/cpp/ObjectModel/RichTextElementProperties.h"

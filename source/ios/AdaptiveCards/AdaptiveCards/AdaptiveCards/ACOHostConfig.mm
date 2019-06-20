@@ -36,9 +36,8 @@ using namespace AdaptiveCards;
         _fontFamilyNames = [NSMutableDictionary dictionary];
 
         // check if requested font family name is supported by iOS, if so save it for future uses
-        [self importFontFamily: AdaptiveCards::FontStyle::Default];
-        [self importFontFamily: AdaptiveCards::FontStyle::Display];
-        [self importFontFamily: AdaptiveCards::FontStyle::Monospace];
+        [self importFontFamily: AdaptiveCards::FontType::Default];
+        [self importFontFamily: AdaptiveCards::FontType::Monospace];
 
         _allActionsHaveIcons = YES;
         _buttonPadding = 5;
@@ -50,11 +49,11 @@ using namespace AdaptiveCards;
     return self;
 }
 
-- (void) importFontFamily:(AdaptiveCards::FontStyle)style
+- (void) importFontFamily:(AdaptiveCards::FontType)type
 {
-    NSString *requestedFontFamilyName = [NSString stringWithCString:_config->GetFontFamily(style).c_str() encoding:NSUTF8StringEncoding];
+    NSString *requestedFontFamilyName = [NSString stringWithCString:_config->GetFontFamily(type).c_str() encoding:NSUTF8StringEncoding];
     if([UIFont.familyNames containsObject:requestedFontFamilyName]){
-        NSString *key = [NSString stringWithCString:FontStyleToString(style).c_str() encoding:NSUTF8StringEncoding];
+        NSString *key = [NSString stringWithCString:FontTypeToString(type).c_str() encoding:NSUTF8StringEncoding];
         _fontFamilyNames[key] = requestedFontFamilyName;
     }
 }
@@ -112,56 +111,26 @@ using namespace AdaptiveCards;
     return [_resolvers getResolverIFType:scheme];
 }
 
-+ (UIColor *)getTextBlockColor:(ForegroundColor)txtClr
-                  colorsConfig:(ColorsConfig const &)config
+- (UIColor *)getHighlightColor:(ACRContainerStyle)style
+               foregroundColor:(ForegroundColor)color
                   subtleOption:(bool)isSubtle
 {
-    const std::string *str;
-    switch (txtClr) {
-        case ForegroundColor::Dark:{
-            str = (isSubtle) ?
-                &config.dark.subtleColor: &config.dark.defaultColor;
-            break;
-        }
-        case ForegroundColor::Light:{
-            str = (isSubtle) ?
-                &config.light.subtleColor: &config.light.defaultColor;
-            break;
-        }
-        case ForegroundColor::Accent:{
-            str = (isSubtle) ?
-                &config.accent.subtleColor: &config.accent.defaultColor;
-            break;
-        }
-        case ForegroundColor::Good:{
-            str = (isSubtle) ?
-                &config.good.subtleColor: &config.good.defaultColor;
-            break;
-        }
-        case ForegroundColor::Warning:{
-            str = (isSubtle) ?
-                &config.warning.subtleColor: &config.warning.defaultColor;
-            break;
-        }
-        case ForegroundColor::Attention:{
-            str = (isSubtle) ?
-                &config.attention.subtleColor: &config.attention.defaultColor;
-            break;
-        }
-        default:{
-            str = (isSubtle) ?
-                &config.dark.subtleColor: &config.dark.defaultColor;
-            break;
-        }
-    }
-
-    return [ACOHostConfig convertHexColorCodeToUIColor:*str];
+    const std::string str = _config->GetHighlightColor([ACOHostConfig getSharedContainerStyle:style], color, isSubtle);
+    return [ACOHostConfig convertHexColorCodeToUIColor:str];
 }
 
-- (int)getTextBlockTextSize:(FontStyle)style
+- (UIColor *)getTextBlockColor:(ACRContainerStyle)style
+                     textColor:(ForegroundColor)txtClr
+                  subtleOption:(bool)isSubtle
+{
+    const std::string str = _config->GetForegroundColor([ACOHostConfig getSharedContainerStyle:style], txtClr, isSubtle);
+    return [ACOHostConfig convertHexColorCodeToUIColor:str];
+}
+
+- (int)getTextBlockTextSize:(FontType)type
                    textSize:(TextSize)txtSz
 {
-    return _config->GetFontSize(style, txtSz);
+    return _config->GetFontSize(type, txtSz);
 }
 
 + (NSTextAlignment)getTextBlockAlignment:(HorizontalAlignment) alignment
@@ -190,10 +159,10 @@ using namespace AdaptiveCards;
     }
 }
 
-- (int)getTextBlockFontWeight:(FontStyle) style
+- (int)getTextBlockFontWeight:(FontType) type
                    textWeight:(TextWeight)weight
 {
-    return _config->GetFontWeight(style, weight);
+    return _config->GetFontWeight(type, weight);
 }
 
 - (CGSize)getImageSize:(ImageSize)imageSize
@@ -332,7 +301,7 @@ using namespace AdaptiveCards;
 {
     if((hexColorCode.length() < 2) || (hexColorCode.at(0) != '#') || !isxdigit(hexColorCode.at(1)) ||
        ((hexColorCode.length() != 7) && hexColorCode.length() != 9)) {
-        NSLog(@"invalid hexcolor code is given for background color: %@",
+        NSLog(@"invalid hexcolor code is given: %@",
             [NSString stringWithCString:hexColorCode.c_str() encoding:NSUTF8StringEncoding]);
         return UIColor.clearColor;
     }
@@ -367,10 +336,7 @@ using namespace AdaptiveCards;
 
 - (UIColor *)getBackgroundColorForContainerStyle:(ACRContainerStyle)style
 {
-    const std::string &hexColorCode = (style == ACREmphasis)?
-        _config->GetContainerStyles().emphasisPalette.backgroundColor :
-        _config->GetContainerStyles().defaultPalette.backgroundColor;
-
+    std::string hexColorCode = _config->GetBackgroundColor([ACOHostConfig getSharedContainerStyle:style]);
     return [ACOHostConfig convertHexColorCodeToUIColor:hexColorCode];
 }
 
@@ -381,12 +347,22 @@ using namespace AdaptiveCards;
         case ContainerStyle::None:
             containerStyle = ACRNone;
             break;
-        case ContainerStyle::Default:
-            containerStyle = ACRDefault;
+        case ContainerStyle::Accent:
+            containerStyle = ACRAccent;
+            break;
+        case ContainerStyle::Attention:
+            containerStyle = ACRAttention;
             break;
         case ContainerStyle::Emphasis:
             containerStyle = ACREmphasis;
             break;
+        case ContainerStyle::Good:
+            containerStyle = ACRGood;
+            break;
+        case ContainerStyle::Warning:
+            containerStyle = ACRWarning;
+            break;
+        case ContainerStyle::Default:
         default:
             containerStyle = ACRDefault;
             break;
@@ -394,9 +370,39 @@ using namespace AdaptiveCards;
     return containerStyle;
 }
 
-- (NSString *)getFontFamily:(AdaptiveCards::FontStyle)style
++ (ContainerStyle)getSharedContainerStyle:(ACRContainerStyle)style
 {
-    NSString *key = [NSString stringWithCString:FontStyleToString(style).c_str() encoding:NSUTF8StringEncoding];
+    ContainerStyle containerStyle = ContainerStyle::Default;
+    switch (style) {
+        case ACRContainerStyle::ACRNone:
+            containerStyle = ContainerStyle::None;
+            break;
+        case ACRContainerStyle::ACRAccent:
+            containerStyle = ContainerStyle::Accent;
+            break;
+        case ACRContainerStyle::ACRAttention:
+            containerStyle = ContainerStyle::Attention;
+            break;
+        case ACRContainerStyle::ACREmphasis:
+            containerStyle = ContainerStyle::Emphasis;
+            break;
+        case ACRContainerStyle::ACRGood:
+            containerStyle = ContainerStyle::Good;
+            break;
+        case ACRContainerStyle::ACRWarning:
+            containerStyle = ContainerStyle::Warning;
+            break;
+        case ACRContainerStyle::ACRDefault:
+        default:
+            containerStyle = ContainerStyle::Default;
+            break;
+    }
+    return containerStyle;
+}
+
+- (NSString *)getFontFamily:(AdaptiveCards::FontType)type
+{
+    NSString *key = [NSString stringWithCString:FontTypeToString(type).c_str() encoding:NSUTF8StringEncoding];
     return _fontFamilyNames[key];
 }
 

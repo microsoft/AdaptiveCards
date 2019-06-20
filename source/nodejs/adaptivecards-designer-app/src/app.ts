@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import * as markdownit from "markdown-it";
 import * as ACDesigner from "adaptivecards-designer";
@@ -6,7 +8,6 @@ import "./app.css";
 // TODO: should this be necessary?
 import "adaptivecards-designer/lib/adaptivecards-designer.css";
 import "adaptivecards-designer/node_modules/adaptivecards-controls/lib/adaptivecards-controls.css";
-import "adaptivecards-designer/node_modules/adaptivecards/lib/adaptivecards-default.css";
 
 window.onload = function() {
 	ACDesigner.CardDesigner.onProcessMarkdown = (text: string, result: { didProcess: boolean, outputHtml: string }) => {

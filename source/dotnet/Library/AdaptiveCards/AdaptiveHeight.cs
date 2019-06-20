@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using Newtonsoft.Json;
 
 namespace AdaptiveCards
@@ -5,6 +7,8 @@ namespace AdaptiveCards
     /// <summary>
     ///     Controls the vertical size (height) of element.
     /// </summary>
+    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveHeightType>), true)]
+
     public enum AdaptiveHeightType
     {
         /// <summary>

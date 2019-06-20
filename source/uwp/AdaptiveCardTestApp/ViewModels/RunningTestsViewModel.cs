@@ -1,3 +1,7 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using AdaptiveCards.Rendering.Uwp;
+using AdaptiveCardTestApp.ResourceResolvers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -151,25 +155,47 @@ namespace AdaptiveCardTestApp.ViewModels
 
         private async Task<TestResultViewModel> TestCard(FileViewModel cardFile, FileViewModel hostConfigFile)
         {
-            var renderResult = await RenderCard(cardFile, hostConfigFile);
+            Dictionary<string, IAdaptiveCardResourceResolver> resourceResolvers = new Dictionary<string, IAdaptiveCardResourceResolver>();
+            resourceResolvers.Add("symbol", new SampleResourceResolver());
 
-            var result = await TestResultViewModel.CreateAsync(
-                cardFile: cardFile,
-                hostConfigFile: hostConfigFile,
-                renderedTestResult: renderResult.Item1,
-                actualImageFile: renderResult.Item2,
-                actualJsonFile: renderResult.Item3,
-                expectedFolder: _expectedFolder,
-                sourceHostConfigsFolder: _sourceHostConfigsFolder,
-                sourceCardsFolder: _sourceCardsFolder);
+            uint reruns = 0;
+            TestResultViewModel result = null;
+            bool retryImage = true;
+
+            while (retryImage)
+            {
+                var renderResult = await RenderCard(cardFile, hostConfigFile, resourceResolvers);
+
+                result = await TestResultViewModel.CreateAsync(
+                    cardFile: cardFile,
+                    hostConfigFile: hostConfigFile,
+                    renderedTestResult: renderResult.Item1,
+                    actualImageFile: renderResult.Item2,
+                    actualJsonFile: renderResult.Item3,
+                    expectedFolder: _expectedFolder,
+                    sourceHostConfigsFolder: _sourceHostConfigsFolder,
+                    sourceCardsFolder: _sourceCardsFolder);
+
+                if (!result.Status.IsPassingStatus())
+                {
+                    // Retry if we failed on image matching for an unchanged card to allow for
+                    // occasional differences in image rendering
+                    retryImage = result.Status.OriginalMatched && !result.Status.ImageMatched && (reruns < 3);
+                    reruns++;
+                }
+                else
+                {
+                    retryImage = false;
+                }
+            }
 
             OnSingleTestCompleted?.Invoke(this, result.Status);
             return result;
         }
 
-        private async Task<Tuple<RenderedTestResult, StorageFile, StorageFile>> RenderCard(FileViewModel cardFile, FileViewModel hostConfigFile)
+        private async Task<Tuple<RenderedTestResult, StorageFile, StorageFile>> RenderCard(FileViewModel cardFile, FileViewModel hostConfigFile, Dictionary<string, IAdaptiveCardResourceResolver> resourceResolvers)
         {
-            var renderResult = await UWPTestLibrary.RenderTestHelpers.RenderCard(cardFile, hostConfigFile);
+            var renderResult = await UWPTestLibrary.RenderTestHelpers.RenderCard(cardFile, hostConfigFile, resourceResolvers);
 
             UWPTestLibrary.ImageWaiter imageWaiter = new ImageWaiter(renderResult.Tree);
 

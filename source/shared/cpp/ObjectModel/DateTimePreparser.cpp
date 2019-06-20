@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 
 #if defined(__ANDROID__) || (__APPLE__) || (__linux__)
@@ -9,13 +11,9 @@
 #include "DateTimePreparsedToken.h"
 
 #include "BaseCardElement.h"
-#include "Enums.h"
-#include <time.h>
 #include "ElementParserRegistration.h"
 #include "DateTimePreparser.h"
 #include <iomanip>
-#include <iostream>
-#include <codecvt>
 
 using namespace AdaptiveSharedNamespace;
 
@@ -38,7 +36,7 @@ bool DateTimePreparser::HasDateTokens() const
     return m_hasDateTokens;
 }
 
-void DateTimePreparser::AddTextToken(std::string const& text, DateTimePreparsedTokenFormat format)
+void DateTimePreparser::AddTextToken(const std::string& text, DateTimePreparsedTokenFormat format)
 {
     if (!text.empty())
     {
@@ -46,7 +44,7 @@ void DateTimePreparser::AddTextToken(std::string const& text, DateTimePreparsedT
     }
 }
 
-void DateTimePreparser::AddDateToken(std::string const& text, struct tm date, DateTimePreparsedTokenFormat format)
+void DateTimePreparser::AddDateToken(const std::string& text, struct tm& date, DateTimePreparsedTokenFormat format)
 {
     m_textTokenCollection.emplace_back(std::make_shared<DateTimePreparsedToken>(text, date, format));
     m_hasDateTokens = true;
@@ -62,29 +60,38 @@ std::string DateTimePreparser::Concatenate() const
     return formedString;
 }
 
-bool DateTimePreparser::IsValidTimeAndDate(const struct tm& parsedTm, const int hours, const int minutes)
+bool DateTimePreparser::IsValidDate(const int year, const int month, const int day)
 {
-    if (parsedTm.tm_mon <= 12 && parsedTm.tm_mday <= 31 && parsedTm.tm_hour <= 24 && parsedTm.tm_min <= 60 &&
-        parsedTm.tm_sec <= 60 && hours <= 24 && minutes <= 60)
+    if (month <= 12 && day <= 31)
     {
-        if (parsedTm.tm_mon == 4 || parsedTm.tm_mon == 6 || parsedTm.tm_mon == 9 || parsedTm.tm_mon == 11)
+        if (month == 4 || month == 6 || month == 9 || month == 11)
         {
-            return parsedTm.tm_mday <= 30;
+            return day <= 30;
         }
-        else if (parsedTm.tm_mon == 2)
+        else if (month == 2)
         {
             /// check for leap year
-            if ((parsedTm.tm_year % 4 == 0 && parsedTm.tm_year % 100 != 0) || parsedTm.tm_year % 400 == 0)
+            if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0)
             {
-                return parsedTm.tm_mday <= 29;
+                return day <= 29;
             }
 
-            return parsedTm.tm_mday <= 28;
+            return day <= 28;
         }
-
         return true;
     }
     return false;
+}
+
+bool DateTimePreparser::IsValidTime(const int hours, const int minutes, const int seconds)
+{
+    return (hours <= 24 && minutes <= 60 && seconds <= 60);
+}
+
+bool DateTimePreparser::IsValidTimeAndDate(const struct tm& parsedTm, const int hours, const int minutes)
+{
+    return IsValidDate(parsedTm.tm_year, parsedTm.tm_mon, parsedTm.tm_mday) &&
+        IsValidTime(parsedTm.tm_hour, parsedTm.tm_min, parsedTm.tm_sec) && IsValidTime(hours, minutes, 0);
 }
 
 constexpr time_t IntToTimeT(int timeToConvert)
@@ -100,7 +107,8 @@ void DateTimePreparser::ParseDateTime(std::string const& in)
 {
     std::vector<DateTimePreparsedToken> sections;
 
-    std::regex pattern("\\{\\{((DATE)|(TIME))\\((\\d{4})-{1}(\\d{2})-{1}(\\d{2})T(\\d{2}):{1}(\\d{2}):{1}(\\d{2})(Z|(([+-])(\\d{2}):{1}(\\d{2})))((((, ?SHORT)|(, ?LONG))|(, ?COMPACT))|)\\)\\}\\}");
+    static const std::regex pattern(
+        "\\{\\{((DATE)|(TIME))\\((\\d{4})-{1}(\\d{2})-{1}(\\d{2})T(\\d{2}):{1}(\\d{2}):{1}(\\d{2})(Z|(([+-])(\\d{2}):{1}(\\d{2})))((((, ?SHORT)|(, ?LONG))|(, ?COMPACT))|)\\)\\}\\}");
     std::smatch matches;
     std::string text = in;
     enum MatchIndex
@@ -256,4 +264,52 @@ void DateTimePreparser::ParseDateTime(std::string const& in)
     }
 
     AddTextToken(text, DateTimePreparsedTokenFormat::RegularString);
+}
+
+// Parses a time of the form HH:MM
+bool DateTimePreparser::TryParseSimpleTime(const std::string& string, unsigned int& hours, unsigned int& minutes)
+{
+    std::smatch subMatches;
+    static const std::regex timeMatch(R"regex(^(\d{2}):(\d{2})$)regex");
+    if (std::regex_match(string, subMatches, timeMatch))
+    {
+        if (subMatches[1].matched && subMatches[2].matched)
+        {
+            unsigned int parsedHours = std::stoul(subMatches[1]);
+            unsigned int parsedMinutes = std::stoul(subMatches[2]);
+
+            if (IsValidTime(parsedHours, parsedMinutes, 0))
+            {
+                hours = parsedHours;
+                minutes = parsedMinutes;
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+// Parses a date of the form YYYY-MM-DD
+bool DateTimePreparser::TryParseSimpleDate(const std::string& string, unsigned int& year, unsigned int& month, unsigned int& day)
+{
+    std::smatch subMatches;
+    static const std::regex dateMatch(R"regex(^(\d{4})-(\d{2})-(\d{2})$)regex");
+    if (std::regex_match(string, subMatches, dateMatch))
+    {
+        if (subMatches[1].matched && subMatches[2].matched && subMatches[3].matched)
+        {
+            unsigned int parsedYear = std::stoul(subMatches[1]);
+            unsigned int parsedMonth = std::stoul(subMatches[2]);
+            unsigned int parsedDay = std::stoul(subMatches[3]);
+
+            if (IsValidDate(parsedYear, parsedMonth, parsedDay))
+            {
+                year = parsedYear;
+                month = parsedMonth;
+                day = parsedDay;
+                return true;
+            }
+        }
+    }
+    return false;
 }

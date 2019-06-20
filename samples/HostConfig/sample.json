@@ -1,35 +1,21 @@
 {
+	"preExpandSingleShowCardAction": false,
 	"spacing": {
 		"small": 3,
 		"default": 8,
 		"medium": 20,
 		"large": 30,
 		"extraLarge": 40,
-		"padding": 15
+		"padding": 20
 	},
 	"separator": {
 		"lineThickness": 1,
 		"lineColor": "#EEEEEE"
 	},
 	"supportsInteractivity": true,
-	"fontStyles": {
+	"fontTypes": {
 		"default": {
-			"fontFamily": "Segoe UI",
-			"fontSizes": {
-				"small": 12,
-				"default": 14,
-				"medium": 17,
-				"large": 21,
-				"extraLarge": 26
-			},
-			"fontWeights": {
-				"lighter": 200,
-				"default": 400,
-				"bolder": 600
-			}
-		},
-		"display": {
-			"fontFamily": "Times New Roman",
+			"fontFamily": "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
 			"fontSizes": {
 				"small": 12,
 				"default": 14,
@@ -44,7 +30,7 @@
 			}
 		},
 		"monospace": {
-			"fontFamily": "Segoe UI Mono",
+			"fontFamily": "'Courier New', Courier, monospace",
 			"fontSizes": {
 				"small": 12,
 				"default": 14,
@@ -61,52 +47,200 @@
 	},
 	"containerStyles": {
 		"default": {
-			"backgroundColor": "#00000000",
 			"foregroundColors": {
 				"default": {
-					"default": "#FF333333",
-					"subtle": "#EE333333"
+					"default": "#ffffffff",
+					"subtle": "#bfffffff"
+				},
+				"dark": {
+					"default": "#ff201f1f",
+					"subtle": "#ff2d2c2c"
+				},
+				"light": {
+					"default": "#ffffffff",
+					"subtle": "#bfffffff"
 				},
 				"accent": {
-					"default": "#FF2E89FC",
-					"subtle": "#882E89FC"
-				},
-				"attention": {
-					"default": "#FFcc3300",
-					"subtle": "#DDcc3300"
+					"default": "#ffa6a7dc",
+					"subtle": "#ff8b8cc7"
 				},
 				"good": {
-					"default": "#FF54a254",
-					"subtle": "#DD54a254"
+					"default": "#ff92c353",
+					"subtle": "#e592c353"
 				},
 				"warning": {
-					"default": "#FFe69500",
-					"subtle": "#DDe69500"
+					"default": "#fff8d22a",
+					"subtle": "#e5f8d22a"
+				},
+				"attention": {
+					"default": "#ffd74654",
+					"subtle": "#e5d74654"
+				}
+			},
+			"backgroundColor": "#ff2d2c2c"
+		},
+		"emphasis": {
+			"foregroundColors": {
+				"default": {
+					"default": "#ffffffff",
+					"subtle": "#bfffffff"
+				},
+				"dark": {
+					"default": "#ff201f1f",
+					"subtle": "#ff2d2c2c"
+				},
+				"light": {
+					"default": "#ffffffff",
+					"subtle": "#bfffffff"
+				},
+				"accent": {
+					"default": "#ffa6a7dc",
+					"subtle": "#ff8b8cc7"
+				},
+				"good": {
+					"default": "#ff92c353",
+					"subtle": "#e592c353"
+				},
+				"warning": {
+					"default": "#fff8d22a",
+					"subtle": "#e5f8d22a"
+				},
+				"attention": {
+					"default": "#ffd74654",
+					"subtle": "#e5d74654"
+				}
+			},
+			"backgroundColor": "#ff292828"
+		},
+		"accent": {
+			"backgroundColor": "#C7DEF9",
+			"foregroundColors": {
+				"default": {
+					"default": "#ff201f1f",
+					"subtle": "#ff2d2c2c"
+				},
+				"dark": {
+					"default": "#ff201f1f",
+					"subtle": "#ff2d2c2c"
+				},
+				"light": {
+					"default": "#ffffffff",
+					"subtle": "#bfffffff"
+				},
+				"accent": {
+					"default": "#ffa6a7dc",
+					"subtle": "#ff8b8cc7"
+				},
+				"good": {
+					"default": "#ff92c353",
+					"subtle": "#e592c353"
+				},
+				"warning": {
+					"default": "#fff8d22a",
+					"subtle": "#e5f8d22a"
+				},
+				"attention": {
+					"default": "#ffd74654",
+					"subtle": "#e5d74654"
 				}
 			}
 		},
-		"emphasis": {
-			"backgroundColor": "#08000000",
+		"good": {
+			"backgroundColor": "#CCFFCC",
 			"foregroundColors": {
 				"default": {
-					"default": "#FF333333",
-					"subtle": "#EE333333"
+					"default": "#ff201f1f",
+					"subtle": "#ff2d2c2c"
+				},
+				"dark": {
+					"default": "#ff201f1f",
+					"subtle": "#ff2d2c2c"
+				},
+				"light": {
+					"default": "#ffffffff",
+					"subtle": "#bfffffff"
 				},
 				"accent": {
-					"default": "#FF2E89FC",
-					"subtle": "#882E89FC"
-				},
-				"attention": {
-					"default": "#FFcc3300",
-					"subtle": "#DDcc3300"
+					"default": "#ffa6a7dc",
+					"subtle": "#ff8b8cc7"
 				},
 				"good": {
-					"default": "#FF54a254",
-					"subtle": "#DD54a254"
+					"default": "#ff92c353",
+					"subtle": "#e592c353"
 				},
 				"warning": {
-					"default": "#FFe69500",
-					"subtle": "#DDe69500"
+					"default": "#fff8d22a",
+					"subtle": "#e5f8d22a"
+				},
+				"attention": {
+					"default": "#ffd74654",
+					"subtle": "#e5d74654"
+				}
+			}
+		},
+		"attention": {
+			"backgroundColor": "#FFC5B2",
+			"foregroundColors": {
+				"default": {
+					"default": "#ff201f1f",
+					"subtle": "#ff2d2c2c"
+				},
+				"dark": {
+					"default": "#ff201f1f",
+					"subtle": "#ff2d2c2c"
+				},
+				"light": {
+					"default": "#ffffffff",
+					"subtle": "#bfffffff"
+				},
+				"accent": {
+					"default": "#ffa6a7dc",
+					"subtle": "#ff8b8cc7"
+				},
+				"good": {
+					"default": "#ff92c353",
+					"subtle": "#e592c353"
+				},
+				"warning": {
+					"default": "#fff8d22a",
+					"subtle": "#e5f8d22a"
+				},
+				"attention": {
+					"default": "#ffd74654",
+					"subtle": "#e5d74654"
+				}
+			}
+		},
+		"warning": {
+			"backgroundColor": "#FFE2B2",
+			"foregroundColors": {
+				"default": {
+					"default": "#ff201f1f",
+					"subtle": "#ff2d2c2c"
+				},
+				"dark": {
+					"default": "#ff201f1f",
+					"subtle": "#ff2d2c2c"
+				},
+				"light": {
+					"default": "#ffffffff",
+					"subtle": "#bfffffff"
+				},
+				"accent": {
+					"default": "#ffa6a7dc",
+					"subtle": "#ff8b8cc7"
+				},
+				"good": {
+					"default": "#ff92c353",
+					"subtle": "#e592c353"
+				},
+				"warning": {
+					"default": "#fff8d22a",
+					"subtle": "#e5f8d22a"
+				},
+				"attention": {
+					"default": "#ffd74654",
+					"subtle": "#e5d74654"
 				}
 			}
 		}
@@ -119,14 +253,14 @@
 	"actions": {
 		"maxActions": 5,
 		"spacing": "default",
-		"buttonSpacing": 10,
+		"buttonSpacing": 20,
 		"showCard": {
 			"actionMode": "inline",
-			"inlineTopMargin": 16
+			"inlineTopMargin": 16,
+			"style": "emphasis"
 		},
 		"actionsOrientation": "horizontal",
-		"actionAlignment": "stretch",
-		"iconSize": 50
+		"actionAlignment": "left"
 	},
 	"adaptiveCard": {
 		"allowCustomStyle": false
@@ -152,9 +286,5 @@
 			"wrap": true
 		},
 		"spacing": 10
-	},
-	"media": {
-		"defaultPoster": "http://adaptivecards.io/content/cats/2.png",
-		"playButton": "http://adaptivecards.io/content/cats/3.png"
 	}
 }

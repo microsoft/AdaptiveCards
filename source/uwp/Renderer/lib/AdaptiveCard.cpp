@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveCard.h"
 #include "AdaptiveCardParseResult.h"
@@ -104,7 +106,7 @@ namespace AdaptiveNamespace
             RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCard>(&adaptiveCard, sharedParseResult->GetAdaptiveCard()));
             RETURN_IF_FAILED(adaptiveParseResult->put_AdaptiveCard(adaptiveCard.Get()));
 
-            ComPtr<IVector<IAdaptiveWarning*>> warnings;
+            ComPtr<IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>> warnings;
             RETURN_IF_FAILED(adaptiveParseResult->get_Warnings(&warnings));
 
             RETURN_IF_FAILED(SharedWarningsToAdaptiveWarnings(sharedParseResult->GetWarnings(), warnings.Get()));
@@ -113,7 +115,7 @@ namespace AdaptiveNamespace
         }
         catch (const AdaptiveCardParseException& e)
         {
-            ComPtr<IVector<IAdaptiveError*>> errors;
+            ComPtr<IVector<ABI::AdaptiveNamespace::AdaptiveError*>> errors;
             RETURN_IF_FAILED(adaptiveParseResult->get_Errors(&errors));
             HString errorMessage;
             ABI::AdaptiveNamespace::ErrorStatusCode statusCode =
@@ -160,8 +162,13 @@ namespace AdaptiveNamespace
         m_verticalAlignment =
             static_cast<ABI::AdaptiveNamespace::VerticalContentAlignment>(sharedAdaptiveCard->GetVerticalContentAlignment());
         m_height = static_cast<ABI::AdaptiveNamespace::HeightType>(sharedAdaptiveCard->GetHeight());
+        m_minHeight = sharedAdaptiveCard->GetMinHeight();
 
-        RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetBackgroundImage(), m_backgroundImage.GetAddressOf()));
+        auto backgroundImage = sharedAdaptiveCard->GetBackgroundImage();
+        if (backgroundImage != nullptr && !backgroundImage->GetUrl().empty())
+        {
+            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveBackgroundImage>(m_backgroundImage.GetAddressOf(), backgroundImage));
+        }
 
         return S_OK;
     }
@@ -194,14 +201,15 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveCard::get_BackgroundImage(_Outptr_ HSTRING* backgroundImage)
+    HRESULT AdaptiveCard::get_BackgroundImage(_Outptr_ IAdaptiveBackgroundImage** backgroundImage)
     {
         return m_backgroundImage.CopyTo(backgroundImage);
     }
 
-    HRESULT AdaptiveCard::put_BackgroundImage(_In_ HSTRING backgroundImage)
+    HRESULT AdaptiveCard::put_BackgroundImage(_In_ IAdaptiveBackgroundImage* backgroundImage)
     {
-        return m_backgroundImage.Set(backgroundImage);
+        m_backgroundImage = backgroundImage;
+        return S_OK;
     }
 
     IFACEMETHODIMP AdaptiveCard::get_SelectAction(_COM_Outptr_ IAdaptiveActionElement** action)
@@ -255,6 +263,18 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    HRESULT AdaptiveCard::get_MinHeight(_Out_ UINT32* minHeight)
+    {
+        *minHeight = m_minHeight;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveCard::put_MinHeight(UINT32 minHeight)
+    {
+        m_minHeight = minHeight;
+        return S_OK;
+    }
+
     HRESULT AdaptiveCard::ToJson(_COM_Outptr_ IJsonObject** result)
     {
         std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> sharedModel;
@@ -273,7 +293,14 @@ namespace AdaptiveNamespace
         adaptiveCard->SetSpeak(HStringToUTF8(m_speak.Get()));
         adaptiveCard->SetHeight(static_cast<AdaptiveSharedNamespace::HeightType>(m_height));
         adaptiveCard->SetLanguage(HStringToUTF8(m_language.Get()));
-        adaptiveCard->SetBackgroundImage(HStringToUTF8(m_backgroundImage.Get()));
+        adaptiveCard->SetMinHeight(m_minHeight);
+
+        ComPtr<AdaptiveBackgroundImage> adaptiveBackgroundImage = PeekInnards<AdaptiveBackgroundImage>(m_backgroundImage);
+        std::shared_ptr<AdaptiveSharedNamespace::BackgroundImage> sharedBackgroundImage;
+        if (adaptiveBackgroundImage && SUCCEEDED(adaptiveBackgroundImage->GetSharedModel(sharedBackgroundImage)))
+        {
+            adaptiveCard->SetBackgroundImage(sharedBackgroundImage);
+        }
 
         adaptiveCard->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
         adaptiveCard->SetVerticalContentAlignment(static_cast<AdaptiveSharedNamespace::VerticalContentAlignment>(m_verticalAlignment));

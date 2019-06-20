@@ -13,13 +13,15 @@
 			"color": "default",
 			"horizontalAlignment": "left",
 			"isSubtle": false,
+			"italic": true,
 			"maxLines": 1,
 			"size": "default",
 			"weight": "default",
 			"wrap": false,
 			"id": "TextBlock_id",
 			"spacing": "default",
-			"separator": false
+			"separator": false,
+			"strikethrough": true
 		},
 		{
 			"type": "TextBlock",
@@ -27,6 +29,7 @@
 			"color": "default",
 			"horizontalAlignment": "left",
 			"isSubtle": false,
+			"italic": true,
 			"maxLines": 1,
 			"size": "default",
 			"weight": "normAl",
@@ -34,7 +37,8 @@
 			"id": "TextBlock_id_mono",
 			"spacing": "default",
 			"separator": false,
-			"fontStyle": "monospace"
+			"strikethrough": true,
+			"fontType": "monospace"
 		},
 		{
 			"type": "TextBlock",
@@ -42,6 +46,7 @@
 			"color": "default",
 			"horizontalAlignment": "left",
 			"isSubtle": false,
+			"italic": true,
 			"maxLines": 1,
 			"size": "default",
 			"weight": "default",
@@ -49,7 +54,8 @@
 			"id": "TextBlock_id_def",
 			"spacing": "default",
 			"separator": false,
-			"fontStyle": "default"
+			"strikethrough": true,
+			"fontType": "default"
 		},
 		{
 			"type": "Image",
@@ -124,7 +130,7 @@
 									"type": "TextBlock",
 									"text": "Column3_TextBlock_text",
 									"id": "Column3_TextBlock_id",
-									"fontStyle": "display"
+									"fontType": "display"
 								}
 							]
 						}
@@ -255,6 +261,47 @@
 					]
 				}
 			]
+		},
+		{
+			"type": "ActionSet",
+			"actions": [
+				{
+					"type": "Action.Submit",
+					"title": "ActionSet.Action.Submit",
+					"id": "ActionSet.Action.Submit_id"
+				},
+				{
+					"type": "Action.OpenUrl",
+					"title": "ActionSet.Action.OpenUrl",
+					"id": "ActionSet.Action.OpenUrl_id",
+					"url": "https://adaptivecards.io/"
+				}
+			]
+		},
+		{
+			"type": "RichTextBlock",
+			"id": "RichTextBlock_id",
+			"horizontalAlignment": "right",
+			"inlines": [
+				{
+					"color": "Dark",
+					"fontType": "Monospace",
+					"highlight": true,
+					"isSubtle": true,
+					"italic": true,
+					"size": "large",
+					"strikethrough": true,
+					"text": "This is a text run",
+					"type": "TextRun",
+					"weight": "Bolder"
+				},
+				{
+					"type": "TextRun",
+					"text": "This is another text run",
+					"selectAction": { "type": "Action.Submit" }
+				},
+				"This is a text run specified as a string"
+			]
 		}
 	],
 	"actions": [
@@ -272,6 +319,12 @@
 			"id": "Action.ShowCard_id",
 			"card": {
 				"type": "AdaptiveCard",
+				"backgroundImage": {
+					"url": "https://adaptivecards.io/content/cats/1.png",
+					"fillMode": "repeat",
+					"verticalAlignment": "center",
+					"horizontalAlignment": "right"
+				},
 				"body": [
 					{
 						"type": "TextBlock",

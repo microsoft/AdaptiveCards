@@ -1,5 +1,8 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveActionElement.h"
+#include "Util.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -20,8 +23,19 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetElementTypeString(), m_typeString.GetAddressOf()));
 
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetIconUrl(), m_iconUrl.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetStyle(), m_style.GetAddressOf()));
 
-        m_sentiment = static_cast<ABI::AdaptiveNamespace::Sentiment>(sharedModel->GetSentiment());
+        m_internalId = sharedModel->GetInternalId();
+        m_fallbackType = MapSharedFallbackTypeToUwp(sharedModel->GetFallbackType());
+        if (m_fallbackType == ABI::AdaptiveNamespace::FallbackType::Content)
+        {
+            const auto fallbackObject =
+                std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(sharedModel->GetFallbackContent());
+            if (fallbackObject)
+            {
+                RETURN_IF_FAILED(GenerateActionProjection(fallbackObject, m_fallbackContent.GetAddressOf()));
+            }
+        }
 
         return S_OK;
     }
@@ -34,20 +48,45 @@ namespace AdaptiveNamespace
 
     IFACEMETHODIMP AdaptiveActionElementBase::put_Id(_In_ HSTRING id) { return m_id.Set(id); }
 
+    IFACEMETHODIMP AdaptiveActionElementBase::get_FallbackType(_Out_ ABI::AdaptiveNamespace::FallbackType* fallback)
+    {
+        *fallback = m_fallbackType;
+        return S_OK;
+    }
+
+    IFACEMETHODIMP AdaptiveActionElementBase::get_FallbackContent(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** content)
+    {
+        return m_fallbackContent.CopyTo(content);
+    }
+
+    IFACEMETHODIMP AdaptiveActionElementBase::put_FallbackType(ABI::AdaptiveNamespace::FallbackType fallback)
+    {
+        if (fallback != ABI::AdaptiveNamespace::FallbackType::Content)
+        {
+            m_fallbackContent.Reset();
+        }
+        m_fallbackType = fallback;
+        return S_OK;
+    }
+
+    IFACEMETHODIMP AdaptiveActionElementBase::put_FallbackContent(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* content)
+    {
+        m_fallbackContent = content;
+        return S_OK;
+    }
+
     HRESULT AdaptiveActionElementBase::get_IconUrl(_Outptr_ HSTRING* iconUrl) { return m_iconUrl.CopyTo(iconUrl); }
 
     HRESULT AdaptiveActionElementBase::put_IconUrl(_In_ HSTRING iconUrl) { return m_iconUrl.Set(iconUrl); }
 
-    IFACEMETHODIMP AdaptiveActionElementBase::get_Sentiment(_Out_ ABI::AdaptiveNamespace::Sentiment* sentiment)
+    IFACEMETHODIMP AdaptiveActionElementBase::get_Style(_Outptr_ HSTRING* style)
     {
-        *sentiment = m_sentiment;
-        return S_OK;
+        return m_style.CopyTo(style);
     }
 
-    IFACEMETHODIMP AdaptiveActionElementBase::put_Sentiment(ABI::AdaptiveNamespace::Sentiment sentiment)
+    IFACEMETHODIMP AdaptiveActionElementBase::put_Style(_In_ HSTRING style)
     {
-        m_sentiment = sentiment;
-        return S_OK;
+        return m_style.Set(style);
     }
 
     IFACEMETHODIMP AdaptiveActionElementBase::get_AdditionalProperties(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
@@ -79,7 +118,14 @@ namespace AdaptiveNamespace
         sharedCardElement->SetId(HStringToUTF8(m_id.Get()));
         sharedCardElement->SetTitle(HStringToUTF8(m_title.Get()));
         sharedCardElement->SetIconUrl(HStringToUTF8(m_iconUrl.Get()));
-        sharedCardElement->SetSentiment(static_cast<AdaptiveSharedNamespace::Sentiment>(m_sentiment));
+        sharedCardElement->SetStyle(HStringToUTF8(m_style.Get()));
+        sharedCardElement->SetFallbackType(MapUwpFallbackTypeToShared(m_fallbackType));
+        if (m_fallbackType == ABI::AdaptiveNamespace::FallbackType::Content)
+        {
+            std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement> fallbackSharedModel;
+            RETURN_IF_FAILED(GenerateSharedAction(m_fallbackContent.Get(), fallbackSharedModel));
+            sharedCardElement->SetFallbackContent(std::static_pointer_cast<AdaptiveSharedNamespace::BaseElement>(fallbackSharedModel));
+        }
 
         if (m_additionalProperties != nullptr)
         {

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #ifdef ADAPTIVE_CARDS_WINDOWS
@@ -17,6 +19,7 @@
 #include <memory>
 #include <numeric>
 #include <regex>
+#include <sstream>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -44,3 +47,9 @@
 #endif
 
 #include "Enums.h"
+#include "json/json.h"
+
+namespace AdaptiveSharedNamespace
+{
+    constexpr const char * const c_sharedModelVersion = "1.2";
+}

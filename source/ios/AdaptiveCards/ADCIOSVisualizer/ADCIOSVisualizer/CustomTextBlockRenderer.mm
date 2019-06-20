@@ -38,7 +38,7 @@
     {
         .weight = textBlockElement->GetTextWeight(),
         .size = textBlockElement->GetTextSize(),
-        .style = textBlockElement->GetFontStyle(),
+        .fontType = textBlockElement->GetFontType(),
         .color = textBlockElement->GetTextColor(),
         .isSubtle = textBlockElement->GetIsSubtle(),
         .wrap = textBlockElement->GetWrap()
@@ -52,16 +52,14 @@
     parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
 
     // if correctly initialized, fontFamilyNames array is bigger than zero
-    NSMutableString *fontFamilyName = [[NSMutableString alloc] initWithString:@"'"];
-    [fontFamilyName appendString:[acoConfig getFontFamily:textConfigForBlock.style]];
-    [fontFamilyName appendString:@"'"];
-
+    NSString *fontFamilyName = [acoConfig getFontFamily:textConfigForBlock.fontType];
+ 
     // Font and text size are applied as CSS style by appending it to the html string
     parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: %@; font-size:%dpx; font-weight: %d;}</style>",
                                                           fontFamilyName,
-                                                          [acoConfig getTextBlockTextSize:textConfigForBlock.style
+                                                          [acoConfig getTextBlockTextSize:textConfigForBlock.fontType
                                                                                  textSize:textConfigForBlock.size],
-                                                          [acoConfig getTextBlockFontWeight:textConfigForBlock.style
+                                                          [acoConfig getTextBlockFontWeight:textConfigForBlock.fontType
                                                                                  textWeight:textConfigForBlock.weight]]];
     // Convert html string to NSMutableAttributedString, NSAttributedString knows how to apply html tags
     NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
@@ -78,10 +76,10 @@
 
     // Obtain text color to apply to the attributed string
     ACRContainerStyle style = viewGroup.style;
-    const ColorsConfig &colorConfig = (style == ACREmphasis)? [acoConfig getHostConfig]->GetContainerStyles().emphasisPalette.foregroundColors: [acoConfig getHostConfig]->GetContainerStyles().defaultPalette.foregroundColors;
+    auto foregroundColor = [acoConfig getTextBlockColor:style textColor:textConfigForBlock.color subtleOption:textConfigForBlock.isSubtle];
     
     // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
-    [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:[ACOHostConfig getTextBlockColor:textConfigForBlock.color colorsConfig:colorConfig subtleOption:textConfigForBlock.isSubtle],} range:NSMakeRange(0, content.length)];
+    [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:foregroundColor,} range:NSMakeRange(0, content.length)];
     lab.attributedText = content;
 
     lab.numberOfLines = int(textBlockElement->GetMaxLines());

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -50,7 +52,7 @@ namespace AdaptiveCards.Rendering.Wpf
         public override void Visit(AdaptiveCard card)
         {
             if (card.BackgroundImage != null)
-                _tasks.Add(GetImage(card.BackgroundImage));
+                _tasks.Add(GetImage(card.BackgroundImage.Url));
             base.Visit(card);
         }
 

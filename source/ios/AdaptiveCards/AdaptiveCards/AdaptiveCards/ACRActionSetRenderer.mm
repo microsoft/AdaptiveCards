@@ -15,6 +15,9 @@
 #import "ACRContentHoldingUIScrollView.h"
 #import "ACOBaseActionElementPrivate.h"
 #import "ACRIContentHoldingView.h"
+#import "ACRRenderer.h"
+#import "Util.h"
+
 @implementation ACRActionSetRenderer
 
 + (ACRActionSetRenderer *)getInstance
@@ -30,6 +33,8 @@
                hostConfig:(ACOHostConfig *)config
 {
     ACRRegistration *reg = [ACRRegistration getInstance];
+    ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
+    
     UIView<ACRIContentHoldingView> *childview = nil;
     NSDictionary<NSString *, NSNumber*> *attributes =
     @{@"spacing":[NSNumber numberWithInt:[config getHostConfig]->GetActions().buttonSpacing],
@@ -59,14 +64,38 @@
         }
 
         [acoElem setElem:elem];
-        UIButton *button = [actionRenderer renderButton:rootView inputs:inputs superview:superview baseActionElement:acoElem hostConfig:config];
+
+        NSUInteger numElem = [childview subviewsCounts];
+
+        UIButton *button = nil;
+
+        @try {
+            if([acoElem meetsRequirements:featureReg] == NO) {
+                @throw [ACOFallbackException fallbackException];
+            }
+            button = [actionRenderer renderButton:rootView inputs:inputs superview:superview baseActionElement:acoElem hostConfig:config];
+            [childview addArrangedSubview:button];
+        } @catch (ACOFallbackException *exception) {
+            handleActionFallbackException(exception,
+                                          superview,
+                                          rootView,
+                                          inputs,
+                                          acoElem,
+                                          config,
+                                          childview);
+            NSUInteger count = [childview subviewsCounts];
+            if (count > numElem) {
+                UIView *view = [childview getLastSubview];
+                if (view && [view isKindOfClass:[UIButton class]]) {
+                    button = (UIButton *)view;
+                }
+            }
+        }
 
         accumulatedWidth += [button intrinsicContentSize].width;
         accumulatedHeight += [button intrinsicContentSize].height;
         maxWidth = MAX(maxWidth, [button intrinsicContentSize].width);
         maxHeight = MAX(maxHeight, [button intrinsicContentSize].height);
-
-        [childview addArrangedSubview:button];
     }
 
     float contentWidth = accumulatedWidth, contentHeight = accumulatedHeight;
@@ -79,7 +108,7 @@
         contentWidth = maxWidth;
     }
     childview.frame = CGRectMake(0, 0, contentWidth, contentHeight);
-    containingView.frame = CGRectMake(0, 0, superview.frame.size.width, contentHeight + spacing);
+    containingView.frame = CGRectMake(0, 0, superview.frame.size.width, contentHeight);
     containingView.translatesAutoresizingMaskIntoConstraints = NO;
     [containingView addSubview:childview];
     [NSLayoutConstraint constraintWithItem:containingView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:childview attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
@@ -108,6 +137,16 @@
         vConstraint.priority = UILayoutPriorityDefaultLow;
     }
     return containingView;
+}
+
++ (ACRCardElementType)elemType {
+    return ACRActionSet;
+}
+
+- (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup rootView:(ACRView *)rootView inputs:(NSArray *)inputs baseCardElement:(ACOBaseCardElement *)acoElem hostConfig:(ACOHostConfig *)acoConfig {
+    ACOAdaptiveCard *card = [[ACOAdaptiveCard alloc] init];
+    [card setCard:[[rootView card] card]];
+    return [[ACRActionSetRenderer getInstance] renderButtons:rootView inputs:(NSMutableArray *)inputs superview:viewGroup card:card hostConfig:acoConfig];
 }
 
 @end

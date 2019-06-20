@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -42,7 +44,12 @@ namespace AdaptiveCards.Rendering
                 this.Subtle = $"#{opacity.ToString("x")}{defaultColor.Substring(3)}";
             }
             else
+            {
                 this.Subtle = subtle;
+            }
+
+            this.HighlightColors = new HighlightColorConfig();
+
         }
 
         /// <summary>
@@ -53,5 +60,8 @@ namespace AdaptiveCards.Rendering
 
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string Subtle { get; set; }
+
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public HighlightColorConfig HighlightColors { get; set; }
     }
 }

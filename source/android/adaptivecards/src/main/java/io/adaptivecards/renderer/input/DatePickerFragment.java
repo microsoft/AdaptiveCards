@@ -1,13 +1,18 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer.input;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
 import io.adaptivecards.objectmodel.DateInput;
+import io.adaptivecards.objectmodel.DateTimePreparser;
+import io.adaptivecards.renderer.readonly.RendererUtil;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -17,10 +22,11 @@ import java.util.GregorianCalendar;
 public class DatePickerFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener
 {
-    public void initialize(DateInput dateInput, EditText editText)
+    public void initialize(DateInput dateInput, EditText editText, Context context)
     {
         m_dateInput = dateInput;
         m_editText = editText;
+        m_context = context;
     }
 
     @Override
@@ -40,7 +46,19 @@ public class DatePickerFragment extends DialogFragment
             calendar = Calendar.getInstance();
         }
 
-        return new DatePickerDialog(getActivity(), this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        DatePickerDialog datePickerDialog = new DatePickerDialog(m_context, this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+
+        if (!m_dateInput.GetMin().isEmpty())
+        {
+            datePickerDialog.getDatePicker().setMinDate(RendererUtil.getDate(m_dateInput.GetMin()).getTime().getTime());
+        }
+
+        if (!m_dateInput.GetMax().isEmpty())
+        {
+            datePickerDialog.getDatePicker().setMaxDate(RendererUtil.getDate(m_dateInput.GetMax()).getTime().getTime());
+        }
+
+        return datePickerDialog;
     }
 
     @Override
@@ -54,4 +72,5 @@ public class DatePickerFragment extends DialogFragment
 
     private DateInput m_dateInput;
     private EditText m_editText;
+    private Context m_context;
 }

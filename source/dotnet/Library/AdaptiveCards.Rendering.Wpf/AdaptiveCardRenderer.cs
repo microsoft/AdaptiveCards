@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -34,6 +36,8 @@ namespace AdaptiveCards.Rendering.Wpf
             ElementRenderers.Set<AdaptiveCard>(RenderAdaptiveCardWrapper);
 
             ElementRenderers.Set<AdaptiveTextBlock>(AdaptiveTextBlockRenderer.Render);
+            ElementRenderers.Set<AdaptiveRichTextBlock>(AdaptiveRichTextBlockRenderer.Render);
+
             ElementRenderers.Set<AdaptiveImage>(AdaptiveImageRenderer.Render);
             ElementRenderers.Set<AdaptiveMedia>(AdaptiveMediaRenderer.Render);
 
@@ -42,6 +46,7 @@ namespace AdaptiveCards.Rendering.Wpf
             ElementRenderers.Set<AdaptiveColumnSet>(AdaptiveColumnSetRenderer.Render);
             ElementRenderers.Set<AdaptiveFactSet>(AdaptiveFactSetRenderer.Render);
             ElementRenderers.Set<AdaptiveImageSet>(AdaptiveImageSetRenderer.Render);
+            ElementRenderers.Set<AdaptiveActionSet>(AdaptiveActionSetRenderer.Render);
 
             ElementRenderers.Set<AdaptiveChoiceSetInput>(AdaptiveChoiceSetRenderer.Render);
             ElementRenderers.Set<AdaptiveTextInput>(AdaptiveTextInputRenderer.Render);
@@ -55,6 +60,7 @@ namespace AdaptiveCards.Rendering.Wpf
             ElementRenderers.Set<AdaptiveCustomElement>(AdaptiveCustomElementRenderer.Render);
         }
 
+        public AdaptiveFeatureRegistration FeatureRegistration { get; } = new AdaptiveFeatureRegistration();
 
         /// <summary>
         /// A path to a XAML resource dictionary
@@ -126,8 +132,17 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             var outerGrid = new Grid();
             outerGrid.Style = context.GetStyle("Adaptive.Card");
+
             outerGrid.Background = context.GetColorBrush(context.Config.ContainerStyles.Default.BackgroundColor);
             outerGrid.SetBackgroundSource(card.BackgroundImage, context);
+
+            if(context.CardRoot == null)
+            {
+                context.CardRoot = outerGrid;
+            }
+
+            // Reset the parent style
+            context.RenderArgs.ParentStyle = AdaptiveContainerStyle.Default;
 
             var grid = new Grid();
             grid.Style = context.GetStyle("Adaptive.InnerCard");
@@ -148,46 +163,13 @@ namespace AdaptiveCards.Rendering.Wpf
                     break;
             }
 
-            AdaptiveContainerRenderer.AddContainerElements(grid, card.Body, context);
-            AdaptiveActionSetRenderer.AddActions(grid, card.Actions, context);
-
-            // Only handle Action show cards for the main card
-            if (context.CardDepth == 1)
-            {
-                // Define a new row to contain all the show cards
-                if (context.ActionShowCards.Count > 0)
-                {
-                    grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-                }
-
-                foreach (var showCardTuple in context.ActionShowCards)
-                {
-                    var currentShowCard = showCardTuple.Item1;
-                    var uiButton = showCardTuple.Item2;
-
-                    Grid.SetRow(currentShowCard, grid.RowDefinitions.Count - 1);
-                    grid.Children.Add(currentShowCard);
-
-                    // Assign on click function to all button elements
-                    uiButton.Click += (sender, e) =>
-                    {
-                        bool isCardCollapsed = (currentShowCard.Visibility != Visibility.Visible);
-
-                        // Collapse all the show cards
-                        foreach (var t in context.ActionShowCards)
-                        {
-                            var showCard = t.Item1;
-                            showCard.Visibility = Visibility.Collapsed;
-                        }
-
-                        // If current card is previously collapsed, show it
-                        if (isCardCollapsed)
-                            currentShowCard.Visibility = Visibility.Visible;
-                    };
-                }
-            }
+            outerGrid.MinHeight = card.PixelMinHeight;
 
             outerGrid.Children.Add(grid);
+
+            AdaptiveContainerRenderer.AddContainerElements(grid, card.Body, context);
+            AdaptiveActionSetRenderer.AddRenderedActions(grid, card.Actions, context);
+
 
             if (card.SelectAction != null)
             {
@@ -230,8 +212,10 @@ namespace AdaptiveCards.Rendering.Wpf
                 Config = HostConfig ?? new AdaptiveHostConfig(),
                 Resources = Resources,
                 ElementRenderers = ElementRenderers,
-                Lang = card.Lang,
                 DataUpdater = new JsonTransformLanguage.JsonTransformerDataUpdater()
+                FeatureRegistration = FeatureRegistration,
+                Lang = card.Lang,
+                RenderArgs = new AdaptiveRenderArgs { ForegroundColors = (HostConfig != null) ? HostConfig.ContainerStyles.Default.ForegroundColors : new ContainerStylesConfig().Default.ForegroundColors }
             };
 
             string accentColor = HostConfig.ContainerStyles.Default.ForegroundColors.Accent.Default;
@@ -250,7 +234,6 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 DataUpdater = context.DataUpdater
             };
-
 
             return renderCard;
         }
@@ -289,7 +272,8 @@ namespace AdaptiveCards.Rendering.Wpf
                     Config = HostConfig ?? new AdaptiveHostConfig(),
                     Resources = Resources,
                     ElementRenderers = ElementRenderers,
-                    Lang = card.Lang
+                    Lang = card.Lang,
+                    RenderArgs = new AdaptiveRenderArgs { ForegroundColors = (HostConfig != null) ? HostConfig.ContainerStyles.Default.ForegroundColors : new ContainerStylesConfig().Default.ForegroundColors }
                 };
 
                 var stream = context.Render(card).RenderToImage(width);

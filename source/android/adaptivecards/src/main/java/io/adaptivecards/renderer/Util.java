@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer;
 
 import android.content.Context;
@@ -21,7 +23,7 @@ public final class Util {
         byte[] byteArray = new byte[(int)vectorSize];
         for(int i = 0; i < vectorSize; ++i)
         {
-            byteArray[i] = (byte)charVector.get(i);
+            byteArray[i] = (byte)charVector.get(i).charValue();
         }
 
         return byteArray;

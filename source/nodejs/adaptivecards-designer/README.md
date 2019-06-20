@@ -52,10 +52,10 @@ The simplest way to get started it to include 3 script tags in your page.
 		// Initialize monaco-editor for the JSON-editor pane. The simplest way to do this is use the code below, since we currently bundle monaco into our CDN distribution. 
 		require.config({ paths: { 'vs': 'https://unpkg.com/adaptivecards-designer@0.1.0/dist/monaco-editor/min/vs' } });
 		require(['vs/editor/editor.main'], function () {
-			designer.monacoEditorLoaded();
+			designer.monacoModuleLoaded();
 		});
 
-		designer.attachTo(document.getElementById("designerRootHost");
+		designer.attachTo(document.getElementById("designerRootHost"));
 	};
 </script>
 
@@ -86,7 +86,6 @@ import * as markdownit from "markdown-it";
 import * as Designer from "adaptivecards-designer";
 
 // if you want to bundle the designer CSS using mini-css-loader:
-import "adaptivecards/dist/adaptivecards-default.css";
 import "adaptivecards-controls/dist/adaptivecards-controls.css";
 import "adaptivecards-designer/dist/adaptivecards-designer.css";
 

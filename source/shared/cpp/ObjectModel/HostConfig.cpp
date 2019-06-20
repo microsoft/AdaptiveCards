@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "HostConfig.h"
 #include "ParseUtil.h"
@@ -33,8 +35,8 @@ HostConfig HostConfig::Deserialize(const Json::Value& json)
     result._fontWeights = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontWeightsConfig>(
         json, AdaptiveCardSchemaKey::FontWeights, result._fontWeights, FontWeightsConfig::Deserialize);
 
-    result._fontStyles = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontStylesDefinition>(
-        json, AdaptiveCardSchemaKey::FontStyles, result._fontStyles, FontStylesDefinition::Deserialize);
+    result._fontTypes = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontTypesDefinition>(
+        json, AdaptiveCardSchemaKey::FontTypes, result._fontTypes, FontTypesDefinition::Deserialize);
 
     result._containerStyles = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStylesDefinition>(
         json, AdaptiveCardSchemaKey::ContainerStyles, result._containerStyles, ContainerStylesDefinition::Deserialize);
@@ -87,9 +89,9 @@ FontSizesConfig FontSizesConfig::Deserialize(const Json::Value& json, const Font
     return result;
 }
 
-FontStyleDefinition FontStyleDefinition::Deserialize(const Json::Value& json, const FontStyleDefinition& defaultValue)
+FontTypeDefinition FontTypeDefinition::Deserialize(const Json::Value& json, const FontTypeDefinition& defaultValue)
 {
-    FontStyleDefinition result;
+    FontTypeDefinition result;
 
     const std::string fontFamily = ParseUtil::GetString(json, AdaptiveCardSchemaKey::FontFamily);
     result.fontFamily = (fontFamily == "") ? defaultValue.fontFamily : fontFamily;
@@ -107,16 +109,26 @@ FontStyleDefinition FontStyleDefinition::Deserialize(const Json::Value& json, co
     return result;
 }
 
-FontStylesDefinition FontStylesDefinition::Deserialize(const Json::Value& json, const FontStylesDefinition& defaultValue)
+FontTypesDefinition FontTypesDefinition::Deserialize(const Json::Value& json, const FontTypesDefinition& defaultValue)
 {
-    FontStylesDefinition result;
+    FontTypesDefinition result;
 
-    result.defaultStyle = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontStyleDefinition>(
-        json, AdaptiveCardSchemaKey::Default, defaultValue.defaultStyle, FontStyleDefinition::Deserialize);
-    result.displayStyle = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontStyleDefinition>(
-        json, AdaptiveCardSchemaKey::Display, defaultValue.defaultStyle, FontStyleDefinition::Deserialize);
-    result.monospaceStyle = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontStyleDefinition>(
-        json, AdaptiveCardSchemaKey::Monospace, defaultValue.defaultStyle, FontStyleDefinition::Deserialize);
+    result.defaultFontType = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontTypeDefinition>(
+        json, AdaptiveCardSchemaKey::Default, defaultValue.defaultFontType, FontTypeDefinition::Deserialize);
+    result.monospaceFontType = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontTypeDefinition>(
+        json, AdaptiveCardSchemaKey::Monospace, defaultValue.monospaceFontType, FontTypeDefinition::Deserialize);
+    return result;
+}
+
+HighlightColorConfig HighlightColorConfig::Deserialize(const Json::Value& json, const HighlightColorConfig& defaultValue)
+{
+    HighlightColorConfig result;
+    std::string defaultColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Default);
+    result.defaultColor = defaultColor == "" ? defaultValue.defaultColor : defaultColor;
+
+    std::string subtleColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Subtle);
+    result.subtleColor = subtleColor == "" ? defaultValue.subtleColor : subtleColor;
+
     return result;
 }
 
@@ -129,39 +141,50 @@ ColorConfig ColorConfig::Deserialize(const Json::Value& json, const ColorConfig&
     std::string subtleColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Subtle);
     result.subtleColor = subtleColor == "" ? defaultValue.subtleColor : subtleColor;
 
+    result.highlightColors = ParseUtil::ExtractJsonValueAndMergeWithDefault<HighlightColorConfig>(
+        json, AdaptiveCardSchemaKey::HighlightColors, defaultValue.highlightColors, HighlightColorConfig::Deserialize);
+
     return result;
 }
 
 ColorsConfig ColorsConfig::Deserialize(const Json::Value& json, const ColorsConfig& defaultValue)
 {
     ColorsConfig result;
-    auto colorDeserializer = &ColorConfig::Deserialize;
 
     result.defaultColor = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json,
                                                                                       AdaptiveCardSchemaKey::Default,
                                                                                       defaultValue.defaultColor,
-                                                                                      colorDeserializer);
+                                                                                      &ColorConfig::Deserialize);
 
-    result.accent =
-        ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json, AdaptiveCardSchemaKey::Accent, defaultValue.accent, colorDeserializer);
+    result.accent = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json,
+                                                                                AdaptiveCardSchemaKey::Accent,
+                                                                                defaultValue.accent,
+                                                                                &ColorConfig::Deserialize);
 
-    result.dark =
-        ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json, AdaptiveCardSchemaKey::Dark, defaultValue.dark, colorDeserializer);
+    result.dark = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json,
+                                                                              AdaptiveCardSchemaKey::Dark,
+                                                                              defaultValue.dark,
+                                                                              &ColorConfig::Deserialize);
 
-    result.light =
-        ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json, AdaptiveCardSchemaKey::Light, defaultValue.light, colorDeserializer);
+    result.light = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json,
+                                                                               AdaptiveCardSchemaKey::Light,
+                                                                               defaultValue.light,
+                                                                               &ColorConfig::Deserialize);
 
-    result.good =
-        ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json, AdaptiveCardSchemaKey::Good, defaultValue.good, colorDeserializer);
+    result.good = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json,
+                                                                              AdaptiveCardSchemaKey::Good,
+                                                                              defaultValue.good,
+                                                                              &ColorConfig::Deserialize);
 
-    result.warning =
-        ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json, AdaptiveCardSchemaKey::Warning, defaultValue.warning, colorDeserializer);
+    result.warning = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json,
+                                                                                 AdaptiveCardSchemaKey::Warning,
+                                                                                 defaultValue.warning,
+                                                                                 &ColorConfig::Deserialize);
 
     result.attention = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorConfig>(json,
                                                                                    AdaptiveCardSchemaKey::Attention,
                                                                                    defaultValue.attention,
-                                                                                   colorDeserializer);
-
+                                                                                   &ColorConfig::Deserialize);
     return result;
 }
 
@@ -172,7 +195,7 @@ TextConfig TextConfig::Deserialize(const Json::Value& json, const TextConfig& de
 
     result.size = ParseUtil::GetEnumValue<TextSize>(json, AdaptiveCardSchemaKey::Size, defaultValue.size, TextSizeFromString);
 
-    result.style = ParseUtil::GetEnumValue<FontStyle>(json, AdaptiveCardSchemaKey::FontStyle, defaultValue.style, FontStyleFromString);
+    result.fontType = ParseUtil::GetEnumValue<FontType>(json, AdaptiveCardSchemaKey::FontType, defaultValue.fontType, FontTypeFromString);
 
     result.color = ParseUtil::GetEnumValue<ForegroundColor>(json, AdaptiveCardSchemaKey::Color, defaultValue.color, ForegroundColorFromString);
 
@@ -334,6 +357,18 @@ ContainerStylesDefinition ContainerStylesDefinition::Deserialize(const Json::Val
     result.emphasisPalette = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStyleDefinition>(
         json, AdaptiveCardSchemaKey::Emphasis, defaultValue.emphasisPalette, ContainerStyleDefinition::Deserialize);
 
+    result.goodPalette = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStyleDefinition>(
+        json, AdaptiveCardSchemaKey::Good, defaultValue.goodPalette, ContainerStyleDefinition::Deserialize);
+
+    result.attentionPalette = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStyleDefinition>(
+        json, AdaptiveCardSchemaKey::Attention, defaultValue.attentionPalette, ContainerStyleDefinition::Deserialize);
+
+    result.warningPalette = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStyleDefinition>(
+        json, AdaptiveCardSchemaKey::Warning, defaultValue.warningPalette, ContainerStyleDefinition::Deserialize);
+
+    result.accentPalette = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStyleDefinition>(
+        json, AdaptiveCardSchemaKey::Accent, defaultValue.accentPalette, ContainerStyleDefinition::Deserialize);
+
     return result;
 }
 
@@ -376,17 +411,15 @@ MediaConfig MediaConfig::Deserialize(const Json::Value& json, const MediaConfig&
     return result;
 }
 
-FontStyleDefinition HostConfig::GetFontStyle(FontStyle style) const
+FontTypeDefinition HostConfig::GetFontType(FontType type) const
 {
-    switch (style)
+    switch (type)
     {
-    case FontStyle::Display:
-        return _fontStyles.displayStyle;
-    case FontStyle::Monospace:
-        return _fontStyles.monospaceStyle;
-    case FontStyle::Default:
+    case FontType::Monospace:
+        return _fontTypes.monospaceFontType;
+    case FontType::Default:
     default:
-        return _fontStyles.defaultStyle;
+        return _fontTypes.defaultFontType;
     }
 }
 
@@ -486,47 +519,42 @@ unsigned int FontWeightsConfig::GetDefaultFontWeight(TextWeight weight)
     }
 }
 
-std::string HostConfig::GetFontFamily(FontStyle style) const
+std::string HostConfig::GetFontFamily(FontType fontType) const
 {
     // desired font family
-    auto fontFamilyValue = GetFontStyle(style).fontFamily;
+    auto fontFamilyValue = GetFontType(fontType).fontFamily;
 
     if (fontFamilyValue.empty())
     {
-        if (style == FontStyle::Monospace)
+        if (fontType == FontType::Monospace)
         {
             // pass empty string for renderer to handle appropriate const default font family for Monospace
             fontFamilyValue = "";
         }
         else
         {
-            // default font family
-            fontFamilyValue = _fontStyles.defaultStyle.fontFamily;
+            // deprecated font family
+            fontFamilyValue = _fontFamily;
             if (fontFamilyValue.empty())
             {
-                // deprecated font family
-                fontFamilyValue = _fontFamily;
-                if (fontFamilyValue.empty())
-                {
-                    // pass empty string for renderer to handle appropriate const default font family
-                    fontFamilyValue = "";
-                }
+                // pass empty string for renderer to handle appropriate const default font family
+                fontFamilyValue = "";
             }
         }
     }
     return fontFamilyValue;
 }
 
-unsigned int HostConfig::GetFontSize(FontStyle style, TextSize size) const
+unsigned int HostConfig::GetFontSize(FontType fontType, TextSize size) const
 {
     // desired font size
-    auto result = GetFontStyle(style).fontSizes.GetFontSize(size);
+    auto result = GetFontType(fontType).fontSizes.GetFontSize(size);
 
     // UINT_MAX used to check if value was defined
     if (result == UINT_MAX)
     {
         // default font size
-        result = _fontStyles.defaultStyle.fontSizes.GetFontSize(size);
+        result = _fontTypes.defaultFontType.fontSizes.GetFontSize(size);
         if (result == UINT_MAX)
         {
             // deprecated font size
@@ -541,16 +569,16 @@ unsigned int HostConfig::GetFontSize(FontStyle style, TextSize size) const
     return result;
 }
 
-unsigned int HostConfig::GetFontWeight(FontStyle style, TextWeight weight) const
+unsigned int HostConfig::GetFontWeight(FontType fontType, TextWeight weight) const
 {
     // desired font weight
-    auto result = GetFontStyle(style).fontWeights.GetFontWeight(weight);
+    auto result = GetFontType(fontType).fontWeights.GetFontWeight(weight);
 
     // UINT_MAX used to check if value was defined
     if (result == UINT_MAX)
     {
         // default font weight
-        result = _fontStyles.defaultStyle.fontWeights.GetFontWeight(weight);
+        result = _fontTypes.defaultFontType.fontWeights.GetFontWeight(weight);
         if (result == UINT_MAX)
         {
             // deprecated font weight
@@ -563,6 +591,80 @@ unsigned int HostConfig::GetFontWeight(FontStyle style, TextWeight weight) const
         }
     }
     return result;
+}
+
+const ContainerStyleDefinition& HostConfig::GetContainerStyle(ContainerStyle style) const
+{
+    switch (style)
+    {
+    case ContainerStyle::Accent:
+        return _containerStyles.accentPalette;
+    case ContainerStyle::Attention:
+        return _containerStyles.attentionPalette;
+    case ContainerStyle::Emphasis:
+        return _containerStyles.emphasisPalette;
+    case ContainerStyle::Good:
+        return _containerStyles.goodPalette;
+    case ContainerStyle::Warning:
+        return _containerStyles.warningPalette;
+    case ContainerStyle::Default:
+    default:
+        return _containerStyles.defaultPalette;
+    }
+}
+
+std::string HostConfig::GetBackgroundColor(ContainerStyle style) const
+{
+    return GetContainerStyle(style).backgroundColor;
+}
+
+template<typename T> std::string GetColorFromColorConfig(T colorConfig, bool isSubtle)
+{
+    return (isSubtle) ? (colorConfig.subtleColor) : (colorConfig.defaultColor);
+}
+
+const ColorConfig& HostConfig::GetContainerColorConfig(const ColorsConfig& colors, ForegroundColor color) const
+{
+    switch (color)
+    {
+    case ForegroundColor::Accent:
+        return colors.accent;
+    case ForegroundColor::Attention:
+        return colors.attention;
+    case ForegroundColor::Dark:
+        return colors.dark;
+    case ForegroundColor::Good:
+        return colors.good;
+    case ForegroundColor::Light:
+        return colors.light;
+    case ForegroundColor::Warning:
+        return colors.warning;
+    case ForegroundColor::Default:
+    default:
+        return colors.defaultColor;
+    }
+}
+
+std::string HostConfig::GetForegroundColor(ContainerStyle style, ForegroundColor color, bool isSubtle) const
+{
+    auto colorConfig = GetContainerColorConfig(GetContainerStyle(style).foregroundColors, color);
+    return GetColorFromColorConfig(colorConfig, isSubtle);
+}
+
+std::string HostConfig::GetHighlightColor(ContainerStyle style, ForegroundColor color, bool isSubtle) const
+{
+    auto colorConfig = GetContainerColorConfig(GetContainerStyle(style).foregroundColors, color).highlightColors;
+    return GetColorFromColorConfig(colorConfig, isSubtle);
+}
+
+std::string HostConfig::GetBorderColor(ContainerStyle style) const
+{
+    return GetContainerStyle(style).borderColor;
+}
+
+unsigned int HostConfig::GetBorderThickness(ContainerStyle style) const
+{
+    return GetContainerStyle(style).borderThickness;
 }
 
 std::string HostConfig::GetFontFamily() const
@@ -595,14 +697,14 @@ void HostConfig::SetFontWeights(const FontWeightsConfig value)
     _fontWeights = value;
 }
 
-FontStylesDefinition HostConfig::GetFontStyles() const
+FontTypesDefinition HostConfig::GetFontTypes() const
 {
-    return _fontStyles;
+    return _fontTypes;
 }
 
-void HostConfig::SetFontStyles(const FontStylesDefinition value)
+void HostConfig::SetFontTypes(const FontTypesDefinition value)
 {
-    _fontStyles = value;
+    _fontTypes = value;
 }
 
 bool HostConfig::GetSupportsInteractivity() const

@@ -12,6 +12,7 @@
 #import "CustomProgressBarRenderer.h"
 #import "CustomTextBlockRenderer.h"
 #import "CustomImageRenderer.h"
+#import "CustomActionNewType.h"
 #import "ADCResolver.h"
 #import "AdaptiveCards/ACRButton.h"
 
@@ -65,16 +66,19 @@
                               @"V:|-40-[editView(==200)]-[buttonLayout]", nil];
     [ViewController applyConstraints:formats variables:viewMap];
 }
+
 - (IBAction)toggleCustomRenderer:(id)sender
 {
     _enableCustomRenderer = !_enableCustomRenderer;
     ACRRegistration *registration = [ACRRegistration getInstance];
+
     if(_enableCustomRenderer){
         // enum will be part of API in next iterations when custom renderer extended to non-action type - tracked by issue #809
         [registration setActionRenderer:[CustomActionOpenURLRenderer getInstance] cardElementType:@3];
         [registration setBaseCardElementRenderer:[CustomTextBlockRenderer getInstance] cardElementType:ACRTextBlock];
         [registration setBaseCardElementRenderer:[CustomInputNumberRenderer getInstance] cardElementType:ACRNumberInput];
         [registration setBaseCardElementRenderer:[CustomImageRenderer getInstance] cardElementType:ACRImage];
+        
         _enableCustomRendererButton.backgroundColor = UIColor.redColor;
         _defaultRenderer = [registration getActionSetRenderer];
         [registration setActionSetRenderer:self];
@@ -204,6 +208,9 @@
          @"H:|-[buttonLayout]-|", @"H:|-[scrollview]-|", nil];
 
     [ViewController applyConstraints:formats variables:viewMap];
+    
+    ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
+    [featureReg addFeature:@"acTest" featureVersion:@"1.0"];
 
     [self update:self.ACVTabVC.userSelectedJSon];
     
@@ -222,10 +229,22 @@
     if(cardParseResult.isValid){
         ACRRegistration *registration = [ACRRegistration getInstance];
 
+        NSString *type = @"ProgressBar";
+        CACProgressBar *progressBarParser = [[CACProgressBar alloc] init];
+        [registration setCustomElementParser:progressBarParser key:type];
+
         CustomProgressBarRenderer *progressBarRenderer = [[CustomProgressBarRenderer alloc] init];
-        [registration setCustomElementParser:progressBarRenderer];
+        [registration setCustomElementRenderer:progressBarRenderer key:type];
+
+        CustomActionNewType *customParser = [[CustomActionNewType alloc] init];
+        NSString *type1 = @"NewStyle";
+        [registration setCustomActionElementParser:customParser key:type1];
+
+        CustomActionNewTypeRenderer *customActionRenderer = [CustomActionNewTypeRenderer getInstance];
+        [registration setCustomActionRenderer:customActionRenderer key:type1];
+
         _config = hostconfigParseResult.config;
-        renderResult = [ACRRenderer render:cardParseResult.card config:hostconfigParseResult.config widthConstraint:335 delegate:self];
+        renderResult = [ACRRenderer render:cardParseResult.card config:hostconfigParseResult.config widthConstraint:315 delegate:self];
     }
     
     if(renderResult.succeeded)
@@ -285,6 +304,13 @@
         }
         _userResponseLabel.text = str;
         NSLog(@"user response fetched: %@ with %@", str, [action data]);
+    } else if (action.type == ACRUnknownAction) {
+        if([action isKindOfClass:[CustomActionNewType class]]) {
+            CustomActionNewType *newType = (CustomActionNewType *)action;
+            if(newType.alertController) {
+                [self presentViewController:newType.alertController animated:YES completion:nil];
+            }
+        }
     }
 }
 
@@ -303,8 +329,8 @@
     {
         if([button isKindOfClass:[ACRButton class]])
         {
-            ACRButton *acrButton = (ACRButton*)button;
-            if(acrButton.sentiment != ACRSentimentDefault)
+            ACRButton *acrButton = (ACRButton *)button;
+            if(acrButton.sentiment && [@"default" caseInsensitiveCompare:acrButton.sentiment] != NSOrderedSame)
             {
                 [acrButton applySentimentStyling];
             }

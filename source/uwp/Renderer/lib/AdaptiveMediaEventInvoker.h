@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
@@ -18,7 +20,7 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP SendMediaClickedEvent(_In_ ABI::AdaptiveNamespace::IAdaptiveMedia* mediaElement);
 
     private:
-        Microsoft::WRL::ComPtr<AdaptiveNamespace::RenderedAdaptiveCard> m_renderResult;
+        Microsoft::WRL::WeakRef m_weakRenderResult;
     };
 
     ActivatableClass(AdaptiveMediaEventInvoker);

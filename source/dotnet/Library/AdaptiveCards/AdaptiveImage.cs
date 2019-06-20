@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
@@ -135,6 +137,9 @@ namespace AdaptiveCards
         ///    Explicit Image Height
         /// </summary>
         [JsonIgnore]
+#if !NETSTANDARD1_3
+        [XmlIgnore]
+#endif
         public uint PixelHeight
         {
             get

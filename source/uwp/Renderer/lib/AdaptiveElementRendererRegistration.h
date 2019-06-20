@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
@@ -25,6 +27,4 @@ namespace AdaptiveNamespace
     private:
         std::shared_ptr<RegistrationMap> m_registration;
     };
-
-    ActivatableClass(AdaptiveElementRendererRegistration);
 }

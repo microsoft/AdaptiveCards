@@ -1,7 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "ImageSet.h"
 #include "ParseUtil.h"
 #include "Image.h"
+#include "Util.h"
 
 using namespace AdaptiveSharedNamespace;
 
@@ -53,14 +56,13 @@ std::shared_ptr<BaseCardElement> ImageSetParser::Deserialize(ParseContext& conte
 {
     ParseUtil::ExpectTypeString(value, CardElementType::ImageSet);
 
-    auto imageSet = BaseCardElement::Deserialize<ImageSet>(value);
-
+    auto imageSet = BaseCardElement::Deserialize<ImageSet>(context, value);
     // Get ImageSize
     imageSet->m_imageSize =
         ParseUtil::GetEnumValue<ImageSize>(value, AdaptiveCardSchemaKey::ImageSize, ImageSize::None, ImageSizeFromString);
 
     // Parse Images
-    auto images = ParseUtil::GetElementCollection(context, value, AdaptiveCardSchemaKey::Images, true);
+    auto images = ParseUtil::GetElementCollection<Image>(true, context, value, AdaptiveCardSchemaKey::Images, true);
 
     for (auto image : images)
     {

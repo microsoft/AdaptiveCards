@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 #include "pch.h"
 #include "EnumMagic.h"
@@ -10,8 +12,9 @@ namespace AdaptiveSharedNamespace
         ActionAlignment,
         ActionMode,
         ActionOrientation,
-        Actions,
+        ActionSet,
         ActionSetConfig,
+        Actions,
         ActionsOrientation,
         AdaptiveCard,
         AllowCustomStyle,
@@ -22,6 +25,8 @@ namespace AdaptiveSharedNamespace
         BackgroundImage,
         BackgroundImageUrl,
         BaseCardElement,
+        BaseContainerStyle,
+        Bleed,
         Body,
         Bolder,
         BorderColor,
@@ -30,14 +35,13 @@ namespace AdaptiveSharedNamespace
         ButtonSpacing,
         Card,
         Center,
-        Choices,
         ChoiceSet,
+        Choices,
         Color,
         ColorConfig,
-        ForegroundColors,
         Column,
-        Columns,
         ColumnSet,
+        Columns,
         Container,
         ContainerStyles,
         Dark,
@@ -45,20 +49,26 @@ namespace AdaptiveSharedNamespace
         DateInput,
         Default,
         DefaultPoster,
-        Display,
         ElementId,
         Emphasis,
         ExtraLarge,
-        Facts,
         FactSet,
+        Facts,
+        Fallback,
         FallbackText,
+        FillMode,
         FontFamily,
         FontSizes,
-        FontStyle,
-        FontStyles,
+        FontType,
+        FontTypes,
         FontWeights,
+        ForegroundColor,
+        ForegroundColors,
         Good,
         Height,
+        Highlight,
+        HighlightColor,
+        HighlightColors,
         HorizontalAlignment,
         IconPlacement,
         IconSize,
@@ -66,18 +76,20 @@ namespace AdaptiveSharedNamespace
         Id,
         Image,
         ImageBaseUrl,
-        Images,
         ImageSet,
         ImageSize,
         ImageSizes,
+        Images,
         InlineAction,
+        Inlines,
         InlineTopMargin,
-        IsMultiline,
         IsMultiSelect,
+        IsMultiline,
         IsRequired,
         IsSelected,
         IsSubtle,
         IsVisible,
+        Italic,
         Items,
         Language,
         Large,
@@ -97,15 +109,20 @@ namespace AdaptiveSharedNamespace
         Method,
         MimeType,
         Min,
+        MinHeight,
         Monospace,
         NumberInput,
         Padding,
         Placeholder,
         PlayButton,
         Poster,
+        Repeat,
+        RepeatHorizontally,
+        RepeatVertically,
+        Requires,
+        RichTextBlock,
         Right,
         SelectAction,
-        Sentiment,
         Separator,
         ShowActionMode,
         ShowCard,
@@ -117,6 +134,7 @@ namespace AdaptiveSharedNamespace
         SpacingDefinition,
         Speak,
         Stretch,
+        Strikethrough,
         Style,
         Subtle,
         SupportsInteractivity,
@@ -126,7 +144,6 @@ namespace AdaptiveSharedNamespace
         TextConfig,
         TextInput,
         TextWeight,
-        Thick,
         Thickness,
         TimeInput,
         Title,
@@ -138,6 +155,7 @@ namespace AdaptiveSharedNamespace
         ValueOff,
         ValueOn,
         Version,
+        VerticalAlignment,
         VerticalContentAlignment,
         Warning,
         Weight,
@@ -148,28 +166,36 @@ namespace AdaptiveSharedNamespace
 
     enum class CardElementType
     {
-        Unsupported = 0,
+        // When the order of existing enums are changed, coresponding changes are needed in iOS (ACOBaseCardElement.h)
+        ActionSet = 0,
         AdaptiveCard,
-        TextBlock,
-        Image,
-        Container,
-        Column,
-        ColumnSet,
-        FactSet,
-        Fact,
-        ImageSet,
         ChoiceInput,
         ChoiceSetInput,
+        Column,
+        ColumnSet,
+        Container,
+        Custom,
         DateInput,
+        Fact,
+        FactSet,
+        Image,
+        ImageSet,
+        Media,
         NumberInput,
+        RichTextBlock,
+        TextBlock,
         TextInput,
         TimeInput,
         ToggleInput,
-        Custom,
         Unknown,
-        Media
     };
     DECLARE_ADAPTIVECARD_ENUM(CardElementType);
+
+    enum class InlineElementType
+    {
+        TextRun = 0
+    };
+    DECLARE_ADAPTIVECARD_ENUM(InlineElementType);
 
     enum class TextSize
     {
@@ -189,13 +215,12 @@ namespace AdaptiveSharedNamespace
     };
     DECLARE_ADAPTIVECARD_ENUM(TextWeight);
 
-    enum class FontStyle
+    enum class FontType
     {
         Default = 0,
-        Display,
         Monospace
     };
-    DECLARE_ADAPTIVECARD_ENUM(FontStyle);
+    DECLARE_ADAPTIVECARD_ENUM(FontType);
 
     enum class ForegroundColor
     {
@@ -216,6 +241,23 @@ namespace AdaptiveSharedNamespace
         Right
     };
     DECLARE_ADAPTIVECARD_ENUM(HorizontalAlignment);
+
+    enum class VerticalAlignment
+    {
+        Top = 0,
+        Center,
+        Bottom
+    };
+    DECLARE_ADAPTIVECARD_ENUM(VerticalAlignment);
+
+    enum class ImageFillMode
+    {
+        Cover = 0,
+        RepeatHorizontally,
+        RepeatVertically,
+        Repeat
+    };
+    DECLARE_ADAPTIVECARD_ENUM(ImageFillMode);
 
     enum class ImageStyle
     {
@@ -251,7 +293,8 @@ namespace AdaptiveSharedNamespace
         Submit,
         OpenUrl,
         ToggleVisibility,
-        Custom
+        Custom,
+        UnknownAction,
     };
     DECLARE_ADAPTIVECARD_ENUM(ActionType);
 
@@ -308,7 +351,11 @@ namespace AdaptiveSharedNamespace
     {
         None,
         Default,
-        Emphasis
+        Emphasis,
+        Good,
+        Attention,
+        Warning,
+        Accent
     };
     DECLARE_ADAPTIVECARD_ENUM(ContainerStyle);
 
@@ -326,6 +373,7 @@ namespace AdaptiveSharedNamespace
     enum class WarningStatusCode
     {
         UnknownElementType = 0,
+        UnknownActionElementType,
         UnknownPropertyOnElement,
         UnknownEnumValue,
         NoRendererForType,
@@ -351,20 +399,56 @@ namespace AdaptiveSharedNamespace
     };
     // No mapping to string needed
 
+    // We have to define all possible combinations because java doesn't allow bitwise operations between enum values
+    // and it also limits the values an enum can have to only the values defined in the enum, so combinations wouldn't be
+    // allowed unless they have been explicitly declared (i.e. 0x0101 wouldn't be valid as it was not part of the declared values)
+    enum class ContainerBleedDirection
+    {
+        BleedRestricted =    0x0000,
+        BleedLeft =          0x0001,
+        BleedRight =         0x0010,
+        BleedLeftRight =     0x0011,
+        BleedUp =            0x0100,
+        BleedLeftUp =        0x0101,
+        BleedRightUp =       0x0110,
+        BleedLeftRightUp =   0x0111,
+        BleedDown =          0x1000,
+        BleedLeftDown =      0x1001,
+        BleedRightDown =     0x1010,
+        BleedLeftRightDown = 0x1011,
+        BleedUpDown =        0x1100,
+        BleedLeftUpDown =    0x1101,
+        BleedRightUpDown =   0x1110,
+        BleedAll =           0x1111
+    };
+
+    // Define bit operators so we can use ContainerBleedDirection as a bitmask
+    inline ContainerBleedDirection operator~(ContainerBleedDirection a) { return (ContainerBleedDirection) ~(int)a; }
+    inline ContainerBleedDirection operator|(ContainerBleedDirection a, ContainerBleedDirection b)
+    {
+        return (ContainerBleedDirection)((int)a | (int)b);
+    }
+    inline ContainerBleedDirection operator&(ContainerBleedDirection a, ContainerBleedDirection b)
+    {
+        return (ContainerBleedDirection)((int)a & (int)b);
+    }
+    inline ContainerBleedDirection& operator|=(ContainerBleedDirection& a, ContainerBleedDirection b)
+    {
+        return (ContainerBleedDirection&)((int&)a |= (int)b);
+    }
+    inline ContainerBleedDirection& operator&=(ContainerBleedDirection& a, ContainerBleedDirection b)
+    {
+        return (ContainerBleedDirection&)((int&)a &= (int)b);
+    }
+
+    // No mapping to string needed
+
     enum class IconPlacement
     {
         AboveTitle = 0,
         LeftOfTitle
     };
     DECLARE_ADAPTIVECARD_ENUM(IconPlacement);
-
-    enum class Sentiment
-    {
-        Default = 0,
-        Positive,
-        Destructive
-    };
-    DECLARE_ADAPTIVECARD_ENUM(Sentiment);
 
     enum class VerticalContentAlignment
     {
@@ -380,4 +464,12 @@ namespace AdaptiveSharedNamespace
         Stretch
     };
     DECLARE_ADAPTIVECARD_ENUM(HeightType);
+
+    // Important: "Content" below is a placeholder for a JSON value -- we can't perform automatic mapping.
+    enum class FallbackType
+    {
+        None,
+        Drop,
+        Content
+    };
 }

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "FactSet.h"
 #include "ParseUtil.h"
@@ -21,17 +23,6 @@ std::vector<std::shared_ptr<Fact>>& FactSet::GetFacts()
     return m_facts;
 }
 
-void FactSet::SetLanguage(const std::string& language)
-{
-    for (const std::shared_ptr<Fact>& fact : m_facts)
-    {
-        if (fact != nullptr)
-        {
-            fact->SetLanguage(language);
-        }
-    }
-}
-
 Json::Value FactSet::SerializeToJsonValue() const
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
@@ -50,7 +41,7 @@ std::shared_ptr<BaseCardElement> FactSetParser::Deserialize(ParseContext& contex
 {
     ParseUtil::ExpectTypeString(value, CardElementType::FactSet);
 
-    auto factSet = BaseCardElement::Deserialize<FactSet>(value);
+    auto factSet = BaseCardElement::Deserialize<FactSet>(context, value);
 
     // Parse Facts
     auto facts =

@@ -1,6 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer.input;
 
 import android.content.Context;
+import android.nfc.Tag;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,7 +15,10 @@ import android.widget.LinearLayout;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.AdaptiveWarning;
+import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
@@ -50,7 +56,7 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            ContainerStyle containerStyle)
+            RenderArgs renderArgs)
     {
         if (!hostConfig.GetSupportsInteractivity())
         {
@@ -68,12 +74,19 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
             throw new InternalError("Unable to convert BaseCardElement to ToggleInput object model.");
         }
 
-        setSpacingAndSeparator(context, viewGroup, toggleInput.GetSpacing(), toggleInput.GetSeparator(), hostConfig, true /* horizontal line */);
+        View separator = setSpacingAndSeparator(context, viewGroup, toggleInput.GetSpacing(), toggleInput.GetSeparator(), hostConfig, true /* horizontal line */);
 
         final ToggleInputHandler toggleInputHandler = new ToggleInputHandler(toggleInput);
         CheckBox checkBox = new CheckBox(context);
+        if(!toggleInput.GetWrap())
+        {
+            checkBox.setLines(1);
+            checkBox.setEllipsize(TextUtils.TruncateAt.END);
+        }
         toggleInputHandler.setView(checkBox);
-        checkBox.setTag(toggleInputHandler);
+
+        TagContent tagContent = new TagContent(toggleInput, toggleInputHandler, separator, viewGroup);
+
         checkBox.setText(toggleInput.GetTitle());
         renderedCard.registerInputHandler(toggleInputHandler);
 
@@ -100,10 +113,20 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
             }
         });
 
-        if(toggleInput.GetHeight() == HeightType.Stretch)
+        if (toggleInput.GetHeight() == HeightType.Stretch)
         {
             LinearLayout toggleInputContainer = new LinearLayout(context);
-            toggleInputContainer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+
+            if (toggleInput.GetHeight() == HeightType.Stretch)
+            {
+                toggleInputContainer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+            }
+            else
+            {
+                toggleInputContainer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            }
+
+            tagContent.SetStretchContainer(toggleInputContainer);
             toggleInputContainer.addView(checkBox);
             viewGroup.addView(toggleInputContainer);
         }
@@ -111,6 +134,10 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
         {
             viewGroup.addView(checkBox);
         }
+
+        checkBox.setTag(tagContent);
+        setVisibility(baseCardElement.GetIsVisible(), checkBox);
+
         return checkBox;
     }
 

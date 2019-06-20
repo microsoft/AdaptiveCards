@@ -1,6 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "ParseUtil.h"
 #include "TimeInput.h"
+#include "Util.h"
 
 using namespace AdaptiveSharedNamespace;
 
@@ -76,11 +79,11 @@ void TimeInput::SetValue(const std::string& value)
     m_value = value;
 }
 
-std::shared_ptr<BaseCardElement> TimeInputParser::Deserialize(ParseContext&, const Json::Value& json)
+std::shared_ptr<BaseCardElement> TimeInputParser::Deserialize(ParseContext& context, const Json::Value& json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::TimeInput);
 
-    std::shared_ptr<TimeInput> timeInput = BaseInputElement::Deserialize<TimeInput>(json);
+    std::shared_ptr<TimeInput> timeInput = BaseInputElement::Deserialize<TimeInput>(context, json);
 
     timeInput->SetMax(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Max));
     timeInput->SetMin(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Min));

@@ -1,6 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.adaptivecardssample;
 
-import android.media.MediaPlayer;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +18,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
@@ -21,15 +27,22 @@ import android.view.Menu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
+import io.adaptivecards.renderer.BaseActionElementRenderer;
+import io.adaptivecards.renderer.GenericImageLoaderAsync;
+import io.adaptivecards.renderer.IOnlineImageLoader;
+import io.adaptivecards.renderer.IResourceResolver;
 import io.adaptivecards.renderer.IMediaDataSourceOnPreparedListener;
 import io.adaptivecards.renderer.IOnlineMediaLoader;
+import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.Util;
+import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.*;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
 import io.adaptivecards.renderer.http.HttpRequestHelper;
+import io.adaptivecards.renderer.http.HttpRequestResult;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 import org.json.JSONException;
@@ -44,6 +57,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -51,6 +65,10 @@ import java.util.TimerTask;
 
 import android.media.MediaDataSource;
 import android.support.annotation.RequiresApi;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+import com.pixplicity.sharp.Sharp;
 
 public class MainActivityAdaptiveCardsSample extends FragmentActivity
         implements ICardActionHandler
@@ -62,37 +80,39 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     }
 
     private static String IS_CARD = "isCard";
+    private RemoteClientConnection m_remoteClientConnection;
+    private Button m_buttonScanQr;
+    private Button m_buttonDisconnect;
+    private View m_adaptiveCardPickerGroup;
+    private View m_hostConfigPickerGroup;
+    private EditText m_jsonEditText;
+    private EditText m_configEditText;
+    private Timer m_timer=new Timer();
+    private final long DELAY = 1000; // milliseconds
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_adaptive_cards_sample);
+
+        m_buttonScanQr = (Button)findViewById(R.id.buttonScanQr);
+        m_buttonDisconnect = (Button)findViewById(R.id.buttonDisconnect);
+        m_adaptiveCardPickerGroup = findViewById(R.id.adaptiveCardPickerGroup);
+        m_hostConfigPickerGroup = findViewById(R.id.hostConfigPickerGroup);
+
         setupTabs();
+        setupImageLoader();
 
         // Add text change handler
-        final EditText jsonEditText = (EditText) findViewById(R.id.jsonAdaptiveCard);
-        final EditText configEditText = (EditText) findViewById(R.id.hostConfig);
+        m_jsonEditText = (EditText) findViewById(R.id.jsonAdaptiveCard);
+        m_configEditText = (EditText) findViewById(R.id.hostConfig);
 
         TextWatcher watcher = new TextWatcher()
         {
             @Override
             public void afterTextChanged(Editable editable)
             {
-                m_timer.cancel();
-                m_timer = new Timer();
-                m_timer.schedule(new TimerTask()
-                {
-                    public void run()
-                    {
-                        jsonEditText.post(new Runnable()
-                        {
-                            public void run()
-                            {
-                                renderAdaptiveCard(true);
-                            }
-                        });
-                    }
-                }, DELAY);
+                renderAdaptiveCardAfterDelay(true);
             }
 
             @Override
@@ -100,13 +120,10 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) { }
-
-            private Timer m_timer=new Timer();
-            private final long DELAY = 1000; // milliseconds
         };
 
-        jsonEditText.addTextChangedListener(watcher);
-        configEditText.addTextChangedListener(watcher);
+        m_jsonEditText.addTextChangedListener(watcher);
+        m_configEditText.addTextChangedListener(watcher);
     }
 
     public class CustomCardElement extends BaseCardElement
@@ -138,6 +155,158 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         tabHost.addTab(tabHost.newTabSpec("tab_json").setIndicator("JSON").setContent(R.id.JSON));
         tabHost.addTab(tabHost.newTabSpec("tab_config").setIndicator("Config").setContent(R.id.config));
         tabHost.setCurrentTab(0);
+    }
+
+    public class CustomRedActionElement extends BaseActionElement
+    {
+
+        public CustomRedActionElement(ActionType type) {
+            super(type);
+        }
+
+        public String getBackwardString()
+        {
+            return m_backwardsString;
+        }
+
+        public void setBackwardString(String s)
+        {
+            m_backwardsString = new String();
+            for(int i = s.length() - 1; i >= 0; i--)
+            {
+                m_backwardsString += s.charAt(i);
+            }
+        }
+
+        private String m_backwardsString;
+        public static final String CustomActionId = "redAction";
+    }
+
+    public class CustomRedActionParser extends ActionElementParser
+    {
+        @Override
+        public BaseActionElement Deserialize(ParseContext context, JsonValue value)
+        {
+            CustomRedActionElement element = new CustomRedActionElement(ActionType.Custom);
+            element.SetElementTypeString(CustomRedActionElement.CustomActionId);
+            element.SetId("backwardActionDeserialize");
+            String val = value.getString();
+            try {
+                JSONObject obj = new JSONObject(val);
+                element.setBackwardString(obj.getString("backwardString"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+                element.setBackwardString("deliaF");
+            }
+            return element;
+        }
+
+        @Override
+        public BaseActionElement DeserializeFromString(ParseContext context, String jsonString)
+        {
+            CustomRedActionElement element = new CustomRedActionElement(ActionType.Custom);
+            element.SetElementTypeString(CustomRedActionElement.CustomActionId);
+            element.SetId("backwardActionDeserialize");
+            try {
+                JSONObject obj = new JSONObject(jsonString);
+                element.setBackwardString(obj.getString("backwardString"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+                element.setBackwardString("deliaF");
+            }
+            return element;
+        }
+    }
+
+    public class CustomRedActionRenderer extends BaseActionElementRenderer
+    {
+        @Override
+        public Button render(RenderedAdaptiveCard renderedCard,
+                             Context context,
+                             FragmentManager fragmentManager,
+                             ViewGroup viewGroup,
+                             BaseActionElement baseActionElement,
+                             ICardActionHandler cardActionHandler,
+                             HostConfig hostConfig,
+                             RenderArgs renderArgs)
+        {
+            Button backwardActionButton = new Button(context);
+
+            CustomRedActionElement customAction = (CustomRedActionElement) baseActionElement.findImplObj();
+
+            backwardActionButton.setBackgroundColor(getResources().getColor(R.color.redActionColor));
+            backwardActionButton.setText(customAction.getBackwardString());
+            backwardActionButton.setAllCaps(false);
+            backwardActionButton.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, baseActionElement, cardActionHandler));
+
+            viewGroup.addView(backwardActionButton);
+
+            return backwardActionButton;
+        }
+    }
+
+    public class CustomGreenActionElement extends BaseActionElement
+    {
+
+        public CustomGreenActionElement(ActionType type) {
+            super(type);
+        }
+
+        public String getMessage()
+        {
+            return m_message;
+        }
+
+        private final String m_message = "Smell you later!";
+        public static final String CustomActionId = "greenAction";
+    }
+
+    public class CustomGreenActionParser extends ActionElementParser
+    {
+        @Override
+        public BaseActionElement Deserialize(ParseContext context, JsonValue value)
+        {
+            CustomGreenActionElement element = new CustomGreenActionElement(ActionType.Custom);
+            element.SetElementTypeString(CustomGreenActionElement.CustomActionId);
+            element.SetId("greenActionDeserialize");
+            return element;
+        }
+
+        @Override
+        public BaseActionElement DeserializeFromString(ParseContext context, String jsonString)
+        {
+            CustomGreenActionElement element = new CustomGreenActionElement(ActionType.Custom);
+            element.SetElementTypeString(CustomGreenActionElement.CustomActionId);
+            element.SetId("greenActionDeserialize");
+            return element;
+        }
+    }
+
+    public class CustomGreenActionRenderer extends BaseActionElementRenderer
+    {
+        @Override
+        public Button render(RenderedAdaptiveCard renderedCard,
+                             Context context,
+                             FragmentManager fragmentManager,
+                             ViewGroup viewGroup,
+                             BaseActionElement baseActionElement,
+                             ICardActionHandler cardActionHandler,
+                             HostConfig hostConfig,
+                             RenderArgs renderArgs)
+        {
+            Button greenActionButton = new Button(context);
+
+            CustomGreenActionElement customAction = (CustomGreenActionElement) baseActionElement.findImplObj();
+
+            greenActionButton.setBackgroundColor(getResources().getColor(R.color.greenActionColor));
+            greenActionButton.setText(customAction.getMessage());
+            greenActionButton.setAllCaps(false);
+            greenActionButton.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, baseActionElement, cardActionHandler));
+
+            viewGroup.addView(greenActionButton);
+
+            return greenActionButton;
+        }
     }
 
     public class CustomBlahParser extends BaseCardElementParser
@@ -179,7 +348,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     public class CustomBlahRenderer extends BaseCardElementRenderer
     {
         @Override
-        public View render(RenderedAdaptiveCard renderedAdaptiveCard, Context context, FragmentManager fragmentManager, ViewGroup viewGroup, BaseCardElement baseCardElement, ICardActionHandler cardActionHandler, HostConfig hostConfig, ContainerStyle containerStyle) {
+        public View render(RenderedAdaptiveCard renderedAdaptiveCard, Context context, FragmentManager fragmentManager, ViewGroup viewGroup, BaseCardElement baseCardElement, ICardActionHandler cardActionHandler, HostConfig hostConfig, RenderArgs renderArgs) {
             TextView textView = new TextView(context);
 
             CustomCardElement element = (CustomCardElement) baseCardElement.findImplObj();
@@ -191,6 +360,31 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             viewGroup.addView(textView);
 
             return textView;
+        }
+    }
+
+    public class ShowCardOverrideRenderer extends BaseActionElementRenderer
+    {
+
+        @Override
+        public Button render(RenderedAdaptiveCard renderedCard,
+                             Context context,
+                             FragmentManager fragmentManager,
+                             ViewGroup viewGroup,
+                             BaseActionElement baseActionElement,
+                             ICardActionHandler cardActionHandler,
+                             HostConfig hostConfig,
+                             RenderArgs renderArgs)
+        {
+            Button button = new Button(context);
+
+            button.setBackgroundColor(getResources().getColor(R.color.yellowActionColor));
+            button.setText(baseActionElement.GetTitle() +"(ShowCard)");
+
+            button.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, context, fragmentManager, viewGroup, baseActionElement, cardActionHandler, hostConfig));
+
+            viewGroup.addView(button);
+            return button;
         }
     }
 
@@ -342,17 +536,40 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         }
     }
 
+    private void renderAdaptiveCardAfterDelay(boolean showErrorToast)
+    {
+        m_timer.cancel();
+        m_timer = new Timer();
+        m_timer.schedule(new TimerTask()
+        {
+            public void run()
+            {
+                m_jsonEditText.post(new Runnable()
+                {
+                    public void run()
+                    {
+                        renderAdaptiveCard(true);
+                    }
+                });
+            }
+        }, DELAY);
+    }
+
     private void renderAdaptiveCard(boolean showErrorToast)
     {
+        // Cancel any existing timer, in case we were rendered on-demand while a
+        // delay render was still in the queue
+        m_timer.cancel();
+
         try
         {
-            String jsonText = ((EditText) findViewById(R.id.jsonAdaptiveCard)).getText().toString();
+            String jsonText = m_jsonEditText.getText().toString();
             if (jsonText == null)
             {
                 return;
             }
 
-            String hostConfigText = ((EditText) findViewById(R.id.hostConfig)).getText().toString();
+            String hostConfigText = m_configEditText.getText().toString();
             HostConfig hostConfig;
             if (hostConfigText.isEmpty())
             {
@@ -366,14 +583,27 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             ElementParserRegistration elementParserRegistration = new ElementParserRegistration();
             elementParserRegistration.AddParser("blah", new CustomBlahParser());
 
+            ActionParserRegistration actionParserRegistration = new ActionParserRegistration();
+            actionParserRegistration.AddParser(CustomRedActionElement.CustomActionId, new CustomRedActionParser());
+            actionParserRegistration.AddParser(CustomGreenActionElement.CustomActionId, new CustomGreenActionParser());
+
             CardRendererRegistration.getInstance().registerRenderer("blah", new CustomBlahRenderer());
+            CardRendererRegistration.getInstance().registerActionRenderer(CustomRedActionElement.CustomActionId, new CustomRedActionRenderer());
+            CardRendererRegistration.getInstance().registerActionRenderer(CustomGreenActionElement.CustomActionId, new CustomGreenActionRenderer());
+            // Example on how to override the showcard renderer
+            // CardRendererRegistration.getInstance().registerActionRenderer(AdaptiveCardObjectModel.ActionTypeToString(ActionType.ShowCard), new ShowCardOverrideRenderer());
 
             // Example on how a custom OnlineMediaLoader should be registered
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 CardRendererRegistration.getInstance().registerOnlineMediaLoader(new OnlineMediaLoader());
             }
 
-            ParseContext context = new ParseContext(elementParserRegistration, null);
+            // Sample on how to register a feature registration object
+            FeatureRegistration myFeatureRegistration = new FeatureRegistration();
+            myFeatureRegistration.AddFeature("acTest", "1.0");
+            CardRendererRegistration.getInstance().registerFeatureRegistration(myFeatureRegistration);
+
+            ParseContext context = new ParseContext(elementParserRegistration, actionParserRegistration);
 
             ParseResult parseResult = AdaptiveCard.DeserializeFromString(jsonText, AdaptiveCardRenderer.VERSION, context);
             LinearLayout layout = (LinearLayout) findViewById(R.id.visualAdaptiveCardLayout);
@@ -453,14 +683,22 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         {
             return;
         }
-        EditText jsonText = (EditText) findViewById(R.id.jsonAdaptiveCard);
-        jsonText.setText(fullString);
+        loadAdaptiveCard(fullString);
 
         EditText fileEditText = (EditText) findViewById(R.id.fileEditText);
         List path = data.getData().getPathSegments();
         fileEditText.setText((String)path.get(path.size()-1));
 
     }
+
+    private void loadAdaptiveCard(String payload)
+    {
+        m_jsonEditText.setText(payload);
+
+        // Render it immediately
+        renderAdaptiveCard(true);
+    }
+
 
     private void loadHostConfig(Intent data)
     {
@@ -470,8 +708,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             return;
         }
 
-        EditText configText = (EditText) findViewById(R.id.hostConfig);
-        configText.setText(fullString);
+        loadHostConfig(fullString);
 
         EditText fileEditText = (EditText) findViewById(R.id.hostConfigFileEditText);
         List path = data.getData().getPathSegments();
@@ -479,8 +716,20 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
     }
 
+    private void loadHostConfig(String hostConfigStr)
+    {
+        m_configEditText.setText(hostConfigStr);
+
+        // Render it immediately
+        renderAdaptiveCard(true);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (handleQrActivityResult(requestCode, resultCode, data)) {
+            return;
+        }
+
         switch (requestCode) {
             case FILE_SELECT_CARD:
                 if (resultCode == RESULT_OK)
@@ -638,4 +887,293 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         this.runOnUiThread(new RunnableExtended(this, text, duration));
     }
 
+    private void setupImageLoader()
+    {
+        CardRendererRegistration.getInstance().registerResourceResolver("package", new IResourceResolver()
+        {
+            @Override
+            public HttpRequestResult<Bitmap> resolveImageResource(String url, GenericImageLoaderAsync loader) throws IOException, URISyntaxException
+            {
+                // Get image identifier
+                String authority = getPackageName();
+                Resources resources = getResources();
+
+                // For host app only provides image file name as url, host app can pass "package:[IMAGE NAME]" as replacement for
+                // meeting the valid URL format checking. Here we will remove this prefix to get file name.
+                if (url.startsWith("package:"))
+                {
+                    url = url.replace("package:", "drawable/");
+                }
+
+                int identifier = resources.getIdentifier(url, "", authority);
+                if (identifier == 0)
+                {
+                    throw new IOException("Image not found: " + url);
+                }
+
+                InputStream ins = resources.openRawResource(identifier);
+                Bitmap bitmap = BitmapFactory.decodeStream(ins);
+                if (bitmap == null)
+                {
+                    throw new IOException("Failed to convert local content to bitmap: " + url);
+                }
+
+                return new HttpRequestResult<>(bitmap);
+            }
+
+            @Override
+            public HttpRequestResult<Bitmap> resolveImageResource(String url, GenericImageLoaderAsync loader, int maxWidth) throws IOException, URISyntaxException
+            {
+                return resolveImageResource(url, loader);
+            }
+        });
+
+        CardRendererRegistration.getInstance().registerResourceResolver("data", new IResourceResolver()
+        {
+            @Override
+            public HttpRequestResult<Bitmap> resolveImageResource(String uri, GenericImageLoaderAsync genericImageLoaderAsync) throws IOException, URISyntaxException
+            {
+                Bitmap bitmap;
+                String dataUri = AdaptiveBase64Util.ExtractDataFromUri(uri);
+                CharVector decodedDataUri = AdaptiveBase64Util.Decode(dataUri);
+                byte[] decodedByteArray = Util.getBytes(decodedDataUri);
+                bitmap = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
+
+                return new HttpRequestResult<>(bitmap);
+            }
+
+            @Override
+            public HttpRequestResult<Bitmap> resolveImageResource(String uri, GenericImageLoaderAsync genericImageLoaderAsync, int maxWidth) throws IOException, URISyntaxException
+            {
+                Bitmap bitmap;
+                String dataUri = AdaptiveBase64Util.ExtractDataFromUri(uri);
+                CharVector decodedDataUri = AdaptiveBase64Util.Decode(dataUri);
+
+                if (uri.startsWith("data:image/svg")) {
+                    String svgString = AdaptiveBase64Util.ExtractDataFromUri(uri);
+                    String decodedSvgString = URLDecoder.decode(svgString, "UTF-8");
+                    Sharp sharp = Sharp.loadString(decodedSvgString);
+                    Drawable drawable = sharp.getDrawable();
+                    bitmap = ImageUtil.drawableToBitmap(drawable, maxWidth);
+                }
+                else
+                {
+                    try
+                    {
+                        return genericImageLoaderAsync.loadDataUriImage(uri);
+                    }
+                    catch (Exception e)
+                    {
+                        return new HttpRequestResult<>(e);
+                    }
+                }
+
+                return new HttpRequestResult<>(bitmap);
+            }
+        });
+
+        // Code to demonstrate how IOnlineImageLoader registration works, uncomment to test, you should see that all images rendered are all the same cat
+        /*
+        CardRendererRegistration.getInstance().registerOnlineImageLoader(new IOnlineImageLoader() {
+            @Override
+            public HttpRequestResult<Bitmap> loadOnlineImage(String url, GenericImageLoaderAsync loader) throws IOException, URISyntaxException
+            {
+                String catImnageUri = "http://adaptivecards.io/content/cats/1.png";
+                byte[] bytes = HttpRequestHelper.get(catImnageUri);
+                if (bytes == null)
+                {
+                    throw new IOException("Failed to retrieve content from " + catImnageUri);
+                }
+
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+                if (bitmap == null)
+                {
+                    throw new IOException("Failed to convert content to bitmap: " + new String(bytes));
+                }
+
+                return new HttpRequestResult<>(bitmap);
+            }
+        });
+        */
+    }
+
+    public void onScanQrClicked(View view)
+    {
+        goToConnectingState();
+
+        // Docs here: https://github.com/journeyapps/zxing-android-embedded
+        IntentIntegrator integrator = new IntentIntegrator(this);
+        integrator.setPrompt("Scan QR code from the Designer");
+        integrator.setBeepEnabled(false);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+        integrator.setOrientationLocked(true);
+        integrator.initiateScan();
+    }
+
+    private boolean handleQrActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        IntentResult qrResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (qrResult != null)
+        {
+            String contents = qrResult.getContents();
+            if (contents != null)
+            {
+                m_remoteClientConnection = new RemoteClientConnection(this, new RemoteClientConnection.Observer()
+                {
+                    @Override
+                    public void onConnecting(String status)
+                    {
+                        final String finalStatus = status;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), finalStatus, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onStateChanged(RemoteClientConnection.State state)
+                    {
+                        final RemoteClientConnection.State s = state;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                switch (s) {
+                                    // Connecting omitted because that's never hit, it's already
+                                    // connecting by the time we started observing
+                                    case CONNECTED:
+                                        goToConnectedState();
+                                        break;
+
+                                    case RECONNECTING:
+                                        goToReconnectingState();
+                                        break;
+
+                                    case CLOSED:
+                                        goToDisconnectedState();
+                                        break;
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onConnectFailed(String errorMessage)
+                    {
+                        m_remoteClientConnection = null;
+                        final String finalErrorMessage = errorMessage;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), finalErrorMessage, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCardPayload(String cardPayload)
+                    {
+                        final String cPayload = cardPayload;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                loadAdaptiveCard(cPayload);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onHostConfigPayload(String hostConfigPayload)
+                    {
+                        final String hPayload = hostConfigPayload;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                loadHostConfig(hPayload);
+                            }
+                        });
+                    }
+                });
+
+                m_remoteClientConnection.connect(contents);
+            }
+
+            else
+            {
+                goToDisconnectedState();
+            }
+
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public void onDisconnectClicked(View view)
+    {
+        disconnect();
+        goToDisconnectedState();
+    }
+
+    private void disconnect()
+    {
+        if (m_remoteClientConnection != null)
+        {
+            m_remoteClientConnection.disconnect();
+            m_remoteClientConnection = null;
+        }
+    }
+
+    private void goToConnectingState()
+    {
+        m_buttonScanQr.setText("Connecting...");
+        m_buttonScanQr.setVisibility(View.VISIBLE);
+        m_buttonScanQr.setEnabled(false);
+        m_buttonDisconnect.setVisibility(View.GONE);
+        goToReadOnlyState();
+    }
+
+    private void goToConnectedState()
+    {
+        m_buttonScanQr.setVisibility(View.GONE);
+        m_buttonDisconnect.setVisibility(View.VISIBLE);
+        m_buttonDisconnect.setText("Connected! Click to disconnect");
+        goToReadOnlyState();
+    }
+
+    private void goToReconnectingState()
+    {
+        m_buttonScanQr.setVisibility(View.GONE);
+        m_buttonDisconnect.setVisibility(View.VISIBLE);
+        m_buttonDisconnect.setText("Reconnecting... Tap to disconnect");
+        goToReadOnlyState();
+    }
+
+    private void goToDisconnectedState()
+    {
+        m_buttonScanQr.setText("Connect via QR Code");
+        m_buttonScanQr.setVisibility(View.VISIBLE);
+        m_buttonScanQr.setEnabled(true);
+        m_buttonDisconnect.setVisibility(View.GONE);
+        goToEditableState();
+    }
+
+    private void goToReadOnlyState()
+    {
+        m_adaptiveCardPickerGroup.setVisibility(View.GONE);
+        m_hostConfigPickerGroup.setVisibility(View.GONE);
+        m_jsonEditText.setEnabled(false);
+        m_configEditText.setEnabled(false);
+    }
+
+    private void goToEditableState()
+    {
+        m_adaptiveCardPickerGroup.setVisibility(View.VISIBLE);
+        m_hostConfigPickerGroup.setVisibility(View.VISIBLE);
+        m_jsonEditText.setEnabled(true);
+        m_configEditText.setEnabled(true);
+    }
 }

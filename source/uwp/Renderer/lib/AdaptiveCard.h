@@ -1,11 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "SharedAdaptiveCard.h"
+#include "AdaptiveBackgroundImage.h"
 
 namespace AdaptiveNamespace
 {
-    class DECLSPEC_UUID("6a88e6d4-373a-48ba-840e-16c4b39278b1") AdaptiveCard
+    class DECLSPEC_UUID("ADF7ECAB-1405-4E42-83B0-ECEFFE7CE728") AdaptiveCard
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRt>,
                                               ABI::AdaptiveNamespace::IAdaptiveCard,
                                               Microsoft::WRL::CloakedIid<ITypePeek>>
@@ -23,8 +26,8 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_FallbackText(_Outptr_ HSTRING* fallbackText);
         IFACEMETHODIMP put_FallbackText(_In_ HSTRING fallbackText);
 
-        IFACEMETHODIMP get_BackgroundImage(_Outptr_ HSTRING* backgroundImage);
-        IFACEMETHODIMP put_BackgroundImage(_In_ HSTRING backgroundImage);
+        IFACEMETHODIMP get_BackgroundImage(_Outptr_ ABI::AdaptiveNamespace::IAdaptiveBackgroundImage** backgroundImage);
+        IFACEMETHODIMP put_BackgroundImage(_In_ ABI::AdaptiveNamespace::IAdaptiveBackgroundImage* backgroundImage);
 
         IFACEMETHODIMP get_Language(_Outptr_ HSTRING* language);
         IFACEMETHODIMP put_Language(_In_ HSTRING language);
@@ -51,6 +54,9 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveNamespace::HeightType* heightType);
         IFACEMETHODIMP put_Height(ABI::AdaptiveNamespace::HeightType heightType);
 
+        IFACEMETHODIMP get_MinHeight(_Out_ UINT32* minHeight);
+        IFACEMETHODIMP put_MinHeight(UINT32 minHeight);
+
         IFACEMETHODIMP ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
 
         IFACEMETHODIMP GetResourceInformation(
@@ -71,8 +77,9 @@ namespace AdaptiveNamespace
         Microsoft::WRL::Wrappers::HString m_speak;
         ABI::AdaptiveNamespace::HeightType m_height;
         Microsoft::WRL::Wrappers::HString m_language;
+        UINT32 m_minHeight;
 
-        Microsoft::WRL::Wrappers::HString m_backgroundImage;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveBackgroundImage> m_backgroundImage;
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_selectAction;
         ABI::AdaptiveNamespace::ContainerStyle m_style;

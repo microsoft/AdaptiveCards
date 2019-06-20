@@ -1,0 +1,11 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+  "extends": "Action",
+  "description": "Defines an AdaptiveCard which is shown to the user when the button or link is clicked.",
+  "properties": {
+    "card": {
+      "type": "AdaptiveCard",
+      "description": "The Adaptive Card to show."
+    }
+  }
+}

@@ -1,15 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "stdafx.h"
-#include "CppUnitTest.h"
-#include "TextBlock.h"
-#include <time.h>
-#include <Windows.h>
-#include <StrSafe.h>
-#include "SharedAdaptiveCard.h"
-#include "BaseCardElement.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AdaptiveCards;
-using namespace std;
 
 namespace AdaptiveCardsSharedModelUnitTest
 {
@@ -88,7 +82,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     },\
                     {\
                         \"type\": \"ImageSet\",\
-			            \"images\": \
+                        \"images\": \
                         [ \
                             {\
                                 \"type\": \"Image\", \
@@ -102,7 +96,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     },\
                     {\
                         \"type\": \"Container\",\
-			            \"items\": \
+                        \"items\": \
                         [ \
                             {\
                                 \"type\": \"Image\", \
@@ -116,11 +110,11 @@ namespace AdaptiveCardsSharedModelUnitTest
                     },\
                     {\
                         \"type\": \"ColumnSet\",\
-			            \"columns\": \
+                        \"columns\": \
                         [ \
                             { \
                                 \"type\": \"Column\",\
-			                    \"items\": \
+                                \"items\": \
                                 [ \
                                     {\
                                         \"type\": \"Image\", \
@@ -130,7 +124,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                             }, \
                             { \
                                 \"type\": \"Column\",\
-			                    \"items\": \
+                                \"items\": \
                                 [ \
                                     {\
                                         \"type\": \"Image\", \
@@ -141,7 +135,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                        ] \
                     }\
                 ],\
-	            \"actions\": \
+                \"actions\": \
                 [ \
                     { \
                         \"type\": \"Action.ShowCard\", \
@@ -234,9 +228,9 @@ namespace AdaptiveCardsSharedModelUnitTest
                     return std::make_shared<TestCustomElement>(value);
                 }
                 virtual std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext &context, const std::string& value) override
-				{
-					return Deserialize(context, ParseUtil::GetJsonValueFromString(value));
-				}
+                {
+                    return Deserialize(context, ParseUtil::GetJsonValueFromString(value));
+                }
             };
 
             // Define custom action parser
@@ -246,6 +240,11 @@ namespace AdaptiveCardsSharedModelUnitTest
                 virtual std::shared_ptr<BaseActionElement> Deserialize(ParseContext &context, const Json::Value& value) override
                 {
                     return std::make_shared<TestCustomElement>(value);
+                }
+
+                virtual std::shared_ptr<BaseActionElement> DeserializeFromString(ParseContext &context, const std::string& jsonString) override
+                {
+                    return Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
                 }
             };
 

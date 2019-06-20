@@ -1,15 +1,15 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
 using System.Xml;
-using System.Xml.Schema;
 using System.Xml.Serialization;
 using JsonTransformLanguage;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Linq;
 
 namespace AdaptiveCards
 {
@@ -21,10 +21,6 @@ namespace AdaptiveCards
     [XmlRoot(ElementName = "Card")]
 #endif
     public class AdaptiveCard : AdaptiveTypedElement
-#if WINDOWS_UWP
-      // TODO: uncomment when I figure out the Windows build
-       //   , Windows.UI.Shell.IAdaptiveCard
-#endif
     {
         public const string ContentType = "application/vnd.microsoft.card.adaptive";
 
@@ -61,85 +57,6 @@ namespace AdaptiveCards
         public AdaptiveCard() : this(new AdaptiveSchemaVersion(1, 0)) { }
 
         /// <summary>
-        /// The Body elements for this card
-        /// </summary>
-        [JsonProperty(Order = -3)]
-        [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveElement>))]
-#if !NETSTANDARD1_3
-        [XmlElement(typeof(AdaptiveTextBlock))]
-        [XmlElement(typeof(AdaptiveImage))]
-        [XmlElement(typeof(AdaptiveContainer))]
-        [XmlElement(typeof(AdaptiveColumnSet))]
-        [XmlElement(typeof(AdaptiveImageSet))]
-        [XmlElement(typeof(AdaptiveFactSet))]
-        [XmlElement(typeof(AdaptiveTextInput))]
-        [XmlElement(typeof(AdaptiveDateInput))]
-        [XmlElement(typeof(AdaptiveTimeInput))]
-        [XmlElement(typeof(AdaptiveNumberInput))]
-        [XmlElement(typeof(AdaptiveToggleInput))]
-        [XmlElement(typeof(AdaptiveChoiceSetInput))]
-        [XmlElement(typeof(AdaptiveMedia))]
-#endif
-        public List<AdaptiveElement> Body { get; set; } = new List<AdaptiveElement>();
-
-        public bool ShouldSerializeBody() => Body?.Count > 0;
-
-        /// <summary>
-        ///     Actions for the card
-        /// </summary>
-        [JsonProperty(Order = -2)]
-        [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveAction>))]
-#if !NETSTANDARD1_3
-        [XmlArray("Actions")]
-        [XmlArrayItem(ElementName = "OpenUrl", Type = typeof(AdaptiveOpenUrlAction))]
-        [XmlArrayItem(ElementName = "ShowCard", Type = typeof(AdaptiveShowCardAction))]
-        [XmlArrayItem(ElementName = "Submit", Type = typeof(AdaptiveSubmitAction))]
-#endif
-        public List<AdaptiveAction> Actions { get; set; } = new List<AdaptiveAction>();
-
-        public bool ShouldSerializeActions() => Actions?.Count > 0;
-
-        /// <summary>
-        ///     Speak annotation for the card
-        /// </summary>
-        [JsonProperty(Order = -7, NullValueHandling = NullValueHandling.Ignore)]
-#if !NETSTANDARD1_3
-        [XmlElement]
-#endif
-        [DefaultValue(null)]
-        public string Speak { get; set; }
-
-        /// <summary>
-        ///     Title for the card (used when displayed in a dialog)
-        /// </summary>
-        [JsonProperty(Order = -6, NullValueHandling = NullValueHandling.Ignore)]
-        [Obsolete("The Title property is not officially supported right now and should not be used")]
-        public string Title { get; set; }
-
-        /// <summary>
-        ///     Background image for card
-        /// </summary>
-        [JsonProperty(Order = -5, DefaultValueHandling = DefaultValueHandling.Ignore)]
-#if !NETSTANDARD1_3
-        [XmlIgnore]
-#endif
-        public Uri BackgroundImage { get; set; }
-
-        /// <summary>
-        ///     This is necessary for XML serialization. You should use the <see cref="F:BackgroundImage" /> property directly.
-        /// </summary>
-#if !NETSTANDARD1_3
-        [XmlAttribute("BackgroundImage")]
-        [Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
-#endif
-        [JsonIgnore]
-        public string BackgroundImageString
-        {
-            get { return BackgroundImage?.ToString(); }
-            set { BackgroundImage = new Uri(value); }
-        }
-
-        /// <summary>
         ///     Schema version that this card requires. If a client is lower than this version the fallbackText will be rendered.
         /// </summary>
         [JsonProperty(Order = -10, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate, NullValueHandling = NullValueHandling.Include)]
@@ -167,6 +84,16 @@ namespace AdaptiveCards
         public string FallbackText { get; set; }
 
         /// <summary>
+        ///     Speak annotation for the card
+        /// </summary>
+        [JsonProperty(Order = -7, NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        [DefaultValue(null)]
+        public string Speak { get; set; }
+
+        /// <summary>
         ///     The 2-letter ISO-639-1 language used in the card. Used to localize any date/time functions
         /// </summary>
         [JsonProperty(Order = -7, NullValueHandling = NullValueHandling.Ignore)]
@@ -177,7 +104,101 @@ namespace AdaptiveCards
         public string Lang { get; set; }
 
         /// <summary>
-        ///     The content alignment for the eelment inside the container.
+        ///     Title for the card (used when displayed in a dialog)
+        /// </summary>
+        [JsonProperty(Order = -6, NullValueHandling = NullValueHandling.Ignore)]
+        [Obsolete("The Title property is not officially supported right now and should not be used")]
+        public string Title { get; set; }
+
+        /// <summary>
+        ///     Background image for card
+        /// </summary>
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        [JsonProperty(Order = -5, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonConverter(typeof(AdaptiveBackgroundImageConverter))]
+        [DefaultValue(null)]
+        public AdaptiveBackgroundImage BackgroundImage { get; set; }
+
+        /// <summary>
+        ///     Value that denotes if the card must use all the vertical space that is set to it. Default value is <see cref="AdaptiveHeight.Default"/>.
+        /// </summary>
+        [JsonConverter(typeof(StringSizeWithUnitConverter), true)]
+        [JsonProperty(Order = -4, DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlElement(typeof(AdaptiveHeight))]
+#endif
+        [DefaultValue(typeof(AdaptiveHeight), "auto")]
+        public AdaptiveHeight Height { get; set; }
+
+        /// <summary>
+        ///    Explicit card minimum height in pixels
+        /// </summary>
+        [JsonConverter(typeof(StringSizeWithUnitConverter), false)]
+        [JsonProperty("minHeight", DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(0)]
+        public uint PixelMinHeight { get; set; }
+
+        /// <summary>
+        /// The Body elements for this card
+        /// </summary>
+        [JsonProperty(Order = -3)]
+        [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveElement>))]
+#if !NETSTANDARD1_3
+        [XmlElement(typeof(AdaptiveTextBlock))]
+        [XmlElement(typeof(AdaptiveImage))]
+        [XmlElement(typeof(AdaptiveContainer))]
+        [XmlElement(typeof(AdaptiveColumnSet))]
+        [XmlElement(typeof(AdaptiveImageSet))]
+        [XmlElement(typeof(AdaptiveFactSet))]
+        [XmlElement(typeof(AdaptiveTextInput))]
+        [XmlElement(typeof(AdaptiveDateInput))]
+        [XmlElement(typeof(AdaptiveTimeInput))]
+        [XmlElement(typeof(AdaptiveNumberInput))]
+        [XmlElement(typeof(AdaptiveToggleInput))]
+        [XmlElement(typeof(AdaptiveChoiceSetInput))]
+        [XmlElement(typeof(AdaptiveMedia))]
+        [XmlElement(typeof(AdaptiveActionSet))]
+#endif
+        public List<AdaptiveElement> Body { get; set; } = new List<AdaptiveElement>();
+
+        public bool ShouldSerializeBody() => Body?.Count > 0;
+
+        /// <summary>
+        ///     Actions for the card
+        /// </summary>
+        [JsonProperty(Order = -2)]
+        [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveAction>))]
+#if !NETSTANDARD1_3
+        [XmlElement(typeof(AdaptiveOpenUrlAction))]
+        [XmlElement(typeof(AdaptiveShowCardAction))]
+        [XmlElement(typeof(AdaptiveSubmitAction))]
+        [XmlElement(typeof(AdaptiveToggleVisibilityAction))]
+#endif
+        public List<AdaptiveAction> Actions { get; set; } = new List<AdaptiveAction>();
+
+        public bool ShouldSerializeActions() => Actions?.Count > 0;
+
+        /// <summary>
+        /// This makes sure the $schema property doesn't show up in AdditionalProperties
+        /// </summary>
+        [JsonProperty("$schema")]
+#if !NETSTANDARD1_3
+        [XmlIgnore]
+#endif
+        internal string JsonSchema { get; set; }
+
+        public bool ShouldSerializeJsonSchema()
+        {
+            return false;
+        }
+
+        /// <summary>
+        ///     The content alignment for the element inside the container.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
@@ -215,17 +236,6 @@ namespace AdaptiveCards
             }
             return true;
         }
-
-        /// <summary>
-        ///     Value that denotes if the card must use all the vertical space that is set to it. Default value is <see cref="AdaptiveHeight.Default"/>.
-        /// </summary>
-        [JsonConverter(typeof(StringSizeWithUnitConverter), true)]
-        [JsonProperty(Order = -4, DefaultValueHandling = DefaultValueHandling.Ignore)]
-#if !NETSTANDARD1_3
-        [XmlElement(typeof(AdaptiveHeight))]
-#endif
-        [DefaultValue(typeof(AdaptiveHeight), "auto")]
-        public AdaptiveHeight Height { get; set; }
 
         /// <summary>
         /// Parse an AdaptiveCard from a JSON string
@@ -312,20 +322,7 @@ namespace AdaptiveCards
             return JsonConvert.SerializeObject(this, Newtonsoft.Json.Formatting.Indented);
         }
 
-        /// <summary>
-        /// This makes sure the $schema property doesn't show up in AdditionalProperties
-        /// </summary>
-        [JsonProperty("$schema")]
-#if !NETSTANDARD1_3
-        [XmlIgnore]
-#endif
-        internal string JsonSchema { get; set; }
         public JToken CurrentData { get; private set; }
-
-        public bool ShouldSerializeJsonSchema()
-        {
-            return false;
-        }
 
         /// <summary>
         /// Get resource information for all Images/Media in the whole card
@@ -343,10 +340,10 @@ namespace AdaptiveCards
             List<RemoteResourceInformation> resourceInformationList = new List<RemoteResourceInformation>();
 
             // Get background image
-            if (!String.IsNullOrEmpty(card.BackgroundImageString))
+            if (!String.IsNullOrEmpty(card.BackgroundImage?.UrlString))
             {
                 resourceInformationList.Add(new RemoteResourceInformation(
-                    card.BackgroundImageString,
+                    card.BackgroundImage?.UrlString,
                     "image"
                 ));
             }

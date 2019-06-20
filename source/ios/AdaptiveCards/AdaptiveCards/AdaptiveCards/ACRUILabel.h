@@ -11,4 +11,7 @@
 @interface ACRUILabel:UITextView
 @property ACRContainerStyle style;
 @property CGFloat area;
+
+- (void)handleInlineAction:(UIGestureRecognizer *)gestureRecognizer;
+
 @end

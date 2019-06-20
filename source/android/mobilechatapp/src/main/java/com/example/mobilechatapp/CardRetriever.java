@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.example.mobilechatapp;
 
 import android.content.Context;
@@ -196,8 +198,7 @@ public class CardRetriever
             value = FirstSectionValue.all;
         }
         else if( (firstSectionString.compareToIgnoreCase("random") == 0) ||
-                (firstSectionString.charAt(0) == 'R') ||
-                (firstSectionString.charAt(0) == 'r') )
+                (firstSectionString.compareToIgnoreCase("R") == 0 ) )
         {
             value = FirstSectionValue.random;
         }

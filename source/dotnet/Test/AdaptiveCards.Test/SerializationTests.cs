@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +22,7 @@ namespace AdaptiveCards.Test
             card.Version = "1.0";
             card.FallbackText = "Fallback Text";
             card.Speak = "Speak";
-            card.BackgroundImage = new Uri("http://adaptivecards.io/content/cats/1.png");
+            card.BackgroundImage = new AdaptiveBackgroundImage("http://adaptivecards.io/content/cats/1.png");
             card.Body.Add(new AdaptiveTextBlock { Text = "Hello" });
             card.Actions.Add(new AdaptiveSubmitAction() { Title = "Action 1" });
 
@@ -48,7 +50,7 @@ namespace AdaptiveCards.Test
         }
 
         [TestMethod]
-        public void TestSkippingUnknownElements()
+        public void TestKeepingUnknownElements()
         {
             var json = @"{
   ""type"": ""AdaptiveCard"",
@@ -78,9 +80,19 @@ namespace AdaptiveCards.Test
             var result = AdaptiveCard.FromJson(json);
 
             Assert.IsNotNull(result.Card);
-            Assert.AreEqual(1, result.Card.Body.Count);
-            Assert.AreEqual(1, result.Card.Actions.Count);
+            Assert.AreEqual(2, result.Card.Body.Count);
+            Assert.AreEqual(2, result.Card.Actions.Count);
             Assert.AreEqual(2, result.Warnings.Count);
+
+            // check first unknown element
+            var unknown_elem = (AdaptiveUnknownElement)result.Card.Body[0];
+            Assert.AreEqual(unknown_elem.Type, "IDunno");
+            Assert.AreEqual(unknown_elem.AdditionalProperties["text"], "Hello");
+
+            // check second unknown element
+            var unknown_action = result.Card.Actions[0];
+            Assert.AreEqual(unknown_action.Type, "Action.IDunno");
+            Assert.AreEqual(unknown_action.Title, "Action 1");
         }
 
         [TestMethod]
@@ -133,6 +145,57 @@ namespace AdaptiveCards.Test
     }
   ],
   ""-ms-test"": ""Card extension data""
+}";
+            Assert.AreEqual(expected, card.ToJson());
+
+            var deserializedCard = AdaptiveCard.FromJson(expected).Card;
+            Assert.AreEqual(expected, deserializedCard.ToJson());
+        }
+
+        [TestMethod]
+        public void TestSerializingUnknownItems()
+        {
+            var card = new AdaptiveCard("1.2")
+            {
+                Body =
+                {
+                    new AdaptiveUnknownElement()
+                    {
+                        Type = "Graph",
+                        AdditionalProperties =
+                        {
+                            ["UnknownProperty1"] = "UnknownValue1"
+                        }
+                    }
+                },
+                Actions =
+                {
+                    new AdaptiveUnknownAction()
+                    {
+                        Type = "Action.Graph",
+                        AdditionalProperties =
+                        {
+                            ["UnknownProperty2"] = "UnknownValue2"
+                        }
+                    }
+                }
+            };
+
+            var expected = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.2"",
+  ""body"": [
+    {
+      ""type"": ""Graph"",
+      ""UnknownProperty1"": ""UnknownValue1""
+    }
+  ],
+  ""actions"": [
+    {
+      ""type"": ""Action.Graph"",
+      ""UnknownProperty2"": ""UnknownValue2""
+    }
+  ]
 }";
             Assert.AreEqual(expected, card.ToJson());
 
@@ -417,8 +480,243 @@ namespace AdaptiveCards.Test
             var containerEmphasisStyle = card.Body[1] as AdaptiveContainer;
             Assert.AreEqual(AdaptiveContainerStyle.Emphasis, containerEmphasisStyle.Style);
 
-            var containerNonStyle = card.Body[2] as AdaptiveContainer;
-            Assert.AreEqual(null, containerNonStyle.Style);
+            var containerNoneStyle = card.Body[2] as AdaptiveContainer;
+            Assert.IsNull(containerNoneStyle.Style);
+        }
+
+        [TestMethod]
+        public void BackgroundImage()
+        {
+            var card = new AdaptiveCard("1.2");
+            card.BackgroundImage = new AdaptiveBackgroundImage("http://adaptivecards.io/content/cats/1.png", AdaptiveImageFillMode.Repeat, AdaptiveHorizontalAlignment.Right, AdaptiveVerticalAlignment.Bottom);
+
+            var columnSet = new AdaptiveColumnSet();
+            var column1 = new AdaptiveColumn();
+            column1.BackgroundImage = new AdaptiveBackgroundImage("http://adaptivecards.io/content/cats/1.png", AdaptiveImageFillMode.RepeatVertically, AdaptiveHorizontalAlignment.Center, AdaptiveVerticalAlignment.Top);
+            columnSet.Columns.Add(column1);
+            var column2 = new AdaptiveColumn();
+            column2.BackgroundImage = new AdaptiveBackgroundImage("http://adaptivecards.io/content/cats/2.png", AdaptiveImageFillMode.Cover, AdaptiveHorizontalAlignment.Right, AdaptiveVerticalAlignment.Bottom);
+            columnSet.Columns.Add(column2);
+            card.Body.Add(columnSet);
+
+            var container1 = new AdaptiveContainer();
+            container1.BackgroundImage = new AdaptiveBackgroundImage("http://adaptivecards.io/content/cats/2.png", AdaptiveImageFillMode.RepeatHorizontally, AdaptiveHorizontalAlignment.Left, AdaptiveVerticalAlignment.Center);
+            card.Body.Add(container1);
+
+            var container2 = new AdaptiveContainer();
+            container2.BackgroundImage = new AdaptiveBackgroundImage("http://adaptivecards.io/content/cats/3.png");
+            card.Body.Add(container2);
+
+            var expected = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.2"",
+  ""backgroundImage"": {
+    ""url"": ""http://adaptivecards.io/content/cats/1.png"",
+    ""fillMode"": ""repeat"",
+    ""horizontalAlignment"": ""right"",
+    ""verticalAlignment"": ""bottom""
+  },
+  ""body"": [
+    {
+      ""type"": ""ColumnSet"",
+      ""columns"": [
+        {
+          ""type"": ""Column"",
+          ""backgroundImage"": {
+            ""url"": ""http://adaptivecards.io/content/cats/1.png"",
+            ""fillMode"": ""repeatVertically"",
+            ""horizontalAlignment"": ""center""
+          },
+          ""items"": []
+        },
+        {
+          ""type"": ""Column"",
+          ""backgroundImage"": {
+            ""url"": ""http://adaptivecards.io/content/cats/2.png"",
+            ""horizontalAlignment"": ""right"",
+            ""verticalAlignment"": ""bottom""
+          },
+          ""items"": []
+        }
+      ]
+    },
+    {
+      ""type"": ""Container"",
+      ""backgroundImage"": {
+        ""url"": ""http://adaptivecards.io/content/cats/2.png"",
+        ""fillMode"": ""repeatHorizontally"",
+        ""verticalAlignment"": ""center""
+      },
+      ""items"": []
+    },
+    {
+      ""type"": ""Container"",
+      ""backgroundImage"": ""http://adaptivecards.io/content/cats/3.png"",
+      ""items"": []
+    }
+  ]
+}";
+            Assert.AreEqual(expected, card.ToJson());
+        }
+
+        [TestMethod]
+        public void RichTextBlock()
+        {
+            var card = new AdaptiveCard("1.2");
+
+            var richTB = new AdaptiveRichTextBlock();
+            richTB.HorizontalAlignment = AdaptiveHorizontalAlignment.Center;
+
+            // Build text runs
+            var textRun1 = new AdaptiveTextRun("Start the rich text block ");
+            richTB.Inlines.Add(textRun1);
+
+            var textRun2 = new AdaptiveTextRun("with some cool looking stuff. ");
+            textRun2.Color = AdaptiveTextColor.Accent;
+            textRun2.FontType = AdaptiveFontType.Monospace;
+            textRun2.IsSubtle = true;
+            textRun2.Italic = true;
+            textRun2.Strikethrough = true;
+            textRun2.Highlight = true;
+            textRun2.Size = AdaptiveTextSize.Large;
+            textRun2.Weight = AdaptiveTextWeight.Bolder;
+            richTB.Inlines.Add(textRun2);
+
+            var textRun3 = new AdaptiveTextRun("This run has a link!");
+            textRun3.SelectAction = new AdaptiveOpenUrlAction()
+            {
+                Title = "Open URL",
+                UrlString = "http://adaptivecards.io/"
+            };
+            richTB.Inlines.Add(textRun3);
+
+            card.Body.Add(richTB);
+
+            // Indentation needs to be kept as-is to match the result of card.ToJson
+            var expected = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.2"",
+  ""body"": [
+    {
+      ""type"": ""RichTextBlock"",
+      ""horizontalAlignment"": ""center"",
+      ""inlines"": [
+        {
+          ""type"": ""TextRun"",
+          ""text"": ""Start the rich text block ""
+        },
+        {
+          ""type"": ""TextRun"",
+          ""size"": ""large"",
+          ""weight"": ""bolder"",
+          ""color"": ""accent"",
+          ""isSubtle"": true,
+          ""italic"": true,
+          ""strikethrough"": true,
+          ""highlight"": true,
+          ""text"": ""with some cool looking stuff. "",
+          ""fontType"": ""monospace""
+        },
+        {
+          ""type"": ""TextRun"",
+          ""text"": ""This run has a link!"",
+          ""selectAction"": {
+            ""type"": ""Action.OpenUrl"",
+            ""url"": ""http://adaptivecards.io/"",
+            ""title"": ""Open URL""
+          }
+        }
+      ]
+    }
+  ]
+}";
+            Assert.AreEqual(expected, card.ToJson());
+        }
+
+        [TestMethod]
+        public void RichTextBlockFromJson()
+        {
+            var json = @"{
+              ""type"": ""AdaptiveCard"",
+              ""version"": ""1.2"",
+              ""body"": [
+                {
+                  ""type"": ""RichTextBlock"",
+                  ""horizontalAlignment"": ""center"",
+                  ""inlines"": [
+                      {
+                        ""type"": ""TextRun"",
+                        ""text"": ""Start the rich text block ""
+                      },
+                      {
+                          ""type"": ""TextRun"",
+                          ""size"": ""large"",
+                          ""weight"": ""bolder"",
+                          ""color"": ""accent"",
+                          ""isSubtle"": true,
+                          ""italic"": true,
+                          ""highlight"": true,
+                          ""strikethrough"": true,
+                          ""text"": ""with some cool looking stuff. "",
+                          ""fontStyle"": ""monospace""
+                      },
+                      {
+                        ""type"": ""TextRun"",
+                        ""text"": ""This run has a link!"",
+                        ""selectAction"": {
+                          ""type"": ""Action.OpenUrl"",
+                          ""url"": ""http://adaptivecards.io/"",
+                          ""title"": ""Open URL""
+                      }
+                  }
+                  ]
+                }
+              ]
+            }";
+
+            var card = AdaptiveCard.FromJson(json).Card;
+
+            var richTB = card.Body[0] as AdaptiveRichTextBlock;
+            Assert.AreEqual(richTB.HorizontalAlignment, AdaptiveHorizontalAlignment.Center);
+
+            var inlines1 = richTB.Inlines;
+            var run1 = inlines1[0] as AdaptiveTextRun;
+            Assert.AreEqual("Start the rich text block ", run1.Text);
+
+            var run2 = inlines1[1] as AdaptiveTextRun;
+            Assert.AreEqual(run2.Text, "with some cool looking stuff. ");
+            Assert.IsTrue(run2.Italic);
+            Assert.IsTrue(run2.Strikethrough);
+            Assert.IsTrue(run2.Highlight);
+
+            var run3 = inlines1[2] as AdaptiveTextRun;
+            Assert.AreEqual(run3.Text, "This run has a link!");
+            Assert.AreEqual("Action.OpenUrl", run3.SelectAction.Type);
+            Assert.AreEqual("Open URL", run3.SelectAction.Title);
+            Assert.AreEqual("http://adaptivecards.io/", (run3.SelectAction as AdaptiveOpenUrlAction).UrlString); ;
+        }
+
+        [TestMethod]
+        public void EmptyRichTextBlock()
+        {
+            var json = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.2"",
+  ""body"": [
+    {
+      ""type"": ""RichTextBlock"",
+      ""inlines"": []
+    }
+  ]
+}";
+
+            var card = AdaptiveCard.FromJson(json).Card;
+
+            // Validate RTB
+            var richTB1 = card.Body[0] as AdaptiveRichTextBlock;
+            Assert.IsTrue(richTB1.Inlines.Count == 0);
+
+            Assert.AreEqual(json, card.ToJson());
         }
 
         [TestMethod]
@@ -561,5 +859,190 @@ namespace AdaptiveCards.Test
             var deserializedActual = deserializedCard.ToJson();
             Assert.AreEqual(expected: expected, actual: deserializedActual);
         }
+
+        [TestMethod]
+        public void TargetElementSerialization()
+        {
+            string url = "http://adaptivecards.io/content/cats/1.png";
+            var expected = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.2"",
+  ""id"": ""myCard"",
+  ""body"": [
+    {
+      ""type"": ""Image"",
+      ""url"": """ + url + @""",
+      ""selectAction"": {
+        ""type"": ""Action.ToggleVisibility"",
+        ""targetElements"": [
+          ""id1"",
+          {
+            ""elementId"": ""id2"",
+            ""isVisible"": false
+          },
+          {
+            ""elementId"": ""id3"",
+            ""isVisible"": true
+          },
+          ""id4""
+        ]
+      }
+    }
+  ],
+  ""actions"": [
+    {
+      ""type"": ""Action.ToggleVisibility"",
+      ""targetElements"": [
+        ""id1"",
+        {
+          ""elementId"": ""id2"",
+          ""isVisible"": false
+        },
+        {
+          ""elementId"": ""id3"",
+          ""isVisible"": true
+        },
+        ""id4""
+      ]
+    }
+  ]
+}";
+
+            var card = new AdaptiveCard("1.2")
+            {
+                Id = "myCard",
+                Body =
+                {
+                    new AdaptiveImage(url)
+                    {
+                        SelectAction = new AdaptiveToggleVisibilityAction()
+                        {
+                            TargetElements =
+                            {
+                                "id1",
+                                new AdaptiveTargetElement("id2", false),
+                                new AdaptiveTargetElement("id3", true),
+                                new AdaptiveTargetElement("id4")
+                            }
+                        }
+                    }
+                },
+                Actions =
+                {
+                    new AdaptiveToggleVisibilityAction()
+                    {
+                        TargetElements =
+                        {
+                            "id1",
+                            new AdaptiveTargetElement("id2", false),
+                            new AdaptiveTargetElement("id3", true),
+                            new AdaptiveTargetElement("id4")
+                        }
+                    }
+                }
+            };
+
+            var actual = card.ToJson();
+            Assert.AreEqual(expected: expected, actual: actual);
+            var deserializedCard = AdaptiveCard.FromJson(expected).Card;
+            var deserializedActual = deserializedCard.ToJson();
+            Assert.AreEqual(expected: expected, actual: deserializedActual);
+        }
+
+        [TestMethod]
+        public void ColumnSetStyleSerialization()
+        {
+            var expected = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.2"",
+  ""id"": ""myCard"",
+  ""body"": [
+    {
+      ""type"": ""ColumnSet"",
+      ""columns"": [],
+      ""style"": ""default""
+    },
+    {
+      ""type"": ""ColumnSet"",
+      ""columns"": [],
+      ""style"": ""emphasis""
+    }
+  ]
+}";
+
+            var card = new AdaptiveCard("1.2")
+            {
+                Id = "myCard",
+                Body =
+                {
+                    new AdaptiveColumnSet()
+                    {
+                        Style = AdaptiveContainerStyle.Default
+                    },
+                    new AdaptiveColumnSet()
+                    {
+                        Style = AdaptiveContainerStyle.Emphasis
+                    }
+                }
+            };
+
+            var actual = card.ToJson();
+            Assert.AreEqual(expected: expected, actual: actual);
+            var deserializedCard = AdaptiveCard.FromJson(expected).Card;
+            var deserializedActual = deserializedCard.ToJson();
+            Assert.AreEqual(expected: expected, actual: deserializedActual);
+        }
+
+        [TestMethod]
+        public void ContainerBleedSerialization()
+        {
+            var expected = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.2"",
+  ""body"": [
+    {
+      ""type"": ""Container"",
+      ""items"": [
+        {
+          ""type"": ""TextBlock"",
+          ""text"": ""This container has a gray background that extends to the edges of the card"",
+          ""wrap"": true
+        }
+      ],
+      ""style"": ""emphasis"",
+      ""bleed"": true
+    }
+  ]
+}";
+
+            var card = new AdaptiveCard("1.2")
+            {
+                Body =
+                {
+                    new AdaptiveContainer()
+                    {
+                        Style = AdaptiveContainerStyle.Emphasis,
+                        Bleed = true,
+                        Items = new List<AdaptiveElement>
+                        {
+                            new AdaptiveTextBlock()
+                            {
+                                Text = "This container has a gray background that extends to the edges of the card",
+                                Wrap = true
+                            }
+                        }
+                    }
+                }
+            };
+
+            var actual = card.ToJson();
+            Assert.AreEqual(expected: expected, actual: actual);
+            var deserializedCard = AdaptiveCard.FromJson(expected).Card;
+            var deserializedActual = deserializedCard.ToJson();
+            Assert.AreEqual(expected: expected, actual: deserializedActual);
+        }
+
+
+
     }
 }

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveFact.h"
 #include "Util.h"
@@ -57,9 +59,9 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(HStringToUTF8(m_value.Get(), value));
         fact->SetValue(value);
 
-        std::string language;
         if (!(WindowsIsStringEmpty(m_language.Get())))
         {
+            std::string language;
             RETURN_IF_FAILED(HStringToUTF8(m_language.Get(), language));
             fact->SetLanguage(language);
         }

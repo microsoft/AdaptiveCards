@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "ParseUtil.h"
 #include "ToggleVisibilityTarget.h"
@@ -58,22 +60,19 @@ std::shared_ptr<ToggleVisibilityTarget> ToggleVisibilityTarget::Deserialize(Pars
     return toggleVisibilityTargetElement;
 }
 
-std::shared_ptr<ToggleVisibilityTarget> ToggleVisibilityTarget::DeserializeFromString(ParseContext& context,
-                                                                                                    const std::string& jsonString)
+std::shared_ptr<ToggleVisibilityTarget> ToggleVisibilityTarget::DeserializeFromString(ParseContext& context, const std::string& jsonString)
 {
     return ToggleVisibilityTarget::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 std::string ToggleVisibilityTarget::Serialize()
 {
-    Json::FastWriter writer;
-    return writer.write(SerializeToJsonValue());
+    return ParseUtil::JsonToString(SerializeToJsonValue());
 }
 
 Json::Value ToggleVisibilityTarget::SerializeToJsonValue()
 {
-    auto visibilityToggle = GetIsVisible();
-
+    const auto visibilityToggle = GetIsVisible();
     if (visibilityToggle == IsVisibleToggle)
     {
         // If this is a toggle target, return just a json string
@@ -81,7 +80,7 @@ Json::Value ToggleVisibilityTarget::SerializeToJsonValue()
     }
     else
     {
-        // For true and false targets return a json object with a "targetId" and "isVisisble" properties
+        // For true and false targets return a json object with a "targetId" and "isVisible" properties
         Json::Value root;
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ElementId)] = GetElementId();
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsVisible)] = (visibilityToggle == IsVisibleTrue);

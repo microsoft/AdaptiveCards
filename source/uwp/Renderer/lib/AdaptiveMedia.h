@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
@@ -56,6 +58,11 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Id(_Outptr_ HSTRING* id) { return AdaptiveCardElementBase::get_Id(id); }
         IFACEMETHODIMP put_Id(_In_ HSTRING id) { return AdaptiveCardElementBase::put_Id(id); }
 
+        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveNamespace::FallbackType * fallback) { return AdaptiveCardElementBase::get_FallbackType(fallback); }
+        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement ** content) { return AdaptiveCardElementBase::get_FallbackContent(content); }
+        IFACEMETHODIMP put_FallbackType(ABI::AdaptiveNamespace::FallbackType fallback) { return AdaptiveCardElementBase::put_FallbackType(fallback); }
+        IFACEMETHODIMP put_FallbackContent(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement * content) { return AdaptiveCardElementBase::put_FallbackContent(content); }
+
         IFACEMETHODIMP get_ElementTypeString(_Outptr_ HSTRING* value)
         {
             return AdaptiveCardElementBase::get_ElementTypeString(value);
@@ -77,6 +84,12 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP put_Height(ABI::AdaptiveNamespace::HeightType height)
         {
             return AdaptiveCardElementBase::put_Height(height);
+        }
+
+        IFACEMETHODIMP MeetsRequirements(_In_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration* featureRegistration,
+                                         _Out_ boolean* value)
+        {
+            return AdaptiveCardElementBase::MeetsRequirements(featureRegistration, value);
         }
 
         IFACEMETHODIMP ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)

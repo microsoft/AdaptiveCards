@@ -5,6 +5,10 @@
       <Configuration>Debug</Configuration>
       <Platform>ARM</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|ARM64">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
@@ -16,6 +20,10 @@
     <ProjectConfiguration Include="Release|ARM">
       <Configuration>Release</Configuration>
       <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM64">
+      <Configuration>Release</Configuration>
+      <Platform>ARM64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
@@ -34,8 +42,8 @@
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <AppContainerApplication>true</AppContainerApplication>
     <ApplicationType>Windows Store</ApplicationType>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
-    <WindowsTargetPlatformMinVersion>10.0.15063.0</WindowsTargetPlatformMinVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformMinVersion>10.0.16299.0</WindowsTargetPlatformMinVersion>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
     <TargetName>AdaptiveCards.Rendering.Uwp</TargetName>
     <GenerateManifest>false</GenerateManifest>
@@ -87,7 +95,7 @@
       </AdditionalDependencies>
     </Link>
     <CustomBuildStep>
-      <Command>mdmerge -partial -i "$(OutDir)$(TargetName).winmd" -o "$(OutDir)Output" -metadata_dir "$(FrameworkSdkDir)UnionMetadata" &amp;&amp; copy /y "$(OutDir)Output\*" "$(OutDir)"</Command>
+      <Command>mdmerge -partial -i "$(OutDir)$(TargetName).winmd" -o "$(OutDir)Output" -metadata_dir "$(WindowsSDK_MetadataFoundationPath)" -metadata_dir "$(WindowsSDK_MetadataPathVersioned)\Windows.Foundation.UniversalApiContract\7.0.0.0" &amp;&amp; copy /y "$(OutDir)Output\*" "$(OutDir)"</Command>
       <Outputs>$(OutDir)%(TargetName).winmd</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
@@ -113,6 +121,8 @@
       </AdditionalIncludeDirectories>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">stdcpp17</LanguageStandard>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">stdcpp17</LanguageStandard>
+      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">stdcpp17</LanguageStandard>
+      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">stdcpp17</LanguageStandard>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">stdcpp17</LanguageStandard>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">stdcpp17</LanguageStandard>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdcpp17</LanguageStandard>
@@ -120,10 +130,16 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="lib\AdaptiveHighlightColorConfig.cpp" />
+    <ClCompile Include="lib\ElementTagContent.cpp" />
     <ClInclude Include="lib\AdaptiveActionElement.h" />
     <ClInclude Include="lib\AdaptiveActionInvoker.h" />
     <ClInclude Include="lib\AdaptiveActionParserRegistration.h" />
+    <ClInclude Include="lib\AdaptiveActionRendererRegistration.h" />
     <ClInclude Include="lib\AdaptiveActionsConfig.h" />
+    <ClInclude Include="lib\AdaptiveActionSet.h" />
+    <ClInclude Include="lib\AdaptiveActionSetRenderer.h" />
+    <ClInclude Include="lib\AdaptiveBackgroundImage.h" />
     <ClInclude Include="lib\AdaptiveCardElement.h" />
     <ClInclude Include="lib\AdaptiveChoiceSetInputRenderer.h" />
     <ClInclude Include="lib\AdaptiveColumnRenderer.h" />
@@ -133,8 +149,10 @@
     <ClInclude Include="lib\AdaptiveCardRendererComponent.h" />
     <ClInclude Include="lib\AdaptiveCardResourceResolvers.h" />
     <ClInclude Include="lib\AdaptiveError.h" />
-    <ClInclude Include="lib\AdaptiveFontStyleDefinition.h" />
-    <ClInclude Include="lib\AdaptiveFontStylesDefinition.h" />
+    <ClInclude Include="lib\AdaptiveFeatureRegistration.h" />
+    <ClInclude Include="lib\AdaptiveFontTypeDefinition.h" />
+    <ClInclude Include="lib\AdaptiveFontTypesDefinition.h" />
+    <ClInclude Include="lib\AdaptiveHighlightColorConfig.h" />
     <ClInclude Include="lib\AdaptiveHostConfigParseResult.h" />
     <ClInclude Include="lib\AdaptiveCardParseResult.h" />
     <ClInclude Include="lib\AdaptiveContainerStyleDefinition.h" />
@@ -158,21 +176,32 @@
     <ClInclude Include="lib\AdaptiveMediaSource.h" />
     <ClInclude Include="lib\AdaptiveNumberInputRenderer.h" />
     <ClInclude Include="lib\AdaptiveMediaEventArgs.h" />
+    <ClInclude Include="lib\AdaptiveOpenUrlActionRenderer.h" />
     <ClInclude Include="lib\AdaptiveRemoteResourceInformation.h" />
     <ClInclude Include="lib\AdaptiveRenderArgs.h" />
     <ClInclude Include="lib\AdaptiveRenderContext.h" />
+    <ClInclude Include="lib\AdaptiveRichTextBlock.h" />
+    <ClInclude Include="lib\AdaptiveRichTextBlockRenderer.h" />
     <ClInclude Include="lib\AdaptiveSeparator.h" />
+    <ClInclude Include="lib\AdaptiveShowCardActionRenderer.h" />
+    <ClInclude Include="lib\AdaptiveSubmitActionRenderer.h" />
     <ClInclude Include="lib\AdaptiveTextBlockRenderer.h" />
+    <ClInclude Include="lib\AdaptiveTextElement.h" />
     <ClInclude Include="lib\AdaptiveTextInputRenderer.h" />
+    <ClInclude Include="lib\AdaptiveTextRun.h" />
     <ClInclude Include="lib\AdaptiveTimeInputRenderer.h" />
     <ClInclude Include="lib\AdaptiveToggleInputRenderer.h" />
+    <ClInclude Include="lib\AdaptiveToggleVisibilityActionRenderer.h" />
     <ClInclude Include="lib\AdaptiveToggleVisibilityTarget.h" />
     <ClInclude Include="lib\AdaptiveToggleVisibilityAction.h" />
+    <ClInclude Include="lib\AdaptiveUnsupportedAction.h" />
+    <ClInclude Include="lib\AdaptiveUnsupportedElement.h" />
     <ClInclude Include="lib\AdaptiveWarning.h" />
     <ClInclude Include="lib\CustomActionWrapper.h" />
     <ClInclude Include="lib\CustomElementWrapper.h" />
     <ClInclude Include="lib\DateTimeParser.h" />
-    <ClInclude Include="lib\HtmlHelpers.h" />
+    <ClInclude Include="lib\ElementTagContent.h" />
+    <ClInclude Include="lib\TextHelpers.h" />
     <ClInclude Include="lib\InputValue.h" />
     <ClInclude Include="lib\MediaHelpers.h" />
     <ClInclude Include="lib\RenderedAdaptiveCard.h" />
@@ -213,22 +242,38 @@
     <ClInclude Include="lib\ImageLoadTracker.h" />
     <ClInclude Include="lib\IXamlBuilderListener.h" />
     <ClInclude Include="lib\pch.h" />
+    <ClInclude Include="lib\TileControl.h" />
     <ClInclude Include="lib\Util.h" />
     <ClInclude Include="lib\Vector.h" />
     <ClInclude Include="lib\WholeItemsPanel.h" />
     <ClInclude Include="lib\XamlBuilder.h" />
-    <ClCompile Include="lib\AdaptiveFontStyleDefinition.cpp" />
-    <ClCompile Include="lib\AdaptiveFontStylesDefinition.cpp" />
+    <ClCompile Include="lib\AdaptiveActionRendererRegistration.cpp" />
+    <ClCompile Include="lib\AdaptiveBackgroundImage.cpp" />
+    <ClCompile Include="lib\AdaptiveFeatureRegistration.cpp" />
+    <ClCompile Include="lib\AdaptiveFontTypeDefinition.cpp" />
+    <ClCompile Include="lib\AdaptiveFontTypesDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveMedia.cpp" />
     <ClCompile Include="lib\AdaptiveMediaConfig.cpp" />
     <ClCompile Include="lib\AdaptiveMediaEventInvoker.cpp" />
     <ClCompile Include="lib\AdaptiveMediaRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveMediaSource.cpp" />
     <ClCompile Include="lib\AdaptiveMediaEventArgs.cpp" />
+    <ClCompile Include="lib\AdaptiveOpenUrlActionRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveRemoteResourceInformation.cpp" />
+    <ClCompile Include="lib\AdaptiveRichTextBlock.cpp" />
+    <ClCompile Include="lib\AdaptiveRichTextBlockRenderer.cpp" />
+    <ClCompile Include="lib\AdaptiveTextElement.cpp" />
+    <ClCompile Include="lib\AdaptiveTextRun.cpp" />
+    <ClCompile Include="lib\AdaptiveToggleVisibilityActionRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveToggleVisibilityTarget.cpp" />
     <ClCompile Include="lib\AdaptiveToggleVisibilityAction.cpp" />
+    <ClCompile Include="lib\AdaptiveShowCardActionRenderer.cpp" />
+    <ClCompile Include="lib\AdaptiveSubmitActionRenderer.cpp" />
+    <ClCompile Include="lib\AdaptiveUnsupportedAction.cpp" />
+    <ClCompile Include="lib\AdaptiveUnsupportedElement.cpp" />
     <ClCompile Include="lib\MediaHelpers.cpp" />
+    <ClCompile Include="lib\AdaptiveActionSet.cpp" />
+    <ClCompile Include="lib\AdaptiveActionSetRenderer.cpp" />
     <ClCompile Include="lib\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -273,7 +318,7 @@
     <ClCompile Include="lib\CustomActionWrapper.cpp" />
     <ClCompile Include="lib\CustomElementWrapper.cpp" />
     <ClCompile Include="lib\DateTimeParser.cpp" />
-    <ClCompile Include="lib\HtmlHelpers.cpp" />
+    <ClCompile Include="lib\TextHelpers.cpp" />
     <ClCompile Include="lib\InputValue.cpp" />
     <ClCompile Include="lib\RenderedAdaptiveCard.cpp" />
     <ClCompile Include="lib\AdaptiveSeparatorConfig.cpp" />
@@ -307,6 +352,7 @@
     <ClCompile Include="lib\AdaptiveTextBlock.cpp" />
     <ClCompile Include="lib\AdaptiveTextConfig.cpp" />
     <ClCompile Include="lib\ImageLoadTracker.cpp" />
+    <ClCompile Include="lib\TileControl.cpp" />
     <ClCompile Include="lib\Util.cpp" />
     <ClCompile Include="lib\WholeItemsPanel.cpp" />
     <ClCompile Include="lib\XamlBuilder.cpp" />
@@ -325,6 +371,5 @@
     </Midl>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets" />
 </Project>

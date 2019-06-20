@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Diagnostics;
 using System.Globalization;
@@ -16,13 +18,15 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public class AdaptiveConverterParameters
         {
-            public AdaptiveConverterParameters(Image image, AdaptiveImage adaptiveImage)
+            public AdaptiveConverterParameters(Image image, AdaptiveImage adaptiveImage, AdaptiveRenderContext context)
             {
                 Image = image;
                 AdaptiveImage = adaptiveImage;
+                AdaptiveContext = context;
             }
             public Image Image {get; set;}
             public AdaptiveImage AdaptiveImage {get; set;}
+            public AdaptiveRenderContext AdaptiveContext {get; set;}
         }
         /// <summary>
         /// Renders the element to a bitmap
@@ -58,7 +62,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             image.Source = await context.ResolveImageSource(url);
 
-            var parameters = new AdaptiveConverterParameters(image, adaptiveImage);
+            var parameters = new AdaptiveConverterParameters(image, adaptiveImage, context);
             var binding = new Binding
             {
                 RelativeSource = RelativeSource.Self,
@@ -80,11 +84,10 @@ namespace AdaptiveCards.Rendering.Wpf
                 var image = adaptiveParameters.Image;
                 var adaptiveImage = adaptiveParameters.AdaptiveImage;
                 var imageWidth = ((BitmapImage) image.Source)?.PixelWidth;
+                var imageHeight = ((BitmapImage)image.Source)?.PixelHeight;
 
-                if(adaptiveImage.PixelWidth != 0 || adaptiveImage.PixelHeight != 0)
+                if (adaptiveImage.PixelWidth != 0 || adaptiveImage.PixelHeight != 0)
                 {
-                    var imageHeight = ((BitmapImage) image.Source)?.PixelHeight;
-
                     if(adaptiveImage.PixelWidth == 0)
                     {
                         adaptiveImage.PixelWidth = (uint) ((imageWidth / (float)imageHeight) * adaptiveImage.PixelHeight);
@@ -100,7 +103,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
                     return Stretch.Fill;
                 }
-                else if (imageWidth >= parentWidth)
+                else if (imageWidth >= parentWidth || imageSourceIsLargerThanExpectedRenderingSize(imageWidth, imageHeight, adaptiveImage.Size, adaptiveParameters.AdaptiveContext))
                 {
                     return Stretch.Uniform;
                 }
@@ -108,6 +111,31 @@ namespace AdaptiveCards.Rendering.Wpf
                 {
                     return Stretch.None;
                 }
+            }
+
+            bool imageSourceIsLargerThanExpectedRenderingSize(int? imageSourceWidth, int? imageSourceHeight, AdaptiveImageSize imageSize, AdaptiveRenderContext context)
+            {
+                // No size provided, let's keep previous behaviour
+                if (!imageSourceWidth.HasValue || !imageSourceHeight.HasValue)
+                {
+                    return false;
+                }
+
+                int imageSizeInPixels = int.MaxValue;
+                switch (imageSize)
+                {
+                    case AdaptiveImageSize.Small:
+                        imageSizeInPixels = context.Config.ImageSizes.Small;
+                        break;
+                    case AdaptiveImageSize.Medium:
+                        imageSizeInPixels = context.Config.ImageSizes.Medium;
+                        break;
+                    case AdaptiveImageSize.Large:
+                        imageSizeInPixels = context.Config.ImageSizes.Large;
+                        break;
+                }
+
+                return ((imageSourceWidth.Value > imageSizeInPixels) || (imageSourceHeight.Value > imageSizeInPixels));
             }
 
             public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -129,10 +157,10 @@ namespace AdaptiveCards.Rendering.Wpf
             return bitmap;
         }
 
-        public static async void SetBackgroundSource(this Grid grid, Uri uri, AdaptiveRenderContext context)
+        public static async void SetBackgroundSource(this Grid grid, AdaptiveBackgroundImage adaptiveBackgroundImage, AdaptiveRenderContext context)
         {
             // Try to resolve the image URI
-            Uri finalUri = context.Config.ResolveFinalAbsoluteUri(uri);
+            Uri finalUri = context.Config.ResolveFinalAbsoluteUri(adaptiveBackgroundImage?.Url);
             if (finalUri == null)
             {
                 return;
@@ -142,12 +170,48 @@ namespace AdaptiveCards.Rendering.Wpf
 
             if (bi != null)
             {
-                grid.Background = new ImageBrush(bi)
+                // bi.Pixel{Width, Height}: dimensions of image
+                // grid.Actual{Width, Height}: dimensions of grid containing background image
+                switch (adaptiveBackgroundImage.FillMode)
                 {
-                    Stretch = Stretch.UniformToFill,
-                    AlignmentX = AlignmentX.Left,
-                    AlignmentY = AlignmentY.Top
-                };
+                    case AdaptiveImageFillMode.Repeat:
+                        grid.Background = new ImageBrush(bi)
+                        {
+                            TileMode = TileMode.Tile,
+                            Viewport = new Rect(0, 0, bi.PixelWidth, bi.PixelHeight),
+                            ViewportUnits = BrushMappingMode.Absolute
+                        };
+                        break;
+                    case AdaptiveImageFillMode.RepeatHorizontally:
+                        grid.Background = new ImageBrush(bi)
+                        {
+                            TileMode = TileMode.FlipY,
+                            Stretch = Stretch.Uniform,
+                            AlignmentY = (AlignmentY) adaptiveBackgroundImage.VerticalAlignment,
+                            Viewport = new Rect(0, 0, bi.PixelWidth, grid.ActualHeight + 1),
+                            ViewportUnits = BrushMappingMode.Absolute
+                        };
+                        break;
+                    case AdaptiveImageFillMode.RepeatVertically:
+                        grid.Background = new ImageBrush(bi)
+                        {
+                            TileMode = TileMode.FlipX,
+                            Stretch = Stretch.Uniform,
+                            AlignmentX = (AlignmentX)adaptiveBackgroundImage.HorizontalAlignment,
+                            Viewport = new Rect(0, 0, grid.ActualWidth + 1, bi.PixelWidth),
+                            ViewportUnits = BrushMappingMode.Absolute
+                        };
+                        break;
+                    case AdaptiveImageFillMode.Cover:
+                    default:
+                        grid.Background = new ImageBrush(bi)
+                        {
+                            Stretch = Stretch.UniformToFill,
+                            AlignmentY = (AlignmentY)adaptiveBackgroundImage.VerticalAlignment,
+                            AlignmentX = (AlignmentX)adaptiveBackgroundImage.HorizontalAlignment
+                        };
+                        break;
+                }
             }
         }
 

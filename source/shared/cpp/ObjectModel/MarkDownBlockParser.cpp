@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include <iostream>
 #include "MarkDownBlockParser.h"
@@ -367,29 +369,29 @@ bool LinkParser::MatchAtLinkTextRun(std::stringstream& lookahead)
     }
     else
     {
-        if (lookahead.peek() == '[')
+        // parses recursively to the right
+        while (lookahead.peek() != EOF && lookahead.peek() != ']')
         {
-            m_parsedResult.AppendParseResult(m_linkTextParsedResult);
-            return false;
-        }
-        else
-        {
-            // Block() will process the inline items within Link Text block
-            ParseBlock(lookahead);
-            m_linkTextParsedResult.AppendParseResult(m_parsedResult);
+            MarkDownBlockParser::ParseBlock(lookahead);
+            m_linkTextParsedResult.AppendParseResult(GetParsedResult());
 
-            if (lookahead.peek() == ']')
+            if (m_linkTextParsedResult.GetIsCaptured())
             {
-                // move code gen objects to link text list to further process it
-                char streamChar;
-                lookahead.get(streamChar);
-                m_linkTextParsedResult.AddNewTokenToParsedResult(streamChar);
-                return true;
+                break;
             }
-
-            m_parsedResult.AppendParseResult(m_linkTextParsedResult);
-            return false;
         }
+
+        if (lookahead.peek() == ']')
+        {
+            // move code gen objects to link text list to further process it
+            char streamChar;
+            lookahead.get(streamChar);
+            m_linkTextParsedResult.AddNewTokenToParsedResult(streamChar);
+            return true;
+        } 
+
+        m_parsedResult.AppendParseResult(m_linkTextParsedResult);
+        return false;
     }
 }
 
@@ -492,6 +494,7 @@ void LinkParser::CaptureLinkToken()
     m_parsedResult.Clear();
     m_parsedResult.FoundHtmlTags();
     m_parsedResult.AppendToTokens(codeGen);
+    m_parsedResult.SetIsCaptured(true);
 }
 
 // list marker have form of ^-\s+ or \r-\s+

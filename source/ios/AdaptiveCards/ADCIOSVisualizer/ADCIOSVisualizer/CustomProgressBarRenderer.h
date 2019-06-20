@@ -9,7 +9,20 @@
 
 #import <AdaptiveCards/ACFramework.h>
 
-@interface CustomProgressBarRenderer:NSObject<ACOIBaseCardElementParser>
+@interface CACProgressBar:ACOBaseCardElement<ACOIBaseCardElementParser> 
 
-- (UIView *)deserializeToCustomUIElement:(NSData* )json;
+@property NSNumber *red;
+@property NSNumber *green;
+@property NSNumber *blue;
+@property NSNumber *alpha;
+@property NSNumber *progress;
+@property NSNumber *thickness;
+
+- (instancetype)init:(NSNumber *)red green:(NSNumber *)green blue:(NSNumber *)blue
+               alpha:(NSNumber *)alpha progress:(NSNumber *)progress thickness:(NSNumber *)thickness;
+@end
+
+
+@interface CustomProgressBarRenderer:ACRBaseCardElementRenderer
+
 @end

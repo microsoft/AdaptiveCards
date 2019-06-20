@@ -11,6 +11,9 @@
 @interface ACRContentStackView:UIView<ACRIContentHoldingView>
 
 @property (nonnull) UIStackView* stackView;
+@property (weak, nullable) UIView *backgroundView;
+@property (nonnull) NSArray<NSLayoutConstraint *>* widthconstraint;
+@property (nonnull) NSArray<NSLayoutConstraint *>* heightconstraint;
 
 @property BOOL isActionSet;
 
@@ -25,4 +28,9 @@
 - (void)adjustHuggingForLastElement;
 
 - (void)addTarget:(nonnull NSObject *)target;
+
+- (void)applyPadding:(unsigned int)padding priority:(unsigned int)priority;
+
+- (void)bleed:(unsigned int)padding priority:(unsigned int)priority target:(UIView *)target direction:(ACRBleedDirection)direction parentView:(UIView *)parent;
+
 @end

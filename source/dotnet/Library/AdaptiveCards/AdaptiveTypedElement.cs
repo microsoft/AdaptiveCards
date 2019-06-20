@@ -1,14 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Serialization;
 using System.Xml.Serialization;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
 
 namespace AdaptiveCards
 {
@@ -26,6 +25,26 @@ namespace AdaptiveCards
         public abstract string Type { get; set; }
 
         /// <summary>
+        /// Additional properties not found on the default schema
+        /// </summary>
+        [JsonExtensionData]
+#if !NETSTANDARD1_3
+        [XmlIgnore]
+#endif
+        public IDictionary<string, object> AdditionalProperties { get; set; } = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+
+        [JsonConverter(typeof(AdaptiveFallbackConverter))]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        [DefaultValue(null)]
+        public AdaptiveFallbackElement Fallback { get; set; }
+
+        [JsonIgnore]
+        public AdaptiveInternalID InternalID { get; }
+
+        /// <summary>
         /// A unique ID associated with the element. For Inputs the ID will be used as the key for Action.Submit response
         /// </summary>
         [JsonProperty(Order = -9, DefaultValueHandling = DefaultValueHandling.Ignore)]
@@ -37,15 +56,6 @@ namespace AdaptiveCards
 
 
         public AdaptiveElementDefinitions Elements { get; set; } = new AdaptiveElementDefinitions();
-
-        /// <summary>
-        /// Additional properties not found on the default schema
-        /// </summary>
-        [JsonExtensionData]
-#if !NETSTANDARD1_3
-        [XmlIgnore]
-#endif
-        public IDictionary<string, object> AdditionalProperties { get; set;  } = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
 
         public object Data { get; set; }
 
@@ -92,6 +102,43 @@ namespace AdaptiveCards
             {
                 child.ResolveCustomElements(context);
             }
+        }
+
+        [DefaultValue(null)]
+        public IDictionary<string, string> Requires;
+
+        // Given a map of what our host provides, determine if this element's requirements are satisfied.
+        public bool MeetsRequirements(AdaptiveFeatureRegistration featureRegistration)
+        {
+            if (Requires != null)
+            {
+                foreach (var requirement in Requires)
+                {
+                    // special case for adaptive cards version
+                    var requirementName = requirement.Key;
+                    var requirementVersion = requirement.Value;
+                    string provides = featureRegistration.Get(requirementName);
+                    if (provides.Length == 0)
+                    {
+                        return false;
+                    }
+
+                    if (requirementVersion == "*")
+                    {
+                        // any version is sufficient to satisfy the requirement
+                        return true;
+                    }
+
+                    // host provides this requirement, but does it provide an acceptible version?
+                    var providesVersion = new AdaptiveSchemaVersion(provides);
+                    if (providesVersion < requirementVersion)
+                    {
+                        // host's provided version is too low
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
     }
 }

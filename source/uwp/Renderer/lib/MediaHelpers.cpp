@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "XamlHelpers.h"
 #include "XamlBuilder.h"
@@ -93,7 +95,7 @@ void AddDefaultPlayIcon(_In_ IPanel* posterPanel, _In_ IAdaptiveHostConfig* host
     THROW_IF_FAILED(rectangle.As(&rectangleAsShape));
 
     ABI::Windows::UI::Color whiteBrushColor{0xFF, 0xFF, 0xFF, 0xFF};
-    ComPtr<IBrush> rectangleBrush = XamlBuilder::GetSolidColorBrush(whiteBrushColor);
+    ComPtr<IBrush> rectangleBrush = XamlHelpers::GetSolidColorBrush(whiteBrushColor);
     THROW_IF_FAILED(rectangleAsShape->put_Fill(rectangleBrush.Get()));
 
     ComPtr<IUIElement> rectangleAsUIElement;
@@ -108,9 +110,9 @@ void AddDefaultPlayIcon(_In_ IPanel* posterPanel, _In_ IAdaptiveHostConfig* host
     THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Colors).Get(), &colorsStatics));
 
     ABI::Windows::UI::Color darkBrushColor;
-    THROW_IF_FAILED(GetColorFromAdaptiveColor(hostConfig, ForegroundColor_Dark, containerStyle, false, &darkBrushColor));
+    THROW_IF_FAILED(GetColorFromAdaptiveColor(hostConfig, ForegroundColor_Dark, containerStyle, false, false, &darkBrushColor));
 
-    ComPtr<IBrush> darkBrush = XamlBuilder::GetSolidColorBrush(darkBrushColor);
+    ComPtr<IBrush> darkBrush = XamlHelpers::GetSolidColorBrush(darkBrushColor);
     rectangleAsShape->put_Stroke(darkBrush.Get());
 
     // Create a play symbol icon

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "ParseUtil.h"
 #include "ToggleVisibilityAction.h"
@@ -34,7 +36,7 @@ Json::Value ToggleVisibilityAction::SerializeToJsonValue() const
 
 std::shared_ptr<BaseActionElement> ToggleVisibilityActionParser::Deserialize(ParseContext& context, const Json::Value& json)
 {
-    std::shared_ptr<ToggleVisibilityAction> toggleVisibilityAction = BaseActionElement::Deserialize<ToggleVisibilityAction>(json);
+    std::shared_ptr<ToggleVisibilityAction> toggleVisibilityAction = BaseActionElement::Deserialize<ToggleVisibilityAction>(context, json);
 
     auto targetElements = ParseUtil::GetElementCollectionOfSingleType<ToggleVisibilityTarget>(
         context, json, AdaptiveCardSchemaKey::TargetElements, ToggleVisibilityTarget::Deserialize, true);
