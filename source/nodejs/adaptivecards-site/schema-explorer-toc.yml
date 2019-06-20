@@ -29,7 +29,7 @@
   - Input.Toggle
   - Input.ChoiceSet
   - Input.Choice
-  - Input.Feedback
-  - Input.FeedbackElt
+  - Input.Rating
+  - Input.RatingIcons
 - Types:
   - BackgroundImage
