@@ -5,7 +5,10 @@
   - Image
   - Media
   - MediaSource
+  - RichTextBlock
+  - TextRun
 - Containers:
+  - ActionSet
   - Container
   - ColumnSet
   - Column
@@ -16,6 +19,8 @@
   - Action.OpenUrl
   - Action.Submit
   - Action.ShowCard
+  - Action.ToggleVisibility
+  - TargetElement
 - Inputs:
   - Input.Text
   - Input.Number
@@ -24,3 +29,5 @@
   - Input.Toggle
   - Input.ChoiceSet
   - Input.Choice
+- Types:
+  - BackgroundImage
