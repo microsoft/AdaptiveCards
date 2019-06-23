@@ -40,7 +40,9 @@
     "adaptivecards": "^1.2.0",
     "adaptivecards-designer": "^0.6.0",
     "adaptivecards-visualizer": "^1.2.2",
+    "dts-generator": "^3.0.0",
     "markdown-it": "^8.4.0",
-    "monaco-editor": "^0.15.6"
+    "monaco-editor": "^0.15.6",
+    "typescript": "^3.5.2"
   }
 }
