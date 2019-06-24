@@ -2081,25 +2081,27 @@ export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCard
             this.changed(false);
         }
 
-        let validationNecessity = addLabelAndInput(card, "Necessity:", Adaptive.ChoiceSetInput);
-        validationNecessity.input.isCompact = true;
-        validationNecessity.input.choices.push(new Adaptive.Choice("Optional", Adaptive.InputValidationNecessity.Optional.toString()));
-        validationNecessity.input.choices.push(new Adaptive.Choice("Required", Adaptive.InputValidationNecessity.Required.toString()));
-        validationNecessity.input.choices.push(new Adaptive.Choice("Required with visual cue", Adaptive.InputValidationNecessity.RequiredWithVisualCue.toString()));
-        validationNecessity.input.defaultValue = this.cardElement.validation.necessity.toString();
-        validationNecessity.input.onValueChanged = () => {
-            this.cardElement.validation.necessity = <Adaptive.InputValidationNecessity>parseInt(validationNecessity.input.value);
+        if (Adaptive.AdaptiveCard.useBuiltInInputValidation) {
+            let validationNecessity = addLabelAndInput(card, "Necessity:", Adaptive.ChoiceSetInput);
+            validationNecessity.input.isCompact = true;
+            validationNecessity.input.choices.push(new Adaptive.Choice("Optional", Adaptive.InputValidationNecessity.Optional.toString()));
+            validationNecessity.input.choices.push(new Adaptive.Choice("Required", Adaptive.InputValidationNecessity.Required.toString()));
+            validationNecessity.input.choices.push(new Adaptive.Choice("Required with visual cue", Adaptive.InputValidationNecessity.RequiredWithVisualCue.toString()));
+            validationNecessity.input.defaultValue = this.cardElement.validation.necessity.toString();
+            validationNecessity.input.onValueChanged = () => {
+                this.cardElement.validation.necessity = <Adaptive.InputValidationNecessity>parseInt(validationNecessity.input.value);
 
-            this.changed(false);
-        }
+                this.changed(false);
+            }
 
-        let validationErrorMessage = addLabelAndInput(card, "Error message:", Adaptive.TextInput);
-        validationErrorMessage.input.placeholder = "(not set)";
-        validationErrorMessage.input.defaultValue = this.cardElement.validation.errorMessage;
-        validationErrorMessage.input.onValueChanged = () => {
-            this.cardElement.validation.errorMessage = validationErrorMessage.input.value;
+            let validationErrorMessage = addLabelAndInput(card, "Error message:", Adaptive.TextInput);
+            validationErrorMessage.input.placeholder = "(not set)";
+            validationErrorMessage.input.defaultValue = this.cardElement.validation.errorMessage;
+            validationErrorMessage.input.onValueChanged = () => {
+                this.cardElement.validation.errorMessage = validationErrorMessage.input.value;
 
-            this.changed(false);
+                this.changed(false);
+            }
         }
     }
 
