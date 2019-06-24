@@ -26,5 +26,5 @@ hexo.extend.helper.register('js', function (script) {
 	var scriptContents = fs.readFileSync(scriptFilePath, "utf8");
 	var version = md5(scriptContents);
 
-	return `<script src="${script}?v=${version}"></script>`;
+	return `<script src="/${script}?v=${version}"></script>`;
 });
