@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 import { renderExtendedComponent } from "../../TestUtils";
-import { InputChoiceSetFabric } from "../../../src/Components/Inputs/InputChoiceSetFabric";
+import { InputChoiceSetFabric } from "../../../Components/Inputs/InputChoiceSetFabric";
 import { initializeIcons } from "office-ui-fabric-react";
 
 initializeIcons();

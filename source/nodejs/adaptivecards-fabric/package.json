@@ -27,8 +27,9 @@
 		"prebuild": "tsc",
 		"build": "webpack",
 		"watch": "webpack --watch",
+		"dts": "dts-generator --name adaptivecards --project . --out dist/adaptivecards.d.ts",
 		"lint": "tslint -c ../tslint.json 'src/**/*.{ts,tsx}'",
-		"release": "npm run clean && npm run build && npm test && webpack --mode=production"
+		"release": "npm run clean && npm run build && npm test && webpack --mode=production && npm run dts"
 	},
 	"peerDependencies": {
 		"adaptivecards": "^1.2.0",
@@ -44,5 +45,22 @@
 		"office-ui-fabric-react": "^7.5.2",
 		"react": "^16.8.6",
 		"react-dom": "^16.8.6"
+	},
+	"jest": {
+		"rootDir": "src",
+		"transform": {
+			"^.+\\.tsx?$": "ts-jest"
+		},
+		"testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+		"moduleFileExtensions": [
+			"ts",
+			"tsx",
+			"js",
+			"jsx",
+			"json"
+		],
+		"modulePathIgnorePatterns": [
+			"TestUtils"
+		]
 	}
 }

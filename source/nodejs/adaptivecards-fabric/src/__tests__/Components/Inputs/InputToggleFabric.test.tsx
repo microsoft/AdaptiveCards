@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import { InputToggleFabric } from "../../../src/Components/Inputs/InputToggleFabric";
+import { InputToggleFabric } from "../../../Components/Inputs/InputToggleFabric";
 import { renderExtendedComponent } from "../../TestUtils";
 import { initializeIcons } from "office-ui-fabric-react";
 

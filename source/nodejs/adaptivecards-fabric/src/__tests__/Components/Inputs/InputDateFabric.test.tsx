@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import { InputDateFabric } from "../../../src/Components/Inputs/InputDateFabric";
+import { InputDateFabric } from "../../../Components/Inputs/InputDateFabric";
 import { initializeIcons } from "@uifabric/icons";
 import * as TestUtils from "../../TestUtils";
 
