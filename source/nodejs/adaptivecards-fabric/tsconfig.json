@@ -13,7 +13,6 @@
 		"forceConsistentCasingInFileNames": true,
 		"noImplicitAny": true,
 		"moduleResolution": "node",
-		"allowJs": true,
 		"preserveConstEnums": true,
 		"skipLibCheck": true,
 		"plugins": [{
