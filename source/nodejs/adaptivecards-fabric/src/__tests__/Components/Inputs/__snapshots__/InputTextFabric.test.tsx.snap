@@ -2,7 +2,7 @@
 
 exports[`InputTextExtended renders int text multiline correctly 1`] = `
 <div
-  style="display: flex; flex-direction: column; box-sizing: border-box;"
+  style="display: flex; flex-direction: column; box-sizing: border-box; flex: 0 0 auto;"
 >
   <div
     class="ac-input-container"
@@ -38,7 +38,7 @@ exports[`InputTextExtended renders int text multiline correctly 1`] = `
 
 exports[`InputTextExtended renders int text single line correctly 1`] = `
 <div
-  style="display: flex; flex-direction: column; box-sizing: border-box;"
+  style="display: flex; flex-direction: column; box-sizing: border-box; flex: 0 0 auto;"
 >
   <div
     class="ac-input-container"

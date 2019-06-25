@@ -16,7 +16,7 @@ describe("InputTextExtended", () => {
     });
 
     it("renders int text multiline correctly", () => {
-        let input = TestUtils.renderExtendedComponent(InputTextFabric, {
+        let input = TestUtils.renderFabricComponent(InputTextFabric, {
             "type": "Input.Text",
             "id": "input3",
             "placeholder": "enter comment",
@@ -29,7 +29,7 @@ describe("InputTextExtended", () => {
     });
 
     it("renders int text single line correctly", () => {
-        let input = TestUtils.renderExtendedComponent(InputTextFabric, {
+        let input = TestUtils.renderFabricComponent(InputTextFabric, {
             "type": "Input.Text",
             "id": "input3",
             "placeholder": "enter comment",
@@ -42,7 +42,7 @@ describe("InputTextExtended", () => {
     });
 
     it("can set initial value", () => {
-        let el = TestUtils.renderExtendedComponent(InputTextFabric, {
+        let el = TestUtils.renderFabricComponent(InputTextFabric, {
             "type": "Input.Text",
             "id": "input3",
             "placeholder": "enter comment",
@@ -57,7 +57,7 @@ describe("InputTextExtended", () => {
     });
 
     it("can render placeholder", () => {
-        let el = TestUtils.renderExtendedComponent(InputTextFabric, {
+        let el = TestUtils.renderFabricComponent(InputTextFabric, {
             "type": "Input.Text",
             "id": "blah",
             "placeholder": "enter comment",

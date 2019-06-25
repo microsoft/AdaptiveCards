@@ -2,7 +2,7 @@
 
 exports[`InputChoiceSet inputChoiceSetCheckboxMultiSelect should be rendered correctly 1`] = `
 <div
-  style="display: flex; flex-direction: column; box-sizing: border-box;"
+  style="display: flex; flex-direction: column; box-sizing: border-box; flex: 0 0 auto;"
 >
   <div
     class="ac-input-container"
@@ -113,7 +113,7 @@ exports[`InputChoiceSet inputChoiceSetCheckboxMultiSelect should be rendered cor
 
 exports[`InputChoiceSet inputChoiceSetChoiceGroup should be rendered correctly 1`] = `
 <div
-  style="display: flex; flex-direction: column; box-sizing: border-box;"
+  style="display: flex; flex-direction: column; box-sizing: border-box; flex: 0 0 auto;"
 >
   <div
     class="ac-input-container"
@@ -218,7 +218,7 @@ exports[`InputChoiceSet inputChoiceSetChoiceGroup should be rendered correctly 1
 
 exports[`InputChoiceSet inputChoiceSetComboBox should be rendered correctly 1`] = `
 <div
-  style="display: flex; flex-direction: column; box-sizing: border-box;"
+  style="display: flex; flex-direction: column; box-sizing: border-box; flex: 0 0 auto;"
 >
   <div
     class="ac-input-container"
@@ -279,7 +279,7 @@ exports[`InputChoiceSet inputChoiceSetComboBox should be rendered correctly 1`] 
 
 exports[`InputChoiceSet inputChoiceSetComboBoxMultiSelect should be rendered correctly 1`] = `
 <div
-  style="display: flex; flex-direction: column; box-sizing: border-box;"
+  style="display: flex; flex-direction: column; box-sizing: border-box; flex: 0 0 auto;"
 >
   <div
     class="ac-input-container"

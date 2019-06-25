@@ -22,7 +22,7 @@
 	"main": "lib/adaptivecards.js",
 	"types": "lib/adaptivecards.d.ts",
 	"scripts": {
-		"test": "jest --forceExit --runInBand",
+		"test": "jest --forceExit --runInBand -u",
 		"clean": "rimraf build lib dist",
 		"prebuild": "tsc",
 		"build": "webpack",
@@ -38,13 +38,7 @@
 		"react-dom": "^16.8.6"
 	},
 	"devDependencies": {
-		"@types/react": "^16.8.22",
-		"@types/react-dom": "^16.8.4",
-		"adaptivecards": "^1.2.0",
-		"awesome-typescript-loader": "^5.2.1",
-		"office-ui-fabric-react": "^7.5.2",
-		"react": "^16.8.6",
-		"react-dom": "^16.8.6"
+		"adaptivecards": "^1.2.0"
 	},
 	"jest": {
 		"rootDir": "src",

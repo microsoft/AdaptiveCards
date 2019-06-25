@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import { renderExtendedComponent } from "../../TestUtils";
+import { renderFabricComponent } from "../../TestUtils";
 import { InputChoiceSetFabric } from "../../../Components/Inputs/InputChoiceSetFabric";
 import { initializeIcons } from "office-ui-fabric-react";
 
@@ -55,22 +55,22 @@ const inputChoiceSetCheckboxMultiSelect = {
 
 describe("InputChoiceSet", () => {
     it("inputChoiceSetComboBox should be rendered correctly", () => {
-        let el = renderExtendedComponent(InputChoiceSetFabric, inputChoiceSetComboBox);
+        let el = renderFabricComponent(InputChoiceSetFabric, inputChoiceSetComboBox);
         expect(el).toMatchSnapshot();
     });
 
     it("inputChoiceSetChoiceGroup should be rendered correctly", () => {
-        let el = renderExtendedComponent(InputChoiceSetFabric, inputChoiceSetChoiceGroup);
+        let el = renderFabricComponent(InputChoiceSetFabric, inputChoiceSetChoiceGroup);
         expect(el).toMatchSnapshot();
     });
 
     it("inputChoiceSetComboBoxMultiSelect should be rendered correctly", () => {
-        let el = renderExtendedComponent(InputChoiceSetFabric, inputChoiceSetComboBoxMultiSelect);
+        let el = renderFabricComponent(InputChoiceSetFabric, inputChoiceSetComboBoxMultiSelect);
         expect(el).toMatchSnapshot();
     });
 
     it("inputChoiceSetCheckboxMultiSelect should be rendered correctly", () => {
-        let el = renderExtendedComponent(InputChoiceSetFabric, inputChoiceSetCheckboxMultiSelect);
+        let el = renderFabricComponent(InputChoiceSetFabric, inputChoiceSetCheckboxMultiSelect);
         expect(el).toMatchSnapshot();
     });
 

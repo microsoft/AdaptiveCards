@@ -16,7 +16,7 @@ describe("InputDateExtended", () => {
     });
 
     it("renders component correctly", () => {
-        let input = TestUtils.renderExtendedComponent(InputDateFabric, {
+        let input = TestUtils.renderFabricComponent(InputDateFabric, {
             type: "Input.Date",
             id: "date",
             spacing: "none",

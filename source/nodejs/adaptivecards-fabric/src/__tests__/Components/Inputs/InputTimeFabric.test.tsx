@@ -16,7 +16,7 @@ describe("InputTimeExtended", () => {
     });
 
     it("should render input time correctly", () => {
-        let input = TestUtils.renderExtendedComponent(InputTimeFabric, {
+        let input = TestUtils.renderFabricComponent(InputTimeFabric, {
             "type": "Input.Time",
             "id": "time",
             "min": "09:00",

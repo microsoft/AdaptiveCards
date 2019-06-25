@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 import { InputToggleFabric } from "../../../Components/Inputs/InputToggleFabric";
-import { renderExtendedComponent } from "../../TestUtils";
+import { renderFabricComponent } from "../../TestUtils";
 import { initializeIcons } from "office-ui-fabric-react";
 
 initializeIcons();
@@ -17,13 +17,13 @@ const toggleProps = {
 
 describe("InputToggleExtended", () => {
     it("should be rendered correctly", () => {
-        let el = renderExtendedComponent(InputToggleFabric, toggleProps);
+        let el = renderFabricComponent(InputToggleFabric, toggleProps);
 
         expect(el).toMatchSnapshot();
     });
 
     it("can set initial value", () => {
-        let el = renderExtendedComponent(InputToggleFabric, toggleProps);
+        let el = renderFabricComponent(InputToggleFabric, toggleProps);
 
         expect(el.querySelector("button").getAttribute("aria-checked")).toBe("true");
     });

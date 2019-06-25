@@ -3,7 +3,7 @@
 
 import { CardElement } from "adaptivecards";
 
-export const renderExtendedComponent = <T extends CardElement>(type: { new(): T; }, json: any): HTMLElement => {
+export const renderFabricComponent = <T extends CardElement>(type: { new(): T; }, json: any): HTMLElement => {
     let el = new type();
     el.parse(json);
     return el.render();

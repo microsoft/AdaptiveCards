@@ -2,7 +2,7 @@
 
 exports[`InputDateExtended renders component correctly 1`] = `
 <div
-  style="display: flex; flex-direction: column; box-sizing: border-box;"
+  style="display: flex; flex-direction: column; box-sizing: border-box; flex: 0 0 auto;"
 >
   <div
     class="ac-input-container"
