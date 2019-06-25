@@ -7,12 +7,12 @@ import * as AC from "adaptivecards";
 import * as Shared from "../Utils/shared";
 import { ActionButton } from "./ActionButton";
 
-export function createActionDiv(
+export const createActionDiv = (
     title: string,
     iconUrl: string,
     baseCssClass: string,
     iconPlacement: AC.ActionIconPlacement,
-    iconSize: number): HTMLDivElement {
+    iconSize: number): HTMLDivElement => {
     const div = Shared.getDiv();
     ReactDOM.render(
         <ActionButton
@@ -22,7 +22,7 @@ export function createActionDiv(
             iconPlacement={iconPlacement}
             iconSize={iconSize}></ActionButton>, div);
     return div;
-}
+};
 
 export class OpenUrlActionFabric extends AC.OpenUrlAction {
 
@@ -41,13 +41,13 @@ export class OpenUrlActionFabric extends AC.OpenUrlAction {
 
 export class SubmitActionFabric extends AC.SubmitAction {
 
-    private internalRenderedElement: any;
+    private internalRenderedElement: HTMLElement;
 
     get renderedElement(): HTMLElement {
         return this.internalRenderedElement;
     }
 
-    public render(baseCssClass?: string) {
+    public render(baseCssClass?: string): void {
         let actionsConfig = this.parent.hostConfig.actions;
         const div = createActionDiv(this.title, this.iconUrl, baseCssClass, actionsConfig.iconPlacement, actionsConfig.iconSize);
         this.internalRenderedElement = div;
@@ -56,13 +56,13 @@ export class SubmitActionFabric extends AC.SubmitAction {
 
 export class ShowCardActionFabric extends AC.ShowCardAction {
 
-    private internalRenderedElement: any;
+    private internalRenderedElement: HTMLElement;
 
     get renderedElement(): HTMLElement {
         return this.internalRenderedElement;
     }
 
-    public render(baseCssClass?: string) {
+    public render(baseCssClass?: string): void {
         let actionsConfig = this.parent.hostConfig.actions;
         const div = createActionDiv(this.title, this.iconUrl, baseCssClass, actionsConfig.iconPlacement, actionsConfig.iconSize);
         this.internalRenderedElement = div;
@@ -71,14 +71,14 @@ export class ShowCardActionFabric extends AC.ShowCardAction {
 
 export class ToggleVisibilityActionFabric extends AC.ToggleVisibilityAction {
 
-    private internalRenderedElement: any;
+    private internalRenderedElement: HTMLElement;
 
     get renderedElement(): HTMLElement {
         return this.internalRenderedElement;
     }
 
-    public render(baseCssClass?: string) {
-        const div = document.createElement("div");
+    public render(baseCssClass?: string): void {
+        const div = Shared.getDiv();
         ReactDOM.render(<ActionButton text={this.title} className={baseCssClass} />, div);
         this.internalRenderedElement = div;
     }

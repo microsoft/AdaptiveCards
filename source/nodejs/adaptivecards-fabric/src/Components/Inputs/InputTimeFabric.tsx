@@ -17,8 +17,8 @@ export class InputTimeFabric extends Shared.ReactInputElement {
         this.id = AC.getStringValue(json.id);
         this.value = json.value;
         this.placeholder = AC.getStringValue(json.placeholder);
-        this.min = AC.getStringValue(json.min);
-        this.max = AC.getStringValue(json.max);
+        this.min = json.min ? AC.getStringValue(json.min) : undefined;
+        this.max = json.max ? AC.getStringValue(json.max) : undefined;
     }
 
     protected renderReact = (): JSX.Element => {

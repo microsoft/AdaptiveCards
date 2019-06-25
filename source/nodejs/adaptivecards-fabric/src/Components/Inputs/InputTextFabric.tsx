@@ -23,7 +23,7 @@ export class InputTextFabric extends Shared.ReactInputElement {
         this.value = json.value;
         this.id = AC.getStringValue(json.id);
         this.isMultiline = AC.getBoolValue(json.isMultiline, false);
-        this.maxLength = json.maxLength ? parseInt(AC.getStringValue(json.maxLength), 10) : null;
+        this.maxLength = json.maxLength ? parseInt(AC.getStringValue(json.maxLength), 10) : undefined;
         this.placeholder = AC.getStringValue(json.placeholder);
         this.label = AC.getStringValue(json.label);
     }

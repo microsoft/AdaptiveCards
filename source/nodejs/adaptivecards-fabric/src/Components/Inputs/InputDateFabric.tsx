@@ -20,13 +20,29 @@ export class InputDateFabric extends Shared.ReactInputElement {
     public getJsonTypeName = (): string => "Input.Date";
 
     public parse = (json: any, errors?: AC.IValidationError[]) => {
+        this.id = AC.getStringValue(json.id);
+        this.placeholder = AC.getStringValue(json.placeholder);
+        this.parseDates(json, errors);
+    }
+
+    private parseDates = (json: any, errors?: AC.IValidationError[]) => {
         const dateString = AC.getStringValue(json.value);
         this.value = dateString;
-        this.date = dateString ? new Date(dateString) : new Date();
-        this.id = AC.getStringValue(json.id);
-        this.minDate = json.min ? new Date(AC.getStringValue(json.min)) : null;
-        this.maxDate = json.max ? new Date(AC.getStringValue(json.max)) : null;
-        this.placeholder = AC.getStringValue(json.placeholder);
+        this.date = dateString ? this.getDate(dateString) : new Date();
+        this.minDate = json.min ? this.getDate(AC.getStringValue(json.min)) : undefined;
+        this.maxDate = json.max ? this.getDate(AC.getStringValue(json.max)) : undefined;
+    }
+
+    private getDate = (dateString: string, errors?: AC.IValidationError[]): Date => {
+        try {
+            return new Date(dateString);
+        } catch (error) {
+            Shared.raiseParseError({
+                error: AC.ValidationError.InvalidPropertyValue,
+                message: error,
+            }, errors);
+            return undefined;
+        }
     }
 
     private buildDatePicker = () => {
