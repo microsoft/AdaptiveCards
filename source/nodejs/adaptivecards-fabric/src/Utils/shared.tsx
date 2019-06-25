@@ -55,3 +55,13 @@ export const raiseParseError = (error: AC.IValidationError, errors: Array<AC.IVa
     }
 };
 
+export const getIntValue = (val: any, errors?: AC.IValidationError[], defaultValue: number = undefined): number => {
+    try {
+        return val ? parseInt(val, 10) : defaultValue;
+    } catch (error) {
+        raiseParseError({
+            error: AC.ValidationError.InvalidPropertyValue,
+            message: error,
+        }, errors);
+    }
+};
