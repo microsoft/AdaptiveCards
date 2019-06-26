@@ -122,7 +122,7 @@ namespace UWPUnitTests
 
             while (retryImage)
             {
-                var renderResult = await UWPTestLibrary.RenderTestHelpers.RenderCard(cardFile, hostConfigFile, new Dictionary<string, AdaptiveCards.Rendering.Uwp.IAdaptiveCardResourceResolver>());
+                var renderResult = await UWPTestLibrary.RenderTestHelpers.RenderCard(cardFile, hostConfigFile);
 
                 if (renderResult.Tree != null)
                 {

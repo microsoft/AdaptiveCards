@@ -164,17 +164,21 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
                 [imageView.widthAnchor constraintEqualToAnchor:superView.widthAnchor].active = YES;
             } else if (superView.frame.size.height > imageView.frame.size.height) {
                 [imageView.heightAnchor constraintEqualToAnchor:superView.heightAnchor].active = YES;
+            } else { // if background image is bigger than the superview; let it retain its dimensions
+                imageView.translatesAutoresizingMaskIntoConstraints = YES;
             }
+
+            [imageView.centerYAnchor constraintEqualToAnchor:superView.centerYAnchor].active = YES;
 
             switch (backgroundImageProperties->GetHorizontalAlignment()) {
                 case HorizontalAlignment::Right:
-                    [superView.trailingAnchor constraintEqualToAnchor:imageView.trailingAnchor].active = YES;
+                    [imageView.trailingAnchor constraintEqualToAnchor:superView.trailingAnchor].active = YES;
                     break;
                 case HorizontalAlignment::Left:
-                    [superView.leadingAnchor constraintEqualToAnchor:imageView.leadingAnchor].active = YES;
+                    [imageView.leadingAnchor constraintEqualToAnchor:superView.leadingAnchor].active = YES;
                     break;
                 case HorizontalAlignment::Center:
-                    [superView.centerXAnchor constraintEqualToAnchor:imageView.centerXAnchor].active = YES;
+                    [imageView.centerXAnchor constraintEqualToAnchor:superView.centerXAnchor].active = YES;
                     break;
             }
 
