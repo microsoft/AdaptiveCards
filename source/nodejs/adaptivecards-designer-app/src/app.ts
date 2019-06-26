@@ -12,7 +12,7 @@ import "adaptivecards-designer/node_modules/adaptivecards-controls/lib/adaptivec
 
 window.onload = function() {
     // Comment to disable preview features (data binding)
-    ACDesigner.GlobalSettings.previewFeaturesEnabled = true;
+    ACDesigner.GlobalSettings.previewFeaturesEnabled = false;
 
 	ACDesigner.CardDesigner.onProcessMarkdown = (text: string, result: { didProcess: boolean, outputHtml: string }) => {
 		result.outputHtml = new markdownit().render(text);
