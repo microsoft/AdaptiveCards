@@ -294,6 +294,7 @@ export abstract class CardElement extends CardObject {
             this.separatorOrientation);
 
             if (AdaptiveCard.alwaysBleedSeparators && renderedSeparator && this.separatorOrientation == Enums.Orientation.Horizontal) {
+                // Adjust separator's margins if the option to always bleed separators is turned on
                 let parentContainer = this.getParentContainer();
     
                 if (parentContainer && parentContainer.getEffectivePadding()) {
