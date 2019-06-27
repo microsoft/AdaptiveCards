@@ -258,9 +258,9 @@ namespace AdaptiveCards.Test
             var card = AdaptiveCard.FromJson(json).Card;
 
             // Contents of card for easier access
-            AdaptiveContainer container = (AdaptiveContainer) card.Body[0];
-            AdaptiveTextBlock textblock = (AdaptiveTextBlock) container.Items[0];
-            AdaptiveImage image = (AdaptiveImage) container.Items[1];
+            AdaptiveContainer container = (AdaptiveContainer)card.Body[0];
+            AdaptiveTextBlock textblock = (AdaptiveTextBlock)container.Items[0];
+            AdaptiveImage image = (AdaptiveImage)container.Items[1];
 
             // Container property tests
             Assert.IsNull(container.Style);
@@ -299,7 +299,7 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(card.Body.Count, 1);
             var imageBlock = card.Body[0] as AdaptiveImage;
             Assert.AreEqual(0, result.Warnings.Count);
-            Assert.AreEqual(20U,imageBlock.PixelWidth);
+            Assert.AreEqual(20U, imageBlock.PixelWidth);
             Assert.AreEqual(50U, imageBlock.PixelHeight);
         }
 
@@ -518,7 +518,7 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(columnSet.Height, AdaptiveHeight.Auto);
             Assert.AreEqual(columnSet.Columns.Count, 2);
 
-            foreach(var column in columnSet.Columns)
+            foreach (var column in columnSet.Columns)
             {
                 Assert.AreEqual(column.Items.Count, 1);
                 var columnContent = column.Items[0];
@@ -934,11 +934,11 @@ namespace AdaptiveCards.Test
 
             actionSet.Actions.Add(showCardAction);
 
-                AdaptiveToggleVisibilityAction toggleVisibilityAction = new AdaptiveToggleVisibilityAction
-                {
-                    Title = "Toggle",
-                    TargetElements = new List<AdaptiveTargetElement> { "test" }
-                };
+            AdaptiveToggleVisibilityAction toggleVisibilityAction = new AdaptiveToggleVisibilityAction
+            {
+                Title = "Toggle",
+                TargetElements = new List<AdaptiveTargetElement> { "test" }
+            };
             actionSet.Actions.Add(toggleVisibilityAction);
 
             // This lines are not indented so the comparisson doesn't fail due to extra spaces
@@ -1142,6 +1142,60 @@ namespace AdaptiveCards.Test
 }";
             var outputJson = card.ToJson();
             Assert.AreEqual(outputJson, expectedJson);
-}
+        }
+
+        [TestMethod]
+        public void TestImplicitImageType()
+        {
+            // Images set to type "Image" or with type unset should parse correctly within an image set
+            var imageTypeSetOrEmpty =
+            @"{
+                ""type"": ""AdaptiveCard"",
+                ""version"": ""1.2"",
+                ""body"": [
+                    {
+                        ""type"": ""ImageSet"",
+                        ""images"": [
+                            {
+                                ""type"": ""Image"",
+                                ""url"": ""http://adaptivecards.io/content/cats/1.png""
+                            },
+                            {
+                                ""url"": ""http://adaptivecards.io/content/cats/1.png""
+                            }
+                        ]
+                    }
+                ]
+            }";
+
+            // Images set to a bogus type should not parse correctly
+            var imageTypeInvalid =
+            @"{
+                ""type"": ""AdaptiveCard"",
+                ""version"": ""1.2"",
+                ""body"": [
+                    {
+                        ""type"": ""ImageSet"",
+                        ""images"": [
+                            {
+                                ""type"": ""Elephant"",
+                                ""url"": ""http://adaptivecards.io/content/cats/1.png""
+                            }
+                        ]
+                    }
+                ]
+            }";
+
+            var result = AdaptiveCard.FromJson(imageTypeSetOrEmpty);
+            Assert.IsNotNull(result.Card);
+            Assert.AreEqual(2, (result.Card.Body[0] as AdaptiveImageSet).Images.Count);
+
+            var ex = Assert.ThrowsException<ArgumentException>(() =>
+            {
+                AdaptiveCard.FromJson(imageTypeInvalid);
+            });
+
+            StringAssert.Contains(ex.Message, "The value \"AdaptiveCards.AdaptiveUnknownElement\" is not of type \"AdaptiveCards.AdaptiveImage\" and cannot be used in this generic collection.");
+        }
     }
 }
