@@ -11,6 +11,7 @@
 #include "AdaptiveFeatureRegistration.h"
 #include "AdaptiveHostConfig.h"
 #include "AdaptiveImage.h"
+#include "AdaptiveImageRenderer.h"
 #include "AdaptiveRenderArgs.h"
 #include "AdaptiveShowCardAction.h"
 #include "AdaptiveTextRun.h"
@@ -487,9 +488,10 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
         THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
 
+        // For background image we use the default image renderer instead of custom image renderers
         ComPtr<IAdaptiveElementRenderer> elementRenderer;
-        THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Image").Get(), &elementRenderer));
-
+        THROW_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveImageRenderer>(&elementRenderer));
+        
         ComPtr<IUIElement> background;
         if (elementRenderer != nullptr)
         {
