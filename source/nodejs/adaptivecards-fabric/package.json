@@ -19,15 +19,15 @@
 	"files": [
 		"dist"
 	],
-	"main": "lib/adaptivecards.js",
-	"types": "lib/adaptivecards.d.ts",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
 	"scripts": {
 		"test": "jest --forceExit --runInBand -u",
 		"clean": "rimraf build lib dist",
 		"prebuild": "tsc",
 		"build": "webpack",
 		"watch": "webpack --watch",
-		"dts": "dts-generator --name adaptivecards --project . --out dist/adaptivecards.d.ts",
+		"dts": "dts-generator --name adaptivecards --project . --out dist/index.d.ts",
 		"lint": "tslint -c ../tslint.json 'src/**/*.{ts,tsx}'",
 		"release": "npm run clean && npm run build && npm test && webpack --mode=production && npm run dts"
 	},
