@@ -228,31 +228,31 @@ namespace AdaptiveCards.Test
         public void TestDefaultValueHandling()
         {
             var json = @"{
-	            ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
-	            ""type"": ""AdaptiveCard"",
-	            ""version"": ""1.0"",
-	            ""body"": [
-		            {
-			            ""type"": ""Container"",
-			            ""style"": ""asdf"",
-			            ""spacing"": ""asdf"",
-			            ""items"": [
-				            {
-					            ""type"": ""TextBlock"",
-					            ""text"": ""Sample text"",
-					            ""color"": ""asdf"",
-					            ""size"": ""asdf"",
-					            ""weight"": ""asdf""
-				            },
-				            {
-					            ""type"": ""Image"",
-					            ""url"": ""http://adaptivecards.io/content/cats/1.png"",
-					            ""style"": ""asdf"",
-					            ""size"": ""asdf""
-				            }
-			            ]
-		            }
-	            ]
+                ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                ""type"": ""AdaptiveCard"",
+                ""version"": ""1.0"",
+                ""body"": [
+                    {
+                        ""type"": ""Container"",
+                        ""style"": ""asdf"",
+                        ""spacing"": ""asdf"",
+                        ""items"": [
+                            {
+                                ""type"": ""TextBlock"",
+                                ""text"": ""Sample text"",
+                                ""color"": ""asdf"",
+                                ""size"": ""asdf"",
+                                ""weight"": ""asdf""
+                            },
+                            {
+                                ""type"": ""Image"",
+                                ""url"": ""http://adaptivecards.io/content/cats/1.png"",
+                                ""style"": ""asdf"",
+                                ""size"": ""asdf""
+                            }
+                        ]
+                    }
+                ]
             }";
 
             var card = AdaptiveCard.FromJson(json).Card;
