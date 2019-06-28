@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"baseUrl": ".",
-		"outDir": "dist",
+		"outDir": "lib",
 		"target": "es5",
 		"module": "commonjs",
 		"jsx": "react",
@@ -24,7 +24,9 @@
 			"mockTypeScriptVersion": false
 		}]
 	},
-	"include": ["src"],
+	"files": [
+		"src/adaptivecards-fabric.ts"
+	],
 	"exclude": [
 		"src/__tests__",
 		"node_modules"

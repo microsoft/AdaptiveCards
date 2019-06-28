@@ -10,11 +10,11 @@ module.exports = (env, argv) => {
 
     return {
         entry: {
-            'adaptivecards': './src/adaptivecards.ts'
+            'adaptivecards-fabric': './src/adaptivecards-fabric.ts'
         },
         output: {
             path: path.resolve(__dirname, "./dist"),
-            filename: "[name].js",
+			filename: devMode ? "[name].js" : "[name].min.js",
             libraryTarget: "umd",
             library: "@ms-conv-ux/adaptive-cards-extended"
         },
