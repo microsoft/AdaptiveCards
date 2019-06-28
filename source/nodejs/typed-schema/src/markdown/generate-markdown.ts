@@ -52,6 +52,8 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 			formattedProperties.push(formattedTypeProperty);
 		}
 
+		var firstInheritedFormattedProperty: any;
+
 		properties.forEach((property, name) => {
 			var summary = getPropertySummary(property, knownTypes, autoLink, elementVersion);
 
@@ -61,6 +63,12 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 				Required: summary.required,
 				Description: summary.description
 			};
+
+			// If we haven't reached the start of the inherited properties...
+			// Note that inherited required properties are moved up to the front
+			if (!firstInheritedFormattedProperty && !property.required && !classDefinition.properties.has(property.name)) {
+				firstInheritedFormattedProperty = formattedProperty;
+			}
 
 			// Special case version property on Adaptive Card to be required.
 			// It's actually not required in ShowCard, so in schema it's not required,
@@ -76,38 +84,63 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 			formattedProperties.push(formattedProperty);
 		});
 
-		// Data needs to be formatted as follows for use with markdown library
-		/*
-			table([
-			['Branch', 'Commit'],
-			['master', '0123456789abcdef'],
-			['staging', 'fedcba9876543210']
-			])
-		*/
-		var tableData = [];
-		var headerRow = [];
-		for (var propName in formattedProperties[0]) {
-			headerRow.push(propName);
-		}
-		tableData.push(headerRow);
+		var mainFormattedProperties = [];
+		var inheritedFormattedProperties = [];
+		var reachedInherited = false;
 
 		formattedProperties.forEach((formattedProperty) => {
-			var dataRow = [];
-			for (var propName in formattedProperty) {
-				dataRow.push(formattedProperty[propName]);
+			if (reachedInherited || formattedProperty == firstInheritedFormattedProperty) {
+				reachedInherited = true;
+				inheritedFormattedProperties.push(formattedProperty);
+			} else {
+				mainFormattedProperties.push(formattedProperty);
 			}
-			tableData.push(dataRow);
 		});
 
 		// Format as markdown table
-		md += mdTable(tableData, {
-			pad: false
-		});
+		if (mainFormattedProperties.length > 0) {
+			md += createTable(mainFormattedProperties);
+			md += '\n';
+		}
 
-		md += '\n';
+		if (inheritedFormattedProperties.length > 0) {
+			md += "\n**Inherited properties**\n\n";
+			md += createTable(inheritedFormattedProperties);
+			md += "\n";
+		}
 	}
 
 	return md;
+}
+
+function createTable(formattedProperties: any[]) {
+	// Data needs to be formatted as follows for use with markdown library
+	/*
+		table([
+		['Branch', 'Commit'],
+		['master', '0123456789abcdef'],
+		['staging', 'fedcba9876543210']
+		])
+	*/
+	var tableData = [];
+	var headerRow = [];
+	for (var propName in formattedProperties[0]) {
+		headerRow.push(propName);
+	}
+	tableData.push(headerRow);
+
+	formattedProperties.forEach((formattedProperty) => {
+		var dataRow = [];
+		for (var propName in formattedProperty) {
+			dataRow.push(formattedProperty[propName]);
+		}
+		tableData.push(dataRow);
+	});
+
+	// Format as markdown table
+	return mdTable(tableData, {
+		pad: false
+	});
 }
 
 function sortProperties(properties: Map<string, SchemaProperty>) {
@@ -247,14 +280,14 @@ export function createPropertyDetails(property: SchemaProperty, headerLevel: num
 	var summary = getPropertySummary(property, knownTypes, autoLink, elementVersion);
 	var type = summary.type;
 
-	md += style.getHeaderMarkdown(property.name, headerLevel) + '\n\n';
+	md += style.getHeaderMarkdown(property.name, headerLevel); // Includes ending newlines
 
 	// TODO: Add plugin point for custom JSON schema properties like gltf_*
 	var detailedDescription = property.description;
 	if (defined(detailedDescription)) {
-		md += detailedDescription + '\n';
+		md += detailedDescription + '\n\n';
 	} else if (defined(summary.description)) {
-		md += summary.description + '\n';
+		md += summary.description + '\n\n';
 	}
 
 	md += '* ' + style.propertyDetails('Type') + ': ' + summary.formattedType + '\n';
@@ -267,14 +300,7 @@ export function createPropertyDetails(property: SchemaProperty, headerLevel: num
 
 	md += '* ' + style.propertyDetails('Required') + ': ' + summary.required + '\n';
 
-	var hasComplexTypes = false;
-
-	var allTypes: SchemaPropertyType[] = property.getAllTypes();
-	allTypes.forEach(propertyType => {
-		if (propertyType.type instanceof SchemaClass || propertyType.type instanceof SchemaEnum) {
-			hasComplexTypes = true;
-		}
-	});
+	var hasComplexTypes = propertyHasComplexTypes(property);
 
 	if (hasComplexTypes) {
 		var allowedValues: string[] = getAllowedValuesForProperty(property, summary, includeVersion);
@@ -287,6 +313,19 @@ export function createPropertyDetails(property: SchemaProperty, headerLevel: num
 	}
 
 	return md + '\n';
+}
+
+export function propertyHasComplexTypes(property: SchemaProperty) {
+	var answer = false;
+
+	var allTypes: SchemaPropertyType[] = property.getAllTypes();
+	allTypes.forEach(propertyType => {
+		if (propertyType.type instanceof SchemaClass || propertyType.type instanceof SchemaEnum) {
+			answer = true;
+		}
+	});
+
+	return answer;
 }
 
 function getAllowedValuesForProperty(property: SchemaProperty, summary: any, includeVersion: boolean) {

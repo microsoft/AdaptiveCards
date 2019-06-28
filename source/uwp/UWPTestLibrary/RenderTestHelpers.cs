@@ -51,7 +51,7 @@ namespace UWPTestLibrary
             }
         }
 
-        public static async Task<RenderedTestResult> RenderCard(FileViewModel cardFile, FileViewModel hostConfigFile, Dictionary<string, IAdaptiveCardResourceResolver> resourceResolvers)
+        public static async Task<RenderedTestResult> RenderCard(FileViewModel cardFile, FileViewModel hostConfigFile)
         {
             string error = null;
             string roundTrippedJsonString = null;
@@ -99,10 +99,7 @@ namespace UWPTestLibrary
                             renderer.HostConfig = hostConfig;
                         }
 
-                        foreach (var resourceResolver in resourceResolvers)
-                        {
-                            renderer.ResourceResolvers.Set(resourceResolver.Key, resourceResolver.Value);
-                        }
+                        renderer.ResourceResolvers.Set("symbol", new SampleResourceResolver());
 
                         if (hostConfigFile.Name.Contains(FileLoadHelpers.fixedNonInteractiveName))
                         {
