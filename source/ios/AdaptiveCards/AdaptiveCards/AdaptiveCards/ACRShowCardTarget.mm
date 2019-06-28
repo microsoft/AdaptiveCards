@@ -21,7 +21,7 @@
     ACOHostConfig *_config;
     __weak UIView<ACRIContentHoldingView> *_superview;
     __weak ACRView *_rootView;
-    __weak UIView *_adcView;
+    __weak ACRColumnView *_adcView;
     __weak UIButton *_button;
     ACOBaseActionElement *_actionElement;
 }
@@ -51,49 +51,43 @@
 - (void)createShowCard:(NSMutableArray*)inputs
 {
     [inputs setArray:[NSMutableArray arrayWithArray:[[_rootView card] getInputs]]];
-    if(!inputs){
+
+    if (!inputs) {
         inputs = [[NSMutableArray alloc] init];
     }
-    ACRColumnView *containingView = [[ACRColumnView alloc] initWithFrame:_rootView.frame];
-    UIView *adcView = [ACRRenderer renderWithAdaptiveCards:_adaptiveCard
-                                                    inputs:inputs
-                                                  context:_rootView
-                                           containingView:containingView
-                                                hostconfig:_config];
+
+    ACRColumnView *adcView = [[ACRColumnView alloc] initWithFrame:_rootView.frame];
+
+    [ACRRenderer renderWithAdaptiveCards:_adaptiveCard
+                                  inputs:inputs
+                                 context:_rootView
+                          containingView:adcView
+                              hostconfig:_config];
+
     [[_rootView card] setInputs:inputs];
     unsigned int padding = [_config getHostConfig] ->GetActions().showCard.inlineTopMargin;
-
-        ACRContentHoldingUIView *wrappingView = [[ACRContentHoldingUIView alloc] init];
-    [wrappingView addSubview:adcView];
-
-    NSString *horString = [[NSString alloc] initWithFormat:@"H:|-0-[adcView]-0-|"];
-    NSString *verString = [[NSString alloc] initWithFormat:@"V:|-%u-[adcView]-0-|",
-                           padding];
-    NSDictionary *dictionary = NSDictionaryOfVariableBindings(wrappingView, adcView);
-    NSArray *horzConst = [NSLayoutConstraint constraintsWithVisualFormat:horString
-                                                                 options:0
-                                                                 metrics:nil
-                                                                   views:dictionary];
-    NSArray *vertConst = [NSLayoutConstraint constraintsWithVisualFormat:verString
-                                                                 options:0
-                                                                 metrics:nil
-                                                                   views:dictionary];
-    [wrappingView addConstraints:horzConst];
-    [wrappingView addConstraints:vertConst];
-    _adcView = wrappingView;
 
     ContainerStyle containerStyle = ([_config getHostConfig]->GetAdaptiveCard().allowCustomStyle)? _adaptiveCard->GetStyle() : [_config getHostConfig]->GetActions().showCard.style;
 
     ACRContainerStyle style = (ACRContainerStyle)(containerStyle);
 
-    if(style == ACRNone) {
+    if (style == ACRNone) {
         style = [_superview style];
     }
 
-    wrappingView.translatesAutoresizingMaskIntoConstraints = NO;
-    wrappingView.backgroundColor = [_config getBackgroundColorForContainerStyle:style];
+    _adcView = adcView;
+    _adcView.translatesAutoresizingMaskIntoConstraints = NO;
+    _adcView.backgroundColor = [_config getBackgroundColorForContainerStyle:style];
+    [_superview addArrangedSubview:adcView];
 
-    [_superview addArrangedSubview:_adcView];
+    for (NSLayoutConstraint *constraint in adcView.widthconstraint) {
+        constraint.active = NO;
+    }
+
+    for (NSLayoutConstraint *constraint in adcView.heightconstraint) {
+        constraint.active = NO;
+    }
+
     _adcView.hidden = YES;
 }
 
@@ -101,7 +95,16 @@
 {
     BOOL hidden = _adcView.hidden;
     [_superview hideAllShowCards];
-    _adcView.hidden = (hidden == YES)? NO: YES;
+    _adcView.hidden = (hidden == YES) ? NO : YES;
+
+    for (NSLayoutConstraint *constraint in _adcView.widthconstraint) {
+        constraint.active = hidden;
+    }
+
+    for (NSLayoutConstraint *constraint in _adcView.heightconstraint) {
+        constraint.active = hidden;
+    }
+
     if ([_rootView.acrActionDelegate respondsToSelector:@selector(didChangeVisibility: isVisible:)])
     {
         [_rootView.acrActionDelegate didChangeVisibility:_button isVisible:(!_adcView.hidden)];
@@ -126,6 +129,15 @@
 - (void)hideShowCard
 {
     _adcView.hidden = YES;
+
+    for (NSLayoutConstraint *constraint in _adcView.widthconstraint) {
+        constraint.active = NO;
+    }
+
+    for (NSLayoutConstraint *constraint in _adcView.heightconstraint) {
+        constraint.active = NO;
+    }
+
     if ([_rootView.acrActionDelegate respondsToSelector:@selector(didChangeVisibility: isVisible:)])
     {
         [_rootView.acrActionDelegate didChangeVisibility:_button isVisible:(!_adcView.hidden)];

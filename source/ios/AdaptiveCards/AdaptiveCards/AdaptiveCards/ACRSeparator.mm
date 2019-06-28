@@ -81,13 +81,16 @@ using namespace AdaptiveCards;
                                                  multiplier:1
                                                    constant:0];
     }
+    
+    NSLayoutConstraint *constraintByAnchor = nil;
+    
     if(UILayoutConstraintAxisVertical == huggingAxis)
     {
         [self setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
         [self setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
         [self setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         [self setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-        [self.heightAnchor constraintEqualToConstant:height].active = YES;
+        constraintByAnchor = [self.heightAnchor constraintEqualToConstant:height];
     }
     else
     {
@@ -95,8 +98,12 @@ using namespace AdaptiveCards;
         [self setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
         [self setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
         [self setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-        [self.widthAnchor constraintEqualToConstant:width].active = YES;
+        constraintByAnchor = [self.widthAnchor constraintEqualToConstant:width];
     }
+    
+    constraintByAnchor.priority = 999;
+    constraintByAnchor.active = YES;
+    constraint.priority = 999;
     return constraint;
 }
 

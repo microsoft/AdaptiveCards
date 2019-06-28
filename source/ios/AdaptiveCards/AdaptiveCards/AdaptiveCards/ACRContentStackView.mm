@@ -216,7 +216,7 @@ using namespace AdaptiveCards;
     NSString *horString = [[NSString alloc] initWithFormat:@"H:|-(%u@%u)-[_stackView]-(%u@%u)-|",
                            leadingPadding, priority, trailingPadding, priority];
     NSString *verString = [[NSString alloc] initWithFormat:@"V:|-(%u@%u)-[_stackView]-(%u@%u)-|",
-                           topPadding, priority, bottomPadding, priority];
+                           topPadding, priority, bottomPadding, 999];
 
     NSDictionary *dictionary = NSDictionaryOfVariableBindings(_stackView);
 
