@@ -1,28 +1,38 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-#include "Enums.h"
 #include "pch.h"
 #include "BackgroundImage.h"
+#include "ParseContext.h"
+#include "ParseUtil.h"
 
-namespace AdaptiveSharedNamespace
+using namespace AdaptiveSharedNamespace;
+
+BackgroundImage::BackgroundImage()
 {
-    std::string BackgroundImage::GetUrl() const { return m_url; }
+}
 
-    void BackgroundImage::SetUrl(const std::string& value) { m_url = value; }
+std::string BackgroundImage::GetUrl() const { return m_url; }
 
-    ImageFillMode BackgroundImage::GetFillMode() const { return m_fillMode; }
+void BackgroundImage::SetUrl(const std::string& value) { m_url = value; }
 
-    void BackgroundImage::SetFillMode(const ImageFillMode& value) { m_fillMode = value; }
+ImageFillMode BackgroundImage::GetFillMode() const { return m_fillMode; }
 
-    HorizontalAlignment BackgroundImage::GetHorizontalAlignment() const { return m_hAlignment; }
+void BackgroundImage::SetFillMode(const ImageFillMode& value) { m_fillMode = value; }
 
-    void BackgroundImage::SetHorizontalAlignment(const HorizontalAlignment& value) { m_hAlignment = value; }
+HorizontalAlignment BackgroundImage::GetHorizontalAlignment() const { return m_hAlignment; }
 
-    VerticalAlignment BackgroundImage::GetVerticalAlignment() const { return m_vAlignment; }
+void BackgroundImage::SetHorizontalAlignment(const HorizontalAlignment& value) { m_hAlignment = value; }
 
-    void BackgroundImage::SetVerticalAlignment(const VerticalAlignment& value) { m_vAlignment = value; }
+VerticalAlignment BackgroundImage::GetVerticalAlignment() const { return m_vAlignment; }
 
-    Json::Value BackgroundImage::SerializeToJsonValue() const
+void BackgroundImage::SetVerticalAlignment(const VerticalAlignment& value) { m_vAlignment = value; }
+
+std::string BackgroundImage::Serialize() const
+    {
+        return ParseUtil::JsonToString(SerializeToJsonValue());
+    }
+
+Json::Value BackgroundImage::SerializeToJsonValue() const
     {
         Json::Value root;
 
@@ -62,7 +72,7 @@ namespace AdaptiveSharedNamespace
         return root;
     }
 
-    std::shared_ptr<BackgroundImage> BackgroundImage::Deserialize(const Json::Value& json)
+std::shared_ptr<BackgroundImage> BackgroundImage::Deserialize(const Json::Value& json)
     {
         std::shared_ptr<BackgroundImage> image = std::make_shared<BackgroundImage>();
 
@@ -79,4 +89,8 @@ namespace AdaptiveSharedNamespace
 
         return image;
     }
-}
+
+std::shared_ptr<BackgroundImage> BackgroundImage::DeserializeFromString(const std::string& jsonString)
+    {
+        return BackgroundImage::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
+    }
