@@ -1,7 +1,6 @@
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ConcatPlugin = require('webpack-concat-plugin');
 
@@ -15,7 +14,7 @@ module.exports = (env, argv) => {
 		mode: mode,
 		entry: {
 			"adaptivecards-designer": "./src/adaptivecards-designer.ts",
-			//"microsoft-hosts": "./src/containers/index.ts"
+			"adaptivecards-designer-standalone": "./src/adaptivecards-designer-standalone.ts"
 		},
 		output: {
 			path: path.resolve(__dirname, "./dist"),
@@ -49,22 +48,20 @@ module.exports = (env, argv) => {
 		},
 		plugins: [
 			new HtmlWebpackPlugin({
+				title: "Adaptive Cards Designer (No Microsoft Hosts)",
+				template: "./no-hosts.html",
+				filename: "no-hosts.html",
+				chunks: [ "adaptivecards-designer-standalone" ]
+			 }),
+			new HtmlWebpackPlugin({
 				title: "Adaptive Cards Designer",
-				template: "./index.html"
+				template: "./index.html",
+				filename: "index.html",
+				chunks: [ "adaptivecards-designer" ]
 			}),
 			new MiniCssExtractPlugin({
 				filename: '[name].css'
 			}),
-			new CopyWebpackPlugin([{
-				from: 'src/adaptivecards-designer.css',
-				to: '.',
-				flatten: true
-			}]),
-			new CopyWebpackPlugin([{
-				from: 'node_modules/adaptivecards-controls/dist/adaptivecards-controls.css',
-				to: '.',
-				flatten: true
-			}]),
 			new ConcatPlugin({
 				uglify: false,
 				sourceMap: false,
@@ -73,10 +70,15 @@ module.exports = (env, argv) => {
 				filesToConcat: [ './node_modules/adaptivecards-controls/dist/adaptivecards-controls.css', './src/adaptivecards-designer.css']
 			}),
 			new CopyWebpackPlugin([{
-					from: 'src/adaptivecards-designer.css',
-					to: '../lib/',
-					flatten: true
-				},
+				from: 'src/containers/default/adaptivecards-defaulthost.css',
+				to: '.'
+			}]),
+			new CopyWebpackPlugin([{
+				from: 'src/adaptivecards-designer.css',
+				to: '.',
+				flatten: true
+			}]),
+			new CopyWebpackPlugin([
 				{
 					from: 'src/containers/**/*.css',
 					to: 'containers/',
@@ -91,17 +93,11 @@ module.exports = (env, argv) => {
 					from: 'src/containers/**/*.jpg',
 					to: 'containers/',
 					flatten: true
-				},
-				{
-					from: 'node_modules/monaco-editor/min/vs',
-					to: 'monaco-editor/min/vs'
 				}
 			])
 		],
-		externals: {
-			//"adaptivecards": "AdaptiveCards",
-			//"adaptivecards-controls": "ACControls",
-			//"monaco-editor/esm/vs/editor/editor.api": "monaco"
-		}
+		externals: [
+			///^monaco-editor/ // <-- NOT WORKING for some reason
+		]
 	}
 }

@@ -310,6 +310,7 @@ $(function () {
 
 	function renderCard(el, json) {
 
+
 		// TODO: clean this up to only provide custom host config options
 		// it breaks on any rename as-is
 		var adaptiveCard = new AdaptiveCards.AdaptiveCard();
@@ -320,17 +321,7 @@ $(function () {
 		el.text('').append(renderedCard).show();
 	}
 
-	var cardUrl = $(this).attr("data-card-url");
-	var el = $(this);
-	if (cardUrl) {
-		$.getJSON(cardUrl, function (json) { renderCard(el, JSON.parse(json)); });
-	} else {
-		renderCard($(this), JSON.parse(el.text()));
-	}
-
-
 	$('.ac-properties table').addClass("w3-table w3-bordered w3-responsive");
-
 
 	hljs.configure({
 		tabReplace: '  '
@@ -342,6 +333,35 @@ $(function () {
 
 	$('#menu-nav').on('change', function () {
 		window.location = this.value;
-	});
+
+	// Code for making our sidebar sticky
+
+	var $sidebar;
+	var $headerHolder;
+
+	$sidebar = $(".sidebar");
+	if ($sidebar.length > 0) {
+		$headerHolder = $(".header-holder");
+
+		updateSidebarTopOffset();
+
+		$(document).scroll(function () {
+			updateSidebarTopOffset();
+		});
+	}
+
+
+	function updateSidebarTopOffset() {
+		var headerHeight = $headerHolder.height();
+		var scrollOffset = $(document).scrollTop();
+		var topPadding = 24;
+
+		var calculatedTop = headerHeight - scrollOffset + topPadding;
+		if (calculatedTop < topPadding) {
+			calculatedTop = topPadding;
+		}
+
+		$sidebar.css("top", calculatedTop);
+	}
 
 });

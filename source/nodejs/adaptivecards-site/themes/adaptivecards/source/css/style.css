@@ -128,7 +128,7 @@ code {
 .sidebar {
 	position: fixed;
 	top: 118px; /* This will get dynamically changed by sticky-sidebar.js */
-	bottom: 24px;
+	bottom: 0;
 	overflow: auto;
 }
 
