@@ -9,6 +9,7 @@ module.exports = (env, argv) => {
     console.info(`running webpack with mode: ${mode}`);
 
     return {
+        mode: mode,
         entry: {
             'adaptivecards-fabric': './src/adaptivecards-fabric.ts'
         },
@@ -44,6 +45,5 @@ module.exports = (env, argv) => {
             new CleanWebpackPlugin()
         ],
         externals: ["react", "react-dom", "adaptivecards", "office-ui-fabric-react"],
-        mode: mode
     }
 };
