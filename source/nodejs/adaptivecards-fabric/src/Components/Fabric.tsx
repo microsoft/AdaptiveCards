@@ -8,7 +8,7 @@ import * as Actions from "../actions";
 
 let iconsInitialized = false;
 
-export const useFabricControls = () => {
+export const useFabricComponents = () => {
     if (!iconsInitialized) {
         initializeIcons();
         iconsInitialized = true;

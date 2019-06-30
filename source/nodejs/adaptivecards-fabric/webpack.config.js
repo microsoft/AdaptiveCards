@@ -48,15 +48,13 @@ module.exports = (env, argv) => {
                 template: "./index.html"
             })
         ],
-        externals: [
-            // "react",
-            // "react-dom",
-            // "office-ui-fabric-react",
-            {
-                "adaptivecards": {
-                    var: "AdaptiveCards"
-                }
+        externals: [{
+            "react": "React",
+            "react-dom": "ReactDOM",
+            "office-ui-fabric-react": "fabric",
+            "adaptivecards": {
+                var: "AdaptiveCards"
             }
-        ]
+        }]
     }
 };

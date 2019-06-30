@@ -8,6 +8,14 @@
     <script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.js"></script>
     <script src="https://unpkg.com/adaptivecards@1.2.0/dist/adaptivecards.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.8.6/umd/react.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.8.6/umd/react-dom.development.js"></script>
+
+    <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-js/1.4.0/css/fabric.min.css" />
+    <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-js/1.4.0/css/fabric.components.min.css" />
+    <script src="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-js/6.189.3/js/fabric.min.js"></script>
+    
+
     <style type="text/css">
         #exampleDiv {
             width: 300px;
@@ -226,7 +234,7 @@
             // Create an AdaptiveCard instance
             var adaptiveCard = new AdaptiveCards.AdaptiveCard();
 
-            ACFabric.useFabricControls();
+            ACFabric.useFabricComponents();
 
             // Set its hostConfig property unless you want to use the default Host Config
             // Host Config defines the style and behavior of a card

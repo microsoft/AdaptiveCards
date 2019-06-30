@@ -67,7 +67,7 @@ let card = {
 let adaptiveCard = new AdaptiveCards.AdaptiveCard();
 
 // Use Fabric controls when rendering Adaptive Cards
-ACFabric.useFabricControls();
+ACFabric.useFabricComponents();
 
 // Set its hostConfig property unless you want to use the default Host Config
 // Host Config defines the style and behavior of a card
