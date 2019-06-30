@@ -27,7 +27,7 @@ npm install adaptivecards-fabric
 ```js
 // Import modules:
 import * as AdaptiveCards from "adaptivecards";
-import { useFabricComponents } from "adaptivecards-fabric";
+import * as ACFabric from "adaptivecards-fabric";
 ```
 
 ### Render a card
@@ -66,8 +66,8 @@ let card = {
 // Create an AdaptiveCard instance
 let adaptiveCard = new AdaptiveCards.AdaptiveCard();
 
-// enable Fabric extensions
-useFabricComponents();
+// Use Fabric controls when rendering Adaptive Cards
+ACFabric.useFabricControls();
 
 // Set its hostConfig property unless you want to use the default Host Config
 // Host Config defines the style and behavior of a card

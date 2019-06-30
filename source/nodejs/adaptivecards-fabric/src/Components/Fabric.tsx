@@ -4,11 +4,11 @@
 import * as AC from "adaptivecards";
 import { initializeIcons } from "office-ui-fabric-react";
 import * as Components from ".";
-import * as Actions from "../Actions";
+import * as Actions from "../actions";
 
 let iconsInitialized = false;
 
-export const useFabricComponents = () => {
+export const useFabricControls = () => {
     if (!iconsInitialized) {
         initializeIcons();
         iconsInitialized = true;

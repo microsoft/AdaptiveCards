@@ -1,20 +1,8 @@
 {
+	"extends": "../tsconfig.json",
 	"compilerOptions": {
-		"baseUrl": ".",
-		"outDir": "lib",
-		"target": "es5",
-		"module": "commonjs",
-		"jsx": "react",
+		"outDir": "./lib",
 		"lib": ["dom", "es6", "es7"],
-		"declaration": true,
-		"sourceMap": true,
-		"experimentalDecorators": true,
-		"noUnusedLocals": true,
-		"forceConsistentCasingInFileNames": true,
-		"noImplicitAny": true,
-		"moduleResolution": "node",
-		"preserveConstEnums": true,
-		"skipLibCheck": true,
 		"plugins": [{
 			"name": "typescript-tslint-plugin",
 			"alwaysShowRuleFailuresAsWarnings": false,
@@ -24,11 +12,5 @@
 			"mockTypeScriptVersion": false
 		}]
 	},
-	"files": [
-		"src/adaptivecards-fabric.ts"
-	],
-	"exclude": [
-		"src/__tests__",
-		"node_modules"
-	]
+	"files": [ "./src/index.ts"]
 }

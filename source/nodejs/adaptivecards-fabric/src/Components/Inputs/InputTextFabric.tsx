@@ -4,7 +4,7 @@
 import * as React from "react";
 import { TextField } from "office-ui-fabric-react";
 import * as AC from "adaptivecards";
-import * as Shared from "../../Utils/shared";
+import * as Shared from "../../utils/shared";
 
 export class InputTextFabric extends Shared.ReactInputElement {
     public value: string;
