@@ -363,7 +363,7 @@ export abstract class CardElement extends CardObject {
         element.style.padding = "4px";
         element.style.minHeight = "32px";
         element.style.fontSize = "10px";
-        element.innerText = "Empty " + this.getJsonTypeName();
+        element.textContent = "Empty " + this.getJsonTypeName();
 
         return element;
     }
@@ -1230,7 +1230,7 @@ export class TextBlock extends BaseTextBlock {
             }
 
             if (this._treatAsPlainText) {
-                element.innerText = this._processedText;
+                element.textContent = this._processedText;
             }
             else {
                 element.innerHTML = this._processedText;
@@ -1435,12 +1435,12 @@ export class TextRun extends BaseTextBlock {
                     this.selectAction.execute();
                 }
 
-                anchor.innerText = formattedText;
+                anchor.textContent = formattedText;
 
                 element.appendChild(anchor);
             }
             else {
-                element.innerText = formattedText;
+                element.textContent = formattedText;
             }
 
             return element;
@@ -1917,7 +1917,7 @@ export class Image extends CardElement {
                     errorElement.style.justifyContent = "center";
                     errorElement.style.backgroundColor = "#EEEEEE";
                     errorElement.style.color = "black";
-                    errorElement.innerText = ":-(";
+                    errorElement.textContent = ":-(";
                     errorElement.style.padding = "10px";
 
                     this.applySize(errorElement);
@@ -3864,7 +3864,7 @@ export abstract class Action extends CardObject {
         }
 
         if (hasTitle) {
-            titleElement.innerText = this.title;
+            titleElement.textContent = this.title;
         }
 
         if (Utils.isNullOrEmpty(this.iconUrl)) {
