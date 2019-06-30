@@ -11,15 +11,43 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.8.6/umd/react.development.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.8.6/umd/react-dom.development.js"></script>
 
-    <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-js/1.4.0/css/fabric.min.css" />
+    <!-- <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-js/1.4.0/css/fabric.min.css" />
     <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-js/1.4.0/css/fabric.components.min.css" />
-    <script src="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-js/6.189.3/js/fabric.min.js"></script>
-    
+    <script src="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-js/6.189.3/js/fabric.min.js"></script> -->
+
 
     <style type="text/css">
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
+        }
+
         #exampleDiv {
-            width: 300px;
+            width: 330px;
             border: solid 1px black;
+        }
+
+        .wrapper {
+            display: flex;
+        }
+
+        .main {
+            width: 360px;
+
+        }
+
+        .info {
+            background: #444444;
+            color: #fff;
+            padding: 30px;
+            position: fixed;
+            width: 50%;
+            right: 0;
+            height: 100vh;
+        }
+
+        .fabricLogo {
+            padding: 10px;
+            width: 100%;
         }
     </style>
 
@@ -47,27 +75,6 @@
                         "style": "text",
                         "maxLength": 0,
                         "id": "SimpleVal"
-                    },
-                    {
-                        "type": "Input.Text",
-                        "placeholder": "Homepage",
-                        "style": "url",
-                        "maxLength": 0,
-                        "id": "UrlVal"
-                    },
-                    {
-                        "type": "Input.Text",
-                        "placeholder": "Email",
-                        "style": "email",
-                        "maxLength": 0,
-                        "id": "EmailVal"
-                    },
-                    {
-                        "type": "Input.Text",
-                        "placeholder": "Phone",
-                        "style": "tel",
-                        "maxLength": 0,
-                        "id": "TelVal"
                     },
                     {
                         "type": "Input.Text",
@@ -264,21 +271,37 @@
 </head>
 
 <body onload="renderCard()">
-    <h1>Adaptive Cards Example</h1>
+    <div class="wrapper">
+        <div class="main">
+            <h1>Adaptive Cards 💙 Fabric</h1>
 
-    <p>This example requires a build of the Adaptive Cards library.</p>
+            <h3>To run:</h3>
+            <code>
+                <pre>$ npm install</pre>
+                <pre>$ npm start</pre>
+            </code>
 
-    <h3>To run:</h3>
-    <code>
-		<pre>$ npx lerna bootstrap</pre>
-		<pre>$ npx lerna run build</pre>
-		<pre>$ npm start</pre>
-	</code>
+            <h3>A Fabric-enhanced card should render below...</h3>
 
-    <h3>A Fabric-ehanced card should render below...</h3>
-
-    <div id="exampleDiv"></div>
-
+            <div id="exampleDiv"></div>
+        </div>
+        <div class="info">
+            <img alt="Adaptive Cards Logo" class="acLogo"
+                src="https://github.com/microsoft/AdaptiveCards/raw/master/assets/adaptive-card-200.png"></img>
+            <svg width="150" height="150" viewBox="0 0 200 200">
+                <g transform="translate(100 100)">
+                    <path transform="translate(-50 -50)" fill="tomato"
+                        d="M92.71,7.27L92.71,7.27c-9.71-9.69-25.46-9.69-35.18,0L50,14.79l-7.54-7.52C32.75-2.42,17-2.42,7.29,7.27v0 c-9.71,9.69-9.71,25.41,0,35.1L50,85l42.71-42.63C102.43,32.68,102.43,16.96,92.71,7.27z">
+                    </path>
+                    <animateTransform attributeName="transform" type="scale" values="1; 1.5; 1.25; 1.5; 1.5; 1;"
+                        dur="2s" repeatCount="indefinite" additive="sum">
+                    </animateTransform>
+                </g>
+            </svg>
+            <img alt="Fabric logo" class="fabricLogo"
+                src="https://static2.sharepointonline.com/files/fabric/fabric-website/images/discover-resources-1x.png"></img>
+        </div>
+    </div>
 </body>
 
 </html>
