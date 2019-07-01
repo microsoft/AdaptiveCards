@@ -46,6 +46,15 @@ namespace AdaptiveNamespace
             return AdaptiveInputElementBase::put_IsRequired(isRequired);
         }
 
+        IFACEMETHODIMP get_ErrorMessage(_Outptr_ HSTRING* errorMessage)
+        {
+            return AdaptiveInputElementBase::get_ErrorMessage(errorMessage);
+        }
+        IFACEMETHODIMP put_ErrorMessage(_In_ HSTRING errorMessage)
+        {
+            return AdaptiveInputElementBase::put_ErrorMessage(errorMessage);
+        }
+
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespace::ElementType* elementType);
 
