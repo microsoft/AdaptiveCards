@@ -60,23 +60,21 @@ namespace AdaptiveCardTestApp.Pages
 
             Color indicatorColor;
             Symbol symbol;
-            switch (status)
+
+            if (status.IsPassingStatus())
             {
-                case TestStatus.Passed:
-                case TestStatus.PassedButSourceWasChanged:
-                    indicatorColor = Colors.Green;
-                    symbol = Symbol.Accept;
-                    break;
-
-                case TestStatus.New:
-                    indicatorColor = Color.FromArgb(255, 65, 159, 254); // A nice blue color
-                    symbol = Symbol.Add;
-                    break;
-
-                default:
-                    indicatorColor = Colors.Red;
-                    symbol = Symbol.Cancel;
-                    break;
+                indicatorColor = Colors.Green;
+                symbol = Symbol.Accept;
+            }
+            else if (status.NewCard)
+            {
+                indicatorColor = Color.FromArgb(255, 65, 159, 254); // A nice blue color
+                symbol = Symbol.Add;
+            }
+            else
+            {
+                indicatorColor = Colors.Red;
+                symbol = Symbol.Cancel;
             }
 
             visual.Children.Add(new Ellipse()

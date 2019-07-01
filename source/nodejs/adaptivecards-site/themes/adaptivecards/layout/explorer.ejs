@@ -1,6 +1,6 @@
 <div id="content-wrapper" class="w3-content explorer" style="max-width:1564px">
 
-  <nav id="sidebar-todo" class="toc-todo w3-sidebar w3-cell w3-hide-small w3-hide-medium w3-bar-block w3-padding-16" style="width: 200px">
+  <nav id="sidebar-todo" class="toc-todo sidebar w3-cell w3-hide-small w3-hide-medium w3-bar-block" style="width: 200px">
 	<div class="sidebar__inner">
 		<ul class="toc-tree">
 			<% page.schema.forEach(function(root) { %>
@@ -59,6 +59,6 @@
   <% }}) %>
 
 
-  <%- propertiesDetails(page.element.properties) %>
+  <%- propertiesDetails(page.element.properties, page.element.version) %>
 
 </div>

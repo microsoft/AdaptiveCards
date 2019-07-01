@@ -325,17 +325,19 @@ namespace AdaptiveSharedNamespace
     {
         std::string propertyName = AdaptiveCardSchemaKeyToString(key);
         auto elementArray = json.get(propertyName, Json::Value());
+
+        if (!elementArray.isNull() && !elementArray.isArray())
+        {
+            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
+                                             "Could not parse specified key: " + propertyName + ". It was not an array");
+        }
+
         if (isRequired && elementArray.empty())
         {
             throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing,
                                              "Could not parse required key: " + propertyName + ". It was not found");
         }
 
-        if (!elementArray.empty() && !elementArray.isArray())
-        {
-            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
-                                             "Could not parse specified key: " + propertyName + ". It was not an array");
-        }
         return elementArray;
     }
 

@@ -36,13 +36,38 @@
                         HorizontalAlignment="Stretch"
                         Click="ButtonStartOver_Click"/>
                     <Button
-                        x:Name="ButtonAcceptAll"
-                        Content="Accept all"
+                        x:Name="ButtonUpdateOriginals"
                         RelativePanel.RightOf="ButtonStartOver"
                         Style="{ThemeResource AccentButtonStyle}"
                         Margin="2,2,2,2"
                         HorizontalAlignment="Stretch"
+                        Content="Accept all new sources"
                         Click="ButtonAcceptAll_Click"/>
+                    <Button
+                        x:Name="ButtonUpdateJson"
+                        RelativePanel.RightOf="ButtonUpdateOriginals"
+                        Style="{ThemeResource AccentButtonStyle}"
+                        Margin="2,2,2,2"
+                        HorizontalAlignment="Stretch"
+                        Content="Accept all new json"
+                        Click="ButtonAcceptAll_Click"/>
+                    <Button
+                        x:Name="ButtonUpdateImage"
+                        RelativePanel.RightOf="ButtonUpdateJson"
+                        Style="{ThemeResource AccentButtonStyle}"
+                        Margin="2,2,2,2"
+                        HorizontalAlignment="Stretch"
+                        Content="Accept all new images"
+                        Click="ButtonAcceptAll_Click"/>
+                    <Button
+                        x:Name="ButtonUpdateAll"
+                        RelativePanel.RightOf="ButtonUpdateImage"
+                        Style="{ThemeResource AccentButtonStyle}"
+                        Margin="2,2,2,2"
+                        HorizontalAlignment="Stretch"
+                        Content="Accept all changes"
+                        Click="ButtonAcceptAll_Click"/>
+
                 </RelativePanel>
             </ListView.Header>
             <ListView.ItemTemplate>

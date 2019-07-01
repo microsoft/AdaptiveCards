@@ -125,6 +125,12 @@ code {
     max-height: 800px;
 }
 
+.sidebar {
+	position: fixed;
+	top: 118px; /* This will get dynamically changed by sticky-sidebar.js */
+	bottom: 24px;
+	overflow: auto;
+}
 
 /* Weird conflicts were happening with the docs CSS when it was named toc */
 
@@ -150,6 +156,11 @@ ul.action-list {
 
 .toc-todo ul.toc-tree {
 	margin-left: -30px;
+	margin-top: 0;
+}
+
+.samples-sidebar-list {
+	margin-top: 0;
 }
 
 .toc-todo ul ul {
@@ -159,6 +170,12 @@ ul.action-list {
 .toc-todo > div > ul > li {
     padding-left: 30px;
 }
+
+/* For samples, since there's no heirarchy, don't indent the left as much */
+.toc-todo .samples-sidebar-list li {
+    padding-left: 12px;
+}
+
 .toc-todo li {
     padding-left: 30px;
     padding-top: 3px;

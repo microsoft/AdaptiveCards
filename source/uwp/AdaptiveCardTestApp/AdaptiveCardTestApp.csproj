@@ -127,7 +127,6 @@
     <Compile Include="Pages\StartPage.xaml.cs">
       <DependentUpon>StartPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ResourceResolvers\SampleResourceResolver.cs" />
     <Compile Include="ViewModels\TestResultsViewModel.cs" />
     <Compile Include="ViewModels\TestResultsCategoryViewModel.cs" />
     <Compile Include="ViewModels\RunningTestsViewModel.cs" />
@@ -156,9 +155,6 @@
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
-    <Content Include="..\..\..\samples\Tests\*.json">
-      <Link>LinkedCards\Tests\%(FileName)</Link>
-    </Content>
     <Content Include="..\..\..\samples\v1.0\Scenarios\*.json">
       <Link>LinkedCards\v1.0\Scenarios\%(FileName)</Link>
     </Content>
@@ -173,6 +169,18 @@
     </Content>
     <Content Include="..\..\..\samples\v1.2\Elements\*.json">
       <Link>LinkedCards\v1.2\Elements\%(FileName)</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Tests\*.json">
+      <Link>LinkedCards\v1.0\Tests\%(FileName)</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.1\Tests\*.json">
+      <Link>LinkedCards\v1.1\Tests\%(FileName)</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Tests\*.json">
+      <Link>LinkedCards\v1.2\Tests\%(FileName)</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.3\Tests\*.json">
+      <Link>LinkedCards\v1.3\Tests\%(FileName)</Link>
     </Content>
     <Content Include="..\..\..\samples\HostConfig\*.json">
       <Link>LinkedHostConfigs\%(FileName)</Link>
