@@ -21,29 +21,32 @@
 			// in practice you'll probably get this from a service
 			// see http://adaptivecards.io/samples/ for inspiration
 			var card = {
-				"type": "AdaptiveCard",
-				"version": "1.0",
-				"body": [{
-						"type": "Image",
-						"url": "http://adaptivecards.io/content/adaptive-card-50.png"
-					},
-					{
-						"type": "TextBlock",
-						"text": "Hello **Adaptive Cards!**"
-					}
-				],
-				"actions": [{
-						"type": "Action.OpenUrl",
-						"title": "Learn more",
-						"url": "http://adaptivecards.io"
-					},
-					{
-						"type": "Action.OpenUrl",
-						"title": "GitHub",
-						"url": "http://github.com/Microsoft/AdaptiveCards"
-					}
-				]
-			};
+    "type": "AdaptiveCard",
+    "body": [
+        {
+            "type": "Input.ChoiceSet",
+            "id": "as",
+            "placeholder": "Placeholder text",
+            "choices": [
+                {
+                    "title": "Spicy",
+                    "value": "opt1"
+                },
+                {
+                    "title": "Salmon",
+                    "value": "Choice 2"
+                },
+                {
+                    "title": "Fish",
+                    "value": "roe"
+                }
+            ],
+            "style": "expanded"
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.0"
+};
 
 			// Create an AdaptiveCard instance
 			var adaptiveCard = new AdaptiveCards.AdaptiveCard();

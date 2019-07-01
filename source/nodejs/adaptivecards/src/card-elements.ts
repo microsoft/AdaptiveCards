@@ -3235,7 +3235,10 @@ export class ChoiceSetInput extends Input {
 
                 let element = document.createElement("div");
                 element.className = this.hostConfig.makeCssClassName("ac-input", "ac-choiceSetInput-expanded");
-                element.style.width = "100%";
+				element.style.width = "100%";
+				
+				// TODO: delete this
+				element.style.textAlign = "center";
 
                 this._toggleInputs = [];
 
@@ -3244,12 +3247,13 @@ export class ChoiceSetInput extends Input {
                     radioInput.id = Utils.generateUniqueId();
                     radioInput.type = "radio";
                     radioInput.style.margin = "0";
-                    radioInput.style.display = "inline-block";
+                    radioInput.style.display = "inline";
                     radioInput.style.verticalAlign = "middle";
                     radioInput.name = Utils.isNullOrEmpty(this.id) ? uniqueCategoryName : this.id;
                     radioInput.value = this.choices[i].value;
                     radioInput.style.flex = "0 0 auto";
-                    radioInput.setAttribute("aria-label", this.choices[i].title);
+					radioInput.setAttribute("aria-label", this.choices[i].title);
+					radioInput.style.display = "none"; // hide radio button
 
                     if (this.choices[i].value == this.defaultValue) {
                         radioInput.checked = true;
@@ -3268,17 +3272,35 @@ export class ChoiceSetInput extends Input {
                     label.wrap = this.wrap;
 
                     let labelElement = label.render();
-                    labelElement.style.display = "inline-block";
+                    labelElement.style.display = "block";
                     labelElement.style.flex = "1 1 auto";
                     labelElement.style.marginLeft = "6px";
-                    labelElement.style.verticalAlign = "middle";
+					labelElement.style.verticalAlign = "middle";
+					labelElement.style.flexGrow = "1";
+					labelElement.style.backgroundImage = "url('https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg')";
+					labelElement.style.backgroundSize = "25px 25px";
+					labelElement.style.backgroundRepeat = "no-repeat";
+					labelElement.style.backgroundPositionX = "center";
+					labelElement.style.paddingTop = "25px";
+
+					// hovering over stars
+					labelElement.onmouseover = function() {
+						labelElement.style.backgroundImage = "url('https://github.githubassets.com/images/modules/site/logos/nasa-logo.png')";
+					};
+
+					labelElement.onmouseleave = function() {
+						labelElement.style.backgroundImage = "url('https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg')";
+					};
 
                     let spacerElement = document.createElement("div");
                     spacerElement.style.width = "6px";
 
-                    let compoundInput = document.createElement("div");
-                    compoundInput.style.display = "flex";
-                    compoundInput.style.alignItems = "center";
+					let compoundInput = document.createElement("div");
+					compoundInput.style.marginLeft = "6px";
+					compoundInput.style.marginRight = "6px";
+					compoundInput.style.display = "inline-block";
+					compoundInput.style.textAlign = "center";
+					compoundInput.style.flexGrow = "1";
 
                     Utils.appendChild(compoundInput, radioInput);
                     Utils.appendChild(compoundInput, spacerElement);
