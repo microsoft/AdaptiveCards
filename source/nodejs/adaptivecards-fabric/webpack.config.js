@@ -51,7 +51,7 @@ module.exports = (env, argv) => {
         externals: [{
             "react": "React",
             "react-dom": "ReactDOM",
-            //"office-ui-fabric-react": "fabric",
+            "office-ui-fabric-react": "fabric",
             "adaptivecards": {
                 var: "AdaptiveCards"
             }

@@ -1,17 +1,20 @@
 # Adaptive Cards Fabric
 
-This package extends standard AdaptiveCards package replacing regular input controls with [Office Fabric UI](https://developer.microsoft.com/en-us/fabric#/controls/web).
+This package "lights-up" the Adaptive Card renderer with [Office Fabric UI](https://developer.microsoft.com/en-us/fabric#/controls/web) input controls.
+
+![Adaptive cards fabric animation](adaptivecards-fabric.gif)
+
 
 ## Extended Controls
 
-| AdaptiveCard Component | Office Fabric UI Control |
+| AdaptiveCard Element | Office Fabric UI Control |
 |------------------------|--------------------------|
 | Input.Date             |[DatePicker](https://developer.microsoft.com/en-us/fabric#/controls/web/datepicker)|
 | Input.Number, Input.Text, Input.Time|[TextField](https://developer.microsoft.com/en-us/fabric#/controls/web/textfield)|
 | Input.Toggle           |[Toggle](https://developer.microsoft.com/en-us/fabric#/controls/web/toggle)|
-| Input.ChoiceSet(style:compact)|[Dropdown](https://developer.microsoft.com/en-us/fabric#/controls/web/dropdown)|
-| Input.ChoiceSet(style:expanded, isMultiSelect:false)|[ChoiceGroup](https://developer.microsoft.com/en-us/fabric#/controls/web/choicegroup)|
-| Input.ChoiceSet(style:expanded, isMultiSelect:true)|[Checkbox](https://developer.microsoft.com/en-us/fabric#/controls/web/checkbox)|
+| Input.ChoiceSet (style:compact)|[Dropdown](https://developer.microsoft.com/en-us/fabric#/controls/web/dropdown)|
+| Input.ChoiceSet (style:expanded, isMultiSelect:false)|[ChoiceGroup](https://developer.microsoft.com/en-us/fabric#/controls/web/choicegroup)|
+| Input.ChoiceSet (style:expanded, isMultiSelect:true)|[Checkbox](https://developer.microsoft.com/en-us/fabric#/controls/web/checkbox)|
 | Actions                |[Button](https://developer.microsoft.com/en-us/fabric#/controls/web/button)|
 
 ## Install
@@ -19,6 +22,8 @@ This package extends standard AdaptiveCards package replacing regular input cont
 ```console
 npm install adaptivecards-fabric
 ```
+
+**NOTE**: you must also install the [`adaptivecards`](https://npmjs.com/package/adaptivecards) library if not already in your project.
 
 ## Usage
 
