@@ -334,34 +334,35 @@ $(function () {
 	$('#menu-nav').on('change', function () {
 		window.location = this.value;
 
-	// Code for making our sidebar sticky
+		// Code for making our sidebar sticky
 
-	var $sidebar;
-	var $headerHolder;
+		var $sidebar;
+		var $headerHolder;
 
-	$sidebar = $(".sidebar");
-	if ($sidebar.length > 0) {
-		$headerHolder = $(".header-holder");
+		$sidebar = $(".sidebar");
+		if ($sidebar.length > 0) {
+			$headerHolder = $(".header-holder");
 
-		updateSidebarTopOffset();
-
-		$(document).scroll(function () {
 			updateSidebarTopOffset();
-		});
-	}
 
-
-	function updateSidebarTopOffset() {
-		var headerHeight = $headerHolder.height();
-		var scrollOffset = $(document).scrollTop();
-		var topPadding = 24;
-
-		var calculatedTop = headerHeight - scrollOffset + topPadding;
-		if (calculatedTop < topPadding) {
-			calculatedTop = topPadding;
+			$(document).scroll(function () {
+				updateSidebarTopOffset();
+			});
 		}
 
-		$sidebar.css("top", calculatedTop);
-	}
 
+		function updateSidebarTopOffset() {
+			var headerHeight = $headerHolder.height();
+			var scrollOffset = $(document).scrollTop();
+			var topPadding = 24;
+
+			var calculatedTop = headerHeight - scrollOffset + topPadding;
+			if (calculatedTop < topPadding) {
+				calculatedTop = topPadding;
+			}
+
+			$sidebar.css("top", calculatedTop);
+		}
+
+	});
 });
