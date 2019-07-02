@@ -29,7 +29,7 @@ namespace AdaptiveSharedNamespace
         VerticalAlignment GetVerticalAlignment() const;
         void SetVerticalAlignment(const VerticalAlignment& value);
 
-        std::string BackgroundImage::Serialize() const;
+        std::string Serialize() const;
         Json::Value SerializeToJsonValue() const;
 
         static std::shared_ptr<BackgroundImage> Deserialize(const Json::Value& json);
