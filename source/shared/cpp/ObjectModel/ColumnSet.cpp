@@ -46,7 +46,7 @@ void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& va
                                                         value,
                                                         AdaptiveCardSchemaKey::Columns,
                                                         false,     // isRequired
-                                                        "Column"); // impliedType
+                                                        CardElementTypeToString(CardElementType::Column)); // impliedType
 }
 
 void ColumnSet::PopulateKnownPropertiesSet()

@@ -1,5 +1,6 @@
 const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = (env, argv) => {
 
@@ -9,29 +10,29 @@ module.exports = (env, argv) => {
     console.info(`running webpack with mode: ${mode}`);
 
     return {
+        mode: mode,
         entry: {
-            'adaptivecards': './src/adaptivecards.ts'
+            'adaptivecards-fabric': './src/index.ts'
         },
         output: {
             path: path.resolve(__dirname, "./dist"),
-            filename: "[name].js",
-            libraryTarget: "umd",
-            library: "@ms-conv-ux/adaptive-cards-extended"
+            filename: devMode ? "[name].js" : "[name].min.js",
+            library: "ACFabric"
         },
         devtool: devMode ? "inline-source-map" : "source-map",
         module: {
             rules: [{
-                    test: /\.tsx?$/,
-                    loader: "awesome-typescript-loader"
-                },
-                {
-                    test: /\.css$/,
-                    use: ['style-loader', 'css-loader']
-                },
-                {
-                    test: /\.scss$/,
-                    use: ['style-loader', 'css-loader', 'sass-loader']
-                }
+                test: /\.tsx?$/,
+                loader: "awesome-typescript-loader"
+            },
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader']
+            },
+            {
+                test: /\.scss$/,
+                use: ['style-loader', 'css-loader', 'sass-loader']
+            }
             ]
         },
         node: {
@@ -41,9 +42,19 @@ module.exports = (env, argv) => {
             extensions: [".ts", ".tsx", ".js", ".jsx"]
         },
         plugins: [
-            new CleanWebpackPlugin()
+            new CleanWebpackPlugin(),
+            new HtmlWebpackPlugin({
+                title: "Adaptive Cards Example",
+                template: "./index.html"
+            })
         ],
-        externals: ["react", "react-dom", "adaptivecards", "office-ui-fabric-react"],
-        mode: mode
+        externals: [{
+            "react": "React",
+            "react-dom": "ReactDOM",
+            "office-ui-fabric-react": "fabric",
+            "adaptivecards": {
+                var: "AdaptiveCards"
+            }
+        }]
     }
 };

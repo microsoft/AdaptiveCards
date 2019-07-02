@@ -2,8 +2,7 @@
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
 import * as Designer from "../../adaptivecards-designer";
-
-var renderToImageConfiguration = require("../../../../../../samples/HostConfig/render-to-image.json");
+import * as hostConfig from "../../hostConfigs/render-to-image.json";
 
 export class BotFrameworkContainer extends Designer.HostContainer {
     public renderTo(hostElement: HTMLElement) {
@@ -17,6 +16,6 @@ export class BotFrameworkContainer extends Designer.HostContainer {
     }
 
     public getHostConfig(): Adaptive.HostConfig {
-        return new Adaptive.HostConfig(renderToImageConfiguration);
+        return new Adaptive.HostConfig(hostConfig);
     }
 }

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 import * as Clipboard from "clipboard";
 import * as Adaptive from "adaptivecards";
-import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import * as monaco from "monaco-editor";
 import * as Constants from "./constants";
 import * as Designer from "./card-designer-surface";
 import * as DesignerPeers from "./designer-peers";
@@ -20,8 +20,7 @@ export class CardDesigner {
     private static internalProcessMarkdown(text: string, result: Adaptive.IMarkdownProcessingResult) {
         if (CardDesigner.onProcessMarkdown) {
             CardDesigner.onProcessMarkdown(text, result);
-        }
-        else {
+        } else {
             // Check for markdownit
             if (window["markdownit"]) {
                 result.outputHtml = window["markdownit"]().render(text);
@@ -928,7 +927,7 @@ export class CardDesigner {
             this._activeHostContainer = this._hostContainers[0];
         }
         else {
-            this._activeHostContainer = new DefaultContainer("Default", "default-container.css");
+            this._activeHostContainer = new DefaultContainer("Default", "adaptivecards-defaulthost.css");
         }
 
         root.style.flex = "1 1 auto";
