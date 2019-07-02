@@ -2,8 +2,7 @@
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
 import * as Designer from "../../adaptivecards-designer";
-
-var skypeConfiguration = require("../../../../../../samples/HostConfig/skype.json");
+import * as hostConfig from "../../hostConfigs/skype.json";
 
 export class SkypeContainer extends Designer.HostContainer {
     public renderTo(hostElement: HTMLElement) {
@@ -32,6 +31,6 @@ export class SkypeContainer extends Designer.HostContainer {
     }
 
     public getHostConfig(): Adaptive.HostConfig {
-        return new Adaptive.HostConfig(skypeConfiguration);
+        return new Adaptive.HostConfig(hostConfig);
     }
 }
