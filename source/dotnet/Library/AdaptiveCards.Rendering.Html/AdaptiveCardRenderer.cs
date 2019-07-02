@@ -986,7 +986,7 @@ namespace AdaptiveCards.Rendering.Html
 
                     if (!string.IsNullOrEmpty(fontFamily))
                     {
-                        htmlTag.Style("font-family", "'" + fontFamily + "'");
+                        htmlTag.Style("font-family", fontFamily);
                     }
 
                     if (!textBlock.Wrap)

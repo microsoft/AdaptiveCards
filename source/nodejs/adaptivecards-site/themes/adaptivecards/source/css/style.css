@@ -128,7 +128,7 @@ code {
 .sidebar {
 	position: fixed;
 	top: 118px; /* This will get dynamically changed by sticky-sidebar.js */
-	bottom: 24px;
+	bottom: 0;
 	overflow: auto;
 }
 
@@ -206,7 +206,7 @@ s {
     color: #0078d7;
 }
 
-.toc.todo > ul {
+.toc-todo > ul {
     display: block;
     margin-left: 0;
     padding-left: 0;

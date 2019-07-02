@@ -4,7 +4,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as AC from "adaptivecards";
-import * as Shared from "../Utils/shared";
+import * as Shared from "../utils/shared";
 import { ActionButton } from "./ActionButton";
 
 export const createActionDiv = (
