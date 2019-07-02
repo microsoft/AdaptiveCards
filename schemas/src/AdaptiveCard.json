@@ -53,6 +53,14 @@
         3801
       ]
     },
+    "displayInputSuccessIndicators": {
+      "type": "boolean",
+      "description": "If true, displays success indicators on inputs once they have passed validation.",
+      "version": "1.3",
+      "features": [
+        3801
+      ]
+    },
     "minHeight": {
       "type": "string",
       "description": "Specifies the minimum height of the card.",
