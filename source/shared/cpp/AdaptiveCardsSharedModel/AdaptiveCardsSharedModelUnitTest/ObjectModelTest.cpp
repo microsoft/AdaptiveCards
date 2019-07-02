@@ -1201,5 +1201,62 @@ namespace AdaptiveCardsSharedModelUnitTest
                 Assert::AreEqual("Unable to parse element of type Elephant", e.GetReason().c_str(), L"GetReason incorrect");
             }
         }
+
+        TEST_METHOD(ImplicitImageTypeInImageSetTest)
+        {
+            // Images set to type "Image" or with type unset should parse correctly within an image set
+            std::string imageTypeSetOrEmpty =
+            "{\
+                \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
+                \"type\": \"AdaptiveCard\",\
+                \"version\": \"1.0\",\
+                \"body\": [\
+                    {\
+                        \"type\":\"ImageSet\",\
+                        \"images\": [\
+                            {\
+                                \"type\": \"Image\",\
+                                \"url\": \"http://adaptivecards.io/content/cats/1.png\"\
+                            },\
+                            {\
+                                \"url\": \"http://adaptivecards.io/content/cats/1.png\"\
+                            }\
+                        ]\
+                    }\
+                ]\
+            }";
+
+            // Images set to a bogus type should not parse correctly
+            std::string imageTypeInvalid =
+            "{\
+                \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
+                \"type\": \"AdaptiveCard\",\
+                \"version\": \"1.0\",\
+                \"body\": [\
+                    {\
+                        \"type\":\"ImageSet\",\
+                        \"images\": [\
+                            {\
+                                \"type\": \"Elephant\",\
+                                \"url\": \"http://adaptivecards.io/content/cats/1.png\"\
+                            }\
+                        ]\
+                    }\
+                ]\
+            }";
+
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(imageTypeSetOrEmpty, "1.0");
+
+            try
+            {
+                parseResult = AdaptiveCard::DeserializeFromString(imageTypeInvalid, "1.0");
+                Assert::IsTrue(false, L"Deserializing should throw an exception");
+            }
+            catch (const AdaptiveCardParseException& e)
+            {
+                Assert::IsTrue(ErrorStatusCode::InvalidPropertyValue == e.GetStatusCode(), L"ErrorStatusCode incorrect");
+                Assert::AreEqual("Unable to parse element of type Elephant", e.GetReason().c_str(), L"GetReason incorrect");
+            }
+        }
     };
 }
