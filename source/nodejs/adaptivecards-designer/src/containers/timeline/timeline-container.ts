@@ -2,8 +2,7 @@
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
 import * as Designer from "../../adaptivecards-designer";
-
-var windowsTimelineConfiguration = require("../../../../../../samples/HostConfig/windows-timeline.json");
+import * as hostConfig from "../../hostConfigs/windows-timeline.json";
 
 export class TimelineContainer extends Designer.HostContainer {
     public initialize() {
@@ -34,7 +33,7 @@ export class TimelineContainer extends Designer.HostContainer {
     }
 
     public getHostConfig(): Adaptive.HostConfig {
-        return new Adaptive.HostConfig(windowsTimelineConfiguration);
+        return new Adaptive.HostConfig(hostConfig);
     }
 
     get isFixedHeight(): boolean {
