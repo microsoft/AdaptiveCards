@@ -7,10 +7,6 @@
 
 using namespace AdaptiveSharedNamespace;
 
-BackgroundImage::BackgroundImage()
-{
-}
-
 std::string BackgroundImage::GetUrl() const { return m_url; }
 
 void BackgroundImage::SetUrl(const std::string& value) { m_url = value; }
