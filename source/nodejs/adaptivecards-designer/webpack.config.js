@@ -32,32 +32,38 @@ module.exports = (env, argv) => {
 		},
 		module: {
 			rules: [{
-					test: /\.ts$/,
-					loader: "ts-loader",
-					exclude: /(node_modules|__tests__)/
-				},
-				{
-					test: /\.css$/,
-					use: [
-						'style-loader',
-						MiniCssExtractPlugin.loader,
-						'css-loader'
-					]
-				}
+				test: /\.ts$/,
+				loader: "ts-loader",
+				exclude: /(node_modules|__tests__)/
+			},
+			{
+				test: /\.css$/,
+				use: [
+					'style-loader',
+					MiniCssExtractPlugin.loader,
+					'css-loader'
+				]
+			}
 			]
 		},
 		plugins: [
 			new HtmlWebpackPlugin({
-				title: "Adaptive Cards Designer (No Microsoft Hosts)",
-				template: "./no-hosts.html",
-				filename: "no-hosts.html",
-				chunks: [ "adaptivecards-designer-standalone" ]
-			 }),
-			new HtmlWebpackPlugin({
 				title: "Adaptive Cards Designer",
 				template: "./index.html",
 				filename: "index.html",
-				chunks: [ "adaptivecards-designer" ]
+				chunks: ["adaptivecards-designer"]
+			}),
+			new HtmlWebpackPlugin({
+				title: "Adaptive Cards Designer (Preview Features)",
+				template: "./previewFeatures.html",
+				filename: "previewFeatures.html",
+				chunks: ["adaptivecards-designer"]
+			}),
+			new HtmlWebpackPlugin({
+				title: "Adaptive Cards Designer (No Microsoft Hosts)",
+				template: "./noHosts.html",
+				filename: "noHosts.html",
+				chunks: ["adaptivecards-designer-standalone"]
 			}),
 			new MiniCssExtractPlugin({
 				filename: '[name].css'
@@ -67,7 +73,7 @@ module.exports = (env, argv) => {
 				sourceMap: false,
 				fileName: 'adaptivecards-designer.css',
 				injectType: 'none',
-				filesToConcat: [ './node_modules/adaptivecards-controls/dist/adaptivecards-controls.css', './src/adaptivecards-designer.css']
+				filesToConcat: ['./node_modules/adaptivecards-controls/dist/adaptivecards-controls.css', './src/adaptivecards-designer.css']
 			}),
 			new CopyWebpackPlugin([{
 				from: 'src/containers/default/adaptivecards-defaulthost.css',

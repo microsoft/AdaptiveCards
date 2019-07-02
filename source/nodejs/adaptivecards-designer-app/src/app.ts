@@ -11,7 +11,7 @@ import "./app.css";
 
 window.onload = function() {
     // Set to true to enable preview features such as data binding
-    ACDesigner.GlobalSettings.previewFeaturesEnabled = false;
+    ACDesigner.GlobalSettings.previewFeaturesEnabled = true;
 
 	ACDesigner.CardDesigner.onProcessMarkdown = (text: string, result: { didProcess: boolean, outputHtml: string }) => {
 		result.outputHtml = new markdownit().render(text);
