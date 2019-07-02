@@ -15,6 +15,8 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
+| **isRequired** | `boolean` | No | Specifies whether the input requires a value. | 1.3 |
+| **errorMessage** | `string` | No | Specifies the text that will be displayed if validation failed. This is optional but strongly recommended. If not provided, there will be NO error message displayed (the field will simply be visually highlighted as invalid). | 1.3 |
 | **fallback** | `Element`, `FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
 | **height** | `BlockElementHeight` | No | Specifies the height of the element. | 1.1 |
 | **separator** | `boolean` | No | When `true`, draw a separating line at the top of the element. | 1.0 |

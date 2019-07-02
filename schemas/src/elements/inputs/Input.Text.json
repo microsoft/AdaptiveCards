@@ -27,6 +27,14 @@
     "value": {
       "type": "string",
       "description": "The initial value for this field."
+    },
+    "regex": {
+      "type": "string",
+      "description": "A regex expression for validating the format of the input.",
+      "version": "1.3",
+      "features": [
+        3081
+      ]
     }
   }
 }

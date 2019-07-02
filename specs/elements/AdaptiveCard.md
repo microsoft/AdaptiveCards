@@ -12,6 +12,7 @@
 | **style** | `ContainerStyle` | No | Style hint for the Adaptive Card. | 1.2 |
 | **fallbackText** | `string` | No | Text shown when the client doesn't support the version specified (may contain markdown). | 1.0 |
 | **backgroundImage** | `BackgroundImage`, `uri` | No | Specifies the background image of the card. | 1.2, 1.0 |
+| **inputNecessityIndicators** | `InputNecessityIndicators` | No | Specifies whether input necessity indicators should be displayed on required inputs, optional inputs, or none at all. | 1.3 |
 | **minHeight** | `string` | No | Specifies the minimum height of the card. | 1.2 |
 | **speak** | `string` | No | Specifies what should be spoken for this entire card. This is simple text or SSML fragment. | 1.0 |
 | **lang** | `string` | No | The 2-letter ISO-639-1 language used in the card. Used to localize any date/time functions. | 1.0 |
@@ -95,6 +96,19 @@ Specifies the background image of the card.
 * **Allowed values**:
   * `BackgroundImage`
   * `uri`
+
+
+## inputNecessityIndicators
+
+Specifies whether input necessity indicators should be displayed on required inputs, optional inputs, or none at all.
+
+* **Type**: `InputNecessityIndicators`
+* **Version** : 1.3
+* **Required**: No
+* **Allowed values**:
+  * `"none"`: Don't display any required/optional indicators on the inputs.
+  * `"requiredInputs"`: Display required indicators on required inputs.
+  * `"optionalInputs"`: Display optional indicators on optional inputs.
 
 
 ## verticalContentAlignment

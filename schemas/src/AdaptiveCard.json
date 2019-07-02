@@ -4,7 +4,7 @@
   "properties": {
     "version": {
       "type": "string",
-	"description": "Schema version that this card requires. If a client is **lower** than this version, the `fallbackText` will be rendered. NOTE: Version is not required for cards within an `Action.ShowCard`. However, it *is* required for the top-level card.",
+      "description": "Schema version that this card requires. If a client is **lower** than this version, the `fallbackText` will be rendered. NOTE: Version is not required for cards within an `Action.ShowCard`. However, it *is* required for the top-level card.",
       "examples": [
         "1.0",
         "1.1",
@@ -43,6 +43,14 @@
           "description": "The URL (or data url) to use as the background image. Supports data URI in version 1.2+",
           "version": "1.0"
         }
+      ]
+    },
+    "inputNecessityIndicators": {
+      "type": "InputNecessityIndicators",
+      "description": "Specifies whether input necessity indicators should be displayed on required inputs, optional inputs, or none at all.",
+      "version": "1.3",
+      "features": [
+        3801
       ]
     },
     "minHeight": {
