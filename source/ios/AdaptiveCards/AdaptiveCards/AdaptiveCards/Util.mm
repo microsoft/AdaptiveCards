@@ -23,7 +23,6 @@ using namespace AdaptiveCards;
 void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visibilityInfo)
 {
     view.hidden = !(visibilityInfo->GetIsVisible());
-    
     NSString *hashkey = [NSString stringWithCString:visibilityInfo->GetId().c_str() encoding:NSUTF8StringEncoding];
     view.tag = hashkey.hash;
 }

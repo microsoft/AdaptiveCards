@@ -26,6 +26,7 @@
         [view setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
         [view setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     }
+
     [self.stackView addArrangedSubview:view];
 }
 

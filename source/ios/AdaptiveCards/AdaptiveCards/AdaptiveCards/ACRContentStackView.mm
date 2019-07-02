@@ -132,10 +132,12 @@ using namespace AdaptiveCards;
         if ([distribAttrib boolValue]) {
             self.stackView.distribution = (UIStackViewDistribution)[distribAttrib integerValue];
         }
+
         NSNumber *alignAttrib = attributes[@"alignment"];
         if ([alignAttrib boolValue]) {
             self.stackView.alignment = (UIStackViewAlignment)[alignAttrib integerValue];
         }
+
         NSNumber *spacingAttrib = attributes[@"spacing"];
         if ([spacingAttrib boolValue]) {
             self.stackView.spacing = [spacingAttrib floatValue];

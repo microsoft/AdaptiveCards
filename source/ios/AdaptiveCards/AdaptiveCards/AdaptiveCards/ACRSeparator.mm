@@ -101,7 +101,7 @@ using namespace AdaptiveCards;
         constraintByAnchor = [self.widthAnchor constraintEqualToConstant:width];
     }
 
-    constraintByAnchor.priority = 1000;
+    constraintByAnchor.priority = 999;
     constraintByAnchor.active = YES;
     constraint.priority = 999;
     return constraint;

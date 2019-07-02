@@ -87,14 +87,6 @@
 
     [_superview addArrangedSubview:adcView];
 
-    for (NSLayoutConstraint *constraint in adcView.widthconstraint) {
-        constraint.active = NO;
-    }
-
-    for (NSLayoutConstraint *constraint in adcView.heightconstraint) {
-        constraint.active = NO;
-    }
-
     _adcView.hidden = YES;
 }
 
@@ -103,14 +95,6 @@
     BOOL hidden = _adcView.hidden;
     [_superview hideAllShowCards];
     _adcView.hidden = (hidden == YES) ? NO : YES;
-
-    for (NSLayoutConstraint *constraint in _adcView.widthconstraint) {
-        constraint.active = hidden;
-    }
-
-    for (NSLayoutConstraint *constraint in _adcView.heightconstraint) {
-        constraint.active = hidden;
-    }
 
     if ([_rootView.acrActionDelegate respondsToSelector:@selector(didChangeVisibility: isVisible:)])
     {
@@ -136,14 +120,6 @@
 - (void)hideShowCard
 {
     _adcView.hidden = YES;
-
-    for (NSLayoutConstraint *constraint in _adcView.widthconstraint) {
-        constraint.active = NO;
-    }
-
-    for (NSLayoutConstraint *constraint in _adcView.heightconstraint) {
-        constraint.active = NO;
-    }
 
     if ([_rootView.acrActionDelegate respondsToSelector:@selector(didChangeVisibility: isVisible:)])
     {
