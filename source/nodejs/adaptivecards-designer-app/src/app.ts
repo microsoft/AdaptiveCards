@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 import * as monaco from "monaco-editor";
 import * as markdownit from "markdown-it";
-// import * as ACDesigner from "../../adaptivecards-designer/src/adaptivecards-designer";
 import * as ACDesigner from "adaptivecards-designer";
 import "adaptivecards-designer/dist/adaptivecards-designer.css";
 import "./app.css";

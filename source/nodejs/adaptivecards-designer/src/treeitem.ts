@@ -85,7 +85,8 @@ export class TreeItem {
         this._childContainerElement = document.createElement("div");
 
         for (let i = 0; i < this.owner.getChildCount(); i++) {
-            let renderedChildItem = this.owner.getChildAt(i).treeItem.render(indentationLevel + 1);
+            //let renderedChildItem = this.owner.getChildAt(i).treeItem.render(indentationLevel + 1);
+            let renderedChildItem = this.owner.getChildAt(i).treeItem.render();
 
             this._childContainerElement.appendChild(renderedChildItem);
         }
