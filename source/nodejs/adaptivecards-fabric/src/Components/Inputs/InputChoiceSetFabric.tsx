@@ -22,6 +22,7 @@ export class InputChoiceSetFabric extends Shared.ReactInputElement {
     public parse = (json: any, errors?: AC.IValidationError[]) => {
         this.id = json.id ? AC.getStringValue(json.id) : null;
         this.valueInternal = json.value;
+        this.defaultValue = this.valueInternal;
         this.selectedValues = this.defaultValueToArray(this.value);
         this.choices = json.choices;
         this.isMultiSelect = AC.getBoolValue(json.isMultiSelect, false);

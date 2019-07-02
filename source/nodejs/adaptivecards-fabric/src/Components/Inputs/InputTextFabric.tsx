@@ -21,6 +21,7 @@ export class InputTextFabric extends Shared.ReactInputElement {
 
     public parse = (json: any, errors?: any) => {
         this.valueInternal = json.value;
+        this.defaultValue = this.valueInternal;
         this.id = AC.getStringValue(json.id);
         this.isMultiline = AC.getBoolValue(json.isMultiline, false);
         this.maxLength = Shared.getIntValue(json.maxLength);
