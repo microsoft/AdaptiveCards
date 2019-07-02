@@ -88,8 +88,7 @@
     BOOL hideDefaultPlayIcon = NO;
 
     if (!playIconImage) {
-        NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)elem.get()];
-        NSString *key = [NSString stringWithFormat:@"%@_%@", [number stringValue], @"playIcon" ];
+        NSString *key = [NSString stringWithFormat:@"%llu_playIcon", (unsigned long long)elem.get()];
         playIconImageView  = [rootView getImageView:key];
     } else {
         playIconImageView = [[UIImageView alloc] initWithImage:playIconImage];
