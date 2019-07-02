@@ -56,7 +56,14 @@
         inputs = [[NSMutableArray alloc] init];
     }
 
-    ACRColumnView *adcView = [[ACRColumnView alloc] initWithFrame:_rootView.frame];
+    // configure padding using LayoutGuid
+    unsigned int padding = [_config getHostConfig] ->GetActions().showCard.inlineTopMargin;
+
+    NSDictionary<NSString *, NSNumber *> *attributes =
+        @{ @"padding-top":[NSNumber numberWithFloat:padding] };
+
+    ACRColumnView *adcView = [[ACRColumnView alloc] initWithFrame:_rootView.frame
+        attributes:attributes];
 
     [ACRRenderer renderWithAdaptiveCards:_adaptiveCard
                                   inputs:inputs
@@ -65,7 +72,6 @@
                               hostconfig:_config];
 
     [[_rootView card] setInputs:inputs];
-    unsigned int padding = [_config getHostConfig] ->GetActions().showCard.inlineTopMargin;
 
     ContainerStyle containerStyle = ([_config getHostConfig]->GetAdaptiveCard().allowCustomStyle)? _adaptiveCard->GetStyle() : [_config getHostConfig]->GetActions().showCard.style;
 
@@ -78,6 +84,7 @@
     _adcView = adcView;
     _adcView.translatesAutoresizingMaskIntoConstraints = NO;
     _adcView.backgroundColor = [_config getBackgroundColorForContainerStyle:style];
+
     [_superview addArrangedSubview:adcView];
 
     for (NSLayoutConstraint *constraint in adcView.widthconstraint) {
@@ -110,7 +117,7 @@
         [_rootView.acrActionDelegate didChangeVisibility:_button isVisible:(!_adcView.hidden)];
     }
 
-    if([_rootView.acrActionDelegate respondsToSelector:@selector(didChangeViewLayout:newFrame:)] && _adcView.hidden == NO){
+    if ([_rootView.acrActionDelegate respondsToSelector:@selector(didChangeViewLayout:newFrame:)] && _adcView.hidden == NO){
         CGRect showCardFrame = _adcView.frame;
         showCardFrame.origin = [_adcView convertPoint:_adcView.frame.origin toView:nil];
         CGRect oldFrame = showCardFrame;

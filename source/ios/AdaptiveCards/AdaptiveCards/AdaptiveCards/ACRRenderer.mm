@@ -198,7 +198,7 @@ using namespace AdaptiveCards;
 
     auto firstelem = elems.begin();
     auto prevElem = elems.empty() ? nullptr : *firstelem;
-    
+
     for (const auto &elem : elems)
     {
         if (*firstelem != elem) {
@@ -247,7 +247,7 @@ using namespace AdaptiveCards;
         } @catch (ACOFallbackException *e){
             handleFallbackException(e, view, rootView, inputs, elem, config);
         }
-        
+
         prevElem = elem;
     }
 

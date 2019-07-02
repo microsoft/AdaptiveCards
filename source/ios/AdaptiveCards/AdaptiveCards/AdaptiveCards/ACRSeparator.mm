@@ -81,9 +81,9 @@ using namespace AdaptiveCards;
                                                  multiplier:1
                                                    constant:0];
     }
-    
+
     NSLayoutConstraint *constraintByAnchor = nil;
-    
+
     if(UILayoutConstraintAxisVertical == huggingAxis)
     {
         [self setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
@@ -100,8 +100,8 @@ using namespace AdaptiveCards;
         [self setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         constraintByAnchor = [self.widthAnchor constraintEqualToConstant:width];
     }
-    
-    constraintByAnchor.priority = 999;
+
+    constraintByAnchor.priority = 1000;
     constraintByAnchor.active = YES;
     constraint.priority = 999;
     return constraint;
@@ -130,13 +130,13 @@ using namespace AdaptiveCards;
 {
     ACRSeparator *separator = nil;
     Spacing requestedSpacing = Spacing::None;
-    
+
     if (elem) {
         requestedSpacing = elem->GetSpacing();
     } else {
         requestedSpacing = spacing;
     }
-    
+
     if (Spacing::None != requestedSpacing) {
         UIStackView *superview = nil;
 
@@ -146,10 +146,10 @@ using namespace AdaptiveCards;
         } else {
             superview = ((ACRContentStackView *) view).stackView;
         }
-        
+
         unsigned int spacing = [ACRSeparator getSpacing:requestedSpacing hostConfig:config];
         separator = [[ACRSeparator alloc] initWithFrame:CGRectMake(0, 0, spacing, spacing)];
-        
+
         if (separator) {
             // Shared model has not implemented support
             separator->width = spacing;
@@ -173,7 +173,7 @@ using namespace AdaptiveCards;
             }
         }
     }
-    
+
     return separator;
 }
 
