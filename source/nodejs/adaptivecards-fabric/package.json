@@ -1,0 +1,60 @@
+{
+	"name": "adaptivecards-fabric",
+	"version": "1.2.0",
+	"description": "Adaptive Cards Office Fabric based extension",
+	"homepage": "http://adaptivecards.io",
+	"author": "AdaptiveCards",
+	"license": "MIT",
+	"keywords": [
+		"adaptivecards",
+		"adaptive",
+		"cards",
+		"microsoft",
+		"bot"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git://git@github.com/microsoft/AdaptiveCards.git"
+	},
+	"files": [
+		"dist"
+	],
+	"main": "lib/adaptivecards.js",
+	"types": "lib/adaptivecards.d.ts",
+	"scripts": {
+		"test": "jest --forceExit --runInBand -u",
+		"clean": "rimraf build lib dist",
+		"prebuild": "tsc",
+		"build": "webpack",
+		"watch": "webpack --watch",
+		"dts": "dts-generator --name adaptivecards --project . --out dist/adaptivecards.d.ts",
+		"lint": "tslint -c ../tslint.json 'src/**/*.{ts,tsx}'",
+		"release": "npm run clean && npm run build && npm test && webpack --mode=production && npm run dts"
+	},
+	"peerDependencies": {
+		"adaptivecards": "^1.2.0",
+		"office-ui-fabric-react": "^6.189.3",
+		"react": "^16.8.6",
+		"react-dom": "^16.8.6"
+	},
+	"devDependencies": {
+		"adaptivecards": "^1.2.0"
+	},
+	"jest": {
+		"rootDir": "src",
+		"transform": {
+			"^.+\\.tsx?$": "ts-jest"
+		},
+		"testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+		"moduleFileExtensions": [
+			"ts",
+			"tsx",
+			"js",
+			"jsx",
+			"json"
+		],
+		"modulePathIgnorePatterns": [
+			"TestUtils"
+		]
+	}
+}
