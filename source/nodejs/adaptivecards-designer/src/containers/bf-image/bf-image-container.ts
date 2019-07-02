@@ -2,21 +2,20 @@
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
 import { HostContainer } from "../host-container";
-import * as hostConfig from "../../../../../../samples/HostConfig/render-to-image.json";
-//var hostConfig = require("../../../../../../samples/HostConfig/render-to-image.json");
+import * as hostConfig from "../../hostConfigs/render-to-image.json";
 
 export class BotFrameworkContainer extends HostContainer {
-    public renderTo(hostElement: HTMLElement) {
-        this.cardHost.classList.add("bf-images-card");
+	public renderTo(hostElement: HTMLElement) {
+		this.cardHost.classList.add("bf-images-card");
 
-        let frame = document.createElement("div");
-        frame.className = "bf-images-frame";
-        frame.appendChild(this.cardHost);
+		let frame = document.createElement("div");
+		frame.className = "bf-images-frame";
+		frame.appendChild(this.cardHost);
 
-        hostElement.appendChild(frame);
-    }
+		hostElement.appendChild(frame);
+	}
 
-    public getHostConfig(): Adaptive.HostConfig {
-        return new Adaptive.HostConfig(hostConfig);
-    }
+	public getHostConfig(): Adaptive.HostConfig {
+		return new Adaptive.HostConfig(hostConfig);
+	}
 }

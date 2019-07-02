@@ -2,8 +2,7 @@
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
 import { HostContainer } from "../host-container";
-
-var outlookConfiguration = require("../../../../../../samples/HostConfig/outlook-desktop.json");
+import * as hostConfig from "../../hostConfigs/outlook-desktop.json";
 
 export class OutlookContainer extends HostContainer {
     public renderTo(hostElement: HTMLElement) {
@@ -112,6 +111,6 @@ export class OutlookContainer extends HostContainer {
     }
 
     public getHostConfig(): Adaptive.HostConfig {
-        return new Adaptive.HostConfig(outlookConfiguration);
+        return new Adaptive.HostConfig(hostConfig);
     }
 }

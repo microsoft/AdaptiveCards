@@ -1,8 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
-
-var sampleConfiguration = require("../../../../../samples/HostConfig/sample.json");
+import * as hostConfig from "../hostConfigs/sample.json";
 
 export abstract class HostContainer {
     private _cardHost: HTMLElement;
@@ -43,7 +42,7 @@ export abstract class HostContainer {
     }
 
     public getHostConfig(): Adaptive.HostConfig {
-        return new Adaptive.HostConfig(sampleConfiguration);
+        return new Adaptive.HostConfig(hostConfig);
     }
 
     supportsActionBar: boolean = false;

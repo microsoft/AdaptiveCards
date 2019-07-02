@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+import * as monaco from "monaco-editor";
 import * as markdownit from "markdown-it";
 // import * as ACDesigner from "../../adaptivecards-designer/src/adaptivecards-designer";
 import * as ACDesigner from "adaptivecards-designer";
+import "adaptivecards-designer/dist/adaptivecards-designer.css";
 import "./app.css";
 
-// TODO: should this be necessary?
-import "adaptivecards-designer/lib/adaptivecards-designer.css";
-import "adaptivecards-designer/node_modules/adaptivecards-controls/lib/adaptivecards-controls.css";
+// UNCOMMENT below if you plan to use an empty hostContainers array
+//import "adaptivecards-designer/dist/adaptivecards-defaulthost.css";
 
 window.onload = function() {
     // Set to true to enable preview features such as data binding

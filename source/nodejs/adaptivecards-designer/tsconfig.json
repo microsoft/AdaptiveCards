@@ -4,5 +4,5 @@
 		"outDir": "./lib",
 		"resolveJsonModule": true
 	},
-	"files": ["./src/adaptivecards-designer.ts", "./src/containers/index.ts"]
+	"files": ["./src/adaptivecards-designer.ts" ]
 }
