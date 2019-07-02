@@ -4,7 +4,7 @@
 import * as React from "react";
 import * as AC from "adaptivecards";
 import * as FabricUI from "office-ui-fabric-react";
-import * as Shared from "../../Utils/shared";
+import * as Shared from "../../utils/shared";
 
 interface InputChoiceProps {
     type?: string;
