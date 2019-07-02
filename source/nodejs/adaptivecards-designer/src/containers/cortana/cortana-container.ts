@@ -2,8 +2,7 @@
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
 import * as Designer from "../../adaptivecards-designer";
-
-var cortanaSkillsConfiguration = require("../../../../../../samples/HostConfig/cortana-skills.json");
+import * as hostConfig from "../../hostConfigs/cortana-skills.json";
 
 export class CortanaContainer extends Designer.HostContainer {
     public renderTo(hostElement: HTMLElement) {
@@ -62,6 +61,6 @@ export class CortanaContainer extends Designer.HostContainer {
     }
 
     public getHostConfig(): Adaptive.HostConfig {
-        return new Adaptive.HostConfig(cortanaSkillsConfiguration);
+        return new Adaptive.HostConfig(hostConfig);
     }
 }
