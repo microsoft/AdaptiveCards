@@ -12,8 +12,8 @@
 		"microsoft",
 		"bot"
 	],
-	"main": "lib/adaptivecards-fabric.js",
-	"types": "lib/adaptivecards-fabric.d.ts",
+	"main": "lib/index.js",
+	"types": "lib/index.d.ts",
 	"files": [
 		"lib",
 		"dist",
