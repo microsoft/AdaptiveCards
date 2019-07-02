@@ -107,3 +107,40 @@ Controls the amount of spacing between this element and the preceding element.
 <!-- END AUTO-GENERATED -->
 
 ## Rendering
+
+### Input validation
+
+#### Determining if input is valid...
+
+- If the text is blank (length == 0)
+	- If `"isRequired": false`
+		- Valid!
+	- Else
+		- Invalid!
+- Else if there's text...
+	- If `"regex"` specified
+		- If regex passes match
+			- Valid!
+		- Else
+			- Invalid!
+	- Else
+		- Valid!
+
+
+#### Visual states
+
+Note that these comps are just examples. Each platform should mimick whatever style the platform has for representing these concepts.
+
+##### Initial state with required cue
+
+![Required cue](assets/Inputs/Input.Text/RequiredCue.png)
+
+##### Invalid state without error message
+
+Note that just highlighting the box in red isn't enough (must be accessible with color blindness).
+
+![Invalid without error](assets/Inputs/Input.Text/InvalidWithoutError.png)
+
+##### Invalid state with error message
+
+![Invalid with error](assets/Inputs/Input.Text/InvalidWithError.png)

@@ -80,3 +80,23 @@ Controls the amount of spacing between this element and the preceding element.
 <!-- END AUTO-GENERATED -->
 
 ## Rendering
+
+### Input validation
+
+#### Determining if input is valid...
+
+- If no time has been selected
+	- If `"isRequired": false`
+		- Valid!
+	- Else
+		- Invalid!
+- Else if there's a time...
+	- If the time is within specified `min` and `max`
+		- Valid!
+	- Else
+		- Invalid!
+
+
+#### Visual states
+
+See `Input.ChoiceSet` compact

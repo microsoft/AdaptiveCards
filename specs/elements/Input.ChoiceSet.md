@@ -100,3 +100,56 @@ Controls the amount of spacing between this element and the preceding element.
 <!-- END AUTO-GENERATED -->
 
 ## Rendering
+
+### Input validation
+
+#### Determining if input is valid...
+
+- If no value has been selected
+	- If `"isRequired": false`
+		- Valid!
+	- Else
+		- Invalid!
+- Else if there's a value selected...
+	- Valid!
+
+
+#### Visual states for compact
+
+Note that these comps are just examples. Each platform should mimick whatever style the platform has for representing these concepts.
+
+##### Initial state with required cue
+
+![Required cue](assets/Inputs/Input.ChoiceSet/Compact/InitialRequiredCue.png)
+
+##### Invalid state without error message
+
+Note that in this case, highlighting the box is enough since there's a visual difference (there wasn't a box before).
+
+![Invalid without error](assets/Inputs/Input.ChoiceSet/Compact/InvalidWithoutError.png)
+
+##### Invalid state with error message
+
+Same as above except error message appears beneath like the other examples.
+
+
+#### Visual states for expanded
+
+##### Initial state with required cue
+
+![Required cue](assets/Inputs/Input.ChoiceSet/Expanded/InitialWithRequiredCue.png)
+
+##### Invalid state without error message
+
+Note that in this case, highlighting the box is enough since there's a visual difference (there wasn't a box before).
+
+![Invalid without error](assets/Inputs/Input.ChoiceSet/Expanded/InvalidWithoutError.png)
+
+##### Invalid state with error message
+
+Same as above except error message appears beneath like the other examples.
+
+
+#### Visual states for multi-select expanded
+
+See Input.Toggle, same idea

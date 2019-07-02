@@ -81,3 +81,34 @@ Controls the amount of spacing between this element and the preceding element.
 <!-- END AUTO-GENERATED -->
 
 ## Rendering
+
+### Input validation
+
+#### Determining if input is valid...
+
+- If toggle is off
+	- If `"isRequired": false`
+		- Valid!
+	- Else
+		- Invalid!
+- Else if toggle is on
+	- Valid!
+
+
+#### Visual states
+
+Note that these comps are just examples. Each platform should mimick whatever style the platform has for representing these concepts.
+
+##### Initial state with required cue
+
+![Required cue](assets/Inputs/Input.Toggle/InitialRequiredCue.png)
+
+##### Invalid state without error message
+
+Note that in this case, highlighting the box is enough since there's a visual difference (there wasn't a box before).
+
+![Invalid without error](assets/Inputs/Input.Toggle/InvalidWithoutError.png)
+
+##### Invalid state with error message
+
+![Invalid with error](assets/Inputs/Input.Toggle/InvalidWithError.png)
