@@ -13,7 +13,7 @@ export class InputToggleFabric extends Shared.ReactInputElement {
 
     public parse = (json: any, errors?: AC.IValidationError[]) => {
         this.id = AC.getStringValue(json.id);
-        this.value = json.value;
+        this.valueInternal = json.value;
         this.valueOn = AC.getStringValue(json.valueOn);
         this.valueOff = AC.getStringValue(json.valueOff);
         this.title = AC.getStringValue(json.title);
@@ -38,6 +38,6 @@ export class InputToggleFabric extends Shared.ReactInputElement {
     public getJsonTypeName = (): string => "Input.Toggle";
 
     private handleToggleChange = (event: React.MouseEvent<HTMLElement> | React.ChangeEvent, checked?: boolean) => {
-        this.value = checked ? this.valueOn : this.valueOff;
+        this.valueInternal = checked ? this.valueOn : this.valueOff;
     }
 }

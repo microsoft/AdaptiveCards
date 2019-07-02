@@ -21,7 +21,7 @@ export class InputChoiceSetFabric extends Shared.ReactInputElement {
 
     public parse = (json: any, errors?: AC.IValidationError[]) => {
         this.id = json.id ? AC.getStringValue(json.id) : null;
-        this.value = json.value;
+        this.valueInternal = json.value;
         this.selectedValues = this.defaultValueToArray(this.value);
         this.choices = json.choices;
         this.isMultiSelect = AC.getBoolValue(json.isMultiSelect, false);
@@ -103,7 +103,7 @@ export class InputChoiceSetFabric extends Shared.ReactInputElement {
 
     private handleChoiceGroupChange =
         (ev?: React.FormEvent<HTMLElement | HTMLInputElement>, option?: FabricUI.IChoiceGroupOption): void => {
-            this.value = option.key;
+            this.valueInternal = option.key;
             ev.stopPropagation();
             ev.preventDefault();
         }
@@ -113,7 +113,7 @@ export class InputChoiceSetFabric extends Shared.ReactInputElement {
             if (this.isMultiSelect) {
                 this.updateMultiselectData(option.selected, option.key);
             } else {
-                this.value = option.key;
+                this.valueInternal = option.key;
             }
             event.stopPropagation();
             event.preventDefault();
@@ -121,7 +121,7 @@ export class InputChoiceSetFabric extends Shared.ReactInputElement {
 
     private updateMultiselectData = (selected: boolean, key: any): void => {
         this.updateSelectedValues(selected, key);
-        this.value = this.selectedValues.join(",");
+        this.valueInternal = this.selectedValues.join(",");
     }
 
     private updateSelectedValues = (selected: boolean, key: any): void => {

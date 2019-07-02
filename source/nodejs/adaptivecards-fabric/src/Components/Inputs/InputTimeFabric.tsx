@@ -7,15 +7,14 @@ import * as FabricUI from "office-ui-fabric-react";
 import * as Shared from "../../utils/shared";
 
 export class InputTimeFabric extends Shared.ReactInputElement {
-
-    public value: string;
+    
     private placeholder: string;
     private min: string;
     private max: string;
 
     public parse = (json: any, errors?: AC.IValidationError[]) => {
         this.id = AC.getStringValue(json.id);
-        this.value = json.value;
+        this.valueInternal = json.value;
         this.placeholder = AC.getStringValue(json.placeholder);
         this.min = AC.getStringValue(json.min);
         this.max = AC.getStringValue(json.max);

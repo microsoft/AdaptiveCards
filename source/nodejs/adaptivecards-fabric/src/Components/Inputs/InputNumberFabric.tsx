@@ -13,7 +13,7 @@ export class InputNumberFabric extends Shared.ReactInputElement {
     private placeholder: string;
 
     public parse = (json: any, errors?: AC.IValidationError[]) => {
-        this.value = json.value;
+        this.valueInternal = json.value;
         this.id = AC.getStringValue(json.id);
         this.min = Shared.getIntValue(json.min);
         this.max = Shared.getIntValue(json.max);

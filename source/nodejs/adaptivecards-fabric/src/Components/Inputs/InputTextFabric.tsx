@@ -7,7 +7,7 @@ import * as AC from "adaptivecards";
 import * as Shared from "../../utils/shared";
 
 export class InputTextFabric extends Shared.ReactInputElement {
-    public value: string;
+
     private isMultiline: boolean;
     private maxLength: number;
     private placeholder: string;
@@ -20,7 +20,7 @@ export class InputTextFabric extends Shared.ReactInputElement {
     public getJsonTypeName = (): string => "Input.Text";
 
     public parse = (json: any, errors?: any) => {
-        this.value = json.value;
+        this.valueInternal = json.value;
         this.id = AC.getStringValue(json.id);
         this.isMultiline = AC.getBoolValue(json.isMultiline, false);
         this.maxLength = Shared.getIntValue(json.maxLength);

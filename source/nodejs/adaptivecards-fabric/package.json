@@ -20,7 +20,7 @@
 		"src"
 	],
 	"scripts": {
-		"test": "jest --forceExit --runInBand -u",
+		"test": "jest --forceExit --runInBand",
 		"clean": "rimraf build lib dist",
 		"prebuild": "tsc",
 		"build": "webpack",

@@ -32,7 +32,7 @@ export abstract class ReactCardElementContainer extends AC.Container {
 
 export abstract class ReactInputElement extends AC.Input {
 
-    public value: any;
+    public valueInternal: any;
     protected abstract renderReact(): JSX.Element;
 
     protected internalRender(): HTMLElement {
@@ -41,7 +41,11 @@ export abstract class ReactInputElement extends AC.Input {
     }
 
     protected handleChange = (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
-        this.value = newValue;
+        this.valueInternal = newValue;
+    }
+
+    get value(): string {
+        return this.valueInternal;
     }
 }
 

@@ -25,7 +25,6 @@ exports[`InputTextExtended renders int text multiline correctly 1`] = `
               class="ms-TextField-field field-57"
               id="input3"
               maxlength="500"
-              placeholder="enter comment"
             >
               This value was pre-filled
             </textarea>

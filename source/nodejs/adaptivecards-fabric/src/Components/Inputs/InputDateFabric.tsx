@@ -7,7 +7,7 @@ import * as AC from "adaptivecards";
 import * as Shared from "../../utils/shared";
 
 export class InputDateFabric extends Shared.ReactInputElement {
-    public value: string;
+
     private date: Date;
     private placeholder: string;
     private minDate: Date;
@@ -27,7 +27,7 @@ export class InputDateFabric extends Shared.ReactInputElement {
 
     private parseDates = (json: any, errors?: AC.IValidationError[]) => {
         const dateString = AC.getStringValue(json.value);
-        this.value = dateString;
+        this.valueInternal = dateString;
         this.date = dateString ? this.getDate(dateString) : new Date();
         this.minDate = json.min ? this.getDate(AC.getStringValue(json.min)) : undefined;
         this.maxDate = json.max ? this.getDate(AC.getStringValue(json.max)) : undefined;
@@ -58,6 +58,6 @@ export class InputDateFabric extends Shared.ReactInputElement {
     }
 
     private handleSelectDate = (date: Date) => {
-        this.value = date.toLocaleDateString("en-US");
+        this.valueInternal = date.toLocaleDateString("en-US");
     }
 }
