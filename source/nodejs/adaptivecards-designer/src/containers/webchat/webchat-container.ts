@@ -2,8 +2,7 @@
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
 import * as Designer from "../../adaptivecards-designer";
-
-var webChatConfiguration = require("../../../../../../samples/HostConfig/webchat.json");
+import * as hostConfig from "../../hostConfigs/webchat.json";
 
 export class WebChatContainer extends Designer.HostContainer {
     public renderTo(hostElement: HTMLElement) {
@@ -17,6 +16,6 @@ export class WebChatContainer extends Designer.HostContainer {
     }
 
     public getHostConfig(): Adaptive.HostConfig {
-        return new Adaptive.HostConfig(webChatConfiguration);
+        return new Adaptive.HostConfig(hostConfig);
     }
 }
