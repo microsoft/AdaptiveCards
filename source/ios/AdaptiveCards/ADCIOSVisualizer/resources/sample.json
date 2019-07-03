@@ -246,6 +246,7 @@
 		"spacing": 5
 	},
 	"media": {
+        "playButton" : "http://adaptivecards.io/content/adaptive-card-50.png",
 		"allowInlinePlayback" : true
 	}
 }
