@@ -5,19 +5,18 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import <SafariServices/SafariServices.h>
 #import "ViewController.h"
+#import "ADCResolver.h"
+#import "AdaptiveCards/ACRButton.h"
+#import "CustomActionNewType.h"
 #import "CustomActionOpenURLRenderer.h"
+#import "CustomImageRenderer.h"
 #import "CustomInputNumberRenderer.h"
 #import "CustomProgressBarRenderer.h"
 #import "CustomTextBlockRenderer.h"
-#import "CustomImageRenderer.h"
-#import "CustomActionNewType.h"
-#import "ADCResolver.h"
-#import "AdaptiveCards/ACRButton.h"
+#import <SafariServices/SafariServices.h>
 
-@interface ViewController ()
-{
+@interface ViewController () {
     BOOL _enableCustomRenderer;
     ACOResourceResolvers *_resolvers;
     id<ACRIBaseActionSetRenderer> _defaultRenderer;
@@ -30,12 +29,11 @@
 {
     NSArray<NSLayoutConstraint *> *constraints = nil;
 
-    for(NSString *format in formats)
-    {
+    for (NSString *format in formats) {
         constraints = [NSLayoutConstraint constraintsWithVisualFormat:format
                                                               options:0
                                                               metrics:nil
-                                                                views:variables]; 
+                                                                views:variables];
         [NSLayoutConstraint activateConstraints:constraints];
     }
 }
@@ -43,12 +41,12 @@
 - (IBAction)editText:(id)sender
 {
     NSMutableAttributedString *content =
-    [[NSMutableAttributedString alloc] initWithString:self.editableStr];
-    
+        [[NSMutableAttributedString alloc] initWithString:self.editableStr];
+
     NSMutableParagraphStyle *para = [[NSMutableParagraphStyle alloc] init];
     para.lineBreakMode = NSLineBreakByCharWrapping;
     para.alignment = NSTextAlignmentLeft;
-    [content addAttributes:@{NSParagraphStyleAttributeName:para} range:NSMakeRange(0,1)];
+    [content addAttributes:@{NSParagraphStyleAttributeName : para} range:NSMakeRange(0, 1)];
     self.editView.attributedText = content;
     UIFontDescriptor *dec = self.editView.font.fontDescriptor;
     self.editView.font = [UIFont fontWithDescriptor:dec size:8];
@@ -61,9 +59,9 @@
     NSDictionary *viewMap = NSDictionaryOfVariableBindings(editView, buttonLayout);
     [self.ACVTabVC.tableView removeFromSuperview];
 
-    NSArray<NSString *> *formats = 
-        [NSArray arrayWithObjects:@"H:|-[editView]-|",   
-                              @"V:|-40-[editView(==200)]-[buttonLayout]", nil];
+    NSArray<NSString *> *formats =
+        [NSArray arrayWithObjects:@"H:|-[editView]-|",
+                                  @"V:|-40-[editView(==200)]-[buttonLayout]", nil];
     [ViewController applyConstraints:formats variables:viewMap];
 }
 
@@ -72,24 +70,23 @@
     _enableCustomRenderer = !_enableCustomRenderer;
     ACRRegistration *registration = [ACRRegistration getInstance];
 
-    if(_enableCustomRenderer){
+    if (_enableCustomRenderer) {
         // enum will be part of API in next iterations when custom renderer extended to non-action type - tracked by issue #809
         [registration setActionRenderer:[CustomActionOpenURLRenderer getInstance] cardElementType:@3];
         [registration setBaseCardElementRenderer:[CustomTextBlockRenderer getInstance] cardElementType:ACRTextBlock];
         [registration setBaseCardElementRenderer:[CustomInputNumberRenderer getInstance] cardElementType:ACRNumberInput];
         [registration setBaseCardElementRenderer:[CustomImageRenderer getInstance] cardElementType:ACRImage];
-        
+
         _enableCustomRendererButton.backgroundColor = UIColor.redColor;
         _defaultRenderer = [registration getActionSetRenderer];
         [registration setActionSetRenderer:self];
-    } else
-    {
+    } else {
         [registration setActionRenderer:nil cardElementType:@3];
         [registration setBaseCardElementRenderer:nil cardElementType:ACRTextBlock];
         [registration setBaseCardElementRenderer:nil cardElementType:ACRNumberInput];
         [registration setBaseCardElementRenderer:nil cardElementType:ACRImage];
         [registration setActionSetRenderer:nil];
-        _enableCustomRendererButton.backgroundColor = [UIColor colorWithRed:0/255 green:122.0/255 blue:1 alpha:1];
+        _enableCustomRendererButton.backgroundColor = [UIColor colorWithRed:0 / 255 green:122.0 / 255 blue:1 alpha:1];
     }
     [self update:self.editableStr];
 }
@@ -97,21 +94,22 @@
 - (IBAction)applyText:(id)sender
 {
     UITableView *ACVTabView = self.ACVTabVC.tableView;
-    if(_editView.text != NULL && ![_editView.text isEqualToString:@""]){
+    if (_editView.text != NULL && ![_editView.text isEqualToString:@""]) {
         [self update:self.editView.text];
-        [self.view addSubview: ACVTabView];
+        [self.view addSubview:ACVTabView];
         [self.editView removeFromSuperview];
 
         UIStackView *buttonLayout = self.buttonLayout;
         NSDictionary *viewMap = NSDictionaryOfVariableBindings(ACVTabView, buttonLayout);
         NSArray<NSString *> *formats =
             [NSArray arrayWithObjects:@"H:|-[ACVTabView]-|",
-                                  @"V:|-40-[ACVTabView(==200)]-[buttonLayout]", nil];
+                                      @"V:|-40-[ACVTabView(==200)]-[buttonLayout]", nil];
         [ViewController applyConstraints:formats variables:viewMap];
     }
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     [self registerForKeyboardNotifications];
     _resolvers = [[ACOResourceResolvers alloc] init];
@@ -134,7 +132,7 @@
     [self.view addSubview:ACVTabView];
     ACVTabView.translatesAutoresizingMaskIntoConstraints = NO;
 
-    self.editView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) textContainer: nil];
+    self.editView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) textContainer:nil];
     self.editView.directionalLockEnabled = NO;
     [self.view addSubview:self.editView];
 
@@ -147,40 +145,43 @@
     [NSLayoutConstraint constraintWithItem:_tryButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:25].active = YES;
 
     [self.tryButton setTitle:@"Try Yourself" forState:UIControlStateNormal];
-    [self.tryButton setTitleColor:[UIColor colorWithRed:0/255 green:122.0/255 blue:1 alpha:1] forState:UIControlStateSelected];
+    [self.tryButton setTitleColor:[UIColor colorWithRed:0 / 255 green:122.0 / 255 blue:1 alpha:1] forState:UIControlStateSelected];
     [self.tryButton setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
-    [self.tryButton addTarget:self action:@selector(editText:)
+    [self.tryButton addTarget:self
+                       action:@selector(editText:)
              forControlEvents:UIControlEventTouchUpInside];
     [buttonLayout addArrangedSubview:self.tryButton];
-    self.tryButton.backgroundColor = [UIColor colorWithRed:0/255 green:122.0/255 blue:1 alpha:1];
-    self.tryButton.contentEdgeInsets = UIEdgeInsetsMake(5,5,5,5);
+    self.tryButton.backgroundColor = [UIColor colorWithRed:0 / 255 green:122.0 / 255 blue:1 alpha:1];
+    self.tryButton.contentEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
 
     // apply button
     self.applyButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [self.applyButton setTitle:@"Apply" forState:UIControlStateNormal];
-    [self.applyButton setTitleColor:[UIColor colorWithRed:0/255 green:122.0/255 blue:1 alpha:1] forState:UIControlStateSelected];
+    [self.applyButton setTitleColor:[UIColor colorWithRed:0 / 255 green:122.0 / 255 blue:1 alpha:1] forState:UIControlStateSelected];
     [self.applyButton setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
 
-    self.applyButton.backgroundColor = [UIColor colorWithRed:0/255 green:122.0/255 blue:1 alpha:1];
-    self.applyButton.contentEdgeInsets = UIEdgeInsetsMake(5,5,5,5);
-      [NSLayoutConstraint constraintWithItem:_applyButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:25].active = YES;
+    self.applyButton.backgroundColor = [UIColor colorWithRed:0 / 255 green:122.0 / 255 blue:1 alpha:1];
+    self.applyButton.contentEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
+    [NSLayoutConstraint constraintWithItem:_applyButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:25].active = YES;
 
-    [self.applyButton addTarget:self action:@selector(applyText:)
+    [self.applyButton addTarget:self
+                         action:@selector(applyText:)
                forControlEvents:UIControlEventTouchUpInside];
     [buttonLayout addArrangedSubview:self.applyButton];
 
     // custon renderer button
     self.enableCustomRendererButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [self.enableCustomRendererButton setTitle:@"Enable Custom Renderer" forState:UIControlStateNormal];
-    [self.enableCustomRendererButton setTitleColor:[UIColor colorWithRed:0/255 green:122.0/255 blue:1 alpha:1] forState:UIControlStateSelected];
+    [self.enableCustomRendererButton setTitleColor:[UIColor colorWithRed:0 / 255 green:122.0 / 255 blue:1 alpha:1] forState:UIControlStateSelected];
     [self.enableCustomRendererButton setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
 
-    self.enableCustomRendererButton.backgroundColor = [UIColor colorWithRed:0/255 green:122.0/255 blue:1 alpha:1];
-    self.enableCustomRendererButton.contentEdgeInsets = UIEdgeInsetsMake(5,5,5,5);
-      [NSLayoutConstraint constraintWithItem:_enableCustomRendererButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:25].active = YES;
+    self.enableCustomRendererButton.backgroundColor = [UIColor colorWithRed:0 / 255 green:122.0 / 255 blue:1 alpha:1];
+    self.enableCustomRendererButton.contentEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
+    [NSLayoutConstraint constraintWithItem:_enableCustomRendererButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:25].active = YES;
 
-    [self.enableCustomRendererButton addTarget:self action:@selector(toggleCustomRenderer:)
-               forControlEvents:UIControlEventTouchUpInside];
+    [self.enableCustomRendererButton addTarget:self
+                                        action:@selector(toggleCustomRenderer:)
+                              forControlEvents:UIControlEventTouchUpInside];
     [buttonLayout addArrangedSubview:self.enableCustomRendererButton];
 
     [self.view addSubview:buttonLayout];
@@ -202,31 +203,31 @@
     scrollview.translatesAutoresizingMaskIntoConstraints = NO;
 
     NSDictionary *viewMap = NSDictionaryOfVariableBindings(ACVTabView, buttonLayout, scrollview);
-    NSArray<NSString *> *formats = 
-        [NSArray arrayWithObjects:@"H:|-[ACVTabView]-|",   
-                              @"V:|-40-[ACVTabView(==200)]-[buttonLayout]-[scrollview]-40@100-|",
-         @"H:|-[buttonLayout]-|", @"H:|-[scrollview]-|", nil];
+    NSArray<NSString *> *formats =
+        [NSArray arrayWithObjects:@"H:|-[ACVTabView]-|",
+                                  @"V:|-40-[ACVTabView(==200)]-[buttonLayout]-[scrollview]-40@100-|",
+                                  @"H:|-[buttonLayout]-|", @"H:|-[scrollview]-|", nil];
 
     [ViewController applyConstraints:formats variables:viewMap];
-    
+
     ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
     [featureReg addFeature:@"acTest" featureVersion:@"1.0"];
 
     [self update:self.ACVTabVC.userSelectedJSon];
-    
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
 }
 
-- (void)update:(NSString *) jsonStr
+- (void)update:(NSString *)jsonStr
 {
     self.editableStr = jsonStr;
     ACRRenderResult *renderResult;
     ACOHostConfigParseResult *hostconfigParseResult = [ACOHostConfig fromJson:self.hostconfig resourceResolvers:_resolvers];
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:jsonStr];
-    if(cardParseResult.isValid){
+    if (cardParseResult.isValid) {
         ACRRegistration *registration = [ACRRegistration getInstance];
 
         NSString *type = @"ProgressBar";
@@ -246,12 +247,11 @@
         _config = hostconfigParseResult.config;
         renderResult = [ACRRenderer render:cardParseResult.card config:hostconfigParseResult.config widthConstraint:315 delegate:self];
     }
-    
-    if(renderResult.succeeded)
-    {
+
+    if (renderResult.succeeded) {
         ACRView *ad = renderResult.view;
         ad.mediaDelegate = self;
-        if(self.curView)
+        if (self.curView)
             [self.curView removeFromSuperview];
 
         self.curView = ad;
@@ -259,7 +259,7 @@
         [_scrView addSubview:self.curView];
         UIView *view = self.curView;
         view.translatesAutoresizingMaskIntoConstraints = NO;
-            
+
         [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
         [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
         [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:3].active = YES;
@@ -271,7 +271,7 @@
 {
     [super viewWillAppear:animated];
     float verticalContentInset = self.scrView.frame.size.height - self.curView.frame.size.height;
-    verticalContentInset = (verticalContentInset <= 0)? 20 : verticalContentInset;
+    verticalContentInset = (verticalContentInset <= 0) ? 20 : verticalContentInset;
     UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, verticalContentInset, 0.0);
     self.scrView.contentInset = contentInsets;
 }
@@ -288,14 +288,14 @@
 
 - (void)didFetchUserResponses:(ACOAdaptiveCard *)card action:(ACOBaseActionElement *)action
 {
-    if(action.type == ACROpenUrl){
+    if (action.type == ACROpenUrl) {
         NSURL *url = [NSURL URLWithString:[action url]];
         SFSafariViewController *svc = [[SFSafariViewController alloc] initWithURL:url];
         [self presentViewController:svc animated:YES completion:nil];
-    } else if(action.type == ACRSubmit){
-        NSData * userInputsAsJson = [card inputs];
+    } else if (action.type == ACRSubmit) {
+        NSData *userInputsAsJson = [card inputs];
         NSString *str = [[NSString alloc] initWithData:userInputsAsJson encoding:NSUTF8StringEncoding];
-        if(!_userResponseLabel) {
+        if (!_userResponseLabel) {
             _userResponseLabel = [[UILabel alloc] init];
             _userResponseLabel.numberOfLines = 0;
             _userResponseLabel.backgroundColor = UIColor.groupTableViewBackgroundColor;
@@ -305,9 +305,9 @@
         _userResponseLabel.text = str;
         NSLog(@"user response fetched: %@ with %@", str, [action data]);
     } else if (action.type == ACRUnknownAction) {
-        if([action isKindOfClass:[CustomActionNewType class]]) {
+        if ([action isKindOfClass:[CustomActionNewType class]]) {
             CustomActionNewType *newType = (CustomActionNewType *)action;
-            if(newType.alertController) {
+            if (newType.alertController) {
                 [self presentViewController:newType.alertController animated:YES completion:nil];
             }
         }
@@ -321,34 +321,26 @@
 
 - (void)didChangeVisibility:(UIButton *)button isVisible:(BOOL)isVisible
 {
-    if(isVisible)
-    {
+    if (isVisible) {
         button.backgroundColor = [UIColor redColor];
-    }
-    else
-    {
-        if([button isKindOfClass:[ACRButton class]])
-        {
+    } else {
+        if ([button isKindOfClass:[ACRButton class]]) {
             ACRButton *acrButton = (ACRButton *)button;
-            if(acrButton.sentiment && [@"default" caseInsensitiveCompare:acrButton.sentiment] != NSOrderedSame)
-            {
+            if (acrButton.sentiment && [@"default" caseInsensitiveCompare:acrButton.sentiment] != NSOrderedSame) {
                 [acrButton applySentimentStyling];
-            }
-            else
-            {
+            } else {
                 button.backgroundColor = [UIColor colorWithRed:0.11 green:0.68 blue:0.97 alpha:1.0];
             }
-        }
-        else
-        {
+        } else {
             button.backgroundColor = [UIColor colorWithRed:0.11 green:0.68 blue:0.97 alpha:1.0];
         }
         [self.scrView layoutIfNeeded];
     }
 }
 
-- (void)didFetchMediaViewController:(AVPlayerViewController *)controller card:(ACOAdaptiveCard *)card {
-    [self addChildViewController:controller];    
+- (void)didFetchMediaViewController:(AVPlayerViewController *)controller card:(ACOAdaptiveCard *)card
+{
+    [self addChildViewController:controller];
     [controller didMoveToParentViewController:self];
 }
 
@@ -366,31 +358,32 @@
 {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWasShown:)
-                                                 name:UIKeyboardWillShowNotification object:nil];
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillBeHidden:)
-                                                 name:UIKeyboardWillHideNotification object:nil];
-
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
 }
 
 // Called when the UIKeyboardDidShowNotification is sent.
-- (void)keyboardWasShown:(NSNotification*)aNotification
+- (void)keyboardWasShown:(NSNotification *)aNotification
 {
-    NSDictionary* info = [aNotification userInfo];
+    NSDictionary *info = [aNotification userInfo];
     CGRect kbFrame = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGSize kbSize = kbFrame.size;
 
     UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
     CGRect scrollViewFrame = _scrView.frame;
-    if(scrollViewFrame.origin.y + scrollViewFrame.size.height > kbFrame.origin.y) {
+    if (scrollViewFrame.origin.y + scrollViewFrame.size.height > kbFrame.origin.y) {
         self.scrView.contentInset = contentInsets;
         self.scrView.scrollIndicatorInsets = contentInsets;
     }
 }
 
 // Called when the UIKeyboardWillHideNotification is sent
-- (void)keyboardWillBeHidden:(NSNotification*)aNotification
+- (void)keyboardWillBeHidden:(NSNotification *)aNotification
 {
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
     self.scrView.contentInset = contentInsets;

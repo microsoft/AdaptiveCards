@@ -5,10 +5,10 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACRBaseActionElementRenderer.h"
 #import "ACRActionToggleVisibilityRenderer.h"
 #import "ACOBaseActionElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
+#import "ACRBaseActionElementRenderer.h"
 #import "ACRButton.h"
 #import "ACRToggleVisibilityTarget.h"
 #import "ToggleVisibilityAction.h"
@@ -21,7 +21,7 @@
     return singletonInstance;
 }
 
-- (UIButton* )renderButton:(ACRView *)view
+- (UIButton *)renderButton:(ACRView *)view
                     inputs:(NSArray *)inputs
                  superview:(UIView<ACRIContentHoldingView> *)superview
          baseActionElement:(ACOBaseActionElement *)acoElem
@@ -35,9 +35,9 @@
     UIButton *button = [ACRButton rootView:view baseActionElement:acoElem title:title andHostConfig:acoConfig];
 
     ACRToggleVisibilityTarget *target = [[ACRToggleVisibilityTarget alloc]
-                                            initWithActionElement:action
-                                                           config:acoConfig
-                                                         rootView:view];
+        initWithActionElement:action
+                       config:acoConfig
+                     rootView:view];
 
     [button addTarget:target action:@selector(doSelectAction) forControlEvents:UIControlEventTouchUpInside];
 

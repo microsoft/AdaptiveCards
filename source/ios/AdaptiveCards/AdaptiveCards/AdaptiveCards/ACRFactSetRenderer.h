@@ -7,8 +7,8 @@
 
 #import "ACRBaseCardElementRenderer.h"
 
-@interface ACRFactSetRenderer:ACRBaseCardElementRenderer
+@interface ACRFactSetRenderer : ACRBaseCardElementRenderer
 
-+ (ACRFactSetRenderer* )getInstance;
++ (ACRFactSetRenderer *)getInstance;
 
 @end

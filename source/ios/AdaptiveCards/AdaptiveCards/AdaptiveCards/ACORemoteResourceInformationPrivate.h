@@ -7,7 +7,7 @@
 #import "ACORemoteResourceInformation.h"
 #import "RemoteResourceInformation.h"
 
-@interface ACORemoteResourceInformation()
+@interface ACORemoteResourceInformation ()
 
 - (instancetype)initWithRemoteResourceInformation:(AdaptiveCards::RemoteResourceInformation const &)remoteResourceInformation;
 

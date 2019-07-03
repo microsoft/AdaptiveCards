@@ -10,8 +10,7 @@
 extern NSString *const ACRInputErrorDomain;
 extern NSString *const ACRParseErrorDomain;
 
-typedef NS_ENUM(NSUInteger, ACRInputError)
-{
+typedef NS_ENUM(NSUInteger, ACRInputError) {
     ACRInputErrorValueMissing,
     ACRInputErrorLessThanMin,
     ACRInputErrorGreaterThanMax,
@@ -19,7 +18,7 @@ typedef NS_ENUM(NSUInteger, ACRInputError)
     ACRInputErrorGreaterThanMaxDate,
 };
 
-@interface ACOFallbackException:NSObject
+@interface ACOFallbackException : NSObject
 
 + (ACOFallbackException *)fallbackException;
 

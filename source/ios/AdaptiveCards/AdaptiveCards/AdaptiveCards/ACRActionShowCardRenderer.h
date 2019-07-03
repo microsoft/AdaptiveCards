@@ -7,7 +7,7 @@
 
 #import "ACRBaseActionElementRenderer.h"
 
-@interface ACRActionShowCardRenderer:ACRBaseActionElementRenderer
+@interface ACRActionShowCardRenderer : ACRBaseActionElementRenderer
 
 + (ACRActionShowCardRenderer *)getInstance;
 

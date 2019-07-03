@@ -5,13 +5,13 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "ACRIBaseInputHandler.h"
-#import "SharedAdaptiveCard.h"
-#import "BaseInputElement.h"
 #import "ACRTextField.h"
+#import "BaseInputElement.h"
+#import "SharedAdaptiveCard.h"
+#import <UIKit/UIKit.h>
 
-@interface ACRDateTextField:ACRTextField
+@interface ACRDateTextField : ACRTextField
 @property NSDate *min;
 @property NSDate *max;
 @property NSDateFormatter *formatter;

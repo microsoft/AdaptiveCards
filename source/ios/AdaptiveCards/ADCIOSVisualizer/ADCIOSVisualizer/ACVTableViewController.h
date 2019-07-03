@@ -14,9 +14,9 @@
     userconfig:(NSString *)payload;
 @end
 
-@interface ACVTableViewController: UITableViewController
+@interface ACVTableViewController : UITableViewController
 
-@property (nonatomic, weak) id <ACVTableViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<ACVTableViewControllerDelegate> delegate;
 @property NSString *userSelectedJSon;
 
 @end

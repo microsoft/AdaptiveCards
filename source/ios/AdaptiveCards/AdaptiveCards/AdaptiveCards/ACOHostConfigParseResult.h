@@ -9,11 +9,11 @@
 
 @class ACOHostConfig;
 
-@interface ACOHostConfigParseResult:NSObject
+@interface ACOHostConfigParseResult : NSObject
 
-@property(readonly) ACOHostConfig *config;
-@property(readonly) BOOL isValid;
-@property(readonly) NSArray<NSError *> *parseErrors;
+@property (readonly) ACOHostConfig *config;
+@property (readonly) BOOL isValid;
+@property (readonly) NSArray<NSError *> *parseErrors;
 
 - (instancetype)init:(ACOHostConfig *)config errors:(NSArray<NSError *> *)errors;
 

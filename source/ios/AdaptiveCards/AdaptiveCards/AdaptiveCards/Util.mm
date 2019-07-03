@@ -5,18 +5,18 @@
 //  Copyright © 2019 Microsoft. All rights reserved.
 //
 
+#import "Util.h"
+#import "ACOBaseActionElementPrivate.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACRBaseCardElementRenderer.h"
+#import "ACRContentStackView.h"
+#import "ACRIBaseActionElementRenderer.h"
+#import "ACRRegistration.h"
+#import "ACRUIImageView.h"
+#import "ACRViewPrivate.h"
 #import "BackgroundImage.h"
 #import "Enums.h"
-#import "ACRViewPrivate.h"
-#import "ACRUIImageView.h"
-#import "Util.h"
-#import "ACRContentStackView.h"
-#import "ACOHostConfigPrivate.h"
-#import "ACOBaseCardElementPrivate.h"
-#import "ACRBaseCardElementRenderer.h"
-#import "ACRRegistration.h"
-#import "ACOBaseActionElementPrivate.h"
-#import "ACRIBaseActionElementRenderer.h"
 
 using namespace AdaptiveCards;
 
@@ -63,7 +63,7 @@ void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage>
             NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)backgroundImage.get()];
             NSString *imageViewKey = [number stringValue];
             imgView = [rootView getImageView:imageViewKey];
-            if (!imgView){
+            if (!imgView) {
                 imgView = [rootView getImageView:@"backgroundImage"];
             }
         }
@@ -83,9 +83,7 @@ void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage>
 
 void renderBackgroundImage(const BackgroundImage *backgroundImageProperties, UIImageView *imageView, UIImage *image)
 {
-    if (backgroundImageProperties->GetFillMode() == ImageFillMode::Repeat
-        || backgroundImageProperties->GetFillMode() == ImageFillMode::RepeatHorizontally
-        || backgroundImageProperties->GetFillMode() == ImageFillMode::RepeatVertically) {
+    if (backgroundImageProperties->GetFillMode() == ImageFillMode::Repeat || backgroundImageProperties->GetFillMode() == ImageFillMode::RepeatHorizontally || backgroundImageProperties->GetFillMode() == ImageFillMode::RepeatVertically) {
         imageView.backgroundColor = [UIColor colorWithPatternImage:image];
         imageView.image = nil;
     }
@@ -104,8 +102,7 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
     }
 
     switch (backgroundImageProperties->GetFillMode()) {
-        case ImageFillMode::Repeat:
-        {
+        case ImageFillMode::Repeat: {
             [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:superView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
             [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:superView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
             [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:superView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0].active = YES;
@@ -114,14 +111,12 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
             imageView.contentMode = UIViewContentModeScaleAspectFill;
             break;
         }
-        case ImageFillMode::RepeatHorizontally:
-        {
+        case ImageFillMode::RepeatHorizontally: {
             [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:image.size.height].active = YES;
             [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:superView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0].active = YES;
             [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:superView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0].active = YES;
 
-            switch (backgroundImageProperties->GetVerticalAlignment())
-            {
+            switch (backgroundImageProperties->GetVerticalAlignment()) {
                 case VerticalAlignment::Bottom:
                     [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:superView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
                     break;
@@ -135,13 +130,11 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
             }
             break;
         }
-        case ImageFillMode::RepeatVertically:
-        {
+        case ImageFillMode::RepeatVertically: {
             [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:image.size.width].active = YES;
             [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:superView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
             [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:superView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
-            switch (backgroundImageProperties->GetHorizontalAlignment())
-            {
+            switch (backgroundImageProperties->GetHorizontalAlignment()) {
                 case HorizontalAlignment::Right:
                     [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:superView attribute:NSLayoutAttributeRight multiplier:1.0 constant:0].active = YES;
                     break;
@@ -156,8 +149,7 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
             break;
         }
         case ImageFillMode::Cover:
-        default:
-        {
+        default: {
             imageView.contentMode = UIViewContentModeScaleAspectFill;
 
             if (superView.frame.size.width > imageView.frame.size.width) {
@@ -203,7 +195,7 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
                 ACRContentStackView *view = (ACRContentStackView *)[rootView getBleedTarget:internalId];
                 // c++ to object-c enum conversion
                 ContainerBleedDirection adaptiveBleedDirection = collection->GetBleedDirection();
-                ACRBleedDirection direction = (ACRBleedDirection) adaptiveBleedDirection;
+                ACRBleedDirection direction = (ACRBleedDirection)adaptiveBleedDirection;
                 view = view ? view : rootView;
 
                 if (view) {
@@ -228,12 +220,12 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
 
                     [container bleed:config->GetSpacing().paddingSpacing priority:1000 target:backgroundView direction:direction parentView:marginalView];
 
-                    if([container layer].borderWidth) {
+                    if ([container layer].borderWidth) {
                         [backgroundView layer].borderWidth = [container layer].borderWidth;
                         [container layer].borderWidth = 0;
                     }
 
-                    if([container layer].borderColor) {
+                    if ([container layer].borderColor) {
                         [backgroundView layer].borderColor = [container layer].borderColor;
                         [container layer].borderColor = 0;
                     }
@@ -245,10 +237,11 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
 
 ObserverActionBlock generateBackgroundImageObserverAction(std::shared_ptr<BackgroundImage> backgroundImageProperties, ACRView *observer, std::shared_ptr<BaseCardElement> const &context)
 {
-    return ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseCardElement> const &elem, NSURL* url, ACRView* rootView) {
+    return ^(NSObject<ACOIResourceResolver> *imageResourceResolver, NSString *key, std::shared_ptr<BaseCardElement> const &elem, NSURL *url, ACRView *rootView) {
         UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
-        if(view) {
-            [view addObserver:observer forKeyPath:@"image"
+        if (view) {
+            [view addObserver:observer
+                   forKeyPath:@"image"
                       options:NSKeyValueObservingOptionNew
                       context:backgroundImageProperties.get()];
 
@@ -297,7 +290,7 @@ void handleFallbackException(ACOFallbackException *exception,
                 removeLastViewFromCollectionView(elemType, view);
                 [renderer render:view rootView:rootView inputs:inputs baseCardElement:acoElem hostConfig:config];
                 bHandled = true;
-            } @catch (ACOFallbackException *e){
+            } @catch (ACOFallbackException *e) {
                 NSLog(@"Fallback Failed, trying different fallback");
                 NSLog(@"%@", e);
             }

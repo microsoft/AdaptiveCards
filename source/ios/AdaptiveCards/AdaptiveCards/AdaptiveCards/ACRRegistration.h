@@ -7,16 +7,16 @@
 //
 @class ACRBaseCardElementRenderer;
 
-#import "ACRBaseActionElementRenderer.h"
 #import "ACOBaseCardElement.h"
+#import "ACRBaseActionElementRenderer.h"
 
-@interface ACRRegistration:NSObject
+@interface ACRRegistration : NSObject
 
 + (ACRRegistration *)getInstance;
 
-- (ACRBaseCardElementRenderer *)getRenderer:(NSNumber *) cardElementType;
+- (ACRBaseCardElementRenderer *)getRenderer:(NSNumber *)cardElementType;
 
-- (ACRBaseActionElementRenderer *)getActionRenderer:(NSNumber *) cardElementType;
+- (ACRBaseActionElementRenderer *)getActionRenderer:(NSNumber *)cardElementType;
 
 - (id<ACRIBaseActionSetRenderer>)getActionSetRenderer;
 
@@ -26,7 +26,8 @@
 
 - (void)setActionSetRenderer:(id<ACRIBaseActionSetRenderer>)actionsetRenderer;
 
-- (void)setCustomElementParser:(NSObject<ACOIBaseCardElementParser> *)customElementParser key:(NSString *)key;;
+- (void)setCustomElementParser:(NSObject<ACOIBaseCardElementParser> *)customElementParser key:(NSString *)key;
+;
 
 - (NSObject<ACOIBaseCardElementParser> *)getCustomElementParser:(NSString *)key;
 
@@ -46,7 +47,7 @@
 
 @end
 
-@interface ACOFeatureRegistration:NSObject
+@interface ACOFeatureRegistration : NSObject
 + (ACOFeatureRegistration *)getInstance;
 - (void)addFeature:(nullable NSString *)featureName featureVersion:(nullable NSString *)version;
 - (void)removeFeature:(nullable NSString *)featureName;

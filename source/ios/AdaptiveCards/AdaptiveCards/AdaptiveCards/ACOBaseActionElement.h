@@ -5,12 +5,12 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "ACOParseContext.h"
+#import <Foundation/Foundation.h>
 
 @class ACOFeatureRegistration;
 
-@interface ACOBaseActionElement:NSObject
+@interface ACOBaseActionElement : NSObject
 
 typedef NS_ENUM(NSInteger, ACRActionType) {
     ACRShowCard = 1,
@@ -41,6 +41,6 @@ typedef NS_ENUM(NSInteger, ACRIconPlacement) {
 
 @protocol ACOIBaseActionElementParser
 
-- (ACOBaseActionElement *)deserialize:(NSData *)json parseContext:(ACOParseContext* )parseContext;
+- (ACOBaseActionElement *)deserialize:(NSData *)json parseContext:(ACOParseContext *)parseContext;
 
 @end

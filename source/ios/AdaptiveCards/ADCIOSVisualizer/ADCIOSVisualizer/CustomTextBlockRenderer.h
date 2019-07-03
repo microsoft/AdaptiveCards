@@ -9,7 +9,7 @@
 
 #import <AdaptiveCards/ACFramework.h>
 
-@interface CustomTextBlockRenderer:ACRBaseCardElementRenderer
+@interface CustomTextBlockRenderer : ACRBaseCardElementRenderer
 
 + (CustomTextBlockRenderer *)getInstance;
 

@@ -6,7 +6,7 @@
 //
 #import "ACRContentStackView.h"
 
-@interface ACRColumnView:ACRContentStackView
+@interface ACRColumnView : ACRContentStackView
 
 @property NSString *columnWidth;
 @property CGFloat pixelWidth;

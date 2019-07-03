@@ -7,7 +7,7 @@
 
 #include <Foundation/Foundation.h>
 
-@interface ACOParseContext: NSObject
+@interface ACOParseContext : NSObject
 
 - (instancetype)init;
 

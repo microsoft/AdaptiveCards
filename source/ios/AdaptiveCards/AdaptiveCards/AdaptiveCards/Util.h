@@ -5,13 +5,13 @@
 //  Copyfight © 2019 Microsoft. All rights reserved.
 //
 
-#import<UIKit/UIKit.h>
+#import "ACRErrors.h"
+#import "ACRSeparator.h"
 #import "ACRViewPrivate.h"
 #import "BaseCardElement.h"
 #import "CollectionTypeElement.h"
 #import "TextElementProperties.h"
-#import "ACRErrors.h"
-#import "ACRSeparator.h"
+#import <UIKit/UIKit.h>
 
 using namespace AdaptiveCards;
 
@@ -31,9 +31,9 @@ ObserverActionBlock generateBackgroundImageObserverAction(std::shared_ptr<Backgr
 
 UIFontDescriptor *getItalicFontDescriptor(UIFontDescriptor *descriptor, bool isItalic);
 
-void handleFallbackException(ACOFallbackException *exception, 
+void handleFallbackException(ACOFallbackException *exception,
                              UIView<ACRIContentHoldingView> *view,
-                             ACRView *rootView, 
+                             ACRView *rootView,
                              NSMutableArray *inputs,
                              std::shared_ptr<BaseCardElement> const &elem,
                              ACOHostConfig *config);
