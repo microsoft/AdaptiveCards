@@ -40,8 +40,8 @@ The card elements to render inside the `Column`.
   * `ImageSet`
   * `Input.ChoiceSet`
   * `Input.Date`
-  * `Input.Feedback`
   * `Input.Number`
+  * `Input.Rating`
   * `Input.Text`
   * `Input.Time`
   * `Input.Toggle`
