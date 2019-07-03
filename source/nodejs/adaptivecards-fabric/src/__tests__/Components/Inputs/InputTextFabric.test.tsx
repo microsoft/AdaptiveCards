@@ -79,11 +79,13 @@ describe("InputTextExtended", () => {
             "type": "Input.Text",
             "id": "blah",
             "placeholder": "enter comment",
+            "style": "url"
         });
 
         const json = element.toJSON();
         expect(json).toBeDefined();
         expect(json.type).toEqual("Input.Text");
         expect(json.placeholder).toEqual("enter comment");
+        expect(json.style).toEqual("Url");
     });
 });

@@ -14,7 +14,7 @@ export class InputTimeFabric extends Shared.ReactInputElement {
 
     public parse = (json: any, errors?: AC.IValidationError[]) => {
         super.parse(json, errors);
-        this.value = json.value;
+        this.value = this.defaultValue;
         this.placeholder = AC.getStringValue(json.placeholder);
         this.min = AC.getStringValue(json.min);
         this.max = AC.getStringValue(json.max);

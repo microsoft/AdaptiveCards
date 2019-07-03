@@ -36,9 +36,8 @@ export class InputDateFabric extends Shared.ReactInputElement {
     }
 
     private parseDates = (json: any, errors?: AC.IValidationError[]) => {
-        const dateString = AC.getStringValue(json.value, "");
-        this.value = dateString;
-        this.date = dateString ? this.getDate(dateString) : new Date();
+        this.value = this.defaultValue;
+        this.date = this.value ? this.getDate(this.value) : new Date();
         this.minDate = json.min ? this.getDate(AC.getStringValue(json.min)) : undefined;
         this.maxDate = json.max ? this.getDate(AC.getStringValue(json.max)) : undefined;
     }

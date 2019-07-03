@@ -6,27 +6,21 @@ import * as AC from "adaptivecards";
 import * as FabricUI from "office-ui-fabric-react";
 import * as Shared from "../../utils/shared";
 
-interface InputChoiceProps {
-    type?: string;
-    title: string;
-    value: string;
-}
-
 export class InputChoiceSetFabric extends Shared.ReactInputElement {
 
     private isMultiSelect: boolean;
-    private choices: InputChoiceProps[];
+    private choices: AC.Choice[];
     private style: string;
     private selectedValues: string[] = [];
 
     public parse = (json: any, errors?: AC.IValidationError[]) => {
         super.parse(json, errors);
-        this.value = AC.getStringValue(json.value, "");
+        this.value = this.defaultValue;
         this.selectedValues = this.defaultValueToArray(this.value);
-        this.choices = json.choices;
         this.isMultiSelect = AC.getBoolValue(json.isMultiSelect, false);
         this.title = AC.getStringValue(json.title);
         this.style = AC.getStringValue(json.style);
+        this.parseChoises(json);
     }
 
     protected renderReact = (): JSX.Element => (
@@ -41,7 +35,7 @@ export class InputChoiceSetFabric extends Shared.ReactInputElement {
         let result = super.toJSON();
 
         if (this.choices.length > 0) {
-            AC.setProperty(result, "choices", this.choices);
+            AC.setProperty(result, "choices", this.choices.map(ch => ch.toJSON()));
         }
 
         if (!this.isCompact()) {
@@ -51,6 +45,16 @@ export class InputChoiceSetFabric extends Shared.ReactInputElement {
         AC.setProperty(result, "isMultiSelect", this.isMultiSelect, false);
 
         return result;
+    }
+
+    private parseChoises = (json: any) => {
+        this.choices = Array.isArray(json.choices) ?
+            json.choices.map(ch => {
+                let choice = new AC.Choice();
+                choice.parse(ch);
+                return choice;
+            }) :
+            [];
     }
 
     private isCompact = () => this.style === "compact";
@@ -111,11 +115,11 @@ export class InputChoiceSetFabric extends Shared.ReactInputElement {
         return [];
     }
 
-    private inputChoicesToComboBoxOptions = (choices: InputChoiceProps[]): FabricUI.IComboBoxOption[] => {
+    private inputChoicesToComboBoxOptions = (choices: AC.Choice[]): FabricUI.IComboBoxOption[] => {
         return choices.map<FabricUI.IComboBoxOption>(c => ({ key: c.value, text: c.title }));
     }
 
-    private inputChoicesToChoiceGroupOptions = (choices: InputChoiceProps[], value: string[]): FabricUI.IChoiceGroupOption[] => {
+    private inputChoicesToChoiceGroupOptions = (choices: AC.Choice[], value: string[]): FabricUI.IChoiceGroupOption[] => {
         return choices.map<FabricUI.IChoiceGroupOption>(c => ({ key: c.value, text: c.title, checked: value.includes(c.value) }));
     }
 
@@ -131,7 +135,7 @@ export class InputChoiceSetFabric extends Shared.ReactInputElement {
             if (this.isMultiSelect) {
                 this.updateMultiselectData(option.selected, option.key);
             } else {
-                this.value = option.key;
+                this.value = `${option.key}`;
             }
             event.stopPropagation();
             event.preventDefault();

@@ -12,6 +12,7 @@ export class InputTextFabric extends Shared.ReactInputElement {
     private maxLength: number;
     private placeholder: string;
     private label: string;
+    private style: AC.InputTextStyle = AC.InputTextStyle.Text;
 
     protected renderReact = (): JSX.Element => {
         return this.buildInput();
@@ -21,11 +22,12 @@ export class InputTextFabric extends Shared.ReactInputElement {
 
     public parse = (json: any, errors?: any) => {
         super.parse(json, errors);
-        this.value = json.value;
+        this.value = this.defaultValue;
         this.isMultiline = AC.getBoolValue(json.isMultiline, false);
         this.maxLength = Shared.getIntValue(json.maxLength);
         this.placeholder = AC.getStringValue(json.placeholder);
         this.label = AC.getStringValue(json.label);
+        this.style = AC.getEnumValue(AC.InputTextStyle, json.style, AC.InputTextStyle.Text);
     }
 
     public toJSON = () => {
@@ -34,6 +36,7 @@ export class InputTextFabric extends Shared.ReactInputElement {
         AC.setProperty(result, "placeholder", this.placeholder);
         AC.setProperty(result, "maxLength", this.maxLength, 0);
         AC.setProperty(result, "isMultiline", this.isMultiline, false);
+        AC.setEnumProperty(AC.InputTextStyle, result, "style", this.style, AC.InputTextStyle.Text);
 
         return result;
     }
@@ -42,6 +45,7 @@ export class InputTextFabric extends Shared.ReactInputElement {
         return (
             <TextField
                 id={this.id}
+                type={AC.InputTextStyle[this.style].toLowerCase()}
                 value={this.defaultValue}
                 multiline={this.isMultiline}
                 maxLength={this.maxLength}

@@ -86,5 +86,6 @@ describe("InputChoiceSet", () => {
         expect(json).toBeDefined();
         expect(json.type).toEqual("Input.ChoiceSet");
         expect(json.value).toEqual("1");
+        expect(json.choices).toBeDefined();
     });
 });

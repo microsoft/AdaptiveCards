@@ -26,6 +26,7 @@ exports[`InputTextExtended renders int text multiline correctly 1`] = `
               id="input3"
               maxlength="500"
               placeholder="enter comment"
+              type="text"
             >
               This value was pre-filled
             </textarea>

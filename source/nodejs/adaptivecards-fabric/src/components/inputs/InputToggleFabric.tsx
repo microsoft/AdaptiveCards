@@ -13,7 +13,7 @@ export class InputToggleFabric extends Shared.ReactInputElement {
 
     public parse = (json: any, errors?: AC.IValidationError[]) => {
         super.parse(json, errors);
-        this.value = AC.getStringValue(json.value, "");
+        this.value = this.defaultValue;
         this.valueOn = AC.getStringValue(json.valueOn);
         this.valueOff = AC.getStringValue(json.valueOff);
         this.title = AC.getStringValue(json.title);
