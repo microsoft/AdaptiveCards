@@ -83,12 +83,21 @@ public class BackgroundImage {
     AdaptiveCardObjectModelJNI.BackgroundImage_SetVerticalAlignment(swigCPtr, this, value.swigValue());
   }
 
+  public String Serialize() {
+    return AdaptiveCardObjectModelJNI.BackgroundImage_Serialize(swigCPtr, this);
+  }
+
   public JsonValue SerializeToJsonValue() {
     return new JsonValue(AdaptiveCardObjectModelJNI.BackgroundImage_SerializeToJsonValue(swigCPtr, this), true);
   }
 
   public static BackgroundImage Deserialize(JsonValue json) {
     long cPtr = AdaptiveCardObjectModelJNI.BackgroundImage_Deserialize(JsonValue.getCPtr(json), json);
+    return (cPtr == 0) ? null : new BackgroundImage(cPtr, true);
+  }
+
+  public static BackgroundImage DeserializeFromString(String jsonString) {
+    long cPtr = AdaptiveCardObjectModelJNI.BackgroundImage_DeserializeFromString(jsonString);
     return (cPtr == 0) ? null : new BackgroundImage(cPtr, true);
   }
 
