@@ -38,7 +38,7 @@ hexo.extend.helper.register('propertiesDetails', function (properties, elementVe
 
 				sampleHtml += '<div class="w3-container w3-col s12 m5 l4">';
 				sampleHtml += '<div class="adaptivecard">' + exampleContent + '</div>';
-				sampleHtml += '<a class="w3-btn w3-blue" target="_blank" href="/designer/index.html?card=/payloads/' + path.basename(example) + '">Try it Yourself Â»</a>';
+				sampleHtml += '<a class="w3-btn w3-blue" target="_blank" href="/designer/index.html?card=/payloads/' + path.basename(example) + '">Try it Yourself »</a>';
 				sampleHtml += '</div>';
 
 				sampleHtml += '</div>'; // w3-cell-row

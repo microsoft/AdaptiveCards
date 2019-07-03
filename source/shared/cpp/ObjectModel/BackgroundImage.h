@@ -2,9 +2,8 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "Enums.h"
 #include "pch.h"
-#include "BaseCardElement.h"
+#include "ParseContext.h"
 
 namespace AdaptiveSharedNamespace
 {
@@ -30,9 +29,11 @@ namespace AdaptiveSharedNamespace
         VerticalAlignment GetVerticalAlignment() const;
         void SetVerticalAlignment(const VerticalAlignment& value);
 
+        std::string Serialize() const;
         Json::Value SerializeToJsonValue() const;
 
         static std::shared_ptr<BackgroundImage> Deserialize(const Json::Value& json);
+        static std::shared_ptr<BackgroundImage> DeserializeFromString(const std::string& jsonString);
 
     private:
         std::string m_url;

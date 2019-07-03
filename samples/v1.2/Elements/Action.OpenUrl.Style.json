@@ -5,7 +5,7 @@
 	"body": [
 		{
 			"type": "TextBlock",
-			"text": "This card has two actions, one of which has an icon. The icon is always placed to the left of title.",
+			"text": "This card has four OpenUrl actions. The styles from left to right are \"Default\", \"Positive\", \"Destructive\" and \"Other\".",
 			"wrap": true
 		}
 	],
