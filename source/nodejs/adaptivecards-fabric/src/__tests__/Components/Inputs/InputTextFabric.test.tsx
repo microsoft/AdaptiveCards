@@ -72,4 +72,18 @@ describe("InputTextExtended", () => {
     it("can get json name", () => {
         expect(new InputTextFabric().getJsonTypeName()).toBe("Input.Text");
     });
+
+    it("generates json correctly", () => {
+        const element = new InputTextFabric();
+        element.parse({
+            "type": "Input.Text",
+            "id": "blah",
+            "placeholder": "enter comment",
+        });
+
+        const json = element.toJSON();
+        expect(json).toBeDefined();
+        expect(json.type).toEqual("Input.Text");
+        expect(json.placeholder).toEqual("enter comment");
+    });
 });

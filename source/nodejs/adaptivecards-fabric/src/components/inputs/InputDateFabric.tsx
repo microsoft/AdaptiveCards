@@ -30,6 +30,7 @@ export class InputDateFabric extends Shared.ReactInputElement {
 
         AC.setProperty(result, "min", this.minDate);
         AC.setProperty(result, "max", this.maxDate);
+        AC.setProperty(result, "placeholder", this.placeholder);
 
         return result;
     }
