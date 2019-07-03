@@ -14,8 +14,8 @@
 		"required": false
 	  },
 	 "maxValue": {
-		"type": "int"
-		"description": "How many icons show up, defaults to 5"
+		"type": "int",
+		"description": "How many icons show up, defaults to 5",
 		"required": false 
 	}
 }
