@@ -20,20 +20,29 @@ export class InputTextFabric extends Shared.ReactInputElement {
     public getJsonTypeName = (): string => "Input.Text";
 
     public parse = (json: any, errors?: any) => {
-        this.valueInternal = json.value;
-        this.defaultValue = this.valueInternal;
-        this.id = AC.getStringValue(json.id);
+        super.parse(json, errors);
+        this.value = json.value;
         this.isMultiline = AC.getBoolValue(json.isMultiline, false);
         this.maxLength = Shared.getIntValue(json.maxLength);
         this.placeholder = AC.getStringValue(json.placeholder);
         this.label = AC.getStringValue(json.label);
     }
 
+    public toJSON = () => {
+        let result = super.toJSON();
+
+        AC.setProperty(result, "placeholder", this.placeholder);
+        AC.setProperty(result, "maxLength", this.maxLength, 0);
+        AC.setProperty(result, "isMultiline", this.isMultiline, false);
+
+        return result;
+    }
+
     private buildInput = (): JSX.Element => {
         return (
             <TextField
                 id={this.id}
-                value={this.value}
+                value={this.defaultValue}
                 multiline={this.isMultiline}
                 maxLength={this.maxLength}
                 placeholder={this.placeholder}

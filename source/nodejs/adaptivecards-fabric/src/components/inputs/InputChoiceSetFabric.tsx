@@ -20,9 +20,8 @@ export class InputChoiceSetFabric extends Shared.ReactInputElement {
     private selectedValues: string[] = [];
 
     public parse = (json: any, errors?: AC.IValidationError[]) => {
-        this.id = json.id ? AC.getStringValue(json.id) : null;
-        this.valueInternal = json.value;
-        this.defaultValue = this.valueInternal;
+        super.parse(json, errors);
+        this.value = AC.getStringValue(json.value, "");
         this.selectedValues = this.defaultValueToArray(this.value);
         this.choices = json.choices;
         this.isMultiSelect = AC.getBoolValue(json.isMultiSelect, false);
@@ -31,12 +30,30 @@ export class InputChoiceSetFabric extends Shared.ReactInputElement {
     }
 
     protected renderReact = (): JSX.Element => (
-        this.style === "compact" ?
+        this.isCompact() ?
             <this.ComboBox /> :
             this.createExpandedView()
     )
 
     public getJsonTypeName = (): string => "Input.ChoiceSet";
+
+    public toJSON = () => {
+        let result = super.toJSON();
+
+        if (this.choices.length > 0) {
+            AC.setProperty(result, "choices", this.choices);
+        }
+
+        if (!this.isCompact()) {
+            AC.setProperty(result, "style", "expanded", false);
+        }
+
+        AC.setProperty(result, "isMultiSelect", this.isMultiSelect, false);
+
+        return result;
+    }
+
+    private isCompact = () => this.style === "compact";
 
     private ComboBox = (): JSX.Element => (
         <FabricUI.ComboBox
@@ -104,7 +121,7 @@ export class InputChoiceSetFabric extends Shared.ReactInputElement {
 
     private handleChoiceGroupChange =
         (ev?: React.FormEvent<HTMLElement | HTMLInputElement>, option?: FabricUI.IChoiceGroupOption): void => {
-            this.valueInternal = option.key;
+            this.value = option.key;
             ev.stopPropagation();
             ev.preventDefault();
         }
@@ -114,7 +131,7 @@ export class InputChoiceSetFabric extends Shared.ReactInputElement {
             if (this.isMultiSelect) {
                 this.updateMultiselectData(option.selected, option.key);
             } else {
-                this.valueInternal = option.key;
+                this.value = option.key;
             }
             event.stopPropagation();
             event.preventDefault();
@@ -122,7 +139,7 @@ export class InputChoiceSetFabric extends Shared.ReactInputElement {
 
     private updateMultiselectData = (selected: boolean, key: any): void => {
         this.updateSelectedValues(selected, key);
-        this.valueInternal = this.selectedValues.join(",");
+        this.value = this.selectedValues.join(",");
     }
 
     private updateSelectedValues = (selected: boolean, key: any): void => {

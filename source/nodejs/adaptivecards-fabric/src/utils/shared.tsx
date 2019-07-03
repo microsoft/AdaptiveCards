@@ -32,20 +32,25 @@ export abstract class ReactCardElementContainer extends AC.Container {
 
 export abstract class ReactInputElement extends AC.Input {
 
-    public valueInternal: any;
+    private _value: any;
     protected abstract renderReact(): JSX.Element;
 
     protected internalRender(): HTMLElement {
-        this.inputControlContainerElement.style.display = "block";
-        return sharedInternalRender(this.renderReact);
+        const element = sharedInternalRender(this.renderReact);
+        element.style.width = "100%";
+        return element;
     }
 
     protected handleChange = (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
-        this.valueInternal = newValue;
+        this._value = newValue;
     }
 
-    get value(): string {
-        return this.valueInternal;
+    get value(): any {
+        return this._value;
+    }
+
+    set value(value: any) {
+        this._value = value;
     }
 }
 
