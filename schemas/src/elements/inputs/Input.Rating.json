@@ -3,9 +3,14 @@
 	"extends": "Input",
 	"description": "Allows a user to input feedback.",
 	"properties": {
-	  "choices": {
-		"type": "Input.FeedbackElt[]",
-		"description": "`FeedbackElt` options.",
+	"iconSelected": {
+		"type": "uri",
+		"description": "Url to selected icon",
+		"required": true
+	  },
+	 "iconUnselected": {
+		"type": "uri",
+		"description": "Url to unselected icon",
 		"required": true
 	  },
 	  "value": {
