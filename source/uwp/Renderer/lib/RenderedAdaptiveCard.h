@@ -6,9 +6,11 @@
 #include "AdaptiveInputs.h"
 
 AdaptiveNamespaceStart
-    class RenderedAdaptiveCard :
+    class DECLSPEC_UUID("F25E0D36-0B5B-4398-AFC8-F84105EC46A2") RenderedAdaptiveCard :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
+            Microsoft::WRL::Implements<IWeakReferenceSource>,
+            Microsoft::WRL::CloakedIid<ITypePeek>,
             Microsoft::WRL::Implements<ABI::AdaptiveNamespace::IRenderedAdaptiveCard>>
     {
         AdaptiveRuntime(RenderedAdaptiveCard)
@@ -41,6 +43,12 @@ AdaptiveNamespaceStart
 
         IFACEMETHODIMP get_Errors(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveError*>** value);
         IFACEMETHODIMP get_Warnings(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>** value);
+
+        // ITypePeek method
+        void *PeekAt(REFIID riid) override
+        {
+            return PeekHelper(riid, this);
+        }
 
         HRESULT AddInputValue(ABI::AdaptiveNamespace::IAdaptiveInputValue* inputValue);
         void SetFrameworkElement(ABI::Windows::UI::Xaml::IFrameworkElement* value);

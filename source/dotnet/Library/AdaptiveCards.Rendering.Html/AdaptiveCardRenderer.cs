@@ -36,7 +36,7 @@ namespace AdaptiveCards.Rendering.Html
         /// <summary>
         /// A set of transforms that are applied to the HtmlTags for specific types
         /// </summary>
-        public static AdaptiveRenderTransformers<HtmlTag, AdaptiveRenderContext> ActionTransformers { get; } = new AdaptiveRenderTransformers<HtmlTag, AdaptiveRenderContext>();
+        public static AdaptiveRenderTransformers<HtmlTag, AdaptiveRenderContext> ActionTransformers { get; } = InitActionTransformers();
 
         public AdaptiveCardRenderer() : this(new AdaptiveHostConfig()) { }
 
@@ -88,17 +88,24 @@ namespace AdaptiveCards.Rendering.Html
             ElementRenderers.Set<AdaptiveSubmitAction>(AdaptiveActionRender);
             ElementRenderers.Set<AdaptiveOpenUrlAction>(AdaptiveActionRender);
             ElementRenderers.Set<AdaptiveShowCardAction>(AdaptiveActionRender);
+        }
 
-            ActionTransformers.Register<AdaptiveOpenUrlAction>((action, tag, context) => tag.Attr("data-ac-url", action.Url));
-            ActionTransformers.Register<AdaptiveSubmitAction>((action, tag, context) => tag.Attr("data-ac-submitData", JsonConvert.SerializeObject(action.Data, Formatting.None)));
-            ActionTransformers.Register<AdaptiveShowCardAction>((action, tag, context) =>
+        private static AdaptiveRenderTransformers<HtmlTag, AdaptiveRenderContext> InitActionTransformers()
+        {
+            var transformers = new AdaptiveRenderTransformers<HtmlTag, AdaptiveRenderContext>();
+            transformers.Register<AdaptiveOpenUrlAction>((action, tag, context) => tag.Attr("data-ac-url", action.Url));
+            transformers.Register<AdaptiveSubmitAction>((action, tag, context) => tag.Attr("data-ac-submitData", JsonConvert.SerializeObject(action.Data, Formatting.None)));
+            transformers.Register<AdaptiveShowCardAction>((action, tag, context) =>
             {
                 var showCardId = GenerateRandomId();
                 tag.Attr("data-ac-showCardId", showCardId);
                 tag.Attr("aria-controls", showCardId);
                 tag.Attr("aria-expanded", bool.FalseString);
             });
+
+            return transformers;
         }
+
 
         protected static HtmlTag AddActionAttributes(AdaptiveAction action, HtmlTag tag, AdaptiveRenderContext context)
         {

@@ -8,6 +8,7 @@
 #include "InputValue.h"
 #include "RenderedAdaptiveCard.h"
 #include "AdaptiveRenderContext.h"
+#include <windows.ui.xaml.shapes.h>
 
 AdaptiveNamespaceStart
     class AdaptiveCardRenderer;
@@ -17,10 +18,12 @@ AdaptiveNamespaceStart
         Microsoft::WRL::FtmBase,
         AdaptiveNamespace::IImageLoadTrackerListener>
     {
-        AdaptiveRuntimeStringClass(XamlBuilder)
-    public:
-        XamlBuilder();
+        friend HRESULT Microsoft::WRL::Details::MakeAndInitialize<AdaptiveNamespace::XamlBuilder, AdaptiveNamespace::XamlBuilder>(
+            AdaptiveNamespace::XamlBuilder**);
 
+        AdaptiveRuntimeStringClass(XamlBuilder);
+
+    public:
         // IImageLoadTrackerListener
         STDMETHODIMP AllImagesLoaded();
         STDMETHODIMP ImagesLoadingHadError();
@@ -122,11 +125,14 @@ AdaptiveNamespaceStart
         static Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Media::IBrush> GetSolidColorBrush(_In_ ABI::Windows::UI::Color color);
 
     private:
+        XamlBuilder();
+
         ImageLoadTracker m_imageLoadTracker;
         std::set<Microsoft::WRL::ComPtr<IXamlBuilderListener>> m_listeners;
         Microsoft::WRL::ComPtr<ABI::Windows::Storage::Streams::IRandomAccessStreamStatics> m_randomAccessStreamStatics;
         std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWithProgress<ABI::Windows::Storage::Streams::IInputStream*, ABI::Windows::Web::Http::HttpProgress>>> m_getStreamOperations;
         std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWithProgress<UINT64, UINT64>>> m_copyStreamOperations;
+        std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWithProgress<UINT32, UINT32>>> m_writeAsyncOperations;
 
         UINT m_fixedWidth = 0;
         UINT m_fixedHeight = 0;
@@ -148,14 +154,26 @@ AdaptiveNamespaceStart
             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);
 
         template<typename T>
-        void SetImageSource(T* destination, ABI::Windows::UI::Xaml::Media::IImageSource* imageSource, ABI::Windows::UI::Xaml::Media::Stretch stretch = Stretch_UniformToFill);
+        void SetAutoSize(T* destination,
+                         IInspectable* parentElement,
+                         IInspectable* imageContainer,
+                         bool imageFiresOpenEvent);
+
         template<typename T>
-        void SetImageOnUIElement(
-            _In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl,
-            T* uiElement,
-            ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers* resolvers,
-            ABI::Windows::UI::Xaml::Media::Stretch stretch = Stretch_UniformToFill
-        );
+        void SetImageSource(T* destination,
+                            ABI::Windows::UI::Xaml::Media::IImageSource* imageSource,
+                            ABI::Windows::UI::Xaml::Media::Stretch stretch = Stretch_UniformToFill);
+
+        template<typename T>
+        void SetImageOnUIElement(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl,
+                                 T* uiElement,
+                                 ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers* resolvers,
+                                 bool isAutoSize,
+                                 IInspectable* parentElement,
+                                 IInspectable* imageContainer,
+                                 _Out_ bool* mustHideElement,
+                                 ABI::Windows::UI::Xaml::Media::Stretch stretch = Stretch_UniformToFill);
+
         template<typename T>
         void PopulateImageFromUrlAsync(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl, T* imageControl);
         void FireAllImagesLoaded();
