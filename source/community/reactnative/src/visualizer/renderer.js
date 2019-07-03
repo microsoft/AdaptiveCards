@@ -42,6 +42,20 @@ export default class Renderer extends React.Component {
         }
     }
 
+    data = {"employee" : {
+        "name": "Ashok",
+        "manager": { "name": "Regar" },
+        "peers": [{
+            "name": "Andrew" 
+        }, { 
+            "name": "Lei"
+        }, { 
+            "name": "Mary Anne"
+        }, { 
+            "name": "Adam"
+        }]
+    }}
+
     constructor(props) {
         super(props);
         this.payload = props.payload;
@@ -69,6 +83,7 @@ export default class Renderer extends React.Component {
                     :
                     <AdaptiveCard
                         payload={this.payload}
+                        dataPayload = {this.data}
                         onExecuteAction={this.onExecuteAction}
                         hostConfig={this.customHostConfig}
                         themeConfig={this.customThemeConfig}

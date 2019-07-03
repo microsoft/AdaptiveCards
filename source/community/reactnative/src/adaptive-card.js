@@ -21,6 +21,10 @@ import ResourceInformation from './utils/resource-information';
 import { ContainerWrapper } from './components/containers';
 import { ThemeConfigManager } from './utils/theme-config';
 import { ModelFactory } from './models';
+import Template from './template-engine/template-engine'
+import {EvaluationContext} from './template-engine/expression-parser'
+
+var context = new EvaluationContext();
 
 export default class AdaptiveCard extends React.Component {
 
@@ -31,12 +35,17 @@ export default class AdaptiveCard extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.payload = props.payload;
+		context.$root = props.dataPayload || props.payload.$data;
+		if (context.$root){
+			this.payload = new Template(props.payload).expand(context);
+		}else{
+			this.payload = props.payload;
+		}
 
 		if (this.props.isActionShowCard) {
-			this.cardModel = props.payload;
+			this.cardModel = this.payload;
 		}else{
-			this.cardModel = ModelFactory.createElement(props.payload);
+			this.cardModel = ModelFactory.createElement(this.payload);
 		}
 		this.state = {
 			showErrors: false,

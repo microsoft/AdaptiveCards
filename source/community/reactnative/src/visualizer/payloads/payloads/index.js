@@ -144,6 +144,14 @@ export default payloads = [
     "json": require('./CustomParsingTestUsingProgressBar.json')
   },
   {
+    "title": "DataBinding.DataPayload.json",
+    "json": require('./DataBinding.DataPayload.json')
+  },
+  {
+    "title": "DataBinding.WithBody.json",
+    "json": require('./DataBinding.WithBody.json')
+  },
+  {
     "title": "DateTimeTestTranslation.json",
     "json": require('./DateTimeTestTranslation.json')
   },

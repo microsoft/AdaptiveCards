@@ -3,7 +3,7 @@
  * 
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#schema-textblock
  */
-
+   
 import React from 'react';
 import {
 	StyleSheet
