@@ -8,10 +8,6 @@
 		"description": "`FeedbackElt` options.",
 		"required": true
 	  },
-	  "style": {
-			  "type": "Input.Feedback",
-			  "description": "Specifiable options are: `rating` or `horizontal`."
-	  },
 	  "value": {
 		"type": "string",
 		"description": "The initial choice (or set of choices) that should be selected.  If style is `rating` but multiple values are given, only the first value will be selected."
