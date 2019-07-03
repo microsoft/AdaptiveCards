@@ -1454,9 +1454,9 @@ Color GenerateLighterColor(const Color& originalColor)
 
     Color lighterColor;
     lighterColor.A = originalColor.A;
-    lighterColor.R = originalColor.R + static_cast<int>((255 - originalColor.R) * lightIncrement);
-    lighterColor.G = originalColor.G + static_cast<int>((255 - originalColor.G) * lightIncrement);
-    lighterColor.B = originalColor.B + static_cast<int>((255 - originalColor.B) * lightIncrement);
+    lighterColor.R = originalColor.R + static_cast<BYTE>((255 - originalColor.R) * lightIncrement);
+    lighterColor.G = originalColor.G + static_cast<BYTE>((255 - originalColor.G) * lightIncrement);
+    lighterColor.B = originalColor.B + static_cast<BYTE>((255 - originalColor.B) * lightIncrement);
     return lighterColor;
 }
 
