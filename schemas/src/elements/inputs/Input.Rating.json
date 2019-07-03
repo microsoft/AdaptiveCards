@@ -17,5 +17,6 @@
 		"type": "number",
 		"description": "How many icons show up, defaults to 5",
 		"required": false 
+	 }
 	}
 }
