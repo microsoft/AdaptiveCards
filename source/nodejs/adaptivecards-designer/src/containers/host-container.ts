@@ -14,6 +14,7 @@ export abstract class HostContainer {
         this.styleSheet = styleSheet;
 
         this._cardHost = document.createElement("div");
+        this._cardHost.className = "cardHost";
     }
 
     abstract renderTo(hostElement: HTMLElement);
