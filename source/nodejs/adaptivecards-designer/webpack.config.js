@@ -48,6 +48,12 @@ module.exports = (env, argv) => {
 		},
 		plugins: [
 			new HtmlWebpackPlugin({
+				title: "Adaptive Cards Designer (No Microsoft Hosts)",
+				template: "./no-hosts.html",
+				filename: "no-hosts.html",
+				chunks: [ "adaptivecards-designer-standalone" ]
+			 }),
+			new HtmlWebpackPlugin({
 				title: "Adaptive Cards Designer",
 				template: "./index.html",
 				filename: "index.html",

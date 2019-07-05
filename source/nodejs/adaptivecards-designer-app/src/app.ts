@@ -6,12 +6,12 @@ import * as ACDesigner from "adaptivecards-designer";
 import "adaptivecards-designer/dist/adaptivecards-designer.css";
 import "./app.css";
 
-// UNCOMMENT below if you plan to use an empty hostContainers array
-//import "adaptivecards-designer/dist/adaptivecards-defaulthost.css";
+// Uncomment below if you plan to use an empty hostContainers array
+// import "adaptivecards-designer/dist/adaptivecards-defaulthost.css";
 
 window.onload = function() {
-    // Set to true to enable preview features such as data binding
-    ACDesigner.GlobalSettings.previewFeaturesEnabled = true;
+    // Uncomment to enabled preview features such as data binding
+    // ACDesigner.GlobalSettings.previewFeaturesEnabled = true;
 
 	ACDesigner.CardDesigner.onProcessMarkdown = (text: string, result: { didProcess: boolean, outputHtml: string }) => {
 		result.outputHtml = new markdownit().render(text);

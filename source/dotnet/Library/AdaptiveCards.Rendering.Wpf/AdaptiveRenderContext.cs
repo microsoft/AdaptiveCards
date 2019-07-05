@@ -314,6 +314,13 @@ namespace AdaptiveCards.Rendering.Wpf
         /// <param name="tagContent">Rendered element tag</param>
         public void SetVisibility(FrameworkElement element, bool desiredVisibility, TagContent tagContent)
         {
+            // TagContents are only assigned to card elements so actions mustn't have a TagContent object tied to it
+            // TagContents are used to save information on the rendered object as the element separator
+            if (tagContent == null)
+            {
+                return;
+            }
+
             bool elementIsCurrentlyVisible = (element.Visibility == Visibility.Visible);
 
             element.Visibility = desiredVisibility ? Visibility.Visible : Visibility.Collapsed;

@@ -516,8 +516,7 @@ namespace AdaptiveNamespace
     {
         ComPtr<ITextBlock> spTextBlock;
 
-        HRESULT hr = pUIElement->QueryInterface(spTextBlock.GetAddressOf());
-        if (SUCCEEDED(hr))
+        if (SUCCEEDED(pUIElement->QueryInterface(spTextBlock.GetAddressOf())))
         {
             HString hText;
             RETURN_IF_FAILED(spTextBlock->get_Text(hText.GetAddressOf()));
@@ -526,8 +525,7 @@ namespace AdaptiveNamespace
         }
 
         ComPtr<IWholeItemsPanel> spWholeItemsPanel;
-        hr = pUIElement->QueryInterface(spWholeItemsPanel.GetAddressOf());
-        if (SUCCEEDED(hr))
+        if (SUCCEEDED(pUIElement->QueryInterface(spWholeItemsPanel.GetAddressOf())))
         {
             // This cast is safe because WinRT only does aggregation
             WholeItemsPanel* pPanelNoRef = reinterpret_cast<WholeItemsPanel*>(spWholeItemsPanel.Get());
@@ -536,8 +534,7 @@ namespace AdaptiveNamespace
         }
 
         ComPtr<IImage> spImage;
-        hr = pUIElement->QueryInterface(spImage.GetAddressOf());
-        if (SUCCEEDED(hr))
+        if (SUCCEEDED(pUIElement->QueryInterface(spImage.GetAddressOf())))
         {
             HString hAltText;
             RETURN_IF_FAILED(GetAltAsString(pUIElement, hAltText.GetAddressOf()));
@@ -547,9 +544,9 @@ namespace AdaptiveNamespace
             }
             return S_OK;
         }
+
         ComPtr<IShape> spShape;
-        hr = pUIElement->QueryInterface(spShape.GetAddressOf());
-        if (SUCCEEDED(hr))
+        if (SUCCEEDED(pUIElement->QueryInterface(spShape.GetAddressOf())))
         {
             HString hAltText;
             RETURN_IF_FAILED(GetAltAsString(pUIElement, hAltText.GetAddressOf()));

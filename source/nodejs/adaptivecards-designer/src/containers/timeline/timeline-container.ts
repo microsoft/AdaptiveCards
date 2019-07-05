@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
 import { HostContainer } from "../host-container";
-import * as Designer from "../../adaptivecards-designer";
 import * as hostConfig from "../../hostConfigs/windows-timeline.json";
 
 export class TimelineContainer extends HostContainer {

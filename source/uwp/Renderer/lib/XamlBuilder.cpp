@@ -1424,7 +1424,7 @@ namespace AdaptiveNamespace
                 ComPtr<IUIElement> toggleElementAsUIElement;
                 RETURN_IF_FAILED(toggleElement.As(&toggleElementAsUIElement));
 
-                Visibility visibilityToSet;
+                Visibility visibilityToSet = Visibility_Visible;
                 if (toggle == ABI::AdaptiveNamespace::IsVisible_IsVisibleTrue)
                 {
                     visibilityToSet = Visibility_Visible;

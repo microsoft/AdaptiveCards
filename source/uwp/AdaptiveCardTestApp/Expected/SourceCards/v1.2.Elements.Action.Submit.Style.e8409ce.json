@@ -5,33 +5,29 @@
 	"body": [
 		{
 			"type": "TextBlock",
-			"text": "This card has two actions, one of which has an icon. The icon is always placed to the left of title.",
+			"text": "This card has four Submit actions. The styles from left to right are \"Default\", \"Positive\", \"Destructive\" and \"Other\".",
 			"wrap": true
 		}
 	],
 	"actions": [
 		{
-			"type": "Action.OpenUrl",
+			"type": "Action.Submit",
 			"style": "default",
-			"url": "http://adaptivecards.io",
 			"title": "Default"
 		},
 		{
-			"type": "Action.OpenUrl",
+			"type": "Action.Submit",
 			"style": "positive",
-			"url": "http://adaptivecards.io",
 			"title": "Pawsitive"
 		},
 		{
-			"type": "Action.OpenUrl",
+			"type": "Action.Submit",
 			"style": "destructive",
-			"url": "http://adaptivecards.io",
 			"title": "Destructive"
 		},
 		{
-			"type": "Action.OpenUrl",
+			"type": "Action.Submit",
 			"style": "other",
-			"url": "http://adaptivecards.io",
 			"title": "Other"
 		}
 	]
