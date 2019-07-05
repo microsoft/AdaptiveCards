@@ -130,8 +130,8 @@ namespace AdaptiveNamespace::XamlHelpers
             ComPtr<IWholeItemsPanel> wholeItemsPanel;
             if (SUCCEEDED(spPanel.As(&wholeItemsPanel)))
             {
-                ComPtr<WholeItemsPanel> panel = PeekInnards<WholeItemsPanel>(wholeItemsPanel);
-                panel->AddElementToStretchablesList(elementToAppend.Get());
+                ComPtr<WholeItemsPanel> wholeItemsPanelObj = PeekInnards<WholeItemsPanel>(wholeItemsPanel);
+                wholeItemsPanelObj->AddElementToStretchablesList(elementToAppend.Get());
             }
         }
     }
