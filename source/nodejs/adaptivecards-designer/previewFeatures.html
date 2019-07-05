@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Adaptive Cards Designer</title>
+	<script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.min.js"></script>
+	<script src="https://unpkg.com/monaco-editor@0.17.1/min/vs/loader.js"></script>
+
+	<style type="text/css">
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0;
+		}
+	</style>
+
+	<script type="text/javascript">
+		window.onload = function() {
+            ACDesigner.GlobalSettings.previewFeaturesEnabled = true;
+
+            if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
+				console.log("Local storage is not available.");
+			}
+
+
+			let hostContainers = [];
+
+			hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
+			hostContainers.push(new ACDesigner.CortanaContainer("Cortana Skills", "containers/cortana-container.css"));
+			hostContainers.push(new ACDesigner.OutlookContainer("Outlook Actionable Messages", "containers/outlook-container.css"));
+			hostContainers.push(new ACDesigner.TimelineContainer("Windows Timeline", "containers/timeline-container.css"));
+			hostContainers.push(new ACDesigner.DarkTeamsContainer("Microsoft Teams - Dark", "containers/teams-container-dark.css"));
+			hostContainers.push(new ACDesigner.LightTeamsContainer("Microsoft Teams - Light", "containers/teams-container-light.css"));
+			hostContainers.push(new ACDesigner.BotFrameworkContainer("Bot Framework Other Channels (Image render)", "containers/bf-image-container.css"));
+			hostContainers.push(new ACDesigner.ToastContainer("Windows Notifications (Preview)", "containers/toast-container.css"));
+
+			let designer = new ACDesigner.CardDesigner(hostContainers);
+			require.config({
+				paths: {
+					'vs': 'https://unpkg.com/monaco-editor@0.17.1/min/vs'
+				}
+			});
+			require(['vs/editor/editor.main'], function () {
+				designer.monacoModuleLoaded();
+			});
+
+			designer.attachTo(document.getElementById("designerRootHost"));
+
+		};
+	</script>
+</head>
+
+<body>
+	<div style="font-family: 'Segoe UI', sans-serif; font-size: 14px; display: flex; flex-direction: column; height: 100vh;">
+		<div id="designerRootHost"></div>
+	</div>
+</body>
+
+</html>

@@ -42,7 +42,7 @@ function createCardObjectInstance<T extends CardObject>(
 
     if (json && typeof json === "object") {
         let tryToFallback = false;
-        let typeName = Utils.getStringValue(json["type"]);
+		let typeName = Utils.getStringValue(json["type"]);
 
         if (forbiddenTypeNames && forbiddenTypeNames.indexOf(typeName) >= 0) {
             raiseParseError(createValidationErrorCallback(typeName, InstanceCreationErrorType.ForbiddenType), errors);
@@ -166,7 +166,14 @@ export abstract class SerializableObject {
     }
 
     setCustomProperty(name: string, value: any) {
-        this._rawProperties[name] = value;
+        let shouldDeleteProperty = (typeof value === "string" && Utils.isNullOrEmpty(value)) || value === undefined || value === null;
+
+        if (shouldDeleteProperty) {
+            delete this._rawProperties[name];
+        }
+        else {
+            this._rawProperties[name] = value;
+        }
     }
 
     getCustomProperty(name: string): any {
@@ -286,7 +293,19 @@ export abstract class CardElement extends CardObject {
             },
             this.separatorOrientation);
 
-        return renderedSeparator;
+            if (AdaptiveCard.alwaysBleedSeparators && renderedSeparator && this.separatorOrientation == Enums.Orientation.Horizontal) {
+                // Adjust separator's margins if the option to always bleed separators is turned on
+                let parentContainer = this.getParentContainer();
+    
+                if (parentContainer && parentContainer.getEffectivePadding()) {
+                    let parentPhysicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(parentContainer.getEffectivePadding());
+    
+                    renderedSeparator.style.marginLeft = "-" + parentPhysicalPadding.left + "px";
+                    renderedSeparator.style.marginRight = "-" + parentPhysicalPadding.right + "px";
+                }
+            }
+    
+            return renderedSeparator;
     }
 
     private updateRenderedElementVisibility() {
@@ -478,8 +497,8 @@ export abstract class CardElement extends CardObject {
         return false;
     }
 
-    toJSON() {
-        let result = super.toJSON();
+	toJSON(): any {
+		let result = super.toJSON();
 
         Utils.setProperty(result, "isVisible", this.isVisible, true);
 
@@ -491,8 +510,8 @@ export abstract class CardElement extends CardObject {
         Utils.setProperty(result, "separator", this.separator, false);
         Utils.setProperty(result, "height", this.height, "auto");
 
-        if (this.minPixelHeight) {
-            Utils.setProperty(result, "minHeight", this.minPixelHeight + "px");
+        if (this.supportsMinHeight) {
+            Utils.setProperty(result, "minHeight", typeof this.minPixelHeight === "number" && !isNaN(this.minPixelHeight) ? this.minPixelHeight + "px" : undefined);
         }
 
         return result;
@@ -570,7 +589,7 @@ export abstract class CardElement extends CardObject {
     }
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
-        super.parse(json, errors);
+		super.parse(json, errors);
 
         raiseParseElementEvent(this, json, errors);
 
@@ -641,6 +660,9 @@ export abstract class CardElement extends CardObject {
                     );
                 }
             }
+        }
+        else {
+            this.minPixelHeight = null;
         }
     }
 
@@ -1310,7 +1332,7 @@ export class TextBlock extends BaseTextBlock {
     maxLines: number;
     useMarkdown: boolean = true;
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         Utils.setProperty(result, "wrap", this.wrap, false);
@@ -1655,22 +1677,31 @@ export class RichTextBlock extends CardElement {
     }
 }
 
-export class Fact {
+export class Fact extends SerializableObject {
     name: string;
     value: string;
 
     constructor(name: string = undefined, value: string = undefined) {
+        super();
+
         this.name = name;
         this.value = value;
     }
 
     parse(json: any) {
+        super.parse(json);
+
         this.name = Utils.getStringValue(json["title"]);
         this.value = Utils.getStringValue(json["value"]);
     }
 
     toJSON() {
-        return { title: this.name, value: this.value };
+        let result = super.toJSON();
+
+        Utils.setProperty(result, "title", this.name);
+        Utils.setProperty(result, "value", this.value);
+
+        return result;
     }
 }
 
@@ -1761,16 +1792,22 @@ export class FactSet extends CardElement {
         return "FactSet";
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
-        let facts = []
+        Utils.setArrayProperty(result, "facts", this.facts);
 
-        for (let fact of this.facts) {
-            facts.push(fact.toJSON());
-        }
+        /*
+        let facts = [];
+
+		if (this.facts) {
+			for (let fact of this.facts) {
+				facts.push(fact.toJSON());
+			}
+		}
 
         Utils.setProperty(result, "facts", facts);
+        */
 
         return result;
     }
@@ -1780,18 +1817,16 @@ export class FactSet extends CardElement {
 
         this.facts = [];
 
-        if (json["facts"] != null) {
-            var jsonFacts = json["facts"] as Array<any>;
+		let jsonFacts = json["facts"];
 
-            this.facts = [];
+		if (Array.isArray(jsonFacts)) {
+			for (let jsonFact of jsonFacts) {
+				let fact = new Fact();
+				fact.parse(jsonFact);
 
-            for (var i = 0; i < jsonFacts.length; i++) {
-                let fact = new Fact();
-                fact.parse(jsonFacts[i]);
-
-                this.facts.push(fact);
-            }
-        }
+				this.facts.push(fact);
+			}
+		}
     }
 }
 
@@ -1968,7 +2003,7 @@ export class Image extends CardElement {
     pixelHeight?: number = null;
     altText: string = "";
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         if (this._selectAction) {
@@ -2031,7 +2066,7 @@ export class Image extends CardElement {
         }
 
         this.size = Utils.getEnumValue(Enums.Size, json["size"], this.size);
-        this.altText = json["altText"];
+		this.altText = Utils.getStringValue(json["altText"]);
 
         // pixelWidth and pixelHeight are only parsed for backwards compatibility.
         // Payloads should use the width and height proerties instead.
@@ -2164,6 +2199,8 @@ export abstract class CardElementContainer extends CardElement {
     abstract getLastVisibleRenderedItem(): CardElement;
     abstract removeItem(item: CardElement): boolean;
 
+    allowVerticalOverflow: boolean = false;
+
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
@@ -2177,7 +2214,7 @@ export abstract class CardElementContainer extends CardElement {
         }
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         if (this._selectAction && this.isSelectable) {
@@ -2222,6 +2259,11 @@ export abstract class CardElementContainer extends CardElement {
     render(): HTMLElement {
         let element = super.render();
         let hostConfig = this.hostConfig;
+
+        if (this.allowVerticalOverflow) {
+            element.style.overflowX = "hidden";
+            element.style.overflowY = "auto";
+        }
 
         if (element && this.isSelectable && this._selectAction && hostConfig.supportsInteractivity) {
             element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
@@ -2367,7 +2409,7 @@ export class ImageSet extends CardElementContainer {
         return "ImageSet";
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         Utils.setEnumProperty(Enums.Size, result, "imageSize", this.imageSize, Enums.Size.Medium);
@@ -2420,25 +2462,31 @@ export class ImageSet extends CardElementContainer {
     }
 }
 
-export class MediaSource {
+export class MediaSource extends SerializableObject {
     mimeType: string;
     url: string;
 
     constructor(url: string = undefined, mimeType: string = undefined) {
+        super();
+
         this.url = url;
         this.mimeType = mimeType;
     }
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
-        this.mimeType = Utils.getStringValue(json["mimeType"]);
-        this.url = Utils.getStringValue(json["url"]);
-    }
+        super.parse(json, errors);
 
-    toJSON() {
-        return {
-            mimeType: this.mimeType,
-            url: this.url
-        }
+		this.mimeType = Utils.getStringValue(json["mimeType"]);
+		this.url = Utils.getStringValue(json["url"]);
+	}
+
+	toJSON(): any {
+        let result = super.toJSON();
+
+        Utils.setProperty(result, "mimeType", this.mimeType);
+        Utils.setProperty(result, "url", this.url);
+
+        return result;
     }
 }
 
@@ -2457,7 +2505,7 @@ export class Media extends CardElement {
         this._selectedMediaType = undefined;
 
         for (let source of this.sources) {
-            let mimeComponents = source.mimeType.split('/');
+            let mimeComponents = source.mimeType ? source.mimeType.split('/') : [];
 
             if (mimeComponents.length == 2) {
                 if (!this._selectedMediaType) {
@@ -2623,29 +2671,28 @@ export class Media extends CardElement {
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
-        this.poster = Utils.getStringValue(json["poster"]);
-        this.altText = Utils.getStringValue(json["altText"]);
+		this.poster = Utils.getStringValue(json["poster"]);
+		this.altText = Utils.getStringValue(json["altText"]);
 
-        if (json["sources"] != null) {
-            let jsonSources = json["sources"] as Array<any>;
+        this.sources = [];
 
-            this.sources = [];
-
-            for (let i = 0; i < jsonSources.length; i++) {
+        if (Array.isArray(json["sources"])) {
+            for (let jsonSource of json["sources"]) {
                 let source = new MediaSource();
-                source.parse(jsonSources[i], errors);
+                source.parse(jsonSource, errors);
 
                 this.sources.push(source);
             }
         }
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         Utils.setProperty(result, "poster", this.poster);
         Utils.setProperty(result, "altText", this.altText);
 
+        /*
         if (this.sources.length > 0) {
             let serializedSources = [];
 
@@ -2655,6 +2702,9 @@ export class Media extends CardElement {
 
             Utils.setProperty(result, "sources", serializedSources);
         }
+        */
+
+        Utils.setArrayProperty(result, "sources", this.sources);
 
         return result;
     }
@@ -2686,18 +2736,20 @@ export class Media extends CardElement {
     }
 }
 
-export class InputValidationOptions {
+export class InputValidationOptions extends SerializableObject {
     necessity: Enums.InputValidationNecessity = Enums.InputValidationNecessity.Optional;
     errorMessage: string = undefined;
 
     parse(json: any) {
+        super.parse(json);
+
         this.necessity = Utils.getEnumValue(Enums.InputValidationNecessity, json["necessity"], this.necessity);
         this.errorMessage = Utils.getStringValue(json["errorMessage"]);
     }
 
     toJSON() {
         if (this.necessity != Enums.InputValidationNecessity.Optional || !Utils.isNullOrEmpty(this.errorMessage)) {
-            let result = {}
+            let result = super.toJSON();
 
             Utils.setEnumProperty(Enums.InputValidationNecessity, result, "necessity", this.necessity, Enums.InputValidationNecessity.Optional);
             Utils.setProperty(result, "errorMessage", this.errorMessage);
@@ -2798,7 +2850,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
 
     title: string;
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         Utils.setProperty(result, "title", this.title);
@@ -3013,7 +3065,7 @@ export class TextInput extends Input {
         return result;
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         Utils.setProperty(result, "placeholder", this.placeholder);
@@ -3135,7 +3187,7 @@ export class ToggleInput extends Input {
         return "Input.Toggle";
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         Utils.setProperty(result, "valueOn", this.valueOn, "true");
@@ -3164,22 +3216,31 @@ export class ToggleInput extends Input {
     }
 }
 
-export class Choice {
+export class Choice extends SerializableObject {
     title: string;
     value: string;
 
     constructor(title: string = undefined, value: string = undefined) {
+        super();
+
         this.title = title;
         this.value = value;
     }
 
     parse(json: any) {
-        this.title = Utils.getStringValue(json["title"]);
-        this.value = Utils.getStringValue(json["value"]);
+        super.parse(json);
+
+        this.title = Utils.getStringValue(json["title"], "");
+        this.value = Utils.getStringValue(json["value"], "");
     }
 
-    toJSON() {
-        return { title: this.title, value: this.value };
+    toJSON(): any {
+        let result = super.toJSON();
+
+        Utils.setProperty(result, "title", this.title);
+        Utils.setProperty(result, "value", this.value);
+
+        return result;
     }
 }
 
@@ -3368,25 +3429,26 @@ export class ChoiceSetInput extends Input {
         return "Input.ChoiceSet";
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         Utils.setProperty(result, "placeholder", this.placeholder);
 
-        if (this.choices.length > 0) {
-            var choices = [];
+        /*
+        let choices = [];
 
+        if (this.choices) {
             for (let choice of this.choices) {
                 choices.push(choice.toJSON());
             }
-
-            Utils.setProperty(result, "choices", choices);
         }
 
-        if (!this.isCompact) {
-            Utils.setProperty(result, "style", "expanded", false);
-        }
+        Utils.setProperty(result, "choices", choices);
+        */
 
+        Utils.setArrayProperty(result, "choices", this.choices);
+
+        Utils.setProperty(result, "style", this.isCompact ? null : "expanded");
         Utils.setProperty(result, "isMultiSelect", this.isMultiSelect, false);
         Utils.setProperty(result, "wrap", this.wrap, false);
 
@@ -3426,12 +3488,10 @@ export class ChoiceSetInput extends Input {
 
         this.choices = [];
 
-        if (json["choices"] != undefined) {
-            let choiceArray = json["choices"] as Array<any>;
-
-            for (let i = 0; i < choiceArray.length; i++) {
+        if (Array.isArray(json["choices"])) {
+            for (let jsonChoice of json["choices"]) {
                 let choice = new Choice();
-                choice.parse(choiceArray[i]);
+                choice.parse(jsonChoice);
 
                 this.choices.push(choice);
             }
@@ -3519,7 +3579,7 @@ export class NumberInput extends Input {
         return "Input.Number";
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         Utils.setProperty(result, "placeholder", this.placeholder);
@@ -3828,8 +3888,8 @@ export abstract class Action extends CardObject {
         return "";
     }
 
-    toJSON() {
-        let result = super.toJSON();
+    toJSON(): any {
+		let result = super.toJSON();
 
         Utils.setProperty(result, "type", this.getJsonTypeName());
         Utils.setProperty(result, "title", this.title);
@@ -3927,7 +3987,7 @@ export abstract class Action extends CardObject {
     };
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
-        super.parse(json, errors);
+		super.parse(json, errors);
 
         raiseParseActionEvent(this, json, errors);
 
@@ -4099,7 +4159,7 @@ export class OpenUrlAction extends Action {
         return OpenUrlAction.JsonTypeName;
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         Utils.setProperty(result, "url", this.url);
@@ -4211,23 +4271,32 @@ export class ToggleVisibilityAction extends Action {
     }
 }
 
-export class HttpHeader {
+export class HttpHeader extends SerializableObject {
     private _value = new Shared.StringWithSubstitutions();
 
     name: string;
 
     constructor(name: string = "", value: string = "") {
+        super();
+
         this.name = name;
         this.value = value;
     }
 
     parse(json: any) {
+        super.parse(json);
+
         this.name = Utils.getStringValue(json["name"]);
         this.value = Utils.getStringValue(json["value"]);
     }
 
-    toJSON() {
-        return { name: this.name, value: this._value.getOriginal() };
+    toJSON(): any {
+        let result = super.toJSON();
+
+        Utils.setProperty(result, "name", this.name);
+        Utils.setProperty(result, "value", this._value.getOriginal());
+
+        return result;
     }
 
     getReferencedInputs(inputs: Array<Input>, referencedInputs: Shared.Dictionary<Input>) {
@@ -4291,7 +4360,7 @@ export class HttpAction extends Action {
         return HttpAction.JsonTypeName;
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         Utils.setProperty(result, "method", this.method);
@@ -4299,15 +4368,17 @@ export class HttpAction extends Action {
         Utils.setProperty(result, "body", this._body.getOriginal());
         Utils.setProperty(result, "ignoreInputValidation", this.ignoreInputValidation, false);
 
-        if (this._headers.length > 0) {
-            let headers = [];
+        /*
+        let headers = [];
 
-            for (let header of this._headers) {
-                headers.push(header.toJSON());
-            }
-
-            Utils.setProperty(result, "headers", headers);
+        for (let header of this.headers) {
+            headers.push(header.toJSON());
         }
+
+        Utils.setProperty(result, "headers", headers);
+        */
+
+        Utils.setArrayProperty(result, "headers", this.headers);
 
         return result;
     }
@@ -4348,12 +4419,10 @@ export class HttpAction extends Action {
 
         this._headers = [];
 
-        if (json["headers"] != null) {
-            var jsonHeaders = json["headers"] as Array<any>;
-
-            for (var i = 0; i < jsonHeaders.length; i++) {
+        if (Array.isArray(json["headers"])) {
+            for (let jsonHeader of json["headers"]) {
                 let httpHeader = new HttpHeader();
-                httpHeader.parse(jsonHeaders[i]);
+                httpHeader.parse(jsonHeader);
 
                 this.headers.push(httpHeader);
             }
@@ -4408,7 +4477,7 @@ export class ShowCardAction extends Action {
         return ShowCardAction.JsonTypeName;
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         if (this.card) {
@@ -4640,7 +4709,7 @@ class ActionCollection {
         }
     }
 
-    toJSON() {
+    toJSON(): any {
         if (this.items.length > 0) {
             let result = [];
 
@@ -4946,7 +5015,7 @@ export class ActionSet extends CardElement {
         this._actionCollection = new ActionCollection(this);
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         Utils.setEnumProperty(Enums.Orientation, result, "orientation", this.orientation);
@@ -5141,10 +5210,10 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
     }
 
     isBleeding(): boolean {
-        return this.getHasBackground() && this.getBleed();
+		return (this.getHasBackground() || this.hostConfig.alwaysAllowBleed) && this.getBleed();
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         Utils.setProperty(result, "style", this.style);
@@ -5206,7 +5275,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
     }
 }
 
-export class BackgroundImage {
+export class BackgroundImage extends SerializableObject {
     private static readonly defaultFillMode = Enums.FillMode.Cover;
     private static readonly defaultHorizontalAlignment = Enums.HorizontalAlignment.Left;
     private static readonly defaultVerticalAlignment = Enums.VerticalAlignment.Top;
@@ -5224,13 +5293,15 @@ export class BackgroundImage {
     }
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+        super.parse(json, errors);
+
         this.url = Utils.getStringValue(json["url"]);
         this.fillMode = Utils.getEnumValue(Enums.FillMode, json["fillMode"], this.fillMode);
         this.horizontalAlignment = Utils.getEnumValue(Enums.HorizontalAlignment, json["horizontalAlignment"], this.horizontalAlignment);
         this.verticalAlignment = Utils.getEnumValue(Enums.VerticalAlignment, json["verticalAlignment"], this.verticalAlignment);
     }
 
-    toJSON() {
+    toJSON(): any {
         if (!this.isValid()) {
             return null;
         }
@@ -5238,10 +5309,11 @@ export class BackgroundImage {
         if (this.fillMode == BackgroundImage.defaultFillMode &&
             this.horizontalAlignment == BackgroundImage.defaultHorizontalAlignment &&
             this.verticalAlignment == BackgroundImage.defaultVerticalAlignment) {
+
             return this.url;
         }
         else {
-            let result = {};
+            let result = super.toJSON();
 
             Utils.setProperty(result, "url", this.url);
             Utils.setEnumProperty(Enums.FillMode, result, "fillMode", this.fillMode, BackgroundImage.defaultFillMode);
@@ -5469,7 +5541,7 @@ export class Container extends StylableCardElementContainer {
     verticalContentAlignment: Enums.VerticalAlignment = Enums.VerticalAlignment.Top;
     rtl?: boolean = null;
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         Utils.setProperty(result, "backgroundImage", this.backgroundImage.toJSON());
@@ -5767,7 +5839,7 @@ export class Column extends Container {
         return "Column";
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         if (this.width instanceof Shared.SizeAndUnit) {
@@ -5804,28 +5876,30 @@ export class Column extends Container {
             }
         }
 
-        var invalidWidth = false;
+        if (jsonWidth) {
+            var invalidWidth = false;
 
-        try {
-            this.width = Shared.SizeAndUnit.parse(jsonWidth);
-        }
-        catch (e) {
-            if (typeof jsonWidth === "string" && (jsonWidth === "auto" || jsonWidth === "stretch")) {
-                this.width = jsonWidth;
+            try {
+                this.width = Shared.SizeAndUnit.parse(jsonWidth);
             }
-            else {
-                invalidWidth = true;
+            catch (e) {
+                if (typeof jsonWidth === "string" && (jsonWidth === "auto" || jsonWidth === "stretch")) {
+                    this.width = jsonWidth;
+                }
+                else {
+                    invalidWidth = true;
+                }
             }
-        }
 
-        if (invalidWidth) {
-            raiseParseError(
-                {
-                    error: Enums.ValidationError.InvalidPropertyValue,
-                    message: "Invalid column width:" + jsonWidth + " - defaulting to \"auto\""
-                },
-                errors
-            );
+            if (invalidWidth) {
+                raiseParseError(
+                    {
+                        error: Enums.ValidationError.InvalidPropertyValue,
+                        message: "Invalid column width:" + jsonWidth + " - defaulting to \"auto\""
+                    },
+                    errors
+                );
+            }
         }
     }
 
@@ -5957,7 +6031,7 @@ export class ColumnSet extends StylableCardElementContainer {
         return true;
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         if (this._columns.length > 0) {
@@ -6335,7 +6409,7 @@ export abstract class ContainerWithActions extends Container {
         this._actionCollection = new ActionCollection(this);
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         Utils.setProperty(result, "actions", this._actionCollection.toJSON());
@@ -6529,7 +6603,7 @@ export class AdaptiveCard extends ContainerWithActions {
     static allowMarkForTextHighlighting: boolean = false;
     static alwaysBleedSeparators: boolean = false;
     static enableFullJsonRoundTrip: boolean = false;
-    static useBuiltInInputValidation: boolean = false;
+    static useBuiltInInputValidation: boolean = true;
     static displayInputValidationErrors: boolean = true;
 
     static readonly elementTypeRegistry = new ElementTypeRegistry();
@@ -6655,7 +6729,7 @@ export class AdaptiveCard extends ContainerWithActions {
         return "AdaptiveCard";
     }
 
-    toJSON() {
+    toJSON(): any {
         let result = super.toJSON();
 
         Utils.setProperty(result, "$schema", "http://adaptivecards.io/schemas/adaptive-card.json");
@@ -6707,7 +6781,7 @@ export class AdaptiveCard extends ContainerWithActions {
         this._cardTypeName = Utils.getStringValue(json["type"]);
         this.speak = Utils.getStringValue(json["speak"]);
 
-        let langId = json["lang"];
+		var langId = Utils.getStringValue(json["lang"]);
 
         if (langId && typeof langId === "string") {
             try {

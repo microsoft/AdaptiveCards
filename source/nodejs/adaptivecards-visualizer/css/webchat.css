@@ -86,9 +86,29 @@ a.ac-anchor:visited:active {
 .ac-pushButton:hover {
     background-color: #CCCCCC;
 }
-
+  
 .ac-pushButton:active {
     background-color: #BABABA;
+}
+  
+.ac-pushButton.sentiment-positive {
+    background-color: #0078D7;
+    color: white;
+}
+
+.ac-pushButton.sentiment-positive:hover,
+.ac-pushButton.sentiment-positive:active {
+    background-color: #006ABC;
+}
+
+.ac-pushButton.sentiment-destructive {
+    background-color: #E50000;
+    color: white;
+}
+
+.ac-pushButton.sentiment-destructive:hover,
+.ac-pushButton.sentiment-destructive:active {
+    background-color: #BF0000;
 }
 
 .ac-input-container {
