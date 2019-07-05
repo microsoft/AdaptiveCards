@@ -29,5 +29,10 @@ Json::Value BaseInputElement::SerializeToJsonValue() const
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
+    if (m_isRequired)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsRequired)] = m_isRequired;
+    }
+
     return root;
 }

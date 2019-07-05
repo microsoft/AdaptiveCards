@@ -32,6 +32,7 @@ namespace AdaptiveSharedNamespace
         ParseUtil::ThrowIfNotJsonObject(json);
 
         baseInputElement->SetId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id, true));
+        baseInputElement->SetIsRequired(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsRequired, false));
 
         return baseInputElement;
     }
