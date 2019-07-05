@@ -1,29 +1,16 @@
-/* * {
-    box-sizing: border-box;
-}
-
-html {
-    overflow: hidden !important;
-}
-
-body {
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 14px;
-    font-weight: normal;
-    height: 100vh;
-    margin: 0;
-    padding: 0;
-} */
-
-/*
-    Miscellaneous
-*/
-
 @font-face {
     font-family: 'FabricMDL2Icons';
     src: url("https://appsforoffice.microsoft.com/fabric/fonts/icons/FabricMDL2Icons.woff") format("woff"), url("https://appsforoffice.microsoft.com/fabric/fonts/icons/FabricMDL2Icons.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
+}
+
+.acd-designer-cardArea {
+    flex: 1 1 70%;
+    background-color: #F6F6F6;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
 }
 
 .acd-designersurface {
@@ -34,12 +21,20 @@ body {
     display: none !important;
 }
 
+.acd-toolPalette-pane {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    background-color: white;
+    border-right: 1px solid #D2D2D2;
+}
+
 .acd-treeView-pane {
     display: flex;
     flex: 0 0 auto;
     flex-direction: column;
     width: 360px;
-    height: 100%;
+    background-color: white;
 }
 
 .acd-treeView-host {
@@ -55,7 +50,6 @@ body {
     flex: 0 0 auto;
     flex-direction: column;
     width: 360px;
-    height: 100%;
     background-color: #F9F9F9;
 }
 
@@ -143,6 +137,35 @@ body {
     color: black !important;
 }
 
+.acd-dialog-overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.acd-dialog-frame {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 50px -5px rgba(0, 0, 0, 0.4);
+}
+
+.acd-sample-picker-message {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    word-wrap: break-word;
+}
+
 /*
     Icons
 */
@@ -152,6 +175,14 @@ body {
     font-size: 14px;
     font-style: normal;
     font-weight: normal;
+}
+
+.acd-toolPalette-icon {
+    color: #3a96dd;
+}
+
+.acd-treeView-icon {
+    color: #3a96dd;
 }
 
 .acd-icon-bolt::before {
@@ -306,6 +337,26 @@ body {
     content: "\EB1C";
 }
 
+.acd-icon-dot::before {
+    content: "\E915";
+}
+
+.acd-icon-dataStructure::before {
+    content: "\EC8D";
+}
+
+.acd-icon-preview::before {
+    content: "\E8A1";
+}
+
+.acd-icon-open::before {
+    content: "\ED25";
+}
+
+.acd-icon-customPaletteItem::before {
+    content: "\ECAA";
+}
+
 /*
     Side panes
 */
@@ -315,61 +366,83 @@ body {
     overflow-x: hidden;
 }
 
-.acd-sidePane-header {
-    height: 32px;
-    background-color: #EEEEEE;
-    cursor: default;
-}
-
-.acd-sidePane-header.rotated90DegreesClockwise {
-    width: 32px;
-    height: 170px;
-    border-bottom: 1px solid #D2D2D2;
-}
-
-.acd-sidePane-header.rotated90DegreesCounterClockwise {
-    width: 32px;
-    height: 170px;
-    border-bottom: 1px solid #D2D2D2;
-}
-
-.acd-sidePane-header-content {
-    height: 100%;
-    padding: 4px 10px;
+.acd-horizontalCollapsedTabContainer {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex: 0 0 auto;
 }
 
-.acd-sidePane-header-content.rotated90DegreesClockwise {
-    width: 170px;
-    height: 32px;
-    transform-origin: 0 100%;
-    transform: rotate(90deg) translate(-32px, 0px);
+.acd-horizontalCollapsedTabContainer > .acd-toolbox-header {
+    border-right: 1px solid #D2D2D2;
 }
 
-.acd-sidePane-header-content.rotated90DegreesCounterClockwise {
+.acd-verticalCollapsedTabContainer.acd-dockedLeft > .acd-toolbox-header {
+    width: 32px;
+    height: 170px;
+    border-bottom: 1px solid #D2D2D2;
+}
+
+.acd-verticalCollapsedTabContainer.acd-dockedLeft .acd-toolbox-header-content {
     width: 170px;
     height: 32px;
     transform-origin: 0 0;
     transform: rotate(-90deg) translate(-170px, 0px);
 }
 
-.acd-sidePane-header-title {
+
+.acd-verticalCollapsedTabContainer.acd-dockedRight > .acd-toolbox-header {
+    width: 32px;
+    height: 170px;
+    border-bottom: 1px solid #D2D2D2;
+}
+
+.acd-verticalCollapsedTabContainer.acd-dockedRight .acd-toolbox-header-content {
+    width: 170px;
+    height: 32px;
+    transform-origin: 0 100%;
+    transform: rotate(90deg) translate(-32px, 0px);
+}
+
+.acd-toolbox-header {
+    height: 32px;
+    background-color: #EEEEEE;
+    cursor: default;
+    flex: 0 0 auto;
+}
+
+.acd-toolbox-header-content {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.acd-toolbox-header-title {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    padding: 4px 8px;
+    font-weight: 500;
 }
 
-.acd-sidePane-header-expandCollapseButton {
+.acd-toolbox-header-commandButton {
     display: flex;
     align-items: center;
     cursor: pointer;
-    margin-left: 4px;
+    height: 100%;
+    padding: 4px 8px;
 }
 
-.acd-sidePane-header-status {
-    margin-left: 4px;
+.acd-toolbox-header-commandButton:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.acd-toolbox-header-commandButton:active {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.acd-toolbox-header-commandsHost {
+    display: flex;
+    height: 100%;
 }
 
 .acd-designersurface.dragging {
@@ -412,8 +485,8 @@ body {
     background-color: none;
 }
 
-.acd-peer.dragging:hover {
-    border: 1px solid green;
+.acd-peer.dragging {
+    border: 1px solid red !important;
 }
 
 .acd-peerButton {
@@ -468,8 +541,9 @@ body {
     cursor: move;
     display: flex;
     align-items: center;
-    justify-content: center;
     padding: 4px 16px 4px 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .acd-palette-item-label {
@@ -522,6 +596,11 @@ body {
 
 .acd-tree-item-additionalText {
     color: gray;
+    margin-left: 8px;
+}
+
+.acd-data-tree-item-additionalText {
+    color: #3a96dd;
     margin-left: 8px;
 }
 
@@ -581,6 +660,10 @@ body {
 .acd-toolbar-button:disabled {
     color: lightgray;
     background-color: transparent;
+}
+
+.acd-toolbar-button.acd-toolbar-button-toggled {
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 .acd-toolbar-button-iconOnly::before {
