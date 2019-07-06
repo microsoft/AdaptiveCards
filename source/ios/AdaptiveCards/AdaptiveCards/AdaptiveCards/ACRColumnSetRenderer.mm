@@ -113,8 +113,15 @@
                                              multiplier:1
                                                constant:0]];
             }
+
+            [curView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+            [curView setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+
             stretchView = curView;
-        } else if (![curView.columnWidth isEqualToString:@"auto"]) {
+        } else if ([curView.columnWidth isEqualToString:@"auto"]) {            
+            [curView setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+            [curView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh	 forAxis:UILayoutConstraintAxisHorizontal];
+        } else {
             try {
                 relativeColumnWidth = std::stof(column->GetWidth());
                 if (prevRelColumnWidth) {
