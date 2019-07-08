@@ -2871,8 +2871,8 @@ export abstract class Input extends CardElement implements Shared.IInput {
 }
 
 export class TextInput extends Input {
-    private _inlineAction: Action;
-
+	private _inlineAction: Action;
+	
     protected internalRender(): HTMLElement {
         if (this.isMultiline) {
             let textareaElement = document.createElement("textarea");
@@ -2881,6 +2881,7 @@ export class TextInput extends Input {
             textareaElement.tabIndex = 0;
 
             if (!Utils.isNullOrEmpty(this.placeholder)) {
+				//TODO: maybe this corresponds to what ratingIconUrl 'should' be?
                 textareaElement.placeholder = this.placeholder;
                 textareaElement.setAttribute("aria-label", this.placeholder)
             }
@@ -2991,8 +2992,10 @@ export class TextInput extends Input {
 
     maxLength: number;
     isMultiline: boolean = false;
-    placeholder: string;
-    style: Enums.InputTextStyle = Enums.InputTextStyle.Text;
+	placeholder: string;
+	style: Enums.InputTextStyle = Enums.InputTextStyle.Text;
+	//TODO: added
+	ratingIconUrl: string;
 
     getJsonTypeName(): string {
         return "Input.Text";
@@ -3028,7 +3031,10 @@ export class TextInput extends Input {
 
         this.maxLength = json["maxLength"];
         this.isMultiline = Utils.getBoolValue(json["isMultiline"], this.isMultiline);
-        this.placeholder = Utils.getStringValue(json["placeholder"]);
+		this.placeholder = Utils.getStringValue(json["placeholder"]);
+		//todo: added
+		this.ratingIconUrl = Utils.getStringValue(json["ratingIconUrl"]);
+
         this.style = Utils.getEnumValue(Enums.InputTextStyle, json["style"], this.style);
         this.inlineAction = createActionInstance(
             this,
@@ -3220,7 +3226,7 @@ export class ChoiceSetInput extends Input {
 
                     if (this.choices[i].value == this.defaultValue) {
                         option.selected = true;
-                    }
+					}
 
                     Utils.appendChild(this._selectElement, option);
                 }
@@ -3238,9 +3244,13 @@ export class ChoiceSetInput extends Input {
 				element.style.width = "100%";
 				
 				// TODO: delete this
-				element.style.textAlign = "center";
+				//element.style.textAlign = "center";
 
-                this._toggleInputs = [];
+				this._toggleInputs = [];
+
+				// for a future commit:
+				// setting up this var to allow for later filling of the stars
+				//let labels: Label[];
 
                 for (let i = 0; i < this.choices.length; i++) {
                     let radioInput = document.createElement("input");
@@ -3263,21 +3273,23 @@ export class ChoiceSetInput extends Input {
 
                     this._toggleInputs.push(radioInput);
 
-                    let label = new Label();
+					let label = new Label();
                     label.setParent(this);
                     label.forElementId = radioInput.id;
                     label.hostConfig = this.hostConfig;
-                    label.text = Utils.isNullOrEmpty(this.choices[i].title) ? "Choice " + i : this.choices[i].title;
+					label.text = Utils.isNullOrEmpty(this.choices[i].title) ? "Choice " + i : this.choices[i].title;
                     label.useMarkdown = AdaptiveCard.useMarkdownInRadioButtonAndCheckbox;
-                    label.wrap = this.wrap;
-
-                    let labelElement = label.render();
+					label.wrap = this.wrap;
+					
+					let labelElement = label.render();
                     labelElement.style.display = "block";
                     labelElement.style.flex = "1 1 auto";
                     labelElement.style.marginLeft = "6px";
 					labelElement.style.verticalAlign = "middle";
 					labelElement.style.flexGrow = "1";
-					labelElement.style.backgroundImage = "url('https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg')";
+					
+					labelElement.style.backgroundImage = "url('" + this.ratingIconUrl + "')";
+					
 					labelElement.style.backgroundSize = "25px 25px";
 					labelElement.style.backgroundRepeat = "no-repeat";
 					labelElement.style.backgroundPositionX = "center";
@@ -3287,9 +3299,13 @@ export class ChoiceSetInput extends Input {
 					labelElement.onmouseover = function() {
 						labelElement.style.backgroundImage = "url('https://github.githubassets.com/images/modules/site/logos/nasa-logo.png')";
 					};
+					// fill stars up to
 
 					labelElement.onmouseleave = function() {
 						labelElement.style.backgroundImage = "url('https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg')";
+						// labelElement[0].style.backgroundImage = "url('https://github.githubassets.com/images/modules/site/logos/nasa-logo.png')";
+						// labelElement.style.backgroundImage = "url('" + this.ratingIconUrl + "')";
+						// alert(ratingIconUrl);
 					};
 
                     let spacerElement = document.createElement("div");
@@ -3306,7 +3322,8 @@ export class ChoiceSetInput extends Input {
                     Utils.appendChild(compoundInput, spacerElement);
                     Utils.appendChild(compoundInput, labelElement);
 
-                    Utils.appendChild(element, compoundInput);
+					Utils.appendChild(element, compoundInput);
+					
                 }
 
                 return element;
@@ -3379,7 +3396,13 @@ export class ChoiceSetInput extends Input {
     isCompact: boolean = false;
     isMultiSelect: boolean = false;
     placeholder: string;
-    wrap: boolean = false;
+	wrap: boolean = false;
+	//TODO: added
+	ratingIconUrl: string;
+
+	private newMethod() {
+		return this;
+	}
 
     getJsonTypeName(): string {
         return "Input.ChoiceSet";
@@ -3388,7 +3411,10 @@ export class ChoiceSetInput extends Input {
     toJSON() {
         let result = super.toJSON();
 
-        Utils.setProperty(result, "placeholder", this.placeholder);
+		Utils.setProperty(result, "placeholder", this.placeholder);
+		
+		//todo: added... but why is this not necessary?
+		// Utils.setProperty(result, "ratingIconUrl", this.ratingIconUrl);
 
         if (this.choices.length > 0) {
             var choices = [];
@@ -3406,6 +3432,7 @@ export class ChoiceSetInput extends Input {
 
         Utils.setProperty(result, "isMultiSelect", this.isMultiSelect, false);
         Utils.setProperty(result, "wrap", this.wrap, false);
+		
 
         return result;
     }
@@ -3439,9 +3466,12 @@ export class ChoiceSetInput extends Input {
 
         this.isCompact = !(json["style"] === "expanded");
         this.isMultiSelect = Utils.getBoolValue(json["isMultiSelect"], this.isMultiSelect);
-        this.placeholder = Utils.getStringValue(json["placeholder"]);
+		this.placeholder = Utils.getStringValue(json["placeholder"]);
+		
+		//TODO: added
+		this.ratingIconUrl = Utils.getStringValue(json["ratingIconUrl"]);
 
-        this.choices = [];
+		this.choices = [];
 
         if (json["choices"] != undefined) {
             let choiceArray = json["choices"] as Array<any>;
