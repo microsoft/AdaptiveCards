@@ -28,6 +28,7 @@ export class InputTextFabric extends Shared.ReactInputElement {
         this.placeholder = AC.getStringValue(json.placeholder);
         this.label = AC.getStringValue(json.label);
         this.style = AC.getEnumValue(AC.InputTextStyle, json.style, AC.InputTextStyle.Text);
+        this.inlineAction = AC.createActionInstance(this, json.inlineAction, [AC.ShowCardAction.JsonTypeName], false, errors);
     }
 
     public toJSON = () => {
@@ -37,6 +38,9 @@ export class InputTextFabric extends Shared.ReactInputElement {
         AC.setProperty(result, "maxLength", this.maxLength, 0);
         AC.setProperty(result, "isMultiline", this.isMultiline, false);
         AC.setEnumProperty(AC.InputTextStyle, result, "style", this.style, AC.InputTextStyle.Text);
+        if (this.inlineAction) {
+            AC.setProperty(result, "inlineAction", this.inlineAction.toJSON());
+        }
 
         return result;
     }
@@ -52,7 +56,15 @@ export class InputTextFabric extends Shared.ReactInputElement {
                 placeholder={this.placeholder}
                 label={this.label}
                 onChange={this.handleChange}
+                onKeyDown={this.handleKeyDown}
             />
         );
+    }
+
+    private handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
+        // Enter pressed
+        if (e.keyCode === 13 && this.inlineAction) {
+            this.inlineAction.execute();
+        }
     }
 }
