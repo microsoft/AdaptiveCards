@@ -193,8 +193,6 @@ namespace AdaptiveNamespace
         default:
             return m_actionEvents->InvokeAll(this, eventArgs.Get());
         }
-
-        return m_actionEvents->InvokeAll(this, eventArgs.Get());
     }
 
     HRESULT RenderedAdaptiveCard::SendMediaClickedEvent(_In_ IAdaptiveMedia* mediaElement)
