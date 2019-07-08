@@ -801,6 +801,7 @@ namespace AdaptiveNamespace
                         ComPtr<IAsyncOperationWithProgress<UINT64, UINT64>> copyStreamOperation;
                         RETURN_IF_FAILED(m_randomAccessStreamStatics->CopyAsync(imageStream.Get(), outputStream.Get(), &copyStreamOperation));
 
+                        m_copyStreamOperations.push_back(copyStreamOperation);
                         return copyStreamOperation->put_Completed(
                             Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationWithProgressCompletedHandler<UINT64, UINT64>>>(
                                 [strongThis, this, bitmapSource, randomAccessStream, strongImageControl](
@@ -815,7 +816,6 @@ namespace AdaptiveNamespace
                                     return S_OK;
                                 })
                                 .Get());
-                        m_copyStreamOperations.push_back(copyStreamOperation);
                     }
                     else
                     {
