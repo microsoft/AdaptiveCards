@@ -113,24 +113,6 @@ using namespace AdaptiveCards;
         [rootView loadBackgroundImageAccordingToResourceResolverIF:backgroundImageProperties key:@"backgroundImage" observerAction:observerAction];
     }
 
-    if(![config getHostConfig]->GetMedia().playButton.empty()) {
-        ObserverActionBlock observerAction =
-        ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseCardElement> const &elem, NSURL* url, ACRView* rootView) {
-            UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
-            if(view) {
-                [view addObserver:rootView forKeyPath:@"image"
-                          options:NSKeyValueObservingOptionNew
-                          context:nil];
-
-                // store the image view for easy retrieval in ACRView::observeValueForKeyPath
-                [rootView setImageView:key view:view];
-            }
-        };
-        [rootView
-            loadImageAccordingToResourceResolverIFFromString:[config getHostConfig]->GetMedia().playButton
-            key:@"playIconImage" observerAction:observerAction];
-    }
-
     ACRContainerStyle style = ([config getHostConfig]->GetAdaptiveCard().allowCustomStyle)? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
     style = (style == ACRNone)? ACRDefault : style;
     [verticalView setStyle:style];

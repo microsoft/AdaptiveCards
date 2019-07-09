@@ -35,7 +35,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             if (!String.IsNullOrWhiteSpace(action.Style))
             {
-                Style style = context.GetStyle($"Adaptive.{action.Type}.{action.Style}");
+                Style style = context.GetStyle($"Adaptive.Action.{action.Style}");
 
                 if (style == null && String.Equals(action.Style, "positive", StringComparison.OrdinalIgnoreCase))
                 {
