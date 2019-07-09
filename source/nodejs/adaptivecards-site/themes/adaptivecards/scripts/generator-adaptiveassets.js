@@ -13,7 +13,7 @@ var assets = [
         // Sample payloads
         path: "../../../samples/v1.*/**/*.json",
         dest: function (p) { return "payloads/" + path.basename(p); }
-    },
+	},
     {
 		// Legacy JSON schema URL, it'll stay at 1.1 as a point-in-history and we're
 		// deprecating that url path as it's not versioned

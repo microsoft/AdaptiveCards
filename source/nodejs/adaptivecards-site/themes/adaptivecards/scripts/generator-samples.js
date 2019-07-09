@@ -21,7 +21,9 @@ hexo.extend.generator.register("generator-sampleBrowser", function (locals) {
         }
     });
 
-    var generated = [];
+	var generated = [];
+	var designerSampleCatalog = [];
+
     samples.forEach(function (sample, i) {
         var page = {
             path: sample.htmlPath,
@@ -32,7 +34,12 @@ hexo.extend.generator.register("generator-sampleBrowser", function (locals) {
                 samples: samples,
                 samplePath: sample.htmlPath
             }
-        };
+		};
+		
+		designerSampleCatalog.push({
+			displayName: sample.name,
+			cardPayloadUrl: "../payloads/" + path.basename(sample.jsonPath)
+		});
 
         // Generate an index.html for the first one
         if(i === 0) {
@@ -48,7 +55,15 @@ hexo.extend.generator.register("generator-sampleBrowser", function (locals) {
             })
         }
         generated.push(page);
-    });
+	});
+	
+	// Publish the designer sample catalog file
+	generated.push({
+		path: "designer/sample-catalogue.json",
+		data: function() {
+			return designerSampleCatalog
+		}
+	});
 
     return generated;
 });
