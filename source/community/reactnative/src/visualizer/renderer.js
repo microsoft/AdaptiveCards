@@ -43,8 +43,8 @@ export default class Renderer extends React.Component {
     }
 
     data = {"employee" : {
-        "name": "Ashok",
-        "manager": { "name": "Regar" },
+        "name": "Steve",
+        "manager": { "name": "Jobs" },
         "peers": [{
             "name": "Andrew" 
         }, { 
@@ -80,7 +80,7 @@ export default class Renderer extends React.Component {
                             {JSON.stringify(this.payload, null, '  ')}
                         </Text>
                     </ScrollView>
-                    :
+                    : this.payload.isDataPresent ? 
                     <AdaptiveCard
                         payload={this.payload}
                         dataPayload = {this.data}
@@ -88,7 +88,15 @@ export default class Renderer extends React.Component {
                         hostConfig={this.customHostConfig}
                         themeConfig={this.customThemeConfig}
                         onParseError={this.onParseError}
+                        ref="adaptiveCardRef" /> :
+                        <AdaptiveCard
+                        payload={this.payload}
+                        onExecuteAction={this.onExecuteAction}
+                        hostConfig={this.customHostConfig}
+                        themeConfig={this.customThemeConfig}
+                        onParseError={this.onParseError}
                         ref="adaptiveCardRef" />
+
                 }
             </View>
         );

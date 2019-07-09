@@ -148,6 +148,10 @@ export default payloads = [
     "json": require('./DataBinding.DataPayload.json')
   },
   {
+    "title": "DataBinding.Iterative.json",
+    "json": require('./DataBinding.Iterative.json')
+  },
+  {
     "title": "DataBinding.WithBody.json",
     "json": require('./DataBinding.WithBody.json')
   },

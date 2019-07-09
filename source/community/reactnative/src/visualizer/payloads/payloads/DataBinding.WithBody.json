@@ -15,12 +15,23 @@
             }, { 
                 "name": "Adam"
             }]
-        }
+        },
+        "id": "1291525457129548",
+        "status": 4,
+        "author": "Matt Hidinger",
+        "message": "Dummy message",
+        "start_time": "2018-05-04T18:05:33.3087147Z",
+        "end_time": "2018-05-04T18:05:33.3087147Z",
+        "price": "35"
     },
     "body": [
         {
             "type": "TextBlock",
             "text": "Hi {employee.name}! Here's a bit about your org..."
+        },
+        {
+            "type": "TextBlock",
+            "text": "{message}"
         },
         {
             "type": "TextBlock",

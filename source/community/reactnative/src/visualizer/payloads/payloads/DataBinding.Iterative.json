@@ -1,0 +1,22 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.1",
+    "isDataPresent": true,
+    "body": [
+      {
+        "type": "Container",
+        "items": [
+            {
+                "type": "TextBlock",
+                "$data": [
+                    { "name": "Matt" }, 
+                    { "name": "David" }, 
+                    { "name": "Thomas" }
+                ],
+                "text": "{name}"
+            }
+        ]
+    }
+    ]
+  }

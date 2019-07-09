@@ -36,9 +36,10 @@ export default class AdaptiveCard extends React.Component {
 		super(props);
 
 		context.$root = props.dataPayload || props.payload.$data;
-		if (context.$root){
+		if (context.$root || props.payload.isDataPresent){
 			this.payload = new Template(props.payload).expand(context);
 		}else{
+			// this.payload = new Template(props.payload).expand(context);
 			this.payload = props.payload;
 		}
 
