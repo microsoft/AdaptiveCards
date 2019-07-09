@@ -155,6 +155,33 @@ module.exports = {
 };
 ```
 
+## Open Sample button
+
+The Designer makes it easy to load a sample from a catalog. Simply create a file on your web host with the following structure
+
+```json
+[
+	{
+		"displayName": "My Sample Payload",
+		"cardPayloadUrl": "url/to/the/payload.json"
+	}
+]
+```
+
+And then set the `sampleCatalogueUrl` to the location of that file:
+
+```js
+	/* Configure "Open Sample" tooobar button */
+	designer.sampleCatalogueUrl = window.location.origin + "/sample-catalogue.json";
+```
+
+If you don't want to load via a sample, you can hide the toolbar button
+
+```js
+	/* Hide the "Open Sample" toolbar button */
+	designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.OpenPayload).isVisible = false;
+```
+
 ## Advanced configuration
 
 For advanced configuration of the designer use the following APIs.
@@ -181,7 +208,6 @@ For advanced configuration of the designer use the following APIs.
         (sender) => { alert("My button was clicked"); });
     myButton.separator = true;
     designer.toolbar.insertElementAfter(myButton, Designer.CardDesigner.ToolbarCommands.HostAppPicker);
-
 
 	/* Collapse certain panes by default (BEFORE designer attached)	*/
 	designer.treeViewPane.collapse();
