@@ -21,7 +21,7 @@ import ResourceInformation from './utils/resource-information';
 import { ContainerWrapper } from './components/containers';
 import { ThemeConfigManager } from './utils/theme-config';
 import { ModelFactory } from './models';
-import Template from './template-engine/template-engine'
+import {Template} from './template-engine/template-engine'
 import {EvaluationContext} from './template-engine/expression-parser'
 
 var context = new EvaluationContext();

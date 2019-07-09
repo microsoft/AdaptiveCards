@@ -2,20 +2,35 @@
   "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
   "type": "AdaptiveCard",
   "version": "1.1",
+  "$data": {
+    "price": 25,
+    "isFavourite": true,
+    "isAvailable": false
+  },
   "body": [
     {
-      "type": "Container",
-      "items": [
-          {
-              "type": "TextBlock",
-              "$data": [
-                  { "name": "Matt" }, 
-                  { "name": "David" }, 
-                  { "name": "Thomas" }
-              ],
-              "text": "{name}"
-          }
-      ]
-  }
+      "type": "TextBlock",
+      "$when": "{price > 30}",
+      "text": "This thing is pricy!",
+      "color": "attention"
+    },
+    {
+      "type": "TextBlock",
+      "$when": "{price <= 30}",
+      "text": "Dang, this thing is cheap!",
+      "color": "good"
+    },
+    {
+      "type": "TextBlock",
+      "$when": "{isFavourite == true}",
+      "text": "OMG, This is my favourite!",
+      "color": "good"
+    },
+    {
+      "type": "TextBlock",
+      "$when": "{(isFavourite == true) == (isAvailable != false)}",
+      "text": "Yes, This item is Available!",
+      "color": "good"
+    }
   ]
 }
