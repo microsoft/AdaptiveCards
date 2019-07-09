@@ -179,7 +179,7 @@ If you don't want to load via a sample, you can hide the toolbar button
 
 ```js
 	/* Hide the "Open Sample" toolbar button */
-    designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.OpenPayload).isVisible = false;
+	designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.OpenPayload).isVisible = false;
 ```
 
 ## Advanced configuration
