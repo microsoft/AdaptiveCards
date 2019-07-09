@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Shapes;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
@@ -226,19 +225,13 @@ namespace AdaptiveCards.Rendering.Wpf
 
             SeparatorConfig sepStyle = context.Config.Separator;
 
-            double rowHeight = ((spacing - sepStyle.LineThickness) / 2);
-            uiSep.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(rowHeight, GridUnitType.Pixel) });
-            uiSep.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(sepStyle.LineThickness, GridUnitType.Pixel) });
-            uiSep.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(rowHeight, GridUnitType.Pixel) });
-
-            Rectangle separator = new Rectangle() { Fill = context.GetColorBrush(sepStyle.LineColor) };
-
+            var margin = (spacing - sepStyle.LineThickness) / 2;
+            uiSep.Margin = new Thickness(0, margin, 0, margin);
+            uiSep.SetHeight(sepStyle.LineThickness);
             if (!string.IsNullOrWhiteSpace(sepStyle.LineColor))
             {
-                Grid.SetRow(separator, 1);
+                uiSep.SetBackgroundColor(sepStyle.LineColor, context);
             }
-            uiSep.Children.Add(separator);
-
             uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
             Grid.SetRow(uiSep, uiContainer.RowDefinitions.Count - 1);
             uiContainer.Children.Add(uiSep);
