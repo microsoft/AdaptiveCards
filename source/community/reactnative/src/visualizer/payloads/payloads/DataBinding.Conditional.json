@@ -5,7 +5,7 @@
     "$data": {
       "price": 25,
       "isFavourite": true,
-      "isAvailable": false
+      "isAvailable": true
     },
     "body": [
       {
@@ -29,8 +29,7 @@
       {
         "type": "TextBlock",
         "$when": "{(isFavourite == true) == (isAvailable != false)}",
-        "text": "Yes, This item is Available!",
-        "color": "good"
+        "text": "Yes, This item is Available!"
       }
     ]
   }
