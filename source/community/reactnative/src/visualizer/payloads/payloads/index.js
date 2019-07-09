@@ -4,6 +4,10 @@ export default payloads = [
     "json": require('./DataBinding.Conditional.json')
   },
   {
+    "title": "DataBinding.DataContext.json",
+    "json": require('./DataBinding.DataContext.json')
+  },
+  {
     "title": "DataBinding.DataPayload.json",
     "json": require('./DataBinding.DataPayload.json')
   },

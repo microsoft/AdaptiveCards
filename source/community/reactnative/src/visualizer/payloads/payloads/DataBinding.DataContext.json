@@ -1,0 +1,33 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.1",
+    "$root": {
+        "rootdata": "The root data object"
+    },
+    "$data": {
+        "id": "1291525457129548",
+        "status": 4,
+        "author": "Matt Hidinger",
+        "mySubObject": {
+            "mySubObjectProperty": "Any sub object property"
+        }
+    },
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "{author}"
+        },
+        {
+            "type": "Container",
+            "$data": "{mySubObject}",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "This TextBlock is now scoped directly to 'mySubObject': {mySubObjectProperty}",
+                    "wrap": true
+                }
+            ]
+        }
+    ]
+}
