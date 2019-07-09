@@ -23,7 +23,12 @@ This package "lights-up" the Adaptive Card renderer with [Office Fabric UI](http
 npm install adaptivecards-fabric
 ```
 
-**NOTE**: you must also install the [`adaptivecards`](https://npmjs.com/package/adaptivecards) library if not already in your project.
+**NOTE**: you must also install the necessary peer dependencies:
+
+* adaptivecards
+* office-ui-fabric-react
+* react
+* react-dom
 
 ## Usage
 
