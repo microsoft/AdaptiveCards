@@ -5,7 +5,13 @@
   "$data": {
     "price": 25,
     "isFavourite": true,
-    "isAvailable": false
+    "isAvailable": false,
+    "id": "1291525457129548",
+    "status": 4,
+    "author": "Matt Hidinger",
+    "message": "{\"type\":\"Deployment\",\"buildId\":\"9542982\",\"releaseId\":\"129\",\"buildNumber\":\"20180504.3\",\"releaseName\":\"Release-104\",\"repoProvider\":\"GitHub\"}",
+    "start_time": "2018-05-04T18:05:33.3087147Z",
+    "end_time": "2018-05-04T18:05:33.3087147Z"
   },
   "body": [
     {
@@ -31,6 +37,10 @@
       "$when": "{(isFavourite == true) == (isAvailable != false)}",
       "text": "Yes, This item is Available!",
       "color": "good"
-    }
+    },
+    {
+      "type": "TextBlock",
+      "text": "{JSON.parse(message).releaseName}"
+  }
   ]
 }

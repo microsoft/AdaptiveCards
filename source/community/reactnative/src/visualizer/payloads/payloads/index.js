@@ -1,5 +1,25 @@
 export default payloads = [
   {
+    "title": "DataBinding.Conditional.json",
+    "json": require('./DataBinding.Conditional.json')
+  },
+  {
+    "title": "DataBinding.DataPayload.json",
+    "json": require('./DataBinding.DataPayload.json')
+  },
+  {
+    "title": "DataBinding.Iterative.json",
+    "json": require('./DataBinding.Iterative.json')
+  },
+  {
+    "title": "DataBinding.JsonParse.json",
+    "json": require('./DataBinding.JsonParse.json')
+  },
+  {
+    "title": "DataBinding.WithBody.json",
+    "json": require('./DataBinding.WithBody.json')
+  },
+  {
     "title": "TextBlock.Markdown.json",
     "json": require('./TextBlock.Markdown.json')
   },
@@ -143,22 +163,7 @@ export default payloads = [
     "title": "CustomParsingTestUsingProgressBar.json",
     "json": require('./CustomParsingTestUsingProgressBar.json')
   },
-  {
-    "title": "DataBinding.Conditional.json",
-    "json": require('./DataBinding.Conditional.json')
-  },
-  {
-    "title": "DataBinding.DataPayload.json",
-    "json": require('./DataBinding.DataPayload.json')
-  },
-  {
-    "title": "DataBinding.Iterative.json",
-    "json": require('./DataBinding.Iterative.json')
-  },
-  {
-    "title": "DataBinding.WithBody.json",
-    "json": require('./DataBinding.WithBody.json')
-  },
+
   {
     "title": "DateTimeTestTranslation.json",
     "json": require('./DateTimeTestTranslation.json')
