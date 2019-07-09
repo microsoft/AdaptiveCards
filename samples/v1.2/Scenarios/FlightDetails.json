@@ -221,7 +221,7 @@
                                         },
                                         {
                                             "type": "Action.Submit",
-                                            "title": "View in calendar",
+                                            "title": "View in calendar"
                                         }
                                     ],
                                     "spacing": "Medium"
