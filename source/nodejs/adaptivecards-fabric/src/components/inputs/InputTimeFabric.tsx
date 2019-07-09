@@ -8,14 +8,13 @@ import * as Shared from "../../utils/shared";
 
 export class InputTimeFabric extends Shared.ReactInputElement {
 
-    public value: string;
     private placeholder: string;
     private min: string;
     private max: string;
 
     public parse = (json: any, errors?: AC.IValidationError[]) => {
-        this.id = AC.getStringValue(json.id);
-        this.value = json.value;
+        super.parse(json, errors);
+        this.value = this.defaultValue;
         this.placeholder = AC.getStringValue(json.placeholder);
         this.min = AC.getStringValue(json.min);
         this.max = AC.getStringValue(json.max);
@@ -26,7 +25,7 @@ export class InputTimeFabric extends Shared.ReactInputElement {
             <FabricUI.TextField
                 id={this.id}
                 placeholder={`${this.placeholder}`}
-                value={`${this.value}`}
+                value={`${this.defaultValue}`}
                 type="time"
                 onChange={this.handleChange}
                 max={this.max}
@@ -36,4 +35,13 @@ export class InputTimeFabric extends Shared.ReactInputElement {
     }
 
     public getJsonTypeName = (): string => "Input.Time";
+
+    public toJSON = () => {
+        let result = super.toJSON();
+
+        AC.setProperty(result, "min", this.min);
+        AC.setProperty(result, "max", this.max);
+
+        return result;
+    }
 }

@@ -52,9 +52,7 @@ module.exports = (env, argv) => {
             "react": "React",
             "react-dom": "ReactDOM",
             "office-ui-fabric-react": "fabric",
-            "adaptivecards": {
-                var: "AdaptiveCards"
-            }
+            "adaptivecards":  "AdaptiveCards"
         }]
     }
 };
