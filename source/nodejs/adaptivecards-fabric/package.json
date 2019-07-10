@@ -1,6 +1,6 @@
 {
 	"name": "adaptivecards-fabric",
-	"version": "1.0.0",
+	"version": "1.0.3",
 	"description": "Adaptive Cards Office Fabric based extension",
 	"author": "AdaptiveCards",
 	"license": "MIT",
@@ -12,20 +12,20 @@
 		"microsoft",
 		"bot"
 	],
-	"main": "lib/adaptivecards-fabric.js",
-	"types": "lib/adaptivecards-fabric.d.ts",
+	"main": "lib/index.js",
+	"types": "lib/index.d.ts",
 	"files": [
 		"lib",
 		"dist",
 		"src"
 	],
 	"scripts": {
-		"test": "jest --forceExit --runInBand -u",
+		"test": "jest --forceExit --runInBand",
 		"clean": "rimraf build lib dist",
 		"prebuild": "tsc",
 		"build": "webpack",
 		"watch": "webpack --watch",
-		"start": "webpack-dev-server --open",
+		"start": "webpack-dev-server --open --local",
 		"dts": "dts-generator --name adaptivecards-fabric --project . --out dist/adaptivecards-fabric.d.ts",
 		"lint": "tslint -c ../tslint.json 'src/**/*.{ts,tsx}'",
 		"release": "npm run clean && npm run build && npm test && webpack --mode=production && npm run dts"

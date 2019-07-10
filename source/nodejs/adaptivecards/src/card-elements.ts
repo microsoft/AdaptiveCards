@@ -6603,7 +6603,7 @@ export class AdaptiveCard extends ContainerWithActions {
     static allowMarkForTextHighlighting: boolean = false;
     static alwaysBleedSeparators: boolean = false;
     static enableFullJsonRoundTrip: boolean = false;
-    static useBuiltInInputValidation: boolean = false;
+    static useBuiltInInputValidation: boolean = true;
     static displayInputValidationErrors: boolean = true;
 
     static readonly elementTypeRegistry = new ElementTypeRegistry();

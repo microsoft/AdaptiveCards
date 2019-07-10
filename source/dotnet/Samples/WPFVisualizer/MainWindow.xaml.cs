@@ -24,6 +24,8 @@ using System.Windows.Media;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Document;
+using System.Collections.ObjectModel;
+using System.Threading;
 
 namespace WpfVisualizer
 {
@@ -32,6 +34,10 @@ namespace WpfVisualizer
         private bool _dirty;
         private readonly SpeechSynthesizer _synth;
         private DocumentLine _errorLine;
+        /*
+        // This variable exists so the sample styles are not added twice
+        private bool _stylesAdded = false;
+        */
 
         public MainWindow()
         {
@@ -121,15 +127,20 @@ namespace WpfVisualizer
                 AdaptiveCard card = parseResult.Card;
 
                 /*
-                // Example on how to override the Action Positive and Destructive styles
-                Style positiveStyle = new Style(typeof(Button));
-                positiveStyle.Setters.Add(new Setter(Button.BackgroundProperty, Brushes.Green));
-                Style otherStyle = new Style(typeof(Button));
-                otherStyle.Setters.Add(new Setter(Button.BackgroundProperty, Brushes.Yellow));
-                otherStyle.Setters.Add(new Setter(Button.ForegroundProperty, Brushes.Red));
+                if (!_stylesAdded)
+                {
+                    // Example on how to override the Action Positive and Destructive styles
+                    Style positiveStyle = new Style(typeof(Button));
+                    positiveStyle.Setters.Add(new Setter(Button.BackgroundProperty, Brushes.Green));
+                    Style otherStyle = new Style(typeof(Button));
+                    otherStyle.Setters.Add(new Setter(Button.BackgroundProperty, Brushes.Yellow));
+                    otherStyle.Setters.Add(new Setter(Button.ForegroundProperty, Brushes.Red));
 
-                Renderer.Resources.Add("Adaptive.Action.Submit.positive", positiveStyle);
-                Renderer.Resources.Add("Adaptive.Action.Submit.other", otherStyle);
+                    Renderer.Resources.Add("Adaptive.Action.positive", positiveStyle);
+                    Renderer.Resources.Add("Adaptive.Action.other", otherStyle);
+
+                    _stylesAdded = true;
+                }
                 */
 
                 RenderedAdaptiveCard renderedCard = Renderer.RenderCard(card);

@@ -2,3 +2,4 @@
 // Licensed under the MIT License.
 
 export * from "./inputs";
+export * from "./Fabric";
