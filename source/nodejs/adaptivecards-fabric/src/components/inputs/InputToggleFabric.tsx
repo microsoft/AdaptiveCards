@@ -12,8 +12,8 @@ export class InputToggleFabric extends Shared.ReactInputElement {
     private valueOff: string;
 
     public parse = (json: any, errors?: AC.IValidationError[]) => {
-        this.id = AC.getStringValue(json.id);
-        this.value = json.value;
+        super.parse(json, errors);
+        this.value = this.defaultValue;
         this.valueOn = AC.getStringValue(json.valueOn);
         this.valueOff = AC.getStringValue(json.valueOff);
         this.title = AC.getStringValue(json.title);
@@ -24,7 +24,7 @@ export class InputToggleFabric extends Shared.ReactInputElement {
             id={this.id}
             inlineLabel={true}
             onChange={this.handleToggleChange}
-            defaultChecked={this.value === this.valueOn}
+            defaultChecked={this.defaultValue === this.valueOn}
             label={this.title}
             styles={{
                 root: {
@@ -36,6 +36,15 @@ export class InputToggleFabric extends Shared.ReactInputElement {
     )
 
     public getJsonTypeName = (): string => "Input.Toggle";
+
+    public toJSON = () => {
+        let result = super.toJSON();
+
+        AC.setProperty(result, "valueOn", this.valueOn, "true");
+        AC.setProperty(result, "valueOff", this.valueOff, "false");
+
+        return result;
+    }
 
     private handleToggleChange = (event: React.MouseEvent<HTMLElement> | React.ChangeEvent, checked?: boolean) => {
         this.value = checked ? this.valueOn : this.valueOff;
