@@ -2881,7 +2881,6 @@ export class TextInput extends Input {
             textareaElement.tabIndex = 0;
 
             if (!Utils.isNullOrEmpty(this.placeholder)) {
-				//TODO: maybe this corresponds to what ratingIconUrl 'should' be?
                 textareaElement.placeholder = this.placeholder;
                 textareaElement.setAttribute("aria-label", this.placeholder)
             }
@@ -2994,8 +2993,9 @@ export class TextInput extends Input {
     isMultiline: boolean = false;
 	placeholder: string;
 	style: Enums.InputTextStyle = Enums.InputTextStyle.Text;
-	//TODO: added
+	
 	ratingIconUrl: string;
+	hoverRatingIconUrl: string;
 
     getJsonTypeName(): string {
         return "Input.Text";
@@ -3034,6 +3034,7 @@ export class TextInput extends Input {
 		this.placeholder = Utils.getStringValue(json["placeholder"]);
 		//todo: added
 		this.ratingIconUrl = Utils.getStringValue(json["ratingIconUrl"]);
+		this.hoverRatingIconUrl = Utils.getStringValue(json["hoverRatingIconUrl"]);
 
         this.style = Utils.getEnumValue(Enums.InputTextStyle, json["style"], this.style);
         this.inlineAction = createActionInstance(
@@ -3236,8 +3237,13 @@ export class ChoiceSetInput extends Input {
                 return this._selectElement;
             }
             else {
-                // Render as a series of radio buttons
-                let uniqueCategoryName = ChoiceSetInput.getUniqueCategoryName();
+				// Render as a series of radio buttons
+				
+				// default star rating icons
+				let defaultRatingIconUrl = "https://image.flaticon.com/icons/png/512/55/55695.png";
+				let defaultHoverRatingIconUrl = "https://1.bp.blogspot.com/-IYhCSMtZFzY/WNlKUQYsGQI/AAAAAAABX-s/gZc8ID2yCf0JUuQ4FXAoly2Cx4PE40OiACLcB/s320/star.png";
+
+				let uniqueCategoryName = ChoiceSetInput.getUniqueCategoryName();
 
                 let element = document.createElement("div");
                 element.className = this.hostConfig.makeCssClassName("ac-input", "ac-choiceSetInput-expanded");
@@ -3247,10 +3253,22 @@ export class ChoiceSetInput extends Input {
 				//element.style.textAlign = "center";
 
 				this._toggleInputs = [];
+				
+				// best practices?
+				// this.ratingIconUrl ? alert("1: using custom") : alert("1: not using custom");
+				let ratingIconUrl = this.ratingIconUrl ? this.ratingIconUrl : defaultRatingIconUrl;
+				// let hoverRatingIconUrl = this.hoverRatingIconUrl ? this.hoverRatingIconUrl : defaultHoverRatingIconUrl;
+				// alert("ratingIconUrl: " + ratingIconUrl);
 
-				// for a future commit:
+				// let ratingIconUrl = defaultRatingIconUrl;
+				let hoverRatingIconUrl = defaultHoverRatingIconUrl;
+				// let hoverRatingIconUrl = "https://pbs.twimg.com/profile_images/988775660163252226/XpgonN0X_400x400.jpg";
+
+				
+
 				// setting up this var to allow for later filling of the stars
-				//let labels: Label[];
+				let labels: Label[] = new Array(this.choices.length);
+				let labelElements: HTMLElement[] = new Array(this.choices.length);
 
                 for (let i = 0; i < this.choices.length; i++) {
                     let radioInput = document.createElement("input");
@@ -3271,43 +3289,44 @@ export class ChoiceSetInput extends Input {
 
                     radioInput.onchange = () => { this.valueChanged(); }
 
-                    this._toggleInputs.push(radioInput);
-
-					let label = new Label();
-                    label.setParent(this);
-                    label.forElementId = radioInput.id;
-                    label.hostConfig = this.hostConfig;
-					label.text = Utils.isNullOrEmpty(this.choices[i].title) ? "Choice " + i : this.choices[i].title;
-                    label.useMarkdown = AdaptiveCard.useMarkdownInRadioButtonAndCheckbox;
-					label.wrap = this.wrap;
+					this._toggleInputs.push(radioInput);
 					
-					let labelElement = label.render();
-                    labelElement.style.display = "block";
-                    labelElement.style.flex = "1 1 auto";
-                    labelElement.style.marginLeft = "6px";
-					labelElement.style.verticalAlign = "middle";
-					labelElement.style.flexGrow = "1";
+					labels[i] = new Label();
+					labels[i].setParent(this);
+                    labels[i].forElementId = radioInput.id;
+                    labels[i].hostConfig = this.hostConfig;
+					labels[i].text = Utils.isNullOrEmpty(this.choices[i].title) ? "Choice " + i : this.choices[i].title;
+                    labels[i].useMarkdown = AdaptiveCard.useMarkdownInRadioButtonAndCheckbox;
+					labels[i].wrap = this.wrap;
 					
-					labelElement.style.backgroundImage = "url('" + this.ratingIconUrl + "')";
+					labelElements[i] = labels[i].render();
+                    labelElements[i].style.display = "block";
+                    labelElements[i].style.flex = "1 1 auto";
+                    labelElements[i].style.marginLeft = "6px";
+					labelElements[i].style.verticalAlign = "middle";
+					labelElements[i].style.flexGrow = "1";
 					
-					labelElement.style.backgroundSize = "25px 25px";
-					labelElement.style.backgroundRepeat = "no-repeat";
-					labelElement.style.backgroundPositionX = "center";
-					labelElement.style.paddingTop = "25px";
-
+					labelElements[i].style.backgroundImage = "url('" + ratingIconUrl + "')";
+					labelElements[i].style.backgroundSize = "25px 25px";
+					labelElements[i].style.backgroundRepeat = "no-repeat";
+					labelElements[i].style.backgroundPositionX = "center";
+					labelElements[i].style.paddingTop = "25px";
+					
 					// hovering over stars
-					labelElement.onmouseover = function() {
-						labelElement.style.backgroundImage = "url('https://github.githubassets.com/images/modules/site/logos/nasa-logo.png')";
+					labelElements[i].onmouseover = function() {
+						for (let j = 0; j <= i; j++) {
+							labelElements[j].style.backgroundImage = "url('" + hoverRatingIconUrl + "')";
+						}
+						
 					};
 					// fill stars up to
 
-					labelElement.onmouseleave = function() {
-						labelElement.style.backgroundImage = "url('https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg')";
-						// labelElement[0].style.backgroundImage = "url('https://github.githubassets.com/images/modules/site/logos/nasa-logo.png')";
-						// labelElement.style.backgroundImage = "url('" + this.ratingIconUrl + "')";
-						// alert(ratingIconUrl);
+					labelElements[i].onmouseleave = function() {
+						for (let j = 0; j <= i; j++) {
+							labelElements[j].style.backgroundImage = "url('" + ratingIconUrl + "')";
+						}
 					};
-
+					
                     let spacerElement = document.createElement("div");
                     spacerElement.style.width = "6px";
 
@@ -3320,7 +3339,7 @@ export class ChoiceSetInput extends Input {
 
                     Utils.appendChild(compoundInput, radioInput);
                     Utils.appendChild(compoundInput, spacerElement);
-                    Utils.appendChild(compoundInput, labelElement);
+                    Utils.appendChild(compoundInput, labelElements[i]);
 
 					Utils.appendChild(element, compoundInput);
 					
