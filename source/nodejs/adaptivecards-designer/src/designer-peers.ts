@@ -2080,7 +2080,7 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
 
 export class NumberInputPeer extends InputPeer<Adaptive.NumberInput> {
     static readonly placeholderProperty = new StringPropertyEditor(Versions.v1_0, "placeholder", "Placeholder");
-    static readonly minProperty = new StringPropertyEditor(Versions.v1_0, "min", "Maximum value");
+    static readonly minProperty = new StringPropertyEditor(Versions.v1_0, "min", "Minimum value");
     static readonly maxProperty = new StringPropertyEditor(Versions.v1_0, "max", "Maximum value");
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
@@ -2102,7 +2102,7 @@ export class NumberInputPeer extends InputPeer<Adaptive.NumberInput> {
 }
 
 export class DateInputPeer extends InputPeer<Adaptive.DateInput> {
-    static readonly minProperty = new StringPropertyEditor(Versions.v1_0, "min", "Maximum value");
+    static readonly minProperty = new StringPropertyEditor(Versions.v1_0, "min", "Minimum value");
     static readonly maxProperty = new StringPropertyEditor(Versions.v1_0, "max", "Maximum value");
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
@@ -2117,7 +2117,7 @@ export class DateInputPeer extends InputPeer<Adaptive.DateInput> {
 }
 
 export class TimeInputPeer extends InputPeer<Adaptive.TimeInput> {
-    static readonly minProperty = new StringPropertyEditor(Versions.v1_0, "min", "Maximum value");
+    static readonly minProperty = new StringPropertyEditor(Versions.v1_0, "min", "Minimum value");
     static readonly maxProperty = new StringPropertyEditor(Versions.v1_0, "max", "Maximum value");
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
