@@ -78,7 +78,7 @@
                                       constant:columnElem->GetMinHeight()].active = YES;
     }
 
-    [column setClipsToBounds:TRUE];
+    //[column setClipsToBounds:TRUE];
 
     std::shared_ptr<BaseActionElement> selectAction = columnElem->GetSelectAction();
     // instantiate and add tap gesture recognizer

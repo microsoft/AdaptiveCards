@@ -120,7 +120,10 @@
 
 - (CGSize)intrinsicContentSize
 {
-    return self.frame.size;
+    CGSize size = self.frame.size;
+    NSLog(@"sz: w = %f, h = %f", size.width, size.height);
+    return size;
+    //return self.frame.size;
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text;

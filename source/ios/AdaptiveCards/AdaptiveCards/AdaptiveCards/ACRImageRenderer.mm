@@ -107,9 +107,9 @@
         constraint.priority = 998;
         constraint.active = YES;
         [leftGuide.heightAnchor constraintEqualToAnchor:view.heightAnchor].active = YES;
-        NSLayoutConstraint *leadingConstraint = [view.leadingAnchor constraintEqualToAnchor:wrappingview.leadingAnchor];
-        leadingConstraint.priority = 997;
-        leadingConstraint.active = YES;
+        //NSLayoutConstraint *leadingConstraint = [view.leadingAnchor constraintEqualToAnchor:wrappingview.leadingAnchor];
+        //leadingConstraint.priority = 997;
+        //leadingConstraint.active = YES;
     }
 
     if (adaptiveAlignment == HorizontalAlignment::Right || adaptiveAlignment == HorizontalAlignment::Center) {
@@ -123,11 +123,11 @@
         [rightGuide.trailingAnchor constraintEqualToAnchor:wrappingview.trailingAnchor].active = YES;
     }
     
-    if (adaptiveAlignment == HorizontalAlignment::Right) {
-        NSLayoutConstraint *trailingConstraint = [view.trailingAnchor constraintEqualToAnchor:wrappingview.trailingAnchor];
-        trailingConstraint.priority = 997;
-        trailingConstraint.active = YES;
-    }
+    //if (adaptiveAlignment == HorizontalAlignment::Right) {
+    //    NSLayoutConstraint *trailingConstraint = [view.trailingAnchor constraintEqualToAnchor:wrappingview.trailingAnchor];
+    //    trailingConstraint.priority = 997;
+    //    trailingConstraint.active = YES;
+    //}
     
     if (leftGuide && rightGuide) {
         [leftGuide.widthAnchor constraintEqualToAnchor:rightGuide.widthAnchor multiplier:1.0].active = YES;
@@ -291,7 +291,7 @@
                                          constant:image.size.height]];
         constraints[0].priority = 999;
         constraints[1].priority = 1000;
-        //constraints[2].priority = 1000;
+        constraints[2].priority = 999;
 
         [NSLayoutConstraint activateConstraints:constraints];
 
