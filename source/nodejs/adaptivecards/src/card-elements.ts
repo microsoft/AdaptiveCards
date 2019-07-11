@@ -1753,7 +1753,6 @@ export class Media extends CardElement {
         }
     }
 
-
     private renderPoster(): HTMLElement {
         const playButtonArrowWidth = 12;
         const playButtonArrowHeight = 15;
