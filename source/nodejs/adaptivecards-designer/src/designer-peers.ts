@@ -54,12 +54,14 @@ export class PropertySheetCategory {
     static readonly DefaultCategory = "__defaultCategory";
     static readonly LayoutCategory = "Layout";
     static readonly StyleCategory = "Style";
+    static readonly SelectionAction = "Selection action";
+    static readonly InlineAction = "Inline action";
 
     private _entries: PropertySheetEntry[] = [];
 
     constructor(readonly name: string) { }
 
-    render(card: Adaptive.AdaptiveCard, context: PropertySheetContext) {
+    render(container: Adaptive.Container, context: PropertySheetContext, displayCategoryName: boolean) {
         let entriesToRender: PropertySheetEntry[] = [];
 
         for (let entry of this._entries) {
@@ -69,15 +71,17 @@ export class PropertySheetCategory {
         }
 
         if (entriesToRender.length > 0) {
-            let header = new Adaptive.TextBlock();
-            header.separator = true;
-            header.text = "**" + (this.name === PropertySheetCategory.DefaultCategory ? context.peer.getCardObject().getJsonTypeName() : this.name) + "**";
-        
-            card.addItem(header);
+            if (displayCategoryName) {
+                let header = new Adaptive.TextBlock();
+                header.separator = true;
+                header.text = "**" + (this.name === PropertySheetCategory.DefaultCategory ? context.peer.getCardObject().getJsonTypeName() : this.name) + "**";
+            
+                container.addItem(header);
+            }
         
             for (let entry of entriesToRender) {
                 if (isVersionLessOrEqual(entry.targetVersion, context.targetVersion)) {
-                    card.addItem(entry.render(context));
+                    container.addItem(entry.render(context));
                 }
             }
         }
@@ -113,7 +117,7 @@ export class PropertySheetCategory {
 export class PropertySheet {
     private _categories: { [key: string]: PropertySheetCategory } = {};
 
-    constructor() {
+    constructor(readonly displayCategoryNames: boolean = true) {
         this._categories[PropertySheetCategory.DefaultCategory] = new PropertySheetCategory(PropertySheetCategory.DefaultCategory);
         this._categories[PropertySheetCategory.LayoutCategory] = new PropertySheetCategory(PropertySheetCategory.LayoutCategory);
         this._categories[PropertySheetCategory.StyleCategory] = new PropertySheetCategory(PropertySheetCategory.StyleCategory);
@@ -137,9 +141,9 @@ export class PropertySheet {
         }
     }
 
-    render(card: Adaptive.AdaptiveCard, context: PropertySheetContext) {
+    render(container: Adaptive.Container, context: PropertySheetContext) {
         for (let categoryName of Object.keys(this._categories)) {
-            this._categories[categoryName].render(card, context);
+            this._categories[categoryName].render(container, context, this.displayCategoryNames);
         }
     }
 }
@@ -541,6 +545,19 @@ export abstract class PropertySheetEntry {
     abstract render(context: PropertySheetContext): Adaptive.CardElement;
 
     constructor(readonly targetVersion: TargetVersion) { }
+}
+
+export class SubPropertySheetEntry {
+    render(context: PropertySheetContext): Adaptive.CardElement {
+        let container = new Adaptive.Container();
+        container.spacing = Adaptive.Spacing.Small;
+
+        this.propertySheet.render(container, new PropertySheetContext(context.targetVersion, context.peer, this.target));
+
+        return container;
+    }
+
+    constructor(readonly targetVersion: TargetVersion, readonly target: object, readonly propertySheet: PropertySheet) { }
 }
 
 export class CustomPropertySheetEntry extends PropertySheetEntry {
@@ -1535,6 +1552,14 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
         
+        propertySheet.remove(
+            CardObjectPeer.idProperty,
+            CardElementPeer.isVisibleProperty,
+            CardElementPeer.horizontalAlignmentProperty,
+            CardElementPeer.separatorProperty,
+            CardElementPeer.heightProperty,
+            CardElementPeer.spacingProperty);
+
         propertySheet.add(
             defaultCategory,
             AdaptiveCardPeer.langProperty,
@@ -1551,21 +1576,23 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
             ContainerPeer.backgroundImageProperty);
 
         propertySheet.add(
-            "Selection action",
+            PropertySheetCategory.SelectionAction,
             ContainerPeer.selectActionProperty);
-
-        propertySheet.remove(
-            CardObjectPeer.idProperty,
-            CardElementPeer.isVisibleProperty,
-            CardElementPeer.horizontalAlignmentProperty,
-            CardElementPeer.separatorProperty,
-            CardElementPeer.heightProperty,
-            CardElementPeer.spacingProperty);
 
         if (this.cardElement.selectAction) {
             let selectActionPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, null, this.cardElement.selectAction);
-            selectActionPeer.populatePropertySheet(propertySheet, "Selection action");
             selectActionPeer.onChanged = (sender: DesignerPeer, updatePropertySheet: boolean) => { this.changed(updatePropertySheet); };
+
+            let subPropertySheet = new PropertySheet(false);
+            selectActionPeer.populatePropertySheet(subPropertySheet, PropertySheetCategory.SelectionAction);
+
+            subPropertySheet.remove(
+                ActionPeer.iconUrlProperty,
+                ActionPeer.styleProperty);
+
+            propertySheet.add(
+                PropertySheetCategory.SelectionAction,
+                new SubPropertySheetEntry(Versions.v1_2, this.cardElement.selectAction, subPropertySheet));
         }
     }
 }
@@ -1650,13 +1677,23 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
             ContainerPeer.backgroundImageProperty);
 
         propertySheet.add(
-            "Selection action",
+            PropertySheetCategory.SelectionAction,
             ContainerPeer.selectActionProperty);  
    
         if (this.cardElement.selectAction) {
             let selectActionPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, null, this.cardElement.selectAction);
-            selectActionPeer.populatePropertySheet(propertySheet, "Selection action");
             selectActionPeer.onChanged = (sender: DesignerPeer, updatePropertySheet: boolean) => { this.changed(updatePropertySheet); };
+
+            let subPropertySheet = new PropertySheet(false);
+            selectActionPeer.populatePropertySheet(subPropertySheet, PropertySheetCategory.SelectionAction);
+
+            subPropertySheet.remove(
+                ActionPeer.iconUrlProperty,
+                ActionPeer.styleProperty);
+
+            propertySheet.add(
+                PropertySheetCategory.SelectionAction,
+                new SubPropertySheetEntry(Versions.v1_2, this.cardElement.selectAction, subPropertySheet));
         }
     }
 }
@@ -1710,14 +1747,23 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
             ContainerPeer.bleedProperty);
 
         propertySheet.add(
-            "Selection action",
+            PropertySheetCategory.SelectionAction,
             ContainerPeer.selectActionProperty);
-
     
         if (this.cardElement.selectAction) {
             let selectActionPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, null, this.cardElement.selectAction);
-            selectActionPeer.populatePropertySheet(propertySheet, "Selection action");
             selectActionPeer.onChanged = (sender: DesignerPeer, updatePropertySheet: boolean) => { this.changed(updatePropertySheet); };
+
+            let subPropertySheet = new PropertySheet(false);
+            selectActionPeer.populatePropertySheet(subPropertySheet, PropertySheetCategory.SelectionAction);
+
+            subPropertySheet.remove(
+                ActionPeer.iconUrlProperty,
+                ActionPeer.styleProperty);
+
+            propertySheet.add(
+                PropertySheetCategory.SelectionAction,
+                new SubPropertySheetEntry(Versions.v1_2, this.cardElement.selectAction, subPropertySheet));
         }
     }
 
@@ -1765,13 +1811,23 @@ export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
             ContainerPeer.backgroundImageProperty);
 
         propertySheet.add(
-            "Selection action",
+            PropertySheetCategory.SelectionAction,
             ContainerPeer.selectActionProperty);
 
         if (this.cardElement.selectAction) {
             let selectActionPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, null, this.cardElement.selectAction);
-            selectActionPeer.populatePropertySheet(propertySheet, "Selection action");
             selectActionPeer.onChanged = (sender: DesignerPeer, updatePropertySheet: boolean) => { this.changed(updatePropertySheet); };
+
+            let subPropertySheet = new PropertySheet(false);
+            selectActionPeer.populatePropertySheet(subPropertySheet, PropertySheetCategory.SelectionAction);
+
+            subPropertySheet.remove(
+                ActionPeer.iconUrlProperty,
+                ActionPeer.styleProperty);
+
+            propertySheet.add(
+                PropertySheetCategory.SelectionAction,
+                new SubPropertySheetEntry(Versions.v1_2, this.cardElement.selectAction, subPropertySheet));
         }
     }
 }
@@ -1903,14 +1959,23 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
                 ImagePeer.backgroundColorProperty);
 
             propertySheet.add(
-                "Selection action",
+                PropertySheetCategory.SelectionAction,
                 ContainerPeer.selectActionProperty);
 
             if (this.cardElement.selectAction) {
                 let selectActionPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, null, this.cardElement.selectAction);
-                selectActionPeer.populatePropertySheet(propertySheet, "Selection action");
                 selectActionPeer.onChanged = (sender: DesignerPeer, updatePropertySheet: boolean) => { this.changed(updatePropertySheet); };
-            }
+
+                let subPropertySheet = new PropertySheet(false);
+                selectActionPeer.populatePropertySheet(subPropertySheet, PropertySheetCategory.SelectionAction);
+    
+                subPropertySheet.remove(
+                    ActionPeer.iconUrlProperty,
+                    ActionPeer.styleProperty);
+    
+                propertySheet.add(
+                    PropertySheetCategory.SelectionAction,
+                    new SubPropertySheetEntry(Versions.v1_2, this.cardElement.selectAction, subPropertySheet));            }
         }
     }
 }
@@ -2057,13 +2122,21 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
         }
 
         propertySheet.add(
-            "Inline action",
+            PropertySheetCategory.InlineAction,
             TextInputPeer.inlineActionProperty);
 
         if (this.cardElement.inlineAction) {
             let inlineActionPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, null, this.cardElement.inlineAction);
-            inlineActionPeer.populatePropertySheet(propertySheet, "Inline action");
             inlineActionPeer.onChanged = (sender: DesignerPeer, updatePropertySheet: boolean) => { this.changed(updatePropertySheet); };
+
+            let subPropertySheet = new PropertySheet(false);
+            inlineActionPeer.populatePropertySheet(subPropertySheet, PropertySheetCategory.InlineAction);
+
+            subPropertySheet.remove(ActionPeer.styleProperty);
+
+            propertySheet.add(
+                PropertySheetCategory.InlineAction,
+                new SubPropertySheetEntry(Versions.v1_2, this.cardElement.inlineAction, subPropertySheet));
         }
 
         propertySheet.add(
