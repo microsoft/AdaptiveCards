@@ -1793,7 +1793,7 @@ export class Media extends CardElement {
             playButtonOuterElement.className = "ac-media-playButton";
             playButtonOuterElement.style.display = "flex";
             playButtonOuterElement.style.alignItems = "center";
-	    playButtonOuterElement.style.justifyContent = "center";
+	     playButtonOuterElement.style.justifyContent = "center";
 			
             let playButtonInnerElement = document.createElement("div");
             playButtonInnerElement.className = "ac-media-playButton-arrow";
@@ -1819,22 +1819,22 @@ export class Media extends CardElement {
             playButtonContainer.style.height = "100%";
             playButtonContainer.style.display = "flex";
             playButtonContainer.style.justifyContent = "center";
-	    playButtonContainer.style.alignItems = "center";
-	    playButtonContainer.onclick = (e) => {
-                if (this.hostConfig.media.allowInlinePlayback) {
-                    let mediaPlayerElement = this.renderMediaPlayer();
-                    
-                    this.renderedElement.innerHTML = "";
-                    this.renderedElement.appendChild(mediaPlayerElement);
+	     playButtonContainer.style.alignItems = "center";
+	     playButtonContainer.onclick = (e) => {
+		if (this.hostConfig.media.allowInlinePlayback) {
+		    let mediaPlayerElement = this.renderMediaPlayer();
 
-                    mediaPlayerElement.play();
-                }
-                else {
-                    if (Media.onPlay) {
-                        Media.onPlay(this);
-                    }
-                }
-            };
+		    this.renderedElement.innerHTML = "";
+		    this.renderedElement.appendChild(mediaPlayerElement);
+
+		    mediaPlayerElement.play();
+		}
+		else {
+		    if (Media.onPlay) {
+			Media.onPlay(this);
+		    }
+		}
+	     };
 
             playButtonContainer.appendChild(playButtonOuterElement);
             posterRootElement.appendChild(playButtonContainer);
