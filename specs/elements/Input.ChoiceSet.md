@@ -99,3 +99,9 @@ Controls the amount of spacing between this element and the preceding element.
 <!-- END AUTO-GENERATED -->
 
 ## Rendering
+
+### wrap property
+
+All choice titles should respect the wrap property.
+
+The placeholder text should also respect the wrap property.
