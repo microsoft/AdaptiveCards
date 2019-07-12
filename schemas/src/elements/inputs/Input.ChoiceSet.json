@@ -13,6 +13,14 @@
       "description": "Allow multiple choices to be selected.",
       "default": false
     },
+    "placeholder": {
+      "type": "string",
+      "description": "Description of the input desired. Displayed when no choice has been selected.",
+			"version": "1.3",
+			"features": [
+				3198
+			]
+    },
     "style": {
       "type": "ChoiceInputStyle"
     },
