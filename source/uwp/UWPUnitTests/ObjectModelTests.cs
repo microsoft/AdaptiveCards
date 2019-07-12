@@ -459,7 +459,7 @@ namespace UWPUnitTests
             Assert.AreEqual("Inline Action", textInput.InlineAction.Title);
 
             var jsonString = textInput.ToJson().ToString();
-            Assert.AreEqual("{\"height\":\"Stretch\",\"id\":\"TextInputId\",\"inlineAction\":{\"title\":\"Inline Action\",\"type\":\"Action.Submit\"},\"isMultiline\":true,\"isRequired\":false,\"isVisible\":false,\"maxLength\":5,\"placeholder\":\"Placeholder\",\"separator\":true,\"spacing\":\"medium\",\"style\":\"Email\",\"type\":\"Input.Text\",\"value\":\"Value\"}", jsonString);
+            Assert.AreEqual("{\"height\":\"Stretch\",\"id\":\"TextInputId\",\"inlineAction\":{\"title\":\"Inline Action\",\"type\":\"Action.Submit\"},\"isMultiline\":true,\"isVisible\":false,\"maxLength\":5,\"placeholder\":\"Placeholder\",\"separator\":true,\"spacing\":\"medium\",\"style\":\"Email\",\"type\":\"Input.Text\",\"value\":\"Value\"}", jsonString);
         }
 
         [TestMethod]
@@ -486,7 +486,7 @@ namespace UWPUnitTests
             Assert.AreEqual(42, numberInput.Value);
 
             var jsonString = numberInput.ToJson().ToString();
-            Assert.AreEqual("{\"height\":\"Stretch\",\"id\":\"NumberInputId\",\"isRequired\":false,\"isVisible\":false,\"max\":50,\"min\":40,\"placeholder\":\"Placeholder\",\"separator\":true,\"spacing\":\"medium\",\"type\":\"Input.Number\",\"value\":42}", jsonString);
+            Assert.AreEqual("{\"height\":\"Stretch\",\"id\":\"NumberInputId\",\"isVisible\":false,\"max\":50,\"min\":40,\"placeholder\":\"Placeholder\",\"separator\":true,\"spacing\":\"medium\",\"type\":\"Input.Number\",\"value\":42}", jsonString);
         }
 
         [TestMethod]
@@ -513,7 +513,7 @@ namespace UWPUnitTests
             Assert.AreEqual("2018-01-14", dateInput.Value);
 
             var jsonString = dateInput.ToJson().ToString();
-            Assert.AreEqual("{\"height\":\"Stretch\",\"id\":\"DateInputId\",\"isRequired\":false,\"isVisible\":false,\"max\":\"2019-01-14\",\"min\":\"2017-01-14\",\"placeholder\":\"Placeholder\",\"separator\":true,\"spacing\":\"medium\",\"type\":\"Input.Date\",\"value\":\"2018-01-14\"}", jsonString);
+            Assert.AreEqual("{\"height\":\"Stretch\",\"id\":\"DateInputId\",\"isVisible\":false,\"max\":\"2019-01-14\",\"min\":\"2017-01-14\",\"placeholder\":\"Placeholder\",\"separator\":true,\"spacing\":\"medium\",\"type\":\"Input.Date\",\"value\":\"2018-01-14\"}", jsonString);
         }
 
         [TestMethod]
@@ -568,7 +568,7 @@ namespace UWPUnitTests
             Assert.AreEqual(true, toggleInput.Wrap);
 
             var jsonString = toggleInput.ToJson().ToString();
-            Assert.AreEqual("{\"height\":\"Stretch\",\"id\":\"ToggleInputId\",\"isRequired\":false,\"isVisible\":false,\"separator\":true,\"spacing\":\"medium\",\"title\":\"Title\",\"type\":\"Input.Toggle\",\"value\":\"Value\",\"valueOff\":\"ValueOff\",\"valueOn\":\"ValueOn\",\"wrap\":true}", jsonString);
+            Assert.AreEqual("{\"height\":\"Stretch\",\"id\":\"ToggleInputId\",\"isVisible\":false,\"separator\":true,\"spacing\":\"medium\",\"title\":\"Title\",\"type\":\"Input.Toggle\",\"value\":\"Value\",\"valueOff\":\"ValueOff\",\"valueOn\":\"ValueOn\",\"wrap\":true}", jsonString);
         }
 
         [TestMethod]
@@ -616,7 +616,7 @@ namespace UWPUnitTests
             Assert.AreEqual("Value2", choiceSet.Choices[1].Value);
 
             var jsonString = choiceSet.ToJson().ToString();
-            Assert.AreEqual("{\"choices\":[{\"title\":\"Title1\",\"value\":\"Value1\"},{\"title\":\"Title2\",\"value\":\"Value2\"}],\"height\":\"Stretch\",\"id\":\"ChoiceSetInputId\",\"isMultiSelect\":true,\"isRequired\":false,\"isVisible\":false,\"separator\":true,\"spacing\":\"medium\",\"style\":\"Expanded\",\"type\":\"Input.ChoiceSet\",\"value\":\"Value2\",\"wrap\":true}", jsonString);
+            Assert.AreEqual("{\"choices\":[{\"title\":\"Title1\",\"value\":\"Value1\"},{\"title\":\"Title2\",\"value\":\"Value2\"}],\"height\":\"Stretch\",\"id\":\"ChoiceSetInputId\",\"isMultiSelect\":true,\"isVisible\":false,\"separator\":true,\"spacing\":\"medium\",\"style\":\"Expanded\",\"type\":\"Input.ChoiceSet\",\"value\":\"Value2\",\"wrap\":true}", jsonString);
         }
 
         public void ValidateBaseActionProperties(
