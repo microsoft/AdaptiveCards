@@ -2217,7 +2217,7 @@ export class ToggleInputPeer extends InputPeer<Adaptive.ToggleInput> {
         propertySheet.add(
             defaultCategory,
             ToggleInputPeer.valueOnProperty,
-            ToggleInputPeer.valueOnProperty,
+            ToggleInputPeer.valueOffProperty,
             ToggleInputPeer.defaultValueProperty);
 
         propertySheet.add(
