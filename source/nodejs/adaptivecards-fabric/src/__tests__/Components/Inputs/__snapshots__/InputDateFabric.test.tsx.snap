@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InputDateExtended renders component correctly 1`] = `
+<div
+  style="display: flex; flex-direction: column; box-sizing: border-box; flex: 0 0 auto;"
+>
+  <div
+    class="ac-input-container"
+    style="display: flex;"
+  >
+    <div
+      style="width: 100%; min-width: 0px;"
+    >
+      <div
+        class="ms-DatePicker root-46"
+        id="date"
+      >
+        <div
+          aria-expanded="false"
+          aria-haspopup="true"
+          role="combobox"
+        >
+          <div
+            class="ms-TextField textField-51"
+          >
+            <div
+              class="ms-TextField-wrapper wrapper-52"
+            >
+              <div
+                class="ms-TextField-fieldGroup fieldGroup-53"
+              >
+                <input
+                  aria-invalid="false"
+                  class="ms-TextField-field field-54"
+                  id="date-label"
+                  placeholder="Enter a date"
+                  type="text"
+                  value="Tue May 14 2019"
+                />
+                <i
+                  aria-hidden="true"
+                  class="ms-DatePicker-event--without-label msDatePickerDisabled icon-61"
+                  data-icon-name="Calendar"
+                  role="presentation"
+                >
+                  
+                </i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

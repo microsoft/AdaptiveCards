@@ -104,6 +104,30 @@ a.ac-anchor:visited:active {
     border: 1px solid #464B93;
 }
 
+.ac-pushButton.sentiment-positive {
+    background-color: #0078D7;
+    color: white;
+    border: 1px solid #0078D7;
+}
+
+.ac-pushButton.sentiment-positive:hover,
+.ac-pushButton.sentiment-positive:active {
+    background-color: #006ABC;
+    border: 1px solid #006ABC;
+}
+
+.ac-pushButton.sentiment-destructive {
+    background-color: #E50000;
+    color: white;
+    border: 1px solid #E50000;
+}
+
+.ac-pushButton.sentiment-destructive:hover,
+.ac-pushButton.sentiment-destructive:active {
+    background-color: #BF0000;
+    border: 1px solid #BF0000;
+}
+
 .ac-pushButton.subdued {
     color: #666666;
     border: 1px solid #EEEEEE;

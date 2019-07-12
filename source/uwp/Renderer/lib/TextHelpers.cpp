@@ -161,8 +161,7 @@ HRESULT SetXamlInlines(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adapti
         ComPtr<ABI::Windows::Data::Xml::Dom::IXmlDocumentIO> xmlDocumentIO;
         RETURN_IF_FAILED(xmlDocument.As(&xmlDocumentIO));
 
-        HRESULT hr = xmlDocumentIO->LoadXml(htmlHString.Get());
-        if (SUCCEEDED(hr))
+        if (SUCCEEDED(xmlDocumentIO->LoadXml(htmlHString.Get())))
         {
             ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> xmlDocumentAsNode;
             RETURN_IF_FAILED(xmlDocument.As(&xmlDocumentAsNode));

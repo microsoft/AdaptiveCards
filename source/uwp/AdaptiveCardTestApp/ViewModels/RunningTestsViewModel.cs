@@ -1,7 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using AdaptiveCards.Rendering.Uwp;
-using AdaptiveCardTestApp.ResourceResolvers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -155,16 +153,13 @@ namespace AdaptiveCardTestApp.ViewModels
 
         private async Task<TestResultViewModel> TestCard(FileViewModel cardFile, FileViewModel hostConfigFile)
         {
-            Dictionary<string, IAdaptiveCardResourceResolver> resourceResolvers = new Dictionary<string, IAdaptiveCardResourceResolver>();
-            resourceResolvers.Add("symbol", new SampleResourceResolver());
-
             uint reruns = 0;
             TestResultViewModel result = null;
             bool retryImage = true;
 
             while (retryImage)
             {
-                var renderResult = await RenderCard(cardFile, hostConfigFile, resourceResolvers);
+                var renderResult = await RenderCard(cardFile, hostConfigFile);
 
                 result = await TestResultViewModel.CreateAsync(
                     cardFile: cardFile,
@@ -193,9 +188,9 @@ namespace AdaptiveCardTestApp.ViewModels
             return result;
         }
 
-        private async Task<Tuple<RenderedTestResult, StorageFile, StorageFile>> RenderCard(FileViewModel cardFile, FileViewModel hostConfigFile, Dictionary<string, IAdaptiveCardResourceResolver> resourceResolvers)
+        private async Task<Tuple<RenderedTestResult, StorageFile, StorageFile>> RenderCard(FileViewModel cardFile, FileViewModel hostConfigFile)
         {
-            var renderResult = await UWPTestLibrary.RenderTestHelpers.RenderCard(cardFile, hostConfigFile, resourceResolvers);
+            var renderResult = await UWPTestLibrary.RenderTestHelpers.RenderCard(cardFile, hostConfigFile);
 
             UWPTestLibrary.ImageWaiter imageWaiter = new ImageWaiter(renderResult.Tree);
 

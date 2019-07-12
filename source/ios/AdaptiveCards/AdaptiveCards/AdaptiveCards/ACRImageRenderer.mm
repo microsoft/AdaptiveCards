@@ -44,16 +44,16 @@
     BOOL hasExplicitMeasurements = (pixelWidth || pixelHeight);
     BOOL isAspectRatioNeeded = !(pixelWidth && pixelHeight);
     CGSize cgsize = [acoConfig getImageSize:imgElem->GetImageSize()];
-    
+
     NSString *key = [NSString stringWithCString:imgElem->GetUrl().c_str() encoding:[NSString defaultCStringEncoding]];
     NSMutableDictionary *imageViewMap = [rootView getImageMap];
     NSURL *url = [NSURL URLWithString:key];
-    
+
     if (ACOImageViewIF == [acoConfig getResolverIFType:[url scheme]]) {
         NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)(elem.get())];
         key = [number stringValue];
     }
-    
+
     UIImage *img = imageViewMap[key];
     ImageSize size = ImageSize::None;
     if (!hasExplicitMeasurements){
@@ -162,7 +162,7 @@
     BOOL isAspectRatioNeeded = !(pixelWidth && pixelHeight);
     CGSize cgsize = [acoConfig getImageSize:imageElem->GetImageSize()];
     CGFloat heightToWidthRatio = 0.0f, widthToHeightRatio = 0.0f;
-    
+
     if(image){
         if(image.size.width > 0) {
             heightToWidthRatio = image.size.height / image.size.width;
@@ -197,43 +197,53 @@
     }
 
     if(size != ImageSize::Auto && size != ImageSize::Stretch){
-        [NSLayoutConstraint activateConstraints:
-         @[[NSLayoutConstraint constraintWithItem:imageView
-                                        attribute:NSLayoutAttributeWidth
-                                        relatedBy:NSLayoutRelationEqual
-                                           toItem:nil
-                                        attribute:NSLayoutAttributeNotAnAttribute
-                                       multiplier:1.0
-                                         constant:cgsize.width],
-           [NSLayoutConstraint constraintWithItem:imageView
-                                        attribute:NSLayoutAttributeHeight
-                                        relatedBy:NSLayoutRelationEqual
-                                           toItem:nil
-                                        attribute:NSLayoutAttributeNotAnAttribute
-                                       multiplier:1.0
-                                         constant:cgsize.height]]];
+        NSArray<NSLayoutConstraint *> *constraints =
+        @[[NSLayoutConstraint constraintWithItem:imageView
+                                       attribute:NSLayoutAttributeWidth
+                                       relatedBy:NSLayoutRelationEqual
+                                          toItem:nil
+                                       attribute:NSLayoutAttributeNotAnAttribute
+                                      multiplier:1.0
+                                        constant:cgsize.width],
+          [NSLayoutConstraint constraintWithItem:imageView
+                                       attribute:NSLayoutAttributeHeight
+                                       relatedBy:NSLayoutRelationEqual
+                                          toItem:nil
+                                       attribute:NSLayoutAttributeNotAnAttribute
+                                      multiplier:1.0
+                                        constant:cgsize.height]];
+        constraints[0].priority = 1000;
+        constraints[1].priority = 999;
 
-        if([imageView class] == [ACRUIImageView class]) {
+        [NSLayoutConstraint activateConstraints:constraints];
+
+        if ([imageView class] == [ACRUIImageView class]) {
             ((ACRUIImageView *)imageView).desiredSize = cgsize;
         }
     }
 
-    if(heightToWidthRatio && widthToHeightRatio && (size == ImageSize::Auto || size == ImageSize::Stretch)){
-        [NSLayoutConstraint activateConstraints:@[[NSLayoutConstraint constraintWithItem:imageView
-                                                                attribute:NSLayoutAttributeHeight
-                                                                relatedBy:NSLayoutRelationEqual
-                                                                   toItem:imageView
-                                                                attribute:NSLayoutAttributeWidth
-                                                               multiplier:heightToWidthRatio
-                                                                 constant:0]]];
-        [NSLayoutConstraint activateConstraints:@[[NSLayoutConstraint constraintWithItem:imageView
-                                                                attribute:NSLayoutAttributeWidth
-                                                                relatedBy:NSLayoutRelationEqual
-                                                                   toItem:imageView
-                                                                attribute:NSLayoutAttributeHeight
-                                                               multiplier:widthToHeightRatio
-                                                                 constant:0]]];
-        if([imageView class] == [ACRUIImageView class]) {
+    if (heightToWidthRatio && widthToHeightRatio && (size == ImageSize::Auto || size == ImageSize::Stretch)) {
+        NSArray<NSLayoutConstraint *> *constraints =
+         @[[NSLayoutConstraint constraintWithItem:imageView
+                         attribute:NSLayoutAttributeHeight
+                         relatedBy:NSLayoutRelationEqual
+                            toItem:imageView
+                         attribute:NSLayoutAttributeWidth
+                        multiplier:heightToWidthRatio
+                          constant:0],
+           [NSLayoutConstraint constraintWithItem:imageView
+                                        attribute:NSLayoutAttributeWidth
+                                        relatedBy:NSLayoutRelationEqual
+                                           toItem:imageView
+                                        attribute:NSLayoutAttributeHeight
+                                       multiplier:widthToHeightRatio
+                                         constant:0]];
+        constraints[0].priority = 999;
+        constraints[1].priority = 1000;
+
+        [NSLayoutConstraint activateConstraints:constraints];
+
+        if ([imageView class] == [ACRUIImageView class]) {
             ((ACRUIImageView *)imageView).desiredSize = cgsize;
         }
     }

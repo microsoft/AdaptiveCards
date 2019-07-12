@@ -140,13 +140,12 @@ namespace AdaptiveNamespace
 
                 for (auto& showCardEntry : m_showCards)
                 {
-                    InternalId showCardId = showCardEntry.first;
-                    InternalId actionSetId = showCardEntry.second.first;
-                    ComPtr<IUIElement> showCardUIElement = showCardEntry.second.second;
-
+                    const InternalId showCardId = showCardEntry.first;
+                    const InternalId actionSetId = showCardEntry.second.first;
                     if ((actionSetToToggle == actionSetId) && (showCardToToggle != showCardId))
                     {
-                        RETURN_IF_FAILED(showCardUIElement->put_Visibility(Visibility_Collapsed));
+                        ComPtr<IUIElement> showCardUIElementCurrent = showCardEntry.second.second;
+                        RETURN_IF_FAILED(showCardUIElementCurrent->put_Visibility(Visibility_Collapsed));
                     }
                 }
             }
@@ -194,8 +193,6 @@ namespace AdaptiveNamespace
         default:
             return m_actionEvents->InvokeAll(this, eventArgs.Get());
         }
-
-        return m_actionEvents->InvokeAll(this, eventArgs.Get());
     }
 
     HRESULT RenderedAdaptiveCard::SendMediaClickedEvent(_In_ IAdaptiveMedia* mediaElement)
