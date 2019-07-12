@@ -29,12 +29,12 @@ Json::Value ToggleInput::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = m_value;
     }
 
-    if (!m_valueOff.empty())
+    if (m_valueOff != "false")
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ValueOff)] = m_valueOff;
     }
 
-    if (!m_valueOn.empty())
+    if (m_valueOn != "true")
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ValueOn)] = m_valueOn;
     }
