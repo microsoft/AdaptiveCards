@@ -2105,6 +2105,7 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
     static readonly placeholderProperty = new StringPropertyEditor(Versions.v1_0, "placeholder", "Placeholder");
     static readonly isMultilineProperty = new BooleanPropertyEditor(Versions.v1_0, "isMultiline", "Multi-line", true);
     static readonly styleProperty = new EnumPropertyEditor(Versions.v1_0, "style", "Style", Adaptive.InputTextStyle);
+    static readonly maxLengthProperty = new NumberPropertyEditor(Versions.v1_0, "maxLength", "Maximum length");
     static readonly inlineActionProperty = new ActionPropertyEditor(Versions.v1_2, "inlineAction", "Action type", [ Adaptive.ShowCardAction.JsonTypeName ], true);
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
@@ -2141,6 +2142,7 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
 
         propertySheet.add(
             defaultCategory,
+            TextInputPeer.maxLengthProperty,
             TextInputPeer.defaultValueProperty);
     }
 
@@ -2153,8 +2155,8 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
 
 export class NumberInputPeer extends InputPeer<Adaptive.NumberInput> {
     static readonly placeholderProperty = new StringPropertyEditor(Versions.v1_0, "placeholder", "Placeholder");
-    static readonly minProperty = new StringPropertyEditor(Versions.v1_0, "min", "Minimum value");
-    static readonly maxProperty = new StringPropertyEditor(Versions.v1_0, "max", "Maximum value");
+    static readonly minProperty = new NumberPropertyEditor(Versions.v1_0, "min", "Minimum value");
+    static readonly maxProperty = new NumberPropertyEditor(Versions.v1_0, "max", "Maximum value");
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
