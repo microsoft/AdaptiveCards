@@ -98,21 +98,17 @@
     UILayoutGuide *leftGuide = nil;
     UILayoutGuide *rightGuide = nil;
     HorizontalAlignment adaptiveAlignment = imgElem->GetHorizontalAlignment();
-    if (adaptiveAlignment == HorizontalAlignment::Left || adaptiveAlignment == HorizontalAlignment::Center) {
+    if (adaptiveAlignment == HorizontalAlignment::Left) {
         leftGuide = [[UILayoutGuide alloc] init];
         leftGuide.identifier = @"img-left-guide";
         [wrappingview addLayoutGuide:leftGuide];
         [leftGuide.leadingAnchor constraintEqualToAnchor:wrappingview.leadingAnchor].active = YES;
-        NSLayoutConstraint *constraint = [leftGuide.trailingAnchor constraintEqualToAnchor:view.leadingAnchor];
-        constraint.priority = 998;
-        constraint.active = YES;
+        [leftGuide.trailingAnchor constraintEqualToAnchor:view.leadingAnchor].active = YES;
         [leftGuide.heightAnchor constraintEqualToAnchor:view.heightAnchor].active = YES;
-        //NSLayoutConstraint *leadingConstraint = [view.leadingAnchor constraintEqualToAnchor:wrappingview.leadingAnchor];
-        //leadingConstraint.priority = 997;
-        //leadingConstraint.active = YES;
+        [view.leadingAnchor constraintEqualToAnchor:wrappingview.leadingAnchor].active = YES;
     }
 
-    if (adaptiveAlignment == HorizontalAlignment::Right || adaptiveAlignment == HorizontalAlignment::Center) {
+    if (adaptiveAlignment == HorizontalAlignment::Right) {
         rightGuide = [[UILayoutGuide alloc] init];
         rightGuide.identifier = @"img-right-guide";
         [wrappingview addLayoutGuide:rightGuide];
@@ -121,19 +117,14 @@
         constraint.active = YES;
         [rightGuide.heightAnchor constraintEqualToAnchor:view.heightAnchor].active = YES;
         [rightGuide.trailingAnchor constraintEqualToAnchor:wrappingview.trailingAnchor].active = YES;
-    }
-    
-    //if (adaptiveAlignment == HorizontalAlignment::Right) {
-    //    NSLayoutConstraint *trailingConstraint = [view.trailingAnchor constraintEqualToAnchor:wrappingview.trailingAnchor];
-    //    trailingConstraint.priority = 997;
-    //    trailingConstraint.active = YES;
-    //}
-    
-    if (leftGuide && rightGuide) {
-        [leftGuide.widthAnchor constraintEqualToAnchor:rightGuide.widthAnchor multiplier:1.0].active = YES;
+        [view.trailingAnchor constraintEqualToAnchor:wrappingview.trailingAnchor].active = YES;
     }
 
-    [wrappingview.heightAnchor constraintEqualToAnchor:view.heightAnchor].active = YES;
+    if (adaptiveAlignment == HorizontalAlignment::Center) {
+        [view.centerXAnchor constraintEqualToAnchor:wrappingview.centerXAnchor].active = YES;
+    }
+    
+    [wrappingview.heightAnchor constraintGreaterThanOrEqualToAnchor:view.heightAnchor].active = YES;
     [wrappingview.widthAnchor constraintGreaterThanOrEqualToAnchor:view.widthAnchor].active = YES;
     
     [view.centerYAnchor constraintEqualToAnchor:wrappingview.centerYAnchor].active = YES;
@@ -144,34 +135,11 @@
         view.contentMode = UIViewContentModeScaleAspectFit;
     }
 
-    //[NSLayoutConstraint activateConstraints:
-    // [ACOHostConfig getConstraintsForImageAlignment:imgElem->GetHorizontalAlignment()
-    //                                  withSuperview:wrappingview
-    //                                         toView:view]];
-
-    //NSArray<NSString *> *visualFormats = [NSArray arrayWithObjects:@"H:[view(==wrappingview)]", @"V:|[view(==wrappingview)]|", nil];
-    //NSDictionary *viewMap = NSDictionaryOfVariableBindings(view, wrappingview);
-
-    //for (NSString *constraint in visualFormats){
-    //    [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:constraint options:0 metrics:nil views:viewMap]];
-    //}
-/*
-    if (!(size == ImageSize::Stretch)) {
-        [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-        [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-    }
-*/
-
     if (size != ImageSize::Stretch) {
-        [view setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-        [view setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+        [view setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+        [view setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
         [view setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
         [view setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-        //[wrappingview setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-        //[wrappingview setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-        //[wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-        //[wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-
         if (imgElem->GetHeight() == HeightType::Stretch) {
             UIView *blankTrailingSpace = [[UIView alloc] init];
             [blankTrailingSpace setContentHuggingPriority:(UILayoutPriorityDefaultLow) forAxis:UILayoutConstraintAxisVertical];
@@ -258,7 +226,7 @@
                                         constant:cgsize.height]];
         constraints[0].priority = 1000;
         constraints[1].priority = 1000;
-
+        
         [NSLayoutConstraint activateConstraints:constraints];
 
         if ([imageView class] == [ACRUIImageView class]) {
@@ -281,17 +249,9 @@
                                            toItem:imageView
                                         attribute:NSLayoutAttributeHeight
                                        multiplier:widthToHeightRatio
-                                         constant:0],
-           [NSLayoutConstraint constraintWithItem:imageView
-                                        attribute:NSLayoutAttributeHeight
-                                        relatedBy:NSLayoutRelationEqual
-                                           toItem:nil
-                                        attribute:NSLayoutAttributeNotAnAttribute
-                                       multiplier:1.0
-                                         constant:image.size.height]];
+                                         constant:0]];
         constraints[0].priority = 999;
         constraints[1].priority = 1000;
-        constraints[2].priority = 999;
 
         [NSLayoutConstraint activateConstraints:constraints];
 

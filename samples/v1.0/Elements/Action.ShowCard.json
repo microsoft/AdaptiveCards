@@ -20,42 +20,12 @@
 						"text": "What do you think?"
 					}
 				],
-                "actions": [
-                    {
-                        "type": "Action.ShowCard",
-                        "title": "Action.ShowCard",
-                        "card": {
-                            "type": "AdaptiveCard",
-                            "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-                            "actions": [
-                                {
-                                    "type": "Action.ShowCard",
-                                    "title": "Action.ShowCard",
-                                    "card": {
-                                        "type": "AdaptiveCard",
-                                        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-                                        "actions": [
-                                            {
-                                                "type": "Action.ShowCard",
-                                                "title": "Action.ShowCard",
-                                                "card": {
-                                                    "type": "AdaptiveCard",
-                                                    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-                                                    "body": [
-                                                        {
-                                                            "type": "TextBlock",
-                                                            "text": "New TextBlock"
-                                                        }
-                                                    ]
-                                                }
-                                            }
-                                        ]
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                ]
+				"actions": [
+					{
+						"type": "Action.Submit",
+						"title": "Neat!"
+					}
+				]
 			}
 		}
 	]

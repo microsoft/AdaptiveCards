@@ -32,9 +32,9 @@
     CGSize size = self.frame.size;
     self.scrollEnabled = YES;
 
-    //if(size.height != self.contentSize.height || size.width != self.contentSize.width) {
+    if(size.height != self.contentSize.height || size.width != self.contentSize.width) {
         [self sizeToFit];
-    //}
+    }
     size = self.frame.size;
 
     self.scrollEnabled = NO;

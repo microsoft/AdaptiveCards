@@ -24,8 +24,8 @@
 
 - (void)adjustHuggingForLastElement
 {
-    //if([super.stackView.arrangedSubviews count])
-    //    [[super.stackView.arrangedSubviews objectAtIndex:[super.stackView.arrangedSubviews count ] - 1] setContentHuggingPriority:UILayoutPriorityFittingSizeLevel forAxis:UILayoutConstraintAxisHorizontal];
+    if([super.stackView.arrangedSubviews count])
+        [[super.stackView.arrangedSubviews objectAtIndex:[super.stackView.arrangedSubviews count ] - 1] setContentHuggingPriority:UILayoutPriorityFittingSizeLevel forAxis:UILayoutConstraintAxisHorizontal];
 }
 
 - (void)setAlignmentForColumnStretch

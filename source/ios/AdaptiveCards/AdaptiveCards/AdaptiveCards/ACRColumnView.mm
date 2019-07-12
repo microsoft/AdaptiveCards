@@ -18,9 +18,8 @@
 - (void)addArrangedSubview:(UIView *)view
 {
     // if auto, maintain content size whenever possible
-    if([self.columnWidth isEqualToString:@"auto"]){
-        //[view setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-        [view setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+    if([self.columnWidth isEqualToString:@"auto"]){        
+        [view setContentHuggingPriority:251 forAxis:UILayoutConstraintAxisHorizontal];
         [view setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
       // if columnWidth is set to stretch or number, allow column to fill the available space
     } else if([self.columnWidth isEqualToString:@"stretch"]){ 
