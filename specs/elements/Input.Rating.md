@@ -49,16 +49,16 @@ Describes what to do when an unknown element is encountered or the requires of t
   * `"drop"`: Causes this element to be dropped immediately when unknown elements are encountered. The unknown element doesn't bubble up any higher.
 
 
-## height
+## ~~height
 
-Specifies the height of the element.
+~~Specifies the height of the element.
 
-* **Type**: `BlockElementHeight`
-* **Version** : 1.1
-* **Required**: No
+* **Type**: ~~`BlockElementHeight`
+* **Version** : ~~1.1
+* **Required**: ~~No
 * **Allowed values**:
-  * `"auto"`: The height of the container will be determined by the height of its contents.
-  * `"stretch"`: The container will stretch its height to the available remaining height of the parent container.
+  * ~~`"auto"`: The height of the container will be determined by the height of its contents.
+  * ~~`"stretch"`: The container will stretch its height to the available remaining height of the parent container.
 
 
 ## spacing
