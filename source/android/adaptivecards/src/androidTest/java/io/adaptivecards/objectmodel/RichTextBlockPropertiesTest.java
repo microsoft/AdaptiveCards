@@ -76,6 +76,7 @@ public class RichTextBlockPropertiesTest
     @Test
     public void AllPropertiesWithInheritedTest()
     {
+<<<<<<< HEAD
         final String richTextBlockNoDefaultValues =
             "{\"fallback\":{\"type\":\"Image\",\"url\":\"http://\"}," +
                 "\"height\":\"Stretch\"," +

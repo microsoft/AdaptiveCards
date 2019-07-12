@@ -7,16 +7,16 @@
 #define RETURN_IF_FAILED(statement) \
     do \
     { \
-        HRESULT hr = statement; \
-        if (FAILED(hr)) \
+        HRESULT __hr = statement; \
+        if (FAILED(__hr)) \
         { \
-            return hr; \
+            return __hr; \
         } \
     } while (0, 0)
-#define THROW_IF_FAILED(hr) \
+#define THROW_IF_FAILED(__hr) \
     do \
     { \
-        if (FAILED(hr)) \
+        if (FAILED(__hr)) \
         { \
             throw new std::exception(); \
         } \

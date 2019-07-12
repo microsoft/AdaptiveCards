@@ -48,6 +48,7 @@ using namespace AdaptiveCards;
     }
     return self;
 }
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [self initWithFrame:CGRectMake(0,0,frame.size.width, frame.size.height) attributes:nil];
@@ -113,31 +114,44 @@ using namespace AdaptiveCards;
 
 - (void)config:(nullable NSDictionary<NSString *, id> *)attributes
 {
-    if(!self.stackView){
+    if (!self.stackView) {
         return;
     }
+
     [self addSubview:self.stackView];
-    [self applyPadding:0 priority:1000];
     self.stackView.translatesAutoresizingMaskIntoConstraints = NO;
     self.translatesAutoresizingMaskIntoConstraints = NO;
 
     _targets = [[NSMutableArray alloc] init];
     _showcardTargets = [[NSMutableArray alloc] init];
 
-    if(attributes){
+    CGFloat top = 0, left = 0, bottom = 0, right = 0;
+
+    if (attributes) {
         NSNumber *distribAttrib = attributes[@"distribution"];
-        if([distribAttrib boolValue]){
+        if ([distribAttrib boolValue]) {
             self.stackView.distribution = (UIStackViewDistribution)[distribAttrib integerValue];
         }
+
         NSNumber *alignAttrib = attributes[@"alignment"];
-        if([alignAttrib boolValue]){
+        if ([alignAttrib boolValue]) {
             self.stackView.alignment = (UIStackViewAlignment)[alignAttrib integerValue];
         }
+
         NSNumber *spacingAttrib = attributes[@"spacing"];
-        if([spacingAttrib boolValue]){
+        if ([spacingAttrib boolValue]) {
             self.stackView.spacing = [spacingAttrib floatValue];
         }
+
+        NSNumber *topPaddingAttrib = attributes[@"padding-top"];
+        if ([topPaddingAttrib boolValue]) {
+            top = [topPaddingAttrib floatValue];
+        }
     }
+
+    [self applyPaddingToTop:top left:left
+        bottom:bottom right:right
+        priority:1000 location:ACRBleedToAll];
 }
 
 - (CGSize)intrinsicContentSize
@@ -208,15 +222,22 @@ using namespace AdaptiveCards;
 
 - (void)applyPadding:(unsigned int)amount priority:(unsigned int)priority location:(ACRBleedDirection)location
 {
-    unsigned int leadingPadding = (location & ACRBleedToLeadingEdge) ? amount : 0;
-    unsigned int trailingPadding = (location & ACRBleedToTrailingEdge) ? amount : 0;
-    unsigned int topPadding = (location & ACRBleedToTopEdge) ? amount : 0;
-    unsigned int bottomPadding = (location & ACRBleedToBottomEdge) ? amount : 0;
+    [self applyPaddingToTop:amount left:amount bottom:amount right:amount priority:priority location:location];
+}
 
-    NSString *horString = [[NSString alloc] initWithFormat:@"H:|-(%u@%u)-[_stackView]-(%u@%u)-|",
+- (void)applyPaddingToTop:(CGFloat)top left:(CGFloat)left
+     bottom:(CGFloat)bottom right:(CGFloat)right
+     priority:(unsigned int)priority location:(ACRBleedDirection)location
+ {
+    CGFloat leadingPadding = (location & ACRBleedToLeadingEdge) ? left : 0;
+    CGFloat trailingPadding = (location & ACRBleedToTrailingEdge) ? right : 0;
+    CGFloat topPadding = (location & ACRBleedToTopEdge) ? top : 0;
+    CGFloat bottomPadding = (location & ACRBleedToBottomEdge) ? bottom : 0;
+
+    NSString *horString = [[NSString alloc] initWithFormat:@"H:|-(%f@%u)-[_stackView]-(%f@%u)-|",
                            leadingPadding, priority, trailingPadding, priority];
-    NSString *verString = [[NSString alloc] initWithFormat:@"V:|-(%u@%u)-[_stackView]-(%u@%u)-|",
-                           topPadding, priority, bottomPadding, priority];
+    NSString *verString = [[NSString alloc] initWithFormat:@"V:|-(%f@%u)-[_stackView]-(%f@%u)-|",
+                           topPadding, priority, bottomPadding, 999];
 
     NSDictionary *dictionary = NSDictionaryOfVariableBindings(_stackView);
 

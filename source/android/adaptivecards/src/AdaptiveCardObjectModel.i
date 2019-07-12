@@ -72,11 +72,11 @@ struct tm {
 #include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
 #include "../../../shared/cpp/ObjectModel/BaseInputElement.h"
 #include "../../../shared/cpp/ObjectModel/CollectionTypeElement.h"
-#include "../../../shared/cpp/ObjectModel/BackgroundImage.h"
 #include "../../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.h"
 #include "../../../shared/cpp/ObjectModel/ActionParserRegistration.h"
 #include "../../../shared/cpp/ObjectModel/ElementParserRegistration.h"
 #include "../../../shared/cpp/ObjectModel/FeatureRegistration.h"
+#include "../../../shared/cpp/ObjectModel/BackgroundImage.h"
 #include "../../../shared/cpp/ObjectModel/Container.h"
 #include "../../../shared/cpp/ObjectModel/Image.h"
 #include "../../../shared/cpp/ObjectModel/ImageSet.h"
@@ -118,7 +118,6 @@ struct tm {
 #include "../../../shared/cpp/ObjectModel/RichTextElementProperties.h"
 %}
 
-%shared_ptr(AdaptiveCards::BackgroundImage)
 %shared_ptr(AdaptiveCards::BaseElement)
 %shared_ptr(AdaptiveCards::BaseActionElement)
 %shared_ptr(AdaptiveCards::BaseCardElement)
@@ -131,6 +130,7 @@ struct tm {
 %shared_ptr(AdaptiveCards::ElementParserRegistration)
 %shared_ptr(AdaptiveCards::ActionParserRegistration)
 %shared_ptr(AdaptiveCards::FeatureRegistration)
+%shared_ptr(AdaptiveCards::BackgroundImage)
 %shared_ptr(AdaptiveCards::Container)
 %shared_ptr(AdaptiveCards::TextBlock)
 %shared_ptr(AdaptiveCards::Image)
@@ -760,8 +760,8 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/BaseElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
-%include "../../../shared/cpp/ObjectModel/BackgroundImage.h"
 %include "../../../shared/cpp/ObjectModel/BaseInputElement.h"
+%include "../../../shared/cpp/ObjectModel/BackgroundImage.h"
 %include "../../../shared/cpp/ObjectModel/CollectionTypeElement.h"
 %include "../../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.h"
 %include "../../../shared/cpp/ObjectModel/ActionParserRegistration.h"

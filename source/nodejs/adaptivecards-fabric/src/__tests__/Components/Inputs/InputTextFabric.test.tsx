@@ -41,6 +41,37 @@ describe("InputTextExtended", () => {
         expect(input).toMatchSnapshot();
     });
 
+    it("can serialize inline action", () => {
+        let input = new InputTextFabric();
+        input.parse({
+            "type": "Input.Text",
+            "id": "input1",
+            "inlineAction": {
+                "type": "Action.Submit",
+                "iconUrl": "http://adaptivecards.io/content/cats/1.png",
+                "title": "Reply",
+            },
+        });
+
+        let json = input.toJSON();
+
+        expect(json).toBeDefined();
+        expect(json.inlineAction).toBeDefined();
+    });
+
+    it("renders text box with inline action correctly", () => {
+        let input = TestUtils.renderFabricComponent(InputTextFabric, {
+            "type": "Input.Text",
+            "id": "input3",
+            "placeholder": "enter comment",
+            "maxLength": 500,
+            "isMultiline": false,
+            "value": "This value was pre-filled",
+        });
+
+        expect(input).toMatchSnapshot();
+    });
+
     it("can set initial value", () => {
         let el = TestUtils.renderFabricComponent(InputTextFabric, {
             "type": "Input.Text",
@@ -71,5 +102,21 @@ describe("InputTextExtended", () => {
 
     it("can get json name", () => {
         expect(new InputTextFabric().getJsonTypeName()).toBe("Input.Text");
+    });
+
+    it("generates json correctly", () => {
+        const element = new InputTextFabric();
+        element.parse({
+            "type": "Input.Text",
+            "id": "blah",
+            "placeholder": "enter comment",
+            "style": "url"
+        });
+
+        const json = element.toJSON();
+        expect(json).toBeDefined();
+        expect(json.type).toEqual("Input.Text");
+        expect(json.placeholder).toEqual("enter comment");
+        expect(json.style).toEqual("Url");
     });
 });
