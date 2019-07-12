@@ -734,7 +734,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             })card";
 
             auto parseResult = AdaptiveCard::DeserializeFromString(cardStr, "1.2");
-            Assert::AreEqual(0U, parseResult->GetWarnings().size());
+            Assert::IsTrue(0 == parseResult->GetWarnings().size());
 
             auto column = (std::static_pointer_cast<ColumnSet>(parseResult->GetAdaptiveCard()->GetBody().at(0)))->GetColumns().at(0);
             Assert::IsTrue(FallbackType::Content == column->GetFallbackType());
@@ -767,7 +767,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             })card";
 
             auto parseResult = AdaptiveCard::DeserializeFromString(cardStr, "1.2");
-            Assert::AreEqual(1U, parseResult->GetWarnings().size());
+            Assert::IsTrue(1 == parseResult->GetWarnings().size());
             Assert::IsTrue(WarningStatusCode::UnknownElementType == parseResult->GetWarnings().at(0)->GetStatusCode());
             Assert::AreEqual("Column Fallback must be a Column. Fallback content dropped."s, parseResult->GetWarnings().at(0)->GetReason());
 
