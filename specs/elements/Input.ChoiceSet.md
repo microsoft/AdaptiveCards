@@ -8,7 +8,7 @@
 | **choices** | `Input.Choice[]` | Yes | `Choice` options. | 1.0 |
 | **id** | `string` | Yes | Unique identifier for the value. Used to identify collected input when the Submit action is performed. | 1.0 |
 | **isMultiSelect** | `boolean` | No | Allow multiple choices to be selected. | 1.0 |
-| **placeholder** | `string` | No | Description of the input desired. Displayed when no choice has been selected. | 1.3 |
+| **placeholder** | `string` | No | Description of the input desired. Displayed when no choice has been selected. Note that placeholder is only displayed when `style` is `compact`. | 1.3 |
 | **style** | `ChoiceInputStyle` | No |  | 1.0 |
 | **value** | `string` | No | The initial choice (or set of choices) that should be selected. For multi-select, specify a comma-separated string of values. | 1.0 |
 | **wrap** | `boolean` | No | If `true`, allow text to wrap. Otherwise, text is clipped. | 1.2 |
