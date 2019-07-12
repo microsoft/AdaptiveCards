@@ -15,11 +15,11 @@
     },
     "placeholder": {
       "type": "string",
-      "description": "Description of the input desired. Displayed when no choice has been selected.",
-			"version": "1.3",
-			"features": [
-				3198
-			]
+      "description": "Description of the input desired. Displayed when no choice has been selected. Note that placeholder is only displayed when `style` is `compact`.",
+      "version": "1.3",
+      "features": [
+        3198
+      ]
     },
     "style": {
       "type": "ChoiceInputStyle"
