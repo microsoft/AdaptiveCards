@@ -80,7 +80,7 @@ publishing {
     publications {
         adaptivecards(MavenPublication) {
             groupId 'io.adaptivecards'
-            version '1.2.0-20' + System.getenv('BUILD_BUILDNUMBER')
+            version System.getenv('ACSDKVERSION') + '-' + System.getenv('BUILD_BUILDNUMBER')
             artifact(sourceJar)
             artifact("$buildDir/outputs/aar/adaptivecards-release.aar")
         }
