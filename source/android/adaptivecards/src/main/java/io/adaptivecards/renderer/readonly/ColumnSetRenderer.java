@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.FeatureRegistration;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
@@ -96,7 +97,17 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             RenderArgs columnRenderArgs = new RenderArgs(renderArgs);
             columnRenderArgs.setContainerStyle(styleForThis);
 
-            columnRenderer.render(renderedCard, context, fragmentManager, layout, column, cardActionHandler, hostConfig, columnRenderArgs);
+            FeatureRegistration featureRegistration = CardRendererRegistration.getInstance().getFeatureRegistration();
+
+            CardRendererRegistration.getInstance().renderFallback(renderedCard,
+                                                                  context,
+                                                                  fragmentManager,
+                                                                  column,
+                                                                  layout,
+                                                                  cardActionHandler,
+                                                                  hostConfig,
+                                                                  columnRenderArgs,
+                                                                  featureRegistration);
         }
 
         if (columnSet.GetSelectAction() != null)
