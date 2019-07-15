@@ -84,12 +84,19 @@
     ACOBaseCardElement *acoColumn = [[ACOBaseCardElement alloc] init];
     auto firstColumn = columns.begin();
     auto prevColumn = columns.empty() ? nullptr : *firstColumn;
+    auto lastColumn { columns.back() };
     for (std::shared_ptr<Column> column : columns) {
         if (*firstColumn != column) {
             ACRSeparator *separator = [ACRSeparator renderSeparation:column forSuperview:columnSetView withHostConfig:config];
             configSeparatorVisibility(separator, prevColumn);
         }
+
         [acoColumn setElem:column];
+
+        if (lastColumn == column) {
+            columnSetView.isLastColumn = YES;
+        }
+
         curView = (ACRColumnView *)[columnRenderer render:columnSetView rootView:rootView inputs:inputs baseCardElement:acoColumn hostConfig:acoConfig];
 
         // when stretch, views with stretch properties should have equal width
