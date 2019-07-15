@@ -19,11 +19,11 @@
 {
     // if auto, maintain content size whenever possible
     if([self.columnWidth isEqualToString:@"auto"]){        
-        [view setContentHuggingPriority:251 forAxis:UILayoutConstraintAxisHorizontal];
+        [view setContentHuggingPriority:ACRColumnWidthPriorityAuto forAxis:UILayoutConstraintAxisHorizontal];
         [view setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
       // if columnWidth is set to stretch or number, allow column to fill the available space
     } else if([self.columnWidth isEqualToString:@"stretch"]){ 
-        [view setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+        [view setContentHuggingPriority:ACRColumnWidthPriorityStretch forAxis:UILayoutConstraintAxisHorizontal];
         [view setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     } else {
         [view setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
