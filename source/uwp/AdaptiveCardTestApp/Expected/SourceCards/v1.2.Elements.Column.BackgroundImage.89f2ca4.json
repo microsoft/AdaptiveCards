@@ -1,0 +1,141 @@
+{
+    "type": "AdaptiveCard",
+    "body": [
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "minHeight": "50px",
+                    "backgroundImage": "https://adaptivecards.io/content/AlkiBeach.jpg",
+                    "width": "auto"
+                },
+                {
+                    "type": "Column",
+                    "minHeight": "50px",
+                    "backgroundImage": {
+                        "url": "https://adaptivecards.io/content/GoldenGardensPark.jpg",
+                        "verticalAlignment": "Center"
+                    },
+                    "width": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "minHeight": "50px",
+                    "backgroundImage": "https://adaptivecards.io/content/BainbridgeIsland.jpg",
+                    "width": "auto"
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "You can even repeat the background image..."
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "minHeight": "50px",
+                    "backgroundImage": {
+                        "url": "https://adaptivecards.io/content/uparrow.png",
+                        "fillMode": "Repeat"
+                    },
+                    "width": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "horizontalAlignment": "Center",
+                    "verticalContentAlignment": "Center",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "horizontalAlignment": "Center",
+                            "text": "Those are some crazy arrows",
+                            "wrap": true
+                        }
+                    ],
+                    "width": "stretch"
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "Horizontal repeat..."
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "minHeight": "50px",
+                    "backgroundImage": {
+                        "url": "https://adaptivecards.io/content/downarrow.png",
+                        "fillMode": "RepeatHorizontally"
+                    },
+                    "width": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "minHeight": "50px",
+                    "backgroundImage": {
+                        "url": "https://adaptivecards.io/content/uparrow.png",
+                        "fillMode": "RepeatHorizontally",
+                        "verticalAlignment": "Center"
+                    },
+                    "width": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "minHeight": "50px",
+                    "backgroundImage": {
+                        "url": "https://adaptivecards.io/content/uparrow.png",
+                        "fillMode": "RepeatHorizontally",
+                        "verticalAlignment": "Bottom"
+                    },
+                    "width": "stretch"
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "Vertical repeat..."
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "minHeight": "50px",
+                    "backgroundImage": {
+                        "url": "https://adaptivecards.io/content/uparrow.png",
+                        "fillMode": "RepeatVertically"
+                    },
+                    "width": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "minHeight": "50px",
+                    "backgroundImage": {
+                        "url": "https://adaptivecards.io/content/downarrow.png",
+                        "fillMode": "RepeatVertically",
+                        "horizontalAlignment": "Center"
+                    },
+                    "width": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "minHeight": "50px",
+                    "backgroundImage": {
+                        "url": "https://adaptivecards.io/content/uparrow.png",
+                        "fillMode": "RepeatVertically",
+                        "horizontalAlignment": "Right"
+                    },
+                    "width": "stretch"
+                }
+            ]
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.2"
+}

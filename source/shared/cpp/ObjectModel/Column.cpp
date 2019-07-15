@@ -107,6 +107,20 @@ std::shared_ptr<BaseCardElement> ColumnParser::Deserialize(ParseContext& context
 {
     auto column = CollectionTypeElement::Deserialize<Column>(context, value);
 
+    auto fallbackElement = column->GetFallbackContent();
+    if (fallbackElement)
+    {
+        if (CardElementTypeFromString(fallbackElement->GetElementTypeString()) != CardElementType::Column)
+        {
+            context.warnings.emplace_back(
+                std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::UnknownElementType,
+                                                           "Column Fallback must be a Column. Fallback content dropped."));
+
+            column->SetFallbackContent(nullptr);
+            column->SetFallbackType(FallbackType::None);
+        }
+    }
+
     std::string columnWidth = ParseUtil::GetValueAsString(value, AdaptiveCardSchemaKey::Width);
     if (columnWidth == "")
     {
