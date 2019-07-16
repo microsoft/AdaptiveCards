@@ -1,0 +1,1 @@
+{"actions":[],"body":[{"columns":[{"fallback":{"items":[{"text":"Fallback","type":"TextBlock"}],"type":"Column"},"items":[{"type":"Graph"}],"type":"Column","width":"auto"},{"fallback":"drop","items":[{"type":"Graph"}],"type":"Column"},{"items":[{"text":"This is a column","type":"TextBlock","wrap":true}],"type":"Column"}],"type":"ColumnSet"}],"type":"AdaptiveCard","version":"1.0"}
