@@ -27,7 +27,7 @@ namespace AdaptiveCards.Templating
         {
             if (_js == null)
             {
-                _js = EmbeddedResourceHelper.GetResource("AdaptiveCards.Templating.js.adaptivecards-templating.var.min.js");
+                _js = EmbeddedResourceHelper.GetResource("AdaptiveCards.Templating.js.adaptivecards-templating.min.js");
             }
             return _js;
         }

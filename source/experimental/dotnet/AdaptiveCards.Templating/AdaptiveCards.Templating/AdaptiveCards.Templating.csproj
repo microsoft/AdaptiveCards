@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="..\..\..\..\nodejs\adaptivecards-templating\dist\adaptivecards-templating.var.min.js" Link="js\adaptivecards-templating.var.min.js" />
+    <EmbeddedResource Include="..\..\..\..\nodejs\adaptivecards-templating\dist\adaptivecards-templating.min.js" Link="js\adaptivecards-templating.min.js" />
   </ItemGroup>
 
 </Project>

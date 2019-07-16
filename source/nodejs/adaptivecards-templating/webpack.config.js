@@ -6,7 +6,7 @@ module.exports = (env, argv) => {
 
 	console.info('running webpack with mode:', mode);
 
-	const umdConfig = {
+	return {
 		mode: mode,
 		entry: {
 			"adaptivecards-templating": "./src/adaptivecards-templating.ts"
@@ -15,35 +15,6 @@ module.exports = (env, argv) => {
 			path: path.resolve(__dirname, "./dist"),
 			filename: devMode ? "[name].js" : "[name].min.js",
 			libraryTarget: "umd",
-			library: "ACData"
-		},
-		devtool: devMode ? "inline-source-map" : "source-map",
-		devServer: {
-			contentBase: './dist'
-		},
-		resolve: {
-			extensions: [".ts", ".tsx", ".js"]
-		},
-		module: {
-			rules: [{
-					test: /\.ts$/,
-					loader: "ts-loader",
-					exclude: /(node_modules|__tests__)/
-				}
-			]
-		}
-	};
-
-	// Used in apps like .NET and Android
-	const varConfig = {
-		mode: mode,
-		entry: {
-			"adaptivecards-templating": "./src/adaptivecards-templating.ts"
-		},
-		output: {
-			path: path.resolve(__dirname, "./dist"),
-			filename: devMode ? "[name].var.js" : "[name].var.min.js",
-			libraryTarget: "var",
 			library: "ACData",
 			globalObject: "this"
 		},
@@ -63,9 +34,4 @@ module.exports = (env, argv) => {
 			]
 		}
 	};
-
-	return [
-		umdConfig,
-		varConfig
-	]
 }
