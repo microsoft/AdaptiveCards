@@ -2,6 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>0.1.0-alpha.1</Version>
+    <Authors>Microsoft</Authors>
+    <Product>Adaptive Cards</Product>
+    <Summary>JSON templating library</Summary>
+    <Description>This library implements a JSON-to-JSON templating/data-binding engine. While it is designed to be used with Adaptive Cards, it is not dependent on Adaptive Cards and can therefore be used in many contexts and applications.</Description>
+    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
+    <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
+    <PackageIconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</PackageIconUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/microsoft/AdaptiveCards/issues/2448</PackageProjectUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
