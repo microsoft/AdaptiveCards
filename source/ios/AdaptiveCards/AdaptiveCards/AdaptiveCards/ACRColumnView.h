@@ -10,10 +10,8 @@
 
 typedef NS_ENUM(NSInteger, ACRColumnWidthPriority) {
     ACRColumnWidthPriorityStretch = 250,
-    ACRColumnWidthPriorityStretchAuto,
-    ACRColumnWidthPriorityAuto,    
+    ACRColumnWidthPriorityAuto = ACRColumnWidthPriorityStretch + 1
 };
-
 @property NSString *columnWidth;
 @property CGFloat pixelWidth;
 @property BOOL hasStretchableView;
