@@ -37,4 +37,5 @@
 
 - (void)bleed:(unsigned int)padding priority:(unsigned int)priority target:(UIView *)target direction:(ACRBleedDirection)direction parentView:(UIView *)parent;
 
+- (void)removeViewFromContentStackView:(UIView *)view;
 @end
