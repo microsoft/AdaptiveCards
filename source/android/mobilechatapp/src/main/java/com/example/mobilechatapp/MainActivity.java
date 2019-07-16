@@ -281,10 +281,14 @@ public class MainActivity extends AppCompatActivity implements ICardActionHandle
         {
             try
             {
-                JSONObject object = new JSONObject();
+                JSONObject object = null;
                 if (!data.equals("null\n"))
                 {
                     object = new JSONObject(data);
+                }
+                else
+                {
+                    object = new JSONObject();
                 }
                 showToast("Submit data: " + object.toString() + "\nInput: " + keyValueMap.toString(), Toast.LENGTH_LONG);
             }
