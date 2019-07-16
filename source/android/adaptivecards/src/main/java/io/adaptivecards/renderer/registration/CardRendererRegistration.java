@@ -263,7 +263,7 @@ public class CardRendererRegistration
         for (int i = 0; i < size; i++)
         {
             BaseCardElement cardElement = baseCardElementList.get(i);
-            renderFallback(renderedCard, context, fragmentManager, cardElement, layout, cardActionHandler, hostConfig, renderArgs, featureRegistration);
+            renderElementAndPerformFallback(renderedCard, context, fragmentManager, cardElement, layout, cardActionHandler, hostConfig, renderArgs, featureRegistration);
         }
 
         // This is made as the last operation so we can assure the contents were rendered properly
@@ -301,7 +301,7 @@ public class CardRendererRegistration
         return layout;
     }
 
-    public void renderFallback(
+    public void renderElementAndPerformFallback(
             RenderedAdaptiveCard renderedCard,
             Context context,
             FragmentManager fragmentManager,
