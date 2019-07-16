@@ -127,3 +127,9 @@ Time.format(input: string)
 
 ### Custom functions
 Currently not supported, if you need this, let us know
+
+
+
+## Building
+
+To build the library, first you need to build the nodejs libraries in release mode. See the nodejs folder readme for more info.
