@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "Column.h"
 #include "ParseContext.h"
@@ -93,13 +95,31 @@ void Column::GetResourceInformation(std::vector<RemoteResourceInformation>& reso
 void Column::DeserializeChildren(ParseContext& context, const Json::Value& value)
 {
     // Parse Items
-    auto cardElements = ParseUtil::GetElementCollection(context, value, AdaptiveCardSchemaKey::Items, false);
+    auto cardElements = ParseUtil::GetElementCollection<BaseCardElement>(true, // isTopToBottomContainer
+                                                                         context,
+                                                                         value,
+                                                                         AdaptiveCardSchemaKey::Items,
+                                                                         false); // isRequired
     m_items = std::move(cardElements);
 }
 
 std::shared_ptr<BaseCardElement> ColumnParser::Deserialize(ParseContext& context, const Json::Value& value)
 {
     auto column = CollectionTypeElement::Deserialize<Column>(context, value);
+
+    auto fallbackElement = column->GetFallbackContent();
+    if (fallbackElement)
+    {
+        if (CardElementTypeFromString(fallbackElement->GetElementTypeString()) != CardElementType::Column)
+        {
+            context.warnings.emplace_back(
+                std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::UnknownElementType,
+                                                           "Column Fallback must be a Column. Fallback content dropped."));
+
+            column->SetFallbackContent(nullptr);
+            column->SetFallbackType(FallbackType::None);
+        }
+    }
 
     std::string columnWidth = ParseUtil::GetValueAsString(value, AdaptiveCardSchemaKey::Width);
     if (columnWidth == "")

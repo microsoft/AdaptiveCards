@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import * as Enums from "./enums";
 import * as Shared from "./shared";
 import { HostConfig } from "./host-config";
@@ -24,7 +26,7 @@ export function appendChild(node: Node, child: Node) {
     }
 }
 
-export function setProperty(target: any, propertyName: string, propertyValue: any, defaultValue: any = undefined) {
+export function setProperty(target: object, propertyName: string, propertyValue: any, defaultValue: any = undefined) {
     if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue) {
         delete target[propertyName];
     }
@@ -33,7 +35,7 @@ export function setProperty(target: any, propertyName: string, propertyValue: an
     }
 }
 
-export function setEnumProperty(enumType: { [s: number]: string }, target: any, propertyName: string, propertyValue: number, defaultValue: number = undefined) {
+export function setEnumProperty(enumType: { [s: number]: string }, target: object, propertyName: string, propertyValue: number, defaultValue: number = undefined) {
     let targetValue = target[propertyName];
 
     let canDeleteTarget = targetValue == undefined ? true : enumType[targetValue] !== undefined;
@@ -52,6 +54,25 @@ export function setEnumProperty(enumType: { [s: number]: string }, target: any, 
         else {
             target[propertyName] = enumType[propertyValue];
         }
+    }
+}
+
+export function setArrayProperty(target: object, propertyName: string, propertyValue: any[]) {
+    let items = [];
+
+    if (propertyValue) {
+        for (let item of propertyValue) {
+            items.push(item.toJSON());
+        }
+    }
+
+    if (items.length == 0) {
+        if (target.hasOwnProperty(propertyName) && Array.isArray(target[propertyName])) {
+            delete target[propertyName];
+        }
+    }
+    else {
+        setProperty(target, propertyName, items);
     }
 }
 

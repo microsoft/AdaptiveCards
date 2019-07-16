@@ -48,6 +48,7 @@ using namespace AdaptiveCards;
     }
     return self;
 }
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [self initWithFrame:CGRectMake(0,0,frame.size.width, frame.size.height) attributes:nil];
@@ -113,31 +114,44 @@ using namespace AdaptiveCards;
 
 - (void)config:(nullable NSDictionary<NSString *, id> *)attributes
 {
-    if(!self.stackView){
+    if (!self.stackView) {
         return;
     }
+
     [self addSubview:self.stackView];
-    [self applyPadding:0 priority:1000];
     self.stackView.translatesAutoresizingMaskIntoConstraints = NO;
     self.translatesAutoresizingMaskIntoConstraints = NO;
 
     _targets = [[NSMutableArray alloc] init];
     _showcardTargets = [[NSMutableArray alloc] init];
 
-    if(attributes){
+    CGFloat top = 0, left = 0, bottom = 0, right = 0;
+
+    if (attributes) {
         NSNumber *distribAttrib = attributes[@"distribution"];
-        if([distribAttrib boolValue]){
+        if ([distribAttrib boolValue]) {
             self.stackView.distribution = (UIStackViewDistribution)[distribAttrib integerValue];
         }
+
         NSNumber *alignAttrib = attributes[@"alignment"];
-        if([alignAttrib boolValue]){
+        if ([alignAttrib boolValue]) {
             self.stackView.alignment = (UIStackViewAlignment)[alignAttrib integerValue];
         }
+
         NSNumber *spacingAttrib = attributes[@"spacing"];
-        if([spacingAttrib boolValue]){
+        if ([spacingAttrib boolValue]) {
             self.stackView.spacing = [spacingAttrib floatValue];
         }
+
+        NSNumber *topPaddingAttrib = attributes[@"padding-top"];
+        if ([topPaddingAttrib boolValue]) {
+            top = [topPaddingAttrib floatValue];
+        }
     }
+
+    [self applyPaddingToTop:top left:left
+        bottom:bottom right:right
+        priority:1000 location:ACRBleedToAll];
 }
 
 - (CGSize)intrinsicContentSize
@@ -203,30 +217,66 @@ using namespace AdaptiveCards;
 
 - (void)applyPadding:(unsigned int)padding priority:(unsigned int)priority
 {
-    NSString *horString = [[NSString alloc] initWithFormat:@"H:|-(%u@%u)-[_stackView]-(%u@%u)-|",
-                           padding, priority, padding, priority];
-    NSString *verString = [[NSString alloc] initWithFormat:@"V:|-(%u@%u)-[_stackView]-(%u@%u)-|",
-                           padding, priority, padding, priority];
+    [self applyPadding:padding priority:priority location:ACRBleedToAll];
+}
+
+- (void)applyPadding:(unsigned int)amount priority:(unsigned int)priority location:(ACRBleedDirection)location
+{
+    [self applyPaddingToTop:amount left:amount bottom:amount right:amount priority:priority location:location];
+}
+
+- (void)applyPaddingToTop:(CGFloat)top left:(CGFloat)left
+     bottom:(CGFloat)bottom right:(CGFloat)right
+     priority:(unsigned int)priority location:(ACRBleedDirection)location
+ {
+    CGFloat leadingPadding = (location & ACRBleedToLeadingEdge) ? left : 0;
+    CGFloat trailingPadding = (location & ACRBleedToTrailingEdge) ? right : 0;
+    CGFloat topPadding = (location & ACRBleedToTopEdge) ? top : 0;
+    CGFloat bottomPadding = (location & ACRBleedToBottomEdge) ? bottom : 0;
+
+    NSString *horString = [[NSString alloc] initWithFormat:@"H:|-(%f@%u)-[_stackView]-(%f@%u)-|",
+                           leadingPadding, priority, trailingPadding, priority];
+    NSString *verString = [[NSString alloc] initWithFormat:@"V:|-(%f@%u)-[_stackView]-(%f@%u)-|",
+                           topPadding, priority, bottomPadding, 999];
+
     NSDictionary *dictionary = NSDictionaryOfVariableBindings(_stackView);
+
     _widthconstraint = [NSLayoutConstraint constraintsWithVisualFormat:horString
                                                                 options:0
                                                                 metrics:nil
                                                                   views:dictionary];
-    NSArray *vertConst = [NSLayoutConstraint constraintsWithVisualFormat:verString
-                                                                 options:0
-                                                                 metrics:nil
-                                                                   views:dictionary];
+    _heightconstraint = [NSLayoutConstraint constraintsWithVisualFormat:verString
+                                                                options:0
+                                                                metrics:nil
+                                                                  views:dictionary];
 
     [self addConstraints:_widthconstraint];
-    [self addConstraints:vertConst];
+    [self addConstraints:_heightconstraint];
 }
 
+// target is the background view, it will be pinned to parent according to the direction set by bleed,
+// constraints that are specified by the direction, those will be set to the view that is bleeding
 - (void)bleed:(unsigned int)padding priority:(unsigned int)priority target:(UIView *)target
-    direction:(ACRBleedDirection)direction
+    direction:(ACRBleedDirection)direction parentView:(UIView *)parent
 {
+    // remove existing constraints
     [self removeConstraints:_widthconstraint];
-    // new width will be bleed target - padding left and right
-    [self.stackView.widthAnchor constraintEqualToAnchor:target.widthAnchor constant:padding * -2.0].active = YES;
+    [self removeConstraints:_heightconstraint];
+
+    UIView *leadingView = (direction & ACRBleedToLeadingEdge) ? parent : self;
+    UIView *trailingView = (direction & ACRBleedToTrailingEdge) ? parent : self;
+    UIView *topView = (direction & ACRBleedToTopEdge) ? parent : self;
+    UIView *bottomView = (direction & ACRBleedToBottomEdge) ? parent : self;
+
+    [target.leadingAnchor constraintEqualToAnchor:leadingView.leadingAnchor].active = YES;
+    [target.trailingAnchor constraintEqualToAnchor:trailingView.trailingAnchor].active = YES;
+    [target.topAnchor constraintEqualToAnchor:topView.topAnchor].active = YES;
+    [target.bottomAnchor constraintEqualToAnchor:bottomView.bottomAnchor].active = YES;
+
+    // inverse the bit pattern that are set by ACRBleedDirection enums
+    NSInteger bleedDirection = ~(~0 & direction);
+
+    [self applyPadding:padding priority:1000 location:(ACRBleedDirection)bleedDirection];
 }
 
 - (UILayoutConstraintAxis)getAxis

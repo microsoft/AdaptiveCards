@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "XamlHelpers.h"
 #include "XamlBuilder.h"
@@ -249,13 +251,13 @@ void GetMediaSource(_In_ IAdaptiveHostConfig* hostConfig,
         ComPtr<IAdaptiveMediaSource> currentSource;
         THROW_IF_FAILED(sourceIterator->get_Current(&currentSource));
 
-        HString mimeType;
-        THROW_IF_FAILED(currentSource->get_MimeType(mimeType.GetAddressOf()));
+        HString currentMimeType;
+        THROW_IF_FAILED(currentSource->get_MimeType(currentMimeType.GetAddressOf()));
 
         INT32 isSupported;
         for (UINT i = 0; i < ARRAYSIZE(supportedMimeTypes); i++)
         {
-            THROW_IF_FAILED(WindowsCompareStringOrdinal(mimeType.Get(), HStringReference(supportedMimeTypes[i]).Get(), &isSupported));
+            THROW_IF_FAILED(WindowsCompareStringOrdinal(currentMimeType.Get(), HStringReference(supportedMimeTypes[i]).Get(), &isSupported));
 
             if (isSupported == 0)
             {

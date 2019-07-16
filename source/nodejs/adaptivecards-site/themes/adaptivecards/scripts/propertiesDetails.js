@@ -1,49 +1,56 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 "use strict";
 
-var markedschema = require("marked-schema");
+var typedschema = require("typed-schema");
 var marked = require("marked");
 var fs = require("fs");
 var path = require("path");
 
-hexo.extend.helper.register('propertiesDetails', function (properties) {
+hexo.extend.helper.register('propertiesDetails', function (properties, elementVersion, isSpec) {
   var html = '<h2 class="w3-container">Properties</h2>';
 
-  for (var name in properties) {
-    if (properties.hasOwnProperty(name)) {
-      var property = properties[name];
+  properties.forEach((property, name) => {
 
-      // Get the markdown for the property and turn it into HTML
-      html += '<div class="w3-container">';
+	// Get the markdown for the property and turn it into HTML
+	html += '<div class="w3-container">';
 
-      html += marked(markedschema.generateMarkdown.createPropertyDetails(property, 3), { headerPrefix: "dedupe-header" });
-      html += '</div>'
+	html += marked(typedschema.markdown.createPropertyDetails(property, 3, null, false, true, elementVersion), { headerPrefix: "dedupe-header" });
+	html += '</div>'
 
 
-      // Load card example file into a div, using JS to render it later
-      property.examples.forEach(function (example, i) {
-        if (i === 0) {
-          html += '<h4 class="w3-container">Example</h4>';
-        }
+	// Load card example file into a div, using JS to render it later
+	if (!isSpec) {
+		property.cardExamples.forEach(function (example, i) {
+			var sampleHtml = "";
+			try {
+				if (i === 0) {
+					sampleHtml += '<h4 class="w3-container">Example</h4>';
+				}
 
-        var exampleContent = fs.readFileSync(example, "utf8");
+				var exampleContent = fs.readFileSync(example, "utf8");
 
-        html += '<div class="w3-row reverse-order-mobile">';
+				sampleHtml += '<div class="w3-row reverse-order-mobile">';
 
-        html += '<div class="w3-container w3-col s12 m7 l8 code-snippet">';
-        html += "<pre><code class='json'>" + exampleContent + "</code></pre>";
-        html += "</div>";
+				sampleHtml += '<div class="w3-container w3-col s12 m7 l8 code-snippet">';
+				sampleHtml += "<pre><code class='json'>" + exampleContent + "</code></pre>";
+				sampleHtml += "</div>";
 
-        html += '<div class="w3-container w3-col s12 m5 l4">';
-        html += '<div class="adaptivecard">' + exampleContent + '</div>';
-        html += '<a class="w3-btn w3-blue" target="_blank" href="/designer/index.html?card=/payloads/' + path.basename(example) + '">Try it Yourself »</a>';
-        html += '</div>';
+				sampleHtml += '<div class="w3-container w3-col s12 m5 l4">';
+				sampleHtml += '<div class="adaptivecard">' + exampleContent + '</div>';
+				sampleHtml += '<a class="w3-btn w3-blue" target="_blank" href="/designer/index.html?card=/payloads/' + path.basename(example) + '">Try it Yourself »</a>';
+				sampleHtml += '</div>';
 
-        html += '</div>'; // w3-cell-row
+				sampleHtml += '</div>'; // w3-cell-row
 
-      });
+				html += sampleHtml;
+			} catch (err) {
+				// Do nothing
+			}
 
-    }
-  }
+		});
+	}
+  });
 
   return html;
 });

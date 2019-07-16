@@ -87,12 +87,12 @@ public class TextRun extends Inline {
     AdaptiveCardObjectModelJNI.TextRun_SetTextWeight(swigCPtr, this, value.swigValue());
   }
 
-  public FontStyle GetFontStyle() {
-    return FontStyle.swigToEnum(AdaptiveCardObjectModelJNI.TextRun_GetFontStyle(swigCPtr, this));
+  public FontType GetFontType() {
+    return FontType.swigToEnum(AdaptiveCardObjectModelJNI.TextRun_GetFontType(swigCPtr, this));
   }
 
-  public void SetFontStyle(FontStyle value) {
-    AdaptiveCardObjectModelJNI.TextRun_SetFontStyle(swigCPtr, this, value.swigValue());
+  public void SetFontType(FontType value) {
+    AdaptiveCardObjectModelJNI.TextRun_SetFontType(swigCPtr, this, value.swigValue());
   }
 
   public ForegroundColor GetTextColor() {

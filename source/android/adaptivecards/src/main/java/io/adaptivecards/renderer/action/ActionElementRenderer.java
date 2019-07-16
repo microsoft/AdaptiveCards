@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer.action;
 
 import android.app.Activity;
@@ -123,17 +125,17 @@ public class ActionElementRenderer extends BaseActionElementRenderer
         return new Button(themedContext);
     }
 
-    protected static Button getButtonForSentiment(Context context, String sentiment, HostConfig hostConfig)
+    protected static Button getButtonForStyle(Context context, String style, HostConfig hostConfig)
     {
-        boolean isPositiveSentiment = sentiment.equalsIgnoreCase("Positive");
-        boolean isDestructiveSentiment = sentiment.equalsIgnoreCase("Destructive");
+        boolean isPositiveStyle = style.equalsIgnoreCase("Positive");
+        boolean isDestructiveStyle = style.equalsIgnoreCase("Destructive");
 
-        if(isPositiveSentiment || isDestructiveSentiment)
+        if(isPositiveStyle || isDestructiveStyle)
         {
             Resources.Theme theme = context.getTheme();
             TypedValue buttonStyle = new TypedValue();
 
-            if(isPositiveSentiment)
+            if(isPositiveStyle)
             {
                 if(theme.resolveAttribute(R.attr.adaptiveActionPositive, buttonStyle, true))
                 {
@@ -172,7 +174,7 @@ public class ActionElementRenderer extends BaseActionElementRenderer
         RenderedAdaptiveCard renderedCard,
         RenderArgs renderArgs)
     {
-        Button button = getButtonForSentiment(context, baseActionElement.GetSentiment(), hostConfig);
+        Button button = getButtonForStyle(context, baseActionElement.GetStyle(), hostConfig);
 
         button.setText(baseActionElement.GetTitle());
         ActionAlignment alignment = hostConfig.GetActions().getActionAlignment();

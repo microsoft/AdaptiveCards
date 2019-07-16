@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveInputs.h"
 
@@ -61,9 +63,9 @@ namespace AdaptiveNamespace
         return outStream.str();
     }
 
-    HRESULT AdaptiveInputs::AsValueSet(_COM_Outptr_ IPropertySet** value)
+    HRESULT AdaptiveInputs::AsValueSet(_COM_Outptr_ IPropertySet** valueSetOut)
     {
-        *value = nullptr;
+        *valueSetOut = nullptr;
         ComPtr<IPropertySet> valueSet;
         RETURN_IF_FAILED(ActivateInstance(HStringReference(RuntimeClass_Windows_Foundation_Collections_ValueSet).Get(), &valueSet));
         ComPtr<IMap<HSTRING, IInspectable*>> propertySetMap;
@@ -92,6 +94,6 @@ namespace AdaptiveNamespace
             boolean replaced;
             RETURN_IF_FAILED(propertySetMap->Insert(key.Get(), propVal.Get(), &replaced));
         }
-        return valueSet.CopyTo(value);
+        return valueSet.CopyTo(valueSetOut);
     }
 }

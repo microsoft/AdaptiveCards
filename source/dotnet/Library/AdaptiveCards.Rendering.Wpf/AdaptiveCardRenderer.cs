@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -161,46 +163,11 @@ namespace AdaptiveCards.Rendering.Wpf
 
             outerGrid.MinHeight = card.PixelMinHeight;
 
-            AdaptiveContainerRenderer.AddContainerElements(grid, card.Body, context);
-            AdaptiveActionSetRenderer.AddActions(grid, card.Actions, context);
-
-            // Only handle Action show cards for the main card
-            if (context.CardDepth == 1)
-            {
-                // Define a new row to contain all the show cards
-                if (context.ActionShowCards.Count > 0)
-                {
-                    grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-                }
-
-                foreach (var showCardTuple in context.ActionShowCards)
-                {
-                    var currentShowCard = showCardTuple.Value;
-                    var uiButton = showCardTuple.Key;
-
-                    Grid.SetRow(currentShowCard, grid.RowDefinitions.Count - 1);
-                    grid.Children.Add(currentShowCard);
-
-                    // Assign on click function to all button elements
-                    uiButton.Click += (sender, e) =>
-                    {
-                        bool isCardCollapsed = (currentShowCard.Visibility != Visibility.Visible);
-
-                        // Collapse all the show cards
-                        foreach (var t in context.ActionShowCards)
-                        {
-                            var showCard = t.Value;
-                            showCard.Visibility = Visibility.Collapsed;
-                        }
-
-                        // If current card is previously collapsed, show it
-                        if (isCardCollapsed)
-                            currentShowCard.Visibility = Visibility.Visible;
-                    };
-                }
-            }
-
             outerGrid.Children.Add(grid);
+
+            AdaptiveContainerRenderer.AddContainerElements(grid, card.Body, context);
+            AdaptiveActionSetRenderer.AddRenderedActions(grid, card.Actions, context);
+
 
             if (card.SelectAction != null)
             {
@@ -208,7 +175,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
                 return outerGridWithSelectAction;
             }
-            
+
             return outerGrid;
         }
 
@@ -252,7 +219,7 @@ namespace AdaptiveCards.Rendering.Wpf
             Resources["Adaptive.Action.Positive.Button.MouseOver.Background"] = context.GetColorBrush(lighterAccentColor);
             Resources["Adaptive.Action.Destructive.Button.Foreground"] = context.GetColorBrush(attentionColor);
             Resources["Adaptive.Action.Destructive.Button.MouseOver.Foreground"] = context.GetColorBrush(lighterAttentionColor);
-            
+
             var element = context.Render(card);
 
             renderCard = new RenderedAdaptiveCard(element, card, context.Warnings, context.InputBindings);

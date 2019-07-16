@@ -1,11 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer.readonly;
 
 import android.graphics.Typeface;
 import android.view.Gravity;
-import android.widget.TextView;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
-import io.adaptivecards.objectmodel.FontStyle;
+import io.adaptivecards.objectmodel.FontType;
 import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.HorizontalAlignment;
 import io.adaptivecards.objectmodel.HostConfig;
@@ -38,17 +39,17 @@ public class TextRendererUtil
         return alignment;
     }
 
-    static long getTextSize(FontStyle style, TextSize textSize, HostConfig hostConfig)
+    static long getTextSize(FontType type, TextSize textSize, HostConfig hostConfig)
     {
-        return hostConfig.GetFontSize(style, textSize);
+        return hostConfig.GetFontSize(type, textSize);
     }
 
-    static Typeface getTextFormat(HostConfig hostConfig, FontStyle style)
+    static Typeface getTextFormat(HostConfig hostConfig, FontType type)
     {
-        String fontFamily = hostConfig.GetFontFamily(style);
+        String fontFamily = hostConfig.GetFontFamily(type);
 
         Typeface typeface;
-        if (fontFamily.isEmpty() && style == FontStyle.Monospace)
+        if (fontFamily.isEmpty() && type == FontType.Monospace)
         {
             typeface = Typeface.MONOSPACE;
         }

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer.input;
 
 import android.content.Context;
@@ -9,6 +11,7 @@ import android.widget.EditText;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.DateTimePreparser;
+import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
@@ -74,12 +77,13 @@ public class DateInputRenderer extends TextInputRenderer
             throw new InternalError("Unable to convert BaseCardElement to DateInput object model.");
         }
 
-        setSpacingAndSeparator(context, viewGroup, dateInput.GetSpacing(), dateInput.GetSeparator(), hostConfig, true /* horizontal line */);
+        View separator = setSpacingAndSeparator(context, viewGroup, dateInput.GetSpacing(), dateInput.GetSeparator(), hostConfig, true /* horizontal line */);
 
         DateInputHandler dateInputHandler = new DateInputHandler(dateInput, fragmentManager);
 
         String dateString = DateFormat.getDateInstance().format(RendererUtil.getDate(dateInput.GetValue()).getTime());
 
+        TagContent tagContent = new TagContent(dateInput, dateInputHandler, separator, viewGroup);
         EditText editText = renderInternal(
                 renderedCard,
                 context,
@@ -88,7 +92,8 @@ public class DateInputRenderer extends TextInputRenderer
                 dateString,
                 dateInput.GetPlaceholder(),
                 dateInputHandler,
-                hostConfig);
+                hostConfig,
+                tagContent);
         editText.setRawInputType(TYPE_NULL);
         editText.setFocusable(false);
         editText.setOnClickListener(new View.OnClickListener()
@@ -110,12 +115,9 @@ public class DateInputRenderer extends TextInputRenderer
 
             }
         });
-        editText.setTag(new TagContent(dateInput, dateInputHandler));
 
-        if (!baseCardElement.GetIsVisible())
-        {
-            editText.setVisibility(View.GONE);
-        }
+        editText.setTag(tagContent);
+        setVisibility(baseCardElement.GetIsVisible(), editText);
 
         return editText;
     }

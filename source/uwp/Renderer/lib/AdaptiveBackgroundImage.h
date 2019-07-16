@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
@@ -19,17 +21,17 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveSharedNamespace::BackgroundImage>& sharedImage);
 
-        IFACEMETHODIMP get_Url(_Out_ HSTRING* url);
+        IFACEMETHODIMP get_Url(_Outptr_ HSTRING* url);
         IFACEMETHODIMP put_Url(_In_ HSTRING url);
 
-        IFACEMETHODIMP get_Mode(_Out_ ABI::AdaptiveNamespace::BackgroundImageMode* mode);
-        IFACEMETHODIMP put_Mode(_In_ ABI::AdaptiveNamespace::BackgroundImageMode mode);
+        IFACEMETHODIMP get_FillMode(_Out_ ABI::AdaptiveNamespace::BackgroundImageFillMode* fillMode);
+        IFACEMETHODIMP put_FillMode(ABI::AdaptiveNamespace::BackgroundImageFillMode fillMode);
 
         IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveNamespace::HAlignment* HorizontalAlignment);
-        IFACEMETHODIMP put_HorizontalAlignment(_In_ ABI::AdaptiveNamespace::HAlignment HorizontalAlignment);
+        IFACEMETHODIMP put_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment HorizontalAlignment);
 
         IFACEMETHODIMP get_VerticalAlignment(_Out_ ABI::AdaptiveNamespace::VAlignment* VerticalAlignment);
-        IFACEMETHODIMP put_VerticalAlignment(_In_ ABI::AdaptiveNamespace::VAlignment VerticalAlignment);
+        IFACEMETHODIMP put_VerticalAlignment(ABI::AdaptiveNamespace::VAlignment VerticalAlignment);
 
         HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BackgroundImage>& sharedModel);
 
@@ -38,7 +40,7 @@ namespace AdaptiveNamespace
 
     private:
         Microsoft::WRL::Wrappers::HString m_url;
-        ABI::AdaptiveNamespace::BackgroundImageMode m_mode;
+        ABI::AdaptiveNamespace::BackgroundImageFillMode m_fillMode;
         ABI::AdaptiveNamespace::HAlignment m_horizontalAlignment;
         ABI::AdaptiveNamespace::VAlignment m_verticalAlignment;
     };

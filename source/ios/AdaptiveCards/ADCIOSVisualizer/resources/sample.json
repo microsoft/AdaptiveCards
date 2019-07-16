@@ -1,7 +1,7 @@
 {
 	"supportsInteractivity": true,
 	"imageBaseUrl": "https://pbs.twimg.com/profile_images/3647943215/",
-	"fontStyles": {
+	"fontTypes": {
 		"default": {
 			"fontFamily": "San Francisco",
 			"fontSizes": {
@@ -246,7 +246,7 @@
 		"spacing": 5
 	},
 	"media": {
-		"playButton" :"https://www.shareicon.net/download/64x64/2017/04/08/883361_media_512x512.png",
+        "playButton" : "http://adaptivecards.io/content/adaptive-card-50.png",
 		"allowInlinePlayback" : true
 	}
 }

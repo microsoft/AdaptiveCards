@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "ToggleInput.h"
 #include "ParseUtil.h"
@@ -27,12 +29,12 @@ Json::Value ToggleInput::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = m_value;
     }
 
-    if (!m_valueOff.empty())
+    if (m_valueOff != "false")
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ValueOff)] = m_valueOff;
     }
 
-    if (!m_valueOn.empty())
+    if (m_valueOn != "true")
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ValueOn)] = m_valueOn;
     }
@@ -98,18 +100,8 @@ std::shared_ptr<BaseCardElement> ToggleInputParser::Deserialize(ParseContext& co
     toggleInput->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title, true));
     toggleInput->SetValue(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Value));
     toggleInput->SetWrap(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Wrap, false, false));
-
-    std::string valueOff = ParseUtil::GetString(json, AdaptiveCardSchemaKey::ValueOff);
-    if (valueOff != "")
-    {
-        toggleInput->SetValueOff(valueOff);
-    }
-
-    std::string valueOn = ParseUtil::GetString(json, AdaptiveCardSchemaKey::ValueOn);
-    if (valueOn != "")
-    {
-        toggleInput->SetValueOn(valueOn);
-    }
+    toggleInput->SetValueOff(ParseUtil::GetString(json, AdaptiveCardSchemaKey::ValueOff, std::string("false")));
+    toggleInput->SetValueOn(ParseUtil::GetString(json, AdaptiveCardSchemaKey::ValueOn, std::string("true")));
 
     return toggleInput;
 }

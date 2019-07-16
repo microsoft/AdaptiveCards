@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "HostConfig.h"
 #include "ParseUtil.h"
@@ -33,8 +35,8 @@ HostConfig HostConfig::Deserialize(const Json::Value& json)
     result._fontWeights = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontWeightsConfig>(
         json, AdaptiveCardSchemaKey::FontWeights, result._fontWeights, FontWeightsConfig::Deserialize);
 
-    result._fontStyles = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontStylesDefinition>(
-        json, AdaptiveCardSchemaKey::FontStyles, result._fontStyles, FontStylesDefinition::Deserialize);
+    result._fontTypes = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontTypesDefinition>(
+        json, AdaptiveCardSchemaKey::FontTypes, result._fontTypes, FontTypesDefinition::Deserialize);
 
     result._containerStyles = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStylesDefinition>(
         json, AdaptiveCardSchemaKey::ContainerStyles, result._containerStyles, ContainerStylesDefinition::Deserialize);
@@ -87,9 +89,9 @@ FontSizesConfig FontSizesConfig::Deserialize(const Json::Value& json, const Font
     return result;
 }
 
-FontStyleDefinition FontStyleDefinition::Deserialize(const Json::Value& json, const FontStyleDefinition& defaultValue)
+FontTypeDefinition FontTypeDefinition::Deserialize(const Json::Value& json, const FontTypeDefinition& defaultValue)
 {
-    FontStyleDefinition result;
+    FontTypeDefinition result;
 
     const std::string fontFamily = ParseUtil::GetString(json, AdaptiveCardSchemaKey::FontFamily);
     result.fontFamily = (fontFamily == "") ? defaultValue.fontFamily : fontFamily;
@@ -107,14 +109,14 @@ FontStyleDefinition FontStyleDefinition::Deserialize(const Json::Value& json, co
     return result;
 }
 
-FontStylesDefinition FontStylesDefinition::Deserialize(const Json::Value& json, const FontStylesDefinition& defaultValue)
+FontTypesDefinition FontTypesDefinition::Deserialize(const Json::Value& json, const FontTypesDefinition& defaultValue)
 {
-    FontStylesDefinition result;
+    FontTypesDefinition result;
 
-    result.defaultStyle = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontStyleDefinition>(
-        json, AdaptiveCardSchemaKey::Default, defaultValue.defaultStyle, FontStyleDefinition::Deserialize);
-    result.monospaceStyle = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontStyleDefinition>(
-        json, AdaptiveCardSchemaKey::Monospace, defaultValue.defaultStyle, FontStyleDefinition::Deserialize);
+    result.defaultFontType = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontTypeDefinition>(
+        json, AdaptiveCardSchemaKey::Default, defaultValue.defaultFontType, FontTypeDefinition::Deserialize);
+    result.monospaceFontType = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontTypeDefinition>(
+        json, AdaptiveCardSchemaKey::Monospace, defaultValue.monospaceFontType, FontTypeDefinition::Deserialize);
     return result;
 }
 
@@ -193,7 +195,7 @@ TextConfig TextConfig::Deserialize(const Json::Value& json, const TextConfig& de
 
     result.size = ParseUtil::GetEnumValue<TextSize>(json, AdaptiveCardSchemaKey::Size, defaultValue.size, TextSizeFromString);
 
-    result.style = ParseUtil::GetEnumValue<FontStyle>(json, AdaptiveCardSchemaKey::FontStyle, defaultValue.style, FontStyleFromString);
+    result.fontType = ParseUtil::GetEnumValue<FontType>(json, AdaptiveCardSchemaKey::FontType, defaultValue.fontType, FontTypeFromString);
 
     result.color = ParseUtil::GetEnumValue<ForegroundColor>(json, AdaptiveCardSchemaKey::Color, defaultValue.color, ForegroundColorFromString);
 
@@ -409,15 +411,15 @@ MediaConfig MediaConfig::Deserialize(const Json::Value& json, const MediaConfig&
     return result;
 }
 
-FontStyleDefinition HostConfig::GetFontStyle(FontStyle style) const
+FontTypeDefinition HostConfig::GetFontType(FontType type) const
 {
-    switch (style)
+    switch (type)
     {
-    case FontStyle::Monospace:
-        return _fontStyles.monospaceStyle;
-    case FontStyle::Default:
+    case FontType::Monospace:
+        return _fontTypes.monospaceFontType;
+    case FontType::Default:
     default:
-        return _fontStyles.defaultStyle;
+        return _fontTypes.defaultFontType;
     }
 }
 
@@ -517,14 +519,14 @@ unsigned int FontWeightsConfig::GetDefaultFontWeight(TextWeight weight)
     }
 }
 
-std::string HostConfig::GetFontFamily(FontStyle style) const
+std::string HostConfig::GetFontFamily(FontType fontType) const
 {
     // desired font family
-    auto fontFamilyValue = GetFontStyle(style).fontFamily;
+    auto fontFamilyValue = GetFontType(fontType).fontFamily;
 
     if (fontFamilyValue.empty())
     {
-        if (style == FontStyle::Monospace)
+        if (fontType == FontType::Monospace)
         {
             // pass empty string for renderer to handle appropriate const default font family for Monospace
             fontFamilyValue = "";
@@ -543,16 +545,16 @@ std::string HostConfig::GetFontFamily(FontStyle style) const
     return fontFamilyValue;
 }
 
-unsigned int HostConfig::GetFontSize(FontStyle style, TextSize size) const
+unsigned int HostConfig::GetFontSize(FontType fontType, TextSize size) const
 {
     // desired font size
-    auto result = GetFontStyle(style).fontSizes.GetFontSize(size);
+    auto result = GetFontType(fontType).fontSizes.GetFontSize(size);
 
     // UINT_MAX used to check if value was defined
     if (result == UINT_MAX)
     {
         // default font size
-        result = _fontStyles.defaultStyle.fontSizes.GetFontSize(size);
+        result = _fontTypes.defaultFontType.fontSizes.GetFontSize(size);
         if (result == UINT_MAX)
         {
             // deprecated font size
@@ -567,16 +569,16 @@ unsigned int HostConfig::GetFontSize(FontStyle style, TextSize size) const
     return result;
 }
 
-unsigned int HostConfig::GetFontWeight(FontStyle style, TextWeight weight) const
+unsigned int HostConfig::GetFontWeight(FontType fontType, TextWeight weight) const
 {
     // desired font weight
-    auto result = GetFontStyle(style).fontWeights.GetFontWeight(weight);
+    auto result = GetFontType(fontType).fontWeights.GetFontWeight(weight);
 
     // UINT_MAX used to check if value was defined
     if (result == UINT_MAX)
     {
         // default font weight
-        result = _fontStyles.defaultStyle.fontWeights.GetFontWeight(weight);
+        result = _fontTypes.defaultFontType.fontWeights.GetFontWeight(weight);
         if (result == UINT_MAX)
         {
             // deprecated font weight
@@ -695,14 +697,14 @@ void HostConfig::SetFontWeights(const FontWeightsConfig value)
     _fontWeights = value;
 }
 
-FontStylesDefinition HostConfig::GetFontStyles() const
+FontTypesDefinition HostConfig::GetFontTypes() const
 {
-    return _fontStyles;
+    return _fontTypes;
 }
 
-void HostConfig::SetFontStyles(const FontStylesDefinition value)
+void HostConfig::SetFontTypes(const FontTypesDefinition value)
 {
-    _fontStyles = value;
+    _fontTypes = value;
 }
 
 bool HostConfig::GetSupportsInteractivity() const

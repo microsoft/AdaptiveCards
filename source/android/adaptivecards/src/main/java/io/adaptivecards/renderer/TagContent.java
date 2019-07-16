@@ -1,10 +1,24 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer;
+
+import android.view.View;
+import android.view.ViewGroup;
 
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.renderer.inputhandler.IInputHandler;
 
 public class TagContent
 {
+    /**
+     * Constructor to signalize explicitly if the element is an separator
+     * @param isSeparator
+     */
+    public TagContent(boolean isSeparator)
+    {
+        m_isSeparator = isSeparator;
+    }
+
     // This constructor is necessary as using visualTree.findViewWithTag(param) for searching make
     // the match comparison as param.equals(visualTreeNode) which means that the Equals method for
     // param type is called, so in this case we must convert the string into a tag object for the lookup
@@ -13,14 +27,17 @@ public class TagContent
         m_id = id;
     }
 
-    public TagContent(BaseCardElement baseCardElement)
+    public TagContent(BaseCardElement baseCardElement, View separatorView, ViewGroup viewContainer)
     {
+        this(false);
         m_baseElement = baseCardElement;
+        m_separatorView = separatorView;
+        m_viewContainer = viewContainer;
     }
 
-    public TagContent(BaseCardElement baseCardElement, IInputHandler inputHandler)
+    public TagContent(BaseCardElement baseCardElement, IInputHandler inputHandler, View separatorView, ViewGroup viewContainer)
     {
-        m_baseElement = baseCardElement;
+        this(baseCardElement, separatorView, viewContainer);
         m_inputHandler = inputHandler;
     }
 
@@ -46,6 +63,31 @@ public class TagContent
     public IInputHandler GetInputHandler()
     {
         return m_inputHandler;
+    }
+
+    public boolean IsSeparator()
+    {
+        return m_isSeparator;
+    }
+
+    public View GetSeparator()
+    {
+        return m_separatorView;
+    }
+
+    public ViewGroup GetViewContainer()
+    {
+        return m_viewContainer;
+    }
+
+    public View GetStretchContainer()
+    {
+        return m_stretchContainer;
+    }
+
+    public void SetStretchContainer(View stretchContainer)
+    {
+        m_stretchContainer = stretchContainer;
     }
 
     @Override
@@ -76,7 +118,11 @@ public class TagContent
         return false;
     }
 
+    private boolean m_isSeparator = false;
     private String m_id = null;
     private BaseCardElement m_baseElement = null;
     private IInputHandler m_inputHandler = null;
+    private ViewGroup m_viewContainer = null;
+    private View m_separatorView = null;
+    private View m_stretchContainer = null;
 }

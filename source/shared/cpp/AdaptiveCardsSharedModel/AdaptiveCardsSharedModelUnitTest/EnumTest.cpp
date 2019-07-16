@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "stdafx.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -57,7 +59,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         ENUM_TEST(ForegroundColor, ForegroundColor::Accent, "Accent"s);
         ENUM_TEST_WITH_REVERSE_MAP(TextWeight, TextWeight::Bolder, "Bolder"s, {{"Normal", TextWeight::Default}});
         ENUM_TEST_WITH_REVERSE_MAP(TextSize, TextSize::Large, "Large"s, {{"Normal", TextSize::Default}});
-        ENUM_TEST(FontStyle, FontStyle::Monospace, "Monospace"s);
+        ENUM_TEST(FontType, FontType::Monospace, "Monospace"s);
         ENUM_TEST_WITH_DEFAULT(ActionsOrientation, ActionsOrientation::Vertical, "Vertical"s, ActionsOrientation::Horizontal);
         ENUM_TEST_WITH_DEFAULT(ActionMode, ActionMode::Popup, "Popup"s, ActionMode::Inline);
         ENUM_TEST_WITH_DEFAULT(ChoiceSetStyle, ChoiceSetStyle::Expanded, "Expanded"s, ChoiceSetStyle::Compact);

@@ -47,8 +47,8 @@ public class BackgroundImage {
     this(AdaptiveCardObjectModelJNI.new_BackgroundImage__SWIG_1(url), true);
   }
 
-  public BackgroundImage(String url, BackgroundImageMode mode, HorizontalAlignment hAlignment, VerticalAlignment vAlignment) {
-    this(AdaptiveCardObjectModelJNI.new_BackgroundImage__SWIG_2(url, mode.swigValue(), hAlignment.swigValue(), vAlignment.swigValue()), true);
+  public BackgroundImage(String url, ImageFillMode fillMode, HorizontalAlignment hAlignment, VerticalAlignment vAlignment) {
+    this(AdaptiveCardObjectModelJNI.new_BackgroundImage__SWIG_2(url, fillMode.swigValue(), hAlignment.swigValue(), vAlignment.swigValue()), true);
   }
 
   public String GetUrl() {
@@ -59,12 +59,12 @@ public class BackgroundImage {
     AdaptiveCardObjectModelJNI.BackgroundImage_SetUrl(swigCPtr, this, value);
   }
 
-  public BackgroundImageMode GetMode() {
-    return BackgroundImageMode.swigToEnum(AdaptiveCardObjectModelJNI.BackgroundImage_GetMode(swigCPtr, this));
+  public ImageFillMode GetFillMode() {
+    return ImageFillMode.swigToEnum(AdaptiveCardObjectModelJNI.BackgroundImage_GetFillMode(swigCPtr, this));
   }
 
-  public void SetMode(BackgroundImageMode value) {
-    AdaptiveCardObjectModelJNI.BackgroundImage_SetMode(swigCPtr, this, value.swigValue());
+  public void SetFillMode(ImageFillMode value) {
+    AdaptiveCardObjectModelJNI.BackgroundImage_SetFillMode(swigCPtr, this, value.swigValue());
   }
 
   public HorizontalAlignment GetHorizontalAlignment() {
@@ -83,12 +83,21 @@ public class BackgroundImage {
     AdaptiveCardObjectModelJNI.BackgroundImage_SetVerticalAlignment(swigCPtr, this, value.swigValue());
   }
 
+  public String Serialize() {
+    return AdaptiveCardObjectModelJNI.BackgroundImage_Serialize(swigCPtr, this);
+  }
+
   public JsonValue SerializeToJsonValue() {
     return new JsonValue(AdaptiveCardObjectModelJNI.BackgroundImage_SerializeToJsonValue(swigCPtr, this), true);
   }
 
   public static BackgroundImage Deserialize(JsonValue json) {
     long cPtr = AdaptiveCardObjectModelJNI.BackgroundImage_Deserialize(JsonValue.getCPtr(json), json);
+    return (cPtr == 0) ? null : new BackgroundImage(cPtr, true);
+  }
+
+  public static BackgroundImage DeserializeFromString(String jsonString) {
+    long cPtr = AdaptiveCardObjectModelJNI.BackgroundImage_DeserializeFromString(jsonString);
     return (cPtr == 0) ? null : new BackgroundImage(cPtr, true);
   }
 

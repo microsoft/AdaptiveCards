@@ -1,0 +1,23 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+  "classType": "Enum",
+  "description": "Controls the style of an Action, which influences how the action is displayed, spoken, etc.",
+  "features": [
+    861
+  ],
+  "version": "1.2",
+  "values": [
+    {
+      "value": "default",
+      "description": "Action is displayed as normal"
+    },
+    {
+      "value": "positive",
+      "description": "Action is displayed with a positive style (typically the button becomes accent color)"
+    },
+    {
+      "value": "destructive",
+      "description": "Action is displayed with a destructive style (typically the button becomes red)"
+    }
+  ]
+}

@@ -212,3 +212,14 @@ export function hexToRGB(color) {
 		return color;
 	}
 }
+
+/**
+ * @description Generates an unique ID for the element if its not part of the payload
+ * @return {string} ID as string
+ */
+/**
+ * argb in hex to css rgba
+ */
+export function generateID() {
+	return Math.random().toString(36).substr(2, 9);
+}

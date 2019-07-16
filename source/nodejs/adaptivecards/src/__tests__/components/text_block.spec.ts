@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import {AdaptiveCard,TextBlock} from "../../card-elements";
 
 test('TextBlock should be instantiated', ()=>{

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer.registration;
 
 import android.content.Context;
@@ -275,7 +277,7 @@ public class CardRendererRegistration
                     throw new AdaptiveFallbackException(cardElement);
                 }
 
-                if (!cardElement.MeetsRequirements(featureRegistration))
+                if ((featureRegistration != null) && (!cardElement.MeetsRequirements(featureRegistration)))
                 {
                     throw new AdaptiveFallbackException(cardElement, featureRegistration);
                 }
@@ -289,7 +291,6 @@ public class CardRendererRegistration
                     if (cardElement.GetFallbackType() == FallbackType.Content)
                     {
                         BaseElement fallbackElement = cardElement.GetFallbackContent();
-
                         while (fallbackElement != null)
                         {
                             // Try to render the fallback element
@@ -317,6 +318,10 @@ public class CardRendererRegistration
                                     throw new AdaptiveFallbackException(fallbackCardElement, featureRegistration);
                                 }
 
+                                renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.UNKNOWN_ELEMENT_TYPE,
+                                    "Performing fallback for '" + cardElement.GetElementTypeString() +
+                                        "' (fallback element type: '" + fallbackCardElement.GetElementTypeString() + "')"));
+
                                 fallbackRenderer.render(renderedCard, context, fragmentManager, layout, fallbackCardElement, cardActionHandler, hostConfig, childRenderArgs);
                                 break;
                             }
@@ -334,6 +339,12 @@ public class CardRendererRegistration
                                 }
                             }
                         }
+                    }
+                    else if (cardElement.GetFallbackType() == FallbackType.Drop)
+                    {
+                        renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.UNKNOWN_ELEMENT_TYPE,
+                            "Dropping element '" + cardElement.GetElementTypeString() + "' for fallback"));
+                        continue;
                     }
                 }
                 else if (renderArgs.getAncestorHasFallback())

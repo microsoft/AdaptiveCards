@@ -1,5 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import { DropDown, DropDownItem } from "adaptivecards-controls";
-import { Utils } from "./miscellaneous";
 
 export enum ToolbarElementAlignment {
     Left,
@@ -17,6 +18,7 @@ export abstract class ToolbarElement {
 
     readonly id: string;
 
+    isVisible: boolean = true;
     separator: boolean = false;
     label: string = null;
     alignment: ToolbarElementAlignment = ToolbarElementAlignment.Left;
@@ -54,6 +56,8 @@ export class ToolbarButton extends ToolbarElement {
     private _iconClass: string = undefined;
     private _toolTip: string = undefined;
     private _isEnabled: boolean = true;
+    private _allowToggle: boolean = false;
+    private _isToggled: boolean = false;
 
     protected clicked() {
         if (this.onClick) {
@@ -64,6 +68,13 @@ export class ToolbarButton extends ToolbarElement {
     protected internalUpdateLayout() {
         this.renderedElement.className = "acd-toolbar-button";
         (this.renderedElement as HTMLButtonElement).disabled = !this.isEnabled;
+
+        if (this.isToggled) {
+            this.renderedElement.classList.add("acd-toolbar-button-toggled");
+        }
+        else {
+            this.renderedElement.classList.remove("acd-toolbar-button-toggled");
+        }
 
         if (this.iconClass) {
             this.renderedElement.classList.add(this.iconClass);
@@ -84,6 +95,10 @@ export class ToolbarButton extends ToolbarElement {
         let element = document.createElement("button");
 
         element.onclick = (e) => {
+            if (this.allowToggle) {
+                this.isToggled = !this.isToggled;
+            }
+            
             this.clicked();
         }
 
@@ -102,6 +117,28 @@ export class ToolbarButton extends ToolbarElement {
         this.caption = caption;
         this.iconClass = iconClass;
         this.onClick = onClick;
+    }
+
+    get allowToggle(): boolean {
+        return this._allowToggle;
+    }
+
+    set allowToggle(value: boolean) {
+        this._allowToggle = value;
+
+        if (!this._allowToggle) {
+            this.isToggled = false;
+        }
+    }
+
+    get isToggled(): boolean {
+        return this._isToggled;
+    }
+
+    set isToggled(value: boolean) {
+        this._isToggled = value;
+
+        this.updateLayout();
     }
 
     get caption(): string {
@@ -214,6 +251,14 @@ export class ToolbarChoicePicker extends ToolbarElement {
     get value(): string {
         return this._dropDown.value.key;
     }
+
+    get selectedIndex(): number {
+        return this._dropDown.selectedIndex;
+    }
+
+    set selectedIndex(value: number) {
+        this._dropDown.selectedIndex = value;
+    }
 }
 
 export class Toolbar {
@@ -231,7 +276,6 @@ export class Toolbar {
         container: HTMLElement,
         elements: Array<ToolbarElement>,
         separatorPosition: ToolbarElementAlignment) {
-
         for (let i = 0; i < elements.length; i++) {
             if (elements[i].separator && separatorPosition == ToolbarElementAlignment.Left && i > 0) {
                 container.appendChild(this.createSeparatorElement());
@@ -256,11 +300,13 @@ export class Toolbar {
         let rightElements: Array<ToolbarElement> = [];
 
         for (let element of this._elements) {
-            if (element.alignment == ToolbarElementAlignment.Left) {
-                leftElements.push(element);
-            }
-            else {
-                rightElements.push(element);
+            if (element.isVisible) {
+                if (element.alignment == ToolbarElementAlignment.Left) {
+                    leftElements.push(element);
+                }
+                else {
+                    rightElements.push(element);
+                }
             }
         }
 
@@ -287,6 +333,16 @@ export class Toolbar {
 
     addElement(element: ToolbarElement) {
         this._elements.push(element);
+    }
+
+    getElementById(elementId: string): ToolbarElement {
+        for (let element of this._elements) {
+            if (element.id == elementId) {
+                return element;
+            }
+        }
+
+        return null;
     }
 
     insertElementAfter(element: ToolbarElement, afterElementId: string) {

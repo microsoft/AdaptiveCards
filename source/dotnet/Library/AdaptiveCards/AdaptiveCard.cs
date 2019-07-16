@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -15,10 +17,6 @@ namespace AdaptiveCards
     [XmlRoot(ElementName = "Card")]
 #endif
     public class AdaptiveCard : AdaptiveTypedElement
-#if WINDOWS_UWP
-      // TODO: uncomment when I figure out the Windows build
-       //   , Windows.UI.Shell.IAdaptiveCard
-#endif
     {
         public const string ContentType = "application/vnd.microsoft.card.adaptive";
 
@@ -172,11 +170,10 @@ namespace AdaptiveCards
         [JsonProperty(Order = -2)]
         [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveAction>))]
 #if !NETSTANDARD1_3
-        [XmlArray("Actions")]
-        [XmlArrayItem(ElementName = "OpenUrl", Type = typeof(AdaptiveOpenUrlAction))]
-        [XmlArrayItem(ElementName = "ShowCard", Type = typeof(AdaptiveShowCardAction))]
-        [XmlArrayItem(ElementName = "Submit", Type = typeof(AdaptiveSubmitAction))]
-        [XmlArrayItem(ElementName = "ToggleVisibility", Type = typeof(AdaptiveToggleVisibilityAction))]
+        [XmlElement(typeof(AdaptiveOpenUrlAction))]
+        [XmlElement(typeof(AdaptiveShowCardAction))]
+        [XmlElement(typeof(AdaptiveSubmitAction))]
+        [XmlElement(typeof(AdaptiveToggleVisibilityAction))]
 #endif
         public List<AdaptiveAction> Actions { get; set; } = new List<AdaptiveAction>();
 

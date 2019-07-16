@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "pch.h"
@@ -39,10 +41,6 @@ namespace AdaptiveSharedNamespace
         // padding for card, the root, if the padding is allowed,
         // then the element can bleed to the card
         bool GetCanBleed() const { return (m_bleedDirection != ContainerBleedDirection::BleedRestricted); }
-        // 1. BleedToLeading: bleed its leading edge to the leading edge of the target parent
-        // 2. BleedToTrailing: bleed its trailing edge to the trailing edge of the target parent
-        // 3. RestrictedInAllDrections: doesn't bleed
-        // 4. BleedToBothEdges: bleed to both edges of the target parent
         ContainerBleedDirection GetBleedDirection() const { return m_bleedDirection; }
 
         // configures container style related attributes
@@ -95,14 +93,14 @@ namespace AdaptiveSharedNamespace
     std::shared_ptr<T> CollectionTypeElement::Deserialize(ParseContext& context, const Json::Value& value)
     {
         auto collection = BaseCardElement::Deserialize<T>(context, value);
-        
+
         auto backgroundImage = ParseUtil::GetBackgroundImage(value);
         collection->SetBackgroundImage(backgroundImage);
 
         bool canFallbackToAncestor = context.GetCanFallbackToAncestor();
         context.SetCanFallbackToAncestor(canFallbackToAncestor || (collection->GetFallbackType() != FallbackType::None));
         collection->SetCanFallbackToAncestor(canFallbackToAncestor);
-        
+
         collection->SetStyle(
             ParseUtil::GetEnumValue<ContainerStyle>(value, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
 
@@ -123,10 +121,10 @@ namespace AdaptiveSharedNamespace
 
         // Parse Items
         collection->DeserializeChildren(context, value);
-        
+
         // since we are walking dfs, we have to restore the style before we back up
         context.RestoreContextForCollectionTypeElement(*collection);
-        
+
         context.SetCanFallbackToAncestor(canFallbackToAncestor);
 
         // Parse optional selectAction

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer;
 
 import android.content.Context;
@@ -142,7 +144,7 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
                     throw new AdaptiveFallbackException(actionElement);
                 }
 
-                if (!actionElement.MeetsRequirements(featureRegistration))
+                if ((featureRegistration != null) && (!actionElement.MeetsRequirements(featureRegistration)))
                 {
                     throw new AdaptiveFallbackException(actionElement, featureRegistration);
                 }

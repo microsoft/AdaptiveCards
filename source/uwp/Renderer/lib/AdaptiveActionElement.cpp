@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveActionElement.h"
 #include "Util.h"
@@ -21,7 +23,7 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetElementTypeString(), m_typeString.GetAddressOf()));
 
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetIconUrl(), m_iconUrl.GetAddressOf()));
-        RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetSentiment(), m_sentiment.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetStyle(), m_style.GetAddressOf()));
 
         m_internalId = sharedModel->GetInternalId();
         m_fallbackType = MapSharedFallbackTypeToUwp(sharedModel->GetFallbackType());
@@ -77,14 +79,14 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveActionElementBase::put_IconUrl(_In_ HSTRING iconUrl) { return m_iconUrl.Set(iconUrl); }
 
-    IFACEMETHODIMP AdaptiveActionElementBase::get_Sentiment(_Outptr_ HSTRING* sentiment)
+    IFACEMETHODIMP AdaptiveActionElementBase::get_Style(_Outptr_ HSTRING* style)
     {
-        return m_sentiment.CopyTo(sentiment);
+        return m_style.CopyTo(style);
     }
 
-    IFACEMETHODIMP AdaptiveActionElementBase::put_Sentiment(_In_ HSTRING sentiment)
+    IFACEMETHODIMP AdaptiveActionElementBase::put_Style(_In_ HSTRING style)
     {
-        return m_sentiment.Set(sentiment);
+        return m_style.Set(style);
     }
 
     IFACEMETHODIMP AdaptiveActionElementBase::get_AdditionalProperties(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
@@ -116,7 +118,7 @@ namespace AdaptiveNamespace
         sharedCardElement->SetId(HStringToUTF8(m_id.Get()));
         sharedCardElement->SetTitle(HStringToUTF8(m_title.Get()));
         sharedCardElement->SetIconUrl(HStringToUTF8(m_iconUrl.Get()));
-        sharedCardElement->SetSentiment(HStringToUTF8(m_sentiment.Get()));
+        sharedCardElement->SetStyle(HStringToUTF8(m_style.Get()));
         sharedCardElement->SetFallbackType(MapUwpFallbackTypeToShared(m_fallbackType));
         if (m_fallbackType == ABI::AdaptiveNamespace::FallbackType::Content)
         {

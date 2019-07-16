@@ -13,6 +13,7 @@
 @property (nonnull) UIStackView* stackView;
 @property (weak, nullable) UIView *backgroundView;
 @property (nonnull) NSArray<NSLayoutConstraint *>* widthconstraint;
+@property (nonnull) NSArray<NSLayoutConstraint *>* heightconstraint;
 
 @property BOOL isActionSet;
 
@@ -30,8 +31,10 @@
 
 - (void)applyPadding:(unsigned int)padding priority:(unsigned int)priority;
 
-- (void)bleed:(unsigned int)padding priority:(unsigned int)priority target:(UIView *_Nonnull)target
-    direction:(ACRBleedDirection)direction;
+- (void)applyPaddingToTop:(CGFloat)top left:(CGFloat)left
+     bottom:(CGFloat)bottom right:(CGFloat)right
+     priority:(unsigned int)priority location:(ACRBleedDirection)location;
 
+- (void)bleed:(unsigned int)padding priority:(unsigned int)priority target:(UIView *)target direction:(ACRBleedDirection)direction parentView:(UIView *)parent;
 
 @end

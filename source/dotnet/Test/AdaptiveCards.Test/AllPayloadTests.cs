@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -46,7 +48,7 @@ namespace AdaptiveCards.Test
                     {
                         // If the card is excluded we might not parse properly
                         // skip it if there was a parse failure.
-                        if(!excluded)
+                        if (!excluded)
                         {
                             throw;
                         }
@@ -92,46 +94,39 @@ namespace AdaptiveCards.Test
         public void TestAllScenarios()
         {
             TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.0", "scenarios"), null);
+            TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.1", "scenarios"), null);
         }
 
         [TestMethod]
         public void TestAllElements()
         {
-            // TODO: bring this test back once I investigate the warnings
-            TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.0", "elements"),
-                new string[]
-                {
-                    "Container.Style",
-                    "Action.ShowCard.Style"
-                });
+            TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.0", "elements"), null);
+            TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.1", "elements"), null);
+            TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.2", "elements"), null);
         }
 
         [TestMethod]
         public void TestAllTestCards()
         {
-            // List of json payloads that are expected to fail parsing
-            TestPayloadsInDirectory(Path.Combine(SamplesPath, "tests"),
+
+            TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.0", "tests"),
+                new string[]
+                {   
+                    // These cards are expected to fail
+                    "TypeIsRequired",
+                    "AdaptiveCard.MissingVersion",
+                });
+
+            TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.1", "tests"), null);
+            TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.2", "tests"),
                 new string[]
                 {
                     // These cards are expected to fail
-                    "AdaptiveCard.UnknownElements",
-                    "AdditionalProperty",
-                    "CustomParsingTestUsingProgressBar",
-                    "TypeIsRequired",
-                    "AdaptiveCard.MinVersion",
-                    "AdaptiveCard.MissingVersion",
-                    "AdaptiveCard.Version1.3",
-                    "FlightItinerary_es_fail",
                     "Action.DuplicateIds",
                     "Action.NestedDuplicateIds",
-                    "Action.CustomParsing",
-
-                    // These are cards that features haven't been implemented yet
-                    // <this space intentionally blank>
-
-                    // These cards have AdaptiveCards with styles on them
-                    "ColumnColumnSetContainer.Bleed",
                 });
+
+            TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.3", "tests"), null);
         }
     }
 }

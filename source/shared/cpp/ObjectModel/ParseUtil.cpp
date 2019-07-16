@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "ParseUtil.h"
 #include "AdaptiveCardParseException.h"
@@ -323,17 +325,19 @@ namespace AdaptiveSharedNamespace
     {
         std::string propertyName = AdaptiveCardSchemaKeyToString(key);
         auto elementArray = json.get(propertyName, Json::Value());
+
+        if (!elementArray.isNull() && !elementArray.isArray())
+        {
+            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
+                                             "Could not parse specified key: " + propertyName + ". It was not an array");
+        }
+
         if (isRequired && elementArray.empty())
         {
             throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing,
                                              "Could not parse required key: " + propertyName + ". It was not found");
         }
 
-        if (!elementArray.empty() && !elementArray.isArray())
-        {
-            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
-                                             "Could not parse specified key: " + propertyName + ". It was not an array");
-        }
         return elementArray;
     }
 
@@ -373,31 +377,6 @@ namespace AdaptiveSharedNamespace
             return std::tolower(c, std::locale());
         });
         return new_value;
-    }
-
-    std::vector<std::shared_ptr<BaseCardElement>> ParseUtil::GetElementCollection(ParseContext& context,
-                                                                                  const Json::Value& json,
-                                                                                  AdaptiveCardSchemaKey key,
-                                                                                  bool isRequired)
-    {
-        auto elementArray = GetArray(json, key, isRequired);
-
-        std::vector<std::shared_ptr<BaseCardElement>> elements;
-        if (elementArray.empty())
-        {
-            return std::move(elements);
-        }
-
-        elements.reserve(elementArray.size());
-
-        for (const auto& curJsonValue : elementArray)
-        {
-            std::shared_ptr<BaseElement> curElement;
-            BaseElement::ParseJsonObject<BaseCardElement>(context, curJsonValue, curElement);
-            elements.push_back(std::static_pointer_cast<BaseCardElement>(curElement));
-        }
-
-        return std::move(elements);
     }
 
     std::shared_ptr<BaseActionElement> ParseUtil::GetActionFromJsonValue(ParseContext& context, const Json::Value& json)

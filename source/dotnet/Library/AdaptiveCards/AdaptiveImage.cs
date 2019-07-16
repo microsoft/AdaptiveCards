@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
@@ -33,6 +35,7 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
         [XmlIgnore]
 #endif
+        [JsonProperty(Required = Required.Default)]
         public override string Type { get; set; } = TypeName;
 
         /// <summary>

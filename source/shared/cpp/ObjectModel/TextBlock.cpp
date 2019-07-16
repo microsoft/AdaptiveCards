@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include <iomanip>
 #include <regex>
@@ -78,14 +80,14 @@ void TextBlock::SetTextWeight(const TextWeight value)
     m_textElementProperties->SetTextWeight(value);
 }
 
-FontStyle TextBlock::GetFontStyle() const
+FontType TextBlock::GetFontType() const
 {
-    return m_textElementProperties->GetFontStyle();
+    return m_textElementProperties->GetFontType();
 }
 
-void TextBlock::SetFontStyle(const FontStyle value)
+void TextBlock::SetFontType(const FontType value)
 {
-    m_textElementProperties->SetFontStyle(value);
+    m_textElementProperties->SetFontType(value);
 }
 
 ForegroundColor TextBlock::GetTextColor() const
@@ -116,26 +118,6 @@ bool TextBlock::GetIsSubtle() const
 void TextBlock::SetIsSubtle(const bool value)
 {
     m_textElementProperties->SetIsSubtle(value);
-}
-
-bool TextBlock::GetItalic() const
-{
-    return m_textElementProperties->GetItalic();
-}
-
-void TextBlock::SetItalic(const bool value)
-{
-    m_textElementProperties->SetItalic(value);
-}
-
-bool TextBlock::GetStrikethrough() const
-{
-    return m_textElementProperties->GetStrikethrough();
-}
-
-void TextBlock::SetStrikethrough(const bool value)
-{
-    m_textElementProperties->SetStrikethrough(value);
 }
 
 unsigned int TextBlock::GetMaxLines() const

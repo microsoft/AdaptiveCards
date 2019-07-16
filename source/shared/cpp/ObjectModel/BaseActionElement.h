@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "pch.h"
@@ -27,8 +29,8 @@ namespace AdaptiveSharedNamespace
         virtual std::string GetIconUrl() const;
         virtual void SetIconUrl(const std::string& value);
 
-        virtual std::string GetSentiment() const;
-        virtual void SetSentiment(const std::string& value);
+        virtual std::string GetStyle() const;
+        virtual void SetStyle(const std::string& value);
 
         virtual const ActionType GetElementType() const;
 
@@ -46,8 +48,8 @@ namespace AdaptiveSharedNamespace
     private:
         std::string m_title;
         std::string m_iconUrl;
-        std::string m_sentiment;
-        static constexpr const char* const defaultSentiment = "default";
+        std::string m_style;
+        static constexpr const char* const defaultStyle = "default";
         ActionType m_type;
     };
 
@@ -62,7 +64,7 @@ namespace AdaptiveSharedNamespace
         baseActionElement->DeserializeBase<BaseActionElement>(context, json);
         baseActionElement->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title));
         baseActionElement->SetIconUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::IconUrl));
-        baseActionElement->SetSentiment(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Sentiment, defaultSentiment, false));
+        baseActionElement->SetStyle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Style, defaultStyle, false));
 
         // Walk all properties and put any unknown ones in the additional properties json
         HandleUnknownProperties(json, baseActionElement->m_knownProperties, baseActionElement->m_additionalProperties);

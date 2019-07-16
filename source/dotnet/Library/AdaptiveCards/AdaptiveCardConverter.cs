@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -10,9 +12,6 @@ namespace AdaptiveCards
     public class AdaptiveCardConverter : JsonConverter, ILogWarnings
     {
         public List<AdaptiveWarning> Warnings { get; set; } = new List<AdaptiveWarning>();
-
-        // TODO #2749: temporary warning code for fallback card. Remove when common set of error codes created and integrated.
-        private enum WarningStatusCode { UnsupportedSchemaVersion = 7, InvalidLanguage = 12 };
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
@@ -71,12 +70,12 @@ namespace AdaptiveCards
                     }
                     else
                     {
-                        Warnings.Add(new AdaptiveWarning((int)WarningStatusCode.InvalidLanguage, "Invalid language identifier: " + val));
+                        Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.InvalidLanguage, "Invalid language identifier: " + val));
                     }
                 }
                 catch (CultureNotFoundException)
                 {
-                    Warnings.Add(new AdaptiveWarning((int)WarningStatusCode.InvalidLanguage, "Invalid language identifier: " + val));
+                    Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.InvalidLanguage, "Invalid language identifier: " + val));
                 }
             }
             return val;
@@ -120,7 +119,7 @@ namespace AdaptiveCards
             });
 
             // Add relevant warning
-            Warnings.Add(new AdaptiveWarning((int) WarningStatusCode.UnsupportedSchemaVersion, "Schema version is not supported"));
+            Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.UnsupportedSchemaVersion, "Schema version is not supported"));
 
             return fallbackCard;
         }

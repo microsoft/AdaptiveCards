@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -145,6 +147,8 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public IDictionary<Button, FrameworkElement> ActionShowCards = new Dictionary<Button, FrameworkElement>();
 
+        public Queue<Button> ActionShowCardsKeys = new Queue<Button>();
+
         public virtual Style GetStyle(string styleName)
         {
             while (!String.IsNullOrEmpty(styleName))
@@ -233,15 +237,18 @@ namespace AdaptiveCards.Rendering.Wpf
                 {
                     if (element.Fallback.Type == AdaptiveFallbackElement.AdaptiveFallbackType.Drop)
                     {
-                        Warnings.Add(new AdaptiveWarning(-1, $"Dropping element for fallback '{element.Type}'"));
+                        Warnings.Add(new AdaptiveWarning(-1, $"Dropping element '{element.Type}' for fallback"));
                     }
                     else if (element.Fallback.Type == AdaptiveFallbackElement.AdaptiveFallbackType.Content && element.Fallback.Content != null)
                     {
                         // Render fallback content
+                        Warnings.Add(new AdaptiveWarning(-1, $"Performing fallback for '{element.Type}' (fallback element type '{element.Fallback.Content.Type}')"));
+                        RenderingFallback = true;
                         frameworkElementOut = Render(element.Fallback.Content);
+                        RenderingFallback = false;
                     }
                 }
-                else if (AncestorHasFallback)
+                else if (AncestorHasFallback && !RenderingFallback)
                 {
                     throw new AdaptiveFallbackException();
                 }
@@ -256,6 +263,7 @@ namespace AdaptiveCards.Rendering.Wpf
         }
 
         private bool AncestorHasFallback = false;
+        private bool RenderingFallback = false;
 
         public string Lang { get; set; }
 
@@ -284,24 +292,174 @@ namespace AdaptiveCards.Rendering.Wpf
             }
         }
 
+        /// <summary>
+        /// Casts framework element to a TagContent element
+        /// </summary>
+        /// <param name="element">Rendered element that contains tag</param>
+        /// <returns>Casted tag content</returns>
+        private TagContent GetTagContent(FrameworkElement element)
+        {
+            if ((element != null) && (element.Tag != null) && (element.Tag is TagContent tagContent))
+            {
+                return tagContent;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Changes the visibility for the rendered element
+        /// </summary>
+        /// <param name="element">Rendered element to apply visibility</param>
+        /// <param name="desiredVisibility">Visibility to be applied to the element</param>
+        /// <param name="tagContent">Rendered element tag</param>
+        public void SetVisibility(FrameworkElement element, bool desiredVisibility, TagContent tagContent)
+        {
+            // TagContents are only assigned to card elements so actions mustn't have a TagContent object tied to it
+            // TagContents are used to save information on the rendered object as the element separator
+            if (tagContent == null)
+            {
+                return;
+            }
+
+            bool elementIsCurrentlyVisible = (element.Visibility == Visibility.Visible);
+
+            element.Visibility = desiredVisibility ? Visibility.Visible : Visibility.Collapsed;
+
+            // Hides the separator if any was rendered
+            Grid separator = tagContent.Separator;
+            if (separator != null)
+            {
+                separator.Visibility = desiredVisibility ? Visibility.Visible : Visibility.Collapsed;
+            }
+
+            // Elements (Rows) with RowDefinition having stars won't hide so we have to set the width to auto
+            // Also, trying to set the same rowDefinition twice to the same element is not valid,
+            // so we have to make a check first
+            if ((tagContent.RowDefinition != null) && !(elementIsCurrentlyVisible && desiredVisibility))
+            {
+                RowDefinition rowDefinition = null;
+                if (desiredVisibility)
+                {
+                    rowDefinition = tagContent.RowDefinition;
+                }
+                else
+                {
+                    // When the visibility is set to false, then set the row definition to auto
+                    rowDefinition = new RowDefinition() { Height = GridLength.Auto };
+                }
+
+                tagContent.ParentContainerElement.RowDefinitions[tagContent.ViewIndex] = rowDefinition;
+            }
+
+            // Columns with ColumnDefinition having stars won't hide so we have to set the width to auto
+            // Also, trying to set the same columnDefinition twice to the same element is not valid,
+            // so we have to make a check first
+            if ((tagContent.ColumnDefinition != null) && !(elementIsCurrentlyVisible && desiredVisibility))
+            {
+                ColumnDefinition columnDefinition = null;
+                if (desiredVisibility)
+                {
+                    columnDefinition = tagContent.ColumnDefinition;
+                }
+                else
+                {
+                    columnDefinition = new ColumnDefinition() { Width = GridLength.Auto };
+                }
+
+                tagContent.ParentContainerElement.ColumnDefinitions[tagContent.ViewIndex] = columnDefinition;
+            }
+        }
+
+        /// <summary>
+        /// Changes the visibility of the specified elements as defined
+        /// </summary>
+        /// <param name="targetElements">Taget elements to change visibility</param>
         public void ToggleVisibility(IEnumerable<AdaptiveTargetElement> targetElements)
         {
+            HashSet<Grid> elementContainers = new HashSet<Grid>();
+
             foreach (AdaptiveTargetElement targetElement in targetElements)
             {
                 var element = LogicalTreeHelper.FindLogicalNode(CardRoot, targetElement.ElementId);
 
                 if (element != null && element is FrameworkElement elementFrameworkElement)
                 {
-                    Visibility visibility = elementFrameworkElement.Visibility;
-                    // if we read something with the format {"elementId": <id>", "isVisible": true} or we just read the id and the element is not visible
-                    if ((targetElement.IsVisible.HasValue && targetElement.IsVisible.Value) || (!targetElement.IsVisible.HasValue && visibility != Visibility.Visible))
+                    bool isCurrentlyVisible = (elementFrameworkElement.Visibility == Visibility.Visible);
+
+                    // if we read something with the format {"elementId": <id>", "isVisible": true} or
+                    // we just read the id and the element is not visible;
+                    // otherwise if we read something with the format {"elementId": <id>", "isVisible": false} or
+                    // we just read the id and the element is visible
+                    bool newVisibility = (targetElement.IsVisible.HasValue && targetElement.IsVisible.Value) ||
+                                         (!targetElement.IsVisible.HasValue && !isCurrentlyVisible);
+
+                    TagContent tagContent = GetTagContent(elementFrameworkElement);
+
+                    SetVisibility(elementFrameworkElement, newVisibility, tagContent);
+
+                    if (tagContent != null)
                     {
-                        elementFrameworkElement.Visibility = Visibility.Visible;
+                        elementContainers.Add(tagContent.ParentContainerElement);
                     }
-                    // otherwise if we read something with the format {"elementId": <id>", "isVisible": false} or we just read the id and the element is visible
-                    else if ((targetElement.IsVisible.HasValue && !targetElement.IsVisible.Value) || (!targetElement.IsVisible.HasValue && visibility == Visibility.Visible))
+                }
+            }
+
+            foreach (Grid elementContainer in elementContainers)
+            {
+                ResetSeparatorVisibilityInsideContainer(elementContainer);
+            }
+
+        }
+
+        /// <summary>
+        /// Gets the actual rendered element as elements with 'stretch' height are contained inside a StackPanel
+        /// </summary>
+        /// <param name="element">Element or StackPanel that contains rendered element</param>
+        /// <returns>Actual rendered element</returns>
+        private FrameworkElement GetRenderedElement(FrameworkElement element)
+        {
+            if (element is StackPanel containerPanel)
+            {
+                UIElement uiElement = containerPanel.Children[0];
+
+                if (uiElement is FrameworkElement frameworkElement)
+                {
+                    return frameworkElement;
+                }
+            }
+
+            return element;
+        }
+
+        private void HandleSeparatorAndSpacing(bool isFirstVisible, FrameworkElement element, TagContent tagContent)
+        {
+            // Hide the spacing / separator for the first element
+            // Separators and spacings are added as a grid
+            Grid separator = tagContent.Separator;
+
+            if (separator != null)
+            {
+                separator.Visibility = isFirstVisible ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
+
+        /// <summary>
+        /// Hides the first separator and fixes the visibility for the other visible separators
+        /// </summary>
+        /// <param name="uiContainer">Renderered element container</param>
+        public void ResetSeparatorVisibilityInsideContainer(Grid uiContainer)
+        {
+            bool isFirstVisible = true;
+            foreach (FrameworkElement element in uiContainer.Children)
+            {
+                if (element.Visibility == Visibility.Visible)
+                {
+                    TagContent tagContent = GetTagContent(element);
+
+                    if (tagContent != null)
                     {
-                        elementFrameworkElement.Visibility = Visibility.Collapsed;
+                        HandleSeparatorAndSpacing(isFirstVisible, element, tagContent);
+                        isFirstVisible = false;
                     }
                 }
             }
@@ -312,13 +470,18 @@ namespace AdaptiveCards.Rendering.Wpf
             FrameworkElement card = ActionShowCards[uiAction];
             if (card != null)
             {
-                if (card.Visibility != Visibility.Visible)
+                if (card.Visibility == Visibility.Visible)
                 {
-                    card.Visibility = Visibility.Visible;
+                    card.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
-                    card.Visibility = Visibility.Collapsed;
+                    // need to make sure we collapse all showcards before showing this one
+                    foreach(var showCard in ActionShowCards)
+                    {
+                        showCard.Value.Visibility = Visibility.Collapsed;
+                    }
+                    card.Visibility = Visibility.Visible;
                 }
             }
         }

@@ -75,7 +75,6 @@
     wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
     
     [viewGroup addArrangedSubview:wrappingview];
-    [wrappingview.widthAnchor constraintEqualToAnchor:viewGroup.widthAnchor multiplier:1.0].active =  YES;
 
     [wrappingview addSubview:progressView];
     [progressView.widthAnchor constraintEqualToAnchor:wrappingview.widthAnchor multiplier:0.8].active =  YES;
