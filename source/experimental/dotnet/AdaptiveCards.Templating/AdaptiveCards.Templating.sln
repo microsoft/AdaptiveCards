@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Templating", "AdaptiveCards.Templating\AdaptiveCards.Templating.csproj", "{8E06B1AC-FA0E-42C6-AA1C-6972B56F4D3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Templating.Test", "AdaptiveCards.Templating.Test\AdaptiveCards.Templating.Test.csproj", "{6108C566-8904-4F51-B85D-E865B19A1E03}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8E06B1AC-FA0E-42C6-AA1C-6972B56F4D3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E06B1AC-FA0E-42C6-AA1C-6972B56F4D3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E06B1AC-FA0E-42C6-AA1C-6972B56F4D3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E06B1AC-FA0E-42C6-AA1C-6972B56F4D3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6108C566-8904-4F51-B85D-E865B19A1E03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6108C566-8904-4F51-B85D-E865B19A1E03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6108C566-8904-4F51-B85D-E865B19A1E03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6108C566-8904-4F51-B85D-E865B19A1E03}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {44DD8ED6-C822-4E78-A8AB-06AD6BD36D11}
+	EndGlobalSection
+EndGlobal
