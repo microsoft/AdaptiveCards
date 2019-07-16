@@ -1,0 +1,50 @@
+{
+	"type": "AdaptiveCard",
+	"body": [
+		{
+				"type": "ColumnSet",
+				"separator": true,
+				"spacing": "medium",
+				"columns": [
+					{
+						"type": "Column",
+						"width": "stretch",
+						"items": [
+							{
+								"type": "TextBlock",
+								"text": "Passengers",
+								"isSubtle": true,
+								"weight": "bolder"
+							},
+							{
+								"type": "TextBlock",
+								"text": "Sarah Hum",
+								"spacing": "small"
+							}
+						]
+					},
+					{
+						"type": "Column",
+						"width": "auto",
+						"items": [
+							{
+								"type": "TextBlock",
+								"text": "Seat",
+								"horizontalAlignment": "right",
+								"isSubtle": true,
+								"weight": "bolder"
+							},
+							{
+								"type": "TextBlock",
+								"text": "14A",
+								"horizontalAlignment": "right",
+								"spacing": "small"
+							}
+						]
+					}
+				]
+			}
+	],
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.0"
+}
