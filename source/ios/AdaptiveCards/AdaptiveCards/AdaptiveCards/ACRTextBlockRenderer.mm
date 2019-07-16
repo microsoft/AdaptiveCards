@@ -98,17 +98,6 @@
     [viewGroup addArrangedSubview:wrappingview];
     [wrappingview addSubview:lab];
 
-    NSLayoutAttribute horizontalAlignment = NSLayoutAttributeLeading;
-    if(txtBlck->GetHorizontalAlignment() == HorizontalAlignment::Right) {
-        horizontalAlignment = NSLayoutAttributeTrailing;
-    } else if (txtBlck->GetHorizontalAlignment() == HorizontalAlignment::Center) {
-        horizontalAlignment = NSLayoutAttributeCenterX;
-    }
-
-    [NSLayoutConstraint constraintWithItem:lab attribute:horizontalAlignment relatedBy:NSLayoutRelationEqual toItem:wrappingview attribute:horizontalAlignment multiplier:1.0 constant:0].active = YES;
-    [NSLayoutConstraint constraintWithItem:lab attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:wrappingview attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
-    [NSLayoutConstraint constraintWithItem:lab attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:wrappingview attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
-
     lab.textContainer.maximumNumberOfLines = int(txtBlck->GetMaxLines());
     if(!lab.textContainer.maximumNumberOfLines && !txtBlck->GetWrap()){
         lab.textContainer.maximumNumberOfLines = 1;
@@ -122,9 +111,41 @@
         [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     }
 
-    [NSLayoutConstraint constraintWithItem:wrappingview attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:lab attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0].active = YES;
-    [lab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-    [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    [lab setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+
+    UILayoutGuide *leftGuide = nil;
+    UILayoutGuide *rightGuide = nil;
+    HorizontalAlignment adaptiveAlignment = txtBlck->GetHorizontalAlignment();
+
+    if (adaptiveAlignment == HorizontalAlignment::Right) {
+        leftGuide = [[UILayoutGuide alloc] init];
+        leftGuide.identifier = @"text-left-guide";
+        [wrappingview addLayoutGuide:leftGuide];
+        [leftGuide.leadingAnchor constraintEqualToAnchor:wrappingview.leadingAnchor].active = YES;
+        [leftGuide.trailingAnchor constraintEqualToAnchor:lab.leadingAnchor].active = YES;
+        [leftGuide.heightAnchor constraintEqualToAnchor:lab.heightAnchor].active = YES;
+        [lab.trailingAnchor constraintEqualToAnchor:wrappingview.trailingAnchor].active = YES;
+    }
+
+    if (adaptiveAlignment == HorizontalAlignment::Left) {
+        rightGuide = [[UILayoutGuide alloc] init];
+        rightGuide.identifier = @"text-right-guide";
+        [wrappingview addLayoutGuide:rightGuide];
+        NSLayoutConstraint *constraint = [rightGuide.leadingAnchor constraintEqualToAnchor:lab.trailingAnchor];
+        constraint.active = YES;
+        [rightGuide.heightAnchor constraintEqualToAnchor:lab.heightAnchor].active = YES;
+        [rightGuide.trailingAnchor constraintEqualToAnchor:wrappingview.trailingAnchor].active = YES;
+        [lab.leadingAnchor constraintEqualToAnchor:wrappingview.leadingAnchor].active = YES;
+    }
+    
+    if (adaptiveAlignment == HorizontalAlignment::Center) {
+        [lab.centerXAnchor constraintEqualToAnchor:wrappingview.centerXAnchor].active = YES;
+    }
+
+    [wrappingview.heightAnchor constraintEqualToAnchor:lab.heightAnchor].active = YES;
+    [wrappingview.widthAnchor constraintGreaterThanOrEqualToAnchor:lab.widthAnchor].active = YES;
+    
+    [lab.centerYAnchor constraintEqualToAnchor:wrappingview.centerYAnchor].active = YES;
 
     configVisibility(wrappingview, elem);
 
