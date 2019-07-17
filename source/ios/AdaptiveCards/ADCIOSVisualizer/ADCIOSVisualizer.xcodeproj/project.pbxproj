@@ -67,6 +67,7 @@
 		6BE0389622DE46C1005413DE /* ExpenseReport.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE0389322DE46C1005413DE /* ExpenseReport.json */; };
 		6BE0389722DE46C1005413DE /* Agenda.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE0389422DE46C1005413DE /* Agenda.json */; };
 		6BE0389822DE46C1005413DE /* FlightDetails.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE0389522DE46C1005413DE /* FlightDetails.json */; };
+		6BE0389A22DF9409005413DE /* ContainerDoubleFallback.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE0389922DF9409005413DE /* ContainerDoubleFallback.json */; };
 		6BF339D620A665E600DA5973 /* CustomTextBlockRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BF339D420A665E600DA5973 /* CustomTextBlockRenderer.mm */; };
 		6BF339E320A66A3F00DA5973 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; };
 		6BF339E420A66A4D00DA5973 /* AdaptiveCards.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -226,6 +227,7 @@
 		6BE0389322DE46C1005413DE /* ExpenseReport.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ExpenseReport.json; path = ../../../../samples/v1.2/Scenarios/ExpenseReport.json; sourceTree = "<group>"; };
 		6BE0389422DE46C1005413DE /* Agenda.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Agenda.json; path = ../../../../samples/v1.2/Scenarios/Agenda.json; sourceTree = "<group>"; };
 		6BE0389522DE46C1005413DE /* FlightDetails.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = FlightDetails.json; path = ../../../../samples/v1.2/Scenarios/FlightDetails.json; sourceTree = "<group>"; };
+		6BE0389922DF9409005413DE /* ContainerDoubleFallback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ContainerDoubleFallback.json; path = ../../../../samples/v1.2/Tests/ContainerDoubleFallback.json; sourceTree = "<group>"; };
 		6BF339D420A665E600DA5973 /* CustomTextBlockRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomTextBlockRenderer.mm; sourceTree = "<group>"; };
 		6BF339D520A665E600DA5973 /* CustomTextBlockRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTextBlockRenderer.h; sourceTree = "<group>"; };
 		6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -448,6 +450,7 @@
 		F4D33E341F045B6E00941E44 /* Jsons */ = {
 			isa = PBXGroup;
 			children = (
+				6BE0389922DF9409005413DE /* ContainerDoubleFallback.json */,
 				6BE0389422DE46C1005413DE /* Agenda.json */,
 				6BE0389322DE46C1005413DE /* ExpenseReport.json */,
 				6BE0389522DE46C1005413DE /* FlightDetails.json */,
@@ -707,6 +710,7 @@
 				F4933D041F79853B00F6EBFD /* Restaurant.json in Resources */,
 				30860BC220C9B5C9009F9D99 /* (null) in Resources */,
 				F423C0881EE1FB6100905679 /* LaunchScreen.storyboard in Resources */,
+				6BE0389A22DF9409005413DE /* ContainerDoubleFallback.json in Resources */,
 				F423C0851EE1FB6100905679 /* Assets.xcassets in Resources */,
 				F4933CE01F79852C00F6EBFD /* Input.Text.Style.json in Resources */,
 				C8D72160220CFBAF00E903B3 /* Column.BackgroundImage.json in Resources */,
