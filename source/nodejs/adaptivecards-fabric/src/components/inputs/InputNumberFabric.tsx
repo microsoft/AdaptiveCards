@@ -13,8 +13,8 @@ export class InputNumberFabric extends Shared.ReactInputElement {
     private placeholder: string;
 
     public parse = (json: any, errors?: AC.IValidationError[]) => {
-        this.value = json.value;
-        this.id = AC.getStringValue(json.id);
+        super.parse(json, errors);
+        this.value = this.defaultValue;
         this.min = Shared.getIntValue(json.min);
         this.max = Shared.getIntValue(json.max);
         this.placeholder = AC.getStringValue(json.placeholder);
@@ -24,7 +24,7 @@ export class InputNumberFabric extends Shared.ReactInputElement {
         <FabricUI.TextField
             id={this.id}
             placeholder={`${this.placeholder}`}
-            value={`${this.value}`}
+            value={`${this.defaultValue}`}
             type="number"
             max={this.max}
             min={this.min}
@@ -33,4 +33,14 @@ export class InputNumberFabric extends Shared.ReactInputElement {
     )
 
     public getJsonTypeName = (): string => "Input.Number";
+
+    public toJSON = () => {
+        let result = super.toJSON();
+
+        AC.setProperty(result, "placeholder", this.placeholder);
+        AC.setProperty(result, "min", this.min);
+        AC.setProperty(result, "max", this.max);
+
+        return result;
+    }
 }

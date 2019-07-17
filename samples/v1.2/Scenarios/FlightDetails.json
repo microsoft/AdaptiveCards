@@ -35,29 +35,28 @@
                                 {
                                     "type": "TextBlock",
                                     "spacing": "Small",
-                                    "size": "Medium",
                                     "text": "Delta Air Lines flight 8471",
                                     "wrap": true
                                 },
                                 {
                                     "type": "TextBlock",
                                     "spacing": "None",
-                                    "size": "Medium",
                                     "text": "Confirmation code: ABCDEF",
                                     "wrap": true
                                 },
                                 {
                                     "type": "TextBlock",
                                     "spacing": "None",
-                                    "size": "Medium",
                                     "text": "10 hours 45 minutes",
                                     "wrap": true
                                 }
                             ],
-                            "bleed": true
+                            "bleed": true,
+                            "height": "stretch"
                         }
                     ],
-                    "width": 45
+                    "width": 45,
+                    "height": "stretch"
                 },
                 {
                     "type": "Column",
@@ -208,97 +207,32 @@
                                             ],
                                             "width": 1
                                         }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "type": "ColumnSet",
-                            "horizontalAlignment": "Right",
-                            "spacing": "Large",
-                            "separator": true,
-                            "columns": [
-                                {
-                                    "type": "Column",
-                                    "selectAction": {
-                                        "type": "Action.OpenUrl",
-                                        "url": "http://www.microsoft.com"
-                                    },
-                                    "items": [
-                                        {
-                                            "type": "ColumnSet",
-                                            "columns": [
-                                                {
-                                                    "type": "Column",
-                                                    "items": [
-                                                        {
-                                                            "type": "Image",
-                                                            "url": "http://messagecardplayground.azurewebsites.net/assets/smallairplane.png",
-                                                            "height": "16px"
-                                                        }
-                                                    ],
-                                                    "width": "auto"
-                                                },
-                                                {
-                                                    "type": "Column",
-                                                    "spacing": "Small",
-                                                    "items": [
-                                                        {
-                                                            "type": "TextBlock",
-                                                            "text": "Check in"
-                                                        }
-                                                    ],
-                                                    "width": "auto"
-                                                }
-                                            ]
-                                        }
                                     ],
-                                    "width": "auto"
+                                    "height": "stretch"
                                 },
                                 {
-                                    "type": "Column",
-                                    "spacing": "Large",
-                                    "selectAction": {
-                                        "type": "Action.OpenUrl",
-                                        "url": "http://www.microsoft.com"
-                                    },
-                                    "items": [
+                                    "type": "ActionSet",
+                                    "separator": true,
+                                    "actions": [
                                         {
-                                            "type": "ColumnSet",
-                                            "columns": [
-                                                {
-                                                    "type": "Column",
-                                                    "items": [
-                                                        {
-                                                            "type": "Image",
-                                                            "url": "http://messagecardplayground.azurewebsites.net/assets/calendaricon.png",
-                                                            "height": "16px"
-                                                        }
-                                                    ],
-                                                    "width": "auto"
-                                                },
-                                                {
-                                                    "type": "Column",
-                                                    "spacing": "Small",
-                                                    "items": [
-                                                        {
-                                                            "type": "TextBlock",
-                                                            "text": "View in Calendar"
-                                                        }
-                                                    ],
-                                                    "width": "auto"
-                                                }
-                                            ]
+                                            "type": "Action.Submit",
+                                            "title": "Check in",
+                                            "style": "positive"
+                                        },
+                                        {
+                                            "type": "Action.Submit",
+                                            "title": "View in calendar"
                                         }
                                     ],
-                                    "width": "auto"
+                                    "spacing": "Medium"
                                 }
                             ]
                         }
                     ],
                     "width": 55
                 }
-            ]
+            ],
+            "height": "stretch"
         }
     ],
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
