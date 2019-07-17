@@ -114,15 +114,24 @@ public class ContainerRenderer extends BaseCardElementRenderer
         containerRenderArgs.setContainerStyle(styleForThis);
         if (!container.GetItems().isEmpty())
         {
-            CardRendererRegistration.getInstance().render(renderedCard,
-                                                          context,
-                                                          fragmentManager,
-                                                          containerView,
-                                                          container,
-                                                          container.GetItems(),
-                                                          cardActionHandler,
-                                                          hostConfig,
-                                                          containerRenderArgs);
+            try
+            {
+                CardRendererRegistration.getInstance().render(renderedCard,
+                                                              context,
+                                                              fragmentManager,
+                                                              containerView,
+                                                              container,
+                                                              container.GetItems(),
+                                                              cardActionHandler,
+                                                              hostConfig,
+                                                              containerRenderArgs);
+            }
+            catch (AdaptiveFallbackException e)
+            {
+                // If the container couldn't be rendered, the separator is removed
+                viewGroup.removeView(separator);
+                throw e;
+            }
         }
 
         BackgroundImage backgroundImageProperties = container.GetBackgroundImage();
