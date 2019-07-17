@@ -147,7 +147,6 @@ namespace AdaptiveCards.Sample.Html
                     }
                     catch (Exception err)
                     {
-                        Debugger.Break();
                         writer.WriteLine($"<p class='error'>ERROR: {err.Message}</p>");
                     }
                 }
