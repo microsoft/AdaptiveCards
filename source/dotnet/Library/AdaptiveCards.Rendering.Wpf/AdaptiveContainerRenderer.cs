@@ -162,7 +162,9 @@ namespace AdaptiveCards.Rendering.Wpf
 
                             if (!String.IsNullOrEmpty(cardElement.Id))
                             {
-                                panel.Name = cardElement.Id;
+                                // All elements are added to the dictionary when rendered but elements
+                                // with height stretch are enclosed in a panel that must be added instead
+                                context.RendererElementsWithId.Add(cardElement.Id, panel);
                             }
 
                             panel.Children.Add(uiElement);

@@ -1,9 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.Remoting.Contexts;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -142,6 +145,9 @@ namespace AdaptiveCards.Rendering.Wpf
             }
         }
 
+        // This dictionary exists for setting the ids to elements without messing with the Name property to avoid crashes with weird ids
+        public IDictionary<string, FrameworkElement> RendererElementsWithId = new Dictionary<string, FrameworkElement>();
+
         // Flag to distinuish the main card and action show cards
         public int CardDepth = 0;
 
@@ -209,7 +215,13 @@ namespace AdaptiveCards.Rendering.Wpf
 
                         if (!String.IsNullOrEmpty(element.Id))
                         {
-                            rendered.Name = element.Id;
+                            // The element is added to the dictionary if it's an action or  if it's a card element and the height is auto
+                            // as stretch items are enclosed in a panel that is added in AdaptiveContainerRenderer.AddContainerElements 
+                            if (!(element is AdaptiveElement) ||
+                                (element is AdaptiveElement adaptiveElement && adaptiveElement.Height == AdaptiveHeight.Auto))
+                            {
+                                RendererElementsWithId.Add(element.Id, rendered);
+                            }
                         }
 
                         // Decrement card depth after inner card is rendered
@@ -380,7 +392,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             foreach (AdaptiveTargetElement targetElement in targetElements)
             {
-                var element = LogicalTreeHelper.FindLogicalNode(CardRoot, targetElement.ElementId);
+                var element = RendererElementsWithId[targetElement.ElementId];
 
                 if (element != null && element is FrameworkElement elementFrameworkElement)
                 {
