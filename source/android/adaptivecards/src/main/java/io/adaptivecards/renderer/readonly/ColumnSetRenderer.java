@@ -3,20 +3,19 @@
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.FeatureRegistration;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
-import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.CardElementType;
@@ -96,7 +95,17 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             RenderArgs columnRenderArgs = new RenderArgs(renderArgs);
             columnRenderArgs.setContainerStyle(styleForThis);
 
-            columnRenderer.render(renderedCard, context, fragmentManager, layout, column, cardActionHandler, hostConfig, columnRenderArgs);
+            FeatureRegistration featureRegistration = CardRendererRegistration.getInstance().getFeatureRegistration();
+
+            CardRendererRegistration.getInstance().renderElementAndPerformFallback(renderedCard,
+                                                                                   context,
+                                                                                   fragmentManager,
+                                                                                   column,
+                                                                                   layout,
+                                                                                   cardActionHandler,
+                                                                                   hostConfig,
+                                                                                   columnRenderArgs,
+                                                                                   featureRegistration);
         }
 
         if (columnSet.GetSelectAction() != null)
