@@ -7,7 +7,7 @@ set ACSTANDARD20=netstandard2.0
 
 REM setting path variables
 set ACROOT=source\experimental\dotnet\
-set ACTPATH=AdaptiveCards.Templating\
+set ACTPATH=AdaptiveCards.Templating\AdaptiveCards.Templating\
 set BINPATH=bin\Release\
 set ACSTANDARD20PATH=netstandard2.0\
 
