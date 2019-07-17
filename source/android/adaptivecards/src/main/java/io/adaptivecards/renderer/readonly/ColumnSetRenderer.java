@@ -98,14 +98,14 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             FeatureRegistration featureRegistration = CardRendererRegistration.getInstance().getFeatureRegistration();
 
             CardRendererRegistration.getInstance().renderElementAndPerformFallback(renderedCard,
-                                                                  context,
-                                                                  fragmentManager,
-                                                                  column,
-                                                                  layout,
-                                                                  cardActionHandler,
-                                                                  hostConfig,
-                                                                  columnRenderArgs,
-                                                                  featureRegistration);
+                                                                                   context,
+                                                                                   fragmentManager,
+                                                                                   column,
+                                                                                   layout,
+                                                                                   cardActionHandler,
+                                                                                   hostConfig,
+                                                                                   columnRenderArgs,
+                                                                                   featureRegistration);
         }
 
         if (columnSet.GetSelectAction() != null)
