@@ -30,12 +30,11 @@
 					<optgroup class="noLink" label='<%= root.title %>'>
 						<% root.children.forEach(function(child) { %>
 						<% if(is_current(child.htmlPath)) { %>
-						<option value='<%- url_for(child.htmlPath) %>' selected="selected"><%= child.name %>
-						</option>
+							<option value='<%- url_for(child.htmlPath) %>' selected="selected"><%= child.name %>
+							</option>
 						<% } else { %>
-						<option value='<%- url_for(child.htmlPath) %>'><%= child.name %></option>
+							<option value='<%- url_for(child.htmlPath) %>'><%= child.name %></option>
 						<% } %>
-						>>>>>>> Stashed changes
 
 						<% }) %>
 					</optgroup>
