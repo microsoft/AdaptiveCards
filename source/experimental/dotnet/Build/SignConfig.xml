@@ -7,6 +7,6 @@
   <!-- Release sign job -->
   <job platform="AnyCPU" configuration="release" dest="__RELBINPATH__\..\..\..\s\signed" jobname="Adaptive Cards .NET Templating" approvers="">
     <!-- AdaptiveCards -->
-    <file src="__RELBINPATH__\..\..\..\s\tosign\AdaptiveCards.Templating\netstandard2.0\AdaptiveCards.Templatingnetstandard2.0.dll" signType="Both" dest="__RELBINPATH__\..\..\..\s\signed\AdaptiveCards.Templating\netstandard2.0\AdaptiveCards.Templatingnetstandard2.0.dll" />
+    <file src="__RELBINPATH__\..\..\..\s\tosign\AdaptiveCards.Templating\AdaptiveCards.Templating\netstandard2.0\AdaptiveCards.Templatingnetstandard2.0.dll" signType="Both" dest="__RELBINPATH__\..\..\..\s\signed\AdaptiveCards.Templating\netstandard2.0\AdaptiveCards.Templatingnetstandard2.0.dll" />
   </job>
 </SignConfigXML>
