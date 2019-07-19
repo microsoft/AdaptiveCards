@@ -11,9 +11,8 @@ Abstract class for the base element type.
 
 # Rendering
 
-1. If any required elements are missing or invalid, engage fallback and stop.
-1. Else, render the element
-1. If failed to render, engage fallback and stop.
+1. Render the element
+1. If failed to render (like an unexpected exception occurred), (undeclared behavior) should we engage fallback and stop?
 1. Else, if there is a preceding element that has been rendered...
 	1. Add the specified amount of `spacing` before this element.
 	1. If `separator` is true, draw a separating line in the vertical center of the spacing.
