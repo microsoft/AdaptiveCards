@@ -2994,9 +2994,9 @@ export class TextInput extends Input {
 	placeholder: string;
 	style: Enums.InputTextStyle = Enums.InputTextStyle.Text;
 	
-	ratingIconUrl: string;
-	hoverRatingIconUrl: string;
-
+	iconUnselected: string;
+	iconSelected: string;
+	
     getJsonTypeName(): string {
         return "Input.Text";
     }
@@ -3032,9 +3032,8 @@ export class TextInput extends Input {
         this.maxLength = json["maxLength"];
         this.isMultiline = Utils.getBoolValue(json["isMultiline"], this.isMultiline);
 		this.placeholder = Utils.getStringValue(json["placeholder"]);
-		//todo: added
-		this.ratingIconUrl = Utils.getStringValue(json["ratingIconUrl"]);
-		this.hoverRatingIconUrl = Utils.getStringValue(json["hoverRatingIconUrl"]);
+		this.iconSelected = Utils.getStringValue(json["iconSelected"]);
+		this.iconUnselected = Utils.getStringValue(json["iconUnselected"]);
 
         this.style = Utils.getEnumValue(Enums.InputTextStyle, json["style"], this.style);
         this.inlineAction = createActionInstance(
@@ -3237,11 +3236,8 @@ export class ChoiceSetInput extends Input {
                 return this._selectElement;
             }
             else {
-				// Render as a series of radio buttons
-				
-				// default star rating icons
-				let defaultRatingIconUrl = "https://image.flaticon.com/icons/png/512/55/55695.png";
-				let defaultHoverRatingIconUrl = "https://1.bp.blogspot.com/-IYhCSMtZFzY/WNlKUQYsGQI/AAAAAAABX-s/gZc8ID2yCf0JUuQ4FXAoly2Cx4PE40OiACLcB/s320/star.png";
+				let defaulticonUnselected = "https://image.flaticon.com/icons/png/512/55/55695.png";
+				let defaulticonSelected = "https://1.bp.blogspot.com/-IYhCSMtZFzY/WNlKUQYsGQI/AAAAAAABX-s/gZc8ID2yCf0JUuQ4FXAoly2Cx4PE40OiACLcB/s320/star.png";
 
 				let uniqueCategoryName = ChoiceSetInput.getUniqueCategoryName();
 
@@ -3249,28 +3245,20 @@ export class ChoiceSetInput extends Input {
                 element.className = this.hostConfig.makeCssClassName("ac-input", "ac-choiceSetInput-expanded");
 				element.style.width = "100%";
 				
-				// TODO: delete this
-				//element.style.textAlign = "center";
+				element.style.textAlign = "center";
 
 				this._toggleInputs = [];
-				
-				// best practices?
-				// this.ratingIconUrl ? alert("1: using custom") : alert("1: not using custom");
-				let ratingIconUrl = this.ratingIconUrl ? this.ratingIconUrl : defaultRatingIconUrl;
-				// let hoverRatingIconUrl = this.hoverRatingIconUrl ? this.hoverRatingIconUrl : defaultHoverRatingIconUrl;
-				// alert("ratingIconUrl: " + ratingIconUrl);
 
-				// let ratingIconUrl = defaultRatingIconUrl;
-				let hoverRatingIconUrl = defaultHoverRatingIconUrl;
-				// let hoverRatingIconUrl = "https://pbs.twimg.com/profile_images/988775660163252226/XpgonN0X_400x400.jpg";
+				let iconUnselected = this.iconUnselected ? this.iconUnselected : defaulticonUnselected;
+				let iconSelected = this.iconSelected ? this.iconSelected : defaulticonSelected;
+				const NOT_CLICKED:number = -1;
 
+				let maxValue:number = this.maxValue;
+				let labels: Label[] = new Array(maxValue);
+				let labelElements: HTMLElement[] = new Array(maxValue);
 				
 
-				// setting up this var to allow for later filling of the stars
-				let labels: Label[] = new Array(this.choices.length);
-				let labelElements: HTMLElement[] = new Array(this.choices.length);
-
-                for (let i = 0; i < this.choices.length; i++) {
+                for (let i = 0; i < maxValue; i++) {
                     let radioInput = document.createElement("input");
                     radioInput.id = Utils.generateUniqueId();
                     radioInput.type = "radio";
@@ -3306,24 +3294,49 @@ export class ChoiceSetInput extends Input {
 					labelElements[i].style.verticalAlign = "middle";
 					labelElements[i].style.flexGrow = "1";
 					
-					labelElements[i].style.backgroundImage = "url('" + ratingIconUrl + "')";
+					labelElements[i].style.backgroundImage = "url('" + iconUnselected + "')";
 					labelElements[i].style.backgroundSize = "25px 25px";
 					labelElements[i].style.backgroundRepeat = "no-repeat";
 					labelElements[i].style.backgroundPositionX = "center";
 					labelElements[i].style.paddingTop = "25px";
 					
-					// hovering over stars
+					var ratingClicked:number = NOT_CLICKED;
+
+					// when hovering over an icon, replace that and all preceding icons with the iconSelected image
 					labelElements[i].onmouseover = function() {
 						for (let j = 0; j <= i; j++) {
-							labelElements[j].style.backgroundImage = "url('" + hoverRatingIconUrl + "')";
+							labelElements[j].style.backgroundImage = "url('" + iconSelected + "')";
 						}
-						
+						for (let j = i+1; j < maxValue; j++) {
+							labelElements[j].style.backgroundImage = "url('" + iconUnselected + "')";
+						}
 					};
-					// fill stars up to
 
+					// when leaving an icon, replace that and all preceding icons with the iconSelected image
 					labelElements[i].onmouseleave = function() {
-						for (let j = 0; j <= i; j++) {
-							labelElements[j].style.backgroundImage = "url('" + ratingIconUrl + "')";
+					// labelElements[i].onmouseout = function() { // might be "more correct" to use onmouseout over onmouseleave
+						if (ratingClicked == NOT_CLICKED) {
+							for (let j = 0; j <= i; j++) {
+								labelElements[j].style.backgroundImage = "url('" + iconUnselected + "')";
+							}
+						} else {
+							for (let j = 0; j <= ratingClicked; j++) {
+								labelElements[j].style.backgroundImage = "url('" + iconSelected + "')";
+							}
+							for (let j = ratingClicked + 1; j < maxValue; j++) {
+								labelElements[j].style.backgroundImage = "url('" + iconUnselected + "')";
+							}
+						}
+					};
+
+					// when an icon is clicked, replace it and all preceding icons with the iconSelected image
+					labelElements[i].onclick = function() {
+						ratingClicked = i;
+						for (let j = 0; j <= ratingClicked; j++) {
+							labelElements[j].style.backgroundImage = "url('" + iconSelected + "')";
+						}
+						for (let j = ratingClicked + 1; j < maxValue; j++) {
+							labelElements[j].style.backgroundImage = "url('" + iconUnselected + "')";
 						}
 					};
 					
@@ -3416,8 +3429,9 @@ export class ChoiceSetInput extends Input {
     isMultiSelect: boolean = false;
     placeholder: string;
 	wrap: boolean = false;
-	//TODO: added
-	ratingIconUrl: string;
+	maxValue: number;
+	iconSelected: string;
+	iconUnselected: string;
 
 	private newMethod() {
 		return this;
@@ -3431,9 +3445,6 @@ export class ChoiceSetInput extends Input {
         let result = super.toJSON();
 
 		Utils.setProperty(result, "placeholder", this.placeholder);
-		
-		//todo: added... but why is this not necessary?
-		// Utils.setProperty(result, "ratingIconUrl", this.ratingIconUrl);
 
         if (this.choices.length > 0) {
             var choices = [];
@@ -3487,8 +3498,9 @@ export class ChoiceSetInput extends Input {
         this.isMultiSelect = Utils.getBoolValue(json["isMultiSelect"], this.isMultiSelect);
 		this.placeholder = Utils.getStringValue(json["placeholder"]);
 		
-		//TODO: added
-		this.ratingIconUrl = Utils.getStringValue(json["ratingIconUrl"]);
+		this.maxValue = parseInt(Utils.getStringValue(json["maxValue"]), 10);
+		this.iconSelected = Utils.getStringValue(json["iconSelected"]);
+		this.iconUnselected = Utils.getStringValue(json["iconUnselected"]);
 
 		this.choices = [];
 

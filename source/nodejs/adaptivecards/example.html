@@ -9,7 +9,7 @@
 
 	<style type="text/css">
 		#exampleDiv {
-			width: 350px;
+			width: 550px;
 			border: solid 1px black;
 		}
 	</style>
@@ -20,32 +20,36 @@
 			// author a card
 			// in practice you'll probably get this from a service
 			// see http://adaptivecards.io/samples/ for inspiration
+
+			// this card specifically demos an early prototype of the Input.Rating control
 			var card = {
     "type": "AdaptiveCard",
     "body": [
         {
             "type": "Input.ChoiceSet",
-            "id": "as",
-            "placeholder": "Placeholder text",
+            "id": "UserProvidedRating",
+			"placeholder": "Placeholder text",
+			"maxValue": 5,
+			// "maxValue": 10,
             "choices": [
                 {
-                    "title": "Never",
+                    "title": "Poor",
                     "value": "Choice 1"
                 },
                 {
-                    "title": "Rarely",
+                    "title": "Below Average",
                     "value": "Choice 2"
                 },
                 {
-                    "title": "Sometimes",
+                    "title": "Average",
                     "value": "Choice 3"
 				},
                 {
-                    "title": "Often",
+                    "title": "Above Average",
                     "value": "Choice 4"
                 },
                 {
-                    "title": "Always",
+                    "title": "Excellent",
                     "value": "Choice 5"
 				}/*,
                 {
@@ -72,10 +76,19 @@
             ],
 			"style": "expanded",
 			
-			// "ratingIconUrl": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
-			// "hoverRatingIconUrl": "https://pbs.twimg.com/profile_images/988775660163252226/XpgonN0X_400x400.jpg"
-        }
+			// "iconSelected": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
+			// "iconUnselected": "https://pbs.twimg.com/profile_images/988775660163252226/XpgonN0X_400x400.jpg"
+   		}
     ],
+  			"actions": [
+      	  	{
+				"type": "Action.Submit",
+				"title": "Action.Submit",
+				"data": {
+					"x": 13
+				}
+        	}
+    	],
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "version": "1.0"
 };
