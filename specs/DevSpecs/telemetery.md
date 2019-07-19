@@ -15,6 +15,7 @@ UWP, JS, and .NET are all currently supported by 1DS, allowing for relatively se
  
 ## 3. Performance Implications 
 “Perf-penalty in terms of runtime perf on foreground threads should not be affected; all our log event API calls are async. Background threads would kick in when there's time to upload. Total CPU time to upload would depend how much data you logged. In UTC mode - the perf penalty vs. trace logging would be near-zero. About the same.” - Max Golovanov (1DS) 
+We can look further into how 1DS affects startup time and memory usage with comparison tests. The real-world perf numbers would depend on telemetry volume per minute. Due to call being made in the background, the performance implications shouldn’t be major, but will exist.  
  
  
 ## 4. Backwards Compatibility Concerns  
@@ -27,7 +28,9 @@ Security should be considered in the situation of protecting the token and telem
 In progress. Will update based on finalization of logger interface. 
  
 ## 7. Testing Details 
-### 7.1 JSON Samples 
+### 7.1 
+ 
+### 7.2 JSON Samples and Expected Output 
  
 1) 
 ``` 
@@ -60,11 +63,22 @@ Expected Values:
 | TotalDefaultStarImagesUsed   | 1              | 
 | isDeveloper                  | any            | 
  
+Note: This is not all going to be recorded in one event, but instead each element will be sent and in post processing it will be put together like this.  
+ 
 ## 8. Estimated Dev Cost 
 With two full-time interns working on this feature, implementation of telemetry in JavaScript should take one month, with estimated delivery being mid-August. Within this time frame, progress in the UWP Adaptive Cards platform may also be a plausible stretch goal. 
  
-## 9. 1DS-Specific Considerations 
-There will be a .js file that will implement the 1DS version of the functions in the logger. The functions will pass in the necessary parameters and will make calls to 1DS to send the info. The calls to events will happen for each element render and in post processing through the correlationID we will be able to tie the elements together.  
+## 9. JavaScript Architecture Details 
+The main components of telemetry in the JavaScript platform will include the IACLogger wrapper interface as well as the 1DS-specific implementation of the logger interface. Creating a generalized logger interface will allow easy logging to multiple telemetry platforms if desired, as well as prevent reliance of the existing Adaptive Cards code on a specific telemetry platform. The only changes to the existing JavaScript Adaptive Cards code will only include instantiation and function calls to the generalized IACLogger API.  
+### 9.1 ACLogger Telemetry Wrapper 
+The following is the proposed interface for the IACLogger: 
  
+### 9.2 Location of IACLogger in Existing Code 
+
+
+
  
+### 9.3 Enabling Telemetry 
  
+### 9.4 1DS Implementation of ACLogger 
+There will be a JavaScript file that will implement the 1DS-specific version of the IACLogger. The functions will pass in the necessary parameters and will make calls to 1DS to send the info. The calls to events will happen for each element render and in post processing through the correlationID we will be able to tie the elements together.   
