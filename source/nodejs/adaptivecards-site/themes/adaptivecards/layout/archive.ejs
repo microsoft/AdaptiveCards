@@ -1,42 +1,69 @@
 ---
 layout: layout
 ---
-<!-- Main Content -->
+<!-- This is the blog index page -->
+
 <style>
-   img { max-width: 95%; height: auto; }
+.main-container {
+	padding: 0 !important;
+	background: #f3f3f3 !important;
+}
+
+.uhf-container {
+	width: 100% !important;
+	max-width: 100% !important;
+}
 </style>
 
-<% page.posts.each(function(post){ %>
-<div class="post-preview">
-  <a href="<%- config.root %><%- post.path %>">
-    <h2 class="post-title">
-      <%- post.title || "Untitled" %>
-    </h2>
-  </a>
-  <h3 class="post-subtitle">
-    <%- post.subtitle || "" %>
-  </h3>
-  <p class="subtitle">
-    Posted <%= post.date.format(config.date_format) %>
-  </p>
-  <div class="post-content-preview">
-    <%- post.content %>
-  </div>
+<div class="blog">
+
+	<% page.posts.each(function(post){ %>
+		<div class="w3-row">
+			<div class="w3-col l1 w3-hide-small w3-hide-medium">&nbsp;</div>
+		
+			<div class="w3-col l10">
+				<div class="w3-row w3-white w3-margin w3-border">
+					<div class="w3-col w3-margin-top w3-margin-left w3-margin-bottom l4 w3-hide-small w3-hide-medium">
+						<img src="<%- post.featured_image || url_for('content/icons/android-chrome-512x512.png') %>" class="w3-image" alt="Featured image" />
+					</div>
+
+					<div class="w3-col w3-container l7">
+
+						<a href="<%- config.root %><%- post.path %>">
+							<h2 style="margin-top: 14px"><%- post.title %></h2>
+						</a>
+
+						<div class="w3-medium">
+							<img src="<%- post.author.avatar %>" class="w3-image w3-circle" style="width: 40px" />
+							<a href="<%- post.author.webpage %>"><%- post.author.name %></a>
+							<%= post.date.format(config.date_format) %>
+						</div>
+
+						<div>
+							<%- post.excerpt %>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="w3-col l1 w3-hide-small w3-hide-medium">&nbsp;</div>
+		</div>
+
+	<% }); %>
+
+
+	<!-- Pager -->
+
+	<ul class="w3-ul w3-center w3-medium">
+		<% if (page.prev){ %>
+			<li class="previous">
+				<a class="w3-button w3-blue" href="<%- config.root %><%- page.prev_link %>">&larr; Newer Posts</a>
+			</li>
+		<% } %>
+		<% if (page.next){ %>
+			<li class="next">
+				<a class="w3-button w3-blue" href="<%- config.root %><%- page.next_link %>">Older Posts &rarr;</a>
+			</li>
+		<% } %>
+	</ul>
 </div>
-<% }); %>
-
-
-<!-- Pager -->
-
-<ul class="pager">
-    <% if (page.prev){ %>
-        <li class="previous">
-            <a href="<%- config.root %><%- page.prev_link %>">&larr; Newer Posts</a>
-        </li>
-    <% } %>
-    <% if (page.next){ %>
-        <li class="next">
-            <a href="<%- config.root %><%- page.next_link %>">Older Posts &rarr;</a>
-        </li>
-    <% } %>
-</ul>

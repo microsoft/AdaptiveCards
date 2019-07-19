@@ -250,3 +250,23 @@ dir {
 .ac-textBlock>ul {
 	padding-left: 40px;
 }
+
+
+.blog img {
+	max-width: 95%;
+	height: auto;
+}
+
+/* Hide AddToAny vertical share bar when screen is less than 980 pixels wide */
+@media screen and (max-width: 980px) {
+	.a2a_floating_style.a2a_vertical_style {
+		display: none;
+	}
+}
+
+/* Hide AddToAny horizontal share bar when screen is more than 980 pixels wide */
+@media screen and (min-width: 980px) {
+	.a2a_floating_style.a2a_default_style {
+		display: none;
+	}
+}
