@@ -12,6 +12,7 @@ Reasons for not specified/invalid...
 * **Property value was null**: They specified `"text": null`.
 * **Property value was invalid**: See invalid property values.
 * **Property type was string and empty string provided**: For example, `"text": ""`.
+* **Property type was array and empty array provided**: For example, `"inlines": []`.
 
 **Provided JSON**
 
