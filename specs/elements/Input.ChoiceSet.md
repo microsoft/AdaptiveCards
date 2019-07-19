@@ -65,6 +65,7 @@ Describes what to do when an unknown element is encountered or the requires of t
   * `Input.ChoiceSet`
   * `Input.Date`
   * `Input.Number`
+  * `Input.Rating`
   * `Input.Text`
   * `Input.Time`
   * `Input.Toggle`
