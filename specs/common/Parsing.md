@@ -13,6 +13,14 @@ Reasons for not specified/invalid...
 * **Property value was invalid**: See invalid property values.
 * **Property type was string and empty string provided**: For example, `"text": ""`.
 * **Property type was array and empty array provided**: For example, `"inlines": []`.
+    * Required arrays as of 1.2...
+        * RichTextBlock.inlines
+        * Media.sources
+        * ActionSet.actions
+        * Container.items (although maybe we need to make this non-required since we now have background image and minHeight)
+        * FactSet.facts
+        * ImageSet.images
+        * Input.ChoiceSet.choices
 
 **Provided JSON**
 
