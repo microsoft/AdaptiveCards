@@ -21,7 +21,7 @@ Reasons for not specified/invalid...
     "text": "First TextBlock"
 },
 {
-    "type": "TextBlock"
+    "type": "TextBlock" // Missing required text property
 },
 {
     "type": "TextBlock",
@@ -39,6 +39,60 @@ Reasons for not specified/invalid...
 {
     "type": "TextBlock",
     "text": "Third TextBlock"
+}
+```
+
+Note the behavior for nested objects... Nested objects are parsed FIRST, so an invalid nested object gets dropped
+
+**Provided JSON**
+
+```json
+{
+    "type": "FactSet",
+    "facts": [
+        {
+            "value": "Intro to Adaptive" // Missing required title property
+        },
+        {
+            "title": "Requested by",
+            "value": "Andrew"
+        }
+    ]
+}
+```
+
+**Should render (and serialize) like...**
+
+```json
+{
+    "type": "FactSet",
+    "facts": [
+        {
+            "title": "Requested by",
+            "value": "Andrew"
+        }
+    ]
+}
+```
+
+And for nested object single values... Same policy, the nested object is parsed FIRST, so an invalid nested object gets dropped
+
+**Provided JSON**
+
+```json
+{
+    "type": "Container",
+    "backgroundImage": {
+        "fillMode": "RepeatHorizontally" // Missing required url property
+    }
+}
+```
+
+**Should render (and serialize) like...**
+
+```json
+{
+    "type": "Container"
 }
 ```
 
@@ -99,21 +153,3 @@ An example of invalid properties on inner non-element objects...
     "minHeight": "20px"
 }
 ```
-
-
-1. When parsing an object (like an Action, Element, or an element's inner object)...
-  1. For each property provided in the JSON...
-    1. If unknown property...
-      1. Trigger a warning, like `Unknown property flashing on TextBlock.`
-    1. Else...
-      1. 
-  1. For each property, if a property is invalid...
-    1. "Invalid" means...
-      * Wrong type, like specified a boolean when it should have been a string
-      * Wrong/invalid format, like "50 px" when it should be "50px" (no space)
-    1. Trigger a warning, like `Wrap property expected boolean, but was integer.`
-    1. Revert the property to its default value (so it acts as if the property was never set)
-  1. If a required property is missing (or was invalidated in the previous step)...
-    1. Trigger a warning, like `Dropping TextBlock since required text property is missing.`
-    1. Drop the element and do NOT engage fallback
-    1. Stop.
