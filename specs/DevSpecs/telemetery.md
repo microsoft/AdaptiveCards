@@ -75,6 +75,76 @@ The following is the proposed interface for the IACLogger:
  
 ### 9.2 Location of IACLogger in Existing Code 
 
+```
+interface IACLogger { 
+ 
+    logWarn(message: string): void; 
+ 
+    logErr(message: string): void; 
+ 
+    logVerbose(message: string): void; 
+ 
+    logInfo(message: string): void; 
+ 
+    logEvent(event: string, eventSourceName: string, correlationID: string, valueSet?: object): void; 
+ 
+} 
+ 
+enum TelemetryProvider { 
+    OneDataStrategy, 
+    File 
+} 
+ 
+class ACLogger implements IACLogger { 
+    private static instance: IACLogger; 
+    private listProviders: Set<TelemetryProvider>; 
+    private providers: IACLogger[]; 
+ 
+    public static getLogger(): IACLogger { 
+        if (instance) { 
+            return instance; 
+        } else { 
+            // throw error/exception 
+        } 
+    } 
+ 
+    public static setLogger(...providers: TelemetryProvider[]): void { 
+        // for each instance in providers, instantiate if instance has not yet been instantiated 
+        for (let provider of providers) { 
+            if (!this.listProviders.has(provider)) { 
+                switch (provider) { 
+                    case TelemetryProvider.File: 
+                        providers.push(new FileACLogger()); 
+                        break; 
+                    case TelemetryProvider.OneDataStrategy: 
+                        providers.push(new 1DSLogger()); 
+                        break; 
+                    default: 
+                    // throw exception 
+                } 
+            } 
+        } 
+    } 
+     
+    public logWarn(message: string): void { 
+        // call log warn and log for all instantiated providers 
+        for (let provider of this.providers) { 
+            provider.logWarn(message); 
+        } 
+    } 
+ 
+    // .... etc.... 
+ 
+} 
+ 
+class Example { 
+    main(): void { 
+        var myLogger: IACLogger = ACLogger.getLogger(); 
+        myLogger.setLogger(TelemetryProvider.OneDataStrategy, TelemetryProvider.File); 
+        myLogger.logInfo("Logging to both 1DS and File..."); 
+    } 
+} 
+```
 
 
  
