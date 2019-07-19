@@ -9,7 +9,6 @@
 | **selectAction** | `ISelectAction` | No | An Action that will be invoked when the `ColumnSet` is tapped or selected. `Action.ShowCard` is not supported. | 1.1 |
 | **style** | `ContainerStyle?` | No | Style hint for `ColumnSet`. | 1.2 |
 | **bleed** | `boolean` | No | Determines whether the element should bleed through its parent's padding. | 1.2 |
-| **backgroundImage** | `BackgroundImage`, `uri` | No | Specifies the background image. | 1.2 |
 | **minHeight** | `string` | No | Specifies the minimum height of the column set in pixels, like `"80px"`. | 1.2 |
 
 **Inherited properties**
@@ -62,18 +61,6 @@ Style hint for `ColumnSet`.
   * `"attention"`
   * `"warning"`
   * `"accent"`
-
-
-## backgroundImage
-
-Specifies the background image.
-
-* **Type**: `BackgroundImage`, `uri`
-* **Version** : 1.2
-* **Required**: No
-* **Allowed values**:
-  * `BackgroundImage`
-  * `uri`
 
 
 ## fallback
