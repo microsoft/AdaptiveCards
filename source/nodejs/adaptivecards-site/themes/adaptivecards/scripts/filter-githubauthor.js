@@ -4,8 +4,11 @@ var https = require('https');
 var yaml = require('yaml-front-matter');
 
 hexo.extend.filter.register('before_post_render', function (data) {
+	if(data.layout !== "post")
+		return;
 
 	return new Promise(function (resolve, reject) {
+		
 		const frontMatter = yaml.loadFront(data.raw);
 		const github_username = frontMatter.github_username;
 
@@ -34,13 +37,13 @@ hexo.extend.filter.register('before_post_render', function (data) {
 				});
 
 			}).on("error", (err) => {
-				console.log("Error: " + err.message);
+				console.log(`ERROR: Failed getting GitHub data on page ${data.source}. Message: ${err.message}`);
 				reject();
 			});
 		}
 		else {
-			console.log("Error: No GitHub username in blog post");
-			reject();
+			console.log(`WARN: No GitHub username in page: ${data.source}`);
+			resolve();
 		}
 	});
 

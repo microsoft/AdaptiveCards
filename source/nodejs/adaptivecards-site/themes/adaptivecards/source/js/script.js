@@ -302,14 +302,15 @@ $(function () {
 		var cardUrl = $(this).attr("data-card-url");
 		var el = $(this);
 		if (cardUrl) {
-			$.getJSON(cardUrl, function (json) { renderCard(el, JSON.parse(json)); });
+			$.getJSON(cardUrl, function (json) { renderCard(el, json); });
 		} else {
-			renderCard($(this), JSON.parse(el.text()));
+			renderCard($(this), el.text());
 		}
 	});
 
 	function renderCard(el, json) {
-
+		if(typeof json === "string")
+			json = JSON.parse(json);
 
 		// TODO: clean this up to only provide custom host config options
 		// it breaks on any rename as-is

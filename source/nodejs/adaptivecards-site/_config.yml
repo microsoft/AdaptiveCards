@@ -14,7 +14,7 @@ timezone:
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 url: /
 root: /
-permalink: blog/:year/:month/:day/:title/
+permalink: blog/:title/
 permalink_defaults:
 
 # Directory
@@ -39,9 +39,9 @@ relative_link: false
 future: true
 highlight:
   enable: true
-  line_number: true
+  line_number: false
   auto_detect: false
-  tab_replace:
+  tab_replace: '  '
   
 # Home page setting
 # path: Root path for your blogs index page. (default = '')

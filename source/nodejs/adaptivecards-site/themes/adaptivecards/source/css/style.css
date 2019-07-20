@@ -257,6 +257,11 @@ dir {
 	height: auto;
 }
 
+.blog h1,
+.blog h2 {
+	margin-top: 20px;
+}
+
 /* Hide AddToAny vertical share bar when screen is less than 980 pixels wide */
 @media screen and (max-width: 980px) {
 	.a2a_floating_style.a2a_vertical_style {
