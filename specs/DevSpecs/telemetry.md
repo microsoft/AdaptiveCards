@@ -169,10 +169,14 @@ class Example {
 ### 9.2 Location of IACLogger in Existing Code 
 
 #### Instantiation
-The instance of ACLogger will be instantiated when the constructor of the `AdaptiveCard` object is called.
+The instance of ACLogger will be instantiated when the constructor of the `AdaptiveCard` object is called. Because the logger will belong to the ACLogger class and will be retrieved statically, logging will be possible anywhere within the existing JavaScript code without the need for global variables.
 
 #### Logging Events
-In order to record AuthorCard and RenderCard events, `logEvent()` will be called specifically in the `toJSON()` and `parse()` functions. Integration into `toJSON()` will be necessary to keep track of all cards that are serialized and sent by an author using our authoring SDK.
+In order to record AuthorCard and RenderCard events, `logEvent()` will be called specifically in the `toJSON()` and `parse()` functions. Integration into `toJSON()` will be necessary to keep track of all cards that are serialized and sent by an author using our authoring SDK. Regardless of how it is authored, a card must be `parse()`d before it can be rendered. Therefore, with integration of an event call in this function along with some post-processing, cards that were authored using the object model can be separated from those that were not.
+
+One corner case arises when an individual both authors and renders a card on the same client. In this case, the card is not `parse()`d and will not be captured in our telemetry pipeline. However, this case has been considered and ultimately deemed unnecessary for capture due to the low probability of this scenario occuring. Limiting scope to these two functions also facilitates modularity within existing code.
+
+The OnSubmitButtonClicked event will be captured in the corresponding event listener belonging to the `Action.Submit` class.
  
 ### 9.3 Enabling Telemetry 
 Telemetry will be enabled or disabled through the use of environment variables.
