@@ -232,5 +232,13 @@ For advanced configuration of the designer use the following APIs.
 			]
 		}
 	);
+
+	/* Modify the Element toolbox (BEFORE designer attached) */ 
+	Adaptive.AdaptiveCard.elementTypeRegistry.unregisterType("RichTextBlock");
+	ACDesigner.CardDesignerSurface.cardElementPeerRegistry.unregisterPeer(Adaptive.RichTextBlock);
+
+	/* Modify the Actions flyout (AFTER designer attached) */
+	Adaptive.AdaptiveCard.actionTypeRegistry.unregisterType("Action.ToggleVisibility");
+	ACDesigner.CardDesignerSurface.actionPeerRegistry.unregisterPeer(Adaptive.ToggleVisibilityAction);	
 };
 ```
