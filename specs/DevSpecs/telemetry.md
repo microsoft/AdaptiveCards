@@ -1,7 +1,7 @@
 # Input.Rating Telemetry Design Specification 
  
 ## Abstract 
-This design specification covers telemetry integration into the `Input.Rating` control, which will be included in a future release of Adaptive Cards. Telemetry integration is currently slated only for the JavaScript platform; however, this developer specification will be general enough to cover all platforms supported by Adaptive Cards. See more at the GitHub issue [3058](https://github.com/microsoft/AdaptiveCards/issues/3058).
+This design specification covers telemetry integration into the `Input.Rating` control, which will be included in a future release of Adaptive Cards. Telemetry integration is currently slated only for the JavaScript platform; however, this developer specification will be general enough to cover all platforms supported by Adaptive Cards. This telemetry design will focus on sending telemetry via the 1DS platform, but the design is flexible enough to allow for possible integration of other telemetry platforms in the future. See more at the GitHub issue [3058](https://github.com/microsoft/AdaptiveCards/issues/3058).
  
 ## 1. Feature Dependencies 
 ### 1.1 Dependencies on other features 
@@ -47,7 +47,7 @@ interface IACLogger {
 ## 7. Testing Details 
 ### 7.1 Preliminary Testing
 
-Preliminary testing of the telemetry wrapper will be carried out by logging to the file system.
+Preliminary testing of the telemetry wrapper will be carried out by logging to the file system. Separation between the telemetry wrapper and the 1DS-specific telemetry implementation will make it easier to pinpoint any possible bugs or failures.
 
 ### 7.2 JSON Samples and Expected Output 
  
@@ -74,7 +74,7 @@ Expected Values:
 | CorrelationID                | any            | 
 | AppID                        | any            | 
 | DeviceID                     | any            | 
-| OperationResult              | Success        | 
+| OperationResult              | 0 - Success    | 
 | NumberOfFeedbackControls     | 1              | 
 | NumberOfElements             | 1              | 
 | ElementNames                 | [Input.Rating] | 
@@ -88,7 +88,7 @@ Note: This information will not be recorded in one `logEvent()` call. Rather, th
 With two full-time interns working on this feature, implementation of telemetry in JavaScript should take one month, with estimated delivery being mid-August. Within this time frame, progress in the UWP Adaptive Cards platform may also be a plausible stretch goal. 
  
 ## 9. JavaScript Architecture Details 
-The main components of telemetry in the JavaScript platform will include the IACLogger wrapper interface as well as the 1DS-specific implementation of the logger interface. Creating a generalized logger interface will allow easy logging to multiple telemetry platforms if desired, as well as prevent reliance of the existing Adaptive Cards code on a specific telemetry platform. The only changes to the existing JavaScript Adaptive Cards code will only include instantiation and function calls to the generalized IACLogger API.  
+The main components of telemetry in the JavaScript platform will include the IACLogger wrapper interface as well as the 1DS-specific implementation of the logger interface. Creating a generalized logger interface will allow easy logging to multiple telemetry platforms if desired, as well as prevent reliance of the existing Adaptive Cards code on a specific telemetry platform. The only changes to the existing JavaScript Adaptive Cards code will only include new instantiation and function calls to the generalized IACLogger API.  
 
 ### 9.1 ACLogger Telemetry Wrapper 
 The following is the proposed interface for the IACLogger, along with example use cases: 
@@ -172,9 +172,11 @@ class Example {
 The instance of ACLogger will be instantiated when the constructor of the `AdaptiveCard` object is called. Because the logger will belong to the ACLogger class and will be retrieved statically, logging will be possible anywhere within the existing JavaScript code without the need for global variables.
 
 #### Logging Events
-In order to record AuthorCard and RenderCard events, `logEvent()` will be called specifically in the `toJSON()` and `parse()` functions. Integration into `toJSON()` will be necessary to keep track of all cards that are serialized and sent by an author using our authoring SDK. Regardless of how it is authored, a card must be `parse()`d before it can be rendered. Therefore, with integration of an event call in this function along with some post-processing, cards that were authored using the object model can be separated from those that were not.
+In order to record AuthorCard and RenderCard events, `logEvent()` will be called specifically in the `toJSON()` and `parse()` functions. Integration into `toJSON()` will be necessary to keep track of all cards that are serialized and sent by an author using our authoring SDK. Regardless of how it is authored, a card must be `parse()`d before it can be rendered. Therefore, with the integration of an event call in this function along with some post-processing, cards that were authored using the object model can be separated from those that were not.
 
-One corner case arises when an individual both authors and renders a card on the same client. In this case, the card is not `parse()`d and will not be captured in our telemetry pipeline. However, this case has been considered and ultimately deemed unnecessary for capture due to the low probability of this scenario occuring. Limiting scope to these two functions also facilitates modularity within existing code.
+One corner case arises when an individual both authors and renders a card on the same client (see figure below). In this case, the card is not `parse()`d and will not be captured in our telemetry pipeline. However, this case has been considered and ultimately deemed unnecessary for capture due to the low probability of this scenario occuring. Limiting scope to these two functions also facilitates modularity within existing code.
+
+<img src="https://i.imgur.com/KZRMgWY.png"  width="600" height="auto">
 
 The OnSubmitButtonClicked event will be captured in the corresponding event listener belonging to the `Action.Submit` class.
  
