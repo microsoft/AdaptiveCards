@@ -1414,7 +1414,7 @@ namespace AdaptiveNamespace
     HRESULT XamlBuilder::HandleToggleVisibilityClick(_In_ IFrameworkElement* cardFrameworkElement, _In_ IAdaptiveActionElement* action)
     {
         ComPtr<IAdaptiveActionElement> localAction(action);
-        ComPtr<IAdaptiveToggleVisibility> toggleAction;
+        ComPtr<IAdaptiveToggleVisibilityAction> toggleAction;
         RETURN_IF_FAILED(localAction.As(&toggleAction));
 
         ComPtr<IVector<AdaptiveToggleVisibilityTarget*>> targets;
