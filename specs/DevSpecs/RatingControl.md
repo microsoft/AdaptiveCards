@@ -120,12 +120,4 @@ Add the json samples to the shared model unit tests.
 Add coverage of the json samples to the UWP test app.
 
 ## 10. SEQUENCE DIAGRAM
-Author Card -> Serialize Card -> Deserialize JSON -> Parse/Validate JSON -> Render Input.Rating ->
-- (UWP) use XAML Rating Control to display Input.Rating
-- (iOS) custom implementation
-- (JS) extend ChoiceSet
-- (Android) use native rating control to display Input.Rating
-- (.NET HTML) custom implementation, might use JS
-- (.NET WPF) should be similar to UWP, use XAML Rating control?
-
-[to be replaced by Visio flow diagram]
+<img src="https://i.imgur.com/UwgzyeJ.png"  width="600" height="auto">
