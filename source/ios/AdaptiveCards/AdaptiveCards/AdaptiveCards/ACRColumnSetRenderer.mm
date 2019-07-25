@@ -84,13 +84,40 @@
     ACOBaseCardElement *acoColumn = [[ACOBaseCardElement alloc] init];
     auto firstColumn = columns.begin();
     auto prevColumn = columns.empty() ? nullptr : *firstColumn;
+    ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
+    ACRSeparator *separator = nil;
+
     for (std::shared_ptr<Column> column : columns) {
         if (*firstColumn != column) {
-            ACRSeparator *separator = [ACRSeparator renderSeparation:column forSuperview:columnSetView withHostConfig:config];
+             separator = [ACRSeparator renderSeparation:column forSuperview:columnSetView withHostConfig:config];
             configSeparatorVisibility(separator, prevColumn);
         }
+
         [acoColumn setElem:column];
-        curView = (ACRColumnView *)[columnRenderer render:columnSetView rootView:rootView inputs:inputs baseCardElement:acoColumn hostConfig:acoConfig];
+
+        @try {
+            if ([acoElem meetsRequirements:featureReg] == NO) {
+                @throw [ACOFallbackException fallbackException];
+            }
+
+            curView = (ACRColumnView *)[columnRenderer render:columnSetView rootView:rootView inputs:inputs baseCardElement:acoColumn hostConfig:acoConfig];
+        } @catch (ACOFallbackException *e){
+
+            handleFallbackException(e, columnSetView, rootView, inputs, column, acoConfig);
+             
+            if (separator) {
+                [columnSetView removeViewFromContentStackView:separator];
+            }
+
+            UIView *fallbackView = [columnSetView getLastSubview];
+            if ([fallbackView isKindOfClass:[ACRColumnView class]]) {
+                curView = (ACRColumnView *)fallbackView;
+            } else {
+                // the view added wasn't column view, remove and drop it.
+                [columnSetView removeViewFromContentStackView:curView];
+                curView = prevView;
+            }
+        }
 
         // when stretch, views with stretch properties should have equal width
         if (curView.pixelWidth) {

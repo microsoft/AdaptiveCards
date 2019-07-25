@@ -1,0 +1,34 @@
+{
+	"type": "AdaptiveCard",
+	"body": [
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "Image",
+							"url": "https://gtbotappstorage.blob.core.windows.net/gtbotlogo/skype.png",
+							"altText": ""
+						}
+					],
+					"width": "auto"
+				},
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "very long long text very long long text very long long text",
+							"wrap": true
+						}
+					],
+					"width": "stretch"
+				}
+			]
+		}
+	],
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.0"
+}
