@@ -20,7 +20,7 @@ It makes sense to extend ChoiceSet to implement Input.Rating in the JavaScript r
 ## 4. BACKWARDS COMPATIBILITY CONCERNS/FALLBACK
 ### 4.1 Backwards Compatibility
 No breaking changes to existing features or APIs are introduced with this feature.
-Sending cards with Input.Rating to previous versions of the renderers will result in the rating control being rendered as a standard Input.ChoiceSet.
+The default fallback will be a ChoiceSet with the appropriate number of choices, so if an Input.Rating is sent to a previous version of the renderer, it will render as a ChoiceSet.
 
 ## 5. OBJECT MODEL
 | Property | Type | Required | Description | Version |
@@ -118,3 +118,14 @@ Add the json samples to the shared model unit tests.
 
 ### 9.3 UWP
 Add coverage of the json samples to the UWP test app.
+
+## 10. SEQUENCE DIAGRAM
+Author Card -> Serialize Card -> Deserialize JSON -> Parse/Validate JSON -> Render Input.Rating ->
+- (UWP) use XAML Rating Control to display Input.Rating
+- (iOS) custom implementation
+- (JS) extend ChoiceSet
+- (Android) use native rating control to display Input.Rating
+- (.NET HTML) custom implementation, might use JS
+- (.NET WPF) should be similar to UWP, use XAML Rating control?
+
+[to be replaced by Visio flow diagram]
