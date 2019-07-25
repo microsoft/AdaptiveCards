@@ -5,7 +5,7 @@ This design specification covers telemetry integration into the `Input.Rating` c
  
 ## 1. Feature Dependencies 
 ### 1.1 Dependencies on other features 
-Because telemetry will be baked into the `Input.Rating` control as a result of the implementation of this design, this feature is inherently dependent on the `Input.Rating` control. Externally, this feature is dependent on the functionality of the 1DS SDK. 
+This feature is dependent on the functionality of the 1DS SDK for sending data up through the Microsoft telemetry pipeline.
  
 ### 1.2 Other features' dependencies on this feature 
 There are currently no other existing features that directly depend on this feature. However, future telemetry integration for other elements will be based on the design presented here. 
@@ -20,10 +20,10 @@ We will look further into how 1DS affects startup time and memory usage with com
  
  
 ## 4. Backwards Compatibility Concerns  
-If the renderer is not up to date, we will not be able to receive telemetry, which is not a problem because ‘Input.Rating’ would not work correctly without the up-to-date renderer.  
+There are no backwards compatibility concerns at this time.
  
 ## 5. Security Impact 
-Security should be considered in the situation of protecting the token and telemetry pipeline from malicious parties. Although Adaptive Cards is open source, we do not plan on exposing the telemetry token to the public. Thus, distribution of Adaptive Cards versions with telemetry should be limited to internal use cases only (within Microsoft Corp. only). 
+Security should be considered in the situation of protecting the token and telemetry pipeline from malicious parties. Although Adaptive Cards is open source, we do not plan on exposing the telemetry token to the public. Thus, distribution of Adaptive Cards versions with telemetry should be limited to internal use cases only (within Microsoft Corp. only). This may change upon further discussion with the 1DS team.
  
 ## 6. New APIs 
 This feature will introduce the IACLogger, which provides the following interface (see [section 9.1](#91-aclogger-telemetry-wrapper) for examples and implementation details):
@@ -39,7 +39,7 @@ interface IACLogger {
  
     logInfo(message: string): void; 
  
-    logEvent(event: string, eventSourceName: string, correlationID: string, valueSet?: object): void; 
+    logEvent(event: string, eventSourceName: string, correlationID?: string, valueSet?: object): void; 
  
 } 
 ```
@@ -71,18 +71,18 @@ Expected Values:
  
 | Property                     | Expected Value | 
 |------------------------------|----------------| 
-| CorrelationID                | any            | 
-| AppID                        | any            | 
-| DeviceID                     | any            | 
+| CorrelationID                | N/A            | 
+| AppID                        | N/A            | 
+| DeviceID                     | N/A            | 
 | OperationResult              | 0 - Success    | 
 | NumberOfFeedbackControls     | 1              | 
 | NumberOfElements             | 1              | 
 | ElementNames                 | [Input.Rating] | 
 | TotalDefaultRatingScalesUsed | 1              | 
 | TotalDefaultStarImagesUsed   | 1              | 
-| isDeveloper                  | any            | 
+| isDeveloper                  | N/A            | 
  
-Note: This information will not be recorded in one `logEvent()` call. Rather, this output reflects the expected values after post-processing of telemetry data.
+Note: This information will not be recorded in one `logEvent()` call. Rather, this output reflects the expected values after post-processing of telemetry data. In addition, the value "N/A" indicates that this is a property that will be generated on runtime/post-processing and does not have any relationship with the card JSON itself (and thus is not applicable to the example).
  
 ## 8. Estimated Dev Cost 
 With two full-time interns working on this feature, implementation of telemetry in JavaScript should take one month, with estimated delivery being mid-August. Within this time frame, progress in the UWP Adaptive Cards platform may also be a plausible stretch goal. 
@@ -104,7 +104,7 @@ interface IACLogger {
  
     logInfo(message: string): void; 
  
-    logEvent(event: string, eventSourceName: string, correlationID: string, valueSet?: object): void; 
+    logEvent(event: string, eventSourceName: string, correlationID?: string, valueSet?: object): void; 
  
 } 
  
@@ -165,8 +165,12 @@ class Example {
 ```
 * ACLogger will be instantiated as a singleton, with the option to log to multiple telemetry platforms concurrently
 * The `valueSet` parameter of the `logEvent()` function will be used to send information including whether or not the default icons and default rating quantities were used.
+* Once instantiated, the logger will log to the console by default.
+
+### 9.2 Logger Extensibility
+The logger will be able to integrate with additional providers that are not specified. In addition, documentation will be provided for cases in which a user would like to implement logging in their own custom controls.
  
-### 9.2 Location of IACLogger in Existing Code 
+### 9.3 Location of IACLogger in Existing Code 
 
 #### Instantiation
 The instance of ACLogger will be instantiated when the constructor of the `AdaptiveCard` object is called. Because the logger will belong to the ACLogger class and will be retrieved statically, logging will be possible anywhere within the existing JavaScript code without the need for global variables.
@@ -174,14 +178,16 @@ The instance of ACLogger will be instantiated when the constructor of the `Adapt
 #### Logging Events
 In order to record AuthorCard and RenderCard events, `logEvent()` will be called specifically in the `toJSON()` and `parse()` functions. Integration into `toJSON()` will be necessary to keep track of all cards that are serialized and sent by an author using our authoring SDK. Regardless of how it is authored, a card must be `parse()`d before it can be rendered. Therefore, with the integration of an event call in this function along with some post-processing, cards that were authored using the object model can be separated from those that were not.
 
+In terms of priorities, it is important to note that RenderCard is P0 and AuthorCard is P2; the capturing of the AuthorCard event is low priority.
+
 One corner case arises when an individual both authors and renders a card on the same client (see figure below). In this case, the card is not `parse()`d and will not be captured in our telemetry pipeline. However, this case has been considered and ultimately deemed unnecessary for capture due to the low probability of this scenario occuring. Limiting scope to these two functions also facilitates modularity within existing code.
 
 <img src="https://i.imgur.com/KZRMgWY.png"  width="600" height="auto">
 
 The OnSubmitButtonClicked event will be captured in the corresponding event listener belonging to the `Action.Submit` class.
  
-### 9.3 Enabling Telemetry 
+### 9.4 Enabling Telemetry 
 Telemetry will be enabled or disabled through the use of environment variables.
 
-### 9.4 1DS Implementation of ACLogger 
+### 9.5 1DS Implementation of ACLogger 
 There will be a JavaScript file that will implement the 1DS-specific version of the IACLogger. The functions will pass in the necessary parameters and will make calls to 1DS to send the info. The calls to events will happen for each element render and in post processing through the correlationID we will be able to tie the elements together.   
