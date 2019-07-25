@@ -10,50 +10,29 @@ https://github.com/microsoft/AdaptiveCards/blob/specs/3054-2/specs/elements/Inpu
 ## 2. DEPENDENCIES
 
 ### 2.1 CHOICESET
-One of the two options for this feature’s implementation depends on ChoiceSet.
+This feature’s implementation may depend on ChoiceSet, depending on the platform.
 
 ## 3. MAJOR DECISIONS
 > Note: For card authors, the rating control will be a separate control named “Input.Rating”. This is about the implementation, not what the authors see.
 
-### 3.1 Implementation Option 1: Extending Input.ChoiceSet
-
-This would make the implementation simpler, but could potentially lead to issues if there are changes in either ChoiceSet or the Rating Control in the future due to (somewhat) tighter coupling. However, it's not clear whether this is likely to cause any issues.
-
-[in progress]
-
-| Pros | Cons |
-| ---- | ---- | 
-| Ease of implementation (depending on platform) | Tighter coupling |
-| [Pro] | [Con] |
-| [Pro] | [Con] |
-
-### 3.2 Implementation Option 2: Making a Brand New Control
-This would ensure 
-
-[in progress]
-
-| Pros | Cons |
-| ---- | ---- | 
-| Looser coupling | [Con] |
-| [Pro] | [Con] |
-| [Pro] | [Con] |
+It makes sense to extend ChoiceSet to implement Input.Rating in the JavaScript renderer, but that decision will vary depending on platform.
 
 ## 4. BACKWARDS COMPATIBILITY CONCERNS/FALLBACK
 ### 4.1 Backwards Compatibility
-Sending cards with Input.Rating to previous versions of the renderers will result in the rating control being rendered as a standard Input.ChoiceSet.
 No breaking changes to existing features or APIs are introduced with this feature.
+Sending cards with Input.Rating to previous versions of the renderers will result in the rating control being rendered as a standard Input.ChoiceSet.
 
 ## 5. OBJECT MODEL
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **type** | `"Input.Rating"` | Yes | Must be `"Input.Rating"`. | 1.0 |
-| **iconSelected** | `uri` | No | Url to selected icon, defaults to star | 1.0 |
-| **iconUnselected** | `uri` | No | Url to unselected icon, defaults to star | 1.0 |
-| **maxValue** | `number` | No | How many icons show up, defaults to 5 | 1.0 |
+| **type** | `"Input.Rating"` | Yes | Must be `"Input.Rating"`. | 1.3 |
+| **iconSelected** | `uri` | No | Url to selected icon, defaults to star | 1.3 |
+| **iconUnselected** | `uri` | No | Url to unselected icon, defaults to star | 1.3 |
+| **maxValue** | `number` | No | How many icons show up, defaults to 5 | 1.3 |
 
 ## 6. PLATFORM SPECIFIC DETAILS
 ### 6.1 UWP
-XAML (and therefore UWP) has a native rating control that has all our required functionality.
+XAML (and therefore UWP) has a native rating control that has all our required functionality. To demo, install "XAML Controls Gallery" from the Windows Store and search "RatingControl". The documentation explains how to disable the growth animation that doesn't match our specifications: https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/rating#additional-functionality
 ### 6.2 .NET WPF
 We will leverage .NET WPF’s native rating control.
 ### 6.3 .NET HTML
@@ -66,7 +45,7 @@ There is no native iOS rating control, so we will have to implement it ourselves
 There’s no native JavaScript rating control, so we will have to implement it ourselves.
 
 ## 7. RENDERING DETAILS
-Each platform should render the [in progress]
+Each platform should render the Rating input as it would any other input. Rating inputs are allowed anywhere in the card that other inputs are allowed.
 
 ## 8. TELEMETRY EVENTS
 - AuthorCard
@@ -76,10 +55,63 @@ Each platform should render the [in progress]
 ## 9. TESTING
 ### 9.1 SAMPLES
 - A simple 5-star rating case will be added under v1.3\Elements with the naming Input.Rating.json. This will demonstrate the (assumed) most common use case of sending a 1-5 star rating through an Action.Submit button.
+```
+{ 
+  "type": "AdaptiveCard",
+  "body": [ 
+  	{ 
+    	"type": "Input.Rating", 
+    	"id": "userRating" 
+      } 
+    } 
+  ], 
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json", 
+  "version": "1.3" 
+} 
+```
 - A full test file incorporating all edge cases:
-	- all combinations of default and non-default number of ratings, rating icons, and hover rating icons
+	- all combinations of default and non-default number of ratings, rating icons(iconUnselected), and hover rating icons (iconSelected)
 	- examples with only 1-2 rating choices
 	- examples with many rating choices (enough to overfill the allotted space)
+```
+{ 
+  "type": "AdaptiveCard", 
+  "body": [ 
+    { 
+      "type": "Input.Rating", 
+      "id": "userRating",
+      "maxValue": 5,
+      "iconSelected": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
+      "iconUnselected": "https://pbs.twimg.com/profile_images/988775660163252226/XpgonN0X_400x400.jpg"
+    },
+	{ 
+      "type": "Input.Rating", 
+      "id": "userRating",
+      "maxValue": 10
+    },
+	{ 
+      "type": "Input.Rating", 
+      "id": "userRating",
+      "maxValue": 1,
+      "iconSelected": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+    },
+	{ 
+      "type": "Input.Rating", 
+      "id": "userRating",
+      "maxValue": 2,
+      "iconUnselected": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+    },
+	{ 
+      "type": "Input.Rating", 
+      "id": "userRating",
+      "maxValue": 20,
+      "iconUnselected": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+    }
+  ],
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json", 
+  "version": "1.3" 
+} 
+```
 
 ### 9.2 SHARED MODEL
 Add the json samples to the shared model unit tests.
