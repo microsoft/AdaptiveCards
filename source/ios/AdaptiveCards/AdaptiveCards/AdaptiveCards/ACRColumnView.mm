@@ -13,14 +13,20 @@
 {
     self.stackView.axis = UILayoutConstraintAxisVertical;
     [super config:attributes];
+    self.isLastColumn = NO;
 }
 
 - (void)addArrangedSubview:(UIView *)view
 {
     // if auto, maintain content size whenever possible
     if([self.columnWidth isEqualToString:@"auto"]){
-        [view setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-        [view setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+        NSInteger priority = ACRColumnWidthPriorityAuto;
+        if (self.isLastColumn) {
+            priority = ACRColumnWidthPriorityStretchAuto;
+        }
+
+        [view setContentHuggingPriority:priority forAxis:UILayoutConstraintAxisHorizontal];
+        [view setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
       // if columnWidth is set to stretch or number, allow column to fill the available space
     } else {
         [view setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
