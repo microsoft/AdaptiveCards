@@ -7,6 +7,7 @@
 
 #import "ACRColumnRenderer.h"
 #import "ACRColumnView.h"
+#import "ACRColumnSetView.h"
 #import "ACRRendererPrivate.h"
 #import "Column.h"
 #import "SharedAdaptiveCard.h"
@@ -57,6 +58,9 @@
     if (columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom) {
         leadingBlankSpace = [column addPaddingSpace];
     }
+
+    ACRColumnSetView *columnsetView = (ACRColumnSetView *)viewGroup;
+    column.isLastColumn = columnsetView.isLastColumn;
 
     [ACRRenderer render:column
                rootView:rootView
