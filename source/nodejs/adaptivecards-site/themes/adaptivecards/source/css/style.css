@@ -93,12 +93,6 @@ h6 {
 	max-width: 1000px;
 }
 
-.videobanner {
-	width: calc(100% + 20vw);
-	margin-left: -10vw;
-	background-color: #0078D7;
-}
-
 .cardEditor {
 	display: -webkit-box;
 	display: -ms-flexbox;
@@ -274,4 +268,90 @@ dir {
 	.a2a_floating_style.a2a_default_style {
 		display: none;
 	}
+}
+
+.homepage h1 {
+	line-height: 48px;
+	font-weight: 800;
+}
+
+.homepage h3 {
+	font-size: 20px;
+	font-weight: lighter;
+	line-height: 30px;
+}
+
+.homepage h4 {
+	font-size: 18px;
+	line-height: 28px;
+	font-weight: bolder;
+	margin-bottom: 1px;
+}
+
+.homepage h5 {
+	font-size: 16px;
+	line-height: 24px;
+	color: #555;
+	margin-top: 2px;
+}
+
+.homepage .author {
+	font-weight: bolder;
+	margin-bottom: -3px;
+	margin-top: 6px;
+}
+
+.homepage .title {
+	color: #777;
+	margin-top: 0;
+}
+
+.homepage .mainSection {
+	/*background-color: #0078D7;*/
+}
+
+.homepage .w3-modal {
+	background-color: #2d2d2deb;
+}
+
+.homepage h6 {
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	font-weight: bold;
+	color: #969696;
+}
+
+.homepage a i {
+	width: 20px;
+}
+
+.homepage a:link, .homepage a:visited {
+	color: #2196F3;
+	font-size: 15px;
+	line-height: 29px;
+	font-weight: 600;
+}
+  
+.homepage a:hover {
+	color: blue;
+	text-decoration: none;
+}
+
+.quadrant div:nth-child(1) {
+	background-color: red;
+}
+
+.divider {
+    height:30px;
+    padding-bottom: 10px;
+    width: 100%;
+    margin: 20px auto;
+    float: left;
+}
+
+.divider:after {
+    content: '';
+    display: block;
+    margin-top:19px;
+    border: solid 1px #b38b0d;
 }

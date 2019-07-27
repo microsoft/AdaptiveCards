@@ -294,7 +294,20 @@ $(function () {
 		}
 	}
 
+	$("#closeVideo").click(function () {
+		$("#overviewVideo")[0].pause();
+		$('#videoModal').css("display", "none");
+	});
 
+	$("#watchVideo").click(function () {
+		$("#overviewVideo")[0].play();
+		$('#videoModal').css("display", "block");
+
+	});
+
+	$(document).keyup(function (e) {
+		if (e.keyCode === 27) $('#closeVideo').click();
+	});
 
 	$('.adaptivecard').each(function () {
 
@@ -309,7 +322,7 @@ $(function () {
 	});
 
 	function renderCard(el, json) {
-		if(typeof json === "string")
+		if (typeof json === "string")
 			json = JSON.parse(json);
 
 		// TODO: clean this up to only provide custom host config options
@@ -322,7 +335,7 @@ $(function () {
 		el.text('').append(renderedCard).show();
 	}
 
-	$('.ac-properties table').addClass("w3-table w3-bordered w3-responsive");
+	$('.ac-properties table').addClass("w3-table w3-bordered");
 
 	hljs.configure({
 		tabReplace: '  '
