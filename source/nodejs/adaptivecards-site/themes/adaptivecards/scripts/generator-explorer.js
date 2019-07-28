@@ -7,7 +7,7 @@ var typedschema = require("ac-typed-schema");
 var marked = require("marked");
 var fs = require("hexo-fs");
 
-hexo.extend.generators.register("generator-explorer", function (locals) {
+hexo.extend.generator.register("generator-explorer", function (locals) {
 
     return new Promise(function (resolve, reject) {
 
