@@ -9,11 +9,10 @@
 				</source>
 			</video>
 			<span id="closeVideo" class="w3-button w3-xlarge w3-transparent w3-display-topright"
-				title="Close Modal">×</span>
+				title="Close video">×</span>
 		</div>
 
 	</div>
-
 
 	<div class="w3-center" style="max-width: 600px; margin: auto">
 
@@ -35,12 +34,11 @@
 		</div>
 	</div>
 
-
 	<div class="w3-row-padding mainSection">
 
 		<div class="w3-col l9">
 			<div class="w3-card" style="background-color: #0078D7">
-				<video id="vid" autoplay muted style="width: 100%; margin-bottom: -8px"
+				<video id="vid" autoplay loop muted style="width: 100%; margin-bottom: -8px"
 					src="https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveIntroVideo.mp4"></video>
 			</div>
 		</div>
@@ -80,7 +78,7 @@
 
 					<div><a href="https://portal.productboard.com/adaptivecards/1-adaptive-cards-portal/tabs/4-1-3-proposed/tabs/1-under-consideration"
 							aria-label="Next version"><i class="fa fa-calendar"></i>v1.3</a> <span
-							class="w3-tag w3-round w3-gray w3-tiny">In Development</span></div>
+							class="w3-tag w3-round w3-light-gray w3-tiny">In Development</span></div>
 				</div>
 				<div class="w3-col s6 l12">
 					<h6>GitHub</h6>
@@ -91,28 +89,30 @@
 		</div>
 	</div>
 
+	<div class="divider"></div>
+
 	<%- partial("_partial/home-section", {
 		title: "Meet your users where they are",
-		subtitle: "Break outside the box of templated cards. Adaptive Cards let you describe actionable content as you see fit and deliver it beautifully wherever your customers are",
+		subtitle: "Modern office life is hectic. Users are constantly switching between devices, apps, and services to get their job done. Adaptive Cards allow you to increase engagement and efficiency by injecting your actionable content into the apps they use every day.",
 		video: "content/MicrosoftHosts.mp4",
-		learnMoreTitle: "Latest partner status",
+		learnMoreTitle: "Integrate into existing apps",
 		learnMoreLink: "https://docs.microsoft.com/en-us/adaptive-cards/resources/partners"
 	}) %>
 
 	<%- partial("_partial/section-details", {
 		sections: [{
 			"title": "Bot Framework",
-			"subtitle":  "The Bot framework is a key platform for Adaptive Cards",
+			"subtitle": "A conversational bot powered by Adaptive Cards can greatly simplify business workflows on your web site or through other channels.",
 			"smallImage": "https://leoluis.xyz/content/images/size/w300/2019/03/ChatBot-BotFramework.png"
 		},
 		{
 			"title": "Microsoft Teams",
-			"subtitle":  "Integrate into Teams with Bots, Tabs, Message Extensions, and more",
+			"subtitle":  "As the digital hub for many modern workers, Teams offers multiple extensibilty points for apps to integrate with.",
 			"smallImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Microsoft_Office_Teams_%282018%E2%80%93present%29.svg/1200px-Microsoft_Office_Teams_%282018%E2%80%93present%29.svg.png"
 		},
 		{
 			"title": "Outlook Actionable Messages",
-			"subtitle":  "Deliver actionable content directly to your users inbox",
+			"subtitle":  "Email has long been life-blood of an information worker, and now you can deliver actionable content directly to their inbox.",
 			"smallImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Microsoft_Office_Outlook_%282018%E2%80%93present%29.svg/1200px-Microsoft_Office_Outlook_%282018%E2%80%93present%29.svg.png"
 		},
 		{
@@ -122,21 +122,24 @@
 		}]	
 	}) %>
 
+	<div class="w3-padding-32"></div>
+
 	<%- partial("_partial/quote", { 
 		quote: "User engagement on surveys is always a challenge, but by taking advantage of Outlook Actionable Messages, we experienced a massively increased return rate from ~10-12% to a 3 month average of 35%!",
 		author: "Richard Greenfield",
 		title: "Executive Support Services",
-		profilePic: "https://pbs.twimg.com/profile_images/1257201339/Disneyland-2009_200x200.png",
+		profilePic: "content/rigreenf.jpg",
 		productLogo: "content/microsoft-logo.png"
 	}) %>
 
+	<div class="divider"></div>
 
 	<%- partial("_partial/home-section", {
 		title: "Render cards in your own apps",
 		subtitle: "The Adaptive Cards SDKs make it easy to render cards in your own apps, on any platform.",
-		video: "https://storybook.js.org/videos/storybook-workflow-build-optimized-lg.mp4",
-		learnMoreTitle: "Install the SDKs",
-		learnMoreLink: "https://docs.microsoft.com/en-us/adaptive-cards/resources/partners"
+		video: "content/RenderCardsScenarios.mp4",
+		learnMoreTitle: "Install the Rendering SDKs",
+		learnMoreLink: "https://docs.microsoft.com/en-us/adaptive-cards/rendering-cards/getting-started"
 	}) %>
 
 	<%- partial("_partial/section-details", {
@@ -147,7 +150,7 @@
 			"smallImage": "content/Feature.jpg"
 		},
 		{
-			"title": "Adapts to your app UX",
+			"title": "Adapts to the surrounding UI",
 			"subtitle":  "Cards automatically adaptive to the surrounding UI",
 			"largeImage": "content/Feature.jpg",
 			"smallImage": "content/Feature.jpg"
@@ -166,6 +169,8 @@
 		}]	
 	}) %>
 
+	<div class="w3-padding-32"></div>
+
 	<%- partial("_partial/quote", { 
 		quote: "Microsoft Teams is only as powerful as the third-party services that integrate with it. Adaptive Cards allows any developer to plug into the richness of the Teams platform in a native way.",
 		author: "Bill Bliss",
@@ -174,14 +179,17 @@
 		productLogo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Microsoft_Office_Teams_%282018%E2%80%93present%29.svg/1200px-Microsoft_Office_Teams_%282018%E2%80%93present%29.svg.png"
 	}) %>
 
+	<div class="divider"></div>
 
 	<%- partial("_partial/home-section", {
-		title: "Integrated designer",
+		title: "Integrate the Adaptive Cards designer into your own apps",
 		subtitle: "Easily embed the designer with a full configuration API, allowing anyone to create adaptive cards.",
-		video: "https://storybook.js.org/videos/storybook-workflow-build-optimized-lg.mp4",
+		video: "content/Video-Designer.mp4",
 		learnMoreTitle: "Embed the Designer",
 		learnMoreLink: "https://www.npmjs.com/package/adaptivecards-designer"
 	}) %>
+
+	<div class="w3-padding-32"></div>
 
 	<%- partial("_partial/quote", { 
 		quote: "AtBot enables no-code bot creation and with the Adaptive Card designer we were able to deliver what our customers wanted.",
@@ -191,12 +199,16 @@
 		productLogo: "http://store-images.s-microsoft.com/image/apps.26677.f7d5a0d1-f6e3-47cb-88ce-103eb31b6bad.edfdfff9-1d34-42fb-8595-8f68dd0ae02a.89be960f-f561-4517-a4ac-570c0b3db1d4"
 	}) %>
 
+	<div class="divider"></div>
+
+
 	<%- partial("_partial/home-section", {
-		title: "Start separating the card content from data (Preview)",
+		title: "The data binding preview allows you to create reusable card templates",
 		subtitle: "Simply your workflow by creating reusable card templates that can be co-authored, shared, and distributed to your own team or beyond.",
 		video: "https://storybook.js.org/videos/storybook-workflow-build-optimized-lg.mp4",
 		learnMoreTitle: "All about data binding",
-		learnMoreLink: "https://docs.microsoft.com/en-us/adaptive-cards/data-binding"
+		learnMoreLink: "https://docs.microsoft.com/en-us/adaptive-cards/data-binding",
+		tag: "Preview"
 	}) %>
 
 	<%- partial("_partial/section-details", {
@@ -226,17 +238,30 @@
 		}]	
 	}) %>
 
-	<div class="w3-row-padding">
+	<div class="w3-padding-32"></div>
+
+
+	<%- partial("_partial/quote", { 
+		quote: "Teamwork offers a suite of interoperable productivity tools that integrate with many platforms. By create reusable Adaptive Card templates we can natively integrate our content into our own apps as well as others in a cost saving way.",
+		author: "Tim Cadenbach",
+		title: "Software Engineer",
+		profilePic: "https://pbs.twimg.com/profile_images/919315256563978241/2LDFiF5m_400x400.jpg",
+		productLogo: "content/teamwork-logo.png"
+	}) %>
+
+	<div class="divider"></div>
+
+	<div class="w3-row-padding w3-lightgray">
 		<div class="w3-col m6">
 			<h6>Learn</h6>
-			<a href="<%- url_for('samples') %>">Inspirational samples</a>
-			<a href="<%- url_for('samples') %>">Join our Community Calls, hosted every month</a>
+			<p><a href="<%- url_for('samples') %>">Inspirational samples</a></p>
+			<p><a href="<%- url_for('samples') %>">Join our Community Calls, hosted every month</a></p>
 
 		</div>
 
 		<div class="w3-col m6">
 			<div>
-				<h6 class="w3-cell">Blog </h6><a href="/blog">Read more <i class="fa fa-chevron-right"></i></a>
+				<h6 class="w3-cell">Blog </h6><a href="<%- url_for('blog') %></a>>Read more <i class="fa fa-chevron-right"></i></a>
 			</div>
 
 			<% page.posts.slice(0, 4).each(function(post){ %>

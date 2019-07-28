@@ -275,6 +275,12 @@ dir {
 	font-weight: 800;
 }
 
+.homepage h2 {
+	font-size: 28px;
+	font-weight: bolder;
+	line-height: 36px;
+}
+
 .homepage h3 {
 	font-size: 20px;
 	font-weight: lighter;
@@ -295,6 +301,53 @@ dir {
 	margin-top: 2px;
 }
 
+.homepage h6 {
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	font-weight: bold;
+	color: #969696;
+}
+
+.homepage .divider {
+	border-bottom: solid 1px #ddd;
+	margin-top: 64px;
+	margin-bottom: 64px;
+}
+
+@media screen and (max-width:859px) {
+	.homepage .divider {
+		margin-left: calc(-16px);
+		margin-right: calc(-16px);
+	}
+}
+
+@media print,
+screen and (min-width:860px) {
+	.homepage .divider {
+		margin-left: calc(-24px);
+		margin-right: calc(-24px);
+	}
+}
+
+@media print,
+screen and (min-width:1084px) {
+	.homepage .divider {
+		margin-left: calc(-5vw);
+		margin-right: calc(-5vw);
+	}
+}
+
+@media print,
+screen and (min-width:1795px) {
+	.uhf-container:not(.has-padding) {
+		margin-right: auto;
+		margin-left: auto;
+		max-width: 1600px;
+		width: 1600px;
+	}
+}
+
+
 .homepage .author {
 	font-weight: bolder;
 	margin-bottom: -3px;
@@ -314,12 +367,6 @@ dir {
 	background-color: #2d2d2deb;
 }
 
-.homepage h6 {
-	text-transform: uppercase;
-	letter-spacing: 2px;
-	font-weight: bold;
-	color: #969696;
-}
 
 .homepage a i {
 	width: 20px;
@@ -337,21 +384,11 @@ dir {
 	text-decoration: none;
 }
 
+.fa-chevron-right {
+	font-size: 11px;
+	font-weight: lighter;
+}
+
 .quadrant div:nth-child(1) {
 	background-color: red;
-}
-
-.divider {
-    height:30px;
-    padding-bottom: 10px;
-    width: 100%;
-    margin: 20px auto;
-    float: left;
-}
-
-.divider:after {
-    content: '';
-    display: block;
-    margin-top:19px;
-    border: solid 1px #b38b0d;
 }

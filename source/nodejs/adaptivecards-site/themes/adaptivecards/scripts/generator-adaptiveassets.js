@@ -7,6 +7,7 @@
 var fs = require("hexo-fs");
 var path = require("path");
 var glob = require("glob");
+var md5 = require("md5");
 
 var assets = [
     {
@@ -32,20 +33,27 @@ var assets = [
         path: "node_modules/adaptivecards/dist/*.*",
         dest: function (p) { return p; }
 	},
+	// {
+    //     // designer script (separated because we want to hash it)
+    //     path: "node_modules/adaptivecards-designer/dist/adaptivecards-designer.js",
+	// 	dest: function (p) { return p; }		
+	// },
 	{
-        // designer module
+        // designer assets 
         path: "node_modules/adaptivecards-designer/dist/*.*",
-        dest: function (p) { return p; }
+		dest: function (p) { return p; }
 	},
 	{
-        // designer module (TODO: when monaco-editor is removed from the designer bundle, this can be simplified)
+        // designer module (hashing not working for CSS files; the designer expects certain filenames)
         path: "node_modules/adaptivecards-designer/dist/containers/*.*",
-        dest: function (p) { return p; }
+		dest: function (p) { return p; },
+		noHash: true
 	},
 	{
         // monaco-editor module
         path: "node_modules/monaco-editor/min/vs/**/*.*",
-        dest: function (p) { return p; }
+		dest: function (p) { return p; },
+		noHash: true
     },
     {
         // visualizer script
@@ -65,30 +73,58 @@ var assets = [
     {
         // visualizer monaco loader
         path: "node_modules/adaptivecards-visualizer/src/monaco-loader.js",
-        dest: function (p) { return "visualizer/monaco-loader.js" }
+		dest: function (p) { return "visualizer/monaco-loader.js" },
+		noHash: true
+	},
+	{
+        // site CSS
+        path: "themes/adaptivecards/source/css/*.css",
+		dest: function (p) { return "css/" + path.basename(p) }
+	},
+	{
+        // site JS
+        path: "themes/adaptivecards/source/js/*.js",
+		dest: function (p) { return "js/" + path.basename(p) }
 	}
 ];
 
 hexo.extend.generator.register("generator-adaptiveassets", function (locals) {
 
-    var allAssets = [];
+	let allAssets = [];
+	let hashExtensions = [ ".css", ".js" ];
+	let hashedAssets = [];
 
     assets.forEach(function (asset) {
-        var g = glob.sync(asset.path, { nocase: false }).map(function (p) {
+        var g = glob.sync(asset.path, { nocase: false }).map(function (sourcePath) {
 
-            return {
-                path: asset.dest(p),
+			let destPath = asset.dest(sourcePath);
+
+			if(!asset.noHash && hashExtensions.includes(path.extname(destPath))) {
+				// For cache-busting append the md5 hash of our script and CSS content
+				// EXAMPLE: adaptivecards.js => adaptivecards.c66a8322.js
+				let originalDestPath = destPath;
+				let hash = md5(fs.readFileSync(sourcePath)).substring(0, 6);
+				let hashedFilename = path.basename(destPath, path.extname(destPath)) + "." + hash + path.extname(destPath);
+				
+				destPath = path.dirname(destPath) + "/" + hashedFilename;
+				hashedAssets.push({
+					originalPath: originalDestPath,
+					hashedPath: destPath
+				});
+			}
+
+			return {
+                path: destPath,
                 data: function () {
-                    return fs.createReadStream(p);
+                    return fs.createReadStream(sourcePath);
                 }
             }
         });
 
-        g.forEach(function (item) {
-
-            allAssets.push(item);
-        });
-    });
+        g.forEach(function (item) { allAssets.push(item); });
+	});
+	
+	hexo.locals.set("hashedAssets", () => hashedAssets);
 
     return allAssets;
 });

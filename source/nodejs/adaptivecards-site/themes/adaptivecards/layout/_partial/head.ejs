@@ -34,7 +34,7 @@
 
 	<% if(is_current("visualizer")) { %>
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-		<%- css("visualizer/css/visualizer.css") %>
+		<%- hashedasset("visualizer/css/visualizer.css") %>
 	<% } else if(is_current("designer")) { %>
 		<style type="text/css">
 			.content {
@@ -56,11 +56,10 @@
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">	  
 
-		<%- css("css/extracted.css") %>
-		<%- css("visualizer/css/outlook.css") %>
-		<%- css("css/style.css") %>
+		<%- hashedasset("css/extracted.css") %> 
+		<%- hashedasset("visualizer/css/outlook.css") %>
+		<%- hashedasset("css/style.css") %>
 	<% } %>
-
 
 	<script type="text/javascript">  var appInsights=window.appInsights||function(a){    function b(a){c[a]=function(){var b=arguments;c.queue.push(function(){c[a].apply(c,b)})}}var c={config:a},d=document,e=window;setTimeout(function(){var b=d.createElement("script");b.src=a.url||"https://az416426.vo.msecnd.net/scripts/a/ai.0.js",d.getElementsByTagName("script")[0].parentNode.appendChild(b)});try{c.cookie=d.cookie}catch(a){}c.queue=[];for(var f=["Event","Exception","Metric","PageView","Trace","Dependency"];f.length;)b("track"+f.pop());if(b("setAuthenticatedUserContext"),b("clearAuthenticatedUserContext"),b("startTrackEvent"),b("stopTrackEvent"),b("startTrackPage"),b("stopTrackPage"),b("flush"),!a.disableExceptionTracking){f="onerror",b("_"+f);var g=e[f];e[f]=function(a,b,d,e,h){var i=g&&g(a,b,d,e,h);return!0!==i&&c["_"+f](a,b,d,e,h),i}}return c    }({        instrumentationKey:"bd0c4f36-dd0f-4984-8f32-32cb44d6055a"    });      window.appInsights=appInsights,appInsights.queue&&0===appInsights.queue.length&&appInsights.trackPageView();</script>
 
@@ -74,16 +73,17 @@
 
 	<% /* Load scripts based on the URL */ %>
 	<% if(is_current("visualizer")) { %>
-		<%- js('node_modules/adaptivecards/dist/adaptivecards.min.js') %>  
-		<%- js('node_modules/monaco-editor/min/vs/loader.js') %>  
-		<%- js("visualizer/monaco-loader.js") %>
-		<%- js("visualizer/adaptivecards-visualizer.min.js") %>
+		<%- hashedasset('node_modules/adaptivecards/dist/adaptivecards.min.js') %>  
+		<%- hashedasset('node_modules/monaco-editor/min/vs/loader.js') %>  
+		<%- hashedasset("visualizer/monaco-loader.js") %>
+		<%- hashedasset("visualizer/adaptivecards-visualizer.min.js") %>
 	<% } else if(is_current("designer")) { %>
-		<%- js('node_modules/monaco-editor/min/vs/loader.js') %>  
-		<%- js("node_modules/adaptivecards-designer/dist/adaptivecards-designer.min.js") %>
+		<%- hashedasset('node_modules/monaco-editor/min/vs/loader.js') %>  
+		<%- hashedasset("node_modules/adaptivecards-designer/dist/adaptivecards-designer.min.js") %>
+		<%- hashedasset("node_modules/adaptivecards-designer/dist/adaptivecards-designer.css") %>
 	<% } else { %>
-		<%- js('node_modules/adaptivecards/dist/adaptivecards.min.js') %>	
-		<%- js('js/script.js') %>
+		<%- hashedasset('node_modules/adaptivecards/dist/adaptivecards.min.js') %>	
+		<%- hashedasset('js/script.js') %>
 	<% } %> 
 
 </head>
