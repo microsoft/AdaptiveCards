@@ -24,7 +24,7 @@ layout: layout
 			<div class="w3-col l10">
 				<div class="w3-row w3-white w3-margin w3-border">
 					<div class="w3-col w3-margin-top w3-margin-left w3-margin-bottom l4 w3-hide-small w3-hide-medium">
-						<img src="<%- post.featured_image || url_for('content/icons/android-chrome-512x512.png') %>" class="w3-image" alt="Featured image" />
+						<img src="<%- post.featured_image ? url_for(post.featured_image) : url_for('content/icons/android-chrome-512x512.png') %>" class="w3-image" alt="Featured image" />
 					</div>
 
 					<div class="w3-col w3-container l7">
@@ -40,7 +40,7 @@ layout: layout
 						</div>
 
 						<div>
-							<%- post.excerpt %>
+							<%- truncate(post.excerpt, { length: 600 }) %>
 						</div>
 					</div>
 				</div>
