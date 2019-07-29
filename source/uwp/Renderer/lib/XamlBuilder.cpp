@@ -973,7 +973,7 @@ namespace AdaptiveNamespace
                 Visibility visibility;
                 RETURN_IF_FAILED(child->get_Visibility(&visibility));
 
-				boolean expectedVisibility{};
+                boolean expectedVisibility{};
                 RETURN_IF_FAILED(elementTagContent->get_ExpectedVisibility(&expectedVisibility));
 
                 if (separator)
@@ -1452,7 +1452,7 @@ namespace AdaptiveNamespace
                 ComPtr<IUIElement> toggleElementAsUIElement;
                 RETURN_IF_FAILED(toggleElement.As(&toggleElementAsUIElement));
 
-				ComPtr<IFrameworkElement> toggleElementAsFrameworkElement;
+                ComPtr<IFrameworkElement> toggleElementAsFrameworkElement;
                 RETURN_IF_FAILED(toggleElement.As(&toggleElementAsFrameworkElement));
 
                 ComPtr<IInspectable> tag;
@@ -1478,7 +1478,7 @@ namespace AdaptiveNamespace
                 }
 
                 RETURN_IF_FAILED(toggleElementAsUIElement->put_Visibility(visibilityToSet));
-				RETURN_IF_FAILED(elementTagContent->set_ExpectedVisibility(visibilityToSet == Visibility_Visible));
+                RETURN_IF_FAILED(elementTagContent->set_ExpectedVisibility(visibilityToSet == Visibility_Visible));
 
                 ComPtr<IPanel> parentPanel;
                 RETURN_IF_FAILED(elementTagContent->get_ParentPanel(&parentPanel));
