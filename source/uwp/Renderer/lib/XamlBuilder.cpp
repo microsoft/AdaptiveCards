@@ -873,7 +873,7 @@ namespace AdaptiveNamespace
             }
 
             ComPtr<ElementTagContent> tagContent;
-            RETURN_IF_FAILED(MakeAndInitialize<ElementTagContent>(&tagContent, element, parentPanel, separator, columnDefinition));
+            RETURN_IF_FAILED(MakeAndInitialize<ElementTagContent>(&tagContent, element, parentPanel, separator, columnDefinition, isVisible));
             RETURN_IF_FAILED(newControlAsFrameworkElement->put_Tag(tagContent.Get()));
 
             ABI::AdaptiveNamespace::HeightType heightType{};
@@ -973,11 +973,15 @@ namespace AdaptiveNamespace
                 Visibility visibility;
                 RETURN_IF_FAILED(child->get_Visibility(&visibility));
 
+                boolean expectedVisibility{};
+                RETURN_IF_FAILED(elementTagContent->get_ExpectedVisibility(&expectedVisibility));
+
                 if (separator)
                 {
-                    if (visibility == Visibility_Collapsed || !foundPreviousVisibleElement)
+                    if (!expectedVisibility || !foundPreviousVisibleElement)
                     {
                         // If the element is collapsed, or if it's the first visible element, collapse the separator
+                        // Images are hidden while they are retrieved, we shouldn't hide the separator
                         RETURN_IF_FAILED(separator->put_Visibility(Visibility_Collapsed));
                     }
                     else
@@ -1448,6 +1452,15 @@ namespace AdaptiveNamespace
                 ComPtr<IUIElement> toggleElementAsUIElement;
                 RETURN_IF_FAILED(toggleElement.As(&toggleElementAsUIElement));
 
+                ComPtr<IFrameworkElement> toggleElementAsFrameworkElement;
+                RETURN_IF_FAILED(toggleElement.As(&toggleElementAsFrameworkElement));
+
+                ComPtr<IInspectable> tag;
+                RETURN_IF_FAILED(toggleElementAsFrameworkElement->get_Tag(&tag));
+
+                ComPtr<IElementTagContent> elementTagContent;
+                RETURN_IF_FAILED(tag.As(&elementTagContent));
+
                 Visibility visibilityToSet = Visibility_Visible;
                 if (toggle == ABI::AdaptiveNamespace::IsVisible_IsVisibleTrue)
                 {
@@ -1459,21 +1472,13 @@ namespace AdaptiveNamespace
                 }
                 else if (toggle == ABI::AdaptiveNamespace::IsVisible_IsVisibleToggle)
                 {
-                    Visibility currentVisibility;
-                    RETURN_IF_FAILED(toggleElementAsUIElement->get_Visibility(&currentVisibility));
-                    visibilityToSet = (currentVisibility == Visibility_Collapsed) ? Visibility_Visible : Visibility_Collapsed;
+                    boolean currentVisibility{};
+                    RETURN_IF_FAILED(elementTagContent->get_ExpectedVisibility(&currentVisibility));
+                    visibilityToSet = (currentVisibility) ? Visibility_Collapsed : Visibility_Visible;
                 }
 
                 RETURN_IF_FAILED(toggleElementAsUIElement->put_Visibility(visibilityToSet));
-
-                ComPtr<IFrameworkElement> toggleElementAsFrameworkElement;
-                RETURN_IF_FAILED(toggleElement.As(&toggleElementAsFrameworkElement));
-
-                ComPtr<IInspectable> tag;
-                RETURN_IF_FAILED(toggleElementAsFrameworkElement->get_Tag(&tag));
-
-                ComPtr<IElementTagContent> elementTagContent;
-                RETURN_IF_FAILED(tag.As(&elementTagContent));
+                RETURN_IF_FAILED(elementTagContent->set_ExpectedVisibility(visibilityToSet == Visibility_Visible));
 
                 ComPtr<IPanel> parentPanel;
                 RETURN_IF_FAILED(elementTagContent->get_ParentPanel(&parentPanel));
