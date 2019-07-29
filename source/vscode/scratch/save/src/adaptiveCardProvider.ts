@@ -1,7 +1,7 @@
 'use strict';
 
-import * as vscode from 'vscode';
 import * as path from 'path';
+import * as vscode from 'vscode';
 
 export class AdaptiveCardDocumentContentProvider implements vscode.TextDocumentContentProvider {
     private _onDidChange = new vscode.EventEmitter<vscode.Uri>();
@@ -21,10 +21,6 @@ export class AdaptiveCardDocumentContentProvider implements vscode.TextDocumentC
     }
 
     private createAdaptiveCardSnippet() {
-        return this.extractSnippet();
-    }
-
-    private extractSnippet(): string {
         let editor = vscode.window.activeTextEditor;
         let text = editor ? editor.document.getText() : '';
         let fileName = editor ? editor.document.fileName : '';
@@ -48,7 +44,8 @@ export class AdaptiveCardDocumentContentProvider implements vscode.TextDocumentC
         <html>
             <head>
                 <link rel="stylesheet" type="text/css" href="${this.getPath('media/export.css')}">
-                <script src="${this.getPath('node_modules/microsoft-adaptivecards/dist/adaptive-cards.js')}"></script>
+                <script type="text/javascript" src="https://unpkg.com/markdown-it/dist/markdown-it.min.js"></script>
+                <script src="https://unpkg.com/adaptivecards/dist/adaptivecards.min.js"></script>
             </head>
             <body>
                 <h1>Adaptive Card Preview</h1>

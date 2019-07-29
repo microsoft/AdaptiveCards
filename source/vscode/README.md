@@ -1,6 +1,6 @@
 # Adaptive Cards Viewer for Visual Studio Code
 
-![extension](http://adaptivecards.io/content/vscode-extension.png)
+![extension](https://adaptivecards.io/content/vscode-extension.png)
 
 ## Usage 
 When you are editing a .json file with a adaptive card $schema property you can view by using **Ctrl+Shift+V A**.
@@ -9,7 +9,7 @@ When you are editing a .json file with a adaptive card $schema property you can 
 {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "0.5",
+    "version": "1.0",
     "body": [
 
     ]
@@ -17,13 +17,10 @@ When you are editing a .json file with a adaptive card $schema property you can 
 ```
 
 
-### Options
-The following Visual Studio Code setting is available for the AdaptiveCards Viewer.  This can be set in `User Settings` or `Workspace Settings`.
+## Changes
+* 2.0 
+** Rewrote to use vscode webViews (loadHtml is deprecated)
+** changed to always use latest published renderer 
 
-```javascript
-{
-
-    // Open or not open the preview screen automatically
-    "adaptivecardsviewer.enableautopreview": true,
-}
-```
+* 1.x
+** First version, used hardwired prerelease 0.5 
