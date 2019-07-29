@@ -31,17 +31,35 @@ This feature will introduce the IACLogger, which provides the following interfac
 ```
 interface IACLogger { 
  
-    logWarn(message: string): void; 
- 
-    logErr(message: string): void; 
- 
-    logVerbose(message: string): void; 
- 
-    logInfo(message: string): void; 
- 
-    logEvent(event: string, eventSourceName: string, correlationID?: string, valueSet?: object): void; 
- 
-} 
+	logWarn(message: string): void; 
+	
+	logError(message: string): void; 
+	
+	logVerbose(message: string): void; 
+	
+	logInfo(message: string): void; 
+	
+	logEvent(event: string, eventSourceName: string, correlationID?: string, valueSet?: object): void;
+
+	getLogger(): IACLogger;
+	
+	configureProviders(...providers: IACProvider[]): void;
+
+	configureDefaultProviders(): void;
+	
+   }
+```
+
+This feature will also introduce the IACProvider, which provides the following interface:
+
+```
+interface IACProvider {
+
+	sendData(level: string, message: string): void;
+
+	sendData(event: string, eventSourceName: string, correlationID?: string, valueSet?: object): void;
+
+}
 ```
  
 ## 7. Testing Details 
@@ -106,59 +124,74 @@ interface IACLogger {
  
     logEvent(event: string, eventSourceName: string, correlationID?: string, valueSet?: object): void; 
  
-} 
+}
+
+interface IACProvider {
+
+	sendData(level: string, message: string): void;
+
+	sendData(event: string, eventSourceName: string, correlationID?: string, valueSet?: object): void;
+
+}
  
-enum TelemetryProvider { 
-    OneDataStrategy, 
-    File 
-} 
- 
-class ACLogger implements IACLogger { 
-    private static instance: IACLogger; 
-    private listProviders: Set<TelemetryProvider>; 
-    private providers: IACLogger[]; 
- 
-    public static getLogger(): IACLogger { 
-        if (instance) { 
-            return instance; 
-        } else { 
-            // throw error/exception 
-        } 
-    } 
- 
-    public static setLogger(...providers: TelemetryProvider[]): void { 
-        // for each instance in providers, instantiate if instance has not yet been instantiated 
-        for (let provider of providers) { 
-            if (!this.listProviders.has(provider)) { 
-                switch (provider) { 
-                    case TelemetryProvider.File: 
-                        providers.push(new FileACLogger()); 
-                        break; 
-                    case TelemetryProvider.OneDataStrategy: 
-                        providers.push(new 1DSLogger()); 
-                        break; 
-                    default: 
-                    // throw exception 
-                } 
-            } 
-        } 
-    } 
-     
-    public logWarn(message: string): void { 
-        // call log warn and log for all instantiated providers 
-        for (let provider of this.providers) { 
-            provider.logWarn(message); 
-        } 
-    } 
- 
-    // .... etc.... 
- 
-} 
+class ACLogger implements IACLogger {
+	private static instance: IACLogger;
+	private static providers: IACProvider[];
+
+	private constructor() {	}
+
+	private log(level: LogLevel, message: string) {
+		var stringLevel: string = "";
+
+		switch (level) {
+			case LogLevel.Warn:
+				stringLevel = "warn";
+				break;
+			case LogLevel.Error:
+				stringLevel = "error";
+				break;
+			case LogLevel.Verbose:
+				stringLevel = "verbose";
+				break;
+			case LogLevel.Info:
+				stringLevel = "info";
+				break;
+			default:
+				// throw error, or console message?
+		}
+
+		for (var provider of ACLogger.providers) {
+			provider.sendData(stringLevel, message);
+		}
+	}
+
+	logWarn(message: string): void {
+		this.log(LogLevel.Warn, message);
+	}
+
+	// etc...
+
+	getLogger(): IACLogger {
+		if (ACLogger.instance) {
+			return ACLogger.instance;
+		} else {
+			// throw new Error("Providers not yet configured!");
+		}
+	}
+
+	configureDefaultProviders(): void {
+		// instantiate console and Microsoft1DS loggers if either have not yet been instantiated
+	}
+
+	configureProviders(...providers: IACProvider[]) {
+		// for each specified provider, instantiate the provider if the implementation has not yet been instantiated
+
+}
  
 class Example { 
     main(): void { 
         var myLogger: IACLogger = ACLogger.getLogger(); 
-        myLogger.setLogger(TelemetryProvider.OneDataStrategy, TelemetryProvider.File); 
+        myLogger.configureDefaultProviders(); 
         myLogger.logInfo("Logging to both 1DS and File..."); 
     } 
 } 
