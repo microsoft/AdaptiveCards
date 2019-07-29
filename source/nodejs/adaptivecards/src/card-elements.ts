@@ -2743,7 +2743,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
         this._renderedInputControlElement = this.internalRender();
         this._renderedInputControlElement.style.minWidth = "0px";
 
-        if (AdaptiveCard.useBuiltInInputValidation && this.isNullable && this.validation.necessity == Enums.InputValidationNecessity.RequiredWithVisualCue) {
+        if (this.isNullable && this.validation.necessity == Enums.InputValidationNecessity.RequiredWithVisualCue) {
             this._renderedInputControlElement.classList.add(hostConfig.makeCssClassName("ac-input-required"));
         }
 
@@ -2803,10 +2803,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
 
         Utils.setProperty(result, "title", this.title);
         Utils.setProperty(result, "value", this.renderedElement && !Utils.isNullOrEmpty(this.value) ? this.value : this.defaultValue);
-
-        if (AdaptiveCard.useBuiltInInputValidation) {
-            Utils.setProperty(result, "validation", this.validation.toJSON());
-        }
+        Utils.setProperty(result, "validation", this.validation.toJSON());
 
         return result;
     }
@@ -2849,12 +2846,10 @@ export abstract class Input extends CardElement implements Shared.IInput {
         this.id = Utils.getStringValue(json["id"]);
         this.defaultValue = Utils.getStringValue(json["value"]);
 
-        if (AdaptiveCard.useBuiltInInputValidation) {
-            let jsonValidation = json["validation"];
+        let jsonValidation = json["validation"];
 
-            if (jsonValidation) {
-                this.validation.parse(jsonValidation);
-            }
+        if (jsonValidation) {
+            this.validation.parse(jsonValidation);
         }
     }
 
@@ -3274,7 +3269,7 @@ export class ChoiceSetInput extends Input {
                     radioInput.value = this.choices[i].value;
                     radioInput.style.flex = "0 0 auto";
 					radioInput.setAttribute("aria-label", this.choices[i].title);
-					radioInput.style.display = "none"; // hide radio button
+					radioInput.style.display = "none";
 
                     if (this.choices[i].value == this.defaultValue) {
                         radioInput.checked = true;
@@ -3319,7 +3314,6 @@ export class ChoiceSetInput extends Input {
 
 					// when leaving an icon, replace that and all preceding icons with the iconSelected image
 					labelElements[i].onmouseleave = function() {
-					// labelElements[i].onmouseout = function() { // might be "more correct" to use onmouseout over onmouseleave
 						if (ratingClicked == NOT_CLICKED) {
 							for (let j = 0; j <= i; j++) {
 								labelElements[j].style.backgroundImage = "url('" + iconUnselected + "')";
@@ -3567,6 +3561,289 @@ export class ChoiceSetInput extends Input {
         }
     }
 }
+
+// TODO: ADDED
+export class InputRating extends Input {
+    private static uniqueCategoryCounter = 0;
+
+    private static getUniqueCategoryName(): string {
+        let uniqueCategoryName = "__ac-category" + InputRating.uniqueCategoryCounter;
+
+        InputRating.uniqueCategoryCounter++;
+
+        return uniqueCategoryName;
+    }
+
+    private _selectElement: HTMLSelectElement;
+    private _toggleInputs: Array<HTMLInputElement>;
+
+	protected internalRender(): HTMLElement {
+		alert("hi");
+
+		let defaulticonUnselected = "https://image.flaticon.com/icons/png/512/55/55695.png";
+		let defaulticonSelected = "https://1.bp.blogspot.com/-IYhCSMtZFzY/WNlKUQYsGQI/AAAAAAABX-s/gZc8ID2yCf0JUuQ4FXAoly2Cx4PE40OiACLcB/s320/star.png";
+
+		let uniqueCategoryName = InputRating.getUniqueCategoryName();
+
+		let element = document.createElement("div");
+		element.className = this.hostConfig.makeCssClassName("ac-input", "ac-inputRating");
+		element.style.width = "100%";
+
+		element.style.textAlign = "center";
+
+		this._toggleInputs = [];
+
+		let iconUnselected = this.iconUnselected ? this.iconUnselected : defaulticonUnselected;
+		let iconSelected = this.iconSelected ? this.iconSelected : defaulticonSelected;
+		const NOT_CLICKED: number = -1;
+
+		let maxValue: number = this.maxValue;
+		let labels: Label[] = new Array(maxValue);
+		let labelElements: HTMLElement[] = new Array(maxValue);
+
+		for (let i = 0; i < maxValue; i++) {
+			let radioInput = document.createElement("input");
+			radioInput.id = Utils.generateUniqueId();
+			radioInput.type = "radio";
+			radioInput.style.margin = "0";
+			radioInput.style.display = "inline";
+			radioInput.style.verticalAlign = "middle";
+			radioInput.name = Utils.isNullOrEmpty(this.id) ? uniqueCategoryName : this.id;
+			radioInput.value = this.choices[i].value;
+			radioInput.style.flex = "0 0 auto";
+			radioInput.setAttribute("aria-label", this.choices[i].title);
+			radioInput.style.display = "none";
+
+			if (this.choices[i].value == this.defaultValue) {
+				radioInput.checked = true;
+			}
+
+			radioInput.onchange = () => { this.valueChanged(); }
+
+			this._toggleInputs.push(radioInput);
+
+			labels[i] = new Label();
+			labels[i].setParent(this);
+			labels[i].forElementId = radioInput.id;
+			labels[i].hostConfig = this.hostConfig;
+			labels[i].text = Utils.isNullOrEmpty(this.choices[i].title) ? "Choice " + i : this.choices[i].title;
+			labels[i].useMarkdown = AdaptiveCard.useMarkdownInRadioButtonAndCheckbox;
+			labels[i].wrap = this.wrap;
+
+			labelElements[i] = labels[i].render();
+			labelElements[i].style.display = "block";
+			labelElements[i].style.flex = "1 1 auto";
+			labelElements[i].style.marginLeft = "6px";
+			labelElements[i].style.verticalAlign = "middle";
+			labelElements[i].style.flexGrow = "1";
+
+			labelElements[i].style.backgroundImage = "url('" + iconUnselected + "')";
+			labelElements[i].style.backgroundSize = "25px 25px";
+			labelElements[i].style.backgroundRepeat = "no-repeat";
+			labelElements[i].style.backgroundPositionX = "center";
+			labelElements[i].style.paddingTop = "25px";
+
+			var ratingClicked: number = NOT_CLICKED;
+
+			// when hovering over an icon, replace that and all preceding icons with the iconSelected image
+			labelElements[i].onmouseover = function () {
+				for (let j = 0; j <= i; j++) {
+					labelElements[j].style.backgroundImage = "url('" + iconSelected + "')";
+				}
+				for (let j = i + 1; j < maxValue; j++) {
+					labelElements[j].style.backgroundImage = "url('" + iconUnselected + "')";
+				}
+			};
+
+			// when leaving an icon, replace that and all preceding icons with the iconSelected image
+			labelElements[i].onmouseleave = function () {
+				if (ratingClicked == NOT_CLICKED) {
+					for (let j = 0; j <= i; j++) {
+						labelElements[j].style.backgroundImage = "url('" + iconUnselected + "')";
+					}
+				} else {
+					for (let j = 0; j <= ratingClicked; j++) {
+						labelElements[j].style.backgroundImage = "url('" + iconSelected + "')";
+					}
+					for (let j = ratingClicked + 1; j < maxValue; j++) {
+						labelElements[j].style.backgroundImage = "url('" + iconUnselected + "')";
+					}
+				}
+			};
+
+			// when an icon is clicked, replace it and all preceding icons with the iconSelected image
+			labelElements[i].onclick = function () {
+				ratingClicked = i;
+				for (let j = 0; j <= ratingClicked; j++) {
+					labelElements[j].style.backgroundImage = "url('" + iconSelected + "')";
+				}
+				for (let j = ratingClicked + 1; j < maxValue; j++) {
+					labelElements[j].style.backgroundImage = "url('" + iconUnselected + "')";
+				}
+			};
+
+			let spacerElement = document.createElement("div");
+			spacerElement.style.width = "6px";
+
+			let compoundInput = document.createElement("div");
+			compoundInput.style.marginLeft = "6px";
+			compoundInput.style.marginRight = "6px";
+			compoundInput.style.display = "inline-block";
+			compoundInput.style.textAlign = "center";
+			compoundInput.style.flexGrow = "1";
+
+			Utils.appendChild(compoundInput, radioInput);
+			Utils.appendChild(compoundInput, spacerElement);
+			Utils.appendChild(compoundInput, labelElements[i]);
+
+			Utils.appendChild(element, compoundInput);
+
+		}
+
+		return element;
+	}
+
+    choices: Array<Choice> = [];
+    isCompact: boolean = false;
+    isMultiSelect: boolean = false;
+    placeholder: string;
+	wrap: boolean = false;
+	maxValue: number;
+	iconSelected: string;
+	iconUnselected: string;
+
+	private newMethod() {
+		return this;
+	}
+
+    getJsonTypeName(): string {
+        return "Input.Rating";
+    }
+
+    toJSON() {
+        let result = super.toJSON();
+
+		Utils.setProperty(result, "placeholder", this.placeholder);
+
+        if (this.choices.length > 0) {
+            var choices = [];
+
+            for (let choice of this.choices) {
+                choices.push(choice.toJSON());
+            }
+
+            Utils.setProperty(result, "choices", choices);
+        }
+
+        if (!this.isCompact) {
+            Utils.setProperty(result, "style", "expanded", false);
+        }
+
+        Utils.setProperty(result, "isMultiSelect", this.isMultiSelect, false);
+        Utils.setProperty(result, "wrap", this.wrap, false);
+		
+
+        return result;
+    }
+
+    internalValidateProperties(context: ValidationResults) {
+        super.internalValidateProperties(context);
+
+		// TODO this should be changed
+        if (this.choices.length == 0) {
+            context.addFailure(
+                this,
+                {
+                    error: Enums.ValidationError.CollectionCantBeEmpty,
+                    message: "An Input.Rating must have at least one choice defined."
+                });
+        }
+
+		// TODO: change this
+        for (let choice of this.choices) {
+            if (!choice.title || !choice.value) {
+                context.addFailure(
+                    this,
+                    {
+                        error: Enums.ValidationError.PropertyCantBeNull,
+                        message: "All choices in an Input.ChoiceSet must have their title and value properties set."
+                    });
+            }
+        }
+    }
+
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+        super.parse(json, errors);
+
+        this.isCompact = !(json["style"] === "expanded");
+        this.isMultiSelect = Utils.getBoolValue(json["isMultiSelect"], this.isMultiSelect);
+		this.placeholder = Utils.getStringValue(json["placeholder"]);
+		
+		this.maxValue = parseInt(Utils.getStringValue(json["maxValue"]), 10);
+		this.iconSelected = Utils.getStringValue(json["iconSelected"]);
+		this.iconUnselected = Utils.getStringValue(json["iconUnselected"]);
+
+		this.choices = [];
+
+        if (json["choices"] != undefined) {
+            let choiceArray = json["choices"] as Array<any>;
+
+            for (let i = 0; i < choiceArray.length; i++) {
+                let choice = new Choice();
+                choice.parse(choiceArray[i]);
+
+                this.choices.push(choice);
+            }
+        }
+
+        this.wrap = Utils.getBoolValue(json["wrap"], this.wrap);
+    }
+
+    get value(): string {
+        if (!this.isMultiSelect) {
+            if (this.isCompact) {
+                if (this._selectElement) {
+                    return this._selectElement.selectedIndex > 0 ? this._selectElement.value : null;
+                }
+
+                return null;
+            }
+            else {
+                if (!this._toggleInputs || this._toggleInputs.length == 0) {
+                    return null;
+                }
+
+                for (var i = 0; i < this._toggleInputs.length; i++) {
+                    if (this._toggleInputs[i].checked) {
+                        return this._toggleInputs[i].value;
+                    }
+                }
+
+                return null;
+            }
+        }
+        else {
+            if (!this._toggleInputs || this._toggleInputs.length == 0) {
+                return null;
+            }
+
+            var result: string = "";
+
+            for (var i = 0; i < this._toggleInputs.length; i++) {
+                if (this._toggleInputs[i].checked) {
+                    if (result != "") {
+                        result += this.hostConfig.choiceSetInputValueSeparator;
+                    }
+
+                    result += this._toggleInputs[i].value;
+                }
+            }
+
+            return result == "" ? null : result;
+        }
+    }
+}
+// TODO: END ADDED
 
 export class NumberInput extends Input {
     private _numberInputElement: HTMLInputElement;
