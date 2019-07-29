@@ -7,6 +7,16 @@ hexo.extend.filter.register('before_post_render', function (data) {
 	if(data.layout !== "post")
 		return;
 
+		data.author = {
+			github_username: "matthidinger",
+			avatar: "matthidinger",
+			name: "Matt Hidinger",
+			bio: "I like thingss",
+			webpage: "http://matthidinger.com",
+			twitter: "matthidinger"
+		};
+		return;
+
 	return new Promise(function (resolve, reject) {
 		
 		const frontMatter = yaml.loadFront(data.raw);
