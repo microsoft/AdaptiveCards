@@ -126,7 +126,7 @@ HRESULT SetXamlInlinesWithTextConfig(_In_ IAdaptiveRenderContext* renderContext,
 HRESULT SetWrapProperties(_In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock, bool wrap)
 {
     // Set whether the text wraps
-    RETURN_IF_FAILED(xamlTextBlock->put_TextWrapping(wrap ? TextWrapping::TextWrapping_WrapWholeWords : TextWrapping::TextWrapping_NoWrap));
+    RETURN_IF_FAILED(xamlTextBlock->put_TextWrapping(wrap ? TextWrapping::TextWrapping_Wrap : TextWrapping::TextWrapping_NoWrap));
     RETURN_IF_FAILED(xamlTextBlock->put_TextTrimming(TextTrimming::TextTrimming_CharacterEllipsis));
     return S_OK;
 }
@@ -161,8 +161,7 @@ HRESULT SetXamlInlines(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adapti
         ComPtr<ABI::Windows::Data::Xml::Dom::IXmlDocumentIO> xmlDocumentIO;
         RETURN_IF_FAILED(xmlDocument.As(&xmlDocumentIO));
 
-        HRESULT hr = xmlDocumentIO->LoadXml(htmlHString.Get());
-        if (SUCCEEDED(hr))
+        if (SUCCEEDED(xmlDocumentIO->LoadXml(htmlHString.Get())))
         {
             ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> xmlDocumentAsNode;
             RETURN_IF_FAILED(xmlDocument.As(&xmlDocumentAsNode));

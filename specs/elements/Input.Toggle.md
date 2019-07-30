@@ -7,7 +7,7 @@
 | **type** | `"Input.Toggle"` | Yes | Must be `"Input.Toggle"`. | 1.0 |
 | **title** | `string` | Yes | Title for the toggle | 1.0 |
 | **id** | `string` | Yes | Unique identifier for the value. Used to identify collected input when the Submit action is performed. | 1.0 |
-| **value** | `string` | No, default: `"false"` | The current selected value. If the item is selected that "valueOn" will be used, otherwise "valueOff" | 1.0 |
+| **value** | `string` | No, default: `"false"` | The initial selected value. If you want the toggle to be initially on, set this to the value of `valueOn`'s value. | 1.0 |
 | **valueOff** | `string` | No, default: `"false"` | The value when toggle is off | 1.0 |
 | **valueOn** | `string` | No, default: `"true"` | The value when toggle is on | 1.0 |
 | **wrap** | `boolean` | No | If `true`, allow text to wrap. Otherwise, text is clipped. | 1.2 |

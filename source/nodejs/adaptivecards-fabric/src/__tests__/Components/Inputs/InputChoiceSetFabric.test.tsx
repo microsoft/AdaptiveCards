@@ -77,4 +77,15 @@ describe("InputChoiceSet", () => {
     it("can get json name", () => {
         expect(new InputChoiceSetFabric().getJsonTypeName()).toBe("Input.ChoiceSet");
     });
+
+    it("generates json correctly", () => {
+        const element = new InputChoiceSetFabric();
+        element.parse(inputChoiceSetComboBox);
+
+        const json = element.toJSON();
+        expect(json).toBeDefined();
+        expect(json.type).toEqual("Input.ChoiceSet");
+        expect(json.value).toEqual("1");
+        expect(json.choices).toBeDefined();
+    });
 });

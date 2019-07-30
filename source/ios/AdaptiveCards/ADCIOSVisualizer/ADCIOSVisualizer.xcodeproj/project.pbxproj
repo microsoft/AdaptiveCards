@@ -33,6 +33,10 @@
 		6B268FE520CEF89100D99C1B /* (null) in Resources */ = {isa = PBXBuildFile; };
 		6B2D8605211143BD008DD972 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B2D8604211143BD008DD972 /* AdaptiveCards.framework */; };
 		6B45008722AADE1000BC341C /* Feedback.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B45008622AADE1000BC341C /* Feedback.json */; };
+		6B45008D22CFD63C00BC341C /* TextBlockStrechInColumnSet.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B45008C22CFD63C00BC341C /* TextBlockStrechInColumnSet.json */; };
+		6B45008F22CFD77A00BC341C /* CustomerCard1.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B45008E22CFD77900BC341C /* CustomerCard1.json */; };
+		6B45009122CFDF6A00BC341C /* ImageAutoInColumnSet.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B45009022CFDF6A00BC341C /* ImageAutoInColumnSet.json */; };
+		6B45009322D3F20C00BC341C /* TextBlock.Issue.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B45009222D3F20B00BC341C /* TextBlock.Issue.json */; };
 		6B5D23FB2124ADAC0010EB07 /* Image.ImageBaseUrl.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B5D23FA2124ADAB0010EB07 /* Image.ImageBaseUrl.json */; };
 		6B616C3C21CB0B6D003E29CE /* Action.ToggleVisibility.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B616C3B21CB0B6C003E29CE /* Action.ToggleVisibility.json */; };
 		6B7B1A9B20C21CA900260731 /* SportingEvent.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B7B1A9920C21CA800260731 /* SportingEvent.json */; };
@@ -59,6 +63,11 @@
 		6BC30F6721DFE8EA00B9FAAE /* Media.Sources.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BC30F6521DFE8E900B9FAAE /* Media.Sources.json */; };
 		6BC30F6821DFE8EA00B9FAAE /* Media.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BC30F6621DFE8E900B9FAAE /* Media.json */; };
 		6BC30F6A21DFECB400B9FAAE /* ProductVideo.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BC30F6921DFECB400B9FAAE /* ProductVideo.json */; };
+		6BE0389222DE465C005413DE /* Column.Fallback.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE0389122DE465B005413DE /* Column.Fallback.json */; };
+		6BE0389622DE46C1005413DE /* ExpenseReport.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE0389322DE46C1005413DE /* ExpenseReport.json */; };
+		6BE0389722DE46C1005413DE /* Agenda.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE0389422DE46C1005413DE /* Agenda.json */; };
+		6BE0389822DE46C1005413DE /* FlightDetails.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE0389522DE46C1005413DE /* FlightDetails.json */; };
+		6BE0389A22DF9409005413DE /* ContainerDoubleFallback.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE0389922DF9409005413DE /* ContainerDoubleFallback.json */; };
 		6BF339D620A665E600DA5973 /* CustomTextBlockRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BF339D420A665E600DA5973 /* CustomTextBlockRenderer.mm */; };
 		6BF339E320A66A3F00DA5973 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; };
 		6BF339E420A66A4D00DA5973 /* AdaptiveCards.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -182,6 +191,10 @@
 		6B2630E22152CF1500ED9207 /* ColumnSet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.json; path = ../../../../samples/v1.0/Elements/ColumnSet.json; sourceTree = "<group>"; };
 		6B2D8604211143BD008DD972 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B45008622AADE1000BC341C /* Feedback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Feedback.json; path = ../../../../samples/v1.0/Tests/Feedback.json; sourceTree = "<group>"; };
+		6B45008C22CFD63C00BC341C /* TextBlockStrechInColumnSet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlockStrechInColumnSet.json; path = ../AdaptiveCards/AdaptiveCards/testcards/TextBlockStrechInColumnSet.json; sourceTree = "<group>"; };
+		6B45008E22CFD77900BC341C /* CustomerCard1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CustomerCard1.json; path = ../AdaptiveCards/AdaptiveCards/testcards/CustomerCard1.json; sourceTree = "<group>"; };
+		6B45009022CFDF6A00BC341C /* ImageAutoInColumnSet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ImageAutoInColumnSet.json; path = ../AdaptiveCards/AdaptiveCards/testcards/ImageAutoInColumnSet.json; sourceTree = "<group>"; };
+		6B45009222D3F20B00BC341C /* TextBlock.Issue.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.Issue.json; path = ../AdaptiveCards/AdaptiveCards/testcards/TextBlock.Issue.json; sourceTree = "<group>"; };
 		6B5D23FA2124ADAB0010EB07 /* Image.ImageBaseUrl.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.ImageBaseUrl.json; path = ../../../../samples/v1.0/Elements/Image.ImageBaseUrl.json; sourceTree = "<group>"; };
 		6B616C3B21CB0B6C003E29CE /* Action.ToggleVisibility.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.ToggleVisibility.json; path = ../../../../samples/v1.2/Elements/Action.ToggleVisibility.json; sourceTree = "<group>"; };
 		6B7B1A9920C21CA800260731 /* SportingEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = SportingEvent.json; path = ../../../../samples/v1.0/Scenarios/SportingEvent.json; sourceTree = "<group>"; };
@@ -210,6 +223,11 @@
 		6BC30F6521DFE8E900B9FAAE /* Media.Sources.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Media.Sources.json; path = ../../../../samples/v1.1/Elements/Media.Sources.json; sourceTree = "<group>"; };
 		6BC30F6621DFE8E900B9FAAE /* Media.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Media.json; path = ../../../../samples/v1.1/Elements/Media.json; sourceTree = "<group>"; };
 		6BC30F6921DFECB400B9FAAE /* ProductVideo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ProductVideo.json; path = ../../../../samples/v1.1/Scenarios/ProductVideo.json; sourceTree = "<group>"; };
+		6BE0389122DE465B005413DE /* Column.Fallback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Column.Fallback.json; path = ../../../../samples/v1.2/Elements/Column.Fallback.json; sourceTree = "<group>"; };
+		6BE0389322DE46C1005413DE /* ExpenseReport.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ExpenseReport.json; path = ../../../../samples/v1.2/Scenarios/ExpenseReport.json; sourceTree = "<group>"; };
+		6BE0389422DE46C1005413DE /* Agenda.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Agenda.json; path = ../../../../samples/v1.2/Scenarios/Agenda.json; sourceTree = "<group>"; };
+		6BE0389522DE46C1005413DE /* FlightDetails.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = FlightDetails.json; path = ../../../../samples/v1.2/Scenarios/FlightDetails.json; sourceTree = "<group>"; };
+		6BE0389922DF9409005413DE /* ContainerDoubleFallback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ContainerDoubleFallback.json; path = ../../../../samples/v1.2/Tests/ContainerDoubleFallback.json; sourceTree = "<group>"; };
 		6BF339D420A665E600DA5973 /* CustomTextBlockRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomTextBlockRenderer.mm; sourceTree = "<group>"; };
 		6BF339D520A665E600DA5973 /* CustomTextBlockRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTextBlockRenderer.h; sourceTree = "<group>"; };
 		6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -432,6 +450,15 @@
 		F4D33E341F045B6E00941E44 /* Jsons */ = {
 			isa = PBXGroup;
 			children = (
+				6BE0389922DF9409005413DE /* ContainerDoubleFallback.json */,
+				6BE0389422DE46C1005413DE /* Agenda.json */,
+				6BE0389322DE46C1005413DE /* ExpenseReport.json */,
+				6BE0389522DE46C1005413DE /* FlightDetails.json */,
+				6BE0389122DE465B005413DE /* Column.Fallback.json */,
+				6B45009222D3F20B00BC341C /* TextBlock.Issue.json */,
+				6B45009022CFDF6A00BC341C /* ImageAutoInColumnSet.json */,
+				6B45008E22CFD77900BC341C /* CustomerCard1.json */,
+				6B45008C22CFD63C00BC341C /* TextBlockStrechInColumnSet.json */,
 				6B45008622AADE1000BC341C /* Feedback.json */,
 				6B096D572257DA0B006CC034 /* Action.IconUrl.TwoActions.json */,
 				6B980944216573EF0024B79B /* Action.OpenUrl.IconUrl.json */,
@@ -635,11 +662,14 @@
 				F4933CE41F79852C00F6EBFD /* TextBlock.Color.json in Resources */,
 				6B096D71225EB73C006CC034 /* ColumnSet.Bleed.json in Resources */,
 				6B98094F216573F00024B79B /* VerticalContentAlignment_ForcedContainer.json in Resources */,
+				6BE0389622DE46C1005413DE /* ExpenseReport.json in Resources */,
 				F4933CD41F79852C00F6EBFD /* Image.HorizontalAlignment.json in Resources */,
 				F4933CC51F79852C00F6EBFD /* Action.Submit.json in Resources */,
+				6BE0389722DE46C1005413DE /* Agenda.json in Resources */,
 				6B45008722AADE1000BC341C /* Feedback.json in Resources */,
 				6BAC0F3C229871E000E42DEB /* Action.ShowCard.Style.json in Resources */,
 				6BC30F6721DFE8EA00B9FAAE /* Media.Sources.json in Resources */,
+				6B45009122CFDF6A00BC341C /* ImageAutoInColumnSet.json in Resources */,
 				6B268FE520CEF89100D99C1B /* (null) in Resources */,
 				F4933CED1F79852C00F6EBFD /* TextBlock.Weight.json in Resources */,
 				3016455A225E602A0032E11C /* Container.MinHeight.json in Resources */,
@@ -674,11 +704,13 @@
 				F4071C831FD63D5400AF4FEA /* Solitaire.json in Resources */,
 				3016458722824B8B0032E11C /* AdaptiveCard.BackgroundImage.FillMode.Cover.json in Resources */,
 				F4933CDB1F79852C00F6EBFD /* ImageSet.json in Resources */,
+				6B45008D22CFD63C00BC341C /* TextBlockStrechInColumnSet.json in Resources */,
 				F4933CC61F79852C00F6EBFD /* Column.SelectAction.json in Resources */,
 				6BAC0F3B229871E000E42DEB /* Action.Submit.Style.json in Resources */,
 				F4933D041F79853B00F6EBFD /* Restaurant.json in Resources */,
 				30860BC220C9B5C9009F9D99 /* (null) in Resources */,
 				F423C0881EE1FB6100905679 /* LaunchScreen.storyboard in Resources */,
+				6BE0389A22DF9409005413DE /* ContainerDoubleFallback.json in Resources */,
 				F423C0851EE1FB6100905679 /* Assets.xcassets in Resources */,
 				F4933CE01F79852C00F6EBFD /* Input.Text.Style.json in Resources */,
 				C8D72160220CFBAF00E903B3 /* Column.BackgroundImage.json in Resources */,
@@ -705,19 +737,23 @@
 				F4933CE61F79852C00F6EBFD /* TextBlock.HorizontalAlignment.json in Resources */,
 				F4933CEA1F79852C00F6EBFD /* TextBlock.Size.json in Resources */,
 				6B096D7822601A5A006CC034 /* ActionFallback.json in Resources */,
+				6B45008F22CFD77A00BC341C /* CustomerCard1.json in Resources */,
 				7EF887CD21FBCEF900BAFF02 /* Container.Style.json in Resources */,
 				F4933CEE1F79852C00F6EBFD /* TextBlock.Wrap.json in Resources */,
 				6B096D582257DA0C006CC034 /* Action.IconUrl.TwoActions.json in Resources */,
 				3016455B225E602A0032E11C /* Column.MinHeight.json in Resources */,
 				F4933CE71F79852C00F6EBFD /* TextBlock.IsSubtle.json in Resources */,
 				6BC30F6021DD69D800B9FAAE /* ActionSet.json in Resources */,
+				6B45009322D3F20C00BC341C /* TextBlock.Issue.json in Resources */,
 				F4933CD61F79852C00F6EBFD /* Image.Size.json in Resources */,
 				F4D402161F7DB0BF00D0356B /* sample.json in Resources */,
 				6B096D72225EB73C006CC034 /* Column.Bleed.json in Resources */,
 				6B980949216573F00024B79B /* Column.VerticalContentAlignment.json in Resources */,
+				6BE0389822DE46C1005413DE /* FlightDetails.json in Resources */,
 				6BAC0F252284D52B00E42DEB /* AdaptiveCard.BackgroundImage.FillMode.json in Resources */,
 				F423C0801EE1FB6100905679 /* Main.storyboard in Resources */,
 				6B096D70225EB73C006CC034 /* Container.Bleed.json in Resources */,
+				6BE0389222DE465C005413DE /* Column.Fallback.json in Resources */,
 				C8D72161220CFBAF00E903B3 /* Container.BackgroundImage.json in Resources */,
 				6B5D23FB2124ADAC0010EB07 /* Image.ImageBaseUrl.json in Resources */,
 				3016458A2294BD090032E11C /* TextBlock.FontType.json in Resources */,
