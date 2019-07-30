@@ -12,24 +12,24 @@
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
             <StackPanel Margin="24" Orientation="Horizontal">
 
-                <StackPanel>
-                    <TextBlock
-                        Text="Running tests..."
-                        Style="{ThemeResource TitleTextBlockStyle}"/>
-
-                    <TextBlock
-                        Text="Current test"
-                        Style="{ThemeResource BaseTextBlockStyle}"
-                        Margin="0,24,0,0"/>
-                    <TextBlock
-                        Text="{Binding CurrentHostConfig}"/>
-                    <TextBlock
-                        Text="{Binding CurrentCard}"/>
-                    <Border
-                        Child="{Binding CurrentCardVisual}"
-                        Width="{Binding CurrentCardVisualWidth}"/>
-                </StackPanel>
-
+                <ScrollViewer>
+                    <StackPanel>
+                        <TextBlock
+                            Text="Running tests..."
+                            Style="{ThemeResource TitleTextBlockStyle}"/>
+                        <TextBlock
+                            Text="Current test"
+                            Style="{ThemeResource BaseTextBlockStyle}"
+                            Margin="0,24,0,0"/>
+                        <TextBlock
+                            Text="{Binding CurrentHostConfig}"/>
+                        <TextBlock
+                            Text="{Binding CurrentCard}"/>
+                        <Border
+                            Child="{Binding CurrentCardVisual}"
+                            Width="{Binding CurrentCardVisualWidth}"/>
+                    </StackPanel>
+                </ScrollViewer>
                 <ListView
                     Margin="12,0,0,0"
                     Width="300"

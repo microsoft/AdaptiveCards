@@ -62,6 +62,7 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/ParseResult.cpp
              ../../shared/cpp/ObjectModel/ParseUtil.cpp
              ../../shared/cpp/ObjectModel/RichTextBlock.cpp
+             ../../shared/cpp/ObjectModel/RichTextElementProperties.cpp
              ../../shared/cpp/ObjectModel/SemanticVersion.cpp
              ../../shared/cpp/ObjectModel/SharedAdaptiveCard.cpp
              ../../shared/cpp/ObjectModel/ShowCardAction.cpp

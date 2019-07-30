@@ -142,13 +142,13 @@ namespace AdaptiveCards
         public int MaxWidth { get; set; }
 
         /// <summary>
-        ///     The font style of the TextBlock
+        ///     The font types of the TextBlock
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
-        [DefaultValue(typeof(AdaptiveFontStyle), "default")]
-        public AdaptiveFontStyle FontStyle { get; set; }
+        [DefaultValue(typeof(AdaptiveFontType), "default")]
+        public AdaptiveFontType FontType { get; set; }
     }
 }

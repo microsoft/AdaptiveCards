@@ -190,9 +190,9 @@ namespace AdaptiveCards.Rendering.Html
                     .AddClass("ac-pushButton");
 
 
-                if (!String.IsNullOrWhiteSpace(action.Sentiment) && !String.Equals(action.Sentiment, "default", StringComparison.OrdinalIgnoreCase))
+                if (!String.IsNullOrWhiteSpace(action.Style) && !String.Equals(action.Style, "default", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (String.Equals(action.Sentiment, "positive", StringComparison.OrdinalIgnoreCase))
+                    if (String.Equals(action.Style, "positive", StringComparison.OrdinalIgnoreCase))
                     {
                         string accentColor = context.Config.ContainerStyles.Default.ForegroundColors.Accent.Default;
                         string lighterAccentColor = ColorUtil.GenerateLighterColor(accentColor);
@@ -202,7 +202,7 @@ namespace AdaptiveCards.Rendering.Html
                         buttonElement.Style("color", "#FFFFFF");
                         buttonElement.AddClass("ac-action-positive");
                     }
-                    else if (String.Equals(action.Sentiment, "destructive", StringComparison.OrdinalIgnoreCase))
+                    else if (String.Equals(action.Style, "destructive", StringComparison.OrdinalIgnoreCase))
                     {
                         string attentionColor = context.Config.ContainerStyles.Default.ForegroundColors.Attention.Default;
                         string lighterAttentionColor = ColorUtil.GenerateLighterColor(attentionColor);
@@ -213,7 +213,7 @@ namespace AdaptiveCards.Rendering.Html
                     }
                     else
                     {
-                        buttonElement.AddClass("ac-action-" + action.Sentiment);
+                        buttonElement.AddClass("ac-action-" + action.Style);
                     }
                 }
 
@@ -378,6 +378,13 @@ namespace AdaptiveCards.Rendering.Html
                     }
                 }
 
+                // If the number of actions is bigger than maxActions, then log warning for it
+                if (actions.Count > actionsConfig.MaxActions)
+                {
+                    context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.MaxActionsExceeded,
+                        "Some actions were not rendered due to exceeding the maximum number of actions allowed"));
+                }
+
                 var maxActions = Math.Min(actionsConfig.MaxActions, actions.Count);
                 // See if all actions have icons, otherwise force the icon placement to the left
                 var oldConfigIconPlacement = actionsConfig.IconPlacement;
@@ -459,8 +466,25 @@ namespace AdaptiveCards.Rendering.Html
         {
             if (elements != null)
             {
+                bool isFirstVisibleElement = true;
+                int index = 0;
+
                 foreach (var cardElement in elements)
                 {
+                    if (index != 0)
+                    {
+                        // Only the first element can bleed to the top
+                        context.RenderArgs.BleedDirection &= ~BleedDirection.BleedUp;
+                    }
+
+                    if (index != (elements.Count - 1))
+                    {
+                        // Only the last element can bleed to the bottom
+                        context.RenderArgs.BleedDirection &= ~BleedDirection.BleedDown;
+                    }
+
+                    index++;
+
                     // each element has a row
                     var uiElement = context.Render(cardElement);
                     if (uiElement != null)
@@ -489,8 +513,21 @@ namespace AdaptiveCards.Rendering.Html
                                 uiSeparator.Style("display", "none");
                             }
                         }
+                        else
+                        {
+                            // if it's visible and it's the first element, hide the separator
+                            if (isFirstVisibleElement)
+                            {
+                                if (uiSeparator != null)
+                                {
+                                    uiSeparator.Style("display", "none");
+                                }
+                                
+                                isFirstVisibleElement = false;
+                            }
+                        }
 
-                        if (!String.IsNullOrEmpty(cardElement.Id))
+                        if (!String.IsNullOrWhiteSpace(cardElement.Id))
                         {
                             uiElement.Attr("name", cardElement.Id);
                         }
@@ -597,7 +634,7 @@ namespace AdaptiveCards.Rendering.Html
             // to the side the column would have bled
             if (hasPadding)
             {
-                childRenderArgs.BleedDirection = BleedDirection.Both;
+                childRenderArgs.BleedDirection = BleedDirection.BleedAll;
             }
 
             childRenderArgs.HasParentWithPadding = hasPadding;
@@ -648,63 +685,25 @@ namespace AdaptiveCards.Rendering.Html
                 return 0;
             }).Sum());
 
+            bool isFirstVisibleColumn = true;
             for (int i = 0; i < columnSet.Columns.Count; ++i)
             {
                 var column = columnSet.Columns[i];
 
                 var childRenderArgs = new AdaptiveRenderArgs(childrenRenderArgs);
+                // Reset up and down bleed for columns as that behaviour shouldn't be changed
+                childRenderArgs.BleedDirection |= (BleedDirection.BleedUp | BleedDirection.BleedDown);
 
-                if (hasPadding)
+                if (i != 0)
                 {
-                    if (columnSet.Columns.Count == 1)
-                    {
-                        childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-                        childRenderArgs.BleedDirection = BleedDirection.Both;
-                    }
-                    else
-                    {
-                        if (i == 0)
-                        {
-                            childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-                            childRenderArgs.BleedDirection = BleedDirection.Left;
-                        }
-                        else if (i == (columnSet.Columns.Count - 1))
-                        {
-                            childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-                            childRenderArgs.BleedDirection = BleedDirection.Right;
-                        }
-                        else
-                        {
-                            childRenderArgs.BleedDirection = BleedDirection.None;
-                        }
-                    }
+                    // Only the first column can bleed to the left
+                    childRenderArgs.BleedDirection &= ~BleedDirection.BleedLeft;
                 }
-                else
+
+                if (i != columnSet.Columns.Count - 1)
                 {
-                    if (columnSet.Columns.Count == 1)
-                    {
-                        childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-                        childRenderArgs.BleedDirection = parentRenderArgs.BleedDirection;
-                    }
-                    else
-                    {
-                        if (i == 0 &&
-                            (childRenderArgs.BleedDirection == BleedDirection.Left || childRenderArgs.BleedDirection == BleedDirection.Both))
-                        {
-                            childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-                            childRenderArgs.BleedDirection = BleedDirection.Left;
-                        }
-                        else if (i == (columnSet.Columns.Count - 1) &&
-                            (childRenderArgs.BleedDirection == BleedDirection.Right || childRenderArgs.BleedDirection == BleedDirection.Both))
-                        {
-                            childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
-                            childRenderArgs.BleedDirection = BleedDirection.Right;
-                        }
-                        else
-                        {
-                            childRenderArgs.BleedDirection = BleedDirection.None;
-                        }
-                    }
+                    // Only the last column can bleed to the right
+                    childRenderArgs.BleedDirection &= ~BleedDirection.BleedRight;
                 }
                 context.RenderArgs = childRenderArgs;
 
@@ -719,19 +718,30 @@ namespace AdaptiveCards.Rendering.Html
                     int spacing = context.Config.GetSpacing(column.Spacing) / 2;
                     int lineThickness = column.Separator ? sep.LineThickness : 0;
 
+                    separator = new DivTag()
+                        .AddClass($"ac-columnseparator")
+                        .Style("flex", "0 0 auto")
+                        .Style("padding-left", $"{spacing}px")
+                        .Style("margin-left", $"{spacing}px")
+                        .Style("border-left-style", $"solid");
+
+                    // This are the only two properties for separator
                     if (sep != null)
                     {
-                        separator = new DivTag()
-                            .AddClass($"ac-columnseparator")
-                            .Style("flex", "0 0 auto")
-                            .Style("padding-left", $"{spacing}px")
-                            .Style("margin-left", $"{spacing}px")
-                            .Style("border-left-color", $"{context.GetRGBColor(sep.LineColor)}")
-                            .Style("border-left-width", $"{lineThickness}px")
-                            .Style("border-left-style", $"solid");
-
-                        uiColumnSet.Children.Add(separator);
+                        separator.Style("border-left-color", $"{context.GetRGBColor(sep.LineColor)}")
+                                 .Style("border-left-width", $"{lineThickness}px");
                     }
+
+                    uiColumnSet.Children.Add(separator);
+                }
+
+                if (column.IsVisible && isFirstVisibleColumn)
+                {
+                    if (separator != null)
+                    {
+                        separator.Style("display", "none");
+                    }
+                    isFirstVisibleColumn = false;
                 }
 
                 // do some sizing magic
@@ -830,7 +840,7 @@ namespace AdaptiveCards.Rendering.Html
 
             if (hasPadding)
             {
-                childRenderArgs.BleedDirection = BleedDirection.Both;
+                childRenderArgs.BleedDirection = BleedDirection.BleedAll;
             }
 
             childRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
@@ -921,9 +931,9 @@ namespace AdaptiveCards.Rendering.Html
 
         protected static HtmlTag TextBlockRender(AdaptiveTextBlock textBlock, AdaptiveRenderContext context)
         {
-            string fontFamily = context.Config.GetFontFamily(textBlock.FontStyle);
-            int fontSize = context.Config.GetFontSize(textBlock.FontStyle, textBlock.Size);
-            int weight = context.Config.GetFontWeight(textBlock.FontStyle, textBlock.Weight);
+            string fontFamily = context.Config.GetFontFamily(textBlock.FontType);
+            int fontSize = context.Config.GetFontSize(textBlock.FontType, textBlock.Size);
+            int weight = context.Config.GetFontWeight(textBlock.FontType, textBlock.Weight);
 
             // Not sure where this magic value comes from?
             var lineHeight = fontSize * 1.33;
@@ -976,7 +986,7 @@ namespace AdaptiveCards.Rendering.Html
 
                     if (!string.IsNullOrEmpty(fontFamily))
                     {
-                        htmlTag.Style("font-family", "'" + fontFamily + "'");
+                        htmlTag.Style("font-family", fontFamily);
                     }
 
                     if (!textBlock.Wrap)
@@ -1045,9 +1055,9 @@ namespace AdaptiveCards.Rendering.Html
 
         protected static HtmlTag TextRunRender(AdaptiveTextRun textRun, AdaptiveRenderContext context)
         {
-            string fontFamily = context.Config.GetFontFamily(textRun.FontStyle);
-            int fontSize = context.Config.GetFontSize(textRun.FontStyle, textRun.Size);
-            int weight = context.Config.GetFontWeight(textRun.FontStyle, textRun.Weight);
+            string fontFamily = context.Config.GetFontFamily(textRun.FontType);
+            int fontSize = context.Config.GetFontSize(textRun.FontType, textRun.Size);
+            int weight = context.Config.GetFontWeight(textRun.FontType, textRun.Weight);
 
             // Not sure where this magic value comes from?
             var lineHeight = fontSize * 1.33;
@@ -1096,7 +1106,7 @@ namespace AdaptiveCards.Rendering.Html
                     .Style("flex", "1 1 100%");
             }
 
-            // if explicit image size is not used, use Adpative Image size
+            // if explicit image size is not used, use Adaptive Image size
             if (image.PixelWidth == 0 && image.PixelHeight == 0)
             {
                 switch (image.Size)
@@ -1602,11 +1612,14 @@ namespace AdaptiveCards.Rendering.Html
 
         private static void ApplyDefaultTextAttributes(HtmlTag tag, AdaptiveRenderContext context)
         {
+// Ignore deprecation warning for FontSizes
+#pragma warning disable 0618
             tag.Style("color", context.GetColor(AdaptiveTextColor.Default, false, false))
                 .Style("font-size", $"{context.Config.FontSizes.Default}px")
                 .Style("display", "inline-block")
                 .Style("margin-left", "6px")
                 .Style("vertical-align", "middle");
+#pragma warning restore 0618
         }
 
         protected static HtmlTag DateInputRender(AdaptiveDateInput input, AdaptiveRenderContext context)
@@ -1893,27 +1906,28 @@ namespace AdaptiveCards.Rendering.Html
 
         private static void ApplyBackgroundImage(AdaptiveBackgroundImage backgroundImage, HtmlTag uiContainer, AdaptiveRenderContext context)
         {
-            switch (backgroundImage.Mode)
+            switch (backgroundImage.FillMode)
             {
-                case AdaptiveBackgroundImageMode.Repeat:
+                case AdaptiveImageFillMode.Repeat:
                     uiContainer.Style("background-image", $"url('{context.Config.ResolveFinalAbsoluteUri(backgroundImage.Url)}')")
                             .Style("background-repeat", "repeat");
                     break;
-                case AdaptiveBackgroundImageMode.RepeatHorizontally:
+                case AdaptiveImageFillMode.RepeatHorizontally:
                     uiContainer.Style("background-image", $"url('{context.Config.ResolveFinalAbsoluteUri(backgroundImage.Url)}')")
                             .Style("background-repeat", "repeat-x")
                             .Style("background-position", "left " + backgroundImage.VerticalAlignment.ToString());
                     break;
-                case AdaptiveBackgroundImageMode.RepeatVertically:
+                case AdaptiveImageFillMode.RepeatVertically:
                     uiContainer.Style("background-image", $"url('{context.Config.ResolveFinalAbsoluteUri(backgroundImage.Url)}')")
                             .Style("background-repeat", "repeat-y")
                             .Style("background-position", backgroundImage.HorizontalAlignment.ToString() + " top");
                     break;
-                case AdaptiveBackgroundImageMode.Stretch:
+                case AdaptiveImageFillMode.Cover:
                 default:
                     uiContainer.Style("background-image", $"url('{context.Config.ResolveFinalAbsoluteUri(backgroundImage.Url)}')")
                             .Style("background-repeat", "no-repeat")
-                            .Style("background-size", "cover");
+                            .Style("background-size", "cover")
+                            .Style("background-position", backgroundImage.HorizontalAlignment.ToString().ToLower() + " " + backgroundImage.VerticalAlignment.ToString().ToLower());
                     break;
             }
         }
@@ -1942,19 +1956,31 @@ namespace AdaptiveCards.Rendering.Html
 
                 if (element.Bleed)
                 {
-                    int leftMargin = 0, rightMargin = 0;
-                    if (parentRenderArgs.BleedDirection == BleedDirection.Left || parentRenderArgs.BleedDirection == BleedDirection.Both)
+                    int leftMargin = 0, rightMargin = 0, topMargin = 0, bottomMargin = 0;
+                    if ((parentRenderArgs.BleedDirection & BleedDirection.BleedLeft) != BleedDirection.BleedNone)
                     {
                         leftMargin = -padding;
                     }
 
-                    if (parentRenderArgs.BleedDirection == BleedDirection.Right || parentRenderArgs.BleedDirection == BleedDirection.Both)
+                    if ((parentRenderArgs.BleedDirection & BleedDirection.BleedRight) != BleedDirection.BleedNone)
                     {
                         rightMargin = -padding;
                     }
 
+                    if ((parentRenderArgs.BleedDirection & BleedDirection.BleedUp) != BleedDirection.BleedNone)
+                    {
+                        topMargin = -padding;
+                    }
+
+                    if ((parentRenderArgs.BleedDirection & BleedDirection.BleedDown) != BleedDirection.BleedNone)
+                    {
+                        bottomMargin = -padding;
+                    }
+
                     uiElement.Style("margin-right", rightMargin + "px")
-                                .Style("margin-left", leftMargin + "px");
+                                .Style("margin-left", leftMargin + "px")
+                                .Style("margin-top", topMargin + "px")
+                                .Style("margin-bottom", bottomMargin + "px");
                 }
             }
 

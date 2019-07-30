@@ -22,18 +22,27 @@ There are two simple ways to consume the designer: CDN script reference or impor
 
 The simplest way to get started it to include 3 script tags in your page. 
 
-* **monaco-editor** - provides a rich JSON-editing experience
-* **adaptivecards-designer** - the designer component
-* **markdown-it** - [optional] automatic markdown support for the designer and cards
+1. **monaco-editor** - provides a rich JSON-editing experience
+2. **markdown-it** - [optional] automatic markdown support for the designer and cards
+
+To load the designer component you have 2 options:
+
+3. 
+   * **adaptivecards-designer** - the designer component, with default Microsoft hosts included (Teams, Outlook, Cortana, etc)
+   * **adaptivecards-designer-standalone** - the standalone designer component, without any standard Host Config containers
 
 ```html
-<!-- markdown-it isn't required but enables out-of-the-box markdown support -->
+<!-- OPTIONAL: markdown-it isn't required but enables out-of-the-box markdown support -->
 <script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.min.js"></script>
 
-<!-- NOTE: monaco-editor is required for the designer to work. We currently provide it in the CDN, but this may change later -->
-<script src="https://unpkg.com/adaptivecards-designer@0.1.1/dist/monaco-editor/min/vs/loader.js"></script>
+<!-- REQUIRED: monaco-editor is required for the designer to work -->
+<script src="https://unpkg.com/monaco-editor@0.17.1/min/vs/loader.js"></script>
 
-<script src="https://unpkg.com/adaptivecards-designer@0.1.1/dist/adaptivecards-designer.min.js"></script>
+<!-- DESIGNER OPTION A: Card Designer + Standard Hosts -->
+<script src="https://unpkg.com/adaptivecards-designer@0.7.0/dist/adaptivecards-designer.min.js"></script>
+
+<!-- DESIGNER OPTION B: Standalone Card Designer, without standard Hosts -->
+<!--<script src="https://unpkg.com/adaptivecards-designer@0.7.0/dist/adaptivecards-designer-standalone.min.js"></script>-->
 
 <script type="text/javascript">
 	window.onload = function() {
@@ -47,12 +56,12 @@ The simplest way to get started it to include 3 script tags in your page.
 
 		// The designer requires various CSS and image assets to work properly, 
 		// If you've loaded the script from a CDN it needs to know where these assets are located
-		designer.assetPath = "https://unpkg.com/adaptivecards-designer@0.1.1/dist";
+		designer.assetPath = "https://unpkg.com/adaptivecards-designer@0.7.0/dist";
 
-		// Initialize monaco-editor for the JSON-editor pane. The simplest way to do this is use the code below, since we currently bundle monaco into our CDN distribution. 
-		require.config({ paths: { 'vs': 'https://unpkg.com/adaptivecards-designer@0.1.0/dist/monaco-editor/min/vs' } });
+		// Initialize monaco-editor for the JSON-editor pane. The simplest way to do this is use the code below
+		require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@0.17.1/min/vs' } });
 		require(['vs/editor/editor.main'], function () {
-			designer.monacoEditorLoaded();
+			designer.monacoModuleLoaded();
 		});
 
 		designer.attachTo(document.getElementById("designerRootHost"));
@@ -69,36 +78,39 @@ The simplest way to get started it to include 3 script tags in your page.
 If you already use webpack and want to to bundle the designer, you need a few packages. **adaptivecards-designer**, **monaco-editor** for the JSON editor, and **markdown-it** for markdown handling. You can use another markdown processor if you choose.
 
 ```console
-npm install adaptivecards-designer monaco-editor markdown-it --save
+npm install adaptivecards-designer monaco-editor markdown-it
 ```
 
 You also need some development dependencies to bundle monaco, and copy some CSS+image files into your output.
 
 ```console
-npm install copy-webpack-plugin monaco-editor-webpack-plugin css-loader style-loader --save-dev
+npm install copy-webpack-plugin monaco-editor-webpack-plugin css-loader style-loader
 ```
 
 Then in your app, use the following imports and API. The code below was authored in TypeScript, but can be easily modified to plain JS. 
 
 ```js
-import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+import * as monaco from "monaco-editor";
 import * as markdownit from "markdown-it";
-import * as Designer from "adaptivecards-designer";
+import * as ACDesigner from "adaptivecards-designer";
 
-// if you want to bundle the designer CSS using mini-css-loader:
-import "adaptivecards-controls/dist/adaptivecards-controls.css";
+// if you want to bundle the designer CSS using something like mini-css-loader:
 import "adaptivecards-designer/dist/adaptivecards-designer.css";
+
+// Uncomment below if you choose to pass an empty hostContainers array
+//import "adaptivecards-designer/dist/adaptivecards-defaulthost.css";
 
 window.onload = function() {
 
-	if (!Designer.SettingsManager.isLocalStorageAvailable) {
-		console.log("Local storage is not available.");
+	ACDesigner.CardDesigner.onProcessMarkdown = (text, result) => {
+		result.outputHtml = new markdownit().render(text);
+		result.didProcess = true;
 	}
 
 	let hostContainers = [];
-	hostContainers.push(new Designer.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
+	hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
 
-	let designer = new Designer.CardDesigner(hostContainers);
+	let designer = new ACDesigner.CardDesigner(hostContainers);
 	designer.attachTo(document.getElementById("designerRootHost"));
 	designer.monacoModuleLoaded(monaco);
 };
@@ -110,7 +122,7 @@ window.onload = function() {
 The following plugins and configuration should be enough to boostrap the designer and dependencies.
 
 * **monaco-editor-webpack-plugin** - makes it easy to use monaco with webpack
-* **copy-webpack-plugin** - the designer requires a few CSS and image assets to exist in your bundle. This plugin copies them from the designer into your output
+* **copy-webpack-plugin** [OPTIONAL] - If you use any of the default Host Configs, then the designer requires a few CSS and image assets be available. This plugin as described below copies them from the designer package into your output bundle
 
 ```js
 ...
@@ -143,6 +155,33 @@ module.exports = {
 };
 ```
 
+## Open Sample button
+
+The Designer makes it easy to load a sample from a catalog. Simply create a file on your web host with the following structure
+
+```json
+[
+	{
+		"displayName": "My Sample Payload",
+		"cardPayloadUrl": "url/to/the/payload.json"
+	}
+]
+```
+
+And then set the `sampleCatalogueUrl` to the location of that file:
+
+```js
+	/* Configure "Open Sample" tooobar button */
+	designer.sampleCatalogueUrl = window.location.origin + "/sample-catalogue.json";
+```
+
+If you don't want to load via a sample, you can hide the toolbar button
+
+```js
+	/* Hide the "Open Sample" toolbar button */
+	designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.OpenPayload).isVisible = false;
+```
+
 ## Advanced configuration
 
 For advanced configuration of the designer use the following APIs.
@@ -170,7 +209,6 @@ For advanced configuration of the designer use the following APIs.
     myButton.separator = true;
     designer.toolbar.insertElementAfter(myButton, Designer.CardDesigner.ToolbarCommands.HostAppPicker);
 
-
 	/* Collapse certain panes by default (BEFORE designer attached)	*/
 	designer.treeViewPane.collapse();
 	designer.jsonEditorPane.collapse();
@@ -191,7 +229,3 @@ For advanced configuration of the designer use the following APIs.
 	);
 };
 ```
-
-## Full sample code
-
-See the [full example here](https://unpkg.com/adaptivecards-designer@0.1.0/dist/index-cdn.html)

@@ -345,7 +345,7 @@ namespace AdaptiveCards.Rendering.Html.Test
 
             // Generated HTML should have an additional disabled and hidden option which is selected.
             Assert.AreEqual(
-                "<div class='ac-container' style='background-color: rgba(255, 255, 255, 1.00);justify-content: flex-start;'><div class='ac-container' style='padding-right: 15px;padding-left: 15px;padding-top: 15px;padding-bottom: 15px;margin-right: -15px;margin-left: -15px;background-color: rgba(0, 0, 0, 0.03);justify-content: flex-start;'></div></div>",
+                "<div class='ac-container' style='background-color: rgba(255, 255, 255, 1.00);justify-content: flex-start;'><div class='ac-container' style='padding-right: 15px;padding-left: 15px;padding-top: 15px;padding-bottom: 15px;margin-right: -15px;margin-left: -15px;margin-top: -15px;margin-bottom: -15px;background-color: rgba(0, 0, 0, 0.03);justify-content: flex-start;'></div></div>",
                 workingBleedHtml);
 
             Assert.AreEqual(

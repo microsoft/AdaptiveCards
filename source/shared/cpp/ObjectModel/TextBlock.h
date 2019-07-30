@@ -35,8 +35,8 @@ namespace AdaptiveSharedNamespace
         TextWeight GetTextWeight() const;
         void SetTextWeight(const TextWeight value);
 
-        FontStyle GetFontStyle() const;
-        void SetFontStyle(const FontStyle value);
+        FontType GetFontType() const;
+        void SetFontType(const FontType value);
 
         ForegroundColor GetTextColor() const;
         void SetTextColor(const ForegroundColor value);
@@ -46,12 +46,6 @@ namespace AdaptiveSharedNamespace
 
         bool GetIsSubtle() const;
         void SetIsSubtle(const bool value);
-
-        bool GetItalic() const;
-        void SetItalic(const bool value);
-
-        bool GetStrikethrough() const;
-        void SetStrikethrough(const bool value);
 
         unsigned int GetMaxLines() const;
         void SetMaxLines(const unsigned int value);

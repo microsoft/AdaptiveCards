@@ -66,7 +66,7 @@ namespace AdaptiveCards.Test
         }
 
         [TestMethod]
-        public void ParseSentiment()
+        public void ParseStyle()
         {
             var json = @"{
   ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
@@ -76,19 +76,19 @@ namespace AdaptiveCards.Test
   ""actions"": [
     {
       ""type"": ""Action.OpenUrl"",
-      ""sentiment"": ""default"",
+      ""style"": ""default"",
       ""url"": ""http://adaptivecards.io"",
       ""title"": ""Action.Default""
     },
     {
       ""type"": ""Action.OpenUrl"",
-      ""sentiment"": ""positive"",
+      ""style"": ""positive"",
       ""url"": ""http://adaptivecards.io"",
       ""title"": ""Action.Pawsitive""
     },
     {
       ""type"": ""Action.OpenUrl"",
-      ""sentiment"": ""destructive"",
+      ""style"": ""destructive"",
       ""url"": ""http://adaptivecards.io"",
       ""title"": ""Action.Destructive""
     }
@@ -101,9 +101,9 @@ namespace AdaptiveCards.Test
             var actions = result.Card.Actions;
 
             Assert.AreEqual(3, actions.Count);
-            Assert.AreEqual("default", actions[0].Sentiment);
-            Assert.AreEqual("positive", actions[1].Sentiment);
-            Assert.AreEqual("destructive", actions[2].Sentiment);
+            Assert.AreEqual("default", actions[0].Style);
+            Assert.AreEqual("positive", actions[1].Style);
+            Assert.AreEqual("destructive", actions[2].Style);
         }
 
         [TestMethod]

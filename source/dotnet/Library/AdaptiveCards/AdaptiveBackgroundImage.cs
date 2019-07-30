@@ -26,18 +26,18 @@ namespace AdaptiveCards
             Url = url;
         }
 
-        public AdaptiveBackgroundImage(string url, AdaptiveBackgroundImageMode mode, AdaptiveHorizontalAlignment hAlignment, AdaptiveVerticalAlignment vAlignment)
+        public AdaptiveBackgroundImage(string url, AdaptiveImageFillMode fillMode, AdaptiveHorizontalAlignment hAlignment, AdaptiveVerticalAlignment vAlignment)
         {
             Url = new Uri(url, UriKind.RelativeOrAbsolute);
-            Mode = mode;
+            FillMode = fillMode;
             HorizontalAlignment = hAlignment;
             VerticalAlignment = vAlignment;
         }
 
-        public AdaptiveBackgroundImage(Uri url, AdaptiveBackgroundImageMode mode, AdaptiveHorizontalAlignment hAlignment, AdaptiveVerticalAlignment vAlignment)
+        public AdaptiveBackgroundImage(Uri url, AdaptiveImageFillMode fillMode, AdaptiveHorizontalAlignment hAlignment, AdaptiveVerticalAlignment vAlignment)
         {
             Url = url;
-            Mode = mode;
+            FillMode = fillMode;
             HorizontalAlignment = hAlignment;
             VerticalAlignment = vAlignment;
         }
@@ -66,8 +66,8 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
-        [DefaultValue(typeof(AdaptiveBackgroundImageMode), "stretch")]
-        public AdaptiveBackgroundImageMode Mode { get; set; }
+        [DefaultValue(typeof(AdaptiveImageFillMode), "cover")]
+        public AdaptiveImageFillMode FillMode { get; set; }
 
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
@@ -85,7 +85,7 @@ namespace AdaptiveCards
 
         public bool HasDefaultValues()
         {
-            if (Mode == AdaptiveBackgroundImageMode.Stretch && HorizontalAlignment == AdaptiveHorizontalAlignment.Left && VerticalAlignment == AdaptiveVerticalAlignment.Top)
+            if (FillMode == AdaptiveImageFillMode.Cover && HorizontalAlignment == AdaptiveHorizontalAlignment.Left && VerticalAlignment == AdaptiveVerticalAlignment.Top)
             {
                 return true;
             }

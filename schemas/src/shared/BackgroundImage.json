@@ -1,0 +1,24 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+  "description": "Specifies a background image.",
+  "properties": {
+    "url": {
+      "type": "uri-reference",
+      "description": "The URL (or data url) of the image.",
+      "required": true
+    },
+    "fillMode": {
+      "type": "ImageFillMode",
+      "description": "Describes how the image should fill the area."
+    },
+    "horizontalAlignment": {
+      "type": "HorizontalAlignment",
+      "description": "Describes how the image should be aligned if it must be cropped or if using repeat fill mode."
+    },
+    "verticalAlignment": {
+      "type": "VerticalAlignment",
+      "description": "Describes how the image should be aligned if it must be cropped or if using repeat fill mode."
+    }
+  },
+  "version": "1.2"
+}

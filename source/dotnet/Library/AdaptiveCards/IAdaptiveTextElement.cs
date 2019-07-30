@@ -46,6 +46,6 @@ namespace AdaptiveCards
         /// <summary>
         ///     The font style of the TextBlock
         /// </summary>
-        AdaptiveFontStyle FontStyle { get; set; }
+        AdaptiveFontType FontType { get; set; }
     }
 }

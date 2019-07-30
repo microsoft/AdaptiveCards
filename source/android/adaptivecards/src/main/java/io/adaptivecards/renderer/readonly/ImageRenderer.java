@@ -169,12 +169,13 @@ public class ImageRenderer extends BaseCardElementRenderer
             throw new InternalError("Unable to convert BaseCardElement to Image object model.");
         }
 
+        boolean isInImageSet = viewGroup instanceof HorizontalFlowLayout;
+        View separator = setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, !isInImageSet /* horizontal line */, isInImageSet);
+
         ImageView imageView = new ImageView(context);
-        imageView.setTag(new TagContent(image));
-        if (!baseCardElement.GetIsVisible())
-        {
-            imageView.setVisibility(View.GONE);
-        }
+        imageView.setTag(new TagContent(image, separator, viewGroup));
+
+        setVisibility(baseCardElement.GetIsVisible(), imageView);
 
         String imageBackgroundColor = image.GetBackgroundColor();
         int backgroundColor = 0;
@@ -302,8 +303,6 @@ public class ImageRenderer extends BaseCardElementRenderer
         {
             setImageSize(context, imageView, image.GetImageSize(), hostConfig.GetImageSizes());
         }
-        boolean isInImageSet = viewGroup instanceof HorizontalFlowLayout;
-        setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, !isInImageSet /* horizontal line */, isInImageSet);
 
         viewGroup.addView(imageView);
 

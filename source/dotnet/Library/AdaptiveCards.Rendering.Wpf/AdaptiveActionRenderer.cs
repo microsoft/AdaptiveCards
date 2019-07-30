@@ -33,20 +33,20 @@ namespace AdaptiveCards.Rendering.Wpf
                 Style = context.GetStyle($"Adaptive.{action.Type}"),
             };
 
-            if (!String.IsNullOrWhiteSpace(action.Sentiment))
+            if (!String.IsNullOrWhiteSpace(action.Style))
             {
-                Style sentimentStyle = context.GetStyle($"Adaptive.{action.Type}.{action.Sentiment}");
+                Style style = context.GetStyle($"Adaptive.Action.{action.Style}");
 
-                if (sentimentStyle == null && String.Equals(action.Sentiment, "positive", StringComparison.OrdinalIgnoreCase))
+                if (style == null && String.Equals(action.Style, "positive", StringComparison.OrdinalIgnoreCase))
                 {
-                    sentimentStyle = context.GetStyle("PositiveActionDefaultStyle");
+                    style = context.GetStyle("PositiveActionDefaultStyle");
                 }
-                else if (sentimentStyle == null && String.Equals(action.Sentiment, "destructive", StringComparison.OrdinalIgnoreCase))
+                else if (style == null && String.Equals(action.Style, "destructive", StringComparison.OrdinalIgnoreCase))
                 {
-                    sentimentStyle = context.GetStyle("DestructiveActionDefaultStyle");
+                    style = context.GetStyle("DestructiveActionDefaultStyle");
                 }
 
-                uiButton.Style = sentimentStyle;
+                uiButton.Style = style;
             }
 
             var contentStackPanel = new StackPanel();
@@ -68,7 +68,7 @@ namespace AdaptiveCards.Rendering.Wpf
             var uiTitle = new TextBlock
             {
                 Text = action.Title,
-                FontSize = context.Config.GetFontSize(AdaptiveFontStyle.Default, AdaptiveTextSize.Default),
+                FontSize = context.Config.GetFontSize(AdaptiveFontType.Default, AdaptiveTextSize.Default),
                 Style = context.GetStyle($"Adaptive.Action.Title")
             };
 

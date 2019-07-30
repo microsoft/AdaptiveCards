@@ -44,22 +44,7 @@ using namespace AdaptiveCards;
     [view registerClass:[UICollectionViewCell class]forCellWithReuseIdentifier:@"cellId"];
 
     [viewGroup addArrangedSubview:view];
-    [viewGroup addConstraint:
-     [NSLayoutConstraint constraintWithItem:view
-                                  attribute:NSLayoutAttributeLeading
-                                  relatedBy:NSLayoutRelationLessThanOrEqual
-                                     toItem:viewGroup
-                                  attribute:NSLayoutAttributeLeading
-                                 multiplier:1.0
-                                   constant:0]];
-    [viewGroup addConstraint:
-     [NSLayoutConstraint constraintWithItem:view
-                                  attribute:NSLayoutAttributeTrailing
-                                  relatedBy:NSLayoutRelationLessThanOrEqual
-                                     toItem:viewGroup
-                                  attribute:NSLayoutAttributeTrailing
-                                 multiplier:1.0
-                                   constant:0]];
+
     [view setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
 
     configVisibility(view, elem);
