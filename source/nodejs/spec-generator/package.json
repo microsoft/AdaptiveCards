@@ -1,6 +1,6 @@
 {
 	"name": "spec-generator",
-	"version": "0.5.0",
+	"version": "0.5.2",
 	"description": "Generates the element/property tables for our specs based on the schema file.",
 	"author": "AdaptiveCards",
 	"license": "MIT",
@@ -20,13 +20,11 @@
 		"build-all": "cd ../typed-schema && npm run build && cd ../spec-generator && npm run build",
 		"build-all-and-run": "npm run build-all && npm run run"
 	},
-	"dependencies": {
-		"marked-schema": "^0.1.4",
-		"typed-schema": "0.5.0",
-		"p-iteration": "^1.1.8"
-	},
 	"devDependencies": {
+		"marked-schema": "^0.1.4",
+		"p-iteration": "^1.1.8",
 		"rimraf": "^2.6.2",
+		"typed-schema": "^0.5.2",
 		"typescript": "^3.2.2",
 		"webpack": "^4.27.1",
 		"webpack-cli": "^3.1.2"

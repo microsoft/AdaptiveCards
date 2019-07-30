@@ -126,6 +126,11 @@ HRESULT GenerateSharedElement(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement*
             GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveChoiceSetInput>(
                 item);
         break;
+    case ABI::AdaptiveNamespace::ElementType::Column:
+        baseCardElement =
+            GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveColumn>(
+                item);
+        break;
     case ABI::AdaptiveNamespace::ElementType::ColumnSet:
         baseCardElement =
             GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveColumnSet>(
@@ -510,6 +515,10 @@ HRESULT GenerateElementProjection(_In_ const std::shared_ptr<AdaptiveSharedNames
     case CardElementType::RichTextBlock:
         RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveRichTextBlock>(
             projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::RichTextBlock>(baseElement)));
+        break;
+    case CardElementType::Column:
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveColumn>(
+            projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::Column>(baseElement)));
         break;
     case CardElementType::Custom:
         RETURN_IF_FAILED(std::AdaptivePointerCast<::AdaptiveNamespace::CustomElementWrapper>(baseElement)->GetWrappedElement(projectedElement));
@@ -1454,9 +1463,9 @@ Color GenerateLighterColor(const Color& originalColor)
 
     Color lighterColor;
     lighterColor.A = originalColor.A;
-    lighterColor.R = originalColor.R + static_cast<int>((255 - originalColor.R) * lightIncrement);
-    lighterColor.G = originalColor.G + static_cast<int>((255 - originalColor.G) * lightIncrement);
-    lighterColor.B = originalColor.B + static_cast<int>((255 - originalColor.B) * lightIncrement);
+    lighterColor.R = originalColor.R + static_cast<BYTE>((255 - originalColor.R) * lightIncrement);
+    lighterColor.G = originalColor.G + static_cast<BYTE>((255 - originalColor.G) * lightIncrement);
+    lighterColor.B = originalColor.B + static_cast<BYTE>((255 - originalColor.B) * lightIncrement);
     return lighterColor;
 }
 

@@ -6,10 +6,10 @@ exports[`InputChoiceSet inputChoiceSetCheckboxMultiSelect should be rendered cor
 >
   <div
     class="ac-input-container"
-    style="display: block;"
+    style="display: flex;"
   >
     <div
-      style="min-width: 0px;"
+      style="width: 100%; min-width: 0px;"
     >
       <div
         class="ms-Checkbox is-checked is-enabled root-78"
@@ -52,15 +52,15 @@ exports[`InputChoiceSet inputChoiceSetCheckboxMultiSelect should be rendered cor
           type="checkbox"
         />
         <label
-          class="ms-Checkbox-label label-80"
+          class="ms-Checkbox-label label-86"
           for="checkbox-12"
         >
           <div
-            class="ms-Checkbox-checkbox checkbox-86"
+            class="ms-Checkbox-checkbox checkbox-87"
           >
             <i
               aria-hidden="true"
-              class="ms-Checkbox-checkmark checkmark-88"
+              class="ms-Checkbox-checkmark checkmark-89"
               data-icon-name="CheckMark"
               role="presentation"
             >
@@ -75,7 +75,7 @@ exports[`InputChoiceSet inputChoiceSetCheckboxMultiSelect should be rendered cor
         </label>
       </div>
       <div
-        class="ms-Checkbox is-checked is-enabled root-89"
+        class="ms-Checkbox is-checked is-enabled root-85"
       >
         <input
           checked=""
@@ -117,10 +117,10 @@ exports[`InputChoiceSet inputChoiceSetChoiceGroup should be rendered correctly 1
 >
   <div
     class="ac-input-container"
-    style="display: block;"
+    style="display: flex;"
   >
     <div
-      style="min-width: 0px;"
+      style="width: 100%; min-width: 0px;"
     >
       <div
         class="applicationRole-63"
@@ -222,10 +222,10 @@ exports[`InputChoiceSet inputChoiceSetComboBox should be rendered correctly 1`] 
 >
   <div
     class="ac-input-container"
-    style="display: block;"
+    style="display: flex;"
   >
     <div
-      style="min-width: 0px;"
+      style="width: 100%; min-width: 0px;"
     >
       <div
         class="ms-ComboBox-container "
@@ -283,10 +283,10 @@ exports[`InputChoiceSet inputChoiceSetComboBoxMultiSelect should be rendered cor
 >
   <div
     class="ac-input-container"
-    style="display: block;"
+    style="display: flex;"
   >
     <div
-      style="min-width: 0px;"
+      style="width: 100%; min-width: 0px;"
     >
       <div
         class="ms-ComboBox-container "

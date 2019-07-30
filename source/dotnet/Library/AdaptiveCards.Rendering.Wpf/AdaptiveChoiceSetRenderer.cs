@@ -6,6 +6,9 @@ using System.IO;
 using System.Xml;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Data;
+using System;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
@@ -44,9 +47,19 @@ namespace AdaptiveCards.Rendering.Wpf
                     if (input.Style == AdaptiveChoiceInputStyle.Compact)
                     {
                         var uiComboItem = new ComboBoxItem();
+                        uiComboItem.HorizontalAlignment = HorizontalAlignment.Stretch;
                         uiComboItem.Style = context.GetStyle("Adaptive.Input.AdaptiveChoiceSetInput.ComboBoxItem");
-                        SetContent(uiComboItem, choice.Title, input.Wrap);
+
+                        TextBlock content = SetContent(uiComboItem, choice.Title, input.Wrap);
+                        // The content TextBlock is binded to the width of the comboBox container
+                        if (input.Wrap && content != null)
+                        {
+                            BindingOperations.SetBinding(content, TextBlock.MaxWidthProperty,
+                                new Binding("ActualWidth") { Source = uiComboBox });
+                        }
+
                         uiComboItem.DataContext = choice;
+                        
                         uiComboBox.Items.Add(uiComboItem);
 
                         // If multiple values are specified, no option is selected
@@ -126,16 +139,20 @@ namespace AdaptiveCards.Rendering.Wpf
                 return uiGrid;
             }
         }
-        public static void SetContent(ContentControl uiControl, string text, bool wrap)
+
+        public static TextBlock SetContent(ContentControl uiControl, string text, bool wrap)
         {
             if (wrap)
             {
-                uiControl.Content = new TextBlock { Text = text, TextWrapping = TextWrapping.Wrap };
+                TextBlock wrappedTextBlock = new TextBlock { Text = text, TextWrapping = TextWrapping.Wrap };
+                uiControl.Content = wrappedTextBlock;
+                return wrappedTextBlock;
             }
             else
             {
                 uiControl.Content = text;
             }
+            return null;
         }
     }
 }
