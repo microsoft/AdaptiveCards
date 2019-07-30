@@ -24,11 +24,7 @@
 	
 
 	<link rel="alternate" href="<%- url_for(config.feed.path) %>" title="<%= config.title %>" type="application/atom+xml">
-	
-
-	<% if (theme.favicon){ %>
-		<link rel="icon" href="<%- theme.favicon %>">
-	<% } %>
+	<link rel="icon" href="<%- url_for('content/favicon.ico') %>">
 
 	<link rel="stylesheet" href="https://statics-uhf-eas.akamaized.net/west-european/shell/_scrf/css/themes=default.device=uplevel_web_pc/ec-f8ec33/b7-01890e/67-f66a05/bb-33df2f/d6-3f8236/1c-14fb9c/8e-0f0147/17-1042c1?ver=2.0" type="text/css" media="all" /><link rel="stylesheet" href="https://statics-uhf-eus.akamaized.net/statics/override.css?c=4" type="text/css" />
 

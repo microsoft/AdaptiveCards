@@ -33,11 +33,6 @@ var assets = [
         path: "node_modules/adaptivecards/dist/*.*",
         dest: function (p) { return p; }
 	},
-	// {
-    //     // designer script (separated because we want to hash it)
-    //     path: "node_modules/adaptivecards-designer/dist/adaptivecards-designer.js",
-	// 	dest: function (p) { return p; }		
-	// },
 	{
         // designer assets 
         path: "node_modules/adaptivecards-designer/dist/*.*",

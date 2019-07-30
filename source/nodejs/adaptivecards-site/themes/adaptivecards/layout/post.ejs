@@ -45,7 +45,7 @@
 				<div class="w3-rest">
 					<h3><a href="<%- post.author.webpage %>" class="w3-large"><%- post.author.name %></a></h3>
 					<p style="margin: 8px 0"><%- post.author.bio %></p>
-					<%- followbuttons(post.author) %>
+					<%- partial("_partial/follow-buttons", post.author) %>
 				</div>
 
 			</div>

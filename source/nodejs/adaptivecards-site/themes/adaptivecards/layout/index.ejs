@@ -3,7 +3,7 @@
 	<div id="videoModal" class="w3-modal w3-card-4">
 		<div class="w3-modal-content w3-animate-zoom">
 
-			<video id="overviewVideo" controls="" width="100%" poster="./content/poster-video.png">
+			<video id="overviewVideo" controls="" width="100%" poster="<%- url_for('content/poster-video.png') %>">
 				<source src="https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4"
 					type="video/mp4">
 				</source>
@@ -103,22 +103,22 @@
 		sections: [{
 			"title": "Bot Framework",
 			"subtitle": "A conversational bot powered by Adaptive Cards can greatly simplify business workflows on your web site or through other channels.",
-			"smallImage": "https://leoluis.xyz/content/images/size/w300/2019/03/ChatBot-BotFramework.png"
+			"smallImage": url_for('content/bf-logo.png')
 		},
 		{
 			"title": "Microsoft Teams",
 			"subtitle":  "As the digital hub for many modern workers, Teams offers multiple extensibilty points for apps to integrate with.",
-			"smallImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Microsoft_Office_Teams_%282018%E2%80%93present%29.svg/1200px-Microsoft_Office_Teams_%282018%E2%80%93present%29.svg.png"
+			"smallImage": url_for('content/teams-logo.png')
 		},
 		{
 			"title": "Outlook Actionable Messages",
 			"subtitle":  "Email has long been life-blood of an information worker, and now you can deliver actionable content directly to their inbox.",
-			"smallImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Microsoft_Office_Outlook_%282018%E2%80%93present%29.svg/1200px-Microsoft_Office_Outlook_%282018%E2%80%93present%29.svg.png"
+			"smallImage": url_for('content/outlook-logo.png')
 		},
 		{
 			"title": "Windows Timeline",
 			"subtitle":  "Allow users to resume their activities on any device",
-			"smallImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Windows_logo_-_2012.svg/768px-Windows_logo_-_2012.svg.png"
+			"smallImage": url_for('content/windows-logo.png')
 		}]	
 	}) %>
 
@@ -128,8 +128,8 @@
 		quote: "User engagement on surveys is always a challenge, but by taking advantage of Outlook Actionable Messages, we experienced a massively increased return rate from ~10-12% to a 3 month average of 35%!",
 		author: "Richard Greenfield",
 		title: "Executive Support Services",
-		profilePic: "content/rigreenf.jpg",
-		productLogo: "content/microsoft-logo.png"
+		profilePic: url_for('content/rigreenf.jpg'),
+		productLogo: url_for('content/microsoft-logo.png')
 	}) %>
 
 	<div class="divider"></div>
@@ -146,26 +146,22 @@
 		sections: [{
 			"title": "Native performance",
 			"subtitle":  "Adaptive Cards generate native UI on any platform",
-			"largeImage": "content/Feature.jpg",
-			"smallImage": "content/Feature.jpg"
+			"smallImage": url_for('content/feature.jpg')
 		},
 		{
 			"title": "Adapts to the surrounding UI",
 			"subtitle":  "Cards automatically adaptive to the surrounding UI",
-			"largeImage": "content/Feature.jpg",
-			"smallImage": "content/Feature.jpg"
+			"smallImage": url_for('content/feature.jpg')
 		},
 		{
 			"title": "Fully extensible",
 			"subtitle":  "The schema is open-ended so you can add your own element types",
-			"largeImage": "content/Feature.jpg",
-			"smallImage": "content/Feature.jpg"
+			"smallImage": url_for('content/feature.jpg')
 		},
 		{
 			"title": "Safe and secure",
 			"subtitle":  "Cards are purely declarative so you can trust content from any source",
-			"largeImage": "content/Feature.jpg",
-			"smallImage": "content/Feature.jpg"
+			"smallImage": url_for('content/feature.jpg')
 		}]	
 	}) %>
 
@@ -176,7 +172,7 @@
 		author: "Bill Bliss",
 		title: "Platform Architect",
 		profilePic: "https://pbs.twimg.com/profile_images/1257201339/Disneyland-2009_200x200.png",
-		productLogo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Microsoft_Office_Teams_%282018%E2%80%93present%29.svg/1200px-Microsoft_Office_Teams_%282018%E2%80%93present%29.svg.png"
+		productLogo: url_for('content/teams-logo.png')
 	}) %>
 
 	<div class="divider"></div>
@@ -196,7 +192,7 @@
 		author: "Joe Herres",
 		title: "Co-CEO",
 		profilePic: "https://pbs.twimg.com/profile_images/911946058242158594/oyph7XGi_200x200.jpg",
-		productLogo: "http://store-images.s-microsoft.com/image/apps.26677.f7d5a0d1-f6e3-47cb-88ce-103eb31b6bad.edfdfff9-1d34-42fb-8595-8f68dd0ae02a.89be960f-f561-4517-a4ac-570c0b3db1d4"
+		productLogo: url_for('content/atbot-logo.png')
 	}) %>
 
 	<div class="divider"></div>
@@ -215,26 +211,22 @@
 		sections: [{
 			"title": "Rich designer integration",
 			"subtitle":  "Sample data allows you to preview your template without leaving the designer.",
-			"largeImage": "content/Feature.jpg",
-			"smallImage": "content/Feature.jpg"
+			"smallImage": url_for('content/feature.jpg')
 		},
 		{
 			"title": "Simplify your workflows",
 			"subtitle":  "Create your template in the designer, use it without your services, then paste it right back into the designer to make changes.",
-			"largeImage": "content/Feature.jpg",
-			"smallImage": "content/Feature.jpg"
+			"smallImage": url_for('content/feature.jpg')
 		},
 		{
 			"title": "Card Template service makes sharing templates a snap",
 			"subtitle":  "The template service finds a template for your data, and will even populate it for you.",
-			"largeImage": "content/Feature.jpg",
-			"smallImage": "content/Feature.jpg"
+			"smallImage": url_for('content/feature.jpg')
 		},
 		{
 			"title": "We want to hear from you",
 			"subtitle":  "We don't have a release date for this preview yet, but we're waiting to learn from you.",
-			"largeImage": "content/Feature.jpg",
-			"smallImage": "content/Feature.jpg"
+			"smallImage": url_for('content/feature.jpg')
 		}]	
 	}) %>
 
@@ -246,7 +238,7 @@
 		author: "Tim Cadenbach",
 		title: "Software Engineer",
 		profilePic: "https://pbs.twimg.com/profile_images/919315256563978241/2LDFiF5m_400x400.jpg",
-		productLogo: "content/teamwork-logo.png"
+		productLogo: url_for('content/teamwork-logo.png')
 	}) %>
 
 	<div class="divider"></div>
@@ -261,7 +253,7 @@
 
 		<div class="w3-col m6">
 			<div>
-				<h6 class="w3-cell">Blog </h6><a href="<%- url_for('blog') %></a>>Read more <i class="fa fa-chevron-right"></i></a>
+				<h6 class="w3-cell">Blog </h6><a href="<%- url_for('blog') %>">Read more <i class="fa fa-chevron-right"></i></a>
 			</div>
 
 			<% page.posts.slice(0, 4).each(function(post){ %>
