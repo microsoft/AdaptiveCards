@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Azure.Storage;
@@ -53,18 +53,15 @@ namespace blob_quickstart
                 await cloudBlobContainer.SetPermissionsAsync(permissions);
 
                 // Create a file in your local MyDocuments folder to upload to a blob.
-                string localPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                string localFileName = "QuickStart_" + Guid.NewGuid().ToString() + ".txt";
-                string sourceFile = Path.Combine(localPath, localFileName);
-                // Write text to the file.
-                File.WriteAllText(sourceFile, "Hello, World!");
-
-                Console.WriteLine("Temp file = {0}", sourceFile);
-                Console.WriteLine("Uploading to Blob storage as blob '{0}'", localFileName);
+                var localPath = "source/ios/AdaptiveCards/AdaptiveCards";
+                var adaptiveCardFileName = "AdaptiveCards.framework";
+                var option = "zip";
+                var cloudFileName = adaptiveCardFileName + "_" + Guid.NewGuid().ToString() + "." + option;
+                string sourceFile = Path.Combine(localPath, adaptiveCardFileName);
 
                 // Get a reference to the blob address, then upload the file to the blob.
                 // Use the value of localFileName for the blob name.
-                CloudBlockBlob cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(localFileName);
+                CloudBlockBlob cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(cloudFileName);
                 await cloudBlockBlob.UploadFromFileAsync(sourceFile);
 
                 Console.WriteLine("List blobs in container.");
