@@ -84,6 +84,7 @@
     ACOBaseCardElement *acoColumn = [[ACOBaseCardElement alloc] init];
     auto firstColumn = columns.begin();
     auto prevColumn = columns.empty() ? nullptr : *firstColumn;
+    auto lastColumn { columns.back() };
     ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
     ACRSeparator *separator = nil;
 
@@ -98,6 +99,10 @@
         @try {
             if ([acoElem meetsRequirements:featureReg] == NO) {
                 @throw [ACOFallbackException fallbackException];
+            }
+            
+            if (lastColumn == column) {
+                columnSetView.isLastColumn = YES;
             }
 
             curView = (ACRColumnView *)[columnRenderer render:columnSetView rootView:rootView inputs:inputs baseCardElement:acoColumn hostConfig:acoConfig];
