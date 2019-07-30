@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace AdaptiveCards.Rendering.Wpf
@@ -172,6 +173,11 @@ namespace AdaptiveCards.Rendering.Wpf
                             uiContainer.Children.Add(panel);
                             context.SetVisibility(panel, cardElement.IsVisible, tag);
                         }
+                    }
+
+                    if (cardElement.TabIndex != 0)
+                    {
+                        KeyboardNavigation.SetTabIndex(uiElement, cardElement.TabIndex);
                     }
 
                     if (cardElement.Type == "ActionSet")

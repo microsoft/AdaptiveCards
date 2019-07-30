@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
 
@@ -164,6 +165,8 @@ namespace AdaptiveCards.Rendering.Wpf
             outerGrid.MinHeight = card.PixelMinHeight;
 
             outerGrid.Children.Add(grid);
+
+            KeyboardNavigation.SetTabNavigation(grid, KeyboardNavigationMode.Cycle);
 
             AdaptiveContainerRenderer.AddContainerElements(grid, card.Body, context);
             AdaptiveActionSetRenderer.AddRenderedActions(grid, card.Actions, context);

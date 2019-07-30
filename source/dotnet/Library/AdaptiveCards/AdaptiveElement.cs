@@ -77,5 +77,15 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(true)]
         public bool IsVisible { get; set; } = true;
+
+        /// <summary> 
+        /// The keyboard tab order of the element 
+        /// </summary> 
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlIgnore]
+#endif
+        [DefaultValue(0)]
+        public int TabIndex { get; set; }
     }
 }
