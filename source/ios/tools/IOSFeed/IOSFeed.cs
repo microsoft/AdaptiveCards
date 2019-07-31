@@ -14,15 +14,13 @@ namespace IOSFeedNS
 
             // Run the examples asynchronously, wait for the results before proceeding
             ProcessAsync().GetAwaiter().GetResult();
-
-            Console.WriteLine("Press any key to exit the sample application.");
         }
 
         private static async Task ProcessAsync()
         {
-            string storageConnectionString; 
+            string storageConnectionString;
 
-            var connectionStringPath = "ConnectString.txt";
+            var connectionStringPath = "source/ios/tools/IOSFeed/ConnectString.txt";
             using (StreamReader sr = File.OpenText(connectionStringPath))
             {
                 storageConnectionString = sr.ReadToEnd();
