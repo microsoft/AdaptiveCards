@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.705
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "blob-quickstart", "blob-quickstart.csproj", "{953218C2-8A1A-44E3-96C6-DFF08D977D7C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IOSFeed", "IOSFeed.csproj", "{953218C2-8A1A-44E3-96C6-DFF08D977D7C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

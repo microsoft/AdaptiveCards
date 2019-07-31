@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Storage;
 using Microsoft.Azure.Storage.Blob;
 
-namespace blob_quickstart
+namespace IOSFeedNS
 {
-    class Program
+    class IOSFeed
     {
         public static void Main()
         {
@@ -78,6 +78,7 @@ namespace blob_quickstart
                     foreach (IListBlobItem item in results.Results)
                     {
                         Console.WriteLine(item.Uri);
+                        UpdatePodSpec(item.Uri.ToString());
                     }
                 } while (blobContinuationToken != null);
             }
@@ -116,6 +117,7 @@ namespace blob_quickstart
                 }
 
                 File.WriteAllText(sourceFile, output);
+                Console.WriteLine(output);
             }
         }
     }
