@@ -20,7 +20,13 @@ namespace blob_quickstart
 
         private static async Task ProcessAsync()
         {
-            string storageConnectionString = Environment.GetEnvironmentVariable("CONNECT_STR");
+            string storageConnectionString; 
+
+            var connectionStringPath = "ConnectString.txt";
+            using (StreamReader sr = File.OpenText(connectionStringPath))
+            {
+                storageConnectionString = sr.ReadToEnd();
+            }
 
             Console.WriteLine("key string: " + storageConnectionString);
             // Check whether the connection string can be parsed.
@@ -87,9 +93,30 @@ namespace blob_quickstart
 
         private static void UpdatePodSpec(string uri)
         {
-            var localPath = "source/ios/AdaptiveCards/AdaptiveCards";
+            var localPath = "source/ios/tools";
             var localFileName = "AdaptiveCards.podspec";
             var sourceFile = Path.Combine(localPath, localFileName);
+            // Open the stream and read it back.
+            using (StreamReader sr = File.OpenText(sourceFile))
+            {
+                string s = "";
+                string output = "";
+                while ((s = sr.ReadLine()) != null)
+                {
+                    if(s.Length != 0)
+                    {
+                        var splits = s.Split('=');
+                        if (splits.Length > 0 && splits[0].Trim().Equals("spec.source"))
+                        {
+                            s = splits[0] + "= { :http => " + "'" + uri + "' }";
+                        }
+                    }
+
+                    output += s;
+                }
+
+                File.WriteAllText(sourceFile, output);
+            }
         }
     }
 }
