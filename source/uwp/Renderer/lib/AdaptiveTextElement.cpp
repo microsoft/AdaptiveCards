@@ -82,4 +82,16 @@ namespace AdaptiveNamespace
         m_fontType = fontType;
         return S_OK;
     }
+
+    HRESULT AdaptiveTextElement::get_Underline(_Out_ boolean* underline)
+    {
+        *underline = m_underline;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveTextElement::put_Underline(_In_ boolean underline)
+    {
+        m_underline = underline;
+        return S_OK;
+    }
 }

@@ -148,6 +148,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::ToggleInput, "toggleInput"},
             {AdaptiveCardSchemaKey::Top, "top"},
             {AdaptiveCardSchemaKey::Type, "type"},
+            {AdaptiveCardSchemaKey::Underline, "underline"},
             {AdaptiveCardSchemaKey::Url, "url"},
             {AdaptiveCardSchemaKey::Value, "value"},
             {AdaptiveCardSchemaKey::ValueOff, "valueOff"},

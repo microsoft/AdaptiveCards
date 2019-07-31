@@ -484,6 +484,7 @@ AdaptiveNamespaceStart
         Boolean IsSubtle;
         String Language;
         FontType FontType;
+        Boolean Underline;
     };
 
     [

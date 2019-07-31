@@ -73,8 +73,8 @@ HRESULT SetHorizontalAlignment(_In_ TAdaptiveType* adaptiveTextBlock, _In_ TXaml
     return S_OK;
 }
 
-HRESULT SetStrikethrough(_In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* textBlock);
-HRESULT SetStrikethrough(_In_ ABI::Windows::UI::Xaml::Documents::ITextElement* textBlock);
+HRESULT SetStrikethroughAndUnderline(bool isStrikethrough, bool isUnderline, _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* textBlock);
+HRESULT SetStrikethroughAndUnderline(bool isStrikethrough, bool isUnderline, _In_ ABI::Windows::UI::Xaml::Documents::ITextElement* textBlock);
 
 template<typename TXamlTextBlockType>
 HRESULT StyleTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adaptiveTextElement,
@@ -88,10 +88,9 @@ HRESULT StyleTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adap
     Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveHostConfig> hostConfig;
     RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
-    if (isStrikethrough)
-    {
-        RETURN_IF_FAILED(SetStrikethrough(xamlTextElement));
-    }
+    boolean isUnderline;
+    RETURN_IF_FAILED(adaptiveTextElement->get_Underline(&isUnderline));
+    RETURN_IF_FAILED(SetStrikethroughAndUnderline(isStrikethrough, isUnderline, xamlTextElement));
 
     if (isItalic)
     {

@@ -150,6 +150,16 @@ void TextRun::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
     m_selectAction = action;
 }
 
+bool TextRun::GetUnderline() const
+{
+    return m_textElementProperties->GetUnderline();
+}
+
+void TextRun::SetUnderline(const bool value)
+{
+    m_textElementProperties->SetUnderline(value);
+}
+
 std::shared_ptr<Inline> TextRun::Deserialize(ParseContext& context, const Json::Value& json)
 {
     std::shared_ptr<TextRun> inlineTextRun = std::make_shared<TextRun>();

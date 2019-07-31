@@ -14,13 +14,13 @@ using namespace AdaptiveSharedNamespace;
 
 TextElementProperties::TextElementProperties() :
     m_textSize(TextSize::Default), m_textWeight(TextWeight::Default), m_fontType(FontType::Default),
-    m_textColor(ForegroundColor::Default), m_isSubtle(false), m_language()
+    m_textColor(ForegroundColor::Default), m_isSubtle(false), m_language(), m_underline(false)
 {
 }
 
 TextElementProperties::TextElementProperties(const TextConfig& config, const std::string& text, const std::string& language) :
     m_textSize(config.size), m_textWeight(config.weight), m_fontType(config.fontType), m_textColor(config.color),
-    m_isSubtle(config.isSubtle), m_text(text), m_language(language)
+    m_isSubtle(config.isSubtle), m_text(text), m_language(language), m_underline(false)
 {
 }
 
@@ -49,6 +49,11 @@ Json::Value TextElementProperties::SerializeToJsonValue(Json::Value& root) const
     if (m_isSubtle)
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsSubtle)] = true;
+    }
+
+    if (m_underline)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Underline)] = true;
     }
 
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Text)] = GetText();
@@ -131,6 +136,16 @@ void TextElementProperties::SetLanguage(const std::string& value)
     m_language = value;
 }
 
+bool TextElementProperties::GetUnderline() const
+{
+    return m_underline;
+}
+
+void TextElementProperties::SetUnderline(const bool value)
+{
+    m_underline = value;
+}
+
 void TextElementProperties::Deserialize(const ParseContext& context, const Json::Value& json)
 {
     SetText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Text, true));
@@ -140,6 +155,7 @@ void TextElementProperties::Deserialize(const ParseContext& context, const Json:
     SetFontType(ParseUtil::GetEnumValue<FontType>(json, AdaptiveCardSchemaKey::FontType, FontType::Default, FontTypeFromString));
     SetIsSubtle(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsSubtle, false));
     SetLanguage(context.GetLanguage());
+    SetUnderline(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Underline, false));
 }
 
 void TextElementProperties::PopulateKnownPropertiesSet(std::unordered_set<std::string>& knownProperties)
@@ -149,5 +165,6 @@ void TextElementProperties::PopulateKnownPropertiesSet(std::unordered_set<std::s
                             AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color),
                             AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::TextWeight),
                             AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::FontType),
-                            AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsSubtle)});
+                            AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsSubtle),
+                            AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Underline)});
 }

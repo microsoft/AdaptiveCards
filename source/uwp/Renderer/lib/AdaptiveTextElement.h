@@ -31,10 +31,15 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_FontType(_Out_ ABI::AdaptiveNamespace::FontType* fontType);
         IFACEMETHODIMP put_FontType(ABI::AdaptiveNamespace::FontType fontType);
 
-    protected:
-        template<typename T> HRESULT InitializeTextElement(const std::shared_ptr<T>& sharedModel)
+        IFACEMETHODIMP get_Underline(_Out_ boolean* underline);
+        IFACEMETHODIMP put_Underline(_In_ boolean underline);
+
+    protected : template<typename T>
+                HRESULT
+                InitializeTextElement(const std::shared_ptr<T>& sharedModel)
         {
             m_subtle = sharedModel->GetIsSubtle();
+            m_underline = sharedModel->GetUnderline();
             m_fontType = static_cast<ABI::AdaptiveNamespace::FontType>(sharedModel->GetFontType());
             m_textSize = static_cast<ABI::AdaptiveNamespace::TextSize>(sharedModel->GetTextSize());
             m_textWeight = static_cast<ABI::AdaptiveNamespace::TextWeight>(sharedModel->GetTextWeight());
@@ -48,6 +53,7 @@ namespace AdaptiveNamespace
         template<typename T> HRESULT SetTextElementProperties(std::shared_ptr<T> sharedCardElement)
         {
             sharedCardElement->SetIsSubtle(m_subtle);
+            sharedCardElement->SetUnderline(m_underline);
             sharedCardElement->SetFontType(static_cast<AdaptiveSharedNamespace::FontType>(m_fontType));
             sharedCardElement->SetTextSize(static_cast<AdaptiveSharedNamespace::TextSize>(m_textSize));
             sharedCardElement->SetTextWeight(static_cast<AdaptiveSharedNamespace::TextWeight>(m_textWeight));
@@ -68,6 +74,7 @@ namespace AdaptiveNamespace
 
     private:
         boolean m_subtle;
+        boolean m_underline;
         Microsoft::WRL::Wrappers::HString m_text;
         Microsoft::WRL::Wrappers::HString m_language;
         ABI::AdaptiveNamespace::FontType m_fontType;
