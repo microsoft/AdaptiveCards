@@ -10,11 +10,8 @@ namespace IOSFeedNS
     {
         public static void Main()
         {
-            Console.WriteLine("Azure Blob Storage - .NET quickstart sample\n");
-
             // Run the examples asynchronously, wait for the results before proceeding
-            //ProcessAsync().GetAwaiter().GetResult();
-            UpdatePodSpec("hello word");
+            ProcessAsync().GetAwaiter().GetResult();
             Console.Read();
         }
 
@@ -100,8 +97,8 @@ namespace IOSFeedNS
 
         private static void UpdatePodSpec(string uri)
         {
-            var localPath = "source/ios/tools";
-            var targetPath = "source/ios";
+            var localPath = "../../../../";//"source/ios/tools";
+            var targetPath = "../../../../../";
             var localFileName = "AdaptiveCards.podspec";
             var sourceFile = Path.Combine(localPath, localFileName);
             var targetFile = Path.Combine(targetPath, localFileName);
