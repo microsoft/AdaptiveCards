@@ -13,10 +13,9 @@ namespace blob_quickstart
             Console.WriteLine("Azure Blob Storage - .NET quickstart sample\n");
 
             // Run the examples asynchronously, wait for the results before proceeding
-            ProcessAsync().GetAwaiter().GetResult();
+            //ProcessAsync().GetAwaiter().GetResult();
 
             Console.WriteLine("Press any key to exit the sample application.");
-            Console.ReadLine();
         }
 
         private static async Task ProcessAsync()
