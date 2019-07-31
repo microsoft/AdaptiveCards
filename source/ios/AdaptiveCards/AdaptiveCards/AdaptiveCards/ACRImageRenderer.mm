@@ -83,13 +83,7 @@
     if (!view) {
         return wrappingview;
     }
-
-    if (!isAspectRatioNeeded){
-        view.contentMode = UIViewContentModeScaleToFill;
-    } else {
-        view.contentMode = UIViewContentModeScaleAspectFit;
-    }
-
+    
     view.clipsToBounds = YES;
 
     std::string backgroundColor = imgElem->GetBackgroundColor();
@@ -101,33 +95,51 @@
 
     [viewGroup addArrangedSubview:wrappingview];
 
-    [NSLayoutConstraint activateConstraints:
-     [ACOHostConfig getConstraintsForImageAlignment:imgElem->GetHorizontalAlignment()
-                                      withSuperview:wrappingview
-                                             toView:view]];
-
-    NSArray<NSString *> *visualFormats = [NSArray arrayWithObjects:@"H:[view(<=wrappingview)]", @"V:|[view(<=wrappingview)]|", nil];
-    NSDictionary *viewMap = NSDictionaryOfVariableBindings(view, wrappingview);
-
-    for (NSString *constraint in visualFormats){
-        [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:constraint options:0 metrics:nil views:viewMap]];
+    UILayoutGuide *leftGuide = nil;
+    UILayoutGuide *rightGuide = nil;
+    HorizontalAlignment adaptiveAlignment = imgElem->GetHorizontalAlignment();
+    if (adaptiveAlignment == HorizontalAlignment::Left) {
+        leftGuide = [[UILayoutGuide alloc] init];
+        leftGuide.identifier = @"img-left-guide";
+        [wrappingview addLayoutGuide:leftGuide];
+        [leftGuide.leadingAnchor constraintEqualToAnchor:wrappingview.leadingAnchor].active = YES;
+        [leftGuide.trailingAnchor constraintEqualToAnchor:view.leadingAnchor].active = YES;
+        [leftGuide.heightAnchor constraintEqualToAnchor:view.heightAnchor].active = YES;
+        [view.leadingAnchor constraintEqualToAnchor:wrappingview.leadingAnchor].active = YES;
     }
 
-    if (!(size == ImageSize::Auto || size == ImageSize::Stretch)) {
-        [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-        [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+    if (adaptiveAlignment == HorizontalAlignment::Right) {
+        rightGuide = [[UILayoutGuide alloc] init];
+        rightGuide.identifier = @"img-right-guide";
+        [wrappingview addLayoutGuide:rightGuide];
+        NSLayoutConstraint *constraint = [rightGuide.leadingAnchor constraintEqualToAnchor:view.trailingAnchor];
+        constraint.priority = 998;
+        constraint.active = YES;
+        [rightGuide.heightAnchor constraintEqualToAnchor:view.heightAnchor].active = YES;
+        [rightGuide.trailingAnchor constraintEqualToAnchor:wrappingview.trailingAnchor].active = YES;
+        [view.trailingAnchor constraintEqualToAnchor:wrappingview.trailingAnchor].active = YES;
+    }
+
+    if (adaptiveAlignment == HorizontalAlignment::Center) {
+        [view.centerXAnchor constraintEqualToAnchor:wrappingview.centerXAnchor].active = YES;
+    }
+    
+    [wrappingview.heightAnchor constraintGreaterThanOrEqualToAnchor:view.heightAnchor].active = YES;
+    [wrappingview.widthAnchor constraintGreaterThanOrEqualToAnchor:view.widthAnchor].active = YES;
+    
+    [view.centerYAnchor constraintEqualToAnchor:wrappingview.centerYAnchor].active = YES;
+    
+    if (!isAspectRatioNeeded){
+        view.contentMode = UIViewContentModeScaleToFill;
+    } else {
+        view.contentMode = UIViewContentModeScaleAspectFit;
     }
 
     if (size != ImageSize::Stretch) {
-        [view setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-        [view setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+        [view setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+        [view setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
         [view setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
         [view setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-        [wrappingview setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-        [wrappingview setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-        [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-        [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-
         if (imgElem->GetHeight() == HeightType::Stretch) {
             UIView *blankTrailingSpace = [[UIView alloc] init];
             [blankTrailingSpace setContentHuggingPriority:(UILayoutPriorityDefaultLow) forAxis:UILayoutConstraintAxisVertical];
@@ -213,8 +225,8 @@
                                       multiplier:1.0
                                         constant:cgsize.height]];
         constraints[0].priority = 1000;
-        constraints[1].priority = 999;
-
+        constraints[1].priority = 1000;
+        
         [NSLayoutConstraint activateConstraints:constraints];
 
         if ([imageView class] == [ACRUIImageView class]) {
