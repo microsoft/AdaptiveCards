@@ -11,7 +11,8 @@ namespace IOSFeedNS
         public static void Main()
         {
             // Run the examples asynchronously, wait for the results before proceeding
-            ProcessAsync().GetAwaiter().GetResult();
+            //ProcessAsync().GetAwaiter().GetResult();
+            UpdatePodSpec("hello world");
             Console.Read();
         }
 
@@ -97,6 +98,7 @@ namespace IOSFeedNS
 
         private static void UpdatePodSpec(string uri)
         {
+            var adaptiveVersion = Environment.GetEnvironmentVariable("ADCVERSION");
             var localPath = "../../../../";//"source/ios/tools";
             var targetPath = "../../../../../";
             var localFileName = "AdaptiveCards.podspec";
@@ -109,12 +111,19 @@ namespace IOSFeedNS
                 string output = "";
                 while ((s = sr.ReadLine()) != null)
                 {
-                    if(s.Length != 0)
+                    if (s.Length != 0)
                     {
                         var splits = s.Split('=');
-                        if (splits.Length > 0 && splits[0].Contains("spec.source"))
+                        if (splits.Length > 0)
                         {
-                            s = splits[0] + "= { :http => " + "'" + uri + "' }";
+                            if (splits[0].Contains("spec.source"))
+                            {
+                                s = splits[0] + "= { :http => " + "'" + uri + "' }";
+                            }
+                            else if (splits[0].Contains("spec.version"))
+                            {
+                                s = splits[0] + "= '" + adaptiveVersion + "'" ;
+                            }
                         }
 
                         output += (s + "\n");
