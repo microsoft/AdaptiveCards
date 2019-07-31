@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using AdaptiveCards.Rendering.Uwp;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -10,7 +9,6 @@ using System.Threading.Tasks;
 using UWPTestLibrary;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
-using Windows.Data.Json;
 using Windows.Storage;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
