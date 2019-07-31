@@ -60,7 +60,8 @@ namespace IOSFeedNS
                 var localFileName = "AdaptiveCards.framework";
                 var option = ".zip";
                 var sourceFile = Path.Combine(localPath, localFileName + option);
-                var cloudFileName = localFileName + Guid.NewGuid().ToString() + option;
+                var blobGuid = Guid.NewGuid().ToString();
+                var cloudFileName = localFileName + blobGuid + option;
 
                 CloudBlockBlob cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(cloudFileName);
 
@@ -73,10 +74,15 @@ namespace IOSFeedNS
                     var results = await cloudBlobContainer.ListBlobsSegmentedAsync(null, blobContinuationToken);
                     // Get the value of the continuation token returned by the listing call.
                     blobContinuationToken = results.ContinuationToken;
+                    Console.WriteLine("blobs guid: " + blobGuid); 
                     foreach (IListBlobItem item in results.Results)
                     {
                         Console.WriteLine(item.Uri);
-                        UpdatePodSpec(item.Uri.ToString());
+                        var uriString = item.Uri.ToString();
+                        if (uriString.Contains(blobGuid))
+                        {
+                            UpdatePodSpec(uriString);
+                        }
                     }
                 } while (blobContinuationToken != null);
             }
@@ -105,7 +111,7 @@ namespace IOSFeedNS
                     if(s.Length != 0)
                     {
                         var splits = s.Split('=');
-                        if (splits.Length > 0 && splits[0].Trim().Equals("spec.source"))
+                        if (splits.Length > 0 && splits[0].Contains("spec.source"))
                         {
                             s = splits[0] + "= { :http => " + "'" + uri + "' }";
                         }
