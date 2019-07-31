@@ -10,7 +10,7 @@
     },
     "value": {
       "type": "string",
-      "description": "The current selected value. If the item is selected that \"valueOn\" will be used, otherwise \"valueOff\"",
+      "description": "The initial selected value. If you want the toggle to be initially on, set this to the value of `valueOn`'s value.",
       "default": "false"
     },
     "valueOff": {
