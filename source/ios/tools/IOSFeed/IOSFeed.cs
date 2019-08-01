@@ -6,18 +6,23 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Storage;
 using Microsoft.Azure.Storage.Blob;
 
-namespace IOSFeedNS
+namespace AdaptiveCards.Tools.IOSFeed
 {
-    public static class Constatns
+    public static class Constants
     {
-        public const string connectionStringPath = "source/ios/tools/IOSFeed/ConnectString.txt";
-        public const string containerId = "adaptivecardsiosblobs";
-        public const string frameworkPath = "source/ios/AdaptiveCards/AdaptiveCards";
-        public const string frameworkName = "AdaptiveCards.framework.zip";
-        public const string podspecPath = "./source/ios/tools/";
-        public const string targetPodspecPath = "./source/ios/";
-        public const string podspecName = "AdaptiveCards.podspec";
+        public const string ConnectionStringPath = "source/ios/tools/IOSFeed/ConnectString.txt";
+        public const string ContainerId = "adaptivecardsiosblobs";
+        public const string FrameworkPath = "source/ios/AdaptiveCards/AdaptiveCards";
+        public const string FrameworkName = "AdaptiveCards.framework.zip";
+        public const string PodspecPath = "./source/ios/tools/";
+        public const string TargetPodspecPath = "./source/ios/";
+        public const string PodspecName = "AdaptiveCards.podspec";
     }
+
+    /// <summary>
+    /// IOSFeed picks up ios artifact, sends to the Azure storage 
+    /// and updates podspec for pod publication
+    /// </summary>
     class IOSFeed
     {
         public static void Main()
@@ -30,7 +35,13 @@ namespace IOSFeedNS
         {
             string storageConnectionString;
 
-            using (StreamReader sr = File.OpenText(Constatns.connectionStringPath))
+            FileInfo fi = new FileInfo(Constants.ConnectionStringPath);
+            if (!fi.Exists)
+            {
+                throw new InvalidOperationException("connection string file does not exist");
+            }
+
+            using (StreamReader sr = File.OpenText(Constants.ConnectionStringPath))
             {
                 storageConnectionString = sr.ReadToEnd();
             }
@@ -46,7 +57,7 @@ namespace IOSFeedNS
                 CloudBlobClient cloudBlobClient = storageAccount.CreateCloudBlobClient();
 
                 CloudBlobContainer cloudBlobContainer =
-                    cloudBlobClient.GetContainerReference(Constatns.containerId);
+                    cloudBlobClient.GetContainerReference(Constants.ContainerId);
                 await cloudBlobContainer.CreateIfNotExistsAsync();
 
                 // Set the permissions so the blobs are public.
@@ -57,9 +68,9 @@ namespace IOSFeedNS
 
                 await cloudBlobContainer.SetPermissionsAsync(permissions);
 
-                var sourceFile = Path.Combine(Constatns.frameworkPath, Constatns.frameworkName);
+                var sourceFile = Path.Combine(Constants.FrameworkPath, Constants.FrameworkName);
                 var blobGuid = Guid.NewGuid().ToString();
-                var cloudFileName = blobGuid + Constatns.frameworkName;
+                var cloudFileName = blobGuid + Constants.FrameworkName;
 
                 CloudBlockBlob cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(cloudFileName);
 
@@ -83,14 +94,21 @@ namespace IOSFeedNS
             }
             else
             {
-                Console.WriteLine("missing valid connection string");
+                throw new InvalidOperationException("invalid connection string");
             }
         }
 
         private static void UpdatePodSpec(string uri)
         {
-            var sourceFile = Path.Combine(Constatns.podspecPath, Constatns.podspecName);
-            var targetFile = Path.Combine(Constatns.targetPodspecPath, Constatns.podspecName);
+            var sourceFile = Path.Combine(Constants.PodspecPath, Constants.PodspecName);
+            var targetFile = Path.Combine(Constants.TargetPodspecPath, Constants.PodspecName);
+
+            FileInfo fi = new FileInfo(sourceFile);
+            if (!fi.Exists)
+            {
+                throw new FileNotFoundException("missing podspec");
+            }
+
             // Open the stream and read it back.
             using (StreamReader sr = File.OpenText(sourceFile))
             {
