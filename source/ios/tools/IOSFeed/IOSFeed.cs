@@ -13,7 +13,6 @@ namespace IOSFeedNS
             // Run the examples asynchronously, wait for the results before proceeding
             //ProcessAsync().GetAwaiter().GetResult();
             UpdatePodSpec("hello world");
-            Console.Read();
         }
 
         private static async Task ProcessAsync()
