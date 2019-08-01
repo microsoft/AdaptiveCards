@@ -1,6 +1,7 @@
 import { IACProvider } from "./IACProvider";
 import { LogLevel } from "./log-enums";
 import { ConsoleLogger } from "./ConsoleLogger";
+import { Microsoft1DSLogger } from "./Microsoft1DSLogger/Microsoft1DSLogger";
 const uuidv4 = require('uuid/v4');
 
 export class ACLogger {
@@ -92,8 +93,7 @@ export class ACLogger {
 		}
 
 		if (!has1DS) {
-			// TODO: Implement Microsoft1DS Logging
-			// ACLogger.providers.push(new Microsoft1DS());
+			this.instance.providers.push(new Microsoft1DSLogger());
 		}
 	}
 
@@ -106,7 +106,7 @@ export class ACLogger {
 			var newProviderName: string = Object.getPrototypeOf(newProvider).constructor.name;
 
 			// check if new provider is already configured
-			this.providers.forEach(function(currentProvider) {
+			this.providers.forEach(function(currentProvider: IACProvider) {
 				if (newProviderName === Object.getPrototypeOf(currentProvider).constructor.name) {
 					hasProvider = true;
 				}

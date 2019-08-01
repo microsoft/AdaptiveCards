@@ -1,6 +1,6 @@
 import { ApplicationInsights } from '@ms/1ds-analytics-web-js'; //Imported for 1DS telemetry
 
-class Microsoft1DSLogger {
+export class Microsoft1DSLogger {
 	analytics: ApplicationInsights;
 	constructor(){
 		this.analytics = new ApplicationInsights();
@@ -44,7 +44,10 @@ class Microsoft1DSLogger {
 	sendData(event: string, eventSourceName: string, correlationID?: string, valueSet?: object){
 		//if no valueSet send one event
 		//if valueSet is empty send one event
+		
 		if (valueSet != undefined){
+
+			
 			//Create array of keys and values from the valueSet object
 			for(const [key, value] of Object.entries(valueSet)){
 				this.analytics.trackEvent({
@@ -77,5 +80,7 @@ class Microsoft1DSLogger {
 				//baseType: "testBaseType"
 			});
 		}
+
+		
 	}
 }

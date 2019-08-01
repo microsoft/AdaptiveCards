@@ -7,10 +7,11 @@
 | **type** | `"Input.ChoiceSet"` | Yes | Must be `"Input.ChoiceSet"`. | 1.0 |
 | **choices** | `Input.Choice[]` | Yes | `Choice` options. | 1.0 |
 | **id** | `string` | Yes | Unique identifier for the value. Used to identify collected input when the Submit action is performed. | 1.0 |
-| **isMultiSelect** | `boolean` | No | Allow multiple choices to be selected. | 1.0 |
-| **style** | `ChoiceInputStyle` | No |  | 1.0 |
-| **value** | `string` | No | The initial choice (or set of choices) that should be selected. For multi-select, specify a comma-separated string of values. | 1.0 |
+| **isMultiSelect** | `boolean` | No | Allow multiple choices to be selected. If style property is `rating`, then this parameter will be ignored. | 1.0 |
+| **style** | `ChoiceInputStyle` | No | Specifiable options are: `compact`, `expanded`, `rating`, and `horizontal`. | 1.0 |
+| **value** | `string` | No | The initial choice (or set of choices) that should be selected. For multi-select, specify a comma-separated string of values. If style is `rating` but multiple values are given, only the first value will be selected. | 1.0 |
 | **wrap** | `boolean` | No | If `true`, allow text to wrap. Otherwise, text is clipped. | 1.2 |
+| **iconHeight** | `string` | No | If icons are used for an `Input.Choice`, then this property will specify the height of each icon within the `Input.ChoiceSet`. | 1.3 |
 
 **Inherited properties**
 
@@ -36,11 +37,15 @@
 
 ## style
 
+Specifiable options are: `compact`, `expanded`, `rating`, and `horizontal`.
+
 * **Type**: `ChoiceInputStyle`
 * **Required**: No
 * **Allowed values**:
   * `"compact"`
   * `"expanded"`
+  * `"rating"`: Added in version 1.3. Allows for feedback input on a ranging point scale.
+  * `"horizontal"`: Added in version 1.3. A horizontal version of the expanded style of `Input.ChoiceSet`.
 
 
 ## fallback
@@ -60,6 +65,7 @@ Describes what to do when an unknown element is encountered or the requires of t
   * `Input.ChoiceSet`
   * `Input.Date`
   * `Input.Number`
+  * `Input.Rating`
   * `Input.Text`
   * `Input.Time`
   * `Input.Toggle`

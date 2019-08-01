@@ -2002,6 +2002,7 @@ export class FactSetPeer extends TypedCardElementPeer<Adaptive.FactSet> {
 }
 
 export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCardElementPeer<TInput> {
+<<<<<<< HEAD
     static readonly titleProperty = new StringPropertyEditor(Versions.v1_0, "title", "Title");
     static readonly defaultValueProperty = new StringPropertyEditor(Versions.v1_0, "defaultValue", "Default value");
     static readonly validationProperty = new CompoundPropertyEditor(
@@ -2027,6 +2028,46 @@ export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCard
         propertySheet.remove(
             CardElementPeer.horizontalAlignmentProperty,
             CardElementPeer.heightProperty);
+=======
+    protected getExcludedProperties(): Array<string> {
+        return [ "horizontalAlignment", "height" ];
+    }
+
+    internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
+        super.internalAddPropertySheetEntries(card, includeHeader);
+
+        let title = addLabelAndInput(card, "Title:", Adaptive.TextInput);
+        title.input.placeholder = "(not set)";
+        title.input.defaultValue = this.cardElement.title;
+        title.input.onValueChanged = () => {
+            this.cardElement.title = title.input.value;
+
+            this.changed(false);
+        }
+
+        if (Adaptive.AdaptiveCard.useBuiltInInputValidation) {
+            let validationNecessity = addLabelAndInput(card, "Necessity:", Adaptive.ChoiceSetInput);
+            validationNecessity.input.isCompact = true;
+            validationNecessity.input.choices.push(new Adaptive.Choice("Optional", Adaptive.InputValidationNecessity.Optional.toString()));
+            validationNecessity.input.choices.push(new Adaptive.Choice("Required", Adaptive.InputValidationNecessity.Required.toString()));
+            validationNecessity.input.choices.push(new Adaptive.Choice("Required with visual cue", Adaptive.InputValidationNecessity.RequiredWithVisualCue.toString()));
+            validationNecessity.input.defaultValue = this.cardElement.validation.necessity.toString();
+            validationNecessity.input.onValueChanged = () => {
+                this.cardElement.validation.necessity = <Adaptive.InputValidationNecessity>parseInt(validationNecessity.input.value);
+
+                this.changed(false);
+            }
+
+            let validationErrorMessage = addLabelAndInput(card, "Error message:", Adaptive.TextInput);
+            validationErrorMessage.input.placeholder = "(not set)";
+            validationErrorMessage.input.defaultValue = this.cardElement.validation.errorMessage;
+            validationErrorMessage.input.onValueChanged = () => {
+                this.cardElement.validation.errorMessage = validationErrorMessage.input.value;
+
+                this.changed(false);
+            }
+        }
+>>>>>>> btam/input-rating
     }
 
     initializeCardElement() {

@@ -154,7 +154,9 @@ export interface IChoiceSetInput extends IInput {
     isMultiSelect?: boolean;
     style?: "expanded" | "compact";
     placeholder?: string;
-    choices: IChoice[];
+	choices: IChoice[];
+	//TODO prob delete; added to test
+	bgURL: string;
 }
 
 export interface IVersion {
