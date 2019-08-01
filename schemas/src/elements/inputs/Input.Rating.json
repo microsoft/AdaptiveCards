@@ -1,22 +1,26 @@
 {
-	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
-	"extends": "Input",
-	"description": "Allows a user to input a rating.",
-	"properties": {
-	"iconSelected": {
-		"type": "uri",
-		"description": "Url to selected icon, defaults to star",
-		"required": false
-	  },
-	 "iconUnselected": {
-		"type": "uri",
-		"description": "Url to unselected icon, defaults to star",
-		"required": false
-	  },
-	 "maxValue": {
-		"type": "number",
-		"description": "How many icons show up, defaults to 5",
-		"required": false 
-	 }
-	}
+  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+  "extends": "Input",
+  "description": "Allows a user to input a rating.",
+  "version": "1.3",
+  "features": [
+    3054
+  ],
+  "properties": {
+  "maxValue": {
+    "type": "number",
+    "description": "How many icons show up, defaults to 5",
+    "required": false
+    },
+    "iconSelected": {
+      "type": "uri",
+      "description": "Url to selected icon, defaults to star",
+      "required": false
+    },
+    "iconUnselected": {
+      "type": "uri",
+      "description": "Url to unselected icon, defaults to star",
+      "required": false
+    }
+  }
 }
