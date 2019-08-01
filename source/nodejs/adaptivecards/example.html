@@ -21,29 +21,70 @@
 			// in practice you'll probably get this from a service
 			// see http://adaptivecards.io/samples/ for inspiration
 			var card = {
-				"type": "AdaptiveCard",
-				"version": "1.0",
-				"body": [{
-						"type": "Image",
-						"url": "http://adaptivecards.io/content/adaptive-card-50.png"
-					},
-					{
-						"type": "TextBlock",
-						"text": "Hello **Adaptive Cards!**"
-					}
-				],
-				"actions": [{
-						"type": "Action.OpenUrl",
-						"title": "Learn more",
-						"url": "http://adaptivecards.io"
-					},
-					{
-						"type": "Action.OpenUrl",
-						"title": "GitHub",
-						"url": "http://github.com/Microsoft/AdaptiveCards"
-					}
-				]
-			};
+    "type": "AdaptiveCard",
+    "body": [
+        {
+            "type": "Input.ChoiceSet",
+            "id": "as",
+            "placeholder": "Placeholder text",
+            "choices": [
+                {
+                    "title": "Spicy Tuna",
+                    "value": "opt1"
+                },
+                {
+                    "title": "Spicy Salmon",
+                    "value": "Choice 2"
+                },
+                {
+                    "title": "Fish",
+                    "value": "roe"
+                }
+            ],
+            "style": "expanded"
+        },
+        {
+            "type": "TextBlock",
+            "id": "e",
+            "text": "It's my textblock"
+        },
+        {
+            "type": "Media",
+            "id": "asdf"
+        },
+        {
+            "type": "ActionSet",
+            "actions": [
+                {
+                    "type": "Action.Submit",
+                    "title": "Action.Submit"
+                },
+                {
+                    "type": "Action.ShowCard",
+                    "title": "Action.ShowCard",
+                    "card": {
+                        "type": "AdaptiveCard",
+                        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "ImageSet",
+            "id": "asdfd",
+            "images": [
+                {
+                    "type": "Image",
+                    "url": "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31",
+                    "size": "Medium",
+                    "altText": ""
+                }
+            ]
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.0"
+};
 
 			// Create an AdaptiveCard instance
 			var adaptiveCard = new AdaptiveCards.AdaptiveCard();
@@ -70,6 +111,86 @@
 
 			// And finally insert it in the page:
 			document.getElementById('exampleDiv').appendChild(renderedCard);
+
+			var card2 = {
+    "type": "AdaptiveCard",
+    "body": [
+        {
+            "type": "Input.ChoiceSet",
+            "id": "as",
+            "placeholder": "Placeholder text",
+            "choices": [
+                {
+                    "title": "Spicy Tuna",
+                    "value": "opt1"
+                },
+                {
+                    "title": "Spicy Salmon",
+                    "value": "Choice 2"
+                },
+                {
+                    "title": "Fish",
+                    "value": "roe"
+                }
+            ],
+            "style": "expanded"
+        },
+        {
+            "type": "TextBlock",
+            "id": "e",
+            "text": "It's my textblock"
+        },
+        {
+            "type": "Media",
+            "id": "asdf"
+        },
+        {
+            "type": "ActionSet",
+            "actions": [
+                {
+                    "type": "Action.Submit",
+                    "title": "Action.Submit"
+                },
+                {
+                    "type": "Action.ShowCard",
+                    "title": "Action.ShowCard",
+                    "card": {
+                        "type": "AdaptiveCard",
+                        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+                    }
+                }
+            ]
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.0"
+};
+
+			// Create an AdaptiveCard instance
+			var adaptiveCard2 = new AdaptiveCards.AdaptiveCard();
+
+			// Set its hostConfig property unless you want to use the default Host Config
+			// Host Config defines the style and behavior of a card
+			adaptiveCard2.hostConfig = new AdaptiveCards.HostConfig({
+				fontFamily: "Segoe UI, Helvetica Neue, sans-serif"
+				// More host config options
+				// You can find example configs here: https://github.com/microsoft/AdaptiveCards/tree/master/samples/HostConfig
+			});
+
+			// Set the adaptive card's event handlers. onExecuteAction is invoked
+			// whenever an action is clicked in the card
+			adaptiveCard2.onExecuteAction = function (action) {
+				alert("Ow!");
+			}
+
+			// Parse the card payload
+			adaptiveCard2.parse(card2);
+
+			// Render the card to an HTML element:
+			var renderedCard2 = adaptiveCard2.render();
+
+			// And finally insert it in the page:
+			document.getElementById('exampleDiv').appendChild(renderedCard2);
 		}
 	</script>
 

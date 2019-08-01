@@ -5,6 +5,7 @@ import * as Shared from "./shared";
 import * as Utils from "./utils";
 import * as HostConfig from "./host-config";
 import * as TextFormatters from "./text-formatters";
+import { ACLoggerV3 } from "./logging/ACLogger-v3";
 
 function invokeSetCollection(action: Action, collection: ActionCollection) {
     if (action) {
@@ -3807,11 +3808,17 @@ class ActionButton {
     onClick: (actionButton: ActionButton) => void = null;
 
     render(alignment: Enums.ActionAlignment) {
+
+		// phc
+		var GUID = ACLoggerV3.getLogger().getGUID().toString();
+
         this.action.render();
         this.action.renderedElement.style.flex = alignment === Enums.ActionAlignment.Stretch ? "0 1 100%" : "0 1 auto";
         this.action.renderedElement.onclick = (e) => {
             e.preventDefault();
-            e.cancelBubble = true;
+			e.cancelBubble = true;
+			
+			ACLoggerV3.getLogger().logEvent("SubmitAction", "Action.Submit", GUID);
 
             this.click();
         };
@@ -4642,6 +4649,7 @@ class ActionCollection {
     }
 
     private actionClicked(actionButton: ActionButton) {
+
         if (!(actionButton.action instanceof ShowCardAction)) {
             for (var i = 0; i < this.buttons.length; i++) {
                 this.buttons[i].state = ActionButtonState.Normal;
@@ -4691,7 +4699,7 @@ class ActionCollection {
     }
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
-        this.clear();
+		this.clear();
 
         if (json && json instanceof Array) {
             for (let jsonAction of json) {
@@ -5062,7 +5070,7 @@ export class ActionSet extends CardElement {
     }
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
-        super.parse(json, errors);
+		super.parse(json, errors);
 
         var jsonOrientation = json["orientation"];
 
@@ -6618,7 +6626,16 @@ export class AdaptiveCard extends ContainerWithActions {
     static onParseElement: (element: CardElement, json: any, errors?: Array<HostConfig.IValidationError>) => void = null;
     static onParseAction: (element: Action, json: any, errors?: Array<HostConfig.IValidationError>) => void = null;
     static onParseError: (error: HostConfig.IValidationError) => void = null;
-    static onProcessMarkdown: (text: string, result: IMarkdownProcessingResult) => void = null;
+	static onProcessMarkdown: (text: string, result: IMarkdownProcessingResult) => void = null;
+	
+
+	// phc
+	constructor() {
+		super();
+
+		// instantiate logger upon card creation
+		ACLoggerV3.configureDefaultProviders();
+	}
 
     static get processMarkdown(): (text: string) => string {
         throw new Error("The processMarkdown event has been removed. Please update your code and set onProcessMarkdown instead.")
@@ -6776,6 +6793,7 @@ export class AdaptiveCard extends ContainerWithActions {
     }
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+
         this._fallbackCard = null;
 
         this._cardTypeName = Utils.getStringValue(json["type"]);
@@ -6811,10 +6829,74 @@ export class AdaptiveCard extends ContainerWithActions {
         if (fallbackElement) {
             this._fallbackCard = new AdaptiveCard();
             this._fallbackCard.addItem(fallbackElement);
-        }
+		}
 
-        super.parse(json, errors);
-    }
+		// phc
+        if (json[this.getItemsCollectionPropertyName()] != null) {
+
+			ACLoggerV3.getLogger().createGUID();
+		
+            let items = json[this.getItemsCollectionPropertyName()] as Array<any>;
+
+            for (let i = 0; i < items.length; i++) {
+				var itemType = items[i]["type"];
+
+				if (itemType === "Input.Rating") {
+					
+					var valueSet = {};
+
+					valueSet["defaultScale"] = (items[i]["maxValue"]) ? false : true;
+
+					valueSet["defaultStar"] = (items[i]["iconSelected"] || items[i]["iconUnselected"]) ? false : true;
+
+					ACLoggerV3.getLogger().logEvent("RenderCard", items[i]["type"], ACLoggerV3.getLogger().getGUID().toString(), valueSet);
+
+				} else {
+					ACLoggerV3.getLogger().logEvent("RenderCard", items[i]["type"], ACLoggerV3.getLogger().getGUID().toString());
+				}
+
+				if (itemType === "Input.ChoiceSet") {
+					this.logSubItems(items[i], "choices", "Input.Choice");
+
+				} else if (itemType === "FactSet") {
+					this.logSubItems(items[i], "facts", "Fact");
+
+				} else if (itemType === "ColumnSet") {
+					this.logSubItems(items[i], "columns", "Column");
+
+				} else if (itemType === "ActionSet") {
+					this.logSubItems(items[i], "actions", "Action");
+
+				} else if (itemType === "ImageSet") {
+					this.logSubItems(items[i], "images", "Image");
+				}
+			}
+		}
+
+		if (json["actions"]) {
+			console.log(json["actions"]["length"]);
+		}
+		
+		// end phc
+
+		super.parse(json, errors);
+
+		
+	}
+	
+	// phc
+
+	private logSubItems(item: any, subItemName: string, itemSchemaName: string): void {
+		var subItems = item[subItemName];
+
+		if (subItems) {
+			for (var subItem in subItems) {
+				ACLoggerV3.getLogger().logEvent("RenderCard", itemSchemaName, ACLoggerV3.getLogger().getGUID().toString());
+			}
+		}
+	}
+
+	// end phc
 
     render(target?: HTMLElement): HTMLElement {
         let renderedCard: HTMLElement;
