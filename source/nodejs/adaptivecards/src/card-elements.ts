@@ -5,7 +5,7 @@ import * as Shared from "./shared";
 import * as Utils from "./utils";
 import * as HostConfig from "./host-config";
 import * as TextFormatters from "./text-formatters";
-import { ACLoggerV3 } from "./logging/ACLogger-v3";
+import { ACLogger } from "./logging/ACLogger";
 
 function invokeSetCollection(action: Action, collection: ActionCollection) {
     if (action) {
@@ -3810,7 +3810,7 @@ class ActionButton {
     render(alignment: Enums.ActionAlignment) {
 
 		// phc
-		var GUID = ACLoggerV3.getLogger().getGUID().toString();
+		var guid = ACLogger.getLogger().getGUID().toString();
 
         this.action.render();
         this.action.renderedElement.style.flex = alignment === Enums.ActionAlignment.Stretch ? "0 1 100%" : "0 1 auto";
@@ -3818,7 +3818,7 @@ class ActionButton {
             e.preventDefault();
 			e.cancelBubble = true;
 			
-			ACLoggerV3.getLogger().logEvent("SubmitAction", "Action.Submit", GUID);
+			ACLogger.getLogger().logEvent("SubmitAction", "Action.Submit", guid);
 
             this.click();
         };
@@ -6634,7 +6634,7 @@ export class AdaptiveCard extends ContainerWithActions {
 		super();
 
 		// instantiate logger upon card creation
-		ACLoggerV3.configureDefaultProviders();
+		ACLogger.configureDefaultProviders();
 	}
 
     static get processMarkdown(): (text: string) => string {
@@ -6834,7 +6834,9 @@ export class AdaptiveCard extends ContainerWithActions {
 		// phc
         if (json[this.getItemsCollectionPropertyName()] != null) {
 
-			ACLoggerV3.getLogger().createGUID();
+			var logger: ACLogger = ACLogger.getLogger();
+
+			logger.createGUID(); // generate a new GUID each time a new card is parsed
 		
             let items = json[this.getItemsCollectionPropertyName()] as Array<any>;
 
@@ -6842,17 +6844,16 @@ export class AdaptiveCard extends ContainerWithActions {
 				var itemType = items[i]["type"];
 
 				if (itemType === "Input.Rating") {
-					
 					var valueSet = {};
 
 					valueSet["defaultScale"] = (items[i]["maxValue"]) ? false : true;
 
 					valueSet["defaultStar"] = (items[i]["iconSelected"] || items[i]["iconUnselected"]) ? false : true;
 
-					ACLoggerV3.getLogger().logEvent("RenderCard", items[i]["type"], ACLoggerV3.getLogger().getGUID().toString(), valueSet);
+					logger.logEvent("RenderCard", items[i]["type"], logger.getGUID().toString(), valueSet);
 
 				} else {
-					ACLoggerV3.getLogger().logEvent("RenderCard", items[i]["type"], ACLoggerV3.getLogger().getGUID().toString());
+					logger.logEvent("RenderCard", items[i]["type"], logger.getGUID().toString());
 				}
 
 				if (itemType === "Input.ChoiceSet") {
@@ -6874,7 +6875,9 @@ export class AdaptiveCard extends ContainerWithActions {
 		}
 
 		if (json["actions"]) {
-			console.log(json["actions"]["length"]);
+			for (let i = 0; i < json["actions"].length; i++) {
+				logger.logEvent("RenderCard", json["actions"][i]["type"], logger.getGUID().toString());
+			}
 		}
 		
 		// end phc
@@ -6891,7 +6894,7 @@ export class AdaptiveCard extends ContainerWithActions {
 
 		if (subItems) {
 			for (var subItem in subItems) {
-				ACLoggerV3.getLogger().logEvent("RenderCard", itemSchemaName, ACLoggerV3.getLogger().getGUID().toString());
+				ACLogger.getLogger().logEvent("RenderCard", itemSchemaName, ACLogger.getLogger().getGUID().toString());
 			}
 		}
 	}

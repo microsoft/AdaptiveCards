@@ -1,12 +1,11 @@
-import { IACLoggerV3 } from "./IACLogger-v3";
 import { IACProvider } from "./IACProvider";
 import { LogLevel } from "./log-enums";
 import { ConsoleLogger } from "./ConsoleLogger";
 const uuidv4 = require('uuid/v4');
 
-export class ACLoggerV3 implements IACLoggerV3 {
+export class ACLogger {
 
-	private static instance: ACLoggerV3;
+	private static instance: ACLogger;
 	private providers: IACProvider[];
 	private GUID: number;
 
@@ -59,7 +58,7 @@ export class ACLoggerV3 implements IACLoggerV3 {
 		}
 	}
 
-	static getLogger(): IACLoggerV3 {
+	static getLogger(): ACLogger {
 		if (this.instance) {
 			return this.instance;
 		} else {
@@ -122,7 +121,7 @@ export class ACLoggerV3 implements IACLoggerV3 {
 	// checks if instance and providers have been initialized
 	private static checkInitialize(): void {
 		if (!this.instance) {
-			this.instance = new ACLoggerV3();
+			this.instance = new ACLogger();
 		}
 
 		if (!this.instance.providers) {
