@@ -1239,9 +1239,7 @@ export class TextBlock extends BaseTextBlock {
             if (element.firstElementChild instanceof HTMLElement) {
                 let firstElementChild = <HTMLElement>element.firstElementChild;
 				firstElementChild.style.marginTop = "0px";
-				//TODO: NOTE THIS CHANGE! delete after; it should stay 100%
 				firstElementChild.style.width = "100%";
-				// firstElementChild.style.width = "0%";
 
                 if (!this.wrap) {
                     firstElementChild.style.overflow = "hidden";
@@ -3500,7 +3498,6 @@ export class ChoiceSetInput extends Input {
     }
 }
 
-// TODO: ADDED
 export class RatingInput extends Input {
     private static uniqueCategoryCounter = 0;
 
@@ -3547,9 +3544,9 @@ export class RatingInput extends Input {
 			radioInput.style.display = "inline";
 			radioInput.style.verticalAlign = "middle";
 			radioInput.name = Utils.isNullOrEmpty(this.id) ? uniqueCategoryName : this.id;
-			// radioInput.value = this.choices[i].value;
+			radioInput.value = (i + 1).toString();
 			radioInput.style.flex = "0 0 auto";
-			// radioInput.setAttribute("aria-label", this.choices[i].title);
+			radioInput.setAttribute("aria-label", "Rating " + (i + 1));
 			radioInput.style.display = "none";
 
 			radioInput.onchange = () => { this.valueChanged(); }
@@ -3643,7 +3640,7 @@ export class RatingInput extends Input {
 		return element;
 	}
 
-	// TODO: delete these two after correcting the get value string thing
+	// TODO: delete these two after correcting the get value() method
     isCompact: boolean = false;
 	isMultiSelect: boolean = false;
 	
@@ -3687,9 +3684,8 @@ export class RatingInput extends Input {
     internalValidateProperties(context: ValidationResults) {
 		super.internalValidateProperties(context);
 		
-		const MIN_RATING_COUNT: number = 1; // TODO HELP: should I put this elsewhere?
+		const MIN_RATING_COUNT: number = 1;
 
-		// TODO: add a maxValue validator
 		if (this.maxValue < MIN_RATING_COUNT) {
             context.addFailure(
                 this,
@@ -3698,7 +3694,6 @@ export class RatingInput extends Input {
                     message: "An Input.Rating must have at least " + MIN_RATING_COUNT + " possible rating(s)."
                 });
         }
-		// TODO: add URL validator?
     }
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
@@ -3714,7 +3709,6 @@ export class RatingInput extends Input {
 
 		if (json["maxValue"] != undefined && json["maxValue"] > 0) {
 
-			// TODO swap out all "choice" vars with "rating"
             for (let i = 0; i < json["maxValue"]; i++) {
                 let rating = new Choice();
 				rating.title = "Rating " + (i + 1);
@@ -3728,7 +3722,8 @@ export class RatingInput extends Input {
     }
 
     get value(): string {
-		// TODO: unnecessary stuff here
+		// TODO: unnecessary stuff here, fix:
+		/*
         if (!this.isMultiSelect) {
             if (this.isCompact) {
                 if (this._selectElement) {
@@ -3769,10 +3764,50 @@ export class RatingInput extends Input {
             }
 
             return result == "" ? null : result;
+		*/
+		if (!this.isMultiSelect) {
+            if (this.isCompact) {
+                if (this._selectElement) {
+                    return this._selectElement.selectedIndex > 0 ? this._selectElement.value : null;
+                }
+
+                return null;
+            }
+            else {
+                if (!this._toggleInputs || this._toggleInputs.length == 0) {
+                    return null;
+                }
+
+                for (var i = 0; i < this._toggleInputs.length; i++) {
+                    if (this._toggleInputs[i].checked) {
+                        return this._toggleInputs[i].value;
+                    }
+                }
+
+                return null;
+            }
         }
+        else {
+            if (!this._toggleInputs || this._toggleInputs.length == 0) {
+                return null;
+            }
+
+            var result: string = "";
+
+            for (var i = 0; i < this._toggleInputs.length; i++) {
+                if (this._toggleInputs[i].checked) {
+                    if (result != "") {
+                        result += this.hostConfig.choiceSetInputValueSeparator;
+                    }
+
+                    result += this._toggleInputs[i].value;
+                }
+            }
+
+            return result == "" ? null : result;
+		}
     }
 }
-// TODO: END ADDED
 
 export class NumberInput extends Input {
     private _numberInputElement: HTMLInputElement;
