@@ -99,8 +99,9 @@ namespace IOSFeedNS
         private static void UpdatePodSpec(string uri)
         {
             var adaptiveVersion = Environment.GetEnvironmentVariable("ADCVERSION");
-            var localPath = "../../../../";//"source/ios/tools";
-            var targetPath = "../../../../../";
+            //var localPath = "../../../../";//"source/ios/tools";
+            var localPath = "./source/ios/tools/";
+            var targetPath = "./source/ios/";
             var localFileName = "AdaptiveCards.podspec";
             var sourceFile = Path.Combine(localPath, localFileName);
             var targetFile = Path.Combine(targetPath, localFileName);
