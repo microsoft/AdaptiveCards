@@ -63,7 +63,7 @@ The following samples will be added to validate rendering:
 
 - RichTextRun.Underline.json file which contains a RichTextBlock that contains a TextRun with underline
 
-```
+```json
 {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
