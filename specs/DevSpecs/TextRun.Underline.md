@@ -1,4 +1,4 @@
-# InputValidation
+# TextRun.Underline
 
 ## Proposal Link
 https://github.com/microsoft/AdaptiveCards/issues/3051
@@ -10,7 +10,7 @@ No dependencies required
 
 ### UWP & .NET WPF
 
-TextBlock has a property called [TextDecorations](https://docs.microsoft.com/en-us/uwp/api/windows.ui.xaml.controls.textblock.textdecorations) which include Underline
+TextBlock has a property called [TextDecorations](https://docs.microsoft.com/en-us/uwp/api/windows.ui.xaml.controls.textblock.textdecorations) which includes Underline
 
 ### Android
 
@@ -46,7 +46,7 @@ None
 ## Open Issues
 
 ### Feature extensibility
-The property may include support multiple line underlining at some point which will make the property accept numerical values as well as boolean values
+Extensibility should not be modified by this property.
 
 ## Testing
 
