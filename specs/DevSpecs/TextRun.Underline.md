@@ -14,12 +14,6 @@ TextBlock has a property called [TextDecorations](https://docs.microsoft.com/en-
 
 ### Android
 
-#### TextBlock
-
-TextBlocks are rendered using TextViews, TextView has a property called PaintFlags which include [Paint.UNDERLINE_TEXT_FLAG](https://developer.android.com/reference/android/graphics/Paint)
-
-#### RichTextBlock
-
 TextRuns are rendered using SpannableStrings, between the possible spans to use there is [UnderlineSpan](https://developer.android.com/reference/android/text/style/UnderlineSpan) 
 
 ### iOS
@@ -66,31 +60,6 @@ All Object model test suites should be updated to validate the new property.
 
 ### Samples
 The following samples will be added to validate rendering:
-- TextBlock.Underline.json file which contains TextBlock with underline
-
-```
-{
-	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-	"type": "AdaptiveCard",
-	"version": "1.3",
-	"body": [
-        {
-			"type": "TextBlock",
-			"text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-		},
-		{
-			"type": "TextBlock",
-			"text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-			"underline": true
-		},
-		{
-			"type": "TextBlock",
-			"text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-			"underline": false
-		}
-	]
-}
-```
 
 - RichTextRun.Underline.json file which contains a RichTextBlock that contains a TextRun with underline
 
