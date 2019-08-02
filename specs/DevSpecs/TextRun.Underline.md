@@ -10,7 +10,7 @@ No dependencies required
 
 ### UWP & .NET WPF
 
-TextBlock has a property called [TextDecorations](https://docs.microsoft.com/en-us/uwp/api/windows.ui.xaml.controls.textblock.textdecorations) which includes Underline
+TextElement has a property called [TextDecorations](https://docs.microsoft.com/en-us/uwp/api/windows.ui.xaml.controls.textblock.textdecorations) which includes Underline
 
 ### Android
 
@@ -22,7 +22,7 @@ NSMutableAttributedString are able to set underlines in the whole text and in so
 
 ### .NET HTML
 
-The \<u> tag allows underlining
+The `<u>` tag allows underlining
 
 ## Feature Defaults
 
