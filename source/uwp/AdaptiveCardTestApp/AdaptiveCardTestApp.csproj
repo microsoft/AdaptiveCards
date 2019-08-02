@@ -170,6 +170,9 @@
     <Content Include="..\..\..\samples\v1.2\Elements\*.json">
       <Link>LinkedCards\v1.2\Elements\%(FileName)</Link>
     </Content>
+    <Content Include="..\..\..\samples\v1.3\Elements\*.json">
+      <Link>LinkedCards\v1.3\Elements\%(FileName)</Link>
+    </Content>
     <Content Include="..\..\..\samples\v1.0\Tests\*.json">
       <Link>LinkedCards\v1.0\Tests\%(FileName)</Link>
     </Content>
