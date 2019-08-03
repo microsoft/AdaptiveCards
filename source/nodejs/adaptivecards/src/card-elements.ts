@@ -6,7 +6,8 @@ import * as Utils from "./utils";
 import * as HostConfig from "./host-config";
 import * as TextFormatters from "./text-formatters";
 import { ACLogger } from "./logging/ACLogger";
-import { Microsoft1DSLogger } from "./logging/Microsoft1DSLogger/Microsoft1DSLogger";
+import { GUIDHelper } from "./logging/GUIDHelper";
+import { IACLogger } from "./logging/IACLogger";
 
 function invokeSetCollection(action: Action, collection: ActionCollection) {
     if (action) {
@@ -4141,7 +4142,8 @@ class ActionButton {
     render(alignment: Enums.ActionAlignment) {
 
 		// phc
-		var guid = ACLogger.getLogger().getGUID().toString();
+		var useGUID = GUIDHelper.getOrCreate().useGUID();
+		var guid = GUIDHelper.getOrCreate().getGUID().toString();
 
         this.action.render();
         this.action.renderedElement.style.flex = alignment === Enums.ActionAlignment.Stretch ? "0 1 100%" : "0 1 auto";
@@ -4149,8 +4151,8 @@ class ActionButton {
             e.preventDefault();
 			e.cancelBubble = true;
 			
-			if (this.action instanceof SubmitAction) {
-				ACLogger.getLogger().logEvent("SubmitAction", "Action.Submit", guid);
+			if (this.action instanceof SubmitAction && useGUID) {
+				ACLogger.getOrCreate().logEvent("SubmitAction", "Action.Submit", guid);
 			}
 			
 
@@ -6969,7 +6971,8 @@ export class AdaptiveCard extends ContainerWithActions {
 		super();
 
 		// instantiate logger upon card creation
-		ACLogger.configureDefaultProviders();
+		ACLogger.getOrCreate().configureDefaultProviders();
+		
 	}
 
     static get processMarkdown(): (text: string) => string {
@@ -7169,50 +7172,67 @@ export class AdaptiveCard extends ContainerWithActions {
 		// phc
         if (json[this.getItemsCollectionPropertyName()] != null) {
 
-			var logger: ACLogger = ACLogger.getLogger();
+			let items = json[this.getItemsCollectionPropertyName()] as Array<any>;
 
-			logger.createGUID(); // generate a new GUID each time a new card is parsed
-		
-            let items = json[this.getItemsCollectionPropertyName()] as Array<any>;
+			var hasRating: boolean = false; // only telemetry for card with Input.Rating is collected
 
-            for (let i = 0; i < items.length; i++) {
-				var itemType = items[i]["type"];
-
-				if (itemType === "Input.Rating") {
-					var valueSet = {};
-
-					valueSet["defaultScale"] = (items[i]["maxValue"]) ? false : true;
-
-					valueSet["defaultStar"] = (items[i]["iconSelected"] || items[i]["iconUnselected"]) ? false : true;
-
-					logger.logEvent("RenderCard", items[i]["type"], logger.getGUID().toString(), valueSet);
-
-				} else {
-					logger.logEvent("RenderCard", items[i]["type"], logger.getGUID().toString());
-				}
-
-				if (itemType === "Input.ChoiceSet") {
-					this.logSubItems(items[i], "choices", "Input.Choice");
-
-				} else if (itemType === "FactSet") {
-					this.logSubItems(items[i], "facts", "Fact");
-
-				} else if (itemType === "ColumnSet") {
-					this.logSubItems(items[i], "columns", "Column");
-
-				} else if (itemType === "ActionSet") {
-					this.logSubItems(items[i], "actions", "Action");
-
-				} else if (itemType === "ImageSet") {
-					this.logSubItems(items[i], "images", "Image");
+			for (let i = 0; i < items.length; i++) {
+				if (items[i]["type"] === "Input.Rating") {
+					hasRating = true;
+					break;
 				}
 			}
-		}
+			
+			var guidHelper: GUIDHelper = GUIDHelper.getOrCreate();
+			guidHelper.createGUID(); // generate a new GUID each time a new card is parsed
 
-		if (json["actions"]) {
-			for (let i = 0; i < json["actions"].length; i++) {
-				logger.logEvent("RenderCard", json["actions"][i]["type"], logger.getGUID().toString());
+			if (hasRating) {
+
+				var logger: IACLogger = ACLogger.getOrCreate();
+				
+
+				for (let i = 0; i < items.length; i++) {
+					var itemType = items[i]["type"];
+
+					if (itemType === "Input.Rating") {
+						var valueSet = {};
+
+						valueSet["defaultScale"] = (items[i]["maxValue"]) ? false : true;
+
+						valueSet["defaultStar"] = (items[i]["iconSelected"] || items[i]["iconUnselected"]) ? false : true;
+
+						logger.logEvent("RenderCard", items[i]["type"], guidHelper.getGUID().toString(), valueSet);
+
+					} else {
+						logger.logEvent("RenderCard", items[i]["type"], guidHelper.getGUID().toString());
+					}
+
+					if (itemType === "Input.ChoiceSet") {
+						this.logSubItems(items[i], "choices", "Input.Choice");
+
+					} else if (itemType === "FactSet") {
+						this.logSubItems(items[i], "facts", "Fact");
+
+					} else if (itemType === "ColumnSet") {
+						this.logSubItems(items[i], "columns", "Column");
+
+					} else if (itemType === "ActionSet") {
+						this.logSubItems(items[i], "actions", "Action");
+
+					} else if (itemType === "ImageSet") {
+						this.logSubItems(items[i], "images", "Image");
+					}
+				}
+
+				if (json["actions"]) {
+					for (let i = 0; i < json["actions"].length; i++) {
+						logger.logEvent("RenderCard", json["actions"][i]["type"], guidHelper.getGUID().toString());
+					}
+				}
+
 			}
+
+			
 		}
 		
 		// end phc
@@ -7233,9 +7253,9 @@ export class AdaptiveCard extends ContainerWithActions {
 
 				// account for case where actions can have different types
 				if (itemSchemaName == "Action") {
-					ACLogger.getLogger().logEvent("RenderCard", subItems[i]["type"], ACLogger.getLogger().getGUID().toString());
+					ACLogger.getOrCreate().logEvent("RenderCard", subItems[i]["type"], GUIDHelper.getOrCreate().getGUID().toString());
 				} else {
-					ACLogger.getLogger().logEvent("RenderCard", itemSchemaName, ACLogger.getLogger().getGUID().toString());
+					ACLogger.getOrCreate().logEvent("RenderCard", itemSchemaName, GUIDHelper.getOrCreate().getGUID().toString());
 				}
 			}
 		}

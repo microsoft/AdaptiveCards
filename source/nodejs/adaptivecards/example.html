@@ -156,6 +156,61 @@
 
 			// And finally insert it in the page:
 			document.getElementById('exampleDiv').appendChild(renderedCard2);
+
+			var card3 = {
+    "type": "AdaptiveCard",
+    "body": [
+        {
+			// "type": "Input.ChoiceSet",
+			"type": "Input.Rating",
+			"id": "UserProvidedRating",
+			// "placeholder": "Placeholder text",
+			// "maxValue": 5,
+			// "maxValue": 10,
+			
+			"iconSelected": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+			// "iconUnselected": "https://pbs.twimg.com/profile_images/988775660163252226/XpgonN0X_400x400.jpg"
+		}
+    ],
+  			"actions": [
+      	  	{
+				"type": "Action.Submit",
+				"title": "Action.Submit",
+				"data": {
+					"x": 13
+				}
+        	}
+		],
+	// "$schema": "/schemas/1.3/adaptive-card.json",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.0"
+};
+
+			// Create an AdaptiveCard instance
+			var adaptiveCard3 = new AdaptiveCards.AdaptiveCard();
+
+			// Set its hostConfig property unless you want to use the default Host Config
+			// Host Config defines the style and behavior of a card
+			adaptiveCard3.hostConfig = new AdaptiveCards.HostConfig({
+				fontFamily: "Segoe UI, Helvetica Neue, sans-serif"
+				// More host config options
+				// You can find example configs here: https://github.com/microsoft/AdaptiveCards/tree/master/samples/HostConfig
+			});
+
+			// Set the adaptive card's event handlers. onExecuteAction is invoked
+			// whenever an action is clicked in the card
+			adaptiveCard3.onExecuteAction = function (action) {
+				alert("Ow!");
+			}
+
+			// Parse the card payload
+			adaptiveCard3.parse(card3);
+
+			// Render the card to an HTML element:
+			var renderedCard3 = adaptiveCard3.render();
+
+			// And finally insert it in the page:
+			document.getElementById('exampleDiv').appendChild(renderedCard3);
 		}
 	</script>
 

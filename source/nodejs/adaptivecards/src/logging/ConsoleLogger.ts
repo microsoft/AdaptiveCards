@@ -8,10 +8,7 @@ export class ConsoleLogger implements IACProvider {
 
 	sendData(event: any, eventSourceName: any, correlationID?: any, valueSet?: any) {
 		console.log(event + " ---- " + eventSourceName);
-		console.log("Other " + correlationID + " --- " + valueSet);
-		if (valueSet) {
-			console.log(valueSet["defaultScale"]);
-		}
+		console.log("Correlation ID + optional valueSet " + correlationID + " --- " + valueSet);
 	}
 
 	

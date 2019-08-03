@@ -2,13 +2,12 @@ import { IACProvider } from "./IACProvider";
 import { LogLevel } from "./log-enums";
 import { ConsoleLogger } from "./ConsoleLogger";
 import { Microsoft1DSLogger } from "./Microsoft1DSLogger/Microsoft1DSLogger";
-const uuidv4 = require('uuid/v4');
+import { IACLogger } from "./IACLogger";
 
-export class ACLogger {
+export class ACLogger implements IACLogger {
 
-	private static instance: ACLogger;
+	private static instance: IACLogger;
 	private providers: IACProvider[];
-	private GUID: number;
 
 	private constructor() {	}
 
@@ -29,7 +28,7 @@ export class ACLogger {
 				stringLevel = "info";
 				break;
 			default:
-				// throw error, or console message?
+				console.log("Error: LogLevel undefined.")
 		}
 
 		for (var provider of this.providers) {
@@ -59,24 +58,25 @@ export class ACLogger {
 		}
 	}
 
-	static getLogger(): ACLogger {
-		if (this.instance) {
-			return this.instance;
-		} else {
-			console.log("Providers not yet configured!");
-			// throw new Error("Providers not yet configured!");
+	static getOrCreate(): IACLogger {
+		if (!this.instance) {
+			this.instance = new ACLogger();
 		}
+
+		return this.instance;
 	}
+	
+	configureDefaultProviders(): void {
 
-	static configureDefaultProviders(): void {
-
-		this.checkInitialize();
+		if (!this.providers) {
+			this.providers = [];
+		}
 
 		var hasConsole = false;
 		var has1DS = false;
 
 		// check if defaults have already been instantiated
-		this.instance.providers.forEach(function(provider) {
+		this.providers.forEach(function(provider) {
 
 			var providerName = Object.getPrototypeOf(provider).constructor.name;
 
@@ -88,18 +88,21 @@ export class ACLogger {
 		});
 
 		if (!hasConsole) {
-			this.instance.providers.push(new ConsoleLogger());
+			this.providers.push(new ConsoleLogger());
 			
 		}
 
 		if (!has1DS) {
-			this.instance.providers.push(new Microsoft1DSLogger());
+			this.providers.push(new Microsoft1DSLogger());
 		}
 	}
+	
 
-	static configureProviders(...providers: IACProvider[]) {
+	configureCustomProviders(...providers: IACProvider[]) {
 
-		this.checkInitialize();
+		if (!this.providers) {
+			this.providers = [];
+		}
 
 		providers.forEach(function(newProvider) {
 			var hasProvider: boolean = false;
@@ -116,25 +119,6 @@ export class ACLogger {
 				this.providers.push(newProvider);
 			}
 		});
-	}
-
-	// checks if instance and providers have been initialized
-	private static checkInitialize(): void {
-		if (!this.instance) {
-			this.instance = new ACLogger();
-		}
-
-		if (!this.instance.providers) {
-			this.instance.providers = [];
-		}
-	}
-
-	createGUID(): void {
-		this.GUID = uuidv4();
-	}
-
-	getGUID(): number {
-		return this.GUID;
 	}
 
 }
