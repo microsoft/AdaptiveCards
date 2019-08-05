@@ -10,3 +10,4 @@ export * from "./skype/skype-container";
 export * from "./teams/teams-container";
 export * from "./timeline/timeline-container";
 export * from "./webchat/webchat-container";
+export * from "./custom/custom-container";

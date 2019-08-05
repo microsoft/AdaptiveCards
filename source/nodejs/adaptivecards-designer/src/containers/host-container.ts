@@ -1,18 +1,38 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
+import { AdaptiveCardPeer } from "../designer-peers";
+import { isNullOrEmpty } from "adaptivecards";
+import { isNullOrUndefined } from "util";
 
 var sampleConfiguration = require("../../../../../samples/HostConfig/sample.json");
 
 export abstract class HostContainer {
-    private _cardHost: HTMLElement;
+
+    get cardHost(): HTMLElement {
+        return this._cardHost;
+    }
+
+    get isFixedHeight(): boolean {
+        return false;
+    }
 
     readonly name: string;
     readonly styleSheet: string;
 
-    constructor(name: string, styleSheet: string) {
+    public supportsActionBar: boolean = false;
+    public _cardHostConfig: Adaptive.HostConfig;
+	private _cardHost: HTMLElement;
+
+    constructor(name: string, styleSheet: string, hostConfig?: string) {
         this.name = name;
         this.styleSheet = styleSheet;
+
+        if ( !isNullOrEmpty(hostConfig) ) {
+            this._cardHostConfig = new Adaptive.HostConfig(hostConfig);
+        } else {
+            this._cardHostConfig = new Adaptive.HostConfig(sampleConfiguration);
+        }
 
         this._cardHost = document.createElement("div");
         this._cardHost.className = "cardHost";
@@ -43,16 +63,6 @@ export abstract class HostContainer {
     }
 
     public getHostConfig(): Adaptive.HostConfig {
-        return new Adaptive.HostConfig(sampleConfiguration);
-    }
-
-    supportsActionBar: boolean = false;
-
-    get cardHost(): HTMLElement {
-        return this._cardHost;
-    }
-
-    get isFixedHeight(): boolean {
-        return false;
+        return this._cardHostConfig;
     }
 }

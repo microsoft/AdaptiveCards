@@ -136,37 +136,36 @@ export class CardDesigner {
 
             if (peer) {
                 card = peer.buildPropertySheetCard();
-            }
-            else {
+            } else {
                 card = new Adaptive.AdaptiveCard();
                 card.parse(
                     {
-                        type: "AdaptiveCard",
-                        version: "1.0",
                         body: [
                             {
+                                text: "**Nothing is selected**",
                                 type: "TextBlock",
                                 wrap: true,
-                                text: "**Nothing is selected**"
-                            },
+							},
                             {
+                                text: "Select an element in the card to modify its properties.",
                                 type: "TextBlock",
                                 wrap: true,
-                                text: "Select an element in the card to modify its properties."
-                            }
-                        ]
-                    }
+							}
+                        ],
+                        type: "AdaptiveCard",
+                        version: "1.0",
+					}
                 );
                 card.padding = new Adaptive.PaddingDefinition(
                     Adaptive.Spacing.Small,
                     Adaptive.Spacing.Small,
                     Adaptive.Spacing.Small,
-                    Adaptive.Spacing.Small
-                )
+                    Adaptive.Spacing.Small,
+                );
             }
 
-            // card.hostConfig = this._propertySheetHostConfig;
-            card.hostConfig = defaultHostConfig;
+            // Grab Host config from active host container
+            card.hostConfig = this.activeHostContainer.getHostConfig();
 
             this._propertySheetToolbox.content.appendChild(card.render());
         }
