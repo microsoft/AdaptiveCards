@@ -65,5 +65,6 @@ namespace AdaptiveSharedNamespace
         void PopulateKnownPropertiesSet() override;
         std::shared_ptr<BaseActionElement> m_selectAction;
         bool m_highlight;
+        bool m_underline{};
     };
 }

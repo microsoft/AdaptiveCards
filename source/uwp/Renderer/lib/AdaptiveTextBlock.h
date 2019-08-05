@@ -81,10 +81,6 @@ namespace AdaptiveNamespace
             return AdaptiveTextElement::put_FontType(type);
         }
 
-        IFACEMETHODIMP get_Underline(_Out_ boolean* underline) { return AdaptiveTextElement::get_Underline(underline); }
-
-        IFACEMETHODIMP put_Underline(boolean underline) { return AdaptiveTextElement::put_Underline(underline); }
-
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespace::ElementType* elementType);
 

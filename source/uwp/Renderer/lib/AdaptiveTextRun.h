@@ -36,6 +36,9 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Strikethrough(_Out_ boolean* strikethrough);
         IFACEMETHODIMP put_Strikethrough(boolean strikethrough);
 
+        IFACEMETHODIMP get_Underline(_Out_ boolean* underline);
+        IFACEMETHODIMP put_Underline(boolean underline);
+
         // IAdaptiveTextElement
         IFACEMETHODIMP get_Text(_Outptr_ HSTRING* text) { return AdaptiveTextElement::get_Text(text); }
         IFACEMETHODIMP put_Text(_In_ HSTRING text) { return AdaptiveTextElement::put_Text(text); }
@@ -82,16 +85,6 @@ namespace AdaptiveNamespace
             return AdaptiveTextElement::put_FontType(type);
         }
 
-        IFACEMETHODIMP get_Underline(_Out_ boolean* underline)
-        {
-            return AdaptiveTextElement::get_Underline(underline);
-        }
-
-        IFACEMETHODIMP put_Underline(boolean underline)
-        {
-            return AdaptiveTextElement::put_Underline(underline);
-        }
-
         HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::TextRun>& sharedModel) noexcept;
 
         // ITypePeek method
@@ -102,6 +95,7 @@ namespace AdaptiveNamespace
         boolean m_highlight;
         boolean m_italic;
         boolean m_strikethrough;
+        boolean m_underline;
     };
 
     ActivatableClass(AdaptiveTextRun);

@@ -45,9 +45,6 @@ namespace AdaptiveSharedNamespace
         void SetLanguage(const std::string& value);
         std::string GetLanguage() const;
 
-        bool GetUnderline() const;
-        void SetUnderline(const bool value);
-
         virtual void Deserialize(const ParseContext& context, const Json::Value& root);
         virtual void PopulateKnownPropertiesSet(std::unordered_set<std::string>& knownProperties);
 
@@ -59,6 +56,5 @@ namespace AdaptiveSharedNamespace
         ForegroundColor m_textColor;
         bool m_isSubtle;
         std::string m_language;
-        bool m_underline{};
     };
 }

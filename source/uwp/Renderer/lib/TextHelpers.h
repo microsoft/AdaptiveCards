@@ -3,6 +3,30 @@
 #pragma once
 #include "XamlBuilder.h"
 
+class TextRunStyleParameters
+{
+public:
+    TextRunStyleParameters() : m_isStrikethrough(false), m_isItalic(false), m_isUnderline(false), m_isInHyperlink(false)
+    {
+    }
+
+    TextRunStyleParameters(bool isStrikethrough, bool isItalic, bool isUnderline, bool isInHyperlink) :
+        m_isStrikethrough(isStrikethrough), m_isItalic(isItalic), m_isUnderline(isUnderline), m_isInHyperlink(isInHyperlink)
+    {
+    }
+
+    bool IsStrikethrough() const { return m_isStrikethrough; }
+    bool IsItalic() const { return m_isItalic; }
+    bool IsUnderline() const { return m_isUnderline; }
+    bool IsInHyperlink() const { return m_isInHyperlink; }
+
+private:
+    bool m_isStrikethrough{};
+    bool m_isItalic{};
+    bool m_isUnderline{};
+    bool m_isInHyperlink{};
+};
+
 HRESULT AddHtmlInlines(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adaptiveTextElement,
                        _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                        _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
@@ -15,9 +39,7 @@ HRESULT AddTextInlines(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adapti
                        _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                        _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
                        _In_ ABI::Windows::Data::Xml::Dom::IXmlNode* node,
-                       bool isStrikethrough,
-                       bool isItalic,
-                       bool isInHyperlink,
+                       const TextRunStyleParameters& styleParameters,
                        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines,
                        _Out_ UINT* characterLength);
 
@@ -25,9 +47,7 @@ HRESULT AddSingleTextInline(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* a
                             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
                             _In_ HSTRING string,
-                            bool isStrikethrough,
-                            bool isItalic,
-                            bool isInHyperlink,
+                            const TextRunStyleParameters& styleParameters,
                             _In_ ABI::Windows::Foundation::Collections::IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines,
                             _Out_ UINT* characterLength);
 
@@ -80,19 +100,15 @@ template<typename TXamlTextBlockType>
 HRESULT StyleTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adaptiveTextElement,
                          _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                          _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
-                         bool isStrikethrough,
-                         bool isItalic,
-                         bool isInHyperlink,
+                         const TextRunStyleParameters& styleProperties,
                          _In_ TXamlTextBlockType* xamlTextElement)
 {
     Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveHostConfig> hostConfig;
     RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
-    boolean isUnderline;
-    RETURN_IF_FAILED(adaptiveTextElement->get_Underline(&isUnderline));
-    RETURN_IF_FAILED(SetStrikethroughAndUnderline(isStrikethrough, isUnderline, xamlTextElement));
+    RETURN_IF_FAILED(SetStrikethroughAndUnderline(styleProperties.IsStrikethrough(), styleProperties.IsUnderline(), xamlTextElement));
 
-    if (isItalic)
+    if (styleProperties.IsItalic())
     {
         RETURN_IF_FAILED(xamlTextElement->put_FontStyle(ABI::Windows::UI::Text::FontStyle::FontStyle_Italic));
     }
@@ -102,7 +118,7 @@ HRESULT StyleTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adap
     RETURN_IF_FAILED(adaptiveTextElement->get_Color(&adaptiveTextColor));
 
     // If the card author set the default color and we're in a hyperlink, don't change the color and lose the hyperlink styling
-    if (adaptiveTextColor != ABI::AdaptiveNamespace::ForegroundColor::Default || !isInHyperlink)
+    if (adaptiveTextColor != ABI::AdaptiveNamespace::ForegroundColor::Default || !styleProperties.IsInHyperlink())
     {
         boolean isSubtle = false;
         RETURN_IF_FAILED(adaptiveTextElement->get_IsSubtle(&isSubtle));

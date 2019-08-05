@@ -56,9 +56,6 @@ namespace AdaptiveSharedNamespace
         void SetLanguage(const std::string& value);
         std::string GetLanguage() const;
 
-        bool GetUnderline() const;
-        void SetUnderline(const bool value);
-
     private:
         bool m_wrap;
         unsigned int m_maxLines;

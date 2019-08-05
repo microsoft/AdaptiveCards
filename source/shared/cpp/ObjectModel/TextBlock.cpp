@@ -150,16 +150,6 @@ void TextBlock::SetLanguage(const std::string& value)
     m_textElementProperties->SetLanguage(value);
 }
 
-bool TextBlock::GetUnderline() const
-{
-    return m_textElementProperties->GetUnderline();
-}
-
-void TextBlock::SetUnderline(const bool value)
-{
-    m_textElementProperties->SetUnderline(value);
-}
-
 std::shared_ptr<BaseCardElement> TextBlockParser::Deserialize(ParseContext& context, const Json::Value& json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::TextBlock);
