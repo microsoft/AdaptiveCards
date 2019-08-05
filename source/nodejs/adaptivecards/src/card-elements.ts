@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Enums from "./enums";
 import * as Shared from "./shared";
@@ -3584,8 +3584,8 @@ export class RatingInput extends Input {
 		const NOT_CLICKED: number = -1;
 		const DEFAULT_RATING_SCALE: number = 5;
 
-		let defaulticonUnselected = "https://image.flaticon.com/icons/png/512/55/55695.png";
-		let defaulticonSelected = "https://1.bp.blogspot.com/-IYhCSMtZFzY/WNlKUQYsGQI/AAAAAAABX-s/gZc8ID2yCf0JUuQ4FXAoly2Cx4PE40OiACLcB/s320/star.png";
+		let defaulticonUnselected = "https://i.imgur.com/87eARQE.png";
+		let defaulticonSelected = "https://i.imgur.com/bXMnufQ.png";
 
 		let uniqueCategoryName = RatingInput.getUniqueCategoryName();
 
@@ -3599,9 +3599,8 @@ export class RatingInput extends Input {
 
 		let iconUnselected = this.iconUnselected ? this.iconUnselected : defaulticonUnselected;
 		let iconSelected = this.iconSelected ? this.iconSelected : defaulticonSelected;
-		
-
 		let maxValue: number = this.maxValue ? this.maxValue : DEFAULT_RATING_SCALE;
+
 		let labels: Label[] = new Array(maxValue);
 		let labelElements: HTMLElement[] = new Array(maxValue);
 
@@ -3661,7 +3660,7 @@ export class RatingInput extends Input {
 				}
 			};
 
-			// when leaving an icon, replace that and all preceding icons with the iconSelected image
+			// when leaving an icon (i.e. we stop hovering), return to previous state
 			labelElements[i].onmouseleave = function () {
 				if (ratingClicked == NOT_CLICKED) {
 					for (let j = 0; j <= i; j++) {
@@ -3692,8 +3691,8 @@ export class RatingInput extends Input {
 			spacerElement.style.width = "6px";
 
 			let compoundInput = document.createElement("div");
-			compoundInput.style.marginLeft = "6px";
-			compoundInput.style.marginRight = "6px";
+			compoundInput.style.marginLeft = "0px";
+			compoundInput.style.marginRight = "0px";
 			compoundInput.style.display = "inline-block";
 			compoundInput.style.textAlign = "center";
 			compoundInput.style.flexGrow = "1";
@@ -3738,7 +3737,7 @@ export class RatingInput extends Input {
 			for (let i = 0; i < this.maxValue; i++) {
 				let rating:Choice;
 				rating.title = "Choice " + (i + 1);
-				rating.value = "Choice " + (i + 1);
+				rating.value = (i + 1).toString();
 				ratings.push(rating.toJSON());
 			}
 
@@ -3781,7 +3780,7 @@ export class RatingInput extends Input {
             for (let i = 0; i < json["maxValue"]; i++) {
                 let rating = new Choice();
 				rating.title = "Rating " + (i + 1);
-				rating.value = "Rating " + (i + 1);
+				rating.value = (i + 1).toString();
 
 				ratings.push(rating);
             }
@@ -3791,49 +3790,7 @@ export class RatingInput extends Input {
     }
 
     get value(): string {
-		// TODO: unnecessary stuff here, fix:
-		/*
-        if (!this.isMultiSelect) {
-            if (this.isCompact) {
-                if (this._selectElement) {
-                    return this._selectElement.selectedIndex > 0 ? this._selectElement.value : null;
-                }
-
-                return null;
-            }
-            else {
-                if (!this._toggleInputs || this._toggleInputs.length == 0) {
-                    return null;
-                }
-
-                for (var i = 0; i < this._toggleInputs.length; i++) {
-                    if (this._toggleInputs[i].checked) {
-                        return this._toggleInputs[i].value;
-                    }
-                }
-
-                return null;
-            }
-        }
-        else {
-            if (!this._toggleInputs || this._toggleInputs.length == 0) {
-                return null;
-            }
-
-            var result: string = "";
-
-            for (var i = 0; i < this._toggleInputs.length; i++) {
-                if (this._toggleInputs[i].checked) {
-                    if (result != "") {
-                        result += this.hostConfig.choiceSetInputValueSeparator;
-                    }
-
-                    result += this._toggleInputs[i].value;
-                }
-            }
-
-            return result == "" ? null : result;
-		*/
+		// TODO: isMultiSelect and isCompact are not necessary here, fix:
 		if (!this.isMultiSelect) {
             if (this.isCompact) {
                 if (this._selectElement) {
@@ -3875,6 +3832,7 @@ export class RatingInput extends Input {
 
             return result == "" ? null : result;
 		}
+		/**/
     }
 }
 
