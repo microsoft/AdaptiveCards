@@ -26,7 +26,7 @@ The `<u>` tag allows underlining
 
 ## Feature Defaults
 
-The underline property will have the <i>false</i> value by default signalizing that no underline is required
+The underline property will have the <i>false</i> value by default signaling that no underline is required
 
 ## Backwards Compatibility Concerns
 
