@@ -351,21 +351,24 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
             std::vector<std::shared_ptr<Column>> &columns = columSet->GetColumns();
             // ColumnSet is vector of Column, instead of vector of BaseCardElement
             for(auto const &column : columns) { // update serial number that is used for generating unique key for image_map
-                // Handle background image (if necessary)
-                auto backgroundImageProperties = column->GetBackgroundImage();
-                if((backgroundImageProperties != nullptr) && !(backgroundImageProperties->GetUrl().empty())) {
-                    ObserverActionBlock observerAction = generateBackgroundImageObserverAction(backgroundImageProperties, self, column);
-                    [self loadBackgroundImageAccordingToResourceResolverIF:backgroundImageProperties key:nil observerAction:observerAction];
-                }
-
-                [self addTasksToConcurrentQueue: column->GetItems()];
+                [self processBaseCardElement: column];
             }
             break;
         }
-        default:
+
+        case CardElementType::Column:
         {
-            /// no work is needed
-            break;
+            std::shared_ptr<Column> column = std::static_pointer_cast<Column>(elem);
+            // Handle background image (if necessary)
+            auto backgroundImageProperties = column->GetBackgroundImage();
+            if((backgroundImageProperties != nullptr) && !(backgroundImageProperties->GetUrl().empty())) {
+                ObserverActionBlock observerAction = generateBackgroundImageObserverAction(backgroundImageProperties, self, column);
+                [self loadBackgroundImageAccordingToResourceResolverIF:backgroundImageProperties key:nil observerAction:observerAction];
+            }
+	    
+            // add column fallbacks to async task queue
+            [self processFallback:column];
+            [self addTasksToConcurrentQueue: column->GetItems()];
         }
     }
 }
@@ -381,16 +384,8 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
             continue;
         }
 
+        [self processFallback:elem];
         [self processBaseCardElement:elem];
-        std::shared_ptr<BaseElement> fallbackElem = elem->GetFallbackContent();
-        while (fallbackElem) {
-            std::shared_ptr<BaseCardElement> fallbackElemCard = std::static_pointer_cast<BaseCardElement>(fallbackElem);
-            if (fallbackElemCard) {
-                [self processBaseCardElement:fallbackElemCard];
-            }
-
-            fallbackElem = fallbackElemCard->GetFallbackContent();
-        }
     }
 }
 
@@ -792,6 +787,21 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 {
     NSNumber *key = [NSNumber numberWithUnsignedLongLong:internalId.Hash()];
     return _paddingMap[[key stringValue]];
+}
+
+// get fallback content and add them async task queue
+- (void)processFallback:(std::shared_ptr<BaseCardElement> const &)elem
+{
+    std::shared_ptr<BaseElement> fallbackElem = elem->GetFallbackContent();
+    while (fallbackElem) {
+        std::shared_ptr<BaseCardElement> fallbackElemCard = std::static_pointer_cast<BaseCardElement>(fallbackElem);
+        if (fallbackElemCard) {
+            [self processBaseCardElement:fallbackElemCard];
+        }
+
+        fallbackElem = fallbackElemCard->GetFallbackContent();
+    }
+
 }
 
 @end

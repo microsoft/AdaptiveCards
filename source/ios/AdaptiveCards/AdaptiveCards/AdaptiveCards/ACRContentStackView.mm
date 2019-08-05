@@ -169,10 +169,15 @@ using namespace AdaptiveCards;
     if ([self subviewsCounts]) {
         UIView *view = [self getLastSubview];
         if (view) {
-            [self.stackView removeArrangedSubview:view];
-            [view removeFromSuperview];
+            [self removeViewFromContentStackView:view];
         }
     }
+}
+
+- (void)removeViewFromContentStackView:(UIView *)view
+{
+    [self.stackView removeArrangedSubview:view];
+    [view removeFromSuperview];
 }
 
 - (UIView *)getLastSubview

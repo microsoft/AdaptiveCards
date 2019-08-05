@@ -1,0 +1,1 @@
+{"actions":[{"title":"OK","type":"Action.Submit"}],"body":[{"text":"This input is required and has a regex","type":"TextBlock"},{"id":"input1","isRequired":true,"regEx":"([A-Z])\\w+","type":"Input.Text"},{"text":"This input is optional and has a regex","type":"TextBlock"},{"id":"input2","regEx":"([A-Z])\\w+","type":"Input.Text"}],"type":"AdaptiveCard","version":"1.3"}

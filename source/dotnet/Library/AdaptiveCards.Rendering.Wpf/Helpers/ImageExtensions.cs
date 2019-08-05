@@ -103,39 +103,10 @@ namespace AdaptiveCards.Rendering.Wpf
 
                     return Stretch.Fill;
                 }
-                else if (imageWidth >= parentWidth || imageSourceIsLargerThanExpectedRenderingSize(imageWidth, imageHeight, adaptiveImage.Size, adaptiveParameters.AdaptiveContext))
+                else 
                 {
                     return Stretch.Uniform;
                 }
-                else
-                {
-                    return Stretch.None;
-                }
-            }
-
-            bool imageSourceIsLargerThanExpectedRenderingSize(int? imageSourceWidth, int? imageSourceHeight, AdaptiveImageSize imageSize, AdaptiveRenderContext context)
-            {
-                // No size provided, let's keep previous behaviour
-                if (!imageSourceWidth.HasValue || !imageSourceHeight.HasValue)
-                {
-                    return false;
-                }
-
-                int imageSizeInPixels = int.MaxValue;
-                switch (imageSize)
-                {
-                    case AdaptiveImageSize.Small:
-                        imageSizeInPixels = context.Config.ImageSizes.Small;
-                        break;
-                    case AdaptiveImageSize.Medium:
-                        imageSizeInPixels = context.Config.ImageSizes.Medium;
-                        break;
-                    case AdaptiveImageSize.Large:
-                        imageSizeInPixels = context.Config.ImageSizes.Large;
-                        break;
-                }
-
-                return ((imageSourceWidth.Value > imageSizeInPixels) || (imageSourceHeight.Value > imageSizeInPixels));
             }
 
             public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
