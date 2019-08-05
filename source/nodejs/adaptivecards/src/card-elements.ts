@@ -3723,52 +3723,6 @@ export class RatingInput extends Input {
 
     get value(): string {
 		// TODO: isMultiSelect and isCompact are not necessary here, fix:
-		/*
-		// if (!this.isMultiSelect) {
-            // if (this.isCompact) {
-				alert("selected index: " + this._selectElement.selectedIndex);
-				alert("selected element: " + this._selectElement.value);
-                if (this._selectElement) {
-                    return this._selectElement.selectedIndex > 0 ? this._selectElement.value : null;
-                }
-
-                return null;
-            // }
-            // else {
-                if (!this._toggleInputs || this._toggleInputs.length == 0) {
-                    return null;
-                }
-
-                for (var i = 0; i < this._toggleInputs.length; i++) {
-                    if (this._toggleInputs[i].checked) {
-                        return this._toggleInputs[i].value;
-                    }
-                }
-
-                return null;
-            // }
-        // }
-        // else {
-            if (!this._toggleInputs || this._toggleInputs.length == 0) {
-                return null;
-            }
-
-            var result: string = "";
-
-            for (var i = 0; i < this._toggleInputs.length; i++) {
-                if (this._toggleInputs[i].checked) {
-                    if (result != "") {
-                        result += this.hostConfig.choiceSetInputValueSeparator;
-                    }
-
-                    result += this._toggleInputs[i].value;
-                }
-            }
-
-            return result == "" ? null : result;
-		// }
-		*/
-		
 		if (!this.isMultiSelect) {
             if (this.isCompact) {
                 if (this._selectElement) {
