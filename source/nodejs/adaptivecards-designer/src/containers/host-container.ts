@@ -21,10 +21,11 @@ export abstract class HostContainer {
     readonly styleSheet: string;
 
     public supportsActionBar: boolean = false;
-    public _cardHostConfig: Adaptive.HostConfig;
+	public _cardHostConfig: Adaptive.HostConfig;
+	public _cardHostBackground: string;
 	private _cardHost: HTMLElement;
 
-    constructor(name: string, styleSheet: string, hostConfig?: string) {
+    constructor(name: string, styleSheet: string, hostConfig?: string, background?: string) {
         this.name = name;
         this.styleSheet = styleSheet;
 
@@ -32,7 +33,13 @@ export abstract class HostContainer {
             this._cardHostConfig = new Adaptive.HostConfig(hostConfig);
         } else {
             this._cardHostConfig = new Adaptive.HostConfig(sampleConfiguration);
-        }
+		}
+
+		if ( !isNullOrEmpty(background) ) {
+            this._cardHostBackground = background;
+        } else {
+            this._cardHostBackground = "#F6F6F6";
+		}
 
         this._cardHost = document.createElement("div");
         this._cardHost.className = "cardHost";
@@ -50,7 +57,7 @@ export abstract class HostContainer {
     }
 
     public getBackgroundColor(): string {
-        return "#F6F6F6";
+        return this._cardHostBackground;
     }
 
     public parseElement(element: Adaptive.CardElement, json: any) {
