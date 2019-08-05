@@ -1,13 +1,13 @@
-.teams-frame {
+.custom-frame {
     display: flex;
 }
 
-.teams-botNameAndTime {
+.custom-botNameAndTime {
     color: black;
     margin-bottom: 12px;
 }
 
-.teams-hexagon-outer {
+.custom-hexagon-outer {
     overflow: hidden;
     transform: rotate(120deg);
     flex: 0 0 50px;
@@ -15,14 +15,14 @@
     margin-right: 6px;
 }
 
-.teams-hexagon-inner {
+.custom-hexagon-inner {
     overflow: hidden;
     width: 100%;
     height: 100%;
     transform: rotate(-60deg);
 }
 
-.teams-bot-logo {
+.custom-bot-logo {
     width: 100%;
     height: 100%;
     background-repeat: no-repeat;
@@ -33,7 +33,7 @@
     transform: rotate(-60deg);
 }
 
-.teams-inner-frame {
+.custom-inner-frame {
     background-color: white;
     border-radius: 4px;
     padding: 24px;
@@ -41,7 +41,7 @@
     max-width: 726px;
 }
 
-.teams-card {
+.custom-card {
     border: 2px solid #F1F0EF;
     border-top-color: #ACCEEF;
     border-radius: 4px;

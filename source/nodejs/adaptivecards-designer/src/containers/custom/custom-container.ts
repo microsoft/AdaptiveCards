@@ -11,15 +11,15 @@ export class CustomContainer extends Designer.HostContainer {
 
 	public renderTo(hostElement: HTMLElement) {
         var outerFrame = document.createElement("div");
-        outerFrame.className = "teams-frame";
+        outerFrame.className = "custom-frame";
 
         let innerFrame = document.createElement("div");
-        innerFrame.className = "teams-inner-frame";
+        innerFrame.className = "custom-inner-frame";
 
-        this.cardHost.classList.add("teams-card");
+        this.cardHost.classList.add("custom-card");
 
         let botNameAndTime = document.createElement("div");
-        botNameAndTime.className = "teams-botNameAndTime";
+        botNameAndTime.className = "custom-botNameAndTime";
         botNameAndTime.innerText = "Sent from Bot ( 2:36 PM )";
 
         innerFrame.appendChild(botNameAndTime);
