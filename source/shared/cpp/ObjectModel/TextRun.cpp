@@ -7,7 +7,7 @@ using namespace AdaptiveSharedNamespace;
 
 TextRun::TextRun() :
     Inline(InlineElementType::TextRun), m_textElementProperties(std::make_shared<RichTextElementProperties>()),
-    m_highlight(false), m_underline(false)
+    m_highlight(false)
 {
     PopulateKnownPropertiesSet();
 }
@@ -26,11 +26,6 @@ Json::Value TextRun::SerializeToJsonValue() const
     if (m_highlight)
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Highlight)] = true;
-    }
-
-    if (m_underline)
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Underline)] = true;
     }
 
     if (m_selectAction != nullptr)
@@ -158,12 +153,12 @@ void TextRun::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
 
 bool TextRun::GetUnderline() const
 {
-    return m_underline;
+    return m_textElementProperties->GetUnderline();
 }
 
 void TextRun::SetUnderline(const bool value)
 {
-    m_underline = value;
+    m_textElementProperties->SetUnderline(value);
 }
 
 std::shared_ptr<Inline> TextRun::Deserialize(ParseContext& context, const Json::Value& json)
