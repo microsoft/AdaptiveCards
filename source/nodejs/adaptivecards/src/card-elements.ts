@@ -3514,9 +3514,10 @@ export class RatingInput extends Input {
 
 	protected internalRender(): HTMLElement {
 		const NOT_CLICKED: number = -1;
+		const DEFAULT_RATING_SCALE: number = 5;
 
-		let defaulticonUnselected = "https://image.flaticon.com/icons/png/512/55/55695.png";
-		let defaulticonSelected = "https://1.bp.blogspot.com/-IYhCSMtZFzY/WNlKUQYsGQI/AAAAAAABX-s/gZc8ID2yCf0JUuQ4FXAoly2Cx4PE40OiACLcB/s320/star.png";
+		let defaulticonUnselected = "https://i.imgur.com/87eARQE.png";
+		let defaulticonSelected = "https://i.imgur.com/bXMnufQ.png";
 
 		let uniqueCategoryName = RatingInput.getUniqueCategoryName();
 
@@ -3530,9 +3531,8 @@ export class RatingInput extends Input {
 
 		let iconUnselected = this.iconUnselected ? this.iconUnselected : defaulticonUnselected;
 		let iconSelected = this.iconSelected ? this.iconSelected : defaulticonSelected;
-		
+		let maxValue: number = this.maxValue ? this.maxValue : DEFAULT_RATING_SCALE;
 
-		let maxValue: number = this.maxValue;
 		let labels: Label[] = new Array(maxValue);
 		let labelElements: HTMLElement[] = new Array(maxValue);
 
@@ -3592,7 +3592,7 @@ export class RatingInput extends Input {
 				}
 			};
 
-			// when leaving an icon, replace that and all preceding icons with the iconSelected image
+			// when leaving an icon (i.e. we stop hovering), return to previous state
 			labelElements[i].onmouseleave = function () {
 				if (ratingClicked == NOT_CLICKED) {
 					for (let j = 0; j <= i; j++) {
@@ -3623,8 +3623,8 @@ export class RatingInput extends Input {
 			spacerElement.style.width = "6px";
 
 			let compoundInput = document.createElement("div");
-			compoundInput.style.marginLeft = "6px";
-			compoundInput.style.marginRight = "6px";
+			compoundInput.style.marginLeft = "0px";
+			compoundInput.style.marginRight = "0px";
 			compoundInput.style.display = "inline-block";
 			compoundInput.style.textAlign = "center";
 			compoundInput.style.flexGrow = "1";
@@ -3669,7 +3669,7 @@ export class RatingInput extends Input {
 			for (let i = 0; i < this.maxValue; i++) {
 				let rating:Choice;
 				rating.title = "Choice " + (i + 1);
-				rating.value = "Choice " + (i + 1);
+				rating.value = (i + 1).toString();
 				ratings.push(rating.toJSON());
 			}
 
@@ -3712,7 +3712,7 @@ export class RatingInput extends Input {
             for (let i = 0; i < json["maxValue"]; i++) {
                 let rating = new Choice();
 				rating.title = "Rating " + (i + 1);
-				rating.value = "Rating " + (i + 1);
+				rating.value = (i + 1).toString();
 
 				ratings.push(rating);
             }
@@ -3722,17 +3722,19 @@ export class RatingInput extends Input {
     }
 
     get value(): string {
-		// TODO: unnecessary stuff here, fix:
+		// TODO: isMultiSelect and isCompact are not necessary here, fix:
 		/*
-        if (!this.isMultiSelect) {
-            if (this.isCompact) {
+		// if (!this.isMultiSelect) {
+            // if (this.isCompact) {
+				alert("selected index: " + this._selectElement.selectedIndex);
+				alert("selected element: " + this._selectElement.value);
                 if (this._selectElement) {
                     return this._selectElement.selectedIndex > 0 ? this._selectElement.value : null;
                 }
 
                 return null;
-            }
-            else {
+            // }
+            // else {
                 if (!this._toggleInputs || this._toggleInputs.length == 0) {
                     return null;
                 }
@@ -3744,9 +3746,9 @@ export class RatingInput extends Input {
                 }
 
                 return null;
-            }
-        }
-        else {
+            // }
+        // }
+        // else {
             if (!this._toggleInputs || this._toggleInputs.length == 0) {
                 return null;
             }
@@ -3764,7 +3766,9 @@ export class RatingInput extends Input {
             }
 
             return result == "" ? null : result;
+		// }
 		*/
+		
 		if (!this.isMultiSelect) {
             if (this.isCompact) {
                 if (this._selectElement) {
@@ -3806,6 +3810,7 @@ export class RatingInput extends Input {
 
             return result == "" ? null : result;
 		}
+		/**/
     }
 }
 
@@ -3829,7 +3834,7 @@ export class NumberInput extends Input {
 
         if (!Utils.isNullOrEmpty(this.placeholder)) {
             this._numberInputElement.placeholder = this.placeholder;
-            this._numberInputElement.setAttribute("aria-label", this.placeholder);
+            this._numberInputElement.setAttribute("aria-label", this.placeholder + " EDIT ");
         }
 
         this._numberInputElement.oninput = () => { this.valueChanged(); }
@@ -3877,8 +3882,8 @@ export class NumberInput extends Input {
         this._max = this.parseInputValue(value);
     }
 
-    get value(): string {
-        return this._numberInputElement ? this._numberInputElement.value : null;
+	get value(): string {
+		return this._numberInputElement ? this._numberInputElement.value : null;
     }
 }
 

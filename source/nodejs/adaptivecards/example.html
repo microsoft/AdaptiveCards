@@ -9,7 +9,7 @@
 
 	<style type="text/css">
 		#exampleDiv {
-			width: 1000px;
+			width: 500px;
 			border: solid 1px black;
 		}
 	</style>
@@ -22,15 +22,57 @@
 			// see http://adaptivecards.io/samples/ for inspiration
 
 			// this card specifically demos the Input.Rating control
-			var card = {
+			var card =
+{
     "type": "AdaptiveCard",
     "body": [
+	{
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": 2,
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "PIZZA"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "Tom's Pie",
+                            "weight": "Bolder",
+                            "size": "ExtraLarge",
+                            "spacing": "None"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "**Matt H. said** \"I'm compelled to give this place 5 stars due to the number of times I've chosen to eat here this past year!\"",
+                            "size": "Small",
+                            "wrap": true
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": 1,
+                    "items": [
+                        {
+                            "type": "Image",
+                            "url": "https://picsum.photos/300?image=882",
+                            "size": "auto"
+                        }
+                    ]
+                }
+            ]
+        },
         {
-			// "type": "Input.ChoiceSet",
+            "type": "TextBlock",
+            "text": "Would you mind rating our restaurant?",
+            "size": "Medium"
+        },
+        {
 			"type": "Input.Rating",
-			"id": "UserProvidedRating",
-			// "placeholder": "Placeholder text",
-			"maxValue": 5,
+			"id": "UserProvidedRating"//,
 			// "maxValue": 10,
 			
 			// "iconSelected": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
@@ -40,13 +82,9 @@
   			"actions": [
       	  	{
 				"type": "Action.Submit",
-				"title": "Action.Submit",
-				"data": {
-					"x": 13
-				}
+				"title": "Submit Rating"
         	}
 		],
-	// "$schema": "/schemas/1.3/adaptive-card.json",
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "version": "1.0"
 };
