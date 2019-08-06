@@ -63,7 +63,11 @@ public class Column extends CollectionTypeElement {
   }
 
   public void SetWidth(String value) {
-    AdaptiveCardObjectModelJNI.Column_SetWidth(swigCPtr, this, value);
+    AdaptiveCardObjectModelJNI.Column_SetWidth__SWIG_0(swigCPtr, this, value);
+  }
+
+  public void SetWidth(String value, AdaptiveCardParseWarningVector warnings) {
+    AdaptiveCardObjectModelJNI.Column_SetWidth__SWIG_1(swigCPtr, this, value, AdaptiveCardParseWarningVector.getCPtr(warnings), warnings);
   }
 
   public int GetPixelWidth() {
