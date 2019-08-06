@@ -188,4 +188,4 @@ Add the json samples to the shared model unit tests.
 Add coverage of the json samples to the UWP test app.
 
 ## 10. SEQUENCE DIAGRAM
-<img src="https://i.imgur.com/N3KT9oW.png"  width="600" height="auto">
+<img src="https://i.imgur.com/GfCqvK9.png"  width="600" height="auto">
