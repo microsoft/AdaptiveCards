@@ -3788,7 +3788,7 @@ export class NumberInput extends Input {
 
         if (!Utils.isNullOrEmpty(this.placeholder)) {
             this._numberInputElement.placeholder = this.placeholder;
-            this._numberInputElement.setAttribute("aria-label", this.placeholder + " EDIT ");
+            this._numberInputElement.setAttribute("aria-label", this.placeholder);
         }
 
         this._numberInputElement.oninput = () => { this.valueChanged(); }
