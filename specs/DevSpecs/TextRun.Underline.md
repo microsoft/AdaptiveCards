@@ -22,7 +22,7 @@ NSMutableAttributedString are able to set underlines in the whole text and in so
 
 ### .NET HTML
 
-The `<u>` tag allows underlining
+The `<u>` tag allows underlining but the style "text-decoration" property ended up being used as strikethrough also uses it and it can hold the values "line-through" and "underline" at the same time
 
 ## Feature Defaults
 
