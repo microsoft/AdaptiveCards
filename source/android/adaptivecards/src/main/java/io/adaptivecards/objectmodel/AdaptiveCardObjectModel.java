@@ -301,6 +301,18 @@ public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants
     return HeightType.swigToEnum(AdaptiveCardObjectModelJNI.HeightTypeFromString(t));
   }
 
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__InputNecessityIndicators_t getInputNecessityIndicatorsEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__InputNecessityIndicators_t(AdaptiveCardObjectModelJNI.getInputNecessityIndicatorsEnum(), false);
+  }
+
+  public static String InputNecessityIndicatorsToString(InputNecessityIndicators t) {
+    return AdaptiveCardObjectModelJNI.InputNecessityIndicatorsToString(t.swigValue());
+  }
+
+  public static InputNecessityIndicators InputNecessityIndicatorsFromString(String t) {
+    return InputNecessityIndicators.swigToEnum(AdaptiveCardObjectModelJNI.InputNecessityIndicatorsFromString(t));
+  }
+
   public static void HandleUnknownProperties(JsonValue json, SWIGTYPE_p_std__unordered_setT_std__string_t knownProperties, JsonValue unknownProperties) {
     AdaptiveCardObjectModelJNI.HandleUnknownProperties(JsonValue.getCPtr(json), json, SWIGTYPE_p_std__unordered_setT_std__string_t.getCPtr(knownProperties), JsonValue.getCPtr(unknownProperties), unknownProperties);
   }
