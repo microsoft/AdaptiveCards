@@ -12,6 +12,16 @@
 			width: 1000px;
 			border: solid 1px black;
 		}
+
+		#exampleDiv2 {
+			width: 1000px;
+			border: solid 1px black;
+		}
+
+		#exampleDiv3 {
+			width: 1000px;
+			border: solid 1px black;
+		}
 	</style>
 
 	<script type="text/javascript">
@@ -127,7 +137,7 @@
                     "value": "Choice 2"
                 },
                 {
-                    "title": "Fish",
+                    "title": "Unagi",
                     "value": "roe"
                 }
             ],
@@ -136,11 +146,7 @@
         {
             "type": "TextBlock",
             "id": "e",
-            "text": "It's my textblock"
-        },
-        {
-            "type": "Media",
-            "id": "asdf"
+            "text": "Please choose an option from above."
         },
         {
             "type": "ActionSet",
@@ -188,7 +194,7 @@
 			var renderedCard2 = adaptiveCard2.render();
 
 			// And finally insert it in the page:
-			document.getElementById('exampleDiv').appendChild(renderedCard2);
+			document.getElementById('exampleDiv2').appendChild(renderedCard2);
 
 			var card3 = {
     "type": "AdaptiveCard",
@@ -196,12 +202,10 @@
         {
 			// "type": "Input.ChoiceSet",
 			"type": "Input.Rating",
-			"id": "UserProvidedRating",
+			"id": "UserProvidedRating"
 			// "placeholder": "Placeholder text",
 			// "maxValue": 5,
 			// "maxValue": 10,
-			
-			"iconSelected": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
 			// "iconUnselected": "https://pbs.twimg.com/profile_images/988775660163252226/XpgonN0X_400x400.jpg"
 		}
     ],
@@ -233,7 +237,7 @@
 			// Set the adaptive card's event handlers. onExecuteAction is invoked
 			// whenever an action is clicked in the card
 			adaptiveCard3.onExecuteAction = function (action) {
-				alert("Ow!");
+				alert("Submitted.");
 			}
 
 			// Parse the card payload
@@ -243,27 +247,20 @@
 			var renderedCard3 = adaptiveCard3.render();
 
 			// And finally insert it in the page:
-			document.getElementById('exampleDiv').appendChild(renderedCard3);
+			document.getElementById('exampleDiv3').appendChild(renderedCard3);
 		}
 	</script>
 
 </head>
 
 <body onload="renderCard()">
-	<h1>Adaptive Cards Example</h1>
-
-	<p>This example requires a build of the Adaptive Cards library.</p>
-
-	<h3>To run:</h3>
-	<code>
-		<pre>$ npm install</pre>
-		<pre>$ npm run build</pre>
-		<pre>Refresh this page</pre>
-	</code>
-
-	<h3>A card will render below</h3>
+	<h1>Adaptive Cards Telemetry Demo</h1>
 
 	<div id="exampleDiv"></div>
+	<br>
+	<div id="exampleDiv2"></div>
+	<br>
+	<div id="exampleDiv3"></div>
 
 </body>
 
