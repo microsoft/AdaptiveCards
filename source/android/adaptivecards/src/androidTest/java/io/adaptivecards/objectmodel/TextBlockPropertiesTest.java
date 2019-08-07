@@ -14,25 +14,6 @@ public class TextBlockPropertiesTest
         System.loadLibrary("adaptivecards-native-lib");
     }
 
-    /*
-    @SuppressWarnings("unchecked")
-    static <T extends BaseCardElement> T cast(BaseCardElement baseElement, Class<T> type)
-    {
-        T castedElement = null;
-
-        if (baseElement instanceof T)
-        {
-            castedElement = (T) baseElement;
-        }
-        else if ((castedElement = type.dynamic_cast(baseElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to TextBlock object model.");
-        }
-
-        return castedElement;
-    }
-    */
-
     @Test
     public void AllPropertiesTest()
     {

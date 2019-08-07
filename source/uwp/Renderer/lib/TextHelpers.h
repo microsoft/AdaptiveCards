@@ -57,15 +57,25 @@ HRESULT SetHorizontalAlignment(_In_ TAdaptiveType* adaptiveTextBlock, _In_ TXaml
     HAlignment horizontalAlignment;
     RETURN_IF_FAILED(adaptiveTextBlock->get_HorizontalAlignment(&horizontalAlignment));
 
+    ComPtr<TXamlTextBlockType> xamlTextBlockComptr(xamlTextBlock);
+    ComPtr<ABI::Windows::UI::Xaml::IFrameworkElement> xamlTextBlockAsFrameworkElement;
+    RETURN_IF_FAILED(xamlTextBlockComptr.As(&xamlTextBlockAsFrameworkElement));
+
     switch (horizontalAlignment)
     {
     case ABI::AdaptiveNamespace::HAlignment::Left:
+        // text block stretches to both ends of its parent horizontally if its horizontal alignment is not set,
+        // this can lead to unexpected behavior such as hyper link being active in the streched space
+        // setting the horizontal alignment, aligns the textblock instead of stretching
+        RETURN_IF_FAILED(xamlTextBlockAsFrameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment::HorizontalAlignment_Left));
         RETURN_IF_FAILED(xamlTextBlock->put_TextAlignment(TextAlignment::TextAlignment_Left));
         break;
     case ABI::AdaptiveNamespace::HAlignment::Right:
+        RETURN_IF_FAILED(xamlTextBlockAsFrameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment::HorizontalAlignment_Right));
         RETURN_IF_FAILED(xamlTextBlock->put_TextAlignment(TextAlignment::TextAlignment_Right));
         break;
     case ABI::AdaptiveNamespace::HAlignment::Center:
+        RETURN_IF_FAILED(xamlTextBlockAsFrameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment::HorizontalAlignment_Center));
         RETURN_IF_FAILED(xamlTextBlock->put_TextAlignment(TextAlignment::TextAlignment_Center));
         break;
     }
