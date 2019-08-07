@@ -35,7 +35,20 @@ window.onload = function() {
 
 	let designer = new ACDesigner.CardDesigner(hostContainers);
 	designer.sampleCatalogueUrl = window.location.origin + "/sample-catalogue.json";
-	designer.attachTo(document.getElementById("designerRootHost"));
+
+	/* Uncomment to modify the element toolbox */
+    Adaptive.AdaptiveCard.elementTypeRegistry.unregisterType("RichTextBlock");
+    ACDesigner.CardDesignerSurface.cardElementPeerRegistry.unregisterPeer(Adaptive.RichTextBlock);
+ 
+    Adaptive.AdaptiveCard.elementTypeRegistry.unregisterType("ActionSet");
+    ACDesigner.CardDesignerSurface.cardElementPeerRegistry.unregisterPeer(Adaptive.ActionSet);
+ 
+    designer.attachTo(document.getElementById("designerRootHost"));
+ 
+	/* Uncomment to modify the action registry */
+    Adaptive.AdaptiveCard.actionTypeRegistry.unregisterType("Action.ToggleVisibility");
+    ACDesigner.CardDesignerSurface.actionPeerRegistry.unregisterPeer(Adaptive.ToggleVisibilityAction);
+
 
 	/* Uncomment to test a custom palette item example
     let exampleSnippet = new ACDesigner.SnippetPaletteItem("Custom", "Example");
