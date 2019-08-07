@@ -4,8 +4,8 @@
 	"version": "1.0",
 	"body": [
 		{
-            "type": "blah",
-            "secret": "This is a custom element"
+			"type": "blah",
+			"secret": "This is a custom element"
 		}
 	]
 }
