@@ -613,7 +613,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long Column_SerializeToJsonValue(long jarg1, Column jarg1_);
   public final static native void Column_DeserializeChildren(long jarg1, Column jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
   public final static native String Column_GetWidth(long jarg1, Column jarg1_);
-  public final static native void Column_SetWidth(long jarg1, Column jarg1_, String jarg2);
+  public final static native void Column_SetWidth__SWIG_0(long jarg1, Column jarg1_, String jarg2);
+  public final static native void Column_SetWidth__SWIG_1(long jarg1, Column jarg1_, String jarg2, long jarg3, AdaptiveCardParseWarningVector jarg3_);
   public final static native int Column_GetPixelWidth(long jarg1, Column jarg1_);
   public final static native void Column_SetPixelWidth(long jarg1, Column jarg1_, int jarg2);
   public final static native long Column_GetItems__SWIG_0(long jarg1, Column jarg1_);
@@ -1352,6 +1353,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void TextRun_SetHighlight(long jarg1, TextRun jarg1_, boolean jarg2);
   public final static native void TextRun_SetLanguage(long jarg1, TextRun jarg1_, String jarg2);
   public final static native String TextRun_GetLanguage(long jarg1, TextRun jarg1_);
+  public final static native boolean TextRun_GetUnderline(long jarg1, TextRun jarg1_);
+  public final static native void TextRun_SetUnderline(long jarg1, TextRun jarg1_, boolean jarg2);
   public final static native long TextRun_GetSelectAction(long jarg1, TextRun jarg1_);
   public final static native void TextRun_SetSelectAction(long jarg1, TextRun jarg1_, long jarg2, BaseActionElement jarg2_);
   public final static native long TextRun_dynamic_cast(long jarg1, Inline jarg1_);
