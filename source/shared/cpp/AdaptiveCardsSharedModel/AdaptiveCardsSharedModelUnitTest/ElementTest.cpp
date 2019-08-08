@@ -18,6 +18,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             auto columnTest = std::make_shared<AdaptiveCards::Column>();
             Assert::AreEqual(0, columnTest->GetPixelWidth());
             Assert::AreEqual("Auto"s, columnTest->GetWidth());
+<<<<<<< HEAD
             Assert::AreEqual("{\"items\":[],\"type\":\"Column\",\"width\":\"Auto\"}\n"s, columnTest->Serialize());
 
             columnTest->SetWidth("20px"s);
@@ -34,6 +35,14 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual(0, columnTest->GetPixelWidth());
             Assert::AreEqual("stretch"s, columnTest->GetWidth());
             Assert::AreEqual("{\"items\":[],\"type\":\"Column\",\"width\":\"stretch\"}\n"s, columnTest->Serialize());
+=======
+            columnTest->SetWidth("20px"s);
+            Assert::AreEqual(20, columnTest->GetPixelWidth());
+            Assert::AreEqual("20px"s, columnTest->GetWidth());
+            columnTest->SetPixelWidth(40);
+            Assert::AreEqual(40, columnTest->GetPixelWidth());
+            Assert::AreEqual("40px"s, columnTest->GetWidth());
+>>>>>>> fee0c0319... [Shared] Reflect changes between width and pixel width (#3317)
         }
     };
 }
