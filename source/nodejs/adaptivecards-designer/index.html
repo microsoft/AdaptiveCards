@@ -18,7 +18,9 @@
 
 	<script type="text/javascript">
 		window.onload = function() {
-			if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
+            ACDesigner.GlobalSettings.previewFeaturesEnabled = false;
+
+            if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
 				console.log("Local storage is not available.");
 			}
 

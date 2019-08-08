@@ -31,4 +31,17 @@ describe("InputToggleExtended", () => {
     it("can get json name", () => {
         expect(new InputToggleFabric().getJsonTypeName()).toBe("Input.Toggle");
     });
+
+    it("generates json correctly", () => {
+        const element = new InputToggleFabric();
+        element.parse(toggleProps);
+
+        const json = element.toJSON();
+        expect(json).toBeDefined();
+        expect(json.type).toEqual("Input.Toggle");
+        expect(json.title).toEqual("Are you sure?");
+        expect(json.value).toEqual("yeah");
+        expect(json.valueOn).toEqual("yeah");
+        expect(json.valueOff).toEqual("nope");
+    });
 });

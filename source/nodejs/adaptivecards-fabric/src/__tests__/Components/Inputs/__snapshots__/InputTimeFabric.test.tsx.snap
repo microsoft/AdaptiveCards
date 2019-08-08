@@ -6,10 +6,10 @@ exports[`InputTimeExtended should render input time correctly 1`] = `
 >
   <div
     class="ac-input-container"
-    style="display: block;"
+    style="display: flex;"
   >
     <div
-      style="min-width: 0px;"
+      style="width: 100%; min-width: 0px;"
     >
       <div
         class="ms-TextField root-47"
