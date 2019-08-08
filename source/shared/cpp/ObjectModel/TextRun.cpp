@@ -6,7 +6,8 @@
 using namespace AdaptiveSharedNamespace;
 
 TextRun::TextRun() :
-    Inline(InlineElementType::TextRun), m_textElementProperties(std::make_shared<RichTextElementProperties>()), m_highlight(false)
+    Inline(InlineElementType::TextRun), m_textElementProperties(std::make_shared<RichTextElementProperties>()),
+    m_highlight(false)
 {
     PopulateKnownPropertiesSet();
 }
@@ -150,6 +151,16 @@ void TextRun::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
     m_selectAction = action;
 }
 
+bool TextRun::GetUnderline() const
+{
+    return m_textElementProperties->GetUnderline();
+}
+
+void TextRun::SetUnderline(const bool value)
+{
+    m_textElementProperties->SetUnderline(value);
+}
+
 std::shared_ptr<Inline> TextRun::Deserialize(ParseContext& context, const Json::Value& json)
 {
     std::shared_ptr<TextRun> inlineTextRun = std::make_shared<TextRun>();
@@ -164,6 +175,7 @@ std::shared_ptr<Inline> TextRun::Deserialize(ParseContext& context, const Json::
         inlineTextRun->m_textElementProperties->Deserialize(context, json);
 
         inlineTextRun->SetHighlight(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Highlight, false));
+        inlineTextRun->SetUnderline(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Underline, false));
         inlineTextRun->SetSelectAction(ParseUtil::GetAction(context, json, AdaptiveCardSchemaKey::SelectAction, false));
 
         HandleUnknownProperties(json, inlineTextRun->m_knownProperties, inlineTextRun->m_additionalProperties);
