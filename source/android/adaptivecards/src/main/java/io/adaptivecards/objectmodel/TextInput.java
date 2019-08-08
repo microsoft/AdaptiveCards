@@ -103,6 +103,14 @@ public class TextInput extends BaseInputElement {
     AdaptiveCardObjectModelJNI.TextInput_SetInlineAction(swigCPtr, this, BaseActionElement.getCPtr(action), action);
   }
 
+  public String GetRegex() {
+    return AdaptiveCardObjectModelJNI.TextInput_GetRegex(swigCPtr, this);
+  }
+
+  public void SetRegex(String value) {
+    AdaptiveCardObjectModelJNI.TextInput_SetRegex(swigCPtr, this, value);
+  }
+
   public static TextInput dynamic_cast(BaseCardElement baseCardElement) {
     long cPtr = AdaptiveCardObjectModelJNI.TextInput_dynamic_cast(BaseCardElement.getCPtr(baseCardElement), baseCardElement);
     return (cPtr == 0) ? null : new TextInput(cPtr, true);
