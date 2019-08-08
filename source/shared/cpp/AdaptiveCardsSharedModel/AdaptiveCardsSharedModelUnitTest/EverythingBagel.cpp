@@ -406,6 +406,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::IsTrue(inlineTextElement->GetItalic());
         Assert::IsTrue(inlineTextElement->GetHighlight());
         Assert::IsTrue(inlineTextElement->GetStrikethrough());
+        Assert::IsTrue(inlineTextElement->GetUnderline());
 
         Assert::IsTrue(InlineElementType::TextRun == inlines[1]->GetInlineType());
         Assert::AreEqual("TextRun"s, inlines[1]->GetInlineTypeString());

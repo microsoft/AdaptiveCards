@@ -26,6 +26,7 @@ namespace AdaptiveNamespace
         m_highlight = sharedTextRun->GetHighlight();
         m_italic = sharedTextRun->GetItalic();
         m_strikethrough = sharedTextRun->GetStrikethrough();
+        m_underline = sharedTextRun->GetUnderline();
 
         RETURN_IF_FAILED(GenerateActionProjection(sharedTextRun->GetSelectAction(), &m_selectAction));
         RETURN_IF_FAILED(AdaptiveTextElement::InitializeTextElement(sharedTextRun));
@@ -80,6 +81,17 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    IFACEMETHODIMP AdaptiveTextRun::get_Underline(boolean* underline)
+    {
+        *underline = m_underline;
+        return S_OK;
+    }
+
+    IFACEMETHODIMP AdaptiveTextRun::put_Underline(boolean underline)
+    {
+        m_underline = underline;
+        return S_OK;
+    }
 
     HRESULT AdaptiveTextRun::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::TextRun>& sharedModel) noexcept try
     {
@@ -89,6 +101,7 @@ namespace AdaptiveNamespace
         textRun->SetItalic(m_italic);
         textRun->SetStrikethrough(m_strikethrough);
         textRun->SetHighlight(m_highlight);
+        textRun->SetUnderline(m_underline);
 
         if (m_selectAction != nullptr)
         {

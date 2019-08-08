@@ -18,6 +18,7 @@
 		3016458A2294BD090032E11C /* TextBlock.FontType.json in Resources */ = {isa = PBXBuildFile; fileRef = 301645892294BD080032E11C /* TextBlock.FontType.json */; };
 		30860BC220C9B5C9009F9D99 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		30860BC420C9B5C9009F9D99 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		30A1ADB622F9F60E00BA3B6F /* RichTextBlock.Underline.json in Resources */ = {isa = PBXBuildFile; fileRef = 30A1ADB522F9F60E00BA3B6F /* RichTextBlock.Underline.json */; };
 		30C340E42214D50F009A785D /* ColumnSet.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = 30C340E32214D50F009A785D /* ColumnSet.Style.json */; };
 		6B096D582257DA0C006CC034 /* Action.IconUrl.TwoActions.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B096D572257DA0B006CC034 /* Action.IconUrl.TwoActions.json */; };
 		6B096D70225EB73C006CC034 /* Container.Bleed.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B096D6D225EB73C006CC034 /* Container.Bleed.json */; };
@@ -178,6 +179,7 @@
 		3016458222824B8A0032E11C /* AdaptiveCard.BackgroundImage.FillMode.Cover.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = AdaptiveCard.BackgroundImage.FillMode.Cover.json; path = ../../../../samples/v1.2/Elements/AdaptiveCard.BackgroundImage.FillMode.Cover.json; sourceTree = "<group>"; };
 		3016458322824B8A0032E11C /* AdaptiveCard.BackgroundImage.FillMode.RepeatVertically.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = AdaptiveCard.BackgroundImage.FillMode.RepeatVertically.json; path = ../../../../samples/v1.2/Elements/AdaptiveCard.BackgroundImage.FillMode.RepeatVertically.json; sourceTree = "<group>"; };
 		301645892294BD080032E11C /* TextBlock.FontType.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.FontType.json; path = ../../../../samples/v1.2/Elements/TextBlock.FontType.json; sourceTree = "<group>"; };
+		30A1ADB522F9F60E00BA3B6F /* RichTextBlock.Underline.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = RichTextBlock.Underline.json; path = ../../../../samples/v1.3/Elements/RichTextBlock.Underline.json; sourceTree = "<group>"; };
 		30C340E32214D50F009A785D /* ColumnSet.Style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.Style.json; path = ../../../../samples/v1.2/Elements/ColumnSet.Style.json; sourceTree = "<group>"; };
 		6B096D572257DA0B006CC034 /* Action.IconUrl.TwoActions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.IconUrl.TwoActions.json; path = ../../../../samples/v1.1/Elements/Action.IconUrl.TwoActions.json; sourceTree = "<group>"; };
 		6B096D6D225EB73C006CC034 /* Container.Bleed.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Container.Bleed.json; path = ../../../../samples/v1.2/Elements/Container.Bleed.json; sourceTree = "<group>"; };
@@ -450,6 +452,7 @@
 		F4D33E341F045B6E00941E44 /* Jsons */ = {
 			isa = PBXGroup;
 			children = (
+				30A1ADB522F9F60E00BA3B6F /* RichTextBlock.Underline.json */,
 				6BE0389922DF9409005413DE /* ContainerDoubleFallback.json */,
 				6BE0389422DE46C1005413DE /* Agenda.json */,
 				6BE0389322DE46C1005413DE /* ExpenseReport.json */,
@@ -766,6 +769,7 @@
 				F4933CD11F79852C00F6EBFD /* Container.Spacing.json in Resources */,
 				F4933CCF1F79852C00F6EBFD /* Container.SelectAction.json in Resources */,
 				F4933CDC1F79852C00F6EBFD /* Input.ChoiceSet.json in Resources */,
+				30A1ADB622F9F60E00BA3B6F /* RichTextBlock.Underline.json in Resources */,
 				6BC30F6821DFE8EA00B9FAAE /* Media.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
