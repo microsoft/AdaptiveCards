@@ -154,6 +154,7 @@ namespace AdaptiveSharedNamespace
         ToggleInput,
         Top,
         Type,
+        Underline,
         Url,
         Value,
         ValueOff,

@@ -540,6 +540,7 @@ AdaptiveNamespaceStart
         Boolean Italic;
         Boolean Strikethrough;
         Boolean Highlight;
+        Boolean Underline;
         IAdaptiveActionElement SelectAction;
     };
 
