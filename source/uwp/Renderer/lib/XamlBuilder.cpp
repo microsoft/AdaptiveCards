@@ -2260,7 +2260,7 @@ namespace AdaptiveNamespace
         // Prevent an image from being stretched out if it is smaller than the
         // space allocated for it (when in auto mode).
         ComPtr<IEllipse> localElementAsEllipse;
-        if(S_OK == localElement.As(&localElementAsEllipse))
+        if (SUCCEEDED(localElement.As(&localElementAsEllipse)))
         {
             // don't need to set both width and height when image size is auto since
             // we want a circle as shape.
@@ -2325,8 +2325,6 @@ namespace AdaptiveNamespace
             ComPtr<IBitmapSource> imageSourceAsBitmap;
             THROW_IF_FAILED(imageSource.As(&imageSourceAsBitmap));
 
-            ComPtr<IInspectable> strongParentElement(parentElement);
-
             // If the image hasn't loaded yet
             if (imageFiresOpenEvent)
             {
@@ -2334,6 +2332,7 @@ namespace AdaptiveNamespace
                 THROW_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
                 // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
                 EventRegistrationToken eventToken;
+                ComPtr<IInspectable> strongParentElement(parentElement);
                 THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(
                     Callback<IRoutedEventHandler>([ellipseAsUIElement, ellipsAsFrameworkElement, imageSourceAsBitmap, strongParentElement, isVisible](IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
                         if (isVisible)
