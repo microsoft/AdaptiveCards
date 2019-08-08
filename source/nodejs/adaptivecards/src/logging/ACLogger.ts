@@ -11,7 +11,14 @@ export class ACLogger implements IACLogger {
 
 	private constructor() {	}
 
-	private log(level: LogLevel, message: string) {
+	private log(level: LogLevel, message: string): void {
+
+		// if providers have not yet been configured, then exit
+		if (!this.providers) {
+			console.log("ERROR: Providers have not yet been configured!");
+			return;
+		}
+
 		var stringLevel: string = "";
 
 		switch (level) {
@@ -28,11 +35,17 @@ export class ACLogger implements IACLogger {
 				stringLevel = "info";
 				break;
 			default:
-				console.log("Error: LogLevel undefined.")
+				console.log("ERROR: LogLevel undefined.");
+				return;
 		}
 
 		for (var provider of this.providers) {
-			provider.sendLogData(stringLevel, message);
+
+			try {
+				provider.sendLogData(stringLevel, message);
+			} catch (e) {
+				console.log("ERROR: Error logging to provider " + Object.getPrototypeOf(provider).constructor.name + " - " + e);
+			}
 		}
 	}
 
@@ -54,7 +67,11 @@ export class ACLogger implements IACLogger {
 	
 	logEvent(event: string, eventSourceName: string, correlationID?: string, valueSet?: object): void {
 		for (var provider of this.providers) {
-			provider.sendData(event, eventSourceName, correlationID, valueSet);
+			try {
+				provider.sendData(event, eventSourceName, correlationID, valueSet);
+			} catch (e) {
+				console.log("ERROR: Error logging to provider " + Object.getPrototypeOf(provider).constructor.name + " - " + e);
+			}
 		}
 	}
 

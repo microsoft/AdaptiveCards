@@ -9,6 +9,8 @@ import { ACLogger } from "./logging/ACLogger";
 import { GUIDHelper } from "./logging/GUIDHelper";
 import { IACLogger } from "./logging/IACLogger";
 
+var TELEMETRY_ENABLED: boolean = true;
+
 function invokeSetCollection(action: Action, collection: ActionCollection) {
     if (action) {
         // Closest emulation of "internal" in TypeScript.
@@ -4053,7 +4055,7 @@ class ActionButton {
     private _parentContainerStyle: string;
     private _state: ActionButtonState = ActionButtonState.Normal;
 
-    private updateCssStyle() {
+    protected updateCssStyle() {
         let hostConfig = this.action.parent.hostConfig;
 
         this.action.renderedElement.className = hostConfig.makeCssClassName("ac-pushButton");
@@ -4099,20 +4101,11 @@ class ActionButton {
 
     render(alignment: Enums.ActionAlignment) {
 
-		// phc
-		var useGUID = GUIDHelper.getOrCreate().useGUID();
-		var guid = GUIDHelper.getOrCreate().getGUID().toString();
-
         this.action.render();
         this.action.renderedElement.style.flex = alignment === Enums.ActionAlignment.Stretch ? "0 1 100%" : "0 1 auto";
         this.action.renderedElement.onclick = (e) => {
             e.preventDefault();
 			e.cancelBubble = true;
-			
-			if (this.action instanceof SubmitAction && useGUID) {
-				ACLogger.getOrCreate().logEvent("SubmitAction", "Action.Submit", guid);
-			}
-			
 
             this.click();
         };
@@ -4135,6 +4128,32 @@ class ActionButton {
 
         this.updateCssStyle();
     }
+}
+
+class ActionButtonWithTelemetry extends ActionButton {
+	
+	render(alignment: Enums.ActionAlignment) {
+
+		var useGUID = GUIDHelper.getOrCreate().useGUID();
+		var guid = GUIDHelper.getOrCreate().getGUID().toString();
+
+        this.action.render();
+        this.action.renderedElement.style.flex = alignment === Enums.ActionAlignment.Stretch ? "0 1 100%" : "0 1 auto";
+        this.action.renderedElement.onclick = (e) => {
+            e.preventDefault();
+			e.cancelBubble = true;
+			
+			if (this.action instanceof SubmitAction && useGUID) {
+				ACLogger.getOrCreate().logEvent("SubmitAction", "Action.Submit", guid);
+			}
+			
+
+            this.click();
+        };
+
+        this.updateCssStyle();
+    }
+
 }
 
 export abstract class Action extends CardObject {
@@ -5165,7 +5184,10 @@ class ActionCollection {
                     let actionButton: ActionButton = this.findActionButton(this.items[i]);
 
                     if (!actionButton) {
-                        actionButton = new ActionButton(this.items[i], parentContainerStyle);
+
+						actionButton = TELEMETRY_ENABLED ? new ActionButtonWithTelemetry(this.items[i], parentContainerStyle) : new ActionButton(this.items[i], parentContainerStyle);
+						
+                        // actionButton = new ActionButton(this.items[i], parentContainerStyle); // original without telemetry
                         actionButton.onClick = (ab) => { this.actionClicked(ab); };
 
                         this.buttons.push(actionButton);
@@ -6922,16 +6944,6 @@ export class AdaptiveCard extends ContainerWithActions {
     static onParseAction: (element: Action, json: any, errors?: Array<HostConfig.IValidationError>) => void = null;
     static onParseError: (error: HostConfig.IValidationError) => void = null;
 	static onProcessMarkdown: (text: string, result: IMarkdownProcessingResult) => void = null;
-	
-
-	// phc
-	constructor() {
-		super();
-
-		// instantiate logger upon card creation
-		ACLogger.getOrCreate().configureDefaultProviders();
-		
-	}
 
     static get processMarkdown(): (text: string) => string {
         throw new Error("The processMarkdown event has been removed. Please update your code and set onProcessMarkdown instead.")
@@ -7126,9 +7138,23 @@ export class AdaptiveCard extends ContainerWithActions {
             this._fallbackCard = new AdaptiveCard();
             this._fallbackCard.addItem(fallbackElement);
 		}
+		
+		// enables telemetry recording for RenderCard event
+		if (TELEMETRY_ENABLED) {
+			this.renderCardTelemetry(json);
+		}
+		
+		super.parse(json, errors);
 
-		// phc
-        if (json[this.getItemsCollectionPropertyName()] != null) {
+		
+	}
+	
+	private renderCardTelemetry(json: any): void {
+
+		// instantiate logger upon card parse
+		ACLogger.getOrCreate().configureDefaultProviders();
+
+		if (json[this.getItemsCollectionPropertyName()] != null) {
 
 			let items = json[this.getItemsCollectionPropertyName()] as Array<any>;
 
@@ -7147,6 +7173,7 @@ export class AdaptiveCard extends ContainerWithActions {
 			if (hasRating) {
 
 				var logger: IACLogger = ACLogger.getOrCreate();
+				var guid: string = guidHelper.getGUID().toString(); // only call getGUID() if card hasRating
 				
 
 				for (let i = 0; i < items.length; i++) {
@@ -7159,10 +7186,10 @@ export class AdaptiveCard extends ContainerWithActions {
 
 						valueSet["defaultStar"] = (items[i]["iconSelected"] || items[i]["iconUnselected"]) ? false : true;
 
-						logger.logEvent("RenderCard", items[i]["type"], guidHelper.getGUID().toString(), valueSet);
+						logger.logEvent("RenderCard", items[i]["type"], guid, valueSet);
 
 					} else {
-						logger.logEvent("RenderCard", items[i]["type"], guidHelper.getGUID().toString());
+						logger.logEvent("RenderCard", items[i]["type"], guid);
 					}
 
 					if (itemType === "Input.ChoiceSet") {
@@ -7184,7 +7211,7 @@ export class AdaptiveCard extends ContainerWithActions {
 
 				if (json["actions"]) {
 					for (let i = 0; i < json["actions"].length; i++) {
-						logger.logEvent("RenderCard", json["actions"][i]["type"], guidHelper.getGUID().toString());
+						logger.logEvent("RenderCard", json["actions"][i]["type"], guid);
 					}
 				}
 
@@ -7192,15 +7219,7 @@ export class AdaptiveCard extends ContainerWithActions {
 
 			
 		}
-		
-		// end phc
-
-		super.parse(json, errors);
-
-		
 	}
-	
-	// phc
 
 	private logSubItems(item: any, subItemName: string, itemSchemaName: string): void {
 		var subItems = item[subItemName];
@@ -7219,7 +7238,6 @@ export class AdaptiveCard extends ContainerWithActions {
 		}
 	}
 
-	// end phc
 
     render(target?: HTMLElement): HTMLElement {
         let renderedCard: HTMLElement;

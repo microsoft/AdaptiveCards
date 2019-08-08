@@ -197,31 +197,32 @@
 			document.getElementById('exampleDiv2').appendChild(renderedCard2);
 
 			var card3 = {
-    "type": "AdaptiveCard",
-    "body": [
-        {
-			// "type": "Input.ChoiceSet",
+				"type": "AdaptiveCard",
+				"version": "1.0",
+				"body": [{
+						"type": "Image",
+						"url": "http://adaptivecards.io/content/adaptive-card-50.png"
+					},
+					{
+						"type": "TextBlock",
+						"text": "Hello **Adaptive Cards!**"
+					},
+					{
 			"type": "Input.Rating",
 			"id": "UserProvidedRating"
-			// "placeholder": "Placeholder text",
-			// "maxValue": 5,
-			// "maxValue": 10,
-			// "iconUnselected": "https://pbs.twimg.com/profile_images/988775660163252226/XpgonN0X_400x400.jpg"
 		}
-    ],
-  			"actions": [
-      	  	{
-				"type": "Action.Submit",
-				"title": "Action.Submit",
-				"data": {
-					"x": 13
-				}
-        	}
-		],
-	// "$schema": "/schemas/1.3/adaptive-card.json",
-	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "version": "1.0"
-};
+				],
+				"actions": [{
+						"type": "Action.Submit",
+						"title": "Learn more"
+					},
+					{
+						"type": "Action.OpenUrl",
+						"title": "GitHub",
+						"url": "http://github.com/Microsoft/AdaptiveCards"
+					}
+				]
+			};
 
 			// Create an AdaptiveCard instance
 			var adaptiveCard3 = new AdaptiveCards.AdaptiveCard();
