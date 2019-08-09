@@ -4134,7 +4134,7 @@ class ActionButtonWithTelemetry extends ActionButton {
 	
 	render(alignment: Enums.ActionAlignment) {
 
-		var useGUID = GUIDHelper.getOrCreate().useGUID();
+		var useGUID = GUIDHelper.getOrCreate().trackGUID();
 		var guid = GUIDHelper.getOrCreate().getGUID().toString();
 
         this.action.render();
@@ -7149,6 +7149,11 @@ export class AdaptiveCard extends ContainerWithActions {
 		
 	}
 	
+	/**
+	 * A method that creates an IACLogger and enables event logging to the respective providers.
+	 * 
+	 * @param json - The JSON object that is being parsed
+	 */
 	private renderCardTelemetry(json: any): void {
 
 		// instantiate logger upon card parse
@@ -7158,7 +7163,8 @@ export class AdaptiveCard extends ContainerWithActions {
 
 			let items = json[this.getItemsCollectionPropertyName()] as Array<any>;
 
-			var hasRating: boolean = false; // only telemetry for card with Input.Rating is collected
+			// only telemetry for card with Input.Rating is collected
+			var hasRating: boolean = false;
 
 			for (let i = 0; i < items.length; i++) {
 				if (items[i]["type"] === "Input.Rating") {
@@ -7168,12 +7174,16 @@ export class AdaptiveCard extends ContainerWithActions {
 			}
 			
 			var guidHelper: GUIDHelper = GUIDHelper.getOrCreate();
-			guidHelper.createGUID(); // generate a new GUID each time a new card is parsed
+			// generate a new GUID each time a new card is parsed
+			guidHelper.createGUID();
 
 			if (hasRating) {
 
 				var logger: IACLogger = ACLogger.getOrCreate();
-				var guid: string = guidHelper.getGUID().toString(); // only call getGUID() if card hasRating
+
+				// only call getGUID() if we want to track the GUID
+				// (has a rating control)
+				var guid: string = guidHelper.getGUID().toString();
 				
 
 				for (let i = 0; i < items.length; i++) {
@@ -7221,6 +7231,13 @@ export class AdaptiveCard extends ContainerWithActions {
 		}
 	}
 
+	/**
+	 * A helper method used by the renderCardTelemetry() method to log sub-elements (e.g. Choices within ChoiceSet).
+	 * 
+	 * @param item Name of the item element
+	 * @param subItemName Name of the subitems
+	 * @param itemSchemaName Name of the item according to the Adaptive Cards schema
+	 */
 	private logSubItems(item: any, subItemName: string, itemSchemaName: string): void {
 		var subItems = item[subItemName];
 

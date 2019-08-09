@@ -1,15 +1,18 @@
+/*
+	A console logging implementation of the IACProvider.
+	Allows for all logging from an IACLogger to be output to the console.
+*/
 import { IACProvider } from "./IACProvider";
 
 export class ConsoleLogger implements IACProvider {
 
 	sendLogData(level: string, message: string) {
-		console.log(level + " --- " + message);
+		console.log("Log" + level.toUpperCase() + ": " + message);
 	}
 
 	sendData(event: any, eventSourceName: any, correlationID?: any, valueSet?: any) {
-		console.log(event + " ---- " + eventSourceName);
-		console.log("Correlation ID + optional valueSet " + correlationID + " --- " + valueSet);
+		console.log("LogEvent: " + event + "\nSource: " + eventSourceName + 
+		"\nCorrelationID: " + correlationID + "\n" + "valueSet: " + valueSet);
 	}
 
-	
 }

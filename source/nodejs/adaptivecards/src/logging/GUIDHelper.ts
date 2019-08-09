@@ -1,5 +1,9 @@
 const uuidv4 = require('uuid/v4');
 
+/*
+A helper class to generate, keep track of, and return a unique GUID
+to correlate events throughout a unique card's life cycle.
+*/
 export class GUIDHelper {
 	private guid: number;
 	private static instance: GUIDHelper;
@@ -7,6 +11,11 @@ export class GUIDHelper {
 
 	private constructor() { }
 
+	/**
+	 * Returns the singleton instance of the ACLogger.
+	 * If the instance has not yet been created, then the instance is created,
+	 * then returned.
+	 */
 	static getOrCreate(): GUIDHelper {
 		if (this.instance) {
 			return this.instance;
@@ -16,17 +25,23 @@ export class GUIDHelper {
 		}
 	}
 
+	/**
+	 * Creates a unique GUID and resets tracking
+	 */
 	createGUID(): void {
 		this.guid = uuidv4();
 		this.hasRating = false;
 	}
 
+	/**
+	 * 
+	 */
 	getGUID(): number {
 		this.hasRating = true;
 		return this.guid;
 	}
 
-	useGUID(): boolean {
+	trackGUID(): boolean {
 		return this.hasRating;
 	}
 }

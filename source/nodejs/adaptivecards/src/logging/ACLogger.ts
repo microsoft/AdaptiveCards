@@ -4,6 +4,10 @@ import { ConsoleLogger } from "./ConsoleLogger";
 import { Microsoft1DSLogger } from "./Microsoft1DSLogger/Microsoft1DSLogger";
 import { IACLogger } from "./IACLogger";
 
+/*
+	The implementation of the IACLogger to be used within the
+	Adaptive Cards JS renderer.
+*/
 export class ACLogger implements IACLogger {
 
 	private static instance: IACLogger;
@@ -75,6 +79,11 @@ export class ACLogger implements IACLogger {
 		}
 	}
 
+	/**
+	 * Returns the singleton instance of the ACLogger.
+	 * If the instance has not yet been created, then the instance is created,
+	 * then returned.
+	 */
 	static getOrCreate(): IACLogger {
 		if (!this.instance) {
 			this.instance = new ACLogger();
@@ -115,7 +124,12 @@ export class ACLogger implements IACLogger {
 	}
 	
 
-	configureCustomProviders(...providers: IACProvider[]) {
+	configureCustomProviders(...providers: IACProvider[]): void {
+
+		if (providers === undefined || providers.length == 0) {
+			this.configureDefaultProviders();
+			return;
+		}
 
 		if (!this.providers) {
 			this.providers = [];
