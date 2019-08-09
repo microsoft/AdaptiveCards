@@ -18,11 +18,10 @@ import io.adaptivecards.objectmodel.TextWeight;
 
 public class TextRendererUtil
 {
-
     private static Map<String, Typeface> customTypefaces = new HashMap<>();
 
-    public static void registerCustomTypeface(String name, Typeface typeface)
-    {
+    public static void registerCustomTypeface(String name, Typeface typeface) {
+
         customTypefaces.put(name, typeface);
     }
 
