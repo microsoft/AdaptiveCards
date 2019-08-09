@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
-using Microsoft.MarkedNet;
+using MarkedNet;
 
 namespace AdaptiveCards.Rendering.Html
 {
@@ -17,6 +17,7 @@ namespace AdaptiveCards.Rendering.Html
             marked.Options.Mangle = false;
             marked.Options.Sanitize = true;
             marked.Options.XHtml = true;
+            marked.Options.ExternalLinks = false;
 
             var rawXhtml = marked.Parse(markdown);
             var root = XElement.Parse($"<root>{rawXhtml}</root>");

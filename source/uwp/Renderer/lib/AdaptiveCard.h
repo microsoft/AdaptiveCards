@@ -57,6 +57,9 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_MinHeight(_Out_ UINT32* minHeight);
         IFACEMETHODIMP put_MinHeight(UINT32 minHeight);
 
+        IFACEMETHODIMP get_InputNecessityIndicators(_Out_ ABI::AdaptiveNamespace::InputNecessityIndicators* inputNecessityIndicators);
+        IFACEMETHODIMP put_InputNecessityIndicators(ABI::AdaptiveNamespace::InputNecessityIndicators inputNecessityIndicators);
+
         IFACEMETHODIMP ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
 
         IFACEMETHODIMP GetResourceInformation(
@@ -84,6 +87,7 @@ namespace AdaptiveNamespace
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_selectAction;
         ABI::AdaptiveNamespace::ContainerStyle m_style;
         ABI::AdaptiveNamespace::VerticalContentAlignment m_verticalAlignment;
+        ABI::AdaptiveNamespace::InputNecessityIndicators m_inputNecessityIndicators;
     };
 
     class AdaptiveCardStaticsImpl WrlFinal : public Microsoft::WRL::AgileActivationFactory<ABI::AdaptiveNamespace::IAdaptiveCardStatics>

@@ -25,17 +25,6 @@
         2109
       ]
     },
-    "backgroundImage": {
-      "type": "BackgroundImage",
-      "description": "Specifies the background image.",
-      "version": "1.2",
-      "shorthands": [
-        {
-          "type": "uri-reference",
-          "description": "The URL (or data url) to use as the background image. Supports data URI."
-        }
-      ]
-    },
     "minHeight": {
       "type": "string",
       "description": "Specifies the minimum height of the column set in pixels, like `\"80px\"`.",

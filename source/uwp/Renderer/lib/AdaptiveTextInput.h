@@ -42,6 +42,9 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_InlineAction(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** action);
         IFACEMETHODIMP put_InlineAction(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action);
 
+        IFACEMETHODIMP get_Regex(_Outptr_ HSTRING* regex);
+        IFACEMETHODIMP put_Regex(_In_ HSTRING regex);
+
         // IAdaptiveInputElement
         IFACEMETHODIMP get_IsRequired(_Out_ boolean* isRequired)
         {
@@ -50,6 +53,15 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP put_IsRequired(boolean isRequired)
         {
             return AdaptiveInputElementBase::put_IsRequired(isRequired);
+        }
+
+        IFACEMETHODIMP get_ErrorMessage(_Outptr_ HSTRING* errorMessage)
+        {
+            return AdaptiveInputElementBase::get_ErrorMessage(errorMessage);
+        }
+        IFACEMETHODIMP put_ErrorMessage(_In_ HSTRING errorMessage)
+        {
+            return AdaptiveInputElementBase::put_ErrorMessage(errorMessage);
         }
 
         // IAdaptiveCardElement
@@ -144,6 +156,7 @@ namespace AdaptiveNamespace
         boolean m_isMultiline;
         ABI::AdaptiveNamespace::TextInputStyle m_textInputStyle;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_inlineAction;
+        Microsoft::WRL::Wrappers::HString m_regex;
     };
 
     ActivatableClass(AdaptiveTextInput);
