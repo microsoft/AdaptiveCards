@@ -295,6 +295,20 @@
                                 android:paddingLeft="15dp"
                                 android:text="Image.json"
                                 android:visibility="gone" />
+
+                            <Switch
+                                android:id="@+id/customTypeface"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Custom Typeface" />
+
+                            <TextView
+                                android:id="@+id/cardsCustomTypeface"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Change config to customFontConfig.json"
+                                android:visibility="gone"
+                                tools:visibility="gone" />
                         </LinearLayout>
                     </ScrollView>
                 </LinearLayout>

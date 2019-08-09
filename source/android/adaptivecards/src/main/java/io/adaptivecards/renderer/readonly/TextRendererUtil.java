@@ -5,6 +5,9 @@ package io.adaptivecards.renderer.readonly;
 import android.graphics.Typeface;
 import android.view.Gravity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.FontType;
 import io.adaptivecards.objectmodel.ForegroundColor;
@@ -15,6 +18,13 @@ import io.adaptivecards.objectmodel.TextWeight;
 
 public class TextRendererUtil
 {
+
+    private static Map<String, Typeface> customTypefaces = new HashMap<>();
+
+    public static void registerCustomTypeface(String name, Typeface typeface)
+    {
+        customTypefaces.put(name, typeface);
+    }
 
     static int getTextAlignment(HorizontalAlignment textAlignment)
     {
@@ -52,6 +62,10 @@ public class TextRendererUtil
         if (fontFamily.isEmpty() && type == FontType.Monospace)
         {
             typeface = Typeface.MONOSPACE;
+        }
+        else if (customTypefaces.containsKey(fontFamily))
+        {
+            typeface = customTypefaces.get(fontFamily);
         }
         else
         {
