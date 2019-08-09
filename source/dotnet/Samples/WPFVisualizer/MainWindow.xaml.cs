@@ -77,6 +77,7 @@ namespace WpfVisualizer
 
             // Use the Xceed rich input controls
             Renderer.UseXceedElementRenderers();
+            xceedCheckbox.IsChecked = true;
 
             // Register custom elements and actions
             // TODO: Change to instance property? Change to UWP parser registration
@@ -427,6 +428,18 @@ namespace WpfVisualizer
 
         private void HostConfigEditor_OnPropertyValueChanged(object sender, PropertyValueChangedEventArgs e)
         {
+            _dirty = true;
+        }
+
+        private void XceedCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Renderer.DontUseXceedElementRenderers();
+            _dirty = true;
+        }
+
+        private void XceedCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            Renderer.UseXceedElementRenderers();
             _dirty = true;
         }
     }
