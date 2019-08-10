@@ -290,6 +290,22 @@ dir {
   margin-top: 20px;
 }
 
+.blog pre {
+	padding: 0;
+	margin: 12px -16px;
+	border: none;
+}
+
+.blog pre > code {
+	margin: 16px;
+	font-size: 1.1em;
+}
+
+
+.hljs {
+	background: #FAFAFA;
+}
+
 /* Hide AddToAny vertical share bar when screen is less than 980 pixels wide */
 @media screen and (max-width: 980px) {
   .a2a_floating_style.a2a_vertical_style {

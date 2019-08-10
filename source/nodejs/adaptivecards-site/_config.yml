@@ -38,11 +38,12 @@ post_asset_folder: true
 relative_link: false
 future: true
 highlight:
-  enable: true
+  enable: false # Use plugin instead
   line_number: false
   auto_detect: false
   tab_replace: '  '
   
+
 # Home page setting
 # path: Root path for your blogs index page. (default = '')
 # per_page: Posts displayed per page. (0 = disable pagination)
