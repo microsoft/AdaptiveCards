@@ -345,6 +345,31 @@ $(function () {
 		hljs.highlightBlock(block);
 	});
 
+	// From https://github.com/30-seconds/30-seconds-of-code/blob/20e7d899f31ac3d8fb2b30b2e311acf9a1964fe8/snippets/copyToClipboard.md
+	function copyToClipboard(str) {
+		const el = document.createElement('textarea');
+		el.value = str;
+		el.setAttribute('readonly', '');
+		el.style.position = 'absolute';
+		el.style.left = '-9999px';
+		document.body.appendChild(el);
+		const selected =
+		  document.getSelection().rangeCount > 0 ? document.getSelection().getRangeAt(0) : false;
+		el.select();
+		document.execCommand('copy');
+		document.body.removeChild(el);
+		if (selected) {
+		  document.getSelection().removeAllRanges();
+		  document.getSelection().addRange(selected);
+		}
+	}
+
+	$("button.copy-code").click(function (e) {
+		var content = $(this).parent().siblings("pre").text();
+		copyToClipboard(content);
+	});
+
+
 	$('#menu-nav').on('change', function () {
 		window.location = this.value;
 	});
