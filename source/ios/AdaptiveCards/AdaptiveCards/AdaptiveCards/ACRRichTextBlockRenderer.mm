@@ -117,6 +117,11 @@
                 if(textRun->GetStrikethrough()) {
                     [textRunContent addAttribute:NSStrikethroughStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(0, textRunContent.length)];
                 }
+                
+                if(textRun->GetUnderline())
+                {
+                    [textRunContent addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(0, textRunContent.length)];
+                }
 
                 // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
                 [textRunContent addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:foregroundColor,} range:NSMakeRange(0, textRunContent.length - 1)];
