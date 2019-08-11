@@ -4,66 +4,81 @@ layout: layout
 <!-- This is the blog index page -->
 
 <style>
-.main-container {
-	padding: 0 !important;
-	background: #f3f3f3 !important;
-}
+	.main-container {
+		padding: 0 !important;
+	}
 
-.uhf-container {
-	width: 100% !important;
-	max-width: 100% !important;
-}
+	.uhf-container {
+		width: 100% !important;
+		max-width: 100% !important;
+	}
+
+	.footer-holder {
+		border-top: none !important;
+	}
+
+	.coverImage {
+		height: 172px !important;
+		border: solid 1px rgba(0, 0, 0, .15);
+		background-position: 50% 50% !important;
+		background-size: cover;
+		background-color: #f0f0f0;
+		display: block;
+	}
 </style>
 
 <div class="blog">
 
-	<% page.posts.each(function(post){ %>
-		<div class="w3-row">
-			<div class="w3-col l1 w3-hide-small w3-hide-medium">&nbsp;</div>
-		
-			<div class="w3-col l10">
-				<div class="w3-row w3-white w3-margin w3-border">
-					<div class="w3-col w3-margin-top w3-margin-left w3-margin-bottom l4 w3-hide-small w3-hide-medium">
-						<img src="<%- post.featured_image ? url_for(post.featured_image) : url_for('content/icons_blue/blue-3x2.png') %>" class="w3-image" alt="Featured image" />
-					</div>
 
-					<div class="w3-col w3-container l7">
+	<% page.posts.each(function(post, i) { %>
+	<% if(i % 3 === 0) { %>
+	<div class="w3-row-padding w3-margin-top w3-margin-bottom w3-padding-32">
+		<div class="w3-col l1 w3-hide-small">&nbsp;</div>
 
-						<a href="<%- config.root %><%- post.path %>">
-							<h2 style="margin-top: 14px"><%- post.title %></h2>
-						</a>
+		<% } %>
+		<article class="w3-col l3 w3-container article">
+			<% var imageSrc = post.featured_image ? url_for(post.featured_image) : url_for('content/icons_blue/blue-3x2.png');
+				var style = "background-image: url('" + imageSrc + "')"  %>
+			<a href="<%- config.root %><%- post.path %>" class="coverImage" style="<%= style %>"></a>
 
-						<div class="w3-medium">
-							<img src="<%- post.author.avatar %>" class="w3-image w3-circle" style="width: 40px" />
-							<a href="<%- post.author.webpage %>"><%- post.author.name %></a>
-							<%= post.date.format(config.date_format) %>
-						</div>
+			<a class="article-title" href="<%- config.root %><%- post.path %>"><%- post.title %></a>
 
-						<div>
-							<%- truncate(post.excerpt, { length: 600 }) %>
-						</div>
-					</div>
+			<a class="article-subtitle" href="<%- config.root %><%- post.path %>"><%- post.subtitle %></a>
+
+			<div class="w3-margin-top">
+				<div class="w3-cell w3-cell-middle">
+					<a href="<%- post.author.webpage %>"><img src="<%- post.author.avatar %>" class="w3-image w3-circle"
+							style="width: 35px; margin-right: 6px" /></a>
+				</div>
+				<div class="w3-cell">
+					<a class="article-author" href="<%- post.author.webpage %>"><%- post.author.name %></a>
+					<datetime class="article-date" style="margin: 0"><%= post.date.format("MMM D") %></datetime> · <span
+						class="reading-time"><%- readingTime(page.content, 'min read', 60) %></span>
 				</div>
 			</div>
 
-			<div class="w3-col l1 w3-hide-small w3-hide-medium">&nbsp;</div>
-		</div>
 
+		</article>
+
+		<% if(i % 3 === 2) { %>
+		<div class="w3-col l1 w3-hide-small">&nbsp;</div>
+
+	</div>
+	<% } %>
 	<% }); %>
-
 
 	<!-- Pager -->
 
 	<ul class="w3-ul w3-center w3-medium">
 		<% if (page.prev){ %>
-			<li class="previous">
-				<a class="w3-button w3-blue" href="<%- config.root %><%- page.prev_link %>">&larr; Newer Posts</a>
-			</li>
+		<li class="previous">
+			<a class="w3-button w3-blue" href="<%- config.root %><%- page.prev_link %>">&larr; Newer Posts</a>
+		</li>
 		<% } %>
 		<% if (page.next){ %>
-			<li class="next">
-				<a class="w3-button w3-blue" href="<%- config.root %><%- page.next_link %>">Older Posts &rarr;</a>
-			</li>
+		<li class="next">
+			<a class="w3-button w3-blue" href="<%- config.root %><%- page.next_link %>">Older Posts &rarr;</a>
+		</li>
 		<% } %>
 	</ul>
 </div>

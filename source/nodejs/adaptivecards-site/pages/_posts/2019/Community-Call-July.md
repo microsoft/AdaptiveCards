@@ -1,5 +1,6 @@
 ---
 title: Community Call - July 11, 2019
+subtitle: Adaptive Cards 💙 Fabric, and a new Template Service prototype
 date: 2019-07-11
 featured_image: postman.png
 github_username: matthidinger

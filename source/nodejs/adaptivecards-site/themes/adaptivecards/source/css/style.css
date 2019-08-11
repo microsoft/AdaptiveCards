@@ -289,6 +289,59 @@ dir {
   margin-top: 20px;
 }
 
+.blog a:link,
+.blog a:visited {
+  color: #000000;
+}
+
+.blog .article {
+	max-width: 400px;
+}
+
+.blog .article-title:link,
+.blog .article-title:visited {
+  font-size: 21px;
+  display: block;
+  font-weight: 600;
+  margin: 12px 0;
+  text-overflow: ellipsis;
+}
+
+.blog a:hover {
+  text-decoration: none;
+}
+
+.blog .article-subtitle:link,
+.blog .article-subtitle:visited {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 17px;
+  line-height: 22px;
+  margin-top: 7px;
+  display: block;
+}
+
+.blog a:hover {
+  text-decoration: none;
+}
+
+.blog .article-author {
+  display: block;
+  font-size: 14px;
+  margin-bottom: -2px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.54) !important;
+}
+
+.blog .article-date {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 13px;
+}
+
+.blog .reading-time {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 13px;
+}
+
 .blog pre {
   padding: 0;
   margin: 12px -16px;
@@ -439,8 +492,8 @@ dir {
 }
 
 .ac-footer {
-	margin-bottom: -36px; /* The UFH footer adds a bunch of margin we don't need */
-	font-size: 0.9em;
+  margin-bottom: -36px; /* The UFH footer adds a bunch of margin we don't need */
+  font-size: 0.9em;
 }
 
 .ac-footer a:link,

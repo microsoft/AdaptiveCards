@@ -11,6 +11,7 @@ hexo.extend.filter.register('before_post_render', function (data) {
 	const frontMatter = yaml.loadFront(data.raw);
 	const github_username = frontMatter.github_username;
 	data.image = frontMatter.featured_image;
+	data.subtitle = frontMatter.subtitle;
 
 	if (github_username) {
 		return request({

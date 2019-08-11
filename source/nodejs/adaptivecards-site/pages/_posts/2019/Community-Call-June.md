@@ -1,5 +1,6 @@
 ---
 title: Community Call - June 13, 2019
+subtitle: v1.2 shipped, 1.3 planning underway, and a new JavaScript templating library available
 date: 2019-06-13
 featured_image: flight.jpg
 github_username: matthidinger
