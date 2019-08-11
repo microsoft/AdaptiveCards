@@ -149,9 +149,8 @@ h6 {
 }
 
 .code-snippet > pre {
-	background-color: #fdfdfd;
-
-  margin-top: 0; 
+  background-color: #fdfdfd;
+  margin-top: 0;
   font-size: 12px;
   overflow-wrap: break-word;
   padding: 0;
@@ -169,7 +168,7 @@ code {
 }
 
 .sample-browser code {
-  max-height: 800px;
+  max-height: calc(100vh - 400px);
 }
 
 .sidebar {
@@ -291,19 +290,22 @@ dir {
 }
 
 .blog pre {
-	padding: 0;
-	margin: 12px -16px;
-	border: none;
+  padding: 0;
+  margin: 12px -16px;
+  border: none;
 }
 
 .blog pre > code {
-	margin: 16px;
-	font-size: 1.1em;
+  margin: 16px;
+  font-size: 1.1em;
 }
 
+.blog .adaptivecard {
+  margin: 0;
+}
 
 .hljs {
-	background: #FAFAFA;
+  background: #fafafa;
 }
 
 /* Hide AddToAny vertical share bar when screen is less than 980 pixels wide */
@@ -351,7 +353,8 @@ dir {
   margin-top: 2px;
 }
 
-.homepage h6 {
+.homepage h6,
+.footer-holder h6 {
   text-transform: uppercase;
   letter-spacing: 2px;
   font-weight: bold;
@@ -435,6 +438,19 @@ dir {
   font-weight: lighter;
 }
 
-.quadrant div:nth-child(1) {
-  background-color: red;
+.ac-footer {
+	margin-bottom: -36px; /* The UFH footer adds a bunch of margin we don't need */
+	font-size: 0.9em;
+}
+
+.ac-footer a:link,
+.ac-footer a:visited {
+  color: #777777;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.ac-footer a:hover {
+  color: #6b6b6b;
+  text-decoration: none;
 }

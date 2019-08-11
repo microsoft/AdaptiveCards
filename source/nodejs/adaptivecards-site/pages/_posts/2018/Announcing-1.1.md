@@ -1,5 +1,6 @@
 ---
 title: Announcing Adaptive Cards 1.1
+excerpt: At the Microsoft Ignite conference we announced the general availability of Adaptive Cards 1.1, unblocking some of the most requested community and partner feature such as a Media element, Action Icons and more layout flexibility.
 date: 2018-10-12
 featured_image: designer.png
 github_username: matthidinger

@@ -8,7 +8,8 @@
   <%- body %>
 </div>
 
-<%- partial('_partial/footer', null, {cache: false}) %>
-
+<% if(!page.hideFooter) { %>
+	<%- partial('_partial/footer', null, {cache: false}) %>
+<% } %>
 </body>
 </html>

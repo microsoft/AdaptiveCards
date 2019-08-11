@@ -38,7 +38,8 @@
 
 		<div class="w3-col l9">
 			<div class="w3-card" style="background-color: #0078D7">
-				<video id="vid" autoplay loop muted style="width: 100%; margin-bottom: -8px"
+				<video id="vid" autoplay muted style="width: 100%; margin-bottom: -8px"
+					data-loop-delay="5000"
 					src="https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveIntroVideo.mp4"></video>
 			</div>
 		</div>
@@ -95,6 +96,7 @@
 		title: "Meet your users where they are",
 		subtitle: "Modern office life is hectic. Users are constantly switching between devices, apps, and services to get their job done. Adaptive Cards allow you to increase engagement and efficiency by injecting your actionable content into the apps they use every day.",
 		video: "https://adaptivecardsblob.blob.core.windows.net/assets/Video-MeetYourUsersWhereTheyAre.mp4",
+		videoLoopDelay: 5000,
 		learnMoreTitle: "Integrate into existing apps",
 		learnMoreLink: "https://docs.microsoft.com/en-us/adaptive-cards/resources/partners"
 	}) %>
@@ -138,6 +140,7 @@
 		title: "Render cards in your own apps",
 		subtitle: "The Adaptive Cards SDKs make it easy to render cards in your own apps, on any platform.",
 		video: "https://adaptivecardsblob.blob.core.windows.net/assets/Video-RenderingCards.mp4",
+		videoLoopDelay: 2000,
 		learnMoreTitle: "Install the Rendering SDKs",
 		learnMoreLink: "https://docs.microsoft.com/en-us/adaptive-cards/rendering-cards/getting-started"
 	}) %>
@@ -181,6 +184,7 @@
 		title: "Make a seamless design experience by embedding the Adaptive Cards designer into your web site",
 		subtitle: "Easily embed the designer with a full configuration API, allowing anyone to create adaptive cards.",
 		video: "https://adaptivecardsblob.blob.core.windows.net/assets/Video-Designer.mp4",
+		videoLoopDelay: 5000,
 		learnMoreTitle: "Embed the Designer",
 		learnMoreLink: "https://www.npmjs.com/package/adaptivecards-designer"
 	}) %>
@@ -240,34 +244,5 @@
 		profilePic: "https://pbs.twimg.com/profile_images/919315256563978241/2LDFiF5m_400x400.jpg",
 		productLogo: url_for('content/teamwork-logo.png')
 	}) %>
-
-	<div class="divider"></div>
-
-	<div class="w3-row-padding w3-lightgray">
-		<div class="w3-col m6">
-			<h6>Learn</h6>
-			<p><a href="<%- url_for('samples') %>">Inspirational samples</a></p>
-			<p><a href="<%- url_for('samples') %>">Join our Community Calls, hosted every month</a></p>
-
-		</div>
-
-		<div class="w3-col m6">
-			<div>
-				<h6 class="w3-cell">Blog </h6><a href="<%- url_for('blog') %>">Read more <i class="fa fa-chevron-right"></i></a>
-			</div>
-
-			<% page.posts.slice(0, 4).each(function(post){ %>
-			<div class="w3-margin-top">
-				<a href="<%- config.root %><%- post.path %>"><%- post.title %></a>
-				<div class="w3-medium">
-					<img src="<%- post.author.avatar %>" class="w3-image w3-circle" style="width: 25px" />
-					<a href="<%- post.author.webpage %>"><%- post.author.name %></a>
-				</div>
-
-			</div>
-
-			<% }); %>
-		</div>
-	</div>
 
 </div>

@@ -309,6 +309,20 @@ $(function () {
 		if (e.keyCode === 27) $('#closeVideo').click();
 	});
 
+		// Loop videos 
+	$("video").each(function() {
+		var $video = $(this); 
+		var loopDelay = $video.attr("data-loop-delay");
+		if(loopDelay) {
+			$video.on("ended", function() { 
+				setTimeout(function() {
+					$video[0].play();
+				}, loopDelay);
+			});
+		}
+	});
+
+
 	$('.adaptivecard').each(function () {
 
 
@@ -341,9 +355,7 @@ $(function () {
 		tabReplace: '  '
 	});
 
-	$('pre code').each(function (i, block) {
-		hljs.highlightBlock(block);
-	});
+	hljs.initHighlightingOnLoad();
 
 	// From https://github.com/30-seconds/30-seconds-of-code/blob/20e7d899f31ac3d8fb2b30b2e311acf9a1964fe8/snippets/copyToClipboard.md
 	function copyToClipboard(str) {
@@ -368,10 +380,22 @@ $(function () {
 		var content = $(this).parent().siblings("pre").text();
 		copyToClipboard(content);
 	});
+	
+	$("button.try-adaptivecard").click(function (e) {
+		var cardUrl = $(this).parent().siblings("div.adaptivecard").attr("data-card-url");
+		var isAbsolutelUri = new RegExp('^(?:[a-z]+:)?//', 'i');
+		if(isAbsolutelUri.test(cardUrl) === false) {
+			cardUrl = window.location.href + cardUrl;
+		}
+		window.open("/designer/index.html?card=" + encodeURIComponent(cardUrl));
+	});
 
 	$("#feedback-button").click(function(e) {
 		e.preventDefault();
-		window.open("https://github.com/MicrosoftDocs/AdaptiveCards/issues/new?title=" + encodeURIComponent("[Website] [Your feedback title here]") + "&body=" + encodeURIComponent("\r\n\r\n[Your detailed feedback here]\r\n\r\n---\r\n* URL: " + window.location.href));
+		window.open("https://github.com/MicrosoftDocs/AdaptiveCards/issues/new?title=" 
+			+ encodeURIComponent("[Website] [Your feedback title here]") 
+			+ "&body=" + encodeURIComponent("\r\n\r\n[Your detailed feedback here]\r\n\r\n---\r\n* URL: " 
+			+ window.location.href));
 	});
 
 
@@ -381,10 +405,12 @@ $(function () {
 
 	// Code for making sidebar sticky
 	var headerHolder;
+	var footerHolder;
 	var sidebar = $(".sidebar");
 
 	if (sidebar.length > 0) {
 		headerHolder = $(".header-holder");
+		footerHolder = $(".footer-holder");
 
 		updateSidebarTopOffset();
 
@@ -393,17 +419,21 @@ $(function () {
 		});
 	}
 
-
 	function updateSidebarTopOffset() {
 		var headerHeight = headerHolder.height();
+		var footerHeight = footerHolder.height();
 		var scrollOffset = $(document).scrollTop();
-		var topPadding = 24;
+		var windowHeight = $(window).height();
+		var footerPosition = footerHolder.offset().top;
+		var hiddenAfter = (footerPosition + footerHeight) - (scrollOffset + windowHeight);
 
+		var topPadding = 24;
+ 
 		var calculatedTop = headerHeight - scrollOffset + topPadding;
 		if (calculatedTop < topPadding) {
 			calculatedTop = topPadding;
 		}
 
-		sidebar.css("top", calculatedTop);
+		sidebar.css("top", calculatedTop).css("bottom", footerHeight - hiddenAfter);
 	}
 });
