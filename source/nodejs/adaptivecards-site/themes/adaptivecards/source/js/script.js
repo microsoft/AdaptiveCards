@@ -392,7 +392,7 @@ $(function () {
 
 	$("#feedback-button").click(function(e) {
 		e.preventDefault();
-		window.open("https://github.com/MicrosoftDocs/AdaptiveCards/issues/new?title=" 
+		window.open("https://github.com/Microsoft/AdaptiveCards/issues/new?title=" 
 			+ encodeURIComponent("[Website] [Your feedback title here]") 
 			+ "&body=" + encodeURIComponent("\r\n\r\n[Your detailed feedback here]\r\n\r\n---\r\n* URL: " 
 			+ window.location.href));

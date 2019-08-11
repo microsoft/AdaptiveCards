@@ -1,27 +1,26 @@
 <footer class="footer-holder w3-row-padding w3-light-gray w3-border-top w3-padding-32">
 
-	<div class="ac-footer">
-		<div class="w3-col m2 w3-hide-small">&nbsp;</div>
+	<div class="w3-cell-row ac-footer" style="margin: 0 auto; max-width: 920px">
 
-		<div class="w3-col m3 w3-container">
+		<div class="w3-cell w3-container w3-margin-top w3-mobile" style="width: 300px">
 
 
 			<img src="<%- url_for('content/adaptive-cards-100.png') %>" alt="Adaptive Cards logo"
-				class="w3-image" style="width: 75px; margin-right: 6px" />
-			<span class="w3-large" style="font-weight: bold; color: #969696">Adaptive Cards</span>
+				class="w3-image" style="width: 75px; margin-right: 6px" /> 
+			<span class="w3-large" style="font-weight: bold; color: #969696; word-wrap: none">Adaptive Cards</span>
 			<p>Homepage design inspired by <a href="https://storybook.js.org">Storybook.js</a>.
 				Site powered by <a href="https://hexo.io">Hexo</a>.</p>
 			<p class="w3-small w3-text-gray">Build date: <%= new Date().toLocaleDateString() %></p>
 		</div>
 
-		<div class="w3-col m3 w3-container">
+		<div class="w3-cell w3-container w3-margin-top w3-mobile"style="width: 300px">
 			<h6>Learn</h6>
 			<p><a href="<%- url_for('samples') %>">Inspirational samples <i class="fa fa-chevron-right"></i></a></p>
 			<p><a href="<%- url_for('https://aka.ms/adaptivecardscommunitycall') %>">Join our monthly Community Calls <i
 						class="fa fa-chevron-right"></i></a></p>
 		</div>
-
-		<div class="w3-col m3 w3-container">
+ 
+		<div class="w3-cell w3-container w3-margin-top w3-mobile" style="width: 300px">
 			<div class="w3-cell-row" style="margin-top: 6px;">
 				<h6 class="w3-cell w3-cell-middle">Blog</h6>
 				<a class="w3-cell w3-cell-middle w3-small" style="padding-left: 20px;"
@@ -36,8 +35,7 @@
 			<% }); %>
 		</div>
 
-		<div class="w3-col m1 w3-hide-small">&nbsp;</div>
-
+	
 		<div style="clear:both">&nbsp;</div>
 
 	</div>

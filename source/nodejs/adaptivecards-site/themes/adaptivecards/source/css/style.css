@@ -284,22 +284,24 @@ dir {
   height: auto;
 }
 
+
+.blog .coverImage {
+	height: 172px;
+	border: solid 1px rgba(0, 0, 0, .15);
+	background-position: 50% 50%;
+	background-size: cover;
+	background-color: #f0f0f0;
+	display: block;
+}
+
 .blog h1,
 .blog h2 {
   margin-top: 20px;
 }
 
-.blog a:link,
-.blog a:visited {
-  color: #000000;
-}
-
-.blog .article {
-	max-width: 400px;
-}
-
 .blog .article-title:link,
 .blog .article-title:visited {
+  color: #000;
   font-size: 21px;
   display: block;
   font-weight: 600;
@@ -492,7 +494,6 @@ dir {
 }
 
 .ac-footer {
-  margin-bottom: -36px; /* The UFH footer adds a bunch of margin we don't need */
   font-size: 0.9em;
 }
 
@@ -506,4 +507,9 @@ dir {
 .ac-footer a:hover {
   color: #6b6b6b;
   text-decoration: none;
+}
+
+#uhf-footer {
+	margin-top: 0; /* The UFH footer adds a bunch of margin we don't need */
+	font-size: 1em;
 }
