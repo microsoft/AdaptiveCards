@@ -9,8 +9,6 @@ import { ACLogger } from "./logging/ACLogger";
 import { GUIDHelper } from "./logging/GUIDHelper";
 import { IACLogger } from "./logging/IACLogger";
 
-var TELEMETRY_ENABLED: boolean = true;
-
 function invokeSetCollection(action: Action, collection: ActionCollection) {
     if (action) {
         // Closest emulation of "internal" in TypeScript.
@@ -5185,7 +5183,8 @@ class ActionCollection {
 
                     if (!actionButton) {
 
-						actionButton = TELEMETRY_ENABLED ? new ActionButtonWithTelemetry(this.items[i], parentContainerStyle) : new ActionButton(this.items[i], parentContainerStyle);
+						actionButton = this._owner.hostConfig.telemetryEnabled ? new ActionButtonWithTelemetry(this.items[i], parentContainerStyle) 
+					        : new ActionButton(this.items[i], parentContainerStyle);
 						
                         // actionButton = new ActionButton(this.items[i], parentContainerStyle); // original without telemetry
                         actionButton.onClick = (ab) => { this.actionClicked(ab); };
@@ -7140,7 +7139,7 @@ export class AdaptiveCard extends ContainerWithActions {
 		}
 		
 		// enables telemetry recording for RenderCard event
-		if (TELEMETRY_ENABLED) {
+		if (this.hostConfig.telemetryEnabled) {
 			this.renderCardTelemetry(json);
 		}
 		
