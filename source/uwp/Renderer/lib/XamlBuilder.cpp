@@ -2111,6 +2111,9 @@ namespace AdaptiveNamespace
             boolean isItalic{false};
             RETURN_IF_FAILED(adaptiveTextRun->get_Italic(&isItalic));
 
+            boolean isUnderline{};
+            RETURN_IF_FAILED(adaptiveTextRun->get_Underline(&isUnderline));
+
             UINT inlineLength;
             if (selectAction != nullptr)
             {
@@ -2141,9 +2144,7 @@ namespace AdaptiveNamespace
                                                      renderContext,
                                                      renderArgs,
                                                      text.Get(),
-                                                     isStrikethrough,
-                                                     isItalic,
-                                                     true,
+                                                     TextRunStyleParameters(isStrikethrough, isItalic, isUnderline, true),
                                                      hyperlinkInlines.Get(),
                                                      &inlineLength));
 
@@ -2160,9 +2161,7 @@ namespace AdaptiveNamespace
                                                      renderContext,
                                                      renderArgs,
                                                      text.Get(),
-                                                     isStrikethrough,
-                                                     isItalic,
-                                                     false,
+                                                     TextRunStyleParameters(isStrikethrough, isItalic, isUnderline, false),
                                                      xamlInlines.Get(),
                                                      &inlineLength));
             }
