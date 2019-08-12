@@ -12,7 +12,7 @@ namespace AdaptiveCards.Rendering.Wpf
             renderer.ElementRenderers.Set<AdaptiveTimeInput>(XceedTimeInput.Render);
         }
 
-        public static void DontUseXceedElementRenderers(this AdaptiveCardRenderer renderer)
+        public static void UseDefaultElementRenderers(this AdaptiveCardRenderer renderer)
         {
             renderer.ElementRenderers.Set<AdaptiveTextInput>(AdaptiveTextInputRenderer.Render);
             renderer.ElementRenderers.Set<AdaptiveNumberInput>(AdaptiveNumberInputRenderer.Render);

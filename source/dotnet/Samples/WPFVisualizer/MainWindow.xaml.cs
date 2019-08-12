@@ -433,7 +433,7 @@ namespace WpfVisualizer
 
         private void XceedCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
-            Renderer.DontUseXceedElementRenderers();
+            Renderer.UseDefaultElementRenderers();
             _dirty = true;
         }
 
