@@ -18,7 +18,8 @@ void TextRun::PopulateKnownPropertiesSet()
 
 Json::Value TextRun::SerializeToJsonValue() const
 {
-    Json::Value root = m_textElementProperties->SerializeToJsonValue(root);
+    Json::Value root{};
+    root = m_textElementProperties->SerializeToJsonValue(root);
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = GetInlineTypeString();
 
     if (m_highlight)

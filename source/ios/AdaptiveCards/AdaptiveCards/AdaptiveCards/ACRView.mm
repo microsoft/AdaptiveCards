@@ -287,6 +287,25 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                 [self loadImageAccordingToResourceResolverIF:elem key:nil observerAction:observerAction];
             }
 
+            if (![_hostConfig getHostConfig]->GetMedia().playButton.empty()) {
+                ObserverActionBlock observerAction =
+                ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseCardElement> const &elem, NSURL* url, ACRView* rootView) {
+                    UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
+                    if(view) {
+                        [view addObserver:rootView forKeyPath:@"image"
+                                  options:NSKeyValueObservingOptionNew
+                                  context:nil];
+                        // store the image view for easy retrieval in ACRView::observeValueForKeyPath
+                        [rootView setImageView:key view:view];
+                    }
+                };
+
+                NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)elem.get()];
+                NSString *key = [NSString stringWithFormat:@"%@_%@", [number stringValue], @"playIcon" ];
+
+                [self loadImageAccordingToResourceResolverIFFromString:[_hostConfig getHostConfig]->GetMedia().playButton key:key observerAction:observerAction];
+            }
+
             break;
         }
         case CardElementType::TextInput:
@@ -332,21 +351,24 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
             std::vector<std::shared_ptr<Column>> &columns = columSet->GetColumns();
             // ColumnSet is vector of Column, instead of vector of BaseCardElement
             for(auto const &column : columns) { // update serial number that is used for generating unique key for image_map
-                // Handle background image (if necessary)
-                auto backgroundImageProperties = column->GetBackgroundImage();
-                if((backgroundImageProperties != nullptr) && !(backgroundImageProperties->GetUrl().empty())) {
-                    ObserverActionBlock observerAction = generateBackgroundImageObserverAction(backgroundImageProperties, self, column);
-                    [self loadBackgroundImageAccordingToResourceResolverIF:backgroundImageProperties key:nil observerAction:observerAction];
-                }
-
-                [self addTasksToConcurrentQueue: column->GetItems()];
+                [self processBaseCardElement: column];
             }
             break;
         }
-        default:
+
+        case CardElementType::Column:
         {
-            /// no work is needed
-            break;
+            std::shared_ptr<Column> column = std::static_pointer_cast<Column>(elem);
+            // Handle background image (if necessary)
+            auto backgroundImageProperties = column->GetBackgroundImage();
+            if((backgroundImageProperties != nullptr) && !(backgroundImageProperties->GetUrl().empty())) {
+                ObserverActionBlock observerAction = generateBackgroundImageObserverAction(backgroundImageProperties, self, column);
+                [self loadBackgroundImageAccordingToResourceResolverIF:backgroundImageProperties key:nil observerAction:observerAction];
+            }
+	    
+            // add column fallbacks to async task queue
+            [self processFallback:column];
+            [self addTasksToConcurrentQueue: column->GetItems()];
         }
     }
 }
@@ -362,16 +384,8 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
             continue;
         }
 
+        [self processFallback:elem];
         [self processBaseCardElement:elem];
-        std::shared_ptr<BaseElement> fallbackElem = elem->GetFallbackContent();
-        while (fallbackElem) {
-            std::shared_ptr<BaseCardElement> fallbackElemCard = std::static_pointer_cast<BaseCardElement>(fallbackElem);
-            if (fallbackElemCard) {
-                [self processBaseCardElement:fallbackElemCard];
-            }
-
-            fallbackElem = fallbackElemCard->GetFallbackContent();
-        }
     }
 }
 
@@ -659,6 +673,10 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     std::shared_ptr<Image> imgElem = std::make_shared<Image>();
     imgElem->SetUrl(url);
     imgElem->SetImageSize(ImageSize::None);
+    NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)imgElem.get()];
+    if (!key) {
+        key = [number stringValue];
+    }
     [self loadImageAccordingToResourceResolverIF:imgElem key:key observerAction:observerAction];
 }
 
@@ -668,7 +686,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     NSNumber *number = nil;
     NSString *nSUrlStr = nil;
 
-    if(elem->GetElementType() == CardElementType::Media) {
+    if (elem->GetElementType() == CardElementType::Media) {
         std::shared_ptr<Media> mediaElem = std::static_pointer_cast<Media>(elem);
         number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)mediaElem.get()];
         nSUrlStr = [NSString stringWithCString:mediaElem->GetPoster().c_str() encoding:[NSString defaultCStringEncoding]];
@@ -677,7 +695,8 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
         number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)imgElem.get()];
         nSUrlStr = [NSString stringWithCString:imgElem->GetUrl().c_str() encoding:[NSString defaultCStringEncoding]];
     }
-    if(!key) {
+
+    if (!key) {
         key = [number stringValue];
     }
 
@@ -690,8 +709,8 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 
     NSURL *url = [NSURL URLWithString:nSUrlStr];
     NSObject<ACOIResourceResolver> *imageResourceResolver = [_hostConfig getResourceResolverForScheme:[url scheme]];
-    if(imageResourceResolver && ACOImageViewIF == [_hostConfig getResolverIFType:[url scheme]]) {
-        if(observerAction) {
+    if (imageResourceResolver && ACOImageViewIF == [_hostConfig getResolverIFType:[url scheme]]) {
+        if (observerAction) {
             observerAction(imageResourceResolver, key, elem, url, self);
         }
     } else {
@@ -768,6 +787,21 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 {
     NSNumber *key = [NSNumber numberWithUnsignedLongLong:internalId.Hash()];
     return _paddingMap[[key stringValue]];
+}
+
+// get fallback content and add them async task queue
+- (void)processFallback:(std::shared_ptr<BaseCardElement> const &)elem
+{
+    std::shared_ptr<BaseElement> fallbackElem = elem->GetFallbackContent();
+    while (fallbackElem) {
+        std::shared_ptr<BaseCardElement> fallbackElemCard = std::static_pointer_cast<BaseCardElement>(fallbackElem);
+        if (fallbackElemCard) {
+            [self processBaseCardElement:fallbackElemCard];
+        }
+
+        fallbackElem = fallbackElemCard->GetFallbackContent();
+    }
+
 }
 
 @end
