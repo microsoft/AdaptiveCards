@@ -4,6 +4,16 @@
   "description": "Style hint for `Input.ChoiceSet`.",
   "values": [
     "compact",
-    "expanded"
+	"expanded",
+	{
+		"value": "rating",
+		"description": "Allows for feedback input on a ranging point scale.",
+		"version": "1.3"
+	},
+	{
+		"value": "horizontal",
+		"description": "A horizontal version of the expanded style of `Input.ChoiceSet`.",
+		"version": "1.3"
+	}
   ]
 }

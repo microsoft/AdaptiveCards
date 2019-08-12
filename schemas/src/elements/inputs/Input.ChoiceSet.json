@@ -10,20 +10,26 @@
     },
     "isMultiSelect": {
       "type": "boolean",
-      "description": "Allow multiple choices to be selected.",
+      "description": "Allow multiple choices to be selected. If style property is `rating`, then this parameter will be ignored.",
       "default": false
     },
     "style": {
-      "type": "ChoiceInputStyle"
+			"type": "ChoiceInputStyle",
+			"description": "Specifiable options are: `compact`, `expanded`, `rating`, and `horizontal`."
     },
     "value": {
       "type": "string",
-      "description": "The initial choice (or set of choices) that should be selected. For multi-select, specify a comma-separated string of values."
+      "description": "The initial choice (or set of choices) that should be selected. For multi-select, specify a comma-separated string of values. If style is `rating` but multiple values are given, only the first value will be selected."
     },
-    "wrap": {
-      "type": "boolean",
-      "description": "If `true`, allow text to wrap. Otherwise, text is clipped.",
-      "version": "1.2"
-    }
+		"wrap": {
+			"type": "boolean",
+			"description": "If `true`, allow text to wrap. Otherwise, text is clipped.",
+			"version": "1.2"
+		},
+		"iconHeight": {
+			"type": "string",
+			"description": "If icons are used for an `Input.Choice`, then this property will specify the height of each icon within the `Input.ChoiceSet`.",
+			"version":  "1.3"
+		}
   }
 }

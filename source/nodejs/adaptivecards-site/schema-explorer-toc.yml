@@ -29,5 +29,6 @@
   - Input.Toggle
   - Input.ChoiceSet
   - Input.Choice
+  - Input.Rating
 - Types:
   - BackgroundImage

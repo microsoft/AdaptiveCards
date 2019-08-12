@@ -9,7 +9,17 @@
 
 	<style type="text/css">
 		#exampleDiv {
-			width: 250px;
+			width: 1000px;
+			border: solid 1px black;
+		}
+
+		#exampleDiv2 {
+			width: 1000px;
+			border: solid 1px black;
+		}
+
+		#exampleDiv3 {
+			width: 1000px;
 			border: solid 1px black;
 		}
 	</style>
@@ -20,30 +30,69 @@
 			// author a card
 			// in practice you'll probably get this from a service
 			// see http://adaptivecards.io/samples/ for inspiration
+
+			// this card specifically demos the Input.Rating control
 			var card = {
-				"type": "AdaptiveCard",
-				"version": "1.0",
-				"body": [{
-						"type": "Image",
-						"url": "http://adaptivecards.io/content/adaptive-card-50.png"
-					},
-					{
-						"type": "TextBlock",
-						"text": "Hello **Adaptive Cards!**"
-					}
-				],
-				"actions": [{
-						"type": "Action.OpenUrl",
-						"title": "Learn more",
-						"url": "http://adaptivecards.io"
-					},
-					{
-						"type": "Action.OpenUrl",
-						"title": "GitHub",
-						"url": "http://github.com/Microsoft/AdaptiveCards"
-					}
-				]
-			};
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+	{
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": 2,
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "PIZZA"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "Tom's Pie",
+                            "weight": "Bolder",
+                            "size": "ExtraLarge",
+                            "spacing": "None"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "**Matt H. said** \"I'm compelled to give this place 5 stars due to the number of times I've chosen to eat here this past year!\"",
+                            "size": "Small",
+                            "wrap": true
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": 1,
+                    "items": [
+                        {
+                            "type": "Image",
+                            "url": "https://picsum.photos/300?image=882",
+                            "size": "auto"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "Would you mind rating our restaurant?",
+            "size": "Medium"
+        },
+        {
+			"type": "Input.Rating",
+			"id": "UserProvidedRating"
+		}
+    ],
+  			"actions": [
+      	  	{
+				"type": "Action.Submit",
+				"title": "Submit Rating"
+        	}
+		]
+};
 
 			// Create an AdaptiveCard instance
 			var adaptiveCard = new AdaptiveCards.AdaptiveCard();
@@ -70,26 +119,149 @@
 
 			// And finally insert it in the page:
 			document.getElementById('exampleDiv').appendChild(renderedCard);
+
+			var card2 = {
+    "type": "AdaptiveCard",
+    "body": [
+        {
+            "type": "Input.ChoiceSet",
+            "id": "as",
+            "placeholder": "Placeholder text",
+            "choices": [
+                {
+                    "title": "Spicy Tuna",
+                    "value": "opt1"
+                },
+                {
+                    "title": "Spicy Salmon",
+                    "value": "Choice 2"
+                },
+                {
+                    "title": "Unagi",
+                    "value": "roe"
+                }
+            ],
+            "style": "expanded"
+        },
+        {
+            "type": "TextBlock",
+            "id": "e",
+            "text": "Please choose an option from above."
+        },
+        {
+            "type": "ActionSet",
+            "actions": [
+                {
+                    "type": "Action.Submit",
+                    "title": "Action.Submit"
+                },
+                {
+                    "type": "Action.ShowCard",
+                    "title": "Action.ShowCard",
+                    "card": {
+                        "type": "AdaptiveCard",
+                        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+                    }
+                }
+            ]
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.0"
+};
+
+			// Create an AdaptiveCard instance
+			var adaptiveCard2 = new AdaptiveCards.AdaptiveCard();
+
+			// Set its hostConfig property unless you want to use the default Host Config
+			// Host Config defines the style and behavior of a card
+			adaptiveCard2.hostConfig = new AdaptiveCards.HostConfig({
+				fontFamily: "Segoe UI, Helvetica Neue, sans-serif"
+				// More host config options
+				// You can find example configs here: https://github.com/microsoft/AdaptiveCards/tree/master/samples/HostConfig
+			});
+
+			// Set the adaptive card's event handlers. onExecuteAction is invoked
+			// whenever an action is clicked in the card
+			adaptiveCard2.onExecuteAction = function (action) {
+				alert("Ow!");
+			}
+
+			// Parse the card payload
+			adaptiveCard2.parse(card2);
+
+			// Render the card to an HTML element:
+			var renderedCard2 = adaptiveCard2.render();
+
+			// And finally insert it in the page:
+			document.getElementById('exampleDiv2').appendChild(renderedCard2);
+
+			var card3 = {
+				"type": "AdaptiveCard",
+				"version": "1.0",
+				"body": [{
+						"type": "Image",
+						"url": "http://adaptivecards.io/content/adaptive-card-50.png"
+					},
+					{
+						"type": "TextBlock",
+						"text": "Hello **Adaptive Cards!**"
+					},
+					{
+			"type": "Input.Rating",
+			"id": "UserProvidedRating"
+		}
+				],
+				"actions": [{
+						"type": "Action.Submit",
+						"title": "Learn more"
+					},
+					{
+						"type": "Action.OpenUrl",
+						"title": "GitHub",
+						"url": "http://github.com/Microsoft/AdaptiveCards"
+					}
+				]
+			};
+
+			// Create an AdaptiveCard instance
+			var adaptiveCard3 = new AdaptiveCards.AdaptiveCard();
+
+			// Set its hostConfig property unless you want to use the default Host Config
+			// Host Config defines the style and behavior of a card
+			adaptiveCard3.hostConfig = new AdaptiveCards.HostConfig({
+				fontFamily: "Segoe UI, Helvetica Neue, sans-serif"
+				// More host config options
+				// You can find example configs here: https://github.com/microsoft/AdaptiveCards/tree/master/samples/HostConfig
+			});
+
+			// Set the adaptive card's event handlers. onExecuteAction is invoked
+			// whenever an action is clicked in the card
+			adaptiveCard3.onExecuteAction = function (action) {
+				alert("Submitted.");
+			}
+
+			// Parse the card payload
+			adaptiveCard3.parse(card3);
+
+			// Render the card to an HTML element:
+			var renderedCard3 = adaptiveCard3.render();
+
+			// And finally insert it in the page:
+			document.getElementById('exampleDiv3').appendChild(renderedCard3);
 		}
 	</script>
 
 </head>
 
 <body onload="renderCard()">
-	<h1>Adaptive Cards Example</h1>
-
-	<p>This example requires a build of the Adaptive Cards library.</p>
-
-	<h3>To run:</h3>
-	<code>
-		<pre>$ npm install</pre>
-		<pre>$ npm run build</pre>
-		<pre>Refresh this page</pre>
-	</code>
-
-	<h3>A card will render below</h3>
+	<h1>Adaptive Cards Telemetry Demo</h1>
 
 	<div id="exampleDiv"></div>
+	<br>
+	<div id="exampleDiv2"></div>
+	<br>
+	<div id="exampleDiv3"></div>
 
 </body>
 

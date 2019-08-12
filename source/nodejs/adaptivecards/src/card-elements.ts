@@ -1,10 +1,13 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Enums from "./enums";
 import * as Shared from "./shared";
 import * as Utils from "./utils";
 import * as HostConfig from "./host-config";
 import * as TextFormatters from "./text-formatters";
+import { ACLogger } from "./logging/ACLogger";
+import { GUIDHelper } from "./logging/GUIDHelper";
+import { IACLogger } from "./logging/IACLogger";
 
 function invokeSetCollection(action: Action, collection: ActionCollection) {
     if (action) {
@@ -1260,12 +1263,12 @@ export class TextBlock extends BaseTextBlock {
 
             if (element.firstElementChild instanceof HTMLElement) {
                 let firstElementChild = <HTMLElement>element.firstElementChild;
-                firstElementChild.style.marginTop = "0px";
-                firstElementChild.style.width = "100%";
+				firstElementChild.style.marginTop = "0px";
+				firstElementChild.style.width = "100%";
 
                 if (!this.wrap) {
                     firstElementChild.style.overflow = "hidden";
-                    firstElementChild.style.textOverflow = "ellipsis";
+					firstElementChild.style.textOverflow = "ellipsis";
                 }
             }
 
@@ -1297,7 +1300,7 @@ export class TextBlock extends BaseTextBlock {
             }
             else {
                 element.style.whiteSpace = "nowrap";
-                element.style.textOverflow = "ellipsis";
+				element.style.textOverflow = "ellipsis";
             }
 
             if (AdaptiveCard.useAdvancedTextBlockTruncation || AdaptiveCard.useAdvancedCardBottomTruncation) {
@@ -2928,8 +2931,8 @@ export abstract class Input extends CardElement implements Shared.IInput {
 }
 
 export class TextInput extends Input {
-    private _inlineAction: Action;
-
+	private _inlineAction: Action;
+	
     protected internalRender(): HTMLElement {
         if (this.isMultiline) {
             let textareaElement = document.createElement("textarea");
@@ -3048,9 +3051,12 @@ export class TextInput extends Input {
 
     maxLength: number;
     isMultiline: boolean = false;
-    placeholder: string;
-    style: Enums.InputTextStyle = Enums.InputTextStyle.Text;
-
+	placeholder: string;
+	style: Enums.InputTextStyle = Enums.InputTextStyle.Text;
+	
+	iconUnselected: string;
+	iconSelected: string;
+	
     getJsonTypeName(): string {
         return "Input.Text";
     }
@@ -3085,7 +3091,10 @@ export class TextInput extends Input {
 
         this.maxLength = json["maxLength"];
         this.isMultiline = Utils.getBoolValue(json["isMultiline"], this.isMultiline);
-        this.placeholder = Utils.getStringValue(json["placeholder"]);
+		this.placeholder = Utils.getStringValue(json["placeholder"]);
+		this.iconSelected = Utils.getStringValue(json["iconSelected"]);
+		this.iconUnselected = Utils.getStringValue(json["iconUnselected"]);
+
         this.style = Utils.getEnumValue(Enums.InputTextStyle, json["style"], this.style);
         this.inlineAction = createActionInstance(
             this,
@@ -3286,7 +3295,7 @@ export class ChoiceSetInput extends Input {
 
                     if (this.choices[i].value == this.defaultValue) {
                         option.selected = true;
-                    }
+					}
 
                     Utils.appendChild(this._selectElement, option);
                 }
@@ -3296,7 +3305,7 @@ export class ChoiceSetInput extends Input {
                 return this._selectElement;
             }
             else {
-                // Render as a series of radio buttons
+				// Render as a series of radio buttons
                 let uniqueCategoryName = ChoiceSetInput.getUniqueCategoryName();
 
                 let element = document.createElement("div");
@@ -3423,7 +3432,14 @@ export class ChoiceSetInput extends Input {
     isCompact: boolean = false;
     isMultiSelect: boolean = false;
     placeholder: string;
-    wrap: boolean = false;
+	wrap: boolean = false;
+	maxValue: number;
+	iconSelected: string;
+	iconUnselected: string;
+
+	private newMethod() {
+		return this;
+	}
 
     getJsonTypeName(): string {
         return "Input.ChoiceSet";
@@ -3432,7 +3448,7 @@ export class ChoiceSetInput extends Input {
     toJSON(): any {
         let result = super.toJSON();
 
-        Utils.setProperty(result, "placeholder", this.placeholder);
+		Utils.setProperty(result, "placeholder", this.placeholder);
 
         /*
         let choices = [];
@@ -3451,6 +3467,7 @@ export class ChoiceSetInput extends Input {
         Utils.setProperty(result, "style", this.isCompact ? null : "expanded");
         Utils.setProperty(result, "isMultiSelect", this.isMultiSelect, false);
         Utils.setProperty(result, "wrap", this.wrap, false);
+		
 
         return result;
     }
@@ -3484,9 +3501,13 @@ export class ChoiceSetInput extends Input {
 
         this.isCompact = !(json["style"] === "expanded");
         this.isMultiSelect = Utils.getBoolValue(json["isMultiSelect"], this.isMultiSelect);
-        this.placeholder = Utils.getStringValue(json["placeholder"]);
+		this.placeholder = Utils.getStringValue(json["placeholder"]);
+		
+		this.maxValue = parseInt(Utils.getStringValue(json["maxValue"]), 10);
+		this.iconSelected = Utils.getStringValue(json["iconSelected"]);
+		this.iconUnselected = Utils.getStringValue(json["iconUnselected"]);
 
-        this.choices = [];
+		this.choices = [];
 
         if (Array.isArray(json["choices"])) {
             for (let jsonChoice of json["choices"]) {
@@ -3542,6 +3563,276 @@ export class ChoiceSetInput extends Input {
 
             return result == "" ? null : result;
         }
+    }
+}
+
+export class RatingInput extends Input {
+    private static uniqueCategoryCounter = 0;
+
+    private static getUniqueCategoryName(): string {
+        let uniqueCategoryName = "__ac-category" + RatingInput.uniqueCategoryCounter;
+
+        RatingInput.uniqueCategoryCounter++;
+
+        return uniqueCategoryName;
+    }
+
+    private _selectElement: HTMLSelectElement;
+    private _toggleInputs: Array<HTMLInputElement>;
+
+	protected internalRender(): HTMLElement {
+		const NOT_CLICKED: number = -1;
+		const DEFAULT_RATING_SCALE: number = 5;
+
+		let defaulticonUnselected = "https://i.imgur.com/87eARQE.png";
+		let defaulticonSelected = "https://i.imgur.com/bXMnufQ.png";
+
+		let uniqueCategoryName = RatingInput.getUniqueCategoryName();
+
+		let element = document.createElement("div");
+		element.className = this.hostConfig.makeCssClassName("ac-input", "ac-RatingInput");
+		element.style.width = "100%";
+
+		element.style.textAlign = "center";
+
+		this._toggleInputs = [];
+
+		let iconUnselected = this.iconUnselected ? this.iconUnselected : defaulticonUnselected;
+		let iconSelected = this.iconSelected ? this.iconSelected : defaulticonSelected;
+		let maxValue: number = this.maxValue ? this.maxValue : DEFAULT_RATING_SCALE;
+
+		let labels: Label[] = new Array(maxValue);
+		let labelElements: HTMLElement[] = new Array(maxValue);
+
+		for (let i = 0; i < maxValue; i++) {
+			let radioInput = document.createElement("input");
+			radioInput.id = Utils.generateUniqueId();
+			radioInput.type = "radio";
+			radioInput.style.margin = "0";
+			radioInput.style.display = "inline";
+			radioInput.style.verticalAlign = "middle";
+			radioInput.name = Utils.isNullOrEmpty(this.id) ? uniqueCategoryName : this.id;
+			radioInput.value = (i + 1).toString();
+			radioInput.style.flex = "0 0 auto";
+			radioInput.setAttribute("aria-label", "Rating " + (i + 1));
+			radioInput.style.display = "none";
+
+			radioInput.onchange = () => { this.valueChanged(); }
+
+			this._toggleInputs.push(radioInput);
+
+			labels[i] = new Label();
+			labels[i].setParent(this);
+			labels[i].forElementId = radioInput.id;
+			labels[i].hostConfig = this.hostConfig;
+			labels[i].text = "Rating " + (i + 1);
+			labels[i].useMarkdown = AdaptiveCard.useMarkdownInRadioButtonAndCheckbox;
+			labels[i].wrap = this.wrap;
+
+			labelElements[i] = labels[i].render();
+			labelElements[i].style.display = "block";
+			labelElements[i].style.flex = "1 1 auto";
+			labelElements[i].style.marginLeft = "6px";
+			labelElements[i].style.verticalAlign = "middle";
+			labelElements[i].style.flexGrow = "1";
+
+			labelElements[i].style.backgroundImage = "url('" + iconUnselected + "')";
+			labelElements[i].style.backgroundSize = "25px 25px";
+			labelElements[i].style.backgroundRepeat = "no-repeat";
+			labelElements[i].style.backgroundPositionX = "center";
+			labelElements[i].style.paddingTop = "25px";
+
+			let textFirstElementChild = <HTMLElement>labelElements[i].firstElementChild;
+			textFirstElementChild.style.width = "0%";
+			textFirstElementChild.style.removeProperty("text-overflow");
+			textFirstElementChild.style.overflow = "hidden";
+			textFirstElementChild.style.marginBottom = "-20px";
+
+			var ratingClicked: number = NOT_CLICKED;
+
+			// when hovering over an icon, replace that and all preceding icons with the iconSelected image
+			labelElements[i].onmouseover = function () {
+				for (let j = 0; j <= i; j++) {
+					labelElements[j].style.backgroundImage = "url('" + iconSelected + "')";
+				}
+				for (let j = i + 1; j < maxValue; j++) {
+					labelElements[j].style.backgroundImage = "url('" + iconUnselected + "')";
+				}
+			};
+
+			// when leaving an icon (i.e. we stop hovering), return to previous state
+			labelElements[i].onmouseleave = function () {
+				if (ratingClicked == NOT_CLICKED) {
+					for (let j = 0; j <= i; j++) {
+						labelElements[j].style.backgroundImage = "url('" + iconUnselected + "')";
+					}
+				} else {
+					for (let j = 0; j <= ratingClicked; j++) {
+						labelElements[j].style.backgroundImage = "url('" + iconSelected + "')";
+					}
+					for (let j = ratingClicked + 1; j < maxValue; j++) {
+						labelElements[j].style.backgroundImage = "url('" + iconUnselected + "')";
+					}
+				}
+			};
+
+			// when an icon is clicked, replace it and all preceding icons with the iconSelected image
+			labelElements[i].onclick = function () {
+				ratingClicked = i;
+				for (let j = 0; j <= ratingClicked; j++) {
+					labelElements[j].style.backgroundImage = "url('" + iconSelected + "')";
+				}
+				for (let j = ratingClicked + 1; j < maxValue; j++) {
+					labelElements[j].style.backgroundImage = "url('" + iconUnselected + "')";
+				}
+			};
+
+			let spacerElement = document.createElement("div");
+			spacerElement.style.width = "6px";
+
+			let compoundInput = document.createElement("div");
+			compoundInput.style.marginLeft = "0px";
+			compoundInput.style.marginRight = "0px";
+			compoundInput.style.display = "inline-block";
+			compoundInput.style.textAlign = "center";
+			compoundInput.style.flexGrow = "1";
+
+			Utils.appendChild(compoundInput, radioInput);
+			Utils.appendChild(compoundInput, spacerElement);
+			Utils.appendChild(compoundInput, labelElements[i]);
+
+			Utils.appendChild(element, compoundInput);
+
+		}
+
+		return element;
+	}
+
+	// TODO: delete these two after correcting the get value() method
+    isCompact: boolean = false;
+	isMultiSelect: boolean = false;
+	
+    placeholder: string;
+	wrap: boolean = false;
+	maxValue: number;
+	iconSelected: string;
+	iconUnselected: string;
+
+	private newMethod() {
+		return this;
+	}
+
+    getJsonTypeName(): string {
+        return "Input.Rating";
+    }
+
+    toJSON() {
+        let result = super.toJSON();
+
+		Utils.setProperty(result, "placeholder", this.placeholder);
+
+		if (this.maxValue > 0) {
+            var ratings = [];
+
+			for (let i = 0; i < this.maxValue; i++) {
+				let rating:Choice;
+				rating.title = "Choice " + (i + 1);
+				rating.value = (i + 1).toString();
+				ratings.push(rating.toJSON());
+			}
+
+            Utils.setProperty(result, "choices", ratings);
+		}
+		
+        Utils.setProperty(result, "wrap", this.wrap, false);
+		
+        return result;
+    }
+
+    internalValidateProperties(context: ValidationResults) {
+		super.internalValidateProperties(context);
+		
+		const MIN_RATING_COUNT: number = 1;
+
+		if (this.maxValue < MIN_RATING_COUNT) {
+            context.addFailure(
+                this,
+                {
+					error: Enums.ValidationError.InvalidPropertyValue,
+                    message: "An Input.Rating must have at least " + MIN_RATING_COUNT + " possible rating(s)."
+                });
+        }
+    }
+
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+		super.parse(json, errors);
+		
+		this.placeholder = Utils.getStringValue(json["placeholder"]);
+		
+		this.maxValue = parseInt(Utils.getStringValue(json["maxValue"]), 10);
+		this.iconSelected = Utils.getStringValue(json["iconSelected"]);
+		this.iconUnselected = Utils.getStringValue(json["iconUnselected"]);
+
+		let ratings: Array<Choice> = [];
+
+		if (json["maxValue"] != undefined && json["maxValue"] > 0) {
+
+            for (let i = 0; i < json["maxValue"]; i++) {
+                let rating = new Choice();
+				rating.title = "Rating " + (i + 1);
+				rating.value = (i + 1).toString();
+
+				ratings.push(rating);
+            }
+		}
+
+        this.wrap = Utils.getBoolValue(json["wrap"], this.wrap);
+    }
+
+    get value(): string {
+		// TODO: isMultiSelect and isCompact are not necessary here, fix:
+		if (!this.isMultiSelect) {
+            if (this.isCompact) {
+                if (this._selectElement) {
+                    return this._selectElement.selectedIndex > 0 ? this._selectElement.value : null;
+                }
+
+                return null;
+            }
+            else {
+                if (!this._toggleInputs || this._toggleInputs.length == 0) {
+                    return null;
+                }
+
+                for (var i = 0; i < this._toggleInputs.length; i++) {
+                    if (this._toggleInputs[i].checked) {
+                        return this._toggleInputs[i].value;
+                    }
+                }
+
+                return null;
+            }
+        }
+        else {
+            if (!this._toggleInputs || this._toggleInputs.length == 0) {
+                return null;
+            }
+
+            var result: string = "";
+
+            for (var i = 0; i < this._toggleInputs.length; i++) {
+                if (this._toggleInputs[i].checked) {
+                    if (result != "") {
+                        result += this.hostConfig.choiceSetInputValueSeparator;
+                    }
+
+                    result += this._toggleInputs[i].value;
+                }
+            }
+
+            return result == "" ? null : result;
+		}
+		/**/
     }
 }
 
@@ -3762,7 +4053,7 @@ class ActionButton {
     private _parentContainerStyle: string;
     private _state: ActionButtonState = ActionButtonState.Normal;
 
-    private updateCssStyle() {
+    protected updateCssStyle() {
         let hostConfig = this.action.parent.hostConfig;
 
         this.action.renderedElement.className = hostConfig.makeCssClassName("ac-pushButton");
@@ -3807,11 +4098,12 @@ class ActionButton {
     onClick: (actionButton: ActionButton) => void = null;
 
     render(alignment: Enums.ActionAlignment) {
+
         this.action.render();
         this.action.renderedElement.style.flex = alignment === Enums.ActionAlignment.Stretch ? "0 1 100%" : "0 1 auto";
         this.action.renderedElement.onclick = (e) => {
             e.preventDefault();
-            e.cancelBubble = true;
+			e.cancelBubble = true;
 
             this.click();
         };
@@ -3834,6 +4126,32 @@ class ActionButton {
 
         this.updateCssStyle();
     }
+}
+
+class ActionButtonWithTelemetry extends ActionButton {
+	
+	render(alignment: Enums.ActionAlignment) {
+
+		var useGUID = GUIDHelper.getOrCreate().trackGUID();
+		var guid = GUIDHelper.getOrCreate().getGUID().toString();
+
+        this.action.render();
+        this.action.renderedElement.style.flex = alignment === Enums.ActionAlignment.Stretch ? "0 1 100%" : "0 1 auto";
+        this.action.renderedElement.onclick = (e) => {
+            e.preventDefault();
+			e.cancelBubble = true;
+			
+			if (this.action instanceof SubmitAction && useGUID) {
+				ACLogger.getOrCreate().logEvent("SubmitAction", "Action.Submit", guid);
+			}
+			
+
+            this.click();
+        };
+
+        this.updateCssStyle();
+    }
+
 }
 
 export abstract class Action extends CardObject {
@@ -4642,6 +4960,7 @@ class ActionCollection {
     }
 
     private actionClicked(actionButton: ActionButton) {
+
         if (!(actionButton.action instanceof ShowCardAction)) {
             for (var i = 0; i < this.buttons.length; i++) {
                 this.buttons[i].state = ActionButtonState.Normal;
@@ -4691,7 +5010,7 @@ class ActionCollection {
     }
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
-        this.clear();
+		this.clear();
 
         if (json && json instanceof Array) {
             for (let jsonAction of json) {
@@ -4863,7 +5182,11 @@ class ActionCollection {
                     let actionButton: ActionButton = this.findActionButton(this.items[i]);
 
                     if (!actionButton) {
-                        actionButton = new ActionButton(this.items[i], parentContainerStyle);
+
+						actionButton = this._owner.hostConfig.telemetryEnabled ? new ActionButtonWithTelemetry(this.items[i], parentContainerStyle) 
+					        : new ActionButton(this.items[i], parentContainerStyle);
+						
+                        // actionButton = new ActionButton(this.items[i], parentContainerStyle); // original without telemetry
                         actionButton.onClick = (ab) => { this.actionClicked(ab); };
 
                         this.buttons.push(actionButton);
@@ -5062,7 +5385,7 @@ export class ActionSet extends CardElement {
     }
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
-        super.parse(json, errors);
+		super.parse(json, errors);
 
         var jsonOrientation = json["orientation"];
 
@@ -6571,9 +6894,10 @@ export class ElementTypeRegistry extends TypeRegistry<CardElement> {
         this.registerType("ActionSet", () => { return new ActionSet(); });
         this.registerType("Input.Text", () => { return new TextInput(); });
         this.registerType("Input.Date", () => { return new DateInput(); });
-        this.registerType("Input.Time", () => { return new TimeInput(); });
+		this.registerType("Input.Time", () => { return new TimeInput(); });
         this.registerType("Input.Number", () => { return new NumberInput(); });
-        this.registerType("Input.ChoiceSet", () => { return new ChoiceSetInput(); });
+		this.registerType("Input.ChoiceSet", () => { return new ChoiceSetInput(); });
+		this.registerType("Input.Rating", () => { return new RatingInput(); });
         this.registerType("Input.Toggle", () => { return new ToggleInput(); });
     }
 }
@@ -6618,7 +6942,7 @@ export class AdaptiveCard extends ContainerWithActions {
     static onParseElement: (element: CardElement, json: any, errors?: Array<HostConfig.IValidationError>) => void = null;
     static onParseAction: (element: Action, json: any, errors?: Array<HostConfig.IValidationError>) => void = null;
     static onParseError: (error: HostConfig.IValidationError) => void = null;
-    static onProcessMarkdown: (text: string, result: IMarkdownProcessingResult) => void = null;
+	static onProcessMarkdown: (text: string, result: IMarkdownProcessingResult) => void = null;
 
     static get processMarkdown(): (text: string) => string {
         throw new Error("The processMarkdown event has been removed. Please update your code and set onProcessMarkdown instead.")
@@ -6776,6 +7100,7 @@ export class AdaptiveCard extends ContainerWithActions {
     }
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+
         this._fallbackCard = null;
 
         this._cardTypeName = Utils.getStringValue(json["type"]);
@@ -6811,10 +7136,124 @@ export class AdaptiveCard extends ContainerWithActions {
         if (fallbackElement) {
             this._fallbackCard = new AdaptiveCard();
             this._fallbackCard.addItem(fallbackElement);
-        }
+		}
+		
+		// enables telemetry recording for RenderCard event
+		if (this.hostConfig.telemetryEnabled) {
+			this.renderCardTelemetry(json);
+		}
+		
+		super.parse(json, errors);
 
-        super.parse(json, errors);
-    }
+		
+	}
+	
+	/**
+	 * A method that creates an IACLogger and enables event logging to the respective providers.
+	 * 
+	 * @param json - The JSON object that is being parsed
+	 */
+	private renderCardTelemetry(json: any): void {
+
+		// instantiate logger upon card parse
+		ACLogger.getOrCreate().configureDefaultProviders();
+
+		if (json[this.getItemsCollectionPropertyName()] != null) {
+
+			let items = json[this.getItemsCollectionPropertyName()] as Array<any>;
+
+			// only telemetry for card with Input.Rating is collected
+			var hasRating: boolean = false;
+
+			for (let i = 0; i < items.length; i++) {
+				if (items[i]["type"] === "Input.Rating") {
+					hasRating = true;
+					break;
+				}
+			}
+			
+			var guidHelper: GUIDHelper = GUIDHelper.getOrCreate();
+			// generate a new GUID each time a new card is parsed
+			guidHelper.createGUID();
+
+			if (hasRating) {
+
+				var logger: IACLogger = ACLogger.getOrCreate();
+
+				// only call getGUID() if we want to track the GUID
+				// (has a rating control)
+				var guid: string = guidHelper.getGUID().toString();
+				
+
+				for (let i = 0; i < items.length; i++) {
+					var itemType = items[i]["type"];
+
+					if (itemType === "Input.Rating") {
+						var valueSet = {};
+
+						valueSet["defaultScale"] = (items[i]["maxValue"]) ? false : true;
+
+						valueSet["defaultStar"] = (items[i]["iconSelected"] || items[i]["iconUnselected"]) ? false : true;
+
+						logger.logEvent("RenderCard", items[i]["type"], guid, valueSet);
+
+					} else {
+						logger.logEvent("RenderCard", items[i]["type"], guid);
+					}
+
+					if (itemType === "Input.ChoiceSet") {
+						this.logSubItems(items[i], "choices", "Input.Choice");
+
+					} else if (itemType === "FactSet") {
+						this.logSubItems(items[i], "facts", "Fact");
+
+					} else if (itemType === "ColumnSet") {
+						this.logSubItems(items[i], "columns", "Column");
+
+					} else if (itemType === "ActionSet") {
+						this.logSubItems(items[i], "actions", "Action");
+
+					} else if (itemType === "ImageSet") {
+						this.logSubItems(items[i], "images", "Image");
+					}
+				}
+
+				if (json["actions"]) {
+					for (let i = 0; i < json["actions"].length; i++) {
+						logger.logEvent("RenderCard", json["actions"][i]["type"], guid);
+					}
+				}
+
+			}
+
+			
+		}
+	}
+
+	/**
+	 * A helper method used by the renderCardTelemetry() method to log sub-elements (e.g. Choices within ChoiceSet).
+	 * 
+	 * @param item Name of the item element
+	 * @param subItemName Name of the subitems
+	 * @param itemSchemaName Name of the item according to the Adaptive Cards schema
+	 */
+	private logSubItems(item: any, subItemName: string, itemSchemaName: string): void {
+		var subItems = item[subItemName];
+
+		if (subItems) {
+
+			for (let i = 0; i < subItems.length; i++) {
+
+				// account for case where actions can have different types
+				if (itemSchemaName == "Action") {
+					ACLogger.getOrCreate().logEvent("RenderCard", subItems[i]["type"], GUIDHelper.getOrCreate().getGUID().toString());
+				} else {
+					ACLogger.getOrCreate().logEvent("RenderCard", itemSchemaName, GUIDHelper.getOrCreate().getGUID().toString());
+				}
+			}
+		}
+	}
+
 
     render(target?: HTMLElement): HTMLElement {
         let renderedCard: HTMLElement;
