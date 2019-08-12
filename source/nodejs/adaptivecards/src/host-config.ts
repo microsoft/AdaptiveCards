@@ -622,8 +622,7 @@ export class HostConfig {
     private _legacyFontType: FontTypeDefinition;
 
     choiceSetInputValueSeparator: string = ",";
-	supportsInteractivity: boolean = true;
-	telemetryEnabled: boolean = true;
+    supportsInteractivity: boolean = true;
     lineHeights?: ILineHeightDefinitions;
     fontTypes: FontTypeSet = null;
 
