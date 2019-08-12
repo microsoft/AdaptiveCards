@@ -2081,25 +2081,27 @@ export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCard
             this.changed(false);
         }
 
-        let validationNecessity = addLabelAndInput(card, "Necessity:", Adaptive.ChoiceSetInput);
-        validationNecessity.input.isCompact = true;
-        validationNecessity.input.choices.push(new Adaptive.Choice("Optional", Adaptive.InputValidationNecessity.Optional.toString()));
-        validationNecessity.input.choices.push(new Adaptive.Choice("Required", Adaptive.InputValidationNecessity.Required.toString()));
-        validationNecessity.input.choices.push(new Adaptive.Choice("Required with visual cue", Adaptive.InputValidationNecessity.RequiredWithVisualCue.toString()));
-        validationNecessity.input.defaultValue = this.cardElement.validation.necessity.toString();
-        validationNecessity.input.onValueChanged = () => {
-            this.cardElement.validation.necessity = <Adaptive.InputValidationNecessity>parseInt(validationNecessity.input.value);
+        if (Adaptive.AdaptiveCard.useBuiltInInputValidation) {
+            let validationNecessity = addLabelAndInput(card, "Necessity:", Adaptive.ChoiceSetInput);
+            validationNecessity.input.isCompact = true;
+            validationNecessity.input.choices.push(new Adaptive.Choice("Optional", Adaptive.InputValidationNecessity.Optional.toString()));
+            validationNecessity.input.choices.push(new Adaptive.Choice("Required", Adaptive.InputValidationNecessity.Required.toString()));
+            validationNecessity.input.choices.push(new Adaptive.Choice("Required with visual cue", Adaptive.InputValidationNecessity.RequiredWithVisualCue.toString()));
+            validationNecessity.input.defaultValue = this.cardElement.validation.necessity.toString();
+            validationNecessity.input.onValueChanged = () => {
+                this.cardElement.validation.necessity = <Adaptive.InputValidationNecessity>parseInt(validationNecessity.input.value);
 
-            this.changed(false);
-        }
+                this.changed(false);
+            }
 
-        let validationErrorMessage = addLabelAndInput(card, "Error message:", Adaptive.TextInput);
-        validationErrorMessage.input.placeholder = "(not set)";
-        validationErrorMessage.input.defaultValue = this.cardElement.validation.errorMessage;
-        validationErrorMessage.input.onValueChanged = () => {
-            this.cardElement.validation.errorMessage = validationErrorMessage.input.value;
+            let validationErrorMessage = addLabelAndInput(card, "Error message:", Adaptive.TextInput);
+            validationErrorMessage.input.placeholder = "(not set)";
+            validationErrorMessage.input.defaultValue = this.cardElement.validation.errorMessage;
+            validationErrorMessage.input.onValueChanged = () => {
+                this.cardElement.validation.errorMessage = validationErrorMessage.input.value;
 
-            this.changed(false);
+                this.changed(false);
+            }
         }
     }
 
@@ -2214,20 +2216,28 @@ export class NumberInputPeer extends InputPeer<Adaptive.NumberInput> {
             this.changed(false);
         }
 
-        let min = addLabelAndInput(card, "Minimum value:", Adaptive.TextInput);
+        let min = addLabelAndInput(card, "Minimum value:", Adaptive.NumberInput);
         min.input.placeholder = "(not set)";
-        min.input.defaultValue = this.cardElement.min;
+
+        if (this.cardElement.min) {
+            min.input.defaultValue = this.cardElement.min.toString();
+        }
+
         min.input.onValueChanged = () => {
-            this.cardElement.min = min.input.value;
+            this.cardElement.min = min.input.valueAsNumber;
 
             this.changed(false);
         }
 
-        let max = addLabelAndInput(card, "Maximum value:", Adaptive.TextInput);
+        let max = addLabelAndInput(card, "Maximum value:", Adaptive.NumberInput);
         max.input.placeholder = "(not set)";
-        max.input.defaultValue = this.cardElement.max;
+
+        if (this.cardElement.max) {
+            max.input.defaultValue = this.cardElement.max.toString();
+        }
+
         max.input.onValueChanged = () => {
-            this.cardElement.max = max.input.value;
+            this.cardElement.max = max.input.valueAsNumber;
 
             this.changed(false);
         }
