@@ -113,15 +113,24 @@ public class ColumnRenderer extends BaseCardElementRenderer
         columnRenderArgs.setContainerStyle(styleForThis);
         if (!column.GetItems().isEmpty())
         {
-            CardRendererRegistration.getInstance().render(renderedCard,
-                                                          context,
-                                                          fragmentManager,
-                                                          verticalContentAlignmentLayout,
-                                                          column,
-                                                          column.GetItems(),
-                                                          cardActionHandler,
-                                                          hostConfig,
-                                                          columnRenderArgs);
+            try
+            {
+                CardRendererRegistration.getInstance().render(renderedCard,
+                                                              context,
+                                                              fragmentManager,
+                                                              verticalContentAlignmentLayout,
+                                                              column,
+                                                              column.GetItems(),
+                                                              cardActionHandler,
+                                                              hostConfig,
+                                                              columnRenderArgs);
+            }
+            catch (AdaptiveFallbackException e)
+            {
+                // If the column couldn't be rendered, the separator is removed
+                viewGroup.removeView(separator);
+                throw e;
+            }
         }
 
         BackgroundImage backgroundImageProperties = column.GetBackgroundImage();
