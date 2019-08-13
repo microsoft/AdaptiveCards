@@ -23,6 +23,9 @@ namespace AdaptiveSharedNamespace
         bool GetStrikethrough() const;
         void SetStrikethrough(const bool value);
 
+        bool GetUnderline() const;
+        void SetUnderline (const bool value);
+
         Json::Value SerializeToJsonValue(Json::Value& root) const override;
         void Deserialize(const ParseContext& context, const Json::Value& root) override;
         void PopulateKnownPropertiesSet(std::unordered_set<std::string>& knownProperties) override;
@@ -30,5 +33,6 @@ namespace AdaptiveSharedNamespace
     private:
         bool m_italic;
         bool m_strikethrough;
+        bool m_underline;
     };
 }
