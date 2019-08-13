@@ -3545,6 +3545,242 @@ export class ChoiceSetInput extends Input {
     }
 }
 
+/**
+ * Input.Rating control:
+ * Uses the requested number of Choice objects (as radio buttons) to display a star rating.
+ * @defaults
+ * 5 stars. Unselected stars are white with black borders, selected stars are gold.
+ */
+export class RatingInput extends Input {
+    private static uniqueCategoryCounter = 0;
+
+    private static getUniqueCategoryName(): string {
+        let uniqueCategoryName = "__ac-category" + RatingInput.uniqueCategoryCounter;
+
+        RatingInput.uniqueCategoryCounter++;
+
+        return uniqueCategoryName;
+    }
+
+    private _toggleInputs: Array<HTMLInputElement>;
+
+	protected internalRender(): HTMLElement {
+		const NOT_CLICKED: number = -1;
+		const DEFAULT_RATING_SCALE: number = 5;
+
+		// Note: explore changing these from images to CSS "shapes"
+		// otherwise, host on Azure
+		let defaulticonUnselected = "https://i.imgur.com/87eARQE.png";
+		let defaulticonSelected = "https://i.imgur.com/bXMnufQ.png";
+
+		let uniqueCategoryName = RatingInput.getUniqueCategoryName();
+
+		let element = document.createElement("div");
+		element.className = this.hostConfig.makeCssClassName("ac-input", "ac-RatingInput");
+		element.style.width = "100%";
+
+		element.style.textAlign = "center";
+
+		this._toggleInputs = [];
+
+		let iconUnselected = this.iconUnselected ? this.iconUnselected : defaulticonUnselected;
+		let iconSelected = this.iconSelected ? this.iconSelected : defaulticonSelected;
+		let maxValue: number = this.maxValue ? this.maxValue : DEFAULT_RATING_SCALE;
+
+		let labels: Label[] = new Array(maxValue);
+		let labelElements: HTMLElement[] = new Array(maxValue);
+
+		for (let i = 0; i < maxValue; i++) {
+			let radioInput = document.createElement("input");
+			radioInput.id = Utils.generateUniqueId();
+			radioInput.type = "radio";
+			radioInput.style.margin = "0";
+			radioInput.style.display = "inline";
+			radioInput.style.verticalAlign = "middle";
+			radioInput.name = Utils.isNullOrEmpty(this.id) ? uniqueCategoryName : this.id;
+			radioInput.value = (i + 1).toString();
+			radioInput.style.flex = "0 0 auto";
+			radioInput.setAttribute("aria-label", "Rating " + (i + 1));
+			radioInput.style.display = "none";
+
+			radioInput.onchange = () => { this.valueChanged(); }
+
+			this._toggleInputs.push(radioInput);
+
+			labels[i] = new Label();
+			labels[i].setParent(this);
+			labels[i].forElementId = radioInput.id;
+			labels[i].hostConfig = this.hostConfig;
+			labels[i].text = "Rating " + (i + 1);
+			labels[i].useMarkdown = AdaptiveCard.useMarkdownInRadioButtonAndCheckbox;
+			labels[i].wrap = this.wrap;
+
+			labelElements[i] = labels[i].render();
+			labelElements[i].style.display = "block";
+			labelElements[i].style.flex = "1 1 auto";
+			labelElements[i].style.marginLeft = "6px";
+			labelElements[i].style.verticalAlign = "middle";
+			labelElements[i].style.flexGrow = "1";
+
+			labelElements[i].style.backgroundImage = "url('" + iconUnselected + "')";
+			labelElements[i].style.backgroundSize = "25px 25px";
+			labelElements[i].style.backgroundRepeat = "no-repeat";
+			labelElements[i].style.backgroundPositionX = "center";
+			labelElements[i].style.paddingTop = "25px";
+
+			let textFirstElementChild = <HTMLElement>labelElements[i].firstElementChild;
+			textFirstElementChild.style.width = "0%";
+			textFirstElementChild.style.removeProperty("text-overflow");
+			textFirstElementChild.style.overflow = "hidden";
+			textFirstElementChild.style.marginBottom = "-20px";
+
+			var ratingClicked: number = NOT_CLICKED;
+
+			// when hovering over an icon, replace that and all preceding icons with the iconSelected image
+			labelElements[i].onmouseover = function () {
+				for (let j = 0; j <= i; j++) {
+					labelElements[j].style.backgroundImage = "url('" + iconSelected + "')";
+				}
+				for (let j = i + 1; j < maxValue; j++) {
+					labelElements[j].style.backgroundImage = "url('" + iconUnselected + "')";
+				}
+			};
+
+			// when leaving an icon (i.e. we stop hovering), return to previous state
+			labelElements[i].onmouseleave = function () {
+				if (ratingClicked == NOT_CLICKED) {
+					for (let j = 0; j <= i; j++) {
+						labelElements[j].style.backgroundImage = "url('" + iconUnselected + "')";
+					}
+				} else {
+					for (let j = 0; j <= ratingClicked; j++) {
+						labelElements[j].style.backgroundImage = "url('" + iconSelected + "')";
+					}
+					for (let j = ratingClicked + 1; j < maxValue; j++) {
+						labelElements[j].style.backgroundImage = "url('" + iconUnselected + "')";
+					}
+				}
+			};
+
+			// when an icon is clicked, replace it and all preceding icons with the iconSelected image
+			labelElements[i].onclick = function () {
+				ratingClicked = i;
+				for (let j = 0; j <= ratingClicked; j++) {
+					labelElements[j].style.backgroundImage = "url('" + iconSelected + "')";
+				}
+				for (let j = ratingClicked + 1; j < maxValue; j++) {
+					labelElements[j].style.backgroundImage = "url('" + iconUnselected + "')";
+				}
+			};
+
+			let spacerElement = document.createElement("div");
+			spacerElement.style.width = "6px";
+
+			let compoundInput = document.createElement("div");
+			compoundInput.style.marginLeft = "0px";
+			compoundInput.style.marginRight = "0px";
+			compoundInput.style.display = "inline-block";
+			compoundInput.style.textAlign = "center";
+			compoundInput.style.flexGrow = "1";
+
+			Utils.appendChild(compoundInput, radioInput);
+			Utils.appendChild(compoundInput, spacerElement);
+			Utils.appendChild(compoundInput, labelElements[i]);
+
+			Utils.appendChild(element, compoundInput);
+
+		}
+
+		return element;
+	}
+	
+	wrap: boolean = false;
+	maxValue: number;
+	iconSelected: string;
+	iconUnselected: string;
+
+	private newMethod() {
+		return this;
+	}
+
+    getJsonTypeName(): string {
+        return "Input.Rating";
+    }
+
+    toJSON() {
+        let result = super.toJSON();
+
+		if (this.maxValue > 0) {
+            var ratings = [];
+
+			for (let i = 0; i < this.maxValue; i++) {
+				let rating: Choice;
+				rating.title = "Choice " + (i + 1);
+				rating.value = (i + 1).toString();
+				ratings.push(rating.toJSON());
+			}
+
+            Utils.setProperty(result, "choices", ratings);
+		}
+		
+        Utils.setProperty(result, "wrap", this.wrap, false);
+		
+        return result;
+    }
+
+    internalValidateProperties(context: ValidationResults) {
+		super.internalValidateProperties(context);
+		
+		const MIN_RATING_COUNT: number = 1;
+
+		if (this.maxValue < MIN_RATING_COUNT) {
+            context.addFailure(
+                this,
+                {
+					error: Enums.ValidationError.InvalidPropertyValue,
+                    message: "An Input.Rating must have at least " + MIN_RATING_COUNT + " possible rating(s)."
+                });
+        }
+    }
+
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+		super.parse(json, errors);
+		
+		this.maxValue = parseInt(Utils.getStringValue(json["maxValue"]), 10);
+		this.iconSelected = Utils.getStringValue(json["iconSelected"]);
+		this.iconUnselected = Utils.getStringValue(json["iconUnselected"]);
+
+		let ratings: Array<Choice> = [];
+
+		if (json["maxValue"] != undefined && json["maxValue"] > 0) {
+
+            for (let i = 0; i < json["maxValue"]; i++) {
+                let rating = new Choice();
+				rating.title = "Rating " + (i + 1);
+				rating.value = (i + 1).toString();
+
+				ratings.push(rating);
+            }
+		}
+
+        this.wrap = Utils.getBoolValue(json["wrap"], this.wrap);
+    }
+
+	get value(): string {
+		if (!this._toggleInputs || this._toggleInputs.length == 0) {
+			return null;
+		}
+
+		for (var i = 0; i < this._toggleInputs.length; i++) {
+			if (this._toggleInputs[i].checked) {
+				return this._toggleInputs[i].value;
+			}
+		}
+
+		return null;
+    }
+}
+
 export class NumberInput extends Input {
     private _numberInputElement: HTMLInputElement;
     private _min: string;
@@ -6573,7 +6809,8 @@ export class ElementTypeRegistry extends TypeRegistry<CardElement> {
         this.registerType("Input.Date", () => { return new DateInput(); });
         this.registerType("Input.Time", () => { return new TimeInput(); });
         this.registerType("Input.Number", () => { return new NumberInput(); });
-        this.registerType("Input.ChoiceSet", () => { return new ChoiceSetInput(); });
+		this.registerType("Input.ChoiceSet", () => { return new ChoiceSetInput(); });
+		this.registerType("Input.Rating", () => { return new RatingInput(); });
         this.registerType("Input.Toggle", () => { return new ToggleInput(); });
     }
 }
