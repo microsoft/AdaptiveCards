@@ -233,7 +233,7 @@ export default class Visualizer extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        //flex: 1
     },
     payloadPicker: {
         width: '100%',
@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
         height: 25
     },
     moreOptionsModal: {
-        flex: 1,
+        //flex: 1,
         backgroundColor: "rgba(0, 0, 0, 0.1)"
     },
     more: {

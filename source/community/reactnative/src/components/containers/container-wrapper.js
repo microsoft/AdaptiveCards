@@ -123,6 +123,6 @@ export class ContainerWrapper extends React.PureComponent {
 const styles = StyleSheet.create({
     backgroundImage: {
         width: Constants.FullWidth,
-        flex: 1
+        //flex: 1
     }
 });

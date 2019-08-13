@@ -27,7 +27,7 @@ export class ActionSet extends React.Component {
 
 const styles = StyleSheet.create({
 	actionButtonContainer: {
-		flex: 1,
+		// flex: 1,
 	}
 });
 

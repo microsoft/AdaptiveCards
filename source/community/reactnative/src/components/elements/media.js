@@ -138,7 +138,7 @@ export class Media extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        //flex: 1,
         justifyContent: Constants.CenterString,
         alignItems: Constants.CenterString,
         backgroundColor: Constants.BlackColor,

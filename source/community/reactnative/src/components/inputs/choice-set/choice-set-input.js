@@ -332,7 +332,7 @@ export class ChoiceSetInput extends React.Component {
 const styles = StyleSheet.create({
 	containerView: {
 		alignSelf: Constants.AlignStretch,
-		flex: 1
+		//flex: 1
 	},
 	pickerContainer: {
 		backgroundColor: Constants.EmphasisColor,

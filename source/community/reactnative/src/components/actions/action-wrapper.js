@@ -116,7 +116,7 @@ export class ActionWrapper extends React.Component {
 
 const styles = StyleSheet.create({
 	actionButtonContainer: {
-		flex: 1,
+		//flex: 1,
 		paddingTop: padding,
 		flexWrap: Constants.FlexWrap,
 		justifyContent: Constants.CenterString

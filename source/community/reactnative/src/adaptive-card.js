@@ -169,11 +169,11 @@ export default class AdaptiveCard extends React.Component {
 		var adaptiveCardContent =
 			(
 				<ContainerWrapper style={styles.container} json={this.state.cardModel}>
-					<ScrollView alwaysBounceVertical={false} style={{ flexGrow: 0 }}>
+					{/* <ScrollView alwaysBounceVertical={false} style={{ flexGrow: 0 }}> */}
 						{this.parsePayload()}
 						{!Utils.isNullOrEmpty(this.state.cardModel.actions) &&
 							<ActionWrapper actions={this.state.cardModel.actions} />}
-					</ScrollView>
+					{/* </ScrollView> */}
 				</ContainerWrapper>
 			);
 
@@ -278,14 +278,14 @@ AdaptiveCard.propTypes = {
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
+		// //flex: 1,
 	},
 	actionContainer: {
 		marginVertical: 10
 	},
 	backgroundImage: {
 		width: "100%",
-		flex: 1
+		// //flex: 1
 	}
 });
 

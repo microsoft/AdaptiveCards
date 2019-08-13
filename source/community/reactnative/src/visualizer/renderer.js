@@ -54,6 +54,7 @@ export default class Renderer extends React.Component {
         let { isJSONVisible } = this.state;
 
         return (
+            <ScrollView>
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Button title="Close" onPress={this.onModalClose} />
@@ -76,6 +77,7 @@ export default class Renderer extends React.Component {
                         ref="adaptiveCardRef" />
                 }
             </View>
+            </ScrollView>
         );
     }
 
@@ -145,7 +147,8 @@ export default class Renderer extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        // height: 400,
+        //flex: 1,
         padding: 10,
         ...Platform.select({
             ios: {
