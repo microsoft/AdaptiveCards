@@ -55,12 +55,14 @@ export interface IACLogger {
 	configureCustomProviders(...providers: IACProvider[]): void;
 
 	/**
-	 * Configures the IACLogger to log to the Microsoft1DS telemetry platform and the console.
+	 * Returns whether or not telemetry is enabled for the logger.
 	 * 
 	 * @remarks
-	 * If an IACLogger is not configured before logging, then an error will be output to the console and no event/message will be logged.
+	 * This function determines status according to the state of the providers; if providers are empty,
+	 * then telemetry is not enabled, and vice versa
 	 * 
+	 * @returns true if telemetry is enabled, else false
 	 */
-	configureDefaultProviders(): void;
+	isTelemetryEnabled(): boolean;
 
 }

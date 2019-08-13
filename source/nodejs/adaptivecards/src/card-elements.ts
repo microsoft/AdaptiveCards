@@ -5183,7 +5183,7 @@ class ActionCollection {
 
                     if (!actionButton) {
 
-						actionButton = this._owner.hostConfig.telemetryEnabled ? new ActionButtonWithTelemetry(this.items[i], parentContainerStyle) 
+						actionButton = true ? new ActionButtonWithTelemetry(this.items[i], parentContainerStyle) 
 					        : new ActionButton(this.items[i], parentContainerStyle);
 						
                         // actionButton = new ActionButton(this.items[i], parentContainerStyle); // original without telemetry
@@ -7139,12 +7139,11 @@ export class AdaptiveCard extends ContainerWithActions {
 		}
 		
 		// enables telemetry recording for RenderCard event
-		if (this.hostConfig.telemetryEnabled) {
+		if (true) {
 			this.renderCardTelemetry(json);
 		}
 		
 		super.parse(json, errors);
-
 		
 	}
 	
@@ -7156,7 +7155,7 @@ export class AdaptiveCard extends ContainerWithActions {
 	private renderCardTelemetry(json: any): void {
 
 		// instantiate logger upon card parse
-		ACLogger.getOrCreate().configureDefaultProviders();
+		// ACLogger.getOrCreate().configureDefaultProviders();
 
 		if (json[this.getItemsCollectionPropertyName()] != null) {
 

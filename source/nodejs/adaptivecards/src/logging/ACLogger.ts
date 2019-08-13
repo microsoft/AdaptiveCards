@@ -127,7 +127,6 @@ export class ACLogger implements IACLogger {
 	configureCustomProviders(...providers: IACProvider[]): void {
 
 		if (providers === undefined || providers.length == 0) {
-			this.configureDefaultProviders();
 			return;
 		}
 
@@ -150,6 +149,10 @@ export class ACLogger implements IACLogger {
 				this.providers.push(newProvider);
 			}
 		});
+	}
+
+	isTelemetryEnabled(): boolean {
+		return this.providers ? true : false;
 	}
 
 }
