@@ -39,6 +39,7 @@
 		"webpack-dev-server": "^3.7.2"
 	},
 	"dependencies": {
+		"@lerna/query-graph": "^3.16.0",
 		"uuid": "^3.3.2"
 	}
 }
