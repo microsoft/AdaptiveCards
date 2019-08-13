@@ -3566,6 +3566,12 @@ export class ChoiceSetInput extends Input {
     }
 }
 
+/**
+ * Input.Rating control:
+ * Uses the requested number of Choice objects (as radio buttons) to display a star rating.
+ * @defaults
+ * 5 stars. Unselected stars are white with black borders, selected stars are gold.
+ */
 export class RatingInput extends Input {
     private static uniqueCategoryCounter = 0;
 
@@ -3577,13 +3583,14 @@ export class RatingInput extends Input {
         return uniqueCategoryName;
     }
 
-    private _selectElement: HTMLSelectElement;
     private _toggleInputs: Array<HTMLInputElement>;
 
 	protected internalRender(): HTMLElement {
 		const NOT_CLICKED: number = -1;
 		const DEFAULT_RATING_SCALE: number = 5;
 
+		// Note: explore changing these from images to CSS "shapes"
+		// otherwise, host on Azure
 		let defaulticonUnselected = "https://i.imgur.com/87eARQE.png";
 		let defaulticonSelected = "https://i.imgur.com/bXMnufQ.png";
 
@@ -3707,12 +3714,7 @@ export class RatingInput extends Input {
 
 		return element;
 	}
-
-	// TODO: delete these two after correcting the get value() method
-    isCompact: boolean = false;
-	isMultiSelect: boolean = false;
 	
-    placeholder: string;
 	wrap: boolean = false;
 	maxValue: number;
 	iconSelected: string;
@@ -3729,13 +3731,11 @@ export class RatingInput extends Input {
     toJSON() {
         let result = super.toJSON();
 
-		Utils.setProperty(result, "placeholder", this.placeholder);
-
 		if (this.maxValue > 0) {
             var ratings = [];
 
 			for (let i = 0; i < this.maxValue; i++) {
-				let rating:Choice;
+				let rating: Choice;
 				rating.title = "Choice " + (i + 1);
 				rating.value = (i + 1).toString();
 				ratings.push(rating.toJSON());
@@ -3767,8 +3767,6 @@ export class RatingInput extends Input {
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
 		super.parse(json, errors);
 		
-		this.placeholder = Utils.getStringValue(json["placeholder"]);
-		
 		this.maxValue = parseInt(Utils.getStringValue(json["maxValue"]), 10);
 		this.iconSelected = Utils.getStringValue(json["iconSelected"]);
 		this.iconUnselected = Utils.getStringValue(json["iconUnselected"]);
@@ -3789,50 +3787,18 @@ export class RatingInput extends Input {
         this.wrap = Utils.getBoolValue(json["wrap"], this.wrap);
     }
 
-    get value(): string {
-		// TODO: isMultiSelect and isCompact are not necessary here, fix:
-		if (!this.isMultiSelect) {
-            if (this.isCompact) {
-                if (this._selectElement) {
-                    return this._selectElement.selectedIndex > 0 ? this._selectElement.value : null;
-                }
-
-                return null;
-            }
-            else {
-                if (!this._toggleInputs || this._toggleInputs.length == 0) {
-                    return null;
-                }
-
-                for (var i = 0; i < this._toggleInputs.length; i++) {
-                    if (this._toggleInputs[i].checked) {
-                        return this._toggleInputs[i].value;
-                    }
-                }
-
-                return null;
-            }
-        }
-        else {
-            if (!this._toggleInputs || this._toggleInputs.length == 0) {
-                return null;
-            }
-
-            var result: string = "";
-
-            for (var i = 0; i < this._toggleInputs.length; i++) {
-                if (this._toggleInputs[i].checked) {
-                    if (result != "") {
-                        result += this.hostConfig.choiceSetInputValueSeparator;
-                    }
-
-                    result += this._toggleInputs[i].value;
-                }
-            }
-
-            return result == "" ? null : result;
+	get value(): string {
+		if (!this._toggleInputs || this._toggleInputs.length == 0) {
+			return null;
 		}
-		/**/
+
+		for (var i = 0; i < this._toggleInputs.length; i++) {
+			if (this._toggleInputs[i].checked) {
+				return this._toggleInputs[i].value;
+			}
+		}
+
+		return null;
     }
 }
 
