@@ -15,6 +15,7 @@
 #import "CustomActionNewType.h"
 #import "ADCResolver.h"
 #import "AdaptiveCards/ACRButton.h"
+#import "AdaptiveFileBrowserSource.h"
 
 @interface ViewController ()
 {
@@ -120,6 +121,7 @@
     [_resolvers setResourceResolver:resolver scheme:@"https"];
     _enableCustomRenderer = NO;
     self.curView = nil;
+    
     self.ACVTabVC = [[ACVTableViewController alloc] init];
     self.ACVTabVC.delegate = self;
     self.ACVTabVC.tableView.rowHeight = 25;
@@ -129,12 +131,17 @@
     self.ACVTabVC.tableView.showsVerticalScrollIndicator = YES;
     self.ACVTabVC.tableView.userInteractionEnabled = YES;
     self.ACVTabVC.tableView.bounces = YES;
-    self.ACVTabVC.tableView.layer.borderWidth = 1.25;
+    self.ACVTabVC.tableView.layer.borderWidth = 0.8;
+    
     UITableView *ACVTabView = self.ACVTabVC.tableView;
+    
+    self.fileBrowserView = [[AdaptiveFileBrowserSource alloc] initWithFrame:CGRectMake(20, 40, 330, 55) WithDataDelegate:self.ACVTabVC];   
+    
+    [self.view addSubview:self.fileBrowserView];
     [self.view addSubview:ACVTabView];
     ACVTabView.translatesAutoresizingMaskIntoConstraints = NO;
-
-    self.editView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) textContainer: nil];
+    
+    self.editView = [[UITextView alloc] initWithFrame:CGRectMake(0, 55, 0, 0) textContainer: nil];
     self.editView.directionalLockEnabled = NO;
     [self.view addSubview:self.editView];
 
@@ -200,11 +207,13 @@
     scrollview.showsVerticalScrollIndicator = YES;
     _scrView.scrollEnabled = YES;
     scrollview.translatesAutoresizingMaskIntoConstraints = NO;
-
-    NSDictionary *viewMap = NSDictionaryOfVariableBindings(ACVTabView, buttonLayout, scrollview);
+    UIView *fileBrowserView = self.fileBrowserView;
+    
+    NSDictionary *viewMap = NSDictionaryOfVariableBindings(ACVTabView, buttonLayout, scrollview, fileBrowserView);
+    
     NSArray<NSString *> *formats = 
         [NSArray arrayWithObjects:@"H:|-[ACVTabView]-|",   
-                              @"V:|-40-[ACVTabView(==200)]-[buttonLayout]-[scrollview]-40@100-|",
+                              @"V:|-40-[fileBrowserView]-[ACVTabView(==200)]-[buttonLayout]-[scrollview]-40@100-|",
          @"H:|-[buttonLayout]-|", @"H:|-[scrollview]-|", nil];
 
     [ViewController applyConstraints:formats variables:viewMap];
