@@ -10,6 +10,9 @@
 #import <AdaptiveCards/ACFramework.h>
 #import <AdaptiveCards/SharedAdaptiveCard.h>
 #import <AdaptiveCards/SubmitAction.h>
+#import <AdaptiveCards/FactSet.h>
+#import <AdaptiveCards/Fact.h>
+#import <AdaptiveCards/ACOHostConfigPrivate.h>
 
 using namespace std;
 using namespace AdaptiveCards;
@@ -35,7 +38,7 @@ bool compare(shared_ptr<BaseActionElement> const &a, shared_ptr<BaseActionElemen
         NSString *resourcePath = [main resourcePath];
         _rootPath = [resourcePath stringByAppendingPathComponent:@"samples"];
         _fileManager = [NSFileManager defaultManager];
-        NSString *hostConfigAsString = [NSString stringWithContentsOfFile:[main pathForResource:@"sample" ofType:@"json"]
+        NSString *hostConfigAsString = [NSString stringWithContentsOfFile:[main pathForResource:@"filebrowserHostConfig" ofType:@"json"]
                                                                     encoding:NSUTF8StringEncoding
                                                                        error:nil];
         ACOHostConfigParseResult *hostconfigParseResult = [ACOHostConfig fromJson:hostConfigAsString resourceResolvers:nil];
@@ -59,6 +62,22 @@ bool compare(shared_ptr<BaseActionElement> const &a, shared_ptr<BaseActionElemen
 - (UIView *)getAdaptiveFileBrowserView:(NSArray<NSString *> *)directory parentDir:(NSString *)parentDir {
     AdaptiveCard card {};
     card.SetVersion("1.2");
+    auto &body { card.GetBody() };
+    shared_ptr<TextBlock> currentDirectoryLabel { make_shared<TextBlock>() };
+    currentDirectoryLabel->SetText("Available Sample JSONs");
+    currentDirectoryLabel->SetTextSize(TextSize::Large);
+    currentDirectoryLabel->SetHorizontalAlignment(HorizontalAlignment::Center);
+    currentDirectoryLabel->SetTextWeight(TextWeight::Bolder);    
+    body.push_back(currentDirectoryLabel);
+    
+    shared_ptr<FactSet> directoryIndicator { make_shared<FactSet>() };
+    directoryIndicator->SetSeparator(true);
+    shared_ptr<Fact> directoryName { make_shared<Fact>()};
+    directoryName->SetTitle("current directory:");
+    directoryName->SetValue([_fileManager displayNameAtPath:parentDir].UTF8String);
+    directoryIndicator->GetFacts().push_back(directoryName);
+    body.push_back(directoryIndicator);
+    
     auto &actions { card.GetActions() };
     auto backAction { buildAction([parentDir stringByDeletingLastPathComponent].UTF8String, "Back") };
     backAction->SetStyle("destructive");
@@ -90,7 +109,7 @@ bool compare(shared_ptr<BaseActionElement> const &a, shared_ptr<BaseActionElemen
     
     if ([filesList count]) {
         NSArray<NSString *> *immutableFilesList;
-        immutableFilesList = [filesList sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        immutableFilesList = [filesList sortedArrayUsingComparator:^NSComparisonResult(id _Nonnull obj1, id _Nonnull obj2) {
             NSString *path1 = obj1, *path2 = obj2;
             NSComparisonResult result = [[[NSFileManager defaultManager] displayNameAtPath:path1] compare:[[NSFileManager defaultManager] displayNameAtPath:path2]];
             return result;
@@ -128,8 +147,8 @@ shared_ptr<SubmitAction> buildAction (const string &path, const string &title) {
     NSArray *directoryContents = [_fileManager contentsOfDirectoryAtPath:path error:&error];
     _adaptiveView = [self getAdaptiveFileBrowserView:directoryContents parentDir:path];
     [self addSubview:_adaptiveView];
-    [_adaptiveView.topAnchor constraintEqualToAnchor:self.topAnchor].active = YES;
-    [_adaptiveView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor].active = YES;
+    [self.topAnchor constraintEqualToAnchor:_adaptiveView.topAnchor].active = YES;
+    [self.bottomAnchor constraintEqualToAnchor:_adaptiveView.bottomAnchor].active = YES;
     [_adaptiveView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor].active = YES;
     [_adaptiveView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor].active = YES;
 }

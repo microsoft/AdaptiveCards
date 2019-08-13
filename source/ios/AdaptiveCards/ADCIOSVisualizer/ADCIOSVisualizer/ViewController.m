@@ -43,9 +43,21 @@
 
 - (IBAction)editText:(id)sender
 {
-    NSMutableAttributedString *content =
-    [[NSMutableAttributedString alloc] initWithString:self.editableStr];
+    if (!self.editableStr) {
+        return;
+    }
     
+    UIView *filebrowserView = self.compositeFileBrowserView;
+    if (!self.editView) {
+        CGRect desiredDimension = filebrowserView.frame;
+        self.editView = [[UITextView alloc] initWithFrame:desiredDimension textContainer: nil];
+        [self.view addSubview:self.editView];
+        self.editView.directionalLockEnabled = NO;
+        self.editView.showsHorizontalScrollIndicator = YES;        
+    }
+    self.editView.hidden = NO;
+  
+    NSMutableAttributedString *content = [[NSMutableAttributedString alloc] initWithString:self.editableStr];
     NSMutableParagraphStyle *para = [[NSMutableParagraphStyle alloc] init];
     para.lineBreakMode = NSLineBreakByCharWrapping;
     para.alignment = NSTextAlignmentLeft;
@@ -53,19 +65,8 @@
     self.editView.attributedText = content;
     UIFontDescriptor *dec = self.editView.font.fontDescriptor;
     self.editView.font = [UIFont fontWithDescriptor:dec size:8];
-    self.editView.layer.borderWidth = 1.25;
-
-    UITextView *editView = self.editView;
-    [self.view addSubview:editView];
-    editView.translatesAutoresizingMaskIntoConstraints = NO;
-    UIStackView *buttonLayout = self.buttonLayout;
-    NSDictionary *viewMap = NSDictionaryOfVariableBindings(editView, buttonLayout);
-    [self.ACVTabVC.tableView removeFromSuperview];
-
-    NSArray<NSString *> *formats = 
-        [NSArray arrayWithObjects:@"H:|-[editView]-|",   
-                              @"V:|-40-[editView(==200)]-[buttonLayout]", nil];
-    [ViewController applyConstraints:formats variables:viewMap];
+    self.editView.layer.borderWidth = 0.8;
+    filebrowserView.hidden = YES;
 }
 
 - (IBAction)toggleCustomRenderer:(id)sender
@@ -97,19 +98,11 @@
 
 - (IBAction)applyText:(id)sender
 {
-    UITableView *ACVTabView = self.ACVTabVC.tableView;
     if(_editView.text != NULL && ![_editView.text isEqualToString:@""]){
         [self update:self.editView.text];
-        [self.view addSubview: ACVTabView];
-        [self.editView removeFromSuperview];
-
-        UIStackView *buttonLayout = self.buttonLayout;
-        NSDictionary *viewMap = NSDictionaryOfVariableBindings(ACVTabView, buttonLayout);
-        NSArray<NSString *> *formats =
-            [NSArray arrayWithObjects:@"H:|-[ACVTabView]-|",
-                                  @"V:|-40-[ACVTabView(==200)]-[buttonLayout]", nil];
-        [ViewController applyConstraints:formats variables:viewMap];
     }
+    self.editView.hidden = YES;
+    self.compositeFileBrowserView.hidden = NO;
 }
 
 - (void)viewDidLoad {
@@ -131,20 +124,33 @@
     self.ACVTabVC.tableView.showsVerticalScrollIndicator = YES;
     self.ACVTabVC.tableView.userInteractionEnabled = YES;
     self.ACVTabVC.tableView.bounces = YES;
-    self.ACVTabVC.tableView.layer.borderWidth = 0.8;
+    self.ACVTabVC.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     UITableView *ACVTabView = self.ACVTabVC.tableView;
+    _compositeFileBrowserView = [[UIView alloc] init];
+    _compositeFileBrowserView.backgroundColor = UIColor.lightGrayColor;
+    _compositeFileBrowserView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:_compositeFileBrowserView];
+    [_compositeFileBrowserView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:10].active = YES;
+    [_compositeFileBrowserView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-10].active = YES;
     
-    self.fileBrowserView = [[AdaptiveFileBrowserSource alloc] initWithFrame:CGRectMake(20, 40, 330, 55) WithDataDelegate:self.ACVTabVC];   
+    UIView *fileBrowserView = [[AdaptiveFileBrowserSource alloc] initWithFrame:CGRectMake(20, 40, 330, 55) WithDataDelegate:self.ACVTabVC];
+    fileBrowserView.translatesAutoresizingMaskIntoConstraints = NO;
+    [_compositeFileBrowserView addSubview:fileBrowserView];
+    [fileBrowserView.centerXAnchor constraintEqualToAnchor:_compositeFileBrowserView.centerXAnchor].active = YES;
     
-    [self.view addSubview:self.fileBrowserView];
-    [self.view addSubview:ACVTabView];
+    [_compositeFileBrowserView addSubview:ACVTabView];
     ACVTabView.translatesAutoresizingMaskIntoConstraints = NO;
+    ACVTabView.showsVerticalScrollIndicator = YES;
     
-    self.editView = [[UITextView alloc] initWithFrame:CGRectMake(0, 55, 0, 0) textContainer: nil];
-    self.editView.directionalLockEnabled = NO;
-    [self.view addSubview:self.editView];
-
+    [ACVTabView.topAnchor constraintEqualToAnchor:fileBrowserView.bottomAnchor].active = YES;
+    [ACVTabView.centerXAnchor constraintEqualToAnchor:fileBrowserView.centerXAnchor].active = YES;
+    [ACVTabView.widthAnchor constraintEqualToAnchor:fileBrowserView.widthAnchor].active = YES;
+    [ACVTabView.heightAnchor constraintEqualToConstant:200.0].active = YES;
+    
+    [fileBrowserView.topAnchor constraintEqualToAnchor:_compositeFileBrowserView.topAnchor constant:10.0].active = YES;
+    [ACVTabView.bottomAnchor constraintEqualToAnchor:_compositeFileBrowserView.bottomAnchor constant:-10.0].active = YES;
+    
     UIStackView *buttonLayout = [[UIStackView alloc] init];
     self.buttonLayout = buttonLayout;
 
@@ -207,13 +213,11 @@
     scrollview.showsVerticalScrollIndicator = YES;
     _scrView.scrollEnabled = YES;
     scrollview.translatesAutoresizingMaskIntoConstraints = NO;
-    UIView *fileBrowserView = self.fileBrowserView;
     
-    NSDictionary *viewMap = NSDictionaryOfVariableBindings(ACVTabView, buttonLayout, scrollview, fileBrowserView);
+    NSDictionary *viewMap = NSDictionaryOfVariableBindings(_compositeFileBrowserView, buttonLayout, scrollview);
     
     NSArray<NSString *> *formats = 
-        [NSArray arrayWithObjects:@"H:|-[ACVTabView]-|",   
-                              @"V:|-40-[fileBrowserView]-[ACVTabView(==200)]-[buttonLayout]-[scrollview]-40@100-|",
+        [NSArray arrayWithObjects:@"V:|-70-[_compositeFileBrowserView]-[buttonLayout]-[scrollview]-40@100-|",
          @"H:|-[buttonLayout]-|", @"H:|-[scrollview]-|", nil];
 
     [ViewController applyConstraints:formats variables:viewMap];
@@ -271,8 +275,7 @@
             
         [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
         [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
-        [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:3].active = YES;
-        [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0].active = YES;
+        [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:3].active = YES;
     }
 }
 
