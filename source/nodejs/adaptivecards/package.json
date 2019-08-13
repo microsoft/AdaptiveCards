@@ -59,8 +59,6 @@
 		]
 	},
 	"dependencies": {
-		"@ms/1ds-analytics-web-js": "^2.0.4",
-		"@types/mocha": "^5.2.7",
-		"chai": "^4.2.0"
+		"@ms/1ds-analytics-web-js": "^2.0.4"
 	}
 }
