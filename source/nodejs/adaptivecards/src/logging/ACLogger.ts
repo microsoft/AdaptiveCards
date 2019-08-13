@@ -126,6 +126,7 @@ export class ACLogger implements IACLogger {
 
 	configureCustomProviders(...providers: IACProvider[]): void {
 
+
 		if (providers === undefined || providers.length == 0) {
 			return;
 		}
@@ -134,9 +135,9 @@ export class ACLogger implements IACLogger {
 			this.providers = [];
 		}
 
-		providers.forEach(function(newProvider) {
+		for (var i = 0; i < providers.length; i++) {
 			var hasProvider: boolean = false;
-			var newProviderName: string = Object.getPrototypeOf(newProvider).constructor.name;
+			var newProviderName: string = Object.getPrototypeOf(providers[i]).constructor.name;
 
 			// check if new provider is already configured
 			this.providers.forEach(function(currentProvider: IACProvider) {
@@ -146,9 +147,9 @@ export class ACLogger implements IACLogger {
 			});
 
 			if (!hasProvider) {
-				this.providers.push(newProvider);
+				this.providers.push(providers[i]);
 			}
-		});
+		}
 	}
 
 	isTelemetryEnabled(): boolean {

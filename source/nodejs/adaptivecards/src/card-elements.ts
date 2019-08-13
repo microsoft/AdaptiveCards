@@ -8,6 +8,8 @@ import * as TextFormatters from "./text-formatters";
 import { ACLogger } from "./logging/ACLogger";
 import { GUIDHelper } from "./logging/GUIDHelper";
 import { IACLogger } from "./logging/IACLogger";
+import { ConsoleLogger } from "./logging/ConsoleLogger";
+import { Microsoft1DSLogger } from "./logging/Microsoft1DSLogger/Microsoft1DSLogger";
 
 function invokeSetCollection(action: Action, collection: ActionCollection) {
     if (action) {
@@ -4098,7 +4100,7 @@ class ActionButtonWithTelemetry extends ActionButton {
 	
 	render(alignment: Enums.ActionAlignment) {
 
-		var useGUID = GUIDHelper.getOrCreate().trackGUID();
+		var useGUID = GUIDHelper.getOrCreate().isGUIDtracked();
 		var guid = GUIDHelper.getOrCreate().getGUID().toString();
 
         this.action.render();
@@ -5149,7 +5151,7 @@ class ActionCollection {
 
                     if (!actionButton) {
 
-						actionButton = true ? new ActionButtonWithTelemetry(this.items[i], parentContainerStyle) 
+						actionButton = ACLogger.getOrCreate().isTelemetryEnabled() ? new ActionButtonWithTelemetry(this.items[i], parentContainerStyle) 
 					        : new ActionButton(this.items[i], parentContainerStyle);
 						
                         // actionButton = new ActionButton(this.items[i], parentContainerStyle); // original without telemetry
@@ -7107,6 +7109,7 @@ export class AdaptiveCard extends ContainerWithActions {
 		// enables telemetry recording for RenderCard event
 		// uncomment line below to enable
 		// ACLogger.getOrCreate().configureCustomProviders( { add providers here } );
+		ACLogger.getOrCreate().configureCustomProviders(new ConsoleLogger(), new Microsoft1DSLogger());
 
 		if (ACLogger.getOrCreate().isTelemetryEnabled()) {
 			this.renderCardTelemetry(json);

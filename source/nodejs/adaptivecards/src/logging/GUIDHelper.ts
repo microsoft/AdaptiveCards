@@ -56,7 +56,7 @@ export class GUIDHelper {
 	 * 
 	 * @returns true if future events should be tracked, false otherwise
 	 */
-	trackGUID(): boolean {
+	isGUIDtracked(): boolean {
 		return this.hasRating;
 	}
 }
