@@ -7,16 +7,16 @@
   <!-- Release sign job -->
   <job platform="AnyCPU" configuration="release" dest="__RELBINPATH__\..\..\..\s\signed" jobname="Adaptive Cards .NET" approvers="">
     <!-- AdaptiveCards -->
-    <file src="__RELBINPATH__\..\..\..\s\tosign\AdaptiveCards\net4.5.2\AdaptiveCards.dll" signType="Both" dest="__RELBINPATH__\..\..\..\s\signed\AdaptiveCards\net4.5.2\AdaptiveCards.dll" />
-    <file src="__RELBINPATH__\..\..\..\s\tosign\AdaptiveCards\netstandard1.3\AdaptiveCardsnetstandard1.3.dll" signType="Both" dest="__RELBINPATH__\..\..\..\s\signed\AdaptiveCards\netstandard1.3\AdaptiveCardsnetstandard1.3.dll" />
-    <file src="__RELBINPATH__\..\..\..\s\tosign\AdaptiveCards\netstandard2.0\AdaptiveCardsnetstandard2.0.dll" signType="Both" dest="__RELBINPATH__\..\..\..\s\signed\AdaptiveCards\netstandard2.0\AdaptiveCardsnetstandard2.0.dll" />
+    <file src="__RELBINPATH__\..\..\..\s\tosign\AdaptiveCards\net4.5.2\AdaptiveCards.dll" signType="BothDual" dest="__RELBINPATH__\..\..\..\s\signed\AdaptiveCards\net4.5.2\AdaptiveCards.dll" />
+    <file src="__RELBINPATH__\..\..\..\s\tosign\AdaptiveCards\netstandard1.3\AdaptiveCardsnetstandard1.3.dll" signType="BothDual" dest="__RELBINPATH__\..\..\..\s\signed\AdaptiveCards\netstandard1.3\AdaptiveCardsnetstandard1.3.dll" />
+    <file src="__RELBINPATH__\..\..\..\s\tosign\AdaptiveCards\netstandard2.0\AdaptiveCardsnetstandard2.0.dll" signType="BothDual" dest="__RELBINPATH__\..\..\..\s\signed\AdaptiveCards\netstandard2.0\AdaptiveCardsnetstandard2.0.dll" />
     <!-- AdaptiveCards.Html -->
-    <file src="__RELBINPATH__\..\..\..\s\tosign\AdaptiveCards.Rendering.Html\net4.5.2\AdaptiveCards.Rendering.Html.dll" signType="Both" dest="__RELBINPATH__\..\..\..\s\signed\AdaptiveCards.Rendering.Html\net4.5.2\AdaptiveCards.Rendering.Html.dll" />
-    <file src="__RELBINPATH__\..\..\..\s\tosign\AdaptiveCards.Rendering.Html\netstandard1.3\AdaptiveCards.Rendering.Htmlnetstandard1.3.dll" signType="Both" dest="__RELBINPATH__\..\..\..\s\signed\AdaptiveCards.Rendering.Html\netstandard1.3\AdaptiveCards.Rendering.Htmlnetstandard1.3.dll" />
-    <file src="__RELBINPATH__\..\..\..\s\tosign\AdaptiveCards.Rendering.Html\netstandard2.0\AdaptiveCards.Rendering.Htmlnetstandard2.0.dll" signType="Both" dest="__RELBINPATH__\..\..\..\s\signed\AdaptiveCards.Rendering.Html\netstandard2.0\AdaptiveCards.Rendering.Htmlnetstandard2.0.dll" />
+    <file src="__RELBINPATH__\..\..\..\s\tosign\AdaptiveCards.Rendering.Html\net4.5.2\AdaptiveCards.Rendering.Html.dll" signType="BothDual" dest="__RELBINPATH__\..\..\..\s\signed\AdaptiveCards.Rendering.Html\net4.5.2\AdaptiveCards.Rendering.Html.dll" />
+    <file src="__RELBINPATH__\..\..\..\s\tosign\AdaptiveCards.Rendering.Html\netstandard1.3\AdaptiveCards.Rendering.Htmlnetstandard1.3.dll" signType="BothDual" dest="__RELBINPATH__\..\..\..\s\signed\AdaptiveCards.Rendering.Html\netstandard1.3\AdaptiveCards.Rendering.Htmlnetstandard1.3.dll" />
+    <file src="__RELBINPATH__\..\..\..\s\tosign\AdaptiveCards.Rendering.Html\netstandard2.0\AdaptiveCards.Rendering.Htmlnetstandard2.0.dll" signType="BothDual" dest="__RELBINPATH__\..\..\..\s\signed\AdaptiveCards.Rendering.Html\netstandard2.0\AdaptiveCards.Rendering.Htmlnetstandard2.0.dll" />
     <!-- AdaptiveCards.Wpf-->
-    <file src="__RELBINPATH__\..\..\..\s\tosign\AdaptiveCards.Rendering.Wpf\net4.5.2\AdaptiveCards.Rendering.Wpf.dll" signType="Both" dest="__RELBINPATH__\..\..\..\s\signed\AdaptiveCards.Rendering.Wpf\net4.5.2\AdaptiveCards.Rendering.Wpf.dll" />
+    <file src="__RELBINPATH__\..\..\..\s\tosign\AdaptiveCards.Rendering.Wpf\net4.5.2\AdaptiveCards.Rendering.Wpf.dll" signType="BothDual" dest="__RELBINPATH__\..\..\..\s\signed\AdaptiveCards.Rendering.Wpf\net4.5.2\AdaptiveCards.Rendering.Wpf.dll" />
     <!-- AdaptiveCards.Wpf.Xceed-->
-    <file src="__RELBINPATH__\..\..\..\s\tosign\AdaptiveCards.Rendering.Wpf.Xceed\net4.5.2\AdaptiveCards.Rendering.Wpf.Xceed.dll" signType="Both" dest="__RELBINPATH__\..\..\..\s\signed\AdaptiveCards.Rendering.Wpf.Xceed\net4.5.2\AdaptiveCards.Rendering.Wpf.Xceed.dll" />
+    <file src="__RELBINPATH__\..\..\..\s\tosign\AdaptiveCards.Rendering.Wpf.Xceed\net4.5.2\AdaptiveCards.Rendering.Wpf.Xceed.dll" signType="BothDual" dest="__RELBINPATH__\..\..\..\s\signed\AdaptiveCards.Rendering.Wpf.Xceed\net4.5.2\AdaptiveCards.Rendering.Wpf.Xceed.dll" />
   </job>
 </SignConfigXML>

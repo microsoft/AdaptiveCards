@@ -155,6 +155,7 @@ public enum AdaptiveCardSchemaKey {
   ToggleInput,
   Top,
   Type,
+  Underline,
   Url,
   Value,
   ValueOff,

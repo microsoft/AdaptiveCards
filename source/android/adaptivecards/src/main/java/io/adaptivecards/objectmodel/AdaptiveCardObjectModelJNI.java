@@ -1353,6 +1353,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void TextRun_SetHighlight(long jarg1, TextRun jarg1_, boolean jarg2);
   public final static native void TextRun_SetLanguage(long jarg1, TextRun jarg1_, String jarg2);
   public final static native String TextRun_GetLanguage(long jarg1, TextRun jarg1_);
+  public final static native boolean TextRun_GetUnderline(long jarg1, TextRun jarg1_);
+  public final static native void TextRun_SetUnderline(long jarg1, TextRun jarg1_, boolean jarg2);
   public final static native long TextRun_GetSelectAction(long jarg1, TextRun jarg1_);
   public final static native void TextRun_SetSelectAction(long jarg1, TextRun jarg1_, long jarg2, BaseActionElement jarg2_);
   public final static native long TextRun_dynamic_cast(long jarg1, Inline jarg1_);
