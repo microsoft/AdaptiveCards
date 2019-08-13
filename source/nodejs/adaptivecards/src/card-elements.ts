@@ -7105,7 +7105,10 @@ export class AdaptiveCard extends ContainerWithActions {
 		}
 		
 		// enables telemetry recording for RenderCard event
-		if (true) {
+		// uncomment line below to enable
+		// ACLogger.getOrCreate().configureCustomProviders( { add providers here } );
+
+		if (ACLogger.getOrCreate().isTelemetryEnabled()) {
 			this.renderCardTelemetry(json);
 		}
 		
