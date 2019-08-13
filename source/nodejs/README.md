@@ -19,9 +19,23 @@ We use lerna to manage package linking and building.
 2. `npm install`
 3. `npx lerna bootstrap`
 
+## Initialize Telemetry
+
+We use Microsoft 1DS as our telemetry provider.
+
+This is 1DS documentation:
+https://msasg.visualstudio.com/Shared%20Data/_git/1DS.JavaScript?path=%2Fskus%2FanalyticsWeb%2FREADME.md&version=GBmaster&fullScreen=true
+
+1. `cd source/nodejs/adaptivecards`
+2. `npm install -g vsts-npm-auth --registry https://registry.npmjs.com --always-auth false`
+3. `vsts-npm-auth -config .npmrc`
+4. `npm install @ms/1ds-analytics-web-js@2.0.4`
+
+
 ## Build
 
-`npx lerna run build`
+1. `cd source/nodejs`
+2. `npx lerna run build`
 
 ## Start the Designer
 
