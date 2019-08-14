@@ -19,12 +19,10 @@ We use lerna to manage package linking and building.
 2. `npm install`
 3. `npx lerna bootstrap`
 
-## Initialize Telemetry
+## Initialize internal Microsoft 1DS based telemetry provider implementation
 
-We use Microsoft 1DS as our telemetry provider.
+We use Microsoft 1DS as a provider that allows for sending telemetry data to the internal Microsoft service endpoints directly.
 
-This is 1DS documentation:
-https://msasg.visualstudio.com/Shared%20Data/_git/1DS.JavaScript?path=%2Fskus%2FanalyticsWeb%2FREADME.md&version=GBmaster&fullScreen=true
 
 1. `cd source/nodejs/adaptivecards`
 2. `npm install -g vsts-npm-auth --registry https://registry.npmjs.com --always-auth false`
