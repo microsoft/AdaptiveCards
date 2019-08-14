@@ -2258,8 +2258,19 @@ namespace AdaptiveNamespace
 
         // Prevent an image from being stretched out if it is smaller than the
         // space allocated for it (when in auto mode).
-        RETURN_IF_FAILED(localElement->put_MaxHeight(min(maxHeight, pixelHeight)));
-        RETURN_IF_FAILED(localElement->put_MaxWidth(min(maxWidth, pixelWidth)));
+        ComPtr<IEllipse> localElementAsEllipse;
+        if (SUCCEEDED(localElement.As(&localElementAsEllipse)))
+        {
+            // don't need to set both width and height when image size is auto since
+            // we want a circle as shape.
+            // max value for width should be set since adaptive cards is constrained horizontally
+            RETURN_IF_FAILED(localElement->put_MaxWidth(min(maxWidth, pixelWidth)));
+        }
+        else
+        {
+            RETURN_IF_FAILED(localElement->put_MaxHeight(min(maxHeight, pixelHeight)));
+            RETURN_IF_FAILED(localElement->put_MaxWidth(min(maxWidth, pixelWidth)));
+        }
 
         if (setVisible)
         {
@@ -2305,6 +2316,9 @@ namespace AdaptiveNamespace
             ComPtr<IUIElement> ellipseAsUIElement;
             THROW_IF_FAILED(ellipse.As(&ellipseAsUIElement));
 
+            ComPtr<IFrameworkElement> ellipsAsFrameworkElement;
+            THROW_IF_FAILED(ellipse.As(&ellipsAsFrameworkElement));
+
             ComPtr<IImageSource> imageSource;
             THROW_IF_FAILED(brushAsImageBrush->get_ImageSource(&imageSource));
             ComPtr<IBitmapSource> imageSourceAsBitmap;
@@ -2317,18 +2331,25 @@ namespace AdaptiveNamespace
                 THROW_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
                 // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
                 EventRegistrationToken eventToken;
+                ComPtr<IInspectable> strongParentElement(parentElement);
                 THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(
-                    Callback<IRoutedEventHandler>([ellipseAsUIElement, isVisible](IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
-                        // Don't set the AutoImageSize on the ellipse as it makes the ellipse grow bigger than
-                        // what it would be otherwise, just set the visibility when we get the image
+                    Callback<IRoutedEventHandler>([ellipseAsUIElement, ellipsAsFrameworkElement, imageSourceAsBitmap, strongParentElement, isVisible](IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
                         if (isVisible)
                         {
                             RETURN_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Visible));
+                            RETURN_IF_FAILED(SetAutoImageSize(ellipsAsFrameworkElement.Get(),
+                                                    strongParentElement.Get(),
+                                                    imageSourceAsBitmap.Get(),
+                                                    isVisible));
                         }
                         return S_OK;
                     })
                         .Get(),
                     &eventToken));
+            }
+            else
+            {
+                SetAutoImageSize(ellipsAsFrameworkElement.Get(), parentElement, imageSourceAsBitmap.Get(), isVisible);
             }
         }
     }
