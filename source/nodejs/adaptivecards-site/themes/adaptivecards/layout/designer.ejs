@@ -42,7 +42,7 @@
 
 		let designer = new ACDesigner.CardDesigner(hostContainers);
 		designer.assetPath = "<%- config.root %>node_modules/adaptivecards-designer/dist/"; 
-		designer.sampleCatalogueUrl = "<%- config.root %>sample-catalogue.json";
+		designer.sampleCatalogueUrl = "<%- config.root %>designer/sample-catalogue.json";
 
 		let hostDocsButton = new ACDesigner.ToolbarButton(
 			"hostDocs",
@@ -56,7 +56,9 @@
 		hostDocsButton.separator = false;
 
 		designer.toolbar.insertElementAfter(hostDocsButton, ACDesigner.CardDesigner.ToolbarCommands.HostAppPicker);
+		designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.HostAppPicker).width = "auto";
 
+		
 		let visualizerButton = new ACDesigner.ToolbarButton(
 			"visualizerButton",
 			"Classic Visualizer",

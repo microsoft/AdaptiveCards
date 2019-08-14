@@ -56,7 +56,8 @@
 		<% page.element.examples.forEach(function (example, i) { %>
 		<% if(i == 0) { %>
 		<h2 class="w3-container">Example</h2>
-		<%- partial("_partial/code-example", { examplePath: example }) %>
+
+		<%- code_and_card(example) %>
 		<% }}) %>
 
 

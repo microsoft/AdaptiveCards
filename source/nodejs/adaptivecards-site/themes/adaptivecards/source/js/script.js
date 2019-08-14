@@ -309,18 +309,46 @@ $(function () {
 		if (e.keyCode === 27) $('#closeVideo').click();
 	});
 
-		// Loop videos 
-	$("video").each(function() {
-		var $video = $(this); 
+	// Loop videos 
+	$("video").each(function () {
+		var $video = $(this);
 		var loopDelay = $video.attr("data-loop-delay");
-		if(loopDelay) {
-			$video.on("ended", function() { 
-				setTimeout(function() {
+		if (loopDelay) {
+			$video.on("ended", function () {
+				setTimeout(function () {
 					$video[0].play();
 				}, loopDelay);
 			});
 		}
 	});
+
+	
+	$('.ac-properties table').addClass("w3-table w3-bordered");
+
+	hljs.configure({
+		tabReplace: '  '
+	});
+
+	hljs.initHighlightingOnLoad();
+
+	// From https://github.com/30-seconds/30-seconds-of-code/blob/20e7d899f31ac3d8fb2b30b2e311acf9a1964fe8/snippets/copyToClipboard.md
+	function copyToClipboard(str) {
+		const el = document.createElement('textarea');
+		el.value = str;
+		el.setAttribute('readonly', '');
+		el.style.position = 'absolute';
+		el.style.left = '-9999px';
+		document.body.appendChild(el);
+		const selected =
+			document.getSelection().rangeCount > 0 ? document.getSelection().getRangeAt(0) : false;
+		el.select();
+		document.execCommand('copy');
+		document.body.removeChild(el);
+		if (selected) {
+			document.getSelection().removeAllRanges();
+			document.getSelection().addRange(selected);
+		}
+	}
 
 
 	$('.adaptivecard').each(function () {
@@ -349,53 +377,30 @@ $(function () {
 		el.text('').append(renderedCard).show();
 	}
 
-	$('.ac-properties table').addClass("w3-table w3-bordered");
-
-	hljs.configure({
-		tabReplace: '  '
-	});
-
-	hljs.initHighlightingOnLoad();
-
-	// From https://github.com/30-seconds/30-seconds-of-code/blob/20e7d899f31ac3d8fb2b30b2e311acf9a1964fe8/snippets/copyToClipboard.md
-	function copyToClipboard(str) {
-		const el = document.createElement('textarea');
-		el.value = str;
-		el.setAttribute('readonly', '');
-		el.style.position = 'absolute';
-		el.style.left = '-9999px';
-		document.body.appendChild(el);
-		const selected =
-		  document.getSelection().rangeCount > 0 ? document.getSelection().getRangeAt(0) : false;
-		el.select();
-		document.execCommand('copy');
-		document.body.removeChild(el);
-		if (selected) {
-		  document.getSelection().removeAllRanges();
-		  document.getSelection().addRange(selected);
-		}
-	}
-
 	$("button.copy-code").click(function (e) {
 		var content = $(this).parent().siblings("pre").text();
 		copyToClipboard(content);
 	});
-	
+
 	$("button.try-adaptivecard").click(function (e) {
+		var $button = $(this);
+		if($button.attr("data-designer-url")) {
+			window.open($button.attr("data-designer-url"));
+		}
 		var cardUrl = $(this).parent().siblings("div.adaptivecard").attr("data-card-url");
 		var isAbsolutelUri = new RegExp('^(?:[a-z]+:)?//', 'i');
-		if(isAbsolutelUri.test(cardUrl) === false) {
+		if (isAbsolutelUri.test(cardUrl) === false) {
 			cardUrl = window.location.href + cardUrl;
 		}
 		window.open("/designer/index.html?card=" + encodeURIComponent(cardUrl));
 	});
 
-	$("#feedback-button").click(function(e) {
+	$("#feedback-button").click(function (e) {
 		e.preventDefault();
-		window.open("https://github.com/Microsoft/AdaptiveCards/issues/new?title=" 
-			+ encodeURIComponent("[Website] [Your feedback title here]") 
-			+ "&body=" + encodeURIComponent("\r\n\r\n[Your detailed feedback here]\r\n\r\n---\r\n* URL: " 
-			+ window.location.href));
+		window.open("https://github.com/Microsoft/AdaptiveCards/issues/new?title="
+			+ encodeURIComponent("[Website] [Your feedback title here]")
+			+ "&body=" + encodeURIComponent("\r\n\r\n[Your detailed feedback here]\r\n\r\n---\r\n* URL: "
+				+ window.location.href));
 	});
 
 
@@ -428,7 +433,7 @@ $(function () {
 		var hiddenAfter = (footerPosition + footerHeight) - (scrollOffset + windowHeight);
 
 		var topPadding = 24;
- 
+
 		var calculatedTop = headerHeight - scrollOffset + topPadding;
 		if (calculatedTop < topPadding) {
 			calculatedTop = topPadding;

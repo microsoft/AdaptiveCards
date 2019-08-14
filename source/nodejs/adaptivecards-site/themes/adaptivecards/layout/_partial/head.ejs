@@ -30,7 +30,7 @@
 
 	<% if(is_current("visualizer")) { %>
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-		<%- hashedasset("visualizer/css/visualizer.css") %>
+		<%- hashed_asset("visualizer/css/visualizer.css") %>
 	<% } else if(is_current("designer")) { %>
 		<style type="text/css">
 			.content {
@@ -52,16 +52,16 @@
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">	  
 
-		<%- hashedasset("css/extracted.css") %> 
-		<%- hashedasset("visualizer/css/outlook.css") %>
-		<%- hashedasset("css/style.css") %>
+		<%- hashed_asset("css/extracted.css") %> 
+		<%- hashed_asset("visualizer/css/outlook.css") %>
+		<%- hashed_asset("css/style.css") %>
 	<% } %>
 
 	<script type="text/javascript">  var appInsights=window.appInsights||function(a){    function b(a){c[a]=function(){var b=arguments;c.queue.push(function(){c[a].apply(c,b)})}}var c={config:a},d=document,e=window;setTimeout(function(){var b=d.createElement("script");b.src=a.url||"https://az416426.vo.msecnd.net/scripts/a/ai.0.js",d.getElementsByTagName("script")[0].parentNode.appendChild(b)});try{c.cookie=d.cookie}catch(a){}c.queue=[];for(var f=["Event","Exception","Metric","PageView","Trace","Dependency"];f.length;)b("track"+f.pop());if(b("setAuthenticatedUserContext"),b("clearAuthenticatedUserContext"),b("startTrackEvent"),b("stopTrackEvent"),b("startTrackPage"),b("stopTrackPage"),b("flush"),!a.disableExceptionTracking){f="onerror",b("_"+f);var g=e[f];e[f]=function(a,b,d,e,h){var i=g&&g(a,b,d,e,h);return!0!==i&&c["_"+f](a,b,d,e,h),i}}return c    }({        instrumentationKey:"bd0c4f36-dd0f-4984-8f32-32cb44d6055a"    });      window.appInsights=appInsights,appInsights.queue&&0===appInsights.queue.length&&appInsights.trackPageView();</script>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 	<script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.min.js"></script>
+	<script async defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 	<script async defer src="https://buttons.github.io/buttons.js"></script>
 
 	<% /* from UHF MSDocsHeader-AdaptiveCards */ %>
@@ -69,17 +69,17 @@
 
 	<% /* Load scripts based on the URL */ %>
 	<% if(is_current("visualizer")) { %>
-		<%- hashedasset('node_modules/adaptivecards/dist/adaptivecards.min.js') %>  
-		<%- hashedasset('node_modules/monaco-editor/min/vs/loader.js') %>  
-		<%- hashedasset("visualizer/monaco-loader.js") %>
-		<%- hashedasset("visualizer/adaptivecards-visualizer.min.js") %>
+		<%- hashed_asset('node_modules/adaptivecards/dist/adaptivecards.min.js') %>  
+		<%- hashed_asset('node_modules/monaco-editor/min/vs/loader.js') %>  
+		<%- hashed_asset("visualizer/monaco-loader.js") %>
+		<%- hashed_asset("visualizer/adaptivecards-visualizer.min.js") %>
 	<% } else if(is_current("designer")) { %>
-		<%- hashedasset('node_modules/monaco-editor/min/vs/loader.js') %>  
-		<%- hashedasset("node_modules/adaptivecards-designer/dist/adaptivecards-designer.min.js") %>
-		<%- hashedasset("node_modules/adaptivecards-designer/dist/adaptivecards-designer.css") %>
+		<%- hashed_asset('node_modules/monaco-editor/min/vs/loader.js') %>  
+		<%- hashed_asset("node_modules/adaptivecards-designer/dist/adaptivecards-designer.min.js") %>
+		<%- hashed_asset("node_modules/adaptivecards-designer/dist/adaptivecards-designer.css") %>
 	<% } else { %>
-		<%- hashedasset('node_modules/adaptivecards/dist/adaptivecards.min.js') %>	
-		<%- hashedasset('js/script.js') %>
+		<%- hashed_asset('node_modules/adaptivecards/dist/adaptivecards.min.js') %>	
+		<%- hashed_asset('js/script.js') %>
 	<% } %> 
 
 </head>

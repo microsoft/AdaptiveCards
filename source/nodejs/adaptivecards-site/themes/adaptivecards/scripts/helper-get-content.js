@@ -4,6 +4,6 @@
 
 var fs = require("fs");
 
-hexo.extend.helper.register('getcontent', function (path) {
+hexo.extend.helper.register('get_content', function (path) {
   return fs.readFileSync(path);
 });

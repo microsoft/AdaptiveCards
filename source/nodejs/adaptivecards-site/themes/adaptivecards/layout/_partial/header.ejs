@@ -416,15 +416,18 @@
             aria-label="Breadcrumb">
             <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem" class="mobile-breadcrumb">
                <a itemprop="item" href="<%- url_for('/') %>">Adaptive Cards</a>
-            </li>
-            <% if(page.archive || page.published) { %>
-               <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem" class="mobile-breadcrumb">
-               <a itemprop="item" href="<%- url_for('/blog') %>">Blog</a>
-            </li>
-			<% } %>
-			<% if(page.title) { %>
+            </li>			
+			<% if(page.archive) { %>
+				<li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem" class="mobile-breadcrumb">Blog</li>
+			<% } else if(is_post()) { %>
+				<li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem" class="mobile-breadcrumb">
+					<a itemprop="item" href="<%- url_for('/blog') %>">Blog</a>
+				</li>
+				<li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"><span itemprop="name"><%= page.title %></span></li>			
+			<% } else { %>
 				<li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"><span itemprop="name"><%= page.title %></span></li>
 			<% } %>
+
         </ul>
         <div class="content-header-controls exit-focus">
             <button type="button" class="ap-collapse-behavior ap-expanded button-border" data-bi-name="ap-collapse">
@@ -440,13 +443,14 @@
         <div class="action-bar">
             <ul class="action-list">
                 <li>
-                    <a id="feedback-button" data-bi-name="comments">
-                        <span class="docon" aria-hidden="true">💬</span><span class="action-item-text">Feedback</span>
+                    <a id="feedback-button" class="button" data-bi-name="comments">
+                        <span class="docon docon-comment-lines" aria-hidden="true"></span> <span class="action-item-text">Feedback</span>
                     </a>
                 </li>
                 <li>
-                    <a href="https://github.com/Microsoft/AdaptiveCards/" data-bi-name="comments">
-                        <span class="docon" aria-hidden="true"><img alt="" style="height: 1em; width: auto;" src="<%- url_for('content/github-mark.png') %>"/></span><span class="action-item-text">GitHub</span>
+					<a href="https://github.com/Microsoft/AdaptiveCards/" class="button" data-bi-name="comments">
+						
+                        <span class="fa fa-github" area-hidden="true"></span> <span class="action-item-text">GitHub</span>
                     </a>
                 </li>
 

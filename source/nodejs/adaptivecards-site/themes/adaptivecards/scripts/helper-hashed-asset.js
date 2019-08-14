@@ -7,7 +7,7 @@ var path = require("path");
 // The md5 hashes are added in generator-adaptiveassets.js 
 // We use hashing to ensure browsers load the latest version of files as they change
 
-hexo.extend.helper.register('hashedasset', function (asset) {
+hexo.extend.helper.register('hashed_asset', function (asset) {
 	let assetPath = asset;
 	const url_for = hexo.extend.helper.get('url_for').bind(hexo);
 

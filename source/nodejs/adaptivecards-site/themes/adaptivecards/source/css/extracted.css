@@ -389,7 +389,7 @@ screen and (min-width:768px) {
 	-webkit-box-flex: 1;
 	-ms-flex-positive: 1;
 	flex-grow: 1;
-	font-size: .875rem;
+	font-size: 14px;
 	margin: 0;
 }
 
@@ -420,29 +420,7 @@ screen and (min-width:768px) {
 	padding: 4px 8px;
 }
 
-.action-bar .action-list>li a:hover,
-.action-bar .action-list>li a:link:hover {
-	color: hsla(216, 100%, 39%, 1);
-	color: var(--blue);
-}
 
-.action-bar .action-list>li a:hover .action-item-text,
-.action-bar .action-list>li a:link:hover .action-item-text {
-	text-decoration: underline;
-}
-
-.action-bar .action-list>li .docon {
-	font-size: 1.5rem;
-	padding: 8px 2px 5px;
-}
-
-@media print,
-screen and (min-width:768px) {
-	.action-bar .action-list>li .docon {
-		padding: 0 4px;
-		font-size: 1rem;
-	}
-}
 
 .action-bar .action-list>li .action-item-text {
 	display: none;
@@ -452,6 +430,42 @@ screen and (min-width:768px) {
 	.action-bar .action-list>li .action-item-text {
 		display: inline-block;
 	}
+}
+
+.button.is-small {
+    border-radius: 2px;
+    font-size: 14px;
+}
+
+.button.is-text {
+    background-color: transparent;
+    border-color: transparent;
+    color: hsla(0,0%,0%,1);
+    color: var(--text);
+    text-decoration: underline;
+}
+
+.button:not(.is-link), .button:not(.is-text), .button:not(.is-text-primary) {
+    text-decoration: none!important;
+}
+
+.button {
+    border-radius: 2px;
+    background-color: hsla(0,0%,100%,.999);
+    background-color: var(--body-background);
+    border-color: hsla(0,0%,37%,1);
+    border-color: var(--text-subtle);
+    border-width: 1px;
+    color: hsla(0,0%,0%,1);
+    color: var(--text);
+    cursor: pointer;
+    justify-content: center;
+    padding-bottom: calc(.375em - 1px);
+    padding-left: .75em;
+    padding-right: .75em;
+    padding-top: calc(.375em - 1px);
+    text-align: center;
+    white-space: nowrap;
 }
 
 .action-bar .contents-button {
@@ -632,29 +646,21 @@ html:not(.hasSidebar) .contents-button {
 	padding: 0 8px;
 }
 
-.breadcrumbs>li {
-	display: none;
-}
 
-.breadcrumbs>li:after,
-.breadcrumbs>li:before {
-	display: inline-block;
-	margin: 0 6px;
-	color: hsla(0, 0%, 46%, 1);
-	color: var(--grey);
-}
 
 .breadcrumbs>li.mobile-breadcrumb {
 	display: inline-block;
 }
 
-.breadcrumbs>li.mobile-breadcrumb:before {
-	content: "\2039";
-	font-size: 1.2rem;
+.breadcrumbs>li:not(:last-of-type):after {
+    content: "/";
 }
 
-.breadcrumbs>li.mobile-breadcrumb:after {
-	content: none;
+.breadcrumbs>li:after {
+    display: inline;
+    margin: 0 6px;
+    color: hsla(0,0%,67%,1);
+    color: var(--secondary-base);
 }
 
 @media print,
@@ -771,6 +777,10 @@ screen and (min-width:768px) {
 
 .docon-menu:before {
 	content: "\FF2F";
+}
+
+.docon-comment-lines:before {
+    content: "\FF24";
 }
 
 button {

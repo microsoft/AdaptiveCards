@@ -12,18 +12,17 @@ layout: layout
 		width: 100% !important;
 		max-width: 100% !important;
 	}
-
 </style>
 
-<div class="blog">
+<div class="blog w3-content" >
 
 
 	<% page.posts.each(function(post, i) { %>
 
-	<% if(i % 3 === 0) { %>
-	<div class="w3-cell-row w3-padding-16 style="margin: 32px auto; ">
+	<% if(i % 3 === 0) { /* start a new row every 3 posts */ %>
+	<div class="w3-cell-row w3-padding-16">
 		<% } %>
-		<article class="w3-cell w3-margin-top w3-margin-bottom w3-padding-16 w3-container w3-mobile article" style="width: 328px">
+		<article class="w3-cell w3-margin-bottom w3-padding-16 w3-container w3-mobile article" style="width: 328px">
 			<% var imageSrc = post.featured_image ? url_for(post.featured_image) : url_for('content/icons_blue/blue-wide.png');
 				var style = "background-image: url('" + imageSrc + "')"  %>
 			<a href="<%- config.root %><%- post.path %>" class="coverImage" style="<%= style %>"></a>
@@ -39,8 +38,8 @@ layout: layout
 				</div>
 				<div class="w3-cell">
 					<a class="article-author" href="<%- post.author.webpage %>"><%- post.author.name %></a>
-					<datetime class="article-date" style="margin: 0"><%= post.date.format("MMM D, YYYY") %></datetime> · <span
-						class="reading-time"><%- readingTime(post.content, 'min read') %></span>
+					<datetime class="article-date" style="margin: 0"><%= post.date.format("MMM D, YYYY") %></datetime> ·
+					<span class="reading-time"><%- readingTime(post.content, 'min read') %></span>
 				</div>
 			</div>
 
