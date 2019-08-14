@@ -58,7 +58,7 @@
 			"json"
 		]
 	},
-	"dependencies": {
+	"optionalDependencies": {
 		"@ms/1ds-analytics-web-js": "^2.0.4"
 	}
 }
