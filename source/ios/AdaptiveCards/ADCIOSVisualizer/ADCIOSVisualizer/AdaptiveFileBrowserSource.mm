@@ -27,7 +27,7 @@ bool compare(shared_ptr<BaseActionElement> const &a, shared_ptr<BaseActionElemen
     NSString *_rootPath;
     NSFileManager *_fileManager;
     __weak UIView *_adaptiveView;
-    __weak id<ACVTableViewControllerFetchDataDelegate> _tableFetchDateDelegate;
+    __weak id<ACVTableViewControllerFetchDataDelegate> _tableFetchDataDelegate;
     ACOHostConfig *_hostConfig;
 }
 
@@ -54,7 +54,7 @@ bool compare(shared_ptr<BaseActionElement> const &a, shared_ptr<BaseActionElemen
 - (instancetype)initWithFrame:(CGRect)frame WithDataDelegate:(id<ACVTableViewControllerFetchDataDelegate>) delegate {
     self = [self initWithFrame:frame];
     if (self) {
-        _tableFetchDateDelegate = delegate;
+        _tableFetchDataDelegate = delegate;
     }
     return self;
 }
@@ -115,7 +115,7 @@ bool compare(shared_ptr<BaseActionElement> const &a, shared_ptr<BaseActionElemen
             return result;
         }];
 
-        [_tableFetchDateDelegate updateTable:immutableFilesList];
+        [_tableFetchDataDelegate updateTable:immutableFilesList];
     }
     
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:[NSString stringWithUTF8String:card.Serialize().c_str()]];
@@ -154,13 +154,12 @@ shared_ptr<SubmitAction> buildAction (const string &path, const string &title) {
 }
 
 - (void)didFetchUserResponses:(ACOAdaptiveCard *)card action:(ACOBaseActionElement *)action {
-    [_tableFetchDateDelegate updateTable:nil];
+    [_tableFetchDataDelegate updateTable:nil];
     if (action.type == ACRSubmit){
         NSData *data = [[action data] dataUsingEncoding:NSUTF8StringEncoding];
         NSError *err;
         NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&err];
         if (!err) {
-            [_adaptiveView removeFromSuperview];
             [self updateAdaptiveViewWithNewPath:dictionary[@"path"]];
        }
     }
