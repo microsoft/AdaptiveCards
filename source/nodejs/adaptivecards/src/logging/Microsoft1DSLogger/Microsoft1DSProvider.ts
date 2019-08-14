@@ -1,3 +1,5 @@
+import { IACProvider } from '../IACProvider'
+
 //Following the optionalDependency model 
 declare var require: any
 let Microsoft1DSType: any;
@@ -10,7 +12,7 @@ catch(er){
 /**
  * The purpose of this class is to instantiate the 1DS logger which allows events to be sent from adaptive cards 
  */
-export class Microsoft1DSLogger {
+export class Microsoft1DSProvider implements IACProvider {
 	analytics: any;
 	constructor(){
 		if (!Microsoft1DSType){
