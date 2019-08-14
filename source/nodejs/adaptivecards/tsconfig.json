@@ -1,7 +1,11 @@
 {
 	"extends": "../tsconfig.json",
 	"compilerOptions": {
-		"outDir": "./lib"
+		"outDir": "./lib",
+		"lib": [
+			"dom",
+			"es2017"
+		],
 	},
 	"files": ["./src/adaptivecards.ts"]
 }
