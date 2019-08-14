@@ -347,13 +347,6 @@ const CGFloat kAdaptiveCardsWidth = 330;
 
 - (void)fromACVTable:(ACVTableViewController *)avcTabVc userSelectedJson:(NSString *)jsonStr {
     [self update:jsonStr];
-    if ([avcTabVc.tableView.visibleCells count]) {
-        UITableViewCell *cell = avcTabVc.tableView.visibleCells[0];
-        CGFloat height = cell.frame.size.height;
-        self.ACVTabVC.tableHeight.active = NO;
-        self.ACVTabVC.tableHeight = [self.ACVTabVC.tableView.heightAnchor constraintEqualToConstant:height];
-        [UIView animateWithDuration:0.6 animations:^{ self.ACVTabVC.tableHeight.active = YES; }];
-    }
 }
 
 - (void)source:(ACVTableViewController *)avcTabVc userconfig:(NSString *)payload {

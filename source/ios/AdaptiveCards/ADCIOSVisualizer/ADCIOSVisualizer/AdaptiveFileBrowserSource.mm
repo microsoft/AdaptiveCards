@@ -145,8 +145,10 @@ shared_ptr<SubmitAction> buildAction (const string &path, const string &title) {
 - (void)updateAdaptiveViewWithNewPath:(NSString *)path {
     NSError *error;
     NSArray *directoryContents = [_fileManager contentsOfDirectoryAtPath:path error:&error];
-    _adaptiveView = [self getAdaptiveFileBrowserView:directoryContents parentDir:path];
-    [self addSubview:_adaptiveView];
+    UIView *view = [self getAdaptiveFileBrowserView:directoryContents parentDir:path];
+    [self addSubview:view];
+    [_adaptiveView removeFromSuperview];
+    _adaptiveView = view;
     [self.topAnchor constraintEqualToAnchor:_adaptiveView.topAnchor].active = YES;
     [self.bottomAnchor constraintEqualToAnchor:_adaptiveView.bottomAnchor].active = YES;
     [_adaptiveView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor].active = YES;
