@@ -8,7 +8,6 @@ import * as TextFormatters from "./text-formatters";
 import { ACLogger } from "./logging/ACLogger";
 import { GUIDHelper } from "./logging/GUIDHelper";
 import { IACLogger } from "./logging/IACLogger";
-import { ConsoleProvider } from "./logging/ConsoleProvider";
 
 function invokeSetCollection(action: Action, collection: ActionCollection) {
     if (action) {
@@ -6847,7 +6846,6 @@ export class AdaptiveCard extends ContainerWithActions {
 		
 		// uncomment line below to enable sending of telemetry
 		// ACLogger.getOrCreate().configureCustomProviders( { add providers here } );
-		ACLogger.getOrCreate().configureCustomProviders(new ConsoleProvider());
 
 		if (ACLogger.getOrCreate().isTelemetryEnabled()) {
 			this.renderCardTelemetry(json);
