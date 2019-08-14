@@ -386,7 +386,6 @@ namespace Json {
 %template(BaseActionElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement> >;
 %template(DateTimePreparsedTokenVector) std::vector<std::shared_ptr<AdaptiveCards::DateTimePreparsedToken> >;
 %template(ToggleVisibilityTargetVector) std::vector<std::shared_ptr<AdaptiveCards::ToggleVisibilityTarget> >;
-%template(StringVector) std::vector<std::string>;
 %template(CharVector) std::vector<char>;
 %template(InlineVector) std::vector<std::shared_ptr<AdaptiveCards::Inline>>;
 

@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Android.Runtime.ResourceDesignerAttribute("AdaptiveCards.Rendering.Xamarin.Android.Sample.Resource", IsApplication = true)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("AdaptiveCards.Rendering.Xamarin.Android.Sample.Resource", IsApplication=true)]
 
 namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
 {
