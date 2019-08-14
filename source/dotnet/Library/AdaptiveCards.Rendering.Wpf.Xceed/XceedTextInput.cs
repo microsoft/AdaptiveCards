@@ -1,4 +1,6 @@
-﻿using System.Windows;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using System.Windows;
 using System.Windows.Controls;
 using Xceed.Wpf.Toolkit;
 
@@ -18,12 +20,29 @@ namespace AdaptiveCards.Rendering.Wpf
                     textBox.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
                 }
                 if (input.MaxLength > 0)
+                {
                     textBox.MaxLength = input.MaxLength;
+                }
 
                 textBox.Watermark = input.Placeholder;
                 textBox.Style = context.GetStyle($"Adaptive.Input.Text.{input.Style}");
                 textBox.DataContext = input;
                 context.InputBindings.Add(input.Id, () => textBox.Text);
+                if (input.InlineAction != null)
+                {
+                    if (context.Config.Actions.ShowCard.ActionMode == ShowCardActionMode.Inline &&
+                        input.InlineAction.GetType() == typeof(AdaptiveShowCardAction))
+                    {
+                        context.Warnings.Add(new AdaptiveWarning(-1, "Inline ShowCard not supported for InlineAction"));
+                    }
+                    else
+                    {
+                        if (context.Config.SupportsInteractivity && context.ActionHandlers.IsSupported(input.InlineAction.GetType()))
+                        {
+                            return AdaptiveTextInputRenderer.RenderInlineAction(input, context, textBox);
+                        }
+                    }
+                }
                 return textBox;
             }
             else

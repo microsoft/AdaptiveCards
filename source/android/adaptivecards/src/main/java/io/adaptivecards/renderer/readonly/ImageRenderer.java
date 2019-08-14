@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
@@ -7,7 +9,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Shader;
-import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -17,13 +18,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import io.adaptivecards.objectmodel.AdaptiveCardParseWarning;
+import io.adaptivecards.objectmodel.CardElementType;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
-import io.adaptivecards.renderer.AdaptiveCardRenderer;
+import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
+import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
@@ -56,9 +59,25 @@ public class ImageRenderer extends BaseCardElementRenderer
 
     private class ImageRendererImageLoaderAsync extends InnerImageLoaderAsync
     {
-        ImageRendererImageLoaderAsync(RenderedAdaptiveCard renderedCard, ImageView imageView, String imageBaseUrl, ImageStyle imageStyle, int backgroundColor)
+        ImageRendererImageLoaderAsync(
+            RenderedAdaptiveCard renderedCard,
+            ImageView imageView,
+            String imageBaseUrl,
+            ImageStyle imageStyle,
+            int backgroundColor)
         {
-            super(renderedCard, imageView, imageBaseUrl);
+            this(renderedCard, imageView, imageBaseUrl, imageStyle, backgroundColor, -1);
+        }
+
+        ImageRendererImageLoaderAsync(
+            RenderedAdaptiveCard renderedCard,
+            ImageView imageView,
+            String imageBaseUrl,
+            ImageStyle imageStyle,
+            int backgroundColor,
+            int maxWidth)
+        {
+            super(renderedCard, imageView, imageBaseUrl, maxWidth);
             m_imageStyle = imageStyle;
             m_backgroundColor = backgroundColor;
         }
@@ -96,6 +115,20 @@ public class ImageRenderer extends BaseCardElementRenderer
         private int m_backgroundColor;
     }
 
+    private static int getImageSizeLimit(Context context, ImageSize imageSize, ImageSizesConfig imageSizesConfig) {
+        int imageSizeLimit = context.getResources().getDisplayMetrics().widthPixels;
+
+        if (imageSize == ImageSize.Small) {
+            imageSizeLimit = Util.dpToPixels(context, imageSizesConfig.getSmallSize());
+        } else if (imageSize == ImageSize.Medium) {
+            imageSizeLimit = Util.dpToPixels(context, imageSizesConfig.getMediumSize());
+        } else if (imageSize == ImageSize.Large) {
+            imageSizeLimit = Util.dpToPixels(context, imageSizesConfig.getLargeSize());
+        }
+
+        return imageSizeLimit;
+    }
+
     private static void setImageSize(Context context, ImageView imageView, ImageSize imageSize, ImageSizesConfig imageSizesConfig) {
         imageView.setScaleType(ImageView.ScaleType.CENTER);
         if (imageSize == ImageSize.Stretch) {
@@ -124,7 +157,7 @@ public class ImageRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            ContainerStyle containerStyle)
+            RenderArgs renderArgs)
     {
         Image image;
         if (baseCardElement instanceof Image)
@@ -136,15 +169,20 @@ public class ImageRenderer extends BaseCardElementRenderer
             throw new InternalError("Unable to convert BaseCardElement to Image object model.");
         }
 
+        boolean isInImageSet = viewGroup instanceof HorizontalFlowLayout;
+        View separator = setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, !isInImageSet /* horizontal line */, isInImageSet);
+
         ImageView imageView = new ImageView(context);
-        imageView.setTag(image);
+        imageView.setTag(new TagContent(image, separator, viewGroup));
+
+        setVisibility(baseCardElement.GetIsVisible(), imageView);
 
         String imageBackgroundColor = image.GetBackgroundColor();
         int backgroundColor = 0;
-        if(!TextUtils.isEmpty(imageBackgroundColor))
+        if (!TextUtils.isEmpty(imageBackgroundColor))
         {
             // check that it has 9 characters and that the color string isn't a color name
-            if(imageBackgroundColor.length() == 9 && imageBackgroundColor.charAt(0) == '#')
+            if (imageBackgroundColor.length() == 9 && imageBackgroundColor.charAt(0) == '#')
             {
                 try
                 {
@@ -167,20 +205,28 @@ public class ImageRenderer extends BaseCardElementRenderer
             imageView.setBackgroundColor(backgroundColor);
         }
 
-        ImageRendererImageLoaderAsync imageLoaderAsync = new ImageRendererImageLoaderAsync(renderedCard, imageView, hostConfig.getImageBaseUrl(), image.GetImageStyle(), backgroundColor);
+        int imageSizeLimit = getImageSizeLimit(context, image.GetImageSize(), hostConfig.GetImageSizes());
+        ImageRendererImageLoaderAsync imageLoaderAsync = new ImageRendererImageLoaderAsync(
+            renderedCard,
+            imageView,
+            hostConfig.GetImageBaseUrl(),
+            image.GetImageStyle(),
+            backgroundColor,
+            imageSizeLimit);
 
         IOnlineImageLoader onlineImageLoader = CardRendererRegistration.getInstance().getOnlineImageLoader();
         if (onlineImageLoader != null)
         {
             imageLoaderAsync.registerCustomOnlineImageLoader(onlineImageLoader);
         }
+
         imageLoaderAsync.execute(image.GetUrl());
 
         LinearLayout.LayoutParams layoutParams;
         if (image.GetImageSize() == ImageSize.Stretch)
         {
             //ImageView must match parent for stretch to work
-            if( image.GetHeight() == HeightType.Stretch )
+            if (image.GetHeight() == HeightType.Stretch)
             {
                 layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT, 1);
             }
@@ -191,7 +237,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
         else
         {
-            if( image.GetHeight() == HeightType.Stretch )
+            if (image.GetHeight() == HeightType.Stretch)
             {
                 layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT, 1);
             }
@@ -214,7 +260,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         if (image.GetSelectAction() != null)
         {
             imageView.setClickable(true);
-            imageView.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(renderedCard, image.GetSelectAction(), cardActionHandler));
+            imageView.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, image.GetSelectAction(), cardActionHandler));
         }
 
         //set horizontalAlignment
@@ -255,12 +301,11 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
         else
         {
-            setImageSize(context, imageView, image.GetImageSize(), hostConfig.getImageSizes());
+            setImageSize(context, imageView, image.GetImageSize(), hostConfig.GetImageSizes());
         }
-        boolean isInImageSet = viewGroup instanceof HorizontalFlowLayout;
-        setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, !isInImageSet /* horizontal line */, isInImageSet);
 
         viewGroup.addView(imageView);
+
         return imageView;
     }
 

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import {
     AdaptiveCard,
     HostConfig,
@@ -12,6 +14,7 @@ import {
     CardElement
 } from "adaptivecards";
 import * as vkbeautify from "vkbeautify";
+import * as sampleConfiguration from "../../../../../samples/HostConfig/sample.json";
 
 declare var SpeechSynthesisUtterance: any;
 
@@ -54,10 +57,10 @@ export abstract class HostContainer {
         }
     }
 
-    // process SSML markup into an array of either 
+    // process SSML markup into an array of either
     // * utterenance
     // * number which is delay in msg
-    // * url which is an audio file 
+    // * url which is an audio file
     private processNodes(nodes: NodeList, output: any[]): void {
         for (let i = 0; i < nodes.length; i++) {
             let node = nodes[i];
@@ -73,7 +76,7 @@ export abstract class HostContainer {
             else if (node.nodeName == "break" && node instanceof Element) {
                 if (node.attributes["strength"]) {
                     let strength = node.attributes["strength"].nodeValue;
-                    
+
                     if (strength == "weak") {
                         // output.push(50);
                     } else if (strength == "medium") {
@@ -111,8 +114,8 @@ export abstract class HostContainer {
     public initialize() {
         AdaptiveCard.elementTypeRegistry.reset();
         AdaptiveCard.actionTypeRegistry.reset();
-        AdaptiveCard.useAutomaticContainerBleeding = false;
         AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = true;
+        AdaptiveCard.allowMarkForTextHighlighting = false;
     }
 
     public parseElement(element: CardElement, json: any) {
@@ -124,129 +127,12 @@ export abstract class HostContainer {
         return false;
     }
 
+    public setHostCapabilities(hostConfig: HostConfig) {
+        // Do nothing in base implementation
+    }
+
     public getHostConfig(): HostConfig {
-        return new HostConfig({
-            preExpandSingleShowCardAction: false,
-            spacing: {
-                small: 3,
-                default: 8,
-                medium: 20,
-                large: 30,
-                extraLarge: 40,
-                padding: 20
-            },
-            separator: {
-                lineThickness: 1,
-                lineColor: "#EEEEEE"
-            },
-            supportsInteractivity: true,
-            fontFamily: "Segoe UI",
-            fontSizes: {
-                small: 12,
-                default: 14,
-                medium: 17,
-                large: 21,
-                extraLarge: 26
-            },
-            fontWeights: {
-                lighter: 200,
-                default: 400,
-                bolder: 600
-            },
-            containerStyles: {
-                default: {
-                    backgroundColor: "#00000000",
-                    foregroundColors: {
-                        default: {
-                            default: "#333333",
-                            subtle: "#EE333333"
-                        },
-                        accent: {
-                            default: "#2E89FC",
-                            subtle: "#882E89FC"
-                        },
-                        attention: {
-                            default: "#FFD800",
-                            subtle: "#DDFFD800"
-                        },
-                        good: {
-                            default: "#00FF00",
-                            subtle: "#DD00FF00"
-                        },
-                        warning: {
-                            default: "#FF0000",
-                            subtle: "#DDFF0000"
-                        }
-                    }
-                },
-                emphasis: {
-                    backgroundColor: "08000000",
-                    foregroundColors: {
-                        default: {
-                            default: "#333333",
-                            subtle: "#EE333333"
-                        },
-                        accent: {
-                            default: "#2E89FC",
-                            subtle: "#882E89FC"
-                        },
-                        attention: {
-                            default: "#FFD800",
-                            subtle: "#DDFFD800"
-                        },
-                        good: {
-                            default: "#00FF00",
-                            subtle: "#DD00FF00"
-                        },
-                        warning: {
-                            default: "#FF0000",
-                            subtle: "#DDFF0000"
-                        }
-                    }
-                }
-            },
-            imageSizes: {
-                small: 40,
-                medium: 80,
-                large: 160
-            },
-            actions: {
-                maxActions: 5,
-                spacing: Spacing.Default,
-                buttonSpacing: 20,
-                showCard: {
-                    actionMode: ShowCardActionMode.Inline,
-                    inlineTopMargin: 16
-                },
-                actionsOrientation: Orientation.Horizontal,
-                actionAlignment: ActionAlignment.Left
-            },
-            adaptiveCard: {
-                allowCustomStyle: false
-            },
-            imageSet: {
-                imageSize: Size.Medium,
-                maxImageHeight: 100
-            },
-            factSet: {
-                title: {
-                    color: TextColor.Default,
-                    size: TextSize.Default,
-                    isSubtle: false,
-                    weight: TextWeight.Bolder,
-                    wrap: true,
-                    maxWidth: 150
-                },
-                value: {
-                    color: TextColor.Default,
-                    size: TextSize.Default,
-                    isSubtle: false,
-                    weight: TextWeight.Default,
-                    wrap: true
-                },
-                spacing: 10
-            }
-        });
+        return new HostConfig(sampleConfiguration);
     }
 
     protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement): HTMLElement {
@@ -329,7 +215,7 @@ export abstract class HostContainer {
                 element.appendChild(separator);
             }
 
-            var renderedSpeech = this.renderSpeech(adaptiveCard.renderSpeech());
+            var renderedSpeech = this.renderSpeech(adaptiveCard.speak);
 
             if (renderedSpeech) {
                 element.appendChild(renderedSpeech);
@@ -342,4 +228,3 @@ export abstract class HostContainer {
         return element;
     }
 }
-

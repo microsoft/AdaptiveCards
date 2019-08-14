@@ -1,22 +1,42 @@
-# Install and Build
+# Adaptive Cards JavaScript packages
 
-This folder contains the HTML Renderer and the Visualizer tool.
+This directory contains all the JS packages for adaptive cards:
 
-They are built independently, so to make local testing easier, you can use `npm link` below
+* `adaptivecards` - The renderer library
+* `adaptivecards-controls` - A controls library useful for the designer
+* `adaptivecards-fabric` - A set of Fabric UI extensions for the Adaptive Cards JS renderer
+* `adaptivecards-templating` - A JSON-to-JSON templating and data binding library for use with Adaptive Cards
+* `adaptivecards-designer` - The drag-drop designer component
+* `adaptivecards-designer-app` - The designer app that consumes the designer component
+* `adaptivecards-site` - The generated website that is currently hosted at adaptivecards.io
+* `adaptivecards-visualizer` - The classic card Visualizer
 
-## To build the HTML Renderer
+## Bootstrap the repo
 
-1. `cd adaptivecards`
-1. `npm install`
-1. `npm link` (allows the visualizer to take a local symlink dep to this package)
-1. `npm run build` (or `npm run watch`)
+We use lerna to manage package linking and building. 
 
-## To build the Visualizer tool
+1. `cd source/nodejs`
+2. `npm install`
+3. `npx lerna bootstrap`
 
-1. `cd ../adaptivecards-visualizer`
-1. `npm install`
-1. (Optional) To use the local package of adaptivecards, run `npm link adaptivecards` (creates the symlink to the renderer). Otherwise, you can skip this step since the latest public release is already installed.
-1. `npm run build`
+## Build
 
-## To start a local web server
-1. `npm start`
+`npx lerna run build`
+
+## Start the Designer
+
+1. `cd adaptivecards-designer`
+2. `npm start`
+3. OR to test preview features: `npm run start:preview`
+
+# Start the documentation site (http://adaptivecards.io)
+
+1. `cd adaptivecards-site`
+2. `npx lerna run release`
+3. `npm install hexo-cli -g`
+5. `npm start`
+6. Open up the browser to point to: `localhost:[portnumber]` printed after the command above returns under "Hexo is running at".
+
+## Adding a new package
+
+1. `npx lerna add <new-package> --scope=<install-target>`

@@ -1,4 +1,6 @@
-﻿using System;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Newtonsoft.Json;
@@ -32,7 +34,7 @@ namespace AdaptiveCards
         // Checks if the size string was never intended to be explicit size
         private bool isPixelHeight(String size)
         {
-            return !((String.Compare(size, AdaptiveHeightType.Auto.ToString(), true) == 0) 
+            return !((String.Compare(size, AdaptiveHeightType.Auto.ToString(), true) == 0)
                 || (String.Compare(size, AdaptiveHeightType.Stretch.ToString(), true) == 0));
         }
 

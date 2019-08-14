@@ -1,0 +1,3 @@
+# Adaptive Card UWP Perf App
+
+This C++/CX app loops through cards and provides basic performance information. To run, choose a number of parse iterations, a number of render iterations (per parse), and click "Choose Samples Folder and Run". A picker will allow you to select the folder of cards you wish to test, and will run through those cards the number of times specified, updating the performance statistics below. Click Reset to reset the statistics to zero.

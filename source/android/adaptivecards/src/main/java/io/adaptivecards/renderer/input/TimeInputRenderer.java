@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer.input;
 
 import android.content.Context;
@@ -8,15 +10,20 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.DateInput;
 import io.adaptivecards.renderer.AdaptiveWarning;
+import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.TimeInput;
 import io.adaptivecards.renderer.inputhandler.TimeInputHandler;
+import io.adaptivecards.renderer.readonly.RendererUtil;
 
+import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
@@ -43,15 +50,15 @@ public class TimeInputRenderer extends TextInputRenderer
     @Override
     public View render(
             RenderedAdaptiveCard renderedCard,
-            Context context,
+            final Context context,
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            ContainerStyle containerStyle)
+            RenderArgs renderArgs)
     {
-        if (!hostConfig.getSupportsInteractivity())
+        if (!hostConfig.GetSupportsInteractivity())
         {
             renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.INTERACTIVITY_DISALLOWED, "Input.Time is not allowed"));
             return null;
@@ -67,21 +74,12 @@ public class TimeInputRenderer extends TextInputRenderer
             throw new InternalError("Unable to convert BaseCardElement to TimeInput object model.");
         }
 
-        setSpacingAndSeparator(context, viewGroup, timeInput.GetSpacing(), timeInput.GetSeparator(), hostConfig, true /* horizontal line */);
+        View separator = setSpacingAndSeparator(context, viewGroup, timeInput.GetSpacing(), timeInput.GetSeparator(), hostConfig, true /* horizontal line */);
 
         TimeInputHandler timeInputHandler = new TimeInputHandler(timeInput, fragmentManager);
-        String time = timeInput.GetValue();
+        String time = DateFormat.getTimeInstance().format(RendererUtil.getTime(timeInput.GetValue()).getTime());
 
-        try
-        {
-            Date date = TimeInputHandler.s_simpleDateFormat.parse(timeInput.GetValue());
-            time = DateFormat.getTimeInstance().format(date);
-        }
-        catch (ParseException e)
-        {
-            //TODO: Log this
-        }
-
+        TagContent tagContent = new TagContent(timeInput, timeInputHandler, separator, viewGroup);
         EditText editText = renderInternal(
                 renderedCard,
                 context,
@@ -90,7 +88,8 @@ public class TimeInputRenderer extends TextInputRenderer
                 time,
                 timeInput.GetPlaceholder(),
                 timeInputHandler,
-                hostConfig);
+                hostConfig,
+                tagContent);
         editText.setRawInputType(TYPE_NULL);
         editText.setFocusable(false);
         editText.setOnClickListener(new View.OnClickListener()
@@ -98,9 +97,11 @@ public class TimeInputRenderer extends TextInputRenderer
             @Override
             public void onClick(View v)
             {
-                TimeInputHandler timeInputHandler = (TimeInputHandler) v.getTag();
+                TagContent tagContent = (TagContent) v.getTag();
+                TimeInputHandler timeInputHandler = (TimeInputHandler) tagContent.GetInputHandler();
+                TimeInput timeInput = (TimeInput) timeInputHandler.getBaseInputElement();
                 TimePickerFragment timePickerFragment = new TimePickerFragment();
-                timePickerFragment.initialize((EditText) v);
+                timePickerFragment.initialize(timeInput, (EditText) v, context);
                 Bundle args = new Bundle();
                 args.putString("title", TITLE);
                 timePickerFragment.setArguments(args);
@@ -111,9 +112,12 @@ public class TimeInputRenderer extends TextInputRenderer
             }
         });
 
+        editText.setTag(tagContent);
+        setVisibility(baseCardElement.GetIsVisible(), editText);
+
         return editText;
     }
-    
+
     private static TimeInputRenderer s_instance = null;
     private static final String TITLE = "Set Time";
 }

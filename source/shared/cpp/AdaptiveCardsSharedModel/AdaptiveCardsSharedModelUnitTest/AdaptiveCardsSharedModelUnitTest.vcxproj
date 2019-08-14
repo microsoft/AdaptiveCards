@@ -23,7 +23,8 @@
     <ProjectGuid>{7A653D45-32AA-4020-9D23-96C0A7D60EAA}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>AdaptiveCardsSharedModelUnitTest</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformMinVersion>10.0.15063.0</WindowsTargetPlatformMinVersion>
     <ProjectSubType>NativeUnitTestProject</ProjectSubType>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -97,6 +98,7 @@
       <UseFullPaths>true</UseFullPaths>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -113,6 +115,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)..\ObjectModel;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -129,6 +132,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)..\ObjectModel;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -147,6 +151,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)..\ObjectModel;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -163,10 +168,16 @@
   <ItemGroup>
     <ClCompile Include="AdaptiveCardParseExceptionTest.cpp" />
     <ClCompile Include="AdditionalPropertiesTest.cpp" />
-    <ClCompile Include="CustomParsingForIOSTest.cpp" />
+    <ClCompile Include="Base64Test.cpp" />
+    <ClCompile Include="ContainerStyleTest.cpp" />
+    <ClCompile Include="ElementTest.cpp" />
+    <ClCompile Include="FallbackTests.cpp" />
+    <ClCompile Include="UnsupportedtypesParsingTest.cpp" />
+    <ClCompile Include="EnumTest.cpp" />
     <ClCompile Include="EverythingBagel.cpp" />
     <ClCompile Include="ExplicitDimensionTest.cpp" />
     <ClCompile Include="FactUnitTest.cpp" />
+    <ClCompile Include="FontStylesUnitTest.cpp" />
     <ClCompile Include="ImageBackgroundColorTest.cpp" />
     <ClCompile Include="ParserRegistrationTest.cpp" />
     <ClCompile Include="ResourceInformationTests.cpp" />

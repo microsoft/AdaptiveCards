@@ -1,9 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "IImageLoadTrackerListener.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace
+{
     struct TrackedImageDetails
     {
         EventRegistrationToken imageOpenedRegistration;
@@ -33,8 +36,8 @@ AdaptiveNamespaceStart
         HRESULT trackedImage_ImageLoaded(_In_ IInspectable* sender, _In_ ABI::Windows::UI::Xaml::IRoutedEventArgs* eventArgs);
         HRESULT trackedImage_ImageFailed(_In_ IInspectable* sender, _In_ ABI::Windows::UI::Xaml::IExceptionRoutedEventArgs* eventArgs);
         void ImageLoadResultReceived(_In_ IInspectable* sender);
-        void UnsubscribeFromEvents(_In_ IInspectable* bitmapImage, _In_ TrackedImageDetails& trackedImageDetails);
+        void UnsubscribeFromEvents(_In_ IInspectable* bitmapImage, TrackedImageDetails& trackedImageDetails);
         void FireAllImagesLoaded();
         void FireImagesLoadingHadError();
     };
-AdaptiveNamespaceEnd
+}

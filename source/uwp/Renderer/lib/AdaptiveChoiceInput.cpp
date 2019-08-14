@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveChoiceInput.h"
 #include "Util.h"
@@ -10,28 +12,27 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace
+{
     HRESULT AdaptiveChoiceInput::RuntimeClassInitialize() noexcept try
     {
         m_sharedChoiceInput = std::make_shared<ChoiceInput>();
         return S_OK;
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
     HRESULT AdaptiveChoiceInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ChoiceInput>& sharedChoiceInput)
     {
         m_sharedChoiceInput = sharedChoiceInput;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveChoiceInput::get_Title(HSTRING* title)
+    HRESULT AdaptiveChoiceInput::get_Title(_Outptr_ HSTRING* title)
     {
         return UTF8ToHString(m_sharedChoiceInput->GetTitle(), title);
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveChoiceInput::put_Title(HSTRING title)
+    HRESULT AdaptiveChoiceInput::put_Title(_In_ HSTRING title)
     {
         std::string out;
         RETURN_IF_FAILED(HStringToUTF8(title, out));
@@ -39,14 +40,12 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveChoiceInput::get_Value(HSTRING* value)
+    HRESULT AdaptiveChoiceInput::get_Value(_Outptr_ HSTRING* value)
     {
         return UTF8ToHString(m_sharedChoiceInput->GetValue(), value);
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveChoiceInput::put_Value(HSTRING value)
+    HRESULT AdaptiveChoiceInput::put_Value(_In_ HSTRING value)
     {
         std::string out;
         RETURN_IF_FAILED(HStringToUTF8(value, out));
@@ -54,8 +53,7 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveChoiceInput::get_ElementType(ElementType* elementType)
+    HRESULT AdaptiveChoiceInput::get_ElementType(_Out_ ElementType* elementType)
     {
         *elementType = ElementType::ChoiceInput;
         return S_OK;
@@ -66,4 +64,4 @@ AdaptiveNamespaceStart
         sharedModel = m_sharedChoiceInput;
         return S_OK;
     }
-AdaptiveNamespaceEnd
+}

@@ -1,0 +1,150 @@
+.ac-image.ac-selectable {
+    cursor: pointer;
+}
+
+.ac-container.ac-selectable {
+    padding: 5px;
+}
+
+.ac-container.ac-selectable:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.ac-container.ac-selectable:active {
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+.ac-pushButton {
+    font-family: "Segoe UI", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: none;
+    padding: 4px 10px 5px 10px;
+    text-align: center;
+    vertical-align: middle;
+    cursor: default;
+    background-color: #0078d7;
+    color: white;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.ac-pushButton:hover {
+    background-color: #005a9e;
+}
+
+.ac-pushButton:active {
+    background-color: #004d84;
+}
+
+.ac-linkButton {
+    font-family: "Segoe UI", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    border: none;
+    padding: 0;
+    color: #0078d7;
+    background-color: transparent;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.ac-linkButton:hover {
+    color: #005a9e;
+}
+
+.ac-linkButton:active {
+    color: #004d84;
+}
+
+.ac-linkButton.ac-subdued {
+    color: #666666;
+    font-weight: 500;
+}
+
+.ac-linkButton.ac-subdued:hover {
+    color: #005a9e;
+}
+
+.ac-linkButton.ac-subdued:active {
+    color: #004d84;
+}
+
+.ac-input {
+    font-family: "Segoe UI", sans-serif;
+    font-size: 14px;
+    color: black;
+}
+
+.ac-input.ac-input-required {
+    background-image: linear-gradient(45deg, transparent, transparent 50%, red 50%, red 100%);
+    background-position: top right;
+    background-size: .5em .5em;
+    background-repeat: no-repeat;
+}
+
+.ac-input.ac-input-validation-failed {
+    border: 1px solid red !important;
+}
+
+.ac-input.ac-textInput {
+    height: 30px;
+    resize: none;
+}
+
+.ac-input.ac-textInput.ac-multiline {
+    height: 72px;
+}
+
+.ac-input.ac-textInput, .ac-input.ac-numberInput, .ac-input.ac-dateInput, .ac-input.ac-timeInput, .ac-input.ac-multichoiceInput {
+    border: 1px solid #dddddd;
+    padding: 4px 8px 4px 8px;
+}
+
+.kikOuterContainer {
+    border: 1px solid #dddddd;
+}
+
+/* ac-inlineActionButton should set height to the same as ac-input.ac-textInput */
+
+.ac-inlineActionButton {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    font-family: "Segoe UI", sans-serif;
+    font-size: 14px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: none;
+    background-color: transparent;
+    height: 30px;
+}
+
+.ac-inlineActionButton.textOnly {
+    padding: 0 8px;
+}
+
+.ac-inlineActionButton.iconOnly {
+    padding: 0;
+}
+
+.ac-inlineActionButton:hover {
+    background-color: #EEEEEE;
+}
+
+.ac-inlineActionButton:active {
+    background-color: #CCCCCC;
+}

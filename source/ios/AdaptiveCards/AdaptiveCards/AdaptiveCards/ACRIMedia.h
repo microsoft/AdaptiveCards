@@ -18,4 +18,3 @@
 - (void)didFetchMediaEvent:(ACOMediaEvent *)mediaElement card:(ACOAdaptiveCard *)card;
 
 @end
-

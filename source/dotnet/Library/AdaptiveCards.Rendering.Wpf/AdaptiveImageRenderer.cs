@@ -1,4 +1,6 @@
-﻿using System;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,6 +24,7 @@ namespace AdaptiveCards.Rendering.Wpf
             }
 
             uiImage.SetSource(image, finalUri, context);
+
             uiImage.SetHorizontalAlignment(image.HorizontalAlignment);
 
             string style = $"Adaptive.{image.Type}";
@@ -66,11 +69,8 @@ namespace AdaptiveCards.Rendering.Wpf
                     };
                 }
             }
-            if (image.SelectAction != null)
-            {
-                return context.RenderSelectAction(image.SelectAction, uiBorder ?? uiImage);
-            }
-            return uiBorder ?? uiImage;
+
+            return RendererUtil.ApplySelectAction(uiBorder ?? uiImage, image, context);
         }
 
     }

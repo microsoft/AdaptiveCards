@@ -15,13 +15,12 @@
     super.stackView.distribution = UIStackViewDistributionFill;
     super.stackView.alignment    = UIStackViewAlignmentLeading;
     [super config:attributes];
+    self.isLastColumn = NO;
 }
 
 - (void)addArrangedSubview:(UIView* )view
 {
     [super addArrangedSubview:view];
-    CGRect frame = super.frame;
-    super.frame = frame;
 }
 
 - (void)adjustHuggingForLastElement

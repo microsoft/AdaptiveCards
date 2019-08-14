@@ -1,5 +1,8 @@
-﻿using Newtonsoft.Json;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using Newtonsoft.Json;
 using System;
+using System.ComponentModel;
 using System.Reflection;
 using System.Xml.Serialization;
 
@@ -36,5 +39,15 @@ namespace AdaptiveCards
         [XmlAttribute]
 #endif
         public string IconUrl { get; set; }
+
+        /// <summary>
+        ///     Style that can be specified for actions
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue("default")]
+        public string Style { get; set; } = "default";
     }
 }

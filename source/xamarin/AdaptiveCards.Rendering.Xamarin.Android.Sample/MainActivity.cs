@@ -101,4 +101,3 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
         }
     }
 }
-

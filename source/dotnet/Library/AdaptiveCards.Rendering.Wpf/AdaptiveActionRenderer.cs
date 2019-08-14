@@ -1,6 +1,9 @@
-﻿using System;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
@@ -30,6 +33,22 @@ namespace AdaptiveCards.Rendering.Wpf
                 Style = context.GetStyle($"Adaptive.{action.Type}"),
             };
 
+            if (!String.IsNullOrWhiteSpace(action.Style))
+            {
+                Style style = context.GetStyle($"Adaptive.Action.{action.Style}");
+
+                if (style == null && String.Equals(action.Style, "positive", StringComparison.OrdinalIgnoreCase))
+                {
+                    style = context.GetStyle("PositiveActionDefaultStyle");
+                }
+                else if (style == null && String.Equals(action.Style, "destructive", StringComparison.OrdinalIgnoreCase))
+                {
+                    style = context.GetStyle("DestructiveActionDefaultStyle");
+                }
+
+                uiButton.Style = style;
+            }
+
             var contentStackPanel = new StackPanel();
 
             if (!context.IsRenderingSelectAction)
@@ -49,7 +68,7 @@ namespace AdaptiveCards.Rendering.Wpf
             var uiTitle = new TextBlock
             {
                 Text = action.Title,
-                FontSize = context.Config.FontSizes.Default,
+                FontSize = context.Config.GetFontSize(AdaptiveFontType.Default, AdaptiveTextSize.Default),
                 Style = context.GetStyle($"Adaptive.Action.Title")
             };
 
@@ -97,5 +116,6 @@ namespace AdaptiveCards.Rendering.Wpf
             string name = context.GetType().Name.Replace("Action", String.Empty);
             return uiButton;
         }
+
     }
 }

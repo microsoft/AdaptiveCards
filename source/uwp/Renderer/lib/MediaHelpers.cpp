@@ -1,4 +1,6 @@
-﻿#include "pch.h"
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+#include "pch.h"
 #include "XamlHelpers.h"
 #include "XamlBuilder.h"
 #include "AdaptiveImage.h"
@@ -22,11 +24,10 @@ const DOUBLE c_playIconCornerRadius = 5;
 const DOUBLE c_playIconOpacity = .5;
 const DOUBLE c_audioHeight = 100;
 
-void GetMediaPosterAsImage(
-    IAdaptiveRenderContext* renderContext,
-    IAdaptiveRenderArgs* renderArgs,
-    IAdaptiveMedia * adaptiveMedia,
-    IImage ** posterImage)
+void GetMediaPosterAsImage(_In_ IAdaptiveRenderContext* renderContext,
+                           _In_ IAdaptiveRenderArgs* renderArgs,
+                           _In_ IAdaptiveMedia* adaptiveMedia,
+                           _Outptr_ IImage** posterImage)
 {
     HString posterString;
     THROW_IF_FAILED(adaptiveMedia->get_Poster(posterString.GetAddressOf()));
@@ -73,13 +74,11 @@ void GetMediaPosterAsImage(
     THROW_IF_FAILED(posterAsImage.CopyTo(posterImage));
 }
 
-void AddDefaultPlayIcon(
-    IPanel * posterPanel,
-    IAdaptiveHostConfig * hostConfig,
-    IAdaptiveRenderArgs* renderArgs)
+void AddDefaultPlayIcon(_In_ IPanel* posterPanel, _In_ IAdaptiveHostConfig* hostConfig, _In_ IAdaptiveRenderArgs* renderArgs)
 {
     // Create a rectangle
-    ComPtr<IRectangle> rectangle = XamlHelpers::CreateXamlClass<IRectangle>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Rectangle));
+    ComPtr<IRectangle> rectangle =
+        XamlHelpers::CreateXamlClass<IRectangle>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Rectangle));
 
     // Set the size
     ComPtr<IFrameworkElement> rectangleAsFrameworkElement;
@@ -95,8 +94,8 @@ void AddDefaultPlayIcon(
     ComPtr<IShape> rectangleAsShape;
     THROW_IF_FAILED(rectangle.As(&rectangleAsShape));
 
-    ABI::Windows::UI::Color whiteBrushColor{ 0xFF, 0xFF, 0xFF, 0xFF };
-    ComPtr<IBrush> rectangleBrush = XamlBuilder::GetSolidColorBrush(whiteBrushColor);
+    ABI::Windows::UI::Color whiteBrushColor{0xFF, 0xFF, 0xFF, 0xFF};
+    ComPtr<IBrush> rectangleBrush = XamlHelpers::GetSolidColorBrush(whiteBrushColor);
     THROW_IF_FAILED(rectangleAsShape->put_Fill(rectangleBrush.Get()));
 
     ComPtr<IUIElement> rectangleAsUIElement;
@@ -111,13 +110,14 @@ void AddDefaultPlayIcon(
     THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Colors).Get(), &colorsStatics));
 
     ABI::Windows::UI::Color darkBrushColor;
-    THROW_IF_FAILED(GetColorFromAdaptiveColor(hostConfig, ForegroundColor_Dark, containerStyle, false, &darkBrushColor));
+    THROW_IF_FAILED(GetColorFromAdaptiveColor(hostConfig, ForegroundColor_Dark, containerStyle, false, false, &darkBrushColor));
 
-    ComPtr<IBrush> darkBrush = XamlBuilder::GetSolidColorBrush(darkBrushColor);
+    ComPtr<IBrush> darkBrush = XamlHelpers::GetSolidColorBrush(darkBrushColor);
     rectangleAsShape->put_Stroke(darkBrush.Get());
 
     // Create a play symbol icon
-    ComPtr<ISymbolIcon> playIcon = XamlHelpers::CreateXamlClass<ISymbolIcon>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_SymbolIcon));
+    ComPtr<ISymbolIcon> playIcon =
+        XamlHelpers::CreateXamlClass<ISymbolIcon>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_SymbolIcon));
     THROW_IF_FAILED(playIcon->put_Symbol(Symbol::Symbol_Play));
 
     // Set it's color
@@ -127,7 +127,8 @@ void AddDefaultPlayIcon(
 
     // Put the rectangle and the play icon on the panel and center them
     ComPtr<IRelativePanelStatics> relativePanelStatics;
-    THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RelativePanel).Get(), &relativePanelStatics));
+    THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RelativePanel).Get(),
+                                         &relativePanelStatics));
 
     XamlHelpers::AppendXamlElementToPanel(rectangle.Get(), posterPanel);
     THROW_IF_FAILED(relativePanelStatics->SetAlignHorizontalCenterWithPanel(rectangleAsUIElement.Get(), true));
@@ -140,11 +141,7 @@ void AddDefaultPlayIcon(
     THROW_IF_FAILED(relativePanelStatics->SetAlignVerticalCenterWithPanel(playIconAsUIElement.Get(), true));
 }
 
-void AddCustomPlayIcon(
-    IPanel * posterPanel, 
-    HSTRING playIconString,
-    IAdaptiveRenderContext* renderContext,
-    IAdaptiveRenderArgs* renderArgs)
+void AddCustomPlayIcon(_In_ IPanel* posterPanel, _In_ HSTRING playIconString, _In_ IAdaptiveRenderContext* renderContext, _In_ IAdaptiveRenderArgs* renderArgs)
 {
     // Render the custom play icon using the image renderer
     ComPtr<IAdaptiveImage> playIconAdaptiveImage;
@@ -168,17 +165,15 @@ void AddCustomPlayIcon(
 
     // Add it to the panel and center it
     ComPtr<IRelativePanelStatics> relativePanelStatics;
-    THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RelativePanel).Get(), &relativePanelStatics));
+    THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RelativePanel).Get(),
+                                         &relativePanelStatics));
 
     XamlHelpers::AppendXamlElementToPanel(playIconUIElement.Get(), posterPanel);
     THROW_IF_FAILED(relativePanelStatics->SetAlignHorizontalCenterWithPanel(playIconUIElement.Get(), true));
     THROW_IF_FAILED(relativePanelStatics->SetAlignVerticalCenterWithPanel(playIconUIElement.Get(), true));
 }
 
-void AddPlayIcon(
-    IPanel * posterPanel,
-    IAdaptiveRenderContext* renderContext,
-    IAdaptiveRenderArgs* renderArgs)
+void AddPlayIcon(_In_ IPanel* posterPanel, _In_ IAdaptiveRenderContext* renderContext, _In_ IAdaptiveRenderArgs* renderArgs)
 {
     ComPtr<IAdaptiveHostConfig> hostConfig;
     THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
@@ -199,13 +194,13 @@ void AddPlayIcon(
     }
 }
 
-void CreatePosterContainerWithPlayButton(
-    IImage* posterImage,
-    IAdaptiveRenderContext* renderContext,
-    IAdaptiveRenderArgs* renderArgs,
-    IUIElement ** posterContainer)
+void CreatePosterContainerWithPlayButton(_In_ IImage* posterImage,
+                                         _In_ IAdaptiveRenderContext* renderContext,
+                                         _In_ IAdaptiveRenderArgs* renderArgs,
+                                         _Outptr_ IUIElement** posterContainer)
 {
-    ComPtr<IRelativePanel> posterRelativePanel = XamlHelpers::CreateXamlClass<IRelativePanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RelativePanel));
+    ComPtr<IRelativePanel> posterRelativePanel =
+        XamlHelpers::CreateXamlClass<IRelativePanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RelativePanel));
 
     ComPtr<IPanel> posterPanel;
     THROW_IF_FAILED(posterRelativePanel.As(&posterPanel));
@@ -216,7 +211,7 @@ void CreatePosterContainerWithPlayButton(
         // Append the poster image to the panel
         XamlHelpers::AppendXamlElementToPanel(posterImage, posterPanel.Get());
 
-        ComPtr<IImage> localPosterImage{ posterImage };
+        ComPtr<IImage> localPosterImage{posterImage};
         localPosterImage.As(&posterImageAsFrameworkElement);
     }
 
@@ -227,18 +222,16 @@ void CreatePosterContainerWithPlayButton(
     THROW_IF_FAILED(posterRelativePanelAsUIElement.CopyTo(posterContainer));
 }
 
-void GetMediaSource(
-    IAdaptiveHostConfig* hostConfig,
-    IAdaptiveMedia* adaptiveMedia,
-    IUriRuntimeClass** mediaSourceUrl,
-    HSTRING * mimeType)
+void GetMediaSource(_In_ IAdaptiveHostConfig* hostConfig,
+                    _In_ IAdaptiveMedia* adaptiveMedia,
+                    _Outptr_ IUriRuntimeClass** mediaSourceUrl,
+                    _Outptr_ HSTRING* mimeType)
 {
-    LPWSTR supportedMimeTypes[] =
-    {
+    LPWSTR supportedMimeTypes[] = {
         L"video/mp4",
         L"audio/mp4",
-		L"audio/aac",
-		L"audio/mpeg",
+        L"audio/aac",
+        L"audio/mpeg",
     };
 
     ComPtr<IVector<AdaptiveMediaSource*>> sources;
@@ -258,13 +251,13 @@ void GetMediaSource(
         ComPtr<IAdaptiveMediaSource> currentSource;
         THROW_IF_FAILED(sourceIterator->get_Current(&currentSource));
 
-        HString mimeType;
-        THROW_IF_FAILED(currentSource->get_MimeType(mimeType.GetAddressOf()));
+        HString currentMimeType;
+        THROW_IF_FAILED(currentSource->get_MimeType(currentMimeType.GetAddressOf()));
 
         INT32 isSupported;
         for (UINT i = 0; i < ARRAYSIZE(supportedMimeTypes); i++)
         {
-            THROW_IF_FAILED(WindowsCompareStringOrdinal(mimeType.Get(), HStringReference(supportedMimeTypes[i]).Get(), &isSupported));
+            THROW_IF_FAILED(WindowsCompareStringOrdinal(currentMimeType.Get(), HStringReference(supportedMimeTypes[i]).Get(), &isSupported));
 
             if (isSupported == 0)
             {
@@ -289,11 +282,10 @@ void GetMediaSource(
     }
 }
 
-HRESULT HandleMediaResourceResolverCompleted(
-    IAsyncOperation<IRandomAccessStream*>* operation,
-    AsyncStatus status,
-    IMediaElement* mediaElement,
-    HSTRING mimeType)
+HRESULT HandleMediaResourceResolverCompleted(_In_ IAsyncOperation<IRandomAccessStream*>* operation,
+                                             AsyncStatus status,
+                                             _In_ IMediaElement* mediaElement,
+                                             _In_ HSTRING mimeType)
 {
     if (status == AsyncStatus::Completed)
     {
@@ -309,21 +301,20 @@ HRESULT HandleMediaResourceResolverCompleted(
     return S_OK;
 }
 
-HRESULT HandleMediaClick(
-    IAdaptiveRenderContext* renderContext,
-    IAdaptiveMedia* adaptiveMedia,
-    IMediaElement* mediaElement,
-    IUIElement* posterContainer,
-    IUriRuntimeClass* mediaSourceUrl,
-    HSTRING mimeType,
-    IAdaptiveMediaEventInvoker* mediaInvoker)
+HRESULT HandleMediaClick(_In_ IAdaptiveRenderContext* renderContext,
+                         _In_ IAdaptiveMedia* adaptiveMedia,
+                         _In_ IMediaElement* mediaElement,
+                         _In_ IUIElement* posterContainer,
+                         _In_ IUriRuntimeClass* mediaSourceUrl,
+                         _In_ HSTRING mimeType,
+                         _In_ IAdaptiveMediaEventInvoker* mediaInvoker)
 {
     // When the user clicks: hide the poster, show the media element, open and play the media
     if (mediaElement)
     {
-		ComPtr<IMediaElement> localMediaElement{ mediaElement };
+        ComPtr<IMediaElement> localMediaElement{mediaElement};
 
-		RETURN_IF_FAILED(posterContainer->put_Visibility(Visibility_Collapsed));
+        RETURN_IF_FAILED(posterContainer->put_Visibility(Visibility_Collapsed));
 
         ComPtr<IUIElement> mediaAsUIElement;
         RETURN_IF_FAILED(localMediaElement.As(&mediaAsUIElement));
@@ -342,8 +333,8 @@ HRESULT HandleMediaClick(
 
         if (resourceResolver == nullptr)
         {
-            // If there isn't a resource resolver, put the source directly. 
-            THROW_IF_FAILED(mediaElement->put_Source(mediaSourceUrl));    
+            // If there isn't a resource resolver, put the source directly.
+            THROW_IF_FAILED(mediaElement->put_Source(mediaSourceUrl));
         }
         else
         {
@@ -359,38 +350,41 @@ HRESULT HandleMediaClick(
             HSTRING lambdaMimeType;
             WindowsDuplicateString(mimeType, &lambdaMimeType);
 
-            RETURN_IF_FAILED(getResourceStreamOperation->put_Completed(Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationCompletedHandler<IRandomAccessStream*>>>
-                ([localMediaElement, lambdaMimeType](IAsyncOperation<IRandomAccessStream*>* operation, AsyncStatus status) -> HRESULT
-            {
-                // Take ownership of the passed in HSTRING
-                HString localMimeType;
-                localMimeType.Attach(lambdaMimeType);
+            RETURN_IF_FAILED(getResourceStreamOperation->put_Completed(
+                Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationCompletedHandler<IRandomAccessStream*>>>(
+                    [localMediaElement, lambdaMimeType](IAsyncOperation<IRandomAccessStream*>* operation, AsyncStatus status) -> HRESULT {
+                        // Take ownership of the passed in HSTRING
+                        HString localMimeType;
+                        localMimeType.Attach(lambdaMimeType);
 
-                return HandleMediaResourceResolverCompleted(operation, status, localMediaElement.Get(), lambdaMimeType);
-            }).Get()));
+                        return HandleMediaResourceResolverCompleted(operation, status, localMediaElement.Get(), lambdaMimeType);
+                    })
+                    .Get()));
         }
 
         EventRegistrationToken mediaOpenedToken;
-        THROW_IF_FAILED(mediaElement->add_MediaOpened(Callback<IRoutedEventHandler>([=](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
-        {
-            boolean audioOnly;
-            RETURN_IF_FAILED(localMediaElement->get_IsAudioOnly(&audioOnly));
+        THROW_IF_FAILED(
+            mediaElement->add_MediaOpened(Callback<IRoutedEventHandler>([=](IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
+                                              boolean audioOnly;
+                                              RETURN_IF_FAILED(localMediaElement->get_IsAudioOnly(&audioOnly));
 
-            ComPtr<IImageSource> posterSource;
-            RETURN_IF_FAILED(localMediaElement->get_PosterSource(&posterSource));
+                                              ComPtr<IImageSource> posterSource;
+                                              RETURN_IF_FAILED(localMediaElement->get_PosterSource(&posterSource));
 
-            if (audioOnly && posterSource == nullptr)
-            {
-                // If this is audio only and there's no poster, set the height so that the 
-                // controls are visible.
-                ComPtr<IFrameworkElement> mediaAsFrameworkElement;
-                RETURN_IF_FAILED(localMediaElement.As(&mediaAsFrameworkElement));
-                RETURN_IF_FAILED(mediaAsFrameworkElement->put_Height(c_audioHeight));
-            }
+                                              if (audioOnly && posterSource == nullptr)
+                                              {
+                                                  // If this is audio only and there's no poster, set the height so that
+                                                  // the controls are visible.
+                                                  ComPtr<IFrameworkElement> mediaAsFrameworkElement;
+                                                  RETURN_IF_FAILED(localMediaElement.As(&mediaAsFrameworkElement));
+                                                  RETURN_IF_FAILED(mediaAsFrameworkElement->put_Height(c_audioHeight));
+                                              }
 
-            RETURN_IF_FAILED(localMediaElement->Play());
-            return S_OK;
-        }).Get(), &mediaOpenedToken));
+                                              RETURN_IF_FAILED(localMediaElement->Play());
+                                              return S_OK;
+                                          })
+                                              .Get(),
+                                          &mediaOpenedToken));
     }
     else
     {

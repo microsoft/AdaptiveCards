@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "FactSet.h"
 #include "ParseUtil.h"
@@ -21,17 +23,6 @@ std::vector<std::shared_ptr<Fact>>& FactSet::GetFacts()
     return m_facts;
 }
 
-void FactSet::SetLanguage(const std::string& language)
-{
-    for (std::shared_ptr<Fact>& fact : m_facts)
-    {
-        if (fact != nullptr)
-        {
-            fact->SetLanguage(language);
-        }
-    }
-}
-
 Json::Value FactSet::SerializeToJsonValue() const
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
@@ -46,30 +37,23 @@ Json::Value FactSet::SerializeToJsonValue() const
     return root;
 }
 
-std::shared_ptr<BaseCardElement> FactSetParser::Deserialize(
-    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-    const Json::Value& value)
+std::shared_ptr<BaseCardElement> FactSetParser::Deserialize(ParseContext& context, const Json::Value& value)
 {
     ParseUtil::ExpectTypeString(value, CardElementType::FactSet);
 
-    auto factSet = BaseCardElement::Deserialize<FactSet>(value);
+    auto factSet = BaseCardElement::Deserialize<FactSet>(context, value);
 
     // Parse Facts
-    auto facts = ParseUtil::GetElementCollectionOfSingleType<Fact>(elementParserRegistration, actionParserRegistration, warnings, value, AdaptiveCardSchemaKey::Facts, Fact::Deserialize, true);
+    auto facts =
+        ParseUtil::GetElementCollectionOfSingleType<Fact>(context, value, AdaptiveCardSchemaKey::Facts, Fact::Deserialize, true);
     factSet->m_facts = std::move(facts);
 
     return factSet;
 }
 
-std::shared_ptr<BaseCardElement> FactSetParser::DeserializeFromString(
-    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-    const std::string& jsonString)
+std::shared_ptr<BaseCardElement> FactSetParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
 {
-    return FactSetParser::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
+    return FactSetParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 void FactSet::PopulateKnownPropertiesSet()

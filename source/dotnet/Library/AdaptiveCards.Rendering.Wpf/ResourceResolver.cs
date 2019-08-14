@@ -1,4 +1,6 @@
-﻿using System;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -19,6 +21,7 @@ namespace AdaptiveCards.Rendering.Wpf
             Register("http", GetHttpAsync);
             Register("https", GetHttpAsync);
             Register("pack", GetPackAsync);
+            Register("data", GetDataUriAsync);
         }
 
         private static async Task<MemoryStream> GetHttpAsync(Uri uri)
@@ -55,6 +58,23 @@ namespace AdaptiveCards.Rendering.Wpf
 
                 var memoryStream = new MemoryStream();
                 info.Stream.CopyTo(memoryStream);
+                return Task.FromResult(memoryStream);
+            }
+            catch (Exception)
+            {
+                return Task.FromResult<MemoryStream>(null);
+            }
+        }
+
+        private static Task<MemoryStream> GetDataUriAsync(Uri uri)
+        {
+            try
+            {
+                var encodedData = uri.AbsoluteUri.Substring(uri.AbsoluteUri.LastIndexOf(',') + 1);
+
+                var decodedDataUri = Convert.FromBase64String(encodedData);
+                var memoryStream = new MemoryStream(decodedDataUri);
+
                 return Task.FromResult(memoryStream);
             }
             catch (Exception)

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import * as Constants from "./constants";
 import { InputControl } from "./inputcontrol";
 
@@ -16,7 +18,7 @@ export class RadioButton extends InputControl {
     private _label: string = "";
     private _isChecked: boolean;
     private _checkboxElement: HTMLInputElement = null;
-    private _spanElement: HTMLSpanElement = null;    
+    private _spanElement: HTMLSpanElement = null;
 
     private changed() {
         if (this.onChange) {

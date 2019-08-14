@@ -1,5 +1,44 @@
 <resources>
 
+    <style name="adaptiveActionPositive" parent="@style/Widget.AppCompat.Button.Colored">
+        <item name="android:colorAccent">@color/actionPositive</item>
+    </style>
+
+    <style name="adaptiveActionDestructive" parent="@style/Widget.AppCompat.Button.Colored">
+        <item name="android:colorAccent">@color/actionDestructive</item>
+    </style>
+
+    <style name="adaptiveInlineAction">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:paddingLeft">16dp</item>
+    </style>
+
+    <style name="adaptiveInlineActionImage">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:paddingLeft">16dp</item>
+    </style>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorButtonNormal">@color/colorPrimary</item>
+        <!--<item name="colorControlHighlight">@color/colorAccent</item>-->
+        <item name="editTextBackground">@drawable/border</item>
+        <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Colored</item>
+
+        <!-- Example on how to define your own style for Positive and Destructive Actions -->
+        <!--
+        <item name="adaptiveActionDestructive">@style/adaptiveActionDestructive</item>
+        <item name="adaptiveActionPositive">@style/adaptiveActionPositive</item>
+        <item name="adaptiveInlineAction">@style/adaptiveInlineAction</item>
+        <item name="adaptiveInlineActionImage">@style/adaptiveInlineActionImage</item> -->
+
+
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

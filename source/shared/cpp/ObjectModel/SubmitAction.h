@@ -1,48 +1,51 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "pch.h"
 #include "BaseActionElement.h"
-#include "Enums.h"
 #include "ActionParserRegistration.h"
 
-namespace AdaptiveSharedNamespace {
-class SubmitAction : public BaseActionElement
+namespace AdaptiveSharedNamespace
 {
-public:
-    SubmitAction();
+    class SubmitAction : public BaseActionElement
+    {
+    public:
+        SubmitAction();
+        SubmitAction(const SubmitAction&) = default;
+        SubmitAction(SubmitAction&&) = default;
+        SubmitAction& operator=(const SubmitAction&) = default;
+        SubmitAction& operator=(SubmitAction&&) = default;
+        ~SubmitAction() = default;
 
-    std::string GetDataJson() const;
-    Json::Value GetDataJsonAsValue() const;
-    void SetDataJson(const Json::Value &value);
+        std::string GetDataJson() const;
+        Json::Value GetDataJsonAsValue() const;
+        void SetDataJson(const Json::Value& value);
+        void SetDataJson(const std::string value);
 
-    Json::Value SerializeToJsonValue() const override;
+        virtual bool GetIgnoreInputValidation() const;
+        virtual void SetIgnoreInputValidation(const bool value);
 
-private:
-    void PopulateKnownPropertiesSet() override;
+        Json::Value SerializeToJsonValue() const override;
 
-    Json::Value m_dataJson;
-};
+    private:
+        void PopulateKnownPropertiesSet() override;
 
-class SubmitActionParser : public ActionElementParser
-{
-public:
-    SubmitActionParser() = default;
-    SubmitActionParser(const SubmitActionParser&) = default;
-    SubmitActionParser(SubmitActionParser&&) = default;
-    SubmitActionParser& operator=(const SubmitActionParser&) = default;
-    SubmitActionParser& operator=(SubmitActionParser&&) = default;
-    virtual ~SubmitActionParser() = default;
+        Json::Value m_dataJson;
+        bool m_ignoreInputValidation;
+    };
 
-    std::shared_ptr<BaseActionElement> Deserialize(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-        const Json::Value& value) override;
+    class SubmitActionParser : public ActionElementParser
+    {
+    public:
+        SubmitActionParser() = default;
+        SubmitActionParser(const SubmitActionParser&) = default;
+        SubmitActionParser(SubmitActionParser&&) = default;
+        SubmitActionParser& operator=(const SubmitActionParser&) = default;
+        SubmitActionParser& operator=(SubmitActionParser&&) = default;
+        virtual ~SubmitActionParser() = default;
 
-    std::shared_ptr<BaseActionElement> DeserializeFromString(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-        const std::string& jsonString);
-};
+        std::shared_ptr<BaseActionElement> Deserialize(ParseContext& context, const Json::Value& value) override;
+        std::shared_ptr<BaseActionElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
+    };
 }

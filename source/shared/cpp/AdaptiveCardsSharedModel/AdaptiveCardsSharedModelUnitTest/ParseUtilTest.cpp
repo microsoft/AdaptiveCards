@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "stdafx.h"
 #include "ParseUtil.h"
 
@@ -11,34 +13,33 @@ namespace AdaptiveCardsSharedModelUnitTest
     TEST_CLASS(ParseUtilTest)
     {
     public:
+        static Json::Value s_GetJsonObject(const std::string &json)
+        {
+            std::istringstream jsonStream(json);
+            Json::Value jsonValue;
+            jsonStream >> jsonValue;
+            return jsonValue;
+        }
+
         static Json::Value s_GetValidJsonObject()
         {
-            Json::Reader reader;
-            Json::Value jsonValue;
-            reader.parse("{ \"foo\": \"bar\" }", jsonValue);
-            return jsonValue;
+            return s_GetJsonObject("{ \"foo\": \"bar\" }");
         }
 
         static Json::Value s_GetJsonObjectWithType(const std::string &typeName)
         {
-            Json::Reader reader;
-            Json::Value jsonValue;
             std::string jsonTemplate("{ \"foo\": \"bar\", \"type\": \"");
             jsonTemplate.append(typeName);
             jsonTemplate.append("\"}");
-            reader.parse(jsonTemplate, jsonValue);
-            return jsonValue;
+            return s_GetJsonObject(jsonTemplate);
         }
 
         static Json::Value s_GetJsonObjectWithAccent(const std::string &value)
         {
-            Json::Reader reader;
-            Json::Value jsonValue;
             std::string jsonTemplate("{ \"foo\": \"bar\", \"accent\": ");
             jsonTemplate.append(value);
             jsonTemplate.append("}");
-            reader.parse(jsonTemplate, jsonValue);
-            return jsonValue;
+            return s_GetJsonObject(jsonTemplate);
         }
 
         static void s_EmptyFn(const Json::Value&)
@@ -56,8 +57,6 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::ExpectException<AdaptiveCardParseException>([]() { ParseUtil::GetJsonValueFromString("definitely not json"); });
             auto jsonValue = ParseUtil::GetJsonValueFromString("{ \"foo\": \"bar\" }");
             Assert::AreEqual(jsonValue["foo"].asCString(), "bar", false);
-            ParseUtil::ExpectString(jsonValue["foo"]);
-            Assert::ExpectException<AdaptiveCardParseException>([&]() { ParseUtil::ExpectString(jsonValue); });
         }
 
         TEST_METHOD(ThrowIfNotJsonObjectTests)
@@ -136,13 +135,65 @@ namespace AdaptiveCardsSharedModelUnitTest
 
         TEST_METHOD(GetArrayTests)
         {
+            bool throwsExpected = false;
             auto jsonObj = s_GetValidJsonObject();
-            Assert::ExpectException<AdaptiveCardParseException>([&]() { ParseUtil::GetArray(jsonObj, AdaptiveCardSchemaKey::Accent, true); });
+            try
+            {
+                ParseUtil::GetArray(jsonObj, AdaptiveCardSchemaKey::Accent, true);
+                throwsExpected = false;
+            }
+            catch (AdaptiveCardParseException e)
+            {
+                Assert::IsTrue(ErrorStatusCode::RequiredPropertyMissing == e.GetStatusCode());
+                Assert::AreEqual("Could not parse required key: accent. It was not found"s, e.GetReason());
+                throwsExpected = true;
+            }
+            Assert::IsTrue(throwsExpected);
+
             auto emptyRet = ParseUtil::GetArray(jsonObj, AdaptiveCardSchemaKey::Accent, false);
             Assert::IsTrue(emptyRet.isNull());
 
-            auto jsonObjWithAccent = s_GetJsonObjectWithAccent("true"s);
-            Assert::ExpectException<AdaptiveCardParseException>([&]() { ParseUtil::GetArray(jsonObjWithAccent, AdaptiveCardSchemaKey::Accent, true); });
+            try
+            {
+                auto jsonObjWithAccentString = s_GetJsonObjectWithAccent("true"s);
+                ParseUtil::GetArray(jsonObjWithAccentString, AdaptiveCardSchemaKey::Accent, true);
+                throwsExpected = false;
+            }
+            catch (AdaptiveCardParseException e)
+            {
+                Assert::IsTrue(ErrorStatusCode::InvalidPropertyValue == e.GetStatusCode());
+                Assert::AreEqual("Could not parse specified key: accent. It was not an array"s, e.GetReason());
+                throwsExpected = true;
+            }
+            Assert::IsTrue(throwsExpected);
+
+            try
+            {
+                auto jsonObjWithAccentObject = s_GetJsonObjectWithAccent("{}"s);
+                ParseUtil::GetArray(jsonObjWithAccentObject, AdaptiveCardSchemaKey::Accent, true);
+                throwsExpected = false;
+            }
+            catch (AdaptiveCardParseException e)
+            {
+                Assert::IsTrue(ErrorStatusCode::InvalidPropertyValue == e.GetStatusCode());
+                Assert::AreEqual("Could not parse specified key: accent. It was not an array"s, e.GetReason());
+                throwsExpected = true;
+            }
+            Assert::IsTrue(throwsExpected);
+
+            try
+            {
+                auto jsonObjWithAccentEmptyArray = s_GetJsonObjectWithAccent("[]"s);
+                ParseUtil::GetArray(jsonObjWithAccentEmptyArray, AdaptiveCardSchemaKey::Accent, true);
+                throwsExpected = false;
+            }
+            catch (AdaptiveCardParseException e)
+            {
+                Assert::IsTrue(ErrorStatusCode::RequiredPropertyMissing == e.GetStatusCode());
+                Assert::AreEqual("Could not parse required key: accent. It was not found"s, e.GetReason());
+                throwsExpected = true;
+            }
+            Assert::IsTrue(throwsExpected);
 
             auto jsonObjWithAccentArray = s_GetJsonObjectWithAccent("[\"thing1\", \"thing2\"]"s);
             auto arrayRet = ParseUtil::GetArray(jsonObjWithAccentArray, AdaptiveCardSchemaKey::Accent, true);
@@ -167,11 +218,11 @@ namespace AdaptiveCardsSharedModelUnitTest
         {
             auto jsonObj = s_GetValidJsonObject();
             Assert::ExpectException<AdaptiveCardParseException>([&]() { ParseUtil::GetCardElementType(jsonObj); });
-            Assert::IsTrue(ParseUtil::TryGetCardElementType(jsonObj) == CardElementType::Unsupported);
+            Assert::IsTrue(ParseUtil::TryGetCardElementType(jsonObj) == CardElementType::Unknown);
 
             auto jsonObjWithInvalidType = s_GetJsonObjectWithType("Invalid"s);
-            Assert::IsTrue(ParseUtil::GetCardElementType(jsonObjWithInvalidType) == CardElementType::Unsupported);
-            Assert::IsTrue(ParseUtil::TryGetCardElementType(jsonObjWithInvalidType) == CardElementType::Unsupported);
+            Assert::IsTrue(ParseUtil::GetCardElementType(jsonObjWithInvalidType) == CardElementType::Unknown);
+            Assert::IsTrue(ParseUtil::TryGetCardElementType(jsonObjWithInvalidType) == CardElementType::Unknown);
 
             auto jsonObjWithValidType = s_GetJsonObjectWithType("AdaptiveCard"s);
             Assert::IsTrue(ParseUtil::GetCardElementType(jsonObjWithValidType) == CardElementType::AdaptiveCard);

@@ -1,18 +1,7 @@
 {
-    "compilerOptions": {
-        "lib": [
-            "dom",
-            "es2015"
-        ],
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "noImplicitAny": false,
-        "sourceMap": true,
-        "target": "es5",
-        "declaration": true,
-        "outDir": "built"        
-    },
-    "include": [
-        "./src/**/*"
-    ]
+	"extends": "../tsconfig.json",
+	"compilerOptions": {
+		"outDir": "./lib"
+	},
+	"files": ["./src/adaptivecards-controls.ts"]
 }

@@ -1,0 +1,450 @@
+.ms-ctrl-overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 10000;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+}
+
+@keyframes slideTopToBottom {
+    0% {
+        transform: translate(0, -20px);
+    }
+}
+
+@keyframes slideBottomToTop {
+    0% {
+        transform: translate(0, 20px);
+    }
+}
+
+@keyframes slideLeftToRight {
+    0% {
+        transform: translate(-20px, 0);
+    }
+}
+
+@keyframes slideRightToLeft {
+    0% {
+        transform: translate(20px, 0);
+    }
+}
+
+.ms-ctrl-slide {
+    animation-duration: 0.5s;
+    animation-timing-function: cubic-bezier(0.1, 0.9, 0.2, 1);
+}
+
+.ms-ctrl-slide.ms-ctrl-slideTopToBottom {
+    animation-name: fadeIn, slideTopToBottom;
+}
+
+.ms-ctrl-slide.ms-ctrl-slideBottomToTop {
+    animation-name: fadeIn, slideBottomToTop;
+}
+
+.ms-ctrl-slide.ms-ctrl-slideLeftToRight {
+    animation-name: fadeIn, slideLeftToRight;
+}
+
+.ms-ctrl-slide.ms-ctrl-slideRightToLeft {
+    animation-name: fadeIn, slideRightToLeft;
+}
+
+@font-face {
+    font-family: 'FabricMDL2Icons';
+    src: url("https://static2.sharepointonline.com/files/fabric/assets/icons/fabricmdl2icons.woff2?2.21") format("woff2"), url("https://static2.sharepointonline.com/files/fabric/assets/icons/fabricmdl2icons.woff?2.21") format("woff"), url("https://static2.sharepointonline.com/files/fabric/assets/icons/fabricmdl2icons.ttf?2.21") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+.ms-icon {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    font-family: 'FabricMDL2Icons';
+    font-style: normal;
+    font-weight: normal;
+}
+
+.ms-icon-close::before {
+    content: '\E8BB';
+}
+
+.ms-icon-chevronDown::before {
+    content: '\E70D';
+}
+
+.ms-icon-chevronLeft::before {
+    content: "\E76B";
+}
+
+.ms-icon-chevronRight::before {
+    content: "\E76C";
+}
+
+.ms-icon-calendar::before {
+    content: "\E787";
+}
+
+.ms-icon-radioOff::before {
+    content: "\ECCA";
+}
+
+.ms-icon-radioOn::before {
+    content: "\ECCB";
+}
+
+.ms-icon-checkboxOff::before {
+    content: "\E739";
+}
+
+.ms-icon-checkboxOn::before {
+    content: "\E73A";
+}
+
+.ms-icon-checkboxOn-reversed::before {
+    content: "\E73D";
+}
+
+.ms-icon-checkMark::before {
+    content: "\E73E";
+}
+
+.ms-ctrl {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.ms-ctrl-dropdown {
+    border: 1px solid #EEEEEE;
+    background-color: white;
+    height: 32px;
+    display: flex;
+    padding-left: 12px;
+    padding-right: 12px;
+    cursor: pointer;
+}
+
+.ms-ctrl-dropdown:hover {
+    border: 1px solid #0078D7;
+}
+
+.ms-ctrl-dropdown:focus {
+    border: 1px solid #0078D7;
+    outline: 0;
+}
+
+.ms-dropdown-label {
+    line-height: 30px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    height: 100%;
+    width: 100%;
+    color: #333333;
+    flex: 1 1 100%;
+    padding-right: 12px;
+}
+
+.ms-dropdown-label.placeholder {
+    color: gray;
+}
+
+.ms-ctrl-dropdown-button {
+    line-height: 32px;
+    flex: 0 0 auto;
+}
+
+.ms-ctrl-dropdown-button:hover {
+    color: #0078D7;
+}
+
+.ms-ctrl-dropdown-item {
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+    padding: 0px 12px 0px 12px;
+    line-height: 30px;
+    cursor: pointer;
+}
+
+.ms-ctrl-dropdown-item:hover {
+    background-color: #EEEEEE;
+}
+
+.ms-ctrl-dropdown-item:focus {
+    outline: 0;
+    background-color: #CCCCCC;
+}
+
+.ms-ctrl-popup-container {
+    border: 1px solid #EEEEEE;
+    background-color: white;
+    position: absolute;
+    box-shadow: 0 0 15px -5px rgba(0, 0, 0, 0.4);
+    overflow-y: auto;
+}
+
+.ms-ctrl-popup-container:focus {
+    outline: 0;
+}
+
+.ms-ctrl-calendar {
+    display: inline-block;
+}
+
+.ms-ctrl-calendarHeader {
+    font-size: 18px;
+    color: gray;
+    padding-left: 4px;
+    line-height: 34px;
+}
+
+.ms-ctrl-calendarNavButton {
+    text-align: center;
+    line-height: 34px;
+    width: 30px;
+    cursor: pointer;
+}
+
+.ms-ctrl-calendarNavButton:hover {
+    background-color: #EEEEEE;
+}
+
+.ms-ctrl-calendarDayHeader {
+    font-size: 12px;
+    text-align: center;
+    padding: 6px 8px 6px 8px;
+    color: #333333;
+}
+
+.ms-ctrl-calendarDay {
+    font-size: 12px;
+    text-align: center;
+    padding: 6px 8px 6px 8px;
+    color: #333333;
+    cursor: pointer;
+}
+
+.ms-ctrl-calendarDay:hover {
+    background-color: #EEEEEE;
+}
+
+.ms-ctrl-calendarDay.subdued {
+    color: gray;
+}
+
+.ms-ctrl-calendarDay.selected {
+    color: white;
+    background-color: #0078D7;
+}
+
+.ms-calendarPopup {
+    padding: 6px;
+    overflow: hidden;
+}
+
+.ms-ctrl-datePicker {
+    border: 1px solid #EEEEEE;
+    height: 32px;
+    display: flex;
+    padding-left: 12px;
+    padding-right: 12px;
+    cursor: pointer;
+}
+
+.ms-ctrl-datePicker:hover {
+    border: 1px solid #0078D7;
+}
+
+.ms-ctrl-datePicker:focus {
+    border: 1px solid #0078D7;
+    outline: 0;
+}
+
+.ms-ctrl-checkbox {
+    outline: 0;
+    cursor: pointer;
+}
+
+.ms-ctrl-checkbox input[type=checkbox] {
+    visibility: hidden;
+}
+
+.ms-ctrl-checkbox label {
+    display: inline-block;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.ms-ctrl-checkbox label span {
+    margin-left: 24px;
+    line-height: 18px;
+    color: #333333;
+    display: inline-block;
+}
+
+.ms-ctrl-checkbox label span:hover {
+    color: black;
+}
+
+.ms-ctrl-checkbox label::before {
+    box-sizing: border-box;
+    display: inline-block;
+    position: absolute;
+    border: 1px solid #A6A6A6;
+    content: "";
+    width: 18px;
+    height: 18px;
+    transition-property: background, border, border-color;
+    transition-duration: .2s;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.23, 1);
+}
+
+.ms-ctrl-checkbox label:hover::before {
+    border: 1px solid #767676;
+}
+
+.ms-ctrl-checkbox input[type=checkbox]:checked+label::before {
+    content: "";
+    border: 1px solid #0078D7;
+    background-color: #0078D7;
+}
+
+.ms-ctrl-checkbox input[type=checkbox]:checked+label::after {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    font-family: 'FabricMDL2Icons';
+    font-style: normal;
+    font-weight: bold;
+    content: "\E73E";
+    color: white;
+    position: absolute;
+    width: 18px;
+    line-height: 18px;
+    left: 0;
+    top: 0;
+    text-align: center;
+    transition-property: background, border, border-color;
+    transition-duration: .2s;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.23, 1);
+}
+
+.ms-ctrl-radiobutton {
+    outline: 0;
+    cursor: pointer;
+}
+
+.ms-ctrl-radiobutton input[type=radio] {
+    visibility: hidden;
+}
+
+.ms-ctrl-radiobutton label {
+    display: inline-block;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.ms-ctrl-radiobutton label span {
+    margin-left: 22px;
+    line-height: 16px;
+    color: #333333;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.ms-ctrl-radiobutton label span:hover {
+    color: black;
+}
+
+.ms-ctrl-radiobutton label::before {
+    content: "";
+    box-sizing: border-box;
+    display: inline-block;
+    position: absolute;
+    border: 1px solid #A6A6A6;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+}
+
+.ms-ctrl-radiobutton label:hover::before {
+    border: 1px solid #767676;
+}
+
+.ms-ctrl-radiobutton input[type=radio]:checked+label::before {
+    border: 1px solid #0078D7;
+}
+
+.ms-ctrl-radiobutton input[type=radio]+label::after {
+    content: "";
+    box-sizing: border-box;
+    display: inline-block;
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: 0;
+    height: 0;
+}
+
+.ms-ctrl-radiobutton input[type=radio]:checked+label::after {
+    top: 4px;
+    left: 4px;
+    width: 8px;
+    height: 8px;
+    background-color: #0078D7;
+    border-radius: 50%;
+    transition-property: top, left, right, width, height;
+    transition-duration: 150ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.23, 1);
+}
+
+.ms-ctrl-textbox {
+    border: 1px solid #EEEEEE;
+    color: #333333;
+    outline: 0;
+    resize: none;
+    padding: 4px 8px;
+}
+
+.ms-ctrl-textbox-multiline {
+    overflow: auto;
+}
+
+.ms-ctrl-textbox:-moz-placeholder {
+    color: gray;
+}
+
+.ms-ctrl-textbox::-moz-placeholder {
+    color: gray;
+}
+
+.ms-ctrl-textbox:-ms-input-placeholder {
+    color: gray;
+}
+
+.ms-ctrl-textbox::-ms-input-placeholder {
+    color: gray;
+}
+
+.ms-ctrl-textbox::-webkit-input-placeholder {
+    color: gray;
+}
+
+.ms-ctrl-textbox:hover {
+    border: 1px solid #0078D7;
+}
+
+.ms-ctrl-textbox:focus, .ms-ctrl-textbox:active {
+    border: 1px solid #0078D7;
+}

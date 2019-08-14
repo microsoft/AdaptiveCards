@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using Newtonsoft.Json;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
@@ -48,6 +50,16 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(null)]
         public string ValueOff { get; set; } = bool.FalseString;
+
+        /// <summary>
+        ///      when set true, text will wrap
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(false)]
+        public bool Wrap { get; set; }
 
         /// <summary>
         ///     The initial value for the field

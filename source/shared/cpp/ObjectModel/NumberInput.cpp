@@ -1,13 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "NumberInput.h"
 #include "ParseUtil.h"
+#include "Util.h"
 
 using namespace AdaptiveSharedNamespace;
 
 NumberInput::NumberInput() :
-    BaseInputElement(CardElementType::NumberInput),
-    m_value(0),
-    m_max(std::numeric_limits<int>::max()),
+    BaseInputElement(CardElementType::NumberInput), m_value(0), m_max(std::numeric_limits<int>::max()),
     m_min(std::numeric_limits<int>::min())
 {
     PopulateKnownPropertiesSet();
@@ -45,7 +46,7 @@ std::string NumberInput::GetPlaceholder() const
     return m_placeholder;
 }
 
-void NumberInput::SetPlaceholder(const std::string &value)
+void NumberInput::SetPlaceholder(const std::string& value)
 {
     m_placeholder = value;
 }
@@ -80,15 +81,11 @@ void NumberInput::SetMin(const int value)
     m_min = value;
 }
 
-std::shared_ptr<BaseCardElement> NumberInputParser::Deserialize(
-    std::shared_ptr<ElementParserRegistration>,
-    std::shared_ptr<ActionParserRegistration>,
-    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>&,
-    const Json::Value& json)
+std::shared_ptr<BaseCardElement> NumberInputParser::Deserialize(ParseContext& context, const Json::Value& json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::NumberInput);
 
-    std::shared_ptr<NumberInput> numberInput = BaseInputElement::Deserialize<NumberInput>(json);
+    std::shared_ptr<NumberInput> numberInput = BaseInputElement::Deserialize<NumberInput>(context, json);
 
     numberInput->SetPlaceholder(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Placeholder));
     numberInput->SetValue(ParseUtil::GetInt(json, AdaptiveCardSchemaKey::Value, 0));
@@ -98,19 +95,16 @@ std::shared_ptr<BaseCardElement> NumberInputParser::Deserialize(
     return numberInput;
 }
 
-std::shared_ptr<BaseCardElement> NumberInputParser::DeserializeFromString(
-    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-    const std::string& jsonString)
+std::shared_ptr<BaseCardElement>
+NumberInputParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
 {
-    return NumberInputParser::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
+    return NumberInputParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 void NumberInput::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder),
-        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value),
-        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max),
-        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min)});
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min)});
 }

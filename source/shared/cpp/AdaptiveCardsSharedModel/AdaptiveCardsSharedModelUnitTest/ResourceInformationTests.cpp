@@ -1,15 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "stdafx.h"
-#include "CppUnitTest.h"
-#include "TextBlock.h"
-#include <time.h>
-#include <Windows.h>
-#include <StrSafe.h>
-#include "SharedAdaptiveCard.h"
-#include "BaseCardElement.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AdaptiveCards;
-using namespace std;
 
 namespace AdaptiveCardsSharedModelUnitTest
 {
@@ -61,7 +55,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             };
 
             // Test card containing all supported image locations
-            std::string testJsonString = 
+            std::string testJsonString =
             "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
@@ -88,7 +82,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     },\
                     {\
                         \"type\": \"ImageSet\",\
-			            \"images\": \
+                        \"images\": \
                         [ \
                             {\
                                 \"type\": \"Image\", \
@@ -102,7 +96,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     },\
                     {\
                         \"type\": \"Container\",\
-			            \"items\": \
+                        \"items\": \
                         [ \
                             {\
                                 \"type\": \"Image\", \
@@ -116,11 +110,11 @@ namespace AdaptiveCardsSharedModelUnitTest
                     },\
                     {\
                         \"type\": \"ColumnSet\",\
-			            \"columns\": \
+                        \"columns\": \
                         [ \
                             { \
                                 \"type\": \"Column\",\
-			                    \"items\": \
+                                \"items\": \
                                 [ \
                                     {\
                                         \"type\": \"Image\", \
@@ -130,7 +124,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                             }, \
                             { \
                                 \"type\": \"Column\",\
-			                    \"items\": \
+                                \"items\": \
                                 [ \
                                     {\
                                         \"type\": \"Image\", \
@@ -141,7 +135,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                        ] \
                     }\
                 ],\
-	            \"actions\": \
+                \"actions\": \
                 [ \
                     { \
                         \"type\": \"Action.ShowCard\", \
@@ -205,38 +199,37 @@ namespace AdaptiveCardsSharedModelUnitTest
             // Define custom type. This implements both element and action for convenience
             class TestCustomElement : public BaseCardElement, public BaseActionElement
             {
-                public:
-                    TestCustomElement(
-                        const Json::Value& value) :
-                        BaseCardElement(AdaptiveCards::CardElementType::Custom),
-                        BaseActionElement(AdaptiveCards::ActionType::Custom)
-                    {
-                        m_customImage = value.get("customImageProperty", Json::Value()).asString();
-                    }
+            public:
+                TestCustomElement(const Json::Value& value) : BaseCardElement(AdaptiveCards::CardElementType::Custom),
+                                                              BaseActionElement(AdaptiveCards::ActionType::Custom)
+                {
+                    m_customImage = value.get("customImageProperty", Json::Value()).asString();
+                }
 
-                    virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris) override
-                    {
-                        RemoteResourceInformation resourceInfo;
-                        resourceInfo.url = m_customImage;
-                        resourceInfo.mimeType = "image";
-                        resourceUris.push_back(resourceInfo);
-                    }
+                virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris) override
+                {
+                    RemoteResourceInformation resourceInfo;
+                    resourceInfo.url = m_customImage;
+                    resourceInfo.mimeType = "image";
+                    resourceUris.push_back(resourceInfo);
+                }
 
-                private:
-                    std::string m_customImage;
+            private:
+                std::string m_customImage;
             };
 
             // Define custom element parser
             class TestCustomParser : public BaseCardElementParser
             {
             public:
-                virtual std::shared_ptr<BaseCardElement> Deserialize(
-                    std::shared_ptr<AdaptiveCards::ElementParserRegistration> elementParserRegistration,
-                    std::shared_ptr<AdaptiveCards::ActionParserRegistration> actionParserRegistration,
-                    std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>& warnings,
-                    const Json::Value& value) override
+
+                virtual std::shared_ptr<BaseCardElement> Deserialize(ParseContext &context, const Json::Value& value) override
                 {
                     return std::make_shared<TestCustomElement>(value);
+                }
+                virtual std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext &context, const std::string& value) override
+                {
+                    return Deserialize(context, ParseUtil::GetJsonValueFromString(value));
                 }
             };
 
@@ -244,13 +237,14 @@ namespace AdaptiveCardsSharedModelUnitTest
             class TestCustomActionParser : public ActionElementParser
             {
             public:
-                virtual std::shared_ptr<BaseActionElement> Deserialize(
-                    std::shared_ptr<AdaptiveCards::ElementParserRegistration> elementParserRegistration,
-                    std::shared_ptr<AdaptiveCards::ActionParserRegistration> actionParserRegistration,
-                    std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>& warnings,
-                    const Json::Value& value) override
+                virtual std::shared_ptr<BaseActionElement> Deserialize(ParseContext &context, const Json::Value& value) override
                 {
                     return std::make_shared<TestCustomElement>(value);
+                }
+
+                virtual std::shared_ptr<BaseActionElement> DeserializeFromString(ParseContext &context, const std::string& jsonString) override
+                {
+                    return Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
                 }
             };
 
@@ -261,8 +255,9 @@ namespace AdaptiveCardsSharedModelUnitTest
             auto actionRegistration = std::make_shared<ActionParserRegistration>();
             actionRegistration->AddParser("CustomActionWithImage", std::make_shared<TestCustomActionParser>());
 
+            ParseContext context(elementRegistration, actionRegistration);
             // Parse the card and get the image uris
-            auto resourceInformation = AdaptiveCard::DeserializeFromString(testJsonString, "1.0", elementRegistration, actionRegistration)->GetAdaptiveCard()->GetResourceInformation();
+            auto resourceInformation = AdaptiveCard::DeserializeFromString(testJsonString, "1.0", context)->GetAdaptiveCard()->GetResourceInformation();
             ValidateResourceInformation(expectedValues, resourceInformation);
         }
 

@@ -1,4 +1,6 @@
-﻿using System;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using System;
 using System.Collections.Generic;
 
 namespace AdaptiveCards.Rendering
@@ -9,11 +11,12 @@ namespace AdaptiveCards.Rendering
         {
             typeof(AdaptiveOpenUrlAction),
             typeof(AdaptiveSubmitAction),
-            typeof(AdaptiveShowCardAction)
+            typeof(AdaptiveShowCardAction),
+            typeof(AdaptiveToggleVisibilityAction)
         };
 
         /// <summary>
-        /// Adds support for a given action type. Any action in a payload not specifed here will be dropped from the rendered card
+        /// Adds support for a given action type. Any action in a payload not specified here will be dropped from the rendered card
         /// </summary>
         public void AddSupportedAction<TAction>()
             where TAction : AdaptiveAction

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+  "extends": "Input",
+  "description": "Allows a user to enter a number.",
+  "properties": {
+    "max": {
+      "type": "number",
+      "description": "Hint of maximum value (may be ignored by some clients)."
+    },
+    "min": {
+      "type": "number",
+      "description": "Hint of minimum value (may be ignored by some clients)."
+    },
+    "placeholder": {
+      "type": "string",
+      "description": "Description of the input desired. Displayed when no selection has been made."
+    },
+    "value": {
+      "type": "number",
+      "description": "Initial value for this field."
+    }
+  }
+}

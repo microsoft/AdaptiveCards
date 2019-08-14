@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using Newtonsoft.Json;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
@@ -68,6 +70,18 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(0)]
         public int MaxLength { get; set; }
+
+        /// <summary>
+        /// The Body elements for this card
+        /// </summary>
+        [JsonProperty("inlineAction", DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlElement(typeof(AdaptiveOpenUrlAction))]
+        [XmlElement(typeof(AdaptiveShowCardAction))]
+        [XmlElement(typeof(AdaptiveSubmitAction))]
+        [XmlElement(typeof(AdaptiveToggleVisibilityAction))]
+#endif
+        public AdaptiveAction InlineAction { get; set; }
 
         public override string GetNonInteractiveValue()
         {

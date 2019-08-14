@@ -1,4 +1,6 @@
-﻿using System;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -24,7 +26,7 @@ namespace AdaptiveCards.Rendering.Wpf
         }
 
         /// <summary>
-        /// Get all images 
+        /// Get all images
         /// </summary>
         public async Task GetAllImages(AdaptiveCard card)
         {
@@ -50,7 +52,7 @@ namespace AdaptiveCards.Rendering.Wpf
         public override void Visit(AdaptiveCard card)
         {
             if (card.BackgroundImage != null)
-                _tasks.Add(GetImage(card.BackgroundImage));
+                _tasks.Add(GetImage(card.BackgroundImage.Url));
             base.Visit(card);
         }
 

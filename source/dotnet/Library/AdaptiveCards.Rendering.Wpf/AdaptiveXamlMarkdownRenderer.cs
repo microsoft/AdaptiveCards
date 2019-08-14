@@ -1,4 +1,6 @@
-﻿using System;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using System;
 using Microsoft.MarkedNet;
 
 namespace AdaptiveCards.Rendering.Wpf
@@ -83,7 +85,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 int outputNum;
                 int iMarker;
                 for (outputNum = start, iMarker = body.IndexOf(listMarker);
-                    iMarker > 0; 
+                    iMarker > 0;
                     iMarker = body.IndexOf(listMarker), outputNum++)
                 {
                     body = body.Remove(iMarker, listMarker.Length).Insert(iMarker, outputNum.ToString() + ".");

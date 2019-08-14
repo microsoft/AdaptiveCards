@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveCardParseResult.h"
 
@@ -19,46 +21,43 @@ using namespace ABI::Windows::UI;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
-    AdaptiveCardParseResult::AdaptiveCardParseResult()
-    {
-    }
+namespace AdaptiveNamespace
+{
+    AdaptiveCardParseResult::AdaptiveCardParseResult() {}
 
     HRESULT AdaptiveCardParseResult::RuntimeClassInitialize()
     {
-        m_errors = Make<Vector<IAdaptiveError*>>();
-        m_warnings = Make<Vector<IAdaptiveWarning*>>();
+        m_errors = Make<Vector<AdaptiveError*>>();
+        m_warnings = Make<Vector<AdaptiveWarning*>>();
         return S_OK;
     }
 
-    HRESULT AdaptiveCardParseResult::RuntimeClassInitialize(IAdaptiveCard* value)
+    HRESULT AdaptiveCardParseResult::RuntimeClassInitialize(_In_ IAdaptiveCard* value)
     {
         m_adaptiveCard = value;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCardParseResult::get_AdaptiveCard(IAdaptiveCard** value)
+    HRESULT AdaptiveCardParseResult::get_AdaptiveCard(_COM_Outptr_ IAdaptiveCard** value)
     {
         return m_adaptiveCard.CopyTo(value);
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCardParseResult::get_Errors(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveError*>** value)
+    HRESULT AdaptiveCardParseResult::get_Errors(
+        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveError*>** value)
     {
         return m_errors.CopyTo(value);
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCardParseResult::get_Warnings(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>** value)
+    HRESULT AdaptiveCardParseResult::get_Warnings(
+        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>** value)
     {
         return m_warnings.CopyTo(value);
     }
 
-    _Use_decl_annotations_
     HRESULT AdaptiveCardParseResult::put_AdaptiveCard(_In_ IAdaptiveCard* value)
     {
-            m_adaptiveCard = value;
-            return S_OK;
+        m_adaptiveCard = value;
+        return S_OK;
     }
-AdaptiveNamespaceEnd
+}

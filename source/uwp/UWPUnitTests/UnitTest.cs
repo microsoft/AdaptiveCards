@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -38,7 +40,7 @@ namespace UWPUnitTests
         }
 
         [TestMethod]
-        public async Task TestMethod()
+        public async Task TestAllCards()
         {
             _expectedFolder = (TestContext.Properties["ExpectedFolder"] as StorageFolder);
             _tempResultsFolder = (TestContext.Properties["ResultsFolder"] as StorageFolder);
@@ -111,51 +113,75 @@ namespace UWPUnitTests
 
         async public Task TestCard(FileViewModel hostConfigFile, FileViewModel cardFile)
         {
-            var renderResult = await UWPTestLibrary.RenderTestHelpers.RenderCard(cardFile, hostConfigFile);
+            uint reruns = 0;
+            TestResultViewModel result = null;
+            bool retryImage = true;
+            bool testPass = false;
 
-            if (renderResult.Item3 != null)
+            while (retryImage)
             {
-                UWPTestLibrary.ImageWaiter imageWaiter = new ImageWaiter(renderResult.Item3);
+                var renderResult = await UWPTestLibrary.RenderTestHelpers.RenderCard(cardFile, hostConfigFile);
 
-                StackPanel stackPanel = new StackPanel();
-                stackPanel.Children.Add(renderResult.Item3);
+                if (renderResult.Tree != null)
+                {
+                    UWPTestLibrary.ImageWaiter imageWaiter = new ImageWaiter(renderResult.Tree);
 
-                Border border = new Border();
-                border.Width = renderResult.Item4;
-                border.Child = stackPanel;
-                (Window.Current.Content as Frame).Content = border;
+                    StackPanel stackPanel = new StackPanel();
+                    stackPanel.Children.Add(renderResult.Tree);
 
-                await imageWaiter.WaitOnAllImagesAsync();
+                    Border border = new Border();
+                    border.Width = renderResult.CardWidth;
+                    border.Child = stackPanel;
 
+                    ScrollViewer scrollViewer = new ScrollViewer();
+                    scrollViewer.Content = border;
+
+                    (Window.Current.Content as Frame).Content = scrollViewer;
+
+                    await imageWaiter.WaitOnAllImagesAsync();
+
+                }
+
+                StorageFile imageResultFile = null;
+                StorageFile jsonResultFile = null;
+                if (renderResult.Error == null)
+                {
+                    imageResultFile = await _tempResultsFolder.CreateFileAsync("Result.png", CreationCollisionOption.GenerateUniqueName);
+                    jsonResultFile = await _tempResultsFolder.CreateFileAsync("Result.json", CreationCollisionOption.GenerateUniqueName);
+
+                    await UWPTestLibrary.RenderTestHelpers.ResultsToFile(imageResultFile, jsonResultFile, renderResult.RoundTrippedJSON, renderResult.Tree);
+                }
+
+                await Task.Delay(10);
+
+                result = await TestResultViewModel.CreateAsync(
+                    cardFile: cardFile,
+                    hostConfigFile: hostConfigFile,
+                    renderedTestResult: renderResult,
+                    actualImageFile: imageResultFile,
+                    actualJsonFile: jsonResultFile,
+                    expectedFolder: _expectedFolder,
+                    sourceHostConfigsFolder: _sourceHostConfigsFolder,
+                    sourceCardsFolder: _sourceCardsFolder);
+
+                testPass = result.Status.IsPassingStatus() && result.Status.OriginalMatched;
+
+                if(!testPass)
+                {
+                    // Retry if we failed on image matching for an unchanged card to allow for
+                    // occasional differences in image rendering
+                    retryImage = result.Status.OriginalMatched && !result.Status.ImageMatched && (reruns < 3);
+                    reruns++;
+                }
+                else
+                {
+                    retryImage = false;
+                }
             }
 
-            StorageFile imageResultFile = null;
-            StorageFile jsonResultFile = null;
-            if (renderResult.Item1 == null)
+            if (!testPass)
             {
-                imageResultFile = await _tempResultsFolder.CreateFileAsync("Result.png", CreationCollisionOption.GenerateUniqueName);
-                jsonResultFile = await _tempResultsFolder.CreateFileAsync("Result.json", CreationCollisionOption.GenerateUniqueName);
-
-                await UWPTestLibrary.RenderTestHelpers.ResultsToFile(imageResultFile, jsonResultFile, renderResult.Item2, renderResult.Item3);
-            }
-
-            await Task.Delay(10);
-
-            var result = await TestResultViewModel.CreateAsync(
-                cardFile: cardFile,
-                hostConfigFile: hostConfigFile,
-                actualError: renderResult.Item1,
-                actualImageFile: imageResultFile,
-                actualJsonFile: jsonResultFile,
-                xamlCard: renderResult.Item3,
-                expectedFolder: _expectedFolder,
-                sourceHostConfigsFolder: _sourceHostConfigsFolder,
-                sourceCardsFolder: _sourceCardsFolder);
-
-            if ((result.Status != TestStatus.Passed) &&
-                (result.Status != TestStatus.PassedButSourceWasChanged))
-            {
-                throw new Exception(result.Status.ToString() + ": " + result.HostConfigName + "\\"  + result.CardName);
+                throw new Exception(result.Status.ToString() + ": " + result.HostConfigName + "\\" + result.CardName);
             }
         }
     }

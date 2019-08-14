@@ -1,1 +1,16 @@
-<%- partial('_partial/article', {post: page, index: false}) %>
+<article id="<%= page.layout %>-<%= page.slug %>" class="article article-type-<%= page.layout %>">
+	<div class="article-inner">
+	  <%- partial('page/gallery') %>
+	  <% if (page.link || page.title){ %>
+		<header class="article-header">
+		  <%- partial('page/title', {class_name: 'article-title'}) %>
+		</header>
+	  <% } %>
+
+	  <div class="article-entry" itemprop="articleBody">
+		
+		  <%- page.content %>
+	  </div>
+	</div>
+  </article>
+  

@@ -1,4 +1,6 @@
-﻿using System;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -91,7 +93,7 @@ namespace AdaptiveCardVisualizer.ViewModel
 
         /// <summary>
         /// This property will be notified of changes on a delayed schedule, so that it's not
-        /// changing every single time a character is typed. Views presenting 
+        /// changing every single time a character is typed. Views presenting
         /// </summary>
         public string DelayedUpdatePayload
         {

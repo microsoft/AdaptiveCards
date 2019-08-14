@@ -48,6 +48,7 @@ artifacts/
 *_i.c
 *_p.c
 *_i.h
+*_p.h
 *.ilk
 *.meta
 *.obj
@@ -183,6 +184,9 @@ _pkginfo.txt
 # but keep track of directories ending in .cache
 !*.[Cc]ache/
 
+# Visual Studio 2017 auto generated files
+Generated\ Files/
+
 # Others
 ClientBin/
 ~$*
@@ -281,3 +285,9 @@ source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards.framework.zip
 AdaptiveCards.framework/
 *.dll
 *.aar
+
+#cscope files
+cscope.files
+cscope.out
+cscope.in.out
+cscope.po.out

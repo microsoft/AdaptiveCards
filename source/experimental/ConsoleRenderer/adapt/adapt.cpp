@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "stdafx.h"
 
 using namespace AdaptiveSharedNamespace;
@@ -43,4 +45,3 @@ int main(int /*argc*/, char *argv[])
     RestoreConsoleModeForDisplay(dwOld);
     return 0;
 }
-

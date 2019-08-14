@@ -1,17 +1,18 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "pch.h"
-#include "AdaptiveCardParseWarning.h"
 
-namespace AdaptiveSharedNamespace {
+namespace AdaptiveSharedNamespace
+{
     class AdaptiveCard;
+    class AdaptiveCardParseWarning;
 
     class ParseResult
     {
     public:
-        ParseResult(
-            std::shared_ptr<AdaptiveCard> adaptiveCard,
-            std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings);
+        ParseResult(std::shared_ptr<AdaptiveCard> adaptiveCard, std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings);
 
         std::shared_ptr<AdaptiveCard> GetAdaptiveCard() const;
         std::vector<std::shared_ptr<AdaptiveCardParseWarning>> GetWarnings() const;

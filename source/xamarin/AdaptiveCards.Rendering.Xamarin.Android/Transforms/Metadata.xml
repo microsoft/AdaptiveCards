@@ -41,7 +41,12 @@
     <!-- Remove these members because they are causing issues
   <remove-node path="/api/package[@name='io.adaptivecards.renderer']/class[@name='MediaLoaderAsync']" />
   -->
+<<<<<<< HEAD
   <add-node path="/api/package[@name='io.adaptivecards.renderer']">
     <class abstract="false" deprecated="not deprecated" final="false" name="MediaLoaderAsync" static="true" visibility="public" extends="java.lang.Object"/>
   </add-node>
+=======
+  <!-- Remove these members because they are causing issues-->
+  <remove-node path="/api/package[@name='io.adaptivecards.renderer']/class[@name='MediaLoaderAsync']" />
+>>>>>>> master
 </metadata>

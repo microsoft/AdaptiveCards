@@ -1,4 +1,6 @@
-﻿using System;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -71,7 +73,7 @@ namespace Docs.Controllers
 
             Marked marked = new Marked();
             marked.Options.Renderer = new CodeMarkdown();
-            
+
             var text = System.IO.File.ReadAllText(path);
             HttpContext.Response.ContentType = "text/html";
             return marked.Parse(text);

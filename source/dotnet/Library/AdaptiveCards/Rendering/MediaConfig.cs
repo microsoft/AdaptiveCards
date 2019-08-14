@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace AdaptiveCards.Rendering
@@ -14,7 +16,7 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string DefaultPoster { get; set; }
-        
+
         /// <summary>
         /// Play button URL to use for media thumbnail
         /// </summary>

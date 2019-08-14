@@ -1,28 +1,33 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveActionParserRegistration.h"
 #include "AdaptiveElementParserRegistration.h"
 #include "CustomActionWrapper.h"
 #include "Util.h"
 #include "Vector.h"
+#include "AdaptiveShowCardActionRenderer.h"
+#include "AdaptiveSubmitActionRenderer.h"
+#include "AdaptiveOpenUrlActionRenderer.h"
+#include "AdaptiveToggleVisibilityActionRenderer.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::UI;
 
-AdaptiveNamespaceStart
-    AdaptiveActionParserRegistration::AdaptiveActionParserRegistration()
-    {
-    }
+namespace AdaptiveNamespace
+{
+    AdaptiveActionParserRegistration::AdaptiveActionParserRegistration() {}
 
     HRESULT AdaptiveActionParserRegistration::RuntimeClassInitialize() noexcept try
     {
-        m_sharedParserRegistration = std::make_shared<ActionParserRegistration>();
-        m_registration = std::make_shared<RegistrationMap>();
+        std::shared_ptr<ActionParserRegistration> sharedParserRegistration = std::make_shared<ActionParserRegistration>();
+        RuntimeClassInitialize(sharedParserRegistration);
 
         return S_OK;
-    } CATCH_RETURN;
-
+    }
+    CATCH_RETURN;
 
     HRESULT AdaptiveActionParserRegistration::RuntimeClassInitialize(
         std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> sharedParserRegistration) noexcept try
@@ -30,55 +35,61 @@ AdaptiveNamespaceStart
         m_registration = std::make_shared<RegistrationMap>();
         m_sharedParserRegistration = sharedParserRegistration;
 
-        return S_OK;
-    } CATCH_RETURN;
+        m_isInitializing = true;
+        RegisterDefaultActionRenderers(this);
+        m_isInitializing = false;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveActionParserRegistration::Set(HSTRING type, IAdaptiveActionParser* Parser)
+        return S_OK;
+    }
+    CATCH_RETURN;
+
+    HRESULT AdaptiveActionParserRegistration::Set(_In_ HSTRING type, _In_ IAdaptiveActionParser* Parser) noexcept try
     {
         std::string typeString = HStringToUTF8(type);
 
         ComPtr<IAdaptiveActionParser> localParser(Parser);
         (*m_registration)[typeString] = localParser;
 
-        m_sharedParserRegistration->AddParser(typeString, std::make_shared<SharedModelActionParser>(this));
+        // During initialization we will add the known parsers to m_registration. These are already present in the corresponding
+        // shared model registration (m_sharedParserRegistration) which will throw if we attempt to modify them by adding them again.
+        if (!m_isInitializing)
+        {
+            m_sharedParserRegistration->AddParser(typeString, std::make_shared<SharedModelActionParser>(this));
+        }
 
         return S_OK;
     }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveActionParserRegistration::Get(HSTRING type, IAdaptiveActionParser** result)
+    HRESULT AdaptiveActionParserRegistration::Get(_In_ HSTRING type, _COM_Outptr_ IAdaptiveActionParser** result) noexcept try
     {
         *result = nullptr;
 
         RegistrationMap::iterator found = m_registration->find(HStringToUTF8(type));
         if (found != m_registration->end())
         {
-            *result = found->second.Get();
+            RETURN_IF_FAILED(found->second.CopyTo(result));
         }
         return S_OK;
     }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveActionParserRegistration::Remove(_In_ HSTRING type)
+    HRESULT AdaptiveActionParserRegistration::Remove(_In_ HSTRING type) noexcept try
     {
         std::string typeString = HStringToUTF8(type);
 
-        m_registration->erase(typeString);
         m_sharedParserRegistration->RemoveParser(typeString);
+        m_registration->erase(typeString);
         return S_OK;
     }
+    CATCH_RETURN;
 
     std::shared_ptr<ActionParserRegistration> AdaptiveActionParserRegistration::GetSharedParserRegistration()
     {
         return m_sharedParserRegistration;
     }
 
-    std::shared_ptr<BaseActionElement> SharedModelActionParser::Deserialize(
-        std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> actionParserRegistration,
-        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings, 
-        const Json::Value& value)
+    std::shared_ptr<BaseActionElement> SharedModelActionParser::Deserialize(ParseContext& context, const Json::Value& value)
     {
         std::string type = ParseUtil::GetTypeAsString(value);
 
@@ -88,22 +99,34 @@ AdaptiveNamespaceStart
         ComPtr<IAdaptiveActionParser> parser;
         THROW_IF_FAILED(m_parserRegistration->Get(typeAsHstring.Get(), &parser));
 
-        ComPtr<ABI::Windows::Data::Json::IJsonObject>jsonObject;
+        ComPtr<ABI::Windows::Data::Json::IJsonObject> jsonObject;
         THROW_IF_FAILED(JsonCppToJsonObject(value, &jsonObject));
 
         ComPtr<IAdaptiveElementParserRegistration> adaptiveElementParserRegistration;
-        MakeAndInitialize<AdaptiveNamespace::AdaptiveElementParserRegistration>(&adaptiveElementParserRegistration, elementParserRegistration);
+        MakeAndInitialize<AdaptiveNamespace::AdaptiveElementParserRegistration>(&adaptiveElementParserRegistration,
+                                                                                context.elementParserRegistration);
 
         ComPtr<IAdaptiveActionParserRegistration> adaptiveActionParserRegistration;
-        MakeAndInitialize<AdaptiveNamespace::AdaptiveActionParserRegistration>(&adaptiveActionParserRegistration, actionParserRegistration);
+        MakeAndInitialize<AdaptiveNamespace::AdaptiveActionParserRegistration>(&adaptiveActionParserRegistration,
+                                                                               context.actionParserRegistration);
 
         ComPtr<IAdaptiveActionElement> actionElement;
-        ComPtr<ABI::Windows::Foundation::Collections::IVector<IAdaptiveWarning*>> adaptiveWarnings = Make<Vector<IAdaptiveWarning*>>();
-        THROW_IF_FAILED(parser->FromJson(jsonObject.Get(), adaptiveElementParserRegistration.Get(), adaptiveActionParserRegistration.Get(), adaptiveWarnings.Get(), &actionElement));
+        ComPtr<ABI::Windows::Foundation::Collections::IVector<AdaptiveWarning*>> adaptiveWarnings =
+            Make<Vector<AdaptiveWarning*>>();
+        THROW_IF_FAILED(parser->FromJson(jsonObject.Get(),
+                                         adaptiveElementParserRegistration.Get(),
+                                         adaptiveActionParserRegistration.Get(),
+                                         adaptiveWarnings.Get(),
+                                         &actionElement));
 
-        THROW_IF_FAILED(AdaptiveWarningsToSharedWarnings(adaptiveWarnings.Get(), warnings));
+        THROW_IF_FAILED(AdaptiveWarningsToSharedWarnings(adaptiveWarnings.Get(), context.warnings));
 
         std::shared_ptr<CustomActionWrapper> actionWrapper = std::make_shared<CustomActionWrapper>(actionElement.Get());
         return actionWrapper;
     }
-AdaptiveNamespaceEnd
+
+    std::shared_ptr<BaseActionElement> SharedModelActionParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
+    {
+        return Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
+    }
+}

@@ -1,4 +1,6 @@
-﻿using System;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
@@ -48,11 +50,11 @@ namespace AdaptiveCards
             {
                 throw new AdaptiveSerializationException($"'{versionString}' is not a valid version identifier", ex);
             }
-    
+
         }
 
         public AdaptiveSchemaVersion(int major, int minor)
-        { 
+        {
             Major = major;
             Minor = minor;
         }

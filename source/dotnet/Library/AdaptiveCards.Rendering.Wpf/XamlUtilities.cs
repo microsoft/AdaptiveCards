@@ -1,10 +1,12 @@
-﻿namespace AdaptiveCards.Rendering.Wpf
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+namespace AdaptiveCards.Rendering.Wpf
 {
 
     public class XamlUtilities
     {
         /// <summary>
-        /// Get fallback text from the speech element 
+        /// Get fallback text from the speech element
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>

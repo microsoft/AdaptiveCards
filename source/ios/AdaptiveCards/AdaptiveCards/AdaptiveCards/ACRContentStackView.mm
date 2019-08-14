@@ -34,7 +34,7 @@ using namespace AdaptiveCards;
             [self setBorderColorWithHostConfig:config];
             [self setBorderThicknessWithHostConfig:config];
             [self removeConstraints:self.constraints];
-            [self applyPadding:config->spacing.paddingSpacing priority:1000];
+            [self applyPadding:config->GetSpacing().paddingSpacing priority:1000];
         }
     }
     return self;
@@ -48,6 +48,7 @@ using namespace AdaptiveCards;
     }
     return self;
 }
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [self initWithFrame:CGRectMake(0,0,frame.size.width, frame.size.height) attributes:nil];
@@ -87,61 +88,70 @@ using namespace AdaptiveCards;
                     alpha:((num & 0xFF000000) >> 24) / 255.0];
 }
 
-- (ContainerStyleDefinition&)paletteForHostConfig:(std::shared_ptr<HostConfig> const &)config
-{
-    return (_style == ACREmphasis)
-        ? config->containerStyles.emphasisPalette
-        : config->containerStyles.defaultPalette;
-}
-
 - (void)setBackgroundColorWithHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    UIColor *color = [ACOHostConfig convertHexColorCodeToUIColor:[self paletteForHostConfig:config].backgroundColor];
+    auto backgroundColor = config->GetBackgroundColor([ACOHostConfig getSharedContainerStyle:_style]);
+    UIColor *color = [ACOHostConfig convertHexColorCodeToUIColor:backgroundColor];
 
     self.backgroundColor = color;
 }
 
 - (void)setBorderColorWithHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    UIColor *color = [ACOHostConfig convertHexColorCodeToUIColor:[self paletteForHostConfig:config].borderColor];
+    auto borderColor = config->GetBorderColor([ACOHostConfig getSharedContainerStyle:_style]);
+    UIColor *color = [ACOHostConfig convertHexColorCodeToUIColor:borderColor];
 
     [[self layer] setBorderColor:[color CGColor]];
 }
 
 - (void)setBorderThicknessWithHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    const CGFloat borderWidth = [self paletteForHostConfig:config].borderThickness;
+    auto borderThickness = config->GetBorderThickness([ACOHostConfig getSharedContainerStyle:_style]);
+    const CGFloat borderWidth = borderThickness;
 
     [[self layer] setBorderWidth:borderWidth];
 }
 
 - (void)config:(nullable NSDictionary<NSString *, id> *)attributes
 {
-    if(!self.stackView){
+    if (!self.stackView) {
         return;
     }
+
     [self addSubview:self.stackView];
-    [self applyPadding:0 priority:1000];
     self.stackView.translatesAutoresizingMaskIntoConstraints = NO;
     self.translatesAutoresizingMaskIntoConstraints = NO;
 
     _targets = [[NSMutableArray alloc] init];
     _showcardTargets = [[NSMutableArray alloc] init];
 
-    if(attributes){
+    CGFloat top = 0, left = 0, bottom = 0, right = 0;
+
+    if (attributes) {
         NSNumber *distribAttrib = attributes[@"distribution"];
-        if([distribAttrib boolValue]){
+        if ([distribAttrib boolValue]) {
             self.stackView.distribution = (UIStackViewDistribution)[distribAttrib integerValue];
         }
+
         NSNumber *alignAttrib = attributes[@"alignment"];
-        if([alignAttrib boolValue]){
+        if ([alignAttrib boolValue]) {
             self.stackView.alignment = (UIStackViewAlignment)[alignAttrib integerValue];
         }
+
         NSNumber *spacingAttrib = attributes[@"spacing"];
-        if([spacingAttrib boolValue]){
+        if ([spacingAttrib boolValue]) {
             self.stackView.spacing = [spacingAttrib floatValue];
         }
+
+        NSNumber *topPaddingAttrib = attributes[@"padding-top"];
+        if ([topPaddingAttrib boolValue]) {
+            top = [topPaddingAttrib floatValue];
+        }
     }
+
+    [self applyPaddingToTop:top left:left
+        bottom:bottom right:right
+        priority:1000 location:ACRBleedToAll];
 }
 
 - (CGSize)intrinsicContentSize
@@ -154,18 +164,49 @@ using namespace AdaptiveCards;
     [self.stackView addArrangedSubview:view];
 }
 
+- (void)removeLastViewFromArrangedSubview
+{
+    if ([self subviewsCounts]) {
+        UIView *view = [self getLastSubview];
+        if (view) {
+            [self removeViewFromContentStackView:view];
+        }
+    }
+}
+
+- (void)removeViewFromContentStackView:(UIView *)view
+{
+    [self.stackView removeArrangedSubview:view];
+    [view removeFromSuperview];
+}
+
+- (UIView *)getLastSubview
+{
+    UIView *view = nil;
+    const NSUInteger subviewsCounts = [self subviewsCounts];
+    if (subviewsCounts) {
+        view = self.stackView.subviews[subviewsCounts - 1];
+    }
+    return view;
+}
+
+- (NSUInteger)subviewsCounts
+{
+    return [self.stackView.subviews count];
+}
+
 - (void)addTarget:(NSObject *)target
 {
     [_targets addObject:target];
 
-    if([target isKindOfClass:[ACRShowCardTarget class]]){
+    if ([target isKindOfClass:[ACRShowCardTarget class]]) {
         [_showcardTargets addObject:(ACRShowCardTarget *)target];
     }
 }
 
 - (void)hideAllShowCards
 {
-    for(ACRShowCardTarget *target in _showcardTargets){
+    for (ACRShowCardTarget *target in _showcardTargets) {
         [target hideShowCard];
     }
 }
@@ -173,34 +214,108 @@ using namespace AdaptiveCards;
 // let the last element to strech
 - (void)adjustHuggingForLastElement
 {
-    if([self.stackView.arrangedSubviews count])
-        [[self.stackView.arrangedSubviews objectAtIndex:[self.stackView.arrangedSubviews count ] -1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-    if([self.stackView.arrangedSubviews count])
-        [[self.stackView.arrangedSubviews objectAtIndex:[self.stackView.arrangedSubviews count ] -1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+    if ([self.stackView.arrangedSubviews count])
+         [[self.stackView.arrangedSubviews objectAtIndex:[self.stackView.arrangedSubviews count ] -1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+    if ([self.stackView.arrangedSubviews count])
+         [[self.stackView.arrangedSubviews objectAtIndex:[self.stackView.arrangedSubviews count ] -1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
 }
 
 - (void)applyPadding:(unsigned int)padding priority:(unsigned int)priority
 {
-    NSString *horString = [[NSString alloc] initWithFormat:@"H:|-(%u@%u)-[_stackView]-(%u@%u)-|",
-                           padding, priority, padding, priority];
-    NSString *verString = [[NSString alloc] initWithFormat:@"V:|-(%u@%u)-[_stackView]-(%u@%u)-|",
-                           padding, priority, padding, priority];
-    NSDictionary *dictionary = NSDictionaryOfVariableBindings(_stackView);
-    NSArray *horzConst = [NSLayoutConstraint constraintsWithVisualFormat:horString
-                                                                 options:0
-                                                                 metrics:nil
-                                                                   views:dictionary];
-    NSArray *vertConst = [NSLayoutConstraint constraintsWithVisualFormat:verString
-                                                                 options:0
-                                                                 metrics:nil
-                                                                   views:dictionary];
-    [self addConstraints:horzConst];
-    [self addConstraints:vertConst];
+    [self applyPadding:padding priority:priority location:ACRBleedToAll];
 }
 
-- (UILayoutConstraintAxis) getAxis
+- (void)applyPadding:(unsigned int)amount priority:(unsigned int)priority location:(ACRBleedDirection)location
+{
+    [self applyPaddingToTop:amount left:amount bottom:amount right:amount priority:priority location:location];
+}
+
+- (void)applyPaddingToTop:(CGFloat)top left:(CGFloat)left
+     bottom:(CGFloat)bottom right:(CGFloat)right
+     priority:(unsigned int)priority location:(ACRBleedDirection)location
+ {
+    CGFloat leadingPadding = (location & ACRBleedToLeadingEdge) ? left : 0;
+    CGFloat trailingPadding = (location & ACRBleedToTrailingEdge) ? right : 0;
+    CGFloat topPadding = (location & ACRBleedToTopEdge) ? top : 0;
+    CGFloat bottomPadding = (location & ACRBleedToBottomEdge) ? bottom : 0;
+
+    NSString *horString = [[NSString alloc] initWithFormat:@"H:|-(%f@%u)-[_stackView]-(%f@%u)-|",
+                           leadingPadding, priority, trailingPadding, priority];
+    NSString *verString = [[NSString alloc] initWithFormat:@"V:|-(%f@%u)-[_stackView]-(%f@%u)-|",
+                           topPadding, priority, bottomPadding, 999];
+
+    NSDictionary *dictionary = NSDictionaryOfVariableBindings(_stackView);
+
+    _widthconstraint = [NSLayoutConstraint constraintsWithVisualFormat:horString
+                                                                options:0
+                                                                metrics:nil
+                                                                  views:dictionary];
+    _heightconstraint = [NSLayoutConstraint constraintsWithVisualFormat:verString
+                                                                options:0
+                                                                metrics:nil
+                                                                  views:dictionary];
+
+    [self addConstraints:_widthconstraint];
+    [self addConstraints:_heightconstraint];
+}
+
+// target is the background view, it will be pinned to parent according to the direction set by bleed,
+// constraints that are specified by the direction, those will be set to the view that is bleeding
+- (void)bleed:(unsigned int)padding priority:(unsigned int)priority target:(UIView *)target
+    direction:(ACRBleedDirection)direction parentView:(UIView *)parent
+{
+    // remove existing constraints
+    [self removeConstraints:_widthconstraint];
+    [self removeConstraints:_heightconstraint];
+
+    UIView *leadingView = (direction & ACRBleedToLeadingEdge) ? parent : self;
+    UIView *trailingView = (direction & ACRBleedToTrailingEdge) ? parent : self;
+    UIView *topView = (direction & ACRBleedToTopEdge) ? parent : self;
+    UIView *bottomView = (direction & ACRBleedToBottomEdge) ? parent : self;
+
+    [target.leadingAnchor constraintEqualToAnchor:leadingView.leadingAnchor].active = YES;
+    [target.trailingAnchor constraintEqualToAnchor:trailingView.trailingAnchor].active = YES;
+    [target.topAnchor constraintEqualToAnchor:topView.topAnchor].active = YES;
+    [target.bottomAnchor constraintEqualToAnchor:bottomView.bottomAnchor].active = YES;
+
+    // inverse the bit pattern that are set by ACRBleedDirection enums
+    NSInteger bleedDirection = ~(~0 & direction);
+
+    [self applyPadding:padding priority:1000 location:(ACRBleedDirection)bleedDirection];
+}
+
+- (UILayoutConstraintAxis)getAxis
 {
     return self.stackView.axis;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+
+    if (_isActionSet) {
+        float accumulatedWidth = 0, accumulatedHeight = 0, spacing = self.stackView.spacing, maxWidth = 0, maxHeight = 0;
+
+        for(UIView *view in self.stackView.subviews){
+            accumulatedWidth += [view intrinsicContentSize].width;
+            accumulatedHeight += [view intrinsicContentSize].height;
+            maxWidth = MAX(maxWidth, [view intrinsicContentSize].width);
+            maxHeight = MAX(maxHeight, [view intrinsicContentSize].height);
+        }
+
+        float contentWidth = accumulatedWidth, contentHeight = accumulatedHeight;
+        if(self.stackView.axis == UILayoutConstraintAxisHorizontal) {
+            contentWidth += (self.stackView.subviews.count - 1) * spacing;
+            contentHeight = maxHeight;
+        } else {
+            contentHeight += (self.stackView.subviews.count - 1) * spacing;
+            contentWidth = maxWidth;
+        }
+
+        if (contentWidth > self.frame.size.width) {
+            [self removeConstraints:_widthconstraint];
+        }
+    }
 }
 
 @end

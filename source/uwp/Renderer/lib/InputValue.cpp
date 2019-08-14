@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "InputValue.h"
 #include "json/json.h"
@@ -10,7 +12,7 @@ using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::Globalization::DateTimeFormatting;
-using namespace ABI::Windows::UI::Xaml; 
+using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
 using namespace AdaptiveNamespace;
@@ -47,10 +49,12 @@ std::string InputValue::SerializeDateInput() const
         THROW_IF_FAILED(dateRef->get_Value(&date));
 
         ComPtr<IDateTimeFormatterFactory> dateTimeFactory;
-        THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Globalization_DateTimeFormatting_DateTimeFormatter).Get(), &dateTimeFactory));
+        THROW_IF_FAILED(GetActivationFactory(
+            HStringReference(RuntimeClass_Windows_Globalization_DateTimeFormatting_DateTimeFormatter).Get(), &dateTimeFactory));
 
         ComPtr<IDateTimeFormatter> dateTimeFormatter;
-        THROW_IF_FAILED(dateTimeFactory->CreateDateTimeFormatter(HStringReference(L"{year.full}-{month.integer(2)}-{day.integer(2)}").Get(), &dateTimeFormatter));
+        THROW_IF_FAILED(dateTimeFactory->CreateDateTimeFormatter(
+            HStringReference(L"{year.full}-{month.integer(2)}-{day.integer(2)}").Get(), &dateTimeFormatter));
 
         HString formattedDate;
         THROW_IF_FAILED(dateTimeFormatter->Format(date, formattedDate.GetAddressOf()));
@@ -103,13 +107,11 @@ std::string InputValue::SerializeToggleInput() const
     return utf8Value;
 }
 
-std::string InputValue::GetChoiceValue(
-    IAdaptiveChoiceSetInput* choiceInput,
-    INT32 selectedIndex) const
+std::string InputValue::GetChoiceValue(_In_ IAdaptiveChoiceSetInput* choiceInput, INT32 selectedIndex) const
 {
     if (selectedIndex != -1)
     {
-        ComPtr<IVector<IAdaptiveChoiceInput*>> choices;
+        ComPtr<IVector<AdaptiveChoiceInput*>> choices;
         THROW_IF_FAILED(choiceInput->get_Choices(&choices));
 
         ComPtr<IAdaptiveChoiceInput> choice;
@@ -206,7 +208,7 @@ std::string InputValue::SerializeChoiceSetInput() const
     }
 }
 
-HRESULT InputValue::get_CurrentValue(HSTRING * result)
+HRESULT InputValue::get_CurrentValue(_Outptr_ HSTRING* result)
 {
     ComPtr<IAdaptiveCardElement> cardElement;
     RETURN_IF_FAILED(m_adaptiveInputElement.As(&cardElement));
@@ -217,35 +219,35 @@ HRESULT InputValue::get_CurrentValue(HSTRING * result)
     std::string serializedInput;
     switch (elementType)
     {
-        case ElementType_TextInput:
-        case ElementType_NumberInput:
-        {
-            serializedInput = SerializeTextInput();
-            break;
-        }
-        case ElementType_DateInput:
-        {
-            serializedInput = SerializeDateInput();
-            break;
-        }
-        case ElementType_TimeInput:
-        {
-            serializedInput = SerializeTimeInput();
-            break;
-        }
-        case ElementType_ToggleInput:
-        {
-            serializedInput = SerializeToggleInput();
-            break;
-        }
-        case ElementType_ChoiceSetInput:
-        {
-            serializedInput = SerializeChoiceSetInput();
-            break;
-        }
-        default:
-            serializedInput = "";
-            break;
+    case ElementType_TextInput:
+    case ElementType_NumberInput:
+    {
+        serializedInput = SerializeTextInput();
+        break;
+    }
+    case ElementType_DateInput:
+    {
+        serializedInput = SerializeDateInput();
+        break;
+    }
+    case ElementType_TimeInput:
+    {
+        serializedInput = SerializeTimeInput();
+        break;
+    }
+    case ElementType_ToggleInput:
+    {
+        serializedInput = SerializeToggleInput();
+        break;
+    }
+    case ElementType_ChoiceSetInput:
+    {
+        serializedInput = SerializeChoiceSetInput();
+        break;
+    }
+    default:
+        serializedInput = "";
+        break;
     }
 
     RETURN_IF_FAILED(UTF8ToHString(serializedInput, result));
@@ -253,7 +255,7 @@ HRESULT InputValue::get_CurrentValue(HSTRING * result)
     return S_OK;
 }
 
-HRESULT InputValue::get_InputElement(IAdaptiveInputElement ** inputElement)
+HRESULT InputValue::get_InputElement(_COM_Outptr_ IAdaptiveInputElement** inputElement)
 {
     return m_adaptiveInputElement.CopyTo(inputElement);
 }

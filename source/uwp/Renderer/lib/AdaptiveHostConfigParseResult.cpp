@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveHostConfigParseResult.h"
 
@@ -19,32 +21,30 @@ using namespace ABI::Windows::UI;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
-    AdaptiveHostConfigParseResult::AdaptiveHostConfigParseResult()
-    {
-    }
+namespace AdaptiveNamespace
+{
+    AdaptiveHostConfigParseResult::AdaptiveHostConfigParseResult() {}
 
     HRESULT AdaptiveHostConfigParseResult::RuntimeClassInitialize()
     {
-        m_errors = Make<Vector<IAdaptiveError*>>();
+        m_errors = Make<Vector<AdaptiveError*>>();
         return S_OK;
     }
 
-    HRESULT AdaptiveHostConfigParseResult::RuntimeClassInitialize(IAdaptiveHostConfig* value)
+    HRESULT AdaptiveHostConfigParseResult::RuntimeClassInitialize(_In_ IAdaptiveHostConfig* value)
     {
         m_hostConfig = value;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfigParseResult::get_HostConfig(IAdaptiveHostConfig** value)
+    HRESULT AdaptiveHostConfigParseResult::get_HostConfig(_COM_Outptr_ IAdaptiveHostConfig** value)
     {
         return m_hostConfig.CopyTo(value);
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfigParseResult::get_Errors(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveError*>** value)
+    HRESULT AdaptiveHostConfigParseResult::get_Errors(
+        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveError*>** value)
     {
         return m_errors.CopyTo(value);
     }
-AdaptiveNamespaceEnd
+}

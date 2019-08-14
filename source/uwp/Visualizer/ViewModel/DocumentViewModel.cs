@@ -1,4 +1,6 @@
-﻿using AdaptiveCards.Rendering.Uwp;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using AdaptiveCards.Rendering.Uwp;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
@@ -16,6 +18,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using AdaptiveCardVisualizer.Helpers;
 using AdaptiveCardVisualizer.ResourceResolvers;
+using Windows.UI.Xaml.Media;
 
 namespace AdaptiveCardVisualizer.ViewModel
 {
@@ -25,6 +28,7 @@ namespace AdaptiveCardVisualizer.ViewModel
 
         private DocumentViewModel(MainPageViewModel mainPageViewModel) : base(mainPageViewModel) { }
 
+        private RenderedAdaptiveCard _renderedAdaptiveCard;
         private UIElement _renderedCard;
         public UIElement RenderedCard
         {
@@ -81,11 +85,11 @@ namespace AdaptiveCardVisualizer.ViewModel
                 {
                     AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(jsonObject);
 
-                    RenderedAdaptiveCard renderResult = _renderer.RenderAdaptiveCard(parseResult.AdaptiveCard);
-                    if (renderResult.FrameworkElement != null)
+                    _renderedAdaptiveCard = _renderer.RenderAdaptiveCard(parseResult.AdaptiveCard);
+                    if (_renderedAdaptiveCard.FrameworkElement != null)
                     {
-                        RenderedCard = renderResult.FrameworkElement;
-                        renderResult.Action += async (sender, e) =>
+                        RenderedCard = _renderedAdaptiveCard.FrameworkElement;
+                        _renderedAdaptiveCard.Action += async (sender, e) =>
                         {
                             var m_actionDialog = new ContentDialog();
 
@@ -110,7 +114,7 @@ namespace AdaptiveCardVisualizer.ViewModel
 
                         if (!MainPageViewModel.HostConfigEditor.HostConfig.Media.AllowInlinePlayback)
                         {
-                            renderResult.MediaClicked += async (sender, e) =>
+                            _renderedAdaptiveCard.MediaClicked += async (sender, e) =>
                             {
                                 var onPlayDialog = new ContentDialog();
                                 onPlayDialog.Content = "MediaClickedEvent:";
@@ -142,7 +146,7 @@ namespace AdaptiveCardVisualizer.ViewModel
                             Type = ErrorViewModelType.Error
                         });
                     }
-                    foreach (var error in renderResult.Errors)
+                    foreach (var error in _renderedAdaptiveCard.Errors)
                     {
                         newErrors.Add(new ErrorViewModel()
                         {
@@ -159,7 +163,7 @@ namespace AdaptiveCardVisualizer.ViewModel
                         });
                     }
 
-                    foreach (var error in renderResult.Warnings)
+                    foreach (var error in _renderedAdaptiveCard.Warnings)
                     {
                         newErrors.Add(new ErrorViewModel()
                         {
@@ -179,7 +183,7 @@ namespace AdaptiveCardVisualizer.ViewModel
 
                 if (RenderedCard is FrameworkElement)
                 {
-                    (RenderedCard as FrameworkElement).VerticalAlignment = VerticalAlignment.Top;
+                    (RenderedCard as FrameworkElement).VerticalAlignment = Windows.UI.Xaml.VerticalAlignment.Top;
                 }
                 MakeErrorsLike(newErrors);
             }
@@ -203,7 +207,7 @@ namespace AdaptiveCardVisualizer.ViewModel
 
             if (args.Action is AdaptiveSubmitAction)
             {
-                answer += "\nData: " + (args.Action as AdaptiveSubmitAction).DataJson.Stringify();
+                answer += "\nData: " + (args.Action as AdaptiveSubmitAction).DataJson?.Stringify();
             }
             else if (args.Action is AdaptiveOpenUrlAction)
             {
@@ -225,6 +229,9 @@ namespace AdaptiveCardVisualizer.ViewModel
                     _renderer.HostConfig = hostConfig;
                 }
 
+                // Add a feature representing this version of the visualizer. used for test cards.
+                _renderer.FeatureRegistration.Set("acTest", "1.0");
+
                 if (Settings.UseFixedDimensions)
                 {
                     _renderer.SetFixedDimensions(320, 180);
@@ -232,6 +239,23 @@ namespace AdaptiveCardVisualizer.ViewModel
 
                 // Custom resource resolvers
                 _renderer.ResourceResolvers.Set("symbol", new MySymbolResourceResolver());
+
+                /*
+                 *Example on how to override the Action Positive and Destructive styles
+                Style positiveStyle = new Style(typeof(Button));
+                positiveStyle.Setters.Add(new Setter(Button.BackgroundProperty, new SolidColorBrush(Windows.UI.Colors.LawnGreen)));
+                Style destructiveStyle = new Style(typeof(Button));
+                destructiveStyle.Setters.Add(new Setter(Button.BackgroundProperty, new SolidColorBrush(Windows.UI.Colors.Red)));
+                Style otherStyle = new Style(typeof(Button));
+                otherStyle.Setters.Add(new Setter(Button.BackgroundProperty, new SolidColorBrush(Windows.UI.Colors.Yellow)));
+                otherStyle.Setters.Add(new Setter(Button.ForegroundProperty, new SolidColorBrush(Windows.UI.Colors.DarkRed)));
+
+                _renderer.OverrideStyles = new ResourceDictionary();
+                _renderer.OverrideStyles.Add("Adaptive.Action.Positive", positiveStyle);
+                _renderer.OverrideStyles.Add("Adaptive.Action.Destructive", destructiveStyle);
+                _renderer.OverrideStyles.Add("Adaptive.Action.other", otherStyle);
+                */
+
             }
             catch
             {

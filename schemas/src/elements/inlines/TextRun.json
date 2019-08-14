@@ -1,0 +1,51 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+  "extends": "Inline",
+  "description": "Defines a single run of formatted text",
+  "version": "1.2",
+  "properties": {
+    "text": {
+      "type": "string",
+      "description": "Text to display",
+      "required": true
+    },
+    "color": {
+      "type": "Colors",
+      "description": "Controls the color of the text."
+    },
+    "fontType": {
+      "type": "FontType",
+      "description": "The type of font to use"
+    },
+    "highlight": {
+      "type": "boolean",
+      "description": "If `true`, displays the text highlighted."
+    },
+    "isSubtle": {
+      "type": "boolean",
+      "description": "If `true`, displays text slightly toned down to appear less prominent.",
+      "default": false
+    },
+    "italic": {
+      "type": "boolean",
+      "description": "If `true`, displays the text using italic font."
+    },
+    "selectAction": {
+      "type": "ISelectAction",
+      "description": "Action to invoke when this text run is clicked. Visually changes the text run into a hyperlink. `Action.ShowCard` is not supported."
+    },
+    "size": {
+      "type": "FontSize",
+      "description": "Controls size of text."
+    },
+    "strikethrough": {
+      "type": "boolean",
+      "description": "If `true`, displays the text with strikethrough."
+    },
+    "weight": {
+      "type": "FontWeight",
+      "description": "Controls the weight of the text."
+    }
+  },
+  "shorthand": "text"
+}

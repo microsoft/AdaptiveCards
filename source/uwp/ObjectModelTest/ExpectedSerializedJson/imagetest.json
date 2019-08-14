@@ -1,33 +1,33 @@
 {
-  "@type": "AdaptiveCard",
-  "body": [
-    {
-      "@type": "Image",
-      "size": "medium",
-      "imageStyle": "person",
-      "uri": "http://contoso.com"
-    },
-    {
-      "@type": "Image",
-      "uri": "http://contoso.com"
-    },
-    {
-      "@type": "Image",
-      "imageStyle": "person",
-      "uri": "http://contoso.com"
-    },
-    {
-      "@type": "Image",
-      "size": "medium",
-      "uri": "http://contoso.com"
-    },
-    {
-      "@type": "Image",
-      "size": "medium",
-      "imageStyle": "person"
-    },
-    {
-      "@type": "Image"
-    }
-  ]
+	"@type": "AdaptiveCard",
+	"body": [
+		{
+			"@type": "Image",
+			"size": "medium",
+			"imageStyle": "person",
+			"uri": "http://contoso.com"
+		},
+		{
+			"@type": "Image",
+			"uri": "http://contoso.com"
+		},
+		{
+			"@type": "Image",
+			"imageStyle": "person",
+			"uri": "http://contoso.com"
+		},
+		{
+			"@type": "Image",
+			"size": "medium",
+			"uri": "http://contoso.com"
+		},
+		{
+			"@type": "Image",
+			"size": "medium",
+			"imageStyle": "person"
+		},
+		{
+			"@type": "Image"
+		}
+	]
 }

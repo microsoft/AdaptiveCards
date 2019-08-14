@@ -1,4 +1,6 @@
-﻿using System;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -106,7 +108,7 @@ namespace AdaptiveCards.Sample.ImageRender
 
                 // Timeout after 30 seconds
                 var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
-                
+
                 // Render the card to an image
                 RenderedAdaptiveCardImage renderedCard = await renderer.RenderCardToImageAsync(card, true, 400, cts.Token);
 

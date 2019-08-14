@@ -1,15 +1,16 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
-#include <string>
-#include <vector>
-#include "Enums.h"
+#include "pch.h"
 
-namespace AdaptiveSharedNamespace {
+namespace AdaptiveSharedNamespace
+{
     class DateTimePreparsedToken
     {
     public:
         DateTimePreparsedToken();
-        DateTimePreparsedToken(std::string const &text, DateTimePreparsedTokenFormat format);
-        DateTimePreparsedToken(std::string const &text, struct tm date, DateTimePreparsedTokenFormat format);
+        DateTimePreparsedToken(std::string const& text, DateTimePreparsedTokenFormat format);
+        DateTimePreparsedToken(std::string const& text, struct tm date, DateTimePreparsedTokenFormat format);
 
         std::string GetText() const;
         DateTimePreparsedTokenFormat GetFormat() const;

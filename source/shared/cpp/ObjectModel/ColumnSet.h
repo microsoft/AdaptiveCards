@@ -1,58 +1,51 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "pch.h"
-#include "Enums.h"
-#include "BaseCardElement.h"
-#include "Column.h"
-#include "ElementParserRegistration.h"
+#include "CollectionTypeElement.h"
 
-namespace AdaptiveSharedNamespace {
-class ColumnSet : public BaseCardElement
+namespace AdaptiveSharedNamespace
 {
-friend class ColumnSetParser;
-public:
-    ColumnSet();
+    class Column;
 
-    Json::Value SerializeToJsonValue() const override;
+    class ColumnSet : public CollectionTypeElement
+    {
+        friend class ColumnSetParser;
 
-    std::vector<std::shared_ptr<Column>>& GetColumns();
-    const std::vector<std::shared_ptr<Column>>& GetColumns() const;
+    public:
+        ColumnSet();
+        ColumnSet(const ColumnSet&) = default;
+        ColumnSet(ColumnSet&&) = default;
+        ColumnSet& operator=(const ColumnSet&) = default;
+        ColumnSet& operator=(ColumnSet&&) = default;
+        ~ColumnSet() = default;
 
-    std::shared_ptr<BaseActionElement> GetSelectAction() const;
-    void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
+        Json::Value SerializeToJsonValue() const override;
+        void DeserializeChildren(ParseContext& context, const Json::Value& value) override;
 
-    void SetLanguage(const std::string& language);
+        std::vector<std::shared_ptr<Column>>& GetColumns();
+        const std::vector<std::shared_ptr<Column>>& GetColumns() const;
 
-    void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
+        void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
-private:
-    void PopulateKnownPropertiesSet() override;
+    private:
+        void PopulateKnownPropertiesSet() override;
 
-    static const std::unordered_map<CardElementType, std::function<std::shared_ptr<Column>(const Json::Value&)>, EnumHash> ColumnParser;
-    std::vector<std::shared_ptr<Column>> m_columns;
-    std::shared_ptr<BaseActionElement> m_selectAction;
-};
+        std::vector<std::shared_ptr<Column>> m_columns;
+    };
 
-class ColumnSetParser : public BaseCardElementParser
-{
-public:
-    ColumnSetParser() = default;
-    ColumnSetParser(const ColumnSetParser&) = default;
-    ColumnSetParser(ColumnSetParser&&) = default;
-    ColumnSetParser& operator=(const ColumnSetParser&) = default;
-    ColumnSetParser& operator=(ColumnSetParser&&) = default;
-    virtual ~ColumnSetParser() = default;
+    class ColumnSetParser : public BaseCardElementParser
+    {
+    public:
+        ColumnSetParser() = default;
+        ColumnSetParser(const ColumnSetParser&) = default;
+        ColumnSetParser(ColumnSetParser&&) = default;
+        ColumnSetParser& operator=(const ColumnSetParser&) = default;
+        ColumnSetParser& operator=(ColumnSetParser&&) = default;
+        virtual ~ColumnSetParser() = default;
 
-    std::shared_ptr<BaseCardElement> Deserialize(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-        const Json::Value& root) override;
-
-    std::shared_ptr<BaseCardElement> DeserializeFromString(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-        const std::string& jsonString);
-};
+        std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
+        std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
+    };
 }

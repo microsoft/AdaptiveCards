@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveInputs.h"
 
@@ -12,11 +14,9 @@ using namespace ABI::Windows::UI;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
-    AdaptiveInputs::AdaptiveInputs()
-    {
-        m_inputValues = std::make_shared<std::vector<ComPtr<IAdaptiveInputValue>>>();
-    }
+namespace AdaptiveNamespace
+{
+    AdaptiveInputs::AdaptiveInputs() { m_inputValues = std::make_shared<std::vector<ComPtr<IAdaptiveInputValue>>>(); }
 
     HRESULT AdaptiveInputs::RuntimeClassInitialize() noexcept
     {
@@ -24,13 +24,12 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveInputs::AsJson(IJsonObject** value)
+    HRESULT AdaptiveInputs::AsJson(_COM_Outptr_ IJsonObject** value)
     {
         return StringToJsonObject(GetInputItemsAsJsonString(), value);
     }
 
-    HRESULT AdaptiveInputs::AddInputValue(IAdaptiveInputValue* inputValue)
+    HRESULT AdaptiveInputs::AddInputValue(_In_ IAdaptiveInputValue* inputValue)
     {
         m_inputValues->push_back(inputValue);
         return S_OK;
@@ -64,17 +63,17 @@ AdaptiveNamespaceStart
         return outStream.str();
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveInputs::AsValueSet(IPropertySet** value)
+    HRESULT AdaptiveInputs::AsValueSet(_COM_Outptr_ IPropertySet** valueSetOut)
     {
-        *value = nullptr;
+        *valueSetOut = nullptr;
         ComPtr<IPropertySet> valueSet;
         RETURN_IF_FAILED(ActivateInstance(HStringReference(RuntimeClass_Windows_Foundation_Collections_ValueSet).Get(), &valueSet));
         ComPtr<IMap<HSTRING, IInspectable*>> propertySetMap;
         RETURN_IF_FAILED(valueSet.As(&propertySetMap));
 
         ComPtr<IPropertyValueStatics> propertyValueFactory;
-        RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &propertyValueFactory));
+        RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(),
+                                              &propertyValueFactory));
 
         for (auto& inputValue : *m_inputValues)
         {
@@ -95,7 +94,6 @@ AdaptiveNamespaceStart
             boolean replaced;
             RETURN_IF_FAILED(propertySetMap->Insert(key.Get(), propVal.Get(), &replaced));
         }
-        return valueSet.CopyTo(value);
+        return valueSet.CopyTo(valueSetOut);
     }
-
-AdaptiveNamespaceEnd
+}

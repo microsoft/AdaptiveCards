@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveElementRendererRegistration.h"
 #include "Util.h"
@@ -6,19 +8,18 @@ using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::UI;
 
-AdaptiveNamespaceStart
-    AdaptiveElementRendererRegistration::AdaptiveElementRendererRegistration()
-    {
-    }
+namespace AdaptiveNamespace
+{
+    AdaptiveElementRendererRegistration::AdaptiveElementRendererRegistration() {}
 
     HRESULT AdaptiveElementRendererRegistration::RuntimeClassInitialize() noexcept try
     {
         m_registration = std::make_shared<RegistrationMap>();
         return S_OK;
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveElementRendererRegistration::Set(HSTRING type, IAdaptiveElementRenderer* renderer)
+    HRESULT AdaptiveElementRendererRegistration::Set(_In_ HSTRING type, _In_ IAdaptiveElementRenderer* renderer)
     {
         ComPtr<IAdaptiveElementRenderer> localRenderer(renderer);
         (*m_registration)[HStringToUTF8(type)] = localRenderer;
@@ -26,8 +27,7 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveElementRendererRegistration::Get(HSTRING type, IAdaptiveElementRenderer** result)
+    HRESULT AdaptiveElementRendererRegistration::Get(_In_ HSTRING type, _COM_Outptr_ IAdaptiveElementRenderer** result)
     {
         *result = nullptr;
         RegistrationMap::iterator found = m_registration->find(HStringToUTF8(type));
@@ -38,10 +38,9 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    _Use_decl_annotations_
     HRESULT AdaptiveElementRendererRegistration::Remove(_In_ HSTRING type)
     {
         m_registration->erase(HStringToUTF8(type));
         return S_OK;
     }
-AdaptiveNamespaceEnd
+}

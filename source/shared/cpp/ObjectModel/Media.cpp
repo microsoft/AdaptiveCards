@@ -1,11 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "Media.h"
 #include "ParseUtil.h"
+#include "ParseContext.h"
 
 using namespace AdaptiveSharedNamespace;
 
-Media::Media() :
-    BaseCardElement(CardElementType::Media)
+Media::Media() : BaseCardElement(CardElementType::Media)
 {
     PopulateKnownPropertiesSet();
 }
@@ -62,8 +64,8 @@ std::vector<std::shared_ptr<MediaSource>>& Media::GetSources()
 void Media::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Poster),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AltText),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Sources)});
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AltText),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Sources)});
 }
 
 void Media::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
@@ -81,20 +83,16 @@ void Media::GetResourceInformation(std::vector<RemoteResourceInformation>& resou
     return;
 }
 
-std::shared_ptr<BaseCardElement> MediaParser::Deserialize(
-    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-    const Json::Value& json)
+std::shared_ptr<BaseCardElement> MediaParser::Deserialize(ParseContext& context, const Json::Value& json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::Media);
 
-    std::shared_ptr<Media> media = BaseCardElement::Deserialize<Media>(json);
-
+    std::shared_ptr<Media> media = BaseCardElement::Deserialize<Media>(context, json);
     media->SetPoster(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Poster, false));
     media->SetAltText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::AltText, false));
 
-    auto sources = ParseUtil::GetElementCollectionOfSingleType<MediaSource>(elementParserRegistration, actionParserRegistration, warnings, json, AdaptiveCardSchemaKey::Sources, MediaSourceParser::Deserialize, true);
+    auto sources = ParseUtil::GetElementCollectionOfSingleType<MediaSource>(
+        context, json, AdaptiveCardSchemaKey::Sources, MediaSourceParser::Deserialize, true);
 
     std::string mimeBaseType;
     for (auto source : sources)
@@ -111,21 +109,19 @@ std::shared_ptr<BaseCardElement> MediaParser::Deserialize(
         }
         else if (mimeBaseType != currentMimeBaseType)
         {
-            warnings.push_back(std::make_shared<AdaptiveCardParseWarning>(AdaptiveSharedNamespace::WarningStatusCode::InvalidMediaMix, "Media element containing a mix of audio and video was dropped"));
+            context.warnings.push_back(
+                std::make_shared<AdaptiveCardParseWarning>(AdaptiveSharedNamespace::WarningStatusCode::InvalidMediaMix,
+                                                           "Media element containing a mix of audio and video was dropped"));
             return nullptr;
         }
     }
 
-    media->m_sources= std::move(sources);
+    media->m_sources = std::move(sources);
 
     return media;
 }
 
-std::shared_ptr<BaseCardElement> MediaParser::DeserializeFromString(
-    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-    const std::string& jsonString)
+std::shared_ptr<BaseCardElement> MediaParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
 {
-    return MediaParser::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
+    return MediaParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }

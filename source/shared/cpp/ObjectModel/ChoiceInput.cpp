@@ -1,7 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "ChoiceInput.h"
+#include "ParseContext.h"
 #include "ParseUtil.h"
-#include "Enums.h"
 
 using namespace AdaptiveSharedNamespace;
 
@@ -9,11 +11,7 @@ ChoiceInput::ChoiceInput()
 {
 }
 
-std::shared_ptr<ChoiceInput> ChoiceInput::Deserialize(
-    std::shared_ptr<ElementParserRegistration>,
-    std::shared_ptr<ActionParserRegistration>,
-    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>&,
-    const Json::Value& json)
+std::shared_ptr<ChoiceInput> ChoiceInput::Deserialize(ParseContext& /*context*/, const Json::Value& json)
 {
     auto choice = std::make_shared<ChoiceInput>();
 
@@ -23,19 +21,14 @@ std::shared_ptr<ChoiceInput> ChoiceInput::Deserialize(
     return choice;
 }
 
-std::shared_ptr<ChoiceInput> ChoiceInput::DeserializeFromString(
-    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-    const std::string& jsonString)
+std::shared_ptr<ChoiceInput> ChoiceInput::DeserializeFromString(ParseContext& context, const std::string& jsonString)
 {
-    return ChoiceInput::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
+    return ChoiceInput::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 std::string ChoiceInput::Serialize()
 {
-    Json::FastWriter writer;
-    return writer.write(SerializeToJsonValue());
+    return ParseUtil::JsonToString(SerializeToJsonValue());
 }
 
 Json::Value ChoiceInput::SerializeToJsonValue()
@@ -53,7 +46,7 @@ std::string ChoiceInput::GetTitle() const
     return m_title;
 }
 
-void ChoiceInput::SetTitle(const std::string &title)
+void ChoiceInput::SetTitle(const std::string& title)
 {
     m_title = title;
 }
@@ -63,7 +56,7 @@ std::string ChoiceInput::GetValue() const
     return m_value;
 }
 
-void ChoiceInput::SetValue(const std::string &value)
+void ChoiceInput::SetValue(const std::string& value)
 {
     m_value = value;
 }

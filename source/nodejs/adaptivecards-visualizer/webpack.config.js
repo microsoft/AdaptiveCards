@@ -1,42 +1,56 @@
-var webpack = require("webpack");
-var path = require("path");
+const path = require("path");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
-var visualizer = {
-    devtool: "source-map",
-    entry: {
-        "adaptivecards-visualizer": ["./src/app.ts"],
-        "adaptivecards-visualizer.min": ["./src/app.ts"]
-    },
-    output: {
-        path: path.resolve(__dirname, "dist"),
-        filename: "[name].js",
-    },
-    resolve: {
-        extensions: [".ts", ".tsx", ".js"]
-    },
-    plugins: [
-        new webpack.optimize.UglifyJsPlugin({
-            minimize: true,
-            sourceMap: true,
-            include: /\.min\.js$/,
-        })
-    ],
-    module: {
-        rules: [
-            {
-                test: /\.ts$/,
-                loader: "ts-loader"
-            },
-            {
-                test: /\.json$/,
-                loader: "json-loader",
-            }
-        ]
-    },
-    externals: {
-        "adaptivecards": { var: "AdaptiveCards" },
-        "markdown-it": { var: "markdownit"}
-    }
-};
+module.exports = (env, argv) => {
+	const mode = argv.mode || 'development';
+	const devMode = mode === "development";
 
-module.exports = visualizer;
+	console.info('running webpack with mode:', mode);
+
+	return {
+		mode: mode,
+		entry: {
+			"adaptivecards-visualizer": "./src/app.ts",
+		},
+		output: {
+			path: path.resolve(__dirname, "dist"),
+			filename: devMode ? "[name].js" : "[name].min.js",
+		},
+		resolve: {
+			extensions: [".ts", ".tsx", ".js"]
+		},
+		module: {
+			rules: [{
+					test: /\.ts$/,
+					loader: "ts-loader",
+					exclude: /(node_modules|__tests__)/
+				},
+				{
+					test: /\.css$/,
+					use: [
+						'style-loader',
+						'css-loader'
+					]
+				}
+			]
+		},
+		plugins: [
+			//new CleanWebpackPlugin(['dist']),
+			new HtmlWebpackPlugin({
+				title: "Adaptive Cards Visualizer",
+				template: "./index.html"
+			}),
+			new MiniCssExtractPlugin({
+				filename: '[name].css'
+			 })
+		],
+		externals: {
+			"markdown-it": "markdownit",
+			"adaptivecards": "AdaptiveCards",
+			"monaco-editor/esm/vs/editor/editor.api": "monaco"
+		}
+	}
+}

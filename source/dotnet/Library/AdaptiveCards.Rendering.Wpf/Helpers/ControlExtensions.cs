@@ -1,6 +1,9 @@
-﻿using System;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
@@ -26,14 +29,30 @@ namespace AdaptiveCards.Rendering.Wpf
             return control.IsChecked;
         }
 
-        public static void Add (this ListBox control, object element)
+        public static void Add(this ListBox control, object element)
         {
             control.Items.Add(element);
         }
 
-        public static void SetColor(this TextBlock textBlock, string color, AdaptiveRenderContext context)
+        public static void SetColor(this TextBlock textBlock, AdaptiveTextColor color, bool isSubtle, AdaptiveRenderContext context)
         {
-            textBlock.Foreground = context.GetColorBrush(color);
+            FontColorConfig colorOption = context.GetForegroundColors(color);
+            string colorCode = isSubtle ? colorOption.Subtle : colorOption.Default;
+            textBlock.Foreground = context.GetColorBrush(colorCode);
+        }
+
+        public static void SetColor(this Span inlineRun, AdaptiveTextColor color, bool isSubtle, AdaptiveRenderContext context)
+        {
+            FontColorConfig colorOption = context.GetForegroundColors(color);
+            string colorCode = isSubtle ? colorOption.Subtle : colorOption.Default;
+            inlineRun.Foreground = context.GetColorBrush(colorCode);
+        }
+
+        public static void SetHighlightColor(this Span inlineRun, AdaptiveTextColor color, bool isSubtle, AdaptiveRenderContext context)
+        {
+            FontColorConfig colorOption = context.GetForegroundColors(color);
+            string colorCode = isSubtle ? colorOption.HighlightColors.Subtle : colorOption.HighlightColors.Default;
+            inlineRun.Background = context.GetColorBrush(colorCode);
         }
 
         public static void SetHorizontalAlignment(this Image image, AdaptiveHorizontalAlignment alignment)
@@ -46,7 +65,7 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             panel.Background = context.GetColorBrush(color);
         }
-        
+
         public static void SetHeight(this FrameworkElement element, double height)
         {
             element.Height = height;
@@ -72,9 +91,9 @@ namespace AdaptiveCards.Rendering.Wpf
             textBlock.FontWeight = FontWeight.FromOpenTypeWeight(weight);
         }
 
-        public static void  SetPlaceholder (this TextBox textBlock, string placeholder)
-		{
-			//UWP doesnt have the concept of placeholder for TextBox
-		}
+        public static void SetPlaceholder(this TextBox textBlock, string placeholder)
+        {
+            //UWP doesnt have the concept of placeholder for TextBox
+        }
     }
 }

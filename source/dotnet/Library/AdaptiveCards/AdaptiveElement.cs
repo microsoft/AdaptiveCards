@@ -1,13 +1,13 @@
-﻿using Newtonsoft.Json;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using Newtonsoft.Json;
 using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
-    /// <summary>
-    ///     Base class for all elements in a container
-    /// </summary>
+
     public abstract class AdaptiveElement : AdaptiveTypedElement
     {
         /// <summary>
@@ -36,56 +36,6 @@ namespace AdaptiveCards
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [Obsolete("CardElement.Speak has been deprecated.  Use AdaptiveCard.Speak", false)]
         public string Speak { get; set; }
-
-        /// <summary>
-        ///     How should this element be emphasized relative to previous element
-        /// </summary>
-        [Obsolete("Use Separator and Spacing instead")]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public AdaptiveSeparationStyle Separation
-        {
-            get
-            {
-                // There's no good way to back-compat convert this, so we'll just go
-                // based on the spacing value
-                switch (Spacing)
-                {
-                    case AdaptiveSpacing.None:
-                        return AdaptiveSeparationStyle.None;
-
-                    case AdaptiveSpacing.Large:
-                        return AdaptiveSeparationStyle.Strong;
-
-                    default:
-                        return AdaptiveSeparationStyle.Default;
-                }
-            }
-
-            set
-            {
-                // Back-compat for upgrading the obsolete Separation value to the new values
-                switch (value)
-                {
-                    case AdaptiveSeparationStyle.Default:
-                        Separator = false;
-                        Spacing = AdaptiveSpacing.Default;
-                        break;
-
-                    case AdaptiveSeparationStyle.None:
-                        Separator = false;
-                        Spacing = AdaptiveSpacing.None;
-                        break;
-
-                    case AdaptiveSeparationStyle.Strong:
-                        Separator = true;
-                        Spacing = AdaptiveSpacing.Large;
-                        break;
-
-                    default:
-                        throw new NotImplementedException();
-                }
-            }
-        }
 
         public bool ShouldSerializeHeight()
         {
@@ -117,5 +67,15 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(typeof(AdaptiveHeight), "auto")]
         public AdaptiveHeight Height { get; set; }
+
+        /// <summary>
+        /// Indicates whether the element should be visible when the card has been rendered.
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        [DefaultValue(true)]
+        public bool IsVisible { get; set; } = true;
     }
 }

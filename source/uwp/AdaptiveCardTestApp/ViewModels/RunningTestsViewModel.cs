@@ -1,4 +1,6 @@
-﻿using System;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -134,7 +136,7 @@ namespace AdaptiveCardTestApp.ViewModels
         }
 
         public async Task AddCardToTimeline(FileViewModel card)
-        { 
+        {
             UserActivityChannel channel = UserActivityChannel.GetDefault();
             UserActivity userActivity = await channel.GetOrCreateUserActivityAsync(Guid.NewGuid().ToString());
             userActivity.VisualElements.DisplayText = "Card error: " + card.Name;
@@ -151,45 +153,63 @@ namespace AdaptiveCardTestApp.ViewModels
 
         private async Task<TestResultViewModel> TestCard(FileViewModel cardFile, FileViewModel hostConfigFile)
         {
-            var renderResult = await RenderCard(cardFile, hostConfigFile);
+            uint reruns = 0;
+            TestResultViewModel result = null;
+            bool retryImage = true;
 
-            var result = await TestResultViewModel.CreateAsync(
-                cardFile: cardFile,
-                hostConfigFile: hostConfigFile,
-                actualError: renderResult.Item1,
-                actualImageFile: renderResult.Item2,
-                actualJsonFile: renderResult.Item3,
-                xamlCard: renderResult.Item4,
-                expectedFolder: _expectedFolder,
-                sourceHostConfigsFolder: _sourceHostConfigsFolder,
-                sourceCardsFolder: _sourceCardsFolder);
+            while (retryImage)
+            {
+                var renderResult = await RenderCard(cardFile, hostConfigFile);
+
+                result = await TestResultViewModel.CreateAsync(
+                    cardFile: cardFile,
+                    hostConfigFile: hostConfigFile,
+                    renderedTestResult: renderResult.Item1,
+                    actualImageFile: renderResult.Item2,
+                    actualJsonFile: renderResult.Item3,
+                    expectedFolder: _expectedFolder,
+                    sourceHostConfigsFolder: _sourceHostConfigsFolder,
+                    sourceCardsFolder: _sourceCardsFolder);
+
+                if (!result.Status.IsPassingStatus())
+                {
+                    // Retry if we failed on image matching for an unchanged card to allow for
+                    // occasional differences in image rendering
+                    retryImage = result.Status.OriginalMatched && !result.Status.ImageMatched && (reruns < 3);
+                    reruns++;
+                }
+                else
+                {
+                    retryImage = false;
+                }
+            }
 
             OnSingleTestCompleted?.Invoke(this, result.Status);
             return result;
         }
 
-        private async Task<Tuple<string, StorageFile, StorageFile, UIElement>> RenderCard(FileViewModel cardFile, FileViewModel hostConfigFile)
+        private async Task<Tuple<RenderedTestResult, StorageFile, StorageFile>> RenderCard(FileViewModel cardFile, FileViewModel hostConfigFile)
         {
             var renderResult = await UWPTestLibrary.RenderTestHelpers.RenderCard(cardFile, hostConfigFile);
 
-            UWPTestLibrary.ImageWaiter imageWaiter = new ImageWaiter(renderResult.Item3);
+            UWPTestLibrary.ImageWaiter imageWaiter = new ImageWaiter(renderResult.Tree);
 
-            CurrentCardVisual = renderResult.Item3;
-            CurrentCardVisualWidth = renderResult.Item4;
+            CurrentCardVisual = renderResult.Tree;
+            CurrentCardVisualWidth = renderResult.CardWidth;
 
             await imageWaiter.WaitOnAllImagesAsync();
 
             StorageFile imageResultFile = null;
             StorageFile jsonResultFile = null;
-            if (renderResult.Item1 == null)
+            if (renderResult.Error == null)
             {
                 imageResultFile = await _tempResultsFolder.CreateFileAsync("Result.png", CreationCollisionOption.GenerateUniqueName);
                 jsonResultFile = await _tempResultsFolder.CreateFileAsync("Result.json", CreationCollisionOption.GenerateUniqueName);
 
-                await UWPTestLibrary.RenderTestHelpers.ResultsToFile(imageResultFile, jsonResultFile, renderResult.Item2, CurrentCardVisual);
+                await UWPTestLibrary.RenderTestHelpers.ResultsToFile(imageResultFile, jsonResultFile, renderResult.RoundTrippedJSON, CurrentCardVisual);
             }
 
-            return new Tuple<string, StorageFile, StorageFile, UIElement>(renderResult.Item1, imageResultFile, jsonResultFile, CurrentCardVisual);
+            return new Tuple<RenderedTestResult, StorageFile, StorageFile>(renderResult, imageResultFile, jsonResultFile);
         }
 
         private void GoToDoneState()

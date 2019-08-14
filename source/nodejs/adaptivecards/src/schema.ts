@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 export type Size = "auto" | "stretch" | "small" | "medium" | "large";
 export type TextSize  = "small" | "default" | "medium" | "large" | "extraLarge";
 export type HorizontalAlignment = "left" | "center" | "right";
@@ -39,7 +41,7 @@ export interface ICardElement {
 }
 
 export interface IBackgroundImage {
-    url: string;    
+    url: string;
 }
 
 export interface ITextBlock extends ICardElement {
@@ -62,7 +64,12 @@ export interface IContainer extends ICardElement {
     items?: ICardElement[];
 }
 
-export interface IColumn extends IContainer {
+export interface IColumn extends ICardElement {
+    backgroundImage?: IBackgroundImage | string;
+    style?: ContainerStyle;
+    verticalContentAlignment?: VerticalAlignment;
+    selectAction?: IAction;
+    items?: ICardElement[];
     width?: number | "auto" | "stretch" | "auto";
 }
 
@@ -149,10 +156,10 @@ export interface IChoiceSetInput extends IInput {
     placeholder?: string;
     choices: IChoice[];
 }
-    
+
 export interface IVersion {
     major: number;
-    minor: number;    
+    minor: number;
 }
 
 export interface IAdaptiveCard extends ICardElement {
@@ -160,6 +167,6 @@ export interface IAdaptiveCard extends ICardElement {
     version?: IVersion | string;
     backgroundImage?: IBackgroundImage | string;
     body?: (ITextBlock | IImage | IImageSet | IFactSet | IColumnSet | IContainer)[];
-    actions?: (ISubmitAction | IOpenUrlAction | IShowCardAction)[];    
+    actions?: (ISubmitAction | IOpenUrlAction | IShowCardAction)[];
     speak?: string;
 }

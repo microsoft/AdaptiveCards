@@ -1,20 +1,23 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "Separator.h"
 #include "ParseUtil.h"
 
 using namespace AdaptiveSharedNamespace;
 
-Separator::Separator(): m_thickness(SeparatorThickness::Default), m_color(ForegroundColor::Default)
+Separator::Separator() : m_thickness(SeparatorThickness::Default), m_color(ForegroundColor::Default)
 {
 }
-
 
 std::shared_ptr<Separator> Separator::Deserialize(const Json::Value& json)
 {
     std::shared_ptr<Separator> separator = std::make_shared<Separator>();
 
-    separator->SetColor(ParseUtil::GetEnumValue<ForegroundColor>(json, AdaptiveCardSchemaKey::Color, ForegroundColor::Default, ForegroundColorFromString));
-    separator->SetThickness(ParseUtil::GetEnumValue<SeparatorThickness>(json, AdaptiveCardSchemaKey::Thickness, SeparatorThickness::Default, SeparatorThicknessFromString));
+    separator->SetColor(
+        ParseUtil::GetEnumValue<ForegroundColor>(json, AdaptiveCardSchemaKey::Color, ForegroundColor::Default, ForegroundColorFromString));
+    separator->SetThickness(ParseUtil::GetEnumValue<SeparatorThickness>(
+        json, AdaptiveCardSchemaKey::Thickness, SeparatorThickness::Default, SeparatorThicknessFromString));
 
     return separator;
 }
@@ -26,8 +29,7 @@ std::shared_ptr<Separator> Separator::DeserializeFromString(const std::string& j
 
 std::string Separator::Serialize()
 {
-    Json::FastWriter writer;
-    return writer.write(SerializeToJsonValue());
+    return ParseUtil::JsonToString(SerializeToJsonValue());
 }
 
 Json::Value Separator::SerializeToJsonValue()

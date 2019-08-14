@@ -1,4 +1,6 @@
-﻿using System;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using System;
 using System.Collections.Generic;
 
 namespace AdaptiveCards.Rendering
@@ -26,7 +28,7 @@ namespace AdaptiveCards.Rendering
         protected RenderedAdaptiveCardBase(AdaptiveCard originatingCard, IList<AdaptiveWarning> warnings)
         {
             Warnings = warnings ?? throw new ArgumentNullException(nameof(warnings));
-            OriginatingCard = originatingCard ?? throw new ArgumentNullException(nameof(originatingCard));           
+            OriginatingCard = originatingCard ?? throw new ArgumentNullException(nameof(originatingCard));
         }
 
     }

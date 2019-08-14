@@ -1,16 +1,19 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "Util.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace
+{
     class CustomActionWrapper : public AdaptiveSharedNamespace::BaseActionElement
     {
     public:
-        CustomActionWrapper(ABI::AdaptiveNamespace::IAdaptiveActionElement* actionElement) :
-            AdaptiveSharedNamespace::BaseActionElement(AdaptiveSharedNamespace::ActionType::Custom),
-            m_actionElement(actionElement)
-        {}
+        CustomActionWrapper(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* actionElement) :
+            AdaptiveSharedNamespace::BaseActionElement(AdaptiveSharedNamespace::ActionType::Custom), m_actionElement(actionElement)
+        {
+        }
 
         std::string GetId() const override;
         void SetId(const std::string& value) override;
@@ -20,11 +23,11 @@ AdaptiveNamespaceStart
 
         virtual Json::Value SerializeToJsonValue() const override;
 
-        HRESULT GetWrappedElement(ABI::AdaptiveNamespace::IAdaptiveActionElement** actionElement);
+        HRESULT GetWrappedElement(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** actionElement);
 
         virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
     private:
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_actionElement;
     };
-AdaptiveNamespaceEnd
+}

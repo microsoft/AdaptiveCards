@@ -1,4 +1,6 @@
-﻿using AdaptiveCards.Rendering.Uwp;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using AdaptiveCards.Rendering.Uwp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,23 +51,28 @@ namespace UWPTestLibrary
             }
         }
 
-        public static async Task<Tuple<string, string, UIElement, double>> RenderCard(FileViewModel cardFile, FileViewModel hostConfigFile)
+        public static async Task<RenderedTestResult> RenderCard(FileViewModel cardFile, FileViewModel hostConfigFile)
         {
             string error = null;
             string roundTrippedJsonString = null;
             FrameworkElement xaml = null;
             double cardWidth = 400;
+            WeakReference weakRefCard = null;
 
             try
             {
-                AdaptiveHostConfig hostConfig = AdaptiveHostConfig.FromJsonString(hostConfigFile.Contents).HostConfig;
-
-                if (hostConfig == null)
+                AdaptiveHostConfig hostConfig = null;
+                if (hostConfigFile.Contents != null)
                 {
-                    error = "Parsing hostConfig failed";
+                    hostConfig = AdaptiveHostConfig.FromJsonString(hostConfigFile.Contents).HostConfig;
+
+                    if (hostConfig == null)
+                    {
+                        error = "Parsing hostConfig failed";
+                    }
                 }
 
-                else
+                if (error == null)
                 {
                     AdaptiveCard card = AdaptiveCard.FromJsonString(cardFile.Contents).AdaptiveCard;
 
@@ -79,23 +86,33 @@ namespace UWPTestLibrary
                         roundTrippedJsonString = card.ToJson().ToString();
                         card = AdaptiveCard.FromJsonString(roundTrippedJsonString).AdaptiveCard;
 
+                        AdaptiveFeatureRegistration featureRegistration = new AdaptiveFeatureRegistration();
+                        featureRegistration.Set("acTest", "1.0");
+
                         var renderer = new AdaptiveCardRenderer()
                         {
-                            HostConfig = hostConfig
+                            FeatureRegistration = featureRegistration
                         };
 
-                        if (hostConfigFile.Name.Contains("windows-timeline"))
+                        if (hostConfig != null)
+                        {
+                            renderer.HostConfig = hostConfig;
+                        }
+
+                        renderer.ResourceResolvers.Set("symbol", new SampleResourceResolver());
+
+                        if (hostConfigFile.Name.Contains(FileLoadHelpers.fixedNonInteractiveName))
                         {
                             renderer.SetFixedDimensions(320, 180);
                             cardWidth = 320;
-                        }
-                        else if (hostConfigFile.Name.Contains("windows-live-tile"))
-                        {
-                            renderer.SetFixedDimensions(310, 310);
-                            cardWidth = 310;
+
+                            renderer.HostConfig.SupportsInteractivity = false;
                         }
 
-                        xaml = renderer.RenderAdaptiveCard(card).FrameworkElement as FrameworkElement;
+                        RenderedAdaptiveCard renderedCard = renderer.RenderAdaptiveCard(card);
+                        weakRefCard = new WeakReference(renderedCard);
+
+                        xaml = renderedCard.FrameworkElement as FrameworkElement;
 
                         if (xaml == null)
                         {
@@ -112,7 +129,7 @@ namespace UWPTestLibrary
                             };
 
                             // The theme is important to set since it'll ensure buttons/inputs appear correctly
-                            if (hostConfigFile.Name.Contains("windows-notification"))
+                            if (hostConfigFile.Name.Contains(FileLoadHelpers.testVarientHostConfigName))
                             {
                                 xaml.RequestedTheme = ElementTheme.Dark;
                             }
@@ -129,13 +146,20 @@ namespace UWPTestLibrary
                 error = ex.ToString();
             }
 
-            return new Tuple<string, string, UIElement, double>(error, roundTrippedJsonString, xaml, cardWidth);
+            return new RenderedTestResult
+            {
+                Error = error,
+                RoundTrippedJSON = roundTrippedJsonString,
+                Tree = xaml,
+                CardWidth = cardWidth,
+                WeakCard = weakRefCard
+            };
         }
 
         public static async Task ResultsToFile(
             StorageFile imageResult,
-            StorageFile jsonResult, 
-            string roundTrippedJsonString, 
+            StorageFile jsonResult,
+            string roundTrippedJsonString,
             UIElement xaml)
         {
             RenderTargetBitmap rtb = null;

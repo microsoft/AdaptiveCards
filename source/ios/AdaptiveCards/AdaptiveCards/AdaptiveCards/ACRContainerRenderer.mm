@@ -13,6 +13,8 @@
 #import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "ACRViewPrivate.h"
+#import "Util.h"
 
 @implementation ACRContainerRenderer
 
@@ -38,12 +40,17 @@
 
     ACRColumnView *container = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)containerElem->GetStyle()
                                                         parentStyle:[viewGroup style] hostConfig:acoConfig superview:viewGroup];
+    [viewGroup addArrangedSubview:container];
+
+    configBleed(rootView, elem, container, acoConfig);
+
+    renderBackgroundImage(containerElem->GetBackgroundImage(), container, rootView);
 
     UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
-    if(containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom){
+    if (containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom) {
         leadingBlankSpace = [container addPaddingSpace];
     }
-    
+
     container.frame = viewGroup.frame;
 
     [ACRRenderer render:container
@@ -51,15 +58,25 @@
                  inputs:inputs
           withCardElems:containerElem->GetItems()
           andHostConfig:acoConfig];
-    
+
     // Dont add the trailing space if the vertical content alignment is top/default
-    if(containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top && !(container.hasStretchableView))){
+    if (containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top && !(container.hasStretchableView))) {
         trailingBlankSpace = [container addPaddingSpace];
     }
+
+    [container setClipsToBounds:TRUE];
     
-    [viewGroup addArrangedSubview:container];
-        
-    if(leadingBlankSpace != nil && trailingBlankSpace != nil){
+    if (containerElem->GetMinHeight() > 0) {
+        [NSLayoutConstraint constraintWithItem:container
+                                     attribute:NSLayoutAttributeHeight
+                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                        toItem:nil
+                                     attribute:NSLayoutAttributeNotAnAttribute
+                                    multiplier:1
+                                      constant:containerElem->GetMinHeight()].active = YES;
+    }
+
+    if (leadingBlankSpace != nil && trailingBlankSpace != nil) {
         [NSLayoutConstraint constraintWithItem:leadingBlankSpace
                                      attribute:NSLayoutAttributeHeight
                                      relatedBy:NSLayoutRelationEqual
@@ -76,8 +93,19 @@
                                                                   recipientView:container
                                                                   actionElement:selectAction
                                                                      hostConfig:acoConfig];
+
+    configVisibility(container, elem);
+
     return viewGroup;
 }
 
-@end
+- (void)configUpdateForUIImageView:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView
+{
+    std::shared_ptr<BaseCardElement> elem = [acoElem element];
+    std::shared_ptr<Container> containerElem = std::dynamic_pointer_cast<Container>(elem);
+    auto backgroundImageProperties = containerElem->GetBackgroundImage();
 
+    renderBackgroundImage(backgroundImageProperties.get(), imageView, image);
+}
+
+@end

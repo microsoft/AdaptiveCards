@@ -1,29 +1,28 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
 
-AdaptiveNamespaceStart
-    class AdaptiveWarning:
-        public Microsoft::WRL::RuntimeClass<
-        Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        Microsoft::WRL::Implements<ABI::AdaptiveNamespace::IAdaptiveWarning>,
-        Microsoft::WRL::FtmBase>
+namespace AdaptiveNamespace
+{
+    class AdaptiveWarning
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
+                                              Microsoft::WRL::Implements<ABI::AdaptiveNamespace::IAdaptiveWarning>,
+                                              Microsoft::WRL::FtmBase>
     {
-        AdaptiveRuntime(AdaptiveWarning)
+        AdaptiveRuntime(AdaptiveWarning);
 
     public:
         HRESULT RuntimeClassInitialize();
-
-        HRESULT RuntimeClassInitialize(
-            ABI::AdaptiveNamespace::WarningStatusCode statusCode,
-            HSTRING message);
+        HRESULT RuntimeClassInitialize(ABI::AdaptiveNamespace::WarningStatusCode statusCode, _In_ HSTRING message);
 
         // IAdaptiveWarning
-        HRESULT put_StatusCode(_In_ ABI::AdaptiveNamespace::WarningStatusCode value);
+        HRESULT put_StatusCode(ABI::AdaptiveNamespace::WarningStatusCode value);
         IFACEMETHODIMP get_StatusCode(_Out_ ABI::AdaptiveNamespace::WarningStatusCode* value);
 
         HRESULT put_Message(_In_ HSTRING value);
-        IFACEMETHODIMP get_Message(_Out_ HSTRING* value);
+        IFACEMETHODIMP get_Message(_Outptr_ HSTRING* value);
 
     private:
         Microsoft::WRL::Wrappers::HString m_message;
@@ -31,4 +30,4 @@ AdaptiveNamespaceStart
     };
 
     ActivatableClass(AdaptiveWarning);
-AdaptiveNamespaceEnd
+}

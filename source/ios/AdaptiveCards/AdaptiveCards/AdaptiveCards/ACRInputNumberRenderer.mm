@@ -11,6 +11,7 @@
 #import "NumberInput.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "Util.h"
 
 @implementation ACRInputNumberRenderer
 
@@ -55,17 +56,17 @@
     if(elem->GetHeight() == HeightType::Stretch){
         ACRColumnView *inputContainer = [[ACRColumnView alloc] init];
         [inputContainer addArrangedSubview: numInput];
-        
+
         // Add a blank view so the input field doesnt grow as large as it can and so it keeps the same behavior as Android and UWP
         UIView *blankTrailingSpace = [[UIView alloc] init];
         [inputContainer addArrangedSubview:blankTrailingSpace];
         [inputContainer adjustHuggingForLastElement];
-        
+
         [viewGroup addArrangedSubview: inputContainer];
     } else {
         [viewGroup addArrangedSubview: numInput];
     }
-    
+
     numInput.translatesAutoresizingMaskIntoConstraints = NO;
 
     NSString *format = [[NSString alloc]initWithFormat:@"H:|-[%%@]-|"];
@@ -75,6 +76,8 @@
     [ACRBaseCardElementRenderer applyLayoutStyle:format viewsMap:viewsMap];
 
     [inputs addObject:numInput];
+
+    configVisibility(numInput, elem);
 
     return numInput;
 }

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+  "extends": "ToggleableItem",
+  "isAbstract": true,
+  "properties": {
+    "fallback": {
+      "type": "Element|FallbackOption",
+      "description": "Describes what to do when an unknown element is encountered or the requires of this or any children can't be met.",
+      "version": "1.2"
+    },
+    "height": {
+      "type": "BlockElementHeight",
+      "description": "Specifies the height of the element.",
+      "version": "1.1"
+    },
+    "separator": {
+      "type": "boolean",
+      "description": "When `true`, draw a separating line at the top of the element."
+    },
+    "spacing": {
+      "type": "Spacing",
+      "description": "Controls the amount of spacing between this element and the preceding element."
+    }
+  }
+}

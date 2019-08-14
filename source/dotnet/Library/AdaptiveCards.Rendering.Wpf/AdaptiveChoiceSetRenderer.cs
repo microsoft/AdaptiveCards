@@ -1,7 +1,14 @@
-﻿using System.Collections.Generic;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using System.Collections.Generic;
 using System.Linq;
+using System.IO;
+using System.Xml;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Data;
+using System;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
@@ -25,10 +32,11 @@ namespace AdaptiveCards.Rendering.Wpf
 
             foreach (var choice in input.Choices)
             {
+
                 if (input.IsMultiSelect == true)
                 {
                     var uiCheckbox = new CheckBox();
-                    uiCheckbox.Content = choice.Title;
+                    SetContent(uiCheckbox, choice.Title, input.Wrap);
                     uiCheckbox.IsChecked = chosen.Contains(choice.Value);
                     uiCheckbox.DataContext = choice;
                     uiCheckbox.Style = context.GetStyle("Adaptive.Input.AdaptiveChoiceSetInput.CheckBox");
@@ -39,9 +47,19 @@ namespace AdaptiveCards.Rendering.Wpf
                     if (input.Style == AdaptiveChoiceInputStyle.Compact)
                     {
                         var uiComboItem = new ComboBoxItem();
+                        uiComboItem.HorizontalAlignment = HorizontalAlignment.Stretch;
                         uiComboItem.Style = context.GetStyle("Adaptive.Input.AdaptiveChoiceSetInput.ComboBoxItem");
-                        uiComboItem.Content = choice.Title;
+
+                        TextBlock content = SetContent(uiComboItem, choice.Title, input.Wrap);
+                        // The content TextBlock is binded to the width of the comboBox container
+                        if (input.Wrap && content != null)
+                        {
+                            BindingOperations.SetBinding(content, TextBlock.MaxWidthProperty,
+                                new Binding("ActualWidth") { Source = uiComboBox });
+                        }
+
                         uiComboItem.DataContext = choice;
+                        
                         uiComboBox.Items.Add(uiComboItem);
 
                         // If multiple values are specified, no option is selected
@@ -53,7 +71,7 @@ namespace AdaptiveCards.Rendering.Wpf
                     else
                     {
                         var uiRadio = new RadioButton();
-                        uiRadio.Content = choice.Title;
+                        SetContent(uiRadio, choice.Title, input.Wrap);
 
                         // When isMultiSelect is false, only 1 specified value is accepted.
                         // Otherwise, don't set any option
@@ -107,6 +125,7 @@ namespace AdaptiveCards.Rendering.Wpf
                     }
                 }
             });
+
             if (!input.IsMultiSelect && input.Style == AdaptiveChoiceInputStyle.Compact)
             {
                 Grid.SetRow(uiComboBox, 1);
@@ -119,6 +138,21 @@ namespace AdaptiveCards.Rendering.Wpf
                 uiGrid.Children.Add(uiChoices);
                 return uiGrid;
             }
+        }
+
+        public static TextBlock SetContent(ContentControl uiControl, string text, bool wrap)
+        {
+            if (wrap)
+            {
+                TextBlock wrappedTextBlock = new TextBlock { Text = text, TextWrapping = TextWrapping.Wrap };
+                uiControl.Content = wrappedTextBlock;
+                return wrappedTextBlock;
+            }
+            else
+            {
+                uiControl.Content = text;
+            }
+            return null;
         }
     }
 }

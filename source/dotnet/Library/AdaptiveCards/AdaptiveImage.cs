@@ -1,4 +1,6 @@
-﻿using System;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
@@ -33,6 +35,7 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
         [XmlIgnore]
 #endif
+        [JsonProperty(Required = Required.Default)]
         public override string Type { get; set; } = TypeName;
 
         /// <summary>
@@ -121,7 +124,7 @@ namespace AdaptiveCards
         public string AltText { get; set; }
 
         /// <summary>
-        ///    Explicit Image Width 
+        ///    Explicit Image Width
         /// </summary>
         [JsonConverter(typeof(StringSizeWithUnitConverter), false)]
         [JsonProperty("width", DefaultValueHandling = DefaultValueHandling.Ignore)]
@@ -135,6 +138,9 @@ namespace AdaptiveCards
         ///    Explicit Image Height
         /// </summary>
         [JsonIgnore]
+#if !NETSTANDARD1_3
+        [XmlIgnore]
+#endif
         public uint PixelHeight
         {
             get

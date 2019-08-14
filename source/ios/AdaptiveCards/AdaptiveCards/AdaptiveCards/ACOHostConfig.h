@@ -11,7 +11,6 @@
 
 @interface ACOHostConfig:NSObject
 
-@property NSArray<NSString *> *fontFamilyNames;
 @property BOOL allActionsHaveIcons;
 @property CGFloat buttonPadding;
 @property ACOResourceResolvers *resolvers;
@@ -21,8 +20,10 @@
 
 - (NSObject<ACOIResourceResolver> *)getResourceResolverForScheme:(NSString *)scheme;
 
+- (ACOResolverIFType)getResolverIFType:(NSString *)scheme;
+
 + (ACOHostConfigParseResult *)fromJson:(NSString *)payload;
 
 + (ACOHostConfigParseResult *)fromJson:(NSString *)payload resourceResolvers:(ACOResourceResolvers *)resolvers;
 
-@end    
+@end

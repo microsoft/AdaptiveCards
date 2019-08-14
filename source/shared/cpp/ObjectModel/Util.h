@@ -1,20 +1,17 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
-#include <string>
-#include <vector>
-#include <memory>
+
 #include "BaseCardElement.h"
+#include "AdaptiveCardParseWarning.h"
 
-using namespace AdaptiveSharedNamespace;
+std::string ValidateColor(const std::string& backgroundColor,
+                          std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>>& warnings);
 
-void PropagateLanguage(const std::string& language, std::vector<std::shared_ptr<BaseCardElement>>& m_body);
+int ParseSizeForPixelSize(const std::string& sizeString,
+                          std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>>* warnings);
 
-std::string ValidateColor(const std::string &backgroundColor, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings);
+void EnsureShowCardVersions(const std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>>& actions,
+                            const std::string& version);
 
-void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::string &requestedDimension,
-    int &parsedDimension, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings);
-
-bool ShouldParseForExplicitDimension(const std::string &input);
-
-void EnsureShowCardVersions(
-    std::vector<std::shared_ptr<BaseActionElement>>& actions,
-    std::string& version);
+void HandleUnknownProperties(const Json::Value& json, const std::unordered_set<std::string>& knownProperties, Json::Value& unknownProperties);

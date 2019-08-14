@@ -1,65 +1,51 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
-#include "Enums.h"
 #include "pch.h"
-#include "BaseActionElement.h"
-#include "BaseCardElement.h"
-#include "ElementParserRegistration.h"
+#include "CollectionTypeElement.h"
 
-namespace AdaptiveSharedNamespace {
-class Container : public BaseCardElement
+namespace AdaptiveSharedNamespace
 {
-friend class ContainerParser;
-public:
-    Container();
+    class BaseActionElement;
 
-    Json::Value SerializeToJsonValue() const override;
+    class Container : public CollectionTypeElement
+    {
+        friend class ContainerParser;
 
-    std::vector<std::shared_ptr<BaseCardElement>>& GetItems();
-    const std::vector<std::shared_ptr<BaseCardElement>>& GetItems() const;
+    public:
+        Container();
+        Container(const Container&) = default;
+        Container(Container&&) = default;
+        Container& operator=(const Container&) = default;
+        Container& operator=(Container&&) = default;
+        ~Container() = default;
 
-    ContainerStyle GetStyle() const;
-    void SetStyle(const ContainerStyle value);
+        Json::Value SerializeToJsonValue() const override;
+        void DeserializeChildren(ParseContext& context, const Json::Value& value) override;
 
-    std::shared_ptr<BaseActionElement> GetSelectAction() const;
-    void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
+        std::vector<std::shared_ptr<BaseCardElement>>& GetItems();
+        const std::vector<std::shared_ptr<BaseCardElement>>& GetItems() const;
 
-    void SetLanguage(const std::string& value);
+        void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
-    VerticalContentAlignment GetVerticalContentAlignment() const;
-    void SetVerticalContentAlignment(const VerticalContentAlignment value);
+    private:
+        void PopulateKnownPropertiesSet() override;
 
-    void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
+        std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>> m_items;
+    };
 
-private:
-    void PopulateKnownPropertiesSet() override;
+    class ContainerParser : public BaseCardElementParser
+    {
+    public:
+        ContainerParser() = default;
+        ContainerParser(const ContainerParser&) = default;
+        ContainerParser(ContainerParser&&) = default;
+        ContainerParser& operator=(const ContainerParser&) = default;
+        ContainerParser& operator=(ContainerParser&&) = default;
+        virtual ~ContainerParser() = default;
 
-    ContainerStyle m_style;
-    VerticalContentAlignment m_verticalContentAlignment;
-    std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>> m_items;
-    std::shared_ptr<BaseActionElement> m_selectAction;
-};
-
-class ContainerParser : public BaseCardElementParser
-{
-public:
-    ContainerParser() = default;
-    ContainerParser(const ContainerParser&) = default;
-    ContainerParser(ContainerParser&&) = default;
-    ContainerParser& operator=(const ContainerParser&) = default;
-    ContainerParser& operator=(ContainerParser&&) = default;
-    virtual ~ContainerParser() = default;
-
-    std::shared_ptr<BaseCardElement> Deserialize(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-        const Json::Value& root) override;
-
-    std::shared_ptr<BaseCardElement> DeserializeFromString(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-        const std::string& jsonString);
-};
+        std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
+        std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
+    };
 }

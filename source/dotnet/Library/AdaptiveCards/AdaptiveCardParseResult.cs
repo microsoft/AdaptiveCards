@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using System.Collections.Generic;
 
 namespace AdaptiveCards
 {
@@ -12,6 +14,6 @@ namespace AdaptiveCards
         /// <summary>
         /// If any modifications were done to the parsed card they will be reported here
         /// </summary>
-        public List<AdaptiveWarning> Warnings { get; } = new List<AdaptiveWarning>();   
+        public List<AdaptiveWarning> Warnings { get; } = new List<AdaptiveWarning>();
     }
 }

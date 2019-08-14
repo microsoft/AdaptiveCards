@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Xml.Serialization;
@@ -40,6 +42,7 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
+        [DefaultValue(typeof(AdaptiveChoiceInputStyle), "compact")]
         public AdaptiveChoiceInputStyle Style { get; set; }
 
         /// <summary>
@@ -57,6 +60,16 @@ namespace AdaptiveCards
         /// </summary>
         [JsonRequired]
         public List<AdaptiveChoice> Choices { get; set; } = new List<AdaptiveChoice>();
+
+        /// <summary>
+        ///      when set true, text will wrap
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(false)]
+        public bool Wrap { get; set; }
 
         public override string GetNonInteractiveValue()
         {

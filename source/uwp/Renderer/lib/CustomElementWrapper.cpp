@@ -1,11 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "CustomElementWrapper.h"
 
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
 
-AdaptiveNamespaceStart
-
+namespace AdaptiveNamespace
+{
     bool CustomElementWrapper::GetSeparator() const
     {
         boolean hasSeparator;
@@ -13,17 +15,14 @@ AdaptiveNamespaceStart
         return hasSeparator;
     }
 
-    void CustomElementWrapper::SetSeparator(const bool value)
-    {
-        THROW_IF_FAILED(m_cardElement->put_Separator(value));
-    }
+    void CustomElementWrapper::SetSeparator(const bool value) { THROW_IF_FAILED(m_cardElement->put_Separator(value)); }
 
     Spacing CustomElementWrapper::GetSpacing() const
     {
         ABI::AdaptiveNamespace::Spacing spacing;
         THROW_IF_FAILED(m_cardElement->get_Spacing(&spacing));
 
-        return static_cast<Spacing> (spacing);
+        return static_cast<Spacing>(spacing);
     }
 
     void CustomElementWrapper::SetSpacing(const Spacing value)
@@ -33,14 +32,14 @@ AdaptiveNamespaceStart
 
     std::string CustomElementWrapper::GetId() const
     {
-        Wrappers::HString id; 
+        Wrappers::HString id;
         THROW_IF_FAILED(m_cardElement->get_Id(id.GetAddressOf()));
         return HStringToUTF8(id.Get());
     }
 
     void CustomElementWrapper::SetId(const std::string& value)
     {
-        Wrappers::HString id; 
+        Wrappers::HString id;
         THROW_IF_FAILED(UTF8ToHString(value, id.GetAddressOf()));
         THROW_IF_FAILED(m_cardElement->put_Id(id.Get()));
     }
@@ -65,8 +64,8 @@ AdaptiveNamespaceStart
         }
     }
 
-    HRESULT CustomElementWrapper::GetWrappedElement(ABI::AdaptiveNamespace::IAdaptiveCardElement** cardElement)
+    HRESULT CustomElementWrapper::GetWrappedElement(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** cardElement)
     {
         return m_cardElement.CopyTo(cardElement);
     }
-AdaptiveNamespaceEnd
+}

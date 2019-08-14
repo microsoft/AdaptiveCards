@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="adaptiveActionPositive" format="reference" />
+    <attr name="adaptiveActionDestructive" format="reference" />
+    <attr name="adaptiveInlineAction" format="reference" />
+    <attr name="adaptiveInlineActionImage" format="reference" />
+    <style name="adaptiveInlineAction" format="reference" />
+    <style name="adaptiveInlineActionImage" format="reference" />
+</resources>

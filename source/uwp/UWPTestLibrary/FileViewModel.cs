@@ -1,4 +1,6 @@
-﻿using System;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using System;
 using System.Threading.Tasks;
 using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.Core;
@@ -7,7 +9,7 @@ using Windows.Storage.Streams;
 
 namespace UWPTestLibrary
 {
-    public class FileViewModel 
+    public class FileViewModel
     {
         public string Name { get; set; }
 

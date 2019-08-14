@@ -1,8 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -11,6 +14,10 @@ import io.adaptivecards.objectmodel.ActionAlignment;
 import io.adaptivecards.objectmodel.ActionsOrientation;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseActionElementVector;
+import io.adaptivecards.objectmodel.BaseCardElement;
+import io.adaptivecards.objectmodel.BaseElement;
+import io.adaptivecards.objectmodel.FallbackType;
+import io.adaptivecards.objectmodel.FeatureRegistration;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.IconPlacement;
 import io.adaptivecards.objectmodel.Spacing;
@@ -38,26 +45,38 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
         return s_instance;
     }
 
-    public void renderActions(RenderedAdaptiveCard renderedCard, Context context, FragmentManager fragmentManager, ViewGroup viewGroup, BaseActionElementVector baseActionElementList, ICardActionHandler cardActionHandler, HostConfig hostConfig) {
+    public View renderActions(
+                RenderedAdaptiveCard renderedCard,
+                Context context,
+                FragmentManager fragmentManager,
+                ViewGroup viewGroup,
+                BaseActionElementVector baseActionElementList,
+                ICardActionHandler cardActionHandler,
+                HostConfig hostConfig,
+                RenderArgs renderArgs) throws AdaptiveFallbackException
+    {
         long size;
         if (baseActionElementList == null || (size = baseActionElementList.size()) <= 0)
         {
-            return;
+            return null;
         }
 
         LinearLayout actionButtonsLayout = new LinearLayout(context);
         actionButtonsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        int alignment = hostConfig.getActions().getActionAlignment().swigValue();
+        int alignment = hostConfig.GetActions().getActionAlignment().swigValue();
+
+        int actionButtonsAlignment = Gravity.START | Gravity.TOP; // default gravity
         if (alignment == ActionAlignment.Right.swigValue())
         {
-            actionButtonsLayout.setGravity(Gravity.RIGHT);
+            actionButtonsAlignment = Gravity.RIGHT;
         }
         else if (alignment == ActionAlignment.Center.swigValue())
         {
-            actionButtonsLayout.setGravity(Gravity.CENTER_HORIZONTAL);
+            actionButtonsAlignment = Gravity.CENTER_HORIZONTAL;
         }
+        actionButtonsLayout.setGravity(actionButtonsAlignment);
 
-        int actionButtonsLayoutOrientation = hostConfig.getActions().getActionsOrientation().swigValue();
+        int actionButtonsLayoutOrientation = hostConfig.GetActions().getActionsOrientation().swigValue();
         if (actionButtonsLayoutOrientation == ActionsOrientation.Vertical.swigValue())
         {
             actionButtonsLayout.setOrientation(LinearLayout.VERTICAL);
@@ -67,7 +86,7 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
             actionButtonsLayout.setOrientation(LinearLayout.HORIZONTAL);
         }
 
-        Spacing spacing = hostConfig.getActions().getSpacing();
+        Spacing spacing = hostConfig.GetActions().getSpacing();
         /* Passing false for separator since we do not have any configuration for separator in actionsConfig */
         BaseCardElementRenderer.setSpacingAndSeparator(context, viewGroup, spacing, false, hostConfig, true /* Horizontal Line */);
 
@@ -76,6 +95,11 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
             if(actionButtonsLayoutOrientation == ActionsOrientation.Horizontal.swigValue())
             {
                 HorizontalScrollView actionButtonsContainer = new HorizontalScrollView(context);
+                // Make elements alignment works when not enough space to make them scroll
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                layoutParams.gravity = actionButtonsAlignment;
+                actionButtonsContainer.setLayoutParams(layoutParams);
+
                 actionButtonsContainer.setHorizontalScrollBarEnabled(false);
                 actionButtonsContainer.addView(actionButtonsLayout);
                 viewGroup.addView(actionButtonsContainer);
@@ -87,38 +111,115 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
         }
 
         int i = 0;
-        long maxActions = hostConfig.getActions().getMaxActions();
+        long maxActions = hostConfig.GetActions().getMaxActions();
 
-        boolean allActionsHaveIcons = true;
+        // Allow the actions to have the icon drawn at the top as long as all actions have an icon
+        renderArgs.setAllowAboveTitleIconPlacement(true);
         for(; i < size && i < maxActions; ++i)
         {
             BaseActionElement actionElement = baseActionElementList.get(i);
             if(actionElement.GetIconUrl().isEmpty())
             {
-                allActionsHaveIcons = false;
+                renderArgs.setAllowAboveTitleIconPlacement(false);
                 break;
             }
-        }
-
-        for (i = 0; i < size && i < maxActions; i++)
-        {
-            BaseActionElement actionElement = baseActionElementList.get(i);
-
-            IconPlacement originalIconPlacement = hostConfig.getActions().getIconPlacement();
-            if(!allActionsHaveIcons)
-            {
-                hostConfig.getActions().setIconPlacement(IconPlacement.LeftOfTitle);
-            }
-
-            IBaseActionElementRenderer actionRenderer = CardRendererRegistration.getInstance().getActionRenderer();
-            actionRenderer.render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, cardActionHandler, hostConfig);
-            hostConfig.getActions().setIconPlacement(originalIconPlacement);
         }
 
         if (i >= maxActions && size != maxActions)
         {
             renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.MAX_ACTIONS_EXCEEDED, "A maximum of " + maxActions + " actions are allowed"));
         }
+
+        FeatureRegistration featureRegistration = CardRendererRegistration.getInstance().getFeatureRegistration();
+        for (i = 0; i < size && i < maxActions; i++)
+        {
+            BaseActionElement actionElement = baseActionElementList.get(i);
+
+            IBaseActionElementRenderer actionRenderer = CardRendererRegistration.getInstance().getActionRenderer(actionElement.GetElementTypeString());
+
+            try
+            {
+                if (actionRenderer == null)
+                {
+                    throw new AdaptiveFallbackException(actionElement);
+                }
+
+                if ((featureRegistration != null) && (!actionElement.MeetsRequirements(featureRegistration)))
+                {
+                    throw new AdaptiveFallbackException(actionElement, featureRegistration);
+                }
+
+                actionRenderer.render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, cardActionHandler, hostConfig, renderArgs);
+            }
+            catch (AdaptiveFallbackException e)
+            {
+                boolean elementHasFallback = (actionElement.GetFallbackType() != FallbackType.None);
+
+                if (elementHasFallback)
+                {
+                    if (actionElement.GetFallbackType() == FallbackType.Content)
+                    {
+                        BaseElement fallbackElement = actionElement.GetFallbackContent();
+
+                        while (fallbackElement != null)
+                        {
+                            try
+                            {
+                                BaseActionElement fallbackActionElement = null;
+                                if (fallbackElement instanceof BaseActionElement)
+                                {
+                                    fallbackActionElement = (BaseActionElement) fallbackElement;
+                                }
+                                else if ((fallbackActionElement = BaseActionElement.dynamic_cast(fallbackElement)) == null)
+                                {
+                                    throw new InternalError("Unable to convert BaseElement to BaseActionElement object model.");
+                                }
+
+                                IBaseActionElementRenderer fallbackActionRenderer = CardRendererRegistration.getInstance().getActionRenderer(fallbackActionElement.GetElementTypeString());
+
+                                if (fallbackActionRenderer == null)
+                                {
+                                    throw new AdaptiveFallbackException(fallbackElement);
+                                }
+
+                                if (!fallbackElement.MeetsRequirements(featureRegistration))
+                                {
+                                    throw new AdaptiveFallbackException(fallbackElement, featureRegistration);
+                                }
+
+                                fallbackActionRenderer.render(renderedCard, context, fragmentManager, actionButtonsLayout, fallbackActionElement, cardActionHandler, hostConfig, renderArgs);
+                                break;
+                            }
+                            catch (AdaptiveFallbackException e2)
+                            {
+                                // As the fallback element didn't exist, go back to trying
+                                if (fallbackElement.GetFallbackType() == FallbackType.Content)
+                                {
+                                    fallbackElement = fallbackElement.GetFallbackContent();
+                                }
+                                else
+                                {
+                                    // The element has no fallback, just clear the element so the cycle ends
+                                    fallbackElement = null;
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (renderArgs.getAncestorHasFallback())
+                {
+                    // There's an ancestor with fallback so we throw to trigger it
+                    throw e;
+                }
+                else
+                {
+                    renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.UNKNOWN_ELEMENT_TYPE, "Unsupported card element type: " + actionElement.GetElementTypeString()));
+                    continue;
+                }
+            }
+        }
+
+        return actionButtonsLayout;
     }
 
     private static ActionLayoutRenderer s_instance = null;

@@ -1,15 +1,44 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import * as Enums from "./enums";
 import * as Utils from "./utils";
-import { TextColor } from "./adaptivecards";
+import * as Shared from "./shared";
 
-export class TextColorDefinition {
+export interface IValidationError {
+    error: Enums.ValidationError,
+    message: string;
+}
+
+export class ColorDefinition {
     default: string = "#000000";
     subtle: string = "#666666";
 
-    constructor(obj?: any) {
+    constructor(defaultColor?: string, subtleColor?: string) {
+        if (defaultColor) {
+            this.default = defaultColor;
+        }
+
+        if (subtleColor) {
+            this.subtle = subtleColor;
+        }
+    }
+
+    parse(obj?: any) {
         if (obj) {
             this.default = obj["default"] || this.default;
             this.subtle = obj["subtle"] || this.subtle;
+        }
+    }
+}
+
+export class TextColorDefinition extends ColorDefinition {
+    readonly highlightColors = new ColorDefinition("#22000000", "#11000000");
+
+    parse(obj?: any) {
+        super.parse(obj);
+
+        if (obj) {
+            this.highlightColors.parse(obj["highlightColors"]);
         }
     }
 }
@@ -78,7 +107,7 @@ export class FactTextDefinition {
             this.wrap = obj["wrap"] != null ? obj["wrap"] : this.wrap;
         }
     }
-	
+
     getDefaultWeight() {
 		return Enums.TextWeight.Default;
     }
@@ -97,7 +126,7 @@ export class FactTextDefinition {
 export class FactTitleDefinition extends FactTextDefinition {
     maxWidth?: number = 150;
     weight: Enums.TextWeight = Enums.TextWeight.Bolder;
-	
+
     constructor(obj?: any) {
         super(obj);
 
@@ -106,7 +135,7 @@ export class FactTitleDefinition extends FactTextDefinition {
 			this.weight = Utils.parseHostConfigEnum(Enums.TextWeight, obj["weight"], Enums.TextWeight.Bolder);
         }
     }
-	
+
     getDefaultWeight() {
         return Enums.TextWeight.Bolder;
     }
@@ -130,7 +159,7 @@ export class ShowCardActionConfig {
     actionMode: Enums.ShowCardActionMode = Enums.ShowCardActionMode.Inline;
     inlineTopMargin: number = 16;
     style?: string = Enums.ContainerStyle.Emphasis;
-    
+
     constructor(obj?: any) {
         if (obj) {
             this.actionMode = Utils.parseHostConfigEnum(Enums.ShowCardActionMode, obj["actionMode"], Enums.ShowCardActionMode.Inline);
@@ -173,7 +202,7 @@ export class ActionsConfig {
             this.allowTitleToWrap = obj["allowTitleToWrap"] != null ? obj["allowTitleToWrap"] : this.allowTitleToWrap;
 
             try {
-                let sizeAndUnit = Utils.SizeAndUnit.parse(obj["iconSize"]);
+                let sizeAndUnit = Shared.SizeAndUnit.parse(obj["iconSize"]);
 
                 if (sizeAndUnit.unit == Enums.SizeUnit.Pixel) {
                     this.iconSize = sizeAndUnit.physicalSize;
@@ -198,43 +227,71 @@ export class ActionsConfig {
     }
 }
 
-export class ContainerStyleDefinition {
-    private getTextColorDefinitionOrDefault(obj: any, defaultValue: { default: string, subtle: string }) {
-        return new TextColorDefinition(obj ? obj : defaultValue);
+export class ColorSetDefinition {
+    private parseSingleColor(obj: any, propertyName: string) {
+        if (obj) {
+            (this[propertyName] as TextColorDefinition).parse(obj[propertyName]);
+        }
     }
 
+    default: TextColorDefinition = new TextColorDefinition();
+    dark: TextColorDefinition = new TextColorDefinition();
+    light: TextColorDefinition = new TextColorDefinition();
+    accent: TextColorDefinition = new TextColorDefinition();
+    good: TextColorDefinition = new TextColorDefinition();
+    warning: TextColorDefinition = new TextColorDefinition();
+    attention: TextColorDefinition = new TextColorDefinition();
+
+    constructor(obj?: any) {
+        this.parse(obj);
+    }
+
+    parse(obj: any) {
+        if (obj) {
+            this.parseSingleColor(obj, "default");
+            this.parseSingleColor(obj, "dark");
+            this.parseSingleColor(obj, "light");
+            this.parseSingleColor(obj, "accent");
+            this.parseSingleColor(obj, "good");
+            this.parseSingleColor(obj, "warning");
+            this.parseSingleColor(obj, "attention");
+        }
+    }
+}
+
+export class ContainerStyleDefinition {
     backgroundColor?: string;
 
-    readonly foregroundColors = {
-        default: new TextColorDefinition(),
-        dark: new TextColorDefinition(),
-        light: new TextColorDefinition(),
-        accent: new TextColorDefinition(),
-        good: new TextColorDefinition(),
-        warning: new TextColorDefinition(),
-        attention: new TextColorDefinition()
-    };
+    readonly foregroundColors: ColorSetDefinition = new ColorSetDefinition(
+        {
+            "default": { default: "#333333", subtle: "#EE333333" },
+            "dark": { default: "#000000", subtle: "#66000000" },
+            "light": { default: "#FFFFFF", subtle: "#33000000" },
+            "accent": { default: "#2E89FC", subtle: "#882E89FC" },
+            "good": { default: "#54A254", subtle: "#DD54A254" },
+            "warning": { default: "#E69500", subtle: "#DDE69500" },
+            "attention": { default: "#CC3300", subtle: "#DDCC3300" }
+        }
+    );
+
+    highlightBackgroundColor?: string;
+    highlightForegroundColor?: string;
 
     parse(obj: any) {
         if (obj) {
             this.backgroundColor = obj["backgroundColor"];
 
-            if (obj.foregroundColors) {
-                this.foregroundColors.default = this.getTextColorDefinitionOrDefault(obj.foregroundColors["default"], { default: "#333333", subtle: "#EE333333" });
-                this.foregroundColors.dark = this.getTextColorDefinitionOrDefault(obj.foregroundColors["dark"], { default: "#000000", subtle: "#66000000" });
-                this.foregroundColors.light = this.getTextColorDefinitionOrDefault(obj.foregroundColors["light"], { default: "#FFFFFF", subtle: "#33000000" });
-                this.foregroundColors.accent = this.getTextColorDefinitionOrDefault(obj.foregroundColors["accent"], { default: "#2E89FC", subtle: "#882E89FC" });
-                this.foregroundColors.good = this.getTextColorDefinitionOrDefault(obj.foregroundColors["good"], { default: "#54A254", subtle: "#DD54A254" });
-                this.foregroundColors.warning = this.getTextColorDefinitionOrDefault(obj.foregroundColors["warning"], { default: "#E69500", subtle: "#DDE69500" });
-                this.foregroundColors.attention = this.getTextColorDefinitionOrDefault(obj.foregroundColors["attention"], { default: "#CC3300", subtle: "#DDCC3300" });
-            }
-        }        
+            this.foregroundColors.parse(obj["foregroundColors"]);
+
+            this.highlightBackgroundColor = obj["highlightBackgroundColor"];
+            this.highlightForegroundColor = obj["highlightForegroundColor"];
+        }
     }
 
     constructor(obj?: any) {
         this.parse(obj);
     }
-    
+
     get isBuiltIn(): boolean {
         return false;
     }
@@ -260,10 +317,18 @@ export class ContainerStyleSet {
     constructor(obj?: any) {
         this._allStyles[Enums.ContainerStyle.Default] = new BuiltInContainerStyleDefinition();
         this._allStyles[Enums.ContainerStyle.Emphasis] = new BuiltInContainerStyleDefinition();
+        this._allStyles[Enums.ContainerStyle.Accent] = new BuiltInContainerStyleDefinition();
+        this._allStyles[Enums.ContainerStyle.Good] = new BuiltInContainerStyleDefinition();
+        this._allStyles[Enums.ContainerStyle.Attention] = new BuiltInContainerStyleDefinition();
+        this._allStyles[Enums.ContainerStyle.Warning] = new BuiltInContainerStyleDefinition();
 
         if (obj) {
             this._allStyles[Enums.ContainerStyle.Default].parse(obj[Enums.ContainerStyle.Default]);
             this._allStyles[Enums.ContainerStyle.Emphasis].parse(obj[Enums.ContainerStyle.Emphasis]);
+            this._allStyles[Enums.ContainerStyle.Accent].parse(obj[Enums.ContainerStyle.Accent]);
+            this._allStyles[Enums.ContainerStyle.Good].parse(obj[Enums.ContainerStyle.Good]);
+            this._allStyles[Enums.ContainerStyle.Attention].parse(obj[Enums.ContainerStyle.Attention]);
+            this._allStyles[Enums.ContainerStyle.Warning].parse(obj[Enums.ContainerStyle.Warning]);
 
             const customStyleArray = obj["customStyles"];
 
@@ -324,13 +389,243 @@ export class ContainerStyleSet {
     }
 }
 
+export class Version {
+    private _versionString: string;
+    private _major: number;
+    private _minor: number;
+    private _isValid: boolean = true;
+    private _label: string;
+
+    constructor(major: number = 1, minor: number = 1, label?: string) {
+        this._major = major;
+        this._minor = minor;
+        this._label = label;
+    }
+
+    static parse(versionString: string, errors?: Array<IValidationError>): Version {
+        if (!versionString) {
+            return null;
+        }
+
+        var result = new Version();
+        result._versionString = versionString;
+
+        var regEx = /(\d+).(\d+)/gi;
+        var matches = regEx.exec(versionString);
+
+        if (matches != null && matches.length == 3) {
+            result._major = parseInt(matches[1]);
+            result._minor = parseInt(matches[2]);
+        }
+        else {
+            result._isValid = false;
+        }
+
+        if (!result._isValid && errors) {
+            errors.push(
+                {
+                    error: Enums.ValidationError.InvalidPropertyValue,
+                    message: "Invalid version string: " + result._versionString
+                }
+            );
+        }
+
+        return result;
+    }
+
+    toString(): string {
+        return !this._isValid ? this._versionString : this._major + "." + this._minor;
+    }
+
+    compareTo(otherVersion: Version): number {
+        if (!this.isValid || !otherVersion.isValid) {
+            throw new Error("Cannot compare invalid version.");
+        }
+
+        if (this.major > otherVersion.major) {
+            return 1;
+        }
+        else if (this.major < otherVersion.major) {
+            return -1;
+        }
+        else if (this.minor > otherVersion.minor) {
+            return 1;
+        }
+        else if (this.minor < otherVersion.minor) {
+            return -1;
+        }
+
+        return 0;
+    }
+
+    get label(): string {
+        return this._label ? this._label : this.toString();
+    }
+
+    get major(): number {
+        return this._major;
+    }
+
+    get minor(): number {
+        return this._minor;
+    }
+
+    get isValid(): boolean {
+        return this._isValid;
+    }
+}
+
+export type HostCapabilityVersion = Version | "*";
+export type HostCapabilityMap = { [key: string]: HostCapabilityVersion };
+
+export class HostCapabilities {
+    private setCapability(name: string, version: HostCapabilityVersion) {
+        if (!this.capabilities) {
+            this.capabilities = { };
+        }
+
+        this.capabilities[name] = version;
+    }
+
+    capabilities: HostCapabilityMap = null;
+
+    parse(json: any, errors?: Array<IValidationError>) {
+        if (json) {
+            for (let name in json) {
+                let jsonVersion = json[name];
+
+                if (typeof jsonVersion === "string") {
+                    if (jsonVersion == "*") {
+                        this.setCapability(name, "*");
+                    }
+                    else {
+                        let version = Version.parse(jsonVersion, errors);
+
+                        if (version.isValid) {
+                            this.setCapability(name, version);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    hasCapability(name: string, version: HostCapabilityVersion): boolean {
+        if (this.capabilities && this.capabilities.hasOwnProperty(name)) {
+            if (version == "*" || this.capabilities[name] == "*") {
+                return true;
+            }
+
+            return version.compareTo(<Version>this.capabilities[name]) <= 0;
+        }
+
+        return false;
+    }
+
+    areAllMet(hostCapabilities: HostCapabilities): boolean {
+        if (this.capabilities) {
+            for (let capabilityName in this.capabilities) {
+                if (!hostCapabilities.hasCapability(capabilityName, this.capabilities[capabilityName])) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+}
+
+export interface IFontSizeDefinitions {
+    small: number;
+    default: number;
+    medium: number;
+    large: number;
+    extraLarge: number;
+}
+
+export interface IFontWeightDefinitions {
+    lighter: number;
+    default: number;
+    bolder: number;
+}
+
+export class FontTypeDefinition {
+    static readonly monospace =  new FontTypeDefinition("'Courier New', Courier, monospace");
+
+    fontFamily?: string = "Segoe UI,Segoe,Segoe WP,Helvetica Neue,Helvetica,sans-serif";
+
+    fontSizes: IFontSizeDefinitions = {
+        small: 12,
+        default: 14,
+        medium: 17,
+        large: 21,
+        extraLarge: 26
+    };
+
+    fontWeights: IFontWeightDefinitions = {
+        lighter: 200,
+        default: 400,
+        bolder: 600
+    };
+
+    constructor(fontFamily?: string) {
+        if (fontFamily) {
+            this.fontFamily = fontFamily;
+        }
+    }
+
+    parse(obj?: any) {
+        this.fontFamily = obj["fontFamily"] || this.fontFamily;
+        this.fontSizes = {
+            small: obj.fontSizes && obj.fontSizes["small"] || this.fontSizes.small,
+            default: obj.fontSizes && obj.fontSizes["default"] || this.fontSizes.default,
+            medium: obj.fontSizes && obj.fontSizes["medium"] || this.fontSizes.medium,
+            large: obj.fontSizes && obj.fontSizes["large"] || this.fontSizes.large,
+            extraLarge: obj.fontSizes && obj.fontSizes["extraLarge"] || this.fontSizes.extraLarge
+        };
+        this.fontWeights = {
+            lighter: obj.fontWeights && obj.fontWeights["lighter"] || this.fontWeights.lighter,
+            default: obj.fontWeights && obj.fontWeights["default"] || this.fontWeights.default,
+            bolder: obj.fontWeights && obj.fontWeights["bolder"] || this.fontWeights.bolder
+        };
+    }
+}
+
+export class FontTypeSet {
+    default: FontTypeDefinition;
+    monospace: FontTypeDefinition;
+
+    constructor(obj?: any) {
+        this.default = new FontTypeDefinition();
+        this.monospace = new FontTypeDefinition("'Courier New', Courier, monospace");
+
+        if (obj) {
+            this.default.parse(obj["default"]);
+            this.monospace.parse(obj["monospace"]);
+        }
+    }
+
+    getStyleDefinition(style: Enums.FontType): FontTypeDefinition {
+        switch (style) {
+            case Enums.FontType.Monospace:
+                return this.monospace;
+            case Enums.FontType.Default:
+            default:
+                return this.default;
+        }
+    }
+}
+
 export class HostConfig {
+    readonly hostCapabilities = new HostCapabilities();
+
+    private _legacyFontType: FontTypeDefinition;
+
     choiceSetInputValueSeparator: string = ",";
     supportsInteractivity: boolean = true;
     lineHeights?: ILineHeightDefinitions;
+    fontTypes: FontTypeSet = null;
 
-    fontFamily?: string = "Segoe UI,Segoe,Segoe WP,Helvetica Neue,Helvetica,sans-serif";
-    
     readonly spacing = {
         small: 3,
         default: 8,
@@ -345,19 +640,6 @@ export class HostConfig {
         lineColor: "#EEEEEE"
     };
 
-    readonly fontSizes = {
-        small: 12,
-        default: 14,
-        medium: 17,
-        large: 21,
-        extraLarge: 26
-    };
-    
-    readonly fontWeights = {
-        lighter: 200,
-        default: 400,
-        bolder: 600
-    };
     readonly imageSizes = {
         small: 40,
         medium: 80,
@@ -372,6 +654,7 @@ export class HostConfig {
     readonly factSet: FactSetConfig = new FactSetConfig();
 
     cssClassNamePrefix: string = null;
+    alwaysAllowBleed: boolean = false;
 
     constructor(obj?: any) {
         if (obj) {
@@ -381,14 +664,13 @@ export class HostConfig {
 
             this.choiceSetInputValueSeparator = (obj && typeof obj["choiceSetInputValueSeparator"] === "string") ? obj["choiceSetInputValueSeparator"] : this.choiceSetInputValueSeparator;
             this.supportsInteractivity = (obj && typeof obj["supportsInteractivity"] === "boolean") ? obj["supportsInteractivity"] : this.supportsInteractivity;
-            this.fontFamily = obj["fontFamily"] || this.fontFamily;
-            this.fontSizes = {
-                small: obj.fontSizes && obj.fontSizes["small"] || this.fontSizes.small,
-                default: obj.fontSizes && obj.fontSizes["default"] || this.fontSizes.default,
-                medium: obj.fontSizes && obj.fontSizes["medium"] || this.fontSizes.medium,
-                large: obj.fontSizes && obj.fontSizes["large"] || this.fontSizes.large,
-                extraLarge: obj.fontSizes && obj.fontSizes["extraLarge"] || this.fontSizes.extraLarge
-            };
+
+            this._legacyFontType = new FontTypeDefinition();
+            this._legacyFontType.parse(obj);
+
+            if (obj.fontTypes) {
+                this.fontTypes = new FontTypeSet(obj.fontTypes);
+            }
 
             if (obj.lineHeights) {
                 this.lineHeights = {
@@ -398,12 +680,6 @@ export class HostConfig {
                     large: obj.lineHeights["large"],
                     extraLarge: obj.lineHeights["extraLarge"]
                 };
-            };
-
-            this.fontWeights = {
-                lighter: obj.fontWeights && obj.fontWeights["lighter"] || this.fontWeights.lighter,
-                default: obj.fontWeights && obj.fontWeights["default"] || this.fontWeights.default,
-                bolder: obj.fontWeights && obj.fontWeights["bolder"] || this.fontWeights.bolder
             };
 
             this.imageSizes = {
@@ -434,6 +710,15 @@ export class HostConfig {
         }
     }
 
+    getFontTypeDefinition(style?: Enums.FontType): FontTypeDefinition {
+        if (this.fontTypes) {
+            return this.fontTypes.getStyleDefinition(style);
+        }
+        else {
+            return style == Enums.FontType.Monospace ? FontTypeDefinition.monospace : this._legacyFontType;
+        }
+    }
+
     getEffectiveSpacing(spacing: Enums.Spacing): number {
         switch (spacing) {
             case Enums.Spacing.Small:
@@ -453,21 +738,43 @@ export class HostConfig {
         }
     }
 
-    makeCssClassName(...classNames: string[]): string {
-        let result = "";
+	paddingDefinitionToSpacingDefinition(paddingDefinition: Shared.PaddingDefinition): Shared.SpacingDefinition {
+		return new Shared.SpacingDefinition(
+			this.getEffectiveSpacing(paddingDefinition.top),
+			this.getEffectiveSpacing(paddingDefinition.right),
+			this.getEffectiveSpacing(paddingDefinition.bottom),
+			this.getEffectiveSpacing(paddingDefinition.left));
+    }
 
-        for (let i = 0; i < classNames.length; i++) {
-            if (i > 0) {
-                result += " ";
-            }
+    makeCssClassNames(...classNames: string[]): string[] {
+        let result: string[] = [];
 
-            if (this.cssClassNamePrefix) {
-                result += this.cssClassNamePrefix + "-";
-            }
-
-            result += classNames[i];
+        for (let className of classNames) {
+            result.push((this.cssClassNamePrefix ? this.cssClassNamePrefix + "-" : "") + className);
         }
 
         return result;
+    }
+
+    makeCssClassName(...classNames: string[]): string {
+        let result = this.makeCssClassNames(...classNames).join(" ");
+
+        return result ? result : "";
+    }
+
+    get fontFamily(): string {
+        return this._legacyFontType.fontFamily;
+    }
+
+    set fontFamily(value: string) {
+        this._legacyFontType.fontFamily = value;
+    }
+
+    get fontSizes(): IFontSizeDefinitions {
+        return this._legacyFontType.fontSizes;
+    }
+
+    get fontWeights(): IFontWeightDefinitions {
+        return this._legacyFontType.fontWeights;
     }
 }

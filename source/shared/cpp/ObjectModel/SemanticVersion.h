@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "pch.h"
@@ -7,12 +9,19 @@ namespace AdaptiveSharedNamespace
     class SemanticVersion
     {
     public:
-        SemanticVersion(const std::string &version);
+        SemanticVersion(const std::string& version);
 
-        unsigned int GetMajor()    const { return _major; }
-        unsigned int GetMinor()    const { return _minor; }
-        unsigned int GetBuild()    const { return _build; }
+        unsigned int GetMajor() const { return _major; }
+        unsigned int GetMinor() const { return _minor; }
+        unsigned int GetBuild() const { return _build; }
         unsigned int GetRevision() const { return _revision; }
+
+        operator std::string() const
+        {
+            std::stringstream version{};
+            version << _major << '.' << _minor << '.' << _build << '.'  << _revision;
+            return version.str();
+        }
 
     private:
         unsigned int _major;
@@ -27,7 +36,7 @@ namespace AdaptiveSharedNamespace
             lhs.GetBuild() == rhs.GetBuild() && lhs.GetRevision() == rhs.GetRevision();
     }
 
-    inline bool operator< (const SemanticVersion& lhs, const SemanticVersion& rhs)
+    inline bool operator<(const SemanticVersion& lhs, const SemanticVersion& rhs)
     {
         if (lhs.GetMajor() != rhs.GetMajor())
         {
@@ -52,7 +61,7 @@ namespace AdaptiveSharedNamespace
     }
 
     inline bool operator!=(const SemanticVersion& lhs, const SemanticVersion& rhs) { return !operator==(lhs, rhs); }
-    inline bool operator> (const SemanticVersion& lhs, const SemanticVersion& rhs) { return  operator< (rhs, lhs); }
-    inline bool operator<=(const SemanticVersion& lhs, const SemanticVersion& rhs) { return !operator> (lhs, rhs); }
-    inline bool operator>=(const SemanticVersion& lhs, const SemanticVersion& rhs) { return !operator< (lhs, rhs); }
+    inline bool operator>(const SemanticVersion& lhs, const SemanticVersion& rhs) { return operator<(rhs, lhs); }
+    inline bool operator<=(const SemanticVersion& lhs, const SemanticVersion& rhs) { return !operator>(lhs, rhs); }
+    inline bool operator>=(const SemanticVersion& lhs, const SemanticVersion& rhs) { return !operator<(lhs, rhs); }
 }

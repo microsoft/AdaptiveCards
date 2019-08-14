@@ -1,11 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "ParseUtil.h"
 #include "TimeInput.h"
+#include "Util.h"
 
 using namespace AdaptiveSharedNamespace;
 
-TimeInput::TimeInput() :
-    BaseInputElement(CardElementType::TimeInput)
+TimeInput::TimeInput() : BaseInputElement(CardElementType::TimeInput)
 {
     PopulateKnownPropertiesSet();
 }
@@ -42,7 +44,7 @@ std::string TimeInput::GetMax() const
     return m_max;
 }
 
-void TimeInput::SetMax(const std::string &value)
+void TimeInput::SetMax(const std::string& value)
 {
     m_max = value;
 }
@@ -52,7 +54,7 @@ std::string TimeInput::GetMin() const
     return m_min;
 }
 
-void TimeInput::SetMin(const std::string &value)
+void TimeInput::SetMin(const std::string& value)
 {
     m_min = value;
 }
@@ -62,7 +64,7 @@ std::string TimeInput::GetPlaceholder() const
     return m_placeholder;
 }
 
-void TimeInput::SetPlaceholder(const std::string &value)
+void TimeInput::SetPlaceholder(const std::string& value)
 {
     m_placeholder = value;
 }
@@ -72,20 +74,16 @@ std::string TimeInput::GetValue() const
     return m_value;
 }
 
-void TimeInput::SetValue(const std::string &value)
+void TimeInput::SetValue(const std::string& value)
 {
     m_value = value;
 }
 
-std::shared_ptr<BaseCardElement> TimeInputParser::Deserialize(
-    std::shared_ptr<ElementParserRegistration>,
-    std::shared_ptr<ActionParserRegistration>,
-    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>&,
-    const Json::Value& json)
+std::shared_ptr<BaseCardElement> TimeInputParser::Deserialize(ParseContext& context, const Json::Value& json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::TimeInput);
 
-    std::shared_ptr<TimeInput> timeInput = BaseInputElement::Deserialize<TimeInput>(json);
+    std::shared_ptr<TimeInput> timeInput = BaseInputElement::Deserialize<TimeInput>(context, json);
 
     timeInput->SetMax(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Max));
     timeInput->SetMin(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Min));
@@ -95,19 +93,15 @@ std::shared_ptr<BaseCardElement> TimeInputParser::Deserialize(
     return timeInput;
 }
 
-std::shared_ptr<BaseCardElement> TimeInputParser::DeserializeFromString(
-    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-    const std::string& jsonString)
+std::shared_ptr<BaseCardElement> TimeInputParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
 {
-    return TimeInputParser::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
+    return TimeInputParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 void TimeInput::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max),
-        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min),
-        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder),
-        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)});
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)});
 }

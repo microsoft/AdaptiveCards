@@ -1,4 +1,6 @@
-﻿using System;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using System;
 using System.Globalization;
 using System.IO;
 using System.Windows;
@@ -17,57 +19,7 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             var uiTextBlock = CreateControl(textBlock, context);
 
-            FontColorConfig colorOption;
-            switch (textBlock.Color)
-            {
-                case AdaptiveTextColor.Accent:
-                    colorOption = context.Config.ContainerStyles.Default.ForegroundColors.Accent;
-                    break;
-                case AdaptiveTextColor.Attention:
-                    colorOption = context.Config.ContainerStyles.Default.ForegroundColors.Attention;
-                    break;
-                case AdaptiveTextColor.Dark:
-                    colorOption = context.Config.ContainerStyles.Default.ForegroundColors.Dark;
-                    break;
-                case AdaptiveTextColor.Good:
-                    colorOption = context.Config.ContainerStyles.Default.ForegroundColors.Good;
-                    break;
-                case AdaptiveTextColor.Light:
-                    colorOption = context.Config.ContainerStyles.Default.ForegroundColors.Light;
-                    break;
-                case AdaptiveTextColor.Warning:
-                    colorOption = context.Config.ContainerStyles.Default.ForegroundColors.Warning;
-                    break;
-                case AdaptiveTextColor.Default:
-                default:
-                    colorOption = context.Config.ContainerStyles.Default.ForegroundColors.Default;
-                    break;
-            }
-
-            if (textBlock.IsSubtle)
-                uiTextBlock.SetColor(colorOption.Subtle, context);
-            else
-                uiTextBlock.SetColor(colorOption.Default, context);
-
-            switch (textBlock.Size)
-            {
-                case AdaptiveTextSize.Small:
-                    uiTextBlock.FontSize = context.Config.FontSizes.Small;
-                    break;
-                case AdaptiveTextSize.Medium:
-                    uiTextBlock.FontSize = context.Config.FontSizes.Medium;
-                    break;
-                case AdaptiveTextSize.Large:
-                    uiTextBlock.FontSize = context.Config.FontSizes.Large;
-                    break;
-                case AdaptiveTextSize.ExtraLarge:
-                    uiTextBlock.FontSize = context.Config.FontSizes.ExtraLarge;
-                    break;
-                case AdaptiveTextSize.Default:
-                default:
-                    uiTextBlock.FontSize = context.Config.FontSizes.Default;
-                    break;
-            }
+            uiTextBlock.SetColor(textBlock.Color, textBlock.IsSubtle, context);
 
             if (textBlock.MaxWidth > 0)
             {
@@ -78,7 +30,6 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 var uiGrid = new Grid();
                 uiGrid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-
 
                 // create hidden textBlock with appropriate linebreaks that we can use to measure the ActualHeight
                 // using same style, fontWeight settings as original textblock
@@ -132,30 +83,29 @@ namespace AdaptiveCards.Rendering.Wpf
             var uiTextBlock = (System.Windows.Controls.TextBlock)XamlReader.Load(xmlReader);
             uiTextBlock.Style = context.GetStyle($"Adaptive.{textBlock.Type}");
 
-            uiTextBlock.FontFamily = new FontFamily(context.Config.FontFamily);
             uiTextBlock.TextWrapping = TextWrapping.NoWrap;
 
-            switch (textBlock.Weight)
-            {
-                case AdaptiveTextWeight.Bolder:
-                    uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(700);
-                    break;
-                case AdaptiveTextWeight.Lighter:
-                    uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(300);
-                    break;
-                case AdaptiveTextWeight.Default:
-                default:
-                    uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(400);
-                    break;
-            }
+            uiTextBlock.FontFamily = new FontFamily(RendererUtil.GetFontFamilyFromList(context.Config.GetFontFamily(textBlock.FontType)));
+            uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(context.Config.GetFontWeight(textBlock.FontType, textBlock.Weight));
+            uiTextBlock.FontSize = context.Config.GetFontSize(textBlock.FontType, textBlock.Size);
 
             uiTextBlock.TextTrimming = TextTrimming.CharacterEllipsis;
 
+            if (textBlock.Italic)
+            {
+                uiTextBlock.FontStyle = FontStyles.Italic;
+            }
+
+            if (textBlock.Strikethrough)
+            {
+                uiTextBlock.TextDecorations = TextDecorations.Strikethrough;
+            }
+
             if (textBlock.HorizontalAlignment != AdaptiveHorizontalAlignment.Left)
             {
-                System.Windows.HorizontalAlignment alignment;
-                if (Enum.TryParse<System.Windows.HorizontalAlignment>(textBlock.HorizontalAlignment.ToString(), out alignment))
-                    uiTextBlock.HorizontalAlignment = alignment;
+                System.Windows.TextAlignment alignment;
+                if (Enum.TryParse<System.Windows.TextAlignment>(textBlock.HorizontalAlignment.ToString(), out alignment))
+                    uiTextBlock.TextAlignment = alignment;
             }
 
             if (textBlock.Wrap)
@@ -163,7 +113,6 @@ namespace AdaptiveCards.Rendering.Wpf
 
             return uiTextBlock;
         }
-
 
         private class MultiplyConverter : IValueConverter
         {

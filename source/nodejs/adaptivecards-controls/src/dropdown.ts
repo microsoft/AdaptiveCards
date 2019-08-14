@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import * as Constants from "./constants";
 import { Collection } from "./collection";
 import { InputWithPopup, PopupControl } from "./inputwithpopup";
@@ -115,7 +117,7 @@ export class DropDownPopupControl extends PopupControl {
                 this.selectedIndex = selectedItemIndex;
 
                 e.cancelBubble = true;
-                
+
                 break;
             case Constants.KEY_DOWN:
                 if (selectedItemIndex < 0) {
@@ -132,7 +134,7 @@ export class DropDownPopupControl extends PopupControl {
                 this.selectedIndex = selectedItemIndex;
 
                 e.cancelBubble = true;
-                
+
                 break;
         }
     }
@@ -141,8 +143,8 @@ export class DropDownPopupControl extends PopupControl {
         var renderedElement = super.render(rootElementBounds);
 
         renderedElement.style.minWidth = (rootElementBounds.width / 2) + "px";
-        renderedElement.style.maxWidth = rootElementBounds.width + "px";                
-        
+        renderedElement.style.maxWidth = rootElementBounds.width + "px";
+
         return renderedElement;
     }
 
@@ -185,7 +187,7 @@ export class DropDown extends InputWithPopup<DropDownPopupControl, DropDownItem>
 
     constructor() {
         super();
-        
+
         this._items = new Collection<DropDownItem>();
         this._items.onItemAdded = (item) => { item.onClick = (clickedItem) => { this.itemClicked(clickedItem); }; }
         this._items.onItemRemoved = (item) => { item.onClick = null; }

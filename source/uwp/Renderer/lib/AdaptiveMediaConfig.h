@@ -1,29 +1,30 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "Enums.h"
 #include "HostConfig.h"
 
-AdaptiveNamespaceStart
-    class AdaptiveMediaConfig :
-        public Microsoft::WRL::RuntimeClass<
-        Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        ABI::AdaptiveNamespace::IAdaptiveMediaConfig>
+namespace AdaptiveNamespace
+{
+    class AdaptiveMediaConfig
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, ABI::AdaptiveNamespace::IAdaptiveMediaConfig>
     {
-        AdaptiveRuntime(AdaptiveMediaConfig)
+        AdaptiveRuntime(AdaptiveMediaConfig);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(MediaConfig mediaConfig) noexcept;
 
-        IFACEMETHODIMP get_DefaultPoster(_Out_ HSTRING* defaultPoster);
+        IFACEMETHODIMP get_DefaultPoster(_Outptr_ HSTRING* defaultPoster);
         IFACEMETHODIMP put_DefaultPoster(_In_ HSTRING defaultPoster);
 
-        IFACEMETHODIMP get_PlayButton(_Out_ HSTRING* playButton);
+        IFACEMETHODIMP get_PlayButton(_Outptr_ HSTRING* playButton);
         IFACEMETHODIMP put_PlayButton(_In_ HSTRING playButton);
 
         IFACEMETHODIMP get_AllowInlinePlayback(_Out_ boolean* AllowInlinePlayback);
-        IFACEMETHODIMP put_AllowInlinePlayback(_In_ boolean AllowInlinePlayback);
+        IFACEMETHODIMP put_AllowInlinePlayback(boolean AllowInlinePlayback);
 
     private:
         Microsoft::WRL::Wrappers::HString m_defaultPoster;
@@ -31,4 +32,4 @@ AdaptiveNamespaceStart
         boolean m_allowInlinePlayback;
     };
     ActivatableClass(AdaptiveMediaConfig);
-AdaptiveNamespaceEnd
+}

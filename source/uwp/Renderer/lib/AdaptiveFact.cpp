@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveFact.h"
 #include "Util.h"
@@ -10,14 +12,15 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace
+{
     HRESULT AdaptiveFact::RuntimeClassInitialize() noexcept try
     {
         RuntimeClassInitialize(std::make_shared<Fact>());
         return S_OK;
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
     HRESULT AdaptiveFact::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Fact>& sharedFact)
     {
         RETURN_IF_FAILED(UTF8ToHString(sharedFact->GetTitle(), m_title.GetAddressOf()));
@@ -26,44 +29,19 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveFact::get_Title(HSTRING* title)
-    {
-        return m_title.CopyTo(title);
-    }
+    HRESULT AdaptiveFact::get_Title(_Outptr_ HSTRING* title) { return m_title.CopyTo(title); }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveFact::put_Title(HSTRING title)
-    {
-        return m_title.Set(title);
-    }
+    HRESULT AdaptiveFact::put_Title(_In_ HSTRING title) { return m_title.Set(title); }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveFact::get_Value(HSTRING* value)
-    {
-        return m_value.CopyTo(value);
-    }
+    HRESULT AdaptiveFact::get_Value(_Outptr_ HSTRING* value) { return m_value.CopyTo(value); }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveFact::put_Value(HSTRING value)
-    {
-        return m_value.Set(value);
-    }
+    HRESULT AdaptiveFact::put_Value(_In_ HSTRING value) { return m_value.Set(value); }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveFact::get_Language(HSTRING* language)
-    {
-        return m_language.CopyTo(language);
-    }
+    HRESULT AdaptiveFact::get_Language(_Outptr_ HSTRING* language) { return m_language.CopyTo(language); }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveFact::put_Language(HSTRING language)
-    {
-        return m_language.Set(language);
-    }
+    HRESULT AdaptiveFact::put_Language(_In_ HSTRING language) { return m_language.Set(language); }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveFact::get_ElementType(ElementType* elementType)
+    HRESULT AdaptiveFact::get_ElementType(_Out_ ElementType* elementType)
     {
         *elementType = ElementType::Fact;
         return S_OK;
@@ -81,14 +59,15 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(HStringToUTF8(m_value.Get(), value));
         fact->SetValue(value);
 
-        std::string language;
         if (!(WindowsIsStringEmpty(m_language.Get())))
         {
+            std::string language;
             RETURN_IF_FAILED(HStringToUTF8(m_language.Get(), language));
             fact->SetLanguage(language);
         }
 
         sharedModel = fact;
         return S_OK;
-    } CATCH_RETURN;
-AdaptiveNamespaceEnd
+    }
+    CATCH_RETURN;
+}

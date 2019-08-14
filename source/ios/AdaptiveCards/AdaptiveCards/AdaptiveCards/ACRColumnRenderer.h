@@ -7,10 +7,12 @@
 
 #import "ACRBaseCardElementRenderer.h"
 
-@interface ACRColumnRenderer:ACRBaseCardElementRenderer
+@interface ACRColumnRenderer:ACRBaseCardElementRenderer<ACRIKVONotificationHandler>
 
 @property BOOL fillAlignment;
 
 + (ACRColumnRenderer *)getInstance;
+
+- (void)configUpdateForUIImageView:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView;
 
 @end

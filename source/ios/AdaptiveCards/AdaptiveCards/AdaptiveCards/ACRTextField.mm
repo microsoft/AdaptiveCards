@@ -47,11 +47,11 @@
     if(!_maxLength){
         return YES;
     }
-    
+
     if(range.length + range.location > textField.text.length) {
         return NO;
     }
-    
+
     NSUInteger newLength = [textField.text length] + [string length] - range.length;
     return newLength <= _maxLength;
 }

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import * as Utils from "./utils";
 import * as Constants from "./constants";
 import { Collection } from "./collection";
@@ -71,7 +73,7 @@ export class PopupMenu extends PopupControl {
                 this.selectedIndex = selectedItemIndex;
 
                 e.cancelBubble = true;
-                
+
                 break;
             case Constants.KEY_DOWN:
                 if (selectedItemIndex < 0) {
@@ -88,7 +90,7 @@ export class PopupMenu extends PopupControl {
                 this.selectedIndex = selectedItemIndex;
 
                 e.cancelBubble = true;
-                
+
                 break;
         }
     }
@@ -98,7 +100,6 @@ export class PopupMenu extends PopupControl {
             this._overlayElement = document.createElement("div");
             this._overlayElement.className = "ms-ctrl-overlay";
             this._overlayElement.tabIndex = 0;
-            this._overlayElement.style.zIndex = "1000";
             this._overlayElement.style.width = document.documentElement.scrollWidth + "px";
             this._overlayElement.style.height = document.documentElement.scrollHeight + "px";
             this._overlayElement.onfocus = (e) => { this.closePopup(); };
@@ -114,7 +115,7 @@ export class PopupMenu extends PopupControl {
                 "ms-ctrl-slideRightToLeft",
                 "ms-ctrl-slideTopToBottom",
                 "ms-ctrl-slideRightToLeft");
-            
+
             this._overlayElement.appendChild(this._popupControlElement);
 
             var popupElementBounds = this._popupControlElement.getBoundingClientRect();
@@ -128,8 +129,8 @@ export class PopupMenu extends PopupControl {
             if (availableSpaceAbove < popupElementBounds.height && availableSpaceBelow < popupElementBounds.height) {
                 // Not enough space above or below root element
                 var maxPopupHeight = window.innerHeight;
-    
-                this._popupControlElement.style.maxHeight = maxPopupHeight + "px";                
+
+                this._popupControlElement.style.maxHeight = maxPopupHeight + "px";
 
                 if (maxPopupHeight < popupElementBounds.height) {
                     top = Utils.getScrollY();
@@ -144,8 +145,8 @@ export class PopupMenu extends PopupControl {
                 if (availableSpaceLeft < popupElementBounds.width && availableSpaceRight < popupElementBounds.width) {
                     // Not enough space left or right of root element
                     var maxPopupWidth = window.innerWidth;
-        
-                    this._popupControlElement.style.maxWidth = maxPopupWidth + "px";                
+
+                    this._popupControlElement.style.maxWidth = maxPopupWidth + "px";
 
                     if (maxPopupWidth < popupElementBounds.width) {
                         left = Utils.getScrollX();

@@ -10,7 +10,6 @@
 #import <AdaptiveCards/ACFramework.h>
 #import "AdaptiveCards/ACORemoteResourceInformationPrivate.h"
 
-
 @interface ADCIOSVisualizerTests : XCTestCase
 
 @end
@@ -96,7 +95,8 @@
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
     XCTAssertTrue(cardParseResult && cardParseResult.isValid);
     ACRRenderResult *renderResult = [ACRRenderer render:cardParseResult.card config:_defaultHostConfig widthConstraint:335];
-    ACRTextView *acrTextView = (ACRTextView *)[renderResult.view viewWithTag:kACRTextView];
+    NSString *hashkey = @"FeedbackText";
+    ACRTextView *acrTextView = (ACRTextView *)[renderResult.view viewWithTag:hashkey.hash];
     XCTAssertNotNil(acrTextView);
     XCTAssertTrue([acrTextView.text length] == 0);
 }
@@ -347,6 +347,29 @@
             [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
         }
     }];
+}
+
+- (void)testSharedEnumsCompatabilityTest{
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::ActionSet)      == ACRActionSet);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::AdaptiveCard)   == ACRAdaptiveCard);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::ChoiceInput)    == ACRChoiceInput);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::ChoiceSetInput)  == ACRChoiceSetInput);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::Column)         == ACRColumn);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::ColumnSet)      == ACRColumnSet);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::Container)      == ACRContainer);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::Custom)         == ACRCustom);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::DateInput)      == ACRDateInput);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::Fact)           == ACRFact);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::FactSet)        == ACRFactSet);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::Image)          == ACRImage);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::ImageSet)       == ACRImageSet);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::Media)          == ACRMedia);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::NumberInput)    == ACRNumberInput);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::TextBlock)      == ACRTextBlock);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::TextInput)      == ACRTextInput);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::TimeInput)      == ACRTimeInput);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::ToggleInput)    == ACRToggleInput);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::Unknown)        == ACRUnknown);
 }
 
 @end

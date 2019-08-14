@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveMedia.h"
 #include "Vector.h"
@@ -5,21 +7,21 @@
 using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation::Collections;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace
+{
     HRESULT AdaptiveMedia::RuntimeClassInitialize() noexcept try
     {
         std::shared_ptr<AdaptiveSharedNamespace::Media> media = std::make_shared<AdaptiveSharedNamespace::Media>();
         return RuntimeClassInitialize(media);
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
     HRESULT AdaptiveMedia::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Media>& sharedMedia) try
     {
         if (sharedMedia == nullptr)
         {
             return E_INVALIDARG;
         }
-
 
         RETURN_IF_FAILED(UTF8ToHString(sharedMedia->GetPoster(), m_poster.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedMedia->GetAltText(), m_altText.GetAddressOf()));
@@ -29,41 +31,24 @@ AdaptiveNamespaceStart
 
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedMedia));
         return S_OK;
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveMedia::get_ElementType(ElementType* elementType)
+    HRESULT AdaptiveMedia::get_ElementType(_Out_ ElementType* elementType)
     {
         *elementType = ElementType::Media;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveMedia::get_Poster(HSTRING* value)
-    {
-        return m_poster.CopyTo(value);
-    }
+    HRESULT AdaptiveMedia::get_Poster(_Outptr_ HSTRING* value) { return m_poster.CopyTo(value); }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveMedia::put_Poster(HSTRING value)
-    {
-        return m_poster.Set(value);
-    }
+    HRESULT AdaptiveMedia::put_Poster(_In_ HSTRING value) { return m_poster.Set(value); }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveMedia::get_AltText(HSTRING* value)
-    {
-        return m_altText.CopyTo(value);
-    }
+    HRESULT AdaptiveMedia::get_AltText(_Outptr_ HSTRING* value) { return m_altText.CopyTo(value); }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveMedia::put_AltText(HSTRING value)
-    {
-        return m_altText.Set(value);
-    }
+    HRESULT AdaptiveMedia::put_AltText(_In_ HSTRING value) { return m_altText.Set(value); }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveMedia::get_Sources(IVector<AdaptiveMediaSource*>** sources)
+    HRESULT AdaptiveMedia::get_Sources(_COM_Outptr_ IVector<AdaptiveMediaSource*>** sources)
     {
         return m_sources.CopyTo(sources);
     }
@@ -81,5 +66,6 @@ AdaptiveNamespaceStart
 
         sharedMedia = media;
         return S_OK;
-    } CATCH_RETURN;
-AdaptiveNamespaceEnd
+    }
+    CATCH_RETURN;
+}

@@ -1,4 +1,6 @@
-﻿using System;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using System;
 
 namespace AdaptiveCards.Rendering
 {
@@ -6,7 +8,7 @@ namespace AdaptiveCards.Rendering
     {
         public AdaptiveRenderException()
         {
-            
+
         }
 
         public AdaptiveRenderException(string message) : base(message)

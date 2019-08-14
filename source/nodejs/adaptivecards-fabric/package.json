@@ -1,0 +1,73 @@
+{
+	"name": "adaptivecards-fabric",
+	"version": "1.0.3",
+	"description": "Adaptive Cards Office Fabric based extension",
+	"author": "AdaptiveCards",
+	"license": "MIT",
+	"homepage": "http://adaptivecards.io",
+	"keywords": [
+		"adaptivecards",
+		"adaptive",
+		"cards",
+		"microsoft",
+		"bot"
+	],
+	"main": "lib/index.js",
+	"types": "lib/index.d.ts",
+	"files": [
+		"lib",
+		"dist",
+		"src"
+	],
+	"scripts": {
+		"test": "jest --forceExit --runInBand",
+		"clean": "rimraf build lib dist",
+		"prebuild": "tsc",
+		"build": "webpack",
+		"watch": "webpack --watch",
+		"start": "webpack-dev-server --open --local",
+		"dts": "dts-generator --name adaptivecards-fabric --project . --out dist/adaptivecards-fabric.d.ts",
+		"lint": "tslint -c ../tslint.json 'src/**/*.{ts,tsx}'",
+		"release": "npm run clean && npm run build && npm test && webpack --mode=production && npm run dts"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git://git@github.com/microsoft/AdaptiveCards.git"
+	},
+	"peerDependencies": {
+		"adaptivecards": "^1.1.0",
+		"office-ui-fabric-react": "^6.189.3",
+		"react": "^16.8.6",
+		"react-dom": "^16.8.6"
+	},
+	"devDependencies": {
+		"@types/jest": "^23.3.14",
+		"adaptivecards": "^1.2.0",
+		"jest": "^24.8.0",
+		"office-ui-fabric-react": "^6.195.6",
+		"react": "^16.8.6",
+		"react-dom": "^16.8.6",
+		"rimraf": "^2.6.3",
+		"typescript": "^3.5.3",
+		"webpack": "^4.38.0",
+		"webpack-cli": "^3.3.6",
+		"webpack-dev-server": "^3.7.2"
+	},
+	"jest": {
+		"rootDir": "src",
+		"transform": {
+			"^.+\\.tsx?$": "ts-jest"
+		},
+		"testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+		"moduleFileExtensions": [
+			"ts",
+			"tsx",
+			"js",
+			"jsx",
+			"json"
+		],
+		"modulePathIgnorePatterns": [
+			"TestUtils"
+		]
+	}
+}

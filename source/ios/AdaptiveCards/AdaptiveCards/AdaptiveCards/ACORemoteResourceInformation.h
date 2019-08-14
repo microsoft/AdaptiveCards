@@ -13,4 +13,4 @@
 @property (readonly) NSURL* url;
 @property (readonly) NSString* mimeType;
 
-@end    
+@end

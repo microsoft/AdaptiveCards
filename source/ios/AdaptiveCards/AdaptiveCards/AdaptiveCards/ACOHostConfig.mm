@@ -6,18 +6,19 @@
 //
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "ACOHostConfig.h"
-#import "HostConfig.h"
 #import "AdaptiveCardParseException.h"
+#import "ACOHostConfigPrivate.h"
 #import "ACRErrors.h"
 #import "TextBlock.h"
 #import "ACOBaseCardElement.h"
+#import "Enums.h"
 
 using namespace AdaptiveCards;
 
 @implementation ACOHostConfig
 {
     std::shared_ptr<HostConfig> _config;
+    NSMutableDictionary<NSString *, NSString *> *_fontFamilyNames;
 }
 
 - (instancetype)init
@@ -32,19 +33,29 @@ using namespace AdaptiveCards;
     self = [super init];
     if(self && config){
         _config = config;
+        _fontFamilyNames = [NSMutableDictionary dictionary];
+
         // check if requested font family name is supported by iOS, if so save it for future uses
-        NSString *requestedFontFamilyName = [NSString stringWithCString:_config->fontFamily.c_str() encoding:NSUTF8StringEncoding];
-        if([UIFont.familyNames containsObject:requestedFontFamilyName]){
-            _fontFamilyNames = @[requestedFontFamilyName];
-        }
+        [self importFontFamily: AdaptiveCards::FontType::Default];
+        [self importFontFamily: AdaptiveCards::FontType::Monospace];
+
         _allActionsHaveIcons = YES;
         _buttonPadding = 5;
-        if(!_config->imageBaseUrl.empty()) {
-            NSString *tmpURLString = [NSString stringWithCString:_config->imageBaseUrl.c_str() encoding:NSUTF8StringEncoding];
+        if(!_config->GetImageBaseUrl().empty()) {
+            NSString *tmpURLString = [NSString stringWithCString:_config->GetImageBaseUrl().c_str() encoding:NSUTF8StringEncoding];
             _baseURL = [NSURL URLWithString:tmpURLString];
         }
     }
     return self;
+}
+
+- (void) importFontFamily:(AdaptiveCards::FontType)type
+{
+    NSString *requestedFontFamilyName = [NSString stringWithCString:_config->GetFontFamily(type).c_str() encoding:NSUTF8StringEncoding];
+    if([UIFont.familyNames containsObject:requestedFontFamilyName]){
+        NSString *key = [NSString stringWithCString:FontTypeToString(type).c_str() encoding:NSUTF8StringEncoding];
+        _fontFamilyNames[key] = requestedFontFamilyName;
+    }
 }
 
 + (ACOHostConfigParseResult *)fromJson:(NSString *)payload resourceResolvers:(ACOResourceResolvers *)resolvers
@@ -92,75 +103,34 @@ using namespace AdaptiveCards;
 
 - (NSObject<ACOIResourceResolver> *)getResourceResolverForScheme:(NSString *)scheme
 {
-    if(!scheme) {
-        return nil;
-    }
-
     return [_resolvers getResourceResolverForScheme:scheme];
 }
 
-+ (UIColor *)getTextBlockColor:(ForegroundColor)txtClr
-                  colorsConfig:(ColorsConfig const &)config
-                  subtleOption:(bool)isSubtle
+- (ACOResolverIFType)getResolverIFType:(NSString *)scheme;
 {
-    const std::string *str;
-    switch (txtClr) {
-        case ForegroundColor::Dark:{
-            str = (isSubtle) ?
-                &config.dark.subtleColor: &config.dark.defaultColor;
-            break;
-        }
-        case ForegroundColor::Light:{
-            str = (isSubtle) ?
-                &config.light.subtleColor: &config.light.defaultColor;
-            break;
-        }
-        case ForegroundColor::Accent:{
-            str = (isSubtle) ?
-                &config.accent.subtleColor: &config.accent.defaultColor;
-            break;
-        }
-        case ForegroundColor::Good:{
-            str = (isSubtle) ?
-                &config.good.subtleColor: &config.good.defaultColor;
-            break;
-        }
-        case ForegroundColor::Warning:{
-            str = (isSubtle) ?
-                &config.warning.subtleColor: &config.warning.defaultColor;
-            break;
-        }
-        case ForegroundColor::Attention:{
-            str = (isSubtle) ?
-                &config.attention.subtleColor: &config.attention.defaultColor;
-            break;
-        }
-        default:{
-            str = (isSubtle) ?
-                &config.dark.subtleColor: &config.dark.defaultColor;
-            break;
-        }
-    }
-    
-    return [ACOHostConfig convertHexColorCodeToUIColor:*str];
+    return [_resolvers getResolverIFType:scheme];
 }
 
-- (int)getTextBlockTextSize:(TextSize)txtSz
+- (UIColor *)getHighlightColor:(ACRContainerStyle)style
+               foregroundColor:(ForegroundColor)color
+                  subtleOption:(bool)isSubtle
 {
-    switch (txtSz){
-        case TextSize::Small:
-            return _config->fontSizes.smallFontSize;
-        case TextSize::Default:
-            return _config->fontSizes.defaultFontSize;
-        case TextSize::Medium:
-            return _config->fontSizes.mediumFontSize;
-        case TextSize::Large:
-            return _config->fontSizes.largeFontSize;
-        case TextSize::ExtraLarge:
-            return _config->fontSizes.extraLargeFontSize;
-        default:
-            return _config->fontSizes.defaultFontSize;
-    }
+    const std::string str = _config->GetHighlightColor([ACOHostConfig getSharedContainerStyle:style], color, isSubtle);
+    return [ACOHostConfig convertHexColorCodeToUIColor:str];
+}
+
+- (UIColor *)getTextBlockColor:(ACRContainerStyle)style
+                     textColor:(ForegroundColor)txtClr
+                  subtleOption:(bool)isSubtle
+{
+    const std::string str = _config->GetForegroundColor([ACOHostConfig getSharedContainerStyle:style], txtClr, isSubtle);
+    return [ACOHostConfig convertHexColorCodeToUIColor:str];
+}
+
+- (int)getTextBlockTextSize:(FontType)type
+                   textSize:(TextSize)txtSz
+{
+    return _config->GetFontSize(type, txtSz);
 }
 
 + (NSTextAlignment)getTextBlockAlignment:(HorizontalAlignment) alignment
@@ -189,17 +159,10 @@ using namespace AdaptiveCards;
     }
 }
 
-- (int)getTextBlockFontWeight:(TextWeight)weight
+- (int)getTextBlockFontWeight:(FontType) type
+                   textWeight:(TextWeight)weight
 {
-    switch (weight) {
-        default:
-        case TextWeight::Default:
-            return _config->fontWeights.defaultWeight;
-        case TextWeight::Lighter:
-            return _config->fontWeights.lighterWeight;
-        case TextWeight::Bolder:
-            return _config->fontWeights.bolderWeight;
-    }
+    return _config->GetFontWeight(type, weight);
 }
 
 - (CGSize)getImageSize:(ImageSize)imageSize
@@ -208,21 +171,21 @@ using namespace AdaptiveCards;
     switch (imageSize)
     {
         case ImageSize::Large:{
-            sz = _config->imageSizes.largeSize;
+            sz = _config->GetImageSizes().largeSize;
             break;
         }
         case ImageSize::Medium:{
-            sz = _config->imageSizes.mediumSize;
+            sz = _config->GetImageSizes().mediumSize;
             break;
         }
 
         case ImageSize::Small:{
-            sz = _config->imageSizes.smallSize;
+            sz = _config->GetImageSizes().smallSize;
             break;
         }
 
         default:{
-            sz = _config->imageSizes.largeSize;
+            sz = _config->GetImageSizes().largeSize;
         }
     }
     CGSize cgSize = CGSizeMake(sz, sz);
@@ -298,7 +261,7 @@ using namespace AdaptiveCards;
 }
 // find date and time string, and replace them in NSDateFormatterCompactStyle, NSDateFormatterMediumStyle or
 // NSDateFormatterLongStyle of local language
-+ (std::string) getLocalizedDate:(std::string const) text language:(std::string const) language
++ (std::string)getLocalizedDate:(std::string const &)text language:(std::string const &)language
 {
     std::string dateParsedString;
     std::vector<std::shared_ptr<DateTimePreparsedToken>> DateTimePreparsedTokens =  DateTimePreparser(text).GetTextTokens();
@@ -338,20 +301,20 @@ using namespace AdaptiveCards;
 {
     if((hexColorCode.length() < 2) || (hexColorCode.at(0) != '#') || !isxdigit(hexColorCode.at(1)) ||
        ((hexColorCode.length() != 7) && hexColorCode.length() != 9)) {
-        NSLog(@"invalid hexcolor code is given for background color: %@",
+        NSLog(@"invalid hexcolor code is given: %@",
             [NSString stringWithCString:hexColorCode.c_str() encoding:NSUTF8StringEncoding]);
         return UIColor.clearColor;
     }
-    
+
     UIColor *color = UIColor.clearColor;
-    
+
     try {
         size_t idx = 0;
         long num = std::stoul(hexColorCode.substr(1), &idx, 16), alpha = 0xFF;
         if(hexColorCode.length() == 9) {
             alpha = (num & 0xFF000000) >> 24;
         }
-        
+
         if(idx != hexColorCode.length() - 1) {
             NSLog(@"invalid hexcolor code is given: %@",
                   [NSString stringWithCString:hexColorCode.c_str() encoding:NSUTF8StringEncoding]);
@@ -367,16 +330,13 @@ using namespace AdaptiveCards;
         NSLog(@"invalid hexcolor code is given: %@",
             [NSString stringWithCString:hexColorCode.c_str() encoding:NSUTF8StringEncoding]);
     }
-    
+
     return color;
 }
 
 - (UIColor *)getBackgroundColorForContainerStyle:(ACRContainerStyle)style
 {
-    const std::string &hexColorCode = (style == ACREmphasis)?
-        _config->containerStyles.emphasisPalette.backgroundColor :
-        _config->containerStyles.defaultPalette.backgroundColor;
-  
+    std::string hexColorCode = _config->GetBackgroundColor([ACOHostConfig getSharedContainerStyle:style]);
     return [ACOHostConfig convertHexColorCodeToUIColor:hexColorCode];
 }
 
@@ -387,12 +347,22 @@ using namespace AdaptiveCards;
         case ContainerStyle::None:
             containerStyle = ACRNone;
             break;
-        case ContainerStyle::Default:
-            containerStyle = ACRDefault;
+        case ContainerStyle::Accent:
+            containerStyle = ACRAccent;
+            break;
+        case ContainerStyle::Attention:
+            containerStyle = ACRAttention;
             break;
         case ContainerStyle::Emphasis:
             containerStyle = ACREmphasis;
             break;
+        case ContainerStyle::Good:
+            containerStyle = ACRGood;
+            break;
+        case ContainerStyle::Warning:
+            containerStyle = ACRWarning;
+            break;
+        case ContainerStyle::Default:
         default:
             containerStyle = ACRDefault;
             break;
@@ -400,4 +370,47 @@ using namespace AdaptiveCards;
     return containerStyle;
 }
 
++ (ContainerStyle)getSharedContainerStyle:(ACRContainerStyle)style
+{
+    ContainerStyle containerStyle = ContainerStyle::Default;
+    switch (style) {
+        case ACRContainerStyle::ACRNone:
+            containerStyle = ContainerStyle::None;
+            break;
+        case ACRContainerStyle::ACRAccent:
+            containerStyle = ContainerStyle::Accent;
+            break;
+        case ACRContainerStyle::ACRAttention:
+            containerStyle = ContainerStyle::Attention;
+            break;
+        case ACRContainerStyle::ACREmphasis:
+            containerStyle = ContainerStyle::Emphasis;
+            break;
+        case ACRContainerStyle::ACRGood:
+            containerStyle = ContainerStyle::Good;
+            break;
+        case ACRContainerStyle::ACRWarning:
+            containerStyle = ContainerStyle::Warning;
+            break;
+        case ACRContainerStyle::ACRDefault:
+        default:
+            containerStyle = ContainerStyle::Default;
+            break;
+    }
+    return containerStyle;
+}
+
+- (NSString *)getFontFamily:(AdaptiveCards::FontType)type
+{
+    NSString *key = [NSString stringWithCString:FontTypeToString(type).c_str() encoding:NSUTF8StringEncoding];
+    return _fontFamilyNames[key];
+}
+
+- (ACRIconPlacement)getIconPlacement
+{
+    if(IconPlacement::AboveTitle == _config->GetActions().iconPlacement) {
+        return ACRAboveTitle;
+    }
+    return ACRLeftOfTitle;
+}
 @end
