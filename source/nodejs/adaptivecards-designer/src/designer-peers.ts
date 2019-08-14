@@ -2067,7 +2067,6 @@ export class FactSetPeer extends TypedCardElementPeer<Adaptive.FactSet> {
 }
 
 export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCardElementPeer<TInput> {
-    static readonly titleProperty = new StringPropertyEditor(Versions.v1_0, "title", "Title");
     static readonly defaultValueProperty = new StringPropertyEditor(Versions.v1_0, "defaultValue", "Default value");
     static readonly validationProperty = new CompoundPropertyEditor(
         Versions.vNext, 
@@ -2082,22 +2081,12 @@ export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCard
         super.populatePropertySheet(propertySheet, defaultCategory);
         
         propertySheet.add(
-            defaultCategory,
-            InputPeer.titleProperty);
-
-        propertySheet.add(
             "Validation",
             InputPeer.validationProperty);
 
         propertySheet.remove(
             CardElementPeer.horizontalAlignmentProperty,
             CardElementPeer.heightProperty);
-    }
-
-    initializeCardElement() {
-        super.initializeCardElement();
-
-        this.cardElement.title = "New Input.Toggle";
     }
 }
 
@@ -2207,6 +2196,7 @@ export class TimeInputPeer extends InputPeer<Adaptive.TimeInput> {
 }
 
 export class ToggleInputPeer extends InputPeer<Adaptive.ToggleInput> {
+    static readonly titleProperty = new StringPropertyEditor(Versions.v1_0, "title", "Title");
     static readonly valueOnProperty = new StringPropertyEditor(Versions.v1_0, "valueOn", "Value when on");
     static readonly valueOffProperty = new StringPropertyEditor(Versions.v1_0, "valueOff", "Value when off");
     static readonly wrapProperty = new BooleanPropertyEditor(Versions.v1_2, "wrap", "Wrap");
@@ -2216,6 +2206,7 @@ export class ToggleInputPeer extends InputPeer<Adaptive.ToggleInput> {
         
         propertySheet.add(
             defaultCategory,
+            ToggleInputPeer.titleProperty,
             ToggleInputPeer.valueOnProperty,
             ToggleInputPeer.valueOffProperty,
             ToggleInputPeer.defaultValueProperty);
@@ -2223,6 +2214,10 @@ export class ToggleInputPeer extends InputPeer<Adaptive.ToggleInput> {
         propertySheet.add(
             PropertySheetCategory.LayoutCategory,
             ToggleInputPeer.wrapProperty);
+    }
+
+    initializeCardElement() {
+        this.cardElement.title = "New Input.Toggle";
     }
 }
 
@@ -2234,7 +2229,7 @@ export class ChoiceSetInputPeer extends InputPeer<Adaptive.ChoiceSetInput> {
     static readonly choicesProperty = new NameValuePairPropertyEditor(
         Versions.v1_0, 
         "choices",
-        "name",
+        "title",
         "value",
         (name: string, value: string) => { return new Adaptive.Choice(name, value); },
         "Title",
