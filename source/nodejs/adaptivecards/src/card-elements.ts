@@ -3731,14 +3731,25 @@ export class RatingInput extends Input {
     internalValidateProperties(context: ValidationResults) {
 		super.internalValidateProperties(context);
 		
-		const MIN_RATING_COUNT: number = 1;
+		const MIN_RATING_SCALE: number = 1;
+		const MAX_RATING_SCALE: number = 20;
 
-		if (this.maxValue < MIN_RATING_COUNT) {
+		// If the author gives a maxValue outside [MIN, MAX], the renderer will display
+		// the default number of ratings as defined in internalRender() above
+		if (this.maxValue < MIN_RATING_SCALE) {
             context.addFailure(
                 this,
                 {
 					error: Enums.ValidationError.InvalidPropertyValue,
-                    message: "An Input.Rating must have at least " + MIN_RATING_COUNT + " possible rating(s)."
+                    message: "An Input.Rating must have at least " + MIN_RATING_SCALE + " possible rating(s)."
+                });
+		}
+		if (this.maxValue > MAX_RATING_SCALE) {
+            context.addFailure(
+                this,
+                {
+					error: Enums.ValidationError.InvalidPropertyValue,
+                    message: "An Input.Rating can't have more than " + MAX_RATING_SCALE + " possible ratings."
                 });
         }
     }
