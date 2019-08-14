@@ -7,8 +7,8 @@ var marked = require("marked");
 var fs = require("fs");
 var path = require("path");
 
-hexo.extend.helper.register('propertiesDetails', function (properties, elementVersion, isSpec) {
-	const trysamplelink = hexo.extend.helper.get('trysamplelink').bind(hexo);
+hexo.extend.helper.register('properties_details', function (properties, elementVersion, isSpec) {
+	const codeAndCard = hexo.extend.helper.get('code_and_card').bind(hexo);
 
 	var html = '<h2 class="w3-container">Properties</h2>';
 
@@ -26,25 +26,7 @@ hexo.extend.helper.register('propertiesDetails', function (properties, elementVe
 			property.cardExamples.forEach(function (example, i) {
 				var sampleHtml = "";
 				try {
-					if (i === 0) {
-						sampleHtml += '<h4 class="w3-container">Example</h4>';
-					}
-
-					var exampleContent = fs.readFileSync(example, "utf8");
-
-					sampleHtml += '<div class="w3-row reverse-order-mobile">';
-
-					sampleHtml += '<div class="w3-container w3-col s12 m7 l8 code-snippet">';
-					sampleHtml += "<pre><code class='json'>" + exampleContent + "</code></pre>";
-					sampleHtml += "</div>";
-
-					sampleHtml += '<div class="w3-container w3-col s12 m5 l4">';
-					sampleHtml += '<div class="adaptivecard">' + exampleContent + '</div>';
-					sampleHtml += trysamplelink(path.basename(example));
-					sampleHtml += '</div>';
-
-					sampleHtml += '</div>'; // w3-cell-row
-
+					sampleHtml += codeAndCard(example);
 					html += sampleHtml;
 				} catch (err) {
 					// Do nothing

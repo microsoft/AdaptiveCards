@@ -11,10 +11,9 @@ hexo.extend.helper.register('code_and_card', function (jsonPath) {
 	const designerUrl = url_for(`/designer/index.html?card=${payloadUrl}`);
 
 	return `
-	<div class="w3-cell-row reverse-order-mobile code-and-card">
+	<div class="w3-cell-row w3-margin-bottom reverse-order-mobile code-and-card">
 
 		<div class="w3-container w3-cell w3-mobile w3-rest code-snippet">
-			
 			<div class="codeHeader">
 				<span class="language">JSON</span>
 				<button aria-label="Copy code" class="action copy-code">
@@ -25,7 +24,6 @@ hexo.extend.helper.register('code_and_card', function (jsonPath) {
 		</div>
 	
 		<div class="w3-container w3-cell w3-mobile card" >
-
 			<div class="codeHeader">
 				<span class="language">Adaptive Card</span>
 				<button data-designer-url="${designerUrl}" aria-label="Try it yourself" class="w3-button w3-blue action try-adaptivecard">
@@ -33,8 +31,8 @@ hexo.extend.helper.register('code_and_card', function (jsonPath) {
 				</button>
 			</div>
 			<div class="adaptivecard">${get_content(jsonPath)}</div>
-
 		</div>
+		
 	</div>`;
 
 });

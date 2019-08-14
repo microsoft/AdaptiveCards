@@ -190,7 +190,7 @@ h6 {
 	}
 
 	.adaptivecard {
-		max-width: calc(100vw - 49px);
+		max-width: calc(100vw - 50px);
 	}
 }
 
