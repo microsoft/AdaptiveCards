@@ -11,7 +11,34 @@
   <attr path="/api/package[@name='io.adaptivecards.renderer.readonly']" name="managedName">AdaptiveCards.Rendering.Xamarin.Android.Renderer.Readonly</attr>
   <attr path="/api/package[@name='io.adaptivecards.renderer.registration']" name="managedName">AdaptiveCards.Rendering.Xamarin.Android.Renderer.Registration</attr>
 
-  <!-- Remove these members because they are causing issues
+  <attr path="/api/package[@name='io.adaptivecards.objectmodel']/class[@name='AdaptiveCardParseWarningVector']/ method[@name='get']" name="managedReturn">Java.Lang.Object</attr>
+  <attr path="/api/package[@name='io.adaptivecards.objectmodel']/class[@name='BaseActionElementVector']/ method[@name='get']" name="managedReturn">Java.Lang.Object</attr>
+  <attr path="/api/package[@name='io.adaptivecards.objectmodel']/class[@name='BaseCardElementVector']/ method[@name='get']" name="managedReturn">Java.Lang.Object</attr>
+  <attr path="/api/package[@name='io.adaptivecards.objectmodel']/class[@name='CharVector']/ method[@name='get']" name="managedReturn">Java.Lang.Object</attr>
+  <attr path="/api/package[@name='io.adaptivecards.objectmodel']/class[@name='ColumnVector']/ method[@name='get']" name="managedReturn">Java.Lang.Object</attr>
+  <attr path="/api/package[@name='io.adaptivecards.objectmodel']/class[@name='ChoiceInputVector']/ method[@name='get']" name="managedReturn">Java.Lang.Object</attr>
+  <attr path="/api/package[@name='io.adaptivecards.objectmodel']/class[@name='DateTimePreparsedTokenVector']/ method[@name='get']" name="managedReturn">Java.Lang.Object</attr>
+  <attr path="/api/package[@name='io.adaptivecards.objectmodel']/class[@name='FactVector']/ method[@name='get']" name="managedReturn">Java.Lang.Object</attr>
+  <attr path="/api/package[@name='io.adaptivecards.objectmodel']/class[@name='ImageVector']/ method[@name='get']" name="managedReturn">Java.Lang.Object</attr>
+  <attr path="/api/package[@name='io.adaptivecards.objectmodel']/class[@name='InlineVector']/ method[@name='get']" name="managedReturn">Java.Lang.Object</attr>
+  <attr path="/api/package[@name='io.adaptivecards.objectmodel']/class[@name='MediaSourceVector']/ method[@name='get']" name="managedReturn">Java.Lang.Object</attr>
+  <attr path="/api/package[@name='io.adaptivecards.objectmodel']/class[@name='RemoteResourceInformationVector']/ method[@name='get']" name="managedReturn">Java.Lang.Object</attr>
+  <attr path="/api/package[@name='io.adaptivecards.objectmodel']/class[@name='ToggleVisibilityTargetVector']/ method[@name='get']" name="managedReturn">Java.Lang.Object</attr>
+
+    <remove-node path="/api/package[@name='io.adaptivecards.objectmodel']/class[@name='StringVector']" />  
+    <!--
+  <attr path="/api/package[@name='io.adaptivecards.objectmodel']/class[@name='StringVector']/ method[@name='get']" name="managedReturn">Java.Lang.Object</attr>
+  
+    <attr path="/api/package[@name='io.adaptivecards.objectmodel']/class[@name='StringVector']/constructor[@name='StringVector' and count(parameter)=2 and parameter[1][@type='int'] and parameter[2][@type='java.lang.String']]/parameter[2]" name="managedType">Java.Lang.Object</attr>
+  <attr path="/api/package[@name='io.adaptivecards.objectmodel']/class[@name='StringVector']/constructor[@name='StringVector' and count(parameter)=1 and parameter[1][@type='java.lang.String[]']]/parameter[1]" name="managedType">Java.Lang.Object[]</attr>
+  <attr path="/api/package[@name='io.adaptivecards.objectmodel']/class[@name='StringVector']/method[@name='add' and count(parameter)=2 and parameter[1][@type='int'] and parameter[2][@type='java.lang.String']]/parameter[2]" name="managedType">Java.Lang.Object</attr>
+  <attr path="/api/package[@name='io.adaptivecards.objectmodel']/class[@name='StringVector']/method[@name='add' and count(parameter)=1 and parameter[1][@type='java.lang.String']]/parameter[1]" name="managedType">Java.Lang.Object</attr>
+  <attr path="/api/package[@name='io.adaptivecards.objectmodel']/class[@name='StringVector']/method[@name='set' and count(parameter)=2 and parameter[1][@type='int'] and parameter[2][@type='java.lang.String']]/parameter[2]" name="managedType">Java.Lang.Object</attr>
+    -->
+  <attr path="/api/package[@name='io.adaptivecards.renderer']/class[@name='BackgroundImageLoaderAsync']/ method[@name='doInBackground']" name="managedReturn">Java.Lang.Object</attr>
+  <attr path="/api/package[@name='io.adaptivecards.renderer']/class[@name='BackgroundImageLoaderAsync']/ method[@name='doInBackground' and count(parameter)=1 and parameter[1][@type='java.lang.String...']]/parameter[1]" name="managedType">Java.Lang.Object[]</attr>
+
+    <!-- Remove these members because they are causing issues
   <remove-node path="/api/package[@name='io.adaptivecards.renderer']/class[@name='MediaLoaderAsync']" />
   -->
   <add-node path="/api/package[@name='io.adaptivecards.renderer']">

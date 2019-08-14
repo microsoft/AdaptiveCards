@@ -176,6 +176,18 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
 			// aapt resource value: 0x7f010064
 			public const int activityChooserViewStyle = 2130772068;
 			
+			// aapt resource value: 0x7f0100e4
+			public const int adaptiveActionDestructive = 2130772196;
+			
+			// aapt resource value: 0x7f0100e5
+			public const int adaptiveActionPositive = 2130772197;
+			
+			// aapt resource value: 0x7f0100e6
+			public const int adaptiveInlineAction = 2130772198;
+			
+			// aapt resource value: 0x7f0100e7
+			public const int adaptiveInlineActionImage = 2130772199;
+			
 			// aapt resource value: 0x7f010088
 			public const int alertDialogButtonGroupStyle = 2130772104;
 			
@@ -3389,6 +3401,12 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
 			
 			// aapt resource value: 0x7f08015e
 			public const int Widget_AppCompat_Toolbar_Button_Navigation = 2131231070;
+			
+			// aapt resource value: 0x7f08015f
+			public const int adaptiveInlineAction = 2131231071;
+			
+			// aapt resource value: 0x7f080160
+			public const int adaptiveInlineActionImage = 2131231072;
 			
 			static Style()
 			{
