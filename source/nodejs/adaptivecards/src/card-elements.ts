@@ -3552,21 +3552,20 @@ export class ChoiceSetInput extends Input {
  * 5 stars. Unselected stars are white with black borders, selected stars are gold.
  */
 export class RatingInput extends Input {
-    private static uniqueCategoryCounter = 0;
-
+	private static uniqueCategoryCounter = 0;
+	private static readonly DEFAULT_RATING_SCALE: number = 5;
+	private static readonly MIN_RATING_SCALE: number = 1;
+	private static readonly MAX_RATING_SCALE: number = 20;
+	
     private static getUniqueCategoryName(): string {
         let uniqueCategoryName = "__ac-category" + RatingInput.uniqueCategoryCounter;
-
         RatingInput.uniqueCategoryCounter++;
-
         return uniqueCategoryName;
     }
-
     private _toggleInputs: Array<HTMLInputElement>;
 
 	protected internalRender(): HTMLElement {
-		const NOT_CLICKED: number = -1;
-		const DEFAULT_RATING_SCALE: number = 5;
+		const NOT_CLICKED_FLAG: number = -1;
 
 		// Note: explore changing these from images to CSS "shapes"
 		// otherwise, host on Azure
@@ -3585,10 +3584,14 @@ export class RatingInput extends Input {
 
 		let iconUnselected = this.iconUnselected ? this.iconUnselected : defaulticonUnselected;
 		let iconSelected = this.iconSelected ? this.iconSelected : defaulticonSelected;
-		let maxValue: number = this.maxValue ? this.maxValue : DEFAULT_RATING_SCALE;
-
+		let maxValue: number = this.maxValue ? this.maxValue : RatingInput.DEFAULT_RATING_SCALE;
 		let labels: Label[] = new Array(maxValue);
 		let labelElements: HTMLElement[] = new Array(maxValue);
+
+		if (maxValue < RatingInput.MIN_RATING_SCALE || maxValue > RatingInput.MAX_RATING_SCALE) {
+			throw new Error("The Input.Rating control must have between " + RatingInput.MIN_RATING_SCALE
+				+ " and " + RatingInput.MAX_RATING_SCALE + " maximum possible ratings.");
+		}
 
 		for (let i = 0; i < maxValue; i++) {
 			let radioInput = document.createElement("input");
@@ -3634,7 +3637,7 @@ export class RatingInput extends Input {
 			textFirstElementChild.style.overflow = "hidden";
 			textFirstElementChild.style.marginBottom = "-20px";
 
-			var ratingClicked: number = NOT_CLICKED;
+			var ratingClicked: number = NOT_CLICKED_FLAG;
 
 			// when hovering over an icon, replace that and all preceding icons with the iconSelected image
 			labelElements[i].onmouseover = function () {
@@ -3648,7 +3651,7 @@ export class RatingInput extends Input {
 
 			// when leaving an icon (i.e. we stop hovering), return to previous state
 			labelElements[i].onmouseleave = function () {
-				if (ratingClicked == NOT_CLICKED) {
+				if (ratingClicked == NOT_CLICKED_FLAG) {
 					for (let j = 0; j <= i; j++) {
 						labelElements[j].style.backgroundImage = "url('" + iconUnselected + "')";
 					}
@@ -3686,11 +3689,8 @@ export class RatingInput extends Input {
 			Utils.appendChild(compoundInput, radioInput);
 			Utils.appendChild(compoundInput, spacerElement);
 			Utils.appendChild(compoundInput, labelElements[i]);
-
 			Utils.appendChild(element, compoundInput);
-
 		}
-
 		return element;
 	}
 	
@@ -3698,10 +3698,6 @@ export class RatingInput extends Input {
 	maxValue: number;
 	iconSelected: string;
 	iconUnselected: string;
-
-	private newMethod() {
-		return this;
-	}
 
     getJsonTypeName(): string {
         return "Input.Rating";
@@ -3711,7 +3707,7 @@ export class RatingInput extends Input {
         let result = super.toJSON();
 
 		if (this.maxValue > 0) {
-            var ratings = [];
+            let ratings = [];
 
 			for (let i = 0; i < this.maxValue; i++) {
 				let rating: Choice;
@@ -3719,37 +3715,29 @@ export class RatingInput extends Input {
 				rating.value = (i + 1).toString();
 				ratings.push(rating.toJSON());
 			}
-
             Utils.setProperty(result, "choices", ratings);
 		}
-		
         Utils.setProperty(result, "wrap", this.wrap, false);
-		
-        return result;
+		return result;
     }
 
     internalValidateProperties(context: ValidationResults) {
 		super.internalValidateProperties(context);
-		
-		const MIN_RATING_SCALE: number = 1;
-		const MAX_RATING_SCALE: number = 20;
 
-		// If the author gives a maxValue outside [MIN, MAX], the renderer will display
-		// the default number of ratings as defined in internalRender() above
-		if (this.maxValue < MIN_RATING_SCALE) {
+		if (this.maxValue < RatingInput.MIN_RATING_SCALE) {
             context.addFailure(
                 this,
                 {
 					error: Enums.ValidationError.InvalidPropertyValue,
-                    message: "An Input.Rating must have at least " + MIN_RATING_SCALE + " possible rating(s)."
+                    message: "An Input.Rating must have at least " + RatingInput.MIN_RATING_SCALE + " possible rating(s)."
                 });
 		}
-		if (this.maxValue > MAX_RATING_SCALE) {
+		if (this.maxValue > RatingInput.MAX_RATING_SCALE) {
             context.addFailure(
                 this,
                 {
 					error: Enums.ValidationError.InvalidPropertyValue,
-                    message: "An Input.Rating can't have more than " + MAX_RATING_SCALE + " possible ratings."
+                    message: "An Input.Rating can't have more than " + RatingInput.MAX_RATING_SCALE + " possible ratings."
                 });
         }
     }
@@ -3787,7 +3775,6 @@ export class RatingInput extends Input {
 				return this._toggleInputs[i].value;
 			}
 		}
-
 		return null;
     }
 }

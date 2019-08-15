@@ -8,9 +8,9 @@
 | -------- | ---- | -------- | ----------- | ------- |
 | **type** | `"Input.Rating"` | Yes | Must be `"Input.Rating"`. | 1.3 |
 | **id** | `string` | Yes | Unique identifier for the value. Used to identify collected input when the Submit action is performed. | 1.3 |
-| **maxValue** | `number` | No | How many icons show up, defaults to 5 | 1.3 |
-| **iconSelected** | `uri` | No | Url to selected icon, defaults to star | 1.3 |
-| **iconUnselected** | `uri` | No | Url to unselected icon, defaults to star | 1.3 |
+| **maxValue** | `number` | No | How many icons appear in the card (default 5). Must be between 1 and 20, inclusive. The card will not render if given a value outside that range. | 1.3 |
+| **iconSelected** | `uri` | No | Url to selected icon, defaults to a yellow star | 1.3 |
+| **iconUnselected** | `uri` | No | Url to unselected icon, defaults to a white star with a black border | 1.3 |
 
 **Inherited properties**
 

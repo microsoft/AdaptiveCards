@@ -3,6 +3,6 @@
 import {RatingInput} from "../../card-elements";
 
 test('RatingInput should be instantiated', ()=>{
-    const RatingInput = new RatingInput();
+    const ratingInput = new RatingInput();
     expect(RatingInput).toEqual(expect.anything());
 })
