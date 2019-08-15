@@ -1,5 +1,5 @@
 ---
-title: Community Call - February 14, 2019
+title: 📣 Community Call - February 14, 2019
 subtitle: "Sneak preview: Data binding in Adaptive Cards"
 date: 2019-02-14
 featured_image: https://developer.microsoft.com/en-us/office/blogs/wp-content/uploads/2019/02/Adaptive-cards-cards-stock-bot-image-1024x977.png

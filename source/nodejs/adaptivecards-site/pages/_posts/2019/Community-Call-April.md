@@ -1,5 +1,5 @@
 ---
-title: Community Call - April 11, 2019
+title: 📣 Community Call - April 11, 2019
 subtitle: Update on v1.2 release and a new way to sync the designer with an Android device
 date: 2019-04-11
 featured_image: https://developer.microsoft.com/en-us/graph/blogs/wp-content/uploads/2019/04/image-1.jpg

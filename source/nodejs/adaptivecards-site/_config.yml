@@ -17,6 +17,63 @@ root: /
 permalink: blog/:title/
 permalink_defaults:
 
+# Home page
+home:
+  made_for:
+    - title: Android
+      fa: fa-android
+      href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/android/getting-started
+    - title: iOS
+      fa: fa-apple
+      href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/ios/getting-started
+    - title: JavaScript
+      fa: fa-jsfiddle
+      href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/javascript/getting-started
+    - title: ASP.NET
+      fa: fa-html5
+      href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/net-html/getting-started
+    - title: .NET WPF
+      fa: fa-window-maximize
+      href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/net-wpf/getting-started
+    - title: Windows
+      fa: fa-windows
+      href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/uwp/getting-started
+    - title: ReactNative
+      fa: fa-jsfiddle
+      href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/react-native/getting-started
+  releases:
+    - title: v1.2
+      href: https://github.com/microsoft/AdaptiveCards/releases/tag/v1.2.0
+      fa: fa-download
+      tag: Latest
+      tag_class: w3-blue
+    - title: v1.3
+      href: https://portal.productboard.com/adaptivecards/1-adaptive-cards-portal/tabs/4-1-3-proposed/tabs/1-under-consideration
+      fa: fa-calendar
+      tag: In Development
+      tag_class: w3-light-gray
+
+# Footer
+footer:
+  learn_links:
+    - title: Check out sample cards
+      href: /samples
+    - title: Explore the schema
+      href: /explorer
+    - title: Embed the designer
+      href: https://docs.microsoft.com/adaptive-cards/sdk/designer
+    - title: Host App Status
+      href: https://docs.microsoft.com/en-us/adaptive-cards/resources/partners
+    - title: Take advantage of Templating
+      href: https://docs.microsoft.com/en-us/adaptive-cards/templating/
+    - title: Join our monthly Community Calls
+      href: https://aka.ms/adaptivecardscommunitycall
+    - title: Find us on GitHub
+      href: https://github.com/Microsoft/AdaptiveCards
+    - title: Roadmap
+      href: https://portal.productboard.com/adaptivecards/1-adaptive-cards-portal/tabs/4-1-3-proposed/tabs/1-under-consideration
+      
+
 # Directory
 source_dir: pages
 public_dir: public
@@ -25,7 +82,7 @@ archive_dir: blog
 category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
-skip_render:
+skip_render: _posts/**/*.json
 
 # Writing
 new_post_name: :title.md # File name of new posts
@@ -43,7 +100,6 @@ highlight:
   auto_detect: false
   tab_replace: '  '
   
-
 # Home page setting
 # path: Root path for your blogs index page. (default = '')
 # per_page: Posts displayed per page. (0 = disable pagination)
@@ -69,6 +125,7 @@ time_format: HH:mm:ss
 ## Set per_page to 0 to disable pagination
 per_page: 0
 pagination_dir: page
+
 
 # Extensions
 ## Plugins: https://hexo.io/plugins/

@@ -12,8 +12,16 @@ hexo.extend.filter.register('before_post_render', function (data) {
 	const github_username = frontMatter.github_username;
 	data.image = frontMatter.featured_image;
 	data.subtitle = frontMatter.subtitle;
-
+	data.author = {
+		github_username: "Microsoft/AdaptiveCards",
+		avatar: "https://adaptivecards.io/content/adaptive-cards-100.png",
+		name: "Adaptive Cards Team",
+		bio: "Break outside the box of templated cards",
+		webpage: "https://adaptivecards.io"
+	};
+	
 	if (github_username) {
+		// TODO: cache this
 		return request({
 			uri: `https://api.github.com/users/${github_username}`,
 			headers: {
@@ -34,12 +42,6 @@ hexo.extend.filter.register('before_post_render', function (data) {
 		});
 	} else {
 		console.log(`WARN: No GitHub username in page: ${data.source}`);
-		data.author = {
-			github_username: "Microsoft/AdaptiveCards",
-			avatar: "https://adaptivecards.io/content/adaptive-cards-100.png",
-			name: "Adaptive Cards Team",
-			bio: "Break outside the box of templated cards",
-			webpage: "https://adaptivecards.io"
-		};
+		
 	}
 });

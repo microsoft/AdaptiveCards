@@ -1,5 +1,5 @@
 ---
-title: Community Call - July 11, 2019
+title: 📣 Community Call - July 11, 2019
 subtitle: Adaptive Cards 💙 Fabric, and a new Template Service prototype
 date: 2019-07-11
 featured_image: https://developer.microsoft.com/en-us/access/blogs/wp-content/uploads/2019/07/Standard-Adaptive-Card-payload-using-Microsoft-UI-Fabric.jpg

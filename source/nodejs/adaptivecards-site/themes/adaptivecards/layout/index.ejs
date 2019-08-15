@@ -46,46 +46,32 @@
 
 		<div class="w3-col l3">
 			<h6>Made For</h6>
+
 			<div class="w3-row">
-				<div class="w3-col s4 m3 l12"><a
-						href="https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/android/getting-started"><i
-							class="fa fa-android"></i> Android</a></div>
-				<div class="w3-col s4 m3 l12"><a
-						href="https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/ios/getting-started"><i
-							class="fa fa-apple"></i> iOS</a></div>
-				<div class="w3-col s4 m3 l12"><a
-						href="https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/javascript/getting-started"><i
-							class="fa fa-jsfiddle"></i> JavaScript</a></div>
-				<div class="w3-col s4 m3 l12"><a
-						href="https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/net-html/getting-started"><i
-							class="fa fa-html5"></i> .NET HTML</a></div>
-				<div class="w3-col s4 m3 l12"><a
-						href="https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/net-wpf/getting-started"><i
-							class="fa fa-window-maximize"></i> .NET WPF</a></div>
-				<div class="w3-col s4 m3 l12"><a
-						href="https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/uwp/getting-started"><i
-							class="fa fa-windows"></i> Windows</a></div>
-				<div class="w3-col s4 m3 l12"><a
-						href="https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/ios/getting-started"><i
-							class="fa fa-jsfiddle"></i> ReactNative</a></div>
+				<% for(var link of config.home.made_for) { %>
+					<div class="w3-col s4 m3 l12"><a
+						href="<%- link.href %>"><i
+							class="fa <%- link.fa %>"></i> <%- link.title %></a></div>
+				<% } %>
 			</div>
+
 			<div class="w3-row">
 
 				<div class="w3-col s6 l12">
 					<h6>Releases</h6>
-					<div><a href="https://github.com/microsoft/AdaptiveCards/releases/tag/v1.2.0"
-							aria-label="Latest release"><i class="fa fa-download"></i>v1.2</a> <span
-							class="w3-tag w3-round w3-blue w3-tiny">Latest</span></div>
-
-					<div><a href="https://portal.productboard.com/adaptivecards/1-adaptive-cards-portal/tabs/4-1-3-proposed/tabs/1-under-consideration"
-							aria-label="Next version"><i class="fa fa-calendar"></i>v1.3</a> <span
-							class="w3-tag w3-round w3-light-gray w3-tiny">In Development</span></div>
+					<% for(var link of config.home.releases) { %>
+						<div><a href="<%- link.href %>"
+							aria-label="<%- link.title %>"><i class="fa <%- link.fa %>"></i><%- link.title %></a> <span
+							class="w3-tag w3-round w3-tiny <%- link.tag_class %>"><%- link.tag %></span></div>
+					<% } %>
 				</div>
+
 				<div class="w3-col s6 l12">
 					<h6>GitHub</h6>
 					<a class="github-button" href="https://github.com/Microsoft/AdaptiveCards" data-show-count="true"
 						aria-label="Star Microsoft/AdaptiveCards on GitHub">Star</a>
 				</div>
+
 			</div>
 		</div>
 	</div>
@@ -186,7 +172,7 @@
 		video: "https://adaptivecardsblob.blob.core.windows.net/assets/Video-Designer.mp4",
 		videoLoopDelay: 5000,
 		learnMoreTitle: "Embed the Designer",
-		learnMoreLink: "https://www.npmjs.com/package/adaptivecards-designer"
+		learnMoreLink: "https://docs.microsoft.com/adaptive-cards/sdk/designer"
 	}) %>
 
 	<div class="w3-padding-32"></div>

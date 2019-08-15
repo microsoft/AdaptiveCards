@@ -1,5 +1,5 @@
 ---
-title: Community Call - June 13, 2019
+title: 📣 Community Call - June 13, 2019
 subtitle: v1.2 shipped, 1.3 planning underway, and a new JavaScript templating library available
 date: 2019-06-13
 featured_image: flight.jpg
@@ -23,7 +23,7 @@ The [Expense Report sample](https://adaptivecards.io/samples/ExpenseReport.html)
 
 The [full list of v1.2 features](https://github.com/Microsoft/AdaptiveCards/issues/2444) can be found on GitHub. We&#39;re working closely with our partners to roll-out v1.2 as soon as possible. To see which version the major platforms are currently on see the [Host App Docs](https://docs.microsoft.com/en-us/adaptive-cards/resources/partners).
 
-{% adaptivecard ExpenseReport.dat %}
+{% adaptivecard ExpenseReport.json %}
 
 ## v1.3 planning is underway
 

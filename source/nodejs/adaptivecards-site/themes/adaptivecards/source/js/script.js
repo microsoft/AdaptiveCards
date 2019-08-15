@@ -386,13 +386,14 @@ $(function () {
 		var $button = $(this);
 		if($button.attr("data-designer-url")) {
 			window.open($button.attr("data-designer-url"));
+		} else {
+			var cardUrl = $(this).parent().siblings("div.adaptivecard").attr("data-card-url");
+			var isAbsolutelUri = new RegExp('^(?:[a-z]+:)?//', 'i');
+			if (isAbsolutelUri.test(cardUrl) === false) {
+				cardUrl = window.location.href + cardUrl;
+			}
+			window.open("/designer/index.html?card=" + encodeURIComponent(cardUrl));	
 		}
-		var cardUrl = $(this).parent().siblings("div.adaptivecard").attr("data-card-url");
-		var isAbsolutelUri = new RegExp('^(?:[a-z]+:)?//', 'i');
-		if (isAbsolutelUri.test(cardUrl) === false) {
-			cardUrl = window.location.href + cardUrl;
-		}
-		window.open("/designer/index.html?card=" + encodeURIComponent(cardUrl));
 	});
 
 	$("#feedback-button").click(function (e) {

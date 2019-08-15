@@ -1,5 +1,5 @@
 ---
-title: Community Call - March 14, 2019
+title: 📣 Community Call - March 14, 2019
 subtitle: Hacking GitHub Desktop to show Azure server stats
 date: 2019-03-14
 featured_image: https://developer.microsoft.com/en-us/office/blogs/wp-content/uploads/2019/03/Image-1-1-1024x706.png

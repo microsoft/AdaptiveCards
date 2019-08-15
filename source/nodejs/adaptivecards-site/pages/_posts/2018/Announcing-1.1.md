@@ -1,5 +1,5 @@
 ---
-title: Announcing Adaptive Cards 1.1
+title: 🎉 Announcing Adaptive Cards 1.1
 subtitle: All new drag-drop designer, a Media element, and more
 date: 2018-10-12
 featured_image: designer.png
