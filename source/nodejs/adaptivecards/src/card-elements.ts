@@ -3814,9 +3814,8 @@ class ActionButton {
 
     onClick: (actionButton: ActionButton) => void = null;
 
-    render(alignment: Enums.ActionAlignment) {
+    render() {
         this.action.render();
-        this.action.renderedElement.style.flex = alignment === Enums.ActionAlignment.Stretch ? "0 1 100%" : "0 1 auto";
         this.action.renderedElement.onclick = (e) => {
             e.preventDefault();
             e.cancelBubble = true;
@@ -4780,30 +4779,33 @@ class ActionCollection {
     }
 
     render(orientation: Enums.Orientation, isDesignMode: boolean): HTMLElement {
-        if (!this._owner.hostConfig.supportsInteractivity) {
+        // Cache hostConfig for better perf
+        let hostConfig = this._owner.hostConfig;
+
+        if (!hostConfig.supportsInteractivity) {
             return null;
         }
 
         let element = document.createElement("div");
-        let maxActions = this._owner.hostConfig.actions.maxActions ? Math.min(this._owner.hostConfig.actions.maxActions, this.items.length) : this.items.length;
+        let maxActions = hostConfig.actions.maxActions ? Math.min(hostConfig.actions.maxActions, this.items.length) : this.items.length;
         let forbiddenActionTypes = this._owner.getForbiddenActionTypes();
 
         this._actionCardContainer = document.createElement("div");
         this._renderedActionCount = 0;
 
-        if (this._owner.hostConfig.actions.preExpandSingleShowCardAction && maxActions == 1 && this.items[0] instanceof ShowCardAction && isActionAllowed(this.items[0], forbiddenActionTypes)) {
+        if (hostConfig.actions.preExpandSingleShowCardAction && maxActions == 1 && this.items[0] instanceof ShowCardAction && isActionAllowed(this.items[0], forbiddenActionTypes)) {
             this.showActionCard(<ShowCardAction>this.items[0], true);
             this._renderedActionCount = 1;
         }
         else {
             let buttonStrip = document.createElement("div");
-            buttonStrip.className = this._owner.hostConfig.makeCssClassName("ac-actionSet");
+            buttonStrip.className = hostConfig.makeCssClassName("ac-actionSet");
             buttonStrip.style.display = "flex";
 
             if (orientation == Enums.Orientation.Horizontal) {
                 buttonStrip.style.flexDirection = "row";
 
-                if (this._owner.horizontalAlignment && this._owner.hostConfig.actions.actionAlignment != Enums.ActionAlignment.Stretch) {
+                if (this._owner.horizontalAlignment && hostConfig.actions.actionAlignment != Enums.ActionAlignment.Stretch) {
                     switch (this._owner.horizontalAlignment) {
                         case Enums.HorizontalAlignment.Center:
                             buttonStrip.style.justifyContent = "center";
@@ -4817,7 +4819,7 @@ class ActionCollection {
                     }
                 }
                 else {
-                    switch (this._owner.hostConfig.actions.actionAlignment) {
+                    switch (hostConfig.actions.actionAlignment) {
                         case Enums.ActionAlignment.Center:
                             buttonStrip.style.justifyContent = "center";
                             break;
@@ -4833,7 +4835,7 @@ class ActionCollection {
             else {
                 buttonStrip.style.flexDirection = "column";
 
-                if (this._owner.horizontalAlignment && this._owner.hostConfig.actions.actionAlignment != Enums.ActionAlignment.Stretch) {
+                if (this._owner.horizontalAlignment && hostConfig.actions.actionAlignment != Enums.ActionAlignment.Stretch) {
                     switch (this._owner.horizontalAlignment) {
                         case Enums.HorizontalAlignment.Center:
                             buttonStrip.style.alignItems = "center";
@@ -4847,7 +4849,7 @@ class ActionCollection {
                     }
                 }
                 else {
-                    switch (this._owner.hostConfig.actions.actionAlignment) {
+                    switch (hostConfig.actions.actionAlignment) {
                         case Enums.ActionAlignment.Center:
                             buttonStrip.style.alignItems = "center";
                             break;
@@ -4877,24 +4879,31 @@ class ActionCollection {
                         this.buttons.push(actionButton);
                     }
 
-                    actionButton.render(this._owner.hostConfig.actions.actionAlignment);
+                    actionButton.render();
+
+                    if (hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal && hostConfig.actions.actionAlignment == Enums.ActionAlignment.Stretch) {
+                        actionButton.action.renderedElement.style.flex = "0 1 100%";
+                    }
+                    else {
+                        actionButton.action.renderedElement.style.flex = "0 1 auto";
+                    }
 
                     buttonStrip.appendChild(actionButton.action.renderedElement);
 
                     this._renderedActionCount++;
 
-                    if (this._renderedActionCount >= this._owner.hostConfig.actions.maxActions || i == this.items.length - 1) {
+                    if (this._renderedActionCount >= hostConfig.actions.maxActions || i == this.items.length - 1) {
                         break;
                     }
-                    else if (this._owner.hostConfig.actions.buttonSpacing > 0) {
+                    else if (hostConfig.actions.buttonSpacing > 0) {
                         var spacer = document.createElement("div");
 
                         if (orientation === Enums.Orientation.Horizontal) {
                             spacer.style.flex = "0 0 auto";
-                            spacer.style.width = this._owner.hostConfig.actions.buttonSpacing + "px";
+                            spacer.style.width = hostConfig.actions.buttonSpacing + "px";
                         }
                         else {
-                            spacer.style.height = this._owner.hostConfig.actions.buttonSpacing + "px";
+                            spacer.style.height = hostConfig.actions.buttonSpacing + "px";
                         }
 
                         Utils.appendChild(buttonStrip, spacer);
