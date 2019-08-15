@@ -30,7 +30,7 @@ The [full list of v1.2 features](https://github.com/Microsoft/AdaptiveCards/issu
 We also walked through some high-level [features that are under consideration for v1.3](https://portal.productboard.com/adaptivecards/1-adaptive-cards-portal/tabs/4-1-3-proposed). This list is not final and will not include everything listed. Now is the best time to [suggest things](https://portal.productboard.com/adaptivecards/1-adaptive-cards-portal/tabs/4-1-3-proposed) we haven&#39;t considered!
 1.3 feature list
 
-![planning screenshot](Community-Call-June/planning.png)
+![planning screenshot](https://developer.microsoft.com/en-us/graph/blogs/wp-content/uploads/2019/06/Image-1.png)
 
 ## Adaptive Cards templating library for JavaScript available
 

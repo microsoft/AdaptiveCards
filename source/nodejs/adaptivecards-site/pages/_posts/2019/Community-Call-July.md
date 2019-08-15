@@ -2,7 +2,7 @@
 title: Community Call - July 11, 2019
 subtitle: Adaptive Cards 💙 Fabric, and a new Template Service prototype
 date: 2019-07-11
-featured_image: postman.png
+featured_image: https://developer.microsoft.com/en-us/access/blogs/wp-content/uploads/2019/07/Standard-Adaptive-Card-payload-using-Microsoft-UI-Fabric.jpg
 github_username: matthidinger
 twitter: matthidinger
 ---
@@ -17,7 +17,7 @@ Agenda for this month’s call, hosted by Matt Hidinger, included:
 
 Below is a standard Adaptive Card payload, but many of the inputs are rendered using Fabric components. If you’re using Fabric and Adaptive Cards give it a shot and let us know your thoughts!
 
-![Fabric screenshot](Community-Call-July/fabric.jpg)
+![Fabric screenshot](https://developer.microsoft.com/en-us/access/blogs/wp-content/uploads/2019/07/Standard-Adaptive-Card-payload-using-Microsoft-UI-Fabric.jpg)
  
 ## Adaptive Cards Template Service Prototype
 
@@ -35,7 +35,7 @@ We’d love feedback on this service as you have it, please reach out to us on G
 
 Currently we have no date on when this will be production-ready as we are eager to learn how customers might use the service before we determine what our MVP is.
 
-![postman screenshot](Community-Call-July/postman.png)
+![postman screenshot](https://developer.microsoft.com/en-us/access/blogs/wp-content/uploads/2019/07/preview-of-an-%E2%80%9CAdaptive-Card-Template-Service%E2%80%9D-768x708.png)
 
 Watch the call here.
 {% youtube s4EOZyKbKog %}
