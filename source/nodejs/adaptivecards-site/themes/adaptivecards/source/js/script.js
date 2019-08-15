@@ -322,7 +322,7 @@ $(function () {
 		}
 	});
 
-	
+
 	$('.ac-properties table').addClass("w3-table w3-bordered");
 
 	hljs.configure({
@@ -384,7 +384,7 @@ $(function () {
 
 	$("button.try-adaptivecard").click(function (e) {
 		var $button = $(this);
-		if($button.attr("data-designer-url")) {
+		if ($button.attr("data-designer-url")) {
 			window.open($button.attr("data-designer-url"));
 		} else {
 			var cardUrl = $(this).parent().siblings("div.adaptivecard").attr("data-card-url");
@@ -392,7 +392,7 @@ $(function () {
 			if (isAbsolutelUri.test(cardUrl) === false) {
 				cardUrl = window.location.href + cardUrl;
 			}
-			window.open("/designer/index.html?card=" + encodeURIComponent(cardUrl));	
+			window.open("/designer/index.html?card=" + encodeURIComponent(cardUrl));
 		}
 	});
 
@@ -408,6 +408,34 @@ $(function () {
 	$('#menu-nav').on('change', function () {
 		window.location = this.value;
 	});
+
+	// Resize youtube videos
+	// https://css-tricks.com/NetMag/FluidWidthVideo/Article-FluidWidthVideo.php
+
+	var $allVideos = $("iframe"),
+	$fluidEl = $(".blog");
+
+	// Figure out and save aspect ratio for each video
+	$allVideos.each(function () {
+		$(this)
+			.data('aspectRatio', this.height / this.width)
+			.removeAttr('height')
+			.removeAttr('width');
+	});
+
+	// When the window is resized
+	$(window).resize(function () {
+		//debugger;
+
+		var newWidth = $fluidEl.width() - 32;
+		// Resize all videos according to their own aspect ratio
+		$allVideos.each(function () {
+			var $el = $(this);
+			$el.width(newWidth).height(newWidth * $el.data('aspectRatio'));
+		});
+
+		// Kick off one resize to fix all videos on page load
+	}).resize();
 
 	// Code for making sidebar sticky
 	var headerHolder;

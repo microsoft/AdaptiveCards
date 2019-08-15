@@ -76,7 +76,6 @@ document.getElementById('exampleDiv').appendChild(adaptiveCard.render());
 
 
 Watch the call here.
-Dana to add 
-
+<iframe width="560" height="315" src="https://www.youtube.com/embed/UfHDlfN3E10" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 Next month’s call will be held on **Thursday, July 20, 2019 at 9:00am PST**.  We look forward to talking to you then! Download a recurring calendar invite here at https://aka.ms/adaptivecardscommunitycall.

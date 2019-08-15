@@ -491,6 +491,13 @@ dir {
   margin-bottom: 64px;
 }
 
+@media screen and (max-width: 601px) {
+	.homepage .divider {
+	  margin-left: 0 !important;
+	  margin-right: 0 !important;
+	}
+  }
+
 @media screen and (max-width: 859px) {
   .homepage .divider {
     margin-left: calc(-16px);
