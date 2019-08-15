@@ -68,21 +68,25 @@ export class Microsoft1DSProvider implements IACProvider {
 			//takes care of situation where there is and isn't a valueSet in the event
 			if (valueSet != undefined){
 				//Create array of keys and values from the valueSet object and sends an event for each key value pair
-				for(const [key, value] of Object.entries(valueSet)){
-					this.analytics.trackEvent({
-						name: "sendData",
-						data: {
-							event: event,
-							eventSourceName: eventSourceName,
-							correlationID: correlationID,
-							key: key,
-							value: value,
-						},
-						baseData: {
-							//Area to add baseData
-						},
-					});
-				}			
+				var values = {};
+				for (var k in valueSet) {
+					if (valueSet.hasOwnProperty(k)) {
+						values[k] = valueSet[k];
+						this.analytics.trackEvent({
+							name: "sendData",
+							data: {
+								event: event,
+								eventSourceName: eventSourceName,
+								correlationID: correlationID,
+								key: k,
+								value: values[k],
+							},
+							baseData: {
+								//Area to add baseData
+							},
+						});
+					}
+				}		
 			}
 			else {
 				this.analytics.trackEvent({
