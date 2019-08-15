@@ -3841,21 +3841,19 @@ class ActionButton {
 
 class ActionButtonWithTelemetry extends ActionButton {
 	
-	render(alignment: Enums.ActionAlignment) {
-
-		var useGUID = GUIDHelper.getOrCreate().isGUIDtracked();
-		var guid = GUIDHelper.getOrCreate().getGUID().toString();
+    render(alignment: Enums.ActionAlignment) {
+        let useGUID = GUIDHelper.getOrCreate().isGUIDtracked();
+        let guid = GUIDHelper.getOrCreate().getGUID().toString();
 
         this.action.render();
         this.action.renderedElement.style.flex = alignment === Enums.ActionAlignment.Stretch ? "0 1 100%" : "0 1 auto";
         this.action.renderedElement.onclick = (e) => {
             e.preventDefault();
-			e.cancelBubble = true;
+            e.cancelBubble = true;
 			
-			if (this.action instanceof SubmitAction && useGUID) {
-				ACLogger.getOrCreate().logEvent("SubmitAction", "Action.Submit", guid);
-			}
-			
+            if (this.action instanceof SubmitAction && useGUID) {
+                ACLogger.getOrCreate().logEvent("SubmitAction", "Action.Submit", guid);
+            }
 
             this.click();
         };
@@ -6866,7 +6864,7 @@ export class AdaptiveCard extends ContainerWithActions {
 			let items = json[this.getItemsCollectionPropertyName()] as Array<any>;
 
 			// only telemetry for card with Input.Rating is collected
-			var hasRating: boolean = false;
+			let hasRating: boolean = false;
 
 			for (let i = 0; i < items.length; i++) {
 				if (items[i]["type"] === "Input.Rating") {
@@ -6875,24 +6873,24 @@ export class AdaptiveCard extends ContainerWithActions {
 				}
 			}
 			
-			var guidHelper: GUIDHelper = GUIDHelper.getOrCreate();
+			let guidHelper: GUIDHelper = GUIDHelper.getOrCreate();
 			// generate a new GUID each time a new card is parsed
 			guidHelper.createGUID();
 
 			if (hasRating) {
 
-				var logger: IACLogger = ACLogger.getOrCreate();
+				let logger: IACLogger = ACLogger.getOrCreate();
 
 				// only call getGUID() if we want to track the GUID
 				// (has a rating control)
-				var guid: string = guidHelper.getGUID().toString();
+				let guid: string = guidHelper.getGUID().toString();
 				
 
 				for (let i = 0; i < items.length; i++) {
-					var itemType = items[i]["type"];
+					let itemType = items[i]["type"];
 
 					if (itemType === "Input.Rating") {
-						var valueSet = {};
+						let valueSet = {};
 
 						valueSet["defaultScale"] = (items[i]["maxValue"]) ? false : true;
 
@@ -6944,7 +6942,7 @@ export class AdaptiveCard extends ContainerWithActions {
 	 * @param itemSchemaName Name of the item according to the Adaptive Cards schema
 	 */
 	private logSubItems(item: any, subItemName: string, itemSchemaName: string): void {
-		var subItems = item[subItemName];
+		let subItems = item[subItemName];
 
 		if (subItems) {
 

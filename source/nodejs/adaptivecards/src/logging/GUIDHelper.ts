@@ -5,9 +5,9 @@ A helper class to generate, keep track of, and return a unique GUID
 to correlate events throughout a unique card's life cycle.
 */
 export class GUIDHelper {
-	private guid: number;
-	private static instance: GUIDHelper;
-	private hasRating: boolean;
+	private _guid: number;
+	private static _instance: GUIDHelper;
+	private _hasRating: boolean;
 
 	private constructor() { }
 
@@ -19,11 +19,11 @@ export class GUIDHelper {
 	 * @returns Singleton instance of GUIDHelper
 	 */
 	static getOrCreate(): GUIDHelper {
-		if (this.instance) {
-			return this.instance;
+		if (this._instance) {
+			return this._instance;
 		} else {
-			this.instance = new GUIDHelper();
-			return this.instance;
+			this._instance = new GUIDHelper();
+			return this._instance;
 		}
 	}
 
@@ -31,8 +31,8 @@ export class GUIDHelper {
 	 * Creates a new unique GUID and resets tracking
 	 */
 	createGUID(): void {
-		this.guid = uuidv4();
-		this.hasRating = false;
+		this._guid = uuidv4();
+		this._hasRating = false;
 	}
 
 	/**
@@ -46,8 +46,8 @@ export class GUIDHelper {
 	 * @returns GUID. If createGUID() has not yet been called, then an undefined object will be returned
 	 */
 	getGUID(): number {
-		this.hasRating = true;
-		return this.guid;
+		this._hasRating = true;
+		return this._guid;
 	}
 
 	/**
@@ -57,6 +57,6 @@ export class GUIDHelper {
 	 * @returns true if future events should be tracked, false otherwise
 	 */
 	isGUIDtracked(): boolean {
-		return this.hasRating;
+		return this._hasRating;
 	}
 }

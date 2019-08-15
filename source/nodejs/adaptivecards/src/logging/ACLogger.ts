@@ -8,8 +8,8 @@ import { IACLogger } from "./IACLogger";
 */
 export class ACLogger implements IACLogger {
 
-	private static instance: IACLogger;
-	private providers: IACProvider[];
+	private static _instance: IACLogger;
+	private _providers: IACProvider[];
 
 	// singleton method requires a private constructor
 	private constructor() {	}
@@ -17,12 +17,12 @@ export class ACLogger implements IACLogger {
 	private log(level: LogLevel, message: string): void {
 
 		// if providers have not yet been configured, then exit
-		if (!this.providers) {
+		if (!this._providers) {
 			console.log("ERROR: Providers have not yet been configured!");
 			return;
 		}
 
-		var stringLevel: string = "";
+		let stringLevel: string = "";
 		switch (level) {
 			case LogLevel.Warn:
 				stringLevel = "warn";
@@ -41,7 +41,7 @@ export class ACLogger implements IACLogger {
 				return;
 		}
 
-		for (var provider of this.providers) {
+		for (let provider of this._providers) {
 			try {
 				provider.sendLogData(stringLevel, message);
 			} catch (e) {
@@ -67,7 +67,7 @@ export class ACLogger implements IACLogger {
 	}
 	
 	logEvent(event: string, eventSourceName: string, correlationID?: string, valueSet?: object): void {
-		for (var provider of this.providers) {
+		for (let provider of this._providers) {
 			try {
 				provider.sendData(event, eventSourceName, correlationID, valueSet);
 			} catch (e) {
@@ -82,11 +82,11 @@ export class ACLogger implements IACLogger {
 	 * then returned.
 	 */
 	static getOrCreate(): IACLogger {
-		if (!this.instance) {
-			this.instance = new ACLogger();
+		if (!this._instance) {
+			this._instance = new ACLogger();
 		}
 
-		return this.instance;
+		return this._instance;
 	}
 	
 
@@ -96,29 +96,29 @@ export class ACLogger implements IACLogger {
 			return;
 		}
 
-		if (!this.providers) {
-			this.providers = [];
+		if (!this._providers) {
+			this._providers = [];
 		}
 
-		for (var i = 0; i < providers.length; i++) {
-			var hasProvider: boolean = false;
-			var newProviderName: string = Object.getPrototypeOf(providers[i]).constructor.name;
+		for (let i = 0; i < providers.length; i++) {
+			let hasProvider: boolean = false;
+			let newProviderName: string = Object.getPrototypeOf(providers[i]).constructor.name;
 
 			// check if new provider is already configured
-			this.providers.forEach(function(currentProvider: IACProvider) {
+			this._providers.forEach(function(currentProvider: IACProvider) {
 				if (newProviderName === Object.getPrototypeOf(currentProvider).constructor.name) {
 					hasProvider = true;
 				}
 			});
 
 			if (!hasProvider) {
-				this.providers.push(providers[i]);
+				this._providers.push(providers[i]);
 			}
 		}
 	}
 
 	isTelemetryEnabled(): boolean {
-		return this.providers ? true : false;
+		return this._providers ? true : false;
 	}
 
 }
