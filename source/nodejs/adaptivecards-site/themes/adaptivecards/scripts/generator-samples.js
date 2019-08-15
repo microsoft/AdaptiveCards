@@ -10,6 +10,7 @@ var changeCase = require("change-case");
 var samplesPath = "../../../samples/v1.*/Scenarios/*.json";
 
 hexo.extend.generator.register("generator-sampleBrowser", function(locals) {
+	const url_for = hexo.extend.helper.get('url_for').bind(hexo);
 
     // Get all the samples from the Scenarios folder
     var samples = glob.sync(samplesPath, { nocase: false }).map(function(samplePath, index) {
@@ -40,7 +41,7 @@ hexo.extend.generator.register("generator-sampleBrowser", function(locals) {
 
         designerSampleCatalog.push({
             displayName: sample.name,
-            cardPayloadUrl: "../payloads/" + path.basename(sample.jsonPath)
+            cardPayloadUrl: url_for("/payloads/" + path.basename(sample.jsonPath))
         });
 
         // Generate an index.html for the first one
