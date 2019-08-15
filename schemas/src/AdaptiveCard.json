@@ -24,11 +24,6 @@
       "description": "An Action that will be invoked when the card is tapped or selected. `Action.ShowCard` is not supported.",
       "version": "1.1"
     },
-    "style": {
-      "type": "ContainerStyle",
-      "description": "Style hint for the Adaptive Card.",
-      "version": "1.2"
-    },
     "fallbackText": {
       "type": "string",
       "description": "Text shown when the client doesn't support the version specified (may contain markdown)."

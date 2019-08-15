@@ -20,7 +20,7 @@
 		"src"
 	],
 	"scripts": {
-		"test": "jest --forceExit --runInBand",
+		"test": "jest --detectOpenHandles",
 		"clean": "rimraf build lib dist",
 		"prebuild": "tsc",
 		"build": "webpack",
@@ -48,6 +48,7 @@
 		"react": "^16.8.6",
 		"react-dom": "^16.8.6",
 		"rimraf": "^2.6.3",
+		"ts-jest": "^24.0.2",
 		"typescript": "^3.5.3",
 		"webpack": "^4.38.0",
 		"webpack-cli": "^3.3.6",

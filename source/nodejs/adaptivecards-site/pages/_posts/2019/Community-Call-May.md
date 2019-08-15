@@ -3,7 +3,7 @@ title: 📣 Community Call - May 9, 2019
 subtitle: Recap of the Microsoft Build 2019 conference
 date: 2019-05-09
 github_username: matthidinger
-featured_image: build.png
+featured_image: poster.png
 twitter: matthidinger
 ---
 
