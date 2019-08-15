@@ -1,6 +1,7 @@
-﻿using Foundation;
+using Foundation;
 using UIKit;
 using AdaptiveCards.BotConnection;
+using AdaptiveCards;
 
 namespace AdaptiveCards.Rendering.Xamarin.iOS.Sample
 {

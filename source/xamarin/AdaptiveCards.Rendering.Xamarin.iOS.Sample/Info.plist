@@ -5,7 +5,7 @@
 	<key>CFBundleName</key>
 	<string>XamarinAC</string>
 	<key>CFBundleIdentifier</key>
-	<string>io.AdaptiveCards.XamarinAC</string>
+	<string>AdaptiveCards.Rendering.Xamarin.iOS.Sample</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
@@ -41,5 +41,7 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>CFBundleDisplayName</key>
+	<string>AdaptiveCards.Rendering.Xamarin.iOS.Sample</string>
 </dict>
 </plist>
