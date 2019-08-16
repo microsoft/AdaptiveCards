@@ -1,11 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 "use strict";
-
-var markedschema = require("marked-schema");
 var typedschema = require("ac-typed-schema");
-var marked = require("marked");
-var fs = require("hexo-fs");
+var path = require("path");
 
 hexo.extend.generator.register("generator-explorer", function (locals) {
 
@@ -16,7 +13,7 @@ hexo.extend.generator.register("generator-explorer", function (locals) {
 				schema: "../../../schemas/src",
 				toc: "./schema-explorer-toc.yml",
 				rootDefinition: "AdaptiveCard",
-				examplesPath: "../../../samples/v1.*"
+				examplesPath: "../../../samples"
 			});
 			
 			var pages = [];
