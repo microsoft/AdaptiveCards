@@ -6,15 +6,16 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "ACVTableViewController.h"
 #import <AdaptiveCards/AdaptiveCards.h>
+#import <UIKit/UIKit.h>
 
-@interface ViewController:UIViewController <ACVTableViewControllerDelegate, ACRActionDelegate, ACRMediaDelegate, ACRIBaseActionSetRenderer>
+@interface ViewController : UIViewController <ACVTableViewControllerDelegate, ACRActionDelegate, ACRMediaDelegate, ACRIBaseActionSetRenderer>
 
 @property (strong, nonatomic) ACVTableViewController *ACVTabVC;
 @property (strong, nonatomic) UITextView *editView;
 @property (strong, nonatomic) UIStackView *buttonLayout;
+@property (strong, nonatomic) UIStackView *compositeFileBrowserView;
 @property (strong, nonatomic) UIButton *tryButton;
 @property (strong, nonatomic) UIButton *applyButton;
 @property (strong, nonatomic) UIButton *enableCustomRendererButton;

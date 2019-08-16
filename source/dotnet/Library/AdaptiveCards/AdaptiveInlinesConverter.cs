@@ -16,14 +16,14 @@ namespace AdaptiveCards
 
         public override bool CanConvert(Type objectType)
         {
-            return typeof(List<IAdaptiveInline>).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
+            return typeof(List<AdaptiveInline>).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var array = JArray.Load(reader);
             List<object> list = array.ToObject<List<object>>();
-            List<IAdaptiveInline> arrayList = new List<IAdaptiveInline>();
+            List<AdaptiveInline> arrayList = new List<AdaptiveInline>();
 
             // We only support text runs for now, which can be specified as either a string or an object
             foreach (object obj in list)
@@ -35,7 +35,11 @@ namespace AdaptiveCards
                 else
                 {
                     JObject jobj = (JObject)obj;
-                    arrayList.Add((IAdaptiveInline)jobj.ToObject(typeof(AdaptiveTextRun)));
+                    if (jobj.Value<string>("type") != AdaptiveTextRun.TypeName)
+                    {
+                        throw new AdaptiveSerializationException($"Property 'type' must be '{AdaptiveTextRun.TypeName}'");
+                    }
+                    arrayList.Add((AdaptiveInline)jobj.ToObject(typeof(AdaptiveTextRun)));
                 }
             }
             return arrayList;

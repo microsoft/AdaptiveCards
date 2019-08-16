@@ -12,13 +12,14 @@ import { adaptiveCardSchema } from "./adaptive-card-schema";
 import { FullScreenHandler } from "./fullscreen-handler";
 import { Toolbar, ToolbarButton, ToolbarChoicePicker, ToolbarElementAlignment } from "./toolbar";
 import { IPoint, Utils, defaultHostConfig } from "./miscellaneous";
-import { BasePaletteItem, ElementPaletteItem, DataPaletteItem, SnippetPaletteItem, CustomPaletteItem } from "./tool-palette";
+import { BasePaletteItem, ElementPaletteItem, DataPaletteItem, CustomPaletteItem } from "./tool-palette";
 import { DefaultContainer } from "./containers/default/default-container";
 import { SidePanel, SidePanelAlignment } from "./side-panel";
 import { Toolbox, IToolboxCommand } from "./tool-box";
 import { FieldDefinition } from "./data";
 import { DataTreeItem } from "./data-treeitem";
 import { BaseTreeItem } from "./base-tree-item";
+import { Strings } from "./strings";
 import * as Shared from "./shared";
 
 export class CardDesigner {
@@ -225,7 +226,7 @@ export class CardDesigner {
         }
 
         for (let category in categorizedTypes) {
-            let node = document.createElement('li');
+            let node = document.createElement('div');
             node.innerText = category;
             node.className = "acd-palette-category";
 
@@ -362,10 +363,16 @@ export class CardDesigner {
         this.updateSampleData();
 
         this._designerSurface.isPreviewMode = wasInPreviewMode;
+
+        this.updateFullLayout();
     }
 
     private activeHostContainerChanged() {
         this.recreateDesignerSurface();
+
+        if (this.onActiveHostContainerChanged) {
+            this.onActiveHostContainerChanged(this);
+        }
     }
 
     private updateToolboxLayout(toolbox: Toolbox, hostPanelRect: ClientRect | DOMRect) {
@@ -400,11 +407,39 @@ export class CardDesigner {
     private updateLayoutTimer: any;
 
     private preventCardUpdate: boolean = false;
-    
-    private setCardPayload(payload: object) {
-        if (this._isMonacoEditorLoaded) {
-            this._cardEditor.setValue(JSON.stringify(payload, null, 4));
+
+    private cardPayloadChanged() {
+        if (this.onCardPayloadChanged) {
+            this.onCardPayloadChanged(this);
         }
+    }
+
+    private _cardEditorUpdateCounter = 0;
+
+    private beginCardEditorUpdate() {
+        this._cardEditorUpdateCounter++;
+    }
+
+    private endCardEditorUpdate() {
+        if (this._cardEditorUpdateCounter > 0) {
+            this._cardEditorUpdateCounter--;
+        }
+    }
+
+    private setCardPayload(payload: object, addToUndoStack: boolean) {
+        if (this._isMonacoEditorLoaded) {
+            this.beginCardEditorUpdate();
+
+            try {
+                this._cardEditor.setValue(JSON.stringify(payload, null, 4));
+                this.updateCardFromJson(addToUndoStack);
+            }
+            finally {
+                this.endCardEditorUpdate();
+            }
+        }
+
+        this.cardPayloadChanged();
     }
 
     private setSampleDataPayload(payload: any) {
@@ -420,11 +455,7 @@ export class CardDesigner {
             if (!this.preventJsonUpdate && this._isMonacoEditorLoaded) {
                 let cardPayload = this.card.toJSON();
 
-                if (addToUndoStack) {
-                    this.addToUndoStack(cardPayload);
-                }
-    
-                this.setCardPayload(cardPayload);
+                this.setCardPayload(cardPayload, addToUndoStack);
             }
         }
         finally {
@@ -441,7 +472,7 @@ export class CardDesigner {
     }
 
     private preventJsonUpdate: boolean = false;
-    
+
     private getCurrentCardEditorPayload(): string {
         return this._isMonacoEditorLoaded ? this._cardEditor.getValue() : Constants.defaultPayload;
     }
@@ -450,12 +481,20 @@ export class CardDesigner {
         return this._isMonacoEditorLoaded && this._sampleDataEditor ? this._sampleDataEditor.getValue() : "";
     }
 
-    private updateCardFromJson() {
+    private updateCardFromJson(addToUndoStack: boolean) {
         try {
             this.preventJsonUpdate = true;
 
+            let currentEditorPayload = this.getCurrentCardEditorPayload();
+
+            if (addToUndoStack) {
+                this.addToUndoStack(JSON.parse(currentEditorPayload));
+            }
+
             if (!this.preventCardUpdate) {
-                this.designerSurface.setCardPayloadAsString(this.getCurrentCardEditorPayload());
+                this.designerSurface.setCardPayloadAsString(currentEditorPayload);
+
+                this.cardPayloadChanged();
             }
         }
         finally {
@@ -467,7 +506,7 @@ export class CardDesigner {
         clearTimeout(this.cardUpdateTimer);
 
         if (!this.preventCardUpdate) {
-            this.cardUpdateTimer = setTimeout(() => { this.updateCardFromJson(); }, 100);
+            this.cardUpdateTimer = setTimeout(() => { this.updateCardFromJson(true); }, 300);
         }
     }
 
@@ -488,7 +527,7 @@ export class CardDesigner {
     private _togglePreviewButton: ToolbarButton;
 
     private prepareToolbar() {
-        if (Shared.GlobalSettings.previewFeaturesEnabled) {
+        if (Shared.GlobalSettings.showVersionPicker) {
             this._versionChoicePicker = new ToolbarChoicePicker(CardDesigner.ToolbarCommands.VersionPicker);
             this._versionChoicePicker.label = "Target version:"
             this._versionChoicePicker.width = 80;
@@ -514,6 +553,9 @@ export class CardDesigner {
         this._fullScreenButton.displayCaption = false;
         this._fullScreenButton.toolTip = "Enter full screen";
         this._fullScreenButton.alignment = ToolbarElementAlignment.Right;
+        // Hide full screen button by default. This button is useless
+        // and should really be plain and simple removed in a future version
+        this._fullScreenButton.isVisible = false;
 
         this.toolbar.addElement(this._fullScreenButton);
 
@@ -533,7 +575,7 @@ export class CardDesigner {
                             try {
                                 let cardPayload = JSON.parse(dialog.selectedSample.cardPayload);
 
-                                this.setCardPayload(cardPayload);
+                                this.setCardPayload(cardPayload, true);
                             }
                             catch {
                                 alert("The sample could not be loaded.")
@@ -542,7 +584,7 @@ export class CardDesigner {
                             if (!Adaptive.isNullOrEmpty(dialog.selectedSample.sampleData)) {
                                 try {
                                     let sampleDataPayload = JSON.parse(dialog.selectedSample.sampleData);
-    
+
                                     this.setSampleDataPayload(sampleDataPayload);
                                     this.dataStructure = FieldDefinition.create(sampleDataPayload);
                                 }
@@ -629,6 +671,8 @@ export class CardDesigner {
             (sender: ToolbarButton) => { this.togglePreview(); });
         this._togglePreviewButton.separator = true;
         this._togglePreviewButton.allowToggle = true;
+        this._togglePreviewButton.isVisible = Shared.GlobalSettings.enableDataBindingSupport;
+
         this.toolbar.addElement(this._togglePreviewButton);
 
         this._fullScreenHandler = new FullScreenHandler();
@@ -673,14 +717,14 @@ export class CardDesigner {
             validate: false,
             allowComments: true
         }
-    
+
 		// TODO: set this in our editor instead of defaults
         monaco.languages.json.jsonDefaults.setDiagnosticsOptions(monacoConfiguration);
 
         // Setup card JSON editor
         this._cardEditorToolbox.content = document.createElement("div");
         this._cardEditorToolbox.content.style.overflow = "hidden";
-		
+
         this._cardEditor = monaco.editor.create(
             this._cardEditorToolbox.content,
             {
@@ -692,14 +736,18 @@ export class CardDesigner {
                 }
             }
         );
-        
-        this._cardEditor.onDidChangeModelContent(() => { this.scheduleUpdateCardFromJson(); });
+
+        this._cardEditor.onDidChangeModelContent(() => {
+            if (this._cardEditorUpdateCounter == 0) {
+                this.scheduleUpdateCardFromJson();
+            }
+        });
 
         if (this._sampleDataEditorToolbox) {
             // Setup sample data JSON editor
             this._sampleDataEditorToolbox.content = document.createElement("div");
             this._sampleDataEditorToolbox.content.style.overflow = "hidden";
-            
+
             this._sampleDataEditor = monaco.editor.create(
                 this._sampleDataEditorToolbox.content,
                 {
@@ -711,7 +759,7 @@ export class CardDesigner {
                     }
                 }
             );
-            
+
             this._sampleDataEditor.onDidChangeModelContent(
                 () => {
                     this.updateSampleData();
@@ -862,12 +910,12 @@ export class CardDesigner {
                     text: (trigger) => { return JSON.stringify(this.card.toJSON(), null, 4); }
                 });
         }
-        
+
         // Tool palette panel
         let toolPaletteHost = document.createElement("div");
         toolPaletteHost.className = "acd-dockedPane";
 
-        this._toolPaletteToolbox = new Toolbox("toolPalette", "Card Elements");
+        this._toolPaletteToolbox = new Toolbox("toolPalette", Strings.toolboxes.toolPalette.title);
         this._toolPaletteToolbox.content = toolPaletteHost;
 
         let toolPalettePanel = new SidePanel(
@@ -880,10 +928,10 @@ export class CardDesigner {
         toolPalettePanel.attachTo(document.getElementById("toolPalettePanel"));
 
         // JSON editors panel
-        this._cardEditorToolbox = new Toolbox("cardEditor", "Card Payload Editor");
+        this._cardEditorToolbox = new Toolbox("cardEditor", Strings.toolboxes.cardEditor.title);
         this._cardEditorToolbox.content = document.createElement("div");
         this._cardEditorToolbox.content.style.padding = "8px";
-        this._cardEditorToolbox.content.innerText = "Loading editor...";
+        this._cardEditorToolbox.content.innerText = Strings.loadingEditor;
 
         this._jsonEditorsPanel = new SidePanel(
             "jsonEditorPanel",
@@ -901,11 +949,11 @@ export class CardDesigner {
 
         this._jsonEditorsPanel.addToolbox(this._cardEditorToolbox);
 
-        if (Shared.GlobalSettings.previewFeaturesEnabled) {
-            this._sampleDataEditorToolbox = new Toolbox("sampleDataEditor", "Sample Data Editor");
+        if (Shared.GlobalSettings.enableDataBindingSupport && Shared.GlobalSettings.showSampleDataEditorToolbox) {
+            this._sampleDataEditorToolbox = new Toolbox("sampleDataEditor", Strings.toolboxes.sampleDataEditor.title);
             this._sampleDataEditorToolbox.content = document.createElement("div");
             this._sampleDataEditorToolbox.content.style.padding = "8px";
-            this._sampleDataEditorToolbox.content.innerText = "Loading editor...";
+            this._sampleDataEditorToolbox.content.innerText = Strings.loadingEditor;
             this._sampleDataEditorToolbox.commands = [
                 {
                     title: "Copy the structure of this data into the Data Structure toolbox",
@@ -925,7 +973,7 @@ export class CardDesigner {
         let propertySheetHost = document.createElement("div");
         propertySheetHost.className = "acd-propertySheet-host";
 
-        this._propertySheetToolbox = new Toolbox("propertySheet", "Element Properties");
+        this._propertySheetToolbox = new Toolbox("propertySheet", Strings.toolboxes.propertySheet.title);
         this._propertySheetToolbox.content = propertySheetHost;
 
         let propertySheetPanel = new SidePanel(
@@ -943,7 +991,7 @@ export class CardDesigner {
         let treeViewHost = document.createElement("div");
         treeViewHost.className = "acd-treeView-host";
 
-        this._treeViewToolbox = new Toolbox("treeView", "Card Structure");
+        this._treeViewToolbox = new Toolbox("treeView", Strings.toolboxes.cardStructure.title);
         this._treeViewToolbox.content = treeViewHost;
 
         let treeViewPanel = new SidePanel(
@@ -955,11 +1003,11 @@ export class CardDesigner {
             this.scheduleLayoutUpdate();
         }
 
-        if (Shared.GlobalSettings.previewFeaturesEnabled) {
+        if (Shared.GlobalSettings.enableDataBindingSupport && Shared.GlobalSettings.showDataStructureToolbox) {
             let dataExplorerHost = document.createElement("div");
             dataExplorerHost.className = "acd-treeView-host";
 
-            this._dataToolbox = new Toolbox("data", "Data Structure");
+            this._dataToolbox = new Toolbox("data", Strings.toolboxes.dataStructure.title);
             this._dataToolbox.content = dataExplorerHost;
 
             treeViewPanel.addToolbox(this._dataToolbox);
@@ -991,7 +1039,7 @@ export class CardDesigner {
 
             let card = this._undoStack[this._undoStackIndex];
 
-            this.setCardPayload(card);
+            this.setCardPayload(card, false);
 
             this.updateToolbar();
         }
@@ -1003,7 +1051,7 @@ export class CardDesigner {
 
             let card = this._undoStack[this._undoStackIndex];
 
-            this.setCardPayload(card);
+            this.setCardPayload(card, false);
 
             this.updateToolbar();
         }
@@ -1017,7 +1065,7 @@ export class CardDesigner {
             ]
         }
 
-        this.setCardPayload(card);
+        this.setCardPayload(card, true);
     }
 
     setCard(payload: object) {
@@ -1038,6 +1086,9 @@ export class CardDesigner {
     getCard(): object {
         return this.designerSurface.card.toJSON();
     }
+
+    onCardPayloadChanged: (designer: CardDesigner) => void;
+    onActiveHostContainerChanged: (designer: CardDesigner) => void;
 
     get currentTargetVersion(): Shared.TargetVersion {
         if (this._versionChoicePicker) {
@@ -1067,7 +1118,7 @@ export class CardDesigner {
 
         this.setSampleDataPayload(value);
     }
-    
+
     get activeHostContainer(): HostContainer {
         return this._activeHostContainer;
     }
@@ -1106,7 +1157,7 @@ export class CardDesigner {
             }
 
             this.recreateDesignerSurface();
-            this.updateCardFromJson();
+            this.updateCardFromJson(true);
         }
     }
 
@@ -1129,7 +1180,7 @@ export class CardDesigner {
     get toolPaletteToolbox(): Toolbox {
         return this._toolPaletteToolbox;
 	}
-	
+
     get dataToolbox(): Toolbox {
         return this._dataToolbox;
 	}
@@ -1141,7 +1192,7 @@ export class CardDesigner {
 	set assetPath(value: string) {
 		this._assetPath = value;
     }
-    
+
     get customPaletteItems(): CustomPaletteItem[] {
         return this._customPeletteItems;
     }

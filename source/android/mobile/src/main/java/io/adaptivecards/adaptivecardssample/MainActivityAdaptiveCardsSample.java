@@ -478,10 +478,22 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         Map<String, String> keyValueMap = renderedAdaptiveCard.getInputs();
         if (!data.isEmpty())
         {
-            try {
-                JSONObject object = new JSONObject(data);
+            try
+            {
+                JSONObject object = null;
+                if (!data.equals("null\n"))
+                {
+                    object = new JSONObject(data);
+                }
+                else
+                {
+                    object = new JSONObject();
+                }
+
                 showToast("Submit data: " + object.toString() + "\nInput: " + keyValueMap.toString(), Toast.LENGTH_LONG);
-            } catch (JSONException e) {
+            }
+            catch (JSONException e)
+            {
                 showToast(e.toString(), Toast.LENGTH_LONG);
             }
         }

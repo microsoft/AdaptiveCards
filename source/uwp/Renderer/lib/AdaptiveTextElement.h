@@ -2,9 +2,6 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.Uwp.h"
-#include "Enums.h"
-
 namespace AdaptiveNamespace
 {
     class DECLSPEC_UUID("4BC6640A-8FBE-4DE0-81FD-119BC10877F1") AdaptiveTextElement : public IUnknown
@@ -34,9 +31,8 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Underline(_Out_ boolean* underline);
         IFACEMETHODIMP put_Underline(_In_ boolean underline);
 
-    protected : template<typename T>
-                HRESULT
-                InitializeTextElement(const std::shared_ptr<T>& sharedModel)
+    protected:
+        template<typename T> HRESULT InitializeTextElement(const std::shared_ptr<T>& sharedModel)
         {
             m_subtle = sharedModel->GetIsSubtle();
             m_fontType = static_cast<ABI::AdaptiveNamespace::FontType>(sharedModel->GetFontType());

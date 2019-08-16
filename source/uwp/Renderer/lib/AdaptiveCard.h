@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.Uwp.h"
 #include "SharedAdaptiveCard.h"
 #include "AdaptiveBackgroundImage.h"
 
@@ -67,6 +66,8 @@ namespace AdaptiveNamespace
 
         HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard>& sharedModel);
 
+        InternalId GetInternalId() { return m_internalId; }
+
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
@@ -81,6 +82,8 @@ namespace AdaptiveNamespace
         ABI::AdaptiveNamespace::HeightType m_height;
         Microsoft::WRL::Wrappers::HString m_language;
         UINT32 m_minHeight;
+
+        InternalId m_internalId;
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveBackgroundImage> m_backgroundImage;
 

@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-#import <AdaptiveCards/ACFramework.h>
+#import <AdaptiveCards/AdaptiveCards.h>
 
-@interface CustomActionOpenURLRenderer:ACRBaseActionElementRenderer
+@interface CustomActionOpenURLRenderer : ACRBaseActionElementRenderer
 
 + (CustomActionOpenURLRenderer *)getInstance;
 

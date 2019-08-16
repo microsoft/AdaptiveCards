@@ -2,9 +2,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Rendering.Xamarin.Android", "AdaptiveCards.Rendering.Xamarin.Android\AdaptiveCards.Rendering.Xamarin.Android.csproj", "{98A14838-2FDB-4CA1-892C-93154122C3BB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Droid", "Xamarin.Droid\Xamarin.Droid.csproj", "{98A14838-2FDB-4CA1-892C-93154122C3BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Rendering.Xamarin.Android.Sample", "AdaptiveCards.Rendering.Xamarin.Android.Sample\AdaptiveCards.Rendering.Xamarin.Android.Sample.csproj", "{A6C5A2BF-4829-4E23-AAAF-8BF2E5126204}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Droid.Sample", "Xamarin.Droid.Sample\Xamarin.Droid.Sample.csproj", "{A6C5A2BF-4829-4E23-AAAF-8BF2E5126204}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AdaptiveCards.BotConnection", "AdaptiveCards.BotConnection\AdaptiveCards.BotConnection.shproj", "{1EC290D9-1C0E-4FD7-AE2F-A0E7FA47CD0E}"
 EndProject

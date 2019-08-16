@@ -1,31 +1,5 @@
 # Adaptive Cards in iOS
 
-<<<<<<< HEAD
-To install:
-
-please add the following to Podfile
-
-```
-pod 'AdaptiveCards'
-```
-
-if you already know cocoapods, you can skip ahead to creating sample app section
-you can learn more about AdaptiveCards pod [here](https://cocoapods.org/?q=ADaptiveCArds) 
-
-To learn more about cocoapods in general check [here](https://guides.cocoapods.org)
-
-To learn more about cocoapods installation check [here](https://guides.cocoapods.org/using/getting-started.html)
-
-To learn more about pod installation check [here](https://guides.cocoapods.org/using/the-podfile.html) 
-
-at the terminal run:
-
-```
-pod install
-```
-please note Podfile and Xcode project file have to be in the same directory
-please remember to run pod repo update to get latest patches 
-=======
 ## Cocoapods Resources
 To learn more about AdaptiveCards pod  here https://cocoapods.org/?q=ADaptiveCArds
 To learn more about cocoapods in general check here https://guides.cocoapods.org
@@ -94,7 +68,6 @@ ViewController.m
         ad.translatesAutoresizingMaskIntoConstraints = NO;
         
         [NSLayoutConstraint constraintWithItem:ad attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
->>>>>>> master
 
         [NSLayoutConstraint constraintWithItem:ad attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:3].active = YES;
     }
@@ -109,11 +82,6 @@ ViewController.m
     }
 }
 
-<<<<<<< HEAD
-```
-[self.view addSubview:vc.view];
-```
-=======
 @end
 ```
 
@@ -187,7 +155,6 @@ class ViewController: UIViewController, ACRActionDelegate{
 ```
 ### Step 3 
 Allow Image Downloading
->>>>>>> master
 
 Please be sure to add exceptions for specific domains to info.plist or add the following to info.plist 
 ```

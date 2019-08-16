@@ -7,8 +7,8 @@
 
 #import <Foundation/Foundation.h>
 
-#import <AdaptiveCards/ACFramework.h>
+#import <AdaptiveCards/AdaptiveCards.h>
 
-@interface ADCResolver:NSObject<ACOIResourceResolver>
+@interface ADCResolver : NSObject <ACOIResourceResolver>
 
 @end

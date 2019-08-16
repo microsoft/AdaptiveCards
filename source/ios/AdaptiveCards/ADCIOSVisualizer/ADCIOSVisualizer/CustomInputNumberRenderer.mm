@@ -6,7 +6,7 @@
 //
 
 #import "CustomInputNumberRenderer.h"
-#import <AdaptiveCards/ACFramework.h>
+#import <AdaptiveCards/AdaptiveCards.h>
 
 @implementation CustomInputNumberRenderer
 
@@ -17,10 +17,10 @@
 }
 
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
-            rootView:(ACRView *)rootView
-            inputs:(NSArray *)inputs
-   baseCardElement:(ACOBaseCardElement *)acoElem
-        hostConfig:(ACOHostConfig *)acoConfig
+           rootView:(ACRView *)rootView
+             inputs:(NSArray *)inputs
+    baseCardElement:(ACOBaseCardElement *)acoElem
+         hostConfig:(ACOHostConfig *)acoConfig
 {
     ACRInputNumberRenderer *defaultRenderer = [ACRInputNumberRenderer getInstance];
 
@@ -29,12 +29,11 @@
                                      inputs:inputs
                             baseCardElement:acoElem
                                  hostConfig:acoConfig];
-    if(input)
-    {
-        [input setBackgroundColor: [UIColor colorWithRed:1.0
-                                                   green:59.0/255.0
-                                                    blue:48.0/255.0
-                                                   alpha:1.0]];
+    if (input) {
+        [input setBackgroundColor:[UIColor colorWithRed:1.0
+                                                  green:59.0 / 255.0
+                                                   blue:48.0 / 255.0
+                                                  alpha:1.0]];
     }
     return input;
 }

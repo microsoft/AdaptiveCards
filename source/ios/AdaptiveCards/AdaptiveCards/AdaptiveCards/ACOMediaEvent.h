@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ACOMediaSource:NSObject
+@interface ACOMediaSource : NSObject
 @property NSString *url;
 @property NSString *mimeType;
 @property BOOL isVideo;
@@ -16,7 +16,7 @@
 
 @end
 
-@interface ACOMediaEvent:NSObject
+@interface ACOMediaEvent : NSObject
 @property NSArray<ACOMediaSource *> *sources;
 @property BOOL isValid;
 @end

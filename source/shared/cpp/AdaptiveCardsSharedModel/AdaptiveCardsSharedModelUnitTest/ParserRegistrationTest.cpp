@@ -26,6 +26,8 @@ namespace AdaptiveCardsSharedModelUnitTest
                     m_customImage = value.get("customProperty", Json::Value()).asString();
                 }
 
+                virtual ~TestCustomElement() {};
+
             private:
                 std::string m_customImage;
             };
@@ -34,7 +36,8 @@ namespace AdaptiveCardsSharedModelUnitTest
             class TestCustomElementParser : public BaseCardElementParser
             {
             public:
-                virtual std::shared_ptr<BaseCardElement> Deserialize(ParseContext &context, const Json::Value& value) override
+                virtual ~TestCustomElementParser() {};
+                virtual std::shared_ptr<BaseCardElement> Deserialize(ParseContext &/*context*/, const Json::Value& value) override
                 {
                     return std::make_shared<TestCustomElement>(value);
                 }
@@ -48,7 +51,8 @@ namespace AdaptiveCardsSharedModelUnitTest
             class TestCustomActionParser : public ActionElementParser
             {
             public:
-                virtual std::shared_ptr<BaseActionElement> Deserialize(ParseContext &context, const Json::Value& value) override
+                virtual ~TestCustomActionParser() {};
+                virtual std::shared_ptr<BaseActionElement> Deserialize(ParseContext &/*context*/, const Json::Value& value) override
                 {
                     return std::make_shared<TestCustomElement>(value);
                 }

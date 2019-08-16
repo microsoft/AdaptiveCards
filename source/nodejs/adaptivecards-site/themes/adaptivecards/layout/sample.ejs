@@ -1,45 +1,45 @@
-<div id="content-wrapper" class="w3-content sample-browser" style="max-width:1564px">
+<div id="content-wrapper" class="sample-browser w3-margin-bottom" style="max-width:1550px">
 
-  <nav id="sidebar-todo" class="toc-todo sidebar w3-cell w3-hide-small w3-hide-medium w3-bar-block" style="width: 200px">
-    <div class="sidebar__inner">
-      <ul class="samples-sidebar-list">
-        <% page.samples.forEach(function(sample, i) { %>
-          <li class='<%= page.samplePath === sample.htmlPath ? "selectedHolder" : "" %>'>
-            <a href="<%- url_for(sample.htmlPath) %>"><%= sample.name %></a>
-          </li>
-        <% }) %>
-      
-      </ul>
-      
-    </div>
-  </nav>
-    
-  <div class="w3-main" style="margin-left: 220px">
+	<nav id="sidebar-todo" class="toc-todo sidebar w3-cell w3-hide-small w3-hide-medium w3-bar-block"
+		style="width: 200px">
+		<div class="sidebar__inner">
+			<ul class="samples-sidebar-list">
+				<% page.samples.forEach(function(sample, i) { %>
+				<li class='<%= page.samplePath === sample.htmlPath ? "selectedHolder" : "" %>'>
+					<a href="<%- url_for(sample.htmlPath) %>"><%= sample.name %></a>
+				</li>
+				<% }) %>
 
-    <div class="w3-container">
-      <h1><%= page.title %></h1>
-      <p>These samples are just a teaser of the type of cards you can create. Go ahead and tweak them to make any scenario possible!</p>
+			</ul>
 
-      <h2><%= page.sample.name %></h2>
-      
-      <!-- mobile nav -->
-      <div class="w3-hide-large">
-        <select id="menu-nav">y
-          <% page.samples.forEach(function(sample) { %>
-          <% if(is_current(sample.htmlPath)) { %>
-            <option value='<%- url_for(sample.htmlPath) %>' selected="selected"><%= sample.name %></option>
-          <% } else { %>
-            <option value='<%- url_for(sample.htmlPath) %>'><%= sample.name %></option>
-          <% } %> 
-          <% }) %>
-        </select>
-      </div>
-    </div>
+		</div>
+	</nav>
 
+	<div class="w3-main" style="margin-left: 200px">
 
-    
-    <%- partial("_partial/code-example", { examplePath: page.sample.jsonPath }) %>
- 
-  </div>
+		<div class="w3-container">
+			<h1><%= page.title %></h1>
+			<p>These samples are <em>just a teaser</em> of the type of cards you can create.
+				Go ahead and tweak them to make any scenario possible!</p>
+
+			<!-- mobile nav -->
+			<div class="w3-hide-large">
+				<span>Choose sample: </span>
+				<select id="menu-nav" class="w3-select w3-border w3-margin-bottom">
+					<% page.samples.forEach(function(sample) { %>
+					<% if(is_current(sample.htmlPath)) { %>
+					<option value='<%- url_for(sample.htmlPath) %>' selected="selected"><%= sample.name %></option>
+					<% } else { %>
+					<option value='<%- url_for(sample.htmlPath) %>'><%= sample.name %></option>
+					<% } %>
+					<% }) %>
+				</select>
+			</div>
+
+			<h3><%= page.sample.name %> sample</h3>
+		</div>
+
+		<%- code_and_card(page.jsonPath) %>
+	</div>
 
 </div>

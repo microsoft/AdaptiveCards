@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using ObjCRuntime;
 using Foundation;
 
@@ -23,7 +23,9 @@ namespace AdaptiveCards.Rendering.Xamarin.iOS
 	{
 		ShowCard = 1,
 		Submit,
-		OpenUrl
+		OpenUrl,
+        ToggleVisibility,
+        UnknownAction
 	}
 
 	[Native]

@@ -12,9 +12,10 @@ namespace AdaptiveNamespace
         virtual HRESULT get_AdaptiveCardElement(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement * *cardElement) = 0;
         virtual HRESULT get_Separator(_COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement * *separator) = 0;
         virtual HRESULT get_ParentPanel(_COM_Outptr_ ABI::Windows::UI::Xaml::Controls::IPanel * *parentPanel) = 0;
-        // Auto size images hide themselves while they haven't finished loading even when they are expected to be visible so the best way 
-        // to track the intended visibility of the element and its separator is keeping this flag to avoid comparing against the rendered visibility
-        virtual HRESULT get_ExpectedVisibility(_Outptr_ boolean* expectedVisibility) = 0;
+        // Auto size images hide themselves while they haven't finished loading even when they are expected to be
+        // visible so the best way to track the intended visibility of the element and its separator is keeping this
+        // flag to avoid comparing against the rendered visibility
+        virtual HRESULT get_ExpectedVisibility(_Outptr_ boolean * expectedVisibility) = 0;
         virtual HRESULT set_ExpectedVisibility(_In_ boolean expectedVisibility) = 0;
     };
 
@@ -39,7 +40,7 @@ namespace AdaptiveNamespace
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardElement> m_cardElement;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::IColumnDefinition> m_columnDefinition;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> m_separator;
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::IPanel> m_parentPanel;
+        Microsoft::WRL::WeakRef m_parentPanel;
         boolean m_expectedVisibility;
     };
 }

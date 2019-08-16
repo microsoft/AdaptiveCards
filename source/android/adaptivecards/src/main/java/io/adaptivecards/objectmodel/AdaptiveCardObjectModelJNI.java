@@ -376,8 +376,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long BaseElement_GetRequirements(long jarg1, BaseElement jarg1_);
   public final static native void BaseElement_GetResourceInformation(long jarg1, BaseElement jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native void BaseElement_GetResourceInformationSwigExplicitBaseElement(long jarg1, BaseElement jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
-  public final static native void BaseElement_PopulateKnownPropertiesSet(long jarg1, BaseElement jarg1_);
-  public final static native void BaseElement_PopulateKnownPropertiesSetSwigExplicitBaseElement(long jarg1, BaseElement jarg1_);
   public final static native void BaseElement_director_connect(BaseElement obj, long cptr, boolean mem_own, boolean weak_global);
   public final static native void BaseElement_change_ownership(BaseElement obj, long cptr, boolean take_or_release);
   public final static native void HandleUnknownProperties(long jarg1, JsonValue jarg1_, long jarg2, long jarg3, JsonValue jarg3_);
@@ -405,8 +403,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native int BaseCardElement_GetElementType(long jarg1, BaseCardElement jarg1_);
   public final static native int BaseCardElement_GetElementTypeSwigExplicitBaseCardElement(long jarg1, BaseCardElement jarg1_);
   public final static native void BaseCardElement_ParseJsonObject(long jarg1, ParseContext jarg1_, long jarg2, JsonValue jarg2_, long jarg3, BaseElement jarg3_);
-  public final static native void BaseCardElement_PopulateKnownPropertiesSet(long jarg1, BaseCardElement jarg1_);
-  public final static native void BaseCardElement_PopulateKnownPropertiesSetSwigExplicitBaseCardElement(long jarg1, BaseCardElement jarg1_);
   public final static native Object BaseCardElement_swigOriginalObject(long jarg1, BaseCardElement jarg1_);
   public final static native long BaseCardElement_dynamic_cast(long jarg1, BaseElement jarg1_);
   public final static native void BaseCardElement_director_connect(BaseCardElement obj, long cptr, boolean mem_own, boolean weak_global);
@@ -434,8 +430,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long BaseActionElement_SerializeToJsonValue(long jarg1, BaseActionElement jarg1_);
   public final static native long BaseActionElement_SerializeToJsonValueSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_);
   public final static native void BaseActionElement_ParseJsonObject(long jarg1, ParseContext jarg1_, long jarg2, JsonValue jarg2_, long jarg3, BaseElement jarg3_);
-  public final static native void BaseActionElement_PopulateKnownPropertiesSet(long jarg1, BaseActionElement jarg1_);
-  public final static native void BaseActionElement_PopulateKnownPropertiesSetSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_);
   public final static native Object BaseActionElement_swigOriginalObject(long jarg1, BaseActionElement jarg1_);
   public final static native long BaseActionElement_dynamic_cast(long jarg1, BaseElement jarg1_);
   public final static native void BaseActionElement_director_connect(BaseActionElement obj, long cptr, boolean mem_own, boolean weak_global);
@@ -523,6 +517,10 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long ElementParserRegistration_GetParser(long jarg1, ElementParserRegistration jarg1_, String jarg2);
   public final static native void delete_ElementParserRegistration(long jarg1);
   public final static native String c_adaptiveCardsFeature_get();
+  public final static native long new_CaseInsensitiveKeyHash();
+  public final static native void delete_CaseInsensitiveKeyHash(long jarg1);
+  public final static native long new_CaseInsensitiveKeyEquals();
+  public final static native void delete_CaseInsensitiveKeyEquals(long jarg1);
   public final static native long new_FeatureRegistration();
   public final static native void FeatureRegistration_AddFeature(long jarg1, FeatureRegistration jarg1_, String jarg2, String jarg3);
   public final static native void FeatureRegistration_RemoveFeature(long jarg1, FeatureRegistration jarg1_, String jarg2);
@@ -860,6 +858,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long AdaptiveCard_MakeFallbackTextCard(String jarg1, String jarg2, String jarg3) throws java.io.IOException;
   public final static native long AdaptiveCard_SerializeToJsonValue(long jarg1, AdaptiveCard jarg1_);
   public final static native String AdaptiveCard_Serialize(long jarg1, AdaptiveCard jarg1_);
+  public final static native long AdaptiveCard_GetInternalId(long jarg1, AdaptiveCard jarg1_);
   public final static native void delete_AdaptiveCard(long jarg1);
   public final static native long new_AdaptiveCardParseException(int jarg1, String jarg2);
   public final static native String AdaptiveCardParseException_what(long jarg1, AdaptiveCardParseException jarg1_);
@@ -1423,9 +1422,6 @@ public class AdaptiveCardObjectModelJNI {
   public static void SwigDirector_BaseElement_GetResourceInformation(BaseElement jself, long resourceUris) {
     jself.GetResourceInformation(new RemoteResourceInformationVector(resourceUris, false));
   }
-  public static void SwigDirector_BaseElement_PopulateKnownPropertiesSet(BaseElement jself) {
-    jself.PopulateKnownPropertiesSet();
-  }
   public static String SwigDirector_BaseCardElement_GetId(BaseCardElement jself) {
     return jself.GetId();
   }
@@ -1440,9 +1436,6 @@ public class AdaptiveCardObjectModelJNI {
   }
   public static void SwigDirector_BaseCardElement_GetResourceInformation(BaseCardElement jself, long resourceUris) {
     jself.GetResourceInformation(new RemoteResourceInformationVector(resourceUris, false));
-  }
-  public static void SwigDirector_BaseCardElement_PopulateKnownPropertiesSet(BaseCardElement jself) {
-    jself.PopulateKnownPropertiesSet();
   }
   public static boolean SwigDirector_BaseCardElement_GetSeparator(BaseCardElement jself) {
     return jself.GetSeparator();
@@ -1479,9 +1472,6 @@ public class AdaptiveCardObjectModelJNI {
   }
   public static void SwigDirector_BaseActionElement_GetResourceInformation(BaseActionElement jself, long resourceUris) {
     jself.GetResourceInformation(new RemoteResourceInformationVector(resourceUris, false));
-  }
-  public static void SwigDirector_BaseActionElement_PopulateKnownPropertiesSet(BaseActionElement jself) {
-    jself.PopulateKnownPropertiesSet();
   }
   public static String SwigDirector_BaseActionElement_GetTitle(BaseActionElement jself) {
     return jself.GetTitle();

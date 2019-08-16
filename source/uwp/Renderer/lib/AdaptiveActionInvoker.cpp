@@ -15,7 +15,8 @@ namespace AdaptiveNamespace
 {
     HRESULT AdaptiveActionInvoker::RuntimeClassInitialize() noexcept { return S_OK; }
 
-    HRESULT AdaptiveActionInvoker::RuntimeClassInitialize(_In_ RenderedAdaptiveCard* renderResult) noexcept try
+    HRESULT AdaptiveActionInvoker::RuntimeClassInitialize(_In_ RenderedAdaptiveCard* renderResult) noexcept
+    try
     {
         ComPtr<RenderedAdaptiveCard> strongRenderResult = renderResult;
         return strongRenderResult.AsWeak(&m_weakRenderResult);

@@ -23,9 +23,8 @@ namespace AdaptiveCards
         const std::vector<std::shared_ptr<BaseActionElement>>& GetActions() const;
 
     private:
-        void PopulateKnownPropertiesSet() override;
+        void PopulateKnownPropertiesSet();
         std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>> m_actions;
-        ActionsOrientation m_orientation;
     };
 
     class ActionSetParser : public BaseCardElementParser

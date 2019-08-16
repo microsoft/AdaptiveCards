@@ -2,6 +2,7 @@ using Foundation;
 using UIKit;
 using AdaptiveCards.BotConnection;
 using AdaptiveCards;
+using HealthKit;
 
 namespace AdaptiveCards.Rendering.Xamarin.iOS.Sample
 {
@@ -151,6 +152,8 @@ namespace AdaptiveCards.Rendering.Xamarin.iOS.Sample
         private PayloadRetriever m_payloadRetriever = null;
         private UIView m_lastRenderedCard = null;
 
+        private ActionDelegate actionDelegate;
+
         private UIView ReGenerateAdaptiveCard(string json)
         {
             var retrievedCard = ACOAdaptiveCard.FromJson(json);
@@ -158,7 +161,10 @@ namespace AdaptiveCards.Rendering.Xamarin.iOS.Sample
             if (retrievedCard.IsValid == true)
             {
                 var renderResult = ACRRenderer.Render(retrievedCard.Card, m_config.Config,
-                                                      UIScreen.MainScreen.Bounds.Size.Width - 20);
+                                                      UIScreen.MainScreen.Bounds.Size.Width - 20,
+                                                      actionDelegate);
+                // actionDelegate.LabelContainer = renderResult.View;
+                // actionDelegate.ResponseLabel = null;
                 return renderResult.View;
             }
             return null;
@@ -202,6 +208,9 @@ namespace AdaptiveCards.Rendering.Xamarin.iOS.Sample
             };
             controller.View.AddSubview(remoteButton);
 
+            // TODO: Add ViewController
+            actionDelegate = new ActionDelegate(new MainViewController());
+
             // make the window visible
             Window.MakeKeyAndVisible();
             return true;
@@ -217,12 +226,17 @@ namespace AdaptiveCards.Rendering.Xamarin.iOS.Sample
 
             if (renderedCard != null)
             {
-                renderedCard.TranslatesAutoresizingMaskIntoConstraints = true;
+                renderedCard.LayoutIfNeeded();
+                //renderedCard.TranslatesAutoresizingMaskIntoConstraints = true;
                 renderedCard.Frame = new CoreGraphics.CGRect(20,
                                                              UIScreen.MainScreen.Bounds.Size.Height * 0.15f,
-                                                             UIScreen.MainScreen.Bounds.Size.Width - 40,
-                                                             UIScreen.MainScreen.Bounds.Size.Height * 0.8f);
+                                                             renderedCard.Frame.Size.Width,
+                                                             renderedCard.Frame.Size.Height);
+                //UIScreen.MainScreen.Bounds.Size.Width - 40,
+                //UIScreen.MainScreen.Bounds.Size.Height * 0.8f);
+                renderedCard.TranslatesAutoresizingMaskIntoConstraints = true;
                 controller.View.AddSubview(renderedCard);
+                
                 m_lastRenderedCard = renderedCard;
             }
         }

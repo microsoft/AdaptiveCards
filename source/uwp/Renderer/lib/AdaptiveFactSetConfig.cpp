@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
+
 #include "AdaptiveFactSetConfig.h"
 #include "AdaptiveTextConfig.h"
 
@@ -9,7 +10,8 @@ using namespace ABI::AdaptiveNamespace;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveFactSetConfig::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveFactSetConfig::RuntimeClassInitialize() noexcept
+    try
     {
         FactSetConfig factSetConfig;
         return RuntimeClassInitialize(factSetConfig);

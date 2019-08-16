@@ -7,9 +7,9 @@
 
 #import <Foundation/Foundation.h>
 
-#import <AdaptiveCards/ACFramework.h>
+#import <AdaptiveCards/AdaptiveCards.h>
 
-@interface CustomActionNewType:ACOBaseActionElement<ACOIBaseActionElementParser>
+@interface CustomActionNewType : ACOBaseActionElement <ACOIBaseActionElementParser>
 
 @property UIColor *color;
 @property NSInteger cornerradius;
@@ -18,7 +18,7 @@
 
 @end
 
-@interface CustomActionNewTypeRenderer:ACRBaseActionElementRenderer
+@interface CustomActionNewTypeRenderer : ACRBaseActionElementRenderer
 
 + (CustomActionNewTypeRenderer *)getInstance;
 
