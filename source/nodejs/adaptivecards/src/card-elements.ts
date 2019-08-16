@@ -689,7 +689,7 @@ export abstract class CardElement extends CardObject {
     render(): HTMLElement {
         // do not log on source AdaptiveCard
         if (GUIDHelper.getOrCreate().isGUIDtracked() && this.getJsonTypeName() !== "AdaptiveCard") {
-            ACLogger.getOrCreate().logEvent("RenderCard", this.getJsonTypeName(), GUIDHelper.getOrCreate().getGUID().toString());
+            AdaptiveCard.logger.logEvent("RenderCard", this.getJsonTypeName(), GUIDHelper.getOrCreate().getGUID().toString());
         }
         
         this._renderedElement = this.overrideInternalRender();
@@ -1725,7 +1725,7 @@ export class FactSet extends CardElement {
 
         if (GUIDHelper.getOrCreate().isGUIDtracked()) {
             for (let i = 0; i < this.facts.length; i++) {
-                ACLogger.getOrCreate().logEvent("RenderCard", "Fact", GUIDHelper.getOrCreate().getGUID().toString());
+                AdaptiveCard.logger.logEvent("RenderCard", "Fact", GUIDHelper.getOrCreate().getGUID().toString());
             }
         }
 
@@ -3276,7 +3276,7 @@ export class ChoiceSetInput extends Input {
     protected internalRender(): HTMLElement {
         if (GUIDHelper.getOrCreate().isGUIDtracked()) {
             for (let i = 0; i < this.choices.length; i++) {
-                ACLogger.getOrCreate().logEvent("RenderCard", "Choice", GUIDHelper.getOrCreate().getGUID().toString());
+                AdaptiveCard.logger.logEvent("RenderCard", "Choice", GUIDHelper.getOrCreate().getGUID().toString());
             }
         }
 
@@ -3927,7 +3927,7 @@ export abstract class Action extends CardObject {
             // store guid at render time to correlate events
             this._guid = GUIDHelper.getOrCreate().getGUID().toString();
 
-            ACLogger.getOrCreate().logEvent("RenderCard", this.getJsonTypeName(), this._guid);
+            AdaptiveCard.logger.logEvent("RenderCard", this.getJsonTypeName(), this._guid);
         }
 
         // Cache hostConfig for perf
@@ -4003,7 +4003,7 @@ export abstract class Action extends CardObject {
 
         // logging is only scoped to Action.Submit events
         if (this.getJsonTypeName() === "Action.Submit" && this._guid !== null) {
-            ACLogger.getOrCreate().logEvent("SubmitButtonClicked", this.getJsonTypeName(), this._guid);
+            AdaptiveCard.logger.logEvent("SubmitButtonClicked", this.getJsonTypeName(), this._guid);
         }
 
         raiseExecuteActionEvent(this);
@@ -6656,6 +6656,8 @@ export class AdaptiveCard extends ContainerWithActions {
     static onParseError: (error: HostConfig.IValidationError) => void = null;
     static onProcessMarkdown: (text: string, result: IMarkdownProcessingResult) => void = null;
 
+    static readonly logger: IACLogger = ACLogger.getOrCreate();
+
     static get processMarkdown(): (text: string) => string {
         throw new Error("The processMarkdown event has been removed. Please update your code and set onProcessMarkdown instead.")
     }
@@ -6850,10 +6852,10 @@ export class AdaptiveCard extends ContainerWithActions {
 		}
 		
 		// uncomment line below to enable sending of telemetry
-        // ACLogger.getOrCreate().configureCustomProviders( { add providers here } );
-        ACLogger.getOrCreate().configureCustomProviders(new ConsoleProvider());
+        // AdaptiveCard.logger.configureCustomProviders( { add providers here } );
+        AdaptiveCard.logger.configureCustomProviders(new ConsoleProvider());
 
-		if (ACLogger.getOrCreate().isTelemetryEnabled()) {
+		if (AdaptiveCard.logger.isTelemetryEnabled()) {
 			this.renderCardTelemetry(json);
 		}
 
