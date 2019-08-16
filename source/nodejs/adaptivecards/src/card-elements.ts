@@ -6863,7 +6863,7 @@ export class AdaptiveCard extends ContainerWithActions {
 	}
 	
 	/**
-	 * A method that creates an IACLogger and enables event logging to the respective providers.
+	 * A method that enables logging if certain requirements are met (e.g., an Input.Rating element is present)
 	 * 
 	 * @param json - The JSON object that is being parsed
 	 */
@@ -6871,26 +6871,19 @@ export class AdaptiveCard extends ContainerWithActions {
 
 		if (json[this.getItemsCollectionPropertyName()] != null) {
 
-			let items = json[this.getItemsCollectionPropertyName()] as Array<any>;
-
-			// only telemetry for card with Input.Rating is collected
-            let hasRating: boolean = false;
+            let items = json[this.getItemsCollectionPropertyName()] as Array<any>;
             
             let guidHelper: GUIDHelper = GUIDHelper.getOrCreate();
 			// generate a new GUID each time a new card is parsed
 			guidHelper.createGUID();
 
+			// only telemetry for card with Input.Rating is collected
 			for (let i = 0; i < items.length; i++) {
 				if (items[i]["type"] === "Input.Rating") {
-                    hasRating = true;
+                    guidHelper.trackGUID(); // start tracking GUID for telemetry
 					break;
 				}
             }
-            
-            if (hasRating) {
-                GUIDHelper.getOrCreate().getGUID();
-            }
-
 		}
 	}
 

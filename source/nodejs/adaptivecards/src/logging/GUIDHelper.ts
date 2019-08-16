@@ -46,8 +46,15 @@ export class GUIDHelper {
 	 * @returns GUID. If createGUID() has not yet been called, then an undefined object will be returned
 	 */
 	getGUID(): number {
-		this._hasRating = true;
 		return this._guid;
+	}
+
+	/**
+	 * When called, indicates that logging calls should occur for a specific card
+	 * in the future and GUIDs should be correlated
+	 */
+	trackGUID(): void {
+		this._hasRating = true;
 	}
 
 	/**
