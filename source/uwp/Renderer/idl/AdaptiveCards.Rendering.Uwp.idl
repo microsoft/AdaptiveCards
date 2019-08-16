@@ -1764,7 +1764,7 @@ AdaptiveNamespaceStart
 
         void AddInputValue(IAdaptiveInputValue inputValue);
 
-        void AddInlineShowCard(AdaptiveActionSet inputValue,
+        void AddInlineShowCard(AdaptiveActionSet actionSet,
                                AdaptiveShowCardAction showCardAction,
                                Windows.UI.Xaml.UIElement showCardUIElement);
 
