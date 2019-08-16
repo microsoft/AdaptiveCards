@@ -641,6 +641,18 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual<std::string>("<p>How about <strong>以前の製品のリンクで検索</strong></p>", parser.TransformToHtml());
         }
 
+        TEST_METHOD(NonLatinCharacters_BoldSentenceLeadingNonLatin)
+        {
+            MarkDownParser parser("以前の製品のリンクで検索 **以前の製品のリンクで検索**");
+            Assert::AreEqual<std::string>("<p>以前の製品のリンクで検索 <strong>以前の製品のリンクで検索</strong></p>", parser.TransformToHtml());
+        }
+
+        TEST_METHOD(NonLatinCharacters_BoldSentenceLeadingNonLatinNoSpace)
+        {
+            MarkDownParser parser("以前の製品のリンクで検索**以前の製品のリンクで検索**");
+            Assert::AreEqual<std::string>("<p>以前の製品のリンクで検索<strong>以前の製品のリンクで検索</strong></p>", parser.TransformToHtml());
+        }
+
         TEST_METHOD(NonLatinCharacters_BoldSentenceNoWhitespace)
         {
             MarkDownParser parser("How about**以前の製品のリンクで検索**");
