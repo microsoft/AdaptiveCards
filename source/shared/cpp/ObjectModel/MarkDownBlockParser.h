@@ -21,6 +21,31 @@ namespace AdaptiveSharedNamespace
         MarkDownParsedResult& GetParsedResult() { return m_parsedResult; }
 
     protected:
+        static constexpr bool IsSpace(const char ch)
+        {
+            return (ch > 0) && isspace(ch);
+        }
+
+        static constexpr bool IsPunct(const char ch)
+        {
+            return (ch > 0) && ispunct(ch);
+        }
+
+        static constexpr bool IsAlnum(const char ch)
+        {
+            return (ch < 0 || isalnum(ch));
+        }
+
+        static constexpr bool IsCntrl(const char ch)
+        {
+            return (ch > 0) && iscntrl(ch);
+        }
+
+        static constexpr bool IsDigit(const char ch)
+        {
+            return (ch > 0) && isdigit(ch);
+        }
+
         // Holds parsed results
         MarkDownParsedResult m_parsedResult;
     };
@@ -59,12 +84,12 @@ namespace AdaptiveSharedNamespace
             return m_currentDelimiterType == emphasisType;
         }
         void ResetCurrentEmphasisState() { m_delimiterCnts = 0; }
+        bool IsLeftEmphasisDelimiter(const char ch) const;
         bool IsRightEmphasisDelimiter(const char ch) const;
+        // Attempt to capture current emphasis as left emphasis
+        bool TryCapturingLeftEmphasisToken(char ch, std::string& currentToken);
         // Attempt to capture current emphasis as right emphasis
         bool TryCapturingRightEmphasisToken(char ch, std::string& currentToken);
-        bool IsLeftEmphasisDelimiter(const char ch) const;
-        // Attempt to capture current emphasis as right emphasis
-        bool TryCapturingLeftEmphasisToken(char ch, std::string& currentToken);
         void CaptureEmphasisToken(char ch, std::string& currentToken);
         void UpdateLookBehind(char ch);
         static constexpr DelimiterType GetDelimiterTypeForChar(const char ch)

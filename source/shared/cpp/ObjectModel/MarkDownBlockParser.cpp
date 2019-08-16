@@ -238,7 +238,8 @@ bool EmphasisParser::IsLeftEmphasisDelimiter(const char ch) const
     if (m_delimiterCnts && ch != EOF)
     {
         // non-EOF extended chars (i.e. < 0) are treated as non-space non-punctuation characters
-        return (ch < 0 || !isspace(ch)) && !(m_lookBehind == DelimiterType::Alphanumeric && (ch > 0 && ispunct(ch))) &&
+        return (!MarkDownBlockParser::IsSpace(ch)) &&
+            !(m_lookBehind == DelimiterType::Alphanumeric && MarkDownBlockParser::IsPunct(ch)) &&
             !(m_lookBehind == DelimiterType::Alphanumeric && m_currentDelimiterType == DelimiterType::Underscore);
     }
     return false;
@@ -246,13 +247,13 @@ bool EmphasisParser::IsLeftEmphasisDelimiter(const char ch) const
 
 bool EmphasisParser::IsRightEmphasisDelimiter(const char ch) const
 {
-    if ((ch == EOF || (ch > 0 && isspace(ch))) && (m_lookBehind != DelimiterType::WhiteSpace) &&
+    if ((ch == EOF || MarkDownBlockParser::IsSpace(ch)) && (m_lookBehind != DelimiterType::WhiteSpace) &&
         (m_checkLookAhead || m_checkIntraWord || m_currentDelimiterType == DelimiterType::Asterisk))
     {
         return true;
     }
 
-    if ((ch < 0 || isalnum(ch)) && m_lookBehind != DelimiterType::WhiteSpace && m_lookBehind != DelimiterType::Init)
+    if (MarkDownBlockParser::IsAlnum(ch) && m_lookBehind != DelimiterType::WhiteSpace && m_lookBehind != DelimiterType::Init)
     {
         if (!m_checkLookAhead && !m_checkIntraWord)
         {
@@ -265,7 +266,7 @@ bool EmphasisParser::IsRightEmphasisDelimiter(const char ch) const
         }
     }
 
-    if ((ch > 0 && ispunct(ch)) && m_lookBehind != DelimiterType::WhiteSpace)
+    if (MarkDownBlockParser::IsPunct(ch) && m_lookBehind != DelimiterType::WhiteSpace)
     {
         return true;
     }
@@ -321,15 +322,15 @@ bool EmphasisParser::TryCapturingLeftEmphasisToken(char ch, std::string& current
 void EmphasisParser::UpdateLookBehind(char ch)
 {
     // store ch and move itr (note: extended characters are considered alnum for our purposes)
-    if (ch < 0 || isalnum(ch))
+    if (MarkDownBlockParser::IsAlnum(ch))
     {
         m_lookBehind = DelimiterType::Alphanumeric;
     }
-    else if (isspace(ch))
+    else if (MarkDownBlockParser::IsSpace(ch))
     {
         m_lookBehind = DelimiterType::WhiteSpace;
     }
-    else if (ispunct(ch))
+    else if (MarkDownBlockParser::IsPunct(ch))
     {
         m_lookBehind = (ch == '\\') ? DelimiterType::Escape : DelimiterType::Puntuation;
     }
@@ -429,13 +430,14 @@ bool LinkParser::MatchAtLinkTextEnd(std::stringstream& lookahead)
 // link is in form of [txt](url), this method matches '('
 bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
 {
+    // if peeked char is EOF or extended char, this isn't a match
     if (lookahead.peek() < 0)
     {
         return false;
     }
 
     // control key is detected, syntax check failed
-    if (iscntrl(lookahead.peek()))
+    if (MarkDownBlockParser::IsCntrl(static_cast<char>(lookahead.peek())))
     {
         m_parsedResult.AppendParseResult(m_linkTextParsedResult);
         return false;
@@ -462,7 +464,7 @@ bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
 // link is in form of [txt](url), this method matches ')'
 bool LinkParser::MatchAtLinkDestinationRun(std::stringstream& lookahead)
 {
-    if (lookahead.peek() > 0 && (isspace(lookahead.peek()) || iscntrl(lookahead.peek())))
+    if (lookahead.peek() > 0 && (MarkDownBlockParser::IsSpace(static_cast<char>(lookahead.peek())) || MarkDownBlockParser::IsCntrl(static_cast<char>(lookahead.peek()))))
     {
         m_parsedResult.AppendParseResult(m_linkTextParsedResult);
         return false;
@@ -565,7 +567,7 @@ bool ListParser::MatchNewOrderedListItem(std::stringstream& stream, std::string&
         char streamChar;
         stream.get(streamChar);
         number_string += streamChar;
-    } while (isdigit(stream.peek()));
+    } while (MarkDownBlockParser::IsDigit(static_cast<char>(stream.peek())));
 
     if (IsDot(static_cast<char>(stream.peek())))
     {
@@ -589,7 +591,7 @@ void ListParser::ParseSubBlocks(std::stringstream& stream)
             char newLineChar;
             stream.get(newLineChar);
             // check if it is the start of new block items
-            if (newLineChar > 0 && isdigit(stream.peek()))
+            if (MarkDownBlockParser::IsDigit(static_cast<char>(stream.peek())))
             {
                 std::string number_string = "";
                 if (MatchNewOrderedListItem(stream, number_string))
@@ -676,14 +678,14 @@ void OrderedListParser::Match(std::stringstream& stream)
 {
     // used to capture digit char
     std::string number_string = "";
-    if (stream.peek() > 0 && isdigit(stream.peek()))
+    if (MarkDownBlockParser::IsDigit(static_cast<char>(stream.peek())))
     {
         do
         {
             char streamChar;
             stream.get(streamChar);
             number_string += streamChar;
-        } while (isdigit(stream.peek()));
+        } while (MarkDownBlockParser::IsDigit(static_cast<char>(stream.peek())));
 
         if (IsDot(static_cast<char>(stream.peek())))
         {
