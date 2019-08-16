@@ -18,11 +18,11 @@
     "release": "npm run build && npm run dts && npm run generate-adaptive-schema",
     "test": "mocha",
     "build-and-test": "npm run build && npm run test",
-    "generate-schema": "node ./lib/command-line.js ./schema/src Class,Enum Class classType > ./schema/lib/Type.json",
+    "generate-schema": "echo 'test' > ./schema/lib/Type.json && node ./lib/command-line.js ./schema/src Class,Enum classType > ./schema/lib/Type.json",
     "generate-adaptive-schema": "node ./lib/command-line.js ../../../schemas/src AdaptiveCard > ../../../schemas/adaptive-card.json"
   },
   "devDependencies": {
-    "glob": "^7.1.4",
+    "glob": "^7.1.2",
     "js-yaml": "^3.13.1",
     "markdown-table": "^1.1.3",
     "mocha": "^6.2.0",

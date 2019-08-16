@@ -8,7 +8,7 @@ hexo.extend.helper.register('code_and_card', function (jsonPath) {
 	const get_content = hexo.extend.helper.get('get_content').bind(hexo);
 	const url_for = hexo.extend.helper.get('url_for').bind(hexo);
 	const payloadUrl = url_for(`/payloads/${path.basename(jsonPath)}`);
-	const designerUrl = url_for(`/designer/index.html?card=${payloadUrl}`);
+	const designerUrl = url_for(`/designer/index.html?card=${encodeURIComponent(payloadUrl)}`);
 
 	return `
 	<div class="w3-cell-row w3-margin-bottom reverse-order-mobile code-and-card">

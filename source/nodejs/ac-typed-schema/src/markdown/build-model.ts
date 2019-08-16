@@ -22,8 +22,6 @@ export function buildModel(options: BuildModelOptions) {
 
 	var schemaFolder = options.schema;
 	var toc = yaml.safeLoad(fs.readFileSync(options.toc));
-	var rootDefinition = options.rootDefinition;
-
 	var items = [];
 
 	var schema: Schema = Schema.fromFolder(schemaFolder);
@@ -59,17 +57,19 @@ export function buildModel(options: BuildModelOptions) {
 			}
 
 			if (options.examplesPath) {
-				definition.examples = glob.sync(path.join(options.examplesPath, "/**/" + definition.name + ".json"), { nocase: false })
+				definition.examples = glob.sync("**/" + definition.name + ".json", { cwd: options.examplesPath, nocase: true, absolute: true })
 			}
 
 			if (definition.properties) {
 				var properties: Map<string, SchemaProperty> = definition.properties;
-				properties.forEach((property, name) => {
+				properties.forEach((property, properName) => {
 
 					var anyProperty: any = property;
 					anyProperty.cardExamples = [];
 					if (options.examplesPath) {
-						anyProperty.cardExamples = glob.sync(path.join(options.examplesPath, "**/" + definition.name + "." + name + ".json"), { nocase: false });
+						var globPattern = "**/" + definition.name + "." + properName + ".json";
+						anyProperty.cardExamples = glob.sync(globPattern, { cwd: options.examplesPath, nocase: true, absolute: true });
+						//console.log(`Cwd: ${options.examplesPath} || Glob: ${globPattern} || Found ${anyProperty.cardExamples}`)
 					}
 				});
 			}

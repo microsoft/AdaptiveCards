@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 var assert = require("assert");
-var tschema = require("../lib/ac-typed-schema");
+var tschema = require("../lib/typed-schema");
 
 describe("Test transform", function () {
     it("Test description", function () {
