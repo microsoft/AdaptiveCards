@@ -172,6 +172,8 @@ namespace AdaptiveNamespace
             RETURN_IF_FAILED(MakeAndInitialize<AdaptiveBackgroundImage>(m_backgroundImage.GetAddressOf(), backgroundImage));
         }
 
+        m_internalId = sharedAdaptiveCard->GetInternalId();
+
         return S_OK;
     }
 
@@ -318,7 +320,8 @@ namespace AdaptiveNamespace
 
         adaptiveCard->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
         adaptiveCard->SetVerticalContentAlignment(static_cast<AdaptiveSharedNamespace::VerticalContentAlignment>(m_verticalAlignment));
-        adaptiveCard->SetInputNecessityIndicators(static_cast<AdaptiveSharedNamespace::InputNecessityIndicators>(m_inputNecessityIndicators));
+        adaptiveCard->SetInputNecessityIndicators(
+            static_cast<AdaptiveSharedNamespace::InputNecessityIndicators>(m_inputNecessityIndicators));
 
         if (m_selectAction != nullptr)
         {
