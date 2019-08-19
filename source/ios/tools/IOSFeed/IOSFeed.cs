@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 using System;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Azure.Storage;
 using Microsoft.Azure.Storage.Blob;
@@ -27,8 +28,15 @@ namespace AdaptiveCards.Tools.IOSFeed
     {
         public static void Main()
         {
-            // Run the examples asynchronously, wait for the results before proceeding
-            ProcessAsync().GetAwaiter().GetResult();
+            try
+            {
+                // Run the examples asynchronously, wait for the results before proceeding
+                ProcessAsync().GetAwaiter().GetResult();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Uploading taks failed with {0} exception", ex);
+            }
         }
 
         private static async Task ProcessAsync()
@@ -38,7 +46,7 @@ namespace AdaptiveCards.Tools.IOSFeed
             FileInfo fi = new FileInfo(Constants.ConnectionStringPath);
             if (!fi.Exists)
             {
-                throw new InvalidOperationException("connection string file does not exist");
+                throw new InvalidOperationException(Path.GetFileName(Constants.ConnectionStringPath) + " does not exist");
             }
 
             using (StreamReader sr = File.OpenText(Constants.ConnectionStringPath))
@@ -47,8 +55,11 @@ namespace AdaptiveCards.Tools.IOSFeed
             }
 
             // Check whether the connection string can be parsed.
-            CloudStorageAccount storageAccount;
-            if (CloudStorageAccount.TryParse(storageConnectionString, out storageAccount))
+            if (!CloudStorageAccount.TryParse(storageConnectionString, out CloudStorageAccount storageAccount))
+            {
+                throw new InvalidOperationException(Path.GetFileName(Constants.ConnectionStringPath) + " does not have valid connection string");
+            }
+            else
             {
                 // If the connection string is valid, proceed with operations against Blob
                 // storage here.
@@ -74,27 +85,32 @@ namespace AdaptiveCards.Tools.IOSFeed
 
                 CloudBlockBlob cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(cloudFileName);
 
-                await cloudBlockBlob.UploadFromFileAsync(sourceFile);
-
-                BlobContinuationToken blobContinuationToken = null;
-                do
+                try
                 {
-                    var results = await cloudBlobContainer.ListBlobsSegmentedAsync(null, blobContinuationToken);
-                    // Get the value of the continuation token returned by the listing call.
-                    blobContinuationToken = results.ContinuationToken;
-                    foreach (IListBlobItem item in results.Results)
+                    await cloudBlockBlob.UploadFromFileAsync(sourceFile);
+
+                    BlobContinuationToken blobContinuationToken = null;
+                    do
                     {
-                        var uriString = item.Uri.ToString();
-                        if (uriString.Contains(blobGuid))
+                        var results = await cloudBlobContainer.ListBlobsSegmentedAsync(null, blobContinuationToken);
+                        // Get the value of the continuation token returned by the listing call.
+                        blobContinuationToken = results.ContinuationToken;
+                        foreach (IListBlobItem item in results.Results)
                         {
-                            UpdatePodSpec(uriString);
+                            var uriString = item.Uri.ToString();
+                            if (uriString.Contains(blobGuid))
+                            {
+                                UpdatePodSpec(uriString);
+                            }
                         }
-                    }
-                } while (blobContinuationToken != null);
-            }
-            else
-            {
-                throw new InvalidOperationException("invalid connection string");
+                    } while (blobContinuationToken != null);
+                }
+                finally
+                {
+                    // when exception happens, nothing is permanent except blob, so we delete it here, and allow the rest of the exception
+                    // to follow the chain
+                    cloudBlockBlob.DeleteIfExists();
+                }
             }
         }
 
@@ -106,40 +122,45 @@ namespace AdaptiveCards.Tools.IOSFeed
             FileInfo fi = new FileInfo(sourceFile);
             if (!fi.Exists)
             {
-                throw new FileNotFoundException("missing podspec");
+                throw new FileNotFoundException("missing file: " + Constants.PodspecName);
             }
 
             // Open the stream and read it back.
             using (StreamReader sr = File.OpenText(sourceFile))
             {
-                string s = "";
-                string output = "";
+                string s;
+                StringBuilder output = new StringBuilder();
                 while ((s = sr.ReadLine()) != null)
                 {
                     if (s.Length != 0)
                     {
                         var splits = s.Split('=');
+                        StringBuilder stringBuilderForEditedString = new StringBuilder();
                         if (splits.Length > 0)
                         {
-                            if (splits[0].Contains("spec.source"))
+                            if (splits[0].Contains("spec.source", StringComparison.OrdinalIgnoreCase))
                             {
-                                s = splits[0] + "= { :http => " + "'" + uri + "' }";
+                                stringBuilderForEditedString.Append(splits[0]).Append("= { :http => " + "'" + uri + "' }");
                             }
-                            else if (splits[0].Contains("spec.version"))
+                            else if (splits[0].Contains("spec.version", StringComparison.OrdinalIgnoreCase))
                             {
                                 var adaptiveVersion = Environment.GetEnvironmentVariable("ADCVERSION");
-                                s = splits[0] + "= '" + adaptiveVersion + "'" ;
+                                stringBuilderForEditedString.Append(splits[0]).Append("= '" + adaptiveVersion + "'");
+                            }
+                            else
+                            {
+                                stringBuilderForEditedString.Append(s);
                             }
                         }
 
-                        output += (s + "\n");
+                        output.Append(stringBuilderForEditedString + "\n");
                     } else
                     {
-                        output += "\n";
+                        output.Append("\n");
                     }
                 }
 
-                File.WriteAllText(targetFile, output);
+                File.WriteAllText(targetFile, output.ToString());
             }
         }
     }
