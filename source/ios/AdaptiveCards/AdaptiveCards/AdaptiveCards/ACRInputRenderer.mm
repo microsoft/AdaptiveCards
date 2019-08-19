@@ -20,6 +20,7 @@
 #import "ACRButton.h"
 #import "ACRAggregateTarget.h"
 #import "ACRShowCardTarget.h"
+#import "ACRToggleVisibilityTarget.h"
 #import "ACRActionOpenURLRenderer.h"
 #import "ACRUIImageView.h"
 #import "Util.h"
@@ -217,20 +218,30 @@
         ACRAggregateTarget *target = [[ACRAggregateTarget alloc] initWithActionElement:acoAction rootView:rootView];
 
         switch (action->GetElementType()) {
-            case ActionType::ShowCard:
-                [button addTarget:target action:@selector(toggleVisibilityOfShowCard) forControlEvents:UIControlEventTouchUpInside];
-                break;
+
             case ActionType::Submit:
                 [txtInput setReturnKeyType:UIReturnKeySend];
                 quickReplyView.target = target;
             case ActionType::OpenUrl:
                 [button addTarget:target action:@selector(send:) forControlEvents:UIControlEventTouchUpInside];
+                [viewGroup addTarget:target];
                 break;
+                
+            case ActionType::ToggleVisibility:
+            {
+                std::shared_ptr<ToggleVisibilityAction> toggleVisibilityAction { std::dynamic_pointer_cast<ToggleVisibilityAction>(action)};
+                ACRToggleVisibilityTarget *toggleVisibilityActionTarget = [[ACRToggleVisibilityTarget alloc]
+                                                                           initWithActionElement:toggleVisibilityAction
+                                                                           config:acoConfig
+                                                                           rootView:rootView];
+                [button addTarget:toggleVisibilityActionTarget action:@selector(doSelectAction) forControlEvents:UIControlEventTouchUpInside];
+                [viewGroup addTarget:toggleVisibilityActionTarget];
+                break;
+                
+            }
             default:
                 break;
         }
-
-        [viewGroup addTarget:target];
     } else {
         [inputs addObject:inputview];
     }
