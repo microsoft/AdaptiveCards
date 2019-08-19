@@ -51,19 +51,19 @@ HRESULT StyleXamlTextBlockProperties(_In_ ABI::AdaptiveNamespace::IAdaptiveTextB
     return S_OK;
 }
 
-HRESULT SetStrikethroughAndUnderline(bool isStrikethrough, bool isUnderline, _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* textBlock)
+HRESULT SetStrikethroughAndUnderline(const TextRunStyleParameters& styleProperties, _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* textBlock)
 {
     ComPtr<ITextBlock> localTextBlock(textBlock);
     ComPtr<ITextBlock5> textBlock5;
     RETURN_IF_FAILED(localTextBlock.As(&textBlock5));
 
     ABI::Windows::UI::Text::TextDecorations textDecorations = ABI::Windows::UI::Text::TextDecorations::TextDecorations_None;
-    if (isStrikethrough)
+    if (styleProperties.IsStrikethrough())
     {
         textDecorations |= ABI::Windows::UI::Text::TextDecorations::TextDecorations_Strikethrough;
     }
 
-    if (isUnderline)
+    if (styleProperties.IsUnderline() || styleProperties.IsInHyperlink())
     {
         textDecorations |= ABI::Windows::UI::Text::TextDecorations::TextDecorations_Underline;
     }
@@ -72,19 +72,19 @@ HRESULT SetStrikethroughAndUnderline(bool isStrikethrough, bool isUnderline, _In
     return S_OK;
 }
 
-HRESULT SetStrikethroughAndUnderline(bool isStrikethrough, bool isUnderline, _In_ ABI::Windows::UI::Xaml::Documents::ITextElement* textElement)
+HRESULT SetStrikethroughAndUnderline(const TextRunStyleParameters& styleProperties, _In_ ABI::Windows::UI::Xaml::Documents::ITextElement* textElement)
 {
     ComPtr<ABI::Windows::UI::Xaml::Documents::ITextElement> localTextElement(textElement);
     ComPtr<ABI::Windows::UI::Xaml::Documents::ITextElement4> textElement4;
     RETURN_IF_FAILED(localTextElement.As(&textElement4));
 
     ABI::Windows::UI::Text::TextDecorations textDecorations = ABI::Windows::UI::Text::TextDecorations::TextDecorations_None;
-    if (isStrikethrough)
+    if (styleProperties.IsStrikethrough())
     {
         textDecorations |= ABI::Windows::UI::Text::TextDecorations::TextDecorations_Strikethrough;
     }
 
-    if (isUnderline)
+    if (styleProperties.IsUnderline() || styleProperties.IsInHyperlink())
     {
         textDecorations |= ABI::Windows::UI::Text::TextDecorations::TextDecorations_Underline;
     }
