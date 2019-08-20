@@ -1,3 +1,5 @@
+DO NOT SUBMIT!
+
 # Adaptive Cards
 
 ![logo](assets/adaptive-card-200.png)
