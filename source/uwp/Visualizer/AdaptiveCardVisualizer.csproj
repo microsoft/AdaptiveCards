@@ -144,6 +144,10 @@
     </SDKReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\UWPTestLibrary\UWPTestLibrary.csproj">
+      <Project>{c286ce4a-0aa5-42d8-ae42-4765860bcba1}</Project>
+      <Name>UWPTestLibrary</Name>
+    </ProjectReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.8</Version>
     </PackageReference>

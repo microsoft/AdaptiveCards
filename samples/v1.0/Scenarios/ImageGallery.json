@@ -1,60 +1,1 @@
-{
-	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-	"type": "AdaptiveCard",
-	"version": "1.0",
-	"body": [
-		{
-			"type": "TextBlock",
-			"text": "Here are some cool photos",
-			"size": "large"
-		},
-		{
-			"type": "TextBlock",
-			"text": "Sorry some of them are repeats",
-			"size": "medium",
-			"weight": "lighter"
-		},
-		{
-			"type": "ImageSet",
-			"imageSize": "medium",
-			"images": [
-				{
-					"type": "Image",
-					"url": "https://picsum.photos/200/200?image=100"
-				},
-				{
-					"type": "Image",
-					"url": "https://picsum.photos/300/200?image=200"
-				},
-				{
-					"type": "Image",
-					"url": "https://picsum.photos/300/200?image=301"
-				},
-				{
-					"type": "Image",
-					"url": "https://picsum.photos/200/200?image=400"
-				},
-				{
-					"type": "Image",
-					"url": "https://picsum.photos/300/200?image=500"
-				},
-				{
-					"type": "Image",
-					"url": "https://picsum.photos/200/200?image=600"
-				},
-				{
-					"type": "Image",
-					"url": "https://picsum.photos/300/200?image=700"
-				},
-				{
-					"type": "Image",
-					"url": "https://picsum.photos/300/200?image=800"
-				},
-				{
-					"type": "Image",
-					"url": "https://picsum.photos/300/200?image=900"
-				}
-			]
-		}
-	]
-}
+{	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",	"type": "AdaptiveCard",	"version": "1.0",	"body": [		{			"type": "TextBlock",			"text": "Here are some cool photos",			"size": "large"		},		{			"type": "TextBlock",			"text": "Sorry some of them are repeats",			"size": "medium",			"weight": "lighter"		},		{			"type": "ImageSet",			"imageSize": "large",			"images": [				{					"type": "Image",					"url": "https://picsum.photos/id/593/400"				},				{					"type": "Image",					"url": "https://picsum.photos/id/582/400"				},				{					"type": "Image",					"url": "https://picsum.photos/id/433/400"				},				{					"type": "Image",					"url": "https://picsum.photos/id/237/400"				},				{					"type": "Image",					"url": "https://picsum.photos/id/1074/400"				}			]		},		{			"type": "ImageSet",			"imageSize": "large",			"images": [				{					"type": "Image",					"url": "https://picsum.photos/id/1024/400"				},				{					"type": "Image",					"url": "https://picsum.photos/id/130/400"				},				{					"type": "Image",					"url": "https://picsum.photos/id/244/600"				},				{					"type": "Image",					"url": "https://picsum.photos/id/611/600"				},				{					"type": "Image",					"url": "https://picsum.photos/id/275/600"				}			]		},		{			"type": "ImageSet",			"imageSize": "large",			"images": [				{					"type": "Image",					"url": "https://picsum.photos/id/1069/400"				},				{					"type": "Image",					"url": "https://www.ars.usda.gov/ARSUserFiles/oc/graphics/photos/300dpi/kesa/k11252-1.jpg"				},				{					"type": "Image",					"url": "https://www.ars.usda.gov/ARSUserFiles/oc/graphics/photos/k3507-12.jpg"				}			]		},		{			"type": "ImageSet",			"imageSize": "large",			"images": [				{					"type": "Image",					"url": "https://www.ars.usda.gov/ARSUserFiles/oc/graphics/photos/300dpi/kesa/k7033-20.jpg"				},				{					"type": "Image",					"url": "https://www.ars.usda.gov/ARSUserFiles/oc/graphics/photos/k7765-1.jpg"				},				{					"type": "Image",					"url": "https://www.ars.usda.gov/ARSUserFiles/oc/graphics/photos/k3980-17.jpg"				},				{					"type": "Image",					"url": "https://www.ars.usda.gov/ARSUserFiles/oc/graphics/photos/dec97/k7873-11.jpg"				},				{					"type": "Image",					"url": "https://www.ars.usda.gov/ARSUserFiles/oc/graphics/photos/k5504-7.jpg"				}			]		}	]}

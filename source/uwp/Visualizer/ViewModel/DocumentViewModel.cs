@@ -83,7 +83,10 @@ namespace AdaptiveCardVisualizer.ViewModel
                 JsonObject jsonObject;
                 if (JsonObject.TryParse(payload, out jsonObject))
                 {
-                    AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(jsonObject);
+                    AdaptiveElementParserRegistration parserRegistration = new AdaptiveElementParserRegistration();
+                    parserRegistration.Set("AnimalGrid", new TestLibrary.AnimalGridParser());
+
+                    AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(jsonObject, parserRegistration, null);
 
                     _renderedAdaptiveCard = _renderer.RenderAdaptiveCard(parseResult.AdaptiveCard);
                     if (_renderedAdaptiveCard.FrameworkElement != null)
@@ -192,7 +195,7 @@ namespace AdaptiveCardVisualizer.ViewModel
                 Debug.WriteLine(ex.ToString());
                 newErrors.Add(new ErrorViewModel()
                 {
-                    Message = "Rendering failed",
+                    Message = "Rendering failed (" + ex.Message + ")",
                     Type = ErrorViewModelType.Error
                 });
                 MakeErrorsLike(newErrors);
@@ -234,6 +237,8 @@ namespace AdaptiveCardVisualizer.ViewModel
             {
                 _renderer.SetFixedDimensions(320, 180);
             }
+
+            _renderer.ElementRenderers.Set("AnimalGrid", new TestLibrary.AnimalGridRenderer());
 
             // Custom resource resolvers
             _renderer.ResourceResolvers.Set("symbol", new MySymbolResourceResolver());
