@@ -9,12 +9,14 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <StackPanel Margin="30"  Orientation="Horizontal">
-            <TextBlock HorizontalAlignment="Left" Padding="6" Text="AdaptiveCard to load:" TextWrapping="Wrap" VerticalAlignment="Top" Height="32"/>
-            <TextBox x:Name="fileToLoad" HorizontalAlignment="Left" MinWidth="400" Text="" PlaceholderText="File path here" TextChanged="FileToLoad_TextChanged" VerticalAlignment="Top"/>
-            <Button Content="Browse Path" Margin="5,0,0,0" HorizontalAlignment="Right" VerticalAlignment="Top" Click="BrowseClicked"/>
-            <Button Content="Load" Margin="5,0,0,0" HorizontalAlignment="Right" VerticalAlignment="Top" Click="LoadClicked"/>
+        <StackPanel>
+            <StackPanel Margin="30"  Orientation="Horizontal">
+                <TextBlock HorizontalAlignment="Left" Padding="6" Text="AdaptiveCard to load:" TextWrapping="Wrap" VerticalAlignment="Top" Height="32"/>
+                <TextBox x:Name="fileToLoad" HorizontalAlignment="Left" MinWidth="400" Text="" PlaceholderText="File path here" TextChanged="FileToLoad_TextChanged" VerticalAlignment="Top"/>
+                <Button Content="Browse Path" Margin="5,0,0,0" HorizontalAlignment="Right" VerticalAlignment="Top" Click="BrowseClicked"/>
+                <Button Content="Load" Margin="5,0,0,0" HorizontalAlignment="Right" VerticalAlignment="Top" Click="LoadClicked"/>
+            </StackPanel>
+            <ContentControl Margin="30"  x:Name="renderedCardGoesHere"/>
         </StackPanel>
-        <ContentControl Margin="30"  x:Name="renderedCardGoesHere"/>
     </Grid>
 </Page>

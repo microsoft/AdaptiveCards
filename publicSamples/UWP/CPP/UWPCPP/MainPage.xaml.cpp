@@ -51,14 +51,13 @@ void UWPCPP::MainPage::FileToLoad_TextChanged(Platform::Object^ sender, Windows:
 void UWPCPP::MainPage::LoadClicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
     auto fileTask = create_task(StorageFile::GetFileFromPathAsync(fileToLoad->Text));
-    fileTask.then([this](StorageFile^ file) -> IAsyncOperation^
+    fileTask.then([this](StorageFile^ file) -> IAsyncOperation<Platform::String^>^
         {
             return FileIO::ReadTextAsync(file);
         }).then([this](String^ json)
             {
                 auto renderer = ref new AdaptiveCardRenderer();
                 auto renderedCard = renderer->RenderAdaptiveCardFromJsonString(json);
-                //renderedCardGoesHere-
-                //renderedCard->FrameworkElement
+                renderedCardGoesHere->Content = renderedCard->FrameworkElement;
             });
 }
