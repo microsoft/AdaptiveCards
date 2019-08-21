@@ -18,7 +18,7 @@ namespace AdaptiveCards.Rendering.Html
     {
         protected override AdaptiveSchemaVersion GetSupportedSchemaVersion()
         {
-            return new AdaptiveSchemaVersion(1, 2);
+            return new AdaptiveSchemaVersion(1, 3);
         }
 
         /// <summary>
@@ -1076,9 +1076,17 @@ namespace AdaptiveCards.Rendering.Html
                 uiTextRun.Style("font-style", "italic");
             }
 
-            if (textRun.Strikethrough)
+            if (textRun.Strikethrough && textRun.Underline)
+            {
+                uiTextRun.Style("text-decoration", "line-through underline");
+            }
+            else if (textRun.Strikethrough)
             {
                 uiTextRun.Style("text-decoration", "line-through");
+            }
+            else if (textRun.Underline)
+            {
+                uiTextRun.Style("text-decoration", "underline");
             }
 
             if (textRun.Highlight)

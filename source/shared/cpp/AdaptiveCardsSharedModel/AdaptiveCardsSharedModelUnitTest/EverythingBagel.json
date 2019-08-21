@@ -300,6 +300,7 @@
 					"strikethrough": true,
 					"text": "This is a text run",
 					"type": "TextRun",
+					"underline": true,
 					"weight": "Bolder"
 				},
 				{

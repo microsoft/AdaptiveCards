@@ -719,4 +719,52 @@ public class RichTextBlockPropertiesTest
         textRun = TestUtil.castToTextRun(parsedRichTextBlock.GetInlines().get(3));
         Assert.assertEquals(TextWeight.Bolder, textRun.GetTextWeight());
     }
+
+    /**
+     * TextRun test
+     * @throws Exception
+     */
+    @Test
+    public void UnderlineTest() throws Exception
+    {
+        final String richTextBlockStrikeThroughSerializeExpected =
+            "{\"inlines\":[" +
+                "{\"text\":\"This is the first TextRun\",\"type\":\"TextRun\"}," +
+                "{\"text\":\"This is the second TextRun\",\"type\":\"TextRun\"}," +
+                "{\"text\":\"This is the third TextRun\",\"type\":\"TextRun\",\"underline\":true}]," +
+                "\"type\":\"RichTextBlock\"}\n";
+
+        TextRun textRun1 = TestUtil.createMockTextRun("This is the first TextRun");
+
+        TextRun textRun2 = TestUtil.createMockTextRun("This is the second TextRun");
+        textRun2.SetUnderline(false);
+
+        TextRun textRun3 = TestUtil.createMockTextRun("This is the third TextRun");
+        textRun3.SetUnderline(true);
+
+        RichTextBlock richTextBlock = TestUtil.createMockRichTextBlock(textRun1, textRun2, textRun3);
+
+        Assert.assertEquals(richTextBlockStrikeThroughSerializeExpected, richTextBlock.Serialize());
+
+
+        final String richTextBlockStrikeThrough =
+            "{\"inlines\":[" +
+                "{\"text\":\"This is the first TextRun\",\"type\":\"TextRun\"}," +
+                "{\"text\":\"This is the second TextRun\",\"type\":\"TextRun\",\"underline\":false}," +
+                "{\"text\":\"This is the third TextRun\",\"type\":\"TextRun\",\"underline\":true}]," +
+                "\"type\":\"RichTextBlock\"}\n";
+
+        ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(richTextBlockStrikeThrough), "1.0");
+        RichTextBlock parsedRichTextBlock = TestUtil.castToRichTextBlock(result.GetAdaptiveCard().GetBody().get(0));
+        Assert.assertEquals(3, parsedRichTextBlock.GetInlines().size());
+
+        TextRun textRun = TestUtil.castToTextRun(parsedRichTextBlock.GetInlines().get(0));
+        Assert.assertEquals(false, textRun.GetUnderline());
+
+        textRun = TestUtil.castToTextRun(parsedRichTextBlock.GetInlines().get(1));
+        Assert.assertEquals(false, textRun.GetUnderline());
+
+        textRun = TestUtil.castToTextRun(parsedRichTextBlock.GetInlines().get(2));
+        Assert.assertEquals(true, textRun.GetUnderline());
+    }
 }
