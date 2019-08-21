@@ -9,11 +9,11 @@ export function generateUniqueId(): string {
 }
 
 export function getStringValue(obj: any, defaultValue: string = undefined): string {
-    return obj ? obj.toString() : defaultValue;
+    return (typeof obj !== 'undefined') ? obj.toString() : defaultValue;
 }
 
 export function getValueOrDefault<T>(obj: any, defaultValue: T): T {
-    return obj ? <T>obj : defaultValue;
+    return (typeof obj !== 'undefined') ? <T>obj : defaultValue;
 }
 
 export function isNullOrEmpty(value: string): boolean {
