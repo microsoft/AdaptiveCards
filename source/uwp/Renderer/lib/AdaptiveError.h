@@ -19,10 +19,10 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize(ABI::AdaptiveNamespace::ErrorStatusCode statusCode, _In_ HSTRING message);
 
         // IAdaptiveError
-        HRESULT put_StatusCode(ABI::AdaptiveNamespace::ErrorStatusCode value);
+        IFACEMETHODIMP put_StatusCode(ABI::AdaptiveNamespace::ErrorStatusCode value);
         IFACEMETHODIMP get_StatusCode(_Out_ ABI::AdaptiveNamespace::ErrorStatusCode* value);
 
-        HRESULT put_Message(_In_ HSTRING value);
+        IFACEMETHODIMP put_Message(_In_ HSTRING value);
         IFACEMETHODIMP get_Message(_Outptr_ HSTRING* value);
 
     private:

@@ -292,7 +292,8 @@ AdaptiveNamespaceStart
         RenderFailed,
         RequiredPropertyMissing,
         InvalidPropertyValue,
-        UnsupportedParserOverride
+        UnsupportedParserOverride,
+        CustomError,
     } ErrorStatusCode;
 
     [version(NTDDI_WIN10_RS1)]
@@ -313,7 +314,8 @@ AdaptiveNamespaceStart
         UnsupportedMediaType,
         InvalidMediaMix,
         UnsupportedValue,
-        PerformingFallback
+        PerformingFallback,
+        CustomWarning,
     } WarningStatusCode;
 
     [version(NTDDI_WIN10_RS1)]
@@ -2060,8 +2062,8 @@ AdaptiveNamespaceStart
     {
         AdaptiveError();
 
-        ErrorStatusCode StatusCode { get; };
-        String Message { get; };
+        ErrorStatusCode StatusCode;
+        String Message;
     };
 
     [
@@ -2075,8 +2077,8 @@ AdaptiveNamespaceStart
     {
         AdaptiveWarning();
 
-        WarningStatusCode StatusCode { get; };
-        String Message { get; };
+        WarningStatusCode StatusCode;
+        String Message;
     };
 
     [
