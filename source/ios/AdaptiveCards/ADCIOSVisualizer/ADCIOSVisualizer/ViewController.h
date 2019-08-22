@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ACVTableViewController.h"
-#import <AdaptiveCards/AdaptiveCards.h>
+#import <AdaptiveCards/ACFramework.h>
 
 @interface ViewController:UIViewController <ACVTableViewControllerDelegate, ACRActionDelegate, ACRMediaDelegate, ACRIBaseActionSetRenderer>
 
