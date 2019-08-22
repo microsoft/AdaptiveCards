@@ -6,7 +6,7 @@
 //
 
 #import "CustomInputNumberRenderer.h"
-#import <AdaptiveCards/ACFramework.h>
+#import <AdaptiveCards/AdaptiveCards.h>
 
 @implementation CustomInputNumberRenderer
 

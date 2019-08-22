@@ -7,7 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
-#import <AdaptiveCards/ACFramework.h>
+AdaptiveCards.h>/AdaptiveCards.h>
 #import "AdaptiveCards/ACORemoteResourceInformationPrivate.h"
 
 @interface ADCIOSVisualizerTests : XCTestCase

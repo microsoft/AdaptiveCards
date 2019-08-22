@@ -6,7 +6,7 @@
 //
 
 #import "CustomImageRenderer.h"
-#import <AdaptiveCards/ACFramework.h>
+#import <AdaptiveCards/AdaptiveCards.h>
 #import <AdaptiveCards/SharedAdaptiveCard.h>
 #import <AdaptiveCards/TextBlock.h>
 #import <AdaptiveCards/ACRTextBlockRenderer.h>

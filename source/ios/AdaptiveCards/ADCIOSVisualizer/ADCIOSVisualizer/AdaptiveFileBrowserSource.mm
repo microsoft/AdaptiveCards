@@ -7,7 +7,7 @@
 //
 
 #import "AdaptiveFileBrowserSource.h"
-#import <AdaptiveCards/ACFramework.h>
+#import <AdaptiveCards/AdaptiveCards.h>
 #import <AdaptiveCards/SharedAdaptiveCard.h>
 #import <AdaptiveCards/SubmitAction.h>
 #import <AdaptiveCards/FactSet.h>

@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <AdaptiveCards/ACFramework.h>
+#import <AdaptiveCards/AdaptiveCards.h>
 #import "ACVTableViewController.h"
 
 @interface AdaptiveFileBrowserSource:UIView<ACRActionDelegate>
