@@ -30,5 +30,15 @@ namespace AdaptiveNamespace
         ABI::AdaptiveNamespace::ErrorStatusCode m_statusCode;
     };
 
-    ActivatableClass(AdaptiveError);
+    class AdaptiveErrorFactory : public Microsoft::WRL::AgileActivationFactory<ABI::AdaptiveNamespace::IAdaptiveErrorFactory>
+    {
+        IFACEMETHODIMP CreateInstance(ABI::AdaptiveCards::Rendering::Uwp::ErrorStatusCode statusCode,
+                                      _In_ HSTRING message,
+                                      _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveError** result) override
+        {
+            return Microsoft::WRL::Details::MakeAndInitialize<AdaptiveError>(result, statusCode, message);
+        }
+    };
+
+    ActivatableClassWithFactory(AdaptiveError, AdaptiveErrorFactory);
 }
