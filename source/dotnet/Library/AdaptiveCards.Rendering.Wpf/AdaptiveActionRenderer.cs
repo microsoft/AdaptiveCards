@@ -14,13 +14,6 @@ namespace AdaptiveCards.Rendering.Wpf
             if (context.Config.SupportsInteractivity && context.ActionHandlers.IsSupported(action.GetType()))
             {
                 var uiButton = CreateActionButton(action, context);
-                uiButton.Click += (sender, e) =>
-                {
-                    context.InvokeAction(uiButton, new AdaptiveActionEventArgs(action));
-
-                    // Prevent nested events from triggering
-                    e.Handled = true;
-                };
                 return uiButton;
             }
             return null;

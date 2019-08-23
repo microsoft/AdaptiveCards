@@ -24,18 +24,12 @@ namespace AdaptiveCards.Rendering.Wpf
             AdaptiveRenderArgs parentRenderArgs = context.RenderArgs;
             AdaptiveRenderArgs elementRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
 
-            RenderActions(outerActionSet, actionSet.Actions, context);
+            AddRenderedActions(outerActionSet, actionSet.Actions, context, actionSet.InternalID);
 
             return outerActionSet;
         }
 
-        public static void AddRenderedActions(Grid uiContainer, IList<AdaptiveAction> actions, AdaptiveRenderContext context)
-        {
-            RenderActions(uiContainer, actions, context);
-            AddShowCardsViewsToRoot(context);
-        }
-
-        public static void RenderActions(Grid uiContainer, IList<AdaptiveAction> actions, AdaptiveRenderContext context)
+        public static void AddRenderedActions(Grid uiContainer, IList<AdaptiveAction> actions, AdaptiveRenderContext context, AdaptiveInternalID actionSetId)
         {
             if (!context.Config.SupportsInteractivity)
                 return;
@@ -89,10 +83,20 @@ namespace AdaptiveCards.Rendering.Wpf
                     actionsConfig.IconPlacement = IconPlacement.LeftOfTitle;
                 }
 
+                var hasSeenShowCard = false;
+
                 foreach (AdaptiveAction action in actionsToProcess)
                 {
                     // add actions
-                    var uiAction = (Button)context.Render(action);
+                    var uiAction = context.Render(action) as Button;
+                    uiAction.SetContext(actionSetId);
+                    uiAction.Click += (sender, e) =>
+                    {
+                        context.InvokeAction(uiAction, new AdaptiveActionEventArgs(action));
+
+                        // Prevent nested events from triggering
+                        e.Handled = true;
+                    };
 
                     if (uiAction == null)
                     {
@@ -109,7 +113,6 @@ namespace AdaptiveCards.Rendering.Wpf
                         uiAction.Margin = new Thickness(0, actionsConfig.ButtonSpacing, 0, 0);
                     }
 
-
                     if (actionsConfig.ActionsOrientation == ActionsOrientation.Horizontal)
                         Grid.SetColumn(uiAction, iPos++);
 
@@ -117,8 +120,16 @@ namespace AdaptiveCards.Rendering.Wpf
 
                     if (action is AdaptiveShowCardAction showCardAction)
                     {
-                        // Only support 1 level of showCard
-                        if (isInline && context.CardDepth == 1)
+                        if (!hasSeenShowCard)
+                        {
+                            // Define a new row to contain all the show cards
+                            uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                            context.ShowCardsPeersInActionSet[actionSetId] = new List<FrameworkElement>();
+                        }
+
+                        hasSeenShowCard = true;
+
+                        if (isInline)
                         {
                             Grid uiShowCardContainer = new Grid();
                             uiShowCardContainer.Style = context.GetStyle("Adaptive.Actions.ShowCard");
@@ -136,65 +147,16 @@ namespace AdaptiveCards.Rendering.Wpf
                             innerCard.Margin = new Thickness(0);
 
                             uiShowCardContainer.Children.Add(uiShowCardWrapper);
-
-                            // Add to the list of show cards in context
                             context.ActionShowCards.Add(uiAction, uiShowCardContainer);
-                            context.ActionShowCardsKeys.Enqueue(uiAction);
+                            context.ShowCardsPeersInActionSet[actionSetId].Add(uiShowCardContainer);
+                            Grid.SetRow(uiShowCardContainer, uiContainer.RowDefinitions.Count - 1);
+                            uiContainer.Children.Add(uiShowCardContainer);
                         }
                     }
                 }
 
                 // Restore the iconPlacement for the context.
                 actionsConfig.IconPlacement = oldConfigIconPlacement;
-            }
-        }
-
-        /// <summary>
-        /// adds showcards views to the root view
-        /// </summary>
-        /// <param name="context"></param>
-        public static void AddShowCardsViewsToRoot(AdaptiveRenderContext context)
-        {
-            // Only handle Action show cards for the main card
-            if (context.CardDepth == 1)
-            {
-                if (context.CardRoot is Grid cardRoot)
-                {
-                    if (cardRoot.Children.Count > 0 && cardRoot.Children[0] is Grid root)
-                    {
-                        // Define a new row to contain all the show cards
-                        if (context.ActionShowCardsKeys.Count > 0)
-                        {
-                            root.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-                        }
-
-                        while (context.ActionShowCardsKeys.Count > 0)
-                        {
-                            Button uiButton = context.ActionShowCardsKeys.Dequeue();
-                            FrameworkElement currentShowCard = context.ActionShowCards[uiButton];
-
-                            Grid.SetRow(currentShowCard, root.RowDefinitions.Count - 1);
-                            root.Children.Add(currentShowCard);
-
-                            // Assign on click function to all button elements
-                            uiButton.Click += (sender, e) =>
-                            {
-                                bool isCardCollapsed = (currentShowCard.Visibility != Visibility.Visible);
-
-                                // Collapse all the show cards
-                                foreach (KeyValuePair<Button, FrameworkElement> t in context.ActionShowCards)
-                                {
-                                    FrameworkElement showCard = t.Value;
-                                    showCard.Visibility = Visibility.Collapsed;
-                                }
-
-                                // If current card is previously collapsed, show it
-                                if (isCardCollapsed)
-                                    currentShowCard.Visibility = Visibility.Visible;
-                            };
-                        }
-                    }
-                }
             }
         }
 

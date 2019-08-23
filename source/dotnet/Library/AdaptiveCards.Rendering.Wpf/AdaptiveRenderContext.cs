@@ -146,8 +146,7 @@ namespace AdaptiveCards.Rendering.Wpf
         public int CardDepth = 0;
 
         public IDictionary<Button, FrameworkElement> ActionShowCards = new Dictionary<Button, FrameworkElement>();
-
-        public Queue<Button> ActionShowCardsKeys = new Queue<Button>();
+        public IDictionary<AdaptiveInternalID, List<FrameworkElement>> ShowCardsPeersInActionSet = new Dictionary<AdaptiveInternalID, List<FrameworkElement>>();
 
         public virtual Style GetStyle(string styleName)
         {
@@ -468,21 +467,18 @@ namespace AdaptiveCards.Rendering.Wpf
         public void ToggleShowCardVisibility(Button uiAction)
         {
             FrameworkElement card = ActionShowCards[uiAction];
-            if (card != null)
+            var id = uiAction.GetContext() as AdaptiveInternalID;
+            var peers = ShowCardsPeersInActionSet[id];
+            var targetVisibility = card.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+            if (card != null && peers != null)
             {
-                if (card.Visibility == Visibility.Visible)
+                // need to make sure we collapse all showcards before showing this one
+                foreach(var showCard in peers)
                 {
-                    card.Visibility = Visibility.Collapsed;
+                    showCard.Visibility = Visibility.Collapsed;
                 }
-                else
-                {
-                    // need to make sure we collapse all showcards before showing this one
-                    foreach(var showCard in ActionShowCards)
-                    {
-                        showCard.Value.Visibility = Visibility.Collapsed;
-                    }
-                    card.Visibility = Visibility.Visible;
-                }
+
+                card.Visibility = targetVisibility; 
             }
         }
     }
