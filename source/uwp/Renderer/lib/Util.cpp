@@ -1317,7 +1317,7 @@ HRESULT IsBackgroundImageValid(_In_ ABI::AdaptiveNamespace::IAdaptiveBackgroundI
     if (backgroundImage != NULL)
     {
         HString url;
-        THROW_IF_FAILED(backgroundImage->get_Url(url.GetAddressOf()));
+        RETURN_IF_FAILED(backgroundImage->get_Url(url.GetAddressOf()));
         *isValid = url.IsValid();
     }
     return S_OK;
