@@ -25,6 +25,15 @@
 using namespace InternalNamespace;
 #endif
 
+class bad_string_conversion : public std::exception
+{
+public:
+    bad_string_conversion() : _dwErr(GetLastError()) {}
+
+private:
+    DWORD _dwErr;
+};
+
 HRESULT WStringToHString(const std::wstring& in, _Outptr_ HSTRING* out);
 
 std::string WstringToString(const std::wstring& in);
