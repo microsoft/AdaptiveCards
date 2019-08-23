@@ -2060,7 +2060,7 @@ AdaptiveNamespaceStart
     ]
     runtimeclass AdaptiveError 
     {
-        AdaptiveError();
+        AdaptiveError(ErrorStatusCode statusCode, String message);
 
         ErrorStatusCode StatusCode;
         String Message;
@@ -2075,7 +2075,7 @@ AdaptiveNamespaceStart
     ]
     runtimeclass AdaptiveWarning
     {
-        AdaptiveWarning();
+        AdaptiveWarning(WarningStatusCode statusCode, String message);
 
         WarningStatusCode StatusCode;
         String Message;
