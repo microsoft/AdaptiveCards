@@ -146,7 +146,8 @@ namespace AdaptiveCards.Rendering.Wpf
         public int CardDepth = 0;
 
         public IDictionary<Button, FrameworkElement> ActionShowCards = new Dictionary<Button, FrameworkElement>();
-        public IDictionary<AdaptiveInternalID, List<FrameworkElement>> ShowCardsPeersInActionSet = new Dictionary<AdaptiveInternalID, List<FrameworkElement>>();
+		// contains peers of a showcard in actions set with an AdaptiveInternalID
+        public IDictionary<AdaptiveInternalID, List<FrameworkElement>> PeerShowCardsInActionSet = new Dictionary<AdaptiveInternalID, List<FrameworkElement>>();
 
         public virtual Style GetStyle(string styleName)
         {
@@ -468,7 +469,11 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             FrameworkElement card = ActionShowCards[uiAction];
             var id = uiAction.GetContext() as AdaptiveInternalID;
-            var peers = ShowCardsPeersInActionSet[id];
+			if (id == null) 
+			{
+			    return;
+			}
+            var peers = PeerShowCardsInActionSet[id];
             var targetVisibility = card.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
             if (card != null && peers != null)
             {

@@ -83,25 +83,21 @@ namespace AdaptiveCards.Rendering.Wpf
                     actionsConfig.IconPlacement = IconPlacement.LeftOfTitle;
                 }
 
+                // indicates showcard has not been seen if it's set false
                 var hasSeenShowCard = false;
 
                 foreach (AdaptiveAction action in actionsToProcess)
                 {
                     // add actions
                     var uiAction = context.Render(action) as Button;
-                    uiAction.SetContext(actionSetId);
-                    uiAction.Click += (sender, e) =>
-                    {
-                        context.InvokeAction(uiAction, new AdaptiveActionEventArgs(action));
-
-                        // Prevent nested events from triggering
-                        e.Handled = true;
-                    };
 
                     if (uiAction == null)
                     {
                         continue;
                     }
+
+                    // the button's context is used as key for retrieving the corresponding showcard
+                    uiAction.SetContext(actionSetId);
 
                     if (actionsConfig.ActionsOrientation == ActionsOrientation.Horizontal)
                     {
@@ -124,7 +120,7 @@ namespace AdaptiveCards.Rendering.Wpf
                         {
                             // Define a new row to contain all the show cards
                             uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-                            context.ShowCardsPeersInActionSet[actionSetId] = new List<FrameworkElement>();
+                            context.PeerShowCardsInActionSet[actionSetId] = new List<FrameworkElement>();
                         }
 
                         hasSeenShowCard = true;
@@ -148,7 +144,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
                             uiShowCardContainer.Children.Add(uiShowCardWrapper);
                             context.ActionShowCards.Add(uiAction, uiShowCardContainer);
-                            context.ShowCardsPeersInActionSet[actionSetId].Add(uiShowCardContainer);
+                            context.PeerShowCardsInActionSet[actionSetId].Add(uiShowCardContainer);
                             Grid.SetRow(uiShowCardContainer, uiContainer.RowDefinitions.Count - 1);
                             uiContainer.Children.Add(uiShowCardContainer);
                         }
