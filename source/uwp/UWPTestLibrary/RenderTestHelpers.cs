@@ -74,7 +74,10 @@ namespace UWPTestLibrary
 
                 if (error == null)
                 {
-                    AdaptiveCard card = AdaptiveCard.FromJsonString(cardFile.Contents).AdaptiveCard;
+                    AdaptiveElementParserRegistration parserRegistration = new AdaptiveElementParserRegistration();
+                    parserRegistration.Set("AnimalGrid", new TestLibrary.AnimalGridParser());
+
+                    AdaptiveCard card = AdaptiveCard.FromJsonString(cardFile.Contents, parserRegistration, null).AdaptiveCard;
 
                     if (card == null)
                     {
@@ -84,7 +87,7 @@ namespace UWPTestLibrary
                     else
                     {
                         roundTrippedJsonString = card.ToJson().ToString();
-                        card = AdaptiveCard.FromJsonString(roundTrippedJsonString).AdaptiveCard;
+                        card = AdaptiveCard.FromJsonString(roundTrippedJsonString, parserRegistration, null).AdaptiveCard;
 
                         AdaptiveFeatureRegistration featureRegistration = new AdaptiveFeatureRegistration();
                         featureRegistration.Set("acTest", "1.0");
@@ -93,6 +96,8 @@ namespace UWPTestLibrary
                         {
                             FeatureRegistration = featureRegistration
                         };
+
+                        renderer.ElementRenderers.Set("AnimalGrid", new TestLibrary.AnimalGridRenderer());
 
                         if (hostConfig != null)
                         {
