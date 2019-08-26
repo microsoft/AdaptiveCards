@@ -19,7 +19,7 @@ export function appendChild(node: Node, child: Node) {
 }
 
 export function getStringValue(obj: any, defaultValue: string = undefined): string {
-    return obj ? obj.toString() : defaultValue;
+    return (typeof obj !== 'undefined') ? obj.toString() : defaultValue;
 }
 
 export function getNumberValue(obj: any, defaultValue: number = undefined): number {

@@ -15,7 +15,7 @@ using namespace AdaptiveSharedNamespace;
 
 AdaptiveCard::AdaptiveCard() :
     m_style(ContainerStyle::None), m_verticalContentAlignment(VerticalContentAlignment::Top), m_height(HeightType::Auto),
-    m_minHeight(0), m_inputNecessityIndicators(InputNecessityIndicators::None)
+    m_minHeight(0), m_inputNecessityIndicators(InputNecessityIndicators::None), m_internalId{InternalId::Next()}
 {
 }
 
@@ -31,7 +31,7 @@ AdaptiveCard::AdaptiveCard(std::string const& version,
     m_version(version),
     m_fallbackText(fallbackText), m_speak(speak), m_style(style), m_language(language),
     m_verticalContentAlignment(verticalContentAlignment), m_height(height), m_minHeight(minHeight),
-    m_inputNecessityIndicators(InputNecessityIndicators::None)
+    m_inputNecessityIndicators(InputNecessityIndicators::None), m_internalId{InternalId::Next()}
 {
     m_backgroundImage = std::make_shared<BackgroundImage>(backgroundImageUrl);
 }
@@ -50,7 +50,7 @@ AdaptiveCard::AdaptiveCard(std::string const& version,
     m_version(version),
     m_fallbackText(fallbackText), m_speak(speak), m_style(style), m_language(language),
     m_verticalContentAlignment(verticalContentAlignment), m_height(height), m_minHeight(minHeight), m_body(body),
-    m_actions(actions), m_inputNecessityIndicators(InputNecessityIndicators::None)
+    m_actions(actions), m_inputNecessityIndicators(InputNecessityIndicators::None), m_internalId{InternalId::Next()}
 {
     m_backgroundImage = std::make_shared<BackgroundImage>(backgroundImageUrl);
 }
@@ -67,7 +67,7 @@ AdaptiveCard::AdaptiveCard(std::string const& version,
     m_version(version),
     m_fallbackText(fallbackText), m_backgroundImage(backgroundImage), m_speak(speak), m_style(style),
     m_language(language), m_verticalContentAlignment(verticalContentAlignment), m_height(height), m_minHeight(minHeight),
-    m_inputNecessityIndicators(InputNecessityIndicators::None)
+    m_inputNecessityIndicators(InputNecessityIndicators::None), m_internalId{InternalId::Next()}
 {
 }
 
@@ -85,7 +85,7 @@ AdaptiveCard::AdaptiveCard(std::string const& version,
     m_version(version),
     m_fallbackText(fallbackText), m_backgroundImage(backgroundImage), m_speak(speak), m_style(style), m_language(language),
     m_verticalContentAlignment(verticalContentAlignment), m_height(height), m_minHeight(minHeight), m_body(body),
-    m_actions(actions), m_inputNecessityIndicators(InputNecessityIndicators::None)
+    m_actions(actions), m_inputNecessityIndicators(InputNecessityIndicators::None), m_internalId{InternalId::Next()}
 {
 }
 

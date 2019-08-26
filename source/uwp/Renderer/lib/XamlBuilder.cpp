@@ -201,7 +201,12 @@ namespace AdaptiveNamespace
                 {
                     unsigned int bodyCount;
                     RETURN_IF_FAILED(body->get_Size(&bodyCount));
-                    BuildActions(actions.Get(), bodyElementContainer.Get(), bodyCount > 0, renderContext, renderArgs.Get());
+                    BuildActions(adaptiveCard,
+                                 actions.Get(),
+                                 bodyElementContainer.Get(),
+                                 bodyCount > 0,
+                                 renderContext,
+                                 renderArgs.Get());
                 }
                 else
                 {
@@ -1533,10 +1538,11 @@ namespace AdaptiveNamespace
         ComPtr<IVector<IAdaptiveActionElement*>> actions;
         RETURN_IF_FAILED(adaptiveActionSet->get_Actions(&actions));
 
-        return BuildActionSetHelper(adaptiveActionSet.Get(), actions.Get(), renderContext, renderArgs, actionSetControl);
+        return BuildActionSetHelper(nullptr, adaptiveActionSet.Get(), actions.Get(), renderContext, renderArgs, actionSetControl);
     }
 
-    HRESULT XamlBuilder::BuildActions(_In_ IVector<IAdaptiveActionElement*>* children,
+    HRESULT XamlBuilder::BuildActions(_In_ IAdaptiveCard* adaptiveCard,
+                                      _In_ IVector<IAdaptiveActionElement*>* children,
                                       _In_ IPanel* bodyPanel,
                                       bool insertSeparator,
                                       _In_ IAdaptiveRenderContext* renderContext,
@@ -1562,7 +1568,7 @@ namespace AdaptiveNamespace
         }
 
         ComPtr<IUIElement> actionSetControl;
-        RETURN_IF_FAILED(BuildActionSetHelper(nullptr, children, renderContext, renderArgs, &actionSetControl));
+        RETURN_IF_FAILED(BuildActionSetHelper(adaptiveCard, nullptr, children, renderContext, renderArgs, &actionSetControl));
 
         XamlHelpers::AppendXamlElementToPanel(actionSetControl.Get(), bodyPanel);
         return S_OK;
@@ -1589,7 +1595,8 @@ namespace AdaptiveNamespace
         return buttonMargin;
     }
 
-    HRESULT XamlBuilder::BuildActionSetHelper(_In_opt_ IAdaptiveActionSet* adaptiveActionSet,
+    HRESULT XamlBuilder::BuildActionSetHelper(_In_opt_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
+                                              _In_opt_ IAdaptiveActionSet* adaptiveActionSet,
                                               _In_ IVector<IAdaptiveActionElement*>* children,
                                               _In_ IAdaptiveRenderContext* renderContext,
                                               _In_ IAdaptiveRenderArgs* renderArgs,
@@ -1781,8 +1788,19 @@ namespace AdaptiveNamespace
                         RETURN_IF_FAILED(showCardsStackPanel.As(&showCardsPanel));
                         XamlHelpers::AppendXamlElementToPanel(uiShowCard.Get(), showCardsPanel.Get());
 
-                        RETURN_IF_FAILED(
-                            renderContext->AddInlineShowCard(adaptiveActionSet, showCardAction.Get(), uiShowCard.Get()));
+                        if (adaptiveActionSet)
+                        {
+                            RETURN_IF_FAILED(
+                                renderContext->AddInlineShowCard(adaptiveActionSet, showCardAction.Get(), uiShowCard.Get()));
+                        }
+                        else
+                        {
+                            ComPtr<AdaptiveNamespace::AdaptiveRenderContext> contextImpl =
+                                PeekInnards<AdaptiveNamespace::AdaptiveRenderContext>(renderContext);
+
+                            RETURN_IF_FAILED(
+                                contextImpl->AddInlineShowCard(adaptiveCard, showCardAction.Get(), uiShowCard.Get()));
+                        }
                     }
                 }
 

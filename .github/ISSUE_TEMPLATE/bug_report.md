@@ -1,3 +1,12 @@
+---
+name: Bug report
+about: Create a bug report to help us improve
+title: "[Platform][Broad Issue Category if applicable (eg Accessibility)] [Bug Title]"
+labels: Bug
+assignees: ''
+
+---
+
 # Platform
 
 What platform is your issue or question related to? (Delete other platforms).
@@ -19,6 +28,6 @@ If you're an author, who are you sending cards to?
 
 What version are you using? Ex: NuGet 1.0.2, or latest master, etc...
 
-# Issue
+# Details
 
 Explain your issue. If you just have a question, please post [on StackOverflow instead](https://stackoverflow.com/questions/tagged/adaptive-cards).
