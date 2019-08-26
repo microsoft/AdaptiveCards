@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AdaptiveCards.Rendering.Uwp;
 using Windows.Data.Json;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Reflection;
+using System.Linq;
+using Newtonsoft.Json.Serialization;
+using System.ComponentModel;
 
 namespace TestLibrary
 {
@@ -20,6 +21,117 @@ namespace TestLibrary
         Insects,
     }
 
+    public class AdaptiveCardElementConverter : JsonConverter<IAdaptiveCardElement>
+    {
+        JsonValue JTokenToJsonValue(JToken jtoken)
+        {
+            JsonValue value;
+
+            switch (jtoken.Type)
+            {
+                case JTokenType.None:
+                    {
+                        value = JsonValue.CreateNullValue();
+                        break;
+                    }
+                case JTokenType.Float:
+                case JTokenType.Integer:
+                    {
+                        value = JsonValue.CreateNumberValue((double)jtoken);
+                        break;
+                    }
+                case JTokenType.Boolean:
+                    {
+                        value = JsonValue.CreateBooleanValue((bool)jtoken);
+                        break;
+                    }
+                case JTokenType.Array:
+                case JTokenType.Object:
+                    {
+                        value = JsonValue.Parse(jtoken.ToString());
+                        break;
+                    }
+                case JTokenType.String:
+                default:
+                    {
+                        value = JsonValue.CreateStringValue((string)jtoken);
+                        break;
+                    }
+            }
+
+            return value;
+        }
+
+        public override IAdaptiveCardElement ReadJson(JsonReader reader, Type objectType, IAdaptiveCardElement existingValue, bool hasExistingValue, JsonSerializer serializer)
+        {
+            JObject jObject = JObject.Load(reader);
+
+            IAdaptiveCardElement cardElement = (IAdaptiveCardElement)Activator.CreateInstance(objectType);
+            serializer.Populate(jObject.CreateReader(), cardElement);
+
+            HandleAdditionalProperties(cardElement, jObject);
+
+            return cardElement;
+        }
+
+        private void HandleAdditionalProperties(IAdaptiveCardElement cardElement, JObject jObject)
+        {
+            IEnumerable<PropertyInfo> runtimeProperties = cardElement.GetType().GetRuntimeProperties();
+
+            foreach (var keyValuePair in jObject)
+            {
+                bool found = false;
+                foreach (var runtimeProperty in runtimeProperties)
+                {
+                    if (string.Compare(keyValuePair.Key, runtimeProperty.Name, true) == 0)
+                    {
+                        found = true;
+                        break;
+                    }
+                    else
+                    {
+                        // Check if it matches the json attribute name
+                        string jsonPropertyName = null;
+                        foreach (var attribute in runtimeProperty.CustomAttributes)
+                        {
+                            if (attribute.AttributeType == typeof(JsonPropertyAttribute) &&
+                                attribute.ConstructorArguments.Count == 1)
+                            {
+                                jsonPropertyName = attribute.ConstructorArguments[0].Value as string;
+                                break;
+                            }
+                        }
+                        if ((jsonPropertyName != null) && (string.Compare(keyValuePair.Key, jsonPropertyName, true) == 0))
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!found)
+                {
+                    if (cardElement.AdditionalProperties == null)
+                    {
+                        cardElement.AdditionalProperties = new JsonObject();
+                    }
+
+                    cardElement.AdditionalProperties[keyValuePair.Key] = JTokenToJsonValue(keyValuePair.Value);
+                }
+            }
+        }
+
+        public override bool CanWrite { get; } = false;
+
+        public override void WriteJson(JsonWriter writer, IAdaptiveCardElement value, JsonSerializer serializer)
+        {
+
+        }
+
+    }
+
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
+    [JsonConverter(typeof(AdaptiveCardElementConverter))]
     public class AnimalGrid : IAdaptiveCardElement
     {
         [JsonRequired]
@@ -30,26 +142,50 @@ namespace TestLibrary
         // properly, but also possibly not useful for custom element scenarios. That said,
         // leaving them unimplemented means they won't round trip.
         public bool MeetsRequirements(AdaptiveFeatureRegistration featureRegistration) { return true; }
+
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public FallbackType FallbackType { get; set; }
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public IAdaptiveCardElement FallbackContent { get; set; }
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public JsonObject AdditionalProperties { get; set; }
 
         public JsonObject ToJson()
         {
+            try
+            {
+                string jsonString = JsonConvert.SerializeObject(this);
+                JsonObject.Parse(jsonString);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
             return JsonObject.Parse(JsonConvert.SerializeObject(this));
         }
 
         // Set element type to custom and type string to "AnimalGrid"
+        [JsonIgnore]
         public ElementType ElementType { get; } = ElementType.Custom;
+
+        [JsonProperty("type")]
         public string ElementTypeString { get; } = "AnimalGrid";
 
         // Element properties handled automatically by Json.NET
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public HeightType Height { get; set; }
+
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string Id { get; set; }
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public bool Separator { get; set; }
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public Spacing Spacing { get; set; }
 
         // Need to explicitly default this one to true or elements with unset visibility will be non visible
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [DefaultValue(true)]
         public bool IsVisible { get; set; } = true;
     }
 
