@@ -93,6 +93,8 @@ namespace AdaptiveCards.Rendering.Wpf
 
                     if (uiAction == null)
                     {
+                        context.Warnings.Add(new AdaptiveWarning(-1, $"action failed to render" +
+                            $"and valid fallback wasn't present"));
                         continue;
                     }
 
