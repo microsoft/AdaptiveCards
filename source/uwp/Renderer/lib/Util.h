@@ -232,7 +232,7 @@ HRESULT SharedWarningsToAdaptiveWarnings(
 
 HRESULT AdaptiveWarningsToSharedWarnings(
     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-    std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>> sharedWarnings);
+    std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>>& sharedWarnings);
 
 ABI::Windows::UI::Color GenerateLighterColor(const ABI::Windows::UI::Color& originalColor);
 
