@@ -118,17 +118,17 @@ namespace AdaptiveCards.Rendering.Wpf
 
                     if (action is AdaptiveShowCardAction showCardAction)
                     {
-                        if (!hasSeenShowCard)
-                        {
-                            // Define a new row to contain all the show cards
-                            uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-                            context.PeerShowCardsInActionSet[actionSetId] = new List<FrameworkElement>();
-                        }
-
-                        hasSeenShowCard = true;
-
                         if (isInline)
                         {
+                            if (!hasSeenShowCard)
+                            {
+                                // Define a new row to contain all the show cards
+                                uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                                context.PeerShowCardsInActionSet[actionSetId] = new List<FrameworkElement>();
+                            }
+
+                            hasSeenShowCard = true;
+
                             Grid uiShowCardContainer = new Grid();
                             uiShowCardContainer.Style = context.GetStyle("Adaptive.Actions.ShowCard");
                             uiShowCardContainer.DataContext = showCardAction;
