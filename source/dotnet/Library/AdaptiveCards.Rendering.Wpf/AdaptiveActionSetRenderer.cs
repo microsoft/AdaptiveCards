@@ -83,7 +83,8 @@ namespace AdaptiveCards.Rendering.Wpf
                     actionsConfig.IconPlacement = IconPlacement.LeftOfTitle;
                 }
 
-                // indicates showcard has not been seen if it's set false
+                // indicates showcard has not been seen if it's set false; meaningful only if it's used
+                // when inline is supported
                 var hasSeenShowCard = false;
 
                 foreach (AdaptiveAction action in actionsToProcess)
@@ -97,9 +98,6 @@ namespace AdaptiveCards.Rendering.Wpf
                             $"and valid fallback wasn't present"));
                         continue;
                     }
-
-                    // the button's context is used as key for retrieving the corresponding showcard
-                    uiAction.SetContext(actionSetId);
 
                     if (actionsConfig.ActionsOrientation == ActionsOrientation.Horizontal)
                     {
@@ -120,35 +118,50 @@ namespace AdaptiveCards.Rendering.Wpf
                     {
                         if (isInline)
                         {
-                            if (!hasSeenShowCard)
+                            // the button's context is used as key for retrieving the corresponding showcard
+                            uiAction.SetContext(actionSetId);
+
+                            if (!hasSeenShowCard && actionSetId != null)
                             {
                                 // Define a new row to contain all the show cards
                                 uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                                // it's first showcard of the peeprs, create a new list
                                 context.PeerShowCardsInActionSet[actionSetId] = new List<FrameworkElement>();
                             }
 
-                            hasSeenShowCard = true;
+                            if (actionSetId != null)
+                            {
+                                hasSeenShowCard = true;
 
-                            Grid uiShowCardContainer = new Grid();
-                            uiShowCardContainer.Style = context.GetStyle("Adaptive.Actions.ShowCard");
-                            uiShowCardContainer.DataContext = showCardAction;
-                            uiShowCardContainer.Margin = new Thickness(0, actionsConfig.ShowCard.InlineTopMargin, 0, 0);
-                            uiShowCardContainer.Visibility = Visibility.Collapsed;
+                                Grid uiShowCardContainer = new Grid();
+                                uiShowCardContainer.Style = context.GetStyle("Adaptive.Actions.ShowCard");
+                                uiShowCardContainer.DataContext = showCardAction;
+                                uiShowCardContainer.Margin = new Thickness(0, actionsConfig.ShowCard.InlineTopMargin, 0, 0);
+                                uiShowCardContainer.Visibility = Visibility.Collapsed;
 
-                            // render the card
-                            var uiShowCardWrapper = (Grid)context.Render(showCardAction.Card);
-                            uiShowCardWrapper.Background = context.GetColorBrush("Transparent");
-                            uiShowCardWrapper.DataContext = showCardAction;
+                                // render the card
+                                var uiShowCardWrapper = (Grid)context.Render(showCardAction.Card);
+                                uiShowCardWrapper.Background = context.GetColorBrush("Transparent");
+                                uiShowCardWrapper.DataContext = showCardAction;
 
-                            // Remove the card padding
-                            var innerCard = (Grid)uiShowCardWrapper.Children[0];
-                            innerCard.Margin = new Thickness(0);
+                                // Remove the card padding
+                                var innerCard = (Grid)uiShowCardWrapper.Children[0];
+                                innerCard.Margin = new Thickness(0);
 
-                            uiShowCardContainer.Children.Add(uiShowCardWrapper);
-                            context.ActionShowCards.Add(uiAction, uiShowCardContainer);
-                            context.PeerShowCardsInActionSet[actionSetId].Add(uiShowCardContainer);
-                            Grid.SetRow(uiShowCardContainer, uiContainer.RowDefinitions.Count - 1);
-                            uiContainer.Children.Add(uiShowCardContainer);
+                                uiShowCardContainer.Children.Add(uiShowCardWrapper);
+                                context.ActionShowCards.Add(uiAction, uiShowCardContainer);
+                                // added the rendered show card as a peer
+                                context.PeerShowCardsInActionSet[actionSetId].Add(uiShowCardContainer);
+                                // define where in the rows of the parent Grid the show card will occupy
+                                // and add it to the parent
+                                Grid.SetRow(uiShowCardContainer, uiContainer.RowDefinitions.Count - 1);
+                                uiContainer.Children.Add(uiShowCardContainer);
+                            }
+                            else
+                            {
+                                context.Warnings.Add(new AdaptiveWarning(-1, $"button's corresponding show card" +
+                                    $" couldn't be added since the action set the button belongs to has null as internal id"));
+                            }
                         }
                     }
                 }

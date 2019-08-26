@@ -143,7 +143,7 @@ namespace AdaptiveCards.Rendering.Wpf
         }
 
         public IDictionary<Button, FrameworkElement> ActionShowCards = new Dictionary<Button, FrameworkElement>();
-        // contains peers of a showcard in actions set with an AdaptiveInternalID
+        // contains showcard peers in actions set, and the AdaptiveInternalID is internal id of the actions set
         public IDictionary<AdaptiveInternalID, List<FrameworkElement>> PeerShowCardsInActionSet = new Dictionary<AdaptiveInternalID, List<FrameworkElement>>();
 
         public virtual Style GetStyle(string styleName)
@@ -456,14 +456,14 @@ namespace AdaptiveCards.Rendering.Wpf
             var id = uiAction.GetContext() as AdaptiveInternalID;
             if (id == null) 
             {
-                Warnings.Add(new AdaptiveWarning(-1, $"Toggling visibility dropped " +
-                    $"since the action set the button belongs to has null as internal id"));
+                Warnings.Add(new AdaptiveWarning(-1, $"Toggling visibility event handling is dropped " +
+                    $"since the action set the button belongs to has null internal id"));
                 return;
             }
             var peers = PeerShowCardsInActionSet[id];
-            var targetVisibility = card.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
             if (card != null && peers != null)
             {
+                var targetVisibility = card.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
                 // need to make sure we collapse all showcards before showing this one
                 foreach(var showCard in peers)
                 {
