@@ -1,1 +1,97 @@
-{	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",	"type": "AdaptiveCard",	"version": "1.0",	"body": [		{			"type": "TextBlock",			"text": "1 Mammal",			"size": "large"		},		{			"type": "AnimalGrid",			"animalType": "Mammals",			"animalCount": 1		},		{			"type": "TextBlock",			"text": "2 Birds",			"size": "large"		},		{			"type": "AnimalGrid",			"animalType": "Birds",			"animalCount": 2		},		{			"type": "TextBlock",			"text": "3 Fish",			"size": "large"		},		{			"type": "AnimalGrid",			"animalType": "Fish",			"animalCount": 3		},		{			"type": "TextBlock",			"text": "4 Reptiles",			"size": "large"		},		{			"type": "AnimalGrid",			"animalType": "Reptiles",			"animalCount": 4		},		{			"type": "TextBlock",			"text": "5 Insects",			"size": "large"		},		{			"type": "AnimalGrid",			"animalType": "Insects",			"animalCount": 5		}	]}
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "1 Mammal",
+			"size": "large"
+		},
+		{
+			"type": "AnimalGrid",
+			"animalType": "Mammals",
+			"animalCount": 1,
+			"spacing": "large",
+			"separator": true
+		},
+		{
+			"id": "moreMammalsLableId",
+			"type": "TextBlock",
+			"text": "5 Mammals",
+			"size": "large",
+			"isVisible": false
+		},
+		{
+			"id": "moreMammalsId",
+			"type": "AnimalGrid",
+			"animalType": "Mammals",
+			"animalCount": 5,
+			"isVisible": false,
+			"spacing": "large",
+			"separator": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "2 Birds",
+			"size": "large"
+		},
+		{
+			"type": "AnimalGrid",
+			"animalType": "Birds",
+			"animalCount": 2,
+			"spacing": "large",
+			"separator": true
+		},
+		{
+			"id": "fishLableId",
+			"type": "TextBlock",
+			"text": "3 Fish",
+			"size": "large"
+		},
+		{
+			"id": "fishId",
+			"type": "AnimalGrid",
+			"animalType": "Fish",
+			"animalCount": 3,
+			"spacing": "large",
+			"separator": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "4 Reptiles",
+			"size": "large"
+		},
+		{
+			"type": "AnimalGrid",
+			"animalType": "Reptiles",
+			"animalCount": 4,
+			"spacing": "large",
+			"separator": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "5 Insects",
+			"size": "large"
+		},
+		{
+			"type": "AnimalGrid",
+			"animalType": "Insects",
+			"animalCount": 5,
+			"spacing": "large",
+			"separator": true
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.ToggleVisibility",
+			"title": "No More Fish!",
+			"targetElements": [ "fishId", "fishLableId" ]
+		},
+		{
+			"type": "Action.ToggleVisibility",
+			"title": "More Mammals!",
+			"targetElements": [ "moreMammalsId", "moreMammalsLableId" ]
+		}
+	]
+}

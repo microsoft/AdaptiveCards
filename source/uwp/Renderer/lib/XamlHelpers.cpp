@@ -519,9 +519,7 @@ namespace AdaptiveNamespace::XamlHelpers
             RETURN_IF_FAILED(localControl.As(&newControlAsFrameworkElement));
 
             HString id;
-            RETURN_IF_FAILED(element->get_Id(id.GetAddressOf()));
-
-            if (id.IsValid())
+            if (SUCCEEDED(element->get_Id(id.GetAddressOf()) && id.IsValid()))
             {
                 RETURN_IF_FAILED(newControlAsFrameworkElement->put_Name(id.Get()));
             }
