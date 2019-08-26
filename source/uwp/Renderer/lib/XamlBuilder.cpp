@@ -201,7 +201,12 @@ namespace AdaptiveNamespace
                 {
                     unsigned int bodyCount;
                     RETURN_IF_FAILED(body->get_Size(&bodyCount));
-                    BuildActions(actions.Get(), bodyElementContainer.Get(), bodyCount > 0, renderContext, renderArgs.Get());
+                    BuildActions(adaptiveCard,
+                                 actions.Get(),
+                                 bodyElementContainer.Get(),
+                                 bodyCount > 0,
+                                 renderContext,
+                                 renderArgs.Get());
                 }
                 else
                 {
@@ -873,7 +878,7 @@ namespace AdaptiveNamespace
             }
 
             ComPtr<ElementTagContent> tagContent;
-            RETURN_IF_FAILED(MakeAndInitialize<ElementTagContent>(&tagContent, element, parentPanel, separator, columnDefinition));
+            RETURN_IF_FAILED(MakeAndInitialize<ElementTagContent>(&tagContent, element, parentPanel, separator, columnDefinition, isVisible));
             RETURN_IF_FAILED(newControlAsFrameworkElement->put_Tag(tagContent.Get()));
 
             ABI::AdaptiveNamespace::HeightType heightType{};
@@ -973,11 +978,15 @@ namespace AdaptiveNamespace
                 Visibility visibility;
                 RETURN_IF_FAILED(child->get_Visibility(&visibility));
 
+                boolean expectedVisibility{};
+                RETURN_IF_FAILED(elementTagContent->get_ExpectedVisibility(&expectedVisibility));
+
                 if (separator)
                 {
-                    if (visibility == Visibility_Collapsed || !foundPreviousVisibleElement)
+                    if (!expectedVisibility || !foundPreviousVisibleElement)
                     {
                         // If the element is collapsed, or if it's the first visible element, collapse the separator
+                        // Images are hidden while they are retrieved, we shouldn't hide the separator
                         RETURN_IF_FAILED(separator->put_Visibility(Visibility_Collapsed));
                     }
                     else
@@ -1414,7 +1423,7 @@ namespace AdaptiveNamespace
     HRESULT XamlBuilder::HandleToggleVisibilityClick(_In_ IFrameworkElement* cardFrameworkElement, _In_ IAdaptiveActionElement* action)
     {
         ComPtr<IAdaptiveActionElement> localAction(action);
-        ComPtr<IAdaptiveToggleVisibility> toggleAction;
+        ComPtr<IAdaptiveToggleVisibilityAction> toggleAction;
         RETURN_IF_FAILED(localAction.As(&toggleAction));
 
         ComPtr<IVector<AdaptiveToggleVisibilityTarget*>> targets;
@@ -1448,6 +1457,15 @@ namespace AdaptiveNamespace
                 ComPtr<IUIElement> toggleElementAsUIElement;
                 RETURN_IF_FAILED(toggleElement.As(&toggleElementAsUIElement));
 
+                ComPtr<IFrameworkElement> toggleElementAsFrameworkElement;
+                RETURN_IF_FAILED(toggleElement.As(&toggleElementAsFrameworkElement));
+
+                ComPtr<IInspectable> tag;
+                RETURN_IF_FAILED(toggleElementAsFrameworkElement->get_Tag(&tag));
+
+                ComPtr<IElementTagContent> elementTagContent;
+                RETURN_IF_FAILED(tag.As(&elementTagContent));
+
                 Visibility visibilityToSet = Visibility_Visible;
                 if (toggle == ABI::AdaptiveNamespace::IsVisible_IsVisibleTrue)
                 {
@@ -1459,21 +1477,13 @@ namespace AdaptiveNamespace
                 }
                 else if (toggle == ABI::AdaptiveNamespace::IsVisible_IsVisibleToggle)
                 {
-                    Visibility currentVisibility;
-                    RETURN_IF_FAILED(toggleElementAsUIElement->get_Visibility(&currentVisibility));
-                    visibilityToSet = (currentVisibility == Visibility_Collapsed) ? Visibility_Visible : Visibility_Collapsed;
+                    boolean currentVisibility{};
+                    RETURN_IF_FAILED(elementTagContent->get_ExpectedVisibility(&currentVisibility));
+                    visibilityToSet = (currentVisibility) ? Visibility_Collapsed : Visibility_Visible;
                 }
 
                 RETURN_IF_FAILED(toggleElementAsUIElement->put_Visibility(visibilityToSet));
-
-                ComPtr<IFrameworkElement> toggleElementAsFrameworkElement;
-                RETURN_IF_FAILED(toggleElement.As(&toggleElementAsFrameworkElement));
-
-                ComPtr<IInspectable> tag;
-                RETURN_IF_FAILED(toggleElementAsFrameworkElement->get_Tag(&tag));
-
-                ComPtr<IElementTagContent> elementTagContent;
-                RETURN_IF_FAILED(tag.As(&elementTagContent));
+                RETURN_IF_FAILED(elementTagContent->set_ExpectedVisibility(visibilityToSet == Visibility_Visible));
 
                 ComPtr<IPanel> parentPanel;
                 RETURN_IF_FAILED(elementTagContent->get_ParentPanel(&parentPanel));
@@ -1528,10 +1538,11 @@ namespace AdaptiveNamespace
         ComPtr<IVector<IAdaptiveActionElement*>> actions;
         RETURN_IF_FAILED(adaptiveActionSet->get_Actions(&actions));
 
-        return BuildActionSetHelper(adaptiveActionSet.Get(), actions.Get(), renderContext, renderArgs, actionSetControl);
+        return BuildActionSetHelper(nullptr, adaptiveActionSet.Get(), actions.Get(), renderContext, renderArgs, actionSetControl);
     }
 
-    HRESULT XamlBuilder::BuildActions(_In_ IVector<IAdaptiveActionElement*>* children,
+    HRESULT XamlBuilder::BuildActions(_In_ IAdaptiveCard* adaptiveCard,
+                                      _In_ IVector<IAdaptiveActionElement*>* children,
                                       _In_ IPanel* bodyPanel,
                                       bool insertSeparator,
                                       _In_ IAdaptiveRenderContext* renderContext,
@@ -1557,7 +1568,7 @@ namespace AdaptiveNamespace
         }
 
         ComPtr<IUIElement> actionSetControl;
-        RETURN_IF_FAILED(BuildActionSetHelper(nullptr, children, renderContext, renderArgs, &actionSetControl));
+        RETURN_IF_FAILED(BuildActionSetHelper(adaptiveCard, nullptr, children, renderContext, renderArgs, &actionSetControl));
 
         XamlHelpers::AppendXamlElementToPanel(actionSetControl.Get(), bodyPanel);
         return S_OK;
@@ -1584,7 +1595,8 @@ namespace AdaptiveNamespace
         return buttonMargin;
     }
 
-    HRESULT XamlBuilder::BuildActionSetHelper(_In_opt_ IAdaptiveActionSet* adaptiveActionSet,
+    HRESULT XamlBuilder::BuildActionSetHelper(_In_opt_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
+                                              _In_opt_ IAdaptiveActionSet* adaptiveActionSet,
                                               _In_ IVector<IAdaptiveActionElement*>* children,
                                               _In_ IAdaptiveRenderContext* renderContext,
                                               _In_ IAdaptiveRenderArgs* renderArgs,
@@ -1776,8 +1788,19 @@ namespace AdaptiveNamespace
                         RETURN_IF_FAILED(showCardsStackPanel.As(&showCardsPanel));
                         XamlHelpers::AppendXamlElementToPanel(uiShowCard.Get(), showCardsPanel.Get());
 
-                        RETURN_IF_FAILED(
-                            renderContext->AddInlineShowCard(adaptiveActionSet, showCardAction.Get(), uiShowCard.Get()));
+                        if (adaptiveActionSet)
+                        {
+                            RETURN_IF_FAILED(
+                                renderContext->AddInlineShowCard(adaptiveActionSet, showCardAction.Get(), uiShowCard.Get()));
+                        }
+                        else
+                        {
+                            ComPtr<AdaptiveNamespace::AdaptiveRenderContext> contextImpl =
+                                PeekInnards<AdaptiveNamespace::AdaptiveRenderContext>(renderContext);
+
+                            RETURN_IF_FAILED(
+                                contextImpl->AddInlineShowCard(adaptiveCard, showCardAction.Get(), uiShowCard.Get()));
+                        }
                     }
                 }
 
@@ -2106,6 +2129,9 @@ namespace AdaptiveNamespace
             boolean isItalic{false};
             RETURN_IF_FAILED(adaptiveTextRun->get_Italic(&isItalic));
 
+            boolean isUnderline{};
+            RETURN_IF_FAILED(adaptiveTextRun->get_Underline(&isUnderline));
+
             UINT inlineLength;
             if (selectAction != nullptr)
             {
@@ -2136,9 +2162,7 @@ namespace AdaptiveNamespace
                                                      renderContext,
                                                      renderArgs,
                                                      text.Get(),
-                                                     isStrikethrough,
-                                                     isItalic,
-                                                     true,
+                                                     TextRunStyleParameters(isStrikethrough, isItalic, isUnderline, true),
                                                      hyperlinkInlines.Get(),
                                                      &inlineLength));
 
@@ -2155,9 +2179,7 @@ namespace AdaptiveNamespace
                                                      renderContext,
                                                      renderArgs,
                                                      text.Get(),
-                                                     isStrikethrough,
-                                                     isItalic,
-                                                     false,
+                                                     TextRunStyleParameters(isStrikethrough, isItalic, isUnderline, false),
                                                      xamlInlines.Get(),
                                                      &inlineLength));
             }
@@ -2254,8 +2276,19 @@ namespace AdaptiveNamespace
 
         // Prevent an image from being stretched out if it is smaller than the
         // space allocated for it (when in auto mode).
-        RETURN_IF_FAILED(localElement->put_MaxHeight(min(maxHeight, pixelHeight)));
-        RETURN_IF_FAILED(localElement->put_MaxWidth(min(maxWidth, pixelWidth)));
+        ComPtr<IEllipse> localElementAsEllipse;
+        if (SUCCEEDED(localElement.As(&localElementAsEllipse)))
+        {
+            // don't need to set both width and height when image size is auto since
+            // we want a circle as shape.
+            // max value for width should be set since adaptive cards is constrained horizontally
+            RETURN_IF_FAILED(localElement->put_MaxWidth(min(maxWidth, pixelWidth)));
+        }
+        else
+        {
+            RETURN_IF_FAILED(localElement->put_MaxHeight(min(maxHeight, pixelHeight)));
+            RETURN_IF_FAILED(localElement->put_MaxWidth(min(maxWidth, pixelWidth)));
+        }
 
         if (setVisible)
         {
@@ -2301,6 +2334,9 @@ namespace AdaptiveNamespace
             ComPtr<IUIElement> ellipseAsUIElement;
             THROW_IF_FAILED(ellipse.As(&ellipseAsUIElement));
 
+            ComPtr<IFrameworkElement> ellipsAsFrameworkElement;
+            THROW_IF_FAILED(ellipse.As(&ellipsAsFrameworkElement));
+
             ComPtr<IImageSource> imageSource;
             THROW_IF_FAILED(brushAsImageBrush->get_ImageSource(&imageSource));
             ComPtr<IBitmapSource> imageSourceAsBitmap;
@@ -2313,18 +2349,25 @@ namespace AdaptiveNamespace
                 THROW_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
                 // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
                 EventRegistrationToken eventToken;
+                ComPtr<IInspectable> strongParentElement(parentElement);
                 THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(
-                    Callback<IRoutedEventHandler>([ellipseAsUIElement, isVisible](IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
-                        // Don't set the AutoImageSize on the ellipse as it makes the ellipse grow bigger than
-                        // what it would be otherwise, just set the visibility when we get the image
+                    Callback<IRoutedEventHandler>([ellipseAsUIElement, ellipsAsFrameworkElement, imageSourceAsBitmap, strongParentElement, isVisible](IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
                         if (isVisible)
                         {
                             RETURN_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Visible));
+                            RETURN_IF_FAILED(SetAutoImageSize(ellipsAsFrameworkElement.Get(),
+                                                    strongParentElement.Get(),
+                                                    imageSourceAsBitmap.Get(),
+                                                    isVisible));
                         }
                         return S_OK;
                     })
                         .Get(),
                     &eventToken));
+            }
+            else
+            {
+                SetAutoImageSize(ellipsAsFrameworkElement.Get(), parentElement, imageSourceAsBitmap.Get(), isVisible);
             }
         }
     }
