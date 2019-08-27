@@ -13,7 +13,14 @@
 			"animalType": "Mammals",
 			"animalCount": 1,
 			"spacing": "large",
-			"separator": true
+			"separator": true,
+			"additionalPropString": "string",
+			"additionalPropNumber": 3,
+			"additionalPropBool": true,
+			"additionalPropObject": {
+				"a": "b",
+				"c": "d"
+			}
 		},
 		{
 			"id": "moreMammalsLableId",
