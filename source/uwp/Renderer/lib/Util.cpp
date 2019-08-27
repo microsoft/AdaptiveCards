@@ -52,7 +52,7 @@ using namespace AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 
-HRESULT WStringToHString(const std::wstring_view& in, _Outptr_ HSTRING* out)
+HRESULT WStringToHString(const std::wstring_view& in, _Outptr_ HSTRING* out) noexcept try
 {
     if (out == nullptr)
     {
@@ -67,6 +67,7 @@ HRESULT WStringToHString(const std::wstring_view& in, _Outptr_ HSTRING* out)
         return WindowsCreateString(&in[0], static_cast<UINT32>(in.length()), out);
     }
 }
+CATCH_RETURN;
 
 std::string WstringToString(const std::wstring_view& in)
 {
@@ -104,7 +105,7 @@ std::wstring StringToWstring(const std::string_view& in)
     return L"";
 }
 
-HRESULT UTF8ToHString(const std::string_view& in, _Outptr_ HSTRING* out)
+HRESULT UTF8ToHString(const std::string_view& in, _Outptr_ HSTRING* out) noexcept try
 {
     if (out == nullptr)
     {
@@ -116,12 +117,14 @@ HRESULT UTF8ToHString(const std::string_view& in, _Outptr_ HSTRING* out)
         return WindowsCreateString(wide.c_str(), static_cast<UINT32>(wide.length()), out);
     }
 }
+CATCH_RETURN;
 
-HRESULT HStringToUTF8(const HSTRING& in, std::string& out)
+HRESULT HStringToUTF8(const HSTRING& in, std::string& out) noexcept try
 {
     out = WstringToString(WindowsGetStringRawBuffer(in, nullptr));
     return S_OK;
 }
+CATCH_RETURN;
 
 std::string HStringToUTF8(const HSTRING& in)
 {
