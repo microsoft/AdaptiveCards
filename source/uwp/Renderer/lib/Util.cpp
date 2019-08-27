@@ -52,52 +52,59 @@ using namespace AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 
-HRESULT WStringToHString(const std::wstring& in, _Outptr_ HSTRING* out)
+HRESULT WStringToHString(const std::wstring_view& in, _Outptr_ HSTRING* out)
 {
     if (out == nullptr)
     {
         return E_INVALIDARG;
     }
-    return WindowsCreateString(in.c_str(), static_cast<UINT32>(in.length()), out);
+    else if (in.empty())
+    {
+        return WindowsCreateString(L"", 0, out);
+    }
+    else
+    {
+        return WindowsCreateString(&in[0], static_cast<UINT32>(in.length()), out);
+    }
 }
 
-std::string WstringToString(const std::wstring& in)
+std::string WstringToString(const std::wstring_view& in)
 {
     if (!in.empty())
     {
         const size_t requiredSize =
-            WideCharToMultiByte(CP_UTF8, 0 /*dwFlags*/, in.c_str(), (int)in.length(), nullptr, 0, nullptr, nullptr);
+            WideCharToMultiByte(CP_UTF8, 0 /*dwFlags*/, &in[0], (int)in.length(), nullptr, 0, nullptr, nullptr);
         std::string converted(requiredSize, 0);
 
-        if (WideCharToMultiByte(CP_UTF8, 0 /*dwFlags*/, in.c_str(), (int)in.length(), &converted[0], (int)requiredSize, nullptr, nullptr) == 0)
+        if (WideCharToMultiByte(CP_UTF8, 0 /*dwFlags*/, &in[0], (int)in.length(), &converted[0], (int)requiredSize, nullptr, nullptr) == 0)
         {
             throw bad_string_conversion();
         }
-        return std::move(converted);
+        return converted;
     }
     return "";
 }
 
-std::wstring StringToWstring(const std::string& in)
+std::wstring StringToWstring(const std::string_view& in)
 {
     if (!in.empty())
     {
         // TODO: safer casts
         const size_t requiredSize =
-            MultiByteToWideChar(CP_UTF8, 0 /*dwFlags*/, in.c_str(), (int)in.length(), (LPWSTR) nullptr, 0);
+            MultiByteToWideChar(CP_UTF8, 0 /*dwFlags*/, &in[0], (int)in.length(), (LPWSTR) nullptr, 0);
         std::wstring wide(requiredSize, 0);
 
-        if (MultiByteToWideChar(CP_UTF8, 0 /*dwFlags*/, in.c_str(), (int)in.length(), &wide[0], (int)requiredSize) == 0)
+        if (MultiByteToWideChar(CP_UTF8, 0 /*dwFlags*/, &in[0], (int)in.length(), &wide[0], (int)requiredSize) == 0)
         {
             throw bad_string_conversion();
         }
 
-        return std::move(wide);
+        return wide;
     }
     return L"";
 }
 
-HRESULT UTF8ToHString(const std::string& in, _Outptr_ HSTRING* out)
+HRESULT UTF8ToHString(const std::string_view& in, _Outptr_ HSTRING* out)
 {
     if (out == nullptr)
     {
@@ -119,8 +126,14 @@ HRESULT HStringToUTF8(const HSTRING& in, std::string& out)
 std::string HStringToUTF8(const HSTRING& in)
 {
     std::string typeAsKey;
-    HRESULT hr = HStringToUTF8(in, typeAsKey);
-    return FAILED(hr) ? "" : typeAsKey;
+    if (SUCCEEDED(HStringToUTF8(in, typeAsKey)))
+    {
+        return typeAsKey;
+    }
+    else
+    {
+        return "";
+    }
 }
 
 template<typename TSharedBaseType, typename TAdaptiveBaseType, typename TAdaptiveType>

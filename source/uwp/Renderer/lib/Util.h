@@ -34,14 +34,14 @@ private:
     DWORD _dwErr;
 };
 
-HRESULT WStringToHString(const std::wstring& in, _Outptr_ HSTRING* out);
+HRESULT WStringToHString(const std::wstring_view& in, _Outptr_ HSTRING* out);
 
-std::string WstringToString(const std::wstring& in);
-std::wstring StringToWstring(const std::string& in);
+std::string WstringToString(const std::wstring_view& in);
+std::wstring StringToWstring(const std::string_view& in);
 
 // This function is needed to deal with the fact that non-windows platforms handle Unicode without the need for wchar_t.
 // (which has a platform specific implementation) It converts a std::string to an HSTRING.
-HRESULT UTF8ToHString(const std::string& in, _Outptr_ HSTRING* out);
+HRESULT UTF8ToHString(const std::string_view& in, _Outptr_ HSTRING* out);
 
 // This function is needed to deal with the fact that non-windows platforms handle Unicode without the need for wchar_t.
 // (which has a platform specific implementation) It converts from HSTRING to a standard std::string.
