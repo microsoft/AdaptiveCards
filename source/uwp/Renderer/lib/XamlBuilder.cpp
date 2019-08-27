@@ -2351,14 +2351,15 @@ namespace AdaptiveNamespace
                 EventRegistrationToken eventToken;
                 ComPtr<IInspectable> strongParentElement(parentElement);
                 THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(
-                    Callback<IRoutedEventHandler>([ellipseAsUIElement, ellipsAsFrameworkElement, imageSourceAsBitmap, strongParentElement, isVisible](IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
+                    Callback<IRoutedEventHandler>([ellipseAsUIElement, ellipsAsFrameworkElement, imageSourceAsBitmap, strongParentElement, isVisible](
+                                                      IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
                         if (isVisible)
                         {
                             RETURN_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Visible));
                             RETURN_IF_FAILED(SetAutoImageSize(ellipsAsFrameworkElement.Get(),
-                                                    strongParentElement.Get(),
-                                                    imageSourceAsBitmap.Get(),
-                                                    isVisible));
+                                                              strongParentElement.Get(),
+                                                              imageSourceAsBitmap.Get(),
+                                                              isVisible));
                         }
                         return S_OK;
                     })
@@ -3693,9 +3694,11 @@ namespace AdaptiveNamespace
         HString hstringMin;
         RETURN_IF_FAILED(adaptiveDateInput->get_Min(hstringMin.GetAddressOf()));
         std::string min = HStringToUTF8(hstringMin.Get());
-        if (DateTimePreparser::TryParseSimpleDate(min, year, month, day))
+        DateTime minDate{};
+        boolean isMinValid{ DateTimePreparser::TryParseSimpleDate(min, year, month, day) };
+        if (isMinValid)
         {
-            DateTime minDate = GetDateTime(year, month, day);
+            minDate = GetDateTime(year, month, day);
             RETURN_IF_FAILED(datePicker->put_MinDate(minDate));
         }
 
@@ -3706,7 +3709,19 @@ namespace AdaptiveNamespace
         if (DateTimePreparser::TryParseSimpleDate(max, year, month, day))
         {
             DateTime maxDate = GetDateTime(year, month, day);
-            RETURN_IF_FAILED(datePicker->put_MaxDate(maxDate));
+            if (isMinValid)
+            {
+                if (maxDate.UniversalTime > minDate.UniversalTime)
+                {
+                    RETURN_IF_FAILED(datePicker->put_MaxDate(maxDate));
+                }
+                else
+                {
+                    renderContext->AddWarning(
+                        ABI::AdaptiveNamespace::WarningStatusCode::InvalidValue,
+                        HStringReference(L"Min value must be less than max in Input.Date").Get());
+                }
+            }
         }
 
         RETURN_IF_FAILED(
