@@ -3,7 +3,6 @@
 #pragma once
 #include "DateTimePreparser.h"
 
-#include <codecvt>
 #include <string>
 
 namespace AdaptiveNamespace
