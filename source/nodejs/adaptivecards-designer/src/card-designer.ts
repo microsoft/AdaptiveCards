@@ -362,6 +362,8 @@ export class CardDesigner {
         this.updateSampleData();
 
         this._designerSurface.isPreviewMode = wasInPreviewMode;
+
+        this.updateFullLayout();
     }
 
     private activeHostContainerChanged() {
