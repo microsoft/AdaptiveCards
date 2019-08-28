@@ -130,7 +130,7 @@ export function parseHostConfigEnum(targetEnum: { [s: number]: string }, value: 
         return getEnumValue(targetEnum, value, defaultValue);
     }
     else if (typeof value === "number") {
-        return value ? value : defaultValue;
+        return value;
     }
     else {
         return defaultValue;
