@@ -1,0 +1,16 @@
+{
+	"extends": "../tsconfig.json",
+	"compilerOptions": {
+		"outDir": "./lib",
+		"lib": ["dom", "es6", "es7"],
+		"plugins": [{
+			"name": "typescript-tslint-plugin",
+			"alwaysShowRuleFailuresAsWarnings": false,
+			"ignoreDefinitionFiles": true,
+			"configFile": "../../tslint.json",
+			"suppressWhileTypeErrorsPresent": false,
+			"mockTypeScriptVersion": false
+		}]
+	},
+	"files": [ "./src/index.ts"]
+}

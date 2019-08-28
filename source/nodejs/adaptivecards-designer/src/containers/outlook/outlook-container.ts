@@ -1,11 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
-import * as Designer from "../../adaptivecards-designer";
+import { HostContainer } from "../host-container";
+import * as hostConfig from "../../hostConfigs/outlook-desktop.json";
 
-var outlookConfiguration = require("../../../../../../samples/HostConfig/outlook-desktop.json");
-
-export class OutlookContainer extends Designer.HostContainer {
+export class OutlookContainer extends HostContainer {
     public renderTo(hostElement: HTMLElement) {
         hostElement.classList.add("outlook-frame");
         hostElement.appendChild(this.cardHost);
@@ -112,6 +111,6 @@ export class OutlookContainer extends Designer.HostContainer {
     }
 
     public getHostConfig(): Adaptive.HostConfig {
-        return new Adaptive.HostConfig(outlookConfiguration);
+        return new Adaptive.HostConfig(hostConfig);
     }
 }

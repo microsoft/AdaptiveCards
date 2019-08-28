@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InputTimeExtended should render input time correctly 1`] = `
+<div
+  style="display: flex; flex-direction: column; box-sizing: border-box; flex: 0 0 auto;"
+>
+  <div
+    class="ac-input-container"
+    style="display: flex;"
+  >
+    <div
+      style="width: 100%; min-width: 0px;"
+    >
+      <div
+        class="ms-TextField root-47"
+      >
+        <div
+          class="ms-TextField-wrapper wrapper-48"
+        >
+          <div
+            class="ms-TextField-fieldGroup fieldGroup-49"
+          >
+            <input
+              aria-invalid="false"
+              class="ms-TextField-field field-50"
+              id="time"
+              max="17:00"
+              min="09:00"
+              placeholder="undefined"
+              type="time"
+              value="15:30"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

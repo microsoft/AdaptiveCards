@@ -126,6 +126,11 @@ HRESULT GenerateSharedElement(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement*
             GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveChoiceSetInput>(
                 item);
         break;
+    case ABI::AdaptiveNamespace::ElementType::Column:
+        baseCardElement =
+            GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveColumn>(
+                item);
+        break;
     case ABI::AdaptiveNamespace::ElementType::ColumnSet:
         baseCardElement =
             GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveColumnSet>(
@@ -510,6 +515,10 @@ HRESULT GenerateElementProjection(_In_ const std::shared_ptr<AdaptiveSharedNames
     case CardElementType::RichTextBlock:
         RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveRichTextBlock>(
             projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::RichTextBlock>(baseElement)));
+        break;
+    case CardElementType::Column:
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveColumn>(
+            projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::Column>(baseElement)));
         break;
     case CardElementType::Custom:
         RETURN_IF_FAILED(std::AdaptivePointerCast<::AdaptiveNamespace::CustomElementWrapper>(baseElement)->GetWrappedElement(projectedElement));
@@ -1415,7 +1424,7 @@ HRESULT SharedWarningsToAdaptiveWarnings(std::vector<std::shared_ptr<AdaptiveCar
 }
 
 HRESULT AdaptiveWarningsToSharedWarnings(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-                                         std::vector<std::shared_ptr<AdaptiveCardParseWarning>> sharedWarnings)
+                                         std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& sharedWarnings)
 {
     ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>> localAdaptiveWarnings{adaptiveWarnings};
     ComPtr<IIterable<ABI::AdaptiveNamespace::AdaptiveWarning*>> vectorIterable;
@@ -1454,9 +1463,9 @@ Color GenerateLighterColor(const Color& originalColor)
 
     Color lighterColor;
     lighterColor.A = originalColor.A;
-    lighterColor.R = originalColor.R + static_cast<int>((255 - originalColor.R) * lightIncrement);
-    lighterColor.G = originalColor.G + static_cast<int>((255 - originalColor.G) * lightIncrement);
-    lighterColor.B = originalColor.B + static_cast<int>((255 - originalColor.B) * lightIncrement);
+    lighterColor.R = originalColor.R + static_cast<BYTE>((255 - originalColor.R) * lightIncrement);
+    lighterColor.G = originalColor.G + static_cast<BYTE>((255 - originalColor.G) * lightIncrement);
+    lighterColor.B = originalColor.B + static_cast<BYTE>((255 - originalColor.B) * lightIncrement);
     return lighterColor;
 }
 
@@ -1557,10 +1566,6 @@ HRESULT CopyTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* textE
     RETURN_IF_FAILED(textElement->get_IsSubtle(&isSubtle));
     RETURN_IF_FAILED(localCopiedTextElement->put_IsSubtle(isSubtle));
 
-    boolean italic;
-    RETURN_IF_FAILED(textElement->get_Italic(&italic));
-    RETURN_IF_FAILED(localCopiedTextElement->put_Italic(italic));
-
     HString language;
     RETURN_IF_FAILED(textElement->get_Language(language.GetAddressOf()));
     RETURN_IF_FAILED(localCopiedTextElement->put_Language(language.Get()));
@@ -1568,10 +1573,6 @@ HRESULT CopyTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* textE
     ABI::AdaptiveNamespace::TextSize size;
     RETURN_IF_FAILED(textElement->get_Size(&size));
     RETURN_IF_FAILED(localCopiedTextElement->put_Size(size));
-
-    boolean strikethrough;
-    RETURN_IF_FAILED(textElement->get_Strikethrough(&strikethrough));
-    RETURN_IF_FAILED(localCopiedTextElement->put_Strikethrough(strikethrough));
 
     ABI::AdaptiveNamespace::TextWeight weight;
     RETURN_IF_FAILED(textElement->get_Weight(&weight));

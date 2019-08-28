@@ -51,7 +51,7 @@ namespace UWPTestLibrary
             }
         }
 
-        public static async Task<RenderedTestResult> RenderCard(FileViewModel cardFile, FileViewModel hostConfigFile, Dictionary<string, IAdaptiveCardResourceResolver> resourceResolvers)
+        public static async Task<RenderedTestResult> RenderCard(FileViewModel cardFile, FileViewModel hostConfigFile)
         {
             string error = null;
             string roundTrippedJsonString = null;
@@ -61,14 +61,18 @@ namespace UWPTestLibrary
 
             try
             {
-                AdaptiveHostConfig hostConfig = AdaptiveHostConfig.FromJsonString(hostConfigFile.Contents).HostConfig;
-
-                if (hostConfig == null)
+                AdaptiveHostConfig hostConfig = null;
+                if (hostConfigFile.Contents != null)
                 {
-                    error = "Parsing hostConfig failed";
+                    hostConfig = AdaptiveHostConfig.FromJsonString(hostConfigFile.Contents).HostConfig;
+
+                    if (hostConfig == null)
+                    {
+                        error = "Parsing hostConfig failed";
+                    }
                 }
 
-                else
+                if (error == null)
                 {
                     AdaptiveCard card = AdaptiveCard.FromJsonString(cardFile.Contents).AdaptiveCard;
 
@@ -87,19 +91,22 @@ namespace UWPTestLibrary
 
                         var renderer = new AdaptiveCardRenderer()
                         {
-                            HostConfig = hostConfig,
                             FeatureRegistration = featureRegistration
                         };
 
-                        foreach (var resourceResolver in resourceResolvers)
+                        if (hostConfig != null)
                         {
-                            renderer.ResourceResolvers.Set(resourceResolver.Key, resourceResolver.Value);
+                            renderer.HostConfig = hostConfig;
                         }
 
-                        if (hostConfigFile.Name.Contains("windows-timeline"))
+                        renderer.ResourceResolvers.Set("symbol", new SampleResourceResolver());
+
+                        if (hostConfigFile.Name.Contains(FileLoadHelpers.fixedNonInteractiveName))
                         {
                             renderer.SetFixedDimensions(320, 180);
                             cardWidth = 320;
+
+                            renderer.HostConfig.SupportsInteractivity = false;
                         }
 
                         RenderedAdaptiveCard renderedCard = renderer.RenderAdaptiveCard(card);
@@ -122,7 +129,7 @@ namespace UWPTestLibrary
                             };
 
                             // The theme is important to set since it'll ensure buttons/inputs appear correctly
-                            if (hostConfigFile.Name.Contains("windows-notification"))
+                            if (hostConfigFile.Name.Contains(FileLoadHelpers.testVarientHostConfigName))
                             {
                                 xaml.RequestedTheme = ElementTheme.Dark;
                             }

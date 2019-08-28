@@ -1,0 +1,26 @@
+{
+    "symbol": "MSFT",
+    "exchange": "NASDAQ",
+    "company": "Microsoft Corp",
+    "date": "2019-02-12T18:34:00Z",
+    "price": "106.70",
+    "arrow": "up",
+    "change": "1.45",
+    "difference": "1.37",
+    "changeFormatted": "▲ USD 1.45 (1.37%) ",
+    "changeColor": "attention",
+    "stages": [
+        {
+            "title": "Open",
+            "value": "106.14"
+        },
+        {
+            "title": "High",
+            "value": "107.14"
+        },
+        {
+            "title": "Low",
+            "value": "105.48"
+        }
+    ]
+}

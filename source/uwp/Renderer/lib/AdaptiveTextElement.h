@@ -25,24 +25,20 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_IsSubtle(_Out_ boolean* isSubtle);
         IFACEMETHODIMP put_IsSubtle(boolean isSubtle);
 
-        IFACEMETHODIMP get_Italic(_Out_ boolean* italic);
-        IFACEMETHODIMP put_Italic(boolean italic);
-
-        IFACEMETHODIMP get_Strikethrough(_Out_ boolean* strikethrough);
-        IFACEMETHODIMP put_Strikethrough(boolean strikethrough);
-
         IFACEMETHODIMP get_Language(_Outptr_ HSTRING* language);
         IFACEMETHODIMP put_Language(_In_ HSTRING language);
 
         IFACEMETHODIMP get_FontType(_Out_ ABI::AdaptiveNamespace::FontType* fontType);
         IFACEMETHODIMP put_FontType(ABI::AdaptiveNamespace::FontType fontType);
 
-    protected:
-        template<typename T> HRESULT InitializeTextElement(const std::shared_ptr<T>& sharedModel)
+        IFACEMETHODIMP get_Underline(_Out_ boolean* underline);
+        IFACEMETHODIMP put_Underline(_In_ boolean underline);
+
+    protected : template<typename T>
+                HRESULT
+                InitializeTextElement(const std::shared_ptr<T>& sharedModel)
         {
             m_subtle = sharedModel->GetIsSubtle();
-            m_italic = sharedModel->GetItalic();
-            m_strikethrough = sharedModel->GetStrikethrough();
             m_fontType = static_cast<ABI::AdaptiveNamespace::FontType>(sharedModel->GetFontType());
             m_textSize = static_cast<ABI::AdaptiveNamespace::TextSize>(sharedModel->GetTextSize());
             m_textWeight = static_cast<ABI::AdaptiveNamespace::TextWeight>(sharedModel->GetTextWeight());
@@ -56,8 +52,6 @@ namespace AdaptiveNamespace
         template<typename T> HRESULT SetTextElementProperties(std::shared_ptr<T> sharedCardElement)
         {
             sharedCardElement->SetIsSubtle(m_subtle);
-            sharedCardElement->SetItalic(m_italic);
-            sharedCardElement->SetStrikethrough(m_strikethrough);
             sharedCardElement->SetFontType(static_cast<AdaptiveSharedNamespace::FontType>(m_fontType));
             sharedCardElement->SetTextSize(static_cast<AdaptiveSharedNamespace::TextSize>(m_textSize));
             sharedCardElement->SetTextWeight(static_cast<AdaptiveSharedNamespace::TextWeight>(m_textWeight));
@@ -78,8 +72,6 @@ namespace AdaptiveNamespace
 
     private:
         boolean m_subtle;
-        boolean m_italic;
-        boolean m_strikethrough;
         Microsoft::WRL::Wrappers::HString m_text;
         Microsoft::WRL::Wrappers::HString m_language;
         ABI::AdaptiveNamespace::FontType m_fontType;

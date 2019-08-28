@@ -8,6 +8,8 @@
 
 @interface ACRColumnSetView:ACRContentStackView
 
+@property BOOL isLastColumn;
+
 - (void)setAlignmentForColumnStretch;
 
 @end
