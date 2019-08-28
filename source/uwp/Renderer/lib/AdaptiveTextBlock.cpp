@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
+
 #include "AdaptiveTextBlock.h"
-#include "Util.h"
 #include "DateTimeParser.h"
-#include <windows.foundation.collections.h>
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;

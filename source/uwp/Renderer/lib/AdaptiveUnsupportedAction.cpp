@@ -3,7 +3,6 @@
 #include "pch.h"
 
 #include "AdaptiveUnsupportedAction.h"
-#include "Util.h"
 
 using namespace Microsoft::WRL::Wrappers;
 

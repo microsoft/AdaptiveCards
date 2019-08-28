@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
+
 #include "AdaptiveSubmitAction.h"
-#include "Util.h"
 
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;

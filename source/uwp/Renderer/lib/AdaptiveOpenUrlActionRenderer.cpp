@@ -6,7 +6,7 @@
 #include "AdaptiveOpenUrlActionRenderer.h"
 #include "Util.h"
 #include "AdaptiveElementParserRegistration.h"
-#include "XamlBuilder.h"
+#include "ActionHelpers.h"
 
 using namespace ABI::AdaptiveNamespace;
 using namespace Microsoft::WRL;
@@ -24,7 +24,7 @@ namespace AdaptiveNamespace
                                                   _In_ IAdaptiveRenderArgs* renderArgs,
                                                   _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept try
     {
-        return XamlBuilder::BuildAction(action, renderContext, renderArgs, result);
+        return ActionHelpers::BuildAction(action, renderContext, renderArgs, result);
     }
     CATCH_RETURN;
 

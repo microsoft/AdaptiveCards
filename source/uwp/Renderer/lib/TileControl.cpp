@@ -2,16 +2,10 @@
 // Licensed under the MIT License.
 #include "pch.h"
 
-#include "enums.h"
 #include <cmath>
 #include "AdaptiveBackgroundImage.h"
 #include "TileControl.h"
 #include "XamlHelpers.h"
-#include "XamlBuilder.h"
-#include <windows.foundation.collections.h>
-#include <windows.ui.xaml.h>
-#include <windows.ui.xaml.controls.h>
-#include <windows.ui.xaml.shapes.h>
 
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;

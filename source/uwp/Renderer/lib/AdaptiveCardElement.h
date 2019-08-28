@@ -2,9 +2,8 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.Uwp.h"
 #include "SemanticVersion.h"
-#include "Enums.h"
+#include "BaseElement.h"
 
 namespace AdaptiveNamespace
 {

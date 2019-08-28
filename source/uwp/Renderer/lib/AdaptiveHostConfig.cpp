@@ -1,24 +1,24 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
-#include "AdaptiveHostConfig.h"
-#include "Util.h"
+
 #include "AdaptiveActionsConfig.h"
 #include "AdaptiveCardConfig.h"
 #include "AdaptiveColorsConfig.h"
 #include "AdaptiveContainerStylesDefinition.h"
 #include "AdaptiveFactSetConfig.h"
 #include "AdaptiveFontSizesConfig.h"
-#include "AdaptiveFontWeightsConfig.h"
 #include "AdaptiveFontTypeDefinition.h"
 #include "AdaptiveFontTypesDefinition.h"
+#include "AdaptiveFontWeightsConfig.h"
+#include "AdaptiveHostConfig.h"
 #include "AdaptiveHostConfigParseResult.h"
 #include "AdaptiveImageConfig.h"
 #include "AdaptiveImageSetConfig.h"
 #include "AdaptiveImageSizesConfig.h"
 #include "AdaptiveMediaConfig.h"
-#include "AdaptiveSpacingConfig.h"
 #include "AdaptiveSeparatorConfig.h"
+#include "AdaptiveSpacingConfig.h"
 
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;

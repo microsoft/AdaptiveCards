@@ -3,9 +3,6 @@
 #pragma once
 
 #include "pch.h"
-#include <windows.ui.xaml.shapes.h>
-#include "AdaptiveCards.Rendering.Uwp.h"
-#include "Enums.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;

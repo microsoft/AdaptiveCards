@@ -4,9 +4,6 @@
 
 #include "AdaptiveUnsupportedElement.h"
 
-#include "Util.h"
-#include <windows.foundation.collections.h>
-
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveNamespace;

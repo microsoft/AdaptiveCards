@@ -1,10 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
-#include "AdaptiveTextInput.h"
 
-#include "Util.h"
-#include <windows.foundation.collections.h>
+#include "AdaptiveTextInput.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;

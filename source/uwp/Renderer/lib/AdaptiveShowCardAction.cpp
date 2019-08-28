@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
+
 #include "AdaptiveCard.h"
 #include "AdaptiveShowCardAction.h"
-#include "Util.h"
 
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;

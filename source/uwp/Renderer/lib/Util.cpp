@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
-#include <string>
+
 #include <regex>
 
 #include "AdaptiveActionParserRegistration.h"
@@ -39,11 +39,7 @@
 #include "AdaptiveWarning.h"
 #include "CustomActionWrapper.h"
 #include "CustomElementWrapper.h"
-#include "enums.h"
-#include "util.h"
-#include <windows.foundation.collections.h>
 #include "XamlHelpers.h"
-#include "XamlBuilder.h"
 
 using namespace AdaptiveCards;
 using namespace Microsoft::WRL;

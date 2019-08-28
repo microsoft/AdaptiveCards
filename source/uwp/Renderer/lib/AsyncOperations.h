@@ -40,7 +40,7 @@ class RenderAsyncBase
         bool explicitDimensions = m_renderer->GetFixedDimensions(&width, &height);
         if (explicitDimensions)
         {
-            THROW_IF_FAILED(m_renderer->GetXamlBuilder()->SetFixedDimensions(width, height));
+            m_renderer->GetXamlBuilder()->SetFixedDimensions(width, height);
         }
     }
 

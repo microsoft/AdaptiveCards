@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveActionElement.h"
-#include "Util.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;

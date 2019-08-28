@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
+
 #include "AdaptiveToggleVisibilityAction.h"
-#include "Util.h"
-#include "Vector.h"
 
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
