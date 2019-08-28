@@ -3695,7 +3695,7 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(adaptiveDateInput->get_Min(hstringMin.GetAddressOf()));
         std::string min = HStringToUTF8(hstringMin.Get());
         DateTime minDate{};
-        boolean isMinValid{ DateTimePreparser::TryParseSimpleDate(min, year, month, day) };
+        boolean isMinValid{DateTimePreparser::TryParseSimpleDate(min, year, month, day)};
         if (isMinValid)
         {
             minDate = GetDateTime(year, month, day);
@@ -3717,10 +3717,13 @@ namespace AdaptiveNamespace
                 }
                 else
                 {
-                    renderContext->AddWarning(
-                        ABI::AdaptiveNamespace::WarningStatusCode::InvalidValue,
-                        HStringReference(L"Min value must be less than max in Input.Date").Get());
+                    renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::InvalidValue,
+                                              HStringReference(L"Min value must be less than max in Input.Date").Get());
                 }
+            }
+            else
+            {
+                RETURN_IF_FAILED(datePicker->put_MaxDate(maxDate));
             }
         }
 
