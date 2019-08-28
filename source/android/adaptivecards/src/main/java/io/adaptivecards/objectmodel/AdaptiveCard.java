@@ -203,4 +203,8 @@ public class AdaptiveCard {
     return AdaptiveCardObjectModelJNI.AdaptiveCard_Serialize(swigCPtr, this);
   }
 
+  public InternalId GetInternalId() {
+    return new InternalId(AdaptiveCardObjectModelJNI.AdaptiveCard_GetInternalId(swigCPtr, this), true);
+  }
+
 }

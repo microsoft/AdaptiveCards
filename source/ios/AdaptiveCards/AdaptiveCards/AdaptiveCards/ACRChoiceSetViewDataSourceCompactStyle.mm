@@ -147,13 +147,12 @@ static NSString *pickerCell = @"pickerCell";
 {
     UITableViewCell *cell = [tableView.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
     if(indexPath.row == 0) {
-        if(!_compactViewHeight || ![_textInCompactView isEqualToString:cell.textLabel.text]) {
-            CGSize labelStringSize = [cell.textLabel.text boundingRectWithSize:CGSizeMake(cell.contentView.frame.size.width - accessoryViewWidth, CGFLOAT_MAX)
-                                                                options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                                             attributes:@{NSFontAttributeName:cell.textLabel.font}
-                                                                context:nil].size;
-            _compactViewHeight = labelStringSize.height;
-        }
+        CGSize labelStringSize = [cell.textLabel.text
+                                  boundingRectWithSize:CGSizeMake(cell.contentView.frame.size.width - accessoryViewWidth, CGFLOAT_MAX)
+                                  options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                  attributes:@{NSFontAttributeName:cell.textLabel.font}
+                                  context:nil].size;
+        _compactViewHeight = labelStringSize.height;
         return _compactViewHeight + padding;
     } else {
         return _showPickerView ? _pickerViewHeight : 0.0f;

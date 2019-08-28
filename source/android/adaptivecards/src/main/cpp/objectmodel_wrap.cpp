@@ -19236,6 +19236,24 @@ SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
 }
 
 
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1GetInternalId(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  AdaptiveCards::AdaptiveCard *arg1 = (AdaptiveCards::AdaptiveCard *) 0 ;
+  std::shared_ptr< AdaptiveCards::AdaptiveCard const > *smartarg1 = 0 ;
+  AdaptiveCards::InternalId result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::AdaptiveCard > **)&jarg1;
+  arg1 = (AdaptiveCards::AdaptiveCard *)(smartarg1 ? smartarg1->get() : 0); 
+  result = ((AdaptiveCards::AdaptiveCard const *)arg1)->GetInternalId();
+  *(AdaptiveCards::InternalId **)&jresult = new AdaptiveCards::InternalId((const AdaptiveCards::InternalId &)result); 
+  return jresult;
+}
+
+
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1AdaptiveCard(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::AdaptiveCard *arg1 = (AdaptiveCards::AdaptiveCard *) 0 ;
   std::shared_ptr< AdaptiveCards::AdaptiveCard > *smartarg1 = 0 ;

@@ -860,6 +860,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long AdaptiveCard_MakeFallbackTextCard(String jarg1, String jarg2, String jarg3) throws java.io.IOException;
   public final static native long AdaptiveCard_SerializeToJsonValue(long jarg1, AdaptiveCard jarg1_);
   public final static native String AdaptiveCard_Serialize(long jarg1, AdaptiveCard jarg1_);
+  public final static native long AdaptiveCard_GetInternalId(long jarg1, AdaptiveCard jarg1_);
   public final static native void delete_AdaptiveCard(long jarg1);
   public final static native long new_AdaptiveCardParseException(int jarg1, String jarg2);
   public final static native String AdaptiveCardParseException_what(long jarg1, AdaptiveCardParseException jarg1_);
