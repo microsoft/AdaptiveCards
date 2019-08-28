@@ -25,24 +25,33 @@
 using namespace InternalNamespace;
 #endif
 
-HRESULT WStringToHString(const std::wstring& in, _Outptr_ HSTRING* out);
+class bad_string_conversion : public std::exception
+{
+public:
+    bad_string_conversion() : _dwErr(GetLastError()) {}
 
-std::string WstringToString(const std::wstring& in);
-std::wstring StringToWstring(const std::string& in);
+private:
+    DWORD _dwErr;
+};
+
+HRESULT WStringToHString(const std::wstring_view& in, _Outptr_ HSTRING* out) noexcept;
+
+std::string WstringToString(const std::wstring_view& in);
+std::wstring StringToWstring(const std::string_view& in);
 
 // This function is needed to deal with the fact that non-windows platforms handle Unicode without the need for wchar_t.
 // (which has a platform specific implementation) It converts a std::string to an HSTRING.
-HRESULT UTF8ToHString(const std::string& in, _Outptr_ HSTRING* out);
+HRESULT UTF8ToHString(const std::string_view& in, _Outptr_ HSTRING* out) noexcept;
 
 // This function is needed to deal with the fact that non-windows platforms handle Unicode without the need for wchar_t.
 // (which has a platform specific implementation) It converts from HSTRING to a standard std::string.
-HRESULT HStringToUTF8(const HSTRING& in, std::string& out);
+HRESULT HStringToUTF8(const HSTRING& in, std::string& out) noexcept;
 
 std::string HStringToUTF8(const HSTRING& in);
 
-inline bool Boolify(const boolean value)
+inline bool Boolify(const boolean value) noexcept
 {
-    return value > 0 ? true : false;
+    return (value > 0);
 }
 
 HRESULT GetColorFromString(const std::string& colorString, _Out_ ABI::Windows::UI::Color* color) noexcept;
