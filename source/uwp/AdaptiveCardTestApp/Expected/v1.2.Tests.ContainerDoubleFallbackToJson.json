@@ -1,0 +1,1 @@
+{"actions":[],"body":[{"fallback":{"fallback":{"text":"Hello World","type":"TextBlock"},"items":[{"type":"notme"}],"type":"Container"},"type":"whoknows"}],"type":"AdaptiveCard","version":"1.2"}

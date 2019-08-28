@@ -3,6 +3,7 @@ IF EXIST "dist\spec-generator-script.0.5.0.0.min.js" (
 ) ELSE (
 	ECHO Building spec generator...
 	cd ..
+	npm install
 	npx lerna bootstrap
 	cd spec-generator
 	npm run release
