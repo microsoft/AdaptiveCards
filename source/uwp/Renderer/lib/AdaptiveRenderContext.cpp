@@ -115,6 +115,15 @@ namespace AdaptiveNamespace
         return (warnings->Append(warning.Detach()));
     }
 
+    HRESULT AdaptiveRenderContext::AddInlineShowCard(ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
+                                                     ABI::AdaptiveNamespace::IAdaptiveShowCardAction* showCardAction,
+                                                     ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement)
+    {
+        ComPtr<RenderedAdaptiveCard> renderResult;
+        RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
+        return renderResult->AddInlineShowCard(adaptiveCard, showCardAction, showCardFrameworkElement);
+    }
+
     HRESULT AdaptiveRenderContext::AddInlineShowCard(_In_opt_ IAdaptiveActionSet* actionSet,
                                                      _In_ IAdaptiveShowCardAction* showCardAction,
                                                      _In_ ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement)
