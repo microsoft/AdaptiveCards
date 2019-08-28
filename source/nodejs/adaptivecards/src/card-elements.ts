@@ -4083,7 +4083,9 @@ export abstract class Action extends CardObject {
 }
 
 export class SubmitAction extends Action {
-    static readonly JsonTypeName = "Action.Submit";
+    // Note the "weird" way this field is declared is to work around a breaking
+    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
+    static readonly JsonTypeName: "Action.Submit" = "Action.Submit";
 
     private _isPrepared: boolean = false;
     private _originalData: Object;
@@ -4158,7 +4160,9 @@ export class SubmitAction extends Action {
 }
 
 export class OpenUrlAction extends Action {
-    static readonly JsonTypeName = "Action.OpenUrl";
+    // Note the "weird" way this field is declared is to work around a breaking
+    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
+    static readonly JsonTypeName: "Action.OpenUrl" = "Action.OpenUrl";
 
     url: string;
 
@@ -4199,7 +4203,9 @@ export class OpenUrlAction extends Action {
 }
 
 export class ToggleVisibilityAction extends Action {
-    static readonly JsonTypeName = "Action.ToggleVisibility";
+    // Note the "weird" way this field is declared is to work around a breaking
+    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
+    static readonly JsonTypeName: "Action.ToggleVisibility" = "Action.ToggleVisibility";
 
     targetElements = {}
 
@@ -4324,7 +4330,9 @@ export class HttpHeader extends SerializableObject {
 }
 
 export class HttpAction extends Action {
-    static readonly JsonTypeName = "Action.Http";
+    // Note the "weird" way this field is declared is to work around a breaking
+    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
+    static readonly JsonTypeName: "Action.Http" = "Action.Http";
 
     private _url = new Shared.StringWithSubstitutions();
     private _body = new Shared.StringWithSubstitutions();
@@ -4374,17 +4382,6 @@ export class HttpAction extends Action {
         Utils.setProperty(result, "url", this._url.getOriginal());
         Utils.setProperty(result, "body", this._body.getOriginal());
         Utils.setProperty(result, "ignoreInputValidation", this.ignoreInputValidation, false);
-
-        /*
-        let headers = [];
-
-        for (let header of this.headers) {
-            headers.push(header.toJSON());
-        }
-
-        Utils.setProperty(result, "headers", headers);
-        */
-
         Utils.setArrayProperty(result, "headers", this.headers);
 
         return result;
@@ -4470,7 +4467,9 @@ export class HttpAction extends Action {
 }
 
 export class ShowCardAction extends Action {
-    static readonly JsonTypeName = "Action.ShowCard";
+    // Note the "weird" way this field is declared is to work around a breaking
+    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
+    static readonly JsonTypeName: "Action.ShowCard" = "Action.ShowCard";
 
     protected addCssClasses(element: HTMLElement) {
         super.addCssClasses(element);
