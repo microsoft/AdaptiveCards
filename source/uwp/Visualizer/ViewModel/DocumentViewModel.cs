@@ -221,50 +221,38 @@ namespace AdaptiveCardVisualizer.ViewModel
 
         public static void InitializeRenderer(AdaptiveHostConfig hostConfig)
         {
-            try
+            _renderer = new AdaptiveCardRenderer();
+            if (hostConfig != null)
             {
-                _renderer = new AdaptiveCardRenderer();
-                if (hostConfig != null)
-                {
-                    _renderer.HostConfig = hostConfig;
-                }
-
-                // Add a feature representing this version of the visualizer. used for test cards.
-                _renderer.FeatureRegistration.Set("acTest", "1.0");
-
-                if (Settings.UseFixedDimensions)
-                {
-                    _renderer.SetFixedDimensions(320, 180);
-                }
-
-                // Custom resource resolvers
-                _renderer.ResourceResolvers.Set("symbol", new MySymbolResourceResolver());
-
-                /*
-                 *Example on how to override the Action Positive and Destructive styles
-                Style positiveStyle = new Style(typeof(Button));
-                positiveStyle.Setters.Add(new Setter(Button.BackgroundProperty, new SolidColorBrush(Windows.UI.Colors.LawnGreen)));
-                Style destructiveStyle = new Style(typeof(Button));
-                destructiveStyle.Setters.Add(new Setter(Button.BackgroundProperty, new SolidColorBrush(Windows.UI.Colors.Red)));
-                Style otherStyle = new Style(typeof(Button));
-                otherStyle.Setters.Add(new Setter(Button.BackgroundProperty, new SolidColorBrush(Windows.UI.Colors.Yellow)));
-                otherStyle.Setters.Add(new Setter(Button.ForegroundProperty, new SolidColorBrush(Windows.UI.Colors.DarkRed)));
-
-                _renderer.OverrideStyles = new ResourceDictionary();
-                _renderer.OverrideStyles.Add("Adaptive.Action.Positive", positiveStyle);
-                _renderer.OverrideStyles.Add("Adaptive.Action.Destructive", destructiveStyle);
-                _renderer.OverrideStyles.Add("Adaptive.Action.other", otherStyle);
-                */
-
+                _renderer.HostConfig = hostConfig;
             }
-            catch
+
+            // Add a feature representing this version of the visualizer. used for test cards.
+            _renderer.FeatureRegistration.Set("acTest", "1.0");
+
+            if (Settings.UseFixedDimensions)
             {
-                if (Debugger.IsAttached)
-                {
-                    Debugger.Break();
-                }
-                throw;
+                _renderer.SetFixedDimensions(320, 180);
             }
+
+            // Custom resource resolvers
+            _renderer.ResourceResolvers.Set("symbol", new MySymbolResourceResolver());
+
+            /*
+                *Example on how to override the Action Positive and Destructive styles
+            Style positiveStyle = new Style(typeof(Button));
+            positiveStyle.Setters.Add(new Setter(Button.BackgroundProperty, new SolidColorBrush(Windows.UI.Colors.LawnGreen)));
+            Style destructiveStyle = new Style(typeof(Button));
+            destructiveStyle.Setters.Add(new Setter(Button.BackgroundProperty, new SolidColorBrush(Windows.UI.Colors.Red)));
+            Style otherStyle = new Style(typeof(Button));
+            otherStyle.Setters.Add(new Setter(Button.BackgroundProperty, new SolidColorBrush(Windows.UI.Colors.Yellow)));
+            otherStyle.Setters.Add(new Setter(Button.ForegroundProperty, new SolidColorBrush(Windows.UI.Colors.DarkRed)));
+
+            _renderer.OverrideStyles = new ResourceDictionary();
+            _renderer.OverrideStyles.Add("Adaptive.Action.Positive", positiveStyle);
+            _renderer.OverrideStyles.Add("Adaptive.Action.Destructive", destructiveStyle);
+            _renderer.OverrideStyles.Add("Adaptive.Action.other", otherStyle);
+            */
         }
     }
 }
