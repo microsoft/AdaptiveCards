@@ -755,7 +755,6 @@ CATCH_RETURN;
 
 HRESULT GenerateRequirementsProjection(
     const std::shared_ptr<std::unordered_map<std::string, SemanticVersion>>& sharedRequirements,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>* projectedRequirementVector) noexcept
 try
 {
     for (auto& sharedRequirement : *sharedRequirements)
