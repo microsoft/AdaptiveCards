@@ -85,7 +85,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
                 // indicates showcard has not been seen if it's set false; meaningful only if it's used
                 // when inline is supported
-                var hasSeenInlineShowCard = false;
+                bool hasSeenInlineShowCard = false;
 
                 foreach (AdaptiveAction action in actionsToProcess)
                 {
