@@ -1420,7 +1420,7 @@ HRESULT SharedWarningsToAdaptiveWarnings(std::vector<std::shared_ptr<AdaptiveCar
 }
 
 HRESULT AdaptiveWarningsToSharedWarnings(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-                                         std::vector<std::shared_ptr<AdaptiveCardParseWarning>> sharedWarnings)
+                                         std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& sharedWarnings)
 {
     ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>> localAdaptiveWarnings{adaptiveWarnings};
     ComPtr<IIterable<ABI::AdaptiveNamespace::AdaptiveWarning*>> vectorIterable;
