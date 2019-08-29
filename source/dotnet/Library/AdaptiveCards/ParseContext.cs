@@ -31,6 +31,16 @@ namespace AdaptiveCards
             idStack.Push(new Tuple<string, AdaptiveInternalID, bool>(idJsonProperty, internalId, AdaptiveFallbackConverter.IsInFallback));
         }
 
+        public static AdaptiveInternalID PeekElement()
+        {
+            if (idStack.Count == 0)
+            {
+                // internal id in dot net needs to be revisited tracked via issue 3386
+                return new AdaptiveInternalID();
+            }
+            return idStack.Peek().Item2;
+        }
+
         // Pop the last id off our stack and perform validation 
         public static void PopElement()
         {
