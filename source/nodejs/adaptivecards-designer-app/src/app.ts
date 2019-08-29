@@ -35,8 +35,8 @@ window.onload = function() {
     let designer = new ACDesigner.CardDesigner(hostContainers);
     designer.sampleCatalogueUrl = window.location.origin + "/sample-catalogue.json";
     designer.attachTo(document.getElementById("designerRootHost"));
-
-	/* Uncomment to test a custom palette item example
+    
+    /* Uncomment to test a custom palette item example
     let exampleSnippet = new ACDesigner.SnippetPaletteItem("Custom", "Example");
     exampleSnippet.snippet = {
         type: "ColumnSet",
