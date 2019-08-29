@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,7 +36,7 @@ namespace AdaptiveCards.Tools.IOSFeed
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Uploading taks failed with {0} exception", ex);
+                Debug.WriteLine("Uploading taks failed with {0} exception", ex);
             }
         }
 
