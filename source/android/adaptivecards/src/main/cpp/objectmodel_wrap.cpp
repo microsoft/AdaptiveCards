@@ -13903,7 +13903,7 @@ SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
 }
 
 
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1SetWidth(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1SetWidth_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::Column *arg1 = (AdaptiveCards::Column *) 0 ;
   std::string *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::Column > *smartarg1 = 0 ;
@@ -13924,6 +13924,33 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   arg2 = &arg2_str;
   jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
   (arg1)->SetWidth((std::string const &)*arg2);
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1SetWidth_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jobject jarg3_) {
+  AdaptiveCards::Column *arg1 = (AdaptiveCards::Column *) 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > *arg3 = (std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > *) 0 ;
+  std::shared_ptr< AdaptiveCards::Column > *smartarg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg3_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::Column > **)&jarg1;
+  arg1 = (AdaptiveCards::Column *)(smartarg1 ? smartarg1->get() : 0); 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return ;
+  }
+  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return ;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = *(std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > **)&jarg3; 
+  (arg1)->SetWidth((std::string const &)*arg2,arg3);
 }
 
 
@@ -19577,6 +19604,24 @@ SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
   arg1 = (AdaptiveCards::AdaptiveCard *)(smartarg1 ? smartarg1->get() : 0); 
   result = ((AdaptiveCards::AdaptiveCard const *)arg1)->Serialize();
   jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1GetInternalId(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  AdaptiveCards::AdaptiveCard *arg1 = (AdaptiveCards::AdaptiveCard *) 0 ;
+  std::shared_ptr< AdaptiveCards::AdaptiveCard const > *smartarg1 = 0 ;
+  AdaptiveCards::InternalId result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::AdaptiveCard > **)&jarg1;
+  arg1 = (AdaptiveCards::AdaptiveCard *)(smartarg1 ? smartarg1->get() : 0); 
+  result = ((AdaptiveCards::AdaptiveCard const *)arg1)->GetInternalId();
+  *(AdaptiveCards::InternalId **)&jresult = new AdaptiveCards::InternalId((const AdaptiveCards::InternalId &)result); 
   return jresult;
 }
 
@@ -28006,6 +28051,40 @@ SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
 }
 
 
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextRun_1GetUnderline(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  AdaptiveCards::TextRun *arg1 = (AdaptiveCards::TextRun *) 0 ;
+  std::shared_ptr< AdaptiveCards::TextRun const > *smartarg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::TextRun > **)&jarg1;
+  arg1 = (AdaptiveCards::TextRun *)(smartarg1 ? smartarg1->get() : 0); 
+  result = (bool)((AdaptiveCards::TextRun const *)arg1)->GetUnderline();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextRun_1SetUnderline(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
+  AdaptiveCards::TextRun *arg1 = (AdaptiveCards::TextRun *) 0 ;
+  bool arg2 ;
+  std::shared_ptr< AdaptiveCards::TextRun > *smartarg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::TextRun > **)&jarg1;
+  arg1 = (AdaptiveCards::TextRun *)(smartarg1 ? smartarg1->get() : 0); 
+  arg2 = jarg2 ? true : false; 
+  (arg1)->SetUnderline(arg2);
+}
+
+
 SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextRun_1GetSelectAction(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::TextRun *arg1 = (AdaptiveCards::TextRun *) 0 ;
@@ -28226,6 +28305,40 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   arg1 = (AdaptiveCards::RichTextElementProperties *)(smartarg1 ? smartarg1->get() : 0); 
   arg2 = jarg2 ? true : false; 
   (arg1)->SetStrikethrough(arg2);
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_RichTextElementProperties_1GetUnderline(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  AdaptiveCards::RichTextElementProperties *arg1 = (AdaptiveCards::RichTextElementProperties *) 0 ;
+  std::shared_ptr< AdaptiveCards::RichTextElementProperties const > *smartarg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::RichTextElementProperties > **)&jarg1;
+  arg1 = (AdaptiveCards::RichTextElementProperties *)(smartarg1 ? smartarg1->get() : 0); 
+  result = (bool)((AdaptiveCards::RichTextElementProperties const *)arg1)->GetUnderline();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_RichTextElementProperties_1SetUnderline(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
+  AdaptiveCards::RichTextElementProperties *arg1 = (AdaptiveCards::RichTextElementProperties *) 0 ;
+  bool arg2 ;
+  std::shared_ptr< AdaptiveCards::RichTextElementProperties > *smartarg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::RichTextElementProperties > **)&jarg1;
+  arg1 = (AdaptiveCards::RichTextElementProperties *)(smartarg1 ? smartarg1->get() : 0); 
+  arg2 = jarg2 ? true : false; 
+  (arg1)->SetUnderline(arg2);
 }
 
 

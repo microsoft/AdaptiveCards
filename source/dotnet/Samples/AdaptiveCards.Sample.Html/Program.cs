@@ -320,10 +320,10 @@ namespace AdaptiveCards.Sample.Html
 
                             <!-- if element is not visible -> skip (The separator was hidden in the previous step) -->
                             if(child.style.display == 'none'){{
-                                continue;	
+                                continue;
                             }}
 
-                            const childSeparatorId = child.dataset.acSeparatorid;		
+                            const childSeparatorId = child.dataset.acSeparatorid;
                             var childSeparator = document.getElementById(childSeparatorId);
 
                             if(isFirstElement){{

@@ -292,7 +292,8 @@ AdaptiveNamespaceStart
         RenderFailed,
         RequiredPropertyMissing,
         InvalidPropertyValue,
-        UnsupportedParserOverride
+        UnsupportedParserOverride,
+        CustomError,
     } ErrorStatusCode;
 
     [version(NTDDI_WIN10_RS1)]
@@ -313,7 +314,8 @@ AdaptiveNamespaceStart
         UnsupportedMediaType,
         InvalidMediaMix,
         UnsupportedValue,
-        PerformingFallback
+        PerformingFallback,
+        CustomWarning,
     } WarningStatusCode;
 
     [version(NTDDI_WIN10_RS1)]
@@ -540,6 +542,7 @@ AdaptiveNamespaceStart
         Boolean Italic;
         Boolean Strikethrough;
         Boolean Highlight;
+        Boolean Underline;
         IAdaptiveActionElement SelectAction;
     };
 
@@ -1763,7 +1766,7 @@ AdaptiveNamespaceStart
 
         void AddInputValue(IAdaptiveInputValue inputValue);
 
-        void AddInlineShowCard(AdaptiveActionSet inputValue,
+        void AddInlineShowCard(AdaptiveActionSet actionSet,
                                AdaptiveShowCardAction showCardAction,
                                Windows.UI.Xaml.UIElement showCardUIElement);
 
@@ -2057,10 +2060,10 @@ AdaptiveNamespaceStart
     ]
     runtimeclass AdaptiveError 
     {
-        AdaptiveError();
+        AdaptiveError(ErrorStatusCode statusCode, String message);
 
-        ErrorStatusCode StatusCode { get; };
-        String Message { get; };
+        ErrorStatusCode StatusCode;
+        String Message;
     };
 
     [
@@ -2072,10 +2075,10 @@ AdaptiveNamespaceStart
     ]
     runtimeclass AdaptiveWarning
     {
-        AdaptiveWarning();
+        AdaptiveWarning(WarningStatusCode statusCode, String message);
 
-        WarningStatusCode StatusCode { get; };
-        String Message { get; };
+        WarningStatusCode StatusCode;
+        String Message;
     };
 
     [
