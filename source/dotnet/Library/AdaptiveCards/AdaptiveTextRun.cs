@@ -125,5 +125,15 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(null)]
         public AdaptiveAction SelectAction { get; set; }
+
+        /// <summary>
+        ///     Make the text be underlined
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(false)]
+        public bool Underline { get; set; }
     }
 }

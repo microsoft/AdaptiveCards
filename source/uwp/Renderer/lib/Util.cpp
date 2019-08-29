@@ -1,8 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
-#include <locale>
-#include <codecvt>
 #include <string>
 #include <regex>
 
@@ -54,42 +52,91 @@ using namespace AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 
-HRESULT WStringToHString(const std::wstring& in, _Outptr_ HSTRING* out)
+HRESULT WStringToHString(const std::wstring_view& in, _Outptr_ HSTRING* out) noexcept try
 {
     if (out == nullptr)
     {
         return E_INVALIDARG;
     }
-    return WindowsCreateString(in.c_str(), static_cast<UINT32>(in.length()), out);
+    else if (in.empty())
+    {
+        return WindowsCreateString(L"", 0, out);
+    }
+    else
+    {
+        return WindowsCreateString(&in[0], static_cast<UINT32>(in.length()), out);
+    }
+}
+CATCH_RETURN;
+
+std::string WstringToString(const std::wstring_view& in)
+{
+    if (!in.empty())
+    {
+        const size_t requiredSize =
+            WideCharToMultiByte(CP_UTF8, 0 /*dwFlags*/, &in[0], (int)in.length(), nullptr, 0, nullptr, nullptr);
+        std::string converted(requiredSize, 0);
+
+        if (WideCharToMultiByte(CP_UTF8, 0 /*dwFlags*/, &in[0], (int)in.length(), &converted[0], (int)requiredSize, nullptr, nullptr) == 0)
+        {
+            throw bad_string_conversion();
+        }
+        return converted;
+    }
+    return "";
 }
 
-HRESULT UTF8ToHString(const std::string& in, _Outptr_ HSTRING* out)
+std::wstring StringToWstring(const std::string_view& in)
+{
+    if (!in.empty())
+    {
+        // TODO: safer casts
+        const size_t requiredSize =
+            MultiByteToWideChar(CP_UTF8, 0 /*dwFlags*/, &in[0], (int)in.length(), (LPWSTR) nullptr, 0);
+        std::wstring wide(requiredSize, 0);
+
+        if (MultiByteToWideChar(CP_UTF8, 0 /*dwFlags*/, &in[0], (int)in.length(), &wide[0], (int)requiredSize) == 0)
+        {
+            throw bad_string_conversion();
+        }
+
+        return wide;
+    }
+    return L"";
+}
+
+HRESULT UTF8ToHString(const std::string_view& in, _Outptr_ HSTRING* out) noexcept try
 {
     if (out == nullptr)
     {
         return E_INVALIDARG;
     }
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    std::wstring wide = converter.from_bytes(in);
-    return WindowsCreateString(wide.c_str(), static_cast<UINT32>(wide.length()), out);
-}
-
-HRESULT HStringToUTF8(const HSTRING& in, std::string& out)
-{
-    if (in == nullptr)
+    else
     {
-        return E_INVALIDARG;
+        std::wstring wide = StringToWstring(in);
+        return WindowsCreateString(wide.c_str(), static_cast<UINT32>(wide.length()), out);
     }
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    out = converter.to_bytes(WindowsGetStringRawBuffer(in, nullptr));
+}
+CATCH_RETURN;
+
+HRESULT HStringToUTF8(const HSTRING& in, std::string& out) noexcept try
+{
+    out = WstringToString(WindowsGetStringRawBuffer(in, nullptr));
     return S_OK;
 }
+CATCH_RETURN;
 
 std::string HStringToUTF8(const HSTRING& in)
 {
     std::string typeAsKey;
-    HRESULT hr = HStringToUTF8(in, typeAsKey);
-    return FAILED(hr) ? "" : typeAsKey;
+    if (SUCCEEDED(HStringToUTF8(in, typeAsKey)))
+    {
+        return typeAsKey;
+    }
+    else
+    {
+        return "";
+    }
 }
 
 template<typename TSharedBaseType, typename TAdaptiveBaseType, typename TAdaptiveType>
@@ -1207,8 +1254,9 @@ CATCH_RETURN;
 
 HRESULT StringToJsonObject(const std::string& inputString, _COM_Outptr_ IJsonObject** result)
 {
-    std::wstring asWstring = StringToWstring(inputString);
-    return HStringToJsonObject(HStringReference(asWstring.c_str()).Get(), result);
+    HString asHstring;
+    RETURN_IF_FAILED(UTF8ToHString(inputString, asHstring.GetAddressOf()));
+    return HStringToJsonObject(asHstring.Get(), result);
 }
 
 HRESULT HStringToJsonObject(const HSTRING& inputHString, _COM_Outptr_ IJsonObject** result)
@@ -1246,8 +1294,9 @@ HRESULT JsonObjectToHString(_In_ IJsonObject* inputJson, _Outptr_ HSTRING* resul
 
 HRESULT StringToJsonValue(const std::string inputString, _COM_Outptr_ IJsonValue** result)
 {
-    std::wstring asWstring = StringToWstring(inputString);
-    return HStringToJsonValue(HStringReference(asWstring.c_str()).Get(), result);
+    HString asHstring;
+    RETURN_IF_FAILED(UTF8ToHString(inputString, asHstring.GetAddressOf()));
+    return HStringToJsonValue(asHstring.Get(), result);
 }
 
 HRESULT HStringToJsonValue(const HSTRING& inputHString, _COM_Outptr_ IJsonValue** result)
@@ -1325,18 +1374,6 @@ HRESULT IsBackgroundImageValid(_In_ ABI::AdaptiveNamespace::IAdaptiveBackgroundI
     }
     *isValid = FALSE;
     return S_OK;
-}
-
-std::wstring StringToWstring(const std::string& in)
-{
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> utfConverter;
-    return utfConverter.from_bytes(in);
-}
-
-std::string WstringToString(const std::wstring& input)
-{
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> utfConverter;
-    return utfConverter.to_bytes(input);
 }
 
 void RemoteResourceElementToRemoteResourceInformationVector(_In_ ABI::AdaptiveNamespace::IAdaptiveElementWithRemoteResources* remoteResourceElement,
@@ -1424,7 +1461,7 @@ HRESULT SharedWarningsToAdaptiveWarnings(std::vector<std::shared_ptr<AdaptiveCar
 }
 
 HRESULT AdaptiveWarningsToSharedWarnings(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-                                         std::vector<std::shared_ptr<AdaptiveCardParseWarning>> sharedWarnings)
+                                         std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& sharedWarnings)
 {
     ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>> localAdaptiveWarnings{adaptiveWarnings};
     ComPtr<IIterable<ABI::AdaptiveNamespace::AdaptiveWarning*>> vectorIterable;
