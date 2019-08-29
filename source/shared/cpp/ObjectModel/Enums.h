@@ -392,6 +392,7 @@ namespace AdaptiveSharedNamespace
         InvalidColorFormat,
         InvalidDimensionSpecified,
         InvalidLanguage,
+        InvalidValue,
         CustomWarning,
     };
     // No mapping to string needed
