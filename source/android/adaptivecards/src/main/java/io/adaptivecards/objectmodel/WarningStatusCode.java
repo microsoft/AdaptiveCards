@@ -23,6 +23,7 @@ public enum WarningStatusCode {
   InvalidColorFormat,
   InvalidDimensionSpecified,
   InvalidLanguage,
+  InvalidValue,
   CustomWarning;
 
   public final int swigValue() {

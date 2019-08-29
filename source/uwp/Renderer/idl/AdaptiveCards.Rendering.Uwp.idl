@@ -313,6 +313,7 @@ AdaptiveNamespaceStart
         UnsupportedSchemaVersion,
         UnsupportedMediaType,
         InvalidMediaMix,
+        InvalidValue,
         UnsupportedValue,
         PerformingFallback,
         CustomWarning,
