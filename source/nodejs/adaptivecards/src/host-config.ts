@@ -4,11 +4,6 @@ import * as Enums from "./enums";
 import * as Utils from "./utils";
 import * as Shared from "./shared";
 
-export interface IValidationError {
-    error: Enums.ValidationError,
-    message: string;
-}
-
 export class ColorDefinition {
     default: string = "#000000";
     subtle: string = "#666666";
@@ -389,97 +384,10 @@ export class ContainerStyleSet {
     }
 }
 
-export class Version {
-    private _versionString: string;
-    private _major: number;
-    private _minor: number;
-    private _isValid: boolean = true;
-    private _label: string;
-
-    constructor(major: number = 1, minor: number = 1, label?: string) {
-        this._major = major;
-        this._minor = minor;
-        this._label = label;
-    }
-
-    static parse(versionString: string, errors?: Array<IValidationError>): Version {
-        if (!versionString) {
-            return null;
-        }
-
-        var result = new Version();
-        result._versionString = versionString;
-
-        var regEx = /(\d+).(\d+)/gi;
-        var matches = regEx.exec(versionString);
-
-        if (matches != null && matches.length == 3) {
-            result._major = parseInt(matches[1]);
-            result._minor = parseInt(matches[2]);
-        }
-        else {
-            result._isValid = false;
-        }
-
-        if (!result._isValid && errors) {
-            errors.push(
-                {
-                    error: Enums.ValidationError.InvalidPropertyValue,
-                    message: "Invalid version string: " + result._versionString
-                }
-            );
-        }
-
-        return result;
-    }
-
-    toString(): string {
-        return !this._isValid ? this._versionString : this._major + "." + this._minor;
-    }
-
-    compareTo(otherVersion: Version): number {
-        if (!this.isValid || !otherVersion.isValid) {
-            throw new Error("Cannot compare invalid version.");
-        }
-
-        if (this.major > otherVersion.major) {
-            return 1;
-        }
-        else if (this.major < otherVersion.major) {
-            return -1;
-        }
-        else if (this.minor > otherVersion.minor) {
-            return 1;
-        }
-        else if (this.minor < otherVersion.minor) {
-            return -1;
-        }
-
-        return 0;
-    }
-
-    get label(): string {
-        return this._label ? this._label : this.toString();
-    }
-
-    get major(): number {
-        return this._major;
-    }
-
-    get minor(): number {
-        return this._minor;
-    }
-
-    get isValid(): boolean {
-        return this._isValid;
-    }
-}
-
-export type HostCapabilityVersion = Version | "*";
-export type HostCapabilityMap = { [key: string]: HostCapabilityVersion };
+export type HostCapabilityMap = { [key: string]: Shared.TargetVersion };
 
 export class HostCapabilities {
-    private setCapability(name: string, version: HostCapabilityVersion) {
+    private setCapability(name: string, version: Shared.TargetVersion) {
         if (!this.capabilities) {
             this.capabilities = { };
         }
@@ -489,7 +397,7 @@ export class HostCapabilities {
 
     capabilities: HostCapabilityMap = null;
 
-    parse(json: any, errors?: Array<IValidationError>) {
+    parse(json: any, errors?: Array<Shared.IValidationError>) {
         if (json) {
             for (let name in json) {
                 let jsonVersion = json[name];
@@ -499,7 +407,7 @@ export class HostCapabilities {
                         this.setCapability(name, "*");
                     }
                     else {
-                        let version = Version.parse(jsonVersion, errors);
+                        let version = Shared.Version.parse(jsonVersion, errors);
 
                         if (version.isValid) {
                             this.setCapability(name, version);
@@ -510,13 +418,13 @@ export class HostCapabilities {
         }
     }
 
-    hasCapability(name: string, version: HostCapabilityVersion): boolean {
+    hasCapability(name: string, version: Shared.TargetVersion): boolean {
         if (this.capabilities && this.capabilities.hasOwnProperty(name)) {
             if (version == "*" || this.capabilities[name] == "*") {
                 return true;
             }
 
-            return version.compareTo(<Version>this.capabilities[name]) <= 0;
+            return version.compareTo(<Shared.Version>this.capabilities[name]) <= 0;
         }
 
         return false;

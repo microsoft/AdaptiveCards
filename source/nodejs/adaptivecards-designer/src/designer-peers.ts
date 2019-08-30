@@ -7,7 +7,7 @@ import { PeerCommand } from "./peer-command";
 import { CardDesignerSurface } from "./card-designer-surface";
 import { DesignerPeerTreeItem } from "./designer-peer-treeitem";
 import { Rect, IPoint } from "./miscellaneous";
-import { TargetVersion, Versions, isVersionLessOrEqual, GlobalSettings } from "./shared";
+import { GlobalSettings } from "./shared";
 
 export abstract class DesignerPeerInplaceEditor {
     onClose: (applyChanges: boolean) => void;
@@ -65,7 +65,7 @@ export class PropertySheetCategory {
         let entriesToRender: PropertySheetEntry[] = [];
 
         for (let entry of this._entries) {
-            if (isVersionLessOrEqual(entry.targetVersion, context.targetVersion)) {
+            if (Adaptive.isVersionLessOrEqual(entry.targetVersion, context.targetVersion)) {
                 entriesToRender.push(entry);
             }
         }
@@ -80,7 +80,7 @@ export class PropertySheetCategory {
             }
         
             for (let entry of entriesToRender) {
-                if (isVersionLessOrEqual(entry.targetVersion, context.targetVersion)) {
+                if (Adaptive.isVersionLessOrEqual(entry.targetVersion, context.targetVersion)) {
                     container.addItem(entry.render(context));
                 }
             }
@@ -455,7 +455,7 @@ export abstract class DesignerPeer extends DraggableElement {
         }
     }
 
-    buildPropertySheetCard(targetVersion: TargetVersion): Adaptive.AdaptiveCard {
+    buildPropertySheetCard(targetVersion: Adaptive.TargetVersion): Adaptive.AdaptiveCard {
         let card = new Adaptive.AdaptiveCard();
         card.padding = new Adaptive.PaddingDefinition(
             Adaptive.Spacing.Small,
@@ -532,7 +532,7 @@ export abstract class DesignerPeer extends DraggableElement {
 export class PropertySheetContext {
     private _target: object = undefined;
 
-    constructor(readonly targetVersion: TargetVersion, readonly peer: CardObjectPeer, target: object = undefined) {
+    constructor(readonly targetVersion: Adaptive.TargetVersion, readonly peer: CardObjectPeer, target: object = undefined) {
         this._target = target;
     }
 
@@ -544,7 +544,7 @@ export class PropertySheetContext {
 export abstract class PropertySheetEntry {
     abstract render(context: PropertySheetContext): Adaptive.CardElement;
 
-    constructor(readonly targetVersion: TargetVersion) { }
+    constructor(readonly targetVersion: Adaptive.TargetVersion) { }
 }
 
 export class SubPropertySheetEntry {
@@ -557,7 +557,7 @@ export class SubPropertySheetEntry {
         return container;
     }
 
-    constructor(readonly targetVersion: TargetVersion, readonly target: object, readonly propertySheet: PropertySheet) { }
+    constructor(readonly targetVersion: Adaptive.TargetVersion, readonly target: object, readonly propertySheet: PropertySheet) { }
 }
 
 export class CustomPropertySheetEntry extends PropertySheetEntry {
@@ -567,7 +567,7 @@ export class CustomPropertySheetEntry extends PropertySheetEntry {
         }
     }
 
-    constructor(readonly targetVersion: TargetVersion, readonly onRender: (context: PropertySheetContext) => Adaptive.CardElement) {
+    constructor(readonly targetVersion: Adaptive.TargetVersion, readonly onRender: (context: PropertySheetContext) => Adaptive.CardElement) {
         super(targetVersion);
     }
 }
@@ -619,7 +619,7 @@ export abstract class SingleInputPropertyEditor extends PropertySheetEntry {
     }
 
     constructor(
-        readonly targetVersion: TargetVersion,
+        readonly targetVersion: Adaptive.TargetVersion,
         readonly propertyName: string,
         readonly label: string,
         readonly causesPropertySheetRefresh: boolean = false) {
@@ -637,7 +637,7 @@ export class StringPropertyEditor extends SingleInputPropertyEditor {
     }
 
     constructor(
-        readonly targetVersion: TargetVersion,
+        readonly targetVersion: Adaptive.TargetVersion,
         readonly propertyName: string,
         readonly label: string,
         readonly isMultiline: boolean = false,
@@ -664,7 +664,7 @@ export class NumberPropertyEditor extends SingleInputPropertyEditor {
     }
 
     constructor(
-        readonly targetVersion: TargetVersion,
+        readonly targetVersion: Adaptive.TargetVersion,
         readonly propertyName: string,
         readonly label: string,
         readonly defaultValue: number | undefined = undefined,
@@ -710,7 +710,7 @@ export class BooleanPropertyEditor extends SingleInputPropertyEditor {
 }
 
 export interface IVersionedChoice {
-    targetVersion: TargetVersion;
+    targetVersion: Adaptive.TargetVersion;
     name: string;
     value: string;
 }
@@ -722,7 +722,7 @@ export class ChoicePropertyEditor extends SingleInputPropertyEditor {
         input.placeholder = "(not set)";
 
         for (let choice of this.choices) {
-            if (isVersionLessOrEqual(choice.targetVersion, context.targetVersion)) {
+            if (Adaptive.isVersionLessOrEqual(choice.targetVersion, context.targetVersion)) {
                 input.choices.push(new Adaptive.Choice(choice.name, choice.value));
             }
         }
@@ -731,7 +731,7 @@ export class ChoicePropertyEditor extends SingleInputPropertyEditor {
     }
 
     constructor(
-        readonly targetVersion: TargetVersion,
+        readonly targetVersion: Adaptive.TargetVersion,
         readonly propertyName: string,
         readonly label: string,
         readonly choices: IVersionedChoice[],
@@ -756,19 +756,19 @@ export class ContainerStylePropertyEditor extends ChoicePropertyEditor {
         }
     }
 
-    constructor(readonly targetVersion: TargetVersion,readonly propertyName: string, readonly label: string) {
+    constructor(readonly targetVersion: Adaptive.TargetVersion,readonly propertyName: string, readonly label: string) {
         super(
             targetVersion,
             propertyName,
             label,
             [
-                { targetVersion: Versions.v1_0, name: "(not set)", value: "not_set" },
-                { targetVersion: Versions.v1_0, name: "Default", value: "default" },
-                { targetVersion: Versions.v1_0, name: "Emphasis", value: "emphasis" },
-                { targetVersion: Versions.v1_2, name: "Accent", value: "accent" },
-                { targetVersion: Versions.v1_2, name: "Good", value: "good" },
-                { targetVersion: Versions.v1_2, name: "Attention", value: "attention" },
-                { targetVersion: Versions.v1_2, name: "Warning", value: "warning" }
+                { targetVersion: Adaptive.Versions.v1_0, name: "(not set)", value: "not_set" },
+                { targetVersion: Adaptive.Versions.v1_0, name: "Default", value: "default" },
+                { targetVersion: Adaptive.Versions.v1_0, name: "Emphasis", value: "emphasis" },
+                { targetVersion: Adaptive.Versions.v1_2, name: "Accent", value: "accent" },
+                { targetVersion: Adaptive.Versions.v1_2, name: "Good", value: "good" },
+                { targetVersion: Adaptive.Versions.v1_2, name: "Attention", value: "attention" },
+                { targetVersion: Adaptive.Versions.v1_2, name: "Warning", value: "warning" }
             ]);
     }
 }
@@ -835,7 +835,7 @@ export class SizeAndUnitPropertyEditor extends NumberPropertyEditor {
     }
 
     constructor(
-        readonly targetVersion: TargetVersion,
+        readonly targetVersion: Adaptive.TargetVersion,
         readonly propertyName: string,
         readonly label: string,
         readonly sizeUnit: Adaptive.SizeUnit,
@@ -884,7 +884,7 @@ export class ActionPropertyEditor extends SingleInputPropertyEditor {
     }
 
     constructor(
-        readonly targetVersion: TargetVersion,
+        readonly targetVersion: Adaptive.TargetVersion,
         readonly propertyName: string,
         readonly label: string,
         readonly forbiddenActionTypes: string[] = [],
@@ -898,7 +898,7 @@ export class CompoundPropertyEditor extends PropertySheetEntry {
         let container = new Adaptive.Container();
 
         for (let entry of this.entries) {
-            if (isVersionLessOrEqual(entry.targetVersion, context.targetVersion)) {
+            if (Adaptive.isVersionLessOrEqual(entry.targetVersion, context.targetVersion)) {
                 container.addItem(entry.render(new PropertySheetContext(context.targetVersion, context.peer, context.target[this.propertyName])));
             }
         }
@@ -907,7 +907,7 @@ export class CompoundPropertyEditor extends PropertySheetEntry {
     }
 
     constructor(
-        readonly targetVersion: TargetVersion,
+        readonly targetVersion: Adaptive.TargetVersion,
         readonly propertyName: string,
         readonly entries: PropertySheetEntry[] = []) {
         super(targetVersion);
@@ -936,7 +936,7 @@ export class EnumPropertyEditor extends SingleInputPropertyEditor {
     }
 
     constructor(
-        readonly targetVersion: TargetVersion,
+        readonly targetVersion: Adaptive.TargetVersion,
         readonly propertyName: string,
         readonly label: string,
         readonly enumType: { [s: number]: string },
@@ -1060,7 +1060,7 @@ class NameValuePairPropertyEditor extends PropertySheetEntry {
     }
 
     constructor(
-        readonly targetVersion: TargetVersion,
+        readonly targetVersion: Adaptive.TargetVersion,
         readonly collectionPropertyName: string,
         readonly namePropertyName: string,
         readonly valuePropertyName: string,
@@ -1074,21 +1074,21 @@ class NameValuePairPropertyEditor extends PropertySheetEntry {
 }
 
 export abstract class CardObjectPeer extends DesignerPeer {
-    static readonly idProperty = new StringPropertyEditor(Versions.v1_0, "id", "Id");
+    static readonly idProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "id", "Id");
 }
 
 export class ActionPeer extends CardObjectPeer {
-    static readonly titleProperty = new StringPropertyEditor(Versions.v1_0, "title", "Title");
+    static readonly titleProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "title", "Title");
     static readonly styleProperty = new ChoicePropertyEditor(
-        Versions.v1_2, 
+        Adaptive.Versions.v1_2, 
         "style",
         "Style",
         [
-            { targetVersion: Versions.v1_2, name: "Default", value: Adaptive.ActionStyle.Default },
-            { targetVersion: Versions.v1_2, name: "Positive", value: Adaptive.ActionStyle.Positive },
-            { targetVersion: Versions.v1_2, name: "Destructive", value: Adaptive.ActionStyle.Destructive }
+            { targetVersion: Adaptive.Versions.v1_2, name: "Default", value: Adaptive.ActionStyle.Default },
+            { targetVersion: Adaptive.Versions.v1_2, name: "Positive", value: Adaptive.ActionStyle.Positive },
+            { targetVersion: Adaptive.Versions.v1_2, name: "Destructive", value: Adaptive.ActionStyle.Destructive }
         ]);
-    static readonly iconUrlProperty = new StringPropertyEditor(Versions.v1_1, "iconUrl", "Icon URL");
+    static readonly iconUrlProperty = new StringPropertyEditor(Adaptive.Versions.v1_1, "iconUrl", "Icon URL");
 
     protected _action: Adaptive.Action;
 
@@ -1183,20 +1183,20 @@ export abstract class TypedActionPeer<TAction extends Adaptive.Action> extends A
 }
 
 export class HttpActionPeer extends TypedActionPeer<Adaptive.HttpAction> {
-    static readonly ignoreInputValidationProperty = new BooleanPropertyEditor(Versions.vNext, "ignoreInputValidation", "Ignore input validation");
+    static readonly ignoreInputValidationProperty = new BooleanPropertyEditor(Adaptive.Versions.vNext, "ignoreInputValidation", "Ignore input validation");
     static readonly methodProperty = new ChoicePropertyEditor(
-        Versions.v1_0, 
+        Adaptive.Versions.v1_0, 
         "method",
         "Method",
         [
-            { targetVersion: Versions.v1_0, name: "GET", value: "GET" },
-            { targetVersion: Versions.v1_0, name: "POST", value: "POST" }
+            { targetVersion: Adaptive.Versions.v1_0, name: "GET", value: "GET" },
+            { targetVersion: Adaptive.Versions.v1_0, name: "POST", value: "POST" }
         ],
         true);
-    static readonly urlProperty = new StringPropertyEditor(Versions.v1_0, "url", "Url");
-    static readonly bodyProperty = new StringPropertyEditor(Versions.v1_0, "body", "Body", true);
+    static readonly urlProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "url", "Url");
+    static readonly bodyProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "body", "Body", true);
     static readonly headersProperty = new NameValuePairPropertyEditor(
-        Versions.v1_0, 
+        Adaptive.Versions.v1_0, 
         "headers",
         "name",
         "value",
@@ -1233,8 +1233,8 @@ export class HttpActionPeer extends TypedActionPeer<Adaptive.HttpAction> {
 }
 
 export class SubmitActionPeer extends TypedActionPeer<Adaptive.SubmitAction> {
-    static readonly ignoreInputValidationProperty = new BooleanPropertyEditor(Versions.vNext, "ignoreInputValidation", "Ignore input validation");
-    static readonly dataProperty = new ObjectPropertyEditor(Versions.v1_0, "data", "Data");
+    static readonly ignoreInputValidationProperty = new BooleanPropertyEditor(Adaptive.Versions.vNext, "ignoreInputValidation", "Ignore input validation");
+    static readonly dataProperty = new ObjectPropertyEditor(Adaptive.Versions.v1_0, "data", "Data");
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
@@ -1247,7 +1247,7 @@ export class SubmitActionPeer extends TypedActionPeer<Adaptive.SubmitAction> {
 }
 
 export class OpenUrlActionPeer extends TypedActionPeer<Adaptive.OpenUrlAction> {
-    static readonly urlProperty = new StringPropertyEditor(Versions.v1_0, "url", "Url");
+    static readonly urlProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "url", "Url");
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
@@ -1270,18 +1270,18 @@ export class ToggleVisibilityActionPeer extends TypedActionPeer<Adaptive.ToggleV
 export class CardElementPeer extends CardObjectPeer {
     static readonly dataContextProperty = new CustomCardObjectPropertyEditor("*", "$data", "Data context");
     static readonly whenProperty = new CustomCardObjectPropertyEditor("*", "$when", "Only show when");
-    static readonly idProperty = new StringPropertyEditor(Versions.v1_0, "id", "Id");
-    static readonly isVisibleProperty = new BooleanPropertyEditor(Versions.v1_2, "isVisible", "Initially visible");
-    static readonly spacingProperty = new EnumPropertyEditor(Versions.v1_0, "spacing", "Spacing", Adaptive.Spacing);
-    static readonly separatorProperty = new BooleanPropertyEditor(Versions.v1_0, "separator", "Separator");
-    static readonly horizontalAlignmentProperty = new EnumPropertyEditor(Versions.v1_0, "horizontalAlignment", "Horizontal alignment", Adaptive.HorizontalAlignment);
+    static readonly idProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "id", "Id");
+    static readonly isVisibleProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_2, "isVisible", "Initially visible");
+    static readonly spacingProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "spacing", "Spacing", Adaptive.Spacing);
+    static readonly separatorProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_0, "separator", "Separator");
+    static readonly horizontalAlignmentProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "horizontalAlignment", "Horizontal alignment", Adaptive.HorizontalAlignment);
     static readonly heightProperty = new HeightPropertyEditor(
-        Versions.v1_1, 
+        Adaptive.Versions.v1_1, 
         "height",
         "Height",
         [
-            { targetVersion: Versions.v1_1, name: "Automatic", value: "auto" },
-            { targetVersion: Versions.v1_1, name: "Stretch", value: "stretch" }
+            { targetVersion: Adaptive.Versions.v1_1, name: "Automatic", value: "auto" },
+            { targetVersion: Adaptive.Versions.v1_1, name: "Stretch", value: "stretch" }
         ]);
 
     protected _cardElement: Adaptive.CardElement;
@@ -1495,9 +1495,9 @@ export abstract class TypedCardElementPeer<TCardElement extends Adaptive.CardEle
 }
 
 export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard> {
-    static readonly langProperty = new StringPropertyEditor(Versions.v1_1, "lang", "Language");
-    static readonly fallbackTextProperty = new StringPropertyEditor(Versions.v1_0, "fallbackText", "Fallback text", true);
-    static readonly speakProperty = new StringPropertyEditor(Versions.v1_0, "speak", "Speak");
+    static readonly langProperty = new StringPropertyEditor(Adaptive.Versions.v1_1, "lang", "Language");
+    static readonly fallbackTextProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "fallbackText", "Fallback text", true);
+    static readonly speakProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "speak", "Speak");
 
     protected addAction(action: Adaptive.Action) {
         this.cardElement.addAction(action);
@@ -1592,24 +1592,24 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
 
             propertySheet.add(
                 PropertySheetCategory.SelectionAction,
-                new SubPropertySheetEntry(Versions.v1_2, this.cardElement.selectAction, subPropertySheet));
+                new SubPropertySheetEntry(Adaptive.Versions.v1_2, this.cardElement.selectAction, subPropertySheet));
         }
     }
 }
 
 export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
-    private static readonly pixelWidthProperty = new SizeAndUnitPropertyEditor(Versions.v1_1, "width", "Width in pixels", Adaptive.SizeUnit.Pixel);
-    private static readonly weightProperty = new SizeAndUnitPropertyEditor(Versions.v1_0, "width", "Weight", Adaptive.SizeUnit.Weight);
+    private static readonly pixelWidthProperty = new SizeAndUnitPropertyEditor(Adaptive.Versions.v1_1, "width", "Width in pixels", Adaptive.SizeUnit.Pixel);
+    private static readonly weightProperty = new SizeAndUnitPropertyEditor(Adaptive.Versions.v1_0, "width", "Weight", Adaptive.SizeUnit.Weight);
 
     static readonly widthProperty = new ColumnWidthPropertyEditor(
-        Versions.v1_0,
+        Adaptive.Versions.v1_0,
         "width",
         "Width",
         [
-            { targetVersion: Versions.v1_0, name: "Automatic", value: "auto" },
-            { targetVersion: Versions.v1_0, name: "Stretch", value: "stretch" },
-            { targetVersion: Versions.v1_0, name: "Weighted", value: "weighted" },
-            { targetVersion: Versions.v1_1, name: "Pixels", value: "pixels" }
+            { targetVersion: Adaptive.Versions.v1_0, name: "Automatic", value: "auto" },
+            { targetVersion: Adaptive.Versions.v1_0, name: "Stretch", value: "stretch" },
+            { targetVersion: Adaptive.Versions.v1_0, name: "Weighted", value: "weighted" },
+            { targetVersion: Adaptive.Versions.v1_1, name: "Pixels", value: "pixels" }
         ],
         true);
 
@@ -1693,7 +1693,7 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
 
             propertySheet.add(
                 PropertySheetCategory.SelectionAction,
-                new SubPropertySheetEntry(Versions.v1_2, this.cardElement.selectAction, subPropertySheet));
+                new SubPropertySheetEntry(Adaptive.Versions.v1_2, this.cardElement.selectAction, subPropertySheet));
         }
     }
 }
@@ -1763,7 +1763,7 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
 
             propertySheet.add(
                 PropertySheetCategory.SelectionAction,
-                new SubPropertySheetEntry(Versions.v1_2, this.cardElement.selectAction, subPropertySheet));
+                new SubPropertySheetEntry(Adaptive.Versions.v1_2, this.cardElement.selectAction, subPropertySheet));
         }
     }
 
@@ -1773,19 +1773,19 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
 }
 
 export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
-    static readonly selectActionProperty = new ActionPropertyEditor(Versions.v1_0, "selectAction", "Action type", [ Adaptive.ShowCardAction.JsonTypeName ], true);
-    static readonly minHeightProperty = new NumberPropertyEditor(Versions.v1_2, "minPixelHeight", "Minimum height in pixels");
-    static readonly verticalContentAlignmentProperty = new EnumPropertyEditor(Versions.v1_1, "verticalContentAlignment", "Vertical content alignment", Adaptive.VerticalAlignment);
-    static readonly styleProperty = new ContainerStylePropertyEditor(Versions.v1_0, "style", "Style");
-    static readonly bleedProperty = new BooleanPropertyEditor(Versions.v1_2, "bleed", "Bleed");
+    static readonly selectActionProperty = new ActionPropertyEditor(Adaptive.Versions.v1_0, "selectAction", "Action type", [ Adaptive.ShowCardAction.JsonTypeName ], true);
+    static readonly minHeightProperty = new NumberPropertyEditor(Adaptive.Versions.v1_2, "minPixelHeight", "Minimum height in pixels");
+    static readonly verticalContentAlignmentProperty = new EnumPropertyEditor(Adaptive.Versions.v1_1, "verticalContentAlignment", "Vertical content alignment", Adaptive.VerticalAlignment);
+    static readonly styleProperty = new ContainerStylePropertyEditor(Adaptive.Versions.v1_0, "style", "Style");
+    static readonly bleedProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_2, "bleed", "Bleed");
     static readonly backgroundImageProperty = new CompoundPropertyEditor(
-        Versions.v1_0, 
+        Adaptive.Versions.v1_0, 
         "backgroundImage",
         [
-            new StringPropertyEditor(Versions.v1_0, "url", "URL"),
-            new EnumPropertyEditor(Versions.v1_2, "fillMode", "Fill mode", Adaptive.FillMode),
-            new EnumPropertyEditor(Versions.v1_2, "horizontalAlignment", "Horizontal alignment", Adaptive.HorizontalAlignment),
-            new EnumPropertyEditor(Versions.v1_2, "verticalAlignment", "Vertical alignment", Adaptive.VerticalAlignment)
+            new StringPropertyEditor(Adaptive.Versions.v1_0, "url", "URL"),
+            new EnumPropertyEditor(Adaptive.Versions.v1_2, "fillMode", "Fill mode", Adaptive.FillMode),
+            new EnumPropertyEditor(Adaptive.Versions.v1_2, "horizontalAlignment", "Horizontal alignment", Adaptive.HorizontalAlignment),
+            new EnumPropertyEditor(Adaptive.Versions.v1_2, "verticalAlignment", "Vertical alignment", Adaptive.VerticalAlignment)
         ]
     );
 
@@ -1827,7 +1827,7 @@ export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
 
             propertySheet.add(
                 PropertySheetCategory.SelectionAction,
-                new SubPropertySheetEntry(Versions.v1_2, this.cardElement.selectAction, subPropertySheet));
+                new SubPropertySheetEntry(Adaptive.Versions.v1_2, this.cardElement.selectAction, subPropertySheet));
         }
     }
 }
@@ -1873,7 +1873,7 @@ export class ActionSetPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard> {
 }
 
 export class ImageSetPeer extends TypedCardElementPeer<Adaptive.ImageSet> {
-    static readonly ImageSizeProperty = new EnumPropertyEditor(Versions.v1_0, "imageSize", "Image size", Adaptive.Size);
+    static readonly ImageSizeProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "imageSize", "Image size", Adaptive.Size);
 
     protected internalAddCommands(commands: Array<PeerCommand>) {
         super.internalAddCommands(commands);
@@ -1905,13 +1905,13 @@ export class ImageSetPeer extends TypedCardElementPeer<Adaptive.ImageSet> {
 }
 
 export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
-    static readonly urlProperty = new StringPropertyEditor(Versions.v1_0, "url", "Url");
-    static readonly altTextProperty = new StringPropertyEditor(Versions.v1_0, "altText", "Alternate text");
-    static readonly sizeProperty = new EnumPropertyEditor(Versions.v1_0, "size", "Size", Adaptive.Size);
-    static readonly pixelWidthProperty = new NumberPropertyEditor(Versions.v1_1, "pixelWidth", "Width in pixels");
-    static readonly pixelHeightProperty = new NumberPropertyEditor(Versions.v1_1, "pixelHeight", "Height in pixels");
-    static readonly styleProperty = new EnumPropertyEditor(Versions.v1_0, "style", "Style", Adaptive.ImageStyle);
-    static readonly backgroundColorProperty = new StringPropertyEditor(Versions.v1_1, "backgroundColor", "Background color");
+    static readonly urlProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "url", "Url");
+    static readonly altTextProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "altText", "Alternate text");
+    static readonly sizeProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "size", "Size", Adaptive.Size);
+    static readonly pixelWidthProperty = new NumberPropertyEditor(Adaptive.Versions.v1_1, "pixelWidth", "Width in pixels");
+    static readonly pixelHeightProperty = new NumberPropertyEditor(Adaptive.Versions.v1_1, "pixelHeight", "Height in pixels");
+    static readonly styleProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "style", "Style", Adaptive.ImageStyle);
+    static readonly backgroundColorProperty = new StringPropertyEditor(Adaptive.Versions.v1_1, "backgroundColor", "Background color");
 
     private get isParentImageSet(): boolean {
         return this.parent && this.parent instanceof ImageSetPeer;
@@ -1975,16 +1975,16 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
     
                 propertySheet.add(
                     PropertySheetCategory.SelectionAction,
-                    new SubPropertySheetEntry(Versions.v1_2, this.cardElement.selectAction, subPropertySheet));            }
+                    new SubPropertySheetEntry(Adaptive.Versions.v1_2, this.cardElement.selectAction, subPropertySheet));            }
         }
     }
 }
 
 export class MediaPeer extends TypedCardElementPeer<Adaptive.Media> {
-    static readonly altTextProperty = new StringPropertyEditor(Versions.v1_1, "altText", "Alternate text");
-    static readonly posterUrlProperty = new StringPropertyEditor(Versions.v1_1, "posterUrl", "Poster URL");
+    static readonly altTextProperty = new StringPropertyEditor(Adaptive.Versions.v1_1, "altText", "Alternate text");
+    static readonly posterUrlProperty = new StringPropertyEditor(Adaptive.Versions.v1_1, "posterUrl", "Poster URL");
     static readonly sourcesProperty = new NameValuePairPropertyEditor(
-        Versions.v1_1, 
+        Adaptive.Versions.v1_1, 
         "sources",
         "url",
         "mimeType",
@@ -2022,7 +2022,7 @@ export class MediaPeer extends TypedCardElementPeer<Adaptive.Media> {
 
 export class FactSetPeer extends TypedCardElementPeer<Adaptive.FactSet> {
     static readonly factsProperty = new NameValuePairPropertyEditor(
-        Versions.v1_0, 
+        Adaptive.Versions.v1_0, 
         "facts",
         "name",
         "value",
@@ -2067,13 +2067,13 @@ export class FactSetPeer extends TypedCardElementPeer<Adaptive.FactSet> {
 }
 
 export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCardElementPeer<TInput> {
-    static readonly defaultValueProperty = new StringPropertyEditor(Versions.v1_0, "defaultValue", "Default value");
+    static readonly defaultValueProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "defaultValue", "Default value");
     static readonly validationProperty = new CompoundPropertyEditor(
-        Versions.vNext, 
+        Adaptive.Versions.vNext, 
         "validation",
         [
-            new EnumPropertyEditor(Versions.vNext, "necessity", "Necessity", Adaptive.InputValidationNecessity),
-            new StringPropertyEditor(Versions.vNext, "errorMessage", "Error message")
+            new EnumPropertyEditor(Adaptive.Versions.vNext, "necessity", "Necessity", Adaptive.InputValidationNecessity),
+            new StringPropertyEditor(Adaptive.Versions.vNext, "errorMessage", "Error message")
         ]
     );
 
@@ -2091,11 +2091,11 @@ export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCard
 }
 
 export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
-    static readonly placeholderProperty = new StringPropertyEditor(Versions.v1_0, "placeholder", "Placeholder");
-    static readonly isMultilineProperty = new BooleanPropertyEditor(Versions.v1_0, "isMultiline", "Multi-line", true);
-    static readonly styleProperty = new EnumPropertyEditor(Versions.v1_0, "style", "Style", Adaptive.InputTextStyle);
-    static readonly maxLengthProperty = new NumberPropertyEditor(Versions.v1_0, "maxLength", "Maximum length");
-    static readonly inlineActionProperty = new ActionPropertyEditor(Versions.v1_2, "inlineAction", "Action type", [ Adaptive.ShowCardAction.JsonTypeName ], true);
+    static readonly placeholderProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "placeholder", "Placeholder");
+    static readonly isMultilineProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_0, "isMultiline", "Multi-line", true);
+    static readonly styleProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "style", "Style", Adaptive.InputTextStyle);
+    static readonly maxLengthProperty = new NumberPropertyEditor(Adaptive.Versions.v1_0, "maxLength", "Maximum length");
+    static readonly inlineActionProperty = new ActionPropertyEditor(Adaptive.Versions.v1_2, "inlineAction", "Action type", [ Adaptive.ShowCardAction.JsonTypeName ], true);
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
@@ -2126,7 +2126,7 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
 
             propertySheet.add(
                 PropertySheetCategory.InlineAction,
-                new SubPropertySheetEntry(Versions.v1_2, this.cardElement.inlineAction, subPropertySheet));
+                new SubPropertySheetEntry(Adaptive.Versions.v1_2, this.cardElement.inlineAction, subPropertySheet));
         }
 
         propertySheet.add(
@@ -2143,9 +2143,9 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
 }
 
 export class NumberInputPeer extends InputPeer<Adaptive.NumberInput> {
-    static readonly placeholderProperty = new StringPropertyEditor(Versions.v1_0, "placeholder", "Placeholder");
-    static readonly minProperty = new NumberPropertyEditor(Versions.v1_0, "min", "Minimum value");
-    static readonly maxProperty = new NumberPropertyEditor(Versions.v1_0, "max", "Maximum value");
+    static readonly placeholderProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "placeholder", "Placeholder");
+    static readonly minProperty = new NumberPropertyEditor(Adaptive.Versions.v1_0, "min", "Minimum value");
+    static readonly maxProperty = new NumberPropertyEditor(Adaptive.Versions.v1_0, "max", "Maximum value");
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
@@ -2166,8 +2166,8 @@ export class NumberInputPeer extends InputPeer<Adaptive.NumberInput> {
 }
 
 export class DateInputPeer extends InputPeer<Adaptive.DateInput> {
-    static readonly minProperty = new StringPropertyEditor(Versions.v1_0, "min", "Minimum value");
-    static readonly maxProperty = new StringPropertyEditor(Versions.v1_0, "max", "Maximum value");
+    static readonly minProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "min", "Minimum value");
+    static readonly maxProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "max", "Maximum value");
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
@@ -2181,8 +2181,8 @@ export class DateInputPeer extends InputPeer<Adaptive.DateInput> {
 }
 
 export class TimeInputPeer extends InputPeer<Adaptive.TimeInput> {
-    static readonly minProperty = new StringPropertyEditor(Versions.v1_0, "min", "Minimum value");
-    static readonly maxProperty = new StringPropertyEditor(Versions.v1_0, "max", "Maximum value");
+    static readonly minProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "min", "Minimum value");
+    static readonly maxProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "max", "Maximum value");
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
@@ -2196,10 +2196,10 @@ export class TimeInputPeer extends InputPeer<Adaptive.TimeInput> {
 }
 
 export class ToggleInputPeer extends InputPeer<Adaptive.ToggleInput> {
-    static readonly titleProperty = new StringPropertyEditor(Versions.v1_0, "title", "Title");
-    static readonly valueOnProperty = new StringPropertyEditor(Versions.v1_0, "valueOn", "Value when on");
-    static readonly valueOffProperty = new StringPropertyEditor(Versions.v1_0, "valueOff", "Value when off");
-    static readonly wrapProperty = new BooleanPropertyEditor(Versions.v1_2, "wrap", "Wrap");
+    static readonly titleProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "title", "Title");
+    static readonly valueOnProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "valueOn", "Value when on");
+    static readonly valueOffProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "valueOff", "Value when off");
+    static readonly wrapProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_2, "wrap", "Wrap");
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
@@ -2222,12 +2222,12 @@ export class ToggleInputPeer extends InputPeer<Adaptive.ToggleInput> {
 }
 
 export class ChoiceSetInputPeer extends InputPeer<Adaptive.ChoiceSetInput> {
-    static readonly placeholderProperty = new StringPropertyEditor(Versions.v1_0, "placeholder", "Placeholder");
-    static readonly isMultiselectProperty = new BooleanPropertyEditor(Versions.v1_0, "isMultiSelect", "Allow multi selection");
-    static readonly isCompactProperty = new BooleanPropertyEditor(Versions.v1_0, "isCompact", "Compact style");
-    static readonly wrapProperty = new BooleanPropertyEditor(Versions.v1_2, "wrap", "Wrap");
+    static readonly placeholderProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "placeholder", "Placeholder");
+    static readonly isMultiselectProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_0, "isMultiSelect", "Allow multi selection");
+    static readonly isCompactProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_0, "isCompact", "Compact style");
+    static readonly wrapProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_2, "wrap", "Wrap");
     static readonly choicesProperty = new NameValuePairPropertyEditor(
-        Versions.v1_0, 
+        Adaptive.Versions.v1_0, 
         "choices",
         "title",
         "value",
@@ -2315,14 +2315,14 @@ class TextBlockPeerInplaceEditor extends CardElementPeerInplaceEditor<Adaptive.T
 }
 
 export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
-    static readonly textProperty = new StringPropertyEditor(Versions.v1_0, "text", "Text", true);
-    static readonly wrapProperty = new BooleanPropertyEditor(Versions.v1_0, "wrap", "Wrap");
-    static readonly maxLinesProperty = new NumberPropertyEditor(Versions.v1_0, "maxLines", "Maximum lines", 0);
-    static readonly fontTypeProperty = new EnumPropertyEditor(Versions.v1_2, "fontType", "Font type", Adaptive.FontType);
-    static readonly sizeProperty = new EnumPropertyEditor(Versions.v1_0, "size", "Size", Adaptive.TextSize);
-    static readonly weightProperty = new EnumPropertyEditor(Versions.v1_0, "weight", "Weight", Adaptive.TextWeight);
-    static readonly colorProperty = new EnumPropertyEditor(Versions.v1_0, "color", "Color", Adaptive.TextColor);
-    static readonly subtleProperty = new BooleanPropertyEditor(Versions.v1_0, "subtle", "Subtle");
+    static readonly textProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "text", "Text", true);
+    static readonly wrapProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_0, "wrap", "Wrap");
+    static readonly maxLinesProperty = new NumberPropertyEditor(Adaptive.Versions.v1_0, "maxLines", "Maximum lines", 0);
+    static readonly fontTypeProperty = new EnumPropertyEditor(Adaptive.Versions.v1_2, "fontType", "Font type", Adaptive.FontType);
+    static readonly sizeProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "size", "Size", Adaptive.TextSize);
+    static readonly weightProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "weight", "Weight", Adaptive.TextWeight);
+    static readonly colorProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "color", "Color", Adaptive.TextColor);
+    static readonly subtleProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_0, "subtle", "Subtle");
 
     protected createInplaceEditor(): DesignerPeerInplaceEditor {
         return new TextBlockPeerInplaceEditor(this.cardElement);

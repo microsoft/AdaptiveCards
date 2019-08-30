@@ -7,6 +7,11 @@ export const ContentTypes = {
 	applicationXWwwFormUrlencoded: "application/x-www-form-urlencoded"
 }
 
+export interface IValidationError {
+    error: Enums.ValidationError,
+    message: string;
+}
+
 export interface ISeparationDefinition {
 	spacing: number,
 	lineThickness?: number,
@@ -197,3 +202,115 @@ export class UUID {
 }
 
 UUID.initialize();
+
+export class Version {
+    private _versionString: string;
+    private _major: number;
+    private _minor: number;
+    private _isValid: boolean = true;
+    private _label: string;
+
+    constructor(major: number = 1, minor: number = 1, label?: string) {
+        this._major = major;
+        this._minor = minor;
+        this._label = label;
+    }
+
+    static parse(versionString: string, errors?: Array<IValidationError>): Version {
+        if (!versionString) {
+            return null;
+        }
+
+        var result = new Version();
+        result._versionString = versionString;
+
+        var regEx = /(\d+).(\d+)/gi;
+        var matches = regEx.exec(versionString);
+
+        if (matches != null && matches.length == 3) {
+            result._major = parseInt(matches[1]);
+            result._minor = parseInt(matches[2]);
+        }
+        else {
+            result._isValid = false;
+        }
+
+        if (!result._isValid && errors) {
+            errors.push(
+                {
+                    error: Enums.ValidationError.InvalidPropertyValue,
+                    message: "Invalid version string: " + result._versionString
+                }
+            );
+        }
+
+        return result;
+    }
+
+    toString(): string {
+        return !this._isValid ? this._versionString : this._major + "." + this._minor;
+    }
+
+    compareTo(otherVersion: Version): number {
+        if (!this.isValid || !otherVersion.isValid) {
+            throw new Error("Cannot compare invalid version.");
+        }
+
+        if (this.major > otherVersion.major) {
+            return 1;
+        }
+        else if (this.major < otherVersion.major) {
+            return -1;
+        }
+        else if (this.minor > otherVersion.minor) {
+            return 1;
+        }
+        else if (this.minor < otherVersion.minor) {
+            return -1;
+        }
+
+        return 0;
+    }
+
+    get label(): string {
+        return this._label ? this._label : this.toString();
+    }
+
+    get major(): number {
+        return this._major;
+    }
+
+    get minor(): number {
+        return this._minor;
+    }
+
+    get isValid(): boolean {
+        return this._isValid;
+    }
+}
+
+export type TargetVersion = Version | "*";
+
+export class Versions {
+    static readonly v1_0 = new Version(1, 0);
+    static readonly v1_1 = new Version(1, 1);
+    static readonly v1_2 = new Version(1, 2);
+    static readonly latest = Versions.v1_2;
+    static readonly vNext = new Version(1000, 0, "vNext");
+}
+
+export function isVersionLessOrEqual(version: TargetVersion, targetVersion: TargetVersion): boolean {
+    if (version instanceof Version) {
+        if (targetVersion instanceof Version) {
+            return targetVersion.compareTo(version) >= 0;
+        }
+        else {
+            // Target version is *
+            return true;
+        }
+    }
+    else {
+        // Version is *
+        return true;
+    }
+}

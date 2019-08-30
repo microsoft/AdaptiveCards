@@ -851,7 +851,7 @@ export class CardDesigner {
         this.toolbar.attachTo(document.getElementById("toolbarHost"));
 
         if (this._versionChoicePicker) {
-            this._versionChoicePicker.selectedIndex = Shared.SupportedTargetVersions.indexOf(Shared.Versions.v1_2);
+            this._versionChoicePicker.selectedIndex = Shared.SupportedTargetVersions.indexOf(Adaptive.Versions.v1_2);
             this._versionChoicePicker.onChanged = (sender) => {
                 this.buildPropertySheet(this._designerSurface.selectedPeer);
             }
@@ -1041,12 +1041,12 @@ export class CardDesigner {
         return this.designerSurface.card.toJSON();
     }
 
-    get currentTargetVersion(): Shared.TargetVersion {
+    get currentTargetVersion(): Adaptive.TargetVersion {
         if (this._versionChoicePicker) {
             return Shared.SupportedTargetVersions[parseInt(this._versionChoicePicker.value)];
         }
         else {
-            return Shared.Versions.latest;
+            return Adaptive.Versions.latest;
         }
     }
 
