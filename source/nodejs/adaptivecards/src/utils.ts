@@ -8,25 +8,25 @@ export function generateUniqueId(): string {
     return "__ac-" + Shared.UUID.generate();
 }
 
-export function isNullOrEmpty(value: string): boolean {
+export function isNullOrEmpty(value: string | undefined | null): boolean {
     return value === undefined || value === null || value === "";
 }
 
-export function appendChild(node: Node, child: Node) {
-    if (child != null && child != undefined) {
+export function appendChild(node: Node, child: Node | undefined) {
+    if (child) {
         node.appendChild(child);
     }
 }
 
-export function getStringValue(obj: any, defaultValue: string = undefined): string {
+export function getStringValue(obj: any, defaultValue: string | undefined = undefined): string {
     return (typeof obj !== 'undefined') ? obj.toString() : defaultValue;
 }
 
-export function getNumberValue(obj: any, defaultValue: number = undefined): number {
+export function getNumberValue(obj: any, defaultValue: number | undefined = undefined): number | undefined {
     return obj && typeof obj === "number" ? obj : defaultValue;
 }
 
-export function getBoolValue(value: any, defaultValue: boolean): boolean {
+export function getBoolValue(value: any, defaultValue: boolean | undefined): boolean | undefined {
     if (typeof value === "boolean") {
         return value;
     }
@@ -44,12 +44,12 @@ export function getBoolValue(value: any, defaultValue: boolean): boolean {
     return defaultValue;
 }
 
-export function getEnumValue(targetEnum: { [s: number]: string }, name: string, defaultValue: number): number {
+export function getEnumValue(targetEnum: { [s: number]: string }, name: string, defaultValue: number | undefined): number | undefined {
     if (isNullOrEmpty(name)) {
         return defaultValue;
     }
 
-    for (var key in targetEnum) {
+    for (let key in targetEnum) {
         let isValueProperty = parseInt(key, 10) >= 0
 
         if (isValueProperty) {
@@ -66,7 +66,7 @@ export function getEnumValue(targetEnum: { [s: number]: string }, name: string, 
     return defaultValue;
 }
 
-export function setProperty(target: object, propertyName: string, propertyValue: any, defaultValue: any = undefined) {
+export function setProperty(target: { [key: string]: any }, propertyName: string, propertyValue: any, defaultValue: any = undefined) {
     if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue) {
         delete target[propertyName];
     }
@@ -75,7 +75,7 @@ export function setProperty(target: object, propertyName: string, propertyValue:
     }
 }
 
-export function setNumberProperty(target: object, propertyName: string, propertyValue: number, defaultValue: number = undefined) {
+export function setNumberProperty(target: { [key: string]: any }, propertyName: string, propertyValue: number | undefined, defaultValue: number | undefined = undefined) {
     if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue || isNaN(propertyValue)) {
         delete target[propertyName];
     }
@@ -84,7 +84,12 @@ export function setNumberProperty(target: object, propertyName: string, property
     }
 }
 
-export function setEnumProperty(enumType: { [s: number]: string }, target: object, propertyName: string, propertyValue: number, defaultValue: number = undefined) {
+export function setEnumProperty(
+    enumType: { [s: number]: string },
+    target: { [key: string]: any },
+    propertyName: string,
+    propertyValue: number | undefined,
+    defaultValue: number | undefined = undefined) {
     let targetValue = target[propertyName];
 
     let canDeleteTarget = targetValue == undefined ? true : enumType[targetValue] !== undefined;
@@ -106,7 +111,7 @@ export function setEnumProperty(enumType: { [s: number]: string }, target: objec
     }
 }
 
-export function setArrayProperty(target: object, propertyName: string, propertyValue: any[]) {
+export function setArrayProperty(target: { [key: string]: any }, propertyName: string, propertyValue: any[]) {
     let items = [];
 
     if (propertyValue) {
@@ -137,16 +142,18 @@ export function parseHostConfigEnum(targetEnum: { [s: number]: string }, value: 
     }
 }
 
-export function renderSeparation(hostConfig: HostConfig, separationDefinition: Shared.ISeparationDefinition, orientation: Enums.Orientation): HTMLElement {
-    if (separationDefinition.spacing > 0 || separationDefinition.lineThickness > 0) {
+export function renderSeparation(hostConfig: HostConfig, separationDefinition: Shared.ISeparationDefinition, orientation: Enums.Orientation): HTMLElement | undefined {
+    if (separationDefinition.spacing > 0 || (separationDefinition.lineThickness && separationDefinition.lineThickness > 0)) {
         let separator = document.createElement("div");
         separator.className = hostConfig.makeCssClassName("ac-" + (orientation == Enums.Orientation.Horizontal ? "horizontal" : "vertical") + "-separator");
+
+        let color = separationDefinition.lineColor ? stringToCssColor(separationDefinition.lineColor) : "";
 
         if (orientation == Enums.Orientation.Horizontal) {
             if (separationDefinition.lineThickness) {
                 separator.style.paddingTop = (separationDefinition.spacing / 2) + "px";
                 separator.style.marginBottom = (separationDefinition.spacing / 2) + "px";
-                separator.style.borderBottom = separationDefinition.lineThickness + "px solid " + stringToCssColor(separationDefinition.lineColor);
+                separator.style.borderBottom = separationDefinition.lineThickness + "px solid " + color;
             }
             else {
                 separator.style.height = separationDefinition.spacing + "px";
@@ -156,7 +163,7 @@ export function renderSeparation(hostConfig: HostConfig, separationDefinition: S
             if (separationDefinition.lineThickness) {
                 separator.style.paddingLeft = (separationDefinition.spacing / 2) + "px";
                 separator.style.marginRight = (separationDefinition.spacing / 2) + "px";
-                separator.style.borderRight = separationDefinition.lineThickness + "px solid " + stringToCssColor(separationDefinition.lineColor);
+                separator.style.borderRight = separationDefinition.lineThickness + "px solid " + color;
             }
             else {
                 separator.style.width = separationDefinition.spacing + "px";
@@ -168,32 +175,32 @@ export function renderSeparation(hostConfig: HostConfig, separationDefinition: S
         return separator;
     }
     else {
-        return null;
+        return undefined;
     }
 }
 
-export function stringToCssColor(color: string): string {
-    var regEx = /#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})?/gi;
+export function stringToCssColor(color: string | undefined): string | undefined {
+    if (color) {
+        let regEx = /#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})?/gi;
+        let matches = regEx.exec(color);
 
-    var matches = regEx.exec(color);
+        if (matches && matches[4]) {
+            let a = parseInt(matches[1], 16) / 255;
+            let r = parseInt(matches[2], 16);
+            let g = parseInt(matches[3], 16);
+            let b = parseInt(matches[4], 16);
 
-    if (matches && matches[4]) {
-        var a = parseInt(matches[1], 16) / 255;
-        var r = parseInt(matches[2], 16);
-        var g = parseInt(matches[3], 16);
-        var b = parseInt(matches[4], 16);
-
-        return "rgba(" + r + "," + g + "," + b + "," + a + ")";
+            return "rgba(" + r + "," + g + "," + b + "," + a + ")";
+        }
     }
-    else {
-        return color;
-    }
+    
+    return color;
 }
 
 export function truncate(element: HTMLElement,
     maxHeight: number,
     lineHeight?: number) {
-    var fits = () => {
+    let fits = () => {
         // Allow a one pixel overflow to account for rounding differences
         // between browsers
         return maxHeight - element.scrollHeight >= -1.0;
@@ -201,19 +208,19 @@ export function truncate(element: HTMLElement,
 
     if (fits()) return;
 
-    var fullText = element.innerHTML;
-    var truncateAt = (idx) => {
+    let fullText = element.innerHTML;
+    let truncateAt = (idx: any) => {
         element.innerHTML = fullText.substring(0, idx) + '...';
     }
 
-    var breakableIndices = findBreakableIndices(fullText);
-    var lo = 0;
-    var hi = breakableIndices.length;
-    var bestBreakIdx = 0;
+    let breakableIndices = findBreakableIndices(fullText);
+    let lo = 0;
+    let hi = breakableIndices.length;
+    let bestBreakIdx = 0;
 
     // Do a binary search for the longest string that fits
     while (lo < hi) {
-        var mid = Math.floor((lo + hi) / 2);
+        let mid = Math.floor((lo + hi) / 2);
         truncateAt(breakableIndices[mid]);
 
         if (fits()) {
@@ -249,8 +256,8 @@ export function truncate(element: HTMLElement,
 }
 
 function findBreakableIndices(html: string): Array<number> {
-    var results: Array<number> = [];
-    var idx = findNextCharacter(html, -1);
+    let results: Array<number> = [];
+    let idx = findNextCharacter(html, -1);
 
     while (idx < html.length) {
         if (html[idx] == ' ') {
@@ -276,8 +283,8 @@ function findNextCharacter(html: string, currIdx: number): number {
 }
 
 export function getFitStatus(element: HTMLElement, containerEnd: number): Enums.ContainerFitStatus {
-    var start = element.offsetTop;
-    var end = start + element.clientHeight;
+    let start = element.offsetTop;
+    let end = start + element.clientHeight;
 
     if (end <= containerEnd) {
         return Enums.ContainerFitStatus.FullyInContainer;

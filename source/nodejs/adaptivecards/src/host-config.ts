@@ -55,7 +55,7 @@ export class ImageSetConfig {
     constructor(obj?: any) {
         if (obj) {
             this.imageSize = obj["imageSize"] != null ? obj["imageSize"] : this.imageSize;
-            this.maxImageHeight = Utils.getNumberValue(obj["maxImageHeight"], 100);
+            this.maxImageHeight = <number>Utils.getNumberValue(obj["maxImageHeight"], 100);
         }
     }
 
@@ -225,7 +225,7 @@ export class ActionsConfig {
 export class ColorSetDefinition {
     private parseSingleColor(obj: any, propertyName: string) {
         if (obj) {
-            (this[propertyName] as TextColorDefinition).parse(obj[propertyName]);
+            ((<any>this)[propertyName] as TextColorDefinition).parse(obj[propertyName]);
         }
     }
 
@@ -307,7 +307,7 @@ export interface ILineHeightDefinitions {
 }
 
 export class ContainerStyleSet {
-    private _allStyles: object = {};
+    private _allStyles: { [key: string]: ContainerStyleDefinition} = {};
 
     constructor(obj?: any) {
         this._allStyles[Enums.ContainerStyle.Default] = new BuiltInContainerStyleDefinition();
@@ -371,8 +371,13 @@ export class ContainerStyleSet {
         return result;
     }
 
-    getStyleByName(name: string, defaultValue: ContainerStyleDefinition = null): ContainerStyleDefinition {
-        return this._allStyles.hasOwnProperty(name) ? this._allStyles[name] : defaultValue;
+    getStyleByName(name: string | undefined, defaultValue?: ContainerStyleDefinition): ContainerStyleDefinition {
+        if (!Utils.isNullOrEmpty(name) && this._allStyles.hasOwnProperty(<string>name)) {
+            return this._allStyles[<string>name];
+        }
+        else {
+            return defaultValue ? defaultValue : this._allStyles[Enums.ContainerStyle.Default];
+        }
     }
 
     get default(): ContainerStyleDefinition {
@@ -395,7 +400,7 @@ export class HostCapabilities {
         this.capabilities[name] = version;
     }
 
-    capabilities: HostCapabilityMap = null;
+    capabilities?: HostCapabilityMap;
 
     parse(json: any, errors?: Array<Shared.IValidationError>) {
         if (json) {
@@ -409,7 +414,7 @@ export class HostCapabilities {
                     else {
                         let version = Shared.Version.parse(jsonVersion, errors);
 
-                        if (version.isValid) {
+                        if (version && version.isValid) {
                             this.setCapability(name, version);
                         }
                     }
@@ -513,7 +518,7 @@ export class FontTypeSet {
         }
     }
 
-    getStyleDefinition(style: Enums.FontType): FontTypeDefinition {
+    getStyleDefinition(style: Enums.FontType | undefined): FontTypeDefinition {
         switch (style) {
             case Enums.FontType.Monospace:
                 return this.monospace;
@@ -532,7 +537,7 @@ export class HostConfig {
     choiceSetInputValueSeparator: string = ",";
     supportsInteractivity: boolean = true;
     lineHeights?: ILineHeightDefinitions;
-    fontTypes: FontTypeSet = null;
+    fontTypes?: FontTypeSet;
 
     readonly spacing = {
         small: 3,
@@ -561,7 +566,7 @@ export class HostConfig {
     readonly media: MediaConfig = new MediaConfig();
     readonly factSet: FactSetConfig = new FactSetConfig();
 
-    cssClassNamePrefix: string = null;
+    cssClassNamePrefix?: string;
     alwaysAllowBleed: boolean = false;
 
     constructor(obj?: any) {
@@ -670,11 +675,11 @@ export class HostConfig {
         return result ? result : "";
     }
 
-    get fontFamily(): string {
+    get fontFamily(): string | undefined {
         return this._legacyFontType.fontFamily;
     }
 
-    set fontFamily(value: string) {
+    set fontFamily(value: string | undefined) {
         this._legacyFontType.fontFamily = value;
     }
 

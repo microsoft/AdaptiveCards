@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Enums from "./enums";
+import * as Utils from "./utils";
 
 export const ContentTypes = {
 	applicationJson: "application/json",
@@ -20,7 +21,7 @@ export interface ISeparationDefinition {
 
 export interface IInput {
 	id: string;
-    value: string;
+    value?: string;
     validateValue(): boolean;
 }
 
@@ -28,8 +29,8 @@ export type Dictionary<T> = { [key: string]: T };
 
 export class StringWithSubstitutions {
 	private _isProcessed: boolean = false;
-	private _original: string = null;
-    private _processed: string = null;
+	private _original?: string;
+    private _processed?: string;
 
     getReferencedInputs(inputs: IInput[], referencedInputs: Dictionary<IInput>) {
         if (!referencedInputs) {
@@ -37,7 +38,7 @@ export class StringWithSubstitutions {
         }
 
         for (let input of inputs) {
-            let matches = new RegExp("\\{{2}(" + input.id + ").value\\}{2}", "gi").exec(this._original);
+            let matches = new RegExp("\\{{2}(" + input.id + ").value\\}{2}", "gi").exec(<string>this._original);
 
             if (matches != null) {
                 referencedInputs[input.id] = input;
@@ -48,46 +49,48 @@ export class StringWithSubstitutions {
 	substituteInputValues(inputs: Dictionary<IInput>, contentType: string) {
 		this._processed = this._original;
 
-		let regEx = /\{{2}([a-z0-9_$@]+).value\}{2}/gi;
-		let matches;
+        if (!Utils.isNullOrEmpty(this._original)) {
+            let regEx = /\{{2}([a-z0-9_$@]+).value\}{2}/gi;
+            let matches;
 
-		while ((matches = regEx.exec(this._original)) != null) {
-			let matchedInput: IInput = null;
+            while ((matches = regEx.exec(<string>this._original)) != null) {
+                let matchedInput: IInput | undefined = undefined;
 
-			for (let key of Object.keys(inputs)) {
-				if (key.toLowerCase() == matches[1].toLowerCase()) {
-					matchedInput = inputs[key];
-					break;
-				}
-            }
+                for (let key of Object.keys(inputs)) {
+                    if (key.toLowerCase() == matches[1].toLowerCase()) {
+                        matchedInput = inputs[key];
+                        break;
+                    }
+                }
 
-            if (matchedInput) {
-				var valueForReplace = "";
+                if (matchedInput) {
+                    var valueForReplace = "";
 
-				if (matchedInput.value) {
-					valueForReplace = matchedInput.value;
-				}
+                    if (matchedInput.value) {
+                        valueForReplace = matchedInput.value;
+                    }
 
-				if (contentType === ContentTypes.applicationJson) {
-					valueForReplace = JSON.stringify(valueForReplace);
-					valueForReplace = valueForReplace.slice(1, -1);
-				}
-				else if (contentType === ContentTypes.applicationXWwwFormUrlencoded) {
-					valueForReplace = encodeURIComponent(valueForReplace);
-				}
+                    if (contentType === ContentTypes.applicationJson) {
+                        valueForReplace = JSON.stringify(valueForReplace);
+                        valueForReplace = valueForReplace.slice(1, -1);
+                    }
+                    else if (contentType === ContentTypes.applicationXWwwFormUrlencoded) {
+                        valueForReplace = encodeURIComponent(valueForReplace);
+                    }
 
-				this._processed = this._processed.replace(matches[0], valueForReplace);
-			}
-		};
+                    this._processed = (<string>this._processed).replace(matches[0], valueForReplace);
+                }
+            };
+        }
 
-		this._isProcessed = true;
+        this._isProcessed = true;
 	}
 
-	getOriginal(): string {
+	getOriginal(): string | undefined {
 		return this._original;
 	}
 
-	get(): string {
+	get(): string | undefined {
 		if (!this._isProcessed) {
 			return this._original;
 		}
@@ -96,7 +99,7 @@ export class StringWithSubstitutions {
 		}
 	}
 
-	set(value: string) {
+	set(value: string | undefined) {
 		this._original = value;
 		this._isProcessed = false;
 	}
@@ -180,7 +183,7 @@ export interface IResourceInformation {
  * @link http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript/21963136#21963136
  **/
 export class UUID {
-	private static lut = [];
+	private static lut: string[] = [];
 
 	static generate(): string {
 		let d0 = Math.random() * 0xffffffff | 0;
@@ -208,7 +211,7 @@ export class Version {
     private _major: number;
     private _minor: number;
     private _isValid: boolean = true;
-    private _label: string;
+    private _label?: string;
 
     constructor(major: number = 1, minor: number = 1, label?: string) {
         this._major = major;
@@ -216,9 +219,9 @@ export class Version {
         this._label = label;
     }
 
-    static parse(versionString: string, errors?: Array<IValidationError>): Version {
+    static parse(versionString: string, errors?: Array<IValidationError>): Version | undefined {
         if (!versionString) {
-            return null;
+            return undefined;
         }
 
         var result = new Version();

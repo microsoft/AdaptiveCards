@@ -2,7 +2,13 @@
 	"extends": "../tsconfig.json",
 	"compilerOptions": {
         "outDir": "./lib",
-        "downlevelIteration": true
+        "downlevelIteration": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noUnusedLocals": true,
+        "noFallthroughCasesInSwitch": true
 	},
 	"files": ["./src/adaptivecards.ts"]
 }
