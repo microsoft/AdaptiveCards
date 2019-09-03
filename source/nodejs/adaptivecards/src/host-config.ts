@@ -328,9 +328,9 @@ export class ContainerStyleSet {
             const customStyleArray = obj["customStyles"];
 
             if (customStyleArray && Array.isArray(customStyleArray)) {
-                for (var customStyle of customStyleArray) {
+                for (let customStyle of customStyleArray) {
                     if (customStyle) {
-                        var styleName = customStyle["name"];
+                        let styleName = customStyle["name"];
 
                         if (styleName && typeof styleName === "string") {
                             if (this._allStyles.hasOwnProperty(styleName)) {
@@ -347,7 +347,7 @@ export class ContainerStyleSet {
     }
 
     toJSON() {
-        var customStyleArray: Array<any> = [];
+        let customStyleArray: Array<any> = [];
 
         Object.keys(this._allStyles).forEach(
             (key) => {
@@ -359,7 +359,7 @@ export class ContainerStyleSet {
                 }
             });
 
-        var result: any = {
+        let result: any = {
             default: this.default,
             emphasis: this.emphasis
         }

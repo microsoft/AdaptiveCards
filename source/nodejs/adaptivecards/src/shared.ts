@@ -64,7 +64,7 @@ export class StringWithSubstitutions {
                 }
 
                 if (matchedInput) {
-                    var valueForReplace = "";
+                    let valueForReplace = "";
 
                     if (matchedInput.value) {
                         valueForReplace = matchedInput.value;
@@ -224,11 +224,11 @@ export class Version {
             return undefined;
         }
 
-        var result = new Version();
+        let result = new Version();
         result._versionString = versionString;
 
-        var regEx = /(\d+).(\d+)/gi;
-        var matches = regEx.exec(versionString);
+        let regEx = /(\d+).(\d+)/gi;
+        let matches = regEx.exec(versionString);
 
         if (matches != null && matches.length == 3) {
             result._major = parseInt(matches[1]);
