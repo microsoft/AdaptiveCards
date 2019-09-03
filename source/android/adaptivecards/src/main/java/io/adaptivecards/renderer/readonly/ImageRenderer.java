@@ -134,12 +134,14 @@ public class ImageRenderer extends BaseCardElementRenderer
         return imageSizeLimit;
     }
 
-    private static void setImageSize(Context context, ImageView imageView, ImageSize imageSize, ImageSizesConfig imageSizesConfig) {
+    private static void setImageSize(Context context, ImageView imageView, ImageSize imageSize, ImageSizesConfig imageSizesConfig, boolean isInImageSet) {
         imageView.setScaleType(ImageView.ScaleType.CENTER);
         if (imageSize == ImageSize.Stretch)
         {
-            // ImageView must match parent for stretch to work
-            imageView.setLayoutParams(new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+            if (!isInImageSet)
+            {
+                imageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            }
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         }
         else if ((imageSize == ImageSize.Small) || (imageSize == ImageSize.Medium) || (imageSize == ImageSize.Large))
@@ -166,7 +168,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         imageView.setAdjustViewBounds(true);
     }
 
-    private void setImageSize(Context context, ImageView imageView, Image image, HostConfig hostConfig)
+    private void setImageSize(Context context, ImageView imageView, Image image, HostConfig hostConfig, boolean isInImageSet)
     {
         long pixelWidth = image.GetPixelWidth();
         long pixelHeight = image.GetPixelHeight();
@@ -203,7 +205,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
         else
         {
-            setImageSize(context, imageView, image.GetImageSize(), hostConfig.GetImageSizes());
+            setImageSize(context, imageView, image.GetImageSize(), hostConfig.GetImageSizes(), isInImageSet);
         }
     }
 
@@ -276,7 +278,7 @@ public class ImageRenderer extends BaseCardElementRenderer
             weight = 1;
         }
 
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(height, width, weight);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, height, weight);
 
         // Set horizontal alignment for the image
         layoutParams.gravity = getImageHorizontalAlignment(image);
@@ -352,7 +354,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         TagContent tagContent = new TagContent(image, separator, viewGroup);
 
         View imageContainer = setImageHeightAndHorizontalAlignment(context, isInImageSet, imageView, image, tagContent);
-        setImageSize(context, imageView, image, hostConfig);
+        setImageSize(context, imageView, image, hostConfig, isInImageSet);
 
         viewGroup.addView(imageContainer);
         imageView.setTag(tagContent);
