@@ -666,7 +666,8 @@ export abstract class CardElement extends CardObject {
 
     private hideElementDueToOverflow() {
         if (this._renderedElement && this.isVisible) {
-            this._renderedElement.style.visibility = 'hidden';
+            this._renderedElement.style.visibility = "hidden";
+
             this.isVisible = false;
             raiseElementVisibilityChangedEvent(this, false);
         }
@@ -674,7 +675,8 @@ export abstract class CardElement extends CardObject {
 
     private showElementHiddenDueToOverflow() {
         if (this._renderedElement && !this.isVisible) {
-            this._renderedElement.style.visibility = null;
+            this._renderedElement.style.removeProperty("visibility");
+
             this.isVisible = true;
             raiseElementVisibilityChangedEvent(this, false);
         }
@@ -1497,9 +1499,7 @@ export class TextBlock extends BaseTextBlock {
 
     private restoreOriginalContent() {
         if (this.renderedElement !== undefined) {
-            let maxHeight = this.maxLines ? (this._computedLineHeight * this.maxLines) + 'px' : null;
-
-            this.renderedElement.style.maxHeight = maxHeight;
+            this.renderedElement.style.maxHeight = this.maxLines ? (this._computedLineHeight * this.maxLines) + 'px' : null;
             this.renderedElement.innerHTML = this._originalInnerHtml;
         }
     }
@@ -1912,7 +1912,7 @@ export class RichTextBlock extends CardElement {
             throw new Error("RichTextBlock.addInline: the specified card element cannot be used as a RichTextBlock inline.");
         }
 
-        let doAdd: boolean = inline.parent == null || forceAdd;
+        let doAdd: boolean = inline.parent === undefined || forceAdd;
 
         if (!doAdd && inline.parent != this) {
             throw new Error("RichTextBlock.addInline: the specified inline already belongs to another RichTextBlock.");
@@ -2341,7 +2341,7 @@ export class Image extends CardElement {
             imageElement.style.minWidth = "0";
             imageElement.classList.add(hostConfig.makeCssClassName("ac-image"));
 
-            if (this.selectAction != null && hostConfig.supportsInteractivity) {
+            if (this.selectAction !== undefined && hostConfig.supportsInteractivity) {
                 imageElement.tabIndex = 0
                 imageElement.setAttribute("role", "button");
                 imageElement.setAttribute("aria-label", this.selectAction.title);
@@ -2649,7 +2649,7 @@ export abstract class CardElementContainer extends CardElement {
                 element.setAttribute("aria-label", this._selectAction.title);
 
                 element.onclick = (e) => {
-                    if (this._selectAction != null) {
+                    if (this._selectAction !== undefined) {
                         e.preventDefault();
                         e.cancelBubble = true;
 
@@ -2658,7 +2658,7 @@ export abstract class CardElementContainer extends CardElement {
                 }
 
                 element.onkeypress = (e) => {
-                    if (this._selectAction != null && (e.keyCode == 13 || e.keyCode == 32)) {
+                    if (this._selectAction !== undefined && (e.keyCode == 13 || e.keyCode == 32)) {
                         // Enter or space pressed
                         e.preventDefault();
                         e.cancelBubble = true;
@@ -3151,7 +3151,7 @@ export class InputValidationOptions extends SerializableObject {
         this.errorMessage = Utils.getStringValue(json["errorMessage"]);
     }
 
-    toJSON() {
+    toJSON(): any {
         if (this.necessity != Enums.InputValidationNecessity.Optional || !Utils.isNullOrEmpty(this.errorMessage)) {
             let result = super.toJSON();
 
@@ -3161,7 +3161,7 @@ export class InputValidationOptions extends SerializableObject {
             return result;
         }
         else {
-            return null;
+            return undefined;
         }
     }
 }
@@ -3785,7 +3785,7 @@ export class ChoiceSetInput extends Input {
         }
         else {
             // Render as a list of toggle inputs
-            let defaultValues = this.defaultValue ? this.defaultValue.split(this.hostConfig.choiceSetInputValueSeparator) : null;
+            let defaultValues = this.defaultValue ? this.defaultValue.split(this.hostConfig.choiceSetInputValueSeparator) : undefined;
 
             let element = document.createElement("div");
             element.className = this.hostConfig.makeCssClassName("ac-input", "ac-choiceSetInput-multiSelect");
@@ -3881,7 +3881,7 @@ export class ChoiceSetInput extends Input {
 
         Utils.setArrayProperty(result, "choices", this.choices);
 
-        Utils.setProperty(result, "style", this.isCompact ? null : "expanded");
+        Utils.setProperty(result, "style", this.isCompact ? undefined : "expanded");
         Utils.setProperty(result, "isMultiSelect", this.isMultiSelect, false);
         Utils.setProperty(result, "wrap", this.wrap, false);
 
@@ -4272,7 +4272,7 @@ class ActionButton {
     }
 
     click() {
-        if (this.onClick != null) {
+        if (this.onClick !== undefined) {
             this.onClick(this);
         }
     }
@@ -4570,7 +4570,7 @@ export class SubmitAction extends Action {
             for (let key of Object.keys(inputs)) {
                 let input = inputs[key];
 
-                if (input.value != null) {
+                if (input.value !== undefined) {
                     this._processedData[input.id] = input.value;
                 }
             }
@@ -5073,10 +5073,6 @@ class ActionCollection {
     }
 
     private showActionCard(action: ShowCardAction, suppressStyle: boolean = false, raiseEvent: boolean = true) {
-        if (action.card == null) {
-            return;
-        }
-
         (<InlineAdaptiveCard>action.card).suppressStyle = suppressStyle;
 
         let renderedCard = action.card.render();
@@ -5196,7 +5192,7 @@ class ActionCollection {
             return result;
         }
         else {
-            return null;
+            return undefined;
         }
     }
 
@@ -5520,10 +5516,10 @@ export class ActionSet extends CardElement {
         }
         else {
             if (this._actionCollection.items.length == 1) {
-                return this._actionCollection.expandedAction != null && !this.hostConfig.actions.preExpandSingleShowCardAction;
+                return this._actionCollection.expandedAction !== undefined && !this.hostConfig.actions.preExpandSingleShowCardAction;
             }
             else {
-                return this._actionCollection.expandedAction != null;
+                return this._actionCollection.expandedAction !== undefined;
             }
         }
     }
@@ -5690,7 +5686,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
     }
 
     protected get hasExplicitStyle(): boolean {
-        return this._style != null;
+        return this._style !== undefined;
     }
 
     protected get allowCustomStyle(): boolean {
@@ -5795,7 +5791,7 @@ export class BackgroundImage extends SerializableObject {
 
     toJSON(): any {
         if (!this.isValid()) {
-            return null;
+            return undefined;
         }
 
         if (this.fillMode == BackgroundImage.defaultFillMode &&
@@ -5914,7 +5910,7 @@ export class Container extends StylableCardElementContainer {
 
         let element = document.createElement("div");
 
-        if (this.rtl != null && this.rtl) {
+        if (this.rtl !== undefined && this.rtl) {
             element.dir = "rtl";
         }
 
@@ -6120,7 +6116,7 @@ export class Container extends StylableCardElementContainer {
     }
 
     isRtl(): boolean {
-        if (this.rtl != null) {
+        if (this.rtl !== undefined) {
             return this.rtl;
         }
         else {
@@ -6776,7 +6772,7 @@ function raiseAnchorClickedEvent(element: CardElement, anchor: HTMLAnchorElement
     let card = element.getRootElement() as AdaptiveCard;
     let onAnchorClickedHandler = (card && card.onAnchorClicked) ? card.onAnchorClicked : AdaptiveCard.onAnchorClicked;
 
-    return onAnchorClickedHandler != null ? onAnchorClickedHandler(element, anchor) : false;
+    return onAnchorClickedHandler !== undefined ? onAnchorClickedHandler(element, anchor) : false;
 }
 
 function raiseExecuteActionEvent(action: Action) {
@@ -6818,7 +6814,7 @@ function raiseElementVisibilityChangedEvent(element: CardElement, shouldUpdateLa
     let card = rootElement as AdaptiveCard;
     let onElementVisibilityChangedHandler = (card && card.onElementVisibilityChanged) ? card.onElementVisibilityChanged : AdaptiveCard.onElementVisibilityChanged;
 
-    if (onElementVisibilityChangedHandler != null) {
+    if (onElementVisibilityChangedHandler !== undefined) {
         onElementVisibilityChangedHandler(element);
     }
 }
@@ -6827,16 +6823,16 @@ function raiseParseElementEvent(element: CardElement, json: any, errors?: Shared
     let card = element.getRootElement() as AdaptiveCard;
     let onParseElementHandler = (card && card.onParseElement) ? card.onParseElement : AdaptiveCard.onParseElement;
 
-    if (onParseElementHandler != null) {
+    if (onParseElementHandler !== undefined) {
         onParseElementHandler(element, json, errors);
     }
 }
 
 function raiseParseActionEvent(action: Action, json: any, errors?: Shared.IValidationError[]) {
-    let card = action.parent ? action.parent.getRootElement() as AdaptiveCard : null;
+    let card = action.parent ? action.parent.getRootElement() as AdaptiveCard : undefined;
     let onParseActionHandler = (card && card.onParseAction) ? card.onParseAction : AdaptiveCard.onParseAction;
 
-    if (onParseActionHandler != null) {
+    if (onParseActionHandler !== undefined) {
         onParseActionHandler(action, json, errors);
     }
 }
@@ -6846,7 +6842,7 @@ function raiseParseError(error: Shared.IValidationError, errors: Shared.IValidat
         errors.push(error);
     }
 
-    if (AdaptiveCard.onParseError != null) {
+    if (AdaptiveCard.onParseError !== undefined) {
         AdaptiveCard.onParseError(error);
     }
 }
@@ -6894,10 +6890,10 @@ export abstract class ContainerWithActions extends Container {
             return false;
         }
         else if (this.renderedActionCount == 1) {
-            return this._actionCollection.expandedAction != null && !this.hostConfig.actions.preExpandSingleShowCardAction;
+            return this._actionCollection.expandedAction !== undefined && !this.hostConfig.actions.preExpandSingleShowCardAction;
         }
         else {
-            return this._actionCollection.expandedAction != null;
+            return this._actionCollection.expandedAction !== undefined;
         }
     }
 
@@ -6984,10 +6980,10 @@ export abstract class ContainerWithActions extends Container {
         }
         else {
             if (this._actionCollection.items.length == 1) {
-                return this._actionCollection.expandedAction != null && !this.hostConfig.actions.preExpandSingleShowCardAction;
+                return this._actionCollection.expandedAction !== undefined && !this.hostConfig.actions.preExpandSingleShowCardAction;
             }
             else {
-                return this._actionCollection.expandedAction != null;
+                return this._actionCollection.expandedAction !== undefined;
             }
         }
     }
@@ -7023,7 +7019,7 @@ export abstract class TypeRegistry<T> {
     registerType(typeName: string, createInstance: () => T) {
         let registrationInfo = this.findTypeRegistration(typeName);
 
-        if (registrationInfo != null) {
+        if (registrationInfo !== undefined) {
             registrationInfo.createInstance = createInstance;
         }
         else {
@@ -7184,7 +7180,7 @@ export class AdaptiveCard extends ContainerWithActions {
             // Unlike containers, the root card element should be allowed to
             // be shorter than its content (otherwise the overflow truncation
             // logic would never get triggered)
-            renderedElement.style.minHeight = null;
+            renderedElement.style.removeProperty("minHeight");
         }
 
         return renderedElement;
