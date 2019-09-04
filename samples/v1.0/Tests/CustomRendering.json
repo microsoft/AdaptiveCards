@@ -13,7 +13,11 @@
 			"animalType": "Mammals",
 			"animalCount": 1,
 			"spacing": "large",
-			"separator": true
+			"separator": true,
+			"requires": {
+				"adaptiveCards": "1.2",
+				"acTest": "1.0"
+			}
 		},
 		{
 			"id": "moreMammalsLableId",
@@ -21,6 +25,7 @@
 			"text": "5 Mammals",
 			"size": "large",
 			"isVisible": false
+
 		},
 		{
 			"id": "moreMammalsId",

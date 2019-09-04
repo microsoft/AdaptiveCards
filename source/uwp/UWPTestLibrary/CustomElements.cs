@@ -4,10 +4,7 @@ using AdaptiveCards.Rendering.Uwp;
 using Windows.Data.Json;
 using Windows.UI.Xaml;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Converters;
-using System.Reflection;
-using System.Linq;
 using Newtonsoft.Json.Serialization;
 using System.ComponentModel;
 
@@ -22,213 +19,13 @@ namespace TestLibrary
         Insects,
     }
 
-    public class AdaptiveCardContractResolver : DefaultContractResolver
-    {
-        private AdaptiveElementParserRegistration ElementParsers { get; set; }
-        private AdaptiveActionParserRegistration ActionParsers { get; set; }
-        private IList<AdaptiveWarning> Warnings { get; set; }
-
-        public AdaptiveCardContractResolver(AdaptiveElementParserRegistration elementParsers, AdaptiveActionParserRegistration actionParsers, IList<AdaptiveWarning> warnings)
-        {
-            ElementParsers = elementParsers;
-            ActionParsers = actionParsers;
-            Warnings = warnings;
-        }
-
-        protected override JsonConverter ResolveContractConverter(Type objectType)
-        {
-            if ((objectType is IAdaptiveCardElement) || (objectType is IAdaptiveActionElement))
-            {
-                return new AdaptiveElementConverter(ElementParsers, ActionParsers, Warnings);
-            }
-            else
-            {
-                return base.ResolveContractConverter(objectType);
-            }
-        }
-
-        class AdaptiveElementConverter : JsonConverter<IAdaptiveCardElement>
-        {
-            private AdaptiveElementParserRegistration ElementParsers { get; set; }
-            private AdaptiveActionParserRegistration ActionParsers { get; set; }
-            private IList<AdaptiveWarning> Warnings { get; set; }
-
-            public AdaptiveElementConverter(AdaptiveElementParserRegistration elementParsers, AdaptiveActionParserRegistration actionParsers, IList<AdaptiveWarning> warnings)
-            {
-                ElementParsers = elementParsers;
-                ActionParsers = actionParsers;
-                Warnings = warnings;
-            }
-
-            public override IAdaptiveCardElement ReadJson(JsonReader reader, Type objectType, IAdaptiveCardElement existingValue, bool hasExistingValue, JsonSerializer serializer)
-            {
-                JObject jObject = JObject.Load(reader);
-
-                IAdaptiveCardElement cardElement = (IAdaptiveCardElement)Activator.CreateInstance(objectType);
-                serializer.Populate(jObject.CreateReader(), cardElement);
-
-                SetAdditionalProperties(cardElement, jObject);
-                SetFallbackInformation(cardElement, jObject);
-
-                return cardElement;
-            }
-
-            private void SetFallbackInformation(object element, JObject jObject)
-            {
-                var fallback = jObject["fallback"];
-
-                FallbackType fallbackType = FallbackType.None;
-                string fallbackElementType = "";
-                if (fallback != null)
-                {
-                    if ((fallback.Type == JTokenType.String) &&
-                        (string.Compare(fallback.ToString(), "drop") == 0))
-                    {
-                        fallbackType = FallbackType.Drop;
-                    }
-                    else if (fallback.Type == JTokenType.Object)
-                    {
-                        fallbackType = FallbackType.Content;
-                        fallbackElementType = (string)fallback["type"];
-                    }
-                }
-
-                if (element is IAdaptiveCardElement cardElement)
-                {
-                    cardElement.FallbackType = fallbackType;
-                    if (fallbackType == FallbackType.Content)
-                    {
-                        cardElement.FallbackContent = ElementParsers.Get(fallbackElementType).FromJson(JsonObject.Parse(fallback.ToString()), ElementParsers, ActionParsers, Warnings);
-                    }
-                }
-                else if (element is IAdaptiveActionElement actionElement)
-                {
-                    actionElement.FallbackType = fallbackType;
-                    if (fallbackType == FallbackType.Content)
-                    {
-                        actionElement.FallbackContent = ActionParsers.Get(fallbackElementType).FromJson(JsonObject.Parse(fallback.ToString()), ElementParsers, ActionParsers, Warnings);
-                    }
-                }
-            }
-
-            private void SetAdditionalProperties(object element, JObject jObject)
-            {
-                IEnumerable<PropertyInfo> runtimeProperties = element.GetType().GetRuntimeProperties();
-
-                foreach (var keyValuePair in jObject)
-                {
-                    bool found = false;
-                    foreach (var runtimeProperty in runtimeProperties)
-                    {
-                        if (string.Compare(keyValuePair.Key, runtimeProperty.Name, true) == 0)
-                        {
-                            found = true;
-                            break;
-                        }
-                        else
-                        {
-                            // Check if it matches the json attribute name
-                            string jsonPropertyName = null;
-                            foreach (var attribute in runtimeProperty.CustomAttributes)
-                            {
-                                if (attribute.AttributeType == typeof(JsonPropertyAttribute) &&
-                                    attribute.ConstructorArguments.Count == 1)
-                                {
-                                    jsonPropertyName = attribute.ConstructorArguments[0].Value as string;
-                                    break;
-                                }
-                            }
-                            if ((jsonPropertyName != null) && (string.Compare(keyValuePair.Key, jsonPropertyName, true) == 0))
-                            {
-                                found = true;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (!found)
-                    {
-                        if (element is IAdaptiveCardElement cardElement)
-                        {
-                            if (cardElement.AdditionalProperties == null)
-                            {
-                                cardElement.AdditionalProperties = new JsonObject();
-                            }
-
-                            cardElement.AdditionalProperties[keyValuePair.Key] = JTokenToJsonValue(keyValuePair.Value);
-                        }
-                        else if (element is IAdaptiveActionElement actionElement)
-                        {
-                            if (actionElement.AdditionalProperties == null)
-                            {
-                                actionElement.AdditionalProperties = new JsonObject();
-                            }
-
-                            actionElement.AdditionalProperties[keyValuePair.Key] = JTokenToJsonValue(keyValuePair.Value);
-                        }
-                    }
-                }
-            }
-
-            public override bool CanWrite { get; } = false;
-
-            public override void WriteJson(JsonWriter writer, IAdaptiveCardElement value, JsonSerializer serializer)
-            {
-
-                serializer.Serialize(writer, value);
-            }
-
-            JsonValue JTokenToJsonValue(JToken jtoken)
-            {
-                JsonValue value;
-
-                switch (jtoken.Type)
-                {
-                    case JTokenType.None:
-                        {
-                            value = JsonValue.CreateNullValue();
-                            break;
-                        }
-                    case JTokenType.Float:
-                    case JTokenType.Integer:
-                        {
-                            value = JsonValue.CreateNumberValue((double)jtoken);
-                            break;
-                        }
-                    case JTokenType.Boolean:
-                        {
-                            value = JsonValue.CreateBooleanValue((bool)jtoken);
-                            break;
-                        }
-                    case JTokenType.Array:
-                    case JTokenType.Object:
-                        {
-                            value = JsonValue.Parse(jtoken.ToString());
-                            break;
-                        }
-                    case JTokenType.String:
-                    default:
-                        {
-                            value = JsonValue.CreateStringValue((string)jtoken);
-                            break;
-                        }
-                }
-
-                return value;
-            }
-        }
-    }
-
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    //[JsonConverter(typeof(AdaptiveCardElementConverter))]
     public class AnimalGrid : IAdaptiveCardElement
     {
         [JsonRequired]
         [JsonConverter(typeof(StringEnumConverter))]
         public AnimalType AnimalType { get; set; }
         public uint AnimalCount { get; set; } = 1;
-
-        public bool MeetsRequirements(AdaptiveFeatureRegistration featureRegistration) { return true; }
 
         // These are handled by the AdaptiveCardElementConverter
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
@@ -275,6 +72,8 @@ namespace TestLibrary
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [JsonConverter(typeof(StringEnumConverter))]
         public Spacing Spacing { get; set; }
+
+        public IList<AdaptiveRequirement> Requirements { get; set; }
 
         // Need to explicitly default this one to true or elements with unset visibility will be non visible
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
