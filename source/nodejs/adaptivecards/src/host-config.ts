@@ -347,7 +347,7 @@ export class ContainerStyleSet {
     }
 
     toJSON() {
-        let customStyleArray: Array<any> = [];
+        let customStyleArray: any[] = [];
 
         Object.keys(this._allStyles).forEach(
             (key) => {
@@ -402,7 +402,7 @@ export class HostCapabilities {
 
     capabilities?: HostCapabilityMap;
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         if (json) {
             for (let name in json) {
                 let jsonVersion = json[name];

@@ -255,8 +255,8 @@ export function truncate(element: HTMLElement,
     }
 }
 
-function findBreakableIndices(html: string): Array<number> {
-    let results: Array<number> = [];
+function findBreakableIndices(html: string): number[] {
+    let results: number[] = [];
     let idx = findNextCharacter(html, -1);
 
     while (idx < html.length) {

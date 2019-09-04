@@ -13,10 +13,10 @@ function invokeSetCollection(action: Action, collection: ActionCollection | unde
     }
 }
 
-function isActionAllowed(action: Action, forbiddenActionTypes: Array<string>): boolean {
+function isActionAllowed(action: Action, forbiddenActionTypes: string[]): boolean {
     if (forbiddenActionTypes) {
-        for (let i = 0; i < forbiddenActionTypes.length; i++) {
-            if (action.getJsonTypeName() === forbiddenActionTypes[i]) {
+        for (let forbiddenType of forbiddenActionTypes) {
+            if (action.getJsonTypeName() === forbiddenType) {
                 return false;
             }
         }
@@ -37,7 +37,7 @@ function createCardObjectInstance<T extends CardObject>(
     allowFallback: boolean,
     createInstanceCallback: (typeName: string) => T | undefined,
     createValidationErrorCallback: (typeName: string, errorType: InstanceCreationErrorType) => Shared.IValidationError,
-    errors: Array<Shared.IValidationError> | undefined): T | undefined {
+    errors: Shared.IValidationError[] | undefined): T | undefined {
     let result: T | undefined = undefined;
 
     if (json && typeof json === "object") {
@@ -93,7 +93,7 @@ export function createActionInstance(
     json: any,
     forbiddenActionTypes: string[],
     allowFallback: boolean,
-    errors: Array<Shared.IValidationError> | undefined): Action | undefined {
+    errors: Shared.IValidationError[] | undefined): Action | undefined {
     return createCardObjectInstance<Action>(
         parent,
         json,
@@ -121,7 +121,7 @@ export function createElementInstance(
     parent: CardElement | undefined,
     json: any,
     allowFallback: boolean,
-    errors: Array<Shared.IValidationError> | undefined): CardElement | undefined {
+    errors: Shared.IValidationError[] | undefined): CardElement | undefined {
     return createCardObjectInstance<CardElement>(
         parent,
         json,
@@ -148,7 +148,7 @@ export function createElementInstance(
 export abstract class SerializableObject {
     private _rawProperties: { [key: string]: any } = {};
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         this._rawProperties = AdaptiveCard.enableFullJsonRoundTrip ? json : {};
     }
 
@@ -524,7 +524,7 @@ export abstract class CardObject extends SerializableObject {
         }
     }
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 
         // this.id = Utils.getStringValue(json["id"]);
@@ -613,14 +613,14 @@ export abstract class CardElement extends CardObject {
 
     private _shouldFallback: boolean = false;
     // private _lang: string = undefined;
-    private _hostConfig?: HostConfig.HostConfig = undefined;
-    private _parent?: CardElement = undefined;
-    private _renderedElement?: HTMLElement = undefined;
-    private _separatorElement?: HTMLElement = undefined;
+    private _hostConfig?: HostConfig.HostConfig;
+    private _parent?: CardElement;
+    private _renderedElement?: HTMLElement;
+    private _separatorElement?: HTMLElement;
     // private _isVisible: boolean = true;
     private _truncatedDueToOverflow: boolean = false;
     private _defaultRenderedElementDisplayMode: string | null = null;
-    private _padding?: Shared.PaddingDefinition = undefined;
+    private _padding?: Shared.PaddingDefinition;
 
     private internalRenderSeparator(): HTMLElement | undefined {
         let renderedSeparator = Utils.renderSeparation(
@@ -830,9 +830,9 @@ export abstract class CardElement extends CardObject {
     // horizontalAlignment?: Enums.HorizontalAlignment = null;
     // spacing: Enums.Spacing = Enums.Spacing.Default;
     // separator: boolean = false;
-    customCssSelector?: string = undefined;
+    customCssSelector?: string;
     // height: CardElementHeight = "auto";
-    minPixelHeight?: number = undefined;
+    minPixelHeight?: number;
 
     abstract getJsonTypeName(): string;
 
@@ -844,7 +844,7 @@ export abstract class CardElement extends CardObject {
         return false;
     }
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
 		super.parse(json, errors);
 
         raiseParseElementEvent(this, json, errors);
@@ -1125,11 +1125,11 @@ export abstract class CardElement extends CardObject {
         return undefined;
     }
 
-    getAllInputs(): Array<Input> {
+    getAllInputs(): Input[] {
         return [];
     }
 
-    getResourceInformation(): Array<Shared.IResourceInformation> {
+    getResourceInformation(): Shared.IResourceInformation[] {
         return [];
     }
 
@@ -1307,7 +1307,7 @@ export abstract class CardElement extends CardObject {
 
 export abstract class BaseTextBlock extends CardElement {
     private _text?: string;
-    private _selectAction?: Action = undefined;
+    private _selectAction?: Action;
 
     protected getFontSize(fontType: HostConfig.FontTypeDefinition): number {
         switch (this.size) {
@@ -1351,7 +1351,7 @@ export abstract class BaseTextBlock extends CardElement {
     weight: Enums.TextWeight = Enums.TextWeight.Default;
     color: Enums.TextColor = Enums.TextColor.Default;
     isSubtle: boolean = false;
-    fontType?: Enums.FontType = undefined;
+    fontType?: Enums.FontType;
 
     asString(): string | undefined {
         return this.text;
@@ -1420,7 +1420,7 @@ export abstract class BaseTextBlock extends CardElement {
         targetElement.style.fontWeight = fontWeight.toString();
     }
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 
         this.text = Utils.getStringValue(json["text"]);
@@ -1492,7 +1492,7 @@ export abstract class BaseTextBlock extends CardElement {
 export class TextBlock extends BaseTextBlock {
     private _computedLineHeight: number;
     private _originalInnerHtml: string;
-    private _processedText?: string = undefined;
+    private _processedText?: string;
     private _treatAsPlainText: boolean = true;
 
     private restoreOriginalContent() {
@@ -1755,7 +1755,7 @@ export class TextBlock extends BaseTextBlock {
         targetElement.style.lineHeight = this._computedLineHeight + "px";
     }
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 
         this.wrap = <boolean>Utils.getBoolValue(json["wrap"], this.wrap);
@@ -1877,7 +1877,7 @@ export class TextRun extends BaseTextBlock {
         return result;
     }
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 
         this.italic = <boolean>Utils.getBoolValue(json["italic"], this.italic);
@@ -1969,7 +1969,7 @@ export class RichTextBlock extends CardElement {
         return result;
     }
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 
         this._inlines = [];
@@ -2159,7 +2159,7 @@ export class FactSet extends CardElement {
         return element;
     }
 
-    facts: Array<Fact> = [];
+    facts: Fact[] = [];
 
     getJsonTypeName(): string {
         return "FactSet";
@@ -2185,7 +2185,7 @@ export class FactSet extends CardElement {
         return result;
     }
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 
         this.facts = [];
@@ -2206,7 +2206,7 @@ export class FactSet extends CardElement {
 export class Image extends CardElement {
     private _selectAction?: Action;
 
-    private parseDimension(name: string, value: any, errors: Array<Shared.IValidationError> | undefined): number {
+    private parseDimension(name: string, value: any, errors: Shared.IValidationError[] | undefined): number {
         if (value) {
             if (typeof value === "string") {
                 try {
@@ -2417,7 +2417,7 @@ export class Image extends CardElement {
         return result;
     }
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 
         this.url = Utils.getStringValue(json["url"]);
@@ -2489,7 +2489,7 @@ export class Image extends CardElement {
             errors);
     }
 
-    getResourceInformation(): Array<Shared.IResourceInformation> {
+    getResourceInformation(): Shared.IResourceInformation[] {
         if (!Utils.isNullOrEmpty(this.url)) {
             return [{ url: this.url, mimeType: "image" }]
         }
@@ -2514,7 +2514,7 @@ export class Image extends CardElement {
 export abstract class CardElementContainer extends CardElement {
     private _selectAction?: Action;
 
-    protected isElementAllowed(element: CardElement, forbiddenElementTypes: Array<string>) {
+    protected isElementAllowed(element: CardElement, forbiddenElementTypes: string[]) {
         if (!this.hostConfig.supportsInteractivity && element.isInteractive) {
             return false;
         }
@@ -2576,7 +2576,7 @@ export abstract class CardElementContainer extends CardElement {
 
     allowVerticalOverflow: boolean = false;
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 
         if (this.isSelectable) {
@@ -2682,8 +2682,8 @@ export abstract class CardElementContainer extends CardElement {
         }
     }
 
-    getAllInputs(): Array<Input> {
-        let result: Array<Input> = [];
+    getAllInputs(): Input[] {
+        let result: Input[] = [];
 
         for (let i = 0; i < this.getItemCount(); i++) {
             result = result.concat(this.getItemAt(i).getAllInputs());
@@ -2692,8 +2692,8 @@ export abstract class CardElementContainer extends CardElement {
         return result;
     }
 
-    getResourceInformation(): Array<Shared.IResourceInformation> {
-        let result: Array<Shared.IResourceInformation> = [];
+    getResourceInformation(): Shared.IResourceInformation[] {
+        let result: Shared.IResourceInformation[] = [];
 
         for (let i = 0; i < this.getItemCount(); i++) {
             result = result.concat(this.getItemAt(i).getResourceInformation());
@@ -2720,7 +2720,7 @@ export abstract class CardElementContainer extends CardElement {
 }
 
 export class ImageSet extends CardElementContainer {
-    private _images: Array<Image> = [];
+    private _images: Image[] = [];
 
     protected internalRender(): HTMLElement | undefined {
         let element: HTMLElement | undefined = undefined;
@@ -2730,10 +2730,10 @@ export class ImageSet extends CardElementContainer {
             element.style.display = "flex";
             element.style.flexWrap = "wrap";
 
-            for (let i = 0; i < this._images.length; i++) {
-                this._images[i].size = this.imageSize;
+            for (let image of this._images) {
+                image.size = this.imageSize;
 
-                let renderedImage = this._images[i].render();
+                let renderedImage = image.render();
 
                 if (renderedImage) {
                     renderedImage.style.display = "inline-flex";
@@ -2807,13 +2807,13 @@ export class ImageSet extends CardElementContainer {
         return result;
     }
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 
         this.imageSize = <Enums.Size>Utils.getEnumValue(Enums.Size, json["imageSize"], Enums.Size.Medium);
 
         if (json["images"] != null) {
-            let jsonImages = json["images"] as Array<any>;
+            let jsonImages = json["images"] as any[];
 
             this._images = [];
 
@@ -2853,7 +2853,7 @@ export class MediaSource extends SerializableObject {
         this.mimeType = mimeType;
     }
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 
 		this.mimeType = Utils.getStringValue(json["mimeType"]);
@@ -2890,7 +2890,7 @@ export class Media extends CardElement {
     static readonly supportedMediaTypes = ["audio", "video"];
 
     private _selectedMediaType?: string;
-    private _selectedSources: Array<MediaSource>;
+    private _selectedSources: MediaSource[];
 
     private getPosterUrl(): string {
         return this.poster ? this.poster : this.hostConfig.media.defaultPoster;
@@ -3063,11 +3063,11 @@ export class Media extends CardElement {
 
     static onPlay: (sender: Media) => void;
 
-    sources: Array<MediaSource> = [];
+    sources: MediaSource[] = [];
     poster: string;
     altText: string;
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 
 		this.poster = Utils.getStringValue(json["poster"]);
@@ -3112,8 +3112,8 @@ export class Media extends CardElement {
         return "Media";
     }
 
-    getResourceInformation(): Array<Shared.IResourceInformation> {
-        let result: Array<Shared.IResourceInformation> = [];
+    getResourceInformation(): Shared.IResourceInformation[] {
+        let result: Shared.IResourceInformation[] = [];
 
         let posterUrl = this.getPosterUrl();
 
@@ -3305,7 +3305,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
         }
     }
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 
         this.id = Utils.getStringValue(json["id"]);
@@ -3320,7 +3320,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
         }
     }
 
-    getAllInputs(): Array<Input> {
+    getAllInputs(): Input[] {
         return [this];
     }
 
@@ -3498,7 +3498,7 @@ export class TextInput extends Input {
         return result;
     }
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 
         this.maxLength = <number>Utils.getNumberValue(json["maxLength"]);
@@ -3618,7 +3618,7 @@ export class ToggleInput extends Input {
         return result;
     }
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 
         this.title = Utils.getStringValue(json["title"]);
@@ -3677,7 +3677,7 @@ export class ChoiceSetInput extends Input {
     }
 
     private _selectElement: HTMLSelectElement;
-    private _toggleInputs: Array<HTMLInputElement>;
+    private _toggleInputs: HTMLInputElement[];
 
     protected internalRender(): HTMLElement | undefined {
         if (!this.isMultiSelect) {
@@ -3852,7 +3852,7 @@ export class ChoiceSetInput extends Input {
         }
     }
 
-    choices: Array<Choice> = [];
+    choices: Choice[] = [];
     isCompact: boolean = false;
     isMultiSelect: boolean = false;
     placeholder: string;
@@ -3912,7 +3912,7 @@ export class ChoiceSetInput extends Input {
         }
     }
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 
         this.isCompact = !(json["style"] === "expanded");
@@ -3947,9 +3947,9 @@ export class ChoiceSetInput extends Input {
                     return undefined;
                 }
 
-                for (let i = 0; i < this._toggleInputs.length; i++) {
-                    if (this._toggleInputs[i].checked) {
-                        return this._toggleInputs[i].value;
+                for (let toggleInput of this._toggleInputs) {
+                    if (toggleInput.checked) {
+                        return toggleInput.value;
                     }
                 }
 
@@ -4029,7 +4029,7 @@ export class NumberInput extends Input {
         return result;
     }
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 
         this.placeholder = Utils.getStringValue(json["placeholder"]);
@@ -4097,7 +4097,7 @@ export class DateInput extends Input {
         return result;
     }
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 
         this.min = Utils.getStringValue(json["min"]);
@@ -4168,7 +4168,7 @@ export class TimeInput extends Input {
         return result;
     }
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 
         this.min = Utils.getStringValue(json["min"]);
@@ -4221,6 +4221,8 @@ class ActionButton {
                 this.action.renderedElement.classList.add(hostConfig.makeCssClassName("expandable"));
             }
             */
+
+            this.action.updateActionButtonCssStyle(this.action.renderedElement);
 
             this.action.renderedElement.classList.remove(hostConfig.makeCssClassName("expanded"));
             this.action.renderedElement.classList.remove(hostConfig.makeCssClassName("subdued"));
@@ -4300,7 +4302,7 @@ export abstract class Action extends CardObject {
         // Do nothing in base implementation
     }
 
-    protected internalGetReferencedInputs(allInputs: Array<Input>): Shared.Dictionary<Input> {
+    protected internalGetReferencedInputs(allInputs: Input[]): Shared.Dictionary<Input> {
         return {};
     }
 
@@ -4308,7 +4310,7 @@ export abstract class Action extends CardObject {
         // Do nothing in base implementation
     }
 
-    protected internalValidateInputs(referencedInputs: Shared.Dictionary<Input> | undefined): Array<Input> {
+    protected internalValidateInputs(referencedInputs: Shared.Dictionary<Input> | undefined): Input[] {
         let result: Input[] = [];
 
         if (AdaptiveCard.useBuiltInInputValidation && !this.ignoreInputValidation && referencedInputs) {
@@ -4440,7 +4442,7 @@ export abstract class Action extends CardObject {
         return true;
     };
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
 		super.parse(json, errors);
 
         raiseParseActionEvent(this, json, errors);
@@ -4470,11 +4472,11 @@ export abstract class Action extends CardObject {
         return false;
     }
 
-    getAllInputs(): Array<Input> {
+    getAllInputs(): Input[] {
         return [];
     }
 
-    getResourceInformation(): Array<Shared.IResourceInformation> {
+    getResourceInformation(): Shared.IResourceInformation[] {
         if (!Utils.isNullOrEmpty(this.iconUrl)) {
             return [{ url: this.iconUrl, mimeType: "image" }]
         }
@@ -4546,7 +4548,7 @@ export class SubmitAction extends Action {
     private _processedData?: { [key: string]: any };
     private _ignoreInputValidation: boolean = false;
 
-    protected internalGetReferencedInputs(allInputs: Array<Input>): Shared.Dictionary<Input> {
+    protected internalGetReferencedInputs(allInputs: Input[]): Shared.Dictionary<Input> {
         let result: Shared.Dictionary<Input> = {};
 
         for (let input of allInputs) {
@@ -4590,7 +4592,7 @@ export class SubmitAction extends Action {
         return result;
     }
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 
         this._ignoreInputValidation = <boolean>Utils.getBoolValue(json["ignoreInputValidation"], this._ignoreInputValidation);
@@ -4647,7 +4649,7 @@ export class OpenUrlAction extends Action {
         }
     }
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 
         this.url = Utils.getStringValue(json["url"]);
@@ -4770,7 +4772,7 @@ export class HttpHeader extends SerializableObject {
         return result;
     }
 
-    getReferencedInputs(inputs: Array<Input>, referencedInputs: Shared.Dictionary<Input>) {
+    getReferencedInputs(inputs: Input[], referencedInputs: Shared.Dictionary<Input>) {
         this._value.getReferencedInputs(inputs, referencedInputs);
     }
 
@@ -4794,10 +4796,10 @@ export class HttpAction extends Action {
 
     private _url = new Shared.StringWithSubstitutions();
     private _body = new Shared.StringWithSubstitutions();
-    private _headers: Array<HttpHeader> = [];
+    private _headers: HttpHeader[] = [];
     private _ignoreInputValidation: boolean = false;
 
-    protected internalGetReferencedInputs(allInputs: Array<Input>): Shared.Dictionary<Input> {
+    protected internalGetReferencedInputs(allInputs: Input[]): Shared.Dictionary<Input> {
         let result: Shared.Dictionary<Input> = {};
 
         this._url.getReferencedInputs(allInputs, result);
@@ -4871,7 +4873,7 @@ export class HttpAction extends Action {
         }
     }
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 
         this.url = Utils.getStringValue(json["url"]);
@@ -4915,11 +4917,11 @@ export class HttpAction extends Action {
         this._body.set(value);
     }
 
-    get headers(): Array<HttpHeader> {
+    get headers(): HttpHeader[] {
         return this._headers ? this._headers : [];
     }
 
-    set headers(value: Array<HttpHeader>) {
+    set headers(value: HttpHeader[]) {
         this._headers = value;
     }
 }
@@ -4959,7 +4961,7 @@ export class ShowCardAction extends Action {
         this.card.internalValidateProperties(context);
     }
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 
         let jsonCard = json["card"];
@@ -4979,6 +4981,8 @@ export class ShowCardAction extends Action {
     }
 
     updateActionButtonCssStyle(actionButtonElement: HTMLElement): void {
+        super.updateActionButtonCssStyle(actionButtonElement);
+
         if (this.parent) {
             actionButtonElement.classList.add(this.parent.hostConfig.makeCssClassName("expandable"));
         }
@@ -4990,11 +4994,11 @@ export class ShowCardAction extends Action {
         this.card.setParent(value);
     }
 
-    getAllInputs(): Array<Input> {
+    getAllInputs(): Input[] {
         return this.card.getAllInputs();
     }
 
-    getResourceInformation(): Array<Shared.IResourceInformation> {
+    getResourceInformation(): Shared.IResourceInformation[] {
         return super.getResourceInformation().concat(this.card.getResourceInformation());
     }
 
@@ -5155,14 +5159,14 @@ class ActionCollection {
         return undefined;
     }
 
-    items: Array<Action> = [];
-    buttons: Array<ActionButton> = [];
+    items: Action[] = [];
+    buttons: ActionButton[] = [];
 
     constructor(owner: CardElement) {
         this._owner = owner;
     }
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         this.clear();
 
         if (json && json instanceof Array) {
@@ -5199,8 +5203,8 @@ class ActionCollection {
     getActionById(id: string): Action | undefined {
         let result: Action | undefined = undefined;
 
-        for (let i = 0; i < this.items.length; i++) {
-            result = this.items[i].getActionById(id);
+        for (let item of this.items) {
+            result = item.getActionById(id);
 
             if (result) {
                 break;
@@ -5391,9 +5395,9 @@ class ActionCollection {
 
         Utils.appendChild(element, this._actionCardContainer);
 
-        for (let i = 0; i < this.buttons.length; i++) {
-            if (this.buttons[i].state == ActionButtonState.Expanded) {
-                this.expandShowCardAction(<ShowCardAction>this.buttons[i].action, false);
+        for (let button of this.buttons) {
+            if (button.state == ActionButtonState.Expanded) {
+                this.expandShowCardAction(<ShowCardAction>button.action, false);
 
                 break;
             }
@@ -5457,8 +5461,8 @@ class ActionCollection {
         this._renderedActionCount = 0;
     }
 
-    getAllInputs(): Array<Input> {
-        let result: Array<Input> = [];
+    getAllInputs(): Input[] {
+        let result: Input[] = [];
 
         for (let action of this.items) {
             result = result.concat(action.getAllInputs());
@@ -5467,8 +5471,8 @@ class ActionCollection {
         return result;
     }
 
-    getResourceInformation(): Array<Shared.IResourceInformation> {
-        let result: Array<Shared.IResourceInformation> = [];
+    getResourceInformation(): Shared.IResourceInformation[] {
+        let result: Shared.IResourceInformation[] = [];
 
         for (let action of this.items) {
             result = result.concat(action.getResourceInformation());
@@ -5547,7 +5551,7 @@ export class ActionSet extends CardElement {
         this._actionCollection.validateProperties(context);
     }
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 
         let jsonOrientation = json["orientation"];
@@ -5563,11 +5567,11 @@ export class ActionSet extends CardElement {
         this._actionCollection.addAction(action);
     }
 
-    getAllInputs(): Array<Input> {
+    getAllInputs(): Input[] {
         return this._actionCollection.getAllInputs();
     }
 
-    getResourceInformation(): Array<Shared.IResourceInformation> {
+    getResourceInformation(): Shared.IResourceInformation[] {
         return this._actionCollection.getResourceInformation();
     }
 
@@ -5726,7 +5730,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
         }
     }
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 
         this._style = Utils.getStringValue(json["style"]);
@@ -5780,7 +5784,7 @@ export class BackgroundImage extends SerializableObject {
         this.verticalAlignment = BackgroundImage.defaultVerticalAlignment;
     }
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 
         this.url = Utils.getStringValue(json["url"]);
@@ -5859,8 +5863,8 @@ export class BackgroundImage extends SerializableObject {
 }
 
 export class Container extends StylableCardElementContainer {
-    private _items: Array<CardElement> = [];
-    private _renderedItems: Array<CardElement> = [];
+    private _items: CardElement[] = [];
+    private _renderedItems: CardElement[] = [];
 
     private insertItemAt(
         item: CardElement,
@@ -6138,7 +6142,7 @@ export class Container extends StylableCardElementContainer {
         return this.isBleeding() || (lastRenderedItem ? lastRenderedItem.isBleedingAtBottom() && lastRenderedItem.getEffectiveStyle() == this.getEffectiveStyle() : false);
     }
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 
         this.setShouldFallback(false);
@@ -6163,7 +6167,7 @@ export class Container extends StylableCardElementContainer {
         this.verticalContentAlignment = <Enums.VerticalAlignment>Utils.getEnumValue(Enums.VerticalAlignment, json["verticalContentAlignment"], this.verticalContentAlignment);
 
         if (json[this.getItemsCollectionPropertyName()] != null) {
-            let items = json[this.getItemsCollectionPropertyName()] as Array<any>;
+            let items = json[this.getItemsCollectionPropertyName()] as any[];
 
             this.clear();
 
@@ -6219,7 +6223,7 @@ export class Container extends StylableCardElementContainer {
         this._items = [];
     }
 
-    getResourceInformation(): Array<Shared.IResourceInformation> {
+    getResourceInformation(): Shared.IResourceInformation[] {
         let result = super.getResourceInformation();
 
         if (this.backgroundImage.isValid()) {
@@ -6354,7 +6358,7 @@ export class Column extends Container {
         return result;
     }
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 
         let jsonWidth = json["width"];
@@ -6415,10 +6419,10 @@ export class Column extends Container {
 }
 
 export class ColumnSet extends StylableCardElementContainer {
-    private _columns: Array<Column> = [];
-    private _renderedColumns: Array<Column>;
+    private _columns: Column[] = [];
+    private _renderedColumns: Column[];
 
-    private createColumnInstance(json: any, errors: Array<Shared.IValidationError> | undefined): Column | undefined {
+    private createColumnInstance(json: any, errors: Shared.IValidationError[] | undefined): Column | undefined {
         return createCardObjectInstance<Column>(
             this,
             json,
@@ -6626,11 +6630,11 @@ export class ColumnSet extends StylableCardElementContainer {
         return "ColumnSet";
     }
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 
         if (json["columns"] != null) {
-            let jsonColumns = json["columns"] as Array<any>;
+            let jsonColumns = json["columns"] as any[];
 
             this._columns = [];
 
@@ -6819,7 +6823,7 @@ function raiseElementVisibilityChangedEvent(element: CardElement, shouldUpdateLa
     }
 }
 
-function raiseParseElementEvent(element: CardElement, json: any, errors?: Array<Shared.IValidationError>) {
+function raiseParseElementEvent(element: CardElement, json: any, errors?: Shared.IValidationError[]) {
     let card = element.getRootElement() as AdaptiveCard;
     let onParseElementHandler = (card && card.onParseElement) ? card.onParseElement : AdaptiveCard.onParseElement;
 
@@ -6828,7 +6832,7 @@ function raiseParseElementEvent(element: CardElement, json: any, errors?: Array<
     }
 }
 
-function raiseParseActionEvent(action: Action, json: any, errors?: Array<Shared.IValidationError>) {
+function raiseParseActionEvent(action: Action, json: any, errors?: Shared.IValidationError[]) {
     let card = action.parent ? action.parent.getRootElement() as AdaptiveCard : null;
     let onParseActionHandler = (card && card.onParseAction) ? card.onParseAction : AdaptiveCard.onParseAction;
 
@@ -6837,7 +6841,7 @@ function raiseParseActionEvent(action: Action, json: any, errors?: Array<Shared.
     }
 }
 
-function raiseParseError(error: Shared.IValidationError, errors: Array<Shared.IValidationError> | undefined) {
+function raiseParseError(error: Shared.IValidationError, errors: Shared.IValidationError[] | undefined) {
     if (errors) {
         errors.push(error);
     }
@@ -6938,7 +6942,7 @@ export abstract class ContainerWithActions extends Container {
         return result ? result : super.getActionById(id);
     }
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 
         this._actionCollection.parse(json["actions"], errors);
@@ -6966,11 +6970,11 @@ export abstract class ContainerWithActions extends Container {
         this._actionCollection.clear();
     }
 
-    getAllInputs(): Array<Input> {
+    getAllInputs(): Input[] {
         return super.getAllInputs().concat(this._actionCollection.getAllInputs());
     }
 
-    getResourceInformation(): Array<Shared.IResourceInformation> {
+    getResourceInformation(): Shared.IResourceInformation[] {
         return super.getResourceInformation().concat(this._actionCollection.getResourceInformation());
     }
 
@@ -6994,7 +6998,7 @@ export abstract class ContainerWithActions extends Container {
 }
 
 export abstract class TypeRegistry<T> {
-    private _items: Array<ITypeRegistration<T>> = [];
+    private _items: ITypeRegistration<T>[] = [];
 
     private findTypeRegistration(typeName: string): ITypeRegistration<T> | undefined {
         for (let item of this._items) {
@@ -7117,8 +7121,8 @@ export class AdaptiveCard extends ContainerWithActions {
     static onImageLoaded?: (image: Image) => void;
     static onInlineCardExpanded?: (action: ShowCardAction, isExpanded: boolean) => void;
     static onInputValueChanged?: (input: Input) => void;
-    static onParseElement?: (element: CardElement, json: any, errors?: Array<Shared.IValidationError>) => void;
-    static onParseAction?: (element: Action, json: any, errors?: Array<Shared.IValidationError>) => void;
+    static onParseElement?: (element: CardElement, json: any, errors?: Shared.IValidationError[]) => void;
+    static onParseAction?: (element: Action, json: any, errors?: Shared.IValidationError[]) => void;
     static onParseError?: (error: Shared.IValidationError) => void;
     static onProcessMarkdown?: (text: string, result: IMarkdownProcessingResult) => void;
 
@@ -7220,8 +7224,8 @@ export class AdaptiveCard extends ContainerWithActions {
     onImageLoaded?: (image: Image) => void;
     onInlineCardExpanded?: (action: ShowCardAction, isExpanded: boolean) => void;
     onInputValueChanged?: (input: Input) => void;
-    onParseElement?: (element: CardElement, json: any, errors?: Array<Shared.IValidationError>) => void;
-    onParseAction?: (element: Action, json: any, errors?: Array<Shared.IValidationError>) => void;
+    onParseElement?: (element: CardElement, json: any, errors?: Shared.IValidationError[]) => void;
+    onParseAction?: (element: Action, json: any, errors?: Shared.IValidationError[]) => void;
 
     version?: Shared.Version = new Shared.Version(1, 0);
     fallbackText: string;
@@ -7278,7 +7282,7 @@ export class AdaptiveCard extends ContainerWithActions {
         }
     }
 
-    parse(json: any, errors?: Array<Shared.IValidationError>) {
+    parse(json: any, errors?: Shared.IValidationError[]) {
         this._fallbackCard = undefined;
 
         this._cardTypeName = Utils.getStringValue(json["type"]);
@@ -7403,7 +7407,7 @@ class InlineAdaptiveCard extends AdaptiveCard {
         return renderedCard;
     }
 
-    getForbiddenActionTypes(): Array<any> {
+    getForbiddenActionTypes(): any[] {
         return [ShowCardAction];
     }
 }

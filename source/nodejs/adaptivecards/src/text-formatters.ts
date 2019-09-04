@@ -50,15 +50,15 @@ class TimeFormatter extends AbstractTextFormatter {
 }
 
 export function formatText(lang: string | undefined, text: string | undefined): string | undefined {
-    const formatters: Array<AbstractTextFormatter> = [
+    const formatters: AbstractTextFormatter[] = [
         new DateFormatter(/\{{2}DATE\((\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|(?:(?:-|\+)\d{2}:\d{2})))(?:, ?(COMPACT|LONG|SHORT))?\)\}{2}/g),
         new TimeFormatter(/\{{2}TIME\((\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|(?:(?:-|\+)\d{2}:\d{2})))\)\}{2}/g)
     ];
 
     let result = text;
 
-    for (let i = 0; i < formatters.length; i++) {
-        result = formatters[i].format(lang, result);
+    for (let formatter of formatters) {
+        result = formatter.format(lang, result);
     }
 
     return result;

@@ -219,7 +219,7 @@ export class Version {
         this._label = label;
     }
 
-    static parse(versionString: string, errors?: Array<IValidationError>): Version | undefined {
+    static parse(versionString: string, errors?: IValidationError[]): Version | undefined {
         if (!versionString) {
             return undefined;
         }
