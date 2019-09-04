@@ -3,6 +3,17 @@
 import * as Enums from "./enums";
 import * as Utils from "./utils";
 
+export class GlobalSettings {
+    static useAdvancedTextBlockTruncation: boolean = true;
+    static useAdvancedCardBottomTruncation: boolean = false;
+    static useMarkdownInRadioButtonAndCheckbox: boolean = true;
+    static allowMarkForTextHighlighting: boolean = false;
+    static alwaysBleedSeparators: boolean = false;
+    static enableFullJsonRoundTrip: boolean = false;
+    static useBuiltInInputValidation: boolean = true;
+    static displayInputValidationErrors: boolean = true;
+}
+
 export const ContentTypes = {
 	applicationJson: "application/json",
 	applicationXWwwFormUrlencoded: "application/x-www-form-urlencoded"

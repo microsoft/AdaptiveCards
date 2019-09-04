@@ -1,18 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import { HostContainer } from "./host-container";
-import {
-    AdaptiveCard,
-    HostConfig,
-    Size,
-    TextSize,
-    TextColor,
-    TextWeight,
-    Spacing,
-    ShowCardActionMode,
-    Orientation,
-    ActionAlignment,
-} from "adaptivecards";
+import * as Adaptive from "adaptivecards";
 import * as windowsTimelineConfiguration from "../../../../../samples/HostConfig/windows-timeline.json";
 
 export class TimelineContainer extends HostContainer {
@@ -29,8 +18,8 @@ export class TimelineContainer extends HostContainer {
         this.supportsActionBar = false;
     }
 
-    protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement): HTMLElement {
-        AdaptiveCard.useAdvancedCardBottomTruncation = true;
+    protected renderContainer(adaptiveCard: Adaptive.AdaptiveCard, target: HTMLElement): HTMLElement {
+        Adaptive.GlobalSettings.useAdvancedCardBottomTruncation = true;
 
         var wrapper = document.createElement("div");
         wrapper.className = "timeline-frame";
@@ -55,7 +44,7 @@ export class TimelineContainer extends HostContainer {
         return wrapper;
     }
 
-    public getHostConfig(): HostConfig {
-        return new HostConfig(windowsTimelineConfiguration);
+    public getHostConfig(): Adaptive.HostConfig {
+        return new Adaptive.HostConfig(windowsTimelineConfiguration);
     }
 }

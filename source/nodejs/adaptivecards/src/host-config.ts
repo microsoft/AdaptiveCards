@@ -3,6 +3,7 @@
 import * as Enums from "./enums";
 import * as Utils from "./utils";
 import * as Shared from "./shared";
+import { HostCapabilities } from "./host-capabilities";
 
 export class ColorDefinition {
     default: string = "#000000";
@@ -386,65 +387,6 @@ export class ContainerStyleSet {
 
     get emphasis(): ContainerStyleDefinition {
         return this._allStyles[Enums.ContainerStyle.Emphasis];
-    }
-}
-
-export type HostCapabilityMap = { [key: string]: Shared.TargetVersion };
-
-export class HostCapabilities {
-    private setCapability(name: string, version: Shared.TargetVersion) {
-        if (!this.capabilities) {
-            this.capabilities = { };
-        }
-
-        this.capabilities[name] = version;
-    }
-
-    capabilities?: HostCapabilityMap;
-
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        if (json) {
-            for (let name in json) {
-                let jsonVersion = json[name];
-
-                if (typeof jsonVersion === "string") {
-                    if (jsonVersion == "*") {
-                        this.setCapability(name, "*");
-                    }
-                    else {
-                        let version = Shared.Version.parse(jsonVersion, errors);
-
-                        if (version && version.isValid) {
-                            this.setCapability(name, version);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    hasCapability(name: string, version: Shared.TargetVersion): boolean {
-        if (this.capabilities && this.capabilities.hasOwnProperty(name)) {
-            if (version == "*" || this.capabilities[name] == "*") {
-                return true;
-            }
-
-            return version.compareTo(<Shared.Version>this.capabilities[name]) <= 0;
-        }
-
-        return false;
-    }
-
-    areAllMet(hostCapabilities: HostCapabilities): boolean {
-        if (this.capabilities) {
-            for (let capabilityName in this.capabilities) {
-                if (!hostCapabilities.hasCapability(capabilityName, this.capabilities[capabilityName])) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
     }
 }
 

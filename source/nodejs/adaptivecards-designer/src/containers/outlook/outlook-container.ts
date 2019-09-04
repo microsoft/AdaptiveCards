@@ -16,7 +16,7 @@ export class OutlookContainer extends HostContainer {
         Adaptive.AdaptiveCard.actionTypeRegistry.unregisterType("Action.Submit");
         Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.Http", () => { return new Adaptive.HttpAction(); });
 
-        Adaptive.AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = false;
+        Adaptive.GlobalSettings.useMarkdownInRadioButtonAndCheckbox = false;
     }
 
     private parsePadding(json: any): Adaptive.PaddingDefinition {

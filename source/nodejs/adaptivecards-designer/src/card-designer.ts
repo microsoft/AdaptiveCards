@@ -795,7 +795,8 @@ export class CardDesigner {
     sampleCatalogueUrl: string = undefined;
 
     constructor(hostContainers: Array<HostContainer> = null) {
-        Adaptive.AdaptiveCard.enableFullJsonRoundTrip = true;
+        Adaptive.GlobalSettings.enableFullJsonRoundTrip = true;
+        
         Adaptive.AdaptiveCard.onProcessMarkdown = (text: string, result: Adaptive.IMarkdownProcessingResult) => {
             CardDesigner.internalProcessMarkdown(text, result);
         }

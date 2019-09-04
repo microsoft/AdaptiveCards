@@ -1209,7 +1209,7 @@ export class HttpActionPeer extends TypedActionPeer<Adaptive.HttpAction> {
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
         
-        if (Adaptive.AdaptiveCard.useBuiltInInputValidation) {
+        if (Adaptive.GlobalSettings.useBuiltInInputValidation) {
             propertySheet.add(
                 PropertySheetCategory.DefaultCategory,
                 HttpActionPeer.ignoreInputValidationProperty);

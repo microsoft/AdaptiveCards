@@ -24,8 +24,8 @@ export class OutlookContainer extends HostContainer {
         Adaptive.AdaptiveCard.actionTypeRegistry.unregisterType("Action.Submit");
         Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.Http", () => { return new Adaptive.HttpAction(); });
 
-        Adaptive.AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = false;
-        Adaptive.AdaptiveCard.allowMarkForTextHighlighting = true;
+        Adaptive.GlobalSettings.useMarkdownInRadioButtonAndCheckbox = false;
+        Adaptive.GlobalSettings.allowMarkForTextHighlighting = true;
     }
 
     private parsePadding(json: any): Adaptive.PaddingDefinition {
@@ -122,10 +122,8 @@ export class OutlookContainer extends HostContainer {
 
     public setHostCapabilities(hostConfig: Adaptive.HostConfig) {
         // Uncomment to test "requires" clause
-        hostConfig.hostCapabilities.capabilities = {
-            helloWorld: "*",
-            whatNow: new Adaptive.Version(2, 3)
-        };
+        hostConfig.hostCapabilities.addCapability("helloWorld", "*");
+        hostConfig.hostCapabilities.addCapability("whatNot", new Adaptive.Version(2, 3));
     }
 
     public getHostConfig(): Adaptive.HostConfig {

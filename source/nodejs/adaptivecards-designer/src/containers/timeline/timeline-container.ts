@@ -9,9 +9,9 @@ export class TimelineContainer extends HostContainer {
         Adaptive.AdaptiveCard.elementTypeRegistry.reset();
         Adaptive.AdaptiveCard.actionTypeRegistry.reset();
 
-        Adaptive.AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = true;
-        Adaptive.AdaptiveCard.useAdvancedCardBottomTruncation = true;
-        Adaptive.AdaptiveCard.useAdvancedTextBlockTruncation = true;
+        Adaptive.GlobalSettings.useMarkdownInRadioButtonAndCheckbox = true;
+        Adaptive.GlobalSettings.useAdvancedCardBottomTruncation = true;
+        Adaptive.GlobalSettings.useAdvancedTextBlockTruncation = true;
     }
 
     public renderTo(hostElement: HTMLElement) {

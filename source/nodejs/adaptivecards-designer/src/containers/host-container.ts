@@ -23,9 +23,9 @@ export abstract class HostContainer {
         Adaptive.AdaptiveCard.elementTypeRegistry.reset();
         Adaptive.AdaptiveCard.actionTypeRegistry.reset();
 
-        Adaptive.AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = true;
-        Adaptive.AdaptiveCard.useAdvancedCardBottomTruncation = false;
-        Adaptive.AdaptiveCard.useAdvancedTextBlockTruncation = true;
+        Adaptive.GlobalSettings.useMarkdownInRadioButtonAndCheckbox = true;
+        Adaptive.GlobalSettings.useAdvancedCardBottomTruncation = false;
+        Adaptive.GlobalSettings.useAdvancedTextBlockTruncation = true;
     }
 
     public getBackgroundColor(): string {

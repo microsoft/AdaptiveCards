@@ -5,6 +5,8 @@ import * as Shared from "./shared";
 import * as Utils from "./utils";
 import * as HostConfig from "./host-config";
 import * as TextFormatters from "./text-formatters";
+import * as Serialization from "./serializable-object";
+import { HostCapabilities } from "./host-capabilities";
 
 function invokeSetCollection(action: Action, collection: ActionCollection | undefined) {
     if (action && collection) {
@@ -145,42 +147,6 @@ export function createElementInstance(
         errors);
 }
 
-export abstract class SerializableObject {
-    private _rawProperties: { [key: string]: any } = {};
-
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        this._rawProperties = AdaptiveCard.enableFullJsonRoundTrip ? json : {};
-    }
-
-    toJSON(): any {
-        let result: any;
-
-        if (AdaptiveCard.enableFullJsonRoundTrip && this._rawProperties && typeof this._rawProperties === "object") {
-            result = this._rawProperties;
-        }
-        else {
-            result = {};
-        }
-
-        return result;
-    }
-
-    setCustomProperty(name: string, value: any) {
-        let shouldDeleteProperty = (typeof value === "string" && Utils.isNullOrEmpty(value)) || value === undefined || value === null;
-
-        if (shouldDeleteProperty) {
-            delete this._rawProperties[name];
-        }
-        else {
-            this._rawProperties[name] = value;
-        }
-    }
-
-    getCustomProperty(name: string): any {
-        return this._rawProperties[name];
-    }
-}
-
 export class ValidationFailure {
     readonly errors: Shared.IValidationError[] = [];
 
@@ -218,291 +184,26 @@ export class ValidationResults {
     }
 }
 
-export abstract class PropertyDefinition {
-    abstract parse(value: any): any;
-    abstract toJSON(target: object, value: any): void;
+export abstract class CardObject extends Serialization.SerializableObject {
+    static readonly typeNameProperty = new Serialization.StringPropertyDefinition(
+        Shared.Versions.v1_0,
+        "type",
+        undefined,
+        undefined,
+        undefined,
+        (sender: object) => {
+            return (<CardObject>sender).getJsonTypeName()
+        });
+    static readonly idProperty = new Serialization.StringPropertyDefinition(Shared.Versions.v1_0, "id");
 
-    constructor(
-        readonly targetVersion: Shared.TargetVersion,
-        readonly name: string,
-        readonly defaultValue?: any) { }
-}
-
-export abstract class TypedPropertyDefinition<T> extends PropertyDefinition {
-    constructor(
-        readonly targetVersion: Shared.TargetVersion,
-        readonly name: string,
-        readonly defaultValue?: T) {
-        super(targetVersion, name, defaultValue);
-    }
-}
-
-export class StringPropertyDefinition extends TypedPropertyDefinition<string> {
-    parse(value: any): any {
-        let parsedValue = Utils.getStringValue(value, this.defaultValue);
-        let isUndefined = parsedValue === undefined || (parsedValue === "" && this.treatEmptyAsUndefined);
-
-        if (!isUndefined && this.regEx !== undefined) {
-            let matches = this.regEx.exec(value);
-
-            if (!matches) {
-                // TODO: Log parse error
-                return undefined;
-            }
-        }
-
-        return parsedValue;
-    }
-
-    toJSON(target: object, value: any) {
-        Utils.setProperty(
-            target,
-            this.name,
-            value === "" && this.treatEmptyAsUndefined ? undefined : value,
-            this.defaultValue);
-    }
-
-    constructor(
-        readonly targetVersion: Shared.TargetVersion,
-        readonly name: string,
-        readonly treatEmptyAsUndefined: boolean = true,
-        readonly regEx?: RegExp,
-        readonly defaultValue?: string) {
-        super(targetVersion, name, defaultValue);
-    }
-}
-
-export class BooleanPropertyDefinition extends TypedPropertyDefinition<boolean> {
-    parse(value: any): any {
-        return Utils.getBoolValue(value, this.defaultValue);;
-    }
-
-    toJSON(target: object, value: any) {
-        Utils.setProperty(
-            target,
-            this.name,
-            value,
-            this.defaultValue);
-    }
-}
-
-export interface IVersionedValue<TValue> {
-    targetVersion: Shared.TargetVersion;
-    value: TValue;
-}
-
-export class ValueSetPropertyDefinition extends TypedPropertyDefinition<string> {
-    parse(value: any): any {
-        let parsedValue = Utils.getStringValue(value, this.defaultValue);
-
-        for (let value of this.values) {
-            if (parsedValue.toLowerCase() === value.value) {
-                return value.value;
-            }
-        }
-
-        return undefined;
-    }
-
-    toJSON(target: object, value: any) {
-        Utils.setProperty(
-            target,
-            this.name,
-            value,
-            this.defaultValue);
-    }
-
-    constructor(
-        readonly targetVersion: Shared.TargetVersion,
-        readonly name: string,
-        readonly values: IVersionedValue<string>[],
-        readonly defaultValue?: string) {
-        super(targetVersion, name, defaultValue);
-    }
-}
-
-export class EnumPropertyDefinition<TEnum extends { [s: number]: string }> extends TypedPropertyDefinition<number> {
-    parse(value: any): any {
-        return Utils.getEnumValue(this.enumType, value, this.defaultValue);
-
-        /*
-        let parsedValue = Utils.getStringValue(value, this.defaultValue);
-
-        for (let value of this.values) {
-            if (parsedValue.toLowerCase() === value.value) {
-                return value.value;
-            }
-        }
-
-        return undefined;
-        */
-    }
-
-    toJSON(target: object, value: any) {
-        Utils.setEnumProperty(
-            this.enumType,
-            target,
-            this.name,
-            value,
-            this.defaultValue);
-    }
-
-    constructor(
-        readonly targetVersion: Shared.TargetVersion,
-        readonly name: string,
-        readonly enumType: TEnum,
-        readonly values: IVersionedValue<number>[],
-        readonly defaultValue?: number) {
-        super(targetVersion, name, defaultValue);
-    }
-}
-
-type PropertyBag = { [propertyName: string]: any };
-
-/*
-class PropertyBag {
-    private _store: { [propertyName: string]: any } = {};
-
-    getValue(property: PropertyDefinition) {
-        return this._store.hasOwnProperty(property.name) ? this._store[property.name] : property.defaultValue;
-    }
-
-    setValue(property: PropertyDefinition, value: any) {
-        if (value === undefined) {
-            delete this._store[property.name];
-        }
-        else {
-            this._store[property.name] = value;
-        }
-    }
-
-    clear() {
-        this._store = {};
-    }
-}
-*/
-
-export class CardObjectSchema implements Iterable<PropertyDefinition> {
-    private _properties: PropertyDefinition[] = [];
-
-    indexOf(property: PropertyDefinition): number {
-        for (let i = 0; i < this._properties.length; i++) {
-            if (this._properties[i] === property) {
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
-    add(property: PropertyDefinition) {
-        if (this.indexOf(property) === -1) {
-            this._properties.push(property);
-        }
-    }
-
-    remove(property: PropertyDefinition) {
-        while (true) {
-            let index = this.indexOf(property);
-
-            if (index >= 0) {
-                this._properties.splice(index, 1);
-            }
-            else {
-                break;
-            }
-        }
-    }
-
-    /*
-    toJSON(propertyBag: PropertyBag, target: object) {
-        for (let property of this._properties) {
-            property.toJSON(target, propertyBag.getValue(property));
-        }
-    }
-    */
-
-    [Symbol.iterator]() {
-        let index = 0;
-        let properties = this._properties;
-
-        return {
-            next(): IteratorResult<PropertyDefinition> {
-                if (index < properties.length) {
-                    return {
-                        done: false,
-                        value: properties[index++]
-                    }
-                }
-                else {
-                    return {
-                        done: true,
-                        value: undefined as unknown as PropertyDefinition
-                    }
-                }
-            }
-        }
-    }
-}
-
-export abstract class CardObject extends SerializableObject {
-    static readonly typeNameProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "type");
-    static readonly idProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "id");
-
-    protected populateSchema(schema: CardObjectSchema) {
+    protected populateSchema(schema: Serialization.SerializableObjectSchema) {
         schema.add(CardObject.typeNameProperty);
         schema.add(CardObject.idProperty);
-    }
-
-    private static readonly _schemaCache: { [typeName: string]: CardObjectSchema } = {};
-
-    // private readonly _propertyBag = new PropertyBag();
-    private readonly _propertyBag: PropertyBag = {};
-
-    protected getValue(property: PropertyDefinition) {
-        // return this._propertyBag.getValue(property);
-
-        return this._propertyBag.hasOwnProperty(property.name) ? this._propertyBag[property.name] : property.defaultValue;
-    }
-
-    protected setValue(property: PropertyDefinition, value: any) {
-        // this._propertyBag.setValue(property, value);
-
-        if (value === undefined) {
-            delete this._propertyBag[property.name];
-        }
-        else {
-            this._propertyBag[property.name] = value;
-        }
     }
 
     abstract getJsonTypeName(): string;
     abstract shouldFallback(): boolean;
     abstract setParent(parent: CardElement | undefined): void;
-
-    // id: string;
-
-    get schema(): CardObjectSchema {
-        let schema: CardObjectSchema = CardObject._schemaCache[this.getJsonTypeName()];
-
-        if (!schema) {
-            schema = new CardObjectSchema();
-            
-            this.populateSchema(schema);
-
-            CardObject._schemaCache[this.getJsonTypeName()] = schema;
-        }
-
-        return schema;
-    }
-
-    get id(): string {
-        return this.getValue(CardObject.idProperty);
-    }
-
-    set id(value: string) {
-        this.setValue(CardObject.idProperty, value);
-    }
 
     internalValidateProperties(context: ValidationResults) {
         if (!Utils.isNullOrEmpty(this.id)) {
@@ -524,34 +225,6 @@ export abstract class CardObject extends SerializableObject {
         }
     }
 
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        super.parse(json, errors);
-
-        // this.id = Utils.getStringValue(json["id"]);
-
-        for (let property of this.schema) {
-            this.setValue(property, property.parse(json[property.name]));
-        }
-    }
-
-    toJSON(): any {
-        let result = super.toJSON();
-
-        // Utils.setProperty(result, "type", this.getJsonTypeName());
-        // Utils.setProperty(result, "id", this.id);
-
-        // Forcefully set the type property before serializing
-        this.setValue(CardObject.typeNameProperty, this.getJsonTypeName());
-
-        // this.schema.toJSON(this._propertyBag, result);
-
-        for (let property of this.schema) {
-            property.toJSON(result, this.getValue(property));
-        }
-
-        return result;
-    }
-
     validateProperties(): ValidationResults {
         let result = new ValidationResults();
 
@@ -559,15 +232,23 @@ export abstract class CardObject extends SerializableObject {
 
         return result;
     }
+
+    get id(): string {
+        return this.getValue(CardObject.idProperty);
+    }
+
+    set id(value: string) {
+        this.setValue(CardObject.idProperty, value);
+    }
 }
 
 export type CardElementHeight = "auto" | "stretch";
 
 export abstract class CardElement extends CardObject {
-    static readonly langProperty = new StringPropertyDefinition(Shared.Versions.v1_1, "lang", true, /^[a-z]{2,3}$/ig);
-    static readonly isVisibleProperty = new BooleanPropertyDefinition(Shared.Versions.v1_2, "isVisible", true);
-    static readonly separatorProperty = new BooleanPropertyDefinition(Shared.Versions.v1_0, "separator", false);
-    static readonly heightProperty = new ValueSetPropertyDefinition(
+    static readonly langProperty = new Serialization.StringPropertyDefinition(Shared.Versions.v1_1, "lang", true, /^[a-z]{2,3}$/ig);
+    static readonly isVisibleProperty = new Serialization.BooleanPropertyDefinition(Shared.Versions.v1_2, "isVisible", true);
+    static readonly separatorProperty = new Serialization.BooleanPropertyDefinition(Shared.Versions.v1_0, "separator", false);
+    static readonly heightProperty = new Serialization.ValueSetPropertyDefinition(
         Shared.Versions.v1_1,
         "height",
         [
@@ -575,7 +256,7 @@ export abstract class CardElement extends CardObject {
             { targetVersion: Shared.Versions.v1_2, value: "stretch" }
         ],
         "auto");
-    static readonly horizontalAlignmentProperty = new EnumPropertyDefinition(
+    static readonly horizontalAlignmentProperty = new Serialization.EnumPropertyDefinition(
         Shared.Versions.v1_0,
         "horizontalAlignment",
         Enums.HorizontalAlignment,
@@ -585,7 +266,7 @@ export abstract class CardElement extends CardObject {
             { targetVersion: Shared.Versions.v1_0, value: Enums.HorizontalAlignment.Right }
         ],
         Enums.HorizontalAlignment.Left);
-    static readonly spacingProperty = new EnumPropertyDefinition(
+    static readonly spacingProperty = new Serialization.EnumPropertyDefinition(
         Shared.Versions.v1_0,
         "spacing",
         Enums.Spacing,
@@ -601,7 +282,7 @@ export abstract class CardElement extends CardObject {
         Enums.Spacing.Default);
 
 
-    protected populateSchema(schema: CardObjectSchema) {
+    protected populateSchema(schema: Serialization.SerializableObjectSchema) {
         super.populateSchema(schema);
 
         schema.add(CardElement.langProperty);
@@ -632,7 +313,7 @@ export abstract class CardElement extends CardObject {
             },
             this.separatorOrientation);
 
-            if (AdaptiveCard.alwaysBleedSeparators && renderedSeparator && this.separatorOrientation == Enums.Orientation.Horizontal) {
+            if (Shared.GlobalSettings.alwaysBleedSeparators && renderedSeparator && this.separatorOrientation == Enums.Orientation.Horizontal) {
                 // Adjust separator's margins if the option to always bleed separators is turned on
                 let parentContainer = this.getParentContainer();
     
@@ -757,7 +438,7 @@ export abstract class CardElement extends CardObject {
 
     protected applyPadding() {
         if (this.separatorElement) {
-            if (AdaptiveCard.alwaysBleedSeparators && this.separatorOrientation == Enums.Orientation.Horizontal && !this.isBleeding()) {
+            if (Shared.GlobalSettings.alwaysBleedSeparators && this.separatorOrientation == Enums.Orientation.Horizontal && !this.isBleeding()) {
                 let padding = new Shared.PaddingDefinition();
 
                 this.getImmediateSurroundingPadding(padding);
@@ -827,7 +508,7 @@ export abstract class CardElement extends CardObject {
         return Enums.ContainerStyle.Default;
     }
 
-    readonly requires = new HostConfig.HostCapabilities();
+    readonly requires = new HostCapabilities();
 
     // horizontalAlignment?: Enums.HorizontalAlignment = null;
     // spacing: Enums.Spacing = Enums.Spacing.Default;
@@ -1283,7 +964,7 @@ export abstract class CardElement extends CardObject {
         // If the element is going to be hidden, reset any changes that were due
         // to overflow truncation (this ensures that if the element is later
         // un-hidden it has the right content)
-        if (AdaptiveCard.useAdvancedCardBottomTruncation && !value) {
+        if (Shared.GlobalSettings.useAdvancedCardBottomTruncation && !value) {
             this.undoOverflowTruncation();
         }
 
@@ -1571,7 +1252,7 @@ export class TextBlock extends BaseTextBlock {
                 let formattedText = TextFormatters.formatText(this.lang, this.text);
 
                 if (this.useMarkdown && formattedText) {
-                    if (AdaptiveCard.allowMarkForTextHighlighting) {
+                    if (Shared.GlobalSettings.allowMarkForTextHighlighting) {
                         formattedText = formattedText.replace(/<mark>/g, "===").replace(/<\/mark>/g, "/==");
                     }
 
@@ -1583,7 +1264,7 @@ export class TextBlock extends BaseTextBlock {
 
                         // Only process <mark> tag if markdown processing was applied because
                         // markdown processing is also responsible for sanitizing the input string
-                        if (AdaptiveCard.allowMarkForTextHighlighting && this._processedText) {
+                        if (Shared.GlobalSettings.allowMarkForTextHighlighting && this._processedText) {
                             let markStyle: string = "";
                             let effectiveStyle = this.getEffectiveStyleDefinition();
 
@@ -1665,7 +1346,7 @@ export class TextBlock extends BaseTextBlock {
                 element.style.textOverflow = "ellipsis";
             }
 
-            if (AdaptiveCard.useAdvancedTextBlockTruncation || AdaptiveCard.useAdvancedCardBottomTruncation) {
+            if (Shared.GlobalSettings.useAdvancedTextBlockTruncation || Shared.GlobalSettings.useAdvancedCardBottomTruncation) {
                 this._originalInnerHtml = element.innerHTML;
             }
 
@@ -1687,7 +1368,7 @@ export class TextBlock extends BaseTextBlock {
     protected undoOverflowTruncation() {
         this.restoreOriginalContent();
 
-        if (AdaptiveCard.useAdvancedTextBlockTruncation && this.maxLines) {
+        if (Shared.GlobalSettings.useAdvancedTextBlockTruncation && this.maxLines) {
             let maxHeight = this._computedLineHeight * this.maxLines;
 
             this.truncateIfSupported(maxHeight);
@@ -1769,7 +1450,7 @@ export class TextBlock extends BaseTextBlock {
     updateLayout(processChildren: boolean = false) {
         super.updateLayout(processChildren);
 
-        if (AdaptiveCard.useAdvancedTextBlockTruncation && this.maxLines && this.isDisplayed()) {
+        if (Shared.GlobalSettings.useAdvancedTextBlockTruncation && this.maxLines && this.isDisplayed()) {
             // Reset the element's innerHTML in case the available room for
             // content has increased
             this.restoreOriginalContent();
@@ -2050,7 +1731,7 @@ export class RichTextBlock extends CardElement {
     }
 }
 
-export class Fact extends SerializableObject {
+export class Fact extends Serialization.SerializableObject {
     name?: string;
     value?: string;
 
@@ -2842,7 +2523,7 @@ export class ImageSet extends CardElementContainer {
     }
 }
 
-export class MediaSource extends SerializableObject {
+export class MediaSource extends Serialization.SerializableObject {
     mimeType?: string;
     url?: string;
 
@@ -3140,7 +2821,7 @@ export class Media extends CardElement {
     }
 }
 
-export class InputValidationOptions extends SerializableObject {
+export class InputValidationOptions extends Serialization.SerializableObject {
     necessity: Enums.InputValidationNecessity = Enums.InputValidationNecessity.Optional;
     errorMessage?: string;
 
@@ -3202,7 +2883,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
             this._renderedInputControlElement = renderedInputControlElement;
             this._renderedInputControlElement.style.minWidth = "0px";
 
-            if (AdaptiveCard.useBuiltInInputValidation && this.isNullable && this.validation.necessity == Enums.InputValidationNecessity.RequiredWithVisualCue) {
+            if (Shared.GlobalSettings.useBuiltInInputValidation && this.isNullable && this.validation.necessity == Enums.InputValidationNecessity.RequiredWithVisualCue) {
                 this._renderedInputControlElement.classList.add(hostConfig.makeCssClassName("ac-input-required"));
             }
 
@@ -3227,7 +2908,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
     }
 
     protected resetValidationFailureCue() {
-        if (AdaptiveCard.useBuiltInInputValidation && this.renderedElement) {
+        if (Shared.GlobalSettings.useBuiltInInputValidation && this.renderedElement) {
             this._renderedInputControlElement.classList.remove(this.hostConfig.makeCssClassName("ac-input-validation-failed"));
 
             if (this._errorMessageElement) {
@@ -3239,7 +2920,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
     }
 
     protected showValidationErrorMessage() {
-        if (this.renderedElement && AdaptiveCard.useBuiltInInputValidation && AdaptiveCard.displayInputValidationErrors && !Utils.isNullOrEmpty(this.validation.errorMessage)) {
+        if (this.renderedElement && Shared.GlobalSettings.useBuiltInInputValidation && Shared.GlobalSettings.displayInputValidationErrors && !Utils.isNullOrEmpty(this.validation.errorMessage)) {
             this._errorMessageElement = document.createElement("span");
             this._errorMessageElement.className = this.hostConfig.makeCssClassName("ac-input-validation-error-message");
             this._errorMessageElement.textContent = <string>this.validation.errorMessage;
@@ -3266,7 +2947,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
         Utils.setProperty(result, "title", this.title);
         Utils.setProperty(result, "value", this.renderedElement && !Utils.isNullOrEmpty(this.value) ? this.value : this.defaultValue);
 
-        if (AdaptiveCard.useBuiltInInputValidation) {
+        if (Shared.GlobalSettings.useBuiltInInputValidation) {
             Utils.setProperty(result, "validation", this.validation.toJSON());
         }
 
@@ -3287,7 +2968,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
     }
 
     validateValue(): boolean {
-        if (AdaptiveCard.useBuiltInInputValidation) {
+        if (Shared.GlobalSettings.useBuiltInInputValidation) {
             this.resetValidationFailureCue();
 
             let result = this.validation.necessity != Enums.InputValidationNecessity.Optional ? !Utils.isNullOrEmpty(this.value) : true;
@@ -3311,7 +2992,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
         this.id = Utils.getStringValue(json["id"]);
         this.defaultValue = Utils.getStringValue(json["value"]);
 
-        if (AdaptiveCard.useBuiltInInputValidation) {
+        if (Shared.GlobalSettings.useBuiltInInputValidation) {
             let jsonValidation = json["validation"];
 
             if (jsonValidation) {
@@ -3574,7 +3255,7 @@ export class ToggleInput extends Input {
             label.forElementId = this._checkboxInputElement.id;
             label.hostConfig = this.hostConfig;
             label.text = Utils.isNullOrEmpty(this.title) ? this.getJsonTypeName() : this.title;
-            label.useMarkdown = AdaptiveCard.useMarkdownInRadioButtonAndCheckbox;
+            label.useMarkdown = Shared.GlobalSettings.useMarkdownInRadioButtonAndCheckbox;
             label.wrap = this.wrap;
 
             let labelElement = label.render();
@@ -3637,7 +3318,7 @@ export class ToggleInput extends Input {
     }
 }
 
-export class Choice extends SerializableObject {
+export class Choice extends Serialization.SerializableObject {
     title?: string;
     value?: string;
 
@@ -3759,7 +3440,7 @@ export class ChoiceSetInput extends Input {
                     label.forElementId = radioInput.id;
                     label.hostConfig = this.hostConfig;
                     label.text = Utils.isNullOrEmpty(choice.title) ? "Choice " + (i++) : choice.title;
-                    label.useMarkdown = AdaptiveCard.useMarkdownInRadioButtonAndCheckbox;
+                    label.useMarkdown = Shared.GlobalSettings.useMarkdownInRadioButtonAndCheckbox;
                     label.wrap = this.wrap;
 
                     let labelElement = label.render();
@@ -3827,7 +3508,7 @@ export class ChoiceSetInput extends Input {
                 label.forElementId = checkboxInput.id;
                 label.hostConfig = this.hostConfig;
                 label.text = Utils.isNullOrEmpty(choice.title) ? "Choice " + (i++) : choice.title;
-                label.useMarkdown = AdaptiveCard.useMarkdownInRadioButtonAndCheckbox;
+                label.useMarkdown = Shared.GlobalSettings.useMarkdownInRadioButtonAndCheckbox;
                 label.wrap = this.wrap;
 
                 let labelElement = label.render();
@@ -4313,7 +3994,7 @@ export abstract class Action extends CardObject {
     protected internalValidateInputs(referencedInputs: Shared.Dictionary<Input> | undefined): Input[] {
         let result: Input[] = [];
 
-        if (AdaptiveCard.useBuiltInInputValidation && !this.ignoreInputValidation && referencedInputs) {
+        if (Shared.GlobalSettings.useBuiltInInputValidation && !this.ignoreInputValidation && referencedInputs) {
             for (let key of Object.keys(referencedInputs)) {
                 let input = referencedInputs[key];
 
@@ -4328,7 +4009,7 @@ export abstract class Action extends CardObject {
 
     abstract getJsonTypeName(): string;
 
-    readonly requires = new HostConfig.HostCapabilities();
+    readonly requires = new HostCapabilities();
 
     title: string;
     iconUrl: string;
@@ -4744,7 +4425,7 @@ export class ToggleVisibilityAction extends Action {
     }
 }
 
-export class HttpHeader extends SerializableObject {
+export class HttpHeader extends Serialization.SerializableObject {
     private _value = new Shared.StringWithSubstitutions();
 
     name: string;
@@ -5763,7 +5444,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
     }
 }
 
-export class BackgroundImage extends SerializableObject {
+export class BackgroundImage extends Serialization.SerializableObject {
     private static readonly defaultFillMode = Enums.FillMode.Cover;
     private static readonly defaultHorizontalAlignment = Enums.HorizontalAlignment.Left;
     private static readonly defaultVerticalAlignment = Enums.VerticalAlignment.Top;
@@ -5918,7 +5599,7 @@ export class Container extends StylableCardElementContainer {
         element.style.display = "flex";
         element.style.flexDirection = "column";
 
-        if (AdaptiveCard.useAdvancedCardBottomTruncation) {
+        if (Shared.GlobalSettings.useAdvancedCardBottomTruncation) {
             // Forces the container to be at least as tall as its content.
             //
             // Fixes a quirk in Chrome where, for nested flex elements, the
@@ -6455,7 +6136,7 @@ export class ColumnSet extends StylableCardElementContainer {
             element.className = hostConfig.makeCssClassName("ac-columnSet");
             element.style.display = "flex";
 
-            if (AdaptiveCard.useAdvancedCardBottomTruncation) {
+            if (Shared.GlobalSettings.useAdvancedCardBottomTruncation) {
                 // See comment in Container.internalRender()
                 element.style.minHeight = '-webkit-min-content';
             }
@@ -7099,15 +6780,6 @@ export interface IMarkdownProcessingResult {
 export class AdaptiveCard extends ContainerWithActions {
     private static currentVersion: Shared.Version = new Shared.Version(1, 2);
 
-    static useAdvancedTextBlockTruncation: boolean = true;
-    static useAdvancedCardBottomTruncation: boolean = false;
-    static useMarkdownInRadioButtonAndCheckbox: boolean = true;
-    static allowMarkForTextHighlighting: boolean = false;
-    static alwaysBleedSeparators: boolean = false;
-    static enableFullJsonRoundTrip: boolean = false;
-    static useBuiltInInputValidation: boolean = true;
-    static displayInputValidationErrors: boolean = true;
-
     static readonly elementTypeRegistry = new ElementTypeRegistry();
     static readonly actionTypeRegistry = new ActionTypeRegistry();
 
@@ -7176,7 +6848,7 @@ export class AdaptiveCard extends ContainerWithActions {
     protected internalRender(): HTMLElement | undefined {
         let renderedElement = super.internalRender();
 
-        if (AdaptiveCard.useAdvancedCardBottomTruncation && renderedElement) {
+        if (Shared.GlobalSettings.useAdvancedCardBottomTruncation && renderedElement) {
             // Unlike containers, the root card element should be allowed to
             // be shorter than its content (otherwise the overflow truncation
             // logic would never get triggered)
@@ -7352,7 +7024,7 @@ export class AdaptiveCard extends ContainerWithActions {
     updateLayout(processChildren: boolean = true) {
         super.updateLayout(processChildren);
 
-        if (AdaptiveCard.useAdvancedCardBottomTruncation && this.isDisplayed()) {
+        if (Shared.GlobalSettings.useAdvancedCardBottomTruncation && this.isDisplayed()) {
             let padding = this.hostConfig.getEffectiveSpacing(Enums.Spacing.Default);
 
             this['handleOverflow']((<HTMLElement>this.renderedElement).offsetHeight - padding);

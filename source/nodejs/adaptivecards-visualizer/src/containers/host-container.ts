@@ -1,18 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import {
-    AdaptiveCard,
-    HostConfig,
-    Size,
-    TextSize,
-    TextColor,
-    TextWeight,
-    Spacing,
-    ShowCardActionMode,
-    Orientation,
-    ActionAlignment,
-    CardElement
-} from "adaptivecards";
+import * as Adaptive from "adaptivecards";
 import * as vkbeautify from "vkbeautify";
 import * as sampleConfiguration from "../../../../../samples/HostConfig/sample.json";
 
@@ -112,30 +100,31 @@ export abstract class HostContainer {
     }
 
     public initialize() {
-        AdaptiveCard.elementTypeRegistry.reset();
-        AdaptiveCard.actionTypeRegistry.reset();
-        AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = true;
-        AdaptiveCard.allowMarkForTextHighlighting = false;
+        Adaptive.AdaptiveCard.elementTypeRegistry.reset();
+        Adaptive.AdaptiveCard.actionTypeRegistry.reset();
+
+        Adaptive.GlobalSettings.useMarkdownInRadioButtonAndCheckbox = true;
+        Adaptive.GlobalSettings.allowMarkForTextHighlighting = false;
     }
 
-    public parseElement(element: CardElement, json: any) {
+    public parseElement(element: Adaptive.CardElement, json: any) {
         // Do nothing in base implementation
     }
 
-    public anchorClicked(element: CardElement, anchor: HTMLAnchorElement): boolean {
+    public anchorClicked(element: Adaptive.CardElement, anchor: HTMLAnchorElement): boolean {
         // Not handled by the host container by default
         return false;
     }
 
-    public setHostCapabilities(hostConfig: HostConfig) {
+    public setHostCapabilities(hostConfig: Adaptive.HostConfig) {
         // Do nothing in base implementation
     }
 
-    public getHostConfig(): HostConfig {
-        return new HostConfig(sampleConfiguration);
+    public getHostConfig(): Adaptive.HostConfig {
+        return new Adaptive.HostConfig(sampleConfiguration);
     }
 
-    protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement): HTMLElement {
+    protected renderContainer(adaptiveCard: Adaptive.AdaptiveCard, target: HTMLElement): HTMLElement {
         return null;
     }
 
@@ -202,7 +191,7 @@ export abstract class HostContainer {
         this.styleSheet = styleSheet;
     }
 
-    render(adaptiveCard: AdaptiveCard, target: HTMLElement, showSpeechXml: boolean = false): HTMLElement {
+    render(adaptiveCard: Adaptive.AdaptiveCard, target: HTMLElement, showSpeechXml: boolean = false): HTMLElement {
         var element = document.createElement("div");
         target.appendChild(element);
 
