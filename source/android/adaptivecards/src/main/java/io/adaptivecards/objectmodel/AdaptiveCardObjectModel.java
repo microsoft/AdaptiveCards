@@ -73,16 +73,16 @@ public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants
     return TextWeight.swigToEnum(AdaptiveCardObjectModelJNI.TextWeightFromString(t));
   }
 
-  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__FontStyle_t getFontStyleEnum() {
-    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__FontStyle_t(AdaptiveCardObjectModelJNI.getFontStyleEnum(), false);
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__FontType_t getFontTypeEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__FontType_t(AdaptiveCardObjectModelJNI.getFontTypeEnum(), false);
   }
 
-  public static String FontStyleToString(FontStyle t) {
-    return AdaptiveCardObjectModelJNI.FontStyleToString(t.swigValue());
+  public static String FontTypeToString(FontType t) {
+    return AdaptiveCardObjectModelJNI.FontTypeToString(t.swigValue());
   }
 
-  public static FontStyle FontStyleFromString(String t) {
-    return FontStyle.swigToEnum(AdaptiveCardObjectModelJNI.FontStyleFromString(t));
+  public static FontType FontTypeFromString(String t) {
+    return FontType.swigToEnum(AdaptiveCardObjectModelJNI.FontTypeFromString(t));
   }
 
   public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ForegroundColor_t getForegroundColorEnum() {
@@ -121,16 +121,16 @@ public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants
     return VerticalAlignment.swigToEnum(AdaptiveCardObjectModelJNI.VerticalAlignmentFromString(t));
   }
 
-  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__BackgroundImageMode_t getBackgroundImageModeEnum() {
-    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__BackgroundImageMode_t(AdaptiveCardObjectModelJNI.getBackgroundImageModeEnum(), false);
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ImageFillMode_t getImageFillModeEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ImageFillMode_t(AdaptiveCardObjectModelJNI.getImageFillModeEnum(), false);
   }
 
-  public static String BackgroundImageModeToString(BackgroundImageMode t) {
-    return AdaptiveCardObjectModelJNI.BackgroundImageModeToString(t.swigValue());
+  public static String ImageFillModeToString(ImageFillMode t) {
+    return AdaptiveCardObjectModelJNI.ImageFillModeToString(t.swigValue());
   }
 
-  public static BackgroundImageMode BackgroundImageModeFromString(String t) {
-    return BackgroundImageMode.swigToEnum(AdaptiveCardObjectModelJNI.BackgroundImageModeFromString(t));
+  public static ImageFillMode ImageFillModeFromString(String t) {
+    return ImageFillMode.swigToEnum(AdaptiveCardObjectModelJNI.ImageFillModeFromString(t));
   }
 
   public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ImageStyle_t getImageStyleEnum() {
@@ -299,6 +299,18 @@ public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants
 
   public static HeightType HeightTypeFromString(String t) {
     return HeightType.swigToEnum(AdaptiveCardObjectModelJNI.HeightTypeFromString(t));
+  }
+
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__InputNecessityIndicators_t getInputNecessityIndicatorsEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__InputNecessityIndicators_t(AdaptiveCardObjectModelJNI.getInputNecessityIndicatorsEnum(), false);
+  }
+
+  public static String InputNecessityIndicatorsToString(InputNecessityIndicators t) {
+    return AdaptiveCardObjectModelJNI.InputNecessityIndicatorsToString(t.swigValue());
+  }
+
+  public static InputNecessityIndicators InputNecessityIndicatorsFromString(String t) {
+    return InputNecessityIndicators.swigToEnum(AdaptiveCardObjectModelJNI.InputNecessityIndicatorsFromString(t));
   }
 
   public static void HandleUnknownProperties(JsonValue json, SWIGTYPE_p_std__unordered_setT_std__string_t knownProperties, JsonValue unknownProperties) {

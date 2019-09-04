@@ -1,0 +1,45 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "Input.Text",
+			"placeholder": "Name",
+			"style": "text",
+			"maxLength": 0,
+			"id": "duplicate"
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "Submit",
+			"data": {
+				"id": "1234567890"
+			}
+		},
+		{
+			"type": "Action.ShowCard",
+			"title": "Show Card",
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "Input.Text",
+						"placeholder": "enter comment",
+						"style": "text",
+						"maxLength": 0,
+						"id": "duplicate"
+					}
+				],
+				"actions": [
+					{
+						"type": "Action.Submit",
+						"title": "OK"
+					}
+				]
+			}
+		}
+	]
+}

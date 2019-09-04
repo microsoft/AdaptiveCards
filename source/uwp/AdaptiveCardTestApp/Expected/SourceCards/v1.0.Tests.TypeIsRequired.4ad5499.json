@@ -1,0 +1,13 @@
+{
+		"type": "AdaptiveCard",
+		"version": "1.0",
+		"body": [
+			{
+				"type": "TextBlock",
+				"text": "This payload should fail to parse"
+			},
+			{
+				"text": "What am I?"
+			}
+		]
+	}

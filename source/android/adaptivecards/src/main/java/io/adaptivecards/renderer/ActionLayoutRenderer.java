@@ -144,7 +144,7 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
                     throw new AdaptiveFallbackException(actionElement);
                 }
 
-                if (!actionElement.MeetsRequirements(featureRegistration))
+                if ((featureRegistration != null) && (!actionElement.MeetsRequirements(featureRegistration)))
                 {
                     throw new AdaptiveFallbackException(actionElement, featureRegistration);
                 }
@@ -182,7 +182,7 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
                                     throw new AdaptiveFallbackException(fallbackElement);
                                 }
 
-                                if (!fallbackElement.MeetsRequirements(featureRegistration))
+                                if ((featureRegistration != null) && (!fallbackElement.MeetsRequirements(featureRegistration)))
                                 {
                                     throw new AdaptiveFallbackException(fallbackElement, featureRegistration);
                                 }

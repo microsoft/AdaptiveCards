@@ -24,6 +24,8 @@ namespace AdaptiveSharedNamespace
 
         std::string GetWidth() const;
         void SetWidth(const std::string& value);
+        void SetWidth(const std::string& value,
+                      std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>>* warnings);
 
         // explicit width takes precedence over relative width
         int GetPixelWidth() const;
@@ -36,9 +38,6 @@ namespace AdaptiveSharedNamespace
 
     private:
         void PopulateKnownPropertiesSet() override;
-        void SetWidth(const std::string& value,
-                      std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>>* warnings);
-
         std::string m_width;
         unsigned int m_pixelWidth;
         std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>> m_items;

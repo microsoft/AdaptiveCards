@@ -111,8 +111,10 @@ export class Img extends React.Component {
 		let sizeStyle = [];
 		let sizeValue = Utils.parseHostConfigEnum(Enums.Size, this.payload.size, Enums.Size.Auto)
 		/*  This W2H ratio is calculated to determine the height required w.r.to pre-determined sizes */
-		const w2hratio = this.state.imageHeight / this.state.imageWidth;
-
+		var w2hratio = this.state.imageHeight / this.state.imageWidth;
+		if (!Utils.isaNumber(w2hratio)) {
+			w2hratio = 1;
+		}
         /**
          * Scenario 1 : Either height or width has string value (Ex: '80px'),
          *               use the integer portion.

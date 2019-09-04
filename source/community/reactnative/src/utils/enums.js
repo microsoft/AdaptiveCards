@@ -151,3 +151,30 @@ export const FontStyle = Object.freeze({
 	Default: 0,
 	Monospace: 1,
 });
+
+export const ElementType = Object.freeze({
+	AdaptiveCard: 'AdaptiveCard',
+	Container: 'Container',
+	ColumnSet: 'ColumnSet',
+	ImageSet: 'ImageSet',
+	Column: 'Column',
+	FactSet: 'FactSet',
+
+	TextInput: 'Input.Text',
+	NumberInput: 'Input.Number',
+	ToggleInput: 'Input.Toggle',
+	DateInput: 'Input.Date',
+	TimeInput: 'Input.Time',
+	ChoiceSetInput: 'Input.ChoiceSet',
+
+	TextBlock: 'TextBlock',
+	Media: 'Media',
+	Image: 'Image',
+	RichTextBlock: 'RichTextBlock',
+
+	ActionShowCard: 'Action.ShowCard',
+	ActionSubmit: 'Action.Submit',
+	ActionOpenUrl: 'Action.OpenUrl',
+	ActionToggleVisibility: 'Action.ToggleVisibility',
+	ActionSet: 'ActionSet'
+});

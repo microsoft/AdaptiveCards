@@ -1,0 +1,1 @@
+{"actions":[],"body":[{"inlines":[{"text":"This is the first inline. ","type":"TextRun"},{"text":"This inline has default underline value. ","type":"TextRun"},{"text":"This inline must have underline. ","type":"TextRun","underline":true},{"text":"This inline must not have underline. ","type":"TextRun"}],"type":"RichTextBlock"}],"type":"AdaptiveCard","version":"1.3"}

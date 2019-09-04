@@ -43,7 +43,7 @@ namespace AdaptiveCards.Rendering.Wpf
             // to the side the column would have bled
             if (columnHasPadding)
             {
-                childRenderArgs.BleedDirection = BleedDirection.Both;
+                childRenderArgs.BleedDirection = BleedDirection.BleedAll;
             }
 
             // If either this column or an ancestor had padding, then the children will have an ancestor with padding
@@ -53,6 +53,7 @@ namespace AdaptiveCards.Rendering.Wpf
             AdaptiveContainerRenderer.AddContainerElements(uiContainer, column.Items, context);
 
             RendererUtil.ApplyVerticalContentAlignment(uiContainer, column);
+
             uiContainer.MinHeight = column.PixelMinHeight;
 
             // Revert context's value to that of outside the Column

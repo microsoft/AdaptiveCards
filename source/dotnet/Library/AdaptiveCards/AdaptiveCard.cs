@@ -30,7 +30,7 @@ namespace AdaptiveCards
         /// <summary>
         /// The latest known schema version supported by this library
         /// </summary>
-        public static AdaptiveSchemaVersion KnownSchemaVersion = new AdaptiveSchemaVersion(1, 2);
+        public static AdaptiveSchemaVersion KnownSchemaVersion = new AdaptiveSchemaVersion(1, 3);
 
         /// <summary>
         /// Creates an AdaptiveCard using a specific schema version
@@ -170,11 +170,10 @@ namespace AdaptiveCards
         [JsonProperty(Order = -2)]
         [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveAction>))]
 #if !NETSTANDARD1_3
-        [XmlArray("Actions")]
-        [XmlArrayItem(ElementName = "OpenUrl", Type = typeof(AdaptiveOpenUrlAction))]
-        [XmlArrayItem(ElementName = "ShowCard", Type = typeof(AdaptiveShowCardAction))]
-        [XmlArrayItem(ElementName = "Submit", Type = typeof(AdaptiveSubmitAction))]
-        [XmlArrayItem(ElementName = "ToggleVisibility", Type = typeof(AdaptiveToggleVisibilityAction))]
+        [XmlElement(typeof(AdaptiveOpenUrlAction))]
+        [XmlElement(typeof(AdaptiveShowCardAction))]
+        [XmlElement(typeof(AdaptiveSubmitAction))]
+        [XmlElement(typeof(AdaptiveToggleVisibilityAction))]
 #endif
         public List<AdaptiveAction> Actions { get; set; } = new List<AdaptiveAction>();
 

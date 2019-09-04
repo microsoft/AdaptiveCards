@@ -37,11 +37,7 @@ namespace AdaptiveNamespace
         m_verticalAlignment =
             static_cast<ABI::AdaptiveNamespace::VerticalContentAlignment>(sharedColumn->GetVerticalContentAlignment());
         m_bleed = sharedColumn->GetBleed();
-
-        if (sharedColumn->GetCanBleed())
-        {
-            m_bleedDirection = static_cast<ABI::AdaptiveNamespace::BleedDirection>(sharedColumn->GetBleedDirection());
-        }
+        m_bleedDirection = static_cast<ABI::AdaptiveNamespace::BleedDirection>(sharedColumn->GetBleedDirection());
 
         RETURN_IF_FAILED(UTF8ToHString(sharedColumn->GetWidth(), m_width.GetAddressOf()));
         m_pixelWidth = sharedColumn->GetPixelWidth();
@@ -168,8 +164,16 @@ namespace AdaptiveNamespace
 
         column->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
         column->SetVerticalContentAlignment(static_cast<AdaptiveSharedNamespace::VerticalContentAlignment>(m_verticalAlignment));
-        column->SetWidth(HStringToUTF8(m_width.Get()));
-        column->SetPixelWidth(m_pixelWidth);
+
+        if (m_pixelWidth)
+        {
+            column->SetPixelWidth(m_pixelWidth);
+        }
+        else
+        {
+            column->SetWidth(HStringToUTF8(m_width.Get()));
+        }
+
         column->SetMinHeight(m_minHeight);
         column->SetBleed(m_bleed);
 

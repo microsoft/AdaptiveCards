@@ -13,11 +13,19 @@ var assets = [
         // Sample payloads
         path: "../../../samples/v1.*/**/*.json",
         dest: function (p) { return "payloads/" + path.basename(p); }
+	},
+    {
+		// Legacy JSON schema URL, it'll stay at 1.1 as a point-in-history and we're
+		// deprecating that url path as it's not versioned
+        path: "../../../schemas/1.1.0/adaptive-card.json",
+        dest: function (p) { return "schemas/adaptive-card.json"; }
     },
     {
-        // JSON-schema file
-        path: "../../../schemas/adaptive-card.json",
-        dest: function (p) { return "schemas/adaptive-card.json"; }
+        path: "../../../schemas/*/adaptive-card.json",
+        dest: function (p) {
+			// Keep the last 2 path portions... 1.2.0/adaptive-card.json, and put it in the schemas folder
+			return "schemas/" + p.split("/").slice(-2).join("/");
+		}
     },
     {
         // adaptive cards module

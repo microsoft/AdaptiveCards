@@ -26,6 +26,9 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_DataJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonValue** data);
         IFACEMETHODIMP put_DataJson(_In_ ABI::Windows::Data::Json::IJsonValue* data);
 
+        IFACEMETHODIMP get_IgnoreInputValidation(_Out_ boolean* ignoreInputValidation);
+        IFACEMETHODIMP put_IgnoreInputValidation(boolean ignoreInputValidation);
+
         // IAdaptiveActionElement
         IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveNamespace::ActionType* actionType);
         IFACEMETHODIMP get_ActionTypeString(_Outptr_ HSTRING* value)
@@ -65,13 +68,13 @@ namespace AdaptiveNamespace
         }
         IFACEMETHODIMP put_IconUrl(_In_ HSTRING iconUrl) { return AdaptiveActionElementBase::put_IconUrl(iconUrl); }
 
-        IFACEMETHODIMP get_Sentiment(_Outptr_ HSTRING* sentiment)
+        IFACEMETHODIMP get_Style(_Outptr_ HSTRING* style)
         {
-            return AdaptiveActionElementBase::get_Sentiment(sentiment);
+            return AdaptiveActionElementBase::get_Style(style);
         }
-        IFACEMETHODIMP put_Sentiment(_In_ HSTRING sentiment)
+        IFACEMETHODIMP put_Style(_In_ HSTRING style)
         {
-            return AdaptiveActionElementBase::put_Sentiment(sentiment);
+            return AdaptiveActionElementBase::put_Style(style);
         }
 
         IFACEMETHODIMP get_AdditionalProperties(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
@@ -95,6 +98,7 @@ namespace AdaptiveNamespace
 
     private:
         Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonValue> m_dataJson;
+        boolean m_ignoreInputValidation;
     };
 
     ActivatableClass(AdaptiveSubmitAction);

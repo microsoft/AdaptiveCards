@@ -1,0 +1,339 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InputChoiceSet inputChoiceSetCheckboxMultiSelect should be rendered correctly 1`] = `
+<div
+  style="display: flex; flex-direction: column; box-sizing: border-box; flex: 0 0 auto;"
+>
+  <div
+    class="ac-input-container"
+    style="display: flex;"
+  >
+    <div
+      style="width: 100%; min-width: 0px;"
+    >
+      <div
+        class="ms-Checkbox is-checked is-enabled root-78"
+      >
+        <input
+          checked=""
+          class="input-79"
+          id="checkbox-11"
+          type="checkbox"
+        />
+        <label
+          class="ms-Checkbox-label label-80"
+          for="checkbox-11"
+        >
+          <div
+            class="ms-Checkbox-checkbox checkbox-81"
+          >
+            <i
+              aria-hidden="true"
+              class="ms-Checkbox-checkmark checkmark-84"
+              data-icon-name="CheckMark"
+              role="presentation"
+            >
+              
+            </i>
+          </div>
+          <span
+            class="ms-Checkbox-text text-83"
+          >
+            Red
+          </span>
+        </label>
+      </div>
+      <div
+        class="ms-Checkbox is-enabled root-85"
+      >
+        <input
+          class="input-79"
+          id="checkbox-12"
+          type="checkbox"
+        />
+        <label
+          class="ms-Checkbox-label label-86"
+          for="checkbox-12"
+        >
+          <div
+            class="ms-Checkbox-checkbox checkbox-87"
+          >
+            <i
+              aria-hidden="true"
+              class="ms-Checkbox-checkmark checkmark-89"
+              data-icon-name="CheckMark"
+              role="presentation"
+            >
+              
+            </i>
+          </div>
+          <span
+            class="ms-Checkbox-text text-83"
+          >
+            Green
+          </span>
+        </label>
+      </div>
+      <div
+        class="ms-Checkbox is-checked is-enabled root-85"
+      >
+        <input
+          checked=""
+          class="input-79"
+          id="checkbox-13"
+          type="checkbox"
+        />
+        <label
+          class="ms-Checkbox-label label-80"
+          for="checkbox-13"
+        >
+          <div
+            class="ms-Checkbox-checkbox checkbox-81"
+          >
+            <i
+              aria-hidden="true"
+              class="ms-Checkbox-checkmark checkmark-84"
+              data-icon-name="CheckMark"
+              role="presentation"
+            >
+              
+            </i>
+          </div>
+          <span
+            class="ms-Checkbox-text text-83"
+          >
+            Blue
+          </span>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`InputChoiceSet inputChoiceSetChoiceGroup should be rendered correctly 1`] = `
+<div
+  style="display: flex; flex-direction: column; box-sizing: border-box; flex: 0 0 auto;"
+>
+  <div
+    class="ac-input-container"
+    style="display: flex;"
+  >
+    <div
+      style="width: 100%; min-width: 0px;"
+    >
+      <div
+        class="applicationRole-63"
+      >
+        <div
+          class="ms-ChoiceFieldGroup root-64"
+          role="radiogroup"
+        >
+          <div
+            class="ms-ChoiceFieldGroup-flexContainer flexContainer-65"
+          >
+            <div
+              class="ms-ChoiceField root-66"
+            >
+              <div
+                class="ms-ChoiceField-wrapper choiceFieldWrapper-67"
+              >
+                <input
+                  checked=""
+                  class="ms-ChoiceField-input input-68"
+                  id="ChoiceGroup5-1"
+                  name="ChoiceGroup5"
+                  type="radio"
+                />
+                <label
+                  class="ms-ChoiceField-field is-checked field-69"
+                  for="ChoiceGroup5-1"
+                >
+                  <span
+                    class="ms-ChoiceFieldLabel"
+                    id="ChoiceGroupLabel6-1"
+                  >
+                    Red
+                  </span>
+                </label>
+              </div>
+            </div>
+            <div
+              class="ms-ChoiceField root-66"
+            >
+              <div
+                class="ms-ChoiceField-wrapper choiceFieldWrapper-67"
+              >
+                <input
+                  class="ms-ChoiceField-input input-68"
+                  id="ChoiceGroup5-2"
+                  name="ChoiceGroup5"
+                  type="radio"
+                />
+                <label
+                  class="ms-ChoiceField-field field-75"
+                  for="ChoiceGroup5-2"
+                >
+                  <span
+                    class="ms-ChoiceFieldLabel"
+                    id="ChoiceGroupLabel6-2"
+                  >
+                    Green
+                  </span>
+                </label>
+              </div>
+            </div>
+            <div
+              class="ms-ChoiceField root-66"
+            >
+              <div
+                class="ms-ChoiceField-wrapper choiceFieldWrapper-67"
+              >
+                <input
+                  class="ms-ChoiceField-input input-68"
+                  id="ChoiceGroup5-3"
+                  name="ChoiceGroup5"
+                  type="radio"
+                />
+                <label
+                  class="ms-ChoiceField-field field-75"
+                  for="ChoiceGroup5-3"
+                >
+                  <span
+                    class="ms-ChoiceFieldLabel"
+                    id="ChoiceGroupLabel6-3"
+                  >
+                    Blue
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`InputChoiceSet inputChoiceSetComboBox should be rendered correctly 1`] = `
+<div
+  style="display: flex; flex-direction: column; box-sizing: border-box; flex: 0 0 auto;"
+>
+  <div
+    class="ac-input-container"
+    style="display: flex;"
+  >
+    <div
+      style="width: 100%; min-width: 0px;"
+    >
+      <div
+        class="ms-ComboBox-container "
+      >
+        <div
+          class="ms-ComboBox css-46"
+          id="ComboBox1wrapper"
+        >
+          <input
+            aria-autocomplete="both"
+            aria-expanded="false"
+            autocapitalize="off"
+            autocomplete="off"
+            class="ms-ComboBox-Input css-47"
+            data-is-interactable="true"
+            data-lpignore="true"
+            id="ComboBox1-input"
+            readonly=""
+            role="combobox"
+            spellcheck="false"
+            type="text"
+            value="Red"
+          />
+          <button
+            aria-hidden="true"
+            class="ms-Button ms-Button--icon ms-ComboBox-CaretDown-button root-53"
+            data-is-focusable="false"
+            role="presentation"
+            tabindex="-1"
+            type="button"
+          >
+            <div
+              class="ms-Button-flexContainer flexContainer-54"
+            >
+              <i
+                aria-hidden="true"
+                class="ms-Button-icon icon-62"
+                data-icon-name="ChevronDown"
+                role="presentation"
+              >
+                
+              </i>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`InputChoiceSet inputChoiceSetComboBoxMultiSelect should be rendered correctly 1`] = `
+<div
+  style="display: flex; flex-direction: column; box-sizing: border-box; flex: 0 0 auto;"
+>
+  <div
+    class="ac-input-container"
+    style="display: flex;"
+  >
+    <div
+      style="width: 100%; min-width: 0px;"
+    >
+      <div
+        class="ms-ComboBox-container "
+      >
+        <div
+          class="ms-ComboBox css-46"
+          id="ComboBox7wrapper"
+        >
+          <input
+            aria-autocomplete="both"
+            aria-expanded="false"
+            autocapitalize="off"
+            autocomplete="off"
+            class="ms-ComboBox-Input css-47"
+            data-is-interactable="true"
+            data-lpignore="true"
+            id="ComboBox7-input"
+            readonly=""
+            role="combobox"
+            spellcheck="false"
+            type="text"
+            value="Red"
+          />
+          <button
+            aria-hidden="true"
+            class="ms-Button ms-Button--icon ms-ComboBox-CaretDown-button root-53"
+            data-is-focusable="false"
+            role="presentation"
+            tabindex="-1"
+            type="button"
+          >
+            <div
+              class="ms-Button-flexContainer flexContainer-54"
+            >
+              <i
+                aria-hidden="true"
+                class="ms-Button-icon icon-62"
+                data-icon-name="ChevronDown"
+                role="presentation"
+              >
+                
+              </i>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
