@@ -128,7 +128,7 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.2</Version>
     </PackageReference>
-        <PackageReference Include="System.Private.Uri">
+    <PackageReference Include="System.Private.Uri">
       <Version>4.3.2</Version>
     </PackageReference>
   </ItemGroup>

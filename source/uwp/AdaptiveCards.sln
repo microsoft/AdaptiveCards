@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29230.54
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AdaptiveCardRenderer", "Renderer\AdaptiveCardRenderer.vcxproj", "{CF169157-F487-420C-8B9B-CA3ABE2BB209}"
 EndProject
@@ -16,6 +16,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWPUnitTests", "UWPUnitTests\UWPUnitTests.csproj", "{20AB8C0D-5FB5-436F-B6E2-A69553399FCF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWPTestLibrary", "UWPTestLibrary\UWPTestLibrary.csproj", "{C286CE4A-0AA5-42D8-AE42-4765860BCBA1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CF169157-F487-420C-8B9B-CA3ABE2BB209} = {CF169157-F487-420C-8B9B-CA3ABE2BB209}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PerfApp", "PerfApp\PerfApp.vcxproj", "{71EE866B-BB17-4B80-A5B0-55A58B173454}"
 EndProject
