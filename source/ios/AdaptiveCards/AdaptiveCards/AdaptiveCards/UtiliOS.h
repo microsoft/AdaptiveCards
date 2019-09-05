@@ -50,8 +50,8 @@ void handleActionFallbackException(ACOFallbackException *exception,
 void removeLastViewFromCollectionView(const CardElementType elemType,
                                       UIView<ACRIContentHoldingView> *view);
 
-NSInteger buildTarget(ACRView *rootView, std::shared_ptr<BaseActionElement> const &action,
+ACRRenderingError buildTarget(ACRView *rootView, std::shared_ptr<BaseActionElement> const &action,
                       NSObject **target, ACRTargetCapability capability);
 
-NSInteger buildTargetForButton(ACRView *rootView, std::shared_ptr<BaseActionElement> const &action,
+ACRRenderingError buildTargetForButton(ACRView *rootView, std::shared_ptr<BaseActionElement> const &action,
                                UIButton *button, NSObject **target, ACRTargetCapability capability);
