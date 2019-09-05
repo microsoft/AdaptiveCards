@@ -8,7 +8,7 @@
 //  as new kind of target will be added and existing targets become more complicated to build,
 //  this module will help ease the burden of maintaining and implementing new targets.
 //  To add a new target, the class for the target with an initializer should be added
-//  then target builder for the new target should be added. target builder should inherite
+//  then target builder for the new target should be added. target builder should inherit
 //  ACRTargetBuilder which has two methods, build and build: forButton
 //      they both build targets, but build: forButton designed to provide place to add target to
 //      button, and configure the button
@@ -25,8 +25,8 @@
 //
 //  target builders are singletons since they do exactly same works regardless of renderer
 //  instances. however builders' director can have different configuration per rendering, and having
-//  single instance per renderer is preffered. for these reasons, ACRView owns the director, and
-//  clients who whish to use the director's service should access the service through two functions
+//  single instance per renderer is preferred. for these reasons, ACRView owns the director, and
+//  clients who wish to use the director's service should access the service through two functions
 //  in UtiliOS.h, buildTarget and buildTargetForButton
 
 #import "ACRTargetBuilderDirector.h"
