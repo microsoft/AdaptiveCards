@@ -1771,6 +1771,18 @@ export class Fact extends Serialization.SerializableObject {
 }
 
 export class FactSet extends CardElement {
+    static readonly factsProperty = new Serialization.SerializableObjectCollectionPropertyDefinition(
+        Shared.Versions.v1_0,
+        "facts",
+        (sourceItem: any) => { return new Fact(); },
+        (sender: object) => { return []; });
+
+    protected populateSchema(schema: Serialization.SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.add(FactSet.factsProperty);
+    }
+
     protected get useDefaultSizing(): boolean {
         return false;
     }
@@ -1851,35 +1863,16 @@ export class FactSet extends CardElement {
         return element;
     }
 
-    facts: Fact[] = [];
-
     getJsonTypeName(): string {
         return "FactSet";
     }
 
-    toJSON(): any {
-        let result = super.toJSON();
-
-        Utils.setArrayProperty(result, "facts", this.facts);
-
-        return result;
+    get facts(): Fact[] {
+        return this.getValue(FactSet.factsProperty);
     }
 
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        super.parse(json, errors);
-
-        this.facts = [];
-
-		let jsonFacts = json["facts"];
-
-		if (Array.isArray(jsonFacts)) {
-			for (let jsonFact of jsonFacts) {
-				let fact = new Fact();
-				fact.parse(jsonFact);
-
-				this.facts.push(fact);
-			}
-		}
+    set facts(value: Fact[]) {
+        this.setValue(FactSet.factsProperty, value);
     }
 }
 

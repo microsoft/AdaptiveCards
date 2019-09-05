@@ -199,7 +199,7 @@ export class EnumPropertyDefinition<TEnum extends { [s: number]: string }> exten
 
 export class SerializableObjectPropertyDefinition<T extends SerializableObject> extends TypedPropertyDefinition<T> {
     parse(source: PropertyBag, errors?: Shared.IValidationError[]): T | undefined {
-        let result = this.createInstance();
+        let result = this.onCreateInstance();
         result.parse(source[this.name]);
 
         return result;
@@ -216,26 +216,60 @@ export class SerializableObjectPropertyDefinition<T extends SerializableObject> 
     constructor(
         readonly targetVersion: Shared.TargetVersion,
         readonly name: string,
-        readonly createInstance: () => T,
+        readonly onCreateInstance: () => T,
         readonly onGetInitialValue?: (sender: object) => T) {
         super(targetVersion, name, undefined, onGetInitialValue);
+
+        if (!this.onCreateInstance) {
+            throw new Error("SerializedObjectPropertyDefinition instances must have an onCreateInstance handler.");
+        }
+    }
+}
+
+export class SerializableObjectCollectionPropertyDefinition extends TypedPropertyDefinition<SerializableObject[]> {
+    parse(source: PropertyBag, errors?: Shared.IValidationError[]): SerializableObject[] | undefined {
+        let result: SerializableObject[] | undefined = [];
+
+        let sourceCollection = source[this.name];
+
+        if (Array.isArray(sourceCollection)) {
+            for (let sourceItem of sourceCollection) {
+                let item = this.onCreateCollectionItemInstance(sourceItem);
+
+                if (item) {
+                    item.parse(sourceItem);
+
+                    result.push(item);
+                }
+            }
+        }
+
+        return result.length > 0 ? result : undefined;
+    }
+
+    toJSON(target: PropertyBag, value: SerializableObject[] | undefined) {
+        Utils.setArrayProperty(target, this.name, value);
+    }
+
+    constructor(
+        readonly targetVersion: Shared.TargetVersion,
+        readonly name: string,
+        readonly onCreateCollectionItemInstance: (sourceItem: any) => SerializableObject,
+        readonly onGetInitialValue?: (sender: object) => SerializableObject[]) {
+        super(targetVersion, name, undefined, onGetInitialValue);
+
+        if (!this.onCreateCollectionItemInstance) {
+            throw new Error("SerializedObjectCollectionPropertyDefinition instances must have an onCreateCollectionItemInstance handler.");
+        }
     }
 }
 
 export class CustomPropertyDefinition<T> extends TypedPropertyDefinition<T> {
     parse(source: PropertyBag, errors?: Shared.IValidationError[]): T | undefined {
-        if (!this.onParse) {
-            throw new Error("CustomPropertyDefinition instances must have an onParse handler.");
-        }
-
         return this.onParse(this, source, errors);
     }
 
     toJSON(target: PropertyBag, value: T) {
-        if (!this.onToJSON) {
-            throw new Error("CustomPropertyDefinition instances must have an onToJSON handler.");
-        }
-
         this.onToJSON(this, target, value);
     }
 
@@ -247,6 +281,14 @@ export class CustomPropertyDefinition<T> extends TypedPropertyDefinition<T> {
         readonly defaultValue?: T,
         readonly onGetInitialValue?: (sender: object) => T) {
         super(targetVersion, name, defaultValue, onGetInitialValue);
+
+        if (!this.onParse) {
+            throw new Error("CustomPropertyDefinition instances must have an onParse handler.");
+        }
+
+        if (!this.onToJSON) {
+            throw new Error("CustomPropertyDefinition instances must have an onToJSON handler.");
+        }
     }
 }
 

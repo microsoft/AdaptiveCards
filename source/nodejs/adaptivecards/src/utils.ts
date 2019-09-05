@@ -111,7 +111,7 @@ export function setEnumProperty(
     }
 }
 
-export function setArrayProperty(target: { [key: string]: any }, propertyName: string, propertyValue: any[]) {
+export function setArrayProperty(target: { [key: string]: any }, propertyName: string, propertyValue: any[] | undefined) {
     let items = [];
 
     if (propertyValue) {
