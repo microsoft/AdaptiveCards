@@ -1,11 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Shared from "./shared";
+import * as Serialization from "./serializable-object";
 
-export class HostCapabilities {
+export class HostCapabilities extends Serialization.SerializableObject {
     private _capabilities: { [key: string]: Shared.TargetVersion } = {};
 
     parse(json: any, errors?: Shared.IValidationError[]) {
+        super.parse(json, errors);
+
         if (json) {
             for (let name in json) {
                 let jsonVersion = json[name];
@@ -24,6 +27,16 @@ export class HostCapabilities {
                 }
             }
         }
+    }
+
+    toJSON(): any {
+        let result = super.toJSON();
+
+        for (let key in this._capabilities) {
+            result[key] = this._capabilities[key];
+        }
+        
+        return result;
     }
 
     addCapability(name: string, version: Shared.TargetVersion) {

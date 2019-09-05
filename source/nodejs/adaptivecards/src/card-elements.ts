@@ -280,7 +280,55 @@ export abstract class CardElement extends CardObject {
             { targetVersion: Shared.Versions.v1_0, value: Enums.Spacing.Padding }
         ],
         Enums.Spacing.Default);
+    static readonly requiresProperty = new Serialization.SerializableObjectPropertyDefinition(
+        Shared.Versions.v1_2,
+        "requires",
+        () => { return new HostCapabilities(); },
+        () =>  { return new HostCapabilities(); });
+    static readonly minHeightProperty = new Serialization.CustomPropertyDefinition<number | undefined>(
+        Shared.Versions.v1_2,
+        "minHeight",
+        (sender: Serialization.PropertyDefinition, value: any) => {
+            let result: number | undefined = undefined;
 
+            if (typeof value === "string") {
+                let isValid = false;
+
+                try {
+                    let size = Shared.SizeAndUnit.parse(value, true);
+
+                    if (size.unit == Enums.SizeUnit.Pixel) {
+                        result = size.physicalSize;
+
+                        isValid = true;
+                    }
+                }
+                catch {
+                    // Do nothing. A parse error is emitted below
+                }
+
+                if (!isValid) {
+                    /*
+                    raiseParseError(
+                        {
+                            error: Enums.ValidationError.InvalidPropertyValue,
+                            message: "Invalid \"minHeight\" value: " + jsonMinHeight
+                        },
+                        errors
+                    );
+                    */
+                }
+            }
+
+            return result;
+        },
+        (sender: Serialization.PropertyDefinition, target: Serialization.PropertyBag, value: any) => {
+            Utils.setProperty(
+                target,
+                sender.name,
+                typeof value === "number" && !isNaN(value) ? value + "px" : undefined);
+        }
+    );
 
     protected populateSchema(schema: Serialization.SerializableObjectSchema) {
         super.populateSchema(schema);
@@ -290,15 +338,19 @@ export abstract class CardElement extends CardObject {
         schema.add(CardElement.separatorProperty);
         schema.add(CardElement.heightProperty);
         schema.add(CardElement.horizontalAlignmentProperty);
+        schema.add(CardElement.spacingProperty);
+        schema.add(CardElement.requiresProperty);
+
+        if (this.supportsMinHeight) {
+            schema.add(CardElement.minHeightProperty);
+        }
     }
 
     private _shouldFallback: boolean = false;
-    // private _lang: string = undefined;
     private _hostConfig?: HostConfig.HostConfig;
     private _parent?: CardElement;
     private _renderedElement?: HTMLElement;
     private _separatorElement?: HTMLElement;
-    // private _isVisible: boolean = true;
     private _truncatedDueToOverflow: boolean = false;
     private _defaultRenderedElementDisplayMode: string | null = null;
     private _padding?: Shared.PaddingDefinition;
@@ -508,14 +560,7 @@ export abstract class CardElement extends CardObject {
         return Enums.ContainerStyle.Default;
     }
 
-    readonly requires = new HostCapabilities();
-
-    // horizontalAlignment?: Enums.HorizontalAlignment = null;
-    // spacing: Enums.Spacing = Enums.Spacing.Default;
-    // separator: boolean = false;
     customCssSelector?: string;
-    // height: CardElementHeight = "auto";
-    minPixelHeight?: number;
 
     abstract getJsonTypeName(): string;
 
@@ -531,77 +576,6 @@ export abstract class CardElement extends CardObject {
 		super.parse(json, errors);
 
         raiseParseElementEvent(this, json, errors);
-
-        this.requires.parse(json["requires"], errors);
-        // this.isVisible = Utils.getBoolValue(json["isVisible"], this.isVisible);
-        // this.horizontalAlignment = Utils.getEnumValue(Enums.HorizontalAlignment, json["horizontalAlignment"], this.horizontalAlignment);
-
-        // this.spacing = <Enums.Spacing>Utils.getEnumValue(Enums.Spacing, json["spacing"], Enums.Spacing.Default);
-        // this.separator = Utils.getBoolValue(json["separator"], this.separator);
-
-        /*
-        let jsonHeight = json["height"];
-
-        if (jsonHeight === "auto" || jsonHeight === "stretch") {
-            this.height = jsonHeight;
-        }
-        */
-
-        if (this.supportsMinHeight) {
-            let jsonMinHeight = json["minHeight"];
-
-            if (jsonMinHeight && typeof jsonMinHeight === "string") {
-                let isValid = false;
-
-                try {
-                    let size = Shared.SizeAndUnit.parse(jsonMinHeight, true);
-
-                    if (size.unit == Enums.SizeUnit.Pixel) {
-                        this.minPixelHeight = size.physicalSize;
-
-                        isValid = true;
-                    }
-                }
-                catch {
-                    // Do nothing. A parse error is emitted below
-                }
-
-                if (!isValid) {
-                    raiseParseError(
-                        {
-                            error: Enums.ValidationError.InvalidPropertyValue,
-                            message: "Invalid \"minHeight\" value: " + jsonMinHeight
-                        },
-                        errors
-                    );
-                }
-            }
-        }
-        else {
-            this.minPixelHeight = undefined;
-        }
-    }
-
-	toJSON(): any {
-		let result = super.toJSON();
-
-        // Utils.setProperty(result, "isVisible", this.isVisible, true);
-
-        /*
-        if (this.horizontalAlignment !== null) {
-            Utils.setEnumProperty(Enums.HorizontalAlignment, result, "horizontalAlignment", this.horizontalAlignment);
-        }
-        */
-
-        // Utils.setEnumProperty(Enums.Spacing, result, "spacing", this.spacing, Enums.Spacing.Default);
-        // Utils.setProperty(result, "separator", this.separator, false);
-        // Utils.setProperty(result, "height", this.height, "auto");
-
-        if (this.supportsMinHeight) {
-            Utils.setProperty(result, "minHeight", typeof this.minPixelHeight === "number" && !isNaN(this.minPixelHeight) ? this.minPixelHeight + "px" : undefined);
-        }
-
-        return result;
     }
 
     setParent(value: CardElement | undefined) {
@@ -838,6 +812,14 @@ export abstract class CardElement extends CardObject {
         return (padding && this.allowCustomPadding) ? padding : this.getDefaultPadding();
     }
 
+    get minPixelHeight(): number | undefined {
+        return this.getValue(CardElement.minHeightProperty);
+    }
+
+    set minPixelHeight(value: number | undefined) {
+        this.setValue(CardElement.minHeightProperty, value);
+    }
+
     get horizontalAlignment(): Enums.HorizontalAlignment {
         return this.getValue(CardElement.horizontalAlignmentProperty);
     }
@@ -887,20 +869,6 @@ export abstract class CardElement extends CardObject {
     }
 
     set lang(value: string | undefined) {
-        /*
-        if (value && value != "") {
-            let regEx = /^[a-z]{2,3}$/ig;
-
-            let matches = regEx.exec(value);
-
-            if (!matches) {
-                throw new Error("Invalid language identifier: " + value);
-            }
-        }
-
-        this._lang = value;
-        */
-
         this.setValue(CardElement.langProperty, value);
     }
 
@@ -947,6 +915,10 @@ export abstract class CardElement extends CardObject {
         return this._parent;
     }
 
+    get requires(): HostCapabilities {
+        return this.getValue(CardElement.requiresProperty);
+    }
+
     get hasVisibleSeparator(): boolean {
         if (this.parent && this.separatorElement) {
             return !this.parent.isFirstElement(this) && (this.isVisible || this.isDesignMode());
@@ -989,7 +961,70 @@ export abstract class CardElement extends CardObject {
 }
 
 export abstract class BaseTextBlock extends CardElement {
-    private _text?: string;
+    static readonly textProperty = new Serialization.StringPropertyDefinition(
+        Shared.Versions.v1_0,
+        "text",
+        true);
+    static readonly sizeProperty = new Serialization.EnumPropertyDefinition(
+        Shared.Versions.v1_0,
+        "size",
+        Enums.TextSize,
+        [
+            { targetVersion: Shared.Versions.v1_0, value: Enums.TextSize.Default },
+            { targetVersion: Shared.Versions.v1_0, value: Enums.TextSize.Small },
+            { targetVersion: Shared.Versions.v1_0, value: Enums.TextSize.Medium },
+            { targetVersion: Shared.Versions.v1_0, value: Enums.TextSize.Large },
+            { targetVersion: Shared.Versions.v1_0, value: Enums.TextSize.ExtraLarge }
+        ],
+        Enums.TextSize.Default);
+    static readonly weightProperty = new Serialization.EnumPropertyDefinition(
+        Shared.Versions.v1_0,
+        "weight",
+        Enums.TextWeight,
+        [
+            { targetVersion: Shared.Versions.v1_0, value: Enums.TextWeight.Default },
+            { targetVersion: Shared.Versions.v1_0, value: Enums.TextWeight.Lighter },
+            { targetVersion: Shared.Versions.v1_0, value: Enums.TextWeight.Bolder }
+        ],
+        Enums.TextWeight.Default);
+    static readonly colorProperty = new Serialization.EnumPropertyDefinition(
+        Shared.Versions.v1_0,
+        "color",
+        Enums.TextColor,
+        [
+            { targetVersion: Shared.Versions.v1_0, value: Enums.TextColor.Default },
+            { targetVersion: Shared.Versions.v1_0, value: Enums.TextColor.Light },
+            { targetVersion: Shared.Versions.v1_0, value: Enums.TextColor.Dark },
+            { targetVersion: Shared.Versions.v1_0, value: Enums.TextColor.Accent },
+            { targetVersion: Shared.Versions.v1_0, value: Enums.TextColor.Good },
+            { targetVersion: Shared.Versions.v1_0, value: Enums.TextColor.Attention },
+            { targetVersion: Shared.Versions.v1_0, value: Enums.TextColor.Warning }
+        ],
+        Enums.TextColor.Default);
+    static readonly isSubtleProperty = new Serialization.BooleanPropertyDefinition(
+        Shared.Versions.v1_0,
+        "isSubtle",
+        false);
+    static readonly fontTypeProperty = new Serialization.EnumPropertyDefinition(
+        Shared.Versions.v1_2,
+        "fontType",
+        Enums.FontType,
+        [
+            { targetVersion: Shared.Versions.v1_0, value: Enums.FontType.Default },
+            { targetVersion: Shared.Versions.v1_0, value: Enums.FontType.Monospace }
+        ]);
+
+    protected populateSchema(schema: Serialization.SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.add(BaseTextBlock.textProperty);
+        schema.add(BaseTextBlock.sizeProperty);
+        schema.add(BaseTextBlock.weightProperty);
+        schema.add(BaseTextBlock.colorProperty);
+        schema.add(BaseTextBlock.isSubtleProperty);
+        schema.add(BaseTextBlock.fontTypeProperty);
+    }
+
     private _selectAction?: Action;
 
     protected getFontSize(fontType: HostConfig.FontTypeDefinition): number {
@@ -1027,30 +1062,11 @@ export abstract class BaseTextBlock extends CardElement {
     }
 
     protected setText(value: string | undefined) {
-        this._text = value;
+        this.setValue(BaseTextBlock.textProperty, value);
     }
-
-    size: Enums.TextSize = Enums.TextSize.Default;
-    weight: Enums.TextWeight = Enums.TextWeight.Default;
-    color: Enums.TextColor = Enums.TextColor.Default;
-    isSubtle: boolean = false;
-    fontType?: Enums.FontType;
 
     asString(): string | undefined {
         return this.text;
-    }
-
-    toJSON() {
-        let result = super.toJSON();
-
-        Utils.setEnumProperty(Enums.TextSize, result, "size", this.size, Enums.TextSize.Default);
-        Utils.setEnumProperty(Enums.TextWeight, result, "weight", this.weight, Enums.TextWeight.Default);
-        Utils.setEnumProperty(Enums.TextColor, result, "color", this.color, Enums.TextColor.Default);
-        Utils.setProperty(result, "text", this.text);
-        Utils.setProperty(result, "isSubtle", this.isSubtle, false);
-        Utils.setEnumProperty(Enums.FontType, result, "fontType", this.fontType, Enums.FontType.Default);
-
-        return result;
     }
 
     applyStylesTo(targetElement: HTMLElement) {
@@ -1103,48 +1119,44 @@ export abstract class BaseTextBlock extends CardElement {
         targetElement.style.fontWeight = fontWeight.toString();
     }
 
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        super.parse(json, errors);
+    get size(): Enums.TextSize {
+        return this.getValue(BaseTextBlock.sizeProperty);
+    }
 
-        this.text = Utils.getStringValue(json["text"]);
+    set size(value: Enums.TextSize) {
+        this.setValue(BaseTextBlock.sizeProperty, value);
+    }
 
-        let sizeString = Utils.getStringValue(json["size"]);
+    get weight(): Enums.TextWeight {
+        return this.getValue(BaseTextBlock.weightProperty);
+    }
 
-        if (sizeString && sizeString.toLowerCase() === "normal") {
-            this.size = Enums.TextSize.Default;
+    set weight(value: Enums.TextWeight) {
+        this.setValue(BaseTextBlock.weightProperty, value);
+    }
 
-            raiseParseError(
-                {
-                    error: Enums.ValidationError.Deprecated,
-                    message: "The TextBlock.size value \"normal\" is deprecated and will be removed. Use \"default\" instead."
-                },
-                errors
-            );
-        }
-        else {
-            this.size = <Enums.TextSize>Utils.getEnumValue(Enums.TextSize, sizeString, this.size);
-        }
+    get color(): Enums.TextColor {
+        return this.getValue(BaseTextBlock.colorProperty);
+    }
 
-        let weightString = Utils.getStringValue(json["weight"]);
+    set color(value: Enums.TextColor) {
+        this.setValue(BaseTextBlock.colorProperty, value);
+    }
 
-        if (weightString && weightString.toLowerCase() === "normal") {
-            this.weight = Enums.TextWeight.Default;
+    get fontType(): Enums.FontType | undefined {
+        return this.getValue(BaseTextBlock.fontTypeProperty);
+    }
 
-            raiseParseError(
-                {
-                    error: Enums.ValidationError.Deprecated,
-                    message: "The TextBlock.weight value \"normal\" is deprecated and will be removed. Use \"default\" instead."
-                },
-                errors
-            );
-        }
-        else {
-            this.weight = <Enums.TextWeight>Utils.getEnumValue(Enums.TextWeight, weightString, this.weight);
-        }
+    set fontType(value: Enums.FontType | undefined) {
+        this.setValue(BaseTextBlock.fontTypeProperty, value);
+    }
 
-        this.color = <Enums.TextColor>Utils.getEnumValue(Enums.TextColor, json["color"], this.color);
-        this.isSubtle = <boolean>Utils.getBoolValue(json["isSubtle"], this.isSubtle);
-        this.fontType = Utils.getEnumValue(Enums.FontType, json["fontType"], this.fontType);
+    get isSubtle(): boolean {
+        return this.getValue(BaseTextBlock.isSubtleProperty);
+    }
+
+    set isSubtle(value: boolean) {
+        this.setValue(BaseTextBlock.isSubtleProperty, value);
     }
 
     get effectiveColor(): Enums.TextColor {
@@ -1152,7 +1164,8 @@ export abstract class BaseTextBlock extends CardElement {
     }
 
     get text(): string | undefined {
-        return this._text;
+        // return this._text;
+        return this.getValue(BaseTextBlock.textProperty);
     }
 
     set text(value: string | undefined) {
@@ -1173,6 +1186,16 @@ export abstract class BaseTextBlock extends CardElement {
 }
 
 export class TextBlock extends BaseTextBlock {
+    static readonly wrapProperty = new Serialization.BooleanPropertyDefinition(Shared.Versions.v1_0, "wrap", false);
+    static readonly maxLinesProperty = new Serialization.NumberPropertyDefinition(Shared.Versions.v1_0, "maxLines");
+
+    protected populateSchema(schema: Serialization.SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.add(TextBlock.wrapProperty);
+        schema.add(TextBlock.maxLinesProperty);
+    }
+
     private _computedLineHeight: number;
     private _originalInnerHtml: string;
     private _processedText?: string;
@@ -1180,7 +1203,7 @@ export class TextBlock extends BaseTextBlock {
 
     private restoreOriginalContent() {
         if (this.renderedElement !== undefined) {
-            this.renderedElement.style.maxHeight = this.maxLines ? (this._computedLineHeight * this.maxLines) + 'px' : null;
+            this.renderedElement.style.maxHeight = (this.maxLines && this.maxLines > 0) ? (this._computedLineHeight * this.maxLines) + 'px' : null;
             this.renderedElement.innerHTML = this._originalInnerHtml;
         }
     }
@@ -1336,7 +1359,7 @@ export class TextBlock extends BaseTextBlock {
             if (this.wrap) {
                 element.style.wordWrap = "break-word";
 
-                if (this.maxLines > 0) {
+                if (this.maxLines && this.maxLines > 0) {
                     element.style.maxHeight = (this._computedLineHeight * this.maxLines) + "px";
                     element.style.overflow = "hidden";
                 }
@@ -1375,18 +1398,7 @@ export class TextBlock extends BaseTextBlock {
         }
     }
 
-    wrap: boolean = false;
-    maxLines: number;
     useMarkdown: boolean = true;
-
-    toJSON(): any {
-        let result = super.toJSON();
-
-        Utils.setProperty(result, "wrap", this.wrap, false);
-        Utils.setNumberProperty(result, "maxLines", this.maxLines);
-
-        return result;
-    }
 
     applyStylesTo(targetElement: HTMLElement) {
         super.applyStylesTo(targetElement);
@@ -1436,13 +1448,6 @@ export class TextBlock extends BaseTextBlock {
         targetElement.style.lineHeight = this._computedLineHeight + "px";
     }
 
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        super.parse(json, errors);
-
-        this.wrap = <boolean>Utils.getBoolValue(json["wrap"], this.wrap);
-        this.maxLines = <number>Utils.getNumberValue(json["maxLines"]);
-    }
-
     getJsonTypeName(): string {
         return "TextBlock";
     }
@@ -1456,6 +1461,22 @@ export class TextBlock extends BaseTextBlock {
             this.restoreOriginalContent();
             this.truncateIfSupported(this._computedLineHeight * this.maxLines);
         }
+    }
+
+    get wrap(): boolean {
+        return this.getValue(TextBlock.wrapProperty);
+    }
+
+    set wrap(value: boolean) {
+        this.setValue(TextBlock.wrapProperty, value);
+    }
+
+    get maxLines(): number | undefined {
+        return this.getValue(TextBlock.maxLinesProperty);
+    }
+
+    set maxLines(value: number | undefined) {
+        this.setValue(TextBlock.maxLinesProperty, value);
     }
 }
 

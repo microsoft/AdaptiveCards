@@ -265,6 +265,10 @@ export class Version {
         return !this._isValid ? this._versionString : this._major + "." + this._minor;
     }
 
+    toJSON(): any {
+        return this.toString();
+    }
+
     compareTo(otherVersion: Version): number {
         if (!this.isValid || !otherVersion.isValid) {
             throw new Error("Cannot compare invalid version.");
