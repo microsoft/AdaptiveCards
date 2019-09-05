@@ -27,7 +27,7 @@
 //  instances. however builders' director can have different configuration per rendering, and having
 //  single instance per renderer is preffered. for these reasons, ACRView owns the director, and
 //  clients who whish to use the director's service should access the service through two functions
-//  in Util.h, buildTarget and buildTargetForButton
+//  in UtiliOS.h, buildTarget and buildTargetForButton
 
 #import "ACRTargetBuilderDirector.h"
 #import "ACRAggregateTarget.h"
