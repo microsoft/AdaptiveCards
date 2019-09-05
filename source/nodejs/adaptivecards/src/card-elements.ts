@@ -285,50 +285,7 @@ export abstract class CardElement extends CardObject {
         "requires",
         () => { return new HostCapabilities(); },
         () =>  { return new HostCapabilities(); });
-    static readonly minHeightProperty = new Serialization.CustomPropertyDefinition<number | undefined>(
-        Shared.Versions.v1_2,
-        "minHeight",
-        (sender: Serialization.PropertyDefinition, value: any) => {
-            let result: number | undefined = undefined;
-
-            if (typeof value === "string") {
-                let isValid = false;
-
-                try {
-                    let size = Shared.SizeAndUnit.parse(value, true);
-
-                    if (size.unit == Enums.SizeUnit.Pixel) {
-                        result = size.physicalSize;
-
-                        isValid = true;
-                    }
-                }
-                catch {
-                    // Do nothing. A parse error is emitted below
-                }
-
-                if (!isValid) {
-                    /*
-                    raiseParseError(
-                        {
-                            error: Enums.ValidationError.InvalidPropertyValue,
-                            message: "Invalid \"minHeight\" value: " + jsonMinHeight
-                        },
-                        errors
-                    );
-                    */
-                }
-            }
-
-            return result;
-        },
-        (sender: Serialization.PropertyDefinition, target: Serialization.PropertyBag, value: any) => {
-            Utils.setProperty(
-                target,
-                sender.name,
-                typeof value === "number" && !isNaN(value) ? value + "px" : undefined);
-        }
-    );
+    static readonly minHeightProperty = new Serialization.PixelSizePropertyDefinition(Shared.Versions.v1_2, "minHeight");
 
     protected populateSchema(schema: Serialization.SerializableObjectSchema) {
         super.populateSchema(schema);
@@ -1499,6 +1456,18 @@ class Label extends TextBlock {
 }
 
 export class TextRun extends BaseTextBlock {
+    static readonly italicProperty = new Serialization.BooleanPropertyDefinition(Shared.Versions.v1_2, "italic", false);
+    static readonly strikethroughProperty = new Serialization.BooleanPropertyDefinition(Shared.Versions.v1_2, "strikethrough", false);
+    static readonly highlightProperty = new Serialization.BooleanPropertyDefinition(Shared.Versions.v1_2, "highlight", false);
+
+    protected populateSchema(schema: Serialization.SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.add(TextRun.italicProperty);
+        schema.add(TextRun.strikethroughProperty);
+        schema.add(TextRun.highlightProperty);
+    }
+
     protected internalRender(): HTMLElement | undefined {
         if (!Utils.isNullOrEmpty(this.text)) {
             let hostConfig = this.hostConfig;
@@ -1543,10 +1512,6 @@ export class TextRun extends BaseTextBlock {
         }
     }
 
-    italic: boolean = false;
-    strikethrough: boolean = false;
-    highlight: boolean = false;
-
     applyStylesTo(targetElement: HTMLElement) {
         super.applyStylesTo(targetElement);
 
@@ -1568,10 +1533,6 @@ export class TextRun extends BaseTextBlock {
     toJSON() {
         let result = super.toJSON();
 
-        Utils.setProperty(result, "italic", this.italic, false);
-        Utils.setProperty(result, "strikethrough", this.strikethrough, false);
-        Utils.setProperty(result, "highlight", this.highlight, false);
-
         if (this.selectAction) {
             Utils.setProperty(result, "selectAction", this.selectAction.toJSON());
         }
@@ -1582,9 +1543,6 @@ export class TextRun extends BaseTextBlock {
     parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 
-        this.italic = <boolean>Utils.getBoolValue(json["italic"], this.italic);
-        this.strikethrough = <boolean>Utils.getBoolValue(json["strikethrough"], this.strikethrough);
-        this.highlight = <boolean>Utils.getBoolValue(json["highlight"], this.highlight);
         this.selectAction = createActionInstance(
             this,
             json["selectAction"],
@@ -1595,6 +1553,30 @@ export class TextRun extends BaseTextBlock {
 
     getJsonTypeName(): string {
         return "TextRun";
+    }
+
+    get italic(): boolean {
+        return this.getValue(TextRun.italicProperty);
+    }
+
+    set italic(value: boolean) {
+        this.setValue(TextRun.italicProperty, value);
+    }
+
+    get strikethrough(): boolean {
+        return this.getValue(TextRun.strikethroughProperty);
+    }
+
+    set strikethrough(value: boolean) {
+        this.setValue(TextRun.strikethroughProperty, value);
+    }
+
+    get highlight(): boolean {
+        return this.getValue(TextRun.highlightProperty);
+    }
+
+    set highlight(value: boolean) {
+        this.setValue(TextRun.highlightProperty, value);
     }
 
     get isStandalone(): boolean {
@@ -1753,8 +1735,15 @@ export class RichTextBlock extends CardElement {
 }
 
 export class Fact extends Serialization.SerializableObject {
-    name?: string;
-    value?: string;
+    static readonly titleProperty = new Serialization.StringPropertyDefinition(Shared.Versions.v1_0, "title");
+    static readonly valueProperty = new Serialization.StringPropertyDefinition(Shared.Versions.v1_0, "value");
+
+    protected populateSchema(schema: Serialization.SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.add(Fact.titleProperty);
+        schema.add(Fact.valueProperty);
+    }
 
     constructor(name?: string, value?: string) {
         super();
@@ -1763,20 +1752,21 @@ export class Fact extends Serialization.SerializableObject {
         this.value = value;
     }
 
-    parse(json: any) {
-        super.parse(json);
-
-        this.name = Utils.getStringValue(json["title"]);
-        this.value = Utils.getStringValue(json["value"]);
+    // For historic reasons, the "title" schema property is exposed as "name" in the OM.
+    get name(): string | undefined {
+        return this.getValue(Fact.titleProperty);
     }
 
-    toJSON() {
-        let result = super.toJSON();
+    set name(value: string | undefined) {
+        this.setValue(Fact.titleProperty, value);
+    }
 
-        Utils.setProperty(result, "title", this.name);
-        Utils.setProperty(result, "value", this.value);
+    get value(): string | undefined {
+        return this.getValue(Fact.valueProperty);
+    }
 
-        return result;
+    set value(value: string | undefined) {
+        this.setValue(Fact.valueProperty, value);
     }
 }
 
@@ -1872,18 +1862,6 @@ export class FactSet extends CardElement {
 
         Utils.setArrayProperty(result, "facts", this.facts);
 
-        /*
-        let facts = [];
-
-		if (this.facts) {
-			for (let fact of this.facts) {
-				facts.push(fact.toJSON());
-			}
-		}
-
-        Utils.setProperty(result, "facts", facts);
-        */
-
         return result;
     }
 
@@ -1905,35 +1883,109 @@ export class FactSet extends CardElement {
     }
 }
 
-export class Image extends CardElement {
-    private _selectAction?: Action;
+class ImageDimensionProperty extends Serialization.TypedPropertyDefinition<number> {
+    parse(source: Serialization.PropertyBag, errors?: Shared.IValidationError[]): number | undefined {
+        let result: number | undefined = Utils.getNumberValue(source[this.legacyPropertyName], undefined);
 
-    private parseDimension(name: string, value: any, errors: Shared.IValidationError[] | undefined): number {
-        if (value) {
-            if (typeof value === "string") {
-                try {
-                    let size = Shared.SizeAndUnit.parse(value);
-
-                    if (size.unit == Enums.SizeUnit.Pixel) {
-                        return size.physicalSize;
-                    }
-                }
-                catch {
-                    // Ignore error
-                }
-            }
-
+        if (result) {
             raiseParseError(
                 {
-                    error: Enums.ValidationError.InvalidPropertyValue,
-                    message: "Invalid image " + name + ": " + value
+                    error: Enums.ValidationError.Deprecated,
+                    message: "The " + this.legacyPropertyName + " property is deprecated and will be removed. Use the width property instead."
                 },
                 errors
             );
         }
+        else {
+            let value = source[this.name];
 
-        return 0;
+            if (typeof value === "string") {
+                let isValid = false;
+
+                try {
+                    let size = Shared.SizeAndUnit.parse(value, true);
+
+                    if (size.unit == Enums.SizeUnit.Pixel) {
+                        result = size.physicalSize;
+
+                        isValid = true;
+                    }
+                }
+                catch {
+                    // Do nothing. A parse error is emitted below
+                }
+
+                if (!isValid) {
+                    raiseParseError(
+                        {
+                            error: Enums.ValidationError.InvalidPropertyValue,
+                            message: "Invalid " + this.name + " value: " + value
+                        },
+                        errors
+                    );
+                }
+            }
+        }
+
+        return result;
     }
+
+    toJSON(target: object, value: any) {
+        Utils.setProperty(
+            target,
+            this.name,
+            typeof value === "number" && !isNaN(value) ? value + "px" : undefined);
+    }
+
+    constructor(
+        readonly targetVersion: Shared.TargetVersion,
+        readonly name: string,
+        readonly legacyPropertyName: string) {
+        super(targetVersion, name);
+    }
+}
+
+export class Image extends CardElement {
+    static readonly urlProperty = new Serialization.StringPropertyDefinition(Shared.Versions.v1_0, "url");
+    static readonly altTextProperty = new Serialization.StringPropertyDefinition(Shared.Versions.v1_0, "altText");
+    static readonly backgroundColorProperty = new Serialization.StringPropertyDefinition(Shared.Versions.v1_1, "backgroundColor");
+    static readonly styleProperty = new Serialization.EnumPropertyDefinition(
+        Shared.Versions.v1_0,
+        "style",
+        Enums.ImageStyle,
+        [
+            { targetVersion: Shared.Versions.v1_0, value: Enums.ImageStyle.Default },
+            { targetVersion: Shared.Versions.v1_0, value: Enums.ImageStyle.Person }
+        ],
+        Enums.ImageStyle.Default);
+    static readonly sizeProperty = new Serialization.EnumPropertyDefinition(
+        Shared.Versions.v1_0,
+        "size",
+        Enums.Size,
+        [
+            { targetVersion: Shared.Versions.v1_0, value: Enums.Size.Auto },
+            { targetVersion: Shared.Versions.v1_0, value: Enums.Size.Small },
+            { targetVersion: Shared.Versions.v1_0, value: Enums.Size.Medium },
+            { targetVersion: Shared.Versions.v1_0, value: Enums.Size.Large },
+            { targetVersion: Shared.Versions.v1_0, value: Enums.Size.Stretch }
+        ],
+        Enums.Size.Auto);
+    static readonly pixelWidthProperty = new ImageDimensionProperty(Shared.Versions.v1_1, "width", "pixelWidth");
+    static readonly pixelHeightProperty = new ImageDimensionProperty(Shared.Versions.v1_1, "height", "pixelHeight");
+
+    protected populateSchema(schema: Serialization.SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.add(Image.urlProperty);
+        schema.add(Image.altTextProperty);
+        schema.add(Image.backgroundColorProperty);
+        schema.add(Image.styleProperty);
+        schema.add(Image.sizeProperty);
+        schema.add(Image.pixelWidthProperty);
+        schema.add(Image.pixelHeightProperty);
+    }
+
+    private _selectAction?: Action;
 
     private applySize(element: HTMLElement) {
         if (this.pixelWidth || this.pixelHeight) {
@@ -2058,12 +2110,9 @@ export class Image extends CardElement {
                 imageElement.style.backgroundRepeat = "no-repeat";
             }
 
-            if (!Utils.isNullOrEmpty(this.backgroundColor)) {
-                imageElement.style.backgroundColor = <string>Utils.stringToCssColor(this.backgroundColor);
-            }
-
-            imageElement.src = this.url;
-            imageElement.alt = this.altText;
+            imageElement.style.backgroundColor = <string>Utils.stringToCssColor(this.backgroundColor);
+            imageElement.src = <string>this.url;
+            imageElement.alt = <string>this.altText;
 
             element.appendChild(imageElement);
         }
@@ -2071,14 +2120,16 @@ export class Image extends CardElement {
         return element;
     }
 
-    style: Enums.ImageStyle = Enums.ImageStyle.Default;
-    backgroundColor: string;
-    url: string;
-    size: Enums.Size = Enums.Size.Auto;
-    width: Shared.SizeAndUnit;
-    pixelWidth?: number;
-    pixelHeight?: number;
-    altText: string = "";
+    parse(json: any, errors?: Shared.IValidationError[]) {
+        super.parse(json, errors);
+
+        this.selectAction = createActionInstance(
+            this,
+            json["selectAction"],
+            [ShowCardAction.JsonTypeName],
+            !this.isDesignMode(),
+            errors);
+    }
 
     toJSON(): any {
         let result = super.toJSON();
@@ -2086,21 +2137,6 @@ export class Image extends CardElement {
         if (this._selectAction) {
             Utils.setProperty(result, "selectAction", this._selectAction.toJSON());
         }
-
-        Utils.setEnumProperty(Enums.ImageStyle, result, "style", this.style, Enums.ImageStyle.Default);
-        Utils.setProperty(result, "backgroundColor", this.backgroundColor);
-        Utils.setProperty(result, "url", this.url);
-        Utils.setEnumProperty(Enums.Size, result, "size", this.size, Enums.Size.Auto);
-
-        if (this.pixelWidth) {
-            Utils.setProperty(result, "width", this.pixelWidth + "px");
-        }
-
-        if (this.pixelHeight) {
-            Utils.setProperty(result, "height", this.pixelHeight + "px");
-        }
-
-        Utils.setProperty(result, "altText", this.altText);
 
         return result;
     }
@@ -2119,85 +2155,69 @@ export class Image extends CardElement {
         return result;
     }
 
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        super.parse(json, errors);
-
-        this.url = Utils.getStringValue(json["url"]);
-        this.backgroundColor = Utils.getStringValue(json["backgroundColor"]);
-
-        let styleString = Utils.getStringValue(json["style"]);
-
-        if (styleString && styleString.toLowerCase() === "normal") {
-            this.style = Enums.ImageStyle.Default;
-
-            raiseParseError(
-                {
-                    error: Enums.ValidationError.Deprecated,
-                    message: "The Image.style value \"normal\" is deprecated and will be removed. Use \"default\" instead."
-                },
-                errors
-            );
-        }
-        else {
-            this.style = <Enums.ImageStyle>Utils.getEnumValue(Enums.ImageStyle, styleString, this.style);
-        }
-
-        this.size = <Enums.Size>Utils.getEnumValue(Enums.Size, json["size"], this.size);
-		this.altText = Utils.getStringValue(json["altText"]);
-
-        // pixelWidth and pixelHeight are only parsed for backwards compatibility.
-        // Payloads should use the width and height proerties instead.
-        if (json["pixelWidth"] && typeof json["pixelWidth"] === "number") {
-            this.pixelWidth = json["pixelWidth"];
-
-            raiseParseError(
-                {
-                    error: Enums.ValidationError.Deprecated,
-                    message: "The pixelWidth property is deprecated and will be removed. Use the width property instead."
-                },
-                errors
-            );
-        }
-
-        if (json["pixelHeight"] && typeof json["pixelHeight"] === "number") {
-            this.pixelHeight = json["pixelHeight"];
-
-            raiseParseError(
-                {
-                    error: Enums.ValidationError.Deprecated,
-                    message: "The pixelHeight property is deprecated and will be removed. Use the height property instead."
-                },
-                errors
-            );
-        }
-
-        let size = this.parseDimension("width", json["width"], errors);
-
-        if (size > 0) {
-            this.pixelWidth = size;
-        }
-
-        size = this.parseDimension("height", json["height"], errors);
-
-        if (size > 0) {
-            this.pixelHeight = size;
-        }
-
-        this.selectAction = createActionInstance(
-            this,
-            json["selectAction"],
-            [ShowCardAction.JsonTypeName],
-            !this.isDesignMode(),
-            errors);
-    }
-
     getResourceInformation(): Shared.IResourceInformation[] {
         if (!Utils.isNullOrEmpty(this.url)) {
-            return [{ url: this.url, mimeType: "image" }]
+            return [{ url: <string>this.url, mimeType: "image" }]
         }
         else {
             return [];
         }
+    }
+
+    get url(): string | undefined {
+        return this.getValue(Image.urlProperty);
+    }
+
+    set url(value: string | undefined) {
+        this.setValue(Image.urlProperty, value);
+    }
+
+    get altText(): string | undefined {
+        return this.getValue(Image.altTextProperty);
+    }
+
+    set altText(value: string | undefined) {
+        this.setValue(Image.altTextProperty, value);
+    }
+
+    get backgroundColor(): string | undefined {
+        return this.getValue(Image.backgroundColorProperty);
+    }
+
+    set backgroundColor(value: string | undefined) {
+        this.setValue(Image.backgroundColorProperty, value);
+    }
+
+    get size(): Enums.Size {
+        return this.getValue(Image.sizeProperty);
+    }
+
+    set size(value: Enums.Size) {
+        this.setValue(Image.sizeProperty, value);
+    }
+
+    get style(): Enums.ImageStyle {
+        return this.getValue(Image.styleProperty);
+    }
+
+    set style(value: Enums.ImageStyle) {
+        this.setValue(Image.styleProperty, value);
+    }
+
+    get pixelWidth(): number | undefined {
+        return this.getValue(Image.pixelWidthProperty);
+    }
+
+    set pixelWidth(value: number | undefined) {
+        this.setValue(Image.pixelWidthProperty, value);
+    }
+
+    get pixelHeight(): number | undefined {
+        return this.getValue(Image.pixelHeightProperty);
+    }
+
+    set pixelHeight(value: number | undefined) {
+        this.setValue(Image.pixelHeightProperty, value);
     }
 
     get selectAction(): Action | undefined {

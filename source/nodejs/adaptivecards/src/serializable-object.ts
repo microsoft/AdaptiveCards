@@ -2,9 +2,10 @@
 // Licensed under the MIT License.
 import * as Shared from "./shared";
 import * as Utils from "./utils";
+import * as Enums from "./enums";
 
 export abstract class PropertyDefinition {
-    abstract parse(value: any, errors?: Shared.IValidationError[]): any;
+    abstract parse(source: PropertyBag, errors?: Shared.IValidationError[]): any;
     abstract toJSON(target: object, value: any): void;
 
     constructor(
@@ -15,7 +16,7 @@ export abstract class PropertyDefinition {
 }
 
 export abstract class TypedPropertyDefinition<T> extends PropertyDefinition {
-    abstract parse(value: any, errors?: Shared.IValidationError[]): T | undefined;
+    abstract parse(source: PropertyBag, errors?: Shared.IValidationError[]): T | undefined;
 
     constructor(
         readonly targetVersion: Shared.TargetVersion,
@@ -27,12 +28,12 @@ export abstract class TypedPropertyDefinition<T> extends PropertyDefinition {
 }
 
 export class StringPropertyDefinition extends TypedPropertyDefinition<string> {
-    parse(value: any, errors?: Shared.IValidationError[]): string | undefined {
-        let parsedValue = Utils.getStringValue(value, this.defaultValue);
+    parse(source: PropertyBag, errors?: Shared.IValidationError[]): string | undefined {
+        let parsedValue = Utils.getStringValue(source[this.name], this.defaultValue);
         let isUndefined = parsedValue === undefined || (parsedValue === "" && this.treatEmptyAsUndefined);
 
         if (!isUndefined && this.regEx !== undefined) {
-            let matches = this.regEx.exec(value);
+            let matches = this.regEx.exec(parsedValue);
 
             if (!matches) {
                 // TODO: Log parse error
@@ -63,8 +64,8 @@ export class StringPropertyDefinition extends TypedPropertyDefinition<string> {
 }
 
 export class BooleanPropertyDefinition extends TypedPropertyDefinition<boolean> {
-    parse(value: any, errors?: Shared.IValidationError[]): boolean | undefined {
-        return Utils.getBoolValue(value, this.defaultValue);;
+    parse(source: PropertyBag, errors?: Shared.IValidationError[]): boolean | undefined {
+        return Utils.getBoolValue(source[this.name], this.defaultValue);;
     }
 
     toJSON(target: object, value: any) {
@@ -77,8 +78,8 @@ export class BooleanPropertyDefinition extends TypedPropertyDefinition<boolean> 
 }
 
 export class NumberPropertyDefinition extends TypedPropertyDefinition<number> {
-    parse(value: any, errors?: Shared.IValidationError[]): number | undefined {
-        return Utils.getNumberValue(value, this.defaultValue);;
+    parse(source: PropertyBag, errors?: Shared.IValidationError[]): number | undefined {
+        return Utils.getNumberValue(source[this.name], this.defaultValue);;
     }
 
     toJSON(target: object, value: any) {
@@ -90,14 +91,59 @@ export class NumberPropertyDefinition extends TypedPropertyDefinition<number> {
     }
 }
 
+export class PixelSizePropertyDefinition extends TypedPropertyDefinition<number> {
+    parse(source: PropertyBag, errors?: Shared.IValidationError[]): number | undefined {
+        let result: number | undefined = undefined;
+        let value = source[this.name];
+
+        if (typeof value === "string") {
+            let isValid = false;
+
+            try {
+                let size = Shared.SizeAndUnit.parse(value, true);
+
+                if (size.unit == Enums.SizeUnit.Pixel) {
+                    result = size.physicalSize;
+
+                    isValid = true;
+                }
+            }
+            catch {
+                // Do nothing. A parse error is emitted below
+            }
+
+            if (!isValid) {
+                /* TODO
+                raiseParseError(
+                    {
+                        error: Enums.ValidationError.InvalidPropertyValue,
+                        message: "Invalid \"minHeight\" value: " + jsonMinHeight
+                    },
+                    errors
+                );
+                */
+            }
+        }
+
+        return result;
+    }
+
+    toJSON(target: object, value: any) {
+        Utils.setProperty(
+            target,
+            this.name,
+            typeof value === "number" && !isNaN(value) ? value + "px" : undefined);
+    }
+}
+
 export interface IVersionedValue<TValue> {
     targetVersion: Shared.TargetVersion;
     value: TValue;
 }
 
 export class ValueSetPropertyDefinition extends TypedPropertyDefinition<string> {
-    parse(value: any, errors?: Shared.IValidationError[]): string | undefined {
-        let parsedValue = Utils.getStringValue(value, this.defaultValue);
+    parse(source: PropertyBag, errors?: Shared.IValidationError[]): string | undefined {
+        let parsedValue = Utils.getStringValue(source[this.name], this.defaultValue);
 
         for (let value of this.values) {
             if (parsedValue.toLowerCase() === value.value) {
@@ -127,8 +173,8 @@ export class ValueSetPropertyDefinition extends TypedPropertyDefinition<string> 
 }
 
 export class EnumPropertyDefinition<TEnum extends { [s: number]: string }> extends TypedPropertyDefinition<number> {
-    parse(value: any, errors?: Shared.IValidationError[]): number | undefined {
-        return Utils.getEnumValue(this.enumType, value, this.defaultValue);
+    parse(source: PropertyBag, errors?: Shared.IValidationError[]): number | undefined {
+        return Utils.getEnumValue(this.enumType, source[this.name], this.defaultValue);
     }
 
     toJSON(target: object, value: any) {
@@ -152,9 +198,9 @@ export class EnumPropertyDefinition<TEnum extends { [s: number]: string }> exten
 }
 
 export class SerializableObjectPropertyDefinition<T extends SerializableObject> extends TypedPropertyDefinition<T> {
-    parse(value: any, errors?: Shared.IValidationError[]): T | undefined {
+    parse(source: PropertyBag, errors?: Shared.IValidationError[]): T | undefined {
         let result = this.createInstance();
-        result.parse(value);
+        result.parse(source[this.name]);
 
         return result;
     }
@@ -177,12 +223,12 @@ export class SerializableObjectPropertyDefinition<T extends SerializableObject> 
 }
 
 export class CustomPropertyDefinition<T> extends TypedPropertyDefinition<T> {
-    parse(value: any, errors?: Shared.IValidationError[]): T | undefined {
+    parse(source: PropertyBag, errors?: Shared.IValidationError[]): T | undefined {
         if (!this.onParse) {
             throw new Error("CustomPropertyDefinition instances must have an onParse handler.");
         }
 
-        return this.onParse(this, value, errors);
+        return this.onParse(this, source, errors);
     }
 
     toJSON(target: PropertyBag, value: T) {
@@ -196,7 +242,7 @@ export class CustomPropertyDefinition<T> extends TypedPropertyDefinition<T> {
     constructor(
         readonly targetVersion: Shared.TargetVersion,
         readonly name: string,
-        readonly onParse: (sender: PropertyDefinition, value: any, errors?: Shared.IValidationError[]) => T | undefined,
+        readonly onParse: (sender: PropertyDefinition, source: PropertyBag, errors?: Shared.IValidationError[]) => T | undefined,
         readonly onToJSON: (sender: PropertyDefinition, target: PropertyBag, value: T) => void,
         readonly defaultValue?: T,
         readonly onGetInitialValue?: (sender: object) => T) {
@@ -296,12 +342,12 @@ export abstract class SerializableObject {
         }
     }
 
-    parse(json: any, errors?: Shared.IValidationError[]) {
+    parse(source: any, errors?: Shared.IValidationError[]) {
         this._propertyBag = {};
-        this._rawProperties = Shared.GlobalSettings.enableFullJsonRoundTrip ? json : {};
+        this._rawProperties = Shared.GlobalSettings.enableFullJsonRoundTrip ? source : {};
 
         for (let property of this.schema) {
-            this.setValue(property, property.parse(json[property.name], errors));
+            this.setValue(property, property.parse(source, errors));
         }
     }
 
