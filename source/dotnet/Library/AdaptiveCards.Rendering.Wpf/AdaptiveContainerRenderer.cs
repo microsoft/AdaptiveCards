@@ -173,12 +173,6 @@ namespace AdaptiveCards.Rendering.Wpf
                             context.SetVisibility(panel, cardElement.IsVisible, tag);
                         }
                     }
-
-                    if (cardElement.Type == "ActionSet")
-                    {
-                        AdaptiveActionSetRenderer.AddShowCardsViewsToRoot(context);
-                    }
-
                 }
             }
 
@@ -225,10 +219,13 @@ namespace AdaptiveCards.Rendering.Wpf
 
             SeparatorConfig sepStyle = context.Config.Separator;
 
-            uiSep.Margin = new Thickness(0, (spacing - sepStyle.LineThickness) / 2, 0, 0);
+            var margin = (spacing - sepStyle.LineThickness) / 2;
+            uiSep.Margin = new Thickness(0, margin, 0, margin);
             uiSep.SetHeight(sepStyle.LineThickness);
             if (!string.IsNullOrWhiteSpace(sepStyle.LineColor))
-                uiSep.SetBackgroundColor(sepStyle.LineColor,context);
+            {
+                uiSep.SetBackgroundColor(sepStyle.LineColor, context);
+            }
             uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
             Grid.SetRow(uiSep, uiContainer.RowDefinitions.Count - 1);
             uiContainer.Children.Add(uiSep);

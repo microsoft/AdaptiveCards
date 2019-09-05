@@ -22,7 +22,9 @@ public enum WarningStatusCode {
   InvalidMediaMix,
   InvalidColorFormat,
   InvalidDimensionSpecified,
-  InvalidLanguage;
+  InvalidLanguage,
+  InvalidValue,
+  CustomWarning;
 
   public final int swigValue() {
     return swigValue;

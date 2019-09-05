@@ -60,7 +60,7 @@ export class ImageSetConfig {
     constructor(obj?: any) {
         if (obj) {
             this.imageSize = obj["imageSize"] != null ? obj["imageSize"] : this.imageSize;
-            this.maxImageHeight = Utils.getValueOrDefault<number>(obj["maxImageHeight"], 100);
+            this.maxImageHeight = Utils.getNumberValue(obj["maxImageHeight"], 100);
         }
     }
 
@@ -195,7 +195,7 @@ export class ActionsConfig {
             this.spacing = Utils.parseHostConfigEnum(Enums.Spacing, obj.spacing && obj.spacing, Enums.Spacing.Default);
             this.buttonSpacing = obj["buttonSpacing"] != null ? obj["buttonSpacing"] : this.buttonSpacing;
             this.showCard = new ShowCardActionConfig(obj["showCard"]);
-            this.preExpandSingleShowCardAction = Utils.getValueOrDefault<boolean>(obj["preExpandSingleShowCardAction"], false);
+            this.preExpandSingleShowCardAction = Utils.getBoolValue(obj["preExpandSingleShowCardAction"], false);
             this.actionsOrientation = Utils.parseHostConfigEnum(Enums.Orientation, obj["actionsOrientation"], Enums.Orientation.Horizontal);
             this.actionAlignment = Utils.parseHostConfigEnum(Enums.ActionAlignment, obj["actionAlignment"], Enums.ActionAlignment.Left);
             this.iconPlacement = Utils.parseHostConfigEnum(Enums.ActionIconPlacement, obj["iconPlacement"], Enums.ActionIconPlacement.LeftOfTitle);
@@ -394,10 +394,12 @@ export class Version {
     private _major: number;
     private _minor: number;
     private _isValid: boolean = true;
+    private _label: string;
 
-    constructor(major: number = 1, minor: number = 1) {
+    constructor(major: number = 1, minor: number = 1, label?: string) {
         this._major = major;
         this._minor = minor;
+        this._label = label;
     }
 
     static parse(versionString: string, errors?: Array<IValidationError>): Version {
@@ -454,6 +456,10 @@ export class Version {
         }
 
         return 0;
+    }
+
+    get label(): string {
+        return this._label ? this._label : this.toString();
     }
 
     get major(): number {
@@ -648,6 +654,7 @@ export class HostConfig {
     readonly factSet: FactSetConfig = new FactSetConfig();
 
     cssClassNamePrefix: string = null;
+    alwaysAllowBleed: boolean = false;
 
     constructor(obj?: any) {
         if (obj) {

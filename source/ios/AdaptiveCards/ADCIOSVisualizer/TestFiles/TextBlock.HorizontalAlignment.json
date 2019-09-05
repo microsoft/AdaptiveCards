@@ -1,0 +1,22 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "**horizontalAlignment:left**",
+			"horizontalAlignment": "left"
+		},
+		{
+			"type": "TextBlock",
+			"text": "**horizontalAlignment:center**",
+			"horizontalAlignment": "center"
+		},
+		{
+			"type": "TextBlock",
+			"text": "**horizontalAlignment:right**",
+			"horizontalAlignment": "right"
+		}
+	]
+}

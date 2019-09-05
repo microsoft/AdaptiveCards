@@ -4,6 +4,7 @@ package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,7 @@ public class FactSetRenderer extends BaseCardElementRenderer
         TextBlockRenderer.setTextColor(textView, textConfig.getColor(), hostConfig, textConfig.getIsSubtle(), containerStyle);
         TextBlockRenderer.setTextSize(textView, FontType.Default, textConfig.getSize(), hostConfig);
         TextBlockRenderer.getInstance().setTextFormat(textView, hostConfig, FontType.Default, textConfig.getWeight());
+        textView.setOnTouchListener(new TextBlockRenderer.TouchTextView(new SpannableString(text)));
         textView.setSingleLine(!textConfig.getWrap());
         textView.setMaxWidth(Util.dpToPixels(context, textConfig.getMaxWidth()));
         textView.setEllipsize(TextUtils.TruncateAt.END);

@@ -1,0 +1,14 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"inlineSourceMap": false,
+		"outDir": "../output/dist",
+		"removeComments": true
+	},
+	"include": [
+		"../src/**/*.ts"
+	],
+	"exclude": [
+		"../src/**/*.spec.ts"
+	]
+}
