@@ -17,6 +17,7 @@
 #import "ACRRegistration.h"
 #import "ACOBaseActionElementPrivate.h"
 #import "ACRIBaseActionElementRenderer.h"
+#import "BaseActionElement.h"
 
 using namespace AdaptiveCards;
 
@@ -387,4 +388,15 @@ UIFontDescriptor *getItalicFontDescriptor(UIFontDescriptor *descriptor, bool isI
     }
 
     return descriptor;
+}
+
+NSInteger buildTargetForButton(ACRView *rootView, std::shared_ptr<BaseActionElement> const &action,
+                               UIButton *button, NSObject **target,
+                               ACRTargetCapability capability) {
+    return [rootView build:action target:target capability:capability forButton:button];
+}
+
+NSInteger buildTarget(ACRView *rootView, std::shared_ptr<BaseActionElement> const &action,
+                               NSObject **target, ACRTargetCapability capability) {
+    return [rootView build:action target:target capability:capability];
 }

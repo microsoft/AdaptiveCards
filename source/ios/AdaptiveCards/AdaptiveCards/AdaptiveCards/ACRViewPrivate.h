@@ -11,9 +11,16 @@
 #import "BackgroundImage.h"
 #import "SharedAdaptiveCard.h"
 #import "CollectionTypeElement.h"
-#include "ActionParserRegistration.h"
+#import "ActionParserRegistration.h"
+#import "ACRErrors.h"
 
 using namespace AdaptiveCards;
+
+typedef NS_ENUM(NSInteger, ACRTargetCapability) {
+    ACRAction = 0,
+    ACRSelectAction,
+    ACRQuickReply,
+};
 
 @interface ACRView()
 
@@ -45,5 +52,9 @@ typedef void (^ObserverActionBlockForBaseAction)(NSObject<ACOIResourceResolver> 
 
 - (UIView *)getBleedTarget:(InternalId const &)internalId;
 
+- (ACRRenderingError)build:(std::shared_ptr<BaseActionElement> const &)action target:(NSObject **)target capability:(ACRTargetCapability) capability;
+
+- (ACRRenderingError)build:(std::shared_ptr<BaseActionElement> const &)action target:(NSObject **)target capability:(ACRTargetCapability) capability forButton:(UIButton *)button;
 
 @end
+

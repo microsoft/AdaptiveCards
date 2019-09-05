@@ -214,33 +214,14 @@
             [button setTitle:title forState:UIControlStateNormal];
         }
         ACOBaseActionElement *acoAction = [[ACOBaseActionElement alloc] init];
-        [acoAction setElem:action];
-        ACRAggregateTarget *target = [[ACRAggregateTarget alloc] initWithActionElement:acoAction rootView:rootView];
-
-        switch (action->GetElementType()) {
-
-            case ActionType::Submit:
-                [txtInput setReturnKeyType:UIReturnKeySend];
-                quickReplyView.target = target;
-            case ActionType::OpenUrl:
-                [button addTarget:target action:@selector(send:) forControlEvents:UIControlEventTouchUpInside];
-                [viewGroup addTarget:target];
-                break;
-                
-            case ActionType::ToggleVisibility:
-            {
-                std::shared_ptr<ToggleVisibilityAction> toggleVisibilityAction { std::dynamic_pointer_cast<ToggleVisibilityAction>(action)};
-                ACRToggleVisibilityTarget *toggleVisibilityActionTarget = [[ACRToggleVisibilityTarget alloc]
-                                                                           initWithActionElement:toggleVisibilityAction
-                                                                           config:acoConfig
-                                                                           rootView:rootView];
-                [button addTarget:toggleVisibilityActionTarget action:@selector(doSelectAction) forControlEvents:UIControlEventTouchUpInside];
-                [viewGroup addTarget:toggleVisibilityActionTarget];
-                break;
-                
+        [acoAction setElem:action];        
+        
+        NSObject *target;
+        if (ACRRenderingError::ACROk == buildTargetForButton(rootView, action, button, &target, ACRQuickReply)) {
+            if (action->GetElementType() == ActionType::Submit) { 
+                quickReplyView.target = (ACRAggregateTarget *)target;
             }
-            default:
-                break;
+            [viewGroup addTarget:target];
         }
     } else {
         [inputs addObject:inputview];

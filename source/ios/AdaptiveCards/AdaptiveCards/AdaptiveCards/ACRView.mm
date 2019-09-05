@@ -36,7 +36,7 @@
 #import "AdaptiveBase64Util.h"
 #import "ACRButton.h"
 #import "BackgroundImage.h"
-#import "Util.h"
+#import "ACRTargetBuilderDirector.h"
 
 using namespace AdaptiveCards;
 typedef UIImage* (^ImageLoadBlock)(NSURL *url);
@@ -57,6 +57,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     NSMutableDictionary *_imageViewContextMap;
     NSMutableSet *_setOfRemovedObservers;
     NSMutableDictionary<NSString*, UIView *> *_paddingMap;
+    ACRTargetBuilderDirector *_targetBuilderDirector;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -91,6 +92,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
         _adaptiveCard = card;
         if (config) {
             _hostConfig = config;
+            _targetBuilderDirector = [[ACRTargetBuilderDirector alloc] init:self capability:ACRAction adaptiveHostConfig:_hostConfig];
         }
         unsigned int padding = [_hostConfig getHostConfig]->GetSpacing().paddingSpacing;
         [self removeConstraints:self.constraints];
@@ -802,6 +804,19 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
         fallbackElem = fallbackElemCard->GetFallbackContent();
     }
 
+}
+
+- (ACRRenderingError)build:(std::shared_ptr<BaseActionElement> const &)action target:(NSObject **)target capability:(ACRTargetCapability) capability
+{
+    _targetBuilderDirector.builderCapability = capability;
+    *target = [_targetBuilderDirector build:action];
+    return *target ? ACRRenderingError::ACROk : ACRRenderingError::ACRFailed;
+}
+
+- (ACRRenderingError)build:(std::shared_ptr<BaseActionElement> const &)action target:(NSObject **)target capability:(ACRTargetCapability) capability forButton:(UIButton *)button
+{
+    *target = [_targetBuilderDirector build:action forButton:button];
+    return *target ? ACRRenderingError::ACROk : ACRRenderingError::ACRFailed;
 }
 
 @end

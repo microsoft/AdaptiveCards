@@ -12,6 +12,7 @@
 #import "ACRButton.h"
 #import "ACRAggregateTarget.h"
 #import "SubmitAction.h"
+#import "Util.h"
 
 @implementation ACRActionSubmitRenderer
 
@@ -34,9 +35,10 @@
 
     UIButton *button = [ACRButton rootView:view baseActionElement:acoElem title:title andHostConfig:acoConfig];
 
-    ACRAggregateTarget *target = [[ACRAggregateTarget alloc] initWithActionElement:acoElem rootView:(ACRView*)view];
-
-    [button addTarget:target action:@selector(send:) forControlEvents:UIControlEventTouchUpInside];
+    ACRAggregateTarget *target;
+    if (ACRRenderingError::ACROk == buildTargetForButton(view, elem, button, &target, ACRAction)) {
+        [superview addTarget:target];
+    }
 
     [superview addTarget:target];
 
