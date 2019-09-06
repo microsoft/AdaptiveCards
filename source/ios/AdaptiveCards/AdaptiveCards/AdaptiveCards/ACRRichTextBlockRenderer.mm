@@ -19,7 +19,7 @@
 #import "ACRUILabel.h"
 #import "DateTimePreparsedToken.h"
 #import "DateTimePreparser.h"
-#import "Util.h"
+#import "UtiliOS.h"
 #import "ACRLongPressGestureRecognizerFactory.h"
 
 @implementation ACRRichTextBlockRenderer
@@ -98,11 +98,10 @@
                 // Config and add Select Action
                 std::shared_ptr<BaseActionElement> baseAction = textRun->GetSelectAction();
                 if(baseAction) {
-                    NSObject<ACRSelectActionDelegate> *target = [ACRLongPressGestureRecognizerFactory buildTarget:textRun->GetSelectAction() rootView:rootView hostConfig:acoConfig destinationViewForShowCard:nil];
-                    if(target) {
-                        // add target as attribute of the NSAttributedString for rather retrieval when touch event is triggered
+                    NSObject* target;
+                    if (ACRRenderingStatus::ACROk == buildTarget([rootView getSelectActionsTargetBuilderDirector], baseAction, &target)) {
                         [textRunContent addAttribute:@"SelectAction" value:target range:NSMakeRange(0, textRunContent.length - 1)];
-                        [ACRLongPressGestureRecognizerFactory addTapGestureRecognizerToUITextView:lab target:target rootView:rootView hostConfig:acoConfig];
+                        [ACRLongPressGestureRecognizerFactory addTapGestureRecognizerToUITextView:lab target:(NSObject<ACRSelectActionDelegate> *)target rootView:rootView hostConfig:acoConfig];
                     }
                 }
 

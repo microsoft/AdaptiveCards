@@ -28,7 +28,6 @@
 
 - (instancetype)initWithActionElement:(std::shared_ptr<AdaptiveCards::ShowCardAction> const &)showCardActionElement
                               config:(ACOHostConfig *)config
-                           superview:(UIView<ACRIContentHoldingView> *)superview
                             rootView:(ACRView *)rootView
                                button:(UIButton *)button
 {
@@ -37,7 +36,7 @@
     {
         _adaptiveCard = showCardActionElement->GetCard();
         _config = config;
-        _superview = superview;
+        _superview = nil;
         _rootView = rootView;
         _adcView = nil;
         _button = button;
@@ -48,7 +47,7 @@
     return self;
 }
 
-- (void)createShowCard:(NSMutableArray*)inputs
+- (void)createShowCard:(NSMutableArray*)inputs superview:(UIView<ACRIContentHoldingView> *)superview
 {
     [inputs setArray:[NSMutableArray arrayWithArray:[[_rootView card] getInputs]]];
 
@@ -78,16 +77,17 @@
     ACRContainerStyle style = (ACRContainerStyle)(containerStyle);
 
     if (style == ACRNone) {
-        style = [_superview style];
+        style = [superview style];
     }
 
     _adcView = adcView;
     _adcView.translatesAutoresizingMaskIntoConstraints = NO;
     _adcView.backgroundColor = [_config getBackgroundColorForContainerStyle:style];
 
-    [_superview addArrangedSubview:adcView];
+    [superview addArrangedSubview:adcView];
 
     _adcView.hidden = YES;
+    _superview = superview;
 }
 
 - (IBAction)toggleVisibilityOfShowCard

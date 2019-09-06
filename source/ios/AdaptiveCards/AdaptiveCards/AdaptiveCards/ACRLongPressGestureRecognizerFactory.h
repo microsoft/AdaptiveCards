@@ -23,12 +23,6 @@
 + (UILongPressGestureRecognizer * _Nullable)getGestureRecognizer:(UIView<ACRIContentHoldingView> * _Nonnull)viewGroup
                                                 target:(NSObject<ACRSelectActionDelegate> * _Nonnull)target;
 
-// creates target for the gesture
-+ (NSObject<ACRSelectActionDelegate> * _Nullable)buildTarget:(std::shared_ptr<AdaptiveCards::BaseActionElement> const &)action
-                                        rootView:(ACRView * _Nonnull)rootView
-                                      hostConfig:(ACOHostConfig * _Nonnull)config
-                      destinationViewForShowCard:( UIView<ACRIContentHoldingView> * _Nullable)viewGroup;
-
 + (void)addTapGestureRecognizerToUITextView:(UITextView *_Nonnull)textView
                                      target:(NSObject<ACRSelectActionDelegate> *_Nonnull)target
                                    rootView:(ACRView * _Nonnull)rootView
