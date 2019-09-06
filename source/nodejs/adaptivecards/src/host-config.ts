@@ -60,7 +60,7 @@ export class ImageSetConfig {
     constructor(obj?: any) {
         if (obj) {
             this.imageSize = obj["imageSize"] != null ? obj["imageSize"] : this.imageSize;
-            this.maxImageHeight = Utils.getValueOrDefault<number>(obj["maxImageHeight"], 100);
+            this.maxImageHeight = Utils.getNumberValue(obj["maxImageHeight"], 100);
         }
     }
 
@@ -195,7 +195,7 @@ export class ActionsConfig {
             this.spacing = Utils.parseHostConfigEnum(Enums.Spacing, obj.spacing && obj.spacing, Enums.Spacing.Default);
             this.buttonSpacing = obj["buttonSpacing"] != null ? obj["buttonSpacing"] : this.buttonSpacing;
             this.showCard = new ShowCardActionConfig(obj["showCard"]);
-            this.preExpandSingleShowCardAction = Utils.getValueOrDefault<boolean>(obj["preExpandSingleShowCardAction"], false);
+            this.preExpandSingleShowCardAction = Utils.getBoolValue(obj["preExpandSingleShowCardAction"], false);
             this.actionsOrientation = Utils.parseHostConfigEnum(Enums.Orientation, obj["actionsOrientation"], Enums.Orientation.Horizontal);
             this.actionAlignment = Utils.parseHostConfigEnum(Enums.ActionAlignment, obj["actionAlignment"], Enums.ActionAlignment.Left);
             this.iconPlacement = Utils.parseHostConfigEnum(Enums.ActionIconPlacement, obj["iconPlacement"], Enums.ActionIconPlacement.LeftOfTitle);

@@ -173,12 +173,6 @@ namespace AdaptiveCards.Rendering.Wpf
                             context.SetVisibility(panel, cardElement.IsVisible, tag);
                         }
                     }
-
-                    if (cardElement.Type == "ActionSet")
-                    {
-                        AdaptiveActionSetRenderer.AddShowCardsViewsToRoot(context);
-                    }
-
                 }
             }
 

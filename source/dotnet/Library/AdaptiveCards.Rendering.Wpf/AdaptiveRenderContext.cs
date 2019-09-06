@@ -142,12 +142,9 @@ namespace AdaptiveCards.Rendering.Wpf
             }
         }
 
-        // Flag to distinuish the main card and action show cards
-        public int CardDepth = 0;
-
         public IDictionary<Button, FrameworkElement> ActionShowCards = new Dictionary<Button, FrameworkElement>();
-
-        public Queue<Button> ActionShowCardsKeys = new Queue<Button>();
+        // contains showcard peers in actions set, and the AdaptiveInternalID is internal id of the actions set
+        public IDictionary<AdaptiveInternalID, List<FrameworkElement>> PeerShowCardsInActionSet = new Dictionary<AdaptiveInternalID, List<FrameworkElement>>();
 
         public virtual Style GetStyle(string styleName)
         {
@@ -199,23 +196,11 @@ namespace AdaptiveCards.Rendering.Wpf
                     var renderer = ElementRenderers.Get(element.GetType());
                     if (renderer != null)
                     {
-                        // Increment card depth before rendering the inner card
-                        if (element is AdaptiveCard)
-                        {
-                            CardDepth += 1;
-                        }
-
                         var rendered = renderer.Invoke(element, this);
 
                         if (!String.IsNullOrEmpty(element.Id))
                         {
                             rendered.Name = element.Id;
-                        }
-
-                        // Decrement card depth after inner card is rendered
-                        if (element is AdaptiveCard)
-                        {
-                            CardDepth -= 1;
                         }
 
                         frameworkElementOut = rendered;
@@ -468,21 +453,24 @@ namespace AdaptiveCards.Rendering.Wpf
         public void ToggleShowCardVisibility(Button uiAction)
         {
             FrameworkElement card = ActionShowCards[uiAction];
-            if (card != null)
+            var id = uiAction.GetContext() as AdaptiveInternalID;
+            if (id == null) 
             {
-                if (card.Visibility == Visibility.Visible)
+                Warnings.Add(new AdaptiveWarning(-1, $"Toggling visibility event handling is dropped " +
+                    $"since the action set the button belongs to has null internal id"));
+                return;
+            }
+            var peers = PeerShowCardsInActionSet[id];
+            if (card != null && peers != null)
+            {
+                var targetVisibility = card.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+                // need to make sure we collapse all showcards before showing this one
+                foreach(var showCard in peers)
                 {
-                    card.Visibility = Visibility.Collapsed;
+                    showCard.Visibility = Visibility.Collapsed;
                 }
-                else
-                {
-                    // need to make sure we collapse all showcards before showing this one
-                    foreach(var showCard in ActionShowCards)
-                    {
-                        showCard.Value.Visibility = Visibility.Collapsed;
-                    }
-                    card.Visibility = Visibility.Visible;
-                }
+
+                card.Visibility = targetVisibility; 
             }
         }
     }
