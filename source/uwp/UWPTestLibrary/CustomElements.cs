@@ -6,7 +6,7 @@ using Windows.UI.Xaml;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using System.ComponentModel;
+using CustomElementJsonNetHelpers;
 
 namespace TestLibrary
 {
