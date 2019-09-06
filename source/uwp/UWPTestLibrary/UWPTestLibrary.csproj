@@ -110,7 +110,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BindableBase.cs" />
-    <Compile Include="CustomElements.cs" />
+    <Compile Include="AnimalGridCustomElement.cs" />
+    <Compile Include="BorderCustomElement.cs" />
     <Compile Include="ImageWaiter.cs" />
     <Compile Include="FileLoadHelpers.cs" />
     <Compile Include="FileViewModel.cs" />

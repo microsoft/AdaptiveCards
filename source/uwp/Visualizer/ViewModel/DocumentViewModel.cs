@@ -85,6 +85,7 @@ namespace AdaptiveCardVisualizer.ViewModel
                 {
                     AdaptiveElementParserRegistration parserRegistration = new AdaptiveElementParserRegistration();
                     parserRegistration.Set("AnimalGrid", new TestLibrary.AnimalGridParser());
+                    parserRegistration.Set("Border", new TestLibrary.BorderCustomElementParser());
 
                     AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(jsonObject, parserRegistration, null);
 
@@ -239,6 +240,7 @@ namespace AdaptiveCardVisualizer.ViewModel
             }
 
             _renderer.ElementRenderers.Set("AnimalGrid", new TestLibrary.AnimalGridRenderer());
+            _renderer.ElementRenderers.Set("Border", new TestLibrary.BorderCustomElementRenderer());
 
             // Custom resource resolvers
             _renderer.ResourceResolvers.Set("symbol", new MySymbolResourceResolver());
