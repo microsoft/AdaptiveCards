@@ -73,7 +73,7 @@ namespace TestLibrary
         [JsonConverter(typeof(StringEnumConverter))]
         public Spacing Spacing { get; set; }
 
-        public IList<AdaptiveRequirement> Requirements { get; set; }
+        public IList<AdaptiveRequirement> Requirements { get; } = new List<AdaptiveRequirement>(); //BECKYTODO - cusomizer must initialize?
 
         // Need to explicitly default this one to true or elements with unset visibility will be non visible
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
