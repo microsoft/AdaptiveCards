@@ -15,7 +15,7 @@ namespace AdaptiveNamespace
 
     public:
         HRESULT RuntimeClassInitialize();
-        HRESULT RuntimeClassInitialize(HSTRING name, HSTRING version);
+        HRESULT RuntimeClassInitialize(_In_ HSTRING name, _In_ HSTRING version);
         HRESULT RuntimeClassInitialize(const std::pair<const std::string, AdaptiveCards::SemanticVersion>& sharedRequirement) noexcept;
 
         // IAdaptiveRequirement

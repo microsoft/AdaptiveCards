@@ -11,7 +11,7 @@ namespace AdaptiveNamespace
 {
     HRESULT AdaptiveRequirement::RuntimeClassInitialize() { return S_OK; }
 
-    HRESULT AdaptiveRequirement::RuntimeClassInitialize(HSTRING name, HSTRING version)
+    HRESULT AdaptiveRequirement::RuntimeClassInitialize(_In_ HSTRING name, _In_ HSTRING version)
     {
         m_name.Set(name);
         m_version.Set(version);
