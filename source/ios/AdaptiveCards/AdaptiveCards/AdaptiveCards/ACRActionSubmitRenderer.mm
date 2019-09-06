@@ -36,11 +36,9 @@
     UIButton *button = [ACRButton rootView:view baseActionElement:acoElem title:title andHostConfig:acoConfig];
 
     ACRAggregateTarget *target;
-    if (ACRRenderingStatus::ACROk == buildTargetForButton(view, elem, button, &target, ACRAction)) {
+    if (ACRRenderingStatus::ACROk == buildTargetForButton([view getActionsTargetBuilderDirector], elem, button, &target)) {
         [superview addTarget:target];
     }
-
-    [superview addTarget:target];
 
     [button setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
 

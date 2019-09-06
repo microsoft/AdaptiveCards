@@ -14,6 +14,7 @@
 #import "AdaptiveCards/ShowCardAction.h"
 #import "AdaptiveCards/TextBlock.h"
 #import "AdaptiveCards/ACRShowCardTarget.h"
+#import "AdaptiveCards/UtiliOS.h"
 
 @interface ADCIOSVisualizerTests : XCTestCase
 
@@ -121,14 +122,14 @@
     NSObject *target;
     UIButton *button = [UIButton buttonWithType:UIButtonType::UIButtonTypeSystem];
     
-    XCTAssert(ACRRenderingStatus::ACRFailed == [testView build:action target:&target capability:ACRTargetCapability::ACRSelectAction]);
+    XCTAssert(ACRRenderingStatus::ACRFailed == buildTarget([testView getSelectActionsTargetBuilderDirector], action, &target));
 
-    XCTAssert(ACRRenderingStatus::ACRFailed == [testView build:action target:&target capability:ACRTargetCapability::ACRQuickReply]);
+    XCTAssert(ACRRenderingStatus::ACRFailed == buildTarget([testView getQuickReplyTargetBuilderDirector], action, &target));
 
     // show card target not supported without button
-    XCTAssert(ACRRenderingStatus::ACRFailed == [testView build:action target:&target capability:ACRTargetCapability::ACRAction]);
+    XCTAssert(ACRRenderingStatus::ACRFailed == buildTarget([testView getActionsTargetBuilderDirector], action, &target));
 
-    XCTAssert(ACRRenderingStatus::ACROk == [testView build:action target:&target capability:ACRTargetCapability::ACRAction forButton:button]);
+    XCTAssert(ACRRenderingStatus::ACROk == buildTargetForButton([testView getActionsTargetBuilderDirector], action, button, &target));
     
     XCTAssertNotNil(target);
     

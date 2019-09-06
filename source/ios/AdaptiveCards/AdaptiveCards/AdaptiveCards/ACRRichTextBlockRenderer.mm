@@ -99,7 +99,7 @@
                 std::shared_ptr<BaseActionElement> baseAction = textRun->GetSelectAction();
                 if(baseAction) {
                     NSObject* target;
-                    if (ACRRenderingStatus::ACROk == buildTarget(rootView, baseAction, &target, ACRSelectAction)) {
+                    if (ACRRenderingStatus::ACROk == buildTarget([rootView getSelectActionsTargetBuilderDirector], baseAction, &target)) {
                         [textRunContent addAttribute:@"SelectAction" value:target range:NSMakeRange(0, textRunContent.length - 1)];
                         [ACRLongPressGestureRecognizerFactory addTapGestureRecognizerToUITextView:lab target:(NSObject<ACRSelectActionDelegate> *)target rootView:rootView hostConfig:acoConfig];
                     }

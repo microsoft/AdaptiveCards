@@ -182,10 +182,6 @@
 
 @implementation ACRTargetBuilderDirector {
     NSDictionary<NSNumber *, ACRTargetBuilder *> *_builders;
-    NSDictionary<NSNumber *, ACRTargetBuilder *> *_actionsBuilders;
-    NSDictionary<NSNumber *, ACRTargetBuilder *> *_selectActionBuilders;
-    NSDictionary<NSNumber *, ACRTargetBuilder *> *_quickReplyBuilders;
-    ACRTargetCapability _builderCapability;
 }
 
 - (instancetype)init {
@@ -205,51 +201,33 @@
         NSNumber *showcard = [NSNumber numberWithInt:static_cast<int>(ActionType::ShowCard)];
         NSNumber *toggle = [NSNumber numberWithInt:static_cast<int>(ActionType::ToggleVisibility)];
 
-        // target capabilities list supported events and corresponding target builders
-        _actionsBuilders = @{
-            openUrl : [ACRAggregateTargetBuilder getInstance],
-            submit : [ACRAggregateTargetBuilder getInstance],
-            showcard : [ACRShowCardTargetBuilder getInstance],
-            toggle : [ACRToggleVisibilityTargetBuilder getInstance]
-        };
-
-        _selectActionBuilders = @{
-            openUrl : [ACRAggregateTargetBuilder getInstance],
-            submit : [ACRAggregateTargetBuilder getInstance],
-            toggle : [ACRToggleVisibilityTargetBuilder getInstance]
-        };
-
-        _quickReplyBuilders = @{
-            openUrl : [ACRAggregateTargetBuilder getInstance],
-            submit : [ACRAggregateTargetBuilder getInstance],
-            toggle : [ACRToggleVisibilityTargetBuilder getInstance]
-        };
-        [self configDirector:capability];
+        // target capability lists supported events and corresponding target builders
+        switch (capability) {
+            case ACRAction:
+                _builders = @{
+                    openUrl : [ACRAggregateTargetBuilder getInstance],
+                    submit : [ACRAggregateTargetBuilder getInstance],
+                    showcard : [ACRShowCardTargetBuilder getInstance],
+                    toggle : [ACRToggleVisibilityTargetBuilder getInstance]
+                };
+                break;
+            case ACRSelectAction:
+                _builders = @{
+                    openUrl : [ACRAggregateTargetBuilder getInstance],
+                    submit : [ACRAggregateTargetBuilder getInstance],
+                    toggle : [ACRToggleVisibilityTargetBuilder getInstance]
+                };
+                break;
+            case ACRQuickReply:
+                _builders = @{
+                    openUrl : [ACRAggregateTargetBuilder getInstance],
+                    submit : [ACRAggregateTargetBuilder getInstance],
+                    toggle : [ACRToggleVisibilityTargetBuilder getInstance]
+                };
+                break;
+        }
     }
-
     return self;
-}
-
-- (void)configDirector:(ACRTargetCapability)capability {
-    if (_builderCapability != capability) {
-        _builderCapability = capability;
-        [self updateMyCapability];
-    }
-}
-
-- (void)updateMyCapability {
-    // target capabilities list supported events and corresponding target builders
-    switch (_builderCapability) {
-        case ACRAction:
-            _builders = _actionsBuilders;
-            break;
-        case ACRSelectAction:
-            _builders = _selectActionBuilders;
-            break;
-        case ACRQuickReply:
-            _builders = _quickReplyBuilders;
-            break;
-    }
 }
 
 - (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action {
