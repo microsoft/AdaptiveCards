@@ -84,7 +84,7 @@
     ACOBaseCardElement *acoColumn = [[ACOBaseCardElement alloc] init];
     auto firstColumn = columns.begin();
     auto prevColumn = columns.empty() ? nullptr : *firstColumn;
-    auto lastColumn { columns.back() };
+    auto lastColumn = columns.empty() ? nullptr : columns.back();
     ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
     ACRSeparator *separator = nil;
 
