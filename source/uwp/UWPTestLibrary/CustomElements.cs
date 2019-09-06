@@ -27,58 +27,37 @@ namespace TestLibrary
         public AnimalType AnimalType { get; set; }
         public uint AnimalCount { get; set; } = 1;
 
-        // These are handled by the AdaptiveCardElementConverter
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public FallbackType FallbackType { get; set; }
-
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public IAdaptiveCardElement FallbackContent { get; set; }
-
-        [JsonIgnore]
-        public JsonObject AdditionalProperties { get; set; }
-
         public JsonObject ToJson()
         {
             try
             {
-                string jsonString = JsonConvert.SerializeObject(this);
-                JsonObject.Parse(jsonString);
+                string jsonString = JsonConvert.SerializeObject(this, new JsonSerializerSettings
+                {
+                    ContractResolver = new AdaptiveCardContractResolver()
+                });
+                return JsonObject.Parse(jsonString);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                throw e;
             }
-
-            return JsonObject.Parse(JsonConvert.SerializeObject(this));
         }
 
         // Set element type to custom and type string to "AnimalGrid"
-        [JsonIgnore]
         public ElementType ElementType { get; } = ElementType.Custom;
-
-        [JsonProperty("type")]
         public string ElementTypeString { get; } = "AnimalGrid";
-
-        // Element properties handled automatically by Json.NET
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [JsonConverter(typeof(StringEnumConverter))]
-        public HeightType Height { get; set; }
-
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public string Id { get; set; }
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public bool Separator { get; set; }
-
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [JsonConverter(typeof(StringEnumConverter))]
-        public Spacing Spacing { get; set; }
-
         public IList<AdaptiveRequirement> Requirements { get; } = new List<AdaptiveRequirement>(); //BECKYTODO - cusomizer must initialize?
 
-        // Need to explicitly default this one to true or elements with unset visibility will be non visible
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [DefaultValue(true)]
-        public bool IsVisible { get; set; } = true;
+        // Element properties handled automatically by Json.NET and the AdaptiveCardElementConverter
+        public FallbackType FallbackType { get; set; }
+        public IAdaptiveCardElement FallbackContent { get; set; }
+        public JsonObject AdditionalProperties { get; set; }
+        public HeightType Height { get; set; }
+        public string Id { get; set; }
+        public bool Separator { get; set; }
+        public Spacing Spacing { get; set; }
+        public bool IsVisible { get; set; }
     }
 
     public class AnimalGridParser : IAdaptiveElementParser
