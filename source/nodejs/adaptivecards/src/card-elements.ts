@@ -197,8 +197,9 @@ export abstract class CardObject extends Serialization.SerializableObject {
     static readonly idProperty = new Serialization.StringPropertyDefinition(Shared.Versions.v1_0, "id");
 
     protected populateSchema(schema: Serialization.SerializableObjectSchema) {
-        schema.add(CardObject.typeNameProperty);
-        schema.add(CardObject.idProperty);
+        schema.add(
+            CardObject.typeNameProperty,
+            CardObject.idProperty);
     }
 
     abstract getJsonTypeName(): string;
@@ -233,6 +234,10 @@ export abstract class CardObject extends Serialization.SerializableObject {
         return result;
     }
 
+    @Serialization.schemaProperty(CardObject.idProperty)
+    id: string;
+
+    /*
     get id(): string {
         return this.getValue(CardObject.idProperty);
     }
@@ -240,6 +245,7 @@ export abstract class CardObject extends Serialization.SerializableObject {
     set id(value: string) {
         this.setValue(CardObject.idProperty, value);
     }
+    */
 }
 
 export type CardElementHeight = "auto" | "stretch";
@@ -290,13 +296,14 @@ export abstract class CardElement extends CardObject {
     protected populateSchema(schema: Serialization.SerializableObjectSchema) {
         super.populateSchema(schema);
 
-        schema.add(CardElement.langProperty);
-        schema.add(CardElement.isVisibleProperty);
-        schema.add(CardElement.separatorProperty);
-        schema.add(CardElement.heightProperty);
-        schema.add(CardElement.horizontalAlignmentProperty);
-        schema.add(CardElement.spacingProperty);
-        schema.add(CardElement.requiresProperty);
+        schema.add(
+            CardElement.langProperty,
+            CardElement.isVisibleProperty,
+            CardElement.separatorProperty,
+            CardElement.heightProperty,
+            CardElement.horizontalAlignmentProperty,
+            CardElement.spacingProperty,
+            CardElement.requiresProperty);
 
         if (this.supportsMinHeight) {
             schema.add(CardElement.minHeightProperty);
@@ -974,12 +981,13 @@ export abstract class BaseTextBlock extends CardElement {
     protected populateSchema(schema: Serialization.SerializableObjectSchema) {
         super.populateSchema(schema);
 
-        schema.add(BaseTextBlock.textProperty);
-        schema.add(BaseTextBlock.sizeProperty);
-        schema.add(BaseTextBlock.weightProperty);
-        schema.add(BaseTextBlock.colorProperty);
-        schema.add(BaseTextBlock.isSubtleProperty);
-        schema.add(BaseTextBlock.fontTypeProperty);
+        schema.add(
+            BaseTextBlock.textProperty,
+            BaseTextBlock.sizeProperty,
+            BaseTextBlock.weightProperty,
+            BaseTextBlock.colorProperty,
+            BaseTextBlock.isSubtleProperty,
+            BaseTextBlock.fontTypeProperty);
     }
 
     private _selectAction?: Action;
@@ -1149,8 +1157,9 @@ export class TextBlock extends BaseTextBlock {
     protected populateSchema(schema: Serialization.SerializableObjectSchema) {
         super.populateSchema(schema);
 
-        schema.add(TextBlock.wrapProperty);
-        schema.add(TextBlock.maxLinesProperty);
+        schema.add(
+            TextBlock.wrapProperty,
+            TextBlock.maxLinesProperty);
     }
 
     private _computedLineHeight: number;
@@ -1463,9 +1472,10 @@ export class TextRun extends BaseTextBlock {
     protected populateSchema(schema: Serialization.SerializableObjectSchema) {
         super.populateSchema(schema);
 
-        schema.add(TextRun.italicProperty);
-        schema.add(TextRun.strikethroughProperty);
-        schema.add(TextRun.highlightProperty);
+        schema.add(
+            TextRun.italicProperty,
+            TextRun.strikethroughProperty,
+            TextRun.highlightProperty);
     }
 
     protected internalRender(): HTMLElement | undefined {
@@ -1741,8 +1751,9 @@ export class Fact extends Serialization.SerializableObject {
     protected populateSchema(schema: Serialization.SerializableObjectSchema) {
         super.populateSchema(schema);
 
-        schema.add(Fact.titleProperty);
-        schema.add(Fact.valueProperty);
+        schema.add(
+            Fact.titleProperty,
+            Fact.valueProperty);
     }
 
     constructor(name?: string, value?: string) {
@@ -1969,13 +1980,14 @@ export class Image extends CardElement {
     protected populateSchema(schema: Serialization.SerializableObjectSchema) {
         super.populateSchema(schema);
 
-        schema.add(Image.urlProperty);
-        schema.add(Image.altTextProperty);
-        schema.add(Image.backgroundColorProperty);
-        schema.add(Image.styleProperty);
-        schema.add(Image.sizeProperty);
-        schema.add(Image.pixelWidthProperty);
-        schema.add(Image.pixelHeightProperty);
+        schema.add(
+            Image.urlProperty,
+            Image.altTextProperty,
+            Image.backgroundColorProperty,
+            Image.styleProperty,
+            Image.sizeProperty,
+            Image.pixelWidthProperty,
+            Image.pixelHeightProperty);
     }
 
     private _selectAction?: Action;
@@ -2805,19 +2817,6 @@ export class Media extends CardElement {
 
         Utils.setProperty(result, "poster", this.poster);
         Utils.setProperty(result, "altText", this.altText);
-
-        /*
-        if (this.sources.length > 0) {
-            let serializedSources = [];
-
-            for (let source of this.sources) {
-                serializedSources.push(source.toJSON());
-            }
-
-            Utils.setProperty(result, "sources", serializedSources);
-        }
-        */
-
         Utils.setArrayProperty(result, "sources", this.sources);
 
         return result;
@@ -3581,21 +3580,7 @@ export class ChoiceSetInput extends Input {
         let result = super.toJSON();
 
         Utils.setProperty(result, "placeholder", this.placeholder);
-
-        /*
-        let choices = [];
-
-        if (this.choices) {
-            for (let choice of this.choices) {
-                choices.push(choice.toJSON());
-            }
-        }
-
-        Utils.setProperty(result, "choices", choices);
-        */
-
         Utils.setArrayProperty(result, "choices", this.choices);
-
         Utils.setProperty(result, "style", this.isCompact ? undefined : "expanded");
         Utils.setProperty(result, "isMultiSelect", this.isMultiSelect, false);
         Utils.setProperty(result, "wrap", this.wrap, false);

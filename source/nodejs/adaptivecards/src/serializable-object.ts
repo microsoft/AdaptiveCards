@@ -292,7 +292,7 @@ export class CustomPropertyDefinition<T> extends TypedPropertyDefinition<T> {
     }
 }
 
-export class SerializableObjectSchema { // implements Iterable<PropertyDefinition> {
+export class SerializableObjectSchema {
     private _properties: PropertyDefinition[] = [];
 
     indexOf(property: PropertyDefinition): number {
@@ -305,9 +305,11 @@ export class SerializableObjectSchema { // implements Iterable<PropertyDefinitio
         return -1;
     }
 
-    add(property: PropertyDefinition) {
-        if (this.indexOf(property) === -1) {
-            this._properties.push(property);
+    add(...properties: PropertyDefinition[]) {
+        for (let i = 0; i < properties.length; i++) {
+            if (this.indexOf(properties[i]) === -1) {
+                this._properties.push(properties[i]);
+            }
         }
     }
 
@@ -328,33 +330,20 @@ export class SerializableObjectSchema { // implements Iterable<PropertyDefinitio
         return this._properties[index];
     }
 
-    get count(): number {
+    getCount(): number {
         return this._properties.length;
     }
+}
 
-    /*
-    [Symbol.iterator]() {
-        let index = 0;
-        let properties = this._properties;
+export function schemaProperty(property: PropertyDefinition) {
+    return function(target: any, propertyKey: string) {
+        let descriptor = Object.getOwnPropertyDescriptor(target, propertyKey) || {};
 
-        return {
-            next(): IteratorResult<PropertyDefinition> {
-                if (index < properties.length) {
-                    return {
-                        done: false,
-                        value: properties[index++]
-                    }
-                }
-                else {
-                    return {
-                        done: true,
-                        value: undefined as unknown as PropertyDefinition
-                    }
-                }
-            }
-        }
+        descriptor.get = function(this: SerializableObject) { return this.getValue(property); };
+        descriptor.set = function(this: SerializableObject, value: any) { this.setValue(property, value); };
+
+        Object.defineProperty(target, propertyKey, descriptor)
     }
-    */
 }
 
 export type PropertyBag = { [propertyName: string]: any };
@@ -387,10 +376,9 @@ export abstract class SerializableObject {
     }
 
     constructor() {
-        // for (let property of this.schema) {
-        let s = this.schema;
+        let s = this.getSchema();
 
-        for (let i = 0; i < s.count; i++) {
+        for (let i = 0; i < s.getCount(); i++) {
             let property = s.getItemAt(i);
 
             if (property.onGetInitialValue) {
@@ -403,19 +391,13 @@ export abstract class SerializableObject {
         this._propertyBag = {};
         this._rawProperties = Shared.GlobalSettings.enableFullJsonRoundTrip ? source : {};
 
-        let s = this.schema;
+        let s = this.getSchema();
 
-        for (let i = 0; i < s.count; i++) {
+        for (let i = 0; i < s.getCount(); i++) {
             let property = s.getItemAt(i);
 
             this.setValue(property, property.parse(source, errors));
         }
-
-        /*
-        for (let property of this.schema) {
-            this.setValue(property, property.parse(source, errors));
-        }
-        */
     }
 
     toJSON(): any {
@@ -428,19 +410,13 @@ export abstract class SerializableObject {
             result = {};
         }
 
-        let s = this.schema;
+        let s = this.getSchema();
 
-        for (let i = 0; i < s.count; i++) {
+        for (let i = 0; i < s.getCount(); i++) {
             let property = s.getItemAt(i);
 
             property.toJSON(result, this.getValue(property));
         }
-
-        /*
-        for (let property of this.schema) {
-            property.toJSON(result, this.getValue(property));
-        }
-        */
 
         return result;
     }
@@ -460,7 +436,7 @@ export abstract class SerializableObject {
         return this._rawProperties[name];
     }
 
-    get schema(): SerializableObjectSchema {
+    getSchema(): SerializableObjectSchema {
         let schema: SerializableObjectSchema = SerializableObject._schemaCache[this.getSchemaKey()];
 
         if (!schema) {
