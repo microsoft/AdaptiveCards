@@ -52,9 +52,9 @@ typedef void (^ObserverActionBlockForBaseAction)(NSObject<ACOIResourceResolver> 
 
 - (UIView *)getBleedTarget:(InternalId const &)internalId;
 
-- (ACRRenderingError)build:(std::shared_ptr<BaseActionElement> const &)action target:(NSObject **)target capability:(ACRTargetCapability) capability;
+- (ACRRenderingStatus)build:(std::shared_ptr<BaseActionElement> const &)action target:(NSObject **)target capability:(ACRTargetCapability) capability;
 
-- (ACRRenderingError)build:(std::shared_ptr<BaseActionElement> const &)action target:(NSObject **)target capability:(ACRTargetCapability) capability forButton:(UIButton *)button;
+- (ACRRenderingStatus)build:(std::shared_ptr<BaseActionElement> const &)action target:(NSObject **)target capability:(ACRTargetCapability) capability forButton:(UIButton *)button;
 
 @end
 

@@ -803,20 +803,19 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 
         fallbackElem = fallbackElemCard->GetFallbackContent();
     }
-
 }
 
-- (ACRRenderingError)build:(std::shared_ptr<BaseActionElement> const &)action target:(NSObject **)target capability:(ACRTargetCapability) capability
+- (ACRRenderingStatus)build:(std::shared_ptr<BaseActionElement> const &)action target:(NSObject **)target capability:(ACRTargetCapability) capability
 {
-    _targetBuilderDirector.builderCapability = capability;
+    [_targetBuilderDirector configDirector:capability];
     *target = [_targetBuilderDirector build:action];
-    return *target ? ACRRenderingError::ACROk : ACRRenderingError::ACRFailed;
+    return *target ? ACRRenderingStatus::ACROk : ACRRenderingStatus::ACRFailed;
 }
 
-- (ACRRenderingError)build:(std::shared_ptr<BaseActionElement> const &)action target:(NSObject **)target capability:(ACRTargetCapability) capability forButton:(UIButton *)button
+- (ACRRenderingStatus)build:(std::shared_ptr<BaseActionElement> const &)action target:(NSObject **)target capability:(ACRTargetCapability) capability forButton:(UIButton *)button
 {
     *target = [_targetBuilderDirector build:action forButton:button];
-    return *target ? ACRRenderingError::ACROk : ACRRenderingError::ACRFailed;
+    return *target ? ACRRenderingStatus::ACROk : ACRRenderingStatus::ACRFailed;
 }
 
 @end

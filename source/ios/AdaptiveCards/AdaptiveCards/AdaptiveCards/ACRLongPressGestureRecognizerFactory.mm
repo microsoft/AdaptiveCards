@@ -29,7 +29,7 @@ using namespace AdaptiveCards;
 {
     if(action != nullptr){
         NSObject<ACRSelectActionDelegate> *target;
-        if (ACRRenderingError::ACROk == buildTarget(rootView, action, &target, ACRSelectAction) && viewGroup) {
+        if (ACRRenderingStatus::ACROk == buildTarget(rootView, action, &target, ACRSelectAction) && viewGroup) {
             UILongPressGestureRecognizer *recognizer = [ACRLongPressGestureRecognizerFactory getGestureRecognizer:viewGroup target:target];
             [recipientView addGestureRecognizer:recognizer];
             recipientView.userInteractionEnabled = YES;

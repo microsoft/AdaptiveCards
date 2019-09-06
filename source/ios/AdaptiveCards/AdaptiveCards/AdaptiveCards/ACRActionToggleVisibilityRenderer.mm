@@ -36,7 +36,7 @@
     UIButton *button = [ACRButton rootView:view baseActionElement:acoElem title:title andHostConfig:acoConfig];
 
     ACRToggleVisibilityTarget *target;
-    if (ACRRenderingError::ACROk == buildTargetForButton(view, elem, button, &target, ACRAction)) {
+    if (ACRRenderingStatus::ACROk == buildTargetForButton(view, elem, button, &target, ACRAction)) {
         [superview addTarget:target];
     }
 

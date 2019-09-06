@@ -181,7 +181,11 @@
 @end
 
 @implementation ACRTargetBuilderDirector {
-    NSArray<NSDictionary<NSNumber *, ACRTargetBuilder *> *> *_builders;
+    NSDictionary<NSNumber *, ACRTargetBuilder *> *_builders;
+    NSDictionary<NSNumber *, ACRTargetBuilder *> *_actionsBuilders;
+    NSDictionary<NSNumber *, ACRTargetBuilder *> *_selectActionBuilders;
+    NSDictionary<NSNumber *, ACRTargetBuilder *> *_quickReplyBuilders;
+    ACRTargetCapability _builderCapability;
 }
 
 - (instancetype)init {
@@ -194,39 +198,58 @@
     adaptiveHostConfig:(ACOHostConfig *)adaptiveHostConfig {
     self = [super init];
     if (self) {
-        self.builderCapability = capability;
         self.rootView = rootView;
         self.adaptiveHostConfig = adaptiveHostConfig;
-
         NSNumber *openUrl = [NSNumber numberWithInt:static_cast<int>(ActionType::OpenUrl)];
         NSNumber *submit = [NSNumber numberWithInt:static_cast<int>(ActionType::Submit)];
         NSNumber *showcard = [NSNumber numberWithInt:static_cast<int>(ActionType::ShowCard)];
         NSNumber *toggle = [NSNumber numberWithInt:static_cast<int>(ActionType::ToggleVisibility)];
 
         // target capabilities list supported events and corresponding target builders
-        _builders = @[
-            // ACRAction
-            @{
-                openUrl : [ACRAggregateTargetBuilder getInstance],
-                submit : [ACRAggregateTargetBuilder getInstance],
-                showcard : [ACRShowCardTargetBuilder getInstance],
-                toggle : [ACRToggleVisibilityTargetBuilder getInstance]
-            },
-            // ACRSelectAction
-            @{
-                openUrl : [ACRAggregateTargetBuilder getInstance],
-                submit : [ACRAggregateTargetBuilder getInstance],
-                toggle : [ACRToggleVisibilityTargetBuilder getInstance]
-            },
-            // ACRQuickReply
-            @{
-                openUrl : [ACRAggregateTargetBuilder getInstance],
-                submit : [ACRAggregateTargetBuilder getInstance],
-                toggle : [ACRToggleVisibilityTargetBuilder getInstance]
-            }
-        ];
+        _actionsBuilders = @{
+            openUrl : [ACRAggregateTargetBuilder getInstance],
+            submit : [ACRAggregateTargetBuilder getInstance],
+            showcard : [ACRShowCardTargetBuilder getInstance],
+            toggle : [ACRToggleVisibilityTargetBuilder getInstance]
+        };
+
+        _selectActionBuilders = @{
+            openUrl : [ACRAggregateTargetBuilder getInstance],
+            submit : [ACRAggregateTargetBuilder getInstance],
+            toggle : [ACRToggleVisibilityTargetBuilder getInstance]
+        };
+
+        _quickReplyBuilders = @{
+            openUrl : [ACRAggregateTargetBuilder getInstance],
+            submit : [ACRAggregateTargetBuilder getInstance],
+            toggle : [ACRToggleVisibilityTargetBuilder getInstance]
+        };
+        [self configDirector:capability];
     }
+
     return self;
+}
+
+- (void)configDirector:(ACRTargetCapability)capability {
+    if (_builderCapability != capability) {
+        _builderCapability = capability;
+        [self updateMyCapability];
+    }
+}
+
+- (void)updateMyCapability {
+    // target capabilities list supported events and corresponding target builders
+    switch (_builderCapability) {
+        case ACRAction:
+            _builders = _actionsBuilders;
+            break;
+        case ACRSelectAction:
+            _builders = _selectActionBuilders;
+            break;
+        case ACRQuickReply:
+            _builders = _quickReplyBuilders;
+            break;
+    }
 }
 
 - (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action {
@@ -241,27 +264,23 @@
 
 - (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
           forButton:(UIButton *)button {
-    if (![self checkAgainstMyCapability:action]) {
+    if (ACRRenderingStatus::ACROk == [self checkAgainstMyCapability:action]) {
         ACRTargetBuilder *builder = [self getBuilder:action];
         return [builder build:action director:self ForButton:button];
     }
     return nil;
 }
 
-- (ACRRenderingError)checkAgainstMyCapability:(std::shared_ptr<BaseActionElement> const &)action {
-    if (self.builderCapability >= 0 && self.builderCapability < [_builders count]) {
-        return ([_builders[self.builderCapability]
-                   objectForKey:[NSNumber
-                                    numberWithInt:static_cast<int>(action->GetElementType())]])
-        ? ACRRenderingError::ACROk
-        : ACRRenderingError::ACRUnsupported;
-    }
-    return ACRRenderingError::ACRUnsupported;
+- (ACRRenderingStatus)checkAgainstMyCapability:(std::shared_ptr<BaseActionElement> const &)action {
+    return ([_builders
+               objectForKey:[NSNumber numberWithInt:static_cast<int>(action->GetElementType())]])
+               ? ACRRenderingStatus::ACROk
+               : ACRRenderingStatus::ACRUnsupported;
 }
 
 - (ACRTargetBuilder *)getBuilder:(std::shared_ptr<BaseActionElement> const &)action {
     NSNumber *key = [NSNumber numberWithInt:static_cast<int>(action->GetElementType())];
-    return _builders[_builderCapability][key];
+    return _builders[key];
 }
 
 @end

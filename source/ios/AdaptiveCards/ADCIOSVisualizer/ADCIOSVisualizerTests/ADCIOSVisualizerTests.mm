@@ -121,14 +121,14 @@
     NSObject *target;
     UIButton *button = [UIButton buttonWithType:UIButtonType::UIButtonTypeSystem];
     
-    XCTAssert(ACRRenderingError::ACRFailed == [testView build:action target:&target capability:ACRTargetCapability::ACRSelectAction]);
+    XCTAssert(ACRRenderingStatus::ACRFailed == [testView build:action target:&target capability:ACRTargetCapability::ACRSelectAction]);
 
-    XCTAssert(ACRRenderingError::ACRFailed == [testView build:action target:&target capability:ACRTargetCapability::ACRQuickReply]);
+    XCTAssert(ACRRenderingStatus::ACRFailed == [testView build:action target:&target capability:ACRTargetCapability::ACRQuickReply]);
 
     // show card target not supported without button
-    XCTAssert(ACRRenderingError::ACRFailed == [testView build:action target:&target capability:ACRTargetCapability::ACRAction]);
+    XCTAssert(ACRRenderingStatus::ACRFailed == [testView build:action target:&target capability:ACRTargetCapability::ACRAction]);
 
-    XCTAssert(ACRRenderingError::ACROk == [testView build:action target:&target capability:ACRTargetCapability::ACRAction forButton:button]);
+    XCTAssert(ACRRenderingStatus::ACROk == [testView build:action target:&target capability:ACRTargetCapability::ACRAction forButton:button]);
     
     XCTAssertNotNil(target);
     

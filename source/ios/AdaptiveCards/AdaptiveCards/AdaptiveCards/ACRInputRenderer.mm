@@ -217,7 +217,7 @@
         [acoAction setElem:action];        
         
         NSObject *target;
-        if (ACRRenderingError::ACROk == buildTargetForButton(rootView, action, button, &target, ACRQuickReply)) {
+        if (ACRRenderingStatus::ACROk == buildTargetForButton(rootView, action, button, &target, ACRQuickReply)) {
             if (action->GetElementType() == ActionType::Submit) { 
                 quickReplyView.target = (ACRAggregateTarget *)target;
             }

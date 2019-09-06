@@ -1,6 +1,5 @@
 //
-//  Util
-//  Util.mm
+//  UtiliOS
 //
 //  Copyright © 2019 Microsoft. All rights reserved.
 //
@@ -390,13 +389,13 @@ UIFontDescriptor *getItalicFontDescriptor(UIFontDescriptor *descriptor, bool isI
     return descriptor;
 }
 
-ACRRenderingError buildTargetForButton(ACRView *rootView, std::shared_ptr<BaseActionElement> const &action,
+ACRRenderingStatus buildTargetForButton(ACRView *rootView, std::shared_ptr<BaseActionElement> const &action,
                                UIButton *button, NSObject **target,
                                ACRTargetCapability capability) {
     return [rootView build:action target:target capability:capability forButton:button];
 }
 
-ACRRenderingError buildTarget(ACRView *rootView, std::shared_ptr<BaseActionElement> const &action,
+ACRRenderingStatus buildTarget(ACRView *rootView, std::shared_ptr<BaseActionElement> const &action,
                                NSObject **target, ACRTargetCapability capability) {
     return [rootView build:action target:target capability:capability];
 }

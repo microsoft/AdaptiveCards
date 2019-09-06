@@ -1,6 +1,5 @@
 //
-//  Util.h
-//  Util
+//  UtiliOS
 //
 //  Copyfight © 2019 Microsoft. All rights reserved.
 //
@@ -50,8 +49,10 @@ void handleActionFallbackException(ACOFallbackException *exception,
 void removeLastViewFromCollectionView(const CardElementType elemType,
                                       UIView<ACRIContentHoldingView> *view);
 
-ACRRenderingError buildTarget(ACRView *rootView, std::shared_ptr<BaseActionElement> const &action,
-                      NSObject **target, ACRTargetCapability capability);
+ACRRenderingStatus buildTarget(ACRView *rootView, std::shared_ptr<BaseActionElement> const &action,
+                               NSObject **target, ACRTargetCapability capability);
 
-ACRRenderingError buildTargetForButton(ACRView *rootView, std::shared_ptr<BaseActionElement> const &action,
-                               UIButton *button, NSObject **target, ACRTargetCapability capability);
+ACRRenderingStatus buildTargetForButton(ACRView *rootView,
+                                        std::shared_ptr<BaseActionElement> const &action,
+                                        UIButton *button, NSObject **target,
+                                        ACRTargetCapability capability);

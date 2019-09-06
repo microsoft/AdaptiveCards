@@ -36,7 +36,7 @@
     UIButton *button = [ACRButton rootView:rootView baseActionElement:acoElem title:title andHostConfig:acoConfig];
 
     ACRShowCardTarget *target;
-    if (ACRRenderingError::ACROk == buildTargetForButton(rootView, elem, button, &target, ACRAction)) {
+    if (ACRRenderingStatus::ACROk == buildTargetForButton(rootView, elem, button, &target, ACRAction)) {
         [superview addTarget:target];
         [target createShowCard:inputs superview:superview];
     }
