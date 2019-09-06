@@ -11,7 +11,9 @@
 #import "BackgroundImage.h"
 #import "SharedAdaptiveCard.h"
 #import "CollectionTypeElement.h"
-#include "ActionParserRegistration.h"
+#import "ActionParserRegistration.h"
+#import "ACRTargetBuilderDirector.h"
+#import "ACRErrors.h"
 
 using namespace AdaptiveCards;
 
@@ -45,5 +47,11 @@ typedef void (^ObserverActionBlockForBaseAction)(NSObject<ACOIResourceResolver> 
 
 - (UIView *)getBleedTarget:(InternalId const &)internalId;
 
+- (ACRTargetBuilderDirector *)getActionsTargetBuilderDirector;
+
+- (ACRTargetBuilderDirector *)getSelectActionsTargetBuilderDirector;
+
+- (ACRTargetBuilderDirector *)getQuickReplyTargetBuilderDirector;
 
 @end
+

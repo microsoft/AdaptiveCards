@@ -12,7 +12,7 @@
 #import "ACOBaseCardElementPrivate.h"
 #import "ImageSet.h"
 #import "SharedAdaptiveCard.h"
-#import "Util.h"
+#import "UtiliOS.h"
 
 using namespace AdaptiveCards;
 

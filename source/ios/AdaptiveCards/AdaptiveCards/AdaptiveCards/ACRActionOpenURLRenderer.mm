@@ -13,6 +13,8 @@
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseActionElementPrivate.h"
 #import "ACRIContentHoldingView.h"
+#import "UtiliOS.h"
+
 @implementation ACRActionOpenURLRenderer
 
 + (ACRActionOpenURLRenderer *)getInstance
@@ -34,12 +36,11 @@
 
     UIButton *button = [ACRButton rootView:rootView baseActionElement:acoElem title:title andHostConfig:acoConfig];
 
-    ACRAggregateTarget *target = [[ACRAggregateTarget alloc] initWithActionElement:acoElem rootView:(ACRView *)rootView];
-
-    [button addTarget:target action:@selector(send:) forControlEvents:UIControlEventTouchUpInside];
-
-    [superview addTarget:target];
-
+    ACRAggregateTarget *target;
+    if (ACRRenderingStatus::ACROk == buildTargetForButton([rootView getActionsTargetBuilderDirector], elem, button, &target)) {
+        [superview addTarget:target];
+    }
+    
     [button setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
 
     [button setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];

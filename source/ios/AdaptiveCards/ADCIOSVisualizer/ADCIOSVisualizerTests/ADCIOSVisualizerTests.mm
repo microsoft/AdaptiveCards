@@ -7,8 +7,14 @@
 //
 
 #import <XCTest/XCTest.h>
+#import <UIKit/UIKit.h>
 #import <AdaptiveCards/ACFramework.h>
 #import "AdaptiveCards/ACORemoteResourceInformationPrivate.h"
+#import "AdaptiveCards/ACRViewPrivate.h"
+#import "AdaptiveCards/ShowCardAction.h"
+#import "AdaptiveCards/TextBlock.h"
+#import "AdaptiveCards/ACRShowCardTarget.h"
+#import "AdaptiveCards/UtiliOS.h"
 
 @interface ADCIOSVisualizerTests : XCTestCase
 
@@ -96,6 +102,38 @@
     ACRTextView *acrTextView = (ACRTextView *)[renderResult.view viewWithTag:hashkey.hash];
     XCTAssertNotNil(acrTextView);
     XCTAssertTrue([acrTextView.text length] == 0);
+}
+
+- (void)testBuildingShowCardTarget {
+    NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"Feedback" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
+    ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
+    XCTAssertTrue(cardParseResult && cardParseResult.isValid);
+    ACRRenderResult *renderResult = [ACRRenderer render:cardParseResult.card config:_defaultHostConfig widthConstraint:335];
+    
+    ACRView *testView = renderResult.view;
+    std::shared_ptr<AdaptiveCards::TextBlock> textblock = std::make_shared<AdaptiveCards::TextBlock>();
+    textblock->SetText("happy testing");
+    
+    std::shared_ptr<AdaptiveCards::AdaptiveCard> innerCard = std::make_shared<AdaptiveCards::AdaptiveCard>();
+    innerCard->GetBody().push_back(textblock);
+    
+    std::shared_ptr<AdaptiveCards::ShowCardAction> action = std::make_shared<AdaptiveCards::ShowCardAction>();
+    action->SetCard(innerCard);
+    NSObject *target;
+    UIButton *button = [UIButton buttonWithType:UIButtonType::UIButtonTypeSystem];
+    
+    XCTAssert(ACRRenderingStatus::ACRFailed == buildTarget([testView getSelectActionsTargetBuilderDirector], action, &target));
+
+    XCTAssert(ACRRenderingStatus::ACRFailed == buildTarget([testView getQuickReplyTargetBuilderDirector], action, &target));
+
+    // show card target not supported without button
+    XCTAssert(ACRRenderingStatus::ACRFailed == buildTarget([testView getActionsTargetBuilderDirector], action, &target));
+
+    XCTAssert(ACRRenderingStatus::ACROk == buildTargetForButton([testView getActionsTargetBuilderDirector], action, button, &target));
+    
+    XCTAssertNotNil(target);
+    
+    XCTAssertTrue([target respondsToSelector:@selector(createShowCard:superview:)]);
 }
 
 - (void)testChoiceSetInputCanGatherDefaultValues {

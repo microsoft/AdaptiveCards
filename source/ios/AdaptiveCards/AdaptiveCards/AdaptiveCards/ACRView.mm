@@ -36,7 +36,7 @@
 #import "AdaptiveBase64Util.h"
 #import "ACRButton.h"
 #import "BackgroundImage.h"
-#import "Util.h"
+#import "UtiliOS.h"
 
 using namespace AdaptiveCards;
 typedef UIImage* (^ImageLoadBlock)(NSURL *url);
@@ -57,6 +57,9 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     NSMutableDictionary *_imageViewContextMap;
     NSMutableSet *_setOfRemovedObservers;
     NSMutableDictionary<NSString*, UIView *> *_paddingMap;
+    ACRTargetBuilderDirector *_actionsTargetBuilderDirector;
+    ACRTargetBuilderDirector *_selectActionsTargetBuilderDirector;
+    ACRTargetBuilderDirector *_quickReplyTargetBuilderDirector;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -91,6 +94,9 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
         _adaptiveCard = card;
         if (config) {
             _hostConfig = config;
+            _actionsTargetBuilderDirector = [[ACRTargetBuilderDirector alloc] init:self capability:ACRAction adaptiveHostConfig:_hostConfig];
+            _selectActionsTargetBuilderDirector = [[ACRTargetBuilderDirector alloc] init:self capability:ACRSelectAction adaptiveHostConfig:_hostConfig];
+            _quickReplyTargetBuilderDirector = [[ACRTargetBuilderDirector alloc] init:self capability:ACRQuickReply adaptiveHostConfig:_hostConfig];
         }
         unsigned int padding = [_hostConfig getHostConfig]->GetSpacing().paddingSpacing;
         [self removeConstraints:self.constraints];
@@ -801,7 +807,21 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 
         fallbackElem = fallbackElemCard->GetFallbackContent();
     }
+}
 
+- (ACRTargetBuilderDirector *)getActionsTargetBuilderDirector
+{
+    return _actionsTargetBuilderDirector;
+}
+
+- (ACRTargetBuilderDirector *)getSelectActionsTargetBuilderDirector;
+{
+    return _selectActionsTargetBuilderDirector;
+}
+
+- (ACRTargetBuilderDirector *)getQuickReplyTargetBuilderDirector;
+{
+    return _quickReplyTargetBuilderDirector;
 }
 
 @end
