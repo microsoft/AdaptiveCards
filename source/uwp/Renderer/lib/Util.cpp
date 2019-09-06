@@ -1427,18 +1427,14 @@ HRESULT MeetsRequirements(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* car
 
 HRESULT IsBackgroundImageValid(_In_ ABI::AdaptiveNamespace::IAdaptiveBackgroundImage* backgroundImageElement, _Out_ BOOL* isValid)
 {
+    *isValid = FALSE;
     ComPtr<ABI::AdaptiveNamespace::IAdaptiveBackgroundImage> backgroundImage(backgroundImageElement);
     if (backgroundImage != NULL)
     {
-        HSTRING url;
-        THROW_IF_FAILED(backgroundImage->get_Url(&url));
-        if (url != NULL)
-        {
-            *isValid = TRUE;
-            return S_OK;
-        }
+        HString url;
+        RETURN_IF_FAILED(backgroundImage->get_Url(url.GetAddressOf()));
+        *isValid = url.IsValid();
     }
-    *isValid = FALSE;
     return S_OK;
 }
 
