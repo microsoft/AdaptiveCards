@@ -142,6 +142,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Content Include="..\..\..\samples\v1.0\Tests\CustomRendering.Border.json" />
     <None Include="AdaptiveCardTestApp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -173,8 +174,71 @@
     <Content Include="..\..\..\samples\v1.3\Elements\*.json">
       <Link>LinkedCards\v1.3\Elements\%(FileName)</Link>
     </Content>
-    <Content Include="..\..\..\samples\v1.0\Tests\*.json">
-      <Link>LinkedCards\v1.0\Tests\%(FileName)</Link>
+    <Content Include="..\..\..\samples\v1.0\Tests\Action.CustomParsing.json">
+      <Link>LinkedCards\v1.0\Tests\Action.CustomParsing</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Tests\Action.NoBody.json">
+      <Link>LinkedCards\v1.0\Tests\Action.NoBody</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Tests\Action.Title.json">
+      <Link>LinkedCards\v1.0\Tests\Action.Title</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Tests\AdaptiveCard.MinVersion.json">
+      <Link>LinkedCards\v1.0\Tests\AdaptiveCard.MinVersion</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Tests\AdaptiveCard.MissingVersion.json">
+      <Link>LinkedCards\v1.0\Tests\AdaptiveCard.MissingVersion</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Tests\AdaptiveCard.UnknownElements.json">
+      <Link>LinkedCards\v1.0\Tests\AdaptiveCard.UnknownElements</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Tests\AdditionalProperty.json">
+      <Link>LinkedCards\v1.0\Tests\AdditionalProperty</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Tests\AutoImageSet.json">
+      <Link>LinkedCards\v1.0\Tests\AutoImageSet</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Tests\ColumnSet.Empty.json">
+      <Link>LinkedCards\v1.0\Tests\ColumnSet.Empty</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Tests\ColumnSet.ImplicitColumnType.json">
+      <Link>LinkedCards\v1.0\Tests\ColumnSet.ImplicitColumnType</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Tests\CustomParsingTestUsingProgressBar.json">
+      <Link>LinkedCards\v1.0\Tests\CustomParsingTestUsingProgressBar</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Tests\CustomRendering.json">
+      <Link>LinkedCards\v1.0\Tests\CustomRendering</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Tests\DateTimeTestTranslation.json">
+      <Link>LinkedCards\v1.0\Tests\DateTimeTestTranslation</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Tests\FactSetWrapping.json">
+      <Link>LinkedCards\v1.0\Tests\FactSetWrapping</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Tests\Feedback.json">
+      <Link>LinkedCards\v1.0\Tests\Feedback</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Tests\FlightItinerary_en.json">
+      <Link>LinkedCards\v1.0\Tests\FlightItinerary_en</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Tests\FlightItinerary_es.json">
+      <Link>LinkedCards\v1.0\Tests\FlightItinerary_es</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Tests\FlightItinerary_es_fail.json">
+      <Link>LinkedCards\v1.0\Tests\FlightItinerary_es_fail</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Tests\LongFactSet.json">
+      <Link>LinkedCards\v1.0\Tests\LongFactSet</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Tests\NotificationCard.json">
+      <Link>LinkedCards\v1.0\Tests\NotificationCard</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Tests\NumberedListTest.json">
+      <Link>LinkedCards\v1.0\Tests\NumberedListTest</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.0\Tests\TypeIsRequired.json">
+      <Link>LinkedCards\v1.0\Tests\TypeIsRequired</Link>
     </Content>
     <Content Include="..\..\..\samples\v1.1\Tests\*.json">
       <Link>LinkedCards\v1.1\Tests\%(FileName)</Link>

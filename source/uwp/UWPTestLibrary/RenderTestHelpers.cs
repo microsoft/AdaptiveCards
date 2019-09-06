@@ -76,6 +76,7 @@ namespace UWPTestLibrary
                 {
                     AdaptiveElementParserRegistration parserRegistration = new AdaptiveElementParserRegistration();
                     parserRegistration.Set("AnimalGrid", new TestLibrary.AnimalGridParser());
+                    parserRegistration.Set("Border", new TestLibrary.BorderCustomElementParser());
 
                     AdaptiveCard card = AdaptiveCard.FromJsonString(cardFile.Contents, parserRegistration, null).AdaptiveCard;
 
@@ -98,6 +99,7 @@ namespace UWPTestLibrary
                         };
 
                         renderer.ElementRenderers.Set("AnimalGrid", new TestLibrary.AnimalGridRenderer());
+                        renderer.ElementRenderers.Set("Border", new TestLibrary.BorderCustomElementRenderer());
 
                         if (hostConfig != null)
                         {

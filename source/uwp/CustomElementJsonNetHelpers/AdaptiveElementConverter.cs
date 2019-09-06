@@ -30,13 +30,35 @@ namespace CustomElementJsonNetHelpers
         {
             JObject jObject = JObject.Load(reader);
 
-            IAdaptiveCardElement cardElement = (IAdaptiveCardElement)Activator.CreateInstance(objectType);
-            serializer.Populate(jObject.CreateReader(), cardElement);
+            IAdaptiveCardElement cardElement;
 
-            DeserializeAdditionalProperties(cardElement, jObject);
-            DeserializeFallbackInformation(cardElement, jObject);
-            DeserializeRequires(cardElement, jObject);
-            DeserializeDefaultVisibility(cardElement, jObject);
+            string elementTypeString = (string)jObject["type"];
+            bool isKnownElementType = Enum.TryParse(elementTypeString, out ElementType knownElementType);
+
+            if (objectType == typeof(IAdaptiveCardElement) || isKnownElementType)
+            {
+                // If this is a known element type, or if we just have the interface, get the parser from the parser registration
+                IAdaptiveElementParser parser = ElementParsers.Get(elementTypeString);
+
+                string jsonString = jObject.ToString();
+                JsonObject jsonObject = JsonObject.Parse(jsonString);
+
+                cardElement = parser.FromJson(jsonObject, ElementParsers, ActionParsers, Warnings);
+
+                //cardElement = ElementParsers.Get(elementTypeString).FromJson(JsonObject.Parse(jObject.ToString()), ElementParsers, ActionParsers, Warnings);
+            }
+            else
+            {
+                // This is a custom type, instantiate and populate it via Json.NET
+                cardElement = (IAdaptiveCardElement)Activator.CreateInstance(objectType);
+                serializer.Populate(jObject.CreateReader(), cardElement);
+
+                // Handle custom parsing for AdditionalProperties, Fallback, Requires, and Visibility
+                DeserializeAdditionalProperties(cardElement, jObject);
+                DeserializeFallbackInformation(cardElement, jObject);
+                DeserializeRequires(cardElement, jObject);
+                DeserializeDefaultVisibility(cardElement, jObject);
+            }
 
             return cardElement;
         }
