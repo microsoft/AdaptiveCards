@@ -1,0 +1,190 @@
+using System;
+using System.Collections.Generic;
+using AdaptiveCards.Rendering.Uwp;
+using Windows.Data.Json;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Reflection;
+
+namespace CustomElementJsonNetHelpers
+{
+    internal class AdaptiveElementConverter : JsonConverter<IAdaptiveCardElement>
+    {
+        private AdaptiveElementParserRegistration ElementParsers { get; set; }
+        private AdaptiveActionParserRegistration ActionParsers { get; set; }
+        private IList<AdaptiveWarning> Warnings { get; set; }
+
+        public AdaptiveElementConverter(bool canWrite)
+        {
+            CanWrite = canWrite;
+        }
+
+        public AdaptiveElementConverter(AdaptiveElementParserRegistration elementParsers, AdaptiveActionParserRegistration actionParsers, IList<AdaptiveWarning> warnings)
+        {
+            ElementParsers = elementParsers;
+            ActionParsers = actionParsers;
+            Warnings = warnings;
+        }
+
+        public override IAdaptiveCardElement ReadJson(JsonReader reader, Type objectType, IAdaptiveCardElement existingValue, bool hasExistingValue, JsonSerializer serializer)
+        {
+            JObject jObject = JObject.Load(reader);
+
+            IAdaptiveCardElement cardElement = (IAdaptiveCardElement)Activator.CreateInstance(objectType);
+            serializer.Populate(jObject.CreateReader(), cardElement);
+
+            DeserializeAdditionalProperties(cardElement, jObject);
+            DeserializeFallbackInformation(cardElement, jObject);
+            DeserializeRequires(cardElement, jObject);
+            DeserializeDefaultVisibility(cardElement, jObject);
+
+            return cardElement;
+        }
+
+        private void DeserializeDefaultVisibility(IAdaptiveCardElement cardElement, JObject jObject)
+        {
+            if (jObject["isVisible"] == null)
+            {
+                cardElement.IsVisible = true;
+            }
+        }
+
+        private void DeserializeRequires(IAdaptiveCardElement element, JObject jObject)
+        {
+            if (element is IAdaptiveCardElement cardElement)
+            {
+                if (jObject["requires"] != null && jObject["requires"].Type == JTokenType.Object)
+                {
+                    JObject requires = (JObject)jObject["requires"];
+
+                    foreach (JProperty requirement in requires.Properties())
+                    {
+                        (element as IAdaptiveCardElement).Requirements.Add(new AdaptiveRequirement(requirement.Name, requirement.Value.ToString()));
+                    }
+                }
+            }
+        }
+
+        private void DeserializeFallbackInformation(IAdaptiveCardElement element, JObject jObject)
+        {
+            JToken fallback = jObject["fallback"];
+
+            FallbackType fallbackType = FallbackType.None;
+            string fallbackElementType = "";
+            if (fallback != null)
+            {
+                if ((fallback.Type == JTokenType.String) &&
+                    (string.Compare(fallback.ToString(), "drop") == 0))
+                {
+                    fallbackType = FallbackType.Drop;
+                }
+                else if (fallback.Type == JTokenType.Object)
+                {
+                    fallbackType = FallbackType.Content;
+                    fallbackElementType = (string)fallback["type"];
+                }
+            }
+
+            element.FallbackType = fallbackType;
+            if (fallbackType == FallbackType.Content)
+            {
+                element.FallbackContent = ElementParsers.Get(fallbackElementType).FromJson(JsonObject.Parse(fallback.ToString()), ElementParsers, ActionParsers, Warnings);
+            }
+        }
+
+        private void DeserializeAdditionalProperties(IAdaptiveCardElement element, JObject jObject)
+        {
+            IEnumerable<PropertyInfo> runtimeProperties = element.GetType().GetRuntimeProperties();
+
+            foreach (var keyValuePair in jObject)
+            {
+                bool found = false;
+                foreach (var runtimeProperty in runtimeProperties)
+                {
+                    if (string.Compare(keyValuePair.Key, runtimeProperty.Name, true) == 0)
+                    {
+                        found = true;
+                        break;
+                    }
+                    else
+                    {
+                        // Check if it matches the json attribute name
+                        string jsonPropertyName = null;
+                        foreach (var attribute in runtimeProperty.CustomAttributes)
+                        {
+                            if (attribute.AttributeType == typeof(JsonPropertyAttribute) &&
+                                attribute.ConstructorArguments.Count == 1)
+                            {
+                                jsonPropertyName = attribute.ConstructorArguments[0].Value as string;
+                                break;
+                            }
+                        }
+                        if ((jsonPropertyName != null) && (string.Compare(keyValuePair.Key, jsonPropertyName, true) == 0))
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!found)
+                {
+                    if (element.AdditionalProperties == null)
+                    {
+                        element.AdditionalProperties = new JsonObject();
+                    }
+
+                    element.AdditionalProperties[keyValuePair.Key] = JsonHelper.JTokenToJsonValue(keyValuePair.Value);
+                }
+            }
+        }
+
+        public override bool CanWrite { get; } = true;
+        public override void WriteJson(JsonWriter writer, IAdaptiveCardElement value, JsonSerializer serializer)
+        {
+            JObject jObject = JObject.FromObject(value, new JsonSerializer
+            {
+                ContractResolver = new AdaptiveCardSerializationResolver()
+            });
+
+            SerializeAdditionalProperties(value, jObject);
+            SerializeFallback(value, jObject);
+            SerializeRequirements(value, jObject);
+
+            jObject.WriteTo(writer);
+        }
+
+        private void SerializeRequirements(IAdaptiveCardElement value, JObject jObject)
+        {
+            if (value.Requirements != null && value.Requirements.Count > 0)
+            {
+                JObject requirementsObject = new JObject();
+
+                foreach (var requirement in value.Requirements)
+                {
+                    requirementsObject[requirement.Name] = requirement.Version;
+                }
+            }
+        }
+
+        private void SerializeFallback(IAdaptiveCardElement value, JObject jObject)
+        {
+            if (value.FallbackType == FallbackType.Drop)
+            {
+                jObject["fallback"] = "drop";
+            }
+            else if (value.FallbackType == FallbackType.Content && value.FallbackContent != null)
+            {
+                jObject["fallback"] = JObject.Parse(value.FallbackContent.ToJson().Stringify());
+            }
+        }
+
+        public void SerializeAdditionalProperties(IAdaptiveCardElement element, JObject jObject)
+        {
+            foreach (var additionalProperty in element.AdditionalProperties)
+            {
+                jObject[additionalProperty.Key] = JsonHelper.JsonValueToJToken(additionalProperty.Value);
+            }
+        }
+    }
+}
