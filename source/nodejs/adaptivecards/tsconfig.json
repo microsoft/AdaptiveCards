@@ -2,7 +2,6 @@
 	"extends": "../tsconfig.json",
 	"compilerOptions": {
         "outDir": "./lib",
-        "downlevelIteration": true,
         "noImplicitAny": true,
         "strictNullChecks": true,
         "noImplicitReturns": true,

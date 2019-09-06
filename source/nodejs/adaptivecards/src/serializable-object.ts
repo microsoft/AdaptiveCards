@@ -137,8 +137,8 @@ export class PixelSizePropertyDefinition extends TypedPropertyDefinition<number>
 }
 
 export interface IVersionedValue<TValue> {
-    targetVersion: Shared.TargetVersion;
     value: TValue;
+    targetVersion?: Shared.TargetVersion;
 }
 
 export class ValueSetPropertyDefinition extends TypedPropertyDefinition<string> {
@@ -292,7 +292,7 @@ export class CustomPropertyDefinition<T> extends TypedPropertyDefinition<T> {
     }
 }
 
-export class SerializableObjectSchema implements Iterable<PropertyDefinition> {
+export class SerializableObjectSchema { // implements Iterable<PropertyDefinition> {
     private _properties: PropertyDefinition[] = [];
 
     indexOf(property: PropertyDefinition): number {
@@ -324,6 +324,15 @@ export class SerializableObjectSchema implements Iterable<PropertyDefinition> {
         }
     }
 
+    getItemAt(index: number): PropertyDefinition {
+        return this._properties[index];
+    }
+
+    get count(): number {
+        return this._properties.length;
+    }
+
+    /*
     [Symbol.iterator]() {
         let index = 0;
         let properties = this._properties;
@@ -345,6 +354,7 @@ export class SerializableObjectSchema implements Iterable<PropertyDefinition> {
             }
         }
     }
+    */
 }
 
 export type PropertyBag = { [propertyName: string]: any };
@@ -377,7 +387,12 @@ export abstract class SerializableObject {
     }
 
     constructor() {
-        for (let property of this.schema) {
+        // for (let property of this.schema) {
+        let s = this.schema;
+
+        for (let i = 0; i < s.count; i++) {
+            let property = s.getItemAt(i);
+
             if (property.onGetInitialValue) {
                 this.setValue(property, property.onGetInitialValue(this));
             }
@@ -388,9 +403,19 @@ export abstract class SerializableObject {
         this._propertyBag = {};
         this._rawProperties = Shared.GlobalSettings.enableFullJsonRoundTrip ? source : {};
 
+        let s = this.schema;
+
+        for (let i = 0; i < s.count; i++) {
+            let property = s.getItemAt(i);
+
+            this.setValue(property, property.parse(source, errors));
+        }
+
+        /*
         for (let property of this.schema) {
             this.setValue(property, property.parse(source, errors));
         }
+        */
     }
 
     toJSON(): any {
@@ -403,9 +428,19 @@ export abstract class SerializableObject {
             result = {};
         }
 
+        let s = this.schema;
+
+        for (let i = 0; i < s.count; i++) {
+            let property = s.getItemAt(i);
+
+            property.toJSON(result, this.getValue(property));
+        }
+
+        /*
         for (let property of this.schema) {
             property.toJSON(result, this.getValue(property));
         }
+        */
 
         return result;
     }

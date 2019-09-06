@@ -252,8 +252,8 @@ export abstract class CardElement extends CardObject {
         Shared.Versions.v1_1,
         "height",
         [
-            { targetVersion: Shared.Versions.v1_2, value: "auto" },
-            { targetVersion: Shared.Versions.v1_2, value: "stretch" }
+            { value: "auto" },
+            { value: "stretch" }
         ],
         "auto");
     static readonly horizontalAlignmentProperty = new Serialization.EnumPropertyDefinition(
@@ -261,9 +261,9 @@ export abstract class CardElement extends CardObject {
         "horizontalAlignment",
         Enums.HorizontalAlignment,
         [
-            { targetVersion: Shared.Versions.v1_0, value: Enums.HorizontalAlignment.Left },
-            { targetVersion: Shared.Versions.v1_0, value: Enums.HorizontalAlignment.Center },
-            { targetVersion: Shared.Versions.v1_0, value: Enums.HorizontalAlignment.Right }
+            { value: Enums.HorizontalAlignment.Left },
+            { value: Enums.HorizontalAlignment.Center },
+            { value: Enums.HorizontalAlignment.Right }
         ],
         Enums.HorizontalAlignment.Left);
     static readonly spacingProperty = new Serialization.EnumPropertyDefinition(
@@ -271,13 +271,13 @@ export abstract class CardElement extends CardObject {
         "spacing",
         Enums.Spacing,
         [
-            { targetVersion: Shared.Versions.v1_0, value: Enums.Spacing.None },
-            { targetVersion: Shared.Versions.v1_0, value: Enums.Spacing.Small },
-            { targetVersion: Shared.Versions.v1_0, value: Enums.Spacing.Default },
-            { targetVersion: Shared.Versions.v1_0, value: Enums.Spacing.Medium },
-            { targetVersion: Shared.Versions.v1_0, value: Enums.Spacing.Large },
-            { targetVersion: Shared.Versions.v1_0, value: Enums.Spacing.ExtraLarge },
-            { targetVersion: Shared.Versions.v1_0, value: Enums.Spacing.Padding }
+            { value: Enums.Spacing.None },
+            { value: Enums.Spacing.Small },
+            { value: Enums.Spacing.Default },
+            { value: Enums.Spacing.Medium },
+            { value: Enums.Spacing.Large },
+            { value: Enums.Spacing.ExtraLarge },
+            { value: Enums.Spacing.Padding }
         ],
         Enums.Spacing.Default);
     static readonly requiresProperty = new Serialization.SerializableObjectPropertyDefinition(
@@ -927,11 +927,11 @@ export abstract class BaseTextBlock extends CardElement {
         "size",
         Enums.TextSize,
         [
-            { targetVersion: Shared.Versions.v1_0, value: Enums.TextSize.Default },
-            { targetVersion: Shared.Versions.v1_0, value: Enums.TextSize.Small },
-            { targetVersion: Shared.Versions.v1_0, value: Enums.TextSize.Medium },
-            { targetVersion: Shared.Versions.v1_0, value: Enums.TextSize.Large },
-            { targetVersion: Shared.Versions.v1_0, value: Enums.TextSize.ExtraLarge }
+            { value: Enums.TextSize.Default },
+            { value: Enums.TextSize.Small },
+            { value: Enums.TextSize.Medium },
+            { value: Enums.TextSize.Large },
+            { value: Enums.TextSize.ExtraLarge }
         ],
         Enums.TextSize.Default);
     static readonly weightProperty = new Serialization.EnumPropertyDefinition(
@@ -939,9 +939,9 @@ export abstract class BaseTextBlock extends CardElement {
         "weight",
         Enums.TextWeight,
         [
-            { targetVersion: Shared.Versions.v1_0, value: Enums.TextWeight.Default },
-            { targetVersion: Shared.Versions.v1_0, value: Enums.TextWeight.Lighter },
-            { targetVersion: Shared.Versions.v1_0, value: Enums.TextWeight.Bolder }
+            { value: Enums.TextWeight.Default },
+            { value: Enums.TextWeight.Lighter },
+            { value: Enums.TextWeight.Bolder }
         ],
         Enums.TextWeight.Default);
     static readonly colorProperty = new Serialization.EnumPropertyDefinition(
@@ -949,13 +949,13 @@ export abstract class BaseTextBlock extends CardElement {
         "color",
         Enums.TextColor,
         [
-            { targetVersion: Shared.Versions.v1_0, value: Enums.TextColor.Default },
-            { targetVersion: Shared.Versions.v1_0, value: Enums.TextColor.Light },
-            { targetVersion: Shared.Versions.v1_0, value: Enums.TextColor.Dark },
-            { targetVersion: Shared.Versions.v1_0, value: Enums.TextColor.Accent },
-            { targetVersion: Shared.Versions.v1_0, value: Enums.TextColor.Good },
-            { targetVersion: Shared.Versions.v1_0, value: Enums.TextColor.Attention },
-            { targetVersion: Shared.Versions.v1_0, value: Enums.TextColor.Warning }
+            { value: Enums.TextColor.Default },
+            { value: Enums.TextColor.Light },
+            { value: Enums.TextColor.Dark },
+            { value: Enums.TextColor.Accent },
+            { value: Enums.TextColor.Good },
+            { value: Enums.TextColor.Attention },
+            { value: Enums.TextColor.Warning }
         ],
         Enums.TextColor.Default);
     static readonly isSubtleProperty = new Serialization.BooleanPropertyDefinition(
@@ -967,8 +967,8 @@ export abstract class BaseTextBlock extends CardElement {
         "fontType",
         Enums.FontType,
         [
-            { targetVersion: Shared.Versions.v1_0, value: Enums.FontType.Default },
-            { targetVersion: Shared.Versions.v1_0, value: Enums.FontType.Monospace }
+            { value: Enums.FontType.Default },
+            { value: Enums.FontType.Monospace }
         ]);
 
     protected populateSchema(schema: Serialization.SerializableObjectSchema) {
@@ -1947,8 +1947,8 @@ export class Image extends CardElement {
         "style",
         Enums.ImageStyle,
         [
-            { targetVersion: Shared.Versions.v1_0, value: Enums.ImageStyle.Default },
-            { targetVersion: Shared.Versions.v1_0, value: Enums.ImageStyle.Person }
+            { value: Enums.ImageStyle.Default },
+            { value: Enums.ImageStyle.Person }
         ],
         Enums.ImageStyle.Default);
     static readonly sizeProperty = new Serialization.EnumPropertyDefinition(
@@ -1956,11 +1956,11 @@ export class Image extends CardElement {
         "size",
         Enums.Size,
         [
-            { targetVersion: Shared.Versions.v1_0, value: Enums.Size.Auto },
-            { targetVersion: Shared.Versions.v1_0, value: Enums.Size.Small },
-            { targetVersion: Shared.Versions.v1_0, value: Enums.Size.Medium },
-            { targetVersion: Shared.Versions.v1_0, value: Enums.Size.Large },
-            { targetVersion: Shared.Versions.v1_0, value: Enums.Size.Stretch }
+            { value: Enums.Size.Auto },
+            { value: Enums.Size.Small },
+            { value: Enums.Size.Medium },
+            { value: Enums.Size.Large },
+            { value: Enums.Size.Stretch }
         ],
         Enums.Size.Auto);
     static readonly pixelWidthProperty = new ImageDimensionProperty(Shared.Versions.v1_1, "width", "pixelWidth");
