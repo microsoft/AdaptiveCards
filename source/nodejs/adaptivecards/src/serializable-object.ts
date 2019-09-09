@@ -12,7 +12,7 @@ export abstract class PropertyDefinition {
         readonly targetVersion: Shared.TargetVersion,
         readonly name: string,
         readonly defaultValue?: any,
-        readonly onGetInitialValue?: (sender: object) => any) { }
+        readonly onGetInitialValue?: (sender: SerializableObject) => any) { }
 }
 
 export abstract class TypedPropertyDefinition<T> extends PropertyDefinition {
@@ -23,7 +23,7 @@ export abstract class TypedPropertyDefinition<T> extends PropertyDefinition {
         readonly targetVersion: Shared.TargetVersion,
         readonly name: string,
         readonly defaultValue?: T,
-        readonly onGetInitialValue?: (sender: object) => T) {
+        readonly onGetInitialValue?: (sender: SerializableObject) => T) {
         super(targetVersion, name, defaultValue, onGetInitialValue);
     }
 }
@@ -59,7 +59,7 @@ export class StringPropertyDefinition extends TypedPropertyDefinition<string> {
         readonly treatEmptyAsUndefined: boolean = true,
         readonly regEx?: RegExp,
         readonly defaultValue?: string,
-        readonly onGetInitialValue?: (sender: object) => string) {
+        readonly onGetInitialValue?: (sender: SerializableObject) => string) {
         super(targetVersion, name, defaultValue, onGetInitialValue);
     }
 }
@@ -168,7 +168,7 @@ export class ValueSetPropertyDefinition extends TypedPropertyDefinition<string> 
         readonly name: string,
         readonly values: IVersionedValue<string>[],
         readonly defaultValue?: string,
-        readonly onGetInitialValue?: (sender: object) => string) {
+        readonly onGetInitialValue?: (sender: SerializableObject) => string) {
         super(targetVersion, name, defaultValue, onGetInitialValue);
     }
 }
@@ -193,7 +193,7 @@ export class EnumPropertyDefinition<TEnum extends { [s: number]: string }> exten
         readonly enumType: TEnum,
         readonly defaultValue?: number,
         readonly values?: IVersionedValue<number>[],
-        readonly onGetInitialValue?: (sender: object) => number) {
+        readonly onGetInitialValue?: (sender: SerializableObject) => number) {
         super(targetVersion, name, defaultValue, onGetInitialValue);
 
         if (!values) {
@@ -210,7 +210,7 @@ export class EnumPropertyDefinition<TEnum extends { [s: number]: string }> exten
 
 export class SerializableObjectPropertyDefinition<T extends SerializableObject> extends TypedPropertyDefinition<T> {
     parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): T | undefined {
-        let result = this.onCreateInstance();
+        let result = this.onCreateInstance(sender);
         result.parse(source[this.name]);
 
         return result;
@@ -229,8 +229,8 @@ export class SerializableObjectPropertyDefinition<T extends SerializableObject> 
     constructor(
         readonly targetVersion: Shared.TargetVersion,
         readonly name: string,
-        readonly onCreateInstance: () => T,
-        readonly onGetInitialValue?: (sender: object) => T) {
+        readonly onCreateInstance: (sender: SerializableObject) => T,
+        readonly onGetInitialValue?: (sender: SerializableObject) => T) {
         super(targetVersion, name, undefined, onGetInitialValue);
 
         if (!this.onCreateInstance) {
@@ -247,7 +247,7 @@ export class SerializableObjectCollectionPropertyDefinition<T extends Serializab
 
         if (Array.isArray(sourceCollection)) {
             for (let sourceItem of sourceCollection) {
-                let item = this.onCreateCollectionItemInstance(sourceItem);
+                let item = this.onCreateCollectionItemInstance(sender, sourceItem);
 
                 if (item) {
                     item.parse(sourceItem);
@@ -271,8 +271,8 @@ export class SerializableObjectCollectionPropertyDefinition<T extends Serializab
     constructor(
         readonly targetVersion: Shared.TargetVersion,
         readonly name: string,
-        readonly onCreateCollectionItemInstance: (sourceItem: any) => T,
-        readonly onGetInitialValue?: (sender: object) => T[],
+        readonly onCreateCollectionItemInstance: (sender: SerializableObject, sourceItem: any) => T,
+        readonly onGetInitialValue?: (sender: SerializableObject) => T[],
         readonly onItemAdded?: (sender: SerializableObject, item: T) => void) {
         super(targetVersion, name, undefined, onGetInitialValue);
 
@@ -297,7 +297,7 @@ export class CustomPropertyDefinition<T> extends TypedPropertyDefinition<T> {
         readonly onParse: (sender: PropertyDefinition, source: PropertyBag, errors?: Shared.IValidationError[]) => T | undefined,
         readonly onToJSON: (sender: PropertyDefinition, target: PropertyBag, value: T | undefined) => void,
         readonly defaultValue?: T,
-        readonly onGetInitialValue?: (sender: object) => T) {
+        readonly onGetInitialValue?: (sender: SerializableObject) => T) {
         super(targetVersion, name, defaultValue, onGetInitialValue);
 
         if (!this.onParse) {

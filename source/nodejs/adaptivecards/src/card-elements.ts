@@ -5,8 +5,11 @@ import * as Shared from "./shared";
 import * as Utils from "./utils";
 import * as HostConfig from "./host-config";
 import * as TextFormatters from "./text-formatters";
-import * as Serialization from "./serializable-object";
 import { HostCapabilities } from "./host-capabilities";
+import { schemaProperty, SerializableObject, SerializableObjectSchema, StringPropertyDefinition, BooleanPropertyDefinition,
+    ValueSetPropertyDefinition, EnumPropertyDefinition, SerializableObjectCollectionPropertyDefinition,
+    SerializableObjectPropertyDefinition, PixelSizePropertyDefinition, NumberPropertyDefinition, 
+    TypedPropertyDefinition,PropertyBag } from "./serializable-object";
 
 function invokeSetCollection(action: Action, collection: ActionCollection | undefined) {
     if (action && collection) {
@@ -184,8 +187,8 @@ export class ValidationResults {
     }
 }
 
-export abstract class CardObject extends Serialization.SerializableObject {
-    static readonly typeNameProperty = new Serialization.StringPropertyDefinition(
+export abstract class CardObject extends SerializableObject {
+    static readonly typeNameProperty = new StringPropertyDefinition(
         Shared.Versions.v1_0,
         "type",
         undefined,
@@ -194,9 +197,9 @@ export abstract class CardObject extends Serialization.SerializableObject {
         (sender: object) => {
             return (<CardObject>sender).getJsonTypeName()
         });
-    static readonly idProperty = new Serialization.StringPropertyDefinition(Shared.Versions.v1_0, "id");
+    static readonly idProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "id");
 
-    protected populateSchema(schema: Serialization.SerializableObjectSchema) {
+    protected populateSchema(schema: SerializableObjectSchema) {
         schema.add(
             CardObject.typeNameProperty,
             CardObject.idProperty);
@@ -234,7 +237,7 @@ export abstract class CardObject extends Serialization.SerializableObject {
         return result;
     }
 
-    @Serialization.schemaProperty(CardObject.idProperty)
+    @schemaProperty(CardObject.idProperty)
     id: string;
 }
 
@@ -243,10 +246,10 @@ export type CardElementHeight = "auto" | "stretch";
 export abstract class CardElement extends CardObject {
     //#region Schema
 
-    static readonly langProperty = new Serialization.StringPropertyDefinition(Shared.Versions.v1_1, "lang", true, /^[a-z]{2,3}$/ig);
-    static readonly isVisibleProperty = new Serialization.BooleanPropertyDefinition(Shared.Versions.v1_2, "isVisible", true);
-    static readonly separatorProperty = new Serialization.BooleanPropertyDefinition(Shared.Versions.v1_0, "separator", false);
-    static readonly heightProperty = new Serialization.ValueSetPropertyDefinition(
+    static readonly langProperty = new StringPropertyDefinition(Shared.Versions.v1_1, "lang", true, /^[a-z]{2,3}$/ig);
+    static readonly isVisibleProperty = new BooleanPropertyDefinition(Shared.Versions.v1_2, "isVisible", true);
+    static readonly separatorProperty = new BooleanPropertyDefinition(Shared.Versions.v1_0, "separator", false);
+    static readonly heightProperty = new ValueSetPropertyDefinition(
         Shared.Versions.v1_1,
         "height",
         [
@@ -254,24 +257,24 @@ export abstract class CardElement extends CardObject {
             { value: "stretch" }
         ],
         "auto");
-    static readonly horizontalAlignmentProperty = new Serialization.EnumPropertyDefinition(
+    static readonly horizontalAlignmentProperty = new EnumPropertyDefinition(
         Shared.Versions.v1_0,
         "horizontalAlignment",
         Enums.HorizontalAlignment,
         Enums.HorizontalAlignment.Left);
-    static readonly spacingProperty = new Serialization.EnumPropertyDefinition(
+    static readonly spacingProperty = new EnumPropertyDefinition(
         Shared.Versions.v1_0,
         "spacing",
         Enums.Spacing,
         Enums.Spacing.Default);
-    static readonly requiresProperty = new Serialization.SerializableObjectPropertyDefinition(
+    static readonly requiresProperty = new SerializableObjectPropertyDefinition(
         Shared.Versions.v1_2,
         "requires",
         () => { return new HostCapabilities(); },
         () =>  { return new HostCapabilities(); });
-    static readonly minHeightProperty = new Serialization.PixelSizePropertyDefinition(Shared.Versions.v1_2, "minHeight");
+    static readonly minHeightProperty = new PixelSizePropertyDefinition(Shared.Versions.v1_2, "minHeight");
 
-    protected populateSchema(schema: Serialization.SerializableObjectSchema) {
+    protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
 
         schema.add(
@@ -288,22 +291,22 @@ export abstract class CardElement extends CardObject {
         }
     }
 
-    @Serialization.schemaProperty(CardElement.minHeightProperty)
+    @schemaProperty(CardElement.minHeightProperty)
     minPixelHeight?: number;
 
-    @Serialization.schemaProperty(CardElement.horizontalAlignmentProperty)
+    @schemaProperty(CardElement.horizontalAlignmentProperty)
     horizontalAlignment: Enums.HorizontalAlignment;
 
-    @Serialization.schemaProperty(CardElement.spacingProperty)
+    @schemaProperty(CardElement.spacingProperty)
     spacing: Enums.Spacing;
 
-    @Serialization.schemaProperty(CardElement.separatorProperty)
+    @schemaProperty(CardElement.separatorProperty)
     separator: boolean;
 
-    @Serialization.schemaProperty(CardElement.heightProperty)
-    height: CardElementHeight = "auto";
+    @schemaProperty(CardElement.heightProperty)
+    height: CardElementHeight;
 
-    @Serialization.schemaProperty(CardElement.langProperty)
+    @schemaProperty(CardElement.langProperty)
     get lang(): string | undefined {
         let lang = this.getValue(CardElement.langProperty);
 
@@ -324,7 +327,7 @@ export abstract class CardElement extends CardObject {
         this.setValue(CardElement.langProperty, value);
     }
 
-    @Serialization.schemaProperty(CardElement.isVisibleProperty)
+    @schemaProperty(CardElement.isVisibleProperty)
     get isVisible(): boolean {
         return this.getValue(CardElement.isVisibleProperty);
     }
@@ -884,35 +887,35 @@ export abstract class CardElement extends CardObject {
 export abstract class BaseTextBlock extends CardElement {
     //#region Schema
 
-    static readonly textProperty = new Serialization.StringPropertyDefinition(
+    static readonly textProperty = new StringPropertyDefinition(
         Shared.Versions.v1_0,
         "text",
         true);
-    static readonly sizeProperty = new Serialization.EnumPropertyDefinition(
+    static readonly sizeProperty = new EnumPropertyDefinition(
         Shared.Versions.v1_0,
         "size",
         Enums.TextSize,
         Enums.TextSize.Default);
-    static readonly weightProperty = new Serialization.EnumPropertyDefinition(
+    static readonly weightProperty = new EnumPropertyDefinition(
         Shared.Versions.v1_0,
         "weight",
         Enums.TextWeight,
         Enums.TextWeight.Default);
-    static readonly colorProperty = new Serialization.EnumPropertyDefinition(
+    static readonly colorProperty = new EnumPropertyDefinition(
         Shared.Versions.v1_0,
         "color",
         Enums.TextColor,
         Enums.TextColor.Default);
-    static readonly isSubtleProperty = new Serialization.BooleanPropertyDefinition(
+    static readonly isSubtleProperty = new BooleanPropertyDefinition(
         Shared.Versions.v1_0,
         "isSubtle",
         false);
-    static readonly fontTypeProperty = new Serialization.EnumPropertyDefinition(
+    static readonly fontTypeProperty = new EnumPropertyDefinition(
         Shared.Versions.v1_2,
         "fontType",
         Enums.FontType);
 
-    protected populateSchema(schema: Serialization.SerializableObjectSchema) {
+    protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
 
         schema.add(
@@ -924,22 +927,22 @@ export abstract class BaseTextBlock extends CardElement {
             BaseTextBlock.fontTypeProperty);
     }
 
-    @Serialization.schemaProperty(BaseTextBlock.sizeProperty)
+    @schemaProperty(BaseTextBlock.sizeProperty)
     size: Enums.TextSize = Enums.TextSize.Default;
 
-    @Serialization.schemaProperty(BaseTextBlock.weightProperty)
+    @schemaProperty(BaseTextBlock.weightProperty)
     weight: Enums.TextWeight = Enums.TextWeight.Default;
 
-    @Serialization.schemaProperty(BaseTextBlock.colorProperty)
+    @schemaProperty(BaseTextBlock.colorProperty)
     color: Enums.TextColor = Enums.TextColor.Default;
 
-    @Serialization.schemaProperty(BaseTextBlock.fontTypeProperty)
+    @schemaProperty(BaseTextBlock.fontTypeProperty)
     fontType?: Enums.FontType;
 
-    @Serialization.schemaProperty(BaseTextBlock.isSubtleProperty)
+    @schemaProperty(BaseTextBlock.isSubtleProperty)
     isSubtle: boolean = false;
 
-    @Serialization.schemaProperty(BaseTextBlock.textProperty)
+    @schemaProperty(BaseTextBlock.textProperty)
     get text(): string | undefined {
         return this.getValue(BaseTextBlock.textProperty);
     }
@@ -1064,10 +1067,10 @@ export abstract class BaseTextBlock extends CardElement {
 export class TextBlock extends BaseTextBlock {
     //#region Schema
 
-    static readonly wrapProperty = new Serialization.BooleanPropertyDefinition(Shared.Versions.v1_0, "wrap", false);
-    static readonly maxLinesProperty = new Serialization.NumberPropertyDefinition(Shared.Versions.v1_0, "maxLines");
+    static readonly wrapProperty = new BooleanPropertyDefinition(Shared.Versions.v1_0, "wrap", false);
+    static readonly maxLinesProperty = new NumberPropertyDefinition(Shared.Versions.v1_0, "maxLines");
 
-    protected populateSchema(schema: Serialization.SerializableObjectSchema) {
+    protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
 
         schema.add(
@@ -1075,10 +1078,10 @@ export class TextBlock extends BaseTextBlock {
             TextBlock.maxLinesProperty);
     }
 
-    @Serialization.schemaProperty(TextBlock.wrapProperty)
+    @schemaProperty(TextBlock.wrapProperty)
     wrap: boolean = false;
 
-    @Serialization.schemaProperty(TextBlock.maxLinesProperty)
+    @schemaProperty(TextBlock.maxLinesProperty)
     maxLines?: number;
 
     //#endregion
@@ -1372,11 +1375,11 @@ class Label extends TextBlock {
 export class TextRun extends BaseTextBlock {
     //#region Schema
 
-    static readonly italicProperty = new Serialization.BooleanPropertyDefinition(Shared.Versions.v1_2, "italic", false);
-    static readonly strikethroughProperty = new Serialization.BooleanPropertyDefinition(Shared.Versions.v1_2, "strikethrough", false);
-    static readonly highlightProperty = new Serialization.BooleanPropertyDefinition(Shared.Versions.v1_2, "highlight", false);
+    static readonly italicProperty = new BooleanPropertyDefinition(Shared.Versions.v1_2, "italic", false);
+    static readonly strikethroughProperty = new BooleanPropertyDefinition(Shared.Versions.v1_2, "strikethrough", false);
+    static readonly highlightProperty = new BooleanPropertyDefinition(Shared.Versions.v1_2, "highlight", false);
 
-    protected populateSchema(schema: Serialization.SerializableObjectSchema) {
+    protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
 
         schema.add(
@@ -1385,13 +1388,13 @@ export class TextRun extends BaseTextBlock {
             TextRun.highlightProperty);
     }
 
-    @Serialization.schemaProperty(TextRun.italicProperty)
+    @schemaProperty(TextRun.italicProperty)
     italic: boolean = false;
 
-    @Serialization.schemaProperty(TextRun.strikethroughProperty)
+    @schemaProperty(TextRun.strikethroughProperty)
     strikethrough: boolean = false;
 
-    @Serialization.schemaProperty(TextRun.highlightProperty)
+    @schemaProperty(TextRun.highlightProperty)
     highlight: boolean = false;
 
     //#endregion
@@ -1638,13 +1641,13 @@ export class RichTextBlock extends CardElement {
     }
 }
 
-export class Fact extends Serialization.SerializableObject {
+export class Fact extends SerializableObject {
     //#region Schema
 
-    static readonly titleProperty = new Serialization.StringPropertyDefinition(Shared.Versions.v1_0, "title");
-    static readonly valueProperty = new Serialization.StringPropertyDefinition(Shared.Versions.v1_0, "value");
+    static readonly titleProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "title");
+    static readonly valueProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "value");
 
-    protected populateSchema(schema: Serialization.SerializableObjectSchema) {
+    protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
 
         schema.add(
@@ -1653,10 +1656,10 @@ export class Fact extends Serialization.SerializableObject {
     }
 
     // For historic reasons, the "title" schema property is exposed as "name" in the OM.
-    @Serialization.schemaProperty(Fact.titleProperty)
+    @schemaProperty(Fact.titleProperty)
     name?: string;
 
-    @Serialization.schemaProperty(Fact.valueProperty)
+    @schemaProperty(Fact.valueProperty)
     value?: string;
 
     //#endregion
@@ -1672,19 +1675,19 @@ export class Fact extends Serialization.SerializableObject {
 export class FactSet extends CardElement {
     //#region Schema
 
-    static readonly factsProperty = new Serialization.SerializableObjectCollectionPropertyDefinition<Fact>(
+    static readonly factsProperty = new SerializableObjectCollectionPropertyDefinition<Fact>(
         Shared.Versions.v1_0,
         "facts",
         (sourceItem: any) => { return new Fact(); },
         (sender: object) => { return []; });
 
-    protected populateSchema(schema: Serialization.SerializableObjectSchema) {
+    protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
 
         schema.add(FactSet.factsProperty);
     }
 
-    @Serialization.schemaProperty(FactSet.factsProperty)
+    @schemaProperty(FactSet.factsProperty)
     facts: Fact[];
 
     //#endregion
@@ -1774,8 +1777,8 @@ export class FactSet extends CardElement {
     }
 }
 
-class ImageDimensionProperty extends Serialization.TypedPropertyDefinition<number> {
-    parse(sender: any, source: Serialization.PropertyBag, errors?: Shared.IValidationError[]): number | undefined {
+class ImageDimensionProperty extends TypedPropertyDefinition<number> {
+    parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): number | undefined {
         let result: number | undefined = Utils.getNumberValue(source[this.legacyPropertyName], undefined);
 
         if (result) {
@@ -1821,7 +1824,7 @@ class ImageDimensionProperty extends Serialization.TypedPropertyDefinition<numbe
         return result;
     }
 
-    toJSON(target: object, value: any) {
+    toJSON(sender: SerializableObject, target: PropertyBag, value: number | undefined) {
         Utils.setProperty(
             target,
             this.name,
@@ -1839,15 +1842,15 @@ class ImageDimensionProperty extends Serialization.TypedPropertyDefinition<numbe
 export class Image extends CardElement {
     //#region Schema
 
-    static readonly urlProperty = new Serialization.StringPropertyDefinition(Shared.Versions.v1_0, "url");
-    static readonly altTextProperty = new Serialization.StringPropertyDefinition(Shared.Versions.v1_0, "altText");
-    static readonly backgroundColorProperty = new Serialization.StringPropertyDefinition(Shared.Versions.v1_1, "backgroundColor");
-    static readonly styleProperty = new Serialization.EnumPropertyDefinition(
+    static readonly urlProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "url");
+    static readonly altTextProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "altText");
+    static readonly backgroundColorProperty = new StringPropertyDefinition(Shared.Versions.v1_1, "backgroundColor");
+    static readonly styleProperty = new EnumPropertyDefinition(
         Shared.Versions.v1_0,
         "style",
         Enums.ImageStyle,
         Enums.ImageStyle.Default);
-    static readonly sizeProperty = new Serialization.EnumPropertyDefinition(
+    static readonly sizeProperty = new EnumPropertyDefinition(
         Shared.Versions.v1_0,
         "size",
         Enums.Size,
@@ -1855,7 +1858,7 @@ export class Image extends CardElement {
     static readonly pixelWidthProperty = new ImageDimensionProperty(Shared.Versions.v1_1, "width", "pixelWidth");
     static readonly pixelHeightProperty = new ImageDimensionProperty(Shared.Versions.v1_1, "height", "pixelHeight");
 
-    protected populateSchema(schema: Serialization.SerializableObjectSchema) {
+    protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
 
         schema.add(
@@ -1868,25 +1871,25 @@ export class Image extends CardElement {
             Image.pixelHeightProperty);
     }
 
-    @Serialization.schemaProperty(Image.urlProperty)
+    @schemaProperty(Image.urlProperty)
     url?: string;
 
-    @Serialization.schemaProperty(Image.altTextProperty)
+    @schemaProperty(Image.altTextProperty)
     altText?: string;
 
-    @Serialization.schemaProperty(Image.backgroundColorProperty)
+    @schemaProperty(Image.backgroundColorProperty)
     backgroundColor?: string;
 
-    @Serialization.schemaProperty(Image.sizeProperty)
+    @schemaProperty(Image.sizeProperty)
     size: Enums.Size = Enums.Size.Auto;
 
-    @Serialization.schemaProperty(Image.styleProperty)
+    @schemaProperty(Image.styleProperty)
     style: Enums.ImageStyle = Enums.ImageStyle.Default;
 
-    @Serialization.schemaProperty(Image.pixelWidthProperty)
+    @schemaProperty(Image.pixelWidthProperty)
     pixelWidth?: number;
 
-    @Serialization.schemaProperty(Image.pixelHeightProperty)
+    @schemaProperty(Image.pixelHeightProperty)
     pixelHeight?: number;
 
     get selectAction(): Action | undefined {
@@ -2294,19 +2297,19 @@ export abstract class CardElementContainer extends CardElement {
 export class ImageSet extends CardElementContainer {
     //#region Schema
 
-    static readonly imagesProperty = new Serialization.SerializableObjectCollectionPropertyDefinition<Image>(
+    static readonly imagesProperty = new SerializableObjectCollectionPropertyDefinition<Image>(
         Shared.Versions.v1_0,
         "images",
-        (sourceItem: any) => { return new Image(); },
-        (sender: object) => { return []; },
-        (sender: any, item: Image) => { item.setParent(<CardElement>sender); });
-    static readonly sizeProperty = new Serialization.EnumPropertyDefinition(
+        (sender: SerializableObject, sourceItem: any) => { return new Image(); },
+        (sender: SerializableObject) => { return []; },
+        (sender: SerializableObject, item: Image) => { item.setParent(<CardElement>sender); });
+    static readonly sizeProperty = new EnumPropertyDefinition(
         Shared.Versions.v1_0,
         "size",
         Enums.Size,
         Enums.Size.Medium);
 
-    protected populateSchema(schema: Serialization.SerializableObjectSchema) {
+    protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
 
         schema.add(
@@ -2314,10 +2317,10 @@ export class ImageSet extends CardElementContainer {
             ImageSet.sizeProperty);
     }
 
-    @Serialization.schemaProperty(ImageSet.imagesProperty)
+    @schemaProperty(ImageSet.imagesProperty)
     private _images: Image[] = [];
 
-    @Serialization.schemaProperty(ImageSet.sizeProperty)
+    @schemaProperty(ImageSet.sizeProperty)
     imageSize: Enums.Size = Enums.Size.Medium;
 
     //#endregion
@@ -2403,7 +2406,7 @@ export class ImageSet extends CardElementContainer {
     }
 }
 
-export class MediaSource extends Serialization.SerializableObject {
+export class MediaSource extends SerializableObject {
     mimeType?: string;
     url?: string;
 
@@ -2688,7 +2691,7 @@ export class Media extends CardElement {
     }
 }
 
-export class InputValidationOptions extends Serialization.SerializableObject {
+export class InputValidationOptions extends SerializableObject {
     necessity: Enums.InputValidationNecessity = Enums.InputValidationNecessity.Optional;
     errorMessage?: string;
 
@@ -3185,7 +3188,7 @@ export class ToggleInput extends Input {
     }
 }
 
-export class Choice extends Serialization.SerializableObject {
+export class Choice extends SerializableObject {
     title?: string;
     value?: string;
 
@@ -4278,7 +4281,7 @@ export class ToggleVisibilityAction extends Action {
     }
 }
 
-export class HttpHeader extends Serialization.SerializableObject {
+export class HttpHeader extends SerializableObject {
     private _value = new Shared.StringWithSubstitutions();
 
     name: string;
@@ -5297,7 +5300,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
     }
 }
 
-export class BackgroundImage extends Serialization.SerializableObject {
+export class BackgroundImage extends SerializableObject {
     private static readonly defaultFillMode = Enums.FillMode.Cover;
     private static readonly defaultHorizontalAlignment = Enums.HorizontalAlignment.Left;
     private static readonly defaultVerticalAlignment = Enums.VerticalAlignment.Top;
