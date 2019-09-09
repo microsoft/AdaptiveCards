@@ -1721,7 +1721,7 @@ HRESULT GetAdaptiveElementParserRegistrationFromSharedModel(
 {
     // Look up the well known Element parser registration to see if we've got a custom Element registration to pass
     std::shared_ptr<BaseCardElementParser> sharedElementParser =
-        sharedElementParserRegistration->GetParser(c_upwElementParserRegistration);
+        sharedElementParserRegistration->GetParser(c_uwpElementParserRegistration);
 
     if (sharedElementParser != nullptr)
     {

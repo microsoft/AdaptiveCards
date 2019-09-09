@@ -33,8 +33,6 @@ using namespace ABI::Windows::UI;
 
 namespace AdaptiveNamespace
 {
-    const char* c_upwElementParserRegistration = "447C3D76-CAAD-405F-B929-E3201F1537AB";
-
     AdaptiveElementParserRegistration::AdaptiveElementParserRegistration() {}
 
     HRESULT AdaptiveElementParserRegistration::RuntimeClassInitialize() noexcept try
@@ -47,7 +45,7 @@ namespace AdaptiveNamespace
 
         // Register this (UWP) registration with a well known guid string in the shared model
         // registration so we can get it back again
-        m_sharedParserRegistration->AddParser(c_upwElementParserRegistration, std::make_shared<SharedModelElementParser>(this));
+        m_sharedParserRegistration->AddParser(c_uwpElementParserRegistration, std::make_shared<SharedModelElementParser>(this));
 
         m_isInitializing = false;
         return S_OK;
@@ -150,10 +148,6 @@ namespace AdaptiveNamespace
 
     HRESULT SharedModelElementParser::GetAdaptiveParserRegistration(_COM_Outptr_ IAdaptiveElementParserRegistration** elementParserRegistration)
     {
-        ComPtr<IAdaptiveElementParserRegistration> parserRegistration;
-        RETURN_IF_FAILED(m_parserRegistration.As(&parserRegistration));
-        RETURN_IF_FAILED(parserRegistration.CopyTo(elementParserRegistration));
-
-        return S_OK;
+        return m_parserRegistration.CopyTo<IAdaptiveElementParserRegistration>(elementParserRegistration);
     }
 }

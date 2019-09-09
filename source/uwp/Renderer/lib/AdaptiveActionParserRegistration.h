@@ -3,10 +3,10 @@
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
-
+ 
 namespace AdaptiveNamespace
 {
-    extern const char* c_upwActionParserRegistration;
+    constexpr char* c_upwActionParserRegistration = "AB3CC8B0-FF27-4859-A2AA-BCE2E729805";
 
     class DECLSPEC_UUID("fc95029a-9ec0-4d93-b170-09c99876db20") AdaptiveActionParserRegistration
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,

@@ -18,8 +18,6 @@ using namespace ABI::Windows::UI;
 
 namespace AdaptiveNamespace
 {
-    const char* c_upwActionParserRegistration = "AB3CC8B0-FF27-4859-A2AA-BCE2E729805";
-
     AdaptiveActionParserRegistration::AdaptiveActionParserRegistration() {}
 
     HRESULT AdaptiveActionParserRegistration::RuntimeClassInitialize() noexcept try
@@ -135,10 +133,6 @@ namespace AdaptiveNamespace
 
     HRESULT SharedModelActionParser::GetAdaptiveParserRegistration(_COM_Outptr_ IAdaptiveActionParserRegistration** actionParserRegistration)
     {
-        ComPtr<IAdaptiveActionParserRegistration> parserRegistration;
-        RETURN_IF_FAILED(m_parserRegistration.As(&parserRegistration));
-        RETURN_IF_FAILED(parserRegistration.CopyTo(actionParserRegistration));
-
-        return S_OK;
+        return m_parserRegistration.CopyTo<IAdaptiveActionParserRegistration>(actionParserRegistration);
     }
 }
