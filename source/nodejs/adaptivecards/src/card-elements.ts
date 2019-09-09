@@ -236,21 +236,13 @@ export abstract class CardObject extends Serialization.SerializableObject {
 
     @Serialization.schemaProperty(CardObject.idProperty)
     id: string;
-
-    /*
-    get id(): string {
-        return this.getValue(CardObject.idProperty);
-    }
-
-    set id(value: string) {
-        this.setValue(CardObject.idProperty, value);
-    }
-    */
 }
 
 export type CardElementHeight = "auto" | "stretch";
 
 export abstract class CardElement extends CardObject {
+    //#region Schema
+
     static readonly langProperty = new Serialization.StringPropertyDefinition(Shared.Versions.v1_1, "lang", true, /^[a-z]{2,3}$/ig);
     static readonly isVisibleProperty = new Serialization.BooleanPropertyDefinition(Shared.Versions.v1_2, "isVisible", true);
     static readonly separatorProperty = new Serialization.BooleanPropertyDefinition(Shared.Versions.v1_0, "separator", false);
@@ -266,25 +258,11 @@ export abstract class CardElement extends CardObject {
         Shared.Versions.v1_0,
         "horizontalAlignment",
         Enums.HorizontalAlignment,
-        [
-            { value: Enums.HorizontalAlignment.Left },
-            { value: Enums.HorizontalAlignment.Center },
-            { value: Enums.HorizontalAlignment.Right }
-        ],
         Enums.HorizontalAlignment.Left);
     static readonly spacingProperty = new Serialization.EnumPropertyDefinition(
         Shared.Versions.v1_0,
         "spacing",
         Enums.Spacing,
-        [
-            { value: Enums.Spacing.None },
-            { value: Enums.Spacing.Small },
-            { value: Enums.Spacing.Default },
-            { value: Enums.Spacing.Medium },
-            { value: Enums.Spacing.Large },
-            { value: Enums.Spacing.ExtraLarge },
-            { value: Enums.Spacing.Padding }
-        ],
         Enums.Spacing.Default);
     static readonly requiresProperty = new Serialization.SerializableObjectPropertyDefinition(
         Shared.Versions.v1_2,
@@ -309,6 +287,68 @@ export abstract class CardElement extends CardObject {
             schema.add(CardElement.minHeightProperty);
         }
     }
+
+    @Serialization.schemaProperty(CardElement.minHeightProperty)
+    minPixelHeight?: number;
+
+    @Serialization.schemaProperty(CardElement.horizontalAlignmentProperty)
+    horizontalAlignment: Enums.HorizontalAlignment;
+
+    @Serialization.schemaProperty(CardElement.spacingProperty)
+    spacing: Enums.Spacing;
+
+    @Serialization.schemaProperty(CardElement.separatorProperty)
+    separator: boolean;
+
+    @Serialization.schemaProperty(CardElement.heightProperty)
+    height: CardElementHeight = "auto";
+
+    @Serialization.schemaProperty(CardElement.langProperty)
+    get lang(): string | undefined {
+        let lang = this.getValue(CardElement.langProperty);
+
+        if (!Utils.isNullOrEmpty(lang)) {
+            return lang;
+        }
+        else {
+            if (this.parent) {
+                return this.parent.lang;
+            }
+            else {
+                return undefined;
+            }
+        }
+    }
+
+    set lang(value: string | undefined) {
+        this.setValue(CardElement.langProperty, value);
+    }
+
+    @Serialization.schemaProperty(CardElement.isVisibleProperty)
+    get isVisible(): boolean {
+        return this.getValue(CardElement.isVisibleProperty);
+    }
+
+    set isVisible(value: boolean) {
+        // If the element is going to be hidden, reset any changes that were due
+        // to overflow truncation (this ensures that if the element is later
+        // un-hidden it has the right content)
+        if (Shared.GlobalSettings.useAdvancedCardBottomTruncation && !value) {
+            this.undoOverflowTruncation();
+        }
+
+        if (this.isVisible !== value) {
+            this.setValue(CardElement.isVisibleProperty, value);
+
+            this.updateRenderedElementVisibility();
+
+            if (this._renderedElement) {
+                raiseElementVisibilityChangedEvent(this);
+            }
+        }
+    }
+
+    //#endregion
 
     private _shouldFallback: boolean = false;
     private _hostConfig?: HostConfig.HostConfig;
@@ -776,66 +816,6 @@ export abstract class CardElement extends CardObject {
         return (padding && this.allowCustomPadding) ? padding : this.getDefaultPadding();
     }
 
-    get minPixelHeight(): number | undefined {
-        return this.getValue(CardElement.minHeightProperty);
-    }
-
-    set minPixelHeight(value: number | undefined) {
-        this.setValue(CardElement.minHeightProperty, value);
-    }
-
-    get horizontalAlignment(): Enums.HorizontalAlignment {
-        return this.getValue(CardElement.horizontalAlignmentProperty);
-    }
-
-    set horizontalAlignment(value: Enums.HorizontalAlignment) {
-        this.setValue(CardElement.horizontalAlignmentProperty, value);
-    }
-
-    get spacing(): Enums.Spacing {
-        return this.getValue(CardElement.spacingProperty);
-    }
-
-    set spacing(value: Enums.Spacing) {
-        this.setValue(CardElement.spacingProperty, value);
-    }
-
-    get separator(): boolean {
-        return this.getValue(CardElement.separatorProperty);
-    }
-
-    set separator(value: boolean) {
-        this.setValue(CardElement.separatorProperty, value);
-    }
-
-    get height(): CardElementHeight {
-        return this.getValue(CardElement.heightProperty);
-    }
-
-    set height(value: CardElementHeight) {
-        this.setValue(CardElement.heightProperty, value);
-    }
-
-    get lang(): string | undefined {
-        let lang = this.getValue(CardElement.langProperty);
-
-        if (!Utils.isNullOrEmpty(lang)) {
-            return lang;
-        }
-        else {
-            if (this.parent) {
-                return this.parent.lang;
-            }
-            else {
-                return undefined;
-            }
-        }
-    }
-
-    set lang(value: string | undefined) {
-        this.setValue(CardElement.langProperty, value);
-    }
-
     get hostConfig(): HostConfig.HostConfig {
         if (this._hostConfig) {
             return this._hostConfig;
@@ -892,29 +872,6 @@ export abstract class CardElement extends CardObject {
         }
     }
 
-    get isVisible(): boolean {
-        return this.getValue(CardElement.isVisibleProperty);
-    }
-
-    set isVisible(value: boolean) {
-        // If the element is going to be hidden, reset any changes that were due
-        // to overflow truncation (this ensures that if the element is later
-        // un-hidden it has the right content)
-        if (Shared.GlobalSettings.useAdvancedCardBottomTruncation && !value) {
-            this.undoOverflowTruncation();
-        }
-
-        if (this.isVisible !== value) {
-            this.setValue(CardElement.isVisibleProperty, value);
-
-            this.updateRenderedElementVisibility();
-
-            if (this._renderedElement) {
-                raiseElementVisibilityChangedEvent(this);
-            }
-        }
-    }
-
     get renderedElement(): HTMLElement | undefined {
         return this._renderedElement;
     }
@@ -925,6 +882,8 @@ export abstract class CardElement extends CardObject {
 }
 
 export abstract class BaseTextBlock extends CardElement {
+    //#region Schema
+
     static readonly textProperty = new Serialization.StringPropertyDefinition(
         Shared.Versions.v1_0,
         "text",
@@ -933,37 +892,16 @@ export abstract class BaseTextBlock extends CardElement {
         Shared.Versions.v1_0,
         "size",
         Enums.TextSize,
-        [
-            { value: Enums.TextSize.Default },
-            { value: Enums.TextSize.Small },
-            { value: Enums.TextSize.Medium },
-            { value: Enums.TextSize.Large },
-            { value: Enums.TextSize.ExtraLarge }
-        ],
         Enums.TextSize.Default);
     static readonly weightProperty = new Serialization.EnumPropertyDefinition(
         Shared.Versions.v1_0,
         "weight",
         Enums.TextWeight,
-        [
-            { value: Enums.TextWeight.Default },
-            { value: Enums.TextWeight.Lighter },
-            { value: Enums.TextWeight.Bolder }
-        ],
         Enums.TextWeight.Default);
     static readonly colorProperty = new Serialization.EnumPropertyDefinition(
         Shared.Versions.v1_0,
         "color",
         Enums.TextColor,
-        [
-            { value: Enums.TextColor.Default },
-            { value: Enums.TextColor.Light },
-            { value: Enums.TextColor.Dark },
-            { value: Enums.TextColor.Accent },
-            { value: Enums.TextColor.Good },
-            { value: Enums.TextColor.Attention },
-            { value: Enums.TextColor.Warning }
-        ],
         Enums.TextColor.Default);
     static readonly isSubtleProperty = new Serialization.BooleanPropertyDefinition(
         Shared.Versions.v1_0,
@@ -972,11 +910,7 @@ export abstract class BaseTextBlock extends CardElement {
     static readonly fontTypeProperty = new Serialization.EnumPropertyDefinition(
         Shared.Versions.v1_2,
         "fontType",
-        Enums.FontType,
-        [
-            { value: Enums.FontType.Default },
-            { value: Enums.FontType.Monospace }
-        ]);
+        Enums.FontType);
 
     protected populateSchema(schema: Serialization.SerializableObjectSchema) {
         super.populateSchema(schema);
@@ -989,6 +923,44 @@ export abstract class BaseTextBlock extends CardElement {
             BaseTextBlock.isSubtleProperty,
             BaseTextBlock.fontTypeProperty);
     }
+
+    @Serialization.schemaProperty(BaseTextBlock.sizeProperty)
+    size: Enums.TextSize = Enums.TextSize.Default;
+
+    @Serialization.schemaProperty(BaseTextBlock.weightProperty)
+    weight: Enums.TextWeight = Enums.TextWeight.Default;
+
+    @Serialization.schemaProperty(BaseTextBlock.colorProperty)
+    color: Enums.TextColor = Enums.TextColor.Default;
+
+    @Serialization.schemaProperty(BaseTextBlock.fontTypeProperty)
+    fontType?: Enums.FontType;
+
+    @Serialization.schemaProperty(BaseTextBlock.isSubtleProperty)
+    isSubtle: boolean = false;
+
+    @Serialization.schemaProperty(BaseTextBlock.textProperty)
+    get text(): string | undefined {
+        return this.getValue(BaseTextBlock.textProperty);
+    }
+
+    set text(value: string | undefined) {
+        this.setText(value);
+    }
+
+    get selectAction(): Action | undefined {
+        return this._selectAction;
+    }
+
+    set selectAction(value: Action | undefined) {
+        this._selectAction = value;
+
+        if (this._selectAction) {
+            this._selectAction.setParent(this);
+        }
+    }
+
+    //#endregion
 
     private _selectAction?: Action;
 
@@ -1084,73 +1056,14 @@ export abstract class BaseTextBlock extends CardElement {
         targetElement.style.fontWeight = fontWeight.toString();
     }
 
-    get size(): Enums.TextSize {
-        return this.getValue(BaseTextBlock.sizeProperty);
-    }
-
-    set size(value: Enums.TextSize) {
-        this.setValue(BaseTextBlock.sizeProperty, value);
-    }
-
-    get weight(): Enums.TextWeight {
-        return this.getValue(BaseTextBlock.weightProperty);
-    }
-
-    set weight(value: Enums.TextWeight) {
-        this.setValue(BaseTextBlock.weightProperty, value);
-    }
-
-    get color(): Enums.TextColor {
-        return this.getValue(BaseTextBlock.colorProperty);
-    }
-
-    set color(value: Enums.TextColor) {
-        this.setValue(BaseTextBlock.colorProperty, value);
-    }
-
-    get fontType(): Enums.FontType | undefined {
-        return this.getValue(BaseTextBlock.fontTypeProperty);
-    }
-
-    set fontType(value: Enums.FontType | undefined) {
-        this.setValue(BaseTextBlock.fontTypeProperty, value);
-    }
-
-    get isSubtle(): boolean {
-        return this.getValue(BaseTextBlock.isSubtleProperty);
-    }
-
-    set isSubtle(value: boolean) {
-        this.setValue(BaseTextBlock.isSubtleProperty, value);
-    }
-
     get effectiveColor(): Enums.TextColor {
         return this.color ? this.color : Enums.TextColor.Default;
-    }
-
-    get text(): string | undefined {
-        // return this._text;
-        return this.getValue(BaseTextBlock.textProperty);
-    }
-
-    set text(value: string | undefined) {
-        this.setText(value);
-    }
-
-    get selectAction(): Action | undefined {
-        return this._selectAction;
-    }
-
-    set selectAction(value: Action | undefined) {
-        this._selectAction = value;
-
-        if (this._selectAction) {
-            this._selectAction.setParent(this);
-        }
     }
 }
 
 export class TextBlock extends BaseTextBlock {
+    //#region Schema
+
     static readonly wrapProperty = new Serialization.BooleanPropertyDefinition(Shared.Versions.v1_0, "wrap", false);
     static readonly maxLinesProperty = new Serialization.NumberPropertyDefinition(Shared.Versions.v1_0, "maxLines");
 
@@ -1161,6 +1074,14 @@ export class TextBlock extends BaseTextBlock {
             TextBlock.wrapProperty,
             TextBlock.maxLinesProperty);
     }
+
+    @Serialization.schemaProperty(TextBlock.wrapProperty)
+    wrap: boolean = false;
+
+    @Serialization.schemaProperty(TextBlock.maxLinesProperty)
+    maxLines?: number;
+
+    //#endregion
 
     private _computedLineHeight: number;
     private _originalInnerHtml: string;
@@ -1428,22 +1349,6 @@ export class TextBlock extends BaseTextBlock {
             this.truncateIfSupported(this._computedLineHeight * this.maxLines);
         }
     }
-
-    get wrap(): boolean {
-        return this.getValue(TextBlock.wrapProperty);
-    }
-
-    set wrap(value: boolean) {
-        this.setValue(TextBlock.wrapProperty, value);
-    }
-
-    get maxLines(): number | undefined {
-        return this.getValue(TextBlock.maxLinesProperty);
-    }
-
-    set maxLines(value: number | undefined) {
-        this.setValue(TextBlock.maxLinesProperty, value);
-    }
 }
 
 class Label extends TextBlock {
@@ -1465,6 +1370,8 @@ class Label extends TextBlock {
 }
 
 export class TextRun extends BaseTextBlock {
+    //#region Schema
+
     static readonly italicProperty = new Serialization.BooleanPropertyDefinition(Shared.Versions.v1_2, "italic", false);
     static readonly strikethroughProperty = new Serialization.BooleanPropertyDefinition(Shared.Versions.v1_2, "strikethrough", false);
     static readonly highlightProperty = new Serialization.BooleanPropertyDefinition(Shared.Versions.v1_2, "highlight", false);
@@ -1477,6 +1384,17 @@ export class TextRun extends BaseTextBlock {
             TextRun.strikethroughProperty,
             TextRun.highlightProperty);
     }
+
+    @Serialization.schemaProperty(TextRun.italicProperty)
+    italic: boolean = false;
+
+    @Serialization.schemaProperty(TextRun.strikethroughProperty)
+    strikethrough: boolean = false;
+
+    @Serialization.schemaProperty(TextRun.highlightProperty)
+    highlight: boolean = false;
+
+    //#endregion
 
     protected internalRender(): HTMLElement | undefined {
         if (!Utils.isNullOrEmpty(this.text)) {
@@ -1563,30 +1481,6 @@ export class TextRun extends BaseTextBlock {
 
     getJsonTypeName(): string {
         return "TextRun";
-    }
-
-    get italic(): boolean {
-        return this.getValue(TextRun.italicProperty);
-    }
-
-    set italic(value: boolean) {
-        this.setValue(TextRun.italicProperty, value);
-    }
-
-    get strikethrough(): boolean {
-        return this.getValue(TextRun.strikethroughProperty);
-    }
-
-    set strikethrough(value: boolean) {
-        this.setValue(TextRun.strikethroughProperty, value);
-    }
-
-    get highlight(): boolean {
-        return this.getValue(TextRun.highlightProperty);
-    }
-
-    set highlight(value: boolean) {
-        this.setValue(TextRun.highlightProperty, value);
     }
 
     get isStandalone(): boolean {
@@ -1745,6 +1639,8 @@ export class RichTextBlock extends CardElement {
 }
 
 export class Fact extends Serialization.SerializableObject {
+    //#region Schema
+
     static readonly titleProperty = new Serialization.StringPropertyDefinition(Shared.Versions.v1_0, "title");
     static readonly valueProperty = new Serialization.StringPropertyDefinition(Shared.Versions.v1_0, "value");
 
@@ -1756,33 +1652,27 @@ export class Fact extends Serialization.SerializableObject {
             Fact.valueProperty);
     }
 
+    // For historic reasons, the "title" schema property is exposed as "name" in the OM.
+    @Serialization.schemaProperty(Fact.titleProperty)
+    name?: string;
+
+    @Serialization.schemaProperty(Fact.valueProperty)
+    value?: string;
+
+    //#endregion
+
     constructor(name?: string, value?: string) {
         super();
 
         this.name = name;
         this.value = value;
     }
-
-    // For historic reasons, the "title" schema property is exposed as "name" in the OM.
-    get name(): string | undefined {
-        return this.getValue(Fact.titleProperty);
-    }
-
-    set name(value: string | undefined) {
-        this.setValue(Fact.titleProperty, value);
-    }
-
-    get value(): string | undefined {
-        return this.getValue(Fact.valueProperty);
-    }
-
-    set value(value: string | undefined) {
-        this.setValue(Fact.valueProperty, value);
-    }
 }
 
 export class FactSet extends CardElement {
-    static readonly factsProperty = new Serialization.SerializableObjectCollectionPropertyDefinition(
+    //#region Schema
+
+    static readonly factsProperty = new Serialization.SerializableObjectCollectionPropertyDefinition<Fact>(
         Shared.Versions.v1_0,
         "facts",
         (sourceItem: any) => { return new Fact(); },
@@ -1793,6 +1683,11 @@ export class FactSet extends CardElement {
 
         schema.add(FactSet.factsProperty);
     }
+
+    @Serialization.schemaProperty(FactSet.factsProperty)
+    facts: Fact[];
+
+    //#endregion
 
     protected get useDefaultSizing(): boolean {
         return false;
@@ -1877,18 +1772,10 @@ export class FactSet extends CardElement {
     getJsonTypeName(): string {
         return "FactSet";
     }
-
-    get facts(): Fact[] {
-        return this.getValue(FactSet.factsProperty);
-    }
-
-    set facts(value: Fact[]) {
-        this.setValue(FactSet.factsProperty, value);
-    }
 }
 
 class ImageDimensionProperty extends Serialization.TypedPropertyDefinition<number> {
-    parse(source: Serialization.PropertyBag, errors?: Shared.IValidationError[]): number | undefined {
+    parse(sender: any, source: Serialization.PropertyBag, errors?: Shared.IValidationError[]): number | undefined {
         let result: number | undefined = Utils.getNumberValue(source[this.legacyPropertyName], undefined);
 
         if (result) {
@@ -1950,6 +1837,8 @@ class ImageDimensionProperty extends Serialization.TypedPropertyDefinition<numbe
 }
 
 export class Image extends CardElement {
+    //#region Schema
+
     static readonly urlProperty = new Serialization.StringPropertyDefinition(Shared.Versions.v1_0, "url");
     static readonly altTextProperty = new Serialization.StringPropertyDefinition(Shared.Versions.v1_0, "altText");
     static readonly backgroundColorProperty = new Serialization.StringPropertyDefinition(Shared.Versions.v1_1, "backgroundColor");
@@ -1957,22 +1846,11 @@ export class Image extends CardElement {
         Shared.Versions.v1_0,
         "style",
         Enums.ImageStyle,
-        [
-            { value: Enums.ImageStyle.Default },
-            { value: Enums.ImageStyle.Person }
-        ],
         Enums.ImageStyle.Default);
     static readonly sizeProperty = new Serialization.EnumPropertyDefinition(
         Shared.Versions.v1_0,
         "size",
         Enums.Size,
-        [
-            { value: Enums.Size.Auto },
-            { value: Enums.Size.Small },
-            { value: Enums.Size.Medium },
-            { value: Enums.Size.Large },
-            { value: Enums.Size.Stretch }
-        ],
         Enums.Size.Auto);
     static readonly pixelWidthProperty = new ImageDimensionProperty(Shared.Versions.v1_1, "width", "pixelWidth");
     static readonly pixelHeightProperty = new ImageDimensionProperty(Shared.Versions.v1_1, "height", "pixelHeight");
@@ -1989,6 +1867,41 @@ export class Image extends CardElement {
             Image.pixelWidthProperty,
             Image.pixelHeightProperty);
     }
+
+    @Serialization.schemaProperty(Image.urlProperty)
+    url?: string;
+
+    @Serialization.schemaProperty(Image.altTextProperty)
+    altText?: string;
+
+    @Serialization.schemaProperty(Image.backgroundColorProperty)
+    backgroundColor?: string;
+
+    @Serialization.schemaProperty(Image.sizeProperty)
+    size: Enums.Size = Enums.Size.Auto;
+
+    @Serialization.schemaProperty(Image.styleProperty)
+    style: Enums.ImageStyle = Enums.ImageStyle.Default;
+
+    @Serialization.schemaProperty(Image.pixelWidthProperty)
+    pixelWidth?: number;
+
+    @Serialization.schemaProperty(Image.pixelHeightProperty)
+    pixelHeight?: number;
+
+    get selectAction(): Action | undefined {
+        return this._selectAction;
+    }
+
+    set selectAction(value: Action | undefined) {
+        this._selectAction = value;
+
+        if (this._selectAction) {
+            this._selectAction.setParent(this);
+        }
+    }
+
+    //#endregion
 
     private _selectAction?: Action;
 
@@ -2166,74 +2079,6 @@ export class Image extends CardElement {
         }
         else {
             return [];
-        }
-    }
-
-    get url(): string | undefined {
-        return this.getValue(Image.urlProperty);
-    }
-
-    set url(value: string | undefined) {
-        this.setValue(Image.urlProperty, value);
-    }
-
-    get altText(): string | undefined {
-        return this.getValue(Image.altTextProperty);
-    }
-
-    set altText(value: string | undefined) {
-        this.setValue(Image.altTextProperty, value);
-    }
-
-    get backgroundColor(): string | undefined {
-        return this.getValue(Image.backgroundColorProperty);
-    }
-
-    set backgroundColor(value: string | undefined) {
-        this.setValue(Image.backgroundColorProperty, value);
-    }
-
-    get size(): Enums.Size {
-        return this.getValue(Image.sizeProperty);
-    }
-
-    set size(value: Enums.Size) {
-        this.setValue(Image.sizeProperty, value);
-    }
-
-    get style(): Enums.ImageStyle {
-        return this.getValue(Image.styleProperty);
-    }
-
-    set style(value: Enums.ImageStyle) {
-        this.setValue(Image.styleProperty, value);
-    }
-
-    get pixelWidth(): number | undefined {
-        return this.getValue(Image.pixelWidthProperty);
-    }
-
-    set pixelWidth(value: number | undefined) {
-        this.setValue(Image.pixelWidthProperty, value);
-    }
-
-    get pixelHeight(): number | undefined {
-        return this.getValue(Image.pixelHeightProperty);
-    }
-
-    set pixelHeight(value: number | undefined) {
-        this.setValue(Image.pixelHeightProperty, value);
-    }
-
-    get selectAction(): Action | undefined {
-        return this._selectAction;
-    }
-
-    set selectAction(value: Action | undefined) {
-        this._selectAction = value;
-
-        if (this._selectAction) {
-            this._selectAction.setParent(this);
         }
     }
 }
@@ -2447,7 +2292,35 @@ export abstract class CardElementContainer extends CardElement {
 }
 
 export class ImageSet extends CardElementContainer {
+    //#region Schema
+
+    static readonly imagesProperty = new Serialization.SerializableObjectCollectionPropertyDefinition<Image>(
+        Shared.Versions.v1_0,
+        "images",
+        (sourceItem: any) => { return new Image(); },
+        (sender: object) => { return []; },
+        (sender: any, item: Image) => { item.setParent(<CardElement>sender); });
+    static readonly sizeProperty = new Serialization.EnumPropertyDefinition(
+        Shared.Versions.v1_0,
+        "size",
+        Enums.Size,
+        Enums.Size.Medium);
+
+    protected populateSchema(schema: Serialization.SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.add(
+            ImageSet.imagesProperty,
+            ImageSet.sizeProperty);
+    }
+
+    @Serialization.schemaProperty(ImageSet.imagesProperty)
     private _images: Image[] = [];
+
+    @Serialization.schemaProperty(ImageSet.sizeProperty)
+    imageSize: Enums.Size = Enums.Size.Medium;
+
+    //#endregion
 
     protected internalRender(): HTMLElement | undefined {
         let element: HTMLElement | undefined = undefined;
@@ -2475,8 +2348,6 @@ export class ImageSet extends CardElementContainer {
 
         return element;
     }
-
-    imageSize: Enums.Size = Enums.Size.Medium;
 
     getItemCount(): number {
         return this._images.length;
@@ -2514,43 +2385,6 @@ export class ImageSet extends CardElementContainer {
 
     getJsonTypeName(): string {
         return "ImageSet";
-    }
-
-    toJSON(): any {
-        let result = super.toJSON();
-
-        Utils.setEnumProperty(Enums.Size, result, "imageSize", this.imageSize, Enums.Size.Medium);
-
-        if (this._images.length > 0) {
-            let images = [];
-
-            for (let image of this._images) {
-                images.push(image.toJSON());
-            }
-
-            Utils.setProperty(result, "images", images);
-        }
-
-        return result;
-    }
-
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        super.parse(json, errors);
-
-        this.imageSize = <Enums.Size>Utils.getEnumValue(Enums.Size, json["imageSize"], Enums.Size.Medium);
-
-        if (json["images"] != null) {
-            let jsonImages = json["images"] as any[];
-
-            this._images = [];
-
-            for (let i = 0; i < jsonImages.length; i++) {
-                let image = new Image();
-                image.parse(jsonImages[i], errors);
-
-                this.addImage(image);
-            }
-        }
     }
 
     addImage(image: Image) {

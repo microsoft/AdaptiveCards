@@ -5,8 +5,8 @@ import * as Utils from "./utils";
 import * as Enums from "./enums";
 
 export abstract class PropertyDefinition {
-    abstract parse(source: PropertyBag, errors?: Shared.IValidationError[]): any;
-    abstract toJSON(target: object, value: any): void;
+    abstract parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): any;
+    abstract toJSON(sender: SerializableObject, target: PropertyBag, value: any): void;
 
     constructor(
         readonly targetVersion: Shared.TargetVersion,
@@ -16,7 +16,8 @@ export abstract class PropertyDefinition {
 }
 
 export abstract class TypedPropertyDefinition<T> extends PropertyDefinition {
-    abstract parse(source: PropertyBag, errors?: Shared.IValidationError[]): T | undefined;
+    abstract parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): T | undefined;
+    abstract toJSON(sender: SerializableObject, target: PropertyBag, value: T | undefined): void;
 
     constructor(
         readonly targetVersion: Shared.TargetVersion,
@@ -28,7 +29,7 @@ export abstract class TypedPropertyDefinition<T> extends PropertyDefinition {
 }
 
 export class StringPropertyDefinition extends TypedPropertyDefinition<string> {
-    parse(source: PropertyBag, errors?: Shared.IValidationError[]): string | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): string | undefined {
         let parsedValue = Utils.getStringValue(source[this.name], this.defaultValue);
         let isUndefined = parsedValue === undefined || (parsedValue === "" && this.treatEmptyAsUndefined);
 
@@ -44,7 +45,7 @@ export class StringPropertyDefinition extends TypedPropertyDefinition<string> {
         return parsedValue;
     }
 
-    toJSON(target: object, value: any) {
+    toJSON(sender: SerializableObject, target: PropertyBag, value: string | undefined) {
         Utils.setProperty(
             target,
             this.name,
@@ -64,11 +65,11 @@ export class StringPropertyDefinition extends TypedPropertyDefinition<string> {
 }
 
 export class BooleanPropertyDefinition extends TypedPropertyDefinition<boolean> {
-    parse(source: PropertyBag, errors?: Shared.IValidationError[]): boolean | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): boolean | undefined {
         return Utils.getBoolValue(source[this.name], this.defaultValue);;
     }
 
-    toJSON(target: object, value: any) {
+    toJSON(sender: SerializableObject, target: object, value: boolean | undefined) {
         Utils.setProperty(
             target,
             this.name,
@@ -78,11 +79,11 @@ export class BooleanPropertyDefinition extends TypedPropertyDefinition<boolean> 
 }
 
 export class NumberPropertyDefinition extends TypedPropertyDefinition<number> {
-    parse(source: PropertyBag, errors?: Shared.IValidationError[]): number | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): number | undefined {
         return Utils.getNumberValue(source[this.name], this.defaultValue);;
     }
 
-    toJSON(target: object, value: any) {
+    toJSON(sender: SerializableObject, target: PropertyBag, value: number | undefined) {
         Utils.setNumberProperty(
             target,
             this.name,
@@ -92,7 +93,7 @@ export class NumberPropertyDefinition extends TypedPropertyDefinition<number> {
 }
 
 export class PixelSizePropertyDefinition extends TypedPropertyDefinition<number> {
-    parse(source: PropertyBag, errors?: Shared.IValidationError[]): number | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): number | undefined {
         let result: number | undefined = undefined;
         let value = source[this.name];
 
@@ -128,7 +129,7 @@ export class PixelSizePropertyDefinition extends TypedPropertyDefinition<number>
         return result;
     }
 
-    toJSON(target: object, value: any) {
+    toJSON(sender: SerializableObject, target: PropertyBag, value: number | undefined) {
         Utils.setProperty(
             target,
             this.name,
@@ -142,7 +143,7 @@ export interface IVersionedValue<TValue> {
 }
 
 export class ValueSetPropertyDefinition extends TypedPropertyDefinition<string> {
-    parse(source: PropertyBag, errors?: Shared.IValidationError[]): string | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): string | undefined {
         let parsedValue = Utils.getStringValue(source[this.name], this.defaultValue);
 
         for (let value of this.values) {
@@ -154,7 +155,7 @@ export class ValueSetPropertyDefinition extends TypedPropertyDefinition<string> 
         return undefined;
     }
 
-    toJSON(target: object, value: any) {
+    toJSON(sender: SerializableObject, target: PropertyBag, value: string | undefined) {
         Utils.setProperty(
             target,
             this.name,
@@ -173,11 +174,11 @@ export class ValueSetPropertyDefinition extends TypedPropertyDefinition<string> 
 }
 
 export class EnumPropertyDefinition<TEnum extends { [s: number]: string }> extends TypedPropertyDefinition<number> {
-    parse(source: PropertyBag, errors?: Shared.IValidationError[]): number | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): number | undefined {
         return Utils.getEnumValue(this.enumType, source[this.name], this.defaultValue);
     }
 
-    toJSON(target: object, value: any) {
+    toJSON(sender: SerializableObject, target: PropertyBag, value: number | undefined) {
         Utils.setEnumProperty(
             this.enumType,
             target,
@@ -190,26 +191,38 @@ export class EnumPropertyDefinition<TEnum extends { [s: number]: string }> exten
         readonly targetVersion: Shared.TargetVersion,
         readonly name: string,
         readonly enumType: TEnum,
-        readonly values: IVersionedValue<number>[],
         readonly defaultValue?: number,
+        readonly values?: IVersionedValue<number>[],
         readonly onGetInitialValue?: (sender: object) => number) {
         super(targetVersion, name, defaultValue, onGetInitialValue);
+
+        if (!values) {
+            values = [];
+
+            for (let key in enumType) {
+                if (typeof key === "number") {
+                    values.push( { value: key });
+                }
+            }
+        }
     }
 }
 
 export class SerializableObjectPropertyDefinition<T extends SerializableObject> extends TypedPropertyDefinition<T> {
-    parse(source: PropertyBag, errors?: Shared.IValidationError[]): T | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): T | undefined {
         let result = this.onCreateInstance();
         result.parse(source[this.name]);
 
         return result;
     }
 
-    toJSON(target: PropertyBag, value: T) {
-        let serializedValue = value.toJSON();
+    toJSON(sender: SerializableObject, target: PropertyBag, value: T | undefined) {
+        if (value !== undefined) {
+            let serializedValue = value.toJSON();
 
-        if (Object.keys(serializedValue).length > 0) {
-            target[this.name] = serializedValue;
+            if (Object.keys(serializedValue).length > 0) {
+                target[this.name] = serializedValue;
+            }
         }
     }
 
@@ -226,9 +239,9 @@ export class SerializableObjectPropertyDefinition<T extends SerializableObject> 
     }
 }
 
-export class SerializableObjectCollectionPropertyDefinition extends TypedPropertyDefinition<SerializableObject[]> {
-    parse(source: PropertyBag, errors?: Shared.IValidationError[]): SerializableObject[] | undefined {
-        let result: SerializableObject[] | undefined = [];
+export class SerializableObjectCollectionPropertyDefinition<T extends SerializableObject> extends TypedPropertyDefinition<T[]> {
+    parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): T[] | undefined {
+        let result: T[] | undefined = [];
 
         let sourceCollection = source[this.name];
 
@@ -240,6 +253,10 @@ export class SerializableObjectCollectionPropertyDefinition extends TypedPropert
                     item.parse(sourceItem);
 
                     result.push(item);
+
+                    if (this.onItemAdded) {
+                        this.onItemAdded(sender, item);
+                    }
                 }
             }
         }
@@ -247,15 +264,16 @@ export class SerializableObjectCollectionPropertyDefinition extends TypedPropert
         return result.length > 0 ? result : undefined;
     }
 
-    toJSON(target: PropertyBag, value: SerializableObject[] | undefined) {
+    toJSON(sender: SerializableObject, target: PropertyBag, value: T[] | undefined) {
         Utils.setArrayProperty(target, this.name, value);
     }
 
     constructor(
         readonly targetVersion: Shared.TargetVersion,
         readonly name: string,
-        readonly onCreateCollectionItemInstance: (sourceItem: any) => SerializableObject,
-        readonly onGetInitialValue?: (sender: object) => SerializableObject[]) {
+        readonly onCreateCollectionItemInstance: (sourceItem: any) => T,
+        readonly onGetInitialValue?: (sender: object) => T[],
+        readonly onItemAdded?: (sender: SerializableObject, item: T) => void) {
         super(targetVersion, name, undefined, onGetInitialValue);
 
         if (!this.onCreateCollectionItemInstance) {
@@ -265,11 +283,11 @@ export class SerializableObjectCollectionPropertyDefinition extends TypedPropert
 }
 
 export class CustomPropertyDefinition<T> extends TypedPropertyDefinition<T> {
-    parse(source: PropertyBag, errors?: Shared.IValidationError[]): T | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): T | undefined {
         return this.onParse(this, source, errors);
     }
 
-    toJSON(target: PropertyBag, value: T) {
+    toJSON(sender: SerializableObject, target: PropertyBag, value: T | undefined) {
         this.onToJSON(this, target, value);
     }
 
@@ -277,7 +295,7 @@ export class CustomPropertyDefinition<T> extends TypedPropertyDefinition<T> {
         readonly targetVersion: Shared.TargetVersion,
         readonly name: string,
         readonly onParse: (sender: PropertyDefinition, source: PropertyBag, errors?: Shared.IValidationError[]) => T | undefined,
-        readonly onToJSON: (sender: PropertyDefinition, target: PropertyBag, value: T) => void,
+        readonly onToJSON: (sender: PropertyDefinition, target: PropertyBag, value: T | undefined) => void,
         readonly defaultValue?: T,
         readonly onGetInitialValue?: (sender: object) => T) {
         super(targetVersion, name, defaultValue, onGetInitialValue);
@@ -339,10 +357,12 @@ export function schemaProperty(property: PropertyDefinition) {
     return function(target: any, propertyKey: string) {
         let descriptor = Object.getOwnPropertyDescriptor(target, propertyKey) || {};
 
-        descriptor.get = function(this: SerializableObject) { return this.getValue(property); };
-        descriptor.set = function(this: SerializableObject, value: any) { this.setValue(property, value); };
+        if (!descriptor.get && !descriptor.set) {
+            descriptor.get = function(this: SerializableObject) { return this.getValue(property); };
+            descriptor.set = function(this: SerializableObject, value: any) { this.setValue(property, value); };
 
-        Object.defineProperty(target, propertyKey, descriptor)
+            Object.defineProperty(target, propertyKey, descriptor)
+        }
     }
 }
 
@@ -396,7 +416,7 @@ export abstract class SerializableObject {
         for (let i = 0; i < s.getCount(); i++) {
             let property = s.getItemAt(i);
 
-            this.setValue(property, property.parse(source, errors));
+            this.setValue(property, property.parse(this, source, errors));
         }
     }
 
@@ -415,7 +435,7 @@ export abstract class SerializableObject {
         for (let i = 0; i < s.getCount(); i++) {
             let property = s.getItemAt(i);
 
-            property.toJSON(result, this.getValue(property));
+            property.toJSON(this, result, this.getValue(property));
         }
 
         return result;

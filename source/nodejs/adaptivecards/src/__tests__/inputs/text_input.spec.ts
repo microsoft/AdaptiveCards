@@ -25,8 +25,7 @@ test('TextInput should be able to roundtrip', ()=>{
             },
             {
                 "type":"Input.Text",
-                "id":"test-unspecified",
-                "horizontalAlignment": "Left"
+                "id":"test-unspecified"
             }
 
             ],

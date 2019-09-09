@@ -6,7 +6,6 @@
         "strictNullChecks": true,
         "noImplicitReturns": true,
         "noImplicitThis": true,
-        "noUnusedLocals": true,
         "noFallthroughCasesInSwitch": true,
         "experimentalDecorators": true
 	},
