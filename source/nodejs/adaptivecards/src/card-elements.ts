@@ -6,10 +6,9 @@ import * as Utils from "./utils";
 import * as HostConfig from "./host-config";
 import * as TextFormatters from "./text-formatters";
 import { HostCapabilities } from "./host-capabilities";
-import { schemaProperty, SerializableObject, SerializableObjectSchema, StringPropertyDefinition, BooleanPropertyDefinition,
-    ValueSetPropertyDefinition, EnumPropertyDefinition, SerializableObjectCollectionPropertyDefinition,
-    SerializableObjectPropertyDefinition, PixelSizePropertyDefinition, NumberPropertyDefinition, 
-    TypedPropertyDefinition,PropertyBag } from "./serializable-object";
+import { schemaProperty, SerializableObject, SerializableObjectSchema, TypedPropertyDefinition, StringPropertyDefinition,
+    BooleanPropertyDefinition, ValueSetPropertyDefinition, EnumPropertyDefinition, SerializableObjectCollectionPropertyDefinition,
+    SerializableObjectPropertyDefinition, PixelSizePropertyDefinition, NumberPropertyDefinition, PropertyBag } from "./serializable-object";
 
 function invokeSetCollection(action: Action, collection: ActionCollection | undefined) {
     if (action && collection) {
@@ -884,6 +883,30 @@ export abstract class CardElement extends CardObject {
     }
 }
 
+export class ActionPropertyDefinition extends TypedPropertyDefinition<Action> {
+    parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): Action | undefined {
+        let parent = <CardElement>sender;
+
+        return createActionInstance(
+            parent,
+            source[this.name],
+            this.forbiddenActionTypes,
+            parent.isDesignMode(),
+            errors);
+    }
+
+    toJSON(sender: SerializableObject, target: PropertyBag, value: Action | undefined) {
+        Utils.setProperty(target, this.name, value ? value.toJSON() : undefined);
+    }
+
+    constructor(
+        readonly targetVersion: Shared.TargetVersion,
+        readonly name: string,
+        readonly forbiddenActionTypes: string[] = []) {
+        super(targetVersion, name, undefined);
+    }
+}
+
 export abstract class BaseTextBlock extends CardElement {
     //#region Schema
 
@@ -914,6 +937,7 @@ export abstract class BaseTextBlock extends CardElement {
         Shared.Versions.v1_2,
         "fontType",
         Enums.FontType);
+    static readonly selectActionProperty = new ActionPropertyDefinition(Shared.Versions.v1_0, "selectAction", [ "Action.ShowCard" ]);
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
@@ -925,6 +949,9 @@ export abstract class BaseTextBlock extends CardElement {
             BaseTextBlock.colorProperty,
             BaseTextBlock.isSubtleProperty,
             BaseTextBlock.fontTypeProperty);
+        
+        // selectAction is declared on BaseTextBlock but is only exposed on TextRun,
+        // so the property is not added to the BaseTextBlock schema.
     }
 
     @schemaProperty(BaseTextBlock.sizeProperty)
@@ -951,21 +978,10 @@ export abstract class BaseTextBlock extends CardElement {
         this.setText(value);
     }
 
-    get selectAction(): Action | undefined {
-        return this._selectAction;
-    }
-
-    set selectAction(value: Action | undefined) {
-        this._selectAction = value;
-
-        if (this._selectAction) {
-            this._selectAction.setParent(this);
-        }
-    }
+    @schemaProperty(BaseTextBlock.selectActionProperty)
+    selectAction?: Action;
 
     //#endregion
-
-    private _selectAction?: Action;
 
     protected getFontSize(fontType: HostConfig.FontTypeDefinition): number {
         switch (this.size) {
@@ -1385,7 +1401,8 @@ export class TextRun extends BaseTextBlock {
         schema.add(
             TextRun.italicProperty,
             TextRun.strikethroughProperty,
-            TextRun.highlightProperty);
+            TextRun.highlightProperty,
+            BaseTextBlock.selectActionProperty);
     }
 
     @schemaProperty(TextRun.italicProperty)
@@ -1857,6 +1874,7 @@ export class Image extends CardElement {
         Enums.Size.Auto);
     static readonly pixelWidthProperty = new ImageDimensionProperty(Shared.Versions.v1_1, "width", "pixelWidth");
     static readonly pixelHeightProperty = new ImageDimensionProperty(Shared.Versions.v1_1, "height", "pixelHeight");
+    static readonly selectActionProperty = new ActionPropertyDefinition(Shared.Versions.v1_0, "selectAction", [ "Action.ShowCard" ]);
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
@@ -1868,7 +1886,8 @@ export class Image extends CardElement {
             Image.styleProperty,
             Image.sizeProperty,
             Image.pixelWidthProperty,
-            Image.pixelHeightProperty);
+            Image.pixelHeightProperty,
+            Image.selectActionProperty);
     }
 
     @schemaProperty(Image.urlProperty)
@@ -1892,21 +1911,10 @@ export class Image extends CardElement {
     @schemaProperty(Image.pixelHeightProperty)
     pixelHeight?: number;
 
-    get selectAction(): Action | undefined {
-        return this._selectAction;
-    }
-
-    set selectAction(value: Action | undefined) {
-        this._selectAction = value;
-
-        if (this._selectAction) {
-            this._selectAction.setParent(this);
-        }
-    }
+    @schemaProperty(Image.selectActionProperty)
+    selectAction?: Action;
 
     //#endregion
-
-    private _selectAction?: Action;
 
     private applySize(element: HTMLElement) {
         if (this.pixelWidth || this.pixelHeight) {
@@ -2041,27 +2049,6 @@ export class Image extends CardElement {
         return element;
     }
 
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        super.parse(json, errors);
-
-        this.selectAction = createActionInstance(
-            this,
-            json["selectAction"],
-            [ShowCardAction.JsonTypeName],
-            !this.isDesignMode(),
-            errors);
-    }
-
-    toJSON(): any {
-        let result = super.toJSON();
-
-        if (this._selectAction) {
-            Utils.setProperty(result, "selectAction", this._selectAction.toJSON());
-        }
-
-        return result;
-    }
-
     getJsonTypeName(): string {
         return "Image";
     }
@@ -2087,7 +2074,22 @@ export class Image extends CardElement {
 }
 
 export abstract class CardElementContainer extends CardElement {
-    private _selectAction?: Action;
+    //#region Schema
+
+    static readonly selectActionProperty = new ActionPropertyDefinition(Shared.Versions.v1_0, "selectAction", [ "Action.ShowCard" ]);
+
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        if (this.isSelectable) {
+            schema.add(CardElementContainer.selectActionProperty);
+        }
+    }
+
+    @schemaProperty(CardElementContainer.selectActionProperty)
+    protected _selectAction?: Action;
+
+    //#endregion
 
     protected isElementAllowed(element: CardElement, forbiddenElementTypes: string[]) {
         if (!this.hostConfig.supportsInteractivity && element.isInteractive) {
@@ -2127,18 +2129,6 @@ export abstract class CardElementContainer extends CardElement {
         this.renderedElement.style.marginLeft = "0";
     }
 
-    protected getSelectAction(): Action | undefined {
-        return this._selectAction;
-    }
-
-    protected setSelectAction(value: Action | undefined) {
-        this._selectAction = value;
-
-        if (this._selectAction) {
-            this._selectAction.setParent(this);
-        }
-    }
-
     protected get isSelectable(): boolean {
         return false;
     }
@@ -2150,29 +2140,6 @@ export abstract class CardElementContainer extends CardElement {
     abstract removeItem(item: CardElement): boolean;
 
     allowVerticalOverflow: boolean = false;
-
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        super.parse(json, errors);
-
-        if (this.isSelectable) {
-            this._selectAction = createActionInstance(
-                this,
-                json["selectAction"],
-                [ShowCardAction.JsonTypeName],
-                !this.isDesignMode(),
-                errors);
-        }
-    }
-
-    toJSON(): any {
-        let result = super.toJSON();
-
-        if (this._selectAction && this.isSelectable) {
-            Utils.setProperty(result, "selectAction", this._selectAction.toJSON());
-        }
-
-        return result;
-    }
 
     internalValidateProperties(context: ValidationResults) {
         super.internalValidateProperties(context);
@@ -2889,7 +2856,20 @@ export abstract class Input extends CardElement implements Shared.IInput {
 }
 
 export class TextInput extends Input {
-    private _inlineAction?: Action;
+    //#region Schema
+
+    static readonly inlineActionProperty = new ActionPropertyDefinition(Shared.Versions.v1_0, "inlineAction", [ "Action.ShowCard" ]);
+
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.add(TextInput.inlineActionProperty);
+    }
+
+    @schemaProperty(TextInput.inlineActionProperty)
+    inlineAction?: Action;
+
+    //#endregion
 
     protected internalRender(): HTMLElement | undefined {
         if (this.isMultiline) {
@@ -3042,10 +3022,6 @@ export class TextInput extends Input {
         Utils.setProperty(result, "isMultiline", this.isMultiline, false);
         Utils.setEnumProperty(Enums.InputTextStyle, result, "style", this.style, Enums.InputTextStyle.Text);
 
-        if (this._inlineAction) {
-            Utils.setProperty(result, "inlineAction", this._inlineAction.toJSON());
-        }
-
         return result;
     }
 
@@ -3056,24 +3032,6 @@ export class TextInput extends Input {
         this.isMultiline = <boolean>Utils.getBoolValue(json["isMultiline"], this.isMultiline);
         this.placeholder = Utils.getStringValue(json["placeholder"]);
         this.style = <Enums.InputTextStyle>Utils.getEnumValue(Enums.InputTextStyle, json["style"], this.style);
-        this.inlineAction = createActionInstance(
-            this,
-            json["inlineAction"],
-            [ShowCardAction.JsonTypeName],
-            !this.isDesignMode(),
-            errors);
-    }
-
-    get inlineAction(): Action | undefined {
-        return this._inlineAction;
-    }
-
-    set inlineAction(value: Action | undefined) {
-        this._inlineAction = value;
-
-        if (this._inlineAction) {
-            this._inlineAction.setParent(this);
-        }
     }
 
     get value(): string | undefined {
@@ -5802,11 +5760,11 @@ export class Container extends StylableCardElementContainer {
     }
 
     get selectAction(): Action | undefined {
-        return this.getSelectAction();
+        return this._selectAction;
     }
 
     set selectAction(value: Action | undefined) {
-        this.setSelectAction(value);
+        this._selectAction = value;
     }
 
     get bleed(): boolean {
@@ -6288,11 +6246,11 @@ export class ColumnSet extends StylableCardElementContainer {
     }
 
     get selectAction(): Action | undefined {
-        return this.getSelectAction();
+        return this._selectAction;
     }
 
     set selectAction(value: Action | undefined) {
-        this.setSelectAction(value);
+        this._selectAction = value;
     }
 }
 
