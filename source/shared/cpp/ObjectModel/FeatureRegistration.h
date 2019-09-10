@@ -9,7 +9,7 @@ namespace AdaptiveSharedNamespace
 {
     constexpr const char* const c_adaptiveCardsFeature = "adaptiveCards";
 
-    struct KeyHash
+    struct CaseInsensitiveKeyHash
     {
         size_t operator()(const std::string& keyVal) const
         {
@@ -17,7 +17,7 @@ namespace AdaptiveSharedNamespace
         }
     };
 
-    struct KeyEquals
+    struct CaseInsensitiveKeyEquals
     {
         bool operator()(const std::string& leftVal, const std::string& rightVal) const
         {
@@ -37,6 +37,6 @@ namespace AdaptiveSharedNamespace
         std::string GetFeatureVersion(const std::string& featureName) const;
 
     private:
-        std::unordered_map<std::string, std::string, KeyHash, KeyEquals> m_supportedFeatures;
+        std::unordered_map<std::string, std::string, CaseInsensitiveKeyHash, CaseInsensitiveKeyEquals> m_supportedFeatures;
     };
 }
