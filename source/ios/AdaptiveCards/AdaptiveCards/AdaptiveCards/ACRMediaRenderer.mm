@@ -5,20 +5,20 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import <CoreGraphics/CoreGraphics.h>
-#import <AVKit/AVKit.h>
 #import "ACRMediaRenderer.h"
-#import "ACOMediaEventPrivate.h"
-#import "ACRMediaTarget.h"
-#import "SharedAdaptiveCard.h"
-#import "ACRAggregateTarget.h"
-#import "ACRView.h"
-#import "ACRUIImageView.h"
-#import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
-#import "ACRLongPressGestureRecognizerFactory.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACOMediaEventPrivate.h"
+#import "ACRAggregateTarget.h"
 #import "ACRContentHoldingUIView.h"
+#import "ACRLongPressGestureRecognizerFactory.h"
+#import "ACRMediaTarget.h"
+#import "ACRUIImageView.h"
+#import "ACRView.h"
+#import "SharedAdaptiveCard.h"
 #import "UtiliOS.h"
+#import <AVKit/AVKit.h>
+#import <CoreGraphics/CoreGraphics.h>
 
 @implementation ACRMediaRenderer
 
@@ -34,10 +34,10 @@
 }
 
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
-          rootView:(ACRView *)rootView
-            inputs:(NSMutableArray *)inputs
-   baseCardElement:(ACOBaseCardElement *)acoElem
-        hostConfig:(ACOHostConfig *)acoConfig;
+           rootView:(ACRView *)rootView
+             inputs:(NSMutableArray *)inputs
+    baseCardElement:(ACOBaseCardElement *)acoElem
+         hostConfig:(ACOHostConfig *)acoConfig;
 {
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<Media> mediaElem = std::dynamic_pointer_cast<Media>(elem);
@@ -82,14 +82,14 @@
     contentholdingview.isMediaType = YES;
 
     // process play icon image
-    NSString *piikey = [NSString stringWithCString:[acoConfig getHostConfig]->GetMedia().playButton.c_str() encoding:[NSString defaultCStringEncoding]];
+    NSString *piikey = [NSString stringWithCString:[acoConfig getHostConfig] -> GetMedia().playButton.c_str() encoding:[NSString defaultCStringEncoding]];
     UIImage *playIconImage = imageViewMap[piikey];
     UIImageView *playIconImageView = nil;
     BOOL hideDefaultPlayIcon = NO;
 
     if (!playIconImage) {
         NSString *key = [NSString stringWithFormat:@"%llu_playIcon", (unsigned long long)elem.get()];
-        playIconImageView  = [rootView getImageView:key];
+        playIconImageView = [rootView getImageView:key];
     } else {
         playIconImageView = [[UIImageView alloc] initWithImage:playIconImage];
     }
@@ -113,7 +113,7 @@
 
     [viewGroup addArrangedSubview:contentholdingview];
 
-    if ([acoConfig getHostConfig]->GetSupportsInteractivity()){
+    if ([acoConfig getHostConfig] -> GetSupportsInteractivity()) {
         ACRMediaTarget *mediaTarget = nil;
         ACOMediaEvent *mediaEvent = [[ACOMediaEvent alloc] initWithMedia:mediaElem];
         if (!mediaEvent.isValid) {
@@ -121,7 +121,7 @@
             return nil;
         }
         // create target for gesture recongnizer;
-        if (![acoConfig getHostConfig]->GetMedia().allowInlinePlayback) {
+        if (![acoConfig getHostConfig] -> GetMedia().allowInlinePlayback) {
             mediaTarget = [[ACRMediaTarget alloc] initWithMediaEvent:mediaEvent rootView:rootView config:acoConfig];
         } else {
             mediaTarget = [[ACRMediaTarget alloc] initWithMediaEvent:mediaEvent rootView:rootView config:acoConfig containingview:contentholdingview];
@@ -142,11 +142,11 @@
     ACRContentHoldingUIView *contentholdingview = (ACRContentHoldingUIView *)imageView.superview;
     CGFloat heightToWidthRatio = 0.0f;
 
-    if(!image) {
+    if (!image) {
         heightToWidthRatio = .75;
     } else {
         imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
-        if(image.size.width > 0) {
+        if (image.size.width > 0) {
             heightToWidthRatio = image.size.height / image.size.width;
         }
     }
@@ -157,14 +157,22 @@
     [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:contentholdingview attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
 
     [NSLayoutConstraint constraintWithItem:imageView
-        attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual
-           toItem:contentholdingview attribute:NSLayoutAttributeWidth
-       multiplier:1.0 constant:0].active = YES;
+                                 attribute:NSLayoutAttributeWidth
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:contentholdingview
+                                 attribute:NSLayoutAttributeWidth
+                                multiplier:1.0
+                                  constant:0]
+        .active = YES;
 
     [NSLayoutConstraint constraintWithItem:contentholdingview
-        attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual
-           toItem:imageView attribute:NSLayoutAttributeHeight
-       multiplier:1.0 constant:0].active = YES;
+                                 attribute:NSLayoutAttributeHeight
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:imageView
+                                 attribute:NSLayoutAttributeHeight
+                                multiplier:1.0
+                                  constant:0]
+        .active = YES;
 
     [NSLayoutConstraint constraintWithItem:imageView
                                  attribute:NSLayoutAttributeHeight
@@ -172,7 +180,8 @@
                                     toItem:imageView
                                  attribute:NSLayoutAttributeWidth
                                 multiplier:heightToWidthRatio
-                                  constant:0].active = YES;
+                                  constant:0]
+        .active = YES;
     [contentholdingview setNeedsLayout];
 }
 

@@ -27,7 +27,7 @@
 
 - (void)commonInit
 {
-    NSBundle* bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
+    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
     [bundle loadNibNamed:@"ACRQuickActionView" owner:self options:nil];
     [self addSubview:self.contentView];
     self.contentView.frame = self.bounds;
@@ -36,7 +36,7 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if(_target) {
+    if (_target) {
         [_target send:self.button];
     }
     [self resignFirstResponder];

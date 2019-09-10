@@ -5,8 +5,8 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "ACRErrors.h"
+#import <Foundation/Foundation.h>
 
 @protocol ACRIBaseInputHandler
 

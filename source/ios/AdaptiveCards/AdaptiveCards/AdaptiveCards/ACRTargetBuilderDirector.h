@@ -5,11 +5,11 @@
 //  Copyright © 2019 Microsoft. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "ACOBaseActionElementPrivate.h"
 #import "ACRView.h"
+#import <Foundation/Foundation.h>
 
-@interface ACRTargetBuilderDirector:NSObject
+@interface ACRTargetBuilderDirector : NSObject
 // indicates types of target director is allowed to build
 @property __weak ACRView *rootView;
 @property __weak ACOHostConfig *adaptiveHostConfig;

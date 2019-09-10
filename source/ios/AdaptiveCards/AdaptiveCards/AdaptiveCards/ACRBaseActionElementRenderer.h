@@ -4,9 +4,9 @@
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
-#import <Foundation/Foundation.h>
 #import "ACRIBaseActionElementRenderer.h"
+#import <Foundation/Foundation.h>
 
-@interface ACRBaseActionElementRenderer:NSObject<ACRIBaseActionElementRenderer>
+@interface ACRBaseActionElementRenderer : NSObject <ACRIBaseActionElementRenderer>
 
 @end

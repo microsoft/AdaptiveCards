@@ -5,48 +5,47 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
 #import "ACRRegistration.h"
-#import "ACRColumnView.h"
-#import "ACRColumnSetView.h"
-#import "ACRImageRenderer.h"
-#import "ACRImageSetRenderer.h"
-#import "ACRMediaRenderer.h"
-#import "ACRTextBlockRenderer.h"
-#import "ACRRichTextBlockRenderer.h"
-#import "ACRInputRenderer.h"
-#import "ACRInputToggleRenderer.h"
-#import "ACRInputChoiceSetRenderer.h"
-#import "ACRInputDateRenderer.h"
-#import "ACRInputTimeRenderer.h"
-#import "ACRInputNumberRenderer.h"
-#import "ACRFactSetRenderer.h"
-#import "ACRContainerRenderer.h"
-#import "ACRColumnSetRenderer.h"
-#import "ACRColumnRenderer.h"
 #import "ACOBaseActionElement.h"
+#import "ACOParseContextPrivate.h"
 #import "ACRActionOpenURLRenderer.h"
+#import "ACRActionSetRenderer.h"
 #import "ACRActionShowCardRenderer.h"
 #import "ACRActionSubmitRenderer.h"
 #import "ACRActionToggleVisibilityRenderer.h"
-#import "ACRActionSetRenderer.h"
-#import "ACRCustomRenderer.h"
+#import "ACRColumnRenderer.h"
+#import "ACRColumnSetRenderer.h"
+#import "ACRColumnSetView.h"
+#import "ACRColumnView.h"
+#import "ACRContainerRenderer.h"
 #import "ACRCustomActionRenderer.h"
+#import "ACRCustomRenderer.h"
+#import "ACRFactSetRenderer.h"
+#import "ACRImageRenderer.h"
+#import "ACRImageSetRenderer.h"
+#import "ACRInputChoiceSetRenderer.h"
+#import "ACRInputDateRenderer.h"
+#import "ACRInputNumberRenderer.h"
+#import "ACRInputRenderer.h"
+#import "ACRInputTimeRenderer.h"
+#import "ACRInputToggleRenderer.h"
+#import "ACRMediaRenderer.h"
+#import "ACRRichTextBlockRenderer.h"
+#import "ACRTextBlockRenderer.h"
 #import "BaseCardElement.h"
-#import "HostConfig.h"
-#import "ACOParseContextPrivate.h"
 #import "FeatureRegistration.h"
+#import "HostConfig.h"
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 using namespace AdaptiveCards;
 
-@implementation ACRRegistration
-{
+@implementation ACRRegistration {
     NSDictionary *typeToRendererDict;
     NSDictionary *actionRendererDict;
 
-    NSMutableDictionary<NSString*, NSObject<ACOIBaseCardElementParser>*> *_elementParserDict;
-    NSMutableDictionary<NSString*, NSObject<ACOIBaseActionElementParser>*> *_actionParserDict;
+    NSMutableDictionary<NSString *, NSObject<ACOIBaseCardElementParser> *> *_elementParserDict;
+    NSMutableDictionary<NSString *, NSObject<ACOIBaseActionElementParser> *> *_actionParserDict;
     id<ACRIBaseActionSetRenderer> _actionSetRenderer;
     NSMutableDictionary *overridenBaseElementRendererList;
     NSMutableDictionary *overridenBaseActionRendererList;
@@ -54,39 +53,38 @@ using namespace AdaptiveCards;
     ACOParseContext *_parseContext;
 }
 
-- (instancetype) init
+- (instancetype)init
 {
     self = [super init];
-    if(self)
-    {
+    if (self) {
         typeToRendererDict =
             [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-             [ACRMediaRenderer getInstance],      [NSNumber numberWithInt:(int)[ACRMediaRenderer elemType]],
-             [ACRImageRenderer getInstance],      [NSNumber numberWithInt:(int)[ACRImageRenderer elemType]],
-             [ACRImageSetRenderer getInstance],   [NSNumber numberWithInt:(int)[ACRImageSetRenderer elemType]],
-             [ACRTextBlockRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRTextBlockRenderer elemType]],
-             [ACRRichTextBlockRenderer getInstance], [NSNumber numberWithInt:(int)[ACRRichTextBlockRenderer elemType]],
-             [ACRInputRenderer     getInstance],  [NSNumber numberWithInt:(int)[ACRInputRenderer elemType]],
-             [ACRInputToggleRenderer getInstance],[NSNumber numberWithInt:(int)[ACRInputToggleRenderer elemType]],
-             [ACRInputChoiceSetRenderer getInstance], [NSNumber numberWithInt:(int)[ACRInputChoiceSetRenderer elemType]],
-             [ACRInputDateRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRInputDateRenderer elemType]],
-             [ACRInputTimeRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRInputTimeRenderer elemType]],
-             [ACRInputNumberRenderer getInstance], [NSNumber numberWithInt:(int)[ACRInputNumberRenderer elemType]],
-             [ACRFactSetRenderer getInstance],    [NSNumber numberWithInt:(int)[ACRFactSetRenderer elemType]],
-             [ACRContainerRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRContainerRenderer elemType]],
-             [ACRColumnSetRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRColumnSetRenderer elemType]],
-             [ACRColumnRenderer getInstance],     [NSNumber numberWithInt:(int)[ACRColumnRenderer elemType]],
-             [ACRActionSetRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRActionSetRenderer elemType]],
-             [ACRCustomRenderer getInstance],     [NSNumber numberWithInt:(int)[ACRCustomRenderer elemType]],
-             nil];
+                                             [ACRMediaRenderer getInstance], [NSNumber numberWithInt:(int)[ACRMediaRenderer elemType]],
+                                             [ACRImageRenderer getInstance], [NSNumber numberWithInt:(int)[ACRImageRenderer elemType]],
+                                             [ACRImageSetRenderer getInstance], [NSNumber numberWithInt:(int)[ACRImageSetRenderer elemType]],
+                                             [ACRTextBlockRenderer getInstance], [NSNumber numberWithInt:(int)[ACRTextBlockRenderer elemType]],
+                                             [ACRRichTextBlockRenderer getInstance], [NSNumber numberWithInt:(int)[ACRRichTextBlockRenderer elemType]],
+                                             [ACRInputRenderer getInstance], [NSNumber numberWithInt:(int)[ACRInputRenderer elemType]],
+                                             [ACRInputToggleRenderer getInstance], [NSNumber numberWithInt:(int)[ACRInputToggleRenderer elemType]],
+                                             [ACRInputChoiceSetRenderer getInstance], [NSNumber numberWithInt:(int)[ACRInputChoiceSetRenderer elemType]],
+                                             [ACRInputDateRenderer getInstance], [NSNumber numberWithInt:(int)[ACRInputDateRenderer elemType]],
+                                             [ACRInputTimeRenderer getInstance], [NSNumber numberWithInt:(int)[ACRInputTimeRenderer elemType]],
+                                             [ACRInputNumberRenderer getInstance], [NSNumber numberWithInt:(int)[ACRInputNumberRenderer elemType]],
+                                             [ACRFactSetRenderer getInstance], [NSNumber numberWithInt:(int)[ACRFactSetRenderer elemType]],
+                                             [ACRContainerRenderer getInstance], [NSNumber numberWithInt:(int)[ACRContainerRenderer elemType]],
+                                             [ACRColumnSetRenderer getInstance], [NSNumber numberWithInt:(int)[ACRColumnSetRenderer elemType]],
+                                             [ACRColumnRenderer getInstance], [NSNumber numberWithInt:(int)[ACRColumnRenderer elemType]],
+                                             [ACRActionSetRenderer getInstance], [NSNumber numberWithInt:(int)[ACRActionSetRenderer elemType]],
+                                             [ACRCustomRenderer getInstance], [NSNumber numberWithInt:(int)[ACRCustomRenderer elemType]],
+                                             nil];
         actionRendererDict =
             [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-             [ACRActionOpenURLRenderer  getInstance], [NSNumber numberWithInt:(int)ActionType::OpenUrl],
-             [ACRActionShowCardRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::ShowCard],
-             [ACRActionSubmitRenderer   getInstance], [NSNumber numberWithInt:(int)ActionType::Submit],
-             [ACRActionToggleVisibilityRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::ToggleVisibility],
-             [ACRCustomActionRenderer   getInstance], [NSNumber numberWithInt:(int)ActionType::UnknownAction],
-             nil];
+                                             [ACRActionOpenURLRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::OpenUrl],
+                                             [ACRActionShowCardRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::ShowCard],
+                                             [ACRActionSubmitRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::Submit],
+                                             [ACRActionToggleVisibilityRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::ToggleVisibility],
+                                             [ACRCustomActionRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::UnknownAction],
+                                             nil];
 
         _elementParserDict = [[NSMutableDictionary alloc] init];
         _actionParserDict = [[NSMutableDictionary alloc] init];
@@ -95,7 +93,7 @@ using namespace AdaptiveCards;
         _defaultActionSetRenderer = _actionSetRenderer;
 
         overridenBaseElementRendererList = [[NSMutableDictionary alloc] init];
-        overridenBaseActionRendererList  = [[NSMutableDictionary alloc] init];
+        overridenBaseActionRendererList = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -108,7 +106,7 @@ using namespace AdaptiveCards;
 
 - (ACRBaseCardElementRenderer *)getRenderer:(NSNumber *)cardElementType
 {
-    if([overridenBaseElementRendererList objectForKey:cardElementType]){
+    if ([overridenBaseElementRendererList objectForKey:cardElementType]) {
         return [overridenBaseElementRendererList objectForKey:cardElementType];
     }
     return [typeToRendererDict objectForKey:cardElementType];
@@ -116,7 +114,7 @@ using namespace AdaptiveCards;
 
 - (ACRBaseActionElementRenderer *)getActionRenderer:(NSNumber *)cardElementType
 {
-    if([overridenBaseActionRendererList objectForKey:cardElementType]){
+    if ([overridenBaseActionRendererList objectForKey:cardElementType]) {
         return [overridenBaseActionRendererList objectForKey:cardElementType];
     }
     return [actionRendererDict objectForKey:cardElementType];
@@ -124,7 +122,7 @@ using namespace AdaptiveCards;
 
 - (id<ACRIBaseActionSetRenderer>)getActionSetRenderer
 {
-    return (!_actionSetRenderer)? _defaultActionSetRenderer : _actionSetRenderer;
+    return (!_actionSetRenderer) ? _defaultActionSetRenderer : _actionSetRenderer;
 }
 
 - (void)setActionSetRenderer:(id<ACRIBaseActionSetRenderer>)actionsetRenderer
@@ -136,11 +134,11 @@ using namespace AdaptiveCards;
 {
     // custom action must be registered through set custom action renderer method
     // standard actions element enum value must be higher than ACRUnknownAction
-    if(cardElementType.longValue > ACRUnknownAction) {
+    if (cardElementType.longValue > ACRUnknownAction) {
         return;
     }
 
-    if(!renderer) {
+    if (!renderer) {
         [overridenBaseActionRendererList removeObjectForKey:cardElementType];
     } else {
         [overridenBaseActionRendererList setObject:renderer forKey:cardElementType];
@@ -149,7 +147,7 @@ using namespace AdaptiveCards;
 
 - (void)setBaseCardElementRenderer:(ACRBaseCardElementRenderer *)renderer cardElementType:(ACRCardElementType)cardElementType
 {
-    if(!renderer) {
+    if (!renderer) {
         [overridenBaseElementRendererList removeObjectForKey:[NSNumber numberWithInteger:cardElementType]];
     } else {
         [overridenBaseElementRendererList setObject:renderer forKey:[NSNumber numberWithInteger:cardElementType]];
@@ -164,10 +162,10 @@ using namespace AdaptiveCards;
 
 - (void)setCustomElementParser:(NSObject<ACOIBaseCardElementParser> *)parser key:(NSString *)key
 {
-    if(!_parseContext) {
+    if (!_parseContext) {
         _parseContext = [[ACOParseContext alloc] init];
     }
-    if(parser && key) {
+    if (parser && key) {
         _elementParserDict[key] = parser;
     }
 }
@@ -179,8 +177,8 @@ using namespace AdaptiveCards;
 
 - (void)setCustomElementRenderer:(ACRBaseCardElementRenderer *)renderer key:(NSString *)key
 {
-    if(key) {
-        if(renderer) {
+    if (key) {
+        if (renderer) {
             [overridenBaseElementRendererList setObject:renderer forKey:[NSNumber numberWithLong:key.hash]];
         } else {
             [overridenBaseElementRendererList removeObjectForKey:[NSNumber numberWithLong:key.hash]];
@@ -190,10 +188,10 @@ using namespace AdaptiveCards;
 
 - (void)setCustomActionElementParser:(NSObject<ACOIBaseActionElementParser> *)parser key:(NSString *)key
 {
-    if(!_parseContext) {
+    if (!_parseContext) {
         _parseContext = [[ACOParseContext alloc] init];
     }
-    if(parser && key) {
+    if (parser && key) {
         _actionParserDict[key] = parser;
     }
 }
@@ -210,8 +208,8 @@ using namespace AdaptiveCards;
 
 - (void)setCustomActionRenderer:(ACRBaseActionElementRenderer *)renderer key:(NSString *)key
 {
-    if(key) {
-        if(renderer) {
+    if (key) {
+        if (renderer) {
             [overridenBaseActionRendererList setObject:renderer forKey:[NSNumber numberWithLong:key.hash]];
         } else {
             [overridenBaseActionRendererList removeObjectForKey:[NSNumber numberWithLong:key.hash]];
@@ -222,7 +220,7 @@ using namespace AdaptiveCards;
 
 - (BOOL)isActionRendererOverridden:(NSNumber *)cardElementType
 {
-    if([overridenBaseActionRendererList objectForKey:cardElementType]){
+    if ([overridenBaseActionRendererList objectForKey:cardElementType]) {
         return YES;
     }
     return NO;
@@ -230,7 +228,7 @@ using namespace AdaptiveCards;
 
 - (BOOL)isElementRendererOverridden:(ACRCardElementType)cardElementType
 {
-    if([overridenBaseElementRendererList objectForKey:[NSNumber numberWithInteger:cardElementType]]){
+    if ([overridenBaseElementRendererList objectForKey:[NSNumber numberWithInteger:cardElementType]]) {
         return YES;
     }
     return NO;
@@ -238,8 +236,7 @@ using namespace AdaptiveCards;
 
 @end
 
-@implementation ACOFeatureRegistration
-{
+@implementation ACOFeatureRegistration {
     std::shared_ptr<FeatureRegistration> _featureRegistration;
 }
 
@@ -282,4 +279,5 @@ using namespace AdaptiveCards;
 {
     return _featureRegistration;
 }
-@end;
+@end
+;

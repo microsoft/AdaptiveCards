@@ -5,12 +5,12 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import <AVKit/AVKit.h>
 #import "ACOAdaptiveCard.h"
 #import "ACOMediaEvent.h"
+#import <AVKit/AVKit.h>
+#import <UIKit/UIKit.h>
 
-@protocol ACRMediaDelegate<NSObject>
+@protocol ACRMediaDelegate <NSObject>
 
 - (void)didFetchMediaViewController:(AVPlayerViewController *)controller card:(ACOAdaptiveCard *)card;
 

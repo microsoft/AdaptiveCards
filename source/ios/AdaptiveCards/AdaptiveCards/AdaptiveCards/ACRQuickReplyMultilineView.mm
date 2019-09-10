@@ -27,7 +27,7 @@
 
 - (void)commonInit
 {
-    NSBundle* bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
+    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
     [bundle loadNibNamed:@"ACRQuickActionMultilineView" owner:self options:nil];
     [self addSubview:self.contentView];
     self.contentView.frame = self.bounds;

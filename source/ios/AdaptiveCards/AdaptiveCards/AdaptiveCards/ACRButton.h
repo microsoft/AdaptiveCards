@@ -5,10 +5,10 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "ACRView.h"
+#import <UIKit/UIKit.h>
 
-@interface ACRButton:UIButton
+@interface ACRButton : UIButton
 
 @property IBInspectable NSNumber *positiveUseDefault;
 @property IBInspectable UIColor *positiveForegroundColor;
@@ -27,7 +27,7 @@
                  title:(NSString *)title
          andHostConfig:(ACOHostConfig *)config;
 
-- (void)setImageView:(UIImage*)image withConfig:(ACOHostConfig *)config;
+- (void)setImageView:(UIImage *)image withConfig:(ACOHostConfig *)config;
 
 - (void)applySentimentStyling;
 @end

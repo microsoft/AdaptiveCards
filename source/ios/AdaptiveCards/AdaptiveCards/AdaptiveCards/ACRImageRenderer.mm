@@ -6,16 +6,16 @@
 //
 
 #import "ACRImageRenderer.h"
-#import "Image.h"
-#import "ImageSet.h"
-#import "Enums.h"
-#import "SharedAdaptiveCard.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRLongPressGestureRecognizerFactory.h"
-#import "ACRView.h"
-#import "ACOHostConfigPrivate.h"
-#import "ACOBaseCardElementPrivate.h"
 #import "ACRUIImageView.h"
+#import "ACRView.h"
+#import "Enums.h"
+#import "Image.h"
+#import "ImageSet.h"
+#import "SharedAdaptiveCard.h"
 #import "UtiliOS.h"
 
 @implementation ACRImageRenderer
@@ -32,10 +32,10 @@
 }
 
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
-          rootView:(ACRView *)rootView
-            inputs:(NSMutableArray *)inputs
-   baseCardElement:(ACOBaseCardElement *)acoElem
-        hostConfig:(ACOHostConfig *)acoConfig;
+           rootView:(ACRView *)rootView
+             inputs:(NSMutableArray *)inputs
+    baseCardElement:(ACOBaseCardElement *)acoElem
+         hostConfig:(ACOHostConfig *)acoConfig;
 {
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<Image> imgElem = std::dynamic_pointer_cast<Image>(elem);
@@ -56,17 +56,17 @@
 
     UIImage *img = imageViewMap[key];
     ImageSize size = ImageSize::None;
-    if (!hasExplicitMeasurements){
+    if (!hasExplicitMeasurements) {
         size = imgElem->GetImageSize();
         if (size == ImageSize::None) {
-            size = [acoConfig getHostConfig]->GetImage().imageSize;
+            size = [acoConfig getHostConfig] -> GetImage().imageSize;
         }
     }
 
     if (img) {
         ACRUIImageView *acrImageView = [[ACRUIImageView alloc] initWithFrame:CGRectMake(0, 0, cgsize.width, cgsize.height)];
         acrImageView.image = img;
-        if(imgElem->GetImageStyle() == ImageStyle::Person) {
+        if (imgElem->GetImageStyle() == ImageStyle::Person) {
             acrImageView.isPersonStyle = YES;
             [acrImageView setNeedsLayout];
         }
@@ -83,7 +83,7 @@
     if (!view) {
         return wrappingview;
     }
-    
+
     view.clipsToBounds = YES;
 
     std::string backgroundColor = imgElem->GetBackgroundColor();
@@ -123,13 +123,13 @@
     if (adaptiveAlignment == HorizontalAlignment::Center) {
         [view.centerXAnchor constraintEqualToAnchor:wrappingview.centerXAnchor].active = YES;
     }
-    
+
     [wrappingview.heightAnchor constraintGreaterThanOrEqualToAnchor:view.heightAnchor].active = YES;
     [wrappingview.widthAnchor constraintGreaterThanOrEqualToAnchor:view.widthAnchor].active = YES;
-    
+
     [view.centerYAnchor constraintEqualToAnchor:wrappingview.centerYAnchor].active = YES;
-    
-    if (!isAspectRatioNeeded){
+
+    if (!isAspectRatioNeeded) {
         view.contentMode = UIViewContentModeScaleToFill;
     } else {
         view.contentMode = UIViewContentModeScaleAspectFit;
@@ -175,58 +175,58 @@
     CGSize cgsize = [acoConfig getImageSize:imageElem->GetImageSize()];
     CGFloat heightToWidthRatio = 0.0f, widthToHeightRatio = 0.0f;
 
-    if(image){
-        if(image.size.width > 0) {
+    if (image) {
+        if (image.size.width > 0) {
             heightToWidthRatio = image.size.height / image.size.width;
         }
 
-        if(image.size.height > 0) {
+        if (image.size.height > 0) {
             widthToHeightRatio = image.size.width / image.size.height;
         }
     }
 
-    if(hasExplicitMeasurements) {
-        if(pixelWidth){
+    if (hasExplicitMeasurements) {
+        if (pixelWidth) {
             cgsize.width = pixelWidth;
-            if(isAspectRatioNeeded) {
+            if (isAspectRatioNeeded) {
                 cgsize.height = pixelWidth * heightToWidthRatio;
             }
         }
-        if(pixelHeight){
+        if (pixelHeight) {
             cgsize.height = pixelHeight;
-            if(isAspectRatioNeeded) {
+            if (isAspectRatioNeeded) {
                 cgsize.width = pixelHeight * widthToHeightRatio;
             }
         }
     }
 
     ImageSize size = ImageSize::None;
-    if (!hasExplicitMeasurements){
+    if (!hasExplicitMeasurements) {
         size = imageElem->GetImageSize();
         if (size == ImageSize::None) {
-            size = [acoConfig getHostConfig]->GetImage().imageSize;
+            size = [acoConfig getHostConfig] -> GetImage().imageSize;
         }
     }
 
-    if(size != ImageSize::Auto && size != ImageSize::Stretch){
+    if (size != ImageSize::Auto && size != ImageSize::Stretch) {
         NSArray<NSLayoutConstraint *> *constraints =
-        @[[NSLayoutConstraint constraintWithItem:imageView
-                                       attribute:NSLayoutAttributeWidth
-                                       relatedBy:NSLayoutRelationEqual
-                                          toItem:nil
-                                       attribute:NSLayoutAttributeNotAnAttribute
-                                      multiplier:1.0
-                                        constant:cgsize.width],
-          [NSLayoutConstraint constraintWithItem:imageView
-                                       attribute:NSLayoutAttributeHeight
-                                       relatedBy:NSLayoutRelationEqual
-                                          toItem:nil
-                                       attribute:NSLayoutAttributeNotAnAttribute
-                                      multiplier:1.0
-                                        constant:cgsize.height]];
+            @[ [NSLayoutConstraint constraintWithItem:imageView
+                                            attribute:NSLayoutAttributeWidth
+                                            relatedBy:NSLayoutRelationEqual
+                                               toItem:nil
+                                            attribute:NSLayoutAttributeNotAnAttribute
+                                           multiplier:1.0
+                                             constant:cgsize.width],
+               [NSLayoutConstraint constraintWithItem:imageView
+                                            attribute:NSLayoutAttributeHeight
+                                            relatedBy:NSLayoutRelationEqual
+                                               toItem:nil
+                                            attribute:NSLayoutAttributeNotAnAttribute
+                                           multiplier:1.0
+                                             constant:cgsize.height] ];
         constraints[0].priority = 1000;
         constraints[1].priority = 1000;
-        
+
         [NSLayoutConstraint activateConstraints:constraints];
 
         if ([imageView class] == [ACRUIImageView class]) {
@@ -236,20 +236,20 @@
 
     if (heightToWidthRatio && widthToHeightRatio && (size == ImageSize::Auto || size == ImageSize::Stretch)) {
         NSArray<NSLayoutConstraint *> *constraints =
-         @[[NSLayoutConstraint constraintWithItem:imageView
-                         attribute:NSLayoutAttributeHeight
-                         relatedBy:NSLayoutRelationEqual
-                            toItem:imageView
-                         attribute:NSLayoutAttributeWidth
-                        multiplier:heightToWidthRatio
-                          constant:0],
-           [NSLayoutConstraint constraintWithItem:imageView
-                                        attribute:NSLayoutAttributeWidth
-                                        relatedBy:NSLayoutRelationEqual
-                                           toItem:imageView
-                                        attribute:NSLayoutAttributeHeight
-                                       multiplier:widthToHeightRatio
-                                         constant:0]];
+            @[ [NSLayoutConstraint constraintWithItem:imageView
+                                            attribute:NSLayoutAttributeHeight
+                                            relatedBy:NSLayoutRelationEqual
+                                               toItem:imageView
+                                            attribute:NSLayoutAttributeWidth
+                                           multiplier:heightToWidthRatio
+                                             constant:0],
+               [NSLayoutConstraint constraintWithItem:imageView
+                                            attribute:NSLayoutAttributeWidth
+                                            relatedBy:NSLayoutRelationEqual
+                                               toItem:imageView
+                                            attribute:NSLayoutAttributeHeight
+                                           multiplier:widthToHeightRatio
+                                             constant:0] ];
         constraints[0].priority = 999;
         constraints[1].priority = 1000;
 

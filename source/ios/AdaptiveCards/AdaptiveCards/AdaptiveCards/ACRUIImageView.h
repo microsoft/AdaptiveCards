@@ -5,10 +5,10 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "ACOBaseCardElement.h"
+#import <UIKit/UIKit.h>
 
-@interface ACRUIImageView:UIImageView
+@interface ACRUIImageView : UIImageView
 @property BOOL isPersonStyle;
 @property CGSize desiredSize;
 @end

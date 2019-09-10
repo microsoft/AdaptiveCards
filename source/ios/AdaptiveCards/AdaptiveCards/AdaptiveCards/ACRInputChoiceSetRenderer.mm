@@ -6,12 +6,12 @@
 //
 
 #import "ACRInputChoiceSetRenderer.h"
-#import "ACRInputTableView.h"
-#import "ChoiceSetInput.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
 #import "ACRChoiceSetViewDataSource.h"
 #import "ACRChoiceSetViewDataSourceCompactStyle.h"
-#import "ACOHostConfigPrivate.h"
-#import "ACOBaseCardElementPrivate.h"
+#import "ACRInputTableView.h"
+#import "ChoiceSetInput.h"
 #import "UtiliOS.h"
 
 @implementation ACRInputChoiceSetRenderer
@@ -28,17 +28,17 @@
 }
 
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
-          rootView:(ACRView *)rootView
-            inputs:(NSMutableArray *)inputs
-   baseCardElement:(ACOBaseCardElement *)acoElem
-        hostConfig:(ACOHostConfig *)acoConfig;
+           rootView:(ACRView *)rootView
+             inputs:(NSMutableArray *)inputs
+    baseCardElement:(ACOBaseCardElement *)acoElem
+         hostConfig:(ACOHostConfig *)acoConfig;
 {
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<ChoiceSetInput> choiceSet = std::dynamic_pointer_cast<ChoiceSetInput>(elem);
     // creates a tableview with pre-defined style
     NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-    if(!bundle){ // https://github.com/Microsoft/AdaptiveCards/issues/1834
+    if (!bundle) { // https://github.com/Microsoft/AdaptiveCards/issues/1834
         return nil;
     }
     ACRInputTableView *choiceSetView = [bundle loadNibNamed:@"ACRInputTableView" owner:self options:nil][0];
@@ -50,7 +50,7 @@
     [choiceSetView registerClass:[ACRChoiceSetCell class] forCellReuseIdentifier:checkedRadioButtonReuseID];
     [choiceSetView registerClass:[ACRChoiceSetCell class] forCellReuseIdentifier:uncheckedRadioButtonReuseID];
 
-    if(choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact && choiceSet->GetIsMultiSelect() == false) {
+    if (choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact && choiceSet->GetIsMultiSelect() == false) {
         dataSource = [[ACRChoiceSetViewDataSourceCompactStyle alloc] initWithInputChoiceSet:choiceSet rootView:rootView];
         [choiceSetView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     } else {
@@ -62,7 +62,7 @@
     choiceSetView.dataSource = dataSource;
     [inputs addObject:dataSource];
 
-    if(elem->GetHeight() == HeightType::Stretch){
+    if (elem->GetHeight() == HeightType::Stretch) {
         ACRColumnView *textInputContainer = [[ACRColumnView alloc] init];
         [textInputContainer addArrangedSubview:choiceSetView];
 

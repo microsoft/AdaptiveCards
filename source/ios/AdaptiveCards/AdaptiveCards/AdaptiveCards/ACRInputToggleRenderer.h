@@ -8,7 +8,7 @@
 #import "ACRBaseCardElementRenderer.h"
 #import "ACRIBaseInputHandler.h"
 
-@interface ACRInputToggleRenderer:ACRBaseCardElementRenderer
+@interface ACRInputToggleRenderer : ACRBaseCardElementRenderer
 
 + (ACRInputToggleRenderer *)getInstance;
 

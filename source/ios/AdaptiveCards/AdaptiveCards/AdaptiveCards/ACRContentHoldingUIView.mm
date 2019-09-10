@@ -6,8 +6,8 @@
 //
 
 #import "ACRContentHoldingUIView.h"
-#import "SharedAdaptiveCard.h"
 #import "ACRUILabel.h"
+#import "SharedAdaptiveCard.h"
 
 const NSInteger eACRUILabelTag = 0x1234;
 const NSInteger eACRUIFactSetTag = 0x1235;
@@ -19,11 +19,11 @@ using namespace AdaptiveCards;
 
 - (CGSize)intrinsicContentSize
 {
-    if(self.subviews.count) {
+    if (self.subviews.count) {
         NSInteger tag = self.subviews.firstObject.tag;
-        if((tag == eACRUILabelTag) || (tag == eACRUIImageTag)) {
+        if ((tag == eACRUILabelTag) || (tag == eACRUIImageTag)) {
             UIView *view = [self viewWithTag:tag];
-            if(view) {
+            if (view) {
                 return [view intrinsicContentSize];
             }
         }
@@ -34,27 +34,27 @@ using namespace AdaptiveCards;
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    if(_isPersonStyle) {
+    if (_isPersonStyle) {
         UIView *subview = self.subviews[0];
         CGFloat radius = subview.bounds.size.width / 2.0;
         [subview.layer setCornerRadius:radius];
         [subview.layer setMasksToBounds:YES];
     }
 
-    if(_isMediaType){
-        if(!_hidePlayIcon){
+    if (_isMediaType) {
+        if (!_hidePlayIcon) {
             NSMutableArray<CALayer *> *shapes = [[NSMutableArray alloc] init];
-            for(CALayer *layer in [self.layer sublayers]) {
-                if([[layer name] isEqualToString:@"circle"] ||
-                   [[layer name] isEqualToString:@"triangle"]){
+            for (CALayer *layer in [self.layer sublayers]) {
+                if ([[layer name] isEqualToString:@"circle"] ||
+                    [[layer name] isEqualToString:@"triangle"]) {
                     [shapes addObject:layer];
                 }
             }
-            
-            for(CALayer *layer in shapes){
+
+            for (CALayer *layer in shapes) {
                 [layer removeFromSuperlayer];
             }
-        
+
             CGFloat radius = 30.0f;
             CGPoint centerPoint = CGPointMake((self.frame.size.width) / 2, (self.frame.size.height) / 2);
 
@@ -100,16 +100,16 @@ using namespace AdaptiveCards;
             [triangleCanvas setName:@"triangle"];
             [self.layer addSublayer:canvas];
             [self.layer addSublayer:triangleCanvas];
-        } else{
+        } else {
             NSMutableArray<CALayer *> *shapes = [[NSMutableArray alloc] init];
-            for(CALayer *layer in [self.layer sublayers]) {
-                if([[layer name] isEqualToString:@"circle"] ||
-                   [[layer name] isEqualToString:@"triangle"]){
+            for (CALayer *layer in [self.layer sublayers]) {
+                if ([[layer name] isEqualToString:@"circle"] ||
+                    [[layer name] isEqualToString:@"triangle"]) {
                     [shapes addObject:layer];
                 }
             }
 
-            for(CALayer *layer in shapes){
+            for (CALayer *layer in shapes) {
                 [layer removeFromSuperlayer];
             }
         }

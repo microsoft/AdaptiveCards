@@ -6,15 +6,15 @@
 //
 
 #import "ACRLongPressGestureRecognizerFactory.h"
-#import "OpenUrlAction.h"
+#import "ACOBaseActionElementPrivate.h"
+#import "ACRAggregateTarget.h"
 #import "ACRShowCardTarget.h"
 #import "ACRToggleVisibilityTarget.h"
+#import "ACRUILabel.h"
+#import "OpenUrlAction.h"
 #import "ShowCardAction.h"
 #import "SubmitAction.h"
 #import "ToggleVisibilityAction.h"
-#import "ACRAggregateTarget.h"
-#import "ACOBaseActionElementPrivate.h"
-#import "ACRUILabel.h"
 #import "UtiliOS.h"
 
 using namespace AdaptiveCards;
@@ -27,7 +27,7 @@ using namespace AdaptiveCards;
                                 actionElement:(std::shared_ptr<BaseActionElement> const &)action
                                    hostConfig:(ACOHostConfig *)config
 {
-    if(action != nullptr){
+    if (action != nullptr) {
         NSObject<ACRSelectActionDelegate> *target;
         if (ACRRenderingStatus::ACROk == buildTarget([rootView getSelectActionsTargetBuilderDirector], action, &target) && viewGroup) {
             UILongPressGestureRecognizer *recognizer = [ACRLongPressGestureRecognizerFactory getGestureRecognizer:viewGroup target:target];
@@ -42,7 +42,7 @@ using namespace AdaptiveCards;
                                    rootView:(ACRView *)rootView
                                  hostConfig:(ACOHostConfig *)config
 {
-    if(target && textView){
+    if (target && textView) {
         UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:textView action:@selector(handleInlineAction:)];
         [textView addGestureRecognizer:recognizer];
         textView.userInteractionEnabled = YES;

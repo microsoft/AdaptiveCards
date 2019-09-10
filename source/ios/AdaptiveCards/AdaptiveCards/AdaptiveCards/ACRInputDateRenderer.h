@@ -8,7 +8,7 @@
 
 #import "ACRBaseCardElementRenderer.h"
 
-@interface ACRInputDateRenderer:ACRBaseCardElementRenderer
+@interface ACRInputDateRenderer : ACRBaseCardElementRenderer
 
 + (ACRInputDateRenderer *)getInstance;
 

@@ -5,12 +5,12 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "ACOBaseCardElement.h"
+#import <Foundation/Foundation.h>
 
-@interface ACORemoteResourceInformation:NSObject
+@interface ACORemoteResourceInformation : NSObject
 
-@property (readonly) NSURL* url;
-@property (readonly) NSString* mimeType;
+@property (readonly) NSURL *url;
+@property (readonly) NSString *mimeType;
 
 @end

@@ -5,12 +5,12 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACRBaseActionElementRenderer.h"
 #import "ACRActionSubmitRenderer.h"
 #import "ACOBaseActionElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
-#import "ACRButton.h"
 #import "ACRAggregateTarget.h"
+#import "ACRBaseActionElementRenderer.h"
+#import "ACRButton.h"
 #import "SubmitAction.h"
 #import "UtiliOS.h"
 
@@ -22,7 +22,7 @@
     return singletonInstance;
 }
 
-- (UIButton* )renderButton:(ACRView *)view
+- (UIButton *)renderButton:(ACRView *)view
                     inputs:(NSArray *)inputs
                  superview:(UIView<ACRIContentHoldingView> *)superview
          baseActionElement:(ACOBaseActionElement *)acoElem

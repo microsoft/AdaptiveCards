@@ -9,7 +9,7 @@
 
 #import <AdaptiveCards/ACFramework.h>
 
-@interface CustomImageRenderer:ACRBaseCardElementRenderer
+@interface CustomImageRenderer : ACRBaseCardElementRenderer
 
 + (CustomImageRenderer *)getInstance;
 
