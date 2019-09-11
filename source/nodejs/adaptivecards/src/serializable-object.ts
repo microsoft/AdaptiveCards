@@ -283,19 +283,19 @@ export class SerializableObjectCollectionPropertyDefinition<T extends Serializab
 }
 
 export class CustomPropertyDefinition<T> extends TypedPropertyDefinition<T> {
-    parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): T | undefined {
-        return this.onParse(this, source, errors);
+    parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): T {
+        return this.onParse(sender, this, source, errors);
     }
 
-    toJSON(sender: SerializableObject, target: PropertyBag, value: T | undefined) {
-        this.onToJSON(this, target, value);
+    toJSON(sender: SerializableObject, target: PropertyBag, value: T) {
+        this.onToJSON(sender, this, target, value);
     }
 
     constructor(
         readonly targetVersion: Shared.TargetVersion,
         readonly name: string,
-        readonly onParse: (sender: PropertyDefinition, source: PropertyBag, errors?: Shared.IValidationError[]) => T | undefined,
-        readonly onToJSON: (sender: PropertyDefinition, target: PropertyBag, value: T | undefined) => void,
+        readonly onParse: (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: Shared.IValidationError[]) => T,
+        readonly onToJSON: (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: T) => void,
         readonly defaultValue?: T,
         readonly onGetInitialValue?: (sender: SerializableObject) => T) {
         super(targetVersion, name, defaultValue, onGetInitialValue);

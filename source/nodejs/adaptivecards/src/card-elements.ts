@@ -8,7 +8,7 @@ import * as TextFormatters from "./text-formatters";
 import { HostCapabilities } from "./host-capabilities";
 import { schemaProperty, SerializableObject, SerializableObjectSchema, TypedPropertyDefinition, StringPropertyDefinition,
     BooleanPropertyDefinition, ValueSetPropertyDefinition, EnumPropertyDefinition, SerializableObjectCollectionPropertyDefinition,
-    SerializableObjectPropertyDefinition, PixelSizePropertyDefinition, NumberPropertyDefinition, PropertyBag } from "./serializable-object";
+    SerializableObjectPropertyDefinition, PixelSizePropertyDefinition, NumberPropertyDefinition, PropertyBag, CustomPropertyDefinition, PropertyDefinition } from "./serializable-object";
 
 function invokeSetCollection(action: Action, collection: ActionCollection | undefined) {
     if (action && collection) {
@@ -1478,27 +1478,6 @@ export class TextRun extends BaseTextBlock {
         }
     }
 
-    toJSON() {
-        let result = super.toJSON();
-
-        if (this.selectAction) {
-            Utils.setProperty(result, "selectAction", this.selectAction.toJSON());
-        }
-
-        return result;
-    }
-
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        super.parse(json, errors);
-
-        this.selectAction = createActionInstance(
-            this,
-            json["selectAction"],
-            [ShowCardAction.JsonTypeName],
-            !this.isDesignMode(),
-            errors);
-    }
-
     getJsonTypeName(): string {
         return "TextRun";
     }
@@ -2776,12 +2755,23 @@ export abstract class Input extends CardElement implements Shared.IInput {
 
     readonly validation = new InputValidationOptions();
 
-    title: string;
+    parse(json: any, errors?: Shared.IValidationError[]) {
+        super.parse(json, errors);
+
+        this.defaultValue = Utils.getStringValue(json["value"]);
+
+        if (Shared.GlobalSettings.useBuiltInInputValidation) {
+            let jsonValidation = json["validation"];
+
+            if (jsonValidation) {
+                this.validation.parse(jsonValidation);
+            }
+        }
+    }
 
     toJSON(): any {
         let result = super.toJSON();
 
-        Utils.setProperty(result, "title", this.title);
         Utils.setProperty(result, "value", this.renderedElement && !Utils.isNullOrEmpty(this.value) ? this.value : this.defaultValue);
 
         if (Shared.GlobalSettings.useBuiltInInputValidation) {
@@ -2820,21 +2810,6 @@ export abstract class Input extends CardElement implements Shared.IInput {
         }
         else {
             return true;
-        }
-    }
-
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        super.parse(json, errors);
-
-        this.id = Utils.getStringValue(json["id"]);
-        this.defaultValue = Utils.getStringValue(json["value"]);
-
-        if (Shared.GlobalSettings.useBuiltInInputValidation) {
-            let jsonValidation = json["validation"];
-
-            if (jsonValidation) {
-                this.validation.parse(jsonValidation);
-            }
         }
     }
 
@@ -3050,6 +3025,37 @@ export class TextInput extends Input {
 }
 
 export class ToggleInput extends Input {
+    //#region Schema
+
+    static readonly titleProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "title");
+    static readonly valueOnProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "valueOn", true, undefined, "true", (sender: SerializableObject) => { return "true"; });
+    static readonly valueOffProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "valueOff", true, undefined, "false", (sender: SerializableObject) => { return "false"; });
+    static readonly wrapProperty = new BooleanPropertyDefinition(Shared.Versions.v1_2, "wrap", false);
+
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.add(
+            ToggleInput.titleProperty,
+            ToggleInput.valueOnProperty,
+            ToggleInput.valueOffProperty,
+            ToggleInput.wrapProperty);
+    }
+
+    @schemaProperty(ToggleInput.titleProperty)
+    title?: string;
+
+    @schemaProperty(ToggleInput.valueOnProperty)
+    valueOn: string = "true";
+
+    @schemaProperty(ToggleInput.valueOffProperty)
+    valueOff: string = "false";
+
+    @schemaProperty(ToggleInput.wrapProperty)
+    wrap: boolean = false;
+
+    //#endregion
+
     private _checkboxInputElement: HTMLInputElement;
 
     protected internalRender(): HTMLElement | undefined {
@@ -3066,7 +3072,11 @@ export class ToggleInput extends Input {
         this._checkboxInputElement.style.verticalAlign = "middle";
         this._checkboxInputElement.style.margin = "0";
         this._checkboxInputElement.style.flex = "0 0 auto";
-        this._checkboxInputElement.setAttribute("aria-label", this.title);
+
+        if (!Utils.isNullOrEmpty(this.title)) {
+            this._checkboxInputElement.setAttribute("aria-label", <string>this.title);
+        }
+
         this._checkboxInputElement.tabIndex = 0;
 
         if (this.defaultValue == this.valueOn) {
@@ -3109,31 +3119,8 @@ export class ToggleInput extends Input {
         return false;
     }
 
-    valueOn: string = "true";
-    valueOff: string = "false";
-    wrap: boolean = false;
-
     getJsonTypeName(): string {
         return "Input.Toggle";
-    }
-
-    toJSON(): any {
-        let result = super.toJSON();
-
-        Utils.setProperty(result, "valueOn", this.valueOn, "true");
-        Utils.setProperty(result, "valueOff", this.valueOff, "false");
-        Utils.setProperty(result, "wrap", this.wrap);
-
-        return result;
-    }
-
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        super.parse(json, errors);
-
-        this.title = Utils.getStringValue(json["title"]);
-        this.valueOn = Utils.getStringValue(json["valueOn"], this.valueOn);
-        this.valueOff = Utils.getStringValue(json["valueOff"], this.valueOff);
-        this.wrap = <boolean>Utils.getBoolValue(json["wrap"], this.wrap);
     }
 
     get value(): string | undefined {
@@ -3147,8 +3134,26 @@ export class ToggleInput extends Input {
 }
 
 export class Choice extends SerializableObject {
+    //#region Schema
+
+    static readonly titleProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "title");
+    static readonly valueProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "value");
+
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.add(
+            Choice.titleProperty,
+            Choice.valueProperty);
+    }
+
+    @schemaProperty(Choice.titleProperty)
     title?: string;
+
+    @schemaProperty(Choice.valueProperty)
     value?: string;
+
+    //#endregion
 
     constructor(title?: string, value?: string) {
         super();
@@ -3156,25 +3161,66 @@ export class Choice extends SerializableObject {
         this.title = title;
         this.value = value;
     }
-
-    parse(json: any) {
-        super.parse(json);
-
-        this.title = Utils.getStringValue(json["title"]);
-        this.value = Utils.getStringValue(json["value"]);
-    }
-
-    toJSON(): any {
-        let result = super.toJSON();
-
-        Utils.setProperty(result, "title", this.title);
-        Utils.setProperty(result, "value", this.value);
-
-        return result;
-    }
 }
 
 export class ChoiceSetInput extends Input {
+    //#region Schema
+
+    static readonly choicesProperty = new SerializableObjectCollectionPropertyDefinition<Choice>(
+        Shared.Versions.v1_0,
+        "facts",
+        (sourceItem: any) => { return new Choice(); },
+        (sender: object) => { return []; });
+    static readonly styleProperty = new CustomPropertyDefinition<boolean>(
+        Shared.Versions.v1_0,
+        "style",
+        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: Shared.IValidationError[]) => {
+            let style = Utils.getStringValue(source[property.name], property.defaultValue);
+
+            if (!Utils.isNullOrEmpty(style)) {
+                return !(style.toLowerCase() === "expanded");
+            }
+            else {
+                return property.defaultValue;
+            }
+        },
+        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: boolean) => {
+            Utils.setProperty(target, property.name, (<ChoiceSetInput>sender).isCompact ? undefined : "expanded");
+        },
+        false,
+        () => { return true; });
+    static readonly isMultiSelectProperty = new BooleanPropertyDefinition(Shared.Versions.v1_0, "isMultiSelect", false);
+    static readonly placeholderProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "placeholder");
+    static readonly wrapProperty = new BooleanPropertyDefinition(Shared.Versions.v1_2, "wrap", false);
+
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.add(
+            ChoiceSetInput.choicesProperty,
+            ChoiceSetInput.styleProperty,
+            ChoiceSetInput.isMultiSelectProperty,
+            ChoiceSetInput.placeholderProperty,
+            ChoiceSetInput.wrapProperty);
+    }
+
+    @schemaProperty(ChoiceSetInput.styleProperty)
+    isCompact: boolean = false;
+
+    @schemaProperty(ChoiceSetInput.isMultiSelectProperty)
+    isMultiSelect: boolean = false;
+
+    @schemaProperty(ChoiceSetInput.placeholderProperty)
+    placeholder?: string;
+
+    @schemaProperty(ChoiceSetInput.wrapProperty)
+    wrap: boolean = false;
+
+    @schemaProperty(ChoiceSetInput.choicesProperty)
+    choices: Choice[] = [];
+
+    //#endregion
+
     private static uniqueCategoryCounter = 0;
 
     private static getUniqueCategoryName(): string {
@@ -3361,26 +3407,8 @@ export class ChoiceSetInput extends Input {
         }
     }
 
-    choices: Choice[] = [];
-    isCompact: boolean = false;
-    isMultiSelect: boolean = false;
-    placeholder: string;
-    wrap: boolean = false;
-
     getJsonTypeName(): string {
         return "Input.ChoiceSet";
-    }
-
-    toJSON(): any {
-        let result = super.toJSON();
-
-        Utils.setProperty(result, "placeholder", this.placeholder);
-        Utils.setArrayProperty(result, "choices", this.choices);
-        Utils.setProperty(result, "style", this.isCompact ? undefined : "expanded");
-        Utils.setProperty(result, "isMultiSelect", this.isMultiSelect, false);
-        Utils.setProperty(result, "wrap", this.wrap, false);
-
-        return result;
     }
 
     internalValidateProperties(context: ValidationResults) {
@@ -3405,27 +3433,6 @@ export class ChoiceSetInput extends Input {
                     });
             }
         }
-    }
-
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        super.parse(json, errors);
-
-        this.isCompact = !(json["style"] === "expanded");
-        this.isMultiSelect = <boolean>Utils.getBoolValue(json["isMultiSelect"], this.isMultiSelect);
-        this.placeholder = Utils.getStringValue(json["placeholder"]);
-
-        this.choices = [];
-
-        if (Array.isArray(json["choices"])) {
-            for (let jsonChoice of json["choices"]) {
-                let choice = new Choice();
-                choice.parse(jsonChoice);
-
-                this.choices.push(choice);
-            }
-        }
-
-        this.wrap = <boolean>Utils.getBoolValue(json["wrap"], this.wrap);
     }
 
     get value(): string | undefined {
