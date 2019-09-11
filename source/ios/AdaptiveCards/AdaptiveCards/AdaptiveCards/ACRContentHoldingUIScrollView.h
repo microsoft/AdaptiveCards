@@ -7,6 +7,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ACRContentHoldingUIScrollView: UIScrollView
+@interface ACRContentHoldingUIScrollView : UIScrollView
 
 @end

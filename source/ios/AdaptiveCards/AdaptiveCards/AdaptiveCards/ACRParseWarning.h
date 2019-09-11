@@ -7,8 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSUInteger, ACRParseWarningStatusCode)
-{
+typedef NS_ENUM(NSUInteger, ACRParseWarningStatusCode) {
     ACRUnknownElementType = 0,
     ACRUnknownPropertyOnElement,
     ACRUnknownEnumValue,
@@ -19,9 +18,9 @@ typedef NS_ENUM(NSUInteger, ACRParseWarningStatusCode)
     ACRUnsupportedSchemaVersion,
 };
 
-@interface ACRParseWarning:NSObject
+@interface ACRParseWarning : NSObject
 
-@property (readonly)ACRParseWarningStatusCode statusCode;
-@property (readonly)NSString *reason;
+@property (readonly) ACRParseWarningStatusCode statusCode;
+@property (readonly) NSString *reason;
 
 @end

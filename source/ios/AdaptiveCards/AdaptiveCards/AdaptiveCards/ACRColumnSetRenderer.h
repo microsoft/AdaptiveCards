@@ -7,7 +7,7 @@
 
 #import "ACRBaseCardElementRenderer.h"
 
-@interface ACRColumnSetRenderer:ACRBaseCardElementRenderer
+@interface ACRColumnSetRenderer : ACRBaseCardElementRenderer
 
 + (ACRColumnSetRenderer *)getInstance;
 

@@ -5,9 +5,9 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "ACOAdaptiveCard.h"
 #import "ACOBaseActionElement.h"
+#import <Foundation/Foundation.h>
 
 @protocol ACRActionDelegate <NSObject>
 

@@ -7,7 +7,7 @@
 
 #import "ACRBaseActionElementRenderer.h"
 
-@interface ACRActionSubmitRenderer:ACRBaseActionElementRenderer
+@interface ACRActionSubmitRenderer : ACRBaseActionElementRenderer
 
 + (ACRActionSubmitRenderer *)getInstance;
 
