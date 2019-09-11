@@ -511,7 +511,7 @@ dir {
     margin-right: calc(-24px);
   }
 
-  .homepage .section-video {
+  .homepage .section-video video {
     min-width: 450px;
   }
 }
@@ -520,6 +520,10 @@ dir {
   .homepage .divider {
     margin-left: calc(-5vw);
     margin-right: calc(-5vw);
+  }
+
+  .homepage .section-video video {
+    min-width: 550px;
   }
 }
 
