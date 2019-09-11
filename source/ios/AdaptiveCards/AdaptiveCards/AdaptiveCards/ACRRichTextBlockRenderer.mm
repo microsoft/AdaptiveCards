@@ -24,14 +24,12 @@
 
 @implementation ACRRichTextBlockRenderer
 
-+ (ACRRichTextBlockRenderer *)getInstance
-{
++ (ACRRichTextBlockRenderer *)getInstance {
     static ACRRichTextBlockRenderer *singletonInstance = [[self alloc] init];
     return singletonInstance;
 }
 
-+ (ACRCardElementType)elemType
-{
++ (ACRCardElementType)elemType {
     return ACRRichTextBlock;
 }
 
@@ -44,7 +42,8 @@
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<RichTextBlock> rTxtBlck = std::dynamic_pointer_cast<RichTextBlock>(elem);
-    ACRUILabel *lab = [[ACRUILabel alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0)];
+    ACRUILabel *lab =
+        [[ACRUILabel alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0)];
     lab.backgroundColor = [UIColor clearColor];
     lab.style = [viewGroup style];
     lab.editable = NO;
@@ -59,7 +58,8 @@
         for (const auto &inlineText : rTxtBlck->GetInlines()) {
             std::shared_ptr<TextRun> textRun = std::static_pointer_cast<TextRun>(inlineText);
             if (textRun) {
-                NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)textRun.get()];
+                NSNumber *number =
+                    [NSNumber numberWithUnsignedLongLong:(unsigned long long)textRun.get()];
                 NSString *key = [number stringValue];
                 NSDictionary *data = textMap[key];
                 NSData *htmlData = nil;
@@ -76,32 +76,58 @@
                 NSMutableAttributedString *textRunContent = nil;
                 // Initializing NSMutableAttributedString for HTML rendering is very slow
                 if (htmlData) {
-                    textRunContent = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
+                    textRunContent = [[NSMutableAttributedString alloc] initWithData:htmlData
+                                                                             options:options
+                                                                  documentAttributes:nil
+                                                                               error:nil];
                     lab.selectable = YES;
                     lab.dataDetectorTypes = UIDataDetectorTypeLink;
                     lab.userInteractionEnabled = YES;
                 } else {
-                    textRunContent = [[NSMutableAttributedString alloc] initWithString:text attributes:descriptor];
+                    textRunContent = [[NSMutableAttributedString alloc] initWithString:text
+                                                                            attributes:descriptor];
                     // text is preprocessed by markdown parser, and will wrapped by <p></P>
                     // lines below remove the p tags
                     [textRunContent deleteCharactersInRange:NSMakeRange(0, 3)];
-                    [textRunContent deleteCharactersInRange:NSMakeRange([textRunContent length] - 4, 4)];
+                    [textRunContent
+                        deleteCharactersInRange:NSMakeRange([textRunContent length] - 4, 4)];
                 }
                 // Set paragraph style such as line break mode and alignment
                 NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-                paragraphStyle.alignment = [ACOHostConfig getTextBlockAlignment:rTxtBlck->GetHorizontalAlignment()];
+                paragraphStyle.alignment =
+                    [ACOHostConfig getTextBlockAlignment:rTxtBlck->GetHorizontalAlignment()];
 
                 // Obtain text color to apply to the attributed string
                 ACRContainerStyle style = lab.style;
-                auto foregroundColor = [acoConfig getTextBlockColor:style textColor:textRun->GetTextColor() subtleOption:textRun->GetIsSubtle()];
+                auto foregroundColor = [acoConfig getTextBlockColor:style
+                                                          textColor:textRun->GetTextColor()
+                                                       subtleOption:textRun->GetIsSubtle()];
 
                 // Config and add Select Action
                 std::shared_ptr<BaseActionElement> baseAction = textRun->GetSelectAction();
                 if (baseAction) {
                     NSObject *target;
-                    if (ACRRenderingStatus::ACROk == buildTarget([rootView getSelectActionsTargetBuilderDirector], baseAction, &target)) {
-                        [textRunContent addAttribute:@"SelectAction" value:target range:NSMakeRange(0, textRunContent.length - 1)];
-                        [ACRLongPressGestureRecognizerFactory addTapGestureRecognizerToUITextView:lab target:(NSObject<ACRSelectActionDelegate> *)target rootView:rootView hostConfig:acoConfig];
+                    if (ACRRenderingStatus::ACROk ==
+                        buildTarget([rootView getSelectActionsTargetBuilderDirector], baseAction,
+                                    &target)) {
+                        NSRange selectActionRange = NSMakeRange(0, textRunContent.length - 1);
+
+                        [textRunContent addAttribute:@"SelectAction"
+                                               value:target
+                                               range:selectActionRange];
+                        [ACRLongPressGestureRecognizerFactory
+                            addTapGestureRecognizerToUITextView:lab
+                                                         target:(NSObject<ACRSelectActionDelegate>
+                                                                     *)target
+                                                       rootView:rootView
+                                                     hostConfig:acoConfig];
+
+                        [textRunContent addAttribute:NSUnderlineStyleAttributeName
+                                               value:[NSNumber numberWithInt:NSUnderlineStyleSingle]
+                                               range:selectActionRange];
+                        [textRunContent addAttribute:NSUnderlineColorAttributeName
+                                               value:foregroundColor
+                                               range:selectActionRange];
                     }
                 }
 
@@ -110,18 +136,25 @@
                     UIColor *highlightColor = [acoConfig getHighlightColor:style
                                                            foregroundColor:textRun->GetTextColor()
                                                               subtleOption:textRun->GetIsSubtle()];
-                    [textRunContent addAttribute:NSBackgroundColorAttributeName value:highlightColor range:NSMakeRange(0, textRunContent.length)];
+                    [textRunContent addAttribute:NSBackgroundColorAttributeName
+                                           value:highlightColor
+                                           range:NSMakeRange(0, textRunContent.length)];
                 }
 
                 if (textRun->GetStrikethrough()) {
-                    [textRunContent addAttribute:NSStrikethroughStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(0, textRunContent.length)];
+                    [textRunContent addAttribute:NSStrikethroughStyleAttributeName
+                                           value:[NSNumber numberWithInteger:NSUnderlineStyleSingle]
+                                           range:NSMakeRange(0, textRunContent.length)];
                 }
 
                 if (textRun->GetUnderline()) {
-                    [textRunContent addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(0, textRunContent.length)];
+                    [textRunContent addAttribute:NSUnderlineStyleAttributeName
+                                           value:[NSNumber numberWithInteger:NSUnderlineStyleSingle]
+                                           range:NSMakeRange(0, textRunContent.length)];
                 }
 
-                // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
+                // Add paragraph style, text color, text weight as attributes to a
+                // NSMutableAttributedString, content.
                 [textRunContent addAttributes:@{
                     NSParagraphStyleAttributeName : paragraphStyle,
                     NSForegroundColorAttributeName : foregroundColor,
@@ -137,7 +170,8 @@
     lab.attributedText = content;
     lab.area = lab.frame.size.width * lab.frame.size.height;
 
-    ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:lab.frame];
+    ACRContentHoldingUIView *wrappingview =
+        [[ACRContentHoldingUIView alloc] initWithFrame:lab.frame];
     wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
     lab.translatesAutoresizingMaskIntoConstraints = NO;
 
@@ -151,23 +185,57 @@
         horizontalAlignment = NSLayoutAttributeCenterX;
     }
 
-    [NSLayoutConstraint constraintWithItem:lab attribute:horizontalAlignment relatedBy:NSLayoutRelationEqual toItem:wrappingview attribute:horizontalAlignment multiplier:1.0 constant:0].active = YES;
-    [NSLayoutConstraint constraintWithItem:lab attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:wrappingview attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
-    [NSLayoutConstraint constraintWithItem:lab attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:wrappingview attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
+    [NSLayoutConstraint constraintWithItem:lab
+                                 attribute:horizontalAlignment
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:wrappingview
+                                 attribute:horizontalAlignment
+                                multiplier:1.0
+                                  constant:0]
+        .active = YES;
+    [NSLayoutConstraint constraintWithItem:lab
+                                 attribute:NSLayoutAttributeBottom
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:wrappingview
+                                 attribute:NSLayoutAttributeBottom
+                                multiplier:1.0
+                                  constant:0]
+        .active = YES;
+    [NSLayoutConstraint constraintWithItem:lab
+                                 attribute:NSLayoutAttributeTop
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:wrappingview
+                                 attribute:NSLayoutAttributeTop
+                                multiplier:1.0
+                                  constant:0]
+        .active = YES;
 
     lab.textContainer.maximumNumberOfLines = 0;
 
     if (rTxtBlck->GetHeight() == HeightType::Auto) {
-        [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-        [wrappingview setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+        [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired
+                                                      forAxis:UILayoutConstraintAxisVertical];
+        [wrappingview setContentHuggingPriority:UILayoutPriorityDefaultHigh
+                                        forAxis:UILayoutConstraintAxisVertical];
     } else {
-        [wrappingview setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-        [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+        [wrappingview setContentHuggingPriority:UILayoutPriorityDefaultLow
+                                        forAxis:UILayoutConstraintAxisVertical];
+        [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired
+                                                      forAxis:UILayoutConstraintAxisVertical];
     }
 
-    [NSLayoutConstraint constraintWithItem:wrappingview attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:lab attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0].active = YES;
-    [lab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-    [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    [NSLayoutConstraint constraintWithItem:wrappingview
+                                 attribute:NSLayoutAttributeWidth
+                                 relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                    toItem:lab
+                                 attribute:NSLayoutAttributeWidth
+                                multiplier:1.0
+                                  constant:0]
+        .active = YES;
+    [lab setContentCompressionResistancePriority:UILayoutPriorityRequired
+                                         forAxis:UILayoutConstraintAxisHorizontal];
+    [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired
+                                                  forAxis:UILayoutConstraintAxisHorizontal];
 
     configVisibility(wrappingview, elem);
 
