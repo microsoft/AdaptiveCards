@@ -3,9 +3,11 @@
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
-
+ 
 namespace AdaptiveNamespace
 {
+    constexpr char* c_upwActionParserRegistration = "AB3CC8B0-FF27-4859-A2AA-BCE2E729805";
+
     class DECLSPEC_UUID("fc95029a-9ec0-4d93-b170-09c99876db20") AdaptiveActionParserRegistration
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
                                               Microsoft::WRL::Implements<ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration>,
@@ -42,16 +44,22 @@ namespace AdaptiveNamespace
     class SharedModelActionParser : public AdaptiveSharedNamespace::ActionElementParser
     {
     public:
-        SharedModelActionParser(_In_ AdaptiveNamespace::AdaptiveActionParserRegistration* parserRegistration) :
-            m_parserRegistration(parserRegistration)
-        {
-        }
+        SharedModelActionParser(_In_ AdaptiveNamespace::AdaptiveActionParserRegistration* parserRegistration);
 
         // AdaptiveSharedNamespace::ActionElementParser
         std::shared_ptr<BaseActionElement> Deserialize(ParseContext& context, const Json::Value& value) override;
         std::shared_ptr<BaseActionElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
 
+        HRESULT GetAdaptiveParserRegistration(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration** actionParserRegistration);
+
     private:
-        Microsoft::WRL::ComPtr<AdaptiveNamespace::AdaptiveActionParserRegistration> m_parserRegistration;
+        // This a a weak reference to the UWP level AdaptiveActionParserRegistration for this parse. Store as a weak
+        // reference to avoid circular references:
+        //
+        // SharedModelActionParser(This Object)->
+        //      m_parserRegistration(AdaptiveActionParserRegistration)->
+        //          m_sharedParserRegistration(ActionParserRegistration)->
+        //              m_cardElementParsers (Contains this object)
+        Microsoft::WRL::WeakRef m_parserRegistration;
     };
 }
