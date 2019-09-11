@@ -224,7 +224,6 @@ namespace UWPUnitTests
         {
             AdaptiveActionParserRegistration actionParserRegistration = new AdaptiveActionParserRegistration();
             AdaptiveElementParserRegistration elementParserRegistration = new AdaptiveElementParserRegistration();
-            List<AdaptiveWarning> warnings = new List<AdaptiveWarning>();
 
             actionParserRegistration.Set("TestCustomAction", new TestActionParser());
             elementParserRegistration.Set("TestCustomElement", new TestElementParser());
