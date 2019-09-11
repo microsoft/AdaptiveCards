@@ -2353,30 +2353,32 @@ export class ImageSet extends CardElementContainer {
 }
 
 export class MediaSource extends SerializableObject {
+    //#region Schema
+
+    static readonly mimeTypeProperty = new StringPropertyDefinition(Shared.Versions.v1_1, "mimeType");
+    static readonly urlProperty = new StringPropertyDefinition(Shared.Versions.v1_1, "url");
+
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.add(
+            MediaSource.mimeTypeProperty,
+            MediaSource.urlProperty);
+    }
+
+    @schemaProperty(MediaSource.mimeTypeProperty)
     mimeType?: string;
+
+    @schemaProperty(MediaSource.urlProperty)
     url?: string;
+
+    //#endregion
 
     constructor(url?: string, mimeType?: string) {
         super();
 
         this.url = url;
         this.mimeType = mimeType;
-    }
-
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        super.parse(json, errors);
-
-		this.mimeType = Utils.getStringValue(json["mimeType"]);
-		this.url = Utils.getStringValue(json["url"]);
-	}
-
-	toJSON(): any {
-        let result = super.toJSON();
-
-        Utils.setProperty(result, "mimeType", this.mimeType);
-        Utils.setProperty(result, "url", this.url);
-
-        return result;
     }
 
     isValid(): boolean {
@@ -2573,37 +2575,35 @@ export class Media extends CardElement {
 
     static onPlay: (sender: Media) => void;
 
+    //#region Schema
+
+    static readonly sourcesProperty = new SerializableObjectCollectionPropertyDefinition<MediaSource>(
+        Shared.Versions.v1_1,
+        "sources",
+        (sourceItem: any) => { return new MediaSource(); },
+        (sender: object) => { return []; });
+    static readonly posterProperty = new StringPropertyDefinition(Shared.Versions.v1_1, "poster");
+    static readonly altTextProperty = new StringPropertyDefinition(Shared.Versions.v1_1, "altText");
+
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.add(
+            Media.sourcesProperty,
+            Media.posterProperty,
+            Media.altTextProperty);
+    }
+
+    @schemaProperty(Media.sourcesProperty)
     sources: MediaSource[] = [];
-    poster: string;
-    altText: string;
 
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        super.parse(json, errors);
+    @schemaProperty(Media.posterProperty)
+    poster?: string;
 
-		this.poster = Utils.getStringValue(json["poster"]);
-		this.altText = Utils.getStringValue(json["altText"]);
+    @schemaProperty(Media.altTextProperty)
+    altText?: string;
 
-        this.sources = [];
-
-        if (Array.isArray(json["sources"])) {
-            for (let jsonSource of json["sources"]) {
-                let source = new MediaSource();
-                source.parse(jsonSource, errors);
-
-                this.sources.push(source);
-            }
-        }
-    }
-
-    toJSON(): any {
-        let result = super.toJSON();
-
-        Utils.setProperty(result, "poster", this.poster);
-        Utils.setProperty(result, "altText", this.altText);
-        Utils.setArrayProperty(result, "sources", this.sources);
-
-        return result;
-    }
+    //#endregion
 
     getJsonTypeName(): string {
         return "Media";
