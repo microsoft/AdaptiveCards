@@ -7,7 +7,7 @@
 
 #import "ACRBaseActionElementRenderer.h"
 
-@interface ACRActionToggleVisibilityRenderer:ACRBaseActionElementRenderer
+@interface ACRActionToggleVisibilityRenderer : ACRBaseActionElementRenderer
 
 + (ACRActionToggleVisibilityRenderer *)getInstance;
 

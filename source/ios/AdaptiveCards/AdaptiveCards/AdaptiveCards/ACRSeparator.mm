@@ -5,16 +5,15 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "ACRSeparator.h"
 #import "ACRContentStackView.h"
 #import "HostConfig.h"
 #import "TextBlock.h"
+#import <UIKit/UIKit.h>
 
 using namespace AdaptiveCards;
 
-@implementation ACRSeparator
-{
+@implementation ACRSeparator {
     CGFloat width;
     CGFloat height;
     CGFloat lineWidth;
@@ -25,12 +24,11 @@ using namespace AdaptiveCards;
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if(self)
-    {
-        width  = frame.size.width;
+    if (self) {
+        width = frame.size.width;
         height = frame.size.height;
-        axis   = UILayoutConstraintAxisHorizontal;
-        rgb    = 0;
+        axis = UILayoutConstraintAxisHorizontal;
+        rgb = 0;
         self.backgroundColor = UIColor.clearColor;
     }
 
@@ -42,14 +40,16 @@ using namespace AdaptiveCards;
                              axis:(UILayoutConstraintAxis)huggingAxis
 {
     ACRSeparator *separator = [[ACRSeparator alloc] initWithFrame:frame];
-    if(separator && superview)
-    {
+    if (separator && superview) {
         separator->axis = [superview getAxis];
         NSLayoutConstraint *constraints =
-            [separator configAutoLayout:superview havingAxis:separator->axis toAxis:huggingAxis];
+            [separator configAutoLayout:superview
+                             havingAxis:separator->axis
+                                 toAxis:huggingAxis];
         [superview addArrangedSubview:separator];
 
-        if(constraints) [superview addConstraint:constraints];
+        if (constraints)
+            [superview addConstraint:constraints];
     }
 }
 
@@ -58,9 +58,8 @@ using namespace AdaptiveCards;
                                   toAxis:(UILayoutConstraintAxis)huggingAxis
 {
     NSLayoutConstraint *constraint = nil;
-    if(UILayoutConstraintAxisVertical == superviewAxis)
-    {
-        width  = MAX(width, superview.frame.size.width);
+    if (UILayoutConstraintAxisVertical == superviewAxis) {
+        width = MAX(width, superview.frame.size.width);
         constraint = [NSLayoutConstraint constraintWithItem:self
                                                   attribute:NSLayoutAttributeWidth
                                                   relatedBy:NSLayoutRelationEqual
@@ -69,10 +68,8 @@ using namespace AdaptiveCards;
                                                  multiplier:1
                                                    constant:0];
 
-    }
-    else
-    {
-        height  = MAX(height, superview.frame.size.height);
+    } else {
+        height = MAX(height, superview.frame.size.height);
         constraint = [NSLayoutConstraint constraintWithItem:self
                                                   attribute:NSLayoutAttributeHeight
                                                   relatedBy:NSLayoutRelationEqual
@@ -84,16 +81,13 @@ using namespace AdaptiveCards;
 
     NSLayoutConstraint *constraintByAnchor = nil;
 
-    if(UILayoutConstraintAxisVertical == huggingAxis)
-    {
+    if (UILayoutConstraintAxisVertical == huggingAxis) {
         [self setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
         [self setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
         [self setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         [self setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         constraintByAnchor = [self.heightAnchor constraintEqualToConstant:height];
-    }
-    else
-    {
+    } else {
         [self setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
         [self setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
         [self setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
@@ -107,11 +101,12 @@ using namespace AdaptiveCards;
     return constraint;
 }
 
-+ (void) renderActionsSeparator:(UIView *)view
-            hostConfig:(std::shared_ptr<HostConfig> const &)config
++ (void)renderActionsSeparator:(UIView *)view
+                    hostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     std::shared_ptr<BaseCardElement> nullBaseCardElem;
-    [ACRSeparator renderSeparation:nullBaseCardElem superview:view
+    [ACRSeparator renderSeparation:nullBaseCardElem
+                         superview:view
                         hostConfig:config
                            spacing:config->GetActions().spacing];
 }
@@ -142,9 +137,9 @@ using namespace AdaptiveCards;
 
         //clean-up in progress -- need to clean this up
         if ([view isKindOfClass:[UIStackView class]]) {
-            superview = (UIStackView *) view;
+            superview = (UIStackView *)view;
         } else {
-            superview = ((ACRContentStackView *) view).stackView;
+            superview = ((ACRContentStackView *)view).stackView;
         }
 
         unsigned int spacing = [ACRSeparator getSpacing:requestedSpacing hostConfig:config];
@@ -156,7 +151,8 @@ using namespace AdaptiveCards;
             separator->height = spacing;
             if (elem && elem->GetSeparator()) {
                 separator->rgb = std::stoul(config->GetSeparator().lineColor.substr(1), nullptr, 16);
-                separator->lineWidth = config->GetSeparator().lineThickness;;
+                separator->lineWidth = config->GetSeparator().lineThickness;
+                ;
             }
 
             separator.backgroundColor = UIColor.clearColor;
@@ -179,8 +175,7 @@ using namespace AdaptiveCards;
 
 + (unsigned int)getSpacing:(Spacing)spacing hostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    switch (spacing)
-    {
+    switch (spacing) {
         case Spacing::ExtraLarge:
             return config->GetSpacing().extraLargeSpacing;
         case Spacing::Large:
@@ -201,33 +196,29 @@ using namespace AdaptiveCards;
 - (void)drawRect:(CGRect)rect
 {
     CGPoint orig, dest;
-    if(UILayoutConstraintAxisVertical == self->axis)
-    {
+    if (UILayoutConstraintAxisVertical == self->axis) {
         orig = CGPointMake(rect.origin.x, rect.origin.y + rect.size.height / 2.0);
         dest = CGPointMake(rect.origin.x + rect.size.width,
-                                          rect.origin.y + rect.size.height / 2.0);
-    }
-    else
-    {
+                           rect.origin.y + rect.size.height / 2.0);
+    } else {
         orig = CGPointMake(rect.origin.x + rect.size.width / 2.0, rect.origin.y);
         dest = CGPointMake(rect.origin.x + rect.size.width / 2.0,
-                                             rect.origin.y + rect.size.height);
+                           rect.origin.y + rect.size.height);
     }
 
     UIBezierPath *path = [UIBezierPath bezierPath];
-    if(path)
-    {
+    if (path) {
         [path moveToPoint:orig];
         [path addLineToPoint:dest];
         path.lineWidth = self->lineWidth;
 
-        [[UIColor colorWithRed:((self->rgb & 0x00FF0000)>> 16)/ 255.0
-                         green:((self->rgb & 0x0000FF00)>> 8)/ 255.0
-                          blue:((self->rgb & 0x000000FF))/ 255.0
-                         alpha:((self->rgb & 0xFF000000)>> 24)/ 255.0] setStroke];
+        [[UIColor colorWithRed:((self->rgb & 0x00FF0000) >> 16) / 255.0
+                         green:((self->rgb & 0x0000FF00) >> 8) / 255.0
+                          blue:((self->rgb & 0x000000FF)) / 255.0
+                         alpha:((self->rgb & 0xFF000000) >> 24) / 255.0] setStroke];
 
-         [path stroke];
-     }
+        [path stroke];
+    }
 }
 
 - (CGSize)intrinsicContentSize

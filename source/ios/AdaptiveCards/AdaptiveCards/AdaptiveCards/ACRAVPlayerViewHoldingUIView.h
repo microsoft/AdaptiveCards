@@ -7,7 +7,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ACRAVPlayerViewHoldingUIView:UIImageView
+@interface ACRAVPlayerViewHoldingUIView : UIImageView
 
 @property BOOL hidePlayIcon;
 

@@ -412,6 +412,7 @@ AdaptiveNamespaceStart
         interface Windows.Foundation.Collections.IVector<AdaptiveRemoteResourceInformation*>;
         interface Windows.Foundation.Collections.IVector<AdaptiveToggleVisibilityTarget*>;
         interface Windows.Foundation.Collections.IVector<AdaptiveImage*>;
+        interface Windows.Foundation.Collections.IVector<AdaptiveRequirement*>;
     }
 
     [
@@ -434,8 +435,8 @@ AdaptiveNamespaceStart
         FallbackType FallbackType;
         IAdaptiveCardElement FallbackContent;
         Windows.Data.Json.JsonObject AdditionalProperties;
+        Windows.Foundation.Collections.IVector<AdaptiveRequirement> Requirements { get; };
 
-        Boolean MeetsRequirements(AdaptiveFeatureRegistration featureRegistration);
         Windows.Data.Json.JsonObject ToJson();
     };
 
@@ -1592,6 +1593,21 @@ AdaptiveNamespaceStart
         Windows.Data.Json.JsonObject AsJson();
         Windows.Foundation.Collections.ValueSet AsValueSet();
     };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveRequirement", 45B7321F-BB3C-48B8-B98E-6483927C47D7),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass AdaptiveRequirement
+    {
+        AdaptiveRequirement(String requirementName, String requirementversion);
+
+        String Name;
+        String Version;
+    }
 
     [
 #ifdef ADAPTIVE_CARDS_WINDOWS

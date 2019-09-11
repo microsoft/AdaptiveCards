@@ -7,7 +7,7 @@
 
 #import "ACRBaseCardElementRenderer.h"
 
-@interface ACRColumnRenderer:ACRBaseCardElementRenderer<ACRIKVONotificationHandler>
+@interface ACRColumnRenderer : ACRBaseCardElementRenderer <ACRIKVONotificationHandler>
 
 @property BOOL fillAlignment;
 

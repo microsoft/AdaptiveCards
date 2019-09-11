@@ -4,6 +4,7 @@
 #include <string>
 #include <regex>
 
+#include "AdaptiveActionParserRegistration.h"
 #include "AdaptiveActionSet.h"
 #include "AdaptiveColumn.h"
 #include "AdaptiveColumnSet.h"
@@ -11,14 +12,17 @@
 #include "AdaptiveChoiceInput.h"
 #include "AdaptiveChoiceSetInput.h"
 #include "AdaptiveDateInput.h"
+#include "AdaptiveElementParserRegistration.h"
 #include "AdaptiveFact.h"
 #include "AdaptiveFactSet.h"
+#include "AdaptiveFeatureRegistration.h"
 #include "AdaptiveImage.h"
 #include "AdaptiveImageSet.h"
 #include "AdaptiveMedia.h"
 #include "AdaptiveMediaSource.h"
 #include "AdaptiveNumberInput.h"
 #include "AdaptiveOpenUrlAction.h"
+#include "AdaptiveRequirement.h"
 #include "AdaptiveRichTextBlock.h"
 #include "AdaptiveSeparator.h"
 #include "AdaptiveShowCardAction.h"
@@ -91,8 +95,7 @@ std::wstring StringToWstring(const std::string_view& in)
     if (!in.empty())
     {
         // TODO: safer casts
-        const size_t requiredSize =
-            MultiByteToWideChar(CP_UTF8, 0 /*dwFlags*/, &in[0], (int)in.length(), (LPWSTR) nullptr, 0);
+        const size_t requiredSize = MultiByteToWideChar(CP_UTF8, 0 /*dwFlags*/, &in[0], (int)in.length(), (LPWSTR) nullptr, 0);
         std::wstring wide(requiredSize, 0);
 
         if (MultiByteToWideChar(CP_UTF8, 0 /*dwFlags*/, &in[0], (int)in.length(), &wide[0], (int)requiredSize) == 0)
@@ -331,6 +334,42 @@ HRESULT GenerateSharedActions(_In_ ABI::Windows::Foundation::Collections::IVecto
 
     return S_OK;
 }
+
+HRESULT GenerateSharedRequirements(
+    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>* adaptiveRequirements,
+    std::shared_ptr<std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>> sharedRequirements) noexcept try
+{
+    sharedRequirements->clear();
+
+    XamlHelpers::IterateOverVector<ABI::AdaptiveNamespace::AdaptiveRequirement, ABI::AdaptiveNamespace::IAdaptiveRequirement>(
+        adaptiveRequirements, [&](ABI::AdaptiveNamespace::IAdaptiveRequirement* requirement) {
+            HString nameHString;
+            RETURN_IF_FAILED(requirement->get_Name(nameHString.GetAddressOf()));
+
+            HString versionHString;
+            RETURN_IF_FAILED(requirement->get_Version(versionHString.GetAddressOf()));
+
+            std::string nameString;
+            RETURN_IF_FAILED(HStringToUTF8(nameHString.Get(), nameString));
+
+            std::string versionString;
+            RETURN_IF_FAILED(HStringToUTF8(versionHString.Get(), versionString));
+
+            if (versionString == "*")
+            {
+                sharedRequirements->emplace(nameString, "0");
+            }
+            else
+            {
+                sharedRequirements->emplace(nameString, versionString);
+            }
+
+            return S_OK;
+        });
+
+    return S_OK;
+}
+CATCH_RETURN;
 
 HRESULT GenerateSharedImages(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveImage*>* images,
                              std::vector<std::shared_ptr<AdaptiveSharedNamespace::Image>>& containedElements)
@@ -702,6 +741,20 @@ HRESULT GenerateInlinesProjection(const std::vector<std::shared_ptr<AdaptiveShar
             &projectedContainedElement, std::static_pointer_cast<AdaptiveSharedNamespace::TextRun>(containedElement)));
 
         RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
+    }
+    return S_OK;
+}
+CATCH_RETURN;
+
+HRESULT GenerateRequirementsProjection(
+    const std::shared_ptr<std::unordered_map<std::string, SemanticVersion>>& sharedRequirements,
+    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>* projectedRequirementVector) noexcept try
+{
+    for (auto& sharedRequirement : *sharedRequirements)
+    {
+        ComPtr<ABI::AdaptiveNamespace::IAdaptiveRequirement> projectedRequirement;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveRequirement>(&projectedRequirement, sharedRequirement));
+        RETURN_IF_FAILED(projectedRequirementVector->Append(projectedRequirement.Detach()));
     }
     return S_OK;
 }
@@ -1359,20 +1412,31 @@ HRESULT ProjectedElementTypeToHString(ABI::AdaptiveNamespace::ElementType projec
     return UTF8ToHString(CardElementTypeToString(sharedElementType), result);
 }
 
+HRESULT MeetsRequirements(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* cardElement,
+                          _In_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration* featureRegistration,
+                          _Out_ bool* meetsRequirements)
+{
+    std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedElement;
+    RETURN_IF_FAILED(GenerateSharedElement(cardElement, sharedElement));
+
+    ComPtr<AdaptiveFeatureRegistration> featureRegistrationImpl = PeekInnards<AdaptiveFeatureRegistration>(featureRegistration);
+    std::shared_ptr<AdaptiveSharedNamespace::FeatureRegistration> sharedFeatureRegistration =
+        featureRegistrationImpl->GetSharedFeatureRegistration();
+
+    *meetsRequirements = sharedElement->MeetsRequirements(*sharedFeatureRegistration);
+    return S_OK;
+}
+
 HRESULT IsBackgroundImageValid(_In_ ABI::AdaptiveNamespace::IAdaptiveBackgroundImage* backgroundImageElement, _Out_ BOOL* isValid)
 {
+    *isValid = FALSE;
     ComPtr<ABI::AdaptiveNamespace::IAdaptiveBackgroundImage> backgroundImage(backgroundImageElement);
     if (backgroundImage != NULL)
     {
-        HSTRING url;
-        THROW_IF_FAILED(backgroundImage->get_Url(&url));
-        if (url != NULL)
-        {
-            *isValid = TRUE;
-            return S_OK;
-        }
+        HString url;
+        RETURN_IF_FAILED(backgroundImage->get_Url(url.GetAddressOf()));
+        *isValid = url.IsValid();
     }
-    *isValid = FALSE;
     return S_OK;
 }
 
@@ -1620,5 +1684,61 @@ HRESULT CopyTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* textE
     RETURN_IF_FAILED(localCopiedTextElement->put_Text(text.Get()));
 
     RETURN_IF_FAILED(localCopiedTextElement.CopyTo(copiedTextElement));
+    return S_OK;
+}
+
+HRESULT GetAdaptiveActionParserRegistrationFromSharedModel(
+    const std::shared_ptr<ActionParserRegistration>& sharedActionParserRegistration,
+    _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration** adaptiveActionParserRegistration)
+{
+    // Look up the well known action parser registration to see if we've got a custom action registration to pass
+    std::shared_ptr<ActionElementParser> sharedActionParser =
+        sharedActionParserRegistration->GetParser(c_upwActionParserRegistration);
+
+    if (sharedActionParser != nullptr)
+    {
+        // The shared model wraps the passed in parsers. Get our SharedModelActionParser from it so we can retrieve the
+        // IAdaptiveActionParserRegistration
+        std::shared_ptr<ActionElementParserWrapper> parserWrapper =
+            std::static_pointer_cast<ActionElementParserWrapper>(sharedActionParser);
+
+        std::shared_ptr<SharedModelActionParser> sharedModelParser =
+            std::static_pointer_cast<SharedModelActionParser>(parserWrapper->GetActualParser());
+
+        RETURN_IF_FAILED(sharedModelParser->GetAdaptiveParserRegistration(adaptiveActionParserRegistration));
+    }
+    else
+    {
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveActionParserRegistration>(adaptiveActionParserRegistration));
+    }
+
+    return S_OK;
+}
+
+HRESULT GetAdaptiveElementParserRegistrationFromSharedModel(
+    const std::shared_ptr<ElementParserRegistration>& sharedElementParserRegistration,
+    _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration** adaptiveElementParserRegistration)
+{
+    // Look up the well known Element parser registration to see if we've got a custom Element registration to pass
+    std::shared_ptr<BaseCardElementParser> sharedElementParser =
+        sharedElementParserRegistration->GetParser(c_uwpElementParserRegistration);
+
+    if (sharedElementParser != nullptr)
+    {
+        // The shared model wraps the passed in parsers. Get our SharedModelElementParser from it so we can retrieve the
+        // IAdaptiveElementParserRegistration
+        std::shared_ptr<BaseCardElementParserWrapper> parserWrapper =
+            std::static_pointer_cast<BaseCardElementParserWrapper>(sharedElementParser);
+
+        std::shared_ptr<SharedModelElementParser> sharedModelParser =
+            std::static_pointer_cast<SharedModelElementParser>(parserWrapper->GetActualParser());
+
+        RETURN_IF_FAILED(sharedModelParser->GetAdaptiveParserRegistration(adaptiveElementParserRegistration));
+    }
+    else
+    {
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveElementParserRegistration>(adaptiveElementParserRegistration));
+    }
+
     return S_OK;
 }

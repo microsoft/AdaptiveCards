@@ -5,13 +5,14 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACRBaseActionElementRenderer.h"
 #import "ACRActionSubmitRenderer.h"
 #import "ACOBaseActionElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
-#import "ACRButton.h"
 #import "ACRAggregateTarget.h"
+#import "ACRBaseActionElementRenderer.h"
+#import "ACRButton.h"
 #import "SubmitAction.h"
+#import "UtiliOS.h"
 
 @implementation ACRActionSubmitRenderer
 
@@ -21,7 +22,7 @@
     return singletonInstance;
 }
 
-- (UIButton* )renderButton:(ACRView *)view
+- (UIButton *)renderButton:(ACRView *)view
                     inputs:(NSArray *)inputs
                  superview:(UIView<ACRIContentHoldingView> *)superview
          baseActionElement:(ACOBaseActionElement *)acoElem
@@ -34,11 +35,10 @@
 
     UIButton *button = [ACRButton rootView:view baseActionElement:acoElem title:title andHostConfig:acoConfig];
 
-    ACRAggregateTarget *target = [[ACRAggregateTarget alloc] initWithActionElement:acoElem rootView:(ACRView*)view];
-
-    [button addTarget:target action:@selector(send:) forControlEvents:UIControlEventTouchUpInside];
-
-    [superview addTarget:target];
+    ACRAggregateTarget *target;
+    if (ACRRenderingStatus::ACROk == buildTargetForButton([view getActionsTargetBuilderDirector], elem, button, &target)) {
+        [superview addTarget:target];
+    }
 
     [button setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
 

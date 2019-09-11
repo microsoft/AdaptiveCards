@@ -91,16 +91,16 @@ namespace UWPUnitTests
             public UInt32 MinHeight { get; set; }
             IAdaptiveCardElement IAdaptiveCardElement.FallbackContent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
             FallbackType IAdaptiveCardElement.FallbackType { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-            public bool MeetsRequirements(AdaptiveFeatureRegistration featureRegistration)
-            {
-                return true;
-            }
+            public IList<AdaptiveRequirement> Requirements { get; set; }
         };
         class TestElementParser : IAdaptiveElementParser
         {
             public IAdaptiveCardElement FromJson(JsonObject inputJson, AdaptiveElementParserRegistration elementParsers, AdaptiveActionParserRegistration actionParsers, IList<AdaptiveWarning> warnings)
             {
+                // Validate that the registrations we were passed include the custom parsers
+                Assert.IsNotNull(elementParsers.Get("TestCustomElement"));
+                Assert.IsNotNull(actionParsers.Get("TestActionElement"));
+
                 JsonObject jsonTextBlock = inputJson.GetNamedObject("internalTextBlock");
                 var textBlockParser = elementParsers.Get("TextBlock");
 
@@ -114,8 +114,8 @@ namespace UWPUnitTests
         {
             AdaptiveActionParserRegistration actionParserRegistration = new AdaptiveActionParserRegistration();
             AdaptiveElementParserRegistration elementParserRegistration = new AdaptiveElementParserRegistration();
-            List<AdaptiveWarning> warnings = new List<AdaptiveWarning>();
 
+            actionParserRegistration.Set("TestActionElement", new TestActionParser());
             elementParserRegistration.Set("TestCustomElement", new TestElementParser());
             IAdaptiveElementParser testElementParserRetrieved = elementParserRegistration.Get("TestCustomElement");
             Assert.IsNotNull(testElementParserRetrieved);
@@ -207,6 +207,10 @@ namespace UWPUnitTests
         {
             public IAdaptiveActionElement FromJson(JsonObject inputJson, AdaptiveElementParserRegistration elementParsers, AdaptiveActionParserRegistration actionParsers, IList<AdaptiveWarning> warnings)
             {
+                // Validate that the registrations we were passed include the custom parsers
+                Assert.IsNotNull(elementParsers.Get("TestCustomElement"));
+                Assert.IsNotNull(actionParsers.Get("TestCustomAction"));
+
                 JsonObject jsonSubmitAction = inputJson.GetNamedObject("internalSubmitAction");
                 var submitActionParser = actionParsers.Get("Action.Submit");
 
@@ -220,9 +224,9 @@ namespace UWPUnitTests
         {
             AdaptiveActionParserRegistration actionParserRegistration = new AdaptiveActionParserRegistration();
             AdaptiveElementParserRegistration elementParserRegistration = new AdaptiveElementParserRegistration();
-            List<AdaptiveWarning> warnings = new List<AdaptiveWarning>();
 
             actionParserRegistration.Set("TestCustomAction", new TestActionParser());
+            elementParserRegistration.Set("TestCustomElement", new TestElementParser());
             IAdaptiveActionParser testActionParserRetrieved = actionParserRegistration.Get("TestCustomAction");
             Assert.IsNotNull(testActionParserRetrieved);
             Assert.IsNotNull(testActionParserRetrieved as TestActionParser);

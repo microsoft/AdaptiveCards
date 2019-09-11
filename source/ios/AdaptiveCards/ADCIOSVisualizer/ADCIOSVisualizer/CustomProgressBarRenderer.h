@@ -9,7 +9,7 @@
 
 #import <AdaptiveCards/ACFramework.h>
 
-@interface CACProgressBar:ACOBaseCardElement<ACOIBaseCardElementParser> 
+@interface CACProgressBar : ACOBaseCardElement <ACOIBaseCardElementParser>
 
 @property NSNumber *red;
 @property NSNumber *green;
@@ -19,10 +19,12 @@
 @property NSNumber *thickness;
 
 - (instancetype)init:(NSNumber *)red green:(NSNumber *)green blue:(NSNumber *)blue
-               alpha:(NSNumber *)alpha progress:(NSNumber *)progress thickness:(NSNumber *)thickness;
+               alpha:(NSNumber *)alpha
+            progress:(NSNumber *)progress
+           thickness:(NSNumber *)thickness;
 @end
 
 
-@interface CustomProgressBarRenderer:ACRBaseCardElementRenderer
+@interface CustomProgressBarRenderer : ACRBaseCardElementRenderer
 
 @end

@@ -7,7 +7,7 @@
 
 #import "ACRBaseCardElementRenderer.h"
 
-@interface ACRTextBlockRenderer:ACRBaseCardElementRenderer
+@interface ACRTextBlockRenderer : ACRBaseCardElementRenderer
 
 + (ACRTextBlockRenderer *)getInstance;
 @end

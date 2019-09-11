@@ -6,13 +6,13 @@
 //
 
 #import "ACRCustomActionRenderer.h"
-#import "UnknownAction.h"
-#import "SharedAdaptiveCard.h"
 #import "ACOBaseActionElementPrivate.h"
-#import "ACRContentHoldingUIView.h"
 #import "ACOHostConfigPrivate.h"
-#import "Util.h"
+#import "ACRContentHoldingUIView.h"
 #import "ACRRegistration.h"
+#import "SharedAdaptiveCard.h"
+#import "UnknownAction.h"
+#import "UtiliOS.h"
 
 @implementation ACRCustomActionRenderer
 
@@ -27,7 +27,7 @@
     return ACRUnknownAction;
 }
 
-- (UIButton* )renderButton:(ACRView *)view
+- (UIButton *)renderButton:(ACRView *)view
                     inputs:(NSMutableArray *)inputs
                  superview:(UIView<ACRIContentHoldingView> *)superview
          baseActionElement:(ACOBaseActionElement *)acoElem
@@ -36,7 +36,7 @@
     std::shared_ptr<UnknownAction> customAction = std::dynamic_pointer_cast<UnknownAction>([acoElem element]);
 
     ACRRegistration *reg = [ACRRegistration getInstance];
-    if(reg) {
+    if (reg) {
         NSString *type = [NSString stringWithCString:customAction->GetElementTypeString().c_str() encoding:NSUTF8StringEncoding];
         NSObject<ACOIBaseActionElementParser> *parser = [reg getCustomActionElementParser:type];
         if (!parser) {
@@ -45,12 +45,13 @@
         Json::Value blob = customAction->GetAdditionalProperties();
         Json::FastWriter fastWriter;
         NSString *jsonString = [[NSString alloc] initWithCString:fastWriter.write(blob).c_str() encoding:NSUTF8StringEncoding];
-        if(jsonString.length > 0){
+        if (jsonString.length > 0) {
             NSData *jsonPayload = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
             ACOParseContext *context = [reg getParseContext];
             ACOBaseActionElement *actionElement = [parser deserialize:jsonPayload parseContext:context];
-            ACRBaseActionElementRenderer *renderer = [reg getActionRenderer:[NSNumber numberWithLong:type.hash]];;
-            if(renderer) {
+            ACRBaseActionElementRenderer *renderer = [reg getActionRenderer:[NSNumber numberWithLong:type.hash]];
+            ;
+            if (renderer) {
                 return [renderer renderButton:view inputs:inputs superview:superview baseActionElement:actionElement hostConfig:acoConfig];
             }
         }
