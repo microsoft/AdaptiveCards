@@ -94,7 +94,18 @@ namespace AdaptiveCards.Test
     }
   ]
 }";
+            // By default we should be throwing an exception when no version present.
             Assert.ThrowsException<AdaptiveSerializationException>(() => AdaptiveCard.FromJson(json));
+
+            // Or we can supply a replacement version to use
+            AdaptiveCard.OnDeserializingMissingVersion = () => new AdaptiveSchemaVersion(0, 5);
+            var card = AdaptiveCard.FromJson(json);
+            Assert.AreEqual(new AdaptiveSchemaVersion(0, 5), card.Card.Version);
+
+            // But make sure that if the callback throws an exception that it is allowed through
+            AdaptiveCard.OnDeserializingMissingVersion = () => throw new Exception("test exception");
+            Assert.ThrowsException<Exception>(() => AdaptiveCard.FromJson(json));
+            AdaptiveCard.OnDeserializingMissingVersion = null;
         }
 
         [TestMethod]
