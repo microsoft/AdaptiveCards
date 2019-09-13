@@ -199,16 +199,27 @@ export abstract class CardObject extends SerializableObject {
             return (<CardObject>sender).getJsonTypeName()
         });
     static readonly idProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "id");
+    static readonly requiresProperty = new SerializableObjectPropertyDefinition(
+        Shared.Versions.v1_2,
+        "requires",
+        () => { return new HostCapabilities(); },
+        () => { return new HostCapabilities(); });
 
     protected populateSchema(schema: SerializableObjectSchema) {
         schema.add(
             CardObject.typeNameProperty,
-            CardObject.idProperty);
+            CardObject.idProperty,
+            CardObject.requiresProperty);
     }
 
 
     @schemaProperty(CardObject.idProperty)
     id: string;
+
+    @schemaProperty(CardObject.requiresProperty)
+    get requires(): HostCapabilities {
+        return this.getValue(CardObject.requiresProperty);
+    }
 
     //#endregion
 
@@ -275,11 +286,6 @@ export abstract class CardElement extends CardObject {
         "spacing",
         Enums.Spacing,
         Enums.Spacing.Default);
-    static readonly requiresProperty = new SerializableObjectPropertyDefinition(
-        Shared.Versions.v1_2,
-        "requires",
-        () => { return new HostCapabilities(); },
-        () => { return new HostCapabilities(); });
     static readonly minHeightProperty = new PixelSizePropertyDefinition(Shared.Versions.v1_2, "minHeight");
 
     protected populateSchema(schema: SerializableObjectSchema) {
@@ -291,8 +297,7 @@ export abstract class CardElement extends CardObject {
             CardElement.separatorProperty,
             CardElement.heightProperty,
             CardElement.horizontalAlignmentProperty,
-            CardElement.spacingProperty,
-            CardElement.requiresProperty);
+            CardElement.spacingProperty);
 
         if (this.supportsMinHeight) {
             schema.add(CardElement.minHeightProperty);
@@ -357,11 +362,6 @@ export abstract class CardElement extends CardObject {
                 raiseElementVisibilityChangedEvent(this);
             }
         }
-    }
-
-    @schemaProperty(CardElement.requiresProperty)
-    get requires(): HostCapabilities {
-        return this.getValue(CardElement.requiresProperty);
     }
 
     //#endregion
@@ -1180,7 +1180,11 @@ export class TextBlock extends BaseTextBlock {
                 if (hostConfig.supportsInteractivity) {
                     element.tabIndex = 0
                     element.setAttribute("role", "button");
-                    element.setAttribute("aria-label", this.selectAction.title);
+
+                    if (!Utils.isNullOrEmpty(this.selectAction.title)) {
+                        element.setAttribute("aria-label", <string>this.selectAction.title);
+                    }
+
                     element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
                 }
             }
@@ -1444,7 +1448,13 @@ export class TextRun extends BaseTextBlock {
             if (this.selectAction && hostConfig.supportsInteractivity) {
                 let anchor = document.createElement("a");
                 anchor.classList.add(hostConfig.makeCssClassName("ac-anchor"));
-                anchor.href = this.selectAction.getHref();
+
+                let href = this.selectAction.getHref();
+
+                if (!Utils.isNullOrEmpty(href)) {
+                    anchor.href = <string>href;
+                }
+
                 anchor.target = "_blank";
                 anchor.onclick = (e) => {
                     e.preventDefault();
@@ -2020,7 +2030,11 @@ export class Image extends CardElement {
             if (this.selectAction !== undefined && hostConfig.supportsInteractivity) {
                 imageElement.tabIndex = 0
                 imageElement.setAttribute("role", "button");
-                imageElement.setAttribute("aria-label", this.selectAction.title);
+
+                if (!Utils.isNullOrEmpty(this.selectAction.title)) {
+                    imageElement.setAttribute("aria-label", <string>this.selectAction.title);
+                }
+
                 imageElement.classList.add(hostConfig.makeCssClassName("ac-selectable"));
             }
 
@@ -2181,7 +2195,10 @@ export abstract class CardElementContainer extends CardElement {
                 element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
                 element.tabIndex = 0;
                 element.setAttribute("role", "button");
-                element.setAttribute("aria-label", this._selectAction.title);
+
+                if (!Utils.isNullOrEmpty(this._selectAction.title)) {
+                    element.setAttribute("aria-label", <string>this._selectAction.title);
+                }
 
                 element.onclick = (e) => {
                     if (this._selectAction !== undefined) {
@@ -2978,23 +2995,26 @@ export class TextInput extends Input {
                     button.classList.add("textOnly");
 
                     if (this.inlineAction) {
-                        button.textContent = !Utils.isNullOrEmpty(this.inlineAction.title) ? this.inlineAction.title : "Title";
+                        button.textContent = !Utils.isNullOrEmpty(this.inlineAction.title) ? <string>this.inlineAction.title : "Title";
                     }
                     else {
                         button.textContent = "Title";
                     }
                 }
-                icon.src = this.inlineAction.iconUrl;
+
+                if (!Utils.isNullOrEmpty(this.inlineAction.iconUrl)) {
+                    icon.src = <string>this.inlineAction.iconUrl;
+                }
 
                 button.appendChild(icon);
 
                 if (!Utils.isNullOrEmpty(this.inlineAction.title)) {
-                    button.title = this.inlineAction.title;
+                    button.title = <string>this.inlineAction.title;
                 }
             }
             else {
                 button.classList.add("textOnly");
-                button.textContent = !Utils.isNullOrEmpty(this.inlineAction.title) ? this.inlineAction.title : "Title";
+                button.textContent = !Utils.isNullOrEmpty(this.inlineAction.title) ? <string>this.inlineAction.title : "Title";
             }
 
             button.style.marginLeft = "8px";
@@ -3838,6 +3858,54 @@ class ActionButton {
 }
 
 export abstract class Action extends CardObject {
+    //#region Schema
+
+    /* TODO: parsing validation for title
+            raiseParseError(
+                {
+                    error: Enums.ValidationError.PropertyCantBeNull,
+                    message: "Actions should always have a title."
+                },
+                errors
+            );
+    */
+    static readonly titleProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "title");
+    static readonly iconUrlProperty = new StringPropertyDefinition(Shared.Versions.v1_1, "iconUrl");
+    static readonly styleProperty = new ValueSetPropertyDefinition(
+        Shared.Versions.v1_2,
+        "style",
+        [
+            { value: Enums.ActionStyle.Default },
+            { value: Enums.ActionStyle.Positive },
+            { value: Enums.ActionStyle.Destructive }
+        ],
+        Enums.ActionStyle.Default);
+    static readonly requiresProperty = new SerializableObjectPropertyDefinition(
+        Shared.Versions.v1_2,
+        "requires",
+        () => { return new HostCapabilities(); },
+        () => { return new HostCapabilities(); });
+
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.add(
+            Action.titleProperty,
+            Action.iconUrlProperty,
+            Action.styleProperty);
+    }
+
+    @schemaProperty(Action.titleProperty)
+    title?: string;
+
+    @schemaProperty(Action.iconUrlProperty)
+    iconUrl?: string;
+
+    @schemaProperty(Action.styleProperty)
+    style: string = Enums.ActionStyle.Default;
+
+    //#endregion
+
     private _shouldFallback: boolean = false;
     private _parent?: CardElement;
     private _actionCollection?: ActionCollection; // hold the reference to its action collection
@@ -3877,49 +3945,10 @@ export abstract class Action extends CardObject {
 
     abstract getJsonTypeName(): string;
 
-    readonly requires = new HostCapabilities();
-
-    title: string;
-    iconUrl: string;
-    style: string = Enums.ActionStyle.Default;
-
     onExecute: (sender: Action) => void;
 
-    getHref(): string {
+    getHref(): string | undefined {
         return "";
-    }
-
-    parse(json: any, errors?: Shared.IValidationError[]) {
-		super.parse(json, errors);
-
-        raiseParseActionEvent(this, json, errors);
-
-        this.requires.parse(json["requires"], errors);
-
-        if (!json["title"] && json["title"] !== "") {
-            raiseParseError(
-                {
-                    error: Enums.ValidationError.PropertyCantBeNull,
-                    message: "Actions should always have a title."
-                },
-                errors
-            );
-        }
-
-        this.title = Utils.getStringValue(json["title"]);
-        this.iconUrl = Utils.getStringValue(json["iconUrl"]);
-        this.style = Utils.getStringValue(json["style"], this.style);
-    }
-
-    toJSON(): any {
-		let result = super.toJSON();
-
-        Utils.setProperty(result, "type", this.getJsonTypeName());
-        Utils.setProperty(result, "title", this.title);
-        Utils.setProperty(result, "iconUrl", this.iconUrl);
-        Utils.setProperty(result, "style", this.style, Enums.ActionStyle.Default);
-
-        return result;
     }
 
     updateActionButtonCssStyle(actionButtonElement: HTMLElement): void {
@@ -3934,7 +3963,10 @@ export abstract class Action extends CardObject {
 
         this.addCssClasses(buttonElement);
 
-        buttonElement.setAttribute("aria-label", this.title);
+        if (!Utils.isNullOrEmpty(this.title)) {
+            buttonElement.setAttribute("aria-label", <string>this.title);
+        }
+
         buttonElement.type = "button";
         buttonElement.style.display = "flex";
         buttonElement.style.alignItems = "center";
@@ -3951,7 +3983,7 @@ export abstract class Action extends CardObject {
         }
 
         if (hasTitle) {
-            titleElement.innerText = this.title;
+            titleElement.innerText = <string>this.title;
         }
 
         if (Utils.isNullOrEmpty(this.iconUrl)) {
@@ -3961,7 +3993,7 @@ export abstract class Action extends CardObject {
         }
         else {
             let iconElement = document.createElement("img");
-            iconElement.src = this.iconUrl;
+            iconElement.src = <string>this.iconUrl;
             iconElement.style.width = hostConfig.actions.iconSize + "px";
             iconElement.style.height = hostConfig.actions.iconSize + "px";
             iconElement.style.flex = "0 0 auto";
@@ -3971,14 +4003,16 @@ export abstract class Action extends CardObject {
                 buttonElement.style.flexDirection = "column";
 
                 if (hasTitle) {
-                    iconElement.style.marginBottom = "4px";
+                    iconElement.style.marginBottom = "6px";
                 }
             }
             else {
                 buttonElement.classList.add("iconLeft");
 
+                iconElement.style.maxHeight = "100%";
+
                 if (hasTitle) {
-                    iconElement.style.marginRight = "4px";
+                    iconElement.style.marginRight = "6px";
                 }
             }
 
@@ -4027,7 +4061,7 @@ export abstract class Action extends CardObject {
 
     getResourceInformation(): Shared.IResourceInformation[] {
         if (!Utils.isNullOrEmpty(this.iconUrl)) {
-            return [{ url: this.iconUrl, mimeType: "image" }]
+            return [{ url: <string>this.iconUrl, mimeType: "image" }]
         }
         else {
             return [];
@@ -4088,14 +4122,34 @@ export abstract class Action extends CardObject {
 }
 
 export class SubmitAction extends Action {
+    //#region Schema
+
+    static readonly dataProperty = new PropertyDefinition(Shared.Versions.v1_0, "data");
+    // TODO: Revise this when finalizing input validation
+    static readonly ignoreInputValidationProperty = new BooleanPropertyDefinition(Shared.Versions.vNext, "ignoreInputValidation", false);
+
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.add(
+            SubmitAction.dataProperty,
+            SubmitAction.ignoreInputValidationProperty);
+    }
+
+    @schemaProperty(SubmitAction.dataProperty)
+    private _originalData?: PropertyBag;
+
+    @schemaProperty(SubmitAction.ignoreInputValidationProperty)
+    private _ignoreInputValidation: boolean = false;
+
+    //#endregion
+
     // Note the "weird" way this field is declared is to work around a breaking
     // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
     static readonly JsonTypeName: "Action.Submit" = "Action.Submit";
 
     private _isPrepared: boolean = false;
-    private _originalData?: object;
-    private _processedData?: { [key: string]: any };
-    private _ignoreInputValidation: boolean = false;
+    private _processedData?: PropertyBag;
 
     protected internalGetReferencedInputs(allInputs: Input[]): Shared.Dictionary<Input> {
         let result: Shared.Dictionary<Input> = {};
@@ -4132,22 +4186,6 @@ export class SubmitAction extends Action {
         return SubmitAction.JsonTypeName;
     }
 
-    toJSON() {
-        let result = super.toJSON();
-
-        Utils.setProperty(result, "ignoreInputValidation", this.ignoreInputValidation, false);
-        Utils.setProperty(result, "data", this._originalData);
-
-        return result;
-    }
-
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        super.parse(json, errors);
-
-        this._ignoreInputValidation = <boolean>Utils.getBoolValue(json["ignoreInputValidation"], this._ignoreInputValidation);
-        this.data = json["data"];
-    }
-
     get ignoreInputValidation(): boolean {
         return this._ignoreInputValidation;
     }
@@ -4167,22 +4205,27 @@ export class SubmitAction extends Action {
 }
 
 export class OpenUrlAction extends Action {
+    //#region Schema
+
+    static readonly urlProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "url");
+
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.add(OpenUrlAction.urlProperty);
+    }
+
+    @schemaProperty(OpenUrlAction.urlProperty)
+    url?: string;
+
+    //#endregion
+
     // Note the "weird" way this field is declared is to work around a breaking
     // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
     static readonly JsonTypeName: "Action.OpenUrl" = "Action.OpenUrl";
 
-    url: string;
-
     getJsonTypeName(): string {
         return OpenUrlAction.JsonTypeName;
-    }
-
-    toJSON(): any {
-        let result = super.toJSON();
-
-        Utils.setProperty(result, "url", this.url);
-
-        return result;
     }
 
     internalValidateProperties(context: ValidationResults) {
@@ -4198,23 +4241,73 @@ export class OpenUrlAction extends Action {
         }
     }
 
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        super.parse(json, errors);
-
-        this.url = Utils.getStringValue(json["url"]);
-    }
-
-    getHref(): string {
+    getHref(): string | undefined {
         return this.url;
     }
 }
 
 export class ToggleVisibilityAction extends Action {
+    //#region Schema
+
+    static readonly targetElementsProperty = new CustomPropertyDefinition<PropertyBag>(
+        Shared.Versions.v1_2,
+        "targetElements",
+        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: Shared.IValidationError[]) => {
+            let result: PropertyBag = {}
+
+            if (Array.isArray(source[property.name])) {
+                for (let item of source[property.name]) {
+                    if (typeof item === "string") {
+                        result[item] = undefined;
+                    }
+                    else if (typeof item === "object") {
+                        let elementId = item["elementId"];
+    
+                        if (typeof elementId === "string") {
+                            result[elementId] = Utils.getBoolValue(item["isVisible"], undefined);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        },
+        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: PropertyBag) => {
+            let targetElements: any[] = [];
+
+            for (let id of Object.keys(value)) {
+                if (typeof value[id] === "boolean") {
+                    targetElements.push(
+                        {
+                            elementId: id,
+                            isVisible: value[id]
+                        }
+                    );
+                }
+                else {
+                    targetElements.push(id);
+                }
+            }
+    
+            Utils.setArrayProperty(target, property.name, targetElements);
+        },
+        {},
+        (sender: SerializableObject) => { return {}; });
+
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.add(ToggleVisibilityAction.targetElementsProperty);
+    }
+
+    @schemaProperty(ToggleVisibilityAction.targetElementsProperty)
+    targetElements: { [key: string]: any } = {};
+
+    //#endregion
+
     // Note the "weird" way this field is declared is to work around a breaking
     // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
     static readonly JsonTypeName: "Action.ToggleVisibility" = "Action.ToggleVisibility";
-
-    targetElements: { [key: string]: any } = {};
 
     getJsonTypeName(): string {
         return ToggleVisibilityAction.JsonTypeName;
@@ -4235,53 +4328,6 @@ export class ToggleVisibilityAction extends Action {
                 }
             }
         }
-    }
-
-    parse(json: any) {
-        super.parse(json);
-
-        this.targetElements = {};
-
-        let jsonTargetElements = json["targetElements"];
-
-        if (jsonTargetElements && Array.isArray(jsonTargetElements)) {
-            for (let item of jsonTargetElements) {
-                if (typeof item === "string") {
-                    this.targetElements[item] = undefined;
-                }
-                else if (typeof item === "object") {
-                    let jsonElementId = item["elementId"];
-
-                    if (jsonElementId && typeof jsonElementId === "string") {
-                        this.targetElements[jsonElementId] = Utils.getBoolValue(item["isVisible"], undefined);
-                    }
-                }
-            }
-        }
-    }
-
-    toJSON() {
-        let result = super.toJSON();
-
-        let targetElements: any[] = [];
-
-        for (let id of Object.keys(this.targetElements)) {
-            if (typeof this.targetElements[id] === "boolean") {
-                targetElements.push(
-                    {
-                        elementId: id,
-                        isVisible: this.targetElements[id]
-                    }
-                );
-            }
-            else {
-                targetElements.push(id);
-            }
-        }
-
-        result["targetElements"] = targetElements;
-
-        return result;
     }
 
     addTargetElement(elementId: string, isVisible: boolean | undefined = undefined) {

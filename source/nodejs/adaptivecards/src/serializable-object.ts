@@ -4,9 +4,14 @@ import * as Shared from "./shared";
 import * as Utils from "./utils";
 import * as Enums from "./enums";
 
-export abstract class PropertyDefinition {
-    abstract parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): any;
-    abstract toJSON(sender: SerializableObject, target: PropertyBag, value: any): void;
+export class PropertyDefinition {
+    parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): any {
+        return source[this.name];
+    }
+
+    toJSON(sender: SerializableObject, target: PropertyBag, value: any): void {
+        Utils.setProperty(target, this.name, value, this.defaultValue);
+    }
 
     constructor(
         readonly targetVersion: Shared.TargetVersion,
@@ -16,8 +21,10 @@ export abstract class PropertyDefinition {
 }
 
 export abstract class TypedPropertyDefinition<T> extends PropertyDefinition {
+    /*
     abstract parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): T | undefined;
     abstract toJSON(sender: SerializableObject, target: PropertyBag, value: T | undefined): void;
+    */
 
     constructor(
         readonly targetVersion: Shared.TargetVersion,
