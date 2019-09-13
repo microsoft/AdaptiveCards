@@ -605,7 +605,6 @@ export abstract class SingleInputPropertyEditor extends PropertySheetEntry {
         label.text = this.label;
 
         let input = this.createInput(context);
-        input.defaultValue = this.getPropertyValue(context);
         input.onValueChanged = () => {
             this.setPropertyValue(context, input.value);
 
@@ -630,6 +629,7 @@ export abstract class SingleInputPropertyEditor extends PropertySheetEntry {
 export class StringPropertyEditor extends SingleInputPropertyEditor {
     protected createInput(context: PropertySheetContext): Adaptive.Input {
         let input = new Adaptive.TextInput();
+        input.defaultValue = this.getPropertyValue(context);
         input.placeholder = "(not set)";
         input.isMultiline = this.isMultiline;
 
@@ -658,6 +658,7 @@ export class NumberPropertyEditor extends SingleInputPropertyEditor {
 
     protected createInput(context: PropertySheetContext): Adaptive.Input {
         let input = new Adaptive.NumberInput();
+        input.defaultValue = this.getPropertyValue(context);
         input.placeholder = "(not set)";
 
         return input;
@@ -705,7 +706,10 @@ export class BooleanPropertyEditor extends SingleInputPropertyEditor {
     }
 
     protected createInput(context: PropertySheetContext): Adaptive.Input {
-        return new Adaptive.ToggleInput();
+        let input = new Adaptive.ToggleInput();
+        input.defaultValue = this.getPropertyValue(context);
+
+        return input;
     }
 }
 
@@ -718,6 +722,7 @@ export interface IVersionedChoice {
 export class ChoicePropertyEditor extends SingleInputPropertyEditor {
     protected createInput(context: PropertySheetContext): Adaptive.Input {
         let input = new Adaptive.ChoiceSetInput();
+        input.defaultValue = this.getPropertyValue(context);
         input.isCompact = true;
         input.placeholder = "(not set)";
 
@@ -865,6 +870,7 @@ export class ActionPropertyEditor extends SingleInputPropertyEditor {
 
     protected createInput(context: PropertySheetContext): Adaptive.Input {
         let input = new Adaptive.ChoiceSetInput();
+        input.defaultValue = this.getPropertyValue(context);
         input.isCompact = true;
         input.placeholder = "(not set)";
         input.choices.push(new Adaptive.Choice("(not set)", "none"));
@@ -921,6 +927,7 @@ export class EnumPropertyEditor extends SingleInputPropertyEditor {
 
     protected createInput(context: PropertySheetContext): Adaptive.Input {
         let input = new Adaptive.ChoiceSetInput();
+        input.defaultValue = this.getPropertyValue(context);
         input.isCompact = true;
         input.placeholder = "(not set)";
 

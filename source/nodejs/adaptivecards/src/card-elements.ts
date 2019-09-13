@@ -2668,7 +2668,6 @@ export abstract class Input extends CardElement implements Shared.IInput {
     private _inputControlContainerElement: HTMLElement;
     private _errorMessageElement?: HTMLElement;
     private _renderedInputControlElement: HTMLElement;
-    private _defaultValue?: string;
 
     protected get isNullable(): boolean {
         return true;
@@ -2745,20 +2744,16 @@ export abstract class Input extends CardElement implements Shared.IInput {
         }
     }
 
-    protected parseInputValue(value: string | undefined): string | undefined {
-        return value;
-    }
-
-    abstract get value(): string | undefined;
+    abstract get value(): any;
 
     onValueChanged: (sender: Input) => void;
 
     readonly validation = new InputValidationOptions();
 
+    //#region Schema
+
     parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
-
-        this.defaultValue = Utils.getStringValue(json["value"]);
 
         if (Shared.GlobalSettings.useBuiltInInputValidation) {
             let jsonValidation = json["validation"];
@@ -2772,14 +2767,14 @@ export abstract class Input extends CardElement implements Shared.IInput {
     toJSON(): any {
         let result = super.toJSON();
 
-        Utils.setProperty(result, "value", this.renderedElement && !Utils.isNullOrEmpty(this.value) ? this.value : this.defaultValue);
-
         if (Shared.GlobalSettings.useBuiltInInputValidation) {
             Utils.setProperty(result, "validation", this.validation.toJSON());
         }
 
         return result;
     }
+
+    abstract isSet(): boolean;
 
     internalValidateProperties(context: ValidationResults) {
         super.internalValidateProperties(context);
@@ -2798,7 +2793,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
         if (Shared.GlobalSettings.useBuiltInInputValidation) {
             this.resetValidationFailureCue();
 
-            let result = this.validation.necessity != Enums.InputValidationNecessity.Optional ? !Utils.isNullOrEmpty(this.value) : true;
+            let result = this.validation.necessity != Enums.InputValidationNecessity.Optional ? this.isSet() : true;
 
             if (!result && this.renderedElement) {
                 this._renderedInputControlElement.classList.add(this.hostConfig.makeCssClassName("ac-input-validation-failed"));
@@ -2817,14 +2812,6 @@ export abstract class Input extends CardElement implements Shared.IInput {
         return [this];
     }
 
-    get defaultValue(): string | undefined {
-        return this._defaultValue;
-    }
-
-    set defaultValue(value: string | undefined) {
-        this._defaultValue = this.parseInputValue(value);
-    }
-
     get isInteractive(): boolean {
         return true;
     }
@@ -2833,13 +2820,39 @@ export abstract class Input extends CardElement implements Shared.IInput {
 export class TextInput extends Input {
     //#region Schema
 
+    static readonly valueProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "value");
+    static readonly maxLengthProperty = new NumberPropertyDefinition(Shared.Versions.v1_0, "maxLength");
+    static readonly isMultilineProperty = new BooleanPropertyDefinition(Shared.Versions.v1_0, "isMultiline", false);
+    static readonly placeholderProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "placeholder");
+    static readonly styleProperty = new EnumPropertyDefinition(Shared.Versions.v1_0, "style", Enums.InputTextStyle, Enums.InputTextStyle.Text);
     static readonly inlineActionProperty = new ActionPropertyDefinition(Shared.Versions.v1_0, "inlineAction", [ "Action.ShowCard" ]);
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
 
-        schema.add(TextInput.inlineActionProperty);
+        schema.add(
+            TextInput.valueProperty,
+            TextInput.maxLengthProperty,
+            TextInput.isMultilineProperty,
+            TextInput.placeholderProperty,
+            TextInput.styleProperty,
+            TextInput.inlineActionProperty);
     }
+
+    @schemaProperty(TextInput.valueProperty)
+    defaultValue?: string;
+
+    @schemaProperty(TextInput.maxLengthProperty)
+    maxLength?: number;
+
+    @schemaProperty(TextInput.isMultilineProperty)
+    isMultiline: boolean = false;
+
+    @schemaProperty(TextInput.placeholderProperty)
+    placeholder?: string;
+
+    @schemaProperty(TextInput.styleProperty)
+    style: Enums.InputTextStyle = Enums.InputTextStyle.Text;
 
     @schemaProperty(TextInput.inlineActionProperty)
     inlineAction?: Action;
@@ -2854,8 +2867,8 @@ export class TextInput extends Input {
             textareaElement.tabIndex = 0;
 
             if (!Utils.isNullOrEmpty(this.placeholder)) {
-                textareaElement.placeholder = this.placeholder;
-                textareaElement.setAttribute("aria-label", this.placeholder)
+                textareaElement.placeholder = <string>this.placeholder;
+                textareaElement.setAttribute("aria-label", <string>this.placeholder)
             }
 
             if (!Utils.isNullOrEmpty(this.defaultValue)) {
@@ -2884,8 +2897,8 @@ export class TextInput extends Input {
             inputElement.tabIndex = 0;
 
             if (!Utils.isNullOrEmpty(this.placeholder)) {
-                inputElement.placeholder = this.placeholder;
-                inputElement.setAttribute("aria-label", this.placeholder)
+                inputElement.placeholder = <string>this.placeholder;
+                inputElement.setAttribute("aria-label", <string>this.placeholder)
             }
 
             if (!Utils.isNullOrEmpty(this.defaultValue)) {
@@ -2970,11 +2983,6 @@ export class TextInput extends Input {
         return renderedInputControl;
     }
 
-    maxLength: number;
-    isMultiline: boolean = false;
-    placeholder: string;
-    style: Enums.InputTextStyle = Enums.InputTextStyle.Text;
-
     getJsonTypeName(): string {
         return "Input.Text";
     }
@@ -2989,24 +2997,8 @@ export class TextInput extends Input {
         return result;
     }
 
-    toJSON(): any {
-        let result = super.toJSON();
-
-        Utils.setProperty(result, "placeholder", this.placeholder);
-        Utils.setNumberProperty(result, "maxLength", this.maxLength);
-        Utils.setProperty(result, "isMultiline", this.isMultiline, false);
-        Utils.setEnumProperty(Enums.InputTextStyle, result, "style", this.style, Enums.InputTextStyle.Text);
-
-        return result;
-    }
-
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        super.parse(json, errors);
-
-        this.maxLength = <number>Utils.getNumberValue(json["maxLength"]);
-        this.isMultiline = <boolean>Utils.getBoolValue(json["isMultiline"], this.isMultiline);
-        this.placeholder = Utils.getStringValue(json["placeholder"]);
-        this.style = <Enums.InputTextStyle>Utils.getEnumValue(Enums.InputTextStyle, json["style"], this.style);
+    isSet(): boolean {
+        return !Utils.isNullOrEmpty(this.value);
     }
 
     get value(): string | undefined {
@@ -3027,6 +3019,7 @@ export class TextInput extends Input {
 export class ToggleInput extends Input {
     //#region Schema
 
+    static readonly valueProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "value");
     static readonly titleProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "title");
     static readonly valueOnProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "valueOn", true, undefined, "true", (sender: SerializableObject) => { return "true"; });
     static readonly valueOffProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "valueOff", true, undefined, "false", (sender: SerializableObject) => { return "false"; });
@@ -3037,10 +3030,14 @@ export class ToggleInput extends Input {
 
         schema.add(
             ToggleInput.titleProperty,
+            ToggleInput.valueProperty,
             ToggleInput.valueOnProperty,
             ToggleInput.valueOffProperty,
             ToggleInput.wrapProperty);
     }
+
+    @schemaProperty(ToggleInput.valueProperty)
+    defaultValue?: string;
 
     @schemaProperty(ToggleInput.titleProperty)
     title?: string;
@@ -3123,6 +3120,10 @@ export class ToggleInput extends Input {
         return "Input.Toggle";
     }
 
+    isSet(): boolean {
+        return !Utils.isNullOrEmpty(this.value);
+    }
+
     get value(): string | undefined {
         if (this._checkboxInputElement) {
             return this._checkboxInputElement.checked ? this.valueOn : this.valueOff;
@@ -3166,6 +3167,7 @@ export class Choice extends SerializableObject {
 export class ChoiceSetInput extends Input {
     //#region Schema
 
+    static readonly valueProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "value");
     static readonly choicesProperty = new SerializableObjectCollectionPropertyDefinition<Choice>(
         Shared.Versions.v1_0,
         "facts",
@@ -3197,12 +3199,16 @@ export class ChoiceSetInput extends Input {
         super.populateSchema(schema);
 
         schema.add(
+            ChoiceSetInput.valueProperty,
             ChoiceSetInput.choicesProperty,
             ChoiceSetInput.styleProperty,
             ChoiceSetInput.isMultiSelectProperty,
             ChoiceSetInput.placeholderProperty,
             ChoiceSetInput.wrapProperty);
     }
+
+    @schemaProperty(ChoiceSetInput.valueProperty)
+    defaultValue?: string;
 
     @schemaProperty(ChoiceSetInput.styleProperty)
     isCompact: boolean = false;
@@ -3295,7 +3301,7 @@ export class ChoiceSetInput extends Input {
                     radioInput.style.flex = "0 0 auto";
                     radioInput.setAttribute("aria-label", <string>choice.title);
 
-                    if (this.choices[i].value == this.defaultValue) {
+                    if (choice.value == this.defaultValue) {
                         radioInput.checked = true;
                     }
 
@@ -3435,6 +3441,10 @@ export class ChoiceSetInput extends Input {
         }
     }
 
+    isSet(): boolean {
+        return !Utils.isNullOrEmpty(this.value);
+    }
+
     get value(): string | undefined {
         if (!this.isMultiSelect) {
             if (this.isCompact) {
@@ -3481,9 +3491,38 @@ export class ChoiceSetInput extends Input {
 }
 
 export class NumberInput extends Input {
+    //#region Schema
+
+    static readonly valueProperty = new NumberPropertyDefinition(Shared.Versions.v1_0, "value");
+    static readonly placeholderProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "placeholder");
+    static readonly minProperty = new NumberPropertyDefinition(Shared.Versions.v1_0, "min");
+    static readonly maxProperty = new NumberPropertyDefinition(Shared.Versions.v1_0, "max");
+
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.add(
+            NumberInput.valueProperty,
+            NumberInput.minProperty,
+            NumberInput.maxProperty,
+            NumberInput.placeholderProperty);
+    }
+
+    @schemaProperty(NumberInput.valueProperty)
+    defaultValue?: number;
+
+    @schemaProperty(NumberInput.minProperty)
+    min?: number;
+
+    @schemaProperty(NumberInput.maxProperty)
+    max?: number;
+
+    @schemaProperty(NumberInput.placeholderProperty)
+    placeholder?: string;
+
+    //#endregion
+
     private _numberInputElement: HTMLInputElement;
-    private _min?: number;
-    private _max?: number;
 
     protected internalRender(): HTMLElement | undefined {
         this._numberInputElement = document.createElement("input");
@@ -3501,13 +3540,13 @@ export class NumberInput extends Input {
         this._numberInputElement.style.width = "100%";
         this._numberInputElement.tabIndex = 0;
 
-        if (!Utils.isNullOrEmpty(this.defaultValue)) {
-            this._numberInputElement.value = <string>this.defaultValue;
+        if (this.defaultValue !== undefined) {
+            this._numberInputElement.valueAsNumber = this.defaultValue;
         }
 
         if (!Utils.isNullOrEmpty(this.placeholder)) {
-            this._numberInputElement.placeholder = this.placeholder;
-            this._numberInputElement.setAttribute("aria-label", this.placeholder);
+            this._numberInputElement.placeholder = <string>this.placeholder;
+            this._numberInputElement.setAttribute("aria-label", <string>this.placeholder);
         }
 
         this._numberInputElement.oninput = () => { this.valueChanged(); }
@@ -3515,65 +3554,64 @@ export class NumberInput extends Input {
         return this._numberInputElement;
     }
 
-    placeholder: string;
-
     getJsonTypeName(): string {
         return "Input.Number";
     }
 
-    toJSON(): any {
-        let result = super.toJSON();
-
-        Utils.setProperty(result, "placeholder", this.placeholder);
-        Utils.setNumberProperty(result, "min", this.min);
-        Utils.setNumberProperty(result, "max", this.max);
-
-        return result;
+    isSet(): boolean {
+        return this.value !== undefined && !isNaN(this.value);
     }
 
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        super.parse(json, errors);
-
-        this.placeholder = Utils.getStringValue(json["placeholder"]);
-        this.min = Utils.getNumberValue(json["min"]);
-        this.max = Utils.getNumberValue(json["max"]);
-    }
-
-    get min(): number | undefined {
-        return this._min;
-    }
-
-    set min(value: number | undefined) {
-        this._min = value;
-    }
-
-    get max(): number | undefined {
-        return this._max;
-    }
-
-    set max(value: number | undefined) {
-        this._max = value;
-    }
-
-    get value(): string | undefined {
-        return this._numberInputElement ? this._numberInputElement.value : undefined;
-    }
-
-    get valueAsNumber(): number | undefined {
+    get value(): number | undefined {
         return this._numberInputElement ? this._numberInputElement.valueAsNumber : undefined;
     }
 }
 
 export class DateInput extends Input {
+    //#region Schema
+
+    static readonly valueProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "value");
+    static readonly placeholderProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "placeholder");
+    static readonly minProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "min");
+    static readonly maxProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "max");
+
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.add(
+            DateInput.valueProperty,
+            DateInput.minProperty,
+            DateInput.maxProperty,
+            DateInput.placeholderProperty);
+    }
+
+    @schemaProperty(DateInput.valueProperty)
+    defaultValue?: string;
+
+    @schemaProperty(DateInput.minProperty)
+    min?: string;
+
+    @schemaProperty(DateInput.maxProperty)
+    max?: string;
+
+    @schemaProperty(DateInput.placeholderProperty)
+    placeholder?: string;
+
+    //#endregion
+
     private _dateInputElement: HTMLInputElement;
-    private _min?: string;
-    private _max?: string;
 
     protected internalRender(): HTMLElement | undefined {
         this._dateInputElement = document.createElement("input");
         this._dateInputElement.setAttribute("type", "date");
         this._dateInputElement.setAttribute("min", <string>this.min);
         this._dateInputElement.setAttribute("max", <string>this.max);
+
+        if (!Utils.isNullOrEmpty(this.placeholder)) {
+            this._dateInputElement.placeholder = <string>this.placeholder;
+            this._dateInputElement.setAttribute("aria-label", <string>this.placeholder);
+        }
+
         this._dateInputElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-dateInput");
         this._dateInputElement.style.width = "100%";
 
@@ -3590,36 +3628,8 @@ export class DateInput extends Input {
         return "Input.Date";
     }
 
-    toJSON() {
-        let result = super.toJSON();
-
-        Utils.setProperty(result, "min", this.min);
-        Utils.setProperty(result, "max", this.max);
-
-        return result;
-    }
-
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        super.parse(json, errors);
-
-        this.min = Utils.getStringValue(json["min"]);
-        this.max = Utils.getStringValue(json["max"]);
-    }
-
-    get min(): string | undefined {
-        return this._min;
-    }
-
-    set min(value: string | undefined) {
-        this._min = this.parseInputValue(value);
-    }
-
-    get max(): string | undefined {
-        return this._max;
-    }
-
-    set max(value: string | undefined) {
-        this._max = this.parseInputValue(value);
+    isSet(): boolean {
+        return !Utils.isNullOrEmpty(this.value);
     }
 
     get value(): string | undefined {
@@ -3627,10 +3637,59 @@ export class DateInput extends Input {
     }
 }
 
+export class TimePropertyDefinition extends CustomPropertyDefinition<string | undefined> {
+    constructor(readonly targetVersion: Shared.TargetVersion, readonly name: string) {
+        super(
+            targetVersion,
+            name,
+            (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: Shared.IValidationError[]) => {
+                let value = source[property.name];
+    
+                if (typeof value === "string" && !Utils.isNullOrEmpty(value) && /^[0-9]{2}:[0-9]{2}$/.test(value)) {
+                    return value;
+                }
+    
+                return undefined;
+            },
+            (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: string | undefined) => {
+                Utils.setProperty(target, property.name, value);
+            });
+    }
+}
+
 export class TimeInput extends Input {
+    //#region Schema
+
+    static readonly valueProperty = new TimePropertyDefinition(Shared.Versions.v1_0, "value");
+    static readonly placeholderProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "placeholder");
+    static readonly minProperty = new TimePropertyDefinition(Shared.Versions.v1_0, "min");
+    static readonly maxProperty = new TimePropertyDefinition(Shared.Versions.v1_0, "max");
+
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.add(
+            TimeInput.valueProperty,
+            TimeInput.minProperty,
+            TimeInput.maxProperty,
+            TimeInput.placeholderProperty);
+    }
+
+    @schemaProperty(TimeInput.valueProperty)
+    defaultValue?: string;
+
+    @schemaProperty(TimeInput.minProperty)
+    min?: string;
+
+    @schemaProperty(TimeInput.maxProperty)
+    max?: string;
+
+    @schemaProperty(TimeInput.placeholderProperty)
+    placeholder?: string;
+
+    //#endregion
+
     private _timeInputElement: HTMLInputElement;
-    private _min?: string;
-    private _max?: string;
 
     protected internalRender(): HTMLElement | undefined {
         this._timeInputElement = document.createElement("input");
@@ -3641,6 +3700,11 @@ export class TimeInput extends Input {
         this._timeInputElement.style.width = "100%";
         this._timeInputElement.oninput = () => { this.valueChanged(); }
 
+        if (!Utils.isNullOrEmpty(this.placeholder)) {
+            this._timeInputElement.placeholder = <string>this.placeholder;
+            this._timeInputElement.setAttribute("aria-label", <string>this.placeholder);
+        }
+
         if (!Utils.isNullOrEmpty(this.defaultValue)) {
             this._timeInputElement.value = <string>this.defaultValue;
         }
@@ -3648,49 +3712,12 @@ export class TimeInput extends Input {
         return this._timeInputElement;
     }
 
-    protected parseInputValue(value: string | undefined): string | undefined {
-        if (!Utils.isNullOrEmpty(value) && /^[0-9]{2}:[0-9]{2}$/.test(<string>value)) {
-            return value;
-        }
-        else {
-            return undefined;
-        }
-    }
-
     getJsonTypeName(): string {
         return "Input.Time";
     }
 
-    toJSON() {
-        let result = super.toJSON();
-
-        Utils.setProperty(result, "min", this.min);
-        Utils.setProperty(result, "max", this.max);
-
-        return result;
-    }
-
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        super.parse(json, errors);
-
-        this.min = Utils.getStringValue(json["min"]);
-        this.max = Utils.getStringValue(json["max"]);
-    }
-
-    get min(): string | undefined {
-        return this._min;
-    }
-
-    set min(value: string | undefined) {
-        this._min = this.parseInputValue(value);
-    }
-
-    get max(): string | undefined {
-        return this._max;
-    }
-
-    set max(value: string | undefined) {
-        this._max = this.parseInputValue(value);
+    isSet(): boolean {
+        return !Utils.isNullOrEmpty(this.value);
     }
 
     get value(): string | undefined {
@@ -3717,12 +3744,6 @@ class ActionButton {
             if (!Utils.isNullOrEmpty(this._parentContainerStyle)) {
                 this.action.renderedElement.classList.add("style-" + this._parentContainerStyle);
             }
-
-            /*
-            if (this.action instanceof ShowCardAction) {
-                this.action.renderedElement.classList.add(hostConfig.makeCssClassName("expandable"));
-            }
-            */
 
             this.action.updateActionButtonCssStyle(this.action.renderedElement);
 
@@ -4072,7 +4093,7 @@ export class SubmitAction extends Action {
             for (let key of Object.keys(inputs)) {
                 let input = inputs[key];
 
-                if (input.value !== undefined) {
+                if (input.isSet()) {
                     this._processedData[input.id] = input.value;
                 }
             }
