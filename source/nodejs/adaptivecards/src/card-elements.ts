@@ -3885,6 +3885,8 @@ export abstract class Action extends CardObject {
         "requires",
         () => { return new HostCapabilities(); },
         () => { return new HostCapabilities(); });
+    // TODO: Revise this when finalizing input validation
+    static readonly ignoreInputValidationProperty = new BooleanPropertyDefinition(Shared.Versions.vNext, "ignoreInputValidation", false);
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
@@ -3953,6 +3955,12 @@ export abstract class Action extends CardObject {
 
     updateActionButtonCssStyle(actionButtonElement: HTMLElement): void {
         // Do nothing in base implementation
+    }
+
+    parse(json: any, errors?: Shared.IValidationError[]) {
+		super.parse(json, errors);
+
+        raiseParseActionEvent(this, json, errors);
     }
 
     render(baseCssClass: string = "ac-pushButton") {
@@ -4125,21 +4133,19 @@ export class SubmitAction extends Action {
     //#region Schema
 
     static readonly dataProperty = new PropertyDefinition(Shared.Versions.v1_0, "data");
-    // TODO: Revise this when finalizing input validation
-    static readonly ignoreInputValidationProperty = new BooleanPropertyDefinition(Shared.Versions.vNext, "ignoreInputValidation", false);
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
 
         schema.add(
             SubmitAction.dataProperty,
-            SubmitAction.ignoreInputValidationProperty);
+            Action.ignoreInputValidationProperty);
     }
 
     @schemaProperty(SubmitAction.dataProperty)
     private _originalData?: PropertyBag;
 
-    @schemaProperty(SubmitAction.ignoreInputValidationProperty)
+    @schemaProperty(Action.ignoreInputValidationProperty)
     private _ignoreInputValidation: boolean = false;
 
     //#endregion
@@ -4339,36 +4345,56 @@ export class ToggleVisibilityAction extends Action {
     }
 }
 
+class StringWithSubstitutionPropertyDefinition extends TypedPropertyDefinition<Shared.StringWithSubstitutions>  {
+    parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): Shared.StringWithSubstitutions {
+        let result = new Shared.StringWithSubstitutions();
+        result.set(Utils.getStringValue(source[this.name], undefined));
+
+        return result;
+    }
+
+    toJSON(sender: SerializableObject, target: PropertyBag, value: Shared.StringWithSubstitutions): void {
+        Utils.setProperty(target, this.name, value.getOriginal());
+    }
+
+    constructor(
+        readonly targetVersion: Shared.TargetVersion,
+        readonly name: string) {
+        super(targetVersion, name, undefined, () => { return new Shared.StringWithSubstitutions(); });
+    }
+}
+
 export class HttpHeader extends SerializableObject {
-    private _value = new Shared.StringWithSubstitutions();
+    //#region Schema
+
+    static readonly nameProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "name");
+    static readonly valueProperty = new StringWithSubstitutionPropertyDefinition(Shared.Versions.v1_0, "value");
 
     protected getSchemaKey(): string {
         return "HttpHeader";
     }
 
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.add(
+            HttpHeader.nameProperty,
+            HttpHeader.valueProperty);
+    }
+
+    @schemaProperty(HttpHeader.nameProperty)
     name: string;
+
+    @schemaProperty(HttpHeader.valueProperty)
+    private _value: Shared.StringWithSubstitutions;
+
+    //#endregion
 
     constructor(name: string = "", value: string = "") {
         super();
 
         this.name = name;
         this.value = value;
-    }
-
-    parse(json: any) {
-        super.parse(json);
-
-        this.name = Utils.getStringValue(json["name"]);
-        this.value = Utils.getStringValue(json["value"]);
-    }
-
-    toJSON(): any {
-        let result = super.toJSON();
-
-        Utils.setProperty(result, "name", this.name);
-        Utils.setProperty(result, "value", this._value.getOriginal());
-
-        return result;
     }
 
     getReferencedInputs(inputs: Input[], referencedInputs: Shared.Dictionary<Input>) {
@@ -4389,21 +4415,54 @@ export class HttpHeader extends SerializableObject {
 }
 
 export class HttpAction extends Action {
+    //#region Schema
+
+    static readonly urlProperty = new StringWithSubstitutionPropertyDefinition(Shared.Versions.v1_0, "url");
+    static readonly bodyProperty = new StringWithSubstitutionPropertyDefinition(Shared.Versions.v1_0, "body");
+    static readonly methodProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "method");
+    static readonly headersProperty = new SerializableObjectCollectionPropertyDefinition(
+        Shared.Versions.v1_0,
+        "headers",
+        (sender: SerializableObject, sourceItem: any) => { return new HttpHeader(); });
+
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.add(
+            HttpAction.urlProperty,
+            HttpAction.bodyProperty,
+            HttpAction.methodProperty,
+            HttpAction.headersProperty,
+            Action.ignoreInputValidationProperty);
+    }
+
+    @schemaProperty(HttpAction.urlProperty)
+    private _url: Shared.StringWithSubstitutions;
+
+    @schemaProperty(HttpAction.bodyProperty)
+    private _body: Shared.StringWithSubstitutions;
+
+    @schemaProperty(HttpAction.bodyProperty)
+    method?: string;
+
+    @schemaProperty(HttpAction.headersProperty)
+    headers: HttpHeader[] = [];
+
+    @schemaProperty(Action.ignoreInputValidationProperty)
+    private _ignoreInputValidation: boolean = false;
+
+    //#endregion
+
     // Note the "weird" way this field is declared is to work around a breaking
     // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
     static readonly JsonTypeName: "Action.Http" = "Action.Http";
-
-    private _url = new Shared.StringWithSubstitutions();
-    private _body = new Shared.StringWithSubstitutions();
-    private _headers: HttpHeader[] = [];
-    private _ignoreInputValidation: boolean = false;
 
     protected internalGetReferencedInputs(allInputs: Input[]): Shared.Dictionary<Input> {
         let result: Shared.Dictionary<Input> = {};
 
         this._url.getReferencedInputs(allInputs, result);
 
-        for (let header of this._headers) {
+        for (let header of this.headers) {
             header.getReferencedInputs(allInputs, result);
         }
 
@@ -4417,7 +4476,7 @@ export class HttpAction extends Action {
 
         let contentType = Shared.ContentTypes.applicationJson;
 
-        for (let header of this._headers) {
+        for (let header of this.headers) {
             header.prepareForExecution(inputs);
 
             if (!Utils.isNullOrEmpty(header.name) && header.name.toLowerCase() == "content-type") {
@@ -4428,22 +4487,8 @@ export class HttpAction extends Action {
         this._body.substituteInputValues(inputs, contentType);
     };
 
-    method: string;
-
     getJsonTypeName(): string {
         return HttpAction.JsonTypeName;
-    }
-
-    toJSON(): any {
-        let result = super.toJSON();
-
-        Utils.setProperty(result, "method", this.method);
-        Utils.setProperty(result, "url", this._url.getOriginal());
-        Utils.setProperty(result, "body", this._body.getOriginal());
-        Utils.setProperty(result, "ignoreInputValidation", this.ignoreInputValidation, false);
-        Utils.setArrayProperty(result, "headers", this.headers);
-
-        return result;
     }
 
     internalValidateProperties(context: ValidationResults) {
@@ -4472,26 +4517,6 @@ export class HttpAction extends Action {
         }
     }
 
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        super.parse(json, errors);
-
-        this.url = Utils.getStringValue(json["url"]);
-        this.method = Utils.getStringValue(json["method"]);
-        this.body = Utils.getStringValue(json["body"]);
-        this._ignoreInputValidation = <boolean>Utils.getBoolValue(json["ignoreInputValidation"], this._ignoreInputValidation);
-
-        this._headers = [];
-
-        if (Array.isArray(json["headers"])) {
-            for (let jsonHeader of json["headers"]) {
-                let httpHeader = new HttpHeader();
-                httpHeader.parse(jsonHeader);
-
-                this.headers.push(httpHeader);
-            }
-        }
-    }
-
     get ignoreInputValidation(): boolean {
         return this._ignoreInputValidation;
     }
@@ -4514,14 +4539,6 @@ export class HttpAction extends Action {
 
     set body(value: string | undefined) {
         this._body.set(value);
-    }
-
-    get headers(): HttpHeader[] {
-        return this._headers ? this._headers : [];
-    }
-
-    set headers(value: HttpHeader[]) {
-        this._headers = value;
     }
 }
 
