@@ -70,7 +70,7 @@ namespace AdaptiveCards.Rendering
         /// Indicates the style of ShowCard
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public AdaptiveContainerStyle? Style { get; set; } = AdaptiveContainerStyle.Emphasis;
+        public AdaptiveContainerStyle Style { get; set; } = AdaptiveContainerStyle.Emphasis;
 
         /// <summary>
         /// If actionMode is inline this is the margin between the inline card and the actions

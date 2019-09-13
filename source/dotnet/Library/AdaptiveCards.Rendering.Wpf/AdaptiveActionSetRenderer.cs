@@ -131,15 +131,13 @@ namespace AdaptiveCards.Rendering.Wpf
 
                             hasSeenInlineShowCard = true;
 
-                            ///
-
                             Grid uiShowCardContainer = new Grid();
                             uiShowCardContainer.Style = context.GetStyle("Adaptive.Actions.ShowCard");
                             uiShowCardContainer.DataContext = showCardAction;
-                            var padding = context.Config.Spacing.Padding;
-                            uiShowCardContainer.Margin = new Thickness(-padding, actionsConfig.ShowCard.InlineTopMargin, -padding, -padding);
                             uiShowCardContainer.Visibility = Visibility.Collapsed;
-                            //uiShowCardContainer.Background = context.Config.
+                            var padding = context.Config.Spacing.Padding;
+                            // set negative margin to expand the wrapper to the edge of outer most card
+                            uiShowCardContainer.Margin = new Thickness(-padding, actionsConfig.ShowCard.InlineTopMargin, -padding, -padding);
                             var showCardStyleConfig = context.Config.ContainerStyles.GetContainerStyleConfig(actionsConfig.ShowCard.Style);
                             uiShowCardContainer.Background = context.GetColorBrush(showCardStyleConfig.BackgroundColor);
 
@@ -148,27 +146,13 @@ namespace AdaptiveCards.Rendering.Wpf
                             uiShowCardWrapper.Background = context.GetColorBrush("Transparent");
                             uiShowCardWrapper.DataContext = showCardAction;
 
-                            // Remove the card padding
-                            //var innerCard = (Grid)uiShowCardWrapper.Children[0];
-                            //innerCard.Margin = new Thickness(0);
-
                             uiShowCardContainer.Children.Add(uiShowCardWrapper);
                             context.ActionShowCards.Add(uiAction, uiShowCardContainer);
                             // added the rendered show card as a peer
                             context.PeerShowCardsInActionSet[actionSetId].Add(uiShowCardContainer);
                             // define where in the rows of the parent Grid the show card will occupy
                             // and add it to the parent
-                            //var backgroundBorder = new Border();
-                            //var showCardStyleConfig = context.Config.ContainerStyles.GetContainerStyleConfig(actionsConfig.ShowCard.Style);
-                            //backgroundBorder.Background = context.GetColorBrush(showCardStyleConfig.BackgroundColor);
-                            //backgroundBorder.Child = uiShowCardWrapper;
-                            //var showcardMargin = new Thickness(-context.Config.Spacing.Padding, 0, -context.Config.Spacing.Padding, -context.Config.Spacing.Padding);
-                            //backgroundBorder.Margin = showcardMargin;
-                            //uiShowCardContainer.Background= context.GetColorBrush(showCardStyleConfig.BackgroundColor);
-
-                            //Grid.SetRow(backgroundBorder, uiContainer.RowDefinitions.Count - 1);
                             Grid.SetRow(uiShowCardContainer, uiContainer.RowDefinitions.Count - 1);
-                            //uiContainer.Children.Add(backgroundBorder);
                             uiContainer.Children.Add(uiShowCardContainer);
                         }
                         else
