@@ -187,6 +187,8 @@ export class ValidationResults {
 }
 
 export abstract class CardObject extends SerializableObject {
+    //#region Schema
+
     static readonly typeNameProperty = new StringPropertyDefinition(
         Shared.Versions.v1_0,
         "type",
@@ -202,6 +204,16 @@ export abstract class CardObject extends SerializableObject {
         schema.add(
             CardObject.typeNameProperty,
             CardObject.idProperty);
+    }
+
+
+    @schemaProperty(CardObject.idProperty)
+    id: string;
+
+    //#endregion
+
+    protected getSchemaKey(): string {
+        return this.getJsonTypeName();
     }
 
     abstract getJsonTypeName(): string;
@@ -235,9 +247,6 @@ export abstract class CardObject extends SerializableObject {
 
         return result;
     }
-
-    @schemaProperty(CardObject.idProperty)
-    id: string;
 }
 
 export type CardElementHeight = "auto" | "stretch";
@@ -270,7 +279,7 @@ export abstract class CardElement extends CardObject {
         Shared.Versions.v1_2,
         "requires",
         () => { return new HostCapabilities(); },
-        () =>  { return new HostCapabilities(); });
+        () => { return new HostCapabilities(); });
     static readonly minHeightProperty = new PixelSizePropertyDefinition(Shared.Versions.v1_2, "minHeight");
 
     protected populateSchema(schema: SerializableObjectSchema) {
@@ -348,6 +357,11 @@ export abstract class CardElement extends CardObject {
                 raiseElementVisibilityChangedEvent(this);
             }
         }
+    }
+
+    @schemaProperty(CardElement.requiresProperty)
+    get requires(): HostCapabilities {
+        return this.getValue(CardElement.requiresProperty);
     }
 
     //#endregion
@@ -859,10 +873,6 @@ export abstract class CardElement extends CardObject {
 
     get parent(): CardElement | undefined {
         return this._parent;
-    }
-
-    get requires(): HostCapabilities {
-        return this.getValue(CardElement.requiresProperty);
     }
 
     get hasVisibleSeparator(): boolean {
@@ -1660,6 +1670,10 @@ export class Fact extends SerializableObject {
 
     //#endregion
 
+    protected getSchemaKey(): string {
+        return "Fact";
+    }
+
     constructor(name?: string, value?: string) {
         super();
 
@@ -2374,6 +2388,10 @@ export class MediaSource extends SerializableObject {
 
     //#endregion
 
+    protected getSchemaKey(): string {
+        return "MediaSource";
+    }
+
     constructor(url?: string, mimeType?: string) {
         super();
 
@@ -2638,6 +2656,10 @@ export class Media extends CardElement {
 }
 
 export class InputValidationOptions extends SerializableObject {
+    protected getSchemaKey(): string {
+        return "InputValidationOptions";
+    }
+
     necessity: Enums.InputValidationNecessity = Enums.InputValidationNecessity.Optional;
     errorMessage?: string;
 
@@ -3155,6 +3177,10 @@ export class Choice extends SerializableObject {
     value?: string;
 
     //#endregion
+
+    protected getSchemaKey(): string {
+        return "Choice";
+    }
 
     constructor(title?: string, value?: string) {
         super();
@@ -3863,6 +3889,28 @@ export abstract class Action extends CardObject {
         return "";
     }
 
+    parse(json: any, errors?: Shared.IValidationError[]) {
+		super.parse(json, errors);
+
+        raiseParseActionEvent(this, json, errors);
+
+        this.requires.parse(json["requires"], errors);
+
+        if (!json["title"] && json["title"] !== "") {
+            raiseParseError(
+                {
+                    error: Enums.ValidationError.PropertyCantBeNull,
+                    message: "Actions should always have a title."
+                },
+                errors
+            );
+        }
+
+        this.title = Utils.getStringValue(json["title"]);
+        this.iconUrl = Utils.getStringValue(json["iconUrl"]);
+        this.style = Utils.getStringValue(json["style"], this.style);
+    }
+
     toJSON(): any {
 		let result = super.toJSON();
 
@@ -3964,28 +4012,6 @@ export abstract class Action extends CardObject {
 
         return true;
     };
-
-    parse(json: any, errors?: Shared.IValidationError[]) {
-		super.parse(json, errors);
-
-        raiseParseActionEvent(this, json, errors);
-
-        this.requires.parse(json["requires"], errors);
-
-        if (!json["title"] && json["title"] !== "") {
-            raiseParseError(
-                {
-                    error: Enums.ValidationError.PropertyCantBeNull,
-                    message: "Actions should always have a title."
-                },
-                errors
-            );
-        }
-
-        this.title = Utils.getStringValue(json["title"]);
-        this.iconUrl = Utils.getStringValue(json["iconUrl"]);
-        this.style = Utils.getStringValue(json["style"], this.style);
-    }
 
     remove(): boolean {
         if (this._actionCollection) {
@@ -4269,6 +4295,10 @@ export class ToggleVisibilityAction extends Action {
 
 export class HttpHeader extends SerializableObject {
     private _value = new Shared.StringWithSubstitutions();
+
+    protected getSchemaKey(): string {
+        return "HttpHeader";
+    }
 
     name: string;
 
@@ -5290,6 +5320,10 @@ export class BackgroundImage extends SerializableObject {
     private static readonly defaultFillMode = Enums.FillMode.Cover;
     private static readonly defaultHorizontalAlignment = Enums.HorizontalAlignment.Left;
     private static readonly defaultVerticalAlignment = Enums.VerticalAlignment.Top;
+
+    protected getSchemaKey(): string {
+        return "BackgroundImage";
+    }
 
     url?: string;
     fillMode: Enums.FillMode = BackgroundImage.defaultFillMode;

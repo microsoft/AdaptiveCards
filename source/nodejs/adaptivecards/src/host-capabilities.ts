@@ -6,6 +6,10 @@ import * as Serialization from "./serializable-object";
 export class HostCapabilities extends Serialization.SerializableObject {
     private _capabilities: { [key: string]: Shared.TargetVersion } = {};
 
+    protected getSchemaKey(): string {
+        return "HostCapabilities";
+    }
+
     parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
 

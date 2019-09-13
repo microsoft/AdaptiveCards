@@ -374,9 +374,7 @@ export abstract class SerializableObject {
     private _propertyBag: PropertyBag = {};
     private _rawProperties: PropertyBag = {};
 
-    protected getSchemaKey(): string {
-        return this.constructor.name;
-    }
+    protected abstract getSchemaKey(): string;
 
     protected populateSchema(schema: SerializableObjectSchema) {
         // Do nothing in base implementation

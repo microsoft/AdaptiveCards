@@ -327,10 +327,6 @@ export abstract class DesignerPeer extends DraggableElement {
 
         this._parent = parent;
 
-        if (!registration) {
-            alert((<any>this).constructor.name);
-        }
-
         this.registration = registration;
         this.designerSurface = designerSurface;
         this.treeItem = new DesignerPeerTreeItem(this);
