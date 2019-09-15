@@ -146,6 +146,7 @@ namespace AdaptiveCards
         [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveElement>))]
 #if !NETSTANDARD1_3
         [XmlElement(typeof(AdaptiveTextBlock))]
+        [XmlElement(typeof(AdaptiveRichTextBlock))]
         [XmlElement(typeof(AdaptiveImage))]
         [XmlElement(typeof(AdaptiveContainer))]
         [XmlElement(typeof(AdaptiveColumnSet))]
@@ -159,6 +160,7 @@ namespace AdaptiveCards
         [XmlElement(typeof(AdaptiveChoiceSetInput))]
         [XmlElement(typeof(AdaptiveMedia))]
         [XmlElement(typeof(AdaptiveActionSet))]
+        [XmlElement(typeof(AdaptiveUnknownElement))]
 #endif
         public List<AdaptiveElement> Body { get; set; } = new List<AdaptiveElement>();
 
@@ -174,6 +176,7 @@ namespace AdaptiveCards
         [XmlElement(typeof(AdaptiveShowCardAction))]
         [XmlElement(typeof(AdaptiveSubmitAction))]
         [XmlElement(typeof(AdaptiveToggleVisibilityAction))]
+        [XmlElement(typeof(AdaptiveUnknownAction))]
 #endif
         public List<AdaptiveAction> Actions { get; set; } = new List<AdaptiveAction>();
 

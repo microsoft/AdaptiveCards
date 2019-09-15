@@ -34,20 +34,27 @@ namespace AdaptiveCards.Test
             });
 
             XmlSerializer serializer = new XmlSerializer(typeof(AdaptiveCard));
-            foreach (var file in Directory.EnumerateFiles(@"..\..\..\..\..\..\..\samples\v1.0\Scenarios"))
+            foreach (var version in Directory.EnumerateDirectories(@"..\..\..\..\..\..\..\samples\", "v*"))
             {
-                string json = File.ReadAllText(file);
-                var card = JsonConvert.DeserializeObject<AdaptiveCard>(json, new JsonSerializerSettings
+                var folder = Path.Combine($"{version}\\scenarios");
+                if (Directory.Exists(folder))
                 {
-                    Converters = { new StrictIntConverter() }
-                });
-                StringBuilder sb = new StringBuilder();
-                serializer.Serialize(new StringWriter(sb), card);
-                string xml = sb.ToString();
-                var card2 = (AdaptiveCard)serializer.Deserialize(new StringReader(xml));
+                    foreach (var file in Directory.EnumerateFiles(folder, "*.json"))
+                    {
+                        string json = File.ReadAllText(file);
+                        var card = JsonConvert.DeserializeObject<AdaptiveCard>(json, new JsonSerializerSettings
+                        {
+                            Converters = { new StrictIntConverter() }
+                        });
+                        StringBuilder sb = new StringBuilder();
+                        serializer.Serialize(new StringWriter(sb), card);
+                        string xml = sb.ToString();
+                        var card2 = (AdaptiveCard)serializer.Deserialize(new StringReader(xml));
 
-                var result = compareLogic.Compare(card, card2);
-                Assert.IsTrue(result.AreEqual, result.DifferencesString);
+                        var result = compareLogic.Compare(card, card2);
+                        Assert.IsTrue(result.AreEqual, $"{Path.GetFullPath(file)}: {result.DifferencesString}");
+                    }
+                }
             }
         }
     }

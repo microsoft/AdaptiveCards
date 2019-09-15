@@ -9,13 +9,13 @@ namespace AdaptiveCards
 {
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
 #if !NETSTANDARD1_3
-    [XmlType(TypeName = AdaptiveTextBlock.TypeName)]
+    [XmlType(TypeName = AdaptiveTextRun.TypeName)]
 #endif
-    public class AdaptiveTextRun : IAdaptiveTextElement, IAdaptiveInline
+    public class AdaptiveTextRun : AdaptiveInline, IAdaptiveTextElement
     {
         public const string TypeName = "TextRun";
 
-        public string Type { get; set; } = TypeName;
+        public override string Type { get; set; } = TypeName;
 
         public AdaptiveTextRun()
         {
