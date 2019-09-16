@@ -21,11 +21,6 @@ export class PropertyDefinition {
 }
 
 export abstract class TypedPropertyDefinition<T> extends PropertyDefinition {
-    /*
-    abstract parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): T | undefined;
-    abstract toJSON(sender: SerializableObject, target: PropertyBag, value: T | undefined): void;
-    */
-
     constructor(
         readonly targetVersion: Shared.TargetVersion,
         readonly name: string,
@@ -41,7 +36,7 @@ export class StringPropertyDefinition extends TypedPropertyDefinition<string> {
         let isUndefined = parsedValue === undefined || (parsedValue === "" && this.treatEmptyAsUndefined);
 
         if (!isUndefined && this.regEx !== undefined) {
-            let matches = this.regEx.exec(parsedValue);
+            let matches = this.regEx.exec(<string>parsedValue);
 
             if (!matches) {
                 // TODO: Log parse error

@@ -46,44 +46,46 @@ function createCardObjectInstance<T extends CardObject>(
 
     if (json && typeof json === "object") {
         let tryToFallback = false;
-        let typeName = Utils.getStringValue(json["type"]);
+        let typeName = Utils.getStringValue(json["type"], undefined);
         
-        if (forbiddenTypeNames && forbiddenTypeNames.indexOf(typeName) >= 0) {
-            raiseParseError(createValidationErrorCallback(typeName, InstanceCreationErrorType.ForbiddenType), errors);
-        }
-        else {
-            result = createInstanceCallback(typeName);
-
-            if (!result) {
-                tryToFallback = allowFallback;
-
-                raiseParseError(createValidationErrorCallback(typeName, InstanceCreationErrorType.UnknownType), errors);
+        if (!Utils.isNullOrEmpty(typeName)) {
+            if (forbiddenTypeNames.indexOf(<string>typeName) >= 0) {
+                raiseParseError(createValidationErrorCallback(<string>typeName, InstanceCreationErrorType.ForbiddenType), errors);
             }
             else {
-                result.setParent(parent);
-                result.parse(json, errors);
+                result = createInstanceCallback(<string>typeName);
 
-                tryToFallback = result.shouldFallback() && allowFallback;
-            }
+                if (!result) {
+                    tryToFallback = allowFallback;
 
-            if (tryToFallback) {
-                let fallback = json["fallback"];
-
-                if (!fallback && parent) {
-                    parent.setShouldFallback(true);
+                    raiseParseError(createValidationErrorCallback(<string>typeName, InstanceCreationErrorType.UnknownType), errors);
                 }
-                if (typeof fallback === "string" && fallback.toLowerCase() === "drop") {
-                    result = undefined;
+                else {
+                    result.setParent(parent);
+                    result.parse(json, errors);
+
+                    tryToFallback = result.shouldFallback() && allowFallback;
                 }
-                else if (typeof fallback === "object") {
-                    result = createCardObjectInstance<T>(
-                        parent,
-                        fallback,
-                        forbiddenTypeNames,
-                        true,
-                        createInstanceCallback,
-                        createValidationErrorCallback,
-                        errors);
+
+                if (tryToFallback) {
+                    let fallback = json["fallback"];
+
+                    if (!fallback && parent) {
+                        parent.setShouldFallback(true);
+                    }
+                    if (typeof fallback === "string" && fallback.toLowerCase() === "drop") {
+                        result = undefined;
+                    }
+                    else if (typeof fallback === "object") {
+                        result = createCardObjectInstance<T>(
+                            parent,
+                            fallback,
+                            forbiddenTypeNames,
+                            true,
+                            createInstanceCallback,
+                            createValidationErrorCallback,
+                            errors);
+                    }
                 }
             }
         }
@@ -3222,7 +3224,7 @@ export class ChoiceSetInput extends Input {
             let style = Utils.getStringValue(source[property.name], property.defaultValue);
 
             if (!Utils.isNullOrEmpty(style)) {
-                return !(style.toLowerCase() === "expanded");
+                return !((<string>style).toLowerCase() === "expanded");
             }
             else {
                 return property.defaultValue;
