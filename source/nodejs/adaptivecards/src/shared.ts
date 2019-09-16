@@ -154,7 +154,7 @@ export class SizeAndUnit {
 	physicalSize: number;
 	unit: Enums.SizeUnit;
 
-	static parse(input: any, requireUnitSpecifier: boolean = false): SizeAndUnit {
+	static parse(input: string, requireUnitSpecifier: boolean = false): SizeAndUnit {
 		let result = new SizeAndUnit(0, Enums.SizeUnit.Weight);
 
 		let regExp = /^([0-9]+)(px|\*)?$/g;

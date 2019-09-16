@@ -153,9 +153,11 @@ export class ValueSetPropertyDefinition extends TypedPropertyDefinition<string> 
     parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): string | undefined {
         let parsedValue = Utils.getStringValue(source[this.name], this.defaultValue);
 
-        for (let value of this.values) {
-            if (parsedValue.toLowerCase() === value.value) {
-                return value.value;
+        if (parsedValue !== undefined) {
+            for (let value of this.values) {
+                if (parsedValue.toLowerCase() === value.value) {
+                    return value.value;
+                }
             }
         }
 
@@ -217,20 +219,32 @@ export class EnumPropertyDefinition<TEnum extends { [s: number]: string }> exten
 
 export class SerializableObjectPropertyDefinition<T extends SerializableObject> extends TypedPropertyDefinition<T> {
     parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): T | undefined {
-        let result = this.onCreateInstance(sender);
-        result.parse(source[this.name]);
+        let result: T | undefined = undefined;
+        let sourceValue = source[this.name];
+
+        if (typeof sourceValue === "object") {
+            result = this.onCreateInstance(sender);
+            result.parse(sourceValue);
+
+            if (result === undefined && this.onGetInitialValue) {
+                result = this.onGetInitialValue(sender);
+            }
+        }
+        else if (this.onGetInitialValue) {
+            result = this.onGetInitialValue(sender);
+        }
 
         return result;
     }
 
     toJSON(sender: SerializableObject, target: PropertyBag, value: T | undefined) {
-        if (value !== undefined) {
-            let serializedValue = value.toJSON();
+        let serializedValue = value !== undefined ? value.toJSON() : value;
 
-            if (Object.keys(serializedValue).length > 0) {
-                target[this.name] = serializedValue;
-            }
+        if (typeof serializedValue === "object" && Object.keys(serializedValue).length === 0) {
+            serializedValue = undefined;
         }
+
+        super.toJSON(sender, target, serializedValue);
     }
 
     constructor(
@@ -268,7 +282,7 @@ export class SerializableObjectCollectionPropertyDefinition<T extends Serializab
             }
         }
 
-        return result.length > 0 ? result : undefined;
+        return result.length > 0 ? result : (this.onGetInitialValue ? this.onGetInitialValue(sender) : undefined);
     }
 
     toJSON(sender: SerializableObject, target: PropertyBag, value: T[] | undefined) {
@@ -338,15 +352,17 @@ export class SerializableObjectSchema {
         }
     }
 
-    remove(property: PropertyDefinition) {
-        while (true) {
-            let index = this.indexOf(property);
+    remove(...properties: PropertyDefinition[]) {
+        for (let property of properties) {
+            while (true) {
+                let index = this.indexOf(property);
 
-            if (index >= 0) {
-                this._properties.splice(index, 1);
-            }
-            else {
-                break;
+                if (index >= 0) {
+                    this._properties.splice(index, 1);
+                }
+                else {
+                    break;
+                }
             }
         }
     }
@@ -444,6 +460,34 @@ export abstract class SerializableObject {
         }
 
         return result;
+    }
+
+    hasDefaultValue(property: PropertyDefinition): boolean {
+        return this.getValue(property) === property.defaultValue;
+    }
+
+    hasAllDefaultValues(): boolean {
+        let s = this.getSchema();
+
+        for (let i = 0; i < s.getCount(); i++) {
+            let property = s.getItemAt(i);
+
+            if (!this.hasDefaultValue(property)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    resetDefaultValues() {
+        let s = this.getSchema();
+
+        for (let i = 0; i < s.getCount(); i++) {
+            let property = s.getItemAt(i);
+
+            this.setValue(property, property.defaultValue);
+        }
     }
 
     setCustomProperty(name: string, value: any) {

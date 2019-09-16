@@ -212,7 +212,6 @@ export abstract class CardObject extends SerializableObject {
             CardObject.requiresProperty);
     }
 
-
     @schemaProperty(CardObject.idProperty)
     id: string;
 
@@ -292,7 +291,6 @@ export abstract class CardElement extends CardObject {
         super.populateSchema(schema);
 
         schema.add(
-            CardElement.langProperty,
             CardElement.isVisibleProperty,
             CardElement.separatorProperty,
             CardElement.heightProperty,
@@ -2434,6 +2432,36 @@ export class MediaSource extends SerializableObject {
 }
 
 export class Media extends CardElement {
+    //#region Schema
+
+    static readonly sourcesProperty = new SerializableObjectCollectionPropertyDefinition<MediaSource>(
+        Shared.Versions.v1_1,
+        "sources",
+        (sender: SerializableObject, sourceItem: any) => { return new MediaSource(); },
+        (sender: SerializableObject) => { return []; });
+    static readonly posterProperty = new StringPropertyDefinition(Shared.Versions.v1_1, "poster");
+    static readonly altTextProperty = new StringPropertyDefinition(Shared.Versions.v1_1, "altText");
+
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.add(
+            Media.sourcesProperty,
+            Media.posterProperty,
+            Media.altTextProperty);
+    }
+
+    @schemaProperty(Media.sourcesProperty)
+    sources: MediaSource[] = [];
+
+    @schemaProperty(Media.posterProperty)
+    poster?: string;
+
+    @schemaProperty(Media.altTextProperty)
+    altText?: string;
+
+    //#endregion
+
     static readonly supportedMediaTypes = ["audio", "video"];
 
     private _selectedMediaType?: string;
@@ -2610,36 +2638,6 @@ export class Media extends CardElement {
 
     static onPlay: (sender: Media) => void;
 
-    //#region Schema
-
-    static readonly sourcesProperty = new SerializableObjectCollectionPropertyDefinition<MediaSource>(
-        Shared.Versions.v1_1,
-        "sources",
-        (sourceItem: any) => { return new MediaSource(); },
-        (sender: object) => { return []; });
-    static readonly posterProperty = new StringPropertyDefinition(Shared.Versions.v1_1, "poster");
-    static readonly altTextProperty = new StringPropertyDefinition(Shared.Versions.v1_1, "altText");
-
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        schema.add(
-            Media.sourcesProperty,
-            Media.posterProperty,
-            Media.altTextProperty);
-    }
-
-    @schemaProperty(Media.sourcesProperty)
-    sources: MediaSource[] = [];
-
-    @schemaProperty(Media.posterProperty)
-    poster?: string;
-
-    @schemaProperty(Media.altTextProperty)
-    altText?: string;
-
-    //#endregion
-
     getJsonTypeName(): string {
         return "Media";
     }
@@ -2673,32 +2671,33 @@ export class Media extends CardElement {
 }
 
 export class InputValidationOptions extends SerializableObject {
+    //#region Schema
+
+    static readonly necessityProperty = new EnumPropertyDefinition(Shared.Versions.vNext, "necessity", Enums.InputValidationNecessity, Enums.InputValidationNecessity.Optional);
+    static readonly errorMessageProperty = new StringPropertyDefinition(Shared.Versions.vNext, "errorMessagwe");
+
     protected getSchemaKey(): string {
         return "InputValidationOptions";
     }
 
-    necessity: Enums.InputValidationNecessity = Enums.InputValidationNecessity.Optional;
-    errorMessage?: string;
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
 
-    parse(json: any) {
-        super.parse(json);
-
-        this.necessity = <Enums.InputValidationNecessity>Utils.getEnumValue(Enums.InputValidationNecessity, json["necessity"], this.necessity);
-        this.errorMessage = Utils.getStringValue(json["errorMessage"]);
+        schema.add(
+            InputValidationOptions.necessityProperty,
+            InputValidationOptions.errorMessageProperty);
     }
 
+    @schemaProperty(InputValidationOptions.necessityProperty)
+    necessity: Enums.InputValidationNecessity = Enums.InputValidationNecessity.Optional;
+
+    @schemaProperty(InputValidationOptions.errorMessageProperty)
+    errorMessage?: string;
+
+    //#endregion
+
     toJSON(): any {
-        if (this.necessity != Enums.InputValidationNecessity.Optional || !Utils.isNullOrEmpty(this.errorMessage)) {
-            let result = super.toJSON();
-
-            Utils.setEnumProperty(Enums.InputValidationNecessity, result, "necessity", this.necessity, Enums.InputValidationNecessity.Optional);
-            Utils.setProperty(result, "errorMessage", this.errorMessage);
-
-            return result;
-        }
-        else {
-            return undefined;
-        }
+        return this.hasAllDefaultValues() ? undefined : super.toJSON();
     }
 }
 
@@ -2787,31 +2786,28 @@ export abstract class Input extends CardElement implements Shared.IInput {
 
     onValueChanged: (sender: Input) => void;
 
-    readonly validation = new InputValidationOptions();
-
     //#region Schema
 
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        super.parse(json, errors);
+    static readonly validationProperty = new SerializableObjectPropertyDefinition<InputValidationOptions>(
+        Shared.Versions.vNext,
+        "validation",
+        (sender: SerializableObject) => { return new InputValidationOptions(); },
+        (sender: SerializableObject) => { return new InputValidationOptions(); });
+
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
 
         if (Shared.GlobalSettings.useBuiltInInputValidation) {
-            let jsonValidation = json["validation"];
-
-            if (jsonValidation) {
-                this.validation.parse(jsonValidation);
-            }
+            schema.add(Input.validationProperty);
         }
     }
 
-    toJSON(): any {
-        let result = super.toJSON();
-
-        if (Shared.GlobalSettings.useBuiltInInputValidation) {
-            Utils.setProperty(result, "validation", this.validation.toJSON());
-        }
-
-        return result;
+    @schemaProperty(Input.validationProperty)
+    get validation(): InputValidationOptions {
+        return this.getValue(Input.validationProperty);
     }
+
+    //#endregion
 
     abstract isSet(): boolean;
 
@@ -4781,7 +4777,7 @@ class ActionCollection {
     parse(json: any, errors?: Shared.IValidationError[]) {
         this.clear();
 
-        if (json && json instanceof Array) {
+        if (Array.isArray(json)) {
             for (let jsonAction of json) {
                 let action = createActionInstance(
                     this._owner,
@@ -5103,13 +5099,26 @@ class ActionCollection {
 }
 
 export class ActionSet extends CardElement {
+    //#region Schema
+
+    static readonly orientationProperty = new EnumPropertyDefinition(Shared.Versions.v1_1, "orientation", Enums.Orientation);
+
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.add(ActionSet.orientationProperty);
+    }
+
+    @schemaProperty(ActionSet.orientationProperty)
+    orientation?: Enums.Orientation;
+
+    //#endregion
+
     private _actionCollection: ActionCollection;
 
     protected internalRender(): HTMLElement | undefined {
-        return this._actionCollection.render(this.orientation ? this.orientation : this.hostConfig.actions.actionsOrientation, this.isDesignMode());
+        return this._actionCollection.render(this.orientation !== undefined ? this.orientation : this.hostConfig.actions.actionsOrientation, this.isDesignMode());
     }
-
-    orientation?: Enums.Orientation;
 
     constructor() {
         super();
@@ -5117,10 +5126,15 @@ export class ActionSet extends CardElement {
         this._actionCollection = new ActionCollection(this);
     }
 
+    parse(json: any, errors?: Shared.IValidationError[]) {
+        super.parse(json, errors);
+
+        this._actionCollection.parse(json["actions"], errors);
+    }
+
     toJSON(): any {
         let result = super.toJSON();
 
-        Utils.setEnumProperty(Enums.Orientation, result, "orientation", this.orientation);
         Utils.setProperty(result, "actions", this._actionCollection.toJSON());
 
         return result;
@@ -5163,18 +5177,6 @@ export class ActionSet extends CardElement {
         this._actionCollection.validateProperties(context);
     }
 
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        super.parse(json, errors);
-
-        let jsonOrientation = json["orientation"];
-
-        if (jsonOrientation) {
-            this.orientation = Utils.getEnumValue(Enums.Orientation, jsonOrientation, Enums.Orientation.Horizontal);
-        }
-
-        this._actionCollection.parse(json["actions"], errors);
-    }
-
     addAction(action: Action) {
         this._actionCollection.addAction(action);
     }
@@ -5193,8 +5195,48 @@ export class ActionSet extends CardElement {
 }
 
 export abstract class StylableCardElementContainer extends CardElementContainer {
-    private _style?: string;
+    //#region Schema
+
+    static readonly styleProperty = new ValueSetPropertyDefinition(
+        Shared.Versions.v1_0,
+        "style",
+        [
+            { value: Enums.ContainerStyle.Default },
+            { value: Enums.ContainerStyle.Emphasis },
+            { targetVersion: Shared.Versions.v1_2, value: Enums.ContainerStyle.Accent },
+            { targetVersion: Shared.Versions.v1_2, value: Enums.ContainerStyle.Good },
+            { targetVersion: Shared.Versions.v1_2, value: Enums.ContainerStyle.Attention },
+            { targetVersion: Shared.Versions.v1_2, value: Enums.ContainerStyle.Warning }
+        ]);
+    static readonly bleedProperty = new BooleanPropertyDefinition(Shared.Versions.v1_1, "bleed", false);
+
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.add(StylableCardElementContainer.styleProperty);
+    }
+
+    @schemaProperty(StylableCardElementContainer.styleProperty)
+    get style(): string | undefined {
+        if (this.allowCustomStyle) {
+            let style = this.getValue(StylableCardElementContainer.styleProperty);
+
+            if (style && this.hostConfig.containerStyles.getStyleByName(style)) {
+                return style;
+            }
+        }
+
+        return undefined;
+    }
+
+    set style(value: string | undefined) {
+        this.setValue(StylableCardElementContainer.styleProperty, value);
+    }
+
+    @schemaProperty(StylableCardElementContainer.bleedProperty)
     private _bleed: boolean = false;
+
+    //#endregion
 
     protected applyBackground() {
         if (this.renderedElement) {
@@ -5302,7 +5344,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
     }
 
     protected get hasExplicitStyle(): boolean {
-        return this._style !== undefined;
+        return this.getValue(StylableCardElementContainer.styleProperty) !== undefined;
     }
 
     protected get allowCustomStyle(): boolean {
@@ -5317,35 +5359,23 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 		return (this.getHasBackground() || this.hostConfig.alwaysAllowBleed) && this.getBleed();
     }
 
-    toJSON(): any {
-        let result = super.toJSON();
-
-        Utils.setProperty(result, "style", this.style);
-
-        return result;
-    }
-
     internalValidateProperties(context: ValidationResults) {
         super.internalValidateProperties(context);
 
-        if (this._style) {
-            let styleDefinition = this.hostConfig.containerStyles.getStyleByName(this._style);
+        let explicitStyle = this.getValue(StylableCardElementContainer.styleProperty);
+
+        if (explicitStyle !== undefined) {
+            let styleDefinition = this.hostConfig.containerStyles.getStyleByName(explicitStyle);
 
             if (!styleDefinition) {
                 context.addFailure(
                     this,
                     {
                         error: Enums.ValidationError.InvalidPropertyValue,
-                        message: "Unknown container style: " + this._style
+                        message: "Unknown container style: " + explicitStyle
                     });
             }
         }
-    }
-
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        super.parse(json, errors);
-
-        this._style = Utils.getStringValue(json["style"]);
     }
 
     render(): HTMLElement | undefined {
@@ -5363,50 +5393,54 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 
         return effectiveStyle ? effectiveStyle : super.getEffectiveStyle();
     }
-
-    get style(): string | undefined {
-        if (this.allowCustomStyle) {
-            if (this._style && this.hostConfig.containerStyles.getStyleByName(this._style)) {
-                return this._style;
-            }
-        }
-
-        return undefined;
-    }
-
-    set style(value: string | undefined) {
-        this._style = value;
-    }
 }
 
 export class BackgroundImage extends SerializableObject {
-    private static readonly defaultFillMode = Enums.FillMode.Cover;
-    private static readonly defaultHorizontalAlignment = Enums.HorizontalAlignment.Left;
-    private static readonly defaultVerticalAlignment = Enums.VerticalAlignment.Top;
+    //#region Schema
+
+    static readonly urlProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "url");
+    static readonly fillModeProperty = new EnumPropertyDefinition(Shared.Versions.v1_2, "fillMode", Enums.FillMode, Enums.FillMode.Cover);
+    static readonly horizontalAlignmentProperty = new EnumPropertyDefinition(Shared.Versions.v1_2, "horizontalAlignment", Enums.HorizontalAlignment, Enums.HorizontalAlignment.Left);
+    static readonly verticalAlignmentProperty = new EnumPropertyDefinition(Shared.Versions.v1_2, "verticalAlignment", Enums.VerticalAlignment, Enums.VerticalAlignment.Top);
+
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.add(
+            BackgroundImage.urlProperty,
+            BackgroundImage.fillModeProperty,
+            BackgroundImage.horizontalAlignmentProperty,
+            BackgroundImage.verticalAlignmentProperty);
+    }
+
+    @schemaProperty(BackgroundImage.urlProperty)
+    url?: string;
+
+    @schemaProperty(BackgroundImage.fillModeProperty)
+    fillMode: Enums.FillMode;
+
+    @schemaProperty(BackgroundImage.horizontalAlignmentProperty)
+    horizontalAlignment: Enums.HorizontalAlignment;
+
+    @schemaProperty(BackgroundImage.verticalAlignmentProperty)
+    verticalAlignment: Enums.VerticalAlignment;
+
+    //#endregion
 
     protected getSchemaKey(): string {
         return "BackgroundImage";
     }
 
-    url?: string;
-    fillMode: Enums.FillMode = BackgroundImage.defaultFillMode;
-    horizontalAlignment: Enums.HorizontalAlignment = BackgroundImage.defaultHorizontalAlignment;
-    verticalAlignment: Enums.VerticalAlignment = BackgroundImage.defaultVerticalAlignment;
+    parse(source: any, errors?: Shared.IValidationError[]) {
+        if (typeof source === "string") {
+            let result = new BackgroundImage();
+            result.url = source;
 
-    reset(): void {
-        this.url = undefined;
-        this.fillMode = BackgroundImage.defaultFillMode;
-        this.horizontalAlignment = BackgroundImage.defaultHorizontalAlignment;
-        this.verticalAlignment = BackgroundImage.defaultVerticalAlignment;
-    }
-
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        super.parse(json, errors);
-
-        this.url = Utils.getStringValue(json["url"]);
-        this.fillMode = <Enums.FillMode>Utils.getEnumValue(Enums.FillMode, json["fillMode"], this.fillMode);
-        this.horizontalAlignment = <Enums.HorizontalAlignment>Utils.getEnumValue(Enums.HorizontalAlignment, json["horizontalAlignment"], this.horizontalAlignment);
-        this.verticalAlignment = <Enums.VerticalAlignment>Utils.getEnumValue(Enums.VerticalAlignment, json["verticalAlignment"], this.verticalAlignment);
+            return result;
+        }
+        else {
+            return super.parse(source, errors);
+        }
     }
 
     toJSON(): any {
@@ -5414,21 +5448,14 @@ export class BackgroundImage extends SerializableObject {
             return undefined;
         }
 
-        if (this.fillMode == BackgroundImage.defaultFillMode &&
-            this.horizontalAlignment == BackgroundImage.defaultHorizontalAlignment &&
-            this.verticalAlignment == BackgroundImage.defaultVerticalAlignment) {
+        if (this.hasDefaultValue(BackgroundImage.fillModeProperty) &&
+            this.hasDefaultValue(BackgroundImage.horizontalAlignmentProperty) &&
+            this.hasDefaultValue(BackgroundImage.verticalAlignmentProperty)) {
 
             return this.url;
         }
         else {
-            let result = super.toJSON();
-
-            Utils.setProperty(result, "url", this.url);
-            Utils.setEnumProperty(Enums.FillMode, result, "fillMode", this.fillMode, BackgroundImage.defaultFillMode);
-            Utils.setEnumProperty(Enums.HorizontalAlignment, result, "horizontalAlignment", this.horizontalAlignment, BackgroundImage.defaultHorizontalAlignment);
-            Utils.setEnumProperty(Enums.VerticalAlignment, result, "verticalAlignment", this.verticalAlignment, BackgroundImage.defaultVerticalAlignment);
-
-            return result;
+            return super.toJSON();
         }
     }
 
@@ -5648,29 +5675,66 @@ export class Container extends StylableCardElementContainer {
         return true;
     }
 
-    readonly backgroundImage: BackgroundImage = new BackgroundImage();
+    //#region Schema
 
+    static readonly backgroundImageProperty = new SerializableObjectPropertyDefinition<BackgroundImage>(
+        Shared.Versions.v1_0,
+        "backgroundImage",
+        (sender: SerializableObject) => { return new BackgroundImage(); },
+        (sender: SerializableObject) => { return new BackgroundImage(); });
+    static readonly verticalContentAlignmentProperty = new EnumPropertyDefinition(Shared.Versions.v1_1, "verticalContentAlignment", Enums.VerticalAlignment, Enums.VerticalAlignment.Top);
+    static readonly rtlProperty = new BooleanPropertyDefinition(Shared.Versions.v1_0, "rtl");
+
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.add(
+            Container.backgroundImageProperty,
+            Container.verticalContentAlignmentProperty,
+            Container.rtlProperty,
+            Container.bleedProperty);
+    }
+
+    @schemaProperty(Container.backgroundImageProperty)
+    get backgroundImage(): BackgroundImage {
+        return this.getValue(Container.backgroundImageProperty);
+    }
+
+    @schemaProperty(Container.verticalContentAlignmentProperty)
     verticalContentAlignment: Enums.VerticalAlignment = Enums.VerticalAlignment.Top;
+
+    @schemaProperty(Container.rtlProperty)
     rtl?: boolean;
+
+    //#endregion
+
+    parse(json: any, errors?: Shared.IValidationError[]) {
+        super.parse(json, errors);
+
+        this.clear();
+        this.setShouldFallback(false);
+
+        let jsonItems = json[this.getItemsCollectionPropertyName()];
+
+        if (Array.isArray(jsonItems)) {
+            for (let item of jsonItems) {
+                let element = createElementInstance(
+                    this,
+                    item,
+                    !this.isDesignMode(),
+                    errors);
+
+                if (element) {
+                    this.insertItemAt(element, -1, true);
+                }
+            }
+        }
+    }
 
     toJSON(): any {
         let result = super.toJSON();
 
-        Utils.setProperty(result, "backgroundImage", this.backgroundImage.toJSON());
-
-        Utils.setEnumProperty(Enums.VerticalAlignment, result, "verticalContentAlignment", this.verticalContentAlignment, Enums.VerticalAlignment.Top);
-
-        if (this._items.length > 0) {
-            let elements = [];
-
-            for (let element of this._items) {
-                elements.push(element.toJSON());
-            }
-
-            Utils.setProperty(result, this.getItemsCollectionPropertyName(), elements);
-        }
-
-        Utils.setProperty(result, "bleed", this.bleed, false);
+        Utils.setArrayProperty(result, this.getItemsCollectionPropertyName(), this._items);
 
         return result;
     }
@@ -5758,51 +5822,6 @@ export class Container extends StylableCardElementContainer {
         return this.isBleeding() || (lastRenderedItem ? lastRenderedItem.isBleedingAtBottom() && lastRenderedItem.getEffectiveStyle() == this.getEffectiveStyle() : false);
     }
 
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        super.parse(json, errors);
-
-        this.setShouldFallback(false);
-
-        this._items = [];
-        this._renderedItems = [];
-
-        this.backgroundImage.reset();
-
-        let jsonBackgroundImage = json["backgroundImage"];
-
-        if (jsonBackgroundImage) {
-            if (typeof jsonBackgroundImage === "string") {
-                this.backgroundImage.url = jsonBackgroundImage;
-                this.backgroundImage.fillMode = Enums.FillMode.Cover;
-            }
-            else if (typeof jsonBackgroundImage === "object") {
-                this.backgroundImage.parse(jsonBackgroundImage, errors);
-            }
-        }
-
-        this.verticalContentAlignment = <Enums.VerticalAlignment>Utils.getEnumValue(Enums.VerticalAlignment, json["verticalContentAlignment"], this.verticalContentAlignment);
-
-        if (json[this.getItemsCollectionPropertyName()] != null) {
-            let items = json[this.getItemsCollectionPropertyName()] as any[];
-
-            this.clear();
-
-            for (let i = 0; i < items.length; i++) {
-                let element = createElementInstance(
-                    this,
-                    items[i],
-                    !this.isDesignMode(),
-                    errors);
-
-                if (element) {
-                    this.insertItemAt(element, -1, true);
-                }
-            }
-        }
-
-        this.bleed = <boolean>Utils.getBoolValue(json["bleed"], this.bleed);
-    }
-
     indexOf(cardElement: CardElement): number {
         return this._items.indexOf(cardElement);
     }
@@ -5837,6 +5856,7 @@ export class Container extends StylableCardElementContainer {
 
     clear() {
         this._items = [];
+        this._renderedItems = [];
     }
 
     getResourceInformation(): Shared.IResourceInformation[] {
@@ -5904,6 +5924,72 @@ export class Container extends StylableCardElementContainer {
 export type ColumnWidth = Shared.SizeAndUnit | "auto" | "stretch";
 
 export class Column extends Container {
+    //#region Schema
+
+    static readonly widthProperty = new CustomPropertyDefinition<ColumnWidth>(
+        Shared.Versions.v1_0,
+        "width",
+        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: Shared.IValidationError[]) => {
+            let result: ColumnWidth = property.defaultValue;
+            let value = source[property.name];
+            let invalidWidth = false;
+    
+            if (typeof value === "number" && !isNaN(value)) {
+                result = new Shared.SizeAndUnit(value, Enums.SizeUnit.Weight);
+            }
+            else if (value === "auto" || value === "stretch") {
+                result = value;
+            }
+            // TODO: Check for version before parsing pixel width
+            else if (typeof value === "string") {
+                try {
+                    result = Shared.SizeAndUnit.parse(value);
+                }
+                catch (e) {
+                    invalidWidth = true;
+                }    
+            }
+            else {
+                invalidWidth = true;
+            }
+
+            if (invalidWidth) {
+                raiseParseError(
+                    {
+                        error: Enums.ValidationError.InvalidPropertyValue,
+                        message: "Invalid column width:" + value + " - defaulting to \"auto\""
+                    },
+                    errors
+                );
+            }
+
+            return result;
+        },
+        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: ColumnWidth) => {
+            if (value instanceof Shared.SizeAndUnit) {
+                if (value.unit === Enums.SizeUnit.Pixel) {
+                    Utils.setProperty(target, "width", value.physicalSize + "px");
+                }
+                else {
+                    Utils.setNumberProperty(target, "width", value.physicalSize);
+                }
+            }
+            else {
+                Utils.setProperty(target, "width", value);
+            }
+        });
+
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.add(Column.widthProperty);
+    }
+
+    @schemaProperty(Column.widthProperty)
+    width: ColumnWidth = "auto";
+
+    //#endregion
+
     private _computedWeight: number = 0;
 
     protected adjustRenderedElementSize(renderedElement: HTMLElement) {
@@ -5944,8 +6030,6 @@ export class Column extends Container {
         return Enums.Orientation.Vertical;
     }
 
-    width: ColumnWidth = "auto";
-
     constructor(width: ColumnWidth = "auto") {
         super();
 
@@ -5954,70 +6038,6 @@ export class Column extends Container {
 
     getJsonTypeName(): string {
         return "Column";
-    }
-
-    toJSON(): any {
-        let result = super.toJSON();
-
-        if (this.width instanceof Shared.SizeAndUnit) {
-            if (this.width.unit == Enums.SizeUnit.Pixel) {
-                Utils.setProperty(result, "width", this.width.physicalSize + "px");
-            }
-            else {
-                Utils.setProperty(result, "width", this.width.physicalSize);
-            }
-        }
-        else {
-            Utils.setProperty(result, "width", this.width);
-        }
-
-        return result;
-    }
-
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        super.parse(json, errors);
-
-        let jsonWidth = json["width"];
-
-        if (jsonWidth === undefined) {
-            jsonWidth = json["size"];
-
-            if (jsonWidth !== undefined) {
-                raiseParseError(
-                    {
-                        error: Enums.ValidationError.Deprecated,
-                        message: "The \"Column.size\" property is deprecated and will be removed. Use the \"Column.width\" property instead."
-                    },
-                    errors
-                );
-            }
-        }
-
-        if (jsonWidth) {
-            let invalidWidth = false;
-
-            try {
-                this.width = Shared.SizeAndUnit.parse(jsonWidth);
-            }
-            catch (e) {
-                if (typeof jsonWidth === "string" && (jsonWidth === "auto" || jsonWidth === "stretch")) {
-                    this.width = jsonWidth;
-                }
-                else {
-                    invalidWidth = true;
-                }
-            }
-
-            if (invalidWidth) {
-                raiseParseError(
-                    {
-                        error: Enums.ValidationError.InvalidPropertyValue,
-                        message: "Invalid column width:" + jsonWidth + " - defaulting to \"auto\""
-                    },
-                    errors
-                );
-            }
-        }
     }
 
     get hasVisibleSeparator(): boolean {
@@ -6035,6 +6055,16 @@ export class Column extends Container {
 }
 
 export class ColumnSet extends StylableCardElementContainer {
+    //#region Schema
+
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.add(Container.bleedProperty);
+    }
+
+    //#endregion
+
     private _columns: Column[] = [];
     private _renderedColumns: Column[];
 
@@ -6148,20 +6178,29 @@ export class ColumnSet extends StylableCardElementContainer {
         return true;
     }
 
+    parse(json: any, errors?: Shared.IValidationError[]) {
+        super.parse(json, errors);
+
+        this._columns = [];
+        this._renderedColumns = [];
+
+        let jsonColumns = json["columns"];
+
+        if (Array.isArray(jsonColumns)) {
+            for (let item of jsonColumns) {
+                let column = this.createColumnInstance(item, errors);
+
+                if (column) {
+                    this._columns.push(column);
+                }
+            }
+        }
+    }
+
     toJSON(): any {
         let result = super.toJSON();
 
-        if (this._columns.length > 0) {
-            let columns = [];
-
-            for (let column of this._columns) {
-                columns.push(column.toJSON());
-            }
-
-            Utils.setProperty(result, "columns", columns);
-        }
-
-        Utils.setProperty(result, "bleed", this.bleed, false);
+        Utils.setArrayProperty(result, "columns", this._columns);
 
         return result;
     }
@@ -6244,26 +6283,6 @@ export class ColumnSet extends StylableCardElementContainer {
 
     getJsonTypeName(): string {
         return "ColumnSet";
-    }
-
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        super.parse(json, errors);
-
-        if (json["columns"] != null) {
-            let jsonColumns = json["columns"] as any[];
-
-            this._columns = [];
-
-            for (let i = 0; i < jsonColumns.length; i++) {
-                let column = this.createColumnInstance(jsonColumns[i], errors);
-
-                if (column) {
-                    this._columns.push(column);
-                }
-            }
-        }
-
-        this.bleed = <boolean>Utils.getBoolValue(json["bleed"], this.bleed);
     }
 
     internalValidateProperties(context: ValidationResults) {
@@ -6399,10 +6418,8 @@ function raiseExecuteActionEvent(action: Action) {
     let card = action.parent ? action.parent.getRootElement() as AdaptiveCard : undefined;
     let onExecuteActionHandler = (card && card.onExecuteAction) ? card.onExecuteAction : AdaptiveCard.onExecuteAction;
 
-    if (onExecuteActionHandler) {
-        if (action.prepareForExecution()) {
-            onExecuteActionHandler(action);
-        }
+    if (action.prepareForExecution() && onExecuteActionHandler) {
+        onExecuteActionHandler(action);
     }
 }
 
@@ -6531,6 +6548,12 @@ export abstract class ContainerWithActions extends Container {
         this._actionCollection = new ActionCollection(this);
     }
 
+    parse(json: any, errors?: Shared.IValidationError[]) {
+        super.parse(json, errors);
+
+        this._actionCollection.parse(json["actions"], errors);
+    }
+
     toJSON(): any {
         let result = super.toJSON();
 
@@ -6556,12 +6579,6 @@ export abstract class ContainerWithActions extends Container {
         let result: Action | undefined = this._actionCollection.getActionById(id);
 
         return result ? result : super.getActionById(id);
-    }
-
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        super.parse(json, errors);
-
-        this._actionCollection.parse(json["actions"], errors);
     }
 
     internalValidateProperties(context: ValidationResults) {
@@ -6717,7 +6734,63 @@ export interface IMarkdownProcessingResult {
 }
 
 export class AdaptiveCard extends ContainerWithActions {
-    private static currentVersion: Shared.Version = new Shared.Version(1, 2);
+    static readonly schemaUrl = "http://adaptivecards.io/schemas/adaptive-card.json";
+
+    //#region Schema
+
+    protected static readonly $schemaProperty = new CustomPropertyDefinition<string>(
+        Shared.Versions.v1_0,
+        "$schema",
+        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: Shared.IValidationError[]) => {
+            return AdaptiveCard.schemaUrl;
+        },
+        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: Shared.Versions | undefined) => {
+            Utils.setProperty(target, property.name, AdaptiveCard.schemaUrl);
+        });
+
+    static readonly versionProperty = new CustomPropertyDefinition<Shared.Version | undefined>(
+        Shared.Versions.v1_0,
+        "version",
+        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: Shared.IValidationError[]) => {
+            return Shared.Version.parse(source[property.name], errors);
+        },
+        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: Shared.Versions | undefined) => {
+            if (value !== undefined) {
+                Utils.setProperty(target, property.name, value.toString());
+            }
+        },
+        Shared.Versions.v1_0);
+    static readonly fallbackTextProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "fallbackText");
+    static readonly speakProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "speak");
+
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.add(
+            AdaptiveCard.$schemaProperty,
+            AdaptiveCard.versionProperty,
+            CardElement.langProperty,
+            AdaptiveCard.fallbackTextProperty,
+            AdaptiveCard.speakProperty);
+    }
+
+    /*
+    @schemaProperty(AdaptiveCard.$schemaProperty)
+    private get $schema(): string {
+        return this.getValue(AdaptiveCard.$schemaProperty);
+    }
+    */
+
+    @schemaProperty(AdaptiveCard.versionProperty)
+    version: Shared.Version;
+
+    @schemaProperty(AdaptiveCard.fallbackTextProperty)
+    fallbackText?: string;
+
+    @schemaProperty(AdaptiveCard.speakProperty)
+    speak?: string;
+
+    //#endregion
 
     static readonly elementTypeRegistry = new ElementTypeRegistry();
     static readonly actionTypeRegistry = new ActionTypeRegistry();
@@ -6762,7 +6835,6 @@ export class AdaptiveCard extends ContainerWithActions {
         return result;
     }
 
-    private _cardTypeName?: string = "AdaptiveCard";
     private _fallbackCard?: AdaptiveCard;
 
     private isVersionSupported(): boolean {
@@ -6773,8 +6845,8 @@ export class AdaptiveCard extends ContainerWithActions {
             let unsupportedVersion: boolean =
                 !this.version ||
                 !this.version.isValid ||
-                (AdaptiveCard.currentVersion.major < this.version.major) ||
-                (AdaptiveCard.currentVersion.major == this.version.major && AdaptiveCard.currentVersion.minor < this.version.minor);
+                (Shared.Versions.latest.major < this.version.major) ||
+                (Shared.Versions.latest.major == this.version.major && Shared.Versions.latest.minor < this.version.minor);
 
             return !unsupportedVersion;
         }
@@ -6834,35 +6906,33 @@ export class AdaptiveCard extends ContainerWithActions {
     onParseElement?: (element: CardElement, json: any, errors?: Shared.IValidationError[]) => void;
     onParseAction?: (element: Action, json: any, errors?: Shared.IValidationError[]) => void;
 
-    version?: Shared.Version = new Shared.Version(1, 0);
-    fallbackText: string;
-    speak: string;
     designMode: boolean = false;
 
     getJsonTypeName(): string {
         return "AdaptiveCard";
     }
 
-    toJSON(): any {
-        let result = super.toJSON();
+    parse(json: any, errors?: Shared.IValidationError[]) {
+        this._fallbackCard = undefined;
 
-        Utils.setProperty(result, "$schema", "http://adaptivecards.io/schemas/adaptive-card.json");
+        let fallbackElement = createElementInstance(
+            undefined,
+            json["fallback"],
+            !this.isDesignMode(),
+            errors);
 
-        if (!this.bypassVersionCheck && this.version) {
-            Utils.setProperty(result, "version", this.version.toString());
+        if (fallbackElement) {
+            this._fallbackCard = new AdaptiveCard();
+            this._fallbackCard.addItem(fallbackElement);
         }
 
-        Utils.setProperty(result, "fallbackText", this.fallbackText);
-        Utils.setProperty(result, "lang", this.lang);
-        Utils.setProperty(result, "speak", this.speak);
-
-        return result;
+        super.parse(json, errors);
     }
 
     internalValidateProperties(context: ValidationResults) {
         super.internalValidateProperties(context);
 
-        if (this._cardTypeName != "AdaptiveCard") {
+        if (this.getValue(CardElement.typeNameProperty) !== "AdaptiveCard") {
             context.addFailure(
                 this,
                 {
@@ -6884,50 +6954,9 @@ export class AdaptiveCard extends ContainerWithActions {
                 this,
                 {
                     error: Enums.ValidationError.UnsupportedCardVersion,
-                    message: "The specified card version (" + this.version + ") is not supported. The maximum supported card version is " + AdaptiveCard.currentVersion
+                    message: "The specified card version (" + this.version + ") is not supported. The maximum supported card version is " + Shared.Versions.latest
                 });
         }
-    }
-
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        this._fallbackCard = undefined;
-
-        this._cardTypeName = Utils.getStringValue(json["type"]);
-        this.speak = Utils.getStringValue(json["speak"]);
-
-		let langId = Utils.getStringValue(json["lang"]);
-
-        if (langId && typeof langId === "string") {
-            try {
-                this.lang = langId;
-            }
-            catch (e) {
-                raiseParseError(
-                    {
-                        error: Enums.ValidationError.InvalidPropertyValue,
-                        message: e.message
-                    },
-                    errors
-                );
-            }
-        }
-
-        this.version = Shared.Version.parse(json["version"], errors);
-
-        this.fallbackText = Utils.getStringValue(json["fallbackText"]);
-
-        let fallbackElement = createElementInstance(
-            undefined,
-            json["fallback"],
-            !this.isDesignMode(),
-            errors);
-
-        if (fallbackElement) {
-            this._fallbackCard = new AdaptiveCard();
-            this._fallbackCard.addItem(fallbackElement);
-        }
-
-        super.parse(json, errors);
     }
 
     render(target?: HTMLElement): HTMLElement | undefined {
@@ -6946,7 +6975,7 @@ export class AdaptiveCard extends ContainerWithActions {
                 renderedCard.tabIndex = 0;
 
                 if (!Utils.isNullOrEmpty(this.speak)) {
-                    renderedCard.setAttribute("aria-label", this.speak);
+                    renderedCard.setAttribute("aria-label", <string>this.speak);
                 }
             }
         }
@@ -6980,6 +7009,22 @@ export class AdaptiveCard extends ContainerWithActions {
 }
 
 class InlineAdaptiveCard extends AdaptiveCard {
+    //#region Schema
+
+    protected getSchemaKey(): string {
+        return "InlineAdaptiveCard";
+    }
+
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.remove(
+            AdaptiveCard.$schemaProperty,
+            AdaptiveCard.versionProperty);
+    }
+
+    //#endregion
+
     protected getDefaultPadding(): Shared.PaddingDefinition {
         return new Shared.PaddingDefinition(
             this.suppressStyle ? Enums.Spacing.None : Enums.Spacing.Padding,
