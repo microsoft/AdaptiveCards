@@ -18,15 +18,15 @@ export function appendChild(node: Node, child: Node | undefined) {
     }
 }
 
-export function getStringValue(obj: any, defaultValue: string | undefined): string | undefined {
+export function getStringValue(obj: any, defaultValue?: string): string | undefined {
     return typeof obj === "string" ? obj.toString() : defaultValue;
 }
 
-export function getNumberValue(obj: any, defaultValue: number | undefined): number | undefined {
+export function getNumberValue(obj: any, defaultValue?: number): number | undefined {
     return typeof obj === "number" ? obj : defaultValue;
 }
 
-export function getBoolValue(value: any, defaultValue: boolean | undefined): boolean | undefined {
+export function getBoolValue(value: any, defaultValue?: boolean): boolean | undefined {
     if (typeof value === "boolean") {
         return value;
     }
@@ -44,7 +44,7 @@ export function getBoolValue(value: any, defaultValue: boolean | undefined): boo
     return defaultValue;
 }
 
-export function getEnumValue(targetEnum: { [s: number]: string }, name: string, defaultValue: number | undefined): number | undefined {
+export function getEnumValue(targetEnum: { [s: number]: string }, name: string, defaultValue?: number): number | undefined {
     if (isNullOrEmpty(name)) {
         return defaultValue;
     }

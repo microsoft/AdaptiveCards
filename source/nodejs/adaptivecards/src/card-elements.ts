@@ -46,7 +46,7 @@ function createCardObjectInstance<T extends CardObject>(
 
     if (json && typeof json === "object") {
         let tryToFallback = false;
-        let typeName = Utils.getStringValue(json["type"], undefined);
+        let typeName = Utils.getStringValue(json["type"]);
         
         if (!Utils.isNullOrEmpty(typeName)) {
             if (forbiddenTypeNames.indexOf(<string>typeName) >= 0) {
@@ -1799,7 +1799,7 @@ export class FactSet extends CardElement {
 
 class ImageDimensionProperty extends TypedPropertyDefinition<number> {
     parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): number | undefined {
-        let result: number | undefined = Utils.getNumberValue(source[this.legacyPropertyName], undefined);
+        let result: number | undefined = Utils.getNumberValue(source[this.legacyPropertyName]);
 
         if (result) {
             raiseParseError(
@@ -4268,7 +4268,7 @@ export class ToggleVisibilityAction extends Action {
                         let elementId = item["elementId"];
     
                         if (typeof elementId === "string") {
-                            result[elementId] = Utils.getBoolValue(item["isVisible"], undefined);
+                            result[elementId] = Utils.getBoolValue(item["isVisible"]);
                         }
                     }
                 }
@@ -4346,7 +4346,7 @@ export class ToggleVisibilityAction extends Action {
 class StringWithSubstitutionPropertyDefinition extends TypedPropertyDefinition<Shared.StringWithSubstitutions>  {
     parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): Shared.StringWithSubstitutions {
         let result = new Shared.StringWithSubstitutions();
-        result.set(Utils.getStringValue(source[this.name], undefined));
+        result.set(Utils.getStringValue(source[this.name]));
 
         return result;
     }
