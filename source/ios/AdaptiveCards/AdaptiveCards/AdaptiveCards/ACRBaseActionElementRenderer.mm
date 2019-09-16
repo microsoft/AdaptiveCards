@@ -9,13 +9,13 @@
 
 @implementation ACRBaseActionElementRenderer
 
-- (UIButton* )renderButton:(UIViewController *)vc
+- (UIButton *)renderButton:(UIViewController *)vc
                     inputs:(NSMutableArray *)inputs
                  superview:(UIView *)superview
          baseActionElement:(ACOBaseActionElement *)acoElem
-             hostConfig:(ACOHostConfig *)config;
+                hostConfig:(ACOHostConfig *)config;
 {
-   return nil;
+    return nil;
 }
 
 @end

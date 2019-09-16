@@ -127,6 +127,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="lib\AdaptiveHighlightColorConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveRequirement.cpp" />
     <ClCompile Include="lib\ElementTagContent.cpp" />
     <ClInclude Include="lib\AdaptiveActionElement.h" />
     <ClInclude Include="lib\AdaptiveActionInvoker.h" />
@@ -176,6 +177,7 @@
     <ClInclude Include="lib\AdaptiveRemoteResourceInformation.h" />
     <ClInclude Include="lib\AdaptiveRenderArgs.h" />
     <ClInclude Include="lib\AdaptiveRenderContext.h" />
+    <ClInclude Include="lib\AdaptiveRequirement.h" />
     <ClInclude Include="lib\AdaptiveRichTextBlock.h" />
     <ClInclude Include="lib\AdaptiveRichTextBlockRenderer.h" />
     <ClInclude Include="lib\AdaptiveSeparator.h" />

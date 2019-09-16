@@ -8,10 +8,10 @@
 @class ACRView;
 @class ACRRenderer;
 
-#import <Foundation/Foundation.h>
 #import "ACRViewController.h"
+#import <Foundation/Foundation.h>
 
-@interface ACRRenderResult:NSObject
+@interface ACRRenderResult : NSObject
 
 @property ACRView *view;
 @property ACRViewController *viewcontroller;

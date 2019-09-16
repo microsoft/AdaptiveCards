@@ -12,10 +12,9 @@
 - (instancetype)init:(ACOHostConfig *)config errors:(NSArray<NSError *> *)errors
 {
     self = [super init];
-    if(self)
-    {
+    if (self) {
         _config = config;
-        _isValid = (_config)? YES : NO;
+        _isValid = (_config) ? YES : NO;
         _parseErrors = errors;
     }
     return self;

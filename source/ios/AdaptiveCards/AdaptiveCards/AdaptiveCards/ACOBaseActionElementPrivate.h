@@ -9,7 +9,7 @@
 
 using namespace AdaptiveCards;
 
-@interface ACOBaseActionElement()
+@interface ACOBaseActionElement ()
 
 - (instancetype)initWithBaseActionElement:(std::shared_ptr<BaseActionElement> const &)element;
 - (std::shared_ptr<BaseActionElement>)element;

@@ -7,8 +7,8 @@
 
 #import "ACRBaseActionElementRenderer.h"
 
-@interface ACRCustomActionRenderer: ACRBaseActionElementRenderer
+@interface ACRCustomActionRenderer : ACRBaseActionElementRenderer
 
-+ (ACRCustomActionRenderer* ) getInstance;
++ (ACRCustomActionRenderer *)getInstance;
 
 @end

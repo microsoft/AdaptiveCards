@@ -1129,8 +1129,8 @@ namespace AdaptiveNamespace
             RETURN_IF_FAILED(renderArgs->put_AncestorHasFallback(elementHasFallback || ancestorHasFallback));
 
             // Check to see if element's requirements are being met
-            boolean requirementsMet;
-            RETURN_IF_FAILED(element->MeetsRequirements(featureRegistration.Get(), &requirementsMet));
+            bool requirementsMet;
+            RETURN_IF_FAILED(MeetsRequirements(element, featureRegistration.Get(), &requirementsMet));
             hr = requirementsMet ? S_OK : E_PERFORM_FALLBACK;
 
             // Get element renderer

@@ -18,12 +18,12 @@ export function appendChild(node: Node, child: Node | undefined) {
     }
 }
 
-export function getStringValue(obj: any, defaultValue: string | undefined = undefined): string {
-    return (typeof obj !== 'undefined') ? obj.toString() : defaultValue;
+export function getStringValue(obj: any, defaultValue: string | undefined): string | undefined {
+    return typeof obj === "string" ? obj.toString() : defaultValue;
 }
 
-export function getNumberValue(obj: any, defaultValue: number | undefined = undefined): number | undefined {
-    return obj && typeof obj === "number" ? obj : defaultValue;
+export function getNumberValue(obj: any, defaultValue: number | undefined): number | undefined {
+    return typeof obj === "number" ? obj : defaultValue;
 }
 
 export function getBoolValue(value: any, defaultValue: boolean | undefined): boolean | undefined {

@@ -17,27 +17,26 @@
 /* not implemented ATM */
 - (void)setSeparationConfig:(UIView *)viewGroup
 {
-            //SeparationStyle separationStyle,
-            //SeparationConfig defaultSeparationConfig,
-            //SeparationConfig strongSeparationConfig,
-            //(Boolean) horizontalLine)
+    //SeparationStyle separationStyle,
+    //SeparationConfig defaultSeparationConfig,
+    //SeparationConfig strongSeparationConfig,
+    //(Boolean) horizontalLine)
 }
 
 - (UIView *)render:(UIStackView *)viewGroup
-            rootView:(ACRView *)rootView
-            inputs:(NSMutableArray *)inputs
-   baseCardElement:(ACOBaseCardElement *)acoElem
-        hostConfig:(ACOHostConfig *)acoConfig;
+           rootView:(ACRView *)rootView
+             inputs:(NSMutableArray *)inputs
+    baseCardElement:(ACOBaseCardElement *)acoElem
+         hostConfig:(ACOHostConfig *)acoConfig;
 {
-   return viewGroup;
+    return viewGroup;
 }
 
 + (void)applyLayoutStyle:(NSString *)styleFormat viewsMap:(NSDictionary *)viewsMap
 {
     NSArray<NSLayoutConstraint *> *constraints;
 
-    for(NSString *key in viewsMap)
-    {
+    for (NSString *key in viewsMap) {
         NSString *formatString = [[NSString alloc] initWithFormat:styleFormat, key];
         constraints = [NSLayoutConstraint constraintsWithVisualFormat:formatString
                                                               options:0

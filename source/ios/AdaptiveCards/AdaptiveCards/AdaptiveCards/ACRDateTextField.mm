@@ -7,8 +7,8 @@
 
 #import "ACRDateTextField.h"
 #import "DateInput.h"
-#import "TimeInput.h"
 #import "DateTimePreparser.h"
+#import "TimeInput.h"
 
 using namespace AdaptiveCards;
 
@@ -24,8 +24,7 @@ using namespace AdaptiveCards;
 {
     NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
     self = [super init];
-    if(self)
-    {
+    if (self) {
         NSString *valueStr = nil;
         NSString *placeHolderStr = nil;
         NSString *minDateStr = nil;
@@ -41,61 +40,58 @@ using namespace AdaptiveCards;
         self.isRequired = elem->GetIsRequired();
 
         DateTimePreparser preparser;
-        
-        if(dateStyle == NSDateFormatterShortStyle)
-        {
+
+        if (dateStyle == NSDateFormatterShortStyle) {
             std::shared_ptr<DateInput> dateInput = std::dynamic_pointer_cast<DateInput>(elem);
-            
+
             placeHolderStr = [NSString stringWithCString:dateInput->GetPlaceholder().c_str()
                                                 encoding:NSUTF8StringEncoding];
-            
+
             unsigned int year, month, day;
             if (preparser.TryParseSimpleDate(dateInput->GetValue(), year, month, day)) {
                 valueStr = [NSString stringWithFormat:@"%u-%u-%u", year, month, day];
             }
-            
+
             year = month = day = 0;
             NSString *minDateStr = nil, *maxDateStr = nil;
             if (preparser.TryParseSimpleDate(dateInput->GetMin(), year, month, day)) {
                 minDateStr = [NSString stringWithFormat:@"%u-%u-%u", year, month, day];
             }
-            
+
             year = month = day = 0;
             if (preparser.TryParseSimpleDate(dateInput->GetMax(), year, month, day)) {
                 maxDateStr = [NSString stringWithFormat:@"%u-%u-%u", year, month, day];
             }
-            
+
             formatter.timeStyle = NSDateFormatterNoStyle;
 
             [formatter setDateFormat:@"yyyy-MM-dd"];
 
             picker.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
             picker.datePickerMode = UIDatePickerModeDate;
-        }
-        else
-        {
+        } else {
             std::shared_ptr<TimeInput> timeInput = std::dynamic_pointer_cast<TimeInput>(elem);
 
             placeHolderStr = [NSString stringWithCString:timeInput->GetPlaceholder().c_str()
                                                 encoding:NSUTF8StringEncoding];
-            
+
             unsigned int hours = 0, minutes = 0;
             if (preparser.TryParseSimpleTime(timeInput->GetValue(), hours, minutes)) {
                 valueStr = [NSString stringWithFormat:@"%u:%u", hours, minutes];
             }
-            
+
             hours = minutes = 0;
             NSString *minDateStr = nil, *maxDateStr = nil;
-            
+
             if (preparser.TryParseSimpleTime(timeInput->GetMin(), hours, minutes)) {
                 minDateStr = [NSString stringWithFormat:@"%u:%u", hours, minutes];
             }
-            
-            hours = minutes = 0;            
+
+            hours = minutes = 0;
             if (preparser.TryParseSimpleTime(timeInput->GetMax(), hours, minutes)) {
                 maxDateStr = [NSString stringWithFormat:@"%u:%u", hours, minutes];
             }
-            
+
             minDateStr = [NSString stringWithCString:timeInput->GetMin().c_str()
                                             encoding:NSUTF8StringEncoding];
             maxDateStr = [NSString stringWithCString:timeInput->GetMax().c_str()
@@ -131,7 +127,7 @@ using namespace AdaptiveCards;
         UIToolbar *bar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, picker.frame.size.width, 44)];
         [bar setBarStyle:UIBarStyleBlackOpaque];
 
-        bar.items = @[button];
+        bar.items = @[ button ];
         button.tintColor = [UIColor blackColor];
 
         self.inputAccessoryView = bar;
@@ -156,21 +152,16 @@ using namespace AdaptiveCards;
 {
     BOOL isValidated = YES;
     isValidated = [super validate:error];
-    if(isValidated == YES)
-    {
+    if (isValidated == YES) {
         NSDate *date = [self.formatter dateFromString:self.text];
-        if([date compare:self.min] == NSOrderedAscending)
-        {
-            if(error)
-            {
+        if ([date compare:self.min] == NSOrderedAscending) {
+            if (error) {
                 *error = [NSError errorWithDomain:ACRInputErrorDomain code:ACRInputErrorLessThanMinDate userInfo:nil];
             }
             return NO;
         }
-        if([date compare:self.max] == NSOrderedDescending)
-        {
-            if(error)
-            {
+        if ([date compare:self.max] == NSOrderedDescending) {
+            if (error) {
                 *error = [NSError errorWithDomain:ACRInputErrorDomain code:ACRInputErrorGreaterThanMaxDate userInfo:nil];
             }
             return NO;
