@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "Util.h"
 #include "AdaptiveColorConfig.h"
@@ -59,6 +61,6 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveColorConfig::put_HighlightColors(_In_ IAdaptiveHighlightColorConfig* highlightColors)
     {
         m_highlightColors = highlightColors;
-        return S_OK; 
+        return S_OK;
     }
 }

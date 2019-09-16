@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InputToggleExtended should be rendered correctly 1`] = `
+<div
+  style="display: flex; flex-direction: column; box-sizing: border-box; flex: 0 0 auto;"
+>
+  <div
+    class="ac-input-container"
+    style="display: flex;"
+  >
+    <div
+      style="width: 100%; min-width: 0px;"
+    >
+      <div
+        class="ms-Toggle is-checked is-enabled root-46"
+      >
+        <label
+          class="ms-Label ms-Toggle-label label-52"
+          for="Toggle1"
+          id="Toggle1-label"
+        >
+          Are you sure?
+        </label>
+        <div
+          class="ms-Toggle-innerContainer container-48"
+        >
+          <button
+            aria-checked="true"
+            aria-labelledby="Toggle1-label"
+            class="ms-Toggle-background pill-49"
+            data-is-focusable="true"
+            id="Toggle1"
+            role="switch"
+            type="button"
+          >
+            <div
+              class="ms-Toggle-thumb thumb-50"
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

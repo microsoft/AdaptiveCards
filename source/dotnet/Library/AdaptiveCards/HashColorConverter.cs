@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
@@ -21,7 +23,7 @@ namespace AdaptiveCards
             if (reader.TokenType == JsonToken.String)
             {
                 var colorString = defaultSerializer.Deserialize(reader, objectType) as string;
-                // We need to have a string in the format #AARRGGBB or #RRGGBB               
+                // We need to have a string in the format #AARRGGBB or #RRGGBB
                 if (ColorUtil.IsValidColor(colorString))
                 {
                     // We have the right format, and all the digits are hex, return the string

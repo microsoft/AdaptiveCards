@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "SharedAdaptiveCard.h"
 #include "ParseUtil.h"
@@ -12,7 +14,8 @@
 using namespace AdaptiveSharedNamespace;
 
 AdaptiveCard::AdaptiveCard() :
-    m_style(ContainerStyle::None), m_verticalContentAlignment(VerticalContentAlignment::Top), m_height(HeightType::Auto), m_minHeight(0)
+    m_style(ContainerStyle::None), m_verticalContentAlignment(VerticalContentAlignment::Top), m_height(HeightType::Auto),
+    m_minHeight(0), m_inputNecessityIndicators(InputNecessityIndicators::None), m_internalId{InternalId::Next()}
 {
 }
 
@@ -27,7 +30,8 @@ AdaptiveCard::AdaptiveCard(std::string const& version,
                            unsigned int minHeight) :
     m_version(version),
     m_fallbackText(fallbackText), m_speak(speak), m_style(style), m_language(language),
-    m_verticalContentAlignment(verticalContentAlignment), m_height(height), m_minHeight(minHeight)
+    m_verticalContentAlignment(verticalContentAlignment), m_height(height), m_minHeight(minHeight),
+    m_inputNecessityIndicators(InputNecessityIndicators::None), m_internalId{InternalId::Next()}
 {
     m_backgroundImage = std::make_shared<BackgroundImage>(backgroundImageUrl);
 }
@@ -45,8 +49,8 @@ AdaptiveCard::AdaptiveCard(std::string const& version,
                            std::vector<std::shared_ptr<BaseActionElement>>& actions) :
     m_version(version),
     m_fallbackText(fallbackText), m_speak(speak), m_style(style), m_language(language),
-    m_verticalContentAlignment(verticalContentAlignment), m_height(height), m_minHeight(minHeight),
-    m_body(body), m_actions(actions)
+    m_verticalContentAlignment(verticalContentAlignment), m_height(height), m_minHeight(minHeight), m_body(body),
+    m_actions(actions), m_inputNecessityIndicators(InputNecessityIndicators::None), m_internalId{InternalId::Next()}
 {
     m_backgroundImage = std::make_shared<BackgroundImage>(backgroundImageUrl);
 }
@@ -62,7 +66,8 @@ AdaptiveCard::AdaptiveCard(std::string const& version,
                            unsigned int minHeight) :
     m_version(version),
     m_fallbackText(fallbackText), m_backgroundImage(backgroundImage), m_speak(speak), m_style(style),
-    m_language(language), m_verticalContentAlignment(verticalContentAlignment), m_height(height), m_minHeight(minHeight)
+    m_language(language), m_verticalContentAlignment(verticalContentAlignment), m_height(height), m_minHeight(minHeight),
+    m_inputNecessityIndicators(InputNecessityIndicators::None), m_internalId{InternalId::Next()}
 {
 }
 
@@ -79,7 +84,8 @@ AdaptiveCard::AdaptiveCard(std::string const& version,
                            std::vector<std::shared_ptr<BaseActionElement>>& actions) :
     m_version(version),
     m_fallbackText(fallbackText), m_backgroundImage(backgroundImage), m_speak(speak), m_style(style), m_language(language),
-    m_verticalContentAlignment(verticalContentAlignment), m_height(height), m_minHeight(minHeight), m_body(body), m_actions(actions)
+    m_verticalContentAlignment(verticalContentAlignment), m_height(height), m_minHeight(minHeight), m_body(body),
+    m_actions(actions), m_inputNecessityIndicators(InputNecessityIndicators::None), m_internalId{InternalId::Next()}
 {
 }
 
@@ -201,11 +207,11 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json, 
     HeightType height =
         ParseUtil::GetEnumValue<HeightType>(json, AdaptiveCardSchemaKey::Height, HeightType::Auto, HeightTypeFromString);
 
-    unsigned int minHeight = 
+    unsigned int minHeight =
         ParseSizeForPixelSize(ParseUtil::GetString(json, AdaptiveCardSchemaKey::MinHeight), &context.warnings);
 
     // Parse body
-    auto body = ParseUtil::GetElementCollection(context, json, AdaptiveCardSchemaKey::Body, false);
+    auto body = ParseUtil::GetElementCollection<BaseCardElement>(true, context, json, AdaptiveCardSchemaKey::Body, false);
     // Parse actions if present
     auto actions = ParseUtil::GetActionCollection(context, json, AdaptiveCardSchemaKey::Actions, false);
 
@@ -217,6 +223,9 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json, 
 
     // Parse optional selectAction
     result->SetSelectAction(ParseUtil::GetAction(context, json, AdaptiveCardSchemaKey::SelectAction, false));
+
+    result->SetInputNecessityIndicators(ParseUtil::GetEnumValue<InputNecessityIndicators>(
+        json, AdaptiveCardSchemaKey::InputNecessityIndicators, InputNecessityIndicators::None, InputNecessityIndicatorsFromString));
 
     return std::make_shared<ParseResult>(result, context.warnings);
 }
@@ -292,6 +301,12 @@ Json::Value AdaptiveCard::SerializeToJsonValue() const
     if (height != HeightType::Auto)
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height)] = HeightTypeToString(GetHeight());
+    }
+
+    if (m_inputNecessityIndicators != InputNecessityIndicators::None)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::InputNecessityIndicators)] =
+            InputNecessityIndicatorsToString(m_inputNecessityIndicators);
     }
 
     std::string bodyPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Body);
@@ -461,6 +476,16 @@ unsigned int AdaptiveCard::GetMinHeight() const
 void AdaptiveCard::SetMinHeight(const unsigned int value)
 {
     m_minHeight = value;
+}
+
+InputNecessityIndicators AdaptiveCard::GetInputNecessityIndicators() const
+{
+    return m_inputNecessityIndicators;
+}
+
+void AdaptiveCard::SetInputNecessityIndicators(const InputNecessityIndicators value)
+{
+    m_inputNecessityIndicators = value;
 }
 
 std::vector<RemoteResourceInformation> AdaptiveCard::GetResourceInformation()

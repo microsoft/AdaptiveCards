@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer;
 
 import android.app.Activity;
@@ -14,10 +16,13 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import io.adaptivecards.objectmodel.ActionMode;
 import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.BaseActionElement;
+import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.IsVisible;
@@ -25,6 +30,7 @@ import io.adaptivecards.objectmodel.ShowCardAction;
 import io.adaptivecards.objectmodel.ToggleVisibilityAction;
 import io.adaptivecards.objectmodel.ToggleVisibilityTarget;
 import io.adaptivecards.objectmodel.ToggleVisibilityTargetVector;
+import io.adaptivecards.objectmodel.WarningStatusCode;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 public abstract class BaseActionElementRenderer implements IBaseActionElementRenderer
@@ -74,113 +80,35 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
     /**
      * Callback to be invoked when an select action for a card element is clicked
      */
-    public static class SelectActionOnClickListener implements View.OnClickListener
+    public static class SelectActionOnClickListener extends ActionOnClickListener
     {
 
         public SelectActionOnClickListener(RenderedAdaptiveCard renderedCard, BaseActionElement action, ICardActionHandler cardActionHandler)
         {
-            m_action = action;
-            m_renderedAdaptiveCard = renderedCard;
-            m_cardActionHandler = cardActionHandler;
+            super(renderedCard, action, cardActionHandler);
 
-            if(m_action.GetElementType() == ActionType.ToggleVisibility)
+            if (m_action.GetElementType() == ActionType.ShowCard)
             {
-                m_toggleVisibilityAction = null;
-                if (m_action instanceof ToggleVisibilityAction)
-                {
-                    m_toggleVisibilityAction = (ToggleVisibilityAction) m_action;
-                }
-                else if ((m_toggleVisibilityAction = ToggleVisibilityAction.dynamic_cast(m_action)) == null)
-                {
-                    throw new InternalError("Unable to convert BaseActionElement to ToggleVisibilityAction object model.");
-                }
-            }
-        }
-
-        private void populateViewsDictionary()
-        {
-            m_viewDictionary = new HashMap<>();
-
-            ToggleVisibilityTargetVector toggleVisibilityTargetVector = m_toggleVisibilityAction.GetTargetElements();
-            View rootView = m_renderedAdaptiveCard.getView();
-
-            for (int i = 0; i < toggleVisibilityTargetVector.size(); ++i)
-            {
-                ToggleVisibilityTarget target = toggleVisibilityTargetVector.get(i);
-                String elementId = target.GetElementId();
-
-                View foundView = rootView.findViewWithTag(new TagContent(elementId));
-                if(foundView != null)
-                {
-                    m_viewDictionary.put(elementId, foundView);
-                }
+                renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.SELECT_SHOW_CARD_ACTION, "ShowCard not supported for SelectAction"));
             }
         }
 
         @Override
         public void onClick(View v)
         {
-            if(m_action.GetElementType() == ActionType.ToggleVisibility)
+            // As we don't support show card actions for select action, then avoid triggering the event
+            if (m_action.GetElementType() != ActionType.ShowCard)
             {
-                ToggleVisibilityTargetVector toggleVisibilityTargetVector = m_toggleVisibilityAction.GetTargetElements();
-
-                // Populate the dictionary only once so multiple clicks don't perform the search operation every time
-                if (m_viewDictionary == null)
-                {
-                    populateViewsDictionary();
-                }
-
-                for (int i = 0; i < toggleVisibilityTargetVector.size(); ++i)
-                {
-                    ToggleVisibilityTarget target = toggleVisibilityTargetVector.get(i);
-                    String elementId = target.GetElementId();
-
-                    if (m_viewDictionary.containsKey(elementId))
-                    {
-                        View foundView = m_viewDictionary.get(elementId);
-                        IsVisible isVisible = target.GetIsVisible();
-
-                        if (isVisible == IsVisible.IsVisibleFalse)
-                        {
-                            foundView.setVisibility(View.GONE);
-                        }
-                        else if (isVisible == IsVisible.IsVisibleTrue)
-                        {
-                            foundView.setVisibility(View.VISIBLE);
-                        }
-                        else
-                        {
-                            // Toggle
-                            if (foundView.getVisibility() == View.GONE)
-                            {
-                                foundView.setVisibility(View.VISIBLE);
-                            }
-                            else
-                            {
-                                foundView.setVisibility(View.GONE);
-                            }
-                        }
-                    }
-                }
-            }
-            else
-            {
-                m_cardActionHandler.onAction(m_action, m_renderedAdaptiveCard);
+                super.onClick(v);
             }
         }
 
-        protected BaseActionElement m_action;
-        protected RenderedAdaptiveCard m_renderedAdaptiveCard;
-        protected ICardActionHandler m_cardActionHandler;
-
-        private ToggleVisibilityAction m_toggleVisibilityAction = null;
-        private HashMap<String, View> m_viewDictionary = null;
     }
 
     /**
      * Callback to be invoked when an action is clicked
      */
-    public static class ActionOnClickListener extends SelectActionOnClickListener
+    public static class ActionOnClickListener implements View.OnClickListener
     {
 
         /**
@@ -201,8 +129,11 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
                                      ICardActionHandler cardActionHandler,
                                      HostConfig hostConfig)
         {
-            super(renderedCard, baseActionElement, cardActionHandler);
+            this(renderedCard, baseActionElement, cardActionHandler);
+
             m_isInlineShowCardAction = (baseActionElement.GetElementType() == ActionType.ShowCard) && (hostConfig.GetActions().getShowCard().getActionMode() == ActionMode.Inline);
+
+            // As SelectAction doesn't support ShowCard actions, then this line won't be executed
             if (m_isInlineShowCardAction)
             {
                 renderHiddenCard(context, fragmentManager, viewGroup, hostConfig);
@@ -217,8 +148,62 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
          */
         public ActionOnClickListener(RenderedAdaptiveCard renderedCard, BaseActionElement baseActionElement, ICardActionHandler cardActionHandler)
         {
-            super(renderedCard, baseActionElement, cardActionHandler);
-            m_isInlineShowCardAction = false;
+            m_action = baseActionElement;
+            m_renderedAdaptiveCard = renderedCard;
+            m_cardActionHandler = cardActionHandler;
+
+            // In case of the action being a ToggleVisibility action, store the action as ToggleVisibility action so no recasting must be made
+            if (m_action.GetElementType() == ActionType.ToggleVisibility)
+            {
+                m_toggleVisibilityAction = null;
+                if (m_action instanceof ToggleVisibilityAction)
+                {
+                    m_toggleVisibilityAction = (ToggleVisibilityAction) m_action;
+                }
+                else if ((m_toggleVisibilityAction = ToggleVisibilityAction.dynamic_cast(m_action)) == null)
+                {
+                    throw new InternalError("Unable to convert BaseActionElement to ToggleVisibilityAction object model.");
+                }
+            }
+        }
+
+        /**
+         * Resets the visibility of all separators in this viewGroup hiding, if it has, the separator for the first visible element and showing the separator for all other elements
+         * @param viewGroup
+         */
+        private void resetSeparatorVisibilities(ViewGroup viewGroup)
+        {
+            boolean isFirstElement = true;
+            for (int i = 0; i < viewGroup.getChildCount(); ++i)
+            {
+                View element = viewGroup.getChildAt(i);
+                TagContent tagContent = BaseCardElementRenderer.getTagContent(element);
+
+                if (tagContent != null)
+                {
+                    if (!tagContent.IsSeparator() && element.getVisibility() == View.VISIBLE)
+                    {
+                        View separator = tagContent.GetSeparator();
+
+                        if (separator != null)
+                        {
+                            // Only the first element must hide its separator
+                            if (isFirstElement)
+                            {
+                                separator.setVisibility(View.GONE);
+                            }
+                            else
+                            {
+                                separator.setVisibility(View.VISIBLE);
+                            }
+                        }
+
+                        // Reset this so all the other elements can have their separators visible
+                        isFirstElement = false;
+                    }
+                }
+
+            }
         }
 
         private void renderHiddenCard(Context context, FragmentManager fragmentManager, ViewGroup viewGroup, HostConfig hostConfig)
@@ -266,47 +251,136 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
             return null;
         }
 
+        private void populateViewsDictionary()
+        {
+            m_viewDictionary = new HashMap<>();
+
+            ToggleVisibilityTargetVector toggleVisibilityTargetVector = m_toggleVisibilityAction.GetTargetElements();
+            View rootView = m_renderedAdaptiveCard.getView();
+
+            for (int i = 0; i < toggleVisibilityTargetVector.size(); ++i)
+            {
+                ToggleVisibilityTarget target = toggleVisibilityTargetVector.get(i);
+                String elementId = target.GetElementId();
+
+                View foundView = rootView.findViewWithTag(new TagContent(elementId));
+                if (foundView != null)
+                {
+                    m_viewDictionary.put(elementId, foundView);
+                }
+            }
+        }
+
+        private void handleInlineShowCardAction(View v)
+        {
+            Activity hostingActivity = getActivity(v.getContext());
+            if (hostingActivity != null)
+            {
+                View currentFocusedView = hostingActivity.getCurrentFocus();
+                if (currentFocusedView != null)
+                {
+                    currentFocusedView.clearFocus();
+                }
+            }
+
+            v.setPressed(m_invisibleCard.getVisibility() != View.VISIBLE);
+            for (int i = 0; i < m_hiddenCardsLayout.getChildCount(); ++i)
+            {
+                View child = m_hiddenCardsLayout.getChildAt(i);
+                if (child != m_invisibleCard)
+                {
+                    child.setVisibility(View.GONE);
+                }
+            }
+
+            m_invisibleCard.setVisibility(m_invisibleCard.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+
+            View mainCardView = ((ViewGroup) m_hiddenCardsLayout.getParent()).getChildAt(0);
+            int padding = mainCardView.getPaddingTop();
+
+            //remove bottom padding from top linear layout
+            if (m_invisibleCard.getVisibility() == View.VISIBLE)
+            {
+                mainCardView.setPadding(padding, padding, padding, 0);
+                m_invisibleCard.requestFocus();
+            }
+            else
+            {
+                mainCardView.setPadding(padding, padding, padding, padding);
+            }
+        }
+
+        private void handleToggleVisibilityAction(View v)
+        {
+            ToggleVisibilityTargetVector toggleVisibilityTargetVector = m_toggleVisibilityAction.GetTargetElements();
+
+            // Populate the dictionary only once so multiple clicks don't perform the search operation every time
+            if (m_viewDictionary == null)
+            {
+                populateViewsDictionary();
+            }
+
+            // Store the viewgroups to update to avoid updating the same one multiple times
+            Set<ViewGroup> viewGroupsToUpdate = new HashSet<>();
+
+            for (int i = 0; i < toggleVisibilityTargetVector.size(); ++i)
+            {
+                ToggleVisibilityTarget target = toggleVisibilityTargetVector.get(i);
+                String elementId = target.GetElementId();
+
+                if (m_viewDictionary.containsKey(elementId))
+                {
+                    View foundView = m_viewDictionary.get(elementId);
+                    IsVisible isVisible = target.GetIsVisible();
+
+                    boolean elementWillBeVisible = true;
+
+                    // If the visibility changes to not visible or the visibility toggles and the element is currently visible then the element will not be visible
+                    // Otherwise it will be visible (default value)
+                    if ((isVisible == IsVisible.IsVisibleFalse) ||
+                        (isVisible == IsVisible.IsVisibleToggle && foundView.getVisibility() == View.VISIBLE))
+                    {
+                        elementWillBeVisible = false;
+                    }
+
+                    BaseCardElementRenderer.setVisibility(elementWillBeVisible, foundView, viewGroupsToUpdate);
+
+                }
+            }
+
+            for (ViewGroup container : viewGroupsToUpdate)
+            {
+                resetSeparatorVisibilities(container);
+            }
+        }
+
         @Override
         public void onClick(View v) {
             if (m_isInlineShowCardAction)
             {
-                Activity hostingActivity = getActivity(v.getContext());
-                if (hostingActivity != null) {
-                    View currentFocusedView = hostingActivity.getCurrentFocus();
-                    if (currentFocusedView != null) {
-                        currentFocusedView.clearFocus();
-                    }
-                }
-
-                v.setPressed(m_invisibleCard.getVisibility() != View.VISIBLE);
-                for (int i = 0; i < m_hiddenCardsLayout.getChildCount(); ++i) {
-                    View child = m_hiddenCardsLayout.getChildAt(i);
-                    if (child != m_invisibleCard) {
-                        child.setVisibility(View.GONE);
-                    }
-                }
-
-                m_invisibleCard.setVisibility(m_invisibleCard.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-
-                View mainCardView = ((ViewGroup) m_hiddenCardsLayout.getParent()).getChildAt(0);
-                int padding = mainCardView.getPaddingTop();
-
-                //remove bottom padding from top linear layout
-                if (m_invisibleCard.getVisibility() == View.VISIBLE) {
-                    mainCardView.setPadding(padding, padding, padding, 0);
-                    m_invisibleCard.requestFocus();
-                } else {
-                    mainCardView.setPadding(padding, padding, padding, padding);
-                }
+                handleInlineShowCardAction(v);
+            }
+            else if (m_action.GetElementType() == ActionType.ToggleVisibility)
+            {
+                handleToggleVisibilityAction(v);
             }
             else
             {
-                super.onClick(v);
+                m_cardActionHandler.onAction(m_action, m_renderedAdaptiveCard);
             }
         }
 
-        private View m_invisibleCard;
-        private ViewGroup m_hiddenCardsLayout;
-        private boolean m_isInlineShowCardAction;
+        protected BaseActionElement m_action;
+        protected RenderedAdaptiveCard m_renderedAdaptiveCard;
+        protected ICardActionHandler m_cardActionHandler;
+
+        // Information for handling ShowCard actions
+        private View m_invisibleCard = null;
+        private ViewGroup m_hiddenCardsLayout = null;
+        private boolean m_isInlineShowCardAction = false;
+
+        // Information for handling ToggleVisibility actions
+        private HashMap<String, View> m_viewDictionary = null;
+        private ToggleVisibilityAction m_toggleVisibilityAction = null;
     }
 }

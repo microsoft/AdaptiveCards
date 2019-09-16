@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveTextElement.h"
 #include "Util.h"
@@ -65,43 +67,19 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveTextElement::get_Italic(boolean* italic)
-    {
-        *italic = m_italic;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveTextElement::put_Italic(boolean italic)
-    {
-        m_italic = italic;
-        return S_OK;
-    }
-
-    IFACEMETHODIMP AdaptiveTextElement::get_Strikethrough(boolean* strikethrough)
-    {
-        *strikethrough = m_strikethrough;
-        return S_OK;
-    }
-
-    IFACEMETHODIMP AdaptiveTextElement::put_Strikethrough(boolean strikethrough)
-    {
-        m_strikethrough = strikethrough;
-        return S_OK;
-    }
-
     HRESULT AdaptiveTextElement::get_Language(_Outptr_ HSTRING* language) { return m_language.CopyTo(language); }
 
     HRESULT AdaptiveTextElement::put_Language(_In_ HSTRING language) { return m_language.Set(language); }
 
-    HRESULT AdaptiveTextElement::get_FontStyle(_Out_ ABI::AdaptiveNamespace::FontStyle* fontStyle)
+    HRESULT AdaptiveTextElement::get_FontType(_Out_ ABI::AdaptiveNamespace::FontType* fontType)
     {
-        *fontStyle = m_fontStyle;
+        *fontType = m_fontType;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextElement::put_FontStyle(ABI::AdaptiveNamespace::FontStyle fontStyle)
+    HRESULT AdaptiveTextElement::put_FontType(ABI::AdaptiveNamespace::FontType fontType)
     {
-        m_fontStyle = fontStyle;
+        m_fontType = fontType;
         return S_OK;
     }
 }

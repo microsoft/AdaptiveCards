@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "CollectionTypeElement.h"
 #include "Util.h"
@@ -6,7 +8,7 @@ using namespace AdaptiveSharedNamespace;
 
 CollectionTypeElement::CollectionTypeElement(CardElementType type, ContainerStyle style, VerticalContentAlignment alignment) :
     BaseCardElement(type), m_style(style), m_verticalContentAlignment(alignment), m_hasPadding(false),
-    m_hasBleed(false), m_parentalId(), m_bleedDirection(ContainerBleedDirection::BleedToBothEdges), m_minHeight(0)
+    m_hasBleed(false), m_parentalId(), m_bleedDirection(ContainerBleedDirection::BleedAll), m_minHeight(0)
 {
 }
 
@@ -62,7 +64,7 @@ void CollectionTypeElement::SetBleed(const bool value)
 void CollectionTypeElement::ConfigBleed(const AdaptiveCards::ParseContext& context)
 {
     // We allow bleed when the current container has padding and bleed set, and when the parents don't impose a
-    // restiction via bleed direction (i.e. Columnsets)
+    // restiction via bleed direction
     const AdaptiveSharedNamespace::InternalId id = context.PaddingParentInternalId();
     const bool canBleed = GetPadding() && GetBleed();
     if (canBleed && context.GetBleedDirection() != ContainerBleedDirection::BleedRestricted)

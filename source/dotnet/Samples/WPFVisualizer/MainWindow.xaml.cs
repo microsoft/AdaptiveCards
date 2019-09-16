@@ -1,7 +1,8 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using AdaptiveCards;
 using AdaptiveCards.Rendering;
 using AdaptiveCards.Rendering.Wpf;
-using ICSharpCode.AvalonEdit.Document;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
@@ -20,6 +21,11 @@ using Newtonsoft.Json.Linq;
 using Xceed.Wpf.Toolkit.PropertyGrid;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 using System.Windows.Media;
+using ICSharpCode.AvalonEdit.Highlighting.Xshd;
+using ICSharpCode.AvalonEdit.Highlighting;
+using ICSharpCode.AvalonEdit.Document;
+using System.Collections.ObjectModel;
+using System.Threading;
 
 namespace WpfVisualizer
 {
@@ -28,6 +34,10 @@ namespace WpfVisualizer
         private bool _dirty;
         private readonly SpeechSynthesizer _synth;
         private DocumentLine _errorLine;
+        /*
+        // This variable exists so the sample styles are not added twice
+        private bool _stylesAdded = false;
+        */
 
         public MainWindow()
         {
@@ -37,6 +47,10 @@ namespace WpfVisualizer
 
             InitializeComponent();
 
+            LoadJsonSyntaxHighlighting();
+
+            CardPayload = File.ReadAllText("Samples\\ActivityUpdate.json");
+
             _synth = new SpeechSynthesizer();
             _synth.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
             _synth.SetOutputToDefaultAudioDevice();
@@ -44,7 +58,7 @@ namespace WpfVisualizer
             timer.Tick += Timer_Tick;
             timer.Start();
 
-            foreach (var config in Directory.GetFiles(@"..\..\..\..\..\..\samples\HostConfig", "*.json"))
+            foreach (var config in Directory.GetFiles("HostConfigs", "*.json"))
             {
                 hostConfigs.Items.Add(new ComboBoxItem
                 {
@@ -59,8 +73,11 @@ namespace WpfVisualizer
                 Resources = Resources
             };
 
+            Renderer.FeatureRegistration.Set("acTest", "1.0");
+
             // Use the Xceed rich input controls
             Renderer.UseXceedElementRenderers();
+            xceedCheckbox.IsChecked = true;
 
             // Register custom elements and actions
             // TODO: Change to instance property? Change to UWP parser registration
@@ -71,6 +88,14 @@ namespace WpfVisualizer
 
             // This seems unecessary?
             Renderer.ActionHandlers.AddSupportedAction<MyCustomAction>();
+        }
+
+        private void LoadJsonSyntaxHighlighting()
+        {
+            using (var xmlReader = new System.Xml.XmlTextReader("SyntaxHighlighting\\JSON.xml"))
+            {
+                textBox.SyntaxHighlighting = HighlightingLoader.Load(xmlReader, HighlightingManager.Instance);
+            }
         }
 
         public AdaptiveCardRenderer Renderer { get; set; }
@@ -84,28 +109,39 @@ namespace WpfVisualizer
             }
         }
 
+        public string CardPayload
+        {
+            get { return textBox.Text; }
+            set { textBox.Text = value; }
+        }
+
         private void RenderCard()
         {
             cardError.Children.Clear();
-            cardGrid.Children.Clear();
+            cardGrid.Opacity = 0.65;
 
             try
             {
 
-                AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(textBox.Text);
+                AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(CardPayload);
 
                 AdaptiveCard card = parseResult.Card;
 
                 /*
-                // Example on how to override the Action Positive and Destructive styles
-                Style positiveStyle = new Style(typeof(Button));
-                positiveStyle.Setters.Add(new Setter(Button.BackgroundProperty, Brushes.Green));
-                Style otherStyle = new Style(typeof(Button));
-                otherStyle.Setters.Add(new Setter(Button.BackgroundProperty, Brushes.Yellow));
-                otherStyle.Setters.Add(new Setter(Button.ForegroundProperty, Brushes.Red));
+                if (!_stylesAdded)
+                {
+                    // Example on how to override the Action Positive and Destructive styles
+                    Style positiveStyle = new Style(typeof(Button));
+                    positiveStyle.Setters.Add(new Setter(Button.BackgroundProperty, Brushes.Green));
+                    Style otherStyle = new Style(typeof(Button));
+                    otherStyle.Setters.Add(new Setter(Button.BackgroundProperty, Brushes.Yellow));
+                    otherStyle.Setters.Add(new Setter(Button.ForegroundProperty, Brushes.Red));
 
-                Renderer.Resources.Add("Adaptive.Action.Submit.positive", positiveStyle);
-                Renderer.Resources.Add("Adaptive.Action.Submit.other", otherStyle);
+                    Renderer.Resources.Add("Adaptive.Action.positive", positiveStyle);
+                    Renderer.Resources.Add("Adaptive.Action.other", otherStyle);
+
+                    _stylesAdded = true;
+                }
                 */
 
                 RenderedAdaptiveCard renderedCard = Renderer.RenderCard(card);
@@ -116,6 +152,8 @@ namespace WpfVisualizer
 
                 renderedCard.OnMediaClicked += OnMediaClick;
 
+                cardGrid.Opacity = 1;
+                cardGrid.Children.Clear();
                 cardGrid.Children.Add(renderedCard.FrameworkElement);
 
                 // Report any warnings
@@ -226,7 +264,6 @@ namespace WpfVisualizer
             args.FrameworkElement.Focus();
         }
 
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             if (_errorLine != null)
@@ -241,7 +278,7 @@ namespace WpfVisualizer
             var result = dlg.ShowDialog();
             if (result == true)
             {
-                textBox.Text = File.ReadAllText(dlg.FileName).Replace("\t", "  ");
+                CardPayload = File.ReadAllText(dlg.FileName).Replace("\t", "  ");
                 _dirty = true;
             }
         }
@@ -271,24 +308,35 @@ namespace WpfVisualizer
 
         private async void viewImage_Click(object sender, RoutedEventArgs e)
         {
-            //Disable interactivity to remove inputs and actions from the image
             var supportsInteractivity = Renderer.HostConfig.SupportsInteractivity;
-            Renderer.HostConfig.SupportsInteractivity = false;
 
-            var renderedCard = await Renderer.RenderCardToImageAsync(AdaptiveCard.FromJson(textBox.Text).Card, false);
-            Renderer.HostConfig.SupportsInteractivity = supportsInteractivity;
-
-            var path = Path.GetRandomFileName() + ".png";
-            using (var fileStream = new FileStream(path, FileMode.Create))
+            try
             {
-                await renderedCard.ImageStream.CopyToAsync(fileStream);
+                this.IsEnabled = false;
+
+                //Disable interactivity to remove inputs and actions from the image
+                Renderer.HostConfig.SupportsInteractivity = false;
+
+                var renderedCard = await Renderer.RenderCardToImageAsync(AdaptiveCard.FromJson(CardPayload).Card, false);
+                using (var imageStream = renderedCard.ImageStream)
+                {
+                    new ViewImageWindow(renderedCard.ImageStream).Show();
+                }
             }
-            Process.Start(path);
+            catch
+            {
+                MessageBox.Show("Failed to render image");
+            }
+            finally
+            {
+                Renderer.HostConfig.SupportsInteractivity = supportsInteractivity;
+                this.IsEnabled = true;
+            }
         }
 
         private void speak_Click(object sender, RoutedEventArgs e)
         {
-            var result = AdaptiveCard.FromJson(textBox.Text);
+            var result = AdaptiveCard.FromJson(CardPayload);
             var card = result.Card;
 
             _synth.SpeakAsyncCancelAll();
@@ -380,6 +428,18 @@ namespace WpfVisualizer
 
         private void HostConfigEditor_OnPropertyValueChanged(object sender, PropertyValueChangedEventArgs e)
         {
+            _dirty = true;
+        }
+
+        private void XceedCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Renderer.UseDefaultElementRenderers();
+            _dirty = true;
+        }
+
+        private void XceedCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            Renderer.UseXceedElementRenderers();
             _dirty = true;
         }
     }

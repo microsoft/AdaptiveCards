@@ -1,4 +1,6 @@
-﻿//
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+//
 // MainPage.xaml.h
 // Declaration of the MainPage class.
 //

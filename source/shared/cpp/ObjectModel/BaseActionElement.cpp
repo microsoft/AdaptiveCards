@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "BaseActionElement.h"
 #include "BaseElement.h"
@@ -5,9 +7,10 @@
 
 using namespace AdaptiveSharedNamespace;
 
-constexpr const char* const BaseActionElement::defaultSentiment;
+constexpr const char* const BaseActionElement::defaultStyle;
 
-BaseActionElement::BaseActionElement(ActionType type) : m_sentiment(BaseActionElement::defaultSentiment), m_type(type)
+BaseActionElement::BaseActionElement(ActionType type) :
+    m_style(BaseActionElement::defaultStyle), m_type(type)
 {
     SetTypeString(ActionTypeToString(type));
     PopulateKnownPropertiesSet();
@@ -33,14 +36,14 @@ void BaseActionElement::SetIconUrl(const std::string& value)
     m_iconUrl = value;
 }
 
-std::string BaseActionElement::GetSentiment() const
+std::string BaseActionElement::GetStyle() const
 {
-    return m_sentiment;
+    return m_style;
 }
 
-void BaseActionElement::SetSentiment(const std::string& value)
+void BaseActionElement::SetStyle(const std::string& value)
 {
-    m_sentiment = value;
+    m_style = value;
 }
 
 const ActionType BaseActionElement::GetElementType() const
@@ -62,9 +65,9 @@ Json::Value BaseActionElement::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title)] = m_title;
     }
 
-    if (!m_sentiment.empty() && (m_sentiment.compare(defaultSentiment) != 0))
+    if (!m_style.empty() && (m_style.compare(defaultStyle) != 0))
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Sentiment)] = m_sentiment;
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = m_style;
     }
 
     return root;
@@ -73,7 +76,7 @@ Json::Value BaseActionElement::SerializeToJsonValue() const
 void BaseActionElement::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IconUrl),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Sentiment),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title)});
 }
 
@@ -88,7 +91,9 @@ void BaseActionElement::GetResourceInformation(std::vector<RemoteResourceInforma
     }
 }
 
-void BaseActionElement::ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context, const Json::Value& json, std::shared_ptr<BaseElement>& baseElement)
+void BaseActionElement::ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context,
+                                        const Json::Value& json,
+                                        std::shared_ptr<BaseElement>& baseElement)
 {
     baseElement = ParseUtil::GetActionFromJsonValue(context, json);
 }

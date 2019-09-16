@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
@@ -27,6 +29,15 @@ namespace AdaptiveNamespace
 
         IFACEMETHODIMP get_SelectAction(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** action);
         IFACEMETHODIMP put_SelectAction(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action);
+
+        IFACEMETHODIMP get_Italic(_Out_ boolean* italic);
+        IFACEMETHODIMP put_Italic(boolean italic);
+
+        IFACEMETHODIMP get_Strikethrough(_Out_ boolean* strikethrough);
+        IFACEMETHODIMP put_Strikethrough(boolean strikethrough);
+
+        IFACEMETHODIMP get_Underline(_Out_ boolean* underline);
+        IFACEMETHODIMP put_Underline(boolean underline);
 
         // IAdaptiveTextElement
         IFACEMETHODIMP get_Text(_Outptr_ HSTRING* text) { return AdaptiveTextElement::get_Text(text); }
@@ -62,28 +73,16 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_IsSubtle(_Out_ boolean* isSubtle) { return AdaptiveTextElement::get_IsSubtle(isSubtle); }
         IFACEMETHODIMP put_IsSubtle(boolean isSubtle) { return AdaptiveTextElement::put_IsSubtle(isSubtle); }
 
-        IFACEMETHODIMP get_Italic(_Out_ boolean* italic) { return AdaptiveTextElement::get_Italic(italic); }
-        IFACEMETHODIMP put_Italic(boolean italic) { return AdaptiveTextElement::put_Italic(italic); }
-
-        IFACEMETHODIMP get_Strikethrough(_Out_ boolean* strikethrough)
-        {
-            return AdaptiveTextElement::get_Strikethrough(strikethrough);
-        }
-        IFACEMETHODIMP put_Strikethrough(boolean strikethrough)
-        {
-            return AdaptiveTextElement::put_Strikethrough(strikethrough);
-        }
-
         IFACEMETHODIMP get_Language(_Outptr_ HSTRING* language) { return AdaptiveTextElement::get_Language(language); }
         IFACEMETHODIMP put_Language(_In_ HSTRING language) { return AdaptiveTextElement::put_Language(language); }
 
-        IFACEMETHODIMP get_FontStyle(_Out_ ABI::AdaptiveNamespace::FontStyle* style)
+        IFACEMETHODIMP get_FontType(_Out_ ABI::AdaptiveNamespace::FontType* type)
         {
-            return AdaptiveTextElement::get_FontStyle(style);
+            return AdaptiveTextElement::get_FontType(type);
         }
-        IFACEMETHODIMP put_FontStyle(ABI::AdaptiveNamespace::FontStyle style)
+        IFACEMETHODIMP put_FontType(ABI::AdaptiveNamespace::FontType type)
         {
-            return AdaptiveTextElement::put_FontStyle(style);
+            return AdaptiveTextElement::put_FontType(type);
         }
 
         HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::TextRun>& sharedModel) noexcept;
@@ -94,6 +93,9 @@ namespace AdaptiveNamespace
     private:
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_selectAction;
         boolean m_highlight;
+        boolean m_italic;
+        boolean m_strikethrough;
+        boolean m_underline;
     };
 
     ActivatableClass(AdaptiveTextRun);

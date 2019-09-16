@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer;
 
 import android.content.Context;
@@ -24,7 +26,7 @@ import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 public class AdaptiveCardRenderer
 {
-    public static final String VERSION = "1.2";
+    public static final String VERSION = "1.3";
 
     protected AdaptiveCardRenderer()
     {

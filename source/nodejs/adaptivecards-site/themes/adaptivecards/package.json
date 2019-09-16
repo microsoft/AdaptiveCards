@@ -1,18 +1,19 @@
 {
-	"name": "hexo-theme-adaptivecards",
-	"version": "0.0.5",
-	"private": true,
-	"devDependencies": {
-		"copy-webpack-plugin": "^4.6.0",
-		"grunt": "~0.4.2",
-		"grunt-contrib-clean": "~0.5.0",
-		"grunt-contrib-copy": "~0.4.1",
-		"grunt-git": "~0.2.2",
-		"load-grunt-tasks": "~0.2.0",
-		"rimraf": "^2.6.2",
-		"typescript": "^3.2.2",
-		"webpack": "^4.27.1",
-		"webpack-cli": "^3.1.2",
-		"webpack-dev-server": "^3.2.1"
-	}
+  "name": "hexo-theme-adaptivecards",
+  "version": "0.1.1",
+  "private": true,
+  "devDependencies": {
+    "copy-webpack-plugin": "^4.6.0",
+    "grunt": "~0.4.2",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-git": "~0.2.2",
+    "load-grunt-tasks": "~0.2.0",
+    "md5": "^2.2.1",
+    "rimraf": "^2.6.3",
+    "typescript": "^3.5.3",
+    "webpack": "^4.38.0",
+    "webpack-cli": "^3.3.6",
+    "webpack-dev-server": "^3.7.2"
+  }
 }

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+  "classType": "Enum",
+  "description": "Style hint for text input.",
+  "values": [
+    "text",
+    "tel",
+    "url",
+    "email"
+  ]
+}

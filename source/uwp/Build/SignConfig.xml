@@ -7,13 +7,15 @@
   <!-- Release sign job -->
   <job platform="x64" configuration="release" dest="__RELBINPATH__\..\..\..\s\signed" jobname="Adaptive Cards UWP" approvers="">
     <!-- AdaptiveCards winmd -->
-    <file src="__RELBINPATH__\..\..\..\s\tosign\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.winmd" signType="Authenticode" dest="__RELBINPATH__\..\..\..\s\signed\AdaptiveCardRenderer\AdaptiveCards.Rendering.winmd" />
+    <file src="__RELBINPATH__\..\..\..\s\tosign\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.winmd" signType="AuthenticodeFormer" dest="__RELBINPATH__\..\..\..\s\signed\AdaptiveCardRenderer\AdaptiveCards.Rendering.winmd" />
 
     <!-- Win32 -->
-    <file src="__RELBINPATH__\..\..\..\s\tosign\AdaptiveCardRenderer\win32\AdaptiveCards.Rendering.Uwp.dll" signType="Authenticode" dest="__RELBINPATH__\..\..\..\s\signed\AdaptiveCardRenderer\win32\AdaptiveCards.Rendering.Uwp.dll" />
+    <file src="__RELBINPATH__\..\..\..\s\tosign\AdaptiveCardRenderer\win32\AdaptiveCards.Rendering.Uwp.dll" signType="AuthenticodeFormer" dest="__RELBINPATH__\..\..\..\s\signed\AdaptiveCardRenderer\win32\AdaptiveCards.Rendering.Uwp.dll" />
     <!-- x64 -->
-    <file src="__RELBINPATH__\..\..\..\s\tosign\AdaptiveCardRenderer\x64\AdaptiveCards.Rendering.Uwp.dll" signType="Authenticode" dest="__RELBINPATH__\..\..\..\s\signed\AdaptiveCardRenderer\x64\AdaptiveCards.Rendering.Uwp.dll" />
+    <file src="__RELBINPATH__\..\..\..\s\tosign\AdaptiveCardRenderer\x64\AdaptiveCards.Rendering.Uwp.dll" signType="AuthenticodeFormer" dest="__RELBINPATH__\..\..\..\s\signed\AdaptiveCardRenderer\x64\AdaptiveCards.Rendering.Uwp.dll" />
     <!-- ARM -->
-    <file src="__RELBINPATH__\..\..\..\s\tosign\AdaptiveCardRenderer\ARM\AdaptiveCards.Rendering.Uwp.dll" signType="Authenticode" dest="__RELBINPATH__\..\..\..\s\signed\AdaptiveCardRenderer\ARM\AdaptiveCards.Rendering.Uwp.dll" />
+    <file src="__RELBINPATH__\..\..\..\s\tosign\AdaptiveCardRenderer\ARM\AdaptiveCards.Rendering.Uwp.dll" signType="AuthenticodeFormer" dest="__RELBINPATH__\..\..\..\s\signed\AdaptiveCardRenderer\ARM\AdaptiveCards.Rendering.Uwp.dll" />
+    <!-- ARM64 -->
+    <file src="__RELBINPATH__\..\..\..\s\tosign\AdaptiveCardRenderer\ARM64\AdaptiveCards.Rendering.Uwp.dll" signType="AuthenticodeFormer" dest="__RELBINPATH__\..\..\..\s\signed\AdaptiveCardRenderer\ARM64\AdaptiveCards.Rendering.Uwp.dll" />
   </job>
 </SignConfigXML>

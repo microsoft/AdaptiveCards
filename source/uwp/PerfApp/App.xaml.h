@@ -1,4 +1,6 @@
-﻿//
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+//
 // App.xaml.h
 // Declaration of the App class.
 //

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 const PCWSTR c_defaultResourceDictionary = L"\
@@ -190,4 +192,3 @@ const PCWSTR c_defaultActionSentimentResourceDictionary = L"\
         </Setter> \
      </Style> \
 </ResourceDictionary>";
-

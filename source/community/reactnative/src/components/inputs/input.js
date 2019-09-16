@@ -136,8 +136,7 @@ export class Input extends React.Component {
 		this.id = this.payload.id;
 		this.type = this.payload.type;
 		this.isMultiline = this.payload.isMultiline === undefined ? false : this.payload.isMultiline;
-		this.maxLength = (this.payload.maxLength == undefined ||
-			this.payload.maxLength == 0) ? Number.MAX_VALUE : this.payload.maxLength;
+		this.maxLength = this.payload.maxLength > 0 ? this.payload.maxlength : undefined;
 		this.placeholder = this.payload.placeholder;
 		this.textStyle = Utils.getEffectiveInputStyle(this.props.styleValue);
 		this.keyboardType = Utils.getKeyboardType(this.props.styleValue);

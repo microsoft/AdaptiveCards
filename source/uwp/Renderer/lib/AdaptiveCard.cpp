@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveCard.h"
 #include "AdaptiveCardParseResult.h"
@@ -97,7 +99,7 @@ namespace AdaptiveNamespace
         try
         {
             ParseContext context(sharedModelElementParserRegistration, sharedModelActionParserRegistration);
-            const std::string c_rendererVersion = "1.2";
+            const std::string c_rendererVersion = "1.3";
             std::shared_ptr<AdaptiveSharedNamespace::ParseResult> sharedParseResult =
                 AdaptiveSharedNamespace::AdaptiveCard::DeserializeFromString(jsonString, c_rendererVersion, context);
             ComPtr<IAdaptiveCard> adaptiveCard;
@@ -161,12 +163,16 @@ namespace AdaptiveNamespace
             static_cast<ABI::AdaptiveNamespace::VerticalContentAlignment>(sharedAdaptiveCard->GetVerticalContentAlignment());
         m_height = static_cast<ABI::AdaptiveNamespace::HeightType>(sharedAdaptiveCard->GetHeight());
         m_minHeight = sharedAdaptiveCard->GetMinHeight();
+        m_inputNecessityIndicators =
+            static_cast<ABI::AdaptiveNamespace::InputNecessityIndicators>(sharedAdaptiveCard->GetInputNecessityIndicators());
 
         auto backgroundImage = sharedAdaptiveCard->GetBackgroundImage();
         if (backgroundImage != nullptr && !backgroundImage->GetUrl().empty())
         {
             RETURN_IF_FAILED(MakeAndInitialize<AdaptiveBackgroundImage>(m_backgroundImage.GetAddressOf(), backgroundImage));
         }
+
+        m_internalId = sharedAdaptiveCard->GetInternalId();
 
         return S_OK;
     }
@@ -273,6 +279,18 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    IFACEMETHODIMP AdaptiveCard::get_InputNecessityIndicators(ABI::AdaptiveNamespace::InputNecessityIndicators* inputNecessityIndicators)
+    {
+        *inputNecessityIndicators = m_inputNecessityIndicators;
+        return S_OK;
+    }
+
+    IFACEMETHODIMP AdaptiveCard::put_InputNecessityIndicators(ABI::AdaptiveNamespace::InputNecessityIndicators inputNecessityIndicators)
+    {
+        m_inputNecessityIndicators = inputNecessityIndicators;
+        return S_OK;
+    }
+
     HRESULT AdaptiveCard::ToJson(_COM_Outptr_ IJsonObject** result)
     {
         std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> sharedModel;
@@ -302,6 +320,8 @@ namespace AdaptiveNamespace
 
         adaptiveCard->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
         adaptiveCard->SetVerticalContentAlignment(static_cast<AdaptiveSharedNamespace::VerticalContentAlignment>(m_verticalAlignment));
+        adaptiveCard->SetInputNecessityIndicators(
+            static_cast<AdaptiveSharedNamespace::InputNecessityIndicators>(m_inputNecessityIndicators));
 
         if (m_selectAction != nullptr)
         {

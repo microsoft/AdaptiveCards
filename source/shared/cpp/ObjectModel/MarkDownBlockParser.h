@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 #include "MarkDownHtmlGenerator.h"
 #include <iomanip>
@@ -19,6 +21,31 @@ namespace AdaptiveSharedNamespace
         MarkDownParsedResult& GetParsedResult() { return m_parsedResult; }
 
     protected:
+        static constexpr bool IsSpace(const char ch)
+        {
+            return (ch > 0) && isspace(ch);
+        }
+
+        static constexpr bool IsPunct(const char ch)
+        {
+            return (ch > 0) && ispunct(ch);
+        }
+
+        static constexpr bool IsAlnum(const char ch)
+        {
+            return (ch < 0 || isalnum(ch));
+        }
+
+        static constexpr bool IsCntrl(const char ch)
+        {
+            return (ch > 0) && iscntrl(ch);
+        }
+
+        static constexpr bool IsDigit(const char ch)
+        {
+            return (ch > 0) && isdigit(ch);
+        }
+
         // Holds parsed results
         MarkDownParsedResult m_parsedResult;
     };
@@ -33,64 +60,62 @@ namespace AdaptiveSharedNamespace
         EmphasisParser& operator=(EmphasisParser&&) = default;
         virtual ~EmphasisParser() = default;
 
-        enum EmphasisState
+        enum class EmphasisState
         {
-            // Text is being handled
-            Text = 0x0,
-            // Emphasis is being handled
-            Emphasis = 0x1,
-            // Empahais Parsing is done
-            Captured = 0x2,
+            Text,     // Text is being handled
+            Emphasis, // Emphasis is being handled
+            Captured  // Emphasis parsing is complete
         };
 
         void Match(std::stringstream&) override;
-        // Captures remaining charaters in given token
-        // and causes the emphasis parsing to terminate
-        void Flush(int ch, std::string& currentToken);
+
+        // Captures remaining charaters in given token and causes the emphasis parsing to terminate
+        void Flush(char ch, std::string& currentToken);
+
         // check if given character is * or _
-        bool IsMarkDownDelimiter(int ch);
+        bool IsMarkDownDelimiter(char ch) const;
+
         void CaptureCurrentCollectedStringAsRegularToken(std::string& currentToken);
         void CaptureCurrentCollectedStringAsRegularToken();
         void UpdateCurrentEmphasisRunState(DelimiterType emphasisType);
         // Check if current delimiter will be considererd as a delimiter run
-        bool IsEmphasisDelimiterRun(DelimiterType emphasisType) { return m_currentDelimiterType == emphasisType; }
+        bool IsEmphasisDelimiterRun(const DelimiterType emphasisType) const
+        {
+            return m_currentDelimiterType == emphasisType;
+        }
         void ResetCurrentEmphasisState() { m_delimiterCnts = 0; }
-        bool IsRightEmphasisDelimiter(int ch);
+        bool IsLeftEmphasisDelimiter(const char ch) const;
+        bool IsRightEmphasisDelimiter(const char ch) const;
+        // Attempt to capture current emphasis as left emphasis
+        bool TryCapturingLeftEmphasisToken(char ch, std::string& currentToken);
         // Attempt to capture current emphasis as right emphasis
-        bool TryCapturingRightEmphasisToken(int ch, std::string& currentToken);
-        bool IsLeftEmphasisDelimiter(int ch)
+        bool TryCapturingRightEmphasisToken(char ch, std::string& currentToken);
+        void CaptureEmphasisToken(char ch, std::string& currentToken);
+        void UpdateLookBehind(char ch);
+        static constexpr DelimiterType GetDelimiterTypeForChar(const char ch)
         {
-            return (m_delimiterCnts && ch != EOF && !isspace(ch) && !(m_lookBehind == Alphanumeric && ispunct(ch)) &&
-                    !(m_lookBehind == Alphanumeric && m_currentDelimiterType == Underscore));
-        };
-        // Attempt to capture current emphasis as right emphasis
-        bool TryCapturingLeftEmphasisToken(int ch, std::string& currentToken);
-        void CaptureEmphasisToken(int ch, std::string& currentToken);
-        void UpdateLookBehind(int ch);
-        static constexpr DelimiterType GetDelimiterTypeForCharAtCurrentPosition(int ch)
-        {
-            return (ch == '*') ? Asterisk : Underscore;
+            return (ch == '*') ? DelimiterType::Asterisk : DelimiterType::Underscore;
         };
 
         typedef EmphasisState (*MatchWithChar)(EmphasisParser&, std::stringstream&, std::string&);
+
         // Callback function that handles the Text State
         static EmphasisState MatchText(EmphasisParser&, std::stringstream&, std::string&);
+
         // Callback function that handles the Emphasis State
         static EmphasisState MatchEmphasis(EmphasisParser&, std::stringstream&, std::string&);
 
     protected:
         bool m_checkLookAhead = false;
         bool m_checkIntraWord = false;
-        int m_lookBehind = Init;
+        DelimiterType m_lookBehind = DelimiterType::Init;
         int m_delimiterCnts = 0;
-        DelimiterType m_currentDelimiterType = Init;
-        unsigned int m_current_state = 0;
+        DelimiterType m_currentDelimiterType = DelimiterType::Init;
+        EmphasisState m_current_state = EmphasisState::Text;
 
         // vector of callback functions that handles state transistions
-        std::vector<MatchWithChar> m_stateMachine = {
-            MatchText,
-            MatchEmphasis,
-        };
+        const std::unordered_map<EmphasisState, MatchWithChar> m_stateMachine = {{EmphasisState::Text, MatchText},
+                                                                                 {EmphasisState::Emphasis, MatchEmphasis}};
 
         // holds currently collected token
         std::string m_current_token;
@@ -111,18 +136,18 @@ namespace AdaptiveSharedNamespace
     private:
         void CaptureLinkToken();
 
-        // Matches Initial sytax of link
+        // Matches Initial syntax of link
         bool MatchAtLinkInit(std::stringstream&);
-        // Matches LinkText Run sytax of link
+        // Matches LinkText Run syntax of link
         bool MatchAtLinkTextRun(std::stringstream&);
-        // Matches LinkText End sytax of link
+        // Matches LinkText End syntax of link
         bool MatchAtLinkTextEnd(std::stringstream&);
-        // Matches LinkDestination Start sytax of link
+        // Matches LinkDestination Start syntax of link
         bool MatchAtLinkDestinationStart(std::stringstream&);
-        // Matches LinkDestination Run sytax of link
+        // Matches LinkDestination Run syntax of link
         bool MatchAtLinkDestinationRun(std::stringstream&);
 
-        // holds intermidiate result of LinkText
+        // holds intermediate result of LinkText
         MarkDownParsedResult m_linkTextParsedResult;
     };
 
@@ -140,9 +165,9 @@ namespace AdaptiveSharedNamespace
         bool MatchNewListItem(std::stringstream&);
         bool MatchNewBlock(std::stringstream&);
         bool MatchNewOrderedListItem(std::stringstream&, std::string&);
-        static constexpr bool IsHyphen(int ch) { return ch == '-'; };
-        static constexpr bool IsDot(int ch) { return ch == '.'; };
-        static constexpr bool IsNewLine(int ch) { return (ch == '\r') || (ch == '\n'); };
+        static constexpr bool IsHyphen(const char ch) { return ch == '-'; };
+        static constexpr bool IsDot(const char ch) { return ch == '.'; };
+        static constexpr bool IsNewLine(const char ch) { return (ch == '\r') || (ch == '\n'); };
 
     protected:
         void ParseSubBlocks(std::stringstream&);

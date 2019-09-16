@@ -4,16 +4,16 @@
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
+#import "ACOBaseActionElement.h"
+#import "ACOBaseCardElement.h"
 #import "ACOHostConfig.h"
 #import "HostConfig.h"
 #import "TextBlock.h"
 #import <UIKit/UIKit.h>
-#import "ACOBaseActionElement.h"
-#import "ACOBaseCardElement.h"
 
 using namespace AdaptiveCards;
 
-@interface ACOHostConfig()
+@interface ACOHostConfig ()
 
 - (instancetype)initWithConfig:(std::shared_ptr<HostConfig> const &)config;
 - (std::shared_ptr<HostConfig>)getHostConfig;
@@ -21,13 +21,13 @@ using namespace AdaptiveCards;
 
 + (NSNumber *)getTextStrokeWidthForWeight:(TextWeight)weight;
 
-- (int)getTextBlockFontWeight:(FontStyle) style
+- (int)getTextBlockFontWeight:(FontType)type
                    textWeight:(TextWeight)weight;
 
-- (int)getTextBlockTextSize:(FontStyle) style
-                 textSize:(TextSize)txtSz;
+- (int)getTextBlockTextSize:(FontType)type
+                   textSize:(TextSize)txtSz;
 
-- (NSString *)getFontFamily:(AdaptiveCards::FontStyle)style;
+- (NSString *)getFontFamily:(AdaptiveCards::FontType)type;
 
 - (UIColor *)getTextBlockColor:(ACRContainerStyle)style
                      textColor:(ForegroundColor)txtClr

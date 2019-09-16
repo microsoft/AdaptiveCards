@@ -13,7 +13,7 @@
         "lineThickness": 1,
         "lineColor": "#EEEEEE"
     },
-    "fontStyles": {
+    "fontTypes": {
         "default": {
             "fontFamily": "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
             "fontSizes": {

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,11 +31,10 @@ namespace AdaptiveCards
         /// </summary>
         [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveAction>))]
 #if !NETSTANDARD1_3
-        [XmlArray("Actions")]
-        [XmlArrayItem(ElementName = "OpenUrl", Type = typeof(AdaptiveOpenUrlAction))]
-        [XmlArrayItem(ElementName = "ShowCard", Type = typeof(AdaptiveShowCardAction))]
-        [XmlArrayItem(ElementName = "Submit", Type = typeof(AdaptiveSubmitAction))]
-        [XmlArrayItem(ElementName = "ToggleVisibility", Type = typeof(AdaptiveToggleVisibilityAction))]
+        [XmlElement(typeof(AdaptiveOpenUrlAction))]
+        [XmlElement(typeof(AdaptiveShowCardAction))]
+        [XmlElement(typeof(AdaptiveSubmitAction))]
+        [XmlElement(typeof(AdaptiveToggleVisibilityAction))]
 #endif
         public List<AdaptiveAction> Actions { get; set; } = new List<AdaptiveAction>();
     }

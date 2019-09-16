@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -33,6 +35,10 @@ namespace AdaptiveCards
                 else
                 {
                     JObject jobj = (JObject)obj;
+                    if (jobj.Value<string>("type") != AdaptiveTextRun.TypeName)
+                    {
+                        throw new AdaptiveSerializationException($"Property 'type' must be '{AdaptiveTextRun.TypeName}'");
+                    }
                     arrayList.Add((IAdaptiveInline)jobj.ToObject(typeof(AdaptiveTextRun)));
                 }
             }

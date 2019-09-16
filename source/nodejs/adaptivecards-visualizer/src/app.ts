@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import * as AdaptiveCards from "adaptivecards";
 import * as MarkdownIt from "markdown-it";
 import * as Constants from "./constants";
@@ -41,7 +43,13 @@ function renderCard(target: HTMLElement): HTMLElement {
 
     adaptiveCard.parse(json, lastValidationErrors);
 
-    lastValidationErrors = lastValidationErrors.concat(adaptiveCard.validate());
+    let validationResults = adaptiveCard.validateProperties();
+
+    for (let failure of validationResults.failures) {
+        lastValidationErrors = lastValidationErrors.concat(failure.errors);
+    }
+
+    // lastValidationErrors = lastValidationErrors.concat(adaptiveCard.validate());
 
     showValidationErrors();
 
@@ -244,40 +252,7 @@ function actionExecuted(action: AdaptiveCards.Action) {
         message += "    Type: <unknown>";
     }
 
-    // Uncomment to test the action's setStatus method:
-    /*
-    action.setStatus(
-        {
-            "type": "AdaptiveCard",
-            "body": [
-                {
-                    "type": "TextBlock",
-                    "text": "Working on it...",
-                    "weight": "normal",
-                    "size": "small"
-                }
-            ]
-        });
-
-    window.setTimeout(actionCompletedCallback, 2000, action);
-    */
-
     alert(message);
-}
-
-function actionCompletedCallback(action: AdaptiveCards.Action) {
-    action.setStatus(
-        {
-            "type": "AdaptiveCard",
-            "body": [
-                {
-                    "type": "TextBlock",
-                    "text": "Success!",
-                    "weight": "normal",
-                    "size": "small"
-                }
-            ]
-        });
 }
 
 function showPopupCard(action: AdaptiveCards.ShowCardAction) {

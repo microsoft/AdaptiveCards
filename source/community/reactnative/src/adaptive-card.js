@@ -20,6 +20,7 @@ import { SelectAction } from './components/actions';
 import ResourceInformation from './utils/resource-information';
 import { ContainerWrapper } from './components/containers';
 import { ThemeConfigManager } from './utils/theme-config';
+import { ModelFactory } from './models';
 
 export default class AdaptiveCard extends React.Component {
 
@@ -32,9 +33,15 @@ export default class AdaptiveCard extends React.Component {
 
 		this.payload = props.payload;
 
+		if (this.props.isActionShowCard) {
+			this.cardModel = props.payload;
+		}else{
+			this.cardModel = ModelFactory.createElement(props.payload);
+		}
 		this.state = {
 			showErrors: false,
 			payload: this.payload,
+			cardModel: this.cardModel,
 		}
 
 		// hostConfig
@@ -53,57 +60,69 @@ export default class AdaptiveCard extends React.Component {
 	}
 
 	toggleVisibilityForElementWithID = (idArray) => {
-		this.toggleObjectWithIDArray(this.payload, [...idArray]);
+		this.toggleCardModelObject(this.cardModel, [...idArray]);
 		this.setState({
-			payload: this.payload,
+			cardModel: this.cardModel,
 		})
 	}
 
+
 	/**
-	 * @description Toggles the visibility of the components by their ids recursively
-	 * @param {Object} object - the object to be searched for ids
-	 * @param {Array} idArrayValue - the array of IDs to be toggled
+	 * @description Checks the elements recursively to change the isVisible property
+	 * @param {Object} object - the object to be searched
+	 * @param {Array} targetElements - the array of target Ids to be toggled
 	 */
-	toggleObjectWithIDArray = (object, idArrayValue) => {
-		if (idArrayValue.length === 0) return
-		if (object.hasOwnProperty('id') && idArrayValue.includes(object["id"])) {
-			if (!Utils.isNullOrEmpty(object.isVisible)) {
-				object.isVisible = !object.isVisible
-			} else {
-				object.isVisible = false;
-			}
-			var index = idArrayValue.indexOf(object["id"]);
-			if (index !== -1) idArrayValue.splice(index, 1);
-			if (idArrayValue.length === 0) return
-		}
-		Object.keys(object).forEach(element => {
-			if (idArrayValue.length === 0) return
-			if (typeof object[element] == "object") {
-				this.toggleObjectWithIDArray(object[element], idArrayValue);
+	checkTargetElementsForID = (object, targetElements) => {
+		targetElements.forEach(target => {
+			if (target instanceof String || typeof target === 'string'){
+				if(target == object["id"]){
+					object.isVisible = !object.isVisible;
+					var index = targetElements.indexOf(object["id"]);
+					if (index !== -1) targetElements.splice(index, 1);
+					return
+				}
+			}else if((target instanceof Object || typeof target === 'object') && target !== null){
+				if(target["elementId"] === object["id"]){
+					if (!Utils.isNullOrEmpty(target["isVisible"])) {
+						object.isVisible = target["isVisible"]
+					} else {
+						object.isVisible = !object.isVisible;
+					}
+					var index = targetElements.indexOf(target);
+					if (index !== -1) targetElements.splice(index, 1);
+					return
+				}
 			}
 		});
-		return;
 	}
 
 	/**
-	 * @description Comveniece method to toggle the visibility of the component by a single id recursively
+	 * @description Method to toggle the visibility of the component by looking in its children
 	 * @param {Object} object - the object to be searched for ids
 	 * @param {string} idValue - the id of the component to be toggled
 	 */
-	toggleObjectWithID = (object, idValue) => {
-		if (object.hasOwnProperty('id') && object["id"] == idValue) {
-			if (!Utils.isNullOrEmpty(object.isVisible)) {
-				object.isVisible = !object.isVisible
-			} else {
-				object.isVisible = false;
-			}
-			return;
+
+	toggleCardModelObject = (object,idArrayValue) => {
+		if (idArrayValue.length === 0) return
+		if (object.hasOwnProperty('id')) {
+			this.checkTargetElementsForID(object, idArrayValue);
+			if (idArrayValue.length === 0) return
 		}
-		Object.keys(object).forEach(element => {
-			if (typeof object[element] == "object") {
-				this.toggleObjectWithID(object[element], idValue);
+		if((object.children !== undefined) && object.children.length !== 0 ){
+			object.children.forEach(element => {
+				if (idArrayValue.length === 0) return
+					this.toggleCardModelObject(element, idArrayValue);
+			});
+		}
+		//Adaptive cards has actions array in addition to the body which is added as children
+		if(object.type === 'AdaptiveCard'){
+			if((object.actions !== undefined) && object.actions.length !== 0 ){
+				object.actions.forEach(element => {
+					if (idArrayValue.length === 0) return
+						this.toggleCardModelObject(element, idArrayValue);
+				});
 			}
-		});
+		}
 		return;
 	}
 
@@ -139,23 +158,21 @@ export default class AdaptiveCard extends React.Component {
 	 */
 	parsePayload = () => {
 		let children = [];
-		const { body } = this.state.payload;
 
-		if (!body)
+		if (this.state.cardModel.children.length === 0)
 			return children;
-
-		children = Registry.getManager().parseRegistryComponents(body, this.onParseError);
-		return children.map((ChildElement, index) => React.cloneElement(ChildElement, { containerStyle: this.state.payload.style, isFirst: index === 0 }));
+		children = Registry.getManager().parseRegistryComponents(this.state.cardModel.children, this.onParseError);
+		return children.map((ChildElement, index) => React.cloneElement(ChildElement, { containerStyle: this.state.cardModel.style, isFirst: index === 0 }));
 	}
 
 	getAdaptiveCardContent() {
 		var adaptiveCardContent =
 			(
-				<ContainerWrapper style={styles.container} json={this.state.payload}>
+				<ContainerWrapper style={styles.container} json={this.state.cardModel}>
 					<ScrollView alwaysBounceVertical={false} style={{ flexGrow: 0 }}>
 						{this.parsePayload()}
-						{!Utils.isNullOrEmpty(this.state.payload.actions) &&
-							<ActionWrapper actions={this.state.payload.actions} />}
+						{!Utils.isNullOrEmpty(this.state.cardModel.actions) &&
+							<ActionWrapper actions={this.state.cardModel.actions} />}
 					</ScrollView>
 				</ContainerWrapper>
 			);

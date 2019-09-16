@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.ComponentModel;
@@ -111,8 +113,8 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
-        [DefaultValue(typeof(AdaptiveFontStyle), "default")]
-        public AdaptiveFontStyle FontStyle { get; set; }
+        [DefaultValue(typeof(AdaptiveFontType), "default")]
+        public AdaptiveFontType FontType { get; set; }
 
         /// <summary>
         ///     Action for this text run
@@ -123,5 +125,15 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(null)]
         public AdaptiveAction SelectAction { get; set; }
+
+        /// <summary>
+        ///     Make the text be underlined
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(false)]
+        public bool Underline { get; set; }
     }
 }

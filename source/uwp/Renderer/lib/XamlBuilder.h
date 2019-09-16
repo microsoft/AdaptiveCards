@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
@@ -188,13 +190,15 @@ namespace AdaptiveNamespace
                                          bool allActionsHaveIcons,
                                          _In_ ABI::Windows::UI::Xaml::Controls::IButton* button);
 
-        static HRESULT BuildActions(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* children,
+        static HRESULT BuildActions(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
+                                    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* children,
                                     _In_ ABI::Windows::UI::Xaml::Controls::IPanel* bodyPanel,
                                     bool insertSeparator,
                                     _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                     _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);
 
         static HRESULT BuildActionSetHelper(
+            _In_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
             _In_opt_ ABI::AdaptiveNamespace::IAdaptiveActionSet* actionSet,
             _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* children,
             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
@@ -215,10 +219,11 @@ namespace AdaptiveNamespace
         static void ApplyMarginToXamlElement(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
                                              _In_ ABI::Windows::UI::Xaml::IFrameworkElement* element);
         static void AddSeparatorIfNeeded(int& currentElement,
-                                         ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* element,
-                                         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig>& hostConfig,
-                                         ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                                         ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel);
+                                         _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* element,
+                                         _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
+                                         _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                                         _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,
+                                         _Outptr_ ABI::Windows::UI::Xaml::IUIElement** addedSeparator);
         static HRESULT BuildPanelChildren(
             _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveCardElement*>* children,
             _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,
@@ -279,5 +284,10 @@ namespace AdaptiveNamespace
         static HRESULT HandleActionStyling(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* adaptiveActionElement,
                                            _In_ ABI::Windows::UI::Xaml::IFrameworkElement* buttonFrameworkElement,
                                            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext);
+
+        static HRESULT RenderFallback(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* currentElement,
+                                      _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                      _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+                                      _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result);
     };
 }

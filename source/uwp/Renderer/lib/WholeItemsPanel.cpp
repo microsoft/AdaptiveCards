@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 //
 //  Copyright (c) 2014  Microsoft Corporation
 //
@@ -241,12 +243,12 @@ namespace AdaptiveNamespace
     HRESULT WholeItemsPanel::ArrangeOverride(Size finalSize, __RPC__out Size* returnValue)
     {
         float currentHeight{};
-        ComPtr<IVector<UIElement*>> spChildren;
+        ComPtr<IVector<UIElement*>> children;
 
         ComPtr<IPanel> spThisAsPanel;
         RETURN_IF_FAILED(QueryInterface(__uuidof(IPanel), reinterpret_cast<void**>(spThisAsPanel.GetAddressOf())));
-        RETURN_IF_FAILED(spThisAsPanel->get_Children(spChildren.GetAddressOf()));
-        RETURN_IF_FAILED(spChildren->get_Size(&m_measuredCount));
+        RETURN_IF_FAILED(spThisAsPanel->get_Children(children.GetAddressOf()));
+        RETURN_IF_FAILED(children->get_Size(&m_measuredCount));
 
         float extraPaddingPerItem{};
         if (!m_stretchableItems.empty())
@@ -266,20 +268,20 @@ namespace AdaptiveNamespace
             }
         }
 
-        for (unsigned int i{}; i < m_measuredCount; ++i)
+        for (unsigned int i = 0; i < m_measuredCount; ++i)
         {
-            ComPtr<IUIElement> spChild;
-            RETURN_IF_FAILED(spChildren->GetAt(i, spChild.GetAddressOf()));
+            ComPtr<IUIElement> child;
+            RETURN_IF_FAILED(children->GetAt(i, child.GetAddressOf()));
 
             Size childSize;
-            RETURN_IF_FAILED(spChild->get_DesiredSize(&childSize));
+            RETURN_IF_FAILED(child->get_DesiredSize(&childSize));
 
             if (i < m_visibleCount)
             {
                 float childHeight = childSize.Height;
                 float newHeight = currentHeight + childSize.Height;
 
-                if (m_allElementsRendered && IsUIElementInStretchableList(spChild.Get()))
+                if (m_allElementsRendered && IsUIElementInStretchableList(child.Get()))
                 {
                     childHeight += extraPaddingPerItem;
                     newHeight += extraPaddingPerItem;
@@ -290,7 +292,7 @@ namespace AdaptiveNamespace
                     newHeight = finalSize.Height;
                 }
                 const Rect rc = {0.0f, currentHeight, finalSize.Width, childHeight}; // childSize.Width does not respect Text alignment
-                RETURN_IF_FAILED(spChild->Arrange(rc));
+                RETURN_IF_FAILED(child->Arrange(rc));
 
                 currentHeight = newHeight;
             }
@@ -298,14 +300,14 @@ namespace AdaptiveNamespace
             {
                 // Arrange the child outside the panel
                 const Rect rc = {0.0f, OutsidePanelY - childSize.Height, childSize.Width, childSize.Height};
-                RETURN_IF_FAILED(spChild->Arrange(rc));
+                RETURN_IF_FAILED(child->Arrange(rc));
             }
         }
 
         // Now set the clipping region to ensure that items moved away will never be rendered
         // But we allow the items to slightly expand above the panel because we explicitly set negative
-        // margins for text on the first line of a tile. Additionally, leave space on the left and right
-        // according to the value set by s_bleedMargin.
+        // margins for text on the first line of a tile. Additionally, leave at least as much space on all
+        // sides as specified by s_bleedMargin.
         ComPtr<IFrameworkElement> spThisAsIFrameworkElement;
         Thickness margin;
         RETURN_IF_FAILED(QueryInterface(IID_PPV_ARGS(&spThisAsIFrameworkElement)));
@@ -317,10 +319,10 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(QueryInterface(IID_PPV_ARGS(&spThisAsIUIElement)));
         RETURN_IF_FAILED(spThisAsIUIElement->put_Clip(spClip.Get()));
 
-        float x0 = static_cast<float>(-margin.Left - s_bleedMargin);
-        float y0 = static_cast<float>(-margin.Top);
-        float x1 = static_cast<float>(2 * s_bleedMargin + margin.Left + finalSize.Width + margin.Right);
-        float y1 = static_cast<float>(margin.Top + finalSize.Height + margin.Bottom);
+        float x0 = static_cast<float>(-max(margin.Left, s_bleedMargin));
+        float y0 = static_cast<float>(-max(margin.Top, s_bleedMargin));
+        float x1 = static_cast<float>(max(margin.Left, s_bleedMargin) + finalSize.Width + max(margin.Right, s_bleedMargin));
+        float y1 = static_cast<float>(max(margin.Top, s_bleedMargin) + finalSize.Height + max(margin.Bottom, s_bleedMargin));
         RETURN_IF_FAILED(spClip->put_Rect({x0, y0, x1, y1}));
 
         *returnValue = {finalSize.Width, finalSize.Height};
@@ -359,7 +361,7 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT WholeItemsPanel::GetAltText(__RPC__out HSTRING* pResult)
+    HRESULT WholeItemsPanel::GetAltText(__RPC__out HSTRING* pResult) noexcept
     {
         try
         {
@@ -514,8 +516,7 @@ namespace AdaptiveNamespace
     {
         ComPtr<ITextBlock> spTextBlock;
 
-        HRESULT hr = pUIElement->QueryInterface(spTextBlock.GetAddressOf());
-        if (SUCCEEDED(hr))
+        if (SUCCEEDED(pUIElement->QueryInterface(spTextBlock.GetAddressOf())))
         {
             HString hText;
             RETURN_IF_FAILED(spTextBlock->get_Text(hText.GetAddressOf()));
@@ -524,8 +525,7 @@ namespace AdaptiveNamespace
         }
 
         ComPtr<IWholeItemsPanel> spWholeItemsPanel;
-        hr = pUIElement->QueryInterface(spWholeItemsPanel.GetAddressOf());
-        if (SUCCEEDED(hr))
+        if (SUCCEEDED(pUIElement->QueryInterface(spWholeItemsPanel.GetAddressOf())))
         {
             // This cast is safe because WinRT only does aggregation
             WholeItemsPanel* pPanelNoRef = reinterpret_cast<WholeItemsPanel*>(spWholeItemsPanel.Get());
@@ -534,8 +534,7 @@ namespace AdaptiveNamespace
         }
 
         ComPtr<IImage> spImage;
-        hr = pUIElement->QueryInterface(spImage.GetAddressOf());
-        if (SUCCEEDED(hr))
+        if (SUCCEEDED(pUIElement->QueryInterface(spImage.GetAddressOf())))
         {
             HString hAltText;
             RETURN_IF_FAILED(GetAltAsString(pUIElement, hAltText.GetAddressOf()));
@@ -545,9 +544,9 @@ namespace AdaptiveNamespace
             }
             return S_OK;
         }
+
         ComPtr<IShape> spShape;
-        hr = pUIElement->QueryInterface(spShape.GetAddressOf());
-        if (SUCCEEDED(hr))
+        if (SUCCEEDED(pUIElement->QueryInterface(spShape.GetAddressOf())))
         {
             HString hAltText;
             RETURN_IF_FAILED(GetAltAsString(pUIElement, hAltText.GetAddressOf()));

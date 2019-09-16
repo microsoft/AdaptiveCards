@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include <iostream>
 #include "MarkDownBlockParser.h"
@@ -93,24 +95,26 @@ void EmphasisParser::Match(std::stringstream& stream)
 /// captures text until it see emphasis character. When it does, switch to Emphasis state
 EmphasisParser::EmphasisState EmphasisParser::MatchText(EmphasisParser& parser, std::stringstream& stream, std::string& token)
 {
+    const auto currentChar = static_cast<char>(stream.peek());
+
     /// MarkDown keywords
-    if (stream.peek() == '[' || stream.peek() == ']' || stream.peek() == ')' || stream.peek() == '\n' ||
-        stream.peek() == '\r' || stream.eof())
+    if (currentChar == '[' || currentChar == ']' || currentChar == ')' || currentChar == '\n' || currentChar == '\r' ||
+        stream.eof())
     {
-        parser.Flush(stream.peek(), token);
+        parser.Flush(currentChar, token);
         return EmphasisState::Captured;
     }
 
-    if (parser.IsMarkDownDelimiter(stream.peek()))
+    if (parser.IsMarkDownDelimiter(currentChar))
     {
-        // encounterred first emphasis delimiter
+        // encountered first emphasis delimiter
         parser.CaptureCurrentCollectedStringAsRegularToken();
-        const DelimiterType emphasisType = EmphasisParser::GetDelimiterTypeForCharAtCurrentPosition(stream.peek());
+        const DelimiterType emphasisType = EmphasisParser::GetDelimiterTypeForChar(currentChar);
         // get previous character and update the look behind if it was captured before
         if (stream.tellg())
         {
             stream.unget();
-            parser.UpdateLookBehind(stream.get());
+            parser.UpdateLookBehind(static_cast<char>(stream.get()));
         }
 
         parser.UpdateCurrentEmphasisRunState(emphasisType);
@@ -121,7 +125,7 @@ EmphasisParser::EmphasisState EmphasisParser::MatchText(EmphasisParser& parser, 
     }
     else
     {
-        parser.UpdateLookBehind(stream.peek());
+        parser.UpdateLookBehind(currentChar);
         char streamChar;
         stream.get(streamChar);
         token += streamChar;
@@ -129,22 +133,25 @@ EmphasisParser::EmphasisState EmphasisParser::MatchText(EmphasisParser& parser, 
     }
 }
 
-/// captures text untill it see none-emphasis character. When it does, switch to text state
+/// captures text until it see non-emphasis character. When it does, switch to text state
 EmphasisParser::EmphasisState EmphasisParser::MatchEmphasis(EmphasisParser& parser, std::stringstream& stream, std::string& token)
 {
     // key word is encountered, flush what is being processed, and have those keyword
     // handled by ParseBlock()
-    if (stream.peek() == '[' || stream.peek() == ']' || stream.peek() == ')' || stream.peek() == '\n' ||
-        stream.peek() == '\r' || stream.eof())
+
+    const auto currentChar = static_cast<char>(stream.peek());
+
+    if (currentChar == '[' || currentChar == ']' || currentChar == ')' || currentChar == '\n' || currentChar == '\r' ||
+        stream.eof())
     {
-        parser.Flush(stream.peek(), token);
+        parser.Flush(static_cast<char>(currentChar), token);
         return EmphasisState::Captured;
     }
 
-    /// if another emphasis delimiter is encounterred, it is delimiter run
-    if (parser.IsMarkDownDelimiter(stream.peek()))
+    /// if another emphasis delimiter is encountered, it is delimiter run
+    if (parser.IsMarkDownDelimiter(currentChar))
     {
-        const DelimiterType emphasisType = EmphasisParser::GetDelimiterTypeForCharAtCurrentPosition((stream.peek()));
+        const DelimiterType emphasisType = EmphasisParser::GetDelimiterTypeForChar(currentChar);
         if (parser.IsEmphasisDelimiterRun(emphasisType))
         {
             parser.UpdateCurrentEmphasisRunState(emphasisType);
@@ -157,16 +164,16 @@ EmphasisParser::EmphasisState EmphasisParser::MatchEmphasis(EmphasisParser& pars
     /// delimiter run is ended, capture the current accumulated token as emphasis
     else
     {
-        parser.CaptureEmphasisToken(stream.peek(), token);
+        parser.CaptureEmphasisToken(currentChar, token);
 
-        if (stream.peek() == '\\')
+        if (currentChar == '\\')
         {
             // skips escape char
             stream.get();
         }
 
         parser.ResetCurrentEmphasisState();
-        parser.UpdateLookBehind(stream.peek());
+        parser.UpdateLookBehind(static_cast<char>(stream.peek()));
         char streamChar;
         stream.get(streamChar);
         token += streamChar;
@@ -177,7 +184,7 @@ EmphasisParser::EmphasisState EmphasisParser::MatchEmphasis(EmphasisParser& pars
 
 // Captures remaining charaters in given token
 // and causes the emphasis parsing to terminate
-void EmphasisParser::Flush(int ch, std::string& currentToken)
+void EmphasisParser::Flush(char ch, std::string& currentToken)
 {
     if (m_current_state == EmphasisState::Emphasis)
     {
@@ -191,15 +198,18 @@ void EmphasisParser::Flush(int ch, std::string& currentToken)
     currentToken.clear();
 }
 
-bool EmphasisParser::IsMarkDownDelimiter(int ch)
+bool EmphasisParser::IsMarkDownDelimiter(char ch) const
 {
-    return ((ch == '*' || ch == '_') && (m_lookBehind != Escape));
+    return ((ch == '*' || ch == '_') && (m_lookBehind != DelimiterType::Escape));
 }
 
 void EmphasisParser::CaptureCurrentCollectedStringAsRegularToken(std::string& currentToken)
 {
     if (currentToken.empty())
+    {
         return;
+    }
+
     std::shared_ptr<MarkDownHtmlGenerator> codeGen = std::make_shared<MarkDownStringHtmlGenerator>(currentToken);
 
     m_parsedResult.AppendToTokens(codeGen);
@@ -214,24 +224,36 @@ void EmphasisParser::CaptureCurrentCollectedStringAsRegularToken()
 
 void EmphasisParser::UpdateCurrentEmphasisRunState(DelimiterType emphasisType)
 {
-    if (m_lookBehind != WhiteSpace)
+    if (m_lookBehind != DelimiterType::WhiteSpace)
     {
-        m_checkLookAhead = (m_lookBehind == Puntuation);
-        m_checkIntraWord = (m_lookBehind == Alphanumeric && emphasisType == Underscore);
+        m_checkLookAhead = (m_lookBehind == DelimiterType::Puntuation);
+        m_checkIntraWord = (m_lookBehind == DelimiterType::Alphanumeric && emphasisType == DelimiterType::Underscore);
     }
     ++m_delimiterCnts;
     m_currentDelimiterType = emphasisType;
 }
 
-bool EmphasisParser::IsRightEmphasisDelimiter(int ch)
+bool EmphasisParser::IsLeftEmphasisDelimiter(const char ch) const
 {
-    if ((std::isspace(ch) || (ch == EOF)) && (m_lookBehind != WhiteSpace) &&
-        (m_checkLookAhead || m_checkIntraWord || m_currentDelimiterType == Asterisk))
+    if (m_delimiterCnts && ch != EOF)
+    {
+        // non-EOF extended chars (i.e. < 0) are treated as non-space non-punctuation characters
+        return (!MarkDownBlockParser::IsSpace(ch)) &&
+            !(m_lookBehind == DelimiterType::Alphanumeric && MarkDownBlockParser::IsPunct(ch)) &&
+            !(m_lookBehind == DelimiterType::Alphanumeric && m_currentDelimiterType == DelimiterType::Underscore);
+    }
+    return false;
+}
+
+bool EmphasisParser::IsRightEmphasisDelimiter(const char ch) const
+{
+    if ((ch == EOF || MarkDownBlockParser::IsSpace(ch)) && (m_lookBehind != DelimiterType::WhiteSpace) &&
+        (m_checkLookAhead || m_checkIntraWord || m_currentDelimiterType == DelimiterType::Asterisk))
     {
         return true;
     }
 
-    if (isalnum(ch) && m_lookBehind != WhiteSpace && m_lookBehind != Init)
+    if (MarkDownBlockParser::IsAlnum(ch) && m_lookBehind != DelimiterType::WhiteSpace && m_lookBehind != DelimiterType::Init)
     {
         if (!m_checkLookAhead && !m_checkIntraWord)
         {
@@ -244,16 +266,15 @@ bool EmphasisParser::IsRightEmphasisDelimiter(int ch)
         }
     }
 
-    if (ispunct(ch) && m_lookBehind != WhiteSpace)
+    if (MarkDownBlockParser::IsPunct(ch) && m_lookBehind != DelimiterType::WhiteSpace)
     {
         return true;
     }
 
     return false;
-    ;
 }
 
-bool EmphasisParser::TryCapturingRightEmphasisToken(int ch, std::string& currentToken)
+bool EmphasisParser::TryCapturingRightEmphasisToken(char ch, std::string& currentToken)
 {
     if (IsRightEmphasisDelimiter(ch))
     {
@@ -280,7 +301,7 @@ bool EmphasisParser::TryCapturingRightEmphasisToken(int ch, std::string& current
     return false;
 }
 
-bool EmphasisParser::TryCapturingLeftEmphasisToken(int ch, std::string& currentToken)
+bool EmphasisParser::TryCapturingLeftEmphasisToken(char ch, std::string& currentToken)
 {
     // left emphasis detected, save emphasis for later reference
     if (IsLeftEmphasisDelimiter(ch))
@@ -298,26 +319,24 @@ bool EmphasisParser::TryCapturingLeftEmphasisToken(int ch, std::string& currentT
     return false;
 }
 
-void EmphasisParser::UpdateLookBehind(int ch)
+void EmphasisParser::UpdateLookBehind(char ch)
 {
-    // store ch and move itr
-    if (isspace(ch))
+    // store ch and move itr (note: extended characters are considered alnum for our purposes)
+    if (MarkDownBlockParser::IsAlnum(ch))
     {
-        m_lookBehind = WhiteSpace;
+        m_lookBehind = DelimiterType::Alphanumeric;
     }
-
-    if (isalnum(ch))
+    else if (MarkDownBlockParser::IsSpace(ch))
     {
-        m_lookBehind = Alphanumeric;
+        m_lookBehind = DelimiterType::WhiteSpace;
     }
-
-    if (ispunct(ch))
+    else if (MarkDownBlockParser::IsPunct(ch))
     {
-        m_lookBehind = (ch == '\\') ? Escape : Puntuation;
+        m_lookBehind = (ch == '\\') ? DelimiterType::Escape : DelimiterType::Puntuation;
     }
 }
 
-void EmphasisParser::CaptureEmphasisToken(int ch, std::string& currentToken)
+void EmphasisParser::CaptureEmphasisToken(char ch, std::string& currentToken)
 {
     if (!TryCapturingRightEmphasisToken(ch, currentToken) && !TryCapturingLeftEmphasisToken(ch, currentToken) &&
         !currentToken.empty())
@@ -367,29 +386,29 @@ bool LinkParser::MatchAtLinkTextRun(std::stringstream& lookahead)
     }
     else
     {
-        if (lookahead.peek() == '[')
+        // parses recursively to the right
+        while (lookahead.peek() != EOF && lookahead.peek() != ']')
         {
-            m_parsedResult.AppendParseResult(m_linkTextParsedResult);
-            return false;
-        }
-        else
-        {
-            // Block() will process the inline items within Link Text block
-            ParseBlock(lookahead);
-            m_linkTextParsedResult.AppendParseResult(m_parsedResult);
+            MarkDownBlockParser::ParseBlock(lookahead);
+            m_linkTextParsedResult.AppendParseResult(GetParsedResult());
 
-            if (lookahead.peek() == ']')
+            if (m_linkTextParsedResult.GetIsCaptured())
             {
-                // move code gen objects to link text list to further process it
-                char streamChar;
-                lookahead.get(streamChar);
-                m_linkTextParsedResult.AddNewTokenToParsedResult(streamChar);
-                return true;
+                break;
             }
-
-            m_parsedResult.AppendParseResult(m_linkTextParsedResult);
-            return false;
         }
+
+        if (lookahead.peek() == ']')
+        {
+            // move code gen objects to link text list to further process it
+            char streamChar;
+            lookahead.get(streamChar);
+            m_linkTextParsedResult.AddNewTokenToParsedResult(streamChar);
+            return true;
+        }
+
+        m_parsedResult.AppendParseResult(m_linkTextParsedResult);
+        return false;
     }
 }
 
@@ -411,8 +430,14 @@ bool LinkParser::MatchAtLinkTextEnd(std::stringstream& lookahead)
 // link is in form of [txt](url), this method matches '('
 bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
 {
+    // if peeked char is EOF or extended char, this isn't a match
+    if (lookahead.peek() < 0)
+    {
+        return false;
+    }
+
     // control key is detected, syntax check failed
-    if (iscntrl(lookahead.peek()))
+    if (MarkDownBlockParser::IsCntrl(static_cast<char>(lookahead.peek())))
     {
         m_parsedResult.AppendParseResult(m_linkTextParsedResult);
         return false;
@@ -439,7 +464,7 @@ bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
 // link is in form of [txt](url), this method matches ')'
 bool LinkParser::MatchAtLinkDestinationRun(std::stringstream& lookahead)
 {
-    if (isspace(lookahead.peek()) || iscntrl(lookahead.peek()))
+    if (lookahead.peek() > 0 && (MarkDownBlockParser::IsSpace(static_cast<char>(lookahead.peek())) || MarkDownBlockParser::IsCntrl(static_cast<char>(lookahead.peek()))))
     {
         m_parsedResult.AppendParseResult(m_linkTextParsedResult);
         return false;
@@ -492,13 +517,14 @@ void LinkParser::CaptureLinkToken()
     m_parsedResult.Clear();
     m_parsedResult.FoundHtmlTags();
     m_parsedResult.AppendToTokens(codeGen);
+    m_parsedResult.SetIsCaptured(true);
 }
 
 // list marker have form of ^-\s+ or \r-\s+
 // this method matches -\s
 bool ListParser::MatchNewListItem(std::stringstream& stream)
 {
-    if (IsHyphen(stream.peek()))
+    if (IsHyphen(static_cast<char>(stream.peek())))
     {
         stream.get();
         if (stream.peek() == ' ')
@@ -519,12 +545,12 @@ bool ListParser::MatchNewListItem(std::stringstream& stream)
 // at least once.
 bool ListParser::MatchNewBlock(std::stringstream& stream)
 {
-    if (IsNewLine(stream.peek()))
+    if (IsNewLine(static_cast<char>(stream.peek())))
     {
         do
         {
             stream.get();
-        } while (IsNewLine(stream.peek()));
+        } while (IsNewLine(static_cast<char>(stream.peek())));
 
         return true;
     }
@@ -541,9 +567,9 @@ bool ListParser::MatchNewOrderedListItem(std::stringstream& stream, std::string&
         char streamChar;
         stream.get(streamChar);
         number_string += streamChar;
-    } while (isdigit(stream.peek()));
+    } while (MarkDownBlockParser::IsDigit(static_cast<char>(stream.peek())));
 
-    if (stream.peek() == '.')
+    if (IsDot(static_cast<char>(stream.peek())))
     {
         // ordered list syntax check complete
         stream.unget();
@@ -560,12 +586,12 @@ void ListParser::ParseSubBlocks(std::stringstream& stream)
 {
     while (!stream.eof())
     {
-        if (IsNewLine(stream.peek()))
+        if (IsNewLine(static_cast<char>(stream.peek())))
         {
             char newLineChar;
             stream.get(newLineChar);
             // check if it is the start of new block items
-            if (isdigit(stream.peek()))
+            if (MarkDownBlockParser::IsDigit(static_cast<char>(stream.peek())))
             {
                 std::string number_string = "";
                 if (MatchNewOrderedListItem(stream, number_string))
@@ -614,7 +640,7 @@ bool ListParser::CompleteListParsing(std::stringstream& stream)
 void ListParser::Match(std::stringstream& stream)
 {
     // check for - of -\s+ list marker
-    if (IsHyphen(stream.peek()))
+    if (IsHyphen(static_cast<char>(stream.peek())))
     {
         stream.get();
         if (CompleteListParsing(stream))
@@ -652,16 +678,16 @@ void OrderedListParser::Match(std::stringstream& stream)
 {
     // used to capture digit char
     std::string number_string = "";
-    if (isdigit(stream.peek()))
+    if (MarkDownBlockParser::IsDigit(static_cast<char>(stream.peek())))
     {
         do
         {
             char streamChar;
             stream.get(streamChar);
             number_string += streamChar;
-        } while (isdigit(stream.peek()));
+        } while (MarkDownBlockParser::IsDigit(static_cast<char>(stream.peek())));
 
-        if (IsDot(stream.peek()))
+        if (IsDot(static_cast<char>(stream.peek())))
         {
             // ordered list syntax check complete
             stream.get();

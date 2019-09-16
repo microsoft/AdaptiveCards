@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 #include "pch.h"
 #include "EnumMagic.h"
@@ -49,15 +51,17 @@ namespace AdaptiveSharedNamespace
         DefaultPoster,
         ElementId,
         Emphasis,
+        ErrorMessage,
         ExtraLarge,
         FactSet,
         Facts,
         Fallback,
         FallbackText,
+        FillMode,
         FontFamily,
         FontSizes,
-        FontStyle,
-        FontStyles,
+        FontType,
+        FontTypes,
         FontWeights,
         ForegroundColor,
         ForegroundColors,
@@ -71,6 +75,7 @@ namespace AdaptiveSharedNamespace
         IconSize,
         IconUrl,
         Id,
+        IgnoreInputValidation,
         Image,
         ImageBaseUrl,
         ImageSet,
@@ -80,6 +85,7 @@ namespace AdaptiveSharedNamespace
         InlineAction,
         Inlines,
         InlineTopMargin,
+        InputNecessityIndicators,
         IsMultiSelect,
         IsMultiline,
         IsRequired,
@@ -107,13 +113,13 @@ namespace AdaptiveSharedNamespace
         MimeType,
         Min,
         MinHeight,
-        Mode,
         Monospace,
         NumberInput,
         Padding,
         Placeholder,
         PlayButton,
         Poster,
+        Regex,
         Repeat,
         RepeatHorizontally,
         RepeatVertically,
@@ -121,7 +127,6 @@ namespace AdaptiveSharedNamespace
         RichTextBlock,
         Right,
         SelectAction,
-        Sentiment,
         Separator,
         ShowActionMode,
         ShowCard,
@@ -149,6 +154,7 @@ namespace AdaptiveSharedNamespace
         ToggleInput,
         Top,
         Type,
+        Underline,
         Url,
         Value,
         ValueOff,
@@ -214,12 +220,12 @@ namespace AdaptiveSharedNamespace
     };
     DECLARE_ADAPTIVECARD_ENUM(TextWeight);
 
-    enum class FontStyle
+    enum class FontType
     {
         Default = 0,
         Monospace
     };
-    DECLARE_ADAPTIVECARD_ENUM(FontStyle);
+    DECLARE_ADAPTIVECARD_ENUM(FontType);
 
     enum class ForegroundColor
     {
@@ -249,14 +255,14 @@ namespace AdaptiveSharedNamespace
     };
     DECLARE_ADAPTIVECARD_ENUM(VerticalAlignment);
 
-    enum class BackgroundImageMode
+    enum class ImageFillMode
     {
-        Stretch = 0,
+        Cover = 0,
         RepeatHorizontally,
         RepeatVertically,
         Repeat
     };
-    DECLARE_ADAPTIVECARD_ENUM(BackgroundImageMode);
+    DECLARE_ADAPTIVECARD_ENUM(ImageFillMode);
 
     enum class ImageStyle
     {
@@ -365,7 +371,8 @@ namespace AdaptiveSharedNamespace
         RequiredPropertyMissing,
         InvalidPropertyValue,
         UnsupportedParserOverride,
-        IdCollision
+        IdCollision,
+        CustomError,
     };
     // No mapping to string needed
 
@@ -385,6 +392,8 @@ namespace AdaptiveSharedNamespace
         InvalidColorFormat,
         InvalidDimensionSpecified,
         InvalidLanguage,
+        InvalidValue,
+        CustomWarning,
     };
     // No mapping to string needed
 
@@ -398,13 +407,48 @@ namespace AdaptiveSharedNamespace
     };
     // No mapping to string needed
 
+    // We have to define all possible combinations because java doesn't allow bitwise operations between enum values
+    // and it also limits the values an enum can have to only the values defined in the enum, so combinations wouldn't be
+    // allowed unless they have been explicitly declared (i.e. 0x0101 wouldn't be valid as it was not part of the declared values)
     enum class ContainerBleedDirection
     {
-        BleedRestricted = 0,
-        BleedToLeading,
-        BleedToTrailing,
-        BleedToBothEdges,
+        BleedRestricted = 0x0000,
+        BleedLeft = 0x0001,
+        BleedRight = 0x0010,
+        BleedLeftRight = 0x0011,
+        BleedUp = 0x0100,
+        BleedLeftUp = 0x0101,
+        BleedRightUp = 0x0110,
+        BleedLeftRightUp = 0x0111,
+        BleedDown = 0x1000,
+        BleedLeftDown = 0x1001,
+        BleedRightDown = 0x1010,
+        BleedLeftRightDown = 0x1011,
+        BleedUpDown = 0x1100,
+        BleedLeftUpDown = 0x1101,
+        BleedRightUpDown = 0x1110,
+        BleedAll = 0x1111
     };
+
+    // Define bit operators so we can use ContainerBleedDirection as a bitmask
+    inline ContainerBleedDirection operator~(ContainerBleedDirection a) { return (ContainerBleedDirection) ~(int)a; }
+    inline ContainerBleedDirection operator|(ContainerBleedDirection a, ContainerBleedDirection b)
+    {
+        return (ContainerBleedDirection)((int)a | (int)b);
+    }
+    inline ContainerBleedDirection operator&(ContainerBleedDirection a, ContainerBleedDirection b)
+    {
+        return (ContainerBleedDirection)((int)a & (int)b);
+    }
+    inline ContainerBleedDirection& operator|=(ContainerBleedDirection& a, ContainerBleedDirection b)
+    {
+        return (ContainerBleedDirection&)((int&)a |= (int)b);
+    }
+    inline ContainerBleedDirection& operator&=(ContainerBleedDirection& a, ContainerBleedDirection b)
+    {
+        return (ContainerBleedDirection&)((int&)a &= (int)b);
+    }
+
     // No mapping to string needed
 
     enum class IconPlacement
@@ -436,4 +480,12 @@ namespace AdaptiveSharedNamespace
         Drop,
         Content
     };
+
+    enum class InputNecessityIndicators
+    {
+        None,
+        RequiredInputs,
+        OptionalInputs
+    };
+    DECLARE_ADAPTIVECARD_ENUM(InputNecessityIndicators);
 }

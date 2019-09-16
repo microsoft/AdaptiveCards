@@ -12,7 +12,7 @@
         "lineColor": "#EEEEEE"
     },
     "supportsInteractivity": false,
-    "fontStyles": {
+    "fontTypes": {
         "default": {
             "fontFamily": "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
             "fontSizes": {

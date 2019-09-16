@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "stdafx.h"
 #include "ParseUtil.h"
 
@@ -133,13 +135,65 @@ namespace AdaptiveCardsSharedModelUnitTest
 
         TEST_METHOD(GetArrayTests)
         {
+            bool throwsExpected = false;
             auto jsonObj = s_GetValidJsonObject();
-            Assert::ExpectException<AdaptiveCardParseException>([&]() { ParseUtil::GetArray(jsonObj, AdaptiveCardSchemaKey::Accent, true); });
+            try
+            {
+                ParseUtil::GetArray(jsonObj, AdaptiveCardSchemaKey::Accent, true);
+                throwsExpected = false;
+            }
+            catch (AdaptiveCardParseException e)
+            {
+                Assert::IsTrue(ErrorStatusCode::RequiredPropertyMissing == e.GetStatusCode());
+                Assert::AreEqual("Could not parse required key: accent. It was not found"s, e.GetReason());
+                throwsExpected = true;
+            }
+            Assert::IsTrue(throwsExpected);
+
             auto emptyRet = ParseUtil::GetArray(jsonObj, AdaptiveCardSchemaKey::Accent, false);
             Assert::IsTrue(emptyRet.isNull());
 
-            auto jsonObjWithAccent = s_GetJsonObjectWithAccent("true"s);
-            Assert::ExpectException<AdaptiveCardParseException>([&]() { ParseUtil::GetArray(jsonObjWithAccent, AdaptiveCardSchemaKey::Accent, true); });
+            try
+            {
+                auto jsonObjWithAccentString = s_GetJsonObjectWithAccent("true"s);
+                ParseUtil::GetArray(jsonObjWithAccentString, AdaptiveCardSchemaKey::Accent, true);
+                throwsExpected = false;
+            }
+            catch (AdaptiveCardParseException e)
+            {
+                Assert::IsTrue(ErrorStatusCode::InvalidPropertyValue == e.GetStatusCode());
+                Assert::AreEqual("Could not parse specified key: accent. It was not an array"s, e.GetReason());
+                throwsExpected = true;
+            }
+            Assert::IsTrue(throwsExpected);
+
+            try
+            {
+                auto jsonObjWithAccentObject = s_GetJsonObjectWithAccent("{}"s);
+                ParseUtil::GetArray(jsonObjWithAccentObject, AdaptiveCardSchemaKey::Accent, true);
+                throwsExpected = false;
+            }
+            catch (AdaptiveCardParseException e)
+            {
+                Assert::IsTrue(ErrorStatusCode::InvalidPropertyValue == e.GetStatusCode());
+                Assert::AreEqual("Could not parse specified key: accent. It was not an array"s, e.GetReason());
+                throwsExpected = true;
+            }
+            Assert::IsTrue(throwsExpected);
+
+            try
+            {
+                auto jsonObjWithAccentEmptyArray = s_GetJsonObjectWithAccent("[]"s);
+                ParseUtil::GetArray(jsonObjWithAccentEmptyArray, AdaptiveCardSchemaKey::Accent, true);
+                throwsExpected = false;
+            }
+            catch (AdaptiveCardParseException e)
+            {
+                Assert::IsTrue(ErrorStatusCode::RequiredPropertyMissing == e.GetStatusCode());
+                Assert::AreEqual("Could not parse required key: accent. It was not found"s, e.GetReason());
+                throwsExpected = true;
+            }
+            Assert::IsTrue(throwsExpected);
 
             auto jsonObjWithAccentArray = s_GetJsonObjectWithAccent("[\"thing1\", \"thing2\"]"s);
             auto arrayRet = ParseUtil::GetArray(jsonObjWithAccentArray, AdaptiveCardSchemaKey::Accent, true);

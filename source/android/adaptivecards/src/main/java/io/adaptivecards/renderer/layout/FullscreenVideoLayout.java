@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer.layout;
 
 /**
@@ -26,15 +28,12 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -51,6 +50,7 @@ public class FullscreenVideoLayout extends FullscreenVideoView implements View.O
         public void run()
         {
             updateCounter();
+            autoHideControls();
             TIME_THREAD.postDelayed(this, 200);
         }
     };
@@ -217,6 +217,23 @@ public class FullscreenVideoLayout extends FullscreenVideoView implements View.O
         }
     }
 
+    protected void autoHideControls()
+    {
+        if (m_elapsedTimeView == null)
+        {
+            return;
+        }
+
+        // We add one tick every 200 miliseconds and if the ticks have surpassed the 3 seconds ticks,
+        // we hide the controls
+        m_currentTicksForAutoHide++;
+
+        if (m_currentTicksForAutoHide > c_ticksBeforeAutohide)
+        {
+            hideControls();
+        }
+    }
+
     @Override
     public void setOnTouchListener(View.OnTouchListener l)
     {
@@ -357,6 +374,7 @@ public class FullscreenVideoLayout extends FullscreenVideoView implements View.O
         if (m_videoControlsView != null)
         {
             m_videoControlsView.setVisibility(View.VISIBLE);
+            m_currentTicksForAutoHide = 0;
         }
     }
 
@@ -423,4 +441,10 @@ public class FullscreenVideoLayout extends FullscreenVideoView implements View.O
     protected SeekBar m_seekBar;
     protected ImageButton m_playButton;
     protected TextView m_elapsedTimeView, m_totalTimeView;
+
+    // We update the play counter every 200 miliseconds so we keep this count to hide the separator
+    protected int m_currentTicksForAutoHide = 0;
+
+    // The controls will autohide after 3 seconds
+    private final int c_ticksBeforeAutohide = 15;
 }

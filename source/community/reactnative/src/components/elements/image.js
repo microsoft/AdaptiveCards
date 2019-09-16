@@ -17,8 +17,8 @@ import * as Constants from '../../utils/constants';
 import ElementWrapper from '../elements/element-wrapper';
 import { SelectAction } from '../actions';
 import { StyleManager } from '../../styles/style-config';
-import { InputContext } from '../../utils/context';
-import { InputContextConsumer } from '../../utils/context';
+import { InputContext,
+		InputContextConsumer } from '../../utils/context';
 
 const ContainResizeMode = 'contain';
 
@@ -31,8 +31,8 @@ export class Img extends React.Component {
 
 	constructor(props) {
 		super(props);
-
 		this.payload = props.json;
+		this.addResourceInformation = undefined;
 		this.state = {
 			imageWidth: 0,
 			imageHeight: 0,
@@ -40,7 +40,7 @@ export class Img extends React.Component {
 	}
 
 	componentDidMount() {
-		this.context.addResourceInformation(this.payload.url, "");
+		this.addResourceInformation(this.payload.url, "");
 	}
 
     /**
@@ -110,7 +110,11 @@ export class Img extends React.Component {
 	applySize() {
 		let sizeStyle = [];
 		let sizeValue = Utils.parseHostConfigEnum(Enums.Size, this.payload.size, Enums.Size.Auto)
-
+		/*  This W2H ratio is calculated to determine the height required w.r.to pre-determined sizes */
+		var w2hratio = this.state.imageHeight / this.state.imageWidth;
+		if (!Utils.isaNumber(w2hratio)) {
+			w2hratio = 1;
+		}
         /**
          * Scenario 1 : Either height or width has string value (Ex: '80px'),
          *               use the integer portion.
@@ -137,7 +141,7 @@ export class Img extends React.Component {
 			}
 			else {
 				this.width = parseInt(this.payload.width, 10);
-				sizeStyle.push({ height: this.width })
+				sizeStyle.push({ height: this.width * w2hratio })
 				this.height = this.width;
 			}
 		}
@@ -160,7 +164,7 @@ export class Img extends React.Component {
                          */
 						this.isPersonStyle() ?
 							sizeStyle.push({ height: this.hostConfig.imageSizes.small }) :
-							sizeStyle.push({ height: this.state.imageHeight })
+							sizeStyle.push({ height: this.hostConfig.imageSizes.small * w2hratio })
 
                         /**
                          * When images are rendered from imageset,
@@ -168,7 +172,7 @@ export class Img extends React.Component {
                          */
 						this.payload.fromImageSet == true ?
 							sizeStyle.push({ height: this.state.imageHeight }) :
-							sizeStyle.push({ height: this.hostConfig.imageSizes.small })
+							sizeStyle.push({ height: this.hostConfig.imageSizes.small * w2hratio })
 
 						this.width = this.hostConfig.imageSizes.small;
 						break;
@@ -179,11 +183,11 @@ export class Img extends React.Component {
 
 						this.isPersonStyle() ?
 							sizeStyle.push({ height: this.hostConfig.imageSizes.medium }) :
-							sizeStyle.push({ height: this.state.imageHeight })
+							sizeStyle.push({ height: this.hostConfig.imageSizes.medium * w2hratio })
 
 						this.payload.fromImageSet == true ?
 							sizeStyle.push({ height: this.state.imageHeight }) :
-							sizeStyle.push({ height: this.hostConfig.imageSizes.medium })
+							sizeStyle.push({ height: this.hostConfig.imageSizes.medium * w2hratio })
 
 						this.width = this.hostConfig.imageSizes.medium;
 						break;
@@ -193,11 +197,11 @@ export class Img extends React.Component {
 						sizeStyle.push({ width: this.hostConfig.imageSizes.large });
 						this.isPersonStyle() ?
 							sizeStyle.push({ height: this.hostConfig.imageSizes.large }) :
-							sizeStyle.push({ height: this.state.imageHeight })
+							sizeStyle.push({ height: this.hostConfig.imageSizes.large * w2hratio })
 
 						this.payload.fromImageSet == true ?
 							sizeStyle.push({ height: this.state.imageHeight }) :
-							sizeStyle.push({ height: this.hostConfig.imageSizes.large })
+							sizeStyle.push({ height: this.hostConfig.imageSizes.large * w2hratio })
 
 						this.width = this.hostConfig.imageSizes.large;
 						break;
@@ -237,58 +241,47 @@ export class Img extends React.Component {
 		return sizeStyle;
 	}
 
-
 	onPageLayoutHandler = (event) => {
+		const { width: layoutWidth } = event.nativeEvent.layout;
+		//This function is implemented to determine the actual dimensions of the component.
+		Image.getSize(this.url, (width, height) => {
 
-		const { width: layoutWidth, height: layoutHeight } = event.nativeEvent.layout;
-		if (Utils.validateUrl(this.url)) {
-			//This function is implemented to determine the actual dimensions of the component.
-			Image.getSize(this.url, (width, height) => {
+			/**
+			 * Calculating the width to height ratio based on layoutWidth and actual image width.
+			 */
+			const w2hratio = layoutWidth / width
+			/**
+				* The image-width and height are set in state to 
+				* re-render the element once we get the dimensions of the image.
+				*/
 
-				/**
-				 * Calculating the width to height ratio based on layoutWidth and actual image width.
-				 */
-				const w2hratio = layoutWidth / width
-				/**
-					* The image-width and height are set in state to 
-					* re-render the element once we get the determine of the image.
-					*/
+			/**
+			 * If the payload contains "fromImageset" i.e(if the image is rendered via ImageSet),
+			 * the height and width of the image is set to maxImageHeight for sizes "auto" and "stretch"
+			 */
 
-				/**
-				 * If the payload contains "fromImageset" i.e(if the image is rendered via ImageSet),
-				 * the height and width of the image is set to maxImageHeight for sizes "auto" and "stretch"
-				 */
+			if (this.payload.fromImageSet == true &&
+				(this.payload.size === Constants.Auto ||
+					this.payload.size === Constants.AlignStretch)) {
+				this.setState({
+					imageWidth: this.hostConfig.imageSet.maxImageHeight,
+					imageHeight: this.hostConfig.imageSet.maxImageHeight,
+				});
+				this.width = this.payload.width || this.hostConfig.imageSet.maxImageHeight;
+				this.height = this.payload.height || this.hostConfig.imageSet.maxImageHeight;
+			}
+			else {
+				this.setState({
+					imageWidth: layoutWidth,
+					imageHeight: w2hratio * height,
+				});
+				this.width = this.payload.width || layoutWidth;
+				this.height = this.payload.height || w2hratio * height;
+			}
 
-				if (this.payload.fromImageSet == true &&
-					(this.payload.size === Constants.Auto ||
-						this.payload.size === Constants.AlignStretch)) {
-					this.setState({
-						imageWidth: this.hostConfig.imageSet.maxImageHeight,
-						imageHeight: this.hostConfig.imageSet.maxImageHeight,
-					});
-					this.width = this.payload.width || this.hostConfig.imageSet.maxImageHeight;
-					this.height = this.payload.height || this.hostConfig.imageSet.maxImageHeight;
-				}
-				else {
-					this.setState({
-						imageWidth: layoutWidth,
-						imageHeight: w2hratio * height,
-					});
-					this.width = this.payload.width || layoutWidth;
-					this.height = this.payload.height || w2hratio * height;
-				}
-
-			}, (error) => {
-				console.log(`Couldn't get the image size: ${error.message}`);
-			});
-		} else {
-			this.setState({
-				imageWidth: this.hostConfig.imageSet.maxImageHeight,
-				imageHeight: this.hostConfig.imageSet.maxImageHeight,
-			});
-			this.width = this.payload.width || this.hostConfig.imageSet.maxImageHeight;
-			this.height = this.payload.height || this.hostConfig.imageSet.maxImageHeight;
-		}
+		}, (error) => {
+			console.log(`Couldn't get the image size: ${error.message}`);
+		});
 	}
 
 	render() {
@@ -300,7 +293,7 @@ export class Img extends React.Component {
 			spacing,
 		} = this;
 
-		if (!type) {
+		if (!type || !Utils.isValidImageURI(this.payload.url)) {
 			return null;
 		}
 
@@ -328,17 +321,22 @@ export class Img extends React.Component {
 			this.isPersonStyle() ?
 				imageComputedStyle.push({ borderRadius: this.width / 2 }) : null;
 		}
-		
+
 		let imageUrl = Utils.getImageUrl(url);
 
-		var containerContent = (<ElementWrapper json={this.payload} isFirst={this.props.isFirst}
-			style={wrapperComputedStyle}
-			onPageLayout={this.onPageLayoutHandler}>
-        
-			<Image style={imageComputedStyle}
-				source={{ uri: imageUrl }} />
-		</ElementWrapper>);
-		
+		var containerContent = (<InputContextConsumer>
+			{({ addResourceInformation }) => {
+				this.addResourceInformation = addResourceInformation;
+				return <ElementWrapper json={this.payload} isFirst={this.props.isFirst}
+					style={wrapperComputedStyle}
+					onPageLayout={this.onPageLayoutHandler}>
+
+					<Image resizeMode="contain" style={imageComputedStyle}
+						source={{ uri: imageUrl }} />
+				</ElementWrapper>
+			}}
+		</InputContextConsumer>);
+
 		if ((this.payload.selectAction === undefined)
 			|| (HostConfigManager.getHostConfig().supportsInteractivity === false)) {
 			return containerContent;

@@ -1,0 +1,40 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"inputNecessityIndicators": "optionalInputs",
+	"version": "1.3",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "This one is optional"
+		},
+		{
+			"type": "Input.Text",
+			"id": "input1",
+			"isRequired": false
+		},
+		{
+			"type": "TextBlock",
+			"text": "This one too"
+		},
+		{
+			"type": "Input.Text",
+			"id": "input2"
+		},
+		{
+			"type": "TextBlock",
+			"text": "This is required"
+		},
+		{
+			"type": "Input.Text",
+			"id": "input3",
+			"isRequired": true
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "OK"
+		}
+	]
+}

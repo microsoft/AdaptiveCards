@@ -5,6 +5,10 @@
       <Configuration>Debug</Configuration>
       <Platform>ARM</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|ARM64">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
@@ -16,6 +20,10 @@
     <ProjectConfiguration Include="Release|ARM">
       <Configuration>Release</Configuration>
       <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM64">
+      <Configuration>Release</Configuration>
+      <Platform>ARM64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
@@ -35,7 +43,7 @@
     <AppContainerApplication>true</AppContainerApplication>
     <ApplicationType>Windows Store</ApplicationType>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
-    <WindowsTargetPlatformMinVersion>10.0.15063.0</WindowsTargetPlatformMinVersion>
+    <WindowsTargetPlatformMinVersion>10.0.16299.0</WindowsTargetPlatformMinVersion>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
     <TargetName>AdaptiveCards.Rendering.Uwp</TargetName>
     <GenerateManifest>false</GenerateManifest>
@@ -87,7 +95,7 @@
       </AdditionalDependencies>
     </Link>
     <CustomBuildStep>
-      <Command>mdmerge -partial -i "$(OutDir)$(TargetName).winmd" -o "$(OutDir)Output" -metadata_dir "$(FrameworkSdkDir)UnionMetadata" &amp;&amp; copy /y "$(OutDir)Output\*" "$(OutDir)"</Command>
+      <Command>mdmerge -partial -i "$(OutDir)$(TargetName).winmd" -o "$(OutDir)Output" -metadata_dir "$(WindowsSDK_MetadataFoundationPath)" -metadata_dir "$(WindowsSDK_MetadataPathVersioned)\Windows.Foundation.UniversalApiContract\7.0.0.0" &amp;&amp; copy /y "$(OutDir)Output\*" "$(OutDir)"</Command>
       <Outputs>$(OutDir)%(TargetName).winmd</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
@@ -103,25 +111,24 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_WINRT_DLL;_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_WINRT_DLL;_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINRT_DLL;_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>
         ..\..;
         ..\..\shared\cpp\ObjectModel;
         ..\..\shared\cpp\ObjectModel\json;
         %(AdditionalIncludeDirectories)
       </AdditionalIncludeDirectories>
-      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">stdcpp17</LanguageStandard>
-      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">stdcpp17</LanguageStandard>
-      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">stdcpp17</LanguageStandard>
-      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">stdcpp17</LanguageStandard>
-      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdcpp17</LanguageStandard>
-      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <ControlFlowGuard>Guard</ControlFlowGuard>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="lib\AdaptiveHighlightColorConfig.cpp" />
-    <ClCompile Include="lib\XamlHelpers.cpp" />
+    <ClCompile Include="lib\AdaptiveRequirement.cpp" />
+    <ClCompile Include="lib\ElementTagContent.cpp" />
     <ClInclude Include="lib\AdaptiveActionElement.h" />
     <ClInclude Include="lib\AdaptiveActionInvoker.h" />
     <ClInclude Include="lib\AdaptiveActionParserRegistration.h" />
@@ -140,8 +147,8 @@
     <ClInclude Include="lib\AdaptiveCardResourceResolvers.h" />
     <ClInclude Include="lib\AdaptiveError.h" />
     <ClInclude Include="lib\AdaptiveFeatureRegistration.h" />
-    <ClInclude Include="lib\AdaptiveFontStyleDefinition.h" />
-    <ClInclude Include="lib\AdaptiveFontStylesDefinition.h" />
+    <ClInclude Include="lib\AdaptiveFontTypeDefinition.h" />
+    <ClInclude Include="lib\AdaptiveFontTypesDefinition.h" />
     <ClInclude Include="lib\AdaptiveHighlightColorConfig.h" />
     <ClInclude Include="lib\AdaptiveHostConfigParseResult.h" />
     <ClInclude Include="lib\AdaptiveCardParseResult.h" />
@@ -170,6 +177,7 @@
     <ClInclude Include="lib\AdaptiveRemoteResourceInformation.h" />
     <ClInclude Include="lib\AdaptiveRenderArgs.h" />
     <ClInclude Include="lib\AdaptiveRenderContext.h" />
+    <ClInclude Include="lib\AdaptiveRequirement.h" />
     <ClInclude Include="lib\AdaptiveRichTextBlock.h" />
     <ClInclude Include="lib\AdaptiveRichTextBlockRenderer.h" />
     <ClInclude Include="lib\AdaptiveSeparator.h" />
@@ -190,6 +198,7 @@
     <ClInclude Include="lib\CustomActionWrapper.h" />
     <ClInclude Include="lib\CustomElementWrapper.h" />
     <ClInclude Include="lib\DateTimeParser.h" />
+    <ClInclude Include="lib\ElementTagContent.h" />
     <ClInclude Include="lib\TextHelpers.h" />
     <ClInclude Include="lib\InputValue.h" />
     <ClInclude Include="lib\MediaHelpers.h" />
@@ -239,8 +248,8 @@
     <ClCompile Include="lib\AdaptiveActionRendererRegistration.cpp" />
     <ClCompile Include="lib\AdaptiveBackgroundImage.cpp" />
     <ClCompile Include="lib\AdaptiveFeatureRegistration.cpp" />
-    <ClCompile Include="lib\AdaptiveFontStyleDefinition.cpp" />
-    <ClCompile Include="lib\AdaptiveFontStylesDefinition.cpp" />
+    <ClCompile Include="lib\AdaptiveFontTypeDefinition.cpp" />
+    <ClCompile Include="lib\AdaptiveFontTypesDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveMedia.cpp" />
     <ClCompile Include="lib\AdaptiveMediaConfig.cpp" />
     <ClCompile Include="lib\AdaptiveMediaEventInvoker.cpp" />

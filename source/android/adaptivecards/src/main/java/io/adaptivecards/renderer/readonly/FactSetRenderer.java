@@ -1,7 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +13,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
-import io.adaptivecards.objectmodel.FontStyle;
+import io.adaptivecards.objectmodel.FontType;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
@@ -47,8 +50,9 @@ public class FactSetRenderer extends BaseCardElementRenderer
         textView.setText(text);
 
         TextBlockRenderer.setTextColor(textView, textConfig.getColor(), hostConfig, textConfig.getIsSubtle(), containerStyle);
-        TextBlockRenderer.setTextSize(textView, FontStyle.Default, textConfig.getSize(), hostConfig);
-        TextBlockRenderer.getInstance().setTextFormat(textView, hostConfig, FontStyle.Default, textConfig.getWeight());
+        TextBlockRenderer.setTextSize(textView, FontType.Default, textConfig.getSize(), hostConfig);
+        TextBlockRenderer.getInstance().setTextFormat(textView, hostConfig, FontType.Default, textConfig.getWeight());
+        textView.setOnTouchListener(new TextBlockRenderer.TouchTextView(new SpannableString(text)));
         textView.setSingleLine(!textConfig.getWrap());
         textView.setMaxWidth(Util.dpToPixels(context, textConfig.getMaxWidth()));
         textView.setEllipsize(TextUtils.TruncateAt.END);
@@ -78,14 +82,12 @@ public class FactSetRenderer extends BaseCardElementRenderer
             throw new InternalError("Unable to convert BaseCardElement to FactSet object model.");
         }
 
-        setSpacingAndSeparator(context, viewGroup, factSet.GetSpacing(), factSet.GetSeparator(), hostConfig, true);
+        View separator = setSpacingAndSeparator(context, viewGroup, factSet.GetSpacing(), factSet.GetSeparator(), hostConfig, true);
 
         TableLayout tableLayout = new TableLayout(context);
-        tableLayout.setTag(new TagContent(factSet));
-        if(!baseCardElement.GetIsVisible())
-        {
-            tableLayout.setVisibility(View.GONE);
-        }
+        tableLayout.setTag(new TagContent(factSet, separator, viewGroup));
+
+        setVisibility(baseCardElement.GetIsVisible(), tableLayout);
 
         tableLayout.setColumnShrinkable(1, true);
         HeightType height = factSet.GetHeight();

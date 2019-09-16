@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "pch.h"
@@ -42,10 +44,10 @@ namespace AdaptiveNamespace
         virtual HRESULT STDMETHODCALLTYPE ArrangeOverride(_In_ Size arrangeBounds, _Out_ Size* pReturnValue);
 
         // not implemented
-        virtual HRESULT STDMETHODCALLTYPE get_BackgroundImage(_Outptr_ IAdaptiveBackgroundImage** value) { return E_NOTIMPL; }
-        virtual HRESULT STDMETHODCALLTYPE get_RootElement(_Outptr_ IFrameworkElement** value) { return E_NOTIMPL; }
-        virtual HRESULT STDMETHODCALLTYPE put_ResolvedImage(_In_ IUIElement* value) { return E_NOTIMPL; }
-        virtual HRESULT STDMETHODCALLTYPE get_ImageSize(_Out_ ABI::Windows::Foundation::Size* value)
+        virtual HRESULT STDMETHODCALLTYPE get_BackgroundImage(_Outptr_ IAdaptiveBackgroundImage** /*value*/) { return E_NOTIMPL; }
+        virtual HRESULT STDMETHODCALLTYPE get_RootElement(_Outptr_ IFrameworkElement** /*value*/) { return E_NOTIMPL; }
+        virtual HRESULT STDMETHODCALLTYPE put_ResolvedImage(_In_ IUIElement* /*value*/) { return E_NOTIMPL; }
+        virtual HRESULT STDMETHODCALLTYPE get_ImageSize(_Out_ ABI::Windows::Foundation::Size* /*value*/)
         {
             return E_NOTIMPL;
         }
@@ -55,7 +57,7 @@ namespace AdaptiveNamespace
 
     private:
         void RefreshContainerTile();
-        HRESULT ExtractBackgroundImageData(_Out_ ABI::AdaptiveNamespace::BackgroundImageMode* mode,
+        HRESULT ExtractBackgroundImageData(_Out_ ABI::AdaptiveNamespace::BackgroundImageFillMode* fillMode,
                                            _Out_ ABI::AdaptiveNamespace::HAlignment* hAlignment,
                                            _Out_ ABI::AdaptiveNamespace::VAlignment* vAlignment);
 

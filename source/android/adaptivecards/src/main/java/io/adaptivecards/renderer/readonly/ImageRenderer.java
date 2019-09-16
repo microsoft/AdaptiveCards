@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
@@ -146,123 +148,8 @@ public class ImageRenderer extends BaseCardElementRenderer
         imageView.setAdjustViewBounds(true);
     }
 
-    @Override
-    public View render(
-            RenderedAdaptiveCard renderedCard,
-            Context context,
-            FragmentManager fragmentManager,
-            ViewGroup viewGroup,
-            BaseCardElement baseCardElement,
-            ICardActionHandler cardActionHandler,
-            HostConfig hostConfig,
-            RenderArgs renderArgs)
+    private void setImageSize(Context context, ImageView imageView, Image image, HostConfig hostConfig)
     {
-        Image image;
-        if (baseCardElement instanceof Image)
-        {
-            image = (Image) baseCardElement;
-        }
-        else if ((image = Image.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to Image object model.");
-        }
-
-        ImageView imageView = new ImageView(context);
-        imageView.setTag(new TagContent(image));
-        if (!baseCardElement.GetIsVisible())
-        {
-            imageView.setVisibility(View.GONE);
-        }
-
-        String imageBackgroundColor = image.GetBackgroundColor();
-        int backgroundColor = 0;
-        if (!TextUtils.isEmpty(imageBackgroundColor))
-        {
-            // check that it has 9 characters and that the color string isn't a color name
-            if (imageBackgroundColor.length() == 9 && imageBackgroundColor.charAt(0) == '#')
-            {
-                try
-                {
-                    // if the color string is not valid, parseColor will throw a IllegalArgumentException so we just turn the color to transparent on the catch statement
-                    backgroundColor = Color.parseColor(imageBackgroundColor);
-                }
-                catch (IllegalArgumentException e)
-                {
-                    backgroundColor = 0;
-                }
-            }
-            else
-            {
-                backgroundColor = 0;
-            }
-        }
-
-        if(image.GetImageStyle() != ImageStyle.Person)
-        {
-            imageView.setBackgroundColor(backgroundColor);
-        }
-
-        int imageSizeLimit = getImageSizeLimit(context, image.GetImageSize(), hostConfig.GetImageSizes());
-        ImageRendererImageLoaderAsync imageLoaderAsync = new ImageRendererImageLoaderAsync(
-            renderedCard,
-            imageView,
-            hostConfig.GetImageBaseUrl(),
-            image.GetImageStyle(),
-            backgroundColor,
-            imageSizeLimit);
-
-        IOnlineImageLoader onlineImageLoader = CardRendererRegistration.getInstance().getOnlineImageLoader();
-        if (onlineImageLoader != null)
-        {
-            imageLoaderAsync.registerCustomOnlineImageLoader(onlineImageLoader);
-        }
-
-        imageLoaderAsync.execute(image.GetUrl());
-
-        LinearLayout.LayoutParams layoutParams;
-        if (image.GetImageSize() == ImageSize.Stretch)
-        {
-            //ImageView must match parent for stretch to work
-            if (image.GetHeight() == HeightType.Stretch)
-            {
-                layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT, 1);
-            }
-            else
-            {
-                layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            }
-        }
-        else
-        {
-            if (image.GetHeight() == HeightType.Stretch)
-            {
-                layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT, 1);
-            }
-            else
-            {
-                layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            }
-        }
-
-        HorizontalAlignment horizontalAlignment = image.GetHorizontalAlignment();
-        if (horizontalAlignment == HorizontalAlignment.Right)
-        {
-            layoutParams.gravity = Gravity.RIGHT;
-        }
-        else if (horizontalAlignment == HorizontalAlignment.Center)
-        {
-            layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
-        }
-
-        if (image.GetSelectAction() != null)
-        {
-            imageView.setClickable(true);
-            imageView.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, image.GetSelectAction(), cardActionHandler));
-        }
-
-        //set horizontalAlignment
-        imageView.setLayoutParams(layoutParams);
-
         long pixelWidth = image.GetPixelWidth();
         long pixelHeight = image.GetPixelHeight();
         boolean hasExplicitSize = ((pixelHeight != 0) || (pixelWidth != 0));
@@ -300,10 +187,163 @@ public class ImageRenderer extends BaseCardElementRenderer
         {
             setImageSize(context, imageView, image.GetImageSize(), hostConfig.GetImageSizes());
         }
-        boolean isInImageSet = viewGroup instanceof HorizontalFlowLayout;
-        setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, !isInImageSet /* horizontal line */, isInImageSet);
+    }
 
-        viewGroup.addView(imageView);
+    private int getBackgroundColorFromHexCode(String hexColorCode)
+    {
+        int backgroundColor = 0;
+        if (!TextUtils.isEmpty(hexColorCode))
+        {
+            // check that it has 9 characters and that the color string isn't a color name
+            if (hexColorCode.length() == 9 && hexColorCode.charAt(0) == '#')
+            {
+                try
+                {
+                    // if the color string is not valid, parseColor will throw a IllegalArgumentException
+                    // so we just turn the color to transparent on the catch statement
+                    backgroundColor = Color.parseColor(hexColorCode);
+                }
+                catch (IllegalArgumentException e)
+                {
+                    backgroundColor = 0;
+                }
+            }
+            else
+            {
+                backgroundColor = 0;
+            }
+        }
+
+        return backgroundColor;
+    }
+
+    private LinearLayout.LayoutParams setImageHorizontalAlignment(LinearLayout.LayoutParams layoutParams, Image image)
+    {
+        HorizontalAlignment horizontalAlignment = image.GetHorizontalAlignment();
+        if (horizontalAlignment == HorizontalAlignment.Right)
+        {
+            layoutParams.gravity = Gravity.RIGHT;
+        }
+        else if (horizontalAlignment == HorizontalAlignment.Center)
+        {
+            layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
+        }
+
+        return layoutParams;
+    }
+
+    private View setImageHeightAndHorizontalAlignment(Context context, boolean isInImageSet, ImageView imageView, Image image, TagContent tagContent)
+    {
+        LinearLayout.LayoutParams layoutParams;
+        if (image.GetImageSize() == ImageSize.Stretch)
+        {
+            // ImageView must match parent for stretch to work
+            if (image.GetHeight() == HeightType.Stretch)
+            {
+                layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1);
+            }
+            else
+            {
+                layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            }
+        }
+        else
+        {
+            if (image.GetHeight() == HeightType.Stretch)
+            {
+                layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT, 1);
+            }
+            else
+            {
+                layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            }
+        }
+
+        // Set horizontal alignment for the image
+        layoutParams = setImageHorizontalAlignment(layoutParams, image);
+
+        // If the image is part of an imageSet or have height auto, we set the layout parameter to
+        // it and return just the view, otherwise we have to create a layout to grow in height and
+        // contain the image avoiding it to grow larger and making the background color to stretch
+        if (isInImageSet || image.GetHeight() != HeightType.Stretch)
+        {
+            imageView.setLayoutParams(layoutParams);
+            return imageView;
+        }
+        else
+        {
+            LinearLayout stretchLayout = new LinearLayout(context);
+            stretchLayout.setLayoutParams(layoutParams);
+            stretchLayout.addView(imageView);
+            tagContent.SetStretchContainer(stretchLayout);
+            return stretchLayout;
+        }
+    }
+
+    @Override
+    public View render(
+            RenderedAdaptiveCard renderedCard,
+            Context context,
+            FragmentManager fragmentManager,
+            ViewGroup viewGroup,
+            BaseCardElement baseCardElement,
+            ICardActionHandler cardActionHandler,
+            HostConfig hostConfig,
+            RenderArgs renderArgs)
+    {
+        Image image;
+        if (baseCardElement instanceof Image)
+        {
+            image = (Image) baseCardElement;
+        }
+        else if ((image = Image.dynamic_cast(baseCardElement)) == null)
+        {
+            throw new InternalError("Unable to convert BaseCardElement to Image object model.");
+        }
+
+        boolean isInImageSet = viewGroup instanceof HorizontalFlowLayout;
+        View separator = setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, !isInImageSet /* horizontal line */, isInImageSet);
+
+        ImageView imageView = new ImageView(context);
+
+        int backgroundColor = getBackgroundColorFromHexCode(image.GetBackgroundColor());
+
+        if(image.GetImageStyle() != ImageStyle.Person)
+        {
+            imageView.setBackgroundColor(backgroundColor);
+        }
+
+        int imageSizeLimit = getImageSizeLimit(context, image.GetImageSize(), hostConfig.GetImageSizes());
+        ImageRendererImageLoaderAsync imageLoaderAsync = new ImageRendererImageLoaderAsync(
+            renderedCard,
+            imageView,
+            hostConfig.GetImageBaseUrl(),
+            image.GetImageStyle(),
+            backgroundColor,
+            imageSizeLimit);
+
+        IOnlineImageLoader onlineImageLoader = CardRendererRegistration.getInstance().getOnlineImageLoader();
+        if (onlineImageLoader != null)
+        {
+            imageLoaderAsync.registerCustomOnlineImageLoader(onlineImageLoader);
+        }
+
+        imageLoaderAsync.execute(image.GetUrl());
+
+        setImageSize(context, imageView, image, hostConfig);
+
+        TagContent tagContent = new TagContent(image, separator, viewGroup);
+
+        View imageContainer = setImageHeightAndHorizontalAlignment(context, isInImageSet, imageView, image, tagContent);
+        viewGroup.addView(imageContainer);
+        imageView.setTag(tagContent);
+        setVisibility(baseCardElement.GetIsVisible(), imageView);
+
+        if (image.GetSelectAction() != null)
+        {
+            imageView.setClickable(true);
+            imageView.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, image.GetSelectAction(), cardActionHandler));
+        }
 
         return imageView;
     }

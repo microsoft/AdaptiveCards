@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 export const adaptiveCardSchema =
 {
   "$schema": "http://json-schema.org/draft-06/schema#",

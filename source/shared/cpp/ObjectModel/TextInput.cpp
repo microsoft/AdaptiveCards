@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "ParseUtil.h"
 #include "TextInput.h"
@@ -44,6 +46,11 @@ Json::Value TextInput::SerializeToJsonValue() const
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::InlineAction)] =
             BaseCardElement::SerializeSelectAction(m_inlineAction);
+    }
+
+    if (!m_regex.empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Regex)] = m_regex;
     }
 
     return root;
@@ -109,6 +116,16 @@ void TextInput::SetInlineAction(const std::shared_ptr<BaseActionElement> action)
     m_inlineAction = action;
 }
 
+std::string TextInput::GetRegex() const
+{
+    return m_regex;
+}
+
+void TextInput::SetRegex(const std::string& value)
+{
+    m_regex = value;
+}
+
 std::shared_ptr<BaseCardElement> TextInputParser::Deserialize(ParseContext& context, const Json::Value& json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::TextInput);
@@ -121,6 +138,7 @@ std::shared_ptr<BaseCardElement> TextInputParser::Deserialize(ParseContext& cont
     textInput->SetTextInputStyle(
         ParseUtil::GetEnumValue<TextInputStyle>(json, AdaptiveCardSchemaKey::Style, TextInputStyle::Text, TextInputStyleFromString));
     textInput->SetInlineAction(ParseUtil::GetAction(context, json, AdaptiveCardSchemaKey::InlineAction, false));
+    textInput->SetRegex(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Regex));
 
     return textInput;
 }

@@ -6,17 +6,17 @@
 //
 
 #import "ACRTextBlockRenderer.h"
-#import "ACRContentHoldingUIView.h"
-#import "TextBlock.h"
-#import "HostConfig.h"
-#import "MarkDownParser.h"
-#import "ACRView.h"
-#import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACRContentHoldingUIView.h"
 #import "ACRUILabel.h"
+#import "ACRView.h"
 #import "DateTimePreparsedToken.h"
 #import "DateTimePreparser.h"
-#import "Util.h"
+#import "HostConfig.h"
+#import "MarkDownParser.h"
+#import "TextBlock.h"
+#import "UtiliOS.h"
 
 @implementation ACRTextBlockRenderer
 
@@ -32,34 +32,34 @@
 }
 
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
-          rootView:(ACRView *)rootView
-            inputs:(NSMutableArray *)inputs
-   baseCardElement:(ACOBaseCardElement *)acoElem
-        hostConfig:(ACOHostConfig *)acoConfig;
+           rootView:(ACRView *)rootView
+             inputs:(NSMutableArray *)inputs
+    baseCardElement:(ACOBaseCardElement *)acoElem
+         hostConfig:(ACOHostConfig *)acoConfig;
 {
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<TextBlock> txtBlck = std::dynamic_pointer_cast<TextBlock>(elem);
-    ACRUILabel *lab = [[ACRUILabel alloc] initWithFrame:CGRectMake(0,0,viewGroup.frame.size.width, 0)];
+    ACRUILabel *lab = [[ACRUILabel alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0)];
     lab.backgroundColor = [UIColor clearColor];
 
     lab.style = [viewGroup style];
     NSMutableAttributedString *content = nil;
-    if(rootView){
+    if (rootView) {
         NSMutableDictionary *textMap = [rootView getTextMap];
         NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)txtBlck.get()];
         NSString *key = [number stringValue];
-        NSDictionary* data = textMap[key];
+        NSDictionary *data = textMap[key];
         NSData *htmlData = data[@"html"];
         NSDictionary *options = data[@"options"];
         NSDictionary *descriptor = data[@"descriptor"];
         NSString *text = data[@"nonhtml"];
 
         // Initializing NSMutableAttributedString for HTML rendering is very slow
-        if(htmlData) {
+        if (htmlData) {
             content = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
             // Drop newline char
-            [content deleteCharactersInRange:NSMakeRange([content length] -1, 1)];
+            [content deleteCharactersInRange:NSMakeRange([content length] - 1, 1)];
             lab.selectable = YES;
             lab.dataDetectorTypes = UIDataDetectorTypeLink;
             lab.userInteractionEnabled = YES;
@@ -67,7 +67,7 @@
             // if html rendering is skipped, remove p tags from both ends (<p>, </p>)
             content = [[NSMutableAttributedString alloc] initWithString:text attributes:descriptor];
             [content deleteCharactersInRange:NSMakeRange(0, 3)];
-            [content deleteCharactersInRange:NSMakeRange([content length] -4, 4)];
+            [content deleteCharactersInRange:NSMakeRange([content length] - 4, 4)];
         }
         lab.editable = NO;
         lab.textContainer.lineFragmentPadding = 0;
@@ -83,11 +83,11 @@
         auto foregroundColor = [acoConfig getTextBlockColor:style textColor:txtBlck->GetTextColor() subtleOption:txtBlck->GetIsSubtle()];
 
         // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
-        [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:foregroundColor,} range:NSMakeRange(0, content.length)];
-        
-        if(txtBlck->GetStrikethrough()) {
-            [content addAttribute:NSStrikethroughStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(0, content.length)];
+        [content addAttributes:@{
+            NSParagraphStyleAttributeName : paragraphStyle,
+            NSForegroundColorAttributeName : foregroundColor,
         }
+                         range:NSMakeRange(0, content.length)];
 
         lab.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
         lab.attributedText = content;
@@ -102,23 +102,12 @@
     [viewGroup addArrangedSubview:wrappingview];
     [wrappingview addSubview:lab];
 
-    NSLayoutAttribute horizontalAlignment = NSLayoutAttributeLeading;
-    if(txtBlck->GetHorizontalAlignment() == HorizontalAlignment::Right) {
-        horizontalAlignment = NSLayoutAttributeTrailing;
-    } else if (txtBlck->GetHorizontalAlignment() == HorizontalAlignment::Center) {
-        horizontalAlignment = NSLayoutAttributeCenterX;
-    }
-
-    [NSLayoutConstraint constraintWithItem:lab attribute:horizontalAlignment relatedBy:NSLayoutRelationEqual toItem:wrappingview attribute:horizontalAlignment multiplier:1.0 constant:0].active = YES;
-    [NSLayoutConstraint constraintWithItem:lab attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:wrappingview attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
-    [NSLayoutConstraint constraintWithItem:lab attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:wrappingview attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
-
     lab.textContainer.maximumNumberOfLines = int(txtBlck->GetMaxLines());
-    if(!lab.textContainer.maximumNumberOfLines && !txtBlck->GetWrap()){
+    if (!lab.textContainer.maximumNumberOfLines && !txtBlck->GetWrap()) {
         lab.textContainer.maximumNumberOfLines = 1;
     }
 
-    if(txtBlck->GetHeight() == HeightType::Auto){
+    if (txtBlck->GetHeight() == HeightType::Auto) {
         [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         [wrappingview setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
     } else {
@@ -126,9 +115,41 @@
         [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     }
 
-    [NSLayoutConstraint constraintWithItem:wrappingview attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:lab attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0].active = YES;
-    [lab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-    [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    [lab setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+
+    UILayoutGuide *leftGuide = nil;
+    UILayoutGuide *rightGuide = nil;
+    HorizontalAlignment adaptiveAlignment = txtBlck->GetHorizontalAlignment();
+
+    if (adaptiveAlignment == HorizontalAlignment::Right) {
+        leftGuide = [[UILayoutGuide alloc] init];
+        leftGuide.identifier = @"text-left-guide";
+        [wrappingview addLayoutGuide:leftGuide];
+        [leftGuide.leadingAnchor constraintEqualToAnchor:wrappingview.leadingAnchor].active = YES;
+        [leftGuide.trailingAnchor constraintEqualToAnchor:lab.leadingAnchor].active = YES;
+        [leftGuide.heightAnchor constraintEqualToAnchor:lab.heightAnchor].active = YES;
+        [lab.trailingAnchor constraintEqualToAnchor:wrappingview.trailingAnchor].active = YES;
+    }
+
+    if (adaptiveAlignment == HorizontalAlignment::Left) {
+        rightGuide = [[UILayoutGuide alloc] init];
+        rightGuide.identifier = @"text-right-guide";
+        [wrappingview addLayoutGuide:rightGuide];
+        NSLayoutConstraint *constraint = [rightGuide.leadingAnchor constraintEqualToAnchor:lab.trailingAnchor];
+        constraint.active = YES;
+        [rightGuide.heightAnchor constraintEqualToAnchor:lab.heightAnchor].active = YES;
+        [rightGuide.trailingAnchor constraintEqualToAnchor:wrappingview.trailingAnchor].active = YES;
+        [lab.leadingAnchor constraintEqualToAnchor:wrappingview.leadingAnchor].active = YES;
+    }
+
+    if (adaptiveAlignment == HorizontalAlignment::Center) {
+        [lab.centerXAnchor constraintEqualToAnchor:wrappingview.centerXAnchor].active = YES;
+    }
+
+    [wrappingview.heightAnchor constraintEqualToAnchor:lab.heightAnchor].active = YES;
+    [wrappingview.widthAnchor constraintGreaterThanOrEqualToAnchor:lab.widthAnchor].active = YES;
+
+    [lab.centerYAnchor constraintEqualToAnchor:wrappingview.centerYAnchor].active = YES;
 
     configVisibility(wrappingview, elem);
 

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include <sdkddkver.h>
 
 import "inspectable.idl";
@@ -25,168 +27,8 @@ AdaptiveNamespaceStart
     }
 #endif
 
-    runtimeclass AdaptiveCardRenderer;
-    runtimeclass AdaptiveCardResourceResolvers;
-    runtimeclass AdaptiveCardGetResourceStreamArgs;
-
-    runtimeclass AdaptiveTextBlock;
-    runtimeclass AdaptiveCard;
-    runtimeclass AdaptiveBackgroundImage;
-    runtimeclass AdaptiveImage;
-    runtimeclass AdaptiveImageSet;
-    runtimeclass AdaptiveContainer;
-    runtimeclass AdaptiveColumn;
-    runtimeclass AdaptiveColumnSet;
-    runtimeclass AdaptiveFact;
-    runtimeclass AdaptiveFactSet;
-    runtimeclass AdaptiveChoiceInput;
-    runtimeclass AdaptiveChoiceSetInput;
-    runtimeclass AdaptiveDateInput;
-    runtimeclass AdaptiveMedia;
-    runtimeclass AdaptiveMediaSource;
-    runtimeclass AdaptiveNumberInput;
-    runtimeclass AdaptiveTextInput;
-    runtimeclass AdaptiveTimeInput;
-    runtimeclass AdaptiveToggleInput;
-    runtimeclass AdaptiveSeparator;
-    runtimeclass AdaptiveOpenUrlAction;
-    runtimeclass AdaptiveShowCardAction;
-    runtimeclass AdaptiveSubmitAction;
-    runtimeclass AdaptiveToggleVisibilityAction;
-    runtimeclass AdaptiveUnsupportedAction;
-    runtimeclass AdaptiveUnsupportedElement;
-    runtimeclass AdaptiveActionSet;
-
-    runtimeclass AdaptiveFontSizesConfig;
-    runtimeclass AdaptiveFontWeightsConfig;
-    runtimeclass AdaptiveFontStyleDefinition;
-    runtimeclass AdaptiveFontStylesDefinition;
-    runtimeclass AdaptiveColorsConfig;
-    runtimeclass AdaptiveColorConfig;
-    runtimeclass AdaptiveTextConfig;
-    runtimeclass AdaptiveImageSizesConfig;
-    runtimeclass AdaptiveImageSetConfig;
-    runtimeclass AdaptiveContainerStyleConfig;
-    runtimeclass AdaptiveImageConfig;
-    runtimeclass AdaptiveCardConfig;
-    runtimeclass AdaptiveFactSetConfig;
-    runtimeclass AdaptiveShowCardActionConfig;
-    runtimeclass AdaptiveActionsConfig;
-    runtimeclass AdaptiveHostConfig;
-    runtimeclass AdaptiveSpacingConfig;
-    runtimeclass AdaptiveSeparatorConfig;
-    runtimeclass AdaptiveMediaConfig;
-    runtimeclass AdaptiveContainerStyleDefinition;
-    runtimeclass AdaptiveContainerStylesDefinition;
-    runtimeclass RenderedAdaptiveCard;
-    runtimeclass AdaptiveActionEventArgs;
-    runtimeclass AdaptiveMediaEventArgs;
-    runtimeclass AdaptiveInputs;
     runtimeclass AdaptiveCardParseResult;
     runtimeclass AdaptiveHostConfigParseResult;
-    runtimeclass AdaptiveError;
-    runtimeclass AdaptiveWarning;
-
-    runtimeclass AdaptiveElementParserRegistration;
-    runtimeclass AdaptiveActionParserRegistration;
-    runtimeclass AdaptiveFeatureRegistration;
-    runtimeclass AdaptiveElementRendererRegistration;
-    runtimeclass AdaptiveActionRendererRegistration;
-    runtimeclass AdaptiveCardRenderer;
-    runtimeclass AdaptiveChoiceSetInputRenderer;
-    runtimeclass AdaptiveColumnRenderer;
-    runtimeclass AdaptiveColumnSetRenderer;
-    runtimeclass AdaptiveContainerRenderer;
-    runtimeclass AdaptiveDateInputRenderer;
-    runtimeclass AdaptiveFactSetRenderer;
-    runtimeclass AdaptiveImageRenderer;
-    runtimeclass AdaptiveImageSetRenderer;
-    runtimeclass AdaptiveNumberInputRenderer;
-    runtimeclass AdaptiveRenderContext;
-    runtimeclass AdaptiveRenderArgs;
-    runtimeclass AdaptiveActionInvoker;
-    runtimeclass AdaptiveMediaEventInvoker;
-    runtimeclass AdaptiveTextBlockRenderer;
-    runtimeclass AdaptiveRichTextBlockRenderer;
-    runtimeclass AdaptiveTextInputRenderer;
-    runtimeclass AdaptiveTimeInputRenderer;
-    runtimeclass AdaptiveToggleInputRenderer;
-    runtimeclass AdaptiveRemoteResourceInformation;
-    runtimeclass AdaptiveToggleVisibilityTarget;
-
-    runtimeclass TileControl;
-    runtimeclass WholeItemsPanel;
-
-
-    interface IAdaptiveCardResourceResolvers;
-    interface IAdaptiveCardResourceResolver;
-    interface IAdaptiveCardGetResourceStreamArgs;
-
-    interface IAdaptiveCardElement;
-    interface IAdaptiveActionElement;
-    interface IAdaptiveTextBlock;
-    interface IAdaptiveCard;
-    interface IAdaptiveBackgroundImage;
-    interface IAdaptiveImage;
-    interface IAdaptiveImageSet;
-    interface IAdaptiveContainer;
-    interface IAdaptiveColumn;
-    interface IAdaptiveColumnSet;
-    interface IAdaptiveFact;
-    interface IAdaptiveFactSet;
-    interface IAdaptiveChoiceInput;
-    interface IAdaptiveChoiceSetInput;
-    interface IAdaptiveDateInput;
-    interface IAdaptiveTextInput;
-    interface IAdaptiveNumberInput;
-    interface IAdaptiveTimeInput;
-    interface IAdaptiveToggleInput;
-    interface IAdaptiveSeparator;
-    interface IAdaptiveError;
-    interface IAdaptiveWarning;
-    interface IAdaptiveUnsupportedAction;
-    interface IAdaptiveUnsupportedElement;
-    interface IAdaptiveActionSet;
-
-    interface IAdaptiveFontSizesConfig;
-    interface IAdaptiveFontWeightsConfig;
-    interface IAdaptiveFontStyleDefinition;
-    interface IAdaptiveFontStylesDefinition;
-    interface IAdaptiveColorConfig;
-    interface IAdaptiveColorsConfig;
-    interface IAdaptiveTextConfig;
-    interface IAdaptiveImageSizesConfig;
-    interface IAdaptiveImageSetConfig;
-    interface IAdaptiveImageConfig;
-    interface IAdaptiveCardConfig;
-    interface IAdaptiveFactSetConfig;
-    interface IAdaptiveShowCardActionConfig;
-    interface IAdaptiveActionsConfig;
-    interface IAdaptiveHostConfig;
-    interface IAdaptiveSpacingConfig;
-    interface IAdaptiveSeparatorConfig;
-    interface IAdaptiveContainerStyleDefinition;
-    interface IAdaptiveContainerStylesDefinition;
-    interface IRenderedAdaptiveCard;
-    interface IAdaptiveInputs;
-    interface IAdaptiveActionEventArgs;
-
-    interface IAdaptiveElementParserRegistration;
-    interface IAdaptiveActionParserRegistration;
-    interface IAdaptiveFeatureRegistration;
-    interface IAdaptiveElementParser;
-    interface IAdaptiveActionParser;
-
-    interface IAdaptiveActionRenderer;
-    interface IAdaptiveElementRenderer;
-    interface IAdaptiveElementRendererRegistration;
-    interface IAdaptiveActionRendererRegistration;
-    interface IAdaptiveRenderContext;
-    interface IAdaptiveRenderArgs;
-    interface IAdaptiveActionInvoker;
-
-    interface ITileControl;
-    interface IWholeItemsPanel;
 
     [version(NTDDI_WIN10_RS1)]
 #ifdef ADAPTIVE_CARDS_WINDOWS
@@ -259,14 +101,13 @@ AdaptiveNamespaceStart
         [contract(InternalContract, 1)]
         [internal]
 #endif
-        typedef [v1_enum] enum
-            Mode
+        typedef [v1_enum] enum BackgroundImageFillMode
         {
-            Stretch = 0,
+            Cover = 0,
             RepeatHorizontally,
             RepeatVertically,
             Repeat
-        } BackgroundImageMode;
+        } BackgroundImageFillMode;
 
     [version(NTDDI_WIN10_RS1)]
 #ifdef ADAPTIVE_CARDS_WINDOWS
@@ -436,10 +277,10 @@ AdaptiveNamespaceStart
     [contract(InternalContract, 1)]
     [internal]
 #endif
-    typedef [v1_enum] enum FontStyle {
+    typedef [v1_enum] enum FontType {
         Default = 0,
         Monospace
-    } FontStyle;
+    } FontType;
 
     [version(NTDDI_WIN10_RS1)]
 #ifdef ADAPTIVE_CARDS_WINDOWS
@@ -451,7 +292,8 @@ AdaptiveNamespaceStart
         RenderFailed,
         RequiredPropertyMissing,
         InvalidPropertyValue,
-        UnsupportedParserOverride
+        UnsupportedParserOverride,
+        CustomError,
     } ErrorStatusCode;
 
     [version(NTDDI_WIN10_RS1)]
@@ -471,7 +313,10 @@ AdaptiveNamespaceStart
         UnsupportedSchemaVersion,
         UnsupportedMediaType,
         InvalidMediaMix,
-        UnsupportedValue
+        InvalidValue,
+        UnsupportedValue,
+        PerformingFallback,
+        CustomWarning,
     } WarningStatusCode;
 
     [version(NTDDI_WIN10_RS1)]
@@ -528,16 +373,28 @@ AdaptiveNamespaceStart
         Content
     } FallbackType;
 
-    [version(NTDDI_WIN10_RS1)]
+    [version(NTDDI_WIN10_RS1), flags]
 #ifdef ADAPTIVE_CARDS_WINDOWS
     [contract(InternalContract, 1)][internal]
 #endif
     typedef[v1_enum] enum BleedDirection {
-        None = 0,
-        Left,
-        Right,
-        Both
+        None = 0x0000,
+        Left = 0x0001,
+        Right = 0x0010,
+        Up = 0x0100,
+        Down = 0x1000,
+        All = Left | Right | Up | Down
     } BleedDirection;
+
+    [version(NTDDI_WIN10_RS1), flags]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)][internal]
+#endif
+    typedef[v1_enum] enum InputNecessityIndicators {
+        None = 0,
+        RequiredInputs,
+        OptionalInputs
+    } InputNecessityIndicators;
 
     declare
     {
@@ -555,207 +412,108 @@ AdaptiveNamespaceStart
         interface Windows.Foundation.Collections.IVector<AdaptiveRemoteResourceInformation*>;
         interface Windows.Foundation.Collections.IVector<AdaptiveToggleVisibilityTarget*>;
         interface Windows.Foundation.Collections.IVector<AdaptiveImage*>;
+        interface Windows.Foundation.Collections.IVector<AdaptiveRequirement*>;
     }
 
     [
-        version(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(21f8aa32-e8ca-41cb-b571-d7d234173a88),
+        uuid("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveCardElement", 21f8aa32-e8ca-41cb-b571-d7d234173a88),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(74D69C2F-7F1C-47FD-A319-F4B4E7F72EE9)
 #endif
     ]
-    interface IAdaptiveCardElement : IInspectable
+    interface IAdaptiveCardElement
     {
-        [propget] HRESULT ElementType([out, retval] ElementType* value);
-        [propget] HRESULT ElementTypeString([out, retval] HSTRING* value);
+        ElementType ElementType { get; };
+        String ElementTypeString { get; };
 
-        [propget] HRESULT Height([out, retval] HeightType* value);
-        [propput] HRESULT Height([in] HeightType value);
+        HeightType Height;
+        Spacing Spacing;
+        Boolean Separator;
+        String Id;
+        Boolean IsVisible;
+        FallbackType FallbackType;
+        IAdaptiveCardElement FallbackContent;
+        Windows.Data.Json.JsonObject AdditionalProperties;
+        Windows.Foundation.Collections.IVector<AdaptiveRequirement> Requirements { get; };
 
-        [propget] HRESULT Spacing([out, retval] Spacing* value);
-        [propput] HRESULT Spacing([in] Spacing value);
-
-        [propget] HRESULT Separator([out, retval] boolean* value);
-        [propput] HRESULT Separator([in] boolean value);
-
-        [propget] HRESULT Id([out, retval] HSTRING* value);
-        [propput] HRESULT Id([in] HSTRING value);
-
-        [propget] HRESULT IsVisible([out, retval] boolean* value);
-        [propput] HRESULT IsVisible([in] boolean value);
-
-        [propget] HRESULT FallbackType([out, retval] FallbackType * value);
-        [propput] HRESULT FallbackType([in] FallbackType value);
-        [propget] HRESULT FallbackContent([out, retval] IAdaptiveCardElement ** content);
-        [propput] HRESULT FallbackContent([in] IAdaptiveCardElement * content);
-
-        [propget] HRESULT AdditionalProperties([out, retval] Windows.Data.Json.JsonObject** json);
-        [propput] HRESULT AdditionalProperties([in] Windows.Data.Json.JsonObject* json);
-
-        HRESULT MeetsRequirements([in] AdaptiveFeatureRegistration * featureRegistration, [out, retval] boolean * value);
-
-        HRESULT ToJson([out, retval] Windows.Data.Json.JsonObject** value);
+        Windows.Data.Json.JsonObject ToJson();
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveRemoteResourceInformation),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(6E1610FE-E49E-47B9-BCF6-BAB6C893D57F),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveRemoteResourceInformation", 6E1610FE-E49E-47B9-BCF6-BAB6C893D57F)
         contract(InternalContract, 1),
         internal
-#else
-        uuid(384C6E7C-B5AC-4A6C-A6F4-F060C1AD583E),
-#endif
-    ]
-    interface IAdaptiveRemoteResourceInformation : IInspectable
-    {
-        [propget] HRESULT Url([out, retval] HSTRING* value);
-        [propput] HRESULT Url([in] HSTRING value);
-
-        [propget] HRESULT MimeType([out, retval] HSTRING* value);
-        [propput] HRESULT MimeType([in] HSTRING value);
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
 #endif
     ]
     runtimeclass AdaptiveRemoteResourceInformation
     {
-        [default] interface IAdaptiveRemoteResourceInformation;
+        AdaptiveRemoteResourceInformation();
+
+        String Url;
+        String MimeType;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(1D37C30F-9180-4CEF-A73C-C77ED00176DB),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(7BEB71E7-2401-4B40-95AC-DCA3A06FAB37),
 #endif
     ]
-    interface IAdaptiveElementWithRemoteResources : IInspectable
+    interface IAdaptiveElementWithRemoteResources
     {
-        HRESULT GetResourceInformation([out, retval] Windows.Foundation.Collections.IVectorView<AdaptiveRemoteResourceInformation*>** result);
+        Windows.Foundation.Collections.IVectorView<AdaptiveRemoteResourceInformation> GetResourceInformation();
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveSeparator),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(2bbbf18f-394d-48ce-b542-3820a6708a52),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveSeparator", 2bbbf18f-394d-48ce-b542-3820a6708a52)
         contract(InternalContract, 1),
         internal
-#else
-        uuid(a2a0727a-e4aa-423d-b5b0-4b85f7a534c4)
 #endif
-    ]
-    interface IAdaptiveSeparator : IInspectable
-    {
-        [propget] HRESULT Color([out, retval] ForegroundColor* value);
-        [propput] HRESULT Color([in] ForegroundColor value);
-
-        [propget] HRESULT Thickness([out, retval] SeparatorThickness* value);
-        [propput] HRESULT Thickness([in] SeparatorThickness value);
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
+    ] 
     runtimeclass AdaptiveSeparator
     {
-        [default] interface IAdaptiveSeparator;
+        AdaptiveSeparator();
+
+        ForegroundColor Color;
+        SeparatorThickness Thickness;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(6285A2F7-D193-46B3-8F5E-0AE2FDE4225B),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveTextElement", 6285A2F7-D193-46B3-8F5E-0AE2FDE4225B),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(3B1A599D-7CE2-4E14-A885-682363F96925)
 #endif
-    ] interface IAdaptiveTextElement : IInspectable
+    ] 
+    interface IAdaptiveTextElement 
     {
-        [propget] HRESULT Size([out, retval] TextSize * value);
-        [propput] HRESULT Size([in] TextSize value);
-
-        [propget] HRESULT Weight([out, retval] TextWeight * value);
-        [propput] HRESULT Weight([in] TextWeight value);
-
-        [propget] HRESULT Color([out, retval] ForegroundColor * value);
-        [propput] HRESULT Color([in] ForegroundColor value);
-
-        [propget] HRESULT Text([out, retval] HSTRING * value);
-        [propput] HRESULT Text([in] HSTRING value);
-
-        [propget] HRESULT IsSubtle([out, retval] boolean * value);
-        [propput] HRESULT IsSubtle([in] boolean value);
-
-        [propget] HRESULT Italic([out, retval] boolean * value);
-        [propput] HRESULT Italic([in] boolean value);
-
-        [propget] HRESULT Strikethrough([out, retval] boolean * value);
-        [propput] HRESULT Strikethrough([in] boolean value);
-
-        [propget] HRESULT Language([out, retval] HSTRING * value);
-        [propput] HRESULT Language([in] HSTRING value);
-
-        [propget] HRESULT FontStyle([out, retval] FontStyle * value);
-        [propput] HRESULT FontStyle([in] FontStyle value);
+        TextSize Size;
+        TextWeight Weight;
+        ForegroundColor Color;
+        String Text;
+        Boolean IsSubtle;
+        String Language;
+        FontType FontType;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveTextBlock),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(bfafd94d-4c49-4022-b90d-16e03e7be798),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveTextBlock", bfafd94d-4c49-4022-b90d-16e03e7be798),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(c4b68276-7cd0-4c3e-8498-3edb9ec6abfb)
 #endif
-    ] interface IAdaptiveTextBlock : IInspectable requires IAdaptiveTextElement
+    ] 
+    runtimeclass AdaptiveTextBlock : IAdaptiveCardElement, IAdaptiveTextElement
     {
-        [propget] HRESULT Wrap([out, retval] boolean* value);
-        [propput] HRESULT Wrap([in] boolean value);
+        AdaptiveTextBlock();
 
-        [propget] HRESULT HorizontalAlignment([out, retval] HAlignment* value);
-        [propput] HRESULT HorizontalAlignment([in] HAlignment value);
-
-        [propget] HRESULT MaxLines([out, retval] UINT32* value);
-        [propput] HRESULT MaxLines([in] UINT32 value);
-    };
-
-    [version(NTDDI_WIN10_RS1),
-     activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-     contract(InternalContract, 1),
-     internal,
-     activatable(InternalContract, 1)
-#endif
-    ] runtimeclass AdaptiveTextBlock 
-    {
-        [default] interface IAdaptiveTextBlock;
-        interface IAdaptiveTextElement;
-        interface IAdaptiveCardElement;
+        Boolean Wrap;
+        HAlignment HorizontalAlignment;
+        UInt32 MaxLines;
     };
 
     [
@@ -767,3268 +525,1610 @@ AdaptiveNamespaceStart
 #else
         uuid(0AC70C29-FA90-4C28-A6D1-A6EF58126085)
 #endif
-    ] 
-    interface IAdaptiveInline : IInspectable
+    ]
+    interface IAdaptiveInline
     {
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveTextRun),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(D81768ED-D724-4494-B141-A9B3F2613EFD),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveTextRun", D81768ED-D724-4494-B141-A9B3F2613EFD),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(09BBE759-0754-441D-B808-3CE2C188D521)
 #endif
     ] 
-    interface IAdaptiveTextRun : IInspectable requires IAdaptiveTextElement
+    runtimeclass AdaptiveTextRun : IAdaptiveInline, IAdaptiveTextElement
     {
-        [propget] HRESULT Highlight([out, retval] boolean * value);
-        [propput] HRESULT Highlight([in] boolean value);
+        AdaptiveTextRun();
 
-        [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
-        [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
+        Boolean Italic;
+        Boolean Strikethrough;
+        Boolean Highlight;
+        Boolean Underline;
+        IAdaptiveActionElement SelectAction;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ] 
-    runtimeclass AdaptiveTextRun
-    { 
-        [default] interface IAdaptiveTextRun;
-        interface IAdaptiveInline; 
-        interface IAdaptiveTextElement;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveRichTextBlock),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(E3858144-63F3-4625-A986-AADD40DAE0BE),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveRichTextBlock", E3858144-63F3-4625-A986-AADD40DAE0BE),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(6095E4E2-BFA7-41C6-B12E-887F980196A9)
 #endif
     ] 
-    interface IAdaptiveRichTextBlock : IInspectable
+    runtimeclass AdaptiveRichTextBlock : IAdaptiveCardElement
     {
-        [propget] HRESULT HorizontalAlignment([out, retval] HAlignment* value);
-        [propput] HRESULT HorizontalAlignment([in] HAlignment value);
+        AdaptiveRichTextBlock();
 
-        [propget] HRESULT Inlines([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveInline*>** value);
+        HAlignment HorizontalAlignment;
+        Windows.Foundation.Collections.IVector<IAdaptiveInline> Inlines { get; };
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveRichTextBlock
-    {
-        [default] interface IAdaptiveRichTextBlock;
-        interface IAdaptiveCardElement;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveMediaSource),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(05F2F77A-D458-4F73-AAF7-06B91D4C37E6),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveMediaSource", 05F2F77A-D458-4F73-AAF7-06B91D4C37E6),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(5F8A6054-5EC8-4321-988E-3130A977C14C)
 #endif
-    ]
-    interface IAdaptiveMediaSource : IInspectable
-    {
-        [propget] HRESULT MimeType([out, retval] HSTRING* value);
-        [propput] HRESULT MimeType([in] HSTRING value);
-
-        [propget] HRESULT Url([out, retval] HSTRING* value);
-        [propput] HRESULT Url([in] HSTRING value);
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
+    ] 
     runtimeclass AdaptiveMediaSource
     {
-        [default] interface IAdaptiveMediaSource;
+        AdaptiveMediaSource();
+
+        String MimeType;
+        String Url;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveMedia),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(4E3499F8-2A99-4CE3-BA71-5F3799C1E06A),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveMedia"4E3499F8-2A99-4CE3-BA71-5F3799C1E06A),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(161BE390-2927-463C-9A46-21A756F2487B)
 #endif
-    ]
-    interface IAdaptiveMedia : IInspectable
+    ] 
+    runtimeclass AdaptiveMedia : IAdaptiveCardElement
     {
-        [propget] HRESULT Poster([out, retval] HSTRING* value);
-        [propput] HRESULT Poster([in] HSTRING value);
+        AdaptiveMedia();
 
-        [propget] HRESULT AltText([out, retval] HSTRING* value);
-        [propput] HRESULT AltText([in] HSTRING value);
+        String Poster;
+        String AltText;
 
-        [propget] HRESULT Sources([out, retval] Windows.Foundation.Collections.IVector<AdaptiveMediaSource*>** value);
+        Windows.Foundation.Collections.IVector<AdaptiveMediaSource> Sources { get; };
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveMedia
-    {
-        [default] interface IAdaptiveMedia;
-        interface IAdaptiveCardElement;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveBackgroundImage),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(1545EC36-6154-4F39-A81A-E1CF7B384B31),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveBackgroundImage", 1545EC36-6154-4F39-A81A-E1CF7B384B31),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(DBEEF3B8-1446-43C9-8B3B-4EB7CCC72289)
 #endif
-    ] interface IAdaptiveBackgroundImage : IInspectable
+    ] 
+    runtimeclass AdaptiveBackgroundImage
     {
-        [propget] HRESULT Url([out, retval] HSTRING * value);
-        [propput] HRESULT Url([in] HSTRING value);
+        AdaptiveBackgroundImage();
 
-        [propget] HRESULT Mode([out, retval] BackgroundImageMode * value);
-        [propput] HRESULT Mode([in] BackgroundImageMode value);
-
-        [propget] HRESULT HorizontalAlignment([out, retval] HAlignment * value);
-        [propput] HRESULT HorizontalAlignment([in] HAlignment value);
-
-        [propget] HRESULT VerticalAlignment([out, retval] VAlignment * value);
-        [propput] HRESULT VerticalAlignment([in] VAlignment value);
-
-    };
-
-    [version(NTDDI_WIN10_RS1),
-     activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-     contract(InternalContract, 1),
-     internal,
-     activatable(InternalContract, 1)
-#endif
-    ] runtimeclass AdaptiveBackgroundImage {
-        [default] interface IAdaptiveBackgroundImage;
+        String Url;
+        BackgroundImageFillMode FillMode;
+        HAlignment HorizontalAlignment;
+        VAlignment VerticalAlignment;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveCard),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(932119A6-266B-4AC9-8A19-DBED6261BA9F),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveCard", 932119A6-266B-4AC9-8A19-DBED6261BA9F),
+        static_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveCardStatics", 5a426551-3cfc-4688-87fb-7df80fcc9246),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(9D76D8E1-03E4-49F4-8BC2-E7711F1ED3DA)
 #endif
     ]
-    interface IAdaptiveCard : IInspectable
+    runtimeclass AdaptiveCard 
     {
-        [propget] HRESULT Body([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>** value);
+        AdaptiveCard();
 
-        [propget] HRESULT Actions([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveActionElement*>** value);
+        Windows.Foundation.Collections.IVector<IAdaptiveCardElement> Body { get; };
+        Windows.Foundation.Collections.IVector<IAdaptiveActionElement> Actions { get; };
+        ElementType ElementType { get; };
+        String Version;
+        String FallbackText;
+        AdaptiveBackgroundImage BackgroundImage;
+        String Language;
+        String Speak;
+        ContainerStyle Style;
+        IAdaptiveActionElement SelectAction;
+        VerticalContentAlignment VerticalContentAlignment;
+        HeightType Height;
+        UInt32 MinHeight;
+        InputNecessityIndicators InputNecessityIndicators;
 
-        [propget] HRESULT ElementType([out, retval] ElementType* value);
+        Windows.Data.Json.JsonObject ToJson();
+        Windows.Foundation.Collections.IVectorView<AdaptiveRemoteResourceInformation> GetResourceInformation();
 
-        [propget] HRESULT Version([out, retval] HSTRING* value);
-        [propput] HRESULT Version([in] HSTRING value);
+        static AdaptiveCardParseResult FromJson(Windows.Data.Json.JsonObject adaptiveJson);
 
-        [propget] HRESULT FallbackText([out, retval] HSTRING* value);
-        [propput] HRESULT FallbackText([in] HSTRING value);
+        [method_name("FromJsonWithParserRegistration")]
+        static AdaptiveCardParseResult FromJson(
+            Windows.Data.Json.JsonObject adaptiveJson,
+            AdaptiveElementParserRegistration elementRegistration,
+            AdaptiveActionParserRegistration actionRegistration);
 
-        [propget] HRESULT BackgroundImage([out, retval] AdaptiveBackgroundImage** value);
-        [propput] HRESULT BackgroundImage([in] AdaptiveBackgroundImage* value);
+        static AdaptiveCardParseResult FromJsonString(String adaptiveJson);
 
-        [propget] HRESULT Language([out, retval] HSTRING* value);
-        [propput] HRESULT Language([in] HSTRING value);
-
-        [propget] HRESULT Speak([out, retval] HSTRING* value);
-        [propput] HRESULT Speak([in] HSTRING value);
-
-        [propget] HRESULT Style([out, retval] ContainerStyle* value);
-        [propput] HRESULT Style([in] ContainerStyle value);
-
-        [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
-        [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
-
-        [propget] HRESULT VerticalContentAlignment([out, retval] VerticalContentAlignment* value);
-        [propput] HRESULT VerticalContentAlignment([in] VerticalContentAlignment value);
-
-        [propget] HRESULT Height([out, retval] HeightType* value);
-        [propput] HRESULT Height([in] HeightType value);
-
-        [propget] HRESULT MinHeight([out, retval] UINT32* value);
-        [propput] HRESULT MinHeight([in] UINT32 value);
-
-        HRESULT ToJson([out, retval] Windows.Data.Json.JsonObject** value);
-
-        HRESULT GetResourceInformation([out, retval] Windows.Foundation.Collections.IVectorView<AdaptiveRemoteResourceInformation*>** result);
+        [method_name("FromJsonStringWithParserRegistration")] 
+        static AdaptiveCardParseResult FromJsonString(
+            String adaptiveJson,
+            AdaptiveElementParserRegistration elementRegistration,
+            AdaptiveActionParserRegistration actionRegistration);
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveCardParseResult),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(b42d51d5-5916-4cdb-a020-6e24c3e5f7fd),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveCardParseResult", b42d51d5-5916-4cdb-a020-6e24c3e5f7fd),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(b4db0937-025a-4c08-980b-750703e77e37)
 #endif
     ]
-    interface IAdaptiveCardParseResult : IInspectable
+    runtimeclass AdaptiveCardParseResult 
     {
-        [propget] HRESULT AdaptiveCard([out, retval] AdaptiveCard** value);
-        [propget] HRESULT Errors([out, retval] Windows.Foundation.Collections.IVector<AdaptiveError*>** value);
-        [propget] HRESULT Warnings([out, retval] Windows.Foundation.Collections.IVector<AdaptiveWarning*>** value);
+        AdaptiveCardParseResult();
+
+        AdaptiveCard AdaptiveCard { get; };
+        Windows.Foundation.Collections.IVector<AdaptiveError> Errors { get; };
+        Windows.Foundation.Collections.IVector<AdaptiveWarning> Warnings { get; };
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveCardParseResult
-    {
-        [default] interface IAdaptiveCardParseResult;
-    }
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveCard),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(5a426551-3cfc-4688-87fb-7df80fcc9246),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveImage", 3b0830aa-a03a-46c4-9204-32c051e34982),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(bace01f2-5642-4366-879a-dec601d8b7e3)
 #endif
-    ]
-    interface IAdaptiveCardStatics : IInspectable
+    ] 
+    runtimeclass AdaptiveImage : IAdaptiveCardElement
     {
-        [overload("FromJson")]
-        HRESULT FromJson(
-            [in] Windows.Data.Json.JsonObject* adaptiveJson,
-            [out, retval] AdaptiveCardParseResult** card);
+        AdaptiveImage();
 
-        [overload("FromJson")]
-        HRESULT FromJsonWithParserRegistration(
-            [in] Windows.Data.Json.JsonObject* adaptiveJson,
-            [in] AdaptiveElementParserRegistration* elementRegistration,
-            [in] AdaptiveActionParserRegistration* actionRegistration,
-            [out, retval] AdaptiveCardParseResult** card);
-
-        [overload("FromJsonString")]
-        HRESULT FromJsonString(
-            [in] HSTRING adaptiveJson,
-            [out, retval] AdaptiveCardParseResult** card);
-
-        [overload("FromJsonString")]
-        HRESULT FromJsonStringWithParserRegistration(
-            [in] HSTRING adaptiveJson,
-            [in] AdaptiveElementParserRegistration* elementRegistration,
-            [in] AdaptiveActionParserRegistration* actionRegistration,
-            [out, retval] AdaptiveCardParseResult** card);
+        String Url;
+        String BackgroundColor;
+        ImageStyle Style;
+        ImageSize Size;
+        UInt32 PixelWidth;
+        UInt32 PixelHeight;
+        HAlignment HorizontalAlignment;
+        String AltText;
+        IAdaptiveActionElement SelectAction;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-        static(IAdaptiveCardStatics, NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        static(IAdaptiveCardStatics, InternalContract, 1),
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveCard
-    {
-        [default] interface IAdaptiveCard;
-    }
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveImage),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(3b0830aa-a03a-46c4-9204-32c051e34982),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveImageSet", cb3e7434-e7dd-48d9-85a7-3981fb16b2e9),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(16452a2e-1152-47f3-90bd-6e4148b09669)
 #endif
-    ]
-    interface IAdaptiveImage : IInspectable
+    ] 
+    runtimeclass AdaptiveImageSet : IAdaptiveCardElement
     {
-        [propget] HRESULT Url([out, retval] HSTRING* value);
-        [propput] HRESULT Url([in] HSTRING value);
+        AdaptiveImageSet();
 
-        [propget] HRESULT BackgroundColor([out, retval] HSTRING* value);
-        [propput] HRESULT BackgroundColor([in] HSTRING value);
-
-        [propget] HRESULT Style([out, retval] ImageStyle* value);
-        [propput] HRESULT Style([in] ImageStyle value);
-
-        [propget] HRESULT Size([out, retval] ImageSize* value);
-        [propput] HRESULT Size([in] ImageSize value);
-
-        [propget] HRESULT PixelWidth([out, retval] UINT32* value);
-        [propput] HRESULT PixelWidth([in] UINT32 value);
-
-        [propget] HRESULT PixelHeight([out, retval] UINT32* value);
-        [propput] HRESULT PixelHeight([in] UINT32 value);
-
-        [propget] HRESULT HorizontalAlignment([out, retval] HAlignment * value);
-        [propput] HRESULT HorizontalAlignment([in] HAlignment value);
-
-        [propget] HRESULT AltText([out, retval] HSTRING* value);
-        [propput] HRESULT AltText([in] HSTRING value);
-
-        [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
-        [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
+        Windows.Foundation.Collections.IVector<AdaptiveImage> Images { get; };
+        ImageSize ImageSize;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveImage
-    {
-        [default] interface IAdaptiveImage;
-        interface IAdaptiveCardElement;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveImageSet),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(cb3e7434-e7dd-48d9-85a7-3981fb16b2e9),
-        contract(InternalContract, 1),
-        internal
-#else
-        uuid(f618bd35-8fe3-46bd-8988-cdf5607314d1)
-#endif
-    ]
-    interface IAdaptiveImageSet : IInspectable
-    {
-        [propget] HRESULT Images([out, retval] Windows.Foundation.Collections.IVector<AdaptiveImage*>** value);
-
-        [propget] HRESULT ImageSize([out, retval] ImageSize* value);
-        [propput] HRESULT ImageSize([in] ImageSize value);
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveImageSet
-    {
-        [default] interface IAdaptiveImageSet;
-        interface IAdaptiveCardElement;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(5238a2b8-9a13-4dc3-aa9e-5e1e3c1fcd70),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(9b10f5ef-26e8-4d65-ba76-b986b5e90586)
 #endif
     ]
-    interface IAdaptiveInputElement : IInspectable
+    interface IAdaptiveInputElement 
     {
-        [propget] HRESULT IsRequired([out, retval] boolean* value);
-        [propput] HRESULT IsRequired([in] boolean value);
+        Boolean IsRequired;
+        String ErrorMessage;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveChoiceInput),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(ace5f894-2109-4c57-bde6-7e69069242a9),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveChoiceInput", ace5f894-2109-4c57-bde6-7e69069242a9),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(99797dfe-d39c-43a4-9f2b-d457cc358e1e)
-#endif
-    ]
-    interface IAdaptiveChoiceInput : IInspectable
-    {
-        [propget] HRESULT ElementType([out, retval] ElementType* value);
-
-        [propget] HRESULT Title([out, retval] HSTRING* value);
-        [propput] HRESULT Title([in] HSTRING value);
-
-        [propget] HRESULT Value([out, retval] HSTRING* value);
-        [propput] HRESULT Value([in] HSTRING value);
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
 #endif
     ]
     runtimeclass AdaptiveChoiceInput
     {
-        [default] interface IAdaptiveChoiceInput;
+        AdaptiveChoiceInput();
+
+        ElementType ElementType { get; };
+        String Title;
+        String Value;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveChoiceSetInput),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(9fa2984c-a65e-4886-92b0-379ca242e955),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveChoiceSetInput", 9fa2984c-a65e-4886-92b0-379ca242e955),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(ce0735ef-f983-4a5e-bdad-f5eb7f962faa)
 #endif
-    ]
-    interface IAdaptiveChoiceSetInput : IInspectable
+    ] 
+    runtimeclass AdaptiveChoiceSetInput : IAdaptiveInputElement, IAdaptiveCardElement
     {
-        [propget] HRESULT Value([out, retval] HSTRING * value);
-        [propput] HRESULT Value([in] HSTRING value);
-        [propget] HRESULT IsMultiSelect([out, retval] boolean* value);
-        [propput] HRESULT IsMultiSelect([in] boolean value);
-        [propget] HRESULT Wrap([out, retval] boolean* value);
-        [propput] HRESULT Wrap([in] boolean value);
+        AdaptiveChoiceSetInput();
 
-        [propget] HRESULT ChoiceSetStyle([out, retval] ChoiceSetStyle* value);
-        [propput] HRESULT ChoiceSetStyle([in] ChoiceSetStyle value);
-
-        [propget] HRESULT Choices([out, retval] Windows.Foundation.Collections.IVector<AdaptiveChoiceInput*>** value);
+        String Value;
+        Boolean IsMultiSelect;
+        Boolean Wrap;
+        ChoiceSetStyle ChoiceSetStyle;
+        Windows.Foundation.Collections.IVector<AdaptiveChoiceInput> Choices { get; };
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveChoiceSetInput
-    {
-        [default] interface IAdaptiveChoiceSetInput;
-        interface IAdaptiveInputElement;
-        interface IAdaptiveCardElement;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveDateInput),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(547622b8-5670-4265-9459-5adce2630ce9),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveDateInput", 547622b8-5670-4265-9459-5adce2630ce9),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(359e2cc5-9b8d-40bf-bbb2-2d3494d30991)
 #endif
     ]
-    interface IAdaptiveDateInput : IInspectable
+    runtimeclass AdaptiveDateInput : IAdaptiveInputElement, IAdaptiveCardElement
     {
-        [propget] HRESULT Max([out, retval] HSTRING* value);
-        [propput] HRESULT Max([in] HSTRING value);
+        AdaptiveDateInput();
 
-        [propget] HRESULT Min([out, retval] HSTRING* value);
-        [propput] HRESULT Min([in] HSTRING value);
-
-        [propget] HRESULT Placeholder([out, retval] HSTRING* value);
-        [propput] HRESULT Placeholder([in] HSTRING value);
-
-        [propget] HRESULT Value([out, retval] HSTRING* value);
-        [propput] HRESULT Value([in] HSTRING value);
+        String Max;
+        String Min;
+        String Placeholder;
+        String Value;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveDateInput
-    {
-        [default] interface IAdaptiveDateInput;
-        interface IAdaptiveInputElement;
-        interface IAdaptiveCardElement;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveNumberInput),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(7c093cbd-cb81-4e3f-b3ae-82664ce87859),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveNumberInput", 7c093cbd-cb81-4e3f-b3ae-82664ce87859),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(3bd0868c-5fbd-4341-91ff-4b07eb2bd54c)
 #endif
     ]
-    interface IAdaptiveNumberInput : IInspectable
+    runtimeclass AdaptiveNumberInput : IAdaptiveInputElement, IAdaptiveCardElement
     {
-        [propget] HRESULT Max([out, retval] INT32 *value);
-        [propput] HRESULT Max([in] INT32 value);
+        AdaptiveNumberInput();
 
-        [propget] HRESULT Min([out, retval] INT32 *value);
-        [propput] HRESULT Min([in] INT32 value);
-
-        [propget] HRESULT Placeholder([out, retval] HSTRING* value);
-        [propput] HRESULT Placeholder([in] HSTRING value);
-
-        [propget] HRESULT Value([out, retval] INT32* value);
-        [propput] HRESULT Value([in] INT32 value);
+        Int32 Max;
+        Int32 Min;
+        String Placeholder;
+        Int32 Value;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveNumberInput
-    {
-        [default] interface IAdaptiveNumberInput;
-        interface IAdaptiveInputElement;
-        interface IAdaptiveCardElement;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveTextInput),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(c8affec2-c379-4efd-b126-3a8f7277ee88),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveTextInput", c8affec2-c379-4efd-b126-3a8f7277ee88),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(ab30772b-172d-4595-bcd2-01001df19d1e)
 #endif
     ]
-    interface IAdaptiveTextInput : IInspectable
+    runtimeclass AdaptiveTextInput : IAdaptiveInputElement, IAdaptiveCardElement
     {
-        [propget] HRESULT IsMultiline([out, retval] boolean* value);
-        [propput] HRESULT IsMultiline([in] boolean value);
+        AdaptiveTextInput();
 
-        [propget] HRESULT MaxLength([out, retval] UINT32* value);
-        [propput] HRESULT MaxLength([in] UINT32 value);
-
-        [propget] HRESULT Placeholder([out, retval] HSTRING* value);
-        [propput] HRESULT Placeholder([in] HSTRING value);
-
-        [propget] HRESULT Value([out, retval] HSTRING* value);
-        [propput] HRESULT Value([in] HSTRING value);
-
-        [propget] HRESULT TextInputStyle([out, retval] TextInputStyle* value);
-        [propput] HRESULT TextInputStyle([in] TextInputStyle value);
-
-        [propget] HRESULT InlineAction([out, retval] IAdaptiveActionElement** value);
-        [propput] HRESULT InlineAction([in] IAdaptiveActionElement* value);
+        Boolean IsMultiline;
+        UInt32 MaxLength;
+        String Placeholder;
+        String Value;
+        TextInputStyle TextInputStyle;
+        IAdaptiveActionElement InlineAction;
+        String Regex;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveTextInput
-    {
-        [default] interface IAdaptiveTextInput;
-        interface IAdaptiveInputElement;
-        interface IAdaptiveCardElement;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveTimeInput),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(a20ae4a6-7fff-4634-b1d9-2719a02d4967),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveTimeInput", a20ae4a6-7fff-4634-b1d9-2719a02d4967),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(1ee90aff-93e8-4292-ac49-39d4c3289cd9)
 #endif
     ]
-    interface IAdaptiveTimeInput : IInspectable
+    runtimeclass AdaptiveTimeInput : IAdaptiveInputElement, IAdaptiveCardElement
     {
-        [propget] HRESULT Max([out, retval] HSTRING* value);
-        [propput] HRESULT Max([in] HSTRING value);
+        AdaptiveTimeInput();
 
-        [propget] HRESULT Min([out, retval] HSTRING* value);
-        [propput] HRESULT Min([in] HSTRING value);
-
-        [propget] HRESULT Placeholder([out, retval] HSTRING* value);
-        [propput] HRESULT Placeholder([in] HSTRING value);
-
-        [propget] HRESULT Value([out, retval] HSTRING* value);
-        [propput] HRESULT Value([in] HSTRING value);
+        String Max;
+        String Min;
+        String Placeholder;
+        String Value;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveTimeInput
-    {
-        [default] interface IAdaptiveTimeInput;
-        interface IAdaptiveInputElement;
-        interface IAdaptiveCardElement;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveToggleInput),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(05cd9719-b591-4118-9d75-6b21b553123f),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveToggleInput", 05cd9719-b591-4118-9d75-6b21b553123f),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(e8af72a5-597c-4a19-b9c2-1a597db1c79a)
 #endif
     ]
-    interface IAdaptiveToggleInput : IInspectable
+    runtimeclass AdaptiveToggleInput : IAdaptiveInputElement, IAdaptiveCardElement
     {
-        [propget] HRESULT Title([out, retval] HSTRING* value);
-        [propput] HRESULT Title([in] HSTRING value);
+        AdaptiveToggleInput();
 
-        [propget] HRESULT Wrap([out, retval] boolean* value);
-        [propput] HRESULT Wrap([in] boolean value);
-
-        [propget] HRESULT Value([out, retval] HSTRING* value);
-        [propput] HRESULT Value([in] HSTRING value);
-
-        [propget] HRESULT ValueOff([out, retval] HSTRING* value);
-        [propput] HRESULT ValueOff([in] HSTRING value);
-
-        [propget] HRESULT ValueOn([out, retval] HSTRING* value);
-        [propput] HRESULT ValueOn([in] HSTRING value);
+        String Title;
+        Boolean Wrap;
+        String Value;
+        String ValueOff;
+        String ValueOn;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveToggleInput
-    {
-        [default] interface IAdaptiveToggleInput;
-        interface IAdaptiveInputElement;
-        interface IAdaptiveCardElement;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(F0B8422A-FE6B-40C4-87D8-7D3480774D75),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(7989B476-BEC2-4D4E-B84E-EC9816B4E0DE)
 #endif
     ]
-    interface IAdaptiveContainerBase : IInspectable
+    interface IAdaptiveContainerBase
     {
-        [propget] HRESULT Style([out, retval] ContainerStyle* value);
-        [propput] HRESULT Style([in] ContainerStyle value);
-
-        [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
-        [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
-
-        [propget] HRESULT Bleed([out, retval] boolean* value);
-        [propput] HRESULT Bleed([in] boolean value);
-
-        [propget] HRESULT BleedDirection([out, retval] BleedDirection* bleedDirection);
-
-        [propget] HRESULT MinHeight([out, retval] UINT32 * value);
-        [propput] HRESULT MinHeight([in] UINT32 value);
+        ContainerStyle Style;
+        IAdaptiveActionElement SelectAction;
+        Boolean Bleed;
+        BleedDirection BleedDirection { get; };
+        UInt32 MinHeight;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveContainer),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(60554c5a-32db-4130-8613-d39737ced7c4),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveContainer", 60554c5a-32db-4130-8613-d39737ced7c4),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(ba90da3f-556c-4e3a-9d01-11f2ce78dcd7)
+#endif
+    ]
+    runtimeclass AdaptiveContainer : IAdaptiveContainerBase, IAdaptiveCardElement
+    {
+        AdaptiveContainer();
+
+        VerticalContentAlignment VerticalContentAlignment;
+        Windows.Foundation.Collections.IVector<IAdaptiveCardElement> Items { get; };
+        AdaptiveBackgroundImage BackgroundImage;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveColumn", fe3a3792-d916-4b9d-b54c-eb1e1b5c23b4),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveColumn : IAdaptiveContainerBase, IAdaptiveCardElement
+    {
+        AdaptiveColumn();
+
+        String Width;
+        UInt32 PixelWidth;
+        VerticalContentAlignment VerticalContentAlignment;
+        Windows.Foundation.Collections.IVector<IAdaptiveCardElement> Items { get; };
+        AdaptiveBackgroundImage BackgroundImage;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveColumnSet", 703d7c9a-ab48-4a9a-b3cf-60636f7ee953),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveColumnSet : IAdaptiveContainerBase, IAdaptiveCardElement
+    {
+        AdaptiveColumnSet();
+
+        Windows.Foundation.Collections.IVector<AdaptiveColumn> Columns { get; };
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveFact", d06f4235-e32a-4bba-9802-49a8e2d2c3b7),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveFact 
+    {
+        AdaptiveFact();
+
+        ElementType ElementType { get; };
+        String Title;
+        String Value;
+        String Language;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveFactSet", 3d64cefc-f8e5-4304-99f5-2c37f2452ff4),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveFactSet : IAdaptiveCardElement
+    {
+        AdaptiveFactSet();
+
+        Windows.Foundation.Collections.IVector<AdaptiveFact> Facts { get; };
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveActionSet", EC0102C3-A40D-449D-939B-3AD770CE6DAD),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveActionSet : IAdaptiveCardElement
+    {
+        AdaptiveActionSet();
+
+        Windows.Foundation.Collections.IVector<IAdaptiveActionElement> Actions { get; };
+    };
+
+    [
+        default_interface,
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveUnsupportedAction", 2F3B9EAD-294D-4EC9-AC96-47A34E5C59B8),
+        contract(InternalContract, 1),
+        internal
 #endif
     ] 
-    interface IAdaptiveContainer : IInspectable requires IAdaptiveContainerBase
+    runtimeclass AdaptiveUnsupportedAction : IAdaptiveActionElement
     {
-        [propget] HRESULT VerticalContentAlignment([out, retval] VerticalContentAlignment* value);
-        [propput] HRESULT VerticalContentAlignment([in] VerticalContentAlignment value);
-
-        [propget] HRESULT Items([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>** value);
-
-        [propget] HRESULT BackgroundImage([out, retval] AdaptiveBackgroundImage * *value);
-        [propput] HRESULT BackgroundImage([in] AdaptiveBackgroundImage * value);
+        AdaptiveUnsupportedAction();
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
+        default_interface,
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveContainer
-    {
-        [default] interface IAdaptiveContainer;
-        interface IAdaptiveContainerBase;
-        interface IAdaptiveCardElement;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveColumn),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(fe3a3792-d916-4b9d-b54c-eb1e1b5c23b4),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveUnsupportedElement", 37CB2851-378C-48BE-A38D-59B9A88F62B9),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(91e03800-d239-43bc-b5fb-2ccfe0cc7fcb)
 #endif
     ] 
-    interface IAdaptiveColumn : IInspectable requires IAdaptiveContainerBase
+    runtimeclass AdaptiveUnsupportedElement : IAdaptiveCardElement
     {
-        [propget] HRESULT Width([out, retval] HSTRING* value);
-        [propput] HRESULT Width([in] HSTRING value);
-
-        [propget] HRESULT PixelWidth([out, retval] UINT32* value);
-        [propput] HRESULT PixelWidth([in] UINT32 value);
-
-        [propget] HRESULT VerticalContentAlignment([out, retval] VerticalContentAlignment* value);
-        [propput] HRESULT VerticalContentAlignment([in] VerticalContentAlignment value);
-
-        [propget] HRESULT Items([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>** value);
-
-        [propget] HRESULT BackgroundImage([out, retval] AdaptiveBackgroundImage * *value);
-        [propput] HRESULT BackgroundImage([in] AdaptiveBackgroundImage * value);
+        AdaptiveUnsupportedElement();
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveColumn
-    {
-        [default] interface IAdaptiveColumn;
-        interface IAdaptiveContainerBase;
-        interface IAdaptiveCardElement;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveColumnSet),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(703d7c9a-ab48-4a9a-b3cf-60636f7ee953),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveCardRenderer", 847e632d-328c-4b5e-86b3-685152dca0ce),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(4e3e1cd1-906b-4718-96ea-0a6e16bf0199)
 #endif
     ]
-    interface IAdaptiveColumnSet : IInspectable requires IAdaptiveContainerBase
+    runtimeclass AdaptiveCardRenderer 
     {
-        [propget] HRESULT Columns([out, retval] Windows.Foundation.Collections.IVector<AdaptiveColumn*>** value);
+        AdaptiveCardRenderer();
+
+        AdaptiveCardResourceResolvers ResourceResolvers { get; };
+        AdaptiveHostConfig HostConfig;
+        Windows.UI.Xaml.ResourceDictionary OverrideStyles;
+        AdaptiveFeatureRegistration FeatureRegistration;
+
+        void SetFixedDimensions(UInt32 desiredWidth, UInt32 desiredHeight);
+        void ResetFixedDimensions();
+
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        Windows.Foundation.IAsyncOperation<RenderedAdaptiveCard> RenderCardAsXamlAsync(AdaptiveCard adaptiveCard);
+#endif
+
+        RenderedAdaptiveCard RenderAdaptiveCard(AdaptiveCard adaptiveCard);
+        RenderedAdaptiveCard RenderAdaptiveCardFromJsonString(String adaptiveCard);
+        RenderedAdaptiveCard RenderAdaptiveCardFromJson(Windows.Data.Json.JsonObject adaptiveCard);
+
+        AdaptiveElementRendererRegistration ElementRenderers { get; };
+        AdaptiveActionRendererRegistration ActionRenderers { get; };
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveColumnSet
-    {
-        [default] interface IAdaptiveColumnSet;
-        interface IAdaptiveContainerBase;
-        interface IAdaptiveCardElement;
-    };
-
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveFact),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(d06f4235-e32a-4bba-9802-49a8e2d2c3b7),
-        contract(InternalContract, 1),
-        internal
-#else
-        uuid(5c19aa31-03aa-4148-a529-75b855ba045b)
-#endif
-    ]
-    interface IAdaptiveFact : IInspectable
-    {
-        [propget] HRESULT ElementType([out, retval] ElementType* value);
-
-        [propget] HRESULT Title([out, retval] HSTRING* value);
-        [propput] HRESULT Title([in] HSTRING value);
-
-        [propget] HRESULT Value([out, retval] HSTRING* value);
-        [propput] HRESULT Value([in] HSTRING value);
-
-        [propget] HRESULT Language([out, retval] HSTRING* value);
-        [propput] HRESULT Language([in] HSTRING value);
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveFact
-    {
-        [default] interface IAdaptiveFact;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveFactSet),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(3d64cefc-f8e5-4304-99f5-2c37f2452ff4),
-        contract(InternalContract, 1),
-        internal
-#else
-        uuid(05457b99-8090-4937-a637-b469f8edc74f)
-#endif
-    ]
-    interface IAdaptiveFactSet : IInspectable
-    {
-        [propget] HRESULT Facts([out, retval] Windows.Foundation.Collections.IVector<AdaptiveFact*>** value);
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveFactSet
-    {
-        [default] interface IAdaptiveFactSet;
-        interface IAdaptiveCardElement;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveActionSet),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(EC0102C3-A40D-449D-939B-3AD770CE6DAD),
-        contract(InternalContract, 1),
-        internal
-#else
-        uuid(F9778A62-1317-486D-9D82-C71101FA01F8)
-#endif
-    ]
-    interface IAdaptiveActionSet : IInspectable
-    {
-        [propget] HRESULT Actions([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveActionElement*>** value);
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveActionSet
-    {
-        [default] interface IAdaptiveActionSet;
-        interface IAdaptiveCardElement;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveUnsupportedAction),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(2F3B9EAD-294D-4EC9-AC96-47A34E5C59B8),
-        contract(InternalContract, 1),
-        internal
-#else
-        uuid(884C1DB2-E935-4678-8BAD-78E8DAEB73D2)
-#endif
-    ]
-    interface IAdaptiveUnsupportedAction : IInspectable
-    {
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveUnsupportedAction
-    {
-        [default] interface IAdaptiveUnsupportedAction;
-        interface IAdaptiveActionElement;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveUnsupportedElement),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(37CB2851-378C-48BE-A38D-59B9A88F62B9),
-        contract(InternalContract, 1),
-        internal
-#else
-        uuid(BAD9E18F-ACA2-46A7-A16E-31D0B8866ABA)
-#endif
-    ]
-    interface IAdaptiveUnsupportedElement : IInspectable
-    {
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveUnsupportedElement
-    {
-        [default] interface IAdaptiveUnsupportedElement;
-        interface IAdaptiveCardElement;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveCardRenderer),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(847e632d-328c-4b5e-86b3-685152dca0ce),
-        contract(InternalContract, 1),
-        internal
-#else
-        uuid(b0586bc4-b62a-4520-84b8-6c2afb88d022)
-#endif
-    ]
-    interface IAdaptiveCardRenderer : IInspectable
-    {
-        [propget] HRESULT ResourceResolvers([out, retval] AdaptiveCardResourceResolvers** value);
-
-        [propget] HRESULT HostConfig([out, retval] AdaptiveHostConfig** hostConfig);
-        [propput] HRESULT HostConfig([in] AdaptiveHostConfig* hostConfig);
-
-        [propget] HRESULT OverrideStyles([out, retval] Windows.UI.Xaml.ResourceDictionary** overrideDictionary);
-        [propput] HRESULT OverrideStyles([in] Windows.UI.Xaml.ResourceDictionary* overrideDictionary);
-
-        [propget] HRESULT FeatureRegistration([out, retval] AdaptiveFeatureRegistration * *featureRegistration);
-        [propput] HRESULT FeatureRegistration([in] AdaptiveFeatureRegistration * featureRegistration);
-
-        HRESULT SetFixedDimensions([in] UINT32 desiredWidth, [in] UINT32 desiredHeight);
-        HRESULT ResetFixedDimensions();
-
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        HRESULT RenderCardAsXamlAsync([in] AdaptiveCard* adaptiveCard, [out, retval] Windows.Foundation.IAsyncOperation<RenderedAdaptiveCard*>** result);
-#endif
-
-        HRESULT RenderAdaptiveCard([in] AdaptiveCard* adaptiveCard, [out, retval] RenderedAdaptiveCard** result);
-
-        HRESULT RenderAdaptiveCardFromJsonString([in] HSTRING adaptiveJson, [out, retval] RenderedAdaptiveCard** result);
-        HRESULT RenderAdaptiveCardFromJson([in] Windows.Data.Json.JsonObject* adaptiveJson, [out, retval] RenderedAdaptiveCard** result);
-
-        [propget] HRESULT ElementRenderers([out, retval] AdaptiveElementRendererRegistration** result);
-        [propget] HRESULT ActionRenderers([out, retval] AdaptiveActionRendererRegistration** result);
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveCardRenderer
-    {
-        [default] interface IAdaptiveCardRenderer;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveActionEventArgs),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(57244994-491c-48da-8a20-af73e6bdf4d2),
-        contract(InternalContract, 1),
-        internal
-#else
-        uuid(6bc7a30c-6971-474d-8dd3-bb9e1bcde381)
-#endif
-    ]
-    interface IAdaptiveActionEventArgs : IInspectable
-    {
-        [propget] HRESULT Action([out, retval] IAdaptiveActionElement** action);
-        [propget] HRESULT Inputs([out, retval] AdaptiveInputs** value);
-    }
-
-    [
-        version(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveActionEventArgs", 57244994-491c-48da-8a20-af73e6bdf4d2),
         contract(InternalContract, 1),
         internal
 #endif
     ]
     runtimeclass AdaptiveActionEventArgs
     {
-        [default] interface IAdaptiveActionEventArgs;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveMediaEventArgs),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(DE57EF9E-1575-401A-9BD8-A84B9ADCB031),
-        contract(InternalContract, 1),
-        internal
-#else
-        uuid(D7B0DE38-2ADC-48DC-9168-76E52986A4EE)
-#endif
-    ]
-    interface IAdaptiveMediaEventArgs : IInspectable
-    {
-        [propget] HRESULT Media([out, retval] AdaptiveMedia** media);
+        IAdaptiveActionElement Action { get; };
+        AdaptiveInputs Inputs { get; };
     }
 
     [
-        version(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveMediaEventArgs", DE57EF9E-1575-401A-9BD8-A84B9ADCB031),
         contract(InternalContract, 1),
         internal
 #endif
     ]
     runtimeclass AdaptiveMediaEventArgs
     {
-        [default] interface IAdaptiveMediaEventArgs;
-    };
-
+        AdaptiveMedia Media { get; };
+    }
 
     [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveContainerStyleDefinition),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(a2d8b87c-7afa-4425-9c9b-38831dc0aef2),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveContainerStyleDefinition", a2d8b87c-7afa-4425-9c9b-38831dc0aef2),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(ae687d0f-ce50-483c-8478-a17d017d4c25)
 #endif
     ]
-    interface IAdaptiveContainerStyleDefinition : IInspectable
+    runtimeclass AdaptiveContainerStyleDefinition 
     {
-        [propget] HRESULT BackgroundColor([out][retval] Windows.UI.Color* value);
-        [propput] HRESULT BackgroundColor([in] Windows.UI.Color value);
+        AdaptiveContainerStyleDefinition();
 
-        [propget] HRESULT ForegroundColors([out, retval] AdaptiveColorsConfig** value);
-        [propput] HRESULT ForegroundColors([in] AdaptiveColorsConfig* value);
+        Windows.UI.Color BackgroundColor;
+        AdaptiveColorsConfig ForegroundColors;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveContainerStyleDefinition
-    {
-        [default] interface IAdaptiveContainerStyleDefinition;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveContainerStylesDefinition),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(7A0E0585-AE45-402F-B2C4-8B14721D1733),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveContainerStylesDefinition", 7A0E0585-AE45-402F-B2C4-8B14721D1733),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(AB0F1B0A-3B6E-4F43-8E0A-47EAB9903C0B)
 #endif
     ]
-    interface IAdaptiveContainerStylesDefinition : IInspectable
+    runtimeclass AdaptiveContainerStylesDefinition 
     {
-        [propget] HRESULT Default([out, retval] AdaptiveContainerStyleDefinition** value);
-        [propput] HRESULT Default([in] AdaptiveContainerStyleDefinition* value);
+        AdaptiveContainerStylesDefinition();
 
-        [propget] HRESULT Emphasis([out, retval] AdaptiveContainerStyleDefinition** value);
-        [propput] HRESULT Emphasis([in] AdaptiveContainerStyleDefinition* value);
-
-        [propget] HRESULT Good([out, retval] AdaptiveContainerStyleDefinition * *value);
-        [propput] HRESULT Good([in] AdaptiveContainerStyleDefinition * value);
-
-        [propget] HRESULT Attention([out, retval] AdaptiveContainerStyleDefinition * *value);
-        [propput] HRESULT Attention([in] AdaptiveContainerStyleDefinition * value);
-
-        [propget] HRESULT Warning([out, retval] AdaptiveContainerStyleDefinition * *value);
-        [propput] HRESULT Warning([in] AdaptiveContainerStyleDefinition * value);
-
-        [propget] HRESULT Accent([out, retval] AdaptiveContainerStyleDefinition * *value);
-        [propput] HRESULT Accent([in] AdaptiveContainerStyleDefinition * value);
+        AdaptiveContainerStyleDefinition Default;
+        AdaptiveContainerStyleDefinition Emphasis;
+        AdaptiveContainerStyleDefinition Good;
+        AdaptiveContainerStyleDefinition Attention;
+        AdaptiveContainerStyleDefinition Warning;
+        AdaptiveContainerStyleDefinition Accent;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveContainerStylesDefinition
-    {
-        [default] interface IAdaptiveContainerStylesDefinition;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveFontSizesConfig),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(1843e1e9-edcb-4d49-a64e-99a82a0e8d09),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveFontSizesConfig", 1843e1e9-edcb-4d49-a64e-99a82a0e8d09),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(ebca0eab-b08b-4087-9c42-4667ec6ab0e0)
 #endif
     ]
-    interface IAdaptiveFontSizesConfig : IInspectable
+    runtimeclass AdaptiveFontSizesConfig 
     {
-        [propget] HRESULT Small([out, retval] UINT32* value);
-        [propput] HRESULT Small([in] UINT32 value);
+        AdaptiveFontSizesConfig();
 
-        [propget] HRESULT Default([out, retval] UINT32* value);
-        [propput] HRESULT Default([in] UINT32 value);
-
-        [propget] HRESULT Medium([out, retval] UINT32* value);
-        [propput] HRESULT Medium([in] UINT32 value);
-
-        [propget] HRESULT Large([out, retval] UINT32* value);
-        [propput] HRESULT Large([in] UINT32 value);
-
-        [propget] HRESULT ExtraLarge([out, retval] UINT32* value);
-        [propput] HRESULT ExtraLarge([in] UINT32 value);
+        UInt32 Small;
+        UInt32 Default;
+        UInt32 Medium;
+        UInt32 Large;
+        UInt32 ExtraLarge;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveFontSizesConfig
-    {
-        [default] interface IAdaptiveFontSizesConfig;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveFontWeightsConfig),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(59ab4d2a-e219-47fb-a202-74494469b410),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveFontWeightsConfig", 59ab4d2a-e219-47fb-a202-74494469b410),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(23c9d287-afdc-4ca4-87b4-92c551e4c8bc)
 #endif
     ]
-    interface IAdaptiveFontWeightsConfig : IInspectable
+    runtimeclass AdaptiveFontWeightsConfig 
     {
-        [propget] HRESULT Lighter([out, retval] UINT16 *value);
-        [propput] HRESULT Lighter([in] UINT16 value);
+        AdaptiveFontWeightsConfig();
 
-        [propget] HRESULT Default([out, retval] UINT16 *value);
-        [propput] HRESULT Default([in] UINT16 value);
-
-        [propget] HRESULT Bolder([out, retval] UINT16 *value);
-        [propput] HRESULT Bolder([in] UINT16 value);
+        UInt16 Lighter;
+        UInt16 Default;
+        UInt16 Bolder;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveFontWeightsConfig
-    {
-        [default] interface IAdaptiveFontWeightsConfig;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveFontStyleDefinition),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(485E4650-EDF1-4DAD-BB1A-FA6C85626453),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveFontTypeDefinition", 485E4650-EDF1-4DAD-BB1A-FA6C85626453),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(9D744C66-DC57-4D4B-9997-D16761FB11D1)
 #endif
     ]
-    interface IAdaptiveFontStyleDefinition : IInspectable
+    runtimeclass AdaptiveFontTypeDefinition 
     {
-        [propget] HRESULT FontFamily([out, retval] HSTRING* value);
-        [propput] HRESULT FontFamily([in] HSTRING value);
+        AdaptiveFontTypeDefinition();
 
-        [propget] HRESULT FontWeights([out, retval] AdaptiveFontWeightsConfig** value);
-        [propput] HRESULT FontWeights([in] AdaptiveFontWeightsConfig* value);
-
-        [propget] HRESULT FontSizes([out, retval] AdaptiveFontSizesConfig** value);
-        [propput] HRESULT FontSizes([in] AdaptiveFontSizesConfig* value);
+        String FontFamily;
+        AdaptiveFontWeightsConfig FontWeights;
+        AdaptiveFontSizesConfig FontSizes;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveFontStyleDefinition
-    {
-        [default] interface IAdaptiveFontStyleDefinition;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveFontStylesDefinition),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(7EA49458-870F-40C9-908A-35E6A20579C6),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveFontTypesDefinition", 7EA49458-870F-40C9-908A-35E6A20579C6),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(2445D5BF-F0DF-495D-873E-F5B36E53E5D1)
 #endif
     ]
-    interface IAdaptiveFontStylesDefinition : IInspectable
+    runtimeclass AdaptiveFontTypesDefinition 
     {
-        [propget] HRESULT Default([out, retval] AdaptiveFontStyleDefinition** value);
-        [propput] HRESULT Default([in] AdaptiveFontStyleDefinition* value);
+        AdaptiveFontTypesDefinition();
 
-        [propget] HRESULT Monospace([out, retval] AdaptiveFontStyleDefinition** value);
-        [propput] HRESULT Monospace([in] AdaptiveFontStyleDefinition* value);
+        AdaptiveFontTypeDefinition Default;
+        AdaptiveFontTypeDefinition Monospace;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveFontStylesDefinition
-    {
-        [default] interface IAdaptiveFontStylesDefinition;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveHighlightColorConfig),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(DAF30E1C-8437-4A88-B711-1F4574CE3C94),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveHighlightColorConfig", DAF30E1C-8437-4A88-B711-1F4574CE3C94),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(7E71F583-1DAD-4A87-B2F9-1118476BB848)
 #endif
-    ] 
-    interface IAdaptiveHighlightColorConfig : IInspectable
-    {
-        [propget] HRESULT Default([out][retval] Windows.UI.Color * value);
-        [propput] HRESULT Default([in] Windows.UI.Color value);
-
-        [propget] HRESULT Subtle([out][retval] Windows.UI.Color * value);
-        [propput] HRESULT Subtle([in] Windows.UI.Color value);
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ] 
+    ]
     runtimeclass AdaptiveHighlightColorConfig 
-    { 
-        [default] interface IAdaptiveHighlightColorConfig; 
+    {
+        AdaptiveHighlightColorConfig();
+
+        Windows.UI.Color Default;
+        Windows.UI.Color Subtle;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveColorConfig),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(743e6ad3-c0ab-497d-a9c9-3dcf69e6a5a1),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveColorConfig", 743e6ad3-c0ab-497d-a9c9-3dcf69e6a5a1),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(421149d7-65e9-4ec9-b70b-802ba7d6cf98)
-#endif
-    ]
-    interface IAdaptiveColorConfig : IInspectable
-    {
-        [propget] HRESULT Default([out][retval] Windows.UI.Color* value);
-        [propput] HRESULT Default([in] Windows.UI.Color value);
-
-        [propget] HRESULT Subtle([out][retval] Windows.UI.Color* value);
-        [propput] HRESULT Subtle([in] Windows.UI.Color value);
-        
-        [propget] HRESULT HighlightColors([out, retval] AdaptiveHighlightColorConfig * *value);
-        [propput] HRESULT HighlightColors([in] AdaptiveHighlightColorConfig * value);
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
 #endif
     ]
     runtimeclass AdaptiveColorConfig
     {
-        [default] interface IAdaptiveColorConfig;
+        AdaptiveColorConfig();
+
+        Windows.UI.Color Default;
+        Windows.UI.Color Subtle;
+        AdaptiveHighlightColorConfig HighlightColors;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveColorsConfig),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(e13e74e0-f944-4481-8fe9-4ac62a66bed0),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveColorsConfig", e13e74e0-f944-4481-8fe9-4ac62a66bed0),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(1ade7d94-f0ae-4301-a9e2-b1f9c065916f)
-#endif
-    ]
-    interface IAdaptiveColorsConfig : IInspectable
-    {
-        [propget] HRESULT Default([out][retval] AdaptiveColorConfig** value);
-        [propput] HRESULT Default([in] AdaptiveColorConfig* value);
-
-        [propget] HRESULT Accent([out][retval] AdaptiveColorConfig** value);
-        [propput] HRESULT Accent([in] AdaptiveColorConfig* value);
-
-        [propget] HRESULT Dark([out][retval] AdaptiveColorConfig** value);
-        [propput] HRESULT Dark([in] AdaptiveColorConfig* value);
-
-        [propget] HRESULT Light([out][retval] AdaptiveColorConfig** value);
-        [propput] HRESULT Light([in] AdaptiveColorConfig* value);
-
-        [propget] HRESULT Good([out][retval] AdaptiveColorConfig** value);
-        [propput] HRESULT Good([in] AdaptiveColorConfig* value);
-
-        [propget] HRESULT Warning([out][retval] AdaptiveColorConfig** value);
-        [propput] HRESULT Warning([in] AdaptiveColorConfig* value);
-
-        [propget] HRESULT Attention([out][retval] AdaptiveColorConfig** value);
-        [propput] HRESULT Attention([in] AdaptiveColorConfig* value);
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
 #endif
     ]
     runtimeclass AdaptiveColorsConfig
     {
-        [default] interface IAdaptiveColorsConfig;
+        AdaptiveColorsConfig();
+
+        AdaptiveColorConfig Default;
+        AdaptiveColorConfig Accent;
+        AdaptiveColorConfig Dark;
+        AdaptiveColorConfig Light;
+        AdaptiveColorConfig Good;
+        AdaptiveColorConfig Warning;
+        AdaptiveColorConfig Attention;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveTextConfig),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(2fa24f2c-843c-4f3f-be65-023528901970),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveTextConfig", 2fa24f2c-843c-4f3f-be65-023528901970),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(d730ba59-1f48-4dc6-8375-17f364f6086a)
 #endif
     ]
-    interface IAdaptiveTextConfig : IInspectable
+    runtimeclass AdaptiveTextConfig 
     {
-        [propget] HRESULT Weight([out, retval] TextWeight* value);
-        [propput] HRESULT Weight([in] TextWeight value);
+        AdaptiveTextConfig();
 
-        [propget] HRESULT Size([out, retval] TextSize* value);
-        [propput] HRESULT Size([in] TextSize value);
-
-        [propget] HRESULT Color([out, retval] ForegroundColor* value);
-        [propput] HRESULT Color([in] ForegroundColor value);
-
-        [propget] HRESULT IsSubtle([out, retval] boolean* value);
-        [propput] HRESULT IsSubtle([in] boolean value);
-
-        [propget] HRESULT Wrap([out, retval] boolean* value);
-        [propput] HRESULT Wrap([in] boolean value);
-
-        [propget] HRESULT MaxWidth([out, retval] UINT32* value);
-        [propput] HRESULT MaxWidth([in] UINT32 value);
+        TextWeight Weight;
+        TextSize Size;
+        ForegroundColor Color;
+        Boolean IsSubtle;
+        Boolean Wrap;
+        UInt32 MaxWidth;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveTextConfig
-    {
-        [default] interface IAdaptiveTextConfig;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveSpacingConfig),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(f22005cd-d9b7-4ee1-9457-d1520951b021),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveSpacingConfig", f22005cd-d9b7-4ee1-9457-d1520951b021),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(0e21ac82-4838-43cb-b7ef-7b023011061b)
-#endif
-    ]
-    interface IAdaptiveSpacingConfig : IInspectable
-    {
-        [propget] HRESULT Small([out, retval] UINT32* value);
-        [propput] HRESULT Small([in] UINT32 value);
-
-        [propget] HRESULT Default([out, retval] UINT32* value);
-        [propput] HRESULT Default([in] UINT32 value);
-
-        [propget] HRESULT Medium([out, retval] UINT32* value);
-        [propput] HRESULT Medium([in] UINT32 value);
-
-        [propget] HRESULT Large([out, retval] UINT32* value);
-        [propput] HRESULT Large([in] UINT32 value);
-
-        [propget] HRESULT ExtraLarge([out, retval] UINT32* value);
-        [propput] HRESULT ExtraLarge([in] UINT32 value);
-
-        [propget] HRESULT Padding([out, retval] UINT32* value);
-        [propput] HRESULT Padding([in] UINT32 value);
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
 #endif
     ]
     runtimeclass AdaptiveSpacingConfig
     {
-        [default] interface IAdaptiveSpacingConfig;
+        AdaptiveSpacingConfig();
+
+        UInt32 Small;
+        UInt32 Default;
+        UInt32 Medium;
+        UInt32 Large;
+        UInt32 ExtraLarge;
+        UInt32 Padding; 
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveSeparatorConfig),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(05058274-c987-4361-a4f6-0c3d5f955ba4),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveSeparatorConfig", 05058274-c987-4361-a4f6-0c3d5f955ba4),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(c34a155d-6913-4f8b-9b94-f4ab8c578aee)
-#endif
-    ]
-    interface IAdaptiveSeparatorConfig : IInspectable
-    {
-        [propget] HRESULT LineThickness([out, retval] UINT32* value);
-        [propput] HRESULT LineThickness([in] UINT32 value);
-
-        [propget] HRESULT LineColor([out][retval] Windows.UI.Color* value);
-        [propput] HRESULT LineColor([in] Windows.UI.Color value);
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
 #endif
     ]
     runtimeclass AdaptiveSeparatorConfig
     {
-        [default] interface IAdaptiveSeparatorConfig;
+        AdaptiveSeparatorConfig();
+
+        UInt32 LineThickness;
+        Windows.UI.Color LineColor;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveImageSizesConfig),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(ace2f9d0-3063-48ba-a69e-727246d1239d),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveImageSizesConfig", ace2f9d0-3063-48ba-a69e-727246d1239d),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(ce5cd318-502c-4017-a076-4f8cdbb0316d)
 #endif
     ]
-    interface IAdaptiveImageSizesConfig : IInspectable
+    runtimeclass AdaptiveImageSizesConfig 
     {
-        [propget] HRESULT Small([out, retval] UINT32* value);
-        [propput] HRESULT Small([in] UINT32 value);
+        AdaptiveImageSizesConfig();
 
-        [propget] HRESULT Medium([out, retval] UINT32* value);
-        [propput] HRESULT Medium([in] UINT32 value);
-
-        [propget] HRESULT Large([out, retval] UINT32* value);
-        [propput] HRESULT Large([in] UINT32 value);
+        UInt32 Small;
+        UInt32 Medium;
+        UInt32 Large;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveImageSizesConfig
-    {
-        [default] interface IAdaptiveImageSizesConfig;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveImageSetConfig),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(b5f7030a-7a42-4eaa-8cb1-88fb3ed81f66),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveImageSetConfig", b5f7030a-7a42-4eaa-8cb1-88fb3ed81f66),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(29685cc3-027f-4da8-9659-6d3a53c34d88)
 #endif
     ]
-    interface IAdaptiveImageSetConfig : IInspectable
+    runtimeclass AdaptiveImageSetConfig 
     {
-        [propget] HRESULT ImageSize([out, retval] ImageSize* value);
-        [propput] HRESULT ImageSize([in] ImageSize value);
+        AdaptiveImageSetConfig();
 
-        [propget] HRESULT MaxImageHeight([out, retval] UINT32* value);
-        [propput] HRESULT MaxImageHeight([in] UINT32 value);
+        ImageSize ImageSize;
+        UInt32 MaxImageHeight;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveImageSetConfig
-    {
-        [default] interface IAdaptiveImageSetConfig;
-    }
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveImageConfig),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(18a0c8f6-bcfc-41f9-964c-edd63fbfe0c3),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveImageConfig", 18a0c8f6-bcfc-41f9-964c-edd63fbfe0c3),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(ba0d7d84-d708-4919-a2f2-5c322a6f5460)
 #endif
     ]
-    interface IAdaptiveImageConfig : IInspectable
+    runtimeclass AdaptiveImageConfig 
     {
-        [propget] HRESULT ImageSize([out, retval] ImageSize* value);
-        [propput] HRESULT ImageSize([in] ImageSize value);
+        AdaptiveImageConfig();
+
+        ImageSize ImageSize;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveImageConfig
-    {
-        [default] interface IAdaptiveImageConfig;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveCardConfig),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(27902b36-88db-421b-abd8-79a6cf3f1410),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveCardConfig", 27902b36-88db-421b-abd8-79a6cf3f1410),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(9363ea9c-9f73-4e7d-8d6e-0559ac52b314)
 #endif
     ]
-    interface IAdaptiveCardConfig : IInspectable
+    runtimeclass AdaptiveCardConfig 
     {
-        [propget] HRESULT AllowCustomStyle([out, retval] boolean* value);
-        [propput] HRESULT AllowCustomStyle([in] boolean value);
+        AdaptiveCardConfig();
+
+        Boolean AllowCustomStyle;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveCardConfig
-    {
-        [default] interface IAdaptiveCardConfig;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveFactSetConfig),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(d776f288-bdfa-434e-99d7-d1c6d2f21209),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveFactSetConfig", d776f288-bdfa-434e-99d7-d1c6d2f21209),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(9949ed60-fbc0-49fd-80d4-29fb1184854d)
 #endif
     ]
-    interface IAdaptiveFactSetConfig : IInspectable
+    runtimeclass AdaptiveFactSetConfig 
     {
-        [propget] HRESULT Title([out, retval] AdaptiveTextConfig** value);
-        [propput] HRESULT Title([in] AdaptiveTextConfig* value);
+        AdaptiveFactSetConfig();
 
-        [propget] HRESULT Value([out, retval] AdaptiveTextConfig** value);
-        [propput] HRESULT Value([in] AdaptiveTextConfig* value);
-
-        [propget] HRESULT Spacing([out][retval] UINT32* value);
-        [propput] HRESULT Spacing([in] UINT32 value);
+        AdaptiveTextConfig Title;
+        AdaptiveTextConfig Value;
+        UInt32 Spacing;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveFactSetConfig
-    {
-        [default] interface IAdaptiveFactSetConfig;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveShowCardActionConfig),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(4c394fd8-a63a-4710-89dd-014a55b8fb6c),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveShowCardActionConfig", 4c394fd8-a63a-4710-89dd-014a55b8fb6c),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(eacabf24-288c-4307-bd5a-5888a00da918)
 #endif
     ]
-    interface IAdaptiveShowCardActionConfig : IInspectable
+    runtimeclass AdaptiveShowCardActionConfig 
     {
-        [propget] HRESULT ActionMode([out, retval] ActionMode *value);
-        [propput] HRESULT ActionMode([in] ActionMode value);
+        AdaptiveShowCardActionConfig();
 
-        [propget] HRESULT Style([out, retval] ContainerStyle* value);
-        [propput] HRESULT Style([in] ContainerStyle value);
-
-        [propget] HRESULT InlineTopMargin([out, retval] UINT32* value);
-        [propput] HRESULT InlineTopMargin([in] UINT32 value);
+        ActionMode ActionMode;
+        ContainerStyle Style;
+        UInt32 InlineTopMargin;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveShowCardActionConfig
-    {
-        [default] interface IAdaptiveShowCardActionConfig;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveActionsConfig),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(e4157ef5-e8e9-412e-bef6-48771e3aa532),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveActionsConfig", e4157ef5-e8e9-412e-bef6-48771e3aa532),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(ce6981d7-8989-42a3-b335-30cbf7108183)
 #endif
     ]
-    interface IAdaptiveActionsConfig : IInspectable
+    runtimeclass AdaptiveActionsConfig 
     {
-        [propget] HRESULT ShowCard([out, retval] AdaptiveShowCardActionConfig** value);
-        [propput] HRESULT ShowCard([in] AdaptiveShowCardActionConfig* value);
+        AdaptiveActionsConfig();
 
-        [propget] HRESULT ActionsOrientation([out][retval] ActionsOrientation* value);
-        [propput] HRESULT ActionsOrientation([in] ActionsOrientation value);
-
-        [propget] HRESULT ActionAlignment([out, retval] ActionAlignment* value);
-        [propput] HRESULT ActionAlignment([in] ActionAlignment value);
-
-        [propget] HRESULT ButtonSpacing([out][retval] UINT32* value);
-        [propput] HRESULT ButtonSpacing([in] UINT32 value);
-
-        [propget] HRESULT MaxActions([out][retval] UINT32* value);
-        [propput] HRESULT MaxActions([in] UINT32 value);
-
-        [propget] HRESULT Spacing([out][retval] Spacing* value);
-        [propput] HRESULT Spacing([in] Spacing value);
-
-        [propget] HRESULT IconPlacement([out][retval] IconPlacement* value);
-        [propput] HRESULT IconPlacement([in] IconPlacement value);
-
-        [propget] HRESULT IconSize([out][retval] UINT32* value);
-        [propput] HRESULT IconSize([in] UINT32 value);
+        AdaptiveShowCardActionConfig ShowCard;
+        ActionsOrientation ActionsOrientation;
+        ActionAlignment ActionAlignment;
+        UInt32 ButtonSpacing;
+        UInt32 MaxActions;
+        Spacing Spacing;
+        IconPlacement IconPlacement;
+        UInt32 IconSize;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveActionsConfig
-    {
-        [default] interface IAdaptiveActionsConfig;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveMediaConfig),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(FE60D4DC-02E9-4465-8235-7CA98620C17C),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveMediaConfig", FE60D4DC-02E9-4465-8235-7CA98620C17C),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(B8C95DEA-0668-4FD3-B1E2-98310610A6C3)
 #endif
     ]
-    interface IAdaptiveMediaConfig : IInspectable
+    runtimeclass AdaptiveMediaConfig 
     {
-        [propget] HRESULT DefaultPoster([out, retval] HSTRING* value);
-        [propput] HRESULT DefaultPoster([in] HSTRING value);
+        AdaptiveMediaConfig();
 
-        [propget] HRESULT PlayButton([out][retval] HSTRING* value);
-        [propput] HRESULT PlayButton([in] HSTRING value);
-
-        [propget] HRESULT AllowInlinePlayback([out, retval] boolean* value);
-        [propput] HRESULT AllowInlinePlayback([in] boolean value);
+        String DefaultPoster;
+        String PlayButton;
+        Boolean AllowInlinePlayback;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveMediaConfig
-    {
-        [default] interface IAdaptiveMediaConfig;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveHostConfig),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(15ae7240-f9b0-47e4-b444-62da42b8b863),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveHostConfig", 15ae7240-f9b0-47e4-b444-62da42b8b863),
+        static_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveHostConfigStatics", 11a659ac-a28d-42fc-ab0e-f103b3f5c4fd),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(85ef9ddc-4599-4ab6-adf1-1e04238601a5)
 #endif
     ]
-    interface IAdaptiveHostConfig : IInspectable
+    runtimeclass AdaptiveHostConfig 
     {
-        [propget] HRESULT FontFamily([out, retval] HSTRING* value);
-        [propput] HRESULT FontFamily([in] HSTRING value);
+        AdaptiveHostConfig();
 
-        [propget] HRESULT FontSizes([out, retval] AdaptiveFontSizesConfig** value);
-        [propput] HRESULT FontSizes([in] AdaptiveFontSizesConfig* value);
+        String FontFamily;
+        AdaptiveFontSizesConfig FontSizes;
+        AdaptiveFontWeightsConfig FontWeights;
+        AdaptiveFontTypesDefinition FontTypes;
+        Boolean SupportsInteractivity;
+        String ImageBaseUrl;
+        AdaptiveContainerStylesDefinition ContainerStyles;
+        AdaptiveImageSizesConfig ImageSizes;
+        AdaptiveSeparatorConfig Separator;
+        AdaptiveSpacingConfig Spacing;
+        AdaptiveCardConfig AdaptiveCard;
+        AdaptiveImageSetConfig ImageSet;
+        AdaptiveImageConfig Image;
+        AdaptiveFactSetConfig FactSet;
+        AdaptiveActionsConfig Actions;
+        AdaptiveMediaConfig Media;
 
-        [propget] HRESULT FontWeights([out, retval] AdaptiveFontWeightsConfig** value);
-        [propput] HRESULT FontWeights([in] AdaptiveFontWeightsConfig* value);
-
-        [propget] HRESULT FontStyles([out, retval] AdaptiveFontStylesDefinition** value);
-        [propput] HRESULT FontStyles([in] AdaptiveFontStylesDefinition* value);
-
-        [propget] HRESULT SupportsInteractivity([out, retval] boolean* value);
-        [propput] HRESULT SupportsInteractivity([in] boolean value);
-
-        [propget] HRESULT ImageBaseUrl([out, retval] HSTRING* value);
-        [propput] HRESULT ImageBaseUrl([in] HSTRING value);
-
-        [propget] HRESULT ContainerStyles([out, retval] AdaptiveContainerStylesDefinition** value);
-        [propput] HRESULT ContainerStyles([in] AdaptiveContainerStylesDefinition* value);
-
-        [propget] HRESULT ImageSizes([out, retval] AdaptiveImageSizesConfig** value);
-        [propput] HRESULT ImageSizes([in] AdaptiveImageSizesConfig* value);
-
-        [propget] HRESULT Separator([out, retval] AdaptiveSeparatorConfig** value);
-        [propput] HRESULT Separator([in] AdaptiveSeparatorConfig* value);
-
-        [propget] HRESULT Spacing([out, retval] AdaptiveSpacingConfig** value);
-        [propput] HRESULT Spacing([in] AdaptiveSpacingConfig* value);
-
-        [propget] HRESULT AdaptiveCard([out, retval] AdaptiveCardConfig** value);
-        [propput] HRESULT AdaptiveCard([in] AdaptiveCardConfig* value);
-
-        [propget] HRESULT ImageSet([out, retval] AdaptiveImageSetConfig** value);
-        [propput] HRESULT ImageSet([in] AdaptiveImageSetConfig* value);
-
-        [propget] HRESULT Image([out, retval] AdaptiveImageConfig** value);
-        [propput] HRESULT Image([in] AdaptiveImageConfig* value);
-
-        [propget] HRESULT FactSet([out, retval] AdaptiveFactSetConfig** value);
-        [propput] HRESULT FactSet([in] AdaptiveFactSetConfig* value);
-
-        [propget] HRESULT Actions([out, retval] AdaptiveActionsConfig** value);
-        [propput] HRESULT Actions([in] AdaptiveActionsConfig* value);
-
-        [propget] HRESULT Media([out, retval] AdaptiveMediaConfig** value);
-        [propput] HRESULT Media([in] AdaptiveMediaConfig* value);
+        static AdaptiveHostConfigParseResult FromJsonString(String hostConfigJson);
+        static AdaptiveHostConfigParseResult FromJson(Windows.Data.Json.JsonObject hostConfigJson);
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveHostConfigParseResult),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(0e333f58-43b8-48d3-aa68-e30f7e7f1007),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveHostConfigParseResult", 0e333f58-43b8-48d3-aa68-e30f7e7f1007),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(0b1f8963-9d45-4ac0-9af4-cd7923f5206e)
 #endif
     ]
-    interface IAdaptiveHostConfigParseResult : IInspectable
+    runtimeclass AdaptiveHostConfigParseResult 
     {
-        [propget] HRESULT HostConfig([out, retval] AdaptiveHostConfig** value);
-        [propget] HRESULT Errors([out, retval] Windows.Foundation.Collections.IVector<AdaptiveError*>** value);
+        AdaptiveHostConfigParseResult();
+
+        AdaptiveHostConfig HostConfig { get; };
+        Windows.Foundation.Collections.IVector<AdaptiveError> Errors { get; };
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveHostConfigParseResult
-    {
-        [default] interface IAdaptiveHostConfigParseResult;
-    }
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveHostConfig),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(11a659ac-a28d-42fc-ab0e-f103b3f5c4fd),
-        contract(InternalContract, 1),
-        internal
-#else
-        uuid(1a09b9b7-d678-495f-949e-3ad677424fdb)
-#endif
-    ]
-    interface IAdaptiveHostConfigStatics : IInspectable
-    {
-        HRESULT FromJsonString([in] HSTRING hostConfigJson, [out, retval] AdaptiveHostConfigParseResult** config);
-        HRESULT FromJson([in] Windows.Data.Json.JsonObject* hostConfigJson, [out, retval] AdaptiveHostConfigParseResult** config);
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-        static(IAdaptiveHostConfigStatics, NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        static(IAdaptiveHostConfigStatics, InternalContract, 1),
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveHostConfig
-    {
-        [default] interface IAdaptiveHostConfig;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(95ec200c-fad9-4d8d-b25d-cad3a7f3df61),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(b9bbff79-17a0-45ae-9a5f-86b9ff31bf88)
 #endif
     ]
-    interface IAdaptiveActionElement : IInspectable
+    interface IAdaptiveActionElement
     {
-        [propget] HRESULT ActionType([out, retval] ActionType* value);
-        [propget] HRESULT ActionTypeString([out, retval] HSTRING* value);
+        ActionType ActionType { get; };
+        String ActionTypeString { get; };
+        String Title;
+        String Id;
+        FallbackType FallbackType;
+        IAdaptiveActionElement FallbackContent;
+        String IconUrl;
+        String Style;
+        Windows.Data.Json.JsonObject AdditionalProperties;
 
-        [propget] HRESULT Title([out, retval] HSTRING* value);
-        [propput] HRESULT Title([in] HSTRING value);
-
-        [propget] HRESULT Id([out, retval] HSTRING* value);
-        [propput] HRESULT Id([in] HSTRING value);
-
-        [propget] HRESULT FallbackType([out, retval] FallbackType * value);
-        [propput] HRESULT FallbackType([in] FallbackType value);
-        [propget] HRESULT FallbackContent([out, retval] IAdaptiveActionElement ** content);
-        [propput] HRESULT FallbackContent([in] IAdaptiveActionElement * content);
-
-        [propget] HRESULT IconUrl([out, retval] HSTRING* value);
-        [propput] HRESULT IconUrl([in] HSTRING value);
-
-        [propget] HRESULT Sentiment([out, retval] HSTRING* value);
-        [propput] HRESULT Sentiment([in] HSTRING value);
-
-        [propget] HRESULT AdditionalProperties([out, retval] Windows.Data.Json.JsonObject** json);
-        [propput] HRESULT AdditionalProperties([in] Windows.Data.Json.JsonObject* json);
-
-        HRESULT ToJson([out, retval] Windows.Data.Json.JsonObject** value);
+        Windows.Data.Json.JsonObject ToJson();
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveOpenUrlAction),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(8a7f7888-f53b-4fdb-8f3c-968da4352031),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveOpenUrlAction", 8a7f7888-f53b-4fdb-8f3c-968da4352031),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(d70a58cb-4d51-4f96-bb6b-2698eced32ff)
 #endif
     ]
-    interface IAdaptiveOpenUrlAction : IInspectable
+    runtimeclass AdaptiveOpenUrlAction : IAdaptiveActionElement
     {
-        [propput] HRESULT Url([in] Windows.Foundation.Uri* value);
-        [propget] HRESULT Url([out, retval] Windows.Foundation.Uri** value);
+        AdaptiveOpenUrlAction();
+
+        Windows.Foundation.Uri Url;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveOpenUrlAction
-    {
-        [default] interface IAdaptiveOpenUrlAction;
-        interface IAdaptiveActionElement;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveShowCardAction),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(201859e9-1179-4c2b-91fa-3f561210a7f6),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveShowCardAction", 201859e9-1179-4c2b-91fa-3f561210a7f6),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(435ea974-33c7-43b0-a6ac-8137c1b7bb44)
 #endif
-    ]
-    interface IAdaptiveShowCardAction : IInspectable
+    ] 
+    runtimeclass AdaptiveShowCardAction : IAdaptiveActionElement
     {
-        [propget] HRESULT Card([out, retval] AdaptiveCard** value);
-        [propput] HRESULT Card([in] AdaptiveCard* value);
+        AdaptiveShowCardAction();
+
+        AdaptiveCard Card;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveShowCardAction
-    {
-        [default] interface IAdaptiveShowCardAction;
-        interface IAdaptiveActionElement;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveSubmitAction),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(c89015c8-1a8e-4819-8e93-d5fed276efc5),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveSubmitAction", c89015c8-1a8e-4819-8e93-d5fed276efc5),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(97b9b3a3-657b-4d38-a136-154cc8da19a9)
 #endif
-    ]
-    interface IAdaptiveSubmitAction : IInspectable
+    ] 
+    runtimeclass AdaptiveSubmitAction : IAdaptiveActionElement
     {
-        [propget] HRESULT DataJson([out, retval] Windows.Data.Json.JsonValue** value);
-        [propput] HRESULT DataJson([in] Windows.Data.Json.JsonValue* value);
+        AdaptiveSubmitAction();
+
+        Windows.Data.Json.JsonValue DataJson;
+        Boolean IgnoreInputValidation;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveSubmitAction
-    {
-        [default] interface IAdaptiveSubmitAction;
-        interface IAdaptiveActionElement;
-    };
-
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveToggleVisibilityTarget),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(045FA1AE-A5CA-4359-AC35-16FC162F3BF0),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveToggleVisibilityTarget", 045FA1AE-A5CA-4359-AC35-16FC162F3BF0),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(1F626040-8C2F-4C64-AB3E-A80ECE538E5F)
 #endif
-    ]
-    interface IAdaptiveToggleVisibilityTarget : IInspectable
+    ] 
+    runtimeclass AdaptiveToggleVisibilityTarget
     {
-        [propget] HRESULT ElementId([out, retval] HSTRING * value);
-        [propput] HRESULT ElementId([in] HSTRING value);
+        AdaptiveToggleVisibilityTarget();
 
-        [propget] HRESULT IsVisible([out, retval] IsVisible * value);
-        [propput] HRESULT IsVisible([in] IsVisible value);
+        String ElementId;
+        IsVisible IsVisible;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-         contract(InternalContract, 1),
-         internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveToggleVisibilityTarget {
-        [default] interface IAdaptiveToggleVisibilityTarget;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveToggleVisibilityAction),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(7DD38D1D-338A-40D3-9AF8-912FBC61427C),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveToggleVisibilityAction", 7DD38D1D-338A-40D3-9AF8-912FBC61427C),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(DF122310-5768-4111-A155-92F6F34BB37A)
 #endif
-    ]
-    interface IAdaptiveToggleVisibility : IInspectable
+    ] 
+    runtimeclass AdaptiveToggleVisibilityAction : IAdaptiveActionElement
     {
-        [propget] HRESULT TargetElements([out, retval] Windows.Foundation.Collections.IVector<AdaptiveToggleVisibilityTarget*> * *value);
+        AdaptiveToggleVisibilityAction();
+
+        Windows.Foundation.Collections.IVector<AdaptiveToggleVisibilityTarget> TargetElements { get; };
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveToggleVisibilityAction {
-        [default] interface IAdaptiveToggleVisibility;
-        interface IAdaptiveActionElement;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveCardResourceResolvers),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(8e467d28-ef21-4b9c-aad5-36e6073b1132),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveCardResourceResolvers", 8e467d28-ef21-4b9c-aad5-36e6073b1132),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(3b655db6-54d2-47e7-8658-b58ced5fb237)
 #endif
-    ]
-    interface IAdaptiveCardResourceResolvers : IInspectable
-    {
-        HRESULT Set([in] HSTRING scheme, [in] IAdaptiveCardResourceResolver* resolver);
-        HRESULT Get([in] HSTRING scheme, [out, retval] IAdaptiveCardResourceResolver** resolver);
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
+    ] 
     runtimeclass AdaptiveCardResourceResolvers
     {
-        [default] interface IAdaptiveCardResourceResolvers;
+        AdaptiveCardResourceResolvers();
+
+        void Set(String scheme, IAdaptiveCardResourceResolver resolver);
+        IAdaptiveCardResourceResolver Get(String scheme);
     };
 
     [
-        version(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(1dd4f5ee-f11a-485c-a048-c2370d88e4e0),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(30f17ba9-133a-4484-8002-a8f4b6764e3f)
 #endif
     ]
-    interface IAdaptiveCardResourceResolver : IInspectable
+    interface IAdaptiveCardResourceResolver
     {
-        HRESULT GetResourceStreamAsync([in] AdaptiveCardGetResourceStreamArgs* args, [out, retval] Windows.Foundation.IAsyncOperation<Windows.Storage.Streams.IRandomAccessStream*>** result);
+        Windows.Foundation.IAsyncOperation<Windows.Storage.Streams.IRandomAccessStream> GetResourceStreamAsync(AdaptiveCardGetResourceStreamArgs args);
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveCardGetResourceStreamArgs),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(602eee1f-5756-46bd-b703-b7a4130b25f4),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveCardGetResourceStreamArgs", 413365b8-3e56-4cb9-a06a-1f5d1d8c2dac),
+        constructor_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveCardGetResourceStreamArgsFactory", 602eee1f-5756-46bd-b703-b7a4130b25f4),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(e1d63f44-6550-454f-99f4-d02df5ae9b8c)
 #endif
     ]
-    interface IAdaptiveCardGetResourceStreamArgsFactory : IInspectable
+    runtimeclass AdaptiveCardGetResourceStreamArgs 
     {
-        HRESULT CreateAdaptiveCardGetResourceStreamArgs(
-            [in] Windows.Foundation.Uri* value,
-            [out, retval] AdaptiveCardGetResourceStreamArgs** args
-            );
+        AdaptiveCardGetResourceStreamArgs();
+
+        Windows.Foundation.Uri Url { get; };
+
+        [method_name("CreateAdaptiveCardGetResourceStreamArgs")]
+        AdaptiveCardGetResourceStreamArgs(Windows.Foundation.Uri uri);
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveCardGetResourceStreamArgs),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(413365b8-3e56-4cb9-a06a-1f5d1d8c2dac),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IRenderedAdaptiveCard", 81793291-582c-42f5-8582-8275b0a64913),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(0eea761b-5a3e-4f1f-86f6-d511c178e671)
 #endif
     ]
-    interface IAdaptiveCardGetResourceStreamArgs : IInspectable
+    runtimeclass RenderedAdaptiveCard 
     {
-        [propget] HRESULT Url([out, retval] Windows.Foundation.Uri** value);
+        RenderedAdaptiveCard();
+
+        AdaptiveCard OriginatingCard { get; };
+        AdaptiveHostConfig OriginatingHostConfig { get; };
+        Windows.UI.Xaml.FrameworkElement FrameworkElement { get; };
+        AdaptiveInputs UserInputs { get; };
+        Windows.Foundation.Collections.IVector<AdaptiveError> Errors { get; };
+        Windows.Foundation.Collections.IVector<AdaptiveWarning> Warnings { get; };
+
+        event Windows.Foundation.TypedEventHandler<RenderedAdaptiveCard, AdaptiveActionEventArgs> Action;
+        event Windows.Foundation.TypedEventHandler<RenderedAdaptiveCard, AdaptiveMediaEventArgs> MediaClicked;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(IAdaptiveCardGetResourceStreamArgsFactory, NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveCardGetResourceStreamArgs
-    {
-        [default] interface IAdaptiveCardGetResourceStreamArgs;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(RenderedAdaptiveCard),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(81793291-582c-42f5-8582-8275b0a64913),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveInputs", eb02a75b-0b51-4c3c-affb-1eeca347a6b9),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(7bf9ceac-105c-421a-8b4e-8e5be9ead986)
 #endif
     ]
-    interface IRenderedAdaptiveCard : IInspectable
+    runtimeclass AdaptiveInputs 
     {
-        [propget] HRESULT OriginatingCard([out, retval] AdaptiveCard** value);
+        AdaptiveInputs();
 
-        [propget] HRESULT OriginatingHostConfig([out, retval] AdaptiveHostConfig** value);
-
-        [propget] HRESULT FrameworkElement([out, retval] Windows.UI.Xaml.FrameworkElement** value);
-
-        [propget] HRESULT UserInputs([out, retval] AdaptiveInputs** value);
-
-        [propget] HRESULT Errors([out, retval] Windows.Foundation.Collections.IVector<AdaptiveError*>** value);
-
-        [propget] HRESULT Warnings([out, retval] Windows.Foundation.Collections.IVector<AdaptiveWarning*>** value);
-
-        [eventadd] HRESULT Action([in] Windows.Foundation.TypedEventHandler<RenderedAdaptiveCard*, AdaptiveActionEventArgs*>* pHandler, [out][retval] EventRegistrationToken* pToken);
-        [eventremove] HRESULT Action([in] EventRegistrationToken token);
-
-        [eventadd] HRESULT MediaClicked([in] Windows.Foundation.TypedEventHandler<RenderedAdaptiveCard*, AdaptiveMediaEventArgs*>* pHandler, [out][retval] EventRegistrationToken* pToken);
-        [eventremove] HRESULT MediaClicked([in] EventRegistrationToken token);
+        Windows.Data.Json.JsonObject AsJson();
+        Windows.Foundation.Collections.ValueSet AsValueSet();
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass RenderedAdaptiveCard
-    {
-        [default] interface IRenderedAdaptiveCard;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveInputs),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(eb02a75b-0b51-4c3c-affb-1eeca347a6b9),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveRequirement", 45B7321F-BB3C-48B8-B98E-6483927C47D7),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(a172be96-7ab5-4faa-a0fd-99e8160e359e)
 #endif
-    ]
-    interface IAdaptiveInputs : IInspectable
+    ] 
+    runtimeclass AdaptiveRequirement
     {
-        HRESULT AsJson([out, retval] Windows.Data.Json.JsonObject** value);
-        HRESULT AsValueSet([out, retval] Windows.Foundation.Collections.ValueSet** value);
-    };
+        AdaptiveRequirement(String requirementName, String requirementversion);
+
+        String Name;
+        String Version;
+    }
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveInputs
-    {
-        [default] interface IAdaptiveInputs;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveFeatureRegistration),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(b2a455fd-385c-45eb-89ce-007b7ed0a815),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveFeatureRegistration", b2a455fd-385c-45eb-89ce-007b7ed0a815),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(5b639a4d-898a-4c63-8cfe-592437201830)
-#endif
-    ] interface IAdaptiveFeatureRegistration : IInspectable
-    {
-        HRESULT Set([in] HSTRING name, [in] HSTRING version);
-        HRESULT Get([in] HSTRING name, [out, retval] HSTRING * version);
-        HRESULT Remove([in] HSTRING name);
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
 #endif
     ] 
     runtimeclass AdaptiveFeatureRegistration 
     {
-        [default] interface IAdaptiveFeatureRegistration; 
+        AdaptiveFeatureRegistration();
+
+        void Set(String name, String version);
+        String Get(String name);
+        void Remove(String name);
     };
 
-
     [
-        version(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(3324e9f6-86f0-4d59-a06f-6bb464ffd558),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(c42c7757-8cf0-49dc-8c8e-a341963eaba2)
 #endif
     ]
-    interface IAdaptiveElementParser : IInspectable
+    interface IAdaptiveElementParser 
     {
-        HRESULT FromJson(
-            [in] Windows.Data.Json.JsonObject* inputJson,
-            [in] AdaptiveElementParserRegistration* elementParsers,
-            [in] AdaptiveActionParserRegistration* actionParsers,
-            [in] Windows.Foundation.Collections.IVector<AdaptiveWarning*>* warnings,
-            [out, retval] IAdaptiveCardElement** result);
+        IAdaptiveCardElement FromJson(
+            Windows.Data.Json.JsonObject inputJson,
+            AdaptiveElementParserRegistration elementParsers,
+            AdaptiveActionParserRegistration actionParsers,
+            Windows.Foundation.Collections.IVector<AdaptiveWarning> warnings);
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveElementParserRegistration),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(494f5d4a-c005-4203-a170-1446cbaa857f),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveElementParserRegistration", 494f5d4a-c005-4203-a170-1446cbaa857f),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(ae307fdc-6a4e-4e10-a9d4-518ccee99c3b)
 #endif
     ]
-    interface IAdaptiveElementParserRegistration : IInspectable
+    runtimeclass AdaptiveElementParserRegistration 
     {
-        HRESULT Set([in] HSTRING type, [in] IAdaptiveElementParser* parser);
-        HRESULT Get([in] HSTRING type, [out, retval] IAdaptiveElementParser** result);
-        HRESULT Remove([in] HSTRING type);
+        AdaptiveElementParserRegistration();
+
+        void Set(String type, IAdaptiveElementParser parser);
+        IAdaptiveElementParser Get(String type);
+        void Remove(String type);
     };
 
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveElementParserRegistration
-    {
-        [default] interface IAdaptiveElementParserRegistration;
-    };
 
     [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveActionParserRegistration),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(b8484c16-a9bd-48bf-a28c-ef130c13300d),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveActionParserRegistration", b8484c16-a9bd-48bf-a28c-ef130c13300d),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(a730c2e9-6ee8-4b03-b706-60138c66a4a8)
 #endif
     ]
-    interface IAdaptiveActionParserRegistration : IInspectable
+    runtimeclass AdaptiveActionParserRegistration 
     {
-        HRESULT Set([in] HSTRING type, [in] IAdaptiveActionParser* Parser);
-        HRESULT Get([in] HSTRING type, [out, retval] IAdaptiveActionParser** result);
-        HRESULT Remove([in] HSTRING type);
+        AdaptiveActionParserRegistration();
+
+        void Set(String type, IAdaptiveActionParser parser);
+        IAdaptiveActionParser Get(String type);
+        void Remove(String type);
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveActionParserRegistration
-    {
-        [default] interface IAdaptiveActionParserRegistration;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(88a79c26-ded3-4b32-b57c-527fcbeff6a4),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(355d37ed-d622-49c0-9b43-75975f1b6dbe)
 #endif
     ]
-    interface IAdaptiveActionParser : IInspectable
+    interface IAdaptiveActionParser
     {
-        HRESULT FromJson(
-            [in] Windows.Data.Json.JsonObject* inputJson,
-            [in] AdaptiveElementParserRegistration* elementParsers,
-            [in] AdaptiveActionParserRegistration* actionParsers,
-            [in] Windows.Foundation.Collections.IVector<AdaptiveWarning*>* warnings,
-            [out, retval] IAdaptiveActionElement** result);
+        IAdaptiveActionElement FromJson(Windows.Data.Json.JsonObject inputJson,
+                                      AdaptiveElementParserRegistration elementParsers,
+                                      AdaptiveActionParserRegistration actionParsers,
+                                      Windows.Foundation.Collections.IVector<AdaptiveWarning> warnings);
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveElementRendererRegistration),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(2ebd4f56-2c5a-45c1-acaf-d956578e8048),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveElementRendererRegistration", 2ebd4f56-2c5a-45c1-acaf-d956578e8048),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(f5a25e03-4d0e-4f0b-9ef6-3e6c37477e86)
 #endif
     ]
-    interface IAdaptiveElementRendererRegistration : IInspectable
+    runtimeclass AdaptiveElementRendererRegistration 
     {
-        HRESULT Set([in] HSTRING type, [in] IAdaptiveElementRenderer* renderer);
-        HRESULT Get([in] HSTRING type, [out, retval] IAdaptiveElementRenderer** result);
-        HRESULT Remove([in] HSTRING type);
+        void Set(String type, IAdaptiveElementRenderer parser);
+        IAdaptiveElementRenderer Get(String type);
+        void Remove(String type);
     };
 
     [
-        version(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-#endif
-    ]
-    runtimeclass AdaptiveElementRendererRegistration
-    {
-        [default] interface IAdaptiveElementRendererRegistration;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveActionRendererRegistration),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(41EF351F-45AF-428A-A3AC-88455EB03698),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveActionRendererRegistration", 41EF351F-45AF-428A-A3AC-88455EB03698),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(C638667B-984C-4C33-9AD0-DDCD456C45F2)
 #endif
     ]
-    interface IAdaptiveActionRendererRegistration : IInspectable
+    runtimeclass AdaptiveActionRendererRegistration 
     {
-        HRESULT Set([in] HSTRING type, [in] IAdaptiveActionRenderer* renderer);
-        HRESULT Get([in] HSTRING type, [out, retval] IAdaptiveActionRenderer** result);
-        HRESULT Remove([in] HSTRING type);
+        AdaptiveActionRendererRegistration();
+
+        void Set(String type, IAdaptiveActionRenderer parser);
+        IAdaptiveActionRenderer Get(String type);
+        void Remove(String type);
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveActionRendererRegistration
-    {
-        [default] interface IAdaptiveActionRendererRegistration;
-    };
-
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveActionInvoker),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(81d601c7-ebad-4445-a84d-2517d610c993),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveActionInvoker", 81d601c7-ebad-4445-a84d-2517d610c993),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(c7435e94-1028-4543-b52e-54126fcb411f)
 #endif
     ]
-    interface IAdaptiveActionInvoker : IInspectable
+    runtimeclass AdaptiveActionInvoker 
     {
-        HRESULT SendActionEvent([in] IAdaptiveActionElement* actionElement);
+        AdaptiveActionInvoker();
+
+        void SendActionEvent(IAdaptiveActionElement actionElement);
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveActionInvoker
-    {
-        [default] interface IAdaptiveActionInvoker;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveMediaEventInvoker),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(C4B6BBF1-599F-4CCF-904E-4CEFAAA44454),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveMediaEventInvoker", C4B6BBF1-599F-4CCF-904E-4CEFAAA44454),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(DBB394A0-2EDD-4D04-911D-8E1A5CEB88E2)
 #endif
     ]
-    interface IAdaptiveMediaEventInvoker : IInspectable
+    runtimeclass AdaptiveMediaEventInvoker 
     {
-        HRESULT SendMediaClickedEvent([in] AdaptiveMedia* mediaElement);
+        AdaptiveMediaEventInvoker();
+
+        void SendMediaClickedEvent(AdaptiveMedia mediaElement);
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveMediaEventInvoker
-    {
-        [default] interface IAdaptiveMediaEventInvoker;
-    };
-
-
-    [
-        version(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(e138cceb-7a0a-41d4-9477-14e68e8cd67e),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(7855E78D-E217-4D12-9203-0136E79FF869)
 #endif
     ]
-    interface IAdaptiveInputValue : IInspectable
+    interface IAdaptiveInputValue 
     {
-        [propget] HRESULT InputElement([out, retval] IAdaptiveInputElement** inputCardElement);
-        [propget] HRESULT CurrentValue([out, retval] HSTRING * currentInputValue);
+        IAdaptiveInputElement InputElement { get; };
+        String CurrentValue { get; };
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveRenderContext),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(98e4b78a-683c-48f2-a7d2-42b0556e5e63),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveRenderContext", 98e4b78a-683c-48f2-a7d2-42b0556e5e63),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(d2ad59a2-01aa-4b39-b2a7-5ce1d4028fbb)
-#endif
-    ]
-    interface IAdaptiveRenderContext : IInspectable
-    {
-        [propget] HRESULT HostConfig([out, retval] AdaptiveHostConfig** value);
-
-        [propget] HRESULT FeatureRegistration([out, retval] AdaptiveFeatureRegistration** value);
-
-        [propget] HRESULT ElementRenderers([out, retval] AdaptiveElementRendererRegistration** value);
-
-        [propget] HRESULT ActionRenderers([out, retval] AdaptiveActionRendererRegistration** value);
-
-        [propget] HRESULT ResourceResolvers([out, retval] AdaptiveCardResourceResolvers** value);
-
-        [propget] HRESULT ActionInvoker([out, retval] AdaptiveActionInvoker** value);
-
-        [propget] HRESULT MediaEventInvoker([out, retval] AdaptiveMediaEventInvoker** value);
-
-        [propget] HRESULT OverrideStyles([out, retval] Windows.UI.Xaml.ResourceDictionary** overrideDictionary);
-
-        [propget] HRESULT UserInputs([out, retval] AdaptiveInputs** value);
-
-        HRESULT AddInputValue([in] IAdaptiveInputValue* inputValue);
-
-        HRESULT AddInlineShowCard([in] AdaptiveActionSet * inputValue,
-                                  [in] AdaptiveShowCardAction * showCardAction,
-                                  [in] Windows.UI.Xaml.UIElement * showCardUIElement);
-
-        HRESULT AddError([in] ErrorStatusCode statusCode, [in] HSTRING message);
-        HRESULT AddWarning([in] WarningStatusCode statusCode, [in] HSTRING message);
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
 #endif
     ]
     runtimeclass AdaptiveRenderContext
     {
-        [default] interface IAdaptiveRenderContext;
+        AdaptiveRenderContext();
+
+        AdaptiveHostConfig HostConfig { get; };
+        AdaptiveFeatureRegistration FeatureRegistration { get; };
+        AdaptiveElementRendererRegistration ElementRenderers { get; };
+        AdaptiveActionRendererRegistration ActionRenderers { get; };
+        AdaptiveCardResourceResolvers ResourceResolvers { get; };
+        AdaptiveActionInvoker ActionInvoker { get; };
+        AdaptiveMediaEventInvoker MediaEventInvoker { get; };
+        Windows.UI.Xaml.ResourceDictionary OverrideStyles { get; };
+        AdaptiveInputs UserInputs { get; };
+
+        void AddInputValue(IAdaptiveInputValue inputValue);
+
+        void AddInlineShowCard(AdaptiveActionSet actionSet,
+                               AdaptiveShowCardAction showCardAction,
+                               Windows.UI.Xaml.UIElement showCardUIElement);
+
+        void AddError(ErrorStatusCode statusCode, String message);
+        void AddWarning(WarningStatusCode statusCode, String message);
     };
 
     [
-        version(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(880f5743-9132-4ddc-a5e6-b2c6e9351063),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(8682c91f-28e3-48fa-8de3-15ba4ec495ca)
 #endif
     ]
-    interface IAdaptiveElementRenderer : IInspectable
+    interface IAdaptiveElementRenderer 
     {
-        HRESULT Render([in] IAdaptiveCardElement* element, [in] AdaptiveRenderContext* context, [in] AdaptiveRenderArgs* renderArgs, [out, retval] Windows.UI.Xaml.UIElement** result);
+        Windows.UI.Xaml.UIElement Render(IAdaptiveCardElement element,
+                                         AdaptiveRenderContext context,
+                                         AdaptiveRenderArgs renderArgs);
     };
 
     [
-        version(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(0AFBC719-6F2A-4CC7-AAC8-C84E98F78A68),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(B028B6B4-3773-4414-B5E3-58397F8CA37C)
 #endif
     ]
-    interface IAdaptiveActionRenderer : IInspectable
+    interface IAdaptiveActionRenderer 
     {
-        HRESULT Render([in] IAdaptiveActionElement * action,
-                       [in] AdaptiveRenderContext * context,
-                       [in] AdaptiveRenderArgs * renderArgs,
-                       [out, retval] Windows.UI.Xaml.UIElement * *result);
+        Windows.UI.Xaml.UIElement Render(IAdaptiveActionElement element, 
+                                         AdaptiveRenderContext context, 
+                                         AdaptiveRenderArgs renderArgs);
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveTextBlockRenderer
-    {
-        [default] interface IAdaptiveElementRenderer;
-        interface IAdaptiveElementParser;
-    };
-
-    [version(NTDDI_WIN10_RS1),
-     activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-     contract(InternalContract, 1),
-     internal,
-     activatable(InternalContract, 1)
-#endif
-    ] runtimeclass AdaptiveRichTextBlockRenderer 
-    {
-        [default] interface IAdaptiveElementRenderer;
-        interface IAdaptiveElementParser;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveImageRenderer
-    {
-        [default] interface IAdaptiveElementRenderer;
-        interface IAdaptiveElementParser;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveImageSetRenderer
-    {
-        [default] interface IAdaptiveElementRenderer;
-        interface IAdaptiveElementParser;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveContainerRenderer
-    {
-        [default] interface IAdaptiveElementRenderer;
-        interface IAdaptiveElementParser;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveColumnRenderer
-    {
-        [default] interface IAdaptiveElementRenderer;
-        interface IAdaptiveElementParser;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveColumnSetRenderer
-    {
-        [default] interface IAdaptiveElementRenderer;
-        interface IAdaptiveElementParser;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveFactRenderer
-    {
-        [default] interface IAdaptiveElementRenderer;
-        interface IAdaptiveElementParser;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveChoiceSetInputRenderer
-    {
-        [default] interface IAdaptiveElementRenderer;
-        interface IAdaptiveElementParser;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveDateInputRenderer
-    {
-        [default] interface IAdaptiveElementRenderer;
-        interface IAdaptiveElementParser;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveNumberInputRenderer
-    {
-        [default] interface IAdaptiveElementRenderer;
-        interface IAdaptiveElementParser;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveTextInputRenderer
-    {
-        [default] interface IAdaptiveElementRenderer;
-        interface IAdaptiveElementParser;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveTimeInputRenderer
-    {
-        [default] interface IAdaptiveElementRenderer;
-        interface IAdaptiveElementParser;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveToggleInputRenderer
-    {
-        [default] interface IAdaptiveElementRenderer;
-        interface IAdaptiveElementParser;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveFactSetRenderer
-    {
-        [default] interface IAdaptiveElementRenderer;
-        interface IAdaptiveElementParser;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveMediaRenderer
-    {
-        [default] interface IAdaptiveElementRenderer;
-        interface IAdaptiveElementParser;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1)
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveActionSetRenderer
-    {
-        [default] interface IAdaptiveElementRenderer;
-        interface IAdaptiveElementParser;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveOpenUrlActionRenderer
-    {
-        [default] interface IAdaptiveActionRenderer;
-        interface IAdaptiveActionParser;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-         contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveShowCardActionRenderer
-    {
-        [default] interface IAdaptiveActionRenderer;
-        interface IAdaptiveActionParser;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveSubmitActionRenderer
-    {
-        [default] interface IAdaptiveActionRenderer;
-        interface IAdaptiveActionParser;
-    };
-
-    [version(NTDDI_WIN10_RS1),
-     activatable(NTDDI_WIN10_RS1),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-     contract(InternalContract, 1),
-     internal,
-     activatable(InternalContract, 1)
-#endif
-    ] runtimeclass AdaptiveToggleVisibilityActionRenderer
-    {
-        [default] interface IAdaptiveActionRenderer;
-        interface IAdaptiveActionParser;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveRenderArgs),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(e75cbfea-77a6-4562-be66-c86b36ac193a),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(8615baba-2695-46d2-a764-9ab473c65bb9)
 #endif
     ]
-    interface IAdaptiveRenderArgs : IInspectable
+    runtimeclass AdaptiveTextBlockRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
     {
-        [propget] HRESULT ContainerStyle([out, retval] ContainerStyle* value);
-        [propput] HRESULT ContainerStyle([in] ContainerStyle value);
-        [propget] HRESULT ParentElement([out, retval] IInspectable** value);
-        [propput] HRESULT ParentElement([in] IInspectable* value);
-        [propget] HRESULT IsInShowCard([out, retval] boolean * value);
-        [propput] HRESULT IsInShowCard([in] boolean value);
-        [propget] HRESULT AllowAboveTitleIconPlacement([out, retval] boolean * value);
-        [propput] HRESULT AllowAboveTitleIconPlacement([in] boolean value);
-        [propget] HRESULT AncestorHasFallback([out, retval] boolean* value);
-        [propput] HRESULT AncestorHasFallback([in] boolean value);
+        AdaptiveTextBlockRenderer();
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveRenderArgs
-    {
-        [default] interface IAdaptiveRenderArgs;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveError),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(f3c95797-25ad-4ee1-a4ad-0fafb986213f),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(c0222295-bbec-4ff6-bdf3-f207ce78df69)
 #endif
-    ]
-    interface IAdaptiveError : IInspectable
+    ] 
+    runtimeclass AdaptiveRichTextBlockRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
     {
-        [propget] HRESULT StatusCode([out, retval] ErrorStatusCode* value);
-
-        [propget] HRESULT Message([out, retval] HSTRING* value);
+        AdaptiveRichTextBlockRenderer();
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass AdaptiveError
-    {
-        [default] interface IAdaptiveError;
-    };
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveWarning),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(d978d794-6585-4e97-b602-9e6a2ffa3948),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(4b5b28fe-9645-4e11-89c9-b9d25dd1b777)
 #endif
-    ]
-    interface IAdaptiveWarning : IInspectable
+    ] 
+    runtimeclass AdaptiveImageRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
     {
-        [propget] HRESULT StatusCode([out, retval] WarningStatusCode* value);
-
-        [propget] HRESULT Message([out, retval] HSTRING* value);
+        AdaptiveImageRenderer();
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveImageSetRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveImageSetRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveContainerRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveContainerRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveColumnRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveColumnRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveColumnSetRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveColumnSetRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveFactRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveFactRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveChoiceSetInputRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveChoiceSetInputRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveDateInputRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveDateInputRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveNumberInputRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveNumberInputRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveTextInputRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveTextInputRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveTimeInputRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveTimeInputRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveToggleInputRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveToggleInputRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveFactSetRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveFactSetRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveMediaRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveMediaRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveActionSetRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveActionSetRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveOpenUrlActionRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveOpenUrlActionRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveShowCardActionRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveShowCardActionRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveSubmitActionRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveSubmitActionRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass AdaptiveToggleVisibilityActionRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveToggleVisibilityActionRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveRenderArgs", e75cbfea-77a6-4562-be66-c86b36ac193a),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveRenderArgs 
+    {
+        AdaptiveRenderArgs(); 
+
+        ContainerStyle ContainerStyle;
+        IInspectable ParentElement;
+        Boolean IsInShowCard;
+        Boolean AllowAboveTitleIconPlacement;
+        Boolean AncestorHasFallback;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveError", f3c95797-25ad-4ee1-a4ad-0fafb986213f),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveError 
+    {
+        AdaptiveError(ErrorStatusCode statusCode, String message);
+
+        ErrorStatusCode StatusCode;
+        String Message;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveWarning", d978d794-6585-4e97-b602-9e6a2ffa3948),
+        contract(InternalContract, 1),
+        internal
 #endif
     ]
     runtimeclass AdaptiveWarning
     {
-        [default] interface IAdaptiveWarning;
+        AdaptiveWarning(WarningStatusCode statusCode, String message);
+
+        WarningStatusCode StatusCode;
+        String Message;
     };
 
     [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(TileControl),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(cd0a4aaf-d7f7-4398-a874-e5735f72f78d),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.ITileControl", cd0a4aaf-d7f7-4398-a874-e5735f72f78d),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(779a1ef5-69a2-4b62-8ed4-ab239aab96d0)
 #endif
-    ] interface ITileControl : IInspectable
+    ] 
+    runtimeclass TileControl
     {
-        [propget] HRESULT BackgroundImage([out, retval] AdaptiveBackgroundImage** value);
-        [propput] HRESULT BackgroundImage([in] AdaptiveBackgroundImage* value);
+        TileControl();
 
-        [propget] HRESULT RootElement([out, retval] Windows.UI.Xaml.FrameworkElement * *value);
-        [propput] HRESULT RootElement([in] Windows.UI.Xaml.FrameworkElement * value);
+        AdaptiveBackgroundImage BackgroundImage;
+        Windows.UI.Xaml.FrameworkElement RootElement;
+        Windows.UI.Xaml.UIElement ResolvedImage;
+        Windows.Foundation.Size ImageSize;
 
-        [propget] HRESULT ResolvedImage([out, retval] Windows.UI.Xaml.UIElement * *value);
-        [propput] HRESULT ResolvedImage([in] Windows.UI.Xaml.UIElement * value);
-
-        [propget] HRESULT ImageSize([out, retval] Windows.Foundation.Size * value);
-        [propput] HRESULT ImageSize([in] Windows.Foundation.Size value);
-
-        HRESULT LoadImageBrush([in] Windows.UI.Xaml.UIElement * uielement);
+        void LoadImageBrush(Windows.UI.Xaml.UIElement uielement);
     }
 
     [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-        threading(both),
-        marshaling_behavior(agile),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ] runtimeclass TileControl : Windows.UI.Xaml.Controls.ContentControl
-    {
-        [default] interface ITileControl;
-    }
-
-    [
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(WholeItemsPanel),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(bfe6f968-3c42-44df-b1e9-8830424a8616),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IWholeItemsPanel", bfe6f968-3c42-44df-b1e9-8830424a8616),
         contract(InternalContract, 1),
         internal
-#else
-        uuid(cced6652-8ca5-4841-b650-851770ec6ecf)
 #endif
     ]
-    interface IWholeItemsPanel : IInspectable
+    runtimeclass WholeItemsPanel
     {
-        HRESULT GetAltText([out, retval] HSTRING *pResult);
-        HRESULT IsAllContentClippedOut([out, retval] boolean* pResult);
-        HRESULT IsTruncated([out, retval] boolean* pResult);
-    }
-
-    [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
-        threading(both),
-        marshaling_behavior(agile),
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        contract(InternalContract, 1),
-        internal,
-        activatable(InternalContract, 1)
-#endif
-    ]
-    runtimeclass WholeItemsPanel : Windows.UI.Xaml.Controls.Panel
-    {
-        [default] interface IWholeItemsPanel;
+        String GetAltText();
+        Boolean IsAllContentClippedOut();
+        Boolean IsTruncated();
     }
 
 AdaptiveNamespaceEnd

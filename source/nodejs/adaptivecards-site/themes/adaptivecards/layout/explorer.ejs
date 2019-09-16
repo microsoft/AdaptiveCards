@@ -1,64 +1,67 @@
-<div id="content-wrapper" class="w3-content explorer" style="max-width:1564px">
+<div id="content-wrapper" class="w3-row explorer" style="max-width:1564px">
 
-  <nav id="sidebar-todo" class="toc-todo w3-sidebar w3-cell w3-hide-small w3-hide-medium w3-bar-block w3-padding-16" style="width: 200px">
-	<div class="sidebar__inner">
-		<ul class="toc-tree">
-			<% page.schema.forEach(function(root) { %>
+	<nav id="sidebar-todo" class="toc-todo sidebar w3-cell w3-hide-small w3-hide-medium w3-bar-block"
+		style="width: 200px">
+		<div class="sidebar__inner">
+			<ul class="toc-tree">
+				<% page.schema.forEach(function(root) { %>
 				<li><span><i class="fa fa-angle-down"></i> <%= root.title %></span>
-				<ul>
-					<% root.children.forEach(function(child) { %>
-					<li class='<%= page.childPath === child.htmlPath ? "selectedHolder" : "" %>'>
-						<a href="<%- url_for(child.htmlPath) %>"><%= child.name %></a>
-					</li>
-					<% }) %>
-				</ul>
+					<ul>
+						<% root.children.forEach(function(child) { %>
+						<li class='<%= page.childPath === child.htmlPath ? "selectedHolder" : "" %>'>
+							<a href="<%- url_for(child.htmlPath) %>"><%= child.name %></a>
+						</li>
+						<% }) %>
+					</ul>
 				</li>
-			<% }) %>
-		</ul>
+				<% }) %>
+			</ul>
+		</div>
+	</nav>
+
+	<div class="w3-main" style="margin-left: 220px">
+		<div class="w3-container">
+			<h1><%= page.title %></h1>
+
+			<!-- mobile nav -->
+			<div class="w3-hide-large">
+				<select id="menu-nav">
+					<% page.schema.forEach(function(root) { %>
+					<optgroup class="noLink" label='<%= root.title %>'>
+						<% root.children.forEach(function(child) { %>
+						<% if(is_current(child.htmlPath)) { %>
+						<option value='<%- url_for(child.htmlPath) %>' selected="selected"><%= child.name %>
+						</option>
+						<% } else { %>
+						<option value='<%- url_for(child.htmlPath) %>'><%= child.name %></option>
+						<% } %>
+						>>>>>>> Stashed changes
+
+						<% }) %>
+					</optgroup>
+					<% }) %>
+				</select>
+			</div>
+
+			<h2><%= page.element.name %></h2>
+
+			<p><%= page.element.description %></p>
+
+			<div class="ac-properties w3-margin-top">
+				<%- markdown(page.propertiesSummary) %>
+			</div>
+
+		</div>
+
+
+		<% page.element.examples.forEach(function (example, i) { %>
+		<% if(i == 0) { %>
+		<h2 class="w3-container">Example</h2>
+		<%- partial("_partial/code-example", { examplePath: example }) %>
+		<% }}) %>
+
+
+		<%- propertiesDetails(page.element.properties, page.element.version) %>
+
 	</div>
-  </nav>
-
-  <div class="w3-main" style="margin-left: 220px">
-  
-    <div class="w3-container">
-      <h1><%= page.title %></h1>
-
-      <!-- mobile nav -->
-      <div class="w3-hide-large">
-        <select id="menu-nav">
-          <% page.schema.forEach(function(root) { %>
-            <optgroup class="noLink" label='<%= root.title %>'>
-              <% root.children.forEach(function(child) { %>
-                <% if(is_current(child.htmlPath)) { %>
-                  <option value='<%- url_for(child.htmlPath) %>' selected="selected"><%= child.name %></option>
-                <% } else { %>
-                  <option value='<%- url_for(child.htmlPath) %>'><%= child.name %></option>
-                <% } %> 
-          
-              <% }) %>
-             </optgroup>
-          <% }) %>
-        </select>
-      </div>
-
-      <h2><%= page.element.name %></h2>
-
-      <p><%= page.element.description %></p>
-
-      <div class="ac-properties w3-margin-top"> 
-        <%- markdown(page.propertiesSummary) %>
-      </div>
-
-  </div>
-
-
-  <% page.element.examples.forEach(function (example, i) { %>
-    <% if(i == 0) { %>
-      <h2 class="w3-container">Example</h2>
-      <%- partial("_partial/code-example", { examplePath: example }) %>
-  <% }}) %>
-
-
-  <%- propertiesDetails(page.element.properties) %>
-
 </div>

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import * as Utils from "./utils";
 import * as Constants from "./constants";
 import { Collection } from "./collection";
@@ -98,7 +100,6 @@ export class PopupMenu extends PopupControl {
             this._overlayElement = document.createElement("div");
             this._overlayElement.className = "ms-ctrl-overlay";
             this._overlayElement.tabIndex = 0;
-            this._overlayElement.style.zIndex = "1000";
             this._overlayElement.style.width = document.documentElement.scrollWidth + "px";
             this._overlayElement.style.height = document.documentElement.scrollHeight + "px";
             this._overlayElement.onfocus = (e) => { this.closePopup(); };

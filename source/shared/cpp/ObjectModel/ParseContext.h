@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "pch.h"
@@ -26,11 +28,11 @@ namespace AdaptiveSharedNamespace
                          const AdaptiveSharedNamespace::InternalId& internalId,
                          const bool isFallback = false);
         void PopElement();
-        
+
         // tells if it's possible to fallback to ancestor
         bool GetCanFallbackToAncestor() const { return m_canFallbackToAncestor; }
         void SetCanFallbackToAncestor(bool value) { m_canFallbackToAncestor = value; }
-        
+
         void SetLanguage(const std::string& value);
         std::string GetLanguage() const;
 

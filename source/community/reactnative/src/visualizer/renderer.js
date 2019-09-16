@@ -17,6 +17,7 @@ import {
 import AdaptiveCard from '../adaptive-card';
 import { RatingRenderer } from './rating-renderer';
 import { Registry } from '../components/registration/registry';
+import * as Utils from '../utils/util';
 
 export default class Renderer extends React.Component {
 
@@ -38,7 +39,7 @@ export default class Renderer extends React.Component {
     customThemeConfig = {
         button: {
             backgroundColor: '#66BB6A'
-        }    
+        }
     }
 
     constructor(props) {
@@ -92,16 +93,36 @@ export default class Renderer extends React.Component {
                 ],
                 { cancelable: false }
             )
-        } else if (actionObject.type === "Action.OpenUrl") {
+        } else if (actionObject.type === "Action.OpenUrl" && !Utils.isNullOrEmpty(actionObject.url)) {
             Linking.canOpenURL(actionObject.url).then(supported => {
                 if (supported) {
-                    Linking.openURL(actionObject.url);
+                    Linking.openURL(actionObject.url).catch(() => {
+                        console.log("Failed to open URI: " + actionObject.url)
+                        this.alertAction(actionObject);
+                    });
                 } else {
                     console.log("Don't know how to open URI: " + actionObject.url);
+                    this.alertAction(actionObject);
                 }
             });
-        }
+        } else this.alertAction(actionObject);
 
+    }
+
+    /**
+     * @description Alert the action object 
+     * @param {object} actionObject - Details and data about the action.
+     */
+
+    alertAction = (actionObject) => {
+        Alert.alert(
+            'Action',
+            JSON.stringify(actionObject),
+            [
+                { text: "Okay", onPress: () => console.log('OK Pressed') },
+            ],
+            { cancelable: false }
+        )
     }
 
     /**

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import { IPoint } from "./miscellaneous";
 
 export const DRAG_THRESHOLD = 10;
@@ -10,7 +12,7 @@ export abstract class DraggableElement {
     private _dragging: boolean;
 
     private releasePointerCapture(pointerId: number) {
-        this.renderedElement.releasePointerCapture(pointerId);
+        this.getDragSourceElement().releasePointerCapture(pointerId);
 
         this._isPointerDown = false;
     }
@@ -42,7 +44,7 @@ export abstract class DraggableElement {
             this._isPointerDown = true;
             this._lastClickedPoint = { x: e.offsetX, y: e.offsetY };
 
-            this.renderedElement.setPointerCapture(e.pointerId);
+            this.getDragSourceElement().setPointerCapture(e.pointerId);
         }
     }
 
@@ -64,6 +66,12 @@ export abstract class DraggableElement {
         }
     }
 
+    protected click(e: MouseEvent) {
+        if (this.onClick) {
+            this.onDoubleClick(this);
+        }
+    }
+
     protected doubleClick(e: MouseEvent) {
         if (this.onDoubleClick) {
             this.onDoubleClick(this);
@@ -78,10 +86,15 @@ export abstract class DraggableElement {
         // Do nothing in base implementation
     }
 
+    protected getDragSourceElement(): HTMLElement {
+        return this._renderedElement;
+    }
+
     protected abstract internalRender(): HTMLElement;
 
     onStartDrag: (sender: DraggableElement) => void;
     onEndDrag: (sender: DraggableElement) => void;
+    onClick: (sender: DraggableElement) => void;
     onDoubleClick: (sender: DraggableElement) => void;
 
     isDraggable(): boolean {
@@ -103,17 +116,23 @@ export abstract class DraggableElement {
         this.internalUpdateLayout();
     }
 
-    render() {
+    render(): HTMLElement {
         this._renderedElement = this.internalRender();
 
-        this._renderedElement.onmousedown = (e: MouseEvent) => { e.preventDefault(); };
-        this._renderedElement.ondblclick = (e: MouseEvent) => { this.doubleClick(e); };
+        let dragSourceElement = this.getDragSourceElement();
+        dragSourceElement.onclick = (e: MouseEvent) => { this.click(e); };
+        dragSourceElement.ondblclick = (e: MouseEvent) => { this.doubleClick(e); };
 
-        this._renderedElement.onpointerenter = () => { this.isPointerOver = true; };
-        this._renderedElement.onpointerleave = () => { this.isPointerOver = false; };
-        this._renderedElement.onpointerdown = (e: PointerEvent) => { this.pointerDown(e); };
-        this._renderedElement.onpointerup = (e: PointerEvent) => { this.pointerUp(e); };
-        this._renderedElement.onpointermove = (e: PointerEvent) => { this.pointerMove(e); };
+        if (this.isDraggable()) {
+            dragSourceElement.onmousedown = (e: MouseEvent) => { e.preventDefault(); };
+            dragSourceElement.onpointerenter = () => { this.isPointerOver = true; };
+            dragSourceElement.onpointerleave = () => { this.isPointerOver = false; };
+            dragSourceElement.onpointerdown = (e: PointerEvent) => { this.pointerDown(e); };
+            dragSourceElement.onpointerup = (e: PointerEvent) => { this.pointerUp(e); };
+            dragSourceElement.onpointermove = (e: PointerEvent) => { this.pointerMove(e); };
+        }
+
+        return this._renderedElement;
     }
 
     get renderedElement(): HTMLElement {

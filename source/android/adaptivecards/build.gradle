@@ -80,17 +80,18 @@ publishing {
     publications {
         adaptivecards(MavenPublication) {
             groupId 'io.adaptivecards'
-            version System.getenv('XES_SEMANTICVERSION') + '-20' + System.getenv('TFS_VersionNumber')
+            version System.getenv('ACSDKVERSION') + '-' + System.getenv('BUILD_BUILDNUMBER')
             artifact(sourceJar)
             artifact("$buildDir/outputs/aar/adaptivecards-release.aar")
         }
     }
+
     repositories {
         maven {
-            url 'https://microsoft.pkgs.visualstudio.com/_packaging/AdaptiveCards-Android/maven/v1'
+            url 'https://microsoft.pkgs.visualstudio.com/_packaging/AdaptiveCards/maven/v1'
             credentials {
-                username "VSTS"
-                password System.getenv("VSTS_ENV_ACCESS_TOKEN") ?: System.getenv("AdaptiveCardsAuthoTokens")
+                username "AZURE_ARTIFACTS"
+                password System.getenv("AZURE_ARTIFACTS_ENV_ACCESS_TOKEN") ?: "${azureArtifactsGradleAccessToken}"
             }
         }
     }

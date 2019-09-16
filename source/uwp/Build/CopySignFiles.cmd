@@ -26,11 +26,13 @@ REM AdaptiveCards UWP
 mkdir tosign\%ACPATH%\Win32
 mkdir tosign\%ACPATH%\x64
 mkdir tosign\%ACPATH%\ARM
+mkdir tosign\%ACPATH%\ARM64
 
 call :checkedCopy %ACROOT%\Release\%ACPATH%%ACUWP%.winmd tosign\%ACPATH%%ACUWP%.winmd
 call :checkedCopy %ACROOT%Release\%ACPATH%%ACUWP%.dll tosign\%ACPATH%Win32\%ACUWP%.dll
 call :checkedCopy %ACROOT%x64\Release\%ACPATH%%ACUWP%.dll tosign\%ACPATH%x64\%ACUWP%.dll
 call :checkedCopy %ACROOT%ARM\Release\%ACPATH%%ACUWP%.dll tosign\%ACPATH%ARM\%ACUWP%.dll
+call :checkedCopy %ACROOT%ARM64\Release\%ACPATH%%ACUWP%.dll tosign\%ACPATH%ARM64\%ACUWP%.dll
 
 popd
 goto :end
@@ -43,6 +45,7 @@ call :checkedCopy signed\%ACPATH%%ACUWP%.winmd %ACROOT%Release\%ACPATH%%ACUWP%.w
 call :checkedCopy signed\%ACPATH%Win32\%ACUWP%.dll %ACROOT%Release\%ACPATH%%ACUWP%.dll
 call :checkedCopy signed\%ACPATH%x64\%ACUWP%.dll %ACROOT%x64\Release\%ACPATH%%ACUWP%.dll
 call :checkedCopy signed\%ACPATH%ARM\%ACUWP%.dll %ACROOT%ARM\Release\%ACPATH%%ACUWP%.dll
+call :checkedCopy signed\%ACPATH%ARM64\%ACUWP%.dll %ACROOT%ARM64\Release\%ACPATH%%ACUWP%.dll
 
 popd
 goto :end

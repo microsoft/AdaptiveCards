@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AdaptiveCards.Rendering.Uwp;
 using Windows.Data.Json;
@@ -19,6 +21,7 @@ namespace UWPUnitTests
                 },
                 FallbackText = "Fallback Text",
                 Height = HeightType.Stretch,
+                InputNecessityIndicators = InputNecessityIndicators.RequiredInputs,
                 Language = "en",
                 Speak = "This is a card",
                 Style = ContainerStyle.Emphasis,
@@ -29,6 +32,7 @@ namespace UWPUnitTests
             Assert.AreEqual("https://www.stuff.com/background.jpg", card.BackgroundImage.Url);
             Assert.AreEqual("Fallback Text", card.FallbackText);
             Assert.AreEqual(HeightType.Stretch, card.Height);
+            Assert.AreEqual(InputNecessityIndicators.RequiredInputs, card.InputNecessityIndicators);
             Assert.AreEqual("en", card.Language);
             Assert.AreEqual("This is a card", card.Speak);
             Assert.AreEqual(ContainerStyle.Emphasis, card.Style);
@@ -73,7 +77,7 @@ namespace UWPUnitTests
             Assert.AreEqual("Submit Two", card.Actions[1].Title);
 
             var jsonString = card.ToJson().ToString();
-            Assert.AreEqual("{\"actions\":[{\"title\":\"Submit One\",\"type\":\"Action.Submit\"},{\"title\":\"Submit Two\",\"type\":\"Action.Submit\"}],\"backgroundImage\":\"https://www.stuff.com/background.jpg\",\"body\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"},{\"text\":\"This is another text block\",\"type\":\"TextBlock\"}],\"fallbackText\":\"Fallback Text\",\"height\":\"Stretch\",\"lang\":\"en\",\"speak\":\"This is a card\",\"style\":\"Emphasis\",\"type\":\"AdaptiveCard\",\"version\":\"1.3\",\"verticalContentAlignment\":\"Center\"}", jsonString);
+            Assert.AreEqual("{\"actions\":[{\"title\":\"Submit One\",\"type\":\"Action.Submit\"},{\"title\":\"Submit Two\",\"type\":\"Action.Submit\"}],\"backgroundImage\":\"https://www.stuff.com/background.jpg\",\"body\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"},{\"text\":\"This is another text block\",\"type\":\"TextBlock\"}],\"fallbackText\":\"Fallback Text\",\"height\":\"Stretch\",\"inputNecessityIndicators\":\"RequiredInputs\",\"lang\":\"en\",\"speak\":\"This is a card\",\"style\":\"Emphasis\",\"type\":\"AdaptiveCard\",\"version\":\"1.3\",\"verticalContentAlignment\":\"Center\"}", jsonString);
         }
 
         public void ValidateBaseElementProperties(
@@ -97,19 +101,17 @@ namespace UWPUnitTests
             AdaptiveTextBlock textBlock = new AdaptiveTextBlock
             {
                 Color = ForegroundColor.Accent,
-                FontStyle = FontStyle.Monospace,
+                FontType = FontType.Monospace,
                 Height = HeightType.Stretch,
                 HorizontalAlignment = HAlignment.Center,
                 Id = "TextBlockId",
                 IsSubtle = true,
                 IsVisible = false,
-                Italic = true,
                 Language = "en",
                 MaxLines = 3,
                 Separator = true,
                 Size = TextSize.Large,
                 Spacing = Spacing.Large,
-                Strikethrough = true,
                 Text = "This is a text block",
                 Weight = TextWeight.Bolder,
                 Wrap = true
@@ -118,11 +120,9 @@ namespace UWPUnitTests
             ValidateBaseElementProperties(textBlock, "TextBlockId", false, true, Spacing.Large, HeightType.Stretch);
 
             Assert.AreEqual(ForegroundColor.Accent, textBlock.Color);
-            Assert.AreEqual(FontStyle.Monospace, textBlock.FontStyle);
+            Assert.AreEqual(FontType.Monospace, textBlock.FontType);
             Assert.AreEqual(HAlignment.Center, textBlock.HorizontalAlignment);
             Assert.IsTrue(textBlock.IsSubtle);
-            Assert.IsTrue(textBlock.Italic);
-            Assert.IsTrue(textBlock.Strikethrough);
             Assert.AreEqual("en", textBlock.Language);
             Assert.AreEqual<uint>(3, textBlock.MaxLines);
             Assert.AreEqual(TextSize.Large, textBlock.Size);
@@ -131,7 +131,7 @@ namespace UWPUnitTests
             Assert.IsTrue(textBlock.Wrap);
 
             var jsonString = textBlock.ToJson().ToString();
-            Assert.AreEqual("{\"color\":\"Accent\",\"fontStyle\":\"Monospace\",\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"TextBlockId\",\"isSubtle\":true,\"isVisible\":false,\"italic\":true,\"maxLines\":3,\"separator\":true,\"size\":\"Large\",\"spacing\":\"large\",\"strikethrough\":true,\"text\":\"This is a text block\",\"type\":\"TextBlock\",\"weight\":\"Bolder\",\"wrap\":true}", jsonString);
+            Assert.AreEqual("{\"color\":\"Accent\",\"fontType\":\"Monospace\",\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"TextBlockId\",\"isSubtle\":true,\"isVisible\":false,\"maxLines\":3,\"separator\":true,\"size\":\"Large\",\"spacing\":\"large\",\"text\":\"This is a text block\",\"type\":\"TextBlock\",\"weight\":\"Bolder\",\"wrap\":true}", jsonString);
         }
 
         [TestMethod]
@@ -309,6 +309,12 @@ namespace UWPUnitTests
             Assert.AreEqual("This is a text block", (column1.Items[0] as AdaptiveTextBlock).Text);
             Assert.AreEqual("This is another text block", (column1.Items[1] as AdaptiveTextBlock).Text);
 
+            column1.FallbackType = FallbackType.Content;
+            column1.FallbackContent = new AdaptiveColumn();
+
+            Assert.AreEqual(FallbackType.Content, column1.FallbackType);
+            Assert.AreEqual(ElementType.Column, column1.FallbackContent.ElementType);
+
             AdaptiveColumn column2 = new AdaptiveColumn
             {
                 Id = "Column2Id"
@@ -340,7 +346,7 @@ namespace UWPUnitTests
             Assert.AreEqual("Column2Id", columnSet.Columns[1].Id);
 
             var jsonString = columnSet.ToJson().ToString();
-            Assert.AreEqual("{\"bleed\":true,\"columns\":[{\"bleed\":true,\"height\":\"Stretch\",\"id\":\"ColumnId\",\"isVisible\":false,\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"},{\"text\":\"This is another text block\",\"type\":\"TextBlock\"}],\"selectAction\":{\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"separator\":true,\"spacing\":\"small\",\"style\":\"Emphasis\",\"type\":\"Column\",\"verticalContentAlignment\":\"Bottom\",\"width\":\"50px\"},{\"id\":\"Column2Id\",\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"}],\"type\":\"Column\",\"width\":\"auto\"}],\"height\":\"Stretch\",\"id\":\"ColumnSetId\",\"isVisible\":false,\"separator\":true,\"spacing\":\"small\",\"style\":\"Emphasis\",\"type\":\"ColumnSet\"}", jsonString);
+            Assert.AreEqual("{\"bleed\":true,\"columns\":[{\"bleed\":true,\"fallback\":{\"items\":[],\"type\":\"Column\",\"width\":\"auto\"},\"height\":\"Stretch\",\"id\":\"ColumnId\",\"isVisible\":false,\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"},{\"text\":\"This is another text block\",\"type\":\"TextBlock\"}],\"selectAction\":{\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"separator\":true,\"spacing\":\"small\",\"style\":\"Emphasis\",\"type\":\"Column\",\"verticalContentAlignment\":\"Bottom\",\"width\":\"50px\"},{\"id\":\"Column2Id\",\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"}],\"type\":\"Column\",\"width\":\"auto\"}],\"height\":\"Stretch\",\"id\":\"ColumnSetId\",\"isVisible\":false,\"separator\":true,\"spacing\":\"small\",\"style\":\"Emphasis\",\"type\":\"ColumnSet\"}", jsonString);
         }
 
         [TestMethod]
@@ -431,6 +437,8 @@ namespace UWPUnitTests
                 MaxLength = 5,
                 Placeholder = "Placeholder",
                 Value = "Value",
+                ErrorMessage = "Text Input Error Message",
+                Regex = "([A-Z])\\w+",
                 TextInputStyle = TextInputStyle.Email,
                 Height = HeightType.Stretch,
                 Id = "TextInputId",
@@ -441,6 +449,9 @@ namespace UWPUnitTests
 
             ValidateBaseElementProperties(textInput, "TextInputId", false, true, Spacing.Medium, HeightType.Stretch);
 
+            Assert.IsFalse(textInput.IsRequired);
+            Assert.AreEqual("Text Input Error Message", textInput.ErrorMessage);
+            Assert.AreEqual("([A-Z])\\w+", textInput.Regex);
             Assert.AreEqual(true, textInput.IsMultiline);
             Assert.AreEqual<uint>(5, textInput.MaxLength);
             Assert.AreEqual("Placeholder", textInput.Placeholder);
@@ -455,7 +466,7 @@ namespace UWPUnitTests
             Assert.AreEqual("Inline Action", textInput.InlineAction.Title);
 
             var jsonString = textInput.ToJson().ToString();
-            Assert.AreEqual("{\"height\":\"Stretch\",\"id\":\"TextInputId\",\"inlineAction\":{\"title\":\"Inline Action\",\"type\":\"Action.Submit\"},\"isMultiline\":true,\"isRequired\":false,\"isVisible\":false,\"maxLength\":5,\"placeholder\":\"Placeholder\",\"separator\":true,\"spacing\":\"medium\",\"style\":\"Email\",\"type\":\"Input.Text\",\"value\":\"Value\"}", jsonString);
+            Assert.AreEqual("{\"errorMessage\":\"Text Input Error Message\",\"height\":\"Stretch\",\"id\":\"TextInputId\",\"inlineAction\":{\"title\":\"Inline Action\",\"type\":\"Action.Submit\"},\"isMultiline\":true,\"isVisible\":false,\"maxLength\":5,\"placeholder\":\"Placeholder\",\"regex\":\"([A-Z])\\\\w+\",\"separator\":true,\"spacing\":\"medium\",\"style\":\"Email\",\"type\":\"Input.Text\",\"value\":\"Value\"}", jsonString);
         }
 
         [TestMethod]
@@ -467,6 +478,8 @@ namespace UWPUnitTests
                 Min = 40,
                 Placeholder = "Placeholder",
                 Value = 42,
+                IsRequired = false,
+                ErrorMessage = "Number Input Error Message",
                 Height = HeightType.Stretch,
                 Id = "NumberInputId",
                 IsVisible = false,
@@ -476,13 +489,15 @@ namespace UWPUnitTests
 
             ValidateBaseElementProperties(numberInput, "NumberInputId", false, true, Spacing.Medium, HeightType.Stretch);
 
+            Assert.IsFalse(numberInput.IsRequired);
+            Assert.AreEqual("Number Input Error Message", numberInput.ErrorMessage);
             Assert.AreEqual(50, numberInput.Max);
             Assert.AreEqual(40, numberInput.Min);
             Assert.AreEqual("Placeholder", numberInput.Placeholder);
             Assert.AreEqual(42, numberInput.Value);
 
             var jsonString = numberInput.ToJson().ToString();
-            Assert.AreEqual("{\"height\":\"Stretch\",\"id\":\"NumberInputId\",\"isRequired\":false,\"isVisible\":false,\"max\":50,\"min\":40,\"placeholder\":\"Placeholder\",\"separator\":true,\"spacing\":\"medium\",\"type\":\"Input.Number\",\"value\":42}", jsonString);
+            Assert.AreEqual("{\"errorMessage\":\"Number Input Error Message\",\"height\":\"Stretch\",\"id\":\"NumberInputId\",\"isVisible\":false,\"max\":50,\"min\":40,\"placeholder\":\"Placeholder\",\"separator\":true,\"spacing\":\"medium\",\"type\":\"Input.Number\",\"value\":42}", jsonString);
         }
 
         [TestMethod]
@@ -490,26 +505,30 @@ namespace UWPUnitTests
         {
             AdaptiveDateInput dateInput = new AdaptiveDateInput
             {
+                ErrorMessage = "Date Input Error Message",
                 Max = "2019-01-14",
                 Min = "2017-01-14",
                 Placeholder = "Placeholder",
-                Value = "2018-01-14",
                 Height = HeightType.Stretch,
                 Id = "DateInputId",
+                IsRequired = true,
                 IsVisible = false,
                 Separator = true,
                 Spacing = Spacing.Medium,
+                Value = "2018-01-14",
             };
 
             ValidateBaseElementProperties(dateInput, "DateInputId", false, true, Spacing.Medium, HeightType.Stretch);
 
+            Assert.IsTrue(dateInput.IsRequired);
+            Assert.AreEqual("Date Input Error Message", dateInput.ErrorMessage);
             Assert.AreEqual("2019-01-14", dateInput.Max);
             Assert.AreEqual("2017-01-14", dateInput.Min);
             Assert.AreEqual("Placeholder", dateInput.Placeholder);
             Assert.AreEqual("2018-01-14", dateInput.Value);
 
             var jsonString = dateInput.ToJson().ToString();
-            Assert.AreEqual("{\"height\":\"Stretch\",\"id\":\"DateInputId\",\"isRequired\":false,\"isVisible\":false,\"max\":\"2019-01-14\",\"min\":\"2017-01-14\",\"placeholder\":\"Placeholder\",\"separator\":true,\"spacing\":\"medium\",\"type\":\"Input.Date\",\"value\":\"2018-01-14\"}", jsonString);
+            Assert.AreEqual("{\"errorMessage\":\"Date Input Error Message\",\"height\":\"Stretch\",\"id\":\"DateInputId\",\"isRequired\":true,\"isVisible\":false,\"max\":\"2019-01-14\",\"min\":\"2017-01-14\",\"placeholder\":\"Placeholder\",\"separator\":true,\"spacing\":\"medium\",\"type\":\"Input.Date\",\"value\":\"2018-01-14\"}", jsonString);
         }
 
         [TestMethod]
@@ -529,6 +548,9 @@ namespace UWPUnitTests
             };
 
             ValidateBaseElementProperties(timeInput, "TimeInputId", false, true, Spacing.Medium, HeightType.Stretch);
+
+            Assert.IsFalse(timeInput.IsRequired);
+            Assert.IsTrue(timeInput.ErrorMessage.Length == 0);
 
             Assert.AreEqual("05:00", timeInput.Max);
             Assert.AreEqual("01:00", timeInput.Min);
@@ -557,6 +579,9 @@ namespace UWPUnitTests
 
             ValidateBaseElementProperties(toggleInput, "ToggleInputId", false, true, Spacing.Medium, HeightType.Stretch);
 
+            Assert.IsFalse(toggleInput.IsRequired);
+            Assert.IsTrue(toggleInput.ErrorMessage.Length == 0);
+
             Assert.AreEqual("Title", toggleInput.Title);
             Assert.AreEqual("Value", toggleInput.Value);
             Assert.AreEqual("ValueOff", toggleInput.ValueOff);
@@ -564,7 +589,7 @@ namespace UWPUnitTests
             Assert.AreEqual(true, toggleInput.Wrap);
 
             var jsonString = toggleInput.ToJson().ToString();
-            Assert.AreEqual("{\"height\":\"Stretch\",\"id\":\"ToggleInputId\",\"isRequired\":false,\"isVisible\":false,\"separator\":true,\"spacing\":\"medium\",\"title\":\"Title\",\"type\":\"Input.Toggle\",\"value\":\"Value\",\"valueOff\":\"ValueOff\",\"valueOn\":\"ValueOn\",\"wrap\":true}", jsonString);
+            Assert.AreEqual("{\"height\":\"Stretch\",\"id\":\"ToggleInputId\",\"isVisible\":false,\"separator\":true,\"spacing\":\"medium\",\"title\":\"Title\",\"type\":\"Input.Toggle\",\"value\":\"Value\",\"valueOff\":\"ValueOff\",\"valueOn\":\"ValueOn\",\"wrap\":true}", jsonString);
         }
 
         [TestMethod]
@@ -612,7 +637,7 @@ namespace UWPUnitTests
             Assert.AreEqual("Value2", choiceSet.Choices[1].Value);
 
             var jsonString = choiceSet.ToJson().ToString();
-            Assert.AreEqual("{\"choices\":[{\"title\":\"Title1\",\"value\":\"Value1\"},{\"title\":\"Title2\",\"value\":\"Value2\"}],\"height\":\"Stretch\",\"id\":\"ChoiceSetInputId\",\"isMultiSelect\":true,\"isRequired\":false,\"isVisible\":false,\"separator\":true,\"spacing\":\"medium\",\"style\":\"Expanded\",\"type\":\"Input.ChoiceSet\",\"value\":\"Value2\",\"wrap\":true}", jsonString);
+            Assert.AreEqual("{\"choices\":[{\"title\":\"Title1\",\"value\":\"Value1\"},{\"title\":\"Title2\",\"value\":\"Value2\"}],\"height\":\"Stretch\",\"id\":\"ChoiceSetInputId\",\"isMultiSelect\":true,\"isVisible\":false,\"separator\":true,\"spacing\":\"medium\",\"style\":\"Expanded\",\"type\":\"Input.ChoiceSet\",\"value\":\"Value2\",\"wrap\":true}", jsonString);
         }
 
         public void ValidateBaseActionProperties(
@@ -620,11 +645,11 @@ namespace UWPUnitTests
             string iconUrl,
             string id,
             string title,
-            string sentiment)
+            string style)
         {
             Assert.AreEqual(iconUrl, element.IconUrl);
             Assert.AreEqual(id, element.Id);
-            Assert.AreEqual(sentiment, element.Sentiment);
+            Assert.AreEqual(style, element.Style);
             Assert.AreEqual(title, element.Title);
         }
 
@@ -637,7 +662,7 @@ namespace UWPUnitTests
                 Url = url,
                 IconUrl = "http://www.stuff.com/icon.jpg",
                 Id = "OpenUrlId",
-                Sentiment = "Destructive",
+                Style = "Destructive",
                 Title = "Title"
             };
 
@@ -645,7 +670,7 @@ namespace UWPUnitTests
             Assert.AreEqual(url, openUrlAction.Url);
 
             var jsonString = openUrlAction.ToJson().ToString();
-            Assert.AreEqual("{\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"sentiment\":\"Destructive\",\"title\":\"Title\",\"type\":\"Action.OpenUrl\",\"url\":\"http://www.stuff.com/\"}", jsonString);
+            Assert.AreEqual("{\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"style\":\"Destructive\",\"title\":\"Title\",\"type\":\"Action.OpenUrl\",\"url\":\"http://www.stuff.com/\"}", jsonString);
         }
 
         [TestMethod]
@@ -657,7 +682,7 @@ namespace UWPUnitTests
                 DataJson = dataJson,
                 IconUrl = "http://www.stuff.com/icon.jpg",
                 Id = "OpenUrlId",
-                Sentiment = "Destructive",
+                Style = "Destructive",
                 Title = "Title"
             };
 
@@ -665,7 +690,7 @@ namespace UWPUnitTests
             Assert.AreEqual(dataJson, submitAction.DataJson);
 
             var jsonString = submitAction.ToJson().ToString();
-            Assert.AreEqual("{\"data\":\"foo\",\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"sentiment\":\"Destructive\",\"title\":\"Title\",\"type\":\"Action.Submit\"}", jsonString);
+            Assert.AreEqual("{\"data\":\"foo\",\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"style\":\"Destructive\",\"title\":\"Title\",\"type\":\"Action.Submit\"}", jsonString);
         }
 
         [TestMethod]
@@ -675,7 +700,7 @@ namespace UWPUnitTests
             {
                 IconUrl = "http://www.stuff.com/icon.jpg",
                 Id = "OpenUrlId",
-                Sentiment = "Destructive",
+                Style = "Destructive",
                 Title = "Title"
             };
 
@@ -686,7 +711,7 @@ namespace UWPUnitTests
             Assert.IsNotNull(showCardAction.Card);
 
             var jsonString = showCardAction.ToJson().ToString();
-            Assert.AreEqual("{\"card\":{\"actions\":[],\"body\":[],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"},\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"sentiment\":\"Destructive\",\"title\":\"Title\",\"type\":\"Action.ShowCard\"}", jsonString);
+            Assert.AreEqual("{\"card\":{\"actions\":[],\"body\":[],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"},\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"style\":\"Destructive\",\"title\":\"Title\",\"type\":\"Action.ShowCard\"}", jsonString);
         }
 
         [TestMethod]
@@ -711,7 +736,7 @@ namespace UWPUnitTests
             {
                 IconUrl = "http://www.stuff.com/icon.jpg",
                 Id = "ToggleVisibilityId",
-                Sentiment = "Destructive",
+                Style = "Destructive",
                 Title = "Title"
             };
 
@@ -724,7 +749,7 @@ namespace UWPUnitTests
             Assert.AreEqual("element2Id", toggleAction.TargetElements[1].ElementId);
 
             var jsonString = toggleAction.ToJson().ToString();
-            Assert.AreEqual("{\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"ToggleVisibilityId\",\"sentiment\":\"Destructive\",\"targetElements\":[\"elementId\",{\"elementId\":\"element2Id\",\"isVisible\":true}],\"title\":\"Title\",\"type\":\"Action.ToggleVisibility\"}", jsonString);
+            Assert.AreEqual("{\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"ToggleVisibilityId\",\"style\":\"Destructive\",\"targetElements\":[\"elementId\",{\"elementId\":\"element2Id\",\"isVisible\":true}],\"title\":\"Title\",\"type\":\"Action.ToggleVisibility\"}", jsonString);
         }
 
         [TestMethod]
@@ -766,7 +791,7 @@ namespace UWPUnitTests
             AdaptiveTextRun textRun1 = new AdaptiveTextRun
             {
                 Color = ForegroundColor.Accent,
-                FontStyle = FontStyle.Monospace,
+                FontType = FontType.Monospace,
                 Highlight = true,
                 IsSubtle = true,
                 Italic = true,
@@ -775,10 +800,11 @@ namespace UWPUnitTests
                 Strikethrough = true,
                 Text = "This is text run number 1",
                 Weight = TextWeight.Bolder,
+                Underline = true,
             };
 
             Assert.AreEqual(ForegroundColor.Accent, textRun1.Color);
-            Assert.AreEqual(FontStyle.Monospace, textRun1.FontStyle);
+            Assert.AreEqual(FontType.Monospace, textRun1.FontType);
             Assert.IsTrue(textRun1.Highlight);
             Assert.IsTrue(textRun1.IsSubtle);
             Assert.IsTrue(textRun1.Italic);
@@ -787,6 +813,7 @@ namespace UWPUnitTests
             Assert.AreEqual(TextSize.Large, textRun1.Size);
             Assert.AreEqual("This is text run number 1", textRun1.Text);
             Assert.AreEqual(TextWeight.Bolder, textRun1.Weight);
+            Assert.IsTrue(textRun1.Underline);
 
             textRun1.SelectAction = new AdaptiveSubmitAction
             {
@@ -821,7 +848,37 @@ namespace UWPUnitTests
             Assert.AreEqual("This is text run number 3", (richTextBlock.Inlines[2] as AdaptiveTextRun).Text);
 
             var jsonString = richTextBlock.ToJson().ToString();
-            Assert.AreEqual("{\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"RichTextBlockId\",\"inlines\":[{\"color\":\"Accent\",\"fontStyle\":\"Monospace\",\"highlight\":true,\"isSubtle\":true,\"italic\":true,\"selectAction\":{\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"size\":\"Large\",\"strikethrough\":true,\"text\":\"This is text run number 1\",\"type\":\"TextRun\",\"weight\":\"Bolder\"},{\"text\":\"This is text run number 2\",\"type\":\"TextRun\"},{\"text\":\"This is text run number 3\",\"type\":\"TextRun\"}],\"isVisible\":false,\"separator\":true,\"spacing\":\"large\",\"type\":\"RichTextBlock\"}", jsonString);
+            Assert.AreEqual("{\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"RichTextBlockId\",\"inlines\":[{\"color\":\"Accent\",\"fontType\":\"Monospace\",\"highlight\":true,\"isSubtle\":true,\"italic\":true,\"selectAction\":{\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"size\":\"Large\",\"strikethrough\":true,\"text\":\"This is text run number 1\",\"type\":\"TextRun\",\"underline\":true,\"weight\":\"Bolder\"},{\"text\":\"This is text run number 2\",\"type\":\"TextRun\"},{\"text\":\"This is text run number 3\",\"type\":\"TextRun\"}],\"isVisible\":false,\"separator\":true,\"spacing\":\"large\",\"type\":\"RichTextBlock\"}", jsonString);
+        }
+
+        [TestMethod]
+        public void Fallback()
+        {
+            AdaptiveTextBlock textBlockDrop = new AdaptiveTextBlock
+            {
+                Text = "This text block has fallback type Drop",
+                FallbackType = FallbackType.Drop
+            };
+
+            textBlockDrop.Requirements.Add(new AdaptiveRequirement("foo", "1.2.3.4"));
+
+            Assert.AreEqual(FallbackType.Drop, textBlockDrop.FallbackType);
+
+            var jsonString = textBlockDrop.ToJson().ToString();
+            Assert.AreEqual("{\"fallback\":\"drop\",\"requires\":{\"foo\":\"1.2.3.4\"},\"text\":\"This text block has fallback type Drop\",\"type\":\"TextBlock\"}", jsonString);
+
+            AdaptiveTextBlock textBlockNone = new AdaptiveTextBlock
+            {
+                Text = "This text block has fallback explicitly set to None",
+                FallbackType = FallbackType.None
+            };
+
+            textBlockNone.Requirements.Add(new AdaptiveRequirement("foo", "*"));
+
+            Assert.AreEqual(FallbackType.None, textBlockNone.FallbackType);
+
+            jsonString = textBlockNone.ToJson().ToString();
+            Assert.AreEqual("{\"requires\":{\"foo\":\"0.0.0.0\"},\"text\":\"This text block has fallback explicitly set to None\",\"type\":\"TextBlock\"}", jsonString);
         }
     }
 }

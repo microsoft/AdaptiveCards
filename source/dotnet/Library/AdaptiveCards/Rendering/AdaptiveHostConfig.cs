@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Diagnostics;
 using Newtonsoft.Json;
@@ -37,7 +39,7 @@ namespace AdaptiveCards.Rendering
         public FontWeightsConfig FontWeights { get; set; } = new FontWeightsConfig();
 
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public FontStylesConfig FontStyles { get; set; } = new FontStylesConfig();
+        public FontTypesConfig FontTypes { get; set; } = new FontTypesConfig();
 
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public SpacingsConfig Spacing { get; set; } = new SpacingsConfig();
@@ -148,7 +150,6 @@ namespace AdaptiveCards.Rendering
             }
             catch (JsonException ex)
             {
-                Debugger.Break();
                 throw new AdaptiveSerializationException(ex.Message, ex);
             }
         }
@@ -162,17 +163,19 @@ namespace AdaptiveCards.Rendering
             return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
 
-        // Handles inheritance behavior for retrieving the name of the font family given the desired AdaptiveFontStyle
-        public string GetFontFamily(AdaptiveFontStyle fontStyle)
+// Ignore deprecation warnings for Font[Family|Weights|Sizes]
+#pragma warning disable 0618
+        // Handles inheritance behavior for retrieving the name of the font family given the desired AdaptiveFontType
+        public string GetFontFamily(AdaptiveFontType fontType)
         {
-            // Value saved in FontStyles.<desiredStyle>
-            string fontFamilyValue = FontStyles.GetFontStyle(fontStyle).FontFamily;
+            // Value saved in FontTypes.<desiredStyle>
+            string fontFamilyValue = FontTypes.GetFontType(fontType).FontFamily;
 
-            if (string.IsNullOrEmpty(fontFamilyValue))
+            if (string.IsNullOrWhiteSpace(fontFamilyValue))
             {
-                if (fontStyle == AdaptiveFontStyle.Monospace)
+                if (fontType == AdaptiveFontType.Monospace)
                 {
-                    fontFamilyValue = GetDefaultFontFamily(fontStyle);
+                    fontFamilyValue = GetDefaultFontFamily(fontType);
                 }
                 else
                 {
@@ -181,36 +184,37 @@ namespace AdaptiveCards.Rendering
                     if (string.IsNullOrEmpty(fontFamilyValue))
                     {
                         // Fallback to predefined system default value
-                        fontFamilyValue = GetDefaultFontFamily(fontStyle);
+                        fontFamilyValue = GetDefaultFontFamily(fontType);
                     }
                 }
             }
             return fontFamilyValue;
         }
 
-        public int GetFontWeight(AdaptiveFontStyle fontStyle, AdaptiveTextWeight requestedWeight)
+        public int GetFontWeight(AdaptiveFontType fontType, AdaptiveTextWeight requestedWeight)
         {
-            return FontStyles.GetFontStyle(fontStyle).FontWeights.GetFontWeight(requestedWeight)
-                ?? FontStyles.Default.FontWeights.GetFontWeight(requestedWeight)
+            return FontTypes.GetFontType(fontType).FontWeights.GetFontWeight(requestedWeight)
+                ?? FontTypes.Default.FontWeights.GetFontWeight(requestedWeight)
                 ?? FontWeights.GetFontWeight(requestedWeight)
                 ?? FontWeightsConfig.GetDefaultFontWeight(requestedWeight);
         }
 
-        public int GetFontSize(AdaptiveFontStyle fontStyle, AdaptiveTextSize requestedSize)
+        public int GetFontSize(AdaptiveFontType fontType, AdaptiveTextSize requestedSize)
         {
-            return FontStyles.GetFontStyle(fontStyle).FontSizes.GetFontSize(requestedSize)
-                ?? FontStyles.Default.FontSizes.GetFontSize(requestedSize)
+            return FontTypes.GetFontType(fontType).FontSizes.GetFontSize(requestedSize)
+                ?? FontTypes.Default.FontSizes.GetFontSize(requestedSize)
                 ?? FontSizes.GetFontSize(requestedSize)
                 ?? FontSizesConfig.GetDefaultFontSize(requestedSize);
         }
+#pragma warning restore 0618
 
-        private string GetDefaultFontFamily(AdaptiveFontStyle fontStyle)
+        private string GetDefaultFontFamily(AdaptiveFontType fontType)
         {
-            switch (fontStyle)
+            switch (fontType)
             {
-                case AdaptiveFontStyle.Monospace:
+                case AdaptiveFontType.Monospace:
                     return "Courier New";
-                case AdaptiveFontStyle.Default:
+                case AdaptiveFontType.Default:
                 default:
                     // Leave it up to the platform.
                     // Renderer default is usually "Segoe UI"

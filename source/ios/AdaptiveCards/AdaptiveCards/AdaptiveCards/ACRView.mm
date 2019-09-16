@@ -5,44 +5,43 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACRViewPrivate.h"
-#import "ACRContentHoldingUIView.h"
-#import "ACOHostConfigPrivate.h"
-#import "ACRIBaseCardElementRenderer.h"
-#import "ACOBaseCardElementPrivate.h"
 #import "ACOAdaptiveCardPrivate.h"
-#import "SharedAdaptiveCard.h"
-#import "ACRRendererPrivate.h"
-#import "ACRRegistration.h"
-#import <AVFoundation/AVFoundation.h>
-#import "Container.h"
-#import "ColumnSet.h"
-#import "Column.h"
-#import "Fact.h"
-#import "Enums.h"
-#import "Media.h"
-#import "TextInput.h"
-#import "ACRImageRenderer.h"
-#import "TextBlock.h"
-#import "TextRun.h"
-#import "RichTextBlock.h"
-#import "ACRTextBlockRenderer.h"
-#import "MarkDownParser.h"
-#import "ImageSet.h"
-#import "ACRUILabel.h"
-#import "ACRUIImageView.h"
-#import "FactSet.h"
-#import "TextElementProperties.h"
-#import "AdaptiveBase64Util.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
 #import "ACRButton.h"
+#import "ACRContentHoldingUIView.h"
+#import "ACRIBaseCardElementRenderer.h"
+#import "ACRImageRenderer.h"
+#import "ACRRegistration.h"
+#import "ACRRendererPrivate.h"
+#import "ACRTextBlockRenderer.h"
+#import "ACRUIImageView.h"
+#import "ACRUILabel.h"
+#import "ACRViewPrivate.h"
+#import "AdaptiveBase64Util.h"
 #import "BackgroundImage.h"
-#import "Util.h"
+#import "Column.h"
+#import "ColumnSet.h"
+#import "Container.h"
+#import "Enums.h"
+#import "Fact.h"
+#import "FactSet.h"
+#import "ImageSet.h"
+#import "MarkDownParser.h"
+#import "Media.h"
+#import "RichTextBlock.h"
+#import "RichTextElementProperties.h"
+#import "SharedAdaptiveCard.h"
+#import "TextBlock.h"
+#import "TextInput.h"
+#import "TextRun.h"
+#import "UtiliOS.h"
+#import <AVFoundation/AVFoundation.h>
 
 using namespace AdaptiveCards;
-typedef UIImage* (^ImageLoadBlock)(NSURL *url);
+typedef UIImage * (^ImageLoadBlock)(NSURL *url);
 
-@implementation ACRView
-{
+@implementation ACRView {
     ACOAdaptiveCard *_adaptiveCard;
     ACOHostConfig *_hostConfig;
     NSMutableDictionary *_imageViewMap;
@@ -56,13 +55,16 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     NSMutableDictionary *_imageContextMap;
     NSMutableDictionary *_imageViewContextMap;
     NSMutableSet *_setOfRemovedObservers;
-    NSMutableDictionary<NSString*, UIView *> *_paddingMap;
+    NSMutableDictionary<NSString *, UIView *> *_paddingMap;
+    ACRTargetBuilderDirector *_actionsTargetBuilderDirector;
+    ACRTargetBuilderDirector *_selectActionsTargetBuilderDirector;
+    ACRTargetBuilderDirector *_quickReplyTargetBuilderDirector;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if(self){
+    if (self) {
         std::shared_ptr<HostConfig> cHostConfig = std::make_shared<HostConfig>();
         _hostConfig = [[ACOHostConfig alloc] initWithConfig:cHostConfig];
         _imageViewMap = [[NSMutableDictionary alloc] init];
@@ -86,11 +88,19 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
             delegate:(id<ACRActionDelegate>)acrActionDelegate
 {
     self = [self initWithFrame:CGRectMake(0, 0, width, 0)];
-    if(self){
+    if (self) {
         self.accessibilityLabel = @"ACR Root View";
         _adaptiveCard = card;
-        if(config){
+        if (config) {
             _hostConfig = config;
+            _actionsTargetBuilderDirector = [[ACRTargetBuilderDirector alloc] init:self capability:ACRAction adaptiveHostConfig:_hostConfig];
+            _selectActionsTargetBuilderDirector = [[ACRTargetBuilderDirector alloc] init:self capability:ACRSelectAction adaptiveHostConfig:_hostConfig];
+            _quickReplyTargetBuilderDirector = [[ACRTargetBuilderDirector alloc] init:self capability:ACRQuickReply adaptiveHostConfig:_hostConfig];
+        }
+        unsigned int padding = [_hostConfig getHostConfig] -> GetSpacing().paddingSpacing;
+        [self removeConstraints:self.constraints];
+        if (padding) {
+            [self applyPadding:padding priority:1000];
         }
         self.acrActionDelegate = acrActionDelegate;
         [self render];
@@ -111,18 +121,18 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 {
     NSMutableArray *inputs = [[NSMutableArray alloc] init];
 
-    if(self.frame.size.width){
+    if (self.frame.size.width) {
         [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.frame.size.width].active = YES;
     }
 
     UIView *newView = [ACRRenderer renderWithAdaptiveCards:[_adaptiveCard card] inputs:inputs context:self containingView:self hostconfig:_hostConfig];
 
-    ContainerStyle style = ([_hostConfig getHostConfig]->GetAdaptiveCard().allowCustomStyle)? [_adaptiveCard card]->GetStyle(): ContainerStyle::Default;
+    ContainerStyle style = ([_hostConfig getHostConfig] -> GetAdaptiveCard().allowCustomStyle) ? [_adaptiveCard card] -> GetStyle() : ContainerStyle::Default;
 
     newView.backgroundColor = [_hostConfig getBackgroundColorForContainerStyle:
-        [ACOHostConfig getPlatformContainerStyle:style]];
+                                               [ACOHostConfig getPlatformContainerStyle:style]];
 
-    renderBackgroundImage([_adaptiveCard card]->GetBackgroundImage(), newView, self);
+    renderBackgroundImage([_adaptiveCard card] -> GetBackgroundImage(), newView, self);
 
     [self callDidLoadElementsIfNeeded];
     return newView;
@@ -137,29 +147,24 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 - (void)callDidLoadElementsIfNeeded
 {
     // Call back app with didLoadElements
-    if ([[self acrActionDelegate] respondsToSelector:@selector(didLoadElements)] && !_numberOfSubscribers)
-    {
+    if ([[self acrActionDelegate] respondsToSelector:@selector(didLoadElements)] && !_numberOfSubscribers) {
         [[self acrActionDelegate] didLoadElements];
     }
 }
 
 - (void)processBaseCardElement:(std::shared_ptr<BaseCardElement> const &)elem
 {
-    switch (elem->GetElementType())
-    {
-        case CardElementType::TextBlock:
-        {
+    switch (elem->GetElementType()) {
+        case CardElementType::TextBlock: {
             std::shared_ptr<TextBlock> textBlockElement = std::static_pointer_cast<TextBlock>(elem);
-            TextElementProperties textProp;
+            RichTextElementProperties textProp;
             textProp.SetText(textBlockElement->GetText());
             textProp.SetTextSize(textBlockElement->GetTextSize());
             textProp.SetTextWeight(textBlockElement->GetTextWeight());
-            textProp.SetFontStyle(textBlockElement->GetFontStyle());
+            textProp.SetFontType(textBlockElement->GetFontType());
             textProp.SetTextColor(textBlockElement->GetTextColor());
             textProp.SetIsSubtle(textBlockElement->GetIsSubtle());
             textProp.SetLanguage(textBlockElement->GetLanguage());
-            textProp.SetItalic(textBlockElement->GetItalic());
-            textProp.SetStrikethrough(textBlockElement->GetStrikethrough());
 
             /// tag a base card element with unique key
             NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)textBlockElement.get()];
@@ -167,17 +172,16 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
             [self processTextConcurrently:textProp elementId:key];
             break;
         }
-        case CardElementType::RichTextBlock:
-        {
+        case CardElementType::RichTextBlock: {
             std::shared_ptr<RichTextBlock> rTxtBlkElement = std::static_pointer_cast<RichTextBlock>(elem);
             for (const auto &inlineText : rTxtBlkElement->GetInlines()) {
                 std::shared_ptr<TextRun> textRun = std::static_pointer_cast<TextRun>(inlineText);
-                if(textRun) {
-                    TextElementProperties textProp;
+                if (textRun) {
+                    RichTextElementProperties textProp;
                     textProp.SetText(textRun->GetText());
                     textProp.SetTextSize(textRun->GetTextSize());
                     textProp.SetTextWeight(textRun->GetTextWeight());
-                    textProp.SetFontStyle(textRun->GetFontStyle());
+                    textProp.SetFontType(textRun->GetFontType());
                     textProp.SetTextColor(textRun->GetTextColor());
                     textProp.SetIsSubtle(textRun->GetIsSubtle());
                     textProp.SetLanguage(textRun->GetLanguage());
@@ -190,34 +194,33 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
             }
             break;
         }
-        case CardElementType::FactSet:
-        {
+        case CardElementType::FactSet: {
             [self tagBaseCardElement:elem];
             std::shared_ptr<FactSet> factSet = std::dynamic_pointer_cast<FactSet>(elem);
             NSString *key = [NSString stringWithCString:elem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
             key = [key stringByAppendingString:@"*"];
             int rowFactId = 0;
-            for(auto fact : factSet->GetFacts()) {
+            for (auto fact : factSet->GetFacts()) {
 
-                TextElementProperties titleTextProp{[_hostConfig getHostConfig]->GetFactSet().title, fact->GetTitle(), fact->GetLanguage()};
+                RichTextElementProperties titleTextProp{[_hostConfig getHostConfig] -> GetFactSet().title, fact->GetTitle(), fact->GetLanguage()};
                 [self processTextConcurrently:titleTextProp
                                     elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]];
 
 
-                TextElementProperties valueTextProp{[_hostConfig getHostConfig]->GetFactSet().value, fact->GetValue(), fact->GetLanguage()};
+                RichTextElementProperties valueTextProp{[_hostConfig getHostConfig] -> GetFactSet().value, fact->GetValue(), fact->GetLanguage()};
                 [self processTextConcurrently:valueTextProp
                                     elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]];
             }
             break;
         }
-        case CardElementType::Image:
-        {
+        case CardElementType::Image: {
 
             ObserverActionBlock observerAction =
-            ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseCardElement> const &elem, NSURL* url, ACRView *rootView) {
+                ^(NSObject<ACOIResourceResolver> *imageResourceResolver, NSString *key, std::shared_ptr<BaseCardElement> const &elem, NSURL *url, ACRView *rootView) {
                     UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
-                    if(view) {
-                        [view addObserver:self forKeyPath:@"image"
+                    if (view) {
+                        [view addObserver:self
+                               forKeyPath:@"image"
                                   options:NSKeyValueObservingOptionNew
                                   context:elem.get()];
 
@@ -225,125 +228,144 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                         [rootView setImageView:key view:view];
                         [rootView setImageContext:key context:elem];
                     }
-            };
+                };
             [self loadImageAccordingToResourceResolverIF:elem key:nil observerAction:observerAction];
 
             break;
         }
-        case CardElementType::ImageSet:
-        {
-            std::shared_ptr<ImageSet>imgSetElem = std::static_pointer_cast<ImageSet>(elem);
-            for(auto img :imgSetElem->GetImages()) { // loops through images in image set
+        case CardElementType::ImageSet: {
+            std::shared_ptr<ImageSet> imgSetElem = std::static_pointer_cast<ImageSet>(elem);
+            for (auto img : imgSetElem->GetImages()) { // loops through images in image set
                 std::shared_ptr<BaseCardElement> baseImgElem = std::static_pointer_cast<BaseCardElement>(img);
                 img->SetImageSize(imgSetElem->GetImageSize());
 
                 ObserverActionBlock observerAction =
-                ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseCardElement> const &elem, NSURL* url, ACRView *rootView) {
-                    UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
-                    if(view) {
-                        [view addObserver:self forKeyPath:@"image"
-                                  options:NSKeyValueObservingOptionNew
-                                  context:elem.get()];
+                    ^(NSObject<ACOIResourceResolver> *imageResourceResolver, NSString *key, std::shared_ptr<BaseCardElement> const &elem, NSURL *url, ACRView *rootView) {
+                        UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
+                        if (view) {
+                            [view addObserver:self
+                                   forKeyPath:@"image"
+                                      options:NSKeyValueObservingOptionNew
+                                      context:elem.get()];
 
-                        // store the image view and image set element for easy retrieval in ACRView::observeValueForKeyPath
-                        [rootView setImageView:key view:view];
-                        [rootView setImageContext:key context:elem];
-                    }
-                };
+                            // store the image view and image set element for easy retrieval in ACRView::observeValueForKeyPath
+                            [rootView setImageView:key view:view];
+                            [rootView setImageContext:key context:elem];
+                        }
+                    };
 
                 [self loadImageAccordingToResourceResolverIF:baseImgElem key:nil observerAction:observerAction];
-
             }
             break;
         }
-        case CardElementType::Media:
-        {
+        case CardElementType::Media: {
             std::shared_ptr<Media> mediaElem = std::static_pointer_cast<Media>(elem);
-            std::string poster =  mediaElem->GetPoster();
-            if(poster.empty()) {
-                poster = [_hostConfig getHostConfig]->GetMedia().defaultPoster;
+            std::string poster = mediaElem->GetPoster();
+            if (poster.empty()) {
+                poster = [_hostConfig getHostConfig] -> GetMedia().defaultPoster;
             }
 
-            if(!poster.empty()) {
+            if (!poster.empty()) {
                 ObserverActionBlock observerAction =
-                ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseCardElement> const &imgElem, NSURL* url, ACRView* rootView) {
-                    UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
-                    ACRContentHoldingUIView *contentholdingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];
-                    if(view) {
-                        [contentholdingview addSubview:view];
-                        contentholdingview.isMediaType = YES;
-                        [view addObserver:self forKeyPath:@"image"
-                                  options:NSKeyValueObservingOptionNew
-                                  context:elem.get()];
+                    ^(NSObject<ACOIResourceResolver> *imageResourceResolver, NSString *key, std::shared_ptr<BaseCardElement> const &imgElem, NSURL *url, ACRView *rootView) {
+                        UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
+                        ACRContentHoldingUIView *contentholdingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];
+                        if (view) {
+                            [contentholdingview addSubview:view];
+                            contentholdingview.isMediaType = YES;
+                            [view addObserver:self
+                                   forKeyPath:@"image"
+                                      options:NSKeyValueObservingOptionNew
+                                      context:elem.get()];
 
-                        // store the image view and media element for easy retrieval in ACRView::observeValueForKeyPath
-                        [rootView setImageView:key view:contentholdingview];
-                        [rootView setImageContext:key context:elem];
-                    }
-                };
+                            // store the image view and media element for easy retrieval in ACRView::observeValueForKeyPath
+                            [rootView setImageView:key view:contentholdingview];
+                            [rootView setImageContext:key context:elem];
+                        }
+                    };
                 [self loadImageAccordingToResourceResolverIF:elem key:nil observerAction:observerAction];
             }
 
+            if (![_hostConfig getHostConfig] -> GetMedia().playButton.empty()) {
+                ObserverActionBlock observerAction =
+                    ^(NSObject<ACOIResourceResolver> *imageResourceResolver, NSString *key, std::shared_ptr<BaseCardElement> const &elem, NSURL *url, ACRView *rootView) {
+                        UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
+                        if (view) {
+                            [view addObserver:rootView
+                                   forKeyPath:@"image"
+                                      options:NSKeyValueObservingOptionNew
+                                      context:nil];
+                            // store the image view for easy retrieval in ACRView::observeValueForKeyPath
+                            [rootView setImageView:key view:view];
+                        }
+                    };
+
+                NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)elem.get()];
+                NSString *key = [NSString stringWithFormat:@"%@_%@", [number stringValue], @"playIcon"];
+
+                [self loadImageAccordingToResourceResolverIFFromString:[_hostConfig getHostConfig] -> GetMedia().playButton key:key observerAction:observerAction];
+            }
+
             break;
         }
-        case CardElementType::TextInput:
-        {
+        case CardElementType::TextInput: {
             std::shared_ptr<TextInput> textInput = std::static_pointer_cast<TextInput>(elem);
             std::shared_ptr<BaseActionElement> action = textInput->GetInlineAction();
-            if(action != nullptr && !action->GetIconUrl().empty()) {
+            if (action != nullptr && !action->GetIconUrl().empty()) {
                 ObserverActionBlockForBaseAction observerAction =
-                ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseActionElement> const &elem, NSURL* url, ACRView *rootView) {
-                    UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
-                    if(view) {
-                        [view addObserver:self forKeyPath:@"image"
-                                  options:NSKeyValueObservingOptionNew
-                                  context:elem.get()];
+                    ^(NSObject<ACOIResourceResolver> *imageResourceResolver, NSString *key, std::shared_ptr<BaseActionElement> const &elem, NSURL *url, ACRView *rootView) {
+                        UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
+                        if (view) {
+                            [view addObserver:self
+                                   forKeyPath:@"image"
+                                      options:NSKeyValueObservingOptionNew
+                                      context:elem.get()];
 
-                        // store the image view for easy retrieval in ACRView::observeValueForKeyPath
-                        [rootView setImageView:key view:view];
-                    }
-                };
+                            // store the image view for easy retrieval in ACRView::observeValueForKeyPath
+                            [rootView setImageView:key view:view];
+                        }
+                    };
                 [self loadImageAccordingToResourceResolverIFForBaseAction:action key:nil observerAction:observerAction];
             }
             break;
         }
         // continue on search
-        case CardElementType::Container:
-        {
+        case CardElementType::Container: {
             std::shared_ptr<Container> container = std::static_pointer_cast<Container>(elem);
 
             auto backgroundImageProperties = container->GetBackgroundImage();
-            if((backgroundImageProperties != nullptr) && !(backgroundImageProperties->GetUrl().empty())) {
+            if ((backgroundImageProperties != nullptr) && !(backgroundImageProperties->GetUrl().empty())) {
                 ObserverActionBlock observerAction = generateBackgroundImageObserverAction(backgroundImageProperties, self, container);
                 [self loadBackgroundImageAccordingToResourceResolverIF:backgroundImageProperties key:nil observerAction:observerAction];
             }
 
             std::vector<std::shared_ptr<BaseCardElement>> &new_body = container->GetItems();
-            [self addTasksToConcurrentQueue: new_body];
+            [self addTasksToConcurrentQueue:new_body];
             break;
         }
         // continue on search
-        case CardElementType::ColumnSet:
-        {
+        case CardElementType::ColumnSet: {
             std::shared_ptr<ColumnSet> columSet = std::static_pointer_cast<ColumnSet>(elem);
             std::vector<std::shared_ptr<Column>> &columns = columSet->GetColumns();
             // ColumnSet is vector of Column, instead of vector of BaseCardElement
-            for(auto const &column : columns) { // update serial number that is used for generating unique key for image_map
-                // Handle background image (if necessary)
-                auto backgroundImageProperties = column->GetBackgroundImage();
-                if((backgroundImageProperties != nullptr) && !(backgroundImageProperties->GetUrl().empty())) {
-                    ObserverActionBlock observerAction = generateBackgroundImageObserverAction(backgroundImageProperties, self, column);
-                    [self loadBackgroundImageAccordingToResourceResolverIF:backgroundImageProperties key:nil observerAction:observerAction];
-                }
-
-                [self addTasksToConcurrentQueue: column->GetItems()];
+            for (auto const &column : columns) { // update serial number that is used for generating unique key for image_map
+                [self processBaseCardElement:column];
             }
             break;
         }
-        default:
-        {
-            /// no work is needed
-            break;
+
+        case CardElementType::Column: {
+            std::shared_ptr<Column> column = std::static_pointer_cast<Column>(elem);
+            // Handle background image (if necessary)
+            auto backgroundImageProperties = column->GetBackgroundImage();
+            if ((backgroundImageProperties != nullptr) && !(backgroundImageProperties->GetUrl().empty())) {
+                ObserverActionBlock observerAction = generateBackgroundImageObserverAction(backgroundImageProperties, self, column);
+                [self loadBackgroundImageAccordingToResourceResolverIF:backgroundImageProperties key:nil observerAction:observerAction];
+            }
+
+            // add column fallbacks to async task queue
+            [self processFallback:column];
+            [self addTasksToConcurrentQueue:column->GetItems()];
         }
     }
 }
@@ -353,40 +375,32 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 {
     ACRRegistration *rendererRegistration = [ACRRegistration getInstance];
 
-    for (auto &elem : body)
-    {
-        if ([rendererRegistration isElementRendererOverridden:(ACRCardElementType) elem->GetElementType()] == YES) {
+    for (auto &elem : body) {
+        if ([rendererRegistration isElementRendererOverridden:(ACRCardElementType)elem->GetElementType()] == YES) {
             continue;
         }
 
+        [self processFallback:elem];
         [self processBaseCardElement:elem];
-        std::shared_ptr<BaseElement> fallbackElem = elem->GetFallbackContent();
-        while (fallbackElem) {
-            std::shared_ptr<BaseCardElement> fallbackElemCard = std::static_pointer_cast<BaseCardElement>(fallbackElem);
-            if (fallbackElemCard) {
-                [self processBaseCardElement:fallbackElemCard];
-            }
-
-            fallbackElem = fallbackElemCard->GetFallbackContent();
-        }
     }
 }
 
 // Walk through the actions found and process them concurrently
 - (void)loadImagesForActionsAndCheckIfAllActionsHaveIconImages:(std::vector<std::shared_ptr<BaseActionElement>> const &)actions hostconfig:(ACOHostConfig *)hostConfig;
 {
-    for(auto &action : actions){
-        if(!action->GetIconUrl().empty()) {
+    for (auto &action : actions) {
+        if (!action->GetIconUrl().empty()) {
             ObserverActionBlockForBaseAction observerAction =
-            ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseActionElement> const &elem, NSURL* url, ACRView *rootView) {
-                UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
-                if(view) {
-                    [view addObserver:self forKeyPath:@"image"
-                              options:NSKeyValueObservingOptionNew
-                              context:elem.get()];
-                    [rootView setImageView:key view:view];
-                }
-            };
+                ^(NSObject<ACOIResourceResolver> *imageResourceResolver, NSString *key, std::shared_ptr<BaseActionElement> const &elem, NSURL *url, ACRView *rootView) {
+                    UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
+                    if (view) {
+                        [view addObserver:self
+                               forKeyPath:@"image"
+                                  options:NSKeyValueObservingOptionNew
+                                  context:elem.get()];
+                        [rootView setImageView:key view:view];
+                    }
+                };
             [self loadImageAccordingToResourceResolverIFForBaseAction:action key:nil observerAction:observerAction];
         } else {
             hostConfig.allActionsHaveIcons = NO;
@@ -394,105 +408,107 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     }
 }
 
-- (void)processTextConcurrently:(TextElementProperties const &)textProperties
+- (void)processTextConcurrently:(RichTextElementProperties const &)textProperties
                       elementId:(NSString *)elementId
 {
-    TextElementProperties textProp = std::move(textProperties);
+    RichTextElementProperties textProp = std::move(textProperties);
     /// dispatch to concurrent queue
     dispatch_group_async(_async_tasks_group, _global_queue,
-        ^{
-            std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:textProp.GetText() language:textProp.GetLanguage()]);
+                         ^{
+                             std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:textProp.GetText() language:textProp.GetLanguage()]);
 
-            // MarkDownParser transforms text with MarkDown to a html string
-            NSString* parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
-            NSDictionary *data = nil;
+                             // MarkDownParser transforms text with MarkDown to a html string
+                             NSString *parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
+                             NSDictionary *data = nil;
 
-            // use Apple's html rendering only if the string has markdowns
-            if(markDownParser->HasHtmlTags() || markDownParser->IsEscaped()) {
-                NSString *fontFamilyName = nil;
+                             // use Apple's html rendering only if the string has markdowns
+                             if (markDownParser->HasHtmlTags() || markDownParser->IsEscaped()) {
+                                 NSString *fontFamilyName = nil;
 
-                if(![self->_hostConfig getFontFamily:textProp.GetFontStyle()]){
-                    if(textProp.GetFontStyle() == FontStyle::Monospace){
-                        fontFamilyName = @"'Courier New'";
-                    } else{
-                        fontFamilyName = @"'-apple-system',  'San Francisco'";
-                    }
-                } else {
-                    fontFamilyName = [self->_hostConfig getFontFamily:textProp.GetFontStyle()];
-                }
+                                 if (![self->_hostConfig getFontFamily:textProp.GetFontType()]) {
+                                     if (textProp.GetFontType() == FontType::Monospace) {
+                                         fontFamilyName = @"'Courier New'";
+                                     } else {
+                                         fontFamilyName = @"'-apple-system',  'San Francisco'";
+                                     }
+                                 } else {
+                                     fontFamilyName = [self->_hostConfig getFontFamily:textProp.GetFontType()];
+                                 }
 
-                NSString *font_style = textProp.GetItalic() ? @"italic" :  @"normal";
-                // Font and text size are applied as CSS style by appending it to the html string
-                parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: %@; font-size:%dpx; font-weight: %d; font-style: %@;}</style>",
-                                                                      fontFamilyName,
-                                                                      [self->_hostConfig getTextBlockTextSize:textProp.GetFontStyle()
-                                                                                                     textSize:textProp.GetTextSize()],
-                                                                      [self->_hostConfig getTextBlockFontWeight:textProp.GetFontStyle()
-                                                                       textWeight:textProp.GetTextWeight()],
-                                                                      font_style]];
+                                 NSString *font_style = textProp.GetItalic() ? @"italic" : @"normal";
+                                 // Font and text size are applied as CSS style by appending it to the html string
+                                 parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: %@; font-size:%dpx; font-weight: %d; font-style: %@;}</style>",
+                                                                                                                 fontFamilyName,
+                                                                                                                 [self->_hostConfig getTextBlockTextSize:textProp.GetFontType()
+                                                                                                                                                textSize:textProp.GetTextSize()],
+                                                                                                                 [self->_hostConfig getTextBlockFontWeight:textProp.GetFontType()
+                                                                                                                                                textWeight:textProp.GetTextWeight()],
+                                                                                                                 font_style]];
 
-                NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
-                NSDictionary *options = @{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType};
-                data = @{@"html" : htmlData, @"options" : options};
-            } else {
-                int fontweight = [self->_hostConfig getTextBlockFontWeight:textProp.GetFontStyle()
-                                                                textWeight:textProp.GetTextWeight()];
-                // sanity check, 400 is the normal font;
-                if(fontweight <= 0 || fontweight > 900){
-                    fontweight = 400;
-                }
-                UIFont *font = nil;
-                fontweight -= 100;
-                fontweight /= 100;
+                                 NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
+                                 NSDictionary *options = @{NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType};
+                                 data = @{@"html" : htmlData, @"options" : options};
+                             } else {
+                                 int fontweight = [self->_hostConfig getTextBlockFontWeight:textProp.GetFontType()
+                                                                                 textWeight:textProp.GetTextWeight()];
+                                 // sanity check, 400 is the normal font;
+                                 if (fontweight <= 0 || fontweight > 900) {
+                                     fontweight = 400;
+                                 }
+                                 UIFont *font = nil;
+                                 fontweight -= 100;
+                                 fontweight /= 100;
 
-                if (![self->_hostConfig getFontFamily:textProp.GetFontStyle()]){
-                    const NSArray<NSNumber *> *fontweights = @[@(UIFontWeightUltraLight), @(UIFontWeightThin), @(UIFontWeightLight), @(UIFontWeightRegular), @(UIFontWeightMedium),
-                       @(UIFontWeightSemibold), @(UIFontWeightBold), @(UIFontWeightHeavy), @(UIFontWeightBlack)];
-                    const CGFloat size = [self->_hostConfig getTextBlockTextSize:textProp.GetFontStyle() textSize:textProp.GetTextSize()];
-                    if (textProp.GetFontStyle() == FontStyle::Monospace) {
-                        const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
-                                                                    @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
-                        UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:@{UIFontDescriptorFamilyAttribute: @"Courier New",
-                                                               UIFontDescriptorFaceAttribute:fontweights[fontweight]}];
-                        descriptor = getItalicFontDescriptor(descriptor, textProp.GetItalic());
+                                 if (![self->_hostConfig getFontFamily:textProp.GetFontType()]) {
+                                     const NSArray<NSNumber *> *fontweights = @[ @(UIFontWeightUltraLight), @(UIFontWeightThin), @(UIFontWeightLight), @(UIFontWeightRegular), @(UIFontWeightMedium),
+                                                                                 @(UIFontWeightSemibold), @(UIFontWeightBold), @(UIFontWeightHeavy), @(UIFontWeightBlack) ];
+                                     const CGFloat size = [self->_hostConfig getTextBlockTextSize:textProp.GetFontType() textSize:textProp.GetTextSize()];
+                                     if (textProp.GetFontType() == FontType::Monospace) {
+                                         const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
+                                                                                     @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
+                                         UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:@{UIFontDescriptorFamilyAttribute : @"Courier New",
+                                                                                                                             UIFontDescriptorFaceAttribute : fontweights[fontweight]}];
+                                         descriptor = getItalicFontDescriptor(descriptor, textProp.GetItalic());
 
-                        font = [UIFont fontWithDescriptor:descriptor size:[self->_hostConfig getTextBlockTextSize:textProp.GetFontStyle() textSize:textProp.GetTextSize()]];
-                    } else {
-                        font = [UIFont systemFontOfSize:size weight:[fontweights[fontweight] floatValue]];
+                                         font = [UIFont fontWithDescriptor:descriptor size:[self->_hostConfig getTextBlockTextSize:textProp.GetFontType() textSize:textProp.GetTextSize()]];
+                                     } else {
+                                         font = [UIFont systemFontOfSize:size weight:[fontweights[fontweight] floatValue]];
 
-                        if (textProp.GetItalic()) {
-                            font = [UIFont fontWithDescriptor:
-                                    getItalicFontDescriptor(font.fontDescriptor, textProp.GetItalic())
-                                    size:size];
-                        }
-                    }
-                } else {
-                    // font weight as string since font weight as double doesn't work
-                    // normailze fontweight for indexing
-                    const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
-                                                                @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
-                    UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:
-                        @{UIFontDescriptorFamilyAttribute: [self->_hostConfig getFontFamily:textProp.GetFontStyle()],
-                          UIFontDescriptorFaceAttribute:fontweights[fontweight]}];
+                                         if (textProp.GetItalic()) {
+                                             font = [UIFont fontWithDescriptor:
+                                                                getItalicFontDescriptor(font.fontDescriptor, textProp.GetItalic())
+                                                                          size:size];
+                                         }
+                                     }
+                                 } else {
+                                     // font weight as string since font weight as double doesn't work
+                                     // normailze fontweight for indexing
+                                     const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
+                                                                                 @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
+                                     UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:
+                                                                                          @{UIFontDescriptorFamilyAttribute : [self->_hostConfig getFontFamily:textProp.GetFontType()],
+                                                                                            UIFontDescriptorFaceAttribute : fontweights[fontweight]}];
 
-                    descriptor = getItalicFontDescriptor(descriptor, textProp.GetItalic());
+                                     descriptor = getItalicFontDescriptor(descriptor, textProp.GetItalic());
 
-                    font = [UIFont fontWithDescriptor:descriptor size:[self->_hostConfig getTextBlockTextSize:textProp.GetFontStyle() textSize:textProp.GetTextSize()]];
-                }
+                                     font = [UIFont fontWithDescriptor:descriptor size:[self->_hostConfig getTextBlockTextSize:textProp.GetFontType() textSize:textProp.GetTextSize()]];
+                                 }
 
-                NSDictionary *attributeDictionary = @{NSFontAttributeName:font};
-                data = @{@"nonhtml" : parsedString, @"descriptor" : attributeDictionary};
-            }
+                                 NSDictionary *attributeDictionary = @{NSFontAttributeName : font};
+                                 data = @{@"nonhtml" : parsedString, @"descriptor" : attributeDictionary};
+                             }
 
-            if(elementId) {
-                dispatch_sync(self->_serial_text_queue, ^{self->_textMap[elementId] = data; });
-            }
-         });
+                             if (elementId) {
+                                 dispatch_sync(self->_serial_text_queue, ^{
+                                     self->_textMap[elementId] = data;
+                                 });
+                             }
+                         });
 }
 
 - (void)loadImage:(std::string const &)urlStr
 {
-    if(urlStr.empty()){
+    if (urlStr.empty()) {
         return;
     }
 
@@ -500,17 +516,17 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                                             encoding:[NSString defaultCStringEncoding]];
     NSURL *url = [NSURL URLWithString:nSUrlStr];
     // if url is relative, try again with adding base url from host config
-    if([url.relativePath isEqualToString:nSUrlStr]) {
+    if ([url.relativePath isEqualToString:nSUrlStr]) {
         url = [NSURL URLWithString:nSUrlStr relativeToURL:_hostConfig.baseURL];
     }
 
     NSObject<ACOIResourceResolver> *imageResourceResolver = [_hostConfig getResourceResolverForScheme:[url scheme]];
     ImageLoadBlock imageloadblock = nil;
-    if(!imageResourceResolver || ![imageResourceResolver respondsToSelector:@selector(resolveImageResource:)]) {
-        imageloadblock = ^(NSURL *url){
+    if (!imageResourceResolver || ![imageResourceResolver respondsToSelector:@selector(resolveImageResource:)]) {
+        imageloadblock = ^(NSURL *url) {
             // download image
             UIImage *img = nil;
-            if([url.scheme isEqualToString: @"data"]) {
+            if ([url.scheme isEqualToString:@"data"]) {
                 NSString *absoluteUri = url.absoluteString;
                 std::string dataUri = AdaptiveCards::AdaptiveBase64Util::ExtractDataFromUri(std::string([absoluteUri UTF8String]));
                 std::vector<char> decodedDataUri = AdaptiveCards::AdaptiveBase64Util::Decode(dataUri);
@@ -524,17 +540,18 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     }
 
     dispatch_group_async(_async_tasks_group, _global_queue,
-        ^{
-            UIImage *img = nil;
-            if(imageloadblock) {
-                img = imageloadblock(url);
-            } else if(imageResourceResolver){
-                img = [imageResourceResolver resolveImageResource:url];
-            }
+                         ^{
+                             UIImage *img = nil;
+                             if (imageloadblock) {
+                                 img = imageloadblock(url);
+                             } else if (imageResourceResolver) {
+                                 img = [imageResourceResolver resolveImageResource:url];
+                             }
 
-            dispatch_sync(self->_serial_queue, ^{self->_imageViewMap[nSUrlStr] = img;});
-         }
-    );
+                             dispatch_sync(self->_serial_queue, ^{
+                                 self->_imageViewMap[nSUrlStr] = img;
+                             });
+                         });
 }
 
 // add postfix to existing BaseCardElement ID to be used as key
@@ -601,7 +618,8 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                     // remove observer early in case background image must be changed to handle mode = repeat
                     [self removeObserver:self forKeyPath:path onObject:object];
                     observerRemoved = true;
-
+                    NSMutableDictionary *imageViewMap = [self getImageMap];
+                    imageViewMap[key] = image;
                     [renderer configUpdateForUIImageView:baseCardElement config:_hostConfig image:image imageView:(UIImageView *)object];
                 }
             } else {
@@ -612,7 +630,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                 } else {
                     // handle background image for adaptive card that uses resource resolver
                     UIImageView *imageView = (UIImageView *)object;
-                    auto backgroundImage = [_adaptiveCard card]->GetBackgroundImage();
+                    auto backgroundImage = [_adaptiveCard card] -> GetBackgroundImage();
 
                     // remove observer early in case background image must be changed to handle mode = repeat
                     [self removeObserver:self forKeyPath:path onObject:object];
@@ -642,7 +660,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)(backgroundImage.get())];
     NSString *nSUrlStr = [NSString stringWithCString:backgroundImage->GetUrl().c_str() encoding:[NSString defaultCStringEncoding]];
 
-    if(!key) {
+    if (!key) {
         key = [number stringValue];
     }
 
@@ -650,21 +668,27 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 }
 
 - (void)loadImageAccordingToResourceResolverIFFromString:(std::string const &)url
-    key:(NSString *)key observerAction:(ObserverActionBlock)observerAction
+                                                     key:(NSString *)key
+                                          observerAction:(ObserverActionBlock)observerAction
 {
     std::shared_ptr<Image> imgElem = std::make_shared<Image>();
     imgElem->SetUrl(url);
     imgElem->SetImageSize(ImageSize::None);
+    NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)imgElem.get()];
+    if (!key) {
+        key = [number stringValue];
+    }
     [self loadImageAccordingToResourceResolverIF:imgElem key:key observerAction:observerAction];
 }
 
 - (void)loadImageAccordingToResourceResolverIF:(std::shared_ptr<BaseCardElement> const &)elem
-    key:(NSString *)key observerAction:(ObserverActionBlock)observerAction
+                                           key:(NSString *)key
+                                observerAction:(ObserverActionBlock)observerAction
 {
     NSNumber *number = nil;
     NSString *nSUrlStr = nil;
 
-    if(elem->GetElementType() == CardElementType::Media) {
+    if (elem->GetElementType() == CardElementType::Media) {
         std::shared_ptr<Media> mediaElem = std::static_pointer_cast<Media>(elem);
         number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)mediaElem.get()];
         nSUrlStr = [NSString stringWithCString:mediaElem->GetPoster().c_str() encoding:[NSString defaultCStringEncoding]];
@@ -673,7 +697,8 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
         number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)imgElem.get()];
         nSUrlStr = [NSString stringWithCString:imgElem->GetUrl().c_str() encoding:[NSString defaultCStringEncoding]];
     }
-    if(!key) {
+
+    if (!key) {
         key = [number stringValue];
     }
 
@@ -686,8 +711,8 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 
     NSURL *url = [NSURL URLWithString:nSUrlStr];
     NSObject<ACOIResourceResolver> *imageResourceResolver = [_hostConfig getResourceResolverForScheme:[url scheme]];
-    if(imageResourceResolver && ACOImageViewIF == [_hostConfig getResolverIFType:[url scheme]]) {
-        if(observerAction) {
+    if (imageResourceResolver && ACOImageViewIF == [_hostConfig getResolverIFType:[url scheme]]) {
+        if (observerAction) {
             observerAction(imageResourceResolver, key, elem, url, self);
         }
     } else {
@@ -696,7 +721,8 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 }
 
 - (void)loadImageAccordingToResourceResolverIFForBaseAction:(std::shared_ptr<BaseActionElement> const &)elem
-    key:(NSString *)key observerAction:(ObserverActionBlockForBaseAction)observerAction
+                                                        key:(NSString *)key
+                                             observerAction:(ObserverActionBlockForBaseAction)observerAction
 {
     NSNumber *number = nil;
     NSString *nSUrlStr = nil;
@@ -705,15 +731,14 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 
     number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)elem.get()];
     nSUrlStr = [NSString stringWithCString:elem->GetIconUrl().c_str() encoding:[NSString defaultCStringEncoding]];
-    if(!key) {
+    if (!key) {
         key = [number stringValue];
     }
 
     NSURL *url = [NSURL URLWithString:nSUrlStr];
     NSObject<ACOIResourceResolver> *imageResourceResolver = [_hostConfig getResourceResolverForScheme:[url scheme]];
-    if(ACOImageViewIF == [_hostConfig getResolverIFType:[url scheme]])
-    {
-        if(observerAction) {
+    if (ACOImageViewIF == [_hostConfig getResolverIFType:[url scheme]]) {
+        if (observerAction) {
             observerAction(imageResourceResolver, key, elem, url, self);
         }
     } else {
@@ -723,8 +748,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 
 - (void)dealloc
 {
-    for (id key in _imageViewContextMap)
-    {
+    for (id key in _imageViewContextMap) {
         id object = _imageViewContextMap[key];
 
         if ([object isKindOfClass:[ACRContentHoldingUIView class]]) {
@@ -733,8 +757,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
             object = ((ACRButton *)object).iconView;
         }
 
-        if (![_setOfRemovedObservers containsObject:object] && [object isKindOfClass:[UIImageView class]])
-        {
+        if (![_setOfRemovedObservers containsObject:object] && [object isKindOfClass:[UIImageView class]]) {
             [object removeObserver:self forKeyPath:@"image"];
         }
     }
@@ -765,6 +788,35 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 {
     NSNumber *key = [NSNumber numberWithUnsignedLongLong:internalId.Hash()];
     return _paddingMap[[key stringValue]];
+}
+
+// get fallback content and add them async task queue
+- (void)processFallback:(std::shared_ptr<BaseCardElement> const &)elem
+{
+    std::shared_ptr<BaseElement> fallbackElem = elem->GetFallbackContent();
+    while (fallbackElem) {
+        std::shared_ptr<BaseCardElement> fallbackElemCard = std::static_pointer_cast<BaseCardElement>(fallbackElem);
+        if (fallbackElemCard) {
+            [self processBaseCardElement:fallbackElemCard];
+        }
+
+        fallbackElem = fallbackElemCard->GetFallbackContent();
+    }
+}
+
+- (ACRTargetBuilderDirector *)getActionsTargetBuilderDirector
+{
+    return _actionsTargetBuilderDirector;
+}
+
+- (ACRTargetBuilderDirector *)getSelectActionsTargetBuilderDirector;
+{
+    return _selectActionsTargetBuilderDirector;
+}
+
+- (ACRTargetBuilderDirector *)getQuickReplyTargetBuilderDirector;
+{
+    return _quickReplyTargetBuilderDirector;
 }
 
 @end

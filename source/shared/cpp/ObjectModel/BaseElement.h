@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "pch.h"
@@ -64,18 +66,6 @@ namespace AdaptiveSharedNamespace
         virtual void SetId(const std::string& value);
 
         const InternalId GetInternalId() const { return m_internalId; }
-
-        // Element [de]serialization
-
-        // A little template jiu-jitsu here -- given the provided parameters, we need BaseElement::ParseJsonObject to
-        // call either BaseCardElement::ParseJsonObject or BaseActionElement::ParseJsonObject.
-        template<typename T>
-        static void ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context,
-                                    const Json::Value& json,
-                                    std::shared_ptr<BaseElement>& baseElement)
-        {
-            T::ParseJsonObject(context, json, baseElement);
-        }
 
         template<typename T> void DeserializeBase(ParseContext& context, const Json::Value& json);
 

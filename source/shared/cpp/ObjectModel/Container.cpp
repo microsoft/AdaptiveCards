@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "Container.h"
 #include "TextBlock.h"
@@ -47,7 +49,11 @@ std::shared_ptr<BaseCardElement> ContainerParser::Deserialize(ParseContext& cont
 void Container::DeserializeChildren(ParseContext& context, const Json::Value& value)
 {
     // Parse items
-    auto cardElements = ParseUtil::GetElementCollection(context, value, AdaptiveCardSchemaKey::Items, false);
+    auto cardElements = ParseUtil::GetElementCollection<BaseCardElement>(true, // isTopToBottomContainer
+                                                                         context,
+                                                                         value,
+                                                                         AdaptiveCardSchemaKey::Items,
+                                                                         false); // isRequired
     m_items = std::move(cardElements);
 }
 
@@ -58,7 +64,8 @@ std::shared_ptr<BaseCardElement> ContainerParser::DeserializeFromString(ParseCon
 
 void Container::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Bleed),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items)});

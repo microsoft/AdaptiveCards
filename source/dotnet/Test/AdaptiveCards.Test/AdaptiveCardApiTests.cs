@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
 using System.Collections;
@@ -226,39 +228,39 @@ namespace AdaptiveCards.Test
         public void TestDefaultValueHandling()
         {
             var json = @"{
-	            ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
-	            ""type"": ""AdaptiveCard"",
-	            ""version"": ""1.0"",
-	            ""body"": [
-		            {
-			            ""type"": ""Container"",
-			            ""style"": ""asdf"",
-			            ""spacing"": ""asdf"",
-			            ""items"": [
-				            {
-					            ""type"": ""TextBlock"",
-					            ""text"": ""Sample text"",
-					            ""color"": ""asdf"",
-					            ""size"": ""asdf"",
-					            ""weight"": ""asdf""
-				            },
-				            {
-					            ""type"": ""Image"",
-					            ""url"": ""http://adaptivecards.io/content/cats/1.png"",
-					            ""style"": ""asdf"",
-					            ""size"": ""asdf""
-				            }
-			            ]
-		            }
-	            ]
+                ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                ""type"": ""AdaptiveCard"",
+                ""version"": ""1.0"",
+                ""body"": [
+                    {
+                        ""type"": ""Container"",
+                        ""style"": ""asdf"",
+                        ""spacing"": ""asdf"",
+                        ""items"": [
+                            {
+                                ""type"": ""TextBlock"",
+                                ""text"": ""Sample text"",
+                                ""color"": ""asdf"",
+                                ""size"": ""asdf"",
+                                ""weight"": ""asdf""
+                            },
+                            {
+                                ""type"": ""Image"",
+                                ""url"": ""http://adaptivecards.io/content/cats/1.png"",
+                                ""style"": ""asdf"",
+                                ""size"": ""asdf""
+                            }
+                        ]
+                    }
+                ]
             }";
 
             var card = AdaptiveCard.FromJson(json).Card;
 
             // Contents of card for easier access
-            AdaptiveContainer container = (AdaptiveContainer) card.Body[0];
-            AdaptiveTextBlock textblock = (AdaptiveTextBlock) container.Items[0];
-            AdaptiveImage image = (AdaptiveImage) container.Items[1];
+            AdaptiveContainer container = (AdaptiveContainer)card.Body[0];
+            AdaptiveTextBlock textblock = (AdaptiveTextBlock)container.Items[0];
+            AdaptiveImage image = (AdaptiveImage)container.Items[1];
 
             // Container property tests
             Assert.IsNull(container.Style);
@@ -297,7 +299,7 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(card.Body.Count, 1);
             var imageBlock = card.Body[0] as AdaptiveImage;
             Assert.AreEqual(0, result.Warnings.Count);
-            Assert.AreEqual(20U,imageBlock.PixelWidth);
+            Assert.AreEqual(20U, imageBlock.PixelWidth);
             Assert.AreEqual(50U, imageBlock.PixelHeight);
         }
 
@@ -516,7 +518,7 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(columnSet.Height, AdaptiveHeight.Auto);
             Assert.AreEqual(columnSet.Columns.Count, 2);
 
-            foreach(var column in columnSet.Columns)
+            foreach (var column in columnSet.Columns)
             {
                 Assert.AreEqual(column.Items.Count, 1);
                 var columnContent = column.Items[0];
@@ -913,6 +915,7 @@ namespace AdaptiveCards.Test
             };
             actionSet.Actions.Add(openUrlAction);
 
+#pragma warning disable 0618
             AdaptiveShowCardAction showCardAction = new AdaptiveShowCardAction
             {
                 Title = "ShowCard",
@@ -927,14 +930,15 @@ namespace AdaptiveCards.Test
                     }
                 }
             };
+#pragma warning restore 0618
 
             actionSet.Actions.Add(showCardAction);
 
-                AdaptiveToggleVisibilityAction toggleVisibilityAction = new AdaptiveToggleVisibilityAction
-                {
-                    Title = "Toggle",
-                    TargetElements = new List<AdaptiveTargetElement> { "test" }
-                };
+            AdaptiveToggleVisibilityAction toggleVisibilityAction = new AdaptiveToggleVisibilityAction
+            {
+                Title = "Toggle",
+                TargetElements = new List<AdaptiveTargetElement> { "test" }
+            };
             actionSet.Actions.Add(toggleVisibilityAction);
 
             // This lines are not indented so the comparisson doesn't fail due to extra spaces
@@ -1138,6 +1142,95 @@ namespace AdaptiveCards.Test
 }";
             var outputJson = card.ToJson();
             Assert.AreEqual(outputJson, expectedJson);
-}
+        }
+
+        [TestMethod]
+        public void TestImplicitImageType()
+        {
+            // Images set to type "Image" or with type unset should parse correctly within an image set
+            var imageTypeSetOrEmpty =
+            @"{
+                ""type"": ""AdaptiveCard"",
+                ""version"": ""1.2"",
+                ""body"": [
+                    {
+                        ""type"": ""ImageSet"",
+                        ""images"": [
+                            {
+                                ""type"": ""Image"",
+                                ""url"": ""http://adaptivecards.io/content/cats/1.png""
+                            },
+                            {
+                                ""url"": ""http://adaptivecards.io/content/cats/1.png""
+                            }
+                        ]
+                    }
+                ]
+            }";
+
+            // Images set to a bogus type should not parse correctly
+            var imageTypeInvalid =
+            @"{
+                ""type"": ""AdaptiveCard"",
+                ""version"": ""1.2"",
+                ""body"": [
+                    {
+                        ""type"": ""ImageSet"",
+                        ""images"": [
+                            {
+                                ""type"": ""Elephant"",
+                                ""url"": ""http://adaptivecards.io/content/cats/1.png""
+                            }
+                        ]
+                    }
+                ]
+            }";
+
+            var result = AdaptiveCard.FromJson(imageTypeSetOrEmpty);
+            Assert.IsNotNull(result.Card);
+            Assert.AreEqual(2, (result.Card.Body[0] as AdaptiveImageSet).Images.Count);
+
+            var ex = Assert.ThrowsException<ArgumentException>(() =>
+            {
+                AdaptiveCard.FromJson(imageTypeInvalid);
+            });
+
+            StringAssert.Contains(ex.Message, "The value \"AdaptiveCards.AdaptiveUnknownElement\" is not of type \"AdaptiveCards.AdaptiveImage\" and cannot be used in this generic collection.");
+        }
+
+        [TestMethod]
+        public void TestParsingRichTextBlockWithInvalidInlineType()
+        {
+            // card with invalid inline type
+            var invalidCard =
+            @"{
+                  ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                            ""type"": ""AdaptiveCard"",
+                  ""version"": ""1.2"",
+                  ""body"": [
+                    {
+                      ""type"": ""RichTextBlock"",
+                      ""inlines"": [
+                        {
+                          ""type"": ""TextRun"",
+                          ""text"": ""You did exactly what you had to do. You considered all your options, you tried every alternative and then you made the hard choice. The Enterprise computer system is controlled by three primary main processor cores, cross-linked with a redundant melacortz ramistat, fourteen kiloquad interface modules. I think you've let your personal feelings cloud your judgement. Flair is what marks the difference between artistry and mere competence. They were just sucked into space. We have a saboteur aboard. When has justice ever been as simple as a rule book? Your shields were failing, sir. Travel time to the nearest starbase? Sorry, Data. I'm afraid I still don't understand, sir. How long can two people talk about nothing? Wait a minute - you've been declared dead. You can't give orders around here. You're going to be an interesting companion, Mr. Data. Our neural pathways have become accustomed to your sensory input patterns. Fear is the true enemy, the only enemy. The Federation's gone; the Borg is everywhere! Computer, lights up!""
+                        },
+                        {
+                          ""type"": ""who cares???"",
+                          ""text"": ""You did exactly what you had to do. You considered all your options, you tried every alternative and then you made the hard choice. The Enterprise computer system is controlled by three primary main processor cores, cross-linked with a redundant melacortz ramistat, fourteen kiloquad interface modules. I think you've let your personal feelings cloud your judgement. Flair is what marks the difference between artistry and mere competence. They were just sucked into space. We have a saboteur aboard. When has justice ever been as simple as a rule book? Your shields were failing, sir. Travel time to the nearest starbase? Sorry, Data. I'm afraid I still don't understand, sir. How long can two people talk about nothing? Wait a minute - you've been declared dead. You can't give orders around here. You're going to be an interesting companion, Mr. Data. Our neural pathways have become accustomed to your sensory input patterns. Fear is the true enemy, the only enemy. The Federation's gone; the Borg is everywhere! Computer, lights up!""
+                        }
+                      ]
+                    }
+                  ]
+            }";
+
+            var ex = Assert.ThrowsException<AdaptiveSerializationException>(() =>
+            {
+                AdaptiveCard.FromJson(invalidCard);
+            });
+
+
+            StringAssert.Contains(ex.Message, "Property 'type' must be 'TextRun'");
+        }
     }
 }

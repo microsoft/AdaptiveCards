@@ -1,10 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "TextRun.h"
 
 using namespace AdaptiveSharedNamespace;
 
 TextRun::TextRun() :
-    Inline(InlineElementType::TextRun), m_textElementProperties(std::make_shared<TextElementProperties>()), m_highlight(false)
+    Inline(InlineElementType::TextRun), m_textElementProperties(std::make_shared<RichTextElementProperties>()),
+    m_highlight(false)
 {
     PopulateKnownPropertiesSet();
 }
@@ -16,7 +19,8 @@ void TextRun::PopulateKnownPropertiesSet()
 
 Json::Value TextRun::SerializeToJsonValue() const
 {
-    Json::Value root = m_textElementProperties->SerializeToJsonValue(root);
+    Json::Value root{};
+    root = m_textElementProperties->SerializeToJsonValue(root);
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = GetInlineTypeString();
 
     if (m_highlight)
@@ -67,14 +71,14 @@ void TextRun::SetTextWeight(const TextWeight value)
     m_textElementProperties->SetTextWeight(value);
 }
 
-FontStyle TextRun::GetFontStyle() const
+FontType TextRun::GetFontType() const
 {
-    return m_textElementProperties->GetFontStyle();
+    return m_textElementProperties->GetFontType();
 }
 
-void TextRun::SetFontStyle(const FontStyle value)
+void TextRun::SetFontType(const FontType value)
 {
-    m_textElementProperties->SetFontStyle(value);
+    m_textElementProperties->SetFontType(value);
 }
 
 ForegroundColor TextRun::GetTextColor() const
@@ -147,6 +151,16 @@ void TextRun::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
     m_selectAction = action;
 }
 
+bool TextRun::GetUnderline() const
+{
+    return m_textElementProperties->GetUnderline();
+}
+
+void TextRun::SetUnderline(const bool value)
+{
+    m_textElementProperties->SetUnderline(value);
+}
+
 std::shared_ptr<Inline> TextRun::Deserialize(ParseContext& context, const Json::Value& json)
 {
     std::shared_ptr<TextRun> inlineTextRun = std::make_shared<TextRun>();
@@ -161,6 +175,7 @@ std::shared_ptr<Inline> TextRun::Deserialize(ParseContext& context, const Json::
         inlineTextRun->m_textElementProperties->Deserialize(context, json);
 
         inlineTextRun->SetHighlight(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Highlight, false));
+        inlineTextRun->SetUnderline(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Underline, false));
         inlineTextRun->SetSelectAction(ParseUtil::GetAction(context, json, AdaptiveCardSchemaKey::SelectAction, false));
 
         HandleUnknownProperties(json, inlineTextRun->m_knownProperties, inlineTextRun->m_additionalProperties);

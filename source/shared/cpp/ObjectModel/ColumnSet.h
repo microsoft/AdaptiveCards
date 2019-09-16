@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "pch.h"
@@ -31,7 +33,6 @@ namespace AdaptiveSharedNamespace
         void PopulateKnownPropertiesSet() override;
 
         std::vector<std::shared_ptr<Column>> m_columns;
-        std::shared_ptr<BaseActionElement> m_selectAction;
     };
 
     class ColumnSetParser : public BaseCardElementParser

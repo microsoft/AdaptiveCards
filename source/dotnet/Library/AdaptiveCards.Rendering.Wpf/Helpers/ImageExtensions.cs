@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Diagnostics;
 using System.Globalization;
@@ -101,39 +103,10 @@ namespace AdaptiveCards.Rendering.Wpf
 
                     return Stretch.Fill;
                 }
-                else if (imageWidth >= parentWidth || imageSourceIsLargerThanExpectedRenderingSize(imageWidth, imageHeight, adaptiveImage.Size, adaptiveParameters.AdaptiveContext))
+                else 
                 {
                     return Stretch.Uniform;
                 }
-                else
-                {
-                    return Stretch.None;
-                }
-            }
-
-            bool imageSourceIsLargerThanExpectedRenderingSize(int? imageSourceWidth, int? imageSourceHeight, AdaptiveImageSize imageSize, AdaptiveRenderContext context)
-            {
-                // No size provided, let's keep previous behaviour
-                if (!imageSourceWidth.HasValue || !imageSourceHeight.HasValue)
-                {
-                    return false;
-                }
-
-                int imageSizeInPixels = int.MaxValue;
-                switch (imageSize)
-                {
-                    case AdaptiveImageSize.Small:
-                        imageSizeInPixels = context.Config.ImageSizes.Small;
-                        break;
-                    case AdaptiveImageSize.Medium:
-                        imageSizeInPixels = context.Config.ImageSizes.Medium;
-                        break;
-                    case AdaptiveImageSize.Large:
-                        imageSizeInPixels = context.Config.ImageSizes.Large;
-                        break;
-                }
-
-                return ((imageSourceWidth.Value > imageSizeInPixels) || (imageSourceHeight.Value > imageSizeInPixels));
             }
 
             public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -170,9 +143,9 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 // bi.Pixel{Width, Height}: dimensions of image
                 // grid.Actual{Width, Height}: dimensions of grid containing background image
-                switch (adaptiveBackgroundImage.Mode)
+                switch (adaptiveBackgroundImage.FillMode)
                 {
-                    case AdaptiveBackgroundImageMode.Repeat:
+                    case AdaptiveImageFillMode.Repeat:
                         grid.Background = new ImageBrush(bi)
                         {
                             TileMode = TileMode.Tile,
@@ -180,7 +153,7 @@ namespace AdaptiveCards.Rendering.Wpf
                             ViewportUnits = BrushMappingMode.Absolute
                         };
                         break;
-                    case AdaptiveBackgroundImageMode.RepeatHorizontally:
+                    case AdaptiveImageFillMode.RepeatHorizontally:
                         grid.Background = new ImageBrush(bi)
                         {
                             TileMode = TileMode.FlipY,
@@ -190,7 +163,7 @@ namespace AdaptiveCards.Rendering.Wpf
                             ViewportUnits = BrushMappingMode.Absolute
                         };
                         break;
-                    case AdaptiveBackgroundImageMode.RepeatVertically:
+                    case AdaptiveImageFillMode.RepeatVertically:
                         grid.Background = new ImageBrush(bi)
                         {
                             TileMode = TileMode.FlipX,
@@ -200,12 +173,13 @@ namespace AdaptiveCards.Rendering.Wpf
                             ViewportUnits = BrushMappingMode.Absolute
                         };
                         break;
-                    case AdaptiveBackgroundImageMode.Stretch:
+                    case AdaptiveImageFillMode.Cover:
                     default:
                         grid.Background = new ImageBrush(bi)
                         {
                             Stretch = Stretch.UniformToFill,
-                            AlignmentY = AlignmentY.Top
+                            AlignmentY = (AlignmentY)adaptiveBackgroundImage.VerticalAlignment,
+                            AlignmentX = (AlignmentX)adaptiveBackgroundImage.HorizontalAlignment
                         };
                         break;
                 }

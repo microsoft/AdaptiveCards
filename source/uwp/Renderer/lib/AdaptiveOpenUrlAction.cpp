@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveOpenUrlAction.h"
 #include "Util.h"
@@ -26,11 +28,12 @@ namespace AdaptiveNamespace
 
         ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
         RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(), &uriActivationFactory));
-        std::wstring imageUri = StringToWstring(sharedOpenUrlAction->GetUrl());
+        HString asHstring;
+        RETURN_IF_FAILED(UTF8ToHString(sharedOpenUrlAction->GetUrl(), asHstring.GetAddressOf()));
 
-        if (!imageUri.empty())
+        if (asHstring.IsValid())
         {
-            RETURN_IF_FAILED(uriActivationFactory->CreateUri(HStringReference(imageUri.c_str()).Get(), m_url.GetAddressOf()));
+            RETURN_IF_FAILED(uriActivationFactory->CreateUri(asHstring.Get(), m_url.GetAddressOf()));
         }
 
         InitializeBaseElement(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(sharedOpenUrlAction));

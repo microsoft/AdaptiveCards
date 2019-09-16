@@ -1,7 +1,8 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 #include "DateTimePreparser.h"
 
-#include <codecvt>
 #include <string>
 
 namespace AdaptiveNamespace

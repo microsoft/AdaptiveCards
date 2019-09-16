@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -26,7 +28,7 @@ namespace AdaptiveCards.Test
 
             Assert.AreEqual(AdaptiveSpacing.Large, tb.Spacing);
             Assert.AreEqual(true, tb.Separator);
-            
+
             string json = card.ToJson();
 
             Assert.IsTrue(json.Contains(@"""separator"": true"));

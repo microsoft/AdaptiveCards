@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using UWPTestLibrary;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -23,30 +25,46 @@ namespace AdaptiveCardTestApp.Views
             {
                 _currModel = model;
 
-                if (model.Status == TestStatus.Passed)
+                ButtonUpdateImage.Visibility = Visibility.Collapsed;
+                ButtonUpdateJson.Visibility = Visibility.Collapsed;
+                ButtonUpdateOriginals.Visibility = Visibility.Collapsed;
+                ButtonUpdateAll.Visibility = Visibility.Collapsed;
+
+                if (model.Status.NewCard)
                 {
-                    ButtonSaveAsExpected.Visibility = Visibility.Collapsed;
+                    // For a new card, only let them update "all"
+                    ButtonUpdateAll.Visibility = Visibility.Visible;
+
+                }
+                else if (model.Status.MatchedViaError)
+                {
+                    // If they matched via error nothing to update except possibly the original
+                    ButtonUpdateOriginals.Visibility = model.Status.OriginalMatched ? Visibility.Collapsed : Visibility.Visible;
                 }
                 else
                 {
-                    ButtonSaveAsExpected.Visibility = Visibility.Visible;
-
-                    switch (model.Status)
+                    // Provide the appropriate buttons to update as needed
+                    uint buttonsShown = 0;
+                    if (!model.Status.ImageMatched)
                     {
-                        case TestStatus.Failed:
-                        case TestStatus.JsonFailed:
-                        case TestStatus.ImageAndJsonFailed:
-                        case TestStatus.FailedButSourceWasChanged:
-                            ButtonSaveAsExpected.Content = "Accept new version";
-                            break;
+                        ButtonUpdateImage.Visibility = Visibility.Visible;
+                        buttonsShown++;
+                    }
+                    if (!model.Status.JsonRoundTripMatched)
+                    {
+                        ButtonUpdateJson.Visibility = Visibility.Visible;
+                        buttonsShown++;
+                    }
+                    if (!model.Status.OriginalMatched)
+                    {
+                        ButtonUpdateOriginals.Visibility = Visibility.Visible;
+                        buttonsShown++;
+                    }
 
-                        case TestStatus.PassedButSourceWasChanged:
-                            ButtonSaveAsExpected.Content = "Accept new source";
-                            break;
-
-                        case TestStatus.Passed:
-                            ButtonSaveAsExpected.Content = "Set as expected";
-                            break;
+                    // Only show the update all button if we have more than one thing to update
+                    if (buttonsShown > 1)
+                    {
+                        ButtonUpdateAll.Visibility = Visibility.Visible;
                     }
                 }
 
@@ -58,8 +76,30 @@ namespace AdaptiveCardTestApp.Views
 
         private async void ButtonSaveAsExpected_Click(object sender, RoutedEventArgs e)
         {
+            bool updateOriginals = false;
+            bool updateImage = false;
+            bool updateJson = false;
+
+            Button buttonSender = sender as Button;
+            if (buttonSender == ButtonUpdateOriginals)
+            {
+                updateOriginals = true;
+            }
+            else if (buttonSender == ButtonUpdateJson)
+            {
+                updateJson = true;
+            }
+            else if (buttonSender == ButtonUpdateImage)
+            {
+                updateImage = true;
+            }
+            else if (buttonSender == ButtonUpdateAll)
+            {
+                updateOriginals = updateJson = updateImage = true;
+            }
+
             base.IsEnabled = false;
-            await (DataContext as TestResultViewModel).SaveAsNewExpectedAsync();
+            await (DataContext as TestResultViewModel).SaveAsNewExpectedAsync(updateOriginals, updateJson, updateImage);
             base.IsEnabled = true;
         }
 

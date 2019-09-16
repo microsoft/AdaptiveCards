@@ -2,5 +2,14 @@
 	"editor.insertSpaces": false,
 	"editor.formatOnSave": false, // only if you want auto fomattting on saving the file
 	"editor.detectIndentation": false,
-	"C_Cpp.default.cppStandard": "c++17"
+	"C_Cpp.default.cppStandard": "c++17",
+	"runOnSave.statusMessageTimeout": 18000,
+	"runOnSave.commands": [
+		{
+			"match": ".*schemas\\\\src\\\\.*\\.json$",
+			"command": "powershell cd ${workspaceFolder}\\source\\nodejs\\spec-generator; .\\generate.cmd",
+			"runningStatusMessage": "Updating specs...",
+			"finishStatusMessage": "Updated specs!"
+		}
+	]
 }

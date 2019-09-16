@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import {ImageSetConfig} from "../../host-config";
 
 test('ImageSetConfig should parse valid json', ()=>{

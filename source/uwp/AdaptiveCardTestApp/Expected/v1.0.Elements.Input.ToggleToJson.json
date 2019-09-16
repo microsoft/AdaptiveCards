@@ -1,1 +1,1 @@
-{"actions":[{"title":"OK","type":"Action.Submit"}],"body":[{"text":"Toggle Input","type":"TextBlock"},{"id":"acceptTerms","isRequired":false,"title":"I accept the terms and agreements","type":"Input.Toggle","value":"true","valueOff":"false","valueOn":"true"}],"type":"AdaptiveCard","version":"1.0"}
+{"actions":[{"title":"OK","type":"Action.Submit"}],"body":[{"text":"Toggle Input","type":"TextBlock"},{"id":"acceptTerms","title":"I accept the terms and agreements","type":"Input.Toggle","value":"true"}],"type":"AdaptiveCard","version":"1.0"}

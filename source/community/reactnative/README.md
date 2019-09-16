@@ -76,9 +76,13 @@ Refer this [wiki page](https://github.com/Imaginea/AdaptiveCards/wiki/Extensibil
 There are lot of sample JSON payloads covering all element types with few real case scenarios are available within this project.   
 
 To see the visualizer,
-* Clone the repo https://github.com/Imaginea/AdaptiveCards
-* Navigate to source/reactnative/ **>** Run **`npm install`**
-* Run **> `react-native run-ios` OR `run-android`**
+* Clone the repo https://github.com/microsoft/AdaptiveCards
+* Navigate to `source/community/reactnative/` **>** Run **`npm install`**
+* iOS **> `react-native run-ios`**
+* Android **> `react-native run-android`**
+* Windows **> `react-native start`**  and  **`Launch Simulator from Visual Studio`**
+
+**Notes:** Follow https://github.com/Microsoft/react-native-windows/blob/master/RNWCS/docs/GettingStarted.md for react-native-windows setup
 
 
 ##  About Adaptive Card

@@ -1,181 +1,15 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import * as Adaptive  from "adaptivecards";
 import * as Controls  from "adaptivecards-controls";
 import { DraggableElement } from "./draggable-element";
 import { PeerCommand } from "./peer-command";
 import { CardDesignerSurface } from "./card-designer-surface";
-import { TreeItem } from "./treeitem";
+import { DesignerPeerTreeItem } from "./designer-peer-treeitem";
 import { Rect, IPoint } from "./miscellaneous";
+import { TargetVersion, Versions, isVersionLessOrEqual, GlobalSettings } from "./shared";
 
-interface ILabelAndInput<TInput extends Adaptive.Input> {
-    label: Adaptive.TextBlock;
-    input: TInput;
-}
-
-function addLabelAndInput<TInput extends Adaptive.Input>(
-    container: Adaptive.Container,
-    label: string,
-    inputType: { new(): TInput },
-    separator: boolean = false): ILabelAndInput<TInput> {
-
-    var leftColumn = new Adaptive.Column();
-    leftColumn.width = new Adaptive.SizeAndUnit(100, Adaptive.SizeUnit.Pixel);
-    leftColumn.verticalContentAlignment = Adaptive.VerticalAlignment.Center;
-
-    var rightColumn = new Adaptive.Column();
-    rightColumn.width = "stretch";
-    rightColumn.verticalContentAlignment = Adaptive.VerticalAlignment.Center;
-
-    var columnSet = new Adaptive.ColumnSet();
-
-    if (separator) {
-        columnSet.spacing = Adaptive.Spacing.Large;
-        columnSet.separator = true;
-    }
-    else {
-        columnSet.spacing = Adaptive.Spacing.Small;
-    }
-
-    columnSet.addColumn(leftColumn);
-    columnSet.addColumn(rightColumn);
-
-    var result = {
-        label: new Adaptive.TextBlock(),
-        input: new inputType()
-    };
-    result.label.horizontalAlignment = Adaptive.HorizontalAlignment.Right;
-    result.label.text = label;
-    result.label.wrap = true;
-    /*
-    result.label.selectAction = new Adaptive.SubmitAction();
-    result.label.selectAction.onExecute = (sender: Adaptive.Action) => {
-        alert("Clicked: " + label);
-    }
-    */
-
-    leftColumn.addItem(result.label);
-    rightColumn.addItem(result.input);
-
-    container.addItem(columnSet);
-
-    return result;
-}
-
-function addHeader(container: Adaptive.Container, text: string): Adaptive.CardElement {
-    let header = new Adaptive.TextBlock();
-    header.text = "**" + text + "**";
-
-    container.addItem(header);
-
-    return header;
-}
-
-interface INameValuePair {
-    name: string;
-    value: string;
-}
-
-class NameValuePairEditor {
-    private changed(refreshPropertySheet: boolean = false) {
-        if (this.onChanged) {
-            this.onChanged(this, refreshPropertySheet);
-        }
-    }
-
-    onChanged: (sender: NameValuePairEditor, refreshPropertySheet: boolean) => void;
-
-    nameValuePairs: Array<INameValuePair> = [];
-    title: string = "Name/value pairs";
-    messageIfEmpty = "This collection is empty.";
-    addButtonTitle: string = "Add a new pair";
-    nameInputTitle: string = "Name";
-    valueInputTitle: string = "Value";
-
-    render(): Adaptive.Container {
-        let result = new Adaptive.Container();
-
-        let titleTextBlock = new Adaptive.TextBlock();
-        titleTextBlock.text = "**" + this.title + "**";
-
-        result.addItem(titleTextBlock);
-
-        if (this.nameValuePairs.length == 0) {
-            let messageTextBlock = new Adaptive.TextBlock();
-            messageTextBlock.spacing = Adaptive.Spacing.Small;
-            messageTextBlock.text = this.messageIfEmpty;
-
-            result.addItem(messageTextBlock);
-        }
-        else {
-            for (let i = 0; i < this.nameValuePairs.length; i++) {
-                let textInput = new Adaptive.TextInput();
-                textInput.placeholder = this.nameInputTitle;
-                textInput.defaultValue = this.nameValuePairs[i].name;
-                textInput.onValueChanged = (sender) => {
-                    this.nameValuePairs[i].name = sender.value;
-
-                    this.changed();
-                };
-
-                let nameColumn = new Adaptive.Column("stretch");
-                nameColumn.addItem(textInput);
-
-                textInput = new Adaptive.TextInput();
-                textInput.placeholder = this.valueInputTitle;
-                textInput.defaultValue = this.nameValuePairs[i].value;
-                textInput.onValueChanged = (sender) => {
-                    this.nameValuePairs[i].value = sender.value;
-
-                    this.changed();
-                };
-
-                let valueColumn = new Adaptive.Column("stretch");
-                valueColumn.spacing = Adaptive.Spacing.Small;
-                valueColumn.addItem(textInput);
-
-                let removeAction = new Adaptive.SubmitAction();
-                removeAction.title = "X";
-                removeAction.onExecute = (sender) => {
-                    this.nameValuePairs.splice(i, 1);
-
-                    this.changed(true);
-                }
-
-                let actionSet = new Adaptive.ActionSet();
-                actionSet.addAction(removeAction);
-
-                let removeColumn = new Adaptive.Column("auto");
-                removeColumn.spacing = Adaptive.Spacing.Small;
-                removeColumn.addItem(actionSet);
-
-                let columnSet = new Adaptive.ColumnSet();
-                columnSet.spacing = Adaptive.Spacing.Small;
-                columnSet.addColumn(nameColumn);
-                columnSet.addColumn(valueColumn);
-                columnSet.addColumn(removeColumn);
-
-                result.addItem(columnSet);
-            }
-        }
-
-        let addAction = new Adaptive.SubmitAction();
-        addAction.title = this.addButtonTitle;
-        addAction.onExecute = (sender) => {
-            this.nameValuePairs.push({ "name": "", "value": "" });
-
-            this.changed(true);
-        }
-
-        let actionSet = new Adaptive.ActionSet();
-        actionSet.spacing = Adaptive.Spacing.Small;
-        actionSet.addAction(addAction);
-
-        result.addItem(actionSet);
-
-        return result;
-    }
-}
-
-abstract class DesignerPeerInplaceEditor {
+export abstract class DesignerPeerInplaceEditor {
     onClose: (applyChanges: boolean) => void;
 
     abstract initialize();
@@ -183,7 +17,7 @@ abstract class DesignerPeerInplaceEditor {
     abstract render(): HTMLElement;
 }
 
-abstract class CardElementPeerInplaceEditor<TCardElement extends Adaptive.CardElement> extends DesignerPeerInplaceEditor {
+export abstract class CardElementPeerInplaceEditor<TCardElement extends Adaptive.CardElement> extends DesignerPeerInplaceEditor {
     readonly cardElement: TCardElement;
 
     constructor(cardElement: TCardElement) {
@@ -216,7 +50,106 @@ export class DesignerPeerRegistration<TSource, TPeer> extends DesignerPeerRegist
     }
 }
 
+export class PropertySheetCategory {
+    static readonly DefaultCategory = "__defaultCategory";
+    static readonly LayoutCategory = "Layout";
+    static readonly StyleCategory = "Style";
+    static readonly SelectionAction = "Selection action";
+    static readonly InlineAction = "Inline action";
+
+    private _entries: PropertySheetEntry[] = [];
+
+    constructor(readonly name: string) { }
+
+    render(container: Adaptive.Container, context: PropertySheetContext, displayCategoryName: boolean) {
+        let entriesToRender: PropertySheetEntry[] = [];
+
+        for (let entry of this._entries) {
+            if (isVersionLessOrEqual(entry.targetVersion, context.targetVersion)) {
+                entriesToRender.push(entry);
+            }
+        }
+
+        if (entriesToRender.length > 0) {
+            if (displayCategoryName) {
+                let header = new Adaptive.TextBlock();
+                header.separator = true;
+                header.text = "**" + (this.name === PropertySheetCategory.DefaultCategory ? context.peer.getCardObject().getJsonTypeName() : this.name) + "**";
+            
+                container.addItem(header);
+            }
+        
+            for (let entry of entriesToRender) {
+                if (isVersionLessOrEqual(entry.targetVersion, context.targetVersion)) {
+                    container.addItem(entry.render(context));
+                }
+            }
+        }
+    }
+
+    add(...entries: PropertySheetEntry[]) {
+        this._entries = this._entries.concat(entries);
+    }
+
+    remove(...entries: PropertySheetEntry[]) {
+        for (let entry of entries) {
+            let index: number;
+
+            do {
+                let index = this._entries.indexOf(entry);
+
+                if (index >= 0) {
+                    this._entries.splice(index, 1);
+                }
+            } while (index >= 0);
+        }
+    }
+
+    getEntryAt(index: number): PropertySheetEntry {
+        return this._entries[index];
+    }
+
+    get length(): number {
+        return this._entries.length;
+    }
+}
+
+export class PropertySheet {
+    private _categories: { [key: string]: PropertySheetCategory } = {};
+
+    constructor(readonly displayCategoryNames: boolean = true) {
+        this._categories[PropertySheetCategory.DefaultCategory] = new PropertySheetCategory(PropertySheetCategory.DefaultCategory);
+        this._categories[PropertySheetCategory.LayoutCategory] = new PropertySheetCategory(PropertySheetCategory.LayoutCategory);
+        this._categories[PropertySheetCategory.StyleCategory] = new PropertySheetCategory(PropertySheetCategory.StyleCategory);
+    }
+
+    add(categoryName: string, ...entries: PropertySheetEntry[]) {
+        let category = this._categories[categoryName];
+
+        if (!category) {
+            category = new PropertySheetCategory(categoryName);
+
+            this._categories[categoryName] = category;
+        }
+
+        category.add(...entries);
+    }
+
+    remove(...entries: PropertySheetEntry[]) {
+        for (let categoryName of Object.keys(this._categories)) {
+            this._categories[categoryName].remove(...entries);
+        }
+    }
+
+    render(container: Adaptive.Container, context: PropertySheetContext) {
+        for (let categoryName of Object.keys(this._categories)) {
+            this._categories[categoryName].render(container, context, this.displayCategoryNames);
+        }
+    }
+}
+
 export abstract class DesignerPeer extends DraggableElement {
+    private _parent: DesignerPeer;
     private _children: Array<DesignerPeer> = [];
     private _isSelected: boolean = false;
     private _inplaceEditorOverlay: HTMLElement;
@@ -283,6 +216,12 @@ export abstract class DesignerPeer extends DraggableElement {
         return false;
     }
 
+    protected click(e: MouseEvent) {
+        super.click(e);
+
+        this.isSelected = true;
+    }
+
     protected doubleClick(e: MouseEvent) {
         super.doubleClick(e);
 
@@ -295,12 +234,6 @@ export abstract class DesignerPeer extends DraggableElement {
 
     protected getToolTip(): string {
         return null;
-    }
-
-    protected pointerDown(e: PointerEvent) {
-        super.pointerDown(e);
-
-        this.isSelected = true;
     }
 
     protected internalAddCommands(commands: Array<PeerCommand>) {
@@ -350,12 +283,6 @@ export abstract class DesignerPeer extends DraggableElement {
         }
     }
 
-    protected changed(updatePropertySheet: boolean) {
-        if (this.onChanged) {
-            this.onChanged(this, updatePropertySheet);
-        }
-    }
-
     protected peerRemoved(peer: DesignerPeer) {
         if (this.onPeerRemoved) {
             this.onPeerRemoved(peer);
@@ -377,28 +304,28 @@ export abstract class DesignerPeer extends DraggableElement {
         return null;
     }
 
-    protected getExcludedProperties(): Array<string> {
-        return [];
+    protected internalGetTreeItemText(): string {
+        return null;
     }
 
     protected abstract internalRemove(): boolean;
 
     readonly registration: DesignerPeerRegistrationBase;
     readonly designerSurface: CardDesignerSurface;
-    readonly treeItem: TreeItem;
+    readonly treeItem: DesignerPeerTreeItem;
 
-    parent: DesignerPeer;
-
+    onParentChanged: (sender: DesignerPeer) => void;
     onSelectedChanged: (sender: DesignerPeer) => void;
     onChanged: (sender: DesignerPeer, updatePropertySheet: boolean) => void;
     onPeerRemoved: (sender: DesignerPeer) => void;
     onPeerAdded: (sender: DesignerPeer, newPeer: DesignerPeer) => void;
 
-    abstract getCardObjectTypeName(): string;
-    abstract internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean);
+    abstract getCardObject(): Adaptive.CardObject;
 
-    constructor(designerSurface: CardDesignerSurface, registration: DesignerPeerRegistrationBase) {
+    constructor(parent: DesignerPeer, designerSurface: CardDesignerSurface, registration: DesignerPeerRegistrationBase) {
         super();
+
+        this._parent = parent;
 
         if (!registration) {
             alert((<any>this).constructor.name);
@@ -406,14 +333,24 @@ export abstract class DesignerPeer extends DraggableElement {
 
         this.registration = registration;
         this.designerSurface = designerSurface;
-        this.treeItem = new TreeItem(this);
+        this.treeItem = new DesignerPeerTreeItem(this);
     }
 
     abstract getBoundingRect(): Rect;
     abstract getCardObjectBoundingRect(): Rect;
 
+    changed(updatePropertySheet: boolean) {
+        if (this.onChanged) {
+            this.onChanged(this, updatePropertySheet);
+        }
+    }
+
     getTreeItemText(): string {
-        return null;
+        return this.internalGetTreeItemText();
+    }
+
+    populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
+        // Do nothing in base implementation
     }
 
     canDrop(peer: DesignerPeer): boolean {
@@ -518,15 +455,19 @@ export abstract class DesignerPeer extends DraggableElement {
         }
     }
 
-    buildPropertySheetCard(): Adaptive.AdaptiveCard {
-        let result = new Adaptive.AdaptiveCard();
-        result.padding = new Adaptive.PaddingDefinition(
+    buildPropertySheetCard(targetVersion: TargetVersion): Adaptive.AdaptiveCard {
+        let card = new Adaptive.AdaptiveCard();
+        card.padding = new Adaptive.PaddingDefinition(
             Adaptive.Spacing.Small,
             Adaptive.Spacing.Small,
             Adaptive.Spacing.Small,
             Adaptive.Spacing.Small);
 
-        this.internalAddPropertySheetEntries(result, true);
+        let propertySheet = new PropertySheet();
+
+        this.populatePropertySheet(propertySheet);
+
+        propertySheet.render(card, new PropertySheetContext(targetVersion, this));
 
         let actionSet = new Adaptive.ActionSet();
         let commands = this.getCommands(true);
@@ -543,9 +484,31 @@ export abstract class DesignerPeer extends DraggableElement {
 
         actionSet.separator = true;
 
-        result.addItem(actionSet);
+        card.addItem(actionSet);
 
-        return result;
+        return card;
+    }
+
+    scrollIntoView() {
+        if (this.renderedElement) {
+            this.renderedElement.scrollIntoView();
+        }
+
+        if (this.treeItem && this.treeItem.renderedElement) {
+            this.treeItem.renderedElement.scrollIntoView();
+        }
+    }
+
+    get parent(): DesignerPeer {
+        return this._parent;
+    }
+
+    set parent(value: DesignerPeer) {
+        this._parent = value;
+
+        if (this.onParentChanged) {
+            this.onParentChanged(this);
+        }
     }
 
     get isSelected(): boolean {
@@ -566,7 +529,567 @@ export abstract class DesignerPeer extends DraggableElement {
     }
 }
 
-export class ActionPeer extends DesignerPeer {
+export class PropertySheetContext {
+    private _target: object = undefined;
+
+    constructor(readonly targetVersion: TargetVersion, readonly peer: CardObjectPeer, target: object = undefined) {
+        this._target = target;
+    }
+
+    get target(): object {
+        return this._target != undefined ? this._target : this.peer.getCardObject();
+    }
+}
+
+export abstract class PropertySheetEntry {
+    abstract render(context: PropertySheetContext): Adaptive.CardElement;
+
+    constructor(readonly targetVersion: TargetVersion) { }
+}
+
+export class SubPropertySheetEntry {
+    render(context: PropertySheetContext): Adaptive.CardElement {
+        let container = new Adaptive.Container();
+        container.spacing = Adaptive.Spacing.Small;
+
+        this.propertySheet.render(container, new PropertySheetContext(context.targetVersion, context.peer, this.target));
+
+        return container;
+    }
+
+    constructor(readonly targetVersion: TargetVersion, readonly target: object, readonly propertySheet: PropertySheet) { }
+}
+
+export class CustomPropertySheetEntry extends PropertySheetEntry {
+    render(context: PropertySheetContext): Adaptive.CardElement {
+        if (this.onRender) {
+            return this.onRender(context);
+        }
+    }
+
+    constructor(readonly targetVersion: TargetVersion, readonly onRender: (context: PropertySheetContext) => Adaptive.CardElement) {
+        super(targetVersion);
+    }
+}
+
+export abstract class SingleInputPropertyEditor extends PropertySheetEntry {
+    protected abstract createInput(context: PropertySheetContext): Adaptive.Input;
+
+    protected getPropertyValue(context: PropertySheetContext): any {
+        return context.target[this.propertyName];
+    }
+
+    protected setPropertyValue(context: PropertySheetContext, value: string) {
+        context.target[this.propertyName] = value;        
+    }
+
+    render(context: PropertySheetContext): Adaptive.CardElement {
+        let leftColumn = new Adaptive.Column();
+        leftColumn.width = new Adaptive.SizeAndUnit(100, Adaptive.SizeUnit.Pixel);
+        leftColumn.verticalContentAlignment = Adaptive.VerticalAlignment.Center;
+    
+        let rightColumn = new Adaptive.Column();
+        rightColumn.width = "stretch";
+        rightColumn.verticalContentAlignment = Adaptive.VerticalAlignment.Center;
+    
+        let columnSet = new Adaptive.ColumnSet();
+    
+        columnSet.spacing = Adaptive.Spacing.Small;
+    
+        columnSet.addColumn(leftColumn);
+        columnSet.addColumn(rightColumn);
+
+        let label = new Adaptive.TextBlock();
+        label.horizontalAlignment = Adaptive.HorizontalAlignment.Right;
+        label.wrap = true;
+        label.text = this.label;
+
+        let input = this.createInput(context);
+        input.defaultValue = this.getPropertyValue(context);
+        input.onValueChanged = () => {
+            this.setPropertyValue(context, input.value);
+
+            context.peer.changed(this.causesPropertySheetRefresh);
+        }
+    
+        leftColumn.addItem(label);
+        rightColumn.addItem(input);
+
+        return columnSet;
+    }
+
+    constructor(
+        readonly targetVersion: TargetVersion,
+        readonly propertyName: string,
+        readonly label: string,
+        readonly causesPropertySheetRefresh: boolean = false) {
+        super(targetVersion);
+    }
+}
+
+export class StringPropertyEditor extends SingleInputPropertyEditor {
+    protected createInput(context: PropertySheetContext): Adaptive.Input {
+        let input = new Adaptive.TextInput();
+        input.placeholder = "(not set)";
+        input.isMultiline = this.isMultiline;
+
+        return input;
+    }
+
+    constructor(
+        readonly targetVersion: TargetVersion,
+        readonly propertyName: string,
+        readonly label: string,
+        readonly isMultiline: boolean = false,
+        readonly causesPropertySheetRefresh: boolean = false) {
+        super(targetVersion, propertyName, label, causesPropertySheetRefresh);
+    }
+}
+
+export class NumberPropertyEditor extends SingleInputPropertyEditor {
+    protected setPropertyValue(context: PropertySheetContext, value: string) {
+        try {
+            context.target[this.propertyName] = parseFloat(value);
+        }
+        catch {
+            context.target[this.propertyName] = this.defaultValue;
+        }
+    }
+
+    protected createInput(context: PropertySheetContext): Adaptive.Input {
+        let input = new Adaptive.NumberInput();
+        input.placeholder = "(not set)";
+
+        return input;
+    }
+
+    constructor(
+        readonly targetVersion: TargetVersion,
+        readonly propertyName: string,
+        readonly label: string,
+        readonly defaultValue: number | undefined = undefined,
+        readonly causesPropertySheetRefresh: boolean = false) {
+        super(targetVersion, propertyName, label, causesPropertySheetRefresh);
+    }
+}
+
+export class ObjectPropertyEditor extends StringPropertyEditor {
+    protected getPropertyValue(context: PropertySheetContext): any {
+        return JSON.stringify(context.target[this.propertyName]);
+    }
+
+    protected setPropertyValue(context: PropertySheetContext, value: string) {
+        context.target[this.propertyName] = JSON.parse(value);
+    }
+}
+
+export class CustomCardObjectPropertyEditor extends StringPropertyEditor {
+    protected getPropertyValue(context: PropertySheetContext): any {
+        return context.peer.getCardObject().getCustomProperty(this.propertyName);
+    }
+
+    protected setPropertyValue(context: PropertySheetContext, value: string) {
+        context.peer.getCardObject().setCustomProperty(this.propertyName, value);
+    }
+}
+
+export class BooleanPropertyEditor extends SingleInputPropertyEditor {
+    protected getPropertyValue(context: PropertySheetContext): any {
+        let v = context.target[this.propertyName];
+
+        return typeof v === "boolean" ? v.toString() : "false";
+    }
+
+    protected setPropertyValue(context: PropertySheetContext, value: string) {
+        context.target[this.propertyName] = value == "true"; 
+    }
+
+    protected createInput(context: PropertySheetContext): Adaptive.Input {
+        return new Adaptive.ToggleInput();
+    }
+}
+
+export interface IVersionedChoice {
+    targetVersion: TargetVersion;
+    name: string;
+    value: string;
+}
+
+export class ChoicePropertyEditor extends SingleInputPropertyEditor {
+    protected createInput(context: PropertySheetContext): Adaptive.Input {
+        let input = new Adaptive.ChoiceSetInput();
+        input.isCompact = true;
+        input.placeholder = "(not set)";
+
+        for (let choice of this.choices) {
+            if (isVersionLessOrEqual(choice.targetVersion, context.targetVersion)) {
+                input.choices.push(new Adaptive.Choice(choice.name, choice.value));
+            }
+        }
+
+        return input;
+    }
+
+    constructor(
+        readonly targetVersion: TargetVersion,
+        readonly propertyName: string,
+        readonly label: string,
+        readonly choices: IVersionedChoice[],
+        readonly causesPropertySheetRefresh: boolean = false) {
+        super(targetVersion, propertyName, label, causesPropertySheetRefresh);
+    }
+}
+
+export class ContainerStylePropertyEditor extends ChoicePropertyEditor {
+    protected getPropertyValue(context: PropertySheetContext): any {
+        let currentStyle = context.target[this.propertyName];
+
+        return currentStyle ? currentStyle.toString() : "not_set";
+    }
+
+    protected setPropertyValue(context: PropertySheetContext, value: string) {
+        if (value == "not_set") {
+            context.target[this.propertyName] = null;
+        }
+        else {
+            context.target[this.propertyName] = value;
+        }
+    }
+
+    constructor(readonly targetVersion: TargetVersion,readonly propertyName: string, readonly label: string) {
+        super(
+            targetVersion,
+            propertyName,
+            label,
+            [
+                { targetVersion: Versions.v1_0, name: "(not set)", value: "not_set" },
+                { targetVersion: Versions.v1_0, name: "Default", value: "default" },
+                { targetVersion: Versions.v1_0, name: "Emphasis", value: "emphasis" },
+                { targetVersion: Versions.v1_2, name: "Accent", value: "accent" },
+                { targetVersion: Versions.v1_2, name: "Good", value: "good" },
+                { targetVersion: Versions.v1_2, name: "Attention", value: "attention" },
+                { targetVersion: Versions.v1_2, name: "Warning", value: "warning" }
+            ]);
+    }
+}
+
+export class ColumnWidthPropertyEditor extends ChoicePropertyEditor {
+    protected getPropertyValue(context: PropertySheetContext): any {
+        if (context.target[this.propertyName] instanceof Adaptive.SizeAndUnit) {
+            if (context.target[this.propertyName].unit == Adaptive.SizeUnit.Pixel) {
+                return "pixels";
+            }
+            else {
+                return "weighted";
+            }
+        }
+        else {
+            return context.target[this.propertyName].toString();
+        }
+    }
+
+    protected setPropertyValue(context: PropertySheetContext, value: string) {
+        switch (value) {
+            case "auto":
+                context.target[this.propertyName] = "auto";
+                break;
+            case "pixels":
+                context.target[this.propertyName] = new Adaptive.SizeAndUnit(50, Adaptive.SizeUnit.Pixel);
+                break;
+            case "weighted":
+                context.target[this.propertyName] = new Adaptive.SizeAndUnit(50, Adaptive.SizeUnit.Weight);
+                break;
+            case "stretch":
+            default:
+                context.target[this.propertyName] = "stretch";
+                break;
+        }
+    }
+}
+
+export class HeightPropertyEditor extends ChoicePropertyEditor {
+    protected setPropertyValue(context: PropertySheetContext, value: string) {
+        let processedValue: string;
+
+        switch (value) {
+            case "auto":
+            case "stretch":
+                processedValue = value;
+                break;
+            default:
+                processedValue = "auto";
+                break;
+        }
+
+        context.target[this.propertyName] = processedValue; 
+    }
+}
+
+export class SizeAndUnitPropertyEditor extends NumberPropertyEditor {
+    protected getPropertyValue(context: PropertySheetContext): any {
+        return (<Adaptive.SizeAndUnit>context.target[this.propertyName]).physicalSize.toString();
+    }
+
+    protected setPropertyValue(context: PropertySheetContext, value: string) {
+        context.target[this.propertyName] = new Adaptive.SizeAndUnit(parseInt(value), this.sizeUnit);
+    }
+
+    constructor(
+        readonly targetVersion: TargetVersion,
+        readonly propertyName: string,
+        readonly label: string,
+        readonly sizeUnit: Adaptive.SizeUnit,
+        readonly defaultValue: number | undefined = undefined,
+        readonly causesPropertySheetRefresh: boolean = false) {
+        super(targetVersion, propertyName, label, defaultValue, causesPropertySheetRefresh);
+    }   
+}
+
+export class ActionPropertyEditor extends SingleInputPropertyEditor {
+    protected getPropertyValue(context: PropertySheetContext): any {
+        let action = <Adaptive.Action>context.target[this.propertyName];
+
+        return action ? action.getJsonTypeName() : "none";
+    }
+
+    protected setPropertyValue(context: PropertySheetContext, value: string) {
+        context.target[this.propertyName] = parseInt(value, 10);
+
+        if (value == "none") {
+            context.target[this.propertyName] = null;
+        }
+        else {
+            context.target[this.propertyName] = Adaptive.AdaptiveCard.actionTypeRegistry.createInstance(value);
+        }
+    }
+
+    protected createInput(context: PropertySheetContext): Adaptive.Input {
+        let input = new Adaptive.ChoiceSetInput();
+        input.isCompact = true;
+        input.placeholder = "(not set)";
+        input.choices.push(new Adaptive.Choice("(not set)", "none"));
+    
+        for (var i = 0; i < Adaptive.AdaptiveCard.actionTypeRegistry.getItemCount(); i++) {
+            let actionType = Adaptive.AdaptiveCard.actionTypeRegistry.getItemAt(i).typeName;
+            let doAddActionType = this.forbiddenActionTypes ? this.forbiddenActionTypes.indexOf(actionType) < 0 : true;
+    
+            if (doAddActionType) {
+                let choice = new Adaptive.Choice(actionType, actionType);
+    
+                input.choices.push(choice);
+            }
+        }
+
+        return input;
+    }
+
+    constructor(
+        readonly targetVersion: TargetVersion,
+        readonly propertyName: string,
+        readonly label: string,
+        readonly forbiddenActionTypes: string[] = [],
+        readonly causesPropertySheetRefresh: boolean = false) {
+        super(targetVersion, propertyName, label, causesPropertySheetRefresh);
+    }
+}
+
+export class CompoundPropertyEditor extends PropertySheetEntry {
+    render(context: PropertySheetContext): Adaptive.CardElement {
+        let container = new Adaptive.Container();
+
+        for (let entry of this.entries) {
+            if (isVersionLessOrEqual(entry.targetVersion, context.targetVersion)) {
+                container.addItem(entry.render(new PropertySheetContext(context.targetVersion, context.peer, context.target[this.propertyName])));
+            }
+        }
+
+        return container;
+    }
+
+    constructor(
+        readonly targetVersion: TargetVersion,
+        readonly propertyName: string,
+        readonly entries: PropertySheetEntry[] = []) {
+        super(targetVersion);
+    }
+}
+
+export class EnumPropertyEditor extends SingleInputPropertyEditor {
+    protected setPropertyValue(context: PropertySheetContext, value: string) {
+        context.target[this.propertyName] = parseInt(value, 10);
+    }
+
+    protected createInput(context: PropertySheetContext): Adaptive.Input {
+        let input = new Adaptive.ChoiceSetInput();
+        input.isCompact = true;
+        input.placeholder = "(not set)";
+
+        for (let key in this.enumType) {
+            let v = parseInt(key, 10);
+
+            if (!isNaN(v)) {
+                input.choices.push(new Adaptive.Choice(this.enumType[key], key));
+            }
+        }
+
+        return input;
+    }
+
+    constructor(
+        readonly targetVersion: TargetVersion,
+        readonly propertyName: string,
+        readonly label: string,
+        readonly enumType: { [s: number]: string },
+        readonly causesPropertySheetRefresh: boolean = false) {
+        super(targetVersion, propertyName, label, causesPropertySheetRefresh);
+    }
+}
+
+interface INameValuePair {
+    name: string;
+    value: string;
+}
+
+class NameValuePairPropertyEditor extends PropertySheetEntry {
+    private collectionChanged(context: PropertySheetContext, nameValuePairs: INameValuePair[], refreshPropertySheet: boolean) {
+        context.target[this.collectionPropertyName] = [];
+
+        for (let nameValuePair of nameValuePairs) {
+            let item = this.createCollectionItem(nameValuePair.name, nameValuePair.value);
+
+            context.target[this.collectionPropertyName].push(item);
+        }
+
+        context.peer.changed(refreshPropertySheet);
+    }
+
+    render(context: PropertySheetContext): Adaptive.CardElement {
+        let result = new Adaptive.Container();
+
+        let collection = context.target[this.collectionPropertyName];
+
+        if (!Array.isArray(collection)) {
+            throw new Error("The " + this.collectionPropertyName + " property on " + context.peer.getCardObject().getJsonTypeName() + " either doesn't exist or isn't an array.")
+        }
+
+        let nameValuePairs: INameValuePair[] = [];
+
+        for (let pair of collection) {
+            nameValuePairs.push(
+                {
+                    name: pair[this.namePropertyName],
+                    value: pair[this.valuePropertyName]
+                }
+            )
+        }
+
+        if (nameValuePairs.length == 0) {
+            let messageTextBlock = new Adaptive.TextBlock();
+            messageTextBlock.spacing = Adaptive.Spacing.Small;
+            messageTextBlock.text = this.messageIfEmpty;
+
+            result.addItem(messageTextBlock);
+        }
+        else {
+            for (let i = 0; i < nameValuePairs.length; i++) {
+                let textInput = new Adaptive.TextInput();
+                textInput.placeholder = this.namePropertyLabel;
+                textInput.defaultValue = nameValuePairs[i].name;
+                textInput.onValueChanged = (sender) => {
+                    nameValuePairs[i].name = sender.value;
+
+                    this.collectionChanged(context, nameValuePairs, false);
+                };
+
+                let nameColumn = new Adaptive.Column("stretch");
+                nameColumn.addItem(textInput);
+
+                textInput = new Adaptive.TextInput();
+                textInput.placeholder = this.valuePropertyLabel;
+                textInput.defaultValue = nameValuePairs[i].value;
+                textInput.onValueChanged = (sender) => {
+                    nameValuePairs[i].value = sender.value;
+
+                    this.collectionChanged(context, nameValuePairs, false);
+                };
+
+                let valueColumn = new Adaptive.Column("stretch");
+                valueColumn.spacing = Adaptive.Spacing.Small;
+                valueColumn.addItem(textInput);
+
+                let removeAction = new Adaptive.SubmitAction();
+                removeAction.title = "X";
+                removeAction.onExecute = (sender) => {
+                    nameValuePairs.splice(i, 1);
+
+                    this.collectionChanged(context, nameValuePairs, true);
+                }
+
+                let actionSet = new Adaptive.ActionSet();
+                actionSet.addAction(removeAction);
+
+                let removeColumn = new Adaptive.Column("auto");
+                removeColumn.spacing = Adaptive.Spacing.Small;
+                removeColumn.addItem(actionSet);
+
+                let columnSet = new Adaptive.ColumnSet();
+                columnSet.spacing = Adaptive.Spacing.Small;
+                columnSet.addColumn(nameColumn);
+                columnSet.addColumn(valueColumn);
+                columnSet.addColumn(removeColumn);
+
+                result.addItem(columnSet);
+            }
+        }
+
+        let addAction = new Adaptive.SubmitAction();
+        addAction.title = this.addButtonTitle;
+        addAction.onExecute = (sender) => {
+            nameValuePairs.push({ name: "", value: "" });
+
+            this.collectionChanged(context, nameValuePairs, true);
+        }
+
+        let actionSet = new Adaptive.ActionSet();
+        actionSet.spacing = Adaptive.Spacing.Small;
+        actionSet.addAction(addAction);
+
+        result.addItem(actionSet);
+
+        return result;
+    }
+
+    constructor(
+        readonly targetVersion: TargetVersion,
+        readonly collectionPropertyName: string,
+        readonly namePropertyName: string,
+        readonly valuePropertyName: string,
+        readonly createCollectionItem: (name: string, value: string) => any,
+        readonly namePropertyLabel: string = "Name",
+        readonly valuePropertyLabel: string = "Value",
+        readonly addButtonTitle: string = "Add",
+        readonly messageIfEmpty: string = "This collection is empty") {
+        super(targetVersion);
+    }
+}
+
+export abstract class CardObjectPeer extends DesignerPeer {
+    static readonly idProperty = new StringPropertyEditor(Versions.v1_0, "id", "Id");
+}
+
+export class ActionPeer extends CardObjectPeer {
+    static readonly titleProperty = new StringPropertyEditor(Versions.v1_0, "title", "Title");
+    static readonly styleProperty = new ChoicePropertyEditor(
+        Versions.v1_2, 
+        "style",
+        "Style",
+        [
+            { targetVersion: Versions.v1_2, name: "Default", value: Adaptive.ActionStyle.Default },
+            { targetVersion: Versions.v1_2, name: "Positive", value: Adaptive.ActionStyle.Positive },
+            { targetVersion: Versions.v1_2, name: "Destructive", value: Adaptive.ActionStyle.Destructive }
+        ]);
+    static readonly iconUrlProperty = new StringPropertyEditor(Versions.v1_1, "iconUrl", "Icon URL");
+
     protected _action: Adaptive.Action;
 
     protected doubleClick(e: MouseEvent) {
@@ -579,23 +1102,27 @@ export class ActionPeer extends DesignerPeer {
         return this.action.remove();
     }
 
-    constructor(designerSurface: CardDesignerSurface, registration: DesignerPeerRegistrationBase, action: Adaptive.Action) {
-        super(designerSurface, registration);
+    constructor(
+        parent: DesignerPeer,
+        designerSurface: CardDesignerSurface,
+        registration: DesignerPeerRegistrationBase,
+        action: Adaptive.Action) {
+        super(parent, designerSurface, registration);
 
         this._action = action;
     }
 
-    getCardObjectTypeName(): string {
-        return this.action.getJsonTypeName();
-    }
-
-    getTreeItemText(): string {
+    protected internalGetTreeItemText(): string {
         if (this.action.title && this.action.title != "") {
             return this.action.title;
         }
         else {
-            return super.getTreeItemText();
+            return super.internalGetTreeItemText();
         }
+    }
+
+    getCardObject(): Adaptive.CardObject {
+        return this.action;
     }
 
     isDraggable(): boolean {
@@ -625,52 +1152,15 @@ export class ActionPeer extends DesignerPeer {
         );
     }
 
-    internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
-        if (includeHeader) {
-            let actionType = new Adaptive.TextBlock();
-            actionType.text = "**" + this.action.getJsonTypeName() + "**";
+    populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
+        super.populatePropertySheet(propertySheet, defaultCategory);
 
-            card.addItem(actionType);
-        }
-
-        let id = addLabelAndInput(card, "Id:", Adaptive.TextInput);
-        id.input.defaultValue = this.action.id;
-        id.input.placeholder = "(not set)";
-        id.input.onValueChanged = () => {
-            this.action.id = id.input.value;
-
-            this.changed(false);
-        }
-
-        let title = addLabelAndInput(card, "Title:", Adaptive.TextInput);
-        title.input.defaultValue = this.action.title;
-        title.input.placeholder = "(not set)";
-        title.input.onValueChanged = () => {
-            this.action.title = title.input.value;
-
-            this.changed(false);
-        }
-
-        let sentiment = addLabelAndInput(card, "Sentiment:", Adaptive.ChoiceSetInput);
-        sentiment.input.isCompact = true;
-        sentiment.input.choices.push(new Adaptive.Choice("Default", Adaptive.ActionSentiment.Default.toString()));
-        sentiment.input.choices.push(new Adaptive.Choice("Positive", Adaptive.ActionSentiment.Positive.toString()));
-        sentiment.input.choices.push(new Adaptive.Choice("Destructive", Adaptive.ActionSentiment.Destructive.toString()));
-        sentiment.input.defaultValue = this.action.sentiment.toString();
-        sentiment.input.onValueChanged = () => {
-            this.action.sentiment = <Adaptive.ActionSentiment>parseInt(sentiment.input.value);
-
-            this.changed(false);
-        }
-
-        let iconUrl = addLabelAndInput(card, "Icon URL:", Adaptive.TextInput);
-        iconUrl.input.defaultValue = this.action.iconUrl;
-        iconUrl.input.placeholder = "(not set)";
-        iconUrl.input.onValueChanged = () => {
-            this.action.iconUrl = iconUrl.input.value;
-
-            this.changed(false);
-        }
+        propertySheet.add(
+            defaultCategory,
+            ActionPeer.idProperty,
+            ActionPeer.titleProperty,
+            ActionPeer.styleProperty,
+            ActionPeer.iconUrlProperty);
     }
 
     get action(): Adaptive.Action {
@@ -679,8 +1169,12 @@ export class ActionPeer extends DesignerPeer {
 }
 
 export abstract class TypedActionPeer<TAction extends Adaptive.Action> extends ActionPeer {
-    constructor(designerSurface: CardDesignerSurface, registration: DesignerPeerRegistrationBase, action: TAction) {
-        super(designerSurface, registration, action);
+    constructor(
+        parent: DesignerPeer,
+        designerSurface: CardDesignerSurface,
+        registration: DesignerPeerRegistrationBase,
+        action: TAction) {
+        super(parent, designerSurface, registration, action);
     }
 
     get action(): TAction {
@@ -689,109 +1183,78 @@ export abstract class TypedActionPeer<TAction extends Adaptive.Action> extends A
 }
 
 export class HttpActionPeer extends TypedActionPeer<Adaptive.HttpAction> {
-    internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
-        super.internalAddPropertySheetEntries(card, includeHeader);
+    static readonly ignoreInputValidationProperty = new BooleanPropertyEditor(Versions.vNext, "ignoreInputValidation", "Ignore input validation");
+    static readonly methodProperty = new ChoicePropertyEditor(
+        Versions.v1_0, 
+        "method",
+        "Method",
+        [
+            { targetVersion: Versions.v1_0, name: "GET", value: "GET" },
+            { targetVersion: Versions.v1_0, name: "POST", value: "POST" }
+        ],
+        true);
+    static readonly urlProperty = new StringPropertyEditor(Versions.v1_0, "url", "Url");
+    static readonly bodyProperty = new StringPropertyEditor(Versions.v1_0, "body", "Body", true);
+    static readonly headersProperty = new NameValuePairPropertyEditor(
+        Versions.v1_0, 
+        "headers",
+        "name",
+        "value",
+        (name: string, value: string) => { return new Adaptive.HttpHeader(name, value); },
+        "Name",
+        "Value",
+        "Add a new header",
+        "This action has no header.");
 
-        let ignoreInputValidation = addLabelAndInput(card, "Ignore input validation:", Adaptive.ToggleInput);
-        ignoreInputValidation.input.defaultValue = String(this.action.ignoreInputValidation);
-        ignoreInputValidation.input.onValueChanged = () => {
-            this.action.ignoreInputValidation = ignoreInputValidation.input.value == "true";
-
-            this.changed(false);
+    populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
+        super.populatePropertySheet(propertySheet, defaultCategory);
+        
+        if (Adaptive.AdaptiveCard.useBuiltInInputValidation) {
+            propertySheet.add(
+                PropertySheetCategory.DefaultCategory,
+                HttpActionPeer.ignoreInputValidationProperty);
         }
 
-        let method = addLabelAndInput(card, "Method:", Adaptive.ChoiceSetInput);
-        method.input.isCompact = true;
-        method.input.choices.push(new Adaptive.Choice("GET", "GET"));
-        method.input.choices.push(new Adaptive.Choice("POST", "POST"));
-        method.input.placeholder = "(not set)";
-        method.input.defaultValue = this.action.method;
-        method.input.onValueChanged = () => {
-            this.action.method = method.input.value;
+        propertySheet.add(
+            defaultCategory,
+            HttpActionPeer.methodProperty,
+            HttpActionPeer.urlProperty);
 
-            this.changed(true);
+        if (this.action.method == "POST") {
+            propertySheet.add(
+                defaultCategory,
+                HttpActionPeer.bodyProperty);
         }
 
-        let url = addLabelAndInput(card, "Url:", Adaptive.TextInput);
-        url.input.defaultValue = this.action.url;
-        url.input.placeholder = "(not set)";
-        url.input.onValueChanged = () => {
-            this.action.url = url.input.value;
-
-            this.changed(false);
-        }
-
-        if (this.action.method && this.action.method.toLowerCase() == "post") {
-            var body = addLabelAndInput(card, "Body:", Adaptive.TextInput);
-            body.input.isMultiline = true;
-            body.input.defaultValue = this.action.body;
-            body.input.placeholder = "(not set)";
-            body.input.onValueChanged = () => {
-                this.action.body = body.input.value;
-
-                this.changed(false);
-            }
-        }
-
-        let headersEditor = new NameValuePairEditor();
-        headersEditor.title = "HTTP headers:";
-        headersEditor.addButtonTitle = "Add a new header";
-        headersEditor.messageIfEmpty = "This action has no headers.";
-
-        for (let choice of this.action.headers) {
-            headersEditor.nameValuePairs.push({ "name": choice.name, "value": choice.value });
-        }
-
-        headersEditor.onChanged = (sender, refreshPropertySheet) => {
-            this.action.headers = [];
-
-            for (let nameValuePair of sender.nameValuePairs) {
-                this.action.headers.push(new Adaptive.HttpHeader(nameValuePair.name, nameValuePair.value));
-            }
-
-            this.changed(refreshPropertySheet);
-        };
-
-        card.addItem(headersEditor.render());
+        propertySheet.add(
+            "HTTP headers",
+            HttpActionPeer.headersProperty);
     }
 }
 
 export class SubmitActionPeer extends TypedActionPeer<Adaptive.SubmitAction> {
-    internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
-        super.internalAddPropertySheetEntries(card, includeHeader);
+    static readonly ignoreInputValidationProperty = new BooleanPropertyEditor(Versions.vNext, "ignoreInputValidation", "Ignore input validation");
+    static readonly dataProperty = new ObjectPropertyEditor(Versions.v1_0, "data", "Data");
 
-        let ignoreInputValidation = addLabelAndInput(card, "Ignore input validation:", Adaptive.ToggleInput);
-        ignoreInputValidation.input.defaultValue = String(this.action.ignoreInputValidation);
-        ignoreInputValidation.input.onValueChanged = () => {
-            this.action.ignoreInputValidation = ignoreInputValidation.input.value == "true";
-
-            this.changed(false);
-        }
-
-        let data = addLabelAndInput(card, "Data:", Adaptive.TextInput);
-        data.input.isMultiline = true;
-        data.input.defaultValue = JSON.stringify(this.action.data);
-        data.input.placeholder = "(not set)";
-        data.input.onValueChanged = () => {
-            this.action.data = JSON.parse(data.input.value);
-
-            this.changed(false);
-        }
+    populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
+        super.populatePropertySheet(propertySheet, defaultCategory);
+        
+        propertySheet.add(
+            defaultCategory,
+            SubmitActionPeer.ignoreInputValidationProperty,
+            SubmitActionPeer.dataProperty);
     }
 }
 
 export class OpenUrlActionPeer extends TypedActionPeer<Adaptive.OpenUrlAction> {
-    internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
-        super.internalAddPropertySheetEntries(card, includeHeader);
+    static readonly urlProperty = new StringPropertyEditor(Versions.v1_0, "url", "Url");
 
-        var url = addLabelAndInput(card, "Url:", Adaptive.TextInput);
-        url.input.defaultValue = this.action.url;
-        url.input.placeholder = "(not set)";
-        url.input.onValueChanged = () => {
-            this.action.url = url.input.value;
-
-            this.changed(false);
-        }
+    populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
+        super.populatePropertySheet(propertySheet, defaultCategory);
+        
+        propertySheet.add(
+            defaultCategory,
+            OpenUrlActionPeer.urlProperty);
     }
 }
 
@@ -801,7 +1264,26 @@ export class ShowCardActionPeer extends TypedActionPeer<Adaptive.ShowCardAction>
     }
 }
 
-export class CardElementPeer extends DesignerPeer {
+export class ToggleVisibilityActionPeer extends TypedActionPeer<Adaptive.ToggleVisibilityAction> {
+}
+
+export class CardElementPeer extends CardObjectPeer {
+    static readonly dataContextProperty = new CustomCardObjectPropertyEditor("*", "$data", "Data context");
+    static readonly whenProperty = new CustomCardObjectPropertyEditor("*", "$when", "Only show when");
+    static readonly idProperty = new StringPropertyEditor(Versions.v1_0, "id", "Id");
+    static readonly isVisibleProperty = new BooleanPropertyEditor(Versions.v1_2, "isVisible", "Initially visible");
+    static readonly spacingProperty = new EnumPropertyEditor(Versions.v1_0, "spacing", "Spacing", Adaptive.Spacing);
+    static readonly separatorProperty = new BooleanPropertyEditor(Versions.v1_0, "separator", "Separator");
+    static readonly horizontalAlignmentProperty = new EnumPropertyEditor(Versions.v1_0, "horizontalAlignment", "Horizontal alignment", Adaptive.HorizontalAlignment);
+    static readonly heightProperty = new HeightPropertyEditor(
+        Versions.v1_1, 
+        "height",
+        "Height",
+        [
+            { targetVersion: Versions.v1_1, name: "Automatic", value: "auto" },
+            { targetVersion: Versions.v1_1, name: "Stretch", value: "stretch" }
+        ]);
+
     protected _cardElement: Adaptive.CardElement;
 
     protected insertElementAfter(newElement: Adaptive.CardElement) {
@@ -818,106 +1300,23 @@ export class CardElementPeer extends DesignerPeer {
         return this.cardElement.remove();
     }
 
-    protected internalAddBackgroundImageProperties(card: Adaptive.AdaptiveCard, backgroundImage: Adaptive.BackgroundImage) {
-        let header = addHeader(card, "Background image");
-        header.separator = true;
+    protected internalUpdateCssStyles() {
+        super.internalUpdateCssStyles();
 
-        let url = addLabelAndInput(card, "URL:", Adaptive.TextInput);
-        url.input.placeholder = "(not set)";
-
-        if (backgroundImage) {
-            url.input.defaultValue = backgroundImage.url;
+        if (this.cardElement.isVisible) {
+            this.renderedElement.classList.remove("invisible");
         }
-
-        url.input.onValueChanged = () => {
-            backgroundImage.url = url.input.value;
-
-            this.changed(true);
-        }
-
-        if (backgroundImage.isValid()) {
-            let fillMode = addLabelAndInput(card, "Fill mode:", Adaptive.ChoiceSetInput);
-            fillMode.input.isCompact = true;
-            fillMode.input.placeholder = "(not set)";
-            fillMode.input.choices.push(new Adaptive.Choice("Cover", Adaptive.FillMode.Cover.toString()));
-            fillMode.input.choices.push(new Adaptive.Choice("Repeat horizontally", Adaptive.FillMode.RepeatHorizontally.toString()));
-            fillMode.input.choices.push(new Adaptive.Choice("Repeat vertically", Adaptive.FillMode.RepeatVertically.toString()));
-            fillMode.input.choices.push(new Adaptive.Choice("Repeat", Adaptive.FillMode.Repeat.toString()));
-
-            if (backgroundImage) {
-                fillMode.input.defaultValue = backgroundImage.fillMode.toString();
-            }
-
-            fillMode.input.onValueChanged = () => {
-                if (horizontalAlignment.input.value) {
-                    backgroundImage.fillMode = <Adaptive.FillMode>parseInt(fillMode.input.value);
-                }
-
-                this.changed(false);
-            }
-            
-            let horizontalAlignment = addLabelAndInput(card, "Horizontal alignment:", Adaptive.ChoiceSetInput);
-            horizontalAlignment.input.isCompact = true;
-            horizontalAlignment.input.placeholder = "(not set)";
-            horizontalAlignment.input.choices.push(new Adaptive.Choice("Left", Adaptive.HorizontalAlignment.Left.toString()));
-            horizontalAlignment.input.choices.push(new Adaptive.Choice("Center", Adaptive.HorizontalAlignment.Center.toString()));
-            horizontalAlignment.input.choices.push(new Adaptive.Choice("Right", Adaptive.HorizontalAlignment.Right.toString()));
-
-            if (backgroundImage) {
-                horizontalAlignment.input.defaultValue = backgroundImage.horizontalAlignment.toString();
-            }
-
-            horizontalAlignment.input.onValueChanged = () => {
-                if (horizontalAlignment.input.value) {
-                    backgroundImage.horizontalAlignment = <Adaptive.HorizontalAlignment>parseInt(horizontalAlignment.input.value);
-                }
-
-                this.changed(false);
-            }
-            
-            let verticalAlignment = addLabelAndInput(card, "Vertical alignment:", Adaptive.ChoiceSetInput);
-            verticalAlignment.input.isCompact = true;
-            verticalAlignment.input.placeholder = "(not set)";
-            verticalAlignment.input.choices.push(new Adaptive.Choice("Top", Adaptive.VerticalAlignment.Top.toString()));
-            verticalAlignment.input.choices.push(new Adaptive.Choice("Center", Adaptive.VerticalAlignment.Center.toString()));
-            verticalAlignment.input.choices.push(new Adaptive.Choice("Bottom", Adaptive.VerticalAlignment.Bottom.toString()));
-
-            if (backgroundImage) {
-                verticalAlignment.input.defaultValue = backgroundImage.verticalAlignment.toString();
-            }
-
-            verticalAlignment.input.onValueChanged = () => {
-                if (verticalAlignment.input.value) {
-                    backgroundImage.verticalAlignment = <Adaptive.VerticalAlignment>parseInt(verticalAlignment.input.value);
-                }
-
-                this.changed(false);
-            }        
+        else {
+            this.renderedElement.classList.add("invisible");
         }
     }
-
-    protected internalAddMinHeightProperty(card: Adaptive.AdaptiveCard) {
-        let minPixelHeight = addLabelAndInput(card, "Minimum height in pixels:", Adaptive.NumberInput);
-
-        if (this.cardElement.minPixelHeight) {
-            minPixelHeight.input.defaultValue = this.cardElement.minPixelHeight.toString();
-        }
-
-        minPixelHeight.input.placeholder = "(not set)"
-        minPixelHeight.input.onValueChanged = () => {
-            try {
-                this.cardElement.minPixelHeight = parseInt(minPixelHeight.input.value);
-            }
-            catch {
-                this.cardElement.minPixelHeight = null;
-            }
-
-            this.changed(false);
-        }
-    }
-
-    constructor(designerSurface: CardDesignerSurface, registration: DesignerPeerRegistrationBase, cardElement: Adaptive.CardElement) {
-        super(designerSurface, registration);
+    
+    constructor(
+        parent: DesignerPeer,
+        designerSurface: CardDesignerSurface,
+        registration: DesignerPeerRegistrationBase,
+        cardElement: Adaptive.CardElement) {
+        super(parent, designerSurface, registration);
 
         this._cardElement = cardElement;
 
@@ -932,8 +1331,25 @@ export class CardElementPeer extends DesignerPeer {
         }
     }
 
-    getCardObjectTypeName(): string {
-        return this.cardElement.getJsonTypeName();
+    getTreeItemText(): string {
+        let text = super.getTreeItemText();
+        
+        if (this.cardElement.isVisible) {
+            return text;
+        }
+        else {
+            let result = "Hidden";
+            
+            if (text) {
+                result += " - " + text;
+            }
+
+            return result;
+        }
+    }
+
+    getCardObject(): Adaptive.CardObject {
+        return this.cardElement;
     }
 
     initializeCardElement() {
@@ -1036,114 +1452,41 @@ export class CardElementPeer extends DesignerPeer {
         );
     }
 
-    internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
-        if (includeHeader) {
-            addHeader(card, this.cardElement.getJsonTypeName());
+    populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
+        super.populatePropertySheet(propertySheet, defaultCategory);
+
+        if (GlobalSettings.previewFeaturesEnabled) {
+            propertySheet.add(
+                defaultCategory,
+                CardElementPeer.dataContextProperty,
+                CardElementPeer.whenProperty);
         }
 
-        let getExcludedProperties = this.getExcludedProperties();
+        propertySheet.add(
+            defaultCategory,
+            CardElementPeer.idProperty,
+            CardElementPeer.isVisibleProperty);
 
-        if (getExcludedProperties.indexOf("id") < 0) {
-            let id = addLabelAndInput(card, "Id:", Adaptive.TextInput);
-            id.input.defaultValue = this.cardElement.id;
-            id.input.placeholder = "(not set)";
-            id.input.onValueChanged = () => {
-                this.cardElement.id = id.input.value;
-
-                this.changed(false);
-            }
-        }
-
-        if (getExcludedProperties.indexOf("isVisible") < 0) {
-            let isVisible = addLabelAndInput(card, "Initially visible:", Adaptive.ToggleInput);
-            isVisible.input.defaultValue = String(this.cardElement.isVisible);
-            isVisible.input.onValueChanged = () => {
-                this.cardElement.isVisible = isVisible.input.value == "true";
-
-                this.changed(false);
-            }
-        }
-
-        if (getExcludedProperties.indexOf("spacing") < 0) {
-            let spacing = addLabelAndInput(card, "Spacing:", Adaptive.ChoiceSetInput);
-            spacing.input.isCompact = true;
-            spacing.input.choices.push(new Adaptive.Choice("None", Adaptive.Spacing.None.toString()));
-            spacing.input.choices.push(new Adaptive.Choice("Small", Adaptive.Spacing.Small.toString()));
-            spacing.input.choices.push(new Adaptive.Choice("Default", Adaptive.Spacing.Default.toString()));
-            spacing.input.choices.push(new Adaptive.Choice("Medium", Adaptive.Spacing.Medium.toString()));
-            spacing.input.choices.push(new Adaptive.Choice("Large", Adaptive.Spacing.Large.toString()));
-            spacing.input.choices.push(new Adaptive.Choice("Extra large", Adaptive.Spacing.ExtraLarge.toString()));
-            spacing.input.choices.push(new Adaptive.Choice("Default padding", Adaptive.Spacing.Padding.toString()));
-            spacing.input.defaultValue = this.cardElement.spacing.toString();
-            spacing.input.onValueChanged = () => {
-                this.cardElement.spacing = <Adaptive.Spacing>parseInt(spacing.input.value);
-
-                this.changed(false);
-            }
-        }
-
-        if (getExcludedProperties.indexOf("separator") < 0) {
-            let separator = addLabelAndInput(card, "Show separator:", Adaptive.ToggleInput);
-            separator.input.defaultValue = String(this.cardElement.separator);
-            separator.input.onValueChanged = () => {
-                this.cardElement.separator = separator.input.value == "true";
-
-                this.changed(false);
-            }
-        }
-
-        if (getExcludedProperties.indexOf("horizontalAlignment") < 0) {
-            var horizontalAlignment = addLabelAndInput(card, "Horizontal alignment:", Adaptive.ChoiceSetInput);
-            horizontalAlignment.input.isCompact = true;
-            horizontalAlignment.input.placeholder = "(not set)";
-            horizontalAlignment.input.choices.push(new Adaptive.Choice("Left", Adaptive.HorizontalAlignment.Left.toString()));
-            horizontalAlignment.input.choices.push(new Adaptive.Choice("Center", Adaptive.HorizontalAlignment.Center.toString()));
-            horizontalAlignment.input.choices.push(new Adaptive.Choice("Right", Adaptive.HorizontalAlignment.Right.toString()));
-
-            if (this.cardElement.horizontalAlignment) {
-                horizontalAlignment.input.defaultValue = this.cardElement.horizontalAlignment.toString();
-            }
-
-            horizontalAlignment.input.onValueChanged = () => {
-                if (horizontalAlignment.input.value) {
-                    this.cardElement.horizontalAlignment = <Adaptive.HorizontalAlignment>parseInt(horizontalAlignment.input.value);
-                }
-
-                this.changed(false);
-            }
-        }
-
-        if (getExcludedProperties.indexOf("height") < 0) {
-            let height = addLabelAndInput(card, "Height:", Adaptive.ChoiceSetInput);
-            height.input.isCompact = true;
-            height.input.choices.push(new Adaptive.Choice("Automatic", "auto"));
-            height.input.choices.push(new Adaptive.Choice("Stretch", "stretch"));
-            height.input.defaultValue = this.cardElement.height;
-
-            height.input.onValueChanged = () => {
-                switch (height.input.value) {
-                    case "auto":
-                    case "stretch":
-                        this.cardElement.height = height.input.value;
-                        break;
-                    default:
-                        this.cardElement.height = "auto";
-                        break;
-                }
-
-                this.changed(true);
-            }
-        }
+        propertySheet.add(
+            PropertySheetCategory.LayoutCategory,
+            CardElementPeer.spacingProperty,
+            CardElementPeer.separatorProperty,
+            CardElementPeer.horizontalAlignmentProperty,
+            CardElementPeer.heightProperty);
     }
-
+ 
     get cardElement(): Adaptive.CardElement {
         return this._cardElement;
     }
 }
 
 export abstract class TypedCardElementPeer<TCardElement extends Adaptive.CardElement> extends CardElementPeer {
-    constructor(designerSurface: CardDesignerSurface, registration: DesignerPeerRegistrationBase, cardElement: TCardElement) {
-        super(designerSurface, registration, cardElement);
+    constructor(
+        parent: DesignerPeer,
+        designerSurface: CardDesignerSurface,
+        registration: DesignerPeerRegistrationBase,
+        cardElement: TCardElement) {
+        super(parent, designerSurface, registration, cardElement);
     }
 
     get cardElement(): TCardElement {
@@ -1152,6 +1495,10 @@ export abstract class TypedCardElementPeer<TCardElement extends Adaptive.CardEle
 }
 
 export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard> {
+    static readonly langProperty = new StringPropertyEditor(Versions.v1_1, "lang", "Language");
+    static readonly fallbackTextProperty = new StringPropertyEditor(Versions.v1_0, "fallbackText", "Fallback text", true);
+    static readonly speakProperty = new StringPropertyEditor(Versions.v1_0, "speak", "Speak");
+
     protected addAction(action: Adaptive.Action) {
         this.cardElement.addAction(action);
 
@@ -1194,10 +1541,6 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
         );
     }
 
-    protected getExcludedProperties(): Array<string> {
-        return [ "id", "isVisible", "horizontalAlignment", "separator", "height", "spacing" ];
-    }
-
     isDraggable(): boolean {
         return false;
     }
@@ -1206,85 +1549,75 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
         return false;
     }
 
-    internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, updatePropertySheet: boolean) {
-        super.internalAddPropertySheetEntries(card, updatePropertySheet);
-
-        let lang = addLabelAndInput(card, "Language:", Adaptive.TextInput);
-        lang.input.defaultValue = this.cardElement.lang;
-        lang.input.placeholder = "(not set) ISO 639-1 code";
-        lang.input.onValueChanged = () => {
-            this.cardElement.lang = lang.input.value;
-
-            this.changed(false);
-        }
-
-        let fallbackText = addLabelAndInput(card, "Fallback text:", Adaptive.TextInput);
-        fallbackText.input.defaultValue = this.cardElement.fallbackText;
-        fallbackText.input.placeholder = "(not set)";
-        fallbackText.input.isMultiline = true;
-        fallbackText.input.onValueChanged = () => {
-            this.cardElement.fallbackText = fallbackText.input.value;
-
-            this.changed(false);
-        }
-
-        let speak = addLabelAndInput(card, "Speak:", Adaptive.TextInput);
-        speak.input.defaultValue = this.cardElement.fallbackText;
-        speak.input.placeholder = "(not set)";
-        speak.input.isMultiline = true;
-        speak.input.onValueChanged = () => {
-            this.cardElement.speak = speak.input.value;
-
-            this.changed(false);
-        }
-
-        this.internalAddMinHeightProperty(card);
-
-        let verticalContentAlignment = addLabelAndInput(card, "Vertical content alignment:", Adaptive.ChoiceSetInput);
-        verticalContentAlignment.input.isCompact = true;
-        verticalContentAlignment.input.choices.push(new Adaptive.Choice("Top", Adaptive.VerticalAlignment.Top.toString()));
-        verticalContentAlignment.input.choices.push(new Adaptive.Choice("Center", Adaptive.VerticalAlignment.Center.toString()));
-        verticalContentAlignment.input.choices.push(new Adaptive.Choice("Bottom", Adaptive.VerticalAlignment.Bottom.toString()));
-        verticalContentAlignment.input.defaultValue = this.cardElement.verticalContentAlignment.toString();
-        verticalContentAlignment.input.placeholder = "(not set)";
-        verticalContentAlignment.input.onValueChanged = () => {
-            this.cardElement.verticalContentAlignment = <Adaptive.VerticalAlignment>parseInt(verticalContentAlignment.input.value);
-
-            this.changed(false);
-        }
-
-        this.internalAddBackgroundImageProperties(card, this.cardElement.backgroundImage);
+    populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
+        super.populatePropertySheet(propertySheet, defaultCategory);
         
-        let actionSelector = createActionSelector(
-            "Select action",
-            card,
-            this.cardElement.selectAction ? this.cardElement.selectAction.getJsonTypeName() : "none");
+        propertySheet.remove(
+            CardObjectPeer.idProperty,
+            CardElementPeer.isVisibleProperty,
+            CardElementPeer.horizontalAlignmentProperty,
+            CardElementPeer.separatorProperty,
+            CardElementPeer.heightProperty,
+            CardElementPeer.spacingProperty);
 
-        actionSelector.input.onValueChanged = () => {
-            if (actionSelector.input.value == "none") {
-                this.cardElement.selectAction = null;
-            }
-            else {
-                this.cardElement.selectAction = Adaptive.AdaptiveCard.actionTypeRegistry.createInstance(actionSelector.input.value);
-            }
+        propertySheet.add(
+            defaultCategory,
+            AdaptiveCardPeer.langProperty,
+            AdaptiveCardPeer.fallbackTextProperty,
+            AdaptiveCardPeer.speakProperty);
 
-            this.changed(true);
-        }
+        propertySheet.add(
+            PropertySheetCategory.LayoutCategory,
+            ContainerPeer.minHeightProperty,
+            ContainerPeer.verticalContentAlignmentProperty);
+
+        propertySheet.add(
+            "Background image",
+            ContainerPeer.backgroundImageProperty);
+
+        propertySheet.add(
+            PropertySheetCategory.SelectionAction,
+            ContainerPeer.selectActionProperty);
 
         if (this.cardElement.selectAction) {
             let selectActionPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, null, this.cardElement.selectAction);
-            selectActionPeer.internalAddPropertySheetEntries(card, false);
             selectActionPeer.onChanged = (sender: DesignerPeer, updatePropertySheet: boolean) => { this.changed(updatePropertySheet); };
+
+            let subPropertySheet = new PropertySheet(false);
+            selectActionPeer.populatePropertySheet(subPropertySheet, PropertySheetCategory.SelectionAction);
+
+            subPropertySheet.remove(
+                ActionPeer.iconUrlProperty,
+                ActionPeer.styleProperty);
+
+            propertySheet.add(
+                PropertySheetCategory.SelectionAction,
+                new SubPropertySheetEntry(Versions.v1_2, this.cardElement.selectAction, subPropertySheet));
         }
     }
 }
 
 export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
+    private static readonly pixelWidthProperty = new SizeAndUnitPropertyEditor(Versions.v1_1, "width", "Width in pixels", Adaptive.SizeUnit.Pixel);
+    private static readonly weightProperty = new SizeAndUnitPropertyEditor(Versions.v1_0, "width", "Weight", Adaptive.SizeUnit.Weight);
+
+    static readonly widthProperty = new ColumnWidthPropertyEditor(
+        Versions.v1_0,
+        "width",
+        "Width",
+        [
+            { targetVersion: Versions.v1_0, name: "Automatic", value: "auto" },
+            { targetVersion: Versions.v1_0, name: "Stretch", value: "stretch" },
+            { targetVersion: Versions.v1_0, name: "Weighted", value: "weighted" },
+            { targetVersion: Versions.v1_1, name: "Pixels", value: "pixels" }
+        ],
+        true);
+
     protected isContainer(): boolean {
         return true;
     }
 
-    getTreeItemText(): string {
+    protected internalGetTreeItemText(): string {
         if (this.cardElement.width instanceof Adaptive.SizeAndUnit) {
             switch (this.cardElement.width.unit) {
                 case Adaptive.SizeUnit.Weight:
@@ -1309,151 +1642,58 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
         return false;
     }
 
-    internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
-        super.internalAddPropertySheetEntries(card, includeHeader);
-
-        let width = addLabelAndInput(card, "Width:", Adaptive.ChoiceSetInput);
-        width.input.isCompact = true;
-        width.input.choices.push(new Adaptive.Choice("Automatic", "auto"));
-        width.input.choices.push(new Adaptive.Choice("Stretch", "stretch"));
-        width.input.choices.push(new Adaptive.Choice("Weighted", "weighted"));
-        width.input.choices.push(new Adaptive.Choice("Pixels", "pixels"));
+    populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
+        super.populatePropertySheet(propertySheet, defaultCategory);
+        
+        propertySheet.add(
+            defaultCategory,
+            ColumnPeer.widthProperty);
 
         if (this.cardElement.width instanceof Adaptive.SizeAndUnit) {
             if (this.cardElement.width.unit == Adaptive.SizeUnit.Pixel) {
-                width.input.defaultValue = "pixels";
-
-                let pixelWidth = addLabelAndInput(card, "Width in pixels:", Adaptive.NumberInput);
-                pixelWidth.input.defaultValue = this.cardElement.width.physicalSize.toString();
-                pixelWidth.input.placeholder = "(not set)"
-                pixelWidth.input.onValueChanged = () => {
-                    try {
-                        this.cardElement.width = new Adaptive.SizeAndUnit(parseInt(pixelWidth.input.value), Adaptive.SizeUnit.Pixel);
-
-                        this.changed(false);
-                    }
-                    catch {
-                        // Do nothing. The specified width is invalid
-                    }
-                }
+                propertySheet.add(
+                    PropertySheetCategory.DefaultCategory,
+                    ColumnPeer.pixelWidthProperty);
             }
             else {
-                width.input.defaultValue = "weighted";
-
-                let weightedWidth = addLabelAndInput(card, "Weight:", Adaptive.NumberInput);
-                weightedWidth.input.defaultValue = this.cardElement.width.physicalSize.toString();
-                weightedWidth.input.placeholder = "(not set)"
-                weightedWidth.input.onValueChanged = () => {
-                    try {
-                        this.cardElement.width = new Adaptive.SizeAndUnit(parseInt(weightedWidth.input.value), Adaptive.SizeUnit.Weight);
-
-                        this.changed(false);
-                    }
-                    catch {
-                        // Do nothing. The specified width is invalid
-                    }
-                }
+                propertySheet.add(
+                    PropertySheetCategory.DefaultCategory,
+                    ColumnPeer.weightProperty);
             }
         }
-        else {
-            width.input.defaultValue = this.cardElement.width.toString();
-        }
 
-        width.input.placeholder = "(not set)";
+        propertySheet.add(
+            PropertySheetCategory.LayoutCategory,
+            ContainerPeer.minHeightProperty,
+            ContainerPeer.verticalContentAlignmentProperty);
 
-        width.input.onValueChanged = () => {
-            switch (width.input.value) {
-                case "auto":
-                    this.cardElement.width = "auto";
-                    break;
-                case "pixels":
-                    this.cardElement.width = new Adaptive.SizeAndUnit(50, Adaptive.SizeUnit.Pixel);
-                    break;
-                case "weighted":
-                    this.cardElement.width = new Adaptive.SizeAndUnit(50, Adaptive.SizeUnit.Weight);
-                    break;
-                case "stretch":
-                default:
-                    this.cardElement.width = "stretch";
-                    break;
-            }
+        propertySheet.add(
+            PropertySheetCategory.StyleCategory,
+            ContainerPeer.styleProperty,
+            ContainerPeer.bleedProperty);
 
-            this.changed(true);
-        }
+        propertySheet.add(
+            "Background image",
+            ContainerPeer.backgroundImageProperty);
 
-        this.internalAddMinHeightProperty(card);
-
-        let verticalContentAlignment = addLabelAndInput(card, "Vertical content alignment:", Adaptive.ChoiceSetInput);
-        verticalContentAlignment.input.isCompact = true;
-        verticalContentAlignment.input.choices.push(new Adaptive.Choice("Top", Adaptive.VerticalAlignment.Top.toString()));
-        verticalContentAlignment.input.choices.push(new Adaptive.Choice("Center", Adaptive.VerticalAlignment.Center.toString()));
-        verticalContentAlignment.input.choices.push(new Adaptive.Choice("Bottom", Adaptive.VerticalAlignment.Bottom.toString()));
-        verticalContentAlignment.input.defaultValue = this.cardElement.verticalContentAlignment.toString();
-        verticalContentAlignment.input.placeholder = "(not set)";
-        verticalContentAlignment.input.onValueChanged = () => {
-            this.cardElement.verticalContentAlignment = <Adaptive.VerticalAlignment>parseInt(verticalContentAlignment.input.value);
-
-            this.changed(false);
-        }
-
-        let style = addLabelAndInput(card, "Style:", Adaptive.ChoiceSetInput);
-        style.input.isCompact = true;
-        style.input.choices.push(new Adaptive.Choice("(not set)", "not_set"));
-        style.input.choices.push(new Adaptive.Choice("Default", "default"));
-        style.input.choices.push(new Adaptive.Choice("Emphasis", "emphasis"));
-        style.input.choices.push(new Adaptive.Choice("Accent", "accent"));
-        style.input.choices.push(new Adaptive.Choice("Good", "good"));
-        style.input.choices.push(new Adaptive.Choice("Attention", "attention"));
-        style.input.choices.push(new Adaptive.Choice("Warning", "warning"));
-
-        if (this.cardElement.style) {
-            style.input.defaultValue = this.cardElement.style.toString();
-        }
-        else {
-            style.input.defaultValue = "not_set";
-        }
-
-        style.input.onValueChanged = () => {
-            if (style.input.value == "not_set") {
-                this.cardElement.style = null;
-            }
-            else {
-                this.cardElement.style = style.input.value;
-            }
-
-            this.changed(false);
-        }
-
-        let bleed = addLabelAndInput(card, "Bleed:", Adaptive.ToggleInput);
-        bleed.input.defaultValue = String(this.cardElement.bleed);
-        bleed.input.onValueChanged = () => {
-            this.cardElement.bleed = bleed.input.value == "true";
-
-            this.changed(false);
-        }
-
-        this.internalAddBackgroundImageProperties(card, this.cardElement.backgroundImage);
-
-        let actionSelector = createActionSelector(
-            "Select action",
-            card,
-            this.cardElement.selectAction ? this.cardElement.selectAction.getJsonTypeName() : "none");
-
-        actionSelector.input.onValueChanged = () => {
-            if (actionSelector.input.value == "none") {
-                this.cardElement.selectAction = null;
-            }
-            else {
-                this.cardElement.selectAction = Adaptive.AdaptiveCard.actionTypeRegistry.createInstance(actionSelector.input.value);
-            }
-
-            this.changed(true);
-        }
-
+        propertySheet.add(
+            PropertySheetCategory.SelectionAction,
+            ContainerPeer.selectActionProperty);  
+   
         if (this.cardElement.selectAction) {
             let selectActionPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, null, this.cardElement.selectAction);
-            selectActionPeer.internalAddPropertySheetEntries(card, false);
             selectActionPeer.onChanged = (sender: DesignerPeer, updatePropertySheet: boolean) => { this.changed(updatePropertySheet); };
+
+            let subPropertySheet = new PropertySheet(false);
+            selectActionPeer.populatePropertySheet(subPropertySheet, PropertySheetCategory.SelectionAction);
+
+            subPropertySheet.remove(
+                ActionPeer.iconUrlProperty,
+                ActionPeer.styleProperty);
+
+            propertySheet.add(
+                PropertySheetCategory.SelectionAction,
+                new SubPropertySheetEntry(Versions.v1_2, this.cardElement.selectAction, subPropertySheet));
         }
     }
 }
@@ -1484,7 +1724,7 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
         );
     }
 
-    getTreeItemText(): string {
+    protected internalGetTreeItemText(): string {
         let columnCount = this.cardElement.getCount();
 
         switch (columnCount) {
@@ -1497,67 +1737,33 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
         }
     }
 
-    internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
-        super.internalAddPropertySheetEntries(card, includeHeader);
+    populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
+        super.populatePropertySheet(propertySheet, defaultCategory);
+        
+        propertySheet.add(
+            defaultCategory,
+            ContainerPeer.minHeightProperty,
+            ContainerPeer.styleProperty,
+            ContainerPeer.bleedProperty);
 
-        this.internalAddMinHeightProperty(card);
-
-        let style = addLabelAndInput(card, "Style:", Adaptive.ChoiceSetInput);
-        style.input.isCompact = true;
-        style.input.choices.push(new Adaptive.Choice("(not set)", "not_set"));
-        style.input.choices.push(new Adaptive.Choice("Default", "default"));
-        style.input.choices.push(new Adaptive.Choice("Emphasis", "emphasis"));
-        style.input.choices.push(new Adaptive.Choice("Accent", "accent"));
-        style.input.choices.push(new Adaptive.Choice("Good", "good"));
-        style.input.choices.push(new Adaptive.Choice("Attention", "attention"));
-        style.input.choices.push(new Adaptive.Choice("Warning", "warning"));
-
-        if (this.cardElement.style) {
-            style.input.defaultValue = this.cardElement.style.toString();
-        }
-        else {
-            style.input.defaultValue = "not_set";
-        }
-
-        style.input.onValueChanged = () => {
-            if (style.input.value == "not_set") {
-                this.cardElement.style = null;
-            }
-            else {
-                this.cardElement.style = style.input.value;
-            }
-
-            this.changed(false);
-        }
-
-        let bleed = addLabelAndInput(card, "Bleed:", Adaptive.ToggleInput);
-        bleed.input.defaultValue = String(this.cardElement.bleed);
-        bleed.input.onValueChanged = () => {
-            this.cardElement.bleed = bleed.input.value == "true";
-
-            this.changed(false);
-        }
-
-        var actionSelector = createActionSelector(
-            "Select action",
-            card,
-            this.cardElement.selectAction ? this.cardElement.selectAction.getJsonTypeName() : "none");
-
-        actionSelector.input.onValueChanged = () => {
-            if (actionSelector.input.value == "none") {
-                this.cardElement.selectAction = null;
-            }
-            else {
-                this.cardElement.selectAction = Adaptive.AdaptiveCard.actionTypeRegistry.createInstance(actionSelector.input.value);
-            }
-
-            this.changed(true);
-        }
-
+        propertySheet.add(
+            PropertySheetCategory.SelectionAction,
+            ContainerPeer.selectActionProperty);
+    
         if (this.cardElement.selectAction) {
             let selectActionPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, null, this.cardElement.selectAction);
-            selectActionPeer.internalAddPropertySheetEntries(card, false);
             selectActionPeer.onChanged = (sender: DesignerPeer, updatePropertySheet: boolean) => { this.changed(updatePropertySheet); };
+
+            let subPropertySheet = new PropertySheet(false);
+            selectActionPeer.populatePropertySheet(subPropertySheet, PropertySheetCategory.SelectionAction);
+
+            subPropertySheet.remove(
+                ActionPeer.iconUrlProperty,
+                ActionPeer.styleProperty);
+
+            propertySheet.add(
+                PropertySheetCategory.SelectionAction,
+                new SubPropertySheetEntry(Versions.v1_2, this.cardElement.selectAction, subPropertySheet));
         }
     }
 
@@ -1567,86 +1773,61 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
 }
 
 export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
+    static readonly selectActionProperty = new ActionPropertyEditor(Versions.v1_0, "selectAction", "Action type", [ Adaptive.ShowCardAction.JsonTypeName ], true);
+    static readonly minHeightProperty = new NumberPropertyEditor(Versions.v1_2, "minPixelHeight", "Minimum height in pixels");
+    static readonly verticalContentAlignmentProperty = new EnumPropertyEditor(Versions.v1_1, "verticalContentAlignment", "Vertical content alignment", Adaptive.VerticalAlignment);
+    static readonly styleProperty = new ContainerStylePropertyEditor(Versions.v1_0, "style", "Style");
+    static readonly bleedProperty = new BooleanPropertyEditor(Versions.v1_2, "bleed", "Bleed");
+    static readonly backgroundImageProperty = new CompoundPropertyEditor(
+        Versions.v1_0, 
+        "backgroundImage",
+        [
+            new StringPropertyEditor(Versions.v1_0, "url", "URL"),
+            new EnumPropertyEditor(Versions.v1_2, "fillMode", "Fill mode", Adaptive.FillMode),
+            new EnumPropertyEditor(Versions.v1_2, "horizontalAlignment", "Horizontal alignment", Adaptive.HorizontalAlignment),
+            new EnumPropertyEditor(Versions.v1_2, "verticalAlignment", "Vertical alignment", Adaptive.VerticalAlignment)
+        ]
+    );
+
     protected isContainer(): boolean {
         return true;
     }
 
-    internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
-        super.internalAddPropertySheetEntries(card, includeHeader);
+    populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
+        super.populatePropertySheet(propertySheet, defaultCategory);
+        
+        propertySheet.add(
+            PropertySheetCategory.LayoutCategory,
+            ContainerPeer.minHeightProperty,
+            ContainerPeer.verticalContentAlignmentProperty);
 
-        this.internalAddMinHeightProperty(card);
+        propertySheet.add(
+            PropertySheetCategory.StyleCategory,
+            ContainerPeer.styleProperty,
+            ContainerPeer.bleedProperty);
 
-        let verticalContentAlignment = addLabelAndInput(card, "Vertical content alignment:", Adaptive.ChoiceSetInput);
-        verticalContentAlignment.input.isCompact = true;
-        verticalContentAlignment.input.choices.push(new Adaptive.Choice("Top", Adaptive.VerticalAlignment.Top.toString()));
-        verticalContentAlignment.input.choices.push(new Adaptive.Choice("Center", Adaptive.VerticalAlignment.Center.toString()));
-        verticalContentAlignment.input.choices.push(new Adaptive.Choice("Bottom", Adaptive.VerticalAlignment.Bottom.toString()));
-        verticalContentAlignment.input.defaultValue = this.cardElement.verticalContentAlignment.toString();
-        verticalContentAlignment.input.placeholder = "(not set)";
-        verticalContentAlignment.input.onValueChanged = () => {
-            this.cardElement.verticalContentAlignment = <Adaptive.VerticalAlignment>parseInt(verticalContentAlignment.input.value);
+        propertySheet.add(
+            "Background image",
+            ContainerPeer.backgroundImageProperty);
 
-            this.changed(false);
-        }
-
-        let style = addLabelAndInput(card, "Style:", Adaptive.ChoiceSetInput);
-        style.input.isCompact = true;
-        style.input.choices.push(new Adaptive.Choice("(not set)", "not_set"));
-        style.input.choices.push(new Adaptive.Choice("Default", "default"));
-        style.input.choices.push(new Adaptive.Choice("Emphasis", "emphasis"));
-        style.input.choices.push(new Adaptive.Choice("Accent", "accent"));
-        style.input.choices.push(new Adaptive.Choice("Good", "good"));
-        style.input.choices.push(new Adaptive.Choice("Attention", "attention"));
-        style.input.choices.push(new Adaptive.Choice("Warning", "warning"));
-
-        if (this.cardElement.style) {
-            style.input.defaultValue = this.cardElement.style.toString();
-        }
-        else {
-            style.input.defaultValue = "not_set";
-        }
-
-        style.input.onValueChanged = () => {
-            if (style.input.value == "not_set") {
-                this.cardElement.style = null;
-            }
-            else {
-                this.cardElement.style = style.input.value;
-            }
-
-            this.changed(false);
-        }
-
-        let bleed = addLabelAndInput(card, "Bleed:", Adaptive.ToggleInput);
-        bleed.input.defaultValue = String(this.cardElement.bleed);
-        bleed.input.onValueChanged = () => {
-            this.cardElement.bleed = bleed.input.value == "true";
-
-            this.changed(false);
-        }
-
-        this.internalAddBackgroundImageProperties(card, this.cardElement.backgroundImage);
-
-        let actionSelector = createActionSelector(
-            "Select action",
-            card,
-            this.cardElement.selectAction ? this.cardElement.selectAction.getJsonTypeName() : "none");
-
-        actionSelector.input.onValueChanged = () => {
-            if (actionSelector.input.value == "none") {
-                this.cardElement.selectAction = null;
-            }
-            else {
-                this.cardElement.selectAction = Adaptive.AdaptiveCard.actionTypeRegistry.createInstance(actionSelector.input.value);
-            }
-
-            this.changed(true);
-        }
+        propertySheet.add(
+            PropertySheetCategory.SelectionAction,
+            ContainerPeer.selectActionProperty);
 
         if (this.cardElement.selectAction) {
             let selectActionPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, null, this.cardElement.selectAction);
-            selectActionPeer.internalAddPropertySheetEntries(card, false);
             selectActionPeer.onChanged = (sender: DesignerPeer, updatePropertySheet: boolean) => { this.changed(updatePropertySheet); };
+
+            let subPropertySheet = new PropertySheet(false);
+            selectActionPeer.populatePropertySheet(subPropertySheet, PropertySheetCategory.SelectionAction);
+
+            subPropertySheet.remove(
+                ActionPeer.iconUrlProperty,
+                ActionPeer.styleProperty);
+
+            propertySheet.add(
+                PropertySheetCategory.SelectionAction,
+                new SubPropertySheetEntry(Versions.v1_2, this.cardElement.selectAction, subPropertySheet));
         }
     }
 }
@@ -1691,43 +1872,8 @@ export class ActionSetPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard> {
     }
 }
 
-function createActionSelector(title: string, card: Adaptive.AdaptiveCard, defaultValue: string): ILabelAndInput<Adaptive.ChoiceSetInput> {
-    let header = addHeader(card, title);
-    header.separator = true;
-
-    let actionSelector = addLabelAndInput(card, "Action type:", Adaptive.ChoiceSetInput);
-    actionSelector.input.isCompact = true;
-    actionSelector.input.choices.push(new Adaptive.Choice("(not set)", "none"));
-
-    for (var i = 0; i < Adaptive.AdaptiveCard.actionTypeRegistry.getItemCount(); i++) {
-        let choice = new Adaptive.Choice(Adaptive.AdaptiveCard.actionTypeRegistry.getItemAt(i).typeName, Adaptive.AdaptiveCard.actionTypeRegistry.getItemAt(i).typeName);
-
-        actionSelector.input.choices.push(choice);
-    }
-
-    actionSelector.input.defaultValue = defaultValue;
-
-    return actionSelector;
-}
-
 export class ImageSetPeer extends TypedCardElementPeer<Adaptive.ImageSet> {
-    internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
-        super.internalAddPropertySheetEntries(card, includeHeader);
-
-        var imageSize = addLabelAndInput(card, "Image Size:", Adaptive.ChoiceSetInput);
-        imageSize.input.isCompact = true;
-        imageSize.input.choices.push(new Adaptive.Choice("Automatic", Adaptive.Size.Auto.toString()));
-        imageSize.input.choices.push(new Adaptive.Choice("Small", Adaptive.Size.Small.toString()));
-        imageSize.input.choices.push(new Adaptive.Choice("Medium", Adaptive.Size.Medium.toString()));
-        imageSize.input.choices.push(new Adaptive.Choice("Large", Adaptive.Size.Large.toString()));
-        imageSize.input.choices.push(new Adaptive.Choice("Stretch", Adaptive.Size.Stretch.toString()));
-        imageSize.input.defaultValue = this.cardElement.imageSize.toString();
-        imageSize.input.onValueChanged = () => {
-            this.cardElement.imageSize = <Adaptive.Size>parseInt(imageSize.input.value);
-
-            this.changed(false);
-        }
-    }
+    static readonly ImageSizeProperty = new EnumPropertyEditor(Versions.v1_0, "imageSize", "Image size", Adaptive.Size);
 
     protected internalAddCommands(commands: Array<PeerCommand>) {
         super.internalAddCommands(commands);
@@ -1748,9 +1894,25 @@ export class ImageSetPeer extends TypedCardElementPeer<Adaptive.ImageSet> {
                 })
         );
     }
+
+    populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
+        super.populatePropertySheet(propertySheet, defaultCategory);
+        
+        propertySheet.add(
+            defaultCategory,
+            ImageSetPeer.ImageSizeProperty);
+    }
 }
 
 export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
+    static readonly urlProperty = new StringPropertyEditor(Versions.v1_0, "url", "Url");
+    static readonly altTextProperty = new StringPropertyEditor(Versions.v1_0, "altText", "Alternate text");
+    static readonly sizeProperty = new EnumPropertyEditor(Versions.v1_0, "size", "Size", Adaptive.Size);
+    static readonly pixelWidthProperty = new NumberPropertyEditor(Versions.v1_1, "pixelWidth", "Width in pixels");
+    static readonly pixelHeightProperty = new NumberPropertyEditor(Versions.v1_1, "pixelHeight", "Height in pixels");
+    static readonly styleProperty = new EnumPropertyEditor(Versions.v1_0, "style", "Style", Adaptive.ImageStyle);
+    static readonly backgroundColorProperty = new StringPropertyEditor(Versions.v1_1, "backgroundColor", "Background color");
+
     private get isParentImageSet(): boolean {
         return this.parent && this.parent instanceof ImageSetPeer;
     }
@@ -1776,124 +1938,63 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
         }
     }
 
-    internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
-        super.internalAddPropertySheetEntries(card, includeHeader);
-
-        let url = addLabelAndInput(card, "Url:", Adaptive.TextInput);
-        url.input.defaultValue = this.cardElement.url;
-        url.input.onValueChanged = () => {
-            this.cardElement.url = url.input.value;
-
-            this.changed(false);
-        }
-
-        let altText = addLabelAndInput(card, "Alternate text:", Adaptive.TextInput);
-        altText.input.placeholder = "(not set)";
-        altText.input.defaultValue = this.cardElement.altText;
-        altText.input.onValueChanged = () => {
-            this.cardElement.altText = altText.input.value;
-
-            this.changed(false);
-        }
+    populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
+        super.populatePropertySheet(propertySheet, defaultCategory);
+        
+        propertySheet.add(
+            defaultCategory,
+            ImagePeer.urlProperty,
+            ImagePeer.altTextProperty);
 
         if (!this.isParentImageSet) {
-            let size = addLabelAndInput(card, "Size:", Adaptive.ChoiceSetInput);
-            size.input.isCompact = true;
-            size.input.choices.push(new Adaptive.Choice("Automatic", Adaptive.Size.Auto.toString()));
-            size.input.choices.push(new Adaptive.Choice("Small", Adaptive.Size.Small.toString()));
-            size.input.choices.push(new Adaptive.Choice("Medium", Adaptive.Size.Medium.toString()));
-            size.input.choices.push(new Adaptive.Choice("Large", Adaptive.Size.Large.toString()));
-            size.input.choices.push(new Adaptive.Choice("Stretch", Adaptive.Size.Stretch.toString()));
-            size.input.defaultValue = this.cardElement.size.toString();
-            size.input.onValueChanged = () => {
-                this.cardElement.size = <Adaptive.Size>parseInt(size.input.value);
+            propertySheet.add(
+                PropertySheetCategory.LayoutCategory,
+                ImagePeer.sizeProperty,
+                ImagePeer.pixelWidthProperty,
+                ImagePeer.pixelHeightProperty);
 
-                this.changed(false);
-            }
+            propertySheet.add(
+                PropertySheetCategory.StyleCategory,
+                ImagePeer.styleProperty,
+                ImagePeer.backgroundColorProperty);
 
-            let width = addLabelAndInput(card, "Width in pixels:", Adaptive.TextInput);
-            width.input.placeholder = "(not set)";
-
-            if (this.cardElement.pixelWidth) {
-                width.input.defaultValue = this.cardElement.pixelWidth.toString();
-            }
-
-            width.input.onValueChanged = () => {
-                try {
-                    this.cardElement.pixelWidth = parseInt(width.input.value);
-                }
-                catch (e) {
-                    this.cardElement.pixelWidth = null;
-                }
-
-                this.changed(false);
-            }
-
-            let height = addLabelAndInput(card, "Height in pixels:", Adaptive.TextInput);
-            height.input.placeholder = "(not set)";
-
-            if (this.cardElement.pixelHeight) {
-                height.input.defaultValue = this.cardElement.pixelHeight.toString();
-            }
-
-            height.input.onValueChanged = () => {
-                try {
-                    this.cardElement.pixelHeight = parseInt(height.input.value);
-                }
-                catch (e) {
-                    this.cardElement.pixelHeight = null;
-                }
-
-                this.changed(false);
-            }
-
-            let style = addLabelAndInput(card, "Style:", Adaptive.ChoiceSetInput);
-            style.input.isCompact = true;
-            style.input.choices.push(new Adaptive.Choice("Default", Adaptive.ImageStyle.Default.toString()));
-            style.input.choices.push(new Adaptive.Choice("Person", Adaptive.ImageStyle.Person.toString()));
-            style.input.defaultValue = this.cardElement.style.toString();
-            style.input.onValueChanged = () => {
-                this.cardElement.style = <Adaptive.ImageStyle>parseInt(style.input.value);
-
-                this.changed(false);
-            }
-
-            let backgroundColor = addLabelAndInput(card, "Background color:", Adaptive.TextInput);
-            backgroundColor.input.placeholder = "(not set) Format: #RRGGBB";
-            backgroundColor.input.defaultValue = this.cardElement.backgroundColor;
-            backgroundColor.input.onValueChanged = () => {
-                this.cardElement.backgroundColor = backgroundColor.input.value;
-
-                this.changed(false);
-            }
-
-            let actionSelector = createActionSelector(
-                "Select action",
-                card,
-                this.cardElement.selectAction ? this.cardElement.selectAction.getJsonTypeName() : "none");
-
-            actionSelector.input.onValueChanged = () => {
-                if (actionSelector.input.value == "none") {
-                    this.cardElement.selectAction = null;
-                }
-                else {
-                    this.cardElement.selectAction = Adaptive.AdaptiveCard.actionTypeRegistry.createInstance(actionSelector.input.value);
-                }
-
-                this.changed(true);
-            }
+            propertySheet.add(
+                PropertySheetCategory.SelectionAction,
+                ContainerPeer.selectActionProperty);
 
             if (this.cardElement.selectAction) {
                 let selectActionPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, null, this.cardElement.selectAction);
-                selectActionPeer.internalAddPropertySheetEntries(card, false);
                 selectActionPeer.onChanged = (sender: DesignerPeer, updatePropertySheet: boolean) => { this.changed(updatePropertySheet); };
-            }
+
+                let subPropertySheet = new PropertySheet(false);
+                selectActionPeer.populatePropertySheet(subPropertySheet, PropertySheetCategory.SelectionAction);
+    
+                subPropertySheet.remove(
+                    ActionPeer.iconUrlProperty,
+                    ActionPeer.styleProperty);
+    
+                propertySheet.add(
+                    PropertySheetCategory.SelectionAction,
+                    new SubPropertySheetEntry(Versions.v1_2, this.cardElement.selectAction, subPropertySheet));            }
         }
     }
 }
 
 export class MediaPeer extends TypedCardElementPeer<Adaptive.Media> {
-    getTreeItemText(): string {
+    static readonly altTextProperty = new StringPropertyEditor(Versions.v1_1, "altText", "Alternate text");
+    static readonly posterUrlProperty = new StringPropertyEditor(Versions.v1_1, "posterUrl", "Poster URL");
+    static readonly sourcesProperty = new NameValuePairPropertyEditor(
+        Versions.v1_1, 
+        "sources",
+        "url",
+        "mimeType",
+        (name: string, value: string) => { return new Adaptive.MediaSource(name, value); },
+        "URL",
+        "MIME type",
+        "Add a new source",
+        "No source has been defined.");
+
+    protected internalGetTreeItemText(): string {
         if (this.cardElement.selectedMediaType == "audio") {
             return "audio";
         }
@@ -1901,71 +2002,37 @@ export class MediaPeer extends TypedCardElementPeer<Adaptive.Media> {
             return "video";
         }
         else {
-            return super.getTreeItemText();
+            return super.internalGetTreeItemText();
         }
     }
 
-    internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
-        super.internalAddPropertySheetEntries(card, includeHeader);
+    populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
+        super.populatePropertySheet(propertySheet, defaultCategory);
+        
+        propertySheet.add(
+            defaultCategory,
+            MediaPeer.altTextProperty,
+            MediaPeer.posterUrlProperty);
 
-        let altText = addLabelAndInput(card, "Alternate text:", Adaptive.TextInput);
-        altText.input.placeholder = "(not set)";
-        altText.input.defaultValue = this.cardElement.altText;
-        altText.input.onValueChanged = () => {
-            this.cardElement.altText = altText.input.value;
-
-            this.changed(false);
-        }
-
-        var posterUrl = addLabelAndInput(card, "Poster URL:", Adaptive.TextInput);
-        posterUrl.input.placeholder = "(not set)";
-        posterUrl.input.defaultValue = this.cardElement.poster;
-        posterUrl.input.onValueChanged = () => {
-            this.cardElement.poster = posterUrl.input.value;
-
-            this.changed(false);
-        }
-
-        let sourcesEditor = new NameValuePairEditor();
-        sourcesEditor.title = "Sources:";
-        sourcesEditor.addButtonTitle = "Add a new source";
-        sourcesEditor.messageIfEmpty = "No source has been defined.";
-        sourcesEditor.nameInputTitle = "URL";
-        sourcesEditor.valueInputTitle = "MIME type";
-
-        for (let source of this.cardElement.sources) {
-            sourcesEditor.nameValuePairs.push({ "name": source.url, "value": source.mimeType });
-        }
-
-        sourcesEditor.onChanged = (sender, refreshPropertySheet) => {
-            this.cardElement.sources = [];
-
-            for (let nameValuePair of sender.nameValuePairs) {
-                this.cardElement.sources.push(new Adaptive.MediaSource(nameValuePair.name, nameValuePair.value));
-            }
-
-            this.changed(refreshPropertySheet);
-        };
-
-        card.addItem(sourcesEditor.render());
+        propertySheet.add(
+            "Sources",
+            MediaPeer.sourcesProperty);
     }
 }
 
 export class FactSetPeer extends TypedCardElementPeer<Adaptive.FactSet> {
-    protected getExcludedProperties(): Array<string> {
-        return [ "horizontalAlignment" ];
-    }
+    static readonly factsProperty = new NameValuePairPropertyEditor(
+        Versions.v1_0, 
+        "facts",
+        "name",
+        "value",
+        (name: string, value: string) => { return new Adaptive.Fact(name, value); },
+        "Name",
+        "Value",
+        "Add a new fact",
+        "This FactSet is empty.");
 
-    initializeCardElement() {
-        super.initializeCardElement();
-
-        this.cardElement.facts.push(
-            new Adaptive.Fact("Fact 1", "Value 1"),
-            new Adaptive.Fact("Fact 2", "Value 2")
-        );
-    }
-
-    getTreeItemText(): string {
+    protected internalGetTreeItemText(): string {
         if (this.cardElement.facts.length == 0) {
             return "No fact";
         }
@@ -1979,292 +2046,214 @@ export class FactSetPeer extends TypedCardElementPeer<Adaptive.FactSet> {
         return allNames.join(", ");
     }
 
-    internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
-        super.internalAddPropertySheetEntries(card, includeHeader);
+    initializeCardElement() {
+        super.initializeCardElement();
 
-        let factsEditor = new NameValuePairEditor();
-        factsEditor.title = "Facts:";
-        factsEditor.addButtonTitle = "Add a new fact";
-        factsEditor.messageIfEmpty = "This FactSet is empty.";
+        this.cardElement.facts.push(
+            new Adaptive.Fact("Fact 1", "Value 1"),
+            new Adaptive.Fact("Fact 2", "Value 2")
+        );
+    }
 
-        for (let fact of this.cardElement.facts) {
-            factsEditor.nameValuePairs.push({ "name": fact.name, "value": fact.value });
-        }
+    populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
+        super.populatePropertySheet(propertySheet, defaultCategory);
+        
+        propertySheet.add(
+            "Facts",
+            FactSetPeer.factsProperty);
 
-        factsEditor.onChanged = (sender, refreshPropertySheet) => {
-            this.cardElement.facts = [];
-
-            for (let nameValuePair of sender.nameValuePairs) {
-                this.cardElement.facts.push(new Adaptive.Fact(nameValuePair.name, nameValuePair.value));
-            }
-
-            this.changed(refreshPropertySheet);
-        };
-
-        card.addItem(factsEditor.render());
+        propertySheet.remove(CardElementPeer.horizontalAlignmentProperty);
     }
 }
 
 export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCardElementPeer<TInput> {
-    protected getExcludedProperties(): Array<string> {
-        return [ "horizontalAlignment", "height" ];
-    }
+    static readonly defaultValueProperty = new StringPropertyEditor(Versions.v1_0, "defaultValue", "Default value");
+    static readonly validationProperty = new CompoundPropertyEditor(
+        Versions.vNext, 
+        "validation",
+        [
+            new EnumPropertyEditor(Versions.vNext, "necessity", "Necessity", Adaptive.InputValidationNecessity),
+            new StringPropertyEditor(Versions.vNext, "errorMessage", "Error message")
+        ]
+    );
 
-    internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
-        super.internalAddPropertySheetEntries(card, includeHeader);
+    populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
+        super.populatePropertySheet(propertySheet, defaultCategory);
+        
+        propertySheet.add(
+            "Validation",
+            InputPeer.validationProperty);
 
-        let title = addLabelAndInput(card, "Title:", Adaptive.TextInput);
-        title.input.placeholder = "(not set)";
-        title.input.defaultValue = this.cardElement.title;
-        title.input.onValueChanged = () => {
-            this.cardElement.title = title.input.value;
-
-            this.changed(false);
-        }
-
-        let defaultValue = addLabelAndInput(card, "Default value:", Adaptive.TextInput);
-        defaultValue.input.placeholder = "(not set)";
-        defaultValue.input.defaultValue = this.cardElement.defaultValue;
-        defaultValue.input.onValueChanged = () => {
-            this.cardElement.defaultValue = defaultValue.input.value;
-
-            this.changed(false);
-        }
-
-        let validationNecessity = addLabelAndInput(card, "Necessity:", Adaptive.ChoiceSetInput);
-        validationNecessity.input.isCompact = true;
-        validationNecessity.input.choices.push(new Adaptive.Choice("Optional", Adaptive.InputValidationNecessity.Optional.toString()));
-        validationNecessity.input.choices.push(new Adaptive.Choice("Required", Adaptive.InputValidationNecessity.Required.toString()));
-        validationNecessity.input.choices.push(new Adaptive.Choice("Required with visual cue", Adaptive.InputValidationNecessity.RequiredWithVisualCue.toString()));
-        validationNecessity.input.defaultValue = this.cardElement.validation.necessity.toString();
-        validationNecessity.input.onValueChanged = () => {
-            this.cardElement.validation.necessity = <Adaptive.InputValidationNecessity>parseInt(validationNecessity.input.value);
-
-            this.changed(false);
-        }
-
-        let validationErrorMessage = addLabelAndInput(card, "Error message:", Adaptive.TextInput);
-        validationErrorMessage.input.placeholder = "(not set)";
-        validationErrorMessage.input.defaultValue = this.cardElement.validation.errorMessage;
-        validationErrorMessage.input.onValueChanged = () => {
-            this.cardElement.validation.errorMessage = validationErrorMessage.input.value;
-
-            this.changed(false);
-        }
-    }
-
-    initializeCardElement() {
-        super.initializeCardElement();
-
-        this.cardElement.title = "New Input.Toggle";
+        propertySheet.remove(
+            CardElementPeer.horizontalAlignmentProperty,
+            CardElementPeer.heightProperty);
     }
 }
 
 export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
+    static readonly placeholderProperty = new StringPropertyEditor(Versions.v1_0, "placeholder", "Placeholder");
+    static readonly isMultilineProperty = new BooleanPropertyEditor(Versions.v1_0, "isMultiline", "Multi-line", true);
+    static readonly styleProperty = new EnumPropertyEditor(Versions.v1_0, "style", "Style", Adaptive.InputTextStyle);
+    static readonly maxLengthProperty = new NumberPropertyEditor(Versions.v1_0, "maxLength", "Maximum length");
+    static readonly inlineActionProperty = new ActionPropertyEditor(Versions.v1_2, "inlineAction", "Action type", [ Adaptive.ShowCardAction.JsonTypeName ], true);
+
+    populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
+        super.populatePropertySheet(propertySheet, defaultCategory);
+        
+        propertySheet.add(
+            defaultCategory,
+            TextInputPeer.placeholderProperty,
+            TextInputPeer.isMultilineProperty);
+
+        if (!this.cardElement.isMultiline) {
+            propertySheet.add(
+                PropertySheetCategory.DefaultCategory,
+                TextInputPeer.styleProperty);
+        }
+
+        propertySheet.add(
+            PropertySheetCategory.InlineAction,
+            TextInputPeer.inlineActionProperty);
+
+        if (this.cardElement.inlineAction) {
+            let inlineActionPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, null, this.cardElement.inlineAction);
+            inlineActionPeer.onChanged = (sender: DesignerPeer, updatePropertySheet: boolean) => { this.changed(updatePropertySheet); };
+
+            let subPropertySheet = new PropertySheet(false);
+            inlineActionPeer.populatePropertySheet(subPropertySheet, PropertySheetCategory.InlineAction);
+
+            subPropertySheet.remove(ActionPeer.styleProperty);
+
+            propertySheet.add(
+                PropertySheetCategory.InlineAction,
+                new SubPropertySheetEntry(Versions.v1_2, this.cardElement.inlineAction, subPropertySheet));
+        }
+
+        propertySheet.add(
+            defaultCategory,
+            TextInputPeer.maxLengthProperty,
+            TextInputPeer.defaultValueProperty);
+    }
+
     initializeCardElement() {
         super.initializeCardElement();
 
         this.cardElement.placeholder = "Placeholder text";
-    }
-
-    internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
-        super.internalAddPropertySheetEntries(card, includeHeader);
-
-        let placeholder = addLabelAndInput(card, "Placeholder:", Adaptive.TextInput);
-        placeholder.input.placeholder = "(not set)";
-        placeholder.input.defaultValue = this.cardElement.placeholder;
-        placeholder.input.onValueChanged = () => {
-            this.cardElement.placeholder = placeholder.input.value;
-
-            this.changed(false);
-        }
-
-        let isMultiline = addLabelAndInput(card, "Multi-line:", Adaptive.ToggleInput);
-        isMultiline.input.defaultValue = String(this.cardElement.isMultiline);
-        isMultiline.input.onValueChanged = () => {
-            this.cardElement.isMultiline = isMultiline.input.value == "true";
-
-            this.changed(true);
-        }
-
-        if (!this.cardElement.isMultiline) {
-            let style = addLabelAndInput(card, "Style:", Adaptive.ChoiceSetInput);
-            style.input.isCompact = true;
-            style.input.choices.push(new Adaptive.Choice("Text", Adaptive.InputTextStyle.Text.toString()));
-            style.input.choices.push(new Adaptive.Choice("Email", Adaptive.InputTextStyle.Email.toString()));
-            style.input.choices.push(new Adaptive.Choice("Telephone", Adaptive.InputTextStyle.Tel.toString()));
-            style.input.choices.push(new Adaptive.Choice("Url", Adaptive.InputTextStyle.Url.toString()));
-            style.input.defaultValue = this.cardElement.style.toString();
-            style.input.onValueChanged = () => {
-                this.cardElement.style = <Adaptive.InputTextStyle>parseInt(style.input.value);
-
-                this.changed(false);
-            }
-        }
-
-        let actionSelector = createActionSelector(
-            "Inline action",
-            card,
-            this.cardElement.inlineAction ? this.cardElement.inlineAction.getJsonTypeName() : "none");
-
-        actionSelector.input.onValueChanged = () => {
-            if (actionSelector.input.value == "none") {
-                this.cardElement.inlineAction = null;
-            }
-            else {
-                this.cardElement.inlineAction = Adaptive.AdaptiveCard.actionTypeRegistry.createInstance(actionSelector.input.value);
-            }
-
-            this.changed(true);
-        }
-
-        if (this.cardElement.inlineAction) {
-            let inlineActionPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, null, this.cardElement.inlineAction);
-            inlineActionPeer.internalAddPropertySheetEntries(card, false);
-            inlineActionPeer.onChanged = (sender: DesignerPeer, updatePropertySheet: boolean) => { this.changed(updatePropertySheet); };
-        }
     }
 }
 
 export class NumberInputPeer extends InputPeer<Adaptive.NumberInput> {
+    static readonly placeholderProperty = new StringPropertyEditor(Versions.v1_0, "placeholder", "Placeholder");
+    static readonly minProperty = new NumberPropertyEditor(Versions.v1_0, "min", "Minimum value");
+    static readonly maxProperty = new NumberPropertyEditor(Versions.v1_0, "max", "Maximum value");
+
+    populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
+        super.populatePropertySheet(propertySheet, defaultCategory);
+        
+        propertySheet.add(
+            defaultCategory,
+            NumberInputPeer.placeholderProperty,
+            NumberInputPeer.defaultValueProperty,
+            NumberInputPeer.minProperty,
+            NumberInputPeer.maxProperty);
+    }
+
     initializeCardElement() {
         super.initializeCardElement();
 
         this.cardElement.placeholder = "Placeholder text";
     }
-
-    internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
-        super.internalAddPropertySheetEntries(card, includeHeader);
-
-        var placeholder = addLabelAndInput(card, "Placeholder:", Adaptive.TextInput);
-        placeholder.input.placeholder = "(not set)";
-        placeholder.input.defaultValue = this.cardElement.placeholder;
-        placeholder.input.onValueChanged = () => {
-            this.cardElement.placeholder = placeholder.input.value;
-
-            this.changed(false);
-        }
-
-        var min = addLabelAndInput(card, "Minimum value:", Adaptive.NumberInput);
-        min.input.placeholder = "(not set)";
-        min.input.defaultValue = this.cardElement.min;
-        min.input.onValueChanged = () => {
-            this.cardElement.min = min.input.value;
-
-            this.changed(false);
-        }
-
-        var max = addLabelAndInput(card, "Maximum value:", Adaptive.NumberInput);
-        max.input.placeholder = "(not set)";
-        max.input.defaultValue = this.cardElement.max;
-        max.input.onValueChanged = () => {
-            this.cardElement.max = max.input.value;
-
-            this.changed(false);
-        }
-    }
 }
 
 export class DateInputPeer extends InputPeer<Adaptive.DateInput> {
+    static readonly minProperty = new StringPropertyEditor(Versions.v1_0, "min", "Minimum value");
+    static readonly maxProperty = new StringPropertyEditor(Versions.v1_0, "max", "Maximum value");
+
+    populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
+        super.populatePropertySheet(propertySheet, defaultCategory);
+        
+        propertySheet.add(
+            defaultCategory,
+            DateInputPeer.defaultValueProperty,
+            DateInputPeer.minProperty,
+            DateInputPeer.maxProperty);
+    }
 }
 
 export class TimeInputPeer extends InputPeer<Adaptive.TimeInput> {
+    static readonly minProperty = new StringPropertyEditor(Versions.v1_0, "min", "Minimum value");
+    static readonly maxProperty = new StringPropertyEditor(Versions.v1_0, "max", "Maximum value");
+
+    populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
+        super.populatePropertySheet(propertySheet, defaultCategory);
+        
+        propertySheet.add(
+            defaultCategory,
+            TimeInputPeer.defaultValueProperty,
+            TimeInputPeer.minProperty,
+            TimeInputPeer.maxProperty);
+    }
 }
 
 export class ToggleInputPeer extends InputPeer<Adaptive.ToggleInput> {
-    internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
-        super.internalAddPropertySheetEntries(card, includeHeader);
+    static readonly titleProperty = new StringPropertyEditor(Versions.v1_0, "title", "Title");
+    static readonly valueOnProperty = new StringPropertyEditor(Versions.v1_0, "valueOn", "Value when on");
+    static readonly valueOffProperty = new StringPropertyEditor(Versions.v1_0, "valueOff", "Value when off");
+    static readonly wrapProperty = new BooleanPropertyEditor(Versions.v1_2, "wrap", "Wrap");
 
-        var valueOn = addLabelAndInput(card, "Value when on:", Adaptive.TextInput);
-        valueOn.input.placeholder = "(not set)";
-        valueOn.input.defaultValue = this.cardElement.valueOn;
-        valueOn.input.onValueChanged = () => {
-            this.cardElement.valueOn = valueOn.input.value;
+    populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
+        super.populatePropertySheet(propertySheet, defaultCategory);
+        
+        propertySheet.add(
+            defaultCategory,
+            ToggleInputPeer.titleProperty,
+            ToggleInputPeer.valueOnProperty,
+            ToggleInputPeer.valueOffProperty,
+            ToggleInputPeer.defaultValueProperty);
 
-            this.changed(false);
-        }
+        propertySheet.add(
+            PropertySheetCategory.LayoutCategory,
+            ToggleInputPeer.wrapProperty);
+    }
 
-        var valueOff = addLabelAndInput(card, "Value when off:", Adaptive.TextInput);
-        valueOff.input.placeholder = "(not set)";
-        valueOff.input.defaultValue = this.cardElement.valueOff;
-        valueOff.input.onValueChanged = () => {
-            this.cardElement.valueOff = valueOff.input.value;
-
-            this.changed(false);
-        }
-
-        let wrap = addLabelAndInput(card, "Wrap:", Adaptive.ToggleInput);
-        wrap.input.defaultValue = String(this.cardElement.wrap);
-        wrap.input.onValueChanged = () => {
-            this.cardElement.wrap = wrap.input.value == "true";
-
-            this.changed(false);
-        }
+    initializeCardElement() {
+        this.cardElement.title = "New Input.Toggle";
     }
 }
 
 export class ChoiceSetInputPeer extends InputPeer<Adaptive.ChoiceSetInput> {
-    internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
-        super.internalAddPropertySheetEntries(card, includeHeader);
+    static readonly placeholderProperty = new StringPropertyEditor(Versions.v1_0, "placeholder", "Placeholder");
+    static readonly isMultiselectProperty = new BooleanPropertyEditor(Versions.v1_0, "isMultiSelect", "Allow multi selection");
+    static readonly isCompactProperty = new BooleanPropertyEditor(Versions.v1_0, "isCompact", "Compact style");
+    static readonly wrapProperty = new BooleanPropertyEditor(Versions.v1_2, "wrap", "Wrap");
+    static readonly choicesProperty = new NameValuePairPropertyEditor(
+        Versions.v1_0, 
+        "choices",
+        "title",
+        "value",
+        (name: string, value: string) => { return new Adaptive.Choice(name, value); },
+        "Title",
+        "Value",
+        "Add a new choice",
+        "This ChoiceSet is empty");
 
-        let placeholder = addLabelAndInput(card, "Placeholder:", Adaptive.TextInput);
-        placeholder.input.placeholder = "(not set)";
-        placeholder.input.defaultValue = this.cardElement.placeholder;
-        placeholder.input.onValueChanged = () => {
-            this.cardElement.placeholder = placeholder.input.value;
+    populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
+        super.populatePropertySheet(propertySheet, defaultCategory);
+        
+        propertySheet.add(
+            defaultCategory,
+            ChoiceSetInputPeer.placeholderProperty,
+            ChoiceSetInputPeer.isMultiselectProperty,
+            ChoiceSetInputPeer.isCompactProperty,
+            ChoiceSetInputPeer.defaultValueProperty);
 
-            this.changed(false);
-        }
+        propertySheet.add(
+            PropertySheetCategory.LayoutCategory,
+            ToggleInputPeer.wrapProperty);
 
-        let isMultiSelect = addLabelAndInput(card, "Allow multi selection:", Adaptive.ToggleInput);
-        isMultiSelect.input.defaultValue = String(this.cardElement.isMultiSelect);
-        isMultiSelect.input.onValueChanged = () => {
-            this.cardElement.isMultiSelect = isMultiSelect.input.value == "true";
-
-            this.changed(true);
-        }
-
-        if (!this.cardElement.isMultiSelect) {
-            let isCompact = addLabelAndInput(card, "Compact style:", Adaptive.ToggleInput);
-            isCompact.input.defaultValue = String(this.cardElement.isCompact);
-            isCompact.input.onValueChanged = () => {
-                this.cardElement.isCompact = isCompact.input.value == "true";
-
-                this.changed(true);
-            }
-        }
-
-        if (!this.cardElement.isCompact) {
-            let wrap = addLabelAndInput(card, "Wrap:", Adaptive.ToggleInput);
-            wrap.input.defaultValue = String(this.cardElement.wrap);
-            wrap.input.onValueChanged = () => {
-                this.cardElement.wrap = wrap.input.value == "true";
-
-                this.changed(false);
-            }
-        }
-
-        let choicesEditor = new NameValuePairEditor();
-        choicesEditor.title = "Choices:";
-        choicesEditor.addButtonTitle = "Add a new choice";
-        choicesEditor.messageIfEmpty = "This ChoiceSet is empty.";
-        choicesEditor.nameInputTitle = "Title";
-
-        for (let choice of this.cardElement.choices) {
-            choicesEditor.nameValuePairs.push({ "name": choice.title, "value": choice.value });
-        }
-
-        choicesEditor.onChanged = (sender, refreshPropertySheet) => {
-            this.cardElement.choices = [];
-
-            for (let nameValuePair of sender.nameValuePairs) {
-                this.cardElement.choices.push(new Adaptive.Choice(nameValuePair.name, nameValuePair.value));
-            }
-
-            this.changed(refreshPropertySheet);
-        };
-
-        card.addItem(choicesEditor.render());
+        propertySheet.add(
+            "Choices",
+            ChoiceSetInputPeer.choicesProperty);
     }
 
     initializeCardElement() {
@@ -2326,139 +2315,79 @@ class TextBlockPeerInplaceEditor extends CardElementPeerInplaceEditor<Adaptive.T
 }
 
 export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
+    static readonly textProperty = new StringPropertyEditor(Versions.v1_0, "text", "Text", true);
+    static readonly wrapProperty = new BooleanPropertyEditor(Versions.v1_0, "wrap", "Wrap");
+    static readonly maxLinesProperty = new NumberPropertyEditor(Versions.v1_0, "maxLines", "Maximum lines", 0);
+    static readonly fontTypeProperty = new EnumPropertyEditor(Versions.v1_2, "fontType", "Font type", Adaptive.FontType);
+    static readonly sizeProperty = new EnumPropertyEditor(Versions.v1_0, "size", "Size", Adaptive.TextSize);
+    static readonly weightProperty = new EnumPropertyEditor(Versions.v1_0, "weight", "Weight", Adaptive.TextWeight);
+    static readonly colorProperty = new EnumPropertyEditor(Versions.v1_0, "color", "Color", Adaptive.TextColor);
+    static readonly subtleProperty = new BooleanPropertyEditor(Versions.v1_0, "subtle", "Subtle");
+
     protected createInplaceEditor(): DesignerPeerInplaceEditor {
         return new TextBlockPeerInplaceEditor(this.cardElement);
+    }
+
+    protected internalGetTreeItemText(): string {
+        return this.cardElement.text;
+    }
+
+    populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
+        super.populatePropertySheet(propertySheet, defaultCategory);
+        
+        propertySheet.add(
+            defaultCategory,
+            TextBlockPeer.textProperty);
+
+        propertySheet.add(
+            PropertySheetCategory.LayoutCategory,
+            TextBlockPeer.wrapProperty,
+            TextBlockPeer.maxLinesProperty);
+
+        propertySheet.add(
+            PropertySheetCategory.StyleCategory,
+            TextBlockPeer.fontTypeProperty,
+            TextBlockPeer.sizeProperty,
+            TextBlockPeer.weightProperty,
+            TextBlockPeer.colorProperty,
+            TextBlockPeer.subtleProperty);
     }
 
     getToolTip(): string {
         return "Double click to edit";
     }
 
-    getTreeItemText(): string {
-        return this.cardElement.text;
-    }
-
-    internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
-        super.internalAddPropertySheetEntries(card, includeHeader);
-
-        let text = addLabelAndInput(card, "Text:", Adaptive.TextInput);
-        text.input.defaultValue = this.cardElement.text;
-        text.input.isMultiline = true;
-        text.input.onValueChanged = () => {
-            this.cardElement.text = text.input.value;
-
-            this.changed(false);
-        }
-
-        let wrap = addLabelAndInput(card, "Wrap:", Adaptive.ToggleInput);
-        wrap.input.defaultValue = String(this.cardElement.wrap);
-        wrap.input.onValueChanged = () => {
-            this.cardElement.wrap = wrap.input.value == "true";
-
-            this.changed(false);
-        }
-
-        let maxLines = addLabelAndInput(card, "Maximum lines:", Adaptive.NumberInput);
-        maxLines.input.placeholder = "(not set)";
-        maxLines.input.defaultValue = String(this.cardElement.maxLines);
-        maxLines.input.onValueChanged = () => {
-            try {
-                let newMaxLines = parseInt(maxLines.input.value);
-
-                this.cardElement.maxLines = newMaxLines;
-
-                this.changed(false);
-            }
-            catch (ex) {
-                // Do nothing
-            }
-        }
-
-        let fontFamily = addLabelAndInput(card, "Font family:", Adaptive.ChoiceSetInput);
-        fontFamily.input.placeholder = "Default";
-        fontFamily.input.isCompact = true;
-        fontFamily.input.choices.push(new Adaptive.Choice("Default", Adaptive.FontFamily.Default.toString()));
-        fontFamily.input.choices.push(new Adaptive.Choice("Monospace", Adaptive.FontFamily.Monospace.toString()));
-        fontFamily.input.defaultValue = this.cardElement.fontFamily ? this.cardElement.fontFamily.toString() : "Default";
-        fontFamily.input.onValueChanged = () => {
-            this.cardElement.fontFamily = <Adaptive.FontFamily>parseInt(fontFamily.input.value);
-
-            this.changed(false);
-        }
-
-        let size = addLabelAndInput(card, "Size:", Adaptive.ChoiceSetInput);
-        size.input.isCompact = true;
-        size.input.choices.push(new Adaptive.Choice("Small", Adaptive.TextSize.Small.toString()));
-        size.input.choices.push(new Adaptive.Choice("Default", Adaptive.TextSize.Default.toString()));
-        size.input.choices.push(new Adaptive.Choice("Medium", Adaptive.TextSize.Medium.toString()));
-        size.input.choices.push(new Adaptive.Choice("Large", Adaptive.TextSize.Large.toString()));
-        size.input.choices.push(new Adaptive.Choice("Extra large", Adaptive.TextSize.ExtraLarge.toString()));
-        size.input.defaultValue = this.cardElement.size.toString();
-        size.input.onValueChanged = () => {
-            this.cardElement.size = <Adaptive.TextSize>parseInt(size.input.value);
-
-            this.changed(false);
-        }
-
-        let weight = addLabelAndInput(card, "Weight:", Adaptive.ChoiceSetInput);
-        weight.input.isCompact = true;
-        weight.input.choices.push(new Adaptive.Choice("Lighter", Adaptive.TextWeight.Lighter.toString()));
-        weight.input.choices.push(new Adaptive.Choice("Default", Adaptive.TextWeight.Default.toString()));
-        weight.input.choices.push(new Adaptive.Choice("Bolder", Adaptive.TextWeight.Bolder.toString()));
-        weight.input.defaultValue = this.cardElement.weight.toString();
-        weight.input.onValueChanged = () => {
-            this.cardElement.weight = <Adaptive.TextWeight>parseInt(weight.input.value);
-
-            this.changed(false);
-        }
-
-        let color = addLabelAndInput(card, "Color:", Adaptive.ChoiceSetInput);
-        color.input.isCompact = true;
-        color.input.choices.push(new Adaptive.Choice("Default", Adaptive.TextColor.Default.toString()));
-        color.input.choices.push(new Adaptive.Choice("Dark", Adaptive.TextColor.Dark.toString()));
-        color.input.choices.push(new Adaptive.Choice("Light", Adaptive.TextColor.Light.toString()));
-        color.input.choices.push(new Adaptive.Choice("Accent", Adaptive.TextColor.Accent.toString()));
-        color.input.choices.push(new Adaptive.Choice("Good", Adaptive.TextColor.Good.toString()));
-        color.input.choices.push(new Adaptive.Choice("Warning", Adaptive.TextColor.Warning.toString()));
-        color.input.choices.push(new Adaptive.Choice("Attention", Adaptive.TextColor.Attention.toString()));
-        color.input.defaultValue = this.cardElement.color.toString();
-        color.input.onValueChanged = () => {
-            this.cardElement.color = <Adaptive.TextColor>parseInt(color.input.value);
-
-            this.changed(false);
-        }
-
-        let isSubtle = addLabelAndInput(card, "Subtle:", Adaptive.ToggleInput);
-        isSubtle.input.defaultValue = String(this.cardElement.isSubtle);
-        isSubtle.input.title = "";
-        isSubtle.input.onValueChanged = () => {
-            this.cardElement.isSubtle = isSubtle.input.value == "true";
-
-            this.changed(false);
-        }
-    }
-
     initializeCardElement() {
-        this.cardElement.text = "New TextBlock";
+        if (!this.cardElement.text || this.cardElement.text == "") {
+            this.cardElement.text = "New TextBlock";
+        }
     }
 }
 
 export class RichTextBlockPeer extends TypedCardElementPeer<Adaptive.RichTextBlock> {
-    getTreeItemText(): string {
+    protected internalGetTreeItemText(): string {
         return this.cardElement.asString();
     }
 
-    internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
-        super.internalAddPropertySheetEntries(card, includeHeader);
+    populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
+        super.populatePropertySheet(propertySheet, defaultCategory);
+        
+        propertySheet.add(
+            defaultCategory,
+            new CustomPropertySheetEntry(
+                "*",
+                (context: PropertySheetContext) => {
+                    let infoTextBlock = new Adaptive.TextBlock();
+                    infoTextBlock.text = "Use the **Card Payload Editor** to edit the text of this RichTextBlock element.";
+                    infoTextBlock.wrap = true;
+                    infoTextBlock.spacing = Adaptive.Spacing.Large;
+                    infoTextBlock.separator = true;
+                    infoTextBlock.horizontalAlignment = Adaptive.HorizontalAlignment.Center;
 
-        let infoTextBlock = new Adaptive.TextBlock();
-        infoTextBlock.text = "Use the **JSON editor** to edit the text of this RichTextBlock element.";
-        infoTextBlock.wrap = true;
-        infoTextBlock.spacing = Adaptive.Spacing.Large;
-        infoTextBlock.separator = true;
-        infoTextBlock.horizontalAlignment = Adaptive.HorizontalAlignment.Center;
-
-        card.addItem(infoTextBlock);
+                    return infoTextBlock;
+                }
+            )
+        );
     }
 
     initializeCardElement() {

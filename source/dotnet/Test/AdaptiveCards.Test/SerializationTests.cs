@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,7 +50,7 @@ namespace AdaptiveCards.Test
         }
 
         [TestMethod]
-        public void TestSkippingUnknownElements()
+        public void TestKeepingUnknownElements()
         {
             var json = @"{
   ""type"": ""AdaptiveCard"",
@@ -78,9 +80,19 @@ namespace AdaptiveCards.Test
             var result = AdaptiveCard.FromJson(json);
 
             Assert.IsNotNull(result.Card);
-            Assert.AreEqual(1, result.Card.Body.Count);
-            Assert.AreEqual(1, result.Card.Actions.Count);
+            Assert.AreEqual(2, result.Card.Body.Count);
+            Assert.AreEqual(2, result.Card.Actions.Count);
             Assert.AreEqual(2, result.Warnings.Count);
+
+            // check first unknown element
+            var unknown_elem = (AdaptiveUnknownElement)result.Card.Body[0];
+            Assert.AreEqual(unknown_elem.Type, "IDunno");
+            Assert.AreEqual(unknown_elem.AdditionalProperties["text"], "Hello");
+
+            // check second unknown element
+            var unknown_action = result.Card.Actions[0];
+            Assert.AreEqual(unknown_action.Type, "Action.IDunno");
+            Assert.AreEqual(unknown_action.Title, "Action 1");
         }
 
         [TestMethod]
@@ -133,6 +145,57 @@ namespace AdaptiveCards.Test
     }
   ],
   ""-ms-test"": ""Card extension data""
+}";
+            Assert.AreEqual(expected, card.ToJson());
+
+            var deserializedCard = AdaptiveCard.FromJson(expected).Card;
+            Assert.AreEqual(expected, deserializedCard.ToJson());
+        }
+
+        [TestMethod]
+        public void TestSerializingUnknownItems()
+        {
+            var card = new AdaptiveCard("1.2")
+            {
+                Body =
+                {
+                    new AdaptiveUnknownElement()
+                    {
+                        Type = "Graph",
+                        AdditionalProperties =
+                        {
+                            ["UnknownProperty1"] = "UnknownValue1"
+                        }
+                    }
+                },
+                Actions =
+                {
+                    new AdaptiveUnknownAction()
+                    {
+                        Type = "Action.Graph",
+                        AdditionalProperties =
+                        {
+                            ["UnknownProperty2"] = "UnknownValue2"
+                        }
+                    }
+                }
+            };
+
+            var expected = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.2"",
+  ""body"": [
+    {
+      ""type"": ""Graph"",
+      ""UnknownProperty1"": ""UnknownValue1""
+    }
+  ],
+  ""actions"": [
+    {
+      ""type"": ""Action.Graph"",
+      ""UnknownProperty2"": ""UnknownValue2""
+    }
+  ]
 }";
             Assert.AreEqual(expected, card.ToJson());
 
@@ -425,19 +488,19 @@ namespace AdaptiveCards.Test
         public void BackgroundImage()
         {
             var card = new AdaptiveCard("1.2");
-            card.BackgroundImage = new AdaptiveBackgroundImage("http://adaptivecards.io/content/cats/1.png", AdaptiveBackgroundImageMode.Repeat, AdaptiveHorizontalAlignment.Right, AdaptiveVerticalAlignment.Bottom);
+            card.BackgroundImage = new AdaptiveBackgroundImage("http://adaptivecards.io/content/cats/1.png", AdaptiveImageFillMode.Repeat, AdaptiveHorizontalAlignment.Right, AdaptiveVerticalAlignment.Bottom);
 
             var columnSet = new AdaptiveColumnSet();
             var column1 = new AdaptiveColumn();
-            column1.BackgroundImage = new AdaptiveBackgroundImage("http://adaptivecards.io/content/cats/1.png", AdaptiveBackgroundImageMode.RepeatVertically, AdaptiveHorizontalAlignment.Center, AdaptiveVerticalAlignment.Top);
+            column1.BackgroundImage = new AdaptiveBackgroundImage("http://adaptivecards.io/content/cats/1.png", AdaptiveImageFillMode.RepeatVertically, AdaptiveHorizontalAlignment.Center, AdaptiveVerticalAlignment.Top);
             columnSet.Columns.Add(column1);
             var column2 = new AdaptiveColumn();
-            column2.BackgroundImage = new AdaptiveBackgroundImage("http://adaptivecards.io/content/cats/2.png", AdaptiveBackgroundImageMode.Stretch, AdaptiveHorizontalAlignment.Right, AdaptiveVerticalAlignment.Bottom);
+            column2.BackgroundImage = new AdaptiveBackgroundImage("http://adaptivecards.io/content/cats/2.png", AdaptiveImageFillMode.Cover, AdaptiveHorizontalAlignment.Right, AdaptiveVerticalAlignment.Bottom);
             columnSet.Columns.Add(column2);
             card.Body.Add(columnSet);
 
             var container1 = new AdaptiveContainer();
-            container1.BackgroundImage = new AdaptiveBackgroundImage("http://adaptivecards.io/content/cats/2.png", AdaptiveBackgroundImageMode.RepeatHorizontally, AdaptiveHorizontalAlignment.Left, AdaptiveVerticalAlignment.Center);
+            container1.BackgroundImage = new AdaptiveBackgroundImage("http://adaptivecards.io/content/cats/2.png", AdaptiveImageFillMode.RepeatHorizontally, AdaptiveHorizontalAlignment.Left, AdaptiveVerticalAlignment.Center);
             card.Body.Add(container1);
 
             var container2 = new AdaptiveContainer();
@@ -449,7 +512,7 @@ namespace AdaptiveCards.Test
   ""version"": ""1.2"",
   ""backgroundImage"": {
     ""url"": ""http://adaptivecards.io/content/cats/1.png"",
-    ""mode"": ""repeat"",
+    ""fillMode"": ""repeat"",
     ""horizontalAlignment"": ""right"",
     ""verticalAlignment"": ""bottom""
   },
@@ -461,7 +524,7 @@ namespace AdaptiveCards.Test
           ""type"": ""Column"",
           ""backgroundImage"": {
             ""url"": ""http://adaptivecards.io/content/cats/1.png"",
-            ""mode"": ""repeatVertically"",
+            ""fillMode"": ""repeatVertically"",
             ""horizontalAlignment"": ""center""
           },
           ""items"": []
@@ -481,7 +544,7 @@ namespace AdaptiveCards.Test
       ""type"": ""Container"",
       ""backgroundImage"": {
         ""url"": ""http://adaptivecards.io/content/cats/2.png"",
-        ""mode"": ""repeatHorizontally"",
+        ""fillMode"": ""repeatHorizontally"",
         ""verticalAlignment"": ""center""
       },
       ""items"": []
@@ -510,7 +573,7 @@ namespace AdaptiveCards.Test
 
             var textRun2 = new AdaptiveTextRun("with some cool looking stuff. ");
             textRun2.Color = AdaptiveTextColor.Accent;
-            textRun2.FontStyle = AdaptiveFontStyle.Monospace;
+            textRun2.FontType = AdaptiveFontType.Monospace;
             textRun2.IsSubtle = true;
             textRun2.Italic = true;
             textRun2.Strikethrough = true;
@@ -552,7 +615,7 @@ namespace AdaptiveCards.Test
           ""strikethrough"": true,
           ""highlight"": true,
           ""text"": ""with some cool looking stuff. "",
-          ""fontStyle"": ""monospace""
+          ""fontType"": ""monospace""
         },
         {
           ""type"": ""TextRun"",
@@ -980,6 +1043,6 @@ namespace AdaptiveCards.Test
         }
 
 
-        
+
     }
 }

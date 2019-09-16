@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "pch.h"
@@ -60,10 +62,13 @@ namespace AdaptiveSharedNamespace
                        std::function<T(const std::string& name)> enumConverter,
                        bool isRequired = false);
 
-        std::vector<std::shared_ptr<BaseCardElement>> GetElementCollection(ParseContext& context,
-                                                                           const Json::Value& json,
-                                                                           AdaptiveCardSchemaKey key,
-                                                                           bool isRequired = false);
+        template<typename T>
+        std::vector<std::shared_ptr<T>> GetElementCollection(bool isTopToBottomContainer,
+                                                             ParseContext& context,
+                                                             const Json::Value& json,
+                                                             AdaptiveCardSchemaKey key,
+                                                             bool isRequired = false,
+                                                             const std::string& impliedType = std::string());
 
         template<typename T>
         std::vector<std::shared_ptr<T>> GetElementCollectionOfSingleType(
@@ -96,7 +101,6 @@ namespace AdaptiveSharedNamespace
         void ExpectKeyAndValueType(const Json::Value& json, const char* expectedKey, std::function<void(const Json::Value&)> throwIfWrongType);
 
         std::string ToLowercase(const std::string& value);
-
     };
 
     template<typename T>
@@ -181,5 +185,89 @@ namespace AdaptiveSharedNamespace
         auto jsonObject = ParseUtil::ExtractJsonValue(rootJson, key);
         T result = jsonObject.empty() ? defaultValue : deserializer(jsonObject, defaultValue);
         return result;
+    }
+    
+    // Element [de]serialization
+    
+    // A little template jiu-jitsu here -- given the provided parameters, we need BaseElement::ParseJsonObject to
+    // call either BaseCardElement::ParseJsonObject or BaseActionElement::ParseJsonObject.
+    template<typename T>
+    static void ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context,
+                                const Json::Value& json,
+                                std::shared_ptr<BaseElement>& baseElement)
+    {
+        T::ParseJsonObject(context, json, baseElement);
+    }
+
+    template<typename T>
+    std::vector<std::shared_ptr<T>> ParseUtil::GetElementCollection(bool isTopToBottomContainer,
+                                                                    ParseContext& context,
+                                                                    const Json::Value& json,
+                                                                    AdaptiveCardSchemaKey key,
+                                                                    bool isRequired,
+                                                                    const std::string& impliedType)
+    {
+        auto elementArray = GetArray(json, key, isRequired);
+
+        std::vector<std::shared_ptr<T>> elements;
+        if (elementArray.empty())
+        {
+            return std::move(elements);
+        }
+
+        const size_t elemSize = elementArray.size();
+        elements.reserve(elemSize);
+
+        const ContainerBleedDirection previousBleedState = context.GetBleedDirection();
+
+        size_t currentIndex = 0;
+        for (auto& curJsonValue : elementArray)
+        {
+            ContainerBleedDirection currentBleedState = previousBleedState;
+
+            if (currentIndex != 0)
+            {
+                // In a top to bottom container (Container, Column) only the first item can bleed up, in a left
+                // to right container (ColumnSet) only the first item can bleed left. If we're not the first item,
+                // turn off the relevant bit.
+                currentBleedState &= isTopToBottomContainer ? ~ContainerBleedDirection::BleedUp : ~ContainerBleedDirection::BleedLeft;
+            }
+
+            if (currentIndex != (elemSize - 1))
+            {
+                // In a top to bottom container (Container, Column) only the last item can bleed down, in a left
+                // to right container (ColumnSet) only the last item can bleed right. If we're not the last item,
+                // turn off the relevant bit.
+                currentBleedState &=
+                    isTopToBottomContainer ? ~ContainerBleedDirection::BleedDown : ~ContainerBleedDirection::BleedRight;
+            }
+
+            context.PushBleedDirection(currentBleedState);
+
+            // If all items in this collection have the same implied type (i.e. Columns), verify
+            // that if set it is set correctly and set it if it isn't
+            if (!impliedType.empty())
+            {
+                const std::string typeString = ParseUtil::GetString(curJsonValue, AdaptiveCardSchemaKey::Type, impliedType, false);
+                if (typeString.compare(impliedType) != 0)
+                {
+                    throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
+                                                     "Unable to parse element of type " + typeString);
+                }
+
+                curJsonValue[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = typeString;
+            }
+
+            std::shared_ptr<BaseElement> curElement;
+            ParseJsonObject<T>(context, curJsonValue, curElement);
+            elements.push_back(std::static_pointer_cast<T>(curElement));
+
+            // restores the parent's bleed state
+            context.PopBleedDirection();
+
+            currentIndex++;
+        }
+
+        return std::move(elements);
     }
 }

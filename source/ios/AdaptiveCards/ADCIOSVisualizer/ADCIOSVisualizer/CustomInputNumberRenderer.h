@@ -10,7 +10,7 @@
 
 #import <AdaptiveCards/ACFramework.h>
 
-@interface CustomInputNumberRenderer:ACRBaseCardElementRenderer
+@interface CustomInputNumberRenderer : ACRBaseCardElementRenderer
 
 + (CustomInputNumberRenderer *)getInstance;
 

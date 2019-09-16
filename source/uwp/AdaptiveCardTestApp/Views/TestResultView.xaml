@@ -1,4 +1,5 @@
-﻿<UserControl
+﻿<!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. -->
+<UserControl
     x:Class="AdaptiveCardTestApp.Views.TestResultView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -26,6 +27,32 @@
                 Text="{Binding HostConfigName}"/>
             <TextBlock
                 Text="{Binding CardName}"/>
+            <RichTextBlock>
+                <Paragraph/>
+                <Paragraph>
+                    <Span>
+                        <Run Text="Source Json "/>
+                        <Run Foreground="{Binding OriginalResultBrush}" Text="{Binding OriginalResult}"/>
+                    </Span>
+                </Paragraph>
+            </RichTextBlock>            
+            <RichTextBlock>
+                <Paragraph>
+                    <Span>
+                        <Run Text="Json Comparsion "/>
+                        <Run Foreground="{Binding JsonResultBrush}" Text="{Binding JsonResult}"/>
+                    </Span>
+                </Paragraph>
+            </RichTextBlock>
+            <RichTextBlock>
+                <Paragraph>
+                    <Span>
+                        <Run Text="Image Comparsion "/>
+                        <Run Foreground="{Binding ImageResultBrush}" Text="{Binding ImageResult}"/>
+                    </Span>
+                </Paragraph>
+                <Paragraph/>
+            </RichTextBlock>
         </StackPanel>
 
         <Grid Grid.Row="1">
@@ -66,16 +93,19 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
+                <StackPanel>
                 <TextBlock
                     Text="Actual"
                     Style="{ThemeResource BaseTextBlockStyle}"
                     Margin="0,6,0,6"/>
-                <Image
-                    Grid.Row="1"
-                    x:Name="ImageResult"
-                    Source="{Binding ActualImageFile, Converter={StaticResource StorageFileToImageSourceConverter}}"
-                    Stretch="Uniform"
-                    VerticalAlignment="Top"/>
+                <Border BorderThickness="2" BorderBrush="{Binding ImageResultBrush}">
+                    <Image
+                        Grid.Row="1"
+                        x:Name="ImageResult"
+                        Source="{Binding ActualImageFile, Converter={StaticResource StorageFileToImageSourceConverter}}"
+                        Stretch="Uniform"
+                        VerticalAlignment="Top"/>
+                </Border>
                 <TextBlock
                     Grid.Row="1"
                     x:Name="TextBlockError"
@@ -83,6 +113,7 @@
                     Style="{ThemeResource BaseTextBlockStyle}"
                     Foreground="Red"
                     MaxHeight="150"/>
+                </StackPanel>
             </Grid>
             <Grid Grid.Column="4">
                 <Grid.RowDefinitions>
@@ -118,11 +149,30 @@
                 Content="Compare round tripped json"
                 Click="ButtonRoundTrippedJson_Click"/>
             <Button
-                x:Name="ButtonSaveAsExpected"
-                Margin="0,12,0,0"
-                Content="Set as expected"
+                x:Name="ButtonUpdateOriginals"
+                Margin="0,12,6,0"
+                Content="Accept new source"
                 Style="{ThemeResource AccentButtonStyle}"
                 Click="ButtonSaveAsExpected_Click"/>
+            <Button
+                x:Name="ButtonUpdateJson"
+                Margin="0,12,6,0"
+                Content="Accept new json"
+                Style="{ThemeResource AccentButtonStyle}"
+                Click="ButtonSaveAsExpected_Click"/>
+            <Button
+                x:Name="ButtonUpdateImage"
+                Margin="0,12,6,0"
+                Content="Accept new image"
+                Style="{ThemeResource AccentButtonStyle}"
+                Click="ButtonSaveAsExpected_Click"/>
+            <Button
+                x:Name="ButtonUpdateAll"
+                Margin="0,12,6,0"
+                Content="Accept all changes"
+                Style="{ThemeResource AccentButtonStyle}"
+                Click="ButtonSaveAsExpected_Click"/>
+
         </StackPanel>
     </Grid>
 </UserControl>

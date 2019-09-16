@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "MarkDownParsedResult.h"
 
@@ -45,6 +47,7 @@ void MarkDownParsedResult::AppendParseResult(MarkDownParsedResult& x)
     m_codeGenTokens.splice(m_codeGenTokens.end(), x.m_codeGenTokens);
     m_emphasisLookUpTable.splice(m_emphasisLookUpTable.end(), x.m_emphasisLookUpTable);
     m_isHTMLTagsAdded = m_isHTMLTagsAdded || x.HasHtmlTags();
+    SetIsCaptured(x.GetIsCaptured());
 }
 
 // append MarkDownHtmlGenerator object to callee's prased result

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 #include <wrl.h>
 #include <wrl/wrappers/corewrappers.h>
@@ -23,24 +25,33 @@
 using namespace InternalNamespace;
 #endif
 
-HRESULT WStringToHString(const std::wstring& in, _Outptr_ HSTRING* out);
+class bad_string_conversion : public std::exception
+{
+public:
+    bad_string_conversion() : _dwErr(GetLastError()) {}
 
-std::string WstringToString(const std::wstring& in);
-std::wstring StringToWstring(const std::string& in);
+private:
+    DWORD _dwErr;
+};
+
+HRESULT WStringToHString(const std::wstring_view& in, _Outptr_ HSTRING* out) noexcept;
+
+std::string WstringToString(const std::wstring_view& in);
+std::wstring StringToWstring(const std::string_view& in);
 
 // This function is needed to deal with the fact that non-windows platforms handle Unicode without the need for wchar_t.
 // (which has a platform specific implementation) It converts a std::string to an HSTRING.
-HRESULT UTF8ToHString(const std::string& in, _Outptr_ HSTRING* out);
+HRESULT UTF8ToHString(const std::string_view& in, _Outptr_ HSTRING* out) noexcept;
 
 // This function is needed to deal with the fact that non-windows platforms handle Unicode without the need for wchar_t.
 // (which has a platform specific implementation) It converts from HSTRING to a standard std::string.
-HRESULT HStringToUTF8(const HSTRING& in, std::string& out);
+HRESULT HStringToUTF8(const HSTRING& in, std::string& out) noexcept;
 
 std::string HStringToUTF8(const HSTRING& in);
 
-inline bool Boolify(const boolean value)
+inline bool Boolify(const boolean value) noexcept
 {
-    return value > 0 ? true : false;
+    return (value > 0);
 }
 
 HRESULT GetColorFromString(const std::string& colorString, _Out_ ABI::Windows::UI::Color* color) noexcept;
@@ -61,31 +72,31 @@ HRESULT GetHighlighter(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adapti
                        _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
                        _Out_ ABI::Windows::UI::Xaml::Documents::ITextHighlighter** textHighlighter) noexcept;
 
-HRESULT GetFontDataFromStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
-                             ABI::AdaptiveNamespace::FontStyle style,
-                             ABI::AdaptiveNamespace::TextSize desiredSize,
-                             ABI::AdaptiveNamespace::TextWeight desiredWeight,
-                             _Outptr_ HSTRING* resultFontFamilyName,
-                             _Out_ UINT32* resultSize,
-                             _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept;
+HRESULT GetFontDataFromFontType(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+                                ABI::AdaptiveNamespace::FontType fontType,
+                                ABI::AdaptiveNamespace::TextSize desiredSize,
+                                ABI::AdaptiveNamespace::TextWeight desiredWeight,
+                                _Outptr_ HSTRING* resultFontFamilyName,
+                                _Out_ UINT32* resultSize,
+                                _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept;
 
-HRESULT GetFontFamilyFromStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
-                               ABI::AdaptiveNamespace::FontStyle style,
-                               _Outptr_ HSTRING* resultFontFamilyName) noexcept;
+HRESULT GetFontFamilyFromFontType(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+                                  ABI::AdaptiveNamespace::FontType fontType,
+                                  _Outptr_ HSTRING* resultFontFamilyName) noexcept;
 
-HRESULT GetFontSizeFromStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
-                             ABI::AdaptiveNamespace::FontStyle style,
-                             ABI::AdaptiveNamespace::TextSize desiredSize,
-                             _Out_ UINT32* resultSize) noexcept;
+HRESULT GetFontSizeFromFontType(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+                                ABI::AdaptiveNamespace::FontType fontType,
+                                ABI::AdaptiveNamespace::TextSize desiredSize,
+                                _Out_ UINT32* resultSize) noexcept;
 
 HRESULT GetFontWeightFromStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
-                               ABI::AdaptiveNamespace::FontStyle style,
+                               ABI::AdaptiveNamespace::FontType fontType,
                                ABI::AdaptiveNamespace::TextWeight desiredWeight,
                                _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept;
 
-HRESULT GetFontStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
-                     ABI::AdaptiveNamespace::FontStyle style,
-                     _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveFontStyleDefinition** styleDefinition) noexcept;
+HRESULT GetFontType(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+                    ABI::AdaptiveNamespace::FontType fontType,
+                    _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveFontTypeDefinition** styleDefinition) noexcept;
 
 HRESULT GetFontSize(_In_ ABI::AdaptiveNamespace::IAdaptiveFontSizesConfig* sizesConfig,
                     ABI::AdaptiveNamespace::TextSize desiredSize,
@@ -110,6 +121,10 @@ HRESULT GenerateSharedAction(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement
 
 HRESULT GenerateSharedActions(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* items,
                               std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>>& containedElements);
+
+HRESULT GenerateSharedRequirements(
+    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>* adaptiveRequirements,
+    std::shared_ptr<std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>> sharedRequirements) noexcept;
 
 HRESULT GenerateSharedImages(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveImage*>* items,
                              std::vector<std::shared_ptr<AdaptiveSharedNamespace::Image>>& containedElements);
@@ -153,6 +168,10 @@ HRESULT GenerateFactsProjection(const std::vector<std::shared_ptr<AdaptiveShared
 HRESULT GenerateInlinesProjection(const std::vector<std::shared_ptr<AdaptiveSharedNamespace::Inline>>& containedElements,
                                   _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveInline*>* projectedParentContainer) noexcept;
 
+HRESULT GenerateRequirementsProjection(
+    const std::shared_ptr<std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>>& sharedRequirements,
+    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>* projectedRequirementVector) noexcept;
+
 HRESULT GenerateImagesProjection(const std::vector<std::shared_ptr<AdaptiveSharedNamespace::Image>>& containedElements,
                                  _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveImage*>* projectedParentContainer) noexcept;
 
@@ -189,6 +208,10 @@ HRESULT JsonObjectToJsonCpp(_In_ ABI::Windows::Data::Json::IJsonObject* jsonObje
 
 HRESULT ProjectedActionTypeToHString(ABI::AdaptiveNamespace::ActionType projectedActionType, _Outptr_ HSTRING* result);
 HRESULT ProjectedElementTypeToHString(ABI::AdaptiveNamespace::ElementType projectedElementType, _Outptr_ HSTRING* result);
+
+HRESULT MeetsRequirements(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* cardElement,
+                          _In_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration* featureRegistration,
+                          _Out_ bool* meetsRequirements);
 
 HRESULT IsBackgroundImageValid(_In_ ABI::AdaptiveNamespace::IAdaptiveBackgroundImage* backgroundImageElement, _Out_ BOOL* isValid);
 
@@ -230,7 +253,7 @@ HRESULT SharedWarningsToAdaptiveWarnings(
 
 HRESULT AdaptiveWarningsToSharedWarnings(
     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-    std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>> sharedWarnings);
+    std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>>& sharedWarnings);
 
 ABI::Windows::UI::Color GenerateLighterColor(const ABI::Windows::UI::Color& originalColor);
 
@@ -246,6 +269,14 @@ AdaptiveSharedNamespace::FallbackType MapUwpFallbackTypeToShared(const ABI::Adap
 
 HRESULT CopyTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* textElement,
                         _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveTextElement** copiedTextElement);
+
+HRESULT GetAdaptiveActionParserRegistrationFromSharedModel(
+    const std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration>& sharedActionParserRegistration,
+    _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration** adaptiveActionParserRegistration);
+
+HRESULT GetAdaptiveElementParserRegistrationFromSharedModel(
+    const std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration>& sharedElementParserRegistration,
+    _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration** adaptiveElementParserRegistration);
 
 namespace AdaptiveNamespace
 {

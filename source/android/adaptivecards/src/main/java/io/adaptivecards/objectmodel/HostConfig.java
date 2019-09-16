@@ -47,20 +47,20 @@ public class HostConfig {
     return new HostConfig(AdaptiveCardObjectModelJNI.HostConfig_DeserializeFromString(jsonString), true);
   }
 
-  public FontStyleDefinition GetFontStyle(FontStyle style) {
-    return new FontStyleDefinition(AdaptiveCardObjectModelJNI.HostConfig_GetFontStyle(swigCPtr, this, style.swigValue()), true);
+  public FontTypeDefinition GetFontType(FontType fontType) {
+    return new FontTypeDefinition(AdaptiveCardObjectModelJNI.HostConfig_GetFontType(swigCPtr, this, fontType.swigValue()), true);
   }
 
-  public String GetFontFamily(FontStyle style) {
-    return AdaptiveCardObjectModelJNI.HostConfig_GetFontFamily__SWIG_0(swigCPtr, this, style.swigValue());
+  public String GetFontFamily(FontType fontType) {
+    return AdaptiveCardObjectModelJNI.HostConfig_GetFontFamily__SWIG_0(swigCPtr, this, fontType.swigValue());
   }
 
-  public long GetFontSize(FontStyle style, TextSize size) {
-    return AdaptiveCardObjectModelJNI.HostConfig_GetFontSize(swigCPtr, this, style.swigValue(), size.swigValue());
+  public long GetFontSize(FontType fontType, TextSize size) {
+    return AdaptiveCardObjectModelJNI.HostConfig_GetFontSize(swigCPtr, this, fontType.swigValue(), size.swigValue());
   }
 
-  public long GetFontWeight(FontStyle style, TextWeight weight) {
-    return AdaptiveCardObjectModelJNI.HostConfig_GetFontWeight(swigCPtr, this, style.swigValue(), weight.swigValue());
+  public long GetFontWeight(FontType fontType, TextWeight weight) {
+    return AdaptiveCardObjectModelJNI.HostConfig_GetFontWeight(swigCPtr, this, fontType.swigValue(), weight.swigValue());
   }
 
   public String GetBackgroundColor(ContainerStyle style) {
@@ -107,12 +107,12 @@ public class HostConfig {
     AdaptiveCardObjectModelJNI.HostConfig_SetFontWeights(swigCPtr, this, FontWeightsConfig.getCPtr(value), value);
   }
 
-  public FontStylesDefinition GetFontStyles() {
-    return new FontStylesDefinition(AdaptiveCardObjectModelJNI.HostConfig_GetFontStyles(swigCPtr, this), true);
+  public FontTypesDefinition GetFontTypes() {
+    return new FontTypesDefinition(AdaptiveCardObjectModelJNI.HostConfig_GetFontTypes(swigCPtr, this), true);
   }
 
-  public void SetFontStyles(FontStylesDefinition value) {
-    AdaptiveCardObjectModelJNI.HostConfig_SetFontStyles(swigCPtr, this, FontStylesDefinition.getCPtr(value), value);
+  public void SetFontTypes(FontTypesDefinition value) {
+    AdaptiveCardObjectModelJNI.HostConfig_SetFontTypes(swigCPtr, this, FontTypesDefinition.getCPtr(value), value);
   }
 
   public boolean GetSupportsInteractivity() {

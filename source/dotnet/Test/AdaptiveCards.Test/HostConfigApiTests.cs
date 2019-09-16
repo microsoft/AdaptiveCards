@@ -1,7 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using AdaptiveCards.Rendering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+#pragma warning disable 0618
 namespace AdaptiveCards.Test
 {
     [TestClass]
@@ -264,3 +267,4 @@ namespace AdaptiveCards.Test
         }
     }
 }
+#pragma warning restore 0618

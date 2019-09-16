@@ -1,20 +1,21 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.FeatureRegistration;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
-import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.CardElementType;
@@ -70,25 +71,22 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             throw new UnknownError(CardElementType.Column.toString() + " is not a registered renderer.");
         }
 
-        setSpacingAndSeparator(context, viewGroup, columnSet.GetSpacing(), columnSet.GetSeparator(), hostConfig, true);
+        View separator = setSpacingAndSeparator(context, viewGroup, columnSet.GetSpacing(), columnSet.GetSeparator(), hostConfig, true);
 
         ColumnVector columnVector = columnSet.GetColumns();
         long columnVectorSize = columnVector.size();
 
         LinearLayout layout = new LinearLayout(context);
-        layout.setTag(new TagContent(columnSet));
+
 
         // Add this two for allowing children to bleed
         layout.setClipChildren(false);
         layout.setClipToPadding(false);
 
+        setMinHeight(columnSet.GetMinHeight(), layout, context);
+
         ContainerStyle parentContainerStyle = renderArgs.getContainerStyle();
         ContainerStyle styleForThis = ContainerRenderer.GetLocalContainerStyle(columnSet, parentContainerStyle);
-
-        if (!baseCardElement.GetIsVisible())
-        {
-            layout.setVisibility(View.GONE);
-        }
 
         for (int i = 0; i < columnVectorSize; i++)
         {
@@ -97,7 +95,17 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             RenderArgs columnRenderArgs = new RenderArgs(renderArgs);
             columnRenderArgs.setContainerStyle(styleForThis);
 
-            columnRenderer.render(renderedCard, context, fragmentManager, layout, column, cardActionHandler, hostConfig, columnRenderArgs);
+            FeatureRegistration featureRegistration = CardRendererRegistration.getInstance().getFeatureRegistration();
+
+            CardRendererRegistration.getInstance().renderElementAndPerformFallback(renderedCard,
+                                                                                   context,
+                                                                                   fragmentManager,
+                                                                                   column,
+                                                                                   layout,
+                                                                                   cardActionHandler,
+                                                                                   hostConfig,
+                                                                                   columnRenderArgs,
+                                                                                   featureRegistration);
         }
 
         if (columnSet.GetSelectAction() != null)
@@ -106,6 +114,8 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             layout.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, columnSet.GetSelectAction(), cardActionHandler));
         }
 
+        TagContent tagContent = new TagContent(columnSet, separator, viewGroup);
+
         if (columnSet.GetHeight() == HeightType.Stretch)
         {
             LinearLayout stretchLayout = new LinearLayout(context);
@@ -113,6 +123,8 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             stretchLayout.setOrientation(LinearLayout.VERTICAL);
 
             layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1));
+
+            tagContent.SetStretchContainer(stretchLayout);
 
             stretchLayout.addView(layout);
             viewGroup.addView(stretchLayout);
@@ -123,13 +135,11 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             viewGroup.addView(layout);
         }
 
+        layout.setTag(tagContent);
+        setVisibility(baseCardElement.GetIsVisible(), layout);
+
         ContainerRenderer.ApplyPadding(styleForThis, parentContainerStyle, layout, context, hostConfig);
         ContainerRenderer.ApplyBleed(columnSet, layout, context, hostConfig);
-
-        if (columnSet.GetMinHeight() != 0)
-        {
-            layout.setMinimumHeight(Util.dpToPixels(context, (int)columnSet.GetMinHeight()));
-        }
 
         return layout;
     }

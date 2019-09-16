@@ -7,10 +7,10 @@
 
 #import "ACRBaseCardElementRenderer.h"
 
-@interface ACRCustomRenderer: ACRBaseCardElementRenderer
+@interface ACRCustomRenderer : ACRBaseCardElementRenderer
 
 @property NSObject<ACOIBaseCardElementParser> *customElementParser;
 
-+ (ACRCustomRenderer* ) getInstance;
++ (ACRCustomRenderer *)getInstance;
 
 @end

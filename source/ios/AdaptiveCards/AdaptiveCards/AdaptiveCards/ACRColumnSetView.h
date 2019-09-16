@@ -6,7 +6,9 @@
 //
 #import "ACRContentStackView.h"
 
-@interface ACRColumnSetView:ACRContentStackView
+@interface ACRColumnSetView : ACRContentStackView
+
+@property BOOL isLastColumn;
 
 - (void)setAlignmentForColumnStretch;
 

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
@@ -11,6 +13,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Storage;
 using AdaptiveCardVisualizer.ViewModel;
+using Windows.ApplicationModel;
 
 namespace AdaptiveCardVisualizer.Helpers
 {
@@ -237,7 +240,21 @@ namespace AdaptiveCardVisualizer.Helpers
 
         private static async Task<string> GetSchemaHelperAsync()
         {
-            var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Schemas/adaptive-card.json"));
+            var schemasFolder = await Package.Current.InstalledLocation.GetFolderAsync("Schemas");
+            var versionFolders = await schemasFolder.GetFoldersAsync();
+
+            List<Tuple<Version, StorageFolder>> versions = new List<Tuple<Version, StorageFolder>>();
+            foreach (var folder in versionFolders)
+            {
+                if (Version.TryParse(folder.Name, out Version result))
+                {
+                    versions.Add(new Tuple<Version, StorageFolder>(result, folder));
+                }
+            }
+
+            var latestFolder = versions.OrderByDescending(i => i.Item1).First().Item2;
+
+            var file = await latestFolder.GetFileAsync("adaptive-card.json");
             return await FileIO.ReadTextAsync(file);
         }
     }

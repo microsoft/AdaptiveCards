@@ -7,9 +7,10 @@
 			"es2015"
 		],
 		"moduleResolution": "node",
+		"jsx": "react",
 		"noImplicitAny": false,
 		"sourceMap": true,
-		"declaration": true,
+		"declaration": true
 	},
 	"exclude": [
 		"node_modules",

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -145,7 +147,6 @@ namespace AdaptiveCards.Sample.Html
                     }
                     catch (Exception err)
                     {
-                        Debugger.Break();
                         writer.WriteLine($"<p class='error'>ERROR: {err.Message}</p>");
                     }
                 }
@@ -226,7 +227,7 @@ namespace AdaptiveCards.Sample.Html
             }});
         }}
 
-        // Sample JavaScript code to test inlienaction's keyboard event handler 
+        // Sample JavaScript code to test inlienaction's keyboard event handler
         const textinputWithInlineAction = document.getElementsByClassName('ac-textinput-inlineaction');
         for (var i = 0; i < textinputWithInlineAction.length; i++)
         {{
@@ -250,7 +251,7 @@ namespace AdaptiveCards.Sample.Html
                             }}
                         }}
                     }}
-                }} 
+                }}
             }});
         }}
 
@@ -260,7 +261,7 @@ namespace AdaptiveCards.Sample.Html
             const toggleVisibilityAction = toggleVisibilityActions[i];
 
             toggleVisibilityAction.addEventListener('click', function() {{
-                if (true) {{
+                if ({jsAllowInlinePlayback}) {{
                     // Read list of targets with defined behaviour
                     // List will be in format id-targets='id1:True,id2:Toggle,id3:False'
                     const targetElementsString = toggleVisibilityAction.dataset.acTargetelements;
@@ -279,6 +280,9 @@ namespace AdaptiveCards.Sample.Html
                         // The way to discern between checkbox elements and inline-actions is that inline-actions contain a textinput
                         var isCheckBoxElement = ((targetElementsInDocument.length > 1) && !(targetElement.className.includes('ac-textinput')));
 
+                        const targetSeparatorId = targetElement.dataset.acSeparatorid;
+                        const separator = document.getElementById(targetSeparatorId);
+
                         if(targetElementAction == 'True' || (targetElementAction == 'Toggle' && targetElement.style.display == 'none')) {{
                             if( isCheckBoxElement ) {{
                                 targetElement.style.display = 'inline-block';
@@ -286,10 +290,57 @@ namespace AdaptiveCards.Sample.Html
                             else {{
                                 targetElement.style.display = 'flex';
                             }}
+
+                            if(targetElement.className.includes('ac-container')){{
+                                targetElement.style.display = 'block';
+                            }}
+
+                            if(separator != null) {{
+                                separator.style.display = 'block';
+                            }}
                         }}
                         else if(targetElementAction == 'False' || (targetElementAction == 'Toggle' && targetElement.style.display != 'none')) {{
                             targetElement.style.display = 'none';
+
+                            if(separator != null) {{
+                                separator.style.display = 'none';
+                            }}
                         }}
+
+                        const parent = targetElement.parentNode;
+                        var isFirstElement = true;
+                        for(var k = 0; k < parent.childNodes.length; k++){{
+
+                            var child = parent.childNodes[k];
+
+                            <!-- if element is separator -> skip (As we don't care of this one) -->
+                            if(child.className.includes('ac-separator') || child.className.includes('ac-columnseparator')){{
+                                continue;
+                            }}
+
+                            <!-- if element is not visible -> skip (The separator was hidden in the previous step) -->
+                            if(child.style.display == 'none'){{
+                                continue;
+                            }}
+
+                            const childSeparatorId = child.dataset.acSeparatorid;
+                            var childSeparator = document.getElementById(childSeparatorId);
+
+                            if(isFirstElement){{
+                                <!-- if element is visible -> hide separator -->
+                                if(childSeparator != null){{
+                                    childSeparator.style.display = 'none';
+                                }}
+                                isFirstElement = false;
+                            }}
+                            else{{
+                                <!-- if element is visible -> show separator -->
+                                if(childSeparator != null){{
+                                    childSeparator.style.display = 'block';
+                                }}
+                            }}
+                        }}
+
                     }}
 
                 }} else {{

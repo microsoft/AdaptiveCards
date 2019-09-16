@@ -1,10 +1,19 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import { IPoint } from "./miscellaneous";
 
 export class Splitter {
     private _isVertical: boolean = false;
+    private _isAttachedAfter: boolean = false;
     private _sizedELement: HTMLElement;
     private _isPointerDown: boolean;
     private _lastClickedOffset: IPoint;
+
+    private resizeEnded() {
+        if (this.onResizeEnded) {
+            this.onResizeEnded(this);
+        }
+    }
 
     private pointerDown(e: PointerEvent) {
         e.preventDefault();
@@ -24,7 +33,12 @@ export class Splitter {
             let newSize: number;
 
             if (this._isVertical) {
-                newSize = this._sizedELement.getBoundingClientRect().width - (e.x - this._lastClickedOffset.x);
+                if (this._isAttachedAfter) {
+                    newSize = this._sizedELement.getBoundingClientRect().width - (this._lastClickedOffset.x - e.x);
+                }
+                else {
+                    newSize = this._sizedELement.getBoundingClientRect().width - (e.x - this._lastClickedOffset.x);
+                }
 
                 if (newSize >= this.minimum) {
                     this._sizedELement.style.width = newSize + "px";
@@ -33,7 +47,12 @@ export class Splitter {
                 }
             }
             else {
-                newSize = this._sizedELement.getBoundingClientRect().height - (e.y - this._lastClickedOffset.y);
+                if (this._isAttachedAfter) {
+                    newSize = this._sizedELement.getBoundingClientRect().height - (this._lastClickedOffset.y - e.y);
+                }
+                else {
+                    newSize = this._sizedELement.getBoundingClientRect().height - (e.y - this._lastClickedOffset.y);
+                }
 
                 if (newSize >= this.minimum) {
                     this._sizedELement.style.height = newSize + "px";
@@ -44,7 +63,7 @@ export class Splitter {
 
             if (sizeApplied) {
                 if (this.onResized) {
-                    this.onResized(this, newSize);
+                    this.onResized(this);
                 }
 
                 this._lastClickedOffset = { x: e.x, y: e.y };
@@ -57,10 +76,13 @@ export class Splitter {
 
         this.attachedTo.releasePointerCapture(e.pointerId);
 
+        this.resizeEnded();
+
         this._isPointerDown = false;
     }
 
-    onResized: (sender: Splitter, newSize: number) => void;
+    onResizeEnded: (sender: Splitter) => void;
+    onResized: (sender: Splitter) => void;
 
     readonly attachedTo: HTMLElement;
 
@@ -69,10 +91,14 @@ export class Splitter {
     constructor(
         attachedTo: HTMLElement,
         sizedElement: HTMLElement,
-        isVertical: boolean = false) {
+        isVertical: boolean = false,
+        isAttachedAfter: boolean = false,
+        minimumSize: number = 140) {
         this.attachedTo = attachedTo;
         this._sizedELement = sizedElement;
         this._isVertical = isVertical;
+        this._isAttachedAfter = isAttachedAfter;
+        this.minimum = minimumSize;
 
         this.attachedTo.onmousedown = (e: MouseEvent) => {e.preventDefault(); };
         this.attachedTo.onpointerdown = (e: PointerEvent) => { this.pointerDown(e); };

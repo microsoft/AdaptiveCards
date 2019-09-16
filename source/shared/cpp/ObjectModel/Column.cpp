@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "Column.h"
 #include "ParseContext.h"
@@ -25,8 +27,7 @@ void Column::SetWidth(const std::string& value,
                       std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>>* warnings)
 {
     m_width = ParseUtil::ToLowercase(value);
-    const int parsedDimension = ParseSizeForPixelSize(m_width, warnings);
-    SetPixelWidth(parsedDimension);
+    m_pixelWidth = ParseSizeForPixelSize(m_width, warnings);
 }
 
 // explicit width takes precedence over relative width
@@ -38,6 +39,9 @@ int Column::GetPixelWidth() const
 void Column::SetPixelWidth(const int value)
 {
     m_pixelWidth = value;
+    std::ostringstream pixelString;
+    pixelString << value << "px";
+    m_width = pixelString.str();
 }
 
 const std::vector<std::shared_ptr<BaseCardElement>>& Column::GetItems() const
@@ -93,13 +97,31 @@ void Column::GetResourceInformation(std::vector<RemoteResourceInformation>& reso
 void Column::DeserializeChildren(ParseContext& context, const Json::Value& value)
 {
     // Parse Items
-    auto cardElements = ParseUtil::GetElementCollection(context, value, AdaptiveCardSchemaKey::Items, false);
+    auto cardElements = ParseUtil::GetElementCollection<BaseCardElement>(true, // isTopToBottomContainer
+                                                                         context,
+                                                                         value,
+                                                                         AdaptiveCardSchemaKey::Items,
+                                                                         false); // isRequired
     m_items = std::move(cardElements);
 }
 
 std::shared_ptr<BaseCardElement> ColumnParser::Deserialize(ParseContext& context, const Json::Value& value)
 {
     auto column = CollectionTypeElement::Deserialize<Column>(context, value);
+
+    auto fallbackElement = column->GetFallbackContent();
+    if (fallbackElement)
+    {
+        if (CardElementTypeFromString(fallbackElement->GetElementTypeString()) != CardElementType::Column)
+        {
+            context.warnings.emplace_back(
+                std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::UnknownElementType,
+                                                           "Column Fallback must be a Column. Fallback content dropped."));
+
+            column->SetFallbackContent(nullptr);
+            column->SetFallbackType(FallbackType::None);
+        }
+    }
 
     std::string columnWidth = ParseUtil::GetValueAsString(value, AdaptiveCardSchemaKey::Width);
     if (columnWidth == "")
@@ -108,9 +130,7 @@ std::shared_ptr<BaseCardElement> ColumnParser::Deserialize(ParseContext& context
         columnWidth = ParseUtil::GetValueAsString(value, AdaptiveCardSchemaKey::Size);
     }
 
-    column->SetWidth(ParseUtil::ToLowercase(columnWidth));
-    const int parsedDimension = ParseSizeForPixelSize(column->GetWidth(), &context.warnings);
-    column->SetPixelWidth(parsedDimension);
+    column->SetWidth(ParseUtil::ToLowercase(columnWidth), &context.warnings);
 
     return column;
 }

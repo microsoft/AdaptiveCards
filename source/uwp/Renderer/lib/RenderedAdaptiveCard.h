@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
@@ -45,7 +47,11 @@ namespace AdaptiveNamespace
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
-        HRESULT AddInlineShowCard(_In_opt_ ABI::AdaptiveNamespace::IAdaptiveActionSet* actionSet,
+        HRESULT AddInlineShowCard(_In_ ABI::AdaptiveNamespace::IAdaptiveActionSet* actionSet,
+                                  _In_ ABI::AdaptiveNamespace::IAdaptiveShowCardAction* showCardAction,
+                                  _In_ ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement);
+
+        HRESULT AddInlineShowCard(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
                                   _In_ ABI::AdaptiveNamespace::IAdaptiveShowCardAction* showCardAction,
                                   _In_ ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement);
 
@@ -58,6 +64,10 @@ namespace AdaptiveNamespace
 
     private:
         HRESULT HandleInlineShowCardEvent(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* actionElement);
+
+        HRESULT AddInlineShowCardHelper(AdaptiveCards::InternalId& internalId,
+                                        _In_ ABI::AdaptiveNamespace::IAdaptiveShowCardAction* showCardAction,
+                                        _In_ ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement);
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveCard> m_originatingCard;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveHostConfig> m_originatingHostConfig;

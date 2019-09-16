@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
@@ -55,12 +57,17 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_MinHeight(_Out_ UINT32* minHeight);
         IFACEMETHODIMP put_MinHeight(UINT32 minHeight);
 
+        IFACEMETHODIMP get_InputNecessityIndicators(_Out_ ABI::AdaptiveNamespace::InputNecessityIndicators* inputNecessityIndicators);
+        IFACEMETHODIMP put_InputNecessityIndicators(ABI::AdaptiveNamespace::InputNecessityIndicators inputNecessityIndicators);
+
         IFACEMETHODIMP ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
 
         IFACEMETHODIMP GetResourceInformation(
             _COM_Outptr_ ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveNamespace::AdaptiveRemoteResourceInformation*>** uris);
 
         HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard>& sharedModel);
+
+        InternalId GetInternalId() { return m_internalId; }
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
@@ -77,11 +84,14 @@ namespace AdaptiveNamespace
         Microsoft::WRL::Wrappers::HString m_language;
         UINT32 m_minHeight;
 
+        InternalId m_internalId;
+
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveBackgroundImage> m_backgroundImage;
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_selectAction;
         ABI::AdaptiveNamespace::ContainerStyle m_style;
         ABI::AdaptiveNamespace::VerticalContentAlignment m_verticalAlignment;
+        ABI::AdaptiveNamespace::InputNecessityIndicators m_inputNecessityIndicators;
     };
 
     class AdaptiveCardStaticsImpl WrlFinal : public Microsoft::WRL::AgileActivationFactory<ABI::AdaptiveNamespace::IAdaptiveCardStatics>

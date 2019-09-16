@@ -1,6 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.text.Spannable;
@@ -15,6 +18,7 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StrikethroughSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
+import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -114,15 +118,25 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
                     paragraph.setSpan(new StrikethroughSpan(), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
                 }
 
-                // This line sets the bold or italic weight
+                if (textRun.GetUnderline())
+                {
+                    paragraph.setSpan(new UnderlineSpan(), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                }
+
+                // This line sets the bold or lighter weight
                 paragraph.setSpan(new StyleSpan(TextRendererUtil.getTextWeight(textRun.GetTextWeight())), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 
-                long textSize = TextRendererUtil.getTextSize(textRun.GetFontStyle(), textRun.GetTextSize(), hostConfig);
+                if (textRun.GetItalic())
+                {
+                    paragraph.setSpan(new StyleSpan(Typeface.ITALIC), spanStart, spanEnd, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                }
+
+                long textSize = TextRendererUtil.getTextSize(textRun.GetFontType(), textRun.GetTextSize(), hostConfig);
                 paragraph.setSpan(new AbsoluteSizeSpan((int)textSize, true), spanStart, spanEnd, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
 
                 // On API 28, TypefaceSpan(Typeface) was added so we don't have to use the TypefaceSpan(String) constructor
-                String fontName = hostConfig.GetFontFamily(textRun.GetFontStyle());
-                if(fontName.isEmpty())
+                String fontName = hostConfig.GetFontFamily(textRun.GetFontType());
+                if (fontName.isEmpty())
                 {
                     fontName = "monospace";
                 }
@@ -161,7 +175,6 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
         }
 
         TextView textView = new TextView(context);
-        textView.setTag(new TagContent(richTextBlock));
         textView.setEllipsize(TextUtils.TruncateAt.END);
         textView.setHorizontallyScrolling(false);
 
@@ -170,12 +183,10 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
         // Height
         // IsVisible
         // Spacing
-        setSpacingAndSeparator(context, viewGroup, richTextBlock.GetSpacing(), richTextBlock.GetSeparator(), hostConfig, true);
+        View separator = setSpacingAndSeparator(context, viewGroup, richTextBlock.GetSpacing(), richTextBlock.GetSeparator(), hostConfig, true);
 
-        if (!baseCardElement.GetIsVisible())
-        {
-            textView.setVisibility(View.GONE);
-        }
+        textView.setTag(new TagContent(richTextBlock, separator, viewGroup));
+        setVisibility(baseCardElement.GetIsVisible(), textView);
 
         if (richTextBlock.GetHeight() == HeightType.Stretch)
         {

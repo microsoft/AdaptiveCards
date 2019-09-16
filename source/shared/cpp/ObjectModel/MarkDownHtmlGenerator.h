@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 #include <string>
 #include <iomanip>
@@ -7,7 +9,7 @@
 
 namespace AdaptiveSharedNamespace
 {
-    enum DelimiterType
+    enum class DelimiterType
     {
         Init,
         Alphanumeric,
@@ -15,7 +17,7 @@ namespace AdaptiveSharedNamespace
         Escape,
         WhiteSpace,
         Underscore,
-        Asterisk,
+        Asterisk
     };
 
     // this class knows how to generate html string of their types

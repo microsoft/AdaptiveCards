@@ -12,6 +12,10 @@ export default payloads = [
     "json": require('./Action.Title.json')
   },
   {
+    "title": "Action.ToggleVisibility.json",
+    "json": require('./Action.ToggleVisibility.json')
+  },
+  {
     "title": "AdaptiveCard.MinVersion.json",
     "json": require('./AdaptiveCard.MinVersion.json')
   },
@@ -132,6 +136,10 @@ export default payloads = [
     "json": require('./ColumnSet_Container.VerticalStretch.json')
   },
   {
+    "title": "CustomElement.Rendering.json",
+    "json": require('./CustomElement.Rendering.json')
+  },
+  {
     "title": "CustomParsingTestUsingProgressBar.json",
     "json": require('./CustomParsingTestUsingProgressBar.json')
   },
@@ -146,6 +154,10 @@ export default payloads = [
   {
     "title": "FactSetWrapping.json",
     "json": require('./FactSetWrapping.json')
+  },
+  {
+    "title": "Fallback.json",
+    "json": require('./Fallback.json')
   },
   {
     "title": "Feedback.json",

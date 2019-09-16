@@ -1,9 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
-#include <locale>
-#include <codecvt>
 #include <string>
 #include <regex>
 
+#include "AdaptiveActionParserRegistration.h"
 #include "AdaptiveActionSet.h"
 #include "AdaptiveColumn.h"
 #include "AdaptiveColumnSet.h"
@@ -11,14 +12,17 @@
 #include "AdaptiveChoiceInput.h"
 #include "AdaptiveChoiceSetInput.h"
 #include "AdaptiveDateInput.h"
+#include "AdaptiveElementParserRegistration.h"
 #include "AdaptiveFact.h"
 #include "AdaptiveFactSet.h"
+#include "AdaptiveFeatureRegistration.h"
 #include "AdaptiveImage.h"
 #include "AdaptiveImageSet.h"
 #include "AdaptiveMedia.h"
 #include "AdaptiveMediaSource.h"
 #include "AdaptiveNumberInput.h"
 #include "AdaptiveOpenUrlAction.h"
+#include "AdaptiveRequirement.h"
 #include "AdaptiveRichTextBlock.h"
 #include "AdaptiveSeparator.h"
 #include "AdaptiveShowCardAction.h"
@@ -52,42 +56,90 @@ using namespace AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 
-HRESULT WStringToHString(const std::wstring& in, _Outptr_ HSTRING* out)
+HRESULT WStringToHString(const std::wstring_view& in, _Outptr_ HSTRING* out) noexcept try
 {
     if (out == nullptr)
     {
         return E_INVALIDARG;
     }
-    return WindowsCreateString(in.c_str(), static_cast<UINT32>(in.length()), out);
+    else if (in.empty())
+    {
+        return WindowsCreateString(L"", 0, out);
+    }
+    else
+    {
+        return WindowsCreateString(&in[0], static_cast<UINT32>(in.length()), out);
+    }
+}
+CATCH_RETURN;
+
+std::string WstringToString(const std::wstring_view& in)
+{
+    if (!in.empty())
+    {
+        const size_t requiredSize =
+            WideCharToMultiByte(CP_UTF8, 0 /*dwFlags*/, &in[0], (int)in.length(), nullptr, 0, nullptr, nullptr);
+        std::string converted(requiredSize, 0);
+
+        if (WideCharToMultiByte(CP_UTF8, 0 /*dwFlags*/, &in[0], (int)in.length(), &converted[0], (int)requiredSize, nullptr, nullptr) == 0)
+        {
+            throw bad_string_conversion();
+        }
+        return converted;
+    }
+    return "";
 }
 
-HRESULT UTF8ToHString(const std::string& in, _Outptr_ HSTRING* out)
+std::wstring StringToWstring(const std::string_view& in)
+{
+    if (!in.empty())
+    {
+        // TODO: safer casts
+        const size_t requiredSize = MultiByteToWideChar(CP_UTF8, 0 /*dwFlags*/, &in[0], (int)in.length(), (LPWSTR) nullptr, 0);
+        std::wstring wide(requiredSize, 0);
+
+        if (MultiByteToWideChar(CP_UTF8, 0 /*dwFlags*/, &in[0], (int)in.length(), &wide[0], (int)requiredSize) == 0)
+        {
+            throw bad_string_conversion();
+        }
+
+        return wide;
+    }
+    return L"";
+}
+
+HRESULT UTF8ToHString(const std::string_view& in, _Outptr_ HSTRING* out) noexcept try
 {
     if (out == nullptr)
     {
         return E_INVALIDARG;
     }
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    std::wstring wide = converter.from_bytes(in);
-    return WindowsCreateString(wide.c_str(), static_cast<UINT32>(wide.length()), out);
-}
-
-HRESULT HStringToUTF8(const HSTRING& in, std::string& out)
-{
-    if (in == nullptr)
+    else
     {
-        return E_INVALIDARG;
+        std::wstring wide = StringToWstring(in);
+        return WindowsCreateString(wide.c_str(), static_cast<UINT32>(wide.length()), out);
     }
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    out = converter.to_bytes(WindowsGetStringRawBuffer(in, nullptr));
+}
+CATCH_RETURN;
+
+HRESULT HStringToUTF8(const HSTRING& in, std::string& out) noexcept try
+{
+    out = WstringToString(WindowsGetStringRawBuffer(in, nullptr));
     return S_OK;
 }
+CATCH_RETURN;
 
 std::string HStringToUTF8(const HSTRING& in)
 {
     std::string typeAsKey;
-    HRESULT hr = HStringToUTF8(in, typeAsKey);
-    return FAILED(hr) ? "" : typeAsKey;
+    if (SUCCEEDED(HStringToUTF8(in, typeAsKey)))
+    {
+        return typeAsKey;
+    }
+    else
+    {
+        return "";
+    }
 }
 
 template<typename TSharedBaseType, typename TAdaptiveBaseType, typename TAdaptiveType>
@@ -122,6 +174,11 @@ HRESULT GenerateSharedElement(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement*
     case ABI::AdaptiveNamespace::ElementType::ChoiceSetInput:
         baseCardElement =
             GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveChoiceSetInput>(
+                item);
+        break;
+    case ABI::AdaptiveNamespace::ElementType::Column:
+        baseCardElement =
+            GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveColumn>(
                 item);
         break;
     case ABI::AdaptiveNamespace::ElementType::ColumnSet:
@@ -277,6 +334,42 @@ HRESULT GenerateSharedActions(_In_ ABI::Windows::Foundation::Collections::IVecto
 
     return S_OK;
 }
+
+HRESULT GenerateSharedRequirements(
+    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>* adaptiveRequirements,
+    std::shared_ptr<std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>> sharedRequirements) noexcept try
+{
+    sharedRequirements->clear();
+
+    XamlHelpers::IterateOverVector<ABI::AdaptiveNamespace::AdaptiveRequirement, ABI::AdaptiveNamespace::IAdaptiveRequirement>(
+        adaptiveRequirements, [&](ABI::AdaptiveNamespace::IAdaptiveRequirement* requirement) {
+            HString nameHString;
+            RETURN_IF_FAILED(requirement->get_Name(nameHString.GetAddressOf()));
+
+            HString versionHString;
+            RETURN_IF_FAILED(requirement->get_Version(versionHString.GetAddressOf()));
+
+            std::string nameString;
+            RETURN_IF_FAILED(HStringToUTF8(nameHString.Get(), nameString));
+
+            std::string versionString;
+            RETURN_IF_FAILED(HStringToUTF8(versionHString.Get(), versionString));
+
+            if (versionString == "*")
+            {
+                sharedRequirements->emplace(nameString, "0");
+            }
+            else
+            {
+                sharedRequirements->emplace(nameString, versionString);
+            }
+
+            return S_OK;
+        });
+
+    return S_OK;
+}
+CATCH_RETURN;
 
 HRESULT GenerateSharedImages(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveImage*>* images,
                              std::vector<std::shared_ptr<AdaptiveSharedNamespace::Image>>& containedElements)
@@ -509,6 +602,10 @@ HRESULT GenerateElementProjection(_In_ const std::shared_ptr<AdaptiveSharedNames
         RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveRichTextBlock>(
             projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::RichTextBlock>(baseElement)));
         break;
+    case CardElementType::Column:
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveColumn>(
+            projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::Column>(baseElement)));
+        break;
     case CardElementType::Custom:
         RETURN_IF_FAILED(std::AdaptivePointerCast<::AdaptiveNamespace::CustomElementWrapper>(baseElement)->GetWrappedElement(projectedElement));
         break;
@@ -644,6 +741,20 @@ HRESULT GenerateInlinesProjection(const std::vector<std::shared_ptr<AdaptiveShar
             &projectedContainedElement, std::static_pointer_cast<AdaptiveSharedNamespace::TextRun>(containedElement)));
 
         RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
+    }
+    return S_OK;
+}
+CATCH_RETURN;
+
+HRESULT GenerateRequirementsProjection(
+    const std::shared_ptr<std::unordered_map<std::string, SemanticVersion>>& sharedRequirements,
+    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>* projectedRequirementVector) noexcept try
+{
+    for (auto& sharedRequirement : *sharedRequirements)
+    {
+        ComPtr<ABI::AdaptiveNamespace::IAdaptiveRequirement> projectedRequirement;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveRequirement>(&projectedRequirement, sharedRequirement));
+        RETURN_IF_FAILED(projectedRequirementVector->Append(projectedRequirement.Detach()));
     }
     return S_OK;
 }
@@ -970,34 +1081,34 @@ HRESULT GetBackgroundColorFromStyle(ABI::AdaptiveNamespace::ContainerStyle style
 }
 CATCH_RETURN;
 
-HRESULT GetFontDataFromStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
-                             ABI::AdaptiveNamespace::FontStyle style,
-                             ABI::AdaptiveNamespace::TextSize desiredSize,
-                             ABI::AdaptiveNamespace::TextWeight desiredWeight,
-                             _Outptr_ HSTRING* resultFontFamilyName,
-                             _Out_ UINT32* resultSize,
-                             _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept try
+HRESULT GetFontDataFromFontType(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+                                ABI::AdaptiveNamespace::FontType fontType,
+                                ABI::AdaptiveNamespace::TextSize desiredSize,
+                                ABI::AdaptiveNamespace::TextWeight desiredWeight,
+                                _Outptr_ HSTRING* resultFontFamilyName,
+                                _Out_ UINT32* resultSize,
+                                _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept try
 {
-    RETURN_IF_FAILED(GetFontFamilyFromStyle(hostConfig, style, resultFontFamilyName));
-    RETURN_IF_FAILED(GetFontSizeFromStyle(hostConfig, style, desiredSize, resultSize));
-    RETURN_IF_FAILED(GetFontWeightFromStyle(hostConfig, style, desiredWeight, resultWeight));
+    RETURN_IF_FAILED(GetFontFamilyFromFontType(hostConfig, fontType, resultFontFamilyName));
+    RETURN_IF_FAILED(GetFontSizeFromFontType(hostConfig, fontType, desiredSize, resultSize));
+    RETURN_IF_FAILED(GetFontWeightFromStyle(hostConfig, fontType, desiredWeight, resultWeight));
     return S_OK;
 }
 CATCH_RETURN;
 
-HRESULT GetFontFamilyFromStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
-                               ABI::AdaptiveNamespace::FontStyle style,
-                               _Outptr_ HSTRING* resultFontFamilyName) noexcept try
+HRESULT GetFontFamilyFromFontType(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+                                  ABI::AdaptiveNamespace::FontType fontType,
+                                  _Outptr_ HSTRING* resultFontFamilyName) noexcept try
 {
     HString result;
-    ABI::AdaptiveNamespace::IAdaptiveFontStyleDefinition* styleDefinition;
+    ABI::AdaptiveNamespace::IAdaptiveFontTypeDefinition* typeDefinition;
 
     // get FontFamily from desired style
-    RETURN_IF_FAILED(GetFontStyle(hostConfig, style, &styleDefinition));
-    RETURN_IF_FAILED(styleDefinition->get_FontFamily(result.GetAddressOf()));
+    RETURN_IF_FAILED(GetFontType(hostConfig, fontType, &typeDefinition));
+    RETURN_IF_FAILED(typeDefinition->get_FontFamily(result.GetAddressOf()));
     if (result == NULL)
     {
-        if (style == ABI::AdaptiveNamespace::FontStyle::Monospace)
+        if (fontType == ABI::AdaptiveNamespace::FontType::Monospace)
         {
             // fallback to system default monospace FontFamily
             RETURN_IF_FAILED(UTF8ToHString("Courier New", result.GetAddressOf()));
@@ -1017,25 +1128,25 @@ HRESULT GetFontFamilyFromStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig*
 }
 CATCH_RETURN;
 
-HRESULT GetFontSizeFromStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
-                             ABI::AdaptiveNamespace::FontStyle style,
-                             ABI::AdaptiveNamespace::TextSize desiredSize,
-                             _Out_ UINT32* resultSize) noexcept try
+HRESULT GetFontSizeFromFontType(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+                                ABI::AdaptiveNamespace::FontType fontType,
+                                ABI::AdaptiveNamespace::TextSize desiredSize,
+                                _Out_ UINT32* resultSize) noexcept try
 {
     UINT32 result;
-    ABI::AdaptiveNamespace::IAdaptiveFontStyleDefinition* styleDefinition;
+    ABI::AdaptiveNamespace::IAdaptiveFontTypeDefinition* fontTypeDefinition;
     ABI::AdaptiveNamespace::IAdaptiveFontSizesConfig* sizesConfig;
 
     // get FontSize from desired style
-    RETURN_IF_FAILED(GetFontStyle(hostConfig, style, &styleDefinition));
-    RETURN_IF_FAILED(styleDefinition->get_FontSizes(&sizesConfig));
+    RETURN_IF_FAILED(GetFontType(hostConfig, fontType, &fontTypeDefinition));
+    RETURN_IF_FAILED(fontTypeDefinition->get_FontSizes(&sizesConfig));
     RETURN_IF_FAILED(GetFontSize(sizesConfig, desiredSize, &result));
 
     if (result == MAXUINT32)
     {
         // get FontSize from Default style
-        RETURN_IF_FAILED(GetFontStyle(hostConfig, ABI::AdaptiveNamespace::FontStyle::Default, &styleDefinition));
-        RETURN_IF_FAILED(styleDefinition->get_FontSizes(&sizesConfig));
+        RETURN_IF_FAILED(GetFontType(hostConfig, ABI::AdaptiveNamespace::FontType::Default, &fontTypeDefinition));
+        RETURN_IF_FAILED(fontTypeDefinition->get_FontSizes(&sizesConfig));
         RETURN_IF_FAILED(GetFontSize(sizesConfig, desiredSize, &result));
 
         if (result == MAXUINT32)
@@ -1075,24 +1186,24 @@ HRESULT GetFontSizeFromStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* h
 CATCH_RETURN;
 
 HRESULT GetFontWeightFromStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
-                               ABI::AdaptiveNamespace::FontStyle style,
+                               ABI::AdaptiveNamespace::FontType fontType,
                                ABI::AdaptiveNamespace::TextWeight desiredWeight,
                                _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept try
 {
     UINT16 result;
-    ABI::AdaptiveNamespace::IAdaptiveFontStyleDefinition* styleDefinition;
+    ABI::AdaptiveNamespace::IAdaptiveFontTypeDefinition* typeDefinition;
     ABI::AdaptiveNamespace::IAdaptiveFontWeightsConfig* weightConfig;
 
-    // get FontWeight from desired style
-    RETURN_IF_FAILED(GetFontStyle(hostConfig, style, &styleDefinition));
-    RETURN_IF_FAILED(styleDefinition->get_FontWeights(&weightConfig));
+    // get FontWeight from desired fontType
+    RETURN_IF_FAILED(GetFontType(hostConfig, fontType, &typeDefinition));
+    RETURN_IF_FAILED(typeDefinition->get_FontWeights(&weightConfig));
     RETURN_IF_FAILED(GetFontWeight(weightConfig, desiredWeight, &result));
 
     if (result == MAXUINT16)
     {
         // get FontWeight from Default style
-        RETURN_IF_FAILED(GetFontStyle(hostConfig, ABI::AdaptiveNamespace::FontStyle::Default, &styleDefinition));
-        RETURN_IF_FAILED(styleDefinition->get_FontWeights(&weightConfig));
+        RETURN_IF_FAILED(GetFontType(hostConfig, ABI::AdaptiveNamespace::FontType::Default, &typeDefinition));
+        RETURN_IF_FAILED(typeDefinition->get_FontWeights(&weightConfig));
         RETURN_IF_FAILED(GetFontWeight(weightConfig, desiredWeight, &result));
 
         if (result == MAXUINT16)
@@ -1125,21 +1236,21 @@ HRESULT GetFontWeightFromStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig*
 }
 CATCH_RETURN;
 
-HRESULT GetFontStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
-                     ABI::AdaptiveNamespace::FontStyle style,
-                     _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveFontStyleDefinition** styleDefinition) noexcept try
+HRESULT GetFontType(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+                    ABI::AdaptiveNamespace::FontType fontType,
+                    _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveFontTypeDefinition** fontTypeDefinition) noexcept try
 {
-    ABI::AdaptiveNamespace::IAdaptiveFontStylesDefinition* fontStyles;
-    RETURN_IF_FAILED(hostConfig->get_FontStyles(&fontStyles));
+    ABI::AdaptiveNamespace::IAdaptiveFontTypesDefinition* fontTypes;
+    RETURN_IF_FAILED(hostConfig->get_FontTypes(&fontTypes));
 
-    switch (style)
+    switch (fontType)
     {
-    case ABI::AdaptiveNamespace::FontStyle::Monospace:
-        RETURN_IF_FAILED(fontStyles->get_Monospace(styleDefinition));
+    case ABI::AdaptiveNamespace::FontType::Monospace:
+        RETURN_IF_FAILED(fontTypes->get_Monospace(fontTypeDefinition));
         break;
-    case ABI::AdaptiveNamespace::FontStyle::Default:
+    case ABI::AdaptiveNamespace::FontType::Default:
     default:
-        RETURN_IF_FAILED(fontStyles->get_Default(styleDefinition));
+        RETURN_IF_FAILED(fontTypes->get_Default(fontTypeDefinition));
         break;
     }
     return S_OK;
@@ -1196,8 +1307,9 @@ CATCH_RETURN;
 
 HRESULT StringToJsonObject(const std::string& inputString, _COM_Outptr_ IJsonObject** result)
 {
-    std::wstring asWstring = StringToWstring(inputString);
-    return HStringToJsonObject(HStringReference(asWstring.c_str()).Get(), result);
+    HString asHstring;
+    RETURN_IF_FAILED(UTF8ToHString(inputString, asHstring.GetAddressOf()));
+    return HStringToJsonObject(asHstring.Get(), result);
 }
 
 HRESULT HStringToJsonObject(const HSTRING& inputHString, _COM_Outptr_ IJsonObject** result)
@@ -1235,8 +1347,9 @@ HRESULT JsonObjectToHString(_In_ IJsonObject* inputJson, _Outptr_ HSTRING* resul
 
 HRESULT StringToJsonValue(const std::string inputString, _COM_Outptr_ IJsonValue** result)
 {
-    std::wstring asWstring = StringToWstring(inputString);
-    return HStringToJsonValue(HStringReference(asWstring.c_str()).Get(), result);
+    HString asHstring;
+    RETURN_IF_FAILED(UTF8ToHString(inputString, asHstring.GetAddressOf()));
+    return HStringToJsonValue(asHstring.Get(), result);
 }
 
 HRESULT HStringToJsonValue(const HSTRING& inputHString, _COM_Outptr_ IJsonValue** result)
@@ -1299,33 +1412,32 @@ HRESULT ProjectedElementTypeToHString(ABI::AdaptiveNamespace::ElementType projec
     return UTF8ToHString(CardElementTypeToString(sharedElementType), result);
 }
 
-HRESULT IsBackgroundImageValid(_In_ ABI::AdaptiveNamespace::IAdaptiveBackgroundImage* backgroundImageElement, _Out_ BOOL* isValid)
+HRESULT MeetsRequirements(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* cardElement,
+                          _In_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration* featureRegistration,
+                          _Out_ bool* meetsRequirements)
 {
-    ComPtr<ABI::AdaptiveNamespace::IAdaptiveBackgroundImage> backgroundImage(backgroundImageElement);
-    if (backgroundImage != NULL)
-    {
-        HSTRING url;
-        THROW_IF_FAILED(backgroundImage->get_Url(&url));
-        if (url != NULL)
-        {
-            *isValid = TRUE;
-            return S_OK;
-        }
-    }
-    *isValid = FALSE;
+    std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedElement;
+    RETURN_IF_FAILED(GenerateSharedElement(cardElement, sharedElement));
+
+    ComPtr<AdaptiveFeatureRegistration> featureRegistrationImpl = PeekInnards<AdaptiveFeatureRegistration>(featureRegistration);
+    std::shared_ptr<AdaptiveSharedNamespace::FeatureRegistration> sharedFeatureRegistration =
+        featureRegistrationImpl->GetSharedFeatureRegistration();
+
+    *meetsRequirements = sharedElement->MeetsRequirements(*sharedFeatureRegistration);
     return S_OK;
 }
 
-std::wstring StringToWstring(const std::string& in)
+HRESULT IsBackgroundImageValid(_In_ ABI::AdaptiveNamespace::IAdaptiveBackgroundImage* backgroundImageElement, _Out_ BOOL* isValid)
 {
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> utfConverter;
-    return utfConverter.from_bytes(in);
-}
-
-std::string WstringToString(const std::wstring& input)
-{
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> utfConverter;
-    return utfConverter.to_bytes(input);
+    *isValid = FALSE;
+    ComPtr<ABI::AdaptiveNamespace::IAdaptiveBackgroundImage> backgroundImage(backgroundImageElement);
+    if (backgroundImage != NULL)
+    {
+        HString url;
+        RETURN_IF_FAILED(backgroundImage->get_Url(url.GetAddressOf()));
+        *isValid = url.IsValid();
+    }
+    return S_OK;
 }
 
 void RemoteResourceElementToRemoteResourceInformationVector(_In_ ABI::AdaptiveNamespace::IAdaptiveElementWithRemoteResources* remoteResourceElement,
@@ -1413,7 +1525,7 @@ HRESULT SharedWarningsToAdaptiveWarnings(std::vector<std::shared_ptr<AdaptiveCar
 }
 
 HRESULT AdaptiveWarningsToSharedWarnings(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-                                         std::vector<std::shared_ptr<AdaptiveCardParseWarning>> sharedWarnings)
+                                         std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& sharedWarnings)
 {
     ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>> localAdaptiveWarnings{adaptiveWarnings};
     ComPtr<IIterable<ABI::AdaptiveNamespace::AdaptiveWarning*>> vectorIterable;
@@ -1452,9 +1564,9 @@ Color GenerateLighterColor(const Color& originalColor)
 
     Color lighterColor;
     lighterColor.A = originalColor.A;
-    lighterColor.R = originalColor.R + static_cast<int>((255 - originalColor.R) * lightIncrement);
-    lighterColor.G = originalColor.G + static_cast<int>((255 - originalColor.G) * lightIncrement);
-    lighterColor.B = originalColor.B + static_cast<int>((255 - originalColor.B) * lightIncrement);
+    lighterColor.R = originalColor.R + static_cast<BYTE>((255 - originalColor.R) * lightIncrement);
+    lighterColor.G = originalColor.G + static_cast<BYTE>((255 - originalColor.G) * lightIncrement);
+    lighterColor.B = originalColor.B + static_cast<BYTE>((255 - originalColor.B) * lightIncrement);
     return lighterColor;
 }
 
@@ -1547,17 +1659,13 @@ HRESULT CopyTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* textE
     RETURN_IF_FAILED(textElement->get_Color(&color));
     RETURN_IF_FAILED(localCopiedTextElement->put_Color(color));
 
-    ABI::AdaptiveNamespace::FontStyle fontStyle;
-    RETURN_IF_FAILED(textElement->get_FontStyle(&fontStyle));
-    RETURN_IF_FAILED(localCopiedTextElement->put_FontStyle(fontStyle));
+    ABI::AdaptiveNamespace::FontType fontType;
+    RETURN_IF_FAILED(textElement->get_FontType(&fontType));
+    RETURN_IF_FAILED(localCopiedTextElement->put_FontType(fontType));
 
     boolean isSubtle;
     RETURN_IF_FAILED(textElement->get_IsSubtle(&isSubtle));
     RETURN_IF_FAILED(localCopiedTextElement->put_IsSubtle(isSubtle));
-
-    boolean italic;
-    RETURN_IF_FAILED(textElement->get_Italic(&italic));
-    RETURN_IF_FAILED(localCopiedTextElement->put_Italic(italic));
 
     HString language;
     RETURN_IF_FAILED(textElement->get_Language(language.GetAddressOf()));
@@ -1566,10 +1674,6 @@ HRESULT CopyTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* textE
     ABI::AdaptiveNamespace::TextSize size;
     RETURN_IF_FAILED(textElement->get_Size(&size));
     RETURN_IF_FAILED(localCopiedTextElement->put_Size(size));
-
-    boolean strikethrough;
-    RETURN_IF_FAILED(textElement->get_Strikethrough(&strikethrough));
-    RETURN_IF_FAILED(localCopiedTextElement->put_Strikethrough(strikethrough));
 
     ABI::AdaptiveNamespace::TextWeight weight;
     RETURN_IF_FAILED(textElement->get_Weight(&weight));
@@ -1580,5 +1684,61 @@ HRESULT CopyTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* textE
     RETURN_IF_FAILED(localCopiedTextElement->put_Text(text.Get()));
 
     RETURN_IF_FAILED(localCopiedTextElement.CopyTo(copiedTextElement));
+    return S_OK;
+}
+
+HRESULT GetAdaptiveActionParserRegistrationFromSharedModel(
+    const std::shared_ptr<ActionParserRegistration>& sharedActionParserRegistration,
+    _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration** adaptiveActionParserRegistration)
+{
+    // Look up the well known action parser registration to see if we've got a custom action registration to pass
+    std::shared_ptr<ActionElementParser> sharedActionParser =
+        sharedActionParserRegistration->GetParser(c_upwActionParserRegistration);
+
+    if (sharedActionParser != nullptr)
+    {
+        // The shared model wraps the passed in parsers. Get our SharedModelActionParser from it so we can retrieve the
+        // IAdaptiveActionParserRegistration
+        std::shared_ptr<ActionElementParserWrapper> parserWrapper =
+            std::static_pointer_cast<ActionElementParserWrapper>(sharedActionParser);
+
+        std::shared_ptr<SharedModelActionParser> sharedModelParser =
+            std::static_pointer_cast<SharedModelActionParser>(parserWrapper->GetActualParser());
+
+        RETURN_IF_FAILED(sharedModelParser->GetAdaptiveParserRegistration(adaptiveActionParserRegistration));
+    }
+    else
+    {
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveActionParserRegistration>(adaptiveActionParserRegistration));
+    }
+
+    return S_OK;
+}
+
+HRESULT GetAdaptiveElementParserRegistrationFromSharedModel(
+    const std::shared_ptr<ElementParserRegistration>& sharedElementParserRegistration,
+    _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration** adaptiveElementParserRegistration)
+{
+    // Look up the well known Element parser registration to see if we've got a custom Element registration to pass
+    std::shared_ptr<BaseCardElementParser> sharedElementParser =
+        sharedElementParserRegistration->GetParser(c_uwpElementParserRegistration);
+
+    if (sharedElementParser != nullptr)
+    {
+        // The shared model wraps the passed in parsers. Get our SharedModelElementParser from it so we can retrieve the
+        // IAdaptiveElementParserRegistration
+        std::shared_ptr<BaseCardElementParserWrapper> parserWrapper =
+            std::static_pointer_cast<BaseCardElementParserWrapper>(sharedElementParser);
+
+        std::shared_ptr<SharedModelElementParser> sharedModelParser =
+            std::static_pointer_cast<SharedModelElementParser>(parserWrapper->GetActualParser());
+
+        RETURN_IF_FAILED(sharedModelParser->GetAdaptiveParserRegistration(adaptiveElementParserRegistration));
+    }
+    else
+    {
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveElementParserRegistration>(adaptiveElementParserRegistration));
+    }
+
     return S_OK;
 }

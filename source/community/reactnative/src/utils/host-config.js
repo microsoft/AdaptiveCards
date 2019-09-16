@@ -394,7 +394,7 @@ class FontConfig {
 		if (!Utils.isNullOrEmpty(customConfig[type])) { // any custom config ?
 			let config = customConfig[type];
 			if (type === "monospace") {
-				this.fontFamily = (Platform.OS === Constants.PlatformIOS) ? "Courier New" : "monospace";
+				this.fontFamily = (Platform.OS === Constants.PlatformAndroid) ? "monospace" : "Courier New";
 			}
 			else {
 				this.fontFamily = config["fontFamily"] ? config["fontFamily"] : this.fontFamily;

@@ -1,19 +1,124 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Threading.Tasks;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Media;
 
 namespace UWPTestLibrary
 {
     public class TestResultViewModel : BindableBase
     {
+        public TestResultViewModel()
+        {
+            _status = new TestStatus();
+        }
+
         public string CardName { get; set; }
         public FileViewModel CardFile { get; set; }
 
         public string HostConfigName { get; set; }
         public FileViewModel HostConfigFile { get; set; }
+
+        private Brush GetBrushForResult(bool image)
+        {
+            if (Status.MatchedViaError)
+            {
+                return new SolidColorBrush(Windows.UI.Colors.Black);
+            }
+            else if (Status.NewCard)
+            {
+                return new SolidColorBrush(Windows.UI.Color.FromArgb(255, 65, 159, 254));
+            }
+            else if (image && Status.ImageMatched ||
+                     !image && Status.JsonRoundTripMatched)
+            {
+                return new SolidColorBrush(Windows.UI.Colors.LimeGreen);
+            }
+            else
+            {
+                return new SolidColorBrush(Windows.UI.Colors.Red);
+            }
+        }
+
+        private string GetStringForResult(bool image)
+        {
+            if (Status.MatchedViaError)
+            {
+                return "N/A";
+            }
+            else if (Status.NewCard)
+            {
+                return "New";
+            }
+            else if (image && Status.ImageMatched ||
+                     !image && Status.JsonRoundTripMatched)
+            {
+                return "Passed";
+            }
+            else
+            {
+                return "Failed";
+            }
+        }
+
+        public string ImageResult
+        {
+            get { return GetStringForResult(true); }
+        }
+        public Brush ImageResultBrush
+        {
+            get { return GetBrushForResult(true); }
+        }
+        public string JsonResult
+        {
+            get { return GetStringForResult(false); }
+        }
+        public Brush JsonResultBrush
+        {
+            get { return GetBrushForResult(false); }
+        }
+
+        public string OriginalResult
+        {
+            get
+            {
+                if (Status.NewCard)
+                {
+                    return "New";
+                }
+                else if (Status.OriginalMatched)
+                {
+                    return "Unchanged";
+                }
+                else
+                {
+                    return "Changed";
+                }
+            }
+        }
+
+        public Brush OriginalResultBrush
+        {
+            get
+            {
+                if (Status.NewCard)
+                {
+                    return new SolidColorBrush(Windows.UI.Color.FromArgb(255, 65, 159, 254));
+                }
+                else if (Status.OriginalMatched)
+                {
+                    return new SolidColorBrush(Windows.UI.Colors.LimeGreen);
+                }
+                else
+                {
+                    return new SolidColorBrush(Windows.UI.Colors.Red);
+                }
+            }
+        }
 
         public FileViewModel RoundtrippedJsonModel { get; set; }
         public FileViewModel ExpectedRoundtrippedJsonModel { get; set; }
@@ -76,7 +181,7 @@ namespace UWPTestLibrary
                 var storedInfo = await StoredTestResultInfo.DeserializeFromFileAsync(expectedFolder, answer._expectedFileNameWithoutExtension);
                 if (storedInfo == null)
                 {
-                    answer.Status = TestStatus.New;
+                    answer.Status.NewCard = true;
                 }
                 else
                 {
@@ -99,11 +204,7 @@ namespace UWPTestLibrary
                 {
                     if (answer.ExpectedError == answer.TestResult.Error)
                     {
-                        answer.Status = TestStatus.Passed;
-                    }
-                    else
-                    {
-                        answer.Status = TestStatus.Failed;
+                        answer.Status.MatchedViaError = true;
                     }
                 }
 
@@ -115,45 +216,31 @@ namespace UWPTestLibrary
 
                     if (ImageBytesAreTheSame(oldBytes, newBytes))
                     {
-                        answer.Status = TestStatus.Passed;
-                    }
-                    else
-                    {
-                        answer.Status = TestStatus.Failed;
+                        answer.Status.ImageMatched = true;
                     }
 
                     // Check if the round tripped json is the same
                     answer.ExpectedRoundtrippedJsonModel = await FileViewModel.LoadAsync(answer.ExpectedRoundtrippedJsonFile);
                     answer.RoundtrippedJsonModel = await FileViewModel.LoadAsync(answer.ActualRoundTrippedJsonFile);
-                    if (answer.DidRoundtrippedJsonChange)
+                    if (!answer.DidRoundtrippedJsonChange)
                     {
-                        answer.Status = (answer.Status == TestStatus.Passed) ? TestStatus.JsonFailed : TestStatus.ImageAndJsonFailed;
+                        answer.Status.JsonRoundTripMatched = true;
                     }
-                }
-
-                // Otherwise one had image and one had error, so fail
-                else
-                {
-                    answer.Status = TestStatus.Failed;
                 }
 
                 // See if the source chagned by checking
                 // if the hashes have changed since the stored info
-                if (storedInfo.HostConfigHash != hostConfigFile.Hash
-                    || storedInfo.CardHash != cardFile.Hash)
+                if (storedInfo.HostConfigHash == hostConfigFile.Hash &&
+                    storedInfo.CardHash == cardFile.Hash)
                 {
-                    answer.Status = (answer.Status == TestStatus.Failed ||
-                                     answer.Status == TestStatus.ImageAndJsonFailed ||
-                                     answer.Status == TestStatus.JsonFailed) ?
-                        TestStatus.FailedButSourceWasChanged :
-                        TestStatus.PassedButSourceWasChanged;
+                    answer.Status.OriginalMatched = true;
                 }
             }
             catch
             {
                 // Any exceptions being thrown get reported as "New", typically this results from file
                 // not found of an expected file, which means it genuinely is new
-                answer.Status = TestStatus.New;
+                answer.Status.NewCard = true;
             }
 
             return answer;
@@ -244,12 +331,17 @@ namespace UWPTestLibrary
             return name.Replace('\\', '.');
         }
 
-        public async Task SaveAsNewExpectedAsync()
+        public async Task SaveAsNewExpectedAsync(bool updateOriginals, bool updateJson, bool updateImage)
         {
             try
             {
+                if (!updateOriginals && !updateJson && !updateImage)
+                {
+                    return;
+                }
+
                 // If actual has error and existing did NOT have error, delete existing image
-                if (TestResult.Error != null && ExpectedImageFile != null)
+                if (TestResult.Error != null && ExpectedImageFile != null && updateImage)
                 {
                     try
                     {
@@ -261,47 +353,86 @@ namespace UWPTestLibrary
                 // Save the updated info
                 await new StoredTestResultInfo()
                 {
-                    HostConfigHash = HostConfigFile.Hash,
-                    CardHash = CardFile.Hash,
-                    Error = TestResult.Error
+                    HostConfigHash = updateOriginals ? HostConfigFile.Hash : _oldHostConfigHash,
+                    CardHash = updateOriginals ? CardFile.Hash : _oldCardHash,
+                    Error = (updateJson || updateImage) ? TestResult.Error : ExpectedError
                 }.SaveToFileAsync(_expectedFolder, _expectedFileNameWithoutExtension);
 
                 // Make sure the source files are saved (we use FailIfExists and try/catch since if file already exists no need to update it)
-                try
+                if (updateOriginals)
                 {
-                    var sourceHostConfigFile = await _sourceHostConfigsFolder.CreateFileAsync(GetStoredSourceFileName(HostConfigFile.Name, HostConfigFile.Hash), CreationCollisionOption.FailIfExists);
-                    await FileIO.WriteTextAsync(sourceHostConfigFile, HostConfigFile.Contents);
+                    try
+                    {
+                        var sourceHostConfigFile = await _sourceHostConfigsFolder.CreateFileAsync(GetStoredSourceFileName(HostConfigFile.Name, HostConfigFile.Hash), CreationCollisionOption.OpenIfExists);
+                        await FileIO.WriteTextAsync(sourceHostConfigFile, HostConfigFile.Contents);
 
-                    var oldSourceHostConfigFile = await _sourceHostConfigsFolder.CreateFileAsync(GetStoredSourceFileName(HostConfigFile.Name, _oldHostConfigHash), CreationCollisionOption.OpenIfExists);
-                    await oldSourceHostConfigFile.DeleteAsync(StorageDeleteOption.PermanentDelete);
-                }
-                catch { }
-                try
-                {
-                    var sourceCardFile = await _sourceCardsFolder.CreateFileAsync(GetStoredSourceFileName(CardFile.Name, CardFile.Hash), CreationCollisionOption.FailIfExists);
-                    await FileIO.WriteTextAsync(sourceCardFile, CardFile.Contents);
+                        var oldSourceHostConfigFile = await _sourceHostConfigsFolder.CreateFileAsync(GetStoredSourceFileName(HostConfigFile.Name, _oldHostConfigHash), CreationCollisionOption.OpenIfExists);
+                        await oldSourceHostConfigFile.DeleteAsync(StorageDeleteOption.PermanentDelete);
+                    }
+                    catch { }
+                    try
+                    {
+                        var sourceCardFile = await _sourceCardsFolder.CreateFileAsync(GetStoredSourceFileName(CardFile.Name, CardFile.Hash), CreationCollisionOption.OpenIfExists);
+                        await FileIO.WriteTextAsync(sourceCardFile, CardFile.Contents);
 
-                    var oldSourceCardFile = await _sourceCardsFolder.CreateFileAsync(GetStoredSourceFileName(CardFile.Name, _oldCardHash), CreationCollisionOption.OpenIfExists);
-                    await oldSourceCardFile.DeleteAsync(StorageDeleteOption.PermanentDelete);
+                        var oldSourceCardFile = await _sourceCardsFolder.CreateFileAsync(GetStoredSourceFileName(CardFile.Name, _oldCardHash), CreationCollisionOption.OpenIfExists);
+                        await oldSourceCardFile.DeleteAsync(StorageDeleteOption.PermanentDelete);
+                    }
+                    catch { }
                 }
-                catch { }
 
                 // If no error, update the image file
                 if (TestResult.Error == null)
                 {
-                    var expectedFile = await _expectedFolder.CreateFileAsync(_expectedFileNameWithoutExtension + ".png", CreationCollisionOption.ReplaceExisting);
-                    await ActualImageFile.CopyAndReplaceAsync(expectedFile);
-
-                    var expectedJsonFile = await _expectedFolder.CreateFileAsync(GetStrippedFileName(CardFile) + "ToJson.json", CreationCollisionOption.ReplaceExisting);
-                    await ActualRoundTrippedJsonFile.CopyAndReplaceAsync(expectedJsonFile);
+                    if (updateImage)
+                    {
+                        var expectedFile = await _expectedFolder.CreateFileAsync(_expectedFileNameWithoutExtension + ".png", CreationCollisionOption.ReplaceExisting);
+                        await ActualImageFile.CopyAndReplaceAsync(expectedFile);
+                    }
+                    if (updateJson)
+                    {
+                        var expectedJsonFile = await _expectedFolder.CreateFileAsync(GetStrippedFileName(CardFile) + "ToJson.json", CreationCollisionOption.ReplaceExisting);
+                        await ActualRoundTrippedJsonFile.CopyAndReplaceAsync(expectedJsonFile);
+                    }
                 }
 
-                // Update the status
-                ExpectedError = TestResult.Error;
-                ExpectedImageFile = ActualImageFile;
-                _oldHostConfigHash = HostConfigFile.Hash;
-                _oldCardHash = CardFile.Hash;
-                Status = TestStatus.Passed;
+                // Create a new status with the values set to the current values
+                TestStatus newStatus = new TestStatus();
+                newStatus.ImageMatched = Status.ImageMatched;
+                newStatus.JsonRoundTripMatched = Status.JsonRoundTripMatched;
+                newStatus.MatchedViaError = Status.MatchedViaError;
+                newStatus.NewCard = Status.NewCard;
+                newStatus.OriginalMatched = Status.OriginalMatched;
+
+                // Update based on the changes
+                if ((TestResult.Error != null) && (updateImage || updateJson))
+                {
+                    newStatus.MatchedViaError = true;
+                    ExpectedError = TestResult.Error;
+                }
+                else
+                {
+
+                    if (updateImage)
+                    {
+                        newStatus.ImageMatched = true;
+                        ExpectedImageFile = ActualImageFile;
+                    }
+                    if (updateJson)
+                    {
+                        newStatus.JsonRoundTripMatched = true;
+                    }
+                }
+
+                if (updateOriginals)
+                {
+                    _oldHostConfigHash = HostConfigFile.Hash;
+                    _oldCardHash = CardFile.Hash;
+                    newStatus.OriginalMatched = true;
+                    newStatus.NewCard = false;
+                }
+
+                Status = newStatus;
             }
             catch (Exception ex)
             {
@@ -315,41 +446,70 @@ namespace UWPTestLibrary
         }
     }
 
-    public enum TestStatus
+    public class TestStatus
     {
-        /// <summary>
-        /// Visual identically matched
-        /// </summary>
-        Passed,
+        /// <summary>The error results match (either both pass or both fail with the same result)</summary>
+        public bool MatchedViaError { get; set; } = false;
 
-        /// <summary>
-        /// Visual did match, but source files (payload and host config) changed, so changes are possibly expected
-        /// </summary>
-        PassedButSourceWasChanged,
+        /// <summary> The original card and host config json matches </summary>
+        public bool OriginalMatched { get; set; } = false;
 
-        /// <summary>
-        /// Visual did NOT match, and source files (payload and host config) were identical, Json round tripping matches
-        /// </summary>
-        Failed,
+        /// <summary> The rendered image matches</summary>
+        public bool ImageMatched { get; set; } = false;
 
-        /// <summary>
-        /// Visual did NOT match, and source files (payload and host config) were identical, Json round tripping doesn't match
-        /// </summary>
-        ImageAndJsonFailed,
+        /// <summary> The round tripped json matches</summary>
+        public bool JsonRoundTripMatched { get; set; } = false;
 
-        /// <summary>
-        /// Visual identically matched, Roundtripped json did not match, and source files (payload and host config) were identical
-        /// </summary>
-        JsonFailed,
+        /// <summary> This is a new card</summary>
+        public bool NewCard { get; set; } = false;
 
-        /// <summary>
-        /// Visual did NOT match, but source files (payload and host config) changed, so changes are possibly expected
-        /// </summary>
-        FailedButSourceWasChanged,
+        /// <summary> Set the status to a passing result</summary>
+        public void SetToPassingStatus(bool matchedViaError)
+        {
+            NewCard = false;
+            OriginalMatched = true;
 
-        /// <summary>
-        /// New test, no existing Expected
-        /// </summary>
-        New
+            ImageMatched = !matchedViaError;
+            JsonRoundTripMatched = !matchedViaError;
+            MatchedViaError = matchedViaError;
+        }
+
+        // Determine if this status is a passing result
+        public bool IsPassingStatus()
+        {
+            return MatchedViaError || (ImageMatched && JsonRoundTripMatched);
+        }
+
+        public override string ToString()
+        {
+            if (IsPassingStatus())
+            {
+                return "Passed";
+            }
+            else if (NewCard == true)
+            {
+                return "New Card Added";
+            }
+            else if (!OriginalMatched && ((!ImageMatched || !JsonRoundTripMatched) && !MatchedViaError))
+            {
+                return "Failure with original changed";
+            }
+            else if (!ImageMatched && JsonRoundTripMatched)
+            {
+                return "Image comparison failed";
+            }
+            else if (ImageMatched && !JsonRoundTripMatched)
+            {
+                return "Json round trip failed";
+            }
+            else if (!ImageMatched && !JsonRoundTripMatched)
+            {
+                return "Json round trip and image comparison failed";
+            }
+            else
+            {
+                return base.ToString();
+            }
+        }
     }
 }

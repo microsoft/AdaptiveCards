@@ -88,8 +88,6 @@
     <ClCompile Include="lib\AdaptiveMediaEventInvoker.cpp" />
     <ClCompile Include="lib\AdaptiveMediaEventArgs.cpp" />
     <ClCompile Include="lib\AdaptiveRemoteResourceInformation.cpp" />
-    <ClCompile Include="lib\AdaptiveFontStyleDefinition.cpp" />
-    <ClCompile Include="lib\AdaptiveFontStylesDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveToggleVisibilityAction.cpp" />
     <ClCompile Include="lib\AdaptiveToggleVisibilityTarget.cpp" />
     <ClCompile Include="lib\AdaptiveActionSet.cpp" />
@@ -108,9 +106,12 @@
     <ClCompile Include="lib\AdaptiveTextRun.cpp" />
     <ClCompile Include="lib\AdaptiveTextElement.cpp" />
     <ClCompile Include="lib\TextHelpers.cpp" />
-    <ClCompile Include="lib\XamlHelpers.cpp" />
     <ClCompile Include="lib\AdaptiveFeatureRegistration.cpp" />
     <ClCompile Include="lib\AdaptiveHighlightColorConfig.cpp" />
+    <ClCompile Include="lib\ElementTagContent.cpp" />
+    <ClCompile Include="lib\AdaptiveFontTypeDefinition.cpp" />
+    <ClCompile Include="lib\AdaptiveFontTypesDefinition.cpp" />
+    <ClCompile Include="lib\AdaptiveRequirement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -206,8 +207,6 @@
     <ClInclude Include="lib\AdaptiveMediaEventInvoker.h" />
     <ClInclude Include="lib\AdaptiveMediaEventArgs.h" />
     <ClInclude Include="lib\AdaptiveRemoteResourceInformation.h" />
-    <ClInclude Include="lib\AdaptiveFontStyleDefinition.h" />
-    <ClInclude Include="lib\AdaptiveFontStylesDefinition.h" />
     <ClInclude Include="lib\AdaptiveToggleVisibilityAction.h" />
     <ClInclude Include="lib\AdaptiveToggleVisibilityTarget.h" />
     <ClInclude Include="lib\AdaptiveActionSet.h" />
@@ -228,6 +227,10 @@
     <ClInclude Include="lib\TextHelpers.h" />
     <ClInclude Include="lib\AdaptiveFeatureRegistration.h" />
     <ClInclude Include="lib\AdaptiveHighlightColorConfig.h" />
+    <ClInclude Include="lib\ElementTagContent.h" />
+    <ClInclude Include="lib\AdaptiveFontTypeDefinition.h" />
+    <ClInclude Include="lib\AdaptiveFontTypesDefinition.h" />
+    <ClInclude Include="lib\AdaptiveRequirement.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />

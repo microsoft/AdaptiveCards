@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
@@ -15,9 +17,13 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_IsRequired(_Out_ boolean* isRequired);
         IFACEMETHODIMP put_IsRequired(boolean isRequired);
 
+        IFACEMETHODIMP get_ErrorMessage(_Outptr_ HSTRING* title);
+        IFACEMETHODIMP put_ErrorMessage(_In_ HSTRING title);
+
         HRESULT SetSharedElementProperties(std::shared_ptr<AdaptiveSharedNamespace::BaseInputElement> sharedCardElement);
 
     private:
         boolean m_isRequired;
+        Microsoft::WRL::Wrappers::HString m_errorMessage;
     };
 }

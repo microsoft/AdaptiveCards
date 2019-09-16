@@ -152,6 +152,7 @@
     <ClCompile Include="..\..\ObjectModel\CollectionTypeElement.cpp" />
     <ClCompile Include="..\..\ObjectModel\FeatureRegistration.cpp" />
     <ClCompile Include="..\..\ObjectModel\Inline.cpp" />
+    <ClCompile Include="..\..\ObjectModel\RichTextElementProperties.cpp" />
     <ClCompile Include="..\..\ObjectModel\TextElementProperties.cpp" />
     <ClCompile Include="..\..\ObjectModel\TextRun.cpp" />
     <ClCompile Include="..\..\ObjectModel\ParseContext.cpp" />
@@ -218,6 +219,7 @@
     <ClInclude Include="..\..\ObjectModel\CollectionTypeElement.h" />
     <ClInclude Include="..\..\ObjectModel\FeatureRegistration.h" />
     <ClInclude Include="..\..\ObjectModel\Inline.h" />
+    <ClInclude Include="..\..\ObjectModel\RichTextElementProperties.h" />
     <ClInclude Include="..\..\ObjectModel\TextElementProperties.h" />
     <ClInclude Include="..\..\ObjectModel\TextRun.h" />
     <ClInclude Include="..\..\ObjectModel\ParseContext.h" />

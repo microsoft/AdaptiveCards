@@ -1,3 +1,5 @@
+/* Copyright (c) Microsoft Corporation. All rights reserved. */
+/* Licensed under the MIT License. */
 /* File : AdaptiveCardObjectModel.i */
 
 namespace std {
@@ -7,7 +9,7 @@ namespace std {
     protected:
         enable_shared_from_this();
         enable_shared_from_this(const enable_shared_from_this &);
-        ~enable_shared_from_this();        
+        ~enable_shared_from_this();
     };
 }
 
@@ -69,10 +71,10 @@ namespace std {
   }
 %}
 
-%template(BaseCardElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement> >; 
-%template(ImageVector) std::vector<std::shared_ptr<AdaptiveCards::Image> >; 
-%template(FactVector) std::vector<std::shared_ptr<AdaptiveCards::Fact> >; 
-%template(ColumnVector) std::vector<std::shared_ptr<AdaptiveCards::Column> >; 
+%template(BaseCardElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement> >;
+%template(ImageVector) std::vector<std::shared_ptr<AdaptiveCards::Image> >;
+%template(FactVector) std::vector<std::shared_ptr<AdaptiveCards::Fact> >;
+%template(ColumnVector) std::vector<std::shared_ptr<AdaptiveCards::Column> >;
 
 %template(EnableSharedFromThisContainer) std::enable_shared_from_this<AdaptiveCards::Container>;
 

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
@@ -67,7 +69,7 @@ public class ImageSetRenderer extends BaseCardElementRenderer
             throw new InternalError("Unable to convert BaseCardElement to ImageSet object model.");
         }
 
-        setSpacingAndSeparator(context, viewGroup, imageSet.GetSpacing(), imageSet.GetSeparator(), hostConfig, true);
+        View separator = setSpacingAndSeparator(context, viewGroup, imageSet.GetSpacing(), imageSet.GetSeparator(), hostConfig, true);
 
         IBaseCardElementRenderer imageRenderer = CardRendererRegistration.getInstance().getRenderer(CardElementType.Image.toString());
         if (imageRenderer == null)
@@ -76,11 +78,9 @@ public class ImageSetRenderer extends BaseCardElementRenderer
         }
 
         HorizontalFlowLayout horizFlowLayout = new HorizontalFlowLayout(context);
-        horizFlowLayout.setTag(new TagContent(imageSet));
-        if(!baseCardElement.GetIsVisible())
-        {
-            horizFlowLayout.setVisibility(View.GONE);
-        }
+        horizFlowLayout.setTag(new TagContent(imageSet, separator, viewGroup));
+
+        setVisibility(baseCardElement.GetIsVisible(), horizFlowLayout);
 
         ImageSize imageSize = imageSet.GetImageSize();
         ImageVector imageVector = imageSet.GetImages();

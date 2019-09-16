@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import * as Enums from "./enums";
 
 export const ContentTypes = {
@@ -23,7 +25,7 @@ export class StringWithSubstitutions {
 	private _isProcessed: boolean = false;
 	private _original: string = null;
     private _processed: string = null;
-    
+
     getReferencedInputs(inputs: IInput[], referencedInputs: Dictionary<IInput>) {
         if (!referencedInputs) {
             throw new Error("The referencedInputs parameter cannot be null.")

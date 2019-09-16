@@ -36,12 +36,14 @@ class Config {
         this.type = type;
         this.ios = defaultThemeConfig[type].ios;
         this.android = defaultThemeConfig[type].android;
+        this.windows = defaultThemeConfig[type].windows;
 
         if (customConfig[type]) { // any custom config ?
             let config = customConfig[type];
 
             this.ios = config["ios"] ? { ...this.ios, ...config["ios"] } : { ...this.ios, ...config };
             this.android = config["android"] ? { ...this.android, ...config["android"] } : { ...this.android, ...config };
+            this.windows = config["windows"] ? { ...this.windows, ...config["windows"] } : { ...this.windows, ...config };
         }
     }
 }
@@ -65,7 +67,13 @@ const defaultThemeConfig = {
             backgroundColor: "#1D9BF6",
             color: "#FFFFFF",
             textTransform: undefined
-        }
+        },
+        windows: {
+            borderRadius: 15,
+            backgroundColor: "#1D9BF6",
+            color: "#FFFFFF",
+            textTransform: 'none'
+        },
     },
     input: {
         ios: {
@@ -79,6 +87,12 @@ const defaultThemeConfig = {
             backgroundColor: "#FFFFFF",
             borderRadius: 5,
             borderWidth: 1
-        }
+        },
+        windows: {
+            borderColor: "#dcdcdc",
+            backgroundColor: "#FFFFFF",
+            borderRadius: 5,
+            borderWidth: 1
+        },
     }
 }

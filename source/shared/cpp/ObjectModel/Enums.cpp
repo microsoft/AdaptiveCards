@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 
 // Auto-formatting does terrible things to this file, so turn it off.
@@ -47,15 +49,17 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::DefaultPoster, "defaultPoster"},
             {AdaptiveCardSchemaKey::ElementId, "elementId"},
             {AdaptiveCardSchemaKey::Emphasis, "emphasis"},
+            {AdaptiveCardSchemaKey::ErrorMessage, "errorMessage"},
             {AdaptiveCardSchemaKey::ExtraLarge, "extraLarge"},
             {AdaptiveCardSchemaKey::FactSet, "factSet"},
             {AdaptiveCardSchemaKey::Facts, "facts"},
             {AdaptiveCardSchemaKey::Fallback, "fallback"},
             {AdaptiveCardSchemaKey::FallbackText, "fallbackText"},
+            {AdaptiveCardSchemaKey::FillMode, "fillMode"},
             {AdaptiveCardSchemaKey::FontFamily, "fontFamily"},
             {AdaptiveCardSchemaKey::FontSizes, "fontSizes"},
-            {AdaptiveCardSchemaKey::FontStyle, "fontStyle"},
-            {AdaptiveCardSchemaKey::FontStyles, "fontStyles"},
+            {AdaptiveCardSchemaKey::FontType, "fontType"},
+            {AdaptiveCardSchemaKey::FontTypes, "fontTypes"},
             {AdaptiveCardSchemaKey::FontWeights, "fontWeights"},
             {AdaptiveCardSchemaKey::ForegroundColor, "foregroundColor"},
             {AdaptiveCardSchemaKey::ForegroundColors, "foregroundColors"},
@@ -69,6 +73,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::IconSize, "iconSize"},
             {AdaptiveCardSchemaKey::IconUrl, "iconUrl"},
             {AdaptiveCardSchemaKey::Id, "id"},
+            {AdaptiveCardSchemaKey::IgnoreInputValidation, "ignoreInputValidation"},
             {AdaptiveCardSchemaKey::Image, "image"},
             {AdaptiveCardSchemaKey::ImageBaseUrl, "imageBaseUrl"},
             {AdaptiveCardSchemaKey::ImageSet, "imageSet"},
@@ -78,6 +83,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::InlineAction, "inlineAction"},
             {AdaptiveCardSchemaKey::Inlines, "inlines"},
             {AdaptiveCardSchemaKey::InlineTopMargin, "inlineTopMargin"},
+            {AdaptiveCardSchemaKey::InputNecessityIndicators, "inputNecessityIndicators"},
             {AdaptiveCardSchemaKey::IsMultiSelect, "isMultiSelect"},
             {AdaptiveCardSchemaKey::IsMultiline, "isMultiline"},
             {AdaptiveCardSchemaKey::IsRequired, "isRequired"},
@@ -105,13 +111,13 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::MimeType, "mimeType"},
             {AdaptiveCardSchemaKey::Min, "min"},
             {AdaptiveCardSchemaKey::MinHeight, "minHeight"},
-            {AdaptiveCardSchemaKey::Mode, "mode"},
             {AdaptiveCardSchemaKey::Monospace, "monospace"},
             {AdaptiveCardSchemaKey::NumberInput, "numberInput"},
             {AdaptiveCardSchemaKey::Padding, "padding"},
             {AdaptiveCardSchemaKey::Placeholder, "placeholder"},
             {AdaptiveCardSchemaKey::PlayButton, "playButton"},
             {AdaptiveCardSchemaKey::Poster, "poster"},
+            {AdaptiveCardSchemaKey::Regex, "regex"},
             {AdaptiveCardSchemaKey::Repeat, "repeat"},
             {AdaptiveCardSchemaKey::RepeatHorizontally, "repeatHorizontally"},
             {AdaptiveCardSchemaKey::RepeatVertically, "repeatVertically"},
@@ -119,7 +125,6 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::RichTextBlock, "richTextBlock"},
             {AdaptiveCardSchemaKey::Right, "right"},
             {AdaptiveCardSchemaKey::SelectAction, "selectAction"},
-            {AdaptiveCardSchemaKey::Sentiment, "sentiment"},
             {AdaptiveCardSchemaKey::Separator, "separator"},
             {AdaptiveCardSchemaKey::ShowActionMode, "showActionMode"},
             {AdaptiveCardSchemaKey::ShowCard, "showCard"},
@@ -147,6 +152,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::ToggleInput, "toggleInput"},
             {AdaptiveCardSchemaKey::Top, "top"},
             {AdaptiveCardSchemaKey::Type, "type"},
+            {AdaptiveCardSchemaKey::Underline, "underline"},
             {AdaptiveCardSchemaKey::Url, "url"},
             {AdaptiveCardSchemaKey::Value, "value"},
             {AdaptiveCardSchemaKey::ValueOff, "valueOff"},
@@ -221,11 +227,11 @@ namespace AdaptiveSharedNamespace
         { VerticalAlignment::Center, "center" },
         { VerticalAlignment::Bottom, "bottom" }});
 
-    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(BackgroundImageMode, BackgroundImageMode::Stretch, {
-        { BackgroundImageMode::Stretch, "stretch" },
-        { BackgroundImageMode::RepeatHorizontally, "repeatHorizontally" },
-        { BackgroundImageMode::RepeatVertically, "repeatVertically" },
-        { BackgroundImageMode::Repeat, "repeat" }});
+    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ImageFillMode, ImageFillMode::Cover, {
+        { ImageFillMode::Cover, "cover" },
+        { ImageFillMode::RepeatHorizontally, "repeatHorizontally" },
+        { ImageFillMode::RepeatVertically, "repeatVertically" },
+        { ImageFillMode::Repeat, "repeat" }});
 
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ImageSize, ImageSize::Auto, {
             {ImageSize::Auto, "Auto"},
@@ -270,9 +276,9 @@ namespace AdaptiveSharedNamespace
                 {"Normal", TextSize::Default} // Back compat to support "Normal" for "Default" for pre V1.0 payloads
             }});
 
-    DEFINE_ADAPTIVECARD_ENUM(FontStyle, {
-            {FontStyle::Default, "Default"},
-            {FontStyle::Monospace, "Monospace"}});
+    DEFINE_ADAPTIVECARD_ENUM(FontType, {
+            {FontType::Default, "Default"},
+            {FontType::Monospace, "Monospace"}});
 
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ActionsOrientation, ActionsOrientation::Horizontal, {
             {ActionsOrientation::Horizontal, "Horizontal"},
@@ -317,4 +323,9 @@ namespace AdaptiveSharedNamespace
 
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(InlineElementType, InlineElementType::TextRun, {
             {InlineElementType::TextRun, "TextRun"}});
+
+    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(InputNecessityIndicators, InputNecessityIndicators::None, {
+            {InputNecessityIndicators::None, "None"},
+            {InputNecessityIndicators::RequiredInputs, "RequiredInputs"},
+            {InputNecessityIndicators::OptionalInputs, "OptionalInputs"}});
 }

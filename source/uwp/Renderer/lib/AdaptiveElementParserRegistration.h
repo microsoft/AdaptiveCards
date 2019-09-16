@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
@@ -6,6 +8,8 @@
 
 namespace AdaptiveNamespace
 {
+    constexpr char* c_uwpElementParserRegistration = "447C3D76-CAAD-405F-B929-E3201F1537AB";
+
     class DECLSPEC_UUID("fdf8457d-639f-4bbd-9e32-26c14bac3813") AdaptiveElementParserRegistration
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
                                               Microsoft::WRL::Implements<ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration>,
@@ -19,7 +23,6 @@ namespace AdaptiveNamespace
     public:
         AdaptiveElementParserRegistration();
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> sharedParserRegistration) noexcept;
 
         // IAdaptiveElementParserRegistration
         IFACEMETHODIMP Set(_In_ HSTRING type, _In_ ABI::AdaptiveNamespace::IAdaptiveElementParser* Parser) noexcept;
@@ -42,17 +45,23 @@ namespace AdaptiveNamespace
     class SharedModelElementParser : public AdaptiveSharedNamespace::BaseCardElementParser
     {
     public:
-        SharedModelElementParser(_In_ AdaptiveNamespace::AdaptiveElementParserRegistration* parserRegistration) :
-            m_parserRegistration(parserRegistration)
-        {
-        }
+        SharedModelElementParser(_In_ AdaptiveNamespace::AdaptiveElementParserRegistration* parserRegistration);
 
         // AdaptiveSharedNamespace::BaseCardElementParser
         std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& value) override;
         std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
 
+        HRESULT GetAdaptiveParserRegistration(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration** elementParserRegistration);
+
     private:
-        Microsoft::WRL::ComPtr<AdaptiveNamespace::AdaptiveElementParserRegistration> m_parserRegistration;
+        // This a a weak reference to the UWP level AdaptiveElementParserRegistration for this parse. Store as a weak
+        // reference to avoid circular references:
+        //
+        // SharedModelElementParser(This Object)->
+        //      m_parserRegistration(AdaptiveElementParserRegistration)->
+        //          m_sharedParserRegistration(ElementParserRegistration)->
+        //              m_cardElementParsers (Contains this object)
+        Microsoft::WRL::WeakRef m_parserRegistration;
     };
 
     template<typename TAdaptiveCardElement, typename TSharedModelElement, typename TSharedModelParser, typename TAdaptiveElementInterface>

@@ -1,0 +1,34 @@
+{
+	"type": "AdaptiveCard",
+	"body": [
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "long text long text long text long text long text long text",
+							"wrap": true
+						}
+					],
+					"width": "stretch"
+				},
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "long text long text long text long text long text long text",
+							"wrap": true
+						}
+					],
+					"width": "auto"
+				}
+			]
+		}
+	],
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.0"
+}

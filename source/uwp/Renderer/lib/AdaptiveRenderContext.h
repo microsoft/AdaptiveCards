@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
@@ -42,6 +44,10 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_OverrideStyles(_COM_Outptr_ ABI::Windows::UI::Xaml::IResourceDictionary** overrideDictionary) override;
         IFACEMETHODIMP AddError(ABI::AdaptiveNamespace::ErrorStatusCode statusCode, _In_ HSTRING message) override;
         IFACEMETHODIMP AddWarning(ABI::AdaptiveNamespace::WarningStatusCode statusCode, _In_ HSTRING message) override;
+
+        HRESULT AddInlineShowCard(_In_opt_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
+                                  _In_ ABI::AdaptiveNamespace::IAdaptiveShowCardAction* showCardAction,
+                                  _In_ ABI::Windows::UI::Xaml::IUIElement* showCardUIElement);
 
         HRESULT GetRenderResult(_COM_Outptr_ AdaptiveNamespace::RenderedAdaptiveCard** renderResult);
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> GetDefaultActionSentimentDictionary();

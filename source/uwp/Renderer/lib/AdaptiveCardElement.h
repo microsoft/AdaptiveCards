@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
@@ -39,8 +41,7 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveNamespace::HeightType* height);
         IFACEMETHODIMP put_Height(ABI::AdaptiveNamespace::HeightType height);
 
-        IFACEMETHODIMP MeetsRequirements(_In_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration* featureRegistration,
-                                         _Out_ boolean* value);
+        IFACEMETHODIMP get_Requirements(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>** requirements);
 
         IFACEMETHODIMP ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
 
@@ -59,6 +60,6 @@ namespace AdaptiveNamespace
         InternalId m_internalId;
         ABI::AdaptiveNamespace::FallbackType m_fallbackType;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardElement> m_fallbackContent;
-        std::shared_ptr<std::unordered_map<std::string, SemanticVersion>> m_requires;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>> m_requirements;
     };
 }

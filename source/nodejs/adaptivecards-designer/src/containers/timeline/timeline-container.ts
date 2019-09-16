@@ -1,13 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
-import * as Designer from "../../adaptivecards-designer";
+import { HostContainer } from "../host-container";
+import * as hostConfig from "../../hostConfigs/windows-timeline.json";
 
-var windowsTimelineConfiguration = require("../../../../../../samples/HostConfig/windows-timeline.json");
-
-export class TimelineContainer extends Designer.HostContainer {
+export class TimelineContainer extends HostContainer {
     public initialize() {
         Adaptive.AdaptiveCard.elementTypeRegistry.reset();
         Adaptive.AdaptiveCard.actionTypeRegistry.reset();
-        
+
         Adaptive.AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = true;
         Adaptive.AdaptiveCard.useAdvancedCardBottomTruncation = true;
         Adaptive.AdaptiveCard.useAdvancedTextBlockTruncation = true;
@@ -32,7 +33,7 @@ export class TimelineContainer extends Designer.HostContainer {
     }
 
     public getHostConfig(): Adaptive.HostConfig {
-        return new Adaptive.HostConfig(windowsTimelineConfiguration);
+        return new Adaptive.HostConfig(hostConfig);
     }
 
     get isFixedHeight(): boolean {

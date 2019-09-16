@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,23 +21,22 @@ namespace AdaptiveCards.Rendering.Wpf
             outerActionSet.Style = context.GetStyle("Adaptive.Container");
 
             // Keep track of ContainerStyle.ForegroundColors before Container is rendered
-            var parentRenderArgs = context.RenderArgs;
-            var elementRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
+            AdaptiveRenderArgs parentRenderArgs = context.RenderArgs;
+            AdaptiveRenderArgs elementRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
 
-            AddActions(outerActionSet, actionSet.Actions, context);
+            AddRenderedActions(outerActionSet, actionSet.Actions, context, actionSet.InternalID);
 
             return outerActionSet;
         }
 
-        public static void AddActions(Grid uiContainer, IList<AdaptiveAction> actions, AdaptiveRenderContext context)
+        public static void AddRenderedActions(Grid uiContainer, IList<AdaptiveAction> actions, AdaptiveRenderContext context, AdaptiveInternalID actionSetId)
         {
             if (!context.Config.SupportsInteractivity)
                 return;
 
-            var actionsConfig = context.Config.Actions;
-            var maxActions = actionsConfig.MaxActions;
-            var actionsToProcess = actions
-                .Take(maxActions).ToList();
+            ActionsConfig actionsConfig = context.Config.Actions;
+            int maxActions = actionsConfig.MaxActions;
+            List<AdaptiveAction> actionsToProcess = GetActionsToProcess(actions, maxActions, context);
 
             if (actionsToProcess.Any())
             {
@@ -51,7 +52,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 uiActionBar.Style = context.GetStyle("Adaptive.Actions");
 
                 // For vertical, we want to subtract the top margin of the first button
-                var topMargin = actionsConfig.ActionsOrientation == ActionsOrientation.Horizontal
+                int topMargin = actionsConfig.ActionsOrientation == ActionsOrientation.Horizontal
                     ? context.Config.GetSpacing(actionsConfig.Spacing)
                     : context.Config.GetSpacing(actionsConfig.Spacing) - actionsConfig.ButtonSpacing;
 
@@ -66,9 +67,9 @@ namespace AdaptiveCards.Rendering.Wpf
                 int iPos = 0;
 
                 // See if all actions have icons, otherwise force the icon placement to the left
-                var oldConfigIconPlacement = actionsConfig.IconPlacement;
+                IconPlacement oldConfigIconPlacement = actionsConfig.IconPlacement;
                 bool allActionsHaveIcons = true;
-                foreach (var action in actionsToProcess)
+                foreach (AdaptiveAction action in actionsToProcess)
                 {
                     if (string.IsNullOrEmpty(action.IconUrl))
                     {
@@ -82,11 +83,21 @@ namespace AdaptiveCards.Rendering.Wpf
                     actionsConfig.IconPlacement = IconPlacement.LeftOfTitle;
                 }
 
-                foreach (var action in actionsToProcess)
+                // indicates showcard has not been seen if it's set false; meaningful only if it's used
+                // when inline is supported
+                bool hasSeenInlineShowCard = false;
+
+                foreach (AdaptiveAction action in actionsToProcess)
                 {
                     // add actions
-                    var uiAction = (Button)context.Render(action);
+                    var uiAction = context.Render(action) as Button;
 
+                    if (uiAction == null)
+                    {
+                        context.Warnings.Add(new AdaptiveWarning(-1, $"action failed to render" +
+                            $"and valid fallback wasn't present"));
+                        continue;
+                    }
 
                     if (actionsConfig.ActionsOrientation == ActionsOrientation.Horizontal)
                     {
@@ -98,17 +109,28 @@ namespace AdaptiveCards.Rendering.Wpf
                         uiAction.Margin = new Thickness(0, actionsConfig.ButtonSpacing, 0, 0);
                     }
 
-
                     if (actionsConfig.ActionsOrientation == ActionsOrientation.Horizontal)
                         Grid.SetColumn(uiAction, iPos++);
 
                     uiActionBar.Children.Add(uiAction);
 
-                    if (action is AdaptiveShowCardAction showCardAction)
+                    if (action is AdaptiveShowCardAction showCardAction && isInline)
                     {
-                        // Only support 1 level of showCard
-                        if (isInline && context.CardDepth == 1)
+                        if (actionSetId != null)
                         {
+                            // the button's context is used as key for retrieving the corresponding showcard
+                            uiAction.SetContext(actionSetId);
+
+                            if (!hasSeenInlineShowCard)
+                            {
+                                // Define a new row to contain all the show cards
+                                uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                                // it's first showcard of the peers, create a new list
+                                context.PeerShowCardsInActionSet[actionSetId] = new List<FrameworkElement>();
+                            }
+
+                            hasSeenInlineShowCard = true;
+
                             Grid uiShowCardContainer = new Grid();
                             uiShowCardContainer.Style = context.GetStyle("Adaptive.Actions.ShowCard");
                             uiShowCardContainer.DataContext = showCardAction;
@@ -125,9 +147,18 @@ namespace AdaptiveCards.Rendering.Wpf
                             innerCard.Margin = new Thickness(0);
 
                             uiShowCardContainer.Children.Add(uiShowCardWrapper);
-
-                            // Add to the list of show cards in context
                             context.ActionShowCards.Add(uiAction, uiShowCardContainer);
+                            // added the rendered show card as a peer
+                            context.PeerShowCardsInActionSet[actionSetId].Add(uiShowCardContainer);
+                            // define where in the rows of the parent Grid the show card will occupy
+                            // and add it to the parent
+                            Grid.SetRow(uiShowCardContainer, uiContainer.RowDefinitions.Count - 1);
+                            uiContainer.Children.Add(uiShowCardContainer);
+                        }
+                        else
+                        {
+                            context.Warnings.Add(new AdaptiveWarning(-1, $"button's corresponding showCard" +
+                                $" couldn't be added since the action set the button belongs to has null as internal id"));
                         }
                     }
                 }
@@ -135,6 +166,18 @@ namespace AdaptiveCards.Rendering.Wpf
                 // Restore the iconPlacement for the context.
                 actionsConfig.IconPlacement = oldConfigIconPlacement;
             }
+        }
+
+        private static List<AdaptiveAction> GetActionsToProcess(IList<AdaptiveAction> actions, int maxActions, AdaptiveRenderContext context)
+        {
+            // If the number of actions is bigger than maxActions, then log warning for it
+            if (actions.Count > maxActions)
+            {
+                context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.MaxActionsExceeded, "Some actions were not rendered due to exceeding the maximum number of actions allowed"));
+            }
+
+            // just take the first maxActions actions
+            return actions.Take(maxActions).ToList();
         }
     }
 }

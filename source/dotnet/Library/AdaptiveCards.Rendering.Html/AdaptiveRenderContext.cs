@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
@@ -18,31 +20,81 @@ namespace AdaptiveCards.Rendering.Html
 
         public AdaptiveElementRenderers<HtmlTag, AdaptiveRenderContext> ElementRenderers { get; set; }
 
+        public AdaptiveFeatureRegistration FeatureRegistration { get; set; }
+
         public IList<AdaptiveWarning> Warnings { get; } = new List<AdaptiveWarning>();
 
         public IList<HtmlTag> ShowCardTags { get; } = new List<HtmlTag>();
 
+        private bool AncestorHasFallback = false;
+
         public HtmlTag Render(AdaptiveTypedElement element)
         {
-            // If non-inertactive, inputs should just render text
-            if (!Config.SupportsInteractivity && element is AdaptiveInput input)
+            HtmlTag htmlTagOut = null;
+            var oldAncestorHasFallback = AncestorHasFallback;
+            var elementHasFallback = element != null && element.Fallback != null && (element.Fallback.Type != AdaptiveFallbackElement.AdaptiveFallbackType.None);
+            AncestorHasFallback = AncestorHasFallback || elementHasFallback;
+
+            try
             {
-                var tb = new AdaptiveTextBlock();
-                tb.Text = input.GetNonInteractiveValue();
-                Warnings.Add(new AdaptiveWarning(-1, $"Rendering non-interactive input element '{element.Type}'"));
-                return Render(tb);
+                if (AncestorHasFallback && !element.MeetsRequirements(FeatureRegistration))
+                {
+                    throw new AdaptiveFallbackException("Element requirements aren't met");
+                }
+
+                // If non-interactive, inputs should just render text
+                if (!Config.SupportsInteractivity && element is AdaptiveInput input)
+                {
+                    var tb = new AdaptiveTextBlock();
+                    tb.Text = input.GetNonInteractiveValue();
+                    Warnings.Add(new AdaptiveWarning(-1, $"Rendering non-interactive input element '{element.Type}'"));
+                    htmlTagOut = Render(tb);
+                }
+
+                if (htmlTagOut == null)
+                {
+                    var renderer = ElementRenderers.Get(element.GetType());
+                    if (renderer != null)
+                    {
+                        htmlTagOut = renderer.Invoke(element, this);
+                    }
+                }
+            }
+            catch (AdaptiveFallbackException)
+            {
+                if (!elementHasFallback)
+                {
+                    throw;
+                }
             }
 
-            var renderer = ElementRenderers.Get(element.GetType());
-            if (renderer != null)
+            if (htmlTagOut == null)
             {
-                return renderer.Invoke(element, this);
+                // Since no renderer exists for this element, add warning and render fallback (if available)
+                if (element.Fallback != null && element.Fallback.Type != AdaptiveFallbackElement.AdaptiveFallbackType.None)
+                {
+                    if (element.Fallback.Type == AdaptiveFallbackElement.AdaptiveFallbackType.Drop)
+                    {
+                        Warnings.Add(new AdaptiveWarning(-1, $"Dropping element for fallback '{element.Type}'"));
+                    }
+                    else if (element.Fallback.Type == AdaptiveFallbackElement.AdaptiveFallbackType.Content && element.Fallback.Content != null)
+                    {
+                        // Render fallback content
+                        htmlTagOut = Render(element.Fallback.Content);
+                    }
+                }
+                else if (AncestorHasFallback)
+                {
+                    throw new AdaptiveFallbackException();
+                }
+                else
+                {
+                    Warnings.Add(new AdaptiveWarning(-1, $"No renderer for element '{element.Type}'"));
+                }
             }
-            else
-            {
-                Warnings.Add(new AdaptiveWarning(-1, $"No renderer for element '{element.Type}'"));
-                return null;
-            }
+
+            AncestorHasFallback = oldAncestorHasFallback;
+            return htmlTagOut;
         }
 
         public string GetColor(AdaptiveTextColor color, bool isSubtle, bool isHighlight)

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveTextInput.h"
 
@@ -29,6 +31,7 @@ namespace AdaptiveNamespace
 
         RETURN_IF_FAILED(UTF8ToHString(sharedTextInput->GetPlaceholder(), m_placeholder.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedTextInput->GetValue(), m_value.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedTextInput->GetRegex(), m_regex.GetAddressOf()));
         m_maxLength = sharedTextInput->GetMaxLength();
         m_isMultiline = sharedTextInput->GetIsMultiline();
         m_textInputStyle = static_cast<ABI::AdaptiveNamespace::TextInputStyle>(sharedTextInput->GetTextInputStyle());
@@ -75,28 +78,32 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveTextInput::get_TextInputStyle(_Out_ ABI::AdaptiveNamespace::TextInputStyle* textInputStyle)
+    HRESULT AdaptiveTextInput::get_TextInputStyle(_Out_ ABI::AdaptiveNamespace::TextInputStyle* textInputStyle)
     {
         *textInputStyle = m_textInputStyle;
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveTextInput::put_TextInputStyle(ABI::AdaptiveNamespace::TextInputStyle textInputStyle)
+    HRESULT AdaptiveTextInput::put_TextInputStyle(ABI::AdaptiveNamespace::TextInputStyle textInputStyle)
     {
         m_textInputStyle = textInputStyle;
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveTextInput::get_InlineAction(_COM_Outptr_ IAdaptiveActionElement** action)
+    HRESULT AdaptiveTextInput::get_InlineAction(_COM_Outptr_ IAdaptiveActionElement** action)
     {
         return m_inlineAction.CopyTo(action);
     }
 
-    IFACEMETHODIMP AdaptiveTextInput::put_InlineAction(_In_ IAdaptiveActionElement* action)
+    HRESULT AdaptiveTextInput::put_InlineAction(_In_ IAdaptiveActionElement* action)
     {
         m_inlineAction = action;
         return S_OK;
     }
+
+    HRESULT AdaptiveTextInput::get_Regex(HSTRING* regex) { return m_regex.CopyTo(regex); }
+
+    HRESULT AdaptiveTextInput::put_Regex(HSTRING regex) { return m_regex.Set(regex); }
 
     HRESULT AdaptiveTextInput::get_ElementType(_Out_ ElementType* elementType)
     {
@@ -116,6 +123,7 @@ namespace AdaptiveNamespace
 
         textInput->SetPlaceholder(HStringToUTF8(m_placeholder.Get()));
         textInput->SetValue(HStringToUTF8(m_value.Get()));
+        textInput->SetRegex(HStringToUTF8(m_regex.Get()));
 
         if (m_inlineAction != nullptr)
         {

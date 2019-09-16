@@ -94,12 +94,12 @@ public class BaseActionElement extends BaseElement {
     if (getClass() == BaseActionElement.class) AdaptiveCardObjectModelJNI.BaseActionElement_SetIconUrl(swigCPtr, this, value); else AdaptiveCardObjectModelJNI.BaseActionElement_SetIconUrlSwigExplicitBaseActionElement(swigCPtr, this, value);
   }
 
-  public String GetSentiment() {
-    return (getClass() == BaseActionElement.class) ? AdaptiveCardObjectModelJNI.BaseActionElement_GetSentiment(swigCPtr, this) : AdaptiveCardObjectModelJNI.BaseActionElement_GetSentimentSwigExplicitBaseActionElement(swigCPtr, this);
+  public String GetStyle() {
+    return (getClass() == BaseActionElement.class) ? AdaptiveCardObjectModelJNI.BaseActionElement_GetStyle(swigCPtr, this) : AdaptiveCardObjectModelJNI.BaseActionElement_GetStyleSwigExplicitBaseActionElement(swigCPtr, this);
   }
 
-  public void SetSentiment(String value) {
-    if (getClass() == BaseActionElement.class) AdaptiveCardObjectModelJNI.BaseActionElement_SetSentiment(swigCPtr, this, value); else AdaptiveCardObjectModelJNI.BaseActionElement_SetSentimentSwigExplicitBaseActionElement(swigCPtr, this, value);
+  public void SetStyle(String value) {
+    if (getClass() == BaseActionElement.class) AdaptiveCardObjectModelJNI.BaseActionElement_SetStyle(swigCPtr, this, value); else AdaptiveCardObjectModelJNI.BaseActionElement_SetStyleSwigExplicitBaseActionElement(swigCPtr, this, value);
   }
 
   public ActionType GetElementType() {

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer.input;
 
 import android.content.Context;
@@ -63,7 +65,9 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
     public View renderCheckBoxSet(
             RenderedAdaptiveCard renderedCard,
             Context context,
-            ChoiceSetInput choiceSetInput)
+            ChoiceSetInput choiceSetInput,
+            View separator,
+            ViewGroup viewGroup)
     {
         LinearLayout layout = new LinearLayout(context);
         layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -77,11 +81,8 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         defaults.addAll(Arrays.asList(value.split(",")));
         final CheckBoxSetInputHandler checkBoxSetInputHandler = new CheckBoxSetInputHandler(choiceSetInput, checkBoxList);
         checkBoxSetInputHandler.setView(layout);
-        layout.setTag(new TagContent(choiceSetInput, checkBoxSetInputHandler));
-        if(!choiceSetInput.GetIsVisible())
-        {
-            layout.setVisibility(View.GONE);
-        }
+
+        layout.setTag(new TagContent(choiceSetInput, checkBoxSetInputHandler, separator, viewGroup));
 
         for (int i = 0; i < size; i++)
         {
@@ -118,16 +119,15 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
     public View renderRadioGroup(
             RenderedAdaptiveCard renderedCard,
             Context context,
-            ChoiceSetInput choiceSetInput)
+            ChoiceSetInput choiceSetInput,
+            View separator,
+            ViewGroup viewGroup)
     {
         RadioGroup radioGroup = new RadioGroup(context);
         final RadioGroupInputHandler radioGroupInputHandler = new RadioGroupInputHandler(choiceSetInput);
         radioGroupInputHandler.setView(radioGroup);
-        radioGroup.setTag(new TagContent(choiceSetInput, radioGroupInputHandler));
-        if(!choiceSetInput.GetIsVisible())
-        {
-            radioGroup.setVisibility(View.GONE);
-        }
+
+        radioGroup.setTag(new TagContent(choiceSetInput, radioGroupInputHandler, separator, viewGroup));
 
         radioGroup.setOrientation(RadioGroup.VERTICAL);
         ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
@@ -167,7 +167,9 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
     public View renderComboBox(
             RenderedAdaptiveCard renderedCard,
             Context context,
-            ChoiceSetInput choiceSetInput)
+            ChoiceSetInput choiceSetInput,
+            View separator,
+            ViewGroup viewGroup)
     {
         Vector<String> titleList = new Vector<String>();
         ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
@@ -188,11 +190,8 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         final ComboBoxInputHandler comboBoxInputHandler = new ComboBoxInputHandler(choiceSetInput);
         Spinner spinner = new Spinner(context);
         comboBoxInputHandler.setView(spinner);
-        spinner.setTag(new TagContent(choiceSetInput, comboBoxInputHandler));
-        if(!choiceSetInput.GetIsVisible())
-        {
-            spinner.setVisibility(View.GONE);
-        }
+
+        spinner.setTag(new TagContent(choiceSetInput, comboBoxInputHandler, separator, viewGroup));
 
         renderedCard.registerInputHandler(comboBoxInputHandler);
 
@@ -273,26 +272,26 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             throw new InternalError("Unable to convert BaseCardElement to ChoiceSetInput object model.");
         }
 
-        setSpacingAndSeparator(context, viewGroup, choiceSetInput.GetSpacing(), choiceSetInput.GetSeparator(), hostConfig, true /* horizontal line */);
+        View separator = setSpacingAndSeparator(context, viewGroup, choiceSetInput.GetSpacing(), choiceSetInput.GetSeparator(), hostConfig, true /* horizontal line */);
 
         View view = null;
 
         if (choiceSetInput.GetIsMultiSelect())
         {
             // Create multi-select checkbox
-            view = renderCheckBoxSet(renderedCard, context, choiceSetInput);
+            view = renderCheckBoxSet(renderedCard, context, choiceSetInput, separator, viewGroup);
         }
         else
         {
             if (choiceSetInput.GetChoiceSetStyle() == ChoiceSetStyle.Expanded)
             {
                 // Create radio button group
-                view = renderRadioGroup(renderedCard, context, choiceSetInput);
+                view = renderRadioGroup(renderedCard, context, choiceSetInput, separator, viewGroup);
             }
             else if (choiceSetInput.GetChoiceSetStyle() == ChoiceSetStyle.Compact)
             {
                 // create ComboBox (Spinner)
-                view = renderComboBox(renderedCard, context, choiceSetInput);
+                view = renderComboBox(renderedCard, context, choiceSetInput, separator, viewGroup);
             }
             else
             {
@@ -300,10 +299,13 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             }
         }
 
-        if(choiceSetInput.GetHeight() == HeightType.Stretch)
+        if (choiceSetInput.GetHeight() == HeightType.Stretch)
         {
             LinearLayout containerLayout = new LinearLayout(context);
             containerLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+
+            TagContent tagContent = (TagContent)view.getTag();
+            tagContent.SetStretchContainer(containerLayout);
 
             containerLayout.addView(view);
             viewGroup.addView(containerLayout);
@@ -312,6 +314,8 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         {
             viewGroup.addView(view);
         }
+
+        setVisibility(choiceSetInput.GetIsVisible(), view);
 
         return view;
     }

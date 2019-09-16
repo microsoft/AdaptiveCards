@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "pch.h"
@@ -36,11 +38,15 @@ namespace AdaptiveSharedNamespace
         std::shared_ptr<BaseActionElement> GetInlineAction() const;
         void SetInlineAction(const std::shared_ptr<BaseActionElement> action);
 
+        std::string GetRegex() const;
+        void SetRegex(const std::string& value);
+
     private:
         void PopulateKnownPropertiesSet() override;
 
         std::string m_placeholder;
         std::string m_value;
+        std::string m_regex;
         bool m_isMultiline;
         unsigned int m_maxLength;
         TextInputStyle m_style;

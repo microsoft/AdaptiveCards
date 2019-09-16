@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
@@ -67,19 +69,17 @@ public class ContainerRenderer extends BaseCardElementRenderer
             throw new InternalError("Unable to convert BaseCardElement to Container object model.");
         }
 
-        setSpacingAndSeparator(context, viewGroup, container.GetSpacing(),container.GetSeparator(), hostConfig, true /* horizontal line */);
+        View separator = setSpacingAndSeparator(context, viewGroup, container.GetSpacing(),container.GetSeparator(), hostConfig, true /* horizontal line */);
         LinearLayout containerView = new LinearLayout(context);
-        containerView.setTag(new TagContent(container));
+        containerView.setTag(new TagContent(container, separator, viewGroup));
         containerView.setOrientation(LinearLayout.VERTICAL);
+
+        setVisibility(container.GetIsVisible(), containerView);
+        setMinHeight(container.GetMinHeight(), containerView, context);
 
         // Add this two for allowing children to bleed
         containerView.setClipChildren(false);
         containerView.setClipToPadding(false);
-
-        if (!baseCardElement.GetIsVisible())
-        {
-            containerView.setVisibility(View.GONE);
-        }
 
         if (container.GetHeight() == HeightType.Stretch)
         {
@@ -114,15 +114,24 @@ public class ContainerRenderer extends BaseCardElementRenderer
         containerRenderArgs.setContainerStyle(styleForThis);
         if (!container.GetItems().isEmpty())
         {
-            CardRendererRegistration.getInstance().render(renderedCard,
-                                                          context,
-                                                          fragmentManager,
-                                                          containerView,
-                                                          container,
-                                                          container.GetItems(),
-                                                          cardActionHandler,
-                                                          hostConfig,
-                                                          containerRenderArgs);
+            try
+            {
+                CardRendererRegistration.getInstance().render(renderedCard,
+                                                              context,
+                                                              fragmentManager,
+                                                              containerView,
+                                                              container,
+                                                              container.GetItems(),
+                                                              cardActionHandler,
+                                                              hostConfig,
+                                                              containerRenderArgs);
+            }
+            catch (AdaptiveFallbackException e)
+            {
+                // If the container couldn't be rendered, the separator is removed
+                viewGroup.removeView(separator);
+                throw e;
+            }
         }
 
         BackgroundImage backgroundImageProperties = container.GetBackgroundImage();
@@ -145,11 +154,6 @@ public class ContainerRenderer extends BaseCardElementRenderer
             containerView.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, container.GetSelectAction(), cardActionHandler));
         }
 
-        if (container.GetMinHeight() != 0)
-        {
-            containerView.setMinimumHeight(Util.dpToPixels(context, (int)container.GetMinHeight()));
-        }
-
         viewGroup.addView(containerView);
         return containerView;
     }
@@ -160,20 +164,31 @@ public class ContainerRenderer extends BaseCardElementRenderer
         {
             int padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) collectionElementView.getLayoutParams();
-            int marginLeft = layoutParams.leftMargin, marginRight = layoutParams.rightMargin;
+            int marginLeft = layoutParams.leftMargin, marginRight = layoutParams.rightMargin, marginTop = layoutParams.topMargin, marginBottom = layoutParams.bottomMargin;
 
             ContainerBleedDirection bleedDirection = collectionElement.GetBleedDirection();
-            if (bleedDirection == ContainerBleedDirection.BleedToLeading || bleedDirection == ContainerBleedDirection.BleedToBothEdges)
+
+            if ((bleedDirection.swigValue() & ContainerBleedDirection.BleedLeft.swigValue()) != ContainerBleedDirection.BleedRestricted.swigValue())
             {
                 marginLeft = -padding;
             }
 
-            if (bleedDirection == ContainerBleedDirection.BleedToTrailing || bleedDirection == ContainerBleedDirection.BleedToBothEdges)
+            if ((bleedDirection.swigValue() & ContainerBleedDirection.BleedRight.swigValue()) != ContainerBleedDirection.BleedRestricted.swigValue())
             {
                 marginRight = -padding;
             }
 
-            layoutParams.setMargins(marginLeft, layoutParams.topMargin, marginRight, layoutParams.bottomMargin);
+            if ((bleedDirection.swigValue() & ContainerBleedDirection.BleedUp.swigValue()) != ContainerBleedDirection.BleedRestricted.swigValue())
+            {
+                marginTop = -padding;
+            }
+
+            if ((bleedDirection.swigValue() & ContainerBleedDirection.BleedDown.swigValue()) != ContainerBleedDirection.BleedRestricted.swigValue())
+            {
+                marginBottom = -padding;
+            }
+
+            layoutParams.setMargins(marginLeft, marginTop, marginRight, marginBottom);
             collectionElementView.setLayoutParams(layoutParams);
         }
     }

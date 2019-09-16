@@ -6,15 +6,15 @@
 //
 
 #import "ACRInputToggleRenderer.h"
-#import "ACRInputTableView.h"
-#import "ACRContentHoldingUIView.h"
-#import "ACRSeparator.h"
-#import "ToggleInput.h"
-#import "ACRColumnSetView.h"
-#import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACRColumnSetView.h"
+#import "ACRContentHoldingUIView.h"
+#import "ACRInputTableView.h"
+#import "ACRSeparator.h"
 #import "ACRToggleInputDataSource.h"
-#import "Util.h"
+#import "ToggleInput.h"
+#import "UtiliOS.h"
 
 @implementation ACRInputToggleRenderer
 
@@ -30,17 +30,17 @@
 }
 
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
-          rootView:(ACRView *)rootView
-            inputs:(NSMutableArray *)inputs
-   baseCardElement:(ACOBaseCardElement *)acoElem
-        hostConfig:(ACOHostConfig *)acoConfig;
+           rootView:(ACRView *)rootView
+             inputs:(NSMutableArray *)inputs
+    baseCardElement:(ACOBaseCardElement *)acoElem
+         hostConfig:(ACOHostConfig *)acoConfig;
 {
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<ToggleInput> toggleBlck = std::dynamic_pointer_cast<ToggleInput>(elem);
 
     NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-    if(!bundle){ // https://github.com/Microsoft/AdaptiveCards/issues/1834
+    if (!bundle) { // https://github.com/Microsoft/AdaptiveCards/issues/1834
         return nil;
     }
     ACRInputTableView *inputTableView = [bundle loadNibNamed:@"ACRInputTableView" owner:self options:nil][0];
@@ -52,7 +52,7 @@
 
     [inputs addObject:dataSource];
 
-    if(elem->GetHeight() == HeightType::Stretch){
+    if (elem->GetHeight() == HeightType::Stretch) {
         ACRColumnView *textInputContainer = [[ACRColumnView alloc] init];
         [textInputContainer addArrangedSubview:inputTableView];
         // Add a blank view so the input field doesnt grow as large as it can and so it keeps the same behavior as Android and UWP
@@ -64,20 +64,6 @@
     } else {
         [viewGroup addArrangedSubview:inputTableView];
     }
-    [NSLayoutConstraint constraintWithItem:inputTableView
-                                 attribute:NSLayoutAttributeLeading
-                                 relatedBy:NSLayoutRelationLessThanOrEqual
-                                    toItem:viewGroup
-                                 attribute:NSLayoutAttributeLeading
-                                multiplier:1.0
-                                  constant:0].active = YES;
-    [NSLayoutConstraint constraintWithItem:inputTableView
-                                 attribute:NSLayoutAttributeTrailing
-                                 relatedBy:NSLayoutRelationLessThanOrEqual
-                                    toItem:viewGroup
-                                 attribute:NSLayoutAttributeTrailing
-                                multiplier:1.0
-                                  constant:0].active = YES;
 
     configVisibility(inputTableView, elem);
 

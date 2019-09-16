@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveSubmitAction.h"
 #include "Util.h"
@@ -29,6 +31,8 @@ namespace AdaptiveNamespace
             RETURN_IF_FAILED(StringToJsonValue(sharedSubmitAction->GetDataJson(), &m_dataJson));
         }
 
+        m_ignoreInputValidation = sharedSubmitAction->GetIgnoreInputValidation();
+
         InitializeBaseElement(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(sharedSubmitAction));
         return S_OK;
     }
@@ -48,6 +52,18 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    HRESULT AdaptiveSubmitAction::get_IgnoreInputValidation(boolean* ignoreInputValidation)
+    {
+        *ignoreInputValidation = m_ignoreInputValidation;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveSubmitAction::put_IgnoreInputValidation(boolean ignoreInputValidation)
+    {
+        m_ignoreInputValidation = ignoreInputValidation;
+        return S_OK;
+    }
+
     HRESULT AdaptiveSubmitAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel) try
     {
         std::shared_ptr<AdaptiveSharedNamespace::SubmitAction> submitAction =
@@ -60,6 +76,8 @@ namespace AdaptiveNamespace
             RETURN_IF_FAILED(JsonValueToString(m_dataJson.Get(), jsonAsString));
             submitAction->SetDataJson(jsonAsString);
         }
+
+        submitAction->SetIgnoreInputValidation(m_ignoreInputValidation);
 
         sharedModel = submitAction;
         return S_OK;
