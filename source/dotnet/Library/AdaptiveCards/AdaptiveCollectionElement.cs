@@ -32,7 +32,7 @@ namespace AdaptiveCards
         [JsonIgnore]
         [XmlAttribute("Style")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public AdaptiveContainerStyle StyleXml { get { return Style.Value; } set { Style = value; } }
+        public AdaptiveContainerStyle StyleXml { get { return (Style.HasValue) ? Style.Value : AdaptiveContainerStyle.Default; } set { Style = value; } }
         public bool ShouldSerializeStyleXml() => this.Style.HasValue;
 #endif
 

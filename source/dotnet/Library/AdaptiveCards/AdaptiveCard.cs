@@ -123,10 +123,9 @@ namespace AdaptiveCards
         [JsonConverter(typeof(StringSizeWithUnitConverter), true)]
         [JsonProperty(Order = -4, DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
-        [XmlElement(typeof(AdaptiveHeight))]
+        [XmlElement]
 #endif
-        [DefaultValue(typeof(AdaptiveHeight), "auto")]
-        public AdaptiveHeight Height { get; set; }
+        public AdaptiveHeight Height { get; set; } = new AdaptiveHeight(AdaptiveHeightType.Auto);
 
         /// <summary>
         ///    Explicit card minimum height in pixels
@@ -216,25 +215,7 @@ namespace AdaptiveCards
         [DefaultValue(null)]
         public AdaptiveAction SelectAction { get; set; }
 
-        public bool ShouldSerializeHeight()
-        {
-            if (Height == AdaptiveHeight.Auto)
-            {
-                return false;
-            }
-            if (Height.HeightType == AdaptiveHeightType.Pixel)
-            {
-                if (!Height.Unit.HasValue)
-                {
-                    return false;
-                }
-                if (Height.Unit.Value == 0)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
+        public bool ShouldSerializeHeight() => this.Height?.ShouldSerializeAdaptiveHeight() == true;
 
         /// <summary>
         /// Parse an AdaptiveCard from a JSON string

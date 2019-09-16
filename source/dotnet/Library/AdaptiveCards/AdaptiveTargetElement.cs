@@ -52,9 +52,10 @@ namespace AdaptiveCards
         [JsonIgnore]
         [XmlAttribute("IsVisible")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public bool IsVisibleXml { get { return IsVisible.Value; } set { IsVisible = value; } }
+        public bool IsVisibleXml { get { return IsVisible.HasValue ? IsVisible.Value : true; } set { IsVisible = value; } }
         public bool ShouldSerializeIsVisibleXml() => this.IsVisible.HasValue;
 #endif
+
         /// <summary>
         /// Implicit conversion from <see cref="string"/> to <see cref="AdaptiveTargetElement"/>.
         /// </summary>

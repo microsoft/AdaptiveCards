@@ -21,7 +21,7 @@ namespace AdaptiveCards.Test
     public class XmlSerializationTests
     {
         [TestMethod]
-        public void SerializeAllScenarios()
+        public void VerifySerializationForAllScenarioFiles()
         {
             CompareLogic compareLogic = new CompareLogic(new ComparisonConfig()
             {
@@ -46,13 +46,20 @@ namespace AdaptiveCards.Test
                         {
                             Converters = { new StrictIntConverter() }
                         });
+
+                        // test XML serialization round-trips
                         StringBuilder sb = new StringBuilder();
                         serializer.Serialize(new StringWriter(sb), card);
                         string xml = sb.ToString();
                         var card2 = (AdaptiveCard)serializer.Deserialize(new StringReader(xml));
 
                         var result = compareLogic.Compare(card, card2);
-                        Assert.IsTrue(result.AreEqual, $"{Path.GetFullPath(file)}: {result.DifferencesString}");
+                        Assert.IsTrue(result.AreEqual, $"XML serialization different: {Path.GetFullPath(file)}: {result.DifferencesString}");
+
+                        // test JSON serialization round-trips
+                        var card3 = JsonConvert.DeserializeObject<AdaptiveCard>(JsonConvert.SerializeObject(card));
+                        result = compareLogic.Compare(card, card3);
+                        Assert.IsTrue(result.AreEqual, $"JSON Serialization different: {Path.GetFullPath(file)}: {result.DifferencesString}");
                     }
                 }
             }
