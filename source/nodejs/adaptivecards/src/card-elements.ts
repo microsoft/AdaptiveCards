@@ -207,6 +207,10 @@ export abstract class CardObject extends SerializableObject {
         () => { return new HostCapabilities(); },
         () => { return new HostCapabilities(); });
 
+    protected getSchemaKey(): string {
+        return this.getJsonTypeName();
+    }
+
     protected populateSchema(schema: SerializableObjectSchema) {
         schema.add(
             CardObject.typeNameProperty,
@@ -224,13 +228,24 @@ export abstract class CardObject extends SerializableObject {
 
     //#endregion
 
-    protected getSchemaKey(): string {
-        return this.getJsonTypeName();
+    private _parent?: CardElement;
+    private _shouldFallback: boolean = false;
+    
+    abstract getJsonTypeName(): string;
+
+    abstract get hostConfig(): HostConfig.HostConfig;
+
+    setParent(value: CardElement | undefined) {
+        this._parent = value;
     }
 
-    abstract getJsonTypeName(): string;
-    abstract shouldFallback(): boolean;
-    abstract setParent(parent: CardElement | undefined): void;
+    setShouldFallback(value: boolean) {
+        this._shouldFallback = value;
+    }
+
+    shouldFallback(): boolean {
+        return this._shouldFallback || !this.requires.areAllMet(this.hostConfig.hostCapabilities);
+    }
 
     internalValidateProperties(context: ValidationResults) {
         if (!Utils.isNullOrEmpty(this.id)) {
@@ -258,6 +273,10 @@ export abstract class CardObject extends SerializableObject {
         this.internalValidateProperties(result);
 
         return result;
+    }
+
+    get parent(): CardElement | undefined {
+        return this._parent;
     }
 }
 
@@ -366,9 +385,7 @@ export abstract class CardElement extends CardObject {
 
     //#endregion
 
-    private _shouldFallback: boolean = false;
     private _hostConfig?: HostConfig.HostConfig;
-    private _parent?: CardElement;
     private _renderedElement?: HTMLElement;
     private _separatorElement?: HTMLElement;
     private _truncatedDueToOverflow: boolean = false;
@@ -582,8 +599,6 @@ export abstract class CardElement extends CardObject {
 
     customCssSelector?: string;
 
-    abstract getJsonTypeName(): string;
-
     asString(): string | undefined {
         return "";
     }
@@ -596,10 +611,6 @@ export abstract class CardElement extends CardObject {
 		super.parse(json, errors);
 
         raiseParseElementEvent(this, json, errors);
-    }
-
-    setParent(value: CardElement | undefined) {
-        this._parent = value;
     }
 
     getEffectiveStyle(): string {
@@ -818,14 +829,6 @@ export abstract class CardElement extends CardObject {
         return undefined;
     }
 
-    shouldFallback(): boolean {
-        return this._shouldFallback || !this.requires.areAllMet(this.hostConfig.hostCapabilities);
-    }
-
-    setShouldFallback(value: boolean) {
-        this._shouldFallback = value;
-    }
-
     getEffectivePadding(): Shared.PaddingDefinition {
         let padding = this.getPadding();
 
@@ -869,10 +872,6 @@ export abstract class CardElement extends CardObject {
 
     get isInline(): boolean {
         return false;
-    }
-
-    get parent(): CardElement | undefined {
-        return this._parent;
     }
 
     get hasVisibleSeparator(): boolean {
@@ -3906,8 +3905,6 @@ export abstract class Action extends CardObject {
 
     //#endregion
 
-    private _shouldFallback: boolean = false;
-    private _parent?: CardElement;
     private _actionCollection?: ActionCollection; // hold the reference to its action collection
     private _renderedElement?: HTMLElement;
 
@@ -3942,8 +3939,6 @@ export abstract class Action extends CardObject {
 
         return result;
     }
-
-    abstract getJsonTypeName(): string;
 
     onExecute: (sender: Action) => void;
 
@@ -4029,10 +4024,6 @@ export abstract class Action extends CardObject {
         this._renderedElement = buttonElement;
     }
 
-    setParent(value: CardElement | undefined) {
-        this._parent = value;
-    }
-
     execute() {
         if (this.onExecute) {
             this.onExecute(this);
@@ -4091,10 +4082,6 @@ export abstract class Action extends CardObject {
         return this.internalValidateInputs(this.getReferencedInputs());
     }
 
-    shouldFallback(): boolean {
-        return this._shouldFallback || !this.requires.areAllMet(this.hostConfig.hostCapabilities);
-    }
-
     get isPrimary(): boolean {
         return this.style == Enums.ActionStyle.Positive;
     }
@@ -4112,10 +4099,6 @@ export abstract class Action extends CardObject {
 
     get ignoreInputValidation(): boolean {
         return true;
-    }
-
-    get parent(): CardElement | undefined {
-        return this._parent;
     }
 
     get renderedElement(): HTMLElement | undefined {
@@ -6488,6 +6471,7 @@ function raiseParseError(error: Shared.IValidationError, errors: Shared.IValidat
 
 export interface ITypeRegistration<T> {
     typeName: string,
+    schemaVersion: Shared.TargetVersion,
     createInstance: () => T;
 }
 
@@ -6655,7 +6639,7 @@ export abstract class TypeRegistry<T> {
 
     abstract reset(): void;
 
-    registerType(typeName: string, createInstance: () => T) {
+    registerType(typeName: string, createInstance: () => T, schemaVersion: Shared.TargetVersion = "*") {
         let registrationInfo = this.findTypeRegistration(typeName);
 
         if (registrationInfo !== undefined) {
@@ -6664,6 +6648,7 @@ export abstract class TypeRegistry<T> {
         else {
             registrationInfo = {
                 typeName: typeName,
+                schemaVersion: schemaVersion,
                 createInstance: createInstance
             }
 
@@ -6702,14 +6687,14 @@ export class ElementTypeRegistry extends TypeRegistry<CardElement> {
 
         this.registerType("Container", () => { return new Container(); });
         this.registerType("TextBlock", () => { return new TextBlock(); });
-        this.registerType("RichTextBlock", () => { return new RichTextBlock(); });
-        this.registerType("TextRun", () => { return new TextRun(); });
+        this.registerType("RichTextBlock", () => { return new RichTextBlock(); }, Shared.Versions.v1_2);
+        this.registerType("TextRun", () => { return new TextRun(); }, Shared.Versions.v1_2);
         this.registerType("Image", () => { return new Image(); });
         this.registerType("ImageSet", () => { return new ImageSet(); });
-        this.registerType("Media", () => { return new Media(); });
+        this.registerType("Media", () => { return new Media(); }, Shared.Versions.v1_1);
         this.registerType("FactSet", () => { return new FactSet(); });
         this.registerType("ColumnSet", () => { return new ColumnSet(); });
-        this.registerType("ActionSet", () => { return new ActionSet(); });
+        this.registerType("ActionSet", () => { return new ActionSet(); }, Shared.Versions.v1_2);
         this.registerType("Input.Text", () => { return new TextInput(); });
         this.registerType("Input.Date", () => { return new DateInput(); });
         this.registerType("Input.Time", () => { return new TimeInput(); });
