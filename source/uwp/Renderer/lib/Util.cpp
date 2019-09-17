@@ -4,6 +4,7 @@
 #include <string>
 #include <regex>
 
+#include "AdaptiveActionParserRegistration.h"
 #include "AdaptiveActionSet.h"
 #include "AdaptiveColumn.h"
 #include "AdaptiveColumnSet.h"
@@ -11,6 +12,7 @@
 #include "AdaptiveChoiceInput.h"
 #include "AdaptiveChoiceSetInput.h"
 #include "AdaptiveDateInput.h"
+#include "AdaptiveElementParserRegistration.h"
 #include "AdaptiveFact.h"
 #include "AdaptiveFactSet.h"
 #include "AdaptiveFeatureRegistration.h"
@@ -1682,5 +1684,61 @@ HRESULT CopyTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* textE
     RETURN_IF_FAILED(localCopiedTextElement->put_Text(text.Get()));
 
     RETURN_IF_FAILED(localCopiedTextElement.CopyTo(copiedTextElement));
+    return S_OK;
+}
+
+HRESULT GetAdaptiveActionParserRegistrationFromSharedModel(
+    const std::shared_ptr<ActionParserRegistration>& sharedActionParserRegistration,
+    _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration** adaptiveActionParserRegistration)
+{
+    // Look up the well known action parser registration to see if we've got a custom action registration to pass
+    std::shared_ptr<ActionElementParser> sharedActionParser =
+        sharedActionParserRegistration->GetParser(c_upwActionParserRegistration);
+
+    if (sharedActionParser != nullptr)
+    {
+        // The shared model wraps the passed in parsers. Get our SharedModelActionParser from it so we can retrieve the
+        // IAdaptiveActionParserRegistration
+        std::shared_ptr<ActionElementParserWrapper> parserWrapper =
+            std::static_pointer_cast<ActionElementParserWrapper>(sharedActionParser);
+
+        std::shared_ptr<SharedModelActionParser> sharedModelParser =
+            std::static_pointer_cast<SharedModelActionParser>(parserWrapper->GetActualParser());
+
+        RETURN_IF_FAILED(sharedModelParser->GetAdaptiveParserRegistration(adaptiveActionParserRegistration));
+    }
+    else
+    {
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveActionParserRegistration>(adaptiveActionParserRegistration));
+    }
+
+    return S_OK;
+}
+
+HRESULT GetAdaptiveElementParserRegistrationFromSharedModel(
+    const std::shared_ptr<ElementParserRegistration>& sharedElementParserRegistration,
+    _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration** adaptiveElementParserRegistration)
+{
+    // Look up the well known Element parser registration to see if we've got a custom Element registration to pass
+    std::shared_ptr<BaseCardElementParser> sharedElementParser =
+        sharedElementParserRegistration->GetParser(c_uwpElementParserRegistration);
+
+    if (sharedElementParser != nullptr)
+    {
+        // The shared model wraps the passed in parsers. Get our SharedModelElementParser from it so we can retrieve the
+        // IAdaptiveElementParserRegistration
+        std::shared_ptr<BaseCardElementParserWrapper> parserWrapper =
+            std::static_pointer_cast<BaseCardElementParserWrapper>(sharedElementParser);
+
+        std::shared_ptr<SharedModelElementParser> sharedModelParser =
+            std::static_pointer_cast<SharedModelElementParser>(parserWrapper->GetActualParser());
+
+        RETURN_IF_FAILED(sharedModelParser->GetAdaptiveParserRegistration(adaptiveElementParserRegistration));
+    }
+    else
+    {
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveElementParserRegistration>(adaptiveElementParserRegistration));
+    }
+
     return S_OK;
 }

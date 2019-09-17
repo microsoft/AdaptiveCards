@@ -37,20 +37,16 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveElementParserRegistration::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<ElementParserRegistration> sharedParserRegistration = std::make_shared<ElementParserRegistration>();
-        RuntimeClassInitialize(sharedParserRegistration);
-        return S_OK;
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveElementParserRegistration::RuntimeClassInitialize(
-        std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> sharedParserRegistration) noexcept try
-    {
         m_registration = std::make_shared<RegistrationMap>();
-        m_sharedParserRegistration = sharedParserRegistration;
+        m_sharedParserRegistration = std::make_shared<ElementParserRegistration>();
 
         m_isInitializing = true;
         RegisterDefaultElementRenderers(this, nullptr);
+
+        // Register this (UWP) registration with a well known guid string in the shared model
+        // registration so we can get it back again
+        m_sharedParserRegistration->AddParser(c_uwpElementParserRegistration, std::make_shared<SharedModelElementParser>(this));
+
         m_isInitializing = false;
         return S_OK;
     }
@@ -108,6 +104,12 @@ namespace AdaptiveNamespace
         return Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
     }
 
+    SharedModelElementParser::SharedModelElementParser(AdaptiveNamespace::AdaptiveElementParserRegistration* parserRegistration)
+    {
+        ComPtr<AdaptiveElementParserRegistration> localParserRegistration(parserRegistration);
+        localParserRegistration.AsWeak(&m_parserRegistration);
+    }
+
     std::shared_ptr<BaseCardElement> SharedModelElementParser::Deserialize(ParseContext& context, const Json::Value& value)
     {
         std::string type = ParseUtil::GetTypeAsString(value);
@@ -115,19 +117,19 @@ namespace AdaptiveNamespace
         HString typeAsHstring;
         THROW_IF_FAILED(UTF8ToHString(type, typeAsHstring.GetAddressOf()));
 
+        ComPtr<IAdaptiveElementParserRegistration> adaptiveElementParserRegistration;
+        THROW_IF_FAILED(GetAdaptiveParserRegistration(&adaptiveElementParserRegistration));
+
         ComPtr<IAdaptiveElementParser> parser;
-        THROW_IF_FAILED(m_parserRegistration->Get(typeAsHstring.Get(), &parser));
+        THROW_IF_FAILED(adaptiveElementParserRegistration->Get(typeAsHstring.Get(), &parser));
 
         ComPtr<ABI::Windows::Data::Json::IJsonObject> jsonObject;
         THROW_IF_FAILED(JsonCppToJsonObject(value, &jsonObject));
 
-        ComPtr<IAdaptiveElementParserRegistration> adaptiveElementParserRegistration;
-        MakeAndInitialize<AdaptiveNamespace::AdaptiveElementParserRegistration>(&adaptiveElementParserRegistration,
-                                                                                context.elementParserRegistration);
-
+        // Get the action parser registration from the shared model
         ComPtr<IAdaptiveActionParserRegistration> adaptiveActionParserRegistration;
-        MakeAndInitialize<AdaptiveNamespace::AdaptiveActionParserRegistration>(&adaptiveActionParserRegistration,
-                                                                               context.actionParserRegistration);
+        THROW_IF_FAILED(GetAdaptiveActionParserRegistrationFromSharedModel(context.actionParserRegistration,
+                                                                           &adaptiveActionParserRegistration));
 
         ComPtr<IAdaptiveCardElement> cardElement;
         ComPtr<ABI::Windows::Foundation::Collections::IVector<AdaptiveWarning*>> adaptiveWarnings =
@@ -142,5 +144,10 @@ namespace AdaptiveNamespace
 
         std::shared_ptr<CustomElementWrapper> elementWrapper = std::make_shared<CustomElementWrapper>(cardElement.Get());
         return elementWrapper;
+    }
+
+    HRESULT SharedModelElementParser::GetAdaptiveParserRegistration(_COM_Outptr_ IAdaptiveElementParserRegistration** elementParserRegistration)
+    {
+        return m_parserRegistration.CopyTo<IAdaptiveElementParserRegistration>(elementParserRegistration);
     }
 }

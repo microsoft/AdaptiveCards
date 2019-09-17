@@ -7,7 +7,7 @@
 
 #import "ACRBaseCardElementRenderer.h"
 
-@interface ACRInputNumberRenderer:ACRBaseCardElementRenderer
+@interface ACRInputNumberRenderer : ACRBaseCardElementRenderer
 
 + (ACRInputNumberRenderer *)getInstance;
 

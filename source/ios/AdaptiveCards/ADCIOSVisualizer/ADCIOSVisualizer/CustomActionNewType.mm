@@ -11,9 +11,9 @@
 
 @implementation CustomActionNewType
 
-- (ACOBaseActionElement *)deserialize:(NSData *)json parseContext:(ACOParseContext* )parseContext;
+- (ACOBaseActionElement *)deserialize:(NSData *)json parseContext:(ACOParseContext *)parseContext;
 {
-    if(json) {
+    if (json) {
 
         NSDictionary *data = [NSJSONSerialization JSONObjectWithData:json options:NSJSONReadingMutableLeaves error:nil];
         NSNumber *red = data[@"Red"];
@@ -31,7 +31,7 @@
         newTypeAction.color = [UIColor colorWithRed:red.doubleValue / 255.0 green:green.doubleValue / 255.0 blue:blue.doubleValue / 255.0 alpha:1.0];
         newTypeAction.cornerradius = cornerRadius.integerValue;
         newTypeAction.alertMessage = data[@"alertMessage"];
-        
+
         newTypeAction.type = ACRUnknownAction;
 
         return newTypeAction;
@@ -41,9 +41,9 @@
 
 @end
 
-@interface AlertTarget:NSObject
+@interface AlertTarget : NSObject
 
-@property(weak) ACRView *rootView;
+@property (weak) ACRView *rootView;
 @property CustomActionNewType *action;
 
 - (instancetype)init:(ACRView *)rootView action:(CustomActionNewType *)action;
@@ -57,7 +57,7 @@
 - (instancetype)init:(ACRView *)rootView action:(CustomActionNewType *)action
 {
     self = [super init];
-    if(self) {
+    if (self) {
         self.rootView = rootView;
         self.action = action;
     }
@@ -74,7 +74,7 @@
 
 @end
 
-@implementation CustomActionNewTypeRenderer:ACRBaseActionElementRenderer
+@implementation CustomActionNewTypeRenderer : ACRBaseActionElementRenderer
 
 + (CustomActionNewTypeRenderer *)getInstance
 {
@@ -88,7 +88,7 @@
          baseActionElement:(ACOBaseActionElement *)acoElem
                 hostConfig:(ACOHostConfig *)acoConfig
 {
-    NSBundle* bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
+    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
     ACRButton *button = [bundle loadNibNamed:@"ACRButton" owner:rootView options:nil][0];
     [button setTitle:acoElem.title forState:UIControlStateNormal];
     CustomActionNewType *newType = (CustomActionNewType *)acoElem;
