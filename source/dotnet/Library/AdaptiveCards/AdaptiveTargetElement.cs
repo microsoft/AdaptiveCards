@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,18 +34,27 @@ namespace AdaptiveCards
         ///     Identifier of element to change visibility.
         /// </summary>
 #if !NETSTANDARD1_3
-        [XmlIgnore]
+        [XmlAttribute]
 #endif
         public string ElementId { get; set; }
 
         /// <summary>
-        ///     Value to change visibility to.
+        /// Value to change visibility to.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlIgnore]
 #endif
         public bool? IsVisible { get; set; } = null;
+
+#if !NETSTANDARD1_3
+        // Xml Serializer doesn't handle nullable value types, but this trick allows us to serialize only if non-null
+        [JsonIgnore]
+        [XmlAttribute("IsVisible")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool IsVisibleXml { get { return IsVisible.HasValue ? IsVisible.Value : true; } set { IsVisible = value; } }
+        public bool ShouldSerializeIsVisibleXml() => this.IsVisible.HasValue;
+#endif
 
         /// <summary>
         /// Implicit conversion from <see cref="string"/> to <see cref="AdaptiveTargetElement"/>.
