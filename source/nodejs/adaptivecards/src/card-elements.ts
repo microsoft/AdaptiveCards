@@ -6711,7 +6711,7 @@ export class ActionTypeRegistry extends TypeRegistry<Action> {
         this.registerType(OpenUrlAction.JsonTypeName, () => { return new OpenUrlAction(); });
         this.registerType(SubmitAction.JsonTypeName, () => { return new SubmitAction(); });
         this.registerType(ShowCardAction.JsonTypeName, () => { return new ShowCardAction(); });
-        this.registerType(ToggleVisibilityAction.JsonTypeName, () => { return new ToggleVisibilityAction(); });
+        this.registerType(ToggleVisibilityAction.JsonTypeName, () => { return new ToggleVisibilityAction(); }, Shared.Versions.v1_2);
     }
 }
 
