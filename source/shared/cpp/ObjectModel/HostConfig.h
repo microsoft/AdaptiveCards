@@ -84,6 +84,11 @@ namespace AdaptiveSharedNamespace
         static ColorConfig Deserialize(const Json::Value& json, const ColorConfig& defaultValue);
     };
 
+    // TODO: microsoft/AdaptiveCards#3460 each ColorConfig below needs a HighlightColorConfig initializer
+#ifdef __clang__
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wmissing-field-initializers"
+#endif
     struct ColorsConfig
     {
         ColorConfig defaultColor = {"#FF000000", "#B2000000"};
@@ -96,6 +101,9 @@ namespace AdaptiveSharedNamespace
 
         static ColorsConfig Deserialize(const Json::Value& json, const ColorsConfig& defaultValue);
     };
+#ifdef __clang__
+    #pragma clang diagnostic pop
+#endif
 
     struct TextConfig
     {
