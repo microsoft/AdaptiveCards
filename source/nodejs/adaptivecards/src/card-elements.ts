@@ -6,7 +6,7 @@ import * as Utils from "./utils";
 import * as HostConfig from "./host-config";
 import * as TextFormatters from "./text-formatters";
 import { HostCapabilities } from "./host-capabilities";
-import { schemaProperty, SerializableObject, SerializableObjectSchema, TypedPropertyDefinition, StringPropertyDefinition,
+import { schemaProperty, SerializableObject, SerializableObjectSchema, StringPropertyDefinition,
     BooleanPropertyDefinition, ValueSetPropertyDefinition, EnumPropertyDefinition, SerializableObjectCollectionPropertyDefinition,
     SerializableObjectPropertyDefinition, PixelSizePropertyDefinition, NumberPropertyDefinition, PropertyBag, CustomPropertyDefinition, PropertyDefinition } from "./serializable-object";
 
@@ -204,8 +204,7 @@ export abstract class CardObject extends SerializableObject {
     static readonly requiresProperty = new SerializableObjectPropertyDefinition(
         Shared.Versions.v1_2,
         "requires",
-        () => { return new HostCapabilities(); },
-        () => { return new HostCapabilities(); });
+        HostCapabilities);
 
     protected getSchemaKey(): string {
         return this.getJsonTypeName();
@@ -892,7 +891,7 @@ export abstract class CardElement extends CardObject {
     }
 }
 
-export class ActionPropertyDefinition extends TypedPropertyDefinition<Action> {
+export class ActionPropertyDefinition extends PropertyDefinition {
     parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): Action | undefined {
         let parent = <CardElement>sender;
 
@@ -1796,7 +1795,7 @@ export class FactSet extends CardElement {
     }
 }
 
-class ImageDimensionProperty extends TypedPropertyDefinition<number> {
+class ImageDimensionProperty extends PropertyDefinition {
     parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): number | undefined {
         let result: number | undefined = Utils.getNumberValue(source[this.legacyPropertyName]);
 
@@ -2789,11 +2788,10 @@ export abstract class Input extends CardElement implements Shared.IInput {
 
     //#region Schema
 
-    static readonly validationProperty = new SerializableObjectPropertyDefinition<InputValidationOptions>(
+    static readonly validationProperty = new SerializableObjectPropertyDefinition(
         Shared.Versions.vNext,
         "validation",
-        (sender: SerializableObject) => { return new InputValidationOptions(); },
-        (sender: SerializableObject) => { return new InputValidationOptions(); });
+        InputValidationOptions);
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
@@ -3880,8 +3878,7 @@ export abstract class Action extends CardObject {
     static readonly requiresProperty = new SerializableObjectPropertyDefinition(
         Shared.Versions.v1_2,
         "requires",
-        () => { return new HostCapabilities(); },
-        () => { return new HostCapabilities(); });
+        HostCapabilities);
     // TODO: Revise this when finalizing input validation
     static readonly ignoreInputValidationProperty = new BooleanPropertyDefinition(Shared.Versions.vNext, "ignoreInputValidation", false);
 
@@ -4326,7 +4323,7 @@ export class ToggleVisibilityAction extends Action {
     }
 }
 
-class StringWithSubstitutionPropertyDefinition extends TypedPropertyDefinition<Shared.StringWithSubstitutions>  {
+class StringWithSubstitutionPropertyDefinition extends PropertyDefinition  {
     parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): Shared.StringWithSubstitutions {
         let result = new Shared.StringWithSubstitutions();
         result.set(Utils.getStringValue(source[this.name]));
@@ -5662,11 +5659,10 @@ export class Container extends StylableCardElementContainer {
 
     //#region Schema
 
-    static readonly backgroundImageProperty = new SerializableObjectPropertyDefinition<BackgroundImage>(
+    static readonly backgroundImageProperty = new SerializableObjectPropertyDefinition(
         Shared.Versions.v1_0,
         "backgroundImage",
-        (sender: SerializableObject) => { return new BackgroundImage(); },
-        (sender: SerializableObject) => { return new BackgroundImage(); });
+        BackgroundImage);
     static readonly verticalContentAlignmentProperty = new EnumPropertyDefinition(Shared.Versions.v1_1, "verticalContentAlignment", Enums.VerticalAlignment, Enums.VerticalAlignment.Top);
     static readonly rtlProperty = new BooleanPropertyDefinition(Shared.Versions.v1_0, "rtl");
 

@@ -20,17 +20,7 @@ export class PropertyDefinition {
         readonly onGetInitialValue?: (sender: SerializableObject) => any) { }
 }
 
-export abstract class TypedPropertyDefinition<T> extends PropertyDefinition {
-    constructor(
-        readonly targetVersion: Shared.TargetVersion,
-        readonly name: string,
-        readonly defaultValue?: T,
-        readonly onGetInitialValue?: (sender: SerializableObject) => T) {
-        super(targetVersion, name, defaultValue, onGetInitialValue);
-    }
-}
-
-export class StringPropertyDefinition extends TypedPropertyDefinition<string> {
+export class StringPropertyDefinition extends PropertyDefinition {
     parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): string | undefined {
         let parsedValue = Utils.getStringValue(source[this.name], this.defaultValue);
         let isUndefined = parsedValue === undefined || (parsedValue === "" && this.treatEmptyAsUndefined);
@@ -66,7 +56,7 @@ export class StringPropertyDefinition extends TypedPropertyDefinition<string> {
     }
 }
 
-export class BooleanPropertyDefinition extends TypedPropertyDefinition<boolean> {
+export class BooleanPropertyDefinition extends PropertyDefinition {
     parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): boolean | undefined {
         return Utils.getBoolValue(source[this.name], this.defaultValue);;
     }
@@ -80,7 +70,7 @@ export class BooleanPropertyDefinition extends TypedPropertyDefinition<boolean> 
     }
 }
 
-export class NumberPropertyDefinition extends TypedPropertyDefinition<number> {
+export class NumberPropertyDefinition extends PropertyDefinition {
     parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): number | undefined {
         return Utils.getNumberValue(source[this.name], this.defaultValue);;
     }
@@ -94,7 +84,7 @@ export class NumberPropertyDefinition extends TypedPropertyDefinition<number> {
     }
 }
 
-export class PixelSizePropertyDefinition extends TypedPropertyDefinition<number> {
+export class PixelSizePropertyDefinition extends PropertyDefinition {
     parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): number | undefined {
         let result: number | undefined = undefined;
         let value = source[this.name];
@@ -144,7 +134,7 @@ export interface IVersionedValue<TValue> {
     targetVersion?: Shared.TargetVersion;
 }
 
-export class ValueSetPropertyDefinition extends TypedPropertyDefinition<string> {
+export class ValueSetPropertyDefinition extends PropertyDefinition {
     parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): string | undefined {
         let parsedValue = Utils.getStringValue(source[this.name], this.defaultValue);
 
@@ -177,7 +167,7 @@ export class ValueSetPropertyDefinition extends TypedPropertyDefinition<string> 
     }
 }
 
-export class EnumPropertyDefinition<TEnum extends { [s: number]: string }> extends TypedPropertyDefinition<number> {
+export class EnumPropertyDefinition<TEnum extends { [s: number]: string }> extends PropertyDefinition {
     parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): number | undefined {
         return Utils.getEnumValue(this.enumType, source[this.name], this.defaultValue);
     }
@@ -212,13 +202,15 @@ export class EnumPropertyDefinition<TEnum extends { [s: number]: string }> exten
     }
 }
 
-export class SerializableObjectPropertyDefinition<T extends SerializableObject> extends TypedPropertyDefinition<T> {
-    parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): T | undefined {
-        let result: T | undefined = undefined;
+export type SerializableObjectType = { new(): SerializableObject };
+
+export class SerializableObjectPropertyDefinition extends PropertyDefinition {
+    parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): SerializableObject | undefined {
+        let result: SerializableObject | undefined = undefined;
         let sourceValue = source[this.name];
 
         if (typeof sourceValue === "object") {
-            result = this.onCreateInstance(sender);
+            result = new this.objectType();
             result.parse(sourceValue);
 
             if (result === undefined && this.onGetInitialValue) {
@@ -232,7 +224,7 @@ export class SerializableObjectPropertyDefinition<T extends SerializableObject> 
         return result;
     }
 
-    toJSON(sender: SerializableObject, target: PropertyBag, value: T | undefined) {
+    toJSON(sender: SerializableObject, target: PropertyBag, value: SerializableObject | undefined) {
         let serializedValue = value !== undefined ? value.toJSON() : value;
 
         if (typeof serializedValue === "object" && Object.keys(serializedValue).length === 0) {
@@ -245,17 +237,16 @@ export class SerializableObjectPropertyDefinition<T extends SerializableObject> 
     constructor(
         readonly targetVersion: Shared.TargetVersion,
         readonly name: string,
-        readonly onCreateInstance: (sender: SerializableObject) => T,
-        readonly onGetInitialValue?: (sender: SerializableObject) => T) {
-        super(targetVersion, name, undefined, onGetInitialValue);
-
-        if (!this.onCreateInstance) {
-            throw new Error("SerializedObjectPropertyDefinition instances must have an onCreateInstance handler.");
-        }
+        readonly objectType: SerializableObjectType) {
+        super(
+            targetVersion,
+            name,
+            undefined,
+            (sender: SerializableObject) => { return new this.objectType(); });
     }
 }
 
-export class SerializableObjectCollectionPropertyDefinition<T extends SerializableObject> extends TypedPropertyDefinition<T[]> {
+export class SerializableObjectCollectionPropertyDefinition<T extends SerializableObject> extends PropertyDefinition {
     parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): T[] | undefined {
         let result: T[] | undefined = [];
 
@@ -298,7 +289,7 @@ export class SerializableObjectCollectionPropertyDefinition<T extends Serializab
     }
 }
 
-export class CustomPropertyDefinition<T> extends TypedPropertyDefinition<T> {
+export class CustomPropertyDefinition<T> extends PropertyDefinition {
     parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): T {
         return this.onParse(sender, this, source, errors);
     }
