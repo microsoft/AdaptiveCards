@@ -95,11 +95,9 @@
 
     [viewGroup addArrangedSubview:wrappingview];
 
-    UILayoutGuide *leftGuide = nil;
-    UILayoutGuide *rightGuide = nil;
     HorizontalAlignment adaptiveAlignment = imgElem->GetHorizontalAlignment();
     if (adaptiveAlignment == HorizontalAlignment::Left) {
-        leftGuide = [[UILayoutGuide alloc] init];
+        UILayoutGuide *leftGuide = [[UILayoutGuide alloc] init];
         leftGuide.identifier = @"img-left-guide";
         [wrappingview addLayoutGuide:leftGuide];
         [leftGuide.leadingAnchor constraintEqualToAnchor:wrappingview.leadingAnchor].active = YES;
@@ -109,7 +107,7 @@
     }
 
     if (adaptiveAlignment == HorizontalAlignment::Right) {
-        rightGuide = [[UILayoutGuide alloc] init];
+        UILayoutGuide *rightGuide = [[UILayoutGuide alloc] init];
         rightGuide.identifier = @"img-right-guide";
         [wrappingview addLayoutGuide:rightGuide];
         NSLayoutConstraint *constraint = [rightGuide.leadingAnchor constraintEqualToAnchor:view.trailingAnchor];
@@ -127,7 +125,7 @@
     [wrappingview.heightAnchor constraintGreaterThanOrEqualToAnchor:view.heightAnchor].active = YES;
     [wrappingview.widthAnchor constraintGreaterThanOrEqualToAnchor:view.widthAnchor].active = YES;
 
-    [view.centerYAnchor constraintEqualToAnchor:wrappingview.centerYAnchor].active = YES;
+    [view.topAnchor constraintEqualToAnchor:wrappingview.topAnchor].active = YES;
 
     if (!isAspectRatioNeeded) {
         view.contentMode = UIViewContentModeScaleToFill;
@@ -142,8 +140,13 @@
         [view setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         if (imgElem->GetHeight() == HeightType::Stretch) {
             UIView *blankTrailingSpace = [[UIView alloc] init];
-            [blankTrailingSpace setContentHuggingPriority:(UILayoutPriorityDefaultLow) forAxis:UILayoutConstraintAxisVertical];
-            [viewGroup addArrangedSubview:blankTrailingSpace];
+            blankTrailingSpace.translatesAutoresizingMaskIntoConstraints = NO;
+            [wrappingview addSubview:blankTrailingSpace];
+            [blankTrailingSpace.topAnchor constraintEqualToAnchor:view.bottomAnchor].active = YES;
+            [blankTrailingSpace.leadingAnchor constraintEqualToAnchor:view.leadingAnchor].active = YES;
+            [blankTrailingSpace.trailingAnchor constraintEqualToAnchor:view.trailingAnchor].active = YES;
+            [blankTrailingSpace.bottomAnchor constraintEqualToAnchor:wrappingview.bottomAnchor].active = YES;
+            [blankTrailingSpace setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
         }
     }
 
