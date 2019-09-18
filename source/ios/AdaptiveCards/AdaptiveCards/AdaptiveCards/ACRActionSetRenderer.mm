@@ -1,7 +1,4 @@
 //
-//  ACRActionSetRenderer
-//  ACRActionSetRenderer.mm
-//
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
