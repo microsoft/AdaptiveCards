@@ -6,9 +6,9 @@ import * as Utils from "./utils";
 import * as HostConfig from "./host-config";
 import * as TextFormatters from "./text-formatters";
 import { HostCapabilities } from "./host-capabilities";
-import { schemaProperty, SerializableObject, SerializableObjectSchema, StringPropertyDefinition,
-    BooleanPropertyDefinition, ValueSetPropertyDefinition, EnumPropertyDefinition, SerializableObjectCollectionPropertyDefinition,
-    SerializableObjectPropertyDefinition, PixelSizePropertyDefinition, NumberPropertyDefinition, PropertyBag, CustomPropertyDefinition, PropertyDefinition } from "./serializable-object";
+import { property, SerializableObject, SerializableObjectSchema, StringProperty,
+    BoolProperty, ValueSetProperty, EnumProperty, SerializableObjectCollectionProperty,
+    SerializableObjectProperty, PixelSizeProperty, NumProperty, PropertyBag, CustomProperty, PropertyDefinition } from "./serializable-object";
 
 function invokeSetCollection(action: Action, collection: ActionCollection | undefined) {
     if (action && collection) {
@@ -191,7 +191,7 @@ export class ValidationResults {
 export abstract class CardObject extends SerializableObject {
     //#region Schema
 
-    static readonly typeNameProperty = new StringPropertyDefinition(
+    static readonly typeNameProperty = new StringProperty(
         Shared.Versions.v1_0,
         "type",
         undefined,
@@ -200,8 +200,8 @@ export abstract class CardObject extends SerializableObject {
         (sender: object) => {
             return (<CardObject>sender).getJsonTypeName()
         });
-    static readonly idProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "id");
-    static readonly requiresProperty = new SerializableObjectPropertyDefinition(
+    static readonly idProperty = new StringProperty(Shared.Versions.v1_0, "id");
+    static readonly requiresProperty = new SerializableObjectProperty(
         Shared.Versions.v1_2,
         "requires",
         HostCapabilities);
@@ -210,17 +210,10 @@ export abstract class CardObject extends SerializableObject {
         return this.getJsonTypeName();
     }
 
-    protected populateSchema(schema: SerializableObjectSchema) {
-        schema.add(
-            CardObject.typeNameProperty,
-            CardObject.idProperty,
-            CardObject.requiresProperty);
-    }
-
-    @schemaProperty(CardObject.idProperty)
+    @property(CardObject.idProperty)
     id: string;
 
-    @schemaProperty(CardObject.requiresProperty)
+    @property(CardObject.requiresProperty)
     get requires(): HostCapabilities {
         return this.getValue(CardObject.requiresProperty);
     }
@@ -284,10 +277,10 @@ export type CardElementHeight = "auto" | "stretch";
 export abstract class CardElement extends CardObject {
     //#region Schema
 
-    static readonly langProperty = new StringPropertyDefinition(Shared.Versions.v1_1, "lang", true, /^[a-z]{2,3}$/ig);
-    static readonly isVisibleProperty = new BooleanPropertyDefinition(Shared.Versions.v1_2, "isVisible", true);
-    static readonly separatorProperty = new BooleanPropertyDefinition(Shared.Versions.v1_0, "separator", false);
-    static readonly heightProperty = new ValueSetPropertyDefinition(
+    static readonly langProperty = new StringProperty(Shared.Versions.v1_1, "lang", true, /^[a-z]{2,3}$/ig);
+    static readonly isVisibleProperty = new BoolProperty(Shared.Versions.v1_2, "isVisible", true);
+    static readonly separatorProperty = new BoolProperty(Shared.Versions.v1_0, "separator", false);
+    static readonly heightProperty = new ValueSetProperty(
         Shared.Versions.v1_1,
         "height",
         [
@@ -295,49 +288,42 @@ export abstract class CardElement extends CardObject {
             { value: "stretch" }
         ],
         "auto");
-    static readonly horizontalAlignmentProperty = new EnumPropertyDefinition(
+    static readonly horizontalAlignmentProperty = new EnumProperty(
         Shared.Versions.v1_0,
         "horizontalAlignment",
         Enums.HorizontalAlignment,
         Enums.HorizontalAlignment.Left);
-    static readonly spacingProperty = new EnumPropertyDefinition(
+    static readonly spacingProperty = new EnumProperty(
         Shared.Versions.v1_0,
         "spacing",
         Enums.Spacing,
         Enums.Spacing.Default);
-    static readonly minHeightProperty = new PixelSizePropertyDefinition(Shared.Versions.v1_2, "minHeight");
+    static readonly minHeightProperty = new PixelSizeProperty(Shared.Versions.v1_2, "minHeight");
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
 
-        schema.add(
-            CardElement.isVisibleProperty,
-            CardElement.separatorProperty,
-            CardElement.heightProperty,
-            CardElement.horizontalAlignmentProperty,
-            CardElement.spacingProperty);
-
-        if (this.supportsMinHeight) {
-            schema.add(CardElement.minHeightProperty);
+        if (!this.supportsMinHeight) {
+            schema.remove(CardElement.minHeightProperty);
         }
     }
 
-    @schemaProperty(CardElement.minHeightProperty)
+    @property(CardElement.minHeightProperty)
     minPixelHeight?: number;
 
-    @schemaProperty(CardElement.horizontalAlignmentProperty)
+    @property(CardElement.horizontalAlignmentProperty)
     horizontalAlignment: Enums.HorizontalAlignment;
 
-    @schemaProperty(CardElement.spacingProperty)
+    @property(CardElement.spacingProperty)
     spacing: Enums.Spacing;
 
-    @schemaProperty(CardElement.separatorProperty)
+    @property(CardElement.separatorProperty)
     separator: boolean;
 
-    @schemaProperty(CardElement.heightProperty)
+    @property(CardElement.heightProperty)
     height: CardElementHeight;
 
-    @schemaProperty(CardElement.langProperty)
+    @property(CardElement.langProperty)
     get lang(): string | undefined {
         let lang = this.getValue(CardElement.langProperty);
 
@@ -358,7 +344,7 @@ export abstract class CardElement extends CardObject {
         this.setValue(CardElement.langProperty, value);
     }
 
-    @schemaProperty(CardElement.isVisibleProperty)
+    @property(CardElement.isVisibleProperty)
     get isVisible(): boolean {
         return this.getValue(CardElement.isVisibleProperty);
     }
@@ -918,30 +904,30 @@ export class ActionPropertyDefinition extends PropertyDefinition {
 export abstract class BaseTextBlock extends CardElement {
     //#region Schema
 
-    static readonly textProperty = new StringPropertyDefinition(
+    static readonly textProperty = new StringProperty(
         Shared.Versions.v1_0,
         "text",
         true);
-    static readonly sizeProperty = new EnumPropertyDefinition(
+    static readonly sizeProperty = new EnumProperty(
         Shared.Versions.v1_0,
         "size",
         Enums.TextSize,
         Enums.TextSize.Default);
-    static readonly weightProperty = new EnumPropertyDefinition(
+    static readonly weightProperty = new EnumProperty(
         Shared.Versions.v1_0,
         "weight",
         Enums.TextWeight,
         Enums.TextWeight.Default);
-    static readonly colorProperty = new EnumPropertyDefinition(
+    static readonly colorProperty = new EnumProperty(
         Shared.Versions.v1_0,
         "color",
         Enums.TextColor,
         Enums.TextColor.Default);
-    static readonly isSubtleProperty = new BooleanPropertyDefinition(
+    static readonly isSubtleProperty = new BoolProperty(
         Shared.Versions.v1_0,
         "isSubtle",
         false);
-    static readonly fontTypeProperty = new EnumPropertyDefinition(
+    static readonly fontTypeProperty = new EnumProperty(
         Shared.Versions.v1_2,
         "fontType",
         Enums.FontType);
@@ -950,34 +936,27 @@ export abstract class BaseTextBlock extends CardElement {
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
 
-        schema.add(
-            BaseTextBlock.textProperty,
-            BaseTextBlock.sizeProperty,
-            BaseTextBlock.weightProperty,
-            BaseTextBlock.colorProperty,
-            BaseTextBlock.isSubtleProperty,
-            BaseTextBlock.fontTypeProperty);
-        
         // selectAction is declared on BaseTextBlock but is only exposed on TextRun,
-        // so the property is not added to the BaseTextBlock schema.
+        // so the property is removed from the BaseTextBlock schema.
+        schema.remove(BaseTextBlock.selectActionProperty);        
     }
 
-    @schemaProperty(BaseTextBlock.sizeProperty)
+    @property(BaseTextBlock.sizeProperty)
     size: Enums.TextSize = Enums.TextSize.Default;
 
-    @schemaProperty(BaseTextBlock.weightProperty)
+    @property(BaseTextBlock.weightProperty)
     weight: Enums.TextWeight = Enums.TextWeight.Default;
 
-    @schemaProperty(BaseTextBlock.colorProperty)
+    @property(BaseTextBlock.colorProperty)
     color: Enums.TextColor = Enums.TextColor.Default;
 
-    @schemaProperty(BaseTextBlock.fontTypeProperty)
+    @property(BaseTextBlock.fontTypeProperty)
     fontType?: Enums.FontType;
 
-    @schemaProperty(BaseTextBlock.isSubtleProperty)
+    @property(BaseTextBlock.isSubtleProperty)
     isSubtle: boolean = false;
 
-    @schemaProperty(BaseTextBlock.textProperty)
+    @property(BaseTextBlock.textProperty)
     get text(): string | undefined {
         return this.getValue(BaseTextBlock.textProperty);
     }
@@ -986,7 +965,7 @@ export abstract class BaseTextBlock extends CardElement {
         this.setText(value);
     }
 
-    @schemaProperty(BaseTextBlock.selectActionProperty)
+    @property(BaseTextBlock.selectActionProperty)
     selectAction?: Action;
 
     //#endregion
@@ -1091,21 +1070,13 @@ export abstract class BaseTextBlock extends CardElement {
 export class TextBlock extends BaseTextBlock {
     //#region Schema
 
-    static readonly wrapProperty = new BooleanPropertyDefinition(Shared.Versions.v1_0, "wrap", false);
-    static readonly maxLinesProperty = new NumberPropertyDefinition(Shared.Versions.v1_0, "maxLines");
+    static readonly wrapProperty = new BoolProperty(Shared.Versions.v1_0, "wrap", false);
+    static readonly maxLinesProperty = new NumProperty(Shared.Versions.v1_0, "maxLines");
 
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        schema.add(
-            TextBlock.wrapProperty,
-            TextBlock.maxLinesProperty);
-    }
-
-    @schemaProperty(TextBlock.wrapProperty)
+    @property(TextBlock.wrapProperty)
     wrap: boolean = false;
 
-    @schemaProperty(TextBlock.maxLinesProperty)
+    @property(TextBlock.maxLinesProperty)
     maxLines?: number;
 
     //#endregion
@@ -1403,27 +1374,23 @@ class Label extends TextBlock {
 export class TextRun extends BaseTextBlock {
     //#region Schema
 
-    static readonly italicProperty = new BooleanPropertyDefinition(Shared.Versions.v1_2, "italic", false);
-    static readonly strikethroughProperty = new BooleanPropertyDefinition(Shared.Versions.v1_2, "strikethrough", false);
-    static readonly highlightProperty = new BooleanPropertyDefinition(Shared.Versions.v1_2, "highlight", false);
+    static readonly italicProperty = new BoolProperty(Shared.Versions.v1_2, "italic", false);
+    static readonly strikethroughProperty = new BoolProperty(Shared.Versions.v1_2, "strikethrough", false);
+    static readonly highlightProperty = new BoolProperty(Shared.Versions.v1_2, "highlight", false);
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
 
-        schema.add(
-            TextRun.italicProperty,
-            TextRun.strikethroughProperty,
-            TextRun.highlightProperty,
-            BaseTextBlock.selectActionProperty);
+        schema.add(BaseTextBlock.selectActionProperty);
     }
 
-    @schemaProperty(TextRun.italicProperty)
+    @property(TextRun.italicProperty)
     italic: boolean = false;
 
-    @schemaProperty(TextRun.strikethroughProperty)
+    @property(TextRun.strikethroughProperty)
     strikethrough: boolean = false;
 
-    @schemaProperty(TextRun.highlightProperty)
+    @property(TextRun.highlightProperty)
     highlight: boolean = false;
 
     //#endregion
@@ -1658,22 +1625,14 @@ export class RichTextBlock extends CardElement {
 export class Fact extends SerializableObject {
     //#region Schema
 
-    static readonly titleProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "title");
-    static readonly valueProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "value");
-
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        schema.add(
-            Fact.titleProperty,
-            Fact.valueProperty);
-    }
+    static readonly titleProperty = new StringProperty(Shared.Versions.v1_0, "title");
+    static readonly valueProperty = new StringProperty(Shared.Versions.v1_0, "value");
 
     // For historic reasons, the "title" schema property is exposed as "name" in the OM.
-    @schemaProperty(Fact.titleProperty)
+    @property(Fact.titleProperty)
     name?: string;
 
-    @schemaProperty(Fact.valueProperty)
+    @property(Fact.valueProperty)
     value?: string;
 
     //#endregion
@@ -1693,19 +1652,13 @@ export class Fact extends SerializableObject {
 export class FactSet extends CardElement {
     //#region Schema
 
-    static readonly factsProperty = new SerializableObjectCollectionPropertyDefinition<Fact>(
+    static readonly factsProperty = new SerializableObjectCollectionProperty<Fact>(
         Shared.Versions.v1_0,
         "facts",
         (sourceItem: any) => { return new Fact(); },
         (sender: object) => { return []; });
 
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        schema.add(FactSet.factsProperty);
-    }
-
-    @schemaProperty(FactSet.factsProperty)
+    @property(FactSet.factsProperty)
     facts: Fact[];
 
     //#endregion
@@ -1796,46 +1749,38 @@ export class FactSet extends CardElement {
 }
 
 class ImageDimensionProperty extends PropertyDefinition {
+    getJsonPropertyName(): string {
+        return this.jsonName;
+    }
+    
     parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): number | undefined {
-        let result: number | undefined = Utils.getNumberValue(source[this.legacyPropertyName]);
+        let result: number | undefined = undefined;
+        let value = source[this.jsonName];
 
-        if (result) {
-            raiseParseError(
-                {
-                    error: Enums.ValidationError.Deprecated,
-                    message: "The " + this.legacyPropertyName + " property is deprecated and will be removed. Use the width property instead."
-                },
-                errors
-            );
-        }
-        else {
-            let value = source[this.name];
+        if (typeof value === "string") {
+            let isValid = false;
 
-            if (typeof value === "string") {
-                let isValid = false;
+            try {
+                let size = Shared.SizeAndUnit.parse(value, true);
 
-                try {
-                    let size = Shared.SizeAndUnit.parse(value, true);
+                if (size.unit == Enums.SizeUnit.Pixel) {
+                    result = size.physicalSize;
 
-                    if (size.unit == Enums.SizeUnit.Pixel) {
-                        result = size.physicalSize;
-
-                        isValid = true;
-                    }
+                    isValid = true;
                 }
-                catch {
-                    // Do nothing. A parse error is emitted below
-                }
+            }
+            catch {
+                // Do nothing. A parse error is emitted below
+            }
 
-                if (!isValid) {
-                    raiseParseError(
-                        {
-                            error: Enums.ValidationError.InvalidPropertyValue,
-                            message: "Invalid " + this.name + " value: " + value
-                        },
-                        errors
-                    );
-                }
+            if (!isValid) {
+                raiseParseError(
+                    {
+                        error: Enums.ValidationError.InvalidPropertyValue,
+                        message: "Invalid " + this.name + " value: " + value
+                    },
+                    errors
+                );
             }
         }
 
@@ -1845,14 +1790,14 @@ class ImageDimensionProperty extends PropertyDefinition {
     toJSON(sender: SerializableObject, target: PropertyBag, value: number | undefined) {
         Utils.setProperty(
             target,
-            this.name,
+            this.jsonName,
             typeof value === "number" && !isNaN(value) ? value + "px" : undefined);
     }
 
     constructor(
         readonly targetVersion: Shared.TargetVersion,
         readonly name: string,
-        readonly legacyPropertyName: string) {
+        readonly jsonName: string) {
         super(targetVersion, name);
     }
 }
@@ -1860,59 +1805,45 @@ class ImageDimensionProperty extends PropertyDefinition {
 export class Image extends CardElement {
     //#region Schema
 
-    static readonly urlProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "url");
-    static readonly altTextProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "altText");
-    static readonly backgroundColorProperty = new StringPropertyDefinition(Shared.Versions.v1_1, "backgroundColor");
-    static readonly styleProperty = new EnumPropertyDefinition(
+    static readonly urlProperty = new StringProperty(Shared.Versions.v1_0, "url");
+    static readonly altTextProperty = new StringProperty(Shared.Versions.v1_0, "altText");
+    static readonly backgroundColorProperty = new StringProperty(Shared.Versions.v1_1, "backgroundColor");
+    static readonly styleProperty = new EnumProperty(
         Shared.Versions.v1_0,
         "style",
         Enums.ImageStyle,
         Enums.ImageStyle.Default);
-    static readonly sizeProperty = new EnumPropertyDefinition(
+    static readonly sizeProperty = new EnumProperty(
         Shared.Versions.v1_0,
         "size",
         Enums.Size,
         Enums.Size.Auto);
-    static readonly pixelWidthProperty = new ImageDimensionProperty(Shared.Versions.v1_1, "width", "pixelWidth");
-    static readonly pixelHeightProperty = new ImageDimensionProperty(Shared.Versions.v1_1, "height", "pixelHeight");
+    static readonly pixelWidthProperty = new ImageDimensionProperty(Shared.Versions.v1_1, "pixelWidth", "width");
+    static readonly pixelHeightProperty = new ImageDimensionProperty(Shared.Versions.v1_1, "pixelHeight", "height");
     static readonly selectActionProperty = new ActionPropertyDefinition(Shared.Versions.v1_0, "selectAction", [ "Action.ShowCard" ]);
 
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        schema.add(
-            Image.urlProperty,
-            Image.altTextProperty,
-            Image.backgroundColorProperty,
-            Image.styleProperty,
-            Image.sizeProperty,
-            Image.pixelWidthProperty,
-            Image.pixelHeightProperty,
-            Image.selectActionProperty);
-    }
-
-    @schemaProperty(Image.urlProperty)
+    @property(Image.urlProperty)
     url?: string;
 
-    @schemaProperty(Image.altTextProperty)
+    @property(Image.altTextProperty)
     altText?: string;
 
-    @schemaProperty(Image.backgroundColorProperty)
+    @property(Image.backgroundColorProperty)
     backgroundColor?: string;
 
-    @schemaProperty(Image.sizeProperty)
+    @property(Image.sizeProperty)
     size: Enums.Size = Enums.Size.Auto;
 
-    @schemaProperty(Image.styleProperty)
+    @property(Image.styleProperty)
     style: Enums.ImageStyle = Enums.ImageStyle.Default;
 
-    @schemaProperty(Image.pixelWidthProperty)
+    @property(Image.pixelWidthProperty)
     pixelWidth?: number;
 
-    @schemaProperty(Image.pixelHeightProperty)
+    @property(Image.pixelHeightProperty)
     pixelHeight?: number;
 
-    @schemaProperty(Image.selectActionProperty)
+    @property(Image.selectActionProperty)
     selectAction?: Action;
 
     //#endregion
@@ -2086,12 +2017,12 @@ export abstract class CardElementContainer extends CardElement {
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
 
-        if (this.isSelectable) {
-            schema.add(CardElementContainer.selectActionProperty);
+        if (!this.isSelectable) {
+            schema.remove(CardElementContainer.selectActionProperty);
         }
     }
 
-    @schemaProperty(CardElementContainer.selectActionProperty)
+    @property(CardElementContainer.selectActionProperty)
     protected _selectAction?: Action;
 
     //#endregion
@@ -2272,30 +2203,22 @@ export abstract class CardElementContainer extends CardElement {
 export class ImageSet extends CardElementContainer {
     //#region Schema
 
-    static readonly imagesProperty = new SerializableObjectCollectionPropertyDefinition<Image>(
+    static readonly imagesProperty = new SerializableObjectCollectionProperty<Image>(
         Shared.Versions.v1_0,
         "images",
         (sender: SerializableObject, sourceItem: any) => { return new Image(); },
         (sender: SerializableObject) => { return []; },
         (sender: SerializableObject, item: Image) => { item.setParent(<CardElement>sender); });
-    static readonly sizeProperty = new EnumPropertyDefinition(
+    static readonly imageSizeProperty = new EnumProperty(
         Shared.Versions.v1_0,
-        "size",
+        "imageSize",
         Enums.Size,
         Enums.Size.Medium);
 
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        schema.add(
-            ImageSet.imagesProperty,
-            ImageSet.sizeProperty);
-    }
-
-    @schemaProperty(ImageSet.imagesProperty)
+    @property(ImageSet.imagesProperty)
     private _images: Image[] = [];
 
-    @schemaProperty(ImageSet.sizeProperty)
+    @property(ImageSet.imageSizeProperty)
     imageSize: Enums.Size = Enums.Size.Medium;
 
     //#endregion
@@ -2384,21 +2307,13 @@ export class ImageSet extends CardElementContainer {
 export class MediaSource extends SerializableObject {
     //#region Schema
 
-    static readonly mimeTypeProperty = new StringPropertyDefinition(Shared.Versions.v1_1, "mimeType");
-    static readonly urlProperty = new StringPropertyDefinition(Shared.Versions.v1_1, "url");
+    static readonly mimeTypeProperty = new StringProperty(Shared.Versions.v1_1, "mimeType");
+    static readonly urlProperty = new StringProperty(Shared.Versions.v1_1, "url");
 
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        schema.add(
-            MediaSource.mimeTypeProperty,
-            MediaSource.urlProperty);
-    }
-
-    @schemaProperty(MediaSource.mimeTypeProperty)
+    @property(MediaSource.mimeTypeProperty)
     mimeType?: string;
 
-    @schemaProperty(MediaSource.urlProperty)
+    @property(MediaSource.urlProperty)
     url?: string;
 
     //#endregion
@@ -2434,30 +2349,21 @@ export class MediaSource extends SerializableObject {
 export class Media extends CardElement {
     //#region Schema
 
-    static readonly sourcesProperty = new SerializableObjectCollectionPropertyDefinition<MediaSource>(
+    static readonly sourcesProperty = new SerializableObjectCollectionProperty<MediaSource>(
         Shared.Versions.v1_1,
         "sources",
         (sender: SerializableObject, sourceItem: any) => { return new MediaSource(); },
         (sender: SerializableObject) => { return []; });
-    static readonly posterProperty = new StringPropertyDefinition(Shared.Versions.v1_1, "poster");
-    static readonly altTextProperty = new StringPropertyDefinition(Shared.Versions.v1_1, "altText");
+    static readonly posterProperty = new StringProperty(Shared.Versions.v1_1, "poster");
+    static readonly altTextProperty = new StringProperty(Shared.Versions.v1_1, "altText");
 
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        schema.add(
-            Media.sourcesProperty,
-            Media.posterProperty,
-            Media.altTextProperty);
-    }
-
-    @schemaProperty(Media.sourcesProperty)
+    @property(Media.sourcesProperty)
     sources: MediaSource[] = [];
 
-    @schemaProperty(Media.posterProperty)
+    @property(Media.posterProperty)
     poster?: string;
 
-    @schemaProperty(Media.altTextProperty)
+    @property(Media.altTextProperty)
     altText?: string;
 
     //#endregion
@@ -2673,25 +2579,17 @@ export class Media extends CardElement {
 export class InputValidationOptions extends SerializableObject {
     //#region Schema
 
-    static readonly necessityProperty = new EnumPropertyDefinition(Shared.Versions.vNext, "necessity", Enums.InputValidationNecessity, Enums.InputValidationNecessity.Optional);
-    static readonly errorMessageProperty = new StringPropertyDefinition(Shared.Versions.vNext, "errorMessagwe");
+    static readonly necessityProperty = new EnumProperty(Shared.Versions.vNext, "necessity", Enums.InputValidationNecessity, Enums.InputValidationNecessity.Optional);
+    static readonly errorMessageProperty = new StringProperty(Shared.Versions.vNext, "errorMessagwe");
 
     protected getSchemaKey(): string {
         return "InputValidationOptions";
     }
 
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        schema.add(
-            InputValidationOptions.necessityProperty,
-            InputValidationOptions.errorMessageProperty);
-    }
-
-    @schemaProperty(InputValidationOptions.necessityProperty)
+    @property(InputValidationOptions.necessityProperty)
     necessity: Enums.InputValidationNecessity = Enums.InputValidationNecessity.Optional;
 
-    @schemaProperty(InputValidationOptions.errorMessageProperty)
+    @property(InputValidationOptions.errorMessageProperty)
     errorMessage?: string;
 
     //#endregion
@@ -2788,7 +2686,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
 
     //#region Schema
 
-    static readonly validationProperty = new SerializableObjectPropertyDefinition(
+    static readonly validationProperty = new SerializableObjectProperty(
         Shared.Versions.vNext,
         "validation",
         InputValidationOptions);
@@ -2796,12 +2694,12 @@ export abstract class Input extends CardElement implements Shared.IInput {
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
 
-        if (Shared.GlobalSettings.useBuiltInInputValidation) {
-            schema.add(Input.validationProperty);
+        if (!Shared.GlobalSettings.useBuiltInInputValidation) {
+            schema.remove(Input.validationProperty);
         }
     }
 
-    @schemaProperty(Input.validationProperty)
+    @property(Input.validationProperty)
     get validation(): InputValidationOptions {
         return this.getValue(Input.validationProperty);
     }
@@ -2854,41 +2752,29 @@ export abstract class Input extends CardElement implements Shared.IInput {
 export class TextInput extends Input {
     //#region Schema
 
-    static readonly valueProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "value");
-    static readonly maxLengthProperty = new NumberPropertyDefinition(Shared.Versions.v1_0, "maxLength");
-    static readonly isMultilineProperty = new BooleanPropertyDefinition(Shared.Versions.v1_0, "isMultiline", false);
-    static readonly placeholderProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "placeholder");
-    static readonly styleProperty = new EnumPropertyDefinition(Shared.Versions.v1_0, "style", Enums.InputTextStyle, Enums.InputTextStyle.Text);
+    static readonly valueProperty = new StringProperty(Shared.Versions.v1_0, "value");
+    static readonly maxLengthProperty = new NumProperty(Shared.Versions.v1_0, "maxLength");
+    static readonly isMultilineProperty = new BoolProperty(Shared.Versions.v1_0, "isMultiline", false);
+    static readonly placeholderProperty = new StringProperty(Shared.Versions.v1_0, "placeholder");
+    static readonly styleProperty = new EnumProperty(Shared.Versions.v1_0, "style", Enums.InputTextStyle, Enums.InputTextStyle.Text);
     static readonly inlineActionProperty = new ActionPropertyDefinition(Shared.Versions.v1_0, "inlineAction", [ "Action.ShowCard" ]);
 
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        schema.add(
-            TextInput.valueProperty,
-            TextInput.maxLengthProperty,
-            TextInput.isMultilineProperty,
-            TextInput.placeholderProperty,
-            TextInput.styleProperty,
-            TextInput.inlineActionProperty);
-    }
-
-    @schemaProperty(TextInput.valueProperty)
+    @property(TextInput.valueProperty)
     defaultValue?: string;
 
-    @schemaProperty(TextInput.maxLengthProperty)
+    @property(TextInput.maxLengthProperty)
     maxLength?: number;
 
-    @schemaProperty(TextInput.isMultilineProperty)
+    @property(TextInput.isMultilineProperty)
     isMultiline: boolean = false;
 
-    @schemaProperty(TextInput.placeholderProperty)
+    @property(TextInput.placeholderProperty)
     placeholder?: string;
 
-    @schemaProperty(TextInput.styleProperty)
+    @property(TextInput.styleProperty)
     style: Enums.InputTextStyle = Enums.InputTextStyle.Text;
 
-    @schemaProperty(TextInput.inlineActionProperty)
+    @property(TextInput.inlineActionProperty)
     inlineAction?: Action;
 
     //#endregion
@@ -3056,36 +2942,25 @@ export class TextInput extends Input {
 export class ToggleInput extends Input {
     //#region Schema
 
-    static readonly valueProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "value");
-    static readonly titleProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "title");
-    static readonly valueOnProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "valueOn", true, undefined, "true", (sender: SerializableObject) => { return "true"; });
-    static readonly valueOffProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "valueOff", true, undefined, "false", (sender: SerializableObject) => { return "false"; });
-    static readonly wrapProperty = new BooleanPropertyDefinition(Shared.Versions.v1_2, "wrap", false);
+    static readonly valueProperty = new StringProperty(Shared.Versions.v1_0, "value");
+    static readonly titleProperty = new StringProperty(Shared.Versions.v1_0, "title");
+    static readonly valueOnProperty = new StringProperty(Shared.Versions.v1_0, "valueOn", true, undefined, "true", (sender: SerializableObject) => { return "true"; });
+    static readonly valueOffProperty = new StringProperty(Shared.Versions.v1_0, "valueOff", true, undefined, "false", (sender: SerializableObject) => { return "false"; });
+    static readonly wrapProperty = new BoolProperty(Shared.Versions.v1_2, "wrap", false);
 
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        schema.add(
-            ToggleInput.titleProperty,
-            ToggleInput.valueProperty,
-            ToggleInput.valueOnProperty,
-            ToggleInput.valueOffProperty,
-            ToggleInput.wrapProperty);
-    }
-
-    @schemaProperty(ToggleInput.valueProperty)
+    @property(ToggleInput.valueProperty)
     defaultValue?: string;
 
-    @schemaProperty(ToggleInput.titleProperty)
+    @property(ToggleInput.titleProperty)
     title?: string;
 
-    @schemaProperty(ToggleInput.valueOnProperty)
+    @property(ToggleInput.valueOnProperty)
     valueOn: string = "true";
 
-    @schemaProperty(ToggleInput.valueOffProperty)
+    @property(ToggleInput.valueOffProperty)
     valueOff: string = "false";
 
-    @schemaProperty(ToggleInput.wrapProperty)
+    @property(ToggleInput.wrapProperty)
     wrap: boolean = false;
 
     //#endregion
@@ -3174,21 +3049,13 @@ export class ToggleInput extends Input {
 export class Choice extends SerializableObject {
     //#region Schema
 
-    static readonly titleProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "title");
-    static readonly valueProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "value");
+    static readonly titleProperty = new StringProperty(Shared.Versions.v1_0, "title");
+    static readonly valueProperty = new StringProperty(Shared.Versions.v1_0, "value");
 
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        schema.add(
-            Choice.titleProperty,
-            Choice.valueProperty);
-    }
-
-    @schemaProperty(Choice.titleProperty)
+    @property(Choice.titleProperty)
     title?: string;
 
-    @schemaProperty(Choice.valueProperty)
+    @property(Choice.valueProperty)
     value?: string;
 
     //#endregion
@@ -3208,62 +3075,47 @@ export class Choice extends SerializableObject {
 export class ChoiceSetInput extends Input {
     //#region Schema
 
-    static readonly valueProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "value");
-    static readonly choicesProperty = new SerializableObjectCollectionPropertyDefinition<Choice>(
+    static readonly valueProperty = new StringProperty(Shared.Versions.v1_0, "value");
+    static readonly choicesProperty = new SerializableObjectCollectionProperty<Choice>(
         Shared.Versions.v1_0,
-        "facts",
+        "choices",
         (sourceItem: any) => { return new Choice(); },
         (sender: object) => { return []; });
-    static readonly styleProperty = new CustomPropertyDefinition<boolean>(
+    static readonly styleProperty = new ValueSetProperty(
         Shared.Versions.v1_0,
         "style",
-        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: Shared.IValidationError[]) => {
-            let style = Utils.getStringValue(source[property.name], property.defaultValue);
+        [
+            { value: "compact" },
+            { value: "expanded" }
+        ]);
+    static readonly isMultiSelectProperty = new BoolProperty(Shared.Versions.v1_0, "isMultiSelect", false);
+    static readonly placeholderProperty = new StringProperty(Shared.Versions.v1_0, "placeholder");
+    static readonly wrapProperty = new BoolProperty(Shared.Versions.v1_2, "wrap", false);
 
-            if (!Utils.isNullOrEmpty(style)) {
-                return !((<string>style).toLowerCase() === "expanded");
-            }
-            else {
-                return property.defaultValue;
-            }
-        },
-        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: boolean) => {
-            Utils.setProperty(target, property.name, (<ChoiceSetInput>sender).isCompact ? undefined : "expanded");
-        },
-        false,
-        () => { return true; });
-    static readonly isMultiSelectProperty = new BooleanPropertyDefinition(Shared.Versions.v1_0, "isMultiSelect", false);
-    static readonly placeholderProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "placeholder");
-    static readonly wrapProperty = new BooleanPropertyDefinition(Shared.Versions.v1_2, "wrap", false);
-
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        schema.add(
-            ChoiceSetInput.valueProperty,
-            ChoiceSetInput.choicesProperty,
-            ChoiceSetInput.styleProperty,
-            ChoiceSetInput.isMultiSelectProperty,
-            ChoiceSetInput.placeholderProperty,
-            ChoiceSetInput.wrapProperty);
-    }
-
-    @schemaProperty(ChoiceSetInput.valueProperty)
+    @property(ChoiceSetInput.valueProperty)
     defaultValue?: string;
 
-    @schemaProperty(ChoiceSetInput.styleProperty)
-    isCompact: boolean = false;
+    @property(ChoiceSetInput.styleProperty)
+    style?: "compact" | "expanded";
 
-    @schemaProperty(ChoiceSetInput.isMultiSelectProperty)
+    get isCompact(): boolean {
+        return this.style !== "expanded";
+    }
+
+    set isCompact(value: boolean) {
+        this.style = value ? undefined : "expanded";
+    }
+
+    @property(ChoiceSetInput.isMultiSelectProperty)
     isMultiSelect: boolean = false;
 
-    @schemaProperty(ChoiceSetInput.placeholderProperty)
+    @property(ChoiceSetInput.placeholderProperty)
     placeholder?: string;
 
-    @schemaProperty(ChoiceSetInput.wrapProperty)
+    @property(ChoiceSetInput.wrapProperty)
     wrap: boolean = false;
 
-    @schemaProperty(ChoiceSetInput.choicesProperty)
+    @property(ChoiceSetInput.choicesProperty)
     choices: Choice[] = [];
 
     //#endregion
@@ -3534,31 +3386,21 @@ export class ChoiceSetInput extends Input {
 export class NumberInput extends Input {
     //#region Schema
 
-    static readonly valueProperty = new NumberPropertyDefinition(Shared.Versions.v1_0, "value");
-    static readonly placeholderProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "placeholder");
-    static readonly minProperty = new NumberPropertyDefinition(Shared.Versions.v1_0, "min");
-    static readonly maxProperty = new NumberPropertyDefinition(Shared.Versions.v1_0, "max");
+    static readonly valueProperty = new NumProperty(Shared.Versions.v1_0, "value");
+    static readonly placeholderProperty = new StringProperty(Shared.Versions.v1_0, "placeholder");
+    static readonly minProperty = new NumProperty(Shared.Versions.v1_0, "min");
+    static readonly maxProperty = new NumProperty(Shared.Versions.v1_0, "max");
 
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        schema.add(
-            NumberInput.valueProperty,
-            NumberInput.minProperty,
-            NumberInput.maxProperty,
-            NumberInput.placeholderProperty);
-    }
-
-    @schemaProperty(NumberInput.valueProperty)
+    @property(NumberInput.valueProperty)
     defaultValue?: number;
 
-    @schemaProperty(NumberInput.minProperty)
+    @property(NumberInput.minProperty)
     min?: number;
 
-    @schemaProperty(NumberInput.maxProperty)
+    @property(NumberInput.maxProperty)
     max?: number;
 
-    @schemaProperty(NumberInput.placeholderProperty)
+    @property(NumberInput.placeholderProperty)
     placeholder?: string;
 
     //#endregion
@@ -3611,31 +3453,21 @@ export class NumberInput extends Input {
 export class DateInput extends Input {
     //#region Schema
 
-    static readonly valueProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "value");
-    static readonly placeholderProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "placeholder");
-    static readonly minProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "min");
-    static readonly maxProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "max");
+    static readonly valueProperty = new StringProperty(Shared.Versions.v1_0, "value");
+    static readonly placeholderProperty = new StringProperty(Shared.Versions.v1_0, "placeholder");
+    static readonly minProperty = new StringProperty(Shared.Versions.v1_0, "min");
+    static readonly maxProperty = new StringProperty(Shared.Versions.v1_0, "max");
 
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        schema.add(
-            DateInput.valueProperty,
-            DateInput.minProperty,
-            DateInput.maxProperty,
-            DateInput.placeholderProperty);
-    }
-
-    @schemaProperty(DateInput.valueProperty)
+    @property(DateInput.valueProperty)
     defaultValue?: string;
 
-    @schemaProperty(DateInput.minProperty)
+    @property(DateInput.minProperty)
     min?: string;
 
-    @schemaProperty(DateInput.maxProperty)
+    @property(DateInput.maxProperty)
     max?: string;
 
-    @schemaProperty(DateInput.placeholderProperty)
+    @property(DateInput.placeholderProperty)
     placeholder?: string;
 
     //#endregion
@@ -3678,7 +3510,7 @@ export class DateInput extends Input {
     }
 }
 
-export class TimePropertyDefinition extends CustomPropertyDefinition<string | undefined> {
+export class TimePropertyDefinition extends CustomProperty<string | undefined> {
     constructor(readonly targetVersion: Shared.TargetVersion, readonly name: string) {
         super(
             targetVersion,
@@ -3702,30 +3534,20 @@ export class TimeInput extends Input {
     //#region Schema
 
     static readonly valueProperty = new TimePropertyDefinition(Shared.Versions.v1_0, "value");
-    static readonly placeholderProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "placeholder");
+    static readonly placeholderProperty = new StringProperty(Shared.Versions.v1_0, "placeholder");
     static readonly minProperty = new TimePropertyDefinition(Shared.Versions.v1_0, "min");
     static readonly maxProperty = new TimePropertyDefinition(Shared.Versions.v1_0, "max");
 
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        schema.add(
-            TimeInput.valueProperty,
-            TimeInput.minProperty,
-            TimeInput.maxProperty,
-            TimeInput.placeholderProperty);
-    }
-
-    @schemaProperty(TimeInput.valueProperty)
+    @property(TimeInput.valueProperty)
     defaultValue?: string;
 
-    @schemaProperty(TimeInput.minProperty)
+    @property(TimeInput.minProperty)
     min?: string;
 
-    @schemaProperty(TimeInput.maxProperty)
+    @property(TimeInput.maxProperty)
     max?: string;
 
-    @schemaProperty(TimeInput.placeholderProperty)
+    @property(TimeInput.placeholderProperty)
     placeholder?: string;
 
     //#endregion
@@ -3864,9 +3686,9 @@ export abstract class Action extends CardObject {
                 errors
             );
     */
-    static readonly titleProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "title");
-    static readonly iconUrlProperty = new StringPropertyDefinition(Shared.Versions.v1_1, "iconUrl");
-    static readonly styleProperty = new ValueSetPropertyDefinition(
+    static readonly titleProperty = new StringProperty(Shared.Versions.v1_0, "title");
+    static readonly iconUrlProperty = new StringProperty(Shared.Versions.v1_1, "iconUrl");
+    static readonly styleProperty = new ValueSetProperty(
         Shared.Versions.v1_2,
         "style",
         [
@@ -3875,29 +3697,20 @@ export abstract class Action extends CardObject {
             { value: Enums.ActionStyle.Destructive }
         ],
         Enums.ActionStyle.Default);
-    static readonly requiresProperty = new SerializableObjectPropertyDefinition(
+    static readonly requiresProperty = new SerializableObjectProperty(
         Shared.Versions.v1_2,
         "requires",
         HostCapabilities);
     // TODO: Revise this when finalizing input validation
-    static readonly ignoreInputValidationProperty = new BooleanPropertyDefinition(Shared.Versions.vNext, "ignoreInputValidation", false);
+    static readonly ignoreInputValidationProperty = new BoolProperty(Shared.Versions.vNext, "ignoreInputValidation", false);
 
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        schema.add(
-            Action.titleProperty,
-            Action.iconUrlProperty,
-            Action.styleProperty);
-    }
-
-    @schemaProperty(Action.titleProperty)
+    @property(Action.titleProperty)
     title?: string;
 
-    @schemaProperty(Action.iconUrlProperty)
+    @property(Action.iconUrlProperty)
     iconUrl?: string;
 
-    @schemaProperty(Action.styleProperty)
+    @property(Action.styleProperty)
     style: string = Enums.ActionStyle.Default;
 
     //#endregion
@@ -4112,18 +3925,10 @@ export class SubmitAction extends Action {
 
     static readonly dataProperty = new PropertyDefinition(Shared.Versions.v1_0, "data");
 
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        schema.add(
-            SubmitAction.dataProperty,
-            Action.ignoreInputValidationProperty);
-    }
-
-    @schemaProperty(SubmitAction.dataProperty)
+    @property(SubmitAction.dataProperty)
     private _originalData?: PropertyBag;
 
-    @schemaProperty(Action.ignoreInputValidationProperty)
+    @property(Action.ignoreInputValidationProperty)
     private _ignoreInputValidation: boolean = false;
 
     //#endregion
@@ -4191,15 +3996,9 @@ export class SubmitAction extends Action {
 export class OpenUrlAction extends Action {
     //#region Schema
 
-    static readonly urlProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "url");
+    static readonly urlProperty = new StringProperty(Shared.Versions.v1_0, "url");
 
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        schema.add(OpenUrlAction.urlProperty);
-    }
-
-    @schemaProperty(OpenUrlAction.urlProperty)
+    @property(OpenUrlAction.urlProperty)
     url?: string;
 
     //#endregion
@@ -4233,7 +4032,7 @@ export class OpenUrlAction extends Action {
 export class ToggleVisibilityAction extends Action {
     //#region Schema
 
-    static readonly targetElementsProperty = new CustomPropertyDefinition<PropertyBag>(
+    static readonly targetElementsProperty = new CustomProperty<PropertyBag>(
         Shared.Versions.v1_2,
         "targetElements",
         (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: Shared.IValidationError[]) => {
@@ -4278,13 +4077,7 @@ export class ToggleVisibilityAction extends Action {
         {},
         (sender: SerializableObject) => { return {}; });
 
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        schema.add(ToggleVisibilityAction.targetElementsProperty);
-    }
-
-    @schemaProperty(ToggleVisibilityAction.targetElementsProperty)
+    @property(ToggleVisibilityAction.targetElementsProperty)
     targetElements: { [key: string]: any } = {};
 
     //#endregion
@@ -4345,25 +4138,17 @@ class StringWithSubstitutionPropertyDefinition extends PropertyDefinition  {
 export class HttpHeader extends SerializableObject {
     //#region Schema
 
-    static readonly nameProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "name");
+    static readonly nameProperty = new StringProperty(Shared.Versions.v1_0, "name");
     static readonly valueProperty = new StringWithSubstitutionPropertyDefinition(Shared.Versions.v1_0, "value");
 
     protected getSchemaKey(): string {
         return "HttpHeader";
     }
 
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        schema.add(
-            HttpHeader.nameProperty,
-            HttpHeader.valueProperty);
-    }
-
-    @schemaProperty(HttpHeader.nameProperty)
+    @property(HttpHeader.nameProperty)
     name: string;
 
-    @schemaProperty(HttpHeader.valueProperty)
+    @property(HttpHeader.valueProperty)
     private _value: Shared.StringWithSubstitutions;
 
     //#endregion
@@ -4397,8 +4182,8 @@ export class HttpAction extends Action {
 
     static readonly urlProperty = new StringWithSubstitutionPropertyDefinition(Shared.Versions.v1_0, "url");
     static readonly bodyProperty = new StringWithSubstitutionPropertyDefinition(Shared.Versions.v1_0, "body");
-    static readonly methodProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "method");
-    static readonly headersProperty = new SerializableObjectCollectionPropertyDefinition(
+    static readonly methodProperty = new StringProperty(Shared.Versions.v1_0, "method");
+    static readonly headersProperty = new SerializableObjectCollectionProperty(
         Shared.Versions.v1_0,
         "headers",
         (sender: SerializableObject, sourceItem: any) => { return new HttpHeader(); });
@@ -4406,27 +4191,22 @@ export class HttpAction extends Action {
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
 
-        schema.add(
-            HttpAction.urlProperty,
-            HttpAction.bodyProperty,
-            HttpAction.methodProperty,
-            HttpAction.headersProperty,
-            Action.ignoreInputValidationProperty);
+        schema.add(Action.ignoreInputValidationProperty);
     }
 
-    @schemaProperty(HttpAction.urlProperty)
+    @property(HttpAction.urlProperty)
     private _url: Shared.StringWithSubstitutions;
 
-    @schemaProperty(HttpAction.bodyProperty)
+    @property(HttpAction.bodyProperty)
     private _body: Shared.StringWithSubstitutions;
 
-    @schemaProperty(HttpAction.bodyProperty)
+    @property(HttpAction.bodyProperty)
     method?: string;
 
-    @schemaProperty(HttpAction.headersProperty)
+    @property(HttpAction.headersProperty)
     headers: HttpHeader[] = [];
 
-    @schemaProperty(Action.ignoreInputValidationProperty)
+    @property(Action.ignoreInputValidationProperty)
     private _ignoreInputValidation: boolean = false;
 
     //#endregion
@@ -5083,15 +4863,9 @@ class ActionCollection {
 export class ActionSet extends CardElement {
     //#region Schema
 
-    static readonly orientationProperty = new EnumPropertyDefinition(Shared.Versions.v1_1, "orientation", Enums.Orientation);
+    static readonly orientationProperty = new EnumProperty(Shared.Versions.v1_1, "orientation", Enums.Orientation);
 
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        schema.add(ActionSet.orientationProperty);
-    }
-
-    @schemaProperty(ActionSet.orientationProperty)
+    @property(ActionSet.orientationProperty)
     orientation?: Enums.Orientation;
 
     //#endregion
@@ -5179,7 +4953,7 @@ export class ActionSet extends CardElement {
 export abstract class StylableCardElementContainer extends CardElementContainer {
     //#region Schema
 
-    static readonly styleProperty = new ValueSetPropertyDefinition(
+    static readonly styleProperty = new ValueSetProperty(
         Shared.Versions.v1_0,
         "style",
         [
@@ -5190,15 +4964,9 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
             { targetVersion: Shared.Versions.v1_2, value: Enums.ContainerStyle.Attention },
             { targetVersion: Shared.Versions.v1_2, value: Enums.ContainerStyle.Warning }
         ]);
-    static readonly bleedProperty = new BooleanPropertyDefinition(Shared.Versions.v1_1, "bleed", false);
+    static readonly bleedProperty = new BoolProperty(Shared.Versions.v1_1, "bleed", false);
 
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        schema.add(StylableCardElementContainer.styleProperty);
-    }
-
-    @schemaProperty(StylableCardElementContainer.styleProperty)
+    @property(StylableCardElementContainer.styleProperty)
     get style(): string | undefined {
         if (this.allowCustomStyle) {
             let style = this.getValue(StylableCardElementContainer.styleProperty);
@@ -5215,7 +4983,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
         this.setValue(StylableCardElementContainer.styleProperty, value);
     }
 
-    @schemaProperty(StylableCardElementContainer.bleedProperty)
+    @property(StylableCardElementContainer.bleedProperty)
     private _bleed: boolean = false;
 
     //#endregion
@@ -5380,31 +5148,21 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 export class BackgroundImage extends SerializableObject {
     //#region Schema
 
-    static readonly urlProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "url");
-    static readonly fillModeProperty = new EnumPropertyDefinition(Shared.Versions.v1_2, "fillMode", Enums.FillMode, Enums.FillMode.Cover);
-    static readonly horizontalAlignmentProperty = new EnumPropertyDefinition(Shared.Versions.v1_2, "horizontalAlignment", Enums.HorizontalAlignment, Enums.HorizontalAlignment.Left);
-    static readonly verticalAlignmentProperty = new EnumPropertyDefinition(Shared.Versions.v1_2, "verticalAlignment", Enums.VerticalAlignment, Enums.VerticalAlignment.Top);
+    static readonly urlProperty = new StringProperty(Shared.Versions.v1_0, "url");
+    static readonly fillModeProperty = new EnumProperty(Shared.Versions.v1_2, "fillMode", Enums.FillMode, Enums.FillMode.Cover);
+    static readonly horizontalAlignmentProperty = new EnumProperty(Shared.Versions.v1_2, "horizontalAlignment", Enums.HorizontalAlignment, Enums.HorizontalAlignment.Left);
+    static readonly verticalAlignmentProperty = new EnumProperty(Shared.Versions.v1_2, "verticalAlignment", Enums.VerticalAlignment, Enums.VerticalAlignment.Top);
 
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        schema.add(
-            BackgroundImage.urlProperty,
-            BackgroundImage.fillModeProperty,
-            BackgroundImage.horizontalAlignmentProperty,
-            BackgroundImage.verticalAlignmentProperty);
-    }
-
-    @schemaProperty(BackgroundImage.urlProperty)
+    @property(BackgroundImage.urlProperty)
     url?: string;
 
-    @schemaProperty(BackgroundImage.fillModeProperty)
+    @property(BackgroundImage.fillModeProperty)
     fillMode: Enums.FillMode;
 
-    @schemaProperty(BackgroundImage.horizontalAlignmentProperty)
+    @property(BackgroundImage.horizontalAlignmentProperty)
     horizontalAlignment: Enums.HorizontalAlignment;
 
-    @schemaProperty(BackgroundImage.verticalAlignmentProperty)
+    @property(BackgroundImage.verticalAlignmentProperty)
     verticalAlignment: Enums.VerticalAlignment;
 
     //#endregion
@@ -5415,10 +5173,8 @@ export class BackgroundImage extends SerializableObject {
 
     parse(source: any, errors?: Shared.IValidationError[]) {
         if (typeof source === "string") {
-            let result = new BackgroundImage();
-            result.url = source;
-
-            return result;
+            this.resetDefaultValues();
+            this.url = source;
         }
         else {
             return super.parse(source, errors);
@@ -5488,6 +5244,28 @@ export class BackgroundImage extends SerializableObject {
 }
 
 export class Container extends StylableCardElementContainer {
+    //#region Schema
+
+    static readonly backgroundImageProperty = new SerializableObjectProperty(
+        Shared.Versions.v1_0,
+        "backgroundImage",
+        BackgroundImage);
+    static readonly verticalContentAlignmentProperty = new EnumProperty(Shared.Versions.v1_1, "verticalContentAlignment", Enums.VerticalAlignment, Enums.VerticalAlignment.Top);
+    static readonly rtlProperty = new BoolProperty(Shared.Versions.v1_0, "rtl");
+
+    @property(Container.backgroundImageProperty)
+    get backgroundImage(): BackgroundImage {
+        return this.getValue(Container.backgroundImageProperty);
+    }
+
+    @property(Container.verticalContentAlignmentProperty)
+    verticalContentAlignment: Enums.VerticalAlignment = Enums.VerticalAlignment.Top;
+
+    @property(Container.rtlProperty)
+    rtl?: boolean;
+
+    //#endregion
+
     private _items: CardElement[] = [];
     private _renderedItems: CardElement[] = [];
 
@@ -5656,38 +5434,6 @@ export class Container extends StylableCardElementContainer {
     protected get isSelectable(): boolean {
         return true;
     }
-
-    //#region Schema
-
-    static readonly backgroundImageProperty = new SerializableObjectPropertyDefinition(
-        Shared.Versions.v1_0,
-        "backgroundImage",
-        BackgroundImage);
-    static readonly verticalContentAlignmentProperty = new EnumPropertyDefinition(Shared.Versions.v1_1, "verticalContentAlignment", Enums.VerticalAlignment, Enums.VerticalAlignment.Top);
-    static readonly rtlProperty = new BooleanPropertyDefinition(Shared.Versions.v1_0, "rtl");
-
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        schema.add(
-            Container.backgroundImageProperty,
-            Container.verticalContentAlignmentProperty,
-            Container.rtlProperty,
-            Container.bleedProperty);
-    }
-
-    @schemaProperty(Container.backgroundImageProperty)
-    get backgroundImage(): BackgroundImage {
-        return this.getValue(Container.backgroundImageProperty);
-    }
-
-    @schemaProperty(Container.verticalContentAlignmentProperty)
-    verticalContentAlignment: Enums.VerticalAlignment = Enums.VerticalAlignment.Top;
-
-    @schemaProperty(Container.rtlProperty)
-    rtl?: boolean;
-
-    //#endregion
 
     parse(json: any, errors?: Shared.IValidationError[]) {
         super.parse(json, errors);
@@ -5907,7 +5653,7 @@ export type ColumnWidth = Shared.SizeAndUnit | "auto" | "stretch";
 export class Column extends Container {
     //#region Schema
 
-    static readonly widthProperty = new CustomPropertyDefinition<ColumnWidth>(
+    static readonly widthProperty = new CustomProperty<ColumnWidth>(
         Shared.Versions.v1_0,
         "width",
         (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: Shared.IValidationError[]) => {
@@ -5960,13 +5706,7 @@ export class Column extends Container {
             }
         });
 
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        schema.add(Column.widthProperty);
-    }
-
-    @schemaProperty(Column.widthProperty)
+    @property(Column.widthProperty)
     width: ColumnWidth = "auto";
 
     //#endregion
@@ -6036,16 +5776,6 @@ export class Column extends Container {
 }
 
 export class ColumnSet extends StylableCardElementContainer {
-    //#region Schema
-
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        schema.add(Container.bleedProperty);
-    }
-
-    //#endregion
-
     private _columns: Column[] = [];
     private _renderedColumns: Column[];
 
@@ -6721,7 +6451,7 @@ export class AdaptiveCard extends ContainerWithActions {
 
     //#region Schema
 
-    protected static readonly $schemaProperty = new CustomPropertyDefinition<string>(
+    protected static readonly $schemaProperty = new CustomProperty<string>(
         Shared.Versions.v1_0,
         "$schema",
         (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: Shared.IValidationError[]) => {
@@ -6731,7 +6461,7 @@ export class AdaptiveCard extends ContainerWithActions {
             Utils.setProperty(target, property.name, AdaptiveCard.schemaUrl);
         });
 
-    static readonly versionProperty = new CustomPropertyDefinition<Shared.Version | undefined>(
+    static readonly versionProperty = new CustomProperty<Shared.Version | undefined>(
         Shared.Versions.v1_0,
         "version",
         (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: Shared.IValidationError[]) => {
@@ -6743,34 +6473,16 @@ export class AdaptiveCard extends ContainerWithActions {
             }
         },
         Shared.Versions.v1_0);
-    static readonly fallbackTextProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "fallbackText");
-    static readonly speakProperty = new StringPropertyDefinition(Shared.Versions.v1_0, "speak");
+    static readonly fallbackTextProperty = new StringProperty(Shared.Versions.v1_0, "fallbackText");
+    static readonly speakProperty = new StringProperty(Shared.Versions.v1_0, "speak");
 
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        schema.add(
-            AdaptiveCard.$schemaProperty,
-            AdaptiveCard.versionProperty,
-            CardElement.langProperty,
-            AdaptiveCard.fallbackTextProperty,
-            AdaptiveCard.speakProperty);
-    }
-
-    /*
-    @schemaProperty(AdaptiveCard.$schemaProperty)
-    private get $schema(): string {
-        return this.getValue(AdaptiveCard.$schemaProperty);
-    }
-    */
-
-    @schemaProperty(AdaptiveCard.versionProperty)
+    @property(AdaptiveCard.versionProperty)
     version: Shared.Version;
 
-    @schemaProperty(AdaptiveCard.fallbackTextProperty)
+    @property(AdaptiveCard.fallbackTextProperty)
     fallbackText?: string;
 
-    @schemaProperty(AdaptiveCard.speakProperty)
+    @property(AdaptiveCard.speakProperty)
     speak?: string;
 
     //#endregion

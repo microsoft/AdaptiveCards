@@ -116,7 +116,12 @@ export function setArrayProperty(target: { [key: string]: any }, propertyName: s
 
     if (propertyValue) {
         for (let item of propertyValue) {
-            items.push(item.toJSON());
+            if (item.toJSON) {
+                items.push(item.toJSON());
+            }
+            else {
+                items.push(item);
+            }
         }
     }
 

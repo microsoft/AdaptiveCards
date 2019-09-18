@@ -5,6 +5,10 @@ import * as Utils from "./utils";
 import * as Enums from "./enums";
 
 export class PropertyDefinition {
+    getJsonPropertyName(): string {
+        return this.name;
+    }
+
     parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): any {
         return source[this.name];
     }
@@ -20,7 +24,7 @@ export class PropertyDefinition {
         readonly onGetInitialValue?: (sender: SerializableObject) => any) { }
 }
 
-export class StringPropertyDefinition extends PropertyDefinition {
+export class StringProperty extends PropertyDefinition {
     parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): string | undefined {
         let parsedValue = Utils.getStringValue(source[this.name], this.defaultValue);
         let isUndefined = parsedValue === undefined || (parsedValue === "" && this.treatEmptyAsUndefined);
@@ -56,7 +60,7 @@ export class StringPropertyDefinition extends PropertyDefinition {
     }
 }
 
-export class BooleanPropertyDefinition extends PropertyDefinition {
+export class BoolProperty extends PropertyDefinition {
     parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): boolean | undefined {
         return Utils.getBoolValue(source[this.name], this.defaultValue);;
     }
@@ -70,7 +74,7 @@ export class BooleanPropertyDefinition extends PropertyDefinition {
     }
 }
 
-export class NumberPropertyDefinition extends PropertyDefinition {
+export class NumProperty extends PropertyDefinition {
     parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): number | undefined {
         return Utils.getNumberValue(source[this.name], this.defaultValue);;
     }
@@ -84,7 +88,7 @@ export class NumberPropertyDefinition extends PropertyDefinition {
     }
 }
 
-export class PixelSizePropertyDefinition extends PropertyDefinition {
+export class PixelSizeProperty extends PropertyDefinition {
     parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): number | undefined {
         let result: number | undefined = undefined;
         let value = source[this.name];
@@ -134,7 +138,7 @@ export interface IVersionedValue<TValue> {
     targetVersion?: Shared.TargetVersion;
 }
 
-export class ValueSetPropertyDefinition extends PropertyDefinition {
+export class ValueSetProperty extends PropertyDefinition {
     parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): string | undefined {
         let parsedValue = Utils.getStringValue(source[this.name], this.defaultValue);
 
@@ -167,7 +171,7 @@ export class ValueSetPropertyDefinition extends PropertyDefinition {
     }
 }
 
-export class EnumPropertyDefinition<TEnum extends { [s: number]: string }> extends PropertyDefinition {
+export class EnumProperty<TEnum extends { [s: number]: string }> extends PropertyDefinition {
     parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): number | undefined {
         return Utils.getEnumValue(this.enumType, source[this.name], this.defaultValue);
     }
@@ -204,22 +208,23 @@ export class EnumPropertyDefinition<TEnum extends { [s: number]: string }> exten
 
 export type SerializableObjectType = { new(): SerializableObject };
 
-export class SerializableObjectPropertyDefinition extends PropertyDefinition {
+export class SerializableObjectProperty extends PropertyDefinition {
     parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): SerializableObject | undefined {
         let result: SerializableObject | undefined = undefined;
         let sourceValue = source[this.name];
 
-        if (typeof sourceValue === "object") {
-            result = new this.objectType();
-            result.parse(sourceValue);
+        result = new this.objectType();
+        result.parse(sourceValue);
 
-            if (result === undefined && this.onGetInitialValue) {
-                result = this.onGetInitialValue(sender);
-            }
+        if (result === undefined && this.onGetInitialValue) {
+            result = this.onGetInitialValue(sender);
         }
+
+        /*
         else if (this.onGetInitialValue) {
             result = this.onGetInitialValue(sender);
         }
+        */
 
         return result;
     }
@@ -246,7 +251,7 @@ export class SerializableObjectPropertyDefinition extends PropertyDefinition {
     }
 }
 
-export class SerializableObjectCollectionPropertyDefinition<T extends SerializableObject> extends PropertyDefinition {
+export class SerializableObjectCollectionProperty<T extends SerializableObject> extends PropertyDefinition {
     parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): T[] | undefined {
         let result: T[] | undefined = [];
 
@@ -289,7 +294,7 @@ export class SerializableObjectCollectionPropertyDefinition<T extends Serializab
     }
 }
 
-export class CustomPropertyDefinition<T> extends PropertyDefinition {
+export class CustomProperty<T> extends PropertyDefinition {
     parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): T {
         return this.onParse(sender, this, source, errors);
     }
@@ -362,7 +367,7 @@ export class SerializableObjectSchema {
     }
 }
 
-export function schemaProperty(property: PropertyDefinition) {
+export function property(property: PropertyDefinition) {
     return function(target: any, propertyKey: string) {
         let descriptor = Object.getOwnPropertyDescriptor(target, propertyKey) || {};
 
@@ -386,7 +391,21 @@ export abstract class SerializableObject {
     protected abstract getSchemaKey(): string;
 
     protected populateSchema(schema: SerializableObjectSchema) {
-        // Do nothing in base implementation
+        let ctor = <any>this.constructor;
+
+        for (let propertyName in ctor) {
+            try {
+                let propertyValue = ctor[propertyName];
+
+                if (propertyValue instanceof PropertyDefinition) {
+                    schema.add(propertyValue);
+                }
+            }
+            catch {
+                // If a property happens to have a getter function and
+                // it throws an exception, we need to catch it here
+            }
+        }
     }
 
     protected getValue(property: PropertyDefinition) {
@@ -416,14 +435,19 @@ export abstract class SerializableObject {
 
     parse(source: any, errors?: Shared.IValidationError[]) {
         this._propertyBag = {};
-        this._rawProperties = Shared.GlobalSettings.enableFullJsonRoundTrip ? source : {};
+        this._rawProperties = Shared.GlobalSettings.enableFullJsonRoundTrip ? (source ? source : {}) : {};
 
-        let s = this.getSchema();
+        if (source) {
+            let s = this.getSchema();
 
-        for (let i = 0; i < s.getCount(); i++) {
-            let property = s.getItemAt(i);
+            for (let i = 0; i < s.getCount(); i++) {
+                let property = s.getItemAt(i);
 
-            this.setValue(property, property.parse(this, source, errors));
+                this.setValue(property, property.parse(this, source, errors));
+            }
+        }
+        else {
+            this.resetDefaultValues();
         }
     }
 
@@ -438,11 +462,16 @@ export abstract class SerializableObject {
         }
 
         let s = this.getSchema();
+        let serializedProperties: string[] = [];
 
         for (let i = 0; i < s.getCount(); i++) {
             let property = s.getItemAt(i);
 
-            property.toJSON(this, result, this.getValue(property));
+            if (serializedProperties.indexOf(property.getJsonPropertyName()) == -1) {
+                property.toJSON(this, result, this.getValue(property));
+
+                serializedProperties.push(property.getJsonPropertyName());
+            }
         }
 
         return result;
