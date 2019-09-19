@@ -555,7 +555,7 @@ export class CardDesigner {
                                 alert("The sample could not be loaded.")
                             }
 
-                            if (!Adaptive.isNullOrEmpty(dialog.selectedSample.sampleData)) {
+                            if (dialog.selectedSample.sampleData) {
                                 try {
                                     let sampleDataPayload = JSON.parse(dialog.selectedSample.sampleData);
     

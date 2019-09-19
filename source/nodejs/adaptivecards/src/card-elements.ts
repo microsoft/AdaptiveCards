@@ -42,17 +42,17 @@ function createCardObjectInstance<T extends CardObject>(
         let tryToFallback = false;
         let typeName = Utils.getStringValue(json["type"]);
         
-        if (!Utils.isNullOrEmpty(typeName)) {
-            if (forbiddenTypeNames.indexOf(<string>typeName) >= 0) {
-                raiseParseError(createValidationErrorCallback(<string>typeName, InstanceCreationErrorType.ForbiddenType), errors);
+        if (typeName) {
+            if (forbiddenTypeNames.indexOf(typeName) >= 0) {
+                raiseParseError(createValidationErrorCallback(typeName, InstanceCreationErrorType.ForbiddenType), errors);
             }
             else {
-                result = createInstanceCallback(<string>typeName);
+                result = createInstanceCallback(typeName);
 
                 if (!result) {
                     tryToFallback = allowFallback;
 
-                    raiseParseError(createValidationErrorCallback(<string>typeName, InstanceCreationErrorType.UnknownType), errors);
+                    raiseParseError(createValidationErrorCallback(typeName, InstanceCreationErrorType.UnknownType), errors);
                 }
                 else {
                     result.setParent(parent);
@@ -152,21 +152,11 @@ export class ValidationFailure {
 }
 
 export class ValidationResults {
-    private getFailureIndex(cardObject: CardObject) {
-        for (let i = 0; i < this.failures.length; i++) {
-            if (this.failures[i].cardObject === cardObject) {
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
     readonly allIds: Dictionary<number> = {};
     readonly failures: ValidationFailure[] = [];
 
     addFailure(cardObject: CardObject, error: IValidationError) {
-        let index = this.getFailureIndex(cardObject);
+        let index = this.failures.findIndex((value) => { return value.cardObject === cardObject; });
         let failure: ValidationFailure;
 
         if (index < 0) {
@@ -207,7 +197,7 @@ export abstract class CardObject extends SerializableObject {
     }
 
     @property(CardObject.idProperty)
-    id: string;
+    id?: string;
 
     @property(CardObject.requiresProperty)
     get requires(): HostCapabilities {
@@ -236,7 +226,7 @@ export abstract class CardObject extends SerializableObject {
     }
 
     internalValidateProperties(context: ValidationResults) {
-        if (!Utils.isNullOrEmpty(this.id)) {
+        if (this.id) {
             if (context.allIds.hasOwnProperty(this.id)) {
                 if (context.allIds[this.id] == 1) {
                     context.addFailure(
@@ -311,7 +301,7 @@ export abstract class CardElement extends CardObject {
     get lang(): string | undefined {
         let lang = this.getValue(CardElement.langProperty);
 
-        if (!Utils.isNullOrEmpty(lang)) {
+        if (lang) {
             return lang;
         }
         else {
@@ -849,7 +839,7 @@ export abstract class CardElement extends CardObject {
     }
 }
 
-export class ActionPropertyDefinition extends PropertyDefinition {
+export class ActionProperty extends PropertyDefinition {
     parse(sender: SerializableObject, source: PropertyBag, errors?: IValidationError[]): Action | undefined {
         let parent = <CardElement>sender;
 
@@ -903,7 +893,7 @@ export abstract class BaseTextBlock extends CardElement {
         Versions.v1_2,
         "fontType",
         Enums.FontType);
-    static readonly selectActionProperty = new ActionPropertyDefinition(Versions.v1_0, "selectAction", [ "Action.ShowCard" ]);
+    static readonly selectActionProperty = new ActionProperty(Versions.v1_0, "selectAction", [ "Action.ShowCard" ]);
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
@@ -1099,7 +1089,7 @@ export class TextBlock extends BaseTextBlock {
     protected internalRender(): HTMLElement | undefined {
         this._processedText = undefined;
 
-        if (!Utils.isNullOrEmpty(this.text)) {
+        if (this.text) {
             let hostConfig = this.hostConfig;
 
             let element = document.createElement(this.getRenderedDomElementType());
@@ -1122,8 +1112,8 @@ export class TextBlock extends BaseTextBlock {
                     element.tabIndex = 0
                     element.setAttribute("role", "button");
 
-                    if (!Utils.isNullOrEmpty(this.selectAction.title)) {
-                        element.setAttribute("aria-label", <string>this.selectAction.title);
+                    if (this.selectAction.title) {
+                        element.setAttribute("aria-label", this.selectAction.title);
                     }
 
                     element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
@@ -1160,7 +1150,7 @@ export class TextBlock extends BaseTextBlock {
                                 markStyle += "color: " + effectiveStyle.highlightForegroundColor + ";";
                             }
 
-                            if (!Utils.isNullOrEmpty(markStyle)) {
+                            if (markStyle) {
                                 markStyle = 'style="' + markStyle + '"';
                             }
 
@@ -1333,7 +1323,7 @@ class Label extends TextBlock {
     protected internalRender(): HTMLElement | undefined {
         let renderedElement = <HTMLLabelElement>super.internalRender();
 
-        if (!Utils.isNullOrEmpty(this.forElementId)) {
+        if (this.forElementId) {
             renderedElement.htmlFor = this.forElementId;
         }
 
@@ -1368,7 +1358,7 @@ export class TextRun extends BaseTextBlock {
     //#endregion
 
     protected internalRender(): HTMLElement | undefined {
-        if (!Utils.isNullOrEmpty(this.text)) {
+        if (this.text) {
             let hostConfig = this.hostConfig;
 
             let formattedText = TextFormatters.formatText(this.lang, this.text);
@@ -1388,7 +1378,7 @@ export class TextRun extends BaseTextBlock {
 
                 let href = this.selectAction.getHref();
 
-                if (!Utils.isNullOrEmpty(href)) {
+                if (href) {
                     anchor.href = <string>href;
                 }
 
@@ -1673,7 +1663,7 @@ export class FactSet extends CardElement {
 
                 let textBlock = new TextBlock();
                 textBlock.setParent(this);
-                textBlock.text = Utils.isNullOrEmpty(this.facts[i].name) ? "Title" : this.facts[i].name;
+                textBlock.text = this.facts[i].name ? this.facts[i].name :"Title";
                 textBlock.size = hostConfig.factSet.title.size;
                 textBlock.color = hostConfig.factSet.title.color;
                 textBlock.isSubtle = hostConfig.factSet.title.isSubtle;
@@ -1792,7 +1782,7 @@ export class Image extends CardElement {
         Enums.Size.Auto);
     static readonly pixelWidthProperty = new ImageDimensionProperty(Versions.v1_1, "pixelWidth", "width");
     static readonly pixelHeightProperty = new ImageDimensionProperty(Versions.v1_1, "pixelHeight", "height");
-    static readonly selectActionProperty = new ActionPropertyDefinition(Versions.v1_0, "selectAction", [ "Action.ShowCard" ]);
+    static readonly selectActionProperty = new ActionProperty(Versions.v1_0, "selectAction", [ "Action.ShowCard" ]);
 
     @property(Image.urlProperty)
     url?: string;
@@ -1858,7 +1848,7 @@ export class Image extends CardElement {
     protected internalRender(): HTMLElement | undefined {
         let element: HTMLElement | undefined = undefined;
 
-        if (!Utils.isNullOrEmpty(this.url)) {
+        if (this.url) {
             element = document.createElement("div");
             element.style.display = "flex";
             element.style.alignItems = "flex-start";
@@ -1932,7 +1922,7 @@ export class Image extends CardElement {
                 imageElement.tabIndex = 0
                 imageElement.setAttribute("role", "button");
 
-                if (!Utils.isNullOrEmpty(this.selectAction.title)) {
+                if (this.selectAction.title) {
                     imageElement.setAttribute("aria-label", <string>this.selectAction.title);
                 }
 
@@ -1972,19 +1962,14 @@ export class Image extends CardElement {
     }
 
     getResourceInformation(): IResourceInformation[] {
-        if (!Utils.isNullOrEmpty(this.url)) {
-            return [{ url: <string>this.url, mimeType: "image" }]
-        }
-        else {
-            return [];
-        }
+        return this.url ? [{ url: this.url, mimeType: "image" }] : [];
     }
 }
 
 export abstract class CardElementContainer extends CardElement {
     //#region Schema
 
-    static readonly selectActionProperty = new ActionPropertyDefinition(Versions.v1_0, "selectAction", [ "Action.ShowCard" ]);
+    static readonly selectActionProperty = new ActionProperty(Versions.v1_0, "selectAction", [ "Action.ShowCard" ]);
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
@@ -2085,8 +2070,8 @@ export abstract class CardElementContainer extends CardElement {
                 element.tabIndex = 0;
                 element.setAttribute("role", "button");
 
-                if (!Utils.isNullOrEmpty(this._selectAction.title)) {
-                    element.setAttribute("aria-label", <string>this._selectAction.title);
+                if (this._selectAction.title) {
+                    element.setAttribute("aria-label", this._selectAction.title);
                 }
 
                 element.onclick = (e) => {
@@ -2290,7 +2275,7 @@ export class MediaSource extends SerializableObject {
     }
 
     isValid(): boolean {
-        return !Utils.isNullOrEmpty(this.mimeType) && !Utils.isNullOrEmpty(this.url);
+        return this.mimeType && this.url ? true : false;
     }
 
     render(): HTMLElement | undefined {
@@ -2333,7 +2318,7 @@ export class Media extends CardElement {
     private _selectedMediaType?: string;
     private _selectedSources: MediaSource[];
 
-    private getPosterUrl(): string {
+    private getPosterUrl(): string | undefined {
         return this.poster ? this.poster : this.hostConfig.media.defaultPoster;
     }
 
@@ -2513,7 +2498,7 @@ export class Media extends CardElement {
 
         let posterUrl = this.getPosterUrl();
 
-        if (!Utils.isNullOrEmpty(posterUrl)) {
+        if (posterUrl) {
             result.push({ url: posterUrl, mimeType: "image" });
         }
 
@@ -2631,10 +2616,10 @@ export abstract class Input extends CardElement implements IInput {
     }
 
     protected showValidationErrorMessage() {
-        if (this.renderedElement && GlobalSettings.useBuiltInInputValidation && GlobalSettings.displayInputValidationErrors && !Utils.isNullOrEmpty(this.validation.errorMessage)) {
+        if (this.renderedElement && GlobalSettings.useBuiltInInputValidation && GlobalSettings.displayInputValidationErrors && this.validation.errorMessage) {
             this._errorMessageElement = document.createElement("span");
             this._errorMessageElement.className = this.hostConfig.makeCssClassName("ac-input-validation-error-message");
-            this._errorMessageElement.textContent = <string>this.validation.errorMessage;
+            this._errorMessageElement.textContent = this.validation.errorMessage;
 
             this._outerContainerElement.appendChild(this._errorMessageElement);
         }
@@ -2671,7 +2656,7 @@ export abstract class Input extends CardElement implements IInput {
     internalValidateProperties(context: ValidationResults) {
         super.internalValidateProperties(context);
 
-        if (Utils.isNullOrEmpty(this.id)) {
+        if (!this.id) {
             context.addFailure(
                 this,
                 {
@@ -2717,7 +2702,7 @@ export class TextInput extends Input {
     static readonly isMultilineProperty = new BoolProperty(Versions.v1_0, "isMultiline", false);
     static readonly placeholderProperty = new StringProperty(Versions.v1_0, "placeholder");
     static readonly styleProperty = new EnumProperty(Versions.v1_0, "style", Enums.InputTextStyle, Enums.InputTextStyle.Text);
-    static readonly inlineActionProperty = new ActionPropertyDefinition(Versions.v1_0, "inlineAction", [ "Action.ShowCard" ]);
+    static readonly inlineActionProperty = new ActionProperty(Versions.v1_0, "inlineAction", [ "Action.ShowCard" ]);
 
     @property(TextInput.valueProperty)
     defaultValue?: string;
@@ -2739,66 +2724,48 @@ export class TextInput extends Input {
 
     //#endregion
 
+    private setupInput(input: HTMLInputElement | HTMLTextAreaElement) {
+        input.style.flex = "1 1 auto";
+        input.tabIndex = 0;
+
+        if (this.placeholder) {
+            input.placeholder = this.placeholder;
+            input.setAttribute("aria-label", this.placeholder)
+        }
+
+        if (this.defaultValue) {
+            input.value = this.defaultValue;
+        }
+
+        if (this.maxLength && this.maxLength > 0) {
+            input.maxLength = this.maxLength;
+        }
+
+        input.oninput = () => { this.valueChanged(); }
+        input.onkeypress = (e: KeyboardEvent) => {
+            // Ctrl+Enter pressed
+            if (e.keyCode == 10 && this.inlineAction) {
+                this.inlineAction.execute();
+            }
+        }
+    }
+
     protected internalRender(): HTMLElement | undefined {
+        let result: HTMLInputElement | HTMLTextAreaElement;
+
         if (this.isMultiline) {
-            let textareaElement = document.createElement("textarea");
-            textareaElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput", "ac-multiline");
-            textareaElement.style.flex = "1 1 auto";
-            textareaElement.tabIndex = 0;
-
-            if (!Utils.isNullOrEmpty(this.placeholder)) {
-                textareaElement.placeholder = <string>this.placeholder;
-                textareaElement.setAttribute("aria-label", <string>this.placeholder)
-            }
-
-            if (!Utils.isNullOrEmpty(this.defaultValue)) {
-                textareaElement.value = <string>this.defaultValue;
-            }
-
-            if (this.maxLength && this.maxLength > 0) {
-                textareaElement.maxLength = this.maxLength;
-            }
-
-            textareaElement.oninput = () => { this.valueChanged(); }
-            textareaElement.onkeypress = (e: KeyboardEvent) => {
-                // Ctrl+Enter pressed
-                if (e.keyCode == 10 && this.inlineAction) {
-                    this.inlineAction.execute();
-                }
-            }
-
-            return textareaElement;
+            result = document.createElement("textarea");
+            result.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput", "ac-multiline");
         }
         else {
-            let inputElement = document.createElement("input");
-            inputElement.type = Enums.InputTextStyle[this.style].toLowerCase();
-            inputElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput");
-            inputElement.style.flex = "1 1 auto";
-            inputElement.tabIndex = 0;
-
-            if (!Utils.isNullOrEmpty(this.placeholder)) {
-                inputElement.placeholder = <string>this.placeholder;
-                inputElement.setAttribute("aria-label", <string>this.placeholder)
-            }
-
-            if (!Utils.isNullOrEmpty(this.defaultValue)) {
-                inputElement.value = <string>this.defaultValue;
-            }
-
-            if (this.maxLength && this.maxLength > 0) {
-                inputElement.maxLength = this.maxLength;
-            }
-
-            inputElement.oninput = () => { this.valueChanged(); }
-            inputElement.onkeypress = (e: KeyboardEvent) => {
-                // Enter pressed
-                if (e.keyCode == 13 && this.inlineAction) {
-                    this.inlineAction.execute();
-                }
-            }
-
-            return inputElement;
+            result = document.createElement("input");
+            result.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput");
+            result.type = Enums.InputTextStyle[this.style].toLowerCase();
         }
+
+        this.setupInput(result);
+
+        return result;
     }
 
     protected overrideInternalRender(): HTMLElement | undefined {
@@ -2816,7 +2783,7 @@ export class TextInput extends Input {
                 }
             };
 
-            if (!Utils.isNullOrEmpty(this.inlineAction.iconUrl)) {
+            if (this.inlineAction.iconUrl) {
                 button.classList.add("iconOnly");
 
                 let icon = document.createElement("img");
@@ -2836,26 +2803,24 @@ export class TextInput extends Input {
                     button.classList.add("textOnly");
 
                     if (this.inlineAction) {
-                        button.textContent = !Utils.isNullOrEmpty(this.inlineAction.title) ? <string>this.inlineAction.title : "Title";
+                        button.textContent = this.inlineAction.title ? this.inlineAction.title : "Title";
                     }
                     else {
                         button.textContent = "Title";
                     }
                 }
 
-                if (!Utils.isNullOrEmpty(this.inlineAction.iconUrl)) {
-                    icon.src = <string>this.inlineAction.iconUrl;
-                }
+                icon.src = this.inlineAction.iconUrl;
 
                 button.appendChild(icon);
 
-                if (!Utils.isNullOrEmpty(this.inlineAction.title)) {
-                    button.title = <string>this.inlineAction.title;
+                if (this.inlineAction.title) {
+                    button.title = this.inlineAction.title;
                 }
             }
             else {
                 button.classList.add("textOnly");
-                button.textContent = !Utils.isNullOrEmpty(this.inlineAction.title) ? <string>this.inlineAction.title : "Title";
+                button.textContent = this.inlineAction.title ? this.inlineAction.title : "Title";
             }
 
             button.style.marginLeft = "8px";
@@ -2881,7 +2846,7 @@ export class TextInput extends Input {
     }
 
     isSet(): boolean {
-        return !Utils.isNullOrEmpty(this.value);
+        return this.value ? true : false;
     }
 
     get value(): string | undefined {
@@ -2942,8 +2907,8 @@ export class ToggleInput extends Input {
         this._checkboxInputElement.style.margin = "0";
         this._checkboxInputElement.style.flex = "0 0 auto";
 
-        if (!Utils.isNullOrEmpty(this.title)) {
-            this._checkboxInputElement.setAttribute("aria-label", <string>this.title);
+        if (this.title) {
+            this._checkboxInputElement.setAttribute("aria-label", this.title);
         }
 
         this._checkboxInputElement.tabIndex = 0;
@@ -2956,12 +2921,12 @@ export class ToggleInput extends Input {
 
         Utils.appendChild(element, this._checkboxInputElement);
 
-        if (!Utils.isNullOrEmpty(this.title) || this.isDesignMode()) {
+        if (this.title || this.isDesignMode()) {
             let label = new Label();
             label.setParent(this);
             label.forElementId = this._checkboxInputElement.id;
             label.hostConfig = this.hostConfig;
-            label.text = Utils.isNullOrEmpty(this.title) ? this.getJsonTypeName() : this.title;
+            label.text = !this.title ? this.getJsonTypeName() : this.title;
             label.useMarkdown = GlobalSettings.useMarkdownInRadioButtonAndCheckbox;
             label.wrap = this.wrap;
 
@@ -2993,7 +2958,7 @@ export class ToggleInput extends Input {
     }
 
     isSet(): boolean {
-        return !Utils.isNullOrEmpty(this.value);
+        return this.value ? true : false;
     }
 
     get value(): string | undefined {
@@ -3047,7 +3012,8 @@ export class ChoiceSetInput extends Input {
         [
             { value: "compact" },
             { value: "expanded" }
-        ]);
+        ],
+        "compact");
     static readonly isMultiSelectProperty = new BoolProperty(Versions.v1_0, "isMultiSelect", false);
     static readonly placeholderProperty = new StringProperty(Versions.v1_0, "placeholder");
     static readonly wrapProperty = new BoolProperty(Versions.v1_2, "wrap", false);
@@ -3090,12 +3056,99 @@ export class ChoiceSetInput extends Input {
         return uniqueCwtegoryName;
     }
 
+    private _uniqueCategoryName: string;
     private _selectElement: HTMLSelectElement;
     private _toggleInputs: HTMLInputElement[];
 
+    private renderCompundInput(cssClassName: string, type: "checkbox" | "radio", defaultValues: string[] | undefined): HTMLElement {
+        let element = document.createElement("div");
+        element.className = this.hostConfig.makeCssClassName("ac-input", cssClassName);
+        element.style.width = "100%";
+
+        this._toggleInputs = [];
+
+        for (let choice of this.choices) {
+            let input = document.createElement("input");
+            input.id = Utils.generateUniqueId();
+            input.type = type;
+            input.style.margin = "0";
+            input.style.display = "inline-block";
+            input.style.verticalAlign = "middle";
+            input.style.flex = "0 0 auto";
+            input.name = this.id ? this.id : this._uniqueCategoryName;
+
+            if (choice.value) {
+                input.value = choice.value;
+            }
+
+            if (choice.title) {
+                input.setAttribute("aria-label", choice.title);
+            }
+
+            if (defaultValues && choice.value) {
+                if (defaultValues.indexOf(choice.value) >= 0) {
+                    input.checked = true;
+                }
+            }
+
+            input.onchange = () => { this.valueChanged(); }
+
+            this._toggleInputs.push(input);
+
+            let compoundInput = document.createElement("div");
+            compoundInput.style.display = "flex";
+            compoundInput.style.alignItems = "center";
+
+            Utils.appendChild(compoundInput, input);
+
+            let label = new Label();
+            label.setParent(this);
+            label.forElementId = input.id;
+            label.hostConfig = this.hostConfig;
+            label.text = choice.title ? choice.title : "Choice " + this._toggleInputs.length;
+            label.useMarkdown = GlobalSettings.useMarkdownInRadioButtonAndCheckbox;
+            label.wrap = this.wrap;
+
+            let labelElement = label.render();
+
+            if (labelElement) {
+                labelElement.style.display = "inline-block";
+                labelElement.style.flex = "1 1 auto";
+                labelElement.style.marginLeft = "6px";
+                labelElement.style.verticalAlign = "middle";
+
+                let spacerElement = document.createElement("div");
+                spacerElement.style.width = "6px";
+
+                Utils.appendChild(compoundInput, spacerElement);
+                Utils.appendChild(compoundInput, labelElement);
+            }
+
+            Utils.appendChild(element, compoundInput);
+        }
+
+        return element;
+    }
+
     protected internalRender(): HTMLElement | undefined {
-        if (!this.isMultiSelect) {
-            if (this.isCompact) {
+        this._uniqueCategoryName = ChoiceSetInput.getUniqueCategoryName();
+
+        if (this.isMultiSelect) {
+            // Render as a list of toggle inputs
+            return this.renderCompundInput(
+                "ac-choiceSetInput-multiSelect",
+                "checkbox",
+                this.defaultValue ? this.defaultValue.split(this.hostConfig.choiceSetInputValueSeparator) : undefined);
+        }
+        else {
+            if (this.style === "expanded") {
+                // Render as a series of radio buttons
+                return this.renderCompundInput(
+                    "ac-choiceSetInput-expanded",
+                    "radio",
+                    this.defaultValue ? [ this.defaultValue ] : undefined);
+            }
+            else {
                 // Render as a combo box
                 this._selectElement = document.createElement("select");
                 this._selectElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-multichoiceInput", "ac-choiceSetInput-compact");
@@ -3130,139 +3183,6 @@ export class ChoiceSetInput extends Input {
 
                 return this._selectElement;
             }
-            else {
-                // Render as a series of radio buttons
-                let uniqueCategoryName = ChoiceSetInput.getUniqueCategoryName();
-
-                let element = document.createElement("div");
-                element.className = this.hostConfig.makeCssClassName("ac-input", "ac-choiceSetInput-expanded");
-                element.style.width = "100%";
-
-                this._toggleInputs = [];
-
-                let i = 0;
-
-                for (let choice of this.choices) {
-                    let radioInput = document.createElement("input");
-                    radioInput.id = Utils.generateUniqueId();
-                    radioInput.type = "radio";
-                    radioInput.style.margin = "0";
-                    radioInput.style.display = "inline-block";
-                    radioInput.style.verticalAlign = "middle";
-                    radioInput.name = Utils.isNullOrEmpty(this.id) ? uniqueCategoryName : this.id;
-                    radioInput.value = <string>choice.value;
-                    radioInput.style.flex = "0 0 auto";
-                    radioInput.setAttribute("aria-label", <string>choice.title);
-
-                    if (choice.value == this.defaultValue) {
-                        radioInput.checked = true;
-                    }
-
-                    radioInput.onchange = () => { this.valueChanged(); }
-
-                    this._toggleInputs.push(radioInput);
-
-                    let compoundInput = document.createElement("div");
-                    compoundInput.style.display = "flex";
-                    compoundInput.style.alignItems = "center";
-
-                    Utils.appendChild(compoundInput, radioInput);
-
-                    let label = new Label();
-                    label.setParent(this);
-                    label.forElementId = radioInput.id;
-                    label.hostConfig = this.hostConfig;
-                    label.text = Utils.isNullOrEmpty(choice.title) ? "Choice " + (i++) : choice.title;
-                    label.useMarkdown = GlobalSettings.useMarkdownInRadioButtonAndCheckbox;
-                    label.wrap = this.wrap;
-
-                    let labelElement = label.render();
-                    
-                    if (labelElement) {
-                        labelElement.style.display = "inline-block";
-                        labelElement.style.flex = "1 1 auto";
-                        labelElement.style.marginLeft = "6px";
-                        labelElement.style.verticalAlign = "middle";
-
-                        let spacerElement = document.createElement("div");
-                        spacerElement.style.width = "6px";
-
-                        Utils.appendChild(compoundInput, spacerElement);
-                        Utils.appendChild(compoundInput, labelElement);
-                    }
-
-                    Utils.appendChild(element, compoundInput);
-                }
-
-                return element;
-            }
-        }
-        else {
-            // Render as a list of toggle inputs
-            let defaultValues = this.defaultValue ? this.defaultValue.split(this.hostConfig.choiceSetInputValueSeparator) : undefined;
-
-            let element = document.createElement("div");
-            element.className = this.hostConfig.makeCssClassName("ac-input", "ac-choiceSetInput-multiSelect");
-            element.style.width = "100%";
-
-            this._toggleInputs = [];
-
-            let i = 0;
-
-            for (let choice of this.choices) {
-                let checkboxInput = document.createElement("input");
-                checkboxInput.id = Utils.generateUniqueId();
-                checkboxInput.type = "checkbox";
-                checkboxInput.style.margin = "0";
-                checkboxInput.style.display = "inline-block";
-                checkboxInput.style.verticalAlign = "middle";
-                checkboxInput.value = <string>choice.value;
-                checkboxInput.style.flex = "0 0 auto";
-                checkboxInput.setAttribute("aria-label", <string>choice.title);
-
-                if (defaultValues) {
-                    if (defaultValues.indexOf(<string>choice.value) >= 0) {
-                        checkboxInput.checked = true;
-                    }
-                }
-
-                checkboxInput.onchange = () => { this.valueChanged(); }
-
-                this._toggleInputs.push(checkboxInput);
-
-                let compoundInput = document.createElement("div");
-                compoundInput.style.display = "flex";
-                compoundInput.style.alignItems = "center";
-
-                Utils.appendChild(compoundInput, checkboxInput);
-
-                let label = new Label();
-                label.setParent(this);
-                label.forElementId = checkboxInput.id;
-                label.hostConfig = this.hostConfig;
-                label.text = Utils.isNullOrEmpty(choice.title) ? "Choice " + (i++) : choice.title;
-                label.useMarkdown = GlobalSettings.useMarkdownInRadioButtonAndCheckbox;
-                label.wrap = this.wrap;
-
-                let labelElement = label.render();
-
-                if (labelElement) {
-                    labelElement.style.display = "inline-block";
-                    labelElement.style.flex = "1 1 auto";
-                    labelElement.style.marginLeft = "6px";
-                    labelElement.style.verticalAlign = "middle";
-
-                    let spacerElement = document.createElement("div");
-                    spacerElement.style.width = "6px";
-
-                    Utils.appendChild(compoundInput, spacerElement);
-                    Utils.appendChild(compoundInput, labelElement);
-                }
-
-                Utils.appendChild(element, compoundInput);
-            }
-
-            return element;
         }
     }
 
@@ -3295,7 +3215,7 @@ export class ChoiceSetInput extends Input {
     }
 
     isSet(): boolean {
-        return !Utils.isNullOrEmpty(this.value);
+        return this.value ? true : false;
     }
 
     get value(): string | undefined {
@@ -3338,7 +3258,7 @@ export class ChoiceSetInput extends Input {
                 }
             }
 
-            return Utils.isNullOrEmpty(result) ? undefined : result;
+            return result ? result : undefined;
         }
     }
 }
@@ -3387,9 +3307,9 @@ export class NumberInput extends Input {
             this._numberInputElement.valueAsNumber = this.defaultValue;
         }
 
-        if (!Utils.isNullOrEmpty(this.placeholder)) {
-            this._numberInputElement.placeholder = <string>this.placeholder;
-            this._numberInputElement.setAttribute("aria-label", <string>this.placeholder);
+        if (this.placeholder) {
+            this._numberInputElement.placeholder = this.placeholder;
+            this._numberInputElement.setAttribute("aria-label", this.placeholder);
         }
 
         this._numberInputElement.oninput = () => { this.valueChanged(); }
@@ -3437,12 +3357,18 @@ export class DateInput extends Input {
     protected internalRender(): HTMLElement | undefined {
         this._dateInputElement = document.createElement("input");
         this._dateInputElement.setAttribute("type", "date");
-        this._dateInputElement.setAttribute("min", <string>this.min);
-        this._dateInputElement.setAttribute("max", <string>this.max);
 
-        if (!Utils.isNullOrEmpty(this.placeholder)) {
-            this._dateInputElement.placeholder = <string>this.placeholder;
-            this._dateInputElement.setAttribute("aria-label", <string>this.placeholder);
+        if (this.min) {
+            this._dateInputElement.setAttribute("min", this.min);
+        }
+
+        if (this.max) {
+            this._dateInputElement.setAttribute("max", this.max);
+        }
+
+        if (this.placeholder) {
+            this._dateInputElement.placeholder = this.placeholder;
+            this._dateInputElement.setAttribute("aria-label", this.placeholder);
         }
 
         this._dateInputElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-dateInput");
@@ -3450,8 +3376,8 @@ export class DateInput extends Input {
 
         this._dateInputElement.oninput = () => { this.valueChanged(); }
 
-        if (!Utils.isNullOrEmpty(this.defaultValue)) {
-            this._dateInputElement.value = <string>this.defaultValue;
+        if (this.defaultValue) {
+            this._dateInputElement.value = this.defaultValue;
         }
 
         return this._dateInputElement;
@@ -3462,7 +3388,7 @@ export class DateInput extends Input {
     }
 
     isSet(): boolean {
-        return !Utils.isNullOrEmpty(this.value);
+        return this.value ? true : false;
     }
 
     get value(): string | undefined {
@@ -3470,7 +3396,7 @@ export class DateInput extends Input {
     }
 }
 
-export class TimePropertyDefinition extends CustomProperty<string | undefined> {
+export class TimeProperty extends CustomProperty<string | undefined> {
     constructor(readonly targetVersion: TargetVersion, readonly name: string) {
         super(
             targetVersion,
@@ -3478,7 +3404,7 @@ export class TimePropertyDefinition extends CustomProperty<string | undefined> {
             (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: IValidationError[]) => {
                 let value = source[property.name];
     
-                if (typeof value === "string" && !Utils.isNullOrEmpty(value) && /^[0-9]{2}:[0-9]{2}$/.test(value)) {
+                if (typeof value === "string" && value && /^[0-9]{2}:[0-9]{2}$/.test(value)) {
                     return value;
                 }
     
@@ -3493,10 +3419,10 @@ export class TimePropertyDefinition extends CustomProperty<string | undefined> {
 export class TimeInput extends Input {
     //#region Schema
 
-    static readonly valueProperty = new TimePropertyDefinition(Versions.v1_0, "value");
+    static readonly valueProperty = new TimeProperty(Versions.v1_0, "value");
     static readonly placeholderProperty = new StringProperty(Versions.v1_0, "placeholder");
-    static readonly minProperty = new TimePropertyDefinition(Versions.v1_0, "min");
-    static readonly maxProperty = new TimePropertyDefinition(Versions.v1_0, "max");
+    static readonly minProperty = new TimeProperty(Versions.v1_0, "min");
+    static readonly maxProperty = new TimeProperty(Versions.v1_0, "max");
 
     @property(TimeInput.valueProperty)
     defaultValue?: string;
@@ -3523,13 +3449,13 @@ export class TimeInput extends Input {
         this._timeInputElement.style.width = "100%";
         this._timeInputElement.oninput = () => { this.valueChanged(); }
 
-        if (!Utils.isNullOrEmpty(this.placeholder)) {
-            this._timeInputElement.placeholder = <string>this.placeholder;
-            this._timeInputElement.setAttribute("aria-label", <string>this.placeholder);
+        if (this.placeholder) {
+            this._timeInputElement.placeholder = this.placeholder;
+            this._timeInputElement.setAttribute("aria-label", this.placeholder);
         }
 
-        if (!Utils.isNullOrEmpty(this.defaultValue)) {
-            this._timeInputElement.value = <string>this.defaultValue;
+        if (this.defaultValue) {
+            this._timeInputElement.value = this.defaultValue;
         }
 
         return this._timeInputElement;
@@ -3540,7 +3466,7 @@ export class TimeInput extends Input {
     }
 
     isSet(): boolean {
-        return !Utils.isNullOrEmpty(this.value);
+        return this.value ? true : false;
     }
 
     get value(): string | undefined {
@@ -3564,7 +3490,7 @@ class ActionButton {
 
             this.action.renderedElement.className = hostConfig.makeCssClassName("ac-pushButton");
 
-            if (!Utils.isNullOrEmpty(this._parentContainerStyle)) {
+            if (this._parentContainerStyle) {
                 this.action.renderedElement.classList.add("style-" + this._parentContainerStyle);
             }
 
@@ -3582,7 +3508,7 @@ class ActionButton {
                     break;
             }
 
-            if (!Utils.isNullOrEmpty(this.action.style)) {
+            if (this.action.style) {
                 if (this.action.style === Enums.ActionStyle.Positive) {
                     this.action.renderedElement.classList.add(...hostConfig.makeCssClassNames("primary", "style-positive"));
                 }
@@ -3730,16 +3656,14 @@ export abstract class Action extends CardObject {
 
         this.addCssClasses(buttonElement);
 
-        if (!Utils.isNullOrEmpty(this.title)) {
-            buttonElement.setAttribute("aria-label", <string>this.title);
+        if (this.title) {
+            buttonElement.setAttribute("aria-label", this.title);
         }
 
         buttonElement.type = "button";
         buttonElement.style.display = "flex";
         buttonElement.style.alignItems = "center";
         buttonElement.style.justifyContent = "center";
-
-        let hasTitle = !Utils.isNullOrEmpty(this.title);
 
         let titleElement = document.createElement("div");
         titleElement.style.overflow = "hidden";
@@ -3749,18 +3673,18 @@ export abstract class Action extends CardObject {
             titleElement.style.whiteSpace = "nowrap";
         }
 
-        if (hasTitle) {
-            titleElement.innerText = <string>this.title;
+        if (this.title) {
+            titleElement.innerText = this.title;
         }
 
-        if (Utils.isNullOrEmpty(this.iconUrl)) {
+        if (!this.iconUrl) {
             buttonElement.classList.add("noIcon");
 
             buttonElement.appendChild(titleElement);
         }
         else {
             let iconElement = document.createElement("img");
-            iconElement.src = <string>this.iconUrl;
+            iconElement.src = this.iconUrl;
             iconElement.style.width = hostConfig.actions.iconSize + "px";
             iconElement.style.height = hostConfig.actions.iconSize + "px";
             iconElement.style.flex = "0 0 auto";
@@ -3769,7 +3693,7 @@ export abstract class Action extends CardObject {
                 buttonElement.classList.add("iconAbove");
                 buttonElement.style.flexDirection = "column";
 
-                if (hasTitle) {
+                if (this.title) {
                     iconElement.style.marginBottom = "6px";
                 }
             }
@@ -3778,7 +3702,7 @@ export abstract class Action extends CardObject {
 
                 iconElement.style.maxHeight = "100%";
 
-                if (hasTitle) {
+                if (this.title) {
                     iconElement.style.marginRight = "6px";
                 }
             }
@@ -3823,21 +3747,11 @@ export abstract class Action extends CardObject {
     }
 
     getResourceInformation(): IResourceInformation[] {
-        if (!Utils.isNullOrEmpty(this.iconUrl)) {
-            return [{ url: <string>this.iconUrl, mimeType: "image" }]
-        }
-        else {
-            return [];
-        }
+        return this.iconUrl ? [{ url: this.iconUrl, mimeType: "image" }] : [];
     }
 
     getActionById(id: string): Action | undefined {
-        if (this.id == id) {
-            return this;
-        }
-        else {
-            return undefined;
-        }
+        return this.id === id ? this : undefined;
     }
 
     getReferencedInputs(): Dictionary<Input> | undefined {
@@ -3900,7 +3814,9 @@ export class SubmitAction extends Action {
         let result: Dictionary<Input> = {};
 
         for (let input of allInputs) {
-            result[input.id] = input;
+            if (input.id) {
+                result[input.id] = input;
+            }
         }
 
         return result;
@@ -3918,7 +3834,7 @@ export class SubmitAction extends Action {
             for (let key of Object.keys(inputs)) {
                 let input = inputs[key];
 
-                if (input.isSet()) {
+                if (input.id && input.isSet()) {
                     this._processedData[input.id] = input.value;
                 }
             }
@@ -3970,7 +3886,7 @@ export class OpenUrlAction extends Action {
     internalValidateProperties(context: ValidationResults) {
         super.internalValidateProperties(context);
 
-        if (Utils.isNullOrEmpty(this.url)) {
+        if (!this.url) {
             context.addFailure(
                 this,
                 {
@@ -4072,7 +3988,7 @@ export class ToggleVisibilityAction extends Action {
     }
 }
 
-class StringWithSubstitutionPropertyDefinition extends PropertyDefinition  {
+class StringWithSubstitutionProperty extends PropertyDefinition  {
     parse(sender: SerializableObject, source: PropertyBag, errors?: IValidationError[]): StringWithSubstitutions {
         let result = new StringWithSubstitutions();
         result.set(Utils.getStringValue(source[this.name]));
@@ -4095,7 +4011,7 @@ export class HttpHeader extends SerializableObject {
     //#region Schema
 
     static readonly nameProperty = new StringProperty(Versions.v1_0, "name");
-    static readonly valueProperty = new StringWithSubstitutionPropertyDefinition(Versions.v1_0, "value");
+    static readonly valueProperty = new StringWithSubstitutionProperty(Versions.v1_0, "value");
 
     protected getSchemaKey(): string {
         return "HttpHeader";
@@ -4136,8 +4052,8 @@ export class HttpHeader extends SerializableObject {
 export class HttpAction extends Action {
     //#region Schema
 
-    static readonly urlProperty = new StringWithSubstitutionPropertyDefinition(Versions.v1_0, "url");
-    static readonly bodyProperty = new StringWithSubstitutionPropertyDefinition(Versions.v1_0, "body");
+    static readonly urlProperty = new StringWithSubstitutionProperty(Versions.v1_0, "url");
+    static readonly bodyProperty = new StringWithSubstitutionProperty(Versions.v1_0, "body");
     static readonly methodProperty = new StringProperty(Versions.v1_0, "method");
     static readonly headersProperty = new SerializableObjectCollectionProperty(
         Versions.v1_0,
@@ -4193,7 +4109,7 @@ export class HttpAction extends Action {
         for (let header of this.headers) {
             header.prepareForExecution(inputs);
 
-            if (!Utils.isNullOrEmpty(header.name) && header.name.toLowerCase() == "content-type") {
+            if (header.name && header.name.toLowerCase() == "content-type") {
                 contentType = <string>header.value;
             }
         }
@@ -4208,7 +4124,7 @@ export class HttpAction extends Action {
     internalValidateProperties(context: ValidationResults) {
         super.internalValidateProperties(context);
 
-        if (Utils.isNullOrEmpty(this.url)) {
+        if (!this.url) {
             context.addFailure(
                 this,
                 {
@@ -4960,7 +4876,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
         if (this.renderedElement) {
             let styleDefinition = this.hostConfig.containerStyles.getStyleByName(this.style, this.hostConfig.containerStyles.getStyleByName(this.defaultStyle));
 
-            if (!Utils.isNullOrEmpty(styleDefinition.backgroundColor)) {
+            if (styleDefinition.backgroundColor) {
                 this.renderedElement.style.backgroundColor = <string>Utils.stringToCssColor(styleDefinition.backgroundColor);
             }
         }
@@ -5203,7 +5119,7 @@ export class BackgroundImage extends SerializableObject {
     }
 
     isValid(): boolean {
-        return !Utils.isNullOrEmpty(this.url);
+        return this.url ? true : false;
     }
 }
 
@@ -6621,8 +6537,8 @@ export class AdaptiveCard extends ContainerWithActions {
                 renderedCard.classList.add(this.hostConfig.makeCssClassName("ac-adaptiveCard"));
                 renderedCard.tabIndex = 0;
 
-                if (!Utils.isNullOrEmpty(this.speak)) {
-                    renderedCard.setAttribute("aria-label", <string>this.speak);
+                if (this.speak) {
+                    renderedCard.setAttribute("aria-label", this.speak);
                 }
             }
         }

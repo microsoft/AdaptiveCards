@@ -69,7 +69,7 @@ export class ImageSetConfig {
 }
 
 export class MediaConfig {
-    defaultPoster: string;
+    defaultPoster?: string;
     allowInlinePlayback: boolean = true;
 
     constructor(obj?: any) {
@@ -373,8 +373,8 @@ export class ContainerStyleSet {
     }
 
     getStyleByName(name: string | undefined, defaultValue?: ContainerStyleDefinition): ContainerStyleDefinition {
-        if (!Utils.isNullOrEmpty(name) && this._allStyles.hasOwnProperty(<string>name)) {
-            return this._allStyles[<string>name];
+        if (name && this._allStyles.hasOwnProperty(name)) {
+            return this._allStyles[name];
         }
         else {
             return defaultValue ? defaultValue : this._allStyles[Enums.ContainerStyle.Default];

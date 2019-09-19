@@ -8,10 +8,6 @@ export function generateUniqueId(): string {
     return "__ac-" + Shared.UUID.generate();
 }
 
-export function isNullOrEmpty(value: string | undefined | null): boolean {
-    return value === undefined || value === null || value === "";
-}
-
 export function appendChild(node: Node, child: Node | undefined) {
     if (child) {
         node.appendChild(child);
@@ -45,7 +41,7 @@ export function getBoolValue(value: any, defaultValue?: boolean): boolean | unde
 }
 
 export function getEnumValue(targetEnum: { [s: number]: string }, name: string, defaultValue?: number): number | undefined {
-    if (isNullOrEmpty(name)) {
+    if (!name) {
         return defaultValue;
     }
 

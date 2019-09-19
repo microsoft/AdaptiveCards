@@ -36,7 +36,7 @@ export class CatalogueEntry {
         }
         payloadDownloader.download();
 
-        if (!Adaptive.isNullOrEmpty(this.sampleDataUrl)) {
+        if (this.sampleDataUrl) {
             let sampleDataDownloader = new Downloader(this.sampleDataUrl);
             sampleDataDownloader.onSuccess = () => {
                 this._sampleData = sampleDataDownloader.data;
@@ -85,8 +85,7 @@ export function parseCatalogue(input: any): CatalogueEntry[] {
                 let displayName = Adaptive.getStringValue(entry["displayName"]);
                 let cardPayloadUrl = Adaptive.getStringValue(entry["cardPayloadUrl"]);
 
-                if (!Adaptive.isNullOrEmpty(displayName) && !Adaptive.isNullOrEmpty(cardPayloadUrl)) {
-
+                if (displayName && cardPayloadUrl) {
                     result.push(
                         new CatalogueEntry(
                             displayName,

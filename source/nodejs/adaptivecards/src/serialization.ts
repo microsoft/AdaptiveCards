@@ -506,7 +506,7 @@ export abstract class SerializableObject {
     }
 
     setCustomProperty(name: string, value: any) {
-        let shouldDeleteProperty = (typeof value === "string" && Utils.isNullOrEmpty(value)) || value === undefined || value === null;
+        let shouldDeleteProperty = (typeof value === "string" && !value) || value === undefined || value === null;
 
         if (shouldDeleteProperty) {
             delete this._rawProperties[name];

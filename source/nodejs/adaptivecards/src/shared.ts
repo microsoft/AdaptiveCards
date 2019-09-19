@@ -31,7 +31,7 @@ export interface ISeparationDefinition {
 }
 
 export interface IInput {
-	id: string;
+	id?: string;
     value?: string;
     validateValue(): boolean;
 }
@@ -51,7 +51,7 @@ export class StringWithSubstitutions {
         for (let input of inputs) {
             let matches = new RegExp("\\{{2}(" + input.id + ").value\\}{2}", "gi").exec(<string>this._original);
 
-            if (matches != null) {
+            if (matches != null && input.id) {
                 referencedInputs[input.id] = input;
             }
         }
@@ -60,7 +60,7 @@ export class StringWithSubstitutions {
 	substituteInputValues(inputs: Dictionary<IInput>, contentType: string) {
 		this._processed = this._original;
 
-        if (!Utils.isNullOrEmpty(this._original)) {
+        if (this._original) {
             let regEx = /\{{2}([a-z0-9_$@]+).value\}{2}/gi;
             let matches;
 

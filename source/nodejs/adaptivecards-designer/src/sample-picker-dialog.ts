@@ -169,7 +169,7 @@ export class SamplePickerDialog extends Dialog {
         let downloader = new Downloader(this.catalogueUrl);
         downloader.onError = () => { this.renderMessage("The catalogue couldn't be loaded. Please try again later."); };
         downloader.onSuccess = () => {
-            if (!Adaptive.isNullOrEmpty(downloader.data)) {
+            if (downloader.data) {
                 try {
                     let catalogue = parseCatalogue(JSON.parse(downloader.data));
 
