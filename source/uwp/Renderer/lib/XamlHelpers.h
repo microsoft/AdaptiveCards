@@ -380,4 +380,7 @@ namespace AdaptiveNamespace::XamlHelpers
                              _In_ IInspectable* parentElement,
                              _In_ ABI::Windows::UI::Xaml::Media::Imaging::IBitmapSource* imageSource,
                              bool setVisible);
+
+    HRESULT ApplyMarginToXamlElement(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+                                     _In_ ABI::Windows::UI::Xaml::IFrameworkElement* element) noexcept;
 }

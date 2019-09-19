@@ -631,4 +631,18 @@ namespace AdaptiveNamespace::XamlHelpers
             }
         }
     }
+
+    HRESULT ApplyMarginToXamlElement(_In_ IAdaptiveHostConfig* hostConfig, _In_ IFrameworkElement* element) noexcept
+    {
+        ComPtr<IFrameworkElement> localElement(element);
+        ComPtr<IAdaptiveSpacingConfig> spacingConfig;
+        RETURN_IF_FAILED(hostConfig->get_Spacing(&spacingConfig));
+
+        UINT32 padding;
+        spacingConfig->get_Padding(&padding);
+        Thickness margin = {(double)padding, (double)padding, (double)padding, (double)padding};
+
+        RETURN_IF_FAILED(localElement->put_Margin(margin));
+        return S_OK;
+    }
 }

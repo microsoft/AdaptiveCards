@@ -216,20 +216,6 @@ namespace AdaptiveNamespace
         m_enableXamlImageHandling = enableXamlImageHandling;
     }
 
-    static HRESULT ApplyMarginToXamlElement(_In_ IAdaptiveHostConfig* hostConfig, _In_ IFrameworkElement* element) noexcept
-    {
-        ComPtr<IFrameworkElement> localElement(element);
-        ComPtr<IAdaptiveSpacingConfig> spacingConfig;
-        RETURN_IF_FAILED(hostConfig->get_Spacing(&spacingConfig));
-
-        UINT32 padding;
-        spacingConfig->get_Padding(&padding);
-        Thickness margin = {(double)padding, (double)padding, (double)padding, (double)padding};
-
-        RETURN_IF_FAILED(localElement->put_Margin(margin));
-        return S_OK;
-    }
-
     HRESULT XamlBuilder::CreateRootCardElement(_In_ IAdaptiveCard* adaptiveCard,
                                                _In_ IAdaptiveRenderContext* renderContext,
                                                _In_ IAdaptiveRenderArgs* renderArgs,
@@ -289,7 +275,7 @@ namespace AdaptiveNamespace
 
         ComPtr<IFrameworkElement> bodyElementHostAsElement;
         RETURN_IF_FAILED(bodyElementHost.As(&bodyElementHostAsElement));
-        RETURN_IF_FAILED(ApplyMarginToXamlElement(hostConfig.Get(), bodyElementHostAsElement.Get()));
+        RETURN_IF_FAILED(XamlHelpers::ApplyMarginToXamlElement(hostConfig.Get(), bodyElementHostAsElement.Get()));
 
         ABI::AdaptiveNamespace::HeightType adaptiveCardHeightType;
         RETURN_IF_FAILED(adaptiveCard->get_Height(&adaptiveCardHeightType));
