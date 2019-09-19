@@ -4,6 +4,7 @@
 
 #include "AdaptiveImageRenderer.h"
 
+#include "ActionHelpers.h"
 #include "AdaptiveElementParserRegistration.h"
 #include "AdaptiveImage.h"
 #include "AdaptiveBase64Util.h"
@@ -359,13 +360,13 @@ namespace AdaptiveNamespace
 
         RETURN_IF_FAILED(automationPropertiesStatics->SetName(imageAsDependencyObject.Get(), altText.Get()));
 
-        XamlHelpers::HandleSelectAction(adaptiveCardElement,
-                                        selectAction.Get(),
-                                        renderContext,
-                                        imageAsUIElement.Get(),
-                                        XamlHelpers::SupportsInteractivity(hostConfig.Get()),
-                                        true,
-                                        imageControl);
+        ActionHelpers::HandleSelectAction(adaptiveCardElement,
+                                          selectAction.Get(),
+                                          renderContext,
+                                          imageAsUIElement.Get(),
+                                          XamlHelpers::SupportsInteractivity(hostConfig.Get()),
+                                          true,
+                                          imageControl);
 
         return S_OK;
     }

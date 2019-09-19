@@ -36,4 +36,38 @@ namespace AdaptiveNamespace::ActionHelpers
                             _In_ ABI::Windows::UI::Xaml::Controls::ITextBox* textBox,
                             _In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* inlineAction,
                             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** textBoxWithInlineAction);
+
+    void WireButtonClickToAction(_In_ ABI::Windows::UI::Xaml::Controls::IButton* button,
+                                 _In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action,
+                                 _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext);
+
+    void WrapInTouchTarget(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* adaptiveCardElement,
+                           _In_ ABI::Windows::UI::Xaml::IUIElement* elementToWrap,
+                           _In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action,
+                           _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                           bool fullWidth,
+                           const std::wstring& style,
+                           _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** finalElement);
+
+    void HandleSelectAction(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* adaptiveCardElement,
+                            _In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* selectAction,
+                            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                            _In_ ABI::Windows::UI::Xaml::IUIElement* uiElement,
+                            bool supportsInteractivity,
+                            bool fullWidthTouchTarget,
+                            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** outUiElement);
+
+    HRESULT BuildActions(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
+                         _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* children,
+                         _In_ ABI::Windows::UI::Xaml::Controls::IPanel* bodyPanel,
+                         bool insertSeparator,
+                         _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                         _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);
+
+    HRESULT BuildActionSetHelper(_In_opt_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
+                                 _In_opt_ ABI::AdaptiveNamespace::IAdaptiveActionSet* adaptiveActionSet,
+                                 _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* children,
+                                 _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                 _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+                                 _Outptr_ ABI::Windows::UI::Xaml::IUIElement** actionSetControl);
 }

@@ -3,6 +3,8 @@
 #include "pch.h"
 
 #include "AdaptiveContainer.h"
+
+#include "ActionHelpers.h"
 #include "AdaptiveContainerRenderer.h"
 #include "AdaptiveElementParserRegistration.h"
 #include "AdaptiveRenderArgs.h"
@@ -17,11 +19,7 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveContainerRenderer::RuntimeClassInitialize() noexcept try
-    {
-        return S_OK;
-    }
-    CATCH_RETURN;
+    HRESULT AdaptiveContainerRenderer::RuntimeClassInitialize() noexcept { return S_OK; }
 
     HRESULT AdaptiveContainerRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
                                               _In_ IAdaptiveRenderContext* renderContext,
@@ -126,13 +124,13 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveHostConfig> hostConfig;
         RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
-        XamlHelpers::HandleSelectAction(adaptiveCardElement,
-                                        selectAction.Get(),
-                                        renderContext,
-                                        containerBorderAsUIElement.Get(),
-                                        XamlHelpers::SupportsInteractivity(hostConfig.Get()),
-                                        true,
-                                        containerControl);
+        ActionHelpers::HandleSelectAction(adaptiveCardElement,
+                                          selectAction.Get(),
+                                          renderContext,
+                                          containerBorderAsUIElement.Get(),
+                                          XamlHelpers::SupportsInteractivity(hostConfig.Get()),
+                                          true,
+                                          containerControl);
         return S_OK;
     }
     CATCH_RETURN;

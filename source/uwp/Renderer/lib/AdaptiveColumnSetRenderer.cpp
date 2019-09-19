@@ -2,8 +2,10 @@
 // Licensed under the MIT License.
 #include "pch.h"
 
-#include "AdaptiveColumnSet.h"
 #include "AdaptiveColumnSetRenderer.h"
+
+#include "ActionHelpers.h"
+#include "AdaptiveColumnSet.h"
 #include "AdaptiveElementParserRegistration.h"
 #include "AdaptiveRenderArgs.h"
 
@@ -213,13 +215,13 @@ namespace AdaptiveNamespace
         ComPtr<IUIElement> columnSetBorderAsUIElement;
         RETURN_IF_FAILED(columnSetBorder.As(&columnSetBorderAsUIElement));
 
-        XamlHelpers::HandleSelectAction(adaptiveCardElement,
-                                        selectAction.Get(),
-                                        renderContext,
-                                        columnSetBorderAsUIElement.Get(),
-                                        XamlHelpers::SupportsInteractivity(hostConfig.Get()),
-                                        true,
-                                        columnSetControl);
+        ActionHelpers::HandleSelectAction(adaptiveCardElement,
+                                          selectAction.Get(),
+                                          renderContext,
+                                          columnSetBorderAsUIElement.Get(),
+                                          XamlHelpers::SupportsInteractivity(hostConfig.Get()),
+                                          true,
+                                          columnSetControl);
         return S_OK;
     }
     CATCH_RETURN;

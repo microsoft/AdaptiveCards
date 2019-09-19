@@ -28,21 +28,9 @@ namespace AdaptiveNamespace::XamlHelpers
         return solidColorBrushAsBrush;
     }
 
-    void WireButtonClickToAction(_In_ ABI::Windows::UI::Xaml::Controls::IButton* button,
-                                 _In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action,
-                                 _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext);
-
     HRESULT SetStyleFromResourceDictionary(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                            const std::wstring& resourceName,
                                            _In_ ABI::Windows::UI::Xaml::IFrameworkElement* frameworkElement) noexcept;
-
-    void WrapInTouchTarget(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* adaptiveCardElement,
-                           _In_ ABI::Windows::UI::Xaml::IUIElement* elementToWrap,
-                           _In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action,
-                           _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                           bool fullWidth,
-                           const std::wstring& style,
-                           _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** finalElement);
 
     Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> CreateSeparator(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                                                                UINT spacing,
@@ -302,14 +290,6 @@ namespace AdaptiveNamespace::XamlHelpers
                                     _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
                                     _Out_ ABI::AdaptiveNamespace::ContainerStyle* containerStyle);
 
-    void HandleSelectAction(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* adaptiveCardElement,
-                            _In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* selectAction,
-                            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                            _In_ ABI::Windows::UI::Xaml::IUIElement* uiElement,
-                            bool supportsInteractivity,
-                            bool fullWidthTouchTarget,
-                            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** outUiElement);
-
     bool SupportsInteractivity(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig);
 
     template<typename T>
@@ -389,13 +369,6 @@ namespace AdaptiveNamespace::XamlHelpers
     }
     CATCH_RETURN;
 
-    HRESULT BuildActions(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
-                         _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* children,
-                         _In_ ABI::Windows::UI::Xaml::Controls::IPanel* bodyPanel,
-                         bool insertSeparator,
-                         _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                         _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);
-
     void AddSeparatorIfNeeded(int& currentElement,
                               _In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* element,
                               _In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
@@ -407,11 +380,4 @@ namespace AdaptiveNamespace::XamlHelpers
                              _In_ IInspectable* parentElement,
                              _In_ ABI::Windows::UI::Xaml::Media::Imaging::IBitmapSource* imageSource,
                              bool setVisible);
-
-    HRESULT BuildActionSetHelper(_In_opt_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
-                                 _In_opt_ ABI::AdaptiveNamespace::IAdaptiveActionSet* adaptiveActionSet,
-                                 _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* children,
-                                 _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                                 _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
-                                 _Outptr_ ABI::Windows::UI::Xaml::IUIElement** actionSetControl);
 }

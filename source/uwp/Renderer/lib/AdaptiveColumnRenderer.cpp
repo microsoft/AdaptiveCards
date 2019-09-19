@@ -3,6 +3,8 @@
 #include "pch.h"
 
 #include "AdaptiveColumnRenderer.h"
+
+#include "ActionHelpers.h"
 #include "AdaptiveColumn.h"
 #include "AdaptiveElementParserRegistration.h"
 #include "AdaptiveRenderArgs.h"
@@ -17,11 +19,10 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveColumnRenderer::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveColumnRenderer::RuntimeClassInitialize() noexcept
     {
         return S_OK;
     }
-    CATCH_RETURN;
 
     HRESULT AdaptiveColumnRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
                                            _In_ IAdaptiveRenderContext* renderContext,
@@ -121,13 +122,13 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveHostConfig> hostConfig;
         RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
-        XamlHelpers::HandleSelectAction(adaptiveCardElement,
-                                        selectAction.Get(),
-                                        renderContext,
-                                        columnAsUIElement.Get(),
-                                        XamlHelpers::SupportsInteractivity(hostConfig.Get()),
-                                        false,
-                                        ColumnControl);
+        ActionHelpers::HandleSelectAction(adaptiveCardElement,
+                                          selectAction.Get(),
+                                          renderContext,
+                                          columnAsUIElement.Get(),
+                                          XamlHelpers::SupportsInteractivity(hostConfig.Get()),
+                                          false,
+                                          ColumnControl);
         return S_OK;
     }
     CATCH_RETURN;

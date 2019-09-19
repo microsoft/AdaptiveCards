@@ -75,7 +75,8 @@ namespace AdaptiveNamespace
 
             ComPtr<IPanel> bodyElementContainer;
             ComPtr<IUIElement> rootElement;
-            RETURN_IF_FAILED(CreateRootCardElement(adaptiveCard, renderContext, renderArgs.Get(), xamlBuilder, &bodyElementContainer, &rootElement));
+            RETURN_IF_FAILED(
+                CreateRootCardElement(adaptiveCard, renderContext, renderArgs.Get(), xamlBuilder, &bodyElementContainer, &rootElement));
             ComPtr<IFrameworkElement> rootAsFrameworkElement;
             RETURN_IF_FAILED(rootElement.As(&rootAsFrameworkElement));
 
@@ -91,13 +92,13 @@ namespace AdaptiveNamespace
 
             // Create a new IUIElement pointer to house the root element decorated with select action
             ComPtr<IUIElement> rootSelectActionElement;
-            XamlHelpers::HandleSelectAction(nullptr,
-                                            selectAction.Get(),
-                                            renderContext,
-                                            rootElement.Get(),
-                                            XamlHelpers::SupportsInteractivity(hostConfig.Get()),
-                                            true,
-                                            &rootSelectActionElement);
+            ActionHelpers::HandleSelectAction(nullptr,
+                                              selectAction.Get(),
+                                              renderContext,
+                                              rootElement.Get(),
+                                              XamlHelpers::SupportsInteractivity(hostConfig.Get()),
+                                              true,
+                                              &rootSelectActionElement);
             RETURN_IF_FAILED(rootSelectActionElement.As(&rootAsFrameworkElement));
 
             // Enumerate the child items of the card and build xaml for them
@@ -123,12 +124,12 @@ namespace AdaptiveNamespace
                 {
                     unsigned int bodyCount;
                     RETURN_IF_FAILED(body->get_Size(&bodyCount));
-                    XamlHelpers::BuildActions(adaptiveCard,
-                                              actions.Get(),
-                                              bodyElementContainer.Get(),
-                                              bodyCount > 0,
-                                              renderContext,
-                                              renderArgs.Get());
+                    ActionHelpers::BuildActions(adaptiveCard,
+                                                actions.Get(),
+                                                bodyElementContainer.Get(),
+                                                bodyCount > 0,
+                                                renderContext,
+                                                renderArgs.Get());
                 }
                 else
                 {

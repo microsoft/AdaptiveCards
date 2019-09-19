@@ -2,8 +2,10 @@
 // Licensed under the MIT License.
 #include "pch.h"
 
-#include "AdaptiveActionSet.h"
 #include "AdaptiveActionSetRenderer.h"
+
+#include "ActionHelpers.h"
+#include "AdaptiveActionSet.h"
 #include "AdaptiveElementParserRegistration.h"
 #include "AdaptiveRenderArgs.h"
 
@@ -18,17 +20,15 @@ using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveActionSetRenderer::RuntimeClassInitialize() noexcept
-    {
-        return S_OK;
-    }
+    HRESULT AdaptiveActionSetRenderer::RuntimeClassInitialize() noexcept { return S_OK; }
 
     HRESULT AdaptiveActionSetRenderer::FromJson(
         _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
         _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
         _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
         _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept try
+        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept
+    try
     {
         return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveActionSet, AdaptiveSharedNamespace::ActionSet, AdaptiveSharedNamespace::ActionSetParser>(
             jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
@@ -38,7 +38,8 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveActionSetRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
                                               _In_ IAdaptiveRenderContext* renderContext,
                                               _In_ IAdaptiveRenderArgs* renderArgs,
-                                              _COM_Outptr_ IUIElement** actionSetControl) noexcept try
+                                              _COM_Outptr_ IUIElement** actionSetControl) noexcept
+    try
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;
         RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
@@ -58,7 +59,7 @@ namespace AdaptiveNamespace
         ComPtr<IVector<IAdaptiveActionElement*>> actions;
         RETURN_IF_FAILED(adaptiveActionSet->get_Actions(&actions));
 
-        return XamlHelpers::BuildActionSetHelper(nullptr, adaptiveActionSet.Get(), actions.Get(), renderContext, renderArgs, actionSetControl);
+        return ActionHelpers::BuildActionSetHelper(nullptr, adaptiveActionSet.Get(), actions.Get(), renderContext, renderArgs, actionSetControl);
     }
     CATCH_RETURN;
 }
