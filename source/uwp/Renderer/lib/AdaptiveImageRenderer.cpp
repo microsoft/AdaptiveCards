@@ -68,6 +68,14 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // IMPORTANT! Methods below here are actually XamlBuilder methods. They're defined here because they're only used
+    // by the AdaptiveImageRenderer. They exist on XamlBuilder because it's the only place we have that can track
+    // loading and lifetime for images.
+    //
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     HRESULT XamlBuilder::BuildImage(_In_ IAdaptiveCardElement* adaptiveCardElement,
                                     _In_ IAdaptiveRenderContext* renderContext,
                                     _In_ IAdaptiveRenderArgs* renderArgs,
