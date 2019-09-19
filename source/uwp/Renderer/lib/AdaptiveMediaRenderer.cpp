@@ -134,7 +134,8 @@ namespace AdaptiveNamespace
         ComPtr<IButtonBase> touchTargetAsButtonBase;
         RETURN_IF_FAILED(touchTargetUIElement.As(&touchTargetAsButtonBase));
 
-        // Take a reference to the mime type string for the lambda
+        // Take a reference to the mime type string for the lambda (lifetime dictated by localMimeType in the below
+        // lambda)
         HSTRING lambdaMimeType;
         WindowsDuplicateString(mimeType.Get(), &lambdaMimeType);
         ComPtr<IAdaptiveRenderContext> lambdaRenderContext{renderContext};

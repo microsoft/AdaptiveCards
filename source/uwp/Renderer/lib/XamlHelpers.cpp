@@ -413,10 +413,10 @@ namespace AdaptiveNamespace::XamlHelpers
         // In order to reuse the image creation code paths, we simply create an adaptive card
         // image element and then build that into xaml and apply to the root.
         ComPtr<IAdaptiveImage> adaptiveImage;
-        HSTRING url;
+        HString url;
         THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
-        THROW_IF_FAILED(backgroundImage->get_Url(&url));
-        THROW_IF_FAILED(adaptiveImage->put_Url(url));
+        THROW_IF_FAILED(backgroundImage->get_Url(url.GetAddressOf()));
+        THROW_IF_FAILED(adaptiveImage->put_Url(url.Get()));
 
         ComPtr<IAdaptiveCardElement> adaptiveCardElement;
         THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));
@@ -895,11 +895,10 @@ namespace AdaptiveNamespace::XamlHelpers
 
         bool allActionsHaveIcons{true};
         XamlHelpers::IterateOverVector<IAdaptiveActionElement>(children, [&](IAdaptiveActionElement* child) {
-            HSTRING iconUrl;
-            RETURN_IF_FAILED(child->get_IconUrl(&iconUrl));
+            HString iconUrl;
+            RETURN_IF_FAILED(child->get_IconUrl(iconUrl.GetAddressOf()));
 
-            bool iconUrlIsEmpty = WindowsIsStringEmpty(iconUrl);
-            if (iconUrlIsEmpty)
+            if (WindowsIsStringEmpty(iconUrl.Get()))
             {
                 allActionsHaveIcons = false;
             }

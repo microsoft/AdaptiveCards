@@ -346,7 +346,8 @@ HRESULT HandleMediaClick(_In_ IAdaptiveRenderContext* renderContext,
             ComPtr<IAsyncOperation<IRandomAccessStream*>> getResourceStreamOperation;
             RETURN_IF_FAILED(resourceResolver->GetResourceStreamAsync(args.Get(), &getResourceStreamOperation));
 
-            // Take a reference to the mime type string for the lambda
+            // Take a reference to the mime type string for the lambda (lifetime dictated by localMimeType in the below
+            // lambda)
             HSTRING lambdaMimeType;
             WindowsDuplicateString(mimeType, &lambdaMimeType);
 

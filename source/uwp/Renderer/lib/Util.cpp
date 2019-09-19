@@ -1488,12 +1488,12 @@ void GetUrlFromString(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConf
     // Otherwise, try to treat URI as relative
     if (isUrlRelative)
     {
-        HSTRING imageBaseUrl;
-        THROW_IF_FAILED(hostConfig->get_ImageBaseUrl(&imageBaseUrl));
+        HString imageBaseUrl;
+        THROW_IF_FAILED(hostConfig->get_ImageBaseUrl(imageBaseUrl.GetAddressOf()));
 
-        if (imageBaseUrl != nullptr)
+        if (imageBaseUrl.Get() != nullptr)
         {
-            THROW_IF_FAILED(uriActivationFactory->CreateWithRelativeUri(imageBaseUrl, urlString, localUrl.GetAddressOf()));
+            THROW_IF_FAILED(uriActivationFactory->CreateWithRelativeUri(imageBaseUrl.Get(), urlString, localUrl.GetAddressOf()));
         }
     }
 

@@ -51,8 +51,8 @@ namespace AdaptiveNamespace::ActionHelpers
         HString title;
         THROW_IF_FAILED(action->get_Title(title.GetAddressOf()));
 
-        HSTRING iconUrl;
-        THROW_IF_FAILED(action->get_IconUrl(&iconUrl));
+        HString iconUrl;
+        THROW_IF_FAILED(action->get_IconUrl(iconUrl.GetAddressOf()));
 
         ComPtr<IButton> localButton(button);
 
@@ -74,7 +74,7 @@ namespace AdaptiveNamespace::ActionHelpers
             ComPtr<IAdaptiveImage> adaptiveImage;
             THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
 
-            adaptiveImage->put_Url(iconUrl);
+            adaptiveImage->put_Url(iconUrl.Get());
             adaptiveImage->put_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment::Center);
 
             ComPtr<IAdaptiveCardElement> adaptiveCardElement;

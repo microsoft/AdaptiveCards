@@ -88,11 +88,11 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveHostConfig> hostConfig;
         RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
-        HSTRING url;
-        RETURN_IF_FAILED(adaptiveImage->get_Url(&url));
+        HString url;
+        RETURN_IF_FAILED(adaptiveImage->get_Url(url.GetAddressOf()));
 
         ComPtr<IUriRuntimeClass> imageUrl;
-        GetUrlFromString(hostConfig.Get(), url, imageUrl.GetAddressOf());
+        GetUrlFromString(hostConfig.Get(), url.Get(), imageUrl.GetAddressOf());
 
         if (imageUrl == nullptr)
         {
@@ -127,8 +127,8 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveCardResourceResolvers> resourceResolvers;
         RETURN_IF_FAILED(renderContext->get_ResourceResolvers(&resourceResolvers));
 
-        HSTRING backgroundColor;
-        RETURN_IF_FAILED(adaptiveImage->get_BackgroundColor(&backgroundColor));
+        HString backgroundColor;
+        RETURN_IF_FAILED(adaptiveImage->get_BackgroundColor(backgroundColor.GetAddressOf()));
 
         boolean isVisible;
         RETURN_IF_FAILED(adaptiveCardElement->get_IsVisible(&isVisible));
@@ -178,11 +178,11 @@ namespace AdaptiveNamespace
                 RETURN_IF_FAILED(backgroundEllipseAsShape->put_Stretch(ellipseStretch));
             }
 
-            if (backgroundColor != nullptr)
+            if (backgroundColor.Get() != nullptr)
             {
                 // Fill the background ellipse with solid color brush
                 ABI::Windows::UI::Color color;
-                RETURN_IF_FAILED(GetColorFromString(HStringToUTF8(backgroundColor), &color));
+                RETURN_IF_FAILED(GetColorFromString(HStringToUTF8(backgroundColor.Get()), &color));
                 ComPtr<IBrush> backgroundColorBrush = XamlHelpers::GetSolidColorBrush(color);
                 RETURN_IF_FAILED(backgroundEllipseAsShape->put_Fill(backgroundColorBrush.Get()));
 
@@ -215,7 +215,7 @@ namespace AdaptiveNamespace
                     XamlHelpers::CreateXamlClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
 
                 ABI::Windows::UI::Color color;
-                RETURN_IF_FAILED(GetColorFromString(HStringToUTF8(backgroundColor), &color));
+                RETURN_IF_FAILED(GetColorFromString(HStringToUTF8(backgroundColor.Get()), &color));
                 ComPtr<IBrush> backgroundColorBrush = XamlHelpers::GetSolidColorBrush(color);
                 RETURN_IF_FAILED(border->put_Background(backgroundColorBrush.Get()));
 
