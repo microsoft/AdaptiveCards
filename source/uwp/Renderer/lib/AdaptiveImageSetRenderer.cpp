@@ -73,7 +73,7 @@ namespace AdaptiveNamespace
                     RETURN_IF_FAILED(localAdaptiveImage->put_Size(imageSize));
 
                     ComPtr<IAdaptiveCardElement> adaptiveElementImage;
-                    localAdaptiveImage.As(&adaptiveElementImage);
+                    RETURN_IF_FAILED(localAdaptiveImage.As(&adaptiveElementImage));
                     RETURN_IF_FAILED(imageRenderer->Render(adaptiveElementImage.Get(), renderContext, childRenderArgs.Get(), &uiImage));
 
                     ComPtr<IFrameworkElement> imageAsFrameworkElement;
