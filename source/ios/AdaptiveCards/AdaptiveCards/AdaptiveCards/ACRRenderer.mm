@@ -206,7 +206,17 @@ using namespace AdaptiveCards;
                 @throw [ACOFallbackException fallbackException];
             }
             curStretchableElem = [renderer render:view rootView:rootView inputs:inputs baseCardElement:acoElem hostConfig:config];
+
             if (elem->GetHeight() == HeightType::Stretch) {
+                // vertical stretch works in the following way:
+                // an ui element that will be stretched will be contained in a new superview.
+                // additional trailing view is added to the superview at the bottom
+                // uistackview for ColumnSet will have distribution set to fill
+                // this ensures all columns will have same height, thus making the space available for
+                // stretch.
+                // when a smaller column is expanded, the trailing views in its subviews will fill up the
+                // space, by setting the heights of the superviews of the trailing views same as below,
+                // filler space occupies the same space.
                 if (prevStretchableElem) {
                     NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:curStretchableElem
                                                                                         attribute:NSLayoutAttributeHeight
