@@ -53,7 +53,7 @@ using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveCardRenderer::RuntimeClassInitialize()
+    HRESULT AdaptiveCardRenderer::RuntimeClassInitialize() noexcept try
     {
         RETURN_IF_FAILED(MakeAndInitialize<XamlBuilder>(&m_xamlBuilder));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveElementRendererRegistration>(&m_elementRendererRegistration));
@@ -66,6 +66,7 @@ namespace AdaptiveNamespace
         UpdateActionSentimentResourceDictionary();
         return MakeAndInitialize<AdaptiveCardResourceResolvers>(&m_resourceResolvers);
     }
+    CATCH_RETURN;
 
     HRESULT AdaptiveCardRenderer::put_OverrideStyles(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* overrideDictionary)
     {
@@ -296,15 +297,9 @@ namespace AdaptiveNamespace
         m_actionSentimentResourceDictionary = actionSentimentResourceDictionary;
     }
 
-    static HRESULT TryInsertResourceToResourceDictionaries(_In_ IResourceDictionary* resourceDictionary,
-                                                           const std::wstring& resourceName,
-                                                           _In_ IInspectable* value)
+    HRESULT AdaptiveCardRenderer::TryInsertResourceToSentimentResourceDictionary(const std::wstring& resourceName,
+                                                                                 _In_ IInspectable* value)
     {
-        if (!resourceDictionary)
-        {
-            return E_INVALIDARG;
-        }
-
         ComPtr<IPropertyValueStatics> propertyValueStatics;
         RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(),
                                               &propertyValueStatics));
@@ -312,9 +307,8 @@ namespace AdaptiveNamespace
         ComPtr<IInspectable> resourceKey;
         RETURN_IF_FAILED(propertyValueStatics->CreateString(HStringReference(resourceName.c_str()).Get(), resourceKey.GetAddressOf()));
 
-        ComPtr<IResourceDictionary> strongDictionary = resourceDictionary;
         ComPtr<IMap<IInspectable*, IInspectable*>> resourceDictionaryMap;
-        RETURN_IF_FAILED(strongDictionary.As(&resourceDictionaryMap));
+        RETURN_IF_FAILED(m_actionSentimentResourceDictionary.As(&resourceDictionaryMap));
 
         boolean replaced{};
         RETURN_IF_FAILED(resourceDictionaryMap->Insert(resourceKey.Get(), value, &replaced));
@@ -343,24 +337,20 @@ namespace AdaptiveNamespace
         ABI::Windows::UI::Color lighterAttentionColor = GenerateLighterColor(attentionColor);
 
         ComPtr<IBrush> accentColorBrush = XamlHelpers::GetSolidColorBrush(accentColor);
-        THROW_IF_FAILED(TryInsertResourceToResourceDictionaries(m_actionSentimentResourceDictionary.Get(),
-                                                                L"Adaptive.Action.Positive.Button.Static.Background",
-                                                                accentColorBrush.Get()));
+        THROW_IF_FAILED(TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Positive.Button.Static.Background",
+                                                                       accentColorBrush.Get()));
 
         ComPtr<IBrush> lightAccentColorBrush = XamlHelpers::GetSolidColorBrush(lighterAccentColor);
-        THROW_IF_FAILED(TryInsertResourceToResourceDictionaries(m_actionSentimentResourceDictionary.Get(),
-                                                                L"Adaptive.Action.Positive.Button.MouseOver.Background",
-                                                                lightAccentColorBrush.Get()));
+        THROW_IF_FAILED(TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Positive.Button.MouseOver.Background",
+                                                                       lightAccentColorBrush.Get()));
 
         ComPtr<IBrush> attentionColorBrush = XamlHelpers::GetSolidColorBrush(attentionColor);
-        THROW_IF_FAILED(TryInsertResourceToResourceDictionaries(m_actionSentimentResourceDictionary.Get(),
-                                                                L"Adaptive.Action.Destructive.Button.Foreground",
-                                                                attentionColorBrush.Get()));
+        THROW_IF_FAILED(TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Destructive.Button.Foreground",
+                                                                       attentionColorBrush.Get()));
 
         ComPtr<IBrush> lightAttentionColorBrush = XamlHelpers::GetSolidColorBrush(lighterAttentionColor);
-        THROW_IF_FAILED(TryInsertResourceToResourceDictionaries(m_actionSentimentResourceDictionary.Get(),
-                                                                L"Adaptive.Action.Destructive.Button.MouseOver.Foreground",
-                                                                lightAttentionColorBrush.Get()));
+        THROW_IF_FAILED(TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Destructive.Button.MouseOver.Foreground",
+                                                                       lightAttentionColorBrush.Get()));
     }
 
     HRESULT AdaptiveCardRenderer::SetMergedDictionary()
