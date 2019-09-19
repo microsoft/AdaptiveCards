@@ -16,11 +16,10 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveTimeInputRenderer::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveTimeInputRenderer::RuntimeClassInitialize() noexcept
     {
         return S_OK;
     }
-    CATCH_RETURN;
 
     HRESULT AdaptiveTimeInputRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
                                               _In_ IAdaptiveRenderContext* renderContext,
@@ -52,17 +51,17 @@ namespace AdaptiveNamespace
 
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
         ComPtr<IAdaptiveTimeInput> adaptiveTimeInput;
-        THROW_IF_FAILED(cardElement.As(&adaptiveTimeInput));
+        RETURN_IF_FAILED(cardElement.As(&adaptiveTimeInput));
 
         // Set initial value
         HString hstringValue;
-        THROW_IF_FAILED(adaptiveTimeInput->get_Value(hstringValue.GetAddressOf()));
+        RETURN_IF_FAILED(adaptiveTimeInput->get_Value(hstringValue.GetAddressOf()));
         std::string value = HStringToUTF8(hstringValue.Get());
         unsigned int hours, minutes;
         if (DateTimePreparser::TryParseSimpleTime(value, hours, minutes))
         {
             TimeSpan initialTime{(INT64)(hours * 60 + minutes) * 10000000 * 60};
-            THROW_IF_FAILED(timePicker->put_Time(initialTime));
+            RETURN_IF_FAILED(timePicker->put_Time(initialTime));
         }
 
         // Note: Placeholder text and min/max are not supported by ITimePicker
