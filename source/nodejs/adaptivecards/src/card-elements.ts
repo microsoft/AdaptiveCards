@@ -292,18 +292,6 @@ export abstract class CardElement extends CardObject {
         "spacing",
         Enums.Spacing,
         Enums.Spacing.Default);
-    static readonly minHeightProperty = new PixelSizeProperty(Versions.v1_2, "minHeight");
-
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        if (!this.supportsMinHeight) {
-            schema.remove(CardElement.minHeightProperty);
-        }
-    }
-
-    @property(CardElement.minHeightProperty)
-    minPixelHeight?: number;
 
     @property(CardElement.horizontalAlignmentProperty)
     horizontalAlignment: Enums.HorizontalAlignment;
@@ -488,10 +476,6 @@ export abstract class CardElement extends CardObject {
         else {
             renderedElement.style.flex = "1 1 auto";
         }
-
-        if (this.minPixelHeight) {
-            renderedElement.style.minHeight = this.minPixelHeight + "px";
-        }
     }
 
     protected isDisplayed(): boolean {
@@ -554,10 +538,6 @@ export abstract class CardElement extends CardObject {
 
     protected setPadding(value: PaddingDefinition | undefined) {
         this._padding = value;
-    }
-
-    protected get supportsMinHeight(): boolean {
-        return false;
     }
 
     protected get useDefaultSizing(): boolean {
@@ -4955,6 +4935,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
             { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Warning }
         ]);
     static readonly bleedProperty = new BoolProperty(Versions.v1_1, "bleed", false);
+    static readonly minHeightProperty = new PixelSizeProperty(Versions.v1_2, "minHeight");
 
     @property(StylableCardElementContainer.styleProperty)
     get style(): string | undefined {
@@ -4976,7 +4957,18 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
     @property(StylableCardElementContainer.bleedProperty)
     private _bleed: boolean = false;
 
+    @property(StylableCardElementContainer.minHeightProperty)
+    minPixelHeight?: number;
+
     //#endregion
+
+    protected adjustRenderedElementSize(renderedElement: HTMLElement) {
+        super.adjustRenderedElementSize(renderedElement);
+
+        if (this.minPixelHeight) {
+            renderedElement.style.minHeight = this.minPixelHeight + "px";
+        }
+    }
 
     protected applyBackground() {
         if (this.renderedElement) {
@@ -5088,10 +5080,6 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
     }
 
     protected get allowCustomStyle(): boolean {
-        return true;
-    }
-
-    protected get supportsMinHeight(): boolean {
         return true;
     }
 
