@@ -317,7 +317,7 @@ const styles = StyleSheet.create({
 	},
 	inlineActionTextInput: {
 		padding: 5,
-		//flex: 1,
+		flex: 1,
 		backgroundColor: 'transparent',
 		color: '#3a3a3a',
 		borderColor: "#9E9E9E",
