@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 "use strict";
 
-var typedschema = require("ac-typed-schema");
+var typedschema = require("typed-schema");
 var marked = require("marked");
 var fs = require("fs");
 var path = require("path");

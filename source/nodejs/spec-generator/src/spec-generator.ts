@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as markedschema from "marked-schema";
-import * as typedschema from "ac-typed-schema";
+import * as typedschema from "typed-schema";
 var fs = require("fs");
 import { forEach } from "p-iteration";
-import { Schema, SchemaType, SchemaClass, SchemaEnum } from "ac-typed-schema";
+import { Schema, SchemaType, SchemaClass, SchemaEnum } from "typed-schema";
 
 export async function generateAsync() {
 
