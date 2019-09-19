@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Shared from "./shared";
-import * as Serialization from "./serializable-object";
+import * as Serialization from "./serialization";
 
 export class HostCapabilities extends Serialization.SerializableObject {
     private _capabilities: { [key: string]: Shared.TargetVersion } = {};

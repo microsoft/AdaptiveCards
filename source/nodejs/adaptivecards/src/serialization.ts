@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import * as Shared from "./shared";
+import { GlobalSettings, TargetVersion, SizeAndUnit, IValidationError } from "./shared";
 import * as Utils from "./utils";
 import * as Enums from "./enums";
 
@@ -9,7 +9,7 @@ export class PropertyDefinition {
         return this.name;
     }
 
-    parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): any {
+    parse(sender: SerializableObject, source: PropertyBag, errors?: IValidationError[]): any {
         return source[this.name];
     }
 
@@ -18,14 +18,14 @@ export class PropertyDefinition {
     }
 
     constructor(
-        readonly targetVersion: Shared.TargetVersion,
+        readonly targetVersion: TargetVersion,
         readonly name: string,
         readonly defaultValue?: any,
         readonly onGetInitialValue?: (sender: SerializableObject) => any) { }
 }
 
 export class StringProperty extends PropertyDefinition {
-    parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): string | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, errors?: IValidationError[]): string | undefined {
         let parsedValue = Utils.getStringValue(source[this.name], this.defaultValue);
         let isUndefined = parsedValue === undefined || (parsedValue === "" && this.treatEmptyAsUndefined);
 
@@ -50,7 +50,7 @@ export class StringProperty extends PropertyDefinition {
     }
 
     constructor(
-        readonly targetVersion: Shared.TargetVersion,
+        readonly targetVersion: TargetVersion,
         readonly name: string,
         readonly treatEmptyAsUndefined: boolean = true,
         readonly regEx?: RegExp,
@@ -61,7 +61,7 @@ export class StringProperty extends PropertyDefinition {
 }
 
 export class BoolProperty extends PropertyDefinition {
-    parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): boolean | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, errors?: IValidationError[]): boolean | undefined {
         return Utils.getBoolValue(source[this.name], this.defaultValue);;
     }
 
@@ -75,7 +75,7 @@ export class BoolProperty extends PropertyDefinition {
 }
 
 export class NumProperty extends PropertyDefinition {
-    parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): number | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, errors?: IValidationError[]): number | undefined {
         return Utils.getNumberValue(source[this.name], this.defaultValue);;
     }
 
@@ -89,7 +89,7 @@ export class NumProperty extends PropertyDefinition {
 }
 
 export class PixelSizeProperty extends PropertyDefinition {
-    parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): number | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, errors?: IValidationError[]): number | undefined {
         let result: number | undefined = undefined;
         let value = source[this.name];
 
@@ -97,7 +97,7 @@ export class PixelSizeProperty extends PropertyDefinition {
             let isValid = false;
 
             try {
-                let size = Shared.SizeAndUnit.parse(value, true);
+                let size = SizeAndUnit.parse(value, true);
 
                 if (size.unit == Enums.SizeUnit.Pixel) {
                     result = size.physicalSize;
@@ -135,11 +135,11 @@ export class PixelSizeProperty extends PropertyDefinition {
 
 export interface IVersionedValue<TValue> {
     value: TValue;
-    targetVersion?: Shared.TargetVersion;
+    targetVersion?: TargetVersion;
 }
 
 export class ValueSetProperty extends PropertyDefinition {
-    parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): string | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, errors?: IValidationError[]): string | undefined {
         let parsedValue = Utils.getStringValue(source[this.name], this.defaultValue);
 
         if (parsedValue !== undefined) {
@@ -162,7 +162,7 @@ export class ValueSetProperty extends PropertyDefinition {
     }
 
     constructor(
-        readonly targetVersion: Shared.TargetVersion,
+        readonly targetVersion: TargetVersion,
         readonly name: string,
         readonly values: IVersionedValue<string>[],
         readonly defaultValue?: string,
@@ -172,7 +172,7 @@ export class ValueSetProperty extends PropertyDefinition {
 }
 
 export class EnumProperty<TEnum extends { [s: number]: string }> extends PropertyDefinition {
-    parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): number | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, errors?: IValidationError[]): number | undefined {
         return Utils.getEnumValue(this.enumType, source[this.name], this.defaultValue);
     }
 
@@ -186,7 +186,7 @@ export class EnumProperty<TEnum extends { [s: number]: string }> extends Propert
     }
 
     constructor(
-        readonly targetVersion: Shared.TargetVersion,
+        readonly targetVersion: TargetVersion,
         readonly name: string,
         readonly enumType: TEnum,
         readonly defaultValue?: number,
@@ -209,7 +209,7 @@ export class EnumProperty<TEnum extends { [s: number]: string }> extends Propert
 export type SerializableObjectType = { new(): SerializableObject };
 
 export class SerializableObjectProperty extends PropertyDefinition {
-    parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): SerializableObject | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, errors?: IValidationError[]): SerializableObject | undefined {
         let result: SerializableObject | undefined = undefined;
         let sourceValue = source[this.name];
 
@@ -240,7 +240,7 @@ export class SerializableObjectProperty extends PropertyDefinition {
     }
 
     constructor(
-        readonly targetVersion: Shared.TargetVersion,
+        readonly targetVersion: TargetVersion,
         readonly name: string,
         readonly objectType: SerializableObjectType) {
         super(
@@ -252,7 +252,7 @@ export class SerializableObjectProperty extends PropertyDefinition {
 }
 
 export class SerializableObjectCollectionProperty<T extends SerializableObject> extends PropertyDefinition {
-    parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): T[] | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, errors?: IValidationError[]): T[] | undefined {
         let result: T[] | undefined = [];
 
         let sourceCollection = source[this.name];
@@ -281,7 +281,7 @@ export class SerializableObjectCollectionProperty<T extends SerializableObject> 
     }
 
     constructor(
-        readonly targetVersion: Shared.TargetVersion,
+        readonly targetVersion: TargetVersion,
         readonly name: string,
         readonly onCreateCollectionItemInstance: (sender: SerializableObject, sourceItem: any) => T,
         readonly onGetInitialValue?: (sender: SerializableObject) => T[],
@@ -295,7 +295,7 @@ export class SerializableObjectCollectionProperty<T extends SerializableObject> 
 }
 
 export class CustomProperty<T> extends PropertyDefinition {
-    parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): T {
+    parse(sender: SerializableObject, source: PropertyBag, errors?: IValidationError[]): T {
         return this.onParse(sender, this, source, errors);
     }
 
@@ -304,9 +304,9 @@ export class CustomProperty<T> extends PropertyDefinition {
     }
 
     constructor(
-        readonly targetVersion: Shared.TargetVersion,
+        readonly targetVersion: TargetVersion,
         readonly name: string,
-        readonly onParse: (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: Shared.IValidationError[]) => T,
+        readonly onParse: (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: IValidationError[]) => T,
         readonly onToJSON: (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: T) => void,
         readonly defaultValue?: T,
         readonly onGetInitialValue?: (sender: SerializableObject) => T) {
@@ -433,9 +433,9 @@ export abstract class SerializableObject {
         }
     }
 
-    parse(source: any, errors?: Shared.IValidationError[]) {
+    parse(source: any, errors?: IValidationError[]) {
         this._propertyBag = {};
-        this._rawProperties = Shared.GlobalSettings.enableFullJsonRoundTrip ? (source ? source : {}) : {};
+        this._rawProperties = GlobalSettings.enableFullJsonRoundTrip ? (source ? source : {}) : {};
 
         if (source) {
             let s = this.getSchema();
@@ -454,7 +454,7 @@ export abstract class SerializableObject {
     toJSON(): any {
         let result: any;
 
-        if (Shared.GlobalSettings.enableFullJsonRoundTrip && this._rawProperties && typeof this._rawProperties === "object") {
+        if (GlobalSettings.enableFullJsonRoundTrip && this._rawProperties && typeof this._rawProperties === "object") {
             result = this._rawProperties;
         }
         else {

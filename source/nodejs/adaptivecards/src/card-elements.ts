@@ -1,21 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Enums from "./enums";
-import * as Shared from "./shared";
+import { PaddingDefinition, GlobalSettings, Versions, Version, TargetVersion, SizeAndUnit,SpacingDefinition,
+    Dictionary, StringWithSubstitutions, ContentTypes, IInput, IResourceInformation, IValidationError } from "./shared";
 import * as Utils from "./utils";
 import * as HostConfig from "./host-config";
 import * as TextFormatters from "./text-formatters";
 import { HostCapabilities } from "./host-capabilities";
 import { property, SerializableObject, SerializableObjectSchema, StringProperty,
     BoolProperty, ValueSetProperty, EnumProperty, SerializableObjectCollectionProperty,
-    SerializableObjectProperty, PixelSizeProperty, NumProperty, PropertyBag, CustomProperty, PropertyDefinition } from "./serializable-object";
-
-function invokeSetCollection(action: Action, collection: ActionCollection | undefined) {
-    if (action && collection) {
-        // Closest emulation of "internal" in TypeScript.
-        action["setCollection"](collection);
-    }
-}
+    SerializableObjectProperty, PixelSizeProperty, NumProperty, PropertyBag, CustomProperty, PropertyDefinition } from "./serialization";
 
 function isActionAllowed(action: Action, forbiddenActionTypes: string[]): boolean {
     if (forbiddenActionTypes) {
@@ -29,7 +23,7 @@ function isActionAllowed(action: Action, forbiddenActionTypes: string[]): boolea
     return true;
 }
 
-enum InstanceCreationErrorType {
+const enum InstanceCreationErrorType {
     UnknownType,
     ForbiddenType
 }
@@ -40,8 +34,8 @@ function createCardObjectInstance<T extends CardObject>(
     forbiddenTypeNames: string[],
     allowFallback: boolean,
     createInstanceCallback: (typeName: string) => T | undefined,
-    createValidationErrorCallback: (typeName: string, errorType: InstanceCreationErrorType) => Shared.IValidationError,
-    errors: Shared.IValidationError[] | undefined): T | undefined {
+    createValidationErrorCallback: (typeName: string, errorType: InstanceCreationErrorType) => IValidationError,
+    errors: IValidationError[] | undefined): T | undefined {
     let result: T | undefined = undefined;
 
     if (json && typeof json === "object") {
@@ -99,7 +93,7 @@ export function createActionInstance(
     json: any,
     forbiddenActionTypes: string[],
     allowFallback: boolean,
-    errors: Shared.IValidationError[] | undefined): Action | undefined {
+    errors: IValidationError[] | undefined): Action | undefined {
     return createCardObjectInstance<Action>(
         parent,
         json,
@@ -127,7 +121,7 @@ export function createElementInstance(
     parent: CardElement | undefined,
     json: any,
     allowFallback: boolean,
-    errors: Shared.IValidationError[] | undefined): CardElement | undefined {
+    errors: IValidationError[] | undefined): CardElement | undefined {
     return createCardObjectInstance<CardElement>(
         parent,
         json,
@@ -152,7 +146,7 @@ export function createElementInstance(
 }
 
 export class ValidationFailure {
-    readonly errors: Shared.IValidationError[] = [];
+    readonly errors: IValidationError[] = [];
 
     constructor(readonly cardObject: CardObject) { }
 }
@@ -168,10 +162,10 @@ export class ValidationResults {
         return -1;
     }
 
-    readonly allIds: Shared.Dictionary<number> = {};
+    readonly allIds: Dictionary<number> = {};
     readonly failures: ValidationFailure[] = [];
 
-    addFailure(cardObject: CardObject, error: Shared.IValidationError) {
+    addFailure(cardObject: CardObject, error: IValidationError) {
         let index = this.getFailureIndex(cardObject);
         let failure: ValidationFailure;
 
@@ -192,7 +186,7 @@ export abstract class CardObject extends SerializableObject {
     //#region Schema
 
     static readonly typeNameProperty = new StringProperty(
-        Shared.Versions.v1_0,
+        Versions.v1_0,
         "type",
         undefined,
         undefined,
@@ -200,9 +194,9 @@ export abstract class CardObject extends SerializableObject {
         (sender: object) => {
             return (<CardObject>sender).getJsonTypeName()
         });
-    static readonly idProperty = new StringProperty(Shared.Versions.v1_0, "id");
+    static readonly idProperty = new StringProperty(Versions.v1_0, "id");
     static readonly requiresProperty = new SerializableObjectProperty(
-        Shared.Versions.v1_2,
+        Versions.v1_2,
         "requires",
         HostCapabilities);
 
@@ -277,11 +271,11 @@ export type CardElementHeight = "auto" | "stretch";
 export abstract class CardElement extends CardObject {
     //#region Schema
 
-    static readonly langProperty = new StringProperty(Shared.Versions.v1_1, "lang", true, /^[a-z]{2,3}$/ig);
-    static readonly isVisibleProperty = new BoolProperty(Shared.Versions.v1_2, "isVisible", true);
-    static readonly separatorProperty = new BoolProperty(Shared.Versions.v1_0, "separator", false);
+    static readonly langProperty = new StringProperty(Versions.v1_1, "lang", true, /^[a-z]{2,3}$/ig);
+    static readonly isVisibleProperty = new BoolProperty(Versions.v1_2, "isVisible", true);
+    static readonly separatorProperty = new BoolProperty(Versions.v1_0, "separator", false);
     static readonly heightProperty = new ValueSetProperty(
-        Shared.Versions.v1_1,
+        Versions.v1_1,
         "height",
         [
             { value: "auto" },
@@ -289,16 +283,16 @@ export abstract class CardElement extends CardObject {
         ],
         "auto");
     static readonly horizontalAlignmentProperty = new EnumProperty(
-        Shared.Versions.v1_0,
+        Versions.v1_0,
         "horizontalAlignment",
         Enums.HorizontalAlignment,
         Enums.HorizontalAlignment.Left);
     static readonly spacingProperty = new EnumProperty(
-        Shared.Versions.v1_0,
+        Versions.v1_0,
         "spacing",
         Enums.Spacing,
         Enums.Spacing.Default);
-    static readonly minHeightProperty = new PixelSizeProperty(Shared.Versions.v1_2, "minHeight");
+    static readonly minHeightProperty = new PixelSizeProperty(Versions.v1_2, "minHeight");
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
@@ -353,7 +347,7 @@ export abstract class CardElement extends CardObject {
         // If the element is going to be hidden, reset any changes that were due
         // to overflow truncation (this ensures that if the element is later
         // un-hidden it has the right content)
-        if (Shared.GlobalSettings.useAdvancedCardBottomTruncation && !value) {
+        if (GlobalSettings.useAdvancedCardBottomTruncation && !value) {
             this.undoOverflowTruncation();
         }
 
@@ -375,7 +369,7 @@ export abstract class CardElement extends CardObject {
     private _separatorElement?: HTMLElement;
     private _truncatedDueToOverflow: boolean = false;
     private _defaultRenderedElementDisplayMode: string | null = null;
-    private _padding?: Shared.PaddingDefinition;
+    private _padding?: PaddingDefinition;
 
     private internalRenderSeparator(): HTMLElement | undefined {
         let renderedSeparator = Utils.renderSeparation(
@@ -387,7 +381,7 @@ export abstract class CardElement extends CardObject {
             },
             this.separatorOrientation);
 
-            if (Shared.GlobalSettings.alwaysBleedSeparators && renderedSeparator && this.separatorOrientation == Enums.Orientation.Horizontal) {
+            if (GlobalSettings.alwaysBleedSeparators && renderedSeparator && this.separatorOrientation == Enums.Orientation.Horizontal) {
                 // Adjust separator's margins if the option to always bleed separators is turned on
                 let parentContainer = this.getParentContainer();
     
@@ -512,8 +506,8 @@ export abstract class CardElement extends CardObject {
 
     protected applyPadding() {
         if (this.separatorElement) {
-            if (Shared.GlobalSettings.alwaysBleedSeparators && this.separatorOrientation == Enums.Orientation.Horizontal && !this.isBleeding()) {
-                let padding = new Shared.PaddingDefinition();
+            if (GlobalSettings.alwaysBleedSeparators && this.separatorOrientation == Enums.Orientation.Horizontal && !this.isBleeding()) {
+                let padding = new PaddingDefinition();
 
                 this.getImmediateSurroundingPadding(padding);
 
@@ -546,19 +540,19 @@ export abstract class CardElement extends CardObject {
      */
     protected undoOverflowTruncation() { }
 
-    protected getDefaultPadding(): Shared.PaddingDefinition {
-        return new Shared.PaddingDefinition();
+    protected getDefaultPadding(): PaddingDefinition {
+        return new PaddingDefinition();
     }
 
     protected getHasBackground(): boolean {
         return false;
     }
 
-    protected getPadding(): Shared.PaddingDefinition | undefined {
+    protected getPadding(): PaddingDefinition | undefined {
         return this._padding;
     }
 
-    protected setPadding(value: Shared.PaddingDefinition | undefined) {
+    protected setPadding(value: PaddingDefinition | undefined) {
         this._padding = value;
     }
 
@@ -592,7 +586,7 @@ export abstract class CardElement extends CardObject {
         return false;
     }
 
-    parse(json: any, errors?: Shared.IValidationError[]) {
+    parse(json: any, errors?: IValidationError[]) {
 		super.parse(json, errors);
 
         raiseParseElementEvent(this, json, errors);
@@ -619,7 +613,7 @@ export abstract class CardElement extends CardObject {
     }
 
     getImmediateSurroundingPadding(
-        result: Shared.PaddingDefinition,
+        result: PaddingDefinition,
         processTop: boolean = true,
         processRight: boolean = true,
         processBottom: boolean = true,
@@ -802,7 +796,7 @@ export abstract class CardElement extends CardObject {
         return [];
     }
 
-    getResourceInformation(): Shared.IResourceInformation[] {
+    getResourceInformation(): IResourceInformation[] {
         return [];
     }
 
@@ -814,7 +808,7 @@ export abstract class CardElement extends CardObject {
         return undefined;
     }
 
-    getEffectivePadding(): Shared.PaddingDefinition {
+    getEffectivePadding(): PaddingDefinition {
         let padding = this.getPadding();
 
         return (padding && this.allowCustomPadding) ? padding : this.getDefaultPadding();
@@ -878,7 +872,7 @@ export abstract class CardElement extends CardObject {
 }
 
 export class ActionPropertyDefinition extends PropertyDefinition {
-    parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): Action | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, errors?: IValidationError[]): Action | undefined {
         let parent = <CardElement>sender;
 
         return createActionInstance(
@@ -894,7 +888,7 @@ export class ActionPropertyDefinition extends PropertyDefinition {
     }
 
     constructor(
-        readonly targetVersion: Shared.TargetVersion,
+        readonly targetVersion: TargetVersion,
         readonly name: string,
         readonly forbiddenActionTypes: string[] = []) {
         super(targetVersion, name, undefined);
@@ -905,33 +899,33 @@ export abstract class BaseTextBlock extends CardElement {
     //#region Schema
 
     static readonly textProperty = new StringProperty(
-        Shared.Versions.v1_0,
+        Versions.v1_0,
         "text",
         true);
     static readonly sizeProperty = new EnumProperty(
-        Shared.Versions.v1_0,
+        Versions.v1_0,
         "size",
         Enums.TextSize,
         Enums.TextSize.Default);
     static readonly weightProperty = new EnumProperty(
-        Shared.Versions.v1_0,
+        Versions.v1_0,
         "weight",
         Enums.TextWeight,
         Enums.TextWeight.Default);
     static readonly colorProperty = new EnumProperty(
-        Shared.Versions.v1_0,
+        Versions.v1_0,
         "color",
         Enums.TextColor,
         Enums.TextColor.Default);
     static readonly isSubtleProperty = new BoolProperty(
-        Shared.Versions.v1_0,
+        Versions.v1_0,
         "isSubtle",
         false);
     static readonly fontTypeProperty = new EnumProperty(
-        Shared.Versions.v1_2,
+        Versions.v1_2,
         "fontType",
         Enums.FontType);
-    static readonly selectActionProperty = new ActionPropertyDefinition(Shared.Versions.v1_0, "selectAction", [ "Action.ShowCard" ]);
+    static readonly selectActionProperty = new ActionPropertyDefinition(Versions.v1_0, "selectAction", [ "Action.ShowCard" ]);
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
@@ -1070,8 +1064,8 @@ export abstract class BaseTextBlock extends CardElement {
 export class TextBlock extends BaseTextBlock {
     //#region Schema
 
-    static readonly wrapProperty = new BoolProperty(Shared.Versions.v1_0, "wrap", false);
-    static readonly maxLinesProperty = new NumProperty(Shared.Versions.v1_0, "maxLines");
+    static readonly wrapProperty = new BoolProperty(Versions.v1_0, "wrap", false);
+    static readonly maxLinesProperty = new NumProperty(Versions.v1_0, "maxLines");
 
     @property(TextBlock.wrapProperty)
     wrap: boolean = false;
@@ -1164,7 +1158,7 @@ export class TextBlock extends BaseTextBlock {
                 let formattedText = TextFormatters.formatText(this.lang, this.text);
 
                 if (this.useMarkdown && formattedText) {
-                    if (Shared.GlobalSettings.allowMarkForTextHighlighting) {
+                    if (GlobalSettings.allowMarkForTextHighlighting) {
                         formattedText = formattedText.replace(/<mark>/g, "===").replace(/<\/mark>/g, "/==");
                     }
 
@@ -1176,7 +1170,7 @@ export class TextBlock extends BaseTextBlock {
 
                         // Only process <mark> tag if markdown processing was applied because
                         // markdown processing is also responsible for sanitizing the input string
-                        if (Shared.GlobalSettings.allowMarkForTextHighlighting && this._processedText) {
+                        if (GlobalSettings.allowMarkForTextHighlighting && this._processedText) {
                             let markStyle: string = "";
                             let effectiveStyle = this.getEffectiveStyleDefinition();
 
@@ -1258,7 +1252,7 @@ export class TextBlock extends BaseTextBlock {
                 element.style.textOverflow = "ellipsis";
             }
 
-            if (Shared.GlobalSettings.useAdvancedTextBlockTruncation || Shared.GlobalSettings.useAdvancedCardBottomTruncation) {
+            if (GlobalSettings.useAdvancedTextBlockTruncation || GlobalSettings.useAdvancedCardBottomTruncation) {
                 this._originalInnerHtml = element.innerHTML;
             }
 
@@ -1280,7 +1274,7 @@ export class TextBlock extends BaseTextBlock {
     protected undoOverflowTruncation() {
         this.restoreOriginalContent();
 
-        if (Shared.GlobalSettings.useAdvancedTextBlockTruncation && this.maxLines) {
+        if (GlobalSettings.useAdvancedTextBlockTruncation && this.maxLines) {
             let maxHeight = this._computedLineHeight * this.maxLines;
 
             this.truncateIfSupported(maxHeight);
@@ -1344,7 +1338,7 @@ export class TextBlock extends BaseTextBlock {
     updateLayout(processChildren: boolean = false) {
         super.updateLayout(processChildren);
 
-        if (Shared.GlobalSettings.useAdvancedTextBlockTruncation && this.maxLines && this.isDisplayed()) {
+        if (GlobalSettings.useAdvancedTextBlockTruncation && this.maxLines && this.isDisplayed()) {
             // Reset the element's innerHTML in case the available room for
             // content has increased
             this.restoreOriginalContent();
@@ -1374,9 +1368,9 @@ class Label extends TextBlock {
 export class TextRun extends BaseTextBlock {
     //#region Schema
 
-    static readonly italicProperty = new BoolProperty(Shared.Versions.v1_2, "italic", false);
-    static readonly strikethroughProperty = new BoolProperty(Shared.Versions.v1_2, "strikethrough", false);
-    static readonly highlightProperty = new BoolProperty(Shared.Versions.v1_2, "highlight", false);
+    static readonly italicProperty = new BoolProperty(Versions.v1_2, "italic", false);
+    static readonly strikethroughProperty = new BoolProperty(Versions.v1_2, "strikethrough", false);
+    static readonly highlightProperty = new BoolProperty(Versions.v1_2, "highlight", false);
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
@@ -1541,7 +1535,7 @@ export class RichTextBlock extends CardElement {
         return result;
     }
 
-    parse(json: any, errors?: Shared.IValidationError[]) {
+    parse(json: any, errors?: IValidationError[]) {
         super.parse(json, errors);
 
         this._inlines = [];
@@ -1625,8 +1619,8 @@ export class RichTextBlock extends CardElement {
 export class Fact extends SerializableObject {
     //#region Schema
 
-    static readonly titleProperty = new StringProperty(Shared.Versions.v1_0, "title");
-    static readonly valueProperty = new StringProperty(Shared.Versions.v1_0, "value");
+    static readonly titleProperty = new StringProperty(Versions.v1_0, "title");
+    static readonly valueProperty = new StringProperty(Versions.v1_0, "value");
 
     // For historic reasons, the "title" schema property is exposed as "name" in the OM.
     @property(Fact.titleProperty)
@@ -1653,7 +1647,7 @@ export class FactSet extends CardElement {
     //#region Schema
 
     static readonly factsProperty = new SerializableObjectCollectionProperty<Fact>(
-        Shared.Versions.v1_0,
+        Versions.v1_0,
         "facts",
         (sourceItem: any) => { return new Fact(); },
         (sender: object) => { return []; });
@@ -1753,7 +1747,7 @@ class ImageDimensionProperty extends PropertyDefinition {
         return this.jsonName;
     }
     
-    parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): number | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, errors?: IValidationError[]): number | undefined {
         let result: number | undefined = undefined;
         let value = source[this.jsonName];
 
@@ -1761,7 +1755,7 @@ class ImageDimensionProperty extends PropertyDefinition {
             let isValid = false;
 
             try {
-                let size = Shared.SizeAndUnit.parse(value, true);
+                let size = SizeAndUnit.parse(value, true);
 
                 if (size.unit == Enums.SizeUnit.Pixel) {
                     result = size.physicalSize;
@@ -1795,7 +1789,7 @@ class ImageDimensionProperty extends PropertyDefinition {
     }
 
     constructor(
-        readonly targetVersion: Shared.TargetVersion,
+        readonly targetVersion: TargetVersion,
         readonly name: string,
         readonly jsonName: string) {
         super(targetVersion, name);
@@ -1805,22 +1799,22 @@ class ImageDimensionProperty extends PropertyDefinition {
 export class Image extends CardElement {
     //#region Schema
 
-    static readonly urlProperty = new StringProperty(Shared.Versions.v1_0, "url");
-    static readonly altTextProperty = new StringProperty(Shared.Versions.v1_0, "altText");
-    static readonly backgroundColorProperty = new StringProperty(Shared.Versions.v1_1, "backgroundColor");
+    static readonly urlProperty = new StringProperty(Versions.v1_0, "url");
+    static readonly altTextProperty = new StringProperty(Versions.v1_0, "altText");
+    static readonly backgroundColorProperty = new StringProperty(Versions.v1_1, "backgroundColor");
     static readonly styleProperty = new EnumProperty(
-        Shared.Versions.v1_0,
+        Versions.v1_0,
         "style",
         Enums.ImageStyle,
         Enums.ImageStyle.Default);
     static readonly sizeProperty = new EnumProperty(
-        Shared.Versions.v1_0,
+        Versions.v1_0,
         "size",
         Enums.Size,
         Enums.Size.Auto);
-    static readonly pixelWidthProperty = new ImageDimensionProperty(Shared.Versions.v1_1, "pixelWidth", "width");
-    static readonly pixelHeightProperty = new ImageDimensionProperty(Shared.Versions.v1_1, "pixelHeight", "height");
-    static readonly selectActionProperty = new ActionPropertyDefinition(Shared.Versions.v1_0, "selectAction", [ "Action.ShowCard" ]);
+    static readonly pixelWidthProperty = new ImageDimensionProperty(Versions.v1_1, "pixelWidth", "width");
+    static readonly pixelHeightProperty = new ImageDimensionProperty(Versions.v1_1, "pixelHeight", "height");
+    static readonly selectActionProperty = new ActionPropertyDefinition(Versions.v1_0, "selectAction", [ "Action.ShowCard" ]);
 
     @property(Image.urlProperty)
     url?: string;
@@ -1999,7 +1993,7 @@ export class Image extends CardElement {
         return result;
     }
 
-    getResourceInformation(): Shared.IResourceInformation[] {
+    getResourceInformation(): IResourceInformation[] {
         if (!Utils.isNullOrEmpty(this.url)) {
             return [{ url: <string>this.url, mimeType: "image" }]
         }
@@ -2012,7 +2006,7 @@ export class Image extends CardElement {
 export abstract class CardElementContainer extends CardElement {
     //#region Schema
 
-    static readonly selectActionProperty = new ActionPropertyDefinition(Shared.Versions.v1_0, "selectAction", [ "Action.ShowCard" ]);
+    static readonly selectActionProperty = new ActionPropertyDefinition(Versions.v1_0, "selectAction", [ "Action.ShowCard" ]);
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
@@ -2050,7 +2044,7 @@ export abstract class CardElementContainer extends CardElement {
             return;
         }
 
-        let physicalPadding = new Shared.SpacingDefinition();
+        let physicalPadding = new SpacingDefinition();
 
         if (this.getEffectivePadding()) {
             physicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(this.getEffectivePadding());
@@ -2173,8 +2167,8 @@ export abstract class CardElementContainer extends CardElement {
         return result;
     }
 
-    getResourceInformation(): Shared.IResourceInformation[] {
-        let result: Shared.IResourceInformation[] = [];
+    getResourceInformation(): IResourceInformation[] {
+        let result: IResourceInformation[] = [];
 
         for (let i = 0; i < this.getItemCount(); i++) {
             result = result.concat(this.getItemAt(i).getResourceInformation());
@@ -2204,13 +2198,13 @@ export class ImageSet extends CardElementContainer {
     //#region Schema
 
     static readonly imagesProperty = new SerializableObjectCollectionProperty<Image>(
-        Shared.Versions.v1_0,
+        Versions.v1_0,
         "images",
         (sender: SerializableObject, sourceItem: any) => { return new Image(); },
         (sender: SerializableObject) => { return []; },
         (sender: SerializableObject, item: Image) => { item.setParent(<CardElement>sender); });
     static readonly imageSizeProperty = new EnumProperty(
-        Shared.Versions.v1_0,
+        Versions.v1_0,
         "imageSize",
         Enums.Size,
         Enums.Size.Medium);
@@ -2307,8 +2301,8 @@ export class ImageSet extends CardElementContainer {
 export class MediaSource extends SerializableObject {
     //#region Schema
 
-    static readonly mimeTypeProperty = new StringProperty(Shared.Versions.v1_1, "mimeType");
-    static readonly urlProperty = new StringProperty(Shared.Versions.v1_1, "url");
+    static readonly mimeTypeProperty = new StringProperty(Versions.v1_1, "mimeType");
+    static readonly urlProperty = new StringProperty(Versions.v1_1, "url");
 
     @property(MediaSource.mimeTypeProperty)
     mimeType?: string;
@@ -2350,12 +2344,12 @@ export class Media extends CardElement {
     //#region Schema
 
     static readonly sourcesProperty = new SerializableObjectCollectionProperty<MediaSource>(
-        Shared.Versions.v1_1,
+        Versions.v1_1,
         "sources",
         (sender: SerializableObject, sourceItem: any) => { return new MediaSource(); },
         (sender: SerializableObject) => { return []; });
-    static readonly posterProperty = new StringProperty(Shared.Versions.v1_1, "poster");
-    static readonly altTextProperty = new StringProperty(Shared.Versions.v1_1, "altText");
+    static readonly posterProperty = new StringProperty(Versions.v1_1, "poster");
+    static readonly altTextProperty = new StringProperty(Versions.v1_1, "altText");
 
     @property(Media.sourcesProperty)
     sources: MediaSource[] = [];
@@ -2548,8 +2542,8 @@ export class Media extends CardElement {
         return "Media";
     }
 
-    getResourceInformation(): Shared.IResourceInformation[] {
-        let result: Shared.IResourceInformation[] = [];
+    getResourceInformation(): IResourceInformation[] {
+        let result: IResourceInformation[] = [];
 
         let posterUrl = this.getPosterUrl();
 
@@ -2579,8 +2573,8 @@ export class Media extends CardElement {
 export class InputValidationOptions extends SerializableObject {
     //#region Schema
 
-    static readonly necessityProperty = new EnumProperty(Shared.Versions.vNext, "necessity", Enums.InputValidationNecessity, Enums.InputValidationNecessity.Optional);
-    static readonly errorMessageProperty = new StringProperty(Shared.Versions.vNext, "errorMessagwe");
+    static readonly necessityProperty = new EnumProperty(Versions.vNext, "necessity", Enums.InputValidationNecessity, Enums.InputValidationNecessity.Optional);
+    static readonly errorMessageProperty = new StringProperty(Versions.vNext, "errorMessagwe");
 
     protected getSchemaKey(): string {
         return "InputValidationOptions";
@@ -2599,7 +2593,7 @@ export class InputValidationOptions extends SerializableObject {
     }
 }
 
-export abstract class Input extends CardElement implements Shared.IInput {
+export abstract class Input extends CardElement implements IInput {
     private _outerContainerElement: HTMLElement;
     private _inputControlContainerElement: HTMLElement;
     private _errorMessageElement?: HTMLElement;
@@ -2634,7 +2628,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
             this._renderedInputControlElement = renderedInputControlElement;
             this._renderedInputControlElement.style.minWidth = "0px";
 
-            if (Shared.GlobalSettings.useBuiltInInputValidation && this.isNullable && this.validation.necessity == Enums.InputValidationNecessity.RequiredWithVisualCue) {
+            if (GlobalSettings.useBuiltInInputValidation && this.isNullable && this.validation.necessity == Enums.InputValidationNecessity.RequiredWithVisualCue) {
                 this._renderedInputControlElement.classList.add(hostConfig.makeCssClassName("ac-input-required"));
             }
 
@@ -2659,7 +2653,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
     }
 
     protected resetValidationFailureCue() {
-        if (Shared.GlobalSettings.useBuiltInInputValidation && this.renderedElement) {
+        if (GlobalSettings.useBuiltInInputValidation && this.renderedElement) {
             this._renderedInputControlElement.classList.remove(this.hostConfig.makeCssClassName("ac-input-validation-failed"));
 
             if (this._errorMessageElement) {
@@ -2671,7 +2665,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
     }
 
     protected showValidationErrorMessage() {
-        if (this.renderedElement && Shared.GlobalSettings.useBuiltInInputValidation && Shared.GlobalSettings.displayInputValidationErrors && !Utils.isNullOrEmpty(this.validation.errorMessage)) {
+        if (this.renderedElement && GlobalSettings.useBuiltInInputValidation && GlobalSettings.displayInputValidationErrors && !Utils.isNullOrEmpty(this.validation.errorMessage)) {
             this._errorMessageElement = document.createElement("span");
             this._errorMessageElement.className = this.hostConfig.makeCssClassName("ac-input-validation-error-message");
             this._errorMessageElement.textContent = <string>this.validation.errorMessage;
@@ -2687,14 +2681,14 @@ export abstract class Input extends CardElement implements Shared.IInput {
     //#region Schema
 
     static readonly validationProperty = new SerializableObjectProperty(
-        Shared.Versions.vNext,
+        Versions.vNext,
         "validation",
         InputValidationOptions);
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
 
-        if (!Shared.GlobalSettings.useBuiltInInputValidation) {
+        if (!GlobalSettings.useBuiltInInputValidation) {
             schema.remove(Input.validationProperty);
         }
     }
@@ -2722,7 +2716,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
     }
 
     validateValue(): boolean {
-        if (Shared.GlobalSettings.useBuiltInInputValidation) {
+        if (GlobalSettings.useBuiltInInputValidation) {
             this.resetValidationFailureCue();
 
             let result = this.validation.necessity != Enums.InputValidationNecessity.Optional ? this.isSet() : true;
@@ -2752,12 +2746,12 @@ export abstract class Input extends CardElement implements Shared.IInput {
 export class TextInput extends Input {
     //#region Schema
 
-    static readonly valueProperty = new StringProperty(Shared.Versions.v1_0, "value");
-    static readonly maxLengthProperty = new NumProperty(Shared.Versions.v1_0, "maxLength");
-    static readonly isMultilineProperty = new BoolProperty(Shared.Versions.v1_0, "isMultiline", false);
-    static readonly placeholderProperty = new StringProperty(Shared.Versions.v1_0, "placeholder");
-    static readonly styleProperty = new EnumProperty(Shared.Versions.v1_0, "style", Enums.InputTextStyle, Enums.InputTextStyle.Text);
-    static readonly inlineActionProperty = new ActionPropertyDefinition(Shared.Versions.v1_0, "inlineAction", [ "Action.ShowCard" ]);
+    static readonly valueProperty = new StringProperty(Versions.v1_0, "value");
+    static readonly maxLengthProperty = new NumProperty(Versions.v1_0, "maxLength");
+    static readonly isMultilineProperty = new BoolProperty(Versions.v1_0, "isMultiline", false);
+    static readonly placeholderProperty = new StringProperty(Versions.v1_0, "placeholder");
+    static readonly styleProperty = new EnumProperty(Versions.v1_0, "style", Enums.InputTextStyle, Enums.InputTextStyle.Text);
+    static readonly inlineActionProperty = new ActionPropertyDefinition(Versions.v1_0, "inlineAction", [ "Action.ShowCard" ]);
 
     @property(TextInput.valueProperty)
     defaultValue?: string;
@@ -2942,11 +2936,11 @@ export class TextInput extends Input {
 export class ToggleInput extends Input {
     //#region Schema
 
-    static readonly valueProperty = new StringProperty(Shared.Versions.v1_0, "value");
-    static readonly titleProperty = new StringProperty(Shared.Versions.v1_0, "title");
-    static readonly valueOnProperty = new StringProperty(Shared.Versions.v1_0, "valueOn", true, undefined, "true", (sender: SerializableObject) => { return "true"; });
-    static readonly valueOffProperty = new StringProperty(Shared.Versions.v1_0, "valueOff", true, undefined, "false", (sender: SerializableObject) => { return "false"; });
-    static readonly wrapProperty = new BoolProperty(Shared.Versions.v1_2, "wrap", false);
+    static readonly valueProperty = new StringProperty(Versions.v1_0, "value");
+    static readonly titleProperty = new StringProperty(Versions.v1_0, "title");
+    static readonly valueOnProperty = new StringProperty(Versions.v1_0, "valueOn", true, undefined, "true", (sender: SerializableObject) => { return "true"; });
+    static readonly valueOffProperty = new StringProperty(Versions.v1_0, "valueOff", true, undefined, "false", (sender: SerializableObject) => { return "false"; });
+    static readonly wrapProperty = new BoolProperty(Versions.v1_2, "wrap", false);
 
     @property(ToggleInput.valueProperty)
     defaultValue?: string;
@@ -3002,7 +2996,7 @@ export class ToggleInput extends Input {
             label.forElementId = this._checkboxInputElement.id;
             label.hostConfig = this.hostConfig;
             label.text = Utils.isNullOrEmpty(this.title) ? this.getJsonTypeName() : this.title;
-            label.useMarkdown = Shared.GlobalSettings.useMarkdownInRadioButtonAndCheckbox;
+            label.useMarkdown = GlobalSettings.useMarkdownInRadioButtonAndCheckbox;
             label.wrap = this.wrap;
 
             let labelElement = label.render();
@@ -3049,8 +3043,8 @@ export class ToggleInput extends Input {
 export class Choice extends SerializableObject {
     //#region Schema
 
-    static readonly titleProperty = new StringProperty(Shared.Versions.v1_0, "title");
-    static readonly valueProperty = new StringProperty(Shared.Versions.v1_0, "value");
+    static readonly titleProperty = new StringProperty(Versions.v1_0, "title");
+    static readonly valueProperty = new StringProperty(Versions.v1_0, "value");
 
     @property(Choice.titleProperty)
     title?: string;
@@ -3075,22 +3069,22 @@ export class Choice extends SerializableObject {
 export class ChoiceSetInput extends Input {
     //#region Schema
 
-    static readonly valueProperty = new StringProperty(Shared.Versions.v1_0, "value");
+    static readonly valueProperty = new StringProperty(Versions.v1_0, "value");
     static readonly choicesProperty = new SerializableObjectCollectionProperty<Choice>(
-        Shared.Versions.v1_0,
+        Versions.v1_0,
         "choices",
         (sourceItem: any) => { return new Choice(); },
         (sender: object) => { return []; });
     static readonly styleProperty = new ValueSetProperty(
-        Shared.Versions.v1_0,
+        Versions.v1_0,
         "style",
         [
             { value: "compact" },
             { value: "expanded" }
         ]);
-    static readonly isMultiSelectProperty = new BoolProperty(Shared.Versions.v1_0, "isMultiSelect", false);
-    static readonly placeholderProperty = new StringProperty(Shared.Versions.v1_0, "placeholder");
-    static readonly wrapProperty = new BoolProperty(Shared.Versions.v1_2, "wrap", false);
+    static readonly isMultiSelectProperty = new BoolProperty(Versions.v1_0, "isMultiSelect", false);
+    static readonly placeholderProperty = new StringProperty(Versions.v1_0, "placeholder");
+    static readonly wrapProperty = new BoolProperty(Versions.v1_2, "wrap", false);
 
     @property(ChoiceSetInput.valueProperty)
     defaultValue?: string;
@@ -3213,7 +3207,7 @@ export class ChoiceSetInput extends Input {
                     label.forElementId = radioInput.id;
                     label.hostConfig = this.hostConfig;
                     label.text = Utils.isNullOrEmpty(choice.title) ? "Choice " + (i++) : choice.title;
-                    label.useMarkdown = Shared.GlobalSettings.useMarkdownInRadioButtonAndCheckbox;
+                    label.useMarkdown = GlobalSettings.useMarkdownInRadioButtonAndCheckbox;
                     label.wrap = this.wrap;
 
                     let labelElement = label.render();
@@ -3281,7 +3275,7 @@ export class ChoiceSetInput extends Input {
                 label.forElementId = checkboxInput.id;
                 label.hostConfig = this.hostConfig;
                 label.text = Utils.isNullOrEmpty(choice.title) ? "Choice " + (i++) : choice.title;
-                label.useMarkdown = Shared.GlobalSettings.useMarkdownInRadioButtonAndCheckbox;
+                label.useMarkdown = GlobalSettings.useMarkdownInRadioButtonAndCheckbox;
                 label.wrap = this.wrap;
 
                 let labelElement = label.render();
@@ -3386,10 +3380,10 @@ export class ChoiceSetInput extends Input {
 export class NumberInput extends Input {
     //#region Schema
 
-    static readonly valueProperty = new NumProperty(Shared.Versions.v1_0, "value");
-    static readonly placeholderProperty = new StringProperty(Shared.Versions.v1_0, "placeholder");
-    static readonly minProperty = new NumProperty(Shared.Versions.v1_0, "min");
-    static readonly maxProperty = new NumProperty(Shared.Versions.v1_0, "max");
+    static readonly valueProperty = new NumProperty(Versions.v1_0, "value");
+    static readonly placeholderProperty = new StringProperty(Versions.v1_0, "placeholder");
+    static readonly minProperty = new NumProperty(Versions.v1_0, "min");
+    static readonly maxProperty = new NumProperty(Versions.v1_0, "max");
 
     @property(NumberInput.valueProperty)
     defaultValue?: number;
@@ -3453,10 +3447,10 @@ export class NumberInput extends Input {
 export class DateInput extends Input {
     //#region Schema
 
-    static readonly valueProperty = new StringProperty(Shared.Versions.v1_0, "value");
-    static readonly placeholderProperty = new StringProperty(Shared.Versions.v1_0, "placeholder");
-    static readonly minProperty = new StringProperty(Shared.Versions.v1_0, "min");
-    static readonly maxProperty = new StringProperty(Shared.Versions.v1_0, "max");
+    static readonly valueProperty = new StringProperty(Versions.v1_0, "value");
+    static readonly placeholderProperty = new StringProperty(Versions.v1_0, "placeholder");
+    static readonly minProperty = new StringProperty(Versions.v1_0, "min");
+    static readonly maxProperty = new StringProperty(Versions.v1_0, "max");
 
     @property(DateInput.valueProperty)
     defaultValue?: string;
@@ -3511,11 +3505,11 @@ export class DateInput extends Input {
 }
 
 export class TimePropertyDefinition extends CustomProperty<string | undefined> {
-    constructor(readonly targetVersion: Shared.TargetVersion, readonly name: string) {
+    constructor(readonly targetVersion: TargetVersion, readonly name: string) {
         super(
             targetVersion,
             name,
-            (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: Shared.IValidationError[]) => {
+            (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: IValidationError[]) => {
                 let value = source[property.name];
     
                 if (typeof value === "string" && !Utils.isNullOrEmpty(value) && /^[0-9]{2}:[0-9]{2}$/.test(value)) {
@@ -3533,10 +3527,10 @@ export class TimePropertyDefinition extends CustomProperty<string | undefined> {
 export class TimeInput extends Input {
     //#region Schema
 
-    static readonly valueProperty = new TimePropertyDefinition(Shared.Versions.v1_0, "value");
-    static readonly placeholderProperty = new StringProperty(Shared.Versions.v1_0, "placeholder");
-    static readonly minProperty = new TimePropertyDefinition(Shared.Versions.v1_0, "min");
-    static readonly maxProperty = new TimePropertyDefinition(Shared.Versions.v1_0, "max");
+    static readonly valueProperty = new TimePropertyDefinition(Versions.v1_0, "value");
+    static readonly placeholderProperty = new StringProperty(Versions.v1_0, "placeholder");
+    static readonly minProperty = new TimePropertyDefinition(Versions.v1_0, "min");
+    static readonly maxProperty = new TimePropertyDefinition(Versions.v1_0, "max");
 
     @property(TimeInput.valueProperty)
     defaultValue?: string;
@@ -3588,7 +3582,7 @@ export class TimeInput extends Input {
     }
 }
 
-enum ActionButtonState {
+const enum ActionButtonState {
     Normal,
     Expanded,
     Subdued
@@ -3686,10 +3680,10 @@ export abstract class Action extends CardObject {
                 errors
             );
     */
-    static readonly titleProperty = new StringProperty(Shared.Versions.v1_0, "title");
-    static readonly iconUrlProperty = new StringProperty(Shared.Versions.v1_1, "iconUrl");
+    static readonly titleProperty = new StringProperty(Versions.v1_0, "title");
+    static readonly iconUrlProperty = new StringProperty(Versions.v1_1, "iconUrl");
     static readonly styleProperty = new ValueSetProperty(
-        Shared.Versions.v1_2,
+        Versions.v1_2,
         "style",
         [
             { value: Enums.ActionStyle.Default },
@@ -3698,11 +3692,11 @@ export abstract class Action extends CardObject {
         ],
         Enums.ActionStyle.Default);
     static readonly requiresProperty = new SerializableObjectProperty(
-        Shared.Versions.v1_2,
+        Versions.v1_2,
         "requires",
         HostCapabilities);
     // TODO: Revise this when finalizing input validation
-    static readonly ignoreInputValidationProperty = new BoolProperty(Shared.Versions.vNext, "ignoreInputValidation", false);
+    static readonly ignoreInputValidationProperty = new BoolProperty(Versions.vNext, "ignoreInputValidation", false);
 
     @property(Action.titleProperty)
     title?: string;
@@ -3718,26 +3712,22 @@ export abstract class Action extends CardObject {
     private _actionCollection?: ActionCollection; // hold the reference to its action collection
     private _renderedElement?: HTMLElement;
 
-    private setCollection(actionCollection: ActionCollection) {
-        this._actionCollection = actionCollection;
-    }
-
     protected addCssClasses(element: HTMLElement) {
         // Do nothing in base implementation
     }
 
-    protected internalGetReferencedInputs(allInputs: Input[]): Shared.Dictionary<Input> {
+    protected internalGetReferencedInputs(allInputs: Input[]): Dictionary<Input> {
         return {};
     }
 
-    protected internalPrepareForExecution(inputs: Shared.Dictionary<Input> | undefined) {
+    protected internalPrepareForExecution(inputs: Dictionary<Input> | undefined) {
         // Do nothing in base implementation
     }
 
-    protected internalValidateInputs(referencedInputs: Shared.Dictionary<Input> | undefined): Input[] {
+    protected internalValidateInputs(referencedInputs: Dictionary<Input> | undefined): Input[] {
         let result: Input[] = [];
 
-        if (Shared.GlobalSettings.useBuiltInInputValidation && !this.ignoreInputValidation && referencedInputs) {
+        if (GlobalSettings.useBuiltInInputValidation && !this.ignoreInputValidation && referencedInputs) {
             for (let key of Object.keys(referencedInputs)) {
                 let input = referencedInputs[key];
 
@@ -3760,7 +3750,7 @@ export abstract class Action extends CardObject {
         // Do nothing in base implementation
     }
 
-    parse(json: any, errors?: Shared.IValidationError[]) {
+    parse(json: any, errors?: IValidationError[]) {
 		super.parse(json, errors);
 
         raiseParseActionEvent(this, json, errors);
@@ -3866,7 +3856,7 @@ export abstract class Action extends CardObject {
         return [];
     }
 
-    getResourceInformation(): Shared.IResourceInformation[] {
+    getResourceInformation(): IResourceInformation[] {
         if (!Utils.isNullOrEmpty(this.iconUrl)) {
             return [{ url: <string>this.iconUrl, mimeType: "image" }]
         }
@@ -3884,7 +3874,7 @@ export abstract class Action extends CardObject {
         }
     }
 
-    getReferencedInputs(): Shared.Dictionary<Input> | undefined {
+    getReferencedInputs(): Dictionary<Input> | undefined {
         return this.parent ? this.internalGetReferencedInputs(this.parent.getRootElement().getAllInputs()) : undefined;
     }
 
@@ -3923,7 +3913,7 @@ export abstract class Action extends CardObject {
 export class SubmitAction extends Action {
     //#region Schema
 
-    static readonly dataProperty = new PropertyDefinition(Shared.Versions.v1_0, "data");
+    static readonly dataProperty = new PropertyDefinition(Versions.v1_0, "data");
 
     @property(SubmitAction.dataProperty)
     private _originalData?: PropertyBag;
@@ -3940,8 +3930,8 @@ export class SubmitAction extends Action {
     private _isPrepared: boolean = false;
     private _processedData?: PropertyBag;
 
-    protected internalGetReferencedInputs(allInputs: Input[]): Shared.Dictionary<Input> {
-        let result: Shared.Dictionary<Input> = {};
+    protected internalGetReferencedInputs(allInputs: Input[]): Dictionary<Input> {
+        let result: Dictionary<Input> = {};
 
         for (let input of allInputs) {
             result[input.id] = input;
@@ -3950,7 +3940,7 @@ export class SubmitAction extends Action {
         return result;
     }
 
-    protected internalPrepareForExecution(inputs: Shared.Dictionary<Input>) {
+    protected internalPrepareForExecution(inputs: Dictionary<Input>) {
         if (this._originalData) {
             this._processedData = JSON.parse(JSON.stringify(this._originalData));
         }
@@ -3996,7 +3986,7 @@ export class SubmitAction extends Action {
 export class OpenUrlAction extends Action {
     //#region Schema
 
-    static readonly urlProperty = new StringProperty(Shared.Versions.v1_0, "url");
+    static readonly urlProperty = new StringProperty(Versions.v1_0, "url");
 
     @property(OpenUrlAction.urlProperty)
     url?: string;
@@ -4033,9 +4023,9 @@ export class ToggleVisibilityAction extends Action {
     //#region Schema
 
     static readonly targetElementsProperty = new CustomProperty<PropertyBag>(
-        Shared.Versions.v1_2,
+        Versions.v1_2,
         "targetElements",
-        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: Shared.IValidationError[]) => {
+        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: IValidationError[]) => {
             let result: PropertyBag = {}
 
             if (Array.isArray(source[property.name])) {
@@ -4117,29 +4107,29 @@ export class ToggleVisibilityAction extends Action {
 }
 
 class StringWithSubstitutionPropertyDefinition extends PropertyDefinition  {
-    parse(sender: SerializableObject, source: PropertyBag, errors?: Shared.IValidationError[]): Shared.StringWithSubstitutions {
-        let result = new Shared.StringWithSubstitutions();
+    parse(sender: SerializableObject, source: PropertyBag, errors?: IValidationError[]): StringWithSubstitutions {
+        let result = new StringWithSubstitutions();
         result.set(Utils.getStringValue(source[this.name]));
 
         return result;
     }
 
-    toJSON(sender: SerializableObject, target: PropertyBag, value: Shared.StringWithSubstitutions): void {
+    toJSON(sender: SerializableObject, target: PropertyBag, value: StringWithSubstitutions): void {
         Utils.setProperty(target, this.name, value.getOriginal());
     }
 
     constructor(
-        readonly targetVersion: Shared.TargetVersion,
+        readonly targetVersion: TargetVersion,
         readonly name: string) {
-        super(targetVersion, name, undefined, () => { return new Shared.StringWithSubstitutions(); });
+        super(targetVersion, name, undefined, () => { return new StringWithSubstitutions(); });
     }
 }
 
 export class HttpHeader extends SerializableObject {
     //#region Schema
 
-    static readonly nameProperty = new StringProperty(Shared.Versions.v1_0, "name");
-    static readonly valueProperty = new StringWithSubstitutionPropertyDefinition(Shared.Versions.v1_0, "value");
+    static readonly nameProperty = new StringProperty(Versions.v1_0, "name");
+    static readonly valueProperty = new StringWithSubstitutionPropertyDefinition(Versions.v1_0, "value");
 
     protected getSchemaKey(): string {
         return "HttpHeader";
@@ -4149,7 +4139,7 @@ export class HttpHeader extends SerializableObject {
     name: string;
 
     @property(HttpHeader.valueProperty)
-    private _value: Shared.StringWithSubstitutions;
+    private _value: StringWithSubstitutions;
 
     //#endregion
 
@@ -4160,12 +4150,12 @@ export class HttpHeader extends SerializableObject {
         this.value = value;
     }
 
-    getReferencedInputs(inputs: Input[], referencedInputs: Shared.Dictionary<Input>) {
+    getReferencedInputs(inputs: Input[], referencedInputs: Dictionary<Input>) {
         this._value.getReferencedInputs(inputs, referencedInputs);
     }
 
-    prepareForExecution(inputs: Shared.Dictionary<Input>) {
-        this._value.substituteInputValues(inputs, Shared.ContentTypes.applicationXWwwFormUrlencoded);
+    prepareForExecution(inputs: Dictionary<Input>) {
+        this._value.substituteInputValues(inputs, ContentTypes.applicationXWwwFormUrlencoded);
     }
 
     get value(): string | undefined {
@@ -4180,11 +4170,11 @@ export class HttpHeader extends SerializableObject {
 export class HttpAction extends Action {
     //#region Schema
 
-    static readonly urlProperty = new StringWithSubstitutionPropertyDefinition(Shared.Versions.v1_0, "url");
-    static readonly bodyProperty = new StringWithSubstitutionPropertyDefinition(Shared.Versions.v1_0, "body");
-    static readonly methodProperty = new StringProperty(Shared.Versions.v1_0, "method");
+    static readonly urlProperty = new StringWithSubstitutionPropertyDefinition(Versions.v1_0, "url");
+    static readonly bodyProperty = new StringWithSubstitutionPropertyDefinition(Versions.v1_0, "body");
+    static readonly methodProperty = new StringProperty(Versions.v1_0, "method");
     static readonly headersProperty = new SerializableObjectCollectionProperty(
-        Shared.Versions.v1_0,
+        Versions.v1_0,
         "headers",
         (sender: SerializableObject, sourceItem: any) => { return new HttpHeader(); });
 
@@ -4195,10 +4185,10 @@ export class HttpAction extends Action {
     }
 
     @property(HttpAction.urlProperty)
-    private _url: Shared.StringWithSubstitutions;
+    private _url: StringWithSubstitutions;
 
     @property(HttpAction.bodyProperty)
-    private _body: Shared.StringWithSubstitutions;
+    private _body: StringWithSubstitutions;
 
     @property(HttpAction.bodyProperty)
     method?: string;
@@ -4215,8 +4205,8 @@ export class HttpAction extends Action {
     // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
     static readonly JsonTypeName: "Action.Http" = "Action.Http";
 
-    protected internalGetReferencedInputs(allInputs: Input[]): Shared.Dictionary<Input> {
-        let result: Shared.Dictionary<Input> = {};
+    protected internalGetReferencedInputs(allInputs: Input[]): Dictionary<Input> {
+        let result: Dictionary<Input> = {};
 
         this._url.getReferencedInputs(allInputs, result);
 
@@ -4229,10 +4219,10 @@ export class HttpAction extends Action {
         return result;
     }
 
-    protected internalPrepareForExecution(inputs: Shared.Dictionary<Input>) {
-        this._url.substituteInputValues(inputs, Shared.ContentTypes.applicationXWwwFormUrlencoded);
+    protected internalPrepareForExecution(inputs: Dictionary<Input>) {
+        this._url.substituteInputValues(inputs, ContentTypes.applicationXWwwFormUrlencoded);
 
-        let contentType = Shared.ContentTypes.applicationJson;
+        let contentType = ContentTypes.applicationJson;
 
         for (let header of this.headers) {
             header.prepareForExecution(inputs);
@@ -4335,7 +4325,7 @@ export class ShowCardAction extends Action {
         this.card.internalValidateProperties(context);
     }
 
-    parse(json: any, errors?: Shared.IValidationError[]) {
+    parse(json: any, errors?: IValidationError[]) {
         super.parse(json, errors);
 
         let jsonCard = json["card"];
@@ -4372,7 +4362,7 @@ export class ShowCardAction extends Action {
         return this.card.getAllInputs();
     }
 
-    getResourceInformation(): Shared.IResourceInformation[] {
+    getResourceInformation(): IResourceInformation[] {
         return super.getResourceInformation().concat(this.card.getResourceInformation());
     }
 
@@ -4536,7 +4526,7 @@ class ActionCollection {
         this._owner = owner;
     }
 
-    parse(json: any, errors?: Shared.IValidationError[]) {
+    parse(json: any, errors?: IValidationError[]) {
         this.clear();
 
         if (Array.isArray(json)) {
@@ -4788,7 +4778,7 @@ class ActionCollection {
                 action.setParent(this._owner);
             }
 
-            invokeSetCollection(action, this);
+            action["_actionCollection"] = this;
         }
         else {
             throw new Error("The action already belongs to another element.");
@@ -4807,7 +4797,7 @@ class ActionCollection {
 
             action.setParent(undefined);
 
-            invokeSetCollection(action, undefined);
+            action["_actionCollection"] = undefined;
 
             for (let i = 0; i < this.buttons.length; i++) {
                 if (this.buttons[i].action == action) {
@@ -4841,8 +4831,8 @@ class ActionCollection {
         return result;
     }
 
-    getResourceInformation(): Shared.IResourceInformation[] {
-        let result: Shared.IResourceInformation[] = [];
+    getResourceInformation(): IResourceInformation[] {
+        let result: IResourceInformation[] = [];
 
         for (let action of this.items) {
             result = result.concat(action.getResourceInformation());
@@ -4863,7 +4853,7 @@ class ActionCollection {
 export class ActionSet extends CardElement {
     //#region Schema
 
-    static readonly orientationProperty = new EnumProperty(Shared.Versions.v1_1, "orientation", Enums.Orientation);
+    static readonly orientationProperty = new EnumProperty(Versions.v1_1, "orientation", Enums.Orientation);
 
     @property(ActionSet.orientationProperty)
     orientation?: Enums.Orientation;
@@ -4882,7 +4872,7 @@ export class ActionSet extends CardElement {
         this._actionCollection = new ActionCollection(this);
     }
 
-    parse(json: any, errors?: Shared.IValidationError[]) {
+    parse(json: any, errors?: IValidationError[]) {
         super.parse(json, errors);
 
         this._actionCollection.parse(json["actions"], errors);
@@ -4941,7 +4931,7 @@ export class ActionSet extends CardElement {
         return this._actionCollection.getAllInputs();
     }
 
-    getResourceInformation(): Shared.IResourceInformation[] {
+    getResourceInformation(): IResourceInformation[] {
         return this._actionCollection.getResourceInformation();
     }
 
@@ -4954,17 +4944,17 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
     //#region Schema
 
     static readonly styleProperty = new ValueSetProperty(
-        Shared.Versions.v1_0,
+        Versions.v1_0,
         "style",
         [
             { value: Enums.ContainerStyle.Default },
             { value: Enums.ContainerStyle.Emphasis },
-            { targetVersion: Shared.Versions.v1_2, value: Enums.ContainerStyle.Accent },
-            { targetVersion: Shared.Versions.v1_2, value: Enums.ContainerStyle.Good },
-            { targetVersion: Shared.Versions.v1_2, value: Enums.ContainerStyle.Attention },
-            { targetVersion: Shared.Versions.v1_2, value: Enums.ContainerStyle.Warning }
+            { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Accent },
+            { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Good },
+            { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Attention },
+            { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Warning }
         ]);
-    static readonly bleedProperty = new BoolProperty(Shared.Versions.v1_1, "bleed", false);
+    static readonly bleedProperty = new BoolProperty(Versions.v1_1, "bleed", false);
 
     @property(StylableCardElementContainer.styleProperty)
     get style(): string | undefined {
@@ -5005,7 +4995,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
             return;
         }
 
-        let physicalPadding = new Shared.SpacingDefinition();
+        let physicalPadding = new SpacingDefinition();
 
         if (this.getEffectivePadding()) {
             physicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(this.getEffectivePadding());
@@ -5018,7 +5008,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 
         if (this.isBleeding()) {
             // Bleed into the first parent that does have padding
-            let padding = new Shared.PaddingDefinition();
+            let padding = new PaddingDefinition();
 
             this.getImmediateSurroundingPadding(padding);
 
@@ -5068,9 +5058,9 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
         return false;
     }
 
-    protected getDefaultPadding(): Shared.PaddingDefinition {
+    protected getDefaultPadding(): PaddingDefinition {
         return this.getHasBackground() ?
-            new Shared.PaddingDefinition(
+            new PaddingDefinition(
                 Enums.Spacing.Padding,
                 Enums.Spacing.Padding,
                 Enums.Spacing.Padding,
@@ -5148,10 +5138,10 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 export class BackgroundImage extends SerializableObject {
     //#region Schema
 
-    static readonly urlProperty = new StringProperty(Shared.Versions.v1_0, "url");
-    static readonly fillModeProperty = new EnumProperty(Shared.Versions.v1_2, "fillMode", Enums.FillMode, Enums.FillMode.Cover);
-    static readonly horizontalAlignmentProperty = new EnumProperty(Shared.Versions.v1_2, "horizontalAlignment", Enums.HorizontalAlignment, Enums.HorizontalAlignment.Left);
-    static readonly verticalAlignmentProperty = new EnumProperty(Shared.Versions.v1_2, "verticalAlignment", Enums.VerticalAlignment, Enums.VerticalAlignment.Top);
+    static readonly urlProperty = new StringProperty(Versions.v1_0, "url");
+    static readonly fillModeProperty = new EnumProperty(Versions.v1_2, "fillMode", Enums.FillMode, Enums.FillMode.Cover);
+    static readonly horizontalAlignmentProperty = new EnumProperty(Versions.v1_2, "horizontalAlignment", Enums.HorizontalAlignment, Enums.HorizontalAlignment.Left);
+    static readonly verticalAlignmentProperty = new EnumProperty(Versions.v1_2, "verticalAlignment", Enums.VerticalAlignment, Enums.VerticalAlignment.Top);
 
     @property(BackgroundImage.urlProperty)
     url?: string;
@@ -5171,7 +5161,7 @@ export class BackgroundImage extends SerializableObject {
         return "BackgroundImage";
     }
 
-    parse(source: any, errors?: Shared.IValidationError[]) {
+    parse(source: any, errors?: IValidationError[]) {
         if (typeof source === "string") {
             this.resetDefaultValues();
             this.url = source;
@@ -5247,11 +5237,11 @@ export class Container extends StylableCardElementContainer {
     //#region Schema
 
     static readonly backgroundImageProperty = new SerializableObjectProperty(
-        Shared.Versions.v1_0,
+        Versions.v1_0,
         "backgroundImage",
         BackgroundImage);
-    static readonly verticalContentAlignmentProperty = new EnumProperty(Shared.Versions.v1_1, "verticalContentAlignment", Enums.VerticalAlignment, Enums.VerticalAlignment.Top);
-    static readonly rtlProperty = new BoolProperty(Shared.Versions.v1_0, "rtl");
+    static readonly verticalContentAlignmentProperty = new EnumProperty(Versions.v1_1, "verticalContentAlignment", Enums.VerticalAlignment, Enums.VerticalAlignment.Top);
+    static readonly rtlProperty = new BoolProperty(Versions.v1_0, "rtl");
 
     @property(Container.backgroundImageProperty)
     get backgroundImage(): BackgroundImage {
@@ -5325,7 +5315,7 @@ export class Container extends StylableCardElementContainer {
         element.style.display = "flex";
         element.style.flexDirection = "column";
 
-        if (Shared.GlobalSettings.useAdvancedCardBottomTruncation) {
+        if (GlobalSettings.useAdvancedCardBottomTruncation) {
             // Forces the container to be at least as tall as its content.
             //
             // Fixes a quirk in Chrome where, for nested flex elements, the
@@ -5435,7 +5425,7 @@ export class Container extends StylableCardElementContainer {
         return true;
     }
 
-    parse(json: any, errors?: Shared.IValidationError[]) {
+    parse(json: any, errors?: IValidationError[]) {
         super.parse(json, errors);
 
         this.clear();
@@ -5586,7 +5576,7 @@ export class Container extends StylableCardElementContainer {
         this._renderedItems = [];
     }
 
-    getResourceInformation(): Shared.IResourceInformation[] {
+    getResourceInformation(): IResourceInformation[] {
         let result = super.getResourceInformation();
 
         if (this.backgroundImage.isValid()) {
@@ -5623,11 +5613,11 @@ export class Container extends StylableCardElementContainer {
         return result;
     }
 
-    get padding(): Shared.PaddingDefinition | undefined {
+    get padding(): PaddingDefinition | undefined {
         return this.getPadding();
     }
 
-    set padding(value: Shared.PaddingDefinition | undefined) {
+    set padding(value: PaddingDefinition | undefined) {
         this.setPadding(value);
     }
 
@@ -5648,21 +5638,21 @@ export class Container extends StylableCardElementContainer {
     }
 }
 
-export type ColumnWidth = Shared.SizeAndUnit | "auto" | "stretch";
+export type ColumnWidth = SizeAndUnit | "auto" | "stretch";
 
 export class Column extends Container {
     //#region Schema
 
     static readonly widthProperty = new CustomProperty<ColumnWidth>(
-        Shared.Versions.v1_0,
+        Versions.v1_0,
         "width",
-        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: Shared.IValidationError[]) => {
+        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: IValidationError[]) => {
             let result: ColumnWidth = property.defaultValue;
             let value = source[property.name];
             let invalidWidth = false;
     
             if (typeof value === "number" && !isNaN(value)) {
-                result = new Shared.SizeAndUnit(value, Enums.SizeUnit.Weight);
+                result = new SizeAndUnit(value, Enums.SizeUnit.Weight);
             }
             else if (value === "auto" || value === "stretch") {
                 result = value;
@@ -5670,7 +5660,7 @@ export class Column extends Container {
             // TODO: Check for version before parsing pixel width
             else if (typeof value === "string") {
                 try {
-                    result = Shared.SizeAndUnit.parse(value);
+                    result = SizeAndUnit.parse(value);
                 }
                 catch (e) {
                     invalidWidth = true;
@@ -5693,7 +5683,7 @@ export class Column extends Container {
             return result;
         },
         (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: ColumnWidth) => {
-            if (value instanceof Shared.SizeAndUnit) {
+            if (value instanceof SizeAndUnit) {
                 if (value.unit === Enums.SizeUnit.Pixel) {
                     Utils.setProperty(target, "width", value.physicalSize + "px");
                 }
@@ -5735,7 +5725,7 @@ export class Column extends Container {
             renderedElement.style.flex = "1 1 50px";
         }
         else {
-            let sizeAndUnit = <Shared.SizeAndUnit>this.width;
+            let sizeAndUnit = <SizeAndUnit>this.width;
 
             if (sizeAndUnit.unit == Enums.SizeUnit.Pixel) {
                 renderedElement.style.flex = "0 0 auto";
@@ -5779,7 +5769,7 @@ export class ColumnSet extends StylableCardElementContainer {
     private _columns: Column[] = [];
     private _renderedColumns: Column[];
 
-    private createColumnInstance(json: any, errors: Shared.IValidationError[] | undefined): Column | undefined {
+    private createColumnInstance(json: any, errors: IValidationError[] | undefined): Column | undefined {
         return createCardObjectInstance<Column>(
             this,
             json,
@@ -5816,7 +5806,7 @@ export class ColumnSet extends StylableCardElementContainer {
             element.className = hostConfig.makeCssClassName("ac-columnSet");
             element.style.display = "flex";
 
-            if (Shared.GlobalSettings.useAdvancedCardBottomTruncation) {
+            if (GlobalSettings.useAdvancedCardBottomTruncation) {
                 // See comment in Container.internalRender()
                 element.style.minHeight = '-webkit-min-content';
             }
@@ -5836,13 +5826,13 @@ export class ColumnSet extends StylableCardElementContainer {
             let totalWeight: number = 0;
 
             for (let column of this._columns) {
-                if (column.width instanceof Shared.SizeAndUnit && (column.width.unit == Enums.SizeUnit.Weight)) {
+                if (column.width instanceof SizeAndUnit && (column.width.unit == Enums.SizeUnit.Weight)) {
                     totalWeight += column.width.physicalSize;
                 }
             }
 
             for (let column of this._columns) {
-                if (column.width instanceof Shared.SizeAndUnit && column.width.unit == Enums.SizeUnit.Weight && totalWeight > 0) {
+                if (column.width instanceof SizeAndUnit && column.width.unit == Enums.SizeUnit.Weight && totalWeight > 0) {
                     let computedWeight = 100 / totalWeight * column.width.physicalSize;
 
                     // Best way to emulate "internal" access I know of
@@ -5889,7 +5879,7 @@ export class ColumnSet extends StylableCardElementContainer {
         return true;
     }
 
-    parse(json: any, errors?: Shared.IValidationError[]) {
+    parse(json: any, errors?: IValidationError[]) {
         super.parse(json, errors);
 
         this._columns = [];
@@ -6092,11 +6082,11 @@ export class ColumnSet extends StylableCardElementContainer {
         this.setBleed(value);
     }
 
-    get padding(): Shared.PaddingDefinition | undefined {
+    get padding(): PaddingDefinition | undefined {
         return this.getPadding();
     }
 
-    set padding(value: Shared.PaddingDefinition | undefined) {
+    set padding(value: PaddingDefinition | undefined) {
         this.setPadding(value);
     }
 
@@ -6167,7 +6157,7 @@ function raiseElementVisibilityChangedEvent(element: CardElement, shouldUpdateLa
     }
 }
 
-function raiseParseElementEvent(element: CardElement, json: any, errors?: Shared.IValidationError[]) {
+function raiseParseElementEvent(element: CardElement, json: any, errors?: IValidationError[]) {
     let card = element.getRootElement() as AdaptiveCard;
     let onParseElementHandler = (card && card.onParseElement) ? card.onParseElement : AdaptiveCard.onParseElement;
 
@@ -6176,7 +6166,7 @@ function raiseParseElementEvent(element: CardElement, json: any, errors?: Shared
     }
 }
 
-function raiseParseActionEvent(action: Action, json: any, errors?: Shared.IValidationError[]) {
+function raiseParseActionEvent(action: Action, json: any, errors?: IValidationError[]) {
     let card = action.parent ? action.parent.getRootElement() as AdaptiveCard : undefined;
     let onParseActionHandler = (card && card.onParseAction) ? card.onParseAction : AdaptiveCard.onParseAction;
 
@@ -6185,7 +6175,7 @@ function raiseParseActionEvent(action: Action, json: any, errors?: Shared.IValid
     }
 }
 
-function raiseParseError(error: Shared.IValidationError, errors: Shared.IValidationError[] | undefined) {
+function raiseParseError(error: IValidationError, errors: IValidationError[] | undefined) {
     if (errors) {
         errors.push(error);
     }
@@ -6197,7 +6187,7 @@ function raiseParseError(error: Shared.IValidationError, errors: Shared.IValidat
 
 export interface ITypeRegistration<T> {
     typeName: string,
-    schemaVersion: Shared.TargetVersion,
+    schemaVersion: TargetVersion,
     createInstance: () => T;
 }
 
@@ -6260,7 +6250,7 @@ export abstract class ContainerWithActions extends Container {
         this._actionCollection = new ActionCollection(this);
     }
 
-    parse(json: any, errors?: Shared.IValidationError[]) {
+    parse(json: any, errors?: IValidationError[]) {
         super.parse(json, errors);
 
         this._actionCollection.parse(json["actions"], errors);
@@ -6319,7 +6309,7 @@ export abstract class ContainerWithActions extends Container {
         return super.getAllInputs().concat(this._actionCollection.getAllInputs());
     }
 
-    getResourceInformation(): Shared.IResourceInformation[] {
+    getResourceInformation(): IResourceInformation[] {
         return super.getResourceInformation().concat(this._actionCollection.getResourceInformation());
     }
 
@@ -6365,7 +6355,7 @@ export abstract class TypeRegistry<T> {
 
     abstract reset(): void;
 
-    registerType(typeName: string, createInstance: () => T, schemaVersion: Shared.TargetVersion = "*") {
+    registerType(typeName: string, createInstance: () => T, schemaVersion: TargetVersion = "*") {
         let registrationInfo = this.findTypeRegistration(typeName);
 
         if (registrationInfo !== undefined) {
@@ -6413,14 +6403,14 @@ export class ElementTypeRegistry extends TypeRegistry<CardElement> {
 
         this.registerType("Container", () => { return new Container(); });
         this.registerType("TextBlock", () => { return new TextBlock(); });
-        this.registerType("RichTextBlock", () => { return new RichTextBlock(); }, Shared.Versions.v1_2);
-        this.registerType("TextRun", () => { return new TextRun(); }, Shared.Versions.v1_2);
+        this.registerType("RichTextBlock", () => { return new RichTextBlock(); }, Versions.v1_2);
+        this.registerType("TextRun", () => { return new TextRun(); }, Versions.v1_2);
         this.registerType("Image", () => { return new Image(); });
         this.registerType("ImageSet", () => { return new ImageSet(); });
-        this.registerType("Media", () => { return new Media(); }, Shared.Versions.v1_1);
+        this.registerType("Media", () => { return new Media(); }, Versions.v1_1);
         this.registerType("FactSet", () => { return new FactSet(); });
         this.registerType("ColumnSet", () => { return new ColumnSet(); });
-        this.registerType("ActionSet", () => { return new ActionSet(); }, Shared.Versions.v1_2);
+        this.registerType("ActionSet", () => { return new ActionSet(); }, Versions.v1_2);
         this.registerType("Input.Text", () => { return new TextInput(); });
         this.registerType("Input.Date", () => { return new DateInput(); });
         this.registerType("Input.Time", () => { return new TimeInput(); });
@@ -6437,7 +6427,7 @@ export class ActionTypeRegistry extends TypeRegistry<Action> {
         this.registerType(OpenUrlAction.JsonTypeName, () => { return new OpenUrlAction(); });
         this.registerType(SubmitAction.JsonTypeName, () => { return new SubmitAction(); });
         this.registerType(ShowCardAction.JsonTypeName, () => { return new ShowCardAction(); });
-        this.registerType(ToggleVisibilityAction.JsonTypeName, () => { return new ToggleVisibilityAction(); }, Shared.Versions.v1_2);
+        this.registerType(ToggleVisibilityAction.JsonTypeName, () => { return new ToggleVisibilityAction(); }, Versions.v1_2);
     }
 }
 
@@ -6452,32 +6442,32 @@ export class AdaptiveCard extends ContainerWithActions {
     //#region Schema
 
     protected static readonly $schemaProperty = new CustomProperty<string>(
-        Shared.Versions.v1_0,
+        Versions.v1_0,
         "$schema",
-        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: Shared.IValidationError[]) => {
+        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: IValidationError[]) => {
             return AdaptiveCard.schemaUrl;
         },
-        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: Shared.Versions | undefined) => {
+        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: Versions | undefined) => {
             Utils.setProperty(target, property.name, AdaptiveCard.schemaUrl);
         });
 
-    static readonly versionProperty = new CustomProperty<Shared.Version | undefined>(
-        Shared.Versions.v1_0,
+    static readonly versionProperty = new CustomProperty<Version | undefined>(
+        Versions.v1_0,
         "version",
-        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: Shared.IValidationError[]) => {
-            return Shared.Version.parse(source[property.name], errors);
+        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: IValidationError[]) => {
+            return Version.parse(source[property.name], errors);
         },
-        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: Shared.Versions | undefined) => {
+        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: Versions | undefined) => {
             if (value !== undefined) {
                 Utils.setProperty(target, property.name, value.toString());
             }
         },
-        Shared.Versions.v1_0);
-    static readonly fallbackTextProperty = new StringProperty(Shared.Versions.v1_0, "fallbackText");
-    static readonly speakProperty = new StringProperty(Shared.Versions.v1_0, "speak");
+        Versions.v1_0);
+    static readonly fallbackTextProperty = new StringProperty(Versions.v1_0, "fallbackText");
+    static readonly speakProperty = new StringProperty(Versions.v1_0, "speak");
 
     @property(AdaptiveCard.versionProperty)
-    version: Shared.Version;
+    version: Version;
 
     @property(AdaptiveCard.fallbackTextProperty)
     fallbackText?: string;
@@ -6496,9 +6486,9 @@ export class AdaptiveCard extends ContainerWithActions {
     static onImageLoaded?: (image: Image) => void;
     static onInlineCardExpanded?: (action: ShowCardAction, isExpanded: boolean) => void;
     static onInputValueChanged?: (input: Input) => void;
-    static onParseElement?: (element: CardElement, json: any, errors?: Shared.IValidationError[]) => void;
-    static onParseAction?: (element: Action, json: any, errors?: Shared.IValidationError[]) => void;
-    static onParseError?: (error: Shared.IValidationError) => void;
+    static onParseElement?: (element: CardElement, json: any, errors?: IValidationError[]) => void;
+    static onParseAction?: (element: Action, json: any, errors?: IValidationError[]) => void;
+    static onParseError?: (error: IValidationError) => void;
     static onProcessMarkdown?: (text: string, result: IMarkdownProcessingResult) => void;
 
     static get processMarkdown(): (text: string) => string {
@@ -6540,8 +6530,8 @@ export class AdaptiveCard extends ContainerWithActions {
             let unsupportedVersion: boolean =
                 !this.version ||
                 !this.version.isValid ||
-                (Shared.Versions.latest.major < this.version.major) ||
-                (Shared.Versions.latest.major == this.version.major && Shared.Versions.latest.minor < this.version.minor);
+                (Versions.latest.major < this.version.major) ||
+                (Versions.latest.major == this.version.major && Versions.latest.minor < this.version.minor);
 
             return !unsupportedVersion;
         }
@@ -6554,7 +6544,7 @@ export class AdaptiveCard extends ContainerWithActions {
     protected internalRender(): HTMLElement | undefined {
         let renderedElement = super.internalRender();
 
-        if (Shared.GlobalSettings.useAdvancedCardBottomTruncation && renderedElement) {
+        if (GlobalSettings.useAdvancedCardBottomTruncation && renderedElement) {
             // Unlike containers, the root card element should be allowed to
             // be shorter than its content (otherwise the overflow truncation
             // logic would never get triggered)
@@ -6568,8 +6558,8 @@ export class AdaptiveCard extends ContainerWithActions {
         return true;
     }
 
-    protected getDefaultPadding(): Shared.PaddingDefinition {
-        return new Shared.PaddingDefinition(
+    protected getDefaultPadding(): PaddingDefinition {
+        return new PaddingDefinition(
             Enums.Spacing.Padding,
             Enums.Spacing.Padding,
             Enums.Spacing.Padding,
@@ -6598,8 +6588,8 @@ export class AdaptiveCard extends ContainerWithActions {
     onImageLoaded?: (image: Image) => void;
     onInlineCardExpanded?: (action: ShowCardAction, isExpanded: boolean) => void;
     onInputValueChanged?: (input: Input) => void;
-    onParseElement?: (element: CardElement, json: any, errors?: Shared.IValidationError[]) => void;
-    onParseAction?: (element: Action, json: any, errors?: Shared.IValidationError[]) => void;
+    onParseElement?: (element: CardElement, json: any, errors?: IValidationError[]) => void;
+    onParseAction?: (element: Action, json: any, errors?: IValidationError[]) => void;
 
     designMode: boolean = false;
 
@@ -6607,7 +6597,7 @@ export class AdaptiveCard extends ContainerWithActions {
         return "AdaptiveCard";
     }
 
-    parse(json: any, errors?: Shared.IValidationError[]) {
+    parse(json: any, errors?: IValidationError[]) {
         this._fallbackCard = undefined;
 
         let fallbackElement = createElementInstance(
@@ -6649,7 +6639,7 @@ export class AdaptiveCard extends ContainerWithActions {
                 this,
                 {
                     error: Enums.ValidationError.UnsupportedCardVersion,
-                    message: "The specified card version (" + this.version + ") is not supported. The maximum supported card version is " + Shared.Versions.latest
+                    message: "The specified card version (" + this.version + ") is not supported. The maximum supported card version is " + Versions.latest
                 });
         }
     }
@@ -6687,7 +6677,7 @@ export class AdaptiveCard extends ContainerWithActions {
     updateLayout(processChildren: boolean = true) {
         super.updateLayout(processChildren);
 
-        if (Shared.GlobalSettings.useAdvancedCardBottomTruncation && this.isDisplayed()) {
+        if (GlobalSettings.useAdvancedCardBottomTruncation && this.isDisplayed()) {
             let padding = this.hostConfig.getEffectiveSpacing(Enums.Spacing.Default);
 
             this['handleOverflow']((<HTMLElement>this.renderedElement).offsetHeight - padding);
@@ -6720,8 +6710,8 @@ class InlineAdaptiveCard extends AdaptiveCard {
 
     //#endregion
 
-    protected getDefaultPadding(): Shared.PaddingDefinition {
-        return new Shared.PaddingDefinition(
+    protected getDefaultPadding(): PaddingDefinition {
+        return new PaddingDefinition(
             this.suppressStyle ? Enums.Spacing.None : Enums.Spacing.Padding,
             Enums.Spacing.Padding,
             this.suppressStyle ? Enums.Spacing.None : Enums.Spacing.Padding,

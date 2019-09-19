@@ -147,7 +147,7 @@ export class ContainerStyle {
     static readonly Warning: "warning" = "warning";
 }
 
-export enum ValidationError {
+export const enum ValidationError {
     Hint,
     ActionTypeNotAllowed,
     CollectionCantBeEmpty,
@@ -164,7 +164,7 @@ export enum ValidationError {
     DuplicateId
 }
 
-export enum ContainerFitStatus {
+export const enum ContainerFitStatus {
     FullyInContainer,
     Overflowing,
     FullyOutOfContainer
