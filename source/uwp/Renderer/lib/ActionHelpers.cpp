@@ -317,7 +317,7 @@ namespace AdaptiveNamespace::ActionHelpers
         }
 
         ABI::AdaptiveNamespace::ContainerStyle containerStyle;
-        renderArgs->get_ContainerStyle(&containerStyle);
+        RETURN_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
 
         boolean allowAboveTitleIconPlacement;
         RETURN_IF_FAILED(renderArgs->get_AllowAboveTitleIconPlacement(&allowAboveTitleIconPlacement));
