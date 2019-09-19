@@ -91,7 +91,7 @@ namespace AdaptiveNamespace
 
         double sideMargin = (double)padding * -1;
         double topMargin = isBottomActionBar ? inlineTopMargin + padding : inlineTopMargin;
-        double bottomMargin = isBottomActionBar ? (double)padding * -1 : 0;
+        double bottomMargin = (double)padding * -1;
 
         Thickness margin = {sideMargin, topMargin, sideMargin, bottomMargin};
         RETURN_IF_FAILED(showCardFrameworkElement->put_Margin(margin));
