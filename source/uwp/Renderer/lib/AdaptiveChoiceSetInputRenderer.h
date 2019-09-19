@@ -32,14 +32,14 @@ namespace AdaptiveNamespace
         static bool IsChoiceSelected(std::vector<std::string> selectedValues,
                                      _In_ ABI::AdaptiveNamespace::IAdaptiveChoiceInput* choice);
 
-        HRESULT _BuildExpandedChoiceSetInput(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                                             _In_ ABI::AdaptiveNamespace::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
-                                             boolean isMultiSelect,
-                                             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** choiceInputSet);
-
-        HRESULT _BuildCompactChoiceSetInput(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+        HRESULT BuildExpandedChoiceSetInput(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                             _In_ ABI::AdaptiveNamespace::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
+                                            boolean isMultiSelect,
                                             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** choiceInputSet);
+
+        HRESULT BuildCompactChoiceSetInput(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                           _In_ ABI::AdaptiveNamespace::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
+                                           _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** choiceInputSet);
     };
 
     ActivatableClass(AdaptiveChoiceSetInputRenderer);

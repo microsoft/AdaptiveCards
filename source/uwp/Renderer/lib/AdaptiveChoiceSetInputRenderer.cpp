@@ -17,11 +17,10 @@ using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveChoiceSetInputRenderer::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveChoiceSetInputRenderer::RuntimeClassInitialize() noexcept
     {
         return S_OK;
     }
-    CATCH_RETURN;
 
     HRESULT AdaptiveChoiceSetInputRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
                                                    _In_ IAdaptiveRenderContext* renderContext,
@@ -50,11 +49,11 @@ namespace AdaptiveNamespace
 
         if (choiceSetStyle == ABI::AdaptiveNamespace::ChoiceSetStyle_Compact && !isMultiSelect)
         {
-            _BuildCompactChoiceSetInput(renderContext, adaptiveChoiceSetInput.Get(), choiceInputSet);
+            BuildCompactChoiceSetInput(renderContext, adaptiveChoiceSetInput.Get(), choiceInputSet);
         }
         else
         {
-            _BuildExpandedChoiceSetInput(renderContext, adaptiveChoiceSetInput.Get(), isMultiSelect, choiceInputSet);
+            BuildExpandedChoiceSetInput(renderContext, adaptiveChoiceSetInput.Get(), isMultiSelect, choiceInputSet);
         }
 
         XamlHelpers::AddInputValueToContext(renderContext, adaptiveCardElement, *choiceInputSet);
@@ -101,9 +100,9 @@ namespace AdaptiveNamespace
         return std::find(selectedValues.begin(), selectedValues.end(), stdValue) != selectedValues.end();
     }
 
-    HRESULT AdaptiveChoiceSetInputRenderer::_BuildCompactChoiceSetInput(_In_ IAdaptiveRenderContext* renderContext,
-                                                                        _In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
-                                                                        _COM_Outptr_ IUIElement** choiceInputSet)
+    HRESULT AdaptiveChoiceSetInputRenderer::BuildCompactChoiceSetInput(_In_ IAdaptiveRenderContext* renderContext,
+                                                                       _In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
+                                                                       _COM_Outptr_ IUIElement** choiceInputSet)
     {
         ComPtr<IComboBox> comboBox =
             XamlHelpers::CreateXamlClass<IComboBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ComboBox));
@@ -170,10 +169,10 @@ namespace AdaptiveNamespace
         return comboBoxAsUIElement.CopyTo(choiceInputSet);
     }
 
-    HRESULT AdaptiveChoiceSetInputRenderer::_BuildExpandedChoiceSetInput(_In_ IAdaptiveRenderContext* renderContext,
-                                                                         _In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
-                                                                         boolean isMultiSelect,
-                                                                         _COM_Outptr_ IUIElement** choiceInputSet)
+    HRESULT AdaptiveChoiceSetInputRenderer::BuildExpandedChoiceSetInput(_In_ IAdaptiveRenderContext* renderContext,
+                                                                        _In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
+                                                                        boolean isMultiSelect,
+                                                                        _COM_Outptr_ IUIElement** choiceInputSet)
     {
         ComPtr<IVector<AdaptiveChoiceInput*>> choices;
         RETURN_IF_FAILED(adaptiveChoiceSetInput->get_Choices(&choices));
