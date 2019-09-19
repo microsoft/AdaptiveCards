@@ -135,6 +135,8 @@ namespace AdaptiveSharedNamespace
         Json::Value SerializeToJsonValue() const;
         std::string Serialize() const;
 
+        const InternalId GetInternalId() const { return m_internalId; }
+
     private:
         static void _ValidateLanguage(const std::string& language, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings);
 
@@ -148,6 +150,8 @@ namespace AdaptiveSharedNamespace
         HeightType m_height;
         unsigned int m_minHeight;
         InputNecessityIndicators m_inputNecessityIndicators;
+
+        InternalId m_internalId;
 
         std::vector<std::shared_ptr<BaseCardElement>> m_body;
         std::vector<std::shared_ptr<BaseActionElement>> m_actions;

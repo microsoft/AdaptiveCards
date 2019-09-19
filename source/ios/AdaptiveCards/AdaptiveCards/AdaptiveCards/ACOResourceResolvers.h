@@ -5,11 +5,11 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
+#import "ACOIResourceResolver.h"
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "ACOIResourceResolver.h"
 
-@interface ACOResourceResolvers:NSObject
+@interface ACOResourceResolvers : NSObject
 
 typedef NS_ENUM(NSInteger, ACOResolverIFType) {
     ACODefaultIF = 0,

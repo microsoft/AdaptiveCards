@@ -20,9 +20,9 @@
 
 @end
 
-@interface ACVTableViewController: UITableViewController<ACVTableViewControllerFetchDataDelegate>
+@interface ACVTableViewController : UITableViewController <ACVTableViewControllerFetchDataDelegate>
 
-@property (nonatomic, weak) id <ACVTableViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<ACVTableViewControllerDelegate> delegate;
 @property NSString *userSelectedJSon;
 @property (strong, nonatomic) NSLayoutConstraint *tableHeight;
 @property BOOL IsCollapsed;

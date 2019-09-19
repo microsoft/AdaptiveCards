@@ -70,6 +70,14 @@ public class RichTextElementProperties extends TextElementProperties {
     AdaptiveCardObjectModelJNI.RichTextElementProperties_SetStrikethrough(swigCPtr, this, value);
   }
 
+  public boolean GetUnderline() {
+    return AdaptiveCardObjectModelJNI.RichTextElementProperties_GetUnderline(swigCPtr, this);
+  }
+
+  public void SetUnderline(boolean value) {
+    AdaptiveCardObjectModelJNI.RichTextElementProperties_SetUnderline(swigCPtr, this, value);
+  }
+
   public JsonValue SerializeToJsonValue(JsonValue root) {
     return new JsonValue(AdaptiveCardObjectModelJNI.RichTextElementProperties_SerializeToJsonValue(swigCPtr, this, JsonValue.getCPtr(root), root), true);
   }

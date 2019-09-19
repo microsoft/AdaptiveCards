@@ -292,7 +292,8 @@ AdaptiveNamespaceStart
         RenderFailed,
         RequiredPropertyMissing,
         InvalidPropertyValue,
-        UnsupportedParserOverride
+        UnsupportedParserOverride,
+        CustomError,
     } ErrorStatusCode;
 
     [version(NTDDI_WIN10_RS1)]
@@ -312,8 +313,10 @@ AdaptiveNamespaceStart
         UnsupportedSchemaVersion,
         UnsupportedMediaType,
         InvalidMediaMix,
+        InvalidValue,
         UnsupportedValue,
-        PerformingFallback
+        PerformingFallback,
+        CustomWarning,
     } WarningStatusCode;
 
     [version(NTDDI_WIN10_RS1)]
@@ -409,6 +412,7 @@ AdaptiveNamespaceStart
         interface Windows.Foundation.Collections.IVector<AdaptiveRemoteResourceInformation*>;
         interface Windows.Foundation.Collections.IVector<AdaptiveToggleVisibilityTarget*>;
         interface Windows.Foundation.Collections.IVector<AdaptiveImage*>;
+        interface Windows.Foundation.Collections.IVector<AdaptiveRequirement*>;
     }
 
     [
@@ -431,8 +435,8 @@ AdaptiveNamespaceStart
         FallbackType FallbackType;
         IAdaptiveCardElement FallbackContent;
         Windows.Data.Json.JsonObject AdditionalProperties;
+        Windows.Foundation.Collections.IVector<AdaptiveRequirement> Requirements { get; };
 
-        Boolean MeetsRequirements(AdaptiveFeatureRegistration featureRegistration);
         Windows.Data.Json.JsonObject ToJson();
     };
 
@@ -1592,6 +1596,21 @@ AdaptiveNamespaceStart
 
     [
 #ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveRequirement", 45B7321F-BB3C-48B8-B98E-6483927C47D7),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass AdaptiveRequirement
+    {
+        AdaptiveRequirement(String requirementName, String requirementversion);
+
+        String Name;
+        String Version;
+    }
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
         interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveFeatureRegistration", b2a455fd-385c-45eb-89ce-007b7ed0a815),
         contract(InternalContract, 1),
         internal
@@ -1764,7 +1783,7 @@ AdaptiveNamespaceStart
 
         void AddInputValue(IAdaptiveInputValue inputValue);
 
-        void AddInlineShowCard(AdaptiveActionSet inputValue,
+        void AddInlineShowCard(AdaptiveActionSet actionSet,
                                AdaptiveShowCardAction showCardAction,
                                Windows.UI.Xaml.UIElement showCardUIElement);
 
@@ -2058,10 +2077,10 @@ AdaptiveNamespaceStart
     ]
     runtimeclass AdaptiveError 
     {
-        AdaptiveError();
+        AdaptiveError(ErrorStatusCode statusCode, String message);
 
-        ErrorStatusCode StatusCode { get; };
-        String Message { get; };
+        ErrorStatusCode StatusCode;
+        String Message;
     };
 
     [
@@ -2073,10 +2092,10 @@ AdaptiveNamespaceStart
     ]
     runtimeclass AdaptiveWarning
     {
-        AdaptiveWarning();
+        AdaptiveWarning(WarningStatusCode statusCode, String message);
 
-        WarningStatusCode StatusCode { get; };
-        String Message { get; };
+        WarningStatusCode StatusCode;
+        String Message;
     };
 
     [

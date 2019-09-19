@@ -190,13 +190,15 @@ namespace AdaptiveNamespace
                                          bool allActionsHaveIcons,
                                          _In_ ABI::Windows::UI::Xaml::Controls::IButton* button);
 
-        static HRESULT BuildActions(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* children,
+        static HRESULT BuildActions(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
+                                    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* children,
                                     _In_ ABI::Windows::UI::Xaml::Controls::IPanel* bodyPanel,
                                     bool insertSeparator,
                                     _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                     _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);
 
         static HRESULT BuildActionSetHelper(
+            _In_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
             _In_opt_ ABI::AdaptiveNamespace::IAdaptiveActionSet* actionSet,
             _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* children,
             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,

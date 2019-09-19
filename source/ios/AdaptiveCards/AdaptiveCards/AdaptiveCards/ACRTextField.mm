@@ -5,8 +5,8 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACOBaseCardElementPrivate.h"
 #import "ACRTextField.h"
+#import "ACOBaseCardElementPrivate.h"
 #import "TextInput.h"
 
 
@@ -14,15 +14,12 @@
 
 - (BOOL)validate:(NSError **)error
 {
-    if(self.isRequired && !self.hasText)
-    {
-        if(error)
-        {
+    if (self.isRequired && !self.hasText) {
+        if (error) {
             *error = [NSError errorWithDomain:ACRInputErrorDomain code:ACRInputErrorValueMissing userInfo:nil];
         }
         return NO;
-    }
-    else
+    } else
         return YES;
 }
 
@@ -44,11 +41,11 @@
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    if(!_maxLength){
+    if (!_maxLength) {
         return YES;
     }
 
-    if(range.length + range.location > textField.text.length) {
+    if (range.length + range.location > textField.text.length) {
         return NO;
     }
 
