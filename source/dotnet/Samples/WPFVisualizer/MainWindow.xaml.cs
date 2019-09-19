@@ -61,7 +61,6 @@ namespace WpfVisualizer
                 });
             }
 
-
             Renderer = new AdaptiveCardRenderer()
             {
                 Resources = Resources
@@ -115,7 +114,6 @@ namespace WpfVisualizer
 
             try
             {
-
                 AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(CardPayload);
 
                 AdaptiveCard card = parseResult.Card;

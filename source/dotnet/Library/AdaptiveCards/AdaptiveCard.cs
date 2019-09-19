@@ -234,6 +234,14 @@ namespace AdaptiveCards
         }
 
         /// <summary>
+        ///     Callback that will be invoked should a null or empty version string is encountered. The callback may return an alternate version to use for parsing.
+        /// </summary>
+        /// <example>
+        ///     AdaptiveCard.OnDeserializingMissingVersion = () => new AdaptiveSchemaVersion(0, 5);
+        /// </example>
+        public static Func<AdaptiveSchemaVersion> OnDeserializingMissingVersion { get; set; }
+
+        /// <summary>
         /// Parse an AdaptiveCard from a JSON string
         /// </summary>
         /// <param name="json">A JSON-serialized Adaptive Card</param>
