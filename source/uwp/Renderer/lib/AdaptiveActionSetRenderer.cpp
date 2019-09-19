@@ -4,11 +4,8 @@
 
 #include "AdaptiveActionSet.h"
 #include "AdaptiveActionSetRenderer.h"
-#include "AdaptiveShowCardActionRenderer.h"
 #include "AdaptiveElementParserRegistration.h"
-#include "AdaptiveImage.h"
 #include "AdaptiveRenderArgs.h"
-#include "ActionHelpers.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -21,11 +18,10 @@ using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveActionSetRenderer::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveActionSetRenderer::RuntimeClassInitialize() noexcept
     {
         return S_OK;
     }
-    CATCH_RETURN;
 
     HRESULT AdaptiveActionSetRenderer::FromJson(
         _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
