@@ -18,7 +18,7 @@ namespace AdaptiveNamespace
     public:
         AdaptiveActionSet();
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::ActionSet>& sharedActionSet);
+        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ActionSet>& sharedActionSet);
 
         // IAdaptiveActionSet
         IFACEMETHODIMP get_Actions(

@@ -30,8 +30,8 @@ namespace AdaptiveNamespace
 
         virtual HRESULT STDMETHODCALLTYPE put_BackgroundImage(_In_ IAdaptiveBackgroundImage* value);
         virtual HRESULT STDMETHODCALLTYPE put_RootElement(_In_ IFrameworkElement* value);
-        virtual HRESULT STDMETHODCALLTYPE get_ResolvedImage(_Outptr_ IUIElement** value);
-        virtual HRESULT STDMETHODCALLTYPE put_ImageSize(ABI::Windows::Foundation::Size value);
+        virtual HRESULT STDMETHODCALLTYPE get_ResolvedImage(_COM_Outptr_ IUIElement** value);
+        virtual HRESULT STDMETHODCALLTYPE put_ImageSize(_In_ ABI::Windows::Foundation::Size value);
 
         virtual HRESULT STDMETHODCALLTYPE LoadImageBrush(_In_ IUIElement* image);
 

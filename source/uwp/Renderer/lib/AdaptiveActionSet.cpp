@@ -21,7 +21,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveActionSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ActionSet>& sharedActionSet)
+    HRESULT AdaptiveActionSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ActionSet>& sharedActionSet)
     try
     {
         if (sharedActionSet == nullptr)
@@ -35,12 +35,12 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveActionSet::get_Actions(IVector<IAdaptiveActionElement*>** items)
+    HRESULT AdaptiveActionSet::get_Actions(_COM_Outptr_ IVector<IAdaptiveActionElement*>** items)
     {
         return m_actions.CopyTo(items);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveActionSet::get_ElementType(ElementType* elementType)
+    HRESULT AdaptiveActionSet::get_ElementType(_Out_ ElementType* elementType)
     {
         *elementType = ElementType::ActionSet;
         return S_OK;
