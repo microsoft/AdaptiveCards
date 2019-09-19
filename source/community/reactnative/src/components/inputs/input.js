@@ -306,7 +306,7 @@ const styles = StyleSheet.create({
 		height: 44,
 	},
 	input: {
-		width: Constants.FullWidth,
+		width: '85%',
 		padding: 5,
 		marginTop: 15,
 	},
