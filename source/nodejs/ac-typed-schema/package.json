@@ -1,5 +1,5 @@
 {
-  "name": "typed-schema",
+  "name": "ac-typed-schema",
   "version": "0.5.2",
   "description": "Generates the element/property tables for our specs based on the schema file.",
   "author": "AdaptiveCards",
