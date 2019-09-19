@@ -11,10 +11,10 @@ import { property, SerializableObject, SerializableObjectSchema, StringProperty,
     BoolProperty, ValueSetProperty, EnumProperty, SerializableObjectCollectionProperty,
     SerializableObjectProperty, PixelSizeProperty, NumProperty, PropertyBag, CustomProperty, PropertyDefinition } from "./serialization";
 
-function isActionAllowed(action: Action, forbiddenActionTypes: string[]): boolean {
-    if (forbiddenActionTypes) {
-        for (let forbiddenType of forbiddenActionTypes) {
-            if (action.getJsonTypeName() === forbiddenType) {
+function isCardObjectAllowed<T extends CardObject>(o: CardObject, forbiddenTypes: CardObjectType<T>[]): boolean {
+    if (forbiddenTypes) {
+        for (let forbiddenType of forbiddenTypes) {
+            if (o.constructor === forbiddenType) {
                 return false;
             }
         }
@@ -181,6 +181,8 @@ export class ValidationResults {
         failure.errors.push(error);
     }
 }
+
+export type CardObjectType<T extends CardObject> = { new(): T };
 
 export abstract class CardObject extends SerializableObject {
     //#region Schema
@@ -584,11 +586,7 @@ export abstract class CardElement extends CardObject {
         return this.hostConfig.containerStyles.getStyleByName(this.getEffectiveStyle());
     }
 
-    getForbiddenElementTypes(): string[] {
-        return [];
-    }
-
-    getForbiddenActionTypes(): any[] {
+    getForbiddenActionTypes(): CardObjectType<Action>[] {
         return [];
     }
 
@@ -2001,20 +1999,8 @@ export abstract class CardElementContainer extends CardElement {
 
     //#endregion
 
-    protected isElementAllowed(element: CardElement, forbiddenElementTypes: string[]) {
-        if (!this.hostConfig.supportsInteractivity && element.isInteractive) {
-            return false;
-        }
-
-        if (forbiddenElementTypes) {
-            for (let forbiddenElementType of forbiddenElementTypes) {
-                if (element.getJsonTypeName() === forbiddenElementType) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
+    protected isElementAllowed(element: CardElement) {
+        return this.hostConfig.supportsInteractivity || !element.isInteractive;
     }
 
     protected applyPadding() {
@@ -2066,7 +2052,7 @@ export abstract class CardElementContainer extends CardElement {
                     });
             }
 
-            if (!this.isElementAllowed(item, this.getForbiddenElementTypes())) {
+            if (!this.isElementAllowed(item)) {
                 context.addFailure(
                     this,
                     {
@@ -4574,12 +4560,12 @@ class ActionCollection {
         }
 
         for (let item of this.items) {
-            if (!isActionAllowed(item, this._owner.getForbiddenActionTypes())) {
+            if (!isCardObjectAllowed(item, this._owner.getForbiddenActionTypes())) {
                 context.addFailure(
                     this._owner,
                     {
                         error: Enums.ValidationError.ActionTypeNotAllowed,
-                        message: "Actions of type " + item.getJsonTypeName() + " are not allowe."
+                        message: "Actions of type " + item.getJsonTypeName() + " are not allowed in this context."
                     });
             }
 
@@ -4602,7 +4588,7 @@ class ActionCollection {
         this._actionCardContainer = document.createElement("div");
         this._renderedActionCount = 0;
 
-        if (hostConfig.actions.preExpandSingleShowCardAction && maxActions == 1 && this.items[0] instanceof ShowCardAction && isActionAllowed(this.items[0], forbiddenActionTypes)) {
+        if (hostConfig.actions.preExpandSingleShowCardAction && maxActions == 1 && this.items[0] instanceof ShowCardAction && isCardObjectAllowed(this.items[0], forbiddenActionTypes)) {
             this.showActionCard(<ShowCardAction>this.items[0], true);
             this._renderedActionCount = 1;
         }
@@ -4681,7 +4667,7 @@ class ActionCollection {
                 let parentContainerStyle = parentContainer.getEffectiveStyle();
 
                 for (let i = 0; i < this.items.length; i++) {
-                    if (isActionAllowed(this.items[i], forbiddenActionTypes)) {
+                    if (isCardObjectAllowed(this.items[i], forbiddenActionTypes)) {
                         let actionButton = this.findActionButton(this.items[i]);
 
                         if (!actionButton) {
@@ -5332,7 +5318,7 @@ export class Container extends StylableCardElementContainer {
 
         if (this._items.length > 0) {
             for (let item of this._items) {
-                let renderedItem = this.isElementAllowed(item, this.getForbiddenElementTypes()) ? item.render() : undefined;
+                let renderedItem = this.isElementAllowed(item) ? item.render() : undefined;
 
                 if (renderedItem) {
                     if (this._renderedItems.length > 0 && item.separatorElement) {
@@ -5767,17 +5753,9 @@ export class ColumnSet extends StylableCardElementContainer {
                 return !typeName || typeName === "Column" ? new Column() : undefined;
             },
             (typeName: string, errorType: InstanceCreationErrorType) => {
-                if (errorType == InstanceCreationErrorType.UnknownType) {
-                    return {
-                        error: Enums.ValidationError.UnknownElementType,
-                        message: "Unknown element type: " + typeName + ". Fallback will be used if present."
-                    }
-                }
-                else {
-                    return {
-                        error: Enums.ValidationError.ElementTypeNotAllowed,
-                        message: "Element type " + typeName + " isn't allowed in a ColumnSet."
-                    }
+                return {
+                    error: Enums.ValidationError.ElementTypeNotAllowed,
+                    message: "Invalid element type " + typeName + ". Only Column elements are allowed in a ColumnSet."
                 }
             },
             errors);
@@ -6728,8 +6706,8 @@ class InlineAdaptiveCard extends AdaptiveCard {
         return renderedCard;
     }
 
-    getForbiddenActionTypes(): any[] {
-        return [ShowCardAction];
+    getForbiddenActionTypes(): CardObjectType<Action>[] {
+        return [ ShowCardAction ];
     }
 }
 

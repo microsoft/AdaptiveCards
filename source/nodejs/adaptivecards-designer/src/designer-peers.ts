@@ -1728,7 +1728,7 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
     }
 
     protected internalGetTreeItemText(): string {
-        let columnCount = this.cardElement.getCount();
+        let columnCount = this.cardElement.getItemCount();
 
         switch (columnCount) {
             case 0:
