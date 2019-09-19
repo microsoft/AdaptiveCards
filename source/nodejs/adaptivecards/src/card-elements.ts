@@ -5936,12 +5936,8 @@ export class ColumnSet extends StylableCardElementContainer {
         return false;
     }
 
-    getCount(): number {
-        return this._columns.length;
-    }
-
     getItemCount(): number {
-        return this.getCount();
+        return this._columns.length;
     }
 
     getFirstVisibleRenderedItem(): CardElement | undefined {

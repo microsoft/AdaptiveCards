@@ -20,6 +20,9 @@ Please be aware of the following **breaking changes** in particular versions.
 
 | In version | Change description |
 |---|---|
+| **vNext** | `ColumnSet.getCount()` has been **REMOVED**. Use `ColumnSet.getItemCount()` instead. |
+|| Library is now compiled with the `noImplicitAny` flag. As a result, anything that can be undefined/not set now has the `undefined` value. All uses of `null` have been removed. |
+|| The following global setting statics have been moved from the AdaptiveCard class to the new GlobalSettings class: `useAdvancedTextBlockTruncation`, `useAdvancedCardBottomTruncation`, `useMarkdownInRadioButtonAndCheckbox`, `allowMarkForTextHighlighting`, `alwaysBleedSeparators`, `enableFullJsonRoundTrip`, `useBuiltInInputValidation`, `displayInputValidationErrors` |
 | **1.2** | The default `value` of an Input.Time **no longer accepts seconds**. 08:25:32 will now be treated as an invalid value and ignored; it should be replaced with 08:25. This behavior is consistent with other Adaptive Card renderers.|
 || The `ICardObject` interface has been **REMOVED**, replaced with the `CardObject` class that both `CardElement` and `Action` extend. This change should have little to no impact on any application.|
 || The `CardElement.validate()` and `Action.validate()` methods have been **REMOVED**, replaced with `CardObject.validateProperties()` and `CardObject.internalValidateProperties(context: ValidationContext)`. Custom elements and actions now must override `internalValidateProperties` and add validation failures as appropriate to the `context` object passed as a parameter using its `addFailure` method. Be sure to always call `super.internalValidateProperties(context)` in your override.|
