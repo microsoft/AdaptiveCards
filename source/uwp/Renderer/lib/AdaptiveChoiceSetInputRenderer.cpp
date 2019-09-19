@@ -74,7 +74,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    static std::vector<std::string> GetChoiceSetValueVector(_In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput)
+    std::vector<std::string> AdaptiveChoiceSetInputRenderer::GetChoiceSetValueVector(_In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput)
     {
         HString value;
         THROW_IF_FAILED(adaptiveChoiceSetInput->get_Value(value.GetAddressOf()));
@@ -87,13 +87,13 @@ namespace AdaptiveNamespace
         {
             std::string subString;
             std::getline(streamValue, subString, ',');
-            values.push_back(subString);
+            values.push_back(std::move(subString));
         }
 
         return values;
     }
 
-    static bool IsChoiceSelected(std::vector<std::string> selectedValues, _In_ IAdaptiveChoiceInput* choice)
+    bool AdaptiveChoiceSetInputRenderer::IsChoiceSelected(std::vector<std::string> selectedValues, _In_ IAdaptiveChoiceInput* choice)
     {
         HString value;
         THROW_IF_FAILED(choice->get_Value(value.GetAddressOf()));

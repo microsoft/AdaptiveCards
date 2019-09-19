@@ -28,6 +28,10 @@ namespace AdaptiveNamespace
                                 _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept override;
 
     private:
+        static std::vector<std::string> GetChoiceSetValueVector(_In_ ABI::AdaptiveNamespace::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput);
+        static bool IsChoiceSelected(std::vector<std::string> selectedValues,
+                                     _In_ ABI::AdaptiveNamespace::IAdaptiveChoiceInput* choice);
+
         HRESULT _BuildExpandedChoiceSetInput(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                              _In_ ABI::AdaptiveNamespace::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
                                              boolean isMultiSelect,
