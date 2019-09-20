@@ -1,0 +1,23 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+  "extends": "Input",
+  "description": "Lets a user choose a date.",
+  "properties": {
+    "max": {
+      "type": "string",
+      "description": "Hint of maximum value expressed in ISO-8601 format (may be ignored by some clients)."
+    },
+    "min": {
+      "type": "string",
+      "description": "Hint of minimum value expressed in ISO-8601 format (may be ignored by some clients)."
+    },
+    "placeholder": {
+      "type": "string",
+      "description": "Description of the input desired. Displayed when no selection has been made."
+    },
+    "value": {
+      "type": "string",
+      "description": "The initial value for this field expressed in ISO-8601 format."
+    }
+  }
+}
