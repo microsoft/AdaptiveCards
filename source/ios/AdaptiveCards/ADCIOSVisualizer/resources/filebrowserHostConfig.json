@@ -1,0 +1,252 @@
+{
+	"supportsInteractivity": true,
+	"imageBaseUrl": "https://pbs.twimg.com/profile_images/3647943215/",
+	"fontTypes": {
+		"default": {
+			"fontFamily": "San Francisco",
+			"fontSizes": {
+				"small": 12,
+				"default": 14,
+				"medium": 17,
+				"large": 21,
+				"extraLarge": 26
+			},
+			"fontWeights": {
+				"lighter": 200,
+				"default": 400,
+				"bolder": 700
+			}
+		},
+		"monospace": {
+			"fontFamily": "Courier New",
+			"fontSizes": {
+				"small": 12,
+				"default": 14,
+				"medium": 17,
+				"large": 21,
+				"extraLarge": 26
+			},
+			"fontWeights": {
+				"lighter": 200,
+				"default": 400,
+				"bolder": 700
+			}
+		}
+	},
+	"imageSizes": {
+		"small": 40,
+		"medium": 80,
+		"large": 160
+	},
+	"containerStyles": {
+		"default": {
+			"foregroundColors": {
+				"default": {
+					"default": "#333333",
+					"subtle": "#EE333333"
+				},
+				"accent": {
+					"default": "#2E89FC",
+					"subtle": "#882E89FC"
+				},
+				"good": {
+					"default": "#54A254",
+					"subtle": "#DD54A254"
+				},
+				"warning": {
+					"default": "#C3AB23",
+					"subtle": "#DDC3AB23"
+				},
+				"attention": {
+					"default": "#FF0000",
+					"subtle": "#DDFF0000"
+				}
+			},
+			"backgroundColor": "#FFFFFF"
+		},
+		"emphasis": {
+			"foregroundColors": {
+				"default": {
+					"default": "#333333",
+					"subtle": "#EE333333"
+				},
+				"accent": {
+					"default": "#2E89FC",
+					"subtle": "#882E89FC"
+				},
+				"good": {
+					"default": "#54A254",
+					"subtle": "#DD54A254"
+				},
+				"warning": {
+					"default": "#C3AB23",
+					"subtle": "#DDC3AB23"
+				},
+				"attention": {
+					"default": "#FF0000",
+					"subtle": "#DDFF0000"
+				}
+			},
+			"backgroundColor": "#08000000",
+			"borderColor": "#FF000000",
+			"borderThickness": 1
+		},
+		"good": {
+			"foregroundColors": {
+				"default": {
+					"default": "#333333",
+					"subtle": "#EE333333"
+				},
+				"accent": {
+					"default": "#2E89FC",
+					"subtle": "#882E89FC"
+				},
+				"good": {
+					"default": "#54A254",
+					"subtle": "#DD54A254"
+				},
+				"warning": {
+					"default": "#C3AB23",
+					"subtle": "#DDC3AB23"
+				},
+				"attention": {
+					"default": "#FF0000",
+					"subtle": "#DDFF0000"
+				}
+			},
+			"backgroundColor": "#DD54A254"
+		},
+		"warning": {
+			"foregroundColors": {
+				"default": {
+					"default": "#333333",
+					"subtle": "#EE333333"
+				},
+				"accent": {
+					"default": "#2E89FC",
+					"subtle": "#882E89FC"
+				},
+				"good": {
+					"default": "#54A254",
+					"subtle": "#DD54A254"
+				},
+				"warning": {
+					"default": "#C3AB23",
+					"subtle": "#DDC3AB23"
+				},
+				"attention": {
+					"default": "#FF0000",
+					"subtle": "#DDFF0000"
+				}
+			},
+			"backgroundColor": "#DDC3AB23"
+		},
+		"attention": {
+			"foregroundColors": {
+				"default": {
+					"default": "#333333",
+					"subtle": "#EE333333"
+				},
+				"accent": {
+					"default": "#2E89FC",
+					"subtle": "#882E89FC"
+				},
+				"good": {
+					"default": "#54A254",
+					"subtle": "#DD54A254"
+				},
+				"warning": {
+					"default": "#C3AB23",
+					"subtle": "#DDC3AB23"
+				},
+				"attention": {
+					"default": "#FF0000",
+					"subtle": "#DDFF0000"
+				}
+			},
+			"backgroundColor": "#DDFF0000",
+			"borderColor": "#FF000000",
+			"borderThickness": 2
+		},
+		"accent": {
+			"foregroundColors": {
+				"default": {
+					"default": "#333333",
+					"subtle": "#EE333333"
+				},
+				"accent": {
+					"default": "#2E89FC",
+					"subtle": "#882E89FC"
+				},
+				"good": {
+					"default": "#54A254",
+					"subtle": "#DD54A254"
+				},
+				"warning": {
+					"default": "#C3AB23",
+					"subtle": "#DDC3AB23"
+				},
+				"attention": {
+					"default": "#FF0000",
+					"subtle": "#DDFF0000"
+				}
+			},
+			"backgroundColor": "#882E89FC",
+			"borderThickness": 1
+		}
+	},
+	"spacing": {
+		"small": 3,
+		"default": 8,
+		"medium": 20,
+		"large": 30,
+		"extraLarge": 40,
+		"padding": 10
+	},
+	"separator": {
+		"lineThickness": 1,
+		"lineColor": "#FF000000"
+	},
+	"actions": {
+		"maxActions": 5,
+		"spacing": "Default",
+		"buttonSpacing": 10,
+		"showCard": {
+			"actionMode": "Popup",
+			"inlineTopMargin": 16,
+			"style": "Emphasis"
+		},
+		"preExpandSingleShowCardAction": false,
+		"actionsOrientation": "Horizontal",
+		"actionAlignment": "Left"
+	},
+	"adaptiveCard": {
+		"allowCustomStyle": true
+	},
+	"imageSet": {
+		"imageSize": "Medium",
+		"maxImageHeight": 999
+	},
+	"factSet": {
+		"title": {
+			"size": "Default",
+			"color": "Default",
+			"isSubtle": false,
+			"weight": "Bolder",
+			"maxWidth":150,
+			"warp": true
+		},
+		"value": {
+			"size": "Default",
+			"color": "Default",
+			"isSubtle": false,
+			"weight": "Default",
+			"warp": true
+		},
+		"spacing": 5
+	},
+	"media": {
+        "playButton" : "http://adaptivecards.io/content/adaptive-card-50.png",
+		"allowInlinePlayback" : true
+	}
+}
