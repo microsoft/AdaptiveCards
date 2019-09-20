@@ -11,18 +11,21 @@ import {
     Platform,
     Alert,
     Linking,
-    ScrollView
+    ScrollView,
+    Dimensions
 } from 'react-native';
 
 import AdaptiveCard from '../adaptive-card';
 import { RatingRenderer } from './rating-renderer';
 import { Registry } from '../components/registration/registry';
 import * as Utils from '../utils/util';
+const { height } = Dimensions.get('window');
 
 export default class Renderer extends React.Component {
 
     state = {
-        isJSONVisible: false
+        isJSONVisible: false,
+        height: 0
     }
 
     customHostConfig = {
@@ -48,35 +51,42 @@ export default class Renderer extends React.Component {
         this.onModalClose = props.onModalClose;
     }
 
+    onContentSizeChange = (contentWidth, contentHeight) => {
+        this.setState({ screenHeight: contentHeight });
+    }
+    
     render() {
         Registry.getManager().registerComponent('RatingBlock', RatingRenderer);
 
         let { isJSONVisible } = this.state;
+		const scrollEnabled = this.state.screenHeight > height ;
 
         return (
-            <ScrollView>
-            <View style={styles.container}>
-                <View style={styles.header}>
-                    <Button title="Close" onPress={this.onModalClose} />
-                    <Text style={styles.title}>Adaptive Card</Text>
-                    <Button title={isJSONVisible ? 'Card' : 'Json'} onPress={this.toggleJSONView} />
+            <ScrollView
+                scrollEnabled={scrollEnabled}
+                onContentSizeChange={this.onContentSizeChange}>
+                <View style={styles.container}>
+                    <View style={styles.header}>
+                        <Button title="Close" onPress={this.onModalClose} />
+                        <Text style={styles.title}>Adaptive Card</Text>
+                        <Button title={isJSONVisible ? 'Card' : 'Json'} onPress={this.toggleJSONView} />
+                    </View>
+                    {isJSONVisible ?
+                        <ScrollView contentContainerStyle={styles.jsonContainer}>
+                            <Text style={{ fontFamily: 'Courier New' }}>
+                                {JSON.stringify(this.payload, null, '  ')}
+                            </Text>
+                        </ScrollView>
+                        :
+                        <AdaptiveCard
+                            payload={this.payload}
+                            onExecuteAction={this.onExecuteAction}
+                            hostConfig={this.customHostConfig}
+                            themeConfig={this.customThemeConfig}
+                            onParseError={this.onParseError}
+                            ref="adaptiveCardRef" />
+                    }
                 </View>
-                {isJSONVisible ?
-                    <ScrollView contentContainerStyle={styles.jsonContainer}>
-                        <Text style={{ fontFamily: 'Courier New' }}>
-                            {JSON.stringify(this.payload, null, '  ')}
-                        </Text>
-                    </ScrollView>
-                    :
-                    <AdaptiveCard
-                        payload={this.payload}
-                        onExecuteAction={this.onExecuteAction}
-                        hostConfig={this.customHostConfig}
-                        themeConfig={this.customThemeConfig}
-                        onParseError={this.onParseError}
-                        ref="adaptiveCardRef" />
-                }
-            </View>
             </ScrollView>
         );
     }
