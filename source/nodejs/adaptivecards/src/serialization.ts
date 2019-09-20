@@ -220,12 +220,6 @@ export class SerializableObjectProperty extends PropertyDefinition {
             result = this.onGetInitialValue(sender);
         }
 
-        /*
-        else if (this.onGetInitialValue) {
-            result = this.onGetInitialValue(sender);
-        }
-        */
-
         return result;
     }
 
@@ -251,24 +245,21 @@ export class SerializableObjectProperty extends PropertyDefinition {
     }
 }
 
-export class SerializableObjectCollectionProperty<T extends SerializableObject> extends PropertyDefinition {
-    parse(sender: SerializableObject, source: PropertyBag, errors?: IValidationError[]): T[] | undefined {
-        let result: T[] | undefined = [];
+export class SerializableObjectCollectionProperty extends PropertyDefinition {
+    parse(sender: SerializableObject, source: PropertyBag, errors?: IValidationError[]): SerializableObject[] | undefined {
+        let result: SerializableObject[] | undefined = [];
 
         let sourceCollection = source[this.name];
 
         if (Array.isArray(sourceCollection)) {
             for (let sourceItem of sourceCollection) {
-                let item = this.onCreateCollectionItemInstance(sender, sourceItem);
+                let item = new this.objectType();
+                item.parse(sourceItem);
 
-                if (item) {
-                    item.parse(sourceItem);
+                result.push(item);
 
-                    result.push(item);
-
-                    if (this.onItemAdded) {
-                        this.onItemAdded(sender, item);
-                    }
+                if (this.onItemAdded) {
+                    this.onItemAdded(sender, item);
                 }
             }
         }
@@ -276,21 +267,20 @@ export class SerializableObjectCollectionProperty<T extends SerializableObject> 
         return result.length > 0 ? result : (this.onGetInitialValue ? this.onGetInitialValue(sender) : undefined);
     }
 
-    toJSON(sender: SerializableObject, target: PropertyBag, value: T[] | undefined) {
+    toJSON(sender: SerializableObject, target: PropertyBag, value: SerializableObject[] | undefined) {
         Utils.setArrayProperty(target, this.name, value);
     }
 
     constructor(
         readonly targetVersion: TargetVersion,
         readonly name: string,
-        readonly onCreateCollectionItemInstance: (sender: SerializableObject, sourceItem: any) => T,
-        readonly onGetInitialValue?: (sender: SerializableObject) => T[],
-        readonly onItemAdded?: (sender: SerializableObject, item: T) => void) {
-        super(targetVersion, name, undefined, onGetInitialValue);
-
-        if (!this.onCreateCollectionItemInstance) {
-            throw new Error("SerializedObjectCollectionPropertyDefinition instances must have an onCreateCollectionItemInstance handler.");
-        }
+        readonly objectType: SerializableObjectType,
+        readonly onItemAdded?: (sender: SerializableObject, item: SerializableObject) => void) {
+        super(
+            targetVersion,
+            name,
+            undefined,
+            (sender: SerializableObject) => { return []; });
     }
 }
 

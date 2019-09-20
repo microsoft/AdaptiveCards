@@ -1614,11 +1614,7 @@ export class Fact extends SerializableObject {
 export class FactSet extends CardElement {
     //#region Schema
 
-    static readonly factsProperty = new SerializableObjectCollectionProperty<Fact>(
-        Versions.v1_0,
-        "facts",
-        (sourceItem: any) => { return new Fact(); },
-        (sender: object) => { return []; });
+    static readonly factsProperty = new SerializableObjectCollectionProperty(Versions.v1_0, "facts", Fact);
 
     @property(FactSet.factsProperty)
     facts: Fact[];
@@ -2148,11 +2144,10 @@ export abstract class CardElementContainer extends CardElement {
 export class ImageSet extends CardElementContainer {
     //#region Schema
 
-    static readonly imagesProperty = new SerializableObjectCollectionProperty<Image>(
+    static readonly imagesProperty = new SerializableObjectCollectionProperty(
         Versions.v1_0,
         "images",
-        (sender: SerializableObject, sourceItem: any) => { return new Image(); },
-        (sender: SerializableObject) => { return []; },
+        Image,
         (sender: SerializableObject, item: Image) => { item.setParent(<CardElement>sender); });
     static readonly imageSizeProperty = new EnumProperty(
         Versions.v1_0,
@@ -2294,11 +2289,7 @@ export class MediaSource extends SerializableObject {
 export class Media extends CardElement {
     //#region Schema
 
-    static readonly sourcesProperty = new SerializableObjectCollectionProperty<MediaSource>(
-        Versions.v1_1,
-        "sources",
-        (sender: SerializableObject, sourceItem: any) => { return new MediaSource(); },
-        (sender: SerializableObject) => { return []; });
+    static readonly sourcesProperty = new SerializableObjectCollectionProperty(Versions.v1_1, "sources", MediaSource);
     static readonly posterProperty = new StringProperty(Versions.v1_1, "poster");
     static readonly altTextProperty = new StringProperty(Versions.v1_1, "altText");
 
@@ -3001,11 +2992,7 @@ export class ChoiceSetInput extends Input {
     //#region Schema
 
     static readonly valueProperty = new StringProperty(Versions.v1_0, "value");
-    static readonly choicesProperty = new SerializableObjectCollectionProperty<Choice>(
-        Versions.v1_0,
-        "choices",
-        (sourceItem: any) => { return new Choice(); },
-        (sender: object) => { return []; });
+    static readonly choicesProperty = new SerializableObjectCollectionProperty(Versions.v1_0, "choices", Choice);
     static readonly styleProperty = new ValueSetProperty(
         Versions.v1_0,
         "style",
@@ -4055,10 +4042,7 @@ export class HttpAction extends Action {
     static readonly urlProperty = new StringWithSubstitutionProperty(Versions.v1_0, "url");
     static readonly bodyProperty = new StringWithSubstitutionProperty(Versions.v1_0, "body");
     static readonly methodProperty = new StringProperty(Versions.v1_0, "method");
-    static readonly headersProperty = new SerializableObjectCollectionProperty(
-        Versions.v1_0,
-        "headers",
-        (sender: SerializableObject, sourceItem: any) => { return new HttpHeader(); });
+    static readonly headersProperty = new SerializableObjectCollectionProperty(Versions.v1_0, "headers", HttpHeader);
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
@@ -4076,7 +4060,7 @@ export class HttpAction extends Action {
     method?: string;
 
     @property(HttpAction.headersProperty)
-    headers: HttpHeader[] = [];
+    headers: HttpHeader[];
 
     @property(Action.ignoreInputValidationProperty)
     private _ignoreInputValidation: boolean = false;
