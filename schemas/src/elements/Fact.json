@@ -1,0 +1,16 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+  "description": "Describes a Fact in a FactSet as a key/value pair.",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "The title of the fact.",
+      "required": true
+    },
+    "value": {
+      "type": "string",
+      "description": "The value of the fact.",
+      "required": true
+    }
+  }
+}

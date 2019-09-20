@@ -1,0 +1,16 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+  "description": "Represents an entry for Action.ToggleVisibility's targetElements property",
+  "properties": {
+    "elementId": {
+      "type": "string",
+      "description": "Element ID of element to toggle",
+      "required": true
+    },
+    "isVisible": {
+      "type": "boolean?",
+      "description": "If `true`, always show target element. If `false`, always hide target element. If not supplied, toggle target element's visibility. "
+    }
+  },
+  "shorthand": "elementId"
+}
