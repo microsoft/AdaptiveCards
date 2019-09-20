@@ -19,11 +19,11 @@ export function appendChild(node: Node, child: Node) {
 }
 
 export function getStringValue(obj: any, defaultValue: string = undefined): string {
-    return obj ? obj.toString() : defaultValue;
+    return typeof obj === "string" ? obj.toString() : defaultValue;
 }
 
 export function getNumberValue(obj: any, defaultValue: number = undefined): number {
-    return obj && typeof obj === "number" ? obj : defaultValue;
+    return typeof obj === "number" ? obj : defaultValue;
 }
 
 export function getBoolValue(value: any, defaultValue: boolean): boolean {
@@ -66,7 +66,7 @@ export function getEnumValue(targetEnum: { [s: number]: string }, name: string, 
     return defaultValue;
 }
 
-export function setProperty(target: any, propertyName: string, propertyValue: any, defaultValue: any = undefined) {
+export function setProperty(target: object, propertyName: string, propertyValue: any, defaultValue: any = undefined) {
     if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue) {
         delete target[propertyName];
     }
@@ -130,7 +130,7 @@ export function parseHostConfigEnum(targetEnum: { [s: number]: string }, value: 
         return getEnumValue(targetEnum, value, defaultValue);
     }
     else if (typeof value === "number") {
-        return value ? value : defaultValue;
+        return value;
     }
     else {
         return defaultValue;
