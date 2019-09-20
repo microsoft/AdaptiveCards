@@ -40,6 +40,20 @@ export class SettingsManager {
         }
     }
 
+    static tryLoadStringSetting(name: string): ILoadSettingResult<string> {
+        if (SettingsManager.isLocalStorageAvailable) {
+            let returnValue = localStorage.getItem(name);
+    
+            return {
+                succeeded: true,
+                value: returnValue
+            };
+        }
+        else {
+            return { succeeded: false };
+        }
+    }
+    
     static tryLoadNumberSetting(name: string): ILoadSettingResult<number> {
         if (SettingsManager.isLocalStorageAvailable) {
             let returnValue = localStorage.getItem(name);

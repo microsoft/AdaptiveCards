@@ -18,17 +18,13 @@
 
 	<script type="text/javascript">
 		window.onload = function() {
-            ACDesigner.GlobalSettings.previewFeaturesEnabled = false;
+            ACDesigner.GlobalSettings.previewFeaturesEnabled = true;
 
             if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
 				console.log("Local storage is not available.");
 			}
 
 
-			// Prepare a list of host containers
-			// This is not required. When no list is passed (empty array or null), the designer
-			// uses a default built-in host container, and the host container picker in the
-			// toolbar is hidden.
 			let hostContainers = [];
 
 			hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
@@ -41,49 +37,6 @@
 			hostContainers.push(new ACDesigner.ToastContainer("Windows Notifications (Preview)", "containers/toast-container.css"));
 
 			let designer = new ACDesigner.CardDesigner(hostContainers);
-
-			// Change where the designer looks for assets like CSS and container images
-			//designer.assetPath = "http://localhost:8080/";
-
-			/* Here's how to add buttons to the toolbar:
-
-			let myButton = new ACDesigner.ToolbarButton(
-				"myButton",
-				"My button",
-				null,
-				(sender) => { alert("My button was clicked"); });
-			myButton.separator = true;
-			designer.toolbar.insertElementAfter(myButton, ACDesigner.CardDesigner.ToolbarCommands.HostAppPicker);
-
-
-			// NOTE: Adding toolbar elements must be done BEFORE the designer is attached
-
-			
-			/* Here's how to collapse certain panes by default:
-			
-			designer.treeViewPane.collapse();
-			designer.jsonEditorPane.collapse();
-			*/
-
-			/* Here's how to set the card payload in the designer:
-
-			designer.setCard(
-				{
-					type: "AdaptiveCard",
-					version: "1.0",
-					body: [
-						{
-							type: "TextBlock",
-							text: "Hello world"
-						}
-					]
-				}
-			);
-			*/
-
-			// NOTE: Collapsing panes/setting the card payload must be done AFTER the designer is attached
-			// Initialize monaco-editor for the JSON-editor pane. 
-
 			require.config({
 				paths: {
 					'vs': 'https://unpkg.com/monaco-editor@0.17.1/min/vs'
