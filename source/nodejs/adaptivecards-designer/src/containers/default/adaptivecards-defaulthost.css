@@ -1,3 +1,9 @@
+.card-frame {
+    border: 1px solid #F1F1F1;
+    box-shadow: 0 0 15px -5px rgba(0, 0, 0, 0.4);
+    background: white;
+}
+
 .ac-media-poster {}
 
 .ac-media-poster.empty {
@@ -75,7 +81,7 @@ a.ac-anchor:visited:active {
     font-family: "Calibri", sans-serif;
     font-size: 14px;
     font-weight: 600;
-    padding: 10px;
+    padding: 8px;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -196,12 +202,4 @@ a.ac-anchor:visited:active {
 
 .ac-inlineActionButton:active {
     background-color: #CCCCCC;
-}
-
-.webChatOuterContainer {
-    background-color: #eceff1;
-    border: 1px solid #e6e6e6;
-    padding: 8px;
-    width: 416px;
-    border-radius: 4px;
 }
