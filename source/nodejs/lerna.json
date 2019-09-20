@@ -1,7 +1,10 @@
 {
 	"version": "independent",
 	"packages": [
-		"adaptivecards*/**"
+		"adaptivecards*/**",
+		"spec-generator/**",
+		"ac-typed-schema/**"
+		
 	],
 	"command": {
 		"publish": {
