@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.Uwp.h"
-#include "Enums.h"
 #include "NumberInput.h"
 #include "AdaptiveInputElement.h"
 
