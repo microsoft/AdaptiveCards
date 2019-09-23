@@ -9,15 +9,14 @@
 
 using namespace AdaptiveCards;
 
-@implementation ACRParseWarning
-{
+@implementation ACRParseWarning {
     std::shared_ptr<AdaptiveCardParseWarning> _parseWarnings;
 }
 
 - (instancetype)initWithParseWarning:(std::shared_ptr<AdaptiveCardParseWarning> const &)parseWarning
 {
     self = [super init];
-    if(self){
+    if (self) {
         _statusCode = (ACRParseWarningStatusCode)parseWarning->GetStatusCode();
         _reason = [NSString stringWithCString:parseWarning->GetReason().c_str() encoding:NSUTF8StringEncoding];
     }

@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 using Newtonsoft.Json;
+using System;
+using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
@@ -28,29 +30,47 @@ namespace AdaptiveCards
     }
 
 
-    public struct AdaptiveHeight
+    public class AdaptiveHeight : IEquatable<AdaptiveHeight>
     {
         public static AdaptiveHeight Auto { get; } = new AdaptiveHeight(AdaptiveHeightType.Auto);
 
         public static AdaptiveHeight Stretch { get; } = new AdaptiveHeight(AdaptiveHeightType.Stretch);
 
-        public AdaptiveHeightType _heightType;
-        public AdaptiveHeightType HeightType { get { return _heightType; } set { } }
-
-        public uint? _unit;
-        public uint? Unit { get { return _unit; } set { } }
+        public AdaptiveHeight()
+        {
+        }
 
         public AdaptiveHeight(uint px)
         {
-            _heightType = AdaptiveHeightType.Pixel;
-            _unit = px;
+            HeightType = AdaptiveHeightType.Pixel;
+            this.Unit = px;
         }
 
         public AdaptiveHeight(AdaptiveHeightType heightType)
         {
-            _heightType = heightType;
-            _unit = null;
+            HeightType = heightType;
+            Unit = null;
         }
+
+
+        [JsonProperty("heightType")]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        public AdaptiveHeightType HeightType { get; set; }
+
+        [JsonProperty("unit")]
+#if !NETSTANDARD1_3
+        [XmlIgnore]
+#endif
+        public uint? Unit { get; set; }
+
+#if !NETSTANDARD1_3
+        [XmlAttribute("Unit")]
+        [JsonIgnore]
+        public uint UnitXml { get { return Unit.HasValue ? Unit.Value : 0; } set { Unit = value; } }
+        public bool ShouldSerializeUnitXml() => Unit.HasValue;
+#endif
 
         public bool IsPixel()
         {
@@ -63,7 +83,8 @@ namespace AdaptiveCards
             {
                 return false;
             }
-            if( HeightType == AdaptiveHeightType.Pixel )
+
+            if (HeightType == AdaptiveHeightType.Pixel)
             {
                 if (!Unit.HasValue)
                 {
@@ -79,23 +100,13 @@ namespace AdaptiveCards
 
         public static bool operator ==(AdaptiveHeight ah1, AdaptiveHeight ah2)
         {
-            if (ah1 != null && ah2 != null)
-            {
-                return ah1.Equals(ah2);
-            }
-
-            if (ah1 == null && ah2 == null)
-            {
-                return true;
-            }
-            return false;
+            return ah1.Equals(ah2);
         }
 
         public static bool operator !=(AdaptiveHeight ah1, AdaptiveHeight ah2)
         {
-            return !(ah1 == ah2);
+            return !ah1.Equals(ah2);
         }
-
         public override int GetHashCode()
         {
             if (!Unit.HasValue)
@@ -107,17 +118,18 @@ namespace AdaptiveCards
 
         public override bool Equals(object obj)
         {
-            if (obj is AdaptiveHeight)
+            return this.Equals(obj as AdaptiveHeight);
+        }
+
+        public Boolean Equals(AdaptiveHeight other)
+        {
+            if (this.HeightType == other.HeightType)
             {
-                AdaptiveHeight ah = (AdaptiveHeight)obj;
-                if (HeightType == ah.HeightType)
+                if (this.HeightType == AdaptiveHeightType.Pixel)
                 {
-                    if (HeightType == AdaptiveHeightType.Pixel)
-                    {
-                        return Unit == ah.Unit;
-                    }
-                    return true;
+                    return this.Unit == other.Unit;
                 }
+                return true;
             }
             return false;
         }
