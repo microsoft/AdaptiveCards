@@ -1,0 +1,79 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Nutrition facts",
+			"size": "large",
+			"weight": "bolder"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Per 3 cookies (36 g)"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Calories 180",
+			"weight": "bolder"
+		},
+		{
+			"type": "FactSet",
+			"facts": [
+				{
+					"title": "Fat",
+					"value": "10 g"
+				},
+				{
+					"title": "Saturated",
+					"value": "4 g"
+				},
+				{
+					"title": "+ Trans",
+					"value": "0 g"
+				},
+				{
+					"title": "Cholesterol",
+					"value": "5 mg"
+				},
+				{
+					"title": "Sodium",
+					"value": "100 mg"
+				},
+				{
+					"title": "Carbohydrate",
+					"value": "24 g"
+				},
+				{
+					"title": "Fibre",
+					"value": "0 g"
+				},
+				{
+					"title": "Sugars",
+					"value": "12 g"
+				},
+				{
+					"title": "Protein",
+					"value": "2 g"
+				},
+				{
+					"title": "Vitamin A",
+					"value": "0 %"
+				},
+				{
+					"title": "Vitamin C",
+					"value": "0 %"
+				},
+				{
+					"title": "Calcium",
+					"value": "0 %"
+				},
+				{
+					"title": "Iron",
+					"value": "6 %"
+				}
+			]
+		}
+	]
+}
