@@ -89,9 +89,10 @@ namespace AdaptiveNamespace
         UINT32 inlineTopMargin;
         RETURN_IF_FAILED(showCardActionConfig->get_InlineTopMargin(&inlineTopMargin));
 
-        double sideMargin = (double)padding * -1;
-        double topMargin = isBottomActionBar ? inlineTopMargin + padding : inlineTopMargin;
-        double bottomMargin = isBottomActionBar ? (double)padding * -1 : 0;
+        const double negativePadding = -(static_cast<double>(padding));
+        const double sideMargin = negativePadding;
+        const double topMargin = isBottomActionBar ? inlineTopMargin + padding : inlineTopMargin;
+        const double bottomMargin = isBottomActionBar ? negativePadding : 0;
 
         Thickness margin = {sideMargin, topMargin, sideMargin, bottomMargin};
         RETURN_IF_FAILED(showCardFrameworkElement->put_Margin(margin));
