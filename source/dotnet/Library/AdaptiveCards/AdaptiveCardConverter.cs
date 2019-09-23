@@ -20,29 +20,52 @@ namespace AdaptiveCards
 
         public override bool CanWrite => false;
 
+        private void ValidateJsonVersion(ref JObject jObject)
+        {
+            string exceptionMessage = "";
+            if (jObject.Value<string>("version") == null)
+            {
+                exceptionMessage = "Could not parse required key: version. It was not found.";
+            }
+
+            // If this is the root AdaptiveCard and missing a version we fail parsing.
+            // The depth checks that cards within a Action.ShowCard don't require the version
+            if (jObject.Value<string>("version") == "")
+            {
+                exceptionMessage = "Property is required but was found empty: version";
+            }
+
+            if (!String.IsNullOrEmpty(exceptionMessage))
+            {
+                if (AdaptiveCard.OnDeserializingMissingVersion == null)
+                {
+                    // no handler registered for dealing with missing/empty version. best just throw...
+                    throw new AdaptiveSerializationException(exceptionMessage);
+                }
+                else
+                {
+                    // caller wants to override version semantics
+                    var overriddenVersion = AdaptiveCard.OnDeserializingMissingVersion();
+                    jObject["version"] = overriddenVersion.ToString();
+                }
+            }
+        }
+
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var jObject = JObject.Load(reader);
 
             if (jObject.Value<string>("type") != AdaptiveCard.TypeName)
+            {
                 throw new AdaptiveSerializationException($"Property 'type' must be '{AdaptiveCard.TypeName}'");
+            }
 
             if (reader.Depth == 0)
             {
                 // Needed for ID collision detection after fallback was introduced
                 ParseContext.Initialize();
 
-                if (jObject.Value<string>("version") == null)
-                {
-                    throw new AdaptiveSerializationException("Could not parse required key: version. It was not found.");
-                }
-
-                // If this is the root AdaptiveCard and missing a version we fail parsing.
-                // The depth checks that cards within a Action.ShowCard don't require the version
-                if (jObject.Value<string>("version") == "")
-                {
-                    throw new AdaptiveSerializationException("Property is required but was found empty: version");
-                }
+                ValidateJsonVersion(ref jObject);
 
                 if (new AdaptiveSchemaVersion(jObject.Value<string>("version")) > AdaptiveCard.KnownSchemaVersion)
                 {
