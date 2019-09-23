@@ -211,8 +211,20 @@ For advanced configuration of the designer use the following APIs.
 
 	/* Collapse certain panes by default (BEFORE designer attached)	*/
 	designer.treeViewPane.collapse();
-	designer.jsonEditorPane.collapse();
-	
+    designer.jsonEditorPane.collapse();
+    
+    /* Be notified when the card has changed */
+    designer.onCardPayloadChanged = (sender: ACDesigner.CardDesigner) => {
+        // Get the updated card payload
+        let updatedCard = sender.getCard();
+
+        // ... do something with the retrieved payload
+    }
+
+    /* Be notified when the active (selected) host app has changed */
+    designer.onActiveHostContainerChanged = (sender: ACDesigner.CardDesigner) => {
+        // React to active host app change
+    }
 
 	/* Set the card payload in the designer: (AFTER designer attached) */ 
 	designer.setCard(
