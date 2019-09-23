@@ -15,7 +15,8 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveShowCardActionRenderer::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveShowCardActionRenderer::RuntimeClassInitialize() noexcept
+    try
     {
         return S_OK;
     }
@@ -24,7 +25,8 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveShowCardActionRenderer::Render(_In_ IAdaptiveActionElement* action,
                                                    _In_ IAdaptiveRenderContext* renderContext,
                                                    _In_ IAdaptiveRenderArgs* renderArgs,
-                                                   _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept try
+                                                   _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept
+    try
     {
         return ActionHelpers::BuildAction(action, renderContext, renderArgs, result);
     }
@@ -35,7 +37,8 @@ namespace AdaptiveNamespace
         _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
         _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
         _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** element) noexcept try
+        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** element) noexcept
+    try
     {
         return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveShowCardAction, AdaptiveSharedNamespace::ShowCardAction, AdaptiveSharedNamespace::ShowCardActionParser>(
             jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
@@ -46,7 +49,8 @@ namespace AdaptiveNamespace
                                                           _In_ IAdaptiveRenderContext* renderContext,
                                                           _In_ IAdaptiveRenderArgs* renderArgs,
                                                           bool isBottomActionBar,
-                                                          _Outptr_ IUIElement** uiShowCard) noexcept try
+                                                          _Outptr_ IUIElement** uiShowCard) noexcept
+    try
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;
         RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
@@ -65,7 +69,8 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(renderArgs->put_IsInShowCard(true));
 
         ComPtr<IFrameworkElement> localUiShowCard;
-        RETURN_IF_FAILED(XamlBuilder::BuildXamlTreeFromAdaptiveCard(showCard, localUiShowCard.GetAddressOf(), renderContext, nullptr, showCardConfigStyle));
+        RETURN_IF_FAILED(
+            XamlBuilder::BuildXamlTreeFromAdaptiveCard(showCard, localUiShowCard.GetAddressOf(), renderContext, nullptr, showCardConfigStyle));
 
         RETURN_IF_FAILED(renderArgs->put_IsInShowCard(wasInShowCard));
 

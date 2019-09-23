@@ -9,7 +9,8 @@ using namespace ABI::AdaptiveNamespace;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveMediaConfig::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveMediaConfig::RuntimeClassInitialize() noexcept
+    try
     {
         MediaConfig mediaConfig;
         return RuntimeClassInitialize(mediaConfig);

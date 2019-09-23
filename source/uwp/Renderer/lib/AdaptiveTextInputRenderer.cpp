@@ -18,7 +18,8 @@ using namespace ABI::Windows::UI::Xaml::Input;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveTextInputRenderer::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveTextInputRenderer::RuntimeClassInitialize() noexcept
+    try
     {
         return S_OK;
     }
@@ -27,7 +28,8 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveTextInputRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
                                               _In_ IAdaptiveRenderContext* renderContext,
                                               _In_ IAdaptiveRenderArgs* renderArgs,
-                                              _COM_Outptr_ IUIElement** textInputControl) noexcept try
+                                              _COM_Outptr_ IUIElement** textInputControl) noexcept
+    try
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;
         RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
@@ -135,7 +137,8 @@ namespace AdaptiveNamespace
         _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
         _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
         _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept try
+        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept
+    try
     {
         return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveTextInput, AdaptiveSharedNamespace::TextInput, AdaptiveSharedNamespace::TextInputParser>(
             jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);

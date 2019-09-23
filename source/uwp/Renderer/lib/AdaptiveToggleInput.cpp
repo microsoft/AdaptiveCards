@@ -13,7 +13,8 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveToggleInput::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveToggleInput::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::ToggleInput> toggleInput =
             std::make_shared<AdaptiveSharedNamespace::ToggleInput>();
@@ -21,7 +22,8 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveToggleInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ToggleInput>& sharedToggleInput) try
+    HRESULT AdaptiveToggleInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ToggleInput>& sharedToggleInput)
+    try
     {
         if (sharedToggleInput == nullptr)
         {
@@ -73,7 +75,8 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveToggleInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
+    HRESULT AdaptiveToggleInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::ToggleInput> toggleInput =
             std::make_shared<AdaptiveSharedNamespace::ToggleInput>();

@@ -383,8 +383,7 @@ HRESULT HandleMediaClick(_In_ IAdaptiveRenderContext* renderContext,
 
                                               RETURN_IF_FAILED(localMediaElement->Play());
                                               return S_OK;
-                                          })
-                                              .Get(),
+                                          }).Get(),
                                           &mediaOpenedToken));
     }
     else

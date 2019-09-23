@@ -9,7 +9,8 @@ using namespace ABI::AdaptiveNamespace;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveTextConfig::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveTextConfig::RuntimeClassInitialize() noexcept
+    try
     {
         TextConfig textConfig;
         return RuntimeClassInitialize(textConfig);

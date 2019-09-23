@@ -11,7 +11,8 @@ using namespace Microsoft::WRL::Wrappers;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveFontTypeDefinition::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveFontTypeDefinition::RuntimeClassInitialize() noexcept
+    try
     {
         FontTypeDefinition typeDefinition;
         return RuntimeClassInitialize(typeDefinition);
@@ -28,10 +29,7 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveFontTypeDefinition::get_FontFamily(_Outptr_ HSTRING* value) { return m_fontFamily.CopyTo(value); }
 
-    HRESULT AdaptiveFontTypeDefinition::put_FontFamily(_In_ HSTRING fontFamily)
-    {
-        return m_fontFamily.Set(fontFamily);
-    }
+    HRESULT AdaptiveFontTypeDefinition::put_FontFamily(_In_ HSTRING fontFamily) { return m_fontFamily.Set(fontFamily); }
 
     HRESULT AdaptiveFontTypeDefinition::get_FontWeights(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveFontWeightsConfig** weightsConfig)
     {

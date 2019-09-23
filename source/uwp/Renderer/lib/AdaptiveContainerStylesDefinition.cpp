@@ -11,7 +11,8 @@ using namespace ABI::AdaptiveNamespace;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveContainerStylesDefinition::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveContainerStylesDefinition::RuntimeClassInitialize() noexcept
+    try
     {
         ContainerStylesDefinition stylesDefinition;
         return RuntimeClassInitialize(stylesDefinition);

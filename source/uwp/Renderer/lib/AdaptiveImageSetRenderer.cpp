@@ -17,16 +17,18 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveImageSetRenderer::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveImageSetRenderer::RuntimeClassInitialize() noexcept
+    try
     {
         return S_OK;
     }
     CATCH_RETURN;
 
     HRESULT AdaptiveImageSetRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
-                                       _In_ IAdaptiveRenderContext* renderContext,
-                                       _In_ IAdaptiveRenderArgs* renderArgs,
-                                       _COM_Outptr_ IUIElement** imageSetControl) noexcept try
+                                             _In_ IAdaptiveRenderContext* renderContext,
+                                             _In_ IAdaptiveRenderArgs* renderArgs,
+                                             _COM_Outptr_ IUIElement** imageSetControl) noexcept
+    try
     {
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
         ComPtr<IAdaptiveImageSet> adaptiveImageSet;
@@ -100,7 +102,8 @@ namespace AdaptiveNamespace
 
         ComPtr<IFrameworkElement> imageSetAsFrameworkElement;
         RETURN_IF_FAILED(xamlGrid.As(&imageSetAsFrameworkElement));
-        RETURN_IF_FAILED(XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.ImageSet", imageSetAsFrameworkElement.Get()));
+        RETURN_IF_FAILED(
+            XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.ImageSet", imageSetAsFrameworkElement.Get()));
 
         return xamlGrid.CopyTo(imageSetControl);
     }
@@ -111,7 +114,8 @@ namespace AdaptiveNamespace
         _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
         _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
         _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept try
+        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept
+    try
     {
         return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveImageSet, AdaptiveSharedNamespace::ImageSet, AdaptiveSharedNamespace::ImageSetParser>(
             jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);

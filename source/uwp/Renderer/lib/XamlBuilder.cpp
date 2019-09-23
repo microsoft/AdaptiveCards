@@ -28,14 +28,16 @@ namespace AdaptiveNamespace
                                              &m_randomAccessStreamStatics));
     }
 
-    HRESULT XamlBuilder::AllImagesLoaded() noexcept try
+    HRESULT XamlBuilder::AllImagesLoaded() noexcept
+    try
     {
         FireAllImagesLoaded();
         return S_OK;
     }
     CATCH_RETURN;
 
-    HRESULT XamlBuilder::ImagesLoadingHadError() noexcept try
+    HRESULT XamlBuilder::ImagesLoadingHadError() noexcept
+    try
     {
         FireImagesLoadingHadError();
         return S_OK;
@@ -46,7 +48,8 @@ namespace AdaptiveNamespace
                                                        _Outptr_ IFrameworkElement** xamlTreeRoot,
                                                        _In_ IAdaptiveRenderContext* renderContext,
                                                        ComPtr<XamlBuilder> xamlBuilder,
-                                                       ABI::AdaptiveNamespace::ContainerStyle defaultContainerStyle) noexcept try
+                                                       ABI::AdaptiveNamespace::ContainerStyle defaultContainerStyle) noexcept
+    try
     {
         *xamlTreeRoot = nullptr;
         if (adaptiveCard != nullptr)
@@ -176,7 +179,8 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT XamlBuilder::AddListener(_In_ IXamlBuilderListener* listener) noexcept try
+    HRESULT XamlBuilder::AddListener(_In_ IXamlBuilderListener* listener) noexcept
+    try
     {
         if (m_listeners.find(listener) == m_listeners.end())
         {
@@ -190,7 +194,8 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT XamlBuilder::RemoveListener(_In_ IXamlBuilderListener* listener) noexcept try
+    HRESULT XamlBuilder::RemoveListener(_In_ IXamlBuilderListener* listener) noexcept
+    try
     {
         if (m_listeners.find(listener) != m_listeners.end())
         {
@@ -221,7 +226,8 @@ namespace AdaptiveNamespace
                                                _In_ IAdaptiveRenderArgs* renderArgs,
                                                ComPtr<XamlBuilder> xamlBuilder,
                                                _COM_Outptr_ IPanel** bodyElementContainer,
-                                               _COM_Outptr_ IUIElement** rootElementResult) noexcept try
+                                               _COM_Outptr_ IUIElement** rootElementResult) noexcept
+    try
     {
         // The root of an adaptive card is a composite of several elements, depending on the card
         // properties.  From back to front these are:

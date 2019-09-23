@@ -8,7 +8,8 @@ using namespace Microsoft::WRL::Wrappers;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveUnsupportedAction::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveUnsupportedAction::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::UnknownAction> unknownAction =
             std::make_shared<AdaptiveSharedNamespace::UnknownAction>();
@@ -16,7 +17,8 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveUnsupportedAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::UnknownAction>& sharedUnknown) try
+    HRESULT AdaptiveUnsupportedAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::UnknownAction>& sharedUnknown)
+    try
     {
         if (sharedUnknown == nullptr)
         {
@@ -34,7 +36,8 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveUnsupportedAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedUnknown) try
+    HRESULT AdaptiveUnsupportedAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedUnknown)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::UnknownAction> unknownAction =
             std::make_shared<AdaptiveSharedNamespace::UnknownAction>();

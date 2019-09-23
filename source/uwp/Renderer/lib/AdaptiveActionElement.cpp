@@ -78,15 +78,9 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveActionElementBase::put_IconUrl(_In_ HSTRING iconUrl) { return m_iconUrl.Set(iconUrl); }
 
-    IFACEMETHODIMP AdaptiveActionElementBase::get_Style(_Outptr_ HSTRING* style)
-    {
-        return m_style.CopyTo(style);
-    }
+    IFACEMETHODIMP AdaptiveActionElementBase::get_Style(_Outptr_ HSTRING* style) { return m_style.CopyTo(style); }
 
-    IFACEMETHODIMP AdaptiveActionElementBase::put_Style(_In_ HSTRING style)
-    {
-        return m_style.Set(style);
-    }
+    IFACEMETHODIMP AdaptiveActionElementBase::put_Style(_In_ HSTRING style) { return m_style.Set(style); }
 
     IFACEMETHODIMP AdaptiveActionElementBase::get_AdditionalProperties(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
     {

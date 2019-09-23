@@ -14,7 +14,8 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveToggleVisibilityTarget::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveToggleVisibilityTarget::RuntimeClassInitialize() noexcept
+    try
     {
         RuntimeClassInitialize(std::make_shared<ToggleVisibilityTarget>());
         return S_OK;
@@ -44,7 +45,8 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveToggleVisibilityTarget::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityTarget>& sharedModel) try
+    HRESULT AdaptiveToggleVisibilityTarget::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityTarget>& sharedModel)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityTarget> toggleTarget =
             std::make_shared<AdaptiveSharedNamespace::ToggleVisibilityTarget>();

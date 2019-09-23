@@ -13,7 +13,8 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveFact::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveFact::RuntimeClassInitialize() noexcept
+    try
     {
         RuntimeClassInitialize(std::make_shared<Fact>());
         return S_OK;
@@ -46,7 +47,8 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveFact::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::Fact>& sharedModel) try
+    HRESULT AdaptiveFact::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::Fact>& sharedModel)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::Fact> fact = std::make_shared<AdaptiveSharedNamespace::Fact>();
 

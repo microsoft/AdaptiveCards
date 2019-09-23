@@ -9,7 +9,8 @@ using namespace ABI::AdaptiveNamespace;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveImageSizesConfig::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveImageSizesConfig::RuntimeClassInitialize() noexcept
+    try
     {
         ImageSizesConfig imageSizesConfig;
         return RuntimeClassInitialize(imageSizesConfig);

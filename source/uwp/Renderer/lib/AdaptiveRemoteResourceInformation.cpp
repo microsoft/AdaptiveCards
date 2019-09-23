@@ -13,14 +13,16 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveRemoteResourceInformation::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveRemoteResourceInformation::RuntimeClassInitialize() noexcept
+    try
     {
         RemoteResourceInformation uriInformation;
         return RuntimeClassInitialize(uriInformation);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveRemoteResourceInformation::RuntimeClassInitialize(RemoteResourceInformation& uriInformation) try
+    HRESULT AdaptiveRemoteResourceInformation::RuntimeClassInitialize(RemoteResourceInformation& uriInformation)
+    try
     {
         RETURN_IF_FAILED(UTF8ToHString(uriInformation.url, m_url.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(uriInformation.mimeType, m_mimeType.GetAddressOf()));

@@ -10,7 +10,8 @@ using namespace ABI::Windows::UI;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveHighlightColorConfig::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveHighlightColorConfig::RuntimeClassInitialize() noexcept
+    try
     {
         HighlightColorConfig colorConfig;
         return RuntimeClassInitialize(colorConfig);

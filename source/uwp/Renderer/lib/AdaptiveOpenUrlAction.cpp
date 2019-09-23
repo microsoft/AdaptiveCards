@@ -11,7 +11,8 @@ using namespace ABI::Windows::Foundation;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveOpenUrlAction::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveOpenUrlAction::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::OpenUrlAction> openUrlAction =
             std::make_shared<AdaptiveSharedNamespace::OpenUrlAction>();
@@ -19,7 +20,8 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveOpenUrlAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::OpenUrlAction>& sharedOpenUrlAction) try
+    HRESULT AdaptiveOpenUrlAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::OpenUrlAction>& sharedOpenUrlAction)
+    try
     {
         if (sharedOpenUrlAction == nullptr)
         {
@@ -43,7 +45,8 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveOpenUrlAction::get_Url(_COM_Outptr_ IUriRuntimeClass** url) { return m_url.CopyTo(url); }
 
-    HRESULT AdaptiveOpenUrlAction::put_Url(_In_ IUriRuntimeClass* url) try
+    HRESULT AdaptiveOpenUrlAction::put_Url(_In_ IUriRuntimeClass* url)
+    try
     {
         m_url = url;
         return S_OK;
@@ -56,7 +59,8 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveOpenUrlAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel) try
+    HRESULT AdaptiveOpenUrlAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::OpenUrlAction> openUrlAction =
             std::make_shared<AdaptiveSharedNamespace::OpenUrlAction>();

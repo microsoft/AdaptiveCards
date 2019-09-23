@@ -20,7 +20,8 @@ using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 
 namespace AdaptiveNamespace
 {
-    HRESULT TileControl::RuntimeClassInitialize() noexcept try
+    HRESULT TileControl::RuntimeClassInitialize() noexcept
+    try
     {
         ComPtr<IContentControlFactory> spFactory;
         RETURN_IF_FAILED(Windows::Foundation::GetActivationFactory(

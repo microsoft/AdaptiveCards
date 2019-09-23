@@ -41,7 +41,8 @@ namespace AdaptiveNamespace
 
     AdaptiveImageRenderer::AdaptiveImageRenderer(ComPtr<XamlBuilder> xamlBuilder) : m_xamlBuilder(xamlBuilder) {}
 
-    HRESULT AdaptiveImageRenderer::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveImageRenderer::RuntimeClassInitialize() noexcept
+    try
     {
         RETURN_IF_FAILED(MakeAndInitialize<XamlBuilder>(&m_xamlBuilder));
         return S_OK;
@@ -51,7 +52,8 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveImageRenderer::Render(_In_ IAdaptiveCardElement* cardElement,
                                           _In_ IAdaptiveRenderContext* renderContext,
                                           _In_ IAdaptiveRenderArgs* renderArgs,
-                                          _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept try
+                                          _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept
+    try
     {
         return m_xamlBuilder->BuildImage(cardElement, renderContext, renderArgs, result);
     }
@@ -62,7 +64,8 @@ namespace AdaptiveNamespace
         _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
         _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
         _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept try
+        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept
+    try
     {
         return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveImage, AdaptiveSharedNamespace::Image, AdaptiveSharedNamespace::ImageParser>(
             jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);

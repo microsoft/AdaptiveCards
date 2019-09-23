@@ -10,7 +10,8 @@ using namespace ABI::Windows::UI;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveActionsConfig::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveActionsConfig::RuntimeClassInitialize() noexcept
+    try
     {
         ActionsConfig actionsConfig;
         return RuntimeClassInitialize(actionsConfig);

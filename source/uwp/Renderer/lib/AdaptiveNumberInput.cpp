@@ -13,7 +13,8 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveNumberInput::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveNumberInput::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::NumberInput> numberInput =
             std::make_shared<AdaptiveSharedNamespace::NumberInput>();
@@ -21,7 +22,8 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveNumberInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::NumberInput>& sharedNumberInput) try
+    HRESULT AdaptiveNumberInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::NumberInput>& sharedNumberInput)
+    try
     {
         if (sharedNumberInput == nullptr)
         {
@@ -87,7 +89,8 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveNumberInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
+    HRESULT AdaptiveNumberInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::NumberInput> numberInput =
             std::make_shared<AdaptiveSharedNamespace::NumberInput>();

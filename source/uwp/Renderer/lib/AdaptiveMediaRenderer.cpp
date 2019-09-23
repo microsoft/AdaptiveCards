@@ -21,7 +21,8 @@ using namespace ABI::Windows::UI::Xaml::Media;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveMediaRenderer::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveMediaRenderer::RuntimeClassInitialize() noexcept
+    try
     {
         return S_OK;
     }
@@ -30,7 +31,8 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveMediaRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
                                           _In_ IAdaptiveRenderContext* renderContext,
                                           _In_ IAdaptiveRenderArgs* renderArgs,
-                                          _COM_Outptr_ IUIElement** mediaControl) noexcept try
+                                          _COM_Outptr_ IUIElement** mediaControl) noexcept
+    try
     {
         ComPtr<IAdaptiveCardElement> localCardElement{adaptiveCardElement};
         ComPtr<IAdaptiveMedia> adaptiveMedia;
@@ -176,7 +178,8 @@ namespace AdaptiveNamespace
         _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
         _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
         _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept try
+        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept
+    try
     {
         return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveMedia, AdaptiveSharedNamespace::Media, AdaptiveSharedNamespace::MediaParser>(
             jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);

@@ -10,7 +10,8 @@ using namespace ABI::Windows::Data::Json;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveSubmitAction::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveSubmitAction::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::SubmitAction> submitAction =
             std::make_shared<AdaptiveSharedNamespace::SubmitAction>();
@@ -18,7 +19,8 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveSubmitAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::SubmitAction>& sharedSubmitAction) try
+    HRESULT AdaptiveSubmitAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::SubmitAction>& sharedSubmitAction)
+    try
     {
         if (sharedSubmitAction == nullptr)
         {
@@ -64,7 +66,8 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveSubmitAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel) try
+    HRESULT AdaptiveSubmitAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::SubmitAction> submitAction =
             std::make_shared<AdaptiveSharedNamespace::SubmitAction>();

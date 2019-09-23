@@ -53,7 +53,8 @@ using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveCardRenderer::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveCardRenderer::RuntimeClassInitialize() noexcept
+    try
     {
         RETURN_IF_FAILED(MakeAndInitialize<XamlBuilder>(&m_xamlBuilder));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveElementRendererRegistration>(&m_elementRendererRegistration));

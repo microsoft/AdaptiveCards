@@ -10,7 +10,8 @@ using namespace ABI::Windows::UI;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveShowCardActionConfig::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveShowCardActionConfig::RuntimeClassInitialize() noexcept
+    try
     {
         ShowCardActionConfig showCardActionConfig;
         return RuntimeClassInitialize(showCardActionConfig);

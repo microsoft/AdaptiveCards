@@ -13,14 +13,16 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveTimeInput::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveTimeInput::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::TimeInput> timeInput = std::make_shared<AdaptiveSharedNamespace::TimeInput>();
         return RuntimeClassInitialize(timeInput);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveTimeInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TimeInput>& sharedTimeInput) try
+    HRESULT AdaptiveTimeInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TimeInput>& sharedTimeInput)
+    try
     {
         if (sharedTimeInput == nullptr)
         {
@@ -63,7 +65,8 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveTimeInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
+    HRESULT AdaptiveTimeInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::TimeInput> timeInput = std::make_shared<AdaptiveSharedNamespace::TimeInput>();
 

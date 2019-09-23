@@ -40,7 +40,8 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveNamespace::HeightType* height);
         IFACEMETHODIMP put_Height(ABI::AdaptiveNamespace::HeightType height);
 
-        IFACEMETHODIMP get_Requirements(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>** requirements);
+        IFACEMETHODIMP get_Requirements(
+            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>** requirements);
 
         IFACEMETHODIMP ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
 

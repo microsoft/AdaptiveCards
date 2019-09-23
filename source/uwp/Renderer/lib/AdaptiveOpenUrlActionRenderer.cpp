@@ -13,7 +13,8 @@ using namespace Microsoft::WRL;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveOpenUrlActionRenderer::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveOpenUrlActionRenderer::RuntimeClassInitialize() noexcept
+    try
     {
         return S_OK;
     }
@@ -22,7 +23,8 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveOpenUrlActionRenderer::Render(_In_ IAdaptiveActionElement* action,
                                                   _In_ IAdaptiveRenderContext* renderContext,
                                                   _In_ IAdaptiveRenderArgs* renderArgs,
-                                                  _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept try
+                                                  _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept
+    try
     {
         return ActionHelpers::BuildAction(action, renderContext, renderArgs, result);
     }
@@ -33,7 +35,8 @@ namespace AdaptiveNamespace
         _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
         _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
         _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** element) noexcept try
+        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** element) noexcept
+    try
     {
         return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveOpenUrlAction, AdaptiveSharedNamespace::OpenUrlAction, AdaptiveSharedNamespace::OpenUrlActionParser>(
             jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);

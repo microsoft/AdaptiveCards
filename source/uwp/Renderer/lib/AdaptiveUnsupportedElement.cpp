@@ -13,7 +13,8 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveUnsupportedElement::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveUnsupportedElement::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::UnknownElement> unknownElement =
             std::make_shared<AdaptiveSharedNamespace::UnknownElement>();
@@ -21,7 +22,8 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveUnsupportedElement::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::UnknownElement>& sharedUnknown) try
+    HRESULT AdaptiveUnsupportedElement::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::UnknownElement>& sharedUnknown)
+    try
     {
         if (sharedUnknown == nullptr)
         {
@@ -40,7 +42,8 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveUnsupportedElement::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedUnknown) try
+    HRESULT AdaptiveUnsupportedElement::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedUnknown)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::UnknownElement> unknownElement =
             std::make_shared<AdaptiveSharedNamespace::UnknownElement>();

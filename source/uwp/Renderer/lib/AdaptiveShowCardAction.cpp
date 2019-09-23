@@ -10,7 +10,8 @@ using namespace ABI::AdaptiveNamespace;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveShowCardAction::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveShowCardAction::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::ShowCardAction> showCardAction =
             std::make_shared<AdaptiveSharedNamespace::ShowCardAction>();
@@ -18,7 +19,8 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveShowCardAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ShowCardAction>& sharedShowCardAction) try
+    HRESULT AdaptiveShowCardAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ShowCardAction>& sharedShowCardAction)
+    try
     {
         if (sharedShowCardAction == nullptr)
         {
@@ -53,7 +55,8 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveShowCardAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel) try
+    HRESULT AdaptiveShowCardAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::ShowCardAction> showCardAction =
             std::make_shared<AdaptiveSharedNamespace::ShowCardAction>();

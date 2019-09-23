@@ -27,7 +27,8 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveFactSetRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
                                             _In_ IAdaptiveRenderContext* renderContext,
                                             _In_ IAdaptiveRenderArgs* renderArgs,
-                                            _COM_Outptr_ IUIElement** factSetControl) noexcept try
+                                            _COM_Outptr_ IUIElement** factSetControl) noexcept
+    try
     {
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
         ComPtr<IAdaptiveFactSet> adaptiveFactSet;
@@ -150,7 +151,8 @@ namespace AdaptiveNamespace
 
         ComPtr<IFrameworkElement> factSetAsFrameworkElement;
         RETURN_IF_FAILED(xamlGrid.As(&factSetAsFrameworkElement));
-        RETURN_IF_FAILED(XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.FactSet", factSetAsFrameworkElement.Get()));
+        RETURN_IF_FAILED(
+            XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.FactSet", factSetAsFrameworkElement.Get()));
 
         return xamlGrid.CopyTo(factSetControl);
     }
@@ -161,7 +163,8 @@ namespace AdaptiveNamespace
         _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
         _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
         _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept try
+        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept
+    try
     {
         return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveFactSet, AdaptiveSharedNamespace::FactSet, AdaptiveSharedNamespace::FactSetParser>(
             jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);

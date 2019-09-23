@@ -41,7 +41,10 @@ namespace AdaptiveNamespace
         virtual HRESULT STDMETHODCALLTYPE ArrangeOverride(_In_ Size arrangeBounds, _Out_ Size* pReturnValue);
 
         // not implemented
-        virtual HRESULT STDMETHODCALLTYPE get_BackgroundImage(_Outptr_ IAdaptiveBackgroundImage** /*value*/) { return E_NOTIMPL; }
+        virtual HRESULT STDMETHODCALLTYPE get_BackgroundImage(_Outptr_ IAdaptiveBackgroundImage** /*value*/)
+        {
+            return E_NOTIMPL;
+        }
         virtual HRESULT STDMETHODCALLTYPE get_RootElement(_Outptr_ IFrameworkElement** /*value*/) { return E_NOTIMPL; }
         virtual HRESULT STDMETHODCALLTYPE put_ResolvedImage(_In_ IUIElement* /*value*/) { return E_NOTIMPL; }
         virtual HRESULT STDMETHODCALLTYPE get_ImageSize(_Out_ ABI::Windows::Foundation::Size* /*value*/)

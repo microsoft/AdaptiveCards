@@ -14,14 +14,16 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveTextBlock::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveTextBlock::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::TextBlock> textBlock = std::make_shared<AdaptiveSharedNamespace::TextBlock>();
         return RuntimeClassInitialize(textBlock);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveTextBlock::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TextBlock>& sharedTextBlock) try
+    HRESULT AdaptiveTextBlock::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TextBlock>& sharedTextBlock)
+    try
     {
         if (sharedTextBlock == nullptr)
         {
@@ -80,7 +82,8 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveTextBlock::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedTextBlock) try
+    HRESULT AdaptiveTextBlock::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedTextBlock)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::TextBlock> textBlock = std::make_shared<AdaptiveSharedNamespace::TextBlock>();
 

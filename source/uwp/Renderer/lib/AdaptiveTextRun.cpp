@@ -13,14 +13,16 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveTextRun::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveTextRun::RuntimeClassInitialize() noexcept
+    try
     {
         RuntimeClassInitialize(std::make_shared<TextRun>());
         return S_OK;
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveTextRun::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TextRun>& sharedTextRun) noexcept try
+    HRESULT AdaptiveTextRun::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TextRun>& sharedTextRun) noexcept
+    try
     {
         m_highlight = sharedTextRun->GetHighlight();
         m_italic = sharedTextRun->GetItalic();
@@ -92,7 +94,8 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveTextRun::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::TextRun>& sharedModel) noexcept try
+    HRESULT AdaptiveTextRun::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::TextRun>& sharedModel) noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::TextRun> textRun = std::make_shared<AdaptiveSharedNamespace::TextRun>();
         RETURN_IF_FAILED(AdaptiveTextElement::SetTextElementProperties(textRun));

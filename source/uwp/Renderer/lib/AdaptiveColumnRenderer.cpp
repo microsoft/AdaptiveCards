@@ -19,15 +19,13 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveColumnRenderer::RuntimeClassInitialize() noexcept
-    {
-        return S_OK;
-    }
+    HRESULT AdaptiveColumnRenderer::RuntimeClassInitialize() noexcept { return S_OK; }
 
     HRESULT AdaptiveColumnRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
                                            _In_ IAdaptiveRenderContext* renderContext,
                                            _In_ IAdaptiveRenderArgs* renderArgs,
-                                           _COM_Outptr_ IUIElement** ColumnControl) noexcept try
+                                           _COM_Outptr_ IUIElement** ColumnControl) noexcept
+    try
     {
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
         ComPtr<IAdaptiveColumn> adaptiveColumn;
@@ -138,7 +136,8 @@ namespace AdaptiveNamespace
         _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
         _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
         _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept try
+        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept
+    try
     {
         return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveColumn, AdaptiveSharedNamespace::Column, AdaptiveSharedNamespace::ColumnParser>(
             jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);

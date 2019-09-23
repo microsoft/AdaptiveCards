@@ -19,7 +19,8 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveRichTextBlockRenderer::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveRichTextBlockRenderer::RuntimeClassInitialize() noexcept
+    try
     {
         return S_OK;
     }
@@ -28,7 +29,8 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveRichTextBlockRenderer::Render(_In_ IAdaptiveCardElement* cardElement,
                                                   _In_ IAdaptiveRenderContext* renderContext,
                                                   _In_ IAdaptiveRenderArgs* renderArgs,
-                                                  _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept try
+                                                  _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept
+    try
     {
         // Create the top level rich text block and set it's properties
         ComPtr<IRichTextBlock> xamlRichTextBlock =
@@ -173,7 +175,8 @@ namespace AdaptiveNamespace
         _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
         _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
         _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept try
+        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept
+    try
     {
         return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveRichTextBlock, AdaptiveSharedNamespace::RichTextBlock, AdaptiveSharedNamespace::RichTextBlockParser>(
             jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);

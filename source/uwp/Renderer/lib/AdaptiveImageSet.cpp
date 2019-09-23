@@ -15,14 +15,16 @@ namespace AdaptiveNamespace
 {
     AdaptiveImageSet::AdaptiveImageSet() { m_images = Microsoft::WRL::Make<Vector<AdaptiveImage*>>(); }
 
-    HRESULT AdaptiveImageSet::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveImageSet::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::ImageSet> imageSet = std::make_shared<AdaptiveSharedNamespace::ImageSet>();
         return RuntimeClassInitialize(imageSet);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveImageSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ImageSet>& sharedImageSet) try
+    HRESULT AdaptiveImageSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ImageSet>& sharedImageSet)
+    try
     {
         if (sharedImageSet == nullptr)
         {
@@ -61,7 +63,8 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveImageSet::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
+    HRESULT AdaptiveImageSet::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::ImageSet> imageSet = std::make_shared<AdaptiveSharedNamespace::ImageSet>();
 

@@ -13,7 +13,8 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveSeparator::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveSeparator::RuntimeClassInitialize() noexcept
+    try
     {
         m_sharedSeparator = std::make_shared<Separator>();
         return S_OK;

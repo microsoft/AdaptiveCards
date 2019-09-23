@@ -16,7 +16,8 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveDateInputRenderer::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveDateInputRenderer::RuntimeClassInitialize() noexcept
+    try
     {
         return S_OK;
     }
@@ -25,7 +26,8 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveDateInputRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
                                               _In_ IAdaptiveRenderContext* renderContext,
                                               _In_ IAdaptiveRenderArgs* /*renderArgs*/,
-                                              _COM_Outptr_ IUIElement** dateInputControl) noexcept try
+                                              _COM_Outptr_ IUIElement** dateInputControl) noexcept
+    try
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;
         RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
@@ -119,7 +121,8 @@ namespace AdaptiveNamespace
         _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
         _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
         _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept try
+        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept
+    try
     {
         return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveDateInput, AdaptiveSharedNamespace::DateInput, AdaptiveSharedNamespace::DateInputParser>(
             jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);

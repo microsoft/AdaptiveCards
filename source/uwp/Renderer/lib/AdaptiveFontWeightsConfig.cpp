@@ -9,7 +9,8 @@ using namespace ABI::AdaptiveNamespace;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveFontWeightsConfig::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveFontWeightsConfig::RuntimeClassInitialize() noexcept
+    try
     {
         FontWeightsConfig fontWeightsConfig;
         return RuntimeClassInitialize(fontWeightsConfig);

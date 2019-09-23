@@ -14,7 +14,8 @@ namespace AdaptiveNamespace
 {
     AdaptiveActionSet::AdaptiveActionSet() { m_actions = Microsoft::WRL::Make<Vector<IAdaptiveActionElement*>>(); }
 
-    HRESULT AdaptiveActionSet::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveActionSet::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveCards::ActionSet> ActionSet = std::make_shared<AdaptiveCards::ActionSet>();
         return RuntimeClassInitialize(ActionSet);
