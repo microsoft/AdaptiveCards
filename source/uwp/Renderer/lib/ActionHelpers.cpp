@@ -76,8 +76,8 @@ namespace AdaptiveNamespace::ActionHelpers
             ComPtr<IAdaptiveImage> adaptiveImage;
             THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
 
-            adaptiveImage->put_Url(iconUrl.Get());
-            adaptiveImage->put_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment::Center);
+            THROW_IF_FAILED(adaptiveImage->put_Url(iconUrl.Get()));
+            THROW_IF_FAILED(adaptiveImage->put_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment::Center));
 
             ComPtr<IAdaptiveCardElement> adaptiveCardElement;
             THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));
