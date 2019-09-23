@@ -1,161 +1,141 @@
 {
-	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-	"type": "AdaptiveCard",
-	"version": "1.2",
-	"body": [
-		{
-			"type": "ColumnSet",
-			"columns": [
-				{
-					"type": "Column",
-					"width": "auto",
-					"backgroundImage": "https://picsum.photos/30/30?image=101",
-					"items": [
-						{
-							"type": "TextBlock",
-							"text": "ColumnSet 1\rColumn 1\rStretch"
-						}
-					]
-				},
-				{
-					"type": "Column",
-					"width": "auto",
-					"items": [
-						{
-							"type": "TextBlock",
-							"text": "ColumnSet 1\rColumn 2\rStretch"
-						}
-					]
-				}
-			]
-		},
-		{
-			"type": "ColumnSet",
-			"columns": [
-				{
-					"type": "Column",
-					"width": "auto",
-					"backgroundImage": {
-						"url": "https://picsum.photos/30/30?image=101",
-						"fillMode": "repeat"
-					},
-
-					"items": [
-						{
-							"type": "TextBlock",
-							"text": "ColumnSet 2\rColumn 1\rRepeat"
-						}
-					]
-				},
-				{
-					"type": "Column",
-					"width": "auto",
-					"items": [
-						{
-							"type": "TextBlock",
-							"text": "ColumnSet 2\rColumn 2\rRepeat"
-						}
-					]
-				}
-			]
-		},
-		{
-			"type": "ColumnSet",
-			"columns": [
-				{
-					"type": "Column",
-					"width": "auto",
-					"backgroundImage": {
-						"url": "https://picsum.photos/30/30?image=101",
-						"fillMode": "repeatHorizontally"
-					},
-					"items": [
-						{
-							"type": "TextBlock",
-							"text": "ColumnSet 3\rColumn 1\rRepeatHorizontally"
-						}
-					]
-				},
-				{
-					"type": "Column",
-					"width": "auto",
-					"backgroundImage": {
-						"url": "https://picsum.photos/30/30?image=101",
-						"fillMode": "repeatHorizontally",
-						"verticalAlignment": "center"
-					},
-					"items": [
-						{
-							"type": "TextBlock",
-							"text": "ColumnSet 3\rColumn 2\rRepeatHorizontally"
-						}
-					]
-				},
-				{
-					"type": "Column",
-					"width": "auto",
-					"backgroundImage": {
-						"url": "https://picsum.photos/30/30?image=101",
-						"fillMode": "repeatHorizontally",
-						"verticalAlignment": "bottom"
-					},
-					"items": [
-						{
-							"type": "TextBlock",
-							"text": "ColumnSet 3\rColumn 2\rRepeatHorizontally"
-						}
-					]
-				}
-			]
-		},
-		{
-			"type": "ColumnSet",
-			"columns": [
-				{
-					"type": "Column",
-					"width": "auto",
-					"backgroundImage": {
-						"url": "https://picsum.photos/30/30?image=101",
-						"fillMode": "repeatVertically"
-					},
-					"items": [
-						{
-							"type": "TextBlock",
-							"text": "ColumnSet 4\rColumn 1\rRepeatVertically"
-						}
-					]
-				},
-				{
-					"type": "Column",
-					"width": "auto",
-					"backgroundImage": {
-						"url": "https://picsum.photos/30/30?image=101",
-						"fillMode": "repeatVertically",
-						"horizontalAlignment": "center"
-					},
-					"items": [
-						{
-							"type": "TextBlock",
-							"text": "ColumnSet 4\rColumn 2\rRepeatVertically"
-						}
-					]
-				},
-				{
-					"type": "Column",
-					"width": "auto",
-					"backgroundImage": {
-						"url": "https://picsum.photos/30/30?image=101",
-						"fillMode": "repeatVertically",
-						"horizontalAlignment": "right"
-					},
-					"items": [
-						{
-							"type": "TextBlock",
-							"text": "ColumnSet 4\rColumn 2\rRepeatVertically"
-						}
-					]
-				}
-			]
-		}
-	]
+    "type": "AdaptiveCard",
+    "body": [
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "minHeight": "50px",
+                    "backgroundImage": "https://adaptivecards.io/content/AlkiBeach.jpg",
+                    "width": "auto"
+                },
+                {
+                    "type": "Column",
+                    "minHeight": "50px",
+                    "backgroundImage": {
+                        "url": "https://adaptivecards.io/content/GoldenGardensPark.jpg",
+                        "verticalAlignment": "Center"
+                    },
+                    "width": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "minHeight": "50px",
+                    "backgroundImage": "https://adaptivecards.io/content/BainbridgeIsland.jpg",
+                    "width": "auto"
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "You can even repeat the background image..."
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "minHeight": "50px",
+                    "backgroundImage": {
+                        "url": "https://adaptivecards.io/content/uparrow.png",
+                        "fillMode": "Repeat"
+                    },
+                    "width": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "horizontalAlignment": "Center",
+                    "verticalContentAlignment": "Center",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "horizontalAlignment": "Center",
+                            "text": "Those are some crazy arrows",
+                            "wrap": true
+                        }
+                    ],
+                    "width": "stretch"
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "Horizontal repeat..."
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "minHeight": "50px",
+                    "backgroundImage": {
+                        "url": "https://adaptivecards.io/content/downarrow.png",
+                        "fillMode": "RepeatHorizontally"
+                    },
+                    "width": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "minHeight": "50px",
+                    "backgroundImage": {
+                        "url": "https://adaptivecards.io/content/uparrow.png",
+                        "fillMode": "RepeatHorizontally",
+                        "verticalAlignment": "Center"
+                    },
+                    "width": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "minHeight": "50px",
+                    "backgroundImage": {
+                        "url": "https://adaptivecards.io/content/uparrow.png",
+                        "fillMode": "RepeatHorizontally",
+                        "verticalAlignment": "Bottom"
+                    },
+                    "width": "stretch"
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "Vertical repeat..."
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "minHeight": "50px",
+                    "backgroundImage": {
+                        "url": "https://adaptivecards.io/content/uparrow.png",
+                        "fillMode": "RepeatVertically"
+                    },
+                    "width": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "minHeight": "50px",
+                    "backgroundImage": {
+                        "url": "https://adaptivecards.io/content/downarrow.png",
+                        "fillMode": "RepeatVertically",
+                        "horizontalAlignment": "Center"
+                    },
+                    "width": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "minHeight": "50px",
+                    "backgroundImage": {
+                        "url": "https://adaptivecards.io/content/uparrow.png",
+                        "fillMode": "RepeatVertically",
+                        "horizontalAlignment": "Right"
+                    },
+                    "width": "stretch"
+                }
+            ]
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.2"
 }

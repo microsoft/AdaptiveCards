@@ -1,29 +1,33 @@
 {
-	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
-	"version": "1.1",
-	"height": "stretch",
-	"verticalContentAlignment": "center",
-	"body": [
-		{
-			"type": "TextBlock",
-			"text": "Hi,"
-		},
-		{
-			"type": "TextBlock",
-			"text": "MasterHip",
-			"isSubtle": true
-		},
-		{
-			"type": "Container",
-			"height": "stretch",
-			"verticalContentAlignment": "center",
-			"items": [
-				{
-					"type": "TextBlock",
-					"text": "Column 1"
-				}
-			]
-		}
-	]
+    "version": "1.1",	
+    "minHeight": "150px",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "I'm a regular TextBlock..."
+        },
+        {
+            "type": "Container",
+            "height": "stretch",
+            "verticalContentAlignment": "center",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "But I'm centered..."
+                }
+            ]
+        },
+        {
+            "type": "Container",
+            "verticalContentAlignment": "bottom",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "And I'm like a footer!"
+                }
+            ]
+        }
+    ]
 }
