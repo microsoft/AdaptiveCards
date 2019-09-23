@@ -32,6 +32,20 @@ To load the designer component you have 2 options:
    * **adaptivecards-designer-standalone** - the standalone designer component, without any standard Host Config containers
 
 ```html
+<!-- Start with the following styles for a full-screen designer -->
+<style type="text/css">
+	body {
+		height: 100vh;
+		margin: 0;
+		padding: 0;
+	}
+	
+	#designerRootHost {
+		font-family: 'Segoe UI', sans-serif;
+		font-size: 14px;
+	}
+</style>
+
 <!-- OPTIONAL: markdown-it isn't required but enables out-of-the-box markdown support -->
 <script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.min.js"></script>
 
@@ -39,10 +53,10 @@ To load the designer component you have 2 options:
 <script src="https://unpkg.com/monaco-editor@0.17.1/min/vs/loader.js"></script>
 
 <!-- DESIGNER OPTION A: Card Designer + Standard Hosts -->
-<script src="https://unpkg.com/adaptivecards-designer@0.7.0/dist/adaptivecards-designer.min.js"></script>
+<script src="https://unpkg.com/adaptivecards-designer@latest/dist/adaptivecards-designer.min.js"></script>
 
 <!-- DESIGNER OPTION B: Standalone Card Designer, without standard Hosts -->
-<!--<script src="https://unpkg.com/adaptivecards-designer@0.7.0/dist/adaptivecards-designer-standalone.min.js"></script>-->
+<!--<script src="https://unpkg.com/adaptivecards-designer@latest/dist/adaptivecards-designer-standalone.min.js"></script>-->
 
 <script type="text/javascript">
 	window.onload = function() {
@@ -56,7 +70,7 @@ To load the designer component you have 2 options:
 
 		// The designer requires various CSS and image assets to work properly, 
 		// If you've loaded the script from a CDN it needs to know where these assets are located
-		designer.assetPath = "https://unpkg.com/adaptivecards-designer@0.7.0/dist";
+		designer.assetPath = "https://unpkg.com/adaptivecards-designer@latest/dist";
 
 		// Initialize monaco-editor for the JSON-editor pane. The simplest way to do this is use the code below
 		require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@0.17.1/min/vs' } });
