@@ -49,7 +49,6 @@ namespace AdaptiveNamespace
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
     private:
-
         static UINT s_bleedMargin;
 
         unsigned int m_visibleCount{};

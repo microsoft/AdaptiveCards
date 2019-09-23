@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
+
 #include "AdaptiveSeparator.h"
-#include "Util.h"
-#include <windows.foundation.collections.h>
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -14,7 +13,8 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveSeparator::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveSeparator::RuntimeClassInitialize() noexcept
+    try
     {
         m_sharedSeparator = std::make_shared<Separator>();
         return S_OK;

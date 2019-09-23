@@ -15,7 +15,8 @@ namespace AdaptiveNamespace
 {
     HRESULT AdaptiveMediaEventInvoker::RuntimeClassInitialize() noexcept { return S_OK; }
 
-    HRESULT AdaptiveMediaEventInvoker::RuntimeClassInitialize(_In_ RenderedAdaptiveCard* renderResult) noexcept try
+    HRESULT AdaptiveMediaEventInvoker::RuntimeClassInitialize(_In_ RenderedAdaptiveCard* renderResult) noexcept
+    try
     {
         ComPtr<RenderedAdaptiveCard> strongRenderResult = renderResult;
         return strongRenderResult.AsWeak(&m_weakRenderResult);
