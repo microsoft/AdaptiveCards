@@ -2,12 +2,8 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.Uwp.h"
-#include "AdaptiveCardElement.h"
 #include "AdaptiveBackgroundImage.h"
-#include "Enums.h"
 #include "Column.h"
-#include <windows.foundation.h>
 
 namespace AdaptiveNamespace
 {

@@ -405,11 +405,11 @@ namespace AdaptiveNamespace
             std::string elementAccessKey = std::to_string(m_accessKeyCount);
             ++m_accessKeyCount;
 
-            HSTRING accessKey;
-            if (SUCCEEDED(UTF8ToHString(elementAccessKey, &accessKey)))
+            HString accessKey;
+            if (SUCCEEDED(UTF8ToHString(elementAccessKey, accessKey.GetAddressOf())))
             {
-                elementWithAccessKey->put_AccessKey(accessKey);
-                m_stretchableItems.insert(elementAccessKey);
+                elementWithAccessKey->put_AccessKey(accessKey.Get());
+                m_stretchableItems.insert(std::move(elementAccessKey));
             }
         }
     }
@@ -420,11 +420,10 @@ namespace AdaptiveNamespace
         ComPtr<IUIElement4> elementWithAccessKey;
         if (SUCCEEDED(localElement.As(&elementWithAccessKey)))
         {
-            HSTRING elementAccessKey;
-            if (SUCCEEDED(elementWithAccessKey->get_AccessKey(&elementAccessKey)))
+            HString elementAccessKey;
+            if (SUCCEEDED(elementWithAccessKey->get_AccessKey(elementAccessKey.GetAddressOf())))
             {
-                std::string accessKey = HStringToUTF8(elementAccessKey);
-                return (m_stretchableItems.find(accessKey) != m_stretchableItems.end());
+                return (m_stretchableItems.find(HStringToUTF8(elementAccessKey.Get())) != m_stretchableItems.end());
             }
         }
 

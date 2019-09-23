@@ -111,6 +111,12 @@
     <ClCompile Include="lib\ElementTagContent.cpp" />
     <ClCompile Include="lib\AdaptiveFontTypeDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveFontTypesDefinition.cpp" />
+<<<<<<< HEAD
+=======
+    <ClCompile Include="lib\AdaptiveRequirement.cpp" />
+    <ClCompile Include="lib\ActionHelpers.cpp" />
+    <ClCompile Include="lib\XamlHelpers.cpp" />
+>>>>>>> 1810703ba... [UWP] Clean up XamlBuilder (#3457)
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -229,6 +235,11 @@
     <ClInclude Include="lib\ElementTagContent.h" />
     <ClInclude Include="lib\AdaptiveFontTypeDefinition.h" />
     <ClInclude Include="lib\AdaptiveFontTypesDefinition.h" />
+<<<<<<< HEAD
+=======
+    <ClInclude Include="lib\AdaptiveRequirement.h" />
+    <ClInclude Include="lib\ActionHelpers.h" />
+>>>>>>> 1810703ba... [UWP] Clean up XamlBuilder (#3457)
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />

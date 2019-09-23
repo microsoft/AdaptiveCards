@@ -1,24 +1,24 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
-#include "AdaptiveHostConfig.h"
-#include "Util.h"
+
 #include "AdaptiveActionsConfig.h"
 #include "AdaptiveCardConfig.h"
 #include "AdaptiveColorsConfig.h"
 #include "AdaptiveContainerStylesDefinition.h"
 #include "AdaptiveFactSetConfig.h"
 #include "AdaptiveFontSizesConfig.h"
-#include "AdaptiveFontWeightsConfig.h"
 #include "AdaptiveFontTypeDefinition.h"
 #include "AdaptiveFontTypesDefinition.h"
+#include "AdaptiveFontWeightsConfig.h"
+#include "AdaptiveHostConfig.h"
 #include "AdaptiveHostConfigParseResult.h"
 #include "AdaptiveImageConfig.h"
 #include "AdaptiveImageSetConfig.h"
 #include "AdaptiveImageSizesConfig.h"
 #include "AdaptiveMediaConfig.h"
-#include "AdaptiveSpacingConfig.h"
 #include "AdaptiveSeparatorConfig.h"
+#include "AdaptiveSpacingConfig.h"
 
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
@@ -27,7 +27,8 @@ using namespace ABI::Windows::Data::Json;
 namespace AdaptiveNamespace
 {
     HRESULT AdaptiveHostConfigStaticsImpl::FromJsonString(_In_ HSTRING adaptiveJson,
-                                                          _COM_Outptr_ IAdaptiveHostConfigParseResult** parseResult) noexcept try
+                                                          _COM_Outptr_ IAdaptiveHostConfigParseResult** parseResult) noexcept
+    try
     {
         *parseResult = nullptr;
 
@@ -38,7 +39,8 @@ namespace AdaptiveNamespace
     CATCH_RETURN;
 
     HRESULT AdaptiveHostConfigStaticsImpl::FromJson(_In_ IJsonObject* adaptiveJson,
-                                                    _COM_Outptr_ IAdaptiveHostConfigParseResult** parseResult) noexcept try
+                                                    _COM_Outptr_ IAdaptiveHostConfigParseResult** parseResult) noexcept
+    try
     {
         *parseResult = nullptr;
 
@@ -61,7 +63,8 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveHostConfig::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveHostConfig::RuntimeClassInitialize() noexcept
+    try
     {
         HostConfig sharedHostConfig;
         return RuntimeClassInitialize(sharedHostConfig);

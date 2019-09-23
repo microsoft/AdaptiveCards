@@ -57,12 +57,15 @@ namespace AdaptiveNamespace::ActionHelpers
         THROW_IF_FAILED(action->get_IconUrl(iconUrl.GetAddressOf()));
 
         ComPtr<IButton> localButton(button);
+<<<<<<< HEAD
         ComPtr<IAutomationPropertiesStatics> automationProperties;
         THROW_IF_FAILED(GetActivationFactory(
             HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(), &automationProperties));
         ComPtr<IDependencyObject> buttonAsDependencyObject;
         THROW_IF_FAILED(localButton.As(&buttonAsDependencyObject));
         THROW_IF_FAILED(automationProperties->SetName(buttonAsDependencyObject.Get(), title.Get()));
+=======
+>>>>>>> 1810703ba... [UWP] Clean up XamlBuilder (#3457)
 
         // Check if the button has an iconUrl
         if (iconUrl != nullptr)

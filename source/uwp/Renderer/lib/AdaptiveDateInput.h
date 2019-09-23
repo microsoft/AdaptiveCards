@@ -2,9 +2,7 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.Uwp.h"
 #include "DateInput.h"
-#include "Enums.h"
 #include "AdaptiveInputElement.h"
 
 namespace AdaptiveNamespace

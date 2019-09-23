@@ -69,7 +69,8 @@ namespace AdaptiveNamespace
         m_eventRegistrations.clear();
     }
 
-    HRESULT ImageLoadTracker::AddListener(_In_ IImageLoadTrackerListener* listener) try
+    HRESULT ImageLoadTracker::AddListener(_In_ IImageLoadTrackerListener* listener)
+    try
     {
         if (m_listeners.find(listener) == m_listeners.end())
         {
@@ -83,7 +84,8 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT ImageLoadTracker::RemoveListener(_In_ IImageLoadTrackerListener* listener) try
+    HRESULT ImageLoadTracker::RemoveListener(_In_ IImageLoadTrackerListener* listener)
+    try
     {
         if (m_listeners.find(listener) != m_listeners.end())
         {
