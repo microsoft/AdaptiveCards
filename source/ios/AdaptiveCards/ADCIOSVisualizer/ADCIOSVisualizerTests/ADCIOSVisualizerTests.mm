@@ -7,8 +7,14 @@
 //
 
 #import <XCTest/XCTest.h>
+#import <UIKit/UIKit.h>
 #import <AdaptiveCards/ACFramework.h>
 #import "AdaptiveCards/ACORemoteResourceInformationPrivate.h"
+#import "AdaptiveCards/ACRViewPrivate.h"
+#import "AdaptiveCards/ShowCardAction.h"
+#import "AdaptiveCards/TextBlock.h"
+#import "AdaptiveCards/ACRShowCardTarget.h"
+#import "AdaptiveCards/UtiliOS.h"
 
 @interface ADCIOSVisualizerTests : XCTestCase
 
@@ -43,9 +49,8 @@
     for(NSString *fileName in fileNames){
         NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:fileName ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
         ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
-        if(cardParseResult.isValid) {
-            [cards addObject:cardParseResult.card];
-        }
+        XCTAssertTrue(cardParseResult.isValid);
+        [cards addObject:cardParseResult.card];
     }
     return cards;
 }
@@ -65,29 +70,27 @@
     NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"FoodOrder" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
 
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
-    if(cardParseResult.isValid){
-        NSArray<ACORemoteResourceInformation *> *remoteInformation = [cardParseResult.card remoteResourceInformation];
-        XCTAssertTrue([remoteInformation count] == 3);
-        NSArray<NSString *> *testStrings = @[
-            @"http://contososcubademo.azurewebsites.net/assets/steak.jpg",
-            @"http://contososcubademo.azurewebsites.net/assets/chicken.jpg",
-            @"http://contososcubademo.azurewebsites.net/assets/tofu.jpg"
-        ];
-        unsigned int index = 0;
-        for(ACORemoteResourceInformation *info in remoteInformation){
-            XCTAssertTrue([[testStrings objectAtIndex:index++] isEqualToString:info.url.absoluteString]);
-            XCTAssertTrue([@"image" isEqualToString:info.mimeType]);
-        }
+    XCTAssertTrue(cardParseResult.isValid);
+    NSArray<ACORemoteResourceInformation *> *remoteInformation = [cardParseResult.card remoteResourceInformation];
+    XCTAssertTrue([remoteInformation count] == 3);
+    NSArray<NSString *> *testStrings = @[
+        @"http://contososcubademo.azurewebsites.net/assets/steak.jpg",
+        @"http://contososcubademo.azurewebsites.net/assets/chicken.jpg",
+        @"http://contososcubademo.azurewebsites.net/assets/tofu.jpg"
+    ];
+    unsigned int index = 0;
+    for(ACORemoteResourceInformation *info in remoteInformation){
+        XCTAssertTrue([[testStrings objectAtIndex:index++] isEqualToString:info.url.absoluteString]);
+        XCTAssertTrue([@"image" isEqualToString:info.mimeType]);
     }
 }
 
 - (void)testRelativeURLInformation {
     NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"Image.ImageBaseUrl" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
-    if(cardParseResult.isValid){
-        // host config base url is successfully parsed
-        XCTAssertTrue([_defaultHostConfig.baseURL.absoluteString isEqualToString:@"https://pbs.twimg.com/profile_images/3647943215/"]);
-    }
+    XCTAssertTrue(cardParseResult.isValid);
+    // host config base url is successfully parsed
+    XCTAssertTrue([_defaultHostConfig.baseURL.absoluteString isEqualToString:@"https://pbs.twimg.com/profile_images/3647943215/"]);
 }
 
 - (void)testACRTextView {
@@ -101,6 +104,38 @@
     XCTAssertTrue([acrTextView.text length] == 0);
 }
 
+- (void)testBuildingShowCardTarget {
+    NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"Feedback" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
+    ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
+    XCTAssertTrue(cardParseResult && cardParseResult.isValid);
+    ACRRenderResult *renderResult = [ACRRenderer render:cardParseResult.card config:_defaultHostConfig widthConstraint:335];
+    
+    ACRView *testView = renderResult.view;
+    std::shared_ptr<AdaptiveCards::TextBlock> textblock = std::make_shared<AdaptiveCards::TextBlock>();
+    textblock->SetText("happy testing");
+    
+    std::shared_ptr<AdaptiveCards::AdaptiveCard> innerCard = std::make_shared<AdaptiveCards::AdaptiveCard>();
+    innerCard->GetBody().push_back(textblock);
+    
+    std::shared_ptr<AdaptiveCards::ShowCardAction> action = std::make_shared<AdaptiveCards::ShowCardAction>();
+    action->SetCard(innerCard);
+    NSObject *target;
+    UIButton *button = [UIButton buttonWithType:UIButtonType::UIButtonTypeSystem];
+    
+    XCTAssert(ACRRenderingStatus::ACRFailed == buildTarget([testView getSelectActionsTargetBuilderDirector], action, &target));
+
+    XCTAssert(ACRRenderingStatus::ACRFailed == buildTarget([testView getQuickReplyTargetBuilderDirector], action, &target));
+
+    // show card target not supported without button
+    XCTAssert(ACRRenderingStatus::ACRFailed == buildTarget([testView getActionsTargetBuilderDirector], action, &target));
+
+    XCTAssert(ACRRenderingStatus::ACROk == buildTargetForButton([testView getActionsTargetBuilderDirector], action, button, &target));
+    
+    XCTAssertNotNil(target);
+    
+    XCTAssertTrue([target respondsToSelector:@selector(createShowCard:superview:)]);
+}
+
 - (void)testChoiceSetInputCanGatherDefaultValues {
     NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"Input.ChoiceSet" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
     NSDictionary<NSString *, NSString *> *expectedValue = @{
@@ -112,13 +147,12 @@
     NSData *expectedData = [NSJSONSerialization dataWithJSONObject:expectedValue options:NSJSONWritingPrettyPrinted error:nil];
     NSString *expectedString = [[NSString alloc] initWithData:expectedData encoding:NSUTF8StringEncoding];
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
-    if(cardParseResult.isValid){
-        [ACRRenderer render:cardParseResult.card config:_defaultHostConfig widthConstraint:100.0];
-        // manually call input gather function
-        NSData *output = [cardParseResult.card inputs];
-        NSString *str = [[NSString alloc] initWithData:output encoding:NSUTF8StringEncoding];
-        XCTAssertTrue([str isEqualToString:expectedString]);
-    }
+    XCTAssertTrue(cardParseResult.isValid);
+    [ACRRenderer render:cardParseResult.card config:_defaultHostConfig widthConstraint:100.0];
+    // manually call input gather function
+    NSData *output = [cardParseResult.card inputs];
+    NSString *str = [[NSString alloc] initWithData:output encoding:NSUTF8StringEncoding];
+    XCTAssertTrue([str isEqualToString:expectedString]);
 }
 
 - (void)testPerformanceOnComplicatedCards {

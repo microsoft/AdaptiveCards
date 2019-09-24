@@ -39,4 +39,5 @@
 - (UIView *)render;
 
 - (void)waitForAsyncTasksToFinish;
+
 @end

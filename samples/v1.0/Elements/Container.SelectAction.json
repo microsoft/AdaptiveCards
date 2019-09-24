@@ -42,23 +42,9 @@
 				}
 			],
 			"selectAction": {
-				"type": "Action.ShowCard",
-				"title": "Show card action",
-				"card": {
-					"type": "AdaptiveCard",
-					"body": [
-						{
-							"type": "TextBlock",
-							"text": "What do you think?"
-						}
-					],
-					"actions": [
-						{
-							"type": "Action.Submit",
-							"title": "Neat!"
-						}
-					]
-				}
+				"type": "Action.Submit",
+				"title": "Submit action",
+				"data": "Submitted!"
 			}
 		},
 		{

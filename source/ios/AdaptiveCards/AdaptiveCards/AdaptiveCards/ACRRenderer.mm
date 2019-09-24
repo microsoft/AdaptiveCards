@@ -21,7 +21,7 @@
 #import "ACRContentHoldingUIScrollView.h"
 #import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACRUIImageView.h"
-#import "Util.h"
+#import "UtiliOS.h"
 
 using namespace AdaptiveCards;
 

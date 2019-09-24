@@ -12,6 +12,7 @@
 #import "ShowCardAction.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseActionElementPrivate.h"
+#import "UtiliOS.h"
 
 @implementation ACRActionShowCardRenderer
 
@@ -34,17 +35,11 @@
 
     UIButton *button = [ACRButton rootView:rootView baseActionElement:acoElem title:title andHostConfig:acoConfig];
 
-    ACRShowCardTarget *target = [[ACRShowCardTarget alloc] initWithActionElement:action
-                                                                          config:acoConfig
-                                                                       superview:superview
-                                                                        rootView:rootView
-                                                                          button:button];
-
-    [button addTarget:target action:@selector(toggleVisibilityOfShowCard) forControlEvents:UIControlEventTouchUpInside];
-
-    [superview addTarget:target];
-
-    [target createShowCard:inputs];
+    ACRShowCardTarget *target;
+    if (ACRRenderingStatus::ACROk == buildTargetForButton([rootView getActionsTargetBuilderDirector], elem, button, &target)) {
+        [superview addTarget:target];
+        [target createShowCard:inputs superview:superview];
+    }
 
     [button setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
 

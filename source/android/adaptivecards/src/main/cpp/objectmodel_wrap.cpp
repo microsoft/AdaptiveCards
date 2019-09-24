@@ -13774,7 +13774,7 @@ SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
 }
 
 
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1SetWidth(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1SetWidth_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::Column *arg1 = (AdaptiveCards::Column *) 0 ;
   std::string *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::Column > *smartarg1 = 0 ;
@@ -13795,6 +13795,33 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   arg2 = &arg2_str;
   jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
   (arg1)->SetWidth((std::string const &)*arg2);
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1SetWidth_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jobject jarg3_) {
+  AdaptiveCards::Column *arg1 = (AdaptiveCards::Column *) 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > *arg3 = (std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > *) 0 ;
+  std::shared_ptr< AdaptiveCards::Column > *smartarg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg3_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::Column > **)&jarg1;
+  arg1 = (AdaptiveCards::Column *)(smartarg1 ? smartarg1->get() : 0); 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return ;
+  }
+  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return ;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = *(std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > **)&jarg3; 
+  (arg1)->SetWidth((std::string const &)*arg2,arg3);
 }
 
 

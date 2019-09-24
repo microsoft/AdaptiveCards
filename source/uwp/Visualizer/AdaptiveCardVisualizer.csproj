@@ -24,7 +24,6 @@
     <OutputPath>bin\$(Platform)\Debug\</OutputPath>
     <PlatformTarget>$(Platform)</PlatformTarget>
     <RuntimeIdentifiers>win10-arm;win10-arm-aot;win10-x86;win10-x86-aot;win10-x64;win10-x64-aot</RuntimeIdentifiers>
-    <PackageCertificateThumbprint>BD1E51E915EF811D813E0C6C4143C44144367328</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <DebugSymbols>true</DebugSymbols>

@@ -19,6 +19,13 @@ typedef NS_ENUM(NSUInteger, ACRInputError)
     ACRInputErrorGreaterThanMaxDate,
 };
 
+typedef NS_ENUM(NSUInteger, ACRRenderingStatus)
+{
+    ACROk = 0,
+    ACRFailed,
+    ACRUnsupported,
+};
+
 @interface ACOFallbackException:NSObject
 
 + (ACOFallbackException *)fallbackException;

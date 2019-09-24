@@ -12,6 +12,7 @@
 #import "ACRButton.h"
 #import "ACRToggleVisibilityTarget.h"
 #import "ToggleVisibilityAction.h"
+#import "UtiliOS.h"
 
 @implementation ACRActionToggleVisibilityRenderer
 
@@ -34,14 +35,10 @@
 
     UIButton *button = [ACRButton rootView:view baseActionElement:acoElem title:title andHostConfig:acoConfig];
 
-    ACRToggleVisibilityTarget *target = [[ACRToggleVisibilityTarget alloc]
-                                            initWithActionElement:action
-                                                           config:acoConfig
-                                                         rootView:view];
-
-    [button addTarget:target action:@selector(doSelectAction) forControlEvents:UIControlEventTouchUpInside];
-
-    [superview addTarget:target];
+    ACRToggleVisibilityTarget *target;
+    if (ACRRenderingStatus::ACROk == buildTargetForButton([view getActionsTargetBuilderDirector], elem, button, &target)) {
+        [superview addTarget:target];
+    }
 
     [button setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
 
