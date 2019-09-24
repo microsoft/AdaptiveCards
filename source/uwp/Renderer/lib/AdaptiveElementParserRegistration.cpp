@@ -35,7 +35,8 @@ namespace AdaptiveNamespace
 {
     AdaptiveElementParserRegistration::AdaptiveElementParserRegistration() {}
 
-    HRESULT AdaptiveElementParserRegistration::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveElementParserRegistration::RuntimeClassInitialize() noexcept
+    try
     {
         m_registration = std::make_shared<RegistrationMap>();
         m_sharedParserRegistration = std::make_shared<ElementParserRegistration>();
@@ -52,7 +53,8 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveElementParserRegistration::Set(_In_ HSTRING type, _In_ IAdaptiveElementParser* Parser) noexcept try
+    HRESULT AdaptiveElementParserRegistration::Set(_In_ HSTRING type, _In_ IAdaptiveElementParser* Parser) noexcept
+    try
     {
         std::string typeString = HStringToUTF8(type);
 
@@ -70,7 +72,8 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveElementParserRegistration::Get(_In_ HSTRING type, _COM_Outptr_ IAdaptiveElementParser** result) noexcept try
+    HRESULT AdaptiveElementParserRegistration::Get(_In_ HSTRING type, _COM_Outptr_ IAdaptiveElementParser** result) noexcept
+    try
     {
         *result = nullptr;
 
@@ -83,7 +86,8 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveElementParserRegistration::Remove(_In_ HSTRING type) noexcept try
+    HRESULT AdaptiveElementParserRegistration::Remove(_In_ HSTRING type) noexcept
+    try
     {
         std::string typeString = HStringToUTF8(type);
 

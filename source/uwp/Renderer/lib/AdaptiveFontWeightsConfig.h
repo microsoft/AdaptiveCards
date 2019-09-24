@@ -2,10 +2,6 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.Uwp.h"
-#include "Enums.h"
-#include "HostConfig.h"
-
 namespace AdaptiveNamespace
 {
     class AdaptiveFontWeightsConfig

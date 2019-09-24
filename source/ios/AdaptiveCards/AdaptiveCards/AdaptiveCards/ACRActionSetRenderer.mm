@@ -1,13 +1,11 @@
 //
-//  ACRActionSetRenderer
-//  ACRActionSetRenderer.mm
-//
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
 #import "ACRActionSetRenderer.h"
 #import "ACOAdaptiveCardPrivate.h"
 #import "ACOBaseActionElementPrivate.h"
+#import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRBaseActionElementRenderer.h"
 #import "ACRColumnSetView.h"
@@ -16,9 +14,15 @@
 #import "ACRIContentHoldingView.h"
 #import "ACRRegistration.h"
 #import "ACRRenderer.h"
+#import "ActionSet.h"
 #import "UtiliOS.h"
 
 @implementation ACRActionSetRenderer
+
++ (ACRCardElementType)elemType
+{
+    return ACRActionSet;
+}
 
 + (ACRActionSetRenderer *)getInstance
 {
@@ -26,10 +30,31 @@
     return singletonInstance;
 }
 
+- (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup rootView:(ACRView *)rootView inputs:(NSArray *)inputs baseCardElement:(ACOBaseCardElement *)acoElem hostConfig:(ACOHostConfig *)acoConfig
+{
+    std::shared_ptr<BaseCardElement> elem = [acoElem element];
+    std::shared_ptr<ActionSet> actionSetElem = std::dynamic_pointer_cast<ActionSet>(elem);
+    return [self renderButtons:rootView inputs:(NSMutableArray *)inputs superview:viewGroup elems:actionSetElem->GetActions() hostConfig:acoConfig];
+}
+
 - (UIView *)renderButtons:(ACRView *)rootView
                    inputs:(NSMutableArray *)inputs
                 superview:(UIView<ACRIContentHoldingView> *)superview
                      card:(ACOAdaptiveCard *)card
+               hostConfig:(ACOHostConfig *)config
+{
+    std::vector<std::shared_ptr<BaseActionElement>> elems = [card card] -> GetActions();
+    return [self renderButtons:rootView
+                        inputs:inputs
+                     superview:superview
+                         elems:elems
+                    hostConfig:config];
+}
+
+- (UIView *)renderButtons:(ACRView *)rootView
+                   inputs:(NSMutableArray *)inputs
+                superview:(UIView<ACRIContentHoldingView> *)superview
+                    elems:(const std::vector<std::shared_ptr<BaseActionElement>> &)elems
                hostConfig:(ACOHostConfig *)config
 {
     ACRRegistration *reg = [ACRRegistration getInstance];
@@ -52,7 +77,9 @@
     ACRContentHoldingUIScrollView *containingView = [[ACRContentHoldingUIScrollView alloc] init];
     [superview addArrangedSubview:containingView];
     float accumulatedWidth = 0, accumulatedHeight = 0, spacing = [config getHostConfig] -> GetActions().buttonSpacing, maxWidth = 0, maxHeight = 0;
-    std::vector<std::shared_ptr<BaseActionElement>> elems = [card card] -> GetActions();
+    if (elems.empty()) {
+        return containingView;
+    }
     for (const auto &elem : elems) {
         ACRBaseActionElementRenderer *actionRenderer =
             [reg getActionRenderer:[NSNumber numberWithInt:(int)elem->GetElementType()]];
@@ -140,18 +167,6 @@
         vConstraint.priority = UILayoutPriorityDefaultLow;
     }
     return containingView;
-}
-
-+ (ACRCardElementType)elemType
-{
-    return ACRActionSet;
-}
-
-- (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup rootView:(ACRView *)rootView inputs:(NSArray *)inputs baseCardElement:(ACOBaseCardElement *)acoElem hostConfig:(ACOHostConfig *)acoConfig
-{
-    ACOAdaptiveCard *card = [[ACOAdaptiveCard alloc] init];
-    [card setCard:[[rootView card] card]];
-    return [[ACRActionSetRenderer getInstance] renderButtons:rootView inputs:(NSMutableArray *)inputs superview:viewGroup card:card hostConfig:acoConfig];
 }
 
 @end
