@@ -202,6 +202,14 @@ For advanced configuration of the designer use the following APIs.
 
 ```js
 
+    // Configure toolbox titles
+    ACDesigner.Strings.toolboxes.cardEditor.title = "Custom card editor title";
+    ACDesigner.Strings.toolboxes.cardStructure.title = "Custom card structure title";
+    ACDesigner.Strings.toolboxes.dataStructure.title = "Custom data structure title";
+    ACDesigner.Strings.toolboxes.propertySheet.title = "Custom property sheet title";
+    ACDesigner.Strings.toolboxes.sampleDataEditor.title = "Custom sample data editor title";
+    ACDesigner.Strings.toolboxes.toolPalette.title = "Custom tool palette title";
+
 	/* Add the default Microsoft Host Apps 	*/ 
  
 	hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
