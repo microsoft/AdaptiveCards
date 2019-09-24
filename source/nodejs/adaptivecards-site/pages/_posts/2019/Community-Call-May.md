@@ -5,6 +5,7 @@ date: 2019-05-09
 github_username: matthidinger
 featured_image: poster.png
 twitter: matthidinger
+categrory: community-call
 ---
 
 

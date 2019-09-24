@@ -21,35 +21,35 @@ permalink_defaults:
 home:
   made_for:
     - title: Android
-      fa: fa-android
+      fa: fab fa-android
       href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/android/getting-started
     - title: iOS
-      fa: fa-apple
+      fa: fab fa-apple
       href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/ios/getting-started
     - title: JavaScript
-      fa: fa-jsfiddle
+      fa: fab fa-js
       href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/javascript/getting-started
     - title: ASP.NET
-      fa: fa-html5
+      fa: fab fa-html5
       href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/net-html/getting-started
     - title: .NET WPF
-      fa: fa-window-maximize
+      fa: far fa-window-maximize
       href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/net-wpf/getting-started
     - title: Windows
-      fa: fa-windows
+      fa: fab fa-windows
       href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/uwp/getting-started
     - title: ReactNative
-      fa: fa-jsfiddle
+      fa: fab fa-react
       href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/react-native/getting-started
   releases:
     - title: v1.2
       href: https://github.com/microsoft/AdaptiveCards/releases/tag/v1.2.0
-      fa: fa-download
+      fa: fas fa-download
       tag: 
       tag_class: w3-blue
     - title: Roadmap
       href: https://portal.productboard.com/adaptivecards/1-adaptive-cards-portal/tabs/4-1-3-proposed/tabs/1-under-consideration
-      fa: fa-calendar
+      fa: far fa-calendar-alt
       tag: 
       tag_class: w3-light-gray
 
@@ -67,7 +67,7 @@ footer:
     - title: Take advantage of Templating
       href: https://docs.microsoft.com/en-us/adaptive-cards/templating/
     - title: Join our monthly Community Calls
-      href: https://aka.ms/adaptivecardscommunitycall
+      href: /community-calls
     - title: Find us on GitHub
       href: https://github.com/Microsoft/AdaptiveCards
     - title: Roadmap
@@ -155,3 +155,28 @@ feed:
   content_limit_delim: ' '
   order_by: -date
   icon: themes/adaptivecards/source/content/icons/favicon-32x32.png
+
+image_minifier:
+  enable: false
+  interlaced: false
+  multipass: false
+  optimizationLevel: 2
+  pngquant: false
+  progressive: false
+  silent: false
+
+js_minifier:
+  enable: false
+
+
+html_minifier:
+  enable: false
+  ignore_error: false
+  silent: false
+  exclude:
+
+css_minifier:
+  enable: false
+  silent: false
+  exclude: 
+    - '*.min.css'

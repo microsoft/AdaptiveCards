@@ -26,7 +26,7 @@
 				</button>
 				<button class="w3-button w3-round-xxlarge w3-border w3-border-blue w3-margin-left" style="width:150px"
 					id="watchVideo">
-					<i class="fa fa-play"></i>&nbsp; Watch video
+					<i class="fas fa-play"></i>&nbsp; Watch video
 				</button>
 			</div>
 		</div>
@@ -49,7 +49,7 @@
 				<% for(var link of config.home.made_for) { %>
 					<div class="w3-col s4 m3 l12"><a
 						href="<%- link.href %>"><i
-							class="fa <%- link.fa %>"></i> <%- link.title %></a></div>
+							class="<%- link.fa %>"></i> <%- link.title %></a></div>
 				<% } %>
 			</div>
 
@@ -59,7 +59,7 @@
 					<h6>Releases</h6>
 					<% for(var link of config.home.releases) { %>
 						<div><a href="<%- link.href %>"
-							aria-label="<%- link.title %>"><i class="fa <%- link.fa %>"></i><%- link.title %></a> <span
+							aria-label="<%- link.title %>"><i class="<%- link.fa %>"></i><%- link.title %></a> <span
 							class="w3-tag w3-round w3-tiny <%- link.tag_class %>"><%- link.tag %></span></div>
 					<% } %>
 				</div>

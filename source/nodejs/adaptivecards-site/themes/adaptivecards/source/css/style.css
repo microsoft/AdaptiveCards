@@ -556,7 +556,8 @@ dir {
 }
 
 .homepage a i {
-  width: 20px;
+  width: 15px;
+  font-weight: normal;
 }
 
 .homepage a:link,

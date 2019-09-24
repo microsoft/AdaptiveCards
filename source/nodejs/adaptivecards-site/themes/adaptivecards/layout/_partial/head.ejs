@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <%
@@ -20,7 +20,7 @@
 	}
 	%>
 	<title><% if (title){ %><%= title %> | <% } %><%= config.title %></title>
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	
 
 	<link rel="alternate" href="<%- url_for(config.feed.path) %>" title="<%= config.title %>" type="application/atom+xml">
@@ -35,21 +35,18 @@
 				height: calc(100vh - 97px) !important;
 			}
 
-			* {
-				box-sizing: border-box;
-			}
-
 			body {
 				font-family: 'Segoe UI', sans-serif;
 				font-size: 14px;
-				font-weight: normal;
 			}
 		</style>
 	<% } else { %>
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-		<%- hashed_asset("css/w3.css") %>
-		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">	  
+		<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+		<!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">	   -->
+		<%- hashed_asset("node_modules/@fortawesome/fontawesome-free/css/all.min.css") %>
+		<%- hashed_asset("node_modules/highlightjs/styles/default.min.css") %>
 
+		<%- hashed_asset("css/w3.css") %>
 		<%- hashed_asset("css/extracted.css") %> 
 		<%- hashed_asset("visualizer/css/outlook.css") %>
 		<%- hashed_asset("css/style.css") %>
@@ -57,10 +54,14 @@
 
 	<script type="text/javascript">  var appInsights=window.appInsights||function(a){    function b(a){c[a]=function(){var b=arguments;c.queue.push(function(){c[a].apply(c,b)})}}var c={config:a},d=document,e=window;setTimeout(function(){var b=d.createElement("script");b.src=a.url||"https://az416426.vo.msecnd.net/scripts/a/ai.0.js",d.getElementsByTagName("script")[0].parentNode.appendChild(b)});try{c.cookie=d.cookie}catch(a){}c.queue=[];for(var f=["Event","Exception","Metric","PageView","Trace","Dependency"];f.length;)b("track"+f.pop());if(b("setAuthenticatedUserContext"),b("clearAuthenticatedUserContext"),b("startTrackEvent"),b("stopTrackEvent"),b("startTrackPage"),b("stopTrackPage"),b("flush"),!a.disableExceptionTracking){f="onerror",b("_"+f);var g=e[f];e[f]=function(a,b,d,e,h){var i=g&&g(a,b,d,e,h);return!0!==i&&c["_"+f](a,b,d,e,h),i}}return c    }({        instrumentationKey:"bd0c4f36-dd0f-4984-8f32-32cb44d6055a"    });      window.appInsights=appInsights,appInsights.queue&&0===appInsights.queue.length&&appInsights.trackPageView();</script>
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 	<script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-	<script async defer src="https://buttons.github.io/buttons.js"></script>
+	<script async defer src="https://buttons.github.io/buttons.js"></script> -->
+	<%- hashed_asset("node_modules/jquery/dist/jquery.min.js") %>
+	<%- hashed_asset("node_modules/markdown-it/dist/markdown-it.min.js") %>
+	<%- hashed_asset("node_modules/highlightjs/highlight.pack.min.js") %>
+	<%- hashed_asset("js/github-buttons.js") %>
 
 	<% /* from UHF MSDocsHeader-AdaptiveCards */ %>
 	<link rel="stylesheet" href="https://www.microsoft.com/onerfstatics/marketingsites-wcus-prod/west-european/shell/_scrf/css/themes=default.device=uplevel_web_pc/59-469920/ad-9005a4/bd-292223/26-13ca9e/b7-1464e7/8e-a868c0/58-faa810/34-4fda9f?ver=2.0" type="text/css" media="all" />

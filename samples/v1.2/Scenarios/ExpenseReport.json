@@ -817,5 +817,6 @@
 		}
 	],
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-	"version": "1.0"
+	"version": "1.2",
+	"fallbackText": "This card requires Adaptive Cards v1.2 support to be rendered properly."
 }

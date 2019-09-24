@@ -9,7 +9,22 @@ var path = require("path");
 var glob = require("glob");
 var md5 = require("md5");
 
-var assets = [
+// These are the flat asset files that will be copied into the output folder
+// and available to reference in HTML templates
+var simpleAssets = [
+	"node_modules/adaptivecards/dist/*.*",
+	"node_modules/adaptivecards-designer/dist/*.*",
+	"node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+	"node_modules/@fortawesome/fontawesome-free/webfonts/*.*",
+	"node_modules/highlightjs/highlight.pack.min.js",
+	"node_modules/highlightjs/styles/default.css",
+	"node_modules/jquery/dist/jquery.min.js",
+	"node_modules/markdown-it/dist/markdown-it.min.js",
+];
+
+// These are the other asset files that need to be copied into a specific location
+// the dest param describes the dir/filename used in the output destination
+var customAssets = [
     {
         // Sample payloads
         path: "../../../samples/v1.*/**/*.json",
@@ -28,16 +43,6 @@ var assets = [
 			return "schemas/" + p.split("/").slice(-2).join("/");
 		}
     },
-    {
-        // adaptive cards module
-        path: "node_modules/adaptivecards/dist/*.*",
-        dest: function (p) { return p; }
-	},
-	{
-        // designer assets 
-        path: "node_modules/adaptivecards-designer/dist/*.*",
-		dest: function (p) { return p; }
-	},
 	{
         // designer module (hashing not working for CSS files; the designer expects certain filenames)
         path: "node_modules/adaptivecards-designer/dist/containers/*.*",
@@ -80,8 +85,15 @@ var assets = [
         // site JS
         path: "themes/adaptivecards/source/js/*.js",
 		dest: function (p) { return "js/" + path.basename(p) }
+	},
+	{
+        // third-party scripts and CSS
+        path: "node_modules/markdown-it/dist/markdown-it.min.js",
+		dest: function (p) { return p; }
 	}
 ];
+
+
 
 hexo.extend.generator.register("generator-adaptiveassets", function (locals) {
 
@@ -89,7 +101,14 @@ hexo.extend.generator.register("generator-adaptiveassets", function (locals) {
 	let hashExtensions = [ ".css", ".js" ];
 	let hashedAssets = [];
 
-    assets.forEach(function (asset) {
+	simpleAssets.forEach(function(a) {
+		customAssets.push({
+			path: a,
+			dest: function(p) { return p; }
+		});
+	});
+
+    customAssets.forEach(function (asset) {
         var g = glob.sync(asset.path, { nocase: false }).map(function (sourcePath) {
 
 			let destPath = asset.dest(sourcePath);
