@@ -28,6 +28,11 @@ body > #headerAreaHolder {
   }
 }
 
+.ac-blue {
+  color: #fff !important;
+  background-color: #0050c5 !important;
+}
+
 .breadcrumbs {
   background: #fafafa;
   margin: 0;
@@ -543,7 +548,7 @@ dir {
 }
 
 .homepage .title {
-  color: #777;
+  color: #696969;
   margin-top: 0;
 }
 
@@ -555,14 +560,31 @@ dir {
   background-color: #2d2d2deb;
 }
 
-.homepage a i {
+.homepage i.fab {
   width: 15px;
-  font-weight: normal;
+}
+
+.homepage i.fas, .homepage i.far {
+  width: 20px;
+}
+
+.fa,
+.fas {
+  font-weight: 900 !important;
+}
+
+.fab {
+  font-weight: normal !important;
+}
+
+.ac-blue {
+  color: #fff !important;
+  background-color: #0b78d0 !important;
 }
 
 .homepage a:link,
 .homepage a:visited {
-  color: #2196f3;
+  color: #0b78d0;
   font-size: 15px;
   line-height: 29px;
   font-weight: 600;
@@ -573,18 +595,33 @@ dir {
   text-decoration: none;
 }
 
-.fa-chevron-right {
+/* .fa-chevron-right {
   font-size: 11px;
   font-weight: lighter;
+  font-family: "Font Awesome 5 Free";
+} */
+
+.footer-holder {
+  background-color: #f2f2f2 !important;
+}
+
+.footer-holder h6 {
+  color: #696969 !important;
 }
 
 .ac-footer {
   font-size: 0.9em;
 }
 
+.ac-footer .brand {
+  font-weight: bold;
+  color: #696969;
+  word-wrap: none;
+}
+
 .ac-footer a:link,
 .ac-footer a:visited {
-  color: #777777;
+  color: #5a5a5a;
   font-size: 14px;
   font-weight: 600;
 }
@@ -592,6 +629,15 @@ dir {
 .ac-footer a:hover {
   color: #6b6b6b;
   text-decoration: none;
+}
+
+.ac-footer .post-subtitle {
+  margin-top: 0;
+  color: #696969;
+}
+
+.ac-footer .build-date {
+  color: #696969;
 }
 
 #uhf-footer {

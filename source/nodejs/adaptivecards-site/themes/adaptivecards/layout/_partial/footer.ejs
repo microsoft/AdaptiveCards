@@ -1,4 +1,4 @@
-<footer class="footer-holder w3-row-padding w3-light-gray w3-border-top w3-padding-32">
+<footer class="footer-holder w3-row-padding w3-border-top w3-padding-32">
 
 	<div class="w3-cell-row ac-footer" style="margin: 0 auto; max-width: 920px">
 
@@ -7,10 +7,10 @@
 
 			<img src="<%- url_for('content/adaptive-cards-100.png') %>" alt="Adaptive Cards logo"
 				class="w3-image" style="width: 75px; margin-right: 6px" /> 
-			<span class="w3-large" style="font-weight: bold; color: #969696; word-wrap: none">Adaptive Cards</span>
+			<span class="w3-large brand">Adaptive Cards</span>
 			<p>Homepage design inspired by <a href="https://storybook.js.org">Storybook.js</a>.
 				Site powered by <a href="https://hexo.io">Hexo</a>.</p>
-			<p class="w3-small w3-text-gray">Build date: <%= new Date().toLocaleDateString() %></p>
+			<p class="w3-small build-date">Build date: <%= new Date().toLocaleDateString() %></p>
 		</div>
 
 		<div class="w3-cell w3-container w3-margin-top w3-mobile"style="width: 300px">
@@ -29,8 +29,8 @@
 
 			<% site.posts.sort("-date").slice(0, 4).each(function(post) { %>
 			<div class="w3-margin-top">
-				<a href="<%- config.root %><%- post.path %>"><%- post.title %> <i class="fa fa-chevron-right"></i></a>
-				<p style="margin-top: 0; color: #929292"><%- post.subtitle %></p>
+				<a href="<%- config.root %><%- post.path %>"><%- post.title %> <i class="fas fa-chevron-right"></i></a>
+				<p class="post-subtitle"><%- post.subtitle %></p>
 			</div>
 			<% }); %>
 		</div>

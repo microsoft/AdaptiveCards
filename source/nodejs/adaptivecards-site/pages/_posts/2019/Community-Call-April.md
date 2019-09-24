@@ -43,7 +43,7 @@ Audrie Gordon walks us through a hypothetical construction company that uses Tea
 
 Watch the call here.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/FSfSuGN2yVw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe title="Video of the community call" width="560" height="315" src="https://www.youtube.com/embed/FSfSuGN2yVw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 Next month's call will be held on Thursday, May 9th, 2019 at 9:00am PST. We look forward to talking to you then.
 

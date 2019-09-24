@@ -409,11 +409,31 @@ $(function () {
 		window.location = this.value;
 	});
 
+	function isInViewport(elem) {
+		var bounding = elem.getBoundingClientRect();
+		return (
+			bounding.top >= 0 &&
+			bounding.left >= 0 &&
+			bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+			bounding.right <= (window.innerWidth || document.documentElement.clientWidth)
+		);
+	};
+
+	var videos = document.querySelectorAll('video[autoplay]');
+	window.addEventListener('scroll', function (event) {
+		videos.forEach(function(video) {
+			if (isInViewport(video)) {
+				video.play();
+			} else {
+				video.pause();
+			}
+		});
+	}, false);
+
 	// Resize youtube videos
 	// https://css-tricks.com/NetMag/FluidWidthVideo/Article-FluidWidthVideo.php
-
 	var $allVideos = $("iframe"),
-	$fluidEl = $(".blog");
+		$fluidEl = $(".blog");
 
 	// Figure out and save aspect ratio for each video
 	$allVideos.each(function () {

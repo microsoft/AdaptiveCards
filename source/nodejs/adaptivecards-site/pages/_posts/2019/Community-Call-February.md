@@ -33,7 +33,7 @@ For full documentation and to leave feedback on this preview please check the [G
 
 Watch the call here.
 
-<iframe src="https://www.youtube.com/embed/O7xA-OO69OY" height="315" width="560"></iframe>
+<iframe title="Video of the community call" src="https://www.youtube.com/embed/O7xA-OO69OY" height="315" width="560"></iframe>
 
 Next month's call will be held on Thursday, March 14, 2019 at 9:00am PST. We look forward to talking to you then!
 

@@ -46,7 +46,7 @@ home:
       href: https://github.com/microsoft/AdaptiveCards/releases/tag/v1.2.0
       fa: fas fa-download
       tag: 
-      tag_class: w3-blue
+      tag_class: ac-blue
     - title: Roadmap
       href: https://portal.productboard.com/adaptivecards/1-adaptive-cards-portal/tabs/4-1-3-proposed/tabs/1-under-consideration
       fa: far fa-calendar-alt

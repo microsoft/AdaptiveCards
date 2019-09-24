@@ -36,7 +36,7 @@
 
 			<div class="w3-center">
 				<h2 class="w3-xlarge"><%- post.title %></h2>
-				<div><img src="<%- post.author.avatar %>" class="w3-circle" style="width: 80px" /></div>
+				<div><img src="<%- post.author.avatar %>" class="w3-circle" style="width: 80px" alt="Profile image of <%- post.author.name %>" /></div>
 				<h3 class="w3-large"><%- post.author.name %></h3>
 				<datetime class="article-date" style="margin: 0"><%= post.date.format("MMM D, YYYY") %></datetime> · <span
 						class="reading-time"><%- readingTime(post.content, 'min read') %></span>
@@ -47,7 +47,7 @@
 			</div>
 
 			<div class="w3-row-padding w3-border-top w3-padding">
-				<div class="w3-col w3-margin-top" style="width: 120px"><img src="<%- post.author.avatar %>" class="w3-circle"/></div>
+				<div class="w3-col w3-margin-top" style="width: 120px"><img src="<%- post.author.avatar %>" class="w3-circle" alt="Profile image of <%- post.author.name %>"/></div>
 				<div class="w3-rest">
 					<h3><a href="<%- post.author.webpage %>" class="w3-large article-author" style="font-weight: 500"><%- post.author.name %></a></h3>
 					<p style="margin: 8px 0"><%- post.author.bio %></p>

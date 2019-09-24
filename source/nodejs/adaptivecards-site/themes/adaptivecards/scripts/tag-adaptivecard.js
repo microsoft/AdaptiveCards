@@ -12,8 +12,8 @@ hexo.extend.tag.register('adaptivecard', function (args) {
 	return `
 		<div class="codeHeader">
 			<span class="language">Adaptive Card</span>
-			<button aria-label="Try it yourself" class="w3-button w3-blue action try-adaptivecard">
-				<span>Try it Yourself <i class="fa fa-chevron-right"></i></span>
+			<button aria-label="Try it yourself" class="w3-button ac-blue action try-adaptivecard">
+				<span>Try it Yourself <i class="fas fa-chevron-right"></i></span>
 			</button>
 		</div>
 		<div class="adaptivecard" data-card-url="${payloadUrl}"></div>`;	
