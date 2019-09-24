@@ -7,6 +7,8 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
 
 public class APITest
@@ -32,13 +34,8 @@ public class APITest
                 "}]},{\"type\": \"ImageSet\",\"imageSize\": \"medium\",\"images\": [{\"type\": \"Image\"," +
                 "\"url\": \"https://picsum.photos/200/200?image=100\"},{\"type\": \"Image\"," +
                 "\"url\": \"https://picsum.photos/300/200?image=200\"},{\"type\": \"Image\"," +
-                "\"url\": \"https://picsum.photos/300/200?image=301\"},{\"type\": \"Image\"," +
-                "\"url\": \"https://picsum.photos/200/200?image=400\"},{\"type\": \"Image\"," +
-                "\"url\": \"https://picsum.photos/300/200?image=500\"},{\"type\": \"Image\"," +
-                "\"url\": \"https://picsum.photos/200/200?image=600\"},{\"type\": \"Image\"," +
-                "\"url\": \"https://picsum.photos/300/200?image=700\"},{\"type\": \"Image\"," +
-                "\"url\": \"https://picsum.photos/300/200?image=800\"},{\"type\": \"Image\"," +
-                "\"url\": \"https://picsum.photos/300/200?image=900\"}]}],\"actions\": [{" +
+                "\"url\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzO\"}," +
+                "{\"type\": \"Image\",\"url\": \"https://picsum.photos/300/200?image=900\"}]}],\"actions\": [{" +
                 "\"type\": \"Action.OpenUrl\",\"iconUrl\": \"http://adaptivecards.io/content/cats/1.png\"," +
                 "\"url\": \"http://adaptivecards.io\",\"title\": \"With Icon\"}]}";
 
@@ -47,9 +44,26 @@ public class APITest
 
         RemoteResourceInformationVector resourceInformationVector = parseResult.GetAdaptiveCard().GetResourceInformation();
 
-        for (RemoteResourceInformation resourceInformation : resourceInformationVector)
+        String[] expectedMimeTypes = {"image", "image", "video/mp4", "image", "audio/mpeg", "image", "image", "image", "image", "image"};
+        String[] expectedUrls = {
+            "https://picsum.photos/id/237/200/200",
+            "https://adaptivecards.io/content/poster-video.png",
+            "https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4",
+            "https://adaptivecards.io/content/poster-audio.jpg",
+            "https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp3",
+            "https://picsum.photos/200/200?image=100",
+            "https://picsum.photos/300/200?image=200",
+            "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzO",
+            "https://picsum.photos/300/200?image=900",
+            "http://adaptivecards.io/content/cats/1.png"
+        };
+
+        for (int index = 0; index < resourceInformationVector.size(); ++index)
         {
-            Assert.assertEquals("", );
+            RemoteResourceInformation resourceInformation = resourceInformationVector.get(index);
+
+            Assert.assertEquals(expectedMimeTypes[index], resourceInformation.getMimeType());
+            Assert.assertEquals(expectedUrls[index], resourceInformation.getUrl());
         }
     }
 
