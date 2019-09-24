@@ -134,17 +134,17 @@ namespace AdaptiveCards.Rendering.Wpf
                             Grid uiShowCardContainer = new Grid();
                             uiShowCardContainer.Style = context.GetStyle("Adaptive.Actions.ShowCard");
                             uiShowCardContainer.DataContext = showCardAction;
-                            uiShowCardContainer.Margin = new Thickness(0, actionsConfig.ShowCard.InlineTopMargin, 0, 0);
                             uiShowCardContainer.Visibility = Visibility.Collapsed;
+                            var padding = context.Config.Spacing.Padding;
+                            // set negative margin to expand the wrapper to the edge of outer most card
+                            uiShowCardContainer.Margin = new Thickness(-padding, actionsConfig.ShowCard.InlineTopMargin, -padding, -padding);
+                            var showCardStyleConfig = context.Config.ContainerStyles.GetContainerStyleConfig(actionsConfig.ShowCard.Style);
+                            uiShowCardContainer.Background = context.GetColorBrush(showCardStyleConfig.BackgroundColor);
 
                             // render the card
                             var uiShowCardWrapper = (Grid)context.Render(showCardAction.Card);
                             uiShowCardWrapper.Background = context.GetColorBrush("Transparent");
                             uiShowCardWrapper.DataContext = showCardAction;
-
-                            // Remove the card padding
-                            var innerCard = (Grid)uiShowCardWrapper.Children[0];
-                            innerCard.Margin = new Thickness(0);
 
                             uiShowCardContainer.Children.Add(uiShowCardWrapper);
                             context.ActionShowCards.Add(uiAction, uiShowCardContainer);

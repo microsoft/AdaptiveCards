@@ -368,6 +368,10 @@ export class CardDesigner {
 
     private activeHostContainerChanged() {
         this.recreateDesignerSurface();
+
+        if (this.onActiveHostContainerChanged) {
+            this.onActiveHostContainerChanged(this);
+        }
     }
 
     private updateToolboxLayout(toolbox: Toolbox, hostPanelRect: ClientRect | DOMRect) {
@@ -402,11 +406,19 @@ export class CardDesigner {
     private updateLayoutTimer: any;
 
     private preventCardUpdate: boolean = false;
+
+    private cardPayloadChanged() {
+        if (this.onCardPayloadChanged) {
+            this.onCardPayloadChanged(this);
+        }
+    }
     
     private setCardPayload(payload: object) {
         if (this._isMonacoEditorLoaded) {
             this._cardEditor.setValue(JSON.stringify(payload, null, 4));
         }
+
+        this.cardPayloadChanged();
     }
 
     private setSampleDataPayload(payload: any) {
@@ -458,6 +470,8 @@ export class CardDesigner {
 
             if (!this.preventCardUpdate) {
                 this.designerSurface.setCardPayloadAsString(this.getCurrentCardEditorPayload());
+
+                this.cardPayloadChanged();
             }
         }
         finally {
@@ -1040,6 +1054,9 @@ export class CardDesigner {
     getCard(): object {
         return this.designerSurface.card.toJSON();
     }
+
+    onCardPayloadChanged: (designer: CardDesigner) => void;
+    onActiveHostContainerChanged: (designer: CardDesigner) => void;
 
     get currentTargetVersion(): Shared.TargetVersion {
         if (this._versionChoicePicker) {

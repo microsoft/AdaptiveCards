@@ -42,13 +42,13 @@
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <AppContainerApplication>true</AppContainerApplication>
     <ApplicationType>Windows Store</ApplicationType>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
-    <WindowsTargetPlatformMinVersion>10.0.16299.0</WindowsTargetPlatformMinVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformMinVersion>10.0.15063.0</WindowsTargetPlatformMinVersion>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
     <TargetName>AdaptiveCards.Rendering.Uwp</TargetName>
     <GenerateManifest>false</GenerateManifest>
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">
@@ -95,7 +95,7 @@
       </AdditionalDependencies>
     </Link>
     <CustomBuildStep>
-      <Command>mdmerge -partial -i "$(OutDir)$(TargetName).winmd" -o "$(OutDir)Output" -metadata_dir "$(WindowsSDK_MetadataFoundationPath)" -metadata_dir "$(WindowsSDK_MetadataPathVersioned)\Windows.Foundation.UniversalApiContract\7.0.0.0" &amp;&amp; copy /y "$(OutDir)Output\*" "$(OutDir)"</Command>
+      <Command>mdmerge -partial -i "$(OutDir)$(TargetName).winmd" -o "$(OutDir)Output" -metadata_dir "$(WindowsSDK_MetadataFoundationPath)" -metadata_dir "$(WindowsSDK_MetadataPathVersioned)\Windows.Foundation.UniversalApiContract\8.0.0.0" &amp;&amp; copy /y "$(OutDir)Output\*" "$(OutDir)"</Command>
       <Outputs>$(OutDir)%(TargetName).winmd</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
@@ -126,8 +126,12 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="lib\ActionHelpers.cpp" />
     <ClCompile Include="lib\AdaptiveHighlightColorConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveRequirement.cpp" />
     <ClCompile Include="lib\ElementTagContent.cpp" />
+    <ClCompile Include="lib\XamlHelpers.cpp" />
+    <ClInclude Include="lib\ActionHelpers.h" />
     <ClInclude Include="lib\AdaptiveActionElement.h" />
     <ClInclude Include="lib\AdaptiveActionInvoker.h" />
     <ClInclude Include="lib\AdaptiveActionParserRegistration.h" />
@@ -176,6 +180,7 @@
     <ClInclude Include="lib\AdaptiveRemoteResourceInformation.h" />
     <ClInclude Include="lib\AdaptiveRenderArgs.h" />
     <ClInclude Include="lib\AdaptiveRenderContext.h" />
+    <ClInclude Include="lib\AdaptiveRequirement.h" />
     <ClInclude Include="lib\AdaptiveRichTextBlock.h" />
     <ClInclude Include="lib\AdaptiveRichTextBlockRenderer.h" />
     <ClInclude Include="lib\AdaptiveSeparator.h" />

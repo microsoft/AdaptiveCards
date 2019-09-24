@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
-#include "Util.h"
+
 #include "AdaptiveMediaConfig.h"
 
 using namespace Microsoft::WRL;
@@ -9,7 +9,8 @@ using namespace ABI::AdaptiveNamespace;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveMediaConfig::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveMediaConfig::RuntimeClassInitialize() noexcept
+    try
     {
         MediaConfig mediaConfig;
         return RuntimeClassInitialize(mediaConfig);

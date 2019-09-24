@@ -6,16 +6,15 @@
 //
 
 #import "ACRMediaTarget.h"
-#import "ACRAVPlayerViewHoldingUIView.h"
 #import "ACOHostConfigPrivate.h"
+#import "ACRAVPlayerViewHoldingUIView.h"
 #import "ACRContentHoldingUIView.h"
 
 // tags for easy accessing of subviews
 const int playIconTag = 0x49434F4E;
 const int posterTag = 0x504F5354;
 
-@implementation ACRMediaTarget
-{
+@implementation ACRMediaTarget {
     ACOMediaEvent *_mediaEvent;
     AVPlayerViewController *_mediaViewController;
     NSURL *_url;
@@ -32,12 +31,12 @@ const int posterTag = 0x504F5354;
                     containingview:(UIView *)containingview
 {
     self = [super init];
-    if(self) {
+    if (self) {
         _mediaEvent = mediaEvent;
         _url = url;
         _view = rootView;
         _containingview = containingview;
-        isInline = [config getHostConfig]->GetMedia().allowInlinePlayback;
+        isInline = [config getHostConfig] -> GetMedia().allowInlinePlayback;
     }
     return self;
 }
@@ -57,9 +56,9 @@ const int posterTag = 0x504F5354;
 // delegate for ACRSelectActionDelegate
 - (void)doSelectAction
 {
-    if(!isInline) {
+    if (!isInline) {
         // if inline media play is disabled, call media delegate, and let host to handle it.
-        if([_view.mediaDelegate respondsToSelector:@selector(didFetchMediaEvent: card:)]) {
+        if ([_view.mediaDelegate respondsToSelector:@selector(didFetchMediaEvent:card:)]) {
             [_view.mediaDelegate didFetchMediaEvent:_mediaEvent card:[_view card]];
         } else {
             // https://github.com/Microsoft/AdaptiveCards/issues/1834
@@ -68,21 +67,24 @@ const int posterTag = 0x504F5354;
     } else {
         BOOL validMediaTypeFound = NO;
         // loop and find media source that can be played
-        for(ACOMediaSource *source in _mediaEvent.sources){
-            if(source.isValid){
-                if(source.isVideo){
+        for (ACOMediaSource *source in _mediaEvent.sources) {
+            if (source.isValid) {
+                if (source.isVideo) {
                     NSURL *url = [[NSURL alloc] initWithString:source.url];
                     AVURLAsset *asset = [AVURLAsset URLAssetWithURL:url options:nil];
                     _mimeType = source.mimeType;
-                    [asset loadValuesAsynchronouslyForKeys:@[@"tracks"] completionHandler:^{
-                        AVKeyValueStatus status = [asset statusOfValueForKey:@"tracks" error:nil];
-                        if(status == AVKeyValueStatusLoaded) {
-                            dispatch_async(dispatch_get_main_queue(), ^{[self playVideoWhenTrackIsReady:asset];});
-                        }
-                    }];
+                    [asset loadValuesAsynchronouslyForKeys:@[ @"tracks" ]
+                                         completionHandler:^{
+                                             AVKeyValueStatus status = [asset statusOfValueForKey:@"tracks" error:nil];
+                                             if (status == AVKeyValueStatusLoaded) {
+                                                 dispatch_async(dispatch_get_main_queue(), ^{
+                                                     [self playVideoWhenTrackIsReady:asset];
+                                                 });
+                                             }
+                                         }];
                     validMediaTypeFound = YES;
                     break;
-                } else{ // audio type
+                } else { // audio type
                     NSURL *url = [[NSURL alloc] initWithString:source.url];
                     AVPlayer *player = [AVPlayer playerWithURL:url];
 
@@ -98,10 +100,10 @@ const int posterTag = 0x504F5354;
                     UIView *mediaView = self->_mediaViewController.view;
                     mediaView.translatesAutoresizingMaskIntoConstraints = NO;
 
-                    UIImageView* poster = [self->_containingview viewWithTag:posterTag];
+                    UIImageView *poster = [self->_containingview viewWithTag:posterTag];
 
                     UIView *playIconView = [poster viewWithTag:playIconTag];
-                    if(playIconView){
+                    if (playIconView) {
                         [playIconView removeFromSuperview];
                     }
 
@@ -120,11 +122,11 @@ const int posterTag = 0x504F5354;
                     CGFloat heightToWidthRatio = 0.0f;
                     UIImage *image = poster.image;
 
-                    if(!image) {
+                    if (!image) {
                         heightToWidthRatio = .75;
                     } else {
                         poster.frame = CGRectMake(0, 0, image.size.width, image.size.height);
-                        if(image.size.width > 0) {
+                        if (image.size.width > 0) {
                             heightToWidthRatio = image.size.height / image.size.width;
                         }
                     }
@@ -132,34 +134,67 @@ const int posterTag = 0x504F5354;
                     _containingview.translatesAutoresizingMaskIntoConstraints = NO;
 
                     [NSLayoutConstraint constraintWithItem:mediaView
-                                                 attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual
-                                                    toItem:_containingview attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
+                                                 attribute:NSLayoutAttributeCenterX
+                                                 relatedBy:NSLayoutRelationEqual
+                                                    toItem:_containingview
+                                                 attribute:NSLayoutAttributeCenterX
+                                                multiplier:1.0
+                                                  constant:0]
+                        .active = YES;
 
                     [NSLayoutConstraint constraintWithItem:mediaView
-                                                 attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual
-                                                    toItem:_containingview attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
+                                                 attribute:NSLayoutAttributeCenterY
+                                                 relatedBy:NSLayoutRelationEqual
+                                                    toItem:_containingview
+                                                 attribute:NSLayoutAttributeCenterY
+                                                multiplier:1.0
+                                                  constant:0]
+                        .active = YES;
 
                     [NSLayoutConstraint constraintWithItem:mediaView
-                        attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual
-                           toItem:_containingview attribute:NSLayoutAttributeWidth
-                       multiplier:1.0 constant:0].active = YES;
+                                                 attribute:NSLayoutAttributeWidth
+                                                 relatedBy:NSLayoutRelationEqual
+                                                    toItem:_containingview
+                                                 attribute:NSLayoutAttributeWidth
+                                                multiplier:1.0
+                                                  constant:0]
+                        .active = YES;
 
                     [NSLayoutConstraint constraintWithItem:mediaView
-                        attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual
-                           toItem:_containingview attribute:NSLayoutAttributeHeight
-                       multiplier:1.0 constant:0].active = YES;
+                                                 attribute:NSLayoutAttributeHeight
+                                                 relatedBy:NSLayoutRelationEqual
+                                                    toItem:_containingview
+                                                 attribute:NSLayoutAttributeHeight
+                                                multiplier:1.0
+                                                  constant:0]
+                        .active = YES;
 
                     [NSLayoutConstraint constraintWithItem:_containingview
-                                                 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual
-                                                    toItem:_containingview attribute:NSLayoutAttributeWidth multiplier:heightToWidthRatio constant:0].active = YES;
+                                                 attribute:NSLayoutAttributeHeight
+                                                 relatedBy:NSLayoutRelationEqual
+                                                    toItem:_containingview
+                                                 attribute:NSLayoutAttributeWidth
+                                                multiplier:heightToWidthRatio
+                                                  constant:0]
+                        .active = YES;
 
                     [NSLayoutConstraint constraintWithItem:poster
-                                                 attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationLessThanOrEqual
-                                                    toItem:overlayview attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0].active = YES;
+                                                 attribute:NSLayoutAttributeWidth
+                                                 relatedBy:NSLayoutRelationLessThanOrEqual
+                                                    toItem:overlayview
+                                                 attribute:NSLayoutAttributeWidth
+                                                multiplier:1.0
+                                                  constant:0]
+                        .active = YES;
 
                     [NSLayoutConstraint constraintWithItem:poster
-                                                 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationLessThanOrEqual
-                                                    toItem:overlayview attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0].active = YES;
+                                                 attribute:NSLayoutAttributeHeight
+                                                 relatedBy:NSLayoutRelationLessThanOrEqual
+                                                    toItem:overlayview
+                                                 attribute:NSLayoutAttributeHeight
+                                                multiplier:1.0
+                                                  constant:0]
+                        .active = YES;
                     [_containingview setNeedsLayout];
 
                     [player play];
@@ -168,7 +203,7 @@ const int posterTag = 0x504F5354;
                 }
             }
         }
-        if(!validMediaTypeFound) { // https://github.com/Microsoft/AdaptiveCards/issues/1834
+        if (!validMediaTypeFound) { // https://github.com/Microsoft/AdaptiveCards/issues/1834
             NSLog(@"Warning: supported media types not found");
         }
     }
@@ -177,12 +212,15 @@ const int posterTag = 0x504F5354;
 - (void)playVideoWhenTrackIsReady:(AVURLAsset *)asset
 {
     AVAssetTrack *track = [asset tracksWithMediaCharacteristic:AVMediaCharacteristicVisual][0];
-    [track loadValuesAsynchronouslyForKeys:@[@"naturalSize"] completionHandler:^{
-        AVKeyValueStatus status = [asset statusOfValueForKey:@"naturalSize" error:nil];
-        if(status == AVKeyValueStatusLoaded) {
-            dispatch_async(dispatch_get_main_queue(), ^{[self playMedia:track asset:asset];});
-        }
-    }];
+    [track loadValuesAsynchronouslyForKeys:@[ @"naturalSize" ]
+                         completionHandler:^{
+                             AVKeyValueStatus status = [asset statusOfValueForKey:@"naturalSize" error:nil];
+                             if (status == AVKeyValueStatusLoaded) {
+                                 dispatch_async(dispatch_get_main_queue(), ^{
+                                     [self playMedia:track asset:asset];
+                                 });
+                             }
+                         }];
 }
 
 - (void)playMedia:(AVAssetTrack *)track asset:(AVURLAsset *)asset
@@ -195,7 +233,7 @@ const int posterTag = 0x504F5354;
     self->_mediaViewController = [[AVPlayerViewController alloc] init];
     self->_mediaViewController.player = player;
 
-    if([_view.mediaDelegate respondsToSelector:@selector(didFetchMediaViewController: card:)]){
+    if ([_view.mediaDelegate respondsToSelector:@selector(didFetchMediaViewController:card:)]) {
         [_view.mediaDelegate didFetchMediaViewController:self->_mediaViewController card:nil];
     }
 

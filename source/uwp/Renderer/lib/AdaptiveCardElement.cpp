@@ -5,6 +5,7 @@
 #include "AdaptiveFeatureRegistration.h"
 #include "SemanticVersion.h"
 #include "Util.h"
+#include "Vector.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -35,9 +36,8 @@ namespace AdaptiveNamespace
                 RETURN_IF_FAILED(GenerateElementProjection(fallbackObject, m_fallbackContent.GetAddressOf()));
             }
         }
-
-        m_requires = sharedModel->GetRequirements();
-
+        m_requirements = Microsoft::WRL::Make<Vector<AdaptiveRequirement*>>();
+        GenerateRequirementsProjection(sharedModel->GetRequirements(), m_requirements.Get());
         return S_OK;
     }
 
@@ -102,6 +102,16 @@ namespace AdaptiveNamespace
     IFACEMETHODIMP AdaptiveCardElementBase::put_FallbackContent(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* content)
     {
         m_fallbackContent = content;
+
+        if (content == nullptr && m_fallbackType == ABI::AdaptiveNamespace::FallbackType::Content)
+        {
+            m_fallbackType = ABI::AdaptiveNamespace::FallbackType::None;
+        }
+        else if (content != nullptr)
+        {
+            m_fallbackType = ABI::AdaptiveNamespace::FallbackType::Content;
+        }
+
         return S_OK;
     }
 
@@ -137,22 +147,11 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveCardElementBase::MeetsRequirements(_In_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration* featureRegistration,
-                                                              _Out_ boolean* value) try
+    IFACEMETHODIMP AdaptiveCardElementBase::get_Requirements(
+        ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>** requirements)
     {
-        *value = true;
-
-        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedModel;
-        RETURN_IF_FAILED(GetSharedModel(sharedModel));
-
-        ComPtr<AdaptiveFeatureRegistration> featureRegistrationImpl = PeekInnards<AdaptiveFeatureRegistration>(featureRegistration);
-        std::shared_ptr<AdaptiveSharedNamespace::FeatureRegistration> sharedFeatureRegistration =
-            featureRegistrationImpl->GetSharedFeatureRegistration();
-
-        *value = sharedModel->MeetsRequirements(*sharedFeatureRegistration);
-        return S_OK;
+        return m_requirements.CopyTo(requirements);
     }
-    CATCH_RETURN;
 
     IFACEMETHODIMP AdaptiveCardElementBase::ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
     {
@@ -171,14 +170,7 @@ namespace AdaptiveNamespace
         sharedCardElement->SetHeight(static_cast<AdaptiveSharedNamespace::HeightType>(m_height));
         sharedCardElement->SetFallbackType(MapUwpFallbackTypeToShared(m_fallbackType));
 
-        if (!m_requires->empty())
-        {
-            auto requirements = sharedCardElement->GetRequirements();
-            for (const auto& requirement : *m_requires)
-            {
-                requirements->emplace(requirement);
-            }
-        }
+        RETURN_IF_FAILED(GenerateSharedRequirements(m_requirements.Get(), sharedCardElement->GetRequirements()));
 
         if (m_fallbackType == ABI::AdaptiveNamespace::FallbackType::Content)
         {

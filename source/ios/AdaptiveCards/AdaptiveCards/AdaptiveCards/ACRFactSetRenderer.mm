@@ -4,17 +4,17 @@
 //
 //  Copyright Â© 2017 Microsoft. All rights reserved.
 //
-#import "ACRTextBlockRenderer.h"
-#import "ACRContentHoldingUIView.h"
 #import "ACRFactSetRenderer.h"
-#import "ACRSeparator.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
 #import "ACRColumnSetView.h"
+#import "ACRContentHoldingUIView.h"
+#import "ACRSeparator.h"
+#import "ACRTextBlockRenderer.h"
+#import "ACRUILabel.h"
 #import "Fact.h"
 #import "FactSet.h"
-#import "ACOHostConfigPrivate.h"
-#import "ACOBaseCardElementPrivate.h"
-#import "ACRUILabel.h"
-#import "Util.h"
+#import "UtiliOS.h"
 
 @implementation ACRFactSetRenderer
 
@@ -38,7 +38,7 @@
                   rootView:(ACRView *)rootView
                    element:(std::shared_ptr<BaseCardElement> const &)element
 {
-    ACRUILabel *lab = [[ACRUILabel alloc] initWithFrame:CGRectMake(0,0,superview.frame.size.width, 0)];
+    ACRUILabel *lab = [[ACRUILabel alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, 0)];
     lab.translatesAutoresizingMaskIntoConstraints = NO;
     lab.style = style;
     lab.editable = NO;
@@ -49,10 +49,10 @@
     lab.tag = eACRUIFactSetTag;
 
     NSMutableAttributedString *content = nil;
-    if(rootView){
+    if (rootView) {
         std::shared_ptr<FactSet> fctSet = std::dynamic_pointer_cast<FactSet>(element);
         NSMutableDictionary *textMap = [rootView getTextMap];
-        NSDictionary* data = textMap[elementId];
+        NSDictionary *data = textMap[elementId];
         NSData *htmlData = data[@"html"];
         NSDictionary *options = data[@"options"];
         NSDictionary *descriptor = data[@"descriptor"];
@@ -60,31 +60,31 @@
 
         std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
         // Initializing NSMutableAttributedString for HTML rendering is very slow
-        if(htmlData){
+        if (htmlData) {
             content = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
             // Drop newline char
-            [content deleteCharactersInRange:NSMakeRange([content length] -1, 1)];
+            [content deleteCharactersInRange:NSMakeRange([content length] - 1, 1)];
         } else {
             // if html rendering is skipped, remove p tags from both ends (<p>, </p>)
             content = [[NSMutableAttributedString alloc] initWithString:text attributes:descriptor];
             [content deleteCharactersInRange:NSMakeRange(0, 3)];
-            [content deleteCharactersInRange:NSMakeRange([content length] -4, 4)];
+            [content deleteCharactersInRange:NSMakeRange([content length] - 4, 4)];
         }
         // Set paragraph style such as line break mode and alignment
-        lab.textContainer.lineBreakMode = textConfig.wrap ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;
+        lab.textContainer.lineBreakMode = textConfig.wrap ? NSLineBreakByWordWrapping : NSLineBreakByTruncatingTail;
 
         // Obtain text color to apply to the attributed string
         ACRContainerStyle style = lab.style;
         auto foregroundColor = [acoConfig getTextBlockColor:style textColor:textConfig.color subtleOption:textConfig.isSubtle];
 
         // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
-        [content addAttributes:@{NSForegroundColorAttributeName: foregroundColor,
-                                     NSStrokeWidthAttributeName:[ACOHostConfig getTextStrokeWidthForWeight:textConfig.weight]}
-                                                          range:NSMakeRange(0, content.length)];
+        [content addAttributes:@{NSForegroundColorAttributeName : foregroundColor,
+                                 NSStrokeWidthAttributeName : [ACOHostConfig getTextStrokeWidthForWeight:textConfig.weight]}
+                         range:NSMakeRange(0, content.length)];
         lab.attributedText = content;
         std::string ID = element->GetId();
         std::size_t idx = ID.find_last_of('_');
-        if(std::string::npos != idx){
+        if (std::string::npos != idx) {
             element->SetId(ID.substr(0, idx));
         }
     }
@@ -95,10 +95,10 @@
 }
 
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
-          rootView:(ACRView *)rootView
-            inputs:(NSMutableArray *)inputs
-   baseCardElement:(ACOBaseCardElement *)acoElem
-        hostConfig:(ACOHostConfig *)acoConfig;
+           rootView:(ACRView *)rootView
+             inputs:(NSMutableArray *)inputs
+    baseCardElement:(ACOBaseCardElement *)acoElem
+         hostConfig:(ACOHostConfig *)acoConfig;
 {
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
@@ -123,8 +123,7 @@
 
     [factSetWrapperView adjustHuggingForLastElement];
 
-    for(auto fact :fctSet->GetFacts())
-    {
+    for (auto fact : fctSet->GetFacts()) {
         NSString *title = [NSString stringWithCString:fact->GetTitle().c_str() encoding:NSUTF8StringEncoding];
         ACRUILabel *titleLab = [ACRFactSetRenderer buildLabel:title
                                                     superview:viewGroup

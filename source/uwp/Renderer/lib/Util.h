@@ -122,6 +122,10 @@ HRESULT GenerateSharedAction(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement
 HRESULT GenerateSharedActions(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* items,
                               std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>>& containedElements);
 
+HRESULT GenerateSharedRequirements(
+    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>* adaptiveRequirements,
+    std::shared_ptr<std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>> sharedRequirements) noexcept;
+
 HRESULT GenerateSharedImages(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveImage*>* items,
                              std::vector<std::shared_ptr<AdaptiveSharedNamespace::Image>>& containedElements);
 
@@ -164,6 +168,10 @@ HRESULT GenerateFactsProjection(const std::vector<std::shared_ptr<AdaptiveShared
 HRESULT GenerateInlinesProjection(const std::vector<std::shared_ptr<AdaptiveSharedNamespace::Inline>>& containedElements,
                                   _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveInline*>* projectedParentContainer) noexcept;
 
+HRESULT GenerateRequirementsProjection(
+    const std::shared_ptr<std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>>& sharedRequirements,
+    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>* projectedRequirementVector) noexcept;
+
 HRESULT GenerateImagesProjection(const std::vector<std::shared_ptr<AdaptiveSharedNamespace::Image>>& containedElements,
                                  _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveImage*>* projectedParentContainer) noexcept;
 
@@ -200,6 +208,10 @@ HRESULT JsonObjectToJsonCpp(_In_ ABI::Windows::Data::Json::IJsonObject* jsonObje
 
 HRESULT ProjectedActionTypeToHString(ABI::AdaptiveNamespace::ActionType projectedActionType, _Outptr_ HSTRING* result);
 HRESULT ProjectedElementTypeToHString(ABI::AdaptiveNamespace::ElementType projectedElementType, _Outptr_ HSTRING* result);
+
+HRESULT MeetsRequirements(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* cardElement,
+                          _In_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration* featureRegistration,
+                          _Out_ bool* meetsRequirements);
 
 HRESULT IsBackgroundImageValid(_In_ ABI::AdaptiveNamespace::IAdaptiveBackgroundImage* backgroundImageElement, _Out_ BOOL* isValid);
 
@@ -257,6 +269,14 @@ AdaptiveSharedNamespace::FallbackType MapUwpFallbackTypeToShared(const ABI::Adap
 
 HRESULT CopyTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* textElement,
                         _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveTextElement** copiedTextElement);
+
+HRESULT GetAdaptiveActionParserRegistrationFromSharedModel(
+    const std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration>& sharedActionParserRegistration,
+    _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration** adaptiveActionParserRegistration);
+
+HRESULT GetAdaptiveElementParserRegistrationFromSharedModel(
+    const std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration>& sharedElementParserRegistration,
+    _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration** adaptiveElementParserRegistration);
 
 namespace AdaptiveNamespace
 {

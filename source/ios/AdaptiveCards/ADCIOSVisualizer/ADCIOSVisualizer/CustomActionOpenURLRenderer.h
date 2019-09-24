@@ -10,7 +10,7 @@
 
 #import <AdaptiveCards/ACFramework.h>
 
-@interface CustomActionOpenURLRenderer:ACRBaseActionElementRenderer
+@interface CustomActionOpenURLRenderer : ACRBaseActionElementRenderer
 
 + (CustomActionOpenURLRenderer *)getInstance;
 
