@@ -5,15 +5,15 @@
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
-#import <UIKit/UIKit.h>
+#import "ACRView.h"
+#import "HostConfig.h"
 #import "ImageSet.h"
 #import "SharedAdaptiveCard.h"
-#import "HostConfig.h"
-#import "ACRView.h"
+#import <UIKit/UIKit.h>
 
-@interface ACRImageSetUICollectionView:UICollectionView<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
-- (instancetype)init:(std::shared_ptr<AdaptiveCards::ImageSet> const&)imageSet
+@interface ACRImageSetUICollectionView : UICollectionView <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+- (instancetype)init:(std::shared_ptr<AdaptiveCards::ImageSet> const &)imageSet
       WithHostConfig:(ACOHostConfig *)hostConfig
        WithSuperview:(UIView *)superview
-  rootView:(ACRView *)rootView;
+            rootView:(ACRView *)rootView;
 @end

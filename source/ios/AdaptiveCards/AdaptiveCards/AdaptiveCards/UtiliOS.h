@@ -4,13 +4,13 @@
 //  Copyfight © 2019 Microsoft. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "ACRErrors.h"
 #import "ACRSeparator.h"
 #import "ACRViewPrivate.h"
 #import "BaseCardElement.h"
 #import "CollectionTypeElement.h"
 #import "TextElementProperties.h"
+#import <UIKit/UIKit.h>
 
 using namespace AdaptiveCards;
 

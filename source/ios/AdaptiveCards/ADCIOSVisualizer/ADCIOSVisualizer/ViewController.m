@@ -6,7 +6,6 @@
 //
 
 #import "ViewController.h"
-#import <SafariServices/SafariServices.h>
 #import "ADCResolver.h"
 #import "AdaptiveCards/ACRButton.h"
 #import "AdaptiveFileBrowserSource.h"
@@ -16,6 +15,7 @@
 #import "CustomInputNumberRenderer.h"
 #import "CustomProgressBarRenderer.h"
 #import "CustomTextBlockRenderer.h"
+#import <SafariServices/SafariServices.h>
 
 const CGFloat kAdaptiveCardsWidth = 330;
 
@@ -28,7 +28,8 @@ const CGFloat kAdaptiveCardsWidth = 330;
 @end
 
 @implementation ViewController
-+ (void)applyConstraints:(NSArray<NSString *> *)formats variables:(NSDictionary *)variables {
++ (void)applyConstraints:(NSArray<NSString *> *)formats variables:(NSDictionary *)variables
+{
     NSArray<NSLayoutConstraint *> *constraints = nil;
 
     for (NSString *format in formats) {
@@ -40,7 +41,8 @@ const CGFloat kAdaptiveCardsWidth = 330;
     }
 }
 
-- (IBAction)editText:(id)sender {
+- (IBAction)editText:(id)sender
+{
     if (!self.editableStr) {
         return;
     }
@@ -68,7 +70,8 @@ const CGFloat kAdaptiveCardsWidth = 330;
     filebrowserView.hidden = YES;
 }
 
-- (IBAction)toggleCustomRenderer:(id)sender {
+- (IBAction)toggleCustomRenderer:(id)sender
+{
     _enableCustomRenderer = !_enableCustomRenderer;
     ACRRegistration *registration = [ACRRegistration getInstance];
 
@@ -101,7 +104,8 @@ const CGFloat kAdaptiveCardsWidth = 330;
     [self update:self.editableStr];
 }
 
-- (IBAction)applyText:(id)sender {
+- (IBAction)applyText:(id)sender
+{
     if (_editView.text != NULL && ![_editView.text isEqualToString:@""]) {
         [self update:self.editView.text];
     }
@@ -109,7 +113,8 @@ const CGFloat kAdaptiveCardsWidth = 330;
     self.compositeFileBrowserView.hidden = NO;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     [self registerForKeyboardNotifications];
     _resolvers = [[ACOResourceResolvers alloc] init];
@@ -233,12 +238,12 @@ const CGFloat kAdaptiveCardsWidth = 330;
     buttonLayout.translatesAutoresizingMaskIntoConstraints = NO;
     [buttonLayout.widthAnchor constraintEqualToConstant:kAdaptiveCardsWidth].active = YES;
     [buttonLayout.centerXAnchor constraintEqualToAnchor:fileBrowserView.centerXAnchor].active = YES;
-    
+
     buttonLayout.alignment = UIStackViewAlignmentFill;
     buttonLayout.distribution = UIStackViewDistributionEqualCentering;
     buttonLayout.spacing = 10;
-    
-    
+
+
     _scrView = [[UIScrollView alloc] init];
     _scrView.showsHorizontalScrollIndicator = NO;
 
@@ -264,11 +269,13 @@ const CGFloat kAdaptiveCardsWidth = 330;
     [self update:self.ACVTabVC.userSelectedJSon];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
 }
 
-- (void)update:(NSString *)jsonStr {
+- (void)update:(NSString *)jsonStr
+{
     self.editableStr = jsonStr;
     ACRRenderResult *renderResult;
     ACOHostConfigParseResult *hostconfigParseResult = [ACOHostConfig fromJson:self.hostconfig
@@ -302,7 +309,8 @@ const CGFloat kAdaptiveCardsWidth = 330;
     if (renderResult.succeeded) {
         ACRView *ad = renderResult.view;
         ad.mediaDelegate = self;
-        if (self.curView) [self.curView removeFromSuperview];
+        if (self.curView)
+            [self.curView removeFromSuperview];
 
         self.curView = ad;
 
@@ -337,7 +345,8 @@ const CGFloat kAdaptiveCardsWidth = 330;
     }
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     float verticalContentInset = self.scrView.frame.size.height - self.curView.frame.size.height;
     verticalContentInset = (verticalContentInset <= 0) ? 20 : verticalContentInset;
@@ -345,15 +354,18 @@ const CGFloat kAdaptiveCardsWidth = 330;
     self.scrView.contentInset = contentInsets;
 }
 
-- (void)fromACVTable:(ACVTableViewController *)avcTabVc userSelectedJson:(NSString *)jsonStr {
+- (void)fromACVTable:(ACVTableViewController *)avcTabVc userSelectedJson:(NSString *)jsonStr
+{
     [self update:jsonStr];
 }
 
-- (void)source:(ACVTableViewController *)avcTabVc userconfig:(NSString *)payload {
+- (void)source:(ACVTableViewController *)avcTabVc userconfig:(NSString *)payload
+{
     self.hostconfig = payload;
 }
 
-- (void)didFetchUserResponses:(ACOAdaptiveCard *)card action:(ACOBaseActionElement *)action {
+- (void)didFetchUserResponses:(ACOAdaptiveCard *)card action:(ACOBaseActionElement *)action
+{
     if (action.type == ACROpenUrl) {
         NSURL *url = [NSURL URLWithString:[action url]];
         SFSafariViewController *svc = [[SFSafariViewController alloc] initWithURL:url];
@@ -381,11 +393,13 @@ const CGFloat kAdaptiveCardsWidth = 330;
     }
 }
 
-- (void)didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame {
+- (void)didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame
+{
     [self.scrView scrollRectToVisible:newFrame animated:YES];
 }
 
-- (void)didChangeVisibility:(UIButton *)button isVisible:(BOOL)isVisible {
+- (void)didChangeVisibility:(UIButton *)button isVisible:(BOOL)isVisible
+{
     if (isVisible) {
         button.backgroundColor = [UIColor redColor];
     } else {
@@ -405,7 +419,8 @@ const CGFloat kAdaptiveCardsWidth = 330;
 }
 
 - (void)didFetchMediaViewController:(AVPlayerViewController *)controller
-                               card:(ACOAdaptiveCard *)card {
+                               card:(ACOAdaptiveCard *)card
+{
     [self addChildViewController:controller];
     [controller didMoveToParentViewController:self];
 }
@@ -414,7 +429,8 @@ const CGFloat kAdaptiveCardsWidth = 330;
                    inputs:(NSMutableArray *)inputs
                 superview:(UIView<ACRIContentHoldingView> *)superview
                      card:(ACOAdaptiveCard *)card
-               hostConfig:(ACOHostConfig *)config {
+               hostConfig:(ACOHostConfig *)config
+{
     UIView *actionSetView = [_defaultRenderer renderButtons:rootView
                                                      inputs:inputs
                                                   superview:superview
@@ -423,7 +439,8 @@ const CGFloat kAdaptiveCardsWidth = 330;
     ((UIScrollView *)actionSetView).showsHorizontalScrollIndicator = NO;
     return actionSetView;
 }
-- (void)registerForKeyboardNotifications {
+- (void)registerForKeyboardNotifications
+{
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWasShown:)
                                                  name:UIKeyboardWillShowNotification
@@ -436,7 +453,8 @@ const CGFloat kAdaptiveCardsWidth = 330;
 }
 
 // Called when the UIKeyboardDidShowNotification is sent.
-- (void)keyboardWasShown:(NSNotification *)aNotification {
+- (void)keyboardWasShown:(NSNotification *)aNotification
+{
     NSDictionary *info = [aNotification userInfo];
     CGRect kbFrame = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGSize kbSize = kbFrame.size;
@@ -450,13 +468,15 @@ const CGFloat kAdaptiveCardsWidth = 330;
 }
 
 // Called when the UIKeyboardWillHideNotification is sent
-- (void)keyboardWillBeHidden:(NSNotification *)aNotification {
+- (void)keyboardWillBeHidden:(NSNotification *)aNotification
+{
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
     self.scrView.contentInset = contentInsets;
     self.scrView.scrollIndicatorInsets = contentInsets;
 }
 
-- (void)didLoadElements {
+- (void)didLoadElements
+{
     [self.curView setNeedsLayout];
     NSLog(@"completed loading elements");
 }

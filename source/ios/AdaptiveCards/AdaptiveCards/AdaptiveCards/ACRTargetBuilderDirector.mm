@@ -55,19 +55,22 @@
 
 @implementation ACRTargetBuilder
 
-+ (ACRTargetBuilder *)getInstance {
++ (ACRTargetBuilder *)getInstance
+{
     static ACRTargetBuilder *singletonInstance = [[self alloc] init];
     return singletonInstance;
 }
 
 - (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
-           director:(ACRTargetBuilderDirector *)director {
+           director:(ACRTargetBuilderDirector *)director
+{
     return nil;
 }
 
 - (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
            director:(ACRTargetBuilderDirector *)director
-          ForButton:(UIButton *)button {
+          ForButton:(UIButton *)button
+{
     return nil;
 }
 
@@ -79,13 +82,15 @@
 
 @implementation ACRAggregateTargetBuilder
 
-+ (ACRAggregateTargetBuilder *)getInstance {
++ (ACRAggregateTargetBuilder *)getInstance
+{
     static ACRAggregateTargetBuilder *singletonInstance = [[self alloc] init];
     return singletonInstance;
 }
 
 - (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
-           director:(ACRTargetBuilderDirector *)director {
+           director:(ACRTargetBuilderDirector *)director
+{
     ACOBaseActionElement *acoElem = [[ACOBaseActionElement alloc] initWithBaseActionElement:action];
 
     return [[ACRAggregateTarget alloc] initWithActionElement:acoElem rootView:director.rootView];
@@ -93,7 +98,8 @@
 
 - (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
            director:(ACRTargetBuilderDirector *)director
-          ForButton:(UIButton *)button {
+          ForButton:(UIButton *)button
+{
     NSObject *target = [self build:action director:director];
     if (target) {
         [button addTarget:target
@@ -110,20 +116,23 @@
 
 @implementation ACRShowCardTargetBuilder
 
-+ (ACRShowCardTargetBuilder *)getInstance {
++ (ACRShowCardTargetBuilder *)getInstance
+{
     static ACRShowCardTargetBuilder *singletonInstance = [[self alloc] init];
     return singletonInstance;
 }
 
 // currently not needed
 - (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
-           director:(ACRTargetBuilderDirector *)director {
+           director:(ACRTargetBuilderDirector *)director
+{
     return nil;
 }
 
 - (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
            director:(ACRTargetBuilderDirector *)director
-          ForButton:(UIButton *)button {
+          ForButton:(UIButton *)button
+{
     std::shared_ptr<ShowCardAction> showCardAction =
         std::dynamic_pointer_cast<ShowCardAction>(action);
 
@@ -148,13 +157,15 @@
 
 @implementation ACRToggleVisibilityTargetBuilder
 
-+ (ACRToggleVisibilityTargetBuilder *)getInstance {
++ (ACRToggleVisibilityTargetBuilder *)getInstance
+{
     static ACRToggleVisibilityTargetBuilder *singletonInstance = [[self alloc] init];
     return singletonInstance;
 }
 
 - (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
-           director:(ACRTargetBuilderDirector *)director {
+           director:(ACRTargetBuilderDirector *)director
+{
     std::shared_ptr<ToggleVisibilityAction> toggleVisibilityAction =
         std::dynamic_pointer_cast<ToggleVisibilityAction>(action);
 
@@ -168,7 +179,8 @@
 
 - (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
            director:(ACRTargetBuilderDirector *)director
-          ForButton:(UIButton *)button {
+          ForButton:(UIButton *)button
+{
     NSObject *target = [self build:action director:director];
     if (target) {
         [button addTarget:target
@@ -184,14 +196,16 @@
     NSDictionary<NSNumber *, ACRTargetBuilder *> *_builders;
 }
 
-- (instancetype)init {
+- (instancetype)init
+{
     self = [self init:nil capability:ACRAction adaptiveHostConfig:nil];
     return self;
 }
 
 - (instancetype)init:(ACRView *)rootView
             capability:(ACRTargetCapability)capability
-    adaptiveHostConfig:(ACOHostConfig *)adaptiveHostConfig {
+    adaptiveHostConfig:(ACOHostConfig *)adaptiveHostConfig
+{
     self = [super init];
     if (self) {
         self.rootView = rootView;
@@ -230,7 +244,8 @@
     return self;
 }
 
-- (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action {
+- (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
+{
     if ([self checkAgainstMyCapability:action]) {
         // check fail, stop and return
         return nil;
@@ -241,7 +256,8 @@
 }
 
 - (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
-          forButton:(UIButton *)button {
+          forButton:(UIButton *)button
+{
     if (ACRRenderingStatus::ACROk == [self checkAgainstMyCapability:action]) {
         ACRTargetBuilder *builder = [self getBuilder:action];
         return [builder build:action director:self ForButton:button];
@@ -249,17 +265,18 @@
     return nil;
 }
 
-- (ACRRenderingStatus)checkAgainstMyCapability:(std::shared_ptr<BaseActionElement> const &)action {
+- (ACRRenderingStatus)checkAgainstMyCapability:(std::shared_ptr<BaseActionElement> const &)action
+{
     return ([_builders
                objectForKey:[NSNumber numberWithInt:static_cast<int>(action->GetElementType())]])
                ? ACRRenderingStatus::ACROk
                : ACRRenderingStatus::ACRUnsupported;
 }
 
-- (ACRTargetBuilder *)getBuilder:(std::shared_ptr<BaseActionElement> const &)action {
+- (ACRTargetBuilder *)getBuilder:(std::shared_ptr<BaseActionElement> const &)action
+{
     NSNumber *key = [NSNumber numberWithInt:static_cast<int>(action->GetElementType())];
     return _builders[key];
 }
 
 @end
-

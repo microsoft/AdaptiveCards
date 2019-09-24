@@ -1,11 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
+
 #include "AdaptiveRichTextBlock.h"
-#include "Util.h"
 #include "DateTimeParser.h"
-#include "Vector.h"
-#include <windows.foundation.collections.h>
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -18,7 +16,8 @@ namespace AdaptiveNamespace
 {
     AdaptiveRichTextBlock::AdaptiveRichTextBlock() { m_inlines = Microsoft::WRL::Make<Vector<IAdaptiveInline*>>(); }
 
-    HRESULT AdaptiveRichTextBlock::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveRichTextBlock::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::RichTextBlock> richTextBlock =
             std::make_shared<AdaptiveSharedNamespace::RichTextBlock>();
@@ -26,7 +25,8 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveRichTextBlock::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::RichTextBlock>& sharedRichTextBlock) noexcept try
+    HRESULT AdaptiveRichTextBlock::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::RichTextBlock>& sharedRichTextBlock) noexcept
+    try
     {
         if (sharedRichTextBlock == nullptr)
         {
@@ -66,7 +66,8 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveRichTextBlock::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedRichTextBlock) noexcept try
+    HRESULT AdaptiveRichTextBlock::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedRichTextBlock) noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::RichTextBlock> richTextBlock =
             std::make_shared<AdaptiveSharedNamespace::RichTextBlock>();

@@ -23,14 +23,16 @@ namespace AdaptiveNamespace
         m_columns = Microsoft::WRL::Make<Vector<ABI::AdaptiveNamespace::AdaptiveColumn*>>();
     }
 
-    HRESULT AdaptiveColumnSet::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveColumnSet::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::ColumnSet> columnSet = std::make_shared<AdaptiveSharedNamespace::ColumnSet>();
         return RuntimeClassInitialize(columnSet);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveColumnSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ColumnSet>& sharedColumnSet) noexcept try
+    HRESULT AdaptiveColumnSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ColumnSet>& sharedColumnSet) noexcept
+    try
     {
         if (sharedColumnSet == nullptr)
         {
@@ -117,7 +119,8 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveColumnSet::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) noexcept try
+    HRESULT AdaptiveColumnSet::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::ColumnSet> columnSet = std::make_shared<AdaptiveSharedNamespace::ColumnSet>();
         RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(columnSet)));

@@ -8,19 +8,19 @@
 #import "ACOBaseActionElementPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
-#import "ACRBaseCardElementRenderer.h"
 #import "ACRBaseActionElementRenderer.h"
+#import "ACRBaseCardElementRenderer.h"
 #import "ACRColumnSetView.h"
 #import "ACRColumnView.h"
+#import "ACRContentHoldingUIScrollView.h"
 #import "ACRImageRenderer.h"
+#import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACRRegistration.h"
 #import "ACRRendererPrivate.h"
 #import "ACRSeparator.h"
-#import "ACRViewPrivate.h"
-#import "ACRViewController.h"
-#import "ACRContentHoldingUIScrollView.h"
-#import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACRUIImageView.h"
+#import "ACRViewController.h"
+#import "ACRViewPrivate.h"
 #import "UtiliOS.h"
 
 using namespace AdaptiveCards;
@@ -77,7 +77,7 @@ using namespace AdaptiveCards;
     ACRColumnView *verticalView = containingView;
 
     std::shared_ptr<BaseActionElement> selectAction = adaptiveCard->GetSelectAction();
-    if(selectAction) {
+    if (selectAction) {
         // instantiate and add tap gesture recognizer
         [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:verticalView
                                                                            rootView:rootView
@@ -93,58 +93,60 @@ using namespace AdaptiveCards;
                                         toItem:nil
                                      attribute:NSLayoutAttributeNotAnAttribute
                                     multiplier:1
-                                      constant:adaptiveCard->GetMinHeight()].active = YES;
+                                      constant:adaptiveCard->GetMinHeight()]
+            .active = YES;
     }
 
     auto backgroundImageProperties = adaptiveCard->GetBackgroundImage();
-    if((backgroundImageProperties != nullptr) && !(backgroundImageProperties->GetUrl().empty())) {
+    if ((backgroundImageProperties != nullptr) && !(backgroundImageProperties->GetUrl().empty())) {
         ObserverActionBlock observerAction =
-        ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseCardElement> const &elem, NSURL* url, ACRView* rootView) {
-            UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
-            if(view) {
-                [view addObserver:rootView forKeyPath:@"image"
-                          options:NSKeyValueObservingOptionNew
-                          context:backgroundImageProperties.get()];
+            ^(NSObject<ACOIResourceResolver> *imageResourceResolver, NSString *key, std::shared_ptr<BaseCardElement> const &elem, NSURL *url, ACRView *rootView) {
+                UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
+                if (view) {
+                    [view addObserver:rootView
+                           forKeyPath:@"image"
+                              options:NSKeyValueObservingOptionNew
+                              context:backgroundImageProperties.get()];
 
-                // store the image view and card for easy retrieval in ACRView::observeValueForKeyPath
-                [rootView setImageView:key view:view];
-            }
-        };
+                    // store the image view and card for easy retrieval in ACRView::observeValueForKeyPath
+                    [rootView setImageView:key view:view];
+                }
+            };
         [rootView loadBackgroundImageAccordingToResourceResolverIF:backgroundImageProperties key:@"backgroundImage" observerAction:observerAction];
     }
 
-    ACRContainerStyle style = ([config getHostConfig]->GetAdaptiveCard().allowCustomStyle)? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
-    style = (style == ACRNone)? ACRDefault : style;
+    ACRContainerStyle style = ([config getHostConfig] -> GetAdaptiveCard().allowCustomStyle) ? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
+    style = (style == ACRNone) ? ACRDefault : style;
     [verticalView setStyle:style];
 
     [rootView addTasksToConcurrentQueue:body];
 
     std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();
 
-    if(!actions.empty()) {
+    if (!actions.empty()) {
         [rootView loadImagesForActionsAndCheckIfAllActionsHaveIconImages:actions hostconfig:config];
     }
 
     [rootView waitForAsyncTasksToFinish];
 
     UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
-    if(adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center ||
-       adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom){
+    if (adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center ||
+        adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom) {
         leadingBlankSpace = [verticalView addPaddingSpace];
     }
 
     [ACRRenderer render:verticalView rootView:rootView inputs:inputs withCardElems:body andHostConfig:config];
 
     // Dont add the trailing space if the vertical content alignment is top/default
-    if((adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center) ||
-       (adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Top &&
-        !(verticalView.hasStretchableView))){
+    if ((adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center) ||
+        (adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Top &&
+         !(verticalView.hasStretchableView))) {
         trailingBlankSpace = [verticalView addPaddingSpace];
     }
 
     [[rootView card] setInputs:inputs];
 
-    if(!actions.empty()) {
+    if (!actions.empty()) {
         [ACRSeparator renderActionsSeparator:verticalView hostConfig:[config getHostConfig]];
 
         // renders buttons and their associated actions
@@ -157,9 +159,9 @@ using namespace AdaptiveCards;
 }
 
 + (UIView *)renderActions:(ACRView *)rootView
-                  inputs:(NSMutableArray *)inputs
-               superview:(UIView<ACRIContentHoldingView> *)superview
-                    card:(ACOAdaptiveCard *)card
+                   inputs:(NSMutableArray *)inputs
+                superview:(UIView<ACRIContentHoldingView> *)superview
+                     card:(ACOAdaptiveCard *)card
                hostConfig:(ACOHostConfig *)config
 {
     ACRRegistration *reg = [ACRRegistration getInstance];
@@ -180,9 +182,8 @@ using namespace AdaptiveCards;
 
     auto firstelem = elems.begin();
     auto prevElem = elems.empty() ? nullptr : *firstelem;
-    
-    for (const auto &elem : elems)
-    {
+
+    for (const auto &elem : elems) {
         if (*firstelem != elem) {
             ACRSeparator *separator = [ACRSeparator renderSeparation:elem
                                                         forSuperview:view
@@ -193,9 +194,8 @@ using namespace AdaptiveCards;
         ACRBaseCardElementRenderer *renderer =
             [reg getRenderer:[NSNumber numberWithInt:(int)elem->GetElementType()]];
 
-        if (renderer == nil)
-        {
-            NSLog(@"Unsupported card element type:%d\n", (int) elem->GetElementType());
+        if (renderer == nil) {
+            NSLog(@"Unsupported card element type:%d\n", (int)elem->GetElementType());
             continue;
         }
 
@@ -206,7 +206,17 @@ using namespace AdaptiveCards;
                 @throw [ACOFallbackException fallbackException];
             }
             curStretchableElem = [renderer render:view rootView:rootView inputs:inputs baseCardElement:acoElem hostConfig:config];
+
             if (elem->GetHeight() == HeightType::Stretch) {
+                // vertical stretch works in the following way:
+                // an ui element that will be stretched will be contained in a new superview.
+                // additional trailing view is added to the superview at the bottom
+                // uistackview for ColumnSet will have distribution set to fill
+                // this ensures all columns will have same height, thus making the space available for
+                // stretch.
+                // when a smaller column is expanded, the trailing views in its subviews will fill up the
+                // space, by setting the heights of the superviews of the trailing views same as below,
+                // filler space occupies the same space.
                 if (prevStretchableElem) {
                     NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:curStretchableElem
                                                                                         attribute:NSLayoutAttributeHeight
@@ -220,16 +230,16 @@ using namespace AdaptiveCards;
                 }
 
                 if ([view isKindOfClass:[ACRColumnView class]]) {
-                    ACRColumnView *columnView = (ACRColumnView*)view;
+                    ACRColumnView *columnView = (ACRColumnView *)view;
                     columnView.hasStretchableView = YES;
                 }
 
                 prevStretchableElem = curStretchableElem;
             }
-        } @catch (ACOFallbackException *e){
+        } @catch (ACOFallbackException *e) {
             handleFallbackException(e, view, rootView, inputs, elem, config);
         }
-        
+
         prevElem = elem;
     }
 

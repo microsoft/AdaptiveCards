@@ -4,11 +4,10 @@
 //
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
-#import <Foundation/Foundation.h>
 #import "ACOResourceResolvers.h"
+#import <Foundation/Foundation.h>
 
-@implementation ACOResourceResolvers
-{
+@implementation ACOResourceResolvers {
     NSMutableDictionary<NSString *, NSObject<ACOIResourceResolver> *> *_resolvers;
     NSMutableDictionary<NSString *, NSNumber *> *_resolversIFMap;
 }

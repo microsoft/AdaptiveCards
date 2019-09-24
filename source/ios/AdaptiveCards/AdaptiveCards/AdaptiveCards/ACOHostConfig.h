@@ -5,11 +5,11 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "ACOHostConfigParseResult.h"
 #import "ACOResourceResolvers.h"
+#import <Foundation/Foundation.h>
 
-@interface ACOHostConfig:NSObject
+@interface ACOHostConfig : NSObject
 
 @property BOOL allActionsHaveIcons;
 @property CGFloat buttonPadding;

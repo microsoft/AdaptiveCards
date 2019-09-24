@@ -21,7 +21,8 @@
 
 using namespace AdaptiveCards;
 
-void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visibilityInfo) {
+void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visibilityInfo)
+{
     view.hidden = !(visibilityInfo->GetIsVisible());
     NSString *hashkey = [NSString stringWithCString:visibilityInfo->GetId().c_str()
                                            encoding:NSUTF8StringEncoding];
@@ -29,7 +30,8 @@ void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visi
 }
 
 void configSeparatorVisibility(ACRSeparator *view,
-                               std::shared_ptr<BaseCardElement> const &visibilityInfo) {
+                               std::shared_ptr<BaseCardElement> const &visibilityInfo)
+{
     view.hidden = !(visibilityInfo->GetIsVisible());
     NSMutableString *hashkey = [NSMutableString stringWithCString:visibilityInfo->GetId().c_str()
                                                          encoding:NSUTF8StringEncoding];
@@ -38,7 +40,8 @@ void configSeparatorVisibility(ACRSeparator *view,
 }
 
 void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage> backgroundImage,
-                           UIView *containerView, ACRView *rootView) {
+                           UIView *containerView, ACRView *rootView)
+{
     if (backgroundImage == nullptr || backgroundImage->GetUrl().empty()) {
         return;
     }
@@ -87,7 +90,8 @@ void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage>
 }
 
 void renderBackgroundImage(const BackgroundImage *backgroundImageProperties, UIImageView *imageView,
-                           UIImage *image) {
+                           UIImage *image)
+{
     if (backgroundImageProperties->GetFillMode() == ImageFillMode::Repeat ||
         backgroundImageProperties->GetFillMode() == ImageFillMode::RepeatHorizontally ||
         backgroundImageProperties->GetFillMode() == ImageFillMode::RepeatVertically) {
@@ -98,7 +102,8 @@ void renderBackgroundImage(const BackgroundImage *backgroundImageProperties, UII
 }
 
 void applyBackgroundImageConstraints(const BackgroundImage *backgroundImageProperties,
-                                     UIImageView *imageView, UIImage *image) {
+                                     UIImageView *imageView, UIImage *image)
+{
     if (backgroundImageProperties == nullptr || imageView == nullptr || image == nullptr) {
         return;
     }
@@ -276,8 +281,8 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
             } else if (superView.frame.size.height > imageView.frame.size.height) {
                 [imageView.heightAnchor constraintEqualToAnchor:superView.heightAnchor].active =
                     YES;
-            } else {  // if background image is bigger than the superview; let it retain its
-                      // dimensions
+            } else { // if background image is bigger than the superview; let it retain its
+                     // dimensions
                 imageView.translatesAutoresizingMaskIntoConstraints = YES;
             }
 
@@ -305,7 +310,8 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
 }
 
 void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem,
-                 ACRContentStackView *container, ACOHostConfig *acoConfig) {
+                 ACRContentStackView *container, ACOHostConfig *acoConfig)
+{
     std::shared_ptr<CollectionTypeElement> collection =
         std::dynamic_pointer_cast<CollectionTypeElement>(elem);
     if (collection) {
@@ -368,27 +374,29 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
 
 ObserverActionBlock generateBackgroundImageObserverAction(
     std::shared_ptr<BackgroundImage> backgroundImageProperties, ACRView *observer,
-    std::shared_ptr<BaseCardElement> const &context) {
+    std::shared_ptr<BaseCardElement> const &context)
+{
     return ^(NSObject<ACOIResourceResolver> *imageResourceResolver, NSString *key,
              std::shared_ptr<BaseCardElement> const &elem, NSURL *url, ACRView *rootView) {
-      UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
-      if (view) {
-          [view addObserver:observer
-                 forKeyPath:@"image"
-                    options:NSKeyValueObservingOptionNew
-                    context:backgroundImageProperties.get()];
+        UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
+        if (view) {
+            [view addObserver:observer
+                   forKeyPath:@"image"
+                      options:NSKeyValueObservingOptionNew
+                      context:backgroundImageProperties.get()];
 
-          // store the image view and column for easy retrieval in ACRView::observeValueForKeyPath
-          [rootView setImageView:key view:view];
-          [rootView setImageContext:key context:context];
-      }
+            // store the image view and column for easy retrieval in ACRView::observeValueForKeyPath
+            [rootView setImageView:key view:view];
+            [rootView setImageContext:key context:context];
+        }
     };
 }
 
 void handleFallbackException(ACOFallbackException *exception, UIView<ACRIContentHoldingView> *view,
                              ACRView *rootView, NSMutableArray *inputs,
                              std::shared_ptr<BaseCardElement> const &givenElem,
-                             ACOHostConfig *config) {
+                             ACOHostConfig *config)
+{
     std::shared_ptr<BaseElement> fallbackBaseElement = nullptr;
     std::shared_ptr<BaseCardElement> elem = givenElem;
     bool bCanFallbackToAncestor = elem->CanFallbackToAncestor();
@@ -443,7 +451,8 @@ void handleFallbackException(ACOFallbackException *exception, UIView<ACRIContent
 }
 
 void removeLastViewFromCollectionView(const CardElementType elemType,
-                                      UIView<ACRIContentHoldingView> *view) {
+                                      UIView<ACRIContentHoldingView> *view)
+{
     if (elemType == CardElementType::Container || elemType == CardElementType::Column ||
         elemType == CardElementType::ColumnSet) {
         [view removeLastViewFromArrangedSubview];
@@ -454,7 +463,8 @@ void handleActionFallbackException(ACOFallbackException *exception,
                                    UIView<ACRIContentHoldingView> *view, ACRView *rootView,
                                    NSMutableArray *inputs, ACOBaseActionElement *acoElem,
                                    ACOHostConfig *config,
-                                   UIView<ACRIContentHoldingView> *actionSet) {
+                                   UIView<ACRIContentHoldingView> *actionSet)
+{
     std::shared_ptr<BaseElement> fallbackBaseElement = nullptr;
     std::shared_ptr<BaseActionElement> elem = acoElem.element;
     bool bCanFallbackToAncestor = elem->CanFallbackToAncestor();
@@ -504,7 +514,8 @@ void handleActionFallbackException(ACOFallbackException *exception,
     }
 }
 
-UIFontDescriptor *getItalicFontDescriptor(UIFontDescriptor *descriptor, bool isItalic) {
+UIFontDescriptor *getItalicFontDescriptor(UIFontDescriptor *descriptor, bool isItalic)
+{
     if (isItalic && descriptor) {
         return [descriptor fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic];
     }
@@ -514,14 +525,16 @@ UIFontDescriptor *getItalicFontDescriptor(UIFontDescriptor *descriptor, bool isI
 
 ACRRenderingStatus buildTargetForButton(ACRTargetBuilderDirector *director,
                                         std::shared_ptr<BaseActionElement> const &action,
-                                        UIButton *button, NSObject **target) {
+                                        UIButton *button, NSObject **target)
+{
     *target = [director build:action forButton:button];
     return *target ? ACRRenderingStatus::ACROk : ACRRenderingStatus::ACRFailed;
 }
 
 ACRRenderingStatus buildTarget(ACRTargetBuilderDirector *director,
                                std::shared_ptr<BaseActionElement> const &action,
-                               NSObject **target) {
+                               NSObject **target)
+{
     *target = [director build:action];
     return *target ? ACRRenderingStatus::ACROk : ACRRenderingStatus::ACRFailed;
 }
