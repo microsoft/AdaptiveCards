@@ -419,7 +419,7 @@ $(function () {
 		);
 	};
 
-	var videos = document.querySelectorAll('video[autoplay]');
+	var videos = document.querySelectorAll('video[data-autoplay]');
 	window.addEventListener('scroll', function (event) {
 		videos.forEach(function(video) {
 			if (isInViewport(video)) {
