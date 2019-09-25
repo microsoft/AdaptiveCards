@@ -107,7 +107,7 @@ export abstract class HostContainer {
         Adaptive.GlobalSettings.allowMarkForTextHighlighting = false;
     }
 
-    public parseElement(element: Adaptive.CardElement, json: any) {
+    public parseElement(element: Adaptive.CardElement, source: any, context: Adaptive.CardObjectParseContext) {
         // Do nothing in base implementation
     }
 

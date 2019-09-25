@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as AdaptiveCards from "adaptivecards";
-import * as MarkdownIt from "markdown-it";
 import * as Constants from "./constants";
 
 import { HostContainer } from "./containers/host-container";
@@ -33,7 +32,6 @@ function setContent(element) {
 
 function renderCard(target: HTMLElement): HTMLElement {
     document.getElementById("errorContainer").hidden = true;
-    lastValidationErrors = [];
 
     let json = JSON.parse(currentCardPayload);
     let adaptiveCard = new AdaptiveCards.AdaptiveCard();
@@ -41,15 +39,19 @@ function renderCard(target: HTMLElement): HTMLElement {
 
     getSelectedHostContainer().setHostCapabilities(adaptiveCard.hostConfig);
 
-    adaptiveCard.parse(json, lastValidationErrors);
+    let parseContext = new AdaptiveCards.CardObjectParseContext();
+    
+    parseContext.onParseElement = (element: AdaptiveCards.CardElement, source: any, context: AdaptiveCards.CardObjectParseContext) => {
+        getSelectedHostContainer().parseElement(element, source, context);
+    }
+
+    adaptiveCard.parse(json, parseContext);
 
     let validationResults = adaptiveCard.validateProperties();
 
     for (let failure of validationResults.failures) {
         lastValidationErrors = lastValidationErrors.concat(failure.errors);
     }
-
-    // lastValidationErrors = lastValidationErrors.concat(adaptiveCard.validate());
 
     showValidationErrors();
 
@@ -334,10 +336,6 @@ declare var monacoEditor: any;
 declare function loadMonacoEditor(schema: any, callback: () => void);
 
 function monacoEditorLoaded() {
-    AdaptiveCards.AdaptiveCard.onParseElement = (element: AdaptiveCards.CardElement, json: any) => {
-        getSelectedHostContainer().parseElement(element, json);
-    }
-
     AdaptiveCards.AdaptiveCard.onAnchorClicked = (element: AdaptiveCards.CardElement, anchor: HTMLAnchorElement) => {
         return getSelectedHostContainer().anchorClicked(element, anchor);
     }

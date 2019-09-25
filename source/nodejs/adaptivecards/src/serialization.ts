@@ -1,15 +1,141 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import { GlobalSettings, TargetVersion, SizeAndUnit, IValidationError } from "./shared";
+import { GlobalSettings, SizeAndUnit, IValidationError } from "./shared";
 import * as Utils from "./utils";
 import * as Enums from "./enums";
+
+export class Version {
+    private _versionString: string;
+    private _major: number;
+    private _minor: number;
+    private _isValid: boolean = true;
+    private _label?: string;
+
+    constructor(major: number = 1, minor: number = 1, label?: string) {
+        this._major = major;
+        this._minor = minor;
+        this._label = label;
+    }
+
+    static parse(versionString: string, context: ParseContext): Version | undefined {
+        if (!versionString) {
+            return undefined;
+        }
+
+        let result = new Version();
+        result._versionString = versionString;
+
+        let regEx = /(\d+).(\d+)/gi;
+        let matches = regEx.exec(versionString);
+
+        if (matches != null && matches.length == 3) {
+            result._major = parseInt(matches[1]);
+            result._minor = parseInt(matches[2]);
+        }
+        else {
+            result._isValid = false;
+        }
+
+        if (!result._isValid) {
+            context.errors.push(
+                {
+                    error: Enums.ValidationError.InvalidPropertyValue,
+                    message: "Invalid version string: " + result._versionString
+                }
+            );
+        }
+
+        return result;
+    }
+
+    toString(): string {
+        return !this._isValid ? this._versionString : this._major + "." + this._minor;
+    }
+
+    toJSON(): any {
+        return this.toString();
+    }
+
+    compareTo(otherVersion: Version): number {
+        if (!this.isValid || !otherVersion.isValid) {
+            throw new Error("Cannot compare invalid version.");
+        }
+
+        if (this.major > otherVersion.major) {
+            return 1;
+        }
+        else if (this.major < otherVersion.major) {
+            return -1;
+        }
+        else if (this.minor > otherVersion.minor) {
+            return 1;
+        }
+        else if (this.minor < otherVersion.minor) {
+            return -1;
+        }
+
+        return 0;
+    }
+
+    get label(): string {
+        return this._label ? this._label : this.toString();
+    }
+
+    get major(): number {
+        return this._major;
+    }
+
+    get minor(): number {
+        return this._minor;
+    }
+
+    get isValid(): boolean {
+        return this._isValid;
+    }
+}
+
+export type TargetVersion = Version | "*";
+
+export class Versions {
+    static readonly v1_0 = new Version(1, 0);
+    static readonly v1_1 = new Version(1, 1);
+    static readonly v1_2 = new Version(1, 2);
+    static readonly latest = Versions.v1_2;
+    static readonly vNext = new Version(1000, 0, "vNext");
+}
+
+export function isVersionLessOrEqual(version: TargetVersion, targetVersion: TargetVersion): boolean {
+    if (version instanceof Version) {
+        if (targetVersion instanceof Version) {
+            return targetVersion.compareTo(version) >= 0;
+        }
+        else {
+            // Target version is *
+            return true;
+        }
+    }
+    else {
+        // Version is *
+        return true;
+    }
+}
+
+export abstract class ParseContext {
+    readonly errors: IValidationError[] = [];
+
+    abstract createElementInstance(jsonTypeName: string): SerializableObject | undefined;
+    abstract createActionInstance(jsonTypeName: string): SerializableObject | undefined;
+    abstract objectParsed(o: SerializableObject, source: any): void;
+
+    constructor(readonly targetVersion: Version = Versions.latest) {}
+}
 
 export class PropertyDefinition {
     getJsonPropertyName(): string {
         return this.name;
     }
 
-    parse(sender: SerializableObject, source: PropertyBag, errors?: IValidationError[]): any {
+    parse(sender: SerializableObject, source: PropertyBag, context: ParseContext): any {
         return source[this.name];
     }
 
@@ -25,7 +151,7 @@ export class PropertyDefinition {
 }
 
 export class StringProperty extends PropertyDefinition {
-    parse(sender: SerializableObject, source: PropertyBag, errors?: IValidationError[]): string | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, context: ParseContext): string | undefined {
         let parsedValue = Utils.getStringValue(source[this.name], this.defaultValue);
         let isUndefined = parsedValue === undefined || (parsedValue === "" && this.treatEmptyAsUndefined);
 
@@ -61,7 +187,7 @@ export class StringProperty extends PropertyDefinition {
 }
 
 export class BoolProperty extends PropertyDefinition {
-    parse(sender: SerializableObject, source: PropertyBag, errors?: IValidationError[]): boolean | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, context: ParseContext): boolean | undefined {
         return Utils.getBoolValue(source[this.name], this.defaultValue);;
     }
 
@@ -75,7 +201,7 @@ export class BoolProperty extends PropertyDefinition {
 }
 
 export class NumProperty extends PropertyDefinition {
-    parse(sender: SerializableObject, source: PropertyBag, errors?: IValidationError[]): number | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, context: ParseContext): number | undefined {
         return Utils.getNumberValue(source[this.name], this.defaultValue);;
     }
 
@@ -89,7 +215,7 @@ export class NumProperty extends PropertyDefinition {
 }
 
 export class PixelSizeProperty extends PropertyDefinition {
-    parse(sender: SerializableObject, source: PropertyBag, errors?: IValidationError[]): number | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, context: ParseContext): number | undefined {
         let result: number | undefined = undefined;
         let value = source[this.name];
 
@@ -139,7 +265,7 @@ export interface IVersionedValue<TValue> {
 }
 
 export class ValueSetProperty extends PropertyDefinition {
-    parse(sender: SerializableObject, source: PropertyBag, errors?: IValidationError[]): string | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, context: ParseContext): string | undefined {
         let parsedValue = Utils.getStringValue(source[this.name], this.defaultValue);
 
         if (parsedValue !== undefined) {
@@ -172,7 +298,7 @@ export class ValueSetProperty extends PropertyDefinition {
 }
 
 export class EnumProperty<TEnum extends { [s: number]: string }> extends PropertyDefinition {
-    parse(sender: SerializableObject, source: PropertyBag, errors?: IValidationError[]): number | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, context: ParseContext): number | undefined {
         return Utils.getEnumValue(this.enumType, source[this.name], this.defaultValue);
     }
 
@@ -209,12 +335,12 @@ export class EnumProperty<TEnum extends { [s: number]: string }> extends Propert
 export type SerializableObjectType = { new(): SerializableObject };
 
 export class SerializableObjectProperty extends PropertyDefinition {
-    parse(sender: SerializableObject, source: PropertyBag, errors?: IValidationError[]): SerializableObject | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, context: ParseContext): SerializableObject | undefined {
         let result: SerializableObject | undefined = undefined;
         let sourceValue = source[this.name];
 
         result = new this.objectType();
-        result.parse(sourceValue);
+        result.parse(sourceValue, context);
 
         if (result === undefined && this.onGetInitialValue) {
             result = this.onGetInitialValue(sender);
@@ -246,7 +372,7 @@ export class SerializableObjectProperty extends PropertyDefinition {
 }
 
 export class SerializableObjectCollectionProperty extends PropertyDefinition {
-    parse(sender: SerializableObject, source: PropertyBag, errors?: IValidationError[]): SerializableObject[] | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, context: ParseContext): SerializableObject[] | undefined {
         let result: SerializableObject[] | undefined = [];
 
         let sourceCollection = source[this.name];
@@ -254,7 +380,7 @@ export class SerializableObjectCollectionProperty extends PropertyDefinition {
         if (Array.isArray(sourceCollection)) {
             for (let sourceItem of sourceCollection) {
                 let item = new this.objectType();
-                item.parse(sourceItem);
+                item.parse(sourceItem, context);
 
                 result.push(item);
 
@@ -285,8 +411,8 @@ export class SerializableObjectCollectionProperty extends PropertyDefinition {
 }
 
 export class CustomProperty<T> extends PropertyDefinition {
-    parse(sender: SerializableObject, source: PropertyBag, errors?: IValidationError[]): T {
-        return this.onParse(sender, this, source, errors);
+    parse(sender: SerializableObject, source: PropertyBag, context: ParseContext): T {
+        return this.onParse(sender, this, source, context);
     }
 
     toJSON(sender: SerializableObject, target: PropertyBag, value: T) {
@@ -296,7 +422,7 @@ export class CustomProperty<T> extends PropertyDefinition {
     constructor(
         readonly targetVersion: TargetVersion,
         readonly name: string,
-        readonly onParse: (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: IValidationError[]) => T,
+        readonly onParse: (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: ParseContext) => T,
         readonly onToJSON: (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: T) => void,
         readonly defaultValue?: T,
         readonly onGetInitialValue?: (sender: SerializableObject) => T) {
@@ -423,7 +549,7 @@ export abstract class SerializableObject {
         }
     }
 
-    parse(source: any, errors?: IValidationError[]) {
+    parse(source: any, context: ParseContext) {
         this._propertyBag = {};
         this._rawProperties = GlobalSettings.enableFullJsonRoundTrip ? (source ? source : {}) : {};
 
@@ -433,7 +559,7 @@ export abstract class SerializableObject {
             for (let i = 0; i < s.getCount(); i++) {
                 let property = s.getItemAt(i);
 
-                this.setValue(property, property.parse(this, source, errors));
+                this.setValue(property, property.parse(this, source, context));
             }
         }
         else {

@@ -1,28 +1,27 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import * as Shared from "./shared";
-import * as Serialization from "./serialization";
+import { TargetVersion, Version, SerializableObject, ParseContext } from "./serialization";
 
-export class HostCapabilities extends Serialization.SerializableObject {
-    private _capabilities: { [key: string]: Shared.TargetVersion } = {};
+export class HostCapabilities extends SerializableObject {
+    private _capabilities: { [key: string]: TargetVersion } = {};
 
     protected getSchemaKey(): string {
         return "HostCapabilities";
     }
 
-    parse(json: any, errors?: Shared.IValidationError[]) {
-        super.parse(json, errors);
+    parse(source: any, context: ParseContext) {
+        super.parse(source, context);
 
-        if (json) {
-            for (let name in json) {
-                let jsonVersion = json[name];
+        if (source) {
+            for (let name in source) {
+                let jsonVersion = source[name];
 
                 if (typeof jsonVersion === "string") {
                     if (jsonVersion == "*") {
                         this.addCapability(name, "*");
                     }
                     else {
-                        let version = Shared.Version.parse(jsonVersion, errors);
+                        let version = Version.parse(jsonVersion, context);
 
                         if (version && version.isValid) {
                             this.addCapability(name, version);
@@ -43,7 +42,7 @@ export class HostCapabilities extends Serialization.SerializableObject {
         return result;
     }
 
-    addCapability(name: string, version: Shared.TargetVersion) {
+    addCapability(name: string, version: TargetVersion) {
         this._capabilities[name] = version;
     }
 
@@ -55,13 +54,13 @@ export class HostCapabilities extends Serialization.SerializableObject {
         this._capabilities = {};
     }
 
-    hasCapability(name: string, version: Shared.TargetVersion): boolean {
+    hasCapability(name: string, version: TargetVersion): boolean {
         if (this._capabilities.hasOwnProperty(name)) {
             if (version == "*" || this._capabilities[name] == "*") {
                 return true;
             }
 
-            return version.compareTo(<Shared.Version>this._capabilities[name]) <= 0;
+            return version.compareTo(<Version>this._capabilities[name]) <= 0;
         }
 
         return false;

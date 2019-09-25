@@ -1,17 +1,18 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Enums from "./enums";
-import { PaddingDefinition, GlobalSettings, Versions, Version, TargetVersion, SizeAndUnit,SpacingDefinition,
+import { PaddingDefinition, GlobalSettings, SizeAndUnit,SpacingDefinition,
     Dictionary, StringWithSubstitutions, ContentTypes, IInput, IResourceInformation, IValidationError } from "./shared";
 import * as Utils from "./utils";
 import * as HostConfig from "./host-config";
 import * as TextFormatters from "./text-formatters";
 import { HostCapabilities } from "./host-capabilities";
-import { property, SerializableObject, SerializableObjectSchema, StringProperty,
-    BoolProperty, ValueSetProperty, EnumProperty, SerializableObjectCollectionProperty,
-    SerializableObjectProperty, PixelSizeProperty, NumProperty, PropertyBag, CustomProperty, PropertyDefinition } from "./serialization";
+import { CardObjectType, CardObject, ValidationResults } from "./card-object";
+import { Versions, Version, TargetVersion, property, ParseContext, SerializableObject, SerializableObjectSchema, StringProperty,
+    BoolProperty, ValueSetProperty, EnumProperty, SerializableObjectCollectionProperty, SerializableObjectProperty, PixelSizeProperty,
+    NumProperty, PropertyBag, CustomProperty, PropertyDefinition } from "./serialization";
 
-function isCardObjectAllowed<T extends CardObject>(o: CardObject, forbiddenTypes: CardObjectType<T>[]): boolean {
+function isCardObjectAllowed(o: CardObject, forbiddenTypes: CardObjectType[]): boolean {
     if (forbiddenTypes) {
         for (let forbiddenType of forbiddenTypes) {
             if (o.constructor === forbiddenType) {
@@ -30,21 +31,21 @@ const enum InstanceCreationErrorType {
 
 function createCardObjectInstance<T extends CardObject>(
     parent: CardElement | undefined,
-    json: any,
+    source: any,
     forbiddenTypeNames: string[],
     allowFallback: boolean,
     createInstanceCallback: (typeName: string) => T | undefined,
     createValidationErrorCallback: (typeName: string, errorType: InstanceCreationErrorType) => IValidationError,
-    errors: IValidationError[] | undefined): T | undefined {
+    context: ParseContext): T | undefined {
     let result: T | undefined = undefined;
 
-    if (json && typeof json === "object") {
+    if (source && typeof source === "object") {
         let tryToFallback = false;
-        let typeName = Utils.getStringValue(json["type"]);
+        let typeName = Utils.getStringValue(source["type"]);
         
         if (typeName) {
             if (forbiddenTypeNames.indexOf(typeName) >= 0) {
-                raiseParseError(createValidationErrorCallback(typeName, InstanceCreationErrorType.ForbiddenType), errors);
+                context.errors.push(createValidationErrorCallback(typeName, InstanceCreationErrorType.ForbiddenType));
             }
             else {
                 result = createInstanceCallback(typeName);
@@ -52,17 +53,17 @@ function createCardObjectInstance<T extends CardObject>(
                 if (!result) {
                     tryToFallback = allowFallback;
 
-                    raiseParseError(createValidationErrorCallback(typeName, InstanceCreationErrorType.UnknownType), errors);
+                    context.errors.push(createValidationErrorCallback(typeName, InstanceCreationErrorType.UnknownType));
                 }
                 else {
                     result.setParent(parent);
-                    result.parse(json, errors);
+                    result.parse(source, context);
 
                     tryToFallback = result.shouldFallback() && allowFallback;
                 }
 
                 if (tryToFallback) {
-                    let fallback = json["fallback"];
+                    let fallback = source["fallback"];
 
                     if (!fallback && parent) {
                         parent.setShouldFallback(true);
@@ -78,7 +79,7 @@ function createCardObjectInstance<T extends CardObject>(
                             true,
                             createInstanceCallback,
                             createValidationErrorCallback,
-                            errors);
+                            context);
                     }
                 }
             }
@@ -90,13 +91,13 @@ function createCardObjectInstance<T extends CardObject>(
 
 export function createActionInstance(
     parent: CardElement,
-    json: any,
+    source: any,
     forbiddenActionTypes: string[],
     allowFallback: boolean,
-    errors: IValidationError[] | undefined): Action | undefined {
+    context: ParseContext): Action | undefined {
     return createCardObjectInstance<Action>(
         parent,
-        json,
+        source,
         forbiddenActionTypes,
         allowFallback,
         (typeName: string) => { return AdaptiveCard.actionTypeRegistry.createInstance(typeName); },
@@ -114,17 +115,17 @@ export function createActionInstance(
                 }
             }
         },
-        errors);
+        context);
 }
 
 export function createElementInstance(
     parent: CardElement | undefined,
-    json: any,
+    source: any,
     allowFallback: boolean,
-    errors: IValidationError[] | undefined): CardElement | undefined {
+    context: ParseContext): CardElement | undefined {
     return createCardObjectInstance<CardElement>(
         parent,
-        json,
+        source,
         [], // Forbidden types not supported for elements for now
         allowFallback,
         (typeName: string) => { return AdaptiveCard.elementTypeRegistry.createInstance(typeName); },
@@ -142,122 +143,10 @@ export function createElementInstance(
                 }
             }
         },
-        errors);
+        context);
 }
 
-export class ValidationFailure {
-    readonly errors: IValidationError[] = [];
-
-    constructor(readonly cardObject: CardObject) { }
-}
-
-export class ValidationResults {
-    readonly allIds: Dictionary<number> = {};
-    readonly failures: ValidationFailure[] = [];
-
-    addFailure(cardObject: CardObject, error: IValidationError) {
-        let index = this.failures.findIndex((value) => { return value.cardObject === cardObject; });
-        let failure: ValidationFailure;
-
-        if (index < 0) {
-            failure = new ValidationFailure(cardObject);
-
-            this.failures.push(failure);
-        }
-        else {
-            failure = this.failures[index];
-        }
-
-        failure.errors.push(error);
-    }
-}
-
-export type CardObjectType<T extends CardObject> = { new(): T };
-
-export abstract class CardObject extends SerializableObject {
-    //#region Schema
-
-    static readonly typeNameProperty = new StringProperty(
-        Versions.v1_0,
-        "type",
-        undefined,
-        undefined,
-        undefined,
-        (sender: object) => {
-            return (<CardObject>sender).getJsonTypeName()
-        });
-    static readonly idProperty = new StringProperty(Versions.v1_0, "id");
-    static readonly requiresProperty = new SerializableObjectProperty(
-        Versions.v1_2,
-        "requires",
-        HostCapabilities);
-
-    protected getSchemaKey(): string {
-        return this.getJsonTypeName();
-    }
-
-    @property(CardObject.idProperty)
-    id?: string;
-
-    @property(CardObject.requiresProperty)
-    get requires(): HostCapabilities {
-        return this.getValue(CardObject.requiresProperty);
-    }
-
-    //#endregion
-
-    private _parent?: CardElement;
-    private _shouldFallback: boolean = false;
-    
-    abstract getJsonTypeName(): string;
-
-    abstract get hostConfig(): HostConfig.HostConfig;
-
-    setParent(value: CardElement | undefined) {
-        this._parent = value;
-    }
-
-    setShouldFallback(value: boolean) {
-        this._shouldFallback = value;
-    }
-
-    shouldFallback(): boolean {
-        return this._shouldFallback || !this.requires.areAllMet(this.hostConfig.hostCapabilities);
-    }
-
-    internalValidateProperties(context: ValidationResults) {
-        if (this.id) {
-            if (context.allIds.hasOwnProperty(this.id)) {
-                if (context.allIds[this.id] == 1) {
-                    context.addFailure(
-                        this,
-                        {
-                            error: Enums.ValidationError.DuplicateId,
-                            message: "Duplicate Id: " + this.id
-                        });
-                }
-
-                context.allIds[this.id] += 1;
-            }
-            else {
-                context.allIds[this.id] = 1;
-            }
-        }
-    }
-
-    validateProperties(): ValidationResults {
-        let result = new ValidationResults();
-
-        this.internalValidateProperties(result);
-
-        return result;
-    }
-
-    get parent(): CardElement | undefined {
-        return this._parent;
-    }
-}
-
+export type CardElementType = { new(): CardElement };
 export type CardElementHeight = "auto" | "stretch";
 
 export abstract class CardElement extends CardObject {
@@ -558,10 +447,10 @@ export abstract class CardElement extends CardObject {
         return false;
     }
 
-    parse(json: any, errors?: IValidationError[]) {
-		super.parse(json, errors);
+    parse(source: any, context: ParseContext) {
+		super.parse(source, context);
 
-        raiseParseElementEvent(this, json, errors);
+        context.objectParsed(this, source);
     }
 
     getEffectiveStyle(): string {
@@ -576,7 +465,7 @@ export abstract class CardElement extends CardObject {
         return this.hostConfig.containerStyles.getStyleByName(this.getEffectiveStyle());
     }
 
-    getForbiddenActionTypes(): CardObjectType<Action>[] {
+    getForbiddenActionTypes(): ActionType[] {
         return [];
     }
 
@@ -837,10 +726,14 @@ export abstract class CardElement extends CardObject {
     get separatorElement(): HTMLElement | undefined {
         return this._separatorElement;
     }
+
+    get parent(): CardElement | undefined {
+        return <CardElement>this._parent;
+    }
 }
 
 export class ActionProperty extends PropertyDefinition {
-    parse(sender: SerializableObject, source: PropertyBag, errors?: IValidationError[]): Action | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, context: ParseContext): Action | undefined {
         let parent = <CardElement>sender;
 
         return createActionInstance(
@@ -848,7 +741,7 @@ export class ActionProperty extends PropertyDefinition {
             source[this.name],
             this.forbiddenActionTypes,
             parent.isDesignMode(),
-            errors);
+            context);
     }
 
     toJSON(sender: SerializableObject, target: PropertyBag, value: Action | undefined) {
@@ -1503,13 +1396,13 @@ export class RichTextBlock extends CardElement {
         return result;
     }
 
-    parse(json: any, errors?: IValidationError[]) {
-        super.parse(json, errors);
+    parse(source: any, context: ParseContext) {
+        super.parse(source, context);
 
         this._inlines = [];
 
-        if (Array.isArray(json["inlines"])) {
-            for (let jsonInline of json["inlines"]) {
+        if (Array.isArray(source["inlines"])) {
+            for (let jsonInline of source["inlines"]) {
                 let inline: CardElement | undefined;
 
                 if (typeof jsonInline === "string") {
@@ -1523,7 +1416,7 @@ export class RichTextBlock extends CardElement {
                         this,
                         jsonInline,
                         false, // No fallback for inlines in 1.2
-                        errors);
+                        context);
                 }
 
                 if (inline) {
@@ -1711,7 +1604,7 @@ class ImageDimensionProperty extends PropertyDefinition {
         return this.jsonName;
     }
     
-    parse(sender: SerializableObject, source: PropertyBag, errors?: IValidationError[]): number | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, context: ParseContext): number | undefined {
         let result: number | undefined = undefined;
         let value = source[this.jsonName];
 
@@ -1732,12 +1625,11 @@ class ImageDimensionProperty extends PropertyDefinition {
             }
 
             if (!isValid) {
-                raiseParseError(
+                context.errors.push(
                     {
                         error: Enums.ValidationError.InvalidPropertyValue,
                         message: "Invalid " + this.name + " value: " + value
-                    },
-                    errors
+                    }
                 );
             }
         }
@@ -3388,7 +3280,7 @@ export class TimeProperty extends CustomProperty<string | undefined> {
         super(
             targetVersion,
             name,
-            (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: IValidationError[]) => {
+            (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: ParseContext) => {
                 let value = source[property.name];
     
                 if (typeof value === "string" && value && /^[0-9]{2}:[0-9]{2}$/.test(value)) {
@@ -3547,6 +3439,8 @@ class ActionButton {
     }
 }
 
+export type ActionType = { new(): Action };
+
 export abstract class Action extends CardObject {
     //#region Schema
 
@@ -3629,10 +3523,10 @@ export abstract class Action extends CardObject {
         // Do nothing in base implementation
     }
 
-    parse(json: any, errors?: IValidationError[]) {
-		super.parse(json, errors);
+    parse(source: any, context: ParseContext) {
+		super.parse(source, context);
 
-        raiseParseActionEvent(this, json, errors);
+        context.objectParsed(this, source);
     }
 
     render(baseCssClass: string = "ac-pushButton") {
@@ -3775,6 +3669,10 @@ export abstract class Action extends CardObject {
     get hostConfig(): HostConfig.HostConfig {
         return this.parent ? this.parent.hostConfig : defaultHostConfig;
     }
+
+    get parent(): CardElement | undefined {
+        return <CardElement>this._parent;
+    }
 }
 
 export class SubmitAction extends Action {
@@ -3894,7 +3792,7 @@ export class ToggleVisibilityAction extends Action {
     static readonly targetElementsProperty = new CustomProperty<PropertyBag>(
         Versions.v1_2,
         "targetElements",
-        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: IValidationError[]) => {
+        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: ParseContext) => {
             let result: PropertyBag = {}
 
             if (Array.isArray(source[property.name])) {
@@ -3976,7 +3874,7 @@ export class ToggleVisibilityAction extends Action {
 }
 
 class StringWithSubstitutionProperty extends PropertyDefinition  {
-    parse(sender: SerializableObject, source: PropertyBag, errors?: IValidationError[]): StringWithSubstitutions {
+    parse(sender: SerializableObject, source: PropertyBag, context: ParseContext): StringWithSubstitutions {
         let result = new StringWithSubstitutions();
         result.set(Utils.getStringValue(source[this.name]));
 
@@ -4191,21 +4089,20 @@ export class ShowCardAction extends Action {
         this.card.internalValidateProperties(context);
     }
 
-    parse(json: any, errors?: IValidationError[]) {
-        super.parse(json, errors);
+    parse(source: any, context: ParseContext) {
+        super.parse(source, context);
 
-        let jsonCard = json["card"];
+        let jsonCard = source["card"];
 
         if (jsonCard) {
-            this.card.parse(jsonCard, errors);
+            this.card.parse(jsonCard, context);
         }
         else {
-            raiseParseError(
+            context.errors.push(
                 {
                     error: Enums.ValidationError.PropertyCantBeNull,
                     message: "An Action.ShowCard must have its \"card\" property set to a valid AdaptiveCard object."
-                },
-                errors
+                }
             );
         }
     }
@@ -4392,17 +4289,17 @@ class ActionCollection {
         this._owner = owner;
     }
 
-    parse(json: any, errors?: IValidationError[]) {
+    parse(source: any, context: ParseContext) {
         this.clear();
 
-        if (Array.isArray(json)) {
-            for (let jsonAction of json) {
+        if (Array.isArray(source)) {
+            for (let jsonAction of source) {
                 let action = createActionInstance(
                     this._owner,
                     jsonAction,
                     [],
                     !this._owner.isDesignMode(),
-                    errors);
+                    context);
 
                 if (action) {
                     this.addAction(action);
@@ -4738,10 +4635,10 @@ export class ActionSet extends CardElement {
         this._actionCollection = new ActionCollection(this);
     }
 
-    parse(json: any, errors?: IValidationError[]) {
-        super.parse(json, errors);
+    parse(source: any, context: ParseContext) {
+        super.parse(source, context);
 
-        this._actionCollection.parse(json["actions"], errors);
+        this._actionCollection.parse(source["actions"], context);
     }
 
     toJSON(): any {
@@ -5035,13 +4932,13 @@ export class BackgroundImage extends SerializableObject {
         return "BackgroundImage";
     }
 
-    parse(source: any, errors?: IValidationError[]) {
+    parse(source: any, context: ParseContext) {
         if (typeof source === "string") {
             this.resetDefaultValues();
             this.url = source;
         }
         else {
-            return super.parse(source, errors);
+            return super.parse(source, context);
         }
     }
 
@@ -5299,13 +5196,13 @@ export class Container extends StylableCardElementContainer {
         return true;
     }
 
-    parse(json: any, errors?: IValidationError[]) {
-        super.parse(json, errors);
+    parse(source: any, context: ParseContext) {
+        super.parse(source, context);
 
         this.clear();
         this.setShouldFallback(false);
 
-        let jsonItems = json[this.getItemsCollectionPropertyName()];
+        let jsonItems = source[this.getItemsCollectionPropertyName()];
 
         if (Array.isArray(jsonItems)) {
             for (let item of jsonItems) {
@@ -5313,7 +5210,7 @@ export class Container extends StylableCardElementContainer {
                     this,
                     item,
                     !this.isDesignMode(),
-                    errors);
+                    context);
 
                 if (element) {
                     this.insertItemAt(element, -1, true);
@@ -5520,7 +5417,7 @@ export class Column extends Container {
     static readonly widthProperty = new CustomProperty<ColumnWidth>(
         Versions.v1_0,
         "width",
-        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: IValidationError[]) => {
+        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: ParseContext) => {
             let result: ColumnWidth = property.defaultValue;
             let value = source[property.name];
             let invalidWidth = false;
@@ -5545,12 +5442,11 @@ export class Column extends Container {
             }
 
             if (invalidWidth) {
-                raiseParseError(
+                context.errors.push(
                     {
                         error: Enums.ValidationError.InvalidPropertyValue,
                         message: "Invalid column width:" + value + " - defaulting to \"auto\""
-                    },
-                    errors
+                    }
                 );
             }
 
@@ -5643,10 +5539,10 @@ export class ColumnSet extends StylableCardElementContainer {
     private _columns: Column[] = [];
     private _renderedColumns: Column[];
 
-    private createColumnInstance(json: any, errors: IValidationError[] | undefined): Column | undefined {
+    private createColumnInstance(source: any, context: ParseContext): Column | undefined {
         return createCardObjectInstance<Column>(
             this,
-            json,
+            source,
             [], // Forbidden types not supported for elements for now
             !this.isDesignMode(),
             (typeName: string) => {
@@ -5658,7 +5554,7 @@ export class ColumnSet extends StylableCardElementContainer {
                     message: "Invalid element type " + typeName + ". Only Column elements are allowed in a ColumnSet."
                 }
             },
-            errors);
+            context);
     }
 
     protected internalRender(): HTMLElement | undefined {
@@ -5745,17 +5641,17 @@ export class ColumnSet extends StylableCardElementContainer {
         return true;
     }
 
-    parse(json: any, errors?: IValidationError[]) {
-        super.parse(json, errors);
+    parse(source: any, context: ParseContext) {
+        super.parse(source, context);
 
         this._columns = [];
         this._renderedColumns = [];
 
-        let jsonColumns = json["columns"];
+        let jsonColumns = source["columns"];
 
         if (Array.isArray(jsonColumns)) {
             for (let item of jsonColumns) {
-                let column = this.createColumnInstance(item, errors);
+                let column = this.createColumnInstance(item, context);
 
                 if (column) {
                     this._columns.push(column);
@@ -6019,34 +5915,6 @@ function raiseElementVisibilityChangedEvent(element: CardElement, shouldUpdateLa
     }
 }
 
-function raiseParseElementEvent(element: CardElement, json: any, errors?: IValidationError[]) {
-    let card = element.getRootElement() as AdaptiveCard;
-    let onParseElementHandler = (card && card.onParseElement) ? card.onParseElement : AdaptiveCard.onParseElement;
-
-    if (onParseElementHandler !== undefined) {
-        onParseElementHandler(element, json, errors);
-    }
-}
-
-function raiseParseActionEvent(action: Action, json: any, errors?: IValidationError[]) {
-    let card = action.parent ? action.parent.getRootElement() as AdaptiveCard : undefined;
-    let onParseActionHandler = (card && card.onParseAction) ? card.onParseAction : AdaptiveCard.onParseAction;
-
-    if (onParseActionHandler !== undefined) {
-        onParseActionHandler(action, json, errors);
-    }
-}
-
-function raiseParseError(error: IValidationError, errors: IValidationError[] | undefined) {
-    if (errors) {
-        errors.push(error);
-    }
-
-    if (AdaptiveCard.onParseError !== undefined) {
-        AdaptiveCard.onParseError(error);
-    }
-}
-
 export interface ITypeRegistration<T> {
     typeName: string,
     schemaVersion: TargetVersion,
@@ -6112,10 +5980,10 @@ export abstract class ContainerWithActions extends Container {
         this._actionCollection = new ActionCollection(this);
     }
 
-    parse(json: any, errors?: IValidationError[]) {
-        super.parse(json, errors);
+    parse(source: any, context: ParseContext) {
+        super.parse(source, context);
 
-        this._actionCollection.parse(json["actions"], errors);
+        this._actionCollection.parse(source["actions"], context);
     }
 
     toJSON(): any {
@@ -6306,7 +6174,7 @@ export class AdaptiveCard extends ContainerWithActions {
     protected static readonly $schemaProperty = new CustomProperty<string>(
         Versions.v1_0,
         "$schema",
-        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: IValidationError[]) => {
+        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: ParseContext) => {
             return AdaptiveCard.schemaUrl;
         },
         (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: Versions | undefined) => {
@@ -6316,8 +6184,8 @@ export class AdaptiveCard extends ContainerWithActions {
     static readonly versionProperty = new CustomProperty<Version | undefined>(
         Versions.v1_0,
         "version",
-        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, errors?: IValidationError[]) => {
-            return Version.parse(source[property.name], errors);
+        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: ParseContext) => {
+            return Version.parse(source[property.name], context);
         },
         (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: Versions | undefined) => {
             if (value !== undefined) {
@@ -6348,9 +6216,6 @@ export class AdaptiveCard extends ContainerWithActions {
     static onImageLoaded?: (image: Image) => void;
     static onInlineCardExpanded?: (action: ShowCardAction, isExpanded: boolean) => void;
     static onInputValueChanged?: (input: Input) => void;
-    static onParseElement?: (element: CardElement, json: any, errors?: IValidationError[]) => void;
-    static onParseAction?: (element: Action, json: any, errors?: IValidationError[]) => void;
-    static onParseError?: (error: IValidationError) => void;
     static onProcessMarkdown?: (text: string, result: IMarkdownProcessingResult) => void;
 
     static get processMarkdown(): (text: string) => string {
@@ -6450,8 +6315,6 @@ export class AdaptiveCard extends ContainerWithActions {
     onImageLoaded?: (image: Image) => void;
     onInlineCardExpanded?: (action: ShowCardAction, isExpanded: boolean) => void;
     onInputValueChanged?: (input: Input) => void;
-    onParseElement?: (element: CardElement, json: any, errors?: IValidationError[]) => void;
-    onParseAction?: (element: Action, json: any, errors?: IValidationError[]) => void;
 
     designMode: boolean = false;
 
@@ -6459,21 +6322,21 @@ export class AdaptiveCard extends ContainerWithActions {
         return "AdaptiveCard";
     }
 
-    parse(json: any, errors?: IValidationError[]) {
+    parse(source: any, context: ParseContext) {
         this._fallbackCard = undefined;
 
         let fallbackElement = createElementInstance(
             undefined,
-            json["fallback"],
+            source["fallback"],
             !this.isDesignMode(),
-            errors);
+            context);
 
         if (fallbackElement) {
             this._fallbackCard = new AdaptiveCard();
             this._fallbackCard.addItem(fallbackElement);
         }
 
-        super.parse(json, errors);
+        super.parse(source, context);
     }
 
     internalValidateProperties(context: ValidationResults) {
@@ -6606,7 +6469,7 @@ class InlineAdaptiveCard extends AdaptiveCard {
         return renderedCard;
     }
 
-    getForbiddenActionTypes(): CardObjectType<Action>[] {
+    getForbiddenActionTypes(): ActionType[] {
         return [ ShowCardAction ];
     }
 }

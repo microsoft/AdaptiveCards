@@ -32,7 +32,7 @@ export abstract class HostContainer {
         return "#F6F6F6";
     }
 
-    public parseElement(element: Adaptive.CardElement, json: any) {
+    public parseElement(element: Adaptive.CardElement, source: any, parseContext: Adaptive.CardObjectParseContext) {
         // Do nothing in base implementation
     }
 

@@ -19,10 +19,10 @@ export class OutlookContainer extends HostContainer {
         Adaptive.GlobalSettings.useMarkdownInRadioButtonAndCheckbox = false;
     }
 
-    private parsePadding(json: any): Adaptive.PaddingDefinition {
-        if (json) {
-            if (typeof json === "string") {
-                var uniformPadding = Adaptive.getEnumValue(Adaptive.Spacing, json, Adaptive.Spacing.None);
+    private parsePadding(source: any): Adaptive.PaddingDefinition {
+        if (source) {
+            if (typeof source === "string") {
+                var uniformPadding = Adaptive.getEnumValue(Adaptive.Spacing, source, Adaptive.Spacing.None);
 
                 return new Adaptive.PaddingDefinition(
                     uniformPadding,
@@ -30,33 +30,33 @@ export class OutlookContainer extends HostContainer {
                     uniformPadding,
                     uniformPadding);
             }
-            else if (typeof json === "object") {
+            else if (typeof source === "object") {
                 return new Adaptive.PaddingDefinition(
-                    Adaptive.getEnumValue(Adaptive.Spacing, json["top"], Adaptive.Spacing.None),
-                    Adaptive.getEnumValue(Adaptive.Spacing, json["right"], Adaptive.Spacing.None),
-                    Adaptive.getEnumValue(Adaptive.Spacing, json["bottom"], Adaptive.Spacing.None),
-                    Adaptive.getEnumValue(Adaptive.Spacing, json["left"], Adaptive.Spacing.None));
+                    Adaptive.getEnumValue(Adaptive.Spacing, source["top"], Adaptive.Spacing.None),
+                    Adaptive.getEnumValue(Adaptive.Spacing, source["right"], Adaptive.Spacing.None),
+                    Adaptive.getEnumValue(Adaptive.Spacing, source["bottom"], Adaptive.Spacing.None),
+                    Adaptive.getEnumValue(Adaptive.Spacing, source["left"], Adaptive.Spacing.None));
             }
         }
 
         return null;
     }
 
-    public parseElement(element: Adaptive.CardElement, json: any) {
+    public parseElement(element: Adaptive.CardElement, source: any, parseContext: Adaptive.CardObjectParseContext) {
         if (element instanceof Adaptive.AdaptiveCard) {
             var card = <Adaptive.AdaptiveCard>element;
             var actionArray: Array<Adaptive.Action> = [];
 
             card["resources"] = { actions: actionArray };
 
-            if (typeof json["resources"] === "object") {
-                var actionResources = json["resources"]["actions"] as Array<any>;
+            if (typeof source["resources"] === "object") {
+                var actionResources = source["resources"]["actions"] as Array<any>;
 
                 for (var i = 0; i < actionResources.length; i++) {
                     let action = Adaptive.AdaptiveCard.actionTypeRegistry.createInstance(actionResources[i]["type"]);
 
                     if (action) {
-                        action.parse(actionResources[i]);
+                        action.parse(actionResources[i], parseContext);
                         action.setParent(card);
 
                         actionArray.push(action);
@@ -66,11 +66,11 @@ export class OutlookContainer extends HostContainer {
         }
 
         if (element instanceof Adaptive.Image) {
-            (<Adaptive.Image>element).backgroundColor = json["backgroundColor"];
+            (<Adaptive.Image>element).backgroundColor = source["backgroundColor"];
         }
 
         if (element instanceof Adaptive.Container) {
-            var padding = this.parsePadding(json["padding"]);
+            var padding = this.parsePadding(source["padding"]);
 
             if (padding) {
                 (<Adaptive.Container>element).padding = padding;
@@ -78,7 +78,7 @@ export class OutlookContainer extends HostContainer {
         }
 
         if (element instanceof Adaptive.ColumnSet) {
-            var padding = this.parsePadding(json["padding"]);
+            var padding = this.parsePadding(source["padding"]);
 
             if (padding) {
                 (<Adaptive.ColumnSet>element).padding = padding;

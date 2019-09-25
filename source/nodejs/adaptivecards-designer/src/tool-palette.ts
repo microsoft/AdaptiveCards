@@ -134,7 +134,7 @@ export class SnippetPaletteItem extends CustomPaletteItem {
                 let adaptiveElement = Adaptive.AdaptiveCard.elementTypeRegistry.createInstance(rootElementTypeName);
 
                 if (adaptiveElement) {
-                    adaptiveElement.parse(this.snippet);
+                    adaptiveElement.parse(this.snippet, new Adaptive.CardObjectParseContext());
 
                     let peer = DesignerSurface.CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(designer, null, adaptiveElement);
                     peer.initializeCardElement();

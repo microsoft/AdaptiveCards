@@ -172,7 +172,7 @@ export class CardDesignerSurface {
     private _dragHandle: DragHandle;
     private _removeCommandElement: HTMLElement;
     private _peerCommandsHostElement: HTMLElement;
-    private _lastParseErrors: Array<Adaptive.IValidationError> = [];
+    private _parseContext: Adaptive.CardObjectParseContext = new Adaptive.CardObjectParseContext();
     private _isPreviewMode: boolean = false;
     private _sampleData: any;
 
@@ -234,7 +234,7 @@ export class CardDesignerSurface {
     }
 
     private peerChanged(peer: DesignerPeers.DesignerPeer, updatePropertySheet: boolean) {
-        this._lastParseErrors = [];
+        this._parseContext = new Adaptive.CardObjectParseContext();
 
         this.renderCard()
         this.updateLayout();
@@ -262,7 +262,7 @@ export class CardDesignerSurface {
 
         if (this.card) {
             if (this.onCardValidated) {
-                this.onCardValidated(this._lastParseErrors, this.card.validateProperties());
+                this.onCardValidated(this._parseContext.errors, this.card.validateProperties());
             }
 
             let cardToRender: Adaptive.AdaptiveCard;
@@ -281,7 +281,7 @@ export class CardDesignerSurface {
 
                         cardToRender = new Adaptive.AdaptiveCard();
                         cardToRender.hostConfig = this.card.hostConfig;
-                        cardToRender.parse(expandedCardPayload);
+                        cardToRender.parse(expandedCardPayload, new Adaptive.CardObjectParseContext());
                     }
                     catch (e) {
                         console.log("Template expansion error: " + e.message);
@@ -508,7 +508,7 @@ export class CardDesignerSurface {
         this.parentElement.appendChild(rootElement);
     }
 
-    onCardValidated: (parseErrors: Array<Adaptive.IValidationError>, validationResults: Adaptive.ValidationResults) => void;
+    onCardValidated: (errors: Adaptive.IValidationError[], validationResults: Adaptive.ValidationResults) => void;
     onSelectedPeerChanged: (peer: DesignerPeers.DesignerPeer) => void;
     onLayoutUpdated: (isFullRefresh: boolean) => void;
 
@@ -597,9 +597,9 @@ export class CardDesignerSurface {
     }
 
     setCardPayloadAsObject(payload: object) {
-        this._lastParseErrors = [];
+        this._parseContext = new Adaptive.CardObjectParseContext();
 
-        this.card.parse(payload, this._lastParseErrors);
+        this.card.parse(payload, this._parseContext);
 
         this.render();
     }

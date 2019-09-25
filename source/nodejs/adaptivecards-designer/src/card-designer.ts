@@ -154,7 +154,8 @@ export class CardDesigner {
                                 text: "Select an element in the card to modify its properties."
                             }
                         ]
-                    }
+                    },
+                    new Adaptive.CardObjectParseContext()
                 );
                 card.padding = new Adaptive.PaddingDefinition(
                     Adaptive.Spacing.Small,
@@ -316,7 +317,7 @@ export class CardDesigner {
 
             this.buildTreeView();
         };
-        this._designerSurface.onCardValidated = (parseErrors: Array<Adaptive.IValidationError>, validationResults: Adaptive.ValidationResults) => {
+        this._designerSurface.onCardValidated = (parseErrors: Adaptive.IValidationError[], validationResults: Adaptive.ValidationResults) => {
             let errorPane = document.getElementById("errorPane");
             errorPane.innerHTML = "";
 
