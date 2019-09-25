@@ -1,6 +1,6 @@
 {
   "name": "adaptivecards-site",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "private": true,
   "scripts": {
     "build": "hexo generate",
@@ -14,9 +14,9 @@
   },
   "devDependencies": {
     "ac-typed-schema": "^0.5.2",
-    "adaptivecards": "^1.3.0-alpha.2",
-    "adaptivecards-designer": "^0.7.1",
-    "adaptivecards-visualizer": "^1.2.3",
+    "adaptivecards": "^1.2.3",
+    "adaptivecards-designer": "^0.7.2",
+    "adaptivecards-visualizer": "^1.2.4",
     "change-case": "^3.0.1",
     "glob": "7.1.2",
     "hexo": "^3.9.0",
