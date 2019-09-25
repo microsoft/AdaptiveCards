@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import { TargetVersion, Version, SerializableObject, ParseContext } from "./serialization";
+import { TargetVersion, Version, SerializableObject, BaseParseContext } from "./serialization";
 
 export class HostCapabilities extends SerializableObject {
     private _capabilities: { [key: string]: TargetVersion } = {};
@@ -9,8 +9,8 @@ export class HostCapabilities extends SerializableObject {
         return "HostCapabilities";
     }
 
-    parse(source: any, context: ParseContext) {
-        super.parse(source, context);
+    protected internalParse(source: any, context: BaseParseContext) {
+        super.internalParse(source, context);
 
         if (source) {
             for (let name in source) {

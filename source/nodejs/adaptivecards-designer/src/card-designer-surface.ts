@@ -172,7 +172,7 @@ export class CardDesignerSurface {
     private _dragHandle: DragHandle;
     private _removeCommandElement: HTMLElement;
     private _peerCommandsHostElement: HTMLElement;
-    private _parseContext: Adaptive.CardObjectParseContext = new Adaptive.CardObjectParseContext();
+    private _parseContext: Adaptive.ParseContext = new Adaptive.ParseContext();
     private _isPreviewMode: boolean = false;
     private _sampleData: any;
 
@@ -234,7 +234,7 @@ export class CardDesignerSurface {
     }
 
     private peerChanged(peer: DesignerPeers.DesignerPeer, updatePropertySheet: boolean) {
-        this._parseContext = new Adaptive.CardObjectParseContext();
+        this._parseContext = new Adaptive.ParseContext();
 
         this.renderCard()
         this.updateLayout();
@@ -281,7 +281,7 @@ export class CardDesignerSurface {
 
                         cardToRender = new Adaptive.AdaptiveCard();
                         cardToRender.hostConfig = this.card.hostConfig;
-                        cardToRender.parse(expandedCardPayload, new Adaptive.CardObjectParseContext());
+                        cardToRender.parse(expandedCardPayload, new Adaptive.ParseContext());
                     }
                     catch (e) {
                         console.log("Template expansion error: " + e.message);
@@ -597,7 +597,7 @@ export class CardDesignerSurface {
     }
 
     setCardPayloadAsObject(payload: object) {
-        this._parseContext = new Adaptive.CardObjectParseContext();
+        this._parseContext = new Adaptive.ParseContext();
 
         this.card.parse(payload, this._parseContext);
 

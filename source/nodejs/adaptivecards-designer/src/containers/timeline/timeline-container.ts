@@ -6,8 +6,7 @@ import * as hostConfig from "../../hostConfigs/windows-timeline.json";
 
 export class TimelineContainer extends HostContainer {
     public initialize() {
-        Adaptive.AdaptiveCard.elementTypeRegistry.reset();
-        Adaptive.AdaptiveCard.actionTypeRegistry.reset();
+        super.initialize();
 
         Adaptive.GlobalSettings.useMarkdownInRadioButtonAndCheckbox = true;
         Adaptive.GlobalSettings.useAdvancedCardBottomTruncation = true;

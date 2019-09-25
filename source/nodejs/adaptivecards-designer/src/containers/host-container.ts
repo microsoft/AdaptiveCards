@@ -20,8 +20,7 @@ export abstract class HostContainer {
     abstract renderTo(hostElement: HTMLElement);
 
     public initialize() {
-        Adaptive.AdaptiveCard.elementTypeRegistry.reset();
-        Adaptive.AdaptiveCard.actionTypeRegistry.reset();
+        Adaptive.GlobalRegistry.reset();
 
         Adaptive.GlobalSettings.useMarkdownInRadioButtonAndCheckbox = true;
         Adaptive.GlobalSettings.useAdvancedCardBottomTruncation = false;
@@ -32,7 +31,7 @@ export abstract class HostContainer {
         return "#F6F6F6";
     }
 
-    public parseElement(element: Adaptive.CardElement, source: any, parseContext: Adaptive.CardObjectParseContext) {
+    public parseElement(element: Adaptive.CardElement, source: any, parseContext: Adaptive.ParseContext) {
         // Do nothing in base implementation
     }
 

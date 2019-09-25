@@ -155,7 +155,7 @@ export class CardDesigner {
                             }
                         ]
                     },
-                    new Adaptive.CardObjectParseContext()
+                    new Adaptive.ParseContext()
                 );
                 card.padding = new Adaptive.PaddingDefinition(
                     Adaptive.Spacing.Small,
@@ -197,8 +197,9 @@ export class CardDesigner {
 
         let categorizedTypes: Object = {};
 
-        for (let i = 0; i < Adaptive.AdaptiveCard.elementTypeRegistry.getItemCount(); i++) {
-            let dummyCardElement = Adaptive.AdaptiveCard.elementTypeRegistry.getItemAt(i).createInstance();
+        for (let i = 0; i < Adaptive.GlobalRegistry.elements.getItemCount(); i++) {
+            let registration = Adaptive.GlobalRegistry.elements.getItemAt(i);
+            let dummyCardElement = new registration.objectType();
             let peerRegistration = Designer.CardDesignerSurface.cardElementPeerRegistry.findTypeRegistration((<any>dummyCardElement).constructor);
 
             if (peerRegistration) {
@@ -207,7 +208,7 @@ export class CardDesigner {
                 }
 
                 let paletteItem = new ElementPaletteItem(
-                    Adaptive.AdaptiveCard.elementTypeRegistry.getItemAt(i),
+                    registration,
                     peerRegistration
                 )
 

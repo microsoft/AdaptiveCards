@@ -860,7 +860,7 @@ export class ActionPropertyEditor extends SingleInputPropertyEditor {
             context.target[this.propertyName] = null;
         }
         else {
-            context.target[this.propertyName] = Adaptive.AdaptiveCard.actionTypeRegistry.createInstance(value);
+            context.target[this.propertyName] = Adaptive.GlobalRegistry.actions.createInstance(value);
         }
     }
 
@@ -871,8 +871,8 @@ export class ActionPropertyEditor extends SingleInputPropertyEditor {
         input.placeholder = "(not set)";
         input.choices.push(new Adaptive.Choice("(not set)", "none"));
     
-        for (var i = 0; i < Adaptive.AdaptiveCard.actionTypeRegistry.getItemCount(); i++) {
-            let actionType = Adaptive.AdaptiveCard.actionTypeRegistry.getItemAt(i).typeName;
+        for (var i = 0; i < Adaptive.GlobalRegistry.actions.getItemCount(); i++) {
+            let actionType = Adaptive.GlobalRegistry.actions.getItemAt(i).typeName;
             let doAddActionType = this.forbiddenActionTypes ? this.forbiddenActionTypes.indexOf(actionType) < 0 : true;
     
             if (doAddActionType) {
@@ -1523,12 +1523,12 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
                     execute: (command: PeerCommand, clickedElement: HTMLElement) => {
                         let popupMenu = new Controls.PopupMenu();
 
-                        for (var i = 0; i < Adaptive.AdaptiveCard.actionTypeRegistry.getItemCount(); i++) {
-                            let menuItem = new Controls.DropDownItem(i.toString(), Adaptive.AdaptiveCard.actionTypeRegistry.getItemAt(i).typeName);
+                        for (var i = 0; i < Adaptive.GlobalRegistry.actions.getItemCount(); i++) {
+                            let menuItem = new Controls.DropDownItem(i.toString(), Adaptive.GlobalRegistry.actions.getItemAt(i).typeName);
                             menuItem.onClick = (clickedItem: Controls.DropDownItem) => {
-                                let registryItem = Adaptive.AdaptiveCard.actionTypeRegistry.getItemAt(Number.parseInt(clickedItem.key));
-                                let action = registryItem.createInstance();
-                                action.title = registryItem.typeName;
+                                let registration = Adaptive.GlobalRegistry.actions.getItemAt(Number.parseInt(clickedItem.key));
+                                let action = new registration.objectType();
+                                action.title = registration.typeName;
 
                                 this.addAction(action);
 
@@ -1853,12 +1853,12 @@ export class ActionSetPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard> {
                     execute: (command: PeerCommand, clickedElement: HTMLElement) => {
                         let popupMenu = new Controls.PopupMenu();
 
-                        for (var i = 0; i < Adaptive.AdaptiveCard.actionTypeRegistry.getItemCount(); i++) {
-                            let menuItem = new Controls.DropDownItem(i.toString(), Adaptive.AdaptiveCard.actionTypeRegistry.getItemAt(i).typeName);
+                        for (var i = 0; i < Adaptive.GlobalRegistry.actions.getItemCount(); i++) {
+                            let menuItem = new Controls.DropDownItem(i.toString(), Adaptive.GlobalRegistry.actions.getItemAt(i).typeName);
                             menuItem.onClick = (clickedItem: Controls.DropDownItem) => {
-                                let registryItem = Adaptive.AdaptiveCard.actionTypeRegistry.getItemAt(Number.parseInt(clickedItem.key));
-                                let action = registryItem.createInstance();
-                                action.title = registryItem.typeName;
+                                let registration = Adaptive.GlobalRegistry.actions.getItemAt(Number.parseInt(clickedItem.key));
+                                let action = new registration.objectType();
+                                action.title = registration.typeName;
 
                                 this.addAction(action);
 

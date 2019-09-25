@@ -13,8 +13,8 @@ export class OutlookContainer extends HostContainer {
     public initialize() {
         super.initialize();
 
-        Adaptive.AdaptiveCard.actionTypeRegistry.unregisterType("Action.Submit");
-        Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.Http", () => { return new Adaptive.HttpAction(); });
+        Adaptive.GlobalRegistry.actions.unregister("Action.Submit");
+        Adaptive.GlobalRegistry.actions.register("Action.Http", Adaptive.HttpAction);
 
         Adaptive.GlobalSettings.useMarkdownInRadioButtonAndCheckbox = false;
     }
@@ -42,7 +42,7 @@ export class OutlookContainer extends HostContainer {
         return null;
     }
 
-    public parseElement(element: Adaptive.CardElement, source: any, parseContext: Adaptive.CardObjectParseContext) {
+    public parseElement(element: Adaptive.CardElement, source: any, parseContext: Adaptive.ParseContext) {
         if (element instanceof Adaptive.AdaptiveCard) {
             var card = <Adaptive.AdaptiveCard>element;
             var actionArray: Array<Adaptive.Action> = [];
@@ -53,7 +53,7 @@ export class OutlookContainer extends HostContainer {
                 var actionResources = source["resources"]["actions"] as Array<any>;
 
                 for (var i = 0; i < actionResources.length; i++) {
-                    let action = Adaptive.AdaptiveCard.actionTypeRegistry.createInstance(actionResources[i]["type"]);
+                    let action = Adaptive.GlobalRegistry.actions.createInstance(actionResources[i]["type"]);
 
                     if (action) {
                         action.parse(actionResources[i], parseContext);

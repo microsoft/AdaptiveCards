@@ -4,149 +4,15 @@ import * as Enums from "./enums";
 import { PaddingDefinition, GlobalSettings, SizeAndUnit,SpacingDefinition,
     Dictionary, StringWithSubstitutions, ContentTypes, IInput, IResourceInformation, IValidationError } from "./shared";
 import * as Utils from "./utils";
-import * as HostConfig from "./host-config";
+import { HostConfig, defaultHostConfig, FontTypeDefinition, ColorSetDefinition, TextColorDefinition, ContainerStyleDefinition } from "./host-config";
 import * as TextFormatters from "./text-formatters";
 import { HostCapabilities } from "./host-capabilities";
 import { CardObjectType, CardObject, ValidationResults } from "./card-object";
-import { Versions, Version, TargetVersion, property, ParseContext, SerializableObject, SerializableObjectSchema, StringProperty,
+import { Versions, Version, TargetVersion, property, BaseParseContext, SerializableObject, SerializableObjectSchema, StringProperty,
     BoolProperty, ValueSetProperty, EnumProperty, SerializableObjectCollectionProperty, SerializableObjectProperty, PixelSizeProperty,
     NumProperty, PropertyBag, CustomProperty, PropertyDefinition } from "./serialization";
+import { CardObjectRegistry } from "./registry";
 
-function isCardObjectAllowed(o: CardObject, forbiddenTypes: CardObjectType[]): boolean {
-    if (forbiddenTypes) {
-        for (let forbiddenType of forbiddenTypes) {
-            if (o.constructor === forbiddenType) {
-                return false;
-            }
-        }
-    }
-
-    return true;
-}
-
-const enum InstanceCreationErrorType {
-    UnknownType,
-    ForbiddenType
-}
-
-function createCardObjectInstance<T extends CardObject>(
-    parent: CardElement | undefined,
-    source: any,
-    forbiddenTypeNames: string[],
-    allowFallback: boolean,
-    createInstanceCallback: (typeName: string) => T | undefined,
-    createValidationErrorCallback: (typeName: string, errorType: InstanceCreationErrorType) => IValidationError,
-    context: ParseContext): T | undefined {
-    let result: T | undefined = undefined;
-
-    if (source && typeof source === "object") {
-        let tryToFallback = false;
-        let typeName = Utils.getStringValue(source["type"]);
-        
-        if (typeName) {
-            if (forbiddenTypeNames.indexOf(typeName) >= 0) {
-                context.errors.push(createValidationErrorCallback(typeName, InstanceCreationErrorType.ForbiddenType));
-            }
-            else {
-                result = createInstanceCallback(typeName);
-
-                if (!result) {
-                    tryToFallback = allowFallback;
-
-                    context.errors.push(createValidationErrorCallback(typeName, InstanceCreationErrorType.UnknownType));
-                }
-                else {
-                    result.setParent(parent);
-                    result.parse(source, context);
-
-                    tryToFallback = result.shouldFallback() && allowFallback;
-                }
-
-                if (tryToFallback) {
-                    let fallback = source["fallback"];
-
-                    if (!fallback && parent) {
-                        parent.setShouldFallback(true);
-                    }
-                    if (typeof fallback === "string" && fallback.toLowerCase() === "drop") {
-                        result = undefined;
-                    }
-                    else if (typeof fallback === "object") {
-                        result = createCardObjectInstance<T>(
-                            parent,
-                            fallback,
-                            forbiddenTypeNames,
-                            true,
-                            createInstanceCallback,
-                            createValidationErrorCallback,
-                            context);
-                    }
-                }
-            }
-        }
-    }
-
-    return result;
-}
-
-export function createActionInstance(
-    parent: CardElement,
-    source: any,
-    forbiddenActionTypes: string[],
-    allowFallback: boolean,
-    context: ParseContext): Action | undefined {
-    return createCardObjectInstance<Action>(
-        parent,
-        source,
-        forbiddenActionTypes,
-        allowFallback,
-        (typeName: string) => { return AdaptiveCard.actionTypeRegistry.createInstance(typeName); },
-        (typeName: string, errorType: InstanceCreationErrorType) => {
-            if (errorType == InstanceCreationErrorType.UnknownType) {
-                return {
-                    error: Enums.ValidationError.UnknownActionType,
-                    message: "Unknown action type: " + typeName + ". Fallback will be used if present."
-                }
-            }
-            else {
-                return {
-                    error: Enums.ValidationError.ActionTypeNotAllowed,
-                    message: "Action type " + typeName + " is not allowed in this context."
-                }
-            }
-        },
-        context);
-}
-
-export function createElementInstance(
-    parent: CardElement | undefined,
-    source: any,
-    allowFallback: boolean,
-    context: ParseContext): CardElement | undefined {
-    return createCardObjectInstance<CardElement>(
-        parent,
-        source,
-        [], // Forbidden types not supported for elements for now
-        allowFallback,
-        (typeName: string) => { return AdaptiveCard.elementTypeRegistry.createInstance(typeName); },
-        (typeName: string, errorType: InstanceCreationErrorType) => {
-            if (errorType == InstanceCreationErrorType.UnknownType) {
-                return {
-                    error: Enums.ValidationError.UnknownElementType,
-                    message: "Unknown element type: " + typeName + ". Fallback will be used if present."
-                }
-            }
-            else {
-                return {
-                    error: Enums.ValidationError.ElementTypeNotAllowed,
-                    message: "Element type " + typeName + " is not allowed in this context."
-                }
-            }
-        },
-        context);
-}
-
-export type CardElementType = { new(): CardElement };
 export type CardElementHeight = "auto" | "stretch";
 
 export abstract class CardElement extends CardObject {
@@ -233,7 +99,7 @@ export abstract class CardElement extends CardObject {
 
     //#endregion
 
-    private _hostConfig?: HostConfig.HostConfig;
+    private _hostConfig?: HostConfig;
     private _renderedElement?: HTMLElement;
     private _separatorElement?: HTMLElement;
     private _truncatedDueToOverflow: boolean = false;
@@ -447,10 +313,8 @@ export abstract class CardElement extends CardObject {
         return false;
     }
 
-    parse(source: any, context: ParseContext) {
-		super.parse(source, context);
-
-        context.objectParsed(this, source);
+    parse(source: any, context?: ParseContext) {
+        super.parse(source, context ? context : new ParseContext());
     }
 
     getEffectiveStyle(): string {
@@ -461,7 +325,7 @@ export abstract class CardElement extends CardObject {
         return this.defaultStyle;
     }
 
-    getEffectiveStyleDefinition(): HostConfig.ContainerStyleDefinition {
+    getEffectiveStyleDefinition(): ContainerStyleDefinition {
         return this.hostConfig.containerStyles.getStyleByName(this.getEffectiveStyle());
     }
 
@@ -671,7 +535,7 @@ export abstract class CardElement extends CardObject {
         return (padding && this.allowCustomPadding) ? padding : this.getDefaultPadding();
     }
 
-    get hostConfig(): HostConfig.HostConfig {
+    get hostConfig(): HostConfig {
         if (this._hostConfig) {
             return this._hostConfig;
         }
@@ -685,7 +549,7 @@ export abstract class CardElement extends CardObject {
         }
     }
 
-    set hostConfig(value: HostConfig.HostConfig) {
+    set hostConfig(value: HostConfig) {
         this._hostConfig = value;
     }
 
@@ -736,12 +600,11 @@ export class ActionProperty extends PropertyDefinition {
     parse(sender: SerializableObject, source: PropertyBag, context: ParseContext): Action | undefined {
         let parent = <CardElement>sender;
 
-        return createActionInstance(
+        return context.parseAction(
             parent,
             source[this.name],
             this.forbiddenActionTypes,
-            parent.isDesignMode(),
-            context);
+            parent.isDesignMode());
     }
 
     toJSON(sender: SerializableObject, target: PropertyBag, value: Action | undefined) {
@@ -825,7 +688,7 @@ export abstract class BaseTextBlock extends CardElement {
 
     //#endregion
 
-    protected getFontSize(fontType: HostConfig.FontTypeDefinition): number {
+    protected getFontSize(fontType: FontTypeDefinition): number {
         switch (this.size) {
             case Enums.TextSize.Small:
                 return fontType.fontSizes.small;
@@ -840,7 +703,7 @@ export abstract class BaseTextBlock extends CardElement {
         }
     }
 
-    protected getColorDefinition(colorSet: HostConfig.ColorSetDefinition, color: Enums.TextColor): HostConfig.TextColorDefinition {
+    protected getColorDefinition(colorSet: ColorSetDefinition, color: Enums.TextColor): TextColorDefinition {
         switch (color) {
             case Enums.TextColor.Accent:
                 return colorSet.accent;
@@ -1396,8 +1259,8 @@ export class RichTextBlock extends CardElement {
         return result;
     }
 
-    parse(source: any, context: ParseContext) {
-        super.parse(source, context);
+    protected internalParse(source: any, context: ParseContext) {
+        super.internalParse(source, context);
 
         this._inlines = [];
 
@@ -1412,11 +1275,8 @@ export class RichTextBlock extends CardElement {
                     inline = textRun;
                 }
                 else {
-                    inline = createElementInstance(
-                        this,
-                        jsonInline,
-                        false, // No fallback for inlines in 1.2
-                        context);
+                    // No fallback for inlines in 1.2
+                    inline = context.parseElement(this, jsonInline, false);
                 }
 
                 if (inline) {
@@ -1604,7 +1464,7 @@ class ImageDimensionProperty extends PropertyDefinition {
         return this.jsonName;
     }
     
-    parse(sender: SerializableObject, source: PropertyBag, context: ParseContext): number | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, context: BaseParseContext): number | undefined {
         let result: number | undefined = undefined;
         let value = source[this.jsonName];
 
@@ -3280,7 +3140,7 @@ export class TimeProperty extends CustomProperty<string | undefined> {
         super(
             targetVersion,
             name,
-            (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: ParseContext) => {
+            (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseParseContext) => {
                 let value = source[property.name];
     
                 if (typeof value === "string" && value && /^[0-9]{2}:[0-9]{2}$/.test(value)) {
@@ -3523,10 +3383,8 @@ export abstract class Action extends CardObject {
         // Do nothing in base implementation
     }
 
-    parse(source: any, context: ParseContext) {
-		super.parse(source, context);
-
-        context.objectParsed(this, source);
+    parse(source: any, context?: ParseContext) {
+        super.parse(source, context ? context : new ParseContext());
     }
 
     render(baseCssClass: string = "ac-pushButton") {
@@ -3666,7 +3524,7 @@ export abstract class Action extends CardObject {
         return this._renderedElement;
     }
 
-    get hostConfig(): HostConfig.HostConfig {
+    get hostConfig(): HostConfig {
         return this.parent ? this.parent.hostConfig : defaultHostConfig;
     }
 
@@ -3792,7 +3650,7 @@ export class ToggleVisibilityAction extends Action {
     static readonly targetElementsProperty = new CustomProperty<PropertyBag>(
         Versions.v1_2,
         "targetElements",
-        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: ParseContext) => {
+        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseParseContext) => {
             let result: PropertyBag = {}
 
             if (Array.isArray(source[property.name])) {
@@ -3874,7 +3732,7 @@ export class ToggleVisibilityAction extends Action {
 }
 
 class StringWithSubstitutionProperty extends PropertyDefinition  {
-    parse(sender: SerializableObject, source: PropertyBag, context: ParseContext): StringWithSubstitutions {
+    parse(sender: SerializableObject, source: PropertyBag, context: BaseParseContext): StringWithSubstitutions {
         let result = new StringWithSubstitutions();
         result.set(Utils.getStringValue(source[this.name]));
 
@@ -4089,8 +3947,8 @@ export class ShowCardAction extends Action {
         this.card.internalValidateProperties(context);
     }
 
-    parse(source: any, context: ParseContext) {
-        super.parse(source, context);
+    protected internalParse(source: any, context: ParseContext) {
+        super.internalParse(source, context);
 
         let jsonCard = source["card"];
 
@@ -4146,6 +4004,20 @@ class ActionCollection {
     private _expandedAction?: ShowCardAction;
     private _renderedActionCount: number = 0;
     private _actionCard?: HTMLElement;
+
+    private isActionAllowed(action: Action): boolean {
+        let forbiddenTypes = this._owner.getForbiddenActionTypes();
+
+        if (forbiddenTypes) {
+            for (let forbiddenType of forbiddenTypes) {
+                if (action.constructor === forbiddenType) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 
     private refreshContainer() {
         this._actionCardContainer.innerHTML = "";
@@ -4294,12 +4166,11 @@ class ActionCollection {
 
         if (Array.isArray(source)) {
             for (let jsonAction of source) {
-                let action = createActionInstance(
+                let action = context.parseAction(
                     this._owner,
                     jsonAction,
                     [],
-                    !this._owner.isDesignMode(),
-                    context);
+                    !this._owner.isDesignMode());
 
                 if (action) {
                     this.addAction(action);
@@ -4357,7 +4228,7 @@ class ActionCollection {
         }
 
         for (let item of this.items) {
-            if (!isCardObjectAllowed(item, this._owner.getForbiddenActionTypes())) {
+            if (!this.isActionAllowed(item)) {
                 context.addFailure(
                     this._owner,
                     {
@@ -4380,12 +4251,11 @@ class ActionCollection {
 
         let element = document.createElement("div");
         let maxActions = hostConfig.actions.maxActions ? Math.min(hostConfig.actions.maxActions, this.items.length) : this.items.length;
-        let forbiddenActionTypes = this._owner.getForbiddenActionTypes();
 
         this._actionCardContainer = document.createElement("div");
         this._renderedActionCount = 0;
 
-        if (hostConfig.actions.preExpandSingleShowCardAction && maxActions == 1 && this.items[0] instanceof ShowCardAction && isCardObjectAllowed(this.items[0], forbiddenActionTypes)) {
+        if (hostConfig.actions.preExpandSingleShowCardAction && maxActions == 1 && this.items[0] instanceof ShowCardAction && this.isActionAllowed(this.items[0])) {
             this.showActionCard(<ShowCardAction>this.items[0], true);
             this._renderedActionCount = 1;
         }
@@ -4464,7 +4334,7 @@ class ActionCollection {
                 let parentContainerStyle = parentContainer.getEffectiveStyle();
 
                 for (let i = 0; i < this.items.length; i++) {
-                    if (isCardObjectAllowed(this.items[i], forbiddenActionTypes)) {
+                    if (this.isActionAllowed(this.items[i])) {
                         let actionButton = this.findActionButton(this.items[i]);
 
                         if (!actionButton) {
@@ -4635,8 +4505,8 @@ export class ActionSet extends CardElement {
         this._actionCollection = new ActionCollection(this);
     }
 
-    parse(source: any, context: ParseContext) {
-        super.parse(source, context);
+    protected internalParse(source: any, context: ParseContext) {
+        super.internalParse(source, context);
 
         this._actionCollection.parse(source["actions"], context);
     }
@@ -4932,13 +4802,13 @@ export class BackgroundImage extends SerializableObject {
         return "BackgroundImage";
     }
 
-    parse(source: any, context: ParseContext) {
+    protected internalParse(source: any, context: BaseParseContext) {
         if (typeof source === "string") {
             this.resetDefaultValues();
             this.url = source;
         }
         else {
-            return super.parse(source, context);
+            return super.internalParse(source, context);
         }
     }
 
@@ -5196,8 +5066,8 @@ export class Container extends StylableCardElementContainer {
         return true;
     }
 
-    parse(source: any, context: ParseContext) {
-        super.parse(source, context);
+    protected internalParse(source: any, context: ParseContext) {
+        super.internalParse(source, context);
 
         this.clear();
         this.setShouldFallback(false);
@@ -5206,11 +5076,7 @@ export class Container extends StylableCardElementContainer {
 
         if (Array.isArray(jsonItems)) {
             for (let item of jsonItems) {
-                let element = createElementInstance(
-                    this,
-                    item,
-                    !this.isDesignMode(),
-                    context);
+                let element = context.parseElement(this, item, !this.isDesignMode());
 
                 if (element) {
                     this.insertItemAt(element, -1, true);
@@ -5417,7 +5283,7 @@ export class Column extends Container {
     static readonly widthProperty = new CustomProperty<ColumnWidth>(
         Versions.v1_0,
         "width",
-        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: ParseContext) => {
+        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseParseContext) => {
             let result: ColumnWidth = property.defaultValue;
             let value = source[property.name];
             let invalidWidth = false;
@@ -5540,7 +5406,7 @@ export class ColumnSet extends StylableCardElementContainer {
     private _renderedColumns: Column[];
 
     private createColumnInstance(source: any, context: ParseContext): Column | undefined {
-        return createCardObjectInstance<Column>(
+        return context.parseCardObject<Column>(
             this,
             source,
             [], // Forbidden types not supported for elements for now
@@ -5548,13 +5414,12 @@ export class ColumnSet extends StylableCardElementContainer {
             (typeName: string) => {
                 return !typeName || typeName === "Column" ? new Column() : undefined;
             },
-            (typeName: string, errorType: InstanceCreationErrorType) => {
+            (typeName: string, errorType: ParseErrorType) => {
                 return {
                     error: Enums.ValidationError.ElementTypeNotAllowed,
                     message: "Invalid element type " + typeName + ". Only Column elements are allowed in a ColumnSet."
                 }
-            },
-            context);
+            });
     }
 
     protected internalRender(): HTMLElement | undefined {
@@ -5641,8 +5506,8 @@ export class ColumnSet extends StylableCardElementContainer {
         return true;
     }
 
-    parse(source: any, context: ParseContext) {
-        super.parse(source, context);
+    protected internalParse(source: any, context: ParseContext) {
+        super.internalParse(source, context);
 
         this._columns = [];
         this._renderedColumns = [];
@@ -5915,12 +5780,6 @@ function raiseElementVisibilityChangedEvent(element: CardElement, shouldUpdateLa
     }
 }
 
-export interface ITypeRegistration<T> {
-    typeName: string,
-    schemaVersion: TargetVersion,
-    createInstance: () => T;
-}
-
 export abstract class ContainerWithActions extends Container {
     private _actionCollection: ActionCollection;
 
@@ -5980,8 +5839,8 @@ export abstract class ContainerWithActions extends Container {
         this._actionCollection = new ActionCollection(this);
     }
 
-    parse(source: any, context: ParseContext) {
-        super.parse(source, context);
+    protected internalParse(source: any, context: ParseContext) {
+        super.internalParse(source, context);
 
         this._actionCollection.parse(source["actions"], context);
     }
@@ -6062,105 +5921,6 @@ export abstract class ContainerWithActions extends Container {
     }
 }
 
-export abstract class TypeRegistry<T> {
-    private _items: ITypeRegistration<T>[] = [];
-
-    private findTypeRegistration(typeName: string): ITypeRegistration<T> | undefined {
-        for (let item of this._items) {
-            if (item.typeName === typeName) {
-                return item;
-            }
-        }
-
-        return undefined;
-    }
-
-    constructor() {
-        this.reset();
-    }
-
-    clear() {
-        this._items = [];
-    }
-
-    abstract reset(): void;
-
-    registerType(typeName: string, createInstance: () => T, schemaVersion: TargetVersion = "*") {
-        let registrationInfo = this.findTypeRegistration(typeName);
-
-        if (registrationInfo !== undefined) {
-            registrationInfo.createInstance = createInstance;
-        }
-        else {
-            registrationInfo = {
-                typeName: typeName,
-                schemaVersion: schemaVersion,
-                createInstance: createInstance
-            }
-
-            this._items.push(registrationInfo);
-        }
-    }
-
-    unregisterType(typeName: string) {
-        for (let i = 0; i < this._items.length; i++) {
-            if (this._items[i].typeName === typeName) {
-                this._items.splice(i, 1);
-
-                return;
-            }
-        }
-    }
-
-    createInstance(typeName: string): T | undefined {
-        let registrationInfo = this.findTypeRegistration(typeName);
-
-        return registrationInfo ? registrationInfo.createInstance() : undefined;
-    }
-
-    getItemCount(): number {
-        return this._items.length;
-    }
-
-    getItemAt(index: number): ITypeRegistration<T> {
-        return this._items[index];
-    }
-}
-
-export class ElementTypeRegistry extends TypeRegistry<CardElement> {
-    reset(): void {
-        this.clear();
-
-        this.registerType("Container", () => { return new Container(); });
-        this.registerType("TextBlock", () => { return new TextBlock(); });
-        this.registerType("RichTextBlock", () => { return new RichTextBlock(); }, Versions.v1_2);
-        this.registerType("TextRun", () => { return new TextRun(); }, Versions.v1_2);
-        this.registerType("Image", () => { return new Image(); });
-        this.registerType("ImageSet", () => { return new ImageSet(); });
-        this.registerType("Media", () => { return new Media(); }, Versions.v1_1);
-        this.registerType("FactSet", () => { return new FactSet(); });
-        this.registerType("ColumnSet", () => { return new ColumnSet(); });
-        this.registerType("ActionSet", () => { return new ActionSet(); }, Versions.v1_2);
-        this.registerType("Input.Text", () => { return new TextInput(); });
-        this.registerType("Input.Date", () => { return new DateInput(); });
-        this.registerType("Input.Time", () => { return new TimeInput(); });
-        this.registerType("Input.Number", () => { return new NumberInput(); });
-        this.registerType("Input.ChoiceSet", () => { return new ChoiceSetInput(); });
-        this.registerType("Input.Toggle", () => { return new ToggleInput(); });
-    }
-}
-
-export class ActionTypeRegistry extends TypeRegistry<Action> {
-    reset(): void {
-        this.clear();
-
-        this.registerType(OpenUrlAction.JsonTypeName, () => { return new OpenUrlAction(); });
-        this.registerType(SubmitAction.JsonTypeName, () => { return new SubmitAction(); });
-        this.registerType(ShowCardAction.JsonTypeName, () => { return new ShowCardAction(); });
-        this.registerType(ToggleVisibilityAction.JsonTypeName, () => { return new ToggleVisibilityAction(); }, Versions.v1_2);
-    }
-}
-
 export interface IMarkdownProcessingResult {
     didProcess: boolean;
     outputHtml?: any;
@@ -6174,7 +5934,7 @@ export class AdaptiveCard extends ContainerWithActions {
     protected static readonly $schemaProperty = new CustomProperty<string>(
         Versions.v1_0,
         "$schema",
-        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: ParseContext) => {
+        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseParseContext) => {
             return AdaptiveCard.schemaUrl;
         },
         (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: Versions | undefined) => {
@@ -6184,7 +5944,7 @@ export class AdaptiveCard extends ContainerWithActions {
     static readonly versionProperty = new CustomProperty<Version | undefined>(
         Versions.v1_0,
         "version",
-        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: ParseContext) => {
+        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseParseContext) => {
             return Version.parse(source[property.name], context);
         },
         (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: Versions | undefined) => {
@@ -6206,9 +5966,6 @@ export class AdaptiveCard extends ContainerWithActions {
     speak?: string;
 
     //#endregion
-
-    static readonly elementTypeRegistry = new ElementTypeRegistry();
-    static readonly actionTypeRegistry = new ActionTypeRegistry();
 
     static onAnchorClicked?: (element: CardElement, anchor: HTMLAnchorElement) => boolean;
     static onExecuteAction?: (action: Action) => void;
@@ -6322,21 +6079,17 @@ export class AdaptiveCard extends ContainerWithActions {
         return "AdaptiveCard";
     }
 
-    parse(source: any, context: ParseContext) {
+    protected internalParse(source: any, context: ParseContext) {
         this._fallbackCard = undefined;
 
-        let fallbackElement = createElementInstance(
-            undefined,
-            source["fallback"],
-            !this.isDesignMode(),
-            context);
+        let fallbackElement = context.parseElement(undefined, source["fallback"], !this.isDesignMode());
 
         if (fallbackElement) {
             this._fallbackCard = new AdaptiveCard();
             this._fallbackCard.addItem(fallbackElement);
         }
 
-        super.parse(source, context);
+        super.internalParse(source, context);
     }
 
     internalValidateProperties(context: ValidationResults) {
@@ -6474,292 +6227,204 @@ class InlineAdaptiveCard extends AdaptiveCard {
     }
 }
 
-const defaultHostConfig: HostConfig.HostConfig = new HostConfig.HostConfig(
-    {
-        supportsInteractivity: true,
-        spacing: {
-            small: 10,
-            default: 20,
-            medium: 30,
-            large: 40,
-            extraLarge: 50,
-            padding: 20
-        },
-        separator: {
-            lineThickness: 1,
-            lineColor: "#EEEEEE"
-        },
-        fontTypes: {
-            default: {
-                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                fontSizes: {
-                    small: 12,
-                    default: 14,
-                    medium: 17,
-                    large: 21,
-                    extraLarge: 26
-                },
-                fontWeights: {
-                    lighter: 200,
-                    default: 400,
-                    bolder: 600
+export class GlobalRegistry {
+    static readonly elements = new CardObjectRegistry<CardElement>();
+    static readonly actions = new CardObjectRegistry<Action>();
+
+    static resetElements() {
+        GlobalRegistry.elements.clear();
+
+        GlobalRegistry.elements.register("Container", Container);
+        GlobalRegistry.elements.register("TextBlock", TextBlock);
+        GlobalRegistry.elements.register("RichTextBlock", RichTextBlock, Versions.v1_2);
+        GlobalRegistry.elements.register("TextRun", TextRun, Versions.v1_2);
+        GlobalRegistry.elements.register("Image", Image);
+        GlobalRegistry.elements.register("ImageSet", ImageSet);
+        GlobalRegistry.elements.register("Media", Media, Versions.v1_1);
+        GlobalRegistry.elements.register("FactSet", FactSet);
+        GlobalRegistry.elements.register("ColumnSet", ColumnSet);
+        GlobalRegistry.elements.register("ActionSet", ActionSet, Versions.v1_2);
+        GlobalRegistry.elements.register("Input.Text", TextInput);
+        GlobalRegistry.elements.register("Input.Date", DateInput);
+        GlobalRegistry.elements.register("Input.Time", TimeInput);
+        GlobalRegistry.elements.register("Input.Number", NumberInput);
+        GlobalRegistry.elements.register("Input.ChoiceSet", ChoiceSetInput);
+        GlobalRegistry.elements.register("Input.Toggle", ToggleInput);
+    }
+
+    static resetActions() {
+        GlobalRegistry.actions.clear();
+
+        GlobalRegistry.actions.register(OpenUrlAction.JsonTypeName, OpenUrlAction);
+        GlobalRegistry.actions.register(SubmitAction.JsonTypeName, SubmitAction);
+        GlobalRegistry.actions.register(ShowCardAction.JsonTypeName, ShowCardAction);
+        GlobalRegistry.actions.register(ToggleVisibilityAction.JsonTypeName, ToggleVisibilityAction, Versions.v1_2);
+    }
+
+    static reset() {
+        GlobalRegistry.resetElements();
+        GlobalRegistry.resetActions();
+    }
+}
+
+GlobalRegistry.reset();
+
+const enum ParseErrorType {
+    UnknownType,
+    ForbiddenType
+}
+
+export class ParseContext extends BaseParseContext {
+    private internalParseCardObject<T extends CardObject>(
+        parent: CardElement | undefined,
+        source: any,
+        forbiddenTypeNames: string[],
+        allowFallback: boolean,
+        createInstanceCallback: (typeName: string) => T | undefined,
+        createValidationErrorCallback: (typeName: string, errorType: ParseErrorType) => IValidationError): T | undefined {
+        let result: T | undefined = undefined;
+
+        if (source && typeof source === "object") {
+            let tryToFallback = false;
+            let typeName = Utils.getStringValue(source["type"]);
+            
+            if (typeName) {
+                if (forbiddenTypeNames.indexOf(typeName) >= 0) {
+                    this.errors.push(createValidationErrorCallback(typeName, ParseErrorType.ForbiddenType));
                 }
-            },
-            monospace: {
-                fontFamily: "'Courier New', Courier, monospace",
-                fontSizes: {
-                    small: 12,
-                    default: 14,
-                    medium: 17,
-                    large: 21,
-                    extraLarge: 26
-                },
-                fontWeights: {
-                    lighter: 200,
-                    default: 400,
-                    bolder: 600
-                }
-            }
-        },
-        imageSizes: {
-            small: 40,
-            medium: 80,
-            large: 160
-        },
-        containerStyles: {
-            default: {
-                backgroundColor: "#FFFFFF",
-                foregroundColors: {
-                    default: {
-                        default: "#333333",
-                        subtle: "#EE333333"
-                    },
-                    dark: {
-                        default: "#000000",
-                        subtle: "#66000000"
-                    },
-                    light: {
-                        default: "#FFFFFF",
-                        subtle: "#33000000"
-                    },
-                    accent: {
-                        default: "#2E89FC",
-                        subtle: "#882E89FC"
-                    },
-                    attention: {
-                        default: "#cc3300",
-                        subtle: "#DDcc3300"
-                    },
-                    good: {
-                        default: "#54a254",
-                        subtle: "#DD54a254"
-                    },
-                    warning: {
-                        default: "#e69500",
-                        subtle: "#DDe69500"
+                else {
+                    result = createInstanceCallback(typeName);
+
+                    if (!result) {
+                        tryToFallback = allowFallback;
+
+                        this.errors.push(createValidationErrorCallback(typeName, ParseErrorType.UnknownType));
                     }
-                }
-            },
-            emphasis: {
-                backgroundColor: "#08000000",
-                foregroundColors: {
-                    default: {
-                        default: "#333333",
-                        subtle: "#EE333333"
-                    },
-                    dark: {
-                        default: "#000000",
-                        subtle: "#66000000"
-                    },
-                    light: {
-                        default: "#FFFFFF",
-                        subtle: "#33000000"
-                    },
-                    accent: {
-                        default: "#2E89FC",
-                        subtle: "#882E89FC"
-                    },
-                    attention: {
-                        default: "#cc3300",
-                        subtle: "#DDcc3300"
-                    },
-                    good: {
-                        default: "#54a254",
-                        subtle: "#DD54a254"
-                    },
-                    warning: {
-                        default: "#e69500",
-                        subtle: "#DDe69500"
+                    else {
+                        result.setParent(parent);
+                        result.parse(source, this);
+
+                        tryToFallback = result.shouldFallback() && allowFallback;
                     }
-                }
-            },
-            accent: {
-                backgroundColor: "#C7DEF9",
-                foregroundColors: {
-                    default: {
-                        default: "#333333",
-                        subtle: "#EE333333"
-                    },
-                    dark: {
-                        default: "#000000",
-                        subtle: "#66000000"
-                    },
-                    light: {
-                        default: "#FFFFFF",
-                        subtle: "#33000000"
-                    },
-                    accent: {
-                        default: "#2E89FC",
-                        subtle: "#882E89FC"
-                    },
-                    attention: {
-                        default: "#cc3300",
-                        subtle: "#DDcc3300"
-                    },
-                    good: {
-                        default: "#54a254",
-                        subtle: "#DD54a254"
-                    },
-                    warning: {
-                        default: "#e69500",
-                        subtle: "#DDe69500"
-                    }
-                }
-            },
-            good: {
-                backgroundColor: "#CCFFCC",
-                foregroundColors: {
-                    default: {
-                        default: "#333333",
-                        subtle: "#EE333333"
-                    },
-                    dark: {
-                        default: "#000000",
-                        subtle: "#66000000"
-                    },
-                    light: {
-                        default: "#FFFFFF",
-                        subtle: "#33000000"
-                    },
-                    accent: {
-                        default: "#2E89FC",
-                        subtle: "#882E89FC"
-                    },
-                    attention: {
-                        default: "#cc3300",
-                        subtle: "#DDcc3300"
-                    },
-                    good: {
-                        default: "#54a254",
-                        subtle: "#DD54a254"
-                    },
-                    warning: {
-                        default: "#e69500",
-                        subtle: "#DDe69500"
-                    }
-                }
-            },
-            attention: {
-                backgroundColor: "#FFC5B2",
-                foregroundColors: {
-                    default: {
-                        default: "#333333",
-                        subtle: "#EE333333"
-                    },
-                    dark: {
-                        default: "#000000",
-                        subtle: "#66000000"
-                    },
-                    light: {
-                        default: "#FFFFFF",
-                        subtle: "#33000000"
-                    },
-                    accent: {
-                        default: "#2E89FC",
-                        subtle: "#882E89FC"
-                    },
-                    attention: {
-                        default: "#cc3300",
-                        subtle: "#DDcc3300"
-                    },
-                    good: {
-                        default: "#54a254",
-                        subtle: "#DD54a254"
-                    },
-                    warning: {
-                        default: "#e69500",
-                        subtle: "#DDe69500"
-                    }
-                }
-            },
-            warning: {
-                backgroundColor: "#FFE2B2",
-                foregroundColors: {
-                    default: {
-                        default: "#333333",
-                        subtle: "#EE333333"
-                    },
-                    dark: {
-                        default: "#000000",
-                        subtle: "#66000000"
-                    },
-                    light: {
-                        default: "#FFFFFF",
-                        subtle: "#33000000"
-                    },
-                    accent: {
-                        default: "#2E89FC",
-                        subtle: "#882E89FC"
-                    },
-                    attention: {
-                        default: "#cc3300",
-                        subtle: "#DDcc3300"
-                    },
-                    good: {
-                        default: "#54a254",
-                        subtle: "#DD54a254"
-                    },
-                    warning: {
-                        default: "#e69500",
-                        subtle: "#DDe69500"
+
+                    if (tryToFallback) {
+                        let fallback = source["fallback"];
+
+                        if (!fallback && parent) {
+                            parent.setShouldFallback(true);
+                        }
+                        if (typeof fallback === "string" && fallback.toLowerCase() === "drop") {
+                            result = undefined;
+                        }
+                        else if (typeof fallback === "object") {
+                            result = this.internalParseCardObject<T>(
+                                parent,
+                                fallback,
+                                forbiddenTypeNames,
+                                true,
+                                createInstanceCallback,
+                                createValidationErrorCallback);
+                        }
                     }
                 }
             }
-        },
-        actions: {
-            maxActions: 5,
-            spacing: Enums.Spacing.Default,
-            buttonSpacing: 10,
-            showCard: {
-                actionMode: Enums.ShowCardActionMode.Inline,
-                inlineTopMargin: 16
-            },
-            actionsOrientation: Enums.Orientation.Horizontal,
-            actionAlignment: Enums.ActionAlignment.Left
-        },
-        adaptiveCard: {
-            allowCustomStyle: false
-        },
-        imageSet: {
-            imageSize: Enums.Size.Medium,
-            maxImageHeight: 100
-        },
-        factSet: {
-            title: {
-                color: Enums.TextColor.Default,
-                size: Enums.TextSize.Default,
-                isSubtle: false,
-                weight: Enums.TextWeight.Bolder,
-                wrap: true,
-                maxWidth: 150,
-            },
-            value: {
-                color: Enums.TextColor.Default,
-                size: Enums.TextSize.Default,
-                isSubtle: false,
-                weight: Enums.TextWeight.Default,
-                wrap: true,
-            },
-            spacing: 10
         }
-    });
+
+        return result;
+    }
+
+    protected cardObjectParsed(o: SerializableObject, source: any) {
+        if (o instanceof Action && this.onParseAction) {
+            this.onParseAction(o, source, this);
+        }
+        else if (o instanceof CardElement && this.onParseElement) {
+            this.onParseElement(o, source, this);
+        }
+    }
+
+    onParseAction?: (action: Action, source: any, context: ParseContext) => void;
+    onParseElement?: (element: CardElement, source: any, context: ParseContext) => void;
+
+    elementRegistry?: CardObjectRegistry<CardElement>;
+    actionRegistry?: CardObjectRegistry<Action>;
+
+    parseCardObject<T extends CardObject>(
+        parent: CardElement | undefined,
+        source: any,
+        forbiddenTypeNames: string[],
+        allowFallback: boolean,
+        createInstanceCallback: (typeName: string) => T | undefined,
+        createValidationErrorCallback: (typeName: string, errorType: ParseErrorType) => IValidationError): T | undefined {
+        let result = this.internalParseCardObject(
+            parent,
+            source,
+            forbiddenTypeNames,
+            allowFallback,
+            createInstanceCallback,
+            createValidationErrorCallback);
+        
+        if (result !== undefined) {
+            this.cardObjectParsed(result, source);
+        }
+
+        return result;
+    }
+
+    parseElement(parent: CardElement | undefined, source: any, allowFallback: boolean): CardElement | undefined {
+        return this.parseCardObject<CardElement>(
+            parent,
+            source,
+            [], // Forbidden types not supported for elements for now
+            allowFallback,
+            (typeName: string) => {
+                let registry = this.elementRegistry ? this.elementRegistry : GlobalRegistry.elements;
+
+                return registry.createInstance(typeName);
+            },
+            (typeName: string, errorType: ParseErrorType) => {
+                if (errorType === ParseErrorType.UnknownType) {
+                    return {
+                        error: Enums.ValidationError.UnknownElementType,
+                        message: "Unknown element type: " + typeName + ". Fallback will be used if present."
+                    }
+                }
+                else {
+                    return {
+                        error: Enums.ValidationError.ElementTypeNotAllowed,
+                        message: "Element type " + typeName + " is not allowed in this context."
+                    }
+                }
+            });
+    }
+
+    parseAction(
+        parent: CardElement,
+        source: any,
+        forbiddenActionTypes: string[],
+        allowFallback: boolean): Action | undefined {
+        return this.parseCardObject<Action>(
+            parent,
+            source,
+            forbiddenActionTypes,
+            allowFallback,
+            (typeName: string) => {
+                let registry = this.actionRegistry ? this.actionRegistry : GlobalRegistry.actions;
+
+                return registry.createInstance(typeName);
+            },
+            (typeName: string, errorType: ParseErrorType) => {
+                if (errorType == ParseErrorType.UnknownType) {
+                    return {
+                        error: Enums.ValidationError.UnknownActionType,
+                        message: "Unknown action type: " + typeName + ". Fallback will be used if present."
+                    }
+                }
+                else {
+                    return {
+                        error: Enums.ValidationError.ActionTypeNotAllowed,
+                        message: "Action type " + typeName + " is not allowed in this context."
+                    }
+                }
+            });
+    }
+}

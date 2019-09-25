@@ -4,7 +4,7 @@ import * as Enums from "./enums";
 import { Dictionary, IValidationError } from "./shared";
 import { HostConfig } from "./host-config";
 import { HostCapabilities } from "./host-capabilities";
-import { TargetVersion, Versions, property, SerializableObject, StringProperty, SerializableObjectProperty } from "./serialization";
+import { Versions, property, SerializableObject, StringProperty, SerializableObjectProperty } from "./serialization";
 
 export class ValidationFailure {
     readonly errors: IValidationError[] = [];

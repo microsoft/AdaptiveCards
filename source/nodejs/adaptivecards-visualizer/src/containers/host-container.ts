@@ -100,14 +100,13 @@ export abstract class HostContainer {
     }
 
     public initialize() {
-        Adaptive.AdaptiveCard.elementTypeRegistry.reset();
-        Adaptive.AdaptiveCard.actionTypeRegistry.reset();
+        Adaptive.GlobalRegistry.reset();
 
         Adaptive.GlobalSettings.useMarkdownInRadioButtonAndCheckbox = true;
         Adaptive.GlobalSettings.allowMarkForTextHighlighting = false;
     }
 
-    public parseElement(element: Adaptive.CardElement, source: any, context: Adaptive.CardObjectParseContext) {
+    public parseElement(element: Adaptive.CardElement, source: any, context: Adaptive.ParseContext) {
         // Do nothing in base implementation
     }
 

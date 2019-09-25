@@ -57,7 +57,7 @@ export class ElementPaletteItem extends BasePaletteItem {
     }
 
     createPeer(designer: DesignerSurface.CardDesignerSurface): DesignerPeers.CardElementPeer {
-        let peer = DesignerSurface.CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(designer, null, this.typeRegistration.createInstance());
+        let peer = DesignerSurface.CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(designer, null, new this.typeRegistration.objectType());
         peer.initializeCardElement();
 
         return peer;
@@ -131,10 +131,10 @@ export class SnippetPaletteItem extends CustomPaletteItem {
             let rootElementTypeName = this.snippet["type"];
 
             if (rootElementTypeName) {
-                let adaptiveElement = Adaptive.AdaptiveCard.elementTypeRegistry.createInstance(rootElementTypeName);
+                let adaptiveElement = Adaptive.GlobalRegistry.elements.createInstance(rootElementTypeName);
 
                 if (adaptiveElement) {
-                    adaptiveElement.parse(this.snippet, new Adaptive.CardObjectParseContext());
+                    adaptiveElement.parse(this.snippet);
 
                     let peer = DesignerSurface.CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(designer, null, adaptiveElement);
                     peer.initializeCardElement();

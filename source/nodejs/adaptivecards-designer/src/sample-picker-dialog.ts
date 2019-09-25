@@ -64,7 +64,7 @@ export class SamplePickerDialog extends Dialog {
             }
         }
 
-        card.parse(expandedCardPayload, new Adaptive.CardObjectParseContext());
+        card.parse(expandedCardPayload, new Adaptive.ParseContext());
 
         let renderedCard = card.render();
         renderedCard.style.height = "100%";
@@ -147,8 +147,8 @@ export class SamplePickerDialog extends Dialog {
             }
         }
 
-        let parseContext = new Adaptive.CardObjectParseContext();
-        parseContext.onParseElement = (element: Adaptive.CardElement, source: any, context: Adaptive.CardObjectParseContext) => {
+        let parseContext = new Adaptive.ParseContext();
+        parseContext.onParseElement = (element: Adaptive.CardElement, source: any, context: Adaptive.ParseContext) => {
             if (element instanceof Adaptive.CardElementContainer) {
                 element.allowVerticalOverflow = Adaptive.getBoolValue(source["allowVerticalOverflow"], false);
             }

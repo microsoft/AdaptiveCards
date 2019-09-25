@@ -39,9 +39,9 @@ function renderCard(target: HTMLElement): HTMLElement {
 
     getSelectedHostContainer().setHostCapabilities(adaptiveCard.hostConfig);
 
-    let parseContext = new AdaptiveCards.CardObjectParseContext();
+    let parseContext = new AdaptiveCards.ParseContext();
     
-    parseContext.onParseElement = (element: AdaptiveCards.CardElement, source: any, context: AdaptiveCards.CardObjectParseContext) => {
+    parseContext.onParseElement = (element: AdaptiveCards.CardElement, source: any, context: AdaptiveCards.ParseContext) => {
         getSelectedHostContainer().parseElement(element, source, context);
     }
 
