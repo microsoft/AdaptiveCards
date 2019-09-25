@@ -430,6 +430,9 @@ $(function () {
 		});
 	}, false);
 
+	// Trigger scroll to play the first video
+	window.scroll(0, 1);
+
 	// Resize youtube videos
 	// https://css-tricks.com/NetMag/FluidWidthVideo/Article-FluidWidthVideo.php
 	var $allVideos = $("iframe"),
