@@ -13,6 +13,16 @@ window.onload = function() {
     // Uncomment to enabled preview features such as data binding
     // ACDesigner.GlobalSettings.previewFeaturesEnabled = true;
 
+    // Uncomment to configure default toolbox titles
+    /*
+    ACDesigner.Strings.toolboxes.cardEditor.title = "Custom title";
+    ACDesigner.Strings.toolboxes.cardStructure.title = "Custom title";
+    ACDesigner.Strings.toolboxes.dataStructure.title = "Custom title";
+    ACDesigner.Strings.toolboxes.propertySheet.title = "Custom title";
+    ACDesigner.Strings.toolboxes.sampleDataEditor.title = "Custom title";
+    ACDesigner.Strings.toolboxes.toolPalette.title = "Custom title";
+    */
+
 	ACDesigner.CardDesigner.onProcessMarkdown = (text: string, result: { didProcess: boolean, outputHtml: string }) => {
 		result.outputHtml = new markdownit().render(text);
 		result.didProcess = true;
@@ -33,6 +43,7 @@ window.onload = function() {
 	hostContainers.push(new ACDesigner.ToastContainer("Windows Notifications (Preview)", "containers/toast-container.css"));
 
     let designer = new ACDesigner.CardDesigner(hostContainers);
+
     designer.sampleCatalogueUrl = window.location.origin + "/sample-catalogue.json";
     designer.attachTo(document.getElementById("designerRootHost"));
     
