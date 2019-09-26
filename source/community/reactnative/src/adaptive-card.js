@@ -6,7 +6,8 @@ import React from 'react';
 import {
 	StyleSheet,
 	Text,
-	ScrollView
+	ScrollView,
+	Dimensions
 } from 'react-native';
 
 import { Registry } from './components/registration/registry';
@@ -21,6 +22,8 @@ import ResourceInformation from './utils/resource-information';
 import { ContainerWrapper } from './components/containers';
 import { ThemeConfigManager } from './utils/theme-config';
 import { ModelFactory } from './models';
+
+const { height } = Dimensions.get('window');
 
 export default class AdaptiveCard extends React.Component {
 
@@ -42,6 +45,7 @@ export default class AdaptiveCard extends React.Component {
 			showErrors: false,
 			payload: this.payload,
 			cardModel: this.cardModel,
+			height: 0
 		}
 
 		// hostConfig
@@ -58,6 +62,11 @@ export default class AdaptiveCard extends React.Component {
 		this.styleConfig = StyleManager.getManager().styles;
 
 	}
+
+	onContentSizeChange = (contentWidth, contentHeight) => {
+        this.setState({ screenHeight: contentHeight });
+	}
+	
 
 	toggleVisibilityForElementWithID = (idArray) => {
 		this.toggleCardModelObject(this.cardModel, [...idArray]);
@@ -166,14 +175,25 @@ export default class AdaptiveCard extends React.Component {
 	}
 
 	getAdaptiveCardContent() {
+		const contentSize = this.props.contentSize
+		const { height } =  Dimensions.get('window')
+		var contentHeight = (contentSize &&  contentSize < height) ? contentSize : height;
+		const scrollEnabled = this.state.screenHeight > contentHeight ;
+		 const shouldAddHeight = (contentSize < height - 64)
+		 var containerStyles = [styles.container]
+		if (shouldAddHeight) {
+			containerStyles.push({ height: contentHeight })
+		}
 		var adaptiveCardContent =
-			(
-				<ContainerWrapper style={styles.container} json={this.state.cardModel}>
-					{/* <ScrollView alwaysBounceVertical={false} style={{ flexGrow: 0 }}> */}
+			(  
+				<ContainerWrapper style={containerStyles} json={this.state.cardModel}>
+					<ScrollView
+						scrollEnabled={scrollEnabled}
+						onContentSizeChange={this.onContentSizeChange}>
 						{this.parsePayload()}
 						{!Utils.isNullOrEmpty(this.state.cardModel.actions) &&
 							<ActionWrapper actions={this.state.cardModel.actions} />}
-					{/* </ScrollView> */}
+					</ScrollView>
 				</ContainerWrapper>
 			);
 
@@ -279,7 +299,7 @@ AdaptiveCard.propTypes = {
 const styles = StyleSheet.create({
 	container: {
 		// //flex: 1,
-		padding: 10
+		padding: 10,
 	},
 	actionContainer: {
 		marginVertical: 10

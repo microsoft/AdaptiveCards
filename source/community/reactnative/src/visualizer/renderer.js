@@ -11,21 +11,18 @@ import {
     Platform,
     Alert,
     Linking,
-    ScrollView,
-    Dimensions
+    ScrollView
 } from 'react-native';
 
 import AdaptiveCard from '../adaptive-card';
 import { RatingRenderer } from './rating-renderer';
 import { Registry } from '../components/registration/registry';
 import * as Utils from '../utils/util';
-const { height } = Dimensions.get('window');
 
 export default class Renderer extends React.Component {
 
     state = {
         isJSONVisible: false,
-        height: 0
     }
 
     customHostConfig = {
@@ -51,20 +48,11 @@ export default class Renderer extends React.Component {
         this.onModalClose = props.onModalClose;
     }
 
-    onContentSizeChange = (contentWidth, contentHeight) => {
-        this.setState({ screenHeight: contentHeight });
-    }
-    
     render() {
         Registry.getManager().registerComponent('RatingBlock', RatingRenderer);
-
         let { isJSONVisible } = this.state;
-		const scrollEnabled = this.state.screenHeight > height ;
 
         return (
-            <ScrollView
-                scrollEnabled={scrollEnabled}
-                onContentSizeChange={this.onContentSizeChange}>
                 <View style={styles.container}>
                     <View style={styles.header}>
                         <Button title="Close" onPress={this.onModalClose} />
@@ -80,6 +68,7 @@ export default class Renderer extends React.Component {
                         :
                         <AdaptiveCard
                             payload={this.payload}
+                            // contentSize={500}
                             onExecuteAction={this.onExecuteAction}
                             hostConfig={this.customHostConfig}
                             themeConfig={this.customThemeConfig}
@@ -87,7 +76,6 @@ export default class Renderer extends React.Component {
                             ref="adaptiveCardRef" />
                     }
                 </View>
-            </ScrollView>
         );
     }
 
@@ -159,6 +147,11 @@ const styles = StyleSheet.create({
     container: {
         // height: 400,
         //flex: 1,
+        ...Platform.select({
+            ios: {
+                marginBottom : 84,
+            }
+        }),
         padding: 10,
         ...Platform.select({
             ios: {
