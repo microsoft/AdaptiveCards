@@ -68,119 +68,6 @@ export class Column extends React.Component {
 	}
 
 	/**
-	 * @description This function calculates the Width percentage of the column to be 
- 	 * 				rendered based on the width property from the payload. 
-	 * @param {object} containerStyle - Computed style object
-	 */
-	calculateWidthPercentage = (containerStyle) => {
-		var columns = this.props.columns
-		var widthArray = columns.length > 0 ? columns.map((column) => column.width) : [];
-		var spaceArray = columns.length > 0 ? columns.map((column) => column.spacing) : [];
-
-		var containsNumber = false
-		var containsString = false
-
-		// checks if the width property of the column elements has type of string or a number
-		widthArray.map((value) => {
-			if (typeof (value) == 'number') {
-				containsNumber = true
-			} else if (typeof (value) == 'string') {
-				containsString = true
-			}
-		})
-
-		var spacing = 0
-		spaceArray.map((space) => {
-			const spacingEnumValue = Utils.parseHostConfigEnum(
-				Enums.Spacing,
-				space,
-				Enums.Spacing.Default);
-			spacing += this.hostConfig.getEffectiveSpacing(spacingEnumValue);
-		})
-
-		const spacePercentage = (spacing / deviceWidth) * 100
-		const defaultWidthPercentage = (100 - spacePercentage) / columns.length
-
-		var columnWidth;
-		if (!containsString) {
-			columnWidth = 0
-			columns.forEach(function (column) {
-				if (!Utils.isNullOrEmpty(column.width)) {
-					columnWidth += column.width
-				}
-			});
-		}
-
-		let width = this.column.width
-		if (Utils.isNullOrEmpty(width)) {
-			width = 1
-		}
-
-		let widthPercentage;
-		/**
-		 * Scenario 1 : If the column has atleast one element
-		 *  			of width property with type of string
-		 * Scenario 2 : If the column has elements with width
-		 * 				parameter only of type integer
-		 */
-		if (containsString) {
-			/**
-			 * Scenario 1 : width property has string value (Ex: '80px', 'stretch', 'auto'),
-			 * Scenario 2 : width property has integer value (Ex: 1) 
-			 */
-			if (typeof (width) == 'string') {
-				/**
-				 * Scenario 1 : width property has string value (Ex: '80px'),
-				 *               use the integer portion.
-				 * Scenario 2 : If the width has string 'stretch' value,
-				 *              ignore and use the size property to determine dimensions.
-				 * Scenario 3 : If the width has string 'auto'value,
-				 *              ignore and use the size property to determine dimensions. 
-				 * 				(only if the other elements also has width parameter of type string).
-				 * Scenario 4 : If width is missing, column width is divided equally.
-				 */
-				let lastIndex = width.lastIndexOf('px')
-				if (lastIndex != -1) {
-					let pixelWidth = parseInt(width.substring(0, lastIndex))
-					widthPercentage = (pixelWidth / deviceWidth) * 100
-				}
-				else if (width == Constants.AlignStretch) {
-					containerStyle.push({ flex: 2});
-				}
-				else if (width == Constants.Auto) {
-					if (!containsNumber) {
-						containerStyle.push({ flex: 1 })
-					} else {
-						widthPercentage = defaultWidthPercentage
-					}
-				}
-				else {
-					widthPercentage = defaultWidthPercentage
-				}
-			}
-			else {
-				widthPercentage = defaultWidthPercentage
-			}
-		}
-		else {
-			/**
-			 * Scenario 1 : If width parameter is missing, column width is 
-			 * 				divided equally excluding the default spacing ,
-			 * Scenario 2 : width percentage is calculated based 
-			 * 				on the width parameter from the json 
-			 */
-			if (Utils.isNullOrEmpty(this.column.width)) {
-				widthPercentage = (((width / columns.length) * 100) - (spacePercentage / columns.length))
-			}
-			else {
-				widthPercentage = (((this.column.width / columnWidth) * 100) - (spacePercentage / columns.length))
-			}
-		}
-
-		return widthPercentage
-	}
-
-	/**
      * @description This function renders a separator between the columns 
 	 * 				based on the separator property from the payload. 
 	 * @returns {Component|null}
@@ -201,6 +88,40 @@ export class Column extends React.Component {
 			return null;
 		}
 	}
+	/**
+     * @description This function calculates flex value
+	 * 				based on the column width property from the payload. 
+	 * @returns {flex}
+     */
+
+	 flex = (containerViewStyle) => {
+		var flex = 0
+		var columns = this.props.columns
+		var widthArray = columns.length > 0 ? columns.map((column) => column.width) : [];
+		var sizeValues = []
+		widthArray.map((value) => {
+			if (Utils.isaNumber(value)) {
+				sizeValues.push(value)
+			} 
+		})
+		 var minValue = Math.min.apply(null, sizeValues)
+		 var maxValue = Math.max.apply(null, sizeValues)
+		 if (Utils.isaNumber(this.column.width)) {
+			flex = this.column.width/maxValue 
+		 }
+		 else if (!this.column || this.column.width === 'auto') {
+			 if (sizeValues.length == 0) {
+				flex = 0.1
+				containerViewStyle.push({ flexWrap: 'wrap'})
+			 }else {
+				flex = minValue/maxValue 
+			 }
+		}
+		else if (this.column.width === undefined || this.column.width === 'stretch') {
+			flex = 1 
+		} 
+		return flex;
+	}
 
 	render() {
 		const separator = this.column.separator || false;
@@ -220,14 +141,8 @@ export class Column extends React.Component {
 			spacingStyle.push({ marginLeft: this.spacing })
 		}
 		spacingStyle.push({ flexGrow: 1 });
-
-		let widthPercentage = this.calculateWidthPercentage(containerViewStyle);
-		if (!Utils.isNullOrEmpty(widthPercentage)) {
-			let spacePercentage = widthPercentage;
-			if (!this.isForemostElement())
-				spacePercentage = (this.spacing / deviceWidth) * 100 + spacePercentage;
-			containerViewStyle.push({ width: spacePercentage.toString() + '%' });
-		}
+	
+		containerViewStyle.push({ flex: this.flex(containerViewStyle) })
 
 		let ActionComponent = React.Fragment;
 		let actionComponentProps = {};
