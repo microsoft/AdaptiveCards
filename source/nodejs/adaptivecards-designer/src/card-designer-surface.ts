@@ -7,6 +7,7 @@ import { IPoint } from "./miscellaneous";
 import * as DesignerPeers from "./designer-peers";
 import * as ACData from "adaptivecards-templating";
 import * as Shared from "./shared";
+import { HostContainer } from "./containers";
 
 export type CardElementType = { new(): Adaptive.CardElement };
 export type ActionType = { new(): Adaptive.Action };
@@ -216,7 +217,7 @@ export class CardDesignerSurface {
             if (this._selectedPeer) {
                 this._selectedPeer.isSelected = true;
 
-                let commands = this._selectedPeer.getCommands();
+                let commands = this._selectedPeer.getCommands(this.hostContainer);
 
                 for (let command of commands) {
                     this._peerCommandsHostElement.appendChild(command.render());
@@ -449,11 +450,7 @@ export class CardDesignerSurface {
         }
     }
 
-    readonly parentElement: HTMLElement;
-
-    constructor(parentElement: HTMLElement) {
-        this.parentElement = parentElement;
-
+    constructor(readonly hostContainer: HostContainer) {
         var rootElement = document.createElement("div");
         rootElement.style.position = "relative";
         rootElement.style.width = "100%";
@@ -504,8 +501,8 @@ export class CardDesignerSurface {
 
         rootElement.appendChild(this._designerSurface);
 
-        this.parentElement.innerHTML = "";
-        this.parentElement.appendChild(rootElement);
+        this.hostContainer.cardHost.innerHTML = "";
+        this.hostContainer.cardHost.appendChild(rootElement);
     }
 
     onCardValidated: (errors: Adaptive.IValidationError[], validationResults: Adaptive.ValidationResults) => void;

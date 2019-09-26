@@ -5,6 +5,13 @@ import { HostContainer } from "../host-container";
 import * as hostConfig from "../../hostConfigs/outlook-desktop.json";
 
 export class OutlookContainer extends HostContainer {
+    constructor(name: string, styleSheet: string) {
+        super(name, styleSheet);
+
+        this.actionsRegistry.unregister("Action.Submit");
+        this.actionsRegistry.register("Action.Http", Adaptive.HttpAction);
+    }
+
     public renderTo(hostElement: HTMLElement) {
         hostElement.classList.add("outlook-frame");
         hostElement.appendChild(this.cardHost);
@@ -12,9 +19,6 @@ export class OutlookContainer extends HostContainer {
 
     public initialize() {
         super.initialize();
-
-        Adaptive.GlobalRegistry.actions.unregister("Action.Submit");
-        Adaptive.GlobalRegistry.actions.register("Action.Http", Adaptive.HttpAction);
 
         Adaptive.GlobalSettings.useMarkdownInRadioButtonAndCheckbox = false;
     }
@@ -53,7 +57,7 @@ export class OutlookContainer extends HostContainer {
                 var actionResources = source["resources"]["actions"] as Array<any>;
 
                 for (var i = 0; i < actionResources.length; i++) {
-                    let action = Adaptive.GlobalRegistry.actions.createInstance(actionResources[i]["type"]);
+                    let action = this.actionsRegistry.createInstance(actionResources[i]["type"]);
 
                     if (action) {
                         action.parse(actionResources[i], parseContext);

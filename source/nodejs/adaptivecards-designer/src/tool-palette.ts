@@ -131,7 +131,7 @@ export class SnippetPaletteItem extends CustomPaletteItem {
             let rootElementTypeName = this.snippet["type"];
 
             if (rootElementTypeName) {
-                let adaptiveElement = Adaptive.GlobalRegistry.elements.createInstance(rootElementTypeName);
+                let adaptiveElement = designer.hostContainer.elementsRegistry.createInstance(rootElementTypeName);
 
                 if (adaptiveElement) {
                     adaptiveElement.parse(this.snippet);

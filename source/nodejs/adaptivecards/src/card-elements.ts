@@ -6228,42 +6228,42 @@ class InlineAdaptiveCard extends AdaptiveCard {
 }
 
 export class GlobalRegistry {
+    static populateWithDefaultElements(registry: CardObjectRegistry<CardElement>) {
+        registry.clear();
+
+        registry.register("Container", Container);
+        registry.register("TextBlock", TextBlock);
+        registry.register("RichTextBlock", RichTextBlock, Versions.v1_2);
+        registry.register("TextRun", TextRun, Versions.v1_2);
+        registry.register("Image", Image);
+        registry.register("ImageSet", ImageSet);
+        registry.register("Media", Media, Versions.v1_1);
+        registry.register("FactSet", FactSet);
+        registry.register("ColumnSet", ColumnSet);
+        registry.register("ActionSet", ActionSet, Versions.v1_2);
+        registry.register("Input.Text", TextInput);
+        registry.register("Input.Date", DateInput);
+        registry.register("Input.Time", TimeInput);
+        registry.register("Input.Number", NumberInput);
+        registry.register("Input.ChoiceSet", ChoiceSetInput);
+        registry.register("Input.Toggle", ToggleInput);
+    }
+
+    static populateWithDefaultActions(registry: CardObjectRegistry<Action>) {
+        registry.clear();
+
+        registry.register(OpenUrlAction.JsonTypeName, OpenUrlAction);
+        registry.register(SubmitAction.JsonTypeName, SubmitAction);
+        registry.register(ShowCardAction.JsonTypeName, ShowCardAction);
+        registry.register(ToggleVisibilityAction.JsonTypeName, ToggleVisibilityAction, Versions.v1_2);
+    }
+
     static readonly elements = new CardObjectRegistry<CardElement>();
     static readonly actions = new CardObjectRegistry<Action>();
 
-    static resetElements() {
-        GlobalRegistry.elements.clear();
-
-        GlobalRegistry.elements.register("Container", Container);
-        GlobalRegistry.elements.register("TextBlock", TextBlock);
-        GlobalRegistry.elements.register("RichTextBlock", RichTextBlock, Versions.v1_2);
-        GlobalRegistry.elements.register("TextRun", TextRun, Versions.v1_2);
-        GlobalRegistry.elements.register("Image", Image);
-        GlobalRegistry.elements.register("ImageSet", ImageSet);
-        GlobalRegistry.elements.register("Media", Media, Versions.v1_1);
-        GlobalRegistry.elements.register("FactSet", FactSet);
-        GlobalRegistry.elements.register("ColumnSet", ColumnSet);
-        GlobalRegistry.elements.register("ActionSet", ActionSet, Versions.v1_2);
-        GlobalRegistry.elements.register("Input.Text", TextInput);
-        GlobalRegistry.elements.register("Input.Date", DateInput);
-        GlobalRegistry.elements.register("Input.Time", TimeInput);
-        GlobalRegistry.elements.register("Input.Number", NumberInput);
-        GlobalRegistry.elements.register("Input.ChoiceSet", ChoiceSetInput);
-        GlobalRegistry.elements.register("Input.Toggle", ToggleInput);
-    }
-
-    static resetActions() {
-        GlobalRegistry.actions.clear();
-
-        GlobalRegistry.actions.register(OpenUrlAction.JsonTypeName, OpenUrlAction);
-        GlobalRegistry.actions.register(SubmitAction.JsonTypeName, SubmitAction);
-        GlobalRegistry.actions.register(ShowCardAction.JsonTypeName, ShowCardAction);
-        GlobalRegistry.actions.register(ToggleVisibilityAction.JsonTypeName, ToggleVisibilityAction, Versions.v1_2);
-    }
-
     static reset() {
-        GlobalRegistry.resetElements();
-        GlobalRegistry.resetActions();
+        GlobalRegistry.populateWithDefaultElements(GlobalRegistry.elements);
+        GlobalRegistry.populateWithDefaultActions(GlobalRegistry.actions);
     }
 }
 

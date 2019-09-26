@@ -135,7 +135,7 @@ export class CardDesigner {
             let card: Adaptive.AdaptiveCard;
 
             if (peer) {
-                card = peer.buildPropertySheetCard(this.currentTargetVersion);
+                card = peer.buildPropertySheetCard(this.activeHostContainer, this.currentTargetVersion);
             }
             else {
                 card = new Adaptive.AdaptiveCard();
@@ -198,8 +198,8 @@ export class CardDesigner {
 
         let categorizedTypes: Object = {};
 
-        for (let i = 0; i < Adaptive.GlobalRegistry.elements.getItemCount(); i++) {
-            let registration = Adaptive.GlobalRegistry.elements.getItemAt(i);
+        for (let i = 0; i < this.activeHostContainer.elementsRegistry.getItemCount(); i++) {
+            let registration = this.activeHostContainer.elementsRegistry.getItemAt(i);
             let dummyCardElement = new registration.objectType();
             let peerRegistration = Designer.CardDesignerSurface.cardElementPeerRegistry.findTypeRegistration((<any>dummyCardElement).constructor);
 
@@ -307,7 +307,7 @@ export class CardDesigner {
 
         let wasInPreviewMode = this._designerSurface ? this._designerSurface.isPreviewMode : false;
 
-        this._designerSurface = new Designer.CardDesignerSurface(this.activeHostContainer.cardHost);
+        this._designerSurface = new Designer.CardDesignerSurface(this.activeHostContainer);
         this._designerSurface.fixedHeightCard = this.activeHostContainer.isFixedHeight;
         this._designerSurface.onSelectedPeerChanged = (peer: DesignerPeers.DesignerPeer) => {
             this.buildPropertySheet(peer);
@@ -493,7 +493,13 @@ export class CardDesigner {
     private scheduleLayoutUpdate() {
         clearTimeout(this.updateLayoutTimer);
 
-        this.updateLayoutTimer = setTimeout(() => { this.designerSurface.updateLayout(false); }, 50);
+        this.updateLayoutTimer = setTimeout(
+            () => {
+                if (this.designerSurface) {
+                    this.designerSurface.updateLayout(false);
+                }
+            },
+            50);
     }
 
     private _fullScreenHandler = new FullScreenHandler();
@@ -778,32 +784,37 @@ export class CardDesigner {
 
     private handlePointerUp(e: PointerEvent) {
         this.endDrag();
-        this.designerSurface.endDrag();
+
+        if (this.designerSurface) {
+            this.designerSurface.endDrag();
+        }
     }
 
     private handlePointerMove(e: PointerEvent) {
         this._currentMousePosition = { x: e.x, y: e.y };
 
-        let isPointerOverDesigner = this.designerSurface.isPointerOver(this._currentMousePosition.x, this._currentMousePosition.y);
-        let peerDropped = false;
+        if (this.designerSurface) {
+            let isPointerOverDesigner = this.designerSurface.isPointerOver(this._currentMousePosition.x, this._currentMousePosition.y);
+            let peerDropped = false;
 
-        if (this._draggedPaletteItem && isPointerOverDesigner) {
-            let peer = this._draggedPaletteItem.createPeer(this.designerSurface);
+            if (this._draggedPaletteItem && isPointerOverDesigner) {
+                let peer = this._draggedPaletteItem.createPeer(this.designerSurface);
 
-            let clientCoordinates = this.designerSurface.pageToClientCoordinates(this._currentMousePosition.x, this._currentMousePosition.y);
+                let clientCoordinates = this.designerSurface.pageToClientCoordinates(this._currentMousePosition.x, this._currentMousePosition.y);
 
-            if (this.designerSurface.tryDrop(clientCoordinates, peer)) {
-                this.endDrag();
+                if (this.designerSurface.tryDrop(clientCoordinates, peer)) {
+                    this.endDrag();
 
-                this.designerSurface.startDrag(peer);
+                    this.designerSurface.startDrag(peer);
 
-                peerDropped = true;
+                    peerDropped = true;
+                }
             }
-        }
 
-        if (!peerDropped && this._draggedElement) {
-            this._draggedElement.style.left = this._currentMousePosition.x - 10 + "px";
-            this._draggedElement.style.top = this._currentMousePosition.y - 10 + "px";
+            if (!peerDropped && this._draggedElement) {
+                this._draggedElement.style.left = this._currentMousePosition.x - 10 + "px";
+                this._draggedElement.style.top = this._currentMousePosition.y - 10 + "px";
+            }
         }
     }
 

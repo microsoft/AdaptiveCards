@@ -8,6 +8,7 @@ import { CardDesignerSurface } from "./card-designer-surface";
 import { DesignerPeerTreeItem } from "./designer-peer-treeitem";
 import { Rect, IPoint } from "./miscellaneous";
 import { GlobalSettings } from "./shared";
+import { HostContainer } from "./containers";
 
 export abstract class DesignerPeerInplaceEditor {
     onClose: (applyChanges: boolean) => void;
@@ -236,7 +237,7 @@ export abstract class DesignerPeer extends DraggableElement {
         return null;
     }
 
-    protected internalAddCommands(commands: Array<PeerCommand>) {
+    protected internalAddCommands(hostContainer: HostContainer, commands: Array<PeerCommand>) {
         // Do nothing in base implementation
     }
 
@@ -391,13 +392,13 @@ export abstract class DesignerPeer extends DraggableElement {
         return this._children[index];
     }
 
-    getCommands(promoteParentCommands: boolean = false): Array<PeerCommand> {
+    getCommands(hostContainer: HostContainer, promoteParentCommands: boolean = false): Array<PeerCommand> {
         let result: Array<PeerCommand> = [];
 
-        this.internalAddCommands(result);
+        this.internalAddCommands(hostContainer, result);
 
         if (promoteParentCommands && this.parent) {
-            let parentCommands = this.parent.getCommands();
+            let parentCommands = this.parent.getCommands(hostContainer);
 
             for (let command of parentCommands) {
                 if (command.isPromotable) {
@@ -451,7 +452,7 @@ export abstract class DesignerPeer extends DraggableElement {
         }
     }
 
-    buildPropertySheetCard(targetVersion: Adaptive.TargetVersion): Adaptive.AdaptiveCard {
+    buildPropertySheetCard(hostContainer: HostContainer, targetVersion: Adaptive.TargetVersion): Adaptive.AdaptiveCard {
         let card = new Adaptive.AdaptiveCard();
         card.padding = new Adaptive.PaddingDefinition(
             Adaptive.Spacing.Small,
@@ -463,10 +464,15 @@ export abstract class DesignerPeer extends DraggableElement {
 
         this.populatePropertySheet(propertySheet);
 
-        propertySheet.render(card, new PropertySheetContext(targetVersion, this));
+        propertySheet.render(
+            card,
+            new PropertySheetContext(
+                hostContainer,
+                targetVersion,
+                this));
 
         let actionSet = new Adaptive.ActionSet();
-        let commands = this.getCommands(true);
+        let commands = this.getCommands(hostContainer, true);
 
         for (let command of commands) {
             let action = new Adaptive.SubmitAction();
@@ -528,7 +534,11 @@ export abstract class DesignerPeer extends DraggableElement {
 export class PropertySheetContext {
     private _target: object = undefined;
 
-    constructor(readonly targetVersion: Adaptive.TargetVersion, readonly peer: CardObjectPeer, target: object = undefined) {
+    constructor(
+        readonly hostContainer: HostContainer,
+        readonly targetVersion: Adaptive.TargetVersion,
+        readonly peer: CardObjectPeer,
+        target: object = undefined) {
         this._target = target;
     }
 
@@ -548,7 +558,11 @@ export class SubPropertySheetEntry {
         let container = new Adaptive.Container();
         container.spacing = Adaptive.Spacing.Small;
 
-        this.propertySheet.render(container, new PropertySheetContext(context.targetVersion, context.peer, this.target));
+        this.propertySheet.render(container, new PropertySheetContext(
+            context.hostContainer,
+            context.targetVersion,
+            context.peer,
+            this.target));
 
         return container;
     }
@@ -860,7 +874,7 @@ export class ActionPropertyEditor extends SingleInputPropertyEditor {
             context.target[this.propertyName] = null;
         }
         else {
-            context.target[this.propertyName] = Adaptive.GlobalRegistry.actions.createInstance(value);
+            context.target[this.propertyName] = context.hostContainer.actionsRegistry.createInstance(value);
         }
     }
 
@@ -871,8 +885,8 @@ export class ActionPropertyEditor extends SingleInputPropertyEditor {
         input.placeholder = "(not set)";
         input.choices.push(new Adaptive.Choice("(not set)", "none"));
     
-        for (var i = 0; i < Adaptive.GlobalRegistry.actions.getItemCount(); i++) {
-            let actionType = Adaptive.GlobalRegistry.actions.getItemAt(i).typeName;
+        for (var i = 0; i < context.hostContainer.actionsRegistry.getItemCount(); i++) {
+            let actionType = context.hostContainer.actionsRegistry.getItemAt(i).typeName;
             let doAddActionType = this.forbiddenActionTypes ? this.forbiddenActionTypes.indexOf(actionType) < 0 : true;
     
             if (doAddActionType) {
@@ -901,7 +915,13 @@ export class CompoundPropertyEditor extends PropertySheetEntry {
 
         for (let entry of this.entries) {
             if (Adaptive.isVersionLessOrEqual(entry.targetVersion, context.targetVersion)) {
-                container.addItem(entry.render(new PropertySheetContext(context.targetVersion, context.peer, context.target[this.propertyName])));
+                container.addItem(
+                    entry.render(
+                        new PropertySheetContext(
+                            context.hostContainer,
+                            context.targetVersion,
+                            context.peer,
+                            context.target[this.propertyName])));
             }
         }
 
@@ -1512,8 +1532,8 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
         return true;
     }
 
-    protected internalAddCommands(commands: Array<PeerCommand>) {
-        super.internalAddCommands(commands);
+    protected internalAddCommands(hostContainer: HostContainer, commands: Array<PeerCommand>) {
+        super.internalAddCommands(hostContainer, commands);
 
         commands.push(
             new PeerCommand(
@@ -1523,10 +1543,10 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
                     execute: (command: PeerCommand, clickedElement: HTMLElement) => {
                         let popupMenu = new Controls.PopupMenu();
 
-                        for (var i = 0; i < Adaptive.GlobalRegistry.actions.getItemCount(); i++) {
-                            let menuItem = new Controls.DropDownItem(i.toString(), Adaptive.GlobalRegistry.actions.getItemAt(i).typeName);
+                        for (var i = 0; i < hostContainer.actionsRegistry.getItemCount(); i++) {
+                            let menuItem = new Controls.DropDownItem(i.toString(), hostContainer.actionsRegistry.getItemAt(i).typeName);
                             menuItem.onClick = (clickedItem: Controls.DropDownItem) => {
-                                let registration = Adaptive.GlobalRegistry.actions.getItemAt(Number.parseInt(clickedItem.key));
+                                let registration = hostContainer.actionsRegistry.getItemAt(Number.parseInt(clickedItem.key));
                                 let action = new registration.objectType();
                                 action.title = registration.typeName;
 
@@ -1706,8 +1726,8 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
         return true;
     }
 
-    protected internalAddCommands(commands: Array<PeerCommand>) {
-        super.internalAddCommands(commands);
+    protected internalAddCommands(hostContainer: HostContainer, commands: Array<PeerCommand>) {
+        super.internalAddCommands(hostContainer, commands);
 
         commands.push(
             new PeerCommand(
@@ -1842,8 +1862,8 @@ export class ActionSetPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard> {
         this.insertChild(CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, this, action));
     }
 
-    protected internalAddCommands(commands: Array<PeerCommand>) {
-        super.internalAddCommands(commands);
+    protected internalAddCommands(hostContainer: HostContainer, commands: Array<PeerCommand>) {
+        super.internalAddCommands(hostContainer, commands);
 
         commands.push(
             new PeerCommand(
@@ -1853,10 +1873,10 @@ export class ActionSetPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard> {
                     execute: (command: PeerCommand, clickedElement: HTMLElement) => {
                         let popupMenu = new Controls.PopupMenu();
 
-                        for (var i = 0; i < Adaptive.GlobalRegistry.actions.getItemCount(); i++) {
-                            let menuItem = new Controls.DropDownItem(i.toString(), Adaptive.GlobalRegistry.actions.getItemAt(i).typeName);
+                        for (var i = 0; i < hostContainer.actionsRegistry.getItemCount(); i++) {
+                            let menuItem = new Controls.DropDownItem(i.toString(), hostContainer.actionsRegistry.getItemAt(i).typeName);
                             menuItem.onClick = (clickedItem: Controls.DropDownItem) => {
-                                let registration = Adaptive.GlobalRegistry.actions.getItemAt(Number.parseInt(clickedItem.key));
+                                let registration = hostContainer.actionsRegistry.getItemAt(Number.parseInt(clickedItem.key));
                                 let action = new registration.objectType();
                                 action.title = registration.typeName;
 
@@ -1878,8 +1898,8 @@ export class ActionSetPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard> {
 export class ImageSetPeer extends TypedCardElementPeer<Adaptive.ImageSet> {
     static readonly ImageSizeProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "imageSize", "Image size", Adaptive.Size);
 
-    protected internalAddCommands(commands: Array<PeerCommand>) {
-        super.internalAddCommands(commands);
+    protected internalAddCommands(hostContainer: HostContainer, commands: Array<PeerCommand>) {
+        super.internalAddCommands(hostContainer, commands);
 
         commands.push(
             new PeerCommand(
