@@ -9,8 +9,8 @@
 
 using namespace AdaptiveCards;
 
-@interface ACOParseContext()
+@interface ACOParseContext ()
 
-- (std::shared_ptr<AdaptiveSharedNamespace::ActionElementParser> const)getActionParser:(NSString*)elementType;
+- (std::shared_ptr<AdaptiveSharedNamespace::ActionElementParser> const)getActionParser:(NSString *)elementType;
 
 @end

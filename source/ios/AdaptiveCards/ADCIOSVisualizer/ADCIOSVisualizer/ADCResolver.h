@@ -9,6 +9,6 @@
 
 #import <AdaptiveCards/ACFramework.h>
 
-@interface ADCResolver:NSObject<ACOIResourceResolver>
+@interface ADCResolver : NSObject <ACOIResourceResolver>
 
 @end

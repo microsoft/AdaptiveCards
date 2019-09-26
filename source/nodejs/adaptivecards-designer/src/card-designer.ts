@@ -19,6 +19,7 @@ import { Toolbox, IToolboxCommand } from "./tool-box";
 import { FieldDefinition } from "./data";
 import { DataTreeItem } from "./data-treeitem";
 import { BaseTreeItem } from "./base-tree-item";
+import { Strings } from "./strings";
 import * as Shared from "./shared";
 
 export class CardDesigner {
@@ -368,6 +369,10 @@ export class CardDesigner {
 
     private activeHostContainerChanged() {
         this.recreateDesignerSurface();
+
+        if (this.onActiveHostContainerChanged) {
+            this.onActiveHostContainerChanged(this);
+        }
     }
 
     private updateToolboxLayout(toolbox: Toolbox, hostPanelRect: ClientRect | DOMRect) {
@@ -402,11 +407,19 @@ export class CardDesigner {
     private updateLayoutTimer: any;
 
     private preventCardUpdate: boolean = false;
+
+    private cardPayloadChanged() {
+        if (this.onCardPayloadChanged) {
+            this.onCardPayloadChanged(this);
+        }
+    }
     
     private setCardPayload(payload: object) {
         if (this._isMonacoEditorLoaded) {
             this._cardEditor.setValue(JSON.stringify(payload, null, 4));
         }
+
+        this.cardPayloadChanged();
     }
 
     private setSampleDataPayload(payload: any) {
@@ -458,6 +471,8 @@ export class CardDesigner {
 
             if (!this.preventCardUpdate) {
                 this.designerSurface.setCardPayloadAsString(this.getCurrentCardEditorPayload());
+
+                this.cardPayloadChanged();
             }
         }
         finally {
@@ -869,7 +884,7 @@ export class CardDesigner {
         let toolPaletteHost = document.createElement("div");
         toolPaletteHost.className = "acd-dockedPane";
 
-        this._toolPaletteToolbox = new Toolbox("toolPalette", "Card Elements");
+        this._toolPaletteToolbox = new Toolbox("toolPalette", Strings.toolboxes.toolPalette.title);
         this._toolPaletteToolbox.content = toolPaletteHost;
 
         let toolPalettePanel = new SidePanel(
@@ -882,10 +897,10 @@ export class CardDesigner {
         toolPalettePanel.attachTo(document.getElementById("toolPalettePanel"));
 
         // JSON editors panel
-        this._cardEditorToolbox = new Toolbox("cardEditor", "Card Payload Editor");
+        this._cardEditorToolbox = new Toolbox("cardEditor", Strings.toolboxes.cardEditor.title);
         this._cardEditorToolbox.content = document.createElement("div");
         this._cardEditorToolbox.content.style.padding = "8px";
-        this._cardEditorToolbox.content.innerText = "Loading editor...";
+        this._cardEditorToolbox.content.innerText = Strings.loadingEditor;
 
         this._jsonEditorsPanel = new SidePanel(
             "jsonEditorPanel",
@@ -904,10 +919,10 @@ export class CardDesigner {
         this._jsonEditorsPanel.addToolbox(this._cardEditorToolbox);
 
         if (Shared.GlobalSettings.previewFeaturesEnabled) {
-            this._sampleDataEditorToolbox = new Toolbox("sampleDataEditor", "Sample Data Editor");
+            this._sampleDataEditorToolbox = new Toolbox("sampleDataEditor", Strings.toolboxes.sampleDataEditor.title);
             this._sampleDataEditorToolbox.content = document.createElement("div");
             this._sampleDataEditorToolbox.content.style.padding = "8px";
-            this._sampleDataEditorToolbox.content.innerText = "Loading editor...";
+            this._sampleDataEditorToolbox.content.innerText = Strings.loadingEditor;
             this._sampleDataEditorToolbox.commands = [
                 {
                     title: "Copy the structure of this data into the Data Structure toolbox",
@@ -927,7 +942,7 @@ export class CardDesigner {
         let propertySheetHost = document.createElement("div");
         propertySheetHost.className = "acd-propertySheet-host";
 
-        this._propertySheetToolbox = new Toolbox("propertySheet", "Element Properties");
+        this._propertySheetToolbox = new Toolbox("propertySheet", Strings.toolboxes.propertySheet.title);
         this._propertySheetToolbox.content = propertySheetHost;
 
         let propertySheetPanel = new SidePanel(
@@ -945,7 +960,7 @@ export class CardDesigner {
         let treeViewHost = document.createElement("div");
         treeViewHost.className = "acd-treeView-host";
 
-        this._treeViewToolbox = new Toolbox("treeView", "Card Structure");
+        this._treeViewToolbox = new Toolbox("treeView", Strings.toolboxes.cardStructure.title);
         this._treeViewToolbox.content = treeViewHost;
 
         let treeViewPanel = new SidePanel(
@@ -961,7 +976,7 @@ export class CardDesigner {
             let dataExplorerHost = document.createElement("div");
             dataExplorerHost.className = "acd-treeView-host";
 
-            this._dataToolbox = new Toolbox("data", "Data Structure");
+            this._dataToolbox = new Toolbox("data", Strings.toolboxes.dataStructure.title);
             this._dataToolbox.content = dataExplorerHost;
 
             treeViewPanel.addToolbox(this._dataToolbox);
@@ -1040,6 +1055,9 @@ export class CardDesigner {
     getCard(): object {
         return this.designerSurface.card.toJSON();
     }
+
+    onCardPayloadChanged: (designer: CardDesigner) => void;
+    onActiveHostContainerChanged: (designer: CardDesigner) => void;
 
     get currentTargetVersion(): Shared.TargetVersion {
         if (this._versionChoicePicker) {

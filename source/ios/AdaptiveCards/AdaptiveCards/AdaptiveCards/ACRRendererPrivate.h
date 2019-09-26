@@ -6,23 +6,23 @@
 //
 //
 
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
 #import "ACRBaseCardElementRenderer.h"
 #import "ACRIContentHoldingView.h"
-#import "SharedAdaptiveCard.h"
-#import "HostConfig.h"
 #import "ACRRenderer.h"
 #import "BackgroundImage.h"
+#import "HostConfig.h"
+#import "SharedAdaptiveCard.h"
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 using namespace AdaptiveCards;
 
-@interface ACRRenderer()
+@interface ACRRenderer ()
 
 + (UIView *)renderWithAdaptiveCards:(std::shared_ptr<AdaptiveCards::AdaptiveCard> const &)adaptiveCard
                              inputs:(NSMutableArray *)inputs
-                           context:(ACRView *)rootView
-                    containingView:(ACRColumnView *)guideFrame
+                            context:(ACRView *)rootView
+                     containingView:(ACRColumnView *)guideFrame
                          hostconfig:(ACOHostConfig *)config;
 
 + (UIView<ACRIContentHoldingView> *)render:(UIView *)view

@@ -2,11 +2,7 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.Uwp.h"
-#include "Enums.h"
 #include "ActionSet.h"
-#include <windows.foundation.h>
-#include "AdaptiveCardElement.h"
 
 namespace AdaptiveNamespace
 {
@@ -17,11 +13,12 @@ namespace AdaptiveNamespace
                                               Microsoft::WRL::CloakedIid<ITypePeek>,
                                               Microsoft::WRL::CloakedIid<AdaptiveNamespace::AdaptiveCardElementBase>>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveActionSet, BaseTrust)
+        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveActionSet, BaseTrust);
 
-            public : AdaptiveActionSet();
+    public:
+        AdaptiveActionSet();
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::ActionSet>& sharedActionSet);
+        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ActionSet>& sharedActionSet);
 
         // IAdaptiveActionSet
         IFACEMETHODIMP get_Actions(
@@ -102,10 +99,10 @@ namespace AdaptiveNamespace
             return AdaptiveCardElementBase::put_IsVisible(isVisible);
         }
 
-        IFACEMETHODIMP MeetsRequirements(_In_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration* featureRegistration,
-                                         _Out_ boolean* value)
+        IFACEMETHODIMP get_Requirements(
+            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>** requirements)
         {
-            return AdaptiveCardElementBase::MeetsRequirements(featureRegistration, value);
+            return AdaptiveCardElementBase::get_Requirements(requirements);
         }
 
         IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result)

@@ -40,7 +40,7 @@ class RenderAsyncBase
         bool explicitDimensions = m_renderer->GetFixedDimensions(&width, &height);
         if (explicitDimensions)
         {
-            THROW_IF_FAILED(m_renderer->GetXamlBuilder()->SetFixedDimensions(width, height));
+            m_renderer->GetXamlBuilder()->SetFixedDimensions(width, height);
         }
     }
 
@@ -104,9 +104,9 @@ protected:
                                                                                     m_renderResult.Get()));
 
                     AdaptiveNamespace::XamlBuilder::BuildXamlTreeFromAdaptiveCard(m_card.Get(),
-                                                                                              &m_rootXamlElement,
-                                                                                              renderContext.Get(),
-                                                                                              m_renderer->GetXamlBuilder());
+                                                                                  &m_rootXamlElement,
+                                                                                  renderContext.Get(),
+                                                                                  m_renderer->GetXamlBuilder());
                 }
                 catch (...)
                 {
@@ -114,8 +114,7 @@ protected:
                     return XamlBuilderHadError();
                 }
                 return S_OK;
-            })
-                .Get(),
+            }).Get(),
             &dispatcherAsyncAction);
 
         dispatcherAsyncAction->put_Completed(

@@ -5,11 +5,11 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "ACOAdaptiveCardParseResult.h"
 #import "ACORemoteResourceInformation.h"
+#import <Foundation/Foundation.h>
 
-@interface ACOAdaptiveCard:NSObject
+@interface ACOAdaptiveCard : NSObject
 
 + (ACOAdaptiveCardParseResult *)fromJson:(NSString *)payload;
 - (NSData *)inputs;

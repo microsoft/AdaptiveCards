@@ -5,10 +5,10 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "ACOBaseCardElement.h"
+#import <UIKit/UIKit.h>
 
-@interface ACRUILabel:UITextView
+@interface ACRUILabel : UITextView
 @property ACRContainerStyle style;
 @property CGFloat area;
 
