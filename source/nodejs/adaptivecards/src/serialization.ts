@@ -123,7 +123,7 @@ export function isVersionLessOrEqual(version: TargetVersion, targetVersion: Targ
 export abstract class BaseParseContext {
     readonly errors: IValidationError[] = [];
 
-    constructor(readonly targetVersion: Version = Versions.latest) {}
+    constructor(public targetVersion: Version = Versions.latest) {}
 }
 
 class SimpleParseContext extends BaseParseContext {}
@@ -348,7 +348,7 @@ export class SerializableObjectProperty extends PropertyDefinition {
     }
 
     toJSON(sender: SerializableObject, target: PropertyBag, value: SerializableObject | undefined) {
-        let serializedValue = value !== undefined ? value.toJSON() : value;
+        let serializedValue = value !== undefined ? value.toJSON(this.targetVersion) : value;
 
         if (typeof serializedValue === "object" && Object.keys(serializedValue).length === 0) {
             serializedValue = undefined;
@@ -553,6 +553,21 @@ export abstract class SerializableObject {
         }
     }
 
+    protected internalToJSON(target: PropertyBag, targetVersion: TargetVersion ) {
+        let s = this.getSchema();
+        let serializedProperties: string[] = [];
+
+        for (let i = 0; i < s.getCount(); i++) {
+            let property = s.getItemAt(i);
+
+            if (serializedProperties.indexOf(property.getJsonPropertyName()) == -1) {
+                property.toJSON(this, target, this.getValue(property));
+
+                serializedProperties.push(property.getJsonPropertyName());
+            }
+        }
+    }
+
     constructor() {
         let s = this.getSchema();
 
@@ -569,8 +584,8 @@ export abstract class SerializableObject {
         this.internalParse(source, context ? context : new SimpleParseContext());
     }
 
-    toJSON(): any {
-        let result: any;
+    toJSON(targetVersion?: TargetVersion): PropertyBag {
+        let result: PropertyBag;
 
         if (GlobalSettings.enableFullJsonRoundTrip && this._rawProperties && typeof this._rawProperties === "object") {
             result = this._rawProperties;
@@ -579,18 +594,7 @@ export abstract class SerializableObject {
             result = {};
         }
 
-        let s = this.getSchema();
-        let serializedProperties: string[] = [];
-
-        for (let i = 0; i < s.getCount(); i++) {
-            let property = s.getItemAt(i);
-
-            if (serializedProperties.indexOf(property.getJsonPropertyName()) == -1) {
-                property.toJSON(this, result, this.getValue(property));
-
-                serializedProperties.push(property.getJsonPropertyName());
-            }
-        }
+        this.internalToJSON(result, targetVersion ? targetVersion : Versions.latest);
 
         return result;
     }

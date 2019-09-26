@@ -608,7 +608,7 @@ export class ActionProperty extends PropertyDefinition {
     }
 
     toJSON(sender: SerializableObject, target: PropertyBag, value: Action | undefined) {
-        Utils.setProperty(target, this.name, value ? value.toJSON() : undefined);
+        Utils.setProperty(target, this.name, value ? value.toJSON(this.targetVersion) : undefined);
     }
 
     constructor(
@@ -1241,6 +1241,20 @@ export class RichTextBlock extends CardElement {
         }
     }
 
+    protected internalToJSON(target: PropertyBag, targetVersion: TargetVersion) {
+        super.internalToJSON(target, targetVersion);
+
+        if (this._inlines.length > 0) {
+            let jsonInlines: any[] = [];
+
+            for (let inline of this._inlines) {
+                jsonInlines.push(inline.toJSON(targetVersion));
+            }
+
+            Utils.setProperty(target, "inlines", jsonInlines);
+        }
+    }
+
     protected internalRender(): HTMLElement | undefined {
         if (this._inlines.length > 0) {
             let element = document.createElement("div");
@@ -1281,22 +1295,6 @@ export class RichTextBlock extends CardElement {
 
         for (let inline of this._inlines) {
             result += inline.asString();
-        }
-
-        return result;
-    }
-
-    toJSON() {
-        let result = super.toJSON();
-
-        if (this._inlines.length > 0) {
-            let jsonInlines: any[] = [];
-
-            for (let inline of this._inlines) {
-                jsonInlines.push(inline.toJSON());
-            }
-
-            Utils.setProperty(result, "inlines", jsonInlines);
         }
 
         return result;
@@ -2282,8 +2280,8 @@ export class InputValidationOptions extends SerializableObject {
 
     //#endregion
 
-    toJSON(): any {
-        return this.hasAllDefaultValues() ? undefined : super.toJSON();
+    protected internalToJSON(target: PropertyBag, targetVersion: TargetVersion) {
+        return this.hasAllDefaultValues() ? undefined : super.internalToJSON(target, targetVersion);
     }
 }
 
@@ -3935,6 +3933,14 @@ export class ShowCardAction extends Action {
         }
     }
 
+    protected internalToJSON(target: PropertyBag, targetVersion: TargetVersion) {
+        super.internalToJSON(target, targetVersion);
+
+        if (this.card) {
+            Utils.setProperty(target, "card", this.card.toJSON(targetVersion));
+        }
+    }
+
     protected addCssClasses(element: HTMLElement) {
         super.addCssClasses(element);
 
@@ -3947,16 +3953,6 @@ export class ShowCardAction extends Action {
 
     getJsonTypeName(): string {
         return ShowCardAction.JsonTypeName;
-    }
-
-    toJSON(): any {
-        let result = super.toJSON();
-
-        if (this.card) {
-            Utils.setProperty(result, "card", this.card.toJSON());
-        }
-
-        return result;
     }
 
     internalValidateProperties(context: ValidationResults) {
@@ -4179,12 +4175,12 @@ class ActionCollection {
         }
     }
 
-    toJSON(): any {
+    toJSON(targetVersion: TargetVersion): any {
         if (this.items.length > 0) {
             let result = [];
 
             for (let action of this.items) {
-                result.push(action.toJSON());
+                result.push(action.toJSON(targetVersion));
             }
 
             return result;
@@ -4501,6 +4497,12 @@ export class ActionSet extends CardElement {
         this._actionCollection.parse(source["actions"], context);
     }
 
+    protected internalToJSON(target: PropertyBag, targetVersion: TargetVersion) {
+        super.internalToJSON(target, targetVersion);
+
+        Utils.setProperty(target, "actions", this._actionCollection.toJSON(targetVersion));
+    }
+
     protected internalRender(): HTMLElement | undefined {
         return this._actionCollection.render(this.orientation !== undefined ? this.orientation : this.hostConfig.actions.actionsOrientation, this.isDesignMode());
     }
@@ -4509,14 +4511,6 @@ export class ActionSet extends CardElement {
         super();
 
         this._actionCollection = new ActionCollection(this);
-    }
-
-    toJSON(): any {
-        let result = super.toJSON();
-
-        Utils.setProperty(result, "actions", this._actionCollection.toJSON());
-
-        return result;
     }
 
     isBleedingAtBottom(): boolean {
@@ -4812,7 +4806,7 @@ export class BackgroundImage extends SerializableObject {
         }
     }
 
-    toJSON(): any {
+    protected internalToJSON(target: PropertyBag, targetVersion: TargetVersion) {
         if (!this.isValid()) {
             return undefined;
         }
@@ -4824,7 +4818,7 @@ export class BackgroundImage extends SerializableObject {
             return this.url;
         }
         else {
-            return super.toJSON();
+            return super.internalToJSON(target, targetVersion);
         }
     }
 
@@ -5081,16 +5075,14 @@ export class Container extends StylableCardElementContainer {
         }
     }
 
-    protected get isSelectable(): boolean {
-        return true;
+    protected internalToJSON(target: PropertyBag, targetVersion: TargetVersion) {
+        super.internalToJSON(target, targetVersion);
+
+        Utils.setArrayProperty(target, this.getItemsCollectionPropertyName(), this._items);
     }
 
-    toJSON(): any {
-        let result = super.toJSON();
-
-        Utils.setArrayProperty(result, this.getItemsCollectionPropertyName(), this._items);
-
-        return result;
+    protected get isSelectable(): boolean {
+        return true;
     }
 
     getItemCount(): number {
@@ -5525,12 +5517,10 @@ export class ColumnSet extends StylableCardElementContainer {
         }
     }
 
-    toJSON(): any {
-        let result = super.toJSON();
+    protected internalToJSON(target: PropertyBag, targetVersion: TargetVersion) {
+        super.internalToJSON(target, targetVersion);
 
-        Utils.setArrayProperty(result, "columns", this._columns);
-
-        return result;
+        Utils.setArrayProperty(target, "columns", this._columns);
     }
 
     isFirstElement(element: CardElement): boolean {
@@ -5789,6 +5779,12 @@ export abstract class ContainerWithActions extends Container {
         this._actionCollection.parse(source["actions"], context);
     }
 
+    protected internalToJSON(target: PropertyBag, targetVersion: TargetVersion) {
+        super.internalToJSON(target, targetVersion);
+
+        Utils.setProperty(target, "actions", this._actionCollection.toJSON(targetVersion));
+    }
+
     protected internalRender(): HTMLElement | undefined {
         let element = super.internalRender();
 
@@ -5843,14 +5839,6 @@ export abstract class ContainerWithActions extends Container {
         super();
 
         this._actionCollection = new ActionCollection(this);
-    }
-
-    toJSON(): any {
-        let result = super.toJSON();
-
-        Utils.setProperty(result, "actions", this._actionCollection.toJSON());
-
-        return result;
     }
 
     getActionCount(): number {

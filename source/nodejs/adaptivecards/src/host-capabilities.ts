@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import { TargetVersion, Version, SerializableObject, BaseParseContext } from "./serialization";
+import { TargetVersion, Version, SerializableObject, BaseParseContext, PropertyBag } from "./serialization";
 
 export class HostCapabilities extends SerializableObject {
     private _capabilities: { [key: string]: TargetVersion } = {};
@@ -32,14 +32,12 @@ export class HostCapabilities extends SerializableObject {
         }
     }
 
-    toJSON(): any {
-        let result = super.toJSON();
+    protected internalToJSON(target: PropertyBag, targetVersion: TargetVersion) {
+        super.internalToJSON(target, targetVersion);
 
         for (let key in this._capabilities) {
-            result[key] = this._capabilities[key];
+            target[key] = this._capabilities[key];
         }
-        
-        return result;
     }
 
     addCapability(name: string, version: TargetVersion) {
