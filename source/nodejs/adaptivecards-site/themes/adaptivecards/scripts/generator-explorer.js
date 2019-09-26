@@ -3,7 +3,7 @@
 "use strict";
 
 var markedschema = require("marked-schema");
-var typedschema = require("typed-schema");
+var typedschema = require("ac-typed-schema");
 var marked = require("marked");
 var fs = require("hexo-fs");
 

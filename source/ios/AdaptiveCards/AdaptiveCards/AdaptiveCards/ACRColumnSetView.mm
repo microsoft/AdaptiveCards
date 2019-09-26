@@ -13,20 +13,20 @@
 {
     super.stackView.axis = UILayoutConstraintAxisHorizontal;
     super.stackView.distribution = UIStackViewDistributionFill;
-    super.stackView.alignment    = UIStackViewAlignmentLeading;
+    super.stackView.alignment = UIStackViewAlignmentLeading;
     [super config:attributes];
     self.isLastColumn = NO;
 }
 
-- (void)addArrangedSubview:(UIView* )view
+- (void)addArrangedSubview:(UIView *)view
 {
     [super addArrangedSubview:view];
 }
 
 - (void)adjustHuggingForLastElement
 {
-    if([super.stackView.arrangedSubviews count])
-        [[super.stackView.arrangedSubviews objectAtIndex:[super.stackView.arrangedSubviews count ] - 1] setContentHuggingPriority:UILayoutPriorityFittingSizeLevel forAxis:UILayoutConstraintAxisHorizontal];
+    if ([super.stackView.arrangedSubviews count])
+        [[super.stackView.arrangedSubviews objectAtIndex:[super.stackView.arrangedSubviews count] - 1] setContentHuggingPriority:UILayoutPriorityFittingSizeLevel forAxis:UILayoutConstraintAxisHorizontal];
 }
 
 - (void)setAlignmentForColumnStretch

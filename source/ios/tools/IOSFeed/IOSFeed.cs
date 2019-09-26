@@ -85,7 +85,6 @@ namespace AdaptiveCards.Tools.IOSFeed
                 var cloudFileName = blobGuid + Constants.FrameworkName;
 
                 CloudBlockBlob cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(cloudFileName);
-
                 try
                 {
                     await cloudBlockBlob.UploadFromFileAsync(sourceFile);
@@ -106,11 +105,12 @@ namespace AdaptiveCards.Tools.IOSFeed
                         }
                     } while (blobContinuationToken != null);
                 }
-                finally
+                catch (Exception)
                 {
                     // when exception happens, nothing is permanent except blob, so we delete it here, and allow the rest of the exception
                     // to follow the chain
                     cloudBlockBlob.DeleteIfExists();
+                    throw;
                 }
             }
         }
