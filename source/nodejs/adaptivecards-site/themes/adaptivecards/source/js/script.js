@@ -420,7 +420,7 @@ $(function () {
 	};
 
 	var videos = document.querySelectorAll('video[data-autoplay]');
-	window.addEventListener('scroll', function (event) {
+	$(window).scroll(function (event) {
 		videos.forEach(function(video) {
 			if (isInViewport(video)) {
 				video.play();
@@ -428,10 +428,7 @@ $(function () {
 				video.pause();
 			}
 		});
-	}, false);
-
-	// Trigger scroll to play the first video
-	window.scroll(0, 1);
+	});
 
 	// Resize youtube videos
 	// https://css-tricks.com/NetMag/FluidWidthVideo/Article-FluidWidthVideo.php
