@@ -1214,6 +1214,33 @@ export class RichTextBlock extends CardElement {
         }
     }
 
+    protected internalParse(source: any, context: ParseContext) {
+        super.internalParse(source, context);
+
+        this._inlines = [];
+
+        if (Array.isArray(source["inlines"])) {
+            for (let jsonInline of source["inlines"]) {
+                let inline: CardElement | undefined;
+
+                if (typeof jsonInline === "string") {
+                    let textRun = new TextRun();
+                    textRun.text = jsonInline;
+
+                    inline = textRun;
+                }
+                else {
+                    // No fallback for inlines in 1.2
+                    inline = context.parseElement(this, jsonInline, false);
+                }
+
+                if (inline) {
+                    this.internalAddInline(inline, true);
+                }
+            }
+        }
+    }
+
     protected internalRender(): HTMLElement | undefined {
         if (this._inlines.length > 0) {
             let element = document.createElement("div");
@@ -1257,33 +1284,6 @@ export class RichTextBlock extends CardElement {
         }
 
         return result;
-    }
-
-    protected internalParse(source: any, context: ParseContext) {
-        super.internalParse(source, context);
-
-        this._inlines = [];
-
-        if (Array.isArray(source["inlines"])) {
-            for (let jsonInline of source["inlines"]) {
-                let inline: CardElement | undefined;
-
-                if (typeof jsonInline === "string") {
-                    let textRun = new TextRun();
-                    textRun.text = jsonInline;
-
-                    inline = textRun;
-                }
-                else {
-                    // No fallback for inlines in 1.2
-                    inline = context.parseElement(this, jsonInline, false);
-                }
-
-                if (inline) {
-                    this.internalAddInline(inline, true);
-                }
-            }
-        }
     }
 
     toJSON() {
@@ -3917,6 +3917,24 @@ export class ShowCardAction extends Action {
     // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
     static readonly JsonTypeName: "Action.ShowCard" = "Action.ShowCard";
 
+    protected internalParse(source: any, context: ParseContext) {
+        super.internalParse(source, context);
+
+        let jsonCard = source["card"];
+
+        if (jsonCard) {
+            this.card.parse(jsonCard, context);
+        }
+        else {
+            context.errors.push(
+                {
+                    error: Enums.ValidationError.PropertyCantBeNull,
+                    message: "An Action.ShowCard must have its \"card\" property set to a valid AdaptiveCard object."
+                }
+            );
+        }
+    }
+
     protected addCssClasses(element: HTMLElement) {
         super.addCssClasses(element);
 
@@ -3945,24 +3963,6 @@ export class ShowCardAction extends Action {
         super.internalValidateProperties(context);
 
         this.card.internalValidateProperties(context);
-    }
-
-    protected internalParse(source: any, context: ParseContext) {
-        super.internalParse(source, context);
-
-        let jsonCard = source["card"];
-
-        if (jsonCard) {
-            this.card.parse(jsonCard, context);
-        }
-        else {
-            context.errors.push(
-                {
-                    error: Enums.ValidationError.PropertyCantBeNull,
-                    message: "An Action.ShowCard must have its \"card\" property set to a valid AdaptiveCard object."
-                }
-            );
-        }
     }
 
     updateActionButtonCssStyle(actionButtonElement: HTMLElement): void {
@@ -4495,6 +4495,12 @@ export class ActionSet extends CardElement {
 
     private _actionCollection: ActionCollection;
 
+    protected internalParse(source: any, context: ParseContext) {
+        super.internalParse(source, context);
+
+        this._actionCollection.parse(source["actions"], context);
+    }
+
     protected internalRender(): HTMLElement | undefined {
         return this._actionCollection.render(this.orientation !== undefined ? this.orientation : this.hostConfig.actions.actionsOrientation, this.isDesignMode());
     }
@@ -4503,12 +4509,6 @@ export class ActionSet extends CardElement {
         super();
 
         this._actionCollection = new ActionCollection(this);
-    }
-
-    protected internalParse(source: any, context: ParseContext) {
-        super.internalParse(source, context);
-
-        this._actionCollection.parse(source["actions"], context);
     }
 
     toJSON(): any {
@@ -5062,10 +5062,6 @@ export class Container extends StylableCardElementContainer {
         return this.backgroundImage.isValid() || super.getHasBackground();
     }
 
-    protected get isSelectable(): boolean {
-        return true;
-    }
-
     protected internalParse(source: any, context: ParseContext) {
         super.internalParse(source, context);
 
@@ -5083,6 +5079,10 @@ export class Container extends StylableCardElementContainer {
                 }
             }
         }
+    }
+
+    protected get isSelectable(): boolean {
+        return true;
     }
 
     toJSON(): any {
@@ -5783,6 +5783,12 @@ function raiseElementVisibilityChangedEvent(element: CardElement, shouldUpdateLa
 export abstract class ContainerWithActions extends Container {
     private _actionCollection: ActionCollection;
 
+    protected internalParse(source: any, context: ParseContext) {
+        super.internalParse(source, context);
+
+        this._actionCollection.parse(source["actions"], context);
+    }
+
     protected internalRender(): HTMLElement | undefined {
         let element = super.internalRender();
 
@@ -5837,12 +5843,6 @@ export abstract class ContainerWithActions extends Container {
         super();
 
         this._actionCollection = new ActionCollection(this);
-    }
-
-    protected internalParse(source: any, context: ParseContext) {
-        super.internalParse(source, context);
-
-        this._actionCollection.parse(source["actions"], context);
     }
 
     toJSON(): any {
@@ -6025,6 +6025,19 @@ export class AdaptiveCard extends ContainerWithActions {
         return "body";
     }
 
+    protected internalParse(source: any, context: ParseContext) {
+        this._fallbackCard = undefined;
+
+        let fallbackElement = context.parseElement(undefined, source["fallback"], !this.isDesignMode());
+
+        if (fallbackElement) {
+            this._fallbackCard = new AdaptiveCard();
+            this._fallbackCard.addItem(fallbackElement);
+        }
+
+        super.internalParse(source, context);
+    }
+
     protected internalRender(): HTMLElement | undefined {
         let renderedElement = super.internalRender();
 
@@ -6077,19 +6090,6 @@ export class AdaptiveCard extends ContainerWithActions {
 
     getJsonTypeName(): string {
         return "AdaptiveCard";
-    }
-
-    protected internalParse(source: any, context: ParseContext) {
-        this._fallbackCard = undefined;
-
-        let fallbackElement = context.parseElement(undefined, source["fallback"], !this.isDesignMode());
-
-        if (fallbackElement) {
-            this._fallbackCard = new AdaptiveCard();
-            this._fallbackCard.addItem(fallbackElement);
-        }
-
-        super.internalParse(source, context);
     }
 
     internalValidateProperties(context: ValidationResults) {
