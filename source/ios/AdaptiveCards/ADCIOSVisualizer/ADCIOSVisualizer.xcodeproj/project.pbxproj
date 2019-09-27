@@ -164,8 +164,8 @@ fileRef = 6B2D8604211143BD008DD972 /* AdaptiveCards.framework */;
 fileRef = 6B980933215AE6EC0024B79B /* UIKit.framework */;
 }
 ;
-6B696CDD233E931500E1D607 /* RichTextBlock.json in Resources */ = { isa = PBXBuildFile;
-fileRef = 6B696CDC233E931400E1D607 /* RichTextBlock.json */;
+6B696CDF233EC27B00E1D607 /* RichTextBlock.json in Resources */ = { isa = PBXBuildFile;
+fileRef = 6B696CDE233EC27B00E1D607 /* RichTextBlock.json */;
 }
 ;
 6B980936215AE8780024B79B /* AdaptiveCards.framework in Frameworks */ = { isa = PBXBuildFile;
@@ -544,7 +544,7 @@ path = AdaptiveCards.framework;
 sourceTree = BUILT_PRODUCTS_DIR;
 }
 ;
-6B696CDC233E931400E1D607 /* RichTextBlock.json */ = { isa = PBXFileReference;
+6B696CDE233EC27B00E1D607 /* RichTextBlock.json */ = { isa = PBXFileReference;
 fileEncoding = 4;
 lastKnownFileType = text.json;
 path = RichTextBlock.json;
@@ -836,7 +836,7 @@ children = (6B150A0D23034F2800046B3A /* ActivityUpdate.json */,
             6B150A2D230354F100046B3A /* Image.Style.json */,
             6B150A0A23034F2800046B3A /* Input.ChoiceSet.json */,
             6B150A0C23034F2800046B3A /* Restaurant.json */,
-            6B696CDC233E931400E1D607 /* RichTextBlock.json */,
+            6B696CDE233EC27B00E1D607 /* RichTextBlock.json */,
             6B150A15230353AA00046B3A /* TextBlock.Color.json */,
             6B150A16230353AB00046B3A /* TextBlock.DateTimeFormatting.json */,
             6B150A1C230353AB00046B3A /* TextBlock.HorizontalAlignment.json */,
@@ -1073,7 +1073,7 @@ files = (6B150A36230354F200046B3A /* Image.Size.json in Resources */,
          6B150A3B230354F200046B3A /* Column.Spacing.json in Resources */,
          6B150A38230354F200046B3A /* Image.Style.json in Resources */,
          F423C0851EE1FB6100905679 /* Assets.xcassets in Resources */,
-         6B696CDD233E931500E1D607 /* RichTextBlock.json in Resources */,
+         6B696CDF233EC27B00E1D607 /* RichTextBlock.json in Resources */,
          6B150A1023034F2800046B3A /* Input.ChoiceSet.json in Resources */,
          6B150A22230353AB00046B3A /* TextBlock.Markdown.json in Resources */,
          6B150A0623033D6C00046B3A /* filebrowserHostConfig.json in Resources */,
