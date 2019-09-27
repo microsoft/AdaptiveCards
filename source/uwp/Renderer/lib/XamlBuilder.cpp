@@ -1501,7 +1501,10 @@ namespace AdaptiveNamespace
 
         for (auto parentPanel : parentPanels)
         {
-            SetSeparatorVisibility(parentPanel);
+            if (parentPanel)
+            {
+                SetSeparatorVisibility(parentPanel);
+            }
         }
 
         return S_OK;
