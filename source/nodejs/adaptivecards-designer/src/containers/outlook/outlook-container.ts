@@ -26,7 +26,7 @@ export class OutlookContainer extends HostContainer {
     private parsePadding(source: any): Adaptive.PaddingDefinition {
         if (source) {
             if (typeof source === "string") {
-                var uniformPadding = Adaptive.getEnumValue(Adaptive.Spacing, source, Adaptive.Spacing.None);
+                var uniformPadding = Adaptive.parseEnum(Adaptive.Spacing, source, Adaptive.Spacing.None);
 
                 return new Adaptive.PaddingDefinition(
                     uniformPadding,
@@ -36,17 +36,17 @@ export class OutlookContainer extends HostContainer {
             }
             else if (typeof source === "object") {
                 return new Adaptive.PaddingDefinition(
-                    Adaptive.getEnumValue(Adaptive.Spacing, source["top"], Adaptive.Spacing.None),
-                    Adaptive.getEnumValue(Adaptive.Spacing, source["right"], Adaptive.Spacing.None),
-                    Adaptive.getEnumValue(Adaptive.Spacing, source["bottom"], Adaptive.Spacing.None),
-                    Adaptive.getEnumValue(Adaptive.Spacing, source["left"], Adaptive.Spacing.None));
+                    Adaptive.parseEnum(Adaptive.Spacing, source["top"], Adaptive.Spacing.None),
+                    Adaptive.parseEnum(Adaptive.Spacing, source["right"], Adaptive.Spacing.None),
+                    Adaptive.parseEnum(Adaptive.Spacing, source["bottom"], Adaptive.Spacing.None),
+                    Adaptive.parseEnum(Adaptive.Spacing, source["left"], Adaptive.Spacing.None));
             }
         }
 
         return null;
     }
 
-    public parseElement(element: Adaptive.CardElement, source: any, parseContext: Adaptive.ParseContext) {
+    public parseElement(element: Adaptive.CardElement, source: any, context: Adaptive.SerializationContext) {
         if (element instanceof Adaptive.AdaptiveCard) {
             var card = <Adaptive.AdaptiveCard>element;
             var actionArray: Array<Adaptive.Action> = [];
@@ -57,10 +57,10 @@ export class OutlookContainer extends HostContainer {
                 var actionResources = source["resources"]["actions"] as Array<any>;
 
                 for (var i = 0; i < actionResources.length; i++) {
-                    let action = this.actionsRegistry.createInstance(actionResources[i]["type"]);
+                    let action = this.actionsRegistry.createInstance(actionResources[i]["type"], context.targetVersion);
 
                     if (action) {
-                        action.parse(actionResources[i], parseContext);
+                        action.parse(actionResources[i], context);
                         action.setParent(card);
 
                         actionArray.push(action);

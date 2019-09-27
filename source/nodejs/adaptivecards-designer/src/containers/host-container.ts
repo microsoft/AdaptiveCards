@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import { GlobalSettings, GlobalRegistry, CardObjectRegistry, CardElement, Action, HostConfig, ParseContext } from "adaptivecards";
+import { GlobalSettings, GlobalRegistry, CardObjectRegistry, CardElement, Action, HostConfig, SerializationContext, Version } from "adaptivecards";
 import * as hostConfig from "../hostConfigs/sample.json";
 
 export abstract class HostContainer {
@@ -30,11 +30,19 @@ export abstract class HostContainer {
         GlobalSettings.useAdvancedTextBlockTruncation = true;
     }
 
+    public createSerializationContext(targetVersion: Version): SerializationContext {
+        let context = new SerializationContext(targetVersion);
+        context.elementRegistry = this.elementsRegistry;
+        context.actionRegistry = this.actionsRegistry;
+
+        return context;
+    }
+
     public getBackgroundColor(): string {
         return "#F6F6F6";
     }
 
-    public parseElement(element: CardElement, source: any, parseContext: ParseContext) {
+    public parseElement(element: CardElement, source: any, context: SerializationContext) {
         // Do nothing in base implementation
     }
 

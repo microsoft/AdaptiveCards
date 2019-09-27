@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import { TargetVersion, SerializableObject } from "./serialization";
+import { SerializableObject, Version, Versions } from "./serialization";
 
 export interface ITypeRegistration<T extends SerializableObject> {
     typeName: string,
     objectType: { new(): T },
-    schemaVersion: TargetVersion
+    schemaVersion: Version
 }
 
 export class CardObjectRegistry<T extends SerializableObject> {
@@ -25,7 +25,7 @@ export class CardObjectRegistry<T extends SerializableObject> {
         this._items = [];
     }
 
-    register(typeName: string, objectType: { new(): T }, schemaVersion: TargetVersion = "*") {
+    register(typeName: string, objectType: { new(): T }, schemaVersion: Version = Versions.v1_0) {
         let registrationInfo = this.findTypeRegistration(typeName);
 
         if (registrationInfo !== undefined) {
@@ -52,10 +52,10 @@ export class CardObjectRegistry<T extends SerializableObject> {
         }
     }
 
-    createInstance(typeName: string): T | undefined {
+    createInstance(typeName: string, targetVersion: Version): T | undefined {
         let registrationInfo = this.findTypeRegistration(typeName);
 
-        return registrationInfo ? new registrationInfo.objectType() : undefined;
+        return (registrationInfo && registrationInfo.schemaVersion.compareTo(targetVersion) <= 0) ? new registrationInfo.objectType() : undefined;
     }
 
     getItemCount(): number {

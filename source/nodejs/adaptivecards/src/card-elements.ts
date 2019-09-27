@@ -8,7 +8,7 @@ import { HostConfig, defaultHostConfig, FontTypeDefinition, ColorSetDefinition, 
 import * as TextFormatters from "./text-formatters";
 import { HostCapabilities } from "./host-capabilities";
 import { CardObjectType, CardObject, ValidationResults } from "./card-object";
-import { Versions, Version, TargetVersion, property, BaseParseContext, SerializableObject, SerializableObjectSchema, StringProperty,
+import { Versions, Version, TargetVersion, property, BaseSerializationContext, SerializableObject, SerializableObjectSchema, StringProperty,
     BoolProperty, ValueSetProperty, EnumProperty, SerializableObjectCollectionProperty, SerializableObjectProperty, PixelSizeProperty,
     NumProperty, PropertyBag, CustomProperty, PropertyDefinition } from "./serialization";
 import { CardObjectRegistry } from "./registry";
@@ -313,8 +313,8 @@ export abstract class CardElement extends CardObject {
         return false;
     }
 
-    parse(source: any, context?: ParseContext) {
-        super.parse(source, context ? context : new ParseContext());
+    parse(source: any, context?: SerializationContext) {
+        super.parse(source, context ? context : new SerializationContext());
     }
 
     getEffectiveStyle(): string {
@@ -597,7 +597,7 @@ export abstract class CardElement extends CardObject {
 }
 
 export class ActionProperty extends PropertyDefinition {
-    parse(sender: SerializableObject, source: PropertyBag, context: ParseContext): Action | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, context: SerializationContext): Action | undefined {
         let parent = <CardElement>sender;
 
         return context.parseAction(
@@ -607,12 +607,12 @@ export class ActionProperty extends PropertyDefinition {
             parent.isDesignMode());
     }
 
-    toJSON(sender: SerializableObject, target: PropertyBag, value: Action | undefined) {
-        Utils.setProperty(target, this.name, value ? value.toJSON(this.targetVersion) : undefined);
+    toJSON(sender: SerializableObject, target: PropertyBag, value: Action | undefined, context: SerializationContext) {
+        context.serializeValue(target, this.name, value ? value.toJSON(context) : undefined);
     }
 
     constructor(
-        readonly targetVersion: TargetVersion,
+        readonly targetVersion: Version,
         readonly name: string,
         readonly forbiddenActionTypes: string[] = []) {
         super(targetVersion, name, undefined);
@@ -1214,7 +1214,7 @@ export class RichTextBlock extends CardElement {
         }
     }
 
-    protected internalParse(source: any, context: ParseContext) {
+    protected internalParse(source: any, context: SerializationContext) {
         super.internalParse(source, context);
 
         this._inlines = [];
@@ -1241,17 +1241,17 @@ export class RichTextBlock extends CardElement {
         }
     }
 
-    protected internalToJSON(target: PropertyBag, targetVersion: TargetVersion) {
-        super.internalToJSON(target, targetVersion);
+    protected internalToJSON(target: PropertyBag, context: SerializationContext) {
+        super.internalToJSON(target, context);
 
         if (this._inlines.length > 0) {
             let jsonInlines: any[] = [];
 
             for (let inline of this._inlines) {
-                jsonInlines.push(inline.toJSON(targetVersion));
+                jsonInlines.push(inline.toJSON(context));
             }
 
-            Utils.setProperty(target, "inlines", jsonInlines);
+            context.serializeValue(target, "inlines", jsonInlines);
         }
     }
 
@@ -1462,7 +1462,7 @@ class ImageDimensionProperty extends PropertyDefinition {
         return this.jsonName;
     }
     
-    parse(sender: SerializableObject, source: PropertyBag, context: BaseParseContext): number | undefined {
+    parse(sender: SerializableObject, source: PropertyBag, context: BaseSerializationContext): number | undefined {
         let result: number | undefined = undefined;
         let value = source[this.jsonName];
 
@@ -1495,15 +1495,15 @@ class ImageDimensionProperty extends PropertyDefinition {
         return result;
     }
 
-    toJSON(sender: SerializableObject, target: PropertyBag, value: number | undefined) {
-        Utils.setProperty(
+    toJSON(sender: SerializableObject, target: PropertyBag, value: number | undefined, context: BaseSerializationContext) {
+        context.serializeValue(
             target,
             this.jsonName,
             typeof value === "number" && !isNaN(value) ? value + "px" : undefined);
     }
 
     constructor(
-        readonly targetVersion: TargetVersion,
+        readonly targetVersion: Version,
         readonly name: string,
         readonly jsonName: string) {
         super(targetVersion, name);
@@ -2280,8 +2280,8 @@ export class InputValidationOptions extends SerializableObject {
 
     //#endregion
 
-    protected internalToJSON(target: PropertyBag, targetVersion: TargetVersion) {
-        return this.hasAllDefaultValues() ? undefined : super.internalToJSON(target, targetVersion);
+    protected internalToJSON(target: PropertyBag, context: BaseSerializationContext) {
+        return this.hasAllDefaultValues() ? undefined : super.internalToJSON(target, context);
     }
 }
 
@@ -3134,11 +3134,11 @@ export class DateInput extends Input {
 }
 
 export class TimeProperty extends CustomProperty<string | undefined> {
-    constructor(readonly targetVersion: TargetVersion, readonly name: string) {
+    constructor(readonly targetVersion: Version, readonly name: string) {
         super(
             targetVersion,
             name,
-            (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseParseContext) => {
+            (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseSerializationContext) => {
                 let value = source[property.name];
     
                 if (typeof value === "string" && value && /^[0-9]{2}:[0-9]{2}$/.test(value)) {
@@ -3147,8 +3147,8 @@ export class TimeProperty extends CustomProperty<string | undefined> {
     
                 return undefined;
             },
-            (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: string | undefined) => {
-                Utils.setProperty(target, property.name, value);
+            (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: string | undefined, context: BaseSerializationContext) => {
+                context.serializeValue(target, property.name, value);
             });
     }
 }
@@ -3381,8 +3381,8 @@ export abstract class Action extends CardObject {
         // Do nothing in base implementation
     }
 
-    parse(source: any, context?: ParseContext) {
-        super.parse(source, context ? context : new ParseContext());
+    parse(source: any, context?: SerializationContext) {
+        super.parse(source, context ? context : new SerializationContext());
     }
 
     render(baseCssClass: string = "ac-pushButton") {
@@ -3648,7 +3648,7 @@ export class ToggleVisibilityAction extends Action {
     static readonly targetElementsProperty = new CustomProperty<PropertyBag>(
         Versions.v1_2,
         "targetElements",
-        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseParseContext) => {
+        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseSerializationContext) => {
             let result: PropertyBag = {}
 
             if (Array.isArray(source[property.name])) {
@@ -3660,7 +3660,7 @@ export class ToggleVisibilityAction extends Action {
                         let elementId = item["elementId"];
     
                         if (typeof elementId === "string") {
-                            result[elementId] = Utils.getBoolValue(item["isVisible"]);
+                            result[elementId] = Utils.parseBool(item["isVisible"]);
                         }
                     }
                 }
@@ -3668,7 +3668,7 @@ export class ToggleVisibilityAction extends Action {
 
             return result;
         },
-        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: PropertyBag) => {
+        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: PropertyBag, context: BaseSerializationContext) => {
             let targetElements: any[] = [];
 
             for (let id of Object.keys(value)) {
@@ -3685,7 +3685,7 @@ export class ToggleVisibilityAction extends Action {
                 }
             }
     
-            Utils.setArrayProperty(target, property.name, targetElements);
+            context.serializeArray(target, property.name, targetElements);
         },
         {},
         (sender: SerializableObject) => { return {}; });
@@ -3730,19 +3730,19 @@ export class ToggleVisibilityAction extends Action {
 }
 
 class StringWithSubstitutionProperty extends PropertyDefinition  {
-    parse(sender: SerializableObject, source: PropertyBag, context: BaseParseContext): StringWithSubstitutions {
+    parse(sender: SerializableObject, source: PropertyBag, context: BaseSerializationContext): StringWithSubstitutions {
         let result = new StringWithSubstitutions();
-        result.set(Utils.getStringValue(source[this.name]));
+        result.set(Utils.parseString(source[this.name]));
 
         return result;
     }
 
-    toJSON(sender: SerializableObject, target: PropertyBag, value: StringWithSubstitutions): void {
-        Utils.setProperty(target, this.name, value.getOriginal());
+    toJSON(sender: SerializableObject, target: PropertyBag, value: StringWithSubstitutions, context: BaseSerializationContext): void {
+        context.serializeValue(target, this.name, value.getOriginal());
     }
 
     constructor(
-        readonly targetVersion: TargetVersion,
+        readonly targetVersion: Version,
         readonly name: string) {
         super(targetVersion, name, undefined, () => { return new StringWithSubstitutions(); });
     }
@@ -3915,7 +3915,7 @@ export class ShowCardAction extends Action {
     // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
     static readonly JsonTypeName: "Action.ShowCard" = "Action.ShowCard";
 
-    protected internalParse(source: any, context: ParseContext) {
+    protected internalParse(source: any, context: SerializationContext) {
         super.internalParse(source, context);
 
         let jsonCard = source["card"];
@@ -3933,11 +3933,11 @@ export class ShowCardAction extends Action {
         }
     }
 
-    protected internalToJSON(target: PropertyBag, targetVersion: TargetVersion) {
-        super.internalToJSON(target, targetVersion);
+    protected internalToJSON(target: PropertyBag, context: SerializationContext) {
+        super.internalToJSON(target, context);
 
         if (this.card) {
-            Utils.setProperty(target, "card", this.card.toJSON(targetVersion));
+            context.serializeValue(target, "card", this.card.toJSON(context));
         }
     }
 
@@ -4157,7 +4157,7 @@ class ActionCollection {
         this._owner = owner;
     }
 
-    parse(source: any, context: ParseContext) {
+    parse(source: any, context: SerializationContext) {
         this.clear();
 
         if (Array.isArray(source)) {
@@ -4175,12 +4175,12 @@ class ActionCollection {
         }
     }
 
-    toJSON(targetVersion: TargetVersion): any {
+    toJSON(context: SerializationContext): any {
         if (this.items.length > 0) {
             let result = [];
 
             for (let action of this.items) {
-                result.push(action.toJSON(targetVersion));
+                result.push(action.toJSON(context));
             }
 
             return result;
@@ -4491,16 +4491,16 @@ export class ActionSet extends CardElement {
 
     private _actionCollection: ActionCollection;
 
-    protected internalParse(source: any, context: ParseContext) {
+    protected internalParse(source: any, context: SerializationContext) {
         super.internalParse(source, context);
 
         this._actionCollection.parse(source["actions"], context);
     }
 
-    protected internalToJSON(target: PropertyBag, targetVersion: TargetVersion) {
-        super.internalToJSON(target, targetVersion);
+    protected internalToJSON(target: PropertyBag, context: SerializationContext) {
+        super.internalToJSON(target, context);
 
-        Utils.setProperty(target, "actions", this._actionCollection.toJSON(targetVersion));
+        context.serializeValue(target, "actions", this._actionCollection.toJSON(context));
     }
 
     protected internalRender(): HTMLElement | undefined {
@@ -4581,7 +4581,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
             { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Attention },
             { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Warning }
         ]);
-    static readonly bleedProperty = new BoolProperty(Versions.v1_1, "bleed", false);
+    static readonly bleedProperty = new BoolProperty(Versions.v1_2, "bleed", false);
     static readonly minHeightProperty = new PixelSizeProperty(Versions.v1_2, "minHeight");
 
     @property(StylableCardElementContainer.styleProperty)
@@ -4796,7 +4796,7 @@ export class BackgroundImage extends SerializableObject {
         return "BackgroundImage";
     }
 
-    protected internalParse(source: any, context: BaseParseContext) {
+    protected internalParse(source: any, context: BaseSerializationContext) {
         if (typeof source === "string") {
             this.resetDefaultValues();
             this.url = source;
@@ -4806,7 +4806,7 @@ export class BackgroundImage extends SerializableObject {
         }
     }
 
-    protected internalToJSON(target: PropertyBag, targetVersion: TargetVersion) {
+    protected internalToJSON(target: PropertyBag, context: SerializationContext) {
         if (!this.isValid()) {
             return undefined;
         }
@@ -4818,7 +4818,7 @@ export class BackgroundImage extends SerializableObject {
             return this.url;
         }
         else {
-            return super.internalToJSON(target, targetVersion);
+            return super.internalToJSON(target, context);
         }
     }
 
@@ -5056,7 +5056,7 @@ export class Container extends StylableCardElementContainer {
         return this.backgroundImage.isValid() || super.getHasBackground();
     }
 
-    protected internalParse(source: any, context: ParseContext) {
+    protected internalParse(source: any, context: SerializationContext) {
         super.internalParse(source, context);
 
         this.clear();
@@ -5075,10 +5075,10 @@ export class Container extends StylableCardElementContainer {
         }
     }
 
-    protected internalToJSON(target: PropertyBag, targetVersion: TargetVersion) {
-        super.internalToJSON(target, targetVersion);
+    protected internalToJSON(target: PropertyBag, context: SerializationContext) {
+        super.internalToJSON(target, context);
 
-        Utils.setArrayProperty(target, this.getItemsCollectionPropertyName(), this._items);
+        context.serializeArray(target, this.getItemsCollectionPropertyName(), this._items);
     }
 
     protected get isSelectable(): boolean {
@@ -5275,7 +5275,7 @@ export class Column extends Container {
     static readonly widthProperty = new CustomProperty<ColumnWidth>(
         Versions.v1_0,
         "width",
-        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseParseContext) => {
+        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseSerializationContext) => {
             let result: ColumnWidth = property.defaultValue;
             let value = source[property.name];
             let invalidWidth = false;
@@ -5310,17 +5310,17 @@ export class Column extends Container {
 
             return result;
         },
-        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: ColumnWidth) => {
+        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: ColumnWidth, context: BaseSerializationContext) => {
             if (value instanceof SizeAndUnit) {
                 if (value.unit === Enums.SizeUnit.Pixel) {
-                    Utils.setProperty(target, "width", value.physicalSize + "px");
+                    context.serializeValue(target, "width", value.physicalSize + "px");
                 }
                 else {
-                    Utils.setNumberProperty(target, "width", value.physicalSize);
+                    context.serializeNumber(target, "width", value.physicalSize);
                 }
             }
             else {
-                Utils.setProperty(target, "width", value);
+                context.serializeValue(target, "width", value);
             }
         });
 
@@ -5397,7 +5397,7 @@ export class ColumnSet extends StylableCardElementContainer {
     private _columns: Column[] = [];
     private _renderedColumns: Column[];
 
-    private createColumnInstance(source: any, context: ParseContext): Column | undefined {
+    private createColumnInstance(source: any, context: SerializationContext): Column | undefined {
         return context.parseCardObject<Column>(
             this,
             source,
@@ -5498,7 +5498,7 @@ export class ColumnSet extends StylableCardElementContainer {
         return true;
     }
 
-    protected internalParse(source: any, context: ParseContext) {
+    protected internalParse(source: any, context: SerializationContext) {
         super.internalParse(source, context);
 
         this._columns = [];
@@ -5517,10 +5517,10 @@ export class ColumnSet extends StylableCardElementContainer {
         }
     }
 
-    protected internalToJSON(target: PropertyBag, targetVersion: TargetVersion) {
-        super.internalToJSON(target, targetVersion);
+    protected internalToJSON(target: PropertyBag, context: SerializationContext) {
+        super.internalToJSON(target, context);
 
-        Utils.setArrayProperty(target, "columns", this._columns);
+        context.serializeArray(target, "columns", this._columns);
     }
 
     isFirstElement(element: CardElement): boolean {
@@ -5773,16 +5773,16 @@ function raiseElementVisibilityChangedEvent(element: CardElement, shouldUpdateLa
 export abstract class ContainerWithActions extends Container {
     private _actionCollection: ActionCollection;
 
-    protected internalParse(source: any, context: ParseContext) {
+    protected internalParse(source: any, context: SerializationContext) {
         super.internalParse(source, context);
 
         this._actionCollection.parse(source["actions"], context);
     }
 
-    protected internalToJSON(target: PropertyBag, targetVersion: TargetVersion) {
-        super.internalToJSON(target, targetVersion);
+    protected internalToJSON(target: PropertyBag, context: SerializationContext) {
+        super.internalToJSON(target, context);
 
-        Utils.setProperty(target, "actions", this._actionCollection.toJSON(targetVersion));
+        context.serializeValue(target, "actions", this._actionCollection.toJSON(context));
     }
 
     protected internalRender(): HTMLElement | undefined {
@@ -5922,22 +5922,35 @@ export class AdaptiveCard extends ContainerWithActions {
     protected static readonly $schemaProperty = new CustomProperty<string>(
         Versions.v1_0,
         "$schema",
-        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseParseContext) => {
+        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseSerializationContext) => {
             return AdaptiveCard.schemaUrl;
         },
-        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: Versions | undefined) => {
-            Utils.setProperty(target, property.name, AdaptiveCard.schemaUrl);
+        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: Versions | undefined, context: BaseSerializationContext) => {
+            context.serializeValue(target, property.name, AdaptiveCard.schemaUrl);
         });
 
     static readonly versionProperty = new CustomProperty<Version | undefined>(
         Versions.v1_0,
         "version",
-        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseParseContext) => {
-            return Version.parse(source[property.name], context);
+        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseSerializationContext) => {
+            let version = Version.parse(source[property.name], context);
+
+            if (version === undefined) {
+                version = Versions.latest;
+
+                context.errors.push(
+                    {
+                        error: Enums.ValidationError.InvalidPropertyValue,
+                        message: "Invalid card version. Defaulting to latest version (" + version.toString() + ")"
+                    }
+                );
+            }
+
+            return version;
         },
-        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: Versions | undefined) => {
+        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: Versions | undefined, context: BaseSerializationContext) => {
             if (value !== undefined) {
-                Utils.setProperty(target, property.name, value.toString());
+                context.serializeValue(target, property.name, value.toString());
             }
         },
         Versions.v1_0);
@@ -6002,8 +6015,8 @@ export class AdaptiveCard extends ContainerWithActions {
             let unsupportedVersion: boolean =
                 !this.version ||
                 !this.version.isValid ||
-                (Versions.latest.major < this.version.major) ||
-                (Versions.latest.major == this.version.major && Versions.latest.minor < this.version.minor);
+                (this.maxVersion.major < this.version.major) ||
+                (this.maxVersion.major == this.version.major && this.maxVersion.minor < this.version.minor);
 
             return !unsupportedVersion;
         }
@@ -6013,7 +6026,7 @@ export class AdaptiveCard extends ContainerWithActions {
         return "body";
     }
 
-    protected internalParse(source: any, context: ParseContext) {
+    protected internalParse(source: any, context: SerializationContext) {
         this._fallbackCard = undefined;
 
         let fallbackElement = context.parseElement(undefined, source["fallback"], !this.isDesignMode());
@@ -6024,6 +6037,12 @@ export class AdaptiveCard extends ContainerWithActions {
         }
 
         super.internalParse(source, context);
+    }
+
+    protected internalToJSON(target: PropertyBag, context: SerializationContext) {
+        this.setValue(AdaptiveCard.versionProperty, context.targetVersion);
+
+        super.internalToJSON(target, context);
     }
 
     protected internalRender(): HTMLElement | undefined {
@@ -6105,7 +6124,7 @@ export class AdaptiveCard extends ContainerWithActions {
                 this,
                 {
                     error: Enums.ValidationError.UnsupportedCardVersion,
-                    message: "The specified card version (" + this.version + ") is not supported. The maximum supported card version is " + Versions.latest
+                    message: "The specified card version (" + this.version.toString() + ") is not supported. The maximum supported card version is " + this.maxVersion.toString()
                 });
         }
     }
@@ -6262,7 +6281,7 @@ const enum ParseErrorType {
     ForbiddenType
 }
 
-export class ParseContext extends BaseParseContext {
+export class SerializationContext extends BaseSerializationContext {
     private internalParseCardObject<T extends CardObject>(
         parent: CardElement | undefined,
         source: any,
@@ -6274,7 +6293,7 @@ export class ParseContext extends BaseParseContext {
 
         if (source && typeof source === "object") {
             let tryToFallback = false;
-            let typeName = Utils.getStringValue(source["type"]);
+            let typeName = Utils.parseString(source["type"]);
             
             if (typeName) {
                 if (forbiddenTypeNames.indexOf(typeName) >= 0) {
@@ -6330,8 +6349,8 @@ export class ParseContext extends BaseParseContext {
         }
     }
 
-    onParseAction?: (action: Action, source: any, context: ParseContext) => void;
-    onParseElement?: (element: CardElement, source: any, context: ParseContext) => void;
+    onParseAction?: (action: Action, source: any, context: SerializationContext) => void;
+    onParseElement?: (element: CardElement, source: any, context: SerializationContext) => void;
 
     elementRegistry?: CardObjectRegistry<CardElement>;
     actionRegistry?: CardObjectRegistry<Action>;
@@ -6367,7 +6386,7 @@ export class ParseContext extends BaseParseContext {
             (typeName: string) => {
                 let registry = this.elementRegistry ? this.elementRegistry : GlobalRegistry.elements;
 
-                return registry.createInstance(typeName);
+                return registry.createInstance(typeName, this.targetVersion);
             },
             (typeName: string, errorType: ParseErrorType) => {
                 if (errorType === ParseErrorType.UnknownType) {
@@ -6398,7 +6417,7 @@ export class ParseContext extends BaseParseContext {
             (typeName: string) => {
                 let registry = this.actionRegistry ? this.actionRegistry : GlobalRegistry.actions;
 
-                return registry.createInstance(typeName);
+                return registry.createInstance(typeName, this.targetVersion);
             },
             (typeName: string, errorType: ParseErrorType) => {
                 if (errorType == ParseErrorType.UnknownType) {

@@ -452,7 +452,7 @@ export abstract class DesignerPeer extends DraggableElement {
         }
     }
 
-    buildPropertySheetCard(hostContainer: HostContainer, targetVersion: Adaptive.TargetVersion): Adaptive.AdaptiveCard {
+    buildPropertySheetCard(hostContainer: HostContainer, targetVersion: Adaptive.Version): Adaptive.AdaptiveCard {
         let card = new Adaptive.AdaptiveCard();
         card.padding = new Adaptive.PaddingDefinition(
             Adaptive.Spacing.Small,
@@ -536,7 +536,7 @@ export class PropertySheetContext {
 
     constructor(
         readonly hostContainer: HostContainer,
-        readonly targetVersion: Adaptive.TargetVersion,
+        readonly targetVersion: Adaptive.Version,
         readonly peer: CardObjectPeer,
         target: object = undefined) {
         this._target = target;
@@ -874,7 +874,7 @@ export class ActionPropertyEditor extends SingleInputPropertyEditor {
             context.target[this.propertyName] = null;
         }
         else {
-            context.target[this.propertyName] = context.hostContainer.actionsRegistry.createInstance(value);
+            context.target[this.propertyName] = context.hostContainer.actionsRegistry.createInstance(value, context.targetVersion);
         }
     }
 

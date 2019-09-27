@@ -82,15 +82,15 @@ export function parseCatalogue(input: any): CatalogueEntry[] {
     if (entries != null) {
         for (let entry of entries) {
             if (typeof entry === "object") {
-                let displayName = Adaptive.getStringValue(entry["displayName"]);
-                let cardPayloadUrl = Adaptive.getStringValue(entry["cardPayloadUrl"]);
+                let displayName = Adaptive.parseString(entry["displayName"]);
+                let cardPayloadUrl = Adaptive.parseString(entry["cardPayloadUrl"]);
 
                 if (displayName && cardPayloadUrl) {
                     result.push(
                         new CatalogueEntry(
                             displayName,
                             cardPayloadUrl,
-                            Adaptive.getStringValue(entry["dataSampleUrl"])));
+                            Adaptive.parseString(entry["dataSampleUrl"])));
                 }
             }
         }

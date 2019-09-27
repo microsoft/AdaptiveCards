@@ -49,7 +49,6 @@ export class CardDesigner {
     private _draggedPaletteItem: BasePaletteItem;
     private _draggedElement: HTMLElement;
     private _currentMousePosition: IPoint;
-    private _card: Adaptive.AdaptiveCard;
     private _activeHostContainer: HostContainer;
     private _undoStack: Array<object> = [];
     private _undoStackIndex: number = -1;
@@ -135,7 +134,7 @@ export class CardDesigner {
             let card: Adaptive.AdaptiveCard;
 
             if (peer) {
-                card = peer.buildPropertySheetCard(this.activeHostContainer, this.currentTargetVersion);
+                card = peer.buildPropertySheetCard(this.activeHostContainer, Adaptive.Versions.vNext); // , this.targetVersion);
             }
             else {
                 card = new Adaptive.AdaptiveCard();
@@ -156,7 +155,7 @@ export class CardDesigner {
                             }
                         ]
                     },
-                    new Adaptive.ParseContext()
+                    new Adaptive.SerializationContext(Adaptive.Versions.vNext) // this.targetVersion)
                 );
                 card.padding = new Adaptive.PaddingDefinition(
                     Adaptive.Spacing.Small,
@@ -200,20 +199,22 @@ export class CardDesigner {
 
         for (let i = 0; i < this.activeHostContainer.elementsRegistry.getItemCount(); i++) {
             let registration = this.activeHostContainer.elementsRegistry.getItemAt(i);
-            let dummyCardElement = new registration.objectType();
-            let peerRegistration = Designer.CardDesignerSurface.cardElementPeerRegistry.findTypeRegistration((<any>dummyCardElement).constructor);
 
-            if (peerRegistration) {
-                if (!categorizedTypes.hasOwnProperty(peerRegistration.category)) {
-                    categorizedTypes[peerRegistration.category] = [];
+            if (registration.schemaVersion.compareTo(this.targetVersion) <= 0) {
+                let peerRegistration = Designer.CardDesignerSurface.cardElementPeerRegistry.findTypeRegistration(registration.objectType);
+
+                if (peerRegistration) {
+                    if (!categorizedTypes.hasOwnProperty(peerRegistration.category)) {
+                        categorizedTypes[peerRegistration.category] = [];
+                    }
+
+                    let paletteItem = new ElementPaletteItem(
+                        registration,
+                        peerRegistration
+                    )
+
+                    categorizedTypes[peerRegistration.category].push(paletteItem);
                 }
-
-                let paletteItem = new ElementPaletteItem(
-                    registration,
-                    peerRegistration
-                )
-
-                categorizedTypes[peerRegistration.category].push(paletteItem);
             }
         }
 
@@ -307,7 +308,7 @@ export class CardDesigner {
 
         let wasInPreviewMode = this._designerSurface ? this._designerSurface.isPreviewMode : false;
 
-        this._designerSurface = new Designer.CardDesignerSurface(this.activeHostContainer);
+        this._designerSurface = new Designer.CardDesignerSurface(this.activeHostContainer, this.targetVersion);
         this._designerSurface.fixedHeightCard = this.activeHostContainer.isFixedHeight;
         this._designerSurface.onSelectedPeerChanged = (peer: DesignerPeers.DesignerPeer) => {
             this.buildPropertySheet(peer);
@@ -356,12 +357,18 @@ export class CardDesigner {
         this.buildPalette();
         this.buildPropertySheet(null);
 
-        if (this._card) {
-            this._card.hostConfig = this.activeHostContainer.getHostConfig();
+        let card = new Adaptive.AdaptiveCard();
+        card.version = this.targetVersion;
+        card.hostConfig = this.activeHostContainer.getHostConfig();
+        card.designMode = true;
+        card.onImageLoaded = (image: Adaptive.Image) => {
+            this.scheduleLayoutUpdate();
         }
 
-        this._designerSurface.card = this._card;
+        this._designerSurface.card = card;
 
+        this.updateCardFromJson();
+        this.updateJsonFromCard();
         this.updateSampleData();
 
         this._designerSurface.isPreviewMode = wasInPreviewMode;
@@ -374,6 +381,14 @@ export class CardDesigner {
 
         if (this.onActiveHostContainerChanged) {
             this.onActiveHostContainerChanged(this);
+        }
+    }
+
+    private targetVersionChanged() {
+        this.recreateDesignerSurface();
+
+        if (this.onTargetVersionChanged) {
+            this.onTargetVersionChanged(this);
         }
     }
 
@@ -435,7 +450,7 @@ export class CardDesigner {
             this.preventCardUpdate = true;
 
             if (!this.preventJsonUpdate && this._isMonacoEditorLoaded) {
-                let cardPayload = this.card.toJSON();
+                let cardPayload = this._designerSurface.getCardPayloadAsObject();
 
                 if (addToUndoStack) {
                     this.addToUndoStack(cardPayload);
@@ -502,6 +517,7 @@ export class CardDesigner {
             50);
     }
 
+    private _targetVersion: Adaptive.Version = Adaptive.Versions.latest;
     private _fullScreenHandler = new FullScreenHandler();
     private _fullScreenButton: ToolbarButton;
     private _hostContainerChoicePicker: ToolbarChoicePicker;
@@ -880,9 +896,9 @@ export class CardDesigner {
         this.toolbar.attachTo(document.getElementById("toolbarHost"));
 
         if (this._versionChoicePicker) {
-            this._versionChoicePicker.selectedIndex = Shared.SupportedTargetVersions.indexOf(Adaptive.Versions.v1_2);
-            this._versionChoicePicker.onChanged = (sender) => {
-                this.buildPropertySheet(this._designerSurface.selectedPeer);
+            this._versionChoicePicker.selectedIndex = Shared.SupportedTargetVersions.indexOf(this.targetVersion);
+            this._versionChoicePicker.onChanged = (sender: ToolbarChoicePicker) => {
+                this.targetVersion = Shared.SupportedTargetVersions[parseInt(this._versionChoicePicker.value)];
             }
         }
 
@@ -890,7 +906,7 @@ export class CardDesigner {
             new Clipboard(
                 this._copyJSONButton.renderedElement,
                 {
-                    text: (trigger) => { return JSON.stringify(this.card.toJSON(), null, 4); }
+                    text: (trigger) => { return JSON.stringify(this._designerSurface.getCardPayloadAsObject(), null, 4); }
                 });
         }
         
@@ -1007,13 +1023,6 @@ export class CardDesigner {
         this._isAttached = true;
 
         this.recreateDesignerSurface();
-
-        let card = new Adaptive.AdaptiveCard();
-        card.onImageLoaded = (image: Adaptive.Image) => {
-            this.scheduleLayoutUpdate();
-        }
-
-        this.card = card;
     }
 
     undo() {
@@ -1067,19 +1076,21 @@ export class CardDesigner {
     }
 
     getCard(): object {
-        return this.designerSurface.card.toJSON();
+        return this.designerSurface.getCardPayloadAsObject();
     }
 
     onCardPayloadChanged: (designer: CardDesigner) => void;
     onActiveHostContainerChanged: (designer: CardDesigner) => void;
+    onTargetVersionChanged: (designer: CardDesigner) => void;
 
-    get currentTargetVersion(): Adaptive.TargetVersion {
-        if (this._versionChoicePicker) {
-            return Shared.SupportedTargetVersions[parseInt(this._versionChoicePicker.value)];
-        }
-        else {
-            return Adaptive.Versions.latest;
-        }
+    get targetVersion(): Adaptive.Version {
+        return this._targetVersion;
+    }
+
+    set targetVersion(value: Adaptive.Version) {
+        this._targetVersion = value;
+
+        this.targetVersionChanged();
     }
 
     get dataStructure(): FieldDefinition {
@@ -1120,28 +1131,6 @@ export class CardDesigner {
 
     get canRedo(): boolean {
         return this._undoStackIndex < this._undoStack.length - 1;
-    }
-
-    get card(): Adaptive.AdaptiveCard {
-        return this._card;
-    }
-
-    set card(value: Adaptive.AdaptiveCard) {
-        if (this._card != value) {
-            if (this._card) {
-                this._card.designMode = false;
-            }
-
-            this._card = value;
-
-            if (this._card) {
-                this._card.designMode = true;
-                this._card.hostConfig = this.activeHostContainer.getHostConfig();
-            }
-
-            this.recreateDesignerSurface();
-            this.updateCardFromJson();
-        }
     }
 
     get designerSurface(): Designer.CardDesignerSurface {
@@ -1189,14 +1178,14 @@ export class CardDesigner {
 
 export module CardDesigner {
     export class ToolbarCommands {
-        static FullScreen = "__fullScreenButton";
-        static OpenPayload = "__openPayload";
-        static HostAppPicker = "__hostAppPicker";
-        static VersionPicker = "__versionPicker";
-        static Undo = "__undoButton";
-        static Redo = "__redoButton";
-        static NewCard = "__newCardButton";
-        static CopyJSON = "__copyJsonButton";
-        static TogglePreview = "__togglePreviewButton";
+        static readonly FullScreen = "__fullScreenButton";
+        static readonly OpenPayload = "__openPayload";
+        static readonly HostAppPicker = "__hostAppPicker";
+        static readonly VersionPicker = "__versionPicker";
+        static readonly Undo = "__undoButton";
+        static readonly Redo = "__redoButton";
+        static readonly NewCard = "__newCardButton";
+        static readonly CopyJSON = "__copyJsonButton";
+        static readonly TogglePreview = "__togglePreviewButton";
     }
 }

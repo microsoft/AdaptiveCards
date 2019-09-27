@@ -173,7 +173,7 @@ export class CardDesignerSurface {
     private _dragHandle: DragHandle;
     private _removeCommandElement: HTMLElement;
     private _peerCommandsHostElement: HTMLElement;
-    private _parseContext: Adaptive.ParseContext = new Adaptive.ParseContext();
+    private _serializationContext: Adaptive.SerializationContext;
     private _isPreviewMode: boolean = false;
     private _sampleData: any;
 
@@ -235,8 +235,6 @@ export class CardDesignerSurface {
     }
 
     private peerChanged(peer: DesignerPeers.DesignerPeer, updatePropertySheet: boolean) {
-        this._parseContext = new Adaptive.ParseContext();
-
         this.renderCard()
         this.updateLayout();
 
@@ -263,14 +261,14 @@ export class CardDesignerSurface {
 
         if (this.card) {
             if (this.onCardValidated) {
-                this.onCardValidated(this._parseContext.errors, this.card.validateProperties());
+                this.onCardValidated(this._serializationContext.errors, this.card.validateProperties());
             }
 
             let cardToRender: Adaptive.AdaptiveCard;
 
             if (this.isPreviewMode) {
                 if (Shared.GlobalSettings.previewFeaturesEnabled) {
-                    let cardPayload = this.card.toJSON();
+                    let cardPayload = this.card.toJSON(this._serializationContext);
 
                     try {
                         let template = new ACData.Template(cardPayload);
@@ -282,7 +280,7 @@ export class CardDesignerSurface {
 
                         cardToRender = new Adaptive.AdaptiveCard();
                         cardToRender.hostConfig = this.card.hostConfig;
-                        cardToRender.parse(expandedCardPayload, new Adaptive.ParseContext());
+                        cardToRender.parse(expandedCardPayload, new Adaptive.SerializationContext());
                     }
                     catch (e) {
                         console.log("Template expansion error: " + e.message);
@@ -450,7 +448,9 @@ export class CardDesignerSurface {
         }
     }
 
-    constructor(readonly hostContainer: HostContainer) {
+    constructor(readonly hostContainer: HostContainer, readonly targetVersion: Adaptive.Version) {
+        this._serializationContext = this.hostContainer.createSerializationContext(this.targetVersion);
+
         var rootElement = document.createElement("div");
         rootElement.style.position = "relative";
         rootElement.style.width = "100%";
@@ -593,10 +593,12 @@ export class CardDesignerSurface {
         this.updateLayout();
     }
 
-    setCardPayloadAsObject(payload: object) {
-        this._parseContext = new Adaptive.ParseContext();
+    getCardPayloadAsObject(): object {
+        return this.card.toJSON(this._serializationContext);
+    }
 
-        this.card.parse(payload, this._parseContext);
+    setCardPayloadAsObject(payload: object) {
+        this.card.parse(payload, this._serializationContext);
 
         this.render();
     }

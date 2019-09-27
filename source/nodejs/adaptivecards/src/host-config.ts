@@ -5,6 +5,18 @@ import * as Utils from "./utils";
 import * as Shared from "./shared";
 import { HostCapabilities } from "./host-capabilities";
 
+function parseHostConfigEnum(targetEnum: { [s: number]: string }, value: string | number, defaultValue: any): any {
+    if (typeof value === "string") {
+        return Utils.parseEnum(targetEnum, value, defaultValue);
+    }
+    else if (typeof value === "number") {
+        return value;
+    }
+    else {
+        return defaultValue;
+    }
+}
+
 export class ColorDefinition {
     default: string = "#000000";
     subtle: string = "#666666";
@@ -56,7 +68,7 @@ export class ImageSetConfig {
     constructor(obj?: any) {
         if (obj) {
             this.imageSize = obj["imageSize"] != null ? obj["imageSize"] : this.imageSize;
-            this.maxImageHeight = <number>Utils.getNumberValue(obj["maxImageHeight"], 100);
+            this.maxImageHeight = <number>Utils.parseNumber(obj["maxImageHeight"], 100);
         }
     }
 
@@ -96,10 +108,10 @@ export class FactTextDefinition {
 
     constructor(obj?: any) {
         if (obj) {
-            this.size = Utils.parseHostConfigEnum(Enums.TextSize, obj["size"], Enums.TextSize.Default);
-            this.color = Utils.parseHostConfigEnum(Enums.TextColor, obj["color"], Enums.TextColor.Default);
+            this.size = parseHostConfigEnum(Enums.TextSize, obj["size"], Enums.TextSize.Default);
+            this.color = parseHostConfigEnum(Enums.TextColor, obj["color"], Enums.TextColor.Default);
             this.isSubtle = obj["isSubtle"] || this.isSubtle;
-            this.weight = Utils.parseHostConfigEnum(Enums.TextWeight, obj["weight"], this.getDefaultWeight());
+            this.weight = parseHostConfigEnum(Enums.TextWeight, obj["weight"], this.getDefaultWeight());
             this.wrap = obj["wrap"] != null ? obj["wrap"] : this.wrap;
         }
     }
@@ -128,7 +140,7 @@ export class FactTitleDefinition extends FactTextDefinition {
 
         if (obj) {
             this.maxWidth = obj["maxWidth"] != null ? obj["maxWidth"] : this.maxWidth;
-			this.weight = Utils.parseHostConfigEnum(Enums.TextWeight, obj["weight"], Enums.TextWeight.Bolder);
+			this.weight = parseHostConfigEnum(Enums.TextWeight, obj["weight"], Enums.TextWeight.Bolder);
         }
     }
 
@@ -158,7 +170,7 @@ export class ShowCardActionConfig {
 
     constructor(obj?: any) {
         if (obj) {
-            this.actionMode = Utils.parseHostConfigEnum(Enums.ShowCardActionMode, obj["actionMode"], Enums.ShowCardActionMode.Inline);
+            this.actionMode = parseHostConfigEnum(Enums.ShowCardActionMode, obj["actionMode"], Enums.ShowCardActionMode.Inline);
             this.inlineTopMargin = obj["inlineTopMargin"] != null ? obj["inlineTopMargin"] : this.inlineTopMargin;
             this.style = obj["style"] && typeof obj["style"] === "string" ? obj["style"] : Enums.ContainerStyle.Emphasis;
         }
@@ -188,13 +200,13 @@ export class ActionsConfig {
     constructor(obj?: any) {
         if (obj) {
             this.maxActions = obj["maxActions"] != null ? obj["maxActions"] : this.maxActions;
-            this.spacing = Utils.parseHostConfigEnum(Enums.Spacing, obj.spacing && obj.spacing, Enums.Spacing.Default);
+            this.spacing = parseHostConfigEnum(Enums.Spacing, obj.spacing && obj.spacing, Enums.Spacing.Default);
             this.buttonSpacing = obj["buttonSpacing"] != null ? obj["buttonSpacing"] : this.buttonSpacing;
             this.showCard = new ShowCardActionConfig(obj["showCard"]);
-            this.preExpandSingleShowCardAction = Utils.getBoolValue(obj["preExpandSingleShowCardAction"], false);
-            this.actionsOrientation = Utils.parseHostConfigEnum(Enums.Orientation, obj["actionsOrientation"], Enums.Orientation.Horizontal);
-            this.actionAlignment = Utils.parseHostConfigEnum(Enums.ActionAlignment, obj["actionAlignment"], Enums.ActionAlignment.Left);
-            this.iconPlacement = Utils.parseHostConfigEnum(Enums.ActionIconPlacement, obj["iconPlacement"], Enums.ActionIconPlacement.LeftOfTitle);
+            this.preExpandSingleShowCardAction = Utils.parseBool(obj["preExpandSingleShowCardAction"], false);
+            this.actionsOrientation = parseHostConfigEnum(Enums.Orientation, obj["actionsOrientation"], Enums.Orientation.Horizontal);
+            this.actionAlignment = parseHostConfigEnum(Enums.ActionAlignment, obj["actionAlignment"], Enums.ActionAlignment.Left);
+            this.iconPlacement = parseHostConfigEnum(Enums.ActionIconPlacement, obj["iconPlacement"], Enums.ActionIconPlacement.LeftOfTitle);
             this.allowTitleToWrap = obj["allowTitleToWrap"] != null ? obj["allowTitleToWrap"] : this.allowTitleToWrap;
 
             try {

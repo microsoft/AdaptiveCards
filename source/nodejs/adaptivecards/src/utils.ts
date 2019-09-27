@@ -14,15 +14,15 @@ export function appendChild(node: Node, child: Node | undefined) {
     }
 }
 
-export function getStringValue(obj: any, defaultValue?: string): string | undefined {
-    return typeof obj === "string" ? obj.toString() : defaultValue;
+export function parseString(obj: any, defaultValue?: string): string | undefined {
+    return typeof obj === "string" ? obj : defaultValue;
 }
 
-export function getNumberValue(obj: any, defaultValue?: number): number | undefined {
+export function parseNumber(obj: any, defaultValue?: number): number | undefined {
     return typeof obj === "number" ? obj : defaultValue;
 }
 
-export function getBoolValue(value: any, defaultValue?: boolean): boolean | undefined {
+export function parseBool(value: any, defaultValue?: boolean): boolean | undefined {
     if (typeof value === "boolean") {
         return value;
     }
@@ -40,7 +40,7 @@ export function getBoolValue(value: any, defaultValue?: boolean): boolean | unde
     return defaultValue;
 }
 
-export function getEnumValue(targetEnum: { [s: number]: string }, name: string, defaultValue?: number): number | undefined {
+export function parseEnum(targetEnum: { [s: number]: string }, name: string, defaultValue?: number): number | undefined {
     if (!name) {
         return defaultValue;
     }
@@ -60,87 +60,6 @@ export function getEnumValue(targetEnum: { [s: number]: string }, name: string, 
     }
 
     return defaultValue;
-}
-
-export function setProperty(target: { [key: string]: any }, propertyName: string, propertyValue: any, defaultValue: any = undefined) {
-    if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue) {
-        delete target[propertyName];
-    }
-    else {
-        target[propertyName] = propertyValue;
-    }
-}
-
-export function setNumberProperty(target: { [key: string]: any }, propertyName: string, propertyValue: number | undefined, defaultValue: number | undefined = undefined) {
-    if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue || isNaN(propertyValue)) {
-        delete target[propertyName];
-    }
-    else {
-        target[propertyName] = propertyValue;
-    }
-}
-
-export function setEnumProperty(
-    enumType: { [s: number]: string },
-    target: { [key: string]: any },
-    propertyName: string,
-    propertyValue: number | undefined,
-    defaultValue: number | undefined = undefined) {
-    let targetValue = target[propertyName];
-
-    let canDeleteTarget = targetValue == undefined ? true : enumType[targetValue] !== undefined;
-
-    if (propertyValue == defaultValue) {
-        if (canDeleteTarget) {
-            delete target[propertyName];
-        }
-    }
-    else {
-        if (propertyValue == undefined) {
-            if (canDeleteTarget) {
-                delete target[propertyName];
-            }
-        }
-        else {
-            target[propertyName] = enumType[propertyValue];
-        }
-    }
-}
-
-export function setArrayProperty(target: { [key: string]: any }, propertyName: string, propertyValue: any[] | undefined) {
-    let items = [];
-
-    if (propertyValue) {
-        for (let item of propertyValue) {
-            if (item.toJSON) {
-                items.push(item.toJSON());
-            }
-            else {
-                items.push(item);
-            }
-        }
-    }
-
-    if (items.length == 0) {
-        if (target.hasOwnProperty(propertyName) && Array.isArray(target[propertyName])) {
-            delete target[propertyName];
-        }
-    }
-    else {
-        setProperty(target, propertyName, items);
-    }
-}
-
-export function parseHostConfigEnum(targetEnum: { [s: number]: string }, value: string | number, defaultValue: any): any {
-    if (typeof value === "string") {
-        return getEnumValue(targetEnum, value, defaultValue);
-    }
-    else if (typeof value === "number") {
-        return value;
-    }
-    else {
-        return defaultValue;
-    }
 }
 
 export function renderSeparation(hostConfig: HostConfig, separationDefinition: Shared.ISeparationDefinition, orientation: Enums.Orientation): HTMLElement | undefined {
