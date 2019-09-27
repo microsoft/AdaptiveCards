@@ -61,6 +61,8 @@
     _mainBundle = nil;
     _defaultHostConfigFile = nil;
     _defaultHostConfig = nil;
+    [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRTextBlock];
+    [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRRichTextBlock];
     [super tearDown];
 }
 
@@ -106,6 +108,49 @@
     ACRTextView *acrTextView = (ACRTextView *)[renderResult.view viewWithTag:hashkey.hash];
     XCTAssertNotNil(acrTextView);
     XCTAssertTrue([acrTextView.text length] == 0);
+}
+
+// this test ensure that having custom text render doesn't crash
+// in use case where custom renderer uses default text renderer
+- (void)testCustomTextRendereDoesNotCrash
+{
+    ACRRegistration *registration = [ACRRegistration getInstance];
+    [registration setBaseCardElementRenderer:[ACRTextBlockRenderer getInstance] cardElementType:ACRCardElementType::ACRTextBlock];
+
+    NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"Feedback" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
+    ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
+    XCTAssertTrue(cardParseResult && cardParseResult.isValid);
+    ACRRenderResult *renderResult = [ACRRenderer render:cardParseResult.card config:_defaultHostConfig widthConstraint:335];
+
+    XCTAssertNotNil(renderResult.view);
+}
+
+// tests that rich text block renderer won't crash if default one is overriden & being used in the custom renderer.
+- (void)testCustomRichTextRendereDoesNotCrash
+{
+    ACRRegistration *registration = [ACRRegistration getInstance];
+    [registration setBaseCardElementRenderer:[ACRRichTextBlockRenderer getInstance] cardElementType:ACRCardElementType::ACRRichTextBlock];
+
+    NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"RichTextBlock" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
+    ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
+    XCTAssertTrue(cardParseResult && cardParseResult.isValid);
+    ACRRenderResult *renderResult = [ACRRenderer render:cardParseResult.card config:_defaultHostConfig widthConstraint:335];
+
+    XCTAssertNotNil(renderResult.view);
+}
+
+// tests that factset renderer won't crash if default one is overriden & being used in the custom renderer
+- (void)testCustomFactSetRendereDoesNotCrash
+{
+    ACRRegistration *registration = [ACRRegistration getInstance];
+    [registration setBaseCardElementRenderer:[ACRFactSetRenderer getInstance] cardElementType:ACRCardElementType::ACRFactSet];
+
+    NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"ActivityUpdate" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
+    ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
+    XCTAssertTrue(cardParseResult && cardParseResult.isValid);
+    ACRRenderResult *renderResult = [ACRRenderer render:cardParseResult.card config:_defaultHostConfig widthConstraint:335];
+
+    XCTAssertNotNil(renderResult.view);
 }
 
 - (void)testBuildingShowCardTarget
@@ -430,6 +475,7 @@
     XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::TimeInput) == ACRTimeInput);
     XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::ToggleInput) == ACRToggleInput);
     XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::Unknown) == ACRUnknown);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::RichTextBlock) == ACRRichTextBlock);
 }
 
 @end
