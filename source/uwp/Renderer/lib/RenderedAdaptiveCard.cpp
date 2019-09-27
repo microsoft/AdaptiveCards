@@ -240,7 +240,10 @@ namespace AdaptiveNamespace
 
         for (auto parentPanel : parentPanels)
         {
-            XamlHelpers::SetSeparatorVisibility(parentPanel);
+            if (parentPanel)
+            {
+                XamlHelpers::SetSeparatorVisibility(parentPanel);
+            }
         }
 
         return S_OK;
