@@ -411,7 +411,7 @@
 
     <% if(!is_current('/') && !page.hideBreadcrumb) { /* no breadcrumb on home page */ %>
     <div class="content-header uhf-container has-padding" data-bi-name="content-header">
-		<ul class="breadcrumbs" data-bi-name="breadcrumb" itemscope="" itemtype="http://schema.org/BreadcrumbList" role="navigation"
+		<ul class="breadcrumbs" data-bi-name="breadcrumb" itemscope="" itemtype="http://schema.org/BreadcrumbList" 
 		 aria-label="Breadcrumb">
             <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem" class="mobile-breadcrumb">
                <a itemprop="item" href="<%- url_for('/') %>">Adaptive Cards</a>
@@ -442,7 +442,7 @@
         <div class="action-bar">
             <ul class="action-list">
                 <li>
-                    <a id="feedback-button" class="button" data-bi-name="comments">
+                    <a id="feedback-button" class="button" data-bi-name="feedback">
                         <span class="docon docon-comment-lines" aria-hidden="true"></span> <span class="action-item-text">Feedback</span>
                     </a>
                 </li>

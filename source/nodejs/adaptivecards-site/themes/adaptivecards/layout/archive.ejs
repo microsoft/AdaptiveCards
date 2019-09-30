@@ -27,9 +27,9 @@ layout: layout
 				var style = "background-image: url('" + imageSrc + "')"  %>
 			<a href="<%- config.root %><%- post.path %>" class="coverImage" style="<%= style %>" role="presentation" aria-label="<%= post.title %>"></a>
 
-			<a class="article-title" href="<%- config.root %><%- post.path %>"><%- post.title %></a>
+			<h2><a class="article-title" href="<%- config.root %><%- post.path %>"><%- post.title %></a></h2>
 
-			<a class="article-subtitle" href="<%- config.root %><%- post.path %>"><%- post.subtitle %></a>
+			<h3><a class="article-subtitle" href="<%- config.root %><%- post.path %>"><%- post.subtitle %></a></h3>
 
 			<div class="w3-margin-top">
 				<div class="w3-cell w3-cell-middle">
