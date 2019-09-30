@@ -127,3 +127,33 @@
 	</div>
 
 </div>
+
+
+
+<% /* Load scripts based on the URL */ %>
+
+<% if(is_current("visualizer")) { %>
+
+	<%- hashed_asset('node_modules/adaptivecards/dist/adaptivecards.min.js') %>  
+	<%- hashed_asset('node_modules/monaco-editor/min/vs/loader.js') %>  
+	<%- hashed_asset("visualizer/monaco-loader.js") %>
+	<%- hashed_asset("visualizer/adaptivecards-visualizer.min.js") %>
+
+<% } else if(is_current("designer")) { %>
+
+	<% /* Designer scripts are loaded from the designer.ejs template */ %>
+
+<% } else if(is_current("/")) { %>
+
+	<% /* Keep the homepage light, doesn't need all the other scripts */ %>
+	<%- hashed_asset('js/script.js') %>
+
+<% } else { %>
+
+	<%- hashed_asset("node_modules/markdown-it/dist/markdown-it.min.js") %>
+	<%- hashed_asset("node_modules/highlightjs/highlight.pack.min.js") %>
+	<%- hashed_asset("js/github-buttons.js") %>
+	<%- hashed_asset('node_modules/adaptivecards/dist/adaptivecards.min.js') %>	
+	<%- hashed_asset('js/script.js') %>
+
+<% } %> 

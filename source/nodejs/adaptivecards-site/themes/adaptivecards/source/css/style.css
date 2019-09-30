@@ -570,6 +570,7 @@ dir {
   width: 15px;
 }
 
+
 .homepage i.fas, .homepage i.far {
   width: 20px;
 }
@@ -630,6 +631,7 @@ dir {
   color: #5a5a5a;
   font-size: 14px;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .ac-footer a:hover {

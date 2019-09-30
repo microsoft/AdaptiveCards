@@ -7,8 +7,8 @@
 
 		<%- partial('_partial/header', null, {cache: false}) %>
 
-		<div id="main" class="main-container <% if (!page.hideBreadcrumb) { %>uhf-container<% } %>">
-		<%- body %>
+		<div id="main" role="main" class="main-container <% if (!page.hideBreadcrumb) { %>uhf-container<% } %>">
+			<%- body %>
 		</div>
 
 		<% if(!page.hideFooter) { %>

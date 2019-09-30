@@ -1,5 +1,27 @@
+<style type="text/css">
+	.content {
+		height: calc(100vh - 97px) !important;
+	}
+
+	body {
+		font-family: 'Segoe UI', sans-serif;
+		font-size: 14px;
+	}
+
+	#designerRootHost * {
+    	box-sizing: border-box;
+	}
+</style>
+<%- hashed_asset("node_modules/markdown-it/dist/markdown-it.min.js") %>
+
+<%- hashed_asset('node_modules/monaco-editor/min/vs/loader.js') %>  
+
+<%- hashed_asset("node_modules/adaptivecards-designer/dist/adaptivecards-designer.min.js") %>
+<%- hashed_asset("node_modules/adaptivecards-designer/dist/adaptivecards-designer.css") %>
+
+
 <script type="text/javascript">
-	window.onload = function () {
+	$(function () {
 
 		function getParameterByName(name, url) {
 			if (!url) {
@@ -139,7 +161,7 @@
 			designer.dataStructure = ACDesigner.FieldDefinition.create(sampleData);
 			designer.sampleData = sampleData;
 		});
-	};
+	});
 </script>
 
 <div style="display: flex; flex-direction: column; height: 100%; ">
