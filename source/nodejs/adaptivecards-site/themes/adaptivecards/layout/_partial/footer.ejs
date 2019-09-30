@@ -145,14 +145,13 @@
 
 <% } else if(is_current("/")) { %>
 
-	<% /* Keep the homepage light, doesn't need all the other scripts */ %>
 	<%- hashed_asset('js/script.js') %>
+	<%- hashed_asset("js/github-buttons.js") %>
 
 <% } else { %>
 
 	<%- hashed_asset("node_modules/markdown-it/dist/markdown-it.min.js") %>
 	<%- hashed_asset("node_modules/highlightjs/highlight.pack.min.js") %>
-	<%- hashed_asset("js/github-buttons.js") %>
 	<%- hashed_asset('node_modules/adaptivecards/dist/adaptivecards.min.js') %>	
 	<%- hashed_asset('js/script.js') %>
 
