@@ -1,21 +1,21 @@
 <head>
-  <meta charset="utf-8">
-  <%
-	var title = page.title;
+	<meta charset="utf-8">
+	<%
+		var title = page.title;
 
-	if (is_archive()){
-		title = __("archive_a");
+		if (is_archive()){
+			title = __("archive_a");
 
-		if (is_month()){
-		title += ": " + page.year + "/" + page.month;
-		} else if (is_year()){
-		title += ": " + page.year;
+			if (is_month()){
+			title += ": " + page.year + "/" + page.month;
+			} else if (is_year()){
+			title += ": " + page.year;
+			}
+		} else if (is_category()){
+			title = __("category") + ": " + page.category;
+		} else if (is_tag()){
+			title = __("tag") + ": " + page.tag;
 		}
-	} else if (is_category()){
-		title = __("category") + ": " + page.category;
-	} else if (is_tag()){
-		title = __("tag") + ": " + page.tag;
-	}
 	%>
 	<title><% if (title){ %><%= title %> | <% } %><%= config.title %></title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,6 +25,15 @@
 
 	<link rel="alternate" href="<%- url_for(config.feed.path) %>" title="<%= config.title %>" type="application/atom+xml">
 	<link rel="icon" href="<%- url_for('content/favicon.ico') %>">
+
+	<% if(is_post()) { %>
+		<meta name="twitter:card" content="summary_large_image">
+		<meta name="twitter:title" content="Adaptive Cards | <%- page.title %>">
+		<meta name="twitter:description" content="<%- page.subtitle %>">
+		<meta name="twitter:creator" content="<%- locals['page.author.twitter'] ? page.author.twitter : '' %>">
+		<meta name="twitter:image" content="<%- url_for(page.featured_image) %>">
+		<meta name="twitter:domain" content="https://adaptivecards.io">
+	<% } %>
 
 	<% if(is_current("visualizer")) { %>
 		<%- hashed_asset("css/w3.css") %>
