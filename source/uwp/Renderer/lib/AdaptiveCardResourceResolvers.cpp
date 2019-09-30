@@ -9,7 +9,8 @@ using namespace ABI::Windows::Foundation;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveCardResourceResolvers::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveCardResourceResolvers::RuntimeClassInitialize() noexcept
+    try
     {
         return S_OK;
     }

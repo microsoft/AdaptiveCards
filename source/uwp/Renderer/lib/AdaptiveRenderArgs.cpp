@@ -16,7 +16,8 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveRenderArgs::RuntimeClassInitialize(ABI::AdaptiveNamespace::ContainerStyle containerStyle,
                                                        _In_opt_ IInspectable* parentElement,
-                                                       _In_opt_ IAdaptiveRenderArgs* renderArgs) noexcept try
+                                                       _In_opt_ IAdaptiveRenderArgs* renderArgs) noexcept
+    try
     {
         m_containerStyle = containerStyle;
         m_parentElement = parentElement;

@@ -239,6 +239,17 @@ namespace UWPUnitTests
 
             card.Body.Add(textBlock6);
 
+            AdaptiveTextBlock textBlock7 = new AdaptiveTextBlock
+            {
+                Text = "Text Block 7 tests case insensitive features."
+            };
+
+            textBlock7.Requirements.Add(new AdaptiveRequirement("cAsEiNsEnSiTiVeFEAture", "1.0"));
+
+            Assert.AreEqual(FallbackType.None, textBlock7.FallbackType);
+
+            card.Body.Add(textBlock7);
+
             var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
 
             Exception testException = null;
@@ -250,6 +261,7 @@ namespace UWPUnitTests
                 {
                     AdaptiveCardRenderer renderer = new AdaptiveCardRenderer();
                     renderer.FeatureRegistration.Set("testFeature", "1.0");
+                    renderer.FeatureRegistration.Set("caseInsensitiveFeature", "1.0");
 
                     RenderedAdaptiveCard renderedCard = renderer.RenderAdaptiveCard(card);
 

@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
+
 #include "AdaptiveFontSizesConfig.h"
 
 using namespace Microsoft::WRL;
@@ -8,7 +9,8 @@ using namespace ABI::AdaptiveNamespace;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveFontSizesConfig::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveFontSizesConfig::RuntimeClassInitialize() noexcept
+    try
     {
         FontSizesConfig fontSizesConfig;
         return RuntimeClassInitialize(fontSizesConfig);
