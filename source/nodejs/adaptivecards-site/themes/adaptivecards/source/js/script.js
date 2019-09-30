@@ -1,24 +1,25 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 $(function () {
-	// Adaptive Cards
-	AdaptiveCards.AdaptiveCard.onExecuteAction = function (action) {
-		var message = "Action executed\n";
-		message += "    Title: " + action.title + "\n";
 
-		if (action instanceof AdaptiveCards.OpenUrlAction) {
-			message += "    Type: Action.OpenUrl\n";
-			message += "    Url: " + action.url + "\n";
-		} else if (action instanceof AdaptiveCards.SubmitAction) {
-			message += "    Type: Action.Submit";
-			message += "    Data: " + JSON.stringify(action.data);
-		} else {
-			message += "    Type: <unknown>";
-		}
+	if (typeof AdaptiveCards !== 'undefined') {
+		AdaptiveCards.AdaptiveCard.onExecuteAction = function (action) {
+			var message = "Action executed\n";
+			message += "    Title: " + action.title + "\n";
 
-		alert(message);
-	};
+			if (action instanceof AdaptiveCards.OpenUrlAction) {
+				message += "    Type: Action.OpenUrl\n";
+				message += "    Url: " + action.url + "\n";
+			} else if (action instanceof AdaptiveCards.SubmitAction) {
+				message += "    Type: Action.Submit";
+				message += "    Data: " + JSON.stringify(action.data);
+			} else {
+				message += "    Type: <unknown>";
+			}
 
+			alert(message);
+		};
+	}
 
 
 	var hostConfig = {
@@ -325,11 +326,14 @@ $(function () {
 
 	$('.ac-properties table').addClass("w3-table w3-bordered");
 
-	hljs.configure({
-		tabReplace: '  '
-	});
+	if (typeof hljs !== 'undefined') {
+		hljs.configure({
+			tabReplace: '  '
+		});
+		
+		hljs.initHighlightingOnLoad();
+	}
 
-	hljs.initHighlightingOnLoad();
 
 	// From https://github.com/30-seconds/30-seconds-of-code/blob/20e7d899f31ac3d8fb2b30b2e311acf9a1964fe8/snippets/copyToClipboard.md
 	function copyToClipboard(str) {
@@ -421,7 +425,7 @@ $(function () {
 
 	var videos = document.querySelectorAll('video[data-autoplay]');
 	$(window).scroll(function (event) {
-		videos.forEach(function(video) {
+		videos.forEach(function (video) {
 			if (isInViewport(video)) {
 				video.play();
 			} else {
