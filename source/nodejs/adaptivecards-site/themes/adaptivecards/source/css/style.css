@@ -492,6 +492,12 @@ dir {
   margin-bottom: 64px;
 }
 
+@media screen and (min-width: 601px) {
+	.center-large {
+		text-align: center;
+	}
+}
+
 @media screen and (max-width: 601px) {
   .homepage .divider {
     margin-left: 0 !important;
