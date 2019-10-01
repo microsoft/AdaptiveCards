@@ -9,7 +9,9 @@
 #import "ACRViewPrivate.h"
 #import "BaseCardElement.h"
 #import "CollectionTypeElement.h"
-#import "TextElementProperties.h"
+#import "RichTextElementProperties.h"
+#import "TextBlock.h"
+#import "TextRun.h"
 #import <UIKit/UIKit.h>
 
 using namespace AdaptiveCards;
@@ -55,3 +57,9 @@ ACRRenderingStatus buildTargetForButton(ACRTargetBuilderDirector *director,
 
 ACRRenderingStatus buildTarget(ACRTargetBuilderDirector *director,
                                std::shared_ptr<BaseActionElement> const &action, NSObject **target);
+
+void TextBlockToRichTextElementProperties(const std::shared_ptr<TextBlock> &textBlock, RichTextElementProperties &textProp);
+
+void TextRunToRichTextElementProperties(const std::shared_ptr<TextRun> &textRun, RichTextElementProperties &textProp);
+
+void buildIntermediateResultForText(ACRView *rootView, ACOHostConfig *hostConfig, RichTextElementProperties const &textProperties, NSString *elementId);
