@@ -8,7 +8,7 @@
 		<a href="<%- learnMoreLink %>"><%- learnMoreTitle  %> <i class="fas fa-chevron-right"></i></a>
 	</div>
 	<div class="w3-container w3-cell w3-mobile section-video" >
-		<video data-autoplay="true" muted style="width: 100%; margin-bottom: -8px" data-loop-delay="<%= typeof videoLoopDelay !== 'undefined' ? videoLoopDelay : '' %>"
+		<video data-autoplay="true" playsinline muted style="width: 100%; margin-bottom: -8px" data-loop-delay="<%= typeof videoLoopDelay !== 'undefined' ? videoLoopDelay : '' %>"
 			src="<%- video %>"></video>
 	</div>
 </div>
