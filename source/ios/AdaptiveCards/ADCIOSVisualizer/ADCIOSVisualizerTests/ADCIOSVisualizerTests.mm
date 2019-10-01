@@ -111,47 +111,26 @@
     XCTAssertTrue([acrTextView.text length] == 0);
 }
 
-// this test ensure that having custom text render doesn't crash
+// this test ensure that extending text render doesn't crash
 // in use case where custom renderer uses default text renderer
-- (void)testCustomTextRendereDoesNotCrash
+- (void)testExtendingTextRenderersDoesNotCrash
 {
     ACRRegistration *registration = [ACRRegistration getInstance];
     [registration setBaseCardElementRenderer:[ACRTextBlockRenderer getInstance] cardElementType:ACRCardElementType::ACRTextBlock];
-
-    NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"Feedback" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
-    ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
-    XCTAssertTrue(cardParseResult && cardParseResult.isValid);
-    ACRRenderResult *renderResult = [ACRRenderer render:cardParseResult.card config:_defaultHostConfig widthConstraint:335];
-
-    XCTAssertNotNil(renderResult.view);
-}
-
-// tests that rich text block renderer won't crash if default one is overriden & being used in the custom renderer.
-- (void)testCustomRichTextRendereDoesNotCrash
-{
-    ACRRegistration *registration = [ACRRegistration getInstance];
     [registration setBaseCardElementRenderer:[ACRRichTextBlockRenderer getInstance] cardElementType:ACRCardElementType::ACRRichTextBlock];
-
-    NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"RichTextBlock" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
-    ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
-    XCTAssertTrue(cardParseResult && cardParseResult.isValid);
-    ACRRenderResult *renderResult = [ACRRenderer render:cardParseResult.card config:_defaultHostConfig widthConstraint:335];
-
-    XCTAssertNotNil(renderResult.view);
-}
-
-// tests that factset renderer won't crash if default one is overriden & being used in the custom renderer
-- (void)testCustomFactSetRendereDoesNotCrash
-{
-    ACRRegistration *registration = [ACRRegistration getInstance];
     [registration setBaseCardElementRenderer:[ACRFactSetRenderer getInstance] cardElementType:ACRCardElementType::ACRFactSet];
 
-    NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"ActivityUpdate" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
-    ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
-    XCTAssertTrue(cardParseResult && cardParseResult.isValid);
-    ACRRenderResult *renderResult = [ACRRenderer render:cardParseResult.card config:_defaultHostConfig widthConstraint:335];
+    // TextBlock.Maxlines is used for testing when text block renderer is overriden
+    // RichTextBlock tests for RichTextBlock renderer extension
+    // ActivityUpdate tests TextBlock & FactSet extension combinations
+    NSArray<NSString *> *payloadNames = @[ @"TextBlock.MaxLines", @"RichTextBlock", @"ActivityUpdate" ];
 
-    XCTAssertNotNil(renderResult.view);
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    // Put the code you want to measure the time of here.
+    for (ACOAdaptiveCard *card in cards) {
+        ACRRenderResult *renderResult = [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        XCTAssertNotNil(renderResult.view);
+    }
 }
 
 - (void)testBuildingShowCardTarget
