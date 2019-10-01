@@ -126,7 +126,6 @@
     NSArray<NSString *> *payloadNames = @[ @"TextBlock.MaxLines", @"RichTextBlock", @"ActivityUpdate" ];
 
     NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
-    // Put the code you want to measure the time of here.
     for (ACOAdaptiveCard *card in cards) {
         ACRRenderResult *renderResult = [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
         XCTAssertNotNil(renderResult.view);

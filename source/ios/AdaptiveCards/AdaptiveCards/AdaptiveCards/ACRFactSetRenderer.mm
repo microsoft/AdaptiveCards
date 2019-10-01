@@ -128,10 +128,10 @@
 
     for (auto fact : fctSet->GetFacts()) {
         NSString *title = [NSString stringWithCString:fact->GetTitle().c_str() encoding:NSUTF8StringEncoding];
-        NSString *titileElemId = [key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]];
+        NSString *titleElemId = [key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]];
         if (isOverridden == YES) {
             RichTextElementProperties titleTextProp{config->GetFactSet().title, fact->GetTitle(), fact->GetLanguage()};
-            buildIntermediateResultForText(rootView, acoConfig, titleTextProp, titileElemId);
+            buildIntermediateResultForText(rootView, acoConfig, titleTextProp, titleElemId);
         }
 
         ACRUILabel *titleLab = [ACRFactSetRenderer buildLabel:title
@@ -139,7 +139,7 @@
                                                    hostConfig:acoConfig
                                                    textConfig:config->GetFactSet().title
                                                containerStyle:style
-                                                    elementId:titileElemId
+                                                    elementId:titleElemId
                                                      rootView:rootView
                                                       element:elem];
 
