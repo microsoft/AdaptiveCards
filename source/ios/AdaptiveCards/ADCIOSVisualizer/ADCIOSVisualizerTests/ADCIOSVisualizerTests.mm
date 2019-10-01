@@ -61,6 +61,9 @@
     _mainBundle = nil;
     _defaultHostConfigFile = nil;
     _defaultHostConfig = nil;
+    [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRTextBlock];
+    [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRRichTextBlock];
+    [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRFactSet];
     [super tearDown];
 }
 
@@ -106,6 +109,27 @@
     ACRTextView *acrTextView = (ACRTextView *)[renderResult.view viewWithTag:hashkey.hash];
     XCTAssertNotNil(acrTextView);
     XCTAssertTrue([acrTextView.text length] == 0);
+}
+
+// this test ensure that extending text render doesn't crash
+// in use case where custom renderer uses default text renderer
+- (void)testExtendingTextRenderersDoesNotCrash
+{
+    ACRRegistration *registration = [ACRRegistration getInstance];
+    [registration setBaseCardElementRenderer:[ACRTextBlockRenderer getInstance] cardElementType:ACRCardElementType::ACRTextBlock];
+    [registration setBaseCardElementRenderer:[ACRRichTextBlockRenderer getInstance] cardElementType:ACRCardElementType::ACRRichTextBlock];
+    [registration setBaseCardElementRenderer:[ACRFactSetRenderer getInstance] cardElementType:ACRCardElementType::ACRFactSet];
+
+    // TextBlock.Maxlines is used for testing when text block renderer is overriden
+    // RichTextBlock tests for RichTextBlock renderer extension
+    // ActivityUpdate tests TextBlock & FactSet extension combinations
+    NSArray<NSString *> *payloadNames = @[ @"TextBlock.MaxLines", @"RichTextBlock", @"ActivityUpdate" ];
+
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    for (ACOAdaptiveCard *card in cards) {
+        ACRRenderResult *renderResult = [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        XCTAssertNotNil(renderResult.view);
+    }
 }
 
 - (void)testBuildingShowCardTarget
@@ -430,6 +454,7 @@
     XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::TimeInput) == ACRTimeInput);
     XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::ToggleInput) == ACRToggleInput);
     XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::Unknown) == ACRUnknown);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::RichTextBlock) == ACRRichTextBlock);
 }
 
 @end
