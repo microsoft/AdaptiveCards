@@ -30,9 +30,9 @@
 		<meta name="twitter:card" content="summary_large_image">
 		<meta name="twitter:title" content="Adaptive Cards | <%- page.title %>">
 		<meta name="twitter:description" content="<%- page.subtitle %>">
-		<meta name="twitter:creator" content="<%- locals['page.author.twitter'] ? page.author.twitter : '' %>">
+		<meta name="twitter:creator" content="<%- locals['page.author.twitter'] ? '@' + page.author.twitter : '""' %>">
 		<meta name="twitter:image" content="<%- url_for(page.featured_image) %>">
-		<meta name="twitter:domain" content="https://adaptivecards.io">
+		<meta name="twitter:domain" content="adaptivecards.io">
 	<% } %>
 
 	<% if(is_current("visualizer")) { %>
