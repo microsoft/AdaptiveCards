@@ -84,12 +84,12 @@
 				window.open("https://docs.microsoft.com/en-us/adaptive-cards/resources/partners")
 			}
 		);
-
 		hostDocsButton.separator = false;
 		hostDocsButton.toolTip = "Learn more about the Host Apps";
-
 		designer.toolbar.insertElementAfter(hostDocsButton, ACDesigner.CardDesigner.ToolbarCommands.HostAppPicker);
+
 		designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.HostAppPicker).width = "auto";
+		designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.FullScreen).isVisible = false;
 
 		
 		let visualizerButton = new ACDesigner.ToolbarButton(
@@ -100,10 +100,8 @@
 				window.open("<%- config.root %>visualizer")
 			}
 		);
-
 		visualizerButton.separator = true;
 		visualizerButton.alignment = ACDesigner.ToolbarElementAlignment.Right;
-
 		designer.toolbar.insertElementBefore(visualizerButton, ACDesigner.CardDesigner.ToolbarCommands.FullScreen);
 
 		let feedbackButton = new ACDesigner.ToolbarButton(
@@ -120,11 +118,9 @@
 		feedbackButton.separator = true;
 		feedbackButton.displayCaption = false;
 		feedbackButton.alignment = ACDesigner.ToolbarElementAlignment.Right;
-
 		feedbackButton.toolTip = "Provide feedback about the Designer";
-
 		designer.toolbar.insertElementAfter(feedbackButton, ACDesigner.CardDesigner.ToolbarCommands.FullScreen);
-		designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.FullScreen).isVisible = false;
+
 
 		var cardUrl = getParameterByName("card", null);
 
