@@ -1,3 +1,8 @@
+<%- hashed_asset("node_modules/markdown-it/dist/markdown-it.min.js") %>
+<%- hashed_asset('node_modules/monaco-editor/min/vs/loader.js') %>  
+<%- hashed_asset("node_modules/adaptivecards-designer/dist/adaptivecards-designer.min.js") %>
+<%- hashed_asset("node_modules/adaptivecards-designer/dist/adaptivecards-designer.css") %>
+
 <style type="text/css">
 	.content {
 		height: calc(100vh - 97px) !important;
@@ -11,16 +16,19 @@
 	#designerRootHost * {
     	box-sizing: border-box;
 	}
+
+	.acd-icon-openInNewWindow::before {
+    	content: "\E8A7";
+	}
+
+	.acd-icon-feedback::before {
+    	content: "\ED15";
+	}
 </style>
-<%- hashed_asset("node_modules/markdown-it/dist/markdown-it.min.js") %>
-
-<%- hashed_asset('node_modules/monaco-editor/min/vs/loader.js') %>  
-
-<%- hashed_asset("node_modules/adaptivecards-designer/dist/adaptivecards-designer.min.js") %>
-<%- hashed_asset("node_modules/adaptivecards-designer/dist/adaptivecards-designer.css") %>
 
 
 <script type="text/javascript">
+
 	$(function () {
 
 		function getParameterByName(name, url) {
@@ -43,8 +51,10 @@
 			console.log("Local storage is not available.");
 		}
 		
-		// Enable data binding preview features
-		ACDesigner.GlobalSettings.previewFeaturesEnabled = false;
+		<% if(page.previewFeaturesEnabled) { %>
+			// Enable data binding preview features
+			ACDesigner.GlobalSettings.previewFeaturesEnabled = true;
+		<% } %>
 
 
 		let hostContainers = [];
@@ -69,13 +79,14 @@
 		let hostDocsButton = new ACDesigner.ToolbarButton(
 			"hostDocs",
 			"Host App Docs",
-			null,
+			"acd-icon-openInNewWindow",
 			function () {
 				window.open("https://docs.microsoft.com/en-us/adaptive-cards/resources/partners")
 			}
 		);
 
 		hostDocsButton.separator = false;
+		hostDocsButton.toolTip = "Learn more about the Host Apps";
 
 		designer.toolbar.insertElementAfter(hostDocsButton, ACDesigner.CardDesigner.ToolbarCommands.HostAppPicker);
 		designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.HostAppPicker).width = "auto";
@@ -94,6 +105,26 @@
 		visualizerButton.alignment = ACDesigner.ToolbarElementAlignment.Right;
 
 		designer.toolbar.insertElementBefore(visualizerButton, ACDesigner.CardDesigner.ToolbarCommands.FullScreen);
+
+		let feedbackButton = new ACDesigner.ToolbarButton(
+			"feedbackButton",
+			"Feedback",
+			"acd-icon-feedback",
+			function () {
+				window.open("https://github.com/Microsoft/AdaptiveCards/issues/new?title="
+					+ encodeURIComponent("[Designer] [Your feedback title here]")
+					+ "&body=" + encodeURIComponent("[Your detailed feedback here]"))
+			}
+		);
+
+		feedbackButton.separator = true;
+		feedbackButton.displayCaption = false;
+		feedbackButton.alignment = ACDesigner.ToolbarElementAlignment.Right;
+
+		feedbackButton.toolTip = "Provide feedback about the Designer";
+
+		designer.toolbar.insertElementAfter(feedbackButton, ACDesigner.CardDesigner.ToolbarCommands.FullScreen);
+		designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.FullScreen).isVisible = false;
 
 		var cardUrl = getParameterByName("card", null);
 
