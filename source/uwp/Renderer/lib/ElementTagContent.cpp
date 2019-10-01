@@ -4,6 +4,7 @@
 #include "pch.h"
 #include "ElementTagContent.h"
 
+using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
@@ -16,8 +17,10 @@ namespace AdaptiveNamespace
                                                       _In_ IColumnDefinition* columnDefinition,
                                                       _In_ boolean expectedVisibility)
     {
+        ComPtr<IPanel> localParentPanel(parentPanel);
+        RETURN_IF_FAILED(localParentPanel.AsWeak(&m_parentPanel));
+
         m_columnDefinition = columnDefinition;
-        m_parentPanel = parentPanel;
         m_separator = separator;
         m_cardElement = cardElement;
         m_expectedVisibility = expectedVisibility;

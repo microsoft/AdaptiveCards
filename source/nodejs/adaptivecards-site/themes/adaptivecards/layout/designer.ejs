@@ -1,5 +1,27 @@
+<style type="text/css">
+	.content {
+		height: calc(100vh - 97px) !important;
+	}
+
+	body {
+		font-family: 'Segoe UI', sans-serif;
+		font-size: 14px;
+	}
+
+	#designerRootHost * {
+    	box-sizing: border-box;
+	}
+</style>
+<%- hashed_asset("node_modules/markdown-it/dist/markdown-it.min.js") %>
+
+<%- hashed_asset('node_modules/monaco-editor/min/vs/loader.js') %>  
+
+<%- hashed_asset("node_modules/adaptivecards-designer/dist/adaptivecards-designer.min.js") %>
+<%- hashed_asset("node_modules/adaptivecards-designer/dist/adaptivecards-designer.css") %>
+
+
 <script type="text/javascript">
-	window.onload = function () {
+	$(function () {
 
 		function getParameterByName(name, url) {
 			if (!url) {
@@ -41,8 +63,8 @@
 			"containers/toast-container.css"));
 
 		let designer = new ACDesigner.CardDesigner(hostContainers);
-		designer.assetPath = "../node_modules/adaptivecards-designer/dist/";
-		designer.sampleCatalogueUrl = "./sample-catalogue.json";
+		designer.assetPath = "<%- config.root %>node_modules/adaptivecards-designer/dist/"; 
+		designer.sampleCatalogueUrl = "<%- config.root %>designer/sample-catalogue.json";
 
 		let hostDocsButton = new ACDesigner.ToolbarButton(
 			"hostDocs",
@@ -56,13 +78,15 @@
 		hostDocsButton.separator = false;
 
 		designer.toolbar.insertElementAfter(hostDocsButton, ACDesigner.CardDesigner.ToolbarCommands.HostAppPicker);
+		designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.HostAppPicker).width = "auto";
 
+		
 		let visualizerButton = new ACDesigner.ToolbarButton(
 			"visualizerButton",
 			"Classic Visualizer",
 			null,
 			function () {
-				window.open("/visualizer")
+				window.open("<%- config.root %>visualizer")
 			}
 		);
 
@@ -83,7 +107,7 @@
 					designer.setCard(JSON.parse(xhttp.responseText));
 				}
 
-				history.replaceState(null, null, "/designer");
+				history.replaceState(null, null, "<%- config.root %>designer");
 			};
 
 			// TODO: when the designer has an addError API we should log that we failed to load the requested card
@@ -103,7 +127,7 @@
 
 		require.config({
 			paths: {
-				'vs': '/node_modules/monaco-editor/min/vs'
+				'vs': '<%- config.root %>node_modules/monaco-editor/min/vs'
 			}
 		});
 		require(['vs/editor/editor.main'], function () {
@@ -137,7 +161,7 @@
 			designer.dataStructure = ACDesigner.FieldDefinition.create(sampleData);
 			designer.sampleData = sampleData;
 		});
-	};
+	});
 </script>
 
 <div style="display: flex; flex-direction: column; height: 100%; ">
