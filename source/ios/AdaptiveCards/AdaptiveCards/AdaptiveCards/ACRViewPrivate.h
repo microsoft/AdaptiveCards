@@ -53,5 +53,7 @@ typedef void (^ObserverActionBlockForBaseAction)(NSObject<ACOIResourceResolver> 
 
 - (ACRTargetBuilderDirector *)getQuickReplyTargetBuilderDirector;
 
+- (void)enqueueIntermediateTextProcessingResult:(NSDictionary *)data
+                                      elementId:(NSString *)elementId;
 @end
 
