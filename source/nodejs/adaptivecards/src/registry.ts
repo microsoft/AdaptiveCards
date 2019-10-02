@@ -11,7 +11,7 @@ export interface ITypeRegistration<T extends SerializableObject> {
 export class CardObjectRegistry<T extends SerializableObject> {
     private _items: ITypeRegistration<T>[] = [];
 
-    private findTypeRegistration(typeName: string): ITypeRegistration<T> | undefined {
+    findByName(typeName: string): ITypeRegistration<T> | undefined {
         for (let item of this._items) {
             if (item.typeName === typeName) {
                 return item;
@@ -26,7 +26,7 @@ export class CardObjectRegistry<T extends SerializableObject> {
     }
 
     register(typeName: string, objectType: { new(): T }, schemaVersion: Version = Versions.v1_0) {
-        let registrationInfo = this.findTypeRegistration(typeName);
+        let registrationInfo = this.findByName(typeName);
 
         if (registrationInfo !== undefined) {
             registrationInfo.objectType = objectType;
@@ -53,7 +53,7 @@ export class CardObjectRegistry<T extends SerializableObject> {
     }
 
     createInstance(typeName: string, targetVersion: Version): T | undefined {
-        let registrationInfo = this.findTypeRegistration(typeName);
+        let registrationInfo = this.findByName(typeName);
 
         return (registrationInfo && registrationInfo.schemaVersion.compareTo(targetVersion) <= 0) ? new registrationInfo.objectType() : undefined;
     }

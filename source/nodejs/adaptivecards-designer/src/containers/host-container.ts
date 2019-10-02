@@ -32,8 +32,8 @@ export abstract class HostContainer {
 
     public createSerializationContext(targetVersion: Version): SerializationContext {
         let context = new SerializationContext(targetVersion);
-        context.elementRegistry = this.elementsRegistry;
-        context.actionRegistry = this.actionsRegistry;
+        context.setElementRegistry(this.elementsRegistry);
+        context.setActionRegistry(this.actionsRegistry);
 
         return context;
     }

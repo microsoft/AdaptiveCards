@@ -134,7 +134,7 @@ export class CardDesigner {
             let card: Adaptive.AdaptiveCard;
 
             if (peer) {
-                card = peer.buildPropertySheetCard(this.activeHostContainer, Adaptive.Versions.vNext); // , this.targetVersion);
+                card = peer.buildPropertySheetCard(this.activeHostContainer, this.targetVersion);
             }
             else {
                 card = new Adaptive.AdaptiveCard();
@@ -155,7 +155,7 @@ export class CardDesigner {
                             }
                         ]
                     },
-                    new Adaptive.SerializationContext(Adaptive.Versions.vNext) // this.targetVersion)
+                    new Adaptive.SerializationContext(this.targetVersion)
                 );
                 card.padding = new Adaptive.PaddingDefinition(
                     Adaptive.Spacing.Small,
@@ -165,7 +165,6 @@ export class CardDesigner {
                 )
             }
 
-            // card.hostConfig = this._propertySheetHostConfig;
             card.hostConfig = defaultHostConfig;
 
             this._propertySheetToolbox.content.appendChild(card.render());
@@ -251,15 +250,15 @@ export class CardDesigner {
         }
     }
 
-    private renderErrorPaneElement(message: string, cardObject?: Adaptive.CardObject): HTMLElement {
+    private renderErrorPaneElement(message: string, source?: Adaptive.SerializableObject): HTMLElement {
         let errorElement = document.createElement("div");
         errorElement.className = "acd-error-pane-message";
 
-        if (cardObject) {
+        if (source && source instanceof Adaptive.CardObject) {
             errorElement.classList.add("selectable");
             errorElement.title = "Click to select this element";
             errorElement.onclick = (e) => {
-                let peer = this.designerSurface.findPeer(cardObject);
+                let peer = this.designerSurface.findPeer(source);
 
                 if (peer) {
                     peer.isSelected = true;
@@ -320,29 +319,39 @@ export class CardDesigner {
 
             this.buildTreeView();
         };
-        this._designerSurface.onCardValidated = (parseErrors: Adaptive.IValidationError[], validationResults: Adaptive.ValidationResults) => {
+        this._designerSurface.onCardValidated = (logEntries: Adaptive.IValidationEvent[]) => {
+            if (this.onCardValidated) {
+                this.onCardValidated(this, logEntries);
+            }
+
             let errorPane = document.getElementById("errorPane");
             errorPane.innerHTML = "";
 
-            if (parseErrors.length > 0) {
-                let errorMessages: Array<string> = [];
+            if (logEntries.length > 0) {
+                let dedupedEntries: Adaptive.IValidationEvent[] = [];
 
-                for (let error of parseErrors) {
-                    if (errorMessages.indexOf(error.message) < 0) {
-                        errorMessages.push(error.message);
+                for (let entry of logEntries) {
+                    if (dedupedEntries.indexOf(entry) < 0) {
+                        dedupedEntries.push(entry);
                     }
                 }
 
-                for (let message of errorMessages) {
-                    errorPane.appendChild(this.renderErrorPaneElement("[Error] " + message));
-                }
-            }
+                for (let entry of dedupedEntries) {
+                    let s: string = "";
 
-            if (validationResults.failures.length > 0) {
-                for (let failure of validationResults.failures) {
-                    for (let error of failure.errors) {
-                        errorPane.appendChild(this.renderErrorPaneElement("[" + failure.cardObject.getJsonTypeName() + "] " + error.message, failure.cardObject));
+                    switch (entry.phase) {
+                        case Adaptive.ValidationPhase.Parse:
+                            s = "[Parse]";
+                            break;
+                        case Adaptive.ValidationPhase.ToJSON:
+                            s = "[Serialize]";
+                            break;
+                        default:
+                            s = "[Validation]";
+                            break;
                     }
+
+                    errorPane.appendChild(this.renderErrorPaneElement(s + " " + entry.message, entry.source));
                 }
             }
 
@@ -357,18 +366,7 @@ export class CardDesigner {
         this.buildPalette();
         this.buildPropertySheet(null);
 
-        let card = new Adaptive.AdaptiveCard();
-        card.version = this.targetVersion;
-        card.hostConfig = this.activeHostContainer.getHostConfig();
-        card.designMode = true;
-        card.onImageLoaded = (image: Adaptive.Image) => {
-            this.scheduleLayoutUpdate();
-        }
-
-        this._designerSurface.card = card;
-
         this.updateCardFromJson();
-        this.updateJsonFromCard();
         this.updateSampleData();
 
         this._designerSurface.isPreviewMode = wasInPreviewMode;
@@ -385,6 +383,14 @@ export class CardDesigner {
     }
 
     private targetVersionChanged() {
+        let cardPayload = this.designerSurface.getCardPayloadAsObject();
+
+        if (typeof cardPayload === "object") {
+            cardPayload["version"] = this.targetVersion.toString();
+
+            this.setCardPayload(cardPayload);
+        }
+
         this.recreateDesignerSurface();
 
         if (this.onTargetVersionChanged) {
@@ -1052,7 +1058,8 @@ export class CardDesigner {
     newCard() {
         let card = {
             type: "AdaptiveCard",
-            version: "1.0",
+            $schema: "http://adaptivecards.io/schemas/adaptive-card.json",
+            version: this.targetVersion.toString(),
             body: [
             ]
         }
@@ -1060,26 +1067,8 @@ export class CardDesigner {
         this.setCardPayload(card);
     }
 
-    setCard(payload: object) {
-        try {
-            this.preventJsonUpdate = true;
-
-            if (!this.preventCardUpdate) {
-                this.designerSurface.setCardPayloadAsObject(payload);
-            }
-        }
-        finally {
-            this.preventJsonUpdate = false;
-        }
-
-        this.updateJsonFromCard();
-    }
-
-    getCard(): object {
-        return this.designerSurface.getCardPayloadAsObject();
-    }
-
     onCardPayloadChanged: (designer: CardDesigner) => void;
+    onCardValidated: (designer: CardDesigner, validationLogEntries: Adaptive.IValidationEvent[]) => void;
     onActiveHostContainerChanged: (designer: CardDesigner) => void;
     onTargetVersionChanged: (designer: CardDesigner) => void;
 

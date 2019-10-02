@@ -17,7 +17,7 @@ import { CortanaContainer } from "./containers/cortana";
 
 var hostContainerOptions: Array<HostContainerOption> = [];
 var hostContainerPicker: HTMLSelectElement;
-var lastValidationErrors: Array<Adaptive.IValidationError> = [];
+var lastValidationErrors: Array<Adaptive.IValidationEvent> = [];
 
 function getSelectedHostContainer(): HostContainer {
     return hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
@@ -49,9 +49,7 @@ function renderCard(target: HTMLElement): HTMLElement {
 
     let validationResults = adaptiveCard.validateProperties();
 
-    for (let failure of validationResults.failures) {
-        lastValidationErrors = lastValidationErrors.concat(failure.errors);
-    }
+    lastValidationErrors.push(...validationResults.validationEvents);
 
     showValidationErrors();
 

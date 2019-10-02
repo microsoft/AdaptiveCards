@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Enums from "./enums";
-import * as Utils from "./utils";
 
 export class GlobalSettings {
     static useAdvancedTextBlockTruncation: boolean = true;
@@ -17,11 +16,6 @@ export class GlobalSettings {
 export const ContentTypes = {
 	applicationJson: "application/json",
 	applicationXWwwFormUrlencoded: "application/x-www-form-urlencoded"
-}
-
-export interface IValidationError {
-    error: Enums.ValidationError,
-    message: string;
 }
 
 export interface ISeparationDefinition {

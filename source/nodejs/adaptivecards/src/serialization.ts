@@ -1,8 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import { GlobalSettings, SizeAndUnit, IValidationError } from "./shared";
+import { GlobalSettings, SizeAndUnit } from "./shared";
 import * as Utils from "./utils";
 import * as Enums from "./enums";
+
+export interface IValidationEvent {
+    source?: SerializableObject,
+    phase: Enums.ValidationPhase,
+    event: Enums.ValidationEvent,
+    message: string;
+}
 
 export class Version {
     private _versionString: string;
@@ -37,12 +44,9 @@ export class Version {
         }
 
         if (!result._isValid) {
-            context.errors.push(
-                {
-                    error: Enums.ValidationError.InvalidPropertyValue,
-                    message: "Invalid version string: " + result._versionString
-                }
-            );
+            context.logParseEvent(
+                Enums.ValidationEvent.InvalidPropertyValue,
+                "Invalid version string: " + result._versionString);
         }
 
         return result;
@@ -121,7 +125,7 @@ export function isVersionLessOrEqual(version: TargetVersion, targetVersion: Targ
 }
 
 export abstract class BaseSerializationContext {
-    readonly errors: IValidationError[] = [];
+    private _validationEvents: IValidationEvent[] = [];
 
     serializeValue(target: { [key: string]: any }, propertyName: string, propertyValue: any, defaultValue: any = undefined) {
         if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue) {
@@ -167,20 +171,26 @@ export abstract class BaseSerializationContext {
             }
         }
     }
-    
+
     serializeArray(target: { [key: string]: any }, propertyName: string, propertyValue: any[] | undefined) {
         let items = [];
     
         if (propertyValue) {
             for (let item of propertyValue) {
+                let serializedItem: any = undefined;
+
                 if (item instanceof SerializableObject) {
-                    items.push(item.toJSON(this));
+                    serializedItem = item.toJSON(this);
                 }
                 else if (item.toJSON) {
-                    items.push(item.toJSON());
+                    serializedItem = item.toJSON();
                 }
                 else {
-                    items.push(item);
+                    serializedItem = item;
+                }
+        
+                if (serializedItem !== undefined) {
+                    items.push(serializedItem);
                 }
             }
         }
@@ -194,8 +204,38 @@ export abstract class BaseSerializationContext {
             this.serializeValue(target, propertyName, items);
         }
     }
-    
+
+    clearEvents() {
+        this._validationEvents = [];
+    }
+
+    logEvent(
+        phase: Enums.ValidationPhase,
+        event: Enums.ValidationEvent,
+        message: string,
+        source?: SerializableObject) {
+        this._validationEvents.push(
+            {
+                phase: phase,
+                event: event,
+                message: message
+            }
+        )
+    }
+
+    logParseEvent(event: Enums.ValidationEvent, message: string, source?: SerializableObject) {
+        this.logEvent(Enums.ValidationPhase.Parse, event, message, source);
+    }
+
+    getEventAt(index: number): IValidationEvent {
+        return this._validationEvents[index];
+    }
+
     constructor(public targetVersion: Version = Versions.latest) {}
+
+    get eventCount(): number {
+        return this._validationEvents.length;
+    }
 }
 
 class SimpleSerializationContext extends BaseSerializationContext {}
@@ -229,7 +269,11 @@ export class StringProperty extends PropertyDefinition {
             let matches = this.regEx.exec(<string>parsedValue);
 
             if (!matches) {
-                // TODO: Log parse error
+                context.logParseEvent(
+                    Enums.ValidationEvent.InvalidPropertyValue,
+                    `Invalid "${this.name}" value "${parsedValue}"`,
+                    sender);
+
                 return undefined;
             }
         }
@@ -306,12 +350,10 @@ export class PixelSizeProperty extends PropertyDefinition {
             }
 
             if (!isValid) {
-                context.errors.push(
-                    {
-                        error: Enums.ValidationError.InvalidPropertyValue,
-                        message: "Invalid \"minHeight\" value: " + source[this.name]
-                    }
-                );
+                context.logParseEvent(
+                    Enums.ValidationEvent.InvalidPropertyValue,
+                    "Invalid \"minHeight\" value: " + source[this.name],
+                    sender);
             }
         }
 
@@ -335,6 +377,10 @@ export class ValueSetProperty extends PropertyDefinition {
     parse(sender: SerializableObject, source: PropertyBag, context: BaseSerializationContext): string | undefined {
         let sourceValue = source[this.name];
 
+        if (sourceValue === undefined) {
+            return this.defaultValue;
+        }
+
         if (typeof sourceValue === "string") {
             for (let versionedValue of this.values) {
                 if (sourceValue.toLowerCase() === versionedValue.value.toLowerCase()) {
@@ -344,12 +390,10 @@ export class ValueSetProperty extends PropertyDefinition {
                         return versionedValue.value;
                     }
                     else {
-                        context.errors.push(
-                            {
-                                error: Enums.ValidationError.InvalidPropertyValue,
-                                message: this.name + ": value " + sourceValue + " is supported in version " + targetVersion.toString() + ", but you are using version " + context.targetVersion.toString()
-                            }
-                        );
+                        context.logParseEvent(
+                            Enums.ValidationEvent.InvalidPropertyValue,
+                            `"${this.name}" value "${sourceValue}" is supported in version ${targetVersion.toString()}, but you are using version ${context.targetVersion.toString()}`,
+                            sender);
 
                         return this.defaultValue;
                     }
@@ -357,12 +401,10 @@ export class ValueSetProperty extends PropertyDefinition {
             }
         }
 
-        context.errors.push(
-            {
-                error: Enums.ValidationError.InvalidPropertyValue,
-                message: "Invalid " + this.name + " value: " + source[this.name]
-            }
-        )
+        context.logParseEvent(
+            Enums.ValidationEvent.InvalidPropertyValue,
+            `"Invalid "${this.name}" value "${sourceValue}"`,
+            sender);
 
         return this.defaultValue;
     }
@@ -381,12 +423,11 @@ export class ValueSetProperty extends PropertyDefinition {
                         break;
                     }
                     else {
-                        context.errors.push(
-                            {
-                                error: Enums.ValidationError.InvalidPropertyValue,
-                                message: this.name + ": value " + value + " is supported in version " + targetVersion.toString() + ", but you are using version " + context.targetVersion.toString()
-                            }
-                        );
+                        context.logEvent(
+                            Enums.ValidationPhase.ToJSON,
+                            Enums.ValidationEvent.InvalidPropertyValue,
+                            `"${this.name}" value "${value}" is supported in version ${targetVersion.toString()}, but you are using version ${context.targetVersion.toString()}`,
+                            sender);
                     }
                 }
             }
@@ -415,23 +456,40 @@ export class EnumProperty<TEnum extends { [s: number]: string }> extends Propert
     private _values: IVersionedValue<number>[] = [];
 
     parse(sender: SerializableObject, source: PropertyBag, context: BaseSerializationContext): number | undefined {
-        return Utils.parseEnum(this.enumType, source[this.name], this.defaultValue);
+        let sourceValue = source[this.name];
 
-        /*
-
-        TODO: Emit parse error for invalid enum values
-
-        if (typeof source[this.name] === "string" && parsedValue === undefined) {
-            context.errors.push(
-                {
-                    error: Enums.ValidationError.InvalidPropertyValue,
-                    message: "Invalid " + this.name + " value: " + source[this.name]
-                }
-            )
+        if (typeof sourceValue !== "string") {
+            return this.defaultValue;
         }
 
-        return parsedValue;
-        */
+        let enumValue = Utils.getEnumValueByName(this.enumType, sourceValue);
+
+        if (enumValue !== undefined) {
+            for (let versionedValue of this.values) {
+                if (versionedValue.value === enumValue) {
+                    let targetVersion = versionedValue.targetVersion ? versionedValue.targetVersion : this.targetVersion;
+
+                    if (targetVersion.compareTo(context.targetVersion) <= 0) {
+                        return enumValue;
+                    }
+                    else {
+                        context.logParseEvent(
+                            Enums.ValidationEvent.InvalidPropertyValue,
+                            `"${this.name}" value "${sourceValue}" is supported in version ${targetVersion.toString()}, but you are using version ${context.targetVersion.toString()}`,
+                            sender);
+
+                        return this.defaultValue;
+                    }
+                }
+            }
+        }
+    
+        context.logParseEvent(
+            Enums.ValidationEvent.InvalidPropertyValue,
+            `"Invalid "${this.name}" value "${sourceValue}"`,
+            sender);
+
+        return this.defaultValue;
     }
 
     toJSON(sender: SerializableObject, target: PropertyBag, value: number | undefined, context: BaseSerializationContext) {
@@ -448,12 +506,11 @@ export class EnumProperty<TEnum extends { [s: number]: string }> extends Propert
                         break;
                     }
                     else {
-                        context.errors.push(
-                            {
-                                error: Enums.ValidationError.InvalidPropertyValue,
-                                message: "Invalid property value: " + value
-                            }
-                        )
+                        context.logEvent(
+                            Enums.ValidationPhase.ToJSON,
+                            Enums.ValidationEvent.InvalidPropertyValue,
+                            `"Invalid "${this.name}" value "${value}"`,
+                            sender);
                     }
                 }
             }
@@ -480,8 +537,10 @@ export class EnumProperty<TEnum extends { [s: number]: string }> extends Propert
 
         if (!values) {
             for (let key in enumType) {
-                if (typeof key === "number") {
-                    this._values.push( { value: key });
+                let keyAsNumber = parseInt(key, 10);
+
+                if (keyAsNumber >= 0) {
+                    this._values.push( { value: keyAsNumber });
                 }
             }
         }
@@ -499,15 +558,14 @@ export type SerializableObjectType = { new(): SerializableObject };
 
 export class SerializableObjectProperty extends PropertyDefinition {
     parse(sender: SerializableObject, source: PropertyBag, context: BaseSerializationContext): SerializableObject | undefined {
-        let result: SerializableObject | undefined = undefined;
         let sourceValue = source[this.name];
 
-        result = new this.objectType();
-        result.parse(sourceValue, context);
-
-        if (result === undefined && this.onGetInitialValue) {
-            result = this.onGetInitialValue(sender);
+        if (sourceValue === undefined) {
+            return this.onGetInitialValue ? this.onGetInitialValue(sender) : this.defaultValue;
         }
+
+        let result = new this.objectType();
+        result.parse(sourceValue, context);
 
         return result;
     }
@@ -702,7 +760,7 @@ export abstract class SerializableObject {
         }
     }
 
-    protected internalParse(source: any, context: BaseSerializationContext) {
+    protected internalParse(source: PropertyBag, context: BaseSerializationContext) {
         this._propertyBag = {};
         this._rawProperties = GlobalSettings.enableFullJsonRoundTrip ? (source ? source : {}) : {};
 
@@ -712,7 +770,21 @@ export abstract class SerializableObject {
             for (let i = 0; i < s.getCount(); i++) {
                 let property = s.getItemAt(i);
 
-                this.setValue(property, property.parse(this, source, context));
+                let propertyValue = property.onGetInitialValue ? property.onGetInitialValue(this) : undefined;
+
+                if (source.hasOwnProperty(property.name)) {
+                    if (property.targetVersion.compareTo(context.targetVersion) <= 0) {
+                        propertyValue = property.parse(this, source, context);
+                    }
+                    else {
+                        context.logParseEvent(
+                            Enums.ValidationEvent.UnsupportedProperty,
+                            `Property "${property.name}" is supported in version ${property.targetVersion.toString()}, but you are using version ${context.targetVersion.toString()}`,
+                            this);
+                    }
+                }
+
+                this.setValue(property, propertyValue);
             }
         }
         else {
@@ -738,6 +810,10 @@ export abstract class SerializableObject {
         }
     }
 
+    protected shouldSerialize(context: BaseSerializationContext): boolean {
+        return true;
+    }
+
     maxVersion: Version = Versions.latest;
 
     constructor() {
@@ -752,23 +828,28 @@ export abstract class SerializableObject {
         }
     }
 
-    parse(source: any, context?: BaseSerializationContext) {
+    parse(source: PropertyBag, context?: BaseSerializationContext) {
         this.internalParse(source, context ? context : new SimpleSerializationContext());
     }
 
-    toJSON(context: BaseSerializationContext): PropertyBag {
-        let result: PropertyBag;
+    toJSON(context: BaseSerializationContext): PropertyBag | undefined {
+        if (this.shouldSerialize(context)) {
+            let result: PropertyBag;
 
-        if (GlobalSettings.enableFullJsonRoundTrip && this._rawProperties && typeof this._rawProperties === "object") {
-            result = this._rawProperties;
+            if (GlobalSettings.enableFullJsonRoundTrip && this._rawProperties && typeof this._rawProperties === "object") {
+                result = this._rawProperties;
+            }
+            else {
+                result = {};
+            }
+
+            this.internalToJSON(result, context);
+
+            return result;
         }
         else {
-            result = {};
+            return undefined;
         }
-
-        this.internalToJSON(result, context);
-
-        return result;
     }
 
     hasDefaultValue(property: PropertyDefinition): boolean {

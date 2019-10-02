@@ -237,7 +237,7 @@ export abstract class DesignerPeer extends DraggableElement {
         return null;
     }
 
-    protected internalAddCommands(hostContainer: HostContainer, commands: Array<PeerCommand>) {
+    protected internalAddCommands(hostContainer: HostContainer, targetVersion: Adaptive.Version, commands: Array<PeerCommand>) {
         // Do nothing in base implementation
     }
 
@@ -392,13 +392,13 @@ export abstract class DesignerPeer extends DraggableElement {
         return this._children[index];
     }
 
-    getCommands(hostContainer: HostContainer, promoteParentCommands: boolean = false): Array<PeerCommand> {
+    getCommands(hostContainer: HostContainer, targetVersion: Adaptive.Version, promoteParentCommands: boolean = false): Array<PeerCommand> {
         let result: Array<PeerCommand> = [];
 
-        this.internalAddCommands(hostContainer, result);
+        this.internalAddCommands(hostContainer, targetVersion, result);
 
         if (promoteParentCommands && this.parent) {
-            let parentCommands = this.parent.getCommands(hostContainer);
+            let parentCommands = this.parent.getCommands(hostContainer, targetVersion);
 
             for (let command of parentCommands) {
                 if (command.isPromotable) {
@@ -472,7 +472,7 @@ export abstract class DesignerPeer extends DraggableElement {
                 this));
 
         let actionSet = new Adaptive.ActionSet();
-        let commands = this.getCommands(hostContainer, true);
+        let commands = this.getCommands(hostContainer, targetVersion, true);
 
         for (let command of commands) {
             let action = new Adaptive.SubmitAction();
@@ -1532,36 +1532,48 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
         return true;
     }
 
-    protected internalAddCommands(hostContainer: HostContainer, commands: Array<PeerCommand>) {
-        super.internalAddCommands(hostContainer, commands);
+    protected internalAddCommands(hostContainer: HostContainer, targetVersion: Adaptive.Version, commands: Array<PeerCommand>) {
+        super.internalAddCommands(hostContainer, targetVersion, commands);
 
-        commands.push(
-            new PeerCommand(
-                {
-                    name: "Add an action",
-                    iconClass: "acd-icon-bolt",
-                    execute: (command: PeerCommand, clickedElement: HTMLElement) => {
-                        let popupMenu = new Controls.PopupMenu();
+        let availableActions: Adaptive.ITypeRegistration<Adaptive.Action>[] = [];
 
-                        for (var i = 0; i < hostContainer.actionsRegistry.getItemCount(); i++) {
-                            let menuItem = new Controls.DropDownItem(i.toString(), hostContainer.actionsRegistry.getItemAt(i).typeName);
-                            menuItem.onClick = (clickedItem: Controls.DropDownItem) => {
-                                let registration = hostContainer.actionsRegistry.getItemAt(Number.parseInt(clickedItem.key));
-                                let action = new registration.objectType();
-                                action.title = registration.typeName;
+        for (var i = 0; i < hostContainer.actionsRegistry.getItemCount(); i++) {
+            let typeRegistration = hostContainer.actionsRegistry.getItemAt(i);
 
-                                this.addAction(action);
+            if (typeRegistration.schemaVersion.compareTo(targetVersion) <= 0) {
+                availableActions.push(typeRegistration);
+            }
+        }
 
-                                popupMenu.closePopup();
-                            };
+        if (availableActions.length > 0) {
+            commands.push(
+                new PeerCommand(
+                    {
+                        name: "Add an action",
+                        iconClass: "acd-icon-bolt",
+                        execute: (command: PeerCommand, clickedElement: HTMLElement) => {
+                            let popupMenu = new Controls.PopupMenu();
 
-                            popupMenu.items.add(menuItem);
+                            for (let typeRegistration of availableActions) {
+                                let menuItem = new Controls.DropDownItem(i.toString(), typeRegistration.typeName);
+                                menuItem.onClick = (clickedItem: Controls.DropDownItem) => {
+                                    let registration = typeRegistration;
+                                    let action = new registration.objectType();
+                                    action.title = registration.typeName;
+
+                                    this.addAction(action);
+
+                                    popupMenu.closePopup();
+                                };
+
+                                popupMenu.items.add(menuItem);
+                            }
+
+                            popupMenu.popup(clickedElement);
                         }
-
-                        popupMenu.popup(clickedElement);
-                    }
-                })
-        );
+                    })
+            );
+        }
     }
 
     isDraggable(): boolean {
@@ -1726,8 +1738,8 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
         return true;
     }
 
-    protected internalAddCommands(hostContainer: HostContainer, commands: Array<PeerCommand>) {
-        super.internalAddCommands(hostContainer, commands);
+    protected internalAddCommands(hostContainer: HostContainer, targetVersion: Adaptive.Version, commands: Array<PeerCommand>) {
+        super.internalAddCommands(hostContainer, targetVersion, commands);
 
         commands.push(
             new PeerCommand(
@@ -1862,44 +1874,56 @@ export class ActionSetPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard> {
         this.insertChild(CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, this, action));
     }
 
-    protected internalAddCommands(hostContainer: HostContainer, commands: Array<PeerCommand>) {
-        super.internalAddCommands(hostContainer, commands);
+    protected internalAddCommands(hostContainer: HostContainer, targetVersion: Adaptive.Version, commands: Array<PeerCommand>) {
+        super.internalAddCommands(hostContainer, targetVersion, commands);
 
-        commands.push(
-            new PeerCommand(
-                {
-                    name: "Add an action",
-                    iconClass: "acd-icon-bolt",
-                    execute: (command: PeerCommand, clickedElement: HTMLElement) => {
-                        let popupMenu = new Controls.PopupMenu();
+        let availableActions: Adaptive.ITypeRegistration<Adaptive.Action>[] = [];
 
-                        for (var i = 0; i < hostContainer.actionsRegistry.getItemCount(); i++) {
-                            let menuItem = new Controls.DropDownItem(i.toString(), hostContainer.actionsRegistry.getItemAt(i).typeName);
-                            menuItem.onClick = (clickedItem: Controls.DropDownItem) => {
-                                let registration = hostContainer.actionsRegistry.getItemAt(Number.parseInt(clickedItem.key));
-                                let action = new registration.objectType();
-                                action.title = registration.typeName;
+        for (var i = 0; i < hostContainer.actionsRegistry.getItemCount(); i++) {
+            let typeRegistration = hostContainer.actionsRegistry.getItemAt(i);
 
-                                this.addAction(action);
+            if (typeRegistration.schemaVersion.compareTo(targetVersion) <= 0) {
+                availableActions.push(typeRegistration);
+            }
+        }
 
-                                popupMenu.closePopup();
-                            };
+        if (availableActions.length > 0) {
+            commands.push(
+                new PeerCommand(
+                    {
+                        name: "Add an action",
+                        iconClass: "acd-icon-bolt",
+                        execute: (command: PeerCommand, clickedElement: HTMLElement) => {
+                            let popupMenu = new Controls.PopupMenu();
 
-                            popupMenu.items.add(menuItem);
+                            for (let typeRegistration of availableActions) {
+                                let menuItem = new Controls.DropDownItem(i.toString(), typeRegistration.typeName);
+                                menuItem.onClick = (clickedItem: Controls.DropDownItem) => {
+                                    let registration = typeRegistration;
+                                    let action = new registration.objectType();
+                                    action.title = registration.typeName;
+
+                                    this.addAction(action);
+
+                                    popupMenu.closePopup();
+                                };
+
+                                popupMenu.items.add(menuItem);
+                            }
+
+                            popupMenu.popup(clickedElement);
                         }
-
-                        popupMenu.popup(clickedElement);
-                    }
-                })
-        );
+                    })
+            );
+        }
     }
 }
 
 export class ImageSetPeer extends TypedCardElementPeer<Adaptive.ImageSet> {
     static readonly ImageSizeProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "imageSize", "Image size", Adaptive.Size);
 
-    protected internalAddCommands(hostContainer: HostContainer, commands: Array<PeerCommand>) {
-        super.internalAddCommands(hostContainer, commands);
+    protected internalAddCommands(hostContainer: HostContainer, targetVersion: Adaptive.Version, commands: Array<PeerCommand>) {
+        super.internalAddCommands(hostContainer, targetVersion, commands);
 
         commands.push(
             new PeerCommand(

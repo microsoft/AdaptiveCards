@@ -217,7 +217,7 @@ export class CardDesignerSurface {
             if (this._selectedPeer) {
                 this._selectedPeer.isSelected = true;
 
-                let commands = this._selectedPeer.getCommands(this.hostContainer);
+                let commands = this._selectedPeer.getCommands(this.hostContainer, this.targetVersion);
 
                 for (let command of commands) {
                     this._peerCommandsHostElement.appendChild(command.render());
@@ -261,7 +261,15 @@ export class CardDesignerSurface {
 
         if (this.card) {
             if (this.onCardValidated) {
-                this.onCardValidated(this._serializationContext.errors, this.card.validateProperties());
+                let allValidationEvents: Adaptive.IValidationEvent[] = [];
+
+                for (let i = 0; i < this._serializationContext.eventCount; i++) {
+                    allValidationEvents.push(this._serializationContext.getEventAt(i));
+                }
+
+                allValidationEvents.push(...this.card.validateProperties().validationEvents);
+
+                this.onCardValidated(allValidationEvents);
             }
 
             let cardToRender: Adaptive.AdaptiveCard;
@@ -430,6 +438,10 @@ export class CardDesignerSurface {
         this.updateLayout();
     }
 
+    private get card(): Adaptive.AdaptiveCard {
+        return this._card;
+    }
+
     private get draggedPeer(): DesignerPeers.DesignerPeer {
         return this._draggedPeer;
     }
@@ -503,9 +515,17 @@ export class CardDesignerSurface {
 
         this.hostContainer.cardHost.innerHTML = "";
         this.hostContainer.cardHost.appendChild(rootElement);
+
+        this._card = new Adaptive.AdaptiveCard();
+        this._card.onInlineCardExpanded = (action: Adaptive.ShowCardAction, isExpanded: boolean) => { this.inlineCardExpanded(action, isExpanded); };
+        this._card.version = this.targetVersion;
+        this._card.hostConfig = this.hostContainer.getHostConfig();
+        this._card.designMode = true;
+
+        this.render();
     }
 
-    onCardValidated: (errors: Adaptive.IValidationError[], validationResults: Adaptive.ValidationResults) => void;
+    onCardValidated: (logEntries: Adaptive.IValidationEvent[]) => void;
     onSelectedPeerChanged: (peer: DesignerPeers.DesignerPeer) => void;
     onLayoutUpdated: (isFullRefresh: boolean) => void;
 
@@ -598,6 +618,8 @@ export class CardDesignerSurface {
     }
 
     setCardPayloadAsObject(payload: object) {
+        this._serializationContext.clearEvents();
+
         this.card.parse(payload, this._serializationContext);
 
         this.render();
@@ -702,26 +724,6 @@ export class CardDesignerSurface {
 
     get selectedPeer(): DesignerPeers.DesignerPeer {
         return this._selectedPeer;
-    }
-
-    get card(): Adaptive.AdaptiveCard {
-        return this._card;
-    }
-
-    set card(value: Adaptive.AdaptiveCard) {
-        if (value != this._card) {
-            if (this._card) {
-                this._card.onInlineCardExpanded = null;
-            }
-
-            this._card = value;
-
-            if (this._card) {
-                this._card.onInlineCardExpanded = (action: Adaptive.ShowCardAction, isExpanded: boolean) => { this.inlineCardExpanded(action, isExpanded); };
-            }
-
-            this.render();
-        }
     }
 
     get isPreviewMode(): boolean {

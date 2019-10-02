@@ -1,35 +1,24 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Enums from "./enums";
-import { Dictionary, IValidationError } from "./shared";
+import { Dictionary } from "./shared";
 import { HostConfig } from "./host-config";
 import { HostCapabilities } from "./host-capabilities";
-import { Versions, property, SerializableObject, StringProperty, SerializableObjectProperty } from "./serialization";
-
-export class ValidationFailure {
-    readonly errors: IValidationError[] = [];
-
-    constructor(readonly cardObject: CardObject) { }
-}
+import { Versions, property, SerializableObject, StringProperty, SerializableObjectProperty, IValidationEvent } from "./serialization";
 
 export class ValidationResults {
     readonly allIds: Dictionary<number> = {};
-    readonly failures: ValidationFailure[] = [];
+    readonly validationEvents: IValidationEvent[] = [];
 
-    addFailure(cardObject: CardObject, error: IValidationError) {
-        let index = this.failures.findIndex((value) => { return value.cardObject === cardObject; });
-        let failure: ValidationFailure;
-
-        if (index < 0) {
-            failure = new ValidationFailure(cardObject);
-
-            this.failures.push(failure);
-        }
-        else {
-            failure = this.failures[index];
-        }
-
-        failure.errors.push(error);
+    addFailure(cardObject: CardObject, event: Enums.ValidationEvent, message: string) {
+        this.validationEvents.push(
+            {
+                phase: Enums.ValidationPhase.Validation,
+                source: cardObject,
+                event: event,
+                message: message
+            }
+        );
     }
 }
 
@@ -93,10 +82,8 @@ export abstract class CardObject extends SerializableObject {
                 if (context.allIds[this.id] == 1) {
                     context.addFailure(
                         this,
-                        {
-                            error: Enums.ValidationError.DuplicateId,
-                            message: "Duplicate Id: " + this.id
-                        });
+                        Enums.ValidationEvent.DuplicateId,
+                        "Duplicate Id: " + this.id);
                 }
 
                 context.allIds[this.id] += 1;

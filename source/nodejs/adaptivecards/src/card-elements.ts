@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 import * as Enums from "./enums";
 import { PaddingDefinition, GlobalSettings, SizeAndUnit,SpacingDefinition,
-    Dictionary, StringWithSubstitutions, ContentTypes, IInput, IResourceInformation, IValidationError } from "./shared";
+    Dictionary, StringWithSubstitutions, ContentTypes, IInput, IResourceInformation } from "./shared";
 import * as Utils from "./utils";
 import { HostConfig, defaultHostConfig, FontTypeDefinition, ColorSetDefinition, TextColorDefinition, ContainerStyleDefinition } from "./host-config";
 import * as TextFormatters from "./text-formatters";
 import { HostCapabilities } from "./host-capabilities";
-import { CardObjectType, CardObject, ValidationResults } from "./card-object";
-import { Versions, Version, TargetVersion, property, BaseSerializationContext, SerializableObject, SerializableObjectSchema, StringProperty,
+import { CardObject, ValidationResults } from "./card-object";
+import { Versions, Version, property, BaseSerializationContext, SerializableObject, SerializableObjectSchema, StringProperty,
     BoolProperty, ValueSetProperty, EnumProperty, SerializableObjectCollectionProperty, SerializableObjectProperty, PixelSizeProperty,
     NumProperty, PropertyBag, CustomProperty, PropertyDefinition } from "./serialization";
 import { CardObjectRegistry } from "./registry";
@@ -287,6 +287,10 @@ export abstract class CardElement extends CardObject {
         this._padding = value;
     }
 
+    protected shouldSerialize(context: SerializationContext): boolean {
+        return context.elementRegistry.findByName(this.getJsonTypeName()) !== undefined;
+    }
+
     protected get useDefaultSizing(): boolean {
         return true;
     }
@@ -305,16 +309,16 @@ export abstract class CardElement extends CardObject {
 
     customCssSelector?: string;
 
+    parse(source: any, context?: SerializationContext) {
+        return super.parse(source, context ? context : new SerializationContext());
+    }
+
     asString(): string | undefined {
         return "";
     }
 
     isBleeding(): boolean {
         return false;
-    }
-
-    parse(source: any, context?: SerializationContext) {
-        super.parse(source, context ? context : new SerializationContext());
     }
 
     getEffectiveStyle(): string {
@@ -1464,13 +1468,17 @@ class ImageDimensionProperty extends PropertyDefinition {
     
     parse(sender: SerializableObject, source: PropertyBag, context: BaseSerializationContext): number | undefined {
         let result: number | undefined = undefined;
-        let value = source[this.jsonName];
+        let sourceValue = source[this.jsonName];
 
-        if (typeof value === "string") {
-            let isValid = false;
+        if (sourceValue === undefined) {
+            return this.defaultValue;
+        }
 
+        let isValid = false;
+
+        if (typeof sourceValue === "string") {
             try {
-                let size = SizeAndUnit.parse(value, true);
+                let size = SizeAndUnit.parse(sourceValue, true);
 
                 if (size.unit == Enums.SizeUnit.Pixel) {
                     result = size.physicalSize;
@@ -1481,15 +1489,13 @@ class ImageDimensionProperty extends PropertyDefinition {
             catch {
                 // Do nothing. A parse error is emitted below
             }
+        }
 
-            if (!isValid) {
-                context.errors.push(
-                    {
-                        error: Enums.ValidationError.InvalidPropertyValue,
-                        message: "Invalid " + this.name + " value: " + value
-                    }
-                );
-            }
+        if (!isValid) {
+            context.logParseEvent(
+                Enums.ValidationEvent.InvalidPropertyValue,
+                "Invalid " + this.name + " value: " + sourceValue,
+                sender);
         }
 
         return result;
@@ -1777,19 +1783,15 @@ export abstract class CardElementContainer extends CardElement {
             if (!this.hostConfig.supportsInteractivity && item.isInteractive) {
                 context.addFailure(
                     this,
-                    {
-                        error: Enums.ValidationError.InteractivityNotAllowed,
-                        message: "Interactivity is not allowed."
-                    });
+                    Enums.ValidationEvent.InteractivityNotAllowed,
+                    "Interactivity is not allowed.");
             }
 
             if (!this.isElementAllowed(item)) {
                 context.addFailure(
                     this,
-                    {
-                        error: Enums.ValidationError.InteractivityNotAllowed,
-                        message: "Elements of type " + item.getJsonTypeName() + " are not allowed in this container."
-                    });
+                    Enums.ValidationEvent.InteractivityNotAllowed,
+                    "Elements of type " + item.getJsonTypeName() + " are not allowed in this container.");
             }
 
             item.internalValidateProperties(context);
@@ -2400,10 +2402,8 @@ export abstract class Input extends CardElement implements IInput {
         if (!this.id) {
             context.addFailure(
                 this,
-                {
-                    error: Enums.ValidationError.PropertyCantBeNull,
-                    message: "All inputs must have a unique Id"
-                });
+                Enums.ValidationEvent.PropertyCantBeNull,
+                "All inputs must have a unique Id");
         }
     }
 
@@ -2933,20 +2933,16 @@ export class ChoiceSetInput extends Input {
         if (this.choices.length == 0) {
             context.addFailure(
                 this,
-                {
-                    error: Enums.ValidationError.CollectionCantBeEmpty,
-                    message: "An Input.ChoiceSet must have at least one choice defined."
-                });
+                Enums.ValidationEvent.CollectionCantBeEmpty,
+                "An Input.ChoiceSet must have at least one choice defined.");
         }
 
         for (let choice of this.choices) {
             if (!choice.title || !choice.value) {
                 context.addFailure(
                     this,
-                    {
-                        error: Enums.ValidationError.PropertyCantBeNull,
-                        message: "All choices in an Input.ChoiceSet must have their title and value properties set."
-                    });
+                    Enums.ValidationEvent.PropertyCantBeNull,
+                    "All choices in an Input.ChoiceSet must have their title and value properties set.");
             }
         }
     }
@@ -3302,15 +3298,6 @@ export type ActionType = { new(): Action };
 export abstract class Action extends CardObject {
     //#region Schema
 
-    /* TODO: parsing validation for title
-            raiseParseError(
-                {
-                    error: Enums.ValidationError.PropertyCantBeNull,
-                    message: "Actions should always have a title."
-                },
-                errors
-            );
-    */
     static readonly titleProperty = new StringProperty(Versions.v1_0, "title");
     static readonly iconUrlProperty = new StringProperty(Versions.v1_1, "iconUrl");
     static readonly styleProperty = new ValueSetProperty(
@@ -3322,10 +3309,6 @@ export abstract class Action extends CardObject {
             { value: Enums.ActionStyle.Destructive }
         ],
         Enums.ActionStyle.Default);
-    static readonly requiresProperty = new SerializableObjectProperty(
-        Versions.v1_2,
-        "requires",
-        HostCapabilities);
     // TODO: Revise this when finalizing input validation
     static readonly ignoreInputValidationProperty = new BoolProperty(Versions.vNext, "ignoreInputValidation", false);
 
@@ -3371,6 +3354,10 @@ export abstract class Action extends CardObject {
         return result;
     }
 
+    protected shouldSerialize(context: SerializationContext): boolean {
+        return context.actionRegistry.findByName(this.getJsonTypeName()) !== undefined;
+    }
+
     onExecute: (sender: Action) => void;
 
     getHref(): string | undefined {
@@ -3382,7 +3369,7 @@ export abstract class Action extends CardObject {
     }
 
     parse(source: any, context?: SerializationContext) {
-        super.parse(source, context ? context : new SerializationContext());
+        return super.parse(source, context ? context : new SerializationContext());
     }
 
     render(baseCssClass: string = "ac-pushButton") {
@@ -3630,10 +3617,8 @@ export class OpenUrlAction extends Action {
         if (!this.url) {
             context.addFailure(
                 this,
-                {
-                    error: Enums.ValidationError.PropertyCantBeNull,
-                    message: "An Action.OpenUrl must have its url property set."
-                });
+                Enums.ValidationEvent.PropertyCantBeNull,
+                "An Action.OpenUrl must have its url property set.");
         }
     }
 
@@ -3865,10 +3850,8 @@ export class HttpAction extends Action {
         if (!this.url) {
             context.addFailure(
                 this,
-                {
-                    error: Enums.ValidationError.PropertyCantBeNull,
-                    message: "An Action.Http must have its url property set."
-                });
+                Enums.ValidationEvent.PropertyCantBeNull,
+                "An Action.Http must have its url property set.");
         }
 
         if (this.headers.length > 0) {
@@ -3876,10 +3859,8 @@ export class HttpAction extends Action {
                 if (!header.name) {
                     context.addFailure(
                         this,
-                        {
-                            error: Enums.ValidationError.PropertyCantBeNull,
-                            message: "All headers of an Action.Http must have their name and value properties set."
-                        });
+                        Enums.ValidationEvent.PropertyCantBeNull,
+                        "All headers of an Action.Http must have their name and value properties set.");
                 }
             }
         }
@@ -3924,12 +3905,10 @@ export class ShowCardAction extends Action {
             this.card.parse(jsonCard, context);
         }
         else {
-            context.errors.push(
-                {
-                    error: Enums.ValidationError.PropertyCantBeNull,
-                    message: "An Action.ShowCard must have its \"card\" property set to a valid AdaptiveCard object."
-                }
-            );
+            context.logParseEvent(
+                Enums.ValidationEvent.PropertyCantBeNull,
+                "An Action.ShowCard must have its \"card\" property set to a valid AdaptiveCard object.",
+                this);
         }
     }
 
@@ -4175,19 +4154,8 @@ class ActionCollection {
         }
     }
 
-    toJSON(context: SerializationContext): any {
-        if (this.items.length > 0) {
-            let result = [];
-
-            for (let action of this.items) {
-                result.push(action.toJSON(context));
-            }
-
-            return result;
-        }
-        else {
-            return undefined;
-        }
+    toJSON(target: PropertyBag, propertyName: string, context: SerializationContext): any {
+        context.serializeArray(target, propertyName, this.items);
     }
 
     getActionById(id: string): Action | undefined {
@@ -4208,29 +4176,23 @@ class ActionCollection {
         if (this._owner.hostConfig.actions.maxActions && this.items.length > this._owner.hostConfig.actions.maxActions) {
             context.addFailure(
                 this._owner,
-                {
-                    error: Enums.ValidationError.TooManyActions,
-                    message: "A maximum of " + this._owner.hostConfig.actions.maxActions + " actions are allowed."
-                });
+                Enums.ValidationEvent.TooManyActions,
+                "A maximum of " + this._owner.hostConfig.actions.maxActions + " actions are allowed.");
         }
 
         if (this.items.length > 0 && !this._owner.hostConfig.supportsInteractivity) {
             context.addFailure(
                 this._owner,
-                {
-                    error: Enums.ValidationError.InteractivityNotAllowed,
-                    message: "Interactivity is not allowed."
-                });
+                Enums.ValidationEvent.InteractivityNotAllowed,
+                "Interactivity is not allowed.");
         }
 
         for (let item of this.items) {
             if (!this.isActionAllowed(item)) {
                 context.addFailure(
                     this._owner,
-                    {
-                        error: Enums.ValidationError.ActionTypeNotAllowed,
-                        message: "Actions of type " + item.getJsonTypeName() + " are not allowed in this context."
-                    });
+                    Enums.ValidationEvent.ActionTypeNotAllowed,
+                    "Actions of type " + item.getJsonTypeName() + " are not allowed in this context.");
             }
 
             item.internalValidateProperties(context);
@@ -4500,7 +4462,7 @@ export class ActionSet extends CardElement {
     protected internalToJSON(target: PropertyBag, context: SerializationContext) {
         super.internalToJSON(target, context);
 
-        context.serializeValue(target, "actions", this._actionCollection.toJSON(context));
+        this._actionCollection.toJSON(target, "actions", context);
     }
 
     protected internalRender(): HTMLElement | undefined {
@@ -4745,10 +4707,8 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
             if (!styleDefinition) {
                 context.addFailure(
                     this,
-                    {
-                        error: Enums.ValidationError.InvalidPropertyValue,
-                        message: "Unknown container style: " + explicitStyle
-                    });
+                    Enums.ValidationEvent.InvalidPropertyValue,
+                    "Unknown container style: " + explicitStyle);
             }
         }
     }
@@ -5286,10 +5246,13 @@ export class Column extends Container {
             else if (value === "auto" || value === "stretch") {
                 result = value;
             }
-            // TODO: Check for version before parsing pixel width
             else if (typeof value === "string") {
                 try {
                     result = SizeAndUnit.parse(value);
+
+                    if (result.unit === Enums.SizeUnit.Pixel && property.targetVersion.compareTo(context.targetVersion) > 0) {
+                        invalidWidth = true;
+                    }
                 }
                 catch (e) {
                     invalidWidth = true;
@@ -5300,12 +5263,10 @@ export class Column extends Container {
             }
 
             if (invalidWidth) {
-                context.errors.push(
-                    {
-                        error: Enums.ValidationError.InvalidPropertyValue,
-                        message: "Invalid column width:" + value + " - defaulting to \"auto\""
-                    }
-                );
+                context.logParseEvent(
+                    Enums.ValidationEvent.InvalidPropertyValue,
+                    "Invalid column width:" + value + " - defaulting to \"auto\"",
+                    sender);
             }
 
             return result;
@@ -5365,6 +5326,10 @@ export class Column extends Container {
         }
     }
 
+    protected shouldSerialize(context: SerializationContext): boolean {
+        return true;
+    }
+
     protected get separatorOrientation(): Enums.Orientation {
         return Enums.Orientation.Vertical;
     }
@@ -5406,9 +5371,9 @@ export class ColumnSet extends StylableCardElementContainer {
             (typeName: string) => {
                 return !typeName || typeName === "Column" ? new Column() : undefined;
             },
-            (typeName: string, errorType: ParseErrorType) => {
+            (typeName: string, errorType: TypeErrorType) => {
                 return {
-                    error: Enums.ValidationError.ElementTypeNotAllowed,
+                    error: Enums.ValidationEvent.ElementTypeNotAllowed,
                     message: "Invalid element type " + typeName + ". Only Column elements are allowed in a ColumnSet."
                 }
             });
@@ -5617,10 +5582,8 @@ export class ColumnSet extends StylableCardElementContainer {
         if (weightedColumns > 0 && stretchedColumns > 0) {
             context.addFailure(
                 this,
-                {
-                    error: Enums.ValidationError.Hint,
-                    message: "It is not recommended to use weighted and stretched columns in the same ColumnSet, because in such a situation stretched columns will always get the minimum amount of space."
-                });
+                Enums.ValidationEvent.Hint,
+                "It is not recommended to use weighted and stretched columns in the same ColumnSet, because in such a situation stretched columns will always get the minimum amount of space.");
         }
     }
 
@@ -5782,7 +5745,7 @@ export abstract class ContainerWithActions extends Container {
     protected internalToJSON(target: PropertyBag, context: SerializationContext) {
         super.internalToJSON(target, context);
 
-        context.serializeValue(target, "actions", this._actionCollection.toJSON(context));
+        this._actionCollection.toJSON(target, "actions", context);
     }
 
     protected internalRender(): HTMLElement | undefined {
@@ -5938,12 +5901,9 @@ export class AdaptiveCard extends ContainerWithActions {
             if (version === undefined) {
                 version = Versions.latest;
 
-                context.errors.push(
-                    {
-                        error: Enums.ValidationError.InvalidPropertyValue,
-                        message: "Invalid card version. Defaulting to latest version (" + version.toString() + ")"
-                    }
-                );
+                context.logParseEvent(
+                    Enums.ValidationEvent.InvalidPropertyValue,
+                    "Invalid card version. Defaulting to latest version (" + version.toString() + ")");
             }
 
             return version;
@@ -6070,6 +6030,10 @@ export class AdaptiveCard extends ContainerWithActions {
             Enums.Spacing.Padding);
     }
 
+    protected shouldSerialize(context: SerializationContext): boolean {
+        return true;
+    }
+
     protected get renderIfEmpty(): boolean {
         return true;
     }
@@ -6105,27 +6069,21 @@ export class AdaptiveCard extends ContainerWithActions {
         if (this.getValue(CardElement.typeNameProperty) !== "AdaptiveCard") {
             context.addFailure(
                 this,
-                {
-                    error: Enums.ValidationError.MissingCardType,
-                    message: "Invalid or missing card type. Make sure the card's type property is set to \"AdaptiveCard\"."
-                });
+                Enums.ValidationEvent.MissingCardType,
+                "Invalid or missing card type. Make sure the card's type property is set to \"AdaptiveCard\".");
         }
 
         if (!this.bypassVersionCheck && !this.version) {
             context.addFailure(
                 this,
-                {
-                    error: Enums.ValidationError.PropertyCantBeNull,
-                    message: "The version property must be specified."
-                });
+                Enums.ValidationEvent.PropertyCantBeNull,
+                "The version property must be specified.");
         }
         else if (!this.isVersionSupported()) {
             context.addFailure(
                 this,
-                {
-                    error: Enums.ValidationError.UnsupportedCardVersion,
-                    message: "The specified card version (" + this.version.toString() + ") is not supported. The maximum supported card version is " + this.maxVersion.toString()
-                });
+                Enums.ValidationEvent.UnsupportedCardVersion,
+                "The specified card version (" + this.version.toString() + ") is not supported. The maximum supported card version is " + this.maxVersion.toString());
         }
     }
 
@@ -6276,19 +6234,22 @@ export class GlobalRegistry {
 
 GlobalRegistry.reset();
 
-const enum ParseErrorType {
+const enum TypeErrorType {
     UnknownType,
     ForbiddenType
 }
 
 export class SerializationContext extends BaseSerializationContext {
+    private _elementRegistry?: CardObjectRegistry<CardElement>;
+    private _actionRegistry?: CardObjectRegistry<Action>;
+
     private internalParseCardObject<T extends CardObject>(
         parent: CardElement | undefined,
         source: any,
         forbiddenTypeNames: string[],
         allowFallback: boolean,
         createInstanceCallback: (typeName: string) => T | undefined,
-        createValidationErrorCallback: (typeName: string, errorType: ParseErrorType) => IValidationError): T | undefined {
+        logParseEvent: (typeName: string, errorType: TypeErrorType) => void): T | undefined {
         let result: T | undefined = undefined;
 
         if (source && typeof source === "object") {
@@ -6297,7 +6258,7 @@ export class SerializationContext extends BaseSerializationContext {
             
             if (typeName) {
                 if (forbiddenTypeNames.indexOf(typeName) >= 0) {
-                    this.errors.push(createValidationErrorCallback(typeName, ParseErrorType.ForbiddenType));
+                    logParseEvent(typeName, TypeErrorType.ForbiddenType);
                 }
                 else {
                     result = createInstanceCallback(typeName);
@@ -6305,7 +6266,7 @@ export class SerializationContext extends BaseSerializationContext {
                     if (!result) {
                         tryToFallback = allowFallback;
 
-                        this.errors.push(createValidationErrorCallback(typeName, ParseErrorType.UnknownType));
+                        logParseEvent(typeName, TypeErrorType.UnknownType);
                     }
                     else {
                         result.setParent(parent);
@@ -6330,7 +6291,7 @@ export class SerializationContext extends BaseSerializationContext {
                                 forbiddenTypeNames,
                                 true,
                                 createInstanceCallback,
-                                createValidationErrorCallback);
+                                logParseEvent);
                         }
                     }
                 }
@@ -6352,23 +6313,20 @@ export class SerializationContext extends BaseSerializationContext {
     onParseAction?: (action: Action, source: any, context: SerializationContext) => void;
     onParseElement?: (element: CardElement, source: any, context: SerializationContext) => void;
 
-    elementRegistry?: CardObjectRegistry<CardElement>;
-    actionRegistry?: CardObjectRegistry<Action>;
-
     parseCardObject<T extends CardObject>(
         parent: CardElement | undefined,
         source: any,
         forbiddenTypeNames: string[],
         allowFallback: boolean,
         createInstanceCallback: (typeName: string) => T | undefined,
-        createValidationErrorCallback: (typeName: string, errorType: ParseErrorType) => IValidationError): T | undefined {
+        logParseEvent: (typeName: string, errorType: TypeErrorType) => void): T | undefined {
         let result = this.internalParseCardObject(
             parent,
             source,
             forbiddenTypeNames,
             allowFallback,
             createInstanceCallback,
-            createValidationErrorCallback);
+            logParseEvent);
         
         if (result !== undefined) {
             this.cardObjectParsed(result, source);
@@ -6384,22 +6342,18 @@ export class SerializationContext extends BaseSerializationContext {
             [], // Forbidden types not supported for elements for now
             allowFallback,
             (typeName: string) => {
-                let registry = this.elementRegistry ? this.elementRegistry : GlobalRegistry.elements;
-
-                return registry.createInstance(typeName, this.targetVersion);
+                return this.elementRegistry.createInstance(typeName, this.targetVersion);
             },
-            (typeName: string, errorType: ParseErrorType) => {
-                if (errorType === ParseErrorType.UnknownType) {
-                    return {
-                        error: Enums.ValidationError.UnknownElementType,
-                        message: "Unknown element type: " + typeName + ". Fallback will be used if present."
-                    }
+            (typeName: string, errorType: TypeErrorType) => {
+                if (errorType === TypeErrorType.UnknownType) {
+                    this.logParseEvent(
+                        Enums.ValidationEvent.UnknownElementType,
+                        "Unknown element type: " + typeName + ". Fallback will be used if present.");
                 }
                 else {
-                    return {
-                        error: Enums.ValidationError.ElementTypeNotAllowed,
-                        message: "Element type " + typeName + " is not allowed in this context."
-                    }
+                    this.logParseEvent(
+                        Enums.ValidationEvent.ElementTypeNotAllowed,
+                        "Element type " + typeName + " is not allowed in this context.");
                 }
             });
     }
@@ -6415,23 +6369,41 @@ export class SerializationContext extends BaseSerializationContext {
             forbiddenActionTypes,
             allowFallback,
             (typeName: string) => {
-                let registry = this.actionRegistry ? this.actionRegistry : GlobalRegistry.actions;
-
-                return registry.createInstance(typeName, this.targetVersion);
+                return this.actionRegistry.createInstance(typeName, this.targetVersion);
             },
-            (typeName: string, errorType: ParseErrorType) => {
-                if (errorType == ParseErrorType.UnknownType) {
+            (typeName: string, errorType: TypeErrorType) => {
+                if (errorType == TypeErrorType.UnknownType) {
                     return {
-                        error: Enums.ValidationError.UnknownActionType,
+                        error: Enums.ValidationEvent.UnknownActionType,
                         message: "Unknown action type: " + typeName + ". Fallback will be used if present."
                     }
                 }
                 else {
                     return {
-                        error: Enums.ValidationError.ActionTypeNotAllowed,
+                        error: Enums.ValidationEvent.ActionTypeNotAllowed,
                         message: "Action type " + typeName + " is not allowed in this context."
                     }
                 }
             });
+    }
+
+    get elementRegistry(): CardObjectRegistry<CardElement> {
+        return this._elementRegistry ? this._elementRegistry : GlobalRegistry.elements;
+    }
+
+    // Not using a property setter here because the setter should accept "undefined"
+    // whereas the getter should never return undefined.
+    setElementRegistry(value: CardObjectRegistry<CardElement> | undefined) {
+        this._elementRegistry = value;
+    }
+
+    get actionRegistry(): CardObjectRegistry<Action> {
+        return this._actionRegistry ? this._actionRegistry : GlobalRegistry.actions;
+    }
+
+    // Not using a property setter here because the setter should accept "undefined"
+    // whereas the getter should never return undefined.
+    setActionRegistry(value: CardObjectRegistry<Action> | undefined) {
+        this._actionRegistry = value;
     }
 }

@@ -147,7 +147,13 @@ export class ContainerStyle {
     static readonly Warning: "warning" = "warning";
 }
 
-export const enum ValidationError {
+export const enum ValidationPhase {
+    Parse,
+    ToJSON,
+    Validation
+}
+
+export const enum ValidationEvent {
     Hint,
     ActionTypeNotAllowed,
     CollectionCantBeEmpty,
@@ -161,7 +167,9 @@ export const enum ValidationError {
     UnknownActionType,
     UnknownElementType,
     UnsupportedCardVersion,
-    DuplicateId
+    DuplicateId,
+    UnsupportedProperty,
+    Other
 }
 
 export const enum ContainerFitStatus {

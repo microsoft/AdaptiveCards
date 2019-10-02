@@ -40,26 +40,30 @@ export function parseBool(value: any, defaultValue?: boolean): boolean | undefin
     return defaultValue;
 }
 
-export function parseEnum(targetEnum: { [s: number]: string }, name: string, defaultValue?: number): number | undefined {
-    if (!name) {
-        return defaultValue;
-    }
+export function getEnumValueByName(enumType: { [s: number]: string }, name: string) : number | undefined {
+    for (let key in enumType) {
+        let keyAsNumber = parseInt(key, 10);
 
-    for (let key in targetEnum) {
-        let isValueProperty = parseInt(key, 10) >= 0
+        if (keyAsNumber >= 0) {
+            let value = enumType[key];
 
-        if (isValueProperty) {
-            let value = targetEnum[key];
-
-            if (value && typeof value === "string") {
-                if (value.toLowerCase() === name.toLowerCase()) {
-                    return parseInt(key, 10);
-                }
+            if (value && typeof value === "string" && value.toLowerCase() === name.toLowerCase()) {
+                return keyAsNumber;
             }
         }
     }
 
-    return defaultValue;
+    return undefined;
+}
+
+export function parseEnum(enumType: { [s: number]: string }, name: string, defaultValue?: number): number | undefined {
+    if (!name) {
+        return defaultValue;
+    }
+
+    let enumValue = getEnumValueByName(enumType, name);
+
+    return enumValue !== undefined ? enumValue : defaultValue;
 }
 
 export function renderSeparation(hostConfig: HostConfig, separationDefinition: Shared.ISeparationDefinition, orientation: Enums.Orientation): HTMLElement | undefined {
