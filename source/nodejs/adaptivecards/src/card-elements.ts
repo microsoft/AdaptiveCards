@@ -310,7 +310,11 @@ export abstract class CardElement extends CardObject {
     customCssSelector?: string;
 
     parse(source: any, context?: SerializationContext) {
-        return super.parse(source, context ? context : new SerializationContext());
+        super.parse(source, context ? context : new SerializationContext());
+    }
+
+    toJSON(context?: SerializationContext): PropertyBag | undefined {
+        return super.toJSON(context ? context : new SerializationContext());
     }
 
     asString(): string | undefined {
@@ -3370,6 +3374,10 @@ export abstract class Action extends CardObject {
 
     parse(source: any, context?: SerializationContext) {
         return super.parse(source, context ? context : new SerializationContext());
+    }
+
+    toJSON(context?: SerializationContext): PropertyBag | undefined {
+        return super.toJSON(context ? context : new SerializationContext());
     }
 
     render(baseCssClass: string = "ac-pushButton") {

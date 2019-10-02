@@ -832,8 +832,10 @@ export abstract class SerializableObject {
         this.internalParse(source, context ? context : new SimpleSerializationContext());
     }
 
-    toJSON(context: BaseSerializationContext): PropertyBag | undefined {
-        if (this.shouldSerialize(context)) {
+    toJSON(context?: BaseSerializationContext): PropertyBag | undefined {
+        let effectiveContext = context ? context : new SimpleSerializationContext();
+
+        if (this.shouldSerialize(effectiveContext)) {
             let result: PropertyBag;
 
             if (GlobalSettings.enableFullJsonRoundTrip && this._rawProperties && typeof this._rawProperties === "object") {
@@ -843,7 +845,7 @@ export abstract class SerializableObject {
                 result = {};
             }
 
-            this.internalToJSON(result, context);
+            this.internalToJSON(result, effectiveContext);
 
             return result;
         }

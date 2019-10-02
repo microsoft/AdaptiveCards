@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import {AdaptiveCard, TextInput} from "../../card-elements";
+import { AdaptiveCard, TextInput, SerializationContext } from "../../card-elements";
+import { Versions } from "../../serialization";
 
 test('TextInput should be instantiated', ()=>{
     const textInput = new TextInput();
@@ -33,6 +34,6 @@ test('TextInput should be able to roundtrip', ()=>{
     };
     let ac : AdaptiveCard = new AdaptiveCard();
     ac.parse(sample_card);
-    let json = ac.toJSON();
+    let json = ac.toJSON(new SerializationContext(Versions.v1_0));
     expect(sample_card).toEqual(json);
 })
