@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="b5a70aac-88bc-40b7-af2c-009f4df0bb2e" Publisher="CN=Microsoft" Version="1.0.0.0" />
+  <Identity Name="b5a70aac-88bc-40b7-af2c-009f4df0bb2e" Publisher="CN=AdaptiveCardVisualizer, O=Microsoft, C=en-US" Version="1.0.0.0" />
   <mp:PhoneIdentity PhoneProductId="b5a70aac-88bc-40b7-af2c-009f4df0bb2e" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>AdaptiveCardVisualizer</DisplayName>

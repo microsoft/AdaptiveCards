@@ -31,9 +31,11 @@ namespace AdaptiveCards.Rendering.XamarinForms
             set { SetValue(HostConfigProperty, value); }
         }
 
+        /*
         public EventHandler OnAction(object sender, EventArgs eventArgs)
         {
         }
+        */
 
     }
 }

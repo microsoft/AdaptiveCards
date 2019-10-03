@@ -154,6 +154,10 @@
     <PackageReference Include="Xamarin.Essentials" Version="1.1.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\uwp\Renderer\AdaptiveCardRenderer.vcxproj">
+      <Project>{cf169157-f487-420c-8b9b-ca3abe2bb209}</Project>
+      <Name>AdaptiveCardRenderer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XamarinFormsDraft\AdaptiveCards.Rendering.XamarinForms.csproj">
       <Project>{0B6AB94B-9208-4463-B9FB-2F080B15DDD0}</Project>
       <Name>AdaptiveCards.Rendering.XamarinForms</Name>
