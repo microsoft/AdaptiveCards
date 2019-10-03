@@ -1,7 +1,10 @@
 import * as Adaptive from "adaptivecards";
 
 export class GlobalSettings {
-    static previewFeaturesEnabled: boolean = false;
+    static enableDataBindingSupport: boolean = false;
+    static showDataStructureToolbox: boolean = false;
+    static showSampleDataEditorToolbox: boolean = false;
+    static showVersionPicker: boolean = false;
 }
 
 export type TargetVersion = Adaptive.Version | "*";
