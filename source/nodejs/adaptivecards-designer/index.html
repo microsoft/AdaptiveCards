@@ -18,7 +18,10 @@
 
 	<script type="text/javascript">
 		window.onload = function() {
-            ACDesigner.GlobalSettings.previewFeaturesEnabled = false;
+            ACDesigner.GlobalSettings.enableDataBindingSupport = false;
+            ACDesigner.GlobalSettings.showDataStructureTooklbox = false;
+            ACDesigner.GlobalSettings.showSampleDataEditorToolbox = false;
+            ACDesigner.GlobalSettings.showVersionPicker = false;
 
             if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
 				console.log("Local storage is not available.");

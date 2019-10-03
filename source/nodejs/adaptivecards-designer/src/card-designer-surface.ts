@@ -275,12 +275,12 @@ export class CardDesignerSurface {
             let cardToRender: Adaptive.AdaptiveCard;
 
             if (this.isPreviewMode) {
-                if (Shared.GlobalSettings.previewFeaturesEnabled) {
+                if (Shared.GlobalSettings.enableDataBindingSupport) {
                     let cardPayload = this.card.toJSON(this._serializationContext);
 
                     try {
                         let template = new ACData.Template(cardPayload);
-            
+
                         let context = new ACData.EvaluationContext();
                         context.$root = this.sampleData;
 
