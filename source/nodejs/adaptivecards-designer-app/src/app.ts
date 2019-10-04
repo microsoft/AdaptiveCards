@@ -11,7 +11,13 @@ import "./app.css";
 
 window.onload = function() {
     // Uncomment to enabled preview features such as data binding
-    // ACDesigner.GlobalSettings.previewFeaturesEnabled = true;
+    /*
+    ACDesigner.GlobalSettings.showVersionPicker = true;
+    ACDesigner.GlobalSettings.enableDataBindingSupport = true;
+    // Note the below two flags are ignored if enableDataBindingSupport is set to false
+    ACDesigner.GlobalSettings.showDataStructureToolbox = true;
+    ACDesigner.GlobalSettings.showSampleDataEditorToolbox = true;
+    */
 
     // Uncomment to configure default toolbox titles
     /*

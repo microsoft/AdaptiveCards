@@ -17,10 +17,13 @@
 	</style>
 
 	<script type="text/javascript">
-		window.onload = function() {
-            ACDesigner.GlobalSettings.previewFeaturesEnabled = true;
+		window.onload = function () {
+			ACDesigner.GlobalSettings.enableDataBindingSupport = true;
+			ACDesigner.GlobalSettings.showDataStructureTooklbox = true;
+			ACDesigner.GlobalSettings.showSampleDataEditorToolbox = true;
+			ACDesigner.GlobalSettings.showVersionPicker = true;
 
-            if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
+			if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
 				console.log("Local storage is not available.");
 			}
 

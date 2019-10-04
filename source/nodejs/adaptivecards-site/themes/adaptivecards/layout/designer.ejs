@@ -47,13 +47,16 @@
 			}
 		}
 
-		if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
+	  if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
 			console.log("Local storage is not available.");
 		}
 		
 		<% if(page.previewFeaturesEnabled) { %>
 			// Enable data binding preview features
-			ACDesigner.GlobalSettings.previewFeaturesEnabled = true;
+      ACDesigner.GlobalSettings.enableDataBindingSupport = false;
+      ACDesigner.GlobalSettings.showDataStructureToolbox = false;
+      ACDesigner.GlobalSettings.showSampleDataEditorToolbox = false;
+      ACDesigner.GlobalSettings.showVersionPicker = false;
 		<% } %>
 
 
