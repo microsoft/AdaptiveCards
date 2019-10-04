@@ -42,7 +42,7 @@
     "markdown-it": "^8.4.2",
     "marked-schema": "^0.1.4",
     "minimist": "^1.2.0",
-    "monaco-editor": "^0.15.6",
+    "monaco-editor": "^0.18.1",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
     "rimraf": "^2.6.2",
