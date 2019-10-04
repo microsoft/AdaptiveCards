@@ -17,13 +17,13 @@
 	</style>
 
 	<script type="text/javascript">
-		window.onload = function() {
-            ACDesigner.GlobalSettings.enableDataBindingSupport = false;
-            ACDesigner.GlobalSettings.showDataStructureTooklbox = false;
-            ACDesigner.GlobalSettings.showSampleDataEditorToolbox = false;
-            ACDesigner.GlobalSettings.showVersionPicker = false;
+		window.onload = function () {
+			ACDesigner.GlobalSettings.enableDataBindingSupport = false;
+			ACDesigner.GlobalSettings.showDataStructureTooklbox = false;
+			ACDesigner.GlobalSettings.showSampleDataEditorToolbox = false;
+			ACDesigner.GlobalSettings.showVersionPicker = false;
 
-            if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
+			if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
 				console.log("Local storage is not available.");
 			}
 
@@ -61,9 +61,9 @@
 
 			// NOTE: Adding toolbar elements must be done BEFORE the designer is attached
 
-			
+
 			/* Here's how to collapse certain panes by default:
-			
+
 			designer.treeViewPane.collapse();
 			designer.jsonEditorPane.collapse();
 			*/
@@ -85,7 +85,7 @@
 			*/
 
 			// NOTE: Collapsing panes/setting the card payload must be done AFTER the designer is attached
-			// Initialize monaco-editor for the JSON-editor pane. 
+			// Initialize monaco-editor for the JSON-editor pane.
 
 			require.config({
 				paths: {

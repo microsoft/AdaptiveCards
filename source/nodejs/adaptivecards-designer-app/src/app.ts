@@ -10,14 +10,10 @@ import "./app.css";
 // import "adaptivecards-designer/dist/adaptivecards-defaulthost.css";
 
 window.onload = function() {
-    // Uncomment to enabled preview features such as data binding
-    /*
     ACDesigner.GlobalSettings.showVersionPicker = true;
     ACDesigner.GlobalSettings.enableDataBindingSupport = true;
-    // Note the below two flags are ignored if enableDataBindingSupport is set to false
     ACDesigner.GlobalSettings.showDataStructureToolbox = true;
     ACDesigner.GlobalSettings.showSampleDataEditorToolbox = true;
-    */
 
     // Uncomment to configure default toolbox titles
     /*
