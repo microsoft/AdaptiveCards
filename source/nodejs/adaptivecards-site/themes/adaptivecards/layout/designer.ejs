@@ -43,9 +43,10 @@
 			console.log("Local storage is not available.");
 		}
 		
-		// Enable data binding preview features
-		ACDesigner.GlobalSettings.previewFeaturesEnabled = false;
-
+        ACDesigner.GlobalSettings.enableDataBindingSupport = false;
+        ACDesigner.GlobalSettings.showDataStructureTooklbox = false;
+        ACDesigner.GlobalSettings.showSampleDataEditorToolbox = false;
+        ACDesigner.GlobalSettings.showVersionPicker = false;
 
 		let hostContainers = [];
 		hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
