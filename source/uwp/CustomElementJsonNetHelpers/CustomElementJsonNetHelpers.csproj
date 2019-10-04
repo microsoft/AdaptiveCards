@@ -132,7 +132,7 @@
       <Version>6.2.8</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.3-beta1</Version>
+      <Version>12.0.2</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
