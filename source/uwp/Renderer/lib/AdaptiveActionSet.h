@@ -105,7 +105,6 @@ namespace AdaptiveNamespace
             return AdaptiveCardElementBase::get_Requirements(requirements);
         }
 
-
         IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result)
         {
             return AdaptiveCardElementBase::ToJson(result);
