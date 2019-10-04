@@ -15,7 +15,9 @@ namespace TestLibrary
     public class BorderCustomElement : IAdaptiveCardElement
     {
         public IAdaptiveCardElement ContainedElement { get; set; }
-        public ForegroundColor BorderColor { get; set; }
+
+        [JsonConverter(typeof(StringEnumConverter), true)]
+        public ForegroundColor Color { get; set; }
 
         public JsonObject ToJson()
         {
@@ -116,7 +118,7 @@ namespace TestLibrary
                     break;
             }
 
-            return GetColorFromContainerStyle(containerStyleDefinition, borderElement.BorderColor);
+            return GetColorFromContainerStyle(containerStyleDefinition, borderElement.Color);
         }
 
         public Windows.UI.Color GetColorFromContainerStyle(AdaptiveContainerStyleDefinition containerStyle, ForegroundColor foregroundColor)

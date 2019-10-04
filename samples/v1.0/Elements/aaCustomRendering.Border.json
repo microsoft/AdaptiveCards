@@ -11,6 +11,14 @@
 				"animalType": "Mammals",
 				"animalCount": 2
 			}
+		},
+		{
+			"type": "Border",
+			"color": "Attention",
+			"ContainedElement": {
+				"type": "TextBlock",
+				"text": "This text block is in a border"
+			}
 		}
 	]
 }
