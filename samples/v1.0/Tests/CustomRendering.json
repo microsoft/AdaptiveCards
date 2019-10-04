@@ -14,10 +14,14 @@
 			"animalCount": 1,
 			"spacing": "large",
 			"separator": true,
-			"requires": {
-				"adaptiveCards": "1.2",
-				"acTest": "1.0"
-			}
+			"additionalPropString": "string",
+			"additionalPropNumber": 3,
+			"additionalPropBool": true,
+			"additionalPropObject": {
+				"a": "b",
+				"c": "d"
+			},
+			"fallback": "drop"
 		},
 		{
 			"id": "moreMammalsLableId",
@@ -25,7 +29,6 @@
 			"text": "5 Mammals",
 			"size": "large",
 			"isVisible": false
-
 		},
 		{
 			"id": "moreMammalsId",
@@ -34,7 +37,11 @@
 			"animalCount": 5,
 			"isVisible": false,
 			"spacing": "large",
-			"separator": true
+			"separator": true,
+			"fallback": {
+				"type": "TextBlock",
+				"text": "We dropped an animal grid"
+			}
 		},
 		{
 			"type": "TextBlock",
@@ -46,7 +53,11 @@
 			"animalType": "Birds",
 			"animalCount": 2,
 			"spacing": "large",
-			"separator": true
+			"separator": true,
+			"requires": {
+				"adaptiveCards": "1.2",
+				"acTest": "1.0"
+			}
 		},
 		{
 			"id": "fishLableId",
