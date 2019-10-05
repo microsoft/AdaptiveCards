@@ -1,6 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 $(function () {
+	if(localStorage.getItem("enable-templating") === null) {
+		localStorage.setItem("enable-templating", true);
+	}
+
+	$("#enableTemplating").prop("checked", localStorage.getItem("enable-templating") === "true");
 
 	if (typeof AdaptiveCards !== 'undefined') {
 		AdaptiveCards.AdaptiveCard.onExecuteAction = function (action) {
@@ -330,7 +335,7 @@ $(function () {
 		hljs.configure({
 			tabReplace: '  '
 		});
-		
+
 		hljs.initHighlightingOnLoad();
 	}
 
@@ -355,31 +360,92 @@ $(function () {
 	}
 
 
-	$('.adaptivecard').each(function () {
+	function renderAllCards() {
+		var enableTemplating = localStorage.getItem("enable-templating") === "true";
 
+		$(".show-with-templating").css("display", "none");
+		$(".hide-with-templating").css("display", "block");
 
-		var cardUrl = $(this).attr("data-card-url");
-		var el = $(this);
-		if (cardUrl) {
-			$.getJSON(cardUrl, function (json) { renderCard(el, json); });
-		} else {
-			renderCard($(this), el.text());
-		}
-	});
+		$(".adaptivecard").each(function () {
 
-	function renderCard(el, json) {
+			var cardUrl = $(this).attr("data-card-url");
+			var templateUrl = $(this).attr("data-template-url");
+			var dataUrl = $(this).attr("data-data-url");
+			var el = $(this);
+
+			if (templateUrl && enableTemplating) {
+
+				$(".show-with-templating").css("display", "block");
+				$(".hide-with-templating").css("display", "none");
+		
+				$.getJSON(templateUrl, function (templateJson) {
+					$.getJSON(dataUrl, function (dataJson) {
+						renderCard(el, templateJson, dataJson);
+					});
+				});
+			}
+			else if (cardUrl) {
+				$.getJSON(cardUrl, function (json) { renderCard(el, json); });
+			} else {
+				renderCard($(this), el.text());
+			}
+		});
+	}
+	renderAllCards();
+
+	function renderCard(el, json, dataJson) {
 		if (typeof json === "string")
 			json = JSON.parse(json);
+
+		if (dataJson && typeof dataJson === "string")
+			dataJson = JSON.parse(dataJson);
 
 		// TODO: clean this up to only provide custom host config options
 		// it breaks on any rename as-is
 		var adaptiveCard = new AdaptiveCards.AdaptiveCard();
 		adaptiveCard.hostConfig = new AdaptiveCards.HostConfig(hostConfig);
-		adaptiveCard.parse(json);
-		var renderedCard = adaptiveCard.render();
+		var renderedCard;
+
+		if (dataJson) {
+			var template = new ACData.Template(json);
+			var context = new ACData.EvaluationContext();
+
+			context.registerFunction("format", (param0, param1) => {
+				switch (param1) {
+					case ("%"):
+						return (param0 * 100).toFixed(2) + "%"
+
+					default:
+						return `Unknown format: ${param1}`
+				}
+			});
+			context.registerFunction("parseDateFromEpoch", (param) => {
+				try {
+					let d = new Date(param);
+					let timeZoneOffset = ("0" + new Date().getTimezoneOffset() / 60).slice(-2);
+					return `${d.toISOString().substr(0, 19)}-03:00`;
+				} catch {
+					return "Unable to parse epoch";
+				}
+
+			});
+
+			context.$root = dataJson;
+			adaptiveCard.parse(template.expand(context));
+			renderedCard = adaptiveCard.render();
+		} else {
+			adaptiveCard.parse(json);
+			renderedCard = adaptiveCard.render();
+		}
 
 		el.text('').append(renderedCard).show();
 	}
+
+	$("#enableTemplating").change(function () {
+		localStorage.setItem("enable-templating", this.checked);
+		renderAllCards();
+
+	});
 
 	$("button.copy-code").click(function (e) {
 		var content = $(this).parent().siblings("pre").text();
