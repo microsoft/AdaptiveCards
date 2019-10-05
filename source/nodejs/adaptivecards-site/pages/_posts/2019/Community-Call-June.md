@@ -53,7 +53,7 @@ var templatePayload = {
     ]
 };
  
-// Create a Template instamce from the template payload
+// Create a Template instance from the template payload
 var template = new ACData.Template(templatePayload);
  
 // Create a data context, and set its $root property to the
