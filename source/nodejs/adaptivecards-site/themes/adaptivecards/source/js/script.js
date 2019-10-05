@@ -448,7 +448,7 @@ $(function () {
 	});
 
 	$("button.copy-code").click(function (e) {
-		var content = $(this).parent().siblings("pre").text();
+		var content = $(this).parent().next("pre").text();
 		copyToClipboard(content);
 	});
 
