@@ -302,7 +302,7 @@ export class StringProperty extends PropertyDefinition {
 
 export class BoolProperty extends PropertyDefinition {
     parse(sender: SerializableObject, source: PropertyBag, context: BaseSerializationContext): boolean | undefined {
-        return Utils.parseBool(source[this.name], this.defaultValue);;
+        return Utils.parseBool(source[this.name], this.defaultValue);
     }
 
     toJSON(sender: SerializableObject, target: object, value: boolean | undefined, context: BaseSerializationContext) {
@@ -316,7 +316,7 @@ export class BoolProperty extends PropertyDefinition {
 
 export class NumProperty extends PropertyDefinition {
     parse(sender: SerializableObject, source: PropertyBag, context: BaseSerializationContext): number | undefined {
-        return Utils.parseNumber(source[this.name], this.defaultValue);;
+        return Utils.parseNumber(source[this.name], this.defaultValue);
     }
 
     toJSON(sender: SerializableObject, target: PropertyBag, value: number | undefined, context: BaseSerializationContext) {

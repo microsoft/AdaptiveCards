@@ -176,6 +176,7 @@ export class CardDesignerSurface {
     private _serializationContext: Adaptive.SerializationContext;
     private _isPreviewMode: boolean = false;
     private _sampleData: any;
+    private _dragVisual?: HTMLElement;
 
     private updatePeerCommandsLayout() {
         if (this._selectedPeer) {
@@ -442,11 +443,7 @@ export class CardDesignerSurface {
         return this._card;
     }
 
-    private get draggedPeer(): DesignerPeers.DesignerPeer {
-        return this._draggedPeer;
-    }
-
-    private set draggedPeer(value: DesignerPeers.DesignerPeer) {
+    private setDraggedPeer(value: DesignerPeers.DesignerPeer) {
         if (this._draggedPeer != value) {
             if (this._draggedPeer) {
                 this._draggedPeer.dragging = false;
@@ -502,10 +499,41 @@ export class CardDesignerSurface {
         this._designerSurface.onpointermove = (e: PointerEvent) => {
             let clientRect = this._designerSurface.getBoundingClientRect();
 
-            this.tryDrop({ x: e.x - clientRect.left, y: e.y - clientRect.top }, this.draggedPeer);
+            if (this.draggedPeer) {
+                if (!this._designerSurface.hasPointerCapture(e.pointerId)) {
+                    this._designerSurface.setPointerCapture(e.pointerId);
+                }
+
+                if (!this._dragVisual) {
+                    this._dragVisual = document.createElement("div");
+                    this._dragVisual.style.pointerEvents = "none";
+                    this._dragVisual.style.backgroundColor = "white";
+                    this._dragVisual.style.padding = "6px";
+                    this._dragVisual.style.opacity = "0.6";
+                    this._dragVisual.style.boxShadow = "0 0 15px -5px rgba(0, 0, 0, 0.4)";
+                    this._dragVisual.style.position = "absolute";
+                    this._dragVisual.style.boxSizing = "content-box";
+
+                    this._dragVisual.appendChild(this.draggedPeer.getCardObject().renderedElement.cloneNode(true));
+
+                    document.body.appendChild(this._dragVisual);
+                }
+
+                this._dragVisual.style.left = (e.x - 6) + "px";
+                this._dragVisual.style.top = (e.y - 6) + "px";
+
+                let renderedCardObjectRect = this.draggedPeer.getCardObject().renderedElement.getBoundingClientRect();
+
+                this._dragVisual.style.width = renderedCardObjectRect.width + "px";
+                this._dragVisual.style.height = renderedCardObjectRect.height + "px";
+
+                this.tryDrop({ x: e.x - clientRect.left, y: e.y - clientRect.top }, this.draggedPeer);
+            }
         }
 
         this._designerSurface.onpointerup = (e: PointerEvent) => {
+            this._designerSurface.releasePointerCapture(e.pointerId);
+
             if (this.draggedPeer) {
                 this.endDrag();
             }
@@ -658,13 +686,19 @@ export class CardDesignerSurface {
         }
     }
 
+    onStartDrag: (sender: CardDesignerSurface) => void;
+    onEndDrag: (sender: CardDesignerSurface) => void;
+
     startDrag(peer: DesignerPeers.DesignerPeer) {
         if (!this.draggedPeer) {
             this._designerSurface.classList.add("dragging");
 
-            this.draggedPeer = peer;
-
+            this.setDraggedPeer(peer);
             this.setSelectedPeer(this.draggedPeer);
+
+            if (this.onStartDrag) {
+                this.onStartDrag(this);
+            }
         }
     }
 
@@ -676,7 +710,14 @@ export class CardDesignerSurface {
 
             this._dropTarget.renderedElement.classList.remove("dragover");
 
-            this.draggedPeer = null;
+            this._dragVisual.remove();
+            this._dragVisual = undefined;
+
+            this.setDraggedPeer(null);
+
+            if (this.onEndDrag) {
+                this.onEndDrag(this);
+            }
 
             this._designerSurface.classList.remove("dragging");
         }
@@ -724,6 +765,10 @@ export class CardDesignerSurface {
 
     get selectedPeer(): DesignerPeers.DesignerPeer {
         return this._selectedPeer;
+    }
+
+    get draggedPeer(): DesignerPeers.DesignerPeer {
+        return this._draggedPeer;
     }
 
     get isPreviewMode(): boolean {

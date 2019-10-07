@@ -154,7 +154,7 @@ export abstract class HostContainer {
 
             var serializer = new XMLSerializer();
 
-            speechString = vkbeautify.xml(serializer.serializeToString(dom));;
+            speechString = vkbeautify.xml(serializer.serializeToString(dom));
         }
         else {
             output.push(speechString);

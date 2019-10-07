@@ -362,6 +362,9 @@ export class CardDesigner {
                 errorPane.classList.add("acd-hidden");
             }
         };
+        this._designerSurface.onEndDrag = (sender: Designer.CardDesignerSurface) => {
+            this.addToUndoStack(this._designerSurface.getCardPayloadAsObject());
+        };
 
         this.buildPalette();
         this.buildPropertySheet(null);
@@ -801,7 +804,7 @@ export class CardDesigner {
         this._isMonacoEditorLoaded = true;
 
         this.updateJsonEditorsLayout();
-        this.updateJsonFromCard(false);
+        this.updateJsonFromCard(true);
     }
 
     private updateToolbar() {
@@ -810,28 +813,30 @@ export class CardDesigner {
     }
 
     private addToUndoStack(payload: object) {
-        let doAdd: boolean = true;
-
-        if (this._undoStack.length > 0) {
-            doAdd = this._undoStack[this._undoStack.length - 1] != payload;
-        }
+        let doAdd: boolean = !this._designerSurface.draggedPeer;
 
         if (doAdd) {
-            let undoPayloadsToDiscard = this._undoStack.length - (this._undoStackIndex + 1);
-
-            if (undoPayloadsToDiscard > 0) {
-                this._undoStack.splice(this._undoStackIndex + 1, undoPayloadsToDiscard);
+            if (this._undoStack.length > 0) {
+                doAdd = this._undoStack[this._undoStack.length - 1] != payload;
             }
 
-            this._undoStack.push(payload);
+            if (doAdd) {
+                let undoPayloadsToDiscard = this._undoStack.length - (this._undoStackIndex + 1);
 
-            if (this._undoStack.length > CardDesigner.MAX_UNDO_STACK_SIZE) {
-                this._undoStack.splice(0, 1);
+                if (undoPayloadsToDiscard > 0) {
+                    this._undoStack.splice(this._undoStackIndex + 1, undoPayloadsToDiscard);
+                }
+
+                this._undoStack.push(payload);
+
+                if (this._undoStack.length > CardDesigner.MAX_UNDO_STACK_SIZE) {
+                    this._undoStack.splice(0, 1);
+                }
+
+                this._undoStackIndex = this._undoStack.length - 1;
+
+                this.updateToolbar();
             }
-
-            this._undoStackIndex = this._undoStack.length - 1;
-
-            this.updateToolbar();
         }
     }
 
@@ -1069,7 +1074,6 @@ export class CardDesigner {
             let card = this._undoStack[this._undoStackIndex];
 
             this.setCardPayload(card, false);
-
             this.updateToolbar();
         }
     }
@@ -1081,7 +1085,6 @@ export class CardDesigner {
             let card = this._undoStack[this._undoStackIndex];
 
             this.setCardPayload(card, false);
-
             this.updateToolbar();
         }
     }

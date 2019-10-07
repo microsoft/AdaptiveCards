@@ -100,7 +100,6 @@ export abstract class CardElement extends CardObject {
     //#endregion
 
     private _hostConfig?: HostConfig;
-    private _renderedElement?: HTMLElement;
     private _separatorElement?: HTMLElement;
     private _truncatedDueToOverflow: boolean = false;
     private _defaultRenderedElementDisplayMode: string | null = null;
@@ -119,15 +118,15 @@ export abstract class CardElement extends CardObject {
             if (GlobalSettings.alwaysBleedSeparators && renderedSeparator && this.separatorOrientation == Enums.Orientation.Horizontal) {
                 // Adjust separator's margins if the option to always bleed separators is turned on
                 let parentContainer = this.getParentContainer();
-    
+
                 if (parentContainer && parentContainer.getEffectivePadding()) {
                     let parentPhysicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(parentContainer.getEffectivePadding());
-    
+
                     renderedSeparator.style.marginLeft = "-" + parentPhysicalPadding.left + "px";
                     renderedSeparator.style.marginRight = "-" + parentPhysicalPadding.right + "px";
                 }
             }
-    
+
             return renderedSeparator;
     }
 
@@ -591,10 +590,6 @@ export abstract class CardElement extends CardObject {
         }
     }
 
-    get renderedElement(): HTMLElement | undefined {
-        return this._renderedElement;
-    }
-
     get separatorElement(): HTMLElement | undefined {
         return this._separatorElement;
     }
@@ -664,7 +659,7 @@ export abstract class BaseTextBlock extends CardElement {
 
         // selectAction is declared on BaseTextBlock but is only exposed on TextRun,
         // so the property is removed from the BaseTextBlock schema.
-        schema.remove(BaseTextBlock.selectActionProperty);        
+        schema.remove(BaseTextBlock.selectActionProperty);
     }
 
     @property(BaseTextBlock.sizeProperty)
@@ -1469,7 +1464,7 @@ class ImageDimensionProperty extends PropertyDefinition {
     getJsonPropertyName(): string {
         return this.jsonName;
     }
-    
+
     parse(sender: SerializableObject, source: PropertyBag, context: BaseSerializationContext): number | undefined {
         let result: number | undefined = undefined;
         let sourceValue = source[this.jsonName];
@@ -3140,11 +3135,11 @@ export class TimeProperty extends CustomProperty<string | undefined> {
             name,
             (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseSerializationContext) => {
                 let value = source[property.name];
-    
+
                 if (typeof value === "string" && value && /^[0-9]{2}:[0-9]{2}$/.test(value)) {
                     return value;
                 }
-    
+
                 return undefined;
             },
             (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: string | undefined, context: BaseSerializationContext) => {
@@ -3328,7 +3323,6 @@ export abstract class Action extends CardObject {
     //#endregion
 
     private _actionCollection?: ActionCollection; // hold the reference to its action collection
-    private _renderedElement?: HTMLElement;
 
     protected addCssClasses(element: HTMLElement) {
         // Do nothing in base implementation
@@ -3513,10 +3507,6 @@ export abstract class Action extends CardObject {
         return true;
     }
 
-    get renderedElement(): HTMLElement | undefined {
-        return this._renderedElement;
-    }
-
     get hostConfig(): HostConfig {
         return this.parent ? this.parent.hostConfig : defaultHostConfig;
     }
@@ -3651,7 +3641,7 @@ export class ToggleVisibilityAction extends Action {
                     }
                     else if (typeof item === "object") {
                         let elementId = item["elementId"];
-    
+
                         if (typeof elementId === "string") {
                             result[elementId] = Utils.parseBool(item["isVisible"]);
                         }
@@ -3677,7 +3667,7 @@ export class ToggleVisibilityAction extends Action {
                     targetElements.push(id);
                 }
             }
-    
+
             context.serializeArray(target, property.name, targetElements);
         },
         {},
@@ -5247,7 +5237,7 @@ export class Column extends Container {
             let result: ColumnWidth = property.defaultValue;
             let value = source[property.name];
             let invalidWidth = false;
-    
+
             if (typeof value === "number" && !isNaN(value)) {
                 result = new SizeAndUnit(value, Enums.SizeUnit.Weight);
             }
@@ -5264,7 +5254,7 @@ export class Column extends Container {
                 }
                 catch (e) {
                     invalidWidth = true;
-                }    
+                }
             }
             else {
                 invalidWidth = true;
@@ -6263,7 +6253,7 @@ export class SerializationContext extends BaseSerializationContext {
         if (source && typeof source === "object") {
             let tryToFallback = false;
             let typeName = Utils.parseString(source["type"]);
-            
+
             if (typeName) {
                 if (forbiddenTypeNames.indexOf(typeName) >= 0) {
                     logParseEvent(typeName, TypeErrorType.ForbiddenType);
@@ -6335,7 +6325,7 @@ export class SerializationContext extends BaseSerializationContext {
             allowFallback,
             createInstanceCallback,
             logParseEvent);
-        
+
         if (result !== undefined) {
             this.cardObjectParsed(result, source);
         }

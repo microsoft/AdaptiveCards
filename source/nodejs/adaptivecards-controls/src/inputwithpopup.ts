@@ -129,7 +129,7 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
         this._labelElement.className = "ms-ctrl ms-dropdown-label";
 
         this._dropDownButtonElement = document.createElement("i");
-        this._dropDownButtonElement.className = "ms-icon ms-ctrl-dropdown-button " + this.getButtonIconCssClassName();;
+        this._dropDownButtonElement.className = "ms-icon ms-ctrl-dropdown-button " + this.getButtonIconCssClassName();
 
         this.rootElement.appendChild(this._labelElement);
         this.rootElement.appendChild(this._dropDownButtonElement);

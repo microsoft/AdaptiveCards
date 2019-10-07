@@ -57,8 +57,9 @@ export abstract class CardObject extends SerializableObject {
     //#endregion
 
     private _shouldFallback: boolean = false;
-    
+
     protected _parent?: CardObject;
+    protected _renderedElement?: HTMLElement;
 
     abstract getJsonTypeName(): string;
 
@@ -100,5 +101,9 @@ export abstract class CardObject extends SerializableObject {
         this.internalValidateProperties(result);
 
         return result;
+    }
+
+    get renderedElement(): HTMLElement | undefined {
+        return this._renderedElement;
     }
 }
