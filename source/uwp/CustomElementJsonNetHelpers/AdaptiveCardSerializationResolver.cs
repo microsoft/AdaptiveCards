@@ -22,6 +22,11 @@ namespace CustomElementJsonNetHelpers
                 // Use the string enum converter for these types to get them serialized as enum names rather than integers
                 return new StringEnumConverter();
             }
+            else if (typeof(IAdaptiveCardElement).IsAssignableFrom(objectType))
+            {
+                // Use element converter to handle Additional Properties, Requirements, and Fallback
+                return new AdaptiveElementConverter(null, null, null);
+            }
             else
             {
                 return base.ResolveContractConverter(objectType);

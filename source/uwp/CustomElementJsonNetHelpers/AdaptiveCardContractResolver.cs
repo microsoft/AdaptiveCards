@@ -13,7 +13,9 @@ namespace CustomElementJsonNetHelpers
         private AdaptiveActionParserRegistration ActionParsers { get; set; }
         private IList<AdaptiveWarning> Warnings { get; set; }
 
-        // This is not great because it lets the caller make a mistake and use this constructor for deserialize
+        // This is not great because it lets the caller make a mistake and use this constructor for
+        // deserialize. In the deserialize case we *must* have element and action parsers, in the
+        // serialize case we will *not* have them. 
         public AdaptiveCardContractResolver() { }
 
         public AdaptiveCardContractResolver(AdaptiveElementParserRegistration elementParsers, AdaptiveActionParserRegistration actionParsers, IList<AdaptiveWarning> warnings)
