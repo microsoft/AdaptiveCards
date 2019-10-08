@@ -176,7 +176,7 @@ namespace CustomElementJsonNetHelpers
 
                 foreach (PropertyInfo property in properties)
                 {
-                    customElementType.InvokeMember();
+                    object propertyValue = customElementType.GetRuntimeProperty(property.Name).GetValue(value);
                 }
 
 
