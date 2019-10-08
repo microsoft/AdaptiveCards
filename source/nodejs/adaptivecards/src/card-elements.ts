@@ -5265,6 +5265,8 @@ export class Column extends Container {
                     Enums.ValidationEvent.InvalidPropertyValue,
                     "Invalid column width:" + value + " - defaulting to \"auto\"",
                     sender);
+
+                result = "auto";
             }
 
             return result;
@@ -5311,15 +5313,13 @@ export class Column extends Container {
         else if (this.width === "stretch") {
             renderedElement.style.flex = "1 1 50px";
         }
-        else {
-            let sizeAndUnit = <SizeAndUnit>this.width;
-
-            if (sizeAndUnit.unit == Enums.SizeUnit.Pixel) {
+        else if (this.width instanceof SizeAndUnit) {
+            if (this.width.unit == Enums.SizeUnit.Pixel) {
                 renderedElement.style.flex = "0 0 auto";
-                renderedElement.style.width = sizeAndUnit.physicalSize + "px";
+                renderedElement.style.width = this.width.physicalSize + "px";
             }
             else {
-                renderedElement.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : sizeAndUnit.physicalSize) + "%";
+                renderedElement.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.width.physicalSize) + "%";
             }
         }
     }

@@ -260,60 +260,52 @@ export class CardDesignerSurface {
     private renderCard() {
         this._cardHost.innerHTML = "";
 
-        if (this.card) {
-            if (this.onCardValidated) {
-                let allValidationEvents: Adaptive.IValidationEvent[] = [];
+        if (this.onCardValidated) {
+            let allValidationEvents: Adaptive.IValidationEvent[] = [];
 
-                for (let i = 0; i < this._serializationContext.eventCount; i++) {
-                    allValidationEvents.push(this._serializationContext.getEventAt(i));
-                }
-
-                allValidationEvents.push(...this.card.validateProperties().validationEvents);
-
-                this.onCardValidated(allValidationEvents);
+            for (let i = 0; i < this._serializationContext.eventCount; i++) {
+                allValidationEvents.push(this._serializationContext.getEventAt(i));
             }
 
-            let cardToRender: Adaptive.AdaptiveCard;
+            allValidationEvents.push(...this.card.validateProperties().validationEvents);
 
-            if (this.isPreviewMode) {
-                if (Shared.GlobalSettings.enableDataBindingSupport) {
-                    let cardPayload = this.card.toJSON(this._serializationContext);
-
-                    try {
-                        let template = new ACData.Template(cardPayload);
-
-                        let context = new ACData.EvaluationContext();
-                        context.$root = this.sampleData;
-
-                        let expandedCardPayload = template.expand(context);
-
-                        cardToRender = new Adaptive.AdaptiveCard();
-                        cardToRender.hostConfig = this.card.hostConfig;
-                        cardToRender.parse(expandedCardPayload, new Adaptive.SerializationContext());
-                    }
-                    catch (e) {
-                        console.log("Template expansion error: " + e.message);
-                    }
-                }
-
-                if (!cardToRender) {
-                    cardToRender = this.card;
-                    cardToRender.designMode = false;
-                }
-            }
-            else {
-                cardToRender = this.card;
-                cardToRender.designMode = true;
-            }
-
-            let renderedCard = cardToRender.render();
-
-            if (this.fixedHeightCard) {
-                renderedCard.style.height = "100%";
-
-            }
-            this._cardHost.appendChild(renderedCard);
+            this.onCardValidated(allValidationEvents);
         }
+
+        let cardToRender: Adaptive.AdaptiveCard = this.card;
+
+        if (this.isPreviewMode) {
+            let inputPayload = this.card.toJSON(this._serializationContext);
+
+            cardToRender = new Adaptive.AdaptiveCard();
+            cardToRender.hostConfig = this.card.hostConfig;
+
+            let outputPayload = inputPayload;
+
+            if (Shared.GlobalSettings.enableDataBindingSupport) {
+                try {
+                    let template = new ACData.Template(inputPayload);
+
+                    let context = new ACData.EvaluationContext();
+                    context.$root = this.sampleData;
+
+                    outputPayload = template.expand(context);
+                }
+                catch (e) {
+                    console.log("Template expansion error: " + e.message);
+                }
+            }
+
+            cardToRender.parse(outputPayload, new Adaptive.SerializationContext());
+        }
+
+        let renderedCard = cardToRender.render();
+
+        if (this.fixedHeightCard) {
+            renderedCard.style.height = "100%";
+
+        }
+        this._cardHost.appendChild(renderedCard);
     }
 
     private addPeer(peer: DesignerPeers.DesignerPeer) {
@@ -605,11 +597,9 @@ export class CardDesignerSurface {
 
         this.renderCard();
 
-        if (this.card) {
-            this._rootPeer = CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this, null, this.card);
+        this._rootPeer = CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this, null, this.card);
 
-            this.addPeer(this._rootPeer);
-        }
+        this.addPeer(this._rootPeer);
 
         this._removeCommandElement = document.createElement("div");
         this._removeCommandElement.classList.add("acd-peerButton", "acd-icon-remove");
@@ -658,14 +648,16 @@ export class CardDesignerSurface {
     }
 
     updateLayout(isFullRefresh: boolean = true) {
-        for (var i = 0; i < this._allPeers.length; i++) {
-            this._allPeers[i].updateLayout();
-        }
+        if (!this.isPreviewMode) {
+            for (var i = 0; i < this._allPeers.length; i++) {
+                this._allPeers[i].updateLayout();
+            }
 
-        this.updatePeerCommandsLayout();
+            this.updatePeerCommandsLayout();
 
-        if (this.onLayoutUpdated) {
-            this.onLayoutUpdated(isFullRefresh);
+            if (this.onLayoutUpdated) {
+                this.onLayoutUpdated(isFullRefresh);
+            }
         }
     }
 
@@ -792,7 +784,10 @@ export class CardDesignerSurface {
                 this._peerCommandsHostElement.classList.remove("acd-hidden");
             }
 
+            this.card.designMode = !this._isPreviewMode;
+
             this.renderCard();
+            this.updateLayout(false);
         }
     }
 

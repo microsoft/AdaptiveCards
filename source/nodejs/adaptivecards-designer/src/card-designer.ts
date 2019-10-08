@@ -69,10 +69,11 @@ export class CardDesigner {
 
         if (this._designerSurface.isPreviewMode) {
             this._togglePreviewButton.toolTip = "Return to Design mode";
+            this._designerSurface.setCardPayloadAsString(this.getCurrentCardEditorPayload());
         }
         else {
             this._togglePreviewButton.toolTip = "Switch to Preview mode";
-            this._designerSurface.updateLayout();
+            this.updateCardFromJson(false);
         }
 
         this.buildTreeView();
@@ -514,7 +515,12 @@ export class CardDesigner {
             let currentEditorPayload = this.getCurrentCardEditorPayload();
 
             if (addToUndoStack) {
-                this.addToUndoStack(JSON.parse(currentEditorPayload));
+                try {
+                    this.addToUndoStack(JSON.parse(currentEditorPayload));
+                }
+                catch {
+                    // Swallow the parse error
+                }
             }
 
             if (!this.preventCardUpdate) {
@@ -1000,7 +1006,12 @@ export class CardDesigner {
                     title: "Copy the structure of this data into the Data Structure toolbox",
                     iconClass: "acd-icon-dataStructure",
                     execute: (sender: IToolboxCommand) => {
-                        this.dataStructure = FieldDefinition.create(JSON.parse(this.getCurrentSampleDataEditorPayload()));
+                        try {
+                            this.dataStructure = FieldDefinition.create(JSON.parse(this.getCurrentSampleDataEditorPayload()));
+                        }
+                        catch {
+                            // Swallow the parse error
+                        }
                     }
                 }
             ];
