@@ -9,8 +9,11 @@ namespace CustomElementJsonNetHelpers
 {
     internal class AdaptiveCardSerializationResolver : DefaultContractResolver
     {
-        public AdaptiveCardSerializationResolver()
+        IAdaptiveCardElement ParentElement;
+
+        public AdaptiveCardSerializationResolver(IAdaptiveCardElement parentElement)
         {
+            ParentElement = parentElement;
         }
 
         // BECKYTODO - Make sure container type would be ok...
@@ -21,6 +24,11 @@ namespace CustomElementJsonNetHelpers
             {
                 // Use the string enum converter for these types to get them serialized as enum names rather than integers
                 return new StringEnumConverter();
+            }
+            else if (typeof(IAdaptiveCardElement).IsAssignableFrom(objectType))
+            {
+                // Use element converter to handle Additional Properties, Requirements, and Fallback
+                return new AdaptiveElementConverter(ParentElement);
             }
             else
             {

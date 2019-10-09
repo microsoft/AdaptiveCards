@@ -14,9 +14,11 @@ namespace CustomElementJsonNetHelpers
         private AdaptiveActionParserRegistration ActionParsers { get; set; }
         private IList<AdaptiveWarning> Warnings { get; set; }
 
-        public AdaptiveElementConverter(bool canWrite)
+        IAdaptiveCardElement ParentElement;
+
+        public AdaptiveElementConverter(IAdaptiveCardElement parentElement)
         {
-            CanWrite = canWrite;
+            ParentElement = parentElement;
         }
 
         public AdaptiveElementConverter(AdaptiveElementParserRegistration elementParsers, AdaptiveActionParserRegistration actionParsers, IList<AdaptiveWarning> warnings)
@@ -37,7 +39,8 @@ namespace CustomElementJsonNetHelpers
 
             if (objectType == typeof(IAdaptiveCardElement) || isKnownElementType)
             {
-                // If this is a known element type, or if we just have the interface, get the parser from the parser registration
+                // If this is a known element type, or if we just have the interface and so can't
+                // instantiate, get the parser from the parser registration
                 IAdaptiveElementParser parser = ElementParsers.Get(elementTypeString);
 
                 string jsonString = jObject.ToString();
@@ -49,7 +52,8 @@ namespace CustomElementJsonNetHelpers
             }
             else
             {
-                // This is a custom type, instantiate and populate it via Json.NET
+                // This is a custom type, instantiate and populate it via Json.NET (calling the
+                // registered parser will just end us up back in this function)
                 cardElement = (IAdaptiveCardElement)Activator.CreateInstance(objectType);
                 serializer.Populate(jObject.CreateReader(), cardElement);
 
@@ -166,7 +170,7 @@ namespace CustomElementJsonNetHelpers
         {
             JObject jObject = JObject.FromObject(value, new JsonSerializer
             {
-                ContractResolver = new AdaptiveCardSerializationResolver()
+                ContractResolver = new AdaptiveCardSerializationResolver(value)
             });
 
             SerializeAdditionalProperties(value, jObject);
