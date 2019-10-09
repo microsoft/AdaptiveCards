@@ -331,7 +331,7 @@ export class CardDesignerSurface {
                 this.updateLayout();
             };
             peer.onStartDrag = (sender: DesignerPeers.DesignerPeer) => { this.startDrag(sender); }
-            peer.onEndDrag = (sender: DesignerPeers.DesignerPeer) => { this.endDrag(); }
+            peer.onEndDrag = (sender: DesignerPeers.DesignerPeer) => { this.endDrag(false); }
 
             peer.addElementsToDesignerSurface(this._designerSurface);
 
@@ -475,11 +475,18 @@ export class CardDesignerSurface {
             if (this._selectedPeer) {
                 switch (e.keyCode) {
                     case Controls.KEY_ESCAPE:
-                        this.setSelectedPeer(this._selectedPeer.parent);
+                        if (this.draggedPeer) {
+                            this.endDrag(true);
+                        }
+                        else {
+                            this.setSelectedPeer(this._selectedPeer.parent);
+                        }
 
                         break;
                     case Controls.KEY_DELETE:
-                        this.removeSelected();
+                        if (!this.draggedPeer) {
+                            this.removeSelected();
+                        }
 
                         break;
                 }
@@ -527,7 +534,7 @@ export class CardDesignerSurface {
             this._designerSurface.releasePointerCapture(e.pointerId);
 
             if (this.draggedPeer) {
-                this.endDrag();
+                this.endDrag(false);
             }
         }
 
@@ -679,7 +686,7 @@ export class CardDesignerSurface {
     }
 
     onStartDrag: (sender: CardDesignerSurface) => void;
-    onEndDrag: (sender: CardDesignerSurface) => void;
+    onEndDrag: (sender: CardDesignerSurface, wasCancelled: boolean) => void;
 
     startDrag(peer: DesignerPeers.DesignerPeer) {
         if (!this.draggedPeer) {
@@ -694,7 +701,7 @@ export class CardDesignerSurface {
         }
     }
 
-    endDrag() {
+    endDrag(wasCancelled: boolean) {
         if (this.draggedPeer) {
             // Ensure that the dragged peer's elements are at the top in Z order
             this.draggedPeer.removeElementsFromDesignerSurface(true);
@@ -708,7 +715,7 @@ export class CardDesignerSurface {
             this.setDraggedPeer(null);
 
             if (this.onEndDrag) {
-                this.onEndDrag(this);
+                this.onEndDrag(this, wasCancelled);
             }
 
             this._designerSurface.classList.remove("dragging");

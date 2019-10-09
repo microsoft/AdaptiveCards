@@ -52,6 +52,7 @@ export class CardDesigner {
     private _activeHostContainer: HostContainer;
     private _undoStack: Array<object> = [];
     private _undoStackIndex: number = -1;
+    private _startDragPayload: object;
     private _toolPaletteToolbox: Toolbox;
     private _propertySheetToolbox: Toolbox;
     private _treeViewToolbox: Toolbox;
@@ -363,8 +364,16 @@ export class CardDesigner {
                 errorPane.classList.add("acd-hidden");
             }
         };
-        this._designerSurface.onEndDrag = (sender: Designer.CardDesignerSurface) => {
-            this.addToUndoStack(this._designerSurface.getCardPayloadAsObject());
+        this._designerSurface.onStartDrag = (sender: Designer.CardDesignerSurface) => {
+            this._startDragPayload = JSON.parse(this.getCurrentCardEditorPayload());
+        };
+        this._designerSurface.onEndDrag = (sender: Designer.CardDesignerSurface, wasCancelled: boolean) => {
+            if (wasCancelled) {
+                this.setCardPayload(this._startDragPayload, false);
+            }
+            else {
+                this.addToUndoStack(this._designerSurface.getCardPayloadAsObject());
+            }
         };
 
         this.buildPalette();
@@ -850,7 +859,7 @@ export class CardDesigner {
         this.endDrag();
 
         if (this.designerSurface) {
-            this.designerSurface.endDrag();
+            this.designerSurface.endDrag(false);
         }
     }
 
@@ -1093,9 +1102,9 @@ export class CardDesigner {
         if (this._undoStackIndex < this._undoStack.length - 1) {
             this._undoStackIndex++;
 
-            let card = this._undoStack[this._undoStackIndex];
+            let payload = this._undoStack[this._undoStackIndex];
 
-            this.setCardPayload(card, false);
+            this.setCardPayload(payload, false);
             this.updateToolbar();
         }
     }
