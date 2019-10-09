@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Windows.Foundation;
 using Xamarin.Forms;
 
 namespace AdaptiveCards.Rendering.XamarinForms
@@ -31,11 +32,33 @@ namespace AdaptiveCards.Rendering.XamarinForms
             set { SetValue(HostConfigProperty, value); }
         }
 
-        /*
-        public EventHandler OnAction(object sender, EventArgs eventArgs)
+        private EventHandler onAction;
+
+        // This will be our default name in the meantime
+        public event EventHandler OnAction
         {
+            add
+            {
+                onAction -= value;
+                onAction += value;
+            }
+
+            remove
+            {
+                onAction -= value;
+            }
         }
-        */
+
+        protected virtual void OnOnAction(EventArgs eventArgs)
+        {
+            EventHandler handler = onAction;
+
+            handler?.Invoke(this, eventArgs);
+        }
+        public void SendActionEvent()
+        {
+            OnOnAction(EventArgs.Empty);
+        }
 
     }
 }

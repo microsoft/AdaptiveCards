@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -28,6 +28,40 @@ namespace XamarinFormsDraft.Views
 
             cardControl = this.FindByName<AdaptiveCardControl>("CardControl");
 
+            cardControl.OnAction += CardControl_OnAction;
+
+            cardControl.CardContent = @"{
+                ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                ""type"": ""AdaptiveCard"",
+                ""version"": ""1.0"",
+                ""body"": [
+		            {
+			            ""type"": ""TextBlock"",
+			            ""text"": ""This card's action will open a URL""
+                    }
+	            ],
+	            ""actions"": [
+                    {
+                        ""type"": ""Action.OpenUrl"",
+                        ""title"": ""Action.OpenUrl"",
+                        ""url"": ""http://adaptivecards.io""
+                    },
+                    {
+                        ""type"": ""Action.Submit"",
+                        ""title"": ""Action.Submit"",
+                        ""data"": {
+                            ""x"": 13
+                        }
+                    },
+                    {
+                        ""type"": ""Action.Submit"",
+                        ""title"": ""Neat!""
+		            }
+	            ]
+            }";
+
+
+    /*
             cardControl.CardContent = 
 @"{
   ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
@@ -62,9 +96,14 @@ namespace XamarinFormsDraft.Views
       ""color"": ""attention""
     }
   ]
-}";
+}";*/
 
             BindingContext = viewModel = new ItemsViewModel();
+        }
+
+        private void CardControl_OnAction(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)

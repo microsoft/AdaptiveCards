@@ -1,4 +1,4 @@
-﻿using Xamarin.Forms.Platform.UWP;
+using Xamarin.Forms.Platform.UWP;
 using AdaptiveCards.Rendering.Uwp;
 using AdaptiveCards.Rendering.XamarinForms;
 using AdaptiveCards.Rendering.XamarinForms.UWP;
@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Windows.UI.Xaml;
 using Windows.Data.Json;
+using Windows.Foundation;
 
 [assembly: ExportRenderer(typeof(AdaptiveCardControl), typeof(AdaptiveCards.Rendering.XamarinForms.UWP.AdaptiveCardRenderer2))]
 namespace AdaptiveCards.Rendering.XamarinForms.UWP
@@ -46,6 +47,12 @@ namespace AdaptiveCards.Rendering.XamarinForms.UWP
                         AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(jsonObject);
 
                         RenderedAdaptiveCard _renderedAdaptiveCard = _renderer.RenderAdaptiveCard(parseResult.AdaptiveCard);
+
+                        _renderedAdaptiveCard.Action += new TypedEventHandler<RenderedAdaptiveCard, AdaptiveActionEventArgs>(
+                            delegate (RenderedAdaptiveCard renderedCard, AdaptiveActionEventArgs eventArgs)
+                        {
+                            e.NewElement.SendActionEvent();
+                        });
 
                         adaptiveCardView = _renderedAdaptiveCard.FrameworkElement;
 
