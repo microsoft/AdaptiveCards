@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
-#include "Util.h"
+
 #include "AdaptiveHighlightColorConfig.h"
 
 using namespace Microsoft::WRL;
@@ -10,7 +10,8 @@ using namespace ABI::Windows::UI;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveHighlightColorConfig::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveHighlightColorConfig::RuntimeClassInitialize() noexcept
+    try
     {
         HighlightColorConfig colorConfig;
         return RuntimeClassInitialize(colorConfig);

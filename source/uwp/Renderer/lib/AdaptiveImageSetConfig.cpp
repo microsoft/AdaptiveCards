@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
+
 #include "AdaptiveImageSetConfig.h"
 
 using namespace Microsoft::WRL;
@@ -8,7 +9,8 @@ using namespace ABI::AdaptiveNamespace;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveImageSetConfig::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveImageSetConfig::RuntimeClassInitialize() noexcept
+    try
     {
         ImageSetConfig imageSetConfig;
         return RuntimeClassInitialize(imageSetConfig);

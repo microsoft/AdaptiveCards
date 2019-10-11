@@ -21,7 +21,8 @@ namespace AdaptiveNamespace
         m_choices = Microsoft::WRL::Make<Vector<AdaptiveChoiceInput*>>();
     }
 
-    HRESULT AdaptiveChoiceSetInput::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveChoiceSetInput::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::ChoiceSetInput> choiceSet =
             std::make_shared<AdaptiveSharedNamespace::ChoiceSetInput>();
@@ -29,7 +30,8 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveChoiceSetInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ChoiceSetInput>& sharedChoiceSetInput) try
+    HRESULT AdaptiveChoiceSetInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ChoiceSetInput>& sharedChoiceSetInput)
+    try
     {
         if (sharedChoiceSetInput == nullptr)
         {
@@ -107,7 +109,8 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveChoiceSetInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
+    HRESULT AdaptiveChoiceSetInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::ChoiceSetInput> choiceSet =
             std::make_shared<AdaptiveSharedNamespace::ChoiceSetInput>();
