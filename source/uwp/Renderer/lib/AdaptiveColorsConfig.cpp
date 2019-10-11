@@ -9,7 +9,8 @@ using namespace ABI::AdaptiveNamespace;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveColorsConfig::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveColorsConfig::RuntimeClassInitialize() noexcept
+    try
     {
         ColorsConfig colorsConfig;
         return RuntimeClassInitialize(colorsConfig);

@@ -9,6 +9,7 @@
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRContentHoldingUIView.h"
+#import "ACRRegistration.h"
 #import "ACRUILabel.h"
 #import "ACRView.h"
 #import "DateTimePreparsedToken.h"
@@ -49,11 +50,23 @@
         NSMutableDictionary *textMap = [rootView getTextMap];
         NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)txtBlck.get()];
         NSString *key = [number stringValue];
-        NSDictionary *data = textMap[key];
-        NSData *htmlData = data[@"html"];
-        NSDictionary *options = data[@"options"];
-        NSDictionary *descriptor = data[@"descriptor"];
-        NSString *text = data[@"nonhtml"];
+        NSDictionary *data = nil;
+        NSData *htmlData = nil;
+        NSDictionary *options = nil;
+        NSDictionary *descriptor = nil;
+        NSString *text = nil;
+
+        if ([[ACRRegistration getInstance] isElementRendererOverridden:ACRCardElementType::ACRTextBlock] == YES) {
+            RichTextElementProperties textProp;
+            TextBlockToRichTextElementProperties(txtBlck, textProp);
+            buildIntermediateResultForText(rootView, acoConfig, textProp, key);
+        }
+
+        data = textMap[key];
+        htmlData = data[@"html"];
+        options = data[@"options"];
+        descriptor = data[@"descriptor"];
+        text = data[@"nonhtml"];
 
         // Initializing NSMutableAttributedString for HTML rendering is very slow
         if (htmlData) {

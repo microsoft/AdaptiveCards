@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.Uwp.h"
-#include "Enums.h"
 #include "ChoiceSetInput.h"
 
 namespace AdaptiveNamespace
@@ -28,6 +26,20 @@ namespace AdaptiveNamespace
                                 _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParsers,
                                 _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
                                 _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept override;
+
+    private:
+        static std::vector<std::string> GetChoiceSetValueVector(_In_ ABI::AdaptiveNamespace::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput);
+        static bool IsChoiceSelected(std::vector<std::string> selectedValues,
+                                     _In_ ABI::AdaptiveNamespace::IAdaptiveChoiceInput* choice);
+
+        HRESULT BuildExpandedChoiceSetInput(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                            _In_ ABI::AdaptiveNamespace::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
+                                            boolean isMultiSelect,
+                                            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** choiceInputSet);
+
+        HRESULT BuildCompactChoiceSetInput(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                           _In_ ABI::AdaptiveNamespace::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
+                                           _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** choiceInputSet);
     };
 
     ActivatableClass(AdaptiveChoiceSetInputRenderer);

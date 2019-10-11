@@ -34,7 +34,7 @@
                                         aria-label="See more menu options" data-m="{&quot;cN&quot;:&quot;Mobile forward button_nonnav&quot;,&quot;id&quot;:&quot;nn5c2m1r1a1&quot;,&quot;sN&quot;:5,&quot;aN&quot;:&quot;c2m1r1a1&quot;}"></button>
                                 </div>
                                 <div class="c-show-pipe x-hidden-vp-mobile-st">
-                                    <a id="uhfCatLogo" class="c-logo c-cat-logo" href="http://adaptivecards.io"
+                                    <a id="uhfCatLogo" class="c-logo c-cat-logo" href="https://adaptivecards.io"
                                         aria-label="Adaptive Cards" itemprop="url" data-m="{&quot;cN&quot;:&quot;CatNav_Adaptive Cards_nav&quot;,&quot;id&quot;:&quot;n6c2m1r1a1&quot;,&quot;sN&quot;:6,&quot;aN&quot;:&quot;c2m1r1a1&quot;}">
                                         <span>Adaptive Cards</span>
                                     </a>
@@ -60,8 +60,7 @@
                                         </li>
                                         <li class="single-link js-nav-menu">
                                             <a id="c-shellmenu_1" class="c-uhf-nav-link" href="<%- url_for('explorer') %>"
-                                                data-m="{&quot;cN&quot;:&quot;CatNav_Schema Explorer_nav&quot;,&quot;id&quot;:&quot;n3c8c2m1r1a1&quot;,&quot;sN&quot;:3,&quot;aN&quot;:&quot;c8c2m1r1a1&quot;}">Schema
-                                                Explorer</a>
+                                                data-m="{&quot;cN&quot;:&quot;CatNav_Schema Explorer_nav&quot;,&quot;id&quot;:&quot;n3c8c2m1r1a1&quot;,&quot;sN&quot;:3,&quot;aN&quot;:&quot;c8c2m1r1a1&quot;}">Schema Explorer</a>
                                         </li>
                                         <li class="single-link js-nav-menu">
                                             <a id="c-shellmenu_3" class="c-uhf-nav-link" href="<%- url_for('samples') %>"
@@ -412,19 +411,22 @@
 
     <% if(!is_current('/') && !page.hideBreadcrumb) { /* no breadcrumb on home page */ %>
     <div class="content-header uhf-container has-padding" data-bi-name="content-header">
-        <ul class="breadcrumbs" data-bi-name="breadcrumb" itemscope="" itemtype="http://schema.org/BreadcrumbList" role="navigation"
-            aria-label="Breadcrumb">
+		<ul class="breadcrumbs" data-bi-name="breadcrumb" itemscope="" itemtype="http://schema.org/BreadcrumbList" 
+		 aria-label="Breadcrumb">
             <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem" class="mobile-breadcrumb">
                <a itemprop="item" href="<%- url_for('/') %>">Adaptive Cards</a>
-            </li>
-            <% if(page.archive || page.published) { %>
-               <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem" class="mobile-breadcrumb">
-               <a itemprop="item" href="<%- url_for('/blog') %>">Blog</a>
-            </li>
-			<% } %>
-			<% if(page.title) { %>
+            </li>			
+			<% if(page.archive) { %>
+				<li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem" class="mobile-breadcrumb">Blog</li>
+			<% } else if(is_post()) { %>
+				<li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem" class="mobile-breadcrumb">
+					<a itemprop="item" href="<%- url_for('/blog') %>">Blog</a>
+				</li>
+				<li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"><span itemprop="name"><%= page.title %></span></li>			
+			<% } else { %>
 				<li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"><span itemprop="name"><%= page.title %></span></li>
 			<% } %>
+
         </ul>
         <div class="content-header-controls exit-focus">
             <button type="button" class="ap-collapse-behavior ap-expanded button-border" data-bi-name="ap-collapse">
@@ -440,13 +442,14 @@
         <div class="action-bar">
             <ul class="action-list">
                 <li>
-                    <a href="https://github.com/Microsoft/AdaptiveCards/issues/new" data-bi-name="comments">
-                        <span class="docon" aria-hidden="true">💬</span><span class="action-item-text">Feedback</span>
+                    <a role="button" id="feedback-button" class="button" data-bi-name="feedback" tabindex="0" focusable="true">
+                        <span class="docon docon-comment-lines" aria-hidden="true"></span> <span class="action-item-text">Feedback</span>
                     </a>
                 </li>
                 <li>
-                    <a href="https://github.com/Microsoft/AdaptiveCards/" data-bi-name="comments">
-                        <span class="docon" aria-hidden="true"><img alt="" style="height: 1em; width: auto;" src="/images/github-mark.png"/></span><span class="action-item-text">GitHub</span>
+					<a href="https://github.com/Microsoft/AdaptiveCards/" class="button" data-bi-name="comments">
+						
+                        <span class="fab fa-github" aria-hidden="true"></span> <span class="action-item-text">GitHub</span>
                     </a>
                 </li>
 

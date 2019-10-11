@@ -3,7 +3,7 @@
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
- 
+
 namespace AdaptiveNamespace
 {
     constexpr char* c_upwActionParserRegistration = "AB3CC8B0-FF27-4859-A2AA-BCE2E729805";

@@ -1455,7 +1455,7 @@ export class CardElementPeer extends CardObjectPeer {
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
 
-        if (GlobalSettings.previewFeaturesEnabled) {
+        if (GlobalSettings.enableDataBindingSupport) {
             propertySheet.add(
                 defaultCategory,
                 CardElementPeer.dataContextProperty,

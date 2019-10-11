@@ -5,7 +5,8 @@
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveMediaSource::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveMediaSource::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::MediaSource> mediaSource =
             std::make_shared<AdaptiveSharedNamespace::MediaSource>();
@@ -13,7 +14,8 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveMediaSource::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::MediaSource>& sharedMediaSource) try
+    HRESULT AdaptiveMediaSource::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::MediaSource>& sharedMediaSource)
+    try
     {
         if (sharedMediaSource == nullptr)
         {
@@ -35,7 +37,8 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveMediaSource::put_Url(_In_ HSTRING value) { return m_url.Set(value); }
 
-    HRESULT AdaptiveMediaSource::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::MediaSource>& sharedMediaSource) try
+    HRESULT AdaptiveMediaSource::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::MediaSource>& sharedMediaSource)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::MediaSource> mediaSource =
             std::make_shared<AdaptiveSharedNamespace::MediaSource>();

@@ -34,7 +34,7 @@ The latest release will keep you up to date with features and fixes, but may hav
 <script src="https://unpkg.com/adaptivecards-templating/dist/adaptivecards-templating.min.js"></script>
 
 <!-- Option 2: load a specific version (e.g, 0.1.0-alpha1) -->
-<script src="https://unpkg.com/adaptivecards@0.1.0-alpha1/dist/adaptivecards-templating.min.js"></script>
+<script src="https://unpkg.com/adaptivecards-templating@0.1.0-alpha1/dist/adaptivecards-templating.min.js"></script>
 ```
 
 Once the library is loaded, the global `ACData` variable is defined and ready to be used.
