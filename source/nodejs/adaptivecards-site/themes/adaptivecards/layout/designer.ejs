@@ -113,7 +113,8 @@
 			"Templating Docs",
 			"acd-icon-scopeTemplate",
 			function () {
-				window.open("https://docs.microsoft.com/en-us/adaptive-cards/templating/")
+				appInsights.trackEvent("ViewedTemplatingDocs", {Origin: "Designer"});
+				window.open("https://docs.microsoft.com/en-us/adaptive-cards/templating/");
 			}
 		);
 		templateDocsButton.separator = false;
