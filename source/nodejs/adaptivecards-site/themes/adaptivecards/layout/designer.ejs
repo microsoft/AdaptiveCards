@@ -1,7 +1,7 @@
+<%- hashed_asset("node_modules/adaptivecards-designer/dist/adaptivecards-designer.css") %>
 <%- hashed_asset("node_modules/markdown-it/dist/markdown-it.min.js") %>
 <%- hashed_asset('node_modules/monaco-editor/min/vs/loader.js') %>
 <%- hashed_asset("node_modules/adaptivecards-designer/dist/adaptivecards-designer.min.js") %>
-<%- hashed_asset("node_modules/adaptivecards-designer/dist/adaptivecards-designer.css") %>
 
 <style type="text/css">
 	.content {
@@ -77,7 +77,7 @@
 		<% } %>
 
 
-			let hostContainers = [];
+		let hostContainers = [];
 		hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
 		hostContainers.push(new ACDesigner.CortanaContainer("Cortana Skills", "containers/cortana-container.css"));
 		hostContainers.push(new ACDesigner.OutlookContainer("Outlook Actionable Messages",
