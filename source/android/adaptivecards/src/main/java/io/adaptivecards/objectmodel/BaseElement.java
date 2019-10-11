@@ -133,8 +133,4 @@ public class BaseElement {
     if (getClass() == BaseElement.class) AdaptiveCardObjectModelJNI.BaseElement_GetResourceInformation(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceUris), resourceUris); else AdaptiveCardObjectModelJNI.BaseElement_GetResourceInformationSwigExplicitBaseElement(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceUris), resourceUris);
   }
 
-  protected void PopulateKnownPropertiesSet() {
-    if (getClass() == BaseElement.class) AdaptiveCardObjectModelJNI.BaseElement_PopulateKnownPropertiesSet(swigCPtr, this); else AdaptiveCardObjectModelJNI.BaseElement_PopulateKnownPropertiesSetSwigExplicitBaseElement(swigCPtr, this);
-  }
-
 }
