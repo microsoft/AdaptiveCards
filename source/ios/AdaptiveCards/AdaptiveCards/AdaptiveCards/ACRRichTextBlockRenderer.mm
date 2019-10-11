@@ -12,6 +12,7 @@
 #import "ACRAggregateTarget.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRLongPressGestureRecognizerFactory.h"
+#import "ACRRegistration.h"
 #import "ACRUILabel.h"
 #import "ACRView.h"
 #import "DateTimePreparsedToken.h"
@@ -24,12 +25,14 @@
 
 @implementation ACRRichTextBlockRenderer
 
-+ (ACRRichTextBlockRenderer *)getInstance {
++ (ACRRichTextBlockRenderer *)getInstance
+{
     static ACRRichTextBlockRenderer *singletonInstance = [[self alloc] init];
     return singletonInstance;
 }
 
-+ (ACRCardElementType)elemType {
++ (ACRCardElementType)elemType
+{
     return ACRRichTextBlock;
 }
 
@@ -51,6 +54,7 @@
     lab.textContainerInset = UIEdgeInsetsZero;
     lab.layoutManager.usesFontLeading = false;
 
+    BOOL isOverriden = [[ACRRegistration getInstance] isElementRendererOverridden:ACRCardElementType::ACRRichTextBlock];
     NSMutableAttributedString *content = [[NSMutableAttributedString alloc] init];
     if (rootView) {
         NSMutableDictionary *textMap = [rootView getTextMap];
@@ -61,11 +65,18 @@
                 NSNumber *number =
                     [NSNumber numberWithUnsignedLongLong:(unsigned long long)textRun.get()];
                 NSString *key = [number stringValue];
-                NSDictionary *data = textMap[key];
                 NSData *htmlData = nil;
                 NSDictionary *options = nil;
                 NSDictionary *descriptor = nil;
                 NSString *text = nil;
+
+                if (isOverriden) {
+                    RichTextElementProperties textProp;
+                    TextRunToRichTextElementProperties(textRun, textProp);
+                    buildIntermediateResultForText(rootView, acoConfig, textProp, key);
+                }
+
+                NSDictionary *data = textMap[key];
                 if (data) {
                     htmlData = data[@"html"];
                     options = data[@"options"];
