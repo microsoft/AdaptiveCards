@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-	  <UseWPF>true</UseWPF>
+    <UseWPF>true</UseWPF>
 
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AssemblyName>AdaptiveCards.Rendering.Wpf.Core</AssemblyName>
