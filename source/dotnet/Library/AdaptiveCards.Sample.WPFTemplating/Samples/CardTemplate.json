@@ -1,0 +1,525 @@
+{
+	"type": "AdaptiveCard",
+	"body": [
+		{
+			"type": "Image",
+			"url": "https://s3.amazonaws.com/tw-desk/i/1/doclogo/197378.20190228210102000.197378.20190228210102000rlycm.png",
+			"size": "Large"
+		},
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "ColumnSet",
+					"columns": [
+						{
+							"type": "Column",
+							"items": [
+								{
+									"$when": "{$root.completed}",
+									"type": "TextBlock",
+									"color": "Good",
+									"text": "Completed"
+								},
+								{
+									"type": "TextBlock",
+									"size": "Medium",
+									"weight": "Bolder",
+									"wrap": true,
+									"text": "[{$root.content}]({$root.rooturl}/tasks/{$root.id})"
+								},
+								{
+									"type": "FactSet",
+									"facts": [
+										{
+											"title": "Project:",
+											"value": "[{$root['project-name']}]({$root.rooturl}/projects/{$root['project-id']})"
+										},
+										{
+											"title": "TaskList:",
+											"value": "[{$root['todo-list-name']}]({$root.rooturl}/tasklists/{$root['todo-list-id']})"
+										},
+										{
+											"title": "Assigned to:",
+											"value": "{$root['responsible-party-names']}"
+										},
+										{
+											"title": "Due date:",
+											"value": "{$root['due-date']}"
+										}
+									]
+								},
+								{
+									"type": "TextBlock",
+									"spacing": "Small",
+									"text": "Description:",
+									"isSubtle": true
+								},
+								{
+									"type": "TextBlock",
+									"text": "{$root.description}",
+									"wrap": true
+								},
+								{
+									"type": "ColumnSet",
+									"columns": [
+										{
+											"type": "Column",
+											"items": [
+												{
+													"type": "Image",
+													"style": "Person",
+													"url": "{$root['creator-avatar-url']}",
+													"size": "Small"
+												}
+											],
+											"width": "auto"
+										},
+										{
+											"type": "Column",
+											"items": [
+												{
+													"type": "TextBlock",
+													"text": "Created {$root['created-on']}",
+													"isSubtle": true,
+													"wrap": true,
+													"size": "Small"
+												},
+												{
+													"type": "TextBlock",
+													"spacing": "None",
+													"text": "by [{$root['creator-firstname']} {$root['creator-lastname']}]({$root.rooturl}/people/{$root['creator-id']})",
+													"isSubtle": true,
+													"wrap": true
+												}
+											],
+											"width": "stretch"
+										}
+									]
+								}
+							],
+							"width": "stretch"
+						}
+					]
+				}
+			]
+		},
+		{
+			"separator": true,
+			"type": "Container",
+			"spacing": "Medium",
+			"items": [
+				{
+					"type": "ColumnSet",
+					"spacing": "Medium",
+					"columns": [
+						{
+							"type": "Column",
+							"spacing": "Medium",
+							"items": [
+								{
+									"type": "Image",
+									"spacing": "Medium",
+									"url": "https://tw-synthesiscore-beta.us.teamworkops.com/img/projects/event.png"
+								}
+							],
+							"width": "auto"
+						},
+						{
+							"type": "Column",
+							"spacing": "Medium",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Logged Time:",
+									"spacing": "Medium",
+									"separator": true,
+									"weight": "Bolder"
+								}
+							],
+							"width": "stretch"
+						}
+					]
+				},
+				{
+					"type": "Container",
+					"items": [
+						{
+							"type": "FactSet",
+							"facts": [
+								{
+									"$data": "{$root.timeEntries}",
+									"title": "{$data.userFirstName} {$data.userLastName}",
+									"value": "{$data.date} - {$data.hours}h {$data.minutes}m"
+								}
+							]
+						},
+						{
+							"type": "FactSet",
+							"facts": [
+								{
+									"title": "Estimated",
+									"value": "{$root['estimated']}"
+								},
+								{
+									"title": "Total",
+									"value": "{$root['total']}"
+								}
+							]
+						}
+					]
+				}
+			],
+			"$when": "{$root['timeIsLogged'] > 0}"
+		},
+		{
+			"$when": "{$root['attachments-count'] > 0}",
+			"type": "Container",
+			"spacing": "Medium",
+			"items": [
+				{
+					"type": "ColumnSet",
+					"spacing": "Medium",
+					"columns": [
+						{
+							"type": "Column",
+							"spacing": "Medium",
+							"items": [
+								{
+									"type": "Image",
+									"spacing": "Medium",
+									"url": "https://tw-synthesiscore-beta.us.teamworkops.com/img/projects/file.png"
+								}
+							],
+							"width": "auto"
+						},
+						{
+							"type": "Column",
+							"spacing": "Medium",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Attachments:",
+									"spacing": "Medium",
+									"separator": true,
+									"weight": "Bolder"
+								}
+							],
+							"width": "stretch"
+						}
+					]
+				},
+				{
+					"$data": "{$root.attachments}",
+					"type": "Container",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "{$data.filenameOnDisk}"
+						},
+						{
+							"type": "Image",
+							"url": "{$data.thumbURL}"
+						}
+					]
+				}
+			],
+			"separator": true
+		},
+		{
+			"$when": "{$root['comments-count'] > 0}",
+			"type": "Container",
+			"spacing": "Medium",
+			"items": [
+				{
+					"type": "ColumnSet",
+					"spacing": "Medium",
+					"columns": [
+						{
+							"spacing": "Medium",
+							"type": "Column",
+							"height": "stretch",
+							"items": [
+								{
+									"type": "Image",
+									"url": "https://tw-synthesiscore-beta.us.teamworkops.com/img/projects/comment.png"
+								}
+							],
+							"width": "auto"
+						},
+						{
+							"spacing": "Medium",
+							"type": "Column",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Comments:",
+									"separator": true,
+									"weight": "Bolder"
+								}
+							],
+							"width": "stretch"
+						}
+					]
+				}
+			],
+			"separator": true
+		},
+		{
+			"type": "Container",
+			"$when": "{$root['comments-count'] > 0}",
+			"$data": "{$root.comments}",
+			"items": [
+				{
+					"type": "ColumnSet",
+					"columns": [
+						{
+							"type": "Column",
+							"items": [
+								{
+									"type": "Image",
+									"style": "Person",
+									"url": "{$data['author-avatar-url']}",
+									"size": "Small"
+								}
+							],
+							"width": "auto"
+						},
+						{
+							"type": "Column",
+							"items": [
+								{
+									"type": "ColumnSet",
+									"columns": [
+										{
+											"type": "Column",
+											"items": [
+												{
+													"type": "TextBlock",
+													"weight": "Bolder",
+													"text": " [{$data['author-firstname']} {$data['author-lastname']}]({$root.rooturl}/people/{$root['author_id']}) ( {$data['author-company']} )",
+													"isSubtle": true,
+													"wrap": true
+												}
+											],
+											"width": "auto"
+										},
+										{
+											"type": "Column",
+											"items": [
+												{
+													"type": "TextBlock",
+													"spacing": "None",
+													"text": "{$data['datewritten']}",
+													"isSubtle": true,
+													"wrap": true
+												}
+											],
+											"width": "stretch"
+										}
+									]
+								}
+							],
+							"width": "stretch"
+						}
+					]
+				},
+				{
+					"type": "TextBlock",
+					"text": "{$data.body}",
+					"wrap": true
+				}
+			],
+			"style": "emphasis"
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.ShowCard",
+			"title": "Add Comment",
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "ColumnSet",
+						"columns": [
+							{
+								"type": "Column",
+								"items": [
+									{
+										"type": "Image",
+										"url": "https://tw-synthesiscore-beta.us.teamworkops.com/img/projects/comment_notify.png"
+									}
+								],
+								"width": "auto"
+							},
+							{
+								"type": "Column",
+								"items": [
+									{
+										"type": "TextBlock",
+										"text": "Comment"
+									}
+								],
+								"width": "stretch"
+							}
+						]
+					},
+					{
+						"id": "comment",
+						"type": "Input.Text",
+						"placeholder": "Your comment",
+						"isMultiline": true
+					}
+				],
+				"actions": [
+					{
+						"type": "Action.Submit",
+						"title": "Submit",
+						"data": {
+							"taskId": "{$root.id}",
+							"type": "comment"
+						}
+					}
+				],
+				"version": "1.0",
+				"$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+			}
+		},
+		{
+			"type": "Action.ShowCard",
+			"title": "Log Time",
+			"card": {
+				"type": "AdaptiveCard",
+				"version": "1.2",
+				"body": [
+					{
+						"type": "Container",
+						"items": [
+							{
+								"type": "ColumnSet",
+								"columns": [
+									{
+										"type": "Column",
+										"width": "stretch",
+										"items": [
+											{
+												"type": "TextBlock",
+												"text": "Hours",
+												"spacing": "None"
+											}
+										],
+										"spacing": "None"
+									},
+									{
+										"type": "Column",
+										"width": "stretch",
+										"items": [
+											{
+												"type": "TextBlock",
+												"text": "Minutes",
+												"spacing": "None"
+											}
+										],
+										"spacing": "None"
+									},
+									{
+										"type": "Column",
+										"width": "stretch"
+									},
+									{
+										"type": "Column",
+										"width": "stretch"
+									}
+								],
+								"spacing": "None"
+							}
+						],
+						"verticalContentAlignment": "Center"
+					},
+					{
+						"type": "Container",
+						"items": [
+							{
+								"type": "ColumnSet",
+								"columns": [
+									{
+										"type": "Column",
+										"width": "stretch",
+										"items": [
+											{
+												"type": "Input.Number",
+												"id": "hours",
+												"value": "0"
+											}
+										]
+									},
+									{
+										"type": "Column",
+										"width": "stretch",
+										"items": [
+											{
+												"type": "Input.Number",
+												"value": "0",
+												"id": "minutes",
+												"validation": {
+													"necessity": "Required"
+												}
+											}
+										]
+									},
+									{
+										"type": "Column",
+										"width": "stretch"
+									},
+									{
+										"type": "Column",
+										"width": "stretch"
+									}
+								]
+							}
+						],
+						"spacing": "None"
+					},
+					{
+						"type": "TextBlock",
+						"text": "Description"
+					},
+					{
+						"type": "Input.Text",
+						"placeholder": "Description",
+						"id": "description",
+						"isMultiline": true
+					},
+					{
+						"type": "Input.Toggle",
+						"title": "Billable",
+						"value": "false",
+						"wrap": false,
+						"id": "billable"
+					},
+					{
+						"type": "Input.Toggle",
+						"title": "Task is now complete",
+						"value": "false",
+						"wrap": false,
+						"id": "complete"
+					}
+				],
+				"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+				"actions": [
+					{
+						"type": "Action.Submit",
+						"title": "Submit",
+						"data": {
+							"taskId": "{$root.id}",
+							"type": "time"
+						}
+					}
+				]
+			}
+		}
+	],
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.1"
+}

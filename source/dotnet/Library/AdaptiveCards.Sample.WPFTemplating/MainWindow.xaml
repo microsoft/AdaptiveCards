@@ -1,0 +1,131 @@
+﻿<Window x:Class="AdaptiveCards.Sample.WPFTemplating.MainWindow"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AdaptiveCards.Sample.WPFTemplating"
+        xmlns:avalon="http://icsharpcode.net/sharpdevelop/avalonedit"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+
+        <Style x:Key="Warning" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="Orange"/>
+        </Style>
+        <Style x:Key="Error" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="DarkRed"/>
+        </Style>
+
+        <Style x:Key="Hidden" TargetType="FrameworkElement">
+            <Setter Property="Visibility" Value="Collapsed"/>
+        </Style>
+
+    </Window.Resources>
+
+    <Grid Margin="8" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="5"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Orientation="Horizontal" Grid.ColumnSpan="5">
+            <!-- <Button Name="loadButton" Click="loadButton_Click" Content="Load Card..." Margin="4"/> -->
+            <!-- <Button Name="viewImage" Click="viewImage_Click" Content="View as Image" Margin="4"/> -->
+            <!-- <Button Name="speak" Click="speak_Click" Content="Speak" Margin="4"/> -->
+            <CheckBox Name ="xceedCheckbox" Margin="4,4,1,4" ></CheckBox>
+            <!-- Checked="XceedCheckBox_Checked" -->
+            <!-- Unchecked="XceedCheckBox_Unchecked" -->
+            <TextBlock Margin="1,4,1,4">Use Xceed Renderers</TextBlock>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.ColumnSpan="5" HorizontalAlignment="Right">
+            <Button Name="renderCard" Content="Render" Click="renderCard_Click" Margin="4" HorizontalAlignment="Right"/>
+            <!--="loadConfig_Click"-->
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Card Template" Grid.Row="0" />
+
+            <avalon:TextEditor
+            Grid.Row="1"
+            x:Name="cardTemplate"
+            FontFamily="Consolas"
+            FontSize="10pt"
+            ShowLineNumbers="true"
+            />
+            <!-- TextChanged="textBox_TextChanged" -->
+        </Grid>
+
+        <GridSplitter Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" ResizeDirection="Columns"/>
+
+        <Grid
+            Grid.Row="1"
+            Grid.Column="2"
+            Margin="2,2,2,2">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Card Data" Grid.Row="0" />
+            
+            <avalon:TextEditor
+                x:Name="templateData"
+                FontFamily="Consolas"
+                FontSize="10pt"
+                ShowLineNumbers="true"
+                Grid.Row="1"
+            />
+
+        </Grid>
+
+        <GridSplitter Grid.Row="1" Grid.Column="3" HorizontalAlignment="Stretch" ResizeDirection="Columns"/>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="4" >
+
+            <Grid Background="LightGray">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="104*"/>
+                    <ColumnDefinition Width="311*"/>
+                </Grid.ColumnDefinitions>
+                <Grid Name="cardGrid" MaxWidth="700" VerticalAlignment="Top" Margin="10,10,10,0" Background="WhiteSmoke" Grid.ColumnSpan="2" >
+                    <Grid.Effect>
+                        <DropShadowEffect BlurRadius="15" ShadowDepth="2" RenderingBias="Quality" Direction="-90"/>
+                    </Grid.Effect>
+
+                </Grid>
+
+
+            </Grid>
+
+        </ScrollViewer>
+
+        <GridSplitter Grid.Row="1" Grid.Column="5" HorizontalAlignment="Stretch" ResizeDirection="Columns"/>
+
+        <ScrollViewer Grid.Row="2" Grid.Column="0" MaxHeight="200" Grid.ColumnSpan="4">
+            <StackPanel Name="cardError" />
+        </ScrollViewer>
+
+
+        <StackPanel Grid.Row="2" Grid.Column="4" Name="hostConfigerror" />
+
+    </Grid>
+</Window>

@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AdaptiveCards" Version="1.2.3" />
+    <PackageReference Include="AdaptiveCards.Rendering.Wpf" Version="1.2.3" />
+    <PackageReference Include="AdaptiveCards.Templating" Version="0.1.0-alpha1" />
+    <PackageReference Include="AvalonEdit" Version="6.0.0" />
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="3.6.0" />
+    <PackageReference Include="Microsoft.MarkedNet" Version="1.0.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Samples\CardTemplate.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Samples\DataTemplate.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
