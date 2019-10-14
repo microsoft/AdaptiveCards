@@ -332,6 +332,10 @@ namespace AdaptiveNamespace::ActionHelpers
 
         ABI::AdaptiveNamespace::ActionType actionType;
         RETURN_IF_FAILED(action->get_ActionType(&actionType));
+        if (actionType == ABI::AdaptiveNamespace::ActionType::OpenUrl)
+        {
+            buttonFrameworkElement->
+        }
 
         ComPtr<IAdaptiveShowCardActionConfig> showCardActionConfig;
         RETURN_IF_FAILED(actionsConfig->get_ShowCard(&showCardActionConfig));
