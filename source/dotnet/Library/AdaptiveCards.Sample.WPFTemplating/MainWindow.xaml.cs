@@ -45,15 +45,27 @@ namespace AdaptiveCards.Sample.WPFTemplating
             AdaptiveCard card = parseResult.Card;
             RenderedAdaptiveCard renderedCard = Renderer.RenderCard(card);
             */
-            
-            var transformer = new AdaptiveTransformer();
-            var cardJson = transformer.Transform(cardTemplate.Text, templateData.Text);
-            AdaptiveCard card2 = AdaptiveCard.FromJson(cardJson).Card;
-            RenderedAdaptiveCard renderedCard = Renderer.RenderCard(card2);
 
-            cardGrid.Opacity = 1;
-            cardGrid.Children.Clear();
-            cardGrid.Children.Add(renderedCard.FrameworkElement);
+            try
+            { 
+                var transformer = new AdaptiveTransformer();
+                var cardJson = transformer.Transform(cardTemplate.Text, templateData.Text);
+                AdaptiveCard card2 = AdaptiveCard.FromJson(cardJson).Card;
+                RenderedAdaptiveCard renderedCard = Renderer.RenderCard(card2);
+
+                cardExceptionPanel.Visibility = Visibility.Collapsed;
+                cardGrid.Visibility = Visibility.Visible;
+                cardGrid.Opacity = 1;
+                cardGrid.Children.Clear();
+                cardGrid.Children.Add(renderedCard.FrameworkElement);
+            }
+            catch (Exception ex)
+            {
+                cardExceptionPanel.Visibility = Visibility.Visible;
+                cardGrid.Visibility = Visibility.Collapsed;
+
+                cardException.Text = ex.Message + "\n" + (ex.StackTrace != null ? ex.StackTrace : "");
+            }
         }
     }
 }

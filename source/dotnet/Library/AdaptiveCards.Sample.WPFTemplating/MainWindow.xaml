@@ -113,9 +113,15 @@
 
                 </Grid>
 
+                
+                <StackPanel x:Name="cardExceptionPanel" Visibility="Collapsed" Grid.ColumnSpan="2" Background="White">
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                        <TextBlock x:Name="cardException" Foreground="Red"/>
+                    </ScrollViewer>
+                </StackPanel>
 
             </Grid>
-
+ 
         </ScrollViewer>
 
         <GridSplitter Grid.Row="1" Grid.Column="5" HorizontalAlignment="Stretch" ResizeDirection="Columns"/>
