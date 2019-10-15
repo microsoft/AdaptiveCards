@@ -21,10 +21,13 @@ namespace XamarinFormsDraft.Views
     {
         ItemsViewModel viewModel;
         AdaptiveCardControl cardControl;
+        Label inputLabel;
 
         public ItemsPage()
         {
             InitializeComponent();
+
+            inputLabel = this.FindByName<Label>("inputs");
 
             cardControl = this.FindByName<AdaptiveCardControl>("CardControl");
 
@@ -38,6 +41,12 @@ namespace XamarinFormsDraft.Views
 		            {
 			            ""type"": ""TextBlock"",
 			            ""text"": ""This card's action will open a URL""
+                    },
+                    {
+                        ""type"": ""Input.Text"",
+                        ""id"": ""input1"",
+                        ""placeholder"": ""enter comment"",
+                        ""maxLength"": 500
                     }
 	            ],
 	            ""actions"": [
@@ -103,7 +112,19 @@ namespace XamarinFormsDraft.Views
 
         private void CardControl_OnAction(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            AdaptiveEventArgs eventArgs = e as AdaptiveEventArgs;
+
+            string inputsResult = "";
+            foreach(KeyValuePair<string,string> keyValue in eventArgs.Inputs)
+            {
+                if (!String.IsNullOrEmpty(inputsResult) )
+                {
+                    inputsResult += "\n";
+                }
+                inputsResult += (keyValue.Key + ": " + keyValue.Value);
+            }
+
+            inputLabel.Text = inputsResult;
         }
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)

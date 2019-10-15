@@ -16,7 +16,9 @@
     <StackLayout>
 
         <local:AdaptiveCardControl x:Name="CardControl" />
-        
+
+        <Label x:Name="inputs" Text="" />
+
     </StackLayout>
     
 </ContentPage>

@@ -13,6 +13,7 @@ using Xamarin.Forms;
 using Windows.UI.Xaml;
 using Windows.Data.Json;
 using Windows.Foundation;
+using Windows.Foundation.Collections;
 
 [assembly: ExportRenderer(typeof(AdaptiveCardControl), typeof(AdaptiveCards.Rendering.XamarinForms.UWP.AdaptiveCardRenderer2))]
 namespace AdaptiveCards.Rendering.XamarinForms.UWP
@@ -51,7 +52,19 @@ namespace AdaptiveCards.Rendering.XamarinForms.UWP
                         _renderedAdaptiveCard.Action += new TypedEventHandler<RenderedAdaptiveCard, AdaptiveActionEventArgs>(
                             delegate (RenderedAdaptiveCard renderedCard, AdaptiveActionEventArgs eventArgs)
                         {
-                            e.NewElement.SendActionEvent();
+                            AdaptiveEventArgs adaptiveEventArgs = new AdaptiveEventArgs();
+
+                            ValueSet valueSet = eventArgs.Inputs.AsValueSet();
+
+                            adaptiveEventArgs.Inputs = new Dictionary<string, string>();
+                            foreach (KeyValuePair<string, object> keyValuePair in valueSet)
+                            {
+                                adaptiveEventArgs.Inputs.Add(keyValuePair.Key, keyValuePair.Value.ToString());
+                            }
+                            
+                            adaptiveEventArgs.Visual = renderedCard.FrameworkElement;
+                            
+                            e.NewElement.SendActionEvent(adaptiveEventArgs);
                         });
 
                         adaptiveCardView = _renderedAdaptiveCard.FrameworkElement;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,13 +11,47 @@ using Xamarin.Forms.Platform.iOS;
 
 using AdaptiveCards;
 using AdaptiveCards.Rendering.Xamarin.iOS;
+using Newtonsoft.Json;
 
 [assembly: ExportRenderer (typeof(AdaptiveCardControl), typeof(AdaptiveCards.Rendering.XamarinForms.iOS.AdaptiveCardRenderer))]
 namespace AdaptiveCards.Rendering.XamarinForms.iOS
 {
+
+    public class ViewController : ACRActionDelegate
+    {
+        private AdaptiveCardControl newElement;
+
+        public ViewController(AdaptiveCardControl newElement)
+        {
+            this.newElement = newElement;
+        }
+
+        private Dictionary<string, string> NSDataToDictionary(NSData data)
+        {
+            return JsonConvert.DeserializeObject<Dictionary<string, string>>(NSString.FromData(data, NSStringEncoding.UTF8));
+        }
+
+        public override void DidFetchUserResponses(ACOAdaptiveCard card, ACOBaseActionElement action)
+        {
+            AdaptiveEventArgs adaptiveEventArgs = new AdaptiveEventArgs();
+
+            // adaptiveRenderArgs.AdaptiveCard = renderedCard.AdaptiveCard.SerializeToJsonValue().ToString();
+            // adaptiveRenderArgs.BaseActionElement = baseAction;
+            adaptiveEventArgs.Inputs = NSDataToDictionary(card.InputsAsMap);
+            // adaptiveRenderArgs.Warnings = ToList(renderedCard.Warnings);
+            adaptiveEventArgs.Visual = null;
+
+            // This is how it should work
+            newElement.SendActionEvent(adaptiveEventArgs);
+            // newElement.SendActionEvent(renderedCard, adaptiveRenderArgs);
+        }
+
+        public override void DidFetchSecondaryView(ACOAdaptiveCard card, UINavigationController naviationController) { }
+    }
+
     public class AdaptiveCardRenderer : ViewRenderer<AdaptiveCardControl, UIView>
     {
-
+        private ViewController viewController;
         UIView adaptiveCardView;
         private ACOHostConfigParseResult m_config = null;
         string hostconfig = @"
@@ -170,8 +204,10 @@ namespace AdaptiveCards.Rendering.XamarinForms.iOS
 
                     if (parsedCard.IsValid == true)
                     {
+                        viewController = new ViewController(e.NewElement);
+
                         var renderResult = ACRRenderer.Render(parsedCard.Card, m_config.Config,
-                                                              UIScreen.MainScreen.Bounds.Size.Width - 20);
+                                                              UIScreen.MainScreen.Bounds.Size.Width - 20, viewController);
 
                         adaptiveCardView = renderResult.View;
 

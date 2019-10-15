@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 using UIKit;
 using Foundation;
@@ -99,6 +99,14 @@ namespace AdaptiveCards.Rendering.Xamarin.iOS
         [Static]
         [Export("fromJson:")]
         ACOAdaptiveCardParseResult FromJson(string payload);
+
+        // -(NSArray *)getInputs;
+        [Export("getInputs")]
+        NSArray Inputs { get; }
+
+        // -(NSData *)inputs
+        [Export("inputs")]
+        NSData InputsAsMap { get; }
     }
 
     // @interface ACOHostConfigParseResult : NSObject
@@ -158,10 +166,15 @@ namespace AdaptiveCards.Rendering.Xamarin.iOS
     [BaseType(typeof(NSObject))]
     interface ACRRenderer
     {
-        // +(ACRRenderResult *)render:(ACOAdaptiveCard *)card config:(ACOHostConfig *)config frame:(CGRect)frame;
+        // +(ACRRenderResult *)render:(ACOAdaptiveCard *)card config:(ACOHostConfig *)config widthConstraint:(float)width;
         [Static]
         [Export("render:config:widthConstraint:")]
         ACRRenderResult Render(ACOAdaptiveCard card, ACOHostConfig config, nfloat widthConstraint);
+
+        // +(ACRRenderResult *)render:(ACOAdaptiveCard *)card config:(ACOHostConfig *)config widthConstraint:(float)width delegate:(id<ACRActionDelegate>)acrActionDelegate;
+        [Static]
+        [Export("render:config:widthConstraint:delegate:")]
+        ACRRenderResult Render(ACOAdaptiveCard card, ACOHostConfig config, nfloat widthConstraint, ACRActionDelegate acrActionDelegate);
 
         // +(ACRRenderResult *)renderAsViewController:(ACOAdaptiveCard *)card config:(ACOHostConfig *)config frame:(CGRect)frame delegate:(id<ACRActionDelegate>)acrActionDelegate;
         [Static]

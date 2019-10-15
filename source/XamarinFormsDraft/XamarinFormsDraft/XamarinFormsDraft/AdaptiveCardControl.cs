@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Windows.Foundation;
 using Xamarin.Forms;
 
 namespace AdaptiveCards.Rendering.XamarinForms
@@ -55,9 +54,9 @@ namespace AdaptiveCards.Rendering.XamarinForms
 
             handler?.Invoke(this, eventArgs);
         }
-        public void SendActionEvent()
+        public void SendActionEvent(AdaptiveEventArgs eventArgs)
         {
-            OnOnAction(EventArgs.Empty);
+            OnOnAction(eventArgs);
         }
 
     }

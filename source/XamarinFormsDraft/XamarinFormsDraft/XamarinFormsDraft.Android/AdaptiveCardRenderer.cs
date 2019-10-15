@@ -45,15 +45,16 @@ namespace AdaptiveCards.Rendering.XamarinForms.Droid
         // The action is the sender while the erendered card is the event argument
         public void OnAction(BaseActionElement baseAction, RenderedAdaptiveCard renderedCard)
         {
-            AdaptiveEventArgs adaptiveRenderArgs = new AdaptiveEventArgs();
+            AdaptiveEventArgs adaptiveEventArgs = new AdaptiveEventArgs();
 
-            adaptiveRenderArgs.AdaptiveCard = renderedCard.AdaptiveCard.SerializeToJsonValue().ToString();
-            adaptiveRenderArgs.BaseActionElement = baseAction;
-            adaptiveRenderArgs.Inputs = renderedCard.Inputs;
-            adaptiveRenderArgs.Warnings = ToList(renderedCard.Warnings);
-            adaptiveRenderArgs.Visual = renderedCard.View;
+            // adaptiveRenderArgs.AdaptiveCard = renderedCard.AdaptiveCard.SerializeToJsonValue().ToString();
+            // adaptiveRenderArgs.BaseActionElement = baseAction;
+            adaptiveEventArgs.Inputs = new Dictionary<string, string>(renderedCard.Inputs);
+            // adaptiveRenderArgs.Warnings = ToList(renderedCard.Warnings);
+            adaptiveEventArgs.Visual = renderedCard.View;
 
             // This is how it should work
+            newElement.SendActionEvent(adaptiveEventArgs);
             // newElement.SendActionEvent(renderedCard, adaptiveRenderArgs);
         }
 
