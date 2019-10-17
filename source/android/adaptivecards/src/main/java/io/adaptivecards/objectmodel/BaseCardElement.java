@@ -127,10 +127,6 @@ public class BaseCardElement extends BaseElement {
     AdaptiveCardObjectModelJNI.BaseCardElement_ParseJsonObject(ParseContext.getCPtr(context), context, JsonValue.getCPtr(json), json, BaseElement.getCPtr(element), element);
   }
 
-  protected void PopulateKnownPropertiesSet() {
-    if (getClass() == BaseCardElement.class) AdaptiveCardObjectModelJNI.BaseCardElement_PopulateKnownPropertiesSet(swigCPtr, this); else AdaptiveCardObjectModelJNI.BaseCardElement_PopulateKnownPropertiesSetSwigExplicitBaseCardElement(swigCPtr, this);
-  }
-
   public Object swigOriginalObject() {
     return AdaptiveCardObjectModelJNI.BaseCardElement_swigOriginalObject(swigCPtr, this);
   }
