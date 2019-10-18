@@ -12,6 +12,7 @@
 #import "RichTextElementProperties.h"
 #import "TextBlock.h"
 #import "TextRun.h"
+#import "UnknownAction.h"
 #import <UIKit/UIKit.h>
 
 using namespace AdaptiveCards;
@@ -63,3 +64,5 @@ void TextBlockToRichTextElementProperties(const std::shared_ptr<TextBlock> &text
 void TextRunToRichTextElementProperties(const std::shared_ptr<TextRun> &textRun, RichTextElementProperties &textProp);
 
 void buildIntermediateResultForText(ACRView *rootView, ACOHostConfig *hostConfig, RichTextElementProperties const &textProperties, NSString *elementId);
+
+ACOBaseActionElement *deserializeUnknowActionToCustomAction(const std::shared_ptr<UnknownAction> action);

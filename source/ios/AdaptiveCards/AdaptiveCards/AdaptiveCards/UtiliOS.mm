@@ -656,3 +656,25 @@ void TextRunToRichTextElementProperties(const std::shared_ptr<TextRun> &textRun,
     textProp.SetItalic(textRun->GetItalic());
     textProp.SetStrikethrough(textRun->GetStrikethrough());
 }
+
+ACOBaseActionElement *deserializeUnknowActionToCustomAction(const std::shared_ptr<UnknownAction> unknownAction)
+{
+    ACRRegistration *reg = [ACRRegistration getInstance];
+    ACOBaseActionElement *customAction = nil;
+    if (reg) {
+        NSString *type = [NSString stringWithCString:unknownAction->GetElementTypeString().c_str() encoding:NSUTF8StringEncoding];
+        NSObject<ACOIBaseActionElementParser> *parser = [reg getCustomActionElementParser:type];
+        if (!parser) {
+            @throw [ACOFallbackException fallbackException];
+        }
+        Json::Value blob = unknownAction->GetAdditionalProperties();
+        Json::FastWriter fastWriter;
+        NSString *jsonString = [[NSString alloc] initWithCString:fastWriter.write(blob).c_str() encoding:NSUTF8StringEncoding];
+        if (jsonString.length > 0) {
+            NSData *jsonPayload = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+            ACOParseContext *context = [reg getParseContext];
+            customAction = [parser deserialize:jsonPayload parseContext:context];
+        }
+    }
+    return customAction;
+}

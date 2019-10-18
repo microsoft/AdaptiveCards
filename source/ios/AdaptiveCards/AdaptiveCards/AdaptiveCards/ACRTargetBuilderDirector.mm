@@ -34,6 +34,7 @@
 #import "ACRErrors.h"
 #import "ACRShowCardTarget.h"
 #import "ACRToggleVisibilityTarget.h"
+#import "UtiliOS.h"
 
 // protocol all TargetBuild should implement
 @protocol ACRITargetBuilder
@@ -71,7 +72,13 @@
            director:(ACRTargetBuilderDirector *)director
           ForButton:(UIButton *)button
 {
-    return nil;
+    NSObject *target = [self build:action director:director];
+    if (target) {
+        [button addTarget:target
+                      action:@selector(send:)
+            forControlEvents:UIControlEventTouchUpInside];
+    }
+    return target;
 }
 
 @end
@@ -96,19 +103,6 @@
     return [[ACRAggregateTarget alloc] initWithActionElement:acoElem rootView:director.rootView];
 }
 
-- (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
-           director:(ACRTargetBuilderDirector *)director
-          ForButton:(UIButton *)button
-{
-    NSObject *target = [self build:action director:director];
-    if (target) {
-        [button addTarget:target
-                      action:@selector(send:)
-            forControlEvents:UIControlEventTouchUpInside];
-    }
-    return target;
-}
-
 @end
 
 @interface ACRShowCardTargetBuilder : ACRTargetBuilder
@@ -120,13 +114,6 @@
 {
     static ACRShowCardTargetBuilder *singletonInstance = [[self alloc] init];
     return singletonInstance;
-}
-
-// currently not needed
-- (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
-           director:(ACRTargetBuilderDirector *)director
-{
-    return nil;
 }
 
 - (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
@@ -192,6 +179,32 @@
 
 @end
 
+// build target for unknow actions
+@interface ACRUnknownActionTargetBuilder : ACRTargetBuilder
+@end
+
+@implementation ACRUnknownActionTargetBuilder
+
++ (ACRUnknownActionTargetBuilder *)getInstance
+{
+    static ACRUnknownActionTargetBuilder *singletonInstance = [[self alloc] init];
+    return singletonInstance;
+}
+
+- (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
+           director:(ACRTargetBuilderDirector *)director
+{
+    std::shared_ptr<UnknownAction> unknownAction = std::dynamic_pointer_cast<UnknownAction>(action);
+    if (unknownAction) {
+        ACOBaseActionElement *customAction = deserializeUnknowActionToCustomAction(unknownAction);
+        return [[ACRAggregateTarget alloc] initWithActionElement:customAction rootView:director.rootView];
+    }
+
+    return nil;
+}
+
+@end
+
 @implementation ACRTargetBuilderDirector {
     NSDictionary<NSNumber *, ACRTargetBuilder *> *_builders;
 }
@@ -214,6 +227,7 @@
         NSNumber *submit = [NSNumber numberWithInt:static_cast<int>(ActionType::Submit)];
         NSNumber *showcard = [NSNumber numberWithInt:static_cast<int>(ActionType::ShowCard)];
         NSNumber *toggle = [NSNumber numberWithInt:static_cast<int>(ActionType::ToggleVisibility)];
+        NSNumber *unknown = [NSNumber numberWithInt:static_cast<int>(ActionType::UnknownAction)];
 
         // target capability lists supported events and corresponding target builders
         switch (capability) {
@@ -229,7 +243,8 @@
                 _builders = @{
                     openUrl : [ACRAggregateTargetBuilder getInstance],
                     submit : [ACRAggregateTargetBuilder getInstance],
-                    toggle : [ACRToggleVisibilityTargetBuilder getInstance]
+                    toggle : [ACRToggleVisibilityTargetBuilder getInstance],
+                    unknown : [ACRUnknownActionTargetBuilder getInstance]
                 };
                 break;
             case ACRQuickReply:
