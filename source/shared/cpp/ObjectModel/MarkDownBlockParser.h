@@ -54,10 +54,10 @@ namespace AdaptiveSharedNamespace
     {
     public:
         EmphasisParser() = default;
-        EmphasisParser(const EmphasisParser&) = default;
-        EmphasisParser(EmphasisParser&&) = default;
-        EmphasisParser& operator=(const EmphasisParser&) = default;
-        EmphasisParser& operator=(EmphasisParser&&) = default;
+        EmphasisParser(const EmphasisParser&) = delete;
+        EmphasisParser(EmphasisParser&&) = delete;
+        EmphasisParser& operator=(const EmphasisParser&) = delete;
+        EmphasisParser& operator=(EmphasisParser&&) = delete;
         virtual ~EmphasisParser() = default;
 
         enum class EmphasisState

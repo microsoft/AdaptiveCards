@@ -32,7 +32,7 @@ namespace AdaptiveSharedNamespace
         void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
     private:
-        void PopulateKnownPropertiesSet() override;
+        void PopulateKnownPropertiesSet();
 
         std::vector<std::shared_ptr<Image>> m_images;
         ImageSize m_imageSize;

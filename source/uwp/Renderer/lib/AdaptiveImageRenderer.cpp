@@ -697,17 +697,33 @@ namespace AdaptiveNamespace
                 THROW_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
                 // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
                 EventRegistrationToken eventToken;
-                ComPtr<IInspectable> strongParentElement(parentElement);
+                ComPtr<IInspectable> localParentElement(parentElement);
+
+                // Take weak references to the ellipse and parent to avoid circular references between this lambda and
+                // its parents (Parent->Ellipse->ImageBrush->Lambda->(Parent and Ellipse))
+                WeakRef weakParent;
+                THROW_IF_FAILED(localParentElement.AsWeak(&weakParent));
+
+                WeakRef weakEllipse;
+                THROW_IF_FAILED(ellipseAsUIElement.AsWeak(&weakEllipse));
                 THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(
-                    Callback<IRoutedEventHandler>([ellipseAsUIElement, ellipseAsFrameworkElement, imageSourceAsBitmap, strongParentElement, isVisible](
+                    Callback<IRoutedEventHandler>([weakEllipse, imageSourceAsBitmap, weakParent, isVisible](
                                                       IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
                         if (isVisible)
                         {
-                            RETURN_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Visible));
-                            RETURN_IF_FAILED(XamlHelpers::SetAutoImageSize(ellipseAsFrameworkElement.Get(),
-                                                                           strongParentElement.Get(),
-                                                                           imageSourceAsBitmap.Get(),
-                                                                           isVisible));
+                            ComPtr<IFrameworkElement> lambdaEllipseAsFrameworkElement;
+                            RETURN_IF_FAILED(weakEllipse.As(&lambdaEllipseAsFrameworkElement));
+
+                            ComPtr<IInspectable> lambdaParentElement;
+                            RETURN_IF_FAILED(weakParent.As(&lambdaParentElement));
+
+                            if (lambdaEllipseAsFrameworkElement && lambdaParentElement)
+                            {
+                                RETURN_IF_FAILED(XamlHelpers::SetAutoImageSize(lambdaEllipseAsFrameworkElement.Get(),
+                                                                               lambdaParentElement.Get(),
+                                                                               imageSourceAsBitmap.Get(),
+                                                                               isVisible));
+                            }
                         }
                         return S_OK;
                     }).Get(),
@@ -743,16 +759,33 @@ namespace AdaptiveNamespace
                 THROW_IF_FAILED(imageAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
 
                 // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
-                ComPtr<IInspectable> strongParentElement(parentElement);
+                ComPtr<IInspectable> localParentElement(parentElement);
+
+                // Take weak references to the image and parent to avoid circular references between this lambda and
+                // its parents (Parent->Image->Lambda->(Parent and Image))
+                WeakRef weakParent;
+                THROW_IF_FAILED(localParentElement.AsWeak(&weakParent));
+
+                WeakRef weakImage;
+                THROW_IF_FAILED(imageAsFrameworkElement.AsWeak(&weakImage));
                 EventRegistrationToken eventToken;
                 THROW_IF_FAILED(xamlImage->add_ImageOpened(
-                    Callback<IRoutedEventHandler>([imageAsFrameworkElement, strongParentElement, imageSourceAsBitmap, isVisible](
-                                                      IInspectable* /*sender*/, IRoutedEventArgs *
-                                                      /*args*/) -> HRESULT {
-                        return XamlHelpers::SetAutoImageSize(imageAsFrameworkElement.Get(),
-                                                             strongParentElement.Get(),
-                                                             imageSourceAsBitmap.Get(),
-                                                             isVisible);
+                    Callback<IRoutedEventHandler>([weakImage, weakParent, imageSourceAsBitmap, isVisible](IInspectable* /*sender*/, IRoutedEventArgs *
+                                                                                                          /*args*/) -> HRESULT {
+                        ComPtr<IFrameworkElement> lambdaImageAsFrameworkElement;
+                        RETURN_IF_FAILED(weakImage.As(&lambdaImageAsFrameworkElement));
+
+                        ComPtr<IInspectable> lambdaParentElement;
+                        RETURN_IF_FAILED(weakParent.As(&lambdaParentElement));
+
+                        if (lambdaImageAsFrameworkElement && lambdaParentElement)
+                        {
+                            RETURN_IF_FAILED(XamlHelpers::SetAutoImageSize(lambdaImageAsFrameworkElement.Get(),
+                                                                           lambdaParentElement.Get(),
+                                                                           imageSourceAsBitmap.Get(),
+                                                                           isVisible));
+                        }
+                        return S_OK;
                     }).Get(),
                     &eventToken));
             }

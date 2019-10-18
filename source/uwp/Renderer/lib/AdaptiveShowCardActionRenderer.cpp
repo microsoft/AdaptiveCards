@@ -97,7 +97,7 @@ namespace AdaptiveNamespace
         const double negativePadding = -(static_cast<double>(padding));
         const double sideMargin = negativePadding;
         const double topMargin = isBottomActionBar ? inlineTopMargin + padding : inlineTopMargin;
-        const double bottomMargin = isBottomActionBar ? negativePadding : 0;
+        const double bottomMargin = negativePadding;
 
         Thickness margin = {sideMargin, topMargin, sideMargin, bottomMargin};
         RETURN_IF_FAILED(showCardFrameworkElement->put_Margin(margin));

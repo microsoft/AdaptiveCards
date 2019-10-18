@@ -9,6 +9,7 @@
 #import "ACOHostConfigPrivate.h"
 #import "ACRColumnSetView.h"
 #import "ACRContentHoldingUIView.h"
+#import "ACRRegistration.h"
 #import "ACRSeparator.h"
 #import "ACRTextBlockRenderer.h"
 #import "ACRUILabel.h"
@@ -123,16 +124,25 @@
 
     [factSetWrapperView adjustHuggingForLastElement];
 
+    BOOL isOverridden = [[ACRRegistration getInstance] isElementRendererOverridden:ACRCardElementType::ACRFactSet];
+
     for (auto fact : fctSet->GetFacts()) {
         NSString *title = [NSString stringWithCString:fact->GetTitle().c_str() encoding:NSUTF8StringEncoding];
+        NSString *titleElemId = [key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]];
+        if (isOverridden == YES) {
+            RichTextElementProperties titleTextProp{config->GetFactSet().title, fact->GetTitle(), fact->GetLanguage()};
+            buildIntermediateResultForText(rootView, acoConfig, titleTextProp, titleElemId);
+        }
+
         ACRUILabel *titleLab = [ACRFactSetRenderer buildLabel:title
                                                     superview:viewGroup
                                                    hostConfig:acoConfig
                                                    textConfig:config->GetFactSet().title
                                                containerStyle:style
-                                                    elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]
+                                                    elementId:titleElemId
                                                      rootView:rootView
                                                       element:elem];
+
         [titleLab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         [titleLab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
         [titleLab setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
@@ -142,15 +152,23 @@
             constraintForTitleLab.active = YES;
             constraintForTitleLab.priority = UILayoutPriorityRequired;
         }
+
         NSString *value = [NSString stringWithCString:fact->GetValue().c_str() encoding:NSUTF8StringEncoding];
+        NSString *valElemId = [key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]];
+        if (isOverridden == YES) {
+            RichTextElementProperties valueTextProp{config->GetFactSet().value, fact->GetValue(), fact->GetLanguage()};
+            buildIntermediateResultForText(rootView, acoConfig, valueTextProp, valElemId);
+        }
+
         ACRUILabel *valueLab = [ACRFactSetRenderer buildLabel:value
                                                     superview:viewGroup
                                                    hostConfig:acoConfig
                                                    textConfig:config->GetFactSet().value
                                                containerStyle:style
-                                                    elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]
+                                                    elementId:valElemId
                                                      rootView:rootView
                                                       element:elem];
+
         [valueLab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         [titleStack addArrangedSubview:titleLab];
         [valueStack addArrangedSubview:valueLab];

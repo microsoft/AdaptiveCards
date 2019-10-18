@@ -158,13 +158,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
         case CardElementType::TextBlock: {
             std::shared_ptr<TextBlock> textBlockElement = std::static_pointer_cast<TextBlock>(elem);
             RichTextElementProperties textProp;
-            textProp.SetText(textBlockElement->GetText());
-            textProp.SetTextSize(textBlockElement->GetTextSize());
-            textProp.SetTextWeight(textBlockElement->GetTextWeight());
-            textProp.SetFontType(textBlockElement->GetFontType());
-            textProp.SetTextColor(textBlockElement->GetTextColor());
-            textProp.SetIsSubtle(textBlockElement->GetIsSubtle());
-            textProp.SetLanguage(textBlockElement->GetLanguage());
+            TextBlockToRichTextElementProperties(textBlockElement, textProp);
 
             /// tag a base card element with unique key
             NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)textBlockElement.get()];
@@ -178,15 +172,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
                 std::shared_ptr<TextRun> textRun = std::static_pointer_cast<TextRun>(inlineText);
                 if (textRun) {
                     RichTextElementProperties textProp;
-                    textProp.SetText(textRun->GetText());
-                    textProp.SetTextSize(textRun->GetTextSize());
-                    textProp.SetTextWeight(textRun->GetTextWeight());
-                    textProp.SetFontType(textRun->GetFontType());
-                    textProp.SetTextColor(textRun->GetTextColor());
-                    textProp.SetIsSubtle(textRun->GetIsSubtle());
-                    textProp.SetLanguage(textRun->GetLanguage());
-                    textProp.SetItalic(textRun->GetItalic());
-                    textProp.SetStrikethrough(textRun->GetStrikethrough());
+                    TextRunToRichTextElementProperties(textRun, textProp);
                     NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)textRun.get()];
                     NSString *key = [number stringValue];
                     [self processTextConcurrently:textProp elementId:key];
@@ -415,95 +401,16 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
     /// dispatch to concurrent queue
     dispatch_group_async(_async_tasks_group, _global_queue,
                          ^{
-                             std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:textProp.GetText() language:textProp.GetLanguage()]);
-
-                             // MarkDownParser transforms text with MarkDown to a html string
-                             NSString *parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
-                             NSDictionary *data = nil;
-
-                             // use Apple's html rendering only if the string has markdowns
-                             if (markDownParser->HasHtmlTags() || markDownParser->IsEscaped()) {
-                                 NSString *fontFamilyName = nil;
-
-                                 if (![self->_hostConfig getFontFamily:textProp.GetFontType()]) {
-                                     if (textProp.GetFontType() == FontType::Monospace) {
-                                         fontFamilyName = @"'Courier New'";
-                                     } else {
-                                         fontFamilyName = @"'-apple-system',  'San Francisco'";
-                                     }
-                                 } else {
-                                     fontFamilyName = [self->_hostConfig getFontFamily:textProp.GetFontType()];
-                                 }
-
-                                 NSString *font_style = textProp.GetItalic() ? @"italic" : @"normal";
-                                 // Font and text size are applied as CSS style by appending it to the html string
-                                 parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: %@; font-size:%dpx; font-weight: %d; font-style: %@;}</style>",
-                                                                                                                 fontFamilyName,
-                                                                                                                 [self->_hostConfig getTextBlockTextSize:textProp.GetFontType()
-                                                                                                                                                textSize:textProp.GetTextSize()],
-                                                                                                                 [self->_hostConfig getTextBlockFontWeight:textProp.GetFontType()
-                                                                                                                                                textWeight:textProp.GetTextWeight()],
-                                                                                                                 font_style]];
-
-                                 NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
-                                 NSDictionary *options = @{NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType};
-                                 data = @{@"html" : htmlData, @"options" : options};
-                             } else {
-                                 int fontweight = [self->_hostConfig getTextBlockFontWeight:textProp.GetFontType()
-                                                                                 textWeight:textProp.GetTextWeight()];
-                                 // sanity check, 400 is the normal font;
-                                 if (fontweight <= 0 || fontweight > 900) {
-                                     fontweight = 400;
-                                 }
-                                 UIFont *font = nil;
-                                 fontweight -= 100;
-                                 fontweight /= 100;
-
-                                 if (![self->_hostConfig getFontFamily:textProp.GetFontType()]) {
-                                     const NSArray<NSNumber *> *fontweights = @[ @(UIFontWeightUltraLight), @(UIFontWeightThin), @(UIFontWeightLight), @(UIFontWeightRegular), @(UIFontWeightMedium),
-                                                                                 @(UIFontWeightSemibold), @(UIFontWeightBold), @(UIFontWeightHeavy), @(UIFontWeightBlack) ];
-                                     const CGFloat size = [self->_hostConfig getTextBlockTextSize:textProp.GetFontType() textSize:textProp.GetTextSize()];
-                                     if (textProp.GetFontType() == FontType::Monospace) {
-                                         const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
-                                                                                     @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
-                                         UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:@{UIFontDescriptorFamilyAttribute : @"Courier New",
-                                                                                                                             UIFontDescriptorFaceAttribute : fontweights[fontweight]}];
-                                         descriptor = getItalicFontDescriptor(descriptor, textProp.GetItalic());
-
-                                         font = [UIFont fontWithDescriptor:descriptor size:[self->_hostConfig getTextBlockTextSize:textProp.GetFontType() textSize:textProp.GetTextSize()]];
-                                     } else {
-                                         font = [UIFont systemFontOfSize:size weight:[fontweights[fontweight] floatValue]];
-
-                                         if (textProp.GetItalic()) {
-                                             font = [UIFont fontWithDescriptor:
-                                                                getItalicFontDescriptor(font.fontDescriptor, textProp.GetItalic())
-                                                                          size:size];
-                                         }
-                                     }
-                                 } else {
-                                     // font weight as string since font weight as double doesn't work
-                                     // normailze fontweight for indexing
-                                     const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
-                                                                                 @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
-                                     UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:
-                                                                                          @{UIFontDescriptorFamilyAttribute : [self->_hostConfig getFontFamily:textProp.GetFontType()],
-                                                                                            UIFontDescriptorFaceAttribute : fontweights[fontweight]}];
-
-                                     descriptor = getItalicFontDescriptor(descriptor, textProp.GetItalic());
-
-                                     font = [UIFont fontWithDescriptor:descriptor size:[self->_hostConfig getTextBlockTextSize:textProp.GetFontType() textSize:textProp.GetTextSize()]];
-                                 }
-
-                                 NSDictionary *attributeDictionary = @{NSFontAttributeName : font};
-                                 data = @{@"nonhtml" : parsedString, @"descriptor" : attributeDictionary};
-                             }
-
-                             if (elementId) {
-                                 dispatch_sync(self->_serial_text_queue, ^{
-                                     self->_textMap[elementId] = data;
-                                 });
-                             }
+                             buildIntermediateResultForText(self, self->_hostConfig, textProp, elementId);
                          });
+}
+
+- (void)enqueueIntermediateTextProcessingResult:(NSDictionary *)data
+                                      elementId:(NSString *)elementId
+{
+    dispatch_sync(_serial_text_queue, ^{
+        self->_textMap[elementId] = data;
+    });
 }
 
 - (void)loadImage:(std::string const &)urlStr

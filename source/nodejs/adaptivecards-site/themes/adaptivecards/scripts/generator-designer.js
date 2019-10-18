@@ -12,7 +12,8 @@ hexo.extend.generator.register("generator-designer", function (locals) {
         layout: "designer",
         data: {
 			title: "Designer",
-			hideBreadcrumb: true
+			hideBreadcrumb: true,
+			hideFooter: true
         }
     };
 });
