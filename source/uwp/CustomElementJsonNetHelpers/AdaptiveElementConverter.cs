@@ -41,19 +41,13 @@ namespace CustomElementJsonNetHelpers
 
             if (IsKnownAdaptiveCardsType(jObject, out string elementTypeString) || objectType == typeof(IAdaptiveCardElement))
             {
-                // If this is a known element type, or if we just have the interface, get the parser from the parser registration
-                IAdaptiveElementParser parser = ElementParsers.Get(elementTypeString);
-
-                string jsonString = jObject.ToString();
-                JsonObject jsonObject = JsonObject.Parse(jsonString);
-
-                cardElement = parser.FromJson(jsonObject, ElementParsers, ActionParsers, Warnings);
-
-                //cardElement = ElementParsers.Get(elementTypeString).FromJson(JsonObject.Parse(jObject.ToString()), ElementParsers, ActionParsers, Warnings);
+                // If this is a known element type, or if we just have the interface (so we can't
+                // instantiate), get the parser from the parser registration
+                cardElement = ElementParsers.Get(elementTypeString).FromJson(JsonObject.Parse(jObject.ToString()), ElementParsers, ActionParsers, Warnings);
             }
             else
             {
-                // This is a custom type, instantiate and populate it via Json.NET
+                // This is a concrete custom type, instantiate and populate it via Json.NET
                 cardElement = (IAdaptiveCardElement)Activator.CreateInstance(objectType);
                 serializer.Populate(jObject.CreateReader(), cardElement);
 
@@ -171,22 +165,14 @@ namespace CustomElementJsonNetHelpers
             JObject jObject;
             if (value.ElementType == ElementType.Custom)
             {
-                Type customElementType = value.GetType();
-                PropertyInfo[] properties = customElementType.GetProperties();
-
-                foreach (PropertyInfo property in properties)
-                {
-                    object propertyValue = customElementType.GetRuntimeProperty(property.Name).GetValue(value);
-                }
-
-
-
-
-
                 // If this is a custom element type, use Json.NET with the AdaptiveCardSerializationResolver
                 // which handles special case JsonProperty definitions for IAdaptiveCardElement properties.
-                // (Note: If we use the AdaptiveCardContractResolver here we end up calling back into this
-                // function until the stack overflows)
+
+                // Note: If we use the AdaptiveCardContractResolver here, or if we have the serialization
+                // resolver use this converter, we end up calling back into this function until the stack
+                // overflows. As a result, this doesn't currently correctly handle elements contained in a
+                // custom container. The contained type will be serialized using default Json.NET serialization.
+
                 jObject = JObject.FromObject(value, new JsonSerializer
                 {
                     ContractResolver = new AdaptiveCardSerializationResolver()

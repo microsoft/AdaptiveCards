@@ -9,7 +9,9 @@
 			"ContainedElement": {
 				"type": "AnimalGrid",
 				"animalType": "Mammals",
-				"animalCount": 2
+				"animalCount": 3,
+				"BeckysProp": "This is a property",
+				"isVisible": "false"
 			}
 		},
 		{
