@@ -5,13 +5,13 @@
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{4756BB29-DCA4-4BA4-BDAB-2FDE260A6C98}</ProjectGuid>
+    <ProjectGuid>{9F36FD05-862D-48AA-AF43-BA0E03639150}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TemplateGuid>{65C0771A-452F-423B-995C-F0AE46E643BA}</TemplateGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>XamarinFormsDraft.iOS</RootNamespace>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>AdaptiveCards.Rendering.XamarinForms.Sample.iOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AssemblyName>XamarinFormsDraft.iOS</AssemblyName>
+    <AssemblyName>AdaptiveCards.Rendering.XamarinForms.Sample.iOS</AssemblyName>
     <MtouchEnableSGenConc>true</MtouchEnableSGenConc>
     <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
   </PropertyGroup>
@@ -60,7 +60,10 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AdaptiveCardRenderer.cs" />
+    <Compile Include="Main.cs" />
+    <Compile Include="AppDelegate.cs" />
+    <None Include="Entitlements.plist" />
+    <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -106,6 +109,16 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon20.png">
       <Visible>false</Visible>
     </ImageAsset>
+    <BundleResource Include="Resources\tab_about.png" />
+    <BundleResource Include="Resources\tab_about%402x.png" />
+    <BundleResource Include="Resources\tab_about%403x.png" />
+    <BundleResource Include="Resources\tab_feed.png" />
+    <BundleResource Include="Resources\tab_feed%402x.png" />
+    <BundleResource Include="Resources\tab_feed%403x.png" />
+    <BundleResource Include="Resources\xamarin_logo.png" />
+    <BundleResource Include="Resources\xamarin_logo%402x.png" />
+    <BundleResource Include="Resources\xamarin_logo%403x.png" />
+    <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -116,23 +129,13 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.2</Version>
-    </PackageReference>
-    <PackageReference Include="Toasts.Forms.Plugin">
-      <Version>3.3.2</Version>
-    </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="4.2.0.709249" />
     <PackageReference Include="Xamarin.Essentials" Version="1.2.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\xamarin\AdaptiveCards.Rendering.Xamarin.iOS\AdaptiveCards.Rendering.Xamarin.iOS.csproj">
-      <Project>{dc69056c-24e0-4ad1-82a6-6f1deb2ae70e}</Project>
-      <Name>AdaptiveCards.Rendering.Xamarin.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\XamarinFormsDraft\AdaptiveCards.Rendering.XamarinForms.csproj">
-      <Project>{0b6ab94b-9208-4463-b9fb-2f080b15ddd0}</Project>
-      <Name>AdaptiveCards.Rendering.XamarinForms</Name>
+    <ProjectReference Include="..\Shared\Shared.csproj">
+      <Project>{2e8d5ff2-5464-4480-9c92-d14cbe29e078}</Project>
+      <Name>Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

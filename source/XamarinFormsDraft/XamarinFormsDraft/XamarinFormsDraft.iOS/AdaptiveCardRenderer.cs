@@ -12,6 +12,7 @@ using Xamarin.Forms.Platform.iOS;
 using AdaptiveCards;
 using AdaptiveCards.Rendering.Xamarin.iOS;
 using Newtonsoft.Json;
+using System.ComponentModel;
 
 [assembly: ExportRenderer (typeof(AdaptiveCardControl), typeof(AdaptiveCards.Rendering.XamarinForms.iOS.AdaptiveCardRenderer))]
 namespace AdaptiveCards.Rendering.XamarinForms.iOS
@@ -180,6 +181,28 @@ namespace AdaptiveCards.Rendering.XamarinForms.iOS
           }
         }";
 
+        private void RenderCard(string cardContent, AdaptiveCardControl cardControl)
+        {
+            var parsedCard = ACOAdaptiveCard.FromJson(cardContent);
+
+            if (parsedCard.IsValid == true)
+            {
+                viewController = new ViewController(cardControl);
+
+                var renderResult = ACRRenderer.Render(parsedCard.Card, m_config.Config,
+                                                      UIScreen.MainScreen.Bounds.Size.Width - 20, viewController);
+
+                adaptiveCardView = renderResult.View;
+
+                adaptiveCardView.TranslatesAutoresizingMaskIntoConstraints = true;
+                adaptiveCardView.Frame = new CoreGraphics.CGRect(20,
+                                                             UIScreen.MainScreen.Bounds.Size.Height * 0.15f,
+                                                             UIScreen.MainScreen.Bounds.Size.Width - 40,
+                                                             UIScreen.MainScreen.Bounds.Size.Height * 0.8f);
+            }
+            SetNativeControl(adaptiveCardView);
+        }
+
         protected override void OnElementChanged(ElementChangedEventArgs<AdaptiveCardControl> e)
         {
             base.OnElementChanged(e);
@@ -200,26 +223,24 @@ namespace AdaptiveCards.Rendering.XamarinForms.iOS
                 {
                     string cardContent = e.NewElement.CardContent;
 
-                    var parsedCard = ACOAdaptiveCard.FromJson(cardContent);
-
-                    if (parsedCard.IsValid == true)
-                    {
-                        viewController = new ViewController(e.NewElement);
-
-                        var renderResult = ACRRenderer.Render(parsedCard.Card, m_config.Config,
-                                                              UIScreen.MainScreen.Bounds.Size.Width - 20, viewController);
-
-                        adaptiveCardView = renderResult.View;
-
-                        adaptiveCardView.TranslatesAutoresizingMaskIntoConstraints = true;
-                        adaptiveCardView.Frame = new CoreGraphics.CGRect(20,
-                                                                     UIScreen.MainScreen.Bounds.Size.Height * 0.15f,
-                                                                     UIScreen.MainScreen.Bounds.Size.Width - 40,
-                                                                     UIScreen.MainScreen.Bounds.Size.Height * 0.8f);
-                    }
-                    SetNativeControl(adaptiveCardView);
+                    RenderCard(cardContent, e.NewElement);
                 }
 
+            }
+        }
+
+        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            base.OnElementPropertyChanged(sender, e);
+
+
+            if (e.PropertyName == "Card")
+            {
+                AdaptiveCardControl cardControl = sender as AdaptiveCardControl;
+
+                string cardContent = cardControl.CardContent;
+
+                RenderCard(cardContent, cardControl);
             }
         }
 

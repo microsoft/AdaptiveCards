@@ -16,6 +16,7 @@ using AdaptiveCards.Rendering.XamarinForms.Droid;
 using AdaptiveCards.Rendering.Xamarin.Android.ObjectModel;
 using AdaptiveCards.Rendering.Xamarin.Android.Renderer;
 using AdaptiveCards.Rendering.Xamarin.Android.Renderer.ActionHandler;
+using System.ComponentModel;
 
 [assembly: ExportRenderer(typeof(AdaptiveCardControl), typeof(AdaptiveCards.Rendering.XamarinForms.Droid.AdaptiveCardRenderer))]
 namespace AdaptiveCards.Rendering.XamarinForms.Droid
@@ -81,6 +82,19 @@ namespace AdaptiveCards.Rendering.XamarinForms.Droid
             
         }
 
+        private void RenderCard(string cardContent, AdaptiveCardControl cardControl)
+        {
+            if (cardContent == "") return;
+
+            cardActionHandler = new CardActionHandler(cardControl);
+
+            ParseResult parseResult = AdaptiveCard.DeserializeFromString(cardContent, "1.2");
+
+            var renderedCard = AdaptiveCards.Rendering.Xamarin.Android.Renderer.AdaptiveCardRenderer.Instance.Render(Context, supportFragmentManager, parseResult.AdaptiveCard, cardActionHandler, new HostConfig());
+            adaptiveCardView = renderedCard.View;
+            SetNativeControl(adaptiveCardView);
+        }
+
         protected override void OnElementChanged(ElementChangedEventArgs<AdaptiveCardControl> e)
         {
             base.OnElementChanged(e);
@@ -94,17 +108,21 @@ namespace AdaptiveCards.Rendering.XamarinForms.Droid
             {
                 if (Control == null)
                 {
-                    cardActionHandler = new CardActionHandler(e.NewElement);
-
-                    string cardContent = e.NewElement.CardContent;
-
-                    ParseResult parseResult = AdaptiveCard.DeserializeFromString(cardContent, "1.2");
-
-                    var renderedCard = AdaptiveCards.Rendering.Xamarin.Android.Renderer.AdaptiveCardRenderer.Instance.Render(Context, supportFragmentManager, parseResult.AdaptiveCard, cardActionHandler, new HostConfig());
-                    adaptiveCardView = renderedCard.View;
-                    SetNativeControl(adaptiveCardView);
+                    RenderCard(e.NewElement.CardContent, e.NewElement);
                 }
                                 
+            }
+        }
+
+        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            base.OnElementPropertyChanged(sender, e);
+
+            if (e.PropertyName == "Card")
+            {
+                AdaptiveCardControl cardControl = sender as AdaptiveCardControl;
+
+                RenderCard(cardControl.CardContent, cardControl);
             }
         }
 

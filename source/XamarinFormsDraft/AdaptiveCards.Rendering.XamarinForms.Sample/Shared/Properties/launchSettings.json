@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "AdaptiveCards.Rendering.XamarinForms.Sample": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

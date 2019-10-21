@@ -10,31 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Toasts.Forms.Plugin" Version="3.3.2" />
-    <PackageReference Include="Xamarin.Forms" Version="4.1.0.555618" />  
-    <PackageReference Include="Xamarin.Essentials" Version="1.1.0" />
+    <PackageReference Include="Xamarin.Forms" Version="4.2.0.709249" />  
+    <PackageReference Include="Xamarin.Essentials" Version="1.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\AboutPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\ItemDetailPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\ItemsPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\MainPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\MenuPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\NewItemPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
   </ItemGroup>
