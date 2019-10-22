@@ -14,8 +14,8 @@
 #import "UnknownAction.h"
 #import "UtiliOS.h"
 
-// this renderer is entry point to custom parsing and rendering registered with host
-// it will call custom parsing to deserialize json to object, then the object is renderred by calling
+// this is an entry point to custom parsing and rendering
+// it will call a registered custom parser to deserialize, then the deserialized object is rendered by calling
 // the appropriate custom renderer
 @implementation ACRCustomActionRenderer
 
@@ -37,7 +37,7 @@
                 hostConfig:(ACOHostConfig *)acoConfig;
 {
     std::shared_ptr<UnknownAction> unknownAction = std::dynamic_pointer_cast<UnknownAction>([acoElem element]);
-    // we get back deserialized action object back by running's host's registered parser
+    // we get back a deserialized action object by calling a custom parser registered via host
     ACOBaseActionElement *customAction = deserializeUnknowActionToCustomAction(unknownAction);
     if (customAction) {
         ACRRegistration *reg = [ACRRegistration getInstance];

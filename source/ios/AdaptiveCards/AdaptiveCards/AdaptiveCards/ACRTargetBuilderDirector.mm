@@ -179,7 +179,7 @@
 
 @end
 
-// build target for unknow actions
+// build target for unknown actions
 @interface ACRUnknownActionTargetBuilder : ACRTargetBuilder
 @end
 

@@ -433,7 +433,7 @@
     }];
 }
 
-- (void)testSharedEnumsCompatabilityTest
+- (void)testSharedEnumsCompatabilityWithiOSSDKEnums
 {
     XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::ActionSet) == ACRActionSet);
     XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::AdaptiveCard) == ACRAdaptiveCard);
