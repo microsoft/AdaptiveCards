@@ -16,7 +16,7 @@
 @implementation ACRToggleVisibilityTarget {
     ACOHostConfig *_config;
     __weak ACRView *_rootView;
-    std::unique_ptr<ToggleVisibilityAction> _action;
+    std::shared_ptr<ToggleVisibilityAction> _action;
 }
 
 - (instancetype)initWithActionElement:(std::shared_ptr<AdaptiveCards::ToggleVisibilityAction> const &)actionElement
@@ -27,7 +27,7 @@
     if (self) {
         _config = config;
         _rootView = rootView;
-        _action = std::make_unique<ToggleVisibilityAction>(*(actionElement.get()));
+        _action = std::make_shared<ToggleVisibilityAction>(*(actionElement.get()));
     }
     return self;
 }
@@ -62,6 +62,8 @@
             }
         }
     }
+
+    [_rootView.acrActionDelegate didFetchUserResponses:[_rootView card] action:[[ACOBaseActionElement alloc] initWithBaseActionElement:_action]];
 }
 
 @end
