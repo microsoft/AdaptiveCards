@@ -5,9 +5,11 @@ import * as Utils from "./utils";
 import * as Shared from "./shared";
 import { HostCapabilities } from "./host-capabilities";
 
-function parseHostConfigEnum(targetEnum: { [s: number]: string }, value: string | number, defaultValue: any): any {
+function parseHostConfigEnum(targetEnum: { [s: number]: string }, value: string | number, defaultValue: number): number {
     if (typeof value === "string") {
-        return Utils.parseEnum(targetEnum, value, defaultValue);
+        let parsedValue = Utils.parseEnum(targetEnum, value, defaultValue);
+
+        return parsedValue !== undefined ? parsedValue : defaultValue;
     }
     else if (typeof value === "number") {
         return value;
@@ -117,7 +119,7 @@ export class FactTextDefinition {
     }
 
     getDefaultWeight() {
-		return Enums.TextWeight.Default;
+        return Enums.TextWeight.Default;
     }
 
     toJSON(): any {
@@ -140,7 +142,7 @@ export class FactTitleDefinition extends FactTextDefinition {
 
         if (obj) {
             this.maxWidth = obj["maxWidth"] != null ? obj["maxWidth"] : this.maxWidth;
-			this.weight = parseHostConfigEnum(Enums.TextWeight, obj["weight"], Enums.TextWeight.Bolder);
+            this.weight = parseHostConfigEnum(Enums.TextWeight, obj["weight"], Enums.TextWeight.Bolder);
         }
     }
 
@@ -320,7 +322,7 @@ export interface ILineHeightDefinitions {
 }
 
 export class ContainerStyleSet {
-    private _allStyles: { [key: string]: ContainerStyleDefinition} = {};
+    private _allStyles: { [key: string]: ContainerStyleDefinition } = {};
 
     constructor(obj?: any) {
         this._allStyles[Enums.ContainerStyle.Default] = new BuiltInContainerStyleDefinition();
@@ -417,7 +419,7 @@ export interface IFontWeightDefinitions {
 }
 
 export class FontTypeDefinition {
-    static readonly monospace =  new FontTypeDefinition("'Courier New', Courier, monospace");
+    static readonly monospace = new FontTypeDefinition("'Courier New', Courier, monospace");
 
     fontFamily?: string = "Segoe UI,Segoe,Segoe WP,Helvetica Neue,Helvetica,sans-serif";
 
@@ -605,12 +607,12 @@ export class HostConfig {
         }
     }
 
-	paddingDefinitionToSpacingDefinition(paddingDefinition: Shared.PaddingDefinition): Shared.SpacingDefinition {
-		return new Shared.SpacingDefinition(
-			this.getEffectiveSpacing(paddingDefinition.top),
-			this.getEffectiveSpacing(paddingDefinition.right),
-			this.getEffectiveSpacing(paddingDefinition.bottom),
-			this.getEffectiveSpacing(paddingDefinition.left));
+    paddingDefinitionToSpacingDefinition(paddingDefinition: Shared.PaddingDefinition): Shared.SpacingDefinition {
+        return new Shared.SpacingDefinition(
+            this.getEffectiveSpacing(paddingDefinition.top),
+            this.getEffectiveSpacing(paddingDefinition.right),
+            this.getEffectiveSpacing(paddingDefinition.bottom),
+            this.getEffectiveSpacing(paddingDefinition.left));
     }
 
     makeCssClassNames(...classNames: string[]): string[] {

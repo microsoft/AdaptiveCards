@@ -9,20 +9,14 @@ export interface ITypeRegistration<T extends SerializableObject> {
 }
 
 export class CardObjectRegistry<T extends SerializableObject> {
-    private _items: ITypeRegistration<T>[] = [];
+    private _items: { [typeName: string]: ITypeRegistration<T> } = {};
 
     findByName(typeName: string): ITypeRegistration<T> | undefined {
-        for (let item of this._items) {
-            if (item.typeName === typeName) {
-                return item;
-            }
-        }
-
-        return undefined;
+        return this._items.hasOwnProperty(typeName) ? this._items[typeName] : undefined;
     }
 
     clear() {
-        this._items = [];
+        this._items = {};
     }
 
     register(typeName: string, objectType: { new(): T }, schemaVersion: Version = Versions.v1_0) {
@@ -37,19 +31,13 @@ export class CardObjectRegistry<T extends SerializableObject> {
                 objectType: objectType,
                 schemaVersion: schemaVersion
             }
-
-            this._items.push(registrationInfo);
         }
+
+        this._items[typeName] = registrationInfo;
     }
 
     unregister(typeName: string) {
-        for (let i = 0; i < this._items.length; i++) {
-            if (this._items[i].typeName === typeName) {
-                this._items.splice(i, 1);
-
-                return;
-            }
-        }
+        delete this._items[typeName];
     }
 
     createInstance(typeName: string, targetVersion: Version): T | undefined {
@@ -59,10 +47,10 @@ export class CardObjectRegistry<T extends SerializableObject> {
     }
 
     getItemCount(): number {
-        return this._items.length;
+        return Object.keys(this._items).length;
     }
 
     getItemAt(index: number): ITypeRegistration<T> {
-        return this._items[index];
+        return Object.values(this._items)[index];
     }
 }
