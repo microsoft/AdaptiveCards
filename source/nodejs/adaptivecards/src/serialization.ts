@@ -241,7 +241,7 @@ export abstract class BaseSerializationContext {
 class SimpleSerializationContext extends BaseSerializationContext {}
 
 export class PropertyDefinition {
-    getJsonPropertyName(): string {
+    getInternalName(): string {
         return this.name;
     }
 
@@ -403,7 +403,7 @@ export class ValueSetProperty extends PropertyDefinition {
 
         context.logParseEvent(
             Enums.ValidationEvent.InvalidPropertyValue,
-            `"Invalid "${this.name}" value "${sourceValue}"`,
+            `Invalid "${this.name}" value "${sourceValue}"`,
             sender);
 
         return this.defaultValue;
@@ -486,7 +486,7 @@ export class EnumProperty<TEnum extends { [s: number]: string }> extends Propert
 
         context.logParseEvent(
             Enums.ValidationEvent.InvalidPropertyValue,
-            `"Invalid "${this.name}" value "${sourceValue}"`,
+            `Invalid "${this.name}" value "${sourceValue}"`,
             sender);
 
         return this.defaultValue;
@@ -509,7 +509,7 @@ export class EnumProperty<TEnum extends { [s: number]: string }> extends Propert
                         context.logEvent(
                             Enums.ValidationPhase.ToJSON,
                             Enums.ValidationEvent.InvalidPropertyValue,
-                            `"Invalid "${this.name}" value "${value}"`,
+                            `Invalid "${this.name}" value "${value}"`,
                             sender);
                     }
                 }
@@ -748,15 +748,15 @@ export abstract class SerializableObject {
     }
 
     protected getValue(property: PropertyDefinition) {
-        return this._propertyBag.hasOwnProperty(property.name) ? this._propertyBag[property.name] : property.defaultValue;
+        return this._propertyBag.hasOwnProperty(property.getInternalName()) ? this._propertyBag[property.getInternalName()] : property.defaultValue;
     }
 
     protected setValue(property: PropertyDefinition, value: any) {
         if (value === undefined || value === null) {
-            delete this._propertyBag[property.name];
+            delete this._propertyBag[property.getInternalName()];
         }
         else {
-            this._propertyBag[property.name] = value;
+            this._propertyBag[property.getInternalName()] = value;
         }
     }
 
@@ -802,10 +802,10 @@ export abstract class SerializableObject {
             // Avoid serializing the same property multiple times. This is necessary
             // because some property definitions map to the same underlying schema
             // property
-            if (property.targetVersion.compareTo(context.targetVersion) <= 0 && serializedProperties.indexOf(property.getJsonPropertyName()) === -1) {
+            if (property.targetVersion.compareTo(context.targetVersion) <= 0 && serializedProperties.indexOf(property.name) === -1) {
                 property.toJSON(this, target, this.getValue(property), context);
 
-                serializedProperties.push(property.getJsonPropertyName());
+                serializedProperties.push(property.name);
             }
         }
     }

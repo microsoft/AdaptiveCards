@@ -1461,13 +1461,13 @@ export class FactSet extends CardElement {
 }
 
 class ImageDimensionProperty extends PropertyDefinition {
-    getJsonPropertyName(): string {
-        return this.jsonName;
+    getInternalName(): string {
+        return this.internalName;
     }
 
     parse(sender: SerializableObject, source: PropertyBag, context: BaseSerializationContext): number | undefined {
         let result: number | undefined = undefined;
-        let sourceValue = source[this.jsonName];
+        let sourceValue = source[this.name];
 
         if (sourceValue === undefined) {
             return this.defaultValue;
@@ -1503,14 +1503,14 @@ class ImageDimensionProperty extends PropertyDefinition {
     toJSON(sender: SerializableObject, target: PropertyBag, value: number | undefined, context: BaseSerializationContext) {
         context.serializeValue(
             target,
-            this.jsonName,
+            this.name,
             typeof value === "number" && !isNaN(value) ? value + "px" : undefined);
     }
 
     constructor(
         readonly targetVersion: Version,
         readonly name: string,
-        readonly jsonName: string) {
+        readonly internalName: string) {
         super(targetVersion, name);
     }
 }
@@ -1531,9 +1531,15 @@ export class Image extends CardElement {
         "size",
         Enums.Size,
         Enums.Size.Auto);
-    static readonly pixelWidthProperty = new ImageDimensionProperty(Versions.v1_1, "pixelWidth", "width");
-    static readonly pixelHeightProperty = new ImageDimensionProperty(Versions.v1_1, "pixelHeight", "height");
+    static readonly pixelWidthProperty = new ImageDimensionProperty(Versions.v1_1, "width", "pixelWidth");
+    static readonly pixelHeightProperty = new ImageDimensionProperty(Versions.v1_1, "height", "pixelHeight");
     static readonly selectActionProperty = new ActionProperty(Versions.v1_0, "selectAction", [ "Action.ShowCard" ]);
+
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        schema.remove(CardElement.heightProperty);
+    }
 
     @property(Image.urlProperty)
     url?: string;
