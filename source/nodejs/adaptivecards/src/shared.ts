@@ -58,34 +58,31 @@ export class StringWithSubstitutions {
             let regEx = /\{{2}([a-z0-9_$@]+).value\}{2}/gi;
             let matches;
 
-            while ((matches = regEx.exec(<string>this._original)) != null) {
-                let matchedInput: IInput | undefined = undefined;
-
+            while ((matches = regEx.exec(<string>this._original)) !== null) {
                 for (let key of Object.keys(inputs)) {
                     if (key.toLowerCase() == matches[1].toLowerCase()) {
-                        matchedInput = inputs[key];
+                        let matchedInput = inputs[key];
+
+                        let valueForReplace = "";
+
+                        if (matchedInput.value) {
+                            valueForReplace = matchedInput.value;
+                        }
+
+                        if (contentType === ContentTypes.applicationJson) {
+                            valueForReplace = JSON.stringify(valueForReplace);
+                            valueForReplace = valueForReplace.slice(1, -1);
+                        }
+                        else if (contentType === ContentTypes.applicationXWwwFormUrlencoded) {
+                            valueForReplace = encodeURIComponent(valueForReplace);
+                        }
+
+                        this._processed = (<string>this._processed).replace(matches[0], valueForReplace);
+
                         break;
                     }
                 }
-
-                if (matchedInput) {
-                    let valueForReplace = "";
-
-                    if (matchedInput.value) {
-                        valueForReplace = matchedInput.value;
-                    }
-
-                    if (contentType === ContentTypes.applicationJson) {
-                        valueForReplace = JSON.stringify(valueForReplace);
-                        valueForReplace = valueForReplace.slice(1, -1);
-                    }
-                    else if (contentType === ContentTypes.applicationXWwwFormUrlencoded) {
-                        valueForReplace = encodeURIComponent(valueForReplace);
-                    }
-
-                    this._processed = (<string>this._processed).replace(matches[0], valueForReplace);
-                }
-            };
+            }
         }
 
         this._isProcessed = true;

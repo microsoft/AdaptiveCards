@@ -135,7 +135,7 @@ export abstract class BaseSerializationContext {
             target[propertyName] = propertyValue;
         }
     }
-    
+
     serializeNumber(target: { [key: string]: any }, propertyName: string, propertyValue: number | undefined, defaultValue: number | undefined = undefined) {
         if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue || isNaN(propertyValue)) {
             delete target[propertyName];
@@ -144,7 +144,7 @@ export abstract class BaseSerializationContext {
             target[propertyName] = propertyValue;
         }
     }
-    
+
     serializeEnum(
         enumType: { [s: number]: string },
         target: { [key: string]: any },
@@ -152,9 +152,9 @@ export abstract class BaseSerializationContext {
         propertyValue: number | undefined,
         defaultValue: number | undefined = undefined) {
         let targetValue = target[propertyName];
-    
+
         let canDeleteTarget = targetValue == undefined ? true : enumType[targetValue] !== undefined;
-    
+
         if (propertyValue == defaultValue) {
             if (canDeleteTarget) {
                 delete target[propertyName];
@@ -174,7 +174,7 @@ export abstract class BaseSerializationContext {
 
     serializeArray(target: { [key: string]: any }, propertyName: string, propertyValue: any[] | undefined) {
         let items = [];
-    
+
         if (propertyValue) {
             for (let item of propertyValue) {
                 let serializedItem: any = undefined;
@@ -188,13 +188,13 @@ export abstract class BaseSerializationContext {
                 else {
                     serializedItem = item;
                 }
-        
+
                 if (serializedItem !== undefined) {
                     items.push(serializedItem);
                 }
             }
         }
-    
+
         if (items.length == 0) {
             if (target.hasOwnProperty(propertyName) && Array.isArray(target[propertyName])) {
                 delete target[propertyName];
@@ -483,7 +483,7 @@ export class EnumProperty<TEnum extends { [s: number]: string }> extends Propert
                 }
             }
         }
-    
+
         context.logParseEvent(
             Enums.ValidationEvent.InvalidPropertyValue,
             `"Invalid "${this.name}" value "${sourceValue}"`,
@@ -723,7 +723,7 @@ export type PropertyBag = { [propertyName: string]: any };
 
 export abstract class SerializableObject {
     private static readonly _schemaCache: { [typeName: string]: SerializableObjectSchema } = {};
-    
+
     private _propertyBag: PropertyBag = {};
     private _rawProperties: PropertyBag = {};
 
@@ -752,7 +752,7 @@ export abstract class SerializableObject {
     }
 
     protected setValue(property: PropertyDefinition, value: any) {
-        if (value === undefined) {
+        if (value === undefined || value === null) {
             delete this._propertyBag[property.name];
         }
         else {
@@ -902,7 +902,7 @@ export abstract class SerializableObject {
 
         if (!schema) {
             schema = new SerializableObjectSchema();
-            
+
             this.populateSchema(schema);
 
             SerializableObject._schemaCache[this.getSchemaKey()] = schema;
