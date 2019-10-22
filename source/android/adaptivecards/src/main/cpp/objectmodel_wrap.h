@@ -24,16 +24,12 @@ public:
     virtual std::string Serialize() const;
     virtual Json::Value SerializeToJsonValue() const;
     virtual void GetResourceInformation(std::vector< AdaptiveCards::RemoteResourceInformation > &resourceUris);
-    virtual void PopulateKnownPropertiesSet();
-    virtual void PopulateKnownPropertiesSetSwigPublic() {
-      AdaptiveCards::BaseElement::PopulateKnownPropertiesSet();
-    }
 public:
     bool swig_overrides(int n) {
-      return (n < 6 ? swig_override[n] : false);
+      return (n < 5 ? swig_override[n] : false);
     }
 protected:
-    Swig::BoolArray<6> swig_override;
+    Swig::BoolArray<5> swig_override;
 };
 
 class SwigDirector_BaseCardElement : public AdaptiveCards::BaseCardElement, public Swig::Director {
@@ -51,23 +47,19 @@ public:
     virtual std::string Serialize() const;
     virtual Json::Value SerializeToJsonValue() const;
     virtual void GetResourceInformation(std::vector< AdaptiveCards::RemoteResourceInformation > &resourceUris);
-    virtual void PopulateKnownPropertiesSet();
-    virtual void PopulateKnownPropertiesSetSwigPublic() {
-      AdaptiveCards::BaseCardElement::PopulateKnownPropertiesSet();
-    }
     virtual bool GetSeparator() const;
     virtual void SetSeparator(bool const value);
     virtual AdaptiveCards::Spacing GetSpacing() const;
     virtual void SetSpacing(AdaptiveCards::Spacing const value);
     virtual bool GetIsVisible() const;
     virtual void SetIsVisible(bool const value);
-    virtual AdaptiveCards::CardElementType const GetElementType() const;
+    virtual AdaptiveCards::CardElementType GetElementType() const;
 public:
     bool swig_overrides(int n) {
-      return (n < 13 ? swig_override[n] : false);
+      return (n < 12 ? swig_override[n] : false);
     }
 protected:
-    Swig::BoolArray<13> swig_override;
+    Swig::BoolArray<12> swig_override;
 };
 
 class SwigDirector_BaseActionElement : public AdaptiveCards::BaseActionElement, public Swig::Director {
@@ -84,23 +76,19 @@ public:
     virtual std::string Serialize() const;
     virtual Json::Value SerializeToJsonValue() const;
     virtual void GetResourceInformation(std::vector< AdaptiveCards::RemoteResourceInformation > &resourceUris);
-    virtual void PopulateKnownPropertiesSet();
-    virtual void PopulateKnownPropertiesSetSwigPublic() {
-      AdaptiveCards::BaseActionElement::PopulateKnownPropertiesSet();
-    }
     virtual std::string GetTitle() const;
     virtual void SetTitle(std::string const &value);
     virtual std::string GetIconUrl() const;
     virtual void SetIconUrl(std::string const &value);
     virtual std::string GetStyle() const;
     virtual void SetStyle(std::string const &value);
-    virtual AdaptiveCards::ActionType const GetElementType() const;
+    virtual AdaptiveCards::ActionType GetElementType() const;
 public:
     bool swig_overrides(int n) {
-      return (n < 13 ? swig_override[n] : false);
+      return (n < 12 ? swig_override[n] : false);
     }
 protected:
-    Swig::BoolArray<13> swig_override;
+    Swig::BoolArray<12> swig_override;
 };
 
 class SwigDirector_ActionElementParser : public AdaptiveCards::ActionElementParser, public Swig::Director {

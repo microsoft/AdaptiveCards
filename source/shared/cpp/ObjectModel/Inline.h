@@ -23,7 +23,7 @@ namespace AdaptiveSharedNamespace
         virtual Json::Value SerializeToJsonValue() const;
 
         // Element type
-        virtual const InlineElementType GetInlineType() const;
+        virtual InlineElementType GetInlineType() const;
         std::string GetInlineTypeString() const;
 
         static std::shared_ptr<Inline> Deserialize(ParseContext& context, const Json::Value& root);
@@ -32,7 +32,7 @@ namespace AdaptiveSharedNamespace
         void SetAdditionalProperties(const Json::Value& additionalProperties);
 
     protected:
-        virtual void PopulateKnownPropertiesSet();
+        void PopulateKnownPropertiesSet();
         std::unordered_set<std::string> m_knownProperties;
         Json::Value m_additionalProperties;
 
