@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\..\..\..\samples\v1.0\Scenarios\ActivityUpdate.json" Link="CardSamples\ActivityUpdate.json" />
+    <EmbeddedResource Include="..\..\..\..\..\samples\v1.0\Scenarios\CalendarReminder.json" Link="CardSamples\CalendarReminder.json" />
+    <EmbeddedResource Include="..\..\..\..\..\samples\v1.0\Scenarios\FlightItinerary.json" Link="CardSamples\FlightItinerary.json" />
+    <EmbeddedResource Include="..\..\..\..\..\samples\v1.0\Scenarios\FlightUpdate.json" Link="CardSamples\FlightUpdate.json" />
+    <EmbeddedResource Include="..\..\..\..\..\samples\v1.0\Scenarios\FoodOrder.json" Link="CardSamples\FoodOrder.json" />
+    <EmbeddedResource Include="..\..\..\..\..\samples\v1.0\Scenarios\ImageGallery.json" Link="CardSamples\ImageGallery.json" />
+    <EmbeddedResource Include="..\..\..\..\..\samples\v1.0\Scenarios\InputForm.json" Link="CardSamples\InputForm.json" />
+    <EmbeddedResource Include="..\..\..\..\..\samples\v1.0\Scenarios\Inputs.json" Link="CardSamples\Inputs.json" />
+    <EmbeddedResource Include="..\..\..\..\..\samples\v1.0\Scenarios\Restaurant.json" Link="CardSamples\Restaurant.json" />
+    <EmbeddedResource Include="..\..\..\..\..\samples\v1.0\Scenarios\Solitaire.json" Link="CardSamples\Solitaire.json" />
+    <EmbeddedResource Include="..\..\..\..\..\samples\v1.0\Scenarios\SportingEvent.json" Link="CardSamples\SportingEvent.json" />
+    <EmbeddedResource Include="..\..\..\..\..\samples\v1.0\Scenarios\StockUpdate.json" Link="CardSamples\StockUpdate.json" />
+    <EmbeddedResource Include="..\..\..\..\..\samples\v1.0\Scenarios\WeatherCompact.json" Link="CardSamples\WeatherCompact.json" />
+    <EmbeddedResource Include="..\..\..\..\..\samples\v1.0\Scenarios\WeatherLarge.json" Link="CardSamples\WeatherLarge.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Plugin.Permissions" Version="5.0.0-beta" />
+    <PackageReference Include="Xamarin.Forms" Version="4.2.0.709249" />  
+    <PackageReference Include="Xamarin.Essentials" Version="1.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Library\XamarinForms.Shared\AdaptiveCards.Rendering.XamarinForms.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="CardSamples\" />
+    <Folder Include="ViewModels\" />
+  </ItemGroup>
+</Project>

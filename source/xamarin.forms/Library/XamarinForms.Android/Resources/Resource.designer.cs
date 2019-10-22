@@ -9,9 +9,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Android.Runtime.ResourceDesignerAttribute("XamarinFormsDraft.Droid.Resource", IsApplication=false)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("AdaptiveCards.Rendering.Xamarin.Droid.Resource", IsApplication=false)]
 
-namespace XamarinFormsDraft.Droid
+namespace AdaptiveCards.Rendering.Xamarin.Droid
 {
 	
 	

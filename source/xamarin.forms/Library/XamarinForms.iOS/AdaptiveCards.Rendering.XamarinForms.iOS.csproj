@@ -130,7 +130,7 @@
       <Project>{dc69056c-24e0-4ad1-82a6-6f1deb2ae70e}</Project>
       <Name>AdaptiveCards.Rendering.Xamarin.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\XamarinFormsDraft\AdaptiveCards.Rendering.XamarinForms.csproj">
+    <ProjectReference Include="..\XamarinForms.Shared\AdaptiveCards.Rendering.XamarinForms.csproj">
       <Project>{0b6ab94b-9208-4463-b9fb-2f080b15ddd0}</Project>
       <Name>AdaptiveCards.Rendering.XamarinForms</Name>
     </ProjectReference>

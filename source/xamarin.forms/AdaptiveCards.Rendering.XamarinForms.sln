@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29209.62
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Rendering.XamarinForms.UWP", "XamarinFormsDraft\XamarinFormsDraft.UWP\AdaptiveCards.Rendering.XamarinForms.UWP.csproj", "{070677F7-33B5-4ABC-B82F-44F6234D2F71}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Rendering.XamarinForms.UWP", "Library\XamarinForms.UWP\AdaptiveCards.Rendering.XamarinForms.UWP.csproj", "{070677F7-33B5-4ABC-B82F-44F6234D2F71}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Rendering.XamarinForms.Android", "XamarinFormsDraft\XamarinFormsDraft.Android\AdaptiveCards.Rendering.XamarinForms.Android.csproj", "{01A4695A-B60E-4910-B6D6-4F98B23C52AF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Rendering.XamarinForms.Android", "Library\XamarinForms.Android\AdaptiveCards.Rendering.XamarinForms.Android.csproj", "{01A4695A-B60E-4910-B6D6-4F98B23C52AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Rendering.XamarinForms.iOS", "XamarinFormsDraft\XamarinFormsDraft.iOS\AdaptiveCards.Rendering.XamarinForms.iOS.csproj", "{4756BB29-DCA4-4BA4-BDAB-2FDE260A6C98}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Rendering.XamarinForms.iOS", "Library\XamarinForms.iOS\AdaptiveCards.Rendering.XamarinForms.iOS.csproj", "{4756BB29-DCA4-4BA4-BDAB-2FDE260A6C98}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Rendering.XamarinForms", "XamarinFormsDraft\XamarinFormsDraft\AdaptiveCards.Rendering.XamarinForms.csproj", "{0B6AB94B-9208-4463-B9FB-2F080B15DDD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Rendering.XamarinForms", "Library\XamarinForms.Shared\AdaptiveCards.Rendering.XamarinForms.csproj", "{0B6AB94B-9208-4463-B9FB-2F080B15DDD0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Rendering.Xamarin.Android", "..\xamarin\AdaptiveCards.Rendering.Xamarin.Android\AdaptiveCards.Rendering.Xamarin.Android.csproj", "{98A14838-2FDB-4CA1-892C-93154122C3BB}"
 EndProject
@@ -23,13 +23,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AdaptiveCardRenderer", "..\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{9023FBC8-AEBB-470A-841A-EB128B2D098B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWP", "AdaptiveCards.Rendering.XamarinForms.Sample\UWP\UWP.csproj", "{B671F4B7-841C-465A-B976-8FDB74879ECA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWP", "Samples\XamarinForms.Sample\UWP\UWP.csproj", "{B671F4B7-841C-465A-B976-8FDB74879ECA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Droid", "AdaptiveCards.Rendering.XamarinForms.Sample\Droid\Droid.csproj", "{6C3BB9BB-89A9-4072-A34D-80BA9D0A073F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Droid", "Samples\XamarinForms.Sample\Droid\Droid.csproj", "{6C3BB9BB-89A9-4072-A34D-80BA9D0A073F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iOS", "AdaptiveCards.Rendering.XamarinForms.Sample\iOS\iOS.csproj", "{9F36FD05-862D-48AA-AF43-BA0E03639150}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iOS", "Samples\XamarinForms.Sample\iOS\iOS.csproj", "{9F36FD05-862D-48AA-AF43-BA0E03639150}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "AdaptiveCards.Rendering.XamarinForms.Sample\Shared\Shared.csproj", "{2E8D5FF2-5464-4480-9C92-D14CBE29E078}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Samples\XamarinForms.Sample\Shared\Shared.csproj", "{2E8D5FF2-5464-4480-9C92-D14CBE29E078}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{AFA0A446-9AE6-41DD-B6C9-13B51964F033}"
 EndProject
