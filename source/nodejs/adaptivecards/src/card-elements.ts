@@ -2293,6 +2293,28 @@ export class InputValidationOptions extends SerializableObject {
 }
 
 export abstract class Input extends CardElement implements IInput {
+    //#region Schema
+
+    static readonly validationProperty = new SerializableObjectProperty(
+        Versions.vNext,
+        "validation",
+        InputValidationOptions);
+
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        if (!GlobalSettings.useBuiltInInputValidation) {
+            schema.remove(Input.validationProperty);
+        }
+    }
+
+    @property(Input.validationProperty)
+    get validation(): InputValidationOptions {
+        return this.getValue(Input.validationProperty);
+    }
+
+    //#endregion
+
     private _outerContainerElement: HTMLElement;
     private _inputControlContainerElement: HTMLElement;
     private _errorMessageElement?: HTMLElement;
@@ -2376,28 +2398,6 @@ export abstract class Input extends CardElement implements IInput {
     abstract get value(): any;
 
     onValueChanged: (sender: Input) => void;
-
-    //#region Schema
-
-    static readonly validationProperty = new SerializableObjectProperty(
-        Versions.vNext,
-        "validation",
-        InputValidationOptions);
-
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        if (!GlobalSettings.useBuiltInInputValidation) {
-            schema.remove(Input.validationProperty);
-        }
-    }
-
-    @property(Input.validationProperty)
-    get validation(): InputValidationOptions {
-        return this.getValue(Input.validationProperty);
-    }
-
-    //#endregion
 
     abstract isSet(): boolean;
 
@@ -3566,7 +3566,7 @@ export class SubmitAction extends Action {
             for (let key of Object.keys(inputs)) {
                 let input = inputs[key];
 
-                if (input.id && input.isSet()) {
+                if (input.id) {
                     this._processedData[input.id] = input.value;
                 }
             }

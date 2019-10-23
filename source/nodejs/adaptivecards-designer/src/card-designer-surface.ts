@@ -279,6 +279,36 @@ export class CardDesignerSurface {
 
             cardToRender = new Adaptive.AdaptiveCard();
             cardToRender.hostConfig = this.card.hostConfig;
+            cardToRender.onExecuteAction = (action: Adaptive.Action) => {
+                let message: string = "Action executed\n";
+                message += "    Title: " + action.title + "\n";
+
+                if (action instanceof Adaptive.OpenUrlAction) {
+                    message += "    Type: OpenUrl\n";
+                    message += "    Url: " + action.url + "\n";
+                }
+                else if (action instanceof Adaptive.SubmitAction) {
+                    message += "    Type: Submit";
+                    message += "    Data: " + JSON.stringify(action.data);
+                }
+                else if (action instanceof Adaptive.HttpAction) {
+                    message += "    Type: Http\n";
+                    message += "    Url: " + action.url + "\n";
+                    message += "    Method: " + action.method + "\n";
+                    message += "    Headers:\n";
+
+                    for (let header of action.headers) {
+                        message += "        " + header.name + ": " + header.value + "\n";
+                    }
+
+                    message += "    Body: " + action.body + "\n";
+                }
+                else {
+                    message += "    Type: <unknown>";
+                }
+
+                alert(message);
+            };
 
             let outputPayload = inputPayload;
 
