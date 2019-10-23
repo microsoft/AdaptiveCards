@@ -1681,18 +1681,18 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
         super.populatePropertySheet(propertySheet, defaultCategory);
 
         propertySheet.add(
-            defaultCategory,
+            PropertySheetCategory.LayoutCategory,
             ColumnPeer.widthProperty);
 
         if (this.cardElement.width instanceof Adaptive.SizeAndUnit) {
             if (this.cardElement.width.unit == Adaptive.SizeUnit.Pixel) {
                 propertySheet.add(
-                    PropertySheetCategory.DefaultCategory,
+                    PropertySheetCategory.LayoutCategory,
                     ColumnPeer.pixelWidthProperty);
             }
             else {
                 propertySheet.add(
-                    PropertySheetCategory.DefaultCategory,
+                    PropertySheetCategory.LayoutCategory,
                     ColumnPeer.weightProperty);
             }
         }
