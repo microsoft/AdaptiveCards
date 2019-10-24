@@ -386,9 +386,10 @@ const CGFloat kAdaptiveCardsWidth = 330;
     } else if (action.type == ACRUnknownAction) {
         if ([action isKindOfClass:[CustomActionNewType class]]) {
             CustomActionNewType *newType = (CustomActionNewType *)action;
-            if (newType.alertController) {
-                [self presentViewController:newType.alertController animated:YES completion:nil];
-            }
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"successfully rendered new button type" message:newType.alertMessage preferredStyle:UIAlertControllerStyleAlert];
+            [alertController addAction:[UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleDefault handler:nil]];
+            newType.alertController = alertController;
+            [self presentViewController:alertController animated:YES completion:nil];
         }
     } else if (action.type == ACRToggleVisibility) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Toggle Visibilty" message:nil preferredStyle:UIAlertControllerStyleAlert];
