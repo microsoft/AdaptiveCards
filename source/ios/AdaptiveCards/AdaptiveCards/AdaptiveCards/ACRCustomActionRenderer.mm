@@ -38,7 +38,7 @@
 {
     std::shared_ptr<UnknownAction> unknownAction = std::dynamic_pointer_cast<UnknownAction>([acoElem element]);
     // we get back a deserialized action object by calling a custom parser registered via host
-    ACOBaseActionElement *customAction = deserializeUnknowActionToCustomAction(unknownAction);
+    ACOBaseActionElement *customAction = deserializeUnknownActionToCustomAction(unknownAction);
     if (customAction) {
         ACRRegistration *reg = [ACRRegistration getInstance];
         NSString *type = [NSString stringWithCString:unknownAction->GetElementTypeString().c_str() encoding:NSUTF8StringEncoding];

@@ -65,4 +65,4 @@ void TextRunToRichTextElementProperties(const std::shared_ptr<TextRun> &textRun,
 
 void buildIntermediateResultForText(ACRView *rootView, ACOHostConfig *hostConfig, RichTextElementProperties const &textProperties, NSString *elementId);
 
-ACOBaseActionElement *deserializeUnknowActionToCustomAction(const std::shared_ptr<UnknownAction> action);
+ACOBaseActionElement *deserializeUnknownActionToCustomAction(const std::shared_ptr<UnknownAction> action);

@@ -196,7 +196,7 @@
 {
     std::shared_ptr<UnknownAction> unknownAction = std::dynamic_pointer_cast<UnknownAction>(action);
     if (unknownAction) {
-        ACOBaseActionElement *customAction = deserializeUnknowActionToCustomAction(unknownAction);
+        ACOBaseActionElement *customAction = deserializeUnknownActionToCustomAction(unknownAction);
         return [[ACRAggregateTarget alloc] initWithActionElement:customAction rootView:director.rootView];
     }
 

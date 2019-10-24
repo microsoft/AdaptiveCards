@@ -657,7 +657,7 @@ void TextRunToRichTextElementProperties(const std::shared_ptr<TextRun> &textRun,
     textProp.SetStrikethrough(textRun->GetStrikethrough());
 }
 
-ACOBaseActionElement *deserializeUnknowActionToCustomAction(const std::shared_ptr<UnknownAction> unknownAction)
+ACOBaseActionElement *deserializeUnknownActionToCustomAction(const std::shared_ptr<UnknownAction> unknownAction)
 {
     ACRRegistration *reg = [ACRRegistration getInstance];
     ACOBaseActionElement *customAction = nil;
