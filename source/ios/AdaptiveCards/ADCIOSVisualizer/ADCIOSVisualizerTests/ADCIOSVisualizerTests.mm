@@ -435,6 +435,8 @@
 
 - (void)testSharedEnumsCompatabilityWithiOSSDKEnums
 {
+    // The below Enums from shared model's numeric values should be in sync with
+    // iOS SDK's enum.
     XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::ActionSet) == ACRActionSet);
     XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::AdaptiveCard) == ACRAdaptiveCard);
     XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::ChoiceInput) == ACRChoiceInput);
