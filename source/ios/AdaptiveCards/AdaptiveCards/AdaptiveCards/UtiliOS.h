@@ -17,6 +17,8 @@
 
 using namespace AdaptiveCards;
 
+// configures tag and initial visibility of the given view. Toggle visibility action
+// will access the view by the tag to change the visibility.
 void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visibilityInfo);
 
 void configSeparatorVisibility(ACRSeparator *view,
