@@ -8,7 +8,7 @@
 		   "type": "chrome",
 		   "request": "launch",
 		   "name": "Debug Designer",
-		   "url": "https://localhost:8001",
+		   "url": "http://localhost:8001",
 		   "webRoot": "${workspaceFolder}/source/nodejs/adaptivecards-designer"
 	   },{
 		   "name": ".NET Core Attach",
