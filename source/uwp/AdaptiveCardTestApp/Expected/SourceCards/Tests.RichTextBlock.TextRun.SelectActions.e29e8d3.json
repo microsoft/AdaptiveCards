@@ -47,7 +47,7 @@
 					"color": "good",
 					"selectAction": {
 						"type": "Action.OpenUrl",
-						"url": "http://adaptivecards.io",
+						"url": "https://adaptivecards.io",
 						"title": "Default"
 					}
 				},
