@@ -12,6 +12,7 @@
 #import "AdaptiveCards/ShowCardAction.h"
 #import "AdaptiveCards/TextBlock.h"
 #import "AdaptiveCards/UtiliOS.h"
+#import "CustomActionNewType.h"
 #import <AdaptiveCards/ACFramework.h>
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
@@ -68,10 +69,7 @@
 }
 
 - (void)testRemoteResouceInformation
-{
-    // This is an example of a functional test case.
-    // Use XCTAssert and related functions to verify your tests produce the correct results.
-
+{   
     NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"FoodOrder" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
 
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
@@ -79,9 +77,9 @@
     NSArray<ACORemoteResourceInformation *> *remoteInformation = [cardParseResult.card remoteResourceInformation];
     XCTAssertTrue([remoteInformation count] == 3);
     NSArray<NSString *> *testStrings = @[
-        @"http://contososcubademo.azurewebsites.net/assets/steak.jpg",
-        @"http://contososcubademo.azurewebsites.net/assets/chicken.jpg",
-        @"http://contososcubademo.azurewebsites.net/assets/tofu.jpg"
+        @"https://contososcubademo.azurewebsites.net/assets/steak.jpg",
+        @"https://contososcubademo.azurewebsites.net/assets/chicken.jpg",
+        @"https://contososcubademo.azurewebsites.net/assets/tofu.jpg"
     ];
     unsigned int index = 0;
     for (ACORemoteResourceInformation *info in remoteInformation) {
@@ -432,8 +430,10 @@
     }];
 }
 
-- (void)testSharedEnumsCompatabilityTest
+- (void)testSharedEnumsCompatabilityWithiOSSDKEnums
 {
+    // The below Enums from shared model's numeric values should be in sync with
+    // iOS SDK's enum.
     XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::ActionSet) == ACRActionSet);
     XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::AdaptiveCard) == ACRAdaptiveCard);
     XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::ChoiceInput) == ACRChoiceInput);
@@ -455,6 +455,11 @@
     XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::ToggleInput) == ACRToggleInput);
     XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::Unknown) == ACRUnknown);
     XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::RichTextBlock) == ACRRichTextBlock);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::ActionType::ShowCard) == ACRShowCard);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::ActionType::Submit) == ACRSubmit);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::ActionType::OpenUrl) == ACROpenUrl);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::ActionType::ToggleVisibility) == ACRToggleVisibility);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::ActionType::UnknownAction) == ACRUnknownAction);
 }
 
 @end

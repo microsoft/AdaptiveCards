@@ -24,7 +24,7 @@
                         {
                             "size": "stretch",
                             "backgroundImage": {
-                                "url": "http://messagecardplayground.azurewebsites.net/assets/TxP_HorizontalLine.png",
+                                "url": "https://messagecardplayground.azurewebsites.net/assets/TxP_HorizontalLine.png",
                                 "mode": "repeatHorizontally",
                                 "verticalAlignment": "center"
                             }

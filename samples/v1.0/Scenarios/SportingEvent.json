@@ -16,7 +16,7 @@
 							"items": [
 								{
 									"type": "Image",
-									"url": "http://adaptivecards.io/content/cats/3.png",
+									"url": "https://adaptivecards.io/content/cats/3.png",
 									"size": "medium"
 								},
 									{
@@ -60,7 +60,7 @@
 							"items": [
 								{
 									"type": "Image",
-									"url": "http://adaptivecards.io/content/cats/2.png",
+									"url": "https://adaptivecards.io/content/cats/2.png",
 									"size": "medium",
 									"horizontalAlignment": "center"
 								},

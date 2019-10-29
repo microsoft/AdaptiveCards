@@ -25,6 +25,8 @@ window.onload = function() {
     ACDesigner.Strings.toolboxes.toolPalette.title = "Custom title";
     */
 
+
+
 	ACDesigner.CardDesigner.onProcessMarkdown = (text: string, result: { didProcess: boolean, outputHtml: string }) => {
 		result.outputHtml = new markdownit().render(text);
 		result.didProcess = true;
