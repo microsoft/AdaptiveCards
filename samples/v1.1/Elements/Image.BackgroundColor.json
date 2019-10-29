@@ -10,7 +10,7 @@
 				"items": [{
 					"type": "Image",
 					"backgroundColor": "#982374",
-					"url": "http://adaptivecards.io/content/cats/1.png"
+					"url": "https://adaptivecards.io/content/cats/1.png"
 				}]
 			},
 			{
@@ -19,7 +19,7 @@
 				"items": [{
 					"type": "Image",
 					"backgroundColor": "#128192",
-					"url": "http://adaptivecards.io/content/cats/1.png"
+					"url": "https://adaptivecards.io/content/cats/1.png"
 				}]
 			},
 			{
@@ -28,7 +28,7 @@
 				"items": [{
 					"type": "Image",
 					"backgroundColor": "#183774",
-					"url": "http://adaptivecards.io/content/cats/1.png"
+					"url": "https://adaptivecards.io/content/cats/1.png"
 				}]
 			}
 		]

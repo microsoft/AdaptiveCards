@@ -33,7 +33,7 @@ namespace AdaptiveSharedNamespace
         void SetMin(const int value);
 
     private:
-        void PopulateKnownPropertiesSet() override;
+        void PopulateKnownPropertiesSet();
 
         std::string m_placeholder;
         int m_value;

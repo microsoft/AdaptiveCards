@@ -37,7 +37,7 @@ namespace AdaptiveSharedNamespace
         void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
     private:
-        void PopulateKnownPropertiesSet() override;
+        void PopulateKnownPropertiesSet();
         std::string m_width;
         unsigned int m_pixelWidth;
         std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>> m_items;
