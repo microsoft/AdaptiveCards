@@ -69,12 +69,14 @@ public class ActionElementRenderer extends BaseActionElementRenderer
     {
         private IconPlacement m_iconPlacement;
         private long m_iconSize;
+        private long m_padding;
 
-        protected ActionElementRendererIconImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String imageBaseUrl, IconPlacement iconPlacement, long iconSize)
+        protected ActionElementRendererIconImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String imageBaseUrl, IconPlacement iconPlacement, long iconSize, long padding)
         {
             super(renderedCard, containerView, imageBaseUrl, containerView.getResources().getDisplayMetrics().widthPixels);
             m_iconPlacement = iconPlacement;
             m_iconSize = iconSize;
+            m_padding = padding;
         }
 
         @Override
@@ -114,7 +116,7 @@ public class ActionElementRenderer extends BaseActionElementRenderer
             else
             {
                 button.setCompoundDrawablesWithIntrinsicBounds(drawableIcon, null, null, null);
-                button.requestLayout();
+                button.setCompoundDrawablePadding((int) m_padding);
             }
         }
     }
@@ -212,17 +214,10 @@ public class ActionElementRenderer extends BaseActionElementRenderer
                     button,
                     hostConfig.GetImageBaseUrl(),
                     iconPlacement,
-                    hostConfig.GetActions().getIconSize()
+                    hostConfig.GetActions().getIconSize(),
+                    hostConfig.GetSpacing().getDefaultSpacing()
             );
             imageLoader.execute(baseActionElement.GetIconUrl());
-
-            // Only when the icon must be placed to the left of the title, we have to do this
-            if (iconPlacement == IconPlacement.LeftOfTitle) {
-                int padding = (int) hostConfig.GetSpacing().getDefaultSpacing();
-                ButtonOnLayoutChangedListener layoutChangedListener = new ButtonOnLayoutChangedListener();
-                layoutChangedListener.setPadding(padding);
-                button.addOnLayoutChangeListener(layoutChangedListener);
-            }
         }
 
         viewGroup.addView(button);
