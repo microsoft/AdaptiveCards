@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
+using System.Threading;
 
 namespace AdaptiveCards
 {
@@ -13,6 +13,7 @@ namespace AdaptiveCards
             idStack = new Stack<Tuple<string, AdaptiveInternalID, bool>>();
         }
 
+        private static Mutex mut = new Mutex();
         public enum ContextType { Element, Action };
 
         public static ContextType Type { get; set; }
@@ -24,26 +25,34 @@ namespace AdaptiveCards
         // Push the provided state on to our ID stack
         public static void PushElement(string idJsonProperty, AdaptiveInternalID internalId)
         {
+            mut.WaitOne();
             if (internalId.Equals(AdaptiveInternalID.Invalid))
             {
+                mut.ReleaseMutex();
                 throw new AdaptiveSerializationException($"Attemping to push an element on to the stack with an invalid ID");
             }
             idStack.Push(new Tuple<string, AdaptiveInternalID, bool>(idJsonProperty, internalId, AdaptiveFallbackConverter.IsInFallback));
+            mut.ReleaseMutex();
         }
 
         public static AdaptiveInternalID PeekElement()
         {
+            mut.WaitOne();
             if (idStack.Count == 0)
             {
                 // internal id in dot net needs to be revisited tracked via issue 3386
+                mut.ReleaseMutex();
                 return new AdaptiveInternalID();
             }
-            return idStack.Peek().Item2;
+            var id = idStack.Peek().Item2;
+            mut.ReleaseMutex();
+            return id;
         }
 
         // Pop the last id off our stack and perform validation 
         public static void PopElement()
         {
+            mut.WaitOne();
             // about to pop an element off the stack. perform collision list maintenance and detection.
             var idsToPop = idStack.Peek();
             string elementID = idsToPop.Item1;
@@ -94,12 +103,13 @@ namespace AdaptiveCards
                         }
 
                         // at this point, we may or may not have a collision depending on additional entries.
-                        haveCollision = true;
+                        // haveCollision = true;
                     }
                 }
 
                 if (haveCollision)
                 {
+                    mut.ReleaseMutex();
                     throw new AdaptiveSerializationException("Collision detected for id '" + elementID + "'");
                 }
 
@@ -117,12 +127,14 @@ namespace AdaptiveCards
                 }
             }
             idStack.Pop();
+            mut.ReleaseMutex();
         }
 
         // Walk stack looking for first element to be marked fallback (which isn't the ID we're supposed to skip), then
         // return its internal ID. If none, return an invalid ID. (see comment above)
         public static AdaptiveInternalID GetNearestFallbackID(AdaptiveInternalID skipID)
         {
+            mut.WaitOne();
             foreach (var curElement in idStack)
             {
                 // if element is fallback
@@ -130,11 +142,13 @@ namespace AdaptiveCards
                 {
                     if (!curElement.Item2.Equals(skipID))
                     {
+                        mut.ReleaseMutex();
                         return curElement.Item2;
                     }
                 }
             }
             var invalidID = new AdaptiveInternalID();
+            mut.ReleaseMutex();
             return invalidID;
         }
     }
