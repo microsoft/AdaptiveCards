@@ -9,7 +9,7 @@ using Newtonsoft.Json.Linq;
 
 namespace AdaptiveCards
 {
-    public class AdaptiveCardConverter : JsonConverter, ILogWarnings
+    public class AdaptiveCardConverter : AdaptiveTypedBaseElementConverter, ILogWarnings
     {
         public List<AdaptiveWarning> Warnings { get; set; } = new List<AdaptiveWarning>();
 

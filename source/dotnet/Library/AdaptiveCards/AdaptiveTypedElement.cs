@@ -46,7 +46,7 @@ namespace AdaptiveCards
         public AdaptiveFallbackElement Fallback { get; set; }
 
         [JsonIgnore]
-        public AdaptiveInternalID InternalID { get; } = ParseContext.PeekElement();
+        public AdaptiveInternalID InternalID { get; }// = ParseContext.PeekElement();
 
         /// <summary>
         /// A unique ID associated with the element. For Inputs the ID will be used as the key for Action.Submit response

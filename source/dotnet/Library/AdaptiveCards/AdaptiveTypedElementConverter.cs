@@ -12,7 +12,7 @@ namespace AdaptiveCards
     /// <summary>
     ///     This handles using type field to instantiate strongly typed object on deserialization
     /// </summary>
-    public class AdaptiveTypedElementConverter : JsonConverter, ILogWarnings
+    public class AdaptiveTypedElementConverter : AdaptiveTypedBaseElementConverter, ILogWarnings
     {
         public List<AdaptiveWarning> Warnings { get; set; } = new List<AdaptiveWarning>();
 

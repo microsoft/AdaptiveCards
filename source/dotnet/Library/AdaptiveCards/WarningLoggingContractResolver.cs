@@ -13,15 +13,22 @@ namespace AdaptiveCards
     internal class WarningLoggingContractResolver : DefaultContractResolver
     {
         private readonly AdaptiveCardParseResult _parseResult;
+        private ParseContext _parseContext;
 
-        public WarningLoggingContractResolver(AdaptiveCardParseResult parseResult)
+        public WarningLoggingContractResolver(AdaptiveCardParseResult parseResult, ParseContext parseContext)
         {
             _parseResult = parseResult;
+            _parseContext = parseContext;
         }
 
         protected override JsonConverter ResolveContractConverter(Type type)
         {
             var converter = base.ResolveContractConverter(type);
+
+            if (converter is AdaptiveTypedBaseElementConverter)
+            {
+                ((AdaptiveTypedBaseElementConverter)converter).ParseContext = _parseContext;
+            }
 
             if (converter is ILogWarnings logWarnings)
             {
