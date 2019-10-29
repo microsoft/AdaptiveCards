@@ -8,10 +8,9 @@
 #import "ACRIContentHoldingView.h"
 #import "ACRLongPressGestureRecognizerEventHandler.h"
 #import "ACRView.h"
-#import "HostConfig.h"
-#import "SharedAdaptiveCard.h"
 #import <UIKit/UIKit.h>
 
+// AggregateTraget is used to relay the signal back to host
 @interface ACRAggregateTarget : NSObject <ACRSelectActionDelegate>
 
 - (instancetype)initWithActionElement:(ACOBaseActionElement *)actionElement rootView:(ACRView *)rootView;

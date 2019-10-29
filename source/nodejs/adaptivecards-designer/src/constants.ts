@@ -30,7 +30,7 @@ export const otherTestPayload: string = `{
 							{
 								"type": "Action.OpenUrl",
 								"title": "OK",
-								"url": "http://adaptivecards.io"
+								"url": "https://adaptivecards.io"
 							}
 						]
 					}
@@ -38,7 +38,7 @@ export const otherTestPayload: string = `{
 				{
 					"type": "Action.OpenUrl",
 					"title": "View",
-					"url": "http://adaptivecards.io"
+					"url": "https://adaptivecards.io"
 				}
 			]
 		}
@@ -139,7 +139,7 @@ export const defaultPayload: string = `{
                     {
                         "type": "Action.OpenUrl",
                         "title": "OK",
-                        "url": "http://adaptivecards.io"
+                        "url": "https://adaptivecards.io"
                     }
                 ],
                 "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
@@ -148,7 +148,7 @@ export const defaultPayload: string = `{
         {
             "type": "Action.OpenUrl",
             "title": "View",
-            "url": "http://adaptivecards.io"
+            "url": "https://adaptivecards.io"
         }
     ],
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
