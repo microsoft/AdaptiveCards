@@ -13,12 +13,12 @@
 		{
 			"type": "Action.OpenUrl",
 			"iconUrl": "http://adaptivecards.io/content/cats/2.png",
-			"url": "http://adaptivecards.io",
+			"url": "https://adaptivecards.io",
 			"title": "With Icon"
 		},
 		{
 			"type": "Action.OpenUrl",
-			"url": "http://adaptivecards.io",
+			"url": "https://adaptivecards.io",
 			"title": "Without Icon"
 		}
 	]

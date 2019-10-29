@@ -69,10 +69,7 @@
 }
 
 - (void)testRemoteResouceInformation
-{
-    // This is an example of a functional test case.
-    // Use XCTAssert and related functions to verify your tests produce the correct results.
-
+{   
     NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"FoodOrder" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
 
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
@@ -80,9 +77,9 @@
     NSArray<ACORemoteResourceInformation *> *remoteInformation = [cardParseResult.card remoteResourceInformation];
     XCTAssertTrue([remoteInformation count] == 3);
     NSArray<NSString *> *testStrings = @[
-        @"http://contososcubademo.azurewebsites.net/assets/steak.jpg",
-        @"http://contososcubademo.azurewebsites.net/assets/chicken.jpg",
-        @"http://contososcubademo.azurewebsites.net/assets/tofu.jpg"
+        @"https://contososcubademo.azurewebsites.net/assets/steak.jpg",
+        @"https://contososcubademo.azurewebsites.net/assets/chicken.jpg",
+        @"https://contososcubademo.azurewebsites.net/assets/tofu.jpg"
     ];
     unsigned int index = 0;
     for (ACORemoteResourceInformation *info in remoteInformation) {

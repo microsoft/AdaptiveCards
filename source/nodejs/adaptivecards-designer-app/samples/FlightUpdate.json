@@ -14,7 +14,7 @@
 			  {
 				"type": "Image",
 				"size": "small",
-				"url": "http://adaptivecards.io/content/airplane.png"
+				"url": "https://adaptivecards.io/content/airplane.png"
 			  }
 			]
 		  },
@@ -204,7 +204,7 @@
 			  },
 			  {
 				"type": "Image",
-				"url": "http://adaptivecards.io/content/airplane.png",
+				"url": "https://adaptivecards.io/content/airplane.png",
 				"size": "small"
 			  }
 			]
