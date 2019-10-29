@@ -103,7 +103,7 @@ namespace AdaptiveCards
                         }
 
                         // at this point, we may or may not have a collision depending on additional entries.
-                        // haveCollision = true;
+                        //haveCollision = true;
                     }
                 }
 

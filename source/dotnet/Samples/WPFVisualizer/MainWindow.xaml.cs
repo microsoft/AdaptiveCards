@@ -24,9 +24,8 @@ using System.Windows.Media;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Document;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading;
-using System.Windows.Documents;
 
 namespace WpfVisualizer
 {
@@ -115,51 +114,33 @@ namespace WpfVisualizer
             set { textBox.Text = value; }
         }
 
-        private void RenderCardTask(string payload)
-        {
-            AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(payload);
-        }
-
         private void RenderCard()
         {
-            List<Thread> jobs = new List<Thread>();
-            for (var i = 0; i < 10; i++)
-            {
-                var payload = CardPayload;
-                Thread job = new Thread( () => RenderCardTask(payload));
-                jobs.Add(job);
-                job.Start();
-            }
-
-            foreach (var job in jobs) 
-            {
-                job.Join();
-            }
-            /*
             cardError.Children.Clear();
-            cardGrid.Opacity = 0.65; 
+            cardGrid.Opacity = 0.65;
+
             try
             {
                 AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(CardPayload);
 
                 AdaptiveCard card = parseResult.Card;
 
-                //
-                //if (!_stylesAdded)
-                //{
-                //    // Example on how to override the Action Positive and Destructive styles
-                //    Style positiveStyle = new Style(typeof(Button));
-                //    positiveStyle.Setters.Add(new Setter(Button.BackgroundProperty, Brushes.Green));
-                //    Style otherStyle = new Style(typeof(Button));
-                //    otherStyle.Setters.Add(new Setter(Button.BackgroundProperty, Brushes.Yellow));
-                //    otherStyle.Setters.Add(new Setter(Button.ForegroundProperty, Brushes.Red));
+                /*
+                if (!_stylesAdded)
+                {
+                    // Example on how to override the Action Positive and Destructive styles
+                    Style positiveStyle = new Style(typeof(Button));
+                    positiveStyle.Setters.Add(new Setter(Button.BackgroundProperty, Brushes.Green));
+                    Style otherStyle = new Style(typeof(Button));
+                    otherStyle.Setters.Add(new Setter(Button.BackgroundProperty, Brushes.Yellow));
+                    otherStyle.Setters.Add(new Setter(Button.ForegroundProperty, Brushes.Red));
 
-                //    Renderer.Resources.Add("Adaptive.Action.positive", positiveStyle);
-                //    Renderer.Resources.Add("Adaptive.Action.other", otherStyle);
+                    Renderer.Resources.Add("Adaptive.Action.positive", positiveStyle);
+                    Renderer.Resources.Add("Adaptive.Action.other", otherStyle);
 
-                //    _stylesAdded = true;
-                //}
-                //
+                    _stylesAdded = true;
+                }
+                */
 
                 RenderedAdaptiveCard renderedCard = Renderer.RenderCard(card);
                 // TODO: should we have an option to render fallback card instead of exception?
@@ -193,7 +174,6 @@ namespace WpfVisualizer
             {
                 ShowError(ex);
             }
-*/
         }
 
         private void OnAction(RenderedAdaptiveCard sender, AdaptiveActionEventArgs e)
