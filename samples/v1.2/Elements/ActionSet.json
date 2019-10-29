@@ -27,7 +27,7 @@
 				{
 					"type": "Action.OpenUrl",
 					"title": "OpenUrl",
-					"url": "http://adaptivecards.io"
+					"url": "https://adaptivecards.io"
 				}
 			]
 		},
@@ -54,7 +54,7 @@
 		{
 			"type": "Action.OpenUrl",
 			"title": "OpenUrl",
-			"url": "http://adaptivecards.io"
+			"url": "https://adaptivecards.io"
 		}
 	]
 }
