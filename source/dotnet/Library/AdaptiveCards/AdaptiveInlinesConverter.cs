@@ -39,7 +39,13 @@ namespace AdaptiveCards
                     {
                         throw new AdaptiveSerializationException($"Property 'type' must be '{AdaptiveTextRun.TypeName}'");
                     }
-                    arrayList.Add((AdaptiveInline)jobj.ToObject(typeof(AdaptiveTextRun)));
+                    //arrayList.Add((AdaptiveInline)jobj.ToObject(typeof(AdaptiveTextRun)));
+                    var adaptiveInline = JsonConvert.DeserializeObject<AdaptiveTextRun>(jobj.ToString(), new JsonSerializerSettings
+                    {
+                        ContractResolver = new WarningLoggingContractResolver(new AdaptiveCardParseResult(), new ParseContext()),
+                        Converters = { new StrictIntConverter() }
+                    });
+                    arrayList.Add((AdaptiveInline)adaptiveInline);
                 }
             }
             return arrayList;

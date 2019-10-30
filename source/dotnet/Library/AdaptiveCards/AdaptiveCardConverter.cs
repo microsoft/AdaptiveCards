@@ -63,7 +63,14 @@ namespace AdaptiveCards
             if (reader.Depth == 0)
             {
                 // Needed for ID collision detection after fallback was introduced
-                ParseContext.Initialize();
+                if (ParseContext == null)
+                {
+                    ParseContext = new ParseContext();
+                }
+                else
+                {
+                    ParseContext.Initialize();
+                }
 
                 ValidateJsonVersion(ref jObject);
 
