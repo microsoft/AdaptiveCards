@@ -98,6 +98,7 @@ namespace AdaptiveCards
                 try
                 {
                     serializer.Populate(jObject.CreateReader(), result);
+                    result.InternalID = internalID;
                 }
                 catch (JsonSerializationException) { }
 

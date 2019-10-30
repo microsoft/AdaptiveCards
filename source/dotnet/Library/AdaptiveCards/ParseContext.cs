@@ -15,7 +15,7 @@ namespace AdaptiveCards
 
         public enum ContextType { Element, Action };
 
-        public static ContextType Type { get; set; }
+        public ContextType Type { get; set; }
 
         private IDictionary<string, List<AdaptiveInternalID>> elementIds = new Dictionary<string, List<AdaptiveInternalID>>();
 
