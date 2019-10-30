@@ -25,9 +25,9 @@ namespace AdaptiveCards
         {
             var converter = base.ResolveContractConverter(type);
 
-            if (converter is AdaptiveTypedBaseElementConverter)
+            if (converter is AdaptiveTypedBaseElementConverter converterWithContext)
             {
-                ((AdaptiveTypedBaseElementConverter)converter).ParseContext = _parseContext;
+                converterWithContext.ParseContext = _parseContext;
             }
 
             if (converter is ILogWarnings logWarnings)
@@ -51,6 +51,11 @@ namespace AdaptiveCards
             if (property?.Converter is ILogWarnings converter)
             {
                 converter.Warnings = _parseResult.Warnings;
+            }
+
+            if (property?.Converter is AdaptiveTypedBaseElementConverter converterWithContext)
+            {
+                converterWithContext.ParseContext = _parseContext;
             }
 
             if (property?.MemberConverter is ILogWarnings memberConverter)
