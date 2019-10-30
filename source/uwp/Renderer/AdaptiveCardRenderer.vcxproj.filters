@@ -114,6 +114,7 @@
     <ClCompile Include="lib\AdaptiveRequirement.cpp" />
     <ClCompile Include="lib\ActionHelpers.cpp" />
     <ClCompile Include="lib\XamlHelpers.cpp" />
+    <ClCompile Include="lib\LinkButton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -234,6 +235,7 @@
     <ClInclude Include="lib\AdaptiveFontTypesDefinition.h" />
     <ClInclude Include="lib\AdaptiveRequirement.h" />
     <ClInclude Include="lib\ActionHelpers.h" />
+    <ClInclude Include="lib\LinkButton.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />
