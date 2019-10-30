@@ -24,7 +24,7 @@ namespace AdaptiveCards
         // Push the provided state on to our ID stack
         public static void PushElement(string idJsonProperty, AdaptiveInternalID internalId)
         {
-
+// re-enable when proper fix is checked-in
 #if USEFALLBACK 
             if (internalId.Equals(AdaptiveInternalID.Invalid))
             {
@@ -36,6 +36,7 @@ namespace AdaptiveCards
 
         public static AdaptiveInternalID PeekElement()
         {
+// re-enable when proper fix is checked-in
 #if USEFALLBACK
             if (idStack.Count == 0)
             {
@@ -51,6 +52,7 @@ namespace AdaptiveCards
         // Pop the last id off our stack and perform validation 
         public static void PopElement()
         {
+// re-enable when proper fix is checked-in
 #if USEFALLBACK
             // about to pop an element off the stack. perform collision list maintenance and detection.
             var idsToPop = idStack.Peek();
@@ -132,6 +134,7 @@ namespace AdaptiveCards
         // return its internal ID. If none, return an invalid ID. (see comment above)
         public static AdaptiveInternalID GetNearestFallbackID(AdaptiveInternalID skipID)
         {
+// re-enable when proper fix is checked-in
 #if USEFALLBACK
             foreach (var curElement in idStack)
             {
