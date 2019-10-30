@@ -70,13 +70,15 @@ public class ActionElementRenderer extends BaseActionElementRenderer
         private IconPlacement m_iconPlacement;
         private long m_iconSize;
         private long m_padding;
+        private Context m_context;
 
-        protected ActionElementRendererIconImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String imageBaseUrl, IconPlacement iconPlacement, long iconSize, long padding)
+        protected ActionElementRendererIconImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String imageBaseUrl, IconPlacement iconPlacement, long iconSize, long padding, Context context)
         {
             super(renderedCard, containerView, imageBaseUrl, containerView.getResources().getDisplayMetrics().widthPixels);
             m_iconPlacement = iconPlacement;
             m_iconSize = iconSize;
             m_padding = padding;
+            m_context = context;
         }
 
         @Override
@@ -101,7 +103,7 @@ public class ActionElementRenderer extends BaseActionElementRenderer
             double scaleRatio = imageHeight / originalDrawableIcon.getIntrinsicHeight();
             double imageWidth = scaleRatio * originalDrawableIcon.getIntrinsicWidth();
 
-            return Bitmap.createScaledBitmap(bitmap, (int)(imageWidth * 2), (int)(imageHeight * 2), false);
+            return Bitmap.createScaledBitmap(bitmap, Util.dpToPixels(m_context, (int)imageWidth), Util.dpToPixels(m_context, (int)imageHeight), false);
         }
 
         @Override
@@ -115,8 +117,8 @@ public class ActionElementRenderer extends BaseActionElementRenderer
             }
             else
             {
-                button.setCompoundDrawablesWithIntrinsicBounds(drawableIcon, null, null, null);
-                button.setCompoundDrawablePadding((int) m_padding);
+                button.setCompoundDrawablesRelativeWithIntrinsicBounds(drawableIcon, null, null, null);
+                button.setCompoundDrawablePadding(Util.dpToPixels(m_context, (int) m_padding));
             }
         }
     }
@@ -215,7 +217,8 @@ public class ActionElementRenderer extends BaseActionElementRenderer
                     hostConfig.GetImageBaseUrl(),
                     iconPlacement,
                     hostConfig.GetActions().getIconSize(),
-                    hostConfig.GetSpacing().getDefaultSpacing()
+                    hostConfig.GetSpacing().getDefaultSpacing(),
+                    context
             );
             imageLoader.execute(baseActionElement.GetIconUrl());
         }
