@@ -6,6 +6,7 @@
 //
 
 #import "ACRChoiceSetViewDataSource.h"
+#import "UtiliOS.h"
 #import <Foundation/Foundation.h>
 
 using namespace AdaptiveCards;
@@ -53,9 +54,10 @@ const CGFloat accessoryViewWidth = 50.0f;
     NSMutableSet *_defaultValuesSet;
     NSArray *_defaultValuesArray;
     BOOL _shouldWrap;
+    std::shared_ptr<HostConfig> _config;
 }
 
-- (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const &)choiceSet
+- (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const &)choiceSet WithHostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const &)hostConfig;
 {
     self = [super init];
     if (self) {
@@ -66,6 +68,9 @@ const CGFloat accessoryViewWidth = 50.0f;
         _shouldWrap = choiceSet->GetWrap();
         _userSelections = [[NSMutableDictionary alloc] init];
         _currentSelectedIndexPath = nil;
+        _config = hostConfig;
+        _parentStyle = ACRContainerStyle::ACRNone;
+
         NSString *defaultValues = [NSString stringWithCString:_choiceSetDataSource->GetValue().c_str()
                                                      encoding:NSUTF8StringEncoding];
         _defaultValuesArray = [defaultValues componentsSeparatedByCharactersInSet:
@@ -122,6 +127,7 @@ const CGFloat accessoryViewWidth = 50.0f;
     NSString *title = [NSString stringWithCString:_choiceSetDataSource->GetChoices()[indexPath.row]->GetTitle().c_str()
                                          encoding:NSUTF8StringEncoding];
     cell.textLabel.text = title;
+    cell.textLabel.textColor = getForegroundUIColorFromAdaptiveAttribute(_config, _parentStyle);
     cell.textLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
