@@ -1245,9 +1245,13 @@ namespace AdaptiveCards.Test
 
             StringAssert.Contains(ex.Message, "Property 'type' must be 'TextRun'");
         }
-                void RenderCardTask(string payload)
+        void RenderCardTask(string payload)
         {
             AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(payload);
+            if (parseResult.Warnings.Count != 0)
+            {
+                throw new Exception("parse failed");
+            }
         }
 
         [TestMethod]

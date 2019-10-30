@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace AdaptiveCards
 {
-    class AdaptiveInlinesConverter : JsonConverter
+    class AdaptiveInlinesConverter : AdaptiveTypedBaseElementConverter 
     {
         public override bool CanRead => true;
 
@@ -40,12 +40,16 @@ namespace AdaptiveCards
                         throw new AdaptiveSerializationException($"Property 'type' must be '{AdaptiveTextRun.TypeName}'");
                     }
 
+                    if(ParseContext == null) {
+                        ParseContext = new ParseContext();
+                    }
+
                     var adaptiveInline = JsonConvert.DeserializeObject<AdaptiveTextRun>(jobj.ToString(), new JsonSerializerSettings
                     {
-                        ContractResolver = new WarningLoggingContractResolver(new AdaptiveCardParseResult(), new ParseContext()),
+                        ContractResolver = new WarningLoggingContractResolver(new AdaptiveCardParseResult(), ParseContext),
                         Converters = { new StrictIntConverter() }
                     });
-                    arrayList.Add((AdaptiveInline)adaptiveInline);
+                    arrayList.Add(adaptiveInline);
                 }
             }
             return arrayList;

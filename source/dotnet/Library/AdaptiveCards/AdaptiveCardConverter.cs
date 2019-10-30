@@ -70,7 +70,7 @@ namespace AdaptiveCards
                 }
             }
 
-            /// this is needed when client calls Deserailizer method, we need this contract resolver,
+            /// this is needed when client calls JsonConvert.Deserializer method, we need this contract resolver,
             /// so we can pass ParseContext
             if (!(serializer.ContractResolver is WarningLoggingContractResolver))
             {

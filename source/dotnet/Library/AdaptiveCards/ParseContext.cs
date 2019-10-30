@@ -7,12 +7,6 @@ namespace AdaptiveCards
 {
     public class ParseContext
     {
-        public void Initialize()
-        {
-            elementIds = new Dictionary<string, List<AdaptiveInternalID>>();
-            idStack = new Stack<Tuple<string, AdaptiveInternalID, bool>>();
-        }
-
         public enum ContextType { Element, Action };
 
         public ContextType Type { get; set; }
