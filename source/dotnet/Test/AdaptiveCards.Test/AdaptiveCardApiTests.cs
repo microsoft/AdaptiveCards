@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Collections;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using System.Threading;
-using System.Collections.Concurrent;
 using System.Threading.Tasks;
 
 namespace AdaptiveCards.Test
@@ -1390,6 +1388,8 @@ namespace AdaptiveCards.Test
             }
             catch
             {
+                // it's perfectly fine card. if there is exception, it is due to concurreny
+                // as it's the only variable.
                 Assert.Fail();
             }
 
