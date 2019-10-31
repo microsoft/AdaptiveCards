@@ -11,7 +11,7 @@
 		},
 		{
 			"type": "Image",
-			"url": "http://adaptivecards.io/content/cats/1.png",
+			"url": "https://adaptivecards.io/content/cats/1.png",
 			"size": "medium",
 			"spacing": "none"
 		},
@@ -23,7 +23,7 @@
 		},
 		{
 			"type": "Image",
-			"url": "http://adaptivecards.io/content/cats/1.png",
+			"url": "https://adaptivecards.io/content/cats/1.png",
 			"size": "medium",
 			"spacing": "large",
 			"separator": true

@@ -36,7 +36,7 @@ Next month's call will be held on Thursday, February 14, 2019 at 9:00am PST.  W
 
 From January's call
 
--   [Adaptive Cards Designer component](http://npmjs.com/package/adaptivecards-designer/)
+-   [Adaptive Cards Designer component](https://npmjs.com/package/adaptivecards-designer/)
 -   [ReactNative renderer](https://github.com/Microsoft/react-native-adaptivecards)
 -   [AtBot's Adaptive Card templates](https://admin.atbot.io/Docs/AI/AdaptiveCardTemplates)
 

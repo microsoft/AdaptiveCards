@@ -25,7 +25,7 @@ In the video below we walk-through an end-to-end example by creating an Adaptive
 
 We're also excited to announce a preview of the Adaptive Cards Designer that supports data binding.
 
-Try it out now at **http://vnext.adaptivecards.io/designer**
+Try it out now at **https://vnext.adaptivecards.io/designer**
 
 For full documentation and to leave feedback on this preview please check the [GitHub announcement](https://github.com/Microsoft/AdaptiveCards/issues/2448). The link above also includes instructions for trying to the Stock bot yourself.
 
@@ -42,7 +42,7 @@ Next month's call will be held on Thursday, March 14, 2019 at 9:00am PST. We loo
 From February's call
 
 -   [Data binding documentation](https://github.com/Microsoft/AdaptiveCards/issues/2448)
--   <http://vnext.adaptivecards.io/designer/>
+-   <https://vnext.adaptivecards.io/designer/>
 
 Adaptive Cards community call
 

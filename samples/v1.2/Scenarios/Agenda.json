@@ -17,7 +17,7 @@
 									"items": [
 										{
 											"type": "Image",
-											"url": "http://messagecardplayground.azurewebsites.net/assets/LocationGreen_A.png"
+											"url": "https://messagecardplayground.azurewebsites.net/assets/LocationGreen_A.png"
 										}
 									],
 									"width": "auto"
@@ -56,7 +56,7 @@
 									"items": [
 										{
 											"type": "Image",
-											"url": "http://messagecardplayground.azurewebsites.net/assets/LocationBlue_B.png"
+											"url": "https://messagecardplayground.azurewebsites.net/assets/LocationBlue_B.png"
 										}
 									],
 									"width": "auto"
@@ -95,7 +95,7 @@
 									"items": [
 										{
 											"type": "Image",
-											"url": "http://messagecardplayground.azurewebsites.net/assets/LocationRed_C.png"
+											"url": "https://messagecardplayground.azurewebsites.net/assets/LocationRed_C.png"
 										}
 									],
 									"width": "auto"
@@ -137,7 +137,7 @@
 										{
 											"type": "Image",
 											"horizontalAlignment": "Left",
-											"url": "http://messagecardplayground.azurewebsites.net/assets/Conflict.png"
+											"url": "https://messagecardplayground.azurewebsites.net/assets/Conflict.png"
 										}
 									],
 									"width": "auto"
@@ -167,7 +167,7 @@
 				{
 					"type": "Column",
 					"backgroundImage": {
-						"url": "http://messagecardplayground.azurewebsites.net/assets/SmallVerticalLineGray.png",
+						"url": "https://messagecardplayground.azurewebsites.net/assets/SmallVerticalLineGray.png",
 						"fillMode": "RepeatVertically",
 						"horizontalAlignment": "Center"
 					},
@@ -175,7 +175,7 @@
 						{
 							"type": "Image",
 							"horizontalAlignment": "Center",
-							"url": "http://messagecardplayground.azurewebsites.net/assets/CircleGreen_coffee.png"
+							"url": "https://messagecardplayground.azurewebsites.net/assets/CircleGreen_coffee.png"
 						}
 					],
 					"width": "auto",
@@ -197,7 +197,7 @@
 									"items": [
 										{
 											"type": "Image",
-											"url": "http://messagecardplayground.azurewebsites.net/assets/location_gray.png"
+											"url": "https://messagecardplayground.azurewebsites.net/assets/location_gray.png"
 										}
 									],
 									"width": "auto"
@@ -221,17 +221,17 @@
 							"images": [
 								{
 									"type": "Image",
-									"url": "http://messagecardplayground.azurewebsites.net/assets/person_w1.png",
+									"url": "https://messagecardplayground.azurewebsites.net/assets/person_w1.png",
 									"size": "Small"
 								},
 								{
 									"type": "Image",
-									"url": "http://messagecardplayground.azurewebsites.net/assets/person_m1.png",
+									"url": "https://messagecardplayground.azurewebsites.net/assets/person_m1.png",
 									"size": "Small"
 								},
 								{
 									"type": "Image",
-									"url": "http://messagecardplayground.azurewebsites.net/assets/person_w2.png",
+									"url": "https://messagecardplayground.azurewebsites.net/assets/person_w2.png",
 									"size": "Small"
 								}
 							]
@@ -245,7 +245,7 @@
 									"items": [
 										{
 											"type": "Image",
-											"url": "http://messagecardplayground.azurewebsites.net/assets/power_point.png"
+											"url": "https://messagecardplayground.azurewebsites.net/assets/power_point.png"
 										}
 									],
 									"width": "auto"
@@ -278,7 +278,7 @@
 				{
 					"type": "Column",
 					"backgroundImage": {
-						"url": "http://messagecardplayground.azurewebsites.net/assets/SmallVerticalLineGray.png",
+						"url": "https://messagecardplayground.azurewebsites.net/assets/SmallVerticalLineGray.png",
 						"fillMode": "RepeatVertically",
 						"horizontalAlignment": "Center"
 					},
@@ -286,7 +286,7 @@
 						{
 							"type": "Image",
 							"horizontalAlignment": "Center",
-							"url": "http://messagecardplayground.azurewebsites.net/assets/Gray_Dot.png"
+							"url": "https://messagecardplayground.azurewebsites.net/assets/Gray_Dot.png"
 						}
 					],
 					"width": "auto",
@@ -303,7 +303,7 @@
 									"items": [
 										{
 											"type": "Image",
-											"url": "http://messagecardplayground.azurewebsites.net/assets/car.png"
+											"url": "https://messagecardplayground.azurewebsites.net/assets/car.png"
 										}
 									],
 									"width": "auto"
@@ -350,7 +350,7 @@
 				{
 					"type": "Column",
 					"backgroundImage": {
-						"url": "http://messagecardplayground.azurewebsites.net/assets/SmallVerticalLineGray.png",
+						"url": "https://messagecardplayground.azurewebsites.net/assets/SmallVerticalLineGray.png",
 						"fillMode": "RepeatVertically",
 						"horizontalAlignment": "Center"
 					},
@@ -358,7 +358,7 @@
 						{
 							"type": "Image",
 							"horizontalAlignment": "Center",
-							"url": "http://messagecardplayground.azurewebsites.net/assets/CircleBlue_flight.png"
+							"url": "https://messagecardplayground.azurewebsites.net/assets/CircleBlue_flight.png"
 						}
 					],
 					"width": "auto",
@@ -380,7 +380,7 @@
 									"items": [
 										{
 											"type": "Image",
-											"url": "http://messagecardplayground.azurewebsites.net/assets/location_gray.png"
+											"url": "https://messagecardplayground.azurewebsites.net/assets/location_gray.png"
 										}
 									],
 									"width": "auto"
@@ -400,7 +400,7 @@
 						},
 						{
 							"type": "Image",
-							"url": "http://messagecardplayground.azurewebsites.net/assets/SeaTacMap.png",
+							"url": "https://messagecardplayground.azurewebsites.net/assets/SeaTacMap.png",
 							"size": "Stretch"
 						}
 					],
