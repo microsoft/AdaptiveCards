@@ -76,6 +76,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         List<CheckBox> checkBoxList = new Vector<CheckBox>();
         ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
         long size = choiceInputVector.size();
+
         String value = choiceSetInput.GetValue();
         Vector<String> defaults = new Vector<>();
         defaults.addAll(Arrays.asList(value.split(",")));
@@ -90,9 +91,10 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             CheckBox checkBox = new CheckBox(context);
             checkBox.setText(choiceInput.GetTitle());
 
-            if(!choiceSetInput.GetWrap())
+            if (!choiceSetInput.GetWrap())
             {
-                checkBox.setLines(1);
+                checkBox.setSingleLine(true);
+                checkBox.setPadding(0, 8, 0, 8);
                 checkBox.setEllipsize(TextUtils.TruncateAt.END);
             }
 
