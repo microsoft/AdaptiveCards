@@ -18,30 +18,30 @@ Write-Host Running HTML tests...
 Set-Location .\Samples\AdaptiveCards.Sample.Html
 
 Write-Host SupportsInteractivity = false...
-dotnet run $v1scenariosPath -- -r -o $testResultsPath\HTML\StandardNonInteractive.html
+dotnet run $v1scenariosPath -r -o $testResultsPath\HTML\StandardNonInteractive.html
 
 Write-Host SupportsInteractivity = true...
-dotnet run $v1scenariosPath -- -r -i -o $testResultsPath\HTML\Standard.html
+dotnet run $v1scenariosPath -r -i -o $testResultsPath\HTML\Standard.html
 
 Write-Host Windows notification config...
-dotnet run $v1scenariosPath -- -r -o $testResultsPath\HTML\WindowsNotification.html --host-config $samplesPath\hostconfig\windows-notification.json
+dotnet run $v1scenariosPath -r -o $testResultsPath\HTML\WindowsNotification.html --host-config $samplesPath\hostconfig\windows-notification.json
 
 Write-Host Timeline config...
-dotnet run $v1scenariosPath -- -r -o $testResultsPath\HTML\WindowsTimeline.html --host-config $samplesPath\hostconfig\windows-timeline.json
+dotnet run $v1scenariosPath -r -o $testResultsPath\HTML\WindowsTimeline.html --host-config $samplesPath\hostconfig\windows-timeline.json
 
 Write-Host Running WPF tests...
 Set-Location ..\AdaptiveCards.Sample.ImageRender
 
 Write-Host SupportsInteractivity = false...
-dotnet run $v1scenariosPath -- -r -o $testResultsPath\WPF\StandardNonInteractive
+dotnet run $v1scenariosPath -r -o $testResultsPath\WPF\StandardNonInteractive
 
 Write-Host SupportsInteractivity = true...
-dotnet run $v1scenariosPath -- -r -i -o $testResultsPath\WPF\Standard
+dotnet run $v1scenariosPath -r -i -o $testResultsPath\WPF\Standard
 
 Write-Host Windows notification config....
-dotnet run $v1scenariosPath -- -r -o $testResultsPath\WPF\WindowsNotification --host-config $samplesPath\hostconfig\windows-notification.json
+dotnet run $v1scenariosPath -r -o $testResultsPath\WPF\WindowsNotification --host-config $samplesPath\hostconfig\windows-notification.json
 
 Write-Host Timeline config...
-dotnet run $v1scenariosPath -- -r -o $testResultsPath\WPF\WindowsTimeline --host-config $samplesPath\hostconfig\windows-timeline.json
+dotnet run $v1scenariosPath -r -o $testResultsPath\WPF\WindowsTimeline --host-config $samplesPath\hostconfig\windows-timeline.json
 
 Pop-Location
