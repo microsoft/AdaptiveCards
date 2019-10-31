@@ -497,13 +497,7 @@ export abstract class CardElement extends CardObject {
     }
 
     getRootElement(): CardElement {
-        let rootElement: CardElement = this;
-
-        while (rootElement.parent) {
-            rootElement = rootElement.parent;
-        }
-
-        return rootElement;
+        return this.getRootObject() as CardElement;
     }
 
     getParentContainer(): Container | undefined {
@@ -849,6 +843,7 @@ export class TextBlock extends BaseTextBlock {
         this._processedText = undefined;
 
         if (this.text) {
+            let preProcessedText = this.preProcessPropertyValue(BaseTextBlock.textProperty);
             let hostConfig = this.hostConfig;
 
             let element = document.createElement(this.getRenderedDomElementType());
@@ -882,7 +877,7 @@ export class TextBlock extends BaseTextBlock {
             if (!this._processedText) {
                 this._treatAsPlainText = true;
 
-                let formattedText = TextFormatters.formatText(this.lang, this.text);
+                let formattedText = TextFormatters.formatText(this.lang, preProcessedText);
 
                 if (this.useMarkdown && formattedText) {
                     if (GlobalSettings.allowMarkForTextHighlighting) {
@@ -1118,9 +1113,10 @@ export class TextRun extends BaseTextBlock {
 
     protected internalRender(): HTMLElement | undefined {
         if (this.text) {
+            let preProcessedText = this.preProcessPropertyValue(BaseTextBlock.textProperty);
             let hostConfig = this.hostConfig;
 
-            let formattedText = TextFormatters.formatText(this.lang, this.text);
+            let formattedText = TextFormatters.formatText(this.lang, preProcessedText);
 
             if (!formattedText) {
                 formattedText = "";
@@ -1137,10 +1133,7 @@ export class TextRun extends BaseTextBlock {
 
                 let href = this.selectAction.getHref();
 
-                if (href) {
-                    anchor.href = <string>href;
-                }
-
+                anchor.href = href ? href : "";
                 anchor.target = "_blank";
                 anchor.onclick = (e) => {
                     e.preventDefault();
@@ -1695,8 +1688,8 @@ export class Image extends CardElement {
             }
 
             imageElement.style.backgroundColor = <string>Utils.stringToCssColor(this.backgroundColor);
-            imageElement.src = <string>this.url;
-            imageElement.alt = <string>this.altText;
+            imageElement.src = <string>this.preProcessPropertyValue(Image.urlProperty);
+            imageElement.alt = <string>this.preProcessPropertyValue(Image.altTextProperty);
 
             element.appendChild(imageElement);
         }
@@ -3554,7 +3547,7 @@ export class SubmitAction extends Action {
         return result;
     }
 
-    protected internalPrepareForExecution(inputs: Dictionary<Input>) {
+    protected internalPrepareForExecution(inputs: Dictionary<Input> | undefined) {
         if (this._originalData) {
             this._processedData = JSON.parse(JSON.stringify(this._originalData));
         }
@@ -3562,7 +3555,7 @@ export class SubmitAction extends Action {
             this._processedData = {};
         }
 
-        if (this._processedData) {
+        if (this._processedData && inputs) {
             for (let key of Object.keys(inputs)) {
                 let input = inputs[key];
 
@@ -3828,20 +3821,22 @@ export class HttpAction extends Action {
         return result;
     }
 
-    protected internalPrepareForExecution(inputs: Dictionary<Input>) {
-        this._url.substituteInputValues(inputs, ContentTypes.applicationXWwwFormUrlencoded);
+    protected internalPrepareForExecution(inputs: Dictionary<Input> | undefined) {
+        if (inputs) {
+            this._url.substituteInputValues(inputs, ContentTypes.applicationXWwwFormUrlencoded);
 
-        let contentType = ContentTypes.applicationJson;
+            let contentType = ContentTypes.applicationJson;
 
-        for (let header of this.headers) {
-            header.prepareForExecution(inputs);
+            for (let header of this.headers) {
+                header.prepareForExecution(inputs);
 
-            if (header.name && header.name.toLowerCase() == "content-type") {
-                contentType = <string>header.value;
+                if (header.name && header.name.toLowerCase() == "content-type") {
+                    contentType = <string>header.value;
+                }
             }
-        }
 
-        this._body.substituteInputValues(inputs, contentType);
+            this._body.substituteInputValues(inputs, contentType);
+        }
     };
 
     getJsonTypeName(): string {
@@ -4786,42 +4781,42 @@ export class BackgroundImage extends SerializableObject {
         }
     }
 
-    apply(element: HTMLElement) {
-        if (this.url) {
-            element.style.backgroundImage = "url('" + this.url + "')";
+    apply(element: CardElement) {
+        if (this.url && element.renderedElement) {
+            element.renderedElement.style.backgroundImage = "url('" + element.preProcessPropertyValue(BackgroundImage.urlProperty, this.url) + "')";
 
             switch (this.fillMode) {
                 case Enums.FillMode.Repeat:
-                    element.style.backgroundRepeat = "repeat";
+                    element.renderedElement.style.backgroundRepeat = "repeat";
                     break;
                 case Enums.FillMode.RepeatHorizontally:
-                    element.style.backgroundRepeat = "repeat-x";
+                    element.renderedElement.style.backgroundRepeat = "repeat-x";
                     break;
                 case Enums.FillMode.RepeatVertically:
-                    element.style.backgroundRepeat = "repeat-y";
+                    element.renderedElement.style.backgroundRepeat = "repeat-y";
                     break;
                 case Enums.FillMode.Cover:
                 default:
-                    element.style.backgroundRepeat = "no-repeat";
-                    element.style.backgroundSize = "cover";
+                    element.renderedElement.style.backgroundRepeat = "no-repeat";
+                    element.renderedElement.style.backgroundSize = "cover";
                     break;
             }
 
             switch (this.horizontalAlignment) {
                 case Enums.HorizontalAlignment.Center:
-                    element.style.backgroundPositionX = "center";
+                    element.renderedElement.style.backgroundPositionX = "center";
                     break;
                 case Enums.HorizontalAlignment.Right:
-                    element.style.backgroundPositionX = "right";
+                    element.renderedElement.style.backgroundPositionX = "right";
                     break;
             }
 
             switch (this.verticalAlignment) {
                 case Enums.VerticalAlignment.Center:
-                    element.style.backgroundPositionY = "center";
+                    element.renderedElement.style.backgroundPositionY = "center";
                     break;
                 case Enums.VerticalAlignment.Bottom:
-                    element.style.backgroundPositionY = "bottom";
+                    element.renderedElement.style.backgroundPositionY = "bottom";
                     break;
             }
         }
@@ -4892,7 +4887,7 @@ export class Container extends StylableCardElementContainer {
 
     protected applyBackground() {
         if (this.backgroundImage.isValid() && this.renderedElement) {
-            this.backgroundImage.apply(this.renderedElement);
+            this.backgroundImage.apply(this);
         }
 
         super.applyBackground();
@@ -5289,7 +5284,8 @@ export class Column extends Container {
             else {
                 context.serializeValue(target, "width", value);
             }
-        });
+        },
+        "auto");
 
     @property(Column.widthProperty)
     width: ColumnWidth = "auto";

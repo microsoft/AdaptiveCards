@@ -11,18 +11,12 @@ export abstract class PopupControl {
 
     protected abstract renderContent(): HTMLElement;
 
-    protected close() {
-        if (this.onClose) {
-            this.onClose(this);
-        }
-    }
-
-    onClose: (popupControl: PopupControl) => void;
+    onClose: (popupControl: PopupControl, wasCancelled: boolean) => void;
 
     keyDown(e: KeyboardEvent) {
         switch (e.keyCode) {
             case Constants.KEY_ESCAPE:
-                this.close();
+                this.closePopup(true);
 
                 break;
         }
@@ -56,7 +50,7 @@ export abstract class PopupControl {
             this._overlayElement.tabIndex = 0;
             this._overlayElement.style.width = document.documentElement.scrollWidth + "px";
             this._overlayElement.style.height = document.documentElement.scrollHeight + "px";
-            this._overlayElement.onfocus = (e) => { this.closePopup(); };
+            this._overlayElement.onfocus = (e) => { this.closePopup(true); };
 
             document.body.appendChild(this._overlayElement);
 
@@ -76,6 +70,9 @@ export abstract class PopupControl {
 
             var availableSpaceBelow = window.innerHeight - rootElementBounds.bottom;
             var availableSpaceAbove = rootElementBounds.top;
+            var availableSpaceRight = window.innerWidth - rootElementBounds.left;
+            var availableSpaceRight = window.innerWidth - rootElementBounds.right;
+            var availableSpaceLeft = rootElementBounds.left;
 
             var left = rootElementBounds.left + Utils.getScrollX();
             var top;
@@ -92,9 +89,6 @@ export abstract class PopupControl {
                 else {
                     top = Utils.getScrollY() + rootElementBounds.top + (rootElementBounds.height - actualPopupHeight) /2;
                 }
-
-                var availableSpaceRight = window.innerWidth - rootElementBounds.right;
-                var availableSpaceLeft = rootElementBounds.left;
 
                 if (availableSpaceLeft < popupElementBounds.width && availableSpaceRight < popupElementBounds.width) {
                     // Not enough space left or right of root element
@@ -135,6 +129,10 @@ export abstract class PopupControl {
 
                     this._popupElement.classList.add("ms-ctrl-slide", "ms-ctrl-slideBottomToTop");
                 }
+
+                if (availableSpaceRight < popupElementBounds.width) {
+                    left = Utils.getScrollX() + rootElementBounds.right - popupElementBounds.width;
+                }
             }
 
             this._popupElement.style.left = left + "px";
@@ -146,11 +144,15 @@ export abstract class PopupControl {
         }
     }
 
-    closePopup() {
+    closePopup(wasCancelled: boolean) {
         if (this._isOpen) {
             document.body.removeChild(this._overlayElement);
 
             this._isOpen = false;
+
+            if (this.onClose) {
+                this.onClose(this, wasCancelled);
+            }
         }
     }
 
@@ -216,11 +218,11 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
         rootElement.tabIndex = 0;
         rootElement.className = this.getCssClassName();
 
-        window.addEventListener("resize", (e) => { this.closePopup(); });
+        window.addEventListener("resize", (e) => { this.closePopup(true); });
 
         this.rootElement.onclick = (e) => {
             if (this.isOpen) {
-                this.closePopup();
+                this.closePopup(true);
             }
             else {
                 this.popup();
@@ -248,8 +250,8 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
     popup() {
         this._popupControl = this.createPopupControl();
         this._popupControl = this.createPopupControl();
-        this._popupControl.onClose = (sender) => {
-            this.closePopup();
+        this._popupControl.onClose = (sender, wasCancelled) => {
+            this.closePopup(wasCancelled);
 
             this.rootElement.focus();
         };
@@ -257,8 +259,10 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
         this._popupControl.popup(this.rootElement);
     }
 
-    closePopup() {
-        this.popupControl.closePopup();
+    closePopup(wasCancelled: boolean) {
+        if (this.popupControl) {
+            this.popupControl.closePopup(wasCancelled);
+        }
     }
 
     get isOpen(): boolean {

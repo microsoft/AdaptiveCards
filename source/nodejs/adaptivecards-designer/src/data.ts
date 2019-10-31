@@ -52,7 +52,7 @@ export class ValueData extends DataType {
 }
 
 export class ArrayData extends DataType {
-    static create(parent: FieldDefinition, input: Object): ArrayData {
+    static create(parent: FieldDefinition, input: object): ArrayData {
         if (!Array.isArray(input)) {
             throw new Error("Input is not an array.");
         }
@@ -95,7 +95,7 @@ export class ArrayData extends DataType {
 }
 
 export class ObjectData extends DataType {
-    static create(parent: FieldDefinition, input: Object): ObjectData {
+    static create(parent: FieldDefinition, input: object): ObjectData {
         let result = new ObjectData(parent);
 
         for (let key of Object.keys(input)) {
@@ -114,7 +114,7 @@ export class ObjectData extends DataType {
     constructor(readonly owner: FieldDefinition) {
         super(owner);
     }
-    
+
     getChildFields(): FieldDefinition[] {
         return this.fields;
     }
@@ -142,13 +142,13 @@ export class FieldDefinition {
     getPath(asLeaf: boolean = true): string {
         let result: string = this.qualifiedName(asLeaf);
         let currentField = this.parent;
-        
+
         while (currentField) {
             result = currentField.qualifiedName(false) + "." + result;
-            
+
             currentField = currentField.parent;
         }
-        
+
         return result;
     }
 

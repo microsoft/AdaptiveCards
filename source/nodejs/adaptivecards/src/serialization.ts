@@ -747,7 +747,7 @@ export abstract class SerializableObject {
         }
     }
 
-    protected getValue(property: PropertyDefinition) {
+    protected getValue(property: PropertyDefinition): any {
         return this._propertyBag.hasOwnProperty(property.getInternalName()) ? this._propertyBag[property.getInternalName()] : property.defaultValue;
     }
 

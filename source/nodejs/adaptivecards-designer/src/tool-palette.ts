@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import * as DesignerSurface from "./card-designer-surface";
-import * as DesignerPeers from "./designer-peers";
 import * as Adaptive from "adaptivecards";
 import { DraggableElement } from "./draggable-element";
 import { FieldDefinition } from "./data";
+import { DesignContext, CardDesignerSurface } from "./card-designer-surface";
+import { CardElementPeer, DesignerPeerRegistrationBase } from "./designer-peers";
 
 export abstract class BasePaletteItem extends DraggableElement {
     protected abstract getText(): string;
@@ -34,7 +34,7 @@ export abstract class BasePaletteItem extends DraggableElement {
         return this.internalRender();
     }
 
-    abstract createPeer(designer: DesignerSurface.CardDesignerSurface): DesignerPeers.CardElementPeer;
+    abstract createPeer(context: DesignContext, designer: CardDesignerSurface): CardElementPeer;
 }
 
 export class ElementPaletteItem extends BasePaletteItem {
@@ -47,17 +47,17 @@ export class ElementPaletteItem extends BasePaletteItem {
     }
 
     readonly typeRegistration: Adaptive.ITypeRegistration<Adaptive.CardElement>;
-    readonly peerRegistration: DesignerPeers.DesignerPeerRegistrationBase;
+    readonly peerRegistration: DesignerPeerRegistrationBase;
 
-    constructor(typeRegistration: Adaptive.ITypeRegistration<Adaptive.CardElement>, peerRegistration: DesignerPeers.DesignerPeerRegistrationBase) {
+    constructor(typeRegistration: Adaptive.ITypeRegistration<Adaptive.CardElement>, peerRegistration: DesignerPeerRegistrationBase) {
         super();
 
         this.typeRegistration = typeRegistration;
         this.peerRegistration = peerRegistration;
     }
 
-    createPeer(designer: DesignerSurface.CardDesignerSurface): DesignerPeers.CardElementPeer {
-        let peer = DesignerSurface.CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(designer, null, new this.typeRegistration.objectType());
+    createPeer(context: DesignContext, designer: CardDesignerSurface): CardElementPeer {
+        let peer = CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(designer, null, new this.typeRegistration.objectType());
         peer.initializeCardElement();
 
         return peer;
@@ -77,7 +77,7 @@ export class DataPaletteItem extends BasePaletteItem {
         super();
     }
 
-    createPeer(designer: DesignerSurface.CardDesignerSurface): DesignerPeers.CardElementPeer {
+    createPeer(context: DesignContext, designer: CardDesignerSurface): CardElementPeer {
         let element: Adaptive.CardElement;
 
         if (this.field.isCollection) {
@@ -91,7 +91,7 @@ export class DataPaletteItem extends BasePaletteItem {
             element = textBlock;
         }
 
-        let peer = DesignerSurface.CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(designer, null, element);
+        let peer = CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(designer, null, element);
         peer.initializeCardElement();
 
         return peer;
@@ -126,17 +126,17 @@ export class SnippetPaletteItem extends CustomPaletteItem {
         this.name = name;
     }
 
-    createPeer(designer: DesignerSurface.CardDesignerSurface): DesignerPeers.CardElementPeer {
+    createPeer(context: DesignContext, designer: CardDesignerSurface): CardElementPeer {
         if (this.snippet) {
             let rootElementTypeName = this.snippet["type"];
 
             if (rootElementTypeName) {
-                let adaptiveElement = designer.hostContainer.elementsRegistry.createInstance(rootElementTypeName, designer.targetVersion);
+                let adaptiveElement = context.hostContainer.elementsRegistry.createInstance(rootElementTypeName, context.targetVersion);
 
                 if (adaptiveElement) {
                     adaptiveElement.parse(this.snippet);
 
-                    let peer = DesignerSurface.CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(designer, null, adaptiveElement);
+                    let peer = CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(designer, null, adaptiveElement);
                     peer.initializeCardElement();
 
                     return peer;

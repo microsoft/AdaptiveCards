@@ -11,6 +11,7 @@ export class GlobalSettings {
     static enableFullJsonRoundTrip: boolean = false;
     static useBuiltInInputValidation: boolean = true;
     static displayInputValidationErrors: boolean = true;
+    static allowPreProcessingPropertyValues: boolean = false;
 }
 
 export const ContentTypes = {

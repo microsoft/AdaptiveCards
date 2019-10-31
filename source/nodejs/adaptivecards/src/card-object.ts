@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Enums from "./enums";
-import { Dictionary } from "./shared";
+import { Dictionary, GlobalSettings } from "./shared";
 import { HostConfig } from "./host-config";
 import { HostCapabilities } from "./host-capabilities";
-import { Versions, property, SerializableObject, StringProperty, SerializableObjectProperty, IValidationEvent } from "./serialization";
+import { Versions, property, SerializableObject, StringProperty, SerializableObjectProperty, IValidationEvent, PropertyDefinition } from "./serialization";
 
 export class ValidationResults {
     readonly allIds: Dictionary<number> = {};
@@ -61,9 +61,29 @@ export abstract class CardObject extends SerializableObject {
     protected _parent?: CardObject;
     protected _renderedElement?: HTMLElement;
 
+    onPreProcessPropertyValue?: (sender: CardObject, property: PropertyDefinition, value: any) => any;
+
     abstract getJsonTypeName(): string;
 
     abstract get hostConfig(): HostConfig;
+
+    preProcessPropertyValue(property: PropertyDefinition, propertyValue?: any): any {
+        let value = propertyValue === undefined ? this.getValue(property) : propertyValue;
+
+        if (GlobalSettings.allowPreProcessingPropertyValues) {
+            let currentObject: CardObject | undefined = this;
+
+            while (currentObject && !currentObject.onPreProcessPropertyValue) {
+                currentObject = currentObject.parent;
+            }
+
+            if (currentObject && currentObject.onPreProcessPropertyValue) {
+                return currentObject.onPreProcessPropertyValue(currentObject, property, value);
+            }
+        }
+
+        return value;
+    }
 
     setParent(value: CardObject | undefined) {
         this._parent = value;
@@ -75,6 +95,16 @@ export abstract class CardObject extends SerializableObject {
 
     shouldFallback(): boolean {
         return this._shouldFallback || !this.requires.areAllMet(this.hostConfig.hostCapabilities);
+    }
+
+    getRootObject(): CardObject {
+        let rootObject: CardObject = this;
+
+        while (rootObject.parent) {
+            rootObject = rootObject.parent;
+        }
+
+        return rootObject;
     }
 
     internalValidateProperties(context: ValidationResults) {
@@ -101,6 +131,10 @@ export abstract class CardObject extends SerializableObject {
         this.internalValidateProperties(result);
 
         return result;
+    }
+
+    get parent(): CardObject | undefined {
+        return this._parent;
     }
 
     get renderedElement(): HTMLElement | undefined {

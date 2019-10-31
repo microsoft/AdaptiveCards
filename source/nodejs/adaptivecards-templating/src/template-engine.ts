@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 import { Binding, ExpressionParser, EvaluationContext } from "./expression-parser";
 
-class TemplatizedString {
+export class TemplatizedString {
     private _parts: Array<string | Binding> = [];
 
     static parse(s: string): string | TemplatizedString {
@@ -13,7 +13,7 @@ class TemplatizedString {
             let expressionFound = false;
             let start = i;
             let loop;
-            
+
             do {
                 loop = false;
 

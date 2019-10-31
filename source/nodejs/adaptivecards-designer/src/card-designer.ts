@@ -18,11 +18,11 @@ import { SidePanel, SidePanelAlignment } from "./side-panel";
 import { Toolbox, IToolboxCommand } from "./tool-box";
 import { FieldDefinition } from "./data";
 import { DataTreeItem } from "./data-treeitem";
-import { BaseTreeItem } from "./base-tree-item";
 import { Strings } from "./strings";
 import * as Shared from "./shared";
+import { TreeView } from "./tree-view";
 
-export class CardDesigner {
+export class CardDesigner extends Designer.DesignContext {
     private static internalProcessMarkdown(text: string, result: Adaptive.IMarkdownProcessingResult) {
         if (CardDesigner.onProcessMarkdown) {
             CardDesigner.onProcessMarkdown(text, result);
@@ -49,7 +49,7 @@ export class CardDesigner {
     private _draggedPaletteItem: BasePaletteItem;
     private _draggedElement: HTMLElement;
     private _currentMousePosition: IPoint;
-    private _activeHostContainer: HostContainer;
+    private _hostContainer: HostContainer;
     private _undoStack: Array<object> = [];
     private _undoStackIndex: number = -1;
     private _startDragPayload: object;
@@ -91,27 +91,10 @@ export class CardDesigner {
                     '</div>';
             }
             else {
-                this._treeViewToolbox.content.appendChild(this.designerSurface.rootPeer.treeItem.render());
+                let treeView = new TreeView(this.designerSurface.rootPeer.treeItem);
+
+                this._treeViewToolbox.content.appendChild(treeView.render());
             }
-        }
-    }
-
-    private setupDataTreeItemEvents(treeItem: DataTreeItem) {
-        treeItem.onStartDrag = (sender: BaseTreeItem) => {
-            this._draggedPaletteItem = new DataPaletteItem(treeItem.field);
-
-            this._draggedElement = this._draggedPaletteItem.renderDragVisual();
-            this._draggedElement.style.position = "absolute";
-            this._draggedElement.style.left = this._currentMousePosition.x + "px";
-            this._draggedElement.style.top = this._currentMousePosition.y + "px";
-
-            document.body.appendChild(this._draggedElement);
-
-            treeItem.endDrag();
-        }
-
-        for (let i = 0; i < treeItem.getChildCount(); i++) {
-            this.setupDataTreeItemEvents(treeItem.getChildAt(i));
         }
     }
 
@@ -119,12 +102,11 @@ export class CardDesigner {
         if (this._dataToolbox && this._dataToolbox.content) {
             this._dataToolbox.content.innerHTML = "";
 
-            if (this._dataStructure) {
-                let treeItem = new DataTreeItem(this._dataStructure);
+            if (this.dataStructure) {
+                let treeItem = new DataTreeItem(this.dataStructure);
+                let treeView = new TreeView(treeItem);
 
-                this._dataToolbox.content.appendChild(treeItem.render());
-
-                this.setupDataTreeItemEvents(treeItem);
+                this._dataToolbox.content.appendChild(treeView.render());
             }
         }
     }
@@ -136,7 +118,7 @@ export class CardDesigner {
             let card: Adaptive.AdaptiveCard;
 
             if (peer) {
-                card = peer.buildPropertySheetCard(this.activeHostContainer, this.targetVersion);
+                card = peer.buildPropertySheetCard(this);
             }
             else {
                 card = new Adaptive.AdaptiveCard();
@@ -196,10 +178,10 @@ export class CardDesigner {
 
         this._toolPaletteToolbox.content.innerHTML = "";
 
-        let categorizedTypes: Object = {};
+        let categorizedTypes: object = {};
 
-        for (let i = 0; i < this.activeHostContainer.elementsRegistry.getItemCount(); i++) {
-            let registration = this.activeHostContainer.elementsRegistry.getItemAt(i);
+        for (let i = 0; i < this.hostContainer.elementsRegistry.getItemCount(); i++) {
+            let registration = this.hostContainer.elementsRegistry.getItemAt(i);
 
             if (registration.schemaVersion.compareTo(this.targetVersion) <= 0) {
                 let peerRegistration = Designer.CardDesignerSurface.cardElementPeerRegistry.findTypeRegistration(registration.objectType);
@@ -287,39 +269,38 @@ export class CardDesigner {
         styleSheetLinkElement.rel = "stylesheet";
 		styleSheetLinkElement.type = "text/css";
 
-		if(Utils.isAbsoluteUrl(this.activeHostContainer.styleSheet))
+		if (Utils.isAbsoluteUrl(this.hostContainer.styleSheet))
         {
-			styleSheetLinkElement.href = this.activeHostContainer.styleSheet;
+			styleSheetLinkElement.href = this.hostContainer.styleSheet;
 		}
 		else
 		{
-			styleSheetLinkElement.href = Utils.joinPaths(this._assetPath, this.activeHostContainer.styleSheet);
+			styleSheetLinkElement.href = Utils.joinPaths(this._assetPath, this.hostContainer.styleSheet);
 		}
 
         let _cardArea = document.getElementById("cardArea");
 
         if (_cardArea) {
-            _cardArea.style.backgroundColor = this.activeHostContainer.getBackgroundColor();
+            _cardArea.style.backgroundColor = this.hostContainer.getBackgroundColor();
         }
 
-        this.activeHostContainer.initialize();
+        this.hostContainer.initialize();
 
         this._designerHostElement.innerHTML = "";
-        this.activeHostContainer.renderTo(this._designerHostElement);
+        this.hostContainer.renderTo(this._designerHostElement);
 
         let wasInPreviewMode = this._designerSurface ? this._designerSurface.isPreviewMode : false;
 
-        this._designerSurface = new Designer.CardDesignerSurface(this.activeHostContainer, this.targetVersion);
-        this._designerSurface.fixedHeightCard = this.activeHostContainer.isFixedHeight;
+        this._designerSurface = new Designer.CardDesignerSurface(this); // .activeHostContainer, this.targetVersion);
+        this._designerSurface.fixedHeightCard = this.hostContainer.isFixedHeight;
         this._designerSurface.onSelectedPeerChanged = (peer: DesignerPeers.DesignerPeer) => {
             this.buildPropertySheet(peer);
         };
         this._designerSurface.onLayoutUpdated = (isFullRefresh: boolean) => {
             if (isFullRefresh) {
                 this.scheduleUpdateJsonFromCard();
+                this.buildTreeView();
             }
-
-            this.buildTreeView();
         };
         this._designerSurface.onCardValidated = (logEntries: Adaptive.IValidationEvent[]) => {
             if (this.onCardValidated) {
@@ -666,7 +647,7 @@ export class CardDesigner {
             }
 
             this._hostContainerChoicePicker.onChanged = (sender) => {
-                this.activeHostContainer = this._hostContainers[Number.parseInt(this._hostContainerChoicePicker.value)];
+                this.hostContainer = this._hostContainers[Number.parseInt(this._hostContainerChoicePicker.value)];
 
                 this.activeHostContainerChanged();
             }
@@ -742,7 +723,8 @@ export class CardDesigner {
     private updateSampleData() {
         try {
             this._sampleData = JSON.parse(this.getCurrentSampleDataEditorPayload());
-            this.designerSurface.sampleData = this._sampleData;
+
+            this.scheduleUpdateCardFromJson();
         }
         catch {
             // Swallow expression, the payload isn't a valid JSON document
@@ -811,6 +793,15 @@ export class CardDesigner {
             this._sampleDataEditor.onDidChangeModelContent(
                 () => {
                     this.updateSampleData();
+
+                    if (!this.lockDataStructure) {
+                        try {
+                            this.dataStructure = FieldDefinition.create(JSON.parse(this.getCurrentSampleDataEditorPayload()));
+                        }
+                        catch {
+                            // Swallow exception
+                        }
+                    }
                 });
         }
 
@@ -871,7 +862,7 @@ export class CardDesigner {
             let peerDropped = false;
 
             if (this._draggedPaletteItem && isPointerOverDesigner) {
-                let peer = this._draggedPaletteItem.createPeer(this.designerSurface);
+                let peer = this._draggedPaletteItem.createPeer(this, this.designerSurface);
 
                 let clientCoordinates = this.designerSurface.pageToClientCoordinates(this._currentMousePosition.x, this._currentMousePosition.y);
 
@@ -896,7 +887,10 @@ export class CardDesigner {
     sampleCatalogueUrl: string = undefined;
 
     constructor(hostContainers: Array<HostContainer> = null) {
+        super();
+
         Adaptive.GlobalSettings.enableFullJsonRoundTrip = true;
+        Adaptive.GlobalSettings.allowPreProcessingPropertyValues = true;
 
         Adaptive.AdaptiveCard.onProcessMarkdown = (text: string, result: Adaptive.IMarkdownProcessingResult) => {
             CardDesigner.internalProcessMarkdown(text, result);
@@ -917,10 +911,10 @@ export class CardDesigner {
         document.getElementsByTagName("head")[0].appendChild(styleSheetLinkElement);
 
         if (this._hostContainers && this._hostContainers.length > 0) {
-            this._activeHostContainer = this._hostContainers[0];
+            this._hostContainer = this._hostContainers[0];
         }
         else {
-            this._activeHostContainer = new DefaultContainer("Default", "adaptivecards-defaulthost.css");
+            this._hostContainer = new DefaultContainer("Default", "adaptivecards-defaulthost.css");
         }
 
         root.style.flex = "1 1 auto";
@@ -1010,20 +1004,6 @@ export class CardDesigner {
             this._sampleDataEditorToolbox.content = document.createElement("div");
             this._sampleDataEditorToolbox.content.style.padding = "8px";
             this._sampleDataEditorToolbox.content.innerText = Strings.loadingEditor;
-            this._sampleDataEditorToolbox.commands = [
-                {
-                    title: "Copy the structure of this data into the Data Structure toolbox",
-                    iconClass: "acd-icon-dataStructure",
-                    execute: (sender: IToolboxCommand) => {
-                        try {
-                            this.dataStructure = FieldDefinition.create(JSON.parse(this.getCurrentSampleDataEditorPayload()));
-                        }
-                        catch {
-                            // Swallow the parse error
-                        }
-                    }
-                }
-            ];
 
             this._jsonEditorsPanel.addToolbox(this._sampleDataEditorToolbox);
         }
@@ -1126,6 +1106,8 @@ export class CardDesigner {
     onActiveHostContainerChanged: (designer: CardDesigner) => void;
     onTargetVersionChanged: (designer: CardDesigner) => void;
 
+    lockDataStructure: boolean = false;
+
     get targetVersion(): Adaptive.Version {
         return this._targetVersion;
     }
@@ -1156,13 +1138,13 @@ export class CardDesigner {
         this.setSampleDataPayload(value);
     }
 
-    get activeHostContainer(): HostContainer {
-        return this._activeHostContainer;
+    get hostContainer(): HostContainer {
+        return this._hostContainer;
     }
 
-    set activeHostContainer(value: HostContainer) {
-        if (this._activeHostContainer !== value) {
-            this._activeHostContainer = value;
+    set hostContainer(value: HostContainer) {
+        if (this._hostContainer !== value) {
+            this._hostContainer = value;
 
             this.activeHostContainerChanged();
         }

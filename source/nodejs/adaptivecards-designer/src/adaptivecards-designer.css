@@ -115,11 +115,10 @@
 */
 
 .acd-inplace-editor-host {
-    box-sizing: content-box;
+    box-sizing: border-box;
     position: absolute;
     display: flex;
-    margin: -1px;
-    border: 1px dashed red;
+    outline: 1px dashed steelblue;
     background-color: white;
 }
 
@@ -362,8 +361,6 @@
 */
 
 .acd-verticalCollapsedTabContainer {
-    max-width: 32px;
-    overflow-x: hidden;
 }
 
 .acd-horizontalCollapsedTabContainer {
@@ -458,8 +455,23 @@
     Designer peers
 */
 
+@keyframes acd-peer-frame-appear {
+    from { border-color: transparent }
+    to { border-color: steelblue }
+}
+
+@keyframes acd-peer-frame-disappear {
+    /*
+    from { border-color: currentColor }
+    */
+    to { border-color: transparent }
+}
+
 .acd-peer {
-    border: 1px solid transparent;
+    animation-name: acd-peer-frame-disappear;
+    animation-duration: 150ms;
+    animation-fill-mode: forwards;
+    border: 1px dashed transparent;
 }
 
 .acd-peer.invisible {
@@ -469,12 +481,12 @@
     opacity: 0.4;
 }
 
-.acd-peer:hover {
-    border: 1px solid blue;
-}
-
-.acd-peer.selected {
-    border: solid 1px red;
+.acd-peer:hover,
+.acd-peer.selected,
+.acd-peer.dragging {
+    animation-name: acd-peer-frame-appear;
+    animation-duration: 200ms;
+    animation-fill-mode: forwards;
 }
 
 .acd-peer.dragover {
@@ -485,30 +497,48 @@
     background-color: none;
 }
 
-.acd-peer.dragging {
-    border: 1px solid red !important;
-}
-
 .acd-peerButton {
-    width: 20px;
-    height: 20px;
-    font-family: 'FabricMDL2Icons';
     font-size: 14px;
-    font-weight: bold;
-    font-style: normal;
-    font-weight: normal;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid red;
-    color: red;
+    border: 1px solid steelblue;
+    color: steelblue;
     background-color: white;
     cursor: default;
     user-select: none;
+    padding: 1px;
+    display: flex;
+    align-items: center;
+    pointer-events: all !important;
+    height: 20px;
+    border-radius: 0;
+    outline: none;
+}
+
+.acd-peerButton.fixedWidth {
+    width: 20px;
+}
+
+.acd-peerButton.fixedWidth.circular {
+    border-radius: 50%;
+}
+
+.acd-peerButton.variableWidth {
+}
+
+.acd-peerButton-icon {
+    font-family: 'FabricMDL2Icons';
+    font-style: normal;
+    font-weight: normal;
+    justify-content: center;
+}
+
+.acd-peerButton-text {
+    font-family: inherit;
+    justify-content: center;
+    padding: 0px 4px;
 }
 
 .acd-peerButton:hover {
-    background-color: red;
+    background-color: steelblue;
     color: white;
 }
 
@@ -675,6 +705,16 @@
     font-size: 20px;
     margin-right: 8px;
 }
+
+.acd-fieldPicker-host {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+/*
+    Adaptive Card renderer styles for Property Sheet and other
+    designer AC-based parts of designer UI.
+*/
 
 .default-ac-image.default-ac-selectable {
     cursor: pointer;

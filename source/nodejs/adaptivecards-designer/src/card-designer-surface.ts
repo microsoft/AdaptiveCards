@@ -8,6 +8,7 @@ import * as DesignerPeers from "./designer-peers";
 import * as ACData from "adaptivecards-templating";
 import * as Shared from "./shared";
 import { HostContainer } from "./containers";
+import { FieldDefinition } from "./data";
 
 export type CardElementType = { new(): Adaptive.CardElement };
 export type ActionType = { new(): Adaptive.Action };
@@ -146,7 +147,7 @@ export class ActionPeerRegistry extends DesignerPeerRegistry<ActionType, ActionP
 class DragHandle extends DraggableElement {
     protected internalRender(): HTMLElement {
         let element = document.createElement("div");
-        element.classList.add("acd-peerButton", "acd-icon-drag");
+        element.classList.add("acd-peerButton", "acd-peerButton-icon", "fixedWidth", "circular", "acd-icon-drag");
         element.title = "Drag to move this element";
         element.style.visibility = "hidden";
         element.style.position = "absolute";
@@ -154,6 +155,13 @@ class DragHandle extends DraggableElement {
 
         return element;
     }
+}
+
+export abstract class DesignContext {
+    abstract get hostContainer(): HostContainer;
+    abstract get targetVersion(): Adaptive.Version;
+    abstract get dataStructure(): FieldDefinition;
+    abstract get sampleData(): any;
 }
 
 export class CardDesignerSurface {
@@ -175,7 +183,6 @@ export class CardDesignerSurface {
     private _peerCommandsHostElement: HTMLElement;
     private _serializationContext: Adaptive.SerializationContext;
     private _isPreviewMode: boolean = false;
-    private _sampleData: any;
     private _dragVisual?: HTMLElement;
 
     private updatePeerCommandsLayout() {
@@ -183,7 +190,6 @@ export class CardDesignerSurface {
             let peerRect = this._selectedPeer.getBoundingRect();
             let dragHandleRect = this._dragHandle.renderedElement.getBoundingClientRect();
             let removeButtonRect = this._removeCommandElement.getBoundingClientRect();
-            let commandsHostRect = this._peerCommandsHostElement.getBoundingClientRect();
 
             this._dragHandle.renderedElement.style.left = (peerRect.left - dragHandleRect.width) + "px";
             this._dragHandle.renderedElement.style.top = (peerRect.top - dragHandleRect.height) + "px";
@@ -191,8 +197,9 @@ export class CardDesignerSurface {
             this._removeCommandElement.style.left = peerRect.right + "px";
             this._removeCommandElement.style.top = (peerRect.top - removeButtonRect.height) + "px";
 
-            this._peerCommandsHostElement.style.left = (peerRect.right - commandsHostRect.width) + "px";
+            this._peerCommandsHostElement.style.left = peerRect.left + "px";
             this._peerCommandsHostElement.style.top = (peerRect.bottom + 2) + "px";
+            this._peerCommandsHostElement.style.width = peerRect.width + "px";
 
             this._dragHandle.renderedElement.style.visibility = this._selectedPeer.isDraggable() ? "visible" : "hidden";
             this._removeCommandElement.style.visibility = this._selectedPeer.canBeRemoved() ? "visible" : "hidden";
@@ -218,7 +225,7 @@ export class CardDesignerSurface {
             if (this._selectedPeer) {
                 this._selectedPeer.isSelected = true;
 
-                let commands = this._selectedPeer.getCommands(this.hostContainer, this.targetVersion);
+                let commands = this._selectedPeer.getCommands(this.context);
 
                 for (let command of commands) {
                     this._peerCommandsHostElement.appendChild(command.render());
@@ -317,7 +324,7 @@ export class CardDesignerSurface {
                     let template = new ACData.Template(inputPayload);
 
                     let context = new ACData.EvaluationContext();
-                    context.$root = this.sampleData;
+                    context.$root = this.context.sampleData;
 
                     outputPayload = template.expand(context);
                 }
@@ -479,8 +486,8 @@ export class CardDesignerSurface {
         }
     }
 
-    constructor(readonly hostContainer: HostContainer, readonly targetVersion: Adaptive.Version) {
-        this._serializationContext = this.hostContainer.createSerializationContext(this.targetVersion);
+    constructor(readonly context: DesignContext) {
+        this._serializationContext = this.context.hostContainer.createSerializationContext(this.context.targetVersion);
 
         var rootElement = document.createElement("div");
         rootElement.style.position = "relative";
@@ -570,13 +577,44 @@ export class CardDesignerSurface {
 
         rootElement.appendChild(this._designerSurface);
 
-        this.hostContainer.cardHost.innerHTML = "";
-        this.hostContainer.cardHost.appendChild(rootElement);
+        this.context.hostContainer.cardHost.innerHTML = "";
+        this.context.hostContainer.cardHost.appendChild(rootElement);
 
         this._card = new Adaptive.AdaptiveCard();
         this._card.onInlineCardExpanded = (action: Adaptive.ShowCardAction, isExpanded: boolean) => { this.inlineCardExpanded(action, isExpanded); };
-        this._card.version = this.targetVersion;
-        this._card.hostConfig = this.hostContainer.getHostConfig();
+        this._card.onPreProcessPropertyValue = (sender: Adaptive.CardObject, property: Adaptive.PropertyDefinition, value: any) => {
+            if (Shared.GlobalSettings.enableDataBindingSupport && typeof value === "string" && this.context.sampleData) {
+                switch (property) {
+                    case Adaptive.TextBlock.textProperty:
+                    case Adaptive.Image.urlProperty:
+                        let templatizedString = ACData.TemplatizedString.parse(value);
+
+                        if (templatizedString instanceof ACData.TemplatizedString) {
+                            let evaluationContext = new ACData.EvaluationContext();
+                            evaluationContext.$root = this.context.sampleData;
+
+                            let evaluatedValue = templatizedString.evaluate(evaluationContext);
+
+                            if (evaluatedValue !== undefined) {
+                                return typeof evaluatedValue === "string" ? evaluatedValue : value;
+                            }
+                            else {
+                                return value;
+                            }
+                        }
+                        else {
+                            return templatizedString;
+                        }
+                    default:
+                        // Fallback - let's not pre-process everything, for perf's sake
+                        return value;
+                }
+            }
+
+            return value;
+        };
+        this._card.version = this.context.targetVersion;
+        this._card.hostConfig = this.context.hostContainer.getHostConfig();
         this._card.designMode = true;
 
         this.render();
@@ -639,7 +677,7 @@ export class CardDesignerSurface {
         this.addPeer(this._rootPeer);
 
         this._removeCommandElement = document.createElement("div");
-        this._removeCommandElement.classList.add("acd-peerButton", "acd-icon-remove");
+        this._removeCommandElement.classList.add("acd-peerButton", "acd-peerButton-icon", "fixedWidth", "circular", "acd-icon-remove");
         this._removeCommandElement.title = "Remove";
         this._removeCommandElement.style.visibility = "hidden";
         this._removeCommandElement.style.position = "absolute";
@@ -659,7 +697,9 @@ export class CardDesignerSurface {
         this._peerCommandsHostElement.style.visibility = "hidden";
         this._peerCommandsHostElement.style.position = "absolute";
         this._peerCommandsHostElement.style.display = "flex";
+        this._peerCommandsHostElement.style.justifyContent = "flex-end";
         this._peerCommandsHostElement.style.zIndex = "500";
+        this._peerCommandsHostElement.style.pointerEvents = "none";
 
         this._designerSurface.appendChild(this._dragHandle.renderedElement);
         this._designerSurface.appendChild(this._removeCommandElement);
@@ -825,18 +865,6 @@ export class CardDesignerSurface {
 
             this.renderCard();
             this.updateLayout(false);
-        }
-    }
-
-    get sampleData(): any {
-        return this._sampleData;
-    }
-
-    set sampleData(value: any) {
-        this._sampleData = value;
-
-        if (this.isPreviewMode) {
-            this.renderCard();
         }
     }
 }

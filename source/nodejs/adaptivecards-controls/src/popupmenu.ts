@@ -41,7 +41,7 @@ export class PopupMenu extends PopupControl {
 
         switch (e.keyCode) {
             case Constants.KEY_TAB:
-                this.close();
+                this.closePopup(true);
 
                 break;
             /*
