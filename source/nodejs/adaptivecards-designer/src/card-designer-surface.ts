@@ -584,30 +584,23 @@ export class CardDesignerSurface {
         this._card.onInlineCardExpanded = (action: Adaptive.ShowCardAction, isExpanded: boolean) => { this.inlineCardExpanded(action, isExpanded); };
         this._card.onPreProcessPropertyValue = (sender: Adaptive.CardObject, property: Adaptive.PropertyDefinition, value: any) => {
             if (Shared.GlobalSettings.enableDataBindingSupport && typeof value === "string" && this.context.sampleData) {
-                switch (property) {
-                    case Adaptive.TextBlock.textProperty:
-                    case Adaptive.Image.urlProperty:
-                        let templatizedString = ACData.TemplatizedString.parse(value);
+                let templatizedString = ACData.TemplatizedString.parse(value);
 
-                        if (templatizedString instanceof ACData.TemplatizedString) {
-                            let evaluationContext = new ACData.EvaluationContext();
-                            evaluationContext.$root = this.context.sampleData;
+                if (templatizedString instanceof ACData.TemplatizedString) {
+                    let evaluationContext = new ACData.EvaluationContext();
+                    evaluationContext.$root = this.context.sampleData;
 
-                            let evaluatedValue = templatizedString.evaluate(evaluationContext);
+                    let evaluatedValue = templatizedString.evaluate(evaluationContext);
 
-                            if (evaluatedValue !== undefined) {
-                                return typeof evaluatedValue === "string" ? evaluatedValue : value;
-                            }
-                            else {
-                                return value;
-                            }
-                        }
-                        else {
-                            return templatizedString;
-                        }
-                    default:
-                        // Fallback - let's not pre-process everything, for perf's sake
+                    if (evaluatedValue !== undefined) {
+                        return typeof evaluatedValue === "string" ? evaluatedValue : value;
+                    }
+                    else {
                         return value;
+                    }
+                }
+                else {
+                    return templatizedString;
                 }
             }
 

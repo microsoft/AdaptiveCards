@@ -797,21 +797,20 @@ a.default-ac-anchor:visited:active {
         -ms-user-select: none;
             user-select: none;
     height: 31px;
-    background-color: white;
-    color: #0078D7;
-    border: 1px solid #B2E0FF;
+    background-color: #EEEEEE;
+    color: black;
+    border: 1px solid #CCCCCC;
+    border-radius: 2px;
 }
 
 .default-ac-pushButton:hover {
-    background-color: #0078D7;
-    color: white;
-    border: 1px solid #73C1FD;
+    background-color: #DDDDDD;
+    border: 1px solid #BBBBBB;
 }
 
 .default-ac-pushButton:active {
-    background-color: #464B93;
-    color: white;
-    border: 1px solid #464B93;
+    background-color: #CCCCCC;
+    border: 1px solid #BBBBBB;
 }
 
 .default-ac-pushButton.subdued {
