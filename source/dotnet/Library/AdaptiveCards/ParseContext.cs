@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,16 +25,6 @@ namespace AdaptiveCards
                 throw new AdaptiveSerializationException($"Attemping to push an element on to the stack with an invalid ID");
             }
             idStack.Push(new Tuple<string, AdaptiveInternalID, bool>(idJsonProperty, internalId, AdaptiveFallbackConverter.IsInFallback));
-        }
-
-        public AdaptiveInternalID PeekElement()
-        {
-            if (idStack.Count == 0)
-            {
-                // internal id in dot net needs to be revisited tracked via issue 3386
-                return new AdaptiveInternalID();
-            }
-            return idStack.Peek().Item2;
         }
 
         // Pop the last id off our stack and perform validation 
