@@ -133,6 +133,7 @@
     <ClCompile Include="lib\ActionHelpers.cpp" />
     <ClCompile Include="lib\AdaptiveHighlightColorConfig.cpp" />
     <ClCompile Include="lib\ElementTagContent.cpp" />
+    <ClCompile Include="lib\LinkButton.cpp" />
     <ClCompile Include="lib\XamlHelpers.cpp" />
     <ClInclude Include="lib\ActionHelpers.h" />
     <ClInclude Include="lib\AdaptiveActionElement.h" />
@@ -204,6 +205,7 @@
     <ClInclude Include="lib\CustomElementWrapper.h" />
     <ClInclude Include="lib\DateTimeParser.h" />
     <ClInclude Include="lib\ElementTagContent.h" />
+    <ClInclude Include="lib\LinkButton.h" />
     <ClInclude Include="lib\TextHelpers.h" />
     <ClInclude Include="lib\InputValue.h" />
     <ClInclude Include="lib\MediaHelpers.h" />
