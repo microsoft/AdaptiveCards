@@ -4,7 +4,7 @@
     <VersionMajor>1</VersionMajor>
     <VersionMinor>2</VersionMinor>
     <!-- The nuget package version should be incremented when we produce QFEs -->
-    <NuGetPackVersion>1.2.3</NuGetPackVersion>
+    <NuGetPackVersion>1.2.4</NuGetPackVersion>
     <VersionInfoProductName>AdaptiveCards</VersionInfoProductName>
   </PropertyGroup>
 </Project>
