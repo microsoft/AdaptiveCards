@@ -1245,6 +1245,7 @@ namespace AdaptiveCards.Test
 
             StringAssert.Contains(ex.Message, "Property 'type' must be 'TextRun'");
         }
+
         void RenderCardTask(string payload)
         {
             AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(payload);
@@ -1392,7 +1393,7 @@ namespace AdaptiveCards.Test
             {
                 // it's perfectly fine card. if there is exception, it is due to concurreny
                 // as it's the only variable.
-                Assert.Fail();
+                Assert.Fail("Unexpected failure parsing a valid AdaptiveCard");
             }
         }
     }
