@@ -230,7 +230,6 @@
     <ClInclude Include="lib\ElementTagContent.h" />
     <ClInclude Include="lib\AdaptiveFontTypeDefinition.h" />
     <ClInclude Include="lib\AdaptiveFontTypesDefinition.h" />
-    <ClInclude Include="lib\ActionHelpers.h" />
     <ClInclude Include="lib\LinkButton.h" />
   </ItemGroup>
   <ItemGroup>
