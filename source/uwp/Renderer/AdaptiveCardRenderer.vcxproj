@@ -133,7 +133,6 @@
     <ClCompile Include="lib\AdaptiveHighlightColorConfig.cpp" />
     <ClCompile Include="lib\ElementTagContent.cpp" />
     <ClCompile Include="lib\LinkButton.cpp" />
-    <ClInclude Include="lib\ActionHelpers.cpp" />
     <ClInclude Include="lib\AdaptiveActionElement.h" />
     <ClInclude Include="lib\AdaptiveActionInvoker.h" />
     <ClInclude Include="lib\AdaptiveActionParserRegistration.h" />

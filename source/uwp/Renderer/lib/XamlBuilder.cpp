@@ -32,6 +32,7 @@
 #include <windows.web.http.filters.h>
 #include "XamlBuilder.h"
 #include "XamlHelpers.h"
+#include "LinkButton.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -1248,6 +1249,13 @@ namespace AdaptiveNamespace
         THROW_IF_FAILED(action->get_IconUrl(&iconUrl));
 
         ComPtr<IButton> localButton(button);
+        ComPtr<IAutomationPropertiesStatics> automationProperties;
+        THROW_IF_FAILED(
+            GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
+                                 &automationProperties));
+        ComPtr<IDependencyObject> buttonAsDependencyObject;
+        THROW_IF_FAILED(localButton.As(&buttonAsDependencyObject));
+        THROW_IF_FAILED(automationProperties->SetName(buttonAsDependencyObject.Get(), title.Get()));
 
         // Check if the button has an iconUrl
         if (iconUrl != nullptr)
@@ -1836,8 +1844,23 @@ namespace AdaptiveNamespace
     {
         // Render a button for the action
         ComPtr<IAdaptiveActionElement> action(adaptiveActionElement);
-        ComPtr<IButton> button =
-            XamlHelpers::CreateXamlClass<IButton>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Button));
+        ABI::AdaptiveNamespace::ActionType actionType;
+        RETURN_IF_FAILED(action->get_ActionType(&actionType));
+
+        // now construct an appropriate button for the action type
+        ComPtr<IButton> button;
+        if (actionType == ABI::AdaptiveNamespace::ActionType_OpenUrl)
+        {
+            // OpenUrl buttons should appear as links for accessibility purposes, so we use our custom LinkButton.
+            auto linkButton = winrt::make<LinkButton>();
+            button = linkButton.as<IButton>().detach();
+        }
+
+        if (!button)
+        {
+            // Either non-OpenUrl action or instantiating LinkButton failed. Use standard button.
+            button = XamlHelpers::CreateXamlClass<IButton>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Button));
+        }
 
         ComPtr<IFrameworkElement> buttonFrameworkElement;
         RETURN_IF_FAILED(button.As(&buttonFrameworkElement));
@@ -1894,9 +1917,6 @@ namespace AdaptiveNamespace
                              hostConfig.Get(),
                              allowAboveTitleIconPlacement,
                              button.Get());
-
-        ABI::AdaptiveNamespace::ActionType actionType;
-        RETURN_IF_FAILED(action->get_ActionType(&actionType));
 
         ComPtr<IAdaptiveShowCardActionConfig> showCardActionConfig;
         RETURN_IF_FAILED(actionsConfig->get_ShowCard(&showCardActionConfig));
