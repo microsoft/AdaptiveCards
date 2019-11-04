@@ -36,7 +36,7 @@ We also walked through some high-level [features that are under consideration fo
 
 Lastly we walked through the [adaptivecards-templating](https://www.npmjs.com/package/adaptivecards-templating) package (preview) which is available on NPM. This library adds [templating support](https://github.com/microsoft/AdaptiveCards/issues/2448) to Adaptive Cards, allowing the separation of content from the card layout. This work is currently in active development, so your feedback is most welcome. For plenty of deep dives on templating, take a look at previous Community Calls, and please reach out with any issues or feature suggestions.
 
-You can also experiment with templating adaptive cards using the "next designer" at [http://vnext.adaptivecards.io/designer](http://vnext.adaptivecards.io/designer).
+You can also experiment with templating adaptive cards using the "next designer" at [https://vnext.adaptivecards.io/designer](https://vnext.adaptivecards.io/designer).
 
 To use the **adaptivecards-templating** library, simply take an adaptive card you created in the vnext designer, and add templating expressions for the values you want to replace with real data, then pass that data along to the library as seen below. It will create a fully-populated adaptive card – ready to render!
 

@@ -5,13 +5,13 @@
 	"body": [
 		{
 			"type": "Image",
-			"url": "http://adaptivecards.io/content/cats/2.png",
+			"url": "https://adaptivecards.io/content/cats/2.png",
 			"size": "small",
 			"backgroundColor": "#FF0000FF"
 		},
 		{
 			"type": "Image",
-			"url": "http://adaptivecards.io/content/cats/1.png",
+			"url": "https://adaptivecards.io/content/cats/1.png",
 			"style": "person",
 			"backgroundColor": "#FFFF0000"
 		}
