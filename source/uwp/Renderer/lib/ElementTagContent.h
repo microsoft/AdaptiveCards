@@ -32,6 +32,6 @@ namespace AdaptiveNamespace
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardElement> m_cardElement;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::IColumnDefinition> m_columnDefinition;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> m_separator;
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::IPanel> m_parentPanel;
+        Microsoft::WRL::WeakRef m_parentPanel;
     };
 }

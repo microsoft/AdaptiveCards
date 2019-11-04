@@ -123,9 +123,10 @@ namespace AdaptiveCards
         [JsonConverter(typeof(StringSizeWithUnitConverter), true)]
         [JsonProperty(Order = -4, DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
-        [XmlElement]
+        [XmlElement(typeof(AdaptiveHeight))]
 #endif
-        public AdaptiveHeight Height { get; set; } = new AdaptiveHeight(AdaptiveHeightType.Auto);
+        [DefaultValue(typeof(AdaptiveHeight), "auto")]
+        public AdaptiveHeight Height { get; set; }
 
         /// <summary>
         ///    Explicit card minimum height in pixels
@@ -145,7 +146,6 @@ namespace AdaptiveCards
         [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveElement>))]
 #if !NETSTANDARD1_3
         [XmlElement(typeof(AdaptiveTextBlock))]
-        [XmlElement(typeof(AdaptiveRichTextBlock))]
         [XmlElement(typeof(AdaptiveImage))]
         [XmlElement(typeof(AdaptiveContainer))]
         [XmlElement(typeof(AdaptiveColumnSet))]
@@ -159,7 +159,6 @@ namespace AdaptiveCards
         [XmlElement(typeof(AdaptiveChoiceSetInput))]
         [XmlElement(typeof(AdaptiveMedia))]
         [XmlElement(typeof(AdaptiveActionSet))]
-        [XmlElement(typeof(AdaptiveUnknownElement))]
 #endif
         public List<AdaptiveElement> Body { get; set; } = new List<AdaptiveElement>();
 
@@ -175,7 +174,6 @@ namespace AdaptiveCards
         [XmlElement(typeof(AdaptiveShowCardAction))]
         [XmlElement(typeof(AdaptiveSubmitAction))]
         [XmlElement(typeof(AdaptiveToggleVisibilityAction))]
-        [XmlElement(typeof(AdaptiveUnknownAction))]
 #endif
         public List<AdaptiveAction> Actions { get; set; } = new List<AdaptiveAction>();
 
@@ -215,7 +213,25 @@ namespace AdaptiveCards
         [DefaultValue(null)]
         public AdaptiveAction SelectAction { get; set; }
 
-        public bool ShouldSerializeHeight() => this.Height?.ShouldSerializeAdaptiveHeight() == true;
+        public bool ShouldSerializeHeight()
+        {
+            if (Height == AdaptiveHeight.Auto)
+            {
+                return false;
+            }
+            if (Height.HeightType == AdaptiveHeightType.Pixel)
+            {
+                if (!Height.Unit.HasValue)
+                {
+                    return false;
+                }
+                if (Height.Unit.Value == 0)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
 
         /// <summary>
         ///     Callback that will be invoked should a null or empty version string is encountered. The callback may return an alternate version to use for parsing.
@@ -238,7 +254,7 @@ namespace AdaptiveCards
             {
                 parseResult.Card = JsonConvert.DeserializeObject<AdaptiveCard>(json, new JsonSerializerSettings
                 {
-                    ContractResolver = new WarningLoggingContractResolver(parseResult),
+                    ContractResolver = new WarningLoggingContractResolver(parseResult, new ParseContext()),
                     Converters = { new StrictIntConverter() }
                 });
             }

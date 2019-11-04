@@ -32,6 +32,7 @@
 #include <windows.web.http.filters.h>
 #include "XamlBuilder.h"
 #include "XamlHelpers.h"
+#include "LinkButton.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -245,7 +246,8 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT XamlBuilder::AddListener(_In_ IXamlBuilderListener* listener) noexcept try
+    HRESULT XamlBuilder::AddListener(_In_ IXamlBuilderListener* listener) noexcept
+    try
     {
         if (m_listeners.find(listener) == m_listeners.end())
         {
@@ -259,7 +261,8 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT XamlBuilder::RemoveListener(_In_ IXamlBuilderListener* listener) noexcept try
+    HRESULT XamlBuilder::RemoveListener(_In_ IXamlBuilderListener* listener) noexcept
+    try
     {
         if (m_listeners.find(listener) != m_listeners.end())
         {
@@ -922,7 +925,8 @@ namespace AdaptiveNamespace
 
     static inline HRESULT WarnForFallbackContentElement(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                                         _In_ HSTRING parentElementType,
-                                                        _In_ HSTRING fallbackElementType) try
+                                                        _In_ HSTRING fallbackElementType)
+    try
     {
         std::string warning = "Performing fallback for element of type \"";
         warning.append(HStringToUTF8(parentElementType));
@@ -934,8 +938,8 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    static inline HRESULT WarnForFallbackDrop(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                                              _In_ HSTRING elementType) try
+    static inline HRESULT WarnForFallbackDrop(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext, _In_ HSTRING elementType)
+    try
     {
         std::string warning = "Dropping element of type \"";
         warning.append(HStringToUTF8(elementType));
@@ -1245,6 +1249,13 @@ namespace AdaptiveNamespace
         THROW_IF_FAILED(action->get_IconUrl(&iconUrl));
 
         ComPtr<IButton> localButton(button);
+        ComPtr<IAutomationPropertiesStatics> automationProperties;
+        THROW_IF_FAILED(
+            GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
+                                 &automationProperties));
+        ComPtr<IDependencyObject> buttonAsDependencyObject;
+        THROW_IF_FAILED(localButton.As(&buttonAsDependencyObject));
+        THROW_IF_FAILED(automationProperties->SetName(buttonAsDependencyObject.Get(), title.Get()));
 
         // Check if the button has an iconUrl
         if (iconUrl != nullptr)
@@ -1322,8 +1333,7 @@ namespace AdaptiveNamespace
                         RETURN_IF_FAILED(buttonText.As(&buttonTextAsFrameworkElement));
 
                         return SetMatchingHeight(buttonIconAsFrameworkElement.Get(), buttonTextAsFrameworkElement.Get());
-                    })
-                        .Get(),
+                    }).Get(),
                     &eventToken));
 
                 // Only add spacing when the icon must be located at the left of the title
@@ -1499,7 +1509,10 @@ namespace AdaptiveNamespace
 
         for (auto parentPanel : parentPanels)
         {
-            SetSeparatorVisibility(parentPanel);
+            if (parentPanel)
+            {
+                SetSeparatorVisibility(parentPanel);
+            }
         }
 
         return S_OK;
@@ -1831,8 +1844,23 @@ namespace AdaptiveNamespace
     {
         // Render a button for the action
         ComPtr<IAdaptiveActionElement> action(adaptiveActionElement);
-        ComPtr<IButton> button =
-            XamlHelpers::CreateXamlClass<IButton>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Button));
+        ABI::AdaptiveNamespace::ActionType actionType;
+        RETURN_IF_FAILED(action->get_ActionType(&actionType));
+
+        // now construct an appropriate button for the action type
+        ComPtr<IButton> button;
+        if (actionType == ABI::AdaptiveNamespace::ActionType_OpenUrl)
+        {
+            // OpenUrl buttons should appear as links for accessibility purposes, so we use our custom LinkButton.
+            auto linkButton = winrt::make<LinkButton>();
+            button = linkButton.as<IButton>().detach();
+        }
+
+        if (!button)
+        {
+            // Either non-OpenUrl action or instantiating LinkButton failed. Use standard button.
+            button = XamlHelpers::CreateXamlClass<IButton>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Button));
+        }
 
         ComPtr<IFrameworkElement> buttonFrameworkElement;
         RETURN_IF_FAILED(button.As(&buttonFrameworkElement));
@@ -1890,9 +1918,6 @@ namespace AdaptiveNamespace
                              allowAboveTitleIconPlacement,
                              button.Get());
 
-        ABI::AdaptiveNamespace::ActionType actionType;
-        RETURN_IF_FAILED(action->get_ActionType(&actionType));
-
         ComPtr<IAdaptiveShowCardActionConfig> showCardActionConfig;
         RETURN_IF_FAILED(actionsConfig->get_ShowCard(&showCardActionConfig));
         ABI::AdaptiveNamespace::ActionMode showCardActionMode;
@@ -1906,11 +1931,10 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveActionInvoker> actionInvoker;
         RETURN_IF_FAILED(renderContext->get_ActionInvoker(&actionInvoker));
         EventRegistrationToken clickToken;
-        RETURN_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>(
-                                                   [action, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
-                                                       return actionInvoker->SendActionEvent(action.Get());
-                                                   })
-                                                   .Get(),
+        RETURN_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([action, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs *
+                                                                                                     /*args*/) -> HRESULT {
+                                                   return actionInvoker->SendActionEvent(action.Get());
+                                               }).Get(),
                                                &clickToken));
 
         RETURN_IF_FAILED(HandleActionStyling(adaptiveActionElement, buttonFrameworkElement.Get(), renderContext));
@@ -2313,17 +2337,36 @@ namespace AdaptiveNamespace
                 THROW_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
                 // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
                 EventRegistrationToken eventToken;
+                ComPtr<IInspectable> localParentElement(parentElement);
+
+                // Take weak references to the ellipse and parent to avoid circular references between this lambda and
+                // its parents (Parent->Ellipse->ImageBrush->Lambda->(Parent and Ellipse))
+                WeakRef weakParent;
+                THROW_IF_FAILED(localParentElement.AsWeak(&weakParent));
+
+                WeakRef weakEllipse;
+                THROW_IF_FAILED(ellipseAsUIElement.AsWeak(&weakEllipse));
                 THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(
-                    Callback<IRoutedEventHandler>([ellipseAsUIElement, isVisible](IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
-                        // Don't set the AutoImageSize on the ellipse as it makes the ellipse grow bigger than
-                        // what it would be otherwise, just set the visibility when we get the image
+                    Callback<IRoutedEventHandler>([weakEllipse, imageSourceAsBitmap, weakParent, isVisible](
+                                                      IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
                         if (isVisible)
                         {
-                            RETURN_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Visible));
+                            ComPtr<IFrameworkElement> lambdaEllipseAsFrameworkElement;
+                            RETURN_IF_FAILED(weakEllipse.As(&lambdaEllipseAsFrameworkElement));
+
+                            ComPtr<IInspectable> lambdaParentElement;
+                            RETURN_IF_FAILED(weakParent.As(&lambdaParentElement));
+
+                            if (lambdaEllipseAsFrameworkElement && lambdaParentElement)
+                            {
+                                RETURN_IF_FAILED(SetAutoImageSize(lambdaEllipseAsFrameworkElement.Get(),
+                                                                  lambdaParentElement.Get(),
+                                                                  imageSourceAsBitmap.Get(),
+                                                                  isVisible));
+                            }
                         }
                         return S_OK;
-                    })
-                        .Get(),
+                    }).Get(),
                     &eventToken));
             }
         }
@@ -2352,18 +2395,34 @@ namespace AdaptiveNamespace
                 THROW_IF_FAILED(imageAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
 
                 // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
-                ComPtr<IInspectable> strongParentElement(parentElement);
+                ComPtr<IInspectable> localParentElement(parentElement);
+
+                // Take weak references to the image and parent to avoid circular references between this lambda and
+                // its parents (Parent->Image->Lambda->(Parent and Image))
+                WeakRef weakParent;
+                THROW_IF_FAILED(localParentElement.AsWeak(&weakParent));
+
+                WeakRef weakImage;
+                THROW_IF_FAILED(imageAsFrameworkElement.AsWeak(&weakImage));
                 EventRegistrationToken eventToken;
                 THROW_IF_FAILED(xamlImage->add_ImageOpened(
-                    Callback<IRoutedEventHandler>(
-                        [imageAsFrameworkElement, strongParentElement, imageSourceAsBitmap, isVisible](IInspectable* /*sender*/, IRoutedEventArgs *
-                                                                                                       /*args*/) -> HRESULT {
-                            return SetAutoImageSize(imageAsFrameworkElement.Get(),
-                                                    strongParentElement.Get(),
-                                                    imageSourceAsBitmap.Get(),
-                                                    isVisible);
-                        })
-                        .Get(),
+                    Callback<IRoutedEventHandler>([weakImage, weakParent, imageSourceAsBitmap, isVisible](IInspectable* /*sender*/, IRoutedEventArgs *
+                                                                                                          /*args*/) -> HRESULT {
+                        ComPtr<IFrameworkElement> lambdaImageAsFrameworkElement;
+                        RETURN_IF_FAILED(weakImage.As(&lambdaImageAsFrameworkElement));
+
+                        ComPtr<IInspectable> lambdaParentElement;
+                        RETURN_IF_FAILED(weakParent.As(&lambdaParentElement));
+
+                        if (lambdaImageAsFrameworkElement && lambdaParentElement)
+                        {
+                            RETURN_IF_FAILED(SetAutoImageSize(lambdaImageAsFrameworkElement.Get(),
+                                                              lambdaParentElement.Get(),
+                                                              imageSourceAsBitmap.Get(),
+                                                              isVisible));
+                        }
+                        return S_OK;
+                    }).Get(),
                     &eventToken));
             }
             else
@@ -3917,14 +3976,13 @@ namespace AdaptiveNamespace
         // Make the action the same size as the text box
         EventRegistrationToken eventToken;
         THROW_IF_FAILED(textBoxAsFrameworkElement->add_Loaded(
-            Callback<IRoutedEventHandler>(
-                [actionUIElement, textBoxAsFrameworkElement](IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
-                    ComPtr<IFrameworkElement> actionFrameworkElement;
-                    RETURN_IF_FAILED(actionUIElement.As(&actionFrameworkElement));
+            Callback<IRoutedEventHandler>([actionUIElement, textBoxAsFrameworkElement](IInspectable* /*sender*/, IRoutedEventArgs *
+                                                                                       /*args*/) -> HRESULT {
+                ComPtr<IFrameworkElement> actionFrameworkElement;
+                RETURN_IF_FAILED(actionUIElement.As(&actionFrameworkElement));
 
-                    return SetMatchingHeight(actionFrameworkElement.Get(), textBoxAsFrameworkElement.Get());
-                })
-                .Get(),
+                return SetMatchingHeight(actionFrameworkElement.Get(), textBoxAsFrameworkElement.Get());
+            }).Get(),
             &eventToken));
 
         // Wrap the action in a button
@@ -3957,8 +4015,7 @@ namespace AdaptiveNamespace
             THROW_IF_FAILED(textBoxAsUIElement->add_KeyDown(
                 Callback<IKeyEventHandler>([actionInvoker, localInlineAction](IInspectable* /*sender*/, IKeyRoutedEventArgs* args) -> HRESULT {
                     return HandleKeydownForInlineAction(args, actionInvoker.Get(), localInlineAction.Get());
-                })
-                    .Get(),
+                }).Get(),
                 &keyDownEventToken));
         }
 
@@ -4289,28 +4346,26 @@ namespace AdaptiveNamespace
 
         EventRegistrationToken clickToken;
         RETURN_IF_FAILED(touchTargetAsButtonBase->add_Click(
-            Callback<IRoutedEventHandler>(
-                [touchTargetUIElement, lambdaRenderContext, adaptiveMedia, mediaElement, mediaSourceUrl, lambdaMimeType, mediaInvoker](
-                    IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
-                    // Take ownership of the passed in HSTRING
-                    HString localMimeType;
-                    localMimeType.Attach(lambdaMimeType);
+            Callback<IRoutedEventHandler>([touchTargetUIElement, lambdaRenderContext, adaptiveMedia, mediaElement, mediaSourceUrl, lambdaMimeType, mediaInvoker](
+                                              IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
+                // Take ownership of the passed in HSTRING
+                HString localMimeType;
+                localMimeType.Attach(lambdaMimeType);
 
-                    // Turn off the button to prevent extra clicks
-                    ComPtr<ABI::Windows::UI::Xaml::Controls::IControl> buttonAsControl;
-                    touchTargetUIElement.As(&buttonAsControl);
-                    RETURN_IF_FAILED(buttonAsControl->put_IsEnabled(false));
+                // Turn off the button to prevent extra clicks
+                ComPtr<ABI::Windows::UI::Xaml::Controls::IControl> buttonAsControl;
+                touchTargetUIElement.As(&buttonAsControl);
+                RETURN_IF_FAILED(buttonAsControl->put_IsEnabled(false));
 
-                    // Handle the click
-                    return HandleMediaClick(lambdaRenderContext.Get(),
-                                            adaptiveMedia.Get(),
-                                            mediaElement.Get(),
-                                            touchTargetUIElement.Get(),
-                                            mediaSourceUrl.Get(),
-                                            lambdaMimeType,
-                                            mediaInvoker.Get());
-                })
-                .Get(),
+                // Handle the click
+                return HandleMediaClick(lambdaRenderContext.Get(),
+                                        adaptiveMedia.Get(),
+                                        mediaElement.Get(),
+                                        touchTargetUIElement.Get(),
+                                        mediaSourceUrl.Get(),
+                                        lambdaMimeType,
+                                        mediaInvoker.Get());
+            }).Get(),
             &clickToken));
 
         RETURN_IF_FAILED(mediaPanelAsUIElement.CopyTo(mediaControl));
@@ -4451,12 +4506,11 @@ namespace AdaptiveNamespace
         THROW_IF_FAILED(localButton.As(&buttonBase));
 
         EventRegistrationToken clickToken;
-        THROW_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>(
-                                                  [strongAction, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
-                                                      THROW_IF_FAILED(actionInvoker->SendActionEvent(strongAction.Get()));
-                                                      return S_OK;
-                                                  })
-                                                  .Get(),
+        THROW_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([strongAction, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs *
+                                                                                                          /*args*/) -> HRESULT {
+                                                  THROW_IF_FAILED(actionInvoker->SendActionEvent(strongAction.Get()));
+                                                  return S_OK;
+                                              }).Get(),
                                               &clickToken));
     }
 
@@ -4471,8 +4525,7 @@ namespace AdaptiveNamespace
         // Add Tap handler that sets the event as handled so that it doesn't propagate to the parent containers.
         return uiElement->add_Tapped(Callback<ITappedEventHandler>([](IInspectable* /*sender*/, ITappedRoutedEventArgs* args) -> HRESULT {
                                          return args->put_Handled(TRUE);
-                                     })
-                                         .Get(),
+                                     }).Get(),
                                      &clickToken);
     }
 

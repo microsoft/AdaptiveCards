@@ -9,7 +9,7 @@ using Newtonsoft.Json.Linq;
 
 namespace AdaptiveCards
 {
-    public class IgnoreEmptyItemsConverter<T> : JsonConverter
+    public class IgnoreEmptyItemsConverter<T> : AdaptiveTypedBaseElementConverter 
     {
         public override bool CanConvert(Type objectType)
         {

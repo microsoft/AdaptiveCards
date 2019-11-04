@@ -6,14 +6,17 @@
 //
 
 #import "ACRCustomActionRenderer.h"
-#import "UnknownAction.h"
-#import "SharedAdaptiveCard.h"
 #import "ACOBaseActionElementPrivate.h"
-#import "ACRContentHoldingUIView.h"
 #import "ACOHostConfigPrivate.h"
-#import "UtiliOS.h"
+#import "ACRContentHoldingUIView.h"
 #import "ACRRegistration.h"
+#import "SharedAdaptiveCard.h"
+#import "UnknownAction.h"
+#import "UtiliOS.h"
 
+// this is an entry point to custom parsing and rendering
+// it will call a registered custom parser to deserialize, then the deserialized object is rendered by calling
+// the appropriate custom renderer
 @implementation ACRCustomActionRenderer
 
 + (ACRCustomActionRenderer *)getInstance
@@ -27,32 +30,24 @@
     return ACRUnknownAction;
 }
 
-- (UIButton* )renderButton:(ACRView *)view
+- (UIButton *)renderButton:(ACRView *)view
                     inputs:(NSMutableArray *)inputs
                  superview:(UIView<ACRIContentHoldingView> *)superview
          baseActionElement:(ACOBaseActionElement *)acoElem
                 hostConfig:(ACOHostConfig *)acoConfig;
 {
-    std::shared_ptr<UnknownAction> customAction = std::dynamic_pointer_cast<UnknownAction>([acoElem element]);
+    std::shared_ptr<UnknownAction> unknownAction = std::dynamic_pointer_cast<UnknownAction>([acoElem element]);
+    // we get back a deserialized action object by calling a custom parser registered via host
+    ACOBaseActionElement *customAction = deserializeUnknownActionToCustomAction(unknownAction);
+    if (customAction) {
+        ACRRegistration *reg = [ACRRegistration getInstance];
+        NSString *type = [NSString stringWithCString:unknownAction->GetElementTypeString().c_str() encoding:NSUTF8StringEncoding];
 
-    ACRRegistration *reg = [ACRRegistration getInstance];
-    if(reg) {
-        NSString *type = [NSString stringWithCString:customAction->GetElementTypeString().c_str() encoding:NSUTF8StringEncoding];
-        NSObject<ACOIBaseActionElementParser> *parser = [reg getCustomActionElementParser:type];
-        if (!parser) {
-            @throw [ACOFallbackException fallbackException];
-        }
-        Json::Value blob = customAction->GetAdditionalProperties();
-        Json::FastWriter fastWriter;
-        NSString *jsonString = [[NSString alloc] initWithCString:fastWriter.write(blob).c_str() encoding:NSUTF8StringEncoding];
-        if(jsonString.length > 0){
-            NSData *jsonPayload = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-            ACOParseContext *context = [reg getParseContext];
-            ACOBaseActionElement *actionElement = [parser deserialize:jsonPayload parseContext:context];
-            ACRBaseActionElementRenderer *renderer = [reg getActionRenderer:[NSNumber numberWithLong:type.hash]];;
-            if(renderer) {
-                return [renderer renderButton:view inputs:inputs superview:superview baseActionElement:actionElement hostConfig:acoConfig];
-            }
+        ACRBaseActionElementRenderer *renderer = [reg getActionRenderer:[NSNumber numberWithLong:type.hash]];
+
+        if (renderer) {
+            // render a button by calling custom renderer
+            return [renderer renderButton:view inputs:inputs superview:superview baseActionElement:customAction hostConfig:acoConfig];
         }
     }
     return nil;

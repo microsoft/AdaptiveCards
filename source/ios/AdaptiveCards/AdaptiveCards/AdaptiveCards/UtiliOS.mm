@@ -18,10 +18,14 @@
 #import "BackgroundImage.h"
 #import "BaseActionElement.h"
 #import "Enums.h"
+#import "MarkDownParser.h"
+#import "RichTextElementProperties.h"
+#import "TextRun.h"
 
 using namespace AdaptiveCards;
 
-void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visibilityInfo) {
+void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visibilityInfo)
+{
     view.hidden = !(visibilityInfo->GetIsVisible());
     NSString *hashkey = [NSString stringWithCString:visibilityInfo->GetId().c_str()
                                            encoding:NSUTF8StringEncoding];
@@ -29,7 +33,8 @@ void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visi
 }
 
 void configSeparatorVisibility(ACRSeparator *view,
-                               std::shared_ptr<BaseCardElement> const &visibilityInfo) {
+                               std::shared_ptr<BaseCardElement> const &visibilityInfo)
+{
     view.hidden = !(visibilityInfo->GetIsVisible());
     NSMutableString *hashkey = [NSMutableString stringWithCString:visibilityInfo->GetId().c_str()
                                                          encoding:NSUTF8StringEncoding];
@@ -38,7 +43,8 @@ void configSeparatorVisibility(ACRSeparator *view,
 }
 
 void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage> backgroundImage,
-                           UIView *containerView, ACRView *rootView) {
+                           UIView *containerView, ACRView *rootView)
+{
     if (backgroundImage == nullptr || backgroundImage->GetUrl().empty()) {
         return;
     }
@@ -87,7 +93,8 @@ void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage>
 }
 
 void renderBackgroundImage(const BackgroundImage *backgroundImageProperties, UIImageView *imageView,
-                           UIImage *image) {
+                           UIImage *image)
+{
     if (backgroundImageProperties->GetFillMode() == ImageFillMode::Repeat ||
         backgroundImageProperties->GetFillMode() == ImageFillMode::RepeatHorizontally ||
         backgroundImageProperties->GetFillMode() == ImageFillMode::RepeatVertically) {
@@ -98,7 +105,8 @@ void renderBackgroundImage(const BackgroundImage *backgroundImageProperties, UII
 }
 
 void applyBackgroundImageConstraints(const BackgroundImage *backgroundImageProperties,
-                                     UIImageView *imageView, UIImage *image) {
+                                     UIImageView *imageView, UIImage *image)
+{
     if (backgroundImageProperties == nullptr || imageView == nullptr || image == nullptr) {
         return;
     }
@@ -276,8 +284,8 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
             } else if (superView.frame.size.height > imageView.frame.size.height) {
                 [imageView.heightAnchor constraintEqualToAnchor:superView.heightAnchor].active =
                     YES;
-            } else {  // if background image is bigger than the superview; let it retain its
-                      // dimensions
+            } else { // if background image is bigger than the superview; let it retain its
+                     // dimensions
                 imageView.translatesAutoresizingMaskIntoConstraints = YES;
             }
 
@@ -305,7 +313,8 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
 }
 
 void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem,
-                 ACRContentStackView *container, ACOHostConfig *acoConfig) {
+                 ACRContentStackView *container, ACOHostConfig *acoConfig)
+{
     std::shared_ptr<CollectionTypeElement> collection =
         std::dynamic_pointer_cast<CollectionTypeElement>(elem);
     if (collection) {
@@ -368,27 +377,29 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
 
 ObserverActionBlock generateBackgroundImageObserverAction(
     std::shared_ptr<BackgroundImage> backgroundImageProperties, ACRView *observer,
-    std::shared_ptr<BaseCardElement> const &context) {
+    std::shared_ptr<BaseCardElement> const &context)
+{
     return ^(NSObject<ACOIResourceResolver> *imageResourceResolver, NSString *key,
              std::shared_ptr<BaseCardElement> const &elem, NSURL *url, ACRView *rootView) {
-      UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
-      if (view) {
-          [view addObserver:observer
-                 forKeyPath:@"image"
-                    options:NSKeyValueObservingOptionNew
-                    context:backgroundImageProperties.get()];
+        UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
+        if (view) {
+            [view addObserver:observer
+                   forKeyPath:@"image"
+                      options:NSKeyValueObservingOptionNew
+                      context:backgroundImageProperties.get()];
 
-          // store the image view and column for easy retrieval in ACRView::observeValueForKeyPath
-          [rootView setImageView:key view:view];
-          [rootView setImageContext:key context:context];
-      }
+            // store the image view and column for easy retrieval in ACRView::observeValueForKeyPath
+            [rootView setImageView:key view:view];
+            [rootView setImageContext:key context:context];
+        }
     };
 }
 
 void handleFallbackException(ACOFallbackException *exception, UIView<ACRIContentHoldingView> *view,
                              ACRView *rootView, NSMutableArray *inputs,
                              std::shared_ptr<BaseCardElement> const &givenElem,
-                             ACOHostConfig *config) {
+                             ACOHostConfig *config)
+{
     std::shared_ptr<BaseElement> fallbackBaseElement = nullptr;
     std::shared_ptr<BaseCardElement> elem = givenElem;
     bool bCanFallbackToAncestor = elem->CanFallbackToAncestor();
@@ -443,7 +454,8 @@ void handleFallbackException(ACOFallbackException *exception, UIView<ACRIContent
 }
 
 void removeLastViewFromCollectionView(const CardElementType elemType,
-                                      UIView<ACRIContentHoldingView> *view) {
+                                      UIView<ACRIContentHoldingView> *view)
+{
     if (elemType == CardElementType::Container || elemType == CardElementType::Column ||
         elemType == CardElementType::ColumnSet) {
         [view removeLastViewFromArrangedSubview];
@@ -454,7 +466,8 @@ void handleActionFallbackException(ACOFallbackException *exception,
                                    UIView<ACRIContentHoldingView> *view, ACRView *rootView,
                                    NSMutableArray *inputs, ACOBaseActionElement *acoElem,
                                    ACOHostConfig *config,
-                                   UIView<ACRIContentHoldingView> *actionSet) {
+                                   UIView<ACRIContentHoldingView> *actionSet)
+{
     std::shared_ptr<BaseElement> fallbackBaseElement = nullptr;
     std::shared_ptr<BaseActionElement> elem = acoElem.element;
     bool bCanFallbackToAncestor = elem->CanFallbackToAncestor();
@@ -504,7 +517,8 @@ void handleActionFallbackException(ACOFallbackException *exception,
     }
 }
 
-UIFontDescriptor *getItalicFontDescriptor(UIFontDescriptor *descriptor, bool isItalic) {
+UIFontDescriptor *getItalicFontDescriptor(UIFontDescriptor *descriptor, bool isItalic)
+{
     if (isItalic && descriptor) {
         return [descriptor fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic];
     }
@@ -514,14 +528,153 @@ UIFontDescriptor *getItalicFontDescriptor(UIFontDescriptor *descriptor, bool isI
 
 ACRRenderingStatus buildTargetForButton(ACRTargetBuilderDirector *director,
                                         std::shared_ptr<BaseActionElement> const &action,
-                                        UIButton *button, NSObject **target) {
+                                        UIButton *button, NSObject **target)
+{
     *target = [director build:action forButton:button];
     return *target ? ACRRenderingStatus::ACROk : ACRRenderingStatus::ACRFailed;
 }
 
 ACRRenderingStatus buildTarget(ACRTargetBuilderDirector *director,
                                std::shared_ptr<BaseActionElement> const &action,
-                               NSObject **target) {
+                               NSObject **target)
+{
     *target = [director build:action];
     return *target ? ACRRenderingStatus::ACROk : ACRRenderingStatus::ACRFailed;
+}
+
+void buildIntermediateResultForText(ACRView *rootView, ACOHostConfig *hostConfig, RichTextElementProperties const &textProperties, NSString *elementId)
+{
+    std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:textProperties.GetText() language:textProperties.GetLanguage()]);
+
+    // MarkDownParser transforms text with MarkDown to a html string
+    NSString *parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
+    NSDictionary *data = nil;
+
+    // use Apple's html rendering only if the string has markdowns
+    if (markDownParser->HasHtmlTags() || markDownParser->IsEscaped()) {
+        NSString *fontFamilyName = nil;
+
+        if (![hostConfig getFontFamily:textProperties.GetFontType()]) {
+            if (textProperties.GetFontType() == FontType::Monospace) {
+                fontFamilyName = @"'Courier New'";
+            } else {
+                fontFamilyName = @"'-apple-system',  'San Francisco'";
+            }
+        } else {
+            fontFamilyName = [hostConfig getFontFamily:textProperties.GetFontType()];
+        }
+
+        NSString *font_style = textProperties.GetItalic() ? @"italic" : @"normal";
+        // Font and text size are applied as CSS style by appending it to the html string
+        parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: %@; font-size:%dpx; font-weight: %d; font-style: %@;}</style>",
+                                                                                        fontFamilyName,
+                                                                                        [hostConfig getTextBlockTextSize:textProperties.GetFontType()
+                                                                                                                textSize:textProperties.GetTextSize()],
+                                                                                        [hostConfig getTextBlockFontWeight:textProperties.GetFontType()
+                                                                                                                textWeight:textProperties.GetTextWeight()],
+                                                                                        font_style]];
+
+        NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
+        NSDictionary *options = @{NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType};
+        data = @{@"html" : htmlData, @"options" : options};
+    } else {
+        int fontweight = [hostConfig getTextBlockFontWeight:textProperties.GetFontType()
+                                                 textWeight:textProperties.GetTextWeight()];
+        // sanity check, 400 is the normal font;
+        if (fontweight <= 0 || fontweight > 900) {
+            fontweight = 400;
+        }
+        UIFont *font = nil;
+        fontweight -= 100;
+        fontweight /= 100;
+
+        if (![hostConfig getFontFamily:textProperties.GetFontType()]) {
+            const NSArray<NSNumber *> *fontweights = @[ @(UIFontWeightUltraLight), @(UIFontWeightThin), @(UIFontWeightLight), @(UIFontWeightRegular), @(UIFontWeightMedium),
+                                                        @(UIFontWeightSemibold), @(UIFontWeightBold), @(UIFontWeightHeavy), @(UIFontWeightBlack) ];
+            const CGFloat size = [hostConfig getTextBlockTextSize:textProperties.GetFontType() textSize:textProperties.GetTextSize()];
+            if (textProperties.GetFontType() == FontType::Monospace) {
+                const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
+                                                            @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
+                UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:@{UIFontDescriptorFamilyAttribute : @"Courier New",
+                                                                                                    UIFontDescriptorFaceAttribute : fontweights[fontweight]}];
+                descriptor = getItalicFontDescriptor(descriptor, textProperties.GetItalic());
+
+                font = [UIFont fontWithDescriptor:descriptor size:[hostConfig getTextBlockTextSize:textProperties.GetFontType() textSize:textProperties.GetTextSize()]];
+            } else {
+                font = [UIFont systemFontOfSize:size weight:[fontweights[fontweight] floatValue]];
+
+                if (textProperties.GetItalic()) {
+                    font = [UIFont fontWithDescriptor:
+                                       getItalicFontDescriptor(font.fontDescriptor, textProperties.GetItalic())
+                                                 size:size];
+                }
+            }
+        } else {
+            // font weight as string since font weight as double doesn't work
+            // normailze fontweight for indexing
+            const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
+                                                        @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
+            UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:
+                                                                 @{UIFontDescriptorFamilyAttribute : [hostConfig getFontFamily:textProperties.GetFontType()],
+                                                                   UIFontDescriptorFaceAttribute : fontweights[fontweight]}];
+
+            descriptor = getItalicFontDescriptor(descriptor, textProperties.GetItalic());
+
+            font = [UIFont fontWithDescriptor:descriptor size:[hostConfig getTextBlockTextSize:textProperties.GetFontType() textSize:textProperties.GetTextSize()]];
+        }
+
+        NSDictionary *attributeDictionary = @{NSFontAttributeName : font};
+        data = @{@"nonhtml" : parsedString, @"descriptor" : attributeDictionary};
+    }
+
+    if (elementId) {
+        [rootView enqueueIntermediateTextProcessingResult:data
+                                                elementId:elementId];
+    }
+}
+
+void TextBlockToRichTextElementProperties(const std::shared_ptr<TextBlock> &textBlock, RichTextElementProperties &textProp)
+{
+    textProp.SetText(textBlock->GetText());
+    textProp.SetTextSize(textBlock->GetTextSize());
+    textProp.SetTextWeight(textBlock->GetTextWeight());
+    textProp.SetFontType(textBlock->GetFontType());
+    textProp.SetTextColor(textBlock->GetTextColor());
+    textProp.SetIsSubtle(textBlock->GetIsSubtle());
+    textProp.SetLanguage(textBlock->GetLanguage());
+}
+
+void TextRunToRichTextElementProperties(const std::shared_ptr<TextRun> &textRun, RichTextElementProperties &textProp)
+{
+    textProp.SetText(textRun->GetText());
+    textProp.SetTextSize(textRun->GetTextSize());
+    textProp.SetTextWeight(textRun->GetTextWeight());
+    textProp.SetFontType(textRun->GetFontType());
+    textProp.SetTextColor(textRun->GetTextColor());
+    textProp.SetIsSubtle(textRun->GetIsSubtle());
+    textProp.SetLanguage(textRun->GetLanguage());
+    textProp.SetItalic(textRun->GetItalic());
+    textProp.SetStrikethrough(textRun->GetStrikethrough());
+}
+
+ACOBaseActionElement *deserializeUnknownActionToCustomAction(const std::shared_ptr<UnknownAction> unknownAction)
+{
+    ACRRegistration *reg = [ACRRegistration getInstance];
+    ACOBaseActionElement *customAction = nil;
+    if (reg) {
+        NSString *type = [NSString stringWithCString:unknownAction->GetElementTypeString().c_str() encoding:NSUTF8StringEncoding];
+        NSObject<ACOIBaseActionElementParser> *parser = [reg getCustomActionElementParser:type];
+        if (!parser) {
+            @throw [ACOFallbackException fallbackException];
+        }
+        Json::Value blob = unknownAction->GetAdditionalProperties();
+        Json::FastWriter fastWriter;
+        NSString *jsonString = [[NSString alloc] initWithCString:fastWriter.write(blob).c_str() encoding:NSUTF8StringEncoding];
+        if (jsonString.length > 0) {
+            NSData *jsonPayload = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+            ACOParseContext *context = [reg getParseContext];
+            customAction = [parser deserialize:jsonPayload parseContext:context];
+        }
+    }
+    return customAction;
 }

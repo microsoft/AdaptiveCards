@@ -132,6 +132,7 @@
   <ItemGroup>
     <ClCompile Include="lib\AdaptiveHighlightColorConfig.cpp" />
     <ClCompile Include="lib\ElementTagContent.cpp" />
+    <ClCompile Include="lib\LinkButton.cpp" />
     <ClInclude Include="lib\AdaptiveActionElement.h" />
     <ClInclude Include="lib\AdaptiveActionInvoker.h" />
     <ClInclude Include="lib\AdaptiveActionParserRegistration.h" />
@@ -201,6 +202,7 @@
     <ClInclude Include="lib\CustomElementWrapper.h" />
     <ClInclude Include="lib\DateTimeParser.h" />
     <ClInclude Include="lib\ElementTagContent.h" />
+    <ClInclude Include="lib\LinkButton.h" />
     <ClInclude Include="lib\TextHelpers.h" />
     <ClInclude Include="lib\InputValue.h" />
     <ClInclude Include="lib\MediaHelpers.h" />
