@@ -16,14 +16,14 @@ namespace AdaptiveCards
 
         public override bool CanConvert(Type objectType)
         {
-            return typeof(List<AdaptiveInline>).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
+            return typeof(List<IAdaptiveInline>).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var array = JArray.Load(reader);
             List<object> list = array.ToObject<List<object>>();
-            List<AdaptiveInline> arrayList = new List<AdaptiveInline>();
+            List<IAdaptiveInline> arrayList = new List<IAdaptiveInline>();
             var serializerSettigns = new JsonSerializerSettings
             {
                 ContractResolver = new WarningLoggingContractResolver(new AdaptiveCardParseResult(), ParseContext),
