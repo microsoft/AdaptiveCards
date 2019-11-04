@@ -30,6 +30,7 @@ namespace AdaptiveCards
                 Converters = { new StrictIntConverter() }
             };
 
+
             // We only support text runs for now, which can be specified as either a string or an object
             foreach (object obj in list)
             {
@@ -45,7 +46,17 @@ namespace AdaptiveCards
                         throw new AdaptiveSerializationException($"Property 'type' must be '{AdaptiveTextRun.TypeName}'");
                     }
 
-                    arrayList.Add(JsonConvert.DeserializeObject<AdaptiveTextRun>(jobj.ToString(), serializerSettigns));
+                    if (ParseContext == null)
+                    {
+                        ParseContext = new ParseContext();
+                    }
+
+                    var adaptiveInline = JsonConvert.DeserializeObject<AdaptiveTextRun>(jobj.ToString(), new JsonSerializerSettings
+                    {
+                        ContractResolver = new WarningLoggingContractResolver(new AdaptiveCardParseResult(), ParseContext),
+                        Converters = { new StrictIntConverter() }
+                    });
+                    arrayList.Add(adaptiveInline);
                 }
             }
             return arrayList;

@@ -34,7 +34,6 @@ namespace AdaptiveCards
         [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveElement>))]
 #if !NETSTANDARD1_3
         [XmlElement(typeof(AdaptiveTextBlock))]
-        [XmlElement(typeof(AdaptiveRichTextBlock))]
         [XmlElement(typeof(AdaptiveImage))]
         [XmlElement(typeof(AdaptiveContainer))]
         [XmlElement(typeof(AdaptiveColumnSet))]
@@ -48,7 +47,6 @@ namespace AdaptiveCards
         [XmlElement(typeof(AdaptiveToggleInput))]
         [XmlElement(typeof(AdaptiveMedia))]
         [XmlElement(typeof(AdaptiveActionSet))]
-        [XmlElement(typeof(AdaptiveUnknownElement))]
 #endif
         public List<AdaptiveElement> Items { get; set; } = new List<AdaptiveElement>();
 

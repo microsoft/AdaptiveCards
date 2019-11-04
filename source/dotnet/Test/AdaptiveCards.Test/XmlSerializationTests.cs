@@ -21,7 +21,7 @@ namespace AdaptiveCards.Test
     public class XmlSerializationTests
     {
         [TestMethod]
-        public void VerifySerializationForAllScenarioFiles()
+        public void SerializeAllScenarios()
         {
             CompareLogic compareLogic = new CompareLogic(new ComparisonConfig()
             {
@@ -34,34 +34,20 @@ namespace AdaptiveCards.Test
             });
 
             XmlSerializer serializer = new XmlSerializer(typeof(AdaptiveCard));
-            foreach (var version in Directory.EnumerateDirectories(@"..\..\..\..\..\..\..\samples\", "v*"))
+            foreach (var file in Directory.EnumerateFiles(@"..\..\..\..\..\..\..\samples\v1.0\Scenarios"))
             {
-                var folder = Path.Combine($"{version}\\scenarios");
-                if (Directory.Exists(folder))
+                string json = File.ReadAllText(file);
+                var card = JsonConvert.DeserializeObject<AdaptiveCard>(json, new JsonSerializerSettings
                 {
-                    foreach (var file in Directory.EnumerateFiles(folder, "*.json"))
-                    {
-                        string json = File.ReadAllText(file);
-                        var card = JsonConvert.DeserializeObject<AdaptiveCard>(json, new JsonSerializerSettings
-                        {
-                            Converters = { new StrictIntConverter() }
-                        });
+                    Converters = { new StrictIntConverter() }
+                });
+                StringBuilder sb = new StringBuilder();
+                serializer.Serialize(new StringWriter(sb), card);
+                string xml = sb.ToString();
+                var card2 = (AdaptiveCard)serializer.Deserialize(new StringReader(xml));
 
-                        // test XML serialization round-trips
-                        StringBuilder sb = new StringBuilder();
-                        serializer.Serialize(new StringWriter(sb), card);
-                        string xml = sb.ToString();
-                        var card2 = (AdaptiveCard)serializer.Deserialize(new StringReader(xml));
-
-                        var result = compareLogic.Compare(card, card2);
-                        Assert.IsTrue(result.AreEqual, $"XML serialization different: {Path.GetFullPath(file)}: {result.DifferencesString}");
-
-                        // test JSON serialization round-trips
-                        var card3 = JsonConvert.DeserializeObject<AdaptiveCard>(JsonConvert.SerializeObject(card));
-                        result = compareLogic.Compare(card, card3);
-                        Assert.IsTrue(result.AreEqual, $"JSON Serialization different: {Path.GetFullPath(file)}: {result.DifferencesString}");
-                    }
-                }
+                var result = compareLogic.Compare(card, card2);
+                Assert.IsTrue(result.AreEqual, result.DifferencesString);
             }
         }
     }

@@ -34,7 +34,7 @@ namespace AdaptiveCards
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [JsonConverter(typeof(ToggleElementsConverter))]
 #if !NETSTANDARD1_3
-        [XmlElement]
+        [XmlIgnore]
 #endif
         public List<AdaptiveTargetElement> TargetElements { get; set; } = new List<AdaptiveTargetElement>();
     }

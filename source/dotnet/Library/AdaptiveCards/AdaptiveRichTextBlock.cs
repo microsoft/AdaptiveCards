@@ -39,6 +39,6 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
         [XmlElement(typeof(AdaptiveTextRun))]
 #endif
-        public List<AdaptiveInline> Inlines { get; set; } = new List<AdaptiveInline>();
+        public List<IAdaptiveInline> Inlines { get; set; } = new List<IAdaptiveInline>();
     }
 }
