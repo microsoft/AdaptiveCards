@@ -20,11 +20,11 @@ hexo.extend.generator.register("generator-sampleBrowser", function(locals) {
 		var fileNameWithoutExt = path.basename(samplePath, ".json");
         return {
             jsonPath: samplePath,
-			jsonUrl: url_for(`../payloads/${path.basename(samplePath)}`),
+			jsonUrl: url_for(`/payloads/${path.basename(samplePath)}`),
 			templatePath: `../../../samples/templates/${fileNameWithoutExt}.template.json`,
-			templateUrl: url_for(`../payloads/${fileNameWithoutExt}.template.json`),
+			templateUrl: url_for(`/payloads/${fileNameWithoutExt}.template.json`),
 			dataPath: `../../../samples/templates/${fileNameWithoutExt}.data.json`,
-			dataUrl: url_for(`../payloads/${fileNameWithoutExt}.data.json`),
+			dataUrl: url_for(`/payloads/${fileNameWithoutExt}.data.json`),
             htmlPath: `samples/${fileNameWithoutExt}.html`,
             name: changeCase.sentenceCase(fileNameWithoutExt),
             index: index
@@ -45,7 +45,7 @@ hexo.extend.generator.register("generator-sampleBrowser", function(locals) {
 				dataPath: sample.dataPath
             }
         };
-
+		// TODO: Find way to include the template samples here, for now, just load the regular samples
         designerSampleCatalog.push({
             displayName: sample.name,
 			cardPayloadUrl: sample.jsonUrl,
