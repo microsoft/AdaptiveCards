@@ -330,10 +330,16 @@ export class CardDesignerSurface {
                 try {
                     let template = new ACData.Template(inputPayload);
 
-                    let context = new ACData.EvaluationContext();
-                    context.$root = this.context.sampleData;
+                    let evaluationContext = new ACData.EvaluationContext();
 
-                    outputPayload = template.expand(context);
+                    if (this.context.bindingPreviewMode === BindingPreviewMode.SampleData) {
+                        evaluationContext.$root = this.context.sampleData;
+                    }
+                    else {
+                        evaluationContext.$root = this.context.dataStructure.dataType.generateSampleData();
+                    }
+
+                    outputPayload = template.expand(evaluationContext);
                 }
                 catch (e) {
                     console.log("Template expansion error: " + e.message);
