@@ -5,12 +5,14 @@
 There is no open issue for a Xamarin.Native package so I'm placing the Xamarin.Forms issue for now 
 https://github.com/microsoft/AdaptiveCards/issues/3255
 
+Adaptive Cards rendering libraries for Xamarin and Xamarin.Forms have been some of the most requested features by our consumers, some of the consumers have filed feedback for the development in this packages and it is currently tracked [here](http://HereGoesTheLinkToProductBoardButMattHasIt). This feature has also been requested during conferences where the Adaptive Cards developers have a closer contact with developers and external consumers. 
+
 ## Dependencies
 This project depends entirely on the Android and iOS renderer and their API's. This project is a Xamarin bindings library so the only new code to be included are the xamarin transformations for the underlying renderers. For generating the bindings, Xamarin requires the generated binaries (aar file for Android and framework file for iOS) to be included.
 
 ### What is a bindings library
 
-A bindings library is an assembly that wraps the native library with C# wrappers so native code can be invoked via C# calls. Xamarin.Android implements bindings by using Managed Callable Wrappers (MCW) which are a JNI bridge that are used when managed code needs to invoke Java code. In the case of iOS, to bind a library an API definition file is needed; this is merely a C# source file that contains C# interfaces that have been annotated with a handful of attributes that help drive the binding. The API definition is merely the contract that will be used to generate the API.
+A bindings library is an assembly that wraps the native library (Objective-C/Java code) with C# wrappers so native code can be invoked via C# calls. Xamarin.Android implements bindings by using Managed Callable Wrappers (MCW) which are a JNI bridge that are used when managed code needs to invoke Java code. In the case of iOS, to bind a library an API definition file is needed; this is merely a C# source file that contains C# interfaces that have been annotated with a handful of attributes that help drive the binding. The API definition is merely the contract that will be used to generate the API.
 
 ## Architecture
 
@@ -46,16 +48,16 @@ Android bindings are mostly done in the Metadata.xml file which defines the cont
 </metadata>
 ```
 
-#### APIs to be included in Xamarin
+#### APIs to be included in Xamarin.Android
 
 | API Name | Android API |  Priority |
 | --- | --- | --- |
-| Parsing | ```ParseResult Deserialize(JsonValue, String, ParseContext)``` | P0 |
+| Parsing | ```ParseResult Deserialize(JsonValue, String, ParseContext)``` | P2 |
 | Parsing | ```ParseResult DeserializeFromString(String, String)``` | P0 |
 | Parsing | ```ParseResult DeserializeFromString(String, String, ParseContext)``` | P0 |
 | Parsing | ```ParseResult DeserializeFromFile(String, String)``` | P2 |
 | Parsing | ```ParseResult DeserializeFromFile(String, String, ParseContext)``` | P2 |
-| Rendering | ```RenderedAdaptiveCard render(Context, FragmentManager, AdaptiveCard, ICardActionHandler)``` | P0 |
+| Rendering | ```RenderedAdaptiveCard render(Context, FragmentManager, AdaptiveCard, HostConfig, ICardActionHandler)``` | P0 |
 | Rendering | ```RenderedAdaptiveCard render(Context, FragmentManager, AdaptiveCard, HostConfig)``` | P0 |
 | Custom Element | ```void registerRenderer(string, IBaseCardElementRenderer)``` | P1 |
 | Custom Element | ```IBaseCardElementRenderer(string)``` | P1 |
@@ -123,7 +125,7 @@ public enum ACRActionType : long
 }
 ```
 
-### APIs to be included in Xamarin
+### APIs to be included in Xamarin.iOS
 
 | API Name | iOS API | Priority |
 | --- | --- | --- |
@@ -183,6 +185,13 @@ At least four build pipelines will be needed for this project, 2 pipelines for C
 
 For the alpha version all P0 and P1 APIs should be done while P2 and P3 tasks must be done for the first complete release. 
 
+The priorities among the APIs to be ported into Xamarin for the pre-release version were decided by selecting which APIs would be the bare minimum for a consumer of the Xamarin package to be able to render a card would be P0 as well as any APIs that were part of a feature (such as featureRegistration). For P1, the tasks were decided using the same features asked for P1 in the [Xamarin.Forms github issue](https://github.com/microsoft/AdaptiveCards/issues/3255) which states that custom rendering for actions and elements would be P1. Finally, P2 would be any task that gives a better developer experience but are not required for using Adaptive Cards and P3 would be any APIs that may not be used by most consumers or are specific to only one platform.
+
 ## Open issues
 
 Currently the naming convention for AdaptiveCards packages are medium sized, as Xamarin builds on top of other platforms, these namings internally become large enough to overpass the character limit so errors tend to appear during development which make it harder (Xamarin also doesn't spew enough information to be easily solved).
+
+## References
+
+1. [Binding a Java Library](https://docs.microsoft.com/en-us/xamarin/android/platform/binding-java-library/)
+1. [Overview of Objective-C Bindings](https://docs.microsoft.com/en-us/xamarin/cross-platform/macios/binding/overview)
