@@ -21,11 +21,11 @@ export class DataTreeItem extends BaseTreeItem {
     }
 
     protected getLabelText(): string {
-        return this.field.name;
+        return this.field.displayName;
     }
 
     protected getAdditionalText(): string {
-        return this.field.typeName;
+        return this.field.valueType;
     }
 
     protected getAdditionalTextClass(): string {

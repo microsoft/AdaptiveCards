@@ -63,6 +63,7 @@ export class CardDesigner extends Designer.DesignContext {
     private _assetPath: string;
     private _dataStructure: FieldDefinition;
     private _sampleData: any;
+    private _bindingPreviewMode: Designer.BindingPreviewMode = Designer.BindingPreviewMode.NoPreview;
     private _customPeletteItems: CustomPaletteItem[];
 
     private togglePreview() {
@@ -615,7 +616,7 @@ export class CardDesigner extends Designer.DesignContext {
                                     let sampleDataPayload = JSON.parse(dialog.selectedSample.sampleData);
 
                                     this.setSampleDataPayload(sampleDataPayload);
-                                    this.dataStructure = FieldDefinition.create(sampleDataPayload);
+                                    this.dataStructure = FieldDefinition.deriveFrom(sampleDataPayload);
                                 }
                                 catch {
                                     alert("The sample could not be loaded.")
@@ -796,7 +797,7 @@ export class CardDesigner extends Designer.DesignContext {
 
                     if (!this.lockDataStructure) {
                         try {
-                            this.dataStructure = FieldDefinition.create(JSON.parse(this.getCurrentSampleDataEditorPayload()));
+                            this.dataStructure = FieldDefinition.deriveFrom(JSON.parse(this.getCurrentSampleDataEditorPayload()));
                         }
                         catch {
                             // Swallow exception
@@ -1136,6 +1137,14 @@ export class CardDesigner extends Designer.DesignContext {
         this._sampleData = value;
 
         this.setSampleDataPayload(value);
+    }
+
+    get bindingPreviewMode(): Designer.BindingPreviewMode {
+        return this._bindingPreviewMode;
+    }
+
+    set bindingPreviewMode(value: Designer.BindingPreviewMode) {
+        this._bindingPreviewMode = value;
     }
 
     get hostContainer(): HostContainer {

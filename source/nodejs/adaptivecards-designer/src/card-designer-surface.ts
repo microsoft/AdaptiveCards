@@ -10,6 +10,12 @@ import * as Shared from "./shared";
 import { HostContainer } from "./containers";
 import { FieldDefinition } from "./data";
 
+export const enum BindingPreviewMode {
+    NoPreview,
+    GeneratedData,
+    SampleData
+}
+
 export type CardElementType = { new(): Adaptive.CardElement };
 export type ActionType = { new(): Adaptive.Action };
 export type CardElementPeerType = {
@@ -161,6 +167,7 @@ export abstract class DesignContext {
     abstract get hostContainer(): HostContainer;
     abstract get targetVersion(): Adaptive.Version;
     abstract get dataStructure(): FieldDefinition;
+    abstract get bindingPreviewMode(): BindingPreviewMode;
     abstract get sampleData(): any;
 }
 
@@ -583,12 +590,18 @@ export class CardDesignerSurface {
         this._card = new Adaptive.AdaptiveCard();
         this._card.onInlineCardExpanded = (action: Adaptive.ShowCardAction, isExpanded: boolean) => { this.inlineCardExpanded(action, isExpanded); };
         this._card.onPreProcessPropertyValue = (sender: Adaptive.CardObject, property: Adaptive.PropertyDefinition, value: any) => {
-            if (Shared.GlobalSettings.enableDataBindingSupport && typeof value === "string" && this.context.sampleData) {
+            if (Shared.GlobalSettings.enableDataBindingSupport && typeof value === "string" && this.context.sampleData && this.context.bindingPreviewMode !== BindingPreviewMode.NoPreview) {
                 let templatizedString = ACData.TemplatizedString.parse(value);
 
                 if (templatizedString instanceof ACData.TemplatizedString) {
                     let evaluationContext = new ACData.EvaluationContext();
-                    evaluationContext.$root = this.context.sampleData;
+
+                    if (this.context.bindingPreviewMode === BindingPreviewMode.SampleData) {
+                        evaluationContext.$root = this.context.sampleData;
+                    }
+                    else {
+                        evaluationContext.$root = this.context.dataStructure.dataType.generateSampleData();
+                    }
 
                     let evaluatedValue = templatizedString.evaluate(evaluationContext);
 

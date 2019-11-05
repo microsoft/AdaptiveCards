@@ -78,7 +78,7 @@ export abstract class CardObject extends SerializableObject {
             }
 
             if (currentObject && currentObject.onPreProcessPropertyValue) {
-                return currentObject.onPreProcessPropertyValue(currentObject, property, value);
+                return currentObject.onPreProcessPropertyValue(this, property, value);
             }
         }
 

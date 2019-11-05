@@ -88,7 +88,8 @@ window.onload = function() {
     designer.customPaletteItems = [ exampleSnippet ];
     */
 
-	designer.monacoModuleLoaded(monaco);
+    designer.monacoModuleLoaded(monaco);
+    designer.lockDataStructure = true;
 
 	let sampleData = {
 		firstName: "John",
@@ -113,8 +114,98 @@ window.onload = function() {
 				age: 13
 			}
 		]
-	};
+    };
 
-	designer.dataStructure = ACDesigner.FieldDefinition.create(sampleData);
-	designer.sampleData = sampleData;
+    let sampleDataStructure: ACDesigner.IData = {
+        valueType: "Object",
+        fields: [
+            {
+                name: "firstName",
+                displayName: "First name",
+                valueType: "String",
+                sampleValue: "John"
+            },
+            {
+                name: "lastName",
+                displayName: "Last name",
+                valueType: "String",
+                sampleValue: "Doe"
+            },
+            {
+                name: "age",
+                displayName: "Age",
+                valueType: "Number",
+                sampleValue: 36
+            },
+            {
+                name: "isMarried",
+                displayName: "Married",
+                valueType: "Boolean",
+                sampleValue: false
+            },
+            {
+                name: "address",
+                displayName: "Address",
+                valueType: "Object",
+                fields: [
+                    {
+                        name: "street",
+                        displayName: "Street",
+                        valueType: "String",
+                        sampleValue: "1234 555th Ave NE"
+                    },
+                    {
+                        name: "city",
+                        displayName: "City",
+                        valueType: "String",
+                        sampleValue: "Redmond"
+                    },
+                    {
+                        name: "state",
+                        displayName: "State",
+                        valueType: "String",
+                        sampleValue: "WA"
+                    },
+                    {
+                        name: "countryOrRegion",
+                        displayName: "Country/region",
+                        valueType: "String",
+                        sampleValue: "USA"
+                    }
+                ]
+            },
+            {
+                name: "children",
+                displayName: "Children",
+                valueType: "Array",
+                itemType: {
+                    valueType: "Object",
+                    fields: [
+                        {
+                            name: "firstName",
+                            displayName: "First name",
+                            valueType: "String",
+                            sampleValue: "Jennifer"
+                        },
+                        {
+                            name: "lastName",
+                            displayName: "Last name",
+                            valueType: "String",
+                            sampleValue: "Doe"
+                        },
+                        {
+                            name: "age",
+                            displayName: "Age",
+                            valueType: "Number",
+                            sampleValue: 13
+                        }
+                    ]
+                }
+            }
+        ]
+    };
+
+	designer.dataStructure = ACDesigner.FieldDefinition.parse(sampleDataStructure);
+    designer.sampleData = sampleData;
+    designer.bindingPreviewMode = ACDesigner.BindingPreviewMode.GeneratedData;
 }
