@@ -50,25 +50,31 @@ Android bindings are mostly done in the Metadata.xml file which defines the cont
 
 | API Name | Android API |  Priority |
 | --- | --- | --- |
-| Rendering | RenderedAdaptiveCard render(Context, FragmentManager, AdaptiveCard, ICardActionHandler) | P0 |
-| Rendering | RenderedAdaptiveCard render(Context, FragmentManager, AdaptiveCard, HostConfig) | P0 |
-| Custom Element | void registerRenderer(string, IBaseCardElementRenderer) | P1 |
-| Custom Element | IBaseCardElementRenderer(string) | P1 |
-| Custom Action | void registerActionRenderer(string, IBaseActionElementRenderer) | P1 |
-| Custom Action | IBaseActionElementRenderer getActionRenderer(string) | P1 |
-| Custom Action Layout | void registerActionLayoutRenderer(IActionLayoutRenderer) | P2 |
-| Custom Action Layout | IActionLayoutRenderer getActionLayoutRenderer() | P2 | 
-| Resource Resolvers | void registerOnlineImageLoader(IOnlineImageLoader) – deprecated | P3 |
-| Resource Resolvers | IOnlineImageLoader getOnlineImageLoader() - deprecated | P3 |
-| Resource Resolvers | void registerResourceResolver(string, IResourceResolver) | P2 |
-| Resource Resolvers | IResourceResolver getResourceResolver(string) | P2 |
-| Media Loading | IOnlineMediaLoader getOnlineMediaLoader() | P3 |
-| Media Loading | void registerOnlineMediaLoader(IOnlineMediaLoader) | P3 |
-| Feature Registration | void registerFeatureRegistration(FeatureRegistration) | P0 |
-| Feature Registration | FeatureRegistration getFeatureRegistration() | P0 |
-| Input Watcher | void setInputWatcher(IInputWatcher) | P3 |
-| Input Watcher | IInputWatcher getInputWatcher() | P3 |
-| Custom Fonts | void registerCustomTypeface(string, Typeface) | P3 |
+| Parsing | ```ParseResult Deserialize(JsonValue, String, ParseContext)``` | P0 |
+| Parsing | ```ParseResult DeserializeFromString(String, String)``` | P0 |
+| Parsing | ```ParseResult DeserializeFromString(String, String, ParseContext)``` | P0 |
+| Parsing | ```ParseResult DeserializeFromFile(String, String)``` | P2 |
+| Parsing | ```ParseResult DeserializeFromFile(String, String, ParseContext)``` | P2 |
+| Rendering | ```RenderedAdaptiveCard render(Context, FragmentManager, AdaptiveCard, ICardActionHandler)``` | P0 |
+| Rendering | ```RenderedAdaptiveCard render(Context, FragmentManager, AdaptiveCard, HostConfig)``` | P0 |
+| Custom Element | ```void registerRenderer(string, IBaseCardElementRenderer)``` | P1 |
+| Custom Element | ```IBaseCardElementRenderer(string)``` | P1 |
+| Custom Action | ```void registerActionRenderer(string, IBaseActionElementRenderer)``` | P1 |
+| Custom Action | ```IBaseActionElementRenderer getActionRenderer(string)``` | P1 |
+| Custom Action Layout | ```void registerActionLayoutRenderer(IActionLayoutRenderer)``` | P2 |
+| Custom Action Layout | ```IActionLayoutRenderer getActionLayoutRenderer()``` | P2 | 
+| Resource Resolvers | ```void registerOnlineImageLoader(IOnlineImageLoader)``` – deprecated | P3 |
+| Resource Resolvers | ```IOnlineImageLoader getOnlineImageLoader()``` - deprecated | P3 |
+| Resource Resolvers | ```void registerResourceResolver(string, IResourceResolver)``` | P2 |
+| Resource Resolvers | ```IResourceResolver getResourceResolver(string)``` | P2 |
+| Media Loading | ```IOnlineMediaLoader getOnlineMediaLoader()``` | P3 |
+| Media Loading | ```void registerOnlineMediaLoader(IOnlineMediaLoader)``` | P3 |
+| Feature Registration | ```void registerFeatureRegistration(FeatureRegistration)``` | P0 |
+| Feature Registration | ```FeatureRegistration getFeatureRegistration()``` | P0 |
+| Input Watcher | ```void setInputWatcher(IInputWatcher)``` | P3 |
+| Input Watcher | ```IInputWatcher getInputWatcher()``` | P3 |
+| Custom Fonts | ```void registerCustomTypeface(string, Typeface)``` | P3 |
+| Resource Information | ```RemoteResourceInformationVector GetResourceInformation()``` | P2 |
 
 ### iOS
 
@@ -121,24 +127,26 @@ public enum ACRActionType : long
 
 | API Name | iOS API | Priority |
 | --- | --- | --- |
-| Rendering | (ACRRenderResult*) render:(ACOAdaptiveCard*) config:(ACOHostConfig) widthConstraint:(float) | P0 |
-| Rendering | (ACRRenderResult*) render:(ACOAdaptiveCard*) config:(ACOHostConfig) widthConstraint:(float) delegate:(id<ACRActionDelegate>) | P0 |
-| Rendering | (ACRRenderResult*) renderAsViewController:(ACOAdaptiveCard*) config:(ACOHostConfig) frame:(CGRect) delegate:(id<ACRActionDelegate>) | P0 |
-| Custom Element | (void) setBaseCardElementRenderer: (ACRBaseCardElementRenderer*)cardElementType: (ACRCardElementType) | P1 |
-| Custom Element | (void) setCustomElementParser: (NSObject<ACOIBaseCardElementParser>) | P1 |
-| Custom Element | (void) setCustomElementParser: (NSObject<ACOIBaseCardElementParser>) key: (NSString*) | P1 |
-| Custom Element | (void) setCustomElementRenderer: (ACRBaseCardElementRenderer*) key:(NSString *) | P1 |
-| Custom Element | (NSObject<ACOIBaseCardElementParser>*) getCursorElementParser: (NSString*) | P1 |
-| Custom Element | (ACRBaseCardElementRenderer*) getRenderer: (NSNumber *) | P1 |
-| Custom Action | (void) setActionRenderer: (ACRBaseActionElementRenderer) cardElementType: (NSNumber*) | P1 |
-| Custom Action | (ACRBaseActionElementRenderer*) getActionRenderer: (NSNumber*) | P1 |
-| Custom Action Set | (void) setActionSetRenderer: (id<ACRIBaseActionSetRenderer>) | P2 |
-| Custom Action Set | (id<ACRIBaseActionSetRenderer>) getActionSetRenderer | P2 | 
-| Resource Resolvers | (void) setResourceResolver: (NSObject<ACOIResourceResolver>) scheme: (NSString*) | P2 |
-| Resource Resolvers | (NSObject<ACOIResourceResolver>) getResourceResolverForScheme: (NSString*) | P2 |
-| Feature Registration | (void) addFeature: (NSString*) featureVersion: (NSString*) | P0 | 
-| Feature Registration | (NSString*) removeFeature: (NSString*) | P0 |
-| Feature Registration | (NSString*) getFeatureVersion: (NSString*) | P0 |
+| Parsing | ```(ACOAdaptiveCardParseResult*) fromJson: (NSString*)``` | P0 |
+| Rendering | ```(ACRRenderResult*) render:(ACOAdaptiveCard*) config:(ACOHostConfig) widthConstraint:(float)``` | P0 |
+| Rendering | ```(ACRRenderResult*) render:(ACOAdaptiveCard*) config:(ACOHostConfig) widthConstraint:(float) delegate:(id<ACRActionDelegate>)``` | P0 |
+| Rendering | ```(ACRRenderResult*) renderAsViewController:(ACOAdaptiveCard*) config:(ACOHostConfig) frame:(CGRect) delegate:(id<ACRActionDelegate>)``` | P0 |
+| Custom Element | ```(void) setBaseCardElementRenderer: (ACRBaseCardElementRenderer*)cardElementType: (ACRCardElementType)``` | P1 |
+| Custom Element | ```(void) setCustomElementParser: (NSObject<ACOIBaseCardElementParser>)``` | P1 |
+| Custom Element | ```(void) setCustomElementParser: (NSObject<ACOIBaseCardElementParser>) key: (NSString*)``` | P1 |
+| Custom Element | ```(void) setCustomElementRenderer: (ACRBaseCardElementRenderer*) key:(NSString *)``` | P1 |
+| Custom Element | ```(NSObject<ACOIBaseCardElementParser>*) getCustomElementParser: (NSString*)``` | P1 |
+| Custom Element | ```(ACRBaseCardElementRenderer*) getRenderer: (NSNumber *)``` | P1 |
+| Custom Action | ```(void) setActionRenderer: (ACRBaseActionElementRenderer) cardElementType: (NSNumber*)``` | P1 |
+| Custom Action | ```(ACRBaseActionElementRenderer*) getActionRenderer: (NSNumber*)``` | P1 |
+| Custom Action Set | ```(void) setActionSetRenderer: (id<ACRIBaseActionSetRenderer>)``` | P2 |
+| Custom Action Set | ```(id<ACRIBaseActionSetRenderer>) getActionSetRenderer``` | P2 | 
+| Resource Resolvers | ```(void) setResourceResolver: (NSObject<ACOIResourceResolver>) scheme: (NSString*)``` | P2 |
+| Resource Resolvers | ```(NSObject<ACOIResourceResolver>) getResourceResolverForScheme: (NSString*)``` | P2 |
+| Feature Registration | ```(void) addFeature: (NSString*) featureVersion: (NSString*)``` | P0 | 
+| Feature Registration | ```(NSString*) removeFeature: (NSString*)``` | P0 |
+| Feature Registration | ```(NSString*) getFeatureVersion: (NSString*)``` | P0 |
+| Resource Information | ```(NSArray<ACORemoteResourceInformation>*) remoteResourceInformation``` | P2 | 
 
 ## Breaking changes
 
