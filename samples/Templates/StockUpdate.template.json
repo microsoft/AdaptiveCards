@@ -38,7 +38,7 @@
                             "items": [
                                 {
                                     "type": "TextBlock",
-                                    "text": "{latestPrice}",
+                                    "text": "{latestPrice} ",
                                     "size": "ExtraLarge"
                                 },
                                 {
