@@ -118,10 +118,6 @@ public class BaseActionElement extends BaseElement {
     AdaptiveCardObjectModelJNI.BaseActionElement_ParseJsonObject(ParseContext.getCPtr(context), context, JsonValue.getCPtr(json), json, BaseElement.getCPtr(element), element);
   }
 
-  protected void PopulateKnownPropertiesSet() {
-    if (getClass() == BaseActionElement.class) AdaptiveCardObjectModelJNI.BaseActionElement_PopulateKnownPropertiesSet(swigCPtr, this); else AdaptiveCardObjectModelJNI.BaseActionElement_PopulateKnownPropertiesSetSwigExplicitBaseActionElement(swigCPtr, this);
-  }
-
   public Object swigOriginalObject() {
     return AdaptiveCardObjectModelJNI.BaseActionElement_swigOriginalObject(swigCPtr, this);
   }

@@ -22,7 +22,7 @@
 {
     self = [super init];
     if (self) {
-        _actionElement = [[ACOBaseActionElement alloc] initWithBaseActionElement:[actionElement element]];
+        _actionElement = actionElement;
         _view = rootView;
     }
     return self;

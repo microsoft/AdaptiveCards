@@ -12,6 +12,7 @@
 #import "AdaptiveCards/ShowCardAction.h"
 #import "AdaptiveCards/TextBlock.h"
 #import "AdaptiveCards/UtiliOS.h"
+#import "CustomActionNewType.h"
 #import <AdaptiveCards/ACFramework.h>
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
@@ -61,14 +62,14 @@
     _mainBundle = nil;
     _defaultHostConfigFile = nil;
     _defaultHostConfig = nil;
+    [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRTextBlock];
+    [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRRichTextBlock];
+    [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRFactSet];
     [super tearDown];
 }
 
 - (void)testRemoteResouceInformation
-{
-    // This is an example of a functional test case.
-    // Use XCTAssert and related functions to verify your tests produce the correct results.
-
+{   
     NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"FoodOrder" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
 
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
@@ -76,9 +77,9 @@
     NSArray<ACORemoteResourceInformation *> *remoteInformation = [cardParseResult.card remoteResourceInformation];
     XCTAssertTrue([remoteInformation count] == 3);
     NSArray<NSString *> *testStrings = @[
-        @"http://contososcubademo.azurewebsites.net/assets/steak.jpg",
-        @"http://contososcubademo.azurewebsites.net/assets/chicken.jpg",
-        @"http://contososcubademo.azurewebsites.net/assets/tofu.jpg"
+        @"https://contososcubademo.azurewebsites.net/assets/steak.jpg",
+        @"https://contososcubademo.azurewebsites.net/assets/chicken.jpg",
+        @"https://contososcubademo.azurewebsites.net/assets/tofu.jpg"
     ];
     unsigned int index = 0;
     for (ACORemoteResourceInformation *info in remoteInformation) {
@@ -106,6 +107,27 @@
     ACRTextView *acrTextView = (ACRTextView *)[renderResult.view viewWithTag:hashkey.hash];
     XCTAssertNotNil(acrTextView);
     XCTAssertTrue([acrTextView.text length] == 0);
+}
+
+// this test ensure that extending text render doesn't crash
+// in use case where custom renderer uses default text renderer
+- (void)testExtendingTextRenderersDoesNotCrash
+{
+    ACRRegistration *registration = [ACRRegistration getInstance];
+    [registration setBaseCardElementRenderer:[ACRTextBlockRenderer getInstance] cardElementType:ACRCardElementType::ACRTextBlock];
+    [registration setBaseCardElementRenderer:[ACRRichTextBlockRenderer getInstance] cardElementType:ACRCardElementType::ACRRichTextBlock];
+    [registration setBaseCardElementRenderer:[ACRFactSetRenderer getInstance] cardElementType:ACRCardElementType::ACRFactSet];
+
+    // TextBlock.Maxlines is used for testing when text block renderer is overriden
+    // RichTextBlock tests for RichTextBlock renderer extension
+    // ActivityUpdate tests TextBlock & FactSet extension combinations
+    NSArray<NSString *> *payloadNames = @[ @"TextBlock.MaxLines", @"RichTextBlock", @"ActivityUpdate" ];
+
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    for (ACOAdaptiveCard *card in cards) {
+        ACRRenderResult *renderResult = [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        XCTAssertNotNil(renderResult.view);
+    }
 }
 
 - (void)testBuildingShowCardTarget
@@ -408,8 +430,10 @@
     }];
 }
 
-- (void)testSharedEnumsCompatabilityTest
+- (void)testSharedEnumsCompatabilityWithiOSSDKEnums
 {
+    // The below Enums from shared model's numeric values should be in sync with
+    // iOS SDK's enum.
     XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::ActionSet) == ACRActionSet);
     XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::AdaptiveCard) == ACRAdaptiveCard);
     XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::ChoiceInput) == ACRChoiceInput);
@@ -430,6 +454,12 @@
     XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::TimeInput) == ACRTimeInput);
     XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::ToggleInput) == ACRToggleInput);
     XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::Unknown) == ACRUnknown);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::RichTextBlock) == ACRRichTextBlock);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::ActionType::ShowCard) == ACRShowCard);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::ActionType::Submit) == ACRSubmit);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::ActionType::OpenUrl) == ACROpenUrl);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::ActionType::ToggleVisibility) == ACRToggleVisibility);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::ActionType::UnknownAction) == ACRUnknownAction);
 }
 
 @end

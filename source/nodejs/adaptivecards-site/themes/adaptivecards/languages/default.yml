@@ -6,8 +6,8 @@ tweets: Tweets
 prev: Prev
 next: Next
 comment: Comments
-archive_a: Archives
-archive_b: "Archives: %s"
+archive_a: Blog
+archive_b: "Blog: %s"
 page: Page %d
 recent_posts: Recent Posts
 newer: Newer

@@ -42,7 +42,7 @@ namespace AdaptiveSharedNamespace
         void SetRegex(const std::string& value);
 
     private:
-        void PopulateKnownPropertiesSet() override;
+        void PopulateKnownPropertiesSet();
 
         std::string m_placeholder;
         std::string m_value;

@@ -51,7 +51,7 @@ namespace AdaptiveSharedNamespace
         void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
     private:
-        void PopulateKnownPropertiesSet() override;
+        void PopulateKnownPropertiesSet();
 
         std::string m_url;
         std::string m_backgroundColor;

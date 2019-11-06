@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "AdaptiveCards.Core.Sample.ImageRender": {
+      "commandName": "Project",
+      "commandLineArgs": "..\\..\\..\\..\\..\\..\\..\\samples\\v1.0\\Scenarios -r -i -o ./out --host-config ..\\..\\..\\..\\..\\..\\..\\samples\\HostConfig\\windows-notification.json"
+    }
+  }
+}
