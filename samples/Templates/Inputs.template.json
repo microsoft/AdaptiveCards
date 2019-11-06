@@ -82,16 +82,9 @@
             "value": "1",
             "choices": [
                 {
-                    "title": "{Survey.questions[0].items[0].choice}",
-                    "value": "{Survey.questions[0].items[0].value}"
-                },
-                {
-                    "title": "{Survey.questions[1].items[1].choice}",
-                    "value": "{Survey.questions[1].items[1].value}"
-                },
-                {
-                    "title": "{Survey.questions[2].items[2].choice}",
-                    "value": "{Survey.questions[2].items[2].value}"
+                    "$data": "{Survey.questions[0].items}",
+                    "title": "{choice}",
+                    "value": "{value}"
                 }
             ]
         },
@@ -106,16 +99,9 @@
             "value": "1",
             "choices": [
                 {
-                    "title": "{Survey.questions[1].items[0].choice}",
-                    "value": "{Survey.questions[1].items[0].value}"
-                },
-                {
-                    "title": "{Survey.questions[1].items[1].choice}",
-                    "value": "{Survey.questions[1].items[1].value}"
-                },
-                {
-                    "title": "{Survey.questions[1].items[2].choice}",
-                    "value": "{Survey.questions[1].items[2].value}"
+                    "$data": "{Survey.questions[1].items}",
+                    "title": "{choice}",
+                    "value": "{value}"
                 }
             ]
         },
@@ -130,16 +116,9 @@
             "value": "1,3",
             "choices": [
                 {
-                    "title": "{Survey.questions[2].items[0].choice}",
-                    "value": "{Survey.questions[2].items[0].value}"
-                },
-                {
-                    "title": "{Survey.questions[2].items[1].choice}",
-                    "value": "{Survey.questions[2].items[1].value}"
-                },
-                {
-                    "title": "{Survey.questions[2].items[2].choice}",
-                    "value": "{Survey.questions[2].items[2].value}"
+                    "$data": "{Survey.questions[2].items}",
+                    "title": "{choice}",
+                    "value": "{value}"
                 }
             ]
         },
