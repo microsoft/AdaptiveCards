@@ -18,6 +18,7 @@
 #import <AdaptiveCards/MarkDownParser.h>
 #import <AdaptiveCards/SharedAdaptiveCard.h>
 #import <AdaptiveCards/TextBlock.h>
+#import <AdaptiveCards/UtiliOS.h>
 
 @implementation CustomImageRenderer
 
@@ -170,6 +171,8 @@
                                                                      hostConfig:acoConfig];
     view.translatesAutoresizingMaskIntoConstraints = NO;
     wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
+    configVisibility(wrappingview, elem);
+
     return wrappingview;
 }
 

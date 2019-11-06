@@ -296,15 +296,15 @@ export abstract class CardElement extends CardObject {
             if (AdaptiveCard.alwaysBleedSeparators && renderedSeparator && this.separatorOrientation == Enums.Orientation.Horizontal) {
                 // Adjust separator's margins if the option to always bleed separators is turned on
                 let parentContainer = this.getParentContainer();
-    
+
                 if (parentContainer && parentContainer.getEffectivePadding()) {
                     let parentPhysicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(parentContainer.getEffectivePadding());
-    
+
                     renderedSeparator.style.marginLeft = "-" + parentPhysicalPadding.left + "px";
                     renderedSeparator.style.marginRight = "-" + parentPhysicalPadding.right + "px";
                 }
             }
-    
+
             return renderedSeparator;
     }
 
@@ -1420,7 +1420,7 @@ class Label extends TextBlock {
     protected internalRender(): HTMLElement {
         let renderedElement = <HTMLLabelElement>super.internalRender();
 
-        if (!Utils.isNullOrEmpty(this.forElementId)) {
+        if (renderedElement && !Utils.isNullOrEmpty(this.forElementId)) {
             renderedElement.htmlFor = this.forElementId;
         }
 
@@ -1741,7 +1741,7 @@ export class FactSet extends CardElement {
 
                 let textBlock = new TextBlock();
                 textBlock.setParent(this);
-                textBlock.text = Utils.isNullOrEmpty(this.facts[i].name) ? "Title" : this.facts[i].name;
+                textBlock.text = (Utils.isNullOrEmpty(this.facts[i].name) && this.isDesignMode()) ? "Title" : this.facts[i].name;
                 textBlock.size = hostConfig.factSet.title.size;
                 textBlock.color = hostConfig.factSet.title.color;
                 textBlock.isSubtle = hostConfig.factSet.title.isSubtle;
@@ -3430,21 +3430,7 @@ export class ChoiceSetInput extends Input {
         let result = super.toJSON();
 
         Utils.setProperty(result, "placeholder", this.placeholder);
-
-        /*
-        let choices = [];
-
-        if (this.choices) {
-            for (let choice of this.choices) {
-                choices.push(choice.toJSON());
-            }
-        }
-
-        Utils.setProperty(result, "choices", choices);
-        */
-
         Utils.setArrayProperty(result, "choices", this.choices);
-
         Utils.setProperty(result, "style", this.isCompact ? null : "expanded");
         Utils.setProperty(result, "isMultiSelect", this.isMultiSelect, false);
         Utils.setProperty(result, "wrap", this.wrap, false);
@@ -5843,9 +5829,9 @@ export class Column extends Container {
         return Enums.Orientation.Vertical;
     }
 
-    width: ColumnWidth = "auto";
+    width: ColumnWidth = "stretch";
 
-    constructor(width: ColumnWidth = "auto") {
+    constructor(width: ColumnWidth = "stretch") {
         super();
 
         this.width = width;

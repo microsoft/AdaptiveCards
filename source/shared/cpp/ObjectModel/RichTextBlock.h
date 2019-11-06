@@ -32,7 +32,7 @@ namespace AdaptiveSharedNamespace
 
     private:
         HorizontalAlignment m_hAlignment;
-        void PopulateKnownPropertiesSet() override;
+        void PopulateKnownPropertiesSet();
 
         std::vector<std::shared_ptr<Inline>> m_inlines;
     };

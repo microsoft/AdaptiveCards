@@ -92,7 +92,7 @@ namespace AdaptiveSharedNamespace
 
         std::vector<RemoteResourceInformation> GetResourceInformation();
 
-        const CardElementType GetElementType() const;
+        CardElementType GetElementType() const;
 #ifdef __ANDROID__
         static std::shared_ptr<ParseResult> DeserializeFromFile(const std::string& jsonFile,
                                                                 std::string rendererVersion,

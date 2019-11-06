@@ -282,7 +282,7 @@ export const defaultPayload: string = `{
 				    {
 				        "type": "Action.OpenUrl",
 						"title": "OK",
-						"url": "http://adaptivecards.io"
+						"url": "https://adaptivecards.io"
 			        }
 				]
 			}
@@ -290,7 +290,7 @@ export const defaultPayload: string = `{
 		{
 			"type": "Action.OpenUrl",
 			"title": "View",
-			"url": "http://adaptivecards.io"
+			"url": "https://adaptivecards.io"
 		}
 	]
 }`;

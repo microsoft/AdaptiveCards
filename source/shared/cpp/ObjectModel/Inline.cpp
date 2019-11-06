@@ -20,7 +20,7 @@ Json::Value Inline::SerializeToJsonValue() const
     return root;
 }
 
-const InlineElementType Inline::GetInlineType() const
+InlineElementType Inline::GetInlineType() const
 {
     return m_type;
 }
