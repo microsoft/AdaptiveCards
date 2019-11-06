@@ -1420,7 +1420,7 @@ class Label extends TextBlock {
     protected internalRender(): HTMLElement {
         let renderedElement = <HTMLLabelElement>super.internalRender();
 
-        if (!Utils.isNullOrEmpty(this.forElementId)) {
+        if (renderedElement && !Utils.isNullOrEmpty(this.forElementId)) {
             renderedElement.htmlFor = this.forElementId;
         }
 
@@ -1741,7 +1741,7 @@ export class FactSet extends CardElement {
 
                 let textBlock = new TextBlock();
                 textBlock.setParent(this);
-                textBlock.text = Utils.isNullOrEmpty(this.facts[i].name) ? "Title" : this.facts[i].name;
+                textBlock.text = (Utils.isNullOrEmpty(this.facts[i].name) && this.isDesignMode()) ? "Title" : this.facts[i].name;
                 textBlock.size = hostConfig.factSet.title.size;
                 textBlock.color = hostConfig.factSet.title.color;
                 textBlock.isSubtle = hostConfig.factSet.title.isSubtle;
@@ -1793,18 +1793,6 @@ export class FactSet extends CardElement {
         let result = super.toJSON();
 
         Utils.setArrayProperty(result, "facts", this.facts);
-
-        /*
-        let facts = [];
-
-		if (this.facts) {
-			for (let fact of this.facts) {
-				facts.push(fact.toJSON());
-			}
-		}
-
-        Utils.setProperty(result, "facts", facts);
-        */
 
         return result;
     }
@@ -5843,9 +5831,9 @@ export class Column extends Container {
         return Enums.Orientation.Vertical;
     }
 
-    width: ColumnWidth = "auto";
+    width: ColumnWidth = "stretch";
 
-    constructor(width: ColumnWidth = "auto") {
+    constructor(width: ColumnWidth = "stretch") {
         super();
 
         this.width = width;
