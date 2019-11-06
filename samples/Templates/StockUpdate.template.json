@@ -58,15 +58,15 @@
                                     "facts": [
                                         {
                                             "title": "Open",
-                                            "value": "{open}"
+                                            "value": "{open} "
                                         },
                                         {
                                             "title": "High",
-                                            "value": "{high}"
+                                            "value": "{high} "
                                         },
                                         {
                                             "title": "Low",
-                                            "value": "{low}"
+                                            "value": "{low} "
                                         }
                                     ]
                                 }
