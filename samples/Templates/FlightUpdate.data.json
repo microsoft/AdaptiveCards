@@ -8,33 +8,33 @@
 	"securityScreening": "TSA PreCheck",
 	"underName": {
 	  "@type": "Person",
-	  "name": "Eva Green"
+	  "name": "Sarah Hum"
 	},
 	"reservationFor": {
 	  "@type": "Flight",
-	  "flightNumber": "UA110",
+	  "flightNumber": "KL605",
 	  "provider": {
 		"@type": "Airline",
-		"name": "Continental",
-		"iataCode": "CO",
+		"name": "KLM",
+		"iataCode": "KL",
 		"boardingPolicy": "http://schema.org/ZoneBoardingPolicy"
 	  },
 	  "seller": {
 		"@type": "Airline",
-		"name": "United",
-		"iataCode": "UA"
+		"name": "KLM",
+		"iataCode": "KL"
 	  },
 	  "departureAirport": {
+		"@type": "Airport",
+		"name": "Amsterdam Airport",
+		"iataCode": "AMS"
+	  },
+	  "departureTime": "2017-03-04T09:20:00-01:00",
+	  "arrivalAirport": {
 		"@type": "Airport",
 		"name": "San Francisco Airport",
 		"iataCode": "SFO"
 	  },
-	  "departureTime": "2017-03-04T20:15:00-08:00",
-	  "arrivalAirport": {
-		"@type": "Airport",
-		"name": "John F. Kennedy International Airport",
-		"iataCode": "JFK"
-	  },
-	  "arrivalTime": "2017-03-05T06:30:00-05:00"
+	  "arrivalTime": "2017-03-05T08:20:00+04:00"
 	}
   }
