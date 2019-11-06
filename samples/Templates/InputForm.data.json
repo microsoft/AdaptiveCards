@@ -1,42 +1,39 @@
 {
-	"title": "templating, Tell us about yourself",
-	"companyName": "Microsoft Corporation",
-	"primaryExchange": "Nasdaq Global Select",
-	"sector": "Technology",
-	"calculationPrice": "close",
-	"open": 127.42,
-	"openTime": 1556890200966,
-	"close": 128.9,
-	"closeTime": 1556913600447,
-	"high": 129.43,
-	"low": 127.25,
-	"latestPrice": 128.9,
-	"latestSource": "Close",
-	"latestTime": "May 3, 2019",
-	"latestUpdate": 1556913600447,
-	"latestVolume": 24835154,
-	"iexRealtimePrice": null,
-	"iexRealtimeSize": null,
-	"iexLastUpdated": null,
-	"delayedPrice": 128.9,
-	"delayedPriceTime": 1556913600447,
-	"extendedPrice": 129.04,
-	"extendedChange": 0.14,
-	"extendedChangePercent": 0.00109,
-	"extendedPriceTime": 1556917190214,
-	"previousClose": 126.21,
-	"change": 2.69,
-	"changePercent": 0.02131,
-	"iexMarketPercent": null,
-	"iexVolume": null,
-	"avgTotalVolume": 22183270,
-	"iexBidPrice": null,
-	"iexBidSize": null,
-	"iexAskPrice": null,
-	"iexAskSize": null,
-	"marketCap": 987737229888,
-	"peRatio": 30.84,
-	"week52High": 131.37,
-	"week52Low": 93.96,
-	"ytdChange": 0.30147812013916003
+
+        "title": "Tell us about yourself",
+
+        "body": "We just need a few more details to get you booked for the trip of a lifetime!",
+
+        "disclaimer": "Don't worry, we'll never share or sell your information.",
+
+        "properties": [ 
+
+            { 
+
+                "title" : "Your Name",                       
+
+                "placeholder" : "Last, First"
+
+            },
+
+            { 
+
+                "title" : "Your email",                
+
+                "placeholder" : "youremail@example.com"
+
+            },
+
+            { 
+
+                "title" : "Phone Number",
+
+                "placeholder" : "xxx.xxx.xxxx"
+
+            }        
+
+        ],
+
+        "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b2/Diver_Silhouette%2C_Great_Barrier_Reef.jpg"
+
 }
