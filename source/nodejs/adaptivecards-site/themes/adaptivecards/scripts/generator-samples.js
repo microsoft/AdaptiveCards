@@ -7,41 +7,50 @@ var glob = require("glob");
 var path = require("path");
 var changeCase = require("change-case");
 
-var samplesPath = "../../../samples/v1.*/Scenarios/*.json";
+var scenariosSamplesPath = "../../../samples/v1.*/Scenarios/*.json";
 
 hexo.extend.generator.register("generator-sampleBrowser", function(locals) {
 	const url_for = hexo.extend.helper.get('url_for').bind(hexo);
 
-    // Get all the samples from the Scenarios folder
-    var samples = glob.sync(samplesPath, { nocase: false }).map(function(samplePath, index) {
-        return {
-            jsonPath: samplePath,
-            jsonUrl: "../payloads/" + path.basename(samplePath),
-            htmlPath: "samples/" + path.basename(samplePath, ".json") + ".html",
-            name: changeCase.sentenceCase(path.basename(samplePath, ".json")),
-            index: index
-        }
-    });
-
     var generated = [];
     var designerSampleCatalog = [];
 
-    samples.forEach(function(sample, i) {
+    // Get all the samples from the Scenarios folder
+    var scenarios = glob.sync(scenariosSamplesPath, { nocase: false }).map(function(samplePath, index) {
+		var fileNameWithoutExt = path.basename(samplePath, ".json");
+        return {
+            jsonPath: samplePath,
+			jsonUrl: url_for(`/payloads/${path.basename(samplePath)}`),
+			templatePath: `../../../samples/templates/${fileNameWithoutExt}.template.json`,
+			templateUrl: url_for(`/payloads/${fileNameWithoutExt}.template.json`),
+			dataPath: `../../../samples/templates/${fileNameWithoutExt}.data.json`,
+			dataUrl: url_for(`/payloads/${fileNameWithoutExt}.data.json`),
+            htmlPath: `samples/${fileNameWithoutExt}.html`,
+            name: changeCase.sentenceCase(fileNameWithoutExt),
+            index: index
+        }
+	});
+
+    scenarios.forEach(function(sample, i) {
         var page = {
             path: sample.htmlPath,
             layout: "sample",
             data: {
-                title: "Samples",
+                title: "Samples and Templates",
                 sample: sample,
-                samples: samples,
+                samples: scenarios,
                 samplePath: sample.htmlPath,
-                jsonPath: sample.jsonPath
+				jsonPath: sample.jsonPath,
+				templatePath: sample.templatePath,
+				dataPath: sample.dataPath
             }
-        };
-
+		};
+		
+		// TODO: Find way to include the template samples here, for now, just load the regular samples
         designerSampleCatalog.push({
             displayName: sample.name,
-            cardPayloadUrl: url_for("/payloads/" + path.basename(sample.jsonPath))
+			cardPayloadUrl: sample.jsonUrl
+			//dataSampleUrl: sample.dataUrl
         });
 
         // Generate an index.html for the first one
@@ -50,12 +59,13 @@ hexo.extend.generator.register("generator-sampleBrowser", function(locals) {
                 path: "samples/index.html",
                 layout: "sample",
                 data: {
-                    title: "Samples",
+                    title: "Samples and Templates",
                     sample: sample,
-                    samples: samples,
+                    samples: scenarios,
                     samplePath: sample.htmlPath,
-                    jsonPath: sample.jsonPath
-
+					jsonPath: sample.jsonPath,
+					templatePath: sample.templatePath,
+					dataPath: sample.dataPath
                 }
             })
         }

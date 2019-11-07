@@ -488,7 +488,12 @@ export class CardDesigner {
             let currentEditorPayload = this.getCurrentCardEditorPayload();
 
             if (addToUndoStack) {
-                this.addToUndoStack(JSON.parse(currentEditorPayload));
+                try {
+                    let parsed = JSON.parse(currentEditorPayload);
+                    this.addToUndoStack(parsed);
+                } catch {
+                    // do nothing
+                }
             }
 
             if (!this.preventCardUpdate) {
@@ -496,8 +501,7 @@ export class CardDesigner {
 
                 this.cardPayloadChanged();
             }
-        }
-        finally {
+        } finally {
             this.preventJsonUpdate = false;
         }
     }
@@ -576,8 +580,7 @@ export class CardDesigner {
                                 let cardPayload = JSON.parse(dialog.selectedSample.cardPayload);
 
                                 this.setCardPayload(cardPayload, true);
-                            }
-                            catch {
+                            } catch {
                                 alert("The sample could not be loaded.")
                             }
 
@@ -587,8 +590,7 @@ export class CardDesigner {
 
                                     this.setSampleDataPayload(sampleDataPayload);
                                     this.dataStructure = FieldDefinition.create(sampleDataPayload);
-                                }
-                                catch {
+                                } catch {
                                     alert("The sample could not be loaded.")
                                 }
                             }
@@ -621,7 +623,7 @@ export class CardDesigner {
                 this.activeHostContainer = this._hostContainers[Number.parseInt(this._hostContainerChoicePicker.value)];
 
                 this.activeHostContainerChanged();
-            }
+            };
 
             this.toolbar.addElement(this._hostContainerChoicePicker);
         }
