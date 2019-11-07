@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,24 +7,18 @@ using Newtonsoft.Json;
 
 namespace AdaptiveCards
 {
-    static class ParseContext
+    public class ParseContext
     {
-        public static void Initialize()
-        {
-            elementIds = new Dictionary<string, List<AdaptiveInternalID>>();
-            idStack = new Stack<Tuple<string, AdaptiveInternalID, bool>>();
-        }
-
         public enum ContextType { Element, Action };
 
-        public static ContextType Type { get; set; }
+        public ContextType Type { get; set; }
 
-        private static IDictionary<string, List<AdaptiveInternalID>> elementIds = new Dictionary<string, List<AdaptiveInternalID>>();
+        private IDictionary<string, List<AdaptiveInternalID>> elementIds = new Dictionary<string, List<AdaptiveInternalID>>();
 
-        private static Stack<Tuple<string, AdaptiveInternalID, bool>> idStack = new Stack<Tuple<string, AdaptiveInternalID, bool>>();
+        private Stack<Tuple<string, AdaptiveInternalID, bool>> idStack = new Stack<Tuple<string, AdaptiveInternalID, bool>>();
 
         // Push the provided state on to our ID stack
-        public static void PushElement(string idJsonProperty, AdaptiveInternalID internalId)
+        public void PushElement(string idJsonProperty, AdaptiveInternalID internalId)
         {
             if (internalId.Equals(AdaptiveInternalID.Invalid))
             {
@@ -31,18 +27,8 @@ namespace AdaptiveCards
             idStack.Push(new Tuple<string, AdaptiveInternalID, bool>(idJsonProperty, internalId, AdaptiveFallbackConverter.IsInFallback));
         }
 
-        public static AdaptiveInternalID PeekElement()
-        {
-            if (idStack.Count == 0)
-            {
-                // internal id in dot net needs to be revisited tracked via issue 3386
-                return new AdaptiveInternalID();
-            }
-            return idStack.Peek().Item2;
-        }
-
         // Pop the last id off our stack and perform validation 
-        public static void PopElement()
+        public void PopElement()
         {
             // about to pop an element off the stack. perform collision list maintenance and detection.
             var idsToPop = idStack.Peek();
@@ -121,7 +107,7 @@ namespace AdaptiveCards
 
         // Walk stack looking for first element to be marked fallback (which isn't the ID we're supposed to skip), then
         // return its internal ID. If none, return an invalid ID. (see comment above)
-        public static AdaptiveInternalID GetNearestFallbackID(AdaptiveInternalID skipID)
+        public AdaptiveInternalID GetNearestFallbackID(AdaptiveInternalID skipID)
         {
             foreach (var curElement in idStack)
             {
