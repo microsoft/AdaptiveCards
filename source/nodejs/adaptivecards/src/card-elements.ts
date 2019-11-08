@@ -5849,7 +5849,7 @@ export class Column extends Container {
                 Utils.setProperty(result, "width", this.width.physicalSize + "px");
             }
             else {
-                Utils.setProperty(result, "width", this.width.physicalSize);
+                Utils.setNumberProperty(result, "width", this.width.physicalSize);
             }
         }
         else {
