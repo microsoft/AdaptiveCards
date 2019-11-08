@@ -136,23 +136,30 @@ export class SizeAndUnit {
 	unit: Enums.SizeUnit;
 
 	static parse(input: any, requireUnitSpecifier: boolean = false): SizeAndUnit {
-		let result = new SizeAndUnit(0, Enums.SizeUnit.Weight);
+        let result = new SizeAndUnit(0, Enums.SizeUnit.Weight);
 
-		let regExp = /^([0-9]+)(px|\*)?$/g;
-		let matches = regExp.exec(input);
-		let expectedMatchCount = requireUnitSpecifier ? 3 : 2;
+        if (typeof input === "number") {
+            result.physicalSize = input;
 
-		if (matches && matches.length >= expectedMatchCount) {
-			result.physicalSize = parseInt(matches[1]);
+            return result;
+        }
+        else {
+            let regExp = /^([0-9]+)(px|\*)?$/g;
+            let matches = regExp.exec(input);
+            let expectedMatchCount = requireUnitSpecifier ? 3 : 2;
 
-			if (matches.length == 3) {
-				if (matches[2] == "px") {
-					result.unit = Enums.SizeUnit.Pixel;
-				}
-			}
+            if (matches && matches.length >= expectedMatchCount) {
+                result.physicalSize = parseInt(matches[1]);
 
-			return result;
-		}
+                if (matches.length == 3) {
+                    if (matches[2] == "px") {
+                        result.unit = Enums.SizeUnit.Pixel;
+                    }
+                }
+
+                return result;
+            }
+        }
 
 		throw new Error("Invalid size: " + input);
 	}

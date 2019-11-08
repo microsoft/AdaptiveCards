@@ -296,15 +296,15 @@ export abstract class CardElement extends CardObject {
             if (AdaptiveCard.alwaysBleedSeparators && renderedSeparator && this.separatorOrientation == Enums.Orientation.Horizontal) {
                 // Adjust separator's margins if the option to always bleed separators is turned on
                 let parentContainer = this.getParentContainer();
-    
+
                 if (parentContainer && parentContainer.getEffectivePadding()) {
                     let parentPhysicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(parentContainer.getEffectivePadding());
-    
+
                     renderedSeparator.style.marginLeft = "-" + parentPhysicalPadding.left + "px";
                     renderedSeparator.style.marginRight = "-" + parentPhysicalPadding.right + "px";
                 }
             }
-    
+
             return renderedSeparator;
     }
 
@@ -5851,7 +5851,7 @@ export class Column extends Container {
                 Utils.setProperty(result, "width", this.width.physicalSize + "px");
             }
             else {
-                Utils.setProperty(result, "width", this.width.physicalSize);
+                Utils.setNumberProperty(result, "width", this.width.physicalSize);
             }
         }
         else {
