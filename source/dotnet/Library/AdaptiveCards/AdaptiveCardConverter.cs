@@ -9,7 +9,7 @@ using Newtonsoft.Json.Linq;
 
 namespace AdaptiveCards
 {
-    public class AdaptiveCardConverter : JsonConverter, ILogWarnings
+    public class AdaptiveCardConverter : AdaptiveTypedBaseElementConverter, ILogWarnings
     {
         public List<AdaptiveWarning> Warnings { get; set; } = new List<AdaptiveWarning>();
 
@@ -62,9 +62,6 @@ namespace AdaptiveCards
 
             if (reader.Depth == 0)
             {
-                // Needed for ID collision detection after fallback was introduced
-                ParseContext.Initialize();
-
                 ValidateJsonVersion(ref jObject);
 
                 if (new AdaptiveSchemaVersion(jObject.Value<string>("version")) > AdaptiveCard.KnownSchemaVersion)
@@ -72,6 +69,14 @@ namespace AdaptiveCards
                     return MakeFallbackTextCard(jObject);
                 }
             }
+
+            /// this is needed when client calls JsonConvert.Deserializer method, we need this contract resolver,
+            /// so we can pass ParseContext
+            if (!(serializer.ContractResolver is WarningLoggingContractResolver))
+            {
+                serializer.ContractResolver = new WarningLoggingContractResolver(new AdaptiveCardParseResult(), new ParseContext()); 
+            }
+
             var typedElementConverter = serializer.ContractResolver.ResolveContract(typeof(AdaptiveTypedElement)).Converter;
 
             var card = (AdaptiveCard)typedElementConverter.ReadJson(jObject.CreateReader(), objectType, existingValue, serializer);

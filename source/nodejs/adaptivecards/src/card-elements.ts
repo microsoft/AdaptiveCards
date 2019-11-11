@@ -1077,7 +1077,7 @@ class Label extends TextBlock {
     protected internalRender(): HTMLElement | undefined {
         let renderedElement = <HTMLLabelElement>super.internalRender();
 
-        if (this.forElementId) {
+        if (renderedElement && this.forElementId) {
             renderedElement.htmlFor = this.forElementId;
         }
 
@@ -1406,7 +1406,7 @@ export class FactSet extends CardElement {
 
                 let textBlock = new TextBlock();
                 textBlock.setParent(this);
-                textBlock.text = this.facts[i].name ? this.facts[i].name :"Title";
+                textBlock.text = (!this.facts[i].name && this.isDesignMode()) ? "Title" : this.facts[i].name;
                 textBlock.size = hostConfig.factSet.title.size;
                 textBlock.color = hostConfig.factSet.title.color;
                 textBlock.isSubtle = hostConfig.factSet.title.isSubtle;
@@ -5285,10 +5285,10 @@ export class Column extends Container {
                 context.serializeValue(target, "width", value);
             }
         },
-        "auto");
+        "stretch");
 
     @property(Column.widthProperty)
-    width: ColumnWidth = "auto";
+    width: ColumnWidth = "stretch";
 
     //#endregion
 
@@ -5334,7 +5334,7 @@ export class Column extends Container {
         return Enums.Orientation.Vertical;
     }
 
-    constructor(width: ColumnWidth = "auto") {
+    constructor(width: ColumnWidth = "stretch") {
         super();
 
         this.width = width;

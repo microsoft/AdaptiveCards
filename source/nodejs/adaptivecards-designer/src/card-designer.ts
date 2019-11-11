@@ -519,8 +519,7 @@ export class CardDesigner extends Designer.DesignContext {
 
                 this.cardPayloadChanged();
             }
-        }
-        finally {
+        } finally {
             this.preventJsonUpdate = false;
         }
     }
@@ -606,8 +605,7 @@ export class CardDesigner extends Designer.DesignContext {
                                 let cardPayload = JSON.parse(dialog.selectedSample.cardPayload);
 
                                 this.setCardPayload(cardPayload, true);
-                            }
-                            catch {
+                            } catch {
                                 alert("The sample could not be loaded.")
                             }
 
@@ -651,7 +649,7 @@ export class CardDesigner extends Designer.DesignContext {
                 this.hostContainer = this._hostContainers[Number.parseInt(this._hostContainerChoicePicker.value)];
 
                 this.activeHostContainerChanged();
-            }
+            };
 
             this.toolbar.addElement(this._hostContainerChoicePicker);
         }
