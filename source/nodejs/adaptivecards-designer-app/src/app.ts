@@ -89,8 +89,96 @@ window.onload = function() {
     */
 
     designer.monacoModuleLoaded(monaco);
-    designer.lockDataStructure = true;
 
+    let sampleData = {
+        title: "Publish Adaptive Card Schema",
+        description: "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
+        creator: {
+            name: "Matt Hidinger",
+            profileImage: "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+        },
+        createdUtc: "2017-02-14T06:08:39Z",
+        viewUrl: "https://adaptivecards.io",
+        properties: [
+            { key: "Board", value: "Adaptive Cards" },
+            { key: "List", value: "Backlog" },
+            { key: "Assigned to", value: "Matt Hidinger" },
+            { key: "Due date", value: "Not set" }
+        ]
+    };
+
+    let sampleDataStructure: ACDesigner.IData = {
+        valueType: "Object",
+        fields: [
+            {
+                name: "title",
+                displayName: "Title",
+                valueType: "String",
+                sampleValue: "Publish Adaptive Card Schema"
+            },
+            {
+                name: "description",
+                displayName: "Description",
+                valueType: "String",
+                sampleValue: "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation."
+            },
+            {
+                name: "creator",
+                displayName: "Creator",
+                valueType: "Object",
+                fields: [
+                    {
+                        name: "name",
+                        displayName: "Name",
+                        valueType: "String",
+                        sampleValue: "Matt Hidinger"
+                    },
+                    {
+                        name: "profileImage",
+                        displayName: "Profile image URL",
+                        valueType: "String",
+                        sampleValue: "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+                    }
+                ]
+            },
+            {
+                name: "createdUtc",
+                displayName: "Date created",
+                valueType: "String",
+                sampleValue: "2017-02-14T06:08:39Z"
+            },
+            {
+                name: "viewUrl",
+                displayName: "View URL",
+                valueType: "String",
+                sampleValue: "https://adaptivecards.io"
+            },
+            {
+                name: "properties",
+                displayName: "Properties",
+                valueType: "Array",
+                itemType: {
+                    valueType: "Object",
+                    fields: [
+                        {
+                            name: "key",
+                            displayName: "Key",
+                            valueType: "String",
+                            sampleValue: "Sample key"
+                        },
+                        {
+                            name: "value",
+                            displayName: "Value",
+                            valueType: "String",
+                            sampleValue: "Sample value"
+                        }
+                    ]
+                }
+            }
+        ]
+    };
+
+    /*
 	let sampleData = {
 		firstName: "John",
 		lastName: "Doe",
@@ -204,8 +292,10 @@ window.onload = function() {
             }
         ]
     };
+    */
 
 	designer.dataStructure = ACDesigner.FieldDefinition.parse(sampleDataStructure);
+    designer.lockDataStructure = true;
     designer.sampleData = sampleData;
-    designer.bindingPreviewMode = ACDesigner.BindingPreviewMode.GeneratedData;
+    designer.bindingPreviewMode = ACDesigner.BindingPreviewMode.SampleData;
 }

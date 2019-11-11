@@ -253,6 +253,7 @@ export abstract class SingleInputPropertyEditor extends PropertySheetEntry {
 
         if (additionalCommands && additionalCommands.length > 0) {
             let commandColumn = new Adaptive.Column();
+            commandColumn.width = "auto";
             commandColumn.spacing = Adaptive.Spacing.Small;
             commandColumn.verticalContentAlignment = Adaptive.VerticalAlignment.Center;
 
@@ -298,8 +299,6 @@ export class StringPropertyEditor extends SingleInputPropertyEditor {
                 {
                     caption: "...",
                     onExecute: (sender: SingleInputPropertyEditor, clickedElement: HTMLElement) => {
-                        // alert("TEST 1 executed");
-
                         let fieldPicker = new FieldPicker(context.designContext.dataStructure);
                         fieldPicker.onClose = (sender, wasCancelled) => {
                             if (!wasCancelled) {
