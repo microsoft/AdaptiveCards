@@ -7,6 +7,7 @@
 | **type** | `"Input.Text"` | Yes | Must be `"Input.Text"`. | 1.0 |
 | **id** | `string` | Yes | Unique identifier for the value. Used to identify collected input when the Submit action is performed. | 1.0 |
 | **isMultiline** | `boolean` | No | If `true`, allow multiple lines of input. | 1.0 |
+| **label** | `string`, `TextBlock`, `RichTextBlock` | No | Label for this input | 1.3 |
 | **maxLength** | `number` | No | Hint of maximum length characters to collect (may be ignored by some clients). | 1.0 |
 | **placeholder** | `string` | No | Description of the input desired. Displayed when no text has been input. | 1.0 |
 | **style** | `TextInputStyle` | No |  | 1.0 |
@@ -23,6 +24,19 @@
 | **spacing** | `Spacing` | No | Controls the amount of spacing between this element and the preceding element. | 1.0 |
 | **isVisible** | `boolean` | No, default: `true` | If `false`, this item will be removed from the visual tree. | 1.2 |
 | **requires** | `Dictionary<string>` | No | A series of key/value pairs indicating features that the item requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered. | 1.2 |
+
+
+## label
+
+Label for this input
+
+* **Type**: `string`, `TextBlock`, `RichTextBlock`
+* **Version** : 1.3
+* **Required**: No
+* **Allowed values**:
+  * `string`
+  * `TextBlock`
+  * `RichTextBlock`
 
 
 ## style
@@ -104,3 +118,9 @@ Controls the amount of spacing between this element and the preceding element.
 <!-- END AUTO-GENERATED -->
 
 ## Rendering
+
+### Labels
+The `label` property should be rendered above the input box. Clicking/tapping on the rendered label should put focus on the corresponding input.
+
+### Accessibility
+The `label` property should be set as the accessiblity text when present. If the `label` property is not present, the `placeholder` property should be used instead if present.
