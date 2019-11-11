@@ -22,6 +22,14 @@ As can be seen in the diagram below, the Android and iOS bindings libraries make
 
 Something to consider is that Native Xamarin is designed to share the logic and services inside an application but the UI is independent for every platform which allows us to have three different object models.  
 
+## Feature Priority
+
+The priorities among the APIs to be ported into Xamarin for the pre-release version were decided by selecting which APIs would be the bare minimum for a consumer of the Xamarin package to be able to render a card would be P0 as well as any APIs that were part of a feature (such as featureRegistration). 
+
+For P1, the tasks were decided using the same features asked for P1 in the [Xamarin.Forms github issue](https://github.com/microsoft/AdaptiveCards/issues/3255) which states that custom rendering for actions and elements would be P1. 
+
+Finally, P2 would be any task that enhances the developer experience but are not required for using Adaptive Cards and P3 would be any APIs that may not be used by most consumers or are specific to only one platform.
+
 ## Rendering
 
 ### UWP
@@ -158,7 +166,7 @@ Besides that, no breaking changes should be introduced as the native platforms' 
 
 ## Test Plan
 
-For the alpha and pre-release versions the testing will be performed manually
+For the alpha and pre-release versions the testing will be performed manually, there's currently one sample application for Xamarin Android and one for Xamarin iOS. After the pre release version is published, unit tests are going to be started to be developed starting by covering the most basic scenarios and usages of APIs.
 
 ## Release plan
 
@@ -181,11 +189,24 @@ The Xamarin packages require native libraries to be built beforehand, as we can'
 
 At least four build pipelines will be needed for this project, 2 pipelines for Continuous integration and 2 pipelines for the release. The pipelines for the release will be similar to the UWP and WPF pipelines that generate nuget packages and build against a visual studio solution/project.
 
+## Task plan
+
+| Task name | Expected cost in days |
+| --- | --- |
+| Update to Xamarin Android Bindings | 2 |
+| Update to Xamarin iOS Bindings | 2 |
+| Update to Xamarin Android Sample Application | 2 |
+| Update to Xamarin iOS Sample Application | 2 |
+| Bug fixing | 6 |
+| Update for Android build script | 2| 
+| Update for iOS build script | 2 |
+| Creation of CI and release pipeline for Android | 3 |
+| Creation of CI and release pipeline for iOS | 3 |
+| Total Cost | 24 |
+
 ## Remaining Tasks
 
 For the alpha version all P0 and P1 APIs should be done while P2 and P3 tasks must be done for the first complete release. 
-
-The priorities among the APIs to be ported into Xamarin for the pre-release version were decided by selecting which APIs would be the bare minimum for a consumer of the Xamarin package to be able to render a card would be P0 as well as any APIs that were part of a feature (such as featureRegistration). For P1, the tasks were decided using the same features asked for P1 in the [Xamarin.Forms github issue](https://github.com/microsoft/AdaptiveCards/issues/3255) which states that custom rendering for actions and elements would be P1. Finally, P2 would be any task that gives a better developer experience but are not required for using Adaptive Cards and P3 would be any APIs that may not be used by most consumers or are specific to only one platform.
 
 ## Open issues
 
