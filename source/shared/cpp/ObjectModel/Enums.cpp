@@ -92,6 +92,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::IsVisible, "isVisible"},
             {AdaptiveCardSchemaKey::Italic, "italic"},
             {AdaptiveCardSchemaKey::Items, "items"},
+			{AdaptiveCardSchemaKey::Label, "label"},
             {AdaptiveCardSchemaKey::Language, "lang"},
             {AdaptiveCardSchemaKey::Large, "large"},
             {AdaptiveCardSchemaKey::Left, "left"},

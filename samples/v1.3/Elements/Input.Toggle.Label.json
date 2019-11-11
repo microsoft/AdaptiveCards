@@ -1,0 +1,49 @@
+{
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "Input.Toggle",
+			"title": "Save my data!",
+			"id": "saveData",
+			"label": "We can save your data for future orders."
+		},
+		{
+			"type": "Input.Toggle",
+			"separator": true,
+			"title": "Sign me up for the newsletter!",
+			"id": "newsletter",
+			"label": {
+				"type": "TextBlock",
+				"text": "We have a great newsletter full of exciting articles and the latest updates on our products.",
+				"wrap": true
+			}
+		},
+		{
+			"type": "Input.Toggle",
+			"separator": true,
+			"title": "I want to be a VIP!",
+			"id": "vip",
+			"label": {
+				"type": "RichTextBlock",
+				"inlines": [
+					{
+						"type": "TextRun",
+						"text": "VIPs are the "
+					},
+					{
+						"type": "TextRun",
+						"text": "FIRST",
+						"size": "Medium",
+						"weight": "Bolder",
+						"color": "Good"
+					},
+					{
+						"type": "TextRun",
+						"text": " to know about our new products!"
+					}
+				]
+			}
+		}
+	]
+}

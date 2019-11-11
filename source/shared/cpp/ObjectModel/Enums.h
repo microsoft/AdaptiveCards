@@ -94,6 +94,7 @@ namespace AdaptiveSharedNamespace
         IsVisible,
         Italic,
         Items,
+        Label,
         Language,
         Large,
         Left,

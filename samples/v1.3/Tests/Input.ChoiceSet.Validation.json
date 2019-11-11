@@ -1,0 +1,116 @@
+{
+	"type": "AdaptiveCard",
+	"version": "1.3",
+	"body": [
+		{
+			"type": "Input.ChoiceSet",
+			"label": "Not Required:",
+			"placeholder": "Please select a choice",
+			"id": "compactNotRequired",
+			"choices": [
+				{
+					"title": "Choice 1",
+					"value": "Choice 1"
+				},
+				{
+					"title": "Choice 2",
+					"value": "Choice 2"
+				}
+			]
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"label": "Required:",
+			"placeholder": "Please select a choice",
+			"isRequired": true,
+			"errorMessage": "Error: choice required",
+			"id": "compactRequired",
+			"choices": [
+				{
+					"title": "Choice 1",
+					"value": "Choice 1"
+				},
+				{
+					"title": "Choice 2",
+					"value": "Choice 2"
+				}
+			]
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"label": "Not Required:",
+			"style": "expanded",
+			"id": "expandedNotRequired",
+			"choices": [
+				{
+					"title": "Choice 1",
+					"value": "Choice 1"
+				},
+				{
+					"title": "Choice 2",
+					"value": "Choice 2"
+				}
+			]
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"label": "Required:",
+			"style": "expanded",
+			"isRequired": true,
+			"errorMessage": "Error: choice required",
+			"id": "expandedRequired",
+			"choices": [
+				{
+					"title": "Choice 1",
+					"value": "Choice 1"
+				},
+				{
+					"title": "Choice 2",
+					"value": "Choice 2"
+				}
+			]
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"label": "Not Required:",
+			"style": "expanded",
+			"isMultiSelect": true,
+			"id": "multiselectNotRequired",
+			"choices": [
+				{
+					"title": "Choice 1",
+					"value": "Choice 1"
+				},
+				{
+					"title": "Choice 2",
+					"value": "Choice 2"
+				}
+			]
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"label": "Required:",
+			"style": "expanded",
+			"isMultiSelect": true,
+			"isRequired": true,
+			"errorMessage": "Error: choice required",
+			"id": "multiselectRequired",
+			"choices": [
+				{
+					"title": "Choice 1",
+					"value": "Choice 1"
+				},
+				{
+					"title": "Choice 2",
+					"value": "Choice 2"
+				}
+			]
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "Send!"
+		}
+	]
+}

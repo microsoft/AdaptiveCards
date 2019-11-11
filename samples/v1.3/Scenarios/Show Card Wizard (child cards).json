@@ -1,0 +1,149 @@
+{
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Please provide the following information:"
+		}
+	],
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"actions": [
+		{
+			"type": "Action.ShowCard",
+			"title": "1. Name",
+			"card": {
+				"type": "AdaptiveCard",
+				"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+				"body": [
+					{
+						"type": "Container",
+						"id": "nameProperties",
+						"items": [
+							{
+								"type": "Input.Text",
+								"placeholder": "First Name",
+								"id": "FirstName",
+								"isRequired": true,
+								"errorMessage": "First Name is required"
+							},
+							{
+								"type": "Input.Text",
+								"placeholder": "Middle Name",
+								"id": "MiddleName"
+							},
+							{
+								"type": "Input.Text",
+								"placeholder": "Last Name",
+								"id": "LastName",
+								"isRequired": true,
+								"errorMessage": "Last Name is required"
+							}
+						]
+					}
+				],
+				"actions": [
+					{
+						"type": "Action.ShowCard",
+						"title": "2. Address",
+						"inputs": [ "nameProperties" ],
+						"card": {
+							"type": "AdaptiveCard",
+							"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+							"body": [
+								{
+									"type": "Container",
+									"id": "addressProperties",
+									"items": [
+										{
+											"type": "Input.Text",
+											"placeholder": "Address line 1",
+											"id": "AddressLine1"
+										},
+										{
+											"type": "Input.Text",
+											"placeholder": "Address line 2",
+											"id": "AddressLine2"
+										},
+										{
+											"type": "ColumnSet",
+											"columns": [
+												{
+													"type": "Column",
+													"width": "stretch",
+													"items": [
+														{
+															"type": "Input.Text",
+															"placeholder": "City",
+															"id": "City"
+														}
+													]
+												},
+												{
+													"type": "Column",
+													"width": "stretch",
+													"items": [
+														{
+															"type": "Input.Text",
+															"placeholder": "State",
+															"id": "State"
+														}
+													]
+												},
+												{
+													"type": "Column",
+													"width": "stretch",
+													"items": [
+														{
+															"type": "Input.Text",
+															"placeholder": "Zip Code",
+															"id": "Zip"
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							],
+							"actions": [
+								{
+									"type": "Action.ShowCard",
+									"title": "3. Phone/Email",
+									"inputs": [ "addressProperties" ],
+									"card": {
+										"type": "AdaptiveCard",
+										"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+										"body": [
+											{
+												"type": "Input.Text",
+												"placeholder": "Cell Number",
+												"id": "CellPhone"
+											},
+											{
+												"type": "Input.Text",
+												"placeholder": "Home Number",
+												"id": "HomePhone"
+											},
+											{
+												"type": "Input.Text",
+												"placeholder": "Email Address",
+												"id": "Email"
+											}
+										],
+										"actions": [
+											{
+												"type": "Action.Submit",
+												"title": "Submit"
+											}
+										]
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+}

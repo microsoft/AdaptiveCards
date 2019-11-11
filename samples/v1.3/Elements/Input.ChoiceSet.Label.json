@@ -1,0 +1,87 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "Input.ChoiceSet",
+			"id": "myColor",
+			"style": "compact",
+			"label": "What color do you want?",
+			"choices": [
+				{
+					"title": "Red",
+					"value": "1"
+				},
+				{
+					"title": "Green",
+					"value": "2"
+				},
+				{
+					"title": "Blue",
+					"value": "3"
+				}
+			]
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "myColor2",
+			"style": "expanded",
+			"isMultiSelect": false,
+			"label": {
+				"type": "TextBlock",
+				"text": "What color do you want?",
+				"weight": "Bolder"
+			},
+			"choices": [
+				{
+					"title": "Red",
+					"value": "1"
+				},
+				{
+					"title": "Green",
+					"value": "2"
+				},
+				{
+					"title": "Blue",
+					"value": "3"
+				}
+			]
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "myColor3",
+			"isMultiSelect": true,
+			"style": "expanded",
+			"label": {
+				"type": "RichTextBlock",
+				"inlines": [
+					{
+						"type": "TextRun",
+						"text": "What colors do you want?",
+						"color": "Accent"
+					},
+					{
+						"type": "TextRun",
+						"text": " (You can pick more than one)",
+						"size": "Small"
+					}
+				]
+			},
+			"choices": [
+				{
+					"title": "Red",
+					"value": "1"
+				},
+				{
+					"title": "Green",
+					"value": "2"
+				},
+				{
+					"title": "Blue",
+					"value": "3"
+				}
+			]
+		}
+	]
+}

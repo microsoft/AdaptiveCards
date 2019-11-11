@@ -48,6 +48,7 @@
                         Label="Host config"
                         IsCompact="True"
                         Click="AppBarHostConfigEditor_Click"/>
+                    <CheckBox IsChecked="True" Click="CheckBox_Click">Inline Validation</CheckBox>
                 </StackPanel>
             </CommandBar.Content>
             <CommandBar.SecondaryCommands>

@@ -26,7 +26,7 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveToggleInputRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
                                                 _In_ IAdaptiveRenderContext* renderContext,
-                                                _In_ IAdaptiveRenderArgs* /*renderArgs*/,
+                                                _In_ IAdaptiveRenderArgs* renderArgs,
                                                 _COM_Outptr_ IUIElement** toggleInputControl) noexcept
     try
     {
@@ -76,8 +76,21 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(
             XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Toggle", frameworkElement.Get()));
 
-        RETURN_IF_FAILED(checkboxAsUIElement.CopyTo(toggleInputControl));
-        XamlHelpers::AddInputValueToContext(renderContext, adaptiveCardElement, *toggleInputControl);
+        ComPtr<IAdaptiveInputElement> adapitveToggleInputAsAdaptiveInput;
+        RETURN_IF_FAILED(adaptiveToggleInput.As(&adapitveToggleInputAsAdaptiveInput));
+
+        ComPtr<IUIElement> inputLayout;
+        ComPtr<IUIElement> validationError;
+        RETURN_IF_FAILED(XamlHelpers::HandleInputLayoutAndValidation(
+            adapitveToggleInputAsAdaptiveInput.Get(), checkboxAsUIElement.Get(), false, renderContext, renderArgs, &inputLayout, nullptr, &validationError));
+
+        ComPtr<ToggleInputValue> input;
+        RETURN_IF_FAILED(MakeAndInitialize<ToggleInputValue>(
+            &input, renderContext, adaptiveToggleInput.Get(), checkBox.Get(), nullptr, validationError.Get()));
+        RETURN_IF_FAILED(renderContext->AddInputValue(input.Get()));
+
+        RETURN_IF_FAILED(inputLayout.CopyTo(toggleInputControl));
+
         return S_OK;
     }
     CATCH_RETURN;

@@ -1,0 +1,39 @@
+{
+	"type": "AdaptiveCard",
+	"version": "1.3",
+	"body": [
+		{
+			"type": "Input.Time",
+			"id": "start",
+			"label": {
+				"type": "TextBlock",
+				"text": "Start",
+				"weight": "Bolder"
+			}
+		},
+		{
+			"type": "Input.Time",
+			"id": "end",
+			"label": "End"
+		},
+		{
+			"type": "Input.Time",
+			"id": "due",
+			"label": {
+				"type": "RichTextBlock",
+				"inlines": [
+					{
+						"type": "TextRun",
+						"text": "Due",
+						"color": "Attention"
+					},
+					{
+						"type": "TextRun",
+						"text": " (5 minute grace period)",
+						"size": "Small"
+					}
+				]
+			}
+		}
+	]
+}

@@ -1,0 +1,41 @@
+﻿{
+  "type": "AdaptiveCard",
+  "version": "1.3",
+  "body": [
+    {
+      "type": "Input.Number",
+      "id": "start",
+      "label": "Pick a number between 1 and 10"
+    },
+    {
+      "type": "Input.Date",
+      "id": "end",
+      "label": {
+        "type": "TextBlock",
+        "text": "Pick a number between 100 and 200",
+        "size": "Medium",
+        "wrap": true
+      }
+    },
+    {
+      "type": "Input.Date",
+      "id": "due",
+      "label": {
+        "type": "RichTextBlock",
+        "wrap": true,
+        "inlines": [
+          {
+            "type": "TextRun",
+            "text": "Pick a number between 1000 and 2000",
+            "size": "Large",
+            "color": "Accent"
+          },
+          {
+            "type": "TextRun",
+            "text": "  (Pick a good one 😊)"
+          }
+        ]
+      }
+    }
+  ]
+}

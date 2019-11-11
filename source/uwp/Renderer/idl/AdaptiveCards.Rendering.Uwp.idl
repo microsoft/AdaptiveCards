@@ -723,6 +723,7 @@ AdaptiveNamespaceStart
     {
         Boolean IsRequired;
         String ErrorMessage;
+        String Label;
     };
 
     [
@@ -1001,6 +1002,7 @@ AdaptiveNamespaceStart
 
         void SetFixedDimensions(UInt32 desiredWidth, UInt32 desiredHeight);
         void ResetFixedDimensions();
+        void SetInlineValidation(Boolean inlineValidation);
 
 #ifdef ADAPTIVE_CARDS_WINDOWS
         Windows.Foundation.IAsyncOperation<RenderedAdaptiveCard> RenderCardAsXamlAsync(AdaptiveCard adaptiveCard);
@@ -1592,6 +1594,8 @@ AdaptiveNamespaceStart
 
         Windows.Data.Json.JsonObject AsJson();
         Windows.Foundation.Collections.ValueSet AsValueSet();
+
+        Boolean ValidateInputs();
     };
 
     [
@@ -1758,6 +1762,8 @@ AdaptiveNamespaceStart
     {
         IAdaptiveInputElement InputElement { get; };
         String CurrentValue { get; };
+        Boolean Validate();
+        void SetFocus();
     };
 
     [
