@@ -93,8 +93,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 
             if (!choiceSetInput.GetWrap())
             {
-                checkBox.setSingleLine(true);
-                checkBox.setPadding(0, 8, 0, 8);
+                checkBox.setMaxLines(1);
                 checkBox.setEllipsize(TextUtils.TruncateAt.END);
             }
 
