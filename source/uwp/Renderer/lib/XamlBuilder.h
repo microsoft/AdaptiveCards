@@ -251,6 +251,9 @@ namespace AdaptiveNamespace
                                       const std::wstring& style,
                                       _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** finalElement);
 
+        static void CreateAppropriateButton(ABI::AdaptiveNamespace::ActionType actionType,
+                                            Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::IButton>& button);
+
         void static HandleSelectAction(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* adaptiveCardElement,
                                        _In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* selectAction,
                                        _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,

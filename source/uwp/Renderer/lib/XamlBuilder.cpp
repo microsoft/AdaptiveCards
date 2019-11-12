@@ -1847,20 +1847,12 @@ namespace AdaptiveNamespace
         ABI::AdaptiveNamespace::ActionType actionType;
         RETURN_IF_FAILED(action->get_ActionType(&actionType));
 
-        // now construct an appropriate button for the action type
         ComPtr<IButton> button;
-        if (actionType == ABI::AdaptiveNamespace::ActionType_OpenUrl)
+        try
         {
-            // OpenUrl buttons should appear as links for accessibility purposes, so we use our custom LinkButton.
-            auto linkButton = winrt::make<LinkButton>();
-            button = linkButton.as<IButton>().detach();
+            CreateAppropriateButton(actionType, button);
         }
-
-        if (!button)
-        {
-            // Either non-OpenUrl action or instantiating LinkButton failed. Use standard button.
-            button = XamlHelpers::CreateXamlClass<IButton>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Button));
-        }
+        CATCH_RETURN;
 
         ComPtr<IFrameworkElement> buttonFrameworkElement;
         RETURN_IF_FAILED(button.As(&buttonFrameworkElement));
@@ -4379,6 +4371,23 @@ namespace AdaptiveNamespace
         return Boolify(supportsInteractivity);
     }
 
+    void XamlBuilder::CreateAppropriateButton(ABI::AdaptiveNamespace::ActionType actionType, ComPtr<IButton>& button)
+    {
+        // construct an appropriate button for the action type
+        if (actionType == ABI::AdaptiveNamespace::ActionType_OpenUrl)
+        {
+            // OpenUrl buttons should appear as links for accessibility purposes, so we use our custom LinkButton.
+            auto linkButton = winrt::make<LinkButton>();
+            button = linkButton.as<IButton>().detach();
+        }
+
+        if (!button)
+        {
+            // Either non-OpenUrl action or instantiating LinkButton failed. Use standard button.
+            button = XamlHelpers::CreateXamlClass<IButton>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Button));
+        }
+    }
+
     void XamlBuilder::WrapInTouchTarget(_In_ IAdaptiveCardElement* adaptiveCardElement,
                                         _In_ IUIElement* elementToWrap,
                                         _In_ IAdaptiveActionElement* action,
@@ -4398,8 +4407,11 @@ namespace AdaptiveNamespace
             return;
         }
 
-        ComPtr<IButton> button =
-            XamlHelpers::CreateXamlClass<IButton>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Button));
+        ABI::AdaptiveNamespace::ActionType actionType;
+        action->get_ActionType(&actionType);
+
+        ComPtr<IButton> button;
+        CreateAppropriateButton(actionType, button);
 
         ComPtr<IContentControl> buttonAsContentControl;
         THROW_IF_FAILED(button.As(&buttonAsContentControl));
