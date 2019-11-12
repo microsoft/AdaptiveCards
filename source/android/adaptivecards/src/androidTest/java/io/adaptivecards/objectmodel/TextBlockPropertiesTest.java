@@ -8,6 +8,8 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
+import io.adaptivecards.renderer.readonly.RendererUtil;
+
 public class TextBlockPropertiesTest
 {
     static {
@@ -305,6 +307,19 @@ public class TextBlockPropertiesTest
             TextBlock parsedTextBlock = TestUtil.castToTextBlock(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals((boolean)testTuple.first, parsedTextBlock.GetWrap());
         }
+    }
+
+    @Test
+    public void TestLineBreaks () throws Exception
+    {
+        final String textWithNewLines = "This is some string\nAnd this is another line\r";
+        // This looks counter intuitive but without the replacement of '\n\r' for "<br/>" the
+        // output will only contain a blank space where '\n' is expected
+        final String expectedHtml = "This is some string\nAnd this is another line ";
+
+        String html = RendererUtil.handleSpecialText(textWithNewLines).toString();
+
+        Assert.assertEquals(expectedHtml, html);
     }
 
     // This string is the result for an empty textblock or a textblock with all default values
