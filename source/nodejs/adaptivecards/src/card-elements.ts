@@ -6142,7 +6142,9 @@ export class ColumnSet extends StylableCardElementContainer {
             for (let i = 0; i < jsonColumns.length; i++) {
                 let column = this.createColumnInstance(jsonColumns[i], errors);
 
-                this._columns.push(column);
+                if (column) {
+                    this._columns.push(column);
+                }
             }
         }
 
