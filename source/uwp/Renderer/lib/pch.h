@@ -57,3 +57,9 @@
 #include <windows.foundation.collections.h>
 #include <windows.ui.xaml.shapes.h>
 #include <windows.ui.xaml.markup.h>
+
+#include <winrt/base.h>
+#include <winrt/Windows.UI.Xaml.Automation.h>
+#include <winrt/Windows.UI.Xaml.Automation.Peers.h>
+#include <winrt/Windows.UI.Xaml.Controls.h>
+#include <winrt/Windows.UI.Xaml.Controls.Primitives.h>

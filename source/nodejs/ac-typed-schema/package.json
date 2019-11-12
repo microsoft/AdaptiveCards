@@ -28,6 +28,7 @@
     "mocha": "^6.2.0",
     "p-iteration": "^1.1.8",
     "rimraf": "^2.6.2",
-    "typescript": "^3.5.3"
+    "typescript": "^3.5.3",
+    "webpack-cli": "3.3.10"
   }
 }
