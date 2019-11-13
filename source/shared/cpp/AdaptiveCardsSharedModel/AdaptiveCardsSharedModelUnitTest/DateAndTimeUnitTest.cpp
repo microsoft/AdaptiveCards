@@ -11,82 +11,37 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AdaptiveCards;
 
+// Use this macro to effectively skip a test when run outside of the Pacific timezone
+#define SKIP_TEST_IF_NEEDED() \
+    if (!fShouldRunTests)                       \
+    {                                           \
+        Assert::IsTrue(true, L"Skipping test for non-Pacific timezone"); \
+        return;                                                         \
+    }
+
 namespace AdaptiveCardsSharedModelUnitTest
 {
-    static TIME_ZONE_INFORMATION tzOriginal{};
-    static bool changedTime = false;
+    bool fShouldRunTests = false;
 
-    void EnableTimeZoneChange(bool set)
-    {
-        HANDLE hToken;
-        TOKEN_PRIVILEGES tkp;
-
-        OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hToken);
-        LookupPrivilegeValue(NULL, SE_TIME_ZONE_NAME, &tkp.Privileges[0].Luid);
-        tkp.PrivilegeCount = 1;
-        tkp.Privileges[0].Attributes = set?SE_PRIVILEGE_ENABLED:0;
-        if (!AdjustTokenPrivileges(hToken, FALSE, &tkp, 0, (PTOKEN_PRIVILEGES)NULL, 0))
-        {
-            Logger::WriteMessage("Could not get the permissions to changes the timezone");
-        }
-    }
-
-    // Time tests assume a Pacific Timezone. Make sure that we're
-    // setting it up appropriately for the run of the tests.
     TEST_MODULE_INITIALIZE(InitializeTimeZone)
     {
-        GetTimeZoneInformation(&tzOriginal);
-        changedTime = false;
-        // Don't do this if we're already on the right timezone
-        if (tzOriginal.Bias != 480)
+        // Make sure we only run our tests in Pacific timezone
+        TIME_ZONE_INFORMATION tz{};
+        GetTimeZoneInformation(&tz);
+        fShouldRunTests = (tz.Bias == 480l);
+
+        if (!fShouldRunTests)
         {
-            Logger::WriteMessage("Changing TimeZone to Seattle");
-            TIME_ZONE_INFORMATION tzSeattle = { 0 };
-            tzSeattle.Bias = 480;
-            StringCchCopy(tzSeattle.StandardName, 32, L"Test Standard Zone");
-            tzSeattle.StandardDate.wMonth = 11;
-            tzSeattle.StandardDate.wDayOfWeek = 0;
-            tzSeattle.StandardDate.wDay = 1;
-            tzSeattle.StandardDate.wHour = 2;
-
-            StringCchCopy(tzSeattle.DaylightName, 32, L"Test Daylight Zone");
-            tzSeattle.DaylightDate.wMonth = 3;
-            tzSeattle.DaylightDate.wDayOfWeek = 0;
-            tzSeattle.DaylightDate.wDay = 2;
-            tzSeattle.DaylightDate.wHour = 2;
-            tzSeattle.DaylightBias = -60;
-
-            EnableTimeZoneChange(true);
-            bool timeZoneChanged = SetTimeZoneInformation(&tzSeattle);
-            EnableTimeZoneChange(false);
-            if (!timeZoneChanged)
-            {
-                Assert::Fail(L"Could not change the timezone");
-            }
-            changedTime = true;
+            Logger::WriteMessage("Skipping tests for non-Pacific timezone");
         }
     }
-
-    // Reset the timezone on the machine to the original one.
-    TEST_MODULE_CLEANUP(CleanupTimeZone)
-    {
-        if (changedTime)
-        {
-            Logger::WriteMessage("Resetting TimeZone");
-
-            EnableTimeZoneChange(true);
-            SetTimeZoneInformation(&tzOriginal);
-            EnableTimeZoneChange(false);
-            changedTime = false;
-        }
-    }
-
 
     TEST_CLASS(TimeTest)
     {
     public:
         TEST_METHOD(TransformToTimeTest)
         {
+            SKIP_TEST_IF_NEEDED();
             TextBlock blck;
             std::string testString = "{{TIME(2017-10-28T02:17:00Z)}}";
             blck.SetText(testString);
@@ -98,6 +53,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         }
         TEST_METHOD(TransformToTimeTest2)
         {
+            SKIP_TEST_IF_NEEDED();
             TextBlock blck;
             std::string testString = "{{TIME(2017-10-27T18:19:09Z)}}";
             blck.SetText(testString);
@@ -109,6 +65,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         }
         TEST_METHOD(TransformToTimeWithSmallPositiveOffsetTest)
         {
+            SKIP_TEST_IF_NEEDED();
             TextBlock blck;
             // paris
             std::string testString = "{{TIME(2017-10-28T04:20:00+02:00)}}";
@@ -121,6 +78,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         }
         TEST_METHOD(TransformToTimeWithLargePositiveOffsetTest)
         {
+            SKIP_TEST_IF_NEEDED();
             TextBlock blck;
             // seoul
             std::string testString = "{{TIME(2017-10-28T11:25:00+09:00)}}";
@@ -133,6 +91,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         }
         TEST_METHOD(TransformToTimeWithMinusOffsetTest)
         {
+            SKIP_TEST_IF_NEEDED();
             TextBlock blck;
             // New York
             std::string testString = "{{TIME(2017-10-27T22:27:00-04:00)}}";
@@ -149,6 +108,7 @@ namespace AdaptiveCardsSharedModelUnitTest
     public:
         TEST_METHOD(TransformDateTest)
         {
+            SKIP_TEST_IF_NEEDED();
             TextBlock blck;
             blck.SetText("{{DATE(2017-02-13T20:46:30Z, COMPACT)}}");
             Assert::AreEqual<std::string>("{{DATE(2017-02-13T20:46:30Z, COMPACT)}}",  blck.GetText());
@@ -162,6 +122,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
         TEST_METHOD(TransformToDateWithSmallPositiveOffset)
         {
+            SKIP_TEST_IF_NEEDED();
             TextBlock blck;
             std::string testString = "{{DATE(2017-10-28T04:20:00+02:00, COMPACT)}}";
             blck.SetText(testString);
@@ -176,6 +137,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
         TEST_METHOD(TransformToDateWithLargePositiveOffset)
         {
+            SKIP_TEST_IF_NEEDED();
             TextBlock blck;
             std::string testString = "{{DATE(2017-10-28T11:25:00+09:00, COMPACT)}}";
             // New York
@@ -191,6 +153,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
         TEST_METHOD(TransformToDateNegativeOffset)
         {
+            SKIP_TEST_IF_NEEDED();
             TextBlock blck;
             std::string testString = "{{DATE(2017-10-27T22:27:00-04:00, COMPACT)}}";
             blck.SetText(testString);
@@ -205,6 +168,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
         TEST_METHOD(TransformToDateRespectsOptionalSpace)
         {
+            SKIP_TEST_IF_NEEDED();
             TextBlock blck;
             std::string testString = "{{DATE(2017-10-27T22:27:00-04:00,COMPACT)}}";
             blck.SetText(testString);
@@ -219,6 +183,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
         TEST_METHOD(TransformToDateOnlyAllowsUpToOneSpaceBeforeModifier)
         {
+            SKIP_TEST_IF_NEEDED();
             TextBlock blck;
             std::string testString = "{{DATE(2017-10-27T22:27:00-04:00,  COMPACT)}}";
             blck.SetText(testString);
@@ -231,6 +196,7 @@ namespace AdaptiveCardsSharedModelUnitTest
     public:
         TEST_METHOD(TimeWithShortFormat)
         {
+            SKIP_TEST_IF_NEEDED();
             TextBlock blck;
             // New York
             std::string testString = "{{TIME(2017-10-27T22:07:00Z, SHORT)}}";
@@ -239,6 +205,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         }
         TEST_METHOD(TimeWithLongFormat)
         {
+            SKIP_TEST_IF_NEEDED();
             TextBlock blck;
             // New York
             // New York
@@ -248,6 +215,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         }
         TEST_METHOD(TimeWithLongFormatInText)
         {
+            SKIP_TEST_IF_NEEDED();
             TextBlock blck;
             // New York
             std::string testString = "Hello {{TIME(2017-10-27T26:27:00Z, LONG)}} World!";
@@ -256,6 +224,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         }
         TEST_METHOD(MissingLeadingDigitOfMinutesInputTest)
         {
+            SKIP_TEST_IF_NEEDED();
             TextBlock blck;
             // New York
             std::string testString = "{{TIME(2017-10-27T22:7:00-04:00)}}";
@@ -264,6 +233,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         }
         TEST_METHOD(MissingColumnDelimiterTest)
         {
+            SKIP_TEST_IF_NEEDED();
             TextBlock blck;
             // New York
             std::string testString = "{{TIME(2017-10-27T2:7:00Q04:00)}}";
@@ -272,6 +242,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         }
         TEST_METHOD(ISO8601WithTextTest)
         {
+            SKIP_TEST_IF_NEEDED();
             TextBlock blck;
             // New York
             std::string testString = "You have arrived in New York on {{DATE(2017-10-27T22:23:00Z, SHORT)}}";
@@ -286,6 +257,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
         TEST_METHOD(TwoISO8601WithText)
         {
+            SKIP_TEST_IF_NEEDED();
             TextBlock blck;
             // New York
             std::string testString = "You have arrived in New York on {{DATE(2017-10-27T22:27:00-04:00, SHORT)}} at {{TIME(2017-10-27T22:27:00-04:00)}}.\r have a good trip";
@@ -312,8 +284,9 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::IsTrue(tokens[4]->GetFormat() == DateTimePreparsedTokenFormat::RegularString);
         }
 
-        TEST_METHOD(prefixStringISO8650sufixStringTest)
+        TEST_METHOD(prefixStringISO8650suffixStringTest)
         {
+            SKIP_TEST_IF_NEEDED();
             TextBlock blck;
             // New York
             std::string testString = "You will arrived in Seattle on {{DATE(2017-10-27T22:23:00Z, SHORT)}}; have a good trip";
@@ -357,6 +330,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         }
         TEST_METHOD(DateDefaultStyleInputTest)
         {
+            SKIP_TEST_IF_NEEDED();
             TextBlock blck;
             std::string testString = "{{DATE(2017-02-13T20:46:30Z)}}";
             blck.SetText(testString);
@@ -370,6 +344,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         }
         TEST_METHOD(DateLONGStyleInputTest)
         {
+            SKIP_TEST_IF_NEEDED();
             TextBlock blck;
             std::string testString = "{{DATE(2017-02-13T20:46:30Z, LONG)}}";
             blck.SetText(testString);
@@ -383,6 +358,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         }
         TEST_METHOD(DateSHORTStyleInputTest)
         {
+            SKIP_TEST_IF_NEEDED();
             TextBlock blck;
             std::string testString = "{{DATE(2017-02-13T20:46:30Z, SHORT)}}";
             blck.SetText(testString);
@@ -396,6 +372,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         }
         TEST_METHOD(DateSmallCaseLONGStyleInputTest)
         {
+            SKIP_TEST_IF_NEEDED();
             TextBlock blck;
             std::string testString = "{{DATE(2017-02-13T20:46:30Z, Long)}}";
             blck.SetText(testString);
@@ -403,6 +380,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         }
         TEST_METHOD(InvalidDateTest)
         {
+            SKIP_TEST_IF_NEEDED();
             TextBlock blck;
             std::string testString = "{{DATE(2017-99-14T06:08:00Z)}}";
             blck.SetText(testString);
@@ -410,6 +388,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         }
         TEST_METHOD(InvalidTimeTest)
         {
+            SKIP_TEST_IF_NEEDED();
             TextBlock blck;
             std::string testString = "{{TIME(2017-99-14T06:08:00Z)}}";
             blck.SetText(testString);
@@ -417,6 +396,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         }
         TEST_METHOD(LeapYearValidDayTest)
         {
+            SKIP_TEST_IF_NEEDED();
             TextBlock blck;
             // UTC and PST at Leap Year
             std::string testString = "{{DATE(1992-02-29T18:08:00Z)}}";
@@ -431,6 +411,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         }
         TEST_METHOD(LeapYearValidDayOnlyAtUTCTest)
         {
+            SKIP_TEST_IF_NEEDED();
             TextBlock blck;
             // UTC and PST at Leap Year
             std::string testString = "{{DATE(1992-02-29T07:59:00Z)}}";
@@ -451,5 +432,4 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual<std::string>("{{DATE(1994-02-29T06:08:00Z)}}", blck.GetText());
         }
     };
-
 }
