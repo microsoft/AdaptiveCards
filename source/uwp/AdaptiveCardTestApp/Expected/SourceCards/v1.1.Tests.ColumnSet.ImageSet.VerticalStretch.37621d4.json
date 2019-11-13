@@ -37,11 +37,11 @@
 							"images": [
 								{
 									"type": "Image",
-									"url": "http://adaptivecards.io/content/cats/1.png"
+									"url": "https://adaptivecards.io/content/cats/1.png"
 								},
 								{
 									"type": "Image",
-									"url": "http://adaptivecards.io/content/cats/2.png"
+									"url": "https://adaptivecards.io/content/cats/2.png"
 								}
 							]
 						},

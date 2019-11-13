@@ -16,7 +16,7 @@
 						},
 						{
 							"type": "Image",
-							"url": "http://adaptivecards.io/content/adaptive-card-50.png"
+							"url": "https://adaptivecards.io/content/adaptive-card-50.png"
 						}
 					]
 				},
@@ -32,7 +32,7 @@
 						{
 							"type": "Image",
 							"horizontalAlignment": "center",
-							"url": "http://adaptivecards.io/content/adaptive-card-50.png"
+							"url": "https://adaptivecards.io/content/adaptive-card-50.png"
 						}
 					]
 				},
@@ -46,7 +46,7 @@
 						},
 						{
 							"type": "Image",
-							"url": "http://adaptivecards.io/content/adaptive-card-50.png"
+							"url": "https://adaptivecards.io/content/adaptive-card-50.png"
 						}
 					]
 				}
