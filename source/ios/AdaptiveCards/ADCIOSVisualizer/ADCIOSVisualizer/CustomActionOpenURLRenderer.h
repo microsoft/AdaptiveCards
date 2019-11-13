@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import <AdaptiveCards/AdaptiveCards.h>
+#import <AdaptiveCards/ACFramework.h>
 
 @interface CustomActionOpenURLRenderer : ACRBaseActionElementRenderer
 

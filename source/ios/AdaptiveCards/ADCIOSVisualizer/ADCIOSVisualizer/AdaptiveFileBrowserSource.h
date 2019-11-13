@@ -5,9 +5,8 @@
 //  Copyright © 2019 Microsoft. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <AdaptiveCards/AdaptiveCards.h>
 #import "ACVTableViewController.h"
+#import <AdaptiveCards/ACFramework.h>
 #import <Foundation/Foundation.h>
 
 @interface AdaptiveFileBrowserSource : UIView <ACRActionDelegate>
