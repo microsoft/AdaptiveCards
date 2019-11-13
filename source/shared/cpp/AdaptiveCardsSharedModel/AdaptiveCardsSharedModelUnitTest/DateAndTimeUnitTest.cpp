@@ -23,7 +23,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 {
     bool fShouldRunTests = false;
 
-    TEST_MODULE_INITIALIZE(InitializeTimeZone)
+    TEST_MODULE_INITIALIZE(ShouldRunTestsInTimeZone)
     {
         // Make sure we only run our tests in Pacific timezone
         TIME_ZONE_INFORMATION tz{};
