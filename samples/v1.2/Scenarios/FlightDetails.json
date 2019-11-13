@@ -14,7 +14,7 @@
 								{
 									"type": "Image",
 									"horizontalAlignment": "Center",
-									"url": "http://messagecardplayground.azurewebsites.net/assets/TxP_Flight.png"
+									"url": "https://messagecardplayground.azurewebsites.net/assets/TxP_Flight.png"
 								}
 							],
 							"bleed": true
@@ -86,7 +86,7 @@
 											"items": [
 												{
 													"type": "Image",
-													"url": "http://messagecardplayground.azurewebsites.net/assets/graydot2x2.png",
+													"url": "https://messagecardplayground.azurewebsites.net/assets/graydot2x2.png",
 													"width": "10000px",
 													"height": "2px"
 												}
@@ -100,7 +100,7 @@
 											"items": [
 												{
 													"type": "Image",
-													"url": "http://messagecardplayground.azurewebsites.net/assets/smallairplane.png",
+													"url": "https://messagecardplayground.azurewebsites.net/assets/smallairplane.png",
 													"height": "16px"
 												}
 											],

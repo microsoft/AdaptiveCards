@@ -1,3 +1,8 @@
+<%- hashed_asset("node_modules/adaptivecards-designer/dist/adaptivecards-designer.css") %>
+<%- hashed_asset("node_modules/markdown-it/dist/markdown-it.min.js") %>
+<%- hashed_asset('node_modules/monaco-editor/min/vs/loader.js') %>
+<%- hashed_asset("node_modules/adaptivecards-designer/dist/adaptivecards-designer.min.js") %>
+
 <style type="text/css">
 	.content {
 		height: calc(100vh - 97px) !important;
@@ -9,18 +14,37 @@
 	}
 
 	#designerRootHost * {
-    	box-sizing: border-box;
+		box-sizing: border-box;
+	}
+
+	.acd-icon-openInNewWindow::before {
+		content: "\E8A7";
+	}
+
+	.acd-icon-feedback::before {
+		content: "\ED15";
+	}
+
+	.acd-icon-viewOriginal::before {
+		content: "\E7B4";
+	}
+
+	.acd-icon-fitPage::before {
+		content: "\E9A6";
+	}
+
+	.acd-icon-storyboard::before {
+		content: "\F308";
+	}
+
+	.acd-icon-scopeTemplate::before {
+		content: "\F2B0";
 	}
 </style>
-<%- hashed_asset("node_modules/markdown-it/dist/markdown-it.min.js") %>
-
-<%- hashed_asset('node_modules/monaco-editor/min/vs/loader.js') %>  
-
-<%- hashed_asset("node_modules/adaptivecards-designer/dist/adaptivecards-designer.min.js") %>
-<%- hashed_asset("node_modules/adaptivecards-designer/dist/adaptivecards-designer.css") %>
 
 
 <script type="text/javascript">
+
 	$(function () {
 
 		function getParameterByName(name, url) {
@@ -42,13 +66,18 @@
 		if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
 			console.log("Local storage is not available.");
 		}
-		
-        ACDesigner.GlobalSettings.enableDataBindingSupport = false;
-        ACDesigner.GlobalSettings.showDataStructureTooklbox = false;
-        ACDesigner.GlobalSettings.showSampleDataEditorToolbox = false;
-        ACDesigner.GlobalSettings.showVersionPicker = false;
 
-		let hostContainers = [];
+		ACDesigner.GlobalSettings.enableDataBindingSupport = true;
+		ACDesigner.GlobalSettings.showDataStructureToolbox = true;
+		ACDesigner.GlobalSettings.showSampleDataEditorToolbox = true;
+		
+		<% if (page.previewFeaturesEnabled) { %>
+			// Enable data binding preview features
+			ACDesigner.GlobalSettings.showVersionPicker = false;
+		<% } %>
+
+
+			let hostContainers = [];
 		hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
 		hostContainers.push(new ACDesigner.CortanaContainer("Cortana Skills", "containers/cortana-container.css"));
 		hostContainers.push(new ACDesigner.OutlookContainer("Outlook Actionable Messages",
@@ -64,24 +93,39 @@
 			"containers/toast-container.css"));
 
 		let designer = new ACDesigner.CardDesigner(hostContainers);
-		designer.assetPath = "<%- config.root %>node_modules/adaptivecards-designer/dist/"; 
+		designer.assetPath = "<%- config.root %>node_modules/adaptivecards-designer/dist/";
 		designer.sampleCatalogueUrl = "<%- config.root %>designer/sample-catalogue.json";
 
 		let hostDocsButton = new ACDesigner.ToolbarButton(
 			"hostDocs",
 			"Host App Docs",
-			null,
+			"acd-icon-storyboard",
 			function () {
 				window.open("https://docs.microsoft.com/en-us/adaptive-cards/resources/partners")
 			}
 		);
-
 		hostDocsButton.separator = false;
-
+		hostDocsButton.toolTip = "Learn more about the Host Apps";
 		designer.toolbar.insertElementAfter(hostDocsButton, ACDesigner.CardDesigner.ToolbarCommands.HostAppPicker);
 		designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.HostAppPicker).width = "auto";
 
-		
+		let templateDocsButton = new ACDesigner.ToolbarButton(
+			"templateDocs",
+			"Templating Docs",
+			"acd-icon-scopeTemplate",
+			function () {
+				appInsights.trackEvent("ViewedTemplatingDocs", { Origin: "Designer" });
+				window.open("https://docs.microsoft.com/en-us/adaptive-cards/templating/");
+			}
+		);
+		templateDocsButton.separator = false;
+		templateDocsButton.toolTip = "Learn more about Adaptive Cards templating";
+		designer.toolbar.insertElementAfter(templateDocsButton, "hostDocs");
+
+		designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.HostAppPicker).width = "auto";
+		designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.FullScreen).isVisible = false;
+
+
 		let visualizerButton = new ACDesigner.ToolbarButton(
 			"visualizerButton",
 			"Classic Visualizer",
@@ -90,13 +134,30 @@
 				window.open("<%- config.root %>visualizer")
 			}
 		);
-
 		visualizerButton.separator = true;
 		visualizerButton.alignment = ACDesigner.ToolbarElementAlignment.Right;
-
 		designer.toolbar.insertElementBefore(visualizerButton, ACDesigner.CardDesigner.ToolbarCommands.FullScreen);
 
+		let feedbackButton = new ACDesigner.ToolbarButton(
+			"feedbackButton",
+			"Feedback",
+			"acd-icon-feedback",
+			function () {
+				window.open("https://github.com/Microsoft/AdaptiveCards/issues/new?title="
+					+ encodeURIComponent("[Designer] [Your feedback title here]")
+					+ "&body=" + encodeURIComponent("[Your detailed feedback here]"))
+			}
+		);
+
+		feedbackButton.separator = true;
+		feedbackButton.displayCaption = false;
+		feedbackButton.alignment = ACDesigner.ToolbarElementAlignment.Right;
+		feedbackButton.toolTip = "Provide feedback about the Designer";
+		designer.toolbar.insertElementAfter(feedbackButton, ACDesigner.CardDesigner.ToolbarCommands.FullScreen);
+
+
 		var cardUrl = getParameterByName("card", null);
+		var dataUrl = getParameterByName("data", null);
 
 		if (cardUrl) {
 
@@ -107,6 +168,8 @@
 				if (xhttp.responseText && xhttp.responseText != "") {
 					designer.setCard(JSON.parse(xhttp.responseText));
 				}
+
+				// TODO: Talk to David: I want to put the sampleData setter here but it was failing
 
 				history.replaceState(null, null, "<%- config.root %>designer");
 			};
@@ -132,35 +195,59 @@
 			}
 		});
 		require(['vs/editor/editor.main'], function () {
+
 			designer.monacoModuleLoaded();
 
-			// Add sample data
-			let sampleData = {
-				firstName: "John",
-				lastName: "Doe",
-				age: 45,
-				isMarried: true,
-				address: {
-					street: "1234 555th Ave NE",
-					city: "Redmond",
-					state: "WA",
-					countryOrRegion: "USA"
-				},
-				children: [{
-						firstName: "Jennifer",
-						lastName: "Doe",
-						age: 9
-					},
-					{
-						firstName: "James",
-						lastName: "Doe",
-						age: 13
-					}
-				]
-			};
+			// Override the designer schema validation to enable syntax highlighting
+			// TODO: Find a way to also validate against the schema
+			monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+				validate: true
+			});
 
-			designer.dataStructure = ACDesigner.FieldDefinition.create(sampleData);
-			designer.sampleData = sampleData;
+			if (dataUrl) {
+				var xhttp = new XMLHttpRequest();
+				xhttp.onload = function () {
+					if (xhttp.responseText && xhttp.responseText != "") {
+						var sampleData = JSON.parse(xhttp.responseText);
+						//designer.dataStructure = ACDesigner.FieldDefinition.create(sampleData);
+						designer.sampleData = sampleData;
+					}
+				};
+
+				// TODO: when the designer has an addError API we should log that we failed to load the requested card
+				// xhttp.onerror = function() {
+				// 	designer.
+				// };
+
+				try {
+					xhttp.open("GET", dataUrl, true);
+					xhttp.send();
+				} catch (e) {
+
+				}
+			} else {
+				// Add sample data
+				let sampleData = {
+					"title": "Publish Adaptive Card Schema",
+					"description": "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
+					"creator": {
+						"name": "Matt Hidinger",
+						"profileImage": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+					},
+					"createdUtc": "2017-02-14T06:08:39Z",
+					"viewUrl": "https://adaptivecards.io",
+					"properties": [
+						{ "key": "Board", "value": "Adaptive Cards" },
+						{ "key": "List", "value": "Backlog" },
+						{ "key": "Assigned to", "value": "Matt Hidinger" },
+						{ "key": "Due date", "value": "Not set" }
+					]
+				};
+
+				designer.dataStructure = ACDesigner.FieldDefinition.create(sampleData);
+				designer.sampleData = sampleData;
+
+			}
 		});
 	});
 </script>

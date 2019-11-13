@@ -7,9 +7,6 @@
 
 #import "CustomImageRenderer.h"
 #import <AdaptiveCards/AdaptiveCards.h>
-#import <AdaptiveCards/SharedAdaptiveCard.h>
-#import <AdaptiveCards/TextBlock.h>
-#import <AdaptiveCards/ACRTextBlockRenderer.h>
 #import <AdaptiveCards/ACOBaseCardElementPrivate.h>
 #import <AdaptiveCards/ACOHostConfigPrivate.h>
 #import <AdaptiveCards/ACRContentHoldingUIView.h>
@@ -21,6 +18,7 @@
 #import <AdaptiveCards/MarkDownParser.h>
 #import <AdaptiveCards/SharedAdaptiveCard.h>
 #import <AdaptiveCards/TextBlock.h>
+#import <AdaptiveCards/UtiliOS.h>
 
 @implementation CustomImageRenderer
 
@@ -173,6 +171,8 @@
                                                                      hostConfig:acoConfig];
     view.translatesAutoresizingMaskIntoConstraints = NO;
     wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
+    configVisibility(wrappingview, elem);
+
     return wrappingview;
 }
 

@@ -6,7 +6,6 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import <XCTest/XCTest.h>
 #import <AdaptiveCards/AdaptiveCards.h>
 #import "AdaptiveCards/ACOHostConfigPrivate.h"
 #import <AdaptiveCards/ACFramework.h>

@@ -7,9 +7,6 @@
 
 #import "CustomTextBlockRenderer.h"
 #import <AdaptiveCards/AdaptiveCards.h>
-#import <AdaptiveCards/SharedAdaptiveCard.h>
-#import <AdaptiveCards/TextBlock.h>
-#import <AdaptiveCards/ACRTextBlockRenderer.h>
 #import <AdaptiveCards/ACOBaseCardElementPrivate.h>
 #import <AdaptiveCards/ACOHostConfigPrivate.h>
 #import <AdaptiveCards/ACRContentHoldingUIView.h>

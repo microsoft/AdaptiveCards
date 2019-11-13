@@ -14,6 +14,7 @@ var md5 = require("md5");
 var simpleAssets = [
 	"node_modules/adaptivecards/dist/*.*",
 	"node_modules/adaptivecards-designer/dist/*.*",
+	"node_modules/adaptivecards-templating/dist/*.*",
 	"node_modules/@fortawesome/fontawesome-free/css/all.min.css",
 	"node_modules/@fortawesome/fontawesome-free/webfonts/*.*",
 	"node_modules/highlightjs/highlight.pack.min.js",
@@ -28,6 +29,11 @@ var customAssets = [
     {
         // Sample payloads
         path: "../../../samples/v1.*/**/*.json",
+        dest: function (p) { return "payloads/" + path.basename(p); }
+	},
+	{
+        // Sample template payloads
+        path: "../../../samples/Templates/**/*.json",
         dest: function (p) { return "payloads/" + path.basename(p); }
 	},
     {
