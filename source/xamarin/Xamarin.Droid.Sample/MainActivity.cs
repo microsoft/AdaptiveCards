@@ -14,13 +14,24 @@ using AdaptiveCards.Rendering.Xamarin.Android.Renderer;
 using AdaptiveCards.Rendering.Xamarin.Android.Renderer.ActionHandler;
 using AdaptiveCards.Rendering.Xamarin.Android.Renderer.Registration;
 using AdaptiveCards.Rendering.Xamarin.Android.Sample.Custom;
+using System.IO;
+using System.Text;
+using Java.IO;
+using Android.Drm;
+using System.Runtime.InteropServices;
+using Android.Renderscripts;
 
 namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
 {
     [Activity(Label = "AdaptiveCards", MainLauncher = true, Icon = "@mipmap/icon")]
     public class MainActivity : FragmentActivity, ICardActionHandler
     {
-        private PayloadRetriever m_payloadRetriever = null;
+        private const int FileSelectCard = 0;
+        private const int FileSelectConfig = 1;
+
+        private string CardJson = "";
+        private HostConfig Config = null;
+        private PayloadRetriever PayloadRetriever = null;
 
         public MainActivity()
         {
@@ -34,25 +45,118 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
-            m_payloadRetriever = new PayloadRetriever();
+            PayloadRetriever = new PayloadRetriever();
 
             Button localButton = FindViewById<Button>(Resource.Id.local);
             localButton.Click += OnLocalClick;
 
-            Button remoteButton = FindViewById<Button>(Resource.Id.remote);
-            remoteButton.Click += OnRemoteClickAsync;
+            Button cardSelectButton = FindViewById<Button>(Resource.Id.cardSelectButton);
+            cardSelectButton.Click += CardSelectButton_Click;
+
+            Button hostConfigSelectButton = FindViewById<Button>(Resource.Id.hostConfigSelectButton);
+            hostConfigSelectButton.Click += HostConfigSelectButton_Click;
+
+            // Button remoteButton = FindViewById<Button>(Resource.Id.remote);
+            // remoteButton.Click += OnRemoteClickAsync;
 
             AddCustomRenderers();
         }
 
+        private void CardSelectButton_Click(object sender, EventArgs e)
+        {
+            SelectFile(FileSelectCard);
+        }
+
+        private void HostConfigSelectButton_Click(object sender, EventArgs e)
+        {
+            SelectFile(FileSelectConfig);
+        }
+
         private async void OnRemoteClickAsync(object sender, EventArgs e)
         {
-            RenderAdaptiveCard(await m_payloadRetriever.RequestRemoteAdaptiveCard());
+            RenderAdaptiveCard(await PayloadRetriever.RequestRemoteAdaptiveCard());
         }
+
+        private const int ReadRequestCode = 42;
 
         private void OnLocalClick(object sender, EventArgs e)
         {
-            RenderAdaptiveCard(m_payloadRetriever.RequestLocalAdaptiveCard());
+            RenderAdaptiveCard(PayloadRetriever.RequestLocalAdaptiveCard());
+        }
+
+        private void SelectFile(int requestCode)
+        {
+            Intent filePicker = new Intent(Intent.ActionOpenDocument);
+            filePicker.SetType("*/*");
+            filePicker.AddCategory(Intent.CategoryOpenable);
+
+            StartActivityForResult(filePicker, requestCode);
+        }
+
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            if (resultCode == Result.Ok)
+            {
+                String fullString = LoadFile(data.Data);
+                if (String.IsNullOrWhiteSpace(fullString))
+                {
+                    return;
+                }
+
+                if (requestCode == FileSelectCard)
+                {
+                    EditText fileEditText = (EditText)FindViewById(Resource.Id.cardPathEditText);
+                    fileEditText.Text = (String)data.Data.LastPathSegment;
+
+                    CardJson = fullString;
+                    RenderAdaptiveCard(CardJson);
+                }
+
+                if (requestCode == FileSelectConfig)
+                {
+                    EditText fileEditText = (EditText)FindViewById(Resource.Id.hostConfigPathEditText);
+                    fileEditText.Text = (String)data.Data.LastPathSegment;
+
+                    LoadHostConfig(fullString);
+                    RenderAdaptiveCard(CardJson);
+                }
+            }
+        }
+
+        private System.String LoadFile(global::Android.Net.Uri uri)
+        {
+            // Get the Uri of the selected file
+            if (uri == null)
+            {
+                Toast.MakeText(this, "File was not selected.", ToastLength.Long).Show();
+                return null;
+            }
+
+            Stream inputStream = null;
+            try
+            {
+                inputStream = ContentResolver.OpenInputStream(uri);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                StringBuilder cardJson = new StringBuilder();
+                string s = "";
+
+                while ((s = reader.ReadLine()) != null)
+                {
+                    cardJson.Append(s);
+                }
+
+                return cardJson.ToString();
+            }
+            catch (Java.IO.FileNotFoundException fnfe)
+            {
+                Toast.MakeText(this, "File " + uri.Path + " was not found", ToastLength.Short);
+            }
+            catch (System.Exception e) {
+                return null;
+            }
+            
+            return null;
         }
 
         private void AddCustomRenderers()
@@ -70,8 +174,6 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
 
         private void RenderAdaptiveCard(string jsonText)
         {
-
-
             try
             {
                 ElementParserRegistration elementParserRegistration = new ElementParserRegistration();
@@ -82,18 +184,22 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
 
                 ParseContext parseContext = new ParseContext(elementParserRegistration, actionParserRegistration);
 
-
                 ParseResult parseResult = AdaptiveCard.DeserializeFromString(jsonText, AdaptiveCardRenderer.Version, parseContext);
                 LinearLayout layout = (LinearLayout)FindViewById(Resource.Id.visualAdaptiveCardLayout);
                 layout.RemoveAllViews();
 
-                var renderedCard = AdaptiveCardRenderer.Instance.Render(this, SupportFragmentManager, parseResult.AdaptiveCard, this, new HostConfig());
+                var renderedCard = AdaptiveCardRenderer.Instance.Render(this, SupportFragmentManager, parseResult.AdaptiveCard, this, Config ?? new HostConfig());
                 layout.AddView(renderedCard.View);
             }
             catch (Exception ex)
             {
                 string s = ex.ToString();
             }
+        }
+
+        private void LoadHostConfig(string configJson)
+        {
+            Config = HostConfig.DeserializeFromString(configJson);
         }
 
         public void OnAction(BaseActionElement element, RenderedAdaptiveCard renderedCard)

@@ -13,17 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/linearLayout2">
-        <ScrollView
-            android:id="@+id/scrollView1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.9">
-            <LinearLayout
-                android:id="@+id/visualAdaptiveCardLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
-        </ScrollView>
+        
         <LinearLayout
             android:orientation="vertical"
             android:minWidth="25px"
@@ -37,6 +27,59 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="0.9" />-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Adaptive Card: " />
+                    <EditText
+                        android:id="@+id/cardPathEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:editable="false" 
+                        android:layout_weight="1" />
+                    <Button
+                        android:id="@+id/cardSelectButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" 
+                        android:text="..." 
+                        android:layout_weight="0" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Host Config: " />
+                    <EditText
+                        android:id="@+id/hostConfigPathEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:editable="false" 
+                        android:layout_weight="1" />
+                    <Button
+                        android:id="@+id/hostConfigSelectButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" 
+                        android:text="..." 
+                        android:layout_weight="0" />
+
+                </LinearLayout>
+            </LinearLayout>
+           
             <Button
                 android:id="@+id/local"
                 android:text="@string/sendLocal"
@@ -44,6 +87,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.1"
                 android:gravity="center" />
+            <!--
             <Button
                 android:id="@+id/remote"
                 android:text="@string/sendRemote"
@@ -51,6 +95,19 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.1"
                 android:gravity="center" />
+            -->
         </LinearLayout>
+
+        <ScrollView
+            android:id="@+id/scrollView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.9">
+            <LinearLayout
+                android:id="@+id/visualAdaptiveCardLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
     </LinearLayout>
 </LinearLayout>
