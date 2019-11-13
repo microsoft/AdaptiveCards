@@ -12,30 +12,23 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AdaptiveCards;
 
 // Use this macro to effectively skip a test when run outside of the Pacific timezone
-#define SKIP_TEST_IF_NEEDED() \
-    if (!fShouldRunTests)                       \
-    {                                           \
-        Assert::IsTrue(true, L"Skipping test for non-Pacific timezone"); \
+#define SKIP_TEST_IF_NEEDED()                                           \
+    {                                                                   \
+    TIME_ZONE_INFORMATION tz{};                                         \
+    GetTimeZoneInformation(&tz);                                        \
+    if (tz.Bias == 480l)                                        \
+    {                                                                   \
+        Logger::WriteMessage(L"In Pacific timezone. Running test.");    \
+    }                                                                   \
+    else                                                                \
+    {                                                                   \
+        Logger::WriteMessage(L"Skipping test for non-Pacific timezone"); \
         return;                                                         \
+    }                                                                   \
     }
 
 namespace AdaptiveCardsSharedModelUnitTest
 {
-    bool fShouldRunTests = false;
-
-    TEST_MODULE_INITIALIZE(ShouldRunTestsInTimeZone)
-    {
-        // Make sure we only run our tests in Pacific timezone
-        TIME_ZONE_INFORMATION tz{};
-        GetTimeZoneInformation(&tz);
-        fShouldRunTests = (tz.Bias == 480l);
-
-        if (!fShouldRunTests)
-        {
-            Logger::WriteMessage("Skipping tests for non-Pacific timezone");
-        }
-    }
-
     TEST_CLASS(TimeTest)
     {
     public:
