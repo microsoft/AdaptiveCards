@@ -353,7 +353,7 @@
 		300ECB61219A12D100371DC5 /* AdaptiveBase64Util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AdaptiveBase64Util.cpp; path = ../../../../shared/cpp/ObjectModel/AdaptiveBase64Util.cpp; sourceTree = "<group>"; };
 		300ECB62219A12D100371DC5 /* AdaptiveBase64Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AdaptiveBase64Util.h; path = ../../../../shared/cpp/ObjectModel/AdaptiveBase64Util.h; sourceTree = "<group>"; };
 		6B096D4C225431D0006CC034 /* ACRRichTextBlockRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRRichTextBlockRenderer.h; sourceTree = "<group>"; };
-		6B096D4D225431D0006CC034 /* ACRRichTextBlockRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRRichTextBlockRenderer.mm; sourceTree = "<group>"; };	
+		6B096D4D225431D0006CC034 /* ACRRichTextBlockRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRRichTextBlockRenderer.mm; sourceTree = "<group>"; };
 		6B096D7D22694775006CC034 /* ACRRegistrationPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRRegistrationPrivate.h; sourceTree = "<group>"; };
 		6B1147D01F32E53A008846EC /* ACRActionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRActionDelegate.h; sourceTree = "<group>"; };
 		6B1147D61F32F922008846EC /* ACRShowCardTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRShowCardTarget.h; sourceTree = "<group>"; };

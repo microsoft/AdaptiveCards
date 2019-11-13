@@ -1551,6 +1551,7 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
+
         propertySheet.remove(
             CardObjectPeer.idProperty,
             CardElementPeer.isVisibleProperty,
@@ -1748,6 +1749,7 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
         propertySheet.add(
             PropertySheetCategory.SelectionAction,
             ContainerPeer.selectActionProperty);
+
         if (this.cardElement.selectAction) {
             let selectActionPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, null, this.cardElement.selectAction);
             selectActionPeer.onChanged = (sender: DesignerPeer, updatePropertySheet: boolean) => { this.changed(updatePropertySheet); };
@@ -2077,6 +2079,7 @@ export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCard
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
+
         propertySheet.add(
             "Validation",
             InputPeer.validationProperty);
