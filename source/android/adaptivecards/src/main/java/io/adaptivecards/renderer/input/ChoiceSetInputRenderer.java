@@ -38,6 +38,7 @@ import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.ChoiceSetInput;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.renderer.inputhandler.RadioGroupInputHandler;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
@@ -45,6 +46,42 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+
+class ItemSelectedListener implements AdapterView.OnItemSelectedListener
+{
+    public ItemSelectedListener(ComboBoxInputHandler comboBoxInputHandler, boolean hasEmptyDefault, Vector<String> titles, ArrayAdapter arrayAdapter)
+    {
+        m_InputHandler = comboBoxInputHandler;
+        m_hasEmptyDefault = hasEmptyDefault;
+        m_arrayAdapter = arrayAdapter;
+        m_titles = titles;
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+    {
+        CardRendererRegistration.getInstance().notifyInputChange(m_InputHandler.getId(), m_InputHandler.getInput());
+
+        int lastElementPosition = m_titles.size() - 1;
+        if ((position != lastElementPosition) && m_hasEmptyDefault)
+        {
+            m_titles.remove(lastElementPosition);
+            m_arrayAdapter.notifyDataSetChanged();
+            m_hasEmptyDefault = false;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent)
+    {
+        CardRendererRegistration.getInstance().notifyInputChange(m_InputHandler.getId(), m_InputHandler.getInput());
+    }
+
+    private ComboBoxInputHandler m_InputHandler;
+    private Vector<String> m_titles;
+    private ArrayAdapter m_arrayAdapter;
+    private boolean m_hasEmptyDefault;
+}
 
 public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 {
@@ -171,11 +208,12 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             View separator,
             ViewGroup viewGroup)
     {
-        Vector<String> titleList = new Vector<String>();
+        Vector<String> titleList = new Vector<>();
         ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
         long size = choiceInputVector.size();
         int selection = 0;
         String value = choiceSetInput.GetValue();
+
         for (int i = 0; i < size; i++)
         {
             ChoiceInput choiceInput = choiceInputVector.get(i);
@@ -185,6 +223,15 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             {
                 selection = i;
             }
+        }
+
+        // If the default value is empty, then create an empty option at the end to avoid any mess
+        // with indexes
+        boolean hasEmptyDefault = value.isEmpty();
+        if (hasEmptyDefault)
+        {
+            titleList.addElement("");
+            selection = (int)size;
         }
 
         final ComboBoxInputHandler comboBoxInputHandler = new ComboBoxInputHandler(choiceSetInput);
@@ -227,21 +274,9 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerArrayAdapter);
-        spinner.setSelection(selection);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
-                CardRendererRegistration.getInstance().notifyInputChange(comboBoxInputHandler.getId(), comboBoxInputHandler.getInput());
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent)
-            {
-                CardRendererRegistration.getInstance().notifyInputChange(comboBoxInputHandler.getId(), comboBoxInputHandler.getInput());
-            }
-        });
+        spinner.setSelection(selection);
+        spinner.setOnItemSelectedListener(new ItemSelectedListener(comboBoxInputHandler, hasEmptyDefault, titleList, spinnerArrayAdapter));
         return spinner;
     }
 
