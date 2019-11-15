@@ -68,14 +68,18 @@
 		}
 
 		ACDesigner.GlobalSettings.enableDataBindingSupport = true;
-		ACDesigner.GlobalSettings.showDataStructureToolbox = true;
+		ACDesigner.GlobalSettings.showDataStructureToolbox = false;
 		ACDesigner.GlobalSettings.showSampleDataEditorToolbox = true;
 		
 		<% if (page.previewFeaturesEnabled) { %>
-			// Enable data binding preview features
-			ACDesigner.GlobalSettings.showVersionPicker = false;
-		<% } %>
-
+			// Enable the version picker
+			ACDesigner.GlobalSettings.showVersionPicker = true;
+        <% } %>
+        
+        // Override the build flag if preview=1 is specified on the URL
+        if (getParameterByName("preview") === "1") {
+            ACDesigner.GlobalSettings.showVersionPicker = true;            
+        }
 
 		let hostContainers = [];
 		hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
