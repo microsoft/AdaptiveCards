@@ -49,26 +49,15 @@ import java.util.Vector;
 
 class ItemSelectedListener implements AdapterView.OnItemSelectedListener
 {
-    public ItemSelectedListener(ComboBoxInputHandler comboBoxInputHandler, boolean hasEmptyDefault, Vector<String> titles, ArrayAdapter arrayAdapter)
+    public ItemSelectedListener(ComboBoxInputHandler comboBoxInputHandler)
     {
         m_InputHandler = comboBoxInputHandler;
-        m_hasEmptyDefault = hasEmptyDefault;
-        m_arrayAdapter = arrayAdapter;
-        m_titles = titles;
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
     {
         CardRendererRegistration.getInstance().notifyInputChange(m_InputHandler.getId(), m_InputHandler.getInput());
-
-        int lastElementPosition = m_titles.size() - 1;
-        if ((position != lastElementPosition) && m_hasEmptyDefault)
-        {
-            m_titles.remove(lastElementPosition);
-            m_arrayAdapter.notifyDataSetChanged();
-            m_hasEmptyDefault = false;
-        }
     }
 
     @Override
@@ -78,9 +67,6 @@ class ItemSelectedListener implements AdapterView.OnItemSelectedListener
     }
 
     private ComboBoxInputHandler m_InputHandler;
-    private Vector<String> m_titles;
-    private ArrayAdapter m_arrayAdapter;
-    private boolean m_hasEmptyDefault;
 }
 
 public class ChoiceSetInputRenderer extends BaseCardElementRenderer
@@ -208,7 +194,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             View separator,
             ViewGroup viewGroup)
     {
-        Vector<String> titleList = new Vector<>();
+        final Vector<String> titleList = new Vector<>();
         ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
         long size = choiceInputVector.size();
         int selection = 0;
@@ -235,19 +221,45 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         }
 
         final ComboBoxInputHandler comboBoxInputHandler = new ComboBoxInputHandler(choiceSetInput);
-        Spinner spinner = new Spinner(context);
+        final Spinner spinner = new Spinner(context);
         comboBoxInputHandler.setView(spinner);
 
         spinner.setTag(new TagContent(choiceSetInput, comboBoxInputHandler, separator, viewGroup));
 
         renderedCard.registerInputHandler(comboBoxInputHandler);
 
-        class WrappedTextSpinnerAdapter extends ArrayAdapter<String>
+        class TextSpinnerAdapter extends ArrayAdapter<String>
         {
-            WrappedTextSpinnerAdapter(Context context, int resource,
-                               Vector<String>items)
+            TextSpinnerAdapter(Context context, int resource,
+                                      Vector<String> items, boolean hasEmptyDefault)
             {
                 super(context, resource, items);
+                m_hasEmptyDefault = hasEmptyDefault;
+                m_itemCount = items.size();
+            }
+
+            public int getCount()
+            {
+                if (m_hasEmptyDefault)
+                {
+                    return m_itemCount - 1;
+                }
+                else
+                {
+                    return m_itemCount;
+                }
+            }
+
+            private int m_itemCount = 0;
+            private boolean m_hasEmptyDefault = false;
+        }
+
+        class WrappedTextSpinnerAdapter extends TextSpinnerAdapter
+        {
+            WrappedTextSpinnerAdapter(Context context, int resource,
+                               Vector<String>items, boolean hasEmptyDefault)
+            {
+                super(context, resource, items, hasEmptyDefault);
             }
             @NonNull
             @Override
@@ -265,18 +277,18 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         ArrayAdapter<String> spinnerArrayAdapter;
         if(choiceSetInput.GetWrap())
         {
-            spinnerArrayAdapter = new WrappedTextSpinnerAdapter(context, android.R.layout.simple_spinner_item, titleList);
+            spinnerArrayAdapter = new WrappedTextSpinnerAdapter(context, android.R.layout.simple_spinner_item, titleList, hasEmptyDefault);
         }
         else
         {
-            spinnerArrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, titleList);
+            spinnerArrayAdapter = new TextSpinnerAdapter(context, android.R.layout.simple_spinner_item, titleList, hasEmptyDefault);
         }
 
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerArrayAdapter);
 
         spinner.setSelection(selection);
-        spinner.setOnItemSelectedListener(new ItemSelectedListener(comboBoxInputHandler, hasEmptyDefault, titleList, spinnerArrayAdapter));
+        spinner.setOnItemSelectedListener(new ItemSelectedListener(comboBoxInputHandler));
         return spinner;
     }
 
