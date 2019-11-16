@@ -222,7 +222,7 @@ This scenario could be covered by a RichTextBlock that contains both pieces of t
 Since the benefits of associating the label and text are somewhat subtle, adoption may be an issue with Option 2. Option 1 has the benefit of being concise and simple for the card author and therefore more likely to be used. If an author wants a simple text label on their input, they can use the label property more easily than generating a separate text box. This would make it more likely that they do so, and therefore get the benefits of accessibility, better interaction model, and possible future responsiveness features even if they themselves don’t consider those issues.
 
 #### Backwards Compatibility
-One benefit of this approach is that there is no negative impact on down-level platforms. Because the TextBlock will still exist, only the association will be dropped when rendered on a platform that doesn't support this feature.
+One benefit of this approach is that there is no negative impact on down-level platforms other than not providing the association. Because the TextBlock will still exist, only the association will be dropped when rendered on a platform that doesn't support this feature.
 
 ### Option 3 – LabeledInput type
 
@@ -330,6 +330,7 @@ As alluded to above, we should consider how the label position is determined. On
 
 That said, it may be desirable let either the card author or the host configure the position of the label. The tradeoff is more layout power to the card author, and less flexibility to us to reflow in the future. Because of this, we will not introduce this with v1 of this feature, and consider it only if we get customer feedback or requests to allow positioning of labels.
 
+##### Label Above
 ```json
 {
 	"type": "Input.Text",
@@ -341,6 +342,8 @@ That said, it may be desirable let either the card author or the host configure 
 ```
 ![img](assets/InputLabels/LabelPositionAbove.PNG)
 
+##### Label to the Side
+
 ```json
 {
 	"type": "Input.Text",
@@ -351,6 +354,10 @@ That said, it may be desirable let either the card author or the host configure 
 }
 ```
 ![img](assets/InputLabels/LabelPositionSide.PNG)
+
+> Note on side positioning: With a form full of labels a card author likely would want the inputs to be lined up, which by default would not happen if the labels were different lengths. To properly support side labels we might need a way to group them so that all labels in a group are formatted consistently. Alternatively, we could consider whether we could devise an algorithm for lining up input labels.
+
+##### Label as Placeholder
 
 ```json
 {
