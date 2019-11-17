@@ -1,4 +1,4 @@
-function transform(jsonTemplate, jsonData) {
+function expand(jsonTemplate, jsonData) {
     var template = new ACData.Template(JSON.parse(jsonTemplate));
 
     var context = new ACData.EvaluationContext();

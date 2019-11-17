@@ -1,15 +1,16 @@
 using Jurassic;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace AdaptiveCards.Templating
 {
-    public class AdaptiveTransformer
+    public class AdaptiveTemplate
     {
         private ScriptEngine _scriptEngine;
 
-        public AdaptiveTransformer()
+        public AdaptiveTemplate()
         {
             _scriptEngine = new ScriptEngine();
 
@@ -42,9 +43,30 @@ namespace AdaptiveCards.Templating
             return _jsHelper;
         }
 
-        public string Transform(string jsonTemplate, string jsonData)
+        /// <summary>
+        /// Expand the template and bind the data
+        /// </summary>
+        /// <param name="jsonTemplate">Your Json Template</param>
+        /// <param name="jsonData">The Data to bind (Json Formatted)</param>
+        /// <returns></returns>
+        public string Expand(string jsonTemplate, string jsonData)
         {
-            return _scriptEngine.CallGlobalFunction<string>("transform", jsonTemplate, jsonData);
+            return _scriptEngine.CallGlobalFunction<string>("expand", jsonTemplate, jsonData);
         }
+
+
+        /// <summary>
+        /// Expand the template and bind the data
+        /// </summary>
+        /// <param name="jsonTemplate">Your Json Template</param>
+        /// <param name="jsonData">The Data to bind (Serializable Object)</param>
+        /// <returns></returns>
+        public string Expand(string jsonTemplate, object Data)
+        {
+            var jsonData = JsonConvert.SerializeObject(Data,
+                new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+            return _scriptEngine.CallGlobalFunction<string>("expand", jsonTemplate, jsonData);
+        }
+
     }
 }
