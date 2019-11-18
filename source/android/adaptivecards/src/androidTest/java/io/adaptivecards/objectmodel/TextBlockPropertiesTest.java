@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.objectmodel;
 
 import android.util.Pair;
@@ -315,7 +317,22 @@ public class TextBlockPropertiesTest
         final String textWithNewLines = "This is some string\nAnd this is another line\r";
         // This looks counter intuitive but without the replacement of '\n\r' for "<br/>" the
         // output will only contain a blank space where '\n' is expected
-        final String expectedHtml = "This is some string\nAnd this is another line ";
+        final String expectedHtml = "This is some string\nAnd this is another line";
+
+        // "(\n\r, \r\n, \r, \n)" are all considered line breaks that are converted to \n
+        // The last line breaks are also removed in the handleSpecialText function
+        String html = RendererUtil.handleSpecialText(textWithNewLines).toString();
+
+        Assert.assertEquals(expectedHtml, html);
+    }
+
+    @Test
+    public void TestNumberedList () throws Exception
+    {
+        final String textWithNewLines = "1. Green\r2. Orange\r3. Blue";
+        // This looks counter intuitive but without the replacement of '\n\r' for "<br/>" the
+        // output will only contain a blank space where '\n' is expected
+        final String expectedHtml = "1. Green\n2. Orange\n3. Blue";
 
         String html = RendererUtil.handleSpecialText(textWithNewLines).toString();
 
