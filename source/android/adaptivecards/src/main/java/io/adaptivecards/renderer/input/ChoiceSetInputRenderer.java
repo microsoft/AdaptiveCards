@@ -47,28 +47,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-class ItemSelectedListener implements AdapterView.OnItemSelectedListener
-{
-    public ItemSelectedListener(ComboBoxInputHandler comboBoxInputHandler)
-    {
-        m_InputHandler = comboBoxInputHandler;
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-    {
-        CardRendererRegistration.getInstance().notifyInputChange(m_InputHandler.getId(), m_InputHandler.getInput());
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent)
-    {
-        CardRendererRegistration.getInstance().notifyInputChange(m_InputHandler.getId(), m_InputHandler.getInput());
-    }
-
-    private ComboBoxInputHandler m_InputHandler;
-}
-
 public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 {
     protected ChoiceSetInputRenderer()
@@ -289,7 +267,20 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         spinner.setAdapter(spinnerArrayAdapter);
 
         spinner.setSelection(selection);
-        spinner.setOnItemSelectedListener(new ItemSelectedListener(comboBoxInputHandler));
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                CardRendererRegistration.getInstance().notifyInputChange(comboBoxInputHandler.getId(), comboBoxInputHandler.getInput());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+                CardRendererRegistration.getInstance().notifyInputChange(comboBoxInputHandler.getId(), comboBoxInputHandler.getInput());
+            }
+        });
         return spinner;
     }
 
