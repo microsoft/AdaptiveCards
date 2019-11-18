@@ -8,6 +8,5 @@
   <job platform="x64" configuration="release" dest="__RELBINPATH__\..\..\..\a\signed" jobname="Adaptive Cards UWP Nuget" approvers="">
     <!-- AdaptiveCards -->
     <file src="__RELBINPATH__\..\..\..\a\AdaptiveCards.*.nupkg" signType="Nuget"  />
-    <file src="__RELBINPATH__\..\..\..\a\AdaptiveCards.*.symbols.nupkg" signType="Nuget"  />
   </job>
 </SignConfigXML>
