@@ -57,14 +57,21 @@ namespace AdaptiveCards.Templating
 
         /// <summary>
         /// Expand the template and bind the data
+		/// Note that everything in your data object will be serialized to JSON.
+		/// To avoid performance issues only pass in the data required by your template
         /// </summary>
         /// <param name="jsonTemplate">Your Json Template</param>
-        /// <param name="jsonData">The Data to bind (Serializable Object)</param>
+        /// <param name="jsonData">The Data to bind (will be serialized internally)</param>
         /// <returns></returns>
-        public string Expand(string jsonTemplate, object Data)
+        public string Expand(string jsonTemplate, object Data, JsonSerializerSettings serializerSettings = null)
         {
-            var jsonData = JsonConvert.SerializeObject(Data,
-                new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+            // Use passed serializer settings if null use internal defaults
+            var serializerSettingsToUse = serializerSettings != null ? serializerSettings :
+                new JsonSerializerSettings() {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    DefaultValueHandling = DefaultValueHandling.Ignore};
+
+            var jsonData = JsonConvert.SerializeObject(Data, serializerSettingsToUse);
             return _scriptEngine.CallGlobalFunction<string>("expand", jsonTemplate, jsonData);
         }
 
