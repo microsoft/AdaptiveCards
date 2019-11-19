@@ -2,21 +2,22 @@
 
 ## Proposal Link
 
-There is no open issue for a Xamarin.Native package so I'm placing the Xamarin.Forms issue for now 
-https://github.com/microsoft/AdaptiveCards/issues/3255
+The current issues that track the development of Native Xamarin renderer packages are:
+* [#3626](https://github.com/microsoft/AdaptiveCards/issues/3626)
+* [#3627](https://github.com/microsoft/AdaptiveCards/issues/3627) 
 
-Adaptive Cards rendering libraries for Xamarin and Xamarin.Forms have been some of the most requested features by our consumers, some of the consumers have filed feedback for the development in this packages and it is currently tracked [here](http://HereGoesTheLinkToProductBoardButMattHasIt). This feature has also been requested during conferences where the Adaptive Cards developers have a closer contact with developers and external consumers. 
+Adaptive Cards rendering libraries for Xamarin and Xamarin.Forms have been some of the most requested features by our consumers, some of the consumers have filed feedback for the development in this packages and it is currently tracked [here](https://portal.productboard.com/adaptivecards/1-adaptive-cards-features/c/28-xamarin-and-xamarin-forms-sdks?utm_medium=social&utm_source=portal_share). This feature has also been requested during conferences where the Adaptive Cards developers have a closer contact with developers and external consumers. 
 
 ## Dependencies
 This project depends entirely on the Android and iOS renderer and their API's. This project is a Xamarin bindings library so the only new code to be included are the xamarin transformations for the underlying renderers. For generating the bindings, Xamarin requires the generated binaries (aar file for Android and framework file for iOS) to be included.
 
 ### What is a bindings library
 
-A bindings library is an assembly that wraps the native library (Objective-C/Java code) with C# wrappers so native code can be invoked via C# calls. Xamarin.Android implements bindings by using Managed Callable Wrappers (MCW) which are a JNI bridge that are used when managed code needs to invoke Java code. In the case of iOS, to bind a library an API definition file is needed; this is merely a C# source file that contains C# interfaces that have been annotated with a handful of attributes that help drive the binding. The API definition is merely the contract that will be used to generate the API.
+A bindings library is an assembly that wraps the native library (Objective-C/Java code) with C# wrappers so platform specific code can be invoked via C# calls. Xamarin.Android implements bindings by using Managed Callable Wrappers (MCW) which are a JNI bridge that are used when managed code needs to invoke Java code. In the case of iOS, to bind a library an API definition file is needed; this is merely a C# source file that contains C# interfaces that have been annotated with a handful of attributes that help drive the binding. The API definition is merely the contract that will be used to generate the API.
 
 ## Architecture
 
-As can be seen in the diagram below, the Android and iOS bindings libraries make use of the Java and Objective-C code that is already projected from the shared C++ code. The bindings also make use of the native APIs for both platforms yielding a C# library for every platform that can be consumed by any Xamarin platform.
+As can be seen in the diagram below, the Android and iOS bindings libraries make use our existing iOS/Android renderer libraries that already contain projected code from the shared C++ object model. The bindings also make use of the native APIs for both platforms yielding a C# library for every platform that can be consumed by any Xamarin platform.
 
 [image](assets/XamarinArchitecture.png)
 
@@ -58,33 +59,33 @@ Android bindings are mostly done in the Metadata.xml file which defines the cont
 
 #### APIs to be included in Xamarin.Android
 
-| API Name | Android API |  Priority |
+| Priority | API Name | Android API |
 | --- | --- | --- |
-| Parsing | ```ParseResult Deserialize(JsonValue, String, ParseContext)``` | P2 |
-| Parsing | ```ParseResult DeserializeFromString(String, String)``` | P0 |
-| Parsing | ```ParseResult DeserializeFromString(String, String, ParseContext)``` | P0 |
-| Parsing | ```ParseResult DeserializeFromFile(String, String)``` | P2 |
-| Parsing | ```ParseResult DeserializeFromFile(String, String, ParseContext)``` | P2 |
-| Rendering | ```RenderedAdaptiveCard render(Context, FragmentManager, AdaptiveCard, HostConfig, ICardActionHandler)``` | P0 |
-| Rendering | ```RenderedAdaptiveCard render(Context, FragmentManager, AdaptiveCard, HostConfig)``` | P0 |
-| Custom Element | ```void registerRenderer(string, IBaseCardElementRenderer)``` | P1 |
-| Custom Element | ```IBaseCardElementRenderer(string)``` | P1 |
-| Custom Action | ```void registerActionRenderer(string, IBaseActionElementRenderer)``` | P1 |
-| Custom Action | ```IBaseActionElementRenderer getActionRenderer(string)``` | P1 |
-| Custom Action Layout | ```void registerActionLayoutRenderer(IActionLayoutRenderer)``` | P2 |
-| Custom Action Layout | ```IActionLayoutRenderer getActionLayoutRenderer()``` | P2 | 
-| Resource Resolvers | ```void registerOnlineImageLoader(IOnlineImageLoader)``` – deprecated | P3 |
-| Resource Resolvers | ```IOnlineImageLoader getOnlineImageLoader()``` - deprecated | P3 |
-| Resource Resolvers | ```void registerResourceResolver(string, IResourceResolver)``` | P2 |
-| Resource Resolvers | ```IResourceResolver getResourceResolver(string)``` | P2 |
-| Media Loading | ```IOnlineMediaLoader getOnlineMediaLoader()``` | P3 |
-| Media Loading | ```void registerOnlineMediaLoader(IOnlineMediaLoader)``` | P3 |
-| Feature Registration | ```void registerFeatureRegistration(FeatureRegistration)``` | P0 |
-| Feature Registration | ```FeatureRegistration getFeatureRegistration()``` | P0 |
-| Input Watcher | ```void setInputWatcher(IInputWatcher)``` | P3 |
-| Input Watcher | ```IInputWatcher getInputWatcher()``` | P3 |
-| Custom Fonts | ```void registerCustomTypeface(string, Typeface)``` | P3 |
-| Resource Information | ```RemoteResourceInformationVector GetResourceInformation()``` | P2 |
+| P0 | Parsing | ```ParseResult DeserializeFromString(String, String)``` | 
+| P0 | Parsing | ```ParseResult DeserializeFromString(String, String, ParseContext)``` | 
+| P0 | Rendering | ```RenderedAdaptiveCard render(Context, FragmentManager, AdaptiveCard, HostConfig, ICardActionHandler)``` |
+| P0 | Rendering | ```RenderedAdaptiveCard render(Context, FragmentManager, AdaptiveCard, HostConfig)``` |
+| P0 | Feature Registration | ```void registerFeatureRegistration(FeatureRegistration)``` | 
+| P0 | Feature Registration | ```FeatureRegistration getFeatureRegistration()``` |
+| P1 | Custom Element | ```void registerRenderer(string, IBaseCardElementRenderer)``` |
+| P1 | Custom Element | ```IBaseCardElementRenderer(string)``` |
+| P1 | Custom Action | ```void registerActionRenderer(string, IBaseActionElementRenderer)``` |
+| P1 | Custom Action | ```IBaseActionElementRenderer getActionRenderer(string)``` |
+| P2 | Parsing | ```ParseResult Deserialize(JsonValue, String, ParseContext)``` |
+| P2 | Parsing | ```ParseResult DeserializeFromFile(String, String)``` |
+| P2 | Parsing | ```ParseResult DeserializeFromFile(String, String, ParseContext)``` |
+| P2 | Custom Action Layout | ```void registerActionLayoutRenderer(IActionLayoutRenderer)``` |
+| P2 | Custom Action Layout | ```IActionLayoutRenderer getActionLayoutRenderer()``` |
+| P2 | Resource Resolvers | ```void registerResourceResolver(string, IResourceResolver)``` |
+| P2 | Resource Resolvers | ```IResourceResolver getResourceResolver(string)``` |
+| P2 | Resource Information | ```RemoteResourceInformationVector GetResourceInformation()``` |
+| P3 | Media Loading | ```IOnlineMediaLoader getOnlineMediaLoader()``` |
+| P3 | Media Loading | ```void registerOnlineMediaLoader(IOnlineMediaLoader)``` |
+| P3 | Input Watcher | ```void setInputWatcher(IInputWatcher)``` |
+| P3 | Input Watcher | ```IInputWatcher getInputWatcher()``` |
+| P3 | Custom Fonts | ```void registerCustomTypeface(string, Typeface)``` |
+| P3 | Resource Resolvers | ```void registerOnlineImageLoader(IOnlineImageLoader)``` – deprecated |
+| P3 | Resource Resolvers | ```IOnlineImageLoader getOnlineImageLoader()``` - deprecated |
 
 ### iOS
 
@@ -135,28 +136,28 @@ public enum ACRActionType : long
 
 ### APIs to be included in Xamarin.iOS
 
-| API Name | iOS API | Priority |
+| Priority | API Name | iOS API | 
 | --- | --- | --- |
-| Parsing | ```(ACOAdaptiveCardParseResult*) fromJson: (NSString*)``` | P0 |
-| Rendering | ```(ACRRenderResult*) render:(ACOAdaptiveCard*) config:(ACOHostConfig) widthConstraint:(float)``` | P0 |
-| Rendering | ```(ACRRenderResult*) render:(ACOAdaptiveCard*) config:(ACOHostConfig) widthConstraint:(float) delegate:(id<ACRActionDelegate>)``` | P0 |
-| Rendering | ```(ACRRenderResult*) renderAsViewController:(ACOAdaptiveCard*) config:(ACOHostConfig) frame:(CGRect) delegate:(id<ACRActionDelegate>)``` | P0 |
-| Custom Element | ```(void) setBaseCardElementRenderer: (ACRBaseCardElementRenderer*)cardElementType: (ACRCardElementType)``` | P1 |
-| Custom Element | ```(void) setCustomElementParser: (NSObject<ACOIBaseCardElementParser>)``` | P1 |
-| Custom Element | ```(void) setCustomElementParser: (NSObject<ACOIBaseCardElementParser>) key: (NSString*)``` | P1 |
-| Custom Element | ```(void) setCustomElementRenderer: (ACRBaseCardElementRenderer*) key:(NSString *)``` | P1 |
-| Custom Element | ```(NSObject<ACOIBaseCardElementParser>*) getCustomElementParser: (NSString*)``` | P1 |
-| Custom Element | ```(ACRBaseCardElementRenderer*) getRenderer: (NSNumber *)``` | P1 |
-| Custom Action | ```(void) setActionRenderer: (ACRBaseActionElementRenderer) cardElementType: (NSNumber*)``` | P1 |
-| Custom Action | ```(ACRBaseActionElementRenderer*) getActionRenderer: (NSNumber*)``` | P1 |
-| Custom Action Set | ```(void) setActionSetRenderer: (id<ACRIBaseActionSetRenderer>)``` | P2 |
-| Custom Action Set | ```(id<ACRIBaseActionSetRenderer>) getActionSetRenderer``` | P2 | 
-| Resource Resolvers | ```(void) setResourceResolver: (NSObject<ACOIResourceResolver>) scheme: (NSString*)``` | P2 |
-| Resource Resolvers | ```(NSObject<ACOIResourceResolver>) getResourceResolverForScheme: (NSString*)``` | P2 |
-| Feature Registration | ```(void) addFeature: (NSString*) featureVersion: (NSString*)``` | P0 | 
-| Feature Registration | ```(NSString*) removeFeature: (NSString*)``` | P0 |
-| Feature Registration | ```(NSString*) getFeatureVersion: (NSString*)``` | P0 |
-| Resource Information | ```(NSArray<ACORemoteResourceInformation>*) remoteResourceInformation``` | P2 | 
+| P0 | Parsing | ```(ACOAdaptiveCardParseResult*) fromJson: (NSString*)``` |
+| P0 | Rendering | ```(ACRRenderResult*) render:(ACOAdaptiveCard*) config:(ACOHostConfig) widthConstraint:(float)``` |
+| P0 | Rendering | ```(ACRRenderResult*) render:(ACOAdaptiveCard*) config:(ACOHostConfig) widthConstraint:(float) delegate:(id<ACRActionDelegate>)``` |
+| P0 | Rendering | ```(ACRRenderResult*) renderAsViewController:(ACOAdaptiveCard*) config:(ACOHostConfig) frame:(CGRect) delegate:(id<ACRActionDelegate>)``` |
+| P0 | Feature Registration | ```(void) addFeature: (NSString*) featureVersion: (NSString*)``` |
+| P0 | Feature Registration | ```(NSString*) removeFeature: (NSString*)``` |
+| P0 | Feature Registration | ```(NSString*) getFeatureVersion: (NSString*)``` |
+| P1 | Custom Element | ```(void) setBaseCardElementRenderer: (ACRBaseCardElementRenderer*)cardElementType: (ACRCardElementType)``` |
+| P1 | Custom Element | ```(void) setCustomElementParser: (NSObject<ACOIBaseCardElementParser>)``` |
+| P1 | Custom Element | ```(void) setCustomElementParser: (NSObject<ACOIBaseCardElementParser>) key: (NSString*)``` |
+| P1 | Custom Element | ```(void) setCustomElementRenderer: (ACRBaseCardElementRenderer*) key:(NSString *)``` |
+| P1 | Custom Element | ```(NSObject<ACOIBaseCardElementParser>*) getCustomElementParser: (NSString*)``` |
+| P1 | Custom Element | ```(ACRBaseCardElementRenderer*) getRenderer: (NSNumber *)``` |
+| P1 | Custom Action | ```(void) setActionRenderer: (ACRBaseActionElementRenderer) cardElementType: (NSNumber*)``` |
+| P1 | Custom Action | ```(ACRBaseActionElementRenderer*) getActionRenderer: (NSNumber*)``` |
+| P2 | Custom Action Set | ```(void) setActionSetRenderer: (id<ACRIBaseActionSetRenderer>)``` |
+| P2 | Custom Action Set | ```(id<ACRIBaseActionSetRenderer>) getActionSetRenderer``` |
+| P2 | Resource Resolvers | ```(void) setResourceResolver: (NSObject<ACOIResourceResolver>) scheme: (NSString*)``` |
+| P2 | Resource Resolvers | ```(NSObject<ACOIResourceResolver>) getResourceResolverForScheme: (NSString*)``` |
+| P2 | Resource Information | ```(NSArray<ACORemoteResourceInformation>*) remoteResourceInformation``` | 
 
 ## Breaking changes
 
@@ -166,7 +167,9 @@ Besides that, no breaking changes should be introduced as the native platforms' 
 
 ## Test Plan
 
-For the alpha and pre-release versions the testing will be performed manually, there's currently one sample application for Xamarin Android and one for Xamarin iOS. After the pre release version is published, unit tests are going to be started to be developed starting by covering the most basic scenarios and usages of APIs.
+For the alpha and pre-release versions the testing will be performed manually, there's currently one sample application for Xamarin Android and one for Xamarin iOS. 
+
+After the pre release version is published, unit tests are going to be started to be developed starting by covering the most basic scenarios and usages of APIs, and just as the sample application, one version will be made for Xamarin.Android and one will be made for Xamarin.iOS.
 
 ## Release plan
 
@@ -174,12 +177,19 @@ For the alpha and pre-release versions the testing will be performed manually, t
 
 The artifacts to be released with this library will be:
 1. Source code for Xamarin bindings in the github repository
+1. Source code for Xamarin.Android and Xamarin.iOS sample applications in repository
 1. Xamarin.Android nuget package
 1. Xamarin.iOS nuget package
 
+Other products to be generated but will not be shipped in any store are:
+1. Xamarin.Android sample application
+1. Xamarin.iOS sample application
+
 ### Continuous Integration and Release
 
-To be able to release the previously mentioned nuget packages build definitions must be created. The current system we use for building the other packages allow us to build Xamarin.Android and Xamarin.iOS packages
+To be able to release the previously mentioned nuget packages build definitions must be created. The current system we use (Azure Deployment Pipelines) for building the other packages allow us to build Xamarin.Android and Xamarin.iOS packages.
+
+Android and iOS build artifacts are required to perform the build process, they can be generated 
 
 #### Pre-requisites
 
