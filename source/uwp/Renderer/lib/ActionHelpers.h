@@ -70,4 +70,7 @@ namespace AdaptiveNamespace::ActionHelpers
                                  _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                  _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
                                  _Outptr_ ABI::Windows::UI::Xaml::IUIElement** actionSetControl);
+
+    void CreateAppropriateButton(ABI::AdaptiveNamespace::ActionType actionType,
+                                 Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::IButton>& button);
 }
