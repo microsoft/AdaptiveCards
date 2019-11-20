@@ -161,9 +161,9 @@ public enum ACRActionType : long
 
 ## Breaking changes
 
-There is one big breaking change to be introduced in the iOS platform due to the Xamarin bindings having a direct relationship with the name of the library, which requires changing the library name from ACFramework to AdaptiveCards.
+No breaking changes should be introduced as the native platforms' code is only consumed and projected into C#. We had a concern over introducing one due to having to rename the C++ umbrella header for runnning the Sharpie application, but the change can be reverted:
 
-Besides that, no breaking changes should be introduced as the native platforms' code is only consumed and projected into C#.
+> ... A general rule is that as long as the class and selector names are unchanged, you can do whatever you need to get sharpie to get it parse. Renaming headers, moving headers around, and then revert it once you get a solid parse. In the end the binding stack does not interact with headers once sharpie is done. We the class and selector names during runtime. 
 
 ## Test Plan
 
