@@ -19,7 +19,7 @@ A bindings library is an assembly that wraps the native library (Objective-C/Jav
 
 As can be seen in the diagram below, the Android and iOS bindings libraries make use our existing iOS/Android renderer libraries that already contain projected code from the shared C++ object model. The bindings also make use of the native APIs for both platforms yielding a C# library for every platform that can be consumed by any Xamarin platform.
 
-[image](assets/XamarinArchitecture.png)
+![image](assets/XamarinArchitecture.png)
 
 Something to consider is that Native Xamarin is designed to share the logic and services inside an application but the UI is independent for every platform which allows us to have three different object models.  
 
@@ -189,7 +189,7 @@ Other products to be generated but will not be shipped in any store are:
 
 To be able to release the previously mentioned nuget packages build definitions must be created. The current system we use (Azure Deployment Pipelines) for building the other packages allow us to build Xamarin.Android and Xamarin.iOS packages.
 
-Android and iOS build artifacts are required to perform the build process, they can be generated 
+Android and iOS build artifacts are required to perform the build process, for Android aar files are needed while iOS require a framework file to perform the bindings.
 
 #### Pre-requisites
 
@@ -199,28 +199,31 @@ The Xamarin packages require native libraries to be built beforehand, as we can'
 
 At least four build pipelines will be needed for this project, 2 pipelines for Continuous integration and 2 pipelines for the release. The pipelines for the release will be similar to the UWP and WPF pipelines that generate nuget packages and build against a visual studio solution/project.
 
-## Task plan
+## Identified Tasks
 
-| Task name | Expected cost in days |
+For the alpha version all P0 APIs should be done and tested while P1, P2 and P3 tasks should be finished and tested for the first complete release. 
+
+| Task | Expected cost in days |
 | --- | --- |
-| Update to Xamarin Android Bindings | 2 |
-| Update to Xamarin iOS Bindings | 2 |
-| Update to Xamarin Android Sample Application | 2 |
-| Update to Xamarin iOS Sample Application | 2 |
-| Bug fixing | 6 |
-| Update for Android build script | 2| 
-| Update for iOS build script | 2 |
-| Creation of CI and release pipeline for Android | 3 |
-| Creation of CI and release pipeline for iOS | 3 |
-| Total Cost | 24 |
-
-## Remaining Tasks
-
-For the alpha version all P0 and P1 APIs should be done while P2 and P3 tasks must be done for the first complete release. 
+| Update to Xamarin.Android Bindings for P0 | 2 |
+| Update to Xamarin Android Sample Application | 3 |
+| Creation of CI and release pipelines for Android | 4 |
+| Update to Xamarin.iOS Bindings for P0 | 3 |
+| Update to Xamarin iOS Sample Application | 4 |
+| Update for iOS build script | 3 |
+| Creation of CI and release pipelines for iOS | 4 |
+| Total Cost | 23 |
 
 ## Open issues
 
-Currently the naming convention for AdaptiveCards packages are medium sized, as Xamarin builds on top of other platforms, these namings internally become large enough to overpass the character limit so errors tend to appear during development which make it harder (Xamarin also doesn't spew enough information to be easily solved).
+### Accesibility
+Accesibility support depends entirely on the underlying platform specific libraries as this binding libraries only wrap the Adaptive Cards APIs.
+
+### Reliability of CI builds
+Making changes to platform specific libraries would probably generate a build break for the Xamarin bindings libraries which would require updating them or adding them to the bindings. On the other hand, the time CI builds take will increase as this libraries must be built on top of Android and iOS libraries.
+
+### Package naming
+Currently the naming convention for AdaptiveCards packages are medium sized (e.g. AdaptiveCards.Rendering.Html.Core), as Xamarin builds on top of other platforms, these namings internally become large enough to overpass the character limit so errors tend to appear during development which make it harder (Xamarin also doesn't spew enough information to be easily solved).
 
 ## References
 
