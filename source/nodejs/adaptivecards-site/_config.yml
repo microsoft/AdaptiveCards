@@ -148,11 +148,10 @@ deploy:
 feed:
   type: atom
   path: blog/atom.xml
-  limit: 20
+  limit: 0
   hub:
-  content:
-  content_limit: 240
-  content_limit_delim: ' '
+  content: true
+  content_limit: 
   order_by: -date
   icon: themes/adaptivecards/source/content/icons/favicon-32x32.png
 
