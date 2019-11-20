@@ -183,7 +183,7 @@
     castedRenderer.fillAlignment = NO;
 
     if ([constraints count]) {
-        [columnSetView addConstraints:constraints];
+        [NSLayoutConstraint activateConstraints:constraints];
     }
 
     std::shared_ptr<BaseActionElement> selectAction = columnSetElem->GetSelectAction();

@@ -73,6 +73,10 @@
     if (columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top && _fillAlignment)) {
         trailingBlankSpace = [column addPaddingSpace];
     }
+    
+    if (leadingBlankSpace || trailingBlankSpace) {
+        column.hasStretchableView = YES;
+    }
 
     if (columnElem->GetMinHeight() > 0) {
         [NSLayoutConstraint constraintWithItem:column
