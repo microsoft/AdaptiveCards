@@ -164,11 +164,7 @@
                                                    constant:0]];
                     prevRelColumnWidth = relativeColumnWidth;
                 }
-
-                if (curView.hasStretchableView || (columnSetElem->GetHeight() == HeightType::Stretch)) {
-                    [columnSetView setAlignmentForColumnStretch];
-                }
-
+                
                 prevView = curView;
                 prevRelColumnWidth = relativeColumnWidth;
             }
@@ -178,6 +174,11 @@
                 NSLog(@"unexpected column width property is given");
             }
         }
+
+        if (curView.hasStretchableView || (columnSetElem->GetHeight() == HeightType::Stretch)) {
+            [columnSetView setAlignmentForColumnStretch];
+        }
+
         prevColumn = column;
     }
 
