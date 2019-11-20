@@ -10,6 +10,7 @@
 #import "ACRIBaseCardElementRenderer.h"
 #import "ACRUILabel.h"
 #import "HostConfig.h"
+#import "UtiliOS.h"
 #import <Foundation/Foundation.h>
 
 using namespace AdaptiveCards;
@@ -33,6 +34,7 @@ const CGFloat padding = 16.0f;
         _toggleSwitch = [[UISwitch alloc] init];
         _toggleInputDataSource = toggleInput;
         _config = hostConfig;
+        _parentStyle = ACRContainerStyle::ACRNone;
         self.id = [[NSString alloc] initWithCString:_toggleInputDataSource->GetId().c_str()
                                            encoding:NSUTF8StringEncoding];
         _shouldWrap = toggleInput->GetWrap();
@@ -67,6 +69,7 @@ const CGFloat padding = 16.0f;
                                       reuseIdentifier:identifier];
     }
     cell.textLabel.text = _title;
+    cell.textLabel.textColor = getForegroundUIColorFromAdaptiveAttribute(_config, _parentStyle);
     cell.textLabel.adjustsFontSizeToFitWidth = NO;
     cell.textLabel.numberOfLines = 0;
     cell.textLabel.lineBreakMode = NSLineBreakByTruncatingTail;

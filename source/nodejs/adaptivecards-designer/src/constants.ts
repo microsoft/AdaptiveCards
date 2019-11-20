@@ -49,10 +49,33 @@ export const defaultPayload: string = `{
     "type": "AdaptiveCard",
     "body": [
         {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "This example uses [Adaptive Card Templating](https://docs.microsoft.com/en-us/adaptive-cards/templating/) *(Preview)*",
+                    "size": "Medium",
+                    "wrap": true
+                },
+                {
+                    "type": "TextBlock",
+                    "text": "Click the **Preview mode** toolbar button to see the card bound to the **Sample Data** in the lower-right. Sample Data helps design your card by simulating the real data.",
+                    "wrap": true
+                },
+                {
+                    "type": "TextBlock",
+                    "text": "When you're ready to populate it with real data, use the Adaptive Card [templating SDKs](https://docs.microsoft.com/en-us/adaptive-cards/templating/sdk).",
+                    "wrap": true
+                }
+            ],
+            "style": "good",
+            "bleed": true
+        },
+        {
             "type": "TextBlock",
             "size": "Medium",
             "weight": "Bolder",
-            "text": "Publish Adaptive Card schema"
+            "text": "{title}"
         },
         {
             "type": "ColumnSet",
@@ -63,7 +86,7 @@ export const defaultPayload: string = `{
                         {
                             "type": "Image",
                             "style": "Person",
-                            "url": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
+                            "url": "{creator.profileImage}",
                             "size": "Small"
                         }
                     ],
@@ -75,13 +98,13 @@ export const defaultPayload: string = `{
                         {
                             "type": "TextBlock",
                             "weight": "Bolder",
-                            "text": "Matt Hidinger",
+                            "text": "{creator.name}",
                             "wrap": true
                         },
                         {
                             "type": "TextBlock",
                             "spacing": "None",
-                            "text": "Created {{DATE(2017-02-14T06:08:39Z,SHORT)}}",
+                            "text": "Created {{DATE({createdUtc},SHORT)}}",
                             "isSubtle": true,
                             "wrap": true
                         }
@@ -92,27 +115,16 @@ export const defaultPayload: string = `{
         },
         {
             "type": "TextBlock",
-            "text": "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
+            "text": "{description}",
             "wrap": true
         },
         {
             "type": "FactSet",
             "facts": [
                 {
-                    "title": "Board:",
-                    "value": "Adaptive Card"
-                },
-                {
-                    "title": "List:",
-                    "value": "Backlog"
-                },
-                {
-                    "title": "Assigned to:",
-                    "value": "Matt Hidinger"
-                },
-                {
-                    "title": "Due date:",
-                    "value": "Not set"
+                    "$data": "{properties}",
+                    "title": "{key}:",
+                    "value": "{value}"
                 }
             ]
         }
@@ -137,9 +149,8 @@ export const defaultPayload: string = `{
                 ],
                 "actions": [
                     {
-                        "type": "Action.OpenUrl",
-                        "title": "OK",
-                        "url": "https://adaptivecards.io"
+                        "type": "Action.Submit",
+                        "title": "OK"
                     }
                 ],
                 "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
@@ -148,7 +159,7 @@ export const defaultPayload: string = `{
         {
             "type": "Action.OpenUrl",
             "title": "View",
-            "url": "https://adaptivecards.io"
+            "url": "{viewUrl}"
         }
     ],
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",

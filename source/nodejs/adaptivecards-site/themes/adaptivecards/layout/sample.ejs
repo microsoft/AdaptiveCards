@@ -17,29 +17,48 @@
 
 	<div class="w3-main" style="margin-left: 200px">
 
-		<div class="w3-container">
-			<h1><%= page.title %></h1>
-			<p>These samples are <em>just a teaser</em> of the type of cards you can create.
-				Go ahead and tweak them to make any scenario possible!</p>
+		<div class="w3-row-padding">
+			<div class="w3-col m6">
+				<h1><%= page.title %></h1>
+				<p>These samples are <em>just a teaser</em> of the type of cards you can create.
+					Go ahead and tweak them to make any scenario possible!</p>
 
-			<!-- mobile nav -->
-			<div class="w3-hide-large">
-				<span>Choose sample: </span>
-				<select id="menu-nav" class="w3-select w3-border w3-margin-bottom">
-					<% page.samples.forEach(function(sample) { %>
-					<% if(is_current(sample.htmlPath)) { %>
-					<option value='<%- url_for(sample.htmlPath) %>' selected="selected"><%= sample.name %></option>
-					<% } else { %>
-					<option value='<%- url_for(sample.htmlPath) %>'><%= sample.name %></option>
-					<% } %>
-					<% }) %>
-				</select>
+				<!-- mobile nav -->
+				<div class="w3-hide-large">
+					<span>Choose sample: </span>
+					<select id="menu-nav" class="w3-select w3-border w3-margin-bottom">
+						<% page.samples.forEach(function(sample) { %>
+						<% if(is_current(sample.htmlPath)) { %>
+						<option value='<%- url_for(sample.htmlPath) %>' selected="selected"><%= sample.name %></option>
+						<% } else { %>
+						<option value='<%- url_for(sample.htmlPath) %>'><%= sample.name %></option>
+						<% } %>
+						<% }) %>
+					</select>
+				</div>
 			</div>
 
-			<h3><%= page.sample.name %> sample</h3>
+			<div class="w3-col m6 w3-margin-top">
+				<div class="w3-cell-row2">
+					<div class="w3-cell" style="width: 70px">
+						<label class="switch">
+							<input type="checkbox" checked id="enableTemplating">
+							<span class="slider round"></span>
+						</label>
+					</div>
+					<div class="w3-cell w3-cell-middle">
+						<label class="w3-large" for="enableTemplating">Use Adaptive Card Templating <span class="w3-tag w3-medium w3-round ac-blue">Preview</span></label>
+					</div>
+				</div>
+				
+				<p>Adaptive Card Templating enables the separation of <strong>data</strong> from the <strong>layout</strong> in an Adaptive Card. It helps design a card once, and then populate it with real data at runtime. <a href="https://docs.microsoft.com/en-us/adaptive-cards/templating/">More about templating <i class="fas fa-chevron-right"></i></a></p>
+
+			</div>
 		</div>
 
-		<%- code_and_card(page.jsonPath) %>
+		<h2 class="w3-container"><%= page.sample.name %> sample</h2>
+
+		<%- code_and_card(page.jsonPath, page.templatePath, page.dataPath) %>
 	</div>
 
 </div>
