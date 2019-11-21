@@ -173,6 +173,7 @@
             }
         }
 
+        // to enable filler space to fill, its superview must strech it
         if (curView.hasStretchableView || (columnSetElem->GetHeight() == HeightType::Stretch)) {
             [columnSetView setAlignmentForColumnStretch];
         }
@@ -183,7 +184,7 @@
     castedRenderer.fillAlignment = NO;
 
     if ([constraints count]) {
-        [columnSetView addConstraints:constraints];
+        [NSLayoutConstraint activateConstraints:constraints];
     }
 
     std::shared_ptr<BaseActionElement> selectAction = columnSetElem->GetSelectAction();
