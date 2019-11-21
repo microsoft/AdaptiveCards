@@ -175,6 +175,7 @@
             }
         }
 
+        // to enable filler space to fill, its superview must strech it
         if (curView.hasStretchableView || (columnSetElem->GetHeight() == HeightType::Stretch)) {
             [columnSetView setAlignmentForColumnStretch];
         }
