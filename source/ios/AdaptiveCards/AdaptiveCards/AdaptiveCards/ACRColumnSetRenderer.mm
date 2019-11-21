@@ -164,11 +164,7 @@
                                                    constant:0]];
                     prevRelColumnWidth = relativeColumnWidth;
                 }
-
-                if (curView.hasStretchableView || (columnSetElem->GetHeight() == HeightType::Stretch)) {
-                    [columnSetView setAlignmentForColumnStretch];
-                }
-
+                
                 prevView = curView;
                 prevRelColumnWidth = relativeColumnWidth;
             }
@@ -178,13 +174,19 @@
                 NSLog(@"unexpected column width property is given");
             }
         }
+
+        // to enable filler space to fill, its superview must strech it
+        if (curView.hasStretchableView || (columnSetElem->GetHeight() == HeightType::Stretch)) {
+            [columnSetView setAlignmentForColumnStretch];
+        }
+
         prevColumn = column;
     }
 
     castedRenderer.fillAlignment = NO;
 
     if ([constraints count]) {
-        [columnSetView addConstraints:constraints];
+        [NSLayoutConstraint activateConstraints:constraints];
     }
 
     std::shared_ptr<BaseActionElement> selectAction = columnSetElem->GetSelectAction();
