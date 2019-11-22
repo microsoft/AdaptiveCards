@@ -13,7 +13,6 @@ using AdaptiveCards.Rendering.Xamarin.Android.ObjectModel;
 using AdaptiveCards.Rendering.Xamarin.Android.Renderer;
 using AdaptiveCards.Rendering.Xamarin.Android.Renderer.ActionHandler;
 using AdaptiveCards.Rendering.Xamarin.Android.Renderer.Registration;
-using AdaptiveCards.Rendering.Xamarin.Android.Sample.Custom;
 using System.IO;
 using System.Text;
 using Java.IO;
@@ -148,11 +147,11 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
 
                 return cardJson.ToString();
             }
-            catch (Java.IO.FileNotFoundException fnfe)
+            catch (Java.IO.FileNotFoundException)
             {
                 Toast.MakeText(this, "File " + uri.Path + " was not found", ToastLength.Short);
             }
-            catch (System.Exception e) {
+            catch (System.Exception) {
                 return null;
             }
             
@@ -161,11 +160,6 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
 
         private void AddCustomRenderers()
         {
-            CardRendererRegistration.Instance.RegisterRenderer("CustomElement", new CustomElementRenderer());
-            CardRendererRegistration.Instance.RegisterActionRenderer("CustomAction", new CustomActionRenderer());
-
-            CardRendererRegistration.Instance.RegisterActionLayoutRenderer(new CustomActionLayout());
-
             FeatureRegistration featureRegistration = new FeatureRegistration();
             featureRegistration.AddFeature("acTest", "1.0");
 
@@ -176,15 +170,7 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
         {
             try
             {
-                ElementParserRegistration elementParserRegistration = new ElementParserRegistration();
-                elementParserRegistration.AddParser("CustomElement", new CustomElementParser());
-
-                ActionParserRegistration actionParserRegistration = new ActionParserRegistration();
-                actionParserRegistration.AddParser("CustomAction", new CustomActionParser());
-
-                ParseContext parseContext = new ParseContext(elementParserRegistration, actionParserRegistration);
-
-                ParseResult parseResult = AdaptiveCard.DeserializeFromString(jsonText, AdaptiveCardRenderer.Version, parseContext);
+                ParseResult parseResult = AdaptiveCard.DeserializeFromString(jsonText, AdaptiveCardRenderer.Version);
                 LinearLayout layout = (LinearLayout)FindViewById(Resource.Id.visualAdaptiveCardLayout);
                 layout.RemoveAllViews();
 

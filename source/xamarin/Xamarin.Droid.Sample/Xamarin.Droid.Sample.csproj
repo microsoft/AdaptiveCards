@@ -82,13 +82,6 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Custom\CustomAction.cs" />
-    <Compile Include="Custom\CustomActionLayout.cs" />
-    <Compile Include="Custom\CustomActionParser.cs" />
-    <Compile Include="Custom\CustomActionRenderer.cs" />
-    <Compile Include="Custom\CustomElement.cs" />
-    <Compile Include="Custom\CustomElementParser.cs" />
-    <Compile Include="Custom\CustomElementRenderer.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

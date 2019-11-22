@@ -33,6 +33,25 @@
   <!-- Remove these members because they are causing issues
   <remove-node path="/api/package[@name='io.adaptivecards.renderer']/class[@name='MediaLoaderAsync']" />
   -->
+  <remove-node path="/api/package[@name='io.adaptivecards.renderer.registration']/class[@name='CardRendererRegistration']/ method[@name='registerRenderer']" />
+  <remove-node path="/api/package[@name='io.adaptivecards.renderer.registration']/class[@name='CardRendererRegistration']/ method[@name='getRenderer']" />
+  <remove-node path="/api/package[@name='io.adaptivecards.renderer.registration']/class[@name='CardRendererRegistration']/ method[@name='registerActionRenderer']" />
+  <remove-node path="/api/package[@name='io.adaptivecards.renderer.registration']/class[@name='CardRendererRegistration']/ method[@name='getActionRenderer']" /> 
+  <remove-node path="/api/package[@name='io.adaptivecards.objectmodel']/class[@name='AdaptiveCard']/ method[@name='Deserialize']" />
+  <remove-node path="/api/package[@name='io.adaptivecards.objectmodel']/class[@name='AdaptiveCard']/ method[@name='DeserializeFromFile']" />
+  <remove-node path="/api/package[@name='io.adaptivecards.renderer.registration']/class[@name='CardRendererRegistration']/ method[@name='registerActionLayoutRenderer']" />
+  <remove-node path="/api/package[@name='io.adaptivecards.renderer.registration']/class[@name='CardRendererRegistration']/ method[@name='getActionLayoutRenderer']" />
+  <remove-node path="/api/package[@name='io.adaptivecards.renderer.registration']/class[@name='CardRendererRegistration']/ method[@name='registerResourceResolver']" />
+  <remove-node path="/api/package[@name='io.adaptivecards.renderer.registration']/class[@name='CardRendererRegistration']/ method[@name='getResourceResolver']" />
+  <remove-node path="/api/package[@name='io.adaptivecards.renderer.registration']/class[@name='CardRendererRegistration']/ method[@name='getResourceInformation']" />
+  <remove-node path="/api/package[@name='io.adaptivecards.renderer.registration']/class[@name='CardRendererRegistration']/ method[@name='getOnlineMediaLoader']" />
+  <remove-node path="/api/package[@name='io.adaptivecards.renderer.registration']/class[@name='CardRendererRegistration']/ method[@name='registerOnlineMediaLoader']" />
+  <remove-node path="/api/package[@name='io.adaptivecards.renderer.registration']/class[@name='CardRendererRegistration']/ method[@name='setInputWatcher']" />
+  <remove-node path="/api/package[@name='io.adaptivecards.renderer.registration']/class[@name='CardRendererRegistration']/ method[@name='getInputWatcher']" />
+  <remove-node path="/api/package[@name='io.adaptivecards.renderer.registration']/class[@name='CardRendererRegistration']/ method[@name='registerCustomTypeface']" />
+  <remove-node path="/api/package[@name='io.adaptivecards.renderer.registration']/class[@name='CardRendererRegistration']/ method[@name='registerOnlineImageLoader']" />
+  <remove-node path="/api/package[@name='io.adaptivecards.renderer.registration']/class[@name='CardRendererRegistration']/ method[@name='getOnlineImageLoader']" /> -->
+  
   <add-node path="/api/package[@name='io.adaptivecards.renderer']">
     <class abstract="false" deprecated="not deprecated" final="false" name="MediaLoaderAsync" static="true" visibility="public" extends="java.lang.Object"/>
   </add-node>
