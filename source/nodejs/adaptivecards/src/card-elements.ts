@@ -4048,7 +4048,7 @@ class ActionCollection {
     private showActionCard(action: ShowCardAction, suppressStyle: boolean = false, raiseEvent: boolean = true) {
         (<InlineAdaptiveCard>action.card).suppressStyle = suppressStyle;
 
-        let renderedCard = action.card.render();
+        let renderedCard = action.card.renderedElement ? action.card.renderedElement : action.card.render();
 
         this._actionCard = renderedCard;
         this._expandedAction = action;
