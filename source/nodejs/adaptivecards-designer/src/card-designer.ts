@@ -6,7 +6,7 @@ import * as monaco from "monaco-editor";
 import * as Constants from "./constants";
 import * as Designer from "./card-designer-surface";
 import * as DesignerPeers from "./designer-peers";
-import { SamplePickerDialog } from "./sample-picker-dialog";
+import { OpenSampleDialog } from "./open-sample-dialog";
 import { HostContainer } from "./containers/host-container";
 import { adaptiveCardSchema } from "./adaptive-card-schema";
 import { FullScreenHandler } from "./fullscreen-handler";
@@ -21,6 +21,7 @@ import { DataTreeItem } from "./data-treeitem";
 import { Strings } from "./strings";
 import * as Shared from "./shared";
 import { TreeView } from "./tree-view";
+import { SampleCatalogue } from "./catalogue";
 
 export class CardDesigner extends Designer.DesignContext {
     private static internalProcessMarkdown(text: string, result: Adaptive.IMarkdownProcessingResult) {
@@ -65,6 +66,7 @@ export class CardDesigner extends Designer.DesignContext {
     private _sampleData: any;
     private _bindingPreviewMode: Designer.BindingPreviewMode = Designer.BindingPreviewMode.NoPreview;
     private _customPeletteItems: CustomPaletteItem[];
+    private _sampleCatalogue: SampleCatalogue = new SampleCatalogue();
 
     private togglePreview() {
         this._designerSurface.isPreviewMode = !this._designerSurface.isPreviewMode;
@@ -593,11 +595,11 @@ export class CardDesigner extends Designer.DesignContext {
             "Open Sample",
             "acd-icon-open",
             (sender: ToolbarButton) => {
-                let dialog = new SamplePickerDialog();
+                let dialog = new OpenSampleDialog(this._sampleCatalogue);
                 dialog.title = "Pick a sample";
-                dialog.width = "30%";
-                dialog.height = "60%";
-                dialog.catalogueUrl = this.sampleCatalogueUrl;
+                dialog.closeButton.caption = "Cancel";
+                dialog.width = "80%";
+                dialog.height = "80%";
                 dialog.onClose = (d) => {
                     if (dialog.selectedSample) {
                         dialog.selectedSample.onDownloaded = () => {
@@ -882,8 +884,6 @@ export class CardDesigner extends Designer.DesignContext {
     }
 
     readonly toolbar: Toolbar = new Toolbar();
-
-    sampleCatalogueUrl: string = undefined;
 
     constructor(hostContainers: Array<HostContainer> = null) {
         super();
@@ -1205,6 +1205,14 @@ export class CardDesigner extends Designer.DesignContext {
         this._customPeletteItems = value;
 
         this.buildPalette();
+    }
+
+    get sampleCatalogueUrl(): string {
+        return this._sampleCatalogue.url;
+    }
+
+    set sampleCatalogueUrl(value: string) {
+        this._sampleCatalogue.url = value;
     }
 }
 

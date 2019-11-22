@@ -154,15 +154,82 @@
     display: flex;
     flex-direction: column;
     box-shadow: 0 0 50px -5px rgba(0, 0, 0, 0.4);
+    padding: 20px;
 }
 
-.acd-sample-picker-message {
-    width: 100%;
-    height: 100%;
+.acd-dialog-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.acd-dialog-message {
+    margin-top: 10px;
+}
+
+.acd-dialog-buttonBar {
+    margin-top: 10px;
     display: flex;
+    justify-content: center;
+}
+
+.acd-dialog-button {
+
+}
+
+.acd-open-sample-item {
+    width: 350px;
+    height: 100%;
+    margin: 5px;
+    padding: 15px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    word-wrap: break-word;
+    cursor: pointer;
+}
+
+.acd-open-sample-item-thumbnail {
+    overflow: hidden;
+    height: 100%;
+    min-height: 150px;
+    width: 100%;
+    pointer-events: none;
+    border: 1.5px solid #EEEEEE;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.acd-open-sample-item-title {
+    margin-top: 10px;
+}
+
+.acd-open-sample-item:hover > .acd-open-sample-item-thumbnail {
+    box-shadow: 0 0 20px -5px #CCCCCC;
+    border: 1.5px solid #CCCCCC;
+}
+
+.acd-open-sample-item:hover > .acd-open-sample-item-title {
+    font-weight: bold;
+}
+
+@keyframes acd-spinner-rotate {
+    from { transform: rotate(0) }
+    to { transform: rotate(360deg) }
+}
+
+.acd-spinner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border-width: 1.5px;
+    border-style: solid;
+    border-color: rgb(0, 120, 212) rgb(199, 224, 244) rgb(199, 224, 244) rgb(199, 224, 244);
+    animation-name: acd-spinner-rotate;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: cubic-bezier(0.53, 0.21, 0.29, 0.67);
 }
 
 /*
@@ -174,6 +241,19 @@
     font-size: 14px;
     font-style: normal;
     font-weight: normal;
+}
+
+.acd-dialog-titleBar-button {
+    color: black;
+    background-color: transparent;
+    font-size: 16px;
+    padding: 4px;
+    border: none;
+    cursor: pointer;
+}
+
+.acd-dialog-titleBar-button:hover {
+    background-color: #CCCCCC;
 }
 
 .acd-toolPalette-icon {
@@ -782,7 +862,7 @@ a.default-ac-anchor:visited:active {
     background-color: rgba(0, 0, 0, 0.15) !important;
 }
 
-.default-ac-pushButton {
+.default-ac-pushButton, .acd-dialog-button {
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: center;
@@ -803,12 +883,12 @@ a.default-ac-anchor:visited:active {
     border-radius: 2px;
 }
 
-.default-ac-pushButton:hover {
+.default-ac-pushButton:hover, .acd-dialog-button:hover {
     background-color: #DDDDDD;
     border: 1px solid #BBBBBB;
 }
 
-.default-ac-pushButton:active {
+.default-ac-pushButton:active, .acd-dialog-button:active {
     background-color: #CCCCCC;
     border: 1px solid #BBBBBB;
 }
