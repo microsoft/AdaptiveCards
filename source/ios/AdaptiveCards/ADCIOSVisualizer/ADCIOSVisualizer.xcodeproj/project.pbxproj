@@ -7,12 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		30860BC220C9B5C9009F9D99 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
-		30860BC420C9B5C9009F9D99 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		30860BC220C9B5C9009F9D99 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		30860BC420C9B5C9009F9D99 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		39B5465A188784733EADFBD3 /* Pods_ADCIOSVisualizerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D8A145749F6CC8D47FF8D8 /* Pods_ADCIOSVisualizerTests.framework */; };
-		5CCBFFA7BB7A7074D0CDF5A1 /* Pods_ADCIOSVisualizer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 545526A2955430D8C8497143 /* Pods_ADCIOSVisualizer.framework */; };
 		6B055764233EC53D000EE24A /* RichTextBlock.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B055763233EC53D000EE24A /* RichTextBlock.json */; };
-		6B14FC5D2113BC2200A11CC5 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		6B14FC5D2113BC2200A11CC5 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		6B1509FE22FC98AE00046B3A /* samples in Resources */ = {isa = PBXBuildFile; fileRef = 6B1509FD22FC98AE00046B3A /* samples */; };
 		6B150A0022FCE49600046B3A /* AdaptiveFileBrowserSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B1509FF22FCE49600046B3A /* AdaptiveFileBrowserSource.mm */; };
 		6B150A042302415000046B3A /* sample.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A032302415000046B3A /* sample.json */; };
@@ -49,8 +48,8 @@
 		6B2239AA23874E5F00DFB941 /* AdaptiveCards.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6B2239A823874E5F00DFB941 /* AdaptiveCards.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6B22426621E92AF9000ACDA1 /* CustomActionNewType.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B22426521E92AF9000ACDA1 /* CustomActionNewType.mm */; };
 		6B22426A21FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B22426921FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm */; };
-		6B268FE320CEF19400D99C1B /* BuildFile in Resources */ = {isa = PBXBuildFile; };
-		6B268FE520CEF89100D99C1B /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		6B268FE320CEF19400D99C1B /* (null) in Resources */ = {isa = PBXBuildFile; };
+		6B268FE520CEF89100D99C1B /* (null) in Resources */ = {isa = PBXBuildFile; };
 		6B2D8605211143BD008DD972 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B2D8604211143BD008DD972 /* AdaptiveCards.framework */; };
 		6B696CDB2321AC1C00E1D607 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980933215AE6EC0024B79B /* UIKit.framework */; };
 		6B980936215AE8780024B79B /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980935215AE8780024B79B /* AdaptiveCards.framework */; };
@@ -198,7 +197,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				6B2239A923874E5F00DFB941 /* AdaptiveCards.framework in Frameworks */,
-				5CCBFFA7BB7A7074D0CDF5A1 /* Pods_ADCIOSVisualizer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -511,17 +509,17 @@
 			files = (
 				6B150A36230354F200046B3A /* Image.Size.json in Resources */,
 				6B150A1123034F2800046B3A /* FoodOrder.json in Resources */,
-				6B268FE520CEF89100D99C1B /* BuildFile in Resources */,
+				6B268FE520CEF89100D99C1B /* (null) in Resources */,
 				6B150A37230354F200046B3A /* ColumnSet.Spacing.json in Resources */,
 				6B1509FE22FC98AE00046B3A /* samples in Resources */,
-				6B268FE320CEF19400D99C1B /* BuildFile in Resources */,
+				6B268FE320CEF19400D99C1B /* (null) in Resources */,
 				6B150A2A230353AB00046B3A /* TextBlock.IsSubtle.json in Resources */,
 				6B150A29230353AB00046B3A /* TextBlock.Spacing.json in Resources */,
-				6B14FC5D2113BC2200A11CC5 /* BuildFile in Resources */,
+				6B14FC5D2113BC2200A11CC5 /* (null) in Resources */,
 				6B150A3E230354F200046B3A /* Column.Size.Ratio.json in Resources */,
 				6B150A40230354F200046B3A /* Image.json in Resources */,
 				6B150A042302415000046B3A /* sample.json in Resources */,
-				30860BC220C9B5C9009F9D99 /* BuildFile in Resources */,
+				30860BC220C9B5C9009F9D99 /* (null) in Resources */,
 				6B150A3C230354F200046B3A /* Column.Width.json in Resources */,
 				6B150A20230353AB00046B3A /* TextBlock.Color.json in Resources */,
 				6B150A25230353AB00046B3A /* TextBlock.Lists.json in Resources */,
@@ -547,7 +545,7 @@
 				6B150A23230353AB00046B3A /* TextBlock.MaxLines.json in Resources */,
 				6B150A1223034F2800046B3A /* Restaurant.json in Resources */,
 				6B150A0F23034F2800046B3A /* Feedback.json in Resources */,
-				30860BC420C9B5C9009F9D99 /* BuildFile in Resources */,
+				30860BC420C9B5C9009F9D99 /* (null) in Resources */,
 				6B150A27230353AB00046B3A /* TextBlock.HorizontalAlignment.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
