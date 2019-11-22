@@ -193,7 +193,7 @@ Android and iOS build artifacts are required to perform the build process, for A
 
 #### Pre-requisites
 
-The Xamarin packages require native libraries to be built beforehand, as we can't upload binaries into the repository, then the Android and iOS build definitions must be updated to copy the generated binaries into the xamarin projects folder. 
+The Xamarin packages require native libraries to be built beforehand, for the case of Android as soon as the android binaries are generated the Xamarin project can reference them, while iOS can too, they must be built in a Mac. 
 
 #### Build definitions
 
