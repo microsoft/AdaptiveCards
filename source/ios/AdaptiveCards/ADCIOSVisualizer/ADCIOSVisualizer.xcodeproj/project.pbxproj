@@ -7,10 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		30860BC220C9B5C9009F9D99 /* (null) in Resources */ = {isa = PBXBuildFile; };
-		30860BC420C9B5C9009F9D99 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		30860BC220C9B5C9009F9D99 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		30860BC420C9B5C9009F9D99 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		39B5465A188784733EADFBD3 /* Pods_ADCIOSVisualizerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D8A145749F6CC8D47FF8D8 /* Pods_ADCIOSVisualizerTests.framework */; };
+		5CCBFFA7BB7A7074D0CDF5A1 /* Pods_ADCIOSVisualizer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 545526A2955430D8C8497143 /* Pods_ADCIOSVisualizer.framework */; };
 		6B055764233EC53D000EE24A /* RichTextBlock.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B055763233EC53D000EE24A /* RichTextBlock.json */; };
-		6B14FC5D2113BC2200A11CC5 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		6B14FC5D2113BC2200A11CC5 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
 		6B1509FE22FC98AE00046B3A /* samples in Resources */ = {isa = PBXBuildFile; fileRef = 6B1509FD22FC98AE00046B3A /* samples */; };
 		6B150A0022FCE49600046B3A /* AdaptiveFileBrowserSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B1509FF22FCE49600046B3A /* AdaptiveFileBrowserSource.mm */; };
 		6B150A042302415000046B3A /* sample.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A032302415000046B3A /* sample.json */; };
@@ -43,10 +45,12 @@
 		6B150A3E230354F200046B3A /* Column.Size.Ratio.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A33230354F200046B3A /* Column.Size.Ratio.json */; };
 		6B150A3F230354F200046B3A /* Column.Width.Ratio.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A34230354F200046B3A /* Column.Width.Ratio.json */; };
 		6B150A40230354F200046B3A /* Image.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A35230354F200046B3A /* Image.json */; };
+		6B2239A923874E5F00DFB941 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B2239A823874E5F00DFB941 /* AdaptiveCards.framework */; };
+		6B2239AA23874E5F00DFB941 /* AdaptiveCards.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6B2239A823874E5F00DFB941 /* AdaptiveCards.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6B22426621E92AF9000ACDA1 /* CustomActionNewType.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B22426521E92AF9000ACDA1 /* CustomActionNewType.mm */; };
 		6B22426A21FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B22426921FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm */; };
-		6B268FE320CEF19400D99C1B /* (null) in Resources */ = {isa = PBXBuildFile; };
-		6B268FE520CEF89100D99C1B /* (null) in Resources */ = {isa = PBXBuildFile; };
+		6B268FE320CEF19400D99C1B /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		6B268FE520CEF89100D99C1B /* BuildFile in Resources */ = {isa = PBXBuildFile; };
 		6B2D8605211143BD008DD972 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B2D8604211143BD008DD972 /* AdaptiveCards.framework */; };
 		6B696CDB2321AC1C00E1D607 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980933215AE6EC0024B79B /* UIKit.framework */; };
 		6B980936215AE8780024B79B /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980935215AE8780024B79B /* AdaptiveCards.framework */; };
@@ -55,8 +59,7 @@
 		6B9BDF7020E18E5B00F13155 /* CustomImageRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B9BDF6F20E18E5B00F13155 /* CustomImageRenderer.mm */; };
 		6B9BDFCC20F6D11F00F13155 /* ADCResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9BDFCB20F6D11F00F13155 /* ADCResolver.m */; };
 		6BF339D620A665E600DA5973 /* CustomTextBlockRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BF339D420A665E600DA5973 /* CustomTextBlockRenderer.mm */; };
-		6BF339E320A66A3F00DA5973 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; };
-		6BF339E420A66A4D00DA5973 /* AdaptiveCards.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BC12A139B00A0B073B0F2520 /* Pods_ADCIOSVisualizer_ADCIOSVisualizerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3DF00919D3C6240C781F0DF /* Pods_ADCIOSVisualizer_ADCIOSVisualizerUITests.framework */; };
 		F423C0771EE1FB6100905679 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C0761EE1FB6100905679 /* main.m */; };
 		F423C07A1EE1FB6100905679 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C0791EE1FB6100905679 /* AppDelegate.m */; };
 		F423C07D1EE1FB6100905679 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C07C1EE1FB6100905679 /* ViewController.m */; };
@@ -95,7 +98,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				6BF339E420A66A4D00DA5973 /* AdaptiveCards.framework in Embed Frameworks */,
+				6B2239AA23874E5F00DFB941 /* AdaptiveCards.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -103,6 +106,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		01D8A145749F6CC8D47FF8D8 /* Pods_ADCIOSVisualizerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ADCIOSVisualizerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		408D74CA859BAB1A39F839F3 /* Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests.release.xcconfig"; path = "Target Support Files/Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests/Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests.release.xcconfig"; sourceTree = "<group>"; };
+		4B1D4B695628E5CF027FA77F /* libPods-ADCIOSVisualizer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ADCIOSVisualizer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		545526A2955430D8C8497143 /* Pods_ADCIOSVisualizer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ADCIOSVisualizer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B055763233EC53D000EE24A /* RichTextBlock.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RichTextBlock.json; sourceTree = "<group>"; };
 		6B1509FD22FC98AE00046B3A /* samples */ = {isa = PBXFileReference; lastKnownFileType = folder; name = samples; path = ../../../../samples; sourceTree = "<group>"; };
 		6B1509FF22FCE49600046B3A /* AdaptiveFileBrowserSource.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AdaptiveFileBrowserSource.mm; sourceTree = "<group>"; };
@@ -137,6 +144,7 @@
 		6B150A33230354F200046B3A /* Column.Size.Ratio.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Column.Size.Ratio.json; sourceTree = "<group>"; };
 		6B150A34230354F200046B3A /* Column.Width.Ratio.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Column.Width.Ratio.json; sourceTree = "<group>"; };
 		6B150A35230354F200046B3A /* Image.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Image.json; sourceTree = "<group>"; };
+		6B2239A823874E5F00DFB941 /* AdaptiveCards.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdaptiveCards.framework; path = Pods/AdaptiveCards/AdaptiveCards.framework; sourceTree = "<group>"; };
 		6B22426421E92AF9000ACDA1 /* CustomActionNewType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomActionNewType.h; sourceTree = "<group>"; };
 		6B22426521E92AF9000ACDA1 /* CustomActionNewType.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomActionNewType.mm; sourceTree = "<group>"; };
 		6B22426921FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ADCIOSVisualizerUITests.mm; sourceTree = "<group>"; };
@@ -151,6 +159,12 @@
 		6BF339D420A665E600DA5973 /* CustomTextBlockRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomTextBlockRenderer.mm; sourceTree = "<group>"; };
 		6BF339D520A665E600DA5973 /* CustomTextBlockRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTextBlockRenderer.h; sourceTree = "<group>"; };
 		6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		909A389DC8CA24CDC48D1DD4 /* Pods-ADCIOSVisualizerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ADCIOSVisualizerTests.release.xcconfig"; path = "Target Support Files/Pods-ADCIOSVisualizerTests/Pods-ADCIOSVisualizerTests.release.xcconfig"; sourceTree = "<group>"; };
+		9834D2DA046A5AC5214CA6BA /* Pods-ADCIOSVisualizer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ADCIOSVisualizer.debug.xcconfig"; path = "Target Support Files/Pods-ADCIOSVisualizer/Pods-ADCIOSVisualizer.debug.xcconfig"; sourceTree = "<group>"; };
+		A5DE0A3E68CB3D547F57FF4F /* Pods-ADCIOSVisualizer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ADCIOSVisualizer.release.xcconfig"; path = "Target Support Files/Pods-ADCIOSVisualizer/Pods-ADCIOSVisualizer.release.xcconfig"; sourceTree = "<group>"; };
+		B2DBE0D0442F5EA18847C83F /* Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests.debug.xcconfig"; path = "Target Support Files/Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests/Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		B98C08A05095A66DA2BF5C85 /* Pods-ADCIOSVisualizerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ADCIOSVisualizerTests.debug.xcconfig"; path = "Target Support Files/Pods-ADCIOSVisualizerTests/Pods-ADCIOSVisualizerTests.debug.xcconfig"; sourceTree = "<group>"; };
+		E3DF00919D3C6240C781F0DF /* Pods_ADCIOSVisualizer_ADCIOSVisualizerUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ADCIOSVisualizer_ADCIOSVisualizerUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F423C0721EE1FB6100905679 /* ADCIOSVisualizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ADCIOSVisualizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F423C0761EE1FB6100905679 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F423C0781EE1FB6100905679 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -183,7 +197,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6BF339E320A66A3F00DA5973 /* AdaptiveCards.framework in Frameworks */,
+				6B2239A923874E5F00DFB941 /* AdaptiveCards.framework in Frameworks */,
+				5CCBFFA7BB7A7074D0CDF5A1 /* Pods_ADCIOSVisualizer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -193,6 +208,7 @@
 			files = (
 				6B696CDB2321AC1C00E1D607 /* UIKit.framework in Frameworks */,
 				6B2D8605211143BD008DD972 /* AdaptiveCards.framework in Frameworks */,
+				39B5465A188784733EADFBD3 /* Pods_ADCIOSVisualizerTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -203,6 +219,7 @@
 				6B98093A215AF05A0024B79B /* CoreGraphics.framework in Frameworks */,
 				6B980939215AE9A10024B79B /* UIKit.framework in Frameworks */,
 				6B980936215AE8780024B79B /* AdaptiveCards.framework in Frameworks */,
+				BC12A139B00A0B073B0F2520 /* Pods_ADCIOSVisualizer_ADCIOSVisualizerUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,11 +283,29 @@
 			children = (
 				6B980935215AE8780024B79B /* AdaptiveCards.framework */,
 				6B980933215AE6EC0024B79B /* UIKit.framework */,
+				6B2239A823874E5F00DFB941 /* AdaptiveCards.framework */,
 				6B980930215AE4310024B79B /* CoreGraphics.framework */,
 				6B2D8604211143BD008DD972 /* AdaptiveCards.framework */,
 				6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */,
+				4B1D4B695628E5CF027FA77F /* libPods-ADCIOSVisualizer.a */,
+				545526A2955430D8C8497143 /* Pods_ADCIOSVisualizer.framework */,
+				E3DF00919D3C6240C781F0DF /* Pods_ADCIOSVisualizer_ADCIOSVisualizerUITests.framework */,
+				01D8A145749F6CC8D47FF8D8 /* Pods_ADCIOSVisualizerTests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		93CD1C09198EDD1FD8C0FC42 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				9834D2DA046A5AC5214CA6BA /* Pods-ADCIOSVisualizer.debug.xcconfig */,
+				A5DE0A3E68CB3D547F57FF4F /* Pods-ADCIOSVisualizer.release.xcconfig */,
+				B2DBE0D0442F5EA18847C83F /* Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests.debug.xcconfig */,
+				408D74CA859BAB1A39F839F3 /* Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests.release.xcconfig */,
+				B98C08A05095A66DA2BF5C85 /* Pods-ADCIOSVisualizerTests.debug.xcconfig */,
+				909A389DC8CA24CDC48D1DD4 /* Pods-ADCIOSVisualizerTests.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		F423C0691EE1FB6100905679 = {
@@ -286,6 +321,7 @@
 				F423C0731EE1FB6100905679 /* Products */,
 				6BF339E120A66A3F00DA5973 /* Frameworks */,
 				6BAC0F2A228B42EB00E42DEB /* Recovered References */,
+				93CD1C09198EDD1FD8C0FC42 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -367,6 +403,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F423C0A21EE1FB6100905679 /* Build configuration list for PBXNativeTarget "ADCIOSVisualizer" */;
 			buildPhases = (
+				3BBE420B7597D0342A55ACFC /* [CP] Check Pods Manifest.lock */,
 				F423C06E1EE1FB6100905679 /* Sources */,
 				F423C06F1EE1FB6100905679 /* Frameworks */,
 				F423C0701EE1FB6100905679 /* Resources */,
@@ -385,9 +422,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F423C0A51EE1FB6100905679 /* Build configuration list for PBXNativeTarget "ADCIOSVisualizerTests" */;
 			buildPhases = (
+				752569BE4F04359ED117CF9A /* [CP] Check Pods Manifest.lock */,
 				F423C08A1EE1FB6100905679 /* Sources */,
 				F423C08B1EE1FB6100905679 /* Frameworks */,
 				F423C08C1EE1FB6100905679 /* Resources */,
+				35095F65EB2F83321036AD35 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -403,9 +442,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F423C0A81EE1FB6100905679 /* Build configuration list for PBXNativeTarget "ADCIOSVisualizerUITests" */;
 			buildPhases = (
+				A2C4385B32DF56C342D3427E /* [CP] Check Pods Manifest.lock */,
 				F423C0951EE1FB6100905679 /* Sources */,
 				F423C0961EE1FB6100905679 /* Frameworks */,
 				F423C0971EE1FB6100905679 /* Resources */,
+				691F07D5CBC2D36E39689730 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -470,17 +511,17 @@
 			files = (
 				6B150A36230354F200046B3A /* Image.Size.json in Resources */,
 				6B150A1123034F2800046B3A /* FoodOrder.json in Resources */,
-				6B268FE520CEF89100D99C1B /* (null) in Resources */,
+				6B268FE520CEF89100D99C1B /* BuildFile in Resources */,
 				6B150A37230354F200046B3A /* ColumnSet.Spacing.json in Resources */,
 				6B1509FE22FC98AE00046B3A /* samples in Resources */,
-				6B268FE320CEF19400D99C1B /* (null) in Resources */,
+				6B268FE320CEF19400D99C1B /* BuildFile in Resources */,
 				6B150A2A230353AB00046B3A /* TextBlock.IsSubtle.json in Resources */,
 				6B150A29230353AB00046B3A /* TextBlock.Spacing.json in Resources */,
-				6B14FC5D2113BC2200A11CC5 /* (null) in Resources */,
+				6B14FC5D2113BC2200A11CC5 /* BuildFile in Resources */,
 				6B150A3E230354F200046B3A /* Column.Size.Ratio.json in Resources */,
 				6B150A40230354F200046B3A /* Image.json in Resources */,
 				6B150A042302415000046B3A /* sample.json in Resources */,
-				30860BC220C9B5C9009F9D99 /* (null) in Resources */,
+				30860BC220C9B5C9009F9D99 /* BuildFile in Resources */,
 				6B150A3C230354F200046B3A /* Column.Width.json in Resources */,
 				6B150A20230353AB00046B3A /* TextBlock.Color.json in Resources */,
 				6B150A25230353AB00046B3A /* TextBlock.Lists.json in Resources */,
@@ -506,7 +547,7 @@
 				6B150A23230353AB00046B3A /* TextBlock.MaxLines.json in Resources */,
 				6B150A1223034F2800046B3A /* Restaurant.json in Resources */,
 				6B150A0F23034F2800046B3A /* Feedback.json in Resources */,
-				30860BC420C9B5C9009F9D99 /* (null) in Resources */,
+				30860BC420C9B5C9009F9D99 /* BuildFile in Resources */,
 				6B150A27230353AB00046B3A /* TextBlock.HorizontalAlignment.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -526,6 +567,111 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		35095F65EB2F83321036AD35 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ADCIOSVisualizerTests/Pods-ADCIOSVisualizerTests-frameworks.sh",
+				"${PODS_ROOT}/AdaptiveCards/AdaptiveCards.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AdaptiveCards.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ADCIOSVisualizerTests/Pods-ADCIOSVisualizerTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3BBE420B7597D0342A55ACFC /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ADCIOSVisualizer-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		691F07D5CBC2D36E39689730 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests/Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests-frameworks.sh",
+				"${PODS_ROOT}/AdaptiveCards/AdaptiveCards.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AdaptiveCards.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests/Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		752569BE4F04359ED117CF9A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ADCIOSVisualizerTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A2C4385B32DF56C342D3427E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		F423C06E1EE1FB6100905679 /* Sources */ = {
@@ -709,9 +855,14 @@
 		};
 		F423C0A31EE1FB6100905679 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9834D2DA046A5AC5214CA6BA /* Pods-ADCIOSVisualizer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = UBF8T346G9;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Pods/AdaptiveCards",
+				);
 				INFOPLIST_FILE = ADCIOSVisualizer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = MSFT.ADCIOSVisualizer;
@@ -721,9 +872,14 @@
 		};
 		F423C0A41EE1FB6100905679 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A5DE0A3E68CB3D547F57FF4F /* Pods-ADCIOSVisualizer.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = UBF8T346G9;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Pods/AdaptiveCards",
+				);
 				INFOPLIST_FILE = ADCIOSVisualizer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = MSFT.ADCIOSVisualizer;
@@ -733,6 +889,7 @@
 		};
 		F423C0A61EE1FB6100905679 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B98C08A05095A66DA2BF5C85 /* Pods-ADCIOSVisualizerTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = ADCIOSVisualizerTests/Info.plist;
@@ -745,6 +902,7 @@
 		};
 		F423C0A71EE1FB6100905679 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 909A389DC8CA24CDC48D1DD4 /* Pods-ADCIOSVisualizerTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = ADCIOSVisualizerTests/Info.plist;
@@ -757,6 +915,7 @@
 		};
 		F423C0A91EE1FB6100905679 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B2DBE0D0442F5EA18847C83F /* Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests.debug.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = ADCIOSVisualizerUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -768,6 +927,7 @@
 		};
 		F423C0AA1EE1FB6100905679 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 408D74CA859BAB1A39F839F3 /* Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests.release.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = ADCIOSVisualizerUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

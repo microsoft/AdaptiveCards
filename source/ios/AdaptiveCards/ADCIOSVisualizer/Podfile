@@ -1,0 +1,30 @@
+project 'ADCIOSVisualizer.xcodeproj/'
+
+# Uncomment the next line to define a global platform for your project
+ platform :ios, '10.3'
+
+target 'ADCIOSVisualizer' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for ADCIOSVisualizer
+
+  target 'ADCIOSVisualizerTests' do
+    inherit! :search_paths
+    # for specific version of adaptive card uncomment below, 
+    # and comment the line using the latest
+    # pod 'AdaptiveCards', '~> 1.2.4'
+    # latest version
+    pod 'AdaptiveCards'
+  end
+
+  target 'ADCIOSVisualizerUITests' do
+    # Pods for testing
+    # for specific version of adaptive card uncomment below, 
+    # and comment the line using the latest
+    # pod 'AdaptiveCards', '~> 1.2.4'
+    # latest version
+    pod 'AdaptiveCards'
+  end
+
+end
