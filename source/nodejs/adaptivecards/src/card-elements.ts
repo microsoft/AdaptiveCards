@@ -5,6 +5,7 @@ import * as Shared from "./shared";
 import * as Utils from "./utils";
 import * as HostConfig from "./host-config";
 import * as TextFormatters from "./text-formatters";
+import * as MarkdownFormatter from "./markdown-formatter";
 
 function invokeSetCollection(action: Action, collection: ActionCollection) {
     if (action) {
@@ -6624,6 +6625,11 @@ export class AdaptiveCard extends ContainerWithActions {
     static onParseError: (error: HostConfig.IValidationError) => void = null;
     static onProcessMarkdown: (text: string, result: IMarkdownProcessingResult) => void = null;
 
+    //Method to set custom markdown regex.
+    static setCustomMarkdownRegex(regexArray: any[]){
+        MarkdownFormatter.setCustomMarkdownRegex(regexArray);
+    }
+    
     static get processMarkdown(): (text: string) => string {
         throw new Error("The processMarkdown event has been removed. Please update your code and set onProcessMarkdown instead.")
     }
@@ -6637,18 +6643,13 @@ export class AdaptiveCard extends ContainerWithActions {
             didProcess: false
         };
 
+        //Check if custom markdown processor is initialized. Else use the built-in markdown processing logic.
         if (AdaptiveCard.onProcessMarkdown) {
             AdaptiveCard.onProcessMarkdown(text, result);
-        }
-        else if (window["markdownit"]) {
-            // Check for markdownit
-            result.outputHtml = window["markdownit"]().render(text);
+        } else {
+            result.outputHtml = MarkdownFormatter.formatText(text);
             result.didProcess = true;
         }
-        else {
-            console.warn("Markdown processing isn't enabled. Please see https://www.npmjs.com/package/adaptivecards#supporting-markdown")
-        }
-
         return result;
     }
 

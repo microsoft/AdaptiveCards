@@ -125,19 +125,33 @@ document.body.appendChild(renderedCard);
 
 ## Supporting Markdown
 
-Markdown is a [standard feature of Adaptive Cards](https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/text-features), but to give users flexibility we don't bundle a particular implementation with the library.
+Markdown is a [standard feature of Adaptive Cards](https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/text-features). By default, Adaptive cards support the basic markdown formatting like 
 
-#### Option 1: Markdown-It
+* bold
+* italic 
+* hyperlink 
+* bullet list 
+* numbered list
 
-The easiest way to get markdown support is by adding [markdown-it](https://github.com/markdown-it/markdown-it) to your document.
+You can add and also customize markdown rules using this `AdaptiveCards.setCustomMarkdownRegex` function. Refer [example.html](example.html) for the example usecase.
+
+#### Option to use 3rd party library
+
+If you want to use any 3rd party library like [markdown-it](https://github.com/markdown-it/markdown-it) or handle markdown yourself, use the `AdaptiveCards.onProcessMarkdown` event.
+
+**Example for using markdown-it**
+
 
 ```html
 <script type="text/javascript" src="https://unpkg.com/markdown-it/dist/markdown-it.min.js"></script>
 ```
 
-#### Option 2: Any other 3rd party library
-
-If you want to use another library or handle markdown yourself, use the `AdaptiveCards.onProcessMarkdown` event.
+```js
+AdaptiveCards.onProcessMarkdown = function(text, result) {
+	result.outputHtml = markdownit().render(text);
+	result.didProcess = true;
+}
+```
 
 **IMPORTANT SECURITY NOTE: When you process Markdown (yourself or using a library) you are responsible for making sure the output HTML is safe.**
 

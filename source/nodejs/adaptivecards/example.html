@@ -5,11 +5,10 @@
 	<meta charset="utf-8" />
 	<title>Adaptive Cards Example</title>
 
-	<script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.js"></script>
 
 	<style type="text/css">
 		#exampleDiv {
-			width: 250px;
+			width: 300px;
 			border: solid 1px black;
 		}
 	</style>
@@ -30,6 +29,10 @@
 					{
 						"type": "TextBlock",
 						"text": "Hello **Adaptive Cards!**"
+					},
+					{
+						"type": "TextBlock",
+						"text": "This is a -custom markdown- for bullet list $ Item **1**.1\r$ Item -2.2-\r$ Item 3\r "
 					}
 				],
 				"actions": [{
@@ -61,6 +64,26 @@
 			adaptiveCard.onExecuteAction = function (action) {
 				alert("Ow!");
 			}
+
+			//To add new markdown rules or to customize the existing markdown rules.
+			adaptiveCard.constructor.setCustomMarkdownRegex([{
+							type: 'bullet', 
+							styles:{
+								start: "<ul>",
+								end: "</ul>"},
+							pattern: ['$', '\\r|\\n'],
+							patternType: 'start-end',
+							groups: 1
+						},
+						{
+							type: 'italic',
+							styles:{
+								start: "<i>",
+								end: "</i>"},
+							pattern: ['-'],
+							patternType: 'symmetric',
+							groups:1,
+						}]);
 
 			// Parse the card payload
 			adaptiveCard.parse(card);
