@@ -52,18 +52,8 @@ export class Container extends React.Component {
 
 	internalRenderer = () => {
 		const payload = this.payload;
-		let containerStyle;
-		let minHeight = payload.minHeight;
-		if (minHeight) {
-			if (typeof (minHeight) == 'string') {
-				const lastIndex = minHeight.lastIndexOf('px');
-				minHeight = lastIndex != -1 ? parseInt(minHeight.substring(0, lastIndex)) : minHeight
-			}
-			//If it is number, then directly we can assign minHeight
-			containerStyle = [styles.container, { minHeight }];
-		} else {
-			containerStyle = [styles.container];
-		}
+		const minHeight = Utils.convertStringToNumber(payload.minHeight);
+		const containerStyle = [styles.container, minHeight && { minHeight }];
 
 		var containerContent = (
 			<ContainerWrapper json={this.payload} style={containerStyle} containerStyle={this.props.containerStyle}>
