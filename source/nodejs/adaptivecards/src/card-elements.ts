@@ -1572,15 +1572,24 @@ export class RichTextBlock extends CardElement {
                     break;
             }
 
+            let renderedInlines: number = 0;
+
             for (let inline of this._inlines) {
-                element.appendChild(inline.render());
+                let renderedInline = inline.render();
+
+                if (renderedInline) {
+                    element.appendChild(renderedInline);
+
+                    renderedInlines++;
+                }
             }
 
-            return element;
+            if (renderedInlines > 0) {
+                return element;
+            }
         }
-        else {
-            return null;
-        }
+
+        return null;
     }
 
     asString(): string {
@@ -4597,7 +4606,7 @@ class ActionCollection {
 
         (<InlineAdaptiveCard>action.card).suppressStyle = suppressStyle;
 
-        var renderedCard = action.card.render();
+        var renderedCard = action.card.renderedElement ? action.card.renderedElement : action.card.render();
 
         this._actionCard = renderedCard;
         this._expandedAction = action;
@@ -6144,7 +6153,9 @@ export class ColumnSet extends StylableCardElementContainer {
             for (let i = 0; i < jsonColumns.length; i++) {
                 let column = this.createColumnInstance(jsonColumns[i], errors);
 
-                this._columns.push(column);
+                if (column) {
+                    this._columns.push(column);
+                }
             }
         }
 
