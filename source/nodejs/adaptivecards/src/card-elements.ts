@@ -1288,7 +1288,7 @@ export class RichTextBlock extends CardElement {
             }
         }
 
-        return null;
+        return undefined;
     }
 
     asString(): string | undefined {
