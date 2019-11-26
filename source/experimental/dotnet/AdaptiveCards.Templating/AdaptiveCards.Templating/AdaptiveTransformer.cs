@@ -57,8 +57,8 @@ namespace AdaptiveCards.Templating
 
         /// <summary>
         /// Expand the template and bind the data
-		/// Note that everything in your data object will be serialized to JSON.
-		/// To avoid performance issues only pass in the data required by your template
+        /// Note that everything in your data object will be serialized to JSON.
+        /// To avoid performance issues only pass in the data required by your template
         /// </summary>
         /// <param name="jsonTemplate">Your Json Template</param>
         /// <param name="jsonData">The Data to bind (will be serialized internally)</param>
