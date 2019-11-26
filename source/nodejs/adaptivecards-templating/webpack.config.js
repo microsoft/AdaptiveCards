@@ -15,7 +15,8 @@ module.exports = (env, argv) => {
 			path: path.resolve(__dirname, "./dist"),
 			filename: devMode ? "[name].js" : "[name].min.js",
 			libraryTarget: "umd",
-			library: "ACData"
+			library: "ACData",
+			globalObject: "this"
 		},
 		devtool: devMode ? "inline-source-map" : "source-map",
 		devServer: {

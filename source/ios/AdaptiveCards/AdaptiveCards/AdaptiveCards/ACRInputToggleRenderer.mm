@@ -47,6 +47,7 @@
     inputTableView.frame = CGRectMake(0, 0, viewGroup.frame.size.width, viewGroup.frame.size.height);
     [inputTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     ACRToggleInputDataSource *dataSource = [[ACRToggleInputDataSource alloc] initWithInputToggle:toggleBlck WithHostConfig:config];
+    dataSource.parentStyle = viewGroup.style;
     inputTableView.delegate = dataSource;
     inputTableView.dataSource = dataSource;
 

@@ -678,3 +678,9 @@ ACOBaseActionElement *deserializeUnknownActionToCustomAction(const std::shared_p
     }
     return customAction;
 }
+
+UIColor *getForegroundUIColorFromAdaptiveAttribute(std::shared_ptr<HostConfig> const &config, ACRContainerStyle style, ForegroundColor textColor, bool isSubtle)
+{
+    const std::string str = config->GetForegroundColor([ACOHostConfig getSharedContainerStyle:style], textColor, isSubtle);
+    return [ACOHostConfig convertHexColorCodeToUIColor:str];
+}
