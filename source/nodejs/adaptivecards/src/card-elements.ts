@@ -1271,19 +1271,24 @@ export class RichTextBlock extends CardElement {
                     break;
             }
 
+            let renderedInlines: number = 0;
+
             for (let inline of this._inlines) {
                 let renderedInline = inline.render();
 
                 if (renderedInline) {
                     element.appendChild(renderedInline);
+
+                    renderedInlines++;
                 }
             }
 
-            return element;
+            if (renderedInlines > 0) {
+                return element;
+            }
         }
-        else {
-            return undefined;
-        }
+
+        return null;
     }
 
     asString(): string | undefined {
