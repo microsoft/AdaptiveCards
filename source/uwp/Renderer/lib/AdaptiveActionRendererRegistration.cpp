@@ -12,7 +12,8 @@ namespace AdaptiveNamespace
 {
     AdaptiveActionRendererRegistration::AdaptiveActionRendererRegistration() {}
 
-    HRESULT AdaptiveActionRendererRegistration::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveActionRendererRegistration::RuntimeClassInitialize() noexcept
+    try
     {
         m_registration = std::make_shared<RegistrationMap>();
         return S_OK;

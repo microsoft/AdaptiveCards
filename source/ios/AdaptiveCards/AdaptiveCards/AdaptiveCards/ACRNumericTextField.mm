@@ -13,21 +13,16 @@
 {
     BOOL isValidated = YES;
     isValidated = [super validate:error];
-    if(isValidated == YES)
-    {
+    if (isValidated == YES) {
         int val = [self.text intValue];
-        if(val < self.min)
-        {
-            if(error)
-            {
+        if (val < self.min) {
+            if (error) {
                 *error = [NSError errorWithDomain:ACRInputErrorDomain code:ACRInputErrorLessThanMin userInfo:nil];
             }
             return NO;
         }
-        if(val > self.max)
-        {
-            if(error)
-            {
+        if (val > self.max) {
+            if (error) {
                 *error = [NSError errorWithDomain:ACRInputErrorDomain code:ACRInputErrorGreaterThanMax userInfo:nil];
             }
             return NO;

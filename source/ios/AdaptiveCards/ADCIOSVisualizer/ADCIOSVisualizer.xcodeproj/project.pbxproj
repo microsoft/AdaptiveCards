@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		30860BC220C9B5C9009F9D99 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		30860BC420C9B5C9009F9D99 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		6B055764233EC53D000EE24A /* RichTextBlock.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B055763233EC53D000EE24A /* RichTextBlock.json */; };
 		6B14FC5D2113BC2200A11CC5 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		6B1509FE22FC98AE00046B3A /* samples in Resources */ = {isa = PBXBuildFile; fileRef = 6B1509FD22FC98AE00046B3A /* samples */; };
 		6B150A0022FCE49600046B3A /* AdaptiveFileBrowserSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B1509FF22FCE49600046B3A /* AdaptiveFileBrowserSource.mm */; };
@@ -47,6 +48,7 @@
 		6B268FE320CEF19400D99C1B /* (null) in Resources */ = {isa = PBXBuildFile; };
 		6B268FE520CEF89100D99C1B /* (null) in Resources */ = {isa = PBXBuildFile; };
 		6B2D8605211143BD008DD972 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B2D8604211143BD008DD972 /* AdaptiveCards.framework */; };
+		6B696CDB2321AC1C00E1D607 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980933215AE6EC0024B79B /* UIKit.framework */; };
 		6B980936215AE8780024B79B /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980935215AE8780024B79B /* AdaptiveCards.framework */; };
 		6B980939215AE9A10024B79B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980933215AE6EC0024B79B /* UIKit.framework */; };
 		6B98093A215AF05A0024B79B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980930215AE4310024B79B /* CoreGraphics.framework */; };
@@ -101,6 +103,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6B055763233EC53D000EE24A /* RichTextBlock.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RichTextBlock.json; sourceTree = "<group>"; };
 		6B1509FD22FC98AE00046B3A /* samples */ = {isa = PBXFileReference; lastKnownFileType = folder; name = samples; path = ../../../../samples; sourceTree = "<group>"; };
 		6B1509FF22FCE49600046B3A /* AdaptiveFileBrowserSource.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AdaptiveFileBrowserSource.mm; sourceTree = "<group>"; };
 		6B150A0122FCE4BA00046B3A /* AdaptiveFileBrowserSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdaptiveFileBrowserSource.h; sourceTree = "<group>"; };
@@ -188,6 +191,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B696CDB2321AC1C00E1D607 /* UIKit.framework in Frameworks */,
 				6B2D8605211143BD008DD972 /* AdaptiveCards.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -234,6 +238,7 @@
 				6B150A2D230354F100046B3A /* Image.Style.json */,
 				6B150A0A23034F2800046B3A /* Input.ChoiceSet.json */,
 				6B150A0C23034F2800046B3A /* Restaurant.json */,
+				6B055763233EC53D000EE24A /* RichTextBlock.json */,
 				6B150A15230353AA00046B3A /* TextBlock.Color.json */,
 				6B150A16230353AB00046B3A /* TextBlock.DateTimeFormatting.json */,
 				6B150A1C230353AB00046B3A /* TextBlock.HorizontalAlignment.json */,
@@ -418,7 +423,7 @@
 		F423C06A1EE1FB6100905679 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1010;
+				LastUpgradeCheck = 1030;
 				ORGANIZATIONNAME = Microsoft;
 				TargetAttributes = {
 					F423C0711EE1FB6100905679 = {
@@ -440,10 +445,9 @@
 			};
 			buildConfigurationList = F423C06D1EE1FB6100905679 /* Build configuration list for PBXProject "ADCIOSVisualizer" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 				Base,
 			);
@@ -488,6 +492,7 @@
 				6B150A3B230354F200046B3A /* Column.Spacing.json in Resources */,
 				6B150A38230354F200046B3A /* Image.Style.json in Resources */,
 				F423C0851EE1FB6100905679 /* Assets.xcassets in Resources */,
+				6B055764233EC53D000EE24A /* RichTextBlock.json in Resources */,
 				6B150A1023034F2800046B3A /* Input.ChoiceSet.json in Resources */,
 				6B150A22230353AB00046B3A /* TextBlock.Markdown.json in Resources */,
 				6B150A0623033D6C00046B3A /* filebrowserHostConfig.json in Resources */,
@@ -598,6 +603,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -654,6 +660,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

@@ -46,7 +46,7 @@ void BaseActionElement::SetStyle(const std::string& value)
     m_style = value;
 }
 
-const ActionType BaseActionElement::GetElementType() const
+ActionType BaseActionElement::GetElementType() const
 {
     return m_type;
 }

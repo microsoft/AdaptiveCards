@@ -33,7 +33,7 @@ namespace AdaptiveSharedNamespace
         void SetValue(const std::string& value);
 
     private:
-        void PopulateKnownPropertiesSet() override;
+        void PopulateKnownPropertiesSet();
 
         std::string m_max;
         std::string m_min;

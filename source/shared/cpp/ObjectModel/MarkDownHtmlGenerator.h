@@ -34,10 +34,10 @@ namespace AdaptiveSharedNamespace
     class MarkDownHtmlGenerator
     {
     public:
-        MarkDownHtmlGenerator(const MarkDownHtmlGenerator&) = default;
-        MarkDownHtmlGenerator(MarkDownHtmlGenerator&&) = default;
-        MarkDownHtmlGenerator& operator=(const MarkDownHtmlGenerator&) = default;
-        MarkDownHtmlGenerator& operator=(MarkDownHtmlGenerator&&) = default;
+        MarkDownHtmlGenerator(const MarkDownHtmlGenerator&) = delete;
+        MarkDownHtmlGenerator(MarkDownHtmlGenerator&&) = delete;
+        MarkDownHtmlGenerator& operator=(const MarkDownHtmlGenerator&) = delete;
+        MarkDownHtmlGenerator& operator=(MarkDownHtmlGenerator&&) = delete;
         virtual ~MarkDownHtmlGenerator() = default;
 
         enum MarkDownBlockType
@@ -69,10 +69,10 @@ namespace AdaptiveSharedNamespace
     {
     public:
         MarkDownStringHtmlGenerator() = delete;
-        MarkDownStringHtmlGenerator(const MarkDownStringHtmlGenerator&) = default;
-        MarkDownStringHtmlGenerator(MarkDownStringHtmlGenerator&&) = default;
-        MarkDownStringHtmlGenerator& operator=(const MarkDownStringHtmlGenerator&) = default;
-        MarkDownStringHtmlGenerator& operator=(MarkDownStringHtmlGenerator&&) = default;
+        MarkDownStringHtmlGenerator(const MarkDownStringHtmlGenerator&) = delete;
+        MarkDownStringHtmlGenerator(MarkDownStringHtmlGenerator&&) = delete;
+        MarkDownStringHtmlGenerator& operator=(const MarkDownStringHtmlGenerator&) = delete;
+        MarkDownStringHtmlGenerator& operator=(MarkDownStringHtmlGenerator&&) = delete;
         ~MarkDownStringHtmlGenerator() = default;
 
         MarkDownStringHtmlGenerator(std::string& token) : MarkDownHtmlGenerator(token){};
@@ -85,10 +85,10 @@ namespace AdaptiveSharedNamespace
     {
     public:
         MarkDownNewLineHtmlGenerator() = delete;
-        MarkDownNewLineHtmlGenerator(const MarkDownNewLineHtmlGenerator&) = default;
-        MarkDownNewLineHtmlGenerator(MarkDownNewLineHtmlGenerator&&) = default;
-        MarkDownNewLineHtmlGenerator& operator=(const MarkDownNewLineHtmlGenerator&) = default;
-        MarkDownNewLineHtmlGenerator& operator=(MarkDownNewLineHtmlGenerator&&) = default;
+        MarkDownNewLineHtmlGenerator(const MarkDownNewLineHtmlGenerator&) = delete;
+        MarkDownNewLineHtmlGenerator(MarkDownNewLineHtmlGenerator&&) = delete;
+        MarkDownNewLineHtmlGenerator& operator=(const MarkDownNewLineHtmlGenerator&) = delete;
+        MarkDownNewLineHtmlGenerator& operator=(MarkDownNewLineHtmlGenerator&&) = delete;
         ~MarkDownNewLineHtmlGenerator() = default;
 
         MarkDownNewLineHtmlGenerator(std::string& token) : MarkDownStringHtmlGenerator(token){};
@@ -102,10 +102,10 @@ namespace AdaptiveSharedNamespace
     {
     public:
         MarkDownEmphasisHtmlGenerator() = delete;
-        MarkDownEmphasisHtmlGenerator(const MarkDownEmphasisHtmlGenerator&) = default;
-        MarkDownEmphasisHtmlGenerator(MarkDownEmphasisHtmlGenerator&&) = default;
-        MarkDownEmphasisHtmlGenerator& operator=(const MarkDownEmphasisHtmlGenerator&) = default;
-        MarkDownEmphasisHtmlGenerator& operator=(MarkDownEmphasisHtmlGenerator&&) = default;
+        MarkDownEmphasisHtmlGenerator(const MarkDownEmphasisHtmlGenerator&) = delete;
+        MarkDownEmphasisHtmlGenerator(MarkDownEmphasisHtmlGenerator&&) = delete;
+        MarkDownEmphasisHtmlGenerator& operator=(const MarkDownEmphasisHtmlGenerator&) = delete;
+        MarkDownEmphasisHtmlGenerator& operator=(MarkDownEmphasisHtmlGenerator&&) = delete;
         ~MarkDownEmphasisHtmlGenerator() = default;
 
         MarkDownEmphasisHtmlGenerator(std::string& token, int sizeOfEmphasisDelimiterRun, DelimiterType type) :
@@ -147,10 +147,10 @@ namespace AdaptiveSharedNamespace
     {
     public:
         MarkDownLeftEmphasisHtmlGenerator() = delete;
-        MarkDownLeftEmphasisHtmlGenerator(const MarkDownLeftEmphasisHtmlGenerator&) = default;
-        MarkDownLeftEmphasisHtmlGenerator(MarkDownLeftEmphasisHtmlGenerator&&) = default;
-        MarkDownLeftEmphasisHtmlGenerator& operator=(const MarkDownLeftEmphasisHtmlGenerator&) = default;
-        MarkDownLeftEmphasisHtmlGenerator& operator=(MarkDownLeftEmphasisHtmlGenerator&&) = default;
+        MarkDownLeftEmphasisHtmlGenerator(const MarkDownLeftEmphasisHtmlGenerator&) = delete;
+        MarkDownLeftEmphasisHtmlGenerator(MarkDownLeftEmphasisHtmlGenerator&&) = delete;
+        MarkDownLeftEmphasisHtmlGenerator& operator=(const MarkDownLeftEmphasisHtmlGenerator&) = delete;
+        MarkDownLeftEmphasisHtmlGenerator& operator=(MarkDownLeftEmphasisHtmlGenerator&&) = delete;
         ~MarkDownLeftEmphasisHtmlGenerator() = default;
 
         MarkDownLeftEmphasisHtmlGenerator(std::string& token, int sizeOfEmphasisDelimiterRun, DelimiterType type) :
@@ -172,10 +172,10 @@ namespace AdaptiveSharedNamespace
     {
     public:
         MarkDownRightEmphasisHtmlGenerator() = delete;
-        MarkDownRightEmphasisHtmlGenerator(const MarkDownRightEmphasisHtmlGenerator&) = default;
-        MarkDownRightEmphasisHtmlGenerator(MarkDownRightEmphasisHtmlGenerator&&) = default;
-        MarkDownRightEmphasisHtmlGenerator& operator=(const MarkDownRightEmphasisHtmlGenerator&) = default;
-        MarkDownRightEmphasisHtmlGenerator& operator=(MarkDownRightEmphasisHtmlGenerator&&) = default;
+        MarkDownRightEmphasisHtmlGenerator(const MarkDownRightEmphasisHtmlGenerator&) = delete;
+        MarkDownRightEmphasisHtmlGenerator(MarkDownRightEmphasisHtmlGenerator&&) = delete;
+        MarkDownRightEmphasisHtmlGenerator& operator=(const MarkDownRightEmphasisHtmlGenerator&) = delete;
+        MarkDownRightEmphasisHtmlGenerator& operator=(MarkDownRightEmphasisHtmlGenerator&&) = delete;
         ~MarkDownRightEmphasisHtmlGenerator() = default;
 
         MarkDownRightEmphasisHtmlGenerator(std::string& token, int sizeOfEmphasisDelimiterRun, DelimiterType type) :
@@ -194,10 +194,10 @@ namespace AdaptiveSharedNamespace
     {
     public:
         MarkDownLeftAndRightEmphasisHtmlGenerator() = delete;
-        MarkDownLeftAndRightEmphasisHtmlGenerator(const MarkDownLeftAndRightEmphasisHtmlGenerator&) = default;
-        MarkDownLeftAndRightEmphasisHtmlGenerator(MarkDownLeftAndRightEmphasisHtmlGenerator&&) = default;
-        MarkDownLeftAndRightEmphasisHtmlGenerator& operator=(const MarkDownLeftAndRightEmphasisHtmlGenerator&) = default;
-        MarkDownLeftAndRightEmphasisHtmlGenerator& operator=(MarkDownLeftAndRightEmphasisHtmlGenerator&&) = default;
+        MarkDownLeftAndRightEmphasisHtmlGenerator(const MarkDownLeftAndRightEmphasisHtmlGenerator&) = delete;
+        MarkDownLeftAndRightEmphasisHtmlGenerator(MarkDownLeftAndRightEmphasisHtmlGenerator&&) = delete;
+        MarkDownLeftAndRightEmphasisHtmlGenerator& operator=(const MarkDownLeftAndRightEmphasisHtmlGenerator&) = delete;
+        MarkDownLeftAndRightEmphasisHtmlGenerator& operator=(MarkDownLeftAndRightEmphasisHtmlGenerator&&) = delete;
         ~MarkDownLeftAndRightEmphasisHtmlGenerator() = default;
 
         MarkDownLeftAndRightEmphasisHtmlGenerator(std::string& token, int sizeOfEmphasisDelimiterRun, DelimiterType type) :
@@ -216,10 +216,10 @@ namespace AdaptiveSharedNamespace
     {
     public:
         MarkDownListHtmlGenerator() = delete;
-        MarkDownListHtmlGenerator(const MarkDownListHtmlGenerator&) = default;
-        MarkDownListHtmlGenerator(MarkDownListHtmlGenerator&&) = default;
-        MarkDownListHtmlGenerator& operator=(const MarkDownListHtmlGenerator&) = default;
-        MarkDownListHtmlGenerator& operator=(MarkDownListHtmlGenerator&&) = default;
+        MarkDownListHtmlGenerator(const MarkDownListHtmlGenerator&) = delete;
+        MarkDownListHtmlGenerator(MarkDownListHtmlGenerator&&) = delete;
+        MarkDownListHtmlGenerator& operator=(const MarkDownListHtmlGenerator&) = delete;
+        MarkDownListHtmlGenerator& operator=(MarkDownListHtmlGenerator&&) = delete;
         ~MarkDownListHtmlGenerator() = default;
 
         MarkDownListHtmlGenerator(std::string& token) : MarkDownStringHtmlGenerator(token){};
@@ -234,10 +234,10 @@ namespace AdaptiveSharedNamespace
     {
     public:
         MarkDownOrderedListHtmlGenerator() = delete;
-        MarkDownOrderedListHtmlGenerator(const MarkDownOrderedListHtmlGenerator&) = default;
-        MarkDownOrderedListHtmlGenerator(MarkDownOrderedListHtmlGenerator&&) = default;
-        MarkDownOrderedListHtmlGenerator& operator=(const MarkDownOrderedListHtmlGenerator&) = default;
-        MarkDownOrderedListHtmlGenerator& operator=(MarkDownOrderedListHtmlGenerator&&) = default;
+        MarkDownOrderedListHtmlGenerator(const MarkDownOrderedListHtmlGenerator&) = delete;
+        MarkDownOrderedListHtmlGenerator(MarkDownOrderedListHtmlGenerator&&) = delete;
+        MarkDownOrderedListHtmlGenerator& operator=(const MarkDownOrderedListHtmlGenerator&) = delete;
+        MarkDownOrderedListHtmlGenerator& operator=(MarkDownOrderedListHtmlGenerator&&) = delete;
         ~MarkDownOrderedListHtmlGenerator() = default;
 
         MarkDownOrderedListHtmlGenerator(std::string& token, std::string& number_string) :

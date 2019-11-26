@@ -7,7 +7,7 @@
 
 #import "ACRBaseActionElementRenderer.h"
 
-@interface ACRActionOpenURLRenderer:ACRBaseActionElementRenderer
+@interface ACRActionOpenURLRenderer : ACRBaseActionElementRenderer
 
 + (ACRActionOpenURLRenderer *)getInstance;
 

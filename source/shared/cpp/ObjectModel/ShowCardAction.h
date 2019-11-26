@@ -29,7 +29,7 @@ namespace AdaptiveSharedNamespace
         void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
     private:
-        void PopulateKnownPropertiesSet() override;
+        void PopulateKnownPropertiesSet();
 
         std::shared_ptr<AdaptiveCard> m_card;
     };
