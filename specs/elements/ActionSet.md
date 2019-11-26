@@ -7,7 +7,7 @@
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
 | **type** | `"ActionSet"` | Yes | Must be `"ActionSet"`. | 1.2 |
-| **actions** | `Action[]` | Yes | The array of `Image` elements to show. | 1.2 |
+| **actions** | `Action[]` | Yes | The array of actions in the set. | 1.2 |
 
 **Inherited properties**
 
@@ -24,7 +24,7 @@
 
 ## actions
 
-The array of `Image` elements to show.
+The array of actions in the set.
 
 * **Type**: `Action[]`
 * **Required**: Yes
