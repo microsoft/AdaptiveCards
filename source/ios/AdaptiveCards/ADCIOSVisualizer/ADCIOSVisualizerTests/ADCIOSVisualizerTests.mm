@@ -12,7 +12,6 @@
 #import "AdaptiveCards/ShowCardAction.h"
 #import "AdaptiveCards/TextBlock.h"
 #import "AdaptiveCards/UtiliOS.h"
-#import "CustomActionNewType.h"
 #import <AdaptiveCards/ACFramework.h>
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
@@ -66,6 +65,23 @@
     [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRRichTextBlock];
     [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRFactSet];
     [super tearDown];
+}
+
+- (NSString *)readJsonPayloadFromBundle:(NSString *)fileName error:(NSError **)error
+{
+    NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:fileName ofType:@"json"] encoding:NSUTF8StringEncoding error:error];
+    return payload;
+}
+
+- (void)testMarkdownTelephoneLink
+{
+    NSError *error = nil;
+    NSString *payloadName = @"TextBlock.MarkDown.Telephony";
+    [self readJsonPayloadFromBundle:payloadName error:&error];
+    if (error) {
+        X
+        _XCTAssertion_Fail(@"%fails to read %@", payloadName);
+    }
 }
 
 - (void)testRemoteResouceInformation
