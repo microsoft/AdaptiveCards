@@ -1,7 +1,7 @@
 import { BaseModel } from './base-model'
 import { ModelFactory } from './model-factory';
 import { ElementType } from '../utils/enums'
-import {ImageModel} from './element-model'
+import { ImageModel } from './element-model'
 
 class BaseContainerModel extends BaseModel {
     constructor(payload, parent) {
@@ -37,9 +37,10 @@ export class ContainerModel extends BaseContainerModel {
         this.children = [];
         this.children.push(...ModelFactory.createGroup(payload.items, this));
         this.height = payload.height;
+        this.minHeight = payload.minHeight;
     }
 
-    get items(){
+    get items() {
         return this.children;
     }
 }
@@ -136,7 +137,7 @@ export class ImageSetModel extends BaseContainerModel {
     }
 }
 
-export class ActionSetModel extends BaseContainerModel{
+export class ActionSetModel extends BaseContainerModel {
     constructor(payload, parent) {
         super(payload, parent);
         this.type = ElementType.ActionSet;
