@@ -12,10 +12,13 @@
 #import "RichTextElementProperties.h"
 #import "TextBlock.h"
 #import "TextRun.h"
+#import "UnknownAction.h"
 #import <UIKit/UIKit.h>
 
 using namespace AdaptiveCards;
 
+// configures tag and initial visibility of the given view. Toggle visibility action
+// will access the view by the tag to change the visibility.
 void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visibilityInfo);
 
 void configSeparatorVisibility(ACRSeparator *view,
@@ -63,3 +66,7 @@ void TextBlockToRichTextElementProperties(const std::shared_ptr<TextBlock> &text
 void TextRunToRichTextElementProperties(const std::shared_ptr<TextRun> &textRun, RichTextElementProperties &textProp);
 
 void buildIntermediateResultForText(ACRView *rootView, ACOHostConfig *hostConfig, RichTextElementProperties const &textProperties, NSString *elementId);
+
+ACOBaseActionElement *deserializeUnknownActionToCustomAction(const std::shared_ptr<UnknownAction> action);
+
+UIColor *getForegroundUIColorFromAdaptiveAttribute(std::shared_ptr<HostConfig> const &config, ACRContainerStyle style, ForegroundColor textColor = ForegroundColor::Default, bool isSubtle = false);

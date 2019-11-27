@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace AdaptiveCards
 {
-    class AdaptiveInlinesConverter : JsonConverter
+    class AdaptiveInlinesConverter : AdaptiveTypedBaseElementConverter 
     {
         public override bool CanRead => true;
 
@@ -24,6 +24,11 @@ namespace AdaptiveCards
             var array = JArray.Load(reader);
             List<object> list = array.ToObject<List<object>>();
             List<AdaptiveInline> arrayList = new List<AdaptiveInline>();
+            var serializerSettigns = new JsonSerializerSettings
+            {
+                ContractResolver = new WarningLoggingContractResolver(new AdaptiveCardParseResult(), ParseContext),
+                Converters = { new StrictIntConverter() }
+            };
 
             // We only support text runs for now, which can be specified as either a string or an object
             foreach (object obj in list)
@@ -39,7 +44,8 @@ namespace AdaptiveCards
                     {
                         throw new AdaptiveSerializationException($"Property 'type' must be '{AdaptiveTextRun.TypeName}'");
                     }
-                    arrayList.Add((AdaptiveInline)jobj.ToObject(typeof(AdaptiveTextRun)));
+
+                    arrayList.Add(JsonConvert.DeserializeObject<AdaptiveTextRun>(jobj.ToString(), serializerSettigns));
                 }
             }
             return arrayList;

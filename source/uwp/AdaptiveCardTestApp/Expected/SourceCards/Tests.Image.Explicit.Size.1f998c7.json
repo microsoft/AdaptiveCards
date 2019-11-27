@@ -11,7 +11,7 @@
 		},
 		{
 			"type": "Image",
-			"url": "http://adaptivecards.io/content/cats/1.png",
+			"url": "https://adaptivecards.io/content/cats/1.png",
 			"width": "50px",
 			"height": "50px"
 		},
@@ -23,7 +23,7 @@
 		},
 		{
 			"type": "Image",
-			"url": "http://adaptivecards.io/content/cats/1.png",
+			"url": "https://adaptivecards.io/content/cats/1.png",
 			"width": "25px",
 			"height": "50px"
 		},
@@ -35,7 +35,7 @@
 		},
 		{
 			"type": "Image",
-			"url": "http://adaptivecards.io/content/cats/1.png",
+			"url": "https://adaptivecards.io/content/cats/1.png",
 			"width": "80px"
 		},
 		{
@@ -46,7 +46,7 @@
 		},
 		{
 			"type": "Image",
-			"url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
+			"url": "https://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
 			"style": "person",
 			"width": "80px"
 		},
@@ -59,7 +59,7 @@
 		{
 
 			"type": "Image",
-			"url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
+			"url": "https://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
 			"style": "person",
 			"width": "40px",
 			"height": "80px"

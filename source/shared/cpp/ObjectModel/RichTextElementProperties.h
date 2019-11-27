@@ -15,7 +15,7 @@ namespace AdaptiveSharedNamespace
         RichTextElementProperties(RichTextElementProperties&&) = default;
         RichTextElementProperties& operator=(const RichTextElementProperties&) = default;
         RichTextElementProperties& operator=(RichTextElementProperties&&) = default;
-        ~RichTextElementProperties() = default;
+        virtual ~RichTextElementProperties() = default;
 
         bool GetItalic() const;
         void SetItalic(const bool value);

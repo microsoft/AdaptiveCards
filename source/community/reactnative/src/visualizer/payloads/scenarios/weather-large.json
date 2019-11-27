@@ -14,7 +14,7 @@
                     "items": [
                         {
                             "type": "Image",
-                            "url": "http://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png",
+                            "url": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png",
                             "size": "stretch",
                             "selectAction": {
                                 "type": "Action.OpenUrl",
@@ -72,7 +72,7 @@
                         {
                             "type": "Image",
                             "size": "auto",
-                            "url": "http://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png"
+                            "url": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png"
                         },
                         {
                             "type": "TextBlock",
@@ -92,7 +92,7 @@
                     "selectAction": {
                         "type": "Action.OpenUrl",
                         "title": "View Friday",
-                        "url": "http://www.microsoft.com"
+                        "url": "https://www.microsoft.com"
                     }
                 },
                 {
@@ -108,7 +108,7 @@
                         {
                             "type": "Image",
                             "size": "auto",
-                            "url": "http://messagecardplayground.azurewebsites.net/assets/Drizzle-Square.png"
+                            "url": "https://messagecardplayground.azurewebsites.net/assets/Drizzle-Square.png"
                         },
                         {
                             "type": "TextBlock",
@@ -128,7 +128,7 @@
                     "selectAction": {
                         "type": "Action.OpenUrl",
                         "title": "View Saturday",
-                        "url": "http://www.microsoft.com"
+                        "url": "https://www.microsoft.com"
                     }
                 },
                 {
@@ -144,7 +144,7 @@
                         {
                             "type": "Image",
                             "size": "auto",
-                            "url": "http://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png"
+                            "url": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png"
                         },
                         {
                             "type": "TextBlock",
@@ -164,7 +164,7 @@
                     "selectAction": {
                         "type": "Action.OpenUrl",
                         "title": "View Sunday",
-                        "url": "http://www.microsoft.com"
+                        "url": "https://www.microsoft.com"
                     }
                 },
                 {
@@ -180,7 +180,7 @@
                         {
                             "type": "Image",
                             "size": "auto",
-                            "url": "http://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png",
+                            "url": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png",
                             "selectAction": {
                                 "type": "Action.Submit",
                                 "title": "Action.Submit",
@@ -207,7 +207,7 @@
                     "selectAction": {
                         "type": "Action.OpenUrl",
                         "title": "View Monday",
-                        "url": "http://www.microsoft.com"
+                        "url": "https://www.microsoft.com"
                     }
                 }
             ]
