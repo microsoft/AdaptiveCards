@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- 
+      signType indicates which certificates are used to sign the output
+      signType = "StrongName = 72 , Authenticode = 10006 , Both = 72 & 10006"
+-->
+<SignConfigXML>
+  <!-- Release sign job -->
+  <job platform="AnyCPU" configuration="release" dest="__RELBINPATH__\..\..\..\s\signed" jobname="Adaptive Cards Xamarin.Droid" approvers="">
+    <!-- AdaptiveCards.Rendering.Xamarin.Android -->
+    <file src="__RELBINPATH__\..\..\..\s\tosign\Xamarin.Droid\AdaptiveCards.Rendering.Xamarin.Android.dll" signType="BothDual" dest="__RELBINPATH__\..\..\..\s\signed\Xamarin.Droid\AdaptiveCards.Rendering.Xamarin.Android.dll" />
+  </job>
+</SignConfigXML>

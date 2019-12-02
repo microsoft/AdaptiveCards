@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+      signType indicates which certificates are used to sign the output
+      signType = "StrongName = 72 , Authenticode = 10006 , Both = 72 & 10006"
+-->
+<SignConfigXML>
+  <!-- Release sign job -->
+  <job platform="AnyCPU" configuration="release" dest="__RELBINPATH__\..\..\..\a\signed" jobname="Adaptive Cards Xamarin.Droid Nuget" approvers="">
+    <!-- AdaptiveCards.Rendering.Xamarin.Android -->
+    <file src="__RELBINPATH__\..\..\..\a\Xamarin.Droid.*.nupkg" signType="Nuget"  />
+    <file src="__RELBINPATH__\..\..\..\a\Xamarin.Droid.*.symbols.nupkg" signType="Nuget"  />
+  </job>
+</SignConfigXML>
