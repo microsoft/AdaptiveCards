@@ -2,7 +2,7 @@ REM @echo off
 REM This script copies the dll and winmd files to have different names to be signed and copies them back
 
 REM setting platform variables
-set ACXAMARINDROID= AdaptiveCards.Rendering.Xamarin.Android
+set ACXAMARINDROID=AdaptiveCards.Rendering.Xamarin.Android
 
 REM setting path variables
 set ACROOT=source\xamarin\
