@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "ac-typed-schema": "^0.5.2",
-    "adaptivecards": "^1.3.0-alpha.2",
+    "adaptivecards": "^1.2.5",
     "adaptivecards-designer": "^0.7.1",
     "adaptivecards-visualizer": "^1.2.3",
     "change-case": "^3.0.1",
