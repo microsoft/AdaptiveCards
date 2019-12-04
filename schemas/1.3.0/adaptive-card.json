@@ -900,6 +900,7 @@
           "version": "1.2"
         },
         "id": {},
+        "label": {},
         "fallback": {},
         "height": {},
         "separator": {},
@@ -944,6 +945,7 @@
           "description": "The initial value for this field expressed in ISO-8601 format."
         },
         "id": {},
+        "label": {},
         "fallback": {},
         "height": {},
         "separator": {},
@@ -985,6 +987,7 @@
           "description": "Initial value for this field."
         },
         "id": {},
+        "label": {},
         "fallback": {},
         "height": {},
         "separator": {},
@@ -1014,21 +1017,6 @@
           "description": "If `true`, allow multiple lines of input.",
           "default": false
         },
-        "label": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/TextBlock"
-            },
-            {
-              "$ref": "#/definitions/RichTextBlock"
-            }
-          ],
-          "description": "Label for this input",
-          "version": "1.3"
-        },
         "maxLength": {
           "type": "number",
           "description": "Hint of maximum length characters to collect (may be ignored by some clients)."
@@ -1050,6 +1038,7 @@
           "description": "The initial value for this field."
         },
         "id": {},
+        "label": {},
         "fallback": {},
         "height": {},
         "separator": {},
@@ -1091,6 +1080,7 @@
           "description": "The initial value for this field expressed in ISO-8601 format."
         },
         "id": {},
+        "label": {},
         "fallback": {},
         "height": {},
         "separator": {},
@@ -1140,6 +1130,7 @@
           "version": "1.2"
         },
         "id": {},
+        "label": {},
         "fallback": {},
         "height": {},
         "separator": {},
@@ -2400,6 +2391,21 @@
         "id": {
           "type": "string",
           "description": "Unique identifier for the value. Used to identify collected input when the Submit action is performed."
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/TextBlock"
+            },
+            {
+              "$ref": "#/definitions/RichTextBlock"
+            }
+          ],
+          "description": "Label for this input",
+          "version": "1.3"
         },
         "fallback": {
           "anyOf": [

@@ -313,8 +313,9 @@ Our primary input scenario card uses placeholders to label the inputs. With eith
 Possible Options:
 1. Card author can determine if the label should be put in the placeholder text (`"useLabelAsPlaceholder": true`, `"labelPosition": "Placeholder"`)
     - What do we do if they set a non-label placeholder and set useLabelAsPlaceholder to true? (spec who wins - placeholder probably)
+	- A placeholder with formatting wouldn't make sense, so if they add formatting to their label and then position it as the placeholder that formatting will be lost.
 2. Host decides via host-config (`"labelPosition": "Placeholder"`).
-    - Same issue as above if an explicit placeholder is set by the card author. On option would be to only respect this if no inputs have placeholders (precedent from button icon placement). 
+    - Same issues as above if an explicit placeholder is set by the card author. On option for the case with both a label and a placeholder would be to only respect this if no inputs have placeholders (precedent from button icon placement). 
 3. Do nothing (in the schema)
     - Card author can set placeholder instead of label if they want a placeholder to be the label. Undercuts our ability to reason over the card (we don’t know if the placeholder text is being used as the input’s label) but I’m not sure that has any practical negative consequences:
         - Placeholder will serve as accessibility name in the absence of a label

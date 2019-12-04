@@ -8,11 +8,6 @@
 			"description": "If `true`, allow multiple lines of input.",
 			"default": false
 		},
-		"label": {
-			"type": "string|TextBlock|RichTextBlock",
-			"description": "Label for this input",
-			"version": "1.3"
-		},
 		"maxLength": {
 			"type": "number",
 			"description": "Hint of maximum length characters to collect (may be ignored by some clients)."
