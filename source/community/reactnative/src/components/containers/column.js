@@ -206,7 +206,8 @@ export class Column extends React.Component {
 		const separator = this.column.separator || false;
 		let containerViewStyle = [{
 			flexDirection: separator ?
-				Constants.FlexRow : Constants.FlexColumn
+				Constants.FlexRow : Constants.FlexColumn,
+				backgroundColor: Constants.TransparentString
 		}];
 
 		const spacingEnumValue = Utils.parseHostConfigEnum(
