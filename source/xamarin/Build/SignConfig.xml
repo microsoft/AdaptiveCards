@@ -5,8 +5,16 @@
 -->
 <SignConfigXML>
   <!-- Release sign job -->
-  <job configuration="release" dest="__RELBINPATH__\..\..\..\s\signed" jobname="Adaptive Cards Xamarin.Droid" approvers="">
+  <job platform="anycpu" configuration="release" dest="__RELBINPATH__\..\..\..\s\signed" jobname="Adaptive Cards Xamarin.Droid" approvers="">
     <!-- AdaptiveCards.Rendering.Xamarin.Android -->
-    <file src="__RELBINPATH__\..\..\..\s\tosign\Xamarin.Droid\AdaptiveCards.Rendering.Xamarin.Android.dll" signType="BothDual" dest="__RELBINPATH__\..\..\..\s\signed\Xamarin.Droid\AdaptiveCards.Rendering.Xamarin.Android.dll" />
+    <file src="__RELBINPATH__\..\..\..\s\tosign\Xamarin.Droid\AdaptiveCards.Rendering.Xamarin.Android.dll" signType="BothDual" dest="__RELBINPATH__\..\..\..\s\signed\Xamarin.Droid\AdaptiveCards.Rendering.Xamarin.Android.any.dll" />
+  </job>
+  <job platform="x86" configuration="release" dest="__RELBINPATH__\..\..\..\s\signed" jobname="Adaptive Cards Xamarin.Droid" approvers="">
+    <!-- AdaptiveCards.Rendering.Xamarin.Android -->
+    <file src="__RELBINPATH__\..\..\..\s\tosign\Xamarin.Droid\AdaptiveCards.Rendering.Xamarin.Android.dll" signType="BothDual" dest="__RELBINPATH__\..\..\..\s\signed\Xamarin.Droid\AdaptiveCards.Rendering.Xamarin.Android.x86.dll" />
+  </job>
+  <job platform="x64" configuration="release" dest="__RELBINPATH__\..\..\..\s\signed" jobname="Adaptive Cards Xamarin.Droid" approvers="">
+    <!-- AdaptiveCards.Rendering.Xamarin.Android -->
+    <file src="__RELBINPATH__\..\..\..\s\tosign\Xamarin.Droid\AdaptiveCards.Rendering.Xamarin.Android.dll" signType="BothDual" dest="__RELBINPATH__\..\..\..\s\signed\Xamarin.Droid\AdaptiveCards.Rendering.Xamarin.Android.x64.dll" />
   </job>
 </SignConfigXML>
