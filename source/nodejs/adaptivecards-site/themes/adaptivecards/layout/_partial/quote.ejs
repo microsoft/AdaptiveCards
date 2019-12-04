@@ -13,7 +13,7 @@
 				<p class="title"><%- title %></p>
 			</div>
 			<div class="w3-cell w3-left-align">
-				<img src="<%- productLogo %>"
+				<img src="<%- productLogo %>" title="<%= typeof productName !== 'undefined' ? productName : '' %>""
 					alt="Product logo" class="w3-border-left w3-padding w3-image" style="width:60px;" />
 			</div>
 

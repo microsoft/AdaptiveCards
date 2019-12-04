@@ -113,7 +113,7 @@
 			"Templating Docs",
 			"acd-icon-scopeTemplate",
 			function () {
-				appInsights.trackEvent("ViewedTemplatingDocs", { Origin: "Designer" });
+				appInsights.trackEvent({ name: "ViewedTemplatingDocs" }, { Origin: "Designer" });
 				window.open("https://docs.microsoft.com/en-us/adaptive-cards/templating/");
 			}
 		);
