@@ -17,7 +17,11 @@
 	
 	<Authors>Microsoft</Authors>
     <Summary>Adaptive Card</Summary>
-    <Description>This library implements classes for building and serializing adaptive card objects</Description>
+    <Description>This library binds the existing android rendering library</Description>
+	<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+	<PackageTags>adaptivecards;adaptive-cards</PackageTags>
+	<PackageProjectUrl>https://adaptivecards.io</PackageProjectUrl>
+    <PackageIconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>

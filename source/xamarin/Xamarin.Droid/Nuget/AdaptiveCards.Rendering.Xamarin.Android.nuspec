@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>AdaptiveCards.Rendering.Xamarin.Android</id>
+    <version>0.1.0-prerelease</version>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <projectUrl>https://adaptivecards.io/</projectUrl>
+    <iconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</iconUrl>
+    <description>This library binds the existing android rendering library</description>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <tags>adaptivecards adaptive-cards</tags>
+    <repository url="https://github.com/Microsoft/AdaptiveCards" />
+    <dependencies>
+      <group targetFramework="MonoAndroid7.1">
+        <dependency id="NuGet.Build.Tasks.Pack" version="5.2.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="Java.Interop" targetFramework="MonoAndroid7.1" />
+      <frameworkAssembly assemblyName="Mono.Android" targetFramework="MonoAndroid7.1" />
+      <frameworkAssembly assemblyName="System.Core" targetFramework="MonoAndroid7.1" />
+      <frameworkAssembly assemblyName="System" targetFramework="MonoAndroid7.1" />
+      <frameworkAssembly assemblyName="System.Xml" targetFramework="MonoAndroid7.1" />
+    </frameworkAssemblies>
+  </metadata>
+  <files>
+    <file src="..\Xamarin.Droid\bin\Release\AdaptiveCards.Rendering.Xamarin.Android.pdb" target="lib\monoandroid71\AdaptiveCards.Rendering.Xamarin.Android.pdb" />
+    <file src="..\Xamarin.Droid\bin\Release\AdaptiveCards.Rendering.Xamarin.Android.dll" target="lib\monoandroid71\AdaptiveCards.Rendering.Xamarin.Android.dll" />
+  </files>
+</package>
