@@ -453,8 +453,8 @@ $(function () {
 		copyToClipboard(content);
 	});
 
-	function launchDesigner(cardUrl, dataUrl) {
-		var designerUrl = "/designer/index.html?card=" + cardUrl;
+	function launchDesigner(designerUrl, cardUrl, dataUrl) {
+		designerUrl += "?card=" + cardUrl;
 
 		if(dataUrl) {
 			designerUrl += "&data=" + dataUrl
@@ -466,14 +466,15 @@ $(function () {
 	$("button.try-adaptivecard").click(function (e) {
 		var enableTemplating = localStorage.getItem("enable-templating") === "true";
 		var cardEl = $(this).parent().siblings("div.adaptivecard");
+		var designerUrl = cardEl.attr("data-designer-url");
 		var cardUrl = cardEl.attr("data-card-url");
 		var dataUrl = cardEl.attr("data-data-url");
 		var templateUrl = cardEl.attr("data-template-url");
 
 		if (enableTemplating && dataUrl && templateUrl) { 
-			launchDesigner(templateUrl, dataUrl);			
+			launchDesigner(designerUrl, templateUrl, dataUrl);			
 		} else {
-			launchDesigner(cardUrl);
+			launchDesigner(designerUrl, cardUrl);
 		}
 	});
 

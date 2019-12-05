@@ -9,6 +9,7 @@ hexo.extend.helper.register('code_and_card', function (jsonPath, templatePath = 
 	const url_for = hexo.extend.helper.get('url_for').bind(hexo);
 
 	const payloadUrl = url_for(`/payloads/${path.basename(jsonPath)}`);
+	let designerUrl = url_for(`/designer/index.html`);
 	let templateAttribute = null;
 	let dataAttribute = null;
 
@@ -58,7 +59,7 @@ hexo.extend.helper.register('code_and_card', function (jsonPath, templatePath = 
 					<span>Try it Yourself <i class="fas fa-chevron-right"></i></span>
 				</button>
 			</div>
-			<div class="adaptivecard" data-card-url="${payloadUrl}" ${templateAttribute} ${dataAttribute}></div>
+			<div class="adaptivecard" data-designer-url="${designerUrl}" data-card-url="${payloadUrl}" ${templateAttribute} ${dataAttribute}></div>
 		</div>
 	</div>`;
 
