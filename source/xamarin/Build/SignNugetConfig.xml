@@ -7,7 +7,7 @@
   <!-- Release sign job -->
   <job platform="AnyCPU" configuration="release" dest="__RELBINPATH__\..\..\..\a\signed" jobname="Adaptive Cards Xamarin.Droid Nuget" approvers="">
     <!-- AdaptiveCards.Rendering.Xamarin.Android -->
-    <file src="__RELBINPATH__\..\..\..\a\nuget\Xamarin.Droid.*.nupkg" signType="Nuget"  />
-    <file src="__RELBINPATH__\..\..\..\a\nuget\Xamarin.Droid.*.symbols.nupkg" signType="Nuget"  />
+    <file src="__RELBINPATH__\..\..\..\a\nuget\AdaptiveCards.Rendering.Xamarin.Android.*.nupkg" signType="Nuget"  />
+    <file src="__RELBINPATH__\..\..\..\a\nuget\AdaptiveCards.Rendering.Xamarin.Android.*.symbols.nupkg" signType="Nuget"  />
   </job>
 </SignConfigXML>
