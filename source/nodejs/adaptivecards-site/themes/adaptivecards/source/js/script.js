@@ -503,8 +503,7 @@ $(function () {
 
 	// Resize youtube videos
 	// https://css-tricks.com/NetMag/FluidWidthVideo/Article-FluidWidthVideo.php
-	var $allVideos = $("iframe"),
-		$fluidEl = $(".blog");
+	var $allVideos = $("iframe");
 
 	// Figure out and save aspect ratio for each video
 	$allVideos.each(function () {
@@ -516,12 +515,11 @@ $(function () {
 
 	// When the window is resized
 	$(window).resize(function () {
-		//debugger;
 
-		var newWidth = $fluidEl.width() - 32;
 		// Resize all videos according to their own aspect ratio
 		$allVideos.each(function () {
 			var $el = $(this);
+			var newWidth = $el.parent().innerWidth();
 			$el.width(newWidth).height(newWidth * $el.data('aspectRatio'));
 		});
 
