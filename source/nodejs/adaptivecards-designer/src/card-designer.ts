@@ -451,6 +451,10 @@ export class CardDesigner extends Designer.DesignContext {
             this.beginCardEditorUpdate();
 
             try {
+                if (payload.hasOwnProperty("version")) {
+                    payload["version"] = this.targetVersion.toString();
+                }
+
                 this._cardEditor.setValue(JSON.stringify(payload, null, 4));
                 this.updateCardFromJson(addToUndoStack);
             }
@@ -576,24 +580,10 @@ export class CardDesigner extends Designer.DesignContext {
             this.toolbar.addElement(this._versionChoicePicker);
         }
 
-        this._fullScreenButton = new ToolbarButton(
-            CardDesigner.ToolbarCommands.FullScreen,
-            "Enter Full Screen",
-            "acd-icon-fullScreen",
-            (sender) => { this._fullScreenHandler.toggleFullScreen(); });
-        this._fullScreenButton.displayCaption = false;
-        this._fullScreenButton.toolTip = "Enter full screen";
-        this._fullScreenButton.alignment = ToolbarElementAlignment.Right;
-        // Hide full screen button by default. This button is useless
-        // and should really be plain and simple removed in a future version
-        this._fullScreenButton.isVisible = false;
-
-        this.toolbar.addElement(this._fullScreenButton);
-
-        let openSampleButton = new ToolbarButton(
-            CardDesigner.ToolbarCommands.OpenPayload,
-            "Open Sample",
-            "acd-icon-open",
+        this._newCardButton = new ToolbarButton(
+            CardDesigner.ToolbarCommands.NewCard,
+            "New card",
+            "acd-icon-newCard",
             (sender: ToolbarButton) => {
                 let dialog = new OpenSampleDialog(this._sampleCatalogue);
                 dialog.title = "Pick a sample";
@@ -627,10 +617,10 @@ export class CardDesigner extends Designer.DesignContext {
                     }
                 };
                 dialog.open();
-            }
-        )
+            });
+        this._newCardButton.separator = true;
 
-        this.toolbar.addElement(openSampleButton);
+        this.toolbar.addElement(this._newCardButton);
 
         if (this._hostContainers && this._hostContainers.length > 0) {
             this._hostContainerChoicePicker = new ToolbarChoicePicker(CardDesigner.ToolbarCommands.HostAppPicker);
@@ -678,15 +668,6 @@ export class CardDesigner extends Designer.DesignContext {
         this._redoButton.displayCaption = false;
 
         this.toolbar.addElement(this._redoButton);
-
-        this._newCardButton = new ToolbarButton(
-            CardDesigner.ToolbarCommands.NewCard,
-            "New card",
-            "acd-icon-newCard",
-            (sender: ToolbarButton) => { this.newCard(); });
-        this._newCardButton.separator = true;
-
-        this.toolbar.addElement(this._newCardButton);
 
         this._copyJSONButton = new ToolbarButton(
             CardDesigner.ToolbarCommands.CopyJSON,
@@ -1218,8 +1199,6 @@ export class CardDesigner extends Designer.DesignContext {
 
 export module CardDesigner {
     export class ToolbarCommands {
-        static readonly FullScreen = "__fullScreenButton";
-        static readonly OpenPayload = "__openPayload";
         static readonly HostAppPicker = "__hostAppPicker";
         static readonly VersionPicker = "__versionPicker";
         static readonly Undo = "__undoButton";
