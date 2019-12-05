@@ -453,19 +453,31 @@ $(function () {
 		copyToClipboard(content);
 	});
 
+	function launchDesigner(cardUrl, dataUrl) {
+		var designerUrl = "/designer/index.html?card=" + cardUrl;
+
+		if(dataUrl) {
+			designerUrl += "&data=" + dataUrl
+		}
+
+		window.open(designerUrl);
+	}
+
 	$("button.try-adaptivecard").click(function (e) {
-		var $button = $(this);
-		if ($button.attr("data-designer-url")) {
-			window.open($button.attr("data-designer-url"));
+		var enableTemplating = localStorage.getItem("enable-templating") === "true";
+		var cardEl = $(this).parent().siblings("div.adaptivecard");
+		var cardUrl = cardEl.attr("data-card-url");
+		var dataUrl = cardEl.attr("data-data-url");
+		var templateUrl = cardEl.attr("data-template-url");
+
+		if (enableTemplating && dataUrl && templateUrl) { 
+			launchDesigner(templateUrl, dataUrl);			
 		} else {
-			var cardUrl = $(this).parent().siblings("div.adaptivecard").attr("data-card-url");
-			var isAbsolutelUri = new RegExp('^(?:[a-z]+:)?//', 'i');
-			if (isAbsolutelUri.test(cardUrl) === false) {
-				cardUrl = window.location.href + cardUrl;
-			}
-			window.open("/designer/index.html?card=" + encodeURIComponent(cardUrl));
+			launchDesigner(cardUrl);
 		}
 	});
+
+	
 
 	$("#feedback-button").click(function (e) {
 		e.preventDefault();

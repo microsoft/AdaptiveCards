@@ -11,7 +11,6 @@ hexo.extend.helper.register('code_and_card', function (jsonPath, templatePath = 
 	const payloadUrl = url_for(`/payloads/${path.basename(jsonPath)}`);
 	let templateAttribute = null;
 	let dataAttribute = null;
-	let designerUrl = url_for(`/designer/index.html?card=${encodeURIComponent(payloadUrl)}`);
 
 	const templating = dataPath && fs.existsSync(dataPath);
 	
@@ -30,9 +29,8 @@ hexo.extend.helper.register('code_and_card', function (jsonPath, templatePath = 
 	if (templating) {
 		let dataUrl = url_for(`/payloads/${path.basename(dataPath)}`);
 		let templateUrl = url_for(`/payloads/${path.basename(templatePath)}`);
-		templateAttribute = `data-template-url=${templateUrl}`;
+		templateAttribute = `data-template-url="${templateUrl}"`;
 		dataAttribute = `data-data-url="${dataUrl}"`;
-		designerUrl =  url_for(`/designer/index.html?card=${encodeURIComponent(templateUrl)}&data=${encodeURIComponent(dataUrl)}`);
 		div += `
 		<div class="w3-container w3-cell w3-mobile w3-rest code-snippet show-with-templating">
 			<div class="codeHeader">
@@ -56,7 +54,7 @@ hexo.extend.helper.register('code_and_card', function (jsonPath, templatePath = 
 		<div class="w3-container w3-cell w3-mobile card" >
 			<div class="codeHeader">
 				<span class="language">Adaptive Card</span>
-				<button data-designer-url="${designerUrl}" aria-label="Try it yourself" class="w3-button ac-blue action try-adaptivecard">
+				<button aria-label="Try it yourself" class="w3-button ac-blue action try-adaptivecard">
 					<span>Try it Yourself <i class="fas fa-chevron-right"></i></span>
 				</button>
 			</div>
