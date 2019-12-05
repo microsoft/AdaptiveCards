@@ -5,6 +5,6 @@ using System.Runtime.CompilerServices;
 using Android.App;
 
 #if DELAY_SIGN
-[assembly: AssemblyKeyFileAttribute(@"..\..\Build\35MSSharedLib1024.snk")]
+[assembly: AssemblyKeyFileAttribute(@"..\Build\35MSSharedLib1024.snk")]
 [assembly: AssemblyDelaySignAttribute(true)]
 #endif
