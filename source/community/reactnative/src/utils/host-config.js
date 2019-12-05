@@ -34,7 +34,7 @@ export class TextColorDefinition {
 	toJSON() {
 		return {
 			default: this._default,
-			subtle:this._subtle
+			subtle: this._subtle
 		}
 	}
 }
@@ -287,7 +287,9 @@ export class ContainerStyleDefinition {
 		accent: new TextColorDefinition(),
 		good: new TextColorDefinition(),
 		warning: new TextColorDefinition(),
-		attention: new TextColorDefinition()
+		attention: new TextColorDefinition(),
+		dark: new TextColorDefinition(),
+		light: new TextColorDefinition()
 	};
 
 	parse(obj, type) {
@@ -299,17 +301,21 @@ export class ContainerStyleDefinition {
 		this.foregroundColors.good = this.getTextColorDefinition(defaultHostConfig["containerStyles"][type].foregroundColors["good"]);
 		this.foregroundColors.warning = this.getTextColorDefinition(defaultHostConfig["containerStyles"][type].foregroundColors["warning"]);
 		this.foregroundColors.attention = this.getTextColorDefinition(defaultHostConfig["containerStyles"][type].foregroundColors["attention"]);
-		
+		this.foregroundColors.dark = this.getTextColorDefinition(defaultHostConfig["containerStyles"][type].foregroundColors["dark"]);
+		this.foregroundColors.light = this.getTextColorDefinition(defaultHostConfig["containerStyles"][type].foregroundColors["light"]);
+
 		if (obj && obj[type]) {
-			this.backgroundColor = obj[type]["backgroundColor"]  ? obj[type]["backgroundColor"] : this.backgroundColor;
+			this.backgroundColor = obj[type]["backgroundColor"] ? obj[type]["backgroundColor"] : this.backgroundColor;
 			this.borderColor = obj[type]["borderColor"] ? obj[type]["borderColor"] : this.borderColor;
 			this.borderThickness = obj[type]["borderThickness"] ? obj[type]["borderThickness"] : this.borderThickness;
-			if(obj[type]["foregroundColors"]) {
-				this.foregroundColors.default = this.getTextColorDefinition(obj[type].foregroundColors["default"],this.foregroundColors.default.toJSON);
-				this.foregroundColors.accent = this.getTextColorDefinition(obj[type].foregroundColors["accent"],this.foregroundColors.accent.toJSON);
-				this.foregroundColors.good = this.getTextColorDefinition(obj[type].foregroundColors["good"],this.foregroundColors.good.toJSON);
-				this.foregroundColors.warning = this.getTextColorDefinition(obj[type].foregroundColors["warning"],this.foregroundColors.warning.toJSON);
-				this.foregroundColors.attention = this.getTextColorDefinition(obj[type].foregroundColors["attention"],this.foregroundColors.attention.toJSON);
+			if (obj[type]["foregroundColors"]) {
+				this.foregroundColors.default = this.getTextColorDefinition(obj[type].foregroundColors["default"], this.foregroundColors.default.toJSON);
+				this.foregroundColors.accent = this.getTextColorDefinition(obj[type].foregroundColors["accent"], this.foregroundColors.accent.toJSON);
+				this.foregroundColors.good = this.getTextColorDefinition(obj[type].foregroundColors["good"], this.foregroundColors.good.toJSON);
+				this.foregroundColors.warning = this.getTextColorDefinition(obj[type].foregroundColors["warning"], this.foregroundColors.warning.toJSON);
+				this.foregroundColors.attention = this.getTextColorDefinition(obj[type].foregroundColors["attention"], this.foregroundColors.attention.toJSON);
+				this.foregroundColors.dark = this.getTextColorDefinition(obj[type].foregroundColors["dark"], this.foregroundColors.dark.toJSON);
+				this.foregroundColors.light = this.getTextColorDefinition(obj[type].foregroundColors["light"], this.foregroundColors.light.toJSON);
 			}
 		}
 	}
@@ -807,13 +813,21 @@ export const defaultHostConfig = {
 				"attention": {
 					"default": "#FF0000",
 					"subtle": "#DDFF0000"
+				},
+				"dark": {
+					"default": "#000000",
+					"subtle": "#EE333333"
+				},
+				"light": {
+					"default": "#FFFFFF",
+					"subtle": "#DDFFFFFF"
 				}
 			}
 		},
 		emphasis: {
 			"backgroundColor": "#08000000",
 			"borderColor": "#FF000000",
-			"borderThickness": 1,
+			"borderThickness": 2,
 			"foregroundColors": {
 				"default": {
 					"default": "#333333",
@@ -834,6 +848,14 @@ export const defaultHostConfig = {
 				"attention": {
 					"default": "#FF0000",
 					"subtle": "#DDFF0000"
+				},
+				"dark": {
+					"default": "#000000",
+					"subtle": "#EE333333"
+				},
+				"light": {
+					"default": "#FFFFFF",
+					"subtle": "#DDFFFFFF"
 				}
 			}
 		},
@@ -857,13 +879,23 @@ export const defaultHostConfig = {
 					"subtle": "#DDC3AB23"
 				},
 				"attention": {
-					"default": "#FFFFFF",
+					"default": "#FF0000",
 					"subtle": "#DDFF0000"
+				},
+				"dark": {
+					"default": "#000000",
+					"subtle": "#EE333333"
+				},
+				"light": {
+					"default": "#FFFFFF",
+					"subtle": "#DDFFFFFF"
 				}
 			},
 		},
 		warning: {
-			"backgroundColor": "#DDC3AB23",
+			"backgroundColor": "#DDFF0000",
+			"borderColor": "#FF000000",
+			"borderThickness": 2,
 			"foregroundColors": {
 				"default": {
 					"default": "#FFFFFF",
@@ -884,12 +916,19 @@ export const defaultHostConfig = {
 				"attention": {
 					"default": "#FFFFFF",
 					"subtle": "#DDFF0000"
+				},
+				"dark": {
+					"default": "#000000",
+					"subtle": "#EE333333"
+				},
+				"light": {
+					"default": "#FFFFFF",
+					"subtle": "#DDFFFFFF"
 				}
 			},
-
 		},
 		attention: {
-			"backgroundColor": "#DDFF0000",
+			"backgroundColor": "#DDC3AB23",
 			"foregroundColors": {
 				"default": {
 					"default": "#333333",
@@ -910,6 +949,14 @@ export const defaultHostConfig = {
 				"attention": {
 					"default": "#FF0000",
 					"subtle": "#DDFF0000"
+				},
+				"dark": {
+					"default": "#000000",
+					"subtle": "#EE333333"
+				},
+				"light": {
+					"default": "#FFFFFF",
+					"subtle": "#DDFFFFFF"
 				}
 			}
 		},
@@ -933,8 +980,82 @@ export const defaultHostConfig = {
 					"subtle": "#DDC3AB23"
 				},
 				"attention": {
-					"default": "#FFFFFF",
+					"default": "#FF0000",
 					"subtle": "#DDFF0000"
+				},
+				"dark": {
+					"default": "#000000",
+					"subtle": "#EE333333"
+				},
+				"light": {
+					"default": "#FFFFFF",
+					"subtle": "#DDFFFFFF"
+				}
+			}
+		},
+		dark: {
+			"backgroundColor": "#EAEAEA",
+			"foregroundColors": {
+				"default": {
+					"default": "#333333",
+					"subtle": "#EE333333"
+				},
+				"accent": {
+					"default": "#2E89FC",
+					"subtle": "#882E89FC"
+				},
+				"good": {
+					"default": "#54A254",
+					"subtle": "#DD54A254"
+				},
+				"warning": {
+					"default": "#C3AB23",
+					"subtle": "#DDC3AB23"
+				},
+				"attention": {
+					"default": "#FF0000",
+					"subtle": "#DDFF0000"
+				},
+				"dark": {
+					"default": "#000000",
+					"subtle": "#EE333333"
+				},
+				"light": {
+					"default": "#FFFFFF",
+					"subtle": "#DDFFFFFF"
+				}
+			}
+		},
+		light: {
+			"backgroundColor": "#EAEAEA",
+			"foregroundColors": {
+				"default": {
+					"default": "#FFFFFF",
+					"subtle": "#EE333333"
+				},
+				"accent": {
+					"default": "#2E89FC",
+					"subtle": "#882E89FC"
+				},
+				"good": {
+					"default": "#54A254",
+					"subtle": "#DD54A254"
+				},
+				"warning": {
+					"default": "#C3AB23",
+					"subtle": "#DDC3AB23"
+				},
+				"attention": {
+					"default": "#FF0000",
+					"subtle": "#DDFF0000"
+				},
+				"dark": {
+					"default": "#000000",
+					"subtle": "#EE333333"
+				},
+				"light": {
+					"default": "#FFFFFF",
+					"subtle": "#DDFFFFFF"
 				}
 			}
 		}
