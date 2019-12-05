@@ -25,6 +25,7 @@
     <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+	<DefineConstants>$(DefineConstants);$(AdditionalConstants)</DefineConstants>
 	
 	
     <NuGetPackageImportStamp>
