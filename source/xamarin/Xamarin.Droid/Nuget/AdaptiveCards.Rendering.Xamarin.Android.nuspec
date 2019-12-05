@@ -2,18 +2,16 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>AdaptiveCards.Rendering.Xamarin.Android</id>
-    <version>0.1.0-prerelease</version>
+    <version>0.1.0-alpha</version>
     <authors>Microsoft</authors>
-    <owners>Microsoft</owners>
+	<summary>Adaptive Cards library for Xamarin.Android</summary>
+	<description>This library binds the existing android rendering library for xamarin android developers</description>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <license type="expression">MIT</license>
-    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
-    <projectUrl>https://adaptivecards.io/</projectUrl>
-    <iconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</iconUrl>
-    <description>This library binds the existing android rendering library</description>
+	<tags>adaptivecards;adaptive-cards</tags>
+	<projectUrl>https://adaptivecards.io/</projectUrl>
+	<iconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</iconUrl>
+    <licenseUrl>https://raw.githubusercontent.com/Microsoft/AdaptiveCards/master/LICENSE</licenseUrl>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
-    <tags>adaptivecards adaptive-cards</tags>
-    <repository url="https://github.com/Microsoft/AdaptiveCards" />
     <dependencies>
       <group targetFramework="MonoAndroid7.1">
         <dependency id="NuGet.Build.Tasks.Pack" version="5.2.0" exclude="Build,Analyzers" />
