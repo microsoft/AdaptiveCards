@@ -248,5 +248,12 @@ For advanced configuration of the designer use the following APIs.
 	/* Modify the Actions flyout (AFTER designer attached) */
 	Adaptive.AdaptiveCard.actionTypeRegistry.unregisterType("Action.ToggleVisibility");
 	ACDesigner.CardDesignerSurface.actionPeerRegistry.unregisterPeer(Adaptive.ToggleVisibilityAction);	
+
+
+	/* Try experimental preview features that are in progress */
+	ACDesigner.GlobalSettings.enableDataBindingSupport = true;
+	ACDesigner.GlobalSettings.showDataStructureTooklbox = true;
+	ACDesigner.GlobalSettings.showSampleDataEditorToolbox = true;
+	ACDesigner.GlobalSettings.showVersionPicker = true;
 };
 ```
