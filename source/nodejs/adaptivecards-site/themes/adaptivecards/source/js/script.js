@@ -454,6 +454,11 @@ $(function () {
 	});
 
 	function launchDesigner(designerUrl, cardUrl, dataUrl) {
+		if(!designerUrl || !cardUrl) {
+			alert("Whoops, something went wrong. Please click the Feedback button in the top right and let us know what happened.");
+			return;
+		}
+
 		designerUrl += "?card=" + cardUrl;
 
 		if(dataUrl) {
