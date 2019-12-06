@@ -9,7 +9,8 @@ using namespace AdaptiveSharedNamespace;
 
 constexpr const char* const BaseActionElement::defaultStyle;
 
-BaseActionElement::BaseActionElement(ActionType type) : m_style(BaseActionElement::defaultStyle), m_type(type)
+BaseActionElement::BaseActionElement(ActionType type) :
+    m_style(BaseActionElement::defaultStyle), m_type(type)
 {
     SetTypeString(ActionTypeToString(type));
     PopulateKnownPropertiesSet();
@@ -45,7 +46,7 @@ void BaseActionElement::SetStyle(const std::string& value)
     m_style = value;
 }
 
-const ActionType BaseActionElement::GetElementType() const
+ActionType BaseActionElement::GetElementType() const
 {
     return m_type;
 }
@@ -90,7 +91,9 @@ void BaseActionElement::GetResourceInformation(std::vector<RemoteResourceInforma
     }
 }
 
-void BaseActionElement::ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context, const Json::Value& json, std::shared_ptr<BaseElement>& baseElement)
+void BaseActionElement::ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context,
+                                        const Json::Value& json,
+                                        std::shared_ptr<BaseElement>& baseElement)
 {
     baseElement = ParseUtil::GetActionFromJsonValue(context, json);
 }

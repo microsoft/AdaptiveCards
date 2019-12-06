@@ -1,1 +1,159 @@
+<div class="footer-holder w3-row-padding w3-border-top w3-padding-32">
 
+	<div class="w3-cell-row ac-footer" style="margin: 0 auto; max-width: 920px">
+
+		<div class="w3-cell w3-container w3-margin-top w3-mobile" style="width: 300px">
+
+
+			<img src="<%- url_for('content/adaptive-cards-100.png') %>" alt="Adaptive Cards logo"
+				class="w3-image" style="width: 75px; margin-right: 6px" /> 
+			<span class="w3-large brand">Adaptive Cards</span>
+			<p>Homepage design inspired by <a href="https://storybook.js.org">Storybook.js</a>.
+				Site powered by <a href="https://hexo.io">Hexo</a>.</p>
+			<p class="w3-small build-date">Build date: <%= new Date().toLocaleDateString() %></p>
+		</div>
+
+		<div class="w3-cell w3-container w3-margin-top w3-mobile" style="width: 300px">
+			<h6>Learn</h6>
+			<% for (var link of config.footer.learn_links) { %>
+				<p><a href="<%- url_for(link.href) %>"><%- link.title %> <i class="fas fa-chevron-right"></i></a></p>
+			<% } %>
+		</div>
+ 
+		<div class="w3-cell w3-container w3-margin-top w3-mobile" style="width: 300px">
+			<div class="w3-cell-row" style="margin-top: 6px;">
+				<h6 class="w3-cell w3-cell-middle">Blog</h6>
+				<a class="w3-cell w3-cell-middle w3-small" style="padding-left: 20px;"
+					href="<%- url_for('blog') %>">Read more <i class="fa fa-chevron-right"></i></a>
+			</div>
+
+			<% site.posts.sort("-date").slice(0, 4).each(function(post) { %>
+			<div class="w3-margin-top">
+				<a href="<%- config.root %><%- post.path %>"><%- post.title %> <i class="fas fa-chevron-right"></i></a>
+				<p class="post-subtitle"><%- post.subtitle %></p>
+			</div>
+			<% }); %>
+		</div>
+
+	
+		<div style="clear:both">&nbsp;</div>
+
+	</div>
+
+	<div class="ac-ufh-footer">
+		<div id="footerArea" class="uhf"
+			data-m="{&quot;cN&quot;:&quot;footerArea&quot;,&quot;cT&quot;:&quot;Area_coreuiArea&quot;,&quot;id&quot;:&quot;a2Body&quot;,&quot;sN&quot;:2,&quot;aN&quot;:&quot;Body&quot;}">
+			<div id="footerRegion" data-region-key="footerregion"
+				data-m="{&quot;cN&quot;:&quot;footerRegion&quot;,&quot;cT&quot;:&quot;Region_coreui-region&quot;,&quot;id&quot;:&quot;r1a2&quot;,&quot;sN&quot;:1,&quot;aN&quot;:&quot;a2&quot;}">
+
+				<div id="footerUniversalFooter"
+					data-m="{&quot;cN&quot;:&quot;footerUniversalFooter&quot;,&quot;cT&quot;:&quot;Module_coreui-universalfooter&quot;,&quot;id&quot;:&quot;m1r1a2&quot;,&quot;sN&quot;:1,&quot;aN&quot;:&quot;r1a2&quot;}"
+					data-module-id="Category|footerRegion|coreui-region|footerUniversalFooter|coreui-universalfooter">
+
+
+
+
+					<footer id="uhf-footer" class="c-uhff context-uhf" data-uhf-mscc-rq="false"
+						data-footer-footprint="/MSDocsAdaptivecards/MSDocsAdaptivecardsFooter, fromService: True"
+						data-m="{&quot;cN&quot;:&quot;Uhf footer_cont&quot;,&quot;cT&quot;:&quot;Container&quot;,&quot;id&quot;:&quot;c1m1r1a2&quot;,&quot;sN&quot;:1,&quot;aN&quot;:&quot;m1r1a2&quot;}">
+
+						<div class="c-uhff-base">
+							<a id="locale-picker-link"
+								aria-label="Content Language Selector. Currently set to English (United States)"
+								class="c-uhff-link c-uhff-lang-selector c-glyph glyph-world"
+								href="https://www.microsoft.com/en-us/locale.aspx"
+								data-m="{&quot;cN&quot;:&quot;locale_picker(US)_nav&quot;,&quot;id&quot;:&quot;n7c1c1m1r1a2&quot;,&quot;sN&quot;:7,&quot;aN&quot;:&quot;c1c1m1r1a2&quot;}">English
+								(United States)</a>
+
+							<nav aria-label="Microsoft corporate links">
+								<ul class="c-list f-bare"
+									data-m="{&quot;cN&quot;:&quot;Corp links_cont&quot;,&quot;cT&quot;:&quot;Container&quot;,&quot;id&quot;:&quot;c8c1c1m1r1a2&quot;,&quot;sN&quot;:8,&quot;aN&quot;:&quot;c1c1m1r1a2&quot;}">
+									<li>
+										<a class="c-uhff-link" href="https://www.microsoft.com/en-us/sitemap1.aspx"
+											data-mscc-ic="false"
+											data-m="{&quot;cN&quot;:&quot;Footer_Sitemap_nav&quot;,&quot;id&quot;:&quot;n1c8c1c1m1r1a2&quot;,&quot;sN&quot;:1,&quot;aN&quot;:&quot;c8c1c1m1r1a2&quot;}">Sitemap</a>
+									</li>
+									<li>
+										<a class="c-uhff-link" href="https://support.microsoft.com/en-us/contactus"
+											data-mscc-ic="false"
+											data-m="{&quot;cN&quot;:&quot;Footer_ContactUs_nav&quot;,&quot;id&quot;:&quot;n2c8c1c1m1r1a2&quot;,&quot;sN&quot;:2,&quot;aN&quot;:&quot;c8c1c1m1r1a2&quot;}">Contact
+											Microsoft</a>
+									</li>
+									<li>
+										<a class="c-uhff-link" href="https://go.microsoft.com/fwlink/?LinkId=521839"
+											data-mscc-ic="false"
+											data-m="{&quot;cN&quot;:&quot;Footer_PrivacyandCookies_nav&quot;,&quot;id&quot;:&quot;n3c8c1c1m1r1a2&quot;,&quot;sN&quot;:3,&quot;aN&quot;:&quot;c8c1c1m1r1a2&quot;}">Privacy
+											&amp; cookies </a>
+									</li>
+									<li>
+										<a class="c-uhff-link" href="https://go.microsoft.com/fwlink/?LinkID=206977"
+											data-mscc-ic="false"
+											data-m="{&quot;cN&quot;:&quot;Footer_TermsOfUse_nav&quot;,&quot;id&quot;:&quot;n4c8c1c1m1r1a2&quot;,&quot;sN&quot;:4,&quot;aN&quot;:&quot;c8c1c1m1r1a2&quot;}">Terms
+											of use</a>
+									</li>
+									<li>
+										<a class="c-uhff-link" href="https://www.microsoft.com/trademarks"
+											data-mscc-ic="false"
+											data-m="{&quot;cN&quot;:&quot;Footer_Trademarks_nav&quot;,&quot;id&quot;:&quot;n5c8c1c1m1r1a2&quot;,&quot;sN&quot;:5,&quot;aN&quot;:&quot;c8c1c1m1r1a2&quot;}">Trademarks</a>
+									</li>
+									<li>
+										<a class="c-uhff-link"
+											href="https://www.microsoft.com/en-us/devices/safety-and-eco "
+											data-mscc-ic="false"
+											data-m="{&quot;cN&quot;:&quot;Footer_SafetyAndEco_nav&quot;,&quot;id&quot;:&quot;n6c8c1c1m1r1a2&quot;,&quot;sN&quot;:6,&quot;aN&quot;:&quot;c8c1c1m1r1a2&quot;}">Safety
+											&amp; eco</a>
+									</li>
+									<li>
+										<a class="c-uhff-link" href="https://choice.microsoft.com" data-mscc-ic="false"
+											data-m="{&quot;cN&quot;:&quot;Footer_AboutourAds_nav&quot;,&quot;id&quot;:&quot;n7c8c1c1m1r1a2&quot;,&quot;sN&quot;:7,&quot;aN&quot;:&quot;c8c1c1m1r1a2&quot;}">About
+											our ads</a>
+									</li>
+
+									<li>© Microsoft 2019</li>
+
+								</ul>
+							</nav>
+						</div>
+
+					</footer>
+
+
+
+
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+</div>
+
+
+
+<% /* Load scripts based on the URL */ %>
+
+<% if(is_current("visualizer")) { %>
+
+	<%- hashed_asset('node_modules/adaptivecards/dist/adaptivecards.min.js') %>  
+	<%- hashed_asset('node_modules/monaco-editor/min/vs/loader.js') %>  
+	<%- hashed_asset("visualizer/monaco-loader.js") %>
+	<%- hashed_asset("visualizer/adaptivecards-visualizer.min.js") %>
+
+<% } else if(is_current("designer")) { %>
+
+	<% /* Designer scripts are loaded from the designer.ejs template */ %>
+
+<% } else if(is_current("/")) { %>
+
+	<%- hashed_asset('js/script.js') %>
+	<%- hashed_asset("js/github-buttons.js") %>
+
+<% } else { %>
+
+	<%- hashed_asset("node_modules/markdown-it/dist/markdown-it.min.js") %>
+	<%- hashed_asset("node_modules/highlightjs/highlight.pack.min.js") %>
+	<%- hashed_asset('node_modules/adaptivecards-templating/dist/adaptivecards-templating.min.js') %>	
+	<%- hashed_asset('node_modules/adaptivecards/dist/adaptivecards.min.js') %>	
+	<%- hashed_asset('js/script.js') %>
+
+<% } %> 

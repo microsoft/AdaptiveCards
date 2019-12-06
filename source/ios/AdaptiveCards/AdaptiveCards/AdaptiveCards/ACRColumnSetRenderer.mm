@@ -6,19 +6,19 @@
 //
 
 #import "ACRColumnSetRenderer.h"
-#import "ACRColumnSetView.h"
-#import "ACRRegistration.h"
-#import "ColumnSet.h"
-#import "ACRLongPressGestureRecognizerFactory.h"
-#import "SharedAdaptiveCard.h"
-#import "ACRSeparator.h"
-#import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACRColumnRenderer.h"
+#import "ACRColumnSetView.h"
+#import "ACRLongPressGestureRecognizerFactory.h"
+#import "ACRRegistration.h"
+#import "ACRSeparator.h"
 #import "ACRView.h"
 #import "Column.h"
-#import "ACRColumnRenderer.h"
+#import "ColumnSet.h"
 #import "Enums.h"
-#import "Util.h"
+#import "SharedAdaptiveCard.h"
+#import "UtiliOS.h"
 
 @implementation ACRColumnSetRenderer
 
@@ -33,11 +33,11 @@
     return ACRColumnSet;
 }
 
-- (UIView* )render:(UIView<ACRIContentHoldingView> *)viewGroup
-          rootView:(ACRView *)rootView
-            inputs:(NSMutableArray *)inputs
-   baseCardElement:(ACOBaseCardElement *)acoElem
-        hostConfig:(ACOHostConfig *)acoConfig;
+- (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
+           rootView:(ACRView *)rootView
+             inputs:(NSMutableArray *)inputs
+    baseCardElement:(ACOBaseCardElement *)acoElem
+         hostConfig:(ACOHostConfig *)acoConfig;
 {
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
@@ -54,29 +54,28 @@
     [columnSetView setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
 
     ACRBaseCardElementRenderer *columnRenderer =
-        [[ACRRegistration getInstance] getRenderer:[NSNumber numberWithInt:(int)CardElementType::Column]] ;
+        [[ACRRegistration getInstance] getRenderer:[NSNumber numberWithInt:(int)CardElementType::Column]];
     std::vector<std::shared_ptr<Column>> columns = columnSetElem->GetColumns();
 
     ACRColumnView *prevView = nil, *curView = nil, *stretchView = nil;
     float relativeColumnWidth = 0, prevRelColumnWidth = 0;
     float multiplier = 1.0;
     NSMutableArray *constraints = [[NSMutableArray alloc] init];
-    
+
     if (columnSetElem->GetMinHeight() > 0) {
         [constraints addObject:
-         [NSLayoutConstraint constraintWithItem:columnSetView
-                                      attribute:NSLayoutAttributeHeight
-                                      relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                         toItem:nil
-                                      attribute:NSLayoutAttributeNotAnAttribute
-                                     multiplier:1
-                                       constant:columnSetElem->GetMinHeight()]];
+                         [NSLayoutConstraint constraintWithItem:columnSetView
+                                                      attribute:NSLayoutAttributeHeight
+                                                      relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                         toItem:nil
+                                                      attribute:NSLayoutAttributeNotAnAttribute
+                                                     multiplier:1
+                                                       constant:columnSetElem->GetMinHeight()]];
     }
 
     ACRColumnRenderer *castedRenderer = (ACRColumnRenderer *)columnRenderer;
-    for(std::shared_ptr<Column> column:columns)
-    {
-        if(column->GetVerticalContentAlignment() != VerticalContentAlignment::Top) {
+    for (std::shared_ptr<Column> column : columns) {
+        if (column->GetVerticalContentAlignment() != VerticalContentAlignment::Top) {
             castedRenderer.fillAlignment = YES;
         }
     }
@@ -84,12 +83,13 @@
     ACOBaseCardElement *acoColumn = [[ACOBaseCardElement alloc] init];
     auto firstColumn = columns.begin();
     auto prevColumn = columns.empty() ? nullptr : *firstColumn;
+    auto lastColumn = columns.empty() ? nullptr : columns.back();
     ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
     ACRSeparator *separator = nil;
 
     for (std::shared_ptr<Column> column : columns) {
         if (*firstColumn != column) {
-             separator = [ACRSeparator renderSeparation:column forSuperview:columnSetView withHostConfig:config];
+            separator = [ACRSeparator renderSeparation:column forSuperview:columnSetView withHostConfig:config];
             configSeparatorVisibility(separator, prevColumn);
         }
 
@@ -100,11 +100,15 @@
                 @throw [ACOFallbackException fallbackException];
             }
 
+            if (lastColumn == column) {
+                columnSetView.isLastColumn = YES;
+            }
+
             curView = (ACRColumnView *)[columnRenderer render:columnSetView rootView:rootView inputs:inputs baseCardElement:acoColumn hostConfig:acoConfig];
-        } @catch (ACOFallbackException *e){
+        } @catch (ACOFallbackException *e) {
 
             handleFallbackException(e, columnSetView, rootView, inputs, column, acoConfig);
-             
+
             if (separator) {
                 [columnSetView removeViewFromContentStackView:separator];
             }
@@ -122,23 +126,23 @@
         // when stretch, views with stretch properties should have equal width
         if (curView.pixelWidth) {
             [constraints addObject:
-             [NSLayoutConstraint constraintWithItem:curView
-                                          attribute:NSLayoutAttributeWidth
-                                          relatedBy:NSLayoutRelationEqual
-                                             toItem:nil
-                                          attribute:NSLayoutAttributeNotAnAttribute
-                                         multiplier:1
-                                           constant:curView.pixelWidth]];
-        } else if ([curView.columnWidth isEqualToString:@"stretch"]){
+                             [NSLayoutConstraint constraintWithItem:curView
+                                                          attribute:NSLayoutAttributeWidth
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:nil
+                                                          attribute:NSLayoutAttributeNotAnAttribute
+                                                         multiplier:1
+                                                           constant:curView.pixelWidth]];
+        } else if ([curView.columnWidth isEqualToString:@"stretch"]) {
             if (stretchView) {
                 [constraints addObject:
-                 [NSLayoutConstraint constraintWithItem:curView
-                                              attribute:NSLayoutAttributeWidth
-                                              relatedBy:NSLayoutRelationEqual
-                                                 toItem:stretchView
-                                              attribute:NSLayoutAttributeWidth
-                                             multiplier:1
-                                               constant:0]];
+                                 [NSLayoutConstraint constraintWithItem:curView
+                                                              attribute:NSLayoutAttributeWidth
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:stretchView
+                                                              attribute:NSLayoutAttributeWidth
+                                                             multiplier:1
+                                                               constant:0]];
             }
             stretchView = curView;
         } else if (![curView.columnWidth isEqualToString:@"auto"]) {
@@ -150,36 +154,37 @@
 
                 if (prevView && prevRelColumnWidth) {
                     [constraints addObject:
-                     [NSLayoutConstraint constraintWithItem:curView
-                                                  attribute:NSLayoutAttributeWidth
-                                                  relatedBy:NSLayoutRelationEqual
-                                                     toItem:prevView
-                                                  attribute:NSLayoutAttributeWidth
-                                                 multiplier:multiplier
-                                                   constant:0]];
+                                     [NSLayoutConstraint constraintWithItem:curView
+                                                                  attribute:NSLayoutAttributeWidth
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:prevView
+                                                                  attribute:NSLayoutAttributeWidth
+                                                                 multiplier:multiplier
+                                                                   constant:0]];
                     prevRelColumnWidth = relativeColumnWidth;
-                }
-
-                if (curView.hasStretchableView || (columnSetElem->GetHeight() == HeightType::Stretch)) {
-                    [columnSetView setAlignmentForColumnStretch];
                 }
 
                 prevView = curView;
                 prevRelColumnWidth = relativeColumnWidth;
-            }
-            catch(...) {
+            } catch (...) {
                 multiplier = 1;
                 relativeColumnWidth = 1;
                 NSLog(@"unexpected column width property is given");
             }
         }
+
+        // to enable filler space to fill, its superview must strech it
+        if (curView.hasStretchableView || (columnSetElem->GetHeight() == HeightType::Stretch)) {
+            [columnSetView setAlignmentForColumnStretch];
+        }
+
         prevColumn = column;
     }
 
     castedRenderer.fillAlignment = NO;
 
     if ([constraints count]) {
-        [columnSetView addConstraints:constraints];
+        [NSLayoutConstraint activateConstraints:constraints];
     }
 
     std::shared_ptr<BaseActionElement> selectAction = columnSetElem->GetSelectAction();

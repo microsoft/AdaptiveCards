@@ -26,7 +26,8 @@ namespace AdaptiveNamespace
                                                           _In_ IAdaptiveCardResourceResolvers* resourceResolvers,
                                                           _In_ IResourceDictionary* overrideDictionary,
                                                           _In_ IResourceDictionary* defaultActionSentimentStyles,
-                                                          _In_ RenderedAdaptiveCard* renderResult) noexcept try
+                                                          _In_ RenderedAdaptiveCard* renderResult) noexcept
+    try
     {
         m_hostConfig = hostConfig;
         m_featureRegistration = featureRegistration;
@@ -113,6 +114,15 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
         RETURN_IF_FAILED(renderResult->get_Warnings(&warnings));
         return (warnings->Append(warning.Detach()));
+    }
+
+    HRESULT AdaptiveRenderContext::AddInlineShowCard(ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
+                                                     ABI::AdaptiveNamespace::IAdaptiveShowCardAction* showCardAction,
+                                                     ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement)
+    {
+        ComPtr<RenderedAdaptiveCard> renderResult;
+        RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
+        return renderResult->AddInlineShowCard(adaptiveCard, showCardAction, showCardFrameworkElement);
     }
 
     HRESULT AdaptiveRenderContext::AddInlineShowCard(_In_opt_ IAdaptiveActionSet* actionSet,

@@ -49,6 +49,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::DefaultPoster, "defaultPoster"},
             {AdaptiveCardSchemaKey::ElementId, "elementId"},
             {AdaptiveCardSchemaKey::Emphasis, "emphasis"},
+            {AdaptiveCardSchemaKey::ErrorMessage, "errorMessage"},
             {AdaptiveCardSchemaKey::ExtraLarge, "extraLarge"},
             {AdaptiveCardSchemaKey::FactSet, "factSet"},
             {AdaptiveCardSchemaKey::Facts, "facts"},
@@ -72,6 +73,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::IconSize, "iconSize"},
             {AdaptiveCardSchemaKey::IconUrl, "iconUrl"},
             {AdaptiveCardSchemaKey::Id, "id"},
+            {AdaptiveCardSchemaKey::IgnoreInputValidation, "ignoreInputValidation"},
             {AdaptiveCardSchemaKey::Image, "image"},
             {AdaptiveCardSchemaKey::ImageBaseUrl, "imageBaseUrl"},
             {AdaptiveCardSchemaKey::ImageSet, "imageSet"},
@@ -81,6 +83,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::InlineAction, "inlineAction"},
             {AdaptiveCardSchemaKey::Inlines, "inlines"},
             {AdaptiveCardSchemaKey::InlineTopMargin, "inlineTopMargin"},
+            {AdaptiveCardSchemaKey::InputNecessityIndicators, "inputNecessityIndicators"},
             {AdaptiveCardSchemaKey::IsMultiSelect, "isMultiSelect"},
             {AdaptiveCardSchemaKey::IsMultiline, "isMultiline"},
             {AdaptiveCardSchemaKey::IsRequired, "isRequired"},
@@ -114,6 +117,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Placeholder, "placeholder"},
             {AdaptiveCardSchemaKey::PlayButton, "playButton"},
             {AdaptiveCardSchemaKey::Poster, "poster"},
+            {AdaptiveCardSchemaKey::Regex, "regex"},
             {AdaptiveCardSchemaKey::Repeat, "repeat"},
             {AdaptiveCardSchemaKey::RepeatHorizontally, "repeatHorizontally"},
             {AdaptiveCardSchemaKey::RepeatVertically, "repeatVertically"},
@@ -148,6 +152,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::ToggleInput, "toggleInput"},
             {AdaptiveCardSchemaKey::Top, "top"},
             {AdaptiveCardSchemaKey::Type, "type"},
+            {AdaptiveCardSchemaKey::Underline, "underline"},
             {AdaptiveCardSchemaKey::Url, "url"},
             {AdaptiveCardSchemaKey::Value, "value"},
             {AdaptiveCardSchemaKey::ValueOff, "valueOff"},
@@ -318,4 +323,9 @@ namespace AdaptiveSharedNamespace
 
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(InlineElementType, InlineElementType::TextRun, {
             {InlineElementType::TextRun, "TextRun"}});
+
+    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(InputNecessityIndicators, InputNecessityIndicators::None, {
+            {InputNecessityIndicators::None, "None"},
+            {InputNecessityIndicators::RequiredInputs, "RequiredInputs"},
+            {InputNecessityIndicators::OptionalInputs, "OptionalInputs"}});
 }

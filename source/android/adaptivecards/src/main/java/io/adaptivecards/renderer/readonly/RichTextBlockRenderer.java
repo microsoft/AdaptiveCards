@@ -18,6 +18,7 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StrikethroughSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
+import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -115,6 +116,11 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
                 if (textRun.GetStrikethrough())
                 {
                     paragraph.setSpan(new StrikethroughSpan(), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                }
+
+                if (textRun.GetUnderline())
+                {
+                    paragraph.setSpan(new UnderlineSpan(), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
                 }
 
                 // This line sets the bold or lighter weight

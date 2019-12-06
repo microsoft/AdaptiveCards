@@ -23,7 +23,7 @@ namespace AdaptiveSharedNamespace
         static InternalId Current();
         static constexpr unsigned int Invalid = 0;
 
-        std::size_t const Hash() const { return std::hash<unsigned int>()(m_internalId); }
+        std::size_t Hash() const { return std::hash<unsigned int>()(m_internalId); }
 
         bool operator==(const unsigned int other) const { return m_internalId == other; }
         bool operator!=(const unsigned int other) const { return m_internalId != other; }
@@ -45,10 +45,10 @@ namespace AdaptiveSharedNamespace
     {
     public:
         BaseElement() :
-            m_additionalProperties{}, m_typeString{},
+            m_typeString{}, m_additionalProperties{},
             m_requires{std::make_shared<std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>>()},
-            m_fallbackContent(nullptr), m_fallbackType(FallbackType::None), m_id{}, m_internalId{InternalId::Current()},
-            m_canFallbackToAncestor(false)
+            m_fallbackContent(nullptr), m_internalId{InternalId::Current()}, m_fallbackType(FallbackType::None),
+            m_canFallbackToAncestor(false), m_id{}
         {
             PopulateKnownPropertiesSet();
         }
@@ -88,7 +88,6 @@ namespace AdaptiveSharedNamespace
         virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris);
 
     protected:
-        virtual void PopulateKnownPropertiesSet();
         void SetTypeString(const std::string& type) { m_typeString = type; }
         void SetCanFallbackToAncestor(bool value) { m_canFallbackToAncestor = value; }
 
@@ -99,6 +98,7 @@ namespace AdaptiveSharedNamespace
     private:
         template<typename T> void ParseFallback(ParseContext& context, const Json::Value& json);
         void ParseRequires(ParseContext& context, const Json::Value& json);
+        void PopulateKnownPropertiesSet();
 
         std::shared_ptr<std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>> m_requires;
         std::shared_ptr<BaseElement> m_fallbackContent;

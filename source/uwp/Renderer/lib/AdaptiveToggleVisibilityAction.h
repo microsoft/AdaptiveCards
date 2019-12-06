@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.Uwp.h"
-#include "Enums.h"
 #include "ToggleVisibilityAction.h"
 #include "AdaptiveActionElement.h"
 
@@ -11,7 +9,7 @@ namespace AdaptiveNamespace
 {
     class DECLSPEC_UUID("32114ce2-7e10-4f7f-8225-bfd661c6794c") AdaptiveToggleVisibilityAction
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveNamespace::IAdaptiveToggleVisibility,
+                                              ABI::AdaptiveNamespace::IAdaptiveToggleVisibilityAction,
                                               ABI::AdaptiveNamespace::IAdaptiveActionElement,
                                               Microsoft::WRL::CloakedIid<ITypePeek>,
                                               Microsoft::WRL::CloakedIid<AdaptiveNamespace::AdaptiveActionElementBase>>
@@ -65,14 +63,8 @@ namespace AdaptiveNamespace
         }
         IFACEMETHODIMP put_IconUrl(_In_ HSTRING iconUrl) { return AdaptiveActionElementBase::put_IconUrl(iconUrl); }
 
-        IFACEMETHODIMP get_Style(_Outptr_ HSTRING* style)
-        {
-            return AdaptiveActionElementBase::get_Style(style);
-        }
-        IFACEMETHODIMP put_Style(_In_ HSTRING style)
-        {
-            return AdaptiveActionElementBase::put_Style(style);
-        }
+        IFACEMETHODIMP get_Style(_Outptr_ HSTRING* style) { return AdaptiveActionElementBase::get_Style(style); }
+        IFACEMETHODIMP put_Style(_In_ HSTRING style) { return AdaptiveActionElementBase::put_Style(style); }
 
         IFACEMETHODIMP get_AdditionalProperties(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
         {

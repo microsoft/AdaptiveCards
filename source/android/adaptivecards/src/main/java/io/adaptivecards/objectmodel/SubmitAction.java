@@ -66,6 +66,14 @@ public class SubmitAction extends BaseActionElement {
     AdaptiveCardObjectModelJNI.SubmitAction_SetDataJson__SWIG_1(swigCPtr, this, value);
   }
 
+  public boolean GetIgnoreInputValidation() {
+    return AdaptiveCardObjectModelJNI.SubmitAction_GetIgnoreInputValidation(swigCPtr, this);
+  }
+
+  public void SetIgnoreInputValidation(boolean value) {
+    AdaptiveCardObjectModelJNI.SubmitAction_SetIgnoreInputValidation(swigCPtr, this, value);
+  }
+
   public JsonValue SerializeToJsonValue() {
     return new JsonValue(AdaptiveCardObjectModelJNI.SubmitAction_SerializeToJsonValue(swigCPtr, this), true);
   }

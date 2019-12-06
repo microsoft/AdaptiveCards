@@ -8,14 +8,6 @@ export function generateUniqueId(): string {
     return "__ac-" + Shared.UUID.generate();
 }
 
-export function getStringValue(obj: any, defaultValue: string = undefined): string {
-    return obj ? obj.toString() : defaultValue;
-}
-
-export function getValueOrDefault<T>(obj: any, defaultValue: T): T {
-    return obj ? <T>obj : defaultValue;
-}
-
 export function isNullOrEmpty(value: string): boolean {
     return value === undefined || value === null || value === "";
 }
@@ -26,8 +18,65 @@ export function appendChild(node: Node, child: Node) {
     }
 }
 
+export function getStringValue(obj: any, defaultValue: string = undefined): string {
+    return typeof obj === "string" ? obj.toString() : defaultValue;
+}
+
+export function getNumberValue(obj: any, defaultValue: number = undefined): number {
+    return typeof obj === "number" ? obj : defaultValue;
+}
+
+export function getBoolValue(value: any, defaultValue: boolean): boolean {
+    if (typeof value === "boolean") {
+        return value;
+    }
+    else if (typeof value === "string") {
+        switch (value.toLowerCase()) {
+            case "true":
+                return true;
+            case "false":
+                return false;
+            default:
+                return defaultValue;
+        }
+    }
+
+    return defaultValue;
+}
+
+export function getEnumValue(targetEnum: { [s: number]: string }, name: string, defaultValue: number): number {
+    if (isNullOrEmpty(name)) {
+        return defaultValue;
+    }
+
+    for (var key in targetEnum) {
+        let isValueProperty = parseInt(key, 10) >= 0
+
+        if (isValueProperty) {
+            let value = targetEnum[key];
+
+            if (value && typeof value === "string") {
+                if (value.toLowerCase() === name.toLowerCase()) {
+                    return parseInt(key, 10);
+                }
+            }
+        }
+    }
+
+    return defaultValue;
+}
+
 export function setProperty(target: object, propertyName: string, propertyValue: any, defaultValue: any = undefined) {
     if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue) {
+        delete target[propertyName];
+    }
+    else {
+        target[propertyName] = propertyValue;
+    }
+}
+
+export function setNumberProperty(target: object, propertyName: string, propertyValue: number, defaultValue: number = undefined) {
+    if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue || isNaN(propertyValue)) {
         delete target[propertyName];
     }
     else {
@@ -76,52 +125,14 @@ export function setArrayProperty(target: object, propertyName: string, propertyV
     }
 }
 
-export function getBoolValue(value: any, defaultValue: boolean): boolean {
-    if (typeof value === "boolean") {
-        return value;
-    }
-    else if (typeof value === "string") {
-        switch (value.toLowerCase()) {
-            case "true":
-                return true;
-            case "false":
-                return false;
-            default:
-                return defaultValue;
-        }
-    }
-
-    return defaultValue;
-}
-
-export function getEnumValue(targetEnum: { [s: number]: string }, name: string, defaultValue: number): number {
-    if (isNullOrEmpty(name)) {
-        return defaultValue;
-    }
-
-    for (var key in targetEnum) {
-        let isValueProperty = parseInt(key, 10) >= 0
-
-        if (isValueProperty) {
-            let value = targetEnum[key];
-
-            if (value && typeof value === "string") {
-                if (value.toLowerCase() === name.toLowerCase()) {
-                    return parseInt(key, 10);
-                }
-            }
-        }
-    }
-
-    return defaultValue;
-}
-
 export function parseHostConfigEnum(targetEnum: { [s: number]: string }, value: string | number, defaultValue: any): any {
     if (typeof value === "string") {
         return getEnumValue(targetEnum, value, defaultValue);
-    } else if (typeof value === "number") {
-        return getValueOrDefault<typeof targetEnum>(value, defaultValue);
-    } else {
+    }
+    else if (typeof value === "number") {
+        return value;
+    }
+    else {
         return defaultValue;
     }
 }

@@ -47,6 +47,11 @@ namespace AdaptiveCardTestApp.Pages
 
         private async void ButtonStartTest_Click(object sender, RoutedEventArgs e)
         {
+            if (ListViewCards.SelectedItems.Count == 0 || ListViewHostConfigs.SelectedItems.Count == 0)
+            {
+                return;
+            }
+
             if (DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel != 1)
             {
                 var dontWait = new MessageDialog($"You must run these tests on a monitor that is using 100% scale factor (yours appears to be {DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel * 100}%). Otherwise the XAML and images are rendered at a higher resolution and will not match the current Expected image results.");

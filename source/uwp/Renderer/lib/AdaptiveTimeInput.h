@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.Uwp.h"
-#include "Enums.h"
 #include "TimeInput.h"
 #include "AdaptiveInputElement.h"
 
@@ -44,6 +42,15 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP put_IsRequired(boolean isRequired)
         {
             return AdaptiveInputElementBase::put_IsRequired(isRequired);
+        }
+
+        IFACEMETHODIMP get_ErrorMessage(_Outptr_ HSTRING* errorMessage)
+        {
+            return AdaptiveInputElementBase::get_ErrorMessage(errorMessage);
+        }
+        IFACEMETHODIMP put_ErrorMessage(_In_ HSTRING errorMessage)
+        {
+            return AdaptiveInputElementBase::put_ErrorMessage(errorMessage);
         }
 
         // IAdaptiveCardElement
@@ -106,10 +113,10 @@ namespace AdaptiveNamespace
             return AdaptiveCardElementBase::put_AdditionalProperties(value);
         }
 
-        IFACEMETHODIMP MeetsRequirements(_In_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration* featureRegistration,
-                                         _Out_ boolean* value)
+        IFACEMETHODIMP get_Requirements(
+            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>** requirements)
         {
-            return AdaptiveCardElementBase::MeetsRequirements(featureRegistration, value);
+            return AdaptiveCardElementBase::get_Requirements(requirements);
         }
 
         IFACEMETHODIMP ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)

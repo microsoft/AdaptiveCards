@@ -6,6 +6,7 @@
 	"fallbackText": "fallbackText",
 	"speak": "speak",
 	"lang": "en",
+	"inputNecessityIndicators": "requiredInputs",
 	"body": [
 		{
 			"type": "TextBlock",
@@ -187,6 +188,8 @@
 					"style": "text",
 					"value": "Input.Text_value",
 					"spacing": "small",
+					"isRequired": false,
+					"regex": "([A-Z])\\w+",
 					"inlineAction": {
 						"type": "Action.Submit",
 						"iconUrl": "https://adaptivecards.io/content/cats/1.png",
@@ -199,7 +202,8 @@
 					"max": 10,
 					"min": 5,
 					"placeholder": "Input.Number_placeholder",
-					"value": 7
+					"value": 7,
+					"isRequired": true
 				},
 				{
 					"type": "Input.Date",
@@ -215,7 +219,9 @@
 					"min": "10:00",
 					"max": "17:00",
 					"value": "13:00",
-					"placeholder": "Input.Time_placeholder"
+					"placeholder": "Input.Time_placeholder",
+					"isRequired": true,
+					"errorMessage": "Input.Time.ErrorMessage"
 				},
 				{
 					"type": "Input.Toggle",
@@ -268,7 +274,8 @@
 				{
 					"type": "Action.Submit",
 					"title": "ActionSet.Action.Submit",
-					"id": "ActionSet.Action.Submit_id"
+					"id": "ActionSet.Action.Submit_id",
+					"ignoreInputValidation": true
 				},
 				{
 					"type": "Action.OpenUrl",
@@ -293,6 +300,7 @@
 					"strikethrough": true,
 					"text": "This is a text run",
 					"type": "TextRun",
+					"underline": true,
 					"weight": "Bolder"
 				},
 				{

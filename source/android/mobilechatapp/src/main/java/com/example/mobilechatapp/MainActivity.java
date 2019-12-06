@@ -263,11 +263,15 @@ public class MainActivity extends AppCompatActivity implements ICardActionHandle
         this.runOnUiThread(new RunnableExtended(this, text, duration));
     }
 
-    private void onSubmit(BaseActionElement actionElement, RenderedAdaptiveCard renderedAdaptiveCard) {
+    private void onSubmit(BaseActionElement actionElement, RenderedAdaptiveCard renderedAdaptiveCard)
+    {
         SubmitAction submitAction = null;
-        if (actionElement instanceof SubmitAction) {
+        if (actionElement instanceof SubmitAction)
+        {
             submitAction = (SubmitAction) actionElement;
-        } else if ((submitAction = SubmitAction.dynamic_cast(actionElement)) == null) {
+        }
+        else if ((submitAction = SubmitAction.dynamic_cast(actionElement)) == null)
+        {
             throw new InternalError("Unable to convert BaseActionElement to ShowCardAction object model.");
         }
 
@@ -275,10 +279,20 @@ public class MainActivity extends AppCompatActivity implements ICardActionHandle
         Map<String, String> keyValueMap = renderedAdaptiveCard.getInputs();
         if (!data.isEmpty())
         {
-            try {
-                JSONObject object = new JSONObject(data);
+            try
+            {
+                JSONObject object = null;
+                if (!data.equals("null\n"))
+                {
+                    object = new JSONObject(data);
+                }
+                else
+                {
+                    object = new JSONObject();
+                }
                 showToast("Submit data: " + object.toString() + "\nInput: " + keyValueMap.toString(), Toast.LENGTH_LONG);
-            } catch (JSONException e) {
+            }
+            catch (JSONException e) {
                 showToast(e.toString(), Toast.LENGTH_LONG);
             }
         }

@@ -5,25 +5,24 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "ACRAggregateTarget.h"
+#import "ACOBaseActionElementPrivate.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRIBaseInputHandler.h"
 #import "ACRView.h"
 #import "ACRViewController.h"
-#import "ACOBaseActionElementPrivate.h"
+#import <UIKit/UIKit.h>
 
-@implementation ACRAggregateTarget
-{
+@implementation ACRAggregateTarget {
     ACOBaseActionElement *_actionElement;
     __weak ACRView *_view;
 }
 
-- (instancetype)initWithActionElement:(ACOBaseActionElement *)actionElement rootView:(ACRView*)rootView;
+- (instancetype)initWithActionElement:(ACOBaseActionElement *)actionElement rootView:(ACRView *)rootView;
 {
     self = [super init];
-    if(self) {
-        _actionElement = [[ACOBaseActionElement alloc] initWithBaseActionElement:[actionElement element]];
+    if (self) {
+        _actionElement = actionElement;
         _view = rootView;
     }
     return self;

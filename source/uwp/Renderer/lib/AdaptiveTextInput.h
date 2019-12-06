@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.Uwp.h"
-#include "Enums.h"
 #include "TextInput.h"
 #include "AdaptiveInputElement.h"
 
@@ -42,6 +40,9 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_InlineAction(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** action);
         IFACEMETHODIMP put_InlineAction(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action);
 
+        IFACEMETHODIMP get_Regex(_Outptr_ HSTRING* regex);
+        IFACEMETHODIMP put_Regex(_In_ HSTRING regex);
+
         // IAdaptiveInputElement
         IFACEMETHODIMP get_IsRequired(_Out_ boolean* isRequired)
         {
@@ -50,6 +51,15 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP put_IsRequired(boolean isRequired)
         {
             return AdaptiveInputElementBase::put_IsRequired(isRequired);
+        }
+
+        IFACEMETHODIMP get_ErrorMessage(_Outptr_ HSTRING* errorMessage)
+        {
+            return AdaptiveInputElementBase::get_ErrorMessage(errorMessage);
+        }
+        IFACEMETHODIMP put_ErrorMessage(_In_ HSTRING errorMessage)
+        {
+            return AdaptiveInputElementBase::put_ErrorMessage(errorMessage);
         }
 
         // IAdaptiveCardElement
@@ -112,10 +122,10 @@ namespace AdaptiveNamespace
             return AdaptiveCardElementBase::put_AdditionalProperties(value);
         }
 
-        IFACEMETHODIMP MeetsRequirements(_In_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration* featureRegistration,
-                                         _Out_ boolean* value)
+        IFACEMETHODIMP get_Requirements(
+            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>** requirements)
         {
-            return AdaptiveCardElementBase::MeetsRequirements(featureRegistration, value);
+            return AdaptiveCardElementBase::get_Requirements(requirements);
         }
 
         IFACEMETHODIMP ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
@@ -144,6 +154,7 @@ namespace AdaptiveNamespace
         boolean m_isMultiline;
         ABI::AdaptiveNamespace::TextInputStyle m_textInputStyle;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_inlineAction;
+        Microsoft::WRL::Wrappers::HString m_regex;
     };
 
     ActivatableClass(AdaptiveTextInput);

@@ -2,11 +2,6 @@
 // Licensed under the MIT License.
 package io.adaptivecards.adaptivecardssample;
 
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentActivity;
@@ -16,59 +11,44 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TabHost;
 import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import io.adaptivecards.renderer.BaseActionElementRenderer;
-import io.adaptivecards.renderer.GenericImageLoaderAsync;
-import io.adaptivecards.renderer.IOnlineImageLoader;
-import io.adaptivecards.renderer.IResourceResolver;
-import io.adaptivecards.renderer.IMediaDataSourceOnPreparedListener;
-import io.adaptivecards.renderer.IOnlineMediaLoader;
-import io.adaptivecards.renderer.RenderArgs;
-import io.adaptivecards.renderer.RenderedAdaptiveCard;
-import io.adaptivecards.renderer.BaseCardElementRenderer;
-import io.adaptivecards.renderer.Util;
-import io.adaptivecards.renderer.action.ActionElementRenderer;
-import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.*;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
-import io.adaptivecards.renderer.http.HttpRequestHelper;
-import io.adaptivecards.renderer.http.HttpRequestResult;
+import io.adaptivecards.renderer.IOnlineImageLoader;
+import io.adaptivecards.renderer.IOnlineMediaLoader;
+import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
+import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
+
+import io.adaptivecards.adaptivecardssample.CustomObjects.Actions.*;
+import io.adaptivecards.adaptivecardssample.CustomObjects.CardElements.*;
+import io.adaptivecards.adaptivecardssample.CustomObjects.Media.*;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import android.media.MediaDataSource;
-import android.support.annotation.RequiresApi;
-
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.pixplicity.sharp.Sharp;
 
 public class MainActivityAdaptiveCardsSample extends FragmentActivity
         implements ICardActionHandler
@@ -90,6 +70,15 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     private Timer m_timer=new Timer();
     private final long DELAY = 1000; // milliseconds
 
+    // Options for custom elements
+    private Switch m_customActions;
+    private Switch m_customElements;
+    private Switch m_featureRegistration;
+    private Switch m_svgSupport;
+    private Switch m_customImageLoader;
+    private Switch m_customMediaLoader;
+    private Switch m_onlineImageLoader;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +90,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         m_hostConfigPickerGroup = findViewById(R.id.hostConfigPickerGroup);
 
         setupTabs();
-        setupImageLoader();
+        setupOptions();
 
         // Add text change handler
         m_jsonEditText = (EditText) findViewById(R.id.jsonAdaptiveCard);
@@ -126,25 +115,27 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         m_configEditText.addTextChangedListener(watcher);
     }
 
-    public class CustomCardElement extends BaseCardElement
+    public class SwitchListener implements CompoundButton.OnCheckedChangeListener
     {
-
-        public CustomCardElement(CardElementType type) {
-            super(type);
-        }
-
-        public String getSecretString()
+        public SwitchListener(TextView textView)
         {
-            return secretString;
+            m_cards = textView;
         }
 
-        public void setSecretString(String secret)
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
         {
-            secretString = secret;
+            if (isChecked)
+            {
+                m_cards.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                m_cards.setVisibility(View.GONE);
+            }
         }
 
-        private String secretString;
-
+        private TextView m_cards;
     }
 
     protected void setupTabs()
@@ -154,386 +145,32 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         tabHost.addTab(tabHost.newTabSpec("tab_visual").setIndicator("Visual").setContent(R.id.Visual));
         tabHost.addTab(tabHost.newTabSpec("tab_json").setIndicator("JSON").setContent(R.id.JSON));
         tabHost.addTab(tabHost.newTabSpec("tab_config").setIndicator("Config").setContent(R.id.config));
+        tabHost.addTab(tabHost.newTabSpec("tab_optional").setIndicator("Options").setContent(R.id.options));
         tabHost.setCurrentTab(0);
     }
 
-    public class CustomRedActionElement extends BaseActionElement
+    protected void setupOptions()
     {
+        m_customActions = (Switch) findViewById(R.id.customActions);
+        m_customActions.setOnCheckedChangeListener(new SwitchListener(findViewById(R.id.cardsCustomActions)));
 
-        public CustomRedActionElement(ActionType type) {
-            super(type);
-        }
+        m_customElements = (Switch) findViewById(R.id.customElements);
+        m_customElements.setOnCheckedChangeListener(new SwitchListener(findViewById(R.id.cardsCustomElements)));
 
-        public String getBackwardString()
-        {
-            return m_backwardsString;
-        }
+        m_featureRegistration = (Switch) findViewById(R.id.customFeatureReg);
+        m_featureRegistration.setOnCheckedChangeListener(new SwitchListener(findViewById(R.id.cardsCustomFeature)));
 
-        public void setBackwardString(String s)
-        {
-            m_backwardsString = new String();
-            for(int i = s.length() - 1; i >= 0; i--)
-            {
-                m_backwardsString += s.charAt(i);
-            }
-        }
+        m_svgSupport = (Switch) findViewById(R.id.svgSupport);
+        m_svgSupport.setOnCheckedChangeListener(new SwitchListener(findViewById(R.id.cardsSvgSupport)));
 
-        private String m_backwardsString;
-        public static final String CustomActionId = "redAction";
-    }
+        m_customImageLoader = (Switch) findViewById(R.id.customImageLoader);
+        m_customImageLoader.setOnCheckedChangeListener(new SwitchListener(findViewById(R.id.cardsCustomImageLoader)));
 
-    public class CustomRedActionParser extends ActionElementParser
-    {
-        @Override
-        public BaseActionElement Deserialize(ParseContext context, JsonValue value)
-        {
-            CustomRedActionElement element = new CustomRedActionElement(ActionType.Custom);
-            element.SetElementTypeString(CustomRedActionElement.CustomActionId);
-            element.SetId("backwardActionDeserialize");
-            String val = value.getString();
-            try {
-                JSONObject obj = new JSONObject(val);
-                element.setBackwardString(obj.getString("backwardString"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-                element.setBackwardString("deliaF");
-            }
-            return element;
-        }
+        m_customMediaLoader = (Switch) findViewById(R.id.customMediaLoader);
+        m_customMediaLoader.setOnCheckedChangeListener(new SwitchListener(findViewById(R.id.cardsCustomMediaLoader)));
 
-        @Override
-        public BaseActionElement DeserializeFromString(ParseContext context, String jsonString)
-        {
-            CustomRedActionElement element = new CustomRedActionElement(ActionType.Custom);
-            element.SetElementTypeString(CustomRedActionElement.CustomActionId);
-            element.SetId("backwardActionDeserialize");
-            try {
-                JSONObject obj = new JSONObject(jsonString);
-                element.setBackwardString(obj.getString("backwardString"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-                element.setBackwardString("deliaF");
-            }
-            return element;
-        }
-    }
-
-    public class CustomRedActionRenderer extends BaseActionElementRenderer
-    {
-        @Override
-        public Button render(RenderedAdaptiveCard renderedCard,
-                             Context context,
-                             FragmentManager fragmentManager,
-                             ViewGroup viewGroup,
-                             BaseActionElement baseActionElement,
-                             ICardActionHandler cardActionHandler,
-                             HostConfig hostConfig,
-                             RenderArgs renderArgs)
-        {
-            Button backwardActionButton = new Button(context);
-
-            CustomRedActionElement customAction = (CustomRedActionElement) baseActionElement.findImplObj();
-
-            backwardActionButton.setBackgroundColor(getResources().getColor(R.color.redActionColor));
-            backwardActionButton.setText(customAction.getBackwardString());
-            backwardActionButton.setAllCaps(false);
-            backwardActionButton.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, baseActionElement, cardActionHandler));
-
-            viewGroup.addView(backwardActionButton);
-
-            return backwardActionButton;
-        }
-    }
-
-    public class CustomGreenActionElement extends BaseActionElement
-    {
-
-        public CustomGreenActionElement(ActionType type) {
-            super(type);
-        }
-
-        public String getMessage()
-        {
-            return m_message;
-        }
-
-        private final String m_message = "Smell you later!";
-        public static final String CustomActionId = "greenAction";
-    }
-
-    public class CustomGreenActionParser extends ActionElementParser
-    {
-        @Override
-        public BaseActionElement Deserialize(ParseContext context, JsonValue value)
-        {
-            CustomGreenActionElement element = new CustomGreenActionElement(ActionType.Custom);
-            element.SetElementTypeString(CustomGreenActionElement.CustomActionId);
-            element.SetId("greenActionDeserialize");
-            return element;
-        }
-
-        @Override
-        public BaseActionElement DeserializeFromString(ParseContext context, String jsonString)
-        {
-            CustomGreenActionElement element = new CustomGreenActionElement(ActionType.Custom);
-            element.SetElementTypeString(CustomGreenActionElement.CustomActionId);
-            element.SetId("greenActionDeserialize");
-            return element;
-        }
-    }
-
-    public class CustomGreenActionRenderer extends BaseActionElementRenderer
-    {
-        @Override
-        public Button render(RenderedAdaptiveCard renderedCard,
-                             Context context,
-                             FragmentManager fragmentManager,
-                             ViewGroup viewGroup,
-                             BaseActionElement baseActionElement,
-                             ICardActionHandler cardActionHandler,
-                             HostConfig hostConfig,
-                             RenderArgs renderArgs)
-        {
-            Button greenActionButton = new Button(context);
-
-            CustomGreenActionElement customAction = (CustomGreenActionElement) baseActionElement.findImplObj();
-
-            greenActionButton.setBackgroundColor(getResources().getColor(R.color.greenActionColor));
-            greenActionButton.setText(customAction.getMessage());
-            greenActionButton.setAllCaps(false);
-            greenActionButton.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, baseActionElement, cardActionHandler));
-
-            viewGroup.addView(greenActionButton);
-
-            return greenActionButton;
-        }
-    }
-
-    public class CustomBlahParser extends BaseCardElementParser
-    {
-        @Override
-        public BaseCardElement Deserialize(ParseContext context, JsonValue value)
-        {
-            CustomCardElement element = new CustomCardElement(CardElementType.Custom);
-            element.SetElementTypeString("blah");
-            element.SetId("BlahDeserialize");
-            String val = value.getString();
-            try {
-                JSONObject obj = new JSONObject(val);
-                element.setSecretString(obj.getString("secret"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-                element.setSecretString("Failed");
-            }
-            return element;
-        }
-
-        @Override
-        public BaseCardElement DeserializeFromString(ParseContext context, String jsonString)
-        {
-            CustomCardElement element = new CustomCardElement(CardElementType.Custom);
-            element.SetElementTypeString("blah");
-            element.SetId("BlahDeserialize");
-            try {
-                JSONObject obj = new JSONObject(jsonString);
-                element.setSecretString(obj.getString("secret"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-                element.setSecretString("Failed");
-            }
-            return element;
-        }
-    }
-
-    public class CustomBlahRenderer extends BaseCardElementRenderer
-    {
-        @Override
-        public View render(RenderedAdaptiveCard renderedAdaptiveCard, Context context, FragmentManager fragmentManager, ViewGroup viewGroup, BaseCardElement baseCardElement, ICardActionHandler cardActionHandler, HostConfig hostConfig, RenderArgs renderArgs) {
-            TextView textView = new TextView(context);
-
-            CustomCardElement element = (CustomCardElement) baseCardElement.findImplObj();
-
-            textView.setText(element.getSecretString());
-
-            textView.setAllCaps(true);
-
-            viewGroup.addView(textView);
-
-            return textView;
-        }
-    }
-
-    public class ShowCardOverrideRenderer extends BaseActionElementRenderer
-    {
-
-        @Override
-        public Button render(RenderedAdaptiveCard renderedCard,
-                             Context context,
-                             FragmentManager fragmentManager,
-                             ViewGroup viewGroup,
-                             BaseActionElement baseActionElement,
-                             ICardActionHandler cardActionHandler,
-                             HostConfig hostConfig,
-                             RenderArgs renderArgs)
-        {
-            Button button = new Button(context);
-
-            button.setBackgroundColor(getResources().getColor(R.color.yellowActionColor));
-            button.setText(baseActionElement.GetTitle() +"(ShowCard)");
-
-            button.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, context, fragmentManager, viewGroup, baseActionElement, cardActionHandler, hostConfig));
-
-            viewGroup.addView(button);
-            return button;
-        }
-    }
-
-    /*
-    * MediaDataSource implementation taken from https://github.com/jacks205/MediaDataSourceExample
-    * */
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public class MediaDataSourceImpl extends MediaDataSource
-    {
-        MediaDataSourceImpl(String uri, IMediaDataSourceOnPreparedListener mediaDataSourceOnPreparedListener)
-        {
-            m_mediaUri = uri;
-            m_mediaDataSourceListener = mediaDataSourceOnPreparedListener;
-            Thread mediaDownloadThread = new Thread(m_downloadMediaRunnable);
-            mediaDownloadThread.start();
-        }
-
-        Runnable m_downloadMediaRunnable = new Runnable() {
-            @Override
-            public void run() {
-                try
-                {
-                    URL url = new URL(m_mediaUri);
-                    InputStream inputStream = url.openStream();
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    int read = 0;
-                    while(read != -1)
-                    {
-                        read = inputStream.read();
-                        byteArrayOutputStream.write(read);
-                    }
-                    inputStream.close();
-
-                    byteArrayOutputStream.flush();
-                    m_mediaBuffer = byteArrayOutputStream.toByteArray();
-
-                    byteArrayOutputStream.close();
-
-                    // Call this function to signalize that the mediaPlayer is able to prepare with the current state for DataMediaSource
-                    m_mediaDataSourceListener.prepareMediaPlayer();
-                }
-                catch (MalformedURLException urlException)
-                {
-                    urlException.printStackTrace();
-                    Log.d("Error on video download", urlException.toString());
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                    Log.d("Error on video download", e.toString());
-                }
-            }
-        };
-
-        @Override
-        public int readAt(long position, byte[] buffer, int offset, int size) throws IOException
-        {
-            synchronized (m_mediaBuffer)
-            {
-                int length = m_mediaBuffer.length;
-                if(position >= length)
-                {
-                    return -1;
-                }
-
-                if(position + size > length)
-                {
-                    size -= (position + size) - length;
-                    // size = length - position;
-                }
-                System.arraycopy(m_mediaBuffer, (int)position, buffer, offset, size);
-                return size;
-            }
-        }
-
-        @Override
-        public long getSize() throws IOException
-        {
-            synchronized (m_mediaBuffer)
-            {
-                return m_mediaBuffer.length;
-            }
-        }
-
-        @Override
-        public void close() throws IOException
-        {
-        }
-
-        private volatile IMediaDataSourceOnPreparedListener m_mediaDataSourceListener;
-
-        private volatile String m_mediaUri;
-        private volatile byte[] m_mediaBuffer;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public class OnlineMediaLoader implements IOnlineMediaLoader
-    {
-        public class OnlineFileAvailableChecker extends AsyncTask<String, Void, Boolean>
-        {
-            public OnlineFileAvailableChecker(String uri)
-            {
-                m_uri = uri;
-            }
-
-            @Override
-            protected Boolean doInBackground(String... strings) {
-                // if the provided uri is a valid uri or is valid with the resource resolver, then use that
-                // otherwise, try to get the media from a local file
-                try
-                {
-                    HttpRequestHelper.query(m_uri);
-                    return true;
-                }
-                catch (Exception e)
-                {
-                    // Do nothing if the media was not found at all
-                    e.printStackTrace();
-                    return false;
-                }
-            }
-
-            private String m_uri;
-        }
-
-
-        @Override
-        public MediaDataSource loadOnlineMedia(MediaSourceVector mediaSources, IMediaDataSourceOnPreparedListener mediaDataSourceOnPreparedListener)
-        {
-            final long mediaSourcesSize = mediaSources.size();
-            for(int i = 0; i < mediaSourcesSize; i++)
-            {
-                String mediaUri = mediaSources.get(i).GetUrl();
-
-                OnlineFileAvailableChecker checker = new OnlineFileAvailableChecker(mediaUri);
-                try
-                {
-                    Boolean fileExists = checker.execute("").get();
-                    if(fileExists)
-                    {
-                        return new MediaDataSourceImpl(mediaUri, mediaDataSourceOnPreparedListener);
-                    }
-                }
-                catch (Exception e)
-                {
-                }
-            }
-            return null;
-        }
+        m_onlineImageLoader = (Switch) findViewById(R.id.onlineImageLoader);
+        m_onlineImageLoader.setOnCheckedChangeListener(new SwitchListener(findViewById(R.id.cardsCustomOnlineImageLoader)));
     }
 
     private void renderAdaptiveCardAfterDelay(boolean showErrorToast)
@@ -553,6 +190,102 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
                 });
             }
         }, DELAY);
+    }
+
+    private ParseContext createParseContextForCustomElements()
+    {
+        ElementParserRegistration elementParserRegistration = null;
+        ActionParserRegistration actionParserRegistration = null;
+
+        if (m_customElements.isChecked())
+        {
+            elementParserRegistration = new ElementParserRegistration();
+            elementParserRegistration.AddParser("blah", new CustomBlahParser());
+
+            actionParserRegistration = new ActionParserRegistration();
+            actionParserRegistration.AddParser(CustomRedActionElement.CustomActionId, new CustomRedActionParser());
+            actionParserRegistration.AddParser(CustomGreenActionElement.CustomActionId, new CustomGreenActionParser());
+        }
+
+        return new ParseContext(elementParserRegistration, actionParserRegistration);
+    }
+
+    private void registerCustomImageLoaders()
+    {
+        LocalResourcesLoader localResourcesLoader = null;
+        if (m_customImageLoader.isChecked())
+        {
+            localResourcesLoader = new LocalResourcesLoader(this);
+        }
+        CardRendererRegistration.getInstance().registerResourceResolver("package", localResourcesLoader);
+
+        IOnlineImageLoader onlineImageLoader = null;
+        if (m_onlineImageLoader.isChecked())
+        {
+            // Code to demonstrate how IOnlineImageLoader registration works, uncomment to test, you should see that all images rendered are all the same cat
+            onlineImageLoader = new OnlineImageLoader();
+        }
+        CardRendererRegistration.getInstance().registerOnlineImageLoader(onlineImageLoader);
+
+        SvgImageLoader svgImageLoader = null;
+        if (m_svgSupport.isChecked())
+        {
+            svgImageLoader = new SvgImageLoader();
+        }
+        CardRendererRegistration.getInstance().registerResourceResolver("data", svgImageLoader);
+    }
+
+    private void registerCustomMediaLoaders()
+    {
+        // Example on how a custom OnlineMediaLoader should be registered
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            IOnlineMediaLoader mediaLoader = null;
+
+            if (m_customMediaLoader.isChecked())
+            {
+                mediaLoader = new OnlineMediaLoader();
+            }
+
+            CardRendererRegistration.getInstance().registerOnlineMediaLoader(mediaLoader);
+        }
+    }
+
+    private void registerFeatureRegistration()
+    {
+        // Sample on how to register a feature registration object
+        FeatureRegistration featureRegistration = null;
+        if (m_featureRegistration.isChecked())
+        {
+            featureRegistration = new FeatureRegistration();
+            featureRegistration.AddFeature("acTest", "1.0");
+        }
+        CardRendererRegistration.getInstance().registerFeatureRegistration(featureRegistration);
+    }
+
+    private void registerCustomElementRenderers()
+    {
+        if (m_customActions.isChecked())
+        {
+            CardRendererRegistration.getInstance().registerActionRenderer(CustomRedActionElement.CustomActionId, new CustomRedActionRenderer(this));
+            CardRendererRegistration.getInstance().registerActionRenderer(CustomGreenActionElement.CustomActionId, new CustomGreenActionRenderer(this));
+
+            // Example on how to override the showcard renderer
+            CardRendererRegistration.getInstance().registerActionRenderer(AdaptiveCardObjectModel.ActionTypeToString(ActionType.ShowCard), new ShowCardOverrideRenderer(this));
+        }
+
+        if (m_customElements.isChecked())
+        {
+            CardRendererRegistration.getInstance().registerRenderer("blah", new CustomBlahRenderer());
+        }
+    }
+
+    private void registerCustomFeatures()
+    {
+        registerCustomImageLoaders();
+        registerCustomMediaLoaders();
+        registerFeatureRegistration();
+        registerCustomElementRenderers();
     }
 
     private void renderAdaptiveCard(boolean showErrorToast)
@@ -580,34 +313,13 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
                 hostConfig = HostConfig.DeserializeFromString(hostConfigText);
             }
 
-            ElementParserRegistration elementParserRegistration = new ElementParserRegistration();
-            elementParserRegistration.AddParser("blah", new CustomBlahParser());
-
-            ActionParserRegistration actionParserRegistration = new ActionParserRegistration();
-            actionParserRegistration.AddParser(CustomRedActionElement.CustomActionId, new CustomRedActionParser());
-            actionParserRegistration.AddParser(CustomGreenActionElement.CustomActionId, new CustomGreenActionParser());
-
-            CardRendererRegistration.getInstance().registerRenderer("blah", new CustomBlahRenderer());
-            CardRendererRegistration.getInstance().registerActionRenderer(CustomRedActionElement.CustomActionId, new CustomRedActionRenderer());
-            CardRendererRegistration.getInstance().registerActionRenderer(CustomGreenActionElement.CustomActionId, new CustomGreenActionRenderer());
-            // Example on how to override the showcard renderer
-            // CardRendererRegistration.getInstance().registerActionRenderer(AdaptiveCardObjectModel.ActionTypeToString(ActionType.ShowCard), new ShowCardOverrideRenderer());
-
-            // Example on how a custom OnlineMediaLoader should be registered
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                CardRendererRegistration.getInstance().registerOnlineMediaLoader(new OnlineMediaLoader());
-            }
-
-            // Sample on how to register a feature registration object
-            FeatureRegistration myFeatureRegistration = new FeatureRegistration();
-            myFeatureRegistration.AddFeature("acTest", "1.0");
-            CardRendererRegistration.getInstance().registerFeatureRegistration(myFeatureRegistration);
-
-            ParseContext context = new ParseContext(elementParserRegistration, actionParserRegistration);
-
+            ParseContext context = createParseContextForCustomElements();
             ParseResult parseResult = AdaptiveCard.DeserializeFromString(jsonText, AdaptiveCardRenderer.VERSION, context);
             LinearLayout layout = (LinearLayout) findViewById(R.id.visualAdaptiveCardLayout);
             layout.removeAllViews();
+
+            registerCustomFeatures();
+
             RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(this, getSupportFragmentManager(), parseResult.GetAdaptiveCard(), this, hostConfig);
             layout.addView(renderedCard.getView());
         }
@@ -766,10 +478,22 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         Map<String, String> keyValueMap = renderedAdaptiveCard.getInputs();
         if (!data.isEmpty())
         {
-            try {
-                JSONObject object = new JSONObject(data);
+            try
+            {
+                JSONObject object = null;
+                if (!data.equals("null\n"))
+                {
+                    object = new JSONObject(data);
+                }
+                else
+                {
+                    object = new JSONObject();
+                }
+
                 showToast("Submit data: " + object.toString() + "\nInput: " + keyValueMap.toString(), Toast.LENGTH_LONG);
-            } catch (JSONException e) {
+            }
+            catch (JSONException e)
+            {
                 showToast(e.toString(), Toast.LENGTH_LONG);
             }
         }
@@ -885,117 +609,6 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         }
 
         this.runOnUiThread(new RunnableExtended(this, text, duration));
-    }
-
-    private void setupImageLoader()
-    {
-        CardRendererRegistration.getInstance().registerResourceResolver("package", new IResourceResolver()
-        {
-            @Override
-            public HttpRequestResult<Bitmap> resolveImageResource(String url, GenericImageLoaderAsync loader) throws IOException, URISyntaxException
-            {
-                // Get image identifier
-                String authority = getPackageName();
-                Resources resources = getResources();
-
-                // For host app only provides image file name as url, host app can pass "package:[IMAGE NAME]" as replacement for
-                // meeting the valid URL format checking. Here we will remove this prefix to get file name.
-                if (url.startsWith("package:"))
-                {
-                    url = url.replace("package:", "drawable/");
-                }
-
-                int identifier = resources.getIdentifier(url, "", authority);
-                if (identifier == 0)
-                {
-                    throw new IOException("Image not found: " + url);
-                }
-
-                InputStream ins = resources.openRawResource(identifier);
-                Bitmap bitmap = BitmapFactory.decodeStream(ins);
-                if (bitmap == null)
-                {
-                    throw new IOException("Failed to convert local content to bitmap: " + url);
-                }
-
-                return new HttpRequestResult<>(bitmap);
-            }
-
-            @Override
-            public HttpRequestResult<Bitmap> resolveImageResource(String url, GenericImageLoaderAsync loader, int maxWidth) throws IOException, URISyntaxException
-            {
-                return resolveImageResource(url, loader);
-            }
-        });
-
-        CardRendererRegistration.getInstance().registerResourceResolver("data", new IResourceResolver()
-        {
-            @Override
-            public HttpRequestResult<Bitmap> resolveImageResource(String uri, GenericImageLoaderAsync genericImageLoaderAsync) throws IOException, URISyntaxException
-            {
-                Bitmap bitmap;
-                String dataUri = AdaptiveBase64Util.ExtractDataFromUri(uri);
-                CharVector decodedDataUri = AdaptiveBase64Util.Decode(dataUri);
-                byte[] decodedByteArray = Util.getBytes(decodedDataUri);
-                bitmap = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
-
-                return new HttpRequestResult<>(bitmap);
-            }
-
-            @Override
-            public HttpRequestResult<Bitmap> resolveImageResource(String uri, GenericImageLoaderAsync genericImageLoaderAsync, int maxWidth) throws IOException, URISyntaxException
-            {
-                Bitmap bitmap;
-                String dataUri = AdaptiveBase64Util.ExtractDataFromUri(uri);
-                CharVector decodedDataUri = AdaptiveBase64Util.Decode(dataUri);
-
-                if (uri.startsWith("data:image/svg")) {
-                    String svgString = AdaptiveBase64Util.ExtractDataFromUri(uri);
-                    String decodedSvgString = URLDecoder.decode(svgString, "UTF-8");
-                    Sharp sharp = Sharp.loadString(decodedSvgString);
-                    Drawable drawable = sharp.getDrawable();
-                    bitmap = ImageUtil.drawableToBitmap(drawable, maxWidth);
-                }
-                else
-                {
-                    try
-                    {
-                        return genericImageLoaderAsync.loadDataUriImage(uri);
-                    }
-                    catch (Exception e)
-                    {
-                        return new HttpRequestResult<>(e);
-                    }
-                }
-
-                return new HttpRequestResult<>(bitmap);
-            }
-        });
-
-        // Code to demonstrate how IOnlineImageLoader registration works, uncomment to test, you should see that all images rendered are all the same cat
-        /*
-        CardRendererRegistration.getInstance().registerOnlineImageLoader(new IOnlineImageLoader() {
-            @Override
-            public HttpRequestResult<Bitmap> loadOnlineImage(String url, GenericImageLoaderAsync loader) throws IOException, URISyntaxException
-            {
-                String catImnageUri = "http://adaptivecards.io/content/cats/1.png";
-                byte[] bytes = HttpRequestHelper.get(catImnageUri);
-                if (bytes == null)
-                {
-                    throw new IOException("Failed to retrieve content from " + catImnageUri);
-                }
-
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-
-                if (bitmap == null)
-                {
-                    throw new IOException("Failed to convert content to bitmap: " + new String(bytes));
-                }
-
-                return new HttpRequestResult<>(bitmap);
-            }
-        });
-        */
     }
 
     public void onScanQrClicked(View view)

@@ -13,6 +13,6 @@ For the first time (or whenever modifying package.json), run `npm install`
 ## Testing
 
 1. Make sure you've built first
-1. Make sure you've also generated the Adaptive schema first, see `typed-schema` for instructions
+1. Make sure you've also generated the Adaptive schema first, see `ac-typed-schema` for instructions
 1. `npm run test`
 1. Alternatively, you can run `npm run build-and-test`

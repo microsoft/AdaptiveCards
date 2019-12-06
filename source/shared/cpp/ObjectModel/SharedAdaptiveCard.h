@@ -79,6 +79,8 @@ namespace AdaptiveSharedNamespace
         void SetHeight(const HeightType value);
         unsigned int GetMinHeight() const;
         void SetMinHeight(const unsigned int value);
+        InputNecessityIndicators GetInputNecessityIndicators() const;
+        void SetInputNecessityIndicators(const InputNecessityIndicators value);
 
         std::shared_ptr<BaseActionElement> GetSelectAction() const;
         void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
@@ -90,7 +92,7 @@ namespace AdaptiveSharedNamespace
 
         std::vector<RemoteResourceInformation> GetResourceInformation();
 
-        const CardElementType GetElementType() const;
+        CardElementType GetElementType() const;
 #ifdef __ANDROID__
         static std::shared_ptr<ParseResult> DeserializeFromFile(const std::string& jsonFile,
                                                                 std::string rendererVersion,
@@ -133,6 +135,8 @@ namespace AdaptiveSharedNamespace
         Json::Value SerializeToJsonValue() const;
         std::string Serialize() const;
 
+        const InternalId GetInternalId() const { return m_internalId; }
+
     private:
         static void _ValidateLanguage(const std::string& language, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings);
 
@@ -145,6 +149,9 @@ namespace AdaptiveSharedNamespace
         VerticalContentAlignment m_verticalContentAlignment;
         HeightType m_height;
         unsigned int m_minHeight;
+        InputNecessityIndicators m_inputNecessityIndicators;
+
+        InternalId m_internalId;
 
         std::vector<std::shared_ptr<BaseCardElement>> m_body;
         std::vector<std::shared_ptr<BaseActionElement>> m_actions;
