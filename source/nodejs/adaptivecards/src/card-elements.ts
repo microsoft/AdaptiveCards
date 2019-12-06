@@ -4053,7 +4053,8 @@ class ActionCollection {
     private showActionCard(action: ShowCardAction, suppressStyle: boolean = false, raiseEvent: boolean = true) {
         (<InlineAdaptiveCard>action.card).suppressStyle = suppressStyle;
 
-        let renderedCard = action.card.renderedElement ? action.card.renderedElement : action.card.render();
+        // Always re-render a ShowCard action in design mode; reuse already rendered ShowCard (if available) otherwise
+        let renderedCard = action.card.renderedElement && !this._owner.isDesignMode() ? action.card.renderedElement : action.card.render();
 
         this._actionCard = renderedCard;
         this._expandedAction = action;
