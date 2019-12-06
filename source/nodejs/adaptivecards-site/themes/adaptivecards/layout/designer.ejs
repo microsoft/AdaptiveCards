@@ -126,7 +126,6 @@
 		designer.toolbar.insertElementAfter(templateDocsButton, "hostDocs");
 
 		designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.HostAppPicker).width = "auto";
-		designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.FullScreen).isVisible = false;
 
 
 		let visualizerButton = new ACDesigner.ToolbarButton(
@@ -139,7 +138,7 @@
 		);
 		visualizerButton.separator = true;
 		visualizerButton.alignment = ACDesigner.ToolbarElementAlignment.Right;
-		designer.toolbar.insertElementBefore(visualizerButton, ACDesigner.CardDesigner.ToolbarCommands.FullScreen);
+		designer.toolbar.addElement(visualizerButton);
 
 		let feedbackButton = new ACDesigner.ToolbarButton(
 			"feedbackButton",
@@ -156,7 +155,7 @@
 		feedbackButton.displayCaption = false;
 		feedbackButton.alignment = ACDesigner.ToolbarElementAlignment.Right;
 		feedbackButton.toolTip = "Provide feedback about the Designer";
-		designer.toolbar.insertElementAfter(feedbackButton, ACDesigner.CardDesigner.ToolbarCommands.FullScreen);
+		designer.toolbar.addElement(feedbackButton);
 
 
 		var cardUrl = getParameterByName("card", null);

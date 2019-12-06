@@ -175,13 +175,6 @@ And then set the `sampleCatalogueUrl` to the location of that file:
 	designer.sampleCatalogueUrl = window.location.origin + "/sample-catalogue.json";
 ```
 
-If you don't want to load via a sample, you can hide the toolbar button
-
-```js
-	/* Hide the "Open Sample" toolbar button */
-	designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.OpenPayload).isVisible = false;
-```
-
 ## Advanced configuration
 
 For advanced configuration of the designer use the following APIs.
