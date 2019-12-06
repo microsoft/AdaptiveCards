@@ -586,7 +586,7 @@ export class CardDesigner extends Designer.DesignContext {
             "acd-icon-newCard",
             (sender: ToolbarButton) => {
                 let dialog = new OpenSampleDialog(this._sampleCatalogue);
-                dialog.title = "Pick a sample";
+                dialog.title = "Pick a sample as a starting point";
                 dialog.closeButton.caption = "Cancel";
                 dialog.width = "80%";
                 dialog.height = "80%";

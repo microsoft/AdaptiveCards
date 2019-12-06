@@ -173,14 +173,19 @@
 }
 
 .acd-dialog-button {
+}
 
+.acd-open-sample-item-container {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-end;
+    justify-content: space-evenly;
 }
 
 .acd-open-sample-item {
     width: 350px;
     height: 100%;
-    margin: 5px;
-    padding: 15px;
+    padding: 10px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -193,12 +198,12 @@
     overflow: hidden;
     height: 100%;
     min-height: 150px;
+    max-height: 400px;
     width: 100%;
     pointer-events: none;
     border: 1.5px solid #EEEEEE;
     display: flex;
     justify-content: center;
-    align-items: center;
 }
 
 .acd-open-sample-item-title {

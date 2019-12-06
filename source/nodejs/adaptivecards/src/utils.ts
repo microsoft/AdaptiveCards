@@ -95,6 +95,7 @@ export function renderSeparation(hostConfig: HostConfig, separationDefinition: S
         }
 
         separator.style.overflow = "hidden";
+        separator.style.flex = "0 0 auto";
 
         return separator;
     }
@@ -117,7 +118,7 @@ export function stringToCssColor(color: string | undefined): string | undefined 
             return "rgba(" + r + "," + g + "," + b + "," + a + ")";
         }
     }
-    
+
     return color;
 }
 

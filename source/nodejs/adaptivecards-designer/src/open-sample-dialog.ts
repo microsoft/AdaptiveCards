@@ -113,9 +113,7 @@ export class OpenSampleDialog extends Dialog {
 
     private renderCatalogue(): HTMLElement {
         let renderedElement = document.createElement("div");
-        renderedElement.style.display = "flex";
-        renderedElement.style.flexFlow = "row wrap";
-        renderedElement.style.alignItems = "flex-end";
+        renderedElement.className = "acd-open-sample-item-container";
 
         for (let entry of this.catalogue.entries) {
             let item = new CatalogueItem(entry);
