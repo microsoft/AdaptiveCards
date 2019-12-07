@@ -133,7 +133,17 @@ Markdown is a [standard feature of Adaptive Cards](https://docs.microsoft.com/en
 * bullet list 
 * numbered list
 
-You can add and also customize markdown rules using this `AdaptiveCards.setCustomMarkdownRegex` function. Refer [example.html](example.html) for the example usecase.
+
+You can add and also customize markdown rules using this `AdaptiveCards.AdaptiveCard.textFormatter.setCustomRules` function. Refer [example.html](example.html) for the example usecase.
+
+
+#### Option to use own Markdown Formmater
+
+You can also write your own Markdown formatting library and assign it to the textformatter.
+
+```js
+AdaptiveCards.AdaptiveCard.textFormatter = new MyCustomMarkdownFormatter();
+```
 
 #### Option to use 3rd party library
 

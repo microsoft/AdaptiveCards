@@ -5,7 +5,7 @@ import * as Shared from "./shared";
 import * as Utils from "./utils";
 import * as HostConfig from "./host-config";
 import * as TextFormatters from "./text-formatters";
-import * as MarkdownFormatter from "./markdown-formatter";
+import {MarkdownFormatter, TextFormatter} from "./markdown-formatter";
 
 function invokeSetCollection(action: Action, collection: ActionCollection) {
     if (action) {
@@ -6634,10 +6634,8 @@ export class AdaptiveCard extends ContainerWithActions {
     static onParseError: (error: HostConfig.IValidationError) => void = null;
     static onProcessMarkdown: (text: string, result: IMarkdownProcessingResult) => void = null;
 
-    //Method to set custom markdown regex.
-    static setCustomMarkdownRegex(regexArray: any[]){
-        MarkdownFormatter.setCustomMarkdownRegex(regexArray);
-    }
+    //static MarkdownFormatter = MarkdownFormatter;
+    static textFormatter: TextFormatter = new MarkdownFormatter();
     
     static get processMarkdown(): (text: string) => string {
         throw new Error("The processMarkdown event has been removed. Please update your code and set onProcessMarkdown instead.")
@@ -6656,7 +6654,7 @@ export class AdaptiveCard extends ContainerWithActions {
         if (AdaptiveCard.onProcessMarkdown) {
             AdaptiveCard.onProcessMarkdown(text, result);
         } else {
-            result.outputHtml = MarkdownFormatter.formatText(text);
+            result.outputHtml = AdaptiveCard.textFormatter.formatText(text);
             result.didProcess = true;
         }
         return result;

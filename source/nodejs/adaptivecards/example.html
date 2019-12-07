@@ -66,24 +66,25 @@
 			}
 
 			//To add new markdown rules or to customize the existing markdown rules.
-			adaptiveCard.constructor.setCustomMarkdownRegex([{
-							type: 'bullet', 
-							styles:{
-								start: "<ul>",
-								end: "</ul>"},
-							pattern: ['$', '\\r|\\n'],
-							patternType: 'start-end',
-							groups: 1
-						},
-						{
-							type: 'italic',
-							styles:{
-								start: "<i>",
-								end: "</i>"},
-							pattern: ['-'],
-							patternType: 'symmetric',
-							groups:1,
-						}]);
+			let customRules = [{
+				type: 'unorderedList',
+				styles:{
+					start: "<ul>",
+					end: "</ul>"},
+				patterns: ['$', '\\r|\\n'],
+				patternType: 'list',
+				groups: 1
+			},
+			{
+				type: 'italic',
+				styles:{
+					start: "<i>",
+					end: "</i>"},
+				patterns: ['-'],
+				patternType: 'symmetric',
+				groups:1,
+			}];
+			AdaptiveCards.AdaptiveCard.textFormatter.setCustomRules(customRules);
 
 			// Parse the card payload
 			adaptiveCard.parse(card);
