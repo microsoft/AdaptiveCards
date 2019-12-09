@@ -36,7 +36,7 @@
     "jest": "24.0.0",
     "metro-react-native-babel-preset": "0.48.1",
     "react": "16.6.0-alpha.8af6728",
-    "react-native": "0.57.4",
+    "react-native": "^0.61.5",
     "react-test-renderer": "16.6.0-alpha.8af6728",
     "rnpm-plugin-windows": "^0.2.11"
   },
