@@ -371,6 +371,20 @@ dir {
   padding-left: 40px;
 }
 
+@media print, screen and (min-width: 601px) {
+	.blog .blog-post-wrapper {
+		padding: 0 100px;
+		background: white;
+		margin-top: 32px
+	}
+}
+
+@media print, screen and (max-width: 601px) {
+	.blog .blog-post-wrapper {
+		margin-top: 0px;
+	}
+}
+
 .blog img {
   max-width: 95%;
   height: auto;
@@ -388,6 +402,11 @@ dir {
 .blog h1,
 .blog h2 {
   margin-top: 20px;
+}
+
+.blog .blog-content {
+	font-size: 16px;
+	line-height: 160%;
 }
 
 .blog .article-title:link,
@@ -627,7 +646,7 @@ dir {
 .ac-footer .brand {
   font-weight: bold;
   color: #696969;
-  word-wrap: none;
+  white-space: nowrap;
 }
 
 .ac-footer a:link,
