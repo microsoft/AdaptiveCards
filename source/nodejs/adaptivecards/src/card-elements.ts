@@ -5,7 +5,7 @@ import * as Shared from "./shared";
 import * as Utils from "./utils";
 import * as HostConfig from "./host-config";
 import * as TextFormatters from "./text-formatters";
-import {MarkdownFormatter, TextFormatter} from "./markdown-formatter";
+import { MarkdownFormatter, TextFormatter } from "./markdown-formatter";
 
 function invokeSetCollection(action: Action, collection: ActionCollection) {
     if (action) {

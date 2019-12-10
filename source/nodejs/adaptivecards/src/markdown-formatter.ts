@@ -90,49 +90,55 @@ export class MarkdownFormatter extends TextFormatter {
      * 
      * @param configurations 
      */
-    public setCustomRules(configurations: IFormatterConfiguration[]) {
-        for (var j = 0; j < configurations.length; j++) {
+    public setCustomRules(configurations: IFormatterConfiguration[]): void {
+        for (let j = 0; j < configurations.length; j++) {
             let index = this.configuration.findIndex(config => config.type == configurations[j].type);
             if (index >= 0) {
                 this.configuration[index] = configurations[j];
                 this.initailize(configurations[j]);
                 continue;
-            } else {
+            }
+            else {
                 this.configuration.push(configurations[j]);
             }
         }
     }
 
     /**
-     * To add '\' before all the special characters in the regex.
+     * To add '\' before all the special characters in the regex. In a regex to match a special charater you need to add \ before it.
+     * Example: ** will become \*\*
      * 
      * @param pattern 
      */
-    private encodeSpecialCharacters(pattern: string) {
-        return pattern.replace(MarkdownFormatter.SPECIAL_CHAR_REGEX, "\\$&")
+    private encodeSpecialCharacters(pattern: string): string {
+        return pattern.replace(MarkdownFormatter.SPECIAL_CHAR_REGEX, "\\$&");
     }
 
     private initailize(configuration: IFormatterConfiguration): void {
-
         let patternArray = configuration.patterns,
             patternType = configuration.patternType,
             pattern = patternArray[0],
-            groups = configuration.groups;
+            groups = configuration.groups,
+            pattern_0 = this.encodeSpecialCharacters(patternArray[0]),
+            pattern_1 = patternArray[1] ? this.encodeSpecialCharacters(patternArray[1]) : "";
 
         if (patternType === "list") {
-            pattern = this.encodeSpecialCharacters(patternArray[0]) + '[\\s]+((.*?)[' + this.encodeSpecialCharacters(patternArray[1]) + "](?=" + this.encodeSpecialCharacters(patternArray[1]) + "[\\s]+)|(.*?)$)";
-        } else if (patternType == "symmetric") {
-            pattern = this.encodeSpecialCharacters(patternArray[0]) + '(.*?)' + this.encodeSpecialCharacters(patternArray[0]);
-        } else if (patternType == "asymmetric") {
-            let regexForm = this.encodeSpecialCharacters(patternArray[0]);
-
+            pattern = pattern_0 + '[\\s]+((.*?)[' + pattern_1 + "](?=" + pattern_1 + "[\\s]+)|(.*?)$)";
+        }
+        else if (patternType === "symmetric") {
+            pattern = pattern_0 + '(.*?)' + pattern_0;
+        }
+        else if (patternType === "asymmetric") {
+            let regexForm = pattern_0;
             let part = regexForm.length / groups;
             let regex = "";
-            for (var j = 0; j < groups; j++) {
-                let group = regexForm.substring(part * j, part * (j + 1));
-                let firstHalf = group.substring(0, group.length / 2);
-                let secondHalf = group.substring(group.length / 2, group.length);
-                let middle = (j < groups / 2) ? group.substring(0, group.length / 2) : group.substring(group.length / 2, group.length);
+
+            for (let j = 0; j < groups; j++) {
+                let group = regexForm.substring(part * j, part * (j + 1)),
+                firstHalf = group.substring(0, group.length / 2),
+                secondHalf = group.substring(group.length / 2, group.length),
+                middle = (j < groups / 2) ? group.substring(0, group.length / 2) : group.substring(group.length / 2, group.length);
+                
                 regex = regex + firstHalf + '([^' + middle + ']+)' + secondHalf;
             }
             pattern = regex;
@@ -141,15 +147,13 @@ export class MarkdownFormatter extends TextFormatter {
     }
 
     formatText(text: string): string {
-
         for (let i = 0; i < this.configuration.length; i++) {
             let first = true;
             let parsed,
                 pattern = this.configuration[i].regexp,
-                //pattern = this.patterns[i],
                 patternType = this.configuration[i].patternType,
                 styles = this.configuration[i].styles;
-            while (pattern != null && (parsed = pattern.exec(text)) !== null) {
+            while (pattern && (parsed = pattern.exec(text)) !== null) {
                 if (parsed[1] === undefined) {
                     continue;
                 }
@@ -160,7 +164,8 @@ export class MarkdownFormatter extends TextFormatter {
                     if (first) {
                         text = text.replace(parsed[0], styles.start + "<li>" + parsed[1] + "</li>" + styles.end);
                         first = false;
-                    } else {
+                    }
+                    else {
                         //Remove the end tag and add the list item.
                         let indexOL = text.lastIndexOf(styles.end);
                         text = text.replace(text.substring(indexOL, indexOL + styles.end.length), "");
@@ -168,11 +173,11 @@ export class MarkdownFormatter extends TextFormatter {
                     }
                 }
                 //for bold, italic.
-                else if (patternType == "symmetric") {
+                else if (patternType === "symmetric") {
                     text = text.replace(parsed[0], styles.start + parsed[1] + styles.end);
                 }
                 //for hyperlinks.
-                else if (patternType == "asymmetric" && styles.html) {
+                else if (patternType === "asymmetric" && styles.html) {
                     styles.html = styles.html.replace("{0}", parsed[1]);
                     styles.html = styles.html.replace("{1}", parsed[2]);
                     text = text.replace(parsed[0], styles.html);
@@ -181,6 +186,4 @@ export class MarkdownFormatter extends TextFormatter {
         }
         return text;
     }
-
 }
-
