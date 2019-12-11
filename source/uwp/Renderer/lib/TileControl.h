@@ -3,9 +3,6 @@
 #pragma once
 
 #include "pch.h"
-#include <windows.ui.xaml.shapes.h>
-#include "AdaptiveCards.Rendering.Uwp.h"
-#include "Enums.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -33,8 +30,8 @@ namespace AdaptiveNamespace
 
         virtual HRESULT STDMETHODCALLTYPE put_BackgroundImage(_In_ IAdaptiveBackgroundImage* value);
         virtual HRESULT STDMETHODCALLTYPE put_RootElement(_In_ IFrameworkElement* value);
-        virtual HRESULT STDMETHODCALLTYPE get_ResolvedImage(_Outptr_ IUIElement** value);
-        virtual HRESULT STDMETHODCALLTYPE put_ImageSize(ABI::Windows::Foundation::Size value);
+        virtual HRESULT STDMETHODCALLTYPE get_ResolvedImage(_COM_Outptr_ IUIElement** value);
+        virtual HRESULT STDMETHODCALLTYPE put_ImageSize(_In_ ABI::Windows::Foundation::Size value);
 
         virtual HRESULT STDMETHODCALLTYPE LoadImageBrush(_In_ IUIElement* image);
 
@@ -44,7 +41,10 @@ namespace AdaptiveNamespace
         virtual HRESULT STDMETHODCALLTYPE ArrangeOverride(_In_ Size arrangeBounds, _Out_ Size* pReturnValue);
 
         // not implemented
-        virtual HRESULT STDMETHODCALLTYPE get_BackgroundImage(_Outptr_ IAdaptiveBackgroundImage** /*value*/) { return E_NOTIMPL; }
+        virtual HRESULT STDMETHODCALLTYPE get_BackgroundImage(_Outptr_ IAdaptiveBackgroundImage** /*value*/)
+        {
+            return E_NOTIMPL;
+        }
         virtual HRESULT STDMETHODCALLTYPE get_RootElement(_Outptr_ IFrameworkElement** /*value*/) { return E_NOTIMPL; }
         virtual HRESULT STDMETHODCALLTYPE put_ResolvedImage(_In_ IUIElement* /*value*/) { return E_NOTIMPL; }
         virtual HRESULT STDMETHODCALLTYPE get_ImageSize(_Out_ ABI::Windows::Foundation::Size* /*value*/)

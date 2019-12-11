@@ -1,9 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
+// Note the "weird" way these readonly fields are declared is to work around
+// a breaking change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
+// and adopt this syntax for all other static readonly fields.
 export class ActionStyle {
-    static readonly Default = "default";
-    static readonly Positive = "positive";
-    static readonly Destructive = "destructive";
+    static readonly Default: "default" = "default";
+    static readonly Positive: "positive" = "positive";
+    static readonly Destructive: "destructive" = "destructive";
 }
 
 export enum Size {
@@ -129,14 +133,18 @@ export enum InputValidationNecessity {
     recent enough to understand string enums. This is
     a compatible construct that does not require using
     a more recent version of TypeScript.
+
+    Also note the "weird" way these readonly fields are declared is to work around
+    a breaking change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
+    and adopt this syntax for all other static readonly fields.
 */
 export class ContainerStyle {
-    static readonly Default = "default";
-    static readonly Emphasis = "emphasis";
-    static readonly Accent = "accent";
-    static readonly Good = "good";
-    static readonly Attention = "attention";
-    static readonly Warning = "warning";
+    static readonly Default: "default" = "default";
+    static readonly Emphasis: "emphasis" = "emphasis";
+    static readonly Accent: "accent" = "accent";
+    static readonly Good: "good" = "good";
+    static readonly Attention: "attention" = "attention";
+    static readonly Warning: "warning" = "warning";
 }
 
 export enum ValidationError {

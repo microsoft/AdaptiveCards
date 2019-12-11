@@ -78,7 +78,7 @@ var card = {
     "body": [
         {
             "type": "Image",
-            "url": "http://adaptivecards.io/content/adaptive-card-50.png"
+            "url": "https://adaptivecards.io/content/adaptive-card-50.png"
         },
         {
             "type": "TextBlock",
@@ -89,12 +89,12 @@ var card = {
         {
             "type": "Action.OpenUrl",
             "title": "Learn more",
-            "url": "http://adaptivecards.io"
+            "url": "https://adaptivecards.io"
         },
         {
             "type": "Action.OpenUrl",
             "title": "GitHub",
-            "url": "http://github.com/Microsoft/AdaptiveCards"
+            "url": "https://github.com/Microsoft/AdaptiveCards"
         }
     ]
 };

@@ -13,6 +13,7 @@ import ElementWrapper from '../elements/element-wrapper';
 import { Registry } from '../registration/registry';
 import { SelectAction } from '../actions';
 import * as Constants from '../../utils/constants';
+import * as Utils from '../../utils/util';
 import { HostConfigManager } from '../../utils/host-config';
 import { InputContext } from '../../utils/context';
 import { ContainerWrapper } from './';
@@ -37,11 +38,11 @@ export class Container extends React.Component {
 			return children;
 		}
 
-		if (this.payload.isFallbackActivated){
-			if(this.payload.fallbackType == "drop"){
+		if (this.payload.isFallbackActivated) {
+			if (this.payload.fallbackType == "drop") {
 				return null;
-			}else if(!Utils.isNullOrEmpty(element.fallback)){
-				return Registry.getManager().parseComponent(this.payload.fallback,this.context.onParseError);
+			} else if (!Utils.isNullOrEmpty(element.fallback)) {
+				return Registry.getManager().parseComponent(this.payload.fallback, this.context.onParseError);
 			}
 		}
 
@@ -51,9 +52,11 @@ export class Container extends React.Component {
 
 	internalRenderer = () => {
 		const payload = this.payload;
+		const minHeight = Utils.convertStringToNumber(payload.minHeight);
+		const containerStyle = typeof minHeight === "number" ? [styles.container, { minHeight }] : [styles.container];
 
 		var containerContent = (
-			<ContainerWrapper json={this.payload} style={[styles.container]} containerStyle={this.props.containerStyle}>
+			<ContainerWrapper json={this.payload} style={containerStyle} containerStyle={this.props.containerStyle}>
 				<ElementWrapper json={this.payload} style={[styles.defaultBGStyle, { flexGrow: 0 }]} isFirst={this.props.isFirst}>
 					{this.parsePayload()}
 				</ElementWrapper>

@@ -70,7 +70,12 @@ namespace AdaptiveCards.Rendering.Wpf
 
             if (textRun.Strikethrough)
             {
-                textRunSpan.TextDecorations = TextDecorations.Strikethrough;
+                textRunSpan.TextDecorations.Add(TextDecorations.Strikethrough);
+            }
+            
+            if (textRun.Underline)
+            {
+                textRunSpan.TextDecorations.Add(TextDecorations.Underline);
             }
 
             if (textRun.Highlight)

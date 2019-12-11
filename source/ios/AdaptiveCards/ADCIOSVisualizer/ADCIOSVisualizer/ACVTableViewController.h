@@ -12,11 +12,19 @@
     userSelectedJson:(NSString *)jsonStr;
 - (void)source:(ACVTableViewController *)avcTabVc
     userconfig:(NSString *)payload;
+
 @end
 
-@interface ACVTableViewController: UITableViewController
+@protocol ACVTableViewControllerFetchDataDelegate
+- (void)updateTable:(NSArray<NSString *> *)data;
 
-@property (nonatomic, weak) id <ACVTableViewControllerDelegate> delegate;
+@end
+
+@interface ACVTableViewController : UITableViewController <ACVTableViewControllerFetchDataDelegate>
+
+@property (nonatomic, weak) id<ACVTableViewControllerDelegate> delegate;
 @property NSString *userSelectedJSon;
+@property (strong, nonatomic) NSLayoutConstraint *tableHeight;
+@property BOOL IsCollapsed;
 
 @end

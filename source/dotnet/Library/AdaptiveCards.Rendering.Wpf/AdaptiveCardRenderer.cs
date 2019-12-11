@@ -17,7 +17,7 @@ namespace AdaptiveCards.Rendering.Wpf
     {
         protected override AdaptiveSchemaVersion GetSupportedSchemaVersion()
         {
-            return new AdaptiveSchemaVersion(1, 2);
+            return new AdaptiveSchemaVersion(1, 3);
         }
 
         protected Action<object, AdaptiveActionEventArgs> ActionCallback;
@@ -166,7 +166,7 @@ namespace AdaptiveCards.Rendering.Wpf
             outerGrid.Children.Add(grid);
 
             AdaptiveContainerRenderer.AddContainerElements(grid, card.Body, context);
-            AdaptiveActionSetRenderer.AddRenderedActions(grid, card.Actions, context);
+            AdaptiveActionSetRenderer.AddRenderedActions(grid, card.Actions, context, card.InternalID);
 
 
             if (card.SelectAction != null)

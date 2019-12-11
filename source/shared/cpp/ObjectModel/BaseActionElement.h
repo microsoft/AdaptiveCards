@@ -32,7 +32,7 @@ namespace AdaptiveSharedNamespace
         virtual std::string GetStyle() const;
         virtual void SetStyle(const std::string& value);
 
-        virtual const ActionType GetElementType() const;
+        virtual ActionType GetElementType() const;
 
         void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris) override;
         Json::Value SerializeToJsonValue() const override;
@@ -43,7 +43,7 @@ namespace AdaptiveSharedNamespace
         static void ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context, const Json::Value& json, std::shared_ptr<BaseElement>& element);
 
     protected:
-        void PopulateKnownPropertiesSet() override;
+        void PopulateKnownPropertiesSet();
 
     private:
         std::string m_title;

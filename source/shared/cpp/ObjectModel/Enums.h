@@ -154,6 +154,7 @@ namespace AdaptiveSharedNamespace
         ToggleInput,
         Top,
         Type,
+        Underline,
         Url,
         Value,
         ValueOff,
@@ -370,7 +371,8 @@ namespace AdaptiveSharedNamespace
         RequiredPropertyMissing,
         InvalidPropertyValue,
         UnsupportedParserOverride,
-        IdCollision
+        IdCollision,
+        CustomError,
     };
     // No mapping to string needed
 
@@ -390,6 +392,8 @@ namespace AdaptiveSharedNamespace
         InvalidColorFormat,
         InvalidDimensionSpecified,
         InvalidLanguage,
+        InvalidValue,
+        CustomWarning,
     };
     // No mapping to string needed
 

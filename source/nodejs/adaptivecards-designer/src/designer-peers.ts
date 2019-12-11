@@ -54,12 +54,14 @@ export class PropertySheetCategory {
     static readonly DefaultCategory = "__defaultCategory";
     static readonly LayoutCategory = "Layout";
     static readonly StyleCategory = "Style";
+    static readonly SelectionAction = "Selection action";
+    static readonly InlineAction = "Inline action";
 
     private _entries: PropertySheetEntry[] = [];
 
     constructor(readonly name: string) { }
 
-    render(card: Adaptive.AdaptiveCard, context: PropertySheetContext) {
+    render(container: Adaptive.Container, context: PropertySheetContext, displayCategoryName: boolean) {
         let entriesToRender: PropertySheetEntry[] = [];
 
         for (let entry of this._entries) {
@@ -69,15 +71,17 @@ export class PropertySheetCategory {
         }
 
         if (entriesToRender.length > 0) {
-            let header = new Adaptive.TextBlock();
-            header.separator = true;
-            header.text = "**" + (this.name === PropertySheetCategory.DefaultCategory ? context.peer.getCardObject().getJsonTypeName() : this.name) + "**";
-        
-            card.addItem(header);
-        
+            if (displayCategoryName) {
+                let header = new Adaptive.TextBlock();
+                header.separator = true;
+                header.text = "**" + (this.name === PropertySheetCategory.DefaultCategory ? context.peer.getCardObject().getJsonTypeName() : this.name) + "**";
+
+                container.addItem(header);
+            }
+
             for (let entry of entriesToRender) {
                 if (isVersionLessOrEqual(entry.targetVersion, context.targetVersion)) {
-                    card.addItem(entry.render(context));
+                    container.addItem(entry.render(context));
                 }
             }
         }
@@ -113,7 +117,7 @@ export class PropertySheetCategory {
 export class PropertySheet {
     private _categories: { [key: string]: PropertySheetCategory } = {};
 
-    constructor() {
+    constructor(readonly displayCategoryNames: boolean = true) {
         this._categories[PropertySheetCategory.DefaultCategory] = new PropertySheetCategory(PropertySheetCategory.DefaultCategory);
         this._categories[PropertySheetCategory.LayoutCategory] = new PropertySheetCategory(PropertySheetCategory.LayoutCategory);
         this._categories[PropertySheetCategory.StyleCategory] = new PropertySheetCategory(PropertySheetCategory.StyleCategory);
@@ -137,9 +141,9 @@ export class PropertySheet {
         }
     }
 
-    render(card: Adaptive.AdaptiveCard, context: PropertySheetContext) {
+    render(container: Adaptive.Container, context: PropertySheetContext) {
         for (let categoryName of Object.keys(this._categories)) {
-            this._categories[categoryName].render(card, context);
+            this._categories[categoryName].render(container, context, this.displayCategoryNames);
         }
     }
 }
@@ -543,6 +547,19 @@ export abstract class PropertySheetEntry {
     constructor(readonly targetVersion: TargetVersion) { }
 }
 
+export class SubPropertySheetEntry {
+    render(context: PropertySheetContext): Adaptive.CardElement {
+        let container = new Adaptive.Container();
+        container.spacing = Adaptive.Spacing.Small;
+
+        this.propertySheet.render(container, new PropertySheetContext(context.targetVersion, context.peer, this.target));
+
+        return container;
+    }
+
+    constructor(readonly targetVersion: TargetVersion, readonly target: object, readonly propertySheet: PropertySheet) { }
+}
+
 export class CustomPropertySheetEntry extends PropertySheetEntry {
     render(context: PropertySheetContext): Adaptive.CardElement {
         if (this.onRender) {
@@ -563,22 +580,22 @@ export abstract class SingleInputPropertyEditor extends PropertySheetEntry {
     }
 
     protected setPropertyValue(context: PropertySheetContext, value: string) {
-        context.target[this.propertyName] = value;        
+        context.target[this.propertyName] = value;
     }
 
     render(context: PropertySheetContext): Adaptive.CardElement {
         let leftColumn = new Adaptive.Column();
         leftColumn.width = new Adaptive.SizeAndUnit(100, Adaptive.SizeUnit.Pixel);
         leftColumn.verticalContentAlignment = Adaptive.VerticalAlignment.Center;
-    
+
         let rightColumn = new Adaptive.Column();
         rightColumn.width = "stretch";
         rightColumn.verticalContentAlignment = Adaptive.VerticalAlignment.Center;
-    
+
         let columnSet = new Adaptive.ColumnSet();
-    
+
         columnSet.spacing = Adaptive.Spacing.Small;
-    
+
         columnSet.addColumn(leftColumn);
         columnSet.addColumn(rightColumn);
 
@@ -594,7 +611,7 @@ export abstract class SingleInputPropertyEditor extends PropertySheetEntry {
 
             context.peer.changed(this.causesPropertySheetRefresh);
         }
-    
+
         leftColumn.addItem(label);
         rightColumn.addItem(input);
 
@@ -684,7 +701,7 @@ export class BooleanPropertyEditor extends SingleInputPropertyEditor {
     }
 
     protected setPropertyValue(context: PropertySheetContext, value: string) {
-        context.target[this.propertyName] = value == "true"; 
+        context.target[this.propertyName] = value == "true";
     }
 
     protected createInput(context: PropertySheetContext): Adaptive.Input {
@@ -804,7 +821,7 @@ export class HeightPropertyEditor extends ChoicePropertyEditor {
                 break;
         }
 
-        context.target[this.propertyName] = processedValue; 
+        context.target[this.propertyName] = processedValue;
     }
 }
 
@@ -814,7 +831,7 @@ export class SizeAndUnitPropertyEditor extends NumberPropertyEditor {
     }
 
     protected setPropertyValue(context: PropertySheetContext, value: string) {
-        context.target[this.propertyName] = new Adaptive.SizeAndUnit(parseInt(value), this.sizeUnit);
+        context.target[this.propertyName] = new Adaptive.SizeAndUnit(parseFloat(value), this.sizeUnit);
     }
 
     constructor(
@@ -825,7 +842,7 @@ export class SizeAndUnitPropertyEditor extends NumberPropertyEditor {
         readonly defaultValue: number | undefined = undefined,
         readonly causesPropertySheetRefresh: boolean = false) {
         super(targetVersion, propertyName, label, defaultValue, causesPropertySheetRefresh);
-    }   
+    }
 }
 
 export class ActionPropertyEditor extends SingleInputPropertyEditor {
@@ -851,14 +868,14 @@ export class ActionPropertyEditor extends SingleInputPropertyEditor {
         input.isCompact = true;
         input.placeholder = "(not set)";
         input.choices.push(new Adaptive.Choice("(not set)", "none"));
-    
+
         for (var i = 0; i < Adaptive.AdaptiveCard.actionTypeRegistry.getItemCount(); i++) {
             let actionType = Adaptive.AdaptiveCard.actionTypeRegistry.getItemAt(i).typeName;
             let doAddActionType = this.forbiddenActionTypes ? this.forbiddenActionTypes.indexOf(actionType) < 0 : true;
-    
+
             if (doAddActionType) {
                 let choice = new Adaptive.Choice(actionType, actionType);
-    
+
                 input.choices.push(choice);
             }
         }
@@ -1063,7 +1080,7 @@ export abstract class CardObjectPeer extends DesignerPeer {
 export class ActionPeer extends CardObjectPeer {
     static readonly titleProperty = new StringPropertyEditor(Versions.v1_0, "title", "Title");
     static readonly styleProperty = new ChoicePropertyEditor(
-        Versions.v1_2, 
+        Versions.v1_2,
         "style",
         "Style",
         [
@@ -1168,7 +1185,7 @@ export abstract class TypedActionPeer<TAction extends Adaptive.Action> extends A
 export class HttpActionPeer extends TypedActionPeer<Adaptive.HttpAction> {
     static readonly ignoreInputValidationProperty = new BooleanPropertyEditor(Versions.vNext, "ignoreInputValidation", "Ignore input validation");
     static readonly methodProperty = new ChoicePropertyEditor(
-        Versions.v1_0, 
+        Versions.v1_0,
         "method",
         "Method",
         [
@@ -1179,7 +1196,7 @@ export class HttpActionPeer extends TypedActionPeer<Adaptive.HttpAction> {
     static readonly urlProperty = new StringPropertyEditor(Versions.v1_0, "url", "Url");
     static readonly bodyProperty = new StringPropertyEditor(Versions.v1_0, "body", "Body", true);
     static readonly headersProperty = new NameValuePairPropertyEditor(
-        Versions.v1_0, 
+        Versions.v1_0,
         "headers",
         "name",
         "value",
@@ -1191,7 +1208,7 @@ export class HttpActionPeer extends TypedActionPeer<Adaptive.HttpAction> {
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
-        
+
         if (Adaptive.AdaptiveCard.useBuiltInInputValidation) {
             propertySheet.add(
                 PropertySheetCategory.DefaultCategory,
@@ -1221,7 +1238,7 @@ export class SubmitActionPeer extends TypedActionPeer<Adaptive.SubmitAction> {
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
-        
+
         propertySheet.add(
             defaultCategory,
             SubmitActionPeer.ignoreInputValidationProperty,
@@ -1234,7 +1251,7 @@ export class OpenUrlActionPeer extends TypedActionPeer<Adaptive.OpenUrlAction> {
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
-        
+
         propertySheet.add(
             defaultCategory,
             OpenUrlActionPeer.urlProperty);
@@ -1259,7 +1276,7 @@ export class CardElementPeer extends CardObjectPeer {
     static readonly separatorProperty = new BooleanPropertyEditor(Versions.v1_0, "separator", "Separator");
     static readonly horizontalAlignmentProperty = new EnumPropertyEditor(Versions.v1_0, "horizontalAlignment", "Horizontal alignment", Adaptive.HorizontalAlignment);
     static readonly heightProperty = new HeightPropertyEditor(
-        Versions.v1_1, 
+        Versions.v1_1,
         "height",
         "Height",
         [
@@ -1293,7 +1310,7 @@ export class CardElementPeer extends CardObjectPeer {
             this.renderedElement.classList.add("invisible");
         }
     }
-    
+
     constructor(
         parent: DesignerPeer,
         designerSurface: CardDesignerSurface,
@@ -1316,13 +1333,13 @@ export class CardElementPeer extends CardObjectPeer {
 
     getTreeItemText(): string {
         let text = super.getTreeItemText();
-        
+
         if (this.cardElement.isVisible) {
             return text;
         }
         else {
             let result = "Hidden";
-            
+
             if (text) {
                 result += " - " + text;
             }
@@ -1438,7 +1455,7 @@ export class CardElementPeer extends CardObjectPeer {
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
 
-        if (GlobalSettings.previewFeaturesEnabled) {
+        if (GlobalSettings.enableDataBindingSupport) {
             propertySheet.add(
                 defaultCategory,
                 CardElementPeer.dataContextProperty,
@@ -1457,7 +1474,7 @@ export class CardElementPeer extends CardObjectPeer {
             CardElementPeer.horizontalAlignmentProperty,
             CardElementPeer.heightProperty);
     }
- 
+
     get cardElement(): Adaptive.CardElement {
         return this._cardElement;
     }
@@ -1534,7 +1551,15 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
-        
+
+        propertySheet.remove(
+            CardObjectPeer.idProperty,
+            CardElementPeer.isVisibleProperty,
+            CardElementPeer.horizontalAlignmentProperty,
+            CardElementPeer.separatorProperty,
+            CardElementPeer.heightProperty,
+            CardElementPeer.spacingProperty);
+
         propertySheet.add(
             defaultCategory,
             AdaptiveCardPeer.langProperty,
@@ -1551,21 +1576,23 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
             ContainerPeer.backgroundImageProperty);
 
         propertySheet.add(
-            "Selection action",
+            PropertySheetCategory.SelectionAction,
             ContainerPeer.selectActionProperty);
-
-        propertySheet.remove(
-            CardObjectPeer.idProperty,
-            CardElementPeer.isVisibleProperty,
-            CardElementPeer.horizontalAlignmentProperty,
-            CardElementPeer.separatorProperty,
-            CardElementPeer.heightProperty,
-            CardElementPeer.spacingProperty);
 
         if (this.cardElement.selectAction) {
             let selectActionPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, null, this.cardElement.selectAction);
-            selectActionPeer.populatePropertySheet(propertySheet, "Selection action");
             selectActionPeer.onChanged = (sender: DesignerPeer, updatePropertySheet: boolean) => { this.changed(updatePropertySheet); };
+
+            let subPropertySheet = new PropertySheet(false);
+            selectActionPeer.populatePropertySheet(subPropertySheet, PropertySheetCategory.SelectionAction);
+
+            subPropertySheet.remove(
+                ActionPeer.iconUrlProperty,
+                ActionPeer.styleProperty);
+
+            propertySheet.add(
+                PropertySheetCategory.SelectionAction,
+                new SubPropertySheetEntry(Versions.v1_2, this.cardElement.selectAction, subPropertySheet));
         }
     }
 }
@@ -1617,7 +1644,7 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
-        
+
         propertySheet.add(
             defaultCategory,
             ColumnPeer.widthProperty);
@@ -1650,13 +1677,23 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
             ContainerPeer.backgroundImageProperty);
 
         propertySheet.add(
-            "Selection action",
-            ContainerPeer.selectActionProperty);  
-   
+            PropertySheetCategory.SelectionAction,
+            ContainerPeer.selectActionProperty);
+
         if (this.cardElement.selectAction) {
             let selectActionPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, null, this.cardElement.selectAction);
-            selectActionPeer.populatePropertySheet(propertySheet, "Selection action");
             selectActionPeer.onChanged = (sender: DesignerPeer, updatePropertySheet: boolean) => { this.changed(updatePropertySheet); };
+
+            let subPropertySheet = new PropertySheet(false);
+            selectActionPeer.populatePropertySheet(subPropertySheet, PropertySheetCategory.SelectionAction);
+
+            subPropertySheet.remove(
+                ActionPeer.iconUrlProperty,
+                ActionPeer.styleProperty);
+
+            propertySheet.add(
+                PropertySheetCategory.SelectionAction,
+                new SubPropertySheetEntry(Versions.v1_2, this.cardElement.selectAction, subPropertySheet));
         }
     }
 }
@@ -1702,7 +1739,7 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
-        
+
         propertySheet.add(
             defaultCategory,
             ContainerPeer.minHeightProperty,
@@ -1710,14 +1747,23 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
             ContainerPeer.bleedProperty);
 
         propertySheet.add(
-            "Selection action",
+            PropertySheetCategory.SelectionAction,
             ContainerPeer.selectActionProperty);
 
-    
         if (this.cardElement.selectAction) {
             let selectActionPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, null, this.cardElement.selectAction);
-            selectActionPeer.populatePropertySheet(propertySheet, "Selection action");
             selectActionPeer.onChanged = (sender: DesignerPeer, updatePropertySheet: boolean) => { this.changed(updatePropertySheet); };
+
+            let subPropertySheet = new PropertySheet(false);
+            selectActionPeer.populatePropertySheet(subPropertySheet, PropertySheetCategory.SelectionAction);
+
+            subPropertySheet.remove(
+                ActionPeer.iconUrlProperty,
+                ActionPeer.styleProperty);
+
+            propertySheet.add(
+                PropertySheetCategory.SelectionAction,
+                new SubPropertySheetEntry(Versions.v1_2, this.cardElement.selectAction, subPropertySheet));
         }
     }
 
@@ -1733,7 +1779,7 @@ export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
     static readonly styleProperty = new ContainerStylePropertyEditor(Versions.v1_0, "style", "Style");
     static readonly bleedProperty = new BooleanPropertyEditor(Versions.v1_2, "bleed", "Bleed");
     static readonly backgroundImageProperty = new CompoundPropertyEditor(
-        Versions.v1_0, 
+        Versions.v1_0,
         "backgroundImage",
         [
             new StringPropertyEditor(Versions.v1_0, "url", "URL"),
@@ -1749,7 +1795,7 @@ export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
-        
+
         propertySheet.add(
             PropertySheetCategory.LayoutCategory,
             ContainerPeer.minHeightProperty,
@@ -1765,13 +1811,23 @@ export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
             ContainerPeer.backgroundImageProperty);
 
         propertySheet.add(
-            "Selection action",
+            PropertySheetCategory.SelectionAction,
             ContainerPeer.selectActionProperty);
 
         if (this.cardElement.selectAction) {
             let selectActionPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, null, this.cardElement.selectAction);
-            selectActionPeer.populatePropertySheet(propertySheet, "Selection action");
             selectActionPeer.onChanged = (sender: DesignerPeer, updatePropertySheet: boolean) => { this.changed(updatePropertySheet); };
+
+            let subPropertySheet = new PropertySheet(false);
+            selectActionPeer.populatePropertySheet(subPropertySheet, PropertySheetCategory.SelectionAction);
+
+            subPropertySheet.remove(
+                ActionPeer.iconUrlProperty,
+                ActionPeer.styleProperty);
+
+            propertySheet.add(
+                PropertySheetCategory.SelectionAction,
+                new SubPropertySheetEntry(Versions.v1_2, this.cardElement.selectAction, subPropertySheet));
         }
     }
 }
@@ -1841,7 +1897,7 @@ export class ImageSetPeer extends TypedCardElementPeer<Adaptive.ImageSet> {
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
-        
+
         propertySheet.add(
             defaultCategory,
             ImageSetPeer.ImageSizeProperty);
@@ -1884,7 +1940,7 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
-        
+
         propertySheet.add(
             defaultCategory,
             ImagePeer.urlProperty,
@@ -1903,14 +1959,23 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
                 ImagePeer.backgroundColorProperty);
 
             propertySheet.add(
-                "Selection action",
+                PropertySheetCategory.SelectionAction,
                 ContainerPeer.selectActionProperty);
 
             if (this.cardElement.selectAction) {
                 let selectActionPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, null, this.cardElement.selectAction);
-                selectActionPeer.populatePropertySheet(propertySheet, "Selection action");
                 selectActionPeer.onChanged = (sender: DesignerPeer, updatePropertySheet: boolean) => { this.changed(updatePropertySheet); };
-            }
+
+                let subPropertySheet = new PropertySheet(false);
+                selectActionPeer.populatePropertySheet(subPropertySheet, PropertySheetCategory.SelectionAction);
+
+                subPropertySheet.remove(
+                    ActionPeer.iconUrlProperty,
+                    ActionPeer.styleProperty);
+
+                propertySheet.add(
+                    PropertySheetCategory.SelectionAction,
+                    new SubPropertySheetEntry(Versions.v1_2, this.cardElement.selectAction, subPropertySheet));            }
         }
     }
 }
@@ -1919,7 +1984,7 @@ export class MediaPeer extends TypedCardElementPeer<Adaptive.Media> {
     static readonly altTextProperty = new StringPropertyEditor(Versions.v1_1, "altText", "Alternate text");
     static readonly posterUrlProperty = new StringPropertyEditor(Versions.v1_1, "posterUrl", "Poster URL");
     static readonly sourcesProperty = new NameValuePairPropertyEditor(
-        Versions.v1_1, 
+        Versions.v1_1,
         "sources",
         "url",
         "mimeType",
@@ -1943,7 +2008,7 @@ export class MediaPeer extends TypedCardElementPeer<Adaptive.Media> {
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
-        
+
         propertySheet.add(
             defaultCategory,
             MediaPeer.altTextProperty,
@@ -1957,7 +2022,7 @@ export class MediaPeer extends TypedCardElementPeer<Adaptive.Media> {
 
 export class FactSetPeer extends TypedCardElementPeer<Adaptive.FactSet> {
     static readonly factsProperty = new NameValuePairPropertyEditor(
-        Versions.v1_0, 
+        Versions.v1_0,
         "facts",
         "name",
         "value",
@@ -1992,7 +2057,7 @@ export class FactSetPeer extends TypedCardElementPeer<Adaptive.FactSet> {
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
-        
+
         propertySheet.add(
             "Facts",
             FactSetPeer.factsProperty);
@@ -2002,10 +2067,9 @@ export class FactSetPeer extends TypedCardElementPeer<Adaptive.FactSet> {
 }
 
 export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCardElementPeer<TInput> {
-    static readonly titleProperty = new StringPropertyEditor(Versions.v1_0, "title", "Title");
     static readonly defaultValueProperty = new StringPropertyEditor(Versions.v1_0, "defaultValue", "Default value");
     static readonly validationProperty = new CompoundPropertyEditor(
-        Versions.vNext, 
+        Versions.vNext,
         "validation",
         [
             new EnumPropertyEditor(Versions.vNext, "necessity", "Necessity", Adaptive.InputValidationNecessity),
@@ -2015,10 +2079,6 @@ export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCard
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
-        
-        propertySheet.add(
-            defaultCategory,
-            InputPeer.titleProperty);
 
         propertySheet.add(
             "Validation",
@@ -2028,23 +2088,18 @@ export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCard
             CardElementPeer.horizontalAlignmentProperty,
             CardElementPeer.heightProperty);
     }
-
-    initializeCardElement() {
-        super.initializeCardElement();
-
-        this.cardElement.title = "New Input.Toggle";
-    }
 }
 
 export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
     static readonly placeholderProperty = new StringPropertyEditor(Versions.v1_0, "placeholder", "Placeholder");
     static readonly isMultilineProperty = new BooleanPropertyEditor(Versions.v1_0, "isMultiline", "Multi-line", true);
     static readonly styleProperty = new EnumPropertyEditor(Versions.v1_0, "style", "Style", Adaptive.InputTextStyle);
+    static readonly maxLengthProperty = new NumberPropertyEditor(Versions.v1_0, "maxLength", "Maximum length");
     static readonly inlineActionProperty = new ActionPropertyEditor(Versions.v1_2, "inlineAction", "Action type", [ Adaptive.ShowCardAction.JsonTypeName ], true);
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
-        
+
         propertySheet.add(
             defaultCategory,
             TextInputPeer.placeholderProperty,
@@ -2057,17 +2112,26 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
         }
 
         propertySheet.add(
-            "Inline action",
+            PropertySheetCategory.InlineAction,
             TextInputPeer.inlineActionProperty);
 
         if (this.cardElement.inlineAction) {
             let inlineActionPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, null, this.cardElement.inlineAction);
-            inlineActionPeer.populatePropertySheet(propertySheet, "Inline action");
             inlineActionPeer.onChanged = (sender: DesignerPeer, updatePropertySheet: boolean) => { this.changed(updatePropertySheet); };
+
+            let subPropertySheet = new PropertySheet(false);
+            inlineActionPeer.populatePropertySheet(subPropertySheet, PropertySheetCategory.InlineAction);
+
+            subPropertySheet.remove(ActionPeer.styleProperty);
+
+            propertySheet.add(
+                PropertySheetCategory.InlineAction,
+                new SubPropertySheetEntry(Versions.v1_2, this.cardElement.inlineAction, subPropertySheet));
         }
 
         propertySheet.add(
             defaultCategory,
+            TextInputPeer.maxLengthProperty,
             TextInputPeer.defaultValueProperty);
     }
 
@@ -2080,12 +2144,12 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
 
 export class NumberInputPeer extends InputPeer<Adaptive.NumberInput> {
     static readonly placeholderProperty = new StringPropertyEditor(Versions.v1_0, "placeholder", "Placeholder");
-    static readonly minProperty = new StringPropertyEditor(Versions.v1_0, "min", "Maximum value");
-    static readonly maxProperty = new StringPropertyEditor(Versions.v1_0, "max", "Maximum value");
+    static readonly minProperty = new NumberPropertyEditor(Versions.v1_0, "min", "Minimum value");
+    static readonly maxProperty = new NumberPropertyEditor(Versions.v1_0, "max", "Maximum value");
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
-        
+
         propertySheet.add(
             defaultCategory,
             NumberInputPeer.placeholderProperty,
@@ -2102,12 +2166,12 @@ export class NumberInputPeer extends InputPeer<Adaptive.NumberInput> {
 }
 
 export class DateInputPeer extends InputPeer<Adaptive.DateInput> {
-    static readonly minProperty = new StringPropertyEditor(Versions.v1_0, "min", "Maximum value");
+    static readonly minProperty = new StringPropertyEditor(Versions.v1_0, "min", "Minimum value");
     static readonly maxProperty = new StringPropertyEditor(Versions.v1_0, "max", "Maximum value");
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
-        
+
         propertySheet.add(
             defaultCategory,
             DateInputPeer.defaultValueProperty,
@@ -2117,12 +2181,12 @@ export class DateInputPeer extends InputPeer<Adaptive.DateInput> {
 }
 
 export class TimeInputPeer extends InputPeer<Adaptive.TimeInput> {
-    static readonly minProperty = new StringPropertyEditor(Versions.v1_0, "min", "Maximum value");
+    static readonly minProperty = new StringPropertyEditor(Versions.v1_0, "min", "Minimum value");
     static readonly maxProperty = new StringPropertyEditor(Versions.v1_0, "max", "Maximum value");
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
-        
+
         propertySheet.add(
             defaultCategory,
             TimeInputPeer.defaultValueProperty,
@@ -2132,22 +2196,28 @@ export class TimeInputPeer extends InputPeer<Adaptive.TimeInput> {
 }
 
 export class ToggleInputPeer extends InputPeer<Adaptive.ToggleInput> {
+    static readonly titleProperty = new StringPropertyEditor(Versions.v1_0, "title", "Title");
     static readonly valueOnProperty = new StringPropertyEditor(Versions.v1_0, "valueOn", "Value when on");
     static readonly valueOffProperty = new StringPropertyEditor(Versions.v1_0, "valueOff", "Value when off");
     static readonly wrapProperty = new BooleanPropertyEditor(Versions.v1_2, "wrap", "Wrap");
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
-        
+
         propertySheet.add(
             defaultCategory,
+            ToggleInputPeer.titleProperty,
             ToggleInputPeer.valueOnProperty,
-            ToggleInputPeer.valueOnProperty,
+            ToggleInputPeer.valueOffProperty,
             ToggleInputPeer.defaultValueProperty);
 
         propertySheet.add(
             PropertySheetCategory.LayoutCategory,
             ToggleInputPeer.wrapProperty);
+    }
+
+    initializeCardElement() {
+        this.cardElement.title = "New Input.Toggle";
     }
 }
 
@@ -2157,9 +2227,9 @@ export class ChoiceSetInputPeer extends InputPeer<Adaptive.ChoiceSetInput> {
     static readonly isCompactProperty = new BooleanPropertyEditor(Versions.v1_0, "isCompact", "Compact style");
     static readonly wrapProperty = new BooleanPropertyEditor(Versions.v1_2, "wrap", "Wrap");
     static readonly choicesProperty = new NameValuePairPropertyEditor(
-        Versions.v1_0, 
+        Versions.v1_0,
         "choices",
-        "name",
+        "title",
         "value",
         (name: string, value: string) => { return new Adaptive.Choice(name, value); },
         "Title",
@@ -2169,7 +2239,7 @@ export class ChoiceSetInputPeer extends InputPeer<Adaptive.ChoiceSetInput> {
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
-        
+
         propertySheet.add(
             defaultCategory,
             ChoiceSetInputPeer.placeholderProperty,
@@ -2264,7 +2334,7 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
-        
+
         propertySheet.add(
             defaultCategory,
             TextBlockPeer.textProperty);
@@ -2301,7 +2371,7 @@ export class RichTextBlockPeer extends TypedCardElementPeer<Adaptive.RichTextBlo
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
-        
+
         propertySheet.add(
             defaultCategory,
             new CustomPropertySheetEntry(

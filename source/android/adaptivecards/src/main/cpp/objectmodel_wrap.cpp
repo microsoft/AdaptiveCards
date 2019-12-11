@@ -744,7 +744,7 @@ namespace Swig {
 namespace Swig {
   namespace {
     jclass jclass_AdaptiveCardObjectModelJNI = NULL;
-    jmethodID director_method_ids[36];
+    jmethodID director_method_ids[33];
   }
 }
 
@@ -1939,29 +1939,6 @@ void SwigDirector_BaseElement::GetResourceInformation(std::vector< AdaptiveCards
   if (swigjobj) jenv->DeleteLocalRef(swigjobj);
 }
 
-void SwigDirector_BaseElement::PopulateKnownPropertiesSet() {
-  JNIEnvWrapper swigjnienv(this) ;
-  JNIEnv * jenv = swigjnienv.getJNIEnv() ;
-  jobject swigjobj = (jobject) NULL ;
-  
-  if (!swig_override[5]) {
-    AdaptiveCards::BaseElement::PopulateKnownPropertiesSet();
-    return;
-  }
-  swigjobj = swig_get_self(jenv);
-  if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[5], swigjobj);
-    jthrowable swigerror = jenv->ExceptionOccurred();
-    if (swigerror) {
-      Swig::DirectorException::raise(jenv, swigerror);
-    }
-    
-  } else {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null upcall object in AdaptiveCards::BaseElement::PopulateKnownPropertiesSet ");
-  }
-  if (swigjobj) jenv->DeleteLocalRef(swigjobj);
-}
-
 void SwigDirector_BaseElement::swig_connect_director(JNIEnv *jenv, jobject jself, jclass jcls, bool swig_mem_own, bool weak_global) {
   static struct {
     const char *mname;
@@ -1982,9 +1959,6 @@ void SwigDirector_BaseElement::swig_connect_director(JNIEnv *jenv, jobject jself
     },
     {
       "GetResourceInformation", "(Lio/adaptivecards/objectmodel/RemoteResourceInformationVector;)V", NULL 
-    },
-    {
-      "PopulateKnownPropertiesSet", "()V", NULL 
     }
   };
   
@@ -1997,7 +1971,7 @@ void SwigDirector_BaseElement::swig_connect_director(JNIEnv *jenv, jobject jself
       baseclass = (jclass) jenv->NewGlobalRef(baseclass);
     }
     bool derived = (jenv->IsSameObject(baseclass, jcls) ? false : true);
-    for (int i = 0; i < 6; ++i) {
+    for (int i = 0; i < 5; ++i) {
       if (!methods[i].base_methid) {
         methods[i].base_methid = jenv->GetMethodID(baseclass, methods[i].mname, methods[i].mdesc);
         if (!methods[i].base_methid) return;
@@ -2040,7 +2014,7 @@ std::string SwigDirector_BaseCardElement::GetId() const {
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jresult = (jstring) jenv->CallStaticObjectMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[6], swigjobj);
+    jresult = (jstring) jenv->CallStaticObjectMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[5], swigjobj);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2077,7 +2051,7 @@ void SwigDirector_BaseCardElement::SetId(std::string const &value) {
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
     jvalue = jenv->NewStringUTF((&value)->c_str());
     Swig::LocalRefGuard value_refguard(jenv, jvalue); 
-    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[7], swigjobj, jvalue);
+    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[6], swigjobj, jvalue);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2101,7 +2075,7 @@ std::string SwigDirector_BaseCardElement::Serialize() const {
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jresult = (jstring) jenv->CallStaticObjectMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[8], swigjobj);
+    jresult = (jstring) jenv->CallStaticObjectMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[7], swigjobj);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2137,7 +2111,7 @@ Json::Value SwigDirector_BaseCardElement::SerializeToJsonValue() const {
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[9], swigjobj);
+    jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[8], swigjobj);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2169,7 +2143,7 @@ void SwigDirector_BaseCardElement::GetResourceInformation(std::vector< AdaptiveC
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
     *(std::vector< AdaptiveCards::RemoteResourceInformation > **)&jresourceUris = (std::vector< AdaptiveCards::RemoteResourceInformation > *) &resourceUris; 
-    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[10], swigjobj, jresourceUris);
+    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[9], swigjobj, jresourceUris);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2181,29 +2155,6 @@ void SwigDirector_BaseCardElement::GetResourceInformation(std::vector< AdaptiveC
   if (swigjobj) jenv->DeleteLocalRef(swigjobj);
 }
 
-void SwigDirector_BaseCardElement::PopulateKnownPropertiesSet() {
-  JNIEnvWrapper swigjnienv(this) ;
-  JNIEnv * jenv = swigjnienv.getJNIEnv() ;
-  jobject swigjobj = (jobject) NULL ;
-  
-  if (!swig_override[5]) {
-    AdaptiveCards::BaseCardElement::PopulateKnownPropertiesSet();
-    return;
-  }
-  swigjobj = swig_get_self(jenv);
-  if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[11], swigjobj);
-    jthrowable swigerror = jenv->ExceptionOccurred();
-    if (swigerror) {
-      Swig::DirectorException::raise(jenv, swigerror);
-    }
-    
-  } else {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null upcall object in AdaptiveCards::BaseCardElement::PopulateKnownPropertiesSet ");
-  }
-  if (swigjobj) jenv->DeleteLocalRef(swigjobj);
-}
-
 bool SwigDirector_BaseCardElement::GetSeparator() const {
   bool c_result = SwigValueInit< bool >() ;
   jboolean jresult = 0 ;
@@ -2211,12 +2162,12 @@ bool SwigDirector_BaseCardElement::GetSeparator() const {
   JNIEnv * jenv = swigjnienv.getJNIEnv() ;
   jobject swigjobj = (jobject) NULL ;
   
-  if (!swig_override[6]) {
+  if (!swig_override[5]) {
     return AdaptiveCards::BaseCardElement::GetSeparator();
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jresult = (jboolean) jenv->CallStaticBooleanMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[12], swigjobj);
+    jresult = (jboolean) jenv->CallStaticBooleanMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[10], swigjobj);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2236,14 +2187,14 @@ void SwigDirector_BaseCardElement::SetSeparator(bool const value) {
   jobject swigjobj = (jobject) NULL ;
   jboolean jvalue  ;
   
-  if (!swig_override[7]) {
+  if (!swig_override[6]) {
     AdaptiveCards::BaseCardElement::SetSeparator(value);
     return;
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
     jvalue = (jboolean) value;
-    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[13], swigjobj, jvalue);
+    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[11], swigjobj, jvalue);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2262,12 +2213,12 @@ AdaptiveCards::Spacing SwigDirector_BaseCardElement::GetSpacing() const {
   JNIEnv * jenv = swigjnienv.getJNIEnv() ;
   jobject swigjobj = (jobject) NULL ;
   
-  if (!swig_override[8]) {
+  if (!swig_override[7]) {
     return AdaptiveCards::BaseCardElement::GetSpacing();
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jresult = (jint) jenv->CallStaticIntMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[14], swigjobj);
+    jresult = (jint) jenv->CallStaticIntMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[12], swigjobj);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2287,14 +2238,14 @@ void SwigDirector_BaseCardElement::SetSpacing(AdaptiveCards::Spacing const value
   jobject swigjobj = (jobject) NULL ;
   jint jvalue  ;
   
-  if (!swig_override[9]) {
+  if (!swig_override[8]) {
     AdaptiveCards::BaseCardElement::SetSpacing(value);
     return;
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
     jvalue = (jint) value;
-    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[15], swigjobj, jvalue);
+    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[13], swigjobj, jvalue);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2313,12 +2264,12 @@ bool SwigDirector_BaseCardElement::GetIsVisible() const {
   JNIEnv * jenv = swigjnienv.getJNIEnv() ;
   jobject swigjobj = (jobject) NULL ;
   
-  if (!swig_override[10]) {
+  if (!swig_override[9]) {
     return AdaptiveCards::BaseCardElement::GetIsVisible();
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jresult = (jboolean) jenv->CallStaticBooleanMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[16], swigjobj);
+    jresult = (jboolean) jenv->CallStaticBooleanMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[14], swigjobj);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2338,14 +2289,14 @@ void SwigDirector_BaseCardElement::SetIsVisible(bool const value) {
   jobject swigjobj = (jobject) NULL ;
   jboolean jvalue  ;
   
-  if (!swig_override[11]) {
+  if (!swig_override[10]) {
     AdaptiveCards::BaseCardElement::SetIsVisible(value);
     return;
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
     jvalue = (jboolean) value;
-    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[17], swigjobj, jvalue);
+    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[15], swigjobj, jvalue);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2357,19 +2308,19 @@ void SwigDirector_BaseCardElement::SetIsVisible(bool const value) {
   if (swigjobj) jenv->DeleteLocalRef(swigjobj);
 }
 
-AdaptiveCards::CardElementType const SwigDirector_BaseCardElement::GetElementType() const {
+AdaptiveCards::CardElementType SwigDirector_BaseCardElement::GetElementType() const {
   AdaptiveCards::CardElementType c_result = SwigValueInit< AdaptiveCards::CardElementType >() ;
   jint jresult = 0 ;
   JNIEnvWrapper swigjnienv(this) ;
   JNIEnv * jenv = swigjnienv.getJNIEnv() ;
   jobject swigjobj = (jobject) NULL ;
   
-  if (!swig_override[12]) {
+  if (!swig_override[11]) {
     return AdaptiveCards::BaseCardElement::GetElementType();
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jresult = (jint) jenv->CallStaticIntMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[18], swigjobj);
+    jresult = (jint) jenv->CallStaticIntMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[16], swigjobj);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2405,9 +2356,6 @@ void SwigDirector_BaseCardElement::swig_connect_director(JNIEnv *jenv, jobject j
       "GetResourceInformation", "(Lio/adaptivecards/objectmodel/RemoteResourceInformationVector;)V", NULL 
     },
     {
-      "PopulateKnownPropertiesSet", "()V", NULL 
-    },
-    {
       "GetSeparator", "()Z", NULL 
     },
     {
@@ -2439,7 +2387,7 @@ void SwigDirector_BaseCardElement::swig_connect_director(JNIEnv *jenv, jobject j
       baseclass = (jclass) jenv->NewGlobalRef(baseclass);
     }
     bool derived = (jenv->IsSameObject(baseclass, jcls) ? false : true);
-    for (int i = 0; i < 13; ++i) {
+    for (int i = 0; i < 12; ++i) {
       if (!methods[i].base_methid) {
         methods[i].base_methid = jenv->GetMethodID(baseclass, methods[i].mname, methods[i].mdesc);
         if (!methods[i].base_methid) return;
@@ -2484,7 +2432,7 @@ std::string SwigDirector_BaseActionElement::GetId() const {
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jresult = (jstring) jenv->CallStaticObjectMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[19], swigjobj);
+    jresult = (jstring) jenv->CallStaticObjectMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[17], swigjobj);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2521,7 +2469,7 @@ void SwigDirector_BaseActionElement::SetId(std::string const &value) {
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
     jvalue = jenv->NewStringUTF((&value)->c_str());
     Swig::LocalRefGuard value_refguard(jenv, jvalue); 
-    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[20], swigjobj, jvalue);
+    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[18], swigjobj, jvalue);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2545,7 +2493,7 @@ std::string SwigDirector_BaseActionElement::Serialize() const {
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jresult = (jstring) jenv->CallStaticObjectMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[21], swigjobj);
+    jresult = (jstring) jenv->CallStaticObjectMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[19], swigjobj);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2581,7 +2529,7 @@ Json::Value SwigDirector_BaseActionElement::SerializeToJsonValue() const {
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[22], swigjobj);
+    jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[20], swigjobj);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2613,7 +2561,7 @@ void SwigDirector_BaseActionElement::GetResourceInformation(std::vector< Adaptiv
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
     *(std::vector< AdaptiveCards::RemoteResourceInformation > **)&jresourceUris = (std::vector< AdaptiveCards::RemoteResourceInformation > *) &resourceUris; 
-    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[23], swigjobj, jresourceUris);
+    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[21], swigjobj, jresourceUris);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2625,29 +2573,6 @@ void SwigDirector_BaseActionElement::GetResourceInformation(std::vector< Adaptiv
   if (swigjobj) jenv->DeleteLocalRef(swigjobj);
 }
 
-void SwigDirector_BaseActionElement::PopulateKnownPropertiesSet() {
-  JNIEnvWrapper swigjnienv(this) ;
-  JNIEnv * jenv = swigjnienv.getJNIEnv() ;
-  jobject swigjobj = (jobject) NULL ;
-  
-  if (!swig_override[5]) {
-    AdaptiveCards::BaseActionElement::PopulateKnownPropertiesSet();
-    return;
-  }
-  swigjobj = swig_get_self(jenv);
-  if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[24], swigjobj);
-    jthrowable swigerror = jenv->ExceptionOccurred();
-    if (swigerror) {
-      Swig::DirectorException::raise(jenv, swigerror);
-    }
-    
-  } else {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null upcall object in AdaptiveCards::BaseActionElement::PopulateKnownPropertiesSet ");
-  }
-  if (swigjobj) jenv->DeleteLocalRef(swigjobj);
-}
-
 std::string SwigDirector_BaseActionElement::GetTitle() const {
   std::string c_result ;
   jstring jresult = 0 ;
@@ -2655,12 +2580,12 @@ std::string SwigDirector_BaseActionElement::GetTitle() const {
   JNIEnv * jenv = swigjnienv.getJNIEnv() ;
   jobject swigjobj = (jobject) NULL ;
   
-  if (!swig_override[6]) {
+  if (!swig_override[5]) {
     return AdaptiveCards::BaseActionElement::GetTitle();
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jresult = (jstring) jenv->CallStaticObjectMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[25], swigjobj);
+    jresult = (jstring) jenv->CallStaticObjectMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[22], swigjobj);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2689,7 +2614,7 @@ void SwigDirector_BaseActionElement::SetTitle(std::string const &value) {
   jobject swigjobj = (jobject) NULL ;
   jstring jvalue = 0 ;
   
-  if (!swig_override[7]) {
+  if (!swig_override[6]) {
     AdaptiveCards::BaseActionElement::SetTitle(value);
     return;
   }
@@ -2697,7 +2622,7 @@ void SwigDirector_BaseActionElement::SetTitle(std::string const &value) {
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
     jvalue = jenv->NewStringUTF((&value)->c_str());
     Swig::LocalRefGuard value_refguard(jenv, jvalue); 
-    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[26], swigjobj, jvalue);
+    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[23], swigjobj, jvalue);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2716,12 +2641,12 @@ std::string SwigDirector_BaseActionElement::GetIconUrl() const {
   JNIEnv * jenv = swigjnienv.getJNIEnv() ;
   jobject swigjobj = (jobject) NULL ;
   
-  if (!swig_override[8]) {
+  if (!swig_override[7]) {
     return AdaptiveCards::BaseActionElement::GetIconUrl();
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jresult = (jstring) jenv->CallStaticObjectMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[27], swigjobj);
+    jresult = (jstring) jenv->CallStaticObjectMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[24], swigjobj);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2750,7 +2675,7 @@ void SwigDirector_BaseActionElement::SetIconUrl(std::string const &value) {
   jobject swigjobj = (jobject) NULL ;
   jstring jvalue = 0 ;
   
-  if (!swig_override[9]) {
+  if (!swig_override[8]) {
     AdaptiveCards::BaseActionElement::SetIconUrl(value);
     return;
   }
@@ -2758,7 +2683,7 @@ void SwigDirector_BaseActionElement::SetIconUrl(std::string const &value) {
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
     jvalue = jenv->NewStringUTF((&value)->c_str());
     Swig::LocalRefGuard value_refguard(jenv, jvalue); 
-    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[28], swigjobj, jvalue);
+    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[25], swigjobj, jvalue);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2777,12 +2702,12 @@ std::string SwigDirector_BaseActionElement::GetStyle() const {
   JNIEnv * jenv = swigjnienv.getJNIEnv() ;
   jobject swigjobj = (jobject) NULL ;
   
-  if (!swig_override[10]) {
+  if (!swig_override[9]) {
     return AdaptiveCards::BaseActionElement::GetStyle();
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jresult = (jstring) jenv->CallStaticObjectMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[29], swigjobj);
+    jresult = (jstring) jenv->CallStaticObjectMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[26], swigjobj);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2811,7 +2736,7 @@ void SwigDirector_BaseActionElement::SetStyle(std::string const &value) {
   jobject swigjobj = (jobject) NULL ;
   jstring jvalue = 0 ;
   
-  if (!swig_override[11]) {
+  if (!swig_override[10]) {
     AdaptiveCards::BaseActionElement::SetStyle(value);
     return;
   }
@@ -2819,7 +2744,7 @@ void SwigDirector_BaseActionElement::SetStyle(std::string const &value) {
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
     jvalue = jenv->NewStringUTF((&value)->c_str());
     Swig::LocalRefGuard value_refguard(jenv, jvalue); 
-    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[30], swigjobj, jvalue);
+    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[27], swigjobj, jvalue);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2831,19 +2756,19 @@ void SwigDirector_BaseActionElement::SetStyle(std::string const &value) {
   if (swigjobj) jenv->DeleteLocalRef(swigjobj);
 }
 
-AdaptiveCards::ActionType const SwigDirector_BaseActionElement::GetElementType() const {
+AdaptiveCards::ActionType SwigDirector_BaseActionElement::GetElementType() const {
   AdaptiveCards::ActionType c_result = SwigValueInit< AdaptiveCards::ActionType >() ;
   jint jresult = 0 ;
   JNIEnvWrapper swigjnienv(this) ;
   JNIEnv * jenv = swigjnienv.getJNIEnv() ;
   jobject swigjobj = (jobject) NULL ;
   
-  if (!swig_override[12]) {
+  if (!swig_override[11]) {
     return AdaptiveCards::BaseActionElement::GetElementType();
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jresult = (jint) jenv->CallStaticIntMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[31], swigjobj);
+    jresult = (jint) jenv->CallStaticIntMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[28], swigjobj);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2879,9 +2804,6 @@ void SwigDirector_BaseActionElement::swig_connect_director(JNIEnv *jenv, jobject
       "GetResourceInformation", "(Lio/adaptivecards/objectmodel/RemoteResourceInformationVector;)V", NULL 
     },
     {
-      "PopulateKnownPropertiesSet", "()V", NULL 
-    },
-    {
       "GetTitle", "()Ljava/lang/String;", NULL 
     },
     {
@@ -2913,7 +2835,7 @@ void SwigDirector_BaseActionElement::swig_connect_director(JNIEnv *jenv, jobject
       baseclass = (jclass) jenv->NewGlobalRef(baseclass);
     }
     bool derived = (jenv->IsSameObject(baseclass, jcls) ? false : true);
-    for (int i = 0; i < 13; ++i) {
+    for (int i = 0; i < 12; ++i) {
       if (!methods[i].base_methid) {
         methods[i].base_methid = jenv->GetMethodID(baseclass, methods[i].mname, methods[i].mdesc);
         if (!methods[i].base_methid) return;
@@ -2950,7 +2872,7 @@ std::shared_ptr< AdaptiveCards::BaseActionElement > SwigDirector_ActionElementPa
     jcontext = 0;
     *((std::shared_ptr<  AdaptiveCards::ParseContext > **)&jcontext) = new std::shared_ptr<  AdaptiveCards::ParseContext > (&context SWIG_NO_NULL_DELETER_0); 
     *(Json::Value **)&jvalue = (Json::Value *) &value; 
-    jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[32], swigjobj, jcontext, jvalue);
+    jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[29], swigjobj, jcontext, jvalue);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2991,7 +2913,7 @@ std::shared_ptr< AdaptiveCards::BaseActionElement > SwigDirector_ActionElementPa
     *((std::shared_ptr<  AdaptiveCards::ParseContext > **)&jcontext) = new std::shared_ptr<  AdaptiveCards::ParseContext > (&context SWIG_NO_NULL_DELETER_0); 
     jvalue = jenv->NewStringUTF((&value)->c_str());
     Swig::LocalRefGuard value_refguard(jenv, jvalue); 
-    jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[33], swigjobj, jcontext, jvalue);
+    jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[30], swigjobj, jcontext, jvalue);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -3068,7 +2990,7 @@ std::shared_ptr< AdaptiveCards::BaseCardElement > SwigDirector_BaseCardElementPa
     jcontext = 0;
     *((std::shared_ptr<  AdaptiveCards::ParseContext > **)&jcontext) = new std::shared_ptr<  AdaptiveCards::ParseContext > (&context SWIG_NO_NULL_DELETER_0); 
     *(Json::Value **)&jvalue = (Json::Value *) &value; 
-    jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[34], swigjobj, jcontext, jvalue);
+    jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[31], swigjobj, jcontext, jvalue);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -3109,7 +3031,7 @@ std::shared_ptr< AdaptiveCards::BaseCardElement > SwigDirector_BaseCardElementPa
     *((std::shared_ptr<  AdaptiveCards::ParseContext > **)&jcontext) = new std::shared_ptr<  AdaptiveCards::ParseContext > (&context SWIG_NO_NULL_DELETER_0); 
     jvalue = jenv->NewStringUTF((&value)->c_str());
     Swig::LocalRefGuard value_refguard(jenv, jvalue); 
-    jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[35], swigjobj, jcontext, jvalue);
+    jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[32], swigjobj, jcontext, jvalue);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -9618,38 +9540,6 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseElement_1PopulateKnownPropertiesSet(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  AdaptiveCards::BaseElement *arg1 = (AdaptiveCards::BaseElement *) 0 ;
-  std::shared_ptr< AdaptiveCards::BaseElement > *smartarg1 = 0 ;
-  SwigDirector_BaseElement *darg = 0;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  
-  smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseElement > **)&jarg1;
-  arg1 = (AdaptiveCards::BaseElement *)(smartarg1 ? smartarg1->get() : 0); 
-  darg = dynamic_cast<SwigDirector_BaseElement *>(arg1);
-  (darg)->PopulateKnownPropertiesSet();
-}
-
-
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseElement_1PopulateKnownPropertiesSetSwigExplicitBaseElement(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  AdaptiveCards::BaseElement *arg1 = (AdaptiveCards::BaseElement *) 0 ;
-  std::shared_ptr< AdaptiveCards::BaseElement > *smartarg1 = 0 ;
-  SwigDirector_BaseElement *darg = 0;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  
-  smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseElement > **)&jarg1;
-  arg1 = (AdaptiveCards::BaseElement *)(smartarg1 ? smartarg1->get() : 0); 
-  darg = dynamic_cast<SwigDirector_BaseElement *>(arg1);
-  (darg)->PopulateKnownPropertiesSetSwigPublic();
-}
-
-
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseElement_1director_1connect(JNIEnv *jenv, jclass jcls, jobject jself, jlong objarg, jboolean jswig_mem_own, jboolean jweak_global) {
   std::shared_ptr< AdaptiveCards::BaseElement > *obj = *((std::shared_ptr< AdaptiveCards::BaseElement > **)&objarg);
   (void)jcls;
@@ -10121,38 +10011,6 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   } 
   arg3 = jarg3 ? *(std::shared_ptr< AdaptiveCards::BaseElement > **)&jarg3 : &tempnull3; 
   AdaptiveCards::BaseCardElement::ParseJsonObject(*arg1,(Json::Value const &)*arg2,*arg3);
-}
-
-
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElement_1PopulateKnownPropertiesSet(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  AdaptiveCards::BaseCardElement *arg1 = (AdaptiveCards::BaseCardElement *) 0 ;
-  std::shared_ptr< AdaptiveCards::BaseCardElement > *smartarg1 = 0 ;
-  SwigDirector_BaseCardElement *darg = 0;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  
-  smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseCardElement > **)&jarg1;
-  arg1 = (AdaptiveCards::BaseCardElement *)(smartarg1 ? smartarg1->get() : 0); 
-  darg = dynamic_cast<SwigDirector_BaseCardElement *>(arg1);
-  (darg)->PopulateKnownPropertiesSet();
-}
-
-
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElement_1PopulateKnownPropertiesSetSwigExplicitBaseCardElement(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  AdaptiveCards::BaseCardElement *arg1 = (AdaptiveCards::BaseCardElement *) 0 ;
-  std::shared_ptr< AdaptiveCards::BaseCardElement > *smartarg1 = 0 ;
-  SwigDirector_BaseCardElement *darg = 0;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  
-  smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseCardElement > **)&jarg1;
-  arg1 = (AdaptiveCards::BaseCardElement *)(smartarg1 ? smartarg1->get() : 0); 
-  darg = dynamic_cast<SwigDirector_BaseCardElement *>(arg1);
-  (darg)->PopulateKnownPropertiesSetSwigPublic();
 }
 
 
@@ -10681,38 +10539,6 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   } 
   arg3 = jarg3 ? *(std::shared_ptr< AdaptiveCards::BaseElement > **)&jarg3 : &tempnull3; 
   AdaptiveCards::BaseActionElement::ParseJsonObject(*arg1,(Json::Value const &)*arg2,*arg3);
-}
-
-
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElement_1PopulateKnownPropertiesSet(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  AdaptiveCards::BaseActionElement *arg1 = (AdaptiveCards::BaseActionElement *) 0 ;
-  std::shared_ptr< AdaptiveCards::BaseActionElement > *smartarg1 = 0 ;
-  SwigDirector_BaseActionElement *darg = 0;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  
-  smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseActionElement > **)&jarg1;
-  arg1 = (AdaptiveCards::BaseActionElement *)(smartarg1 ? smartarg1->get() : 0); 
-  darg = dynamic_cast<SwigDirector_BaseActionElement *>(arg1);
-  (darg)->PopulateKnownPropertiesSet();
-}
-
-
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElement_1PopulateKnownPropertiesSetSwigExplicitBaseActionElement(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  AdaptiveCards::BaseActionElement *arg1 = (AdaptiveCards::BaseActionElement *) 0 ;
-  std::shared_ptr< AdaptiveCards::BaseActionElement > *smartarg1 = 0 ;
-  SwigDirector_BaseActionElement *darg = 0;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  
-  smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseActionElement > **)&jarg1;
-  arg1 = (AdaptiveCards::BaseActionElement *)(smartarg1 ? smartarg1->get() : 0); 
-  darg = dynamic_cast<SwigDirector_BaseActionElement *>(arg1);
-  (darg)->PopulateKnownPropertiesSetSwigPublic();
 }
 
 
@@ -12416,6 +12242,50 @@ SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
 }
 
 
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1CaseInsensitiveKeyHash(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  AdaptiveCards::CaseInsensitiveKeyHash *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (AdaptiveCards::CaseInsensitiveKeyHash *)new AdaptiveCards::CaseInsensitiveKeyHash();
+  *(AdaptiveCards::CaseInsensitiveKeyHash **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1CaseInsensitiveKeyHash(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::CaseInsensitiveKeyHash *arg1 = (AdaptiveCards::CaseInsensitiveKeyHash *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(AdaptiveCards::CaseInsensitiveKeyHash **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1CaseInsensitiveKeyEquals(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  AdaptiveCards::CaseInsensitiveKeyEquals *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (AdaptiveCards::CaseInsensitiveKeyEquals *)new AdaptiveCards::CaseInsensitiveKeyEquals();
+  *(AdaptiveCards::CaseInsensitiveKeyEquals **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1CaseInsensitiveKeyEquals(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::CaseInsensitiveKeyEquals *arg1 = (AdaptiveCards::CaseInsensitiveKeyEquals *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(AdaptiveCards::CaseInsensitiveKeyEquals **)&jarg1; 
+  delete arg1;
+}
+
+
 SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1FeatureRegistration(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::FeatureRegistration *result = 0 ;
@@ -13903,7 +13773,7 @@ SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
 }
 
 
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1SetWidth(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1SetWidth_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::Column *arg1 = (AdaptiveCards::Column *) 0 ;
   std::string *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::Column > *smartarg1 = 0 ;
@@ -13924,6 +13794,33 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   arg2 = &arg2_str;
   jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
   (arg1)->SetWidth((std::string const &)*arg2);
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Column_1SetWidth_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jobject jarg3_) {
+  AdaptiveCards::Column *arg1 = (AdaptiveCards::Column *) 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > *arg3 = (std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > *) 0 ;
+  std::shared_ptr< AdaptiveCards::Column > *smartarg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg3_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::Column > **)&jarg1;
+  arg1 = (AdaptiveCards::Column *)(smartarg1 ? smartarg1->get() : 0); 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return ;
+  }
+  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return ;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = *(std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > **)&jarg3; 
+  (arg1)->SetWidth((std::string const &)*arg2,arg3);
 }
 
 
@@ -19577,6 +19474,24 @@ SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
   arg1 = (AdaptiveCards::AdaptiveCard *)(smartarg1 ? smartarg1->get() : 0); 
   result = ((AdaptiveCards::AdaptiveCard const *)arg1)->Serialize();
   jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1GetInternalId(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  AdaptiveCards::AdaptiveCard *arg1 = (AdaptiveCards::AdaptiveCard *) 0 ;
+  std::shared_ptr< AdaptiveCards::AdaptiveCard const > *smartarg1 = 0 ;
+  AdaptiveCards::InternalId result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::AdaptiveCard > **)&jarg1;
+  arg1 = (AdaptiveCards::AdaptiveCard *)(smartarg1 ? smartarg1->get() : 0); 
+  result = ((AdaptiveCards::AdaptiveCard const *)arg1)->GetInternalId();
+  *(AdaptiveCards::InternalId **)&jresult = new AdaptiveCards::InternalId((const AdaptiveCards::InternalId &)result); 
   return jresult;
 }
 
@@ -28006,6 +27921,40 @@ SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
 }
 
 
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextRun_1GetUnderline(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  AdaptiveCards::TextRun *arg1 = (AdaptiveCards::TextRun *) 0 ;
+  std::shared_ptr< AdaptiveCards::TextRun const > *smartarg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::TextRun > **)&jarg1;
+  arg1 = (AdaptiveCards::TextRun *)(smartarg1 ? smartarg1->get() : 0); 
+  result = (bool)((AdaptiveCards::TextRun const *)arg1)->GetUnderline();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextRun_1SetUnderline(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
+  AdaptiveCards::TextRun *arg1 = (AdaptiveCards::TextRun *) 0 ;
+  bool arg2 ;
+  std::shared_ptr< AdaptiveCards::TextRun > *smartarg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::TextRun > **)&jarg1;
+  arg1 = (AdaptiveCards::TextRun *)(smartarg1 ? smartarg1->get() : 0); 
+  arg2 = jarg2 ? true : false; 
+  (arg1)->SetUnderline(arg2);
+}
+
+
 SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextRun_1GetSelectAction(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::TextRun *arg1 = (AdaptiveCards::TextRun *) 0 ;
@@ -28226,6 +28175,40 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   arg1 = (AdaptiveCards::RichTextElementProperties *)(smartarg1 ? smartarg1->get() : 0); 
   arg2 = jarg2 ? true : false; 
   (arg1)->SetStrikethrough(arg2);
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_RichTextElementProperties_1GetUnderline(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  AdaptiveCards::RichTextElementProperties *arg1 = (AdaptiveCards::RichTextElementProperties *) 0 ;
+  std::shared_ptr< AdaptiveCards::RichTextElementProperties const > *smartarg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::RichTextElementProperties > **)&jarg1;
+  arg1 = (AdaptiveCards::RichTextElementProperties *)(smartarg1 ? smartarg1->get() : 0); 
+  result = (bool)((AdaptiveCards::RichTextElementProperties const *)arg1)->GetUnderline();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_RichTextElementProperties_1SetUnderline(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
+  AdaptiveCards::RichTextElementProperties *arg1 = (AdaptiveCards::RichTextElementProperties *) 0 ;
+  bool arg2 ;
+  std::shared_ptr< AdaptiveCards::RichTextElementProperties > *smartarg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::RichTextElementProperties > **)&jarg1;
+  arg1 = (AdaptiveCards::RichTextElementProperties *)(smartarg1 ? smartarg1->get() : 0); 
+  arg2 = jarg2 ? true : false; 
+  (arg1)->SetUnderline(arg2);
 }
 
 
@@ -28829,7 +28812,7 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   static struct {
     const char *method;
     const char *signature;
-  } methods[36] = {
+  } methods[33] = {
     {
       "SwigDirector_BaseElement_GetId", "(Lio/adaptivecards/objectmodel/BaseElement;)Ljava/lang/String;" 
     },
@@ -28846,9 +28829,6 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
       "SwigDirector_BaseElement_GetResourceInformation", "(Lio/adaptivecards/objectmodel/BaseElement;J)V" 
     },
     {
-      "SwigDirector_BaseElement_PopulateKnownPropertiesSet", "(Lio/adaptivecards/objectmodel/BaseElement;)V" 
-    },
-    {
       "SwigDirector_BaseCardElement_GetId", "(Lio/adaptivecards/objectmodel/BaseCardElement;)Ljava/lang/String;" 
     },
     {
@@ -28862,9 +28842,6 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
     },
     {
       "SwigDirector_BaseCardElement_GetResourceInformation", "(Lio/adaptivecards/objectmodel/BaseCardElement;J)V" 
-    },
-    {
-      "SwigDirector_BaseCardElement_PopulateKnownPropertiesSet", "(Lio/adaptivecards/objectmodel/BaseCardElement;)V" 
     },
     {
       "SwigDirector_BaseCardElement_GetSeparator", "(Lio/adaptivecards/objectmodel/BaseCardElement;)Z" 
@@ -28901,9 +28878,6 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
     },
     {
       "SwigDirector_BaseActionElement_GetResourceInformation", "(Lio/adaptivecards/objectmodel/BaseActionElement;J)V" 
-    },
-    {
-      "SwigDirector_BaseActionElement_PopulateKnownPropertiesSet", "(Lio/adaptivecards/objectmodel/BaseActionElement;)V" 
     },
     {
       "SwigDirector_BaseActionElement_GetTitle", "(Lio/adaptivecards/objectmodel/BaseActionElement;)Ljava/lang/String;" 

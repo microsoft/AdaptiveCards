@@ -13,7 +13,7 @@ using namespace AdaptiveCards;
 
 namespace AdaptiveCardsSharedModelUnitTest
 {
-    static TIME_ZONE_INFORMATION tzOriginal = { 0 };
+    static TIME_ZONE_INFORMATION tzOriginal{};
     static bool changedTime = false;
 
     void EnableTimeZoneChange(bool set)

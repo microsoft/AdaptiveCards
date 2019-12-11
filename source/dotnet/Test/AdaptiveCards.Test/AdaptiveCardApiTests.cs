@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace AdaptiveCards.Test
 {
@@ -94,7 +94,20 @@ namespace AdaptiveCards.Test
     }
   ]
 }";
-            Assert.ThrowsException<AdaptiveSerializationException>(() => AdaptiveCard.FromJson(json));
+            // By default we should be throwing an exception when no version present.
+            Assert.ThrowsException<AdaptiveSerializationException>(() => AdaptiveCard.FromJson(json),
+                                                                   "Having no version tag should cause an exception to be thrown.");
+
+            // Or we can supply a replacement version to use
+            AdaptiveCard.OnDeserializingMissingVersion = () => new AdaptiveSchemaVersion(0, 5);
+            var card = AdaptiveCard.FromJson(json);
+            Assert.AreEqual(new AdaptiveSchemaVersion(0, 5), card.Card.Version);
+
+            // But make sure that if the callback throws an exception that it is allowed through
+            AdaptiveCard.OnDeserializingMissingVersion = () => throw new Exception();
+            Assert.ThrowsException<Exception>(() => AdaptiveCard.FromJson(json),
+                                              "An exception thrown from an OnDeserializingMissingVersion handler should be allowed to propagate out.");
+            AdaptiveCard.OnDeserializingMissingVersion = null;
         }
 
         [TestMethod]
@@ -1196,6 +1209,192 @@ namespace AdaptiveCards.Test
             });
 
             StringAssert.Contains(ex.Message, "The value \"AdaptiveCards.AdaptiveUnknownElement\" is not of type \"AdaptiveCards.AdaptiveImage\" and cannot be used in this generic collection.");
+        }
+
+        [TestMethod]
+        public void TestParsingRichTextBlockWithInvalidInlineType()
+        {
+            // card with invalid inline type
+            var invalidCard =
+            @"{
+                  ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                            ""type"": ""AdaptiveCard"",
+                  ""version"": ""1.2"",
+                  ""body"": [
+                    {
+                      ""type"": ""RichTextBlock"",
+                      ""inlines"": [
+                        {
+                          ""type"": ""TextRun"",
+                          ""text"": ""You did exactly what you had to do. You considered all your options, you tried every alternative and then you made the hard choice. The Enterprise computer system is controlled by three primary main processor cores, cross-linked with a redundant melacortz ramistat, fourteen kiloquad interface modules. I think you've let your personal feelings cloud your judgement. Flair is what marks the difference between artistry and mere competence. They were just sucked into space. We have a saboteur aboard. When has justice ever been as simple as a rule book? Your shields were failing, sir. Travel time to the nearest starbase? Sorry, Data. I'm afraid I still don't understand, sir. How long can two people talk about nothing? Wait a minute - you've been declared dead. You can't give orders around here. You're going to be an interesting companion, Mr. Data. Our neural pathways have become accustomed to your sensory input patterns. Fear is the true enemy, the only enemy. The Federation's gone; the Borg is everywhere! Computer, lights up!""
+                        },
+                        {
+                          ""type"": ""who cares???"",
+                          ""text"": ""You did exactly what you had to do. You considered all your options, you tried every alternative and then you made the hard choice. The Enterprise computer system is controlled by three primary main processor cores, cross-linked with a redundant melacortz ramistat, fourteen kiloquad interface modules. I think you've let your personal feelings cloud your judgement. Flair is what marks the difference between artistry and mere competence. They were just sucked into space. We have a saboteur aboard. When has justice ever been as simple as a rule book? Your shields were failing, sir. Travel time to the nearest starbase? Sorry, Data. I'm afraid I still don't understand, sir. How long can two people talk about nothing? Wait a minute - you've been declared dead. You can't give orders around here. You're going to be an interesting companion, Mr. Data. Our neural pathways have become accustomed to your sensory input patterns. Fear is the true enemy, the only enemy. The Federation's gone; the Borg is everywhere! Computer, lights up!""
+                        }
+                      ]
+                    }
+                  ]
+            }";
+
+            var ex = Assert.ThrowsException<AdaptiveSerializationException>(() =>
+            {
+                AdaptiveCard.FromJson(invalidCard);
+            });
+
+
+            StringAssert.Contains(ex.Message, "Property 'type' must be 'TextRun'");
+        }
+
+        void RenderCardTask(string payload)
+        {
+            AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(payload);
+            if (parseResult.Warnings.Count != 0)
+            {
+                throw new Exception("parse failed");
+            }
+        }
+
+        [TestMethod]
+        public void TestConcurrentParsing()
+        {
+            // card with invalid inline type
+            var adaptiveCard =
+@"{
+    ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+    ""type"": ""AdaptiveCard"",
+    ""version"": ""1.0"",
+    ""body"": [
+        {
+            ""type"": ""TextBlock"",
+            ""text"": ""Publish Adaptive Card schema"",
+            ""weight"": ""bolder"",
+            ""size"": ""medium""
+        },
+        {
+            ""type"": ""ColumnSet"",
+            ""columns"": [
+                {
+                    ""type"": ""Column"",
+                    ""width"": ""auto"",
+                    ""items"": [
+                        {
+                            ""type"": ""Image"",
+                            ""url"": ""https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"",
+                            ""size"": ""small"",
+                            ""style"": ""person""
+                        }
+                    ]
+                },
+                {
+                    ""type"": ""Column"",
+                    ""width"": ""stretch"",
+                    ""items"": [
+                        {
+                            ""type"": ""TextBlock"",
+                            ""text"": ""Matt Hidinger"",
+                            ""weight"": ""bolder"",
+                            ""wrap"": true
+                        },
+                        {
+                            ""type"": ""TextBlock"",
+                            ""spacing"": ""none"",
+                            ""text"": ""Created {{DATE(2017-02-14T06:08:39Z, SHORT)}}"",
+                            ""isSubtle"": true,
+                            ""wrap"": true
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            ""type"": ""TextBlock"",
+            ""text"": ""Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation."",
+            ""wrap"": true
+        },
+        {
+            ""type"": ""FactSet"",
+            ""facts"": [
+                {
+                    ""title"": ""Board:"",
+                    ""value"": ""Adaptive Card""
+                },
+                {
+                    ""title"": ""List:"",
+                    ""value"": ""Backlog""
+                },
+                {
+                    ""title"": ""Assigned to:"",
+                    ""value"": ""Matt Hidinger""
+                },
+                {
+                    ""title"": ""Due date:"",
+                    ""value"": ""Not set""
+                }
+            ]
+        }
+    ],
+    ""actions"": [
+        {
+            ""type"": ""Action.ShowCard"",
+            ""title"": ""Set due date"",
+            ""card"": {
+                ""type"": ""AdaptiveCard"",
+                ""body"": [
+                    {
+                        ""type"": ""Input.Date"",
+                        ""id"": ""dueDate""
+                    }
+                ],
+                ""actions"": [
+                    {
+                        ""type"": ""Action.Submit"",
+                        ""title"": ""OK""
+                    }
+                ]
+            }
+        },
+        {
+            ""type"": ""Action.ShowCard"",
+            ""title"": ""Comment"",
+            ""card"": {
+                ""type"": ""AdaptiveCard"",
+                ""body"": [
+                    {
+                        ""type"": ""Input.Text"",
+                        ""id"": ""comment"",
+                        ""isMultiline"": true,
+                        ""placeholder"": ""Enter your comment""
+                    }
+                ],
+                ""actions"": [
+                    {
+                        ""type"": ""Action.Submit"",
+                        ""title"": ""OK""
+                    }
+                ]
+            }
+        }
+    ]
+}";
+            List<Task> tasks = new List<Task>();
+            for (var i = 0; i < 10; i++)
+            {
+                var payload = adaptiveCard;
+                var task = Task.Run(() => { RenderCardTask(payload); });
+                tasks.Add(task);
+            }
+
+            try
+            {
+                Task.WaitAll(tasks.ToArray());
+            }
+            catch
+            {
+                // it's perfectly fine card. if there is exception, it is due to concurreny
+                // as it's the only variable.
+                Assert.Fail("Unexpected failure parsing a valid AdaptiveCard");
+            }
         }
     }
 }

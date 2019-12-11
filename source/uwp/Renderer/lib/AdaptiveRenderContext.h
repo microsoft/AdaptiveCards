@@ -45,6 +45,10 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP AddError(ABI::AdaptiveNamespace::ErrorStatusCode statusCode, _In_ HSTRING message) override;
         IFACEMETHODIMP AddWarning(ABI::AdaptiveNamespace::WarningStatusCode statusCode, _In_ HSTRING message) override;
 
+        HRESULT AddInlineShowCard(_In_opt_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
+                                  _In_ ABI::AdaptiveNamespace::IAdaptiveShowCardAction* showCardAction,
+                                  _In_ ABI::Windows::UI::Xaml::IUIElement* showCardUIElement);
+
         HRESULT GetRenderResult(_COM_Outptr_ AdaptiveNamespace::RenderedAdaptiveCard** renderResult);
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> GetDefaultActionSentimentDictionary();
 

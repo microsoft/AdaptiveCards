@@ -6,15 +6,15 @@
 //
 
 #import "ACRColumnRenderer.h"
-#import "ACRColumnView.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
 #import "ACRColumnSetView.h"
+#import "ACRColumnView.h"
+#import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACRRendererPrivate.h"
 #import "Column.h"
 #import "SharedAdaptiveCard.h"
-#import "ACRLongPressGestureRecognizerFactory.h"
-#import "ACOHostConfigPrivate.h"
-#import "ACOBaseCardElementPrivate.h"
-#import "Util.h"
+#import "UtiliOS.h"
 
 @implementation ACRColumnRenderer
 
@@ -30,27 +30,29 @@
 }
 
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
-          rootView:(ACRView *)rootView
-            inputs:(NSMutableArray *)inputs
-   baseCardElement:(ACOBaseCardElement *)acoElem
-        hostConfig:(ACOHostConfig *)acoConfig;
+           rootView:(ACRView *)rootView
+             inputs:(NSMutableArray *)inputs
+    baseCardElement:(ACOBaseCardElement *)acoElem
+         hostConfig:(ACOHostConfig *)acoConfig;
 {
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<Column> columnElem = std::dynamic_pointer_cast<Column>(elem);
 
-    ACRColumnView* column = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)columnElem->GetStyle()
-                                                     parentStyle:[viewGroup style] hostConfig:acoConfig superview:viewGroup];
+    ACRColumnView *column = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)columnElem->GetStyle()
+                                                     parentStyle:[viewGroup style]
+                                                      hostConfig:acoConfig
+                                                       superview:viewGroup];
 
     [viewGroup addArrangedSubview:column];
-    
+
     configBleed(rootView, elem, column, acoConfig);
-        
+
     renderBackgroundImage(columnElem->GetBackgroundImage(), column, rootView);
-    
+
     column.pixelWidth = columnElem->GetPixelWidth();
     if (columnElem->GetWidth() == "stretch" || columnElem->GetWidth() == "") {
         column.columnWidth = @"stretch";
-    } else if (columnElem->GetWidth() == "auto"){
+    } else if (columnElem->GetWidth() == "auto") {
         column.columnWidth = @"auto";
     }
 
@@ -72,6 +74,10 @@
         trailingBlankSpace = [column addPaddingSpace];
     }
 
+    if (leadingBlankSpace || trailingBlankSpace) {
+        column.hasStretchableView = YES;
+    }
+
     if (columnElem->GetMinHeight() > 0) {
         [NSLayoutConstraint constraintWithItem:column
                                      attribute:NSLayoutAttributeHeight
@@ -79,7 +85,8 @@
                                         toItem:nil
                                      attribute:NSLayoutAttributeNotAnAttribute
                                     multiplier:1
-                                      constant:columnElem->GetMinHeight()].active = YES;
+                                      constant:columnElem->GetMinHeight()]
+            .active = YES;
     }
 
     [column setClipsToBounds:TRUE];
@@ -99,7 +106,8 @@
                                         toItem:trailingBlankSpace
                                      attribute:NSLayoutAttributeHeight
                                     multiplier:1.0
-                                      constant:0].active = YES;
+                                      constant:0]
+            .active = YES;
     }
 
     configVisibility(column, elem);
@@ -112,7 +120,7 @@
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<Column> columnElem = std::dynamic_pointer_cast<Column>(elem);
     auto backgroundImageProperties = columnElem->GetBackgroundImage();
-    
+
     renderBackgroundImage(backgroundImageProperties.get(), imageView, image);
 }
 

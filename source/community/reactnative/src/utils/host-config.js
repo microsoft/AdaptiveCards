@@ -34,7 +34,7 @@ export class TextColorDefinition {
 	toJSON() {
 		return {
 			default: this._default,
-			subtle:this._subtle
+			subtle: this._subtle
 		}
 	}
 }
@@ -305,17 +305,17 @@ export class ContainerStyleDefinition {
 		this.foregroundColors.light = this.getTextColorDefinition(defaultHostConfig["containerStyles"][type].foregroundColors["light"]);
 
 		if (obj && obj[type]) {
-			this.backgroundColor = obj[type]["backgroundColor"]  ? obj[type]["backgroundColor"] : this.backgroundColor;
+			this.backgroundColor = obj[type]["backgroundColor"] ? obj[type]["backgroundColor"] : this.backgroundColor;
 			this.borderColor = obj[type]["borderColor"] ? obj[type]["borderColor"] : this.borderColor;
 			this.borderThickness = obj[type]["borderThickness"] ? obj[type]["borderThickness"] : this.borderThickness;
-			if(obj[type]["foregroundColors"]) {
-				this.foregroundColors.default = this.getTextColorDefinition(obj[type].foregroundColors["default"],this.foregroundColors.default.toJSON);
-				this.foregroundColors.accent = this.getTextColorDefinition(obj[type].foregroundColors["accent"],this.foregroundColors.accent.toJSON);
-				this.foregroundColors.good = this.getTextColorDefinition(obj[type].foregroundColors["good"],this.foregroundColors.good.toJSON);
-				this.foregroundColors.warning = this.getTextColorDefinition(obj[type].foregroundColors["warning"],this.foregroundColors.warning.toJSON);
-				this.foregroundColors.attention = this.getTextColorDefinition(obj[type].foregroundColors["attention"],this.foregroundColors.attention.toJSON);
-				this.foregroundColors.dark = this.getTextColorDefinition(obj[type].foregroundColors["dark"],this.foregroundColors.dark.toJSON);
-				this.foregroundColors.light = this.getTextColorDefinition(obj[type].foregroundColors["light"],this.foregroundColors.light.toJSON);
+			if (obj[type]["foregroundColors"]) {
+				this.foregroundColors.default = this.getTextColorDefinition(obj[type].foregroundColors["default"], this.foregroundColors.default.toJSON);
+				this.foregroundColors.accent = this.getTextColorDefinition(obj[type].foregroundColors["accent"], this.foregroundColors.accent.toJSON);
+				this.foregroundColors.good = this.getTextColorDefinition(obj[type].foregroundColors["good"], this.foregroundColors.good.toJSON);
+				this.foregroundColors.warning = this.getTextColorDefinition(obj[type].foregroundColors["warning"], this.foregroundColors.warning.toJSON);
+				this.foregroundColors.attention = this.getTextColorDefinition(obj[type].foregroundColors["attention"], this.foregroundColors.attention.toJSON);
+				this.foregroundColors.dark = this.getTextColorDefinition(obj[type].foregroundColors["dark"], this.foregroundColors.dark.toJSON);
+				this.foregroundColors.light = this.getTextColorDefinition(obj[type].foregroundColors["light"], this.foregroundColors.light.toJSON);
 			}
 		}
 	}
@@ -827,7 +827,7 @@ export const defaultHostConfig = {
 		emphasis: {
 			"backgroundColor": "#08000000",
 			"borderColor": "#FF000000",
-			"borderThickness": 1,
+			"borderThickness": 2,
 			"foregroundColors": {
 				"default": {
 					"default": "#333333",
@@ -879,7 +879,7 @@ export const defaultHostConfig = {
 					"subtle": "#DDC3AB23"
 				},
 				"attention": {
-					"default": "#FFFFFF",
+					"default": "#FF0000",
 					"subtle": "#DDFF0000"
 				},
 				"dark": {
@@ -893,7 +893,9 @@ export const defaultHostConfig = {
 			},
 		},
 		warning: {
-			"backgroundColor": "#DDC3AB23",
+			"backgroundColor": "#DDFF0000",
+			"borderColor": "#FF000000",
+			"borderThickness": 2,
 			"foregroundColors": {
 				"default": {
 					"default": "#FFFFFF",
@@ -924,10 +926,9 @@ export const defaultHostConfig = {
 					"subtle": "#DDFFFFFF"
 				}
 			},
-
 		},
 		attention: {
-			"backgroundColor": "#DDFF0000",
+			"backgroundColor": "#DDC3AB23",
 			"foregroundColors": {
 				"default": {
 					"default": "#333333",

@@ -4,19 +4,18 @@
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
-#import "AdaptiveCardParseException.h"
+#import "ACOBaseCardElement.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRErrors.h"
-#import "TextBlock.h"
-#import "ACOBaseCardElement.h"
+#import "AdaptiveCardParseException.h"
 #import "Enums.h"
+#import "TextBlock.h"
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 using namespace AdaptiveCards;
 
-@implementation ACOHostConfig
-{
+@implementation ACOHostConfig {
     std::shared_ptr<HostConfig> _config;
     NSMutableDictionary<NSString *, NSString *> *_fontFamilyNames;
 }
@@ -31,17 +30,17 @@ using namespace AdaptiveCards;
 - (instancetype)initWithConfig:(std::shared_ptr<HostConfig> const &)config
 {
     self = [super init];
-    if(self && config){
+    if (self && config) {
         _config = config;
         _fontFamilyNames = [NSMutableDictionary dictionary];
 
         // check if requested font family name is supported by iOS, if so save it for future uses
-        [self importFontFamily: AdaptiveCards::FontType::Default];
-        [self importFontFamily: AdaptiveCards::FontType::Monospace];
+        [self importFontFamily:AdaptiveCards::FontType::Default];
+        [self importFontFamily:AdaptiveCards::FontType::Monospace];
 
         _allActionsHaveIcons = YES;
         _buttonPadding = 5;
-        if(!_config->GetImageBaseUrl().empty()) {
+        if (!_config->GetImageBaseUrl().empty()) {
             NSString *tmpURLString = [NSString stringWithCString:_config->GetImageBaseUrl().c_str() encoding:NSUTF8StringEncoding];
             _baseURL = [NSURL URLWithString:tmpURLString];
         }
@@ -49,10 +48,10 @@ using namespace AdaptiveCards;
     return self;
 }
 
-- (void) importFontFamily:(AdaptiveCards::FontType)type
+- (void)importFontFamily:(AdaptiveCards::FontType)type
 {
     NSString *requestedFontFamilyName = [NSString stringWithCString:_config->GetFontFamily(type).c_str() encoding:NSUTF8StringEncoding];
-    if([UIFont.familyNames containsObject:requestedFontFamilyName]){
+    if ([UIFont.familyNames containsObject:requestedFontFamilyName]) {
         NSString *key = [NSString stringWithCString:FontTypeToString(type).c_str() encoding:NSUTF8StringEncoding];
         _fontFamilyNames[key] = requestedFontFamilyName;
     }
@@ -61,20 +60,20 @@ using namespace AdaptiveCards;
 + (ACOHostConfigParseResult *)fromJson:(NSString *)payload resourceResolvers:(ACOResourceResolvers *)resolvers
 {
     ACOHostConfigParseResult *result = nil;
-    if(payload) {
+    if (payload) {
         try {
             std::shared_ptr<HostConfig> cHostConfig = std::make_shared<HostConfig>(AdaptiveCards::HostConfig::DeserializeFromString(std::string([payload UTF8String])));
-            ACOHostConfig *config= [[ACOHostConfig alloc] initWithConfig:cHostConfig];
+            ACOHostConfig *config = [[ACOHostConfig alloc] initWithConfig:cHostConfig];
             result = [[ACOHostConfigParseResult alloc] init:config errors:nil];
             config->_resolvers = resolvers;
-        } catch(const AdaptiveCardParseException& e) {
+        } catch (const AdaptiveCardParseException &e) {
             // converts AdaptiveCardParseException to NSError
             ErrorStatusCode errorStatusCode = e.GetStatusCode();
             NSInteger errorCode = (long)errorStatusCode;
             NSError *parseError = [NSError errorWithDomain:ACRParseErrorDomain
                                                       code:errorCode
                                                   userInfo:nil];
-            NSArray<NSError *> *errors = @[parseError];
+            NSArray<NSError *> *errors = @[ parseError ];
             result = [[ACOHostConfigParseResult alloc] init:nil errors:errors];
         }
     }
@@ -85,7 +84,7 @@ using namespace AdaptiveCards;
 {
     ACOHostConfigParseResult *result = nil;
 
-    if(payload) {
+    if (payload) {
         result = [ACOHostConfig fromJson:payload resourceResolvers:nil];
     }
     return result;
@@ -133,9 +132,9 @@ using namespace AdaptiveCards;
     return _config->GetFontSize(type, txtSz);
 }
 
-+ (NSTextAlignment)getTextBlockAlignment:(HorizontalAlignment) alignment
++ (NSTextAlignment)getTextBlockAlignment:(HorizontalAlignment)alignment
 {
-    switch (alignment){
+    switch (alignment) {
         case HorizontalAlignment::Center:
             return NSTextAlignmentCenter;
         case HorizontalAlignment::Left:
@@ -159,7 +158,7 @@ using namespace AdaptiveCards;
     }
 }
 
-- (int)getTextBlockFontWeight:(FontType) type
+- (int)getTextBlockFontWeight:(FontType)type
                    textWeight:(TextWeight)weight
 {
     return _config->GetFontWeight(type, weight);
@@ -168,23 +167,22 @@ using namespace AdaptiveCards;
 - (CGSize)getImageSize:(ImageSize)imageSize
 {
     float sz;
-    switch (imageSize)
-    {
-        case ImageSize::Large:{
+    switch (imageSize) {
+        case ImageSize::Large: {
             sz = _config->GetImageSizes().largeSize;
             break;
         }
-        case ImageSize::Medium:{
+        case ImageSize::Medium: {
             sz = _config->GetImageSizes().mediumSize;
             break;
         }
 
-        case ImageSize::Small:{
+        case ImageSize::Small: {
             sz = _config->GetImageSizes().smallSize;
             break;
         }
 
-        default:{
+        default: {
             sz = _config->GetImageSizes().largeSize;
         }
     }
@@ -198,62 +196,57 @@ using namespace AdaptiveCards;
 {
     NSMutableArray *constraints = [[NSMutableArray alloc] init];
     [constraints addObject:
-        [NSLayoutConstraint constraintWithItem:superview
-                                     attribute:NSLayoutAttributeCenterY
-                                     relatedBy:NSLayoutRelationEqual
-                                        toItem:view
-                                     attribute:NSLayoutAttributeCenterY
-                                    multiplier:1
-                                      constant:0]];
+                     [NSLayoutConstraint constraintWithItem:superview
+                                                  attribute:NSLayoutAttributeCenterY
+                                                  relatedBy:NSLayoutRelationEqual
+                                                     toItem:view
+                                                  attribute:NSLayoutAttributeCenterY
+                                                 multiplier:1
+                                                   constant:0]];
 
-    switch (alignment)
-    {
-        case HorizontalAlignment::Center:
-        {
+    switch (alignment) {
+        case HorizontalAlignment::Center: {
             [constraints addObject:
-                [NSLayoutConstraint constraintWithItem:superview
-                                             attribute:NSLayoutAttributeCenterX
-                                             relatedBy:NSLayoutRelationEqual
-                                                toItem:view
-                                             attribute:NSLayoutAttributeCenterX
-                                            multiplier:1
-                                              constant:0]];
-                return constraints;
-        }
-        case HorizontalAlignment::Left:
-        {
-            [constraints addObject:
-                [NSLayoutConstraint constraintWithItem:superview
-                                             attribute:NSLayoutAttributeLeading
-                                             relatedBy:NSLayoutRelationEqual
-                                                toItem:view
-                                             attribute:NSLayoutAttributeLeading
-                                            multiplier:1
-                                              constant:0]];
+                             [NSLayoutConstraint constraintWithItem:superview
+                                                          attribute:NSLayoutAttributeCenterX
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:view
+                                                          attribute:NSLayoutAttributeCenterX
+                                                         multiplier:1
+                                                           constant:0]];
             return constraints;
         }
-        case HorizontalAlignment::Right:
-        {
+        case HorizontalAlignment::Left: {
             [constraints addObject:
-                [NSLayoutConstraint constraintWithItem:superview
-                                             attribute:NSLayoutAttributeTrailing
-                                             relatedBy:NSLayoutRelationEqual
-                                                toItem:view
-                                             attribute:NSLayoutAttributeTrailing
-                                            multiplier:1
-                                              constant:0]];
+                             [NSLayoutConstraint constraintWithItem:superview
+                                                          attribute:NSLayoutAttributeLeading
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:view
+                                                          attribute:NSLayoutAttributeLeading
+                                                         multiplier:1
+                                                           constant:0]];
             return constraints;
         }
-        default:
-        {
+        case HorizontalAlignment::Right: {
             [constraints addObject:
-                [NSLayoutConstraint constraintWithItem:superview
-                                             attribute:NSLayoutAttributeLeading
-                                             relatedBy:NSLayoutRelationEqual
-                                                toItem:view
-                                             attribute:NSLayoutAttributeLeading
-                                            multiplier:1
-                                              constant:0]];
+                             [NSLayoutConstraint constraintWithItem:superview
+                                                          attribute:NSLayoutAttributeTrailing
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:view
+                                                          attribute:NSLayoutAttributeTrailing
+                                                         multiplier:1
+                                                           constant:0]];
+            return constraints;
+        }
+        default: {
+            [constraints addObject:
+                             [NSLayoutConstraint constraintWithItem:superview
+                                                          attribute:NSLayoutAttributeLeading
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:view
+                                                          attribute:NSLayoutAttributeLeading
+                                                         multiplier:1
+                                                           constant:0]];
             return constraints;
         }
     }
@@ -264,28 +257,28 @@ using namespace AdaptiveCards;
 + (std::string)getLocalizedDate:(std::string const &)text language:(std::string const &)language
 {
     std::string dateParsedString;
-    std::vector<std::shared_ptr<DateTimePreparsedToken>> DateTimePreparsedTokens =  DateTimePreparser(text).GetTextTokens();
-    for(auto section : DateTimePreparsedTokens){
-        if(section->GetFormat() != DateTimePreparsedTokenFormat::RegularString) {
+    std::vector<std::shared_ptr<DateTimePreparsedToken>> DateTimePreparsedTokens = DateTimePreparser(text).GetTextTokens();
+    for (auto section : DateTimePreparsedTokens) {
+        if (section->GetFormat() != DateTimePreparsedTokenFormat::RegularString) {
             NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
             [formatter setDateFormat:@"MM/dd/yyyy"];
             /// date format has been already verified by preparsed token
-            std::string givenDate = std::to_string(section->GetMonth() + 1) + "/" +  std::to_string(section->GetDay()) + "/" +  std::to_string(section->GetYear());
+            std::string givenDate = std::to_string(section->GetMonth() + 1) + "/" + std::to_string(section->GetDay()) + "/" + std::to_string(section->GetYear());
             NSString *nsString = [NSString stringWithCString:givenDate.c_str() encoding:NSUTF8StringEncoding];
             NSDate *date = [formatter dateFromString:nsString];
             // specify output date format
             NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
             outputFormatter.timeStyle = NSDateFormatterNoStyle;
-            if(section->GetFormat() == DateTimePreparsedTokenFormat::DateCompact){
+            if (section->GetFormat() == DateTimePreparsedTokenFormat::DateCompact) {
                 outputFormatter.dateStyle = NSDateFormatterShortStyle;
-            } else if(section->GetFormat() == DateTimePreparsedTokenFormat::DateShort){
+            } else if (section->GetFormat() == DateTimePreparsedTokenFormat::DateShort) {
                 outputFormatter.dateStyle = NSDateFormatterMediumStyle;
-            } else{
+            } else {
                 outputFormatter.dateStyle = NSDateFormatterLongStyle;
             }
 
-            NSString *languageType= [NSString stringWithCString:language.c_str() encoding:NSUTF8StringEncoding];
-            if(languageType.length > 0){
+            NSString *languageType = [NSString stringWithCString:language.c_str() encoding:NSUTF8StringEncoding];
+            if (languageType.length > 0) {
                 outputFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:languageType];
             }
             NSString *dateInLocalLanguage = [outputFormatter stringFromDate:date];
@@ -297,12 +290,13 @@ using namespace AdaptiveCards;
     return dateParsedString;
 }
 
-+ (UIColor *)convertHexColorCodeToUIColor:(const std::string&)hexColorCode
++ (UIColor *)convertHexColorCodeToUIColor:(const std::string &)hexColorCode
 {
-    if((hexColorCode.length() < 2) || (hexColorCode.at(0) != '#') || !isxdigit(hexColorCode.at(1)) ||
-       ((hexColorCode.length() != 7) && hexColorCode.length() != 9)) {
+    if ((hexColorCode.length() < 2) || (hexColorCode.at(0) != '#') || !isxdigit(hexColorCode.at(1)) ||
+        ((hexColorCode.length() != 7) && hexColorCode.length() != 9)) {
         NSLog(@"invalid hexcolor code is given: %@",
-            [NSString stringWithCString:hexColorCode.c_str() encoding:NSUTF8StringEncoding]);
+              [NSString stringWithCString:hexColorCode.c_str()
+                                 encoding:NSUTF8StringEncoding]);
         return UIColor.clearColor;
     }
 
@@ -311,24 +305,26 @@ using namespace AdaptiveCards;
     try {
         size_t idx = 0;
         long num = std::stoul(hexColorCode.substr(1), &idx, 16), alpha = 0xFF;
-        if(hexColorCode.length() == 9) {
+        if (hexColorCode.length() == 9) {
             alpha = (num & 0xFF000000) >> 24;
         }
 
-        if(idx != hexColorCode.length() - 1) {
+        if (idx != hexColorCode.length() - 1) {
             NSLog(@"invalid hexcolor code is given: %@",
-                  [NSString stringWithCString:hexColorCode.c_str() encoding:NSUTF8StringEncoding]);
+                  [NSString stringWithCString:hexColorCode.c_str()
+                                     encoding:NSUTF8StringEncoding]);
             color = UIColor.clearColor;
         } else {
             color = [UIColor colorWithRed:((num & 0x00FF0000) >> 16) / 255.0
-                                    green:((num & 0x0000FF00) >>  8) / 255.0
+                                    green:((num & 0x0000FF00) >> 8) / 255.0
                                      blue:((num & 0x000000FF)) / 255.0
                                     alpha:alpha / 255.0];
         }
     } catch (...) {
         color = UIColor.clearColor;
         NSLog(@"invalid hexcolor code is given: %@",
-            [NSString stringWithCString:hexColorCode.c_str() encoding:NSUTF8StringEncoding]);
+              [NSString stringWithCString:hexColorCode.c_str()
+                                 encoding:NSUTF8StringEncoding]);
     }
 
     return color;
@@ -408,7 +404,7 @@ using namespace AdaptiveCards;
 
 - (ACRIconPlacement)getIconPlacement
 {
-    if(IconPlacement::AboveTitle == _config->GetActions().iconPlacement) {
+    if (IconPlacement::AboveTitle == _config->GetActions().iconPlacement) {
         return ACRAboveTitle;
     }
     return ACRLeftOfTitle;

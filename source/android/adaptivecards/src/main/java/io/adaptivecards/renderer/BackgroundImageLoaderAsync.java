@@ -46,7 +46,6 @@ public class BackgroundImageLoaderAsync extends GenericImageLoaderAsync
     {
         BitmapDrawable background = new BackgroundImageDrawable(m_context.getResources(), bitmap, m_backgroundImageProperties);
         m_layout.setBackground(background);
-        m_layout.bringChildToFront(m_layout.getChildAt(0));
     }
 
     private class BackgroundImageDrawable extends BitmapDrawable
