@@ -1,6 +1,6 @@
 {
 	"name": "adaptivecards-designer",
-	"version": "0.7.1",
+	"version": "0.8.0-rc.1",
 	"description": "Adaptive Card designer embeddable control",
 	"author": "AdaptiveCards",
 	"license": "MIT",
@@ -25,9 +25,9 @@
 		"release": "npm run build && webpack --mode=production && npm run dts"
 	},
 	"dependencies": {
-		"adaptivecards": "^1.3.0-alpha.2",
-		"adaptivecards-controls": "^0.3.1",
-		"adaptivecards-templating": "^0.1.0-alpha.1",
+		"adaptivecards": "^2.0.0-alpha.0",
+		"adaptivecards-controls": "^0.3.4",
+		"adaptivecards-templating": "^0.1.1-alpha.0",
 		"clipboard": "^2.0.1"
 	},
 	"peerDependencies": {
