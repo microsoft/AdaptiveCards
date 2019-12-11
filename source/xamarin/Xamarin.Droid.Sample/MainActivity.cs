@@ -205,16 +205,40 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
             }
             else if (actionType == ActionType.ShowCard)
             {
-                var showcardAction = ShowCardAction.Dynamic_cast(element);
-                var card = showcardAction.Card;
-                Toast.MakeText(this, card.ToString() + "\n" + inputValues, ToastLength.Short).Show();
+                ShowCard(element);
             }
             else if (actionType == ActionType.OpenUrl)
             {
+                OpenUrl(element);
+
                 var openUrlAction = OpenUrlAction.Dynamic_cast(element);
                 var url = openUrlAction.Url;
                 Toast.MakeText(this, url + "\n" + inputValues, ToastLength.Short).Show();
             }
+        }
+
+        private void ShowCard(BaseActionElement baseActionElement)
+        {
+            ShowCardAction showCardAction = ShowCardAction.Dynamic_cast(baseActionElement);
+            
+            ShowCardFragment showCardFragment = new ShowCardFragment();
+            HostConfig hostConfig = Config ?? new HostConfig();
+
+            showCardFragment.initialize(this, SupportFragmentManager, showCardAction, this, hostConfig);
+            Bundle args = new Bundle();
+            args.PutString("title", showCardAction.Title);
+            showCardFragment.Arguments = args;
+
+            global::Android.Support.V4.App.FragmentManager fm = SupportFragmentManager;
+            showCardFragment.Show(fm, showCardAction.Title);
+        }
+
+        private void OpenUrl(BaseActionElement baseActionElement)
+        {
+            OpenUrlAction openUrlAction = OpenUrlAction.Dynamic_cast(baseActionElement);
+
+            Intent browserIntent = new Intent(Intent.ActionView, global::Android.Net.Uri.Parse(openUrlAction.Url));
+            StartActivity(browserIntent);
         }
 
         public void OnMediaPlay(BaseCardElement element, RenderedAdaptiveCard renderedCard)
