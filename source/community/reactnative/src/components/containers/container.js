@@ -53,7 +53,8 @@ export class Container extends React.Component {
 	internalRenderer = () => {
 		const payload = this.payload;
 		const minHeight = Utils.convertStringToNumber(payload.minHeight);
-		const containerStyle = typeof minHeight === "number" ? [styles.container, { minHeight }] : [styles.container];
+		//We will pass the style as array, since it can be updated in the container wrapper if required.
+		const containerStyle = typeof minHeight === "number" ? [{ minHeight }] : [];
 
 		var containerContent = (
 			<ContainerWrapper json={this.payload} style={containerStyle} containerStyle={this.props.containerStyle}>
@@ -79,9 +80,6 @@ export class Container extends React.Component {
 };
 
 const styles = StyleSheet.create({
-	container: {
-		//flex: 1,
-	},
 	defaultBGStyle: {
 		backgroundColor: Constants.TransparentString,
 	},

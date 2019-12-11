@@ -38,7 +38,7 @@ export default class AdaptiveCard extends React.Component {
 
 		if (this.props.isActionShowCard) {
 			this.cardModel = props.payload;
-		}else{
+		} else {
 			this.cardModel = ModelFactory.createElement(props.payload);
 		}
 		this.state = {
@@ -64,9 +64,9 @@ export default class AdaptiveCard extends React.Component {
 	}
 
 	onContentSizeChange = (contentWidth, contentHeight) => {
-        this.setState({ screenHeight: contentHeight });
+		this.setState({ screenHeight: contentHeight });
 	}
-	
+
 
 	toggleVisibilityForElementWithID = (idArray) => {
 		this.toggleCardModelObject(this.cardModel, [...idArray]);
@@ -83,15 +83,15 @@ export default class AdaptiveCard extends React.Component {
 	 */
 	checkTargetElementsForID = (object, targetElements) => {
 		targetElements.forEach(target => {
-			if (target instanceof String || typeof target === 'string'){
-				if(target == object["id"]){
+			if (target instanceof String || typeof target === 'string') {
+				if (target == object["id"]) {
 					object.isVisible = !object.isVisible;
 					var index = targetElements.indexOf(object["id"]);
 					if (index !== -1) targetElements.splice(index, 1);
 					return
 				}
-			}else if((target instanceof Object || typeof target === 'object') && target !== null){
-				if(target["elementId"] === object["id"]){
+			} else if ((target instanceof Object || typeof target === 'object') && target !== null) {
+				if (target["elementId"] === object["id"]) {
 					if (!Utils.isNullOrEmpty(target["isVisible"])) {
 						object.isVisible = target["isVisible"]
 					} else {
@@ -111,24 +111,24 @@ export default class AdaptiveCard extends React.Component {
 	 * @param {string} idValue - the id of the component to be toggled
 	 */
 
-	toggleCardModelObject = (object,idArrayValue) => {
+	toggleCardModelObject = (object, idArrayValue) => {
 		if (idArrayValue.length === 0) return
 		if (object.hasOwnProperty('id')) {
 			this.checkTargetElementsForID(object, idArrayValue);
 			if (idArrayValue.length === 0) return
 		}
-		if((object.children !== undefined) && object.children.length !== 0 ){
+		if ((object.children !== undefined) && object.children.length !== 0) {
 			object.children.forEach(element => {
 				if (idArrayValue.length === 0) return
-					this.toggleCardModelObject(element, idArrayValue);
+				this.toggleCardModelObject(element, idArrayValue);
 			});
 		}
 		//Adaptive cards has actions array in addition to the body which is added as children
-		if(object.type === 'AdaptiveCard'){
-			if((object.actions !== undefined) && object.actions.length !== 0 ){
+		if (object.type === 'AdaptiveCard') {
+			if ((object.actions !== undefined) && object.actions.length !== 0) {
 				object.actions.forEach(element => {
 					if (idArrayValue.length === 0) return
-						this.toggleCardModelObject(element, idArrayValue);
+					this.toggleCardModelObject(element, idArrayValue);
 				});
 			}
 		}
@@ -176,16 +176,16 @@ export default class AdaptiveCard extends React.Component {
 
 	getAdaptiveCardContent() {
 		const contentSize = this.props.contentSize
-		const { height } =  Dimensions.get('window')
-		var contentHeight = (contentSize &&  contentSize < height) ? contentSize : height;
-		const scrollEnabled = this.state.screenHeight > contentHeight ;
-		 const shouldAddHeight = (contentSize < height - 64)
-		 var containerStyles = [styles.container]
+		const { height } = Dimensions.get('window')
+		var contentHeight = (contentSize && contentSize < height) ? contentSize : height;
+		const scrollEnabled = this.state.screenHeight > contentHeight;
+		const shouldAddHeight = (contentSize < height - 64)
+		var containerStyles = [styles.container]
 		if (shouldAddHeight) {
 			containerStyles.push({ height: contentHeight })
 		}
 		var adaptiveCardContent =
-			(  
+			(
 				<ContainerWrapper style={containerStyles} json={this.state.cardModel}>
 					<ScrollView
 						scrollEnabled={scrollEnabled}
@@ -298,15 +298,13 @@ AdaptiveCard.propTypes = {
 
 const styles = StyleSheet.create({
 	container: {
-		// //flex: 1,
-		padding: 10,
+		padding: 10
 	},
 	actionContainer: {
 		marginVertical: 10
 	},
 	backgroundImage: {
-		width: "100%",
-		// //flex: 1
+		width: "100%"
 	}
 });
 

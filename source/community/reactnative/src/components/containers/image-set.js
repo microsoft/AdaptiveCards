@@ -70,7 +70,6 @@ export class ImageSet extends React.PureComponent {
 
 const styles = StyleSheet.create({
 	container: {
-		//flex: 1,
 		flexDirection: Constants.FlexRow,
 		flexWrap: FlexWrap,
 	},

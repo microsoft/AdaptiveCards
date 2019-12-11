@@ -52,7 +52,7 @@ export default class Visualizer extends React.Component {
 
         const items = activeIndex === 0 ? payloads : scenarios;
         return (
-            <View style={styles.container}>
+            <View>
                 <TouchableOpacity onPress={() => this.onMoreOptionsClick()} style={styles.moreContainer}>
                     <Image source={moreIcon} style={styles.moreIcon} />
                 </TouchableOpacity>
@@ -183,7 +183,7 @@ export default class Visualizer extends React.Component {
                         activeOption: Constants.AdaptiveCards,
                         payloads: Payloads.AdaptiveCardPayloads,
                         scenarios: Payloads.AdaptiveCardScenarios,
-                        activeIndex : 0
+                        activeIndex: 0
                     });
                 else this.closeMoreOptions();
                 break;
@@ -194,7 +194,7 @@ export default class Visualizer extends React.Component {
                         activeOption: Constants.OtherCards,
                         payloads: Payloads.OtherCardPayloads,
                         scenarios: [],
-                        activeIndex : 0
+                        activeIndex: 0
                     });
                 else this.closeMoreOptions();
                 break;
@@ -205,7 +205,7 @@ export default class Visualizer extends React.Component {
                         activeOption: Constants.AdaptiveCards,
                         payloads: Payloads.AdaptiveCardPayloads,
                         scenarios: Payloads.AdaptiveCardScenarios,
-                        activeIndex : 0
+                        activeIndex: 0
                     });
                 else this.closeMoreOptions();
                 break;
@@ -232,9 +232,6 @@ export default class Visualizer extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        //flex: 1
-    },
     payloadPicker: {
         width: '100%',
         height: 150,
@@ -261,7 +258,6 @@ const styles = StyleSheet.create({
         height: 25
     },
     moreOptionsModal: {
-        //flex: 1,
         backgroundColor: "rgba(0, 0, 0, 0.1)"
     },
     more: {

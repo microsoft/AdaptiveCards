@@ -90,7 +90,7 @@ export class ContainerWrapper extends React.PureComponent {
         // border
         const borderThickness = styleDefinition.borderThickness || 0;
         const borderColor = styleDefinition.borderColor;
-        computedStyles.push({borderWidth: borderThickness, borderColor: Utils.hexToRGB(borderColor)});
+        computedStyles.push({ borderWidth: borderThickness, borderColor: Utils.hexToRGB(borderColor) });
 
         // padding & bleed
         if (this.canApplyPadding()) {
@@ -123,6 +123,5 @@ export class ContainerWrapper extends React.PureComponent {
 const styles = StyleSheet.create({
     backgroundImage: {
         width: Constants.FullWidth,
-        //flex: 1
     }
 });

@@ -53,29 +53,29 @@ export default class Renderer extends React.Component {
         let { isJSONVisible } = this.state;
 
         return (
-                <View style={styles.container}>
-                    <View style={styles.header}>
-                        <Button title="Close" onPress={this.onModalClose} />
-                        <Text style={styles.title}>Adaptive Card</Text>
-                        <Button title={isJSONVisible ? 'Card' : 'Json'} onPress={this.toggleJSONView} />
-                    </View>
-                    {isJSONVisible ?
-                        <ScrollView contentContainerStyle={styles.jsonContainer}>
-                            <Text style={{ fontFamily: 'Courier New' }}>
-                                {JSON.stringify(this.payload, null, '  ')}
-                            </Text>
-                        </ScrollView>
-                        :
-                        <AdaptiveCard
-                            payload={this.payload}
-                            // contentSize={500}
-                            onExecuteAction={this.onExecuteAction}
-                            hostConfig={this.customHostConfig}
-                            themeConfig={this.customThemeConfig}
-                            onParseError={this.onParseError}
-                            ref="adaptiveCardRef" />
-                    }
+            <View style={styles.container}>
+                <View style={styles.header}>
+                    <Button title="Close" onPress={this.onModalClose} />
+                    <Text style={styles.title}>Adaptive Card</Text>
+                    <Button title={isJSONVisible ? 'Card' : 'Json'} onPress={this.toggleJSONView} />
                 </View>
+                {isJSONVisible ?
+                    <ScrollView contentContainerStyle={styles.jsonContainer}>
+                        <Text style={{ fontFamily: 'Courier New' }}>
+                            {JSON.stringify(this.payload, null, '  ')}
+                        </Text>
+                    </ScrollView>
+                    :
+                    <AdaptiveCard
+                        payload={this.payload}
+                        // contentSize={500}
+                        onExecuteAction={this.onExecuteAction}
+                        hostConfig={this.customHostConfig}
+                        themeConfig={this.customThemeConfig}
+                        onParseError={this.onParseError}
+                        ref="adaptiveCardRef" />
+                }
+            </View>
         );
     }
 
@@ -145,11 +145,9 @@ export default class Renderer extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        // height: 400,
-        //flex: 1,
         ...Platform.select({
             ios: {
-                marginBottom : 84,
+                marginBottom: 84,
             }
         }),
         padding: 10,

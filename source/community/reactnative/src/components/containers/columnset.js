@@ -73,7 +73,6 @@ export class ColumnSet extends React.PureComponent {
 
 const styles = StyleSheet.create({
 	defaultBGStyle: {
-		//flex: 1,
 		backgroundColor: Constants.TransparentString,
 		flexDirection: Constants.FlexRow,
 	},
