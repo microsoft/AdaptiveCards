@@ -45,7 +45,7 @@ export default class AdaptiveCard extends React.Component {
 			showErrors: false,
 			payload: this.payload,
 			cardModel: this.cardModel,
-			height: 0
+			screenHeight: 0
 		}
 
 		// hostConfig

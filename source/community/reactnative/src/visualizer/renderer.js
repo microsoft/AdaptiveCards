@@ -22,7 +22,7 @@ import * as Utils from '../utils/util';
 export default class Renderer extends React.Component {
 
     state = {
-        isJSONVisible: false,
+        isJSONVisible: false
     }
 
     customHostConfig = {
@@ -68,7 +68,6 @@ export default class Renderer extends React.Component {
                     :
                     <AdaptiveCard
                         payload={this.payload}
-                        // contentSize={500}
                         onExecuteAction={this.onExecuteAction}
                         hostConfig={this.customHostConfig}
                         themeConfig={this.customThemeConfig}
