@@ -48,7 +48,7 @@ export class ColumnSet extends React.PureComponent {
 		const payload = this.payload;
 
 		var columnSetContent = (
-			<ContainerWrapper style={{ flex: this.payload.columns.length }} json={payload} containerStyle={this.props.containerStyle}>
+			<ContainerWrapper style={{ flex: this.payload.columns.length, backgroundColor: Constants.TransparentString }} json={payload} containerStyle={this.props.containerStyle}>
 				<ElementWrapper json={payload} style={styles.defaultBGStyle} isFirst={this.props.isFirst}>
 					{this.parsePayload()}
 				</ElementWrapper>
