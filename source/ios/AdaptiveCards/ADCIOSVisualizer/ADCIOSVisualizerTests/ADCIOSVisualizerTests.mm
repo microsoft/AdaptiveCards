@@ -67,23 +67,6 @@
     [super tearDown];
 }
 
-- (NSString *)readJsonPayloadFromBundle:(NSString *)fileName error:(NSError **)error
-{
-    NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:fileName ofType:@"json"] encoding:NSUTF8StringEncoding error:error];
-    return payload;
-}
-
-- (void)testMarkdownTelephoneLink
-{
-    NSError *error = nil;
-    NSString *payloadName = @"TextBlock.MarkDown.Telephony";
-    [self readJsonPayloadFromBundle:payloadName error:&error];
-    if (error) {
-        X
-        _XCTAssertion_Fail(@"%fails to read %@", payloadName);
-    }
-}
-
 - (void)testRemoteResouceInformation
 {   
     NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"FoodOrder" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
