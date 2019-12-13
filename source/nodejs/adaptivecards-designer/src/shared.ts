@@ -5,6 +5,8 @@ export class GlobalSettings {
     static showDataStructureToolbox: boolean = false;
     static showSampleDataEditorToolbox: boolean = false;
     static showVersionPicker: boolean = false;
+    static selectedHostContainerControlsTargetVersion: boolean = true;
+    static showTargetVersionMismatchWarning: boolean = true;
 }
 
 export var SupportedTargetVersions: Adaptive.Version[] = [

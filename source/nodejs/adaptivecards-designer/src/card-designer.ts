@@ -294,7 +294,7 @@ export class CardDesigner extends Designer.DesignContext {
 
         let wasInPreviewMode = this._designerSurface ? this._designerSurface.isPreviewMode : false;
 
-        this._designerSurface = new Designer.CardDesignerSurface(this); // .activeHostContainer, this.targetVersion);
+        this._designerSurface = new Designer.CardDesignerSurface(this);
         this._designerSurface.fixedHeightCard = this.hostContainer.isFixedHeight;
         this._designerSurface.onSelectedPeerChanged = (peer: DesignerPeers.DesignerPeer) => {
             this.buildPropertySheet(peer);
@@ -312,6 +312,10 @@ export class CardDesigner extends Designer.DesignContext {
 
             let errorPane = document.getElementById("errorPane");
             errorPane.innerHTML = "";
+
+            if (this.targetVersion.compareTo(this.hostContainer.targetVersion) > 0 && Shared.GlobalSettings.showTargetVersionMismatchWarning) {
+                errorPane.appendChild(this.renderErrorPaneElement("[Warning] The selected Target Version (" + this.targetVersion.toString() + ") is greater than the version supported by " + this.hostContainer.name + " (" + this.hostContainer.targetVersion.toString() + ")"));
+            }
 
             if (logEntries.length > 0) {
                 let dedupedEntries: Adaptive.IValidationEvent[] = [];
@@ -1092,10 +1096,25 @@ export class CardDesigner extends Designer.DesignContext {
         return this._targetVersion;
     }
 
-    set targetVersion(value: Adaptive.Version) {
-        this._targetVersion = value;
+    private _preventRecursiveSetTargetVersion = false;
 
-        this.targetVersionChanged();
+    set targetVersion(value: Adaptive.Version) {
+        if (this._targetVersion.compareTo(value) !== 0 && !this._preventRecursiveSetTargetVersion) {
+            this._preventRecursiveSetTargetVersion = true;
+
+            try {
+                this._targetVersion = value;
+
+                this.targetVersionChanged();
+
+                if (this._versionChoicePicker) {
+                    this._versionChoicePicker.selectedIndex = Shared.SupportedTargetVersions.indexOf(this._targetVersion);
+                }
+            }
+            finally {
+                this._preventRecursiveSetTargetVersion = false;
+            }
+        }
     }
 
     get dataStructure(): FieldDefinition {
@@ -1135,6 +1154,10 @@ export class CardDesigner extends Designer.DesignContext {
             this._hostContainer = value;
 
             this.activeHostContainerChanged();
+
+            if (Shared.GlobalSettings.selectedHostContainerControlsTargetVersion) {
+                this.targetVersion = this._hostContainer.targetVersion;
+            }
         }
     }
 
