@@ -102,6 +102,7 @@ export class ContainerWrapper extends React.PureComponent {
                 computedStyles.push({ marginHorizontal: -padding });
             }
         }
+        computedStyles.push({backgroundColor: Constants.TransparentString});
 
         return computedStyles;
     }
