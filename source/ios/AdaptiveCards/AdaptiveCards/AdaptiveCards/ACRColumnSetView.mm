@@ -11,9 +11,9 @@
 
 - (void)config:(nullable NSDictionary<NSString *, id> *)attributes
 {
-    super.stackView.axis = UILayoutConstraintAxisHorizontal;
-    super.stackView.distribution = UIStackViewDistributionFill;
-    super.stackView.alignment = UIStackViewAlignmentLeading;
+    super.axis = UILayoutConstraintAxisHorizontal;
+    super.distribution = UIStackViewDistributionFill;
+    super.alignment = UIStackViewAlignmentLeading;
     [super config:attributes];
     self.isLastColumn = NO;
 }
@@ -21,17 +21,26 @@
 - (void)addArrangedSubview:(UIView *)view
 {
     [super addArrangedSubview:view];
+    if (!view.isHidden) {
+        CGSize size = [view intrinsicContentSize];
+        if (size.width >= 0 and size.height >= 0) {
+            CGSize combinedSize = CGSizeMake(self.combinedContentSize.width + size.width, MAX(self.combinedContentSize.height, size.height));
+            self.combinedContentSize = combinedSize;
+        }
+    }
 }
 
 - (void)adjustHuggingForLastElement
 {
-    if ([super.stackView.arrangedSubviews count])
-        [[super.stackView.arrangedSubviews objectAtIndex:[super.stackView.arrangedSubviews count] - 1] setContentHuggingPriority:UILayoutPriorityFittingSizeLevel forAxis:UILayoutConstraintAxisHorizontal];
+    UIView *view = [self getLastArrangedSubview];
+    if (view) {
+        [view setContentHuggingPriority:UILayoutPriorityFittingSizeLevel forAxis:UILayoutConstraintAxisHorizontal];
+    }
 }
 
 - (void)setAlignmentForColumnStretch
 {
-    super.stackView.alignment = UIStackViewAlignmentFill;
+    super.alignment = UIStackViewAlignmentFill;
 }
 
 @end

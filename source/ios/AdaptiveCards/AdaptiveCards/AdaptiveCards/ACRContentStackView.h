@@ -10,10 +10,13 @@
 
 @interface ACRContentStackView : UIView <ACRIContentHoldingView>
 
-@property (nonnull) UIStackView *stackView;
 @property (weak, nullable) UIView *backgroundView;
 @property (nonnull) NSArray<NSLayoutConstraint *> *widthconstraint;
 @property (nonnull) NSArray<NSLayoutConstraint *> *heightconstraint;
+@property CGSize combinedContentSize;
+@property UILayoutConstraintAxis axis;
+@property UIStackViewDistribution distribution;
+@property UIStackViewAlignment alignment;
 
 @property BOOL isActionSet;
 
@@ -36,6 +39,10 @@
                     right:(CGFloat)right
                  priority:(unsigned int)priority
                  location:(ACRBleedDirection)location;
+
+- (UIView *)getLastArrangedSubview;
+
+- (void)hideIfSubviewsAreAllHidden;
 
 - (void)bleed:(unsigned int)padding priority:(unsigned int)priority target:(UIView *)target direction:(ACRBleedDirection)direction parentView:(UIView *)parent;
 

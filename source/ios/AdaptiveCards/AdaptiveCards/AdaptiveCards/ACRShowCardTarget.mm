@@ -81,10 +81,8 @@
     _adcView = adcView;
     _adcView.translatesAutoresizingMaskIntoConstraints = NO;
     _adcView.backgroundColor = [_config getBackgroundColorForContainerStyle:style];
-
-    [superview addArrangedSubview:adcView];
-
     _adcView.hidden = YES;
+    [superview addArrangedSubview:adcView];
     _superview = superview;
 }
 

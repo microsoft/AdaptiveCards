@@ -181,76 +181,42 @@
     lab.attributedText = content;
     lab.area = lab.frame.size.width * lab.frame.size.height;
 
-    ACRContentHoldingUIView *wrappingview =
-        [[ACRContentHoldingUIView alloc] initWithFrame:lab.frame];
-    wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
     lab.translatesAutoresizingMaskIntoConstraints = NO;
 
-    [viewGroup addArrangedSubview:wrappingview];
-    [wrappingview addSubview:lab];
+    [viewGroup addArrangedSubview:lab];
+    
+    HorizontalAlignment adaptiveAlignment = rTxtBlck->GetHorizontalAlignment();
 
-    NSLayoutAttribute horizontalAlignment = NSLayoutAttributeLeading;
-    if (rTxtBlck->GetHorizontalAlignment() == HorizontalAlignment::Right) {
-        horizontalAlignment = NSLayoutAttributeTrailing;
-    } else if (rTxtBlck->GetHorizontalAlignment() == HorizontalAlignment::Center) {
-        horizontalAlignment = NSLayoutAttributeCenterX;
+    if (adaptiveAlignment == HorizontalAlignment::Left) {
+        lab.textAlignment = NSTextAlignmentLeft;
     }
-
-    [NSLayoutConstraint constraintWithItem:lab
-                                 attribute:horizontalAlignment
-                                 relatedBy:NSLayoutRelationEqual
-                                    toItem:wrappingview
-                                 attribute:horizontalAlignment
-                                multiplier:1.0
-                                  constant:0]
-        .active = YES;
-    [NSLayoutConstraint constraintWithItem:lab
-                                 attribute:NSLayoutAttributeBottom
-                                 relatedBy:NSLayoutRelationEqual
-                                    toItem:wrappingview
-                                 attribute:NSLayoutAttributeBottom
-                                multiplier:1.0
-                                  constant:0]
-        .active = YES;
-    [NSLayoutConstraint constraintWithItem:lab
-                                 attribute:NSLayoutAttributeTop
-                                 relatedBy:NSLayoutRelationEqual
-                                    toItem:wrappingview
-                                 attribute:NSLayoutAttributeTop
-                                multiplier:1.0
-                                  constant:0]
-        .active = YES;
-
+    if (adaptiveAlignment == HorizontalAlignment::Right) {
+        lab.textAlignment = NSTextAlignmentRight;
+    }
+    if (adaptiveAlignment == HorizontalAlignment::Center) {
+        lab.textAlignment = NSTextAlignmentCenter;
+    }
+    
     lab.textContainer.maximumNumberOfLines = 0;
 
     if (rTxtBlck->GetHeight() == HeightType::Auto) {
-        [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired
+        [lab setContentCompressionResistancePriority:UILayoutPriorityRequired
                                                       forAxis:UILayoutConstraintAxisVertical];
-        [wrappingview setContentHuggingPriority:UILayoutPriorityDefaultHigh
+        [lab setContentHuggingPriority:UILayoutPriorityDefaultHigh
                                         forAxis:UILayoutConstraintAxisVertical];
     } else {
-        [wrappingview setContentHuggingPriority:UILayoutPriorityDefaultLow
+        [lab setContentHuggingPriority:UILayoutPriorityDefaultLow
                                         forAxis:UILayoutConstraintAxisVertical];
-        [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired
+        [lab setContentCompressionResistancePriority:UILayoutPriorityRequired
                                                       forAxis:UILayoutConstraintAxisVertical];
     }
 
-    [NSLayoutConstraint constraintWithItem:wrappingview
-                                 attribute:NSLayoutAttributeWidth
-                                 relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                    toItem:lab
-                                 attribute:NSLayoutAttributeWidth
-                                multiplier:1.0
-                                  constant:0]
-        .active = YES;
     [lab setContentCompressionResistancePriority:UILayoutPriorityRequired
                                          forAxis:UILayoutConstraintAxisHorizontal];
-    [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired
-                                                  forAxis:UILayoutConstraintAxisHorizontal];
 
-    configVisibility(wrappingview, elem);
-
-    return wrappingview;
+    [lab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+    configVisibility(lab, elem);
+    return lab;
 }
 
 @end

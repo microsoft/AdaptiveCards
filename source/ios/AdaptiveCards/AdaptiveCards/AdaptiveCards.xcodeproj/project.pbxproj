@@ -78,6 +78,7 @@
 		6B9AB30220D32A89005C8E15 /* ACRButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B9AB30120D32A89005C8E15 /* ACRButton.xib */; };
 		6B9AB31020DD82A2005C8E15 /* ACRTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B9AB30E20DD82A2005C8E15 /* ACRTextView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B9AB31120DD82A2005C8E15 /* ACRTextView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B9AB30F20DD82A2005C8E15 /* ACRTextView.mm */; };
+		6B9B47E623A450F7004C93A8 /* ACRUIImageViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B9B47E523A450F6004C93A8 /* ACRUIImageViewPrivate.h */; };
 		6B9BDF7320E1BD0E00F13155 /* ACRToggleInputDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B9BDF7120E1BD0E00F13155 /* ACRToggleInputDataSource.mm */; };
 		6B9BDF7420E1BD0E00F13155 /* ACRToggleInputDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B9BDF7220E1BD0E00F13155 /* ACRToggleInputDataSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B9BDF7F20F40D1000F13155 /* ACOResourceResolvers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B9BDF7D20F40D0F00F13155 /* ACOResourceResolvers.mm */; };
@@ -405,6 +406,7 @@
 		6B9AB30120D32A89005C8E15 /* ACRButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACRButton.xib; sourceTree = "<group>"; };
 		6B9AB30E20DD82A2005C8E15 /* ACRTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRTextView.h; sourceTree = "<group>"; };
 		6B9AB30F20DD82A2005C8E15 /* ACRTextView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRTextView.mm; sourceTree = "<group>"; };
+		6B9B47E523A450F6004C93A8 /* ACRUIImageViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRUIImageViewPrivate.h; sourceTree = "<group>"; };
 		6B9BDF7120E1BD0E00F13155 /* ACRToggleInputDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRToggleInputDataSource.mm; sourceTree = "<group>"; };
 		6B9BDF7220E1BD0E00F13155 /* ACRToggleInputDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRToggleInputDataSource.h; sourceTree = "<group>"; };
 		6B9BDF7D20F40D0F00F13155 /* ACOResourceResolvers.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACOResourceResolvers.mm; sourceTree = "<group>"; };
@@ -779,6 +781,7 @@
 				6B696CD723202B1A00E1D607 /* ACRTargetBuilderDirector.mm */,
 				F4960C022051FE8000780566 /* ACRView.h */,
 				F4960C032051FE8100780566 /* ACRView.mm */,
+				6B616C4121CB20D1003E29CE /* ACRActionToggleVisibilityRenderer.h */,
 				F4D06948205B27E9003645E4 /* ACRViewController.h */,
 				F4D06947205B27E9003645E4 /* ACRViewController.mm */,
 				F4D06949205B27EA003645E4 /* ACRViewPrivate.h */,
@@ -986,7 +989,6 @@
 				F4C1F5FD1F2C235E0018CB78 /* ACRActionShowCardRenderer.mm */,
 				F42979381F31458800E89914 /* ACRActionSubmitRenderer.h */,
 				F42979391F31458800E89914 /* ACRActionSubmitRenderer.mm */,
-				6B616C4121CB20D1003E29CE /* ACRActionToggleVisibilityRenderer.h */,
 				6B616C4221CB20D1003E29CE /* ACRActionToggleVisibilityRenderer.mm */,
 				F4F6BA3A204F3109003741B6 /* ACRAggregateTarget.h */,
 				F4F6BA39204F3109003741B6 /* ACRAggregateTarget.mm */,
@@ -1012,6 +1014,7 @@
 		F42979341F3007C500E89914 /* ReadOnlyObjects */ = {
 			isa = PBXGroup;
 			children = (
+				6B9B47E523A450F6004C93A8 /* ACRUIImageViewPrivate.h */,
 				F42741081EF864A900399FBB /* ACRBaseCardElementRenderer.h */,
 				F42741091EF864A900399FBB /* ACRBaseCardElementRenderer.mm */,
 				F42741221EFB274C00399FBB /* ACRColumnRenderer.h */,
@@ -1240,6 +1243,7 @@
 				F4C1F5E81F2ABB3C0018CB78 /* ACRIBaseActionElementRenderer.h in Headers */,
 				6BF430772190DDCA0068E432 /* ACRQuickReplyView.h in Headers */,
 				C8DEDF3A220CDEB00001AAED /* ActionSet.h in Headers */,
+				6B9B47E623A450F7004C93A8 /* ACRUIImageViewPrivate.h in Headers */,
 				6BB211FF20FFF9C0009EA1BA /* ACRIMedia.h in Headers */,
 				6B7B1A9320B4D2AB00260731 /* MediaSource.h in Headers */,
 				7ECFB641219A3940004727A9 /* ParseContext.h in Headers */,

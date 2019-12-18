@@ -11,7 +11,7 @@
 
 - (void)config:(nullable NSDictionary<NSString *, id> *)attributes
 {
-    self.stackView.axis = UILayoutConstraintAxisVertical;
+    self.axis = UILayoutConstraintAxisVertical;
     [super config:attributes];
     self.isLastColumn = NO;
 }
@@ -34,10 +34,17 @@
         [view setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     } else {
         [view setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-        [view setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+        [view setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     }
 
-    [self.stackView addArrangedSubview:view];
+    [super addArrangedSubview:view];
+    
+    if (!view.isHidden) {
+        CGSize size = [view intrinsicContentSize];
+        if (size.width >= 0 and size.height >= 0) {
+            self.combinedContentSize = CGSizeMake(MAX(self.combinedContentSize.width, size.width), self.combinedContentSize.height + size.height);
+        }
+    }    
 }
 
 - (UIView *)addPaddingSpace

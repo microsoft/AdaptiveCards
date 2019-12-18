@@ -15,6 +15,8 @@ using namespace AdaptiveCards;
     NSMutableArray *_targets;
     NSMutableArray<ACRShowCardTarget *> *_showcardTargets;
     ACRContainerStyle _style;
+    UIStackView *_stackView;
+    NSMutableSet<UIView *> *_hiddenSubviews;
 }
 
 - (instancetype)initWithStyle:(ACRContainerStyle)style
@@ -52,6 +54,9 @@ using namespace AdaptiveCards;
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [self initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height) attributes:nil];
+    if (self) {
+        _hiddenSubviews = [[NSMutableSet alloc] init];
+    }
     return self;
 }
 
@@ -75,6 +80,36 @@ using namespace AdaptiveCards;
 - (void)setStyle:(ACRContainerStyle)style
 {
     _style = style;
+}
+
+- (UIStackViewAlignment)alignment
+{
+    return _stackView.alignment;
+}
+
+- (void)setAlignment:(UIStackViewAlignment)alignment
+{
+    _stackView.alignment = alignment;
+}
+
+- (UIStackViewDistribution)distribution
+{
+    return _stackView.distribution;
+}
+
+- (void)setDistribution:(UIStackViewDistribution)distribution
+{
+    _stackView.distribution = distribution;
+}
+
+- (UILayoutConstraintAxis)axis
+{
+    return _stackView.axis;
+}
+
+-(void)setAxis:(UILayoutConstraintAxis)axis
+{
+    _stackView.axis = axis;
 }
 
 + (UIColor *)colorFromString:(const std::string &)colorString
@@ -113,13 +148,16 @@ using namespace AdaptiveCards;
 
 - (void)config:(nullable NSDictionary<NSString *, id> *)attributes
 {
-    if (!self.stackView) {
+    if (!_stackView) {
         return;
     }
 
-    [self addSubview:self.stackView];
-    self.stackView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:_stackView];
+    _stackView.translatesAutoresizingMaskIntoConstraints = NO;
     self.translatesAutoresizingMaskIntoConstraints = NO;
+    _stackView.axis = self.axis;
+    _stackView.distribution = self.distribution;
+    _stackView.alignment = self.alignment;
 
     _targets = [[NSMutableArray alloc] init];
     _showcardTargets = [[NSMutableArray alloc] init];
@@ -129,17 +167,17 @@ using namespace AdaptiveCards;
     if (attributes) {
         NSNumber *distribAttrib = attributes[@"distribution"];
         if ([distribAttrib boolValue]) {
-            self.stackView.distribution = (UIStackViewDistribution)[distribAttrib integerValue];
+            _stackView.distribution = (UIStackViewDistribution)[distribAttrib integerValue];
         }
 
         NSNumber *alignAttrib = attributes[@"alignment"];
         if ([alignAttrib boolValue]) {
-            self.stackView.alignment = (UIStackViewAlignment)[alignAttrib integerValue];
+            _stackView.alignment = (UIStackViewAlignment)[alignAttrib integerValue];
         }
 
         NSNumber *spacingAttrib = attributes[@"spacing"];
         if ([spacingAttrib boolValue]) {
-            self.stackView.spacing = [spacingAttrib floatValue];
+            _stackView.spacing = [spacingAttrib floatValue];
         }
 
         NSNumber *topPaddingAttrib = attributes[@"padding-top"];
@@ -158,12 +196,53 @@ using namespace AdaptiveCards;
 
 - (CGSize)intrinsicContentSize
 {
-    return self.frame.size;
+    return self.combinedContentSize;
 }
 
 - (void)addArrangedSubview:(UIView *)view
 {
-    [self.stackView addArrangedSubview:view];
+    [_stackView addArrangedSubview:view];
+    // if view is hidden before observer is added, we update hidden view count manually
+    if (view.hidden) {
+        [_hiddenSubviews addObject:view];
+    }
+    [view addObserver:self forKeyPath:@"hidden" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
+}
+
+// it's hard to know collection to know when filling the collection is done, this method
+// signals that the filling is done, and do the final visibility adjustment
+- (void)hideIfSubviewsAreAllHidden
+{
+    if ([_hiddenSubviews count] == [_stackView.arrangedSubviews count]) {
+        self.hidden = YES;
+    }
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+ofObject:(id)object
+  change:(NSDictionary *)change
+ context:(void *)context
+{
+    if ([object isKindOfClass:[UIView class]]) {
+        UIView *view = (UIView *)object;
+        BOOL isHidden = view.hidden;
+        if (isHidden == YES) {
+            [_hiddenSubviews addObject:view];
+            if ([_hiddenSubviews count] == [_stackView.arrangedSubviews count]) {
+                self.hidden = YES;
+            }
+        } else {
+            if ([_hiddenSubviews containsObject:view]) {
+                [_hiddenSubviews removeObject:view];
+                if (self.hidden) {
+                    self.hidden = NO;
+                }
+                
+            }
+        }
+//
+//        NSLog(@"hidden subviews = %ld, subview counts = %ld", _hiddenSubviewsCounts, [_stackView.arrangedSubviews count]);
+    }    
 }
 
 - (void)removeLastViewFromArrangedSubview
@@ -173,12 +252,18 @@ using namespace AdaptiveCards;
         if (view) {
             [self removeViewFromContentStackView:view];
         }
-    }
+    }    
 }
 
 - (void)removeViewFromContentStackView:(UIView *)view
 {
-    [self.stackView removeArrangedSubview:view];
+    if (view.hidden) {
+        if ([_hiddenSubviews containsObject:view]) {
+            [_hiddenSubviews removeObject:view];
+        }
+    }
+    [view removeObserver:self forKeyPath:@"hidden"];
+    [_stackView removeArrangedSubview:view];
     [view removeFromSuperview];
 }
 
@@ -187,14 +272,24 @@ using namespace AdaptiveCards;
     UIView *view = nil;
     const NSUInteger subviewsCounts = [self subviewsCounts];
     if (subviewsCounts) {
-        view = self.stackView.subviews[subviewsCounts - 1];
+        view = _stackView.subviews[subviewsCounts - 1];
+    }
+    return view;
+}
+
+- (UIView *)getLastArrangedSubview
+{
+    UIView *view = nil;
+    const NSUInteger arrangedSubviewsCounts = [_stackView.arrangedSubviews count];
+    if (arrangedSubviewsCounts) {
+        view = _stackView.arrangedSubviews[arrangedSubviewsCounts - 1];
     }
     return view;
 }
 
 - (NSUInteger)subviewsCounts
 {
-    return [self.stackView.subviews count];
+    return [_stackView.subviews count];
 }
 
 - (void)addTarget:(NSObject *)target
@@ -216,10 +311,10 @@ using namespace AdaptiveCards;
 // let the last element to strech
 - (void)adjustHuggingForLastElement
 {
-    if ([self.stackView.arrangedSubviews count])
-        [[self.stackView.arrangedSubviews objectAtIndex:[self.stackView.arrangedSubviews count] - 1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-    if ([self.stackView.arrangedSubviews count])
-        [[self.stackView.arrangedSubviews objectAtIndex:[self.stackView.arrangedSubviews count] - 1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+    if ([_stackView.arrangedSubviews count])
+        [[_stackView.arrangedSubviews objectAtIndex:[_stackView.arrangedSubviews count] - 1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+    if ([_stackView.arrangedSubviews count])
+        [[_stackView.arrangedSubviews objectAtIndex:[_stackView.arrangedSubviews count] - 1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
 }
 
 - (void)applyPadding:(unsigned int)padding priority:(unsigned int)priority
@@ -289,19 +384,14 @@ using namespace AdaptiveCards;
     [self applyPadding:padding priority:1000 location:(ACRBleedDirection)bleedDirection];
 }
 
-- (UILayoutConstraintAxis)getAxis
-{
-    return self.stackView.axis;
-}
-
 - (void)layoutSubviews
 {
     [super layoutSubviews];
 
     if (_isActionSet) {
-        float accumulatedWidth = 0, accumulatedHeight = 0, spacing = self.stackView.spacing, maxWidth = 0, maxHeight = 0;
+        float accumulatedWidth = 0, accumulatedHeight = 0, spacing = _stackView.spacing, maxWidth = 0, maxHeight = 0;
 
-        for (UIView *view in self.stackView.subviews) {
+        for (UIView *view in _stackView.subviews) {
             accumulatedWidth += [view intrinsicContentSize].width;
             accumulatedHeight += [view intrinsicContentSize].height;
             maxWidth = MAX(maxWidth, [view intrinsicContentSize].width);
@@ -309,17 +399,24 @@ using namespace AdaptiveCards;
         }
 
         float contentWidth = accumulatedWidth, contentHeight = accumulatedHeight;
-        if (self.stackView.axis == UILayoutConstraintAxisHorizontal) {
-            contentWidth += (self.stackView.subviews.count - 1) * spacing;
+        if (_stackView.axis == UILayoutConstraintAxisHorizontal) {
+            contentWidth += (_stackView.subviews.count - 1) * spacing;
             contentHeight = maxHeight;
         } else {
-            contentHeight += (self.stackView.subviews.count - 1) * spacing;
+            contentHeight += (_stackView.subviews.count - 1) * spacing;
             contentWidth = maxWidth;
         }
 
         if (contentWidth > self.frame.size.width) {
             [self removeConstraints:_widthconstraint];
         }
+    }
+}
+
+- (void)dealloc
+{
+    for (UIView *view in _stackView.arrangedSubviews) {
+        [view removeObserver:self forKeyPath:@"hidden"];
     }
 }
 
