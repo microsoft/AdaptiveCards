@@ -12,13 +12,21 @@ export interface IFormatterStyleRule {
     html?: string;
 }
 
-export interface IFormatterConfiguration {
-    type: string
+export interface IFormatterRule {
     styles: IFormatterStyleRule;
     patterns: string[];
     patternType: FormatterPatternType;
     groups: number;
     regexp?: RegExp;
+}
+
+export interface IFormatterConfiguration {
+    orderedList: IFormatterRule;
+    unorderedList: IFormatterRule;
+    bold: IFormatterRule;
+    italic: IFormatterRule;
+    hyperlink: IFormatterRule;
+    [name: string]: IFormatterRule;
 }
 
 export abstract class TextFormatter {
@@ -30,77 +38,70 @@ export class MarkdownFormatter extends TextFormatter {
     // To match all special characters
     private static SPECIAL_CHAR_REGEX = new RegExp("[^|a-z\\\\s\\d]", 'gi');
 
-    private configuration: IFormatterConfiguration[] = [
-        {
-            type: "orderedList",
-            styles: {
-                start: "<ol>",
-                end: "</ol>"
-            },
-            patterns: ["\\d.", '\\r|\\n'],
-            patternType: "list",
-            groups: 1
-        }, {
-            type: "unorderedList",
-            styles: {
-                start: "<ul>",
-                end: "</ul>"
-            },
-            patterns: ['-', '\\r|\\n'],
-            patternType: 'list',
-            groups: 1,
-        }, {
-            type: "bold",
-            styles: {
-                start: "<b>",
-                end: "</b>"
-            },
-            patterns: ['**'],
-            patternType: 'symmetric',
-            groups: 1,
-        }, {
-            type: "italic",
-            styles: {
-                start: "<i>",
-                end: "</i>"
-            },
-            patterns: ['_'],
-            patternType: 'symmetric',
-            groups: 1,
-        }, {
-            type: "hyperlink",
-            styles: {
-                html: "<a href='{1}'>{0}</a>"
-            },
-            patterns: ['[]()'],
-            patternType: 'asymmetric',
-            groups: 2,
-        }
-    ];
+    private _configuration: IFormatterConfiguration;
 
-    constructor() {
-        super();
-        this.configuration.forEach(config => {
-            this.initailize(config);
-        });
+    /**
+     * Returns the default configuration for the Markdownformatter. 
+     * Add or change on top this.
+     */
+    static getDefaultConfiguration(): IFormatterConfiguration {
+        return {
+            orderedList: {
+                styles: {
+                    start: "<ol>",
+                    end: "</ol>"
+                },
+                patterns: ["\\d.", '\\r|\\n'],
+                patternType: "list",
+                groups: 1
+            },
+            unorderedList: {
+                styles: {
+                    start: "<ul>",
+                    end: "</ul>"
+                },
+                patterns: ['-', '\\r|\\n'],
+                patternType: 'list',
+                groups: 1,
+            },
+            bold: {
+                styles: {
+                    start: "<b>",
+                    end: "</b>"
+                },
+                patterns: ['**'],
+                patternType: 'symmetric',
+                groups: 1,
+            },
+            italic: {
+                styles: {
+                    start: "<i>",
+                    end: "</i>"
+                },
+                patterns: ['_'],
+                patternType: 'symmetric',
+                groups: 1,
+            },
+            hyperlink: {
+                styles: {
+                    html: "<a href='{1}'>{0}</a>"
+                },
+                patterns: ['[]()'],
+                patternType: 'asymmetric',
+                groups: 2,
+            }
+        };
     }
 
     /**
-     * To add custom markdown rules. This will update the default markdown rule is the same type is passed.
-     * 
-     * @param configurations 
+     * @param configuration : optional custom configuration
      */
-    public setCustomRules(configurations: IFormatterConfiguration[]): void {
-        for (let j = 0; j < configurations.length; j++) {
-            let index = this.configuration.findIndex(config => config.type == configurations[j].type);
-            if (index >= 0) {
-                this.configuration[index] = configurations[j];
-                this.initailize(configurations[j]);
-                continue;
-            }
-            else {
-                this.configuration.push(configurations[j]);
-            }
+    constructor(configuration?: IFormatterConfiguration) {
+        super();
+        this._configuration = configuration ? configuration : MarkdownFormatter.getDefaultConfiguration();
+
+        for (let type in this._configuration) {
+            this.initailize(this._configuration[type]);
         }
     }
 
@@ -114,7 +115,12 @@ export class MarkdownFormatter extends TextFormatter {
         return pattern.replace(MarkdownFormatter.SPECIAL_CHAR_REGEX, "\\$&");
     }
 
-    private initailize(configuration: IFormatterConfiguration): void {
+    /**
+     * To initialize the regexp for the rule passed.
+     * 
+     * @param configuration 
+     */
+    private initailize(configuration: IFormatterRule): void {
         let patternArray = configuration.patterns,
             patternType = configuration.patternType,
             pattern = patternArray[0],
@@ -135,10 +141,10 @@ export class MarkdownFormatter extends TextFormatter {
 
             for (let j = 0; j < groups; j++) {
                 let group = regexForm.substring(part * j, part * (j + 1)),
-                firstHalf = group.substring(0, group.length / 2),
-                secondHalf = group.substring(group.length / 2, group.length),
-                middle = (j < groups / 2) ? group.substring(0, group.length / 2) : group.substring(group.length / 2, group.length);
-                
+                    firstHalf = group.substring(0, group.length / 2),
+                    secondHalf = group.substring(group.length / 2, group.length),
+                    middle = (j < groups / 2) ? group.substring(0, group.length / 2) : group.substring(group.length / 2, group.length);
+
                 regex = regex + firstHalf + '([^' + middle + ']+)' + secondHalf;
             }
             pattern = regex;
@@ -146,13 +152,20 @@ export class MarkdownFormatter extends TextFormatter {
         configuration.regexp = new RegExp(pattern, 'gim');
     }
 
+    /**
+     * The main function that formats the text based on the rules initalized.
+     * 
+     * @param text : text to parse 
+     */
     formatText(text: string): string {
-        for (let i = 0; i < this.configuration.length; i++) {
+        for (let type in this._configuration) {
+            this.initailize(this._configuration[type]);
             let first = true;
             let parsed,
-                pattern = this.configuration[i].regexp,
-                patternType = this.configuration[i].patternType,
-                styles = this.configuration[i].styles;
+                pattern = this._configuration[type].regexp,
+                patternType = this._configuration[type].patternType,
+                styles = this._configuration[type].styles;
+
             while (pattern && (parsed = pattern.exec(text)) !== null) {
                 if (parsed[1] === undefined) {
                     continue;

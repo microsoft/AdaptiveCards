@@ -65,26 +65,49 @@
 				alert("Ow!");
 			}
 
-			//To add new markdown rules or to customize the existing markdown rules.
-			let customRules = [{
-				type: 'unorderedList',
+
+			// Follow the below steps to instantiate a MarkdownFormatter with custom configuration
+
+			// Get a copy of the default configuration
+			let myConfiguration = AdaptiveCards.AdaptiveCard.MarkdownFormatter.getDefaultConfiguration();
+
+			// Customize the unorderedList rule
+			myConfiguration.unorderedList = {
 				styles:{
 					start: "<ul>",
 					end: "</ul>"},
 				patterns: ['$', '\\r|\\n'],
 				patternType: 'list',
 				groups: 1
-			},
-			{
-				type: 'italic',
+			};
+
+			// Customize the italic rule
+			myConfiguration.italic = {
 				styles:{
 					start: "<i>",
 					end: "</i>"},
 				patterns: ['-'],
 				patternType: 'symmetric',
 				groups:1,
-			}];
-			AdaptiveCards.AdaptiveCard.textFormatter.setCustomRules(customRules);
+			};
+
+			// Alternatively, the custom configuration can be created entirely from scratch
+			/*
+			myConfiguration = {
+				orderedList: {
+					...
+				},
+				unorderedList: {
+					...
+				},
+				...,
+				myCustomRule: {
+					...
+				}
+			};*/
+
+			// Pass the custom configuration to the MarkdownFormatter constructor
+			AdaptiveCards.AdaptiveCard.textFormatter = new AdaptiveCards.AdaptiveCard.MarkdownFormatter(myConfiguration);
 
 			// Parse the card payload
 			adaptiveCard.parse(card);

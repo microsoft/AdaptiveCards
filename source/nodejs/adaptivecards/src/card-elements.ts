@@ -6634,7 +6634,7 @@ export class AdaptiveCard extends ContainerWithActions {
     static onParseError: (error: HostConfig.IValidationError) => void = null;
     static onProcessMarkdown: (text: string, result: IMarkdownProcessingResult) => void = null;
 
-    //static MarkdownFormatter = MarkdownFormatter;
+    static MarkdownFormatter = MarkdownFormatter;
     static textFormatter: TextFormatter = new MarkdownFormatter();
     
     static get processMarkdown(): (text: string) => string {

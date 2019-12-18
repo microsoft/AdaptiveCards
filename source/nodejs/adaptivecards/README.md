@@ -134,7 +134,7 @@ Markdown is a [standard feature of Adaptive Cards](https://docs.microsoft.com/en
 * numbered list
 
 
-You can add and also customize markdown rules using this `AdaptiveCards.AdaptiveCard.textFormatter.setCustomRules` function. Refer [example.html](example.html) for the example usecase.
+You can add and also customize markdown rules by passing the custom rules to the MarkdownFormatter constructor function. Refer [example.html](example.html) for the example usecase.
 
 
 #### Option to use own Markdown Formmater
