@@ -3,6 +3,7 @@
 import * as monaco from "monaco-editor";
 import * as markdownit from "markdown-it";
 import * as ACDesigner from "adaptivecards-designer";
+import * as Adaptive from "adaptivecards";
 import "adaptivecards-designer/dist/adaptivecards-designer.css";
 import "./app.css";
 
@@ -44,7 +45,9 @@ window.onload = function() {
 	hostContainers.push(new ACDesigner.BotFrameworkContainer("Bot Framework Other Channels (Image render)", "containers/bf-image-container.css"));
 	hostContainers.push(new ACDesigner.ToastContainer("Windows Notifications (Preview)", "containers/toast-container.css"));
 
-    let designer = new ACDesigner.CardDesigner(hostContainers);
+	let designer = new ACDesigner.CardDesigner(hostContainers);
+	designer.sampleCatalogueUrl = window.location.origin + "/sample-catalogue.json";
+	designer.attachTo(document.getElementById("designerRootHost"));
 
     designer.sampleCatalogueUrl = window.location.origin + "/sample-catalogue.json";
     designer.attachTo(document.getElementById("designerRootHost"));
