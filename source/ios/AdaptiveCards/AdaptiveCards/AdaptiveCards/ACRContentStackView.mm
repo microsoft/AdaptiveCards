@@ -11,6 +11,8 @@
 
 using namespace AdaptiveCards;
 
+static int kToggleVisibilityContext;
+
 @implementation ACRContentStackView {
     NSMutableArray *_targets;
     NSMutableArray<ACRShowCardTarget *> *_showcardTargets;
@@ -107,7 +109,7 @@ using namespace AdaptiveCards;
     return _stackView.axis;
 }
 
--(void)setAxis:(UILayoutConstraintAxis)axis
+- (void)setAxis:(UILayoutConstraintAxis)axis
 {
     _stackView.axis = axis;
 }
@@ -206,43 +208,43 @@ using namespace AdaptiveCards;
     if (view.hidden) {
         [_hiddenSubviews addObject:view];
     }
-    [view addObserver:self forKeyPath:@"hidden" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
+    [view addObserver:self forKeyPath:@"hidden" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:&kToggleVisibilityContext];
 }
 
 // it's hard to know collection to know when filling the collection is done, this method
 // signals that the filling is done, and do the final visibility adjustment
 - (void)hideIfSubviewsAreAllHidden
 {
-    if ([_hiddenSubviews count] == [_stackView.arrangedSubviews count]) {
+    NSInteger count = [_hiddenSubviews count];
+    if (count and count == [_stackView.arrangedSubviews count]) {
         self.hidden = YES;
     }
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
-ofObject:(id)object
-  change:(NSDictionary *)change
- context:(void *)context
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context
 {
     if ([object isKindOfClass:[UIView class]]) {
         UIView *view = (UIView *)object;
         BOOL isHidden = view.hidden;
-        if (isHidden == YES) {
+        if (isHidden == YES and ![_hiddenSubviews containsObject:view]) {
             [_hiddenSubviews addObject:view];
+            [self decreaseIntrinsicContentSize:view];
             if ([_hiddenSubviews count] == [_stackView.arrangedSubviews count]) {
                 self.hidden = YES;
             }
         } else {
             if ([_hiddenSubviews containsObject:view]) {
+                [self increaseIntrinsicContentSize:view];
                 [_hiddenSubviews removeObject:view];
                 if (self.hidden) {
                     self.hidden = NO;
                 }
-                
             }
         }
-//
-//        NSLog(@"hidden subviews = %ld, subview counts = %ld", _hiddenSubviewsCounts, [_stackView.arrangedSubviews count]);
-    }    
+    }
 }
 
 - (void)removeLastViewFromArrangedSubview
@@ -252,7 +254,7 @@ ofObject:(id)object
         if (view) {
             [self removeViewFromContentStackView:view];
         }
-    }    
+    }
 }
 
 - (void)removeViewFromContentStackView:(UIView *)view
@@ -341,7 +343,7 @@ ofObject:(id)object
     NSString *horString = [[NSString alloc] initWithFormat:@"H:|-(%f@%u)-[_stackView]-(%f@%u)-|",
                                                            leadingPadding, priority, trailingPadding, priority];
     NSString *verString = [[NSString alloc] initWithFormat:@"V:|-(%f@%u)-[_stackView]-(%f@%u)-|",
-                                                           topPadding, priority, bottomPadding, 999];
+                                                           topPadding, priority, bottomPadding, priority];
 
     NSDictionary *dictionary = NSDictionaryOfVariableBindings(_stackView);
 
@@ -411,6 +413,41 @@ ofObject:(id)object
             [self removeConstraints:_widthconstraint];
         }
     }
+}
+
+- (void)increaseIntrinsicContentSize:(UIView *)view
+{
+}
+
+- (void)decreaseIntrinsicContentSize:(UIView *)view
+{
+}
+
+- (CGFloat)getNextGreatHeight:(UIView *)view
+{
+    return [self getNextSize:view
+                   dimension:^CGFloat(UIView *v) {
+                       return [v intrinsicContentSize].height;
+                   }];
+}
+
+- (CGFloat)getNextGreatWidth:(UIView *)view
+{
+    return [self getNextSize:view
+                   dimension:^CGFloat(UIView *v) {
+                       return [v intrinsicContentSize].width;
+                   }];
+}
+
+- (CGFloat)getNextSize:(UIView *)view dimension:(CGFloat (^)(UIView *view))dimension
+{
+    CGFloat currentBest = 0.0;
+    for (UIView *v in _stackView.arrangedSubviews) {
+        if (![v isEqual:view]) {
+            currentBest = MAX(currentBest, dimension(view));
+        }
+    }
+    return currentBest;
 }
 
 - (void)dealloc

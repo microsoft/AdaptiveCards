@@ -62,13 +62,13 @@
         if (size == ImageSize::None) {
             size = [acoConfig getHostConfig] -> GetImage().imageSize;
         }
-        
+
         if (size == ImageSize::Stretch) {
             intrinsicContentSize = [acoConfig getImageSize:ImageSize::Small];
-        } else if (size != ImageSize::Auto){
+        } else if (size != ImageSize::Auto) {
             intrinsicContentSize = [acoConfig getImageSize:imgElem->GetImageSize()];
         }
-        
+
     } else {
         if (pixelWidth) {
             intrinsicContentSize.width = pixelWidth;
@@ -83,7 +83,7 @@
             }
         }
     }
-    
+
 
     if (img) {
         ACRUIImageView *acrImageView = [[ACRUIImageView alloc] initWithFrame:CGRectMake(0, 0, cgsize.width, cgsize.height)];

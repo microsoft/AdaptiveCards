@@ -195,7 +195,7 @@
                                                                   actionElement:selectAction
                                                                      hostConfig:acoConfig];
     configVisibility(columnSetView, elem);
-    
+
     [columnSetView hideIfSubviewsAreAllHidden];
 
     return columnSetView;

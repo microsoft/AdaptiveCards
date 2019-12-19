@@ -38,13 +38,27 @@
     }
 
     [super addArrangedSubview:view];
-    
-    if (!view.isHidden) {
-        CGSize size = [view intrinsicContentSize];
-        if (size.width >= 0 and size.height >= 0) {
-            self.combinedContentSize = CGSizeMake(MAX(self.combinedContentSize.width, size.width), self.combinedContentSize.height + size.height);
-        }
-    }    
+
+    [self increaseIntrinsicContentSize:view];
+}
+
+- (void)increaseIntrinsicContentSize:(UIView *)view
+{
+    if (view.isHidden) {
+        return;
+    }
+    CGSize size = [view intrinsicContentSize];
+    if (size.width >= 0 and size.height >= 0) {
+        self.combinedContentSize = CGSizeMake(MAX(self.combinedContentSize.width, size.width), self.combinedContentSize.height + size.height);
+    }
+}
+
+- (void)decreaseIntrinsicContentSize:(UIView *)view
+{
+    CGFloat nextMax = [self getNextGreatWidth:view];
+    CGSize size = [view intrinsicContentSize];
+    CGFloat newWidth = (nextMax < size.width) ? nextMax : self.combinedContentSize.width;
+    self.combinedContentSize = CGSizeMake(newWidth, self.combinedContentSize.height - size.height);
 }
 
 - (UIView *)addPaddingSpace

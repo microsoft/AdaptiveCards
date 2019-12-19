@@ -21,6 +21,11 @@
 - (void)addArrangedSubview:(UIView *)view
 {
     [super addArrangedSubview:view];
+    [self increaseIntrinsicContentSize:view];
+}
+
+- (void)increaseIntrinsicContentSize:(UIView *)view
+{
     if (!view.isHidden) {
         CGSize size = [view intrinsicContentSize];
         if (size.width >= 0 and size.height >= 0) {
@@ -28,6 +33,14 @@
             self.combinedContentSize = combinedSize;
         }
     }
+}
+
+- (void)decreaseIntrinsicContentSize:(UIView *)view
+{
+    CGFloat nextMax = [self getNextGreatHeight:view];
+    CGSize size = [view intrinsicContentSize];
+    CGFloat newHeight = (nextMax < size.height) ? nextMax : self.combinedContentSize.height;
+    self.combinedContentSize = CGSizeMake(self.combinedContentSize.width - size.width, newHeight);
 }
 
 - (void)adjustHuggingForLastElement

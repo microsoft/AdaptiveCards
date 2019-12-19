@@ -184,7 +184,7 @@
     lab.translatesAutoresizingMaskIntoConstraints = NO;
 
     [viewGroup addArrangedSubview:lab];
-    
+
     HorizontalAlignment adaptiveAlignment = rTxtBlck->GetHorizontalAlignment();
 
     if (adaptiveAlignment == HorizontalAlignment::Left) {
@@ -196,19 +196,19 @@
     if (adaptiveAlignment == HorizontalAlignment::Center) {
         lab.textAlignment = NSTextAlignmentCenter;
     }
-    
+
     lab.textContainer.maximumNumberOfLines = 0;
 
     if (rTxtBlck->GetHeight() == HeightType::Auto) {
         [lab setContentCompressionResistancePriority:UILayoutPriorityRequired
-                                                      forAxis:UILayoutConstraintAxisVertical];
+                                             forAxis:UILayoutConstraintAxisVertical];
         [lab setContentHuggingPriority:UILayoutPriorityDefaultHigh
-                                        forAxis:UILayoutConstraintAxisVertical];
+                               forAxis:UILayoutConstraintAxisVertical];
     } else {
         [lab setContentHuggingPriority:UILayoutPriorityDefaultLow
-                                        forAxis:UILayoutConstraintAxisVertical];
+                               forAxis:UILayoutConstraintAxisVertical];
         [lab setContentCompressionResistancePriority:UILayoutPriorityRequired
-                                                      forAxis:UILayoutConstraintAxisVertical];
+                                             forAxis:UILayoutConstraintAxisVertical];
     }
 
     [lab setContentCompressionResistancePriority:UILayoutPriorityRequired

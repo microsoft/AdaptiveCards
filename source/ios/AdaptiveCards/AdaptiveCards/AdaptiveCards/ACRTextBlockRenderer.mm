@@ -125,7 +125,7 @@
 
     HorizontalAlignment adaptiveAlignment = txtBlck->GetHorizontalAlignment();
 
-    if (adaptiveAlignment == HorizontalAlignment::Left) { 
+    if (adaptiveAlignment == HorizontalAlignment::Left) {
         lab.textAlignment = NSTextAlignmentLeft;
     }
     if (adaptiveAlignment == HorizontalAlignment::Right) {

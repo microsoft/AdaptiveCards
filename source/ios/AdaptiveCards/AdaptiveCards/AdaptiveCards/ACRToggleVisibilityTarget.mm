@@ -46,7 +46,8 @@
 
         AdaptiveCards::IsVisible toggleEnum = target->GetIsVisible();
         if (toggleEnum == AdaptiveCards::IsVisibleToggle) {
-            view.hidden = !(view.hidden);
+            BOOL isHidden = view.hidden;
+            view.hidden = !isHidden;
             if (separator) {
                 separator.hidden = view.hidden;
             }

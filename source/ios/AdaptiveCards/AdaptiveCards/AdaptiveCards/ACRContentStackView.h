@@ -42,6 +42,14 @@
 
 - (UIView *)getLastArrangedSubview;
 
+- (CGFloat)getNextGreatWidth:(UIView *)view;
+
+- (CGFloat)getNextGreatHeight:(UIView *)view;
+
+- (void)increaseIntrinsicContentSize:(UIView *)view;
+
+- (void)decreaseIntrinsicContentSize:(UIView *)view;
+
 - (void)hideIfSubviewsAreAllHidden;
 
 - (void)bleed:(unsigned int)padding priority:(unsigned int)priority target:(UIView *)target direction:(ACRBleedDirection)direction parentView:(UIView *)parent;
