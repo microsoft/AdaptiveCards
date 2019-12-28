@@ -69,17 +69,19 @@ export class ActionWrapper extends React.Component {
 					}
 				}
 				if (isValid) {
+					const isFirstElement = index == 0 || this.hostConfig.actions.actionsOrientation === Enums.Orientation.Vertical ? true : false
 					if (element.type === 'Action.ShowCard') {
 						this.hasShowCard = true;
 						renderedElement.push(
 							<Element
 								json={element}
+								isFirst={isFirstElement}
 								onShowCardTapped={this.onShowAdaptiveCard}
 								key={`${element.type}-${index}`}
 							/>);
 					}
 					else {
-						renderedElement.push(<Element json={element} key={`${element.type}-${index}`} />);
+						renderedElement.push(<Element json={element} isFirst={isFirstElement} key={`${element.type}-${index}`} />);
 					}
 				}
 			} else {

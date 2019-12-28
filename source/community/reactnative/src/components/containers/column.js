@@ -94,7 +94,7 @@ export class Column extends React.Component {
 	 * @returns {flex}
      */
 
-	 flex = (containerViewStyle) => {
+	flex = (containerViewStyle) => {
 		var flex = 0
 		var columns = this.props.columns
 		var widthArray = columns.length > 0 ? columns.map((column) => column.width) : [];
@@ -102,24 +102,23 @@ export class Column extends React.Component {
 		widthArray.map((value) => {
 			if (Utils.isaNumber(value)) {
 				sizeValues.push(value)
-			} 
+			}
 		})
-		 var minValue = Math.min.apply(null, sizeValues)
-		 var maxValue = Math.max.apply(null, sizeValues)
-		 if (Utils.isaNumber(this.column.width)) {
-			flex = this.column.width/maxValue 
-		 }
-		 else if (!this.column || this.column.width === 'auto') {
-			 if (sizeValues.length == 0) {
-				flex = 0.1
-				containerViewStyle.push({ flexWrap: 'wrap'})
-			 }else {
-				flex = minValue/maxValue 
-			 }
+		var minValue = Math.min.apply(null, sizeValues)
+		var maxValue = Math.max.apply(null, sizeValues)
+		if (Utils.isaNumber(this.column.width)) {
+			flex = this.column.width / maxValue
+		}
+		else if (!this.column || this.column.width === 'auto') {
+			if (sizeValues.length == 0) {
+				containerViewStyle.push({ flexWrap: 'wrap' })
+			} else {
+				flex = minValue / maxValue
+			}
 		}
 		else if (this.column.width === undefined || this.column.width === 'stretch') {
-			flex = 1 
-		} 
+			flex = 1
+		}
 		return flex;
 	}
 
@@ -141,7 +140,7 @@ export class Column extends React.Component {
 			spacingStyle.push({ marginLeft: this.spacing })
 		}
 		spacingStyle.push({ flexGrow: 1 });
-	
+
 		containerViewStyle.push({ flex: this.flex(containerViewStyle) })
 
 		let ActionComponent = React.Fragment;

@@ -52,7 +52,7 @@ export default class Visualizer extends React.Component {
 
         const items = activeIndex === 0 ? payloads : scenarios;
         return (
-            <View>
+            <View style={{ flex: 1 }}>
                 <TouchableOpacity onPress={() => this.onMoreOptionsClick()} style={styles.moreContainer}>
                     <Image source={moreIcon} style={styles.moreIcon} />
                 </TouchableOpacity>

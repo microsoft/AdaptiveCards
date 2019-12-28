@@ -161,6 +161,7 @@ const styles = StyleSheet.create({
 		borderRadius: 5,
 	},
 	overlay: {
+		flex: 1,
 		backgroundColor: 'rgba(0,0,0,.3)',
 		alignItems: Constants.CenterString,
 		justifyContent: Constants.FlexEnd

@@ -5,3 +5,5 @@ export const PayloadHeader = "Payloads";
 
 export const InProgress = "InProgress";
 export const InProgressText = "This task is not completed yet.";
+
+export const IosBottomMargin = 84

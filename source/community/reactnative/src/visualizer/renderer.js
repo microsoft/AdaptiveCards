@@ -18,6 +18,7 @@ import AdaptiveCard from '../adaptive-card';
 import { RatingRenderer } from './rating-renderer';
 import { Registry } from '../components/registration/registry';
 import * as Utils from '../utils/util';
+import * as Constants from './constants';
 
 export default class Renderer extends React.Component {
 
@@ -72,6 +73,7 @@ export default class Renderer extends React.Component {
                         hostConfig={this.customHostConfig}
                         themeConfig={this.customThemeConfig}
                         onParseError={this.onParseError}
+                        // contentSize={500} //we can also set the size of the adaptive card
                         ref="adaptiveCardRef" />
                 }
             </View>
@@ -144,15 +146,11 @@ export default class Renderer extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        ...Platform.select({
-            ios: {
-                marginBottom: 84,
-            }
-        }),
         padding: 10,
         ...Platform.select({
             ios: {
                 paddingTop: 50,
+                marginBottom: Constants.IosBottomMargin, //Adaptive card starts from 84 pixel so we gave margin bottom as 84. Its purely for our renderer app, it will not impact adaptive card.
             }
         }),
     },

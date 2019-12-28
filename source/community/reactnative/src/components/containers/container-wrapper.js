@@ -78,6 +78,7 @@ export class ContainerWrapper extends React.PureComponent {
                 computedStyles.push({ justifyContent: Constants.FlexStart });
                 break;
         }
+        computedStyles.push({ backgroundColor: Constants.TransparentString });
 
         // container BG style
         let backgroundStyle;
@@ -102,7 +103,18 @@ export class ContainerWrapper extends React.PureComponent {
                 computedStyles.push({ marginHorizontal: -padding });
             }
         }
-        computedStyles.push({backgroundColor: Constants.TransparentString});
+
+        // height 
+        const payloadHeight = this.payload.height || false;
+        if (payloadHeight) {
+            const heightEnumValue = Utils.parseHostConfigEnum(
+                Enums.Height,
+                this.payload.height,
+                Enums.Height.Auto);
+            const height = hostConfig.getEffectiveHeight(heightEnumValue);
+            computedStyles.push({ flex: height });
+            !this.payload["verticalContentAlignment"] && height && computedStyles.push({ justifyContent: Constants.SpaceBetween })
+        }
 
         return computedStyles;
     }

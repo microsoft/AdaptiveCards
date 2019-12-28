@@ -6,8 +6,7 @@ import React from 'react';
 import {
 	StyleSheet,
 	Text,
-	ScrollView,
-	Dimensions
+	ScrollView
 } from 'react-native';
 
 import { Registry } from './components/registration/registry';
@@ -22,8 +21,6 @@ import ResourceInformation from './utils/resource-information';
 import { ContainerWrapper } from './components/containers';
 import { ThemeConfigManager } from './utils/theme-config';
 import { ModelFactory } from './models';
-
-const { height } = Dimensions.get('window');
 
 export default class AdaptiveCard extends React.Component {
 
@@ -44,8 +41,7 @@ export default class AdaptiveCard extends React.Component {
 		this.state = {
 			showErrors: false,
 			payload: this.payload,
-			cardModel: this.cardModel,
-			screenHeight: 0
+			cardModel: this.cardModel
 		}
 
 		// hostConfig
@@ -63,18 +59,12 @@ export default class AdaptiveCard extends React.Component {
 
 	}
 
-	onContentSizeChange = (contentWidth, contentHeight) => {
-		this.setState({ screenHeight: contentHeight });
-	}
-
-
 	toggleVisibilityForElementWithID = (idArray) => {
 		this.toggleCardModelObject(this.cardModel, [...idArray]);
 		this.setState({
 			cardModel: this.cardModel,
 		})
 	}
-
 
 	/**
 	 * @description Checks the elements recursively to change the isVisible property
@@ -135,7 +125,6 @@ export default class AdaptiveCard extends React.Component {
 		return;
 	}
 
-
 	/**
 	 * @description Returns the resource information in the card elements as an array
 	 * @returns {Array} - Array of items of type ResourceInformation
@@ -175,21 +164,17 @@ export default class AdaptiveCard extends React.Component {
 	}
 
 	getAdaptiveCardContent() {
-		const contentSize = this.props.contentSize
-		const { height } = Dimensions.get('window')
-		var contentHeight = (contentSize && contentSize < height) ? contentSize : height;
-		const scrollEnabled = this.state.screenHeight > contentHeight;
-		const shouldAddHeight = (contentSize < height - 64)
-		var containerStyles = [styles.container]
-		if (shouldAddHeight) {
-			containerStyles.push({ height: contentHeight })
-		}
+		let containerStyles = [styles.container]
+		//If contentSize is passed by the user from adaptive card via props, we will set this as height
+		this.props.contentSize && containerStyles.push({ height: this.props.contentSize })
 		var adaptiveCardContent =
 			(
 				<ContainerWrapper style={containerStyles} json={this.state.cardModel}>
 					<ScrollView
-						scrollEnabled={scrollEnabled}
-						onContentSizeChange={this.onContentSizeChange}>
+						showsHorizontalScrollIndicator={true}
+						showsVerticalScrollIndicator={true}
+						alwaysBounceVertical={false}
+						alwaysBounceHorizontal={false}>
 						{this.parsePayload()}
 						{!Utils.isNullOrEmpty(this.state.cardModel.actions) &&
 							<ActionWrapper actions={this.state.cardModel.actions} />}
