@@ -29,7 +29,7 @@ We use lerna to manage package linking and building.
 2. `npm start`
 3. OR to test preview features: `npm run start:preview`
 
-# Start the documentation site (http://adaptivecards.io)
+## Start the documentation site (http://adaptivecards.io)
 
 1. `cd adaptivecards-site`
 2. `npx lerna run release`
