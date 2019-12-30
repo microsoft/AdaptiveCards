@@ -61,11 +61,12 @@
     ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
 
     UIView<ACRIContentHoldingView> *childview = nil;
+    AdaptiveCards::ActionsConfig adaptiveActionConfig = [config getHostConfig] -> GetActions();
     NSDictionary<NSString *, NSNumber *> *attributes =
-        @{@"spacing" : [NSNumber numberWithInt:[config getHostConfig] -> GetActions().buttonSpacing],
+        @{@"spacing" : [NSNumber numberWithInt:adaptiveActionConfig.buttonSpacing],
           @"distribution" : [NSNumber numberWithInt:UIStackViewDistributionFillProportionally]};
 
-    if (ActionsOrientation::Horizontal == [config getHostConfig] -> GetActions().actionsOrientation) {
+    if (ActionsOrientation::Horizontal == adaptiveActionConfig.actionsOrientation) {
         childview = [[ACRColumnSetView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, superview.frame.size.height) attributes:attributes];
         ((ACRColumnSetView *)childview).isActionSet = YES;
     } else {
@@ -76,11 +77,14 @@
     ACOBaseActionElement *acoElem = [[ACOBaseActionElement alloc] init];
     ACRContentHoldingUIScrollView *containingView = [[ACRContentHoldingUIScrollView alloc] init];
     [superview addArrangedSubview:containingView];
-    float accumulatedWidth = 0, accumulatedHeight = 0, spacing = [config getHostConfig] -> GetActions().buttonSpacing, maxWidth = 0, maxHeight = 0;
+    float accumulatedWidth = 0, accumulatedHeight = 0, spacing = adaptiveActionConfig.buttonSpacing, maxWidth = 0, maxHeight = 0;
     if (elems.empty()) {
         return containingView;
     }
-    for (const auto &elem : elems) {
+
+    unsigned long uMaxActionsToRender = MIN(adaptiveActionConfig.maxActions, elems.size());
+    for (auto i = 0; i < uMaxActionsToRender; i++) {
+        const auto &elem = elems.at(i);
         ACRBaseActionElementRenderer *actionRenderer =
             [reg getActionRenderer:[NSNumber numberWithInt:(int)elem->GetElementType()]];
 
@@ -126,7 +130,7 @@
 
     float contentWidth = accumulatedWidth, contentHeight = accumulatedHeight;
     [childview adjustHuggingForLastElement];
-    if (ActionsOrientation::Horizontal == [config getHostConfig] -> GetActions().actionsOrientation) {
+    if (ActionsOrientation::Horizontal == adaptiveActionConfig.actionsOrientation) {
         contentWidth += (elems.size() - 1) * spacing;
         contentHeight = maxHeight;
     } else {
@@ -147,12 +151,12 @@
     hConstraint.active = YES;
     vConstraint.active = YES;
 
-    if (ActionsOrientation::Horizontal == [config getHostConfig] -> GetActions().actionsOrientation) {
+    if (ActionsOrientation::Horizontal == adaptiveActionConfig.actionsOrientation) {
         hConstraint.priority = UILayoutPriorityDefaultLow;
         if (contentWidth > superview.frame.size.width) {
             containingView.showsHorizontalScrollIndicator = YES;
         } else {
-            if ([config getHostConfig] -> GetActions().actionAlignment == ActionAlignment::Stretch) {
+            if (adaptiveActionConfig.actionAlignment == ActionAlignment::Stretch) {
                 [NSLayoutConstraint constraintWithItem:containingView
                                              attribute:NSLayoutAttributeWidth
                                              relatedBy:NSLayoutRelationEqual
