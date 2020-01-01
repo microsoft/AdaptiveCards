@@ -39,6 +39,8 @@ export class ColumnSet extends React.PureComponent {
 				<Column json={element}
 					columns={payload.columns}
 					key={`ELEMENT-${index}`}
+					isFirst={index === 0}
+					isLast={index === payload.columns.length - 1}
 				/>);
 		});
 		return children.map(ChildElement => React.cloneElement(ChildElement, { containerStyle: this.payload.style }));
@@ -49,7 +51,7 @@ export class ColumnSet extends React.PureComponent {
 
 		var columnSetContent = (
 			<ContainerWrapper style={{ flex: this.payload.columns.length }} json={payload} containerStyle={this.props.containerStyle}>
-				<ElementWrapper json={payload} style={styles.defaultBGStyle} isFirst={this.props.isFirst}>
+				<ElementWrapper json={payload} isColumnSet={true} style={styles.defaultBGStyle} isFirst={this.props.isFirst}>
 					{this.parsePayload()}
 				</ElementWrapper>
 			</ContainerWrapper>

@@ -14,6 +14,7 @@ import {
 	Text,
 	StyleSheet
 } from 'react-native';
+import PropTypes from 'prop-types';
 import { HostConfigManager } from "../../utils/host-config";
 import { StyleManager } from "../../styles/style-config";
 import { InputContext } from '../../utils/context';
@@ -28,14 +29,24 @@ export default class ElementWrapper extends React.Component {
 
 	static contextType = InputContext;
 
+	static propTypes = {
+		isColumnSet: PropTypes.bool,
+		isFirst: PropTypes.bool
+	};
+
+	static defaultProps = {
+		isColumnSet: false,
+		isFirst: false
+	};
+
 	render() {
 		const computedStyles = this.getComputedStyles();
 		const showValidationText = this.props.isError && this.context.showErrors;
-        const isFirstElement = this.props.isFirst; // Is first element?
+		const { isColumnSet, isFirst } = this.props; //isFirst represent, it is first element
 
 		return (
 			<React.Fragment>
-				{!isFirstElement && this.getSpacingElement()}
+				{!isColumnSet && !isFirst && this.getSpacingElement()}
 				<View style={computedStyles} onLayout={this.props.onPageLayout}>
 					{this.props.children}
 					{showValidationText && this.getValidationText()}

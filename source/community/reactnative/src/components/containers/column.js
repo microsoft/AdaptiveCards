@@ -123,6 +123,7 @@ export class Column extends React.Component {
 	}
 
 	render() {
+		const { isFirst, isLast } = this.props;
 		const separator = this.column.separator || false;
 		let containerViewStyle = [{
 			flexDirection: separator ?
@@ -158,7 +159,7 @@ export class Column extends React.Component {
 			separatorStyles = [containerViewStyle, styles.separatorStyle];
 		}
 
-		return <ContainerWrapper json={this.column} style={[containerViewStyle]} containerStyle={this.props.containerStyle}>
+		return <ContainerWrapper json={this.column} isFirst={isFirst} isLast={isLast} style={[containerViewStyle]} containerStyle={this.props.containerStyle}>
 			<ActionComponent {...actionComponentProps}>
 				{separator && this.renderSeparator()}
 				<View style={separatorStyles}>
