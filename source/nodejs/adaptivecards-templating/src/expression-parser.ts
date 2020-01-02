@@ -626,6 +626,7 @@ export class ExpressionParser {
                     expectedNextTokenTypes = [".", "(", "["];
 
                     break;
+                // gets the literal value of the identifier
                 case "identifier":
                     result.parts.push(this.parseIdentifier());
 
@@ -661,6 +662,7 @@ export class ExpressionParser {
             }
 
             switch (this.current.type) {
+                // these are going to be handled by the unified library
                 case "(":
                 case "identifier":
                     result.nodes.push(this.parsePath());
@@ -747,7 +749,9 @@ export class ExpressionParser {
     }
 
     static parseBinding(bindingExpression: string): Binding {
+        // run tokenizer to tokenize the string
         let parser = new ExpressionParser(Tokenizer.parse(bindingExpression));
+        // consuming tokens
         parser.parseToken("{");
 
         let allowNull = !parser.parseOptionalToken("?#");
