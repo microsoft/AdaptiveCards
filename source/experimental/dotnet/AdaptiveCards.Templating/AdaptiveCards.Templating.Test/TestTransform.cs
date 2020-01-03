@@ -15,6 +15,21 @@ namespace AdaptiveCards.Templating.Test
             string jsonTemplate = @"{
     ""type"": ""AdaptiveCard"",
     ""version"": ""1.0"",
+     ""$data"": {
+            ""employee"": {
+                ""name"": ""Matt"",
+                ""manager"": { ""name"": ""Thomas"" },
+                ""peers"": [{
+                    ""name"": ""Andrew"" 
+                }, { 
+                    ""name"": ""Lei""
+                }, { 
+                    ""name"": ""Mary Anne""
+                }, { 
+                    ""name"": ""Adam""
+                }]
+            }
+        },
     ""body"": [
         {
             ""type"": ""TextBlock"",

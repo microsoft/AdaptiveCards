@@ -12,13 +12,18 @@ namespace AdaptiveCards.Templating
         {
         }
 
+        // does this api handles the case where json template also has data in it?
         public string Transform(string jsonTemplate, string jsonData)
         {
             ICharStream stream = CharStreams.fromstring(jsonTemplate);
-            ITokenSource lexer = new AdaptiveCardsTemplatingLexer(stream);
+            ITokenSource lexer = new JSONLexer(stream);
             ITokenStream tokens = new CommonTokenStream(lexer);
-            AdaptiveCardsTemplatingParser parser = new AdaptiveCardsTemplatingParser(tokens);
+            JSONParser parser = new JSONParser(tokens);
             parser.BuildParseTree = true;
+            IParseTree tree = parser.json();
+            JSONTemplateVisitor eval = new JSONTemplateVisitor();
+            eval.Visit(tree);
+
             return "Work In Progress";
         }
     }
