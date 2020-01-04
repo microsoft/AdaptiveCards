@@ -64,9 +64,52 @@ public interface IJSONVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitArray([NotNull] JSONParser.ArrayContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="JSONParser.value"/>.
+	/// Visit a parse tree produced by the <c>valueString</c>
+	/// labeled alternative in <see cref="JSONParser.value"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitValue([NotNull] JSONParser.ValueContext context);
+	Result VisitValueString([NotNull] JSONParser.ValueStringContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>valueNumber</c>
+	/// labeled alternative in <see cref="JSONParser.value"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitValueNumber([NotNull] JSONParser.ValueNumberContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>valueObject</c>
+	/// labeled alternative in <see cref="JSONParser.value"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitValueObject([NotNull] JSONParser.ValueObjectContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>valueArray</c>
+	/// labeled alternative in <see cref="JSONParser.value"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitValueArray([NotNull] JSONParser.ValueArrayContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>valueTrue</c>
+	/// labeled alternative in <see cref="JSONParser.value"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitValueTrue([NotNull] JSONParser.ValueTrueContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>valueFalse</c>
+	/// labeled alternative in <see cref="JSONParser.value"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitValueFalse([NotNull] JSONParser.ValueFalseContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>valueNull</c>
+	/// labeled alternative in <see cref="JSONParser.value"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitValueNull([NotNull] JSONParser.ValueNullContext context);
 }

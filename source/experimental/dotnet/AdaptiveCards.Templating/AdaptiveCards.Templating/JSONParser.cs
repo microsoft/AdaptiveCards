@@ -338,22 +338,78 @@ public partial class JSONParser : Parser {
 	}
 
 	public partial class ValueContext : ParserRuleContext {
-		public ITerminalNode STRING() { return GetToken(JSONParser.STRING, 0); }
-		public ITerminalNode NUMBER() { return GetToken(JSONParser.NUMBER, 0); }
-		public ObjContext obj() {
-			return GetRuleContext<ObjContext>(0);
-		}
-		public ArrayContext array() {
-			return GetRuleContext<ArrayContext>(0);
-		}
 		public ValueContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_value; } }
+	 
+		public ValueContext() { }
+		public virtual void CopyFrom(ValueContext context) {
+			base.CopyFrom(context);
+		}
+	}
+	public partial class ValueObjectContext : ValueContext {
+		public ObjContext obj() {
+			return GetRuleContext<ObjContext>(0);
+		}
+		public ValueObjectContext(ValueContext context) { CopyFrom(context); }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IJSONVisitor<TResult> typedVisitor = visitor as IJSONVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitValue(this);
+			if (typedVisitor != null) return typedVisitor.VisitValueObject(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class ValueNullContext : ValueContext {
+		public ValueNullContext(ValueContext context) { CopyFrom(context); }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IJSONVisitor<TResult> typedVisitor = visitor as IJSONVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitValueNull(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class ValueNumberContext : ValueContext {
+		public ITerminalNode NUMBER() { return GetToken(JSONParser.NUMBER, 0); }
+		public ValueNumberContext(ValueContext context) { CopyFrom(context); }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IJSONVisitor<TResult> typedVisitor = visitor as IJSONVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitValueNumber(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class ValueTrueContext : ValueContext {
+		public ValueTrueContext(ValueContext context) { CopyFrom(context); }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IJSONVisitor<TResult> typedVisitor = visitor as IJSONVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitValueTrue(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class ValueFalseContext : ValueContext {
+		public ValueFalseContext(ValueContext context) { CopyFrom(context); }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IJSONVisitor<TResult> typedVisitor = visitor as IJSONVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitValueFalse(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class ValueStringContext : ValueContext {
+		public ITerminalNode STRING() { return GetToken(JSONParser.STRING, 0); }
+		public ValueStringContext(ValueContext context) { CopyFrom(context); }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IJSONVisitor<TResult> typedVisitor = visitor as IJSONVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitValueString(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class ValueArrayContext : ValueContext {
+		public ArrayContext array() {
+			return GetRuleContext<ArrayContext>(0);
+		}
+		public ValueArrayContext(ValueContext context) { CopyFrom(context); }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IJSONVisitor<TResult> typedVisitor = visitor as IJSONVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitValueArray(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
@@ -367,42 +423,49 @@ public partial class JSONParser : Parser {
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case STRING:
+				_localctx = new ValueStringContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
 				State = 50; Match(STRING);
 				}
 				break;
 			case NUMBER:
+				_localctx = new ValueNumberContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
 				State = 51; Match(NUMBER);
 				}
 				break;
 			case T__0:
+				_localctx = new ValueObjectContext(_localctx);
 				EnterOuterAlt(_localctx, 3);
 				{
 				State = 52; obj();
 				}
 				break;
 			case T__4:
+				_localctx = new ValueArrayContext(_localctx);
 				EnterOuterAlt(_localctx, 4);
 				{
 				State = 53; array();
 				}
 				break;
 			case T__6:
+				_localctx = new ValueTrueContext(_localctx);
 				EnterOuterAlt(_localctx, 5);
 				{
 				State = 54; Match(T__6);
 				}
 				break;
 			case T__7:
+				_localctx = new ValueFalseContext(_localctx);
 				EnterOuterAlt(_localctx, 6);
 				{
 				State = 55; Match(T__7);
 				}
 				break;
 			case T__8:
+				_localctx = new ValueNullContext(_localctx);
 				EnterOuterAlt(_localctx, 7);
 				{
 				State = 56; Match(T__8);

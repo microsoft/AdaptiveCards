@@ -23,13 +23,13 @@ array
    ;
 
 value
-   : STRING
-   | NUMBER
-   | obj
-   | array
-   | 'true'
-   | 'false'
-   | 'null'
+   : STRING # valueString
+   | NUMBER # valueNumber
+   | obj    # valueObject
+   | array  # valueArray
+   | 'true' # valueTrue
+   | 'false' # valueFalse
+   | 'null'  # valueNull
    ;
 
 TEMPLKEYWRD

@@ -22,9 +22,7 @@ namespace AdaptiveCards.Templating
             parser.BuildParseTree = true;
             IParseTree tree = parser.json();
             JSONTemplateVisitor eval = new JSONTemplateVisitor();
-            eval.Visit(tree);
-
-            return "Work In Progress";
+            return eval.Visit(tree);
         }
     }
 }

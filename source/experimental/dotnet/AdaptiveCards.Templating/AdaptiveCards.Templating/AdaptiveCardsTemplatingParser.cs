@@ -36,18 +36,18 @@ public partial class AdaptiveCardsTemplatingParser : Parser {
 	protected static DFA[] decisionToDFA;
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
-		T__0=1, T__1=2, T__2=3, ID=4, NUM=5, WS=6;
+		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, ID=6, NUM=7, WS=8;
 	public const int
-		RULE_prog = 0, RULE_r = 1, RULE_prop = 2;
+		RULE_prog = 0, RULE_template = 1, RULE_prop = 2;
 	public static readonly string[] ruleNames = {
-		"prog", "r", "prop"
+		"prog", "template", "prop"
 	};
 
 	private static readonly string[] _LiteralNames = {
-		null, "'['", "']'", "'.'"
+		null, "'{'", "'.'", "'}'", "'['", "']'"
 	};
 	private static readonly string[] _SymbolicNames = {
-		null, null, null, null, "ID", "NUM", "WS"
+		null, null, null, null, null, null, "ID", "NUM", "WS"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -81,21 +81,18 @@ public partial class AdaptiveCardsTemplatingParser : Parser {
 		Interpreter = new ParserATNSimulator(this, _ATN, decisionToDFA, sharedContextCache);
 	}
 	public partial class ProgContext : ParserRuleContext {
-		public RContext r() {
-			return GetRuleContext<RContext>(0);
+		public TemplateContext template() {
+			return GetRuleContext<TemplateContext>(0);
 		}
 		public ProgContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_prog; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAdaptiveCardsTemplatingListener typedListener = listener as IAdaptiveCardsTemplatingListener;
-			if (typedListener != null) typedListener.EnterProg(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAdaptiveCardsTemplatingListener typedListener = listener as IAdaptiveCardsTemplatingListener;
-			if (typedListener != null) typedListener.ExitProg(this);
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IAdaptiveCardsTemplatingVisitor<TResult> typedVisitor = visitor as IAdaptiveCardsTemplatingVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitProg(this);
+			else return visitor.VisitChildren(this);
 		}
 	}
 
@@ -106,7 +103,7 @@ public partial class AdaptiveCardsTemplatingParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 6; r();
+			State = 6; template();
 			}
 		}
 		catch (RecognitionException re) {
@@ -120,49 +117,63 @@ public partial class AdaptiveCardsTemplatingParser : Parser {
 		return _localctx;
 	}
 
-	public partial class RContext : ParserRuleContext {
+	public partial class TemplateContext : ParserRuleContext {
 		public PropContext[] prop() {
 			return GetRuleContexts<PropContext>();
 		}
 		public PropContext prop(int i) {
 			return GetRuleContext<PropContext>(i);
 		}
-		public RContext(ParserRuleContext parent, int invokingState)
+		public TemplateContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_r; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAdaptiveCardsTemplatingListener typedListener = listener as IAdaptiveCardsTemplatingListener;
-			if (typedListener != null) typedListener.EnterR(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAdaptiveCardsTemplatingListener typedListener = listener as IAdaptiveCardsTemplatingListener;
-			if (typedListener != null) typedListener.ExitR(this);
+		public override int RuleIndex { get { return RULE_template; } }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IAdaptiveCardsTemplatingVisitor<TResult> typedVisitor = visitor as IAdaptiveCardsTemplatingVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitTemplate(this);
+			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public RContext r() {
-		RContext _localctx = new RContext(Context, State);
-		EnterRule(_localctx, 2, RULE_r);
+	public TemplateContext template() {
+		TemplateContext _localctx = new TemplateContext(Context, State);
+		EnterRule(_localctx, 2, RULE_template);
 		int _la;
 		try {
-			EnterOuterAlt(_localctx, 1);
-			{
-			State = 9;
+			State = 21;
 			ErrorHandler.Sync(this);
-			_la = TokenStream.LA(1);
-			do {
+			switch ( Interpreter.AdaptivePredict(TokenStream,1,Context) ) {
+			case 1:
+				EnterOuterAlt(_localctx, 1);
 				{
-				{
-				State = 8; prop(0);
-				}
-				}
-				State = 11;
+				State = 8; Match(T__0);
+				State = 9; prop();
+				State = 14;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
-			} while ( _la==ID );
+				while (_la==T__1) {
+					{
+					{
+					State = 10; Match(T__1);
+					State = 11; prop();
+					}
+					}
+					State = 16;
+					ErrorHandler.Sync(this);
+					_la = TokenStream.LA(1);
+				}
+				State = 17; Match(T__2);
+				}
+				break;
+			case 2:
+				EnterOuterAlt(_localctx, 2);
+				{
+				State = 19; Match(T__0);
+				State = 20; Match(T__2);
+				}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -177,95 +188,62 @@ public partial class AdaptiveCardsTemplatingParser : Parser {
 	}
 
 	public partial class PropContext : ParserRuleContext {
-		public ITerminalNode ID() { return GetToken(AdaptiveCardsTemplatingParser.ID, 0); }
-		public PropContext[] prop() {
-			return GetRuleContexts<PropContext>();
-		}
-		public PropContext prop(int i) {
-			return GetRuleContext<PropContext>(i);
-		}
-		public ITerminalNode NUM() { return GetToken(AdaptiveCardsTemplatingParser.NUM, 0); }
 		public PropContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_prop; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			IAdaptiveCardsTemplatingListener typedListener = listener as IAdaptiveCardsTemplatingListener;
-			if (typedListener != null) typedListener.EnterProp(this);
+	 
+		public PropContext() { }
+		public virtual void CopyFrom(PropContext context) {
+			base.CopyFrom(context);
 		}
-		public override void ExitRule(IParseTreeListener listener) {
-			IAdaptiveCardsTemplatingListener typedListener = listener as IAdaptiveCardsTemplatingListener;
-			if (typedListener != null) typedListener.ExitProp(this);
+	}
+	public partial class PropArrayContext : PropContext {
+		public ITerminalNode ID() { return GetToken(AdaptiveCardsTemplatingParser.ID, 0); }
+		public ITerminalNode NUM() { return GetToken(AdaptiveCardsTemplatingParser.NUM, 0); }
+		public PropArrayContext(PropContext context) { CopyFrom(context); }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IAdaptiveCardsTemplatingVisitor<TResult> typedVisitor = visitor as IAdaptiveCardsTemplatingVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitPropArray(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class PropIDContext : PropContext {
+		public ITerminalNode ID() { return GetToken(AdaptiveCardsTemplatingParser.ID, 0); }
+		public PropIDContext(PropContext context) { CopyFrom(context); }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IAdaptiveCardsTemplatingVisitor<TResult> typedVisitor = visitor as IAdaptiveCardsTemplatingVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitPropID(this);
+			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
 	public PropContext prop() {
-		return prop(0);
-	}
-
-	private PropContext prop(int _p) {
-		ParserRuleContext _parentctx = Context;
-		int _parentState = State;
-		PropContext _localctx = new PropContext(Context, _parentState);
-		PropContext _prevctx = _localctx;
-		int _startState = 4;
-		EnterRecursionRule(_localctx, 4, RULE_prop, _p);
+		PropContext _localctx = new PropContext(Context, State);
+		EnterRule(_localctx, 4, RULE_prop);
 		try {
-			int _alt;
-			EnterOuterAlt(_localctx, 1);
-			{
-			{
-			State = 14; Match(ID);
-			}
-			Context.Stop = TokenStream.LT(-1);
-			State = 25;
+			State = 28;
 			ErrorHandler.Sync(this);
-			_alt = Interpreter.AdaptivePredict(TokenStream,2,Context);
-			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
-				if ( _alt==1 ) {
-					if ( ParseListeners!=null )
-						TriggerExitRuleEvent();
-					_prevctx = _localctx;
-					{
-					State = 23;
-					ErrorHandler.Sync(this);
-					switch ( Interpreter.AdaptivePredict(TokenStream,1,Context) ) {
-					case 1:
-						{
-						_localctx = new PropContext(_parentctx, _parentState);
-						PushNewRecursionContext(_localctx, _startState, RULE_prop);
-						State = 16;
-						if (!(Precpred(Context, 2))) throw new FailedPredicateException(this, "Precpred(Context, 2)");
-						{
-						State = 17; Match(T__2);
-						}
-						State = 18; prop(3);
-						}
-						break;
-					case 2:
-						{
-						_localctx = new PropContext(_parentctx, _parentState);
-						PushNewRecursionContext(_localctx, _startState, RULE_prop);
-						State = 19;
-						if (!(Precpred(Context, 3))) throw new FailedPredicateException(this, "Precpred(Context, 3)");
-						{
-						State = 20; Match(T__0);
-						}
-						State = 21; Match(NUM);
-						{
-						State = 22; Match(T__1);
-						}
-						}
-						break;
-					}
-					} 
+			switch ( Interpreter.AdaptivePredict(TokenStream,2,Context) ) {
+			case 1:
+				_localctx = new PropArrayContext(_localctx);
+				EnterOuterAlt(_localctx, 1);
+				{
+				State = 23; Match(ID);
+				State = 24; Match(T__3);
+				State = 25; Match(NUM);
+				State = 26; Match(T__4);
 				}
-				State = 27;
-				ErrorHandler.Sync(this);
-				_alt = Interpreter.AdaptivePredict(TokenStream,2,Context);
-			}
+				break;
+			case 2:
+				_localctx = new PropIDContext(_localctx);
+				EnterOuterAlt(_localctx, 2);
+				{
+				State = 27; Match(ID);
+				}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -274,52 +252,39 @@ public partial class AdaptiveCardsTemplatingParser : Parser {
 			ErrorHandler.Recover(this, re);
 		}
 		finally {
-			UnrollRecursionContexts(_parentctx);
+			ExitRule();
 		}
 		return _localctx;
 	}
 
-	public override bool Sempred(RuleContext _localctx, int ruleIndex, int predIndex) {
-		switch (ruleIndex) {
-		case 2: return prop_sempred((PropContext)_localctx, predIndex);
-		}
-		return true;
-	}
-	private bool prop_sempred(PropContext _localctx, int predIndex) {
-		switch (predIndex) {
-		case 0: return Precpred(Context, 2);
-		case 1: return Precpred(Context, 3);
-		}
-		return true;
-	}
-
 	private static char[] _serializedATN = {
 		'\x3', '\x608B', '\xA72A', '\x8133', '\xB9ED', '\x417C', '\x3BE7', '\x7786', 
-		'\x5964', '\x3', '\b', '\x1F', '\x4', '\x2', '\t', '\x2', '\x4', '\x3', 
-		'\t', '\x3', '\x4', '\x4', '\t', '\x4', '\x3', '\x2', '\x3', '\x2', '\x3', 
-		'\x3', '\x6', '\x3', '\f', '\n', '\x3', '\r', '\x3', '\xE', '\x3', '\r', 
-		'\x3', '\x4', '\x3', '\x4', '\x3', '\x4', '\x3', '\x4', '\x3', '\x4', 
-		'\x3', '\x4', '\x3', '\x4', '\x3', '\x4', '\x3', '\x4', '\x3', '\x4', 
-		'\a', '\x4', '\x1A', '\n', '\x4', '\f', '\x4', '\xE', '\x4', '\x1D', '\v', 
-		'\x4', '\x3', '\x4', '\x2', '\x3', '\x6', '\x5', '\x2', '\x4', '\x6', 
-		'\x2', '\x2', '\x2', '\x1E', '\x2', '\b', '\x3', '\x2', '\x2', '\x2', 
-		'\x4', '\v', '\x3', '\x2', '\x2', '\x2', '\x6', '\xF', '\x3', '\x2', '\x2', 
-		'\x2', '\b', '\t', '\x5', '\x4', '\x3', '\x2', '\t', '\x3', '\x3', '\x2', 
-		'\x2', '\x2', '\n', '\f', '\x5', '\x6', '\x4', '\x2', '\v', '\n', '\x3', 
-		'\x2', '\x2', '\x2', '\f', '\r', '\x3', '\x2', '\x2', '\x2', '\r', '\v', 
-		'\x3', '\x2', '\x2', '\x2', '\r', '\xE', '\x3', '\x2', '\x2', '\x2', '\xE', 
-		'\x5', '\x3', '\x2', '\x2', '\x2', '\xF', '\x10', '\b', '\x4', '\x1', 
-		'\x2', '\x10', '\x11', '\a', '\x6', '\x2', '\x2', '\x11', '\x1B', '\x3', 
-		'\x2', '\x2', '\x2', '\x12', '\x13', '\f', '\x4', '\x2', '\x2', '\x13', 
-		'\x14', '\a', '\x5', '\x2', '\x2', '\x14', '\x1A', '\x5', '\x6', '\x4', 
-		'\x5', '\x15', '\x16', '\f', '\x5', '\x2', '\x2', '\x16', '\x17', '\a', 
-		'\x3', '\x2', '\x2', '\x17', '\x18', '\a', '\a', '\x2', '\x2', '\x18', 
-		'\x1A', '\a', '\x4', '\x2', '\x2', '\x19', '\x12', '\x3', '\x2', '\x2', 
-		'\x2', '\x19', '\x15', '\x3', '\x2', '\x2', '\x2', '\x1A', '\x1D', '\x3', 
-		'\x2', '\x2', '\x2', '\x1B', '\x19', '\x3', '\x2', '\x2', '\x2', '\x1B', 
-		'\x1C', '\x3', '\x2', '\x2', '\x2', '\x1C', '\a', '\x3', '\x2', '\x2', 
-		'\x2', '\x1D', '\x1B', '\x3', '\x2', '\x2', '\x2', '\x5', '\r', '\x19', 
-		'\x1B',
+		'\x5964', '\x3', '\n', '!', '\x4', '\x2', '\t', '\x2', '\x4', '\x3', '\t', 
+		'\x3', '\x4', '\x4', '\t', '\x4', '\x3', '\x2', '\x3', '\x2', '\x3', '\x3', 
+		'\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\a', '\x3', '\xF', '\n', '\x3', 
+		'\f', '\x3', '\xE', '\x3', '\x12', '\v', '\x3', '\x3', '\x3', '\x3', '\x3', 
+		'\x3', '\x3', '\x3', '\x3', '\x5', '\x3', '\x18', '\n', '\x3', '\x3', 
+		'\x4', '\x3', '\x4', '\x3', '\x4', '\x3', '\x4', '\x3', '\x4', '\x5', 
+		'\x4', '\x1F', '\n', '\x4', '\x3', '\x4', '\x2', '\x2', '\x5', '\x2', 
+		'\x4', '\x6', '\x2', '\x2', '\x2', ' ', '\x2', '\b', '\x3', '\x2', '\x2', 
+		'\x2', '\x4', '\x17', '\x3', '\x2', '\x2', '\x2', '\x6', '\x1E', '\x3', 
+		'\x2', '\x2', '\x2', '\b', '\t', '\x5', '\x4', '\x3', '\x2', '\t', '\x3', 
+		'\x3', '\x2', '\x2', '\x2', '\n', '\v', '\a', '\x3', '\x2', '\x2', '\v', 
+		'\x10', '\x5', '\x6', '\x4', '\x2', '\f', '\r', '\a', '\x4', '\x2', '\x2', 
+		'\r', '\xF', '\x5', '\x6', '\x4', '\x2', '\xE', '\f', '\x3', '\x2', '\x2', 
+		'\x2', '\xF', '\x12', '\x3', '\x2', '\x2', '\x2', '\x10', '\xE', '\x3', 
+		'\x2', '\x2', '\x2', '\x10', '\x11', '\x3', '\x2', '\x2', '\x2', '\x11', 
+		'\x13', '\x3', '\x2', '\x2', '\x2', '\x12', '\x10', '\x3', '\x2', '\x2', 
+		'\x2', '\x13', '\x14', '\a', '\x5', '\x2', '\x2', '\x14', '\x18', '\x3', 
+		'\x2', '\x2', '\x2', '\x15', '\x16', '\a', '\x3', '\x2', '\x2', '\x16', 
+		'\x18', '\a', '\x5', '\x2', '\x2', '\x17', '\n', '\x3', '\x2', '\x2', 
+		'\x2', '\x17', '\x15', '\x3', '\x2', '\x2', '\x2', '\x18', '\x5', '\x3', 
+		'\x2', '\x2', '\x2', '\x19', '\x1A', '\a', '\b', '\x2', '\x2', '\x1A', 
+		'\x1B', '\a', '\x6', '\x2', '\x2', '\x1B', '\x1C', '\a', '\t', '\x2', 
+		'\x2', '\x1C', '\x1F', '\a', '\a', '\x2', '\x2', '\x1D', '\x1F', '\a', 
+		'\b', '\x2', '\x2', '\x1E', '\x19', '\x3', '\x2', '\x2', '\x2', '\x1E', 
+		'\x1D', '\x3', '\x2', '\x2', '\x2', '\x1F', '\a', '\x3', '\x2', '\x2', 
+		'\x2', '\x5', '\x10', '\x17', '\x1E',
 	};
 
 	public static readonly ATN _ATN =

@@ -15,21 +15,12 @@ namespace AdaptiveCards.Templating.Test
             string jsonTemplate = @"{
     ""type"": ""AdaptiveCard"",
     ""version"": ""1.0"",
-     ""$data"": {
-            ""employee"": {
-                ""name"": ""Matt"",
-                ""manager"": { ""name"": ""Thomas"" },
-                ""peers"": [{
-                    ""name"": ""Andrew"" 
-                }, { 
-                    ""name"": ""Lei""
-                }, { 
-                    ""name"": ""Mary Anne""
-                }, { 
-                    ""name"": ""Adam""
-                }]
-            }
-        },
+    ""$data"": {
+                ""person"": {
+                    ""firstName"": ""Andrew"",
+                    ""lastName"": ""Leader""
+                }
+     },
     ""body"": [
         {
             ""type"": ""TextBlock"",
@@ -65,6 +56,66 @@ namespace AdaptiveCards.Templating.Test
             var actual = JObject.Parse(jsonActual);
 
             Assert.IsTrue(JToken.DeepEquals(expected, actual), "JSON wasn't the same.\n\nExpected: " + expected.ToString() + "\n\nActual: " + actual.ToString());
+        }
+
+        [TestMethod]
+        public void TestArray()
+        {
+            AdaptiveTransformer transformer = new AdaptiveTransformer();
+            var testString =
+                @"{
+                ""type"": ""AdaptiveCard"",
+                ""$data"": {
+                    ""employee"": {
+                        ""name"": ""Matt"",
+                        ""manager"": { ""name"": ""Thomas"" },
+                        ""peers"": [{
+                            ""name"": ""Andrew"" 
+                        }, { 
+                            ""name"": ""Lei""
+                        }, { 
+                            ""name"": ""Mary Anne""
+                        }, { 
+                            ""name"": ""Adam""
+                        }]
+                    }
+                },
+                ""body"": [
+                    {
+                        ""type"": ""TextBlock"",
+                        ""text"": ""Hi {employee.name}! Here's a bit about your org...""
+                    },
+                    {
+                        ""type"": ""TextBlock"",
+                        ""text"": ""Your manager is: {employee.manager.name}""
+                    },
+                    {
+                        ""type"": ""TextBlock"",
+                        ""text"": ""3 of your peers are: {employee.peers[0].name}, {employee.peers[1].name}, {employee.peers[2].name}""
+                    }
+                ]
+            }";
+
+            var expectedString = @"{
+                ""type"": ""AdaptiveCard"",
+                ""body"": [
+                    {
+                        ""type"": ""TextBlock"",
+                        ""text"": ""Hi Matt! Here's a bit about your org...""
+                    },
+                    {
+                        ""type"": ""TextBlock"",
+                        ""text"": ""Your manager is: Thomas""
+                    },
+                    {
+                        ""type"": ""TextBlock"",
+                        ""text"": ""3 of your peers are: Andrew, Lei, Mary Anne""
+                    }
+                ]
+            }";
+
+            string cardJson = transformer.Transform(testString, null);
+            AssertJsonEqual(cardJson, expectedString);
         }
     }
 }
