@@ -4,6 +4,9 @@
 const url = require('url');
 let cheerio;
 
+/* This filter runs after each blog post is rendered and it fixes relative links 
+   in the markdown to be fully qualified URLs */
+
 hexo.extend.filter.register('after_post_render', function(data) {
   if (!hexo.config.post_asset_folder) return;
 
@@ -34,7 +37,11 @@ hexo.extend.filter.register('after_post_render', function(data) {
     }
 
     convertLink('img', 'src');  // images
-    convertLink('a', 'href');  // other files
+	convertLink('a', 'href');  // other files
+	
+	// adaptive card URLs in blog posts
+	convertLink('div.adaptivecard', 'data-card-url');
+	convertLink('div.adaptivecard', 'data-template-url');
 
     data[keys[i]] = $.html();
   }
