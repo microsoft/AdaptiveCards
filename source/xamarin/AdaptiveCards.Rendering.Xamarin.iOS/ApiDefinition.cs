@@ -56,6 +56,14 @@ namespace AdaptiveCards.Rendering.Xamarin.iOS
         // @optional -(void)didLoadElements;
         [Export("didLoadElements")]
         void DidLoadElements();
+
+        // @optional - didChangeVisibility:(UIButton *)button isVisible:(BOOL)isVisible;
+        [Export("didChangeVisibility:isVisible:")]
+        void DidChangeVisibility(UIButton button, bool isVisible);
+
+        // @optional - didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame;
+        [Export("didChangeViewLayout:newFrame:")]
+        void DidChangeViewLayout(CGRect oldFrame, CGRect newFrame);
     }
 
     // @interface ACRParseWarning : NSObject

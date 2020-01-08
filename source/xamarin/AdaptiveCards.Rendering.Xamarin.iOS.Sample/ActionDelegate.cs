@@ -5,6 +5,7 @@ using System.Text;
 
 using Foundation;
 using UIKit;
+using CoreGraphics;
 
 using AdaptiveCards.Rendering.Xamarin.iOS;
 using AdaptiveCards;
@@ -13,9 +14,11 @@ using iAd;
 
 namespace AdaptiveCards.Rendering.Xamarin.iOS.Sample
 {
-    class ActionDelegate : ACRActionDelegate
+    public class ActionDelegate : ACRActionDelegate
     {
         public UIViewController ViewController { get; set; }
+
+        public UIScrollView ScrollView { get; set; }
 
         public ActionDelegate(UIViewController viewController)
         {
@@ -53,8 +56,27 @@ namespace AdaptiveCards.Rendering.Xamarin.iOS.Sample
 
         }
 
-        public override void DidFetchSecondaryView(ACOAdaptiveCard card, UINavigationController naviationController) { }
+        public override void DidFetchSecondaryView(ACOAdaptiveCard card, UINavigationController naviationController)
+        {
 
+        }
+
+        public override void DidChangeViewLayout(CGRect oldFrame, CGRect newFrame)
+        {
+            ScrollView.ScrollRectToVisible(newFrame, animated: true);
+        }
+
+        public override void DidChangeVisibility(UIButton button, bool isVisible)
+        {
+            if (isVisible)
+            {
+                button.BackgroundColor = UIColor.Red;
+            }
+            else
+            {
+                ScrollView.LayoutIfNeeded();
+            }
+        }
 
     }
 }
