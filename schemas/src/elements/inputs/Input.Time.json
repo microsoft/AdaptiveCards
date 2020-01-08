@@ -17,7 +17,7 @@
     },
     "value": {
       "type": "string",
-      "description": "The initial value for this field expressed in ISO-8601 format or in HH:MM."
+      "description": "The initial value for this field expressed in HH:MM."
     }
   }
 }
