@@ -5,11 +5,11 @@
   "properties": {
     "max": {
       "type": "string",
-      "description": "Hint of maximum value expressed in ISO-8601 format or in YYYY-MM-DD(may be ignored by some clients)."
+      "description": "Hint of maximum value expressed in YYYY-MM-DD(may be ignored by some clients)."
     },
     "min": {
       "type": "string",
-      "description": "Hint of minimum value expressed in ISO-8601 format or in YYYY-MM-DD(may be ignored by some clients)."
+      "description": "Hint of minimum value expressed in YYYY-MM-DD(may be ignored by some clients)."
     },
     "placeholder": {
       "type": "string",
@@ -17,7 +17,7 @@
     },
     "value": {
       "type": "string",
-      "description": "The initial value for this field expressed in ISO-8601 format or in YYYY-MM-DD."
+      "description": "The initial value for this field expressed in YYYY-MM-DD."
     }
   }
 }
