@@ -6,10 +6,10 @@
 | -------- | ---- | -------- | ----------- | ------- |
 | **type** | `"Input.Date"` | Yes | Must be `"Input.Date"`. | 1.0 |
 | **id** | `string` | Yes | Unique identifier for the value. Used to identify collected input when the Submit action is performed. | 1.0 |
-| **max** | `string` | No | Hint of maximum value expressed in ISO-8601 format or in YYYY-MM-DD(may be ignored by some clients). | 1.0 |
-| **min** | `string` | No | Hint of minimum value expressed in ISO-8601 format or in YYYY-MM-DD(may be ignored by some clients). | 1.0 |
+| **max** | `string` | No | Hint of maximum value expressed in YYYY-MM-DD(may be ignored by some clients). | 1.0 |
+| **min** | `string` | No | Hint of minimum value expressed in YYYY-MM-DD(may be ignored by some clients). | 1.0 |
 | **placeholder** | `string` | No | Description of the input desired. Displayed when no selection has been made. | 1.0 |
-| **value** | `string` | No | The initial value for this field expressed in ISO-8601 format or in YYYY-MM-DD. | 1.0 |
+| **value** | `string` | No | The initial value for this field expressed in YYYY-MM-DD. | 1.0 |
 
 **Inherited properties**
 
