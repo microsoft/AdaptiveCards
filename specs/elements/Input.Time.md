@@ -9,7 +9,7 @@
 | **max** | `string` | No | Hint of maximum value expressed in HH:MM (may be ignored by some clients). | 1.0 |
 | **min** | `string` | No | Hint of minimum value expressed in HH:MM (may be ignored by some clients). | 1.0 |
 | **placeholder** | `string` | No | Description of the input desired. Displayed when no time has been selected. | 1.0 |
-| **value** | `string` | No | The initial value for this field expressed in ISO-8601 format or in HH:MM. | 1.0 |
+| **value** | `string` | No | The initial value for this field expressed in HH:MM. | 1.0 |
 
 **Inherited properties**
 
