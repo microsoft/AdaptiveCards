@@ -13,14 +13,27 @@ Adaptive Cards is currently available on these platforms:
 * Flutter (community renderer)
 
 This list of platforms represents at least 7 distinct implementations of Adaptive Cards at the rendering level. At each decision point along the way during implementation, the Adaptive Cards developer (i.e. someone writing code to parse or render Adaptive Cards) risks implementing behavior that diverges from intended behavior. One of the biggest selling points for Adaptive Cards is our ability to render across our supported platforms in a way that at once feels native to the supported platform while also having a look and feel that's representative of the card author's intent. Indeed, portability is one of our [core goals](https://docs.microsoft.com/en-us/adaptive-cards/#goals). Each time an inconsistency sneaks into the platform, it risks introducing costs to our partners. These costs have real consequences for the adoption of Adaptive Cards in the market:
-2
+
 * Existing customers are less likely to adopt new versions of Adaptive Cards, even if they want the newer features
 * Potential new customers might be scared to adopt Adaptive Cards altogether if there's a consistency or stability problem (perceived or real), since cross-platform capabilities are central to our value proposition
 * When existing customers *do* adopt new versions, they may end up having to spend extra time testing new versions and then deal with new bugs when *their* customers complain
 
-### In order to maintain our pledge of cross-platform capability, and in order to support all of our partners and customers, we **must** take a strong stance against the introduction of inconsistencies in Adaptive Cards
+In order to maintain our [pledge of cross-platform capability](https://docs.microsoft.com/adaptive-cards/resources/principles), and in order to support all of our partners and customers, we **must** take a strong stance against the introduction of inconsistencies in Adaptive Cards. 
 
 By default, every feature and quirk should have identical behavior across all of our platforms. There will be times, of course, where platform-specific differences may make sense. However, these differences must be intentional. They need to be discussed and documented. To further reduce the likelihood of divergent implementations, we should share code whenever possible.
+
+### Goals
+
+* Provide a platform for experiences that allows card authors to write a card once and be confident that the card works everywhere
+* Make it easy for developers to understand how extending Adaptive Cards impacts consistency
+* Make it possible for third party developers to implement compliant and behaviorally consistent renderers for new platforms
+* Structure code and processes such that inconsistencies are very likely to be found before they are shipped
+
+### Non-Goals
+
+* Provide pixel-perfect rendering across all platforms
+* Provide identical behaviors in all situations across all platforms
+* Make it impossible for developers to make a consistency mistake
 
 ## Types of inconsistencies
 
@@ -34,7 +47,7 @@ Parsing Adaptive Cards poses an interesting problem for us. Since we're a JSON-b
 * Type coercion in Javascript can cause it to be more permissive than other platforms leading to some constructs like `maxlines: "2"` being valid in JS, but invalid in, say, UWP (if JS code isn't carefully written -- we do, of course, author in Typescript, but we do also have to keep these problems in mind)
 * Distinct implementations means that defaults can vary by platform (e.g. whether the `TextBlock` `wrap` property defaults to `true` if not specified)
 * Differing choices made by devs at implementation time can lead to divergent behaviors (e.g. whether an invalid property value is silently dropped vs. emitting a warning vs. failing to parse the card)
-* Supporting libraries and platform affordances available to us can ease or speed up implementation, but can also be the source of inconsistencies (e.g. differences in how a dev constructs .NET's `DateTime`, UWP's `DateTime`, C++'s `std::chrono::time_point`, and Javascript's `Date` -- instantiating each object with, e.g a string can vary in permissivity)
+* Supporting libraries and platform affordances available to us can ease or speed up implementation, but can also be the source of inconsistencies (e.g. differences in how a dev constructs .NET's `DateTime`, UWP's `DateTime`, C++'s `std::chrono::time_point`, and Javascript's `Date` -- instantiating each object with, for example, a string, can vary in permissivity)
   * Indeed, we've had a few issues arise from differences between a hand-rolled solution and a pre-rolled solution (e.g. date/time handling (#1915) and support for markdown (#1984))
 
 ### Rendering
@@ -55,6 +68,7 @@ Rendering presents another avenue by which inconsistencies can sneak into Adapti
   * We can't ship if an `inconsistency`-tagged bug hasn't been resolved for this release
   * Features that need implementation across all platforms are merged to a single branch and PR'd/tested for inconsistencies before being allowed to merge upstream
   * Require that first accepted commits of a new feature include robust test cards that not only exercise the "golden path" for a feature, but every conceivable corner case
+    * Perhaps a checklist that needs to be completed prior to merge?
 * Provide a new tool that allows easy testing of card payloads across all renderers:
   * If shipped for public use, this could be a nice addition to the designer to allow card authors to preview their cards in a variety of renderers
   * Could be used in tests for per-platform visual verification
