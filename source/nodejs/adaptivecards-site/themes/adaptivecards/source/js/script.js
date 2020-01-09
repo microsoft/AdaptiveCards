@@ -453,19 +453,37 @@ $(function () {
 		copyToClipboard(content);
 	});
 
+	function launchDesigner(designerUrl, cardUrl, dataUrl) {
+		if(!designerUrl || !cardUrl) {
+			alert("Whoops, something went wrong. Please click the Feedback button in the top right and let us know what happened.");
+			return;
+		}
+
+		designerUrl += "?card=" + cardUrl;
+
+		if(dataUrl) {
+			designerUrl += "&data=" + dataUrl
+		}
+
+		window.open(designerUrl);
+	}
+
 	$("button.try-adaptivecard").click(function (e) {
-		var $button = $(this);
-		if ($button.attr("data-designer-url")) {
-			window.open($button.attr("data-designer-url"));
+		var enableTemplating = localStorage.getItem("enable-templating") === "true";
+		var cardEl = $(this).parent().siblings("div.adaptivecard");
+		var designerUrl = cardEl.attr("data-designer-url");
+		var cardUrl = cardEl.attr("data-card-url");
+		var dataUrl = cardEl.attr("data-data-url");
+		var templateUrl = cardEl.attr("data-template-url");
+
+		if (enableTemplating && dataUrl && templateUrl) { 
+			launchDesigner(designerUrl, templateUrl, dataUrl);			
 		} else {
-			var cardUrl = $(this).parent().siblings("div.adaptivecard").attr("data-card-url");
-			var isAbsolutelUri = new RegExp('^(?:[a-z]+:)?//', 'i');
-			if (isAbsolutelUri.test(cardUrl) === false) {
-				cardUrl = window.location.href + cardUrl;
-			}
-			window.open("/designer/index.html?card=" + encodeURIComponent(cardUrl));
+			launchDesigner(designerUrl, cardUrl);
 		}
 	});
+
+	
 
 	$("#feedback-button").click(function (e) {
 		e.preventDefault();
@@ -503,8 +521,7 @@ $(function () {
 
 	// Resize youtube videos
 	// https://css-tricks.com/NetMag/FluidWidthVideo/Article-FluidWidthVideo.php
-	var $allVideos = $("iframe"),
-		$fluidEl = $(".blog");
+	var $allVideos = $("iframe");
 
 	// Figure out and save aspect ratio for each video
 	$allVideos.each(function () {
@@ -516,12 +533,11 @@ $(function () {
 
 	// When the window is resized
 	$(window).resize(function () {
-		//debugger;
 
-		var newWidth = $fluidEl.width() - 32;
 		// Resize all videos according to their own aspect ratio
 		$allVideos.each(function () {
 			var $el = $(this);
+			var newWidth = $el.parent().innerWidth();
 			$el.width(newWidth).height(newWidth * $el.data('aspectRatio'));
 		});
 
