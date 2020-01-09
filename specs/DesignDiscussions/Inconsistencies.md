@@ -2,26 +2,6 @@
 
 ## Motivation
 
-Adaptive Cards is currently available on these platforms:
-
-* [UWP](https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/uwp/getting-started) (Available in all WinRT-projected languages; renders using XAML)
-* .Net (Available in all .Net languages; renders using [HTML](https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/net-html/getting-started) or [WPF](https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/net-wpf/getting-started))
-* [Android](https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/android/getting-started) (Java; renders using native Android platform)
-* [iOS](https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/ios/getting-started) (ObjC; renders using native iOS platform)
-* [Javascript](https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/javascript/getting-started) (renders using HTML/JS/CSS)
-* [ReactNative](https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/react-native/getting-started) (community renderer)
-* Flutter (community renderer)
-
-This list of platforms represents at least 7 distinct implementations of Adaptive Cards at the rendering level. At each decision point along the way during implementation, the Adaptive Cards developer (i.e. someone writing code to parse or render Adaptive Cards) risks implementing behavior that diverges from intended behavior. One of the biggest selling points for Adaptive Cards is our ability to render across our supported platforms in a way that at once feels native to the supported platform while also having a look and feel that's representative of the card author's intent. Indeed, portability is one of our [core goals](https://docs.microsoft.com/en-us/adaptive-cards/#goals). Each time an inconsistency sneaks into the platform, it risks introducing costs to our partners. These costs have real consequences for the adoption of Adaptive Cards in the market:
-
-* Existing customers are less likely to adopt new versions of Adaptive Cards, even if they want the newer features
-* Potential new customers might be scared to adopt Adaptive Cards altogether if there's a consistency or stability problem (perceived or real), since cross-platform capabilities are central to our value proposition
-* When existing customers *do* adopt new versions, they may end up having to spend extra time testing new versions and then deal with new bugs when *their* customers complain
-
-In order to maintain our [pledge of cross-platform capability](https://docs.microsoft.com/adaptive-cards/resources/principles), and in order to support all of our partners and customers, we **must** take a strong stance against the introduction of inconsistencies in Adaptive Cards. 
-
-By default, every feature and quirk should have identical behavior across all of our platforms. There will be times, of course, where platform-specific differences may make sense. However, these differences must be intentional. They need to be discussed and documented. To further reduce the likelihood of divergent implementations, we should share code whenever possible.
-
 ### Goals
 
 * Provide a platform for experiences that allows card authors to write a card once and be confident that the card works everywhere
@@ -34,6 +14,33 @@ By default, every feature and quirk should have identical behavior across all of
 * Provide pixel-perfect rendering across all platforms
 * Provide identical behaviors in all situations across all platforms
 * Make it impossible for developers to make a consistency mistake
+
+### Some context
+
+Adaptive Cards is currently available on these platforms:
+
+* [UWP](https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/uwp/getting-started) (Available in all WinRT-projected languages; renders using XAML)
+* .Net (Available in all .Net languages; renders using [HTML](https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/net-html/getting-started) or [WPF](https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/net-wpf/getting-started))
+* [Android](https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/android/getting-started) (Java; renders using native Android platform)
+* [iOS](https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/ios/getting-started) (ObjC; renders using native iOS platform)
+* [Javascript](https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/javascript/getting-started) (renders using HTML/JS/CSS)
+* [ReactNative](https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/react-native/getting-started) (community renderer)
+* Flutter (community renderer)
+
+This list of platforms represents at least 7 distinct implementations of Adaptive Cards at the rendering level. At each decision point along the way during implementation, the Adaptive Cards developer (i.e. someone writing code to parse or render Adaptive Cards) risks implementing behavior that diverges from intended behavior. One of the biggest selling points for Adaptive Cards is our ability to render across our supported platforms in a way that at once feels native to the supported platform while also having a look and feel that's representative of the card author's intent. Indeed, portability is one of our [core goals](https://docs.microsoft.com/en-us/adaptive-cards/#goals). Each time an inconsistency sneaks into the platform, it risks introducing costs to our partners. These costs have real consequences for the adoption of Adaptive Cards in the market:
+
+* Existing customers are less likely to adopt new versions of Adaptive Cards, even if they want the newer features (see slow adoption of newer versions by Teams)
+* Potential new customers might be scared to adopt Adaptive Cards altogether if there's a consistency or stability problem (perceived or real), since cross-platform capabilities are central to our value proposition
+* When existing customers *do* adopt new versions, they may end up having to spend extra time testing new versions and then deal with new bugs when *their* customers complain
+
+Issues that impact Microsoft partners are tracked with labels in our repo:
+
+* [Teams Mobile](https://github.com/microsoft/AdaptiveCards/labels/Msft-TeamsMobile)
+* [Teams Integration](https://github.com/microsoft/AdaptiveCards/labels/MsftTeams-Integration)
+
+In order to maintain our [pledge of cross-platform capability](https://docs.microsoft.com/adaptive-cards/resources/principles), and in order to support all of our partners and customers, we **must** take a strong stance against the introduction of inconsistencies in Adaptive Cards. 
+
+By default, every feature and quirk should have identical behavior across all of our platforms. There will be times, of course, where platform-specific differences may make sense. However, these differences must be intentional. They need to be discussed and documented. To further reduce the likelihood of divergent implementations, we should share code whenever possible.
 
 ## Types of inconsistencies
 
@@ -56,32 +63,42 @@ Rendering presents another avenue by which inconsistencies can sneak into Adapti
 
 * Multiple implementations means that "gotcha" scenarios might not always be covered or may be covered inconsistently (e.g. what happens when you combine `maxLines`, markdown lists, and `wrap: true`?)
 * Platform-provided controls can vary widely in their behaviors and support. Even if divergent behavior is caught during implementation, it may be difficult or tricky to solve completely
-* Some 
 
 ## Proposals
 
-* Reduce code duplication:
-  * Experiment with the shared model as Javascript (e.g. via [emscripten](https://emscripten.org/))
-  * Move .NET from using Newtonsoft.JSON to using the shared model via P/Invoke (Note that this will have impacts on partners. It's likely that this move will only make sense if Javascript is also using the shared model)
-* Change processes to prevent new inconsistencies from ever happening:
-  * New bugs automatically filed with `inconsistency` tag, which is only removed once it's determined that the issue is *not* a consistency issue
-  * We can't ship if an `inconsistency`-tagged bug hasn't been resolved for this release
-  * Features that need implementation across all platforms are merged to a single branch and PR'd/tested for inconsistencies before being allowed to merge upstream
-  * Require that first accepted commits of a new feature include robust test cards that not only exercise the "golden path" for a feature, but every conceivable corner case
-    * Perhaps a checklist that needs to be completed prior to merge?
-* Provide a new tool that allows easy testing of card payloads across all renderers:
-  * If shipped for public use, this could be a nice addition to the designer to allow card authors to preview their cards in a variety of renderers
-  * Could be used in tests for per-platform visual verification
-  * Per-platform accessibility trees could also be generated by this tool to allow for cross-plat verification
-* Parsing/rendering documentation update pass -- leave no ambiguity
-* Blog posts about inconsistencies, how we're addressing them, and how to avoid them when implementing custom parsing/rendering or implementing an entirely new stack
-* Make hard decisions around defaults, required properties, and parser/renderer behaviors
-  * Document them publicly
-  * Blog about them
-  * Blog about philosophy around decisions (enabling third parties to make Adaptive Card-consistent decisions)
-  * Ensure test cards cover scenarios
-  * Make sure we only break our customers once
-* Inconsistency-focused bug bash
+* (P0) Change processes to prevent new inconsistencies from ever happening:
+  * Motivation: Inconsistencies are caught before they ship
+  * Tasks: 
+    * New bugs automatically filed with `inconsistency` tag, which is only removed once it's determined that the issue is *not* a consistency issue
+    * We can't ship if an `inconsistency`-tagged bug hasn't been resolved for this release
+    * Features that need implementation across all platforms are merged to a single branch and PR'd/tested for inconsistencies before being allowed to merge upstream
+    * Require that first accepted commits of a new feature include robust test cards that not only exercise the "golden path" for a feature, but every conceivable corner case relevant to 
+      * Perhaps a checklist that needs to be completed prior to merge?
+* (P1) Provide a new tool that allows easy testing of card payloads across all renderers:
+  * Motivation: Allows for the easy directed testing of feature consistency
+  * Tasks: 
+    * If shipped for public use, this could be a nice addition to the designer to allow card authors to preview their cards in a variety of renderers
+    * Could be used in tests for per-platform visual verification
+    * Per-platform accessibility trees could also be generated by this tool to allow for cross-plat verification
+* (P1) Make hard decisions around defaults, required properties, and parser/renderer behaviors: 
+  * Motivation: When these decisions are fully documented, it's easier for a line-level dev to choose correct behavior, meaning that it's more intuitive as to what the correct behavior should be.
+  * Tasks: 
+    * Document decisions publicly & in code as appropriate
+    * Blog about decisions & philosophy
+    * Review current behavior and make breaking changes as needed
+* (P1) Inconsistency-focused bug bash
+  * Motivation: There are certainly more inconsistencies that have yet to be found. It's better to deal with them all at once if possible.
+  * Tasks: 
+    * Ensure test cards cover scenarios
+* (P2) Reduce code duplication:
+  * Motivation: Fewer implementations means fewer inconsistencies
+  * Tasks:
+    * Experiment with the shared model as Javascript (e.g. via [emscripten](https://emscripten.org/))
+    * Move .NET from using Newtonsoft.JSON to using the shared model via P/Invoke (Note that this will have impacts on partners. It's likely that this move will only make sense if Javascript is also using the shared model)
+* (P2) Parsing/rendering documentation update pass -- leave no ambiguity
+  * Motivation: Makes it easier for third parties to be consistent
+* (P2) Blog posts about inconsistencies, how we're addressing them, and how to avoid them when implementing custom parsing/rendering or implementing an entirely new stack (makes it easier for third parties to be consistent)
+  * Motivation: Better visibility for third parties
 
 ## Specific bugs
 
