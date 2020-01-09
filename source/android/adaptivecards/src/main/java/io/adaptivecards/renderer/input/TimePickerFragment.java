@@ -28,8 +28,6 @@ public class TimePickerFragment extends DialogFragment
         m_context = context;
     }
 
-
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
@@ -38,7 +36,7 @@ public class TimePickerFragment extends DialogFragment
         try
         {
             // Get current value shown to user in the TextEdit
-            Date value = DateFormat.getTimeInstance().parse(m_editText.getText().toString());
+            Date value = DateFormat.getTimeInstance(DateFormat.SHORT).parse(m_editText.getText().toString());
             calendar = new GregorianCalendar();
             calendar.setTime(value);
         }
@@ -57,7 +55,7 @@ public class TimePickerFragment extends DialogFragment
     public void onTimeSet(TimePicker view, int hourOfDay, int min)
     {
         Calendar calendar = new GregorianCalendar(0, 0, 0, hourOfDay, min);
-        String value = DateFormat.getTimeInstance().format(calendar.getTime());
+        String value = TimeInputRenderer.formatTime(calendar.getTime());
         m_editText.setText(value);
     }
 
