@@ -29,13 +29,12 @@ We use lerna to manage package linking and building.
 2. `npm start`
 3. OR to test preview features: `npm run start:preview`
 
-# Start the documentation site (http://adaptivecards.io)
+## Start the documentation site (http://adaptivecards.io)
 
 1. `cd adaptivecards-site`
 2. `npx lerna run release`
-3. `npm install hexo-cli -g`
-5. `npm start`
-6. Open up the browser to point to: `localhost:[portnumber]` printed after the command above returns under "Hexo is running at".
+3. `npm start`
+4. Open up the browser to point to: `localhost:[portnumber]` printed after the command above returns under "Hexo is running at".
 
 ## Adding a new package
 
