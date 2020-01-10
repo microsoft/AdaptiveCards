@@ -25,7 +25,7 @@
     text-align: center;
     vertical-align: middle;
     cursor: default;
-    background-color: #0078D7;
+    background-color: #004980;
     color: white;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -34,7 +34,7 @@
 }
 
     .ac-pushButton:hover {
-        background-color: #005A9E;
+        background-color: #004980;
     }
 
     .ac-pushButton:active {
@@ -50,7 +50,7 @@
     cursor: default;
     border: 2px solid #5D60B3;
     padding: 4px 10px 5px 10px;
-    color: #5D60B3;
+    color: #4B4C9A;
     background-color: white;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -59,12 +59,12 @@
 }
 
     .ac-linkButton:hover {
-        background-color: #5D60B3;
+        background-color: #484B98;
         color: white;
     }
 
     .ac-linkButton:active {
-        background-color: #4F5399;
+        background-color: #454987;
         color: white;
     }
 
