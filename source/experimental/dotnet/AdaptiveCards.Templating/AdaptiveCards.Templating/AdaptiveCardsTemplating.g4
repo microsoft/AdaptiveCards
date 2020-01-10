@@ -6,6 +6,6 @@ prop : ID'[' NUM ']' # propArray
     | ID # propID
     ;
 
-ID : [a-zA-Z]+[0-9]* ;             // match lower-case identifiers
+ID : [a-zA-Z]+;             // match lower-case identifiers
 NUM : [0-9]+;
 WS : [ \t\r\n]+ -> skip ; // skip spaces, tabs, newlines
