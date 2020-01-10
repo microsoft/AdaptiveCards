@@ -117,5 +117,54 @@ namespace AdaptiveCards.Templating.Test
             string cardJson = transformer.Transform(testString, null);
             AssertJsonEqual(cardJson, expectedString);
         }
+
+        [TestMethod]
+        public void TestIteratioin()
+        {
+            AdaptiveTransformer transformer = new AdaptiveTransformer();
+            var testString =
+                @"{
+                    ""type"": ""AdaptiveCard"",
+                    ""body"": [
+                      {
+                          ""type"": ""container"",
+                          ""items"": [
+                              {
+                                  ""type"": ""textblock"",
+                                  ""$data"": [
+                                      { ""name"": ""matt"" }, 
+                                      { ""name"": ""david"" }, 
+                                      { ""name"": ""thomas"" }
+                                  ],
+                                  ""text"": ""{name}""
+                              }
+                          ]
+                      }
+                    ]
+                }";
+            var expectedString =
+                @"{
+                    {
+                        ""type"": ""Container"",
+                        ""items"": [ 
+                            {
+                                ""type"": ""TextBlock"",
+                                ""text"": ""Matt""
+                            },
+                            {
+                                ""type"": ""TextBlock"",
+                                ""text"": ""David""
+                            }
+                            {
+                                ""type"": ""TextBlock"",
+                                ""text"": ""Thomas""
+                            }
+                        ]
+                    }
+            }";
+
+            string cardJson = transformer.Transform(testString, null);
+            AssertJsonEqual(cardJson, expectedString);
+        }
     }
 }

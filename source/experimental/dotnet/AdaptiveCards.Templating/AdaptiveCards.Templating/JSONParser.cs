@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from JSON.g4 by ANTLR 4.7.1
+// Generated from JSONParser.g4 by ANTLR 4.7.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -36,20 +36,24 @@ public partial class JSONParser : Parser {
 	protected static DFA[] decisionToDFA;
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
-		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
-		TEMPLKEYWRD=10, STRING=11, NUMBER=12, WS=13;
+		COMMA=1, COLON=2, LCB=3, RCB=4, LSB=5, RSB=6, TRUE=7, FALSE=8, NULL=9, 
+		StringDeclOpen=10, NUMBER=11, WS=12, CLOSE=13, TEMPLKEYWRD=14, TemplateOpen=15, 
+		STRING=16, TEMPLATECLOSE=17, TEMPLATELITERAL=18;
 	public const int
-		RULE_json = 0, RULE_obj = 1, RULE_pair = 2, RULE_array = 3, RULE_value = 4;
+		RULE_json = 0, RULE_obj = 1, RULE_pair = 2, RULE_array = 3, RULE_value = 4, 
+		RULE_templateString = 5;
 	public static readonly string[] ruleNames = {
-		"json", "obj", "pair", "array", "value"
+		"json", "obj", "pair", "array", "value", "templateString"
 	};
 
 	private static readonly string[] _LiteralNames = {
-		null, "'{'", "','", "'}'", "':'", "'['", "']'", "'true'", "'false'", "'null'"
+		null, "','", "':'", null, null, "'['", "']'", "'true'", "'false'", "'null'", 
+		null, null, null, null, "'$data'"
 	};
 	private static readonly string[] _SymbolicNames = {
-		null, null, null, null, null, null, null, null, null, null, "TEMPLKEYWRD", 
-		"STRING", "NUMBER", "WS"
+		null, "COMMA", "COLON", "LCB", "RCB", "LSB", "RSB", "TRUE", "FALSE", "NULL", 
+		"StringDeclOpen", "NUMBER", "WS", "CLOSE", "TEMPLKEYWRD", "TemplateOpen", 
+		"STRING", "TEMPLATECLOSE", "TEMPLATELITERAL"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -62,7 +66,7 @@ public partial class JSONParser : Parser {
 		}
 	}
 
-	public override string GrammarFileName { get { return "JSON.g4"; } }
+	public override string GrammarFileName { get { return "JSONParser.g4"; } }
 
 	public override string[] RuleNames { get { return ruleNames; } }
 
@@ -92,7 +96,7 @@ public partial class JSONParser : Parser {
 		}
 		public override int RuleIndex { get { return RULE_json; } }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IJSONVisitor<TResult> typedVisitor = visitor as IJSONVisitor<TResult>;
+			IJSONParserVisitor<TResult> typedVisitor = visitor as IJSONParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitJson(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -105,7 +109,7 @@ public partial class JSONParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 10; value();
+			State = 12; value();
 			}
 		}
 		catch (RecognitionException re) {
@@ -120,11 +124,17 @@ public partial class JSONParser : Parser {
 	}
 
 	public partial class ObjContext : ParserRuleContext {
+		public ITerminalNode LCB() { return GetToken(JSONParser.LCB, 0); }
 		public PairContext[] pair() {
 			return GetRuleContexts<PairContext>();
 		}
 		public PairContext pair(int i) {
 			return GetRuleContext<PairContext>(i);
+		}
+		public ITerminalNode RCB() { return GetToken(JSONParser.RCB, 0); }
+		public ITerminalNode[] COMMA() { return GetTokens(JSONParser.COMMA); }
+		public ITerminalNode COMMA(int i) {
+			return GetToken(JSONParser.COMMA, i);
 		}
 		public ObjContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -132,7 +142,7 @@ public partial class JSONParser : Parser {
 		}
 		public override int RuleIndex { get { return RULE_obj; } }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IJSONVisitor<TResult> typedVisitor = visitor as IJSONVisitor<TResult>;
+			IJSONParserVisitor<TResult> typedVisitor = visitor as IJSONParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitObj(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -144,36 +154,36 @@ public partial class JSONParser : Parser {
 		EnterRule(_localctx, 2, RULE_obj);
 		int _la;
 		try {
-			State = 25;
+			State = 27;
 			ErrorHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(TokenStream,1,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 12; Match(T__0);
-				State = 13; pair();
-				State = 18;
+				State = 14; Match(LCB);
+				State = 15; pair();
+				State = 20;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
-				while (_la==T__1) {
+				while (_la==COMMA) {
 					{
 					{
-					State = 14; Match(T__1);
-					State = 15; pair();
+					State = 16; Match(COMMA);
+					State = 17; pair();
 					}
 					}
-					State = 20;
+					State = 22;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.LA(1);
 				}
-				State = 21; Match(T__2);
+				State = 23; Match(RCB);
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 23; Match(T__0);
-				State = 24; Match(T__2);
+				State = 25; Match(LCB);
+				State = 26; Match(RCB);
 				}
 				break;
 			}
@@ -202,25 +212,31 @@ public partial class JSONParser : Parser {
 		}
 	}
 	public partial class JsonPairContext : PairContext {
+		public ITerminalNode StringDeclOpen() { return GetToken(JSONParser.StringDeclOpen, 0); }
 		public ITerminalNode STRING() { return GetToken(JSONParser.STRING, 0); }
+		public ITerminalNode CLOSE() { return GetToken(JSONParser.CLOSE, 0); }
+		public ITerminalNode COLON() { return GetToken(JSONParser.COLON, 0); }
 		public ValueContext value() {
 			return GetRuleContext<ValueContext>(0);
 		}
 		public JsonPairContext(PairContext context) { CopyFrom(context); }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IJSONVisitor<TResult> typedVisitor = visitor as IJSONVisitor<TResult>;
+			IJSONParserVisitor<TResult> typedVisitor = visitor as IJSONParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitJsonPair(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 	public partial class TemplateDataContext : PairContext {
+		public ITerminalNode StringDeclOpen() { return GetToken(JSONParser.StringDeclOpen, 0); }
 		public ITerminalNode TEMPLKEYWRD() { return GetToken(JSONParser.TEMPLKEYWRD, 0); }
-		public ObjContext obj() {
-			return GetRuleContext<ObjContext>(0);
+		public ITerminalNode CLOSE() { return GetToken(JSONParser.CLOSE, 0); }
+		public ITerminalNode COLON() { return GetToken(JSONParser.COLON, 0); }
+		public ValueContext value() {
+			return GetRuleContext<ValueContext>(0);
 		}
 		public TemplateDataContext(PairContext context) { CopyFrom(context); }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IJSONVisitor<TResult> typedVisitor = visitor as IJSONVisitor<TResult>;
+			IJSONParserVisitor<TResult> typedVisitor = visitor as IJSONParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTemplateData(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -231,29 +247,31 @@ public partial class JSONParser : Parser {
 		PairContext _localctx = new PairContext(Context, State);
 		EnterRule(_localctx, 4, RULE_pair);
 		try {
-			State = 33;
+			State = 39;
 			ErrorHandler.Sync(this);
-			switch (TokenStream.LA(1)) {
-			case STRING:
+			switch ( Interpreter.AdaptivePredict(TokenStream,2,Context) ) {
+			case 1:
 				_localctx = new JsonPairContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 27; Match(STRING);
-				State = 28; Match(T__3);
-				State = 29; value();
+				State = 29; Match(StringDeclOpen);
+				State = 30; Match(STRING);
+				State = 31; Match(CLOSE);
+				State = 32; Match(COLON);
+				State = 33; value();
 				}
 				break;
-			case TEMPLKEYWRD:
+			case 2:
 				_localctx = new TemplateDataContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 30; Match(TEMPLKEYWRD);
-				State = 31; Match(T__3);
-				State = 32; obj();
+				State = 34; Match(StringDeclOpen);
+				State = 35; Match(TEMPLKEYWRD);
+				State = 36; Match(CLOSE);
+				State = 37; Match(COLON);
+				State = 38; value();
 				}
 				break;
-			default:
-				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -268,11 +286,17 @@ public partial class JSONParser : Parser {
 	}
 
 	public partial class ArrayContext : ParserRuleContext {
+		public ITerminalNode LSB() { return GetToken(JSONParser.LSB, 0); }
 		public ValueContext[] value() {
 			return GetRuleContexts<ValueContext>();
 		}
 		public ValueContext value(int i) {
 			return GetRuleContext<ValueContext>(i);
+		}
+		public ITerminalNode RSB() { return GetToken(JSONParser.RSB, 0); }
+		public ITerminalNode[] COMMA() { return GetTokens(JSONParser.COMMA); }
+		public ITerminalNode COMMA(int i) {
+			return GetToken(JSONParser.COMMA, i);
 		}
 		public ArrayContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -280,7 +304,7 @@ public partial class JSONParser : Parser {
 		}
 		public override int RuleIndex { get { return RULE_array; } }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IJSONVisitor<TResult> typedVisitor = visitor as IJSONVisitor<TResult>;
+			IJSONParserVisitor<TResult> typedVisitor = visitor as IJSONParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitArray(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -292,36 +316,36 @@ public partial class JSONParser : Parser {
 		EnterRule(_localctx, 6, RULE_array);
 		int _la;
 		try {
-			State = 48;
+			State = 54;
 			ErrorHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(TokenStream,4,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 35; Match(T__4);
-				State = 36; value();
-				State = 41;
+				State = 41; Match(LSB);
+				State = 42; value();
+				State = 47;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
-				while (_la==T__1) {
+				while (_la==COMMA) {
 					{
 					{
-					State = 37; Match(T__1);
-					State = 38; value();
+					State = 43; Match(COMMA);
+					State = 44; value();
 					}
 					}
-					State = 43;
+					State = 49;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.LA(1);
 				}
-				State = 44; Match(T__5);
+				State = 50; Match(RSB);
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 46; Match(T__4);
-				State = 47; Match(T__5);
+				State = 52; Match(LSB);
+				State = 53; Match(RSB);
 				}
 				break;
 			}
@@ -355,16 +379,30 @@ public partial class JSONParser : Parser {
 		}
 		public ValueObjectContext(ValueContext context) { CopyFrom(context); }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IJSONVisitor<TResult> typedVisitor = visitor as IJSONVisitor<TResult>;
+			IJSONParserVisitor<TResult> typedVisitor = visitor as IJSONParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitValueObject(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 	public partial class ValueNullContext : ValueContext {
+		public ITerminalNode NULL() { return GetToken(JSONParser.NULL, 0); }
 		public ValueNullContext(ValueContext context) { CopyFrom(context); }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IJSONVisitor<TResult> typedVisitor = visitor as IJSONVisitor<TResult>;
+			IJSONParserVisitor<TResult> typedVisitor = visitor as IJSONParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitValueNull(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class ValueTemplateStringContext : ValueContext {
+		public ITerminalNode StringDeclOpen() { return GetToken(JSONParser.StringDeclOpen, 0); }
+		public TemplateStringContext templateString() {
+			return GetRuleContext<TemplateStringContext>(0);
+		}
+		public ITerminalNode CLOSE() { return GetToken(JSONParser.CLOSE, 0); }
+		public ValueTemplateStringContext(ValueContext context) { CopyFrom(context); }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IJSONParserVisitor<TResult> typedVisitor = visitor as IJSONParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitValueTemplateString(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
@@ -372,32 +410,36 @@ public partial class JSONParser : Parser {
 		public ITerminalNode NUMBER() { return GetToken(JSONParser.NUMBER, 0); }
 		public ValueNumberContext(ValueContext context) { CopyFrom(context); }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IJSONVisitor<TResult> typedVisitor = visitor as IJSONVisitor<TResult>;
+			IJSONParserVisitor<TResult> typedVisitor = visitor as IJSONParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitValueNumber(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 	public partial class ValueTrueContext : ValueContext {
+		public ITerminalNode TRUE() { return GetToken(JSONParser.TRUE, 0); }
 		public ValueTrueContext(ValueContext context) { CopyFrom(context); }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IJSONVisitor<TResult> typedVisitor = visitor as IJSONVisitor<TResult>;
+			IJSONParserVisitor<TResult> typedVisitor = visitor as IJSONParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitValueTrue(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 	public partial class ValueFalseContext : ValueContext {
+		public ITerminalNode FALSE() { return GetToken(JSONParser.FALSE, 0); }
 		public ValueFalseContext(ValueContext context) { CopyFrom(context); }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IJSONVisitor<TResult> typedVisitor = visitor as IJSONVisitor<TResult>;
+			IJSONParserVisitor<TResult> typedVisitor = visitor as IJSONParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitValueFalse(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 	public partial class ValueStringContext : ValueContext {
+		public ITerminalNode StringDeclOpen() { return GetToken(JSONParser.StringDeclOpen, 0); }
 		public ITerminalNode STRING() { return GetToken(JSONParser.STRING, 0); }
+		public ITerminalNode CLOSE() { return GetToken(JSONParser.CLOSE, 0); }
 		public ValueStringContext(ValueContext context) { CopyFrom(context); }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IJSONVisitor<TResult> typedVisitor = visitor as IJSONVisitor<TResult>;
+			IJSONParserVisitor<TResult> typedVisitor = visitor as IJSONParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitValueString(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -408,7 +450,7 @@ public partial class JSONParser : Parser {
 		}
 		public ValueArrayContext(ValueContext context) { CopyFrom(context); }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IJSONVisitor<TResult> typedVisitor = visitor as IJSONVisitor<TResult>;
+			IJSONParserVisitor<TResult> typedVisitor = visitor as IJSONParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitValueArray(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -419,60 +461,152 @@ public partial class JSONParser : Parser {
 		ValueContext _localctx = new ValueContext(Context, State);
 		EnterRule(_localctx, 8, RULE_value);
 		try {
-			State = 57;
+			State = 69;
 			ErrorHandler.Sync(this);
-			switch (TokenStream.LA(1)) {
-			case STRING:
+			switch ( Interpreter.AdaptivePredict(TokenStream,5,Context) ) {
+			case 1:
 				_localctx = new ValueStringContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 50; Match(STRING);
+				State = 56; Match(StringDeclOpen);
+				State = 57; Match(STRING);
+				State = 58; Match(CLOSE);
 				}
 				break;
-			case NUMBER:
-				_localctx = new ValueNumberContext(_localctx);
+			case 2:
+				_localctx = new ValueTemplateStringContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 51; Match(NUMBER);
+				State = 59; Match(StringDeclOpen);
+				State = 60; templateString();
+				State = 61; Match(CLOSE);
 				}
 				break;
-			case T__0:
-				_localctx = new ValueObjectContext(_localctx);
+			case 3:
+				_localctx = new ValueNumberContext(_localctx);
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 52; obj();
+				State = 63; Match(NUMBER);
 				}
 				break;
-			case T__4:
-				_localctx = new ValueArrayContext(_localctx);
+			case 4:
+				_localctx = new ValueObjectContext(_localctx);
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 53; array();
+				State = 64; obj();
 				}
 				break;
-			case T__6:
-				_localctx = new ValueTrueContext(_localctx);
+			case 5:
+				_localctx = new ValueArrayContext(_localctx);
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 54; Match(T__6);
+				State = 65; array();
 				}
 				break;
-			case T__7:
-				_localctx = new ValueFalseContext(_localctx);
+			case 6:
+				_localctx = new ValueTrueContext(_localctx);
 				EnterOuterAlt(_localctx, 6);
 				{
-				State = 55; Match(T__7);
+				State = 66; Match(TRUE);
 				}
 				break;
-			case T__8:
-				_localctx = new ValueNullContext(_localctx);
+			case 7:
+				_localctx = new ValueFalseContext(_localctx);
 				EnterOuterAlt(_localctx, 7);
 				{
-				State = 56; Match(T__8);
+				State = 67; Match(FALSE);
 				}
 				break;
-			default:
-				throw new NoViableAltException(this);
+			case 8:
+				_localctx = new ValueNullContext(_localctx);
+				EnterOuterAlt(_localctx, 8);
+				{
+				State = 68; Match(NULL);
+				}
+				break;
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class TemplateStringContext : ParserRuleContext {
+		public ITerminalNode[] TemplateOpen() { return GetTokens(JSONParser.TemplateOpen); }
+		public ITerminalNode TemplateOpen(int i) {
+			return GetToken(JSONParser.TemplateOpen, i);
+		}
+		public ITerminalNode[] TEMPLATELITERAL() { return GetTokens(JSONParser.TEMPLATELITERAL); }
+		public ITerminalNode TEMPLATELITERAL(int i) {
+			return GetToken(JSONParser.TEMPLATELITERAL, i);
+		}
+		public ITerminalNode[] TEMPLATECLOSE() { return GetTokens(JSONParser.TEMPLATECLOSE); }
+		public ITerminalNode TEMPLATECLOSE(int i) {
+			return GetToken(JSONParser.TEMPLATECLOSE, i);
+		}
+		public ITerminalNode[] STRING() { return GetTokens(JSONParser.STRING); }
+		public ITerminalNode STRING(int i) {
+			return GetToken(JSONParser.STRING, i);
+		}
+		public TemplateStringContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_templateString; } }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IJSONParserVisitor<TResult> typedVisitor = visitor as IJSONParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitTemplateString(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public TemplateStringContext templateString() {
+		TemplateStringContext _localctx = new TemplateStringContext(Context, State);
+		EnterRule(_localctx, 10, RULE_templateString);
+		int _la;
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 80;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			do {
+				{
+				{
+				State = 72;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+				if (_la==STRING) {
+					{
+					State = 71; Match(STRING);
+					}
+				}
+
+				State = 74; Match(TemplateOpen);
+				State = 75; Match(TEMPLATELITERAL);
+				State = 76; Match(TEMPLATECLOSE);
+				State = 78;
+				ErrorHandler.Sync(this);
+				switch ( Interpreter.AdaptivePredict(TokenStream,7,Context) ) {
+				case 1:
+					{
+					State = 77; Match(STRING);
+					}
+					break;
+				}
+				}
+				}
+				State = 82;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+			} while ( _la==TemplateOpen || _la==STRING );
 			}
 		}
 		catch (RecognitionException re) {
@@ -488,57 +622,77 @@ public partial class JSONParser : Parser {
 
 	private static char[] _serializedATN = {
 		'\x3', '\x608B', '\xA72A', '\x8133', '\xB9ED', '\x417C', '\x3BE7', '\x7786', 
-		'\x5964', '\x3', '\xF', '>', '\x4', '\x2', '\t', '\x2', '\x4', '\x3', 
+		'\x5964', '\x3', '\x14', 'W', '\x4', '\x2', '\t', '\x2', '\x4', '\x3', 
 		'\t', '\x3', '\x4', '\x4', '\t', '\x4', '\x4', '\x5', '\t', '\x5', '\x4', 
-		'\x6', '\t', '\x6', '\x3', '\x2', '\x3', '\x2', '\x3', '\x3', '\x3', '\x3', 
-		'\x3', '\x3', '\x3', '\x3', '\a', '\x3', '\x13', '\n', '\x3', '\f', '\x3', 
-		'\xE', '\x3', '\x16', '\v', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', 
-		'\x3', '\x3', '\x3', '\x5', '\x3', '\x1C', '\n', '\x3', '\x3', '\x4', 
-		'\x3', '\x4', '\x3', '\x4', '\x3', '\x4', '\x3', '\x4', '\x3', '\x4', 
-		'\x5', '\x4', '$', '\n', '\x4', '\x3', '\x5', '\x3', '\x5', '\x3', '\x5', 
-		'\x3', '\x5', '\a', '\x5', '*', '\n', '\x5', '\f', '\x5', '\xE', '\x5', 
-		'-', '\v', '\x5', '\x3', '\x5', '\x3', '\x5', '\x3', '\x5', '\x3', '\x5', 
-		'\x5', '\x5', '\x33', '\n', '\x5', '\x3', '\x6', '\x3', '\x6', '\x3', 
-		'\x6', '\x3', '\x6', '\x3', '\x6', '\x3', '\x6', '\x3', '\x6', '\x5', 
-		'\x6', '<', '\n', '\x6', '\x3', '\x6', '\x2', '\x2', '\a', '\x2', '\x4', 
-		'\x6', '\b', '\n', '\x2', '\x2', '\x2', '\x43', '\x2', '\f', '\x3', '\x2', 
-		'\x2', '\x2', '\x4', '\x1B', '\x3', '\x2', '\x2', '\x2', '\x6', '#', '\x3', 
-		'\x2', '\x2', '\x2', '\b', '\x32', '\x3', '\x2', '\x2', '\x2', '\n', ';', 
-		'\x3', '\x2', '\x2', '\x2', '\f', '\r', '\x5', '\n', '\x6', '\x2', '\r', 
-		'\x3', '\x3', '\x2', '\x2', '\x2', '\xE', '\xF', '\a', '\x3', '\x2', '\x2', 
-		'\xF', '\x14', '\x5', '\x6', '\x4', '\x2', '\x10', '\x11', '\a', '\x4', 
-		'\x2', '\x2', '\x11', '\x13', '\x5', '\x6', '\x4', '\x2', '\x12', '\x10', 
-		'\x3', '\x2', '\x2', '\x2', '\x13', '\x16', '\x3', '\x2', '\x2', '\x2', 
-		'\x14', '\x12', '\x3', '\x2', '\x2', '\x2', '\x14', '\x15', '\x3', '\x2', 
-		'\x2', '\x2', '\x15', '\x17', '\x3', '\x2', '\x2', '\x2', '\x16', '\x14', 
-		'\x3', '\x2', '\x2', '\x2', '\x17', '\x18', '\a', '\x5', '\x2', '\x2', 
-		'\x18', '\x1C', '\x3', '\x2', '\x2', '\x2', '\x19', '\x1A', '\a', '\x3', 
-		'\x2', '\x2', '\x1A', '\x1C', '\a', '\x5', '\x2', '\x2', '\x1B', '\xE', 
-		'\x3', '\x2', '\x2', '\x2', '\x1B', '\x19', '\x3', '\x2', '\x2', '\x2', 
-		'\x1C', '\x5', '\x3', '\x2', '\x2', '\x2', '\x1D', '\x1E', '\a', '\r', 
-		'\x2', '\x2', '\x1E', '\x1F', '\a', '\x6', '\x2', '\x2', '\x1F', '$', 
-		'\x5', '\n', '\x6', '\x2', ' ', '!', '\a', '\f', '\x2', '\x2', '!', '\"', 
-		'\a', '\x6', '\x2', '\x2', '\"', '$', '\x5', '\x4', '\x3', '\x2', '#', 
-		'\x1D', '\x3', '\x2', '\x2', '\x2', '#', ' ', '\x3', '\x2', '\x2', '\x2', 
-		'$', '\a', '\x3', '\x2', '\x2', '\x2', '%', '&', '\a', '\a', '\x2', '\x2', 
-		'&', '+', '\x5', '\n', '\x6', '\x2', '\'', '(', '\a', '\x4', '\x2', '\x2', 
-		'(', '*', '\x5', '\n', '\x6', '\x2', ')', '\'', '\x3', '\x2', '\x2', '\x2', 
-		'*', '-', '\x3', '\x2', '\x2', '\x2', '+', ')', '\x3', '\x2', '\x2', '\x2', 
-		'+', ',', '\x3', '\x2', '\x2', '\x2', ',', '.', '\x3', '\x2', '\x2', '\x2', 
-		'-', '+', '\x3', '\x2', '\x2', '\x2', '.', '/', '\a', '\b', '\x2', '\x2', 
-		'/', '\x33', '\x3', '\x2', '\x2', '\x2', '\x30', '\x31', '\a', '\a', '\x2', 
-		'\x2', '\x31', '\x33', '\a', '\b', '\x2', '\x2', '\x32', '%', '\x3', '\x2', 
-		'\x2', '\x2', '\x32', '\x30', '\x3', '\x2', '\x2', '\x2', '\x33', '\t', 
-		'\x3', '\x2', '\x2', '\x2', '\x34', '<', '\a', '\r', '\x2', '\x2', '\x35', 
-		'<', '\a', '\xE', '\x2', '\x2', '\x36', '<', '\x5', '\x4', '\x3', '\x2', 
-		'\x37', '<', '\x5', '\b', '\x5', '\x2', '\x38', '<', '\a', '\t', '\x2', 
-		'\x2', '\x39', '<', '\a', '\n', '\x2', '\x2', ':', '<', '\a', '\v', '\x2', 
-		'\x2', ';', '\x34', '\x3', '\x2', '\x2', '\x2', ';', '\x35', '\x3', '\x2', 
-		'\x2', '\x2', ';', '\x36', '\x3', '\x2', '\x2', '\x2', ';', '\x37', '\x3', 
-		'\x2', '\x2', '\x2', ';', '\x38', '\x3', '\x2', '\x2', '\x2', ';', '\x39', 
-		'\x3', '\x2', '\x2', '\x2', ';', ':', '\x3', '\x2', '\x2', '\x2', '<', 
-		'\v', '\x3', '\x2', '\x2', '\x2', '\b', '\x14', '\x1B', '#', '+', '\x32', 
-		';',
+		'\x6', '\t', '\x6', '\x4', '\a', '\t', '\a', '\x3', '\x2', '\x3', '\x2', 
+		'\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\a', '\x3', '\x15', 
+		'\n', '\x3', '\f', '\x3', '\xE', '\x3', '\x18', '\v', '\x3', '\x3', '\x3', 
+		'\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x5', '\x3', '\x1E', '\n', 
+		'\x3', '\x3', '\x4', '\x3', '\x4', '\x3', '\x4', '\x3', '\x4', '\x3', 
+		'\x4', '\x3', '\x4', '\x3', '\x4', '\x3', '\x4', '\x3', '\x4', '\x3', 
+		'\x4', '\x5', '\x4', '*', '\n', '\x4', '\x3', '\x5', '\x3', '\x5', '\x3', 
+		'\x5', '\x3', '\x5', '\a', '\x5', '\x30', '\n', '\x5', '\f', '\x5', '\xE', 
+		'\x5', '\x33', '\v', '\x5', '\x3', '\x5', '\x3', '\x5', '\x3', '\x5', 
+		'\x3', '\x5', '\x5', '\x5', '\x39', '\n', '\x5', '\x3', '\x6', '\x3', 
+		'\x6', '\x3', '\x6', '\x3', '\x6', '\x3', '\x6', '\x3', '\x6', '\x3', 
+		'\x6', '\x3', '\x6', '\x3', '\x6', '\x3', '\x6', '\x3', '\x6', '\x3', 
+		'\x6', '\x3', '\x6', '\x5', '\x6', 'H', '\n', '\x6', '\x3', '\a', '\x5', 
+		'\a', 'K', '\n', '\a', '\x3', '\a', '\x3', '\a', '\x3', '\a', '\x3', '\a', 
+		'\x5', '\a', 'Q', '\n', '\a', '\x6', '\a', 'S', '\n', '\a', '\r', '\a', 
+		'\xE', '\a', 'T', '\x3', '\a', '\x2', '\x2', '\b', '\x2', '\x4', '\x6', 
+		'\b', '\n', '\f', '\x2', '\x2', '\x2', '_', '\x2', '\xE', '\x3', '\x2', 
+		'\x2', '\x2', '\x4', '\x1D', '\x3', '\x2', '\x2', '\x2', '\x6', ')', '\x3', 
+		'\x2', '\x2', '\x2', '\b', '\x38', '\x3', '\x2', '\x2', '\x2', '\n', 'G', 
+		'\x3', '\x2', '\x2', '\x2', '\f', 'R', '\x3', '\x2', '\x2', '\x2', '\xE', 
+		'\xF', '\x5', '\n', '\x6', '\x2', '\xF', '\x3', '\x3', '\x2', '\x2', '\x2', 
+		'\x10', '\x11', '\a', '\x5', '\x2', '\x2', '\x11', '\x16', '\x5', '\x6', 
+		'\x4', '\x2', '\x12', '\x13', '\a', '\x3', '\x2', '\x2', '\x13', '\x15', 
+		'\x5', '\x6', '\x4', '\x2', '\x14', '\x12', '\x3', '\x2', '\x2', '\x2', 
+		'\x15', '\x18', '\x3', '\x2', '\x2', '\x2', '\x16', '\x14', '\x3', '\x2', 
+		'\x2', '\x2', '\x16', '\x17', '\x3', '\x2', '\x2', '\x2', '\x17', '\x19', 
+		'\x3', '\x2', '\x2', '\x2', '\x18', '\x16', '\x3', '\x2', '\x2', '\x2', 
+		'\x19', '\x1A', '\a', '\x6', '\x2', '\x2', '\x1A', '\x1E', '\x3', '\x2', 
+		'\x2', '\x2', '\x1B', '\x1C', '\a', '\x5', '\x2', '\x2', '\x1C', '\x1E', 
+		'\a', '\x6', '\x2', '\x2', '\x1D', '\x10', '\x3', '\x2', '\x2', '\x2', 
+		'\x1D', '\x1B', '\x3', '\x2', '\x2', '\x2', '\x1E', '\x5', '\x3', '\x2', 
+		'\x2', '\x2', '\x1F', ' ', '\a', '\f', '\x2', '\x2', ' ', '!', '\a', '\x12', 
+		'\x2', '\x2', '!', '\"', '\a', '\xF', '\x2', '\x2', '\"', '#', '\a', '\x4', 
+		'\x2', '\x2', '#', '*', '\x5', '\n', '\x6', '\x2', '$', '%', '\a', '\f', 
+		'\x2', '\x2', '%', '&', '\a', '\x10', '\x2', '\x2', '&', '\'', '\a', '\xF', 
+		'\x2', '\x2', '\'', '(', '\a', '\x4', '\x2', '\x2', '(', '*', '\x5', '\n', 
+		'\x6', '\x2', ')', '\x1F', '\x3', '\x2', '\x2', '\x2', ')', '$', '\x3', 
+		'\x2', '\x2', '\x2', '*', '\a', '\x3', '\x2', '\x2', '\x2', '+', ',', 
+		'\a', '\a', '\x2', '\x2', ',', '\x31', '\x5', '\n', '\x6', '\x2', '-', 
+		'.', '\a', '\x3', '\x2', '\x2', '.', '\x30', '\x5', '\n', '\x6', '\x2', 
+		'/', '-', '\x3', '\x2', '\x2', '\x2', '\x30', '\x33', '\x3', '\x2', '\x2', 
+		'\x2', '\x31', '/', '\x3', '\x2', '\x2', '\x2', '\x31', '\x32', '\x3', 
+		'\x2', '\x2', '\x2', '\x32', '\x34', '\x3', '\x2', '\x2', '\x2', '\x33', 
+		'\x31', '\x3', '\x2', '\x2', '\x2', '\x34', '\x35', '\a', '\b', '\x2', 
+		'\x2', '\x35', '\x39', '\x3', '\x2', '\x2', '\x2', '\x36', '\x37', '\a', 
+		'\a', '\x2', '\x2', '\x37', '\x39', '\a', '\b', '\x2', '\x2', '\x38', 
+		'+', '\x3', '\x2', '\x2', '\x2', '\x38', '\x36', '\x3', '\x2', '\x2', 
+		'\x2', '\x39', '\t', '\x3', '\x2', '\x2', '\x2', ':', ';', '\a', '\f', 
+		'\x2', '\x2', ';', '<', '\a', '\x12', '\x2', '\x2', '<', 'H', '\a', '\xF', 
+		'\x2', '\x2', '=', '>', '\a', '\f', '\x2', '\x2', '>', '?', '\x5', '\f', 
+		'\a', '\x2', '?', '@', '\a', '\xF', '\x2', '\x2', '@', 'H', '\x3', '\x2', 
+		'\x2', '\x2', '\x41', 'H', '\a', '\r', '\x2', '\x2', '\x42', 'H', '\x5', 
+		'\x4', '\x3', '\x2', '\x43', 'H', '\x5', '\b', '\x5', '\x2', '\x44', 'H', 
+		'\a', '\t', '\x2', '\x2', '\x45', 'H', '\a', '\n', '\x2', '\x2', '\x46', 
+		'H', '\a', '\v', '\x2', '\x2', 'G', ':', '\x3', '\x2', '\x2', '\x2', 'G', 
+		'=', '\x3', '\x2', '\x2', '\x2', 'G', '\x41', '\x3', '\x2', '\x2', '\x2', 
+		'G', '\x42', '\x3', '\x2', '\x2', '\x2', 'G', '\x43', '\x3', '\x2', '\x2', 
+		'\x2', 'G', '\x44', '\x3', '\x2', '\x2', '\x2', 'G', '\x45', '\x3', '\x2', 
+		'\x2', '\x2', 'G', '\x46', '\x3', '\x2', '\x2', '\x2', 'H', '\v', '\x3', 
+		'\x2', '\x2', '\x2', 'I', 'K', '\a', '\x12', '\x2', '\x2', 'J', 'I', '\x3', 
+		'\x2', '\x2', '\x2', 'J', 'K', '\x3', '\x2', '\x2', '\x2', 'K', 'L', '\x3', 
+		'\x2', '\x2', '\x2', 'L', 'M', '\a', '\x11', '\x2', '\x2', 'M', 'N', '\a', 
+		'\x14', '\x2', '\x2', 'N', 'P', '\a', '\x13', '\x2', '\x2', 'O', 'Q', 
+		'\a', '\x12', '\x2', '\x2', 'P', 'O', '\x3', '\x2', '\x2', '\x2', 'P', 
+		'Q', '\x3', '\x2', '\x2', '\x2', 'Q', 'S', '\x3', '\x2', '\x2', '\x2', 
+		'R', 'J', '\x3', '\x2', '\x2', '\x2', 'S', 'T', '\x3', '\x2', '\x2', '\x2', 
+		'T', 'R', '\x3', '\x2', '\x2', '\x2', 'T', 'U', '\x3', '\x2', '\x2', '\x2', 
+		'U', '\r', '\x3', '\x2', '\x2', '\x2', '\v', '\x16', '\x1D', ')', '\x31', 
+		'\x38', 'G', 'J', 'P', 'T',
 	};
 
 	public static readonly ATN _ATN =

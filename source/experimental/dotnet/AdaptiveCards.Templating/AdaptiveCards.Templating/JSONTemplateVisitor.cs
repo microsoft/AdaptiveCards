@@ -10,19 +10,39 @@ using System.Text;
 
 namespace AdaptiveCards.Templating
 {
-    public class JSONTemplateVisitor : JSONBaseVisitor<string>
+    public class JSONTemplateVisitor : JSONParserBaseVisitor<string>
     {
-        public JObject data = null;
+        public ArrayList<JObject> data = new ArrayList<JObject>();
 
         public JSONTemplateVisitor(JObject data = null)
         {
-            this.data = data;
+            if(data != null)
+            {
+                this.data.Add(data);
+            }
         }
 
         public override string VisitTemplateData([NotNull] JSONParser.TemplateDataContext context)
         {
-            string childJson = Visit(context.children[2]);
-            data = JObject.Parse(childJson);
+            IParseTree templateDataValueNode = context.GetChild(4);
+            if (templateDataValueNode is JSONParser.ValueArrayContext)
+            {
+                var arrayParseTree = templateDataValueNode.GetChild(0);
+                for(var i = 0; i < arrayParseTree.ChildCount; i++)
+                {
+                    var child = arrayParseTree.GetChild(i);
+                    if (child is JSONParser.ValueObjectContext)
+                    {
+                        var o = JObject.Parse(child.GetText());
+                            data.Add(o);
+                    }
+                }
+            }
+            else
+            {
+                string childJson = templateDataValueNode.GetText();
+                data.Add(JObject.Parse(childJson));
+            }
             return null;
         }
 
@@ -49,7 +69,7 @@ namespace AdaptiveCards.Templating
 
         public override string VisitObj([NotNull] JSONParser.ObjContext context)
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();            
             for(var i = 0; i < context.ChildCount; i++)
             {
                 var child = context.children[i];
@@ -69,52 +89,72 @@ namespace AdaptiveCards.Templating
 
         public override string VisitTerminal(ITerminalNode node)
         {
+            var tokenType = node.Symbol.Type;
+            if (node.Symbol.Type == JSONLexer.TEMPLATELITERAL)
+            {
+                ICharStream stream = CharStreams.fromstring(node.GetText());
+                AdaptiveCardsTemplatingLexer lexer = new AdaptiveCardsTemplatingLexer(stream);
+                ITokenStream tokens = new CommonTokenStream(lexer);
+                AdaptiveCardsTemplatingParser parser = new AdaptiveCardsTemplatingParser(tokens)
+                {
+                    BuildParseTree = true
+                };
+                IParseTree tree = parser.template();
+                AdaptiveCardsTemplatingTreeVisitor eval = new AdaptiveCardsTemplatingTreeVisitor();
+                var processed = eval.Visit(tree);
+
+                // nice place to add error handling
+                if (this.data != null && processed != null && processed.Keys.Count > 0)
+                {
+                    // need a error handling when user put template with no matching data
+                    // continuing as need to finish skelectal codes
+                    var obj = data[0][processed.Keys[0]];
+                    for (var idx = 1; idx < processed.Keys.Count; idx++)
+                    {
+                        var val = processed.Keys[idx];
+                        if (int.TryParse(val, out int arrayIdx))
+                        {
+                            obj = obj[arrayIdx];
+                        }
+                        else
+                        {
+                            obj = obj[val];
+                        }
+                    }
+
+                    return obj.ToString();
+                }
+
+            }
+
+            if (tokenType == JSONLexer.TemplateOpen || tokenType == JSONLexer.TEMPLATECLOSE)
+            {
+                return "";
+            }
+
             return node.GetText();
         }
 
-        public string BoundString(Match match)
+        public override string VisitValueTemplateString([NotNull] JSONParser.ValueTemplateStringContext context)
         {
-            ICharStream stream = CharStreams.fromstring(match.Value);
-            AdaptiveCardsTemplatingLexer lexer = new AdaptiveCardsTemplatingLexer(stream);
-            ITokenStream tokens = new CommonTokenStream(lexer);
-            AdaptiveCardsTemplatingParser parser = new AdaptiveCardsTemplatingParser(tokens);
-            parser.BuildParseTree = true;
-            IParseTree tree = parser.template();
-            AdaptiveCardsTemplatingTreeVisitor eval = new AdaptiveCardsTemplatingTreeVisitor();
-            var processed = eval.Visit(tree);
-
-            // nice place to add error handling
-            if (this.data != null && processed != null && processed.Keys.Count > 0)
-            {
-                // need a error handling when user put template with no matching data
-                // continuing as need to finish skelectal codes
-                var obj = data[processed.Keys[0]];
-                for (var idx = 1; idx < processed.Keys.Count; idx++)
-                {
-                    var val = processed.Keys[idx];
-                    if (int.TryParse(val, out int arrayIdx))
-                    {
-                        obj = obj[arrayIdx];
-                    }
-                    else
-                    {
-                        obj = obj[val];
-                    }
-                }
-
-                return obj.ToString();
-            }
-
-            return match.Value; 
+            StringBuilder sb = new StringBuilder("\"");
+            sb.Append(Visit(context.children[1])).Append("\"");
+            return sb.ToString(); 
         }
+
         public override string VisitValueString([NotNull] JSONParser.ValueStringContext context)
         {
-            string pattern = @"{[\w\n\.\[\]]+}";
-            Regex rgx = new Regex(pattern);
-            string text = context.GetText();
-            MatchEvaluator evaluator = new MatchEvaluator(BoundString);
-            var matches = Regex.Matches(text, pattern);
-            return Regex.Replace(text, pattern, evaluator);
+            return context.GetText(); 
+        }
+
+        public override string VisitTemplateString([NotNull] JSONParser.TemplateStringContext context)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var child in context.children)
+            {
+                sb.Append(Visit(child));
+            }
+            return sb.ToString(); 
         }
     }
 }
