@@ -407,7 +407,7 @@ export class CardDesigner extends Designer.DesignContext {
         }
     }
 
-    public updateJsonEditorsLayout() {
+    private updateJsonEditorsLayout() {
         if (this._isMonacoEditorLoaded) {
             let jsonEditorsPaneRect = this._jsonEditorsPanel.contentHost.getBoundingClientRect();
 
@@ -426,11 +426,10 @@ export class CardDesigner extends Designer.DesignContext {
         this.updateJsonEditorsLayout();
     }
 
-    private jsonUpdateTimer: any;
-    private cardUpdateTimer: any;
-    private updateLayoutTimer: any;
-
-    private preventCardUpdate: boolean = false;
+    private _jsonUpdateTimer: any;
+    private _cardUpdateTimer: any;
+    private _updateLayoutTimer: any;
+    private _preventCardUpdate: boolean = false;
 
     private cardPayloadChanged() {
         if (this.onCardPayloadChanged) {
@@ -478,7 +477,7 @@ export class CardDesigner extends Designer.DesignContext {
 
     private updateJsonFromCard(addToUndoStack: boolean = true) {
         try {
-            this.preventCardUpdate = true;
+            this._preventCardUpdate = true;
 
             if (!this.preventJsonUpdate && this._isMonacoEditorLoaded) {
                 let cardPayload = this._designerSurface.getCardPayloadAsObject();
@@ -487,15 +486,15 @@ export class CardDesigner extends Designer.DesignContext {
             }
         }
         finally {
-            this.preventCardUpdate = false;
+            this._preventCardUpdate = false;
         }
     }
 
     private scheduleUpdateJsonFromCard() {
-        clearTimeout(this.jsonUpdateTimer);
+        clearTimeout(this._jsonUpdateTimer);
 
         if (!this.preventJsonUpdate) {
-            this.jsonUpdateTimer = setTimeout(() => { this.updateJsonFromCard(); }, 100);
+            this._jsonUpdateTimer = setTimeout(() => { this.updateJsonFromCard(); }, 100);
         }
     }
 
@@ -524,7 +523,7 @@ export class CardDesigner extends Designer.DesignContext {
                 }
             }
 
-            if (!this.preventCardUpdate) {
+            if (!this._preventCardUpdate) {
                 this.designerSurface.setCardPayloadAsString(currentEditorPayload);
 
                 this.cardPayloadChanged();
@@ -535,17 +534,17 @@ export class CardDesigner extends Designer.DesignContext {
     }
 
     private scheduleUpdateCardFromJson() {
-        clearTimeout(this.cardUpdateTimer);
+        clearTimeout(this._cardUpdateTimer);
 
-        if (!this.preventCardUpdate) {
-            this.cardUpdateTimer = setTimeout(() => { this.updateCardFromJson(true); }, 300);
+        if (!this._preventCardUpdate) {
+            this._cardUpdateTimer = setTimeout(() => { this.updateCardFromJson(true); }, 300);
         }
     }
 
     private scheduleLayoutUpdate() {
-        clearTimeout(this.updateLayoutTimer);
+        clearTimeout(this._updateLayoutTimer);
 
-        this.updateLayoutTimer = setTimeout(
+        this._updateLayoutTimer = setTimeout(
             () => {
                 if (this.designerSurface) {
                     this.designerSurface.updateLayout(false);
@@ -564,6 +563,7 @@ export class CardDesigner extends Designer.DesignContext {
     private _newCardButton: ToolbarButton;
     private _copyJSONButton: ToolbarButton;
     private _togglePreviewButton: ToolbarButton;
+    private _preventRecursiveSetTargetVersion = false;
 
     private prepareToolbar() {
         if (Shared.GlobalSettings.showVersionPicker) {
@@ -717,7 +717,95 @@ export class CardDesigner extends Designer.DesignContext {
         }
     }
 
-    public monacoModuleLoaded(monaco: any = null) {
+    private updateToolbar() {
+        this._undoButton.isEnabled = this.canUndo;
+        this._redoButton.isEnabled = this.canRedo;
+    }
+
+    private addToUndoStack(payload: object) {
+        let doAdd: boolean = !this._designerSurface.draggedPeer;
+
+        if (doAdd) {
+            if (this._undoStack.length > 0) {
+                doAdd = this._undoStack[this._undoStack.length - 1] != payload;
+            }
+
+            if (doAdd) {
+                let undoPayloadsToDiscard = this._undoStack.length - (this._undoStackIndex + 1);
+
+                if (undoPayloadsToDiscard > 0) {
+                    this._undoStack.splice(this._undoStackIndex + 1, undoPayloadsToDiscard);
+                }
+
+                this._undoStack.push(payload);
+
+                if (this._undoStack.length > CardDesigner.MAX_UNDO_STACK_SIZE) {
+                    this._undoStack.splice(0, 1);
+                }
+
+                this._undoStackIndex = this._undoStack.length - 1;
+
+                this.updateToolbar();
+            }
+        }
+    }
+
+    private handlePointerUp(e: PointerEvent) {
+        this.endDrag();
+
+        if (this.designerSurface) {
+            this.designerSurface.endDrag(false);
+        }
+    }
+
+    private handlePointerMove(e: PointerEvent) {
+        this._currentMousePosition = { x: e.x, y: e.y };
+
+        if (this.designerSurface) {
+            let isPointerOverDesigner = this.designerSurface.isPointerOver(this._currentMousePosition.x, this._currentMousePosition.y);
+            let peerDropped = false;
+
+            if (this._draggedPaletteItem && isPointerOverDesigner) {
+                let peer = this._draggedPaletteItem.createPeer(this, this.designerSurface);
+
+                let clientCoordinates = this.designerSurface.pageToClientCoordinates(this._currentMousePosition.x, this._currentMousePosition.y);
+
+                if (this.designerSurface.tryDrop(clientCoordinates, peer)) {
+                    this.endDrag();
+
+                    this.designerSurface.startDrag(peer);
+
+                    peerDropped = true;
+                }
+            }
+
+            if (!peerDropped && this._draggedElement) {
+                this._draggedElement.style.left = this._currentMousePosition.x - 10 + "px";
+                this._draggedElement.style.top = this._currentMousePosition.y - 10 + "px";
+            }
+        }
+    }
+
+    readonly toolbar: Toolbar = new Toolbar();
+
+    lockDataStructure: boolean = false;
+
+    constructor(hostContainers: Array<HostContainer> = null) {
+        super();
+
+        Adaptive.GlobalSettings.enableFullJsonRoundTrip = true;
+        Adaptive.GlobalSettings.allowPreProcessingPropertyValues = true;
+
+        Adaptive.AdaptiveCard.onProcessMarkdown = (text: string, result: Adaptive.IMarkdownProcessingResult) => {
+            CardDesigner.internalProcessMarkdown(text, result);
+        }
+
+        this._hostContainers = hostContainers ? hostContainers : [];
+
+        this.prepareToolbar();
+    }
+
+    monacoModuleLoaded(monaco: any = null) {
 		if (!monaco) {
             monaco = window["monaco"];
         }
@@ -799,92 +887,6 @@ export class CardDesigner extends Designer.DesignContext {
         this.updateJsonFromCard(true);
     }
 
-    private updateToolbar() {
-        this._undoButton.isEnabled = this.canUndo;
-        this._redoButton.isEnabled = this.canRedo;
-    }
-
-    private addToUndoStack(payload: object) {
-        let doAdd: boolean = !this._designerSurface.draggedPeer;
-
-        if (doAdd) {
-            if (this._undoStack.length > 0) {
-                doAdd = this._undoStack[this._undoStack.length - 1] != payload;
-            }
-
-            if (doAdd) {
-                let undoPayloadsToDiscard = this._undoStack.length - (this._undoStackIndex + 1);
-
-                if (undoPayloadsToDiscard > 0) {
-                    this._undoStack.splice(this._undoStackIndex + 1, undoPayloadsToDiscard);
-                }
-
-                this._undoStack.push(payload);
-
-                if (this._undoStack.length > CardDesigner.MAX_UNDO_STACK_SIZE) {
-                    this._undoStack.splice(0, 1);
-                }
-
-                this._undoStackIndex = this._undoStack.length - 1;
-
-                this.updateToolbar();
-            }
-        }
-    }
-
-    private handlePointerUp(e: PointerEvent) {
-        this.endDrag();
-
-        if (this.designerSurface) {
-            this.designerSurface.endDrag(false);
-        }
-    }
-
-    private handlePointerMove(e: PointerEvent) {
-        this._currentMousePosition = { x: e.x, y: e.y };
-
-        if (this.designerSurface) {
-            let isPointerOverDesigner = this.designerSurface.isPointerOver(this._currentMousePosition.x, this._currentMousePosition.y);
-            let peerDropped = false;
-
-            if (this._draggedPaletteItem && isPointerOverDesigner) {
-                let peer = this._draggedPaletteItem.createPeer(this, this.designerSurface);
-
-                let clientCoordinates = this.designerSurface.pageToClientCoordinates(this._currentMousePosition.x, this._currentMousePosition.y);
-
-                if (this.designerSurface.tryDrop(clientCoordinates, peer)) {
-                    this.endDrag();
-
-                    this.designerSurface.startDrag(peer);
-
-                    peerDropped = true;
-                }
-            }
-
-            if (!peerDropped && this._draggedElement) {
-                this._draggedElement.style.left = this._currentMousePosition.x - 10 + "px";
-                this._draggedElement.style.top = this._currentMousePosition.y - 10 + "px";
-            }
-        }
-    }
-
-    readonly toolbar: Toolbar = new Toolbar();
-
-    constructor(hostContainers: Array<HostContainer> = null) {
-        super();
-
-        Adaptive.GlobalSettings.enableFullJsonRoundTrip = true;
-        Adaptive.GlobalSettings.allowPreProcessingPropertyValues = true;
-
-        Adaptive.AdaptiveCard.onProcessMarkdown = (text: string, result: Adaptive.IMarkdownProcessingResult) => {
-            CardDesigner.internalProcessMarkdown(text, result);
-        }
-
-        this._hostContainers = hostContainers ? hostContainers : [];
-
-        this.prepareToolbar();
-    }
-
     attachTo(root: HTMLElement)  {
         let styleSheetLinkElement = document.createElement("link");
         styleSheetLinkElement.id = "__ac-designer";
@@ -941,7 +943,9 @@ export class CardDesigner extends Designer.DesignContext {
             new Clipboard(
                 this._copyJSONButton.renderedElement,
                 {
-                    text: (trigger) => { return JSON.stringify(this._designerSurface.getCardPayloadAsObject(), null, 4); }
+                    text: (trigger) => {
+                        return JSON.stringify(this.getCard(), null, 4);
+                    }
                 });
         }
 
@@ -1051,6 +1055,21 @@ export class CardDesigner extends Designer.DesignContext {
         this.recreateDesignerSurface();
     }
 
+    clearUndoStack() {
+        this._undoStack = [];
+        this._undoStackIndex = -1;
+        this.updateToolbar();
+    }
+
+    setCard(payload: object) {
+        this.clearUndoStack();
+        this.setCardPayload(payload, true);
+    }
+
+    getCard(): object {
+        return this._designerSurface ? this._designerSurface.getCardPayloadAsObject() : undefined;
+    }
+
     undo() {
         if (this.canUndo) {
             this._undoStackIndex--;
@@ -1090,13 +1109,9 @@ export class CardDesigner extends Designer.DesignContext {
     onActiveHostContainerChanged: (designer: CardDesigner) => void;
     onTargetVersionChanged: (designer: CardDesigner) => void;
 
-    lockDataStructure: boolean = false;
-
     get targetVersion(): Adaptive.Version {
         return this._targetVersion;
     }
-
-    private _preventRecursiveSetTargetVersion = false;
 
     set targetVersion(value: Adaptive.Version) {
         if (this._targetVersion.compareTo(value) !== 0 && !this._preventRecursiveSetTargetVersion) {
