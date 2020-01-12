@@ -42,7 +42,7 @@ export class ImageSet extends React.PureComponent {
 			const Element = register.getComponentOfType(element.type);
 			if (Element) {
 				renderedElement.push(<Element json={element}
-					key={`ELEMENT-${index}`} isFirst={index == 0 ? true : false} />);
+					key={`ELEMENT-${index}`} isFirst={index == 0} />);
 			} else {
 				let error = { "error": Enums.ValidationError.UnknownElementType, "message": `Unknown Type ${element.type} encountered` };
 				onParseError(error);

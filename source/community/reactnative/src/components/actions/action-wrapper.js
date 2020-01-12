@@ -69,7 +69,7 @@ export class ActionWrapper extends React.Component {
 					}
 				}
 				if (isValid) {
-					const isFirstElement = index == 0 || this.hostConfig.actions.actionsOrientation === Enums.Orientation.Vertical ? true : false
+					const isFirstElement = index == 0 || this.hostConfig.actions.actionsOrientation === Enums.Orientation.Vertical
 					if (element.type === 'Action.ShowCard') {
 						this.hasShowCard = true;
 						renderedElement.push(

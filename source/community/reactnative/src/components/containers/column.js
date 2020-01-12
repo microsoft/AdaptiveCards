@@ -64,7 +64,7 @@ export class Column extends React.Component {
 	 * @returns {boolean} true|false
 	 */
 	isForemostElement = () => {
-		return this.props.columns[0] === this.column ? true : false;
+		return this.props.columns[0] === this.column;
 	}
 
 	/**
