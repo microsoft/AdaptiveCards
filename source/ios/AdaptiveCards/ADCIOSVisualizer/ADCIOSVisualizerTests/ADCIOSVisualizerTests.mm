@@ -6,6 +6,7 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
+#import "AdaptiveCards/ACOHostConfigPrivate.h"
 #import "AdaptiveCards/ACORemoteResourceInformationPrivate.h"
 #import "AdaptiveCards/ACRShowCardTarget.h"
 #import "AdaptiveCards/ACRViewPrivate.h"
@@ -193,6 +194,24 @@
     NSData *output = [cardParseResult.card inputs];
     NSString *str = [[NSString alloc] initWithData:output encoding:NSUTF8StringEncoding];
     XCTAssertTrue([str isEqualToString:expectedString]);
+}
+
+- (void)testMaxActionConfig
+{
+    ACOHostConfig *config = [[ACOHostConfig alloc] init];
+    auto adaptiveConfig = [config getHostConfig];
+    ActionsConfig actionConfig;
+    actionConfig.maxActions = 2;
+    adaptiveConfig->SetActions(actionConfig);
+    NSArray<NSString *> *payloadNames = @[ @"Action.ShowCard.Style" ];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    ACRRenderResult *result = [ACRRenderer render:cards[0] config:config widthConstraint:320.0];
+    XCTAssertTrue(result.warnings.count == 1);
+    XCTAssertTrue([result.warnings[0].message isEqualToString:@"Some actions were not rendered due to exceeding the maximum number of actions allowed"]);
+    actionConfig.maxActions = 3;
+    adaptiveConfig->SetActions(actionConfig);
+    result = [ACRRenderer render:cards[0] config:config widthConstraint:320.0];
+    XCTAssertTrue(result.warnings.count == 0);
 }
 
 - (void)testPerformanceOnComplicatedCards
