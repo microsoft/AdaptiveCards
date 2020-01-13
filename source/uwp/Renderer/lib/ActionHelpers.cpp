@@ -278,14 +278,12 @@ namespace AdaptiveNamespace::ActionHelpers
     {
         // determine what type of action we're building
         ComPtr<IAdaptiveActionElement> action(adaptiveActionElement);
-        ABI::AdaptiveNamespace::ActionType actionType;
-        RETURN_IF_FAILED(action->get_ActionType(&actionType));
 
         // now construct an appropriate button for the action type
         ComPtr<IButton> button;
         try
         {
-            CreateAppropriateButton(actionType, button);
+            CreateAppropriateButton(action.Get(), button);
         }
         CATCH_RETURN;
 
@@ -621,11 +619,8 @@ namespace AdaptiveNamespace::ActionHelpers
             return;
         }
 
-        ABI::AdaptiveNamespace::ActionType actionType;
-        action->get_ActionType(&actionType);
-
         ComPtr<IButton> button;
-        CreateAppropriateButton(actionType, button);
+        CreateAppropriateButton(action, button);
 
         ComPtr<IContentControl> buttonAsContentControl;
         THROW_IF_FAILED(button.As(&buttonAsContentControl));
@@ -1028,19 +1023,25 @@ namespace AdaptiveNamespace::ActionHelpers
         return actionSetAsPanel.CopyTo(actionSetControl);
     }
 
-    void CreateAppropriateButton(ABI::AdaptiveNamespace::ActionType actionType, ComPtr<IButton>& button)
+    void CreateAppropriateButton(ABI::AdaptiveNamespace::IAdaptiveActionElement* action, ComPtr<IButton>& button)
     {
-        // construct an appropriate button for the action type
-        if (actionType == ABI::AdaptiveNamespace::ActionType_OpenUrl)
+        if (action != nullptr)
         {
-            // OpenUrl buttons should appear as links for accessibility purposes, so we use our custom LinkButton.
-            auto linkButton = winrt::make<LinkButton>();
-            button = linkButton.as<IButton>().detach();
+            ABI::AdaptiveNamespace::ActionType actionType;
+            THROW_IF_FAILED(action->get_ActionType(&actionType));
+
+            // construct an appropriate button for the action type
+            if (actionType == ABI::AdaptiveNamespace::ActionType_OpenUrl)
+            {
+                // OpenUrl buttons should appear as links for accessibility purposes, so we use our custom LinkButton.
+                auto linkButton = winrt::make<LinkButton>();
+                button = linkButton.as<IButton>().detach();
+            }
         }
 
         if (!button)
         {
-            // Either non-OpenUrl action or instantiating LinkButton failed. Use standard button.
+            // Either no action, non-OpenUrl action, or instantiating LinkButton failed. Use standard button.
             button = XamlHelpers::CreateXamlClass<IButton>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Button));
         }
     }
