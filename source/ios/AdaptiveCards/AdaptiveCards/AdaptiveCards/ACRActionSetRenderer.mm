@@ -83,6 +83,11 @@
     }
 
     unsigned long uMaxActionsToRender = MIN(adaptiveActionConfig.maxActions, elems.size());
+
+    if (uMaxActionsToRender < elems.size()) {
+        [rootView addWarnings:ACRWarningStatusCode::ACRMaxActionsExceeded mesage:@"Some actions were not rendered due to exceeding the maximum number of actions allowed"];
+    }
+
     for (auto i = 0; i < uMaxActionsToRender; i++) {
         const auto &elem = elems.at(i);
         ACRBaseActionElementRenderer *actionRenderer =
