@@ -17,7 +17,7 @@ using namespace AdaptiveCards;
 {
     self = [super init];
     if (self) {
-        _statusCode = (ACRParseWarningStatusCode)parseWarning->GetStatusCode();
+        _statusCode = (ACRWarningStatusCode)parseWarning->GetStatusCode();
         _reason = [NSString stringWithCString:parseWarning->GetReason().c_str() encoding:NSUTF8StringEncoding];
     }
     return self;
