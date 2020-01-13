@@ -7,6 +7,7 @@
 
 #import "ACOAdaptiveCard.h"
 #import "ACOHostConfig.h"
+#import "ACOWarning.h"
 #import "ACRActionDelegate.h"
 #import "ACRColumnView.h"
 #import "ACRIMedia.h"
@@ -17,6 +18,7 @@
 
 @property (weak) id<ACRActionDelegate> acrActionDelegate;
 @property (weak) id<ACRMediaDelegate> mediaDelegate;
+@property NSArray<ACOWarning *> *warnings;
 
 - (instancetype)init:(ACOAdaptiveCard *)card hostconfig:(ACOHostConfig *)config widthConstraint:(float)width;
 - (instancetype)init:(ACOAdaptiveCard *)card
