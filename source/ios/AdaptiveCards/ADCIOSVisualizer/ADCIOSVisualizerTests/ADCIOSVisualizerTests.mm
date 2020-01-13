@@ -24,6 +24,7 @@
     NSBundle *_mainBundle;
     NSString *_defaultHostConfigFile;
     ACOHostConfig *_defaultHostConfig;
+    NSSet *_setOfExpectedToFailFiles;
 }
 
 - (void)setUp
@@ -39,6 +40,8 @@
             _defaultHostConfig = hostconfigParseResult.config;
         }
     }
+
+    _setOfExpectedToFailFiles = [NSSet setWithArray:@[ @"TypeIsRequired.json", @"AdaptiveCard.MissingVersion.json", @"InvalidMediaMix.json", @"Action.DuplicateIds.json", @"Action.NestedDuplicateIds.json" ]];
 
     self.continueAfterFailure = NO;
 }
@@ -68,7 +71,7 @@
 }
 
 - (void)testRemoteResouceInformation
-{   
+{
     NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"FoodOrder" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
 
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
@@ -85,6 +88,63 @@
         XCTAssertTrue([[testStrings objectAtIndex:index++] isEqualToString:info.url.absoluteString]);
         XCTAssertTrue([@"image" isEqualToString:info.mimeType]);
     }
+}
+/* walk the directories in DFS post-order, and parse and render each payload */
+- (void)parseAndRenderDFS:(NSString *)rootPath FileManager:(NSFileManager *)fManager
+{
+    // files + directories
+    NSArray *directoryContents = [fManager contentsOfDirectoryAtPath:rootPath error:nil];
+    // files only
+    NSMutableArray *filesList = [[NSMutableArray alloc] init];
+
+    // iterate through contents, and if it's a directory, recurse with it, else added to filesList for testing
+    for (NSString *path in directoryContents) {
+        BOOL isDirectory = NO;
+        NSString *resourcePath = [rootPath stringByAppendingPathComponent:path];
+        if ([fManager fileExistsAtPath:resourcePath isDirectory:&isDirectory]) {
+            NSString *displayName = [fManager displayNameAtPath:path];
+            // HostConfigs & Templates directories don't contain valid samples, since there are only two such directories,
+            // if condition check for their names are sufficient
+            if (isDirectory && !([displayName isEqualToString:@"HostConfig"] or [displayName isEqualToString:@"Templates"])) {
+                [self parseAndRenderDFS:resourcePath FileManager:fManager];
+            } else if ([[resourcePath pathExtension] isEqualToString:@"json"]) {
+                [filesList addObject:resourcePath];
+            }
+        }
+    }
+
+    // testing files in the current directory
+    for (NSString *pathToFile in filesList) {
+        NSString *payload =
+            [NSString stringWithContentsOfFile:pathToFile
+                                      encoding:NSUTF8StringEncoding
+                                         error:nil];
+
+        NSString *fileName = [pathToFile lastPathComponent];
+        ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
+
+        if ([_setOfExpectedToFailFiles containsObject:fileName]) {
+            XCTAssertFalse(cardParseResult.isValid);
+        } else {
+            XCTAssertTrue(cardParseResult.isValid);
+            ACRRenderResult *renderResult;
+            renderResult = [ACRRenderer render:cardParseResult.card
+                                        config:nil
+                               widthConstraint:300
+                                      delegate:nil];
+            XCTAssertTrue(renderResult.succeeded);
+        }
+    }
+}
+- (void)testParsingAndRenderingAllCards
+{
+    NSBundle *main = [NSBundle mainBundle];
+    NSString *resourcePath = [main resourcePath];
+    NSString *rootPath = [resourcePath stringByAppendingPathComponent:@"samples"];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+
+    // testing parsing and rendering from bottom up using DFS
+    [self parseAndRenderDFS:rootPath FileManager:fileManager];
 }
 
 - (void)testRelativeURLInformation
