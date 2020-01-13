@@ -25,3 +25,6 @@
         - Only propose elements that are available in that version in the **Card Elements** toolbox
         - Only propose actions that are available in that version in the **Add an action** menu
         - Show parse and validation errors helping the end user understand what aspects of a card are not compatible with the selected version. This includes unavailable elements and actions, enumeration values, container styles, and more
+- The `HostContainer` class now have a `targetVersion` property
+    - When the selected `HostContainer` changes, its target version is automatically selected in the version picker. This behavior can be disabled by setting `GlobalsSettings.selectedHostContainerControlsTargetVersion` to `false`
+    - If a target version that is greater than that supported by the current `HostContainer` is selected, a **Warning** message is displayed to let the user know they might be using Adaptive Card capabilities that are not compatible with the target host application. This behavior can be disabled by setting `GlobalSettings.showTargetVersionMismatchWarning` to `false`.

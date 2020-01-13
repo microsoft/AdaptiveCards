@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import { GlobalSettings, GlobalRegistry, CardObjectRegistry, CardElement, Action, HostConfig, SerializationContext, Version } from "adaptivecards";
+import { GlobalSettings, GlobalRegistry, CardObjectRegistry, CardElement, Action, HostConfig, SerializationContext, Version, Versions } from "adaptivecards";
 import * as hostConfig from "../hostConfigs/sample.json";
 
 export abstract class HostContainer {
@@ -71,5 +71,9 @@ export abstract class HostContainer {
 
     get actionsRegistry(): CardObjectRegistry<Action> {
         return this._actionsRegistry;
+    }
+
+    get targetVersion(): Version {
+        return Versions.v1_0;
     }
 }
