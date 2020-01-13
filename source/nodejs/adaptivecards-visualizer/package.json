@@ -1,6 +1,6 @@
 {
 	"name": "adaptivecards-visualizer",
-	"version": "1.2.4",
+	"version": "1.2.5",
 	"description": "Adaptive Card Visualizer for HTML renderer",
 	"author": "AdaptiveCards",
 	"license": "MIT",
@@ -17,7 +17,7 @@
 		"release": "npm run clean && npm run build && webpack --mode=production"
 	},
 	"devDependencies": {
-		"adaptivecards": "^2.0.0-alpha.0",
+		"adaptivecards": "^2.0.0-alpha.1",
 		"markdown-it": "^8.4.0",
 		"monaco-editor": "^0.15.6",
 		"rimraf": "^2.6.2",

@@ -1,6 +1,6 @@
 {
 	"name": "adaptivecards-designer-app",
-	"version": "0.3.0",
+	"version": "0.3.1",
 	"description": "Adaptive Card designer app",
 	"author": "AdaptiveCards",
 	"license": "MIT",
@@ -12,9 +12,9 @@
 		"release": "npm run build"
 	},
 	"devDependencies": {
-		"adaptivecards": "^2.0.0-alpha.0",
-		"adaptivecards-controls": "^0.3.4",
-		"adaptivecards-designer": "^0.8.0-rc.1",
+		"adaptivecards": "^2.0.0-alpha.1",
+		"adaptivecards-controls": "^0.3.5",
+		"adaptivecards-designer": "^0.8.0-rc.2",
 		"markdown-it": "^8.4.0",
 		"monaco-editor": "^0.15.6",
 		"monaco-editor-webpack-plugin": "^1.7.0",
@@ -25,6 +25,6 @@
 		"webpack-dev-server": "^3.1.14"
 	},
 	"dependencies": {
-		"adaptivecards-templating": "^0.1.1-alpha.0"
+		"adaptivecards-templating": "^0.1.2-alpha.0"
 	}
 }
