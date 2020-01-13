@@ -490,7 +490,7 @@ namespace UWPTestLibrary
             {
                 return "Passed";
             }
-            else if (NewCard == true)
+            else if (NewCard)
             {
                 if (Error == null)
                 {
