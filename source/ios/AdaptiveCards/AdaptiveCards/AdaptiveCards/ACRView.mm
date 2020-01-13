@@ -92,13 +92,12 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
         self.accessibilityLabel = @"ACR Root View";
         _adaptiveCard = card;
         _warnings = [[NSMutableArray<ACOWarning *> alloc] init];
-        // override default host config if user host config is provided
         if (config) {
             _hostConfig = config;
+            _actionsTargetBuilderDirector = [[ACRTargetBuilderDirector alloc] init:self capability:ACRAction adaptiveHostConfig:_hostConfig];
+            _selectActionsTargetBuilderDirector = [[ACRTargetBuilderDirector alloc] init:self capability:ACRSelectAction adaptiveHostConfig:_hostConfig];
+            _quickReplyTargetBuilderDirector = [[ACRTargetBuilderDirector alloc] init:self capability:ACRQuickReply adaptiveHostConfig:_hostConfig];
         }
-        _actionsTargetBuilderDirector = [[ACRTargetBuilderDirector alloc] init:self capability:ACRAction adaptiveHostConfig:_hostConfig];
-        _selectActionsTargetBuilderDirector = [[ACRTargetBuilderDirector alloc] init:self capability:ACRSelectAction adaptiveHostConfig:_hostConfig];
-        _quickReplyTargetBuilderDirector = [[ACRTargetBuilderDirector alloc] init:self capability:ACRQuickReply adaptiveHostConfig:_hostConfig];
         unsigned int padding = [_hostConfig getHostConfig] -> GetSpacing().paddingSpacing;
         [self removeConstraints:self.constraints];
         if (padding) {
@@ -718,14 +717,19 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
     return _actionsTargetBuilderDirector;
 }
 
-- (ACRTargetBuilderDirector *)getSelectActionsTargetBuilderDirector;
+- (ACRTargetBuilderDirector *)getSelectActionsTargetBuilderDirector
 {
     return _selectActionsTargetBuilderDirector;
 }
 
-- (ACRTargetBuilderDirector *)getQuickReplyTargetBuilderDirector;
+- (ACRTargetBuilderDirector *)getQuickReplyTargetBuilderDirector
 {
     return _quickReplyTargetBuilderDirector;
+}
+
+- (void)addWarnings:(ACRWarningStatusCode)statusCode mesage:(NSString *)message
+{
+    [((NSMutableArray *)_warnings) addObject:[[ACOWarning alloc] initWith:statusCode message:message]];
 }
 
 @end
