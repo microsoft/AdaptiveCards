@@ -278,15 +278,44 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
         case ImageFillMode::Cover:
         default: {
             imageView.contentMode = UIViewContentModeScaleAspectFill;
+            // Fill Mode Description
+            // ScaleAspectFill increases one dimension proportionally if
+            // corresponding dimension increases
+            // find which dimension is in deficit and act accordingly
+            // when both dimensions are in deficit find the most deficient dimension
+            // and increase
+            // center the modified image view to the target view.
 
-            if (superView.frame.size.width > imageView.frame.size.width) {
+            CGSize targetViewSize = superView.frame.size;
+            CGSize sourceSize = image.size;
+            const NSInteger difficientInWidth = 0x1;
+            const NSInteger difficientInHeight = 0x2;
+            const NSInteger difficientInBothDimensions = difficientInWidth | difficientInHeight;
+
+            NSInteger sourceTargetCurrentState = 0x0;
+            if (sourceSize.width < targetViewSize.width) {
+                sourceTargetCurrentState = difficientInWidth;
+            }
+
+            if (sourceSize.height < targetViewSize.height) {
+                sourceTargetCurrentState |= difficientInHeight;
+            }
+
+            if (sourceTargetCurrentState == difficientInBothDimensions) {
+                CGFloat widthDifficiencyRaito = targetViewSize.width / sourceSize.width;
+                CGFloat heightDifficiencyRaito = targetViewSize.height / sourceSize.height;
+                // we choose one with bigger difficienty in ratio, and by increasing the
+                // dimension, the other dimension will be increaed by the same % since it's
+                // cover mode
+                if (widthDifficiencyRaito >= heightDifficiencyRaito) {
+                    [imageView.widthAnchor constraintEqualToAnchor:superView.widthAnchor].active = YES;
+                } else {
+                    [imageView.heightAnchor constraintEqualToAnchor:superView.heightAnchor].active = YES;
+                }
+            } else if (sourceTargetCurrentState == difficientInWidth) {
                 [imageView.widthAnchor constraintEqualToAnchor:superView.widthAnchor].active = YES;
-            } else if (superView.frame.size.height > imageView.frame.size.height) {
-                [imageView.heightAnchor constraintEqualToAnchor:superView.heightAnchor].active =
-                    YES;
-            } else { // if background image is bigger than the superview; let it retain its
-                     // dimensions
-                imageView.translatesAutoresizingMaskIntoConstraints = YES;
+            } else if (sourceTargetCurrentState == difficientInHeight) {
+                [imageView.heightAnchor constraintEqualToAnchor:superView.heightAnchor].active = YES;
             }
 
             [imageView.centerYAnchor constraintEqualToAnchor:superView.centerYAnchor].active = YES;
