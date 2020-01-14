@@ -92,7 +92,7 @@
                                                                   documentAttributes:nil
                                                                                error:nil];
                     lab.selectable = YES;
-                    lab.dataDetectorTypes = UIDataDetectorTypeLink;
+                    lab.dataDetectorTypes = UIDataDetectorTypeLink | UIDataDetectorTypePhoneNumber;
                     lab.userInteractionEnabled = YES;
                 } else {
                     textRunContent = [[NSMutableAttributedString alloc] initWithString:text
