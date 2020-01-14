@@ -36,7 +36,7 @@ public class TimePickerFragment extends DialogFragment
         try
         {
             // Get current value shown to user in the TextEdit
-            Date value = DateFormat.getTimeInstance(DateFormat.SHORT).parse(m_editText.getText().toString());
+            Date value = TimeInputRenderer.getTimeFormat().parse(m_editText.getText().toString());
             calendar = new GregorianCalendar();
             calendar.setTime(value);
         }
@@ -55,7 +55,7 @@ public class TimePickerFragment extends DialogFragment
     public void onTimeSet(TimePicker view, int hourOfDay, int min)
     {
         Calendar calendar = new GregorianCalendar(0, 0, 0, hourOfDay, min);
-        String value = TimeInputRenderer.formatTime(calendar.getTime());
+        String value = TimeInputRenderer.getTimeFormat().format(calendar.getTime());
         m_editText.setText(value);
     }
 

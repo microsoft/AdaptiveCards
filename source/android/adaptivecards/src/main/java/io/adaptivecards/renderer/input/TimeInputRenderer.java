@@ -77,7 +77,7 @@ public class TimeInputRenderer extends TextInputRenderer
         View separator = setSpacingAndSeparator(context, viewGroup, timeInput.GetSpacing(), timeInput.GetSeparator(), hostConfig, true /* horizontal line */);
 
         TimeInputHandler timeInputHandler = new TimeInputHandler(timeInput, fragmentManager);
-        String time = TimeInputRenderer.formatTime(RendererUtil.getTime(timeInput.GetValue()).getTime());
+        String time = TimeInputRenderer.getTimeFormat().format(RendererUtil.getTime(timeInput.GetValue()).getTime());
 
         TagContent tagContent = new TagContent(timeInput, timeInputHandler, separator, viewGroup);
         EditText editText = renderInternal(
@@ -118,9 +118,9 @@ public class TimeInputRenderer extends TextInputRenderer
         return editText;
     }
 
-    public static String formatTime(Date time)
+    public static DateFormat getTimeFormat()
     {
-        return DateFormat.getTimeInstance(DateFormat.SHORT).format(time);
+        return DateFormat.getTimeInstance(DateFormat.SHORT);
     }
 
     private static TimeInputRenderer s_instance = null;
