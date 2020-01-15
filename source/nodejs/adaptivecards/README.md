@@ -16,14 +16,14 @@ Check out the [full documentation](https://docs.microsoft.com/en-us/adaptive-car
 
 ## FYI: New policy on versioning
 
-In previous releases of this SDK (`1.x`), the package version would match an official [Adaptive Card Schema](https://adaptivecards.io/explorer/) version. With the `2.x` release we've introduced a new compability layer, allowing users to configure which version of the Schema they want to support while still using the latest renderer.
+In previous releases of this SDK (`1.x`), the package version would match an official [Adaptive Card Schema](https://adaptivecards.io/explorer/) version; the library would be able to parse and render cards expressed in the latest Adaptive Card schema version and all previous versions, but it would only ever serialize to the latest version of the Adaptive Card schema. With the `2.x` release we've introduced a new compability layer, allowing developers to (de)serialize cards to and from any version of the Adaptive Card schema using a single library. The below table summarizes this new versioning capability:
 
-| SDK Version | Supported Adaptive Card Schema Versions |
-| --- | --- |
-| `2.x` | `1.0`, `1.1`, `1.2`
-| `1.2` | `1.2`
-| `1.1` | `1.1`
-| `1.0` | `1.0`
+| SDK Version | Can parse from schema versions | Can serialize to schema versions |
+| --- | --- | --- |
+| `2.x` | `1.0`, `1.1`, `1.2` | `1.0`, `1.1`, `1.2` |
+| `1.2` | `1.0`, `1.1`, `1.2` | `1.2` |
+| `1.1` | `1.0`, `1.1` | `1.1` | 
+| `1.0` | `1.0` | `1.0` |
 
 
 ## Breaking changes
