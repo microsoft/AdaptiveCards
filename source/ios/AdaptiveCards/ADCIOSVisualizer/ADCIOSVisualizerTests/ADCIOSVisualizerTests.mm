@@ -265,9 +265,9 @@
 {
     NSArray<NSString *> *payloadNames = @[ @"TextBlock.Color" ];
     NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
-    
+
     ACRRegistration *registration = [ACRRegistration getInstance];
-    
+
     // reset text block renderer registration
     [registration setBaseCardElementRenderer:nil
                              cardElementType:[ACRTextBlockRenderer elemType]];
@@ -276,8 +276,8 @@
                              cardElementType:[ACRTextBlockRenderer elemType]];
 
     @try {
-    ACRRenderResult *result = [ACRRenderer render:cards[0] config:nil widthConstraint:320.0];
-    XCTAssertTrue(result.succeeded);
+        ACRRenderResult *result = [ACRRenderer render:cards[0] config:nil widthConstraint:320.0];
+        XCTAssertTrue(result.succeeded);
     }
     @catch (NSException *exception) {
         XCTFail(@"intermediate string results should be always available in the text map");
