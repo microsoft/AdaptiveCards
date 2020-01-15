@@ -187,6 +187,8 @@ namespace AdaptiveCards.Rendering.Xamarin.iOS.Sample
 
             if (renderedCard != null)
             {
+                LastRenderedCard = renderedCard;
+
                 ScrollView.AddSubview(renderedCard);
 
                 renderedCard.TranslatesAutoresizingMaskIntoConstraints = false;
@@ -219,8 +221,6 @@ namespace AdaptiveCards.Rendering.Xamarin.iOS.Sample
                     renderedCard.LeadingAnchor.ConstraintEqualTo(ScrollView.LeadingAnchor),
                     renderedCard.TrailingAnchor.ConstraintEqualTo(ScrollView.TrailingAnchor)
                 });
-
-                LastRenderedCard = renderedCard;
             }
         }
 
@@ -293,6 +293,14 @@ namespace AdaptiveCards.Rendering.Xamarin.iOS.Sample
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+
+            if (LastRenderedCard != null && ScrollView != null)
+            { 
+                nfloat verticalContentInset = ScrollView.Frame.Size.Height - LastRenderedCard.Frame.Size.Height;
+                verticalContentInset = (verticalContentInset <= 0) ? 20 : verticalContentInset;
+                UIEdgeInsets contentInsets = new UIEdgeInsets((nfloat)0.0, (nfloat)0.0, verticalContentInset, (nfloat)0.0);
+                ScrollView.ContentInset = contentInsets;
+            }
         }
 
         public override void DidReceiveMemoryWarning()
