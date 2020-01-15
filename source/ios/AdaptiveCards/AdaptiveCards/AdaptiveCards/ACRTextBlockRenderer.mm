@@ -56,7 +56,7 @@
         NSDictionary *descriptor = nil;
         NSString *text = nil;
 
-        if ([[ACRRegistration getInstance] isElementRendererOverridden:ACRCardElementType::ACRTextBlock] == YES) {
+        if (![textMap objectForKey:key]) {
             RichTextElementProperties textProp;
             TextBlockToRichTextElementProperties(txtBlck, textProp);
             buildIntermediateResultForText(rootView, acoConfig, textProp, key);
