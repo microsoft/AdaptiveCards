@@ -117,7 +117,7 @@ The primary purpose of client side input validation is to validate a users input
     ]
 }
 ```
-![img](assets/InputValidation/SimpleForm.png)
+![img](assets/InputValidation/SimpleForm.PNG)
 
 The story becomes more complicated, however, with more complicated cards. Should we validate cards hidden behind collapsed show cards or toggles? Should we validate on action types other than submit? If a hidden element is blocking submit of a form, the user will not be able to see the errors or requirements that are causing their form not to submit. This is not a great user experience. Consider the following options for addressing it:
  
@@ -145,7 +145,7 @@ If there was a validation error on the first "page", bringing the hidden element
 
 Bring back non-visible card element            |  Bring back single input
 :-------------------------:|:-------------------------:
-![img](assets/InputValidation/BrokenToggleWizard.png)  |  ![img](assets/InputValidation/BrokenToggleWizard2.png)
+![img](assets/InputValidation/BrokenToggleWizard.PNG)  |  ![img](assets/InputValidation/BrokenToggleWizard2.PNG)
 
 Additionally, per the below discussion, if we disable the submit button when validation fails, we won't event have an appropriate time at which to change the visibility.
 
