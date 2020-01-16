@@ -97,7 +97,7 @@ export class Column extends React.Component {
 	flex = (containerViewStyle) => {
 		var flex = 0
 		var columns = this.props.columns
-		var widthArray = columns.length > 0 ? columns.map((column) => column.width) : [];
+		const widthArray = columns.map((column) => column.width);
 		var sizeValues = []
 		widthArray.map((value) => {
 			if (Utils.isaNumber(value)) {
