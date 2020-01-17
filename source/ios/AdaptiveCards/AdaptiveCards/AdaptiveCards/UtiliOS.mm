@@ -288,33 +288,33 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
 
             CGSize targetViewSize = superView.frame.size;
             CGSize sourceSize = image.size;
-            const NSInteger difficientInWidth = 0x1;
-            const NSInteger difficientInHeight = 0x2;
-            const NSInteger difficientInBothDimensions = difficientInWidth | difficientInHeight;
+            const BOOL isDeficientInWidth = NO;
+            const BOOL isDeficientInHeight = NO;
+            const NSInteger difficientInBothDimensions = isDeficientInWidth | isDeficientInHeight;
 
             NSInteger sourceTargetCurrentState = 0x0;
             if (sourceSize.width < targetViewSize.width) {
-                sourceTargetCurrentState = difficientInWidth;
+                isDeficientInWidth = YES;
             }
 
             if (sourceSize.height < targetViewSize.height) {
-                sourceTargetCurrentState |= difficientInHeight;
+                isDeficientInHeight = YES;
             }
 
-            if (sourceTargetCurrentState == difficientInBothDimensions) {
-                CGFloat widthDifficiencyRaito = targetViewSize.width / sourceSize.width;
+            if (isDeficientInWidth and isDeficientInWidth) {
+                CGFloat widthDeficiencyRaito = targetViewSize.width / sourceSize.width;
                 CGFloat heightDifficiencyRaito = targetViewSize.height / sourceSize.height;
                 // we choose one with bigger difficienty in ratio, and by increasing the
                 // dimension, the other dimension will be increaed by the same % since it's
                 // cover mode
-                if (widthDifficiencyRaito >= heightDifficiencyRaito) {
+                if (widthDeficiencyRaito >= heightDifficiencyRaito) {
                     [imageView.widthAnchor constraintEqualToAnchor:superView.widthAnchor].active = YES;
                 } else {
                     [imageView.heightAnchor constraintEqualToAnchor:superView.heightAnchor].active = YES;
                 }
-            } else if (sourceTargetCurrentState == difficientInWidth) {
+            } else if (isDeficientInWidth) {
                 [imageView.widthAnchor constraintEqualToAnchor:superView.widthAnchor].active = YES;
-            } else if (sourceTargetCurrentState == difficientInHeight) {
+            } else if (isDeficientInHeight) {
                 [imageView.heightAnchor constraintEqualToAnchor:superView.heightAnchor].active = YES;
             }
 
