@@ -4,6 +4,17 @@ import * as Enums from "./enums";
 import * as Shared from "./shared";
 import { HostConfig } from "./host-config";
 
+export function isSafariOniOS(): boolean {
+    let userAgent = window.navigator.userAgent;
+
+    let isiOS = !!userAgent.match(/iPad/i) || !!userAgent.match(/iPhone/i);
+    let isWebKit = !!userAgent.match(/WebKit/i);
+    // Browsaer is Safari if it's neither Chrome nor Opera nor Edge
+    let isSafari = isWebKit && !userAgent.match(/CriOS/i) && !userAgent.match(/OPiOS/i) && !userAgent.match(/EdgiOS/i);
+
+    return isiOS && isSafari;
+}
+
 export function generateUniqueId(): string {
     return "__ac-" + Shared.UUID.generate();
 }

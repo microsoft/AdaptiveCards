@@ -2578,8 +2578,6 @@ export class Media extends CardElement {
 
                     this.renderedElement.innerHTML = "";
                     this.renderedElement.appendChild(mediaPlayerElement);
-
-                    mediaPlayerElement.play();
                 }
                 else {
                     if (Media.onPlay) {
@@ -2642,7 +2640,15 @@ export class Media extends CardElement {
             mediaElement = document.createElement("audio");
         }
 
+        mediaElement.setAttribute("webkit-playsinline", "");
+        mediaElement.setAttribute("playsinline", "");
+        mediaElement.autoplay = true;
         mediaElement.controls = true;
+
+        if (Utils.isSafariOniOS()) {
+            mediaElement.muted = true;
+        }
+
         mediaElement.preload = "none";
         mediaElement.style.width = "100%";
 
@@ -2697,19 +2703,6 @@ export class Media extends CardElement {
 
         Utils.setProperty(result, "poster", this.poster);
         Utils.setProperty(result, "altText", this.altText);
-
-        /*
-        if (this.sources.length > 0) {
-            let serializedSources = [];
-
-            for (let source of this.sources) {
-                serializedSources.push(source.toJSON());
-            }
-
-            Utils.setProperty(result, "sources", serializedSources);
-        }
-        */
-
         Utils.setArrayProperty(result, "sources", this.sources);
 
         return result;
