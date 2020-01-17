@@ -14,13 +14,25 @@ The simple open card format enables an ecosystem of shared tooling, seamless int
 
 Check out the [full documentation](https://docs.microsoft.com/en-us/adaptive-cards/display/libraries/htmlclient) for more
 
+## FYI: New policy on versioning
+
+In previous releases of this SDK (`1.x`), the package version would match an official [Adaptive Card Schema](https://adaptivecards.io/explorer/) version; the library would be able to parse and render cards expressed in the latest Adaptive Card schema version and all previous versions, but it would only ever serialize to the latest version of the Adaptive Card schema. With the `2.x` release we've introduced a new compability layer, allowing developers to (de)serialize cards to and from any version of the Adaptive Card schema using a single library. The below table summarizes this new versioning capability:
+
+| SDK Version | Can parse from schema versions | Can serialize to schema versions |
+| --- | --- | --- |
+| `2.x` | `1.0`, `1.1`, `1.2` | `1.0`, `1.1`, `1.2` |
+| `1.2` | `1.0`, `1.1`, `1.2` | `1.2` |
+| `1.1` | `1.0`, `1.1` | `1.1` | 
+| `1.0` | `1.0` | `1.0` |
+
+
 ## Breaking changes
 
 Please be aware of the following **breaking changes** in particular versions.
 
 | In version | Change description |
 |---|---|
-| **vNext** | `ColumnSet.getCount()` has been **REMOVED**. Use `ColumnSet.getItemCount()` instead. |
+| **2.0** | `ColumnSet.getCount()` has been **REMOVED**. Use `ColumnSet.getItemCount()` instead. |
 || The `isNullOrEmpty(value: string): boolean` function has been **REMOVED**. Use `if (!stringValue)` instead. |
 || The library is now compiled with the `noImplicitAny` flag. As a result, anything that can be undefined/not set now has the `undefined` value. All uses of `null` have been removed. |
 || The following global setting statics have been moved from the AdaptiveCard class to the new GlobalSettings class: `useAdvancedTextBlockTruncation`, `useAdvancedCardBottomTruncation`, `useMarkdownInRadioButtonAndCheckbox`, `allowMarkForTextHighlighting`, `alwaysBleedSeparators`, `enableFullJsonRoundTrip`, `useBuiltInInputValidation`, `displayInputValidationErrors` |
@@ -190,8 +202,8 @@ module.exports = {
 };
 ```
 
-## Learn more at http://adaptivecards.io
-* [Documentation](http://adaptivecards.io/documentation/)
-* [Schema Explorer](http://adaptivecards.io/explorer/)
-* [Sample Cards](http://adaptivecards.io/samples/)
-* [Interactive Designer](http://adaptivecards.io/designer/)
+## Learn more at https://adaptivecards.io
+* [Documentation](https://adaptivecards.io/documentation/)
+* [Schema Explorer](https://adaptivecards.io/explorer/)
+* [Sample Cards](https://adaptivecards.io/samples/)
+* [Interactive Designer](https://adaptivecards.io/designer/)

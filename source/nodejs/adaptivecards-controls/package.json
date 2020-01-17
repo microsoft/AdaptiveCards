@@ -1,6 +1,6 @@
 {
 	"name": "adaptivecards-controls",
-	"version": "0.3.3",
+	"version": "0.3.5",
 	"description": "A library of pure JS/HTML controls designed for use with Adaptive Cards.",
 	"author": "Microsoft",
 	"license": "MIT",

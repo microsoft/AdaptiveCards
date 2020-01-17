@@ -17,7 +17,7 @@
 		"release": "npm run clean && npm run build && webpack --mode=production"
 	},
 	"devDependencies": {
-		"adaptivecards": "^1.3.0-alpha.4",
+		"adaptivecards": "^2.0.0-alpha.1",
 		"markdown-it": "^8.4.0",
 		"monaco-editor": "^0.15.6",
 		"rimraf": "^2.6.2",
