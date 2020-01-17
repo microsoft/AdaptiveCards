@@ -2645,7 +2645,7 @@ export class Media extends CardElement {
         mediaElement.autoplay = true;
         mediaElement.controls = true;
 
-        if (Utils.isSafariOniOS()) {
+        if (Utils.isMobileOS()) {
             mediaElement.muted = true;
         }
 
