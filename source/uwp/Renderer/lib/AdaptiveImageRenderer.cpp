@@ -704,24 +704,26 @@ namespace AdaptiveNamespace
                 WeakRef weakParent;
                 THROW_IF_FAILED(localParentElement.AsWeak(&weakParent));
 
-                WeakRef weakEllipse;
-                THROW_IF_FAILED(ellipseAsUIElement.AsWeak(&weakEllipse));
                 THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(
-                    Callback<IRoutedEventHandler>([weakEllipse, imageSourceAsBitmap, weakParent, isVisible](
-                                                      IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
+                    Callback<IRoutedEventHandler>([ellipseAsFrameworkElement, weakParent, isVisible](IInspectable* sender, IRoutedEventArgs *
+                                                                                                     /*args*/) -> HRESULT {
                         if (isVisible)
                         {
-                            ComPtr<IFrameworkElement> lambdaEllipseAsFrameworkElement;
-                            RETURN_IF_FAILED(weakEllipse.As(&lambdaEllipseAsFrameworkElement));
+                            ComPtr<IImageBrush> lambdaBrushAsImageBrush;
+                            RETURN_IF_FAILED(sender->QueryInterface(IID_PPV_ARGS(&lambdaBrushAsImageBrush)));
+
+                            ComPtr<IImageSource> lambdaImageSource;
+                            RETURN_IF_FAILED(lambdaBrushAsImageBrush->get_ImageSource(&lambdaImageSource));
+                            ComPtr<IBitmapSource> lambdaImageSourceAsBitmap;
+                            RETURN_IF_FAILED(lambdaImageSource.As(&lambdaImageSourceAsBitmap));
 
                             ComPtr<IInspectable> lambdaParentElement;
                             RETURN_IF_FAILED(weakParent.As(&lambdaParentElement));
-
-                            if (lambdaEllipseAsFrameworkElement && lambdaParentElement)
+                            if (ellipseAsFrameworkElement.Get() && lambdaParentElement.Get())
                             {
-                                RETURN_IF_FAILED(XamlHelpers::SetAutoImageSize(lambdaEllipseAsFrameworkElement.Get(),
+                                RETURN_IF_FAILED(XamlHelpers::SetAutoImageSize(ellipseAsFrameworkElement.Get(),
                                                                                lambdaParentElement.Get(),
-                                                                               imageSourceAsBitmap.Get(),
+                                                                               lambdaImageSourceAsBitmap.Get(),
                                                                                isVisible));
                             }
                         }
