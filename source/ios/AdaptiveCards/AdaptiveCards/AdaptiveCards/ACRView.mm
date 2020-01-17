@@ -91,6 +91,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
     if (self) {
         self.accessibilityLabel = @"ACR Root View";
         _adaptiveCard = card;
+        _warnings = [[NSMutableArray<ACOWarning *> alloc] init];
         if (config) {
             _hostConfig = config;
             _actionsTargetBuilderDirector = [[ACRTargetBuilderDirector alloc] init:self capability:ACRAction adaptiveHostConfig:_hostConfig];
@@ -716,14 +717,19 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
     return _actionsTargetBuilderDirector;
 }
 
-- (ACRTargetBuilderDirector *)getSelectActionsTargetBuilderDirector;
+- (ACRTargetBuilderDirector *)getSelectActionsTargetBuilderDirector
 {
     return _selectActionsTargetBuilderDirector;
 }
 
-- (ACRTargetBuilderDirector *)getQuickReplyTargetBuilderDirector;
+- (ACRTargetBuilderDirector *)getQuickReplyTargetBuilderDirector
 {
     return _quickReplyTargetBuilderDirector;
+}
+
+- (void)addWarnings:(ACRWarningStatusCode)statusCode mesage:(NSString *)message
+{
+    [((NSMutableArray *)_warnings) addObject:[[ACOWarning alloc] initWith:statusCode message:message]];
 }
 
 @end

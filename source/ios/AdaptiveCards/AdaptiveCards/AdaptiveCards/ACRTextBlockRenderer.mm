@@ -74,7 +74,7 @@
             // Drop newline char
             [content deleteCharactersInRange:NSMakeRange([content length] - 1, 1)];
             lab.selectable = YES;
-            lab.dataDetectorTypes = UIDataDetectorTypeLink;
+            lab.dataDetectorTypes = UIDataDetectorTypeLink | UIDataDetectorTypePhoneNumber;
             lab.userInteractionEnabled = YES;
         } else {
             // if html rendering is skipped, remove p tags from both ends (<p>, </p>)
