@@ -288,11 +288,9 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
 
             CGSize targetViewSize = superView.frame.size;
             CGSize sourceSize = image.size;
-            const BOOL isDeficientInWidth = NO;
-            const BOOL isDeficientInHeight = NO;
-            const NSInteger difficientInBothDimensions = isDeficientInWidth | isDeficientInHeight;
+            BOOL isDeficientInWidth = NO;
+            BOOL isDeficientInHeight = NO;
 
-            NSInteger sourceTargetCurrentState = 0x0;
             if (sourceSize.width < targetViewSize.width) {
                 isDeficientInWidth = YES;
             }
