@@ -541,16 +541,35 @@ export class CardDesigner extends Designer.DesignContext {
         }
     }
 
-    private scheduleLayoutUpdate() {
-        clearTimeout(this._updateLayoutTimer);
+    private _isEdgeHTML?: boolean = undefined;
 
-        this._updateLayoutTimer = setTimeout(
-            () => {
-                if (this.designerSurface) {
-                    this.designerSurface.updateLayout(false);
-                }
-            },
-            50);
+    private isEdgeHTML(): boolean {
+        if (this._isEdgeHTML === undefined) {
+            this._isEdgeHTML = window.navigator.userAgent.toLowerCase().indexOf("edge") > -1;
+        }
+
+        return this._isEdgeHTML;
+    }
+
+    private scheduleLayoutUpdate() {
+        if (this.designerSurface) {
+            if (!this.isEdgeHTML()) {
+                this.designerSurface.updateLayout(false);
+            }
+            else {
+                // In "old" Edge, updateLayout() is *super* slow (because it uses getBoundingClientRect
+                // heavily which is itself super slow) and we have to call it only on idle
+                clearTimeout(this._updateLayoutTimer);
+
+                this._updateLayoutTimer = setTimeout(
+                    () => {
+                        if (this.designerSurface) {
+                            this.designerSurface.updateLayout(false);
+                        }
+                    },
+                    5);
+            }
+        }
     }
 
     private _targetVersion: Adaptive.Version = Adaptive.Versions.latest;
