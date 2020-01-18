@@ -104,6 +104,8 @@
 
         lab.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
         lab.attributedText = content;
+        lab.isAccessibilityElement = YES;
+        lab.accessibilityLabel = text;
     }
 
     lab.area = lab.frame.size.width * lab.frame.size.height;

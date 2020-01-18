@@ -124,7 +124,6 @@
 
     [factSetWrapperView adjustHuggingForLastElement];
 
-    BOOL isOverridden = [[ACRRegistration getInstance] isElementRendererOverridden:ACRCardElementType::ACRFactSet];
     NSMutableDictionary *textMap = [rootView getTextMap];
 
     for (auto fact : fctSet->GetFacts()) {
@@ -147,6 +146,9 @@
         [titleLab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         [titleLab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
         [titleLab setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+        
+        titleLab.isAccessibilityElement = YES;
+        titleLab.accessibilityLabel = title;
 
         if (factSetConfig.title.maxWidth) {
             NSLayoutConstraint *constraintForTitleLab = [NSLayoutConstraint constraintWithItem:titleLab attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:factSetConfig.title.maxWidth];
@@ -171,6 +173,9 @@
                                                       element:elem];
 
         [valueLab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+        valueLab.isAccessibilityElement = YES;
+        valueLab.accessibilityLabel = title;
+        
         [titleStack addArrangedSubview:titleLab];
         [valueStack addArrangedSubview:valueLab];
         [NSLayoutConstraint constraintWithItem:valueLab attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:titleLab attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0].active = YES;
