@@ -44,7 +44,7 @@ export default class ElementWrapper extends React.Component {
 		const isColumnSet = this.props.json.type === Constants.TypeColumnSet;
 		return (
 			<React.Fragment>
-				{!isColumnSet && !isFirst && this.getSpacingElement()}
+				{!isColumnSet ? !isFirst && this.getSpacingElement() : this.props.json.separator && !isFirst && this.getSeparatorElement()}
 				<View style={computedStyles} onLayout={this.props.onPageLayout}>
 					{this.props.children}
 					{showValidationText && this.getValidationText()}
@@ -117,6 +117,14 @@ export default class ElementWrapper extends React.Component {
 		}
 
 		return <View style={separatorStyles}></View>
+	}
+
+	/**
+     * @description Return the element for separator
+     * @returns {object} View element with `separator` prop
+     */
+	getSeparatorElement = () => {
+		return <View style={[this.styleConfig.separatorStyle, { height: 3 }]}></View>
 	}
 }
 

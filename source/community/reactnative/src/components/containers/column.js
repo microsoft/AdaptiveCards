@@ -88,6 +88,7 @@ export class Column extends React.Component {
 			return null;
 		}
 	}
+
 	/**
      * @description This function calculates flex value
 	 * 				based on the column width property from the payload. 
@@ -163,7 +164,7 @@ export class Column extends React.Component {
 			separatorStyles = [containerViewStyle, styles.separatorStyle];
 		}
 
-		return <ContainerWrapper json={this.column} isFirst={isFirst} isLast={isLast} style={[containerViewStyle]} containerStyle={this.props.containerStyle}>
+		return <ContainerWrapper json={this.column} hasBackgroundImage={this.props.hasBackgroundImage} isFirst={isFirst} isLast={isLast} style={[containerViewStyle]} containerStyle={this.props.containerStyle}>
 			<ActionComponent {...actionComponentProps}>
 				{separator && this.renderSeparator()}
 				<View style={separatorStyles}>

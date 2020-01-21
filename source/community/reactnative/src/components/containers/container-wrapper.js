@@ -82,8 +82,10 @@ export class ContainerWrapper extends React.PureComponent {
 
         // container BG style
         let backgroundStyle;
-        let styleDefinition = hostConfig.containerStyles.getStyleByName(this.payload["style"], hostConfig.containerStyles.getStyleByName("default"));
-        if (!Utils.isNullOrEmpty(styleDefinition.backgroundColor)) {
+        const styleDefinition = hostConfig.containerStyles.getStyleByName(this.payload["style"], hostConfig.containerStyles.getStyleByName("default"));
+        //we won't apply the background color for the container which has backgroundImage. Even we won't apply color if its parent container having backgroundImage
+        const hasBackgroundImage = !Utils.isNullOrEmpty(this.payload.backgroundImage) || (this.payload.parent && !Utils.isNullOrEmpty(this.payload.parent.backgroundImage)) || (!Utils.isNullOrEmpty(this.props.hasBackgroundImage))
+        if (!hasBackgroundImage && !Utils.isNullOrEmpty(styleDefinition.backgroundColor)) {
             backgroundStyle = { backgroundColor: Utils.hexToRGB(styleDefinition.backgroundColor) };
         }
         computedStyles.push(backgroundStyle);
@@ -93,19 +95,17 @@ export class ContainerWrapper extends React.PureComponent {
         const borderColor = styleDefinition.borderColor;
         computedStyles.push({ borderWidth: borderThickness, borderColor: Utils.hexToRGB(borderColor) });
 
-        // padding & bleed
-        if (this.canApplyPadding()) {
-            const padding = hostConfig.getEffectiveSpacing(Enums.Spacing.Padding);
-            computedStyles.push({ padding: padding });
+        // padding
+        const padding = hostConfig.getEffectiveSpacing(Enums.Spacing.Padding);
+        computedStyles.push({ padding: padding });
 
-            // bleed
-            if (this.payload.bleed && this.props.containerStyle) {
-                const { isFirst, isLast } = this.props;
-                const marginLeft = isFirst ? -padding : 0;
-                const marginRight = isLast ? -padding : 0;
+        // bleed
+        if (this.payload.bleed && this.props.containerStyle) {
+            const { isFirst, isLast } = this.props;
+            const marginLeft = isFirst ? -padding : 0;
+            const marginRight = isLast ? -padding : 0;
 
-                computedStyles.push({ marginVertical: -padding, marginLeft, marginRight });
-            }
+            computedStyles.push({ marginVertical: -padding, marginLeft, marginRight });
         }
 
         // height 
@@ -121,19 +121,6 @@ export class ContainerWrapper extends React.PureComponent {
         }
 
         return computedStyles;
-    }
-
-    /**
-     * @description Determing whether padding can be applied to container 
-     * @returns {boolean}
-     */
-    canApplyPadding = () => {
-        //Removing the default padding applied to Adaptive card root element
-        /* if (this.payload.type === 'AdaptiveCard') {
-            return true;
-        } */
-        const parentContainerStyle = this.props.containerStyle;
-        return this.payload.style && parentContainerStyle != this.payload.style;
     }
 }
 

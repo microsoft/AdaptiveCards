@@ -38,6 +38,7 @@ export class ColumnSet extends React.PureComponent {
 			children.push(
 				<Column json={element}
 					columns={payload.columns}
+					hasBackgroundImage={payload.parent.backgroundImage}
 					key={`ELEMENT-${index}`}
 					isFirst={index === 0}
 					isLast={index === payload.columns.length - 1}
