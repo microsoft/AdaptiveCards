@@ -93,7 +93,7 @@ export default class Renderer extends React.Component {
                 {isJSONVisible ?
                     <ScrollView contentContainerStyle={styles.jsonContainer}>
                         <Text style={{ fontFamily: 'Courier New' }}>
-                            {JSON.stringify(this.payload, null, '  ')}
+                            {JSON.stringify(this.props.payload, null, '  ')}
                         </Text>
                     </ScrollView>
                     :
@@ -103,7 +103,7 @@ export default class Renderer extends React.Component {
                         hostConfig={this.customHostConfig}
                         themeConfig={this.customThemeConfig}
                         onParseError={this.onParseError}
-                        // contentSize={500} //we can also set the size of the adaptive card
+                        // contentHeight={500} //we can also set the height of the adaptive card
                         ref="adaptiveCardRef" />
                 }
             </View>

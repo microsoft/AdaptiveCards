@@ -30,20 +30,18 @@ export default class ElementWrapper extends React.Component {
 	static contextType = InputContext;
 
 	static propTypes = {
-		isColumnSet: PropTypes.bool,
 		isFirst: PropTypes.bool
 	};
 
 	static defaultProps = {
-		isColumnSet: false,
 		isFirst: false
 	};
 
 	render() {
 		const computedStyles = this.getComputedStyles();
 		const showValidationText = this.props.isError && this.context.showErrors;
-		const { isColumnSet, isFirst } = this.props; //isFirst represent, it is first element
-
+		const { isFirst } = this.props; //isFirst represent, it is first element
+		const isColumnSet = this.props.json.type === Constants.TypeColumnSet;
 		return (
 			<React.Fragment>
 				{!isColumnSet && !isFirst && this.getSpacingElement()}

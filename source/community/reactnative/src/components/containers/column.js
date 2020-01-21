@@ -142,7 +142,11 @@ export class Column extends React.Component {
 		}
 		spacingStyle.push({ flexGrow: 1 });
 
-		containerViewStyle.push({ flex: this.flex(containerViewStyle) })
+		if (Utils.isPixelValue(this.column.width) && Utils.isaNumber(this.column.width)) {
+			containerViewStyle.push({ width: parseInt(this.column.width) })
+		} else {
+			containerViewStyle.push({ flex: this.flex(containerViewStyle) })
+		}
 
 		let ActionComponent = React.Fragment;
 		let actionComponentProps = {};

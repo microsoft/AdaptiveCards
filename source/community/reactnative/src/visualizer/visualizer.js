@@ -160,7 +160,7 @@ export default class Visualizer extends React.Component {
 
     /**
      * @description Invoked on payload type segmented control status change
-     * @param {number} index - index of the selected item
+     * @param {string} indexValue - value of the selected index in segmented control
      */
     segmentedControlStatusDidChange = (indexValue) => {
         this.setState({

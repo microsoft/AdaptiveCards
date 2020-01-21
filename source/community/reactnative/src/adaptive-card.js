@@ -165,8 +165,8 @@ export default class AdaptiveCard extends React.Component {
 
 	getAdaptiveCardContent() {
 		let containerStyles = [styles.container]
-		//If contentSize is passed by the user from adaptive card via props, we will set this as height
-		this.props.contentSize && containerStyles.push({ height: this.props.contentSize })
+		//If contentHeight is passed by the user from adaptive card via props, we will set this as height
+		this.props.contentHeight && containerStyles.push({ height: this.props.contentHeight })
 		var adaptiveCardContent =
 			(
 				<ContainerWrapper style={containerStyles} json={this.state.cardModel}>
@@ -278,7 +278,8 @@ AdaptiveCard.propTypes = {
 	hostConfig: PropTypes.object,
 	themeConfig: PropTypes.object,
 	onExecuteAction: PropTypes.func,
-	onParseError: PropTypes.func
+	onParseError: PropTypes.func,
+	contentHeight: PropTypes.number
 };
 
 const styles = StyleSheet.create({
