@@ -695,12 +695,12 @@ namespace AdaptiveNamespace
             {
                 // Collapse the Ellipse while the image loads, so that resizing is not noticeable
                 THROW_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
+
                 // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
                 EventRegistrationToken eventToken;
                 ComPtr<IInspectable> localParentElement(parentElement);
 
-                // Take weak references to the ellipse and parent to avoid circular references between this lambda and
-                // its parents (Parent->Ellipse->ImageBrush->Lambda->(Parent and Ellipse))
+                // Take a weak reference to the parent to avoid circular references (Parent->Ellipse->ImageBrush->Lambda->(Parent))
                 WeakRef weakParent;
                 THROW_IF_FAILED(localParentElement.AsWeak(&weakParent));
 
