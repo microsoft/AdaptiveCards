@@ -15,6 +15,7 @@ type TokenType =
     "-" |
     "*" |
     "/" |
+    "%" |
     "==" |
     "!=" |
     "<" |
@@ -27,6 +28,7 @@ type TokenType =
 
 const orderedOperators: Array<TokenType> = [
     "/",
+    "%",
     "*",
     "-",
     "+",
@@ -77,6 +79,7 @@ class Tokenizer {
             { tokenType: "-", regEx: /^-/ },
             { tokenType: "*", regEx: /^\*/ },
             { tokenType: "/", regEx: /^\// },
+            { tokenType: "%", regEx: /^\%/ },
             { tokenType: "==", regEx: /^==/ },
             { tokenType: "!=", regEx: /^!=/ },
             { tokenType: "<=", regEx: /^<=/ },
@@ -223,6 +226,15 @@ export class EvaluationContext {
 
             return date.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
         };
+        EvaluationContext._builtInFunctions["round"] = (input) => {
+            return typeof input === "number" ? Math.round(input) : input;
+        };
+        EvaluationContext._builtInFunctions["ceil"] = (input) => {
+            return typeof input === "number" ? Math.ceil(input) : input;
+        };
+        EvaluationContext._builtInFunctions["floor"] = (input) => {
+            return typeof input === "number" ? Math.floor(input) : input;
+        };
     }
 
     private _functions = {};
@@ -286,12 +298,12 @@ class ExpressionNode extends EvaluationNode {
 
     evaluate(context: EvaluationContext): any {
         const operatorPriorityGroups = [
-            ["/", "*"],
+            ["/", "%", "*"],
             ["-", "+"],
             ["==", "!=", "<", "<=", ">", ">="]
         ];
 
-        let nodesCopy = this.nodes;
+        let nodesCopy = this.nodes.slice();
 
         for (let priorityGroup of operatorPriorityGroups) {
             let i = 0;
@@ -313,6 +325,9 @@ class ExpressionNode extends EvaluationNode {
                         switch (node.operator) {
                             case "/":
                                 result = left / right;
+                                break;
+                            case "%":
+                                result = left % right;
                                 break;
                             case "*":
                                 result = left * right;
@@ -444,21 +459,21 @@ class PathNode extends EvaluationNode {
                     switch (part.identifier) {
                         case "$root":
                             result = context.$root;
-            
+
                             break;
                         case "$data":
                             result = context.currentDataContext;
-            
+
                             break;
                         case "$index":
                             result = context.$index;
-            
+
                             break;
                         default:
                             result = context.currentDataContext[part.identifier];
-            
+
                             break;
-                    }            
+                    }
                 }
                 else {
                     let partValue = part.evaluate(context);
@@ -592,9 +607,9 @@ export class ExpressionParser {
                 case "(":
                     if (result.parts.length == 0) {
                         this.moveNext();
-    
+
                         result.parts.push(this.parseExpression());
-    
+
                         this.parseToken(")");
                     }
                     else {
@@ -717,6 +732,7 @@ export class ExpressionParser {
                     break;
                 case "*":
                 case "/":
+                case "%":
                 case "==":
                 case "!=":
                 case "<":

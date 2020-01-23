@@ -410,36 +410,32 @@ export class ValueSetProperty extends PropertyDefinition {
     }
 
     toJSON(sender: SerializableObject, target: PropertyBag, value: string | undefined, context: BaseSerializationContext) {
-        if (value !== undefined) {
-            let valueFound = false;
+        let valueFound = false;
 
-            for (let versionedValue of this.values) {
-                if (versionedValue.value === value) {
-                    let targetVersion = versionedValue.targetVersion ? versionedValue.targetVersion : this.targetVersion;
+        for (let versionedValue of this.values) {
+            if (versionedValue.value === value) {
+                let targetVersion = versionedValue.targetVersion ? versionedValue.targetVersion : this.targetVersion;
 
-                    if (targetVersion.compareTo(context.targetVersion) <= 0) {
-                        valueFound = true;
+                if (targetVersion.compareTo(context.targetVersion) <= 0) {
+                    valueFound = true;
 
-                        break;
-                    }
-                    else {
-                        context.logEvent(
-                            Enums.ValidationPhase.ToJSON,
-                            Enums.ValidationEvent.InvalidPropertyValue,
-                            `"${this.name}" value "${value}" is supported in version ${targetVersion.toString()}, but you are using version ${context.targetVersion.toString()}`,
-                            sender);
-                    }
+                    break;
+                }
+                else {
+                    context.logEvent(
+                        Enums.ValidationPhase.ToJSON,
+                        Enums.ValidationEvent.InvalidPropertyValue,
+                        `"${this.name}" value "${value}" is supported in version ${targetVersion.toString()}, but you are using version ${context.targetVersion.toString()}`,
+                        sender);
                 }
             }
-
-            if (valueFound) {
-                context.serializeValue(
-                    target,
-                    this.name,
-                    value,
-                    this.defaultValue);
-            }
         }
+
+        context.serializeValue(
+            target,
+            this.name,
+            valueFound ? value : undefined,
+            this.defaultValue);
     }
 
     constructor(

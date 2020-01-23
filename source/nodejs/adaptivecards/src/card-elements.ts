@@ -193,7 +193,7 @@ export abstract class CardElement extends CardObject {
             sizeChanged = true;
         }
 
-        if (this.isHiddenDueToOverflow) {
+        if (this.isHiddenDueToOverflow()) {
             this.showElementHiddenDueToOverflow();
         }
 
@@ -4768,22 +4768,6 @@ export class BackgroundImage extends SerializableObject {
         }
         else {
             return super.internalParse(source, context);
-        }
-    }
-
-    protected internalToJSON(target: PropertyBag, context: SerializationContext) {
-        if (!this.isValid()) {
-            return undefined;
-        }
-
-        if (this.hasDefaultValue(BackgroundImage.fillModeProperty) &&
-            this.hasDefaultValue(BackgroundImage.horizontalAlignmentProperty) &&
-            this.hasDefaultValue(BackgroundImage.verticalAlignmentProperty)) {
-
-            return this.url;
-        }
-        else {
-            return super.internalToJSON(target, context);
         }
     }
 
