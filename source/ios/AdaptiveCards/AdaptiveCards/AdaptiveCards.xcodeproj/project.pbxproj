@@ -78,7 +78,6 @@
 		6B9AB30220D32A89005C8E15 /* ACRButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B9AB30120D32A89005C8E15 /* ACRButton.xib */; };
 		6B9AB31020DD82A2005C8E15 /* ACRTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B9AB30E20DD82A2005C8E15 /* ACRTextView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B9AB31120DD82A2005C8E15 /* ACRTextView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B9AB30F20DD82A2005C8E15 /* ACRTextView.mm */; };
-		6B9B47E623A450F7004C93A8 /* ACRUIImageViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B9B47E523A450F6004C93A8 /* ACRUIImageViewPrivate.h */; };
 		6B9BDF7320E1BD0E00F13155 /* ACRToggleInputDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B9BDF7120E1BD0E00F13155 /* ACRToggleInputDataSource.mm */; };
 		6B9BDF7420E1BD0E00F13155 /* ACRToggleInputDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B9BDF7220E1BD0E00F13155 /* ACRToggleInputDataSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B9BDF7F20F40D1000F13155 /* ACOResourceResolvers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B9BDF7D20F40D0F00F13155 /* ACOResourceResolvers.mm */; };
@@ -406,7 +405,6 @@
 		6B9AB30120D32A89005C8E15 /* ACRButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACRButton.xib; sourceTree = "<group>"; };
 		6B9AB30E20DD82A2005C8E15 /* ACRTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRTextView.h; sourceTree = "<group>"; };
 		6B9AB30F20DD82A2005C8E15 /* ACRTextView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRTextView.mm; sourceTree = "<group>"; };
-		6B9B47E523A450F6004C93A8 /* ACRUIImageViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRUIImageViewPrivate.h; sourceTree = "<group>"; };
 		6B9BDF7120E1BD0E00F13155 /* ACRToggleInputDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRToggleInputDataSource.mm; sourceTree = "<group>"; };
 		6B9BDF7220E1BD0E00F13155 /* ACRToggleInputDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRToggleInputDataSource.h; sourceTree = "<group>"; };
 		6B9BDF7D20F40D0F00F13155 /* ACOResourceResolvers.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACOResourceResolvers.mm; sourceTree = "<group>"; };
@@ -1014,7 +1012,6 @@
 		F42979341F3007C500E89914 /* ReadOnlyObjects */ = {
 			isa = PBXGroup;
 			children = (
-				6B9B47E523A450F6004C93A8 /* ACRUIImageViewPrivate.h */,
 				F42741081EF864A900399FBB /* ACRBaseCardElementRenderer.h */,
 				F42741091EF864A900399FBB /* ACRBaseCardElementRenderer.mm */,
 				F42741221EFB274C00399FBB /* ACRColumnRenderer.h */,
@@ -1243,7 +1240,6 @@
 				F4C1F5E81F2ABB3C0018CB78 /* ACRIBaseActionElementRenderer.h in Headers */,
 				6BF430772190DDCA0068E432 /* ACRQuickReplyView.h in Headers */,
 				C8DEDF3A220CDEB00001AAED /* ActionSet.h in Headers */,
-				6B9B47E623A450F7004C93A8 /* ACRUIImageViewPrivate.h in Headers */,
 				6BB211FF20FFF9C0009EA1BA /* ACRIMedia.h in Headers */,
 				6B7B1A9320B4D2AB00260731 /* MediaSource.h in Headers */,
 				7ECFB641219A3940004727A9 /* ParseContext.h in Headers */,
@@ -1307,7 +1303,7 @@
 		F423C0AC1EE1FBA900905679 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0940;
+				LastUpgradeCheck = 1130;
 				ORGANIZATIONNAME = Microsoft;
 				TargetAttributes = {
 					F423C0B41EE1FBA900905679 = {
@@ -1687,7 +1683,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BITCODE_GENERATION_MODE = bitcode;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -1725,7 +1721,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BITCODE_GENERATION_MODE = bitcode;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;

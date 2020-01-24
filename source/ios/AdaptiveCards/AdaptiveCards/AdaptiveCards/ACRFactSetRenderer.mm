@@ -169,6 +169,7 @@
                                                      rootView:rootView
                                                       element:elem];
 
+
         [valueLab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         [titleStack addArrangedSubview:titleLab];
         [valueStack addArrangedSubview:valueLab];
