@@ -53,8 +53,10 @@ ViewController.m
     NSString *jsonStr = @"{ \"type\": \"AdaptiveCard\", \"version\": \"1.0\", \"body\": [ { \"type\": \"Image\", \"url\": \"http://adaptivecards.io/content/adaptive-card-50.png\", \"horizontalAlignment\":\"center\" }, { \"type\": \"TextBlock\", \"horizontalAlignment\":\"center\", \"text\": \"Hello **Adaptive Cards!**\" } ], \"actions\": [ { \"type\": \"Action.OpenUrl\", \"title\": \"Learn more\", \"url\": \"http://adaptivecards.io\" }, { \"type\": \"Action.OpenUrl\", \"title\": \"GitHub\", \"url\": \"http://github.com/Microsoft/AdaptiveCards\" } ] }";
     ACRRenderResult *renderResult;
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:jsonStr];
+    // Patch for issue 3741 [https://github.com/microsoft/AdaptiveCards/issues/3741]
+    ACOHostConfig *_config = [[ACOHostConfig alloc] init];
     if(cardParseResult.isValid){
-        renderResult = [ACRRenderer render:cardParseResult.card config:nil widthConstraint:335];
+        renderResult = [ACRRenderer render:cardParseResult.card config:_config widthConstraint:335];
     }
 
     if(renderResult.succeeded)
@@ -126,7 +128,9 @@ class ViewController: UIViewController, ACRActionDelegate{
 
         let cardParseResult = ACOAdaptiveCard.fromJson(jsonStr);
         if((cardParseResult?.isValid)!){
-            let renderResult = ACRRenderer.render(cardParseResult!.card, config: nil, widthConstraint: 335);
+            // Patch for issue 3741 [https://github.com/microsoft/AdaptiveCards/issues/3741]
+            let _config = ACOHostConfig();
+            let renderResult = ACRRenderer.render(cardParseResult!.card, config: _config, widthConstraint: 335);
 
             if(renderResult?.succeeded ?? false)
             {
