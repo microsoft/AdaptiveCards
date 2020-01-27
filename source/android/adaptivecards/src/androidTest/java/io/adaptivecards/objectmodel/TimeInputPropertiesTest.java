@@ -1,10 +1,19 @@
 package io.adaptivecards.objectmodel;
 
+import android.util.Pair;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
 
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+import io.adaptivecards.renderer.input.TimeInputRenderer;
+import io.adaptivecards.renderer.readonly.RendererUtil;
 
 import static org.junit.Assert.*;
 
@@ -208,5 +217,44 @@ public class TimeInputPropertiesTest
         }
     }
 
+    @Test
+    public void TimeFormatting() throws Exception
+    {
+        ArrayList<Pair<Integer, Integer>> formatTestCases = new ArrayList<>();
+        formatTestCases.add(new Pair<>(7, 15));
+        formatTestCases.add(new Pair<>(11, 23));
+        formatTestCases.add(new Pair<>(12, 0));
+        formatTestCases.add(new Pair<>(15, 14));
+        formatTestCases.add(new Pair<>(17, 30));
+        formatTestCases.add(new Pair<>(21, 40));
+
+        String formatTestResults[] = {"7:15 AM", "11:23 AM", "12:00 PM", "3:14 PM", "5:30 PM", "9:40 PM" };
+
+        for (int i = 0; i < formatTestCases.size(); ++i)
+        {
+            Pair<Integer, Integer> formatTestCase = formatTestCases.get(i);
+
+            Calendar calendar = new GregorianCalendar(0, 0, 0, formatTestCase.first, formatTestCase.second);
+            String formattedValue = TimeInputRenderer.getTimeFormat().format(calendar.getTime());
+
+            Assert.assertEquals(formatTestResults[i], formattedValue);
+
+
+            Date value = TimeInputRenderer.getTimeFormat().parse(formatTestResults[i]);
+            calendar = new GregorianCalendar();
+            calendar.setTime(value);
+
+            Assert.assertEquals((int)formatTestCase.first, calendar.get(Calendar.HOUR_OF_DAY));
+            Assert.assertEquals((int)formatTestCase.second, calendar.get(Calendar.MINUTE));
+        }
+
+        /*
+        String parsingTestCases[] = {};
+
+        Date value = TimeInputRenderer.getTimeFormat().parse(m_editText.getText().toString());
+        calendar = new GregorianCalendar();
+        */
+
+    }
 
 }
