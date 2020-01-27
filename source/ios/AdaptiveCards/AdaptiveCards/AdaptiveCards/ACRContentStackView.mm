@@ -43,11 +43,13 @@ static int kToggleVisibilityContext;
     return self;
 }
 
+// this is the dedicated initializer
 - (instancetype)initWithFrame:(CGRect)frame attributes:(nullable NSDictionary<NSString *, id> *)attributes
 {
     self = [super initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
     if (self) {
-        _stackView = [[UIStackView alloc] initWithFrame:frame];
+        _stackView = [[UIStackView alloc] init];
+        _hiddenSubviews = [[NSMutableSet alloc] init];
         [self config:attributes];
     }
     return self;
@@ -55,11 +57,7 @@ static int kToggleVisibilityContext;
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
-    self = [self initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height) attributes:nil];
-    if (self) {
-        _hiddenSubviews = [[NSMutableSet alloc] init];
-    }
-    return self;
+    return [self initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height) attributes:nil];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
@@ -68,6 +66,7 @@ static int kToggleVisibilityContext;
 
     if (self) {
         _stackView = [[UIStackView alloc] init];
+        _hiddenSubviews = [[NSMutableSet alloc] init];
         [self config:nil];
     }
 
@@ -226,24 +225,28 @@ static int kToggleVisibilityContext;
                         change:(NSDictionary *)change
                        context:(void *)context
 {
-    if ([object isKindOfClass:[UIView class]]) {
-        UIView *view = (UIView *)object;
-        BOOL isHidden = view.hidden;
-        if (isHidden == YES and ![_hiddenSubviews containsObject:view]) {
-            [_hiddenSubviews addObject:view];
-            [self decreaseIntrinsicContentSize:view];
-            if ([_hiddenSubviews count] == [_stackView.arrangedSubviews count]) {
-                self.hidden = YES;
-            }
-        } else {
-            if ([_hiddenSubviews containsObject:view]) {
-                [self increaseIntrinsicContentSize:view];
-                [_hiddenSubviews removeObject:view];
-                if (self.hidden) {
-                    self.hidden = NO;
+    if (context == &kToggleVisibilityContext) {
+        if ([object isKindOfClass:[UIView class]]) {
+            UIView *view = (UIView *)object;
+            BOOL isHidden = view.hidden;
+            if (isHidden == YES and ![_hiddenSubviews containsObject:view]) {
+                [_hiddenSubviews addObject:view];
+                [self decreaseIntrinsicContentSize:view];
+                if ([_hiddenSubviews count] == [_stackView.arrangedSubviews count]) {
+                    self.hidden = YES;
+                }
+            } else {
+                if ([_hiddenSubviews containsObject:view]) {
+                    [self increaseIntrinsicContentSize:view];
+                    [_hiddenSubviews removeObject:view];
+                    if (self.hidden) {
+                        self.hidden = NO;
+                    }
                 }
             }
         }
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
 }
 
@@ -423,23 +426,23 @@ static int kToggleVisibilityContext;
 {
 }
 
-- (CGFloat)getMaxHeightOfSubviewsAfterExluding:(UIView *)view
+- (CGFloat)getMaxHeightOfSubviewsAfterExcluding:(UIView *)view
 {
-    return [self getViewWithMaxDimensionAfterExluding:view
-                                            dimension:^CGFloat(UIView *v) {
-                                                return [v intrinsicContentSize].height;
-                                            }];
+    return [self getViewWithMaxDimensionAfterExcluding:view
+                                             dimension:^CGFloat(UIView *v) {
+                                                 return [v intrinsicContentSize].height;
+                                             }];
 }
 
-- (CGFloat)getMaxWidthOfSubviewsAfterExluding:(UIView *)view
+- (CGFloat)getMaxWidthOfSubviewsAfterExcluding:(UIView *)view
 {
-    return [self getViewWithMaxDimensionAfterExluding:view
-                                            dimension:^CGFloat(UIView *v) {
-                                                return [v intrinsicContentSize].width;
-                                            }];
+    return [self getViewWithMaxDimensionAfterExcluding:view
+                                             dimension:^CGFloat(UIView *v) {
+                                                 return [v intrinsicContentSize].width;
+                                             }];
 }
 
-- (CGFloat)getViewWithMaxDimensionAfterExluding:(UIView *)view dimension:(CGFloat (^)(UIView *view))dimension
+- (CGFloat)getViewWithMaxDimensionAfterExcluding:(UIView *)view dimension:(CGFloat (^)(UIView *view))dimension
 {
     CGFloat currentBest = 0.0;
     for (UIView *v in _stackView.arrangedSubviews) {

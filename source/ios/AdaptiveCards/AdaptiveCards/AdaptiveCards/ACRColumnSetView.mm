@@ -38,7 +38,7 @@
 - (void)decreaseIntrinsicContentSize:(UIView *)view
 {
     // get max height amongst the subviews that is not the view
-    CGFloat maxHeightExludingTheView = [self getMaxHeightOfSubviewsAfterExluding:view];
+    CGFloat maxHeightExludingTheView = [self getMaxHeightOfSubviewsAfterExcluding:view];
     CGSize size = [view intrinsicContentSize];
     // there are three possible cases
     // 1. maxHeightExludingTheView is equal to the height of the view

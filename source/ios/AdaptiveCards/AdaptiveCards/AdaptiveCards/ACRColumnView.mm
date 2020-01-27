@@ -55,15 +55,15 @@
 
 - (void)decreaseIntrinsicContentSize:(UIView *)view
 {
-    CGFloat maxWidthExludingTheView = [self getMaxWidthOfSubviewsAfterExluding:view];
+    CGFloat maxWidthExcludingTheView = [self getMaxWidthOfSubviewsAfterExcluding:view];
     CGSize size = [view intrinsicContentSize];
     // there are three possible cases
-    // 1. possibleMaxWidthExludingTheView is equal to the height of the view
-    // 2. possibleMaxWidthExludingTheView is bigger than the the height of the view
-    // 3. possibleMaxWidthExludingTheView is smaller than the the height of the view
+    // 1. possibleMaxWidthExcludingTheView is equal to the height of the view
+    // 2. possibleMaxWidthExcludingTheView is bigger than the the height of the view
+    // 3. possibleMaxWidthExcludingTheView is smaller than the the height of the view
     // only #3 changes the current height, when the view's height is no longer in considreation
     // for dimension
-    CGFloat newWidth = (maxWidthExludingTheView < size.width) ? maxWidthExludingTheView : self.combinedContentSize.width;
+    CGFloat newWidth = (maxWidthExcludingTheView < size.width) ? maxWidthExcludingTheView : self.combinedContentSize.width;
     self.combinedContentSize = CGSizeMake(newWidth, self.combinedContentSize.height - size.height);
 }
 

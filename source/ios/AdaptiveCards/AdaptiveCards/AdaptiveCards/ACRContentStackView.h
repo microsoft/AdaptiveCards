@@ -42,11 +42,11 @@
 
 - (UIView *)getLastArrangedSubview;
 
-// return the largest width from the given subviews exluding the view
-- (CGFloat)getMaxWidthOfSubviewsAfterExluding:(UIView *)view;
+// return the largest width from the given subviews Excluding the view
+- (CGFloat)getMaxWidthOfSubviewsAfterExcluding:(UIView *)view;
 
-// return the largest height from the given subviews exluding the view
-- (CGFloat)getMaxHeightOfSubviewsAfterExluding:(UIView *)view;
+// return the largest height from the given subviews Excluding the view
+- (CGFloat)getMaxHeightOfSubviewsAfterExcluding:(UIView *)view;
 
 - (void)increaseIntrinsicContentSize:(UIView *)view;
 
