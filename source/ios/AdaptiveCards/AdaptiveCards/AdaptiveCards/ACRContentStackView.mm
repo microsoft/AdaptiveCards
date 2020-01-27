@@ -2,7 +2,7 @@
 //  ACRContentStackView
 //  ACRContentStackView.mm
 //
-//  Copyright © 2017 Microsoft. All rights reserved.
+//  Copyright © 2020 Microsoft. All rights reserved.
 //
 
 #include "ACRContentStackView.h"
@@ -423,23 +423,23 @@ static int kToggleVisibilityContext;
 {
 }
 
-- (CGFloat)getNextGreatHeight:(UIView *)view
+- (CGFloat)getMaxHeightOfSubviewsAfterExluding:(UIView *)view
 {
-    return [self getNextSize:view
-                   dimension:^CGFloat(UIView *v) {
-                       return [v intrinsicContentSize].height;
-                   }];
+    return [self getViewWithMaxDimensionAfterExluding:view
+                                            dimension:^CGFloat(UIView *v) {
+                                                return [v intrinsicContentSize].height;
+                                            }];
 }
 
-- (CGFloat)getNextGreatWidth:(UIView *)view
+- (CGFloat)getMaxWidthOfSubviewsAfterExluding:(UIView *)view
 {
-    return [self getNextSize:view
-                   dimension:^CGFloat(UIView *v) {
-                       return [v intrinsicContentSize].width;
-                   }];
+    return [self getViewWithMaxDimensionAfterExluding:view
+                                            dimension:^CGFloat(UIView *v) {
+                                                return [v intrinsicContentSize].width;
+                                            }];
 }
 
-- (CGFloat)getNextSize:(UIView *)view dimension:(CGFloat (^)(UIView *view))dimension
+- (CGFloat)getViewWithMaxDimensionAfterExluding:(UIView *)view dimension:(CGFloat (^)(UIView *view))dimension
 {
     CGFloat currentBest = 0.0;
     for (UIView *v in _stackView.arrangedSubviews) {
