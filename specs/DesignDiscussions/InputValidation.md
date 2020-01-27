@@ -17,35 +17,9 @@ The main additions to the schema for input validation are the `"isRequired"`, `"
 
 Although `regex` would only be supported on `Input.Text`, the `isRequired` and `errorMessage` properties would be supported on all `Input.*` types.
 
-## Schema Additions to Adaptive Card for Validation
-
-In order to allow the card author to visually indicate whether inputs in a card are required or optional, we will add a new property, `showRequiredInputHints`. When this is true, visual indicators will be added to required inputs inputs to signal to the user that they are required. This property will default to true.
-
-```json
-{
-	"type": "AdaptiveCard",
-	"version": "1.3",
-	"showRequiredInputHints":true,
-	"body": [
-		{
-			"type": "TextBlock",
-			"text": "Please enter your name:"
-		},
-		{
-			"type": "Input.Text",
-			"id": "nameInput",
-			"isRequired": true
-		}
-	],
-	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
-}
-```
-
-> Note: We may also want to add a `showOptionalInputHints` to allow card authors to instead (or additionally) mark optional inputs visually. Because the most likely design for this would be to use the word "optional," and because that would require an all up localization story we don't yet have, this is out of scope for v1 of this feature.
-
 ## Validation Rendering
 
-If showRequiredInputHints is true, Required inputs should be marked with a *. In cases where a label has been specified ([Issue #203](https://github.com/microsoft/AdaptiveCards/issues/203)), the required indicator should be placed next to the input's label.
+By default, required inputs should be marked with a *. In cases where a label has been specified, the required indicator should be placed next to the input's label. Further discussion of label formatting can be found in [InputLabels.md](https://github.com/microsoft/AdaptiveCards/blob/master/specs/DesignDiscussions/InputLabels.md), tracked by [Issue #203](https://github.com/microsoft/AdaptiveCards/issues/203).
 
 ![img](assets/InputValidation/Required.PNG)
 
@@ -63,7 +37,12 @@ Issue [#3081](https://github.com/microsoft/AdaptiveCards/issues/3081) covers res
 
  This is also consistent with the behavior recently adopted by WinUI 3.0 for their input validation feature.
 
- >Question: What should happen for Choice Sets?
+ That being said, our hosts may have a variety of existing behaviors in their apps. In order to support consistency within host apps, we will allow the host to configure the validation behavior via host config. 
+
+ Possible values:
+ - First Validation on focus lost (default behavior)
+ - First Validation on action
+ - First Validation on focus lost only if the user has typed something
 
 ### Which Input Properties to Validate
 
@@ -147,8 +126,6 @@ Bring back non-visible card element            |  Bring back single input
 :-------------------------:|:-------------------------:
 ![img](assets/InputValidation/BrokenToggleWizard.PNG)  |  ![img](assets/InputValidation/BrokenToggleWizard2.PNG)
 
-Additionally, per the below discussion, if we disable the submit button when validation fails, we won't event have an appropriate time at which to change the visibility.
-
 > Note on this card: This "Wizard" scenario is implemented here via toggle visibility. We should consider whether we want to support a first class wizard experience where a new element type could list a series of subcards to display in order. Whether or not we ever introduce such a concept, the point remains that toggle logic may be complex, and we shouldn't be arbitrarily toggling things visible outside the scope of what the card author has defined in their toggle buttons.
 
 #### Current Card/Container
@@ -157,82 +134,79 @@ Considering the food order card above, one option in show card scenarios may be 
 
 #### Card Author Control
 
-As the discussion above shows, depending on the card scenario, it may be difficult for us to determine which fields the card author wants to validate. Any of the above approaches may be correct for *some* cards, but none are appropriate for all cards. In order to address this, the best approach is to allow the card author to specify which inputs are associated with a given action. We will implement this via a new `inputs` property on Action types. The inputs listed will be the ones that are validated, and also the ones that are returned on Submit.
+As the discussion above shows, depending on the card scenario, it may be difficult for us to determine which fields the card author wants to validate. Any of the above approaches may be correct for *some* cards, but none are appropriate for all cards. In order to address this, the best approach is to allow the card author to specify which inputs are associated with a given action. We will implement this via a new `associatedInputIds` property on Action types. The inputs listed will be the ones that are validated, and also the ones that are returned on Submit.
 
 The first option available for inputs is "All." This will validate and submit all inputs on the card. This is the current behavior, and would be the default for submit actions.
 ```json
 {
 	"type": "Action.Submit",
 	"title": "Submit",
-	"inputs": "All",
+	"associatedInputIds": "All",
 }
 ```
 
-The second option would be "None". This would be useful for, for example, a "Cancel" button where validation is not required, and would be the default for non-Submit (or Invoke action being discussed for Universal Actions) action types (see further discussion of validation for different action types below).
+The second option would be "None". This would be useful for, for example, a "Cancel" button where validation is not required, and would be the default for non-Submit action types (see further discussion of validation for different action types below).
 ```json
 {
 	"type": "Action.Submit",
 	"title": "Cancel",
-	"inputs": "None",
+	"associatedInputIds": "None",
 }
 ```
 For authors that need more granular control of which inputs to validate, we would also allow them to specify a list of inputs, such as the following:
 ```json
 {
 	"type": "Action.Submit",
-	"title": "Cancel",
-	"inputs": ["input1Id", "input2Id"] 
+	"title": "Submit",
+	"associatedInputIds": ["input1Id", "input2Id"] 
 }
 ```
-In order to allow authors to group their inputs, we could also accept container ids. This allows the card author to functionally define a "form" and indicate that the submit button relates to that form:
+In order to allow authors to group their inputs, we will also accept container ids. This allows the card author to functionally define a "form" and indicate that the submit button relates to that form.
 ```json
 {
 	"type": "Action.Submit",
-	"title": "Cancel",
-	"inputs": ["input1Id", "input2Id", "formContainerId"] 
+	"title": "Submit",
+	"associatedInputIds": ["input1Id", "input2Id", "formContainerId"] 
 }
 ```
+Container IDs can be ids on a `Container`, `Column`, `ColumnSet` or `Card`. An `id` property will be added to the AdaptiveCard type to support this behavior, which will allow card authors to select, for example, a show card as the associated input container. Card id's are not currently part of the schema and exist today only in JavaScript.
 
-> Questions:
->
-> - Do we want to support a "CurrentContainer" or "CurrentContainerAndParent" type option? I think no. Allowing authors to specify containers allows for this behavior, and introducing an option with possibly non-obvious logic in the edge cases may be more confusing than helpful to card authors.
->
-> - Do we want a typed "Form" container? The design described above allows card authors to use containers as "forms" by specifying them as the inputs for a submit action. Is it helpful to have an explicit "FormContainer" type to use for this? There doesn't seem to be an explicit use for it today. One scenario may be if we have "Form" type properties in the future that would be useful to put on a typed element.
-> - I called the property `"inputs"` rather than something validation specific (`validationInputs`?) because in the submit case it indicates not only the inputs that will be validated, but also those that will be submitted. Are there scenarios in which a submit button would need to validate a different set of inputs than those that it wants to send? I would think **no**, as sending un-validated inputs seems like it could cause problems. 
+##### On Not Adding a Form Type
 
+The design described above allows card authors to use containers as "forms" by specifying them as the inputs for a submit action, but does not introduce an explicit `form` type. While semantically typing specific containers as forms seems appealing, we don't have any use cases today where we need that information. One could imagine a scenario in the future where we would want to add properties to forms, but given that the use cases for cards are small pieces of UI, it's unlikely that we'd configure forms at the container level rather than at the card or host level. Additionally, introducing a new type has a backwards compatibility impact, as unknown types will be dropped on earlier versions. Because of these considerations, the benefits of adding a new type are outweighed by the drawbacks. Card authors can use our existing container types to contain their forms.
 
 ##### Defaulting to All
-As discussed above, validating all fields can lead to issues if pieces of the validated UI are hidden from the user. That said, there are a few reasons **defaulting** to all seems like the right approach:
+As discussed above, validating all fields can lead to issues if pieces of the validated UI are hidden from the user. That said, there are a few reasons **defaulting** to all is the right approach:
 
-- In the simplest case, "All" is likely the correct choice. A card which is a simple form with a submit button on the bottom will likely want all validation to pass before submitting
+- In the simplest case, "All" is likely the correct choice. A card which is a simple form with a submit button on the bottom will likely want to validate and submit all fields.
 
 - It is important that the submitted fields are the same as those that are validated. Sending inputs that have validation without enforcing that validation may lead to issues on the server side if the server has assumed that their specified client side validation is dependable. Today, we submit all inputs with each submit, and changing that would be a breaking change for existing cards. Using All as the default allows us to (a) not break the current submit all inputs behavior and (b) not send any un-validated inputs.
 
-- We do validate on focus lost, so a user who has navigated to and away from an input will have seen the validation error, even if they subsequently hid it using a toggle or show card action. This means that in scenarios where the input is not required but has a regex or other validation (such as the personalization example above) the user will already be aware that their field has not validated correctly. The scenario where a **required** input is not shown may be confusing to a user, but one could make the case that it's questionable card design to hide required fields behind toggle or show card actions.
+- By default we will validate on focus lost, so in a host with that behavior a user who has navigated to and away from an input will have seen the validation error, even if they subsequently hid it using a toggle or show card action. This means that in scenarios where the input is not required, but has a regex or other validation (such as the personalization example above) the user will already be aware that their field has not validated correctly. The scenario where a **required** input is not shown may be confusing to a user, but one could make the case that it's questionable card design to hide required fields behind toggle or show card actions.
 
-- Allowing the card author to explicitly specify inputs allows them to override this default behavior to configure the validation as appropriate for their scenario.
+- If "All" doesn't work well for a particular  card, allowing the card author to explicitly specify inputs allows them to override this default behavior to configure the validation as appropriate for their scenario.
 
 ### Validation and Actions
 
 #### Action Types
-Although submit actions are the most obvious case for input validation, we will support validation on all action types. The `inputs` property will indicate which fields are validated.
+Although submit actions are the most obvious case for input validation, we will support validation on all action types. The `associatedInputIds` property will indicate which fields are validated.
 
-##### Submit (and Invoke) Actions
-Submit actions will default to `"inputs": "All"`. This means that all inputs on the card will be validated and sent with this submission. Card authors can adjust this default behavior by setting the `inputs` property to a different value as described above.
+##### Submit Actions
+Submit actions will default to `"associatedInputIds": "All"`. This means that all inputs on the card will be validated and sent with this submission. Card authors can adjust this default behavior by setting the `associatedInputIds` property to a different value as described above.
 
 ##### Toggle and ShowCard Actions
-In many, or even most cases, it likely doesn't make sense to validate on show card or toggle actions if those actions are simply showing more details that don't need to appear on the main card. In some cases, however, either show card or toggle may be used to reveal the next step in a progression through the card experience. The wizard card above is a clear example of this. The card author may want to validate the first "page" before allowing the user to proceed to the second. Event the FoodOrder card can be viewed as an example of using show cards to progress through an interaction. If the upper portion of the card contained addition inputs, the card author may want to validate those fields before proceeding to ask additional questions about the users order. 
+In many cases, it likely doesn't make sense to validate on show card or toggle actions if those actions are simply showing more details that don't need to appear on the main card. In some cases, however, either show card or toggle may be used to reveal the next step in a progression through the card experience. The wizard card above is a clear example of this. The card author may want to validate the first "page" before allowing the user to proceed to the second. Even the FoodOrder card can be viewed as an example of using show cards to progress through an interaction. If the upper portion of the card contained addition inputs, the card author may want to validate those fields before proceeding to ask additional questions about the users order. 
 
-Because by default Toggles and ShowCards don't necessarily need to validate inputs, these actions will default to `"inputs": "None"`. We will, however, support the ability to set a different value to enforce validation of some or all of the inputs before allowing the user to take one of these actions.
-
-> Question: Is it confusing to have an `inputs` property on a type that doesn't actually return those inputs (only validates them)? Would we want to add support for returning inputs on other action types? Is this an indication we need a different name?
+Because by default Toggles and ShowCards don't necessarily need to validate inputs, these actions will default to `"associatedInputIds": "None"`. We will, however, support the ability to set a different value to enforce validation of some or all of the inputs before allowing the user to take one of these actions.
 
 ##### OpenUrl
-It seems unlikely that there are many scenarios to validate inputs on OpenUrl, so the default value for `inputs` will be false. For consistency, however, we will allow `inputs` to be set on OpenUrl actions.
+Today it is unlikely that there are many scenarios to validate inputs on OpenUrl, so the default value for `associatedInputIds` will be `None`. For consistency, however, we will allow `associatedInputIds` to be set on OpenUrl actions.
+
+If we in the future allow inputs to be used to construct the Url, any explicitly referenced inputs can be added to those checked by `associatedInputIds`.
 
 #### Disabling Actions
 
-Actions that depend on validation of the inputs should be greyed out until all related inputs have been validated. Because we are validating on focus lost, it would be possible for a user to navigate through a form using tab, resulting in all error messages and validation being shown. Clicking on a non-greyed out submit button at this time would not give any additional feedback, just silently fail to submit. To avoid this, we should grey out the submit button until such time as all inputs pass validation.
+We will not disable actions that require further validation. Clicking on a action that still has unvalidated fields will show any unshown validation errors, but will not invoke the action. This ensures that all error's are shown to the user and they understand why they cannot proceed.
 
 ## Custom Rendering Error Messages
 Comments in [#3081](https://github.com/microsoft/AdaptiveCards/issues/3081) from dclaux:
@@ -241,14 +215,9 @@ Comments in [#3081](https://github.com/microsoft/AdaptiveCards/issues/3081) from
 And andrewleader:
 >showInputValidationErrors for renderers (via code) makes sense
 
-TODO: Follow up on specifying this behavior.
+This refers to allowing hosts to add custom rendering via code for showing validation errors. Perhaps they wish to show their errors in the style of tooltips, for example, instead of inline under the image. Currently, we view this as a P2 feature. That said, we may be willing to accept a feature inconsistency here if this is required for JavaScript in v1 of input validation, and add it to other platforms in future versions as the need arises and time allows.
 
 ## Future and Out of Scope Features
-
-### OptionalInputHints
-Some forms have indicators designating certain fields as "optional". Explicit support for marking optional fields may be a useful addition in the future, but because of the localization requirements is out of scope for this version.
-
-![img](assets/InputValidation/Optional.PNG)
 
 ### Success Indicators
 Some forms add an indicator to an input once a valid value has been added to give the user feedback that they've entered a valid value. For example, a password field that turns green once the password has reached sufficient complexity. This may be a useful feature for future versions, but is out of scope for v1.

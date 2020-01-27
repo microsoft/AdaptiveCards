@@ -64,12 +64,6 @@
 			"es"
 			]
 		},
-		"showRequiredInputHints": {
-			"type": "boolean",
-			"description": "True if required fields should be visually indicated",
-			"version": "1.3",
-			"default":true
-		},
 		"verticalContentAlignment": {
 			"type": "VerticalContentAlignment",
 			"description": "Defines how the content should be aligned vertically within the container. Only relevant for fixed-height cards, or cards with a `minHeight` specified.",
@@ -78,6 +72,10 @@
 		"$schema": {
 			"type": "uri",
 			"description": "The Adaptive Card schema."
+		},
+		"id": {
+			"type": "string",
+			"description": "A unique identifier associated with the AdaptiveCard."
 		}
 	}
 }

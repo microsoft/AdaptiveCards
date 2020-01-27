@@ -20,7 +20,7 @@
         "iconUrl": {},
         "style": {},
         "fallback": {},
-        "inputs": {},
+        "associatedInputIds": {},
         "requires": {}
       },
       "type": "object",
@@ -51,7 +51,7 @@
         "iconUrl": {},
         "style": {},
         "fallback": {},
-        "inputs": {},
+        "associatedInputIds": {},
         "requires": {}
       },
       "type": "object",
@@ -82,7 +82,7 @@
           ],
           "description": "Initial data that input fields will be combined with. These are essentially ‘hidden’ properties."
         },
-        "inputs": {
+        "associatedInputIds": {
           "anyOf": [
             {
               "type": "array",
@@ -158,7 +158,7 @@
         "iconUrl": {},
         "style": {},
         "fallback": {},
-        "inputs": {},
+        "associatedInputIds": {},
         "requires": {}
       },
       "type": "object",
@@ -288,12 +288,6 @@
             "es"
           ]
         },
-        "showRequiredInputHints": {
-          "type": "boolean",
-          "description": "True if required fields should be visually indicated",
-          "version": "1.3",
-          "default": true
-        },
         "verticalContentAlignment": {
           "$ref": "#/definitions/VerticalContentAlignment",
           "description": "Defines how the content should be aligned vertically within the container. Only relevant for fixed-height cards, or cards with a `minHeight` specified.",
@@ -303,6 +297,10 @@
           "type": "string",
           "format": "uri",
           "description": "The Adaptive Card schema."
+        },
+        "id": {
+          "type": "string",
+          "description": "A unique identifier associated with the AdaptiveCard."
         }
       },
       "type": "object",
@@ -982,11 +980,11 @@
         },
         "max": {
           "type": "string",
-          "description": "Hint of maximum value expressed in ISO-8601 format (may be ignored by some clients)."
+          "description": "Hint of maximum value expressed in YYYY-MM-DD(may be ignored by some clients)."
         },
         "min": {
           "type": "string",
-          "description": "Hint of minimum value expressed in ISO-8601 format (may be ignored by some clients)."
+          "description": "Hint of minimum value expressed in YYYY-MM-DD(may be ignored by some clients)."
         },
         "placeholder": {
           "type": "string",
@@ -994,7 +992,7 @@
         },
         "value": {
           "type": "string",
-          "description": "The initial value for this field expressed in ISO-8601 format."
+          "description": "The initial value for this field expressed in YYYY-MM-DD."
         },
         "id": {},
         "errorMessage": {},
@@ -1127,11 +1125,11 @@
         },
         "max": {
           "type": "string",
-          "description": "Hint of maximum value (may be ignored by some clients)."
+          "description": "Hint of maximum value expressed in HH:MM (may be ignored by some clients)."
         },
         "min": {
           "type": "string",
-          "description": "Hint of minimum value (may be ignored by some clients)."
+          "description": "Hint of minimum value expressed in HH:MM (may be ignored by some clients)."
         },
         "placeholder": {
           "type": "string",
@@ -1139,7 +1137,7 @@
         },
         "value": {
           "type": "string",
-          "description": "The initial value for this field expressed in ISO-8601 format."
+          "description": "The initial value for this field expressed in HH:MM."
         },
         "id": {},
         "errorMessage": {},
@@ -2417,7 +2415,7 @@
           "description": "Describes what to do when an unknown element is encountered or the requires of this or any children can't be met.",
           "version": "1.2"
         },
-        "inputs": {
+        "associatedInputIds": {
           "anyOf": [
             {
               "type": "array",
