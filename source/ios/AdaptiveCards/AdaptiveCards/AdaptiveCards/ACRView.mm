@@ -554,6 +554,8 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
         if (!observerRemoved) {
             [self removeObserver:self forKeyPath:path onObject:object];
         }
+    } else if ([path isEqualToString:@"hidden"]) {
+        [super observeValueForKeyPath:path ofObject:object change:change context:context];
     }
 }
 

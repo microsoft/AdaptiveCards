@@ -56,12 +56,34 @@
 
     UIImage *img = imageViewMap[key];
     ImageSize size = ImageSize::None;
+    CGSize intrinsicContentSize;
     if (!hasExplicitMeasurements) {
         size = imgElem->GetImageSize();
         if (size == ImageSize::None) {
             size = [acoConfig getHostConfig] -> GetImage().imageSize;
         }
+
+        if (size == ImageSize::Stretch) {
+            intrinsicContentSize = [acoConfig getImageSize:ImageSize::Small];
+        } else if (size != ImageSize::Auto) {
+            intrinsicContentSize = [acoConfig getImageSize:imgElem->GetImageSize()];
+        }
+
+    } else {
+        if (pixelWidth) {
+            intrinsicContentSize.width = pixelWidth;
+            if (isAspectRatioNeeded) {
+                intrinsicContentSize.height = pixelWidth;
+            }
+        }
+        if (pixelHeight) {
+            intrinsicContentSize.height = pixelHeight;
+            if (isAspectRatioNeeded) {
+                intrinsicContentSize.width = pixelHeight;
+            }
+        }
     }
+
 
     if (img) {
         ACRUIImageView *acrImageView = [[ACRUIImageView alloc] initWithFrame:CGRectMake(0, 0, cgsize.width, cgsize.height)];
@@ -83,6 +105,7 @@
     if (!view) {
         return wrappingview;
     }
+    wrappingview.desiredContentSize = intrinsicContentSize;
 
     view.clipsToBounds = YES;
 
@@ -233,9 +256,10 @@
         constraints[1].priority = 1000;
 
         [NSLayoutConstraint activateConstraints:constraints];
-
-        if ([imageView class] == [ACRUIImageView class]) {
-            ((ACRUIImageView *)imageView).desiredSize = cgsize;
+        UIView *superview = imageView.superview;
+        if ([superview isKindOfClass:[ACRContentHoldingUIView class]]) {
+            ((ACRContentHoldingUIView *)imageView.superview).desiredContentSize = cgsize;
+            [imageView.superview invalidateIntrinsicContentSize];
         }
     }
 
@@ -260,8 +284,8 @@
 
         [NSLayoutConstraint activateConstraints:constraints];
 
-        if ([imageView class] == [ACRUIImageView class]) {
-            ((ACRUIImageView *)imageView).desiredSize = cgsize;
+        if ([imageView.superview class] == [ACRContentHoldingUIView class]) {
+            ((ACRContentHoldingUIView *)imageView.superview).desiredContentSize = imageView.image.size;
         }
     }
 }
