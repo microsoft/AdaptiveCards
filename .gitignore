@@ -287,3 +287,9 @@ cscope.files
 cscope.out
 cscope.in.out
 cscope.po.out
+
+#tortoisegit stale temp files when resolving merge conflicts
+*BASE_*
+*LOCAL_*
+*REMOTE_*
+*.orig
