@@ -98,6 +98,8 @@
     ACRButton *button = [bundle loadNibNamed:@"ACRButton" owner:rootView options:nil][0];
     [button setTitle:title forState:UIControlStateNormal];
     button.titleLabel.adjustsFontSizeToFitWidth = NO;
+    button.isAccessibilityElement = YES;
+    button.accessibilityLabel = title;
 
     button.sentiment = acoAction.sentiment;
 
