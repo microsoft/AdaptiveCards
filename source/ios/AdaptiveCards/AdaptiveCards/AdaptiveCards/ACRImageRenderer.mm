@@ -160,6 +160,8 @@
     view.translatesAutoresizingMaskIntoConstraints = NO;
     wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
 
+    view.isAccessibilityElement = YES;
+
     configVisibility(wrappingview, elem);
 
     if (imgElem->GetImageStyle() == ImageStyle::Person) {
