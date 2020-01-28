@@ -171,6 +171,7 @@
                                                      rootView:rootView
                                                       element:elem];
 
+
         [valueLab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         valueLab.isAccessibilityElement = YES;
 

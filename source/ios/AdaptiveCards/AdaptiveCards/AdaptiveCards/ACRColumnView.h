@@ -9,8 +9,8 @@
 @interface ACRColumnView : ACRContentStackView
 
 typedef NS_ENUM(NSInteger, ACRColumnWidthPriority) {
-    ACRColumnWidthPriorityStretch = 250,
-    ACRColumnWidthPriorityStretchAuto,
+    ACRColumnWidthPriorityStretch = 249,
+    ACRColumnWidthPriorityStretchAuto = 251,
     ACRColumnWidthPriorityAuto,
 };
 

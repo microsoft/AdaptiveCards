@@ -26,7 +26,9 @@ using namespace AdaptiveCards;
 
 void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visibilityInfo)
 {
-    view.hidden = !(visibilityInfo->GetIsVisible());
+    if (!visibilityInfo->GetIsVisible()) {
+        view.hidden = YES;
+    }
     NSString *hashkey = [NSString stringWithCString:visibilityInfo->GetId().c_str()
                                            encoding:NSUTF8StringEncoding];
     view.tag = hashkey.hash;
@@ -35,7 +37,9 @@ void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visi
 void configSeparatorVisibility(ACRSeparator *view,
                                std::shared_ptr<BaseCardElement> const &visibilityInfo)
 {
-    view.hidden = !(visibilityInfo->GetIsVisible());
+    if (!visibilityInfo->GetIsVisible()) {
+        view.hidden = YES;
+    }
     NSMutableString *hashkey = [NSMutableString stringWithCString:visibilityInfo->GetId().c_str()
                                                          encoding:NSUTF8StringEncoding];
     [hashkey appendString:@"-separator"];
