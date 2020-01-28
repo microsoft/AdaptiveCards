@@ -108,6 +108,8 @@
 
     configVisibility(column, elem);
 
+    [column hideIfSubviewsAreAllHidden];
+
     return column;
 }
 

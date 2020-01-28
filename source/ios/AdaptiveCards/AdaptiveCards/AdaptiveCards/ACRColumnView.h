@@ -6,12 +6,12 @@
 //
 #import "ACRContentStackView.h"
 
-@interface ACRColumnView:ACRContentStackView
+@interface ACRColumnView : ACRContentStackView
 
 typedef NS_ENUM(NSInteger, ACRColumnWidthPriority) {
-    ACRColumnWidthPriorityStretch = 250,
-    ACRColumnWidthPriorityStretchAuto,
-    ACRColumnWidthPriorityAuto,    
+    ACRColumnWidthPriorityStretch = 249,
+    ACRColumnWidthPriorityStretchAuto = 251,
+    ACRColumnWidthPriorityAuto,
 };
 
 @property NSString *columnWidth;

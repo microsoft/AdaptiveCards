@@ -16,7 +16,6 @@
                     superview:(UIView<ACRIContentHoldingView> *)superview;
 - (void)addArrangedSubview:(UIView *)view;
 - (void)removeLastViewFromArrangedSubview;
-- (UILayoutConstraintAxis)getAxis;
 - (void)addTarget:(NSObject *)target;
 - (void)adjustHuggingForLastElement;
 - (ACRContainerStyle)style;
