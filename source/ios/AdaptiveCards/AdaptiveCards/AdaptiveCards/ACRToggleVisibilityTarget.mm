@@ -48,18 +48,23 @@
 
         AdaptiveCards::IsVisible toggleEnum = target->GetIsVisible();
         if (toggleEnum == AdaptiveCards::IsVisibleToggle) {
-            view.hidden = !(view.hidden);
+            BOOL isHidden = view.hidden;
+            view.hidden = !isHidden;
             if (separator) {
                 separator.hidden = view.hidden;
             }
         } else if (toggleEnum == AdaptiveCards::IsVisibleTrue) {
-            view.hidden = NO;
-            if (separator) {
+            if (view.hidden == YES) {
+                view.hidden = NO;
+            }
+            if (separator && separator.hidden == YES) {
                 separator.hidden = NO;
             }
         } else {
-            view.hidden = YES;
-            if (separator) {
+            if (view.hidden == NO) {
+                view.hidden = YES;
+            }
+            if (separator && separator.hidden == NO) {
                 separator.hidden = YES;
             }
         }

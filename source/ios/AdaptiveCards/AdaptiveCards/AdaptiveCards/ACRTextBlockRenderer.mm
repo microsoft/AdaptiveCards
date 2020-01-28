@@ -41,7 +41,7 @@
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<TextBlock> txtBlck = std::dynamic_pointer_cast<TextBlock>(elem);
-    ACRUILabel *lab = [[ACRUILabel alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0)];
+    ACRUILabel *lab = [[ACRUILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
     lab.backgroundColor = [UIColor clearColor];
 
     lab.style = [viewGroup style];
@@ -107,67 +107,38 @@
         lab.isAccessibilityElement = YES;
     }
 
-    lab.area = lab.frame.size.width * lab.frame.size.height;
-
-    ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:lab.frame];
-    wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
     lab.translatesAutoresizingMaskIntoConstraints = NO;
 
-    [viewGroup addArrangedSubview:wrappingview];
-    [wrappingview addSubview:lab];
+    [viewGroup addArrangedSubview:lab];
 
     lab.textContainer.maximumNumberOfLines = int(txtBlck->GetMaxLines());
     if (!lab.textContainer.maximumNumberOfLines && !txtBlck->GetWrap()) {
         lab.textContainer.maximumNumberOfLines = 1;
     }
 
+    [lab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+
     if (txtBlck->GetHeight() == HeightType::Auto) {
-        [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-        [wrappingview setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+        [lab setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
     } else {
-        [wrappingview setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-        [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+        [lab setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
     }
 
-    [lab setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-
-    UILayoutGuide *leftGuide = nil;
-    UILayoutGuide *rightGuide = nil;
     HorizontalAlignment adaptiveAlignment = txtBlck->GetHorizontalAlignment();
 
-    if (adaptiveAlignment == HorizontalAlignment::Right) {
-        leftGuide = [[UILayoutGuide alloc] init];
-        leftGuide.identifier = @"text-left-guide";
-        [wrappingview addLayoutGuide:leftGuide];
-        [leftGuide.leadingAnchor constraintEqualToAnchor:wrappingview.leadingAnchor].active = YES;
-        [leftGuide.trailingAnchor constraintEqualToAnchor:lab.leadingAnchor].active = YES;
-        [leftGuide.heightAnchor constraintEqualToAnchor:lab.heightAnchor].active = YES;
-        [lab.trailingAnchor constraintEqualToAnchor:wrappingview.trailingAnchor].active = YES;
-    }
-
     if (adaptiveAlignment == HorizontalAlignment::Left) {
-        rightGuide = [[UILayoutGuide alloc] init];
-        rightGuide.identifier = @"text-right-guide";
-        [wrappingview addLayoutGuide:rightGuide];
-        NSLayoutConstraint *constraint = [rightGuide.leadingAnchor constraintEqualToAnchor:lab.trailingAnchor];
-        constraint.active = YES;
-        [rightGuide.heightAnchor constraintEqualToAnchor:lab.heightAnchor].active = YES;
-        [rightGuide.trailingAnchor constraintEqualToAnchor:wrappingview.trailingAnchor].active = YES;
-        [lab.leadingAnchor constraintEqualToAnchor:wrappingview.leadingAnchor].active = YES;
+        lab.textAlignment = NSTextAlignmentLeft;
     }
-
+    if (adaptiveAlignment == HorizontalAlignment::Right) {
+        lab.textAlignment = NSTextAlignmentRight;
+    }
     if (adaptiveAlignment == HorizontalAlignment::Center) {
-        [lab.centerXAnchor constraintEqualToAnchor:wrappingview.centerXAnchor].active = YES;
+        lab.textAlignment = NSTextAlignmentCenter;
     }
 
-    [wrappingview.heightAnchor constraintEqualToAnchor:lab.heightAnchor].active = YES;
-    [wrappingview.widthAnchor constraintGreaterThanOrEqualToAnchor:lab.widthAnchor].active = YES;
+    configVisibility(lab, elem);
 
-    [lab.centerYAnchor constraintEqualToAnchor:wrappingview.centerYAnchor].active = YES;
-
-    configVisibility(wrappingview, elem);
-
-    return wrappingview;
+    return lab;
 }
 
 @end
