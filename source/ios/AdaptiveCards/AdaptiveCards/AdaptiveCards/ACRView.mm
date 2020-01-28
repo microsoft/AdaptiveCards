@@ -137,6 +137,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
     renderBackgroundImage([_adaptiveCard card] -> GetBackgroundImage(), newView, self);
 
     [self callDidLoadElementsIfNeeded];
+
     return newView;
 }
 
