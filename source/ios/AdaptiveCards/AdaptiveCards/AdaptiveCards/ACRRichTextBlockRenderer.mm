@@ -179,7 +179,6 @@
     lab.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
     lab.attributedText = content;
     lab.isAccessibilityElement = YES;
-    lab.accessibilityLabel = content.string;
     lab.area = lab.frame.size.width * lab.frame.size.height;
 
     ACRContentHoldingUIView *wrappingview =
