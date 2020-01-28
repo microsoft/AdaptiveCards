@@ -16,5 +16,6 @@
 @property ACRView *view;
 @property ACRViewController *viewcontroller;
 @property BOOL succeeded;
+@property (weak) NSArray<ACOWarning *> *warnings;
 
 @end

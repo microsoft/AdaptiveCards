@@ -115,29 +115,29 @@
 
     UIStackView *valueStack = [[UIStackView alloc] init];
     valueStack.axis = UILayoutConstraintAxisVertical;
-
+    FactSetConfig factSetConfig = config->GetFactSet();
     ACRColumnSetView *factSetWrapperView = [[ACRColumnSetView alloc] init];
     [factSetWrapperView addArrangedSubview:titleStack];
-    [ACRSeparator renderSeparationWithFrame:CGRectMake(0, 0, config->GetFactSet().spacing, config->GetFactSet().spacing) superview:factSetWrapperView axis:UILayoutConstraintAxisHorizontal];
+    [ACRSeparator renderSeparationWithFrame:CGRectMake(0, 0, factSetConfig.spacing, factSetConfig.spacing) superview:factSetWrapperView axis:UILayoutConstraintAxisHorizontal];
     [factSetWrapperView addArrangedSubview:valueStack];
-    [ACRSeparator renderSeparationWithFrame:CGRectMake(0, 0, config->GetFactSet().spacing, config->GetFactSet().spacing) superview:factSetWrapperView axis:UILayoutConstraintAxisHorizontal];
+    [ACRSeparator renderSeparationWithFrame:CGRectMake(0, 0, factSetConfig.spacing, factSetConfig.spacing) superview:factSetWrapperView axis:UILayoutConstraintAxisHorizontal];
 
     [factSetWrapperView adjustHuggingForLastElement];
 
-    BOOL isOverridden = [[ACRRegistration getInstance] isElementRendererOverridden:ACRCardElementType::ACRFactSet];
+    NSMutableDictionary *textMap = [rootView getTextMap];
 
     for (auto fact : fctSet->GetFacts()) {
         NSString *title = [NSString stringWithCString:fact->GetTitle().c_str() encoding:NSUTF8StringEncoding];
         NSString *titleElemId = [key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]];
-        if (isOverridden == YES) {
-            RichTextElementProperties titleTextProp{config->GetFactSet().title, fact->GetTitle(), fact->GetLanguage()};
+        if (![textMap objectForKey:titleElemId]) {
+            RichTextElementProperties titleTextProp{factSetConfig.title, fact->GetTitle(), fact->GetLanguage()};
             buildIntermediateResultForText(rootView, acoConfig, titleTextProp, titleElemId);
         }
 
         ACRUILabel *titleLab = [ACRFactSetRenderer buildLabel:title
                                                     superview:viewGroup
                                                    hostConfig:acoConfig
-                                                   textConfig:config->GetFactSet().title
+                                                   textConfig:factSetConfig.title
                                                containerStyle:style
                                                     elementId:titleElemId
                                                      rootView:rootView
@@ -147,23 +147,25 @@
         [titleLab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
         [titleLab setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
 
-        if (config->GetFactSet().title.maxWidth) {
-            NSLayoutConstraint *constraintForTitleLab = [NSLayoutConstraint constraintWithItem:titleLab attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:config->GetFactSet().title.maxWidth];
+        titleLab.isAccessibilityElement = YES;
+
+        if (factSetConfig.title.maxWidth) {
+            NSLayoutConstraint *constraintForTitleLab = [NSLayoutConstraint constraintWithItem:titleLab attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:factSetConfig.title.maxWidth];
             constraintForTitleLab.active = YES;
             constraintForTitleLab.priority = UILayoutPriorityRequired;
         }
 
         NSString *value = [NSString stringWithCString:fact->GetValue().c_str() encoding:NSUTF8StringEncoding];
         NSString *valElemId = [key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]];
-        if (isOverridden == YES) {
-            RichTextElementProperties valueTextProp{config->GetFactSet().value, fact->GetValue(), fact->GetLanguage()};
+        if (![textMap objectForKey:valElemId]) {
+            RichTextElementProperties valueTextProp{factSetConfig.value, fact->GetValue(), fact->GetLanguage()};
             buildIntermediateResultForText(rootView, acoConfig, valueTextProp, valElemId);
         }
 
         ACRUILabel *valueLab = [ACRFactSetRenderer buildLabel:value
                                                     superview:viewGroup
                                                    hostConfig:acoConfig
-                                                   textConfig:config->GetFactSet().value
+                                                   textConfig:factSetConfig.value
                                                containerStyle:style
                                                     elementId:valElemId
                                                      rootView:rootView
@@ -171,6 +173,8 @@
 
 
         [valueLab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+        valueLab.isAccessibilityElement = YES;
+
         [titleStack addArrangedSubview:titleLab];
         [valueStack addArrangedSubview:valueLab];
         [NSLayoutConstraint constraintWithItem:valueLab attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:titleLab attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0].active = YES;

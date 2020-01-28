@@ -56,7 +56,7 @@
         NSDictionary *descriptor = nil;
         NSString *text = nil;
 
-        if ([[ACRRegistration getInstance] isElementRendererOverridden:ACRCardElementType::ACRTextBlock] == YES) {
+        if (![textMap objectForKey:key]) {
             RichTextElementProperties textProp;
             TextBlockToRichTextElementProperties(txtBlck, textProp);
             buildIntermediateResultForText(rootView, acoConfig, textProp, key);
@@ -74,7 +74,7 @@
             // Drop newline char
             [content deleteCharactersInRange:NSMakeRange([content length] - 1, 1)];
             lab.selectable = YES;
-            lab.dataDetectorTypes = UIDataDetectorTypeLink;
+            lab.dataDetectorTypes = UIDataDetectorTypeLink | UIDataDetectorTypePhoneNumber;
             lab.userInteractionEnabled = YES;
         } else {
             // if html rendering is skipped, remove p tags from both ends (<p>, </p>)
@@ -104,6 +104,7 @@
 
         lab.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
         lab.attributedText = content;
+        lab.isAccessibilityElement = YES;
     }
 
     lab.translatesAutoresizingMaskIntoConstraints = NO;
