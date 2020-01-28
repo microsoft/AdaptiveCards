@@ -116,12 +116,14 @@ const CGFloat accessoryViewWidth = 50.0f;
         } else {
             cell = [tableView dequeueReusableCellWithIdentifier:checkedRadioButtonReuseID];
         }
+        cell.accessibilityTraits |= UIAccessibilityTraitSelected;
     } else {
         if (_isMultiChoicesAllowed) {
             cell = [tableView dequeueReusableCellWithIdentifier:uncheckedCheckboxReuseID];
         } else {
             cell = [tableView dequeueReusableCellWithIdentifier:uncheckedRadioButtonReuseID];
         }
+        cell.accessibilityTraits &= ~UIAccessibilityTraitSelected;
     }
 
     NSString *title = [NSString stringWithCString:_choiceSetDataSource->GetChoices()[indexPath.row]->GetTitle().c_str()
@@ -130,6 +132,7 @@ const CGFloat accessoryViewWidth = 50.0f;
     cell.textLabel.textColor = getForegroundUIColorFromAdaptiveAttribute(_config, _parentStyle);
     cell.textLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.accessibilityTraits = cell.accessibilityTraits | UIAccessibilityTraitButton;
 
     return cell;
 }
