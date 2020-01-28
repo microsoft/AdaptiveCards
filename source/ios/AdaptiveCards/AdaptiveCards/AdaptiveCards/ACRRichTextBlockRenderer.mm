@@ -54,7 +54,6 @@
     lab.textContainerInset = UIEdgeInsetsZero;
     lab.layoutManager.usesFontLeading = false;
 
-    BOOL isOverriden = [[ACRRegistration getInstance] isElementRendererOverridden:ACRCardElementType::ACRRichTextBlock];
     NSMutableAttributedString *content = [[NSMutableAttributedString alloc] init];
     if (rootView) {
         NSMutableDictionary *textMap = [rootView getTextMap];
@@ -70,7 +69,7 @@
                 NSDictionary *descriptor = nil;
                 NSString *text = nil;
 
-                if (isOverriden) {
+                if (![textMap objectForKey:key]) {
                     RichTextElementProperties textProp;
                     TextRunToRichTextElementProperties(textRun, textProp);
                     buildIntermediateResultForText(rootView, acoConfig, textProp, key);
@@ -173,6 +172,7 @@
 
     lab.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
     lab.attributedText = content;
+    lab.isAccessibilityElement = YES;
     lab.area = lab.frame.size.width * lab.frame.size.height;
 
     ACRContentHoldingUIView *wrappingview =
