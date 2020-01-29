@@ -19,16 +19,7 @@ using namespace AdaptiveCards;
 
 - (CGSize)intrinsicContentSize
 {
-    if (self.subviews.count) {
-        NSInteger tag = self.subviews.firstObject.tag;
-        if ((tag == eACRUILabelTag) || (tag == eACRUIImageTag)) {
-            UIView *view = [self viewWithTag:tag];
-            if (view) {
-                return [view intrinsicContentSize];
-            }
-        }
-    }
-    return self.frame.size;
+    return self.desiredContentSize;
 }
 
 - (void)layoutSubviews

@@ -41,7 +41,7 @@ using namespace AdaptiveCards;
 {
     ACRSeparator *separator = [[ACRSeparator alloc] initWithFrame:frame];
     if (separator && superview) {
-        separator->axis = [superview getAxis];
+        separator->axis = ((ACRContentStackView *)superview).axis;
         NSLayoutConstraint *constraints =
             [separator configAutoLayout:superview
                              havingAxis:separator->axis
@@ -133,15 +133,7 @@ using namespace AdaptiveCards;
     }
 
     if (Spacing::None != requestedSpacing) {
-        UIStackView *superview = nil;
-
-        //clean-up in progress -- need to clean this up
-        if ([view isKindOfClass:[UIStackView class]]) {
-            superview = (UIStackView *)view;
-        } else {
-            superview = ((ACRContentStackView *)view).stackView;
-        }
-
+        ACRContentStackView *superview = (ACRContentStackView *)view;
         unsigned int spacing = [ACRSeparator getSpacing:requestedSpacing hostConfig:config];
         separator = [[ACRSeparator alloc] initWithFrame:CGRectMake(0, 0, spacing, spacing)];
 
