@@ -138,7 +138,7 @@ export class Column extends React.Component {
 		this.spacing = this.hostConfig.getEffectiveSpacing(spacingEnumValue);
 
 		let spacingStyle = [];
-		if (!this.isForemostElement()) {
+		if (!this.isForemostElement() && this.column.spacing) {
 			spacingStyle.push({ marginLeft: this.spacing })
 		}
 		spacingStyle.push({ flexGrow: 1 });

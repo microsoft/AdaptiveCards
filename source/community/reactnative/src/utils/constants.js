@@ -53,3 +53,4 @@ export const NumberInput = 'Input.Number';
 export const ErrorMessage = "Required";
 
 export const TypeColumnSet = "ColumnSet";
+export const TypeAdaptiveCard = "AdaptiveCard";
