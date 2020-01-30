@@ -157,7 +157,8 @@ export class ActionButton extends React.Component {
 		let computedStyles = [this.styleConfig.buttonBackgroundColor,
 		this.styleConfig.buttonBorderRadius,
 		this.styleConfig.actionIconFlex,
-		styles.button];
+		styles.button,
+		{ marginLeft: !this.props.isFirst ? 10 : 0 }];
 		if (this.sentiment == Enums.Sentiment.Positive) {
 			computedStyles.push(this.styleConfig.defaultPositiveButtonBackgroundColor);
 		}
@@ -204,7 +205,6 @@ const styles = StyleSheet.create({
 		justifyContent: Constants.CenterString,
 		padding: 10,
 		marginBottom: 10,
-		marginRight: 10,
 		flexGrow: 1,
 	},
 	buttonIcon: {

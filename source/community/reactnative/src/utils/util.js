@@ -45,6 +45,16 @@ export function convertStringToNumber(value) {
 
 /**
  * @description
+ * This function will return the whether the string is pixel
+ * it will return true, if it is pixel value.
+ * @param {string} value 
+ */
+export function isPixelValue(value) {
+	return isString(value) && value.indexOf('px') >= 0
+}
+
+/**
+ * @description
  * This function will return the Enum value for the specified Key if its present or
  * it will return the defaultValue.
  * for eg.. Utils.parseHostConfigEnum(
