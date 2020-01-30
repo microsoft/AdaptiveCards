@@ -72,7 +72,6 @@ export class ColumnModel extends BaseContainerModel {
         this.children = [];
         this.children.push(...ModelFactory.createGroup(payload.items, this));
         this.height = payload.height;
-        this.isVisible = payload.isVisible !== undefined ? payload.isVisible : true;
         if (payload.width) {
             if (payload.width === 'auto' || payload.width === 'stretch') {
                 this.width = payload.width;
