@@ -45,8 +45,9 @@ export class ContainerWrapper extends React.PureComponent {
                 url: this.payload.backgroundImage
             }
         }
+        const backgroundImageStyle = this.payload.type === Constants.TypeAdaptiveCard ? styles.backgroundImage : [styles.backgroundImage, { flex: 1 }];
         return (
-            <View style={styles.backgroundImage}>
+            <View style={backgroundImageStyle}>
                 <BackgroundImage backgroundImage={this.payload.backgroundImage} />
                 {this.props.children}
             </View >
@@ -126,6 +127,6 @@ export class ContainerWrapper extends React.PureComponent {
 
 const styles = StyleSheet.create({
     backgroundImage: {
-        width: Constants.FullWidth,
+        width: Constants.FullWidth
     }
 });
