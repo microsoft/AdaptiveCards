@@ -14,6 +14,8 @@
 * Provide pixel-perfect rendering across all platforms
 * Provide identical behaviors in all situations across all platforms
 * Make it impossible for developers to make a consistency mistake
+* Full coverage of iOS-specific difficulties, which are covered [here](https://microsoft.sharepoint.com/teams/DEP/_layouts/OneNote.aspx?id=%2Fteams%2FDEP%2FShared%20Documents%2FWinDev%2FWinDev&wd=target%28Brownbag.one%7CA3D635A9-C0B6-457F-95EF-0D2C15631319%2F1%5C%2F22%5C%2F2020%20iOS%20%20UI%20framework%20Inconsistencies%7C5A1CF2F4-8EFF-45A9-BDEF-42F89996600A%2F%29
+onenote:https://microsoft.sharepoint.com/teams/DEP/Shared%20Documents/WinDev/WinDev/Brownbag.one#1/22/2020%20iOS%20%20UI%20framework%20Inconsistencies&section-id={A3D635A9-C0B6-457F-95EF-0D2C15631319}&page-id={5A1CF2F4-8EFF-45A9-BDEF-42F89996600A}&end).
 
 ### Some context
 
