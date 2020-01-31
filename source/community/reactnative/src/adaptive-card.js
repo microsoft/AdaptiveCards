@@ -35,13 +35,13 @@ export default class AdaptiveCard extends React.Component {
 
 		if (this.props.isActionShowCard) {
 			this.cardModel = props.payload;
-		}else{
+		} else {
 			this.cardModel = ModelFactory.createElement(props.payload);
 		}
 		this.state = {
 			showErrors: false,
 			payload: this.payload,
-			cardModel: this.cardModel,
+			cardModel: this.cardModel
 		}
 
 		// hostConfig
@@ -66,7 +66,6 @@ export default class AdaptiveCard extends React.Component {
 		})
 	}
 
-
 	/**
 	 * @description Checks the elements recursively to change the isVisible property
 	 * @param {Object} object - the object to be searched
@@ -74,15 +73,15 @@ export default class AdaptiveCard extends React.Component {
 	 */
 	checkTargetElementsForID = (object, targetElements) => {
 		targetElements.forEach(target => {
-			if (target instanceof String || typeof target === 'string'){
-				if(target == object["id"]){
+			if (target instanceof String || typeof target === 'string') {
+				if (target == object["id"]) {
 					object.isVisible = !object.isVisible;
 					var index = targetElements.indexOf(object["id"]);
 					if (index !== -1) targetElements.splice(index, 1);
 					return
 				}
-			}else if((target instanceof Object || typeof target === 'object') && target !== null){
-				if(target["elementId"] === object["id"]){
+			} else if ((target instanceof Object || typeof target === 'object') && target !== null) {
+				if (target["elementId"] === object["id"]) {
 					if (!Utils.isNullOrEmpty(target["isVisible"])) {
 						object.isVisible = target["isVisible"]
 					} else {
@@ -102,30 +101,29 @@ export default class AdaptiveCard extends React.Component {
 	 * @param {string} idValue - the id of the component to be toggled
 	 */
 
-	toggleCardModelObject = (object,idArrayValue) => {
+	toggleCardModelObject = (object, idArrayValue) => {
 		if (idArrayValue.length === 0) return
 		if (object.hasOwnProperty('id')) {
 			this.checkTargetElementsForID(object, idArrayValue);
 			if (idArrayValue.length === 0) return
 		}
-		if((object.children !== undefined) && object.children.length !== 0 ){
+		if ((object.children !== undefined) && object.children.length !== 0) {
 			object.children.forEach(element => {
 				if (idArrayValue.length === 0) return
-					this.toggleCardModelObject(element, idArrayValue);
+				this.toggleCardModelObject(element, idArrayValue);
 			});
 		}
 		//Adaptive cards has actions array in addition to the body which is added as children
-		if(object.type === 'AdaptiveCard'){
-			if((object.actions !== undefined) && object.actions.length !== 0 ){
+		if (object.type === 'AdaptiveCard') {
+			if ((object.actions !== undefined) && object.actions.length !== 0) {
 				object.actions.forEach(element => {
 					if (idArrayValue.length === 0) return
-						this.toggleCardModelObject(element, idArrayValue);
+					this.toggleCardModelObject(element, idArrayValue);
 				});
 			}
 		}
 		return;
 	}
-
 
 	/**
 	 * @description Returns the resource information in the card elements as an array
@@ -166,10 +164,17 @@ export default class AdaptiveCard extends React.Component {
 	}
 
 	getAdaptiveCardContent() {
+		let containerStyles = [styles.container]
+		//If contentHeight is passed by the user from adaptive card via props, we will set this as height
+		this.props.contentHeight && containerStyles.push({ height: this.props.contentHeight })
 		var adaptiveCardContent =
 			(
-				<ContainerWrapper style={styles.container} json={this.state.cardModel}>
-					<ScrollView alwaysBounceVertical={false} style={{ flexGrow: 0 }}>
+				<ContainerWrapper style={containerStyles} json={this.state.cardModel}>
+					<ScrollView
+						showsHorizontalScrollIndicator={true}
+						showsVerticalScrollIndicator={true}
+						alwaysBounceVertical={false}
+						alwaysBounceHorizontal={false}>
 						{this.parsePayload()}
 						{!Utils.isNullOrEmpty(this.state.cardModel.actions) &&
 							<ActionWrapper actions={this.state.cardModel.actions} />}
@@ -273,19 +278,19 @@ AdaptiveCard.propTypes = {
 	hostConfig: PropTypes.object,
 	themeConfig: PropTypes.object,
 	onExecuteAction: PropTypes.func,
-	onParseError: PropTypes.func
+	onParseError: PropTypes.func,
+	contentHeight: PropTypes.number
 };
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
+		padding: 10
 	},
 	actionContainer: {
 		marginVertical: 10
 	},
 	backgroundImage: {
-		width: "100%",
-		flex: 1
+		width: "100%"
 	}
 });
 

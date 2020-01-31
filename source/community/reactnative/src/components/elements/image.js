@@ -17,8 +17,10 @@ import * as Constants from '../../utils/constants';
 import ElementWrapper from '../elements/element-wrapper';
 import { SelectAction } from '../actions';
 import { StyleManager } from '../../styles/style-config';
-import { InputContext,
-		InputContextConsumer } from '../../utils/context';
+import {
+	InputContext,
+	InputContextConsumer
+} from '../../utils/context';
 
 const ContainResizeMode = 'contain';
 
@@ -61,7 +63,7 @@ export class Img extends React.Component {
 
 		this.url = Utils.getImageUrl(imageUrl)
 		this.id = this.payload.id || Constants.EmptyString;
-		let spacingValue = Utils.parseHostConfigEnum(
+		const spacingValue = Utils.parseHostConfigEnum(
 			Enums.Spacing,
 			this.payload.spacing,
 			Enums.Spacing.Small);
@@ -185,9 +187,15 @@ export class Img extends React.Component {
 							sizeStyle.push({ height: this.hostConfig.imageSizes.medium }) :
 							sizeStyle.push({ height: this.hostConfig.imageSizes.medium * w2hratio })
 
+						const spacingValue = Utils.parseHostConfigEnum(
+							Enums.Spacing,
+							this.payload.spacing,
+							Enums.Spacing.Medium);
+						this.spacing = this.hostConfig.getEffectiveSpacing(spacingValue);
+
 						this.payload.fromImageSet == true ?
-							sizeStyle.push({ height: this.state.imageHeight }) :
-							sizeStyle.push({ height: this.hostConfig.imageSizes.medium * w2hratio })
+							sizeStyle.push({ height: this.state.imageHeight, marginRight: this.spacing }) :
+							sizeStyle.push({ height: this.hostConfig.imageSizes.medium * w2hratio })//adding margin right 30px for medium and large to align with native
 
 						this.width = this.hostConfig.imageSizes.medium;
 						break;
@@ -199,9 +207,15 @@ export class Img extends React.Component {
 							sizeStyle.push({ height: this.hostConfig.imageSizes.large }) :
 							sizeStyle.push({ height: this.hostConfig.imageSizes.large * w2hratio })
 
+						const spacingValue = Utils.parseHostConfigEnum(
+							Enums.Spacing,
+							this.payload.spacing,
+							Enums.Spacing.Large);
+						this.spacing = this.hostConfig.getEffectiveSpacing(spacingValue);
+
 						this.payload.fromImageSet == true ?
-							sizeStyle.push({ height: this.state.imageHeight }) :
-							sizeStyle.push({ height: this.hostConfig.imageSizes.large * w2hratio })
+							sizeStyle.push({ height: this.state.imageHeight, marginRight: this.spacing }) :
+							sizeStyle.push({ height: this.hostConfig.imageSizes.large * w2hratio })//adding margin right 30px for medium and large to align with native
 
 						this.width = this.hostConfig.imageSizes.large;
 						break;
@@ -219,8 +233,14 @@ export class Img extends React.Component {
 								sizeStyle.push({ height: this.hostConfig.imageSizes.medium }) :
 								sizeStyle.push({ height: this.state.imageHeight })
 
+							const spacingValue = Utils.parseHostConfigEnum(
+								Enums.Spacing,
+								this.payload.spacing,
+								Enums.Spacing.Medium);
+							this.spacing = this.hostConfig.getEffectiveSpacing(spacingValue);
+
 							this.payload.fromImageSet == true ?
-								sizeStyle.push({ height: this.state.imageHeight }) :
+								sizeStyle.push({ height: this.state.imageHeight, marginRight: this.spacing }) :
 								sizeStyle.push({ height: this.hostConfig.imageSizes.medium })
 
 							this.width = this.hostConfig.imageSizes.medium;
