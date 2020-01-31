@@ -6,13 +6,13 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
+#import "AdaptiveCards/ACOHostConfigPrivate.h"
 #import "AdaptiveCards/ACORemoteResourceInformationPrivate.h"
 #import "AdaptiveCards/ACRShowCardTarget.h"
 #import "AdaptiveCards/ACRViewPrivate.h"
 #import "AdaptiveCards/ShowCardAction.h"
 #import "AdaptiveCards/TextBlock.h"
 #import "AdaptiveCards/UtiliOS.h"
-#import "CustomActionNewType.h"
 #import <AdaptiveCards/ACFramework.h>
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
@@ -25,6 +25,7 @@
     NSBundle *_mainBundle;
     NSString *_defaultHostConfigFile;
     ACOHostConfig *_defaultHostConfig;
+    NSSet *_setOfExpectedToFailFiles;
 }
 
 - (void)setUp
@@ -40,6 +41,8 @@
             _defaultHostConfig = hostconfigParseResult.config;
         }
     }
+
+    _setOfExpectedToFailFiles = [NSSet setWithArray:@[ @"TypeIsRequired.json", @"AdaptiveCard.MissingVersion.json", @"InvalidMediaMix.json", @"Action.DuplicateIds.json", @"Action.NestedDuplicateIds.json" ]];
 
     self.continueAfterFailure = NO;
 }
@@ -69,7 +72,7 @@
 }
 
 - (void)testRemoteResouceInformation
-{   
+{
     NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"FoodOrder" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
 
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
@@ -87,6 +90,63 @@
         XCTAssertTrue([@"image" isEqualToString:info.mimeType]);
     }
 }
+/* walk the directories in DFS post-order, and parse and render each payload */
+- (void)parseAndRenderDFS:(NSString *)rootPath FileManager:(NSFileManager *)fManager
+{
+    // files + directories
+    NSArray *directoryContents = [fManager contentsOfDirectoryAtPath:rootPath error:nil];
+    // files only
+    NSMutableArray *filesList = [[NSMutableArray alloc] init];
+
+    // iterate through contents, and if it's a directory, recurse with it, else added to filesList for testing
+    for (NSString *path in directoryContents) {
+        BOOL isDirectory = NO;
+        NSString *resourcePath = [rootPath stringByAppendingPathComponent:path];
+        if ([fManager fileExistsAtPath:resourcePath isDirectory:&isDirectory]) {
+            NSString *displayName = [fManager displayNameAtPath:path];
+            // HostConfigs & Templates directories don't contain valid samples, since there are only two such directories,
+            // if condition check for their names are sufficient
+            if (isDirectory && !([displayName isEqualToString:@"HostConfig"] or [displayName isEqualToString:@"Templates"])) {
+                [self parseAndRenderDFS:resourcePath FileManager:fManager];
+            } else if ([[resourcePath pathExtension] isEqualToString:@"json"]) {
+                [filesList addObject:resourcePath];
+            }
+        }
+    }
+
+    // testing files in the current directory
+    for (NSString *pathToFile in filesList) {
+        NSString *payload =
+            [NSString stringWithContentsOfFile:pathToFile
+                                      encoding:NSUTF8StringEncoding
+                                         error:nil];
+
+        NSString *fileName = [pathToFile lastPathComponent];
+        ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
+
+        if ([_setOfExpectedToFailFiles containsObject:fileName]) {
+            XCTAssertFalse(cardParseResult.isValid);
+        } else {
+            XCTAssertTrue(cardParseResult.isValid);
+            ACRRenderResult *renderResult;
+            renderResult = [ACRRenderer render:cardParseResult.card
+                                        config:nil
+                               widthConstraint:300
+                                      delegate:nil];
+            XCTAssertTrue(renderResult.succeeded);
+        }
+    }
+}
+- (void)testParsingAndRenderingAllCards
+{
+    NSBundle *main = [NSBundle mainBundle];
+    NSString *resourcePath = [main resourcePath];
+    NSString *rootPath = [resourcePath stringByAppendingPathComponent:@"samples"];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+
+    // testing parsing and rendering from bottom up using DFS
+    [self parseAndRenderDFS:rootPath FileManager:fileManager];
+}
 
 - (void)testRelativeURLInformation
 {
@@ -95,6 +155,15 @@
     XCTAssertTrue(cardParseResult.isValid);
     // host config base url is successfully parsed
     XCTAssertTrue([_defaultHostConfig.baseURL.absoluteString isEqualToString:@"https://pbs.twimg.com/profile_images/3647943215/"]);
+}
+
+- (void)testActionTargetBuilderDirectorCanBeBuiltWithNoUserHostconfig
+{
+    NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"Feedback" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
+    ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
+    XCTAssertTrue(cardParseResult && cardParseResult.isValid);
+    ACRRenderResult *renderResult = [ACRRenderer render:cardParseResult.card config:nil widthConstraint:335];
+    XCTAssertNotNil([renderResult.view getActionsTargetBuilderDirector]);
 }
 
 - (void)testACRTextView
@@ -181,6 +250,47 @@
     NSData *output = [cardParseResult.card inputs];
     NSString *str = [[NSString alloc] initWithData:output encoding:NSUTF8StringEncoding];
     XCTAssertTrue([str isEqualToString:expectedString]);
+}
+
+- (void)testMaxActionConfig
+{
+    ACOHostConfig *config = [[ACOHostConfig alloc] init];
+    auto adaptiveConfig = [config getHostConfig];
+    ActionsConfig actionConfig;
+    actionConfig.maxActions = 2;
+    adaptiveConfig->SetActions(actionConfig);
+    NSArray<NSString *> *payloadNames = @[ @"Action.ShowCard.Style" ];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    ACRRenderResult *result = [ACRRenderer render:cards[0] config:config widthConstraint:320.0];
+    XCTAssertTrue(result.warnings.count == 1);
+    XCTAssertTrue([result.warnings[0].message isEqualToString:@"Some actions were not rendered due to exceeding the maximum number of actions allowed"]);
+    actionConfig.maxActions = 3;
+    adaptiveConfig->SetActions(actionConfig);
+    result = [ACRRenderer render:cards[0] config:config widthConstraint:320.0];
+    XCTAssertTrue(result.warnings.count == 0);
+}
+
+- (void)testTextPreProcessingFailSafe
+{
+    NSArray<NSString *> *payloadNames = @[ @"TextBlock.Color" ];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+
+    ACRRegistration *registration = [ACRRegistration getInstance];
+
+    // reset text block renderer registration
+    [registration setBaseCardElementRenderer:nil
+                             cardElementType:[ACRTextBlockRenderer elemType]];
+    // register the text block as a override renderer
+    [registration setBaseCardElementRenderer:[ACRTextBlockRenderer getInstance]
+                             cardElementType:[ACRTextBlockRenderer elemType]];
+
+    @try {
+        ACRRenderResult *result = [ACRRenderer render:cards[0] config:nil widthConstraint:320.0];
+        XCTAssertTrue(result.succeeded);
+    }
+    @catch (NSException *exception) {
+        XCTFail(@"intermediate string results should be always available in the text map");
+    }
 }
 
 - (void)testPerformanceOnComplicatedCards

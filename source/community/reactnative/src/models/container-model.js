@@ -75,13 +75,8 @@ export class ColumnModel extends BaseContainerModel {
         if (payload.width) {
             if (payload.width === 'auto' || payload.width === 'stretch') {
                 this.width = payload.width;
-            }
-            else {
-                let columnWidth = parseInt(payload.width, 10);
-                if (columnWidth < 0) {
-                    columnWidth = 0;
-                }
-                this.width = columnWidth;
+            } else {
+                this.width = parseInt(payload.width, 10) < 0 ? 0 : payload.width;
             }
         }
     }
