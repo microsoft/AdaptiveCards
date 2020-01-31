@@ -157,6 +157,15 @@
     XCTAssertTrue([_defaultHostConfig.baseURL.absoluteString isEqualToString:@"https://pbs.twimg.com/profile_images/3647943215/"]);
 }
 
+- (void)testActionTargetBuilderDirectorCanBeBuiltWithNoUserHostconfig
+{
+    NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"Feedback" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
+    ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
+    XCTAssertTrue(cardParseResult && cardParseResult.isValid);
+    ACRRenderResult *renderResult = [ACRRenderer render:cardParseResult.card config:nil widthConstraint:335];
+    XCTAssertNotNil([renderResult.view getActionsTargetBuilderDirector]);
+}
+
 - (void)testACRTextView
 {
     NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"Feedback" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
@@ -259,6 +268,29 @@
     adaptiveConfig->SetActions(actionConfig);
     result = [ACRRenderer render:cards[0] config:config widthConstraint:320.0];
     XCTAssertTrue(result.warnings.count == 0);
+}
+
+- (void)testTextPreProcessingFailSafe
+{
+    NSArray<NSString *> *payloadNames = @[ @"TextBlock.Color" ];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+
+    ACRRegistration *registration = [ACRRegistration getInstance];
+
+    // reset text block renderer registration
+    [registration setBaseCardElementRenderer:nil
+                             cardElementType:[ACRTextBlockRenderer elemType]];
+    // register the text block as a override renderer
+    [registration setBaseCardElementRenderer:[ACRTextBlockRenderer getInstance]
+                             cardElementType:[ACRTextBlockRenderer elemType]];
+
+    @try {
+        ACRRenderResult *result = [ACRRenderer render:cards[0] config:nil widthConstraint:320.0];
+        XCTAssertTrue(result.succeeded);
+    }
+    @catch (NSException *exception) {
+        XCTFail(@"intermediate string results should be always available in the text map");
+    }
 }
 
 - (void)testPerformanceOnComplicatedCards
