@@ -37,12 +37,6 @@ namespace AdaptiveCards.XamarinForms.BotClient
         {
             base.OnAppearing();
 
-            var baseUri = new Uri("https://directline.scratch.botframework.com");
-            var secret = "b9RlKakMKPk.cwA.HLc.m6lzEenENtMMk2TD_Lh4iGzK3VlP6x_NsRaA-KLhHkk";
-            // _client = new DirectLineClient(baseUri, new DirectLineClientCredentials(secret));
-
-            // _conversation = await _client.Conversations.StartConversationAsync().ConfigureAwait(false);
-            
             _card = new AdaptiveCard
             {
                 Body = new List<CardElement> { 
@@ -59,17 +53,136 @@ namespace AdaptiveCards.XamarinForms.BotClient
                 }
             };
 
+            _card = new AdaptiveCard
+            {
+                Body = new List<CardElement>
+                {
+                    new TextBlock
+                    {
+                        Text = "Publish Adaptive Card schema",
+                        Weight = TextWeight.Bolder,
+                        Size = TextSize.Medium
+                    },
+                    new ColumnSet
+                    {
+                        Columns = new List<Column>
+                        {
+                            new Column
+                            {
+                                Items = new List<CardElement>
+                                {
+                                    new Image
+                                    {
+                                        Url = "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
+                                        Size = ImageSize.Small,
+                                        Style = ImageStyle.Person
+                                    }
+                                }
+                            },
+                            new Column
+                            {
+                                Items = new List<CardElement>
+                                {
+                                    new TextBlock
+                                    {
+                                        Text = "Matt Hidinger",
+                                        Weight = TextWeight.Bolder,
+                                        Wrap = true
+                                    },
+                                    new TextBlock
+                                    {
+                                        Text = "Created <a random date>",
+                                        IsSubtle = true,
+                                        Wrap = true
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    new TextBlock
+                    {
+                        Text = "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
+                        Wrap = true
+                    },
+                    new FactSet
+                    {
+                        Facts = new List<Fact>
+                        {
+                            new Fact
+                            {
+                                Title = "Board: ",
+                                Value = "Adaptive Card"
+                            },
+                            new Fact
+                            {
+                                Title = "List: ",
+                                Value = "Backlog"
+                            },
+                            new Fact
+                            {
+                                Title = "Assigned to: ",
+                                Value = "Matt Hidinger"
+                            },
+                            new Fact
+                            {
+                                Title = "Due date: ",
+                                Value = "Not set"
+                            }
+                        }
+                    }
+                },
+                Actions = new List<ActionBase>
+                {
+                    new ShowCardAction
+                    {
+                        Title = "Set due date",
+                        Card = new AdaptiveCard
+                        {
+                            Body = new List<CardElement>
+                            {
+                                new DateInput
+                                {
+                                    Id = "dueDate"
+                                }
+                            },
+                            Actions = new List<ActionBase>
+                            {
+                                new SubmitAction
+                                {
+                                    Title = "Ok!"
+                                }
+                            }
+                        }
+                    }, 
+                    new ShowCardAction
+                    {
+                        Title = "Comment",
+                        Card = new AdaptiveCard
+                        {
+                            Body = new List<CardElement>
+                            {
+                                new TextInput
+                                {
+                                    Id = "comment",
+                                    IsMultiline = true,
+                                    Placeholder = "Enter your comment"
+                                }
+                            },
+                            Actions = new List<ActionBase>
+                            {
+                                new SubmitAction
+                                {
+                                    Title = "Ok!"
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
             _renderer = new XamlRenderer(new HostConfig(), Application.Current.Resources, _onAction, _onMissingInput);
 
             _cardContainer = this.FindByName<StackLayout>("Items");
-
-            // AdaptiveTestBot
-            // d5600769-0c92-4ab3-99f4-61380589a887
-            // pass GWGDf3PnKzxLMvi3uo9uNLy
-
-
-            // dl key b9RlKakMKPk.cwA.HLc.m6lzEenENtMMk2TD_Lh4iGzK3VlP6x_NsRaA-KLhHkk
-            // dl b9RlKakMKPk.cwA.dzE.-n6M3jIwaakiWGtA6XX7-m5zn74m3yUzU5k5ANs8WGg
         }
 
         private void _textBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -79,23 +192,10 @@ namespace AdaptiveCards.XamarinForms.BotClient
 
         private void SpeechButton_Clicked(object sender, EventArgs e)
         {
-            //if (VoiceInputExtension.Current != null)
-            //{
-            //    if (ChatAgent.Current.IsTakingVoiceInput)
-            //    {
-            //        ChatAgent.Current.StopVoiceInput();
-            //    }
-            //    else
-            //    {
-            //        ChatAgent.Current.StartVoiceInput();
-            //    }
-            //}
         }
 
         private async void _itemsLayout_SizeChanged(object sender, EventArgs e)
         {
-            //await Task.Delay(50);
-            //await MessagesScrollView.ScrollToAsync(0, int.MaxValue, true);
         }
 
         private void Button_Clicked(object sender, System.EventArgs e)
@@ -113,67 +213,14 @@ namespace AdaptiveCards.XamarinForms.BotClient
             _cardContainer.Children.Clear();
             View v = _renderer.RenderAdaptiveCard(_card, null, new HostConfig());
             _cardContainer.Children.Add(v);
-            // var text = Message.Text;
-            // Send(text);
         }
 
         private async Task Send(string message)
         {
-            /*
-            message = message.Replace('"', '\'');
-            Message.Text = "";
-
-            var fromProperty = new ChannelAccount("Matt");
-
-            var activity = new Activity(text: message, fromProperty: fromProperty, type: "message");
-            try
-            {
-                // await _client.Conversations.PostActivityAsync(_conversation.ConversationId, activity);
-                await Task.Delay(2000);            
-                await GetMessages();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.ToString());
-                Debugger.Break();
-            }
-            */
         }
 
         public async Task<IList<object>> GetMessages()
         {
-            /*
-            var response = await _client.Conversations
-                .GetActivitiesAsync(_conversation.ConversationId, _watermark)
-                .ConfigureAwait(false);
-*/
-            /*
-                        var cardAttachments = response.Activities
-                            .Where(m => m.Attachments != null)
-                            .SelectMany(m => m.Attachments)
-                            .Where(m => m.ContentType == "application/vnd.microsoft.card.adaptive");
-                            */
-            /*
-        foreach (var attachment in cardAttachments)
-        {
-            var jObject = (JObject)attachment.Content;
-            var card = jObject.ToObject<AdaptiveCard>();
-
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                var xaml = _renderer.RenderAdaptiveCard(card);
-
-                xaml.WidthRequest = 350;
-                xaml.Margin = new Thickness(8);
-                xaml.BackgroundColor = Color.LightGray;
-
-                Items.Children.Add(xaml);
-            });
-        }
-
-        _watermark = response.Watermark;
-        return response.Activities;
-        */
             return null;
         }
 
