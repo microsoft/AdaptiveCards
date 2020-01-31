@@ -6,22 +6,25 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Xamarin.Forms;
-using Microsoft.Bot.Connector.DirectLine;
 using Newtonsoft.Json.Linq;
 using AdaptiveCards.Rendering;
 using AdaptiveCards.Rendering.Config;
+using System.Xml.Serialization;
 
 namespace AdaptiveCards.XamarinForms.BotClient
 {
     public partial class MainPage : ContentPage
     {
-        private DirectLineClient _client;
-        private Conversation _conversation;
+        // private DirectLineClient _client;
+        // private Conversation _conversation;
         private string _watermark;
  
         private Action<object, MissingInputEventArgs> _onMissingInput = (s, e) => { };
         private Action<object, ActionEventArgs> _onAction = (s, a) => { };
         private XamlRenderer _renderer;
+        AdaptiveCard _card;
+
+        StackLayout _cardContainer = null;
 
         public MainPage()
         {
@@ -36,12 +39,30 @@ namespace AdaptiveCards.XamarinForms.BotClient
 
             var baseUri = new Uri("https://directline.scratch.botframework.com");
             var secret = "b9RlKakMKPk.cwA.HLc.m6lzEenENtMMk2TD_Lh4iGzK3VlP6x_NsRaA-KLhHkk";
-            _client = new DirectLineClient(baseUri, new DirectLineClientCredentials(secret));
+            // _client = new DirectLineClient(baseUri, new DirectLineClientCredentials(secret));
 
-            _conversation = await _client.Conversations.StartConversationAsync().ConfigureAwait(false);
+            // _conversation = await _client.Conversations.StartConversationAsync().ConfigureAwait(false);
+            
+            _card = new AdaptiveCard
+            {
+                Body = new List<CardElement> { 
+                    new TextBlock
+                    {
+                        Text = "This is a textblock",
+                    },
+                    new TextBlock
+                    {
+                        Text = "This textblock is subtle",
+                        Separation = SeparationStyle.Strong,
+                        IsSubtle = true
+                    }
+                }
+            };
 
             _renderer = new XamlRenderer(new HostConfig(), Application.Current.Resources, _onAction, _onMissingInput);
-        
+
+            _cardContainer = this.FindByName<StackLayout>("Items");
+
             // AdaptiveTestBot
             // d5600769-0c92-4ab3-99f4-61380589a887
             // pass GWGDf3PnKzxLMvi3uo9uNLy
@@ -89,12 +110,16 @@ namespace AdaptiveCards.XamarinForms.BotClient
 
         private void Send()
         {
-            var text = Message.Text;
-            Send(text);
+            _cardContainer.Children.Clear();
+            View v = _renderer.RenderAdaptiveCard(_card, null, new HostConfig());
+            _cardContainer.Children.Add(v);
+            // var text = Message.Text;
+            // Send(text);
         }
 
         private async Task Send(string message)
         {
+            /*
             message = message.Replace('"', '\'');
             Message.Text = "";
 
@@ -103,7 +128,7 @@ namespace AdaptiveCards.XamarinForms.BotClient
             var activity = new Activity(text: message, fromProperty: fromProperty, type: "message");
             try
             {
-                await _client.Conversations.PostActivityAsync(_conversation.ConversationId, activity);
+                // await _client.Conversations.PostActivityAsync(_conversation.ConversationId, activity);
                 await Task.Delay(2000);            
                 await GetMessages();
             }
@@ -112,39 +137,44 @@ namespace AdaptiveCards.XamarinForms.BotClient
                 Debug.WriteLine(ex.ToString());
                 Debugger.Break();
             }
-
+            */
         }
 
-        public async Task<IList<Activity>> GetMessages()
+        public async Task<IList<object>> GetMessages()
         {
+            /*
             var response = await _client.Conversations
                 .GetActivitiesAsync(_conversation.ConversationId, _watermark)
                 .ConfigureAwait(false);
+*/
+            /*
+                        var cardAttachments = response.Activities
+                            .Where(m => m.Attachments != null)
+                            .SelectMany(m => m.Attachments)
+                            .Where(m => m.ContentType == "application/vnd.microsoft.card.adaptive");
+                            */
+            /*
+        foreach (var attachment in cardAttachments)
+        {
+            var jObject = (JObject)attachment.Content;
+            var card = jObject.ToObject<AdaptiveCard>();
 
-            var cardAttachments = response.Activities
-                .Where(m => m.Attachments != null)
-                .SelectMany(m => m.Attachments)
-                .Where(m => m.ContentType == "application/vnd.microsoft.card.adaptive");
-
-            foreach (var attachment in cardAttachments)
+            Device.BeginInvokeOnMainThread(() =>
             {
-                var jObject = (JObject)attachment.Content;
-                var card = jObject.ToObject<AdaptiveCard>();
+                var xaml = _renderer.RenderAdaptiveCard(card);
 
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    var xaml = _renderer.RenderAdaptiveCard(card);
-                    
-                    xaml.WidthRequest = 350;
-                    xaml.Margin = new Thickness(8);
-                    xaml.BackgroundColor = Color.LightGray;
+                xaml.WidthRequest = 350;
+                xaml.Margin = new Thickness(8);
+                xaml.BackgroundColor = Color.LightGray;
 
-                    Items.Children.Add(xaml);
-                });
-            }
+                Items.Children.Add(xaml);
+            });
+        }
 
-            _watermark = response.Watermark;
-            return response.Activities;
+        _watermark = response.Watermark;
+        return response.Activities;
+        */
+            return null;
         }
 
         private void Current_VoiceInputCompleted(object sender, string e)

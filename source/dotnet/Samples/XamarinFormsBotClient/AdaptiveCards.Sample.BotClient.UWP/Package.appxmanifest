@@ -7,15 +7,15 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="55f20cef-9b67-46fb-873b-aca1b4715f8b"
-    Publisher="CN=mahiding"
+    Name="fe1d49af-204d-4725-9a72-cfe1761df72a"
+    Publisher="CN=almedina"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="55f20cef-9b67-46fb-873b-aca1b4715f8b" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="fe1d49af-204d-4725-9a72-cfe1761df72a" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>AdaptiveCards.XamarinForms.BotClient.UWP</DisplayName>
-    <PublisherDisplayName>mahiding</PublisherDisplayName>
+    <DisplayName>AdaptiveCards.Sample.BotClient.UWP</DisplayName>
+    <PublisherDisplayName>almedina</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -30,12 +30,12 @@
   <Applications>
     <Application Id="App"
       Executable="$targetnametoken$.exe"
-      EntryPoint="AdaptiveCards.XamarinForms.BotClient.UWP.App">
+      EntryPoint="AdaptiveCards.Sample.BotClient.UWP.App">
       <uap:VisualElements
-        DisplayName="AdaptiveCards.XamarinForms.BotClient.UWP"
+        DisplayName="AdaptiveCards.Sample.BotClient.UWP"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="AdaptiveCards.XamarinForms.BotClient.UWP"
+        Description="AdaptiveCards.Sample.BotClient.UWP"
         BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
