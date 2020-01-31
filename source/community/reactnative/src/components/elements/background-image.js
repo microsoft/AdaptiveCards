@@ -42,7 +42,7 @@ export class BackgroundImage extends React.Component {
     parseHostConfig = () => {
         this.backgroundImageModeEnumValue = Utils.parseHostConfigEnum(
             Enums.BackgroundImageMode,
-            this.backgroundImage.mode,
+            this.backgroundImage.fillMode || this.backgroundImage.mode,
             Constants.AlignStretch);
         this.verticalAlignmentEnumValue = Utils.parseHostConfigEnum(
             Enums.VerticalAlignment,
@@ -130,7 +130,7 @@ export class BackgroundImage extends React.Component {
                         resizeMethod={Constants.Resize}
                         source={{ uri: this.backgroundImage.url }}
                         onError={() => { this.onError(onParseError) }}
-                        style={{ width: this.state.backgroundImageWidth, height: Constants.FullWidth, resizeMode: Constants.Repeat }}
+                        style={{ width: this.state.backgroundImageWidth / 3, height: Constants.FullWidth, resizeMode: Constants.Repeat }}
                     />
                 );
                 break;
@@ -154,7 +154,7 @@ export class BackgroundImage extends React.Component {
                         resizeMethod={Constants.Resize}
                         source={{ uri: this.backgroundImage.url }}
                         onError={() => { this.onError(onParseError) }}
-                        style={{ width: this.state.backgroundImageWidth, height: Constants.FullWidth, resizeMode: Constants.Repeat }}
+                        style={{ width: this.state.backgroundImageWidth / 3, height: Constants.FullWidth, resizeMode: Constants.Repeat }}
                     />
                 );
                 break;
