@@ -13,9 +13,9 @@ Input validation was originally spec'd in issue [#3081](https://github.com/micro
     "errorMessage": "Username must be between 5 and 50 characters long."
 }
 ```
-The main additions to the schema for input validation are the `"isRequired"`, `"regex"`, and `"errorMessage"` properties on inputs. These properties allow a card author to specify whether or not an input is required, what regular expression defines valid input, and what error message should be shown in case of invalid user input.
+All `Input.*` types will have the `"isRequired"`, and `"errorMessage"` properties added to them. These properties allow a card author to specify whether or not an input is required, and what error message should be shown in case of invalid user input.
 
-Although `regex` would only be supported on `Input.Text`, the `isRequired` and `errorMessage` properties would be supported on all `Input.*` types.
+Additionally, a `regex` property will be added to `Input.Text` to allow card authors to specify what regular expression defines valid input,
 
 ## Validation Rendering
 
@@ -43,6 +43,8 @@ Issue [#3081](https://github.com/microsoft/AdaptiveCards/issues/3081) covers res
  - First Validation on focus lost (default behavior)
  - First Validation on action
  - First Validation on focus lost only if the user has typed something
+
+ For any of the above values, validation will happen for un-validated fields on action, and focus will be placed in the first invalid input.
 
 ### Which Input Properties to Validate
 
