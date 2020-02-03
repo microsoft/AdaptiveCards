@@ -1,4 +1,6 @@
-﻿using System;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -18,7 +20,7 @@ namespace AdaptiveCards.XamarinForms.BotClient
         // private DirectLineClient _client;
         // private Conversation _conversation;
         private string _watermark;
- 
+
         private Action<object, MissingInputEventArgs> _onMissingInput = (s, e) => { };
         private Action<object, ActionEventArgs> _onAction = (s, a) => { };
         private XamlRenderer _renderer;
@@ -181,6 +183,7 @@ namespace AdaptiveCards.XamarinForms.BotClient
             };
 
             _renderer = new XamlRenderer(new HostConfig(), Application.Current.Resources, _onAction, _onMissingInput);
+            _renderer = new AdaptiveCardRenderer(new HostConfig());
 
             _cardContainer = this.FindByName<StackLayout>("Items");
         }

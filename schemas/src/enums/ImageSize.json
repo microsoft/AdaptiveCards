@@ -1,0 +1,27 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+  "classType": "Enum",
+  "description": "Controls the approximate size of the image. The physical dimensions will vary per host. Every option preserves aspect ratio.",
+  "values": [
+    {
+      "value": "auto",
+      "description": "Image will scale down to fit if needed, but will not scale up to fill the area."
+    },
+    {
+      "value": "stretch",
+      "description": "Image with both scale down and up to fit as needed."
+    },
+    {
+      "value": "small",
+      "description": "Image is displayed with a fixed small width, where the width is determined by the host."
+    },
+    {
+      "value": "medium",
+      "description": "Image is displayed with a fixed medium width, where the width is determined by the host."
+    },
+    {
+      "value": "large",
+      "description": "Image is displayed with a fixed large width, where the width is determined by the host."
+    }
+  ]
+}

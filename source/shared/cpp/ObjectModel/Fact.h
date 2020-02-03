@@ -1,34 +1,39 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "pch.h"
-#include "Enums.h"
-#include "json\json.h"
+#include "ElementParserRegistration.h"
+#include "DateTimePreparser.h"
 
-namespace AdaptiveCards
+namespace AdaptiveSharedNamespace
 {
-class Fact
-{
-public:
-    Fact();
-    Fact(std::string title, std::string value, std::string speak);
+    class Fact
+    {
+    public:
+        Fact();
+        Fact(std::string const& title, std::string const& value);
 
-    std::string Serialize();
+        std::string Serialize();
+        Json::Value SerializeToJsonValue();
 
-    std::string GetTitle() const;
-    void SetTitle(const std::string value);
+        std::string GetTitle() const;
+        void SetTitle(const std::string& value);
 
-    std::string GetValue() const;
-    void SetValue(const std::string value);
+        std::string GetValue() const;
+        void SetValue(const std::string& value);
+        DateTimePreparser GetTitleForDateParsing() const;
+        DateTimePreparser GetValueForDateParsing() const;
 
-    std::string GetSpeak() const;
-    void SetSpeak(const std::string value);
+        void SetLanguage(const std::string& value);
+        std::string GetLanguage() const;
 
-    static std::shared_ptr<Fact> Deserialize(const Json::Value& root);
-    static std::shared_ptr<Fact> DeserializeFromString(const std::string& jsonString);
+        static std::shared_ptr<Fact> Deserialize(const ParseContext& context, const Json::Value& root);
+        static std::shared_ptr<Fact> DeserializeFromString(const ParseContext& context, const std::string& jsonString);
 
-private:
-    std::string m_title;
-    std::string m_value;
-    std::string m_speak;
-};
+    private:
+        std::string m_title;
+        std::string m_value;
+        std::string m_language;
+    };
 }

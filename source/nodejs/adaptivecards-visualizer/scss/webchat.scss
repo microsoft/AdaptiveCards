@@ -1,0 +1,21 @@
+@import 'node_modules/adaptivecards/scss/base';
+
+@include base-anchor();
+
+@include base-container();
+
+@include base-push-button();
+
+@include base-input();
+
+.webChatOuterContainer {
+    background-color: #ECEFF1;
+    border: 1px solid #E6E6E6;
+    padding: 8px;
+    width: 416px;
+    border-radius: 4px;    
+}
+
+.webChatInnerContainer {
+    border: 1px solid #D2DDE5;
+}

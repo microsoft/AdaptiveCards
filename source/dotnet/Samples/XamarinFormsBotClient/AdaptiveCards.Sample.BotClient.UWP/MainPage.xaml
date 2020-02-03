@@ -1,4 +1,4 @@
-﻿<forms:WindowsPage
+﻿﻿<forms:WindowsPage
     x:Class="AdaptiveCards.Sample.BotClient.UWP.MainPage"
     xmlns:forms="using:Xamarin.Forms.Platform.UWP"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"

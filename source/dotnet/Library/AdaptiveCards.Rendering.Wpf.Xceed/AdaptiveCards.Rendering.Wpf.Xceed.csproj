@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net4.5.2</TargetFramework>
+    <Authors>Microsoft</Authors>
+    <Summary>Adaptive Card renderer for WPF with enhanced input controls provided by the Xceed WPF toolkit</Summary>
+    <Description>This library implements classes for rendering Adaptive Cards into WPF controls</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageTags>adaptivecards;adaptive-cards</PackageTags>
+    <PackageProjectUrl>https://adaptivecards.io</PackageProjectUrl>
+    <PackageIconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RootNamespace>AdaptiveCards.Rendering.Wpf</RootNamespace>
+    <DefineConstants>WPF;$(DefineConstants);$(AdditionalConstants)</DefineConstants>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <GenerateAssemblyInfo Condition="$(Tfs_PackageVersionNumber) != ''">false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="3.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AdaptiveCards.Rendering.Wpf\AdaptiveCards.Rendering.Wpf.csproj" />
+    <ProjectReference Include="..\AdaptiveCards\AdaptiveCards.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+
+</Project>

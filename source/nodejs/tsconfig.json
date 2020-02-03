@@ -1,0 +1,19 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "es5",
+		"lib": [
+			"dom",
+			"es2015"
+		],
+		"moduleResolution": "node",
+		"jsx": "react",
+		"noImplicitAny": false,
+		"sourceMap": true,
+		"declaration": true
+	},
+	"exclude": [
+		"node_modules",
+		"**/*.spec.ts"
+	]
+}

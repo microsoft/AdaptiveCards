@@ -1,29 +1,59 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "pch.h"
 #include "Enums.h"
-#include "Container.h"
+#include "BackgroundImage.h"
+#include "BaseActionElement.h"
+#include "CollectionTypeElement.h"
 
-namespace AdaptiveCards
+namespace AdaptiveSharedNamespace
 {
-class Column : public Container
-{
-public:
-    Column();
-    Column(SeparationStyle separation, std::string speak, std::string size);
-    Column(SeparationStyle separation, std::string speak, std::string size, std::vector<std::shared_ptr<BaseCardElement>>& items);
+    class BaseActionElement;
 
-    virtual std::string Serialize();
+    class Column : public CollectionTypeElement
+    {
+    public:
+        Column();
 
-    static std::shared_ptr<Column> Deserialize(const Json::Value& root);
-    static std::shared_ptr<Column> DeserializeFromString(const std::string& jsonString);
+        std::string Serialize() const override;
+        Json::Value SerializeToJsonValue() const override;
 
-    const CardElementType GetElementType() const;
+        void DeserializeChildren(ParseContext& context, const Json::Value& value) override;
 
-    std::string GetSize() const;
-    void SetSize(const std::string value);
+        std::string GetWidth() const;
+        void SetWidth(const std::string& value);
+        void SetWidth(const std::string& value,
+                      std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>>* warnings);
 
-private:
-    std::string m_size;
-};
+        // explicit width takes precedence over relative width
+        int GetPixelWidth() const;
+        void SetPixelWidth(const int value);
+
+        std::vector<std::shared_ptr<BaseCardElement>>& GetItems();
+        const std::vector<std::shared_ptr<BaseCardElement>>& GetItems() const;
+
+        void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
+
+    private:
+        void PopulateKnownPropertiesSet();
+        std::string m_width;
+        unsigned int m_pixelWidth;
+        std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>> m_items;
+    };
+
+    class ColumnParser : public BaseCardElementParser
+    {
+    public:
+        ColumnParser() = default;
+        ColumnParser(const ColumnParser&) = default;
+        ColumnParser(ColumnParser&&) = default;
+        ColumnParser& operator=(const ColumnParser&) = default;
+        ColumnParser& operator=(ColumnParser&&) = default;
+        virtual ~ColumnParser() = default;
+
+        std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
+        std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
+    };
 }

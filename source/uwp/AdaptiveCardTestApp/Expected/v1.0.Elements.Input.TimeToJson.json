@@ -1,0 +1,1 @@
+{"actions":[{"title":"OK","type":"Action.Submit"}],"body":[{"text":"What time do you want to meet?","type":"TextBlock"},{"id":"time","max":"17:00","min":"09:00","type":"Input.Time","value":"15:30"}],"type":"AdaptiveCard","version":"1.0"}

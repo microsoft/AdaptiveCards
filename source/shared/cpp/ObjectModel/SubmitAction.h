@@ -1,25 +1,51 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "pch.h"
 #include "BaseActionElement.h"
-#include "Enums.h"
+#include "ActionParserRegistration.h"
 
-namespace AdaptiveCards
+namespace AdaptiveSharedNamespace
 {
-class SubmitAction : public BaseActionElement
-{
-public:
-    SubmitAction();
+    class SubmitAction : public BaseActionElement
+    {
+    public:
+        SubmitAction();
+        SubmitAction(const SubmitAction&) = default;
+        SubmitAction(SubmitAction&&) = default;
+        SubmitAction& operator=(const SubmitAction&) = default;
+        SubmitAction& operator=(SubmitAction&&) = default;
+        ~SubmitAction() = default;
 
-    static std::shared_ptr<SubmitAction> Deserialize(const Json::Value& root);
-    static std::shared_ptr<SubmitAction> DeserializeFromString(const std::string& jsonString);
+        std::string GetDataJson() const;
+        Json::Value GetDataJsonAsValue() const;
+        void SetDataJson(const Json::Value& value);
+        void SetDataJson(const std::string value);
 
-    virtual std::string Serialize();
+        virtual bool GetIgnoreInputValidation() const;
+        virtual void SetIgnoreInputValidation(const bool value);
 
-    std::string GetTitle() const;
-    void SetTitle(const std::string value);
-    
-private:
-    std::string m_title;
-};
+        Json::Value SerializeToJsonValue() const override;
+
+    private:
+        void PopulateKnownPropertiesSet();
+
+        Json::Value m_dataJson;
+        bool m_ignoreInputValidation;
+    };
+
+    class SubmitActionParser : public ActionElementParser
+    {
+    public:
+        SubmitActionParser() = default;
+        SubmitActionParser(const SubmitActionParser&) = default;
+        SubmitActionParser(SubmitActionParser&&) = default;
+        SubmitActionParser& operator=(const SubmitActionParser&) = default;
+        SubmitActionParser& operator=(SubmitActionParser&&) = default;
+        virtual ~SubmitActionParser() = default;
+
+        std::shared_ptr<BaseActionElement> Deserialize(ParseContext& context, const Json::Value& value) override;
+        std::shared_ptr<BaseActionElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
+    };
 }

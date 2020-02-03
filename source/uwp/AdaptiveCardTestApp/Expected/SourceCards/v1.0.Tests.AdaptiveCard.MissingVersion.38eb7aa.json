@@ -1,0 +1,11 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "THIS CARD SHOULD NOT RENDER. The required `version` property is missing.",
+			"wrap": true
+		}
+	]
+}

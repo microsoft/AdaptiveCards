@@ -1,37 +1,48 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+#include "pch.h"
 #include "Fact.h"
+#include "DateTimePreparser.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespace;
 
 Fact::Fact()
 {
 }
 
-Fact::Fact(std::string title, std::string value, std::string speak) : 
-    m_title(title), m_value(value), m_speak(speak)
+Fact::Fact(std::string const& title, std::string const& value) : m_title(title), m_value(value)
 {
 }
 
-std::shared_ptr<Fact> Fact::Deserialize(const Json::Value& json)
+std::shared_ptr<Fact> Fact::Deserialize(const ParseContext& context, const Json::Value& json)
 {
-    std::string title = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title);
-    std::string value = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Value);
-    std::string speak = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Speak);
+    std::string title = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title, true);
+    std::string value = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Value, true);
 
-    auto fact = std::make_shared<Fact>(title, value, speak);
+    auto fact = std::make_shared<Fact>(title, value);
+    fact->SetLanguage(context.GetLanguage());
+
     return fact;
 }
 
-std::shared_ptr<Fact> Fact::DeserializeFromString(const std::string& jsonString)
+std::shared_ptr<Fact> Fact::DeserializeFromString(const ParseContext& context, const std::string& jsonString)
 {
-    Json::Value jsonValue(jsonString);
-
-    return Fact::Deserialize(jsonValue);
+    return Fact::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 std::string Fact::Serialize()
 {
-    return "";
+    return ParseUtil::JsonToString(SerializeToJsonValue());
+}
+
+Json::Value Fact::SerializeToJsonValue()
+{
+    Json::Value root;
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title)] = GetTitle();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = GetValue();
+
+    return root;
 }
 
 std::string Fact::GetTitle() const
@@ -39,7 +50,7 @@ std::string Fact::GetTitle() const
     return m_title;
 }
 
-void Fact::SetTitle(const std::string value)
+void Fact::SetTitle(const std::string& value)
 {
     m_title = value;
 }
@@ -49,17 +60,27 @@ std::string Fact::GetValue() const
     return m_value;
 }
 
-void Fact::SetValue(const std::string value)
+void Fact::SetValue(const std::string& value)
 {
     m_value = value;
 }
 
-std::string Fact::GetSpeak() const
+DateTimePreparser Fact::GetTitleForDateParsing() const
 {
-    return m_speak;
+    return DateTimePreparser(m_title);
 }
 
-void Fact::SetSpeak(const std::string value)
+DateTimePreparser Fact::GetValueForDateParsing() const
 {
-    m_speak = value;
+    return DateTimePreparser(m_value);
+}
+
+std::string Fact::GetLanguage() const
+{
+    return m_language;
+}
+
+void Fact::SetLanguage(const std::string& value)
+{
+    m_language = value;
 }

@@ -1,0 +1,79 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"speak": "The forecast for Seattle January 20 is mostly clear with a High of 51 degrees and Low of 40 degrees",
+	"body": [
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "This is the top container.",
+					"wrap": true
+				}
+			]
+		},
+		{
+			"type": "Container",
+			"spacing": "large",
+			"separator": true,
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "This is the middle container. Its **height** property is **stretch** so it uses all the remaining vertical space.",
+					"wrap": true
+				}
+			]
+		},
+		{
+			"type": "ColumnSet",
+			"height": "stretch",
+			"columns": [
+				{
+					"type": "Column",
+					"width": "auto",
+					"items": [
+						{
+							"type": "Image",
+							"url": "https://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
+							"size": "small",
+							"style": "person"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": "stretch",
+					"spacing": "large",
+					"separator": true,
+					"items": [
+						{
+							"type": "TextBlock",
+							"height": "stretch",
+							"text": "It also works within a ColumnSet",
+							"wrap": true
+						},
+						{
+							"type": "TextBlock",
+							"text": "This text aligns with the bottom of the column",
+							"wrap": true
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "Container",
+			"spacing": "large",
+			"separator": true,
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "This is the bottom container.",
+					"wrap": true
+				}
+			]
+		}
+	]
+}

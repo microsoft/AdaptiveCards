@@ -1,0 +1,82 @@
+﻿<!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. -->
+<Page
+    x:Class="AdaptiveCardTestApp.Pages.TestResultsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdaptiveCardTestApp.Pages"
+    xmlns:views="using:AdaptiveCardTestApp.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <ListView
+            x:Name="ListViewCategories"
+            SelectionMode="Single"
+            SelectionChanged="ListViewCategories_SelectionChanged"
+            DisplayMemberPath="DisplayNameWithCount"/>
+
+        <ListView
+            x:Name="ListViewResults"
+            Grid.Column="1"
+            SelectionMode="None"
+            ItemContainerStyle="{StaticResource FullWidthListViewItem}">
+            <ListView.Header>
+                <RelativePanel HorizontalAlignment="Right">
+                    <Button
+                        x:Name="ButtonStartOver"
+                        Content="Start over"
+                        Margin="2,2,2,2"
+                        HorizontalAlignment="Stretch"
+                        Click="ButtonStartOver_Click"/>
+                    <Button
+                        x:Name="ButtonUpdateOriginals"
+                        RelativePanel.RightOf="ButtonStartOver"
+                        Style="{ThemeResource AccentButtonStyle}"
+                        Margin="2,2,2,2"
+                        HorizontalAlignment="Stretch"
+                        Content="Accept all new sources"
+                        Click="ButtonAcceptAll_Click"/>
+                    <Button
+                        x:Name="ButtonUpdateJson"
+                        RelativePanel.RightOf="ButtonUpdateOriginals"
+                        Style="{ThemeResource AccentButtonStyle}"
+                        Margin="2,2,2,2"
+                        HorizontalAlignment="Stretch"
+                        Content="Accept all new json"
+                        Click="ButtonAcceptAll_Click"/>
+                    <Button
+                        x:Name="ButtonUpdateImage"
+                        RelativePanel.RightOf="ButtonUpdateJson"
+                        Style="{ThemeResource AccentButtonStyle}"
+                        Margin="2,2,2,2"
+                        HorizontalAlignment="Stretch"
+                        Content="Accept all new images"
+                        Click="ButtonAcceptAll_Click"/>
+                    <Button
+                        x:Name="ButtonUpdateAll"
+                        RelativePanel.RightOf="ButtonUpdateImage"
+                        Style="{ThemeResource AccentButtonStyle}"
+                        Margin="2,2,2,2"
+                        HorizontalAlignment="Stretch"
+                        Content="Accept all changes"
+                        Click="ButtonAcceptAll_Click"/>
+
+                </RelativePanel>
+            </ListView.Header>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border Background="{ThemeResource AppBarBackground}" Padding="12" Margin="0,12,0,12">
+                        <views:TestResultView />
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Page>

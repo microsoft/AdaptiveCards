@@ -1,0 +1,52 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"width": "50px",
+					"items": [
+						{
+							"type": "Image",
+							"url": "https://3.bp.blogspot.com/-Xo0EuTNYNQg/UEI1zqGDUTI/AAAAAAAAAYE/PLYx5H4J4-k/s1600/smiley+face+super+happy.jpg",
+							"size": "stretch"
+						}
+					]
+				},
+				{
+					"width": "stretch",
+					"verticalContentAlignment": "center",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "This card has two ColumnSets on top of each other. In each, the left column is explicitly sized to be 50 pixels wide.",
+							"wrap": true
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"width": "50px"
+				},
+				{
+					"width": "stretch",
+					"verticalContentAlignment": "center",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "In this second ColumnSet, columns align perfectly even though there is nothing in the left column.",
+							"wrap": true
+						}
+					]
+				}
+			]
+		}
+	]
+}

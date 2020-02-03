@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimary">#0078DC</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="actionDestructive">#7F0000</color>
+    <color name="actionPositive">#008000</color>
+
+    <color name="greenActionColor">#32CD32</color>
+    <color name="redActionColor">#DC143C</color>
+    <color name="yellowActionColor">#e6c900</color>
 </resources>

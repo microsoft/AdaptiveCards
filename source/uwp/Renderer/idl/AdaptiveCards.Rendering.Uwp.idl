@@ -1,0 +1,2134 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+#include <sdkddkver.h>
+
+import "inspectable.idl";
+import "Windows.Foundation.idl";
+import "Windows.UI.Xaml.idl";
+import "Windows.Data.Json.idl";
+
+#ifdef ADAPTIVE_CARDS_WINDOWS
+#include "winPch.h"
+#endif
+
+#ifndef AdaptiveNamespaceStart
+#define AdaptiveNamespaceStart namespace AdaptiveCards { namespace Rendering { namespace Uwp {
+#define AdaptiveNamespace AdaptiveCards::Rendering::Uwp
+#define AdaptiveNamespaceEnd }}}
+#endif
+
+AdaptiveNamespaceStart
+
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contractversion(1)]
+    [internal]
+    apicontract InternalContract
+    {
+    }
+#endif
+
+    runtimeclass AdaptiveCardParseResult;
+    runtimeclass AdaptiveHostConfigParseResult;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef [v1_enum] enum TextSize
+    {
+        Small = 0,
+        Default,
+        Medium,
+        Large,
+        ExtraLarge
+    } TextSize;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef [v1_enum] enum TextWeight
+    {
+        Lighter = 0,
+        Default,
+        Bolder
+    } TextWeight;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef [v1_enum] enum ForegroundColor
+    {
+        Default = 0,
+        Dark,
+        Light,
+        Accent,
+        Good,
+        Warning,
+        Attention
+    } ForegroundColor;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef [v1_enum] enum HAlignment
+    {
+        Left = 0,
+        Center,
+        Right
+    } HAlignment;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        [contract(InternalContract, 1)]
+        [internal]
+#endif
+        typedef [v1_enum] enum VAlignment
+        {
+            Top = 0,
+            Center,
+            Bottom
+        } VAlignment;
+
+        [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        [contract(InternalContract, 1)]
+        [internal]
+#endif
+        typedef [v1_enum] enum BackgroundImageFillMode
+        {
+            Cover = 0,
+            RepeatHorizontally,
+            RepeatVertically,
+            Repeat
+        } BackgroundImageFillMode;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef [v1_enum] enum ElementType
+    {
+        Unsupported = 0,
+        AdaptiveCard,
+        TextBlock,
+        Image,
+        Container,
+        Column,
+        ColumnSet,
+        FactSet,
+        Fact,
+        ImageSet,
+        ChoiceInput,
+        ChoiceSetInput,
+        DateInput,
+        NumberInput,
+        TextInput,
+        TimeInput,
+        ToggleInput,
+        Custom,
+        Media,
+        ActionSet,
+        RichTextBlock,
+    } ElementType;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef [v1_enum] enum ActionType
+    {
+        Unsupported = 0,
+        ShowCard,
+        Submit,
+        OpenUrl,
+        ToggleVisibility,
+        Custom
+    } ActionType;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef [v1_enum] enum ImageStyle {
+        Default = 0,
+        Person
+    } ImageStyle;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef [v1_enum] enum ImageSize {
+        None = 0,
+        Auto,
+        Stretch,
+        Small,
+        Medium,
+        Large
+    } ImageSize;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef [v1_enum] enum SeparatorThickness {
+        Default = 0,
+        Thick,
+    } SeparatorThickness;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef [v1_enum] enum Spacing {
+        Default = 0,
+        None,
+        Small,
+        Medium,
+        Large,
+        ExtraLarge,
+        Padding
+    } Spacing;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef [v1_enum] enum ActionsOrientation {
+        Vertical = 0,
+        Horizontal
+    } ActionsOrientation;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef [v1_enum] enum ActionAlignment {
+        Left = 0,
+        Center,
+        Right,
+        Stretch,
+    } ActionAlignment;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef [v1_enum] enum ActionMode {
+        Inline = 0,
+        Popup
+    } ActionMode;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef [v1_enum] enum ChoiceSetStyle {
+        Compact = 0,
+        Expanded
+    } ChoiceSetStyle;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef [v1_enum] enum TextInputStyle {
+        Text = 0,
+        Tel,
+        Url,
+        Email,
+    } TextInputStyle;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef [v1_enum] enum ContainerStyle {
+        None = 0,
+        Default,
+        Emphasis,
+        Good,
+        Attention,
+        Warning,
+        Accent
+    } ContainerStyle;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef [v1_enum] enum FontType {
+        Default = 0,
+        Monospace
+    } FontType;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef [v1_enum] enum ErrorStatusCode {
+        InvalidJson = 0,
+        RenderFailed,
+        RequiredPropertyMissing,
+        InvalidPropertyValue,
+        UnsupportedParserOverride,
+        CustomError,
+    } ErrorStatusCode;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef [v1_enum] enum WarningStatusCode {
+        UnknownElementType = 0,
+        UnknownActionElementType,
+        UnknownPropertyOnElement,
+        UnknownEnumValue,
+        NoRendererForType,
+        InteractivityNotSupported,
+        MaxActionsExceeded,
+        AssetLoadFailed,
+        UnsupportedSchemaVersion,
+        UnsupportedMediaType,
+        InvalidMediaMix,
+        InvalidValue,
+        UnsupportedValue,
+        PerformingFallback,
+        CustomWarning,
+    } WarningStatusCode;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef [v1_enum] enum IconPlacement
+    {
+        AboveTitle = 0,
+        LeftOfTitle
+    } IconPlacement;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef [v1_enum] enum VerticalContentAlignment
+    {
+        Top = 0,
+        Center,
+        Bottom
+    } VerticalContentAlignment;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef [v1_enum] enum HeightType
+    {
+        Auto = 0,
+        Stretch
+    } HeightType;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)][internal]
+#endif
+    typedef[v1_enum] enum IsVisible {
+        IsVisibleToggle = 0,
+        IsVisibleTrue,
+        IsVisibleFalse
+    } IsVisible;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)][internal]
+#endif
+    typedef[v1_enum] enum FallbackType {
+        None = 0,
+        Drop,
+        Content
+    } FallbackType;
+
+    [version(NTDDI_WIN10_RS1), flags]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)][internal]
+#endif
+    typedef[v1_enum] enum BleedDirection {
+        None = 0x0000,
+        Left = 0x0001,
+        Right = 0x0010,
+        Up = 0x0100,
+        Down = 0x1000,
+        All = Left | Right | Up | Down
+    } BleedDirection;
+
+    [version(NTDDI_WIN10_RS1), flags]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)][internal]
+#endif
+    typedef[v1_enum] enum InputNecessityIndicators {
+        None = 0,
+        RequiredInputs,
+        OptionalInputs
+    } InputNecessityIndicators;
+
+    declare
+    {
+        interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
+        interface Windows.Foundation.Collections.IVector<IAdaptiveActionElement*>;
+        interface Windows.Foundation.Collections.IVector<AdaptiveColumn*>;
+        interface Windows.Foundation.Collections.IVector<AdaptiveFact*>;
+        interface Windows.Foundation.Collections.IVector<AdaptiveChoiceInput*>;
+        interface Windows.Foundation.Collections.IVector<AdaptiveError*>;
+        interface Windows.Foundation.Collections.IVector<AdaptiveWarning*>;
+        interface Windows.Foundation.Collections.IObservableVector<IAdaptiveCardElement*>;
+        interface Windows.Foundation.Collections.IObservableVector<AdaptiveColumn*>;
+        interface Windows.Foundation.IAsyncOperation<RenderedAdaptiveCard*>;
+        interface Windows.Foundation.Collections.IVector<AdaptiveMediaSource*>;
+        interface Windows.Foundation.Collections.IVector<AdaptiveRemoteResourceInformation*>;
+        interface Windows.Foundation.Collections.IVector<AdaptiveToggleVisibilityTarget*>;
+        interface Windows.Foundation.Collections.IVector<AdaptiveImage*>;
+        interface Windows.Foundation.Collections.IVector<AdaptiveRequirement*>;
+    }
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveCardElement", 21f8aa32-e8ca-41cb-b571-d7d234173a88),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    interface IAdaptiveCardElement
+    {
+        ElementType ElementType { get; };
+        String ElementTypeString { get; };
+
+        HeightType Height;
+        Spacing Spacing;
+        Boolean Separator;
+        String Id;
+        Boolean IsVisible;
+        FallbackType FallbackType;
+        IAdaptiveCardElement FallbackContent;
+        Windows.Data.Json.JsonObject AdditionalProperties;
+        Windows.Foundation.Collections.IVector<AdaptiveRequirement> Requirements { get; };
+
+        Windows.Data.Json.JsonObject ToJson();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveRemoteResourceInformation", 6E1610FE-E49E-47B9-BCF6-BAB6C893D57F)
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveRemoteResourceInformation
+    {
+        AdaptiveRemoteResourceInformation();
+
+        String Url;
+        String MimeType;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(1D37C30F-9180-4CEF-A73C-C77ED00176DB),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    interface IAdaptiveElementWithRemoteResources
+    {
+        Windows.Foundation.Collections.IVectorView<AdaptiveRemoteResourceInformation> GetResourceInformation();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveSeparator", 2bbbf18f-394d-48ce-b542-3820a6708a52)
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass AdaptiveSeparator
+    {
+        AdaptiveSeparator();
+
+        ForegroundColor Color;
+        SeparatorThickness Thickness;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveTextElement", 6285A2F7-D193-46B3-8F5E-0AE2FDE4225B),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    interface IAdaptiveTextElement 
+    {
+        TextSize Size;
+        TextWeight Weight;
+        ForegroundColor Color;
+        String Text;
+        Boolean IsSubtle;
+        String Language;
+        FontType FontType;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveTextBlock", bfafd94d-4c49-4022-b90d-16e03e7be798),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass AdaptiveTextBlock : IAdaptiveCardElement, IAdaptiveTextElement
+    {
+        AdaptiveTextBlock();
+
+        Boolean Wrap;
+        HAlignment HorizontalAlignment;
+        UInt32 MaxLines;
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(25CD5F02-A9F6-4042-BCC0-C6D063AE5EAE),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(0AC70C29-FA90-4C28-A6D1-A6EF58126085)
+#endif
+    ]
+    interface IAdaptiveInline
+    {
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveTextRun", D81768ED-D724-4494-B141-A9B3F2613EFD),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass AdaptiveTextRun : IAdaptiveInline, IAdaptiveTextElement
+    {
+        AdaptiveTextRun();
+
+        Boolean Italic;
+        Boolean Strikethrough;
+        Boolean Highlight;
+        Boolean Underline;
+        IAdaptiveActionElement SelectAction;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveRichTextBlock", E3858144-63F3-4625-A986-AADD40DAE0BE),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass AdaptiveRichTextBlock : IAdaptiveCardElement
+    {
+        AdaptiveRichTextBlock();
+
+        HAlignment HorizontalAlignment;
+        Windows.Foundation.Collections.IVector<IAdaptiveInline> Inlines { get; };
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveMediaSource", 05F2F77A-D458-4F73-AAF7-06B91D4C37E6),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass AdaptiveMediaSource
+    {
+        AdaptiveMediaSource();
+
+        String MimeType;
+        String Url;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveMedia"4E3499F8-2A99-4CE3-BA71-5F3799C1E06A),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass AdaptiveMedia : IAdaptiveCardElement
+    {
+        AdaptiveMedia();
+
+        String Poster;
+        String AltText;
+
+        Windows.Foundation.Collections.IVector<AdaptiveMediaSource> Sources { get; };
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveBackgroundImage", 1545EC36-6154-4F39-A81A-E1CF7B384B31),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass AdaptiveBackgroundImage
+    {
+        AdaptiveBackgroundImage();
+
+        String Url;
+        BackgroundImageFillMode FillMode;
+        HAlignment HorizontalAlignment;
+        VAlignment VerticalAlignment;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveCard", 932119A6-266B-4AC9-8A19-DBED6261BA9F),
+        static_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveCardStatics", 5a426551-3cfc-4688-87fb-7df80fcc9246),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveCard 
+    {
+        AdaptiveCard();
+
+        Windows.Foundation.Collections.IVector<IAdaptiveCardElement> Body { get; };
+        Windows.Foundation.Collections.IVector<IAdaptiveActionElement> Actions { get; };
+        ElementType ElementType { get; };
+        String Version;
+        String FallbackText;
+        AdaptiveBackgroundImage BackgroundImage;
+        String Language;
+        String Speak;
+        ContainerStyle Style;
+        IAdaptiveActionElement SelectAction;
+        VerticalContentAlignment VerticalContentAlignment;
+        HeightType Height;
+        UInt32 MinHeight;
+        InputNecessityIndicators InputNecessityIndicators;
+
+        Windows.Data.Json.JsonObject ToJson();
+        Windows.Foundation.Collections.IVectorView<AdaptiveRemoteResourceInformation> GetResourceInformation();
+
+        static AdaptiveCardParseResult FromJson(Windows.Data.Json.JsonObject adaptiveJson);
+
+        [method_name("FromJsonWithParserRegistration")]
+        static AdaptiveCardParseResult FromJson(
+            Windows.Data.Json.JsonObject adaptiveJson,
+            AdaptiveElementParserRegistration elementRegistration,
+            AdaptiveActionParserRegistration actionRegistration);
+
+        static AdaptiveCardParseResult FromJsonString(String adaptiveJson);
+
+        [method_name("FromJsonStringWithParserRegistration")] 
+        static AdaptiveCardParseResult FromJsonString(
+            String adaptiveJson,
+            AdaptiveElementParserRegistration elementRegistration,
+            AdaptiveActionParserRegistration actionRegistration);
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveCardParseResult", b42d51d5-5916-4cdb-a020-6e24c3e5f7fd),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveCardParseResult 
+    {
+        AdaptiveCardParseResult();
+
+        AdaptiveCard AdaptiveCard { get; };
+        Windows.Foundation.Collections.IVector<AdaptiveError> Errors { get; };
+        Windows.Foundation.Collections.IVector<AdaptiveWarning> Warnings { get; };
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveImage", 3b0830aa-a03a-46c4-9204-32c051e34982),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass AdaptiveImage : IAdaptiveCardElement
+    {
+        AdaptiveImage();
+
+        String Url;
+        String BackgroundColor;
+        ImageStyle Style;
+        ImageSize Size;
+        UInt32 PixelWidth;
+        UInt32 PixelHeight;
+        HAlignment HorizontalAlignment;
+        String AltText;
+        IAdaptiveActionElement SelectAction;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveImageSet", cb3e7434-e7dd-48d9-85a7-3981fb16b2e9),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass AdaptiveImageSet : IAdaptiveCardElement
+    {
+        AdaptiveImageSet();
+
+        Windows.Foundation.Collections.IVector<AdaptiveImage> Images { get; };
+        ImageSize ImageSize;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(5238a2b8-9a13-4dc3-aa9e-5e1e3c1fcd70),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    interface IAdaptiveInputElement 
+    {
+        Boolean IsRequired;
+        String ErrorMessage;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveChoiceInput", ace5f894-2109-4c57-bde6-7e69069242a9),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveChoiceInput
+    {
+        AdaptiveChoiceInput();
+
+        ElementType ElementType { get; };
+        String Title;
+        String Value;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveChoiceSetInput", 9fa2984c-a65e-4886-92b0-379ca242e955),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass AdaptiveChoiceSetInput : IAdaptiveInputElement, IAdaptiveCardElement
+    {
+        AdaptiveChoiceSetInput();
+
+        String Value;
+        Boolean IsMultiSelect;
+        Boolean Wrap;
+        ChoiceSetStyle ChoiceSetStyle;
+        Windows.Foundation.Collections.IVector<AdaptiveChoiceInput> Choices { get; };
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveDateInput", 547622b8-5670-4265-9459-5adce2630ce9),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveDateInput : IAdaptiveInputElement, IAdaptiveCardElement
+    {
+        AdaptiveDateInput();
+
+        String Max;
+        String Min;
+        String Placeholder;
+        String Value;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveNumberInput", 7c093cbd-cb81-4e3f-b3ae-82664ce87859),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveNumberInput : IAdaptiveInputElement, IAdaptiveCardElement
+    {
+        AdaptiveNumberInput();
+
+        Int32 Max;
+        Int32 Min;
+        String Placeholder;
+        Int32 Value;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveTextInput", c8affec2-c379-4efd-b126-3a8f7277ee88),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveTextInput : IAdaptiveInputElement, IAdaptiveCardElement
+    {
+        AdaptiveTextInput();
+
+        Boolean IsMultiline;
+        UInt32 MaxLength;
+        String Placeholder;
+        String Value;
+        TextInputStyle TextInputStyle;
+        IAdaptiveActionElement InlineAction;
+        String Regex;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveTimeInput", a20ae4a6-7fff-4634-b1d9-2719a02d4967),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveTimeInput : IAdaptiveInputElement, IAdaptiveCardElement
+    {
+        AdaptiveTimeInput();
+
+        String Max;
+        String Min;
+        String Placeholder;
+        String Value;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveToggleInput", 05cd9719-b591-4118-9d75-6b21b553123f),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveToggleInput : IAdaptiveInputElement, IAdaptiveCardElement
+    {
+        AdaptiveToggleInput();
+
+        String Title;
+        Boolean Wrap;
+        String Value;
+        String ValueOff;
+        String ValueOn;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(F0B8422A-FE6B-40C4-87D8-7D3480774D75),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    interface IAdaptiveContainerBase
+    {
+        ContainerStyle Style;
+        IAdaptiveActionElement SelectAction;
+        Boolean Bleed;
+        BleedDirection BleedDirection { get; };
+        UInt32 MinHeight;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveContainer", 60554c5a-32db-4130-8613-d39737ced7c4),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveContainer : IAdaptiveContainerBase, IAdaptiveCardElement
+    {
+        AdaptiveContainer();
+
+        VerticalContentAlignment VerticalContentAlignment;
+        Windows.Foundation.Collections.IVector<IAdaptiveCardElement> Items { get; };
+        AdaptiveBackgroundImage BackgroundImage;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveColumn", fe3a3792-d916-4b9d-b54c-eb1e1b5c23b4),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveColumn : IAdaptiveContainerBase, IAdaptiveCardElement
+    {
+        AdaptiveColumn();
+
+        String Width;
+        UInt32 PixelWidth;
+        VerticalContentAlignment VerticalContentAlignment;
+        Windows.Foundation.Collections.IVector<IAdaptiveCardElement> Items { get; };
+        AdaptiveBackgroundImage BackgroundImage;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveColumnSet", 703d7c9a-ab48-4a9a-b3cf-60636f7ee953),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveColumnSet : IAdaptiveContainerBase, IAdaptiveCardElement
+    {
+        AdaptiveColumnSet();
+
+        Windows.Foundation.Collections.IVector<AdaptiveColumn> Columns { get; };
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveFact", d06f4235-e32a-4bba-9802-49a8e2d2c3b7),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveFact 
+    {
+        AdaptiveFact();
+
+        ElementType ElementType { get; };
+        String Title;
+        String Value;
+        String Language;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveFactSet", 3d64cefc-f8e5-4304-99f5-2c37f2452ff4),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveFactSet : IAdaptiveCardElement
+    {
+        AdaptiveFactSet();
+
+        Windows.Foundation.Collections.IVector<AdaptiveFact> Facts { get; };
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveActionSet", EC0102C3-A40D-449D-939B-3AD770CE6DAD),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveActionSet : IAdaptiveCardElement
+    {
+        AdaptiveActionSet();
+
+        Windows.Foundation.Collections.IVector<IAdaptiveActionElement> Actions { get; };
+    };
+
+    [
+        default_interface,
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveUnsupportedAction", 2F3B9EAD-294D-4EC9-AC96-47A34E5C59B8),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass AdaptiveUnsupportedAction : IAdaptiveActionElement
+    {
+        AdaptiveUnsupportedAction();
+    };
+
+    [
+        default_interface,
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveUnsupportedElement", 37CB2851-378C-48BE-A38D-59B9A88F62B9),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass AdaptiveUnsupportedElement : IAdaptiveCardElement
+    {
+        AdaptiveUnsupportedElement();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveCardRenderer", 847e632d-328c-4b5e-86b3-685152dca0ce),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveCardRenderer 
+    {
+        AdaptiveCardRenderer();
+
+        AdaptiveCardResourceResolvers ResourceResolvers { get; };
+        AdaptiveHostConfig HostConfig;
+        Windows.UI.Xaml.ResourceDictionary OverrideStyles;
+        AdaptiveFeatureRegistration FeatureRegistration;
+
+        void SetFixedDimensions(UInt32 desiredWidth, UInt32 desiredHeight);
+        void ResetFixedDimensions();
+
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        Windows.Foundation.IAsyncOperation<RenderedAdaptiveCard> RenderCardAsXamlAsync(AdaptiveCard adaptiveCard);
+#endif
+
+        RenderedAdaptiveCard RenderAdaptiveCard(AdaptiveCard adaptiveCard);
+        RenderedAdaptiveCard RenderAdaptiveCardFromJsonString(String adaptiveCard);
+        RenderedAdaptiveCard RenderAdaptiveCardFromJson(Windows.Data.Json.JsonObject adaptiveCard);
+
+        AdaptiveElementRendererRegistration ElementRenderers { get; };
+        AdaptiveActionRendererRegistration ActionRenderers { get; };
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveActionEventArgs", 57244994-491c-48da-8a20-af73e6bdf4d2),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveActionEventArgs
+    {
+        IAdaptiveActionElement Action { get; };
+        AdaptiveInputs Inputs { get; };
+    }
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveMediaEventArgs", DE57EF9E-1575-401A-9BD8-A84B9ADCB031),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveMediaEventArgs
+    {
+        AdaptiveMedia Media { get; };
+    }
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveContainerStyleDefinition", a2d8b87c-7afa-4425-9c9b-38831dc0aef2),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveContainerStyleDefinition 
+    {
+        AdaptiveContainerStyleDefinition();
+
+        Windows.UI.Color BackgroundColor;
+        AdaptiveColorsConfig ForegroundColors;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveContainerStylesDefinition", 7A0E0585-AE45-402F-B2C4-8B14721D1733),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveContainerStylesDefinition 
+    {
+        AdaptiveContainerStylesDefinition();
+
+        AdaptiveContainerStyleDefinition Default;
+        AdaptiveContainerStyleDefinition Emphasis;
+        AdaptiveContainerStyleDefinition Good;
+        AdaptiveContainerStyleDefinition Attention;
+        AdaptiveContainerStyleDefinition Warning;
+        AdaptiveContainerStyleDefinition Accent;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveFontSizesConfig", 1843e1e9-edcb-4d49-a64e-99a82a0e8d09),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveFontSizesConfig 
+    {
+        AdaptiveFontSizesConfig();
+
+        UInt32 Small;
+        UInt32 Default;
+        UInt32 Medium;
+        UInt32 Large;
+        UInt32 ExtraLarge;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveFontWeightsConfig", 59ab4d2a-e219-47fb-a202-74494469b410),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveFontWeightsConfig 
+    {
+        AdaptiveFontWeightsConfig();
+
+        UInt16 Lighter;
+        UInt16 Default;
+        UInt16 Bolder;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveFontTypeDefinition", 485E4650-EDF1-4DAD-BB1A-FA6C85626453),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveFontTypeDefinition 
+    {
+        AdaptiveFontTypeDefinition();
+
+        String FontFamily;
+        AdaptiveFontWeightsConfig FontWeights;
+        AdaptiveFontSizesConfig FontSizes;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveFontTypesDefinition", 7EA49458-870F-40C9-908A-35E6A20579C6),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveFontTypesDefinition 
+    {
+        AdaptiveFontTypesDefinition();
+
+        AdaptiveFontTypeDefinition Default;
+        AdaptiveFontTypeDefinition Monospace;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveHighlightColorConfig", DAF30E1C-8437-4A88-B711-1F4574CE3C94),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveHighlightColorConfig 
+    {
+        AdaptiveHighlightColorConfig();
+
+        Windows.UI.Color Default;
+        Windows.UI.Color Subtle;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveColorConfig", 743e6ad3-c0ab-497d-a9c9-3dcf69e6a5a1),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveColorConfig
+    {
+        AdaptiveColorConfig();
+
+        Windows.UI.Color Default;
+        Windows.UI.Color Subtle;
+        AdaptiveHighlightColorConfig HighlightColors;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveColorsConfig", e13e74e0-f944-4481-8fe9-4ac62a66bed0),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveColorsConfig
+    {
+        AdaptiveColorsConfig();
+
+        AdaptiveColorConfig Default;
+        AdaptiveColorConfig Accent;
+        AdaptiveColorConfig Dark;
+        AdaptiveColorConfig Light;
+        AdaptiveColorConfig Good;
+        AdaptiveColorConfig Warning;
+        AdaptiveColorConfig Attention;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveTextConfig", 2fa24f2c-843c-4f3f-be65-023528901970),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveTextConfig 
+    {
+        AdaptiveTextConfig();
+
+        TextWeight Weight;
+        TextSize Size;
+        ForegroundColor Color;
+        Boolean IsSubtle;
+        Boolean Wrap;
+        UInt32 MaxWidth;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveSpacingConfig", f22005cd-d9b7-4ee1-9457-d1520951b021),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveSpacingConfig
+    {
+        AdaptiveSpacingConfig();
+
+        UInt32 Small;
+        UInt32 Default;
+        UInt32 Medium;
+        UInt32 Large;
+        UInt32 ExtraLarge;
+        UInt32 Padding; 
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveSeparatorConfig", 05058274-c987-4361-a4f6-0c3d5f955ba4),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveSeparatorConfig
+    {
+        AdaptiveSeparatorConfig();
+
+        UInt32 LineThickness;
+        Windows.UI.Color LineColor;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveImageSizesConfig", ace2f9d0-3063-48ba-a69e-727246d1239d),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveImageSizesConfig 
+    {
+        AdaptiveImageSizesConfig();
+
+        UInt32 Small;
+        UInt32 Medium;
+        UInt32 Large;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveImageSetConfig", b5f7030a-7a42-4eaa-8cb1-88fb3ed81f66),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveImageSetConfig 
+    {
+        AdaptiveImageSetConfig();
+
+        ImageSize ImageSize;
+        UInt32 MaxImageHeight;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveImageConfig", 18a0c8f6-bcfc-41f9-964c-edd63fbfe0c3),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveImageConfig 
+    {
+        AdaptiveImageConfig();
+
+        ImageSize ImageSize;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveCardConfig", 27902b36-88db-421b-abd8-79a6cf3f1410),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveCardConfig 
+    {
+        AdaptiveCardConfig();
+
+        Boolean AllowCustomStyle;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveFactSetConfig", d776f288-bdfa-434e-99d7-d1c6d2f21209),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveFactSetConfig 
+    {
+        AdaptiveFactSetConfig();
+
+        AdaptiveTextConfig Title;
+        AdaptiveTextConfig Value;
+        UInt32 Spacing;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveShowCardActionConfig", 4c394fd8-a63a-4710-89dd-014a55b8fb6c),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveShowCardActionConfig 
+    {
+        AdaptiveShowCardActionConfig();
+
+        ActionMode ActionMode;
+        ContainerStyle Style;
+        UInt32 InlineTopMargin;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveActionsConfig", e4157ef5-e8e9-412e-bef6-48771e3aa532),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveActionsConfig 
+    {
+        AdaptiveActionsConfig();
+
+        AdaptiveShowCardActionConfig ShowCard;
+        ActionsOrientation ActionsOrientation;
+        ActionAlignment ActionAlignment;
+        UInt32 ButtonSpacing;
+        UInt32 MaxActions;
+        Spacing Spacing;
+        IconPlacement IconPlacement;
+        UInt32 IconSize;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveMediaConfig", FE60D4DC-02E9-4465-8235-7CA98620C17C),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveMediaConfig 
+    {
+        AdaptiveMediaConfig();
+
+        String DefaultPoster;
+        String PlayButton;
+        Boolean AllowInlinePlayback;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveHostConfig", 15ae7240-f9b0-47e4-b444-62da42b8b863),
+        static_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveHostConfigStatics", 11a659ac-a28d-42fc-ab0e-f103b3f5c4fd),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveHostConfig 
+    {
+        AdaptiveHostConfig();
+
+        String FontFamily;
+        AdaptiveFontSizesConfig FontSizes;
+        AdaptiveFontWeightsConfig FontWeights;
+        AdaptiveFontTypesDefinition FontTypes;
+        Boolean SupportsInteractivity;
+        String ImageBaseUrl;
+        AdaptiveContainerStylesDefinition ContainerStyles;
+        AdaptiveImageSizesConfig ImageSizes;
+        AdaptiveSeparatorConfig Separator;
+        AdaptiveSpacingConfig Spacing;
+        AdaptiveCardConfig AdaptiveCard;
+        AdaptiveImageSetConfig ImageSet;
+        AdaptiveImageConfig Image;
+        AdaptiveFactSetConfig FactSet;
+        AdaptiveActionsConfig Actions;
+        AdaptiveMediaConfig Media;
+
+        static AdaptiveHostConfigParseResult FromJsonString(String hostConfigJson);
+        static AdaptiveHostConfigParseResult FromJson(Windows.Data.Json.JsonObject hostConfigJson);
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveHostConfigParseResult", 0e333f58-43b8-48d3-aa68-e30f7e7f1007),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveHostConfigParseResult 
+    {
+        AdaptiveHostConfigParseResult();
+
+        AdaptiveHostConfig HostConfig { get; };
+        Windows.Foundation.Collections.IVector<AdaptiveError> Errors { get; };
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(95ec200c-fad9-4d8d-b25d-cad3a7f3df61),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    interface IAdaptiveActionElement
+    {
+        ActionType ActionType { get; };
+        String ActionTypeString { get; };
+        String Title;
+        String Id;
+        FallbackType FallbackType;
+        IAdaptiveActionElement FallbackContent;
+        String IconUrl;
+        String Style;
+        Windows.Data.Json.JsonObject AdditionalProperties;
+
+        Windows.Data.Json.JsonObject ToJson();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveOpenUrlAction", 8a7f7888-f53b-4fdb-8f3c-968da4352031),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveOpenUrlAction : IAdaptiveActionElement
+    {
+        AdaptiveOpenUrlAction();
+
+        Windows.Foundation.Uri Url;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveShowCardAction", 201859e9-1179-4c2b-91fa-3f561210a7f6),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass AdaptiveShowCardAction : IAdaptiveActionElement
+    {
+        AdaptiveShowCardAction();
+
+        AdaptiveCard Card;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveSubmitAction", c89015c8-1a8e-4819-8e93-d5fed276efc5),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass AdaptiveSubmitAction : IAdaptiveActionElement
+    {
+        AdaptiveSubmitAction();
+
+        Windows.Data.Json.JsonValue DataJson;
+        Boolean IgnoreInputValidation;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveToggleVisibilityTarget", 045FA1AE-A5CA-4359-AC35-16FC162F3BF0),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass AdaptiveToggleVisibilityTarget
+    {
+        AdaptiveToggleVisibilityTarget();
+
+        String ElementId;
+        IsVisible IsVisible;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveToggleVisibilityAction", 7DD38D1D-338A-40D3-9AF8-912FBC61427C),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass AdaptiveToggleVisibilityAction : IAdaptiveActionElement
+    {
+        AdaptiveToggleVisibilityAction();
+
+        Windows.Foundation.Collections.IVector<AdaptiveToggleVisibilityTarget> TargetElements { get; };
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveCardResourceResolvers", 8e467d28-ef21-4b9c-aad5-36e6073b1132),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass AdaptiveCardResourceResolvers
+    {
+        AdaptiveCardResourceResolvers();
+
+        void Set(String scheme, IAdaptiveCardResourceResolver resolver);
+        IAdaptiveCardResourceResolver Get(String scheme);
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(1dd4f5ee-f11a-485c-a048-c2370d88e4e0),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    interface IAdaptiveCardResourceResolver
+    {
+        Windows.Foundation.IAsyncOperation<Windows.Storage.Streams.IRandomAccessStream> GetResourceStreamAsync(AdaptiveCardGetResourceStreamArgs args);
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveCardGetResourceStreamArgs", 413365b8-3e56-4cb9-a06a-1f5d1d8c2dac),
+        constructor_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveCardGetResourceStreamArgsFactory", 602eee1f-5756-46bd-b703-b7a4130b25f4),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveCardGetResourceStreamArgs 
+    {
+        AdaptiveCardGetResourceStreamArgs();
+
+        Windows.Foundation.Uri Url { get; };
+
+        [method_name("CreateAdaptiveCardGetResourceStreamArgs")]
+        AdaptiveCardGetResourceStreamArgs(Windows.Foundation.Uri uri);
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IRenderedAdaptiveCard", 81793291-582c-42f5-8582-8275b0a64913),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass RenderedAdaptiveCard 
+    {
+        RenderedAdaptiveCard();
+
+        AdaptiveCard OriginatingCard { get; };
+        AdaptiveHostConfig OriginatingHostConfig { get; };
+        Windows.UI.Xaml.FrameworkElement FrameworkElement { get; };
+        AdaptiveInputs UserInputs { get; };
+        Windows.Foundation.Collections.IVector<AdaptiveError> Errors { get; };
+        Windows.Foundation.Collections.IVector<AdaptiveWarning> Warnings { get; };
+
+        event Windows.Foundation.TypedEventHandler<RenderedAdaptiveCard, AdaptiveActionEventArgs> Action;
+        event Windows.Foundation.TypedEventHandler<RenderedAdaptiveCard, AdaptiveMediaEventArgs> MediaClicked;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveInputs", eb02a75b-0b51-4c3c-affb-1eeca347a6b9),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveInputs 
+    {
+        AdaptiveInputs();
+
+        Windows.Data.Json.JsonObject AsJson();
+        Windows.Foundation.Collections.ValueSet AsValueSet();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveRequirement", 45B7321F-BB3C-48B8-B98E-6483927C47D7),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass AdaptiveRequirement
+    {
+        AdaptiveRequirement(String requirementName, String requirementversion);
+
+        String Name;
+        String Version;
+    }
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveFeatureRegistration", b2a455fd-385c-45eb-89ce-007b7ed0a815),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass AdaptiveFeatureRegistration 
+    {
+        AdaptiveFeatureRegistration();
+
+        void Set(String name, String version);
+        String Get(String name);
+        void Remove(String name);
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(3324e9f6-86f0-4d59-a06f-6bb464ffd558),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    interface IAdaptiveElementParser 
+    {
+        IAdaptiveCardElement FromJson(
+            Windows.Data.Json.JsonObject inputJson,
+            AdaptiveElementParserRegistration elementParsers,
+            AdaptiveActionParserRegistration actionParsers,
+            Windows.Foundation.Collections.IVector<AdaptiveWarning> warnings);
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveElementParserRegistration", 494f5d4a-c005-4203-a170-1446cbaa857f),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveElementParserRegistration 
+    {
+        AdaptiveElementParserRegistration();
+
+        void Set(String type, IAdaptiveElementParser parser);
+        IAdaptiveElementParser Get(String type);
+        void Remove(String type);
+    };
+
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveActionParserRegistration", b8484c16-a9bd-48bf-a28c-ef130c13300d),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveActionParserRegistration 
+    {
+        AdaptiveActionParserRegistration();
+
+        void Set(String type, IAdaptiveActionParser parser);
+        IAdaptiveActionParser Get(String type);
+        void Remove(String type);
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(88a79c26-ded3-4b32-b57c-527fcbeff6a4),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    interface IAdaptiveActionParser
+    {
+        IAdaptiveActionElement FromJson(Windows.Data.Json.JsonObject inputJson,
+                                      AdaptiveElementParserRegistration elementParsers,
+                                      AdaptiveActionParserRegistration actionParsers,
+                                      Windows.Foundation.Collections.IVector<AdaptiveWarning> warnings);
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveElementRendererRegistration", 2ebd4f56-2c5a-45c1-acaf-d956578e8048),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveElementRendererRegistration 
+    {
+        void Set(String type, IAdaptiveElementRenderer parser);
+        IAdaptiveElementRenderer Get(String type);
+        void Remove(String type);
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveActionRendererRegistration", 41EF351F-45AF-428A-A3AC-88455EB03698),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveActionRendererRegistration 
+    {
+        AdaptiveActionRendererRegistration();
+
+        void Set(String type, IAdaptiveActionRenderer parser);
+        IAdaptiveActionRenderer Get(String type);
+        void Remove(String type);
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveActionInvoker", 81d601c7-ebad-4445-a84d-2517d610c993),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveActionInvoker 
+    {
+        AdaptiveActionInvoker();
+
+        void SendActionEvent(IAdaptiveActionElement actionElement);
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveMediaEventInvoker", C4B6BBF1-599F-4CCF-904E-4CEFAAA44454),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveMediaEventInvoker 
+    {
+        AdaptiveMediaEventInvoker();
+
+        void SendMediaClickedEvent(AdaptiveMedia mediaElement);
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(e138cceb-7a0a-41d4-9477-14e68e8cd67e),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    interface IAdaptiveInputValue 
+    {
+        IAdaptiveInputElement InputElement { get; };
+        String CurrentValue { get; };
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveRenderContext", 98e4b78a-683c-48f2-a7d2-42b0556e5e63),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveRenderContext
+    {
+        AdaptiveRenderContext();
+
+        AdaptiveHostConfig HostConfig { get; };
+        AdaptiveFeatureRegistration FeatureRegistration { get; };
+        AdaptiveElementRendererRegistration ElementRenderers { get; };
+        AdaptiveActionRendererRegistration ActionRenderers { get; };
+        AdaptiveCardResourceResolvers ResourceResolvers { get; };
+        AdaptiveActionInvoker ActionInvoker { get; };
+        AdaptiveMediaEventInvoker MediaEventInvoker { get; };
+        Windows.UI.Xaml.ResourceDictionary OverrideStyles { get; };
+        AdaptiveInputs UserInputs { get; };
+
+        void AddInputValue(IAdaptiveInputValue inputValue);
+
+        void AddInlineShowCard(AdaptiveActionSet actionSet,
+                               AdaptiveShowCardAction showCardAction,
+                               Windows.UI.Xaml.UIElement showCardUIElement);
+
+        void AddError(ErrorStatusCode statusCode, String message);
+        void AddWarning(WarningStatusCode statusCode, String message);
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(880f5743-9132-4ddc-a5e6-b2c6e9351063),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    interface IAdaptiveElementRenderer 
+    {
+        Windows.UI.Xaml.UIElement Render(IAdaptiveCardElement element,
+                                         AdaptiveRenderContext context,
+                                         AdaptiveRenderArgs renderArgs);
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(0AFBC719-6F2A-4CC7-AAC8-C84E98F78A68),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    interface IAdaptiveActionRenderer 
+    {
+        Windows.UI.Xaml.UIElement Render(IAdaptiveActionElement element, 
+                                         AdaptiveRenderContext context, 
+                                         AdaptiveRenderArgs renderArgs);
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveTextBlockRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveTextBlockRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass AdaptiveRichTextBlockRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveRichTextBlockRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass AdaptiveImageRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveImageRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveImageSetRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveImageSetRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveContainerRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveContainerRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveColumnRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveColumnRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveColumnSetRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveColumnSetRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveFactRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveFactRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveChoiceSetInputRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveChoiceSetInputRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveDateInputRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveDateInputRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveNumberInputRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveNumberInputRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveTextInputRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveTextInputRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveTimeInputRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveTimeInputRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveToggleInputRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveToggleInputRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveFactSetRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveFactSetRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveMediaRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveMediaRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveActionSetRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveActionSetRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveOpenUrlActionRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveOpenUrlActionRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveShowCardActionRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveShowCardActionRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveSubmitActionRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveSubmitActionRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass AdaptiveToggleVisibilityActionRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+    {
+        AdaptiveToggleVisibilityActionRenderer();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveRenderArgs", e75cbfea-77a6-4562-be66-c86b36ac193a),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveRenderArgs 
+    {
+        AdaptiveRenderArgs(); 
+
+        ContainerStyle ContainerStyle;
+        IInspectable ParentElement;
+        Boolean IsInShowCard;
+        Boolean AllowAboveTitleIconPlacement;
+        Boolean AncestorHasFallback;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveError", f3c95797-25ad-4ee1-a4ad-0fafb986213f),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveError 
+    {
+        AdaptiveError(ErrorStatusCode statusCode, String message);
+
+        ErrorStatusCode StatusCode;
+        String Message;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveWarning", d978d794-6585-4e97-b602-9e6a2ffa3948),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ]
+    runtimeclass AdaptiveWarning
+    {
+        AdaptiveWarning(WarningStatusCode statusCode, String message);
+
+        WarningStatusCode StatusCode;
+        String Message;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.ITileControl", cd0a4aaf-d7f7-4398-a874-e5735f72f78d),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass TileControl
+    {
+        TileControl();
+
+        AdaptiveBackgroundImage BackgroundImage;
+        Windows.UI.Xaml.FrameworkElement RootElement;
+        Windows.UI.Xaml.UIElement ResolvedImage;
+        Windows.Foundation.Size ImageSize;
+
+        void LoadImageBrush(Windows.UI.Xaml.UIElement uielement);
+    }
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IWholeItemsPanel", bfe6f968-3c42-44df-b1e9-8830424a8616),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass WholeItemsPanel : Windows.UI.Xaml.Controls.Panel
+    {
+        String GetAltText();
+        Boolean IsAllContentClippedOut();
+        Boolean IsTruncated();
+    }
+
+AdaptiveNamespaceEnd

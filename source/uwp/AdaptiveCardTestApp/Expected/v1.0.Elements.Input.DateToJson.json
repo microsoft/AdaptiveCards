@@ -1,0 +1,1 @@
+{"actions":[{"title":"OK","type":"Action.Submit"}],"body":[{"text":"Date Input","type":"TextBlock"},{"id":"date","placeholder":"Enter a date","type":"Input.Date","value":"2017-10-12"}],"type":"AdaptiveCard","version":"1.0"}

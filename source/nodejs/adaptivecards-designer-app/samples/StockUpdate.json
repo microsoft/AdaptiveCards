@@ -1,0 +1,62 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "speak": "{company} stock is trading at {price} a share, which is {arrow} {difference}",
+    "body": [
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "{company} ({exchange}: {symbol})",
+                    "size": "medium",
+                    "isSubtle": true
+                },
+                {
+                    "type": "TextBlock",
+                    "text": "{{DATE({date}, LONG)}} {{TIME({date})}}",
+                    "isSubtle": true
+                }
+            ]
+        },
+        {
+            "type": "Container",
+            "spacing": "None",
+            "items": [
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "width": "stretch",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "{price}",
+                                    "size": "ExtraLarge"
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "text": "{changeFormatted}",
+                                    "color": "{changeColor}",
+                                    "spacing": "None"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "width": "auto",
+                            "items": [
+                                {
+                                    "type": "FactSet",
+                                    "facts": "{stages}"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

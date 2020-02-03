@@ -1,0 +1,138 @@
+{
+	"spacing": {
+		"small": 3,
+		"default": 8,
+		"medium": 20,
+		"large": 30,
+		"extraLarge": 40,
+		"padding": 20
+	},
+	"separator": {
+		"lineThickness": 1,
+		"lineColor": "#66000000"
+	},
+	"supportsInteractivity": true,
+	"imageBaseUrl": "ms-appx:///",
+	"fontFamily": "Segoe UI",
+	"fontSizes": {
+		"small": 12,
+		"default": 15,
+		"medium": 20,
+		"large": 24,
+		"extraLarge": 34
+	},
+	"fontWeights": {
+		"lighter": 200,
+		"default": 400,
+		"bolder": 600
+	},
+	"containerStyles": {
+		"default": {
+			"backgroundColor": "#FFFFFFFF",
+			"foregroundColors": {
+				"default": {
+					"default": "#FF000000",
+					"subtle": "#99000000"
+				},
+				"dark": {
+					"default": "#FF000000",
+					"subtle": "#99000000"
+				},
+				"light": {
+					"default": "#FFFFFFFF",
+					"subtle": "#99FFFFFF"
+				},
+				"accent": {
+					"default": "#FF0078D7",
+					"subtle": "#990078D7"
+				},
+				"attention": {
+					"default": "#FFE81123",
+					"subtle": "#99E81123"
+				},
+				"good": {
+					"default": "#FF00CC6A",
+					"subtle": "#9900CC6A"
+				},
+				"warning": {
+					"default": "#FFFFB900",
+					"subtle": "#99FFB900"
+				}
+			}
+		},
+		"emphasis": {
+			"backgroundColor": "#11000000",
+			"foregroundColors": {
+				"default": {
+					"default": "#FF000000",
+					"subtle": "#99000000"
+				},
+				"dark": {
+					"default": "#FF000000",
+					"subtle": "#99000000"
+				},
+				"light": {
+					"default": "#FFFFFFFF",
+					"subtle": "#99FFFFFF"
+				},
+				"accent": {
+					"default": "#FF0078D7",
+					"subtle": "#990078D7"
+				},
+				"attention": {
+					"default": "#FFE81123",
+					"subtle": "#99E81123"
+				},
+				"good": {
+					"default": "#FF00CC6A",
+					"subtle": "#9900CC6A"
+				},
+				"warning": {
+					"default": "#FFFFB900",
+					"subtle": "#99FFB900"
+				}
+			}
+		}
+	},
+	"imageSizes": {
+		"small": 40,
+		"medium": 80,
+		"large": 160
+	},
+	"actions": {
+		"maxActions": 5,
+		"spacing": "default",
+		"buttonSpacing": 10,
+		"showCard": {
+			"actionMode": "inline",
+			"inlineTopMargin": 16
+		},
+		"actionsOrientation": "horizontal",
+		"actionAlignment": "stretch"
+	},
+	"adaptiveCard": {
+		"allowCustomStyle": false
+	},
+	"imageSet": {
+		"imageSize": "medium",
+		"maxImageHeight": 100
+	},
+	"factSet": {
+		"title": {
+			"color": "default",
+			"size": "default",
+			"isSubtle": false,
+			"weight": "bolder",
+			"wrap": true,
+			"maxWidth": 150
+		},
+		"value": {
+			"color": "default",
+			"size": "default",
+			"isSubtle": false,
+			"weight": "default",
+			"wrap": true
+		},
+		"spacing": 10
+	}
+}

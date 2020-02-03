@@ -1,0 +1,346 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"backgroundImage": "https://adaptivecards.io/content/cats/1.png",
+	"fallbackText": "fallbackText",
+	"speak": "speak",
+	"lang": "en",
+	"inputNecessityIndicators": "requiredInputs",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "TextBlock_text",
+			"color": "default",
+			"horizontalAlignment": "left",
+			"isSubtle": false,
+			"italic": true,
+			"maxLines": 1,
+			"size": "default",
+			"weight": "default",
+			"wrap": false,
+			"id": "TextBlock_id",
+			"spacing": "default",
+			"separator": false,
+			"strikethrough": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "TextBlock_text",
+			"color": "default",
+			"horizontalAlignment": "left",
+			"isSubtle": false,
+			"italic": true,
+			"maxLines": 1,
+			"size": "default",
+			"weight": "normAl",
+			"wrap": false,
+			"id": "TextBlock_id_mono",
+			"spacing": "default",
+			"separator": false,
+			"strikethrough": true,
+			"fontType": "monospace"
+		},
+		{
+			"type": "TextBlock",
+			"text": "TextBlock_text",
+			"color": "default",
+			"horizontalAlignment": "left",
+			"isSubtle": false,
+			"italic": true,
+			"maxLines": 1,
+			"size": "default",
+			"weight": "default",
+			"wrap": false,
+			"id": "TextBlock_id_def",
+			"spacing": "default",
+			"separator": false,
+			"strikethrough": true,
+			"fontType": "default"
+		},
+		{
+			"type": "Image",
+			"altText": "Image_altText",
+			"horizontalAlignment": "center",
+			"selectAction": {
+				"type": "Action.OpenUrl",
+				"title": "Image_Action.OpenUrl",
+				"url": "https://adaptivecards.io/"
+			},
+			"size": "auto",
+			"style": "person",
+			"url": "https://adaptivecards.io/content/cats/1.png",
+			"id": "Image_id",
+			"isVisible": false,
+			"spacing": "none",
+			"separator": true
+		},
+		{
+			"type": "Container",
+			"style": "default",
+			"selectAction": {
+				"type": "Action.Submit",
+				"title": "Container_Action.Submit",
+				"data": "Container_data"
+			},
+			"id": "Container_id",
+			"spacing": "medium",
+			"separator": false,
+			"items": [
+				{
+					"type": "ColumnSet",
+					"id": "ColumnSet_id",
+					"spacing": "large",
+					"separator": true,
+					"columns": [
+						{
+							"type": "Column",
+							"style": "default",
+							"width": "auto",
+							"id": "Column_id1",
+							"items": [
+								{
+									"type": "Image",
+									"url": "https://adaptivecards.io/content/cats/1.png"
+								}
+							]
+						},
+						{
+							"type": "Column",
+							"style": "emphasis",
+							"width": "20px",
+							"id": "Column_id2",
+							"items": [
+								{
+									"type": "Image",
+									"url": "https://adaptivecards.io/content/cats/2.png"
+								}
+							]
+						},
+						{
+							"type": "Column",
+							"style": "default",
+							"width": "stretch",
+							"id": "Column_id3",
+							"items": [
+								{
+									"type": "Image",
+									"url": "https://adaptivecards.io/content/cats/3.png"
+								},
+								{
+									"type": "TextBlock",
+									"text": "Column3_TextBlock_text",
+									"id": "Column3_TextBlock_id",
+									"fontType": "display"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "FactSet",
+			"id": "FactSet_id",
+			"facts": [
+				{
+					"type": "Fact",
+					"title": "Topping",
+					"value": "poppyseeds"
+				},
+				{
+					"type": "Fact",
+					"title": "Topping",
+					"value": "onion flakes"
+				}
+			]
+		},
+		{
+			"type": "ImageSet",
+			"imageSize": "auto",
+			"id": "ImageSet_id",
+			"separator": true,
+			"images": [
+				{
+					"type": "Image",
+					"url": "https://adaptivecards.io/content/cats/1.png"
+				},
+				{
+					"type": "Image",
+					"url": "https://adaptivecards.io/content/cats/2.png"
+				},
+				{
+					"type": "Image",
+					"url": "https://adaptivecards.io/content/cats/3.png"
+				}
+			]
+		},
+		{
+			"type": "Container",
+			"id": "Container_id_inputs",
+			"items": [
+				{
+					"type": "Input.Text",
+					"id": "Input.Text_id",
+					"isMultiline": false,
+					"maxLength": 10,
+					"placeholder": "Input.Text_placeholder",
+					"style": "text",
+					"value": "Input.Text_value",
+					"spacing": "small",
+					"isRequired": false,
+					"regex": "([A-Z])\\w+",
+					"inlineAction": {
+						"type": "Action.Submit",
+						"iconUrl": "https://adaptivecards.io/content/cats/1.png",
+						"title": "Input.Text_Action.Submit"
+					}
+				},
+				{
+					"type": "Input.Number",
+					"id": "Input.Number_id",
+					"max": 10,
+					"min": 5,
+					"placeholder": "Input.Number_placeholder",
+					"value": 7,
+					"isRequired": true
+				},
+				{
+					"type": "Input.Date",
+					"id": "Input.Date_id",
+					"min": "8/1/2018",
+					"max": "1/1/2020",
+					"placeholder": "Input.Date_placeholder",
+					"value": "8/9/2018"
+				},
+				{
+					"type": "Input.Time",
+					"id": "Input.Time_id",
+					"min": "10:00",
+					"max": "17:00",
+					"value": "13:00",
+					"placeholder": "Input.Time_placeholder",
+					"isRequired": true,
+					"errorMessage": "Input.Time.ErrorMessage"
+				},
+				{
+					"type": "Input.Toggle",
+					"id": "Input.Toggle_id",
+					"title": "Input.Toggle_title",
+					"value": "Input.Toggle_on",
+					"valueOff": "Input.Toggle_off",
+					"valueOn": "Input.Toggle_on"
+				},
+				{
+					"type": "TextBlock",
+					"weight": "BoLdEr",
+					"size": "large",
+					"text": "Everybody's got choices"
+				},
+				{
+					"type": "Input.ChoiceSet",
+					"id": "Input.ChoiceSet_id",
+					"isMultiSelect": true,
+					"style": "compact",
+					"value": "Input.Choice2,Input.Choice4",
+					"choices": [
+						{
+							"type": "Input.Choice",
+							"title": "Input.Choice1_title",
+							"value": "Input.Choice1"
+						},
+						{
+							"type": "Input.Choice",
+							"title": "Input.Choice2_title",
+							"value": "Input.Choice2"
+						},
+						{
+							"type": "Input.Choice",
+							"title": "Input.Choice3_title",
+							"value": "Input.Choice3"
+						},
+						{
+							"type": "Input.Choice",
+							"title": "Input.Choice4_title",
+							"value": "Input.Choice4"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "ActionSet",
+			"actions": [
+				{
+					"type": "Action.Submit",
+					"title": "ActionSet.Action.Submit",
+					"id": "ActionSet.Action.Submit_id",
+					"ignoreInputValidation": true
+				},
+				{
+					"type": "Action.OpenUrl",
+					"title": "ActionSet.Action.OpenUrl",
+					"id": "ActionSet.Action.OpenUrl_id",
+					"url": "https://adaptivecards.io/"
+				}
+			]
+		},
+		{
+			"type": "RichTextBlock",
+			"id": "RichTextBlock_id",
+			"horizontalAlignment": "right",
+			"inlines": [
+				{
+					"color": "Dark",
+					"fontType": "Monospace",
+					"highlight": true,
+					"isSubtle": true,
+					"italic": true,
+					"size": "large",
+					"strikethrough": true,
+					"text": "This is a text run",
+					"type": "TextRun",
+					"underline": true,
+					"weight": "Bolder"
+				},
+				{
+					"type": "TextRun",
+					"text": "This is another text run",
+					"selectAction": { "type": "Action.Submit" }
+				},
+				"This is a text run specified as a string"
+			]
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "Action.Submit",
+			"id": "Action.Submit_id",
+			"data": {
+				"submitValue": true
+			}
+		},
+		{
+			"type": "Action.ShowCard",
+			"title": "Action.ShowCard",
+			"id": "Action.ShowCard_id",
+			"card": {
+				"type": "AdaptiveCard",
+				"backgroundImage": {
+					"url": "https://adaptivecards.io/content/cats/1.png",
+					"fillMode": "repeat",
+					"verticalAlignment": "center",
+					"horizontalAlignment": "right"
+				},
+				"body": [
+					{
+						"type": "TextBlock",
+						"isSubtle": true,
+						"text": "Action.ShowCard text"
+					}
+				]
+			}
+		}
+	]
+}

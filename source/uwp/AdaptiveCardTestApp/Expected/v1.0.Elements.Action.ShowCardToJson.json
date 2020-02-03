@@ -1,0 +1,1 @@
+{"actions":[{"card":{"actions":[{"title":"Neat!","type":"Action.Submit"}],"body":[{"text":"What do you think?","type":"TextBlock"}],"type":"AdaptiveCard","version":"1.0"},"title":"Action.ShowCard","type":"Action.ShowCard"}],"body":[{"text":"This card's action will show another card","type":"TextBlock"}],"type":"AdaptiveCard","version":"1.0"}

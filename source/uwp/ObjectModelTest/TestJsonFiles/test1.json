@@ -1,59 +1,59 @@
 {
-  "@type": "AdaptiveCard",
-  "targets": {
-    "Windows.Notification": {
-      "appLogo": {
-        "url": "",
-        "alt": "",
-        "crop": "circle"
-      },
-      "heroImage": {
-        "url": "",
-        "alt": ""
-      },
-      "audio": {
-        "src": "",
-        "loop": true
-      }
-    },
-    "Windows.Tile": {
-      "branding": "name",
-      "displayName": "Monday, 22"
-    },
-    "Cortana.Car": {
-      "greeting": "name"
-    },
-    "Windows.Activity": {
-      "title": "Mvp Summit.pptx"
-    },
-    "Default": {}
-  },
-  "actions": [
-  {
-    "type": "imBack",
-    "value": "Something",
-    "text": "Something"
-  }
-  ],
-    "body": [
-    {
-      "@type": "TextBlock",
-      "text": "あああああああああ"
-    },
-    {
-      "@type": "Image"
-    },
-    {
-      "@type": "FactGroup"
-    },
-    {
-      "@type": "ColumnGroup"
-    },
-    {
-      "@type": "ImageGallery"
-    },
-    {
-      "@type": "ActionGroup"
-    }
-  ]
+	"@type": "AdaptiveCard",
+	"targets": {
+		"Windows.Notification": {
+			"appLogo": {
+				"url": "",
+				"alt": "",
+				"crop": "circle"
+			},
+			"heroImage": {
+				"url": "",
+				"alt": ""
+			},
+			"audio": {
+				"src": "",
+				"loop": true
+			}
+		},
+		"Windows.Tile": {
+			"branding": "name",
+			"displayName": "Monday, 22"
+		},
+		"Cortana.Car": {
+			"greeting": "name"
+		},
+		"Windows.Activity": {
+			"title": "Mvp Summit.pptx"
+		},
+		"Default": {}
+	},
+	"actions": [
+	{
+		"type": "imBack",
+		"value": "Something",
+		"text": "Something"
+	}
+	],
+		"body": [
+		{
+			"@type": "TextBlock",
+			"text": "あああああああああ"
+		},
+		{
+			"@type": "Image"
+		},
+		{
+			"@type": "FactGroup"
+		},
+		{
+			"@type": "ColumnGroup"
+		},
+		{
+			"@type": "ImageGallery"
+		},
+		{
+			"@type": "ActionGroup"
+		}
+	]
 }

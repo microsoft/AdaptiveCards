@@ -1,93 +1,81 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
-#include "AdaptiveImageSet.h"
 
-#include "Util.h"
-#include "Vector.h"
-#include <windows.foundation.collections.h>
-#include "XamlCardRendererComponent.h"
+#include "AdaptiveImageSet.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveNamespace
 {
-    AdaptiveImageSet::AdaptiveImageSet()
+    AdaptiveImageSet::AdaptiveImageSet() { m_images = Microsoft::WRL::Make<Vector<AdaptiveImage*>>(); }
+
+    HRESULT AdaptiveImageSet::RuntimeClassInitialize() noexcept
+    try
     {
-        m_images = Microsoft::WRL::Make<Vector<IAdaptiveImage*>>();
+        std::shared_ptr<AdaptiveSharedNamespace::ImageSet> imageSet = std::make_shared<AdaptiveSharedNamespace::ImageSet>();
+        return RuntimeClassInitialize(imageSet);
     }
+    CATCH_RETURN;
 
-    HRESULT AdaptiveImageSet::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveImageSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ImageSet>& sharedImageSet)
+    try
     {
-        m_sharedImageSet = std::make_shared<ImageSet>();
-        return S_OK;
-    } CATCH_RETURN;
+        if (sharedImageSet == nullptr)
+        {
+            return E_INVALIDARG;
+        }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ImageSet>& sharedImageSet)
-    {
-        m_sharedImageSet = sharedImageSet;
-        GenerateImagesProjection(m_sharedImageSet->GetImages(), m_images.Get());
+        GenerateImagesProjection(sharedImageSet->GetImages(), m_images.Get());
+
+        m_imageSize = static_cast<ABI::AdaptiveNamespace::ImageSize>(sharedImageSet->GetImageSize());
+
+        InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedImageSet));
         return S_OK;
     }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-        IFACEMETHODIMP AdaptiveImageSet::get_Images(IVector<IAdaptiveImage*>** images)
+    IFACEMETHODIMP AdaptiveImageSet::get_Images(_COM_Outptr_ IVector<AdaptiveImage*>** images)
     {
         return m_images.CopyTo(images);
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::get_ImageSize(ABI::AdaptiveCards::XamlCardRenderer::ImageSize* imageSize)
+    HRESULT AdaptiveImageSet::get_ImageSize(_Out_ ABI::AdaptiveNamespace::ImageSize* imageSize)
     {
-        *imageSize = static_cast<ABI::AdaptiveCards::XamlCardRenderer::ImageSize>(m_sharedImageSet->GetImageSize());
+        *imageSize = m_imageSize;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::put_ImageSize(ABI::AdaptiveCards::XamlCardRenderer::ImageSize imageSize)
+    HRESULT AdaptiveImageSet::put_ImageSize(ABI::AdaptiveNamespace::ImageSize imageSize)
     {
-        m_sharedImageSet->SetImageSize(static_cast<AdaptiveCards::ImageSize>(imageSize));
-        return S_OK; 
+        m_imageSize = imageSize;
+        return S_OK;
     }
 
-    _Use_decl_annotations_
-        IFACEMETHODIMP AdaptiveImageSet::get_ElementType(ElementType* elementType)
+    IFACEMETHODIMP AdaptiveImageSet::get_ElementType(_Out_ ElementType* elementType)
     {
         *elementType = ElementType::ImageSet;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::get_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation)
+    HRESULT AdaptiveImageSet::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel)
+    try
     {
-        *separation = static_cast<ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle>(m_sharedImageSet->GetSeparationStyle());
+        std::shared_ptr<AdaptiveSharedNamespace::ImageSet> imageSet = std::make_shared<AdaptiveSharedNamespace::ImageSet>();
+
+        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(imageSet)));
+
+        imageSet->SetImageSize(static_cast<AdaptiveSharedNamespace::ImageSize>(m_imageSize));
+
+        RETURN_IF_FAILED(GenerateSharedImages(m_images.Get(), imageSet->GetImages()));
+
+        sharedModel = imageSet;
         return S_OK;
     }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::put_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation)
-    {
-        m_sharedImageSet->SetSeparationStyle(static_cast<AdaptiveCards::SeparationStyle>(separation));
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::get_Speak(HSTRING* speak)
-    {
-        return UTF8ToHString(m_sharedImageSet->GetSpeak(), speak);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::put_Speak(HSTRING speak)
-    {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedImageSet->SetSpeak(out);
-        return S_OK;
-    }
-}
+    CATCH_RETURN;
 }

@@ -1,0 +1,12 @@
+cmake_minimum_required (VERSION 3.5)
+set(CMAKE_OSX_SYSROOT iphonesimulator11.4)
+add_compile_options(-std=c++14 -Wall)
+project (AdaptiveCardsLib)
+include_directories(../../../../shared/cpp/ObjectModel)
+file(GLOB_RECURSE sources ./*.mm ./*.h ./*.m ${UIKIT_INC}/*.h)
+set(CMAKE_C_FLAGS "-x objective-c -fobjc-arc")
+set(CMAKE_CXX_FLAGS "-x objective-c++ -fobjc-arc")
+set(CMAKE_EXE_LINKER_FLAGS "-framework Cocoa -framework UIKit -framework Foundation -framework SafariServices")
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+                     
+add_library(adaptiveCards_lib STATIC ${sources})

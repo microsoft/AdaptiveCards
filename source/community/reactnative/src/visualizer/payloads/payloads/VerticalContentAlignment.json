@@ -1,0 +1,18 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.1",
+	"height": "stretch",
+	"verticalContentAlignment": "center",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Hi,"
+		},
+		{
+			"type": "TextBlock",
+			"text": "MasterHip",
+			"isSubtle": true
+		}
+	]
+}

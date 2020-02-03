@@ -1,31 +1,51 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
-#include "Enums.h"
 #include "pch.h"
-#include "BaseCardElement.h"
+#include "CollectionTypeElement.h"
 
-namespace AdaptiveCards
+namespace AdaptiveSharedNamespace
 {
-class Container : public BaseCardElement
-{
-public:
-    Container();
-    Container(SeparationStyle separation, std::string speak);
-    Container(SeparationStyle separation, std::string speak, std::vector<std::shared_ptr<BaseCardElement>>& items);
+    class BaseActionElement;
 
-    virtual std::string Serialize();
+    class Container : public CollectionTypeElement
+    {
+        friend class ContainerParser;
 
-    std::vector<std::shared_ptr<BaseCardElement>>& GetItems();
-    const std::vector<std::shared_ptr<BaseCardElement>>& GetItems() const;
+    public:
+        Container();
+        Container(const Container&) = default;
+        Container(Container&&) = default;
+        Container& operator=(const Container&) = default;
+        Container& operator=(Container&&) = default;
+        ~Container() = default;
 
-    static std::shared_ptr<Container> Deserialize(const Json::Value& root);
-    static std::shared_ptr<Container> DeserializeFromString(const std::string& jsonString);
+        Json::Value SerializeToJsonValue() const override;
+        void DeserializeChildren(ParseContext& context, const Json::Value& value) override;
 
-protected:
-    static const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>, EnumHash> CardElementParsers;
-    void SetItems(std::vector<std::shared_ptr<BaseCardElement>>& items);
+        std::vector<std::shared_ptr<BaseCardElement>>& GetItems();
+        const std::vector<std::shared_ptr<BaseCardElement>>& GetItems() const;
 
-private:
-    std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>> m_items;
-};
+        void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
+
+    private:
+        void PopulateKnownPropertiesSet();
+
+        std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>> m_items;
+    };
+
+    class ContainerParser : public BaseCardElementParser
+    {
+    public:
+        ContainerParser() = default;
+        ContainerParser(const ContainerParser&) = default;
+        ContainerParser(ContainerParser&&) = default;
+        ContainerParser& operator=(const ContainerParser&) = default;
+        ContainerParser& operator=(ContainerParser&&) = default;
+        virtual ~ContainerParser() = default;
+
+        std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
+        std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
+    };
 }

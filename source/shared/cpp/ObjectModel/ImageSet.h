@@ -1,31 +1,54 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "pch.h"
-#include "Enums.h"
 #include "Image.h"
 #include "BaseCardElement.h"
 
-namespace AdaptiveCards
-    {
+namespace AdaptiveSharedNamespace
+{
     class BaseCardElement;
-        class ImageSet : public BaseCardElement
-        {
-            public:
-            ImageSet();
-            ImageSet(SeparationStyle separation, std::string speak);
-            ImageSet(SeparationStyle separation, std::string speak, std::vector<std::shared_ptr<Image>>& images);
+    class ImageSet : public BaseCardElement
+    {
+        friend class ImageSetParser;
 
-            virtual std::string Serialize();
+    public:
+        ImageSet();
+        ImageSet(const ImageSet&) = default;
+        ImageSet(ImageSet&&) = default;
+        ImageSet& operator=(const ImageSet&) = default;
+        ImageSet& operator=(ImageSet&&) = default;
+        ~ImageSet() = default;
 
-            ImageSize GetImageSize() const;
-            void SetImageSize(const ImageSize value);
+        Json::Value SerializeToJsonValue() const override;
 
-            std::vector<std::shared_ptr<Image>>& GetImages();
-            const std::vector<std::shared_ptr<Image>>& GetImages() const;
-            static std::shared_ptr<ImageSet> Deserialize(const Json::Value& root);
+        ImageSize GetImageSize() const;
+        void SetImageSize(const ImageSize value);
 
-            private:
-            std::vector<std::shared_ptr<Image>> m_images;
-            ImageSize m_imageSize;
-        };
-    }
+        std::vector<std::shared_ptr<Image>>& GetImages();
+        const std::vector<std::shared_ptr<Image>>& GetImages() const;
+
+        void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
+
+    private:
+        void PopulateKnownPropertiesSet();
+
+        std::vector<std::shared_ptr<Image>> m_images;
+        ImageSize m_imageSize;
+    };
+
+    class ImageSetParser : public BaseCardElementParser
+    {
+    public:
+        ImageSetParser() = default;
+        ImageSetParser(const ImageSetParser&) = default;
+        ImageSetParser(ImageSetParser&&) = default;
+        ImageSetParser& operator=(const ImageSetParser&) = default;
+        ImageSetParser& operator=(ImageSetParser&&) = default;
+        virtual ~ImageSetParser() = default;
+
+        std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
+        std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
+    };
+}

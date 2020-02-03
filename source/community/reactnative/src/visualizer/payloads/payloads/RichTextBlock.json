@@ -1,0 +1,75 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "RichTextBlock",
+            "wrap": true,
+            "maxLines": 5,
+            "paragraphs": [
+                {
+                    "inlines": [
+                        {
+                            "type": "TextRun",
+                            "text": "**The Huffington Post**",
+                            "color": "good",
+                            "selectAction": {
+                                "type": "Action.Submit",
+                                "title": "cool link",
+                                "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                            }
+                        },
+                        {
+                            "type": "TextRun",
+                            "text": "5/23/2016",
+                            "color": "good",
+                            "selectAction": {
+                                "type": "Action.Submit",
+                                "title": "cool link",
+                                "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                            }
+                        },
+                        {
+                            "type": "TextRun",
+                            "text": "This is highlighted",
+                            "highlight": true
+                        },
+                        {
+                            "type": "TextRun",
+                            "text": "Adaptive card TextRun testing with two paragraphs"
+                        }
+                    ]
+                },
+                {
+                    "inlines": [
+                        {
+                            "type": "TextRun",
+                            "text": "[Weather in](http://google.com)",
+                            "color": "good",
+                            "selectAction": {
+                                "type": "Action.OpenUrl",
+                                "title": "5/23/2016",
+                                "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                            }
+                        },
+                        {
+                            "type": "TextRun",
+                            "text": "**Chennai on**",
+                            "selectAction": {
+                                "type": "Action.OpenUrl",
+                                "title": "5/23/2016",
+                                "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                            }
+                        },
+                        {
+                            "type": "TextRun",
+                            "text": "Adaptive card TextRun testing for highlight",
+                            "highlight": true
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

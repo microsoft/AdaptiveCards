@@ -1,0 +1,35 @@
+{
+	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+	"description": "Expresses a class",
+	"properties": {
+		"type": {
+			"type": "string",
+			"description": "The name of the class",
+			"required": true
+		},
+		"description": {
+			"type": "string",
+			"description": "A description of the class"
+		},
+		"properties": {
+			"type": "Dictionary<Property>",
+			"description": "Properties of the class"
+		},
+		"isAbstract": {
+			"type": "boolean",
+			"description": "Specifies whether this class is abstract"
+		},
+		"extends": {
+			"type": "string",
+			"description": "Class that this class extends from"
+		},
+    "shorthand": {
+      "type": "string",
+      "description": "Name of one of the properties that represents a shorthand version of this class"
+    },
+		"$schema": {
+			"type": "uri",
+			"description": "JSON schema for the JSON file"
+		}
+	}
+}

@@ -1,0 +1,414 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"height": "stretch",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "ColumnSet",
+			"height": "stretch",
+			"columns": [
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+							"wrap": true
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": 1,
+					"spacing": "large",
+					"separator": true,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "FactSet (id1)",
+							"wrap": true
+						},
+						{
+							"type": "FactSet",
+							"id": "id1",
+							"height": "stretch",
+							"facts": [
+								{
+									"title": "Fact 1",
+									"value": "Value 1"
+								},
+								{
+									"title": "Fact 2",
+									"value": "Value 2"
+								}
+							]
+						},
+						{
+							"type": "TextBlock",
+							"text": "Image (id2)",
+							"wrap": true
+						},
+						{
+							"type": "Image",
+							"id": "id2",
+							"url": "https://adaptivecards.io/content/cats/1.png",
+							"height": "stretch",
+							"size": "small"
+						},
+						{
+							"type": "TextBlock",
+							"text": "ImageSet (id3)",
+							"wrap": true
+						},
+						{
+							"type": "ImageSet",
+							"id": "id3",
+							"imageSize": "small",
+							"height": "stretch",
+							"images": [
+								{
+									"type": "Image",
+									"url": "https://adaptivecards.io/content/cats/1.png"
+								},
+								{
+									"type": "Image",
+									"url": "https://adaptivecards.io/content/cats/2.png"
+								}
+							]
+						},
+						{
+							"type": "TextBlock",
+							"text": "Input.Date (id4)",
+							"wrap": true
+						},
+						{
+							"type": "Input.Date",
+							"id": "id4",
+							"placeholder": "enter date",
+							"height": "stretch"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Input.Number (id5)",
+							"wrap": true
+						},
+						{
+							"type": "Input.Number",
+							"id": "id5",
+							"placeholder": "enter comment",
+							"max": 500,
+							"height": "stretch"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Input.Text with inlineAction (id6)",
+							"wrap": true
+						},
+						{
+							"type": "Input.Text",
+							"id": "id6",
+							"placeholder": "enter comment",
+							"maxLength": 500,
+							"height": "stretch",
+							"inlineAction": {
+								"type": "Action.OpenUrl",
+								"title": "Reply",
+								"url": "https://adaptivecards.io"
+							}
+						},
+						{
+							"type": "TextBlock",
+							"text": "Input.Text (id7)",
+							"wrap": true
+						},
+						{
+							"type": "Input.Text",
+							"id": "id7",
+							"placeholder": "enter comment",
+							"maxLength": 500,
+							"height": "stretch"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Input.Time (id8)",
+							"wrap": true
+						},
+						{
+							"type": "Input.Time",
+							"id": "id8",
+							"placeholder": "enter time",
+							"height": "stretch"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Input.Toggle (id9)",
+							"wrap": true
+						},
+						{
+							"type": "Input.Toggle",
+							"id": "id9",
+							"title": "Placeholder title",
+							"height": "stretch"
+						},
+						{
+							"type": "TextBlock",
+							"text": "TextBlock (id10)",
+							"wrap": true
+						},
+						{
+							"type": "TextBlock",
+							"id": "id10",
+							"text": "Regular textblock",
+							"height": "stretch"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Container (id11)",
+							"wrap": true
+						},
+						{
+							"type": "Container",
+							"id": "id11",
+							"height": "stretch",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "TextBlock inside a container"
+								}
+							]
+						},
+						{
+							"type": "TextBlock",
+							"text": "ColumnSet (id12)",
+							"wrap": true
+						},
+						{
+							"type": "ColumnSet",
+							"id": "id12",
+							"height": "stretch",
+							"columns": [
+								{
+									"type": "Column",
+									"items": [
+										{
+											"type": "TextBlock",
+											"text": "This is for testing columnset"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "TextBlock",
+							"text": "Column (id13)",
+							"wrap": true
+						},
+						{
+							"type": "ColumnSet",
+							"columns": [
+								{
+									"type": "Column",
+									"id": "id13",
+									"height": "stretch",
+									"items": [
+										{
+											"type": "TextBlock",
+											"text": "This is for testing column"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "TextBlock",
+							"text": "Media (id14)",
+							"wrap": true
+						},
+						{
+							"type": "Media",
+							"id": "id14",
+							"height": "stretch",
+							"poster": "https://adaptivecards.io/content/poster-video.png",
+							"sources": [
+								{
+									"mimeType": "video/mp4",
+									"url": "https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4"
+								}
+							]
+						},
+						{
+							"type": "TextBlock",
+							"text": "RichTextBlock (id15)",
+							"wrap": true
+						},
+						{
+							"type": "RichTextBlock",
+							"id": "id15",
+							"height": "stretch",
+							"inlines": [
+								"This is the first inline. ",
+								{
+									"type": "TextRun",
+									"text": "We support colors, ",
+									"color": "good"
+								}
+							]
+						},
+						{
+							"type": "TextBlock",
+							"text": "TextBlock at the bottom",
+							"wrap": true
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "ColumnSet",
+			"height": "stretch",
+			"columns": [
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+							"wrap": true
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": 1,
+					"spacing": "large",
+					"separator": true,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "This is a textblock that doesn't stretch, but the input text does",
+							"wrap": true
+						},
+						{
+							"type": "Input.ChoiceSet",
+							"id": "id16",
+							"height": "stretch",
+							"choices": [
+								{
+									"title": "Red",
+									"value": "1"
+								},
+								{
+									"title": "Green",
+									"value": "2"
+								},
+								{
+									"title": "Blue",
+									"value": "3"
+								}
+							]
+						},
+						{
+							"type": "Input.ChoiceSet",
+							"id": "id17",
+							"style": "expanded",
+							"isMultiSelect": false,
+							"value": "1",
+							"height": "stretch",
+							"choices": [
+								{
+									"title": "Red",
+									"value": "1"
+								},
+								{
+									"title": "Green",
+									"value": "2"
+								},
+								{
+									"title": "Blue",
+									"value": "3"
+								}
+							]
+						},
+						{
+							"type": "TextBlock",
+							"text": "One last text block at the bottom",
+							"wrap": true
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": 1,
+					"spacing": "large",
+					"separator": true,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "This is a textblock that doesn't stretch, but the input text does",
+							"wrap": true
+						},
+						{
+							"type": "Input.ChoiceSet",
+							"id": "id18",
+							"isMultiSelect": true,
+							"value": "1,3",
+							"style": "compact",
+							"height": "stretch",
+							"choices": [
+								{
+									"title": "Red",
+									"value": "1"
+								},
+								{
+									"title": "Green",
+									"value": "2"
+								},
+								{
+									"title": "Blue",
+									"value": "3"
+								}
+							]
+						},
+						{
+							"type": "Input.ChoiceSet",
+							"id": "id19",
+							"isMultiSelect": true,
+							"value": "1",
+							"style": "expanded",
+							"height": "stretch",
+							"choices": [
+								{
+									"title": "Red",
+									"value": "1"
+								},
+								{
+									"title": "Green",
+									"value": "2"
+								},
+								{
+									"title": "Blue",
+									"value": "3"
+								}
+							]
+						},
+						{
+							"type": "TextBlock",
+							"text": "One last text block at the bottom",
+							"wrap": true
+						}
+					]
+				}
+			]
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.ToggleVisibility",
+			"title": "Toggle!",
+			"targetElements": [ "id1", "id2", "id3", "id4", "id5", "id6", "id7", "id8", "id9", "id10", "id11", "id12", "id13", "id14", "id15", "id16", "id17", "id18", "id19" ]
+		}
+	]
+}

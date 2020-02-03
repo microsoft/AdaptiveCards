@@ -1,0 +1,13 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.2",
+	"fallbackText": "This card requires Adaptive Cards version 1.2.",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "This should not appear if renderer version < card version.",
+			"wrap": true
+		}
+	]
+}

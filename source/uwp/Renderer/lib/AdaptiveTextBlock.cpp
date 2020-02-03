@@ -1,178 +1,101 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
+
 #include "AdaptiveTextBlock.h"
-#include "Util.h"
-#include <windows.foundation.collections.h>
-#include "XamlCardRendererComponent.h"
+#include "DateTimeParser.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveTextBlock::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveTextBlock::RuntimeClassInitialize() noexcept
+    try
     {
-        m_sharedTextBlock = std::make_shared<TextBlock>();
-        return S_OK;
-    } CATCH_RETURN;
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::TextBlock>& sharedTextBlock)
-    {
-        m_sharedTextBlock = sharedTextBlock;
-        return S_OK;
+        std::shared_ptr<AdaptiveSharedNamespace::TextBlock> textBlock = std::make_shared<AdaptiveSharedNamespace::TextBlock>();
+        return RuntimeClassInitialize(textBlock);
     }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Text(HSTRING* text)
+    HRESULT AdaptiveTextBlock::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TextBlock>& sharedTextBlock)
+    try
     {
-        return UTF8ToHString(m_sharedTextBlock->GetText(), text);
-    }
+        if (sharedTextBlock == nullptr)
+        {
+            return E_INVALIDARG;
+        }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Text(HSTRING text)
-    {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(text, out));
-        m_sharedTextBlock->SetText(out);
+        m_wrap = sharedTextBlock->GetWrap();
+        m_maxLines = sharedTextBlock->GetMaxLines();
+        m_horizontalAlignment = static_cast<ABI::AdaptiveNamespace::HAlignment>(sharedTextBlock->GetHorizontalAlignment());
+
+        InitializeTextElement(sharedTextBlock);
+        InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedTextBlock));
         return S_OK;
     }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Size(ABI::AdaptiveCards::XamlCardRenderer::TextSize* textSize)
+    HRESULT AdaptiveTextBlock::get_Wrap(_Out_ boolean* wrap)
     {
-        *textSize = static_cast<ABI::AdaptiveCards::XamlCardRenderer::TextSize>(m_sharedTextBlock->GetTextSize());
+        *wrap = m_wrap;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Size(ABI::AdaptiveCards::XamlCardRenderer::TextSize textSize)
-    {
-        m_sharedTextBlock->SetTextSize(static_cast<AdaptiveCards::TextSize>(textSize));
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Weight(ABI::AdaptiveCards::XamlCardRenderer::TextWeight* textWeight)
-    {
-        *textWeight = static_cast<ABI::AdaptiveCards::XamlCardRenderer::TextWeight>(m_sharedTextBlock->GetTextWeight());
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Weight(ABI::AdaptiveCards::XamlCardRenderer::TextWeight textWeight)
-    {
-        m_sharedTextBlock->SetTextWeight(static_cast<AdaptiveCards::TextWeight>(textWeight));
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Color(ABI::AdaptiveCards::XamlCardRenderer::TextColor* textColor)
-    {
-        *textColor = static_cast<ABI::AdaptiveCards::XamlCardRenderer::TextColor>(m_sharedTextBlock->GetTextColor());
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Color(ABI::AdaptiveCards::XamlCardRenderer::TextColor textColor)
-    {
-        m_sharedTextBlock->SetTextColor(static_cast<AdaptiveCards::TextColor>(textColor));
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Wrap(boolean* wrap)
-    {
-        *wrap = m_sharedTextBlock->GetWrap();
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::put_Wrap(boolean wrap)
     {
-        m_sharedTextBlock->SetWrap(Boolify(wrap));
+        m_wrap = wrap;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_IsSubtle(boolean* isSubtle)
+    HRESULT AdaptiveTextBlock::get_MaxLines(_Out_ UINT32* maxLines)
     {
-        *isSubtle = m_sharedTextBlock->GetIsSubtle();
+        *maxLines = m_maxLines;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_IsSubtle(boolean isSubtle)
-    {
-        m_sharedTextBlock->SetIsSubtle(Boolify(isSubtle));
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_MaxLines(UINT32* maxLines)
-    {
-        *maxLines = m_sharedTextBlock->GetMaxLines();
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::put_MaxLines(UINT32 maxLines)
     {
-        m_sharedTextBlock->SetMaxLines(maxLines);
+        m_maxLines = maxLines;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_HorizontalAlignment(ABI::AdaptiveCards::XamlCardRenderer::HAlignment* alignment)
+    HRESULT AdaptiveTextBlock::get_HorizontalAlignment(_Out_ ABI::AdaptiveNamespace::HAlignment* alignment)
     {
-        *alignment = static_cast<ABI::AdaptiveCards::XamlCardRenderer::HAlignment>(m_sharedTextBlock->GetHorizontalAlignment());
+        *alignment = m_horizontalAlignment;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_HorizontalAlignment(ABI::AdaptiveCards::XamlCardRenderer::HAlignment alignment)
+    HRESULT AdaptiveTextBlock::put_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment alignment)
     {
-        m_sharedTextBlock->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(alignment));
+        m_horizontalAlignment = alignment;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_ElementType(ElementType* elementType)
+    HRESULT AdaptiveTextBlock::get_ElementType(_Out_ ElementType* elementType)
     {
         *elementType = ElementType::TextBlock;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation)
+    HRESULT AdaptiveTextBlock::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedTextBlock)
+    try
     {
-        *separation = static_cast<ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle>(m_sharedTextBlock->GetSeparationStyle());
+        std::shared_ptr<AdaptiveSharedNamespace::TextBlock> textBlock = std::make_shared<AdaptiveSharedNamespace::TextBlock>();
+
+        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(textBlock)));
+        RETURN_IF_FAILED(SetTextElementProperties(textBlock));
+
+        textBlock->SetWrap(m_wrap);
+        textBlock->SetMaxLines(m_maxLines);
+        textBlock->SetHorizontalAlignment(static_cast<AdaptiveSharedNamespace::HorizontalAlignment>(m_horizontalAlignment));
+
+        sharedTextBlock = textBlock;
         return S_OK;
     }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation)
-    {
-        m_sharedTextBlock->SetSeparationStyle(static_cast<AdaptiveCards::SeparationStyle>(separation));
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Speak(HSTRING* speak)
-    {
-        return UTF8ToHString(m_sharedTextBlock->GetSpeak(), speak);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Speak(HSTRING speak)
-    {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedTextBlock->SetSpeak(out);
-        return S_OK;
-    }
-
-}}
+    CATCH_RETURN;
+}

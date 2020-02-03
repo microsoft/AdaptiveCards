@@ -1,28 +1,49 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "pch.h"
-#include "Enums.h"
-#include "Fact.h"
 #include "BaseCardElement.h"
+#include "ElementParserRegistration.h"
 
-namespace AdaptiveCards
+namespace AdaptiveSharedNamespace
 {
-class BaseCardElement;
-class FactSet : public BaseCardElement
-{
-public:
-    FactSet();
-    FactSet(SeparationStyle separation, std::string speak);
-    FactSet(SeparationStyle separation, std::string speak, std::vector<std::shared_ptr<Fact>>& facts);
+    class Fact;
 
-    virtual std::string Serialize();
+    class FactSet : public BaseCardElement
+    {
+        friend class FactSetParser;
 
-    std::vector<std::shared_ptr<Fact>>& GetFacts();
-    const std::vector<std::shared_ptr<Fact>>& GetFacts() const;
-    static std::shared_ptr<FactSet> Deserialize(const Json::Value& root);
-    static std::shared_ptr<FactSet> DeserializeFromString(const std::string& jsonString);
+    public:
+        FactSet();
+        FactSet(const FactSet&) = default;
+        FactSet(FactSet&&) = default;
+        FactSet& operator=(const FactSet&) = default;
+        FactSet& operator=(FactSet&&) = default;
+        ~FactSet() = default;
 
-private:
-    std::vector<std::shared_ptr<Fact>> m_facts; 
-};
+        Json::Value SerializeToJsonValue() const override;
+
+        std::vector<std::shared_ptr<Fact>>& GetFacts();
+        const std::vector<std::shared_ptr<Fact>>& GetFacts() const;
+
+    private:
+        void PopulateKnownPropertiesSet();
+
+        std::vector<std::shared_ptr<Fact>> m_facts;
+    };
+
+    class FactSetParser : public BaseCardElementParser
+    {
+    public:
+        FactSetParser() = default;
+        FactSetParser(const FactSetParser&) = default;
+        FactSetParser(FactSetParser&&) = default;
+        FactSetParser& operator=(const FactSetParser&) = default;
+        FactSetParser& operator=(FactSetParser&&) = default;
+        virtual ~FactSetParser() = default;
+
+        std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
+        std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
+    };
 }

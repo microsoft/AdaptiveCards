@@ -1,0 +1,10 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.1",
+    "backgroundImage": {
+        "url": "https://messagecardplayground.azurewebsites.net/assets/SmallVerticalLineGray.png",
+        "mode": "repeatVertically",
+        "horizontalAlignment": "center"
+    }
+}

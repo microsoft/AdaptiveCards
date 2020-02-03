@@ -1,0 +1,19 @@
+{
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "This card has an action with an icon. Icon placement and size depend on host.",
+			"wrap": true
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.OpenUrl",
+			"iconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAABfUlEQVRIS72UPU/DMBRF+69hYaJIbBUjfwFRkFCLKFH4iBQWOpeJbMBG5kzGJ+pLbOeFhKbhSkdW/O57t07dTowx/4K6OQaNjfXry9rK7IHInRuGaA011EM0n4PMrkLSNF1bzAhchEGaaTCceuegz68Pdb+NnYI2mzcay1WrazDfC0qSp06KoqCxXLW6BvOrIM0QIqcR8az5Qqz6BXFNGSqnEfHMPnWtT7Dyg57jRxPHcbnyhYeDu4SfPmYIDwm/WydICqvovlwJzvMcU2/hp09mCVbNoOhuVRn+EoaPHj6oILOs6iC36JoxdoVpIS5WfpCEhGHhbQtF3fW7MMuqeSKNLMswt4q61idY1UHL5cK0Eb467VnrE6z6Bck15+pyQdhj5RlRD3tcrLqDeMfyJ6rV2aeOT6uDF3Rze2WuF/uHuV6QZtoXXpBNPmeTT/Ab7itpq7NKyOV8fuAFAVdxWxzMds67zPaCYHY2O52eTM1Avo+OD8uTCF7IeJjJD3xajPLilAzRAAAAAElFTkSuQmCC",
+			"url": "https://adaptivecards.io",
+			"title": "With DataUri Icon"
+		}
+	]
+}

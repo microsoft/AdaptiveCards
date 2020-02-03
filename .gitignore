@@ -22,6 +22,7 @@ bld/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
+[Cc]lang-Debug/
 
 # Visual Studio 2015 cache/options directory
 .vs/
@@ -48,6 +49,7 @@ artifacts/
 *_i.c
 *_p.c
 *_i.h
+*_p.h
 *.ilk
 *.meta
 *.obj
@@ -183,6 +185,9 @@ _pkginfo.txt
 # but keep track of directories ending in .cache
 !*.[Cc]ache/
 
+# Visual Studio 2017 auto generated files
+Generated\ Files/
+
 # Others
 ClientBin/
 ~$*
@@ -266,5 +271,23 @@ build*
 makefile.inc
 product.pbxproj
 
+# Mac
+**/.DS_Store
+
 #Generated header from MIDL
-**/UWP/Renderer/AdaptiveCards.XamlCardRenderer.h
+**/UWP/Renderer/AdaptiveCards.Rendering.Uwp.h
+*.binlog
+source/nodejs/adaptivecards-visualizer/built/visualizer-with-renderer.js
+source/nodejs/adaptivecards-visualizer/built/visualizer-with-renderer.js
+source/nodejs/adaptivecards/built/card-elements.js
+source/nodejs/adaptivecards/built/card-elements.js.map
+*.tgz
+
+#cscope files
+cscope.files
+cscope.out
+cscope.in.out
+cscope.po.out
+
+# Teamwork.com VS extension
+twp.json

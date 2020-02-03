@@ -1,0 +1,16 @@
+<article id="<%= page.layout %>-<%= page.slug %>" class="article article-type-<%= page.layout %>">
+	<div class="article-inner">
+	 
+	  <% if (page.link || page.title){ %>
+		<header class="article-header">
+		  <%- page.title %>
+		</header>
+	  <% } %>
+
+	  <div class="article-entry" itemprop="articleBody">
+		
+		  <%- page.content %>
+	  </div>
+	</div>
+  </article>
+  

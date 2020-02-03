@@ -1,53 +1,82 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "pch.h"
-#include "Enums.h"
-#include "json\json.h"
-#include "ParseUtil.h"
+#include "BaseActionElement.h"
+#include "BaseElement.h"
+#include "ElementParserRegistration.h"
+#include "Separator.h"
+#include "RemoteResourceInformation.h"
 
-namespace AdaptiveCards
+void HandleUnknownProperties(const Json::Value& json, const std::unordered_set<std::string>& knownProperties, Json::Value& unknownProperties);
+
+namespace AdaptiveSharedNamespace
 {
-class Container;
-class BaseCardElement
-{
-public:
-    BaseCardElement(CardElementType type, SeparationStyle separationStyle, std::string speak);
-    BaseCardElement(CardElementType type);
+    class BaseCardElement : public BaseElement
+    {
+    public:
+        BaseCardElement(CardElementType type, Spacing spacing, bool separator, HeightType height);
+        BaseCardElement(CardElementType type);
 
-    virtual ~BaseCardElement();
+        BaseCardElement() = default;
+        BaseCardElement(const BaseCardElement&) = default;
+        BaseCardElement(BaseCardElement&&) = default;
+        BaseCardElement& operator=(const BaseCardElement&) = default;
+        BaseCardElement& operator=(BaseCardElement&&) = default;
+        ~BaseCardElement() = default;
 
-    SeparationStyle GetSeparationStyle() const;
-    void SetSeparationStyle(const SeparationStyle value);
+        Json::Value SerializeToJsonValue() const override;
 
-    std::string GetSpeak() const;
-    void SetSpeak(const std::string value);
+        virtual bool GetSeparator() const;
+        virtual void SetSeparator(const bool value);
 
-    const CardElementType GetElementType() const;
+        HeightType GetHeight() const;
+        void SetHeight(const HeightType value);
 
-    virtual std::string Serialize() = 0;
+        virtual Spacing GetSpacing() const;
+        virtual void SetSpacing(const Spacing value);
 
-    template <typename T>
-    static std::shared_ptr<T> Deserialize(const Json::Value& json);
+        virtual bool GetIsVisible() const;
+        virtual void SetIsVisible(const bool value);
 
-private:
-    CardElementType m_type;
-    SeparationStyle m_separationStyle;
-    std::string m_speak;
-};
+        virtual CardElementType GetElementType() const;
 
-template <typename T>
-std::shared_ptr<T> BaseCardElement::Deserialize(const Json::Value& json)
-{
-    std::shared_ptr<T> cardElement = std::make_shared<T>();
-    std::shared_ptr<BaseCardElement> baseCardElement = cardElement;
+        template<typename T> static std::shared_ptr<T> Deserialize(ParseContext& context, const Json::Value& json);
 
-    ParseUtil::ThrowIfNotJsonObject(json);
+        static void ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context, const Json::Value& json, std::shared_ptr<BaseElement>& element);
 
-    baseCardElement->SetSpeak(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Speak));
-    baseCardElement->SetSeparationStyle(
-            ParseUtil::GetEnumValue<SeparationStyle>(json, AdaptiveCardSchemaKey::Separation, SeparationStyle::Default, SeparationStyleFromString));
+    protected:
+        static Json::Value SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction);
+        void PopulateKnownPropertiesSet();
 
-    return cardElement;
+    private:
+        CardElementType m_type;
+        Spacing m_spacing;
+        HeightType m_height;
+        bool m_separator;
+        bool m_isVisible;
+    };
+
+    template<typename T> std::shared_ptr<T> BaseCardElement::Deserialize(ParseContext& context, const Json::Value& json)
+    {
+        std::shared_ptr<T> cardElement = std::make_shared<T>();
+        std::shared_ptr<BaseCardElement> baseCardElement = std::static_pointer_cast<BaseCardElement>(cardElement);
+
+        ParseUtil::ThrowIfNotJsonObject(json);
+
+        baseCardElement->DeserializeBase<BaseCardElement>(context, json);
+        baseCardElement->SetCanFallbackToAncestor(context.GetCanFallbackToAncestor());
+        baseCardElement->SetHeight(
+            ParseUtil::GetEnumValue<HeightType>(json, AdaptiveCardSchemaKey::Height, HeightType::Auto, HeightTypeFromString));
+        baseCardElement->SetIsVisible(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsVisible, true));
+        baseCardElement->SetSeparator(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Separator, false));
+        baseCardElement->SetSpacing(
+            ParseUtil::GetEnumValue<Spacing>(json, AdaptiveCardSchemaKey::Spacing, Spacing::Default, SpacingFromString));
+
+        // Walk all properties and put any unknown ones in the additional properties json
+        HandleUnknownProperties(json, baseCardElement->m_knownProperties, baseCardElement->m_additionalProperties);
+
+        return cardElement;
+    }
 }
-}
-

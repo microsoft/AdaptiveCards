@@ -1,53 +1,53 @@
 {
-  "@type": "AdaptiveCard",
-  "body": [
-    {
-      "@type": "TextBlock",
-      "text": "Light Test",
-      "textColor": "light",
-      "textWeight": "bolder",
-      "textSize": "small",
-      "textWrap": "noWrap"
-    },
-    {
-      "@type": "TextBlock",
-      "text": "Dark Test",
-      "textColor": "dark",
-      "textWeight": "bolder",
-      "textWrap": "noWrap"
-    },
-    {
-      "@type": "TextBlock",
-      "text": "Accent Test",
-      "textColor": "accent",
-      "textWeight": "bolder",
-      "textWrap": "noWrap"
-    },
-    {
-      "@type": "TextBlock",
-      "text": "Good Test",
-      "textColor": "good",
-      "textWeight": "bolder",
-      "textWrap": "noWrap"
-    },
-    {
-      "@type": "TextBlock",
-      "textColor": "warning"
-    },
-    {
-      "@type": "TextBlock",
-      "textWeight": "bolder"
-    },
-    {
-      "@type": "TextBlock",
-      "textWrap": "noWrap"
-    },
-    {
-      "@type": "TextBlock",
-      "text": "Attention Test",
-      "textColor": "attention",
-      "textWeight": "bolder",
-      "textWrap": "noWrap"
-    }
-  ]
+	"@type": "AdaptiveCard",
+	"body": [
+		{
+			"@type": "TextBlock",
+			"text": "Light Test",
+			"textColor": "light",
+			"textWeight": "bolder",
+			"textSize": "small",
+			"textWrap": "noWrap"
+		},
+		{
+			"@type": "TextBlock",
+			"text": "Dark Test",
+			"textColor": "dark",
+			"textWeight": "bolder",
+			"textWrap": "noWrap"
+		},
+		{
+			"@type": "TextBlock",
+			"text": "Accent Test",
+			"textColor": "accent",
+			"textWeight": "bolder",
+			"textWrap": "noWrap"
+		},
+		{
+			"@type": "TextBlock",
+			"text": "Good Test",
+			"textColor": "good",
+			"textWeight": "bolder",
+			"textWrap": "noWrap"
+		},
+		{
+			"@type": "TextBlock",
+			"textColor": "warning"
+		},
+		{
+			"@type": "TextBlock",
+			"textWeight": "bolder"
+		},
+		{
+			"@type": "TextBlock",
+			"textWrap": "noWrap"
+		},
+		{
+			"@type": "TextBlock",
+			"text": "Attention Test",
+			"textColor": "attention",
+			"textWeight": "bolder",
+			"textWrap": "noWrap"
+		}
+	]
 }

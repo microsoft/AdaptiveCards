@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "ImageLoadTracker.h"
 
@@ -5,11 +7,11 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveNamespace
 {
     ImageLoadTracker::~ImageLoadTracker()
     {
@@ -19,18 +21,19 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         }
     }
 
-    _Use_decl_annotations_
-    void ImageLoadTracker::TrackBitmapImage(IBitmapImage* bitmapImage)
+    void ImageLoadTracker::TrackBitmapImage(_In_ IBitmapImage* bitmapImage)
     {
         ComPtr<IBitmapImage> localBitmapImage(bitmapImage);
         TrackedImageDetails trackedImageDetails;
 
-        ComPtr<IRoutedEventHandler> imageOpenedEventHandler = Microsoft::WRL::Callback<IRoutedEventHandler, ImageLoadTracker>(this, &ImageLoadTracker::trackedImage_ImageLoaded);
+        ComPtr<IRoutedEventHandler> imageOpenedEventHandler =
+            Microsoft::WRL::Callback<IRoutedEventHandler, ImageLoadTracker>(this, &ImageLoadTracker::trackedImage_ImageLoaded);
         THROW_IF_FAILED(bitmapImage->add_ImageOpened(imageOpenedEventHandler.Get(), &trackedImageDetails.imageOpenedRegistration));
-        ComPtr<IExceptionRoutedEventHandler> imageFailedEventHandler = Microsoft::WRL::Callback<IExceptionRoutedEventHandler, ImageLoadTracker>(this, &ImageLoadTracker::trackedImage_ImageFailed);
+        ComPtr<IExceptionRoutedEventHandler> imageFailedEventHandler =
+            Microsoft::WRL::Callback<IExceptionRoutedEventHandler, ImageLoadTracker>(this, &ImageLoadTracker::trackedImage_ImageFailed);
         THROW_IF_FAILED(bitmapImage->add_ImageFailed(imageFailedEventHandler.Get(), &trackedImageDetails.imageFailedRegistration));
 
-        // Ensure we donn't try and write the private data from multiple threads
+        // Ensure we don't try and write the private data from multiple threads
         auto exclusiveLock = m_lock.LockExclusive();
 
         ComPtr<IInspectable> inspectableBitmapImage;
@@ -44,6 +47,18 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         }
     }
 
+    void ImageLoadTracker::MarkFailedLoadBitmapImage(_In_ IBitmapImage* bitmapImage)
+    {
+        // Record failure
+        m_hasFailure = true;
+
+        // And then notify this image is done
+        ComPtr<IBitmapImage> localBitmapImage(bitmapImage);
+        ComPtr<IInspectable> inspectableBitmapImage;
+        THROW_IF_FAILED(localBitmapImage.As(&inspectableBitmapImage));
+        ImageLoadResultReceived(inspectableBitmapImage.Get());
+    }
+
     void ImageLoadTracker::AbandonOutstandingImages()
     {
         auto exclusiveLock = m_lock.LockExclusive();
@@ -54,8 +69,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         m_eventRegistrations.clear();
     }
 
-    _Use_decl_annotations_
-    HRESULT ImageLoadTracker::AddListener(IImageLoadTrackerListener* listener) try
+    HRESULT ImageLoadTracker::AddListener(_In_ IImageLoadTrackerListener* listener)
+    try
     {
         if (m_listeners.find(listener) == m_listeners.end())
         {
@@ -66,10 +81,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             return E_INVALIDARG;
         }
         return S_OK;
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT ImageLoadTracker::RemoveListener(IImageLoadTrackerListener* listener) try
+    HRESULT ImageLoadTracker::RemoveListener(_In_ IImageLoadTrackerListener* listener)
+    try
     {
         if (m_listeners.find(listener) != m_listeners.end())
         {
@@ -80,29 +96,24 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             return E_INVALIDARG;
         }
         return S_OK;
-    } CATCH_RETURN;
-
-    int ImageLoadTracker::GetTotalImagesTracked()
-    {
-        return m_totalImageCount;
     }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT ImageLoadTracker::trackedImage_ImageLoaded(IInspectable* sender, IRoutedEventArgs* /*eventArgs*/)
-    {
-        ImageLoadResultReceived(sender);
-        return S_OK;
-    }
-    
-    _Use_decl_annotations_
-    HRESULT ImageLoadTracker::trackedImage_ImageFailed(IInspectable* sender, IExceptionRoutedEventArgs* /*eventArgs*/)
+    int ImageLoadTracker::GetTotalImagesTracked() { return m_totalImageCount; }
+
+    HRESULT ImageLoadTracker::trackedImage_ImageLoaded(_In_ IInspectable* sender, _In_ IRoutedEventArgs* /*eventArgs*/)
     {
         ImageLoadResultReceived(sender);
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    void ImageLoadTracker::ImageLoadResultReceived(IInspectable* sender)
+    HRESULT ImageLoadTracker::trackedImage_ImageFailed(_In_ IInspectable* sender, _In_ IExceptionRoutedEventArgs* /*eventArgs*/)
+    {
+        ImageLoadResultReceived(sender);
+        return S_OK;
+    }
+
+    void ImageLoadTracker::ImageLoadResultReceived(_In_ IInspectable* sender)
     {
         auto exclusiveLock = m_lock.LockExclusive();
         m_trackedImageCount--;
@@ -113,12 +124,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         if (m_trackedImageCount == 0)
         {
-            FireAllImagesLoaded();
+            m_hasFailure ? FireImagesLoadingHadError() : FireAllImagesLoaded();
         }
     }
 
-    _Use_decl_annotations_
-    void ImageLoadTracker::UnsubscribeFromEvents(IInspectable* bitmapImage, TrackedImageDetails& trackedImageDetails)
+    void ImageLoadTracker::UnsubscribeFromEvents(_In_ IInspectable* bitmapImage, TrackedImageDetails& trackedImageDetails)
     {
         ComPtr<IInspectable> inspectableBitmapImage(bitmapImage);
         ComPtr<IBitmapImage> localBitmapImage;
@@ -136,4 +146,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             listener->AllImagesLoaded();
         }
     }
-}}
+
+    void ImageLoadTracker::FireImagesLoadingHadError()
+    {
+        for (auto& listener : m_listeners)
+        {
+            listener->ImagesLoadingHadError();
+        }
+    }
+}

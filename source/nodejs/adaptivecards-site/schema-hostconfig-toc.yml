@@ -1,0 +1,15 @@
+- Card Configuration:
+    - AdaptiveCardConfig
+    - ActionsConfig
+    - ContainerStylesConfig
+    - FactSetConfig
+    - FontSizesConfig
+    - FontWeightsConfig
+    - ForegroundColorsConfig
+    - ImageSetConfig
+    - ImageSizesConfig
+    - MediaConfig
+    - SeparatorConfig
+    - ShowCardConfig
+    - SpacingsConfig
+    - TextBlockConfig

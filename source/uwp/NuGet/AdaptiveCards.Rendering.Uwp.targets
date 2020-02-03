@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Target Name="CheckNonUwpApp" Condition="'$(TargetPlatformIdentifier)' != 'UAP'" BeforeTargets="PrepareForBuild">
+        <Error Text="Only UWP apps/libraries are supported." />
+    </Target>
+    <ItemGroup Condition="'$(ProjectExt)' != '.vcxproj'">
+        <SDKReference Include="Microsoft.VCLibs, Version=14.0">
+            <Name>Visual C++ 2015 Runtime for Universal Windows Platform Apps</Name>
+        </SDKReference>
+    </ItemGroup>
+</Project>

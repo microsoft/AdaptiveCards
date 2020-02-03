@@ -1,0 +1,55 @@
+﻿<!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. -->
+<UserControl
+    x:Class="AdaptiveCardVisualizer.DocumentView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdaptiveCardVisualizer"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    xmlns:toolkitControls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:converters="using:AdaptiveCardVisualizer.Converters">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="350"/>
+        </Grid.ColumnDefinitions>
+
+        <!--Editor and errors-->
+        <local:GenericDocumentView />
+
+        <!--Preview-->
+        <Grid
+            Grid.Column="1">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="11,0,0,0" Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}">
+                <Border
+                    x:Name="AdaptiveCardHostContainer"
+                    Child="{Binding RenderedCard}"
+                    Padding="12"/>
+            </ScrollViewer>
+            <Border
+                Background="#11000000"
+                Visibility="{Binding IsLoading}">
+                <ProgressRing
+                    IsActive="True"
+                    Width="40"
+                    Height="40"/>
+            </Border>
+        </Grid>
+
+        <!--Vertical draggable column splitter-->
+        <toolkitControls:GridSplitter
+            Width="11"
+            Background="{ThemeResource SystemControlBackgroundAccentBrush}"
+            GripperCursor="Default"
+            HorizontalAlignment="Left"
+            Grid.Column="1"
+            ResizeDirection="Auto"
+            ResizeBehavior="BasedOnAlignment"
+            CursorBehavior="ChangeOnSplitterHover"
+            GripperForeground="White"/>
+    </Grid>
+</UserControl>

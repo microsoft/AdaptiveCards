@@ -1,0 +1,150 @@
+apply plugin: 'com.android.library'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+android {
+    compileSdkVersion 26
+
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        externalNativeBuild {
+            cmake {
+                cppFlags "-std=c++14 -fexceptions -frtti -DNO_LOCALE_SUPPORT"
+                arguments "-DANDROID_STL=c++_shared"
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
+    }
+}
+
+signing {
+    required { gradle.taskGraph.hasTask("uploadArchives")}
+    sign configurations.archives
+}
+
+task sourceJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier "sources"
+}
+
+task createPom {
+    doLast {
+        pom {
+            project {
+                groupId 'io.adaptivecards'
+                artifactId 'adaptivecards-android'
+                version System.getenv('XES_PACKAGEVERSIONNUMBER') ?: '0.0.0'
+                name 'Android Adaptive Cards Library'
+                description 'Android Adaptive Cards Lib'
+                url 'https://github.com/Microsoft/AdaptiveCards'
+                packaging 'aar'
+                scm {
+                    url 'https://github.com/Microsoft/AdaptiveCards'
+                }
+
+                licenses {
+                    license {
+                        name 'MIT'
+                        url 'https://github.com/Microsoft/AdaptiveCards/blob/master/LICENSE'
+                        distribution 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'microsoft'
+                        name 'adaptivecards'
+                    }
+                }
+            }
+        }.writeTo("pom.xml")
+    }
+}
+
+publishing {
+    publications {
+        adaptivecards(MavenPublication) {
+            groupId 'io.adaptivecards'
+            version System.getenv('ACSDKVERSION') + '-' + System.getenv('BUILD_BUILDNUMBER')
+            artifact(sourceJar)
+            artifact("$buildDir/outputs/aar/adaptivecards-release.aar")
+        }
+    }
+
+    repositories {
+        maven {
+            url 'https://microsoft.pkgs.visualstudio.com/_packaging/AdaptiveCards/maven/v1'
+            credentials {
+                username "AZURE_ARTIFACTS"
+                password System.getenv("AZURE_ARTIFACTS_ENV_ACCESS_TOKEN") ?: "${azureArtifactsGradleAccessToken}"
+            }
+        }
+    }
+}
+
+uploadArchives {
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+                pom.artifactId ="adaptivecards-android"
+
+                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
+                    authentication(userName: NexusUserName, password: NexusPassword)
+                }
+                pom {
+                    setGroupId "io.adaptivecards"
+                    setVersion System.getenv("XES_PACKAGEVERSIONNUMBER") ?:"0.0.0"
+                }
+
+                pom.project {
+                    name 'Android Adaptive Cards Library'
+                    description 'Android Adaptive Cards Lib'
+                    url 'https://github.com/Microsoft/AdaptiveCards'
+
+                    scm {
+                        url  'https://github.com/Microsoft/AdaptiveCards'
+                    }
+
+                    licenses {
+                        license {
+                            name 'MIT'
+                            url 'https://github.com/Microsoft/AdaptiveCards/blob/master/LICENSE'
+                            distribution 'repo'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id 'microsoft'
+                            name 'adaptivecards'
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    testImplementation 'junit:junit:4.12'
+}
