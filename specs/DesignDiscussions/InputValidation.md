@@ -219,6 +219,13 @@ And andrewleader:
 
 This refers to allowing hosts to add custom rendering via code for showing validation errors. Perhaps they wish to show their errors in the style of tooltips, for example, instead of inline under the image. Currently, we view this as a P2 feature. That said, we may be willing to accept a feature inconsistency here if this is required for JavaScript in v1 of input validation, and add it to other platforms in future versions as the need arises and time allows.
 
+## Backwards Compatibility
+All new properties added for input validation will be ignored when sent to earlier versions of Adaptive Cards. This has the following impact:
+ - Required Inputs will not be marked with any indication that they are required
+ - Validation properties will not be checked or enforced. Error messages will not be shown.
+ - Associated inputs will be ignored, and all Submit Actions will be treated as 
+ `"associatedInputIds" : "All"`.
+
 ## Future and Out of Scope Features
 
 ### Success Indicators
