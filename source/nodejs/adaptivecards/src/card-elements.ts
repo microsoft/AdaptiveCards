@@ -102,7 +102,7 @@ export abstract class CardElement extends CardObject {
     private _hostConfig?: HostConfig;
     private _separatorElement?: HTMLElement;
     private _truncatedDueToOverflow: boolean = false;
-    private _defaultRenderedElementDisplayMode: string | null = null;
+    private _defaultRenderedElementDisplayMode?: string;
     private _padding?: PaddingDefinition;
 
     private internalRenderSeparator(): HTMLElement | undefined {
@@ -131,18 +131,20 @@ export abstract class CardElement extends CardObject {
     }
 
     private updateRenderedElementVisibility() {
-        let displayMode = this.isDesignMode() || this.isVisible ? this._defaultRenderedElementDisplayMode : "none";
+        if (this._defaultRenderedElementDisplayMode) {
+            let displayMode = this.isDesignMode() || this.isVisible ? this._defaultRenderedElementDisplayMode : "none";
 
-        if (this._renderedElement) {
-            this._renderedElement.style.display = displayMode;
-        }
-
-        if (this._separatorElement) {
-            if (this.parent && this.parent.isFirstElement(this)) {
-                this._separatorElement.style.display = "none";
+            if (this._renderedElement) {
+                this._renderedElement.style.display = displayMode;
             }
-            else {
-                this._separatorElement.style.display = displayMode;
+
+            if (this._separatorElement) {
+                if (this.parent && this.parent.isFirstElement(this)) {
+                    this._separatorElement.style.display = "none";
+                }
+                else {
+                    this._separatorElement.style.display = displayMode;
+                }
             }
         }
     }
@@ -417,7 +419,7 @@ export abstract class CardElement extends CardObject {
             }
 
             this._renderedElement.style.boxSizing = "border-box";
-            this._defaultRenderedElementDisplayMode = this._renderedElement.style.display;
+            this._defaultRenderedElementDisplayMode = this._renderedElement.style.display ? this._renderedElement.style.display : undefined;
 
             this.adjustRenderedElementSize(this._renderedElement);
             this.updateLayout(false);
@@ -803,7 +805,10 @@ export class TextBlock extends BaseTextBlock {
 
     private restoreOriginalContent() {
         if (this.renderedElement !== undefined) {
-            this.renderedElement.style.maxHeight = (this.maxLines && this.maxLines > 0) ? (this._computedLineHeight * this.maxLines) + 'px' : null;
+            if (this.maxLines && this.maxLines > 0) {
+                this.renderedElement.style.maxHeight = this._computedLineHeight * this.maxLines + "px";
+            }
+
             this.renderedElement.innerHTML = this._originalInnerHtml;
         }
     }
