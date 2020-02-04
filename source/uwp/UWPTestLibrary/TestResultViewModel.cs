@@ -199,6 +199,8 @@ namespace UWPTestLibrary
                     }
                 }
 
+                answer.Status.Error = answer.TestResult.Error;
+
                 // If both had error, compare via the error
                 if (answer.ExpectedError != null && answer.TestResult.Error != null)
                 {
@@ -463,6 +465,8 @@ namespace UWPTestLibrary
         /// <summary> This is a new card</summary>
         public bool NewCard { get; set; } = false;
 
+        public string Error;
+
         /// <summary> Set the status to a passing result</summary>
         public void SetToPassingStatus(bool matchedViaError)
         {
@@ -486,9 +490,16 @@ namespace UWPTestLibrary
             {
                 return "Passed";
             }
-            else if (NewCard == true)
+            else if (NewCard)
             {
-                return "New Card Added";
+                if (Error == null)
+                {
+                    return "New Card Added";
+                }
+                else
+                {
+                    return "Error in new card";
+                }
             }
             else if (!OriginalMatched && ((!ImageMatched || !JsonRoundTripMatched) && !MatchedViaError))
             {
