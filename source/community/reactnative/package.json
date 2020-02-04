@@ -1,7 +1,7 @@
 {
   "name": "adaptivecards-reactnative",
   "description": "AdaptiveCards implementation in ReactNative",
-  "version": "1.2.2",
+  "version": "2.0.0",
   "keywords": [
     "adaptivecards",
     "cards",
@@ -41,6 +41,7 @@
     "rnpm-plugin-windows": "^0.2.11"
   },
   "dependencies": {
+    "adaptivecards-templating": "^0.1.1-alpha.0",
     "react-native-video": "^4.2.0",
     "react-native-windows": "0.57.1"
   },

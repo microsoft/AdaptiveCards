@@ -38,7 +38,10 @@ export class ColumnSet extends React.PureComponent {
 			children.push(
 				<Column json={element}
 					columns={payload.columns}
+					hasBackgroundImage={payload.parent.backgroundImage}
 					key={`ELEMENT-${index}`}
+					isFirst={index === 0}
+					isLast={index === payload.columns.length - 1}
 				/>);
 		});
 		return children.map(ChildElement => React.cloneElement(ChildElement, { containerStyle: this.payload.style }));
@@ -73,7 +76,6 @@ export class ColumnSet extends React.PureComponent {
 
 const styles = StyleSheet.create({
 	defaultBGStyle: {
-		flex: 1,
 		backgroundColor: Constants.TransparentString,
 		flexDirection: Constants.FlexRow,
 	},
