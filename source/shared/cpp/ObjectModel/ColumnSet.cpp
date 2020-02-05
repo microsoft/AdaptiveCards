@@ -1,21 +1,18 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+#include "pch.h"
 #include "ColumnSet.h"
+#include "Column.h"
 #include "ParseUtil.h"
 #include "Image.h"
 #include "TextBlock.h"
+#include "Util.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespace;
 
-const std::unordered_map<CardElementType, std::function<std::shared_ptr<Column>(const Json::Value&)>, EnumHash> ColumnSet::ColumnParser =
+ColumnSet::ColumnSet() : CollectionTypeElement(CardElementType::ColumnSet)
 {
-    { CardElementType::Column, Column::Deserialize }
-};
-
-ColumnSet::ColumnSet() : BaseCardElement(CardElementType::ColumnSet)
-{
-}
-
-ColumnSet::ColumnSet(std::vector<std::shared_ptr<Column>>& columns) : BaseCardElement(CardElementType::ColumnSet), m_columns(columns)
-{
+    PopulateKnownPropertiesSet();
 }
 
 const std::vector<std::shared_ptr<Column>>& ColumnSet::GetColumns() const
@@ -28,26 +25,55 @@ std::vector<std::shared_ptr<Column>>& ColumnSet::GetColumns()
     return m_columns;
 }
 
-std::string ColumnSet::Serialize()
+Json::Value ColumnSet::SerializeToJsonValue() const
 {
-    return "";
+    Json::Value root = CollectionTypeElement::SerializeToJsonValue();
+
+    std::string const& propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Columns);
+    root[propertyName] = Json::Value(Json::arrayValue);
+    for (const auto& column : m_columns)
+    {
+        root[propertyName].append(column->SerializeToJsonValue());
+    }
+
+    return root;
 }
 
-std::shared_ptr<ColumnSet> ColumnSet::Deserialize(const Json::Value& value)
+void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& value)
+{
+    m_columns = ParseUtil::GetElementCollection<Column>(false, // isTopToBottomContainer
+                                                        context,
+                                                        value,
+                                                        AdaptiveCardSchemaKey::Columns,
+                                                        false,     // isRequired
+                                                        CardElementTypeToString(CardElementType::Column)); // impliedType
+}
+
+void ColumnSet::PopulateKnownPropertiesSet()
+{
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Bleed),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Columns),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)});
+}
+
+void ColumnSet::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
+{
+    auto columns = GetColumns();
+    CollectionTypeElement::GetResourceInformation<Column>(resourceInfo, columns);
+    return;
+}
+
+std::shared_ptr<BaseCardElement> ColumnSetParser::Deserialize(ParseContext& context, const Json::Value& value)
 {
     ParseUtil::ExpectTypeString(value, CardElementType::ColumnSet);
 
-    auto container = BaseCardElement::Deserialize<ColumnSet>(value);
+    auto container = CollectionTypeElement::Deserialize<ColumnSet>(context, value);
 
-    // Parse Columns
-    auto cardElements = ParseUtil::GetElementCollection<Column>(value, AdaptiveCardSchemaKey::Columns, ColumnParser);
-    container->m_columns = std::move(cardElements);
     return container;
 }
 
-std::shared_ptr<ColumnSet> ColumnSet::DeserializeFromString(const std::string& jsonString)
+std::shared_ptr<BaseCardElement> ColumnSetParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
 {
-    Json::Value jsonValue(jsonString);
-
-    return ColumnSet::Deserialize(jsonValue);
+    return ColumnSetParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }

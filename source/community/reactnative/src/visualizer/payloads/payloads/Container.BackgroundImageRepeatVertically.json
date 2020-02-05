@@ -1,0 +1,134 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.1",
+    "body": [
+        {
+            "type": "Container",
+            "selectAction": {
+                "type": "Action.OpenUrl",
+                "url": "https://www.microsoft.com"
+            },
+            "spacing": "extraLarge",
+            "items": [
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "size": 5,
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "2:00 PM"
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "spacing": "none",
+                                    "text": "1hr",
+                                    "isSubtle": true
+                                },
+                                {
+                                    "type": "Image",
+                                    "spacing": "none",
+                                    "url": "https://messagecardplayground.azurewebsites.net/assets/Conflict.png"
+                                }
+                            ]
+                        },
+                        {
+                            "size": "auto",
+                            "spacing": "small",
+                            "backgroundImage": {
+                                "url": "https://messagecardplayground.azurewebsites.net/assets/SmallVerticalLineGray.png",
+                                "mode": "repeatVertically",
+                                "horizontalAlignment": "center"
+                            },
+                            "items": [
+                                {
+                                    "type": "Image",
+                                    "horizontalAlignment": "center",
+                                    "url": "https://messagecardplayground.azurewebsites.net/assets/CircleGreen_coffee.png"
+                                }
+                            ]
+                        },
+                        {
+                            "size": 20,
+                            "spacing": "medium",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "**Contoso Campaign Status Meeting**",
+                                    "wrap": true
+                                },
+                                {
+                                    "type": "ColumnSet",
+                                    "columns": [
+                                        {
+                                            "size": "auto",
+                                            "items": [
+                                                {
+                                                    "type": "Image",
+                                                    "url": "https://messagecardplayground.azurewebsites.net/assets/location_gray.png"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "size": "stretch",
+                                            "items": [
+                                                {
+                                                    "type": "TextBlock",
+                                                    "text": "Conf Room Bravern-2/9050",
+                                                    "wrap": true
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "ImageSet",
+                                    "images": [
+                                        {
+                                            "url": "https://messagecardplayground.azurewebsites.net/assets/person_w1.png"
+                                        },
+                                        {
+                                            "url": "https://messagecardplayground.azurewebsites.net/assets/person_m1.png"
+                                        },
+                                        {
+                                            "url": "https://messagecardplayground.azurewebsites.net/assets/person_w2.png"
+                                        },
+                                        {
+                                            "url": "https://messagecardplayground.azurewebsites.net/assets/person_m2.png"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "ColumnSet",
+                                    "columns": [
+                                        {
+                                            "size": "auto",
+                                            "items": [
+                                                {
+                                                    "type": "Image",
+                                                    "url": "https://messagecardplayground.azurewebsites.net/assets/power_point.png"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "size": "stretch",
+                                            "items": [
+                                                {
+                                                    "type": "TextBlock",
+                                                    "text": "**Contoso Brand Guidelines** shared by **Susan Metters**",
+                                                    "wrap": true
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

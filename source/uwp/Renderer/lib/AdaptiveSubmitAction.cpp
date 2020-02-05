@@ -1,59 +1,89 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
+
 #include "AdaptiveSubmitAction.h"
-#include "Util.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveNamespace;
+using namespace ABI::Windows::Data::Json;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveSubmitAction::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveSubmitAction::RuntimeClassInitialize() noexcept
+    try
     {
-        m_sharedSubmitAction = std::make_shared<SubmitAction>();
-        return S_OK;
-    } CATCH_RETURN;
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::SubmitAction>& sharedSubmitAction)
-    {
-        m_sharedSubmitAction = sharedSubmitAction;
-        return S_OK;
+        std::shared_ptr<AdaptiveSharedNamespace::SubmitAction> submitAction =
+            std::make_shared<AdaptiveSharedNamespace::SubmitAction>();
+        return RuntimeClassInitialize(submitAction);
     }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::get_Title(HSTRING* title)
+    HRESULT AdaptiveSubmitAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::SubmitAction>& sharedSubmitAction)
+    try
     {
-        return UTF8ToHString(m_sharedSubmitAction->GetTitle(), title);
-    }
+        if (sharedSubmitAction == nullptr)
+        {
+            return E_INVALIDARG;
+        }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::put_Title(HSTRING title)
-    {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(title, out));
-        m_sharedSubmitAction->SetTitle(out);
-        return S_OK;
-    }
+        auto sharedJson = sharedSubmitAction->GetDataJson();
+        if (!sharedJson.empty())
+        {
+            RETURN_IF_FAILED(StringToJsonValue(sharedSubmitAction->GetDataJson(), &m_dataJson));
+        }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::get_ActionType(ABI::AdaptiveCards::XamlCardRenderer::ActionType* actionType)
-    {
-        *actionType = ABI::AdaptiveCards::XamlCardRenderer::ActionType::Submit;
+        m_ignoreInputValidation = sharedSubmitAction->GetIgnoreInputValidation();
+
+        InitializeBaseElement(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(sharedSubmitAction));
         return S_OK;
     }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::get_Speak(HSTRING* speak)
+    HRESULT AdaptiveSubmitAction::get_ActionType(_Out_ ABI::AdaptiveNamespace::ActionType* actionType)
     {
-        return UTF8ToHString(m_sharedSubmitAction->GetSpeak(), speak);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::put_Speak(HSTRING speak)
-    {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedSubmitAction->SetSpeak(out);
+        *actionType = ABI::AdaptiveNamespace::ActionType::Submit;
         return S_OK;
     }
-}}
+
+    HRESULT AdaptiveSubmitAction::get_DataJson(_COM_Outptr_ IJsonValue** data) { return m_dataJson.CopyTo(data); }
+
+    HRESULT AdaptiveSubmitAction::put_DataJson(_In_ IJsonValue* data)
+    {
+        m_dataJson = data;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveSubmitAction::get_IgnoreInputValidation(boolean* ignoreInputValidation)
+    {
+        *ignoreInputValidation = m_ignoreInputValidation;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveSubmitAction::put_IgnoreInputValidation(boolean ignoreInputValidation)
+    {
+        m_ignoreInputValidation = ignoreInputValidation;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveSubmitAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel)
+    try
+    {
+        std::shared_ptr<AdaptiveSharedNamespace::SubmitAction> submitAction =
+            std::make_shared<AdaptiveSharedNamespace::SubmitAction>();
+        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(submitAction)));
+
+        std::string jsonAsString;
+        if (m_dataJson != nullptr)
+        {
+            RETURN_IF_FAILED(JsonValueToString(m_dataJson.Get(), jsonAsString));
+            submitAction->SetDataJson(jsonAsString);
+        }
+
+        submitAction->SetIgnoreInputValidation(m_ignoreInputValidation);
+
+        sharedModel = submitAction;
+        return S_OK;
+    }
+    CATCH_RETURN;
+}

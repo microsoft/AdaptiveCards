@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Xamarin.Forms;
 using UI = Xamarin.Forms;
 
@@ -16,19 +16,19 @@ namespace AdaptiveCards.Rendering
             image.Source = ImageSource.FromUri(uri);
         }
 
-        public static void SetHorizontalAlignment(this UI.Image image, HorizontalAlignment alignment)
+        public static void SetHorizontalAlignment(this UI.Image image, AdaptiveHorizontalAlignment alignment)
         {
             switch (alignment)
             {
-                case HorizontalAlignment.Left:
+                case AdaptiveHorizontalAlignment.Left:
                     image.HorizontalOptions = LayoutOptions.Start;
                     break;
 
-                case HorizontalAlignment.Center:
+                case AdaptiveHorizontalAlignment.Center:
                     image.HorizontalOptions = LayoutOptions.Center;
                     break;
 
-                case HorizontalAlignment.Right:
+                case AdaptiveHorizontalAlignment.Right:
                     image.HorizontalOptions = LayoutOptions.End;
                     break;
 

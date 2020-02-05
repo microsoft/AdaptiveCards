@@ -1,0 +1,125 @@
+$my-line-color: red;
+$my-background-color: rgba(0, 255, 0, 0.5);
+$my-margin: 13px;
+
+$hostConfig: (
+  spacing: (
+    small: 3px,
+    default: 8px,
+    medium: 20px,
+    large: 30px,
+    extraLarge: 40px,
+    padding: 15px
+  ),
+  separator: (
+    lineThickness: 1px,
+    lineColor: $my-line-color
+  ),
+  supportsInteractivity: true,
+  fontFamily: "Segoe UI",
+  fontSizes: (
+    small: 12px,
+    default: 14px,
+    medium: 17px,
+    large: 21px,
+    extraLarge: 26px
+  ),
+  fontWeights: (
+    lighter: 200px,
+    default: 400px,
+    bolder: 600px
+  ),
+  containerStyles: (
+    default: (
+      backgroundColor: $my-background-color,
+      foregroundColors: (
+        default: (
+          default: rgba(51,51,51,1),
+          subtle: rgba(51,51,51,0.9333333333333333)
+        ),
+        accent: (
+          default: rgba(46,137,252,1),
+          subtle: rgba(46,137,252,0.5333333333333333)
+        ),
+        attention: (
+          default: rgba(204,51,0,1),
+          subtle: rgba(204,51,0,0.8666666666666667)
+        ),
+        good: (
+          default: rgba(84,162,84,1),
+          subtle: rgba(84,162,84,0.8666666666666667)
+        ),
+        warning: (
+          default: rgba(230,149,0,1),
+          subtle: rgba(230,149,0,0.8666666666666667)
+        )
+      )
+    ),
+    emphasis: (
+      backgroundColor: rgba(0,0,0,0.03137254901960784),
+      foregroundColors: (
+        default: (
+          default: rgba(51,51,51,1),
+          subtle: rgba(51,51,51,0.9333333333333333)
+        ),
+        accent: (
+          default: rgba(46,137,252,1),
+          subtle: rgba(46,137,252,0.5333333333333333)
+        ),
+        attention: (
+          default: rgba(204,51,0,1),
+          subtle: rgba(204,51,0,0.8666666666666667)
+        ),
+        good: (
+          default: rgba(84,162,84,1),
+          subtle: rgba(84,162,84,0.8666666666666667)
+        ),
+        warning: (
+          default: rgba(230,149,0,1),
+          subtle: rgba(230,149,0,0.8666666666666667)
+        )
+      )
+    )
+  ),
+  imageSizes: (
+    small: 40px,
+    medium: 80px,
+    large: 160px
+  ),
+  actions: (
+    maxActions: 5px,
+    spacing: "default",
+    buttonSpacing: $my-margin,
+    showCard: (
+      actionMode: "inline",
+      inlineTopMargin: 16px
+    ),
+    actionsOrientation: "horizontal",
+    actionAlignment: "stretch"
+  ),
+  adaptiveCard: (
+    allowCustomStyle: false
+  ),
+  imageSet: (
+    imageSize: "medium",
+    maxImageHeight: 100px
+  ),
+  factSet: (
+    title: (
+      color: "default",
+      size: "default",
+      isSubtle: false,
+      weight: "bolder",
+      wrap: true,
+      maxWidth: 150px
+    ),
+    value: (
+      color: "default",
+      size: "default",
+      isSubtle: false,
+      weight: "default",
+      wrap: true
+    ),
+    spacing: $my-margin
+  )
+);

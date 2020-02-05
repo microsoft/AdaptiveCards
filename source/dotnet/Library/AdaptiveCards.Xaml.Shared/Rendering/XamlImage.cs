@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using AdaptiveCards.Rendering;
 #if WPF
 using System.Windows;
@@ -17,16 +17,16 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlImage
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(AdaptiveTypedElement element, RenderContext context)
         {
-            Image image = (Image)element;
+            AdaptiveImage image = (AdaptiveImage)element;
             var uiImage = new UI.Image();
-            uiImage.SetSource(image.Url,context);
+            uiImage.SetSource(image.UrlString,context);
             uiImage.SetHorizontalAlignment(image.HorizontalAlignment);
 
 
             string style = $"Adaptive.{image.Type}";
-            if (image.Style == ImageStyle.Person)
+            if (image.Style == AdaptiveImageStyle.Person)
             {
                 style += $".{image.Style}";
 #if WPF

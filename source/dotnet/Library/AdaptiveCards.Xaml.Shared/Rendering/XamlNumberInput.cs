@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using AdaptiveCards.Rendering;
 #if WPF
 using System.Windows.Controls;
@@ -11,9 +11,9 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlNumberInput
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(AdaptiveTypedElement element, RenderContext context)
         {
-            NumberInput input = (NumberInput)element;
+            AdaptiveNumberInput input = (AdaptiveNumberInput)element;
             if (context.Config.SupportsInteractivity)
             {
                 var textBox = new TextBox() { Text = input.Value.ToString() };
@@ -25,16 +25,18 @@ namespace AdaptiveCards.Rendering
             }
             else
             {
-                Container container = TypedElementConverter.CreateElement<Container>();
-                container.Separation = input.Separation;
-                TextBlock textBlock = TypedElementConverter.CreateElement<TextBlock>();
+                AdaptiveContainer container = AdaptiveTypedElementConverter.CreateElement<AdaptiveContainer>();
+                container.Spacing = input.Spacing;
+                container.Separator = input.Separator;
+
+                AdaptiveTextBlock textBlock = AdaptiveTypedElementConverter.CreateElement<AdaptiveTextBlock>();
                 textBlock.Text = XamlUtilities.GetFallbackText(input) ?? input.Placeholder;
                 container.Items.Add(textBlock);
                 if (input.Value != double.NaN)
                 {
-                    textBlock = TypedElementConverter.CreateElement<TextBlock>();
+                    textBlock = AdaptiveTypedElementConverter.CreateElement<AdaptiveTextBlock>();
                     textBlock.Text = input.Value.ToString();
-                    textBlock.Color = TextColor.Accent;
+                    textBlock.Color = AdaptiveTextColor.Accent;
                     textBlock.Wrap = true;
                     container.Items.Add(textBlock);
                 }

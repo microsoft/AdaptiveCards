@@ -1,20 +1,21 @@
 //
 //    Copyright (C) Microsoft.  All rights reserved.
 //
+#include "pch.h"
 #include <windows.h>
 #include <wrl.h>
 #include <wrl\wrappers\corewrappers.h>
 
 using namespace Microsoft::WRL;
 
-WrlCreatorMapIncludePragma(XamlCardRenderer);
+WrlCreatorMapIncludePragma(AdaptiveCardRenderer);
 
-STDAPI DllGetActivationFactory(_In_ HSTRING activatableClassId, _COM_Outptr_ IActivationFactory **factory)
+STDAPI DllGetActivationFactory(_In_ HSTRING activatableClassId, _COM_Outptr_ IActivationFactory** factory)
 {
     return Module<ModuleType::InProc>::GetModule().GetActivationFactory(activatableClassId, factory);
 }
 
-STDAPI DllGetClassObject(_In_ REFCLSID rclsid, _In_ REFIID riid, _COM_Outptr_ void **ppv)
+STDAPI DllGetClassObject(_In_ REFCLSID rclsid, _In_ REFIID riid, _COM_Outptr_ void** ppv)
 {
     return Module<ModuleType::InProc>::GetModule().GetClassObject(rclsid, riid, ppv);
 }
@@ -30,7 +31,7 @@ STDAPI DllCanUnloadNow()
     return hr;
 }
 
-STDAPI_(BOOL) DllMain(_In_ HINSTANCE hInstance, _In_ DWORD dwReason, _In_ void * /*lpReserved*/)
+STDAPI_(BOOL) DllMain(_In_ HINSTANCE hInstance, _In_ DWORD dwReason, _In_ void* /*lpReserved*/)
 {
     switch (dwReason)
     {

@@ -1,0 +1,205 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.0",
+	"type": "AdaptiveCard",
+	"lang": "espa",
+	"speak": "<s>Su vuelo esta confirmado para usted y 3 pasajeros mas de San Francisco a Amsterdam para el dia {{DATE(2017-10-10T08:30:00Z, LONG)}} {{TIME(2017-10-10T08:30:00Z)}}</s>",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Pasajeros",
+			"weight": "bolder",
+			"isSubtle": false
+		},
+		{
+			"type": "TextBlock",
+			"text": "Sarah Hum",
+			"separator": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Jeremy Goldberg",
+			"spacing": "none"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Evan Litvak",
+			"spacing": "none"
+		},
+		{
+			"type": "TextBlock",
+			"text": "2 Escalas",
+			"weight": "bolder",
+			"spacing": "medium"
+		},
+		{
+			"type": "TextBlock",
+			"text": "{{DATE(2017-10-10T08:30:00Z, LONG)}} {{TIME(2017-10-10T08:30:00Z)}}",
+			"weight": "bolder",
+			"spacing": "none"
+		},
+		{
+			"type": "ColumnSet",
+			"separator": true,
+			"columns": [
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "San Francisco",
+							"isSubtle": true
+						},
+						{
+							"type": "TextBlock",
+							"size": "extraLarge",
+							"color": "accent",
+							"text": "SFO",
+							"spacing": "none"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": "auto",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "&nbsp;"
+						},
+						{
+							"type": "Image",
+							"url": "https://adaptivecards.io/content/airplane.png",
+							"size": "small",
+							"spacing": "none"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"horizontalAlignment": "right",
+							"text": "Amsterdam",
+							"isSubtle": true
+						},
+						{
+							"type": "TextBlock",
+							"horizontalAlignment": "right",
+							"size": "extraLarge",
+							"color": "accent",
+							"text": "AMS",
+							"spacing": "none"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "Sin-Escalas",
+			"weight": "bolder",
+			"spacing": "medium"
+		},
+		{
+			"type": "TextBlock",
+			"text": "{{DATE(2017-10-18T21:50:00Z, LONG)}} {{TIME(2017-10-18T21:50:00Z)}}",
+			"weight": "bolder",
+			"spacing": "none"
+		},
+		{
+			"type": "ColumnSet",
+			"separator": true,
+			"columns": [
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Amsterdam",
+							"isSubtle": true
+						},
+						{
+							"type": "TextBlock",
+							"size": "extraLarge",
+							"color": "accent",
+							"text": "AMS",
+							"spacing": "none"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": "auto",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "&nbsp;"
+						},
+						{
+							"type": "Image",
+							"url": "https://adaptivecards.io/content/airplane.png",
+							"size": "small",
+							"spacing": "none"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"horizontalAlignment": "right",
+							"text": "San Francisco",
+							"isSubtle": true
+						},
+						{
+							"type": "TextBlock",
+							"horizontalAlignment": "right",
+							"size": "extraLarge",
+							"color": "accent",
+							"text": "SFO",
+							"spacing": "none"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "ColumnSet",
+			"spacing": "medium",
+			"columns": [
+				{
+					"type": "Column",
+					"width": "1",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Total",
+							"size": "medium",
+							"isSubtle": true
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"horizontalAlignment": "right",
+							"text": "$4,032.54",
+							"size": "medium",
+							"weight": "bolder"
+						}
+					]
+				}
+			]
+		}
+	]
+}

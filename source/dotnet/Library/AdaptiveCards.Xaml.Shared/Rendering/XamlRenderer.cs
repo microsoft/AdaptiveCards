@@ -1,9 +1,5 @@
-﻿using System;
-using System.Diagnostics;
+using System;
 using System.IO;
-using System.Windows;
-using AdaptiveCards.Rendering;
-using AdaptiveCards.Rendering.Config;
 #if WPF
 using System.Windows.Markup;
 #elif XAMARIN
@@ -14,18 +10,18 @@ using FrameworkElement = Xamarin.Forms.View;
 
 namespace AdaptiveCards.Rendering
 {
-    public partial class XamlRenderer : AdaptiveRenderer<FrameworkElement, RenderContext>
+    public partial class XamlRenderer : AdaptiveCardRendererBase<FrameworkElement, RenderContext>
     {
         protected Action<object, ActionEventArgs> actionCallback;
         protected Action<object, MissingInputEventArgs> missingDataCallback;
-        protected HostConfig _defaultCardStyling;
+        protected AdaptiveHostConfig _defaultCardStyling;
 
-        public XamlRenderer(HostConfig hostConfig,
+        public XamlRenderer(AdaptiveHostConfig hostConfig,
             ResourceDictionary resources,
             Action<object, ActionEventArgs> actionCallback = null,
             Action<object, MissingInputEventArgs> missingDataCallback = null)
-            : base(hostConfig)
         {
+            HostConfig = hostConfig;
             this.Resources = resources;
             this.actionCallback = actionCallback;
             this.missingDataCallback = missingDataCallback;
@@ -48,29 +44,27 @@ namespace AdaptiveCards.Rendering
 
         private void SetObjectTypes()
         {
-            this.SetRenderer<AdaptiveCard>(XamlAdaptiveCard.Render);
+            ElementRenderers.Set<AdaptiveCard>(XamlAdaptiveCard.Render);
+            ElementRenderers.Set<AdaptiveTextBlock>(XamlTextBlock.Render);
+            ElementRenderers.Set<AdaptiveImage>(XamlImage.Render);
 
-            this.SetRenderer<TextBlock>(XamlTextBlock.Render);
-            this.SetRenderer<Image>(XamlImage.Render);
+            ElementRenderers.Set<AdaptiveActionSet>(XamlActionSet.Render);
+            ElementRenderers.Set<AdaptiveContainer>(XamlContainer.Render);
+            ElementRenderers.Set<AdaptiveColumn>(XamlColumn.Render);
+            ElementRenderers.Set<AdaptiveColumnSet>(XamlColumnSet.Render);
+            ElementRenderers.Set<AdaptiveFactSet>(XamlFactSet.Render);
+            ElementRenderers.Set<AdaptiveImageSet>(XamlImageSet.Render);
 
-            this.SetRenderer<ActionSet>(XamlActionSet.Render);
-            this.SetRenderer<Container>(XamlContainer.Render);
-            this.SetRenderer<Column>(XamlColumn.Render);
-            this.SetRenderer<ColumnSet>(XamlColumnSet.Render);
-            this.SetRenderer<FactSet>(XamlFactSet.Render);
-            this.SetRenderer<ImageSet>(XamlImageSet.Render);
+            ElementRenderers.Set<AdaptiveChoiceSetInput>(XamlChoiceSet.Render);
+            ElementRenderers.Set<AdaptiveTextInput>(XamlTextInput.Render);
+            ElementRenderers.Set<AdaptiveNumberInput>(XamlNumberInput.Render);
+            ElementRenderers.Set<AdaptiveDateInput>(XamlDateInput.Render);
+            ElementRenderers.Set<AdaptiveTimeInput>(XamlTimeInput.Render);
+            ElementRenderers.Set<AdaptiveToggleInput>(XamlToggleInput.Render); ;
 
-            this.SetRenderer<ChoiceSet>(XamlChoiceSet.Render);
-            this.SetRenderer<TextInput>(XamlTextInput.Render);
-            this.SetRenderer<NumberInput>(XamlNumberInput.Render);
-            this.SetRenderer<DateInput>(XamlDateInput.Render);
-            this.SetRenderer<TimeInput>(XamlTimeInput.Render);
-            this.SetRenderer<ToggleInput>(XamlToggleInput.Render); ;
-
-            this.SetRenderer<SubmitAction>(XamlSubmitAction.Render);
-            this.SetRenderer<HttpAction>(XamlHttpAction.Render); ;
-            this.SetRenderer<OpenUrlAction>(XamlOpenUrlAction.Render);
-            this.SetRenderer<ShowCardAction>(XamlShowCardAction.Render);
+            ElementRenderers.Set<AdaptiveSubmitAction>(XamlSubmitAction.Render);
+            ElementRenderers.Set<AdaptiveOpenUrlAction>(XamlOpenUrlAction.Render);
+            ElementRenderers.Set<AdaptiveShowCardAction>(XamlShowCardAction.Render);
         }
 
         /// <summary>
@@ -124,27 +118,32 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public FrameworkElement RenderAdaptiveCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null, HostConfig hostConfig = null)
+        public FrameworkElement RenderAdaptiveCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null, AdaptiveHostConfig hostConfig = null)
         {
             RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
             {
-                Config = hostConfig ?? this.DefaultConfig,
+                Config = hostConfig ?? new AdaptiveHostConfig(),
                 Resources = this.Resources,
                 ElementRenderers = this.ElementRenderers
             };
             return context.Render(card);
         }
 
-        public FrameworkElement RenderShowCard(ShowCardAction showCard, Func<string, MemoryStream> imageResolver = null, HostConfig hostConfig = null)
+        public FrameworkElement RenderShowCard(AdaptiveShowCardAction showCard, Func<string, MemoryStream> imageResolver = null, AdaptiveHostConfig hostConfig = null)
         {
             RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
             {
-                Config = hostConfig ?? this.DefaultConfig,
+                Config = hostConfig ?? new AdaptiveHostConfig(),
                 Resources = this.Resources,
                 ElementRenderers = this.ElementRenderers
             };
 
             return context.Render(showCard.Card);
+        }
+
+        protected override AdaptiveSchemaVersion GetSupportedSchemaVersion()
+        {
+            throw new NotImplementedException();
         }
     }
 }

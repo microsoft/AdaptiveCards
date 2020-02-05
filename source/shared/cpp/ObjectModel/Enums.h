@@ -1,232 +1,491 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 #include "pch.h"
+#include "EnumMagic.h"
 
-#ifdef _WIN32
-#define strncasecmp _strnicmp
-#endif // _WIN32
-
-namespace AdaptiveCards
+namespace AdaptiveSharedNamespace
 {
-
-struct EnumHash
-{
-    template <typename T>
-    std::size_t operator()(T t) const
+    enum class AdaptiveCardSchemaKey
     {
-        return static_cast<std::size_t>(t);
+        Accent = 0,
+        ActionAlignment,
+        ActionMode,
+        ActionOrientation,
+        ActionSet,
+        ActionSetConfig,
+        Actions,
+        ActionsOrientation,
+        AdaptiveCard,
+        AllowCustomStyle,
+        AllowInlinePlayback,
+        AltText,
+        Attention,
+        BackgroundColor,
+        BackgroundImage,
+        BackgroundImageUrl,
+        BaseCardElement,
+        BaseContainerStyle,
+        Bleed,
+        Body,
+        Bolder,
+        BorderColor,
+        BorderThickness,
+        Bottom,
+        ButtonSpacing,
+        Card,
+        Center,
+        ChoiceSet,
+        Choices,
+        Color,
+        ColorConfig,
+        Column,
+        ColumnSet,
+        Columns,
+        Container,
+        ContainerStyles,
+        Dark,
+        Data,
+        DateInput,
+        Default,
+        DefaultPoster,
+        ElementId,
+        Emphasis,
+        ErrorMessage,
+        ExtraLarge,
+        FactSet,
+        Facts,
+        Fallback,
+        FallbackText,
+        FillMode,
+        FontFamily,
+        FontSizes,
+        FontType,
+        FontTypes,
+        FontWeights,
+        ForegroundColor,
+        ForegroundColors,
+        Good,
+        Height,
+        Highlight,
+        HighlightColor,
+        HighlightColors,
+        HorizontalAlignment,
+        IconPlacement,
+        IconSize,
+        IconUrl,
+        Id,
+        IgnoreInputValidation,
+        Image,
+        ImageBaseUrl,
+        ImageSet,
+        ImageSize,
+        ImageSizes,
+        Images,
+        InlineAction,
+        Inlines,
+        InlineTopMargin,
+        InputNecessityIndicators,
+        IsMultiSelect,
+        IsMultiline,
+        IsRequired,
+        IsSelected,
+        IsSubtle,
+        IsVisible,
+        Italic,
+        Items,
+        Language,
+        Large,
+        Left,
+        Light,
+        Lighter,
+        LineColor,
+        LineThickness,
+        Max,
+        MaxActions,
+        MaxImageHeight,
+        MaxLength,
+        MaxLines,
+        MaxWidth,
+        Media,
+        Medium,
+        Method,
+        MimeType,
+        Min,
+        MinHeight,
+        Monospace,
+        NumberInput,
+        Padding,
+        Placeholder,
+        PlayButton,
+        Poster,
+        Regex,
+        Repeat,
+        RepeatHorizontally,
+        RepeatVertically,
+        Requires,
+        RichTextBlock,
+        Right,
+        SelectAction,
+        Separator,
+        ShowActionMode,
+        ShowCard,
+        ShowCardActionConfig,
+        Size,
+        Small,
+        Sources,
+        Spacing,
+        SpacingDefinition,
+        Speak,
+        Stretch,
+        Strikethrough,
+        Style,
+        Subtle,
+        SupportsInteractivity,
+        TargetElements,
+        Text,
+        TextBlock,
+        TextConfig,
+        TextInput,
+        TextWeight,
+        Thickness,
+        TimeInput,
+        Title,
+        ToggleInput,
+        Top,
+        Type,
+        Underline,
+        Url,
+        Value,
+        ValueOff,
+        ValueOn,
+        Version,
+        VerticalAlignment,
+        VerticalContentAlignment,
+        Warning,
+        Weight,
+        Width,
+        Wrap,
+    };
+    DECLARE_ADAPTIVECARD_ENUM(AdaptiveCardSchemaKey);
+
+    enum class CardElementType
+    {
+        // When the order of existing enums are changed, coresponding changes are needed in iOS (ACOBaseCardElement.h)
+        ActionSet = 0,
+        AdaptiveCard,
+        ChoiceInput,
+        ChoiceSetInput,
+        Column,
+        ColumnSet,
+        Container,
+        Custom,
+        DateInput,
+        Fact,
+        FactSet,
+        Image,
+        ImageSet,
+        Media,
+        NumberInput,
+        RichTextBlock,
+        TextBlock,
+        TextInput,
+        TimeInput,
+        ToggleInput,
+        Unknown,
+    };
+    DECLARE_ADAPTIVECARD_ENUM(CardElementType);
+
+    enum class InlineElementType
+    {
+        TextRun = 0
+    };
+    DECLARE_ADAPTIVECARD_ENUM(InlineElementType);
+
+    enum class TextSize
+    {
+        Small = 0,
+        Default,
+        Medium,
+        Large,
+        ExtraLarge
+    };
+    DECLARE_ADAPTIVECARD_ENUM(TextSize);
+
+    enum class TextWeight
+    {
+        Lighter = 0,
+        Default,
+        Bolder
+    };
+    DECLARE_ADAPTIVECARD_ENUM(TextWeight);
+
+    enum class FontType
+    {
+        Default = 0,
+        Monospace
+    };
+    DECLARE_ADAPTIVECARD_ENUM(FontType);
+
+    enum class ForegroundColor
+    {
+        Default = 0,
+        Dark,
+        Light,
+        Accent,
+        Good,
+        Warning,
+        Attention
+    };
+    DECLARE_ADAPTIVECARD_ENUM(ForegroundColor);
+
+    enum class HorizontalAlignment
+    {
+        Left = 0,
+        Center,
+        Right
+    };
+    DECLARE_ADAPTIVECARD_ENUM(HorizontalAlignment);
+
+    enum class VerticalAlignment
+    {
+        Top = 0,
+        Center,
+        Bottom
+    };
+    DECLARE_ADAPTIVECARD_ENUM(VerticalAlignment);
+
+    enum class ImageFillMode
+    {
+        Cover = 0,
+        RepeatHorizontally,
+        RepeatVertically,
+        Repeat
+    };
+    DECLARE_ADAPTIVECARD_ENUM(ImageFillMode);
+
+    enum class ImageStyle
+    {
+        Default = 0,
+        Person
+    };
+    DECLARE_ADAPTIVECARD_ENUM(ImageStyle);
+
+    enum class ImageSize
+    {
+        None = 0,
+        Auto,
+        Stretch,
+        Small,
+        Medium,
+        Large,
+    };
+    DECLARE_ADAPTIVECARD_ENUM(ImageSize);
+
+    enum class TextInputStyle
+    {
+        Text = 0,
+        Tel,
+        Url,
+        Email,
+    };
+    DECLARE_ADAPTIVECARD_ENUM(TextInputStyle);
+
+    enum class ActionType
+    {
+        Unsupported = 0,
+        ShowCard,
+        Submit,
+        OpenUrl,
+        ToggleVisibility,
+        Custom,
+        UnknownAction,
+    };
+    DECLARE_ADAPTIVECARD_ENUM(ActionType);
+
+    enum class ActionAlignment
+    {
+        Left = 0,
+        Center,
+        Right,
+        Stretch,
+    };
+    DECLARE_ADAPTIVECARD_ENUM(ActionAlignment);
+
+    enum class ChoiceSetStyle
+    {
+        Compact = 0,
+        Expanded
+    };
+    DECLARE_ADAPTIVECARD_ENUM(ChoiceSetStyle);
+
+    enum class SeparatorThickness
+    {
+        Default = 0,
+        Thick,
+    };
+    DECLARE_ADAPTIVECARD_ENUM(SeparatorThickness);
+
+    enum class Spacing
+    {
+        Default = 0,
+        None,
+        Small,
+        Medium,
+        Large,
+        ExtraLarge,
+        Padding
+    };
+    DECLARE_ADAPTIVECARD_ENUM(Spacing);
+
+    enum class ActionsOrientation
+    {
+        Vertical = 0,
+        Horizontal
+    };
+    DECLARE_ADAPTIVECARD_ENUM(ActionsOrientation);
+
+    enum class ActionMode
+    {
+        Inline = 0,
+        Popup
+    };
+    DECLARE_ADAPTIVECARD_ENUM(ActionMode);
+
+    enum class ContainerStyle
+    {
+        None,
+        Default,
+        Emphasis,
+        Good,
+        Attention,
+        Warning,
+        Accent
+    };
+    DECLARE_ADAPTIVECARD_ENUM(ContainerStyle);
+
+    enum class ErrorStatusCode
+    {
+        InvalidJson = 0,
+        RenderFailed,
+        RequiredPropertyMissing,
+        InvalidPropertyValue,
+        UnsupportedParserOverride,
+        IdCollision,
+        CustomError,
+    };
+    // No mapping to string needed
+
+    enum class WarningStatusCode
+    {
+        UnknownElementType = 0,
+        UnknownActionElementType,
+        UnknownPropertyOnElement,
+        UnknownEnumValue,
+        NoRendererForType,
+        InteractivityNotSupported,
+        MaxActionsExceeded,
+        AssetLoadFailed,
+        UnsupportedSchemaVersion,
+        UnsupportedMediaType,
+        InvalidMediaMix,
+        InvalidColorFormat,
+        InvalidDimensionSpecified,
+        InvalidLanguage,
+        InvalidValue,
+        CustomWarning,
+    };
+    // No mapping to string needed
+
+    enum class DateTimePreparsedTokenFormat
+    {
+        RegularString = 0,
+        Time,
+        DateCompact,
+        DateShort,
+        DateLong
+    };
+    // No mapping to string needed
+
+    // We have to define all possible combinations because java doesn't allow bitwise operations between enum values
+    // and it also limits the values an enum can have to only the values defined in the enum, so combinations wouldn't be
+    // allowed unless they have been explicitly declared (i.e. 0x0101 wouldn't be valid as it was not part of the declared values)
+    enum class ContainerBleedDirection
+    {
+        BleedRestricted = 0x0000,
+        BleedLeft = 0x0001,
+        BleedRight = 0x0010,
+        BleedLeftRight = 0x0011,
+        BleedUp = 0x0100,
+        BleedLeftUp = 0x0101,
+        BleedRightUp = 0x0110,
+        BleedLeftRightUp = 0x0111,
+        BleedDown = 0x1000,
+        BleedLeftDown = 0x1001,
+        BleedRightDown = 0x1010,
+        BleedLeftRightDown = 0x1011,
+        BleedUpDown = 0x1100,
+        BleedLeftUpDown = 0x1101,
+        BleedRightUpDown = 0x1110,
+        BleedAll = 0x1111
+    };
+
+    // Define bit operators so we can use ContainerBleedDirection as a bitmask
+    inline ContainerBleedDirection operator~(ContainerBleedDirection a) { return (ContainerBleedDirection) ~(int)a; }
+    inline ContainerBleedDirection operator|(ContainerBleedDirection a, ContainerBleedDirection b)
+    {
+        return (ContainerBleedDirection)((int)a | (int)b);
     }
-};
-
-struct CaseInsensitiveEqualTo {
-    bool operator() (const std::string& lhs, const std::string& rhs) const {
-        return strncasecmp(lhs.c_str(), rhs.c_str(), CHAR_MAX) == 0;
+    inline ContainerBleedDirection operator&(ContainerBleedDirection a, ContainerBleedDirection b)
+    {
+        return (ContainerBleedDirection)((int)a & (int)b);
     }
-};
-
-struct CaseInsensitiveHash {
-    size_t operator() (const std::string& keyval) const {
-        return std::accumulate(keyval.begin(), keyval.end(), 0, [](size_t acc, char c) { return acc + (size_t)std::tolower(c); });
+    inline ContainerBleedDirection& operator|=(ContainerBleedDirection& a, ContainerBleedDirection b)
+    {
+        return (ContainerBleedDirection&)((int&)a |= (int)b);
     }
-};
+    inline ContainerBleedDirection& operator&=(ContainerBleedDirection& a, ContainerBleedDirection b)
+    {
+        return (ContainerBleedDirection&)((int&)a &= (int)b);
+    }
 
-enum class AdaptiveCardSchemaKey
-{
-    Type = 0,
-    Body,
-    Version,
-    MinVersion,
-    FallbackText,
-    BaseCardElement,
-    Separation,
-    Speak,
-    Url,
-    ImageStyle,
-    ImageSize,
-    AltText,
-    HorizontalAlignment,
-    Text,
-    TextSize,
-    TextWeight,
-    TextColor,
-    IsSubtle,
-    Wrap,
-    MaxLines,
-    Items,
-    Columns,
-    Size,
-    Facts,
-    Title,
-    Value,
-    Images,
-    Placeholder,
-    IsMultiline,
-    MaxLength,
-    ValueOff,
-    ValueOn,
-    Max,
-    Min,
-    Choices,
-    IsSelected,
-    Style,
-    IsMultiSelect,
-    IsRequired,
-    BackgroundImageUrl,
-    Actions,
-    Method,
-    Card,
-};
+    // No mapping to string needed
 
-enum class TextSize
-{
-    Small = 0,
-    Normal,
-    Medium,
-    Large,
-    ExtraLarge
-};
+    enum class IconPlacement
+    {
+        AboveTitle = 0,
+        LeftOfTitle
+    };
+    DECLARE_ADAPTIVECARD_ENUM(IconPlacement);
 
-enum class TextWeight {
-    Lighter = 0,
-    Normal,
-    Bolder
-};
+    enum class VerticalContentAlignment
+    {
+        Top = 0,
+        Center,
+        Bottom
+    };
+    DECLARE_ADAPTIVECARD_ENUM(VerticalContentAlignment);
 
-enum class TextColor {
-    Default = 0,
-    Dark,
-    Light,
-    Accent,
-    Good,
-    Warning,
-    Attention
-};
+    enum class HeightType
+    {
+        Auto = 0,
+        Stretch
+    };
+    DECLARE_ADAPTIVECARD_ENUM(HeightType);
 
-enum class HorizontalAlignment {
-    Left = 0,
-    Center,
-    Right
-};
+    // Important: "Content" below is a placeholder for a JSON value -- we can't perform automatic mapping.
+    enum class FallbackType
+    {
+        None,
+        Drop,
+        Content
+    };
 
-enum class ImageStyle {
-    Normal = 0,
-    Person
-};
-
-enum class ImageSize {
-    Default = 0,
-    Auto,
-    Stretch,
-    Small,
-    Medium,
-    Large
-};
-
-enum class TextInputStyle {
-    Text = 0,
-    Tel,
-    Url,
-    Email,
-};
-
-enum class CardElementType
-{
-    Unsupported = 0,
-    AdaptiveCard,
-    TextBlock,
-    Image,
-    Container,
-    Column,
-    ColumnSet,
-    FactSet,
-    Fact,
-    ActionGroup,
-    ImageSet,
-    InputDate,
-    InputNumber,
-    InputText,
-    InputTime,
-    InputToggle,
-    InputChoiceSet,
-};
-
-enum class ActionType
-{
-    Unsupported = 0, 
-    ShowCard,
-    Submit,
-    Http,
-    OpenUrl,
-};
-
-enum class ActionAlignment
-{
-    Left = 0,
-    Center,
-    Right,
-    Stretch,
-};
-
-enum class ChoiceSetStyle
-{
-    Compact = 0,
-    Expanded
-};
-
-enum class SeparationStyle {
-    Default = 0,
-    None,
-    Strong,
-};
-
-enum class ActionsOrientation {
-    Vertical = 0,
-    Horizontal
-};
-
-enum class ActionMode {
-    Inline = 0,
-    Popup
-};
-
-const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type);
-AdaptiveCardSchemaKey AdaptiveCardSchemaKeyFromString(const std::string& type);
-
-const std::string CardElementTypeToString(CardElementType elementType);
-CardElementType CardElementTypeFromString(const std::string& elementType);
-
-const std::string ActionTypeToString(ActionType elementType);
-ActionType ActionTypeFromString(const std::string& elementType);
-
-const std::string HorizontalAlignmentToString(HorizontalAlignment type);
-HorizontalAlignment HorizontalAlignmentFromString(const std::string& type);
-
-const std::string TextColorToString(TextColor type);
-TextColor TextColorFromString(const std::string& type);
-
-const std::string TextWeightToString(TextWeight type);
-TextWeight TextWeightFromString(const std::string& type);
-
-const std::string TextSizeToString(TextSize type);
-TextSize TextSizeFromString(const std::string& type);
-
-const std::string ImageSizeToString(ImageSize type);
-ImageSize ImageSizeFromString(const std::string& type);
-
-const std::string SeparationStyleToString(SeparationStyle type);
-SeparationStyle SeparationStyleFromString(const std::string& type);
-
-const std::string ImageStyleToString(ImageStyle style);
-ImageStyle ImageStyleFromString(const std::string& style);
-
-const std::string ActionsOrientationToString(ActionsOrientation style);
-ActionsOrientation ActionsOrientationFromString(const std::string& style);
-
-const std::string ActionModeToString(ActionMode style);
-ActionMode ActionModeFromString(const std::string& style);
-
-const std::string ChoiceSetStyleToString(ChoiceSetStyle type);
-ChoiceSetStyle ChoiceSetStyleFromString(const std::string& type);
-
-const std::string TextInputStyleToString(TextInputStyle style);
-TextInputStyle TextInputStyleFromString(const std::string & style);
+    enum class InputNecessityIndicators
+    {
+        None,
+        RequiredInputs,
+        OptionalInputs
+    };
+    DECLARE_ADAPTIVECARD_ENUM(InputNecessityIndicators);
 }

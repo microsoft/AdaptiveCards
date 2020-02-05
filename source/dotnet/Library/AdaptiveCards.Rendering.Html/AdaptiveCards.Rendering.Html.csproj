@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net4.5.2;netstandard1.3;netstandard2.0</TargetFrameworks>
+    <Authors>Microsoft</Authors>
+    <Summary>Adaptive Card renderer for generating HTML tags</Summary>
+    <Description>This library provides the ability to render an Adaptive Card into HTML, typically used for server-side card rendering</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageTags>adaptivecards;adaptive-cards</PackageTags>
+    <PackageProjectUrl>https://adaptivecards.io</PackageProjectUrl>
+    <PackageIconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <DefineConstants>$(DefineConstants);$(AdditionalConstants)</DefineConstants>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <GenerateAssemblyInfo Condition="$(Tfs_PackageVersionNumber) != ''">false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.MarkedNet" Version="1.0.13" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="System.Reflection" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AdaptiveCards\AdaptiveCards.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.Reflection.TypeExtensions">
+      <Version>4.4.0</Version>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>

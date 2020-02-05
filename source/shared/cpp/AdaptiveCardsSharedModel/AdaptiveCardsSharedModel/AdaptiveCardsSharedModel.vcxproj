@@ -1,0 +1,342 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Clang-Debug|Win32">
+      <Configuration>Clang-Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Clang-Debug|x64">
+      <Configuration>Clang-Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{430407C5-059C-48E8-9260-62A12D30F81C}</ProjectGuid>
+    <RootNamespace>AdaptiveCardsSharedModel</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformMinVersion>10.0.15063.0</WindowsTargetPlatformMinVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Clang-Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>ClangCL</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Clang-Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>ClangCL</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Clang-Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Clang-Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <CodeAnalysisRuleSet>CppCoreCheckRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Clang-Debug|Win32'">
+    <CodeAnalysisRuleSet>CppCoreCheckRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <ClangTidyChecks>-clang-analyzer-security.insecureAPI.strcpy</ClangTidyChecks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <CodeAnalysisRuleSet>CppCoreCheckRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <CodeAnalysisRuleSet>CppCoreCheckRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Clang-Debug|x64'">
+    <CodeAnalysisRuleSet>CppCoreCheckRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <ClangTidyChecks>-clang-analyzer-security.insecureAPI.strcpy</ClangTidyChecks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <CodeAnalysisRuleSet>CppCoreCheckRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <DisableSpecificWarnings>4702</DisableSpecificWarnings>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <EnablePREfast>true</EnablePREfast>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Clang-Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <DisableSpecificWarnings>4702</DisableSpecificWarnings>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <EnablePREfast>true</EnablePREfast>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>-Wno-macro-redefined -Wno-microsoft-include %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <DisableSpecificWarnings>4702</DisableSpecificWarnings>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Clang-Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <DisableSpecificWarnings>4702</DisableSpecificWarnings>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>-Wno-macro-redefined -Wno-microsoft-include %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <DisableSpecificWarnings>4702</DisableSpecificWarnings>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <DisableSpecificWarnings>4702</DisableSpecificWarnings>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\ObjectModel\AdaptiveBase64Util.cpp" />
+    <ClCompile Include="..\..\ObjectModel\BaseElement.cpp" />
+    <ClCompile Include="..\..\ObjectModel\CollectionTypeElement.cpp" />
+    <ClCompile Include="..\..\ObjectModel\FeatureRegistration.cpp" />
+    <ClCompile Include="..\..\ObjectModel\Inline.cpp" />
+    <ClCompile Include="..\..\ObjectModel\RichTextElementProperties.cpp" />
+    <ClCompile Include="..\..\ObjectModel\TextElementProperties.cpp" />
+    <ClCompile Include="..\..\ObjectModel\TextRun.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ParseContext.cpp" />
+    <ClCompile Include="..\..\ObjectModel\BackgroundImage.cpp" />
+    <ClCompile Include="..\..\ObjectModel\RichTextBlock.cpp" />
+    <ClCompile Include="..\..\ObjectModel\SemanticVersion.cpp" />
+    <ClCompile Include="..\..\ObjectModel\Media.cpp" />
+    <ClCompile Include="..\..\ObjectModel\MediaSource.cpp" />
+    <ClCompile Include="..\..\ObjectModel\pch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\ObjectModel\ActionParserRegistration.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ActionSet.cpp" />
+    <ClCompile Include="..\..\ObjectModel\AdaptiveCardParseException.cpp" />
+    <ClCompile Include="..\..\ObjectModel\AdaptiveCardParseWarning.cpp" />
+    <ClCompile Include="..\..\ObjectModel\BaseActionElement.cpp" />
+    <ClCompile Include="..\..\ObjectModel\BaseCardElement.cpp" />
+    <ClCompile Include="..\..\ObjectModel\BaseInputElement.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ChoiceInput.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ChoiceSetInput.cpp" />
+    <ClCompile Include="..\..\ObjectModel\Column.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ColumnSet.cpp" />
+    <ClCompile Include="..\..\ObjectModel\Container.cpp" />
+    <ClCompile Include="..\..\ObjectModel\DateInput.cpp" />
+    <ClCompile Include="..\..\ObjectModel\DateTimePreparsedToken.cpp" />
+    <ClCompile Include="..\..\ObjectModel\DateTimePreparser.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ElementParserRegistration.cpp" />
+    <ClCompile Include="..\..\ObjectModel\Enums.cpp" />
+    <ClCompile Include="..\..\ObjectModel\Fact.cpp" />
+    <ClCompile Include="..\..\ObjectModel\FactSet.cpp" />
+    <ClCompile Include="..\..\ObjectModel\HostConfig.cpp" />
+    <ClCompile Include="..\..\ObjectModel\Image.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ImageSet.cpp" />
+    <ClCompile Include="..\..\ObjectModel\jsoncpp.cpp" />
+    <ClCompile Include="..\..\ObjectModel\MarkDownBlockParser.cpp" />
+    <ClCompile Include="..\..\ObjectModel\MarkDownHtmlGenerator.cpp" />
+    <ClCompile Include="..\..\ObjectModel\MarkDownParsedResult.cpp" />
+    <ClCompile Include="..\..\ObjectModel\MarkDownParser.cpp" />
+    <ClCompile Include="..\..\ObjectModel\NumberInput.cpp" />
+    <ClCompile Include="..\..\ObjectModel\OpenUrlAction.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ParseResult.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ParseUtil.cpp" />
+    <ClCompile Include="..\..\ObjectModel\Separator.cpp" />
+    <ClCompile Include="..\..\ObjectModel\SharedAdaptiveCard.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ShowCardAction.cpp" />
+    <ClCompile Include="..\..\ObjectModel\SubmitAction.cpp" />
+    <ClCompile Include="..\..\ObjectModel\TextBlock.cpp" />
+    <ClCompile Include="..\..\ObjectModel\TextInput.cpp" />
+    <ClCompile Include="..\..\ObjectModel\TimeInput.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ToggleInput.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ToggleVisibilityAction.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ToggleVisibilityTarget.cpp" />
+    <ClCompile Include="..\..\ObjectModel\UnknownAction.cpp" />
+    <ClCompile Include="..\..\ObjectModel\UnknownElement.cpp" />
+    <ClCompile Include="..\..\ObjectModel\Util.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\ObjectModel\ActionParserRegistration.h" />
+    <ClInclude Include="..\..\ObjectModel\ActionSet.h" />
+    <ClInclude Include="..\..\ObjectModel\AdaptiveBase64Util.h" />
+    <ClInclude Include="..\..\ObjectModel\AdaptiveCardParseException.h" />
+    <ClInclude Include="..\..\ObjectModel\AdaptiveCardParseWarning.h" />
+    <ClInclude Include="..\..\ObjectModel\BaseElement.h" />
+    <ClInclude Include="..\..\ObjectModel\CollectionTypeElement.h" />
+    <ClInclude Include="..\..\ObjectModel\FeatureRegistration.h" />
+    <ClInclude Include="..\..\ObjectModel\Inline.h" />
+    <ClInclude Include="..\..\ObjectModel\RichTextElementProperties.h" />
+    <ClInclude Include="..\..\ObjectModel\TextElementProperties.h" />
+    <ClInclude Include="..\..\ObjectModel\TextRun.h" />
+    <ClInclude Include="..\..\ObjectModel\ParseContext.h" />
+    <ClInclude Include="..\..\ObjectModel\BackgroundImage.h" />
+    <ClInclude Include="..\..\ObjectModel\RichTextBlock.h" />
+    <ClInclude Include="..\..\ObjectModel\SemanticVersion.h" />
+    <ClInclude Include="..\..\ObjectModel\BaseActionElement.h" />
+    <ClInclude Include="..\..\ObjectModel\BaseCardElement.h" />
+    <ClInclude Include="..\..\ObjectModel\BaseInputElement.h" />
+    <ClInclude Include="..\..\ObjectModel\ChoiceInput.h" />
+    <ClInclude Include="..\..\ObjectModel\ChoiceSetInput.h" />
+    <ClInclude Include="..\..\ObjectModel\Column.h" />
+    <ClInclude Include="..\..\ObjectModel\ColumnSet.h" />
+    <ClInclude Include="..\..\ObjectModel\Container.h" />
+    <ClInclude Include="..\..\ObjectModel\DateInput.h" />
+    <ClInclude Include="..\..\ObjectModel\DateTimePreparsedToken.h" />
+    <ClInclude Include="..\..\ObjectModel\DateTimePreparser.h" />
+    <ClInclude Include="..\..\ObjectModel\ElementParserRegistration.h" />
+    <ClInclude Include="..\..\ObjectModel\Enums.h" />
+    <ClInclude Include="..\..\ObjectModel\Fact.h" />
+    <ClInclude Include="..\..\ObjectModel\FactSet.h" />
+    <ClInclude Include="..\..\ObjectModel\HostConfig.h" />
+    <ClInclude Include="..\..\ObjectModel\Image.h" />
+    <ClInclude Include="..\..\ObjectModel\ImageSet.h" />
+    <ClInclude Include="..\..\ObjectModel\MarkDownBlockParser.h" />
+    <ClInclude Include="..\..\ObjectModel\MarkDownHtmlGenerator.h" />
+    <ClInclude Include="..\..\ObjectModel\MarkDownParsedResult.h" />
+    <ClInclude Include="..\..\ObjectModel\MarkDownParser.h" />
+    <ClInclude Include="..\..\ObjectModel\Media.h" />
+    <ClInclude Include="..\..\ObjectModel\MediaSource.h" />
+    <ClInclude Include="..\..\ObjectModel\NumberInput.h" />
+    <ClInclude Include="..\..\ObjectModel\OpenUrlAction.h" />
+    <ClInclude Include="..\..\ObjectModel\ParseResult.h" />
+    <ClInclude Include="..\..\ObjectModel\ParseUtil.h" />
+    <ClInclude Include="..\..\ObjectModel\pch.h" />
+    <ClInclude Include="..\..\ObjectModel\Separator.h" />
+    <ClInclude Include="..\..\ObjectModel\SharedAdaptiveCard.h" />
+    <ClInclude Include="..\..\ObjectModel\ShowCardAction.h" />
+    <ClInclude Include="..\..\ObjectModel\SubmitAction.h" />
+    <ClInclude Include="..\..\ObjectModel\TextBlock.h" />
+    <ClInclude Include="..\..\ObjectModel\TextInput.h" />
+    <ClInclude Include="..\..\ObjectModel\TimeInput.h" />
+    <ClInclude Include="..\..\ObjectModel\ToggleInput.h" />
+    <ClInclude Include="..\..\ObjectModel\ToggleVisibilityAction.h" />
+    <ClInclude Include="..\..\ObjectModel\ToggleVisibilityTarget.h" />
+    <ClInclude Include="..\..\ObjectModel\UnknownAction.h" />
+    <ClInclude Include="..\..\ObjectModel\UnknownElement.h" />
+    <ClInclude Include="..\..\ObjectModel\RemoteResourceInformation.h" />
+    <ClInclude Include="..\..\ObjectModel\Util.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

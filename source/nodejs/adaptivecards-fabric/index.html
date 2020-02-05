@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Adaptive Cards Example</title>
+
+    <script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.js"></script>
+    <script src="https://unpkg.com/adaptivecards@1.2.0/dist/adaptivecards.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.8.6/umd/react.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.8.6/umd/react-dom.development.js"></script>
+
+    <!-- <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-js/1.4.0/css/fabric.min.css" />
+    <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-js/1.4.0/css/fabric.components.min.css" />
+    <script src="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-js/6.189.3/js/fabric.min.js"></script> -->
+
+
+    <style type="text/css">
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
+        }
+
+        #exampleDiv {
+            width: 330px;
+            border: solid 1px black;
+        }
+
+        .wrapper {
+            display: flex;
+        }
+
+        .main {
+            width: 360px;
+
+        }
+
+        .info {
+            background: #444444;
+            color: #fff;
+            padding: 30px;
+            position: fixed;
+            width: 50%;
+            right: 0;
+            height: 100vh;
+        }
+
+        .fabricLogo {
+            padding: 10px;
+            width: 100%;
+        }
+    </style>
+
+    <script type="text/javascript">
+        function renderCard() {
+
+            // author a card
+            // in practice you'll probably get this from a service
+            // see http://adaptivecards.io/samples/ for inspiration
+            var card = {
+                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                "type": "AdaptiveCard",
+                "version": "1.0",
+                "body": [
+                    {
+                        "type": "TextBlock",
+                        "size": "medium",
+                        "weight": "bolder",
+                        "text": "Input.Text elements",
+                        "horizontalAlignment": "center"
+                    },
+                    {
+                        "type": "Input.Text",
+                        "placeholder": "Name",
+                        "style": "text",
+                        "maxLength": 0,
+                        "id": "SimpleVal"
+                    },
+                    {
+                        "type": "Input.Text",
+                        "placeholder": "Comments",
+                        "style": "text",
+                        "isMultiline": true,
+                        "maxLength": 0,
+                        "id": "MultiLineVal"
+                    },
+                    {
+                        "type": "Input.Number",
+                        "placeholder": "Quantity",
+                        "min": -5,
+                        "max": 5,
+                        "value": 1,
+                        "id": "NumVal"
+                    },
+                    {
+                        "type": "Input.Date",
+                        "placeholder": "Due Date",
+                        "id": "DateVal",
+                        "value": "2017-09-20"
+                    },
+                    {
+                        "type": "Input.Time",
+                        "placeholder": "Start time",
+                        "id": "TimeVal",
+                        "value": "16:59"
+                    },
+                    {
+                        "type": "TextBlock",
+                        "size": "medium",
+                        "weight": "bolder",
+                        "text": "Input.ChoiceSet",
+                        "horizontalAlignment": "center"
+                    },
+                    {
+                        "type": "TextBlock",
+                        "text": "What color do you want? (compact)"
+                    },
+                    {
+                        "type": "Input.ChoiceSet",
+                        "id": "CompactSelectVal",
+                        "style": "compact",
+                        "value": "1",
+                        "choices": [
+                            {
+                                "title": "Red",
+                                "value": "1"
+                            },
+                            {
+                                "title": "Green",
+                                "value": "2"
+                            },
+                            {
+                                "title": "Blue",
+                                "value": "3"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "TextBlock",
+                        "text": "What color do you want? (expanded)"
+                    },
+                    {
+                        "type": "Input.ChoiceSet",
+                        "id": "SingleSelectVal",
+                        "style": "expanded",
+                        "value": "1",
+                        "choices": [
+                            {
+                                "title": "Red",
+                                "value": "1"
+                            },
+                            {
+                                "title": "Green",
+                                "value": "2"
+                            },
+                            {
+                                "title": "Blue",
+                                "value": "3"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "TextBlock",
+                        "text": "What colors do you want? (multiselect)"
+                    },
+                    {
+                        "type": "Input.ChoiceSet",
+                        "id": "MultiSelectVal",
+                        "isMultiSelect": true,
+                        "value": "1,3",
+                        "choices": [
+                            {
+                                "title": "Red",
+                                "value": "1"
+                            },
+                            {
+                                "title": "Green",
+                                "value": "2"
+                            },
+                            {
+                                "title": "Blue",
+                                "value": "3"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "TextBlock",
+                        "size": "medium",
+                        "weight": "bolder",
+                        "text": "Input.Toggle",
+                        "horizontalAlignment": "center"
+                    },
+                    {
+                        "type": "Input.Toggle",
+                        "title": "I accept the terms and conditions",
+                        "valueOn": "true",
+                        "valueOff": "false",
+                        "id": "AcceptsTerms"
+                    },
+                    {
+                        "type": "Input.Toggle",
+                        "title": "Red cars are better than other cars",
+                        "valueOn": "RedCars",
+                        "valueOff": "NotRedCars",
+                        "id": "ColorPreference"
+                    }
+                ],
+                "actions": [
+                    {
+                        "type": "Action.Submit",
+                        "title": "Submit",
+                        "data": {
+                            "id": "1234567890"
+                        }
+                    },
+                    {
+                        "type": "Action.ShowCard",
+                        "title": "Show Card",
+                        "card": {
+                            "type": "AdaptiveCard",
+                            "body": [
+                                {
+                                    "type": "Input.Text",
+                                    "placeholder": "enter comment",
+                                    "style": "text",
+                                    "maxLength": 0,
+                                    "id": "CommentVal"
+                                }
+                            ],
+                            "actions": [
+                                {
+                                    "type": "Action.Submit",
+                                    "title": "OK"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            };
+
+            // Create an AdaptiveCard instance
+            var adaptiveCard = new AdaptiveCards.AdaptiveCard();
+
+            ACFabric.useFabricComponents();
+
+            // Set its hostConfig property unless you want to use the default Host Config
+            // Host Config defines the style and behavior of a card
+            adaptiveCard.hostConfig = new AdaptiveCards.HostConfig({
+                fontFamily: "Segoe UI, Helvetica Neue, sans-serif"
+                // More host config options
+                // You can find example configs here: https://github.com/microsoft/AdaptiveCards/tree/master/samples/HostConfig 
+            });
+
+            // Set the adaptive card's event handlers. onExecuteAction is invoked
+            // whenever an action is clicked in the card
+            adaptiveCard.onExecuteAction = function (action) {
+                alert("Ow!");
+            }
+
+            // Parse the card payload
+            adaptiveCard.parse(card);
+
+            // Render the card to an HTML element:
+            var renderedCard = adaptiveCard.render();
+
+            // And finally insert it in the page:
+            document.getElementById('exampleDiv').appendChild(renderedCard);
+        }
+    </script>
+
+</head>
+
+<body onload="renderCard()">
+    <div class="wrapper">
+        <div class="main">
+            <h1>Adaptive Cards 💙 Fabric</h1>
+
+            <h3>To run:</h3>
+            <code>
+                <pre>$ npm install</pre>
+                <pre>$ npm start</pre>
+            </code>
+
+            <h3>A Fabric-enhanced card should render below...</h3>
+
+            <div id="exampleDiv"></div>
+        </div>
+        <div class="info">
+            <img alt="Adaptive Cards Logo" class="acLogo"
+                src="https://github.com/microsoft/AdaptiveCards/raw/master/assets/adaptive-card-200.png"></img>
+            <svg width="150" height="150" viewBox="0 0 200 200">
+                <g transform="translate(100 100)">
+                    <path transform="translate(-50 -50)" fill="tomato"
+                        d="M92.71,7.27L92.71,7.27c-9.71-9.69-25.46-9.69-35.18,0L50,14.79l-7.54-7.52C32.75-2.42,17-2.42,7.29,7.27v0 c-9.71,9.69-9.71,25.41,0,35.1L50,85l42.71-42.63C102.43,32.68,102.43,16.96,92.71,7.27z">
+                    </path>
+                    <animateTransform attributeName="transform" type="scale" values="1; 1.5; 1.25; 1.5; 1.5; 1;"
+                        dur="2s" repeatCount="indefinite" additive="sum">
+                    </animateTransform>
+                </g>
+            </svg>
+            <img alt="Fabric logo" class="fabricLogo"
+                src="https://static2.sharepointonline.com/files/fabric/fabric-website/images/discover-resources-1x.png"></img>
+        </div>
+    </div>
+</body>
+
+</html>

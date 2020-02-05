@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using AdaptiveCards.Rendering.Config;
+using AdaptiveCards.Rendering;
 #if XAMARIN
 using FrameworkElement = Xamarin.Forms.View;
 using Xamarin.Forms;
@@ -36,9 +36,13 @@ namespace AdaptiveCards.Rendering
             this._imageResolver = imageResolver;
         }
 
-        public HostConfig Config { get; set; } = new HostConfig();
+        public AdaptiveHostConfig Config { get; set; } = new AdaptiveHostConfig();
 
-        public Dictionary<Type, Func<TypedElement, RenderContext, FrameworkElement>> ElementRenderers = new Dictionary<Type, Func<TypedElement, RenderContext, FrameworkElement>>();
+        public AdaptiveElementRenderers<View, RenderContext> ElementRenderers = new AdaptiveElementRenderers<View, RenderContext>();
+
+        // public Dictionary<FrameworkElement, RenderContext> ElementRenderers = new Dictionary<FrameworkElement, RenderContext>();
+
+
 
 #if WPF
         public BitmapImage ResolveImageSource(string url)
@@ -79,7 +83,7 @@ namespace AdaptiveCards.Rendering
             this.OnAction?.Invoke(ui, args);
         }
 
-        public void MissingInput(ActionBase sender, MissingInputEventArgs args)
+        public void MissingInput(AdaptiveAction sender, MissingInputEventArgs args)
         {
             this.OnMissingInput?.Invoke(sender, args);
         }
@@ -145,9 +149,10 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
-        public FrameworkElement Render(TypedElement element)
+        public FrameworkElement Render(AdaptiveTypedElement element)
         {
-            return this.ElementRenderers[element.GetType()](element, this);
+            return this.ElementRenderers.Get(element.GetType()).Invoke(element, this);
+            // return null;
         }
 
         public Dictionary<string, Func<object>> InputBindings = new Dictionary<string, Func<object>>();
@@ -163,7 +168,7 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// The action that fired
         /// </summary>
-        public ActionBase Action { get; set; }
+        public AdaptiveAction Action { get; set; }
 
         /// <summary>
         /// Data for Input controls (if appropriate)
@@ -173,7 +178,7 @@ namespace AdaptiveCards.Rendering
 
     public class MissingInputEventArgs : EventArgs
     {
-        public MissingInputEventArgs(Input input, FrameworkElement frameworkElement)
+        public MissingInputEventArgs(AdaptiveInput input, FrameworkElement frameworkElement)
         {
             this.FrameworkElement = frameworkElement;
             this.Input = input;
@@ -181,13 +186,13 @@ namespace AdaptiveCards.Rendering
 
         public FrameworkElement FrameworkElement { get; private set; }
 
-        public Input Input { get; private set; }
+        public AdaptiveInput Input { get; private set; }
     }
 
 
     public class MissingInputException : Exception
     {
-        public MissingInputException(string message, Input input, FrameworkElement frameworkElement)
+        public MissingInputException(string message, AdaptiveInput input, FrameworkElement frameworkElement)
             : base(message)
         {
             this.FrameworkElement = frameworkElement;
@@ -196,6 +201,6 @@ namespace AdaptiveCards.Rendering
 
         public FrameworkElement FrameworkElement { get; set; }
 
-        public Input Input { get; set; }
+        public AdaptiveInput Input { get; set; }
     }
 }

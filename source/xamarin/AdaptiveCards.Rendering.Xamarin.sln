@@ -1,0 +1,23 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Rendering.Xamarin.Android", "AdaptiveCards.Rendering.Xamarin.Android\AdaptiveCards.Rendering.Xamarin.Android.csproj", "{98A14838-2FDB-4CA1-892C-93154122C3BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Rendering.Xamarin.Android.Sample", "AdaptiveCards.Rendering.Xamarin.Android.Sample\AdaptiveCards.Rendering.Xamarin.Android.Sample.csproj", "{A6C5A2BF-4829-4E23-AAAF-8BF2E5126204}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{98A14838-2FDB-4CA1-892C-93154122C3BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98A14838-2FDB-4CA1-892C-93154122C3BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98A14838-2FDB-4CA1-892C-93154122C3BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98A14838-2FDB-4CA1-892C-93154122C3BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6C5A2BF-4829-4E23-AAAF-8BF2E5126204}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6C5A2BF-4829-4E23-AAAF-8BF2E5126204}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6C5A2BF-4829-4E23-AAAF-8BF2E5126204}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6C5A2BF-4829-4E23-AAAF-8BF2E5126204}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

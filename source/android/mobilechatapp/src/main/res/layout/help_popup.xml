@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#eff0f1"
+    android:orientation="vertical"
+    android:padding="25dp" >
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="20dp"
+        android:textSize="22sp"
+        android:text="How to use the search function?" />
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="5dp"
+        android:text="Word 1: all | random | r | R | Card number" />
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="5dp"
+        android:text="Word 2: all | Element type name (Equivalent to clicking one of the buttons)" />
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="5dp"
+        android:text="Examples: " />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:shrinkColumns="1">
+
+        <TableRow>
+            <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="random imageset" android:layout_marginRight="10dp" android:layout_marginBottom="3dp" android:textStyle="bold" />
+            <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="Random card that contains an ImageSet element"
+                android:maxLines="4" android:scrollHorizontally="false" android:layout_columnWeight="1" android:ellipsize="none" android:layout_marginBottom="3dp"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="5 textBlock" android:layout_marginRight="10dp" android:layout_marginBottom="3dp" android:textStyle="bold" />
+            <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="6th card that contains a TextBlock element" android:layout_marginBottom="3dp" />
+        </TableRow>
+
+        <TableRow>
+            <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="FactSet" android:layout_marginRight="10dp" android:layout_marginBottom="3dp" android:textStyle="bold" />
+            <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="All cards that contain a FactSet element" android:layout_marginBottom="3dp" />
+        </TableRow>
+
+        <TableRow>
+            <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="empty" android:layout_marginRight="10dp" android:layout_marginBottom="3dp" android:textStyle="italic" />
+            <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="All cards" android:layout_marginBottom="3dp" />
+        </TableRow>
+
+    </TableLayout>
+
+
+
+</LinearLayout>

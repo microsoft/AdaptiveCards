@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using AdaptiveCards.Rendering;
 using System;
-using AdaptiveCards.Rendering.Config;
 #if WPF
 using System.Windows.Shapes;
 using System.Windows.Controls;
@@ -21,12 +20,12 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlContainer
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(AdaptiveTypedElement element, RenderContext context)
         {
-            var containerStyle = context.Config.Container.Normal;
-            Container container = (Container)element;
+            var containerStyle = context.Config.Spacing;
+            AdaptiveContainer container = (AdaptiveContainer)element;
             var uiContainer = new Grid();
-            uiContainer.Margin = new Thickness(containerStyle.Padding.Left, containerStyle.Padding.Top, containerStyle.Padding.Right, containerStyle.Padding.Bottom);
+            uiContainer.Margin = new Thickness(containerStyle.Padding);
             uiContainer.Style = context.GetStyle("Adaptive.Container");
             AddContainerElements(uiContainer, container.Items, context);
 
@@ -58,7 +57,7 @@ namespace AdaptiveCards.Rendering
 #endif 
         }
 
-        public static void AddContainerElements(Grid uiContainer, List<CardElement> elements, RenderContext context)
+        public static void AddContainerElements(Grid uiContainer, List<AdaptiveElement> elements, RenderContext context)
         {
             foreach (var cardElement in elements)
             {
@@ -68,7 +67,7 @@ namespace AdaptiveCards.Rendering
                 {
                     if (uiContainer.RowDefinitions.Count > 0)
                     {
-                        AddSeperator(context, cardElement, uiContainer, cardElement.Separation);
+                        AddSeparator(context, cardElement, uiContainer);
                     }
                     uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
                     Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
@@ -77,29 +76,26 @@ namespace AdaptiveCards.Rendering
             }
         }
 
-        public static void AddSeperator(RenderContext context, CardElement element, Grid uiContainer, SeparationStyle seperationStyle)
+        public static void AddSeparator(RenderContext context, AdaptiveElement element, Grid uiContainer)
         {
-            if (seperationStyle == SeparationStyle.None)
+            if (element.Spacing == AdaptiveSpacing.None && !element.Separator)
+            {
                 return;
+            }
 
             var uiSep = new Grid();
             uiSep.Style = context.GetStyle($"Adaptive.Separator");
-            SeparationConfig sepStyle = null;
-            switch (seperationStyle)
-            {
-                case SeparationStyle.Default:
-                    sepStyle = context.Config.GetSeparationForElement(element, strong: false);
-                    break;
+            int spacing = context.Config.GetSpacing(element.Spacing);
 
-                case SeparationStyle.Strong:
-                    sepStyle = context.Config.GetSeparationForElement(element, strong: true);
-                    break;
-            }
-            
-            uiSep.Margin = new Thickness(0, (sepStyle.Spacing - sepStyle.LineThickness) / 2, 0, (sepStyle.Spacing - sepStyle.LineThickness) / 2);
+            SeparatorConfig sepStyle = context.Config.Separator;
+
+            var margin = (spacing - sepStyle.LineThickness) / 2;
+            uiSep.Margin = new Thickness(0, margin, 0, margin);
             uiSep.SetHeight(sepStyle.LineThickness);
-            if(!string.IsNullOrWhiteSpace(sepStyle.LineColor))
-                uiSep.SetBackgroundColor(sepStyle.LineColor,context);
+            if (!string.IsNullOrWhiteSpace(sepStyle.LineColor))
+            {
+                uiSep.SetBackgroundColor(sepStyle.LineColor, context);
+            }
             uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
             Grid.SetRow(uiSep, uiContainer.RowDefinitions.Count - 1);
             uiContainer.Children.Add(uiSep);            

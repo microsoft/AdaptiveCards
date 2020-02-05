@@ -1,4 +1,6 @@
-﻿using System;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,105 +17,113 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-using AdaptiveCards.XamlCardRenderer;
+using AdaptiveCards.Rendering.Uwp;
+using AdaptiveCardVisualizer.ViewModel;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
-namespace XamlCardVisualizer
+namespace AdaptiveCardVisualizer
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        public MainPageViewModel ViewModel { get; set; }
+
         public MainPage()
         {
             this.InitializeComponent();
 
-            // Construct a temporary object model tree until the parser is available
-            AdaptiveCard card = new AdaptiveCard();
-            AdaptiveContainer container1 = new AdaptiveContainer();
-
-            AdaptiveTextBlock textBlock1 = new AdaptiveTextBlock();
-            textBlock1.Text = "Hello";
-            textBlock1.Weight = TextWeight.Normal;
-            textBlock1.Color = TextColor.Warning;
-            textBlock1.Size = TextSize.Large;
-            container1.Items.Add(textBlock1);
-            AdaptiveTextBlock textBlock2 = new AdaptiveTextBlock();
-            textBlock2.Text = "World";
-            textBlock2.Weight = TextWeight.Normal;
-            textBlock2.Color = TextColor.Accent;
-            container1.Items.Add(textBlock2);
-
-            card.Body.Add(container1);
-
-            AdaptiveContainer container2 = new AdaptiveContainer();
-
-            AdaptiveTextBlock textBlock3 = new AdaptiveTextBlock();
-            textBlock3.Text = "In new container";
-            textBlock3.Weight = TextWeight.Normal;
-            textBlock3.Color = TextColor.Default;
-            container2.Items.Add(textBlock3);
-
-            card.Body.Add(container2);
-
-            AdaptiveImage image = new AdaptiveImage();
-            image.Url = new Uri("https://unsplash.it/360/202?image=883");
-            card.Body.Add(image);
-
-            m_renderer = new AdaptiveCards.XamlCardRenderer.XamlCardRenderer();
-
-            PopulateXamlContent(card);
+            Load();
         }
 
-        private async void PopulateXamlContent(AdaptiveCard card)
+        private async void Load()
         {
-            renderedXamlPresenter.Content = await m_renderer.RenderCardAsXamlAsync(card);
+            IsEnabled = false;
+
+            ViewModel = await MainPageViewModel.LoadAsync();
+            DataContext = ViewModel;
+
+            IsEnabled = true;
         }
 
-        private async void loadFileButton_Clicked(object sender, RoutedEventArgs args)
+        private void loadFileButton_Clicked(object sender, RoutedEventArgs args)
         {
-            FileOpenPicker openPicker = new FileOpenPicker();
-            openPicker.ViewMode = PickerViewMode.List;
-            openPicker.FileTypeFilter.Add(".json");
-
-            StorageFile file = await openPicker.PickSingleFileAsync();
-            if (file != null)
-            {
-                this.adaptiveJson.Document.SetText(Windows.UI.Text.TextSetOptions.None, await FileIO.ReadTextAsync(file));
-            }
-            else
-            {
-            }
+            ViewModel.OpenDocument();
         }
 
-        private async void generateButton_Clicked(object sender, RoutedEventArgs args)
+        private void ButtonNewCard_Click(object sender, RoutedEventArgs e)
         {
-            renderedXamlPresenter.Content = null;
+            ViewModel.NewDocument();
+        }
 
-            string adaptiveJsonText;
-            this.adaptiveJson.Document.GetText(Windows.UI.Text.TextGetOptions.None, out adaptiveJsonText);
+        private void AppBarNew_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.NewDocument();
+        }
 
-            try
+        private void AppBarOpen_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.OpenDocument();
+        }
+
+        private async void AppBarSave_Click(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel.CurrentDocument == null)
             {
-                renderedXamlPresenter.Content = await m_renderer.RenderAdaptiveJsonAsXamlAsync(adaptiveJsonText);
+                return;
             }
-            catch (Exception)
+
+            IsEnabled = false;
+            await ViewModel.CurrentDocument.SaveAsync();
+            IsEnabled = true;
+        }
+
+        private void CommandBar_Opening(object sender, object e)
+        {
+            SetIsCompactOnAppBarButtons(false);
+        }
+
+        private void CommandBar_Closing(object sender, object e)
+        {
+            SetIsCompactOnAppBarButtons(true);
+        }
+
+        private void SetIsCompactOnAppBarButtons(bool isCompact)
+        {
+            foreach (var button in StackPanelMainAppBarButtons.Children.OfType<ICommandBarElement>())
             {
-                GenerateErrorUI();
+                button.IsCompact = isCompact;
             }
         }
 
-        private void GenerateErrorUI()
+        private void AppBarHostConfigEditor_Click(object sender, RoutedEventArgs e)
         {
-            Grid errorGrid = new Grid();
-            TextBlock errorText = new TextBlock();
-            errorText.Text = "An error occurred attempting to generate a visual from this Json";
-            errorGrid.Children.Add(errorText);
-            renderedXamlPresenter.Content = errorGrid;
+            SetIsInHostConfigEditor(!IsInHostConfigEditor);
         }
 
-        private AdaptiveCards.XamlCardRenderer.XamlCardRenderer m_renderer;
+        public bool IsInHostConfigEditor { get; private set; }
+
+        private void SetIsInHostConfigEditor(bool isInHostConfigEditor)
+        {
+            IsInHostConfigEditor = isInHostConfigEditor;
+
+            foreach (var button in StackPanelMainAppBarButtons.Children.OfType<ButtonBase>())
+            {
+                if (button != AppBarHostConfigEditor)
+                {
+                    button.IsEnabled = !isInHostConfigEditor;
+                }
+            }
+
+            HostConfigEditorView.Visibility = isInHostConfigEditor ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void HostConfigTransparentBackdrop_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            AppBarHostConfigEditor.IsChecked = false;
+            SetIsInHostConfigEditor(false);
+        }
     }
 }

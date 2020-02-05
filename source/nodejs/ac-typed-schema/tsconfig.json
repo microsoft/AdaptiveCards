@@ -1,0 +1,19 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "es5",
+		"lib": [
+			"es2015"
+		],
+        "outDir": "./lib",
+		"moduleResolution": "node",
+		"noImplicitAny": false,
+		"sourceMap": true,
+		"declaration": true,
+	},
+	"files": ["./src/typed-schema.ts", "./src/command-line.ts"],
+	"exclude": [
+		"node_modules",
+		"test"
+	]
+}

@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using AdaptiveCards.Rendering;
 #if WPF
 using System.Windows.Controls;
@@ -11,9 +11,9 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlTimeInput
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(AdaptiveTypedElement element, RenderContext context)
         {
-            TimeInput input = (TimeInput)element;
+            AdaptiveTimeInput input = (AdaptiveTimeInput)element;
             if (context.Config.SupportsInteractivity)
             {
                 var textBox = new TextBox() { Text = input.Value };
@@ -25,16 +25,17 @@ namespace AdaptiveCards.Rendering
             }
             else
             {
-                Container container = TypedElementConverter.CreateElement<Container>();
-                container.Separation = input.Separation;
-                TextBlock textBlock = TypedElementConverter.CreateElement<TextBlock>();
+                AdaptiveContainer container = AdaptiveTypedElementConverter.CreateElement<AdaptiveContainer>();
+                container.Separator = input.Separator;
+                container.Spacing = input.Spacing;
+                AdaptiveTextBlock textBlock = AdaptiveTypedElementConverter.CreateElement<AdaptiveTextBlock>();
                 textBlock.Text = XamlUtilities.GetFallbackText(input) ?? input.Placeholder;
                 container.Items.Add(textBlock);
                 if (input.Value != null)
                 {
-                    textBlock = TypedElementConverter.CreateElement<TextBlock>();
+                    textBlock = AdaptiveTypedElementConverter.CreateElement<AdaptiveTextBlock>();
                     textBlock.Text = input.Value;
-                    textBlock.Color = TextColor.Accent;
+                    textBlock.Color = AdaptiveTextColor.Accent;
                     textBlock.Wrap = true;
                     container.Items.Add(textBlock);
                 }

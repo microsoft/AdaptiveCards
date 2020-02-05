@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using AdaptiveCards.Rendering;
 #if WPF
 using System.Windows.Controls;
@@ -12,9 +12,9 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlToggleInput
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(AdaptiveTypedElement element, RenderContext context)
         {
-            ToggleInput input = (ToggleInput)element;
+            AdaptiveToggleInput input = (AdaptiveToggleInput)element;
             if (context.Config.SupportsInteractivity)
             {
                 var uiToggle = new CheckBox();
@@ -33,17 +33,18 @@ namespace AdaptiveCards.Rendering
             }
             else
             {
-                Container container = TypedElementConverter.CreateElement<Container>();
-                container.Separation = input.Separation;
+                AdaptiveContainer container = AdaptiveTypedElementConverter.CreateElement<AdaptiveContainer>();
+                container.Separator = input.Separator;
+                container.Spacing = input.Spacing;
 
-                TextBlock textBlock = TypedElementConverter.CreateElement<TextBlock>();
+                AdaptiveTextBlock textBlock = AdaptiveTypedElementConverter.CreateElement<AdaptiveTextBlock>();
                 textBlock.Text = XamlUtilities.GetFallbackText(input);
                 container.Items.Add(textBlock);
                 if (input.Value != null)
                 {
-                    textBlock = TypedElementConverter.CreateElement<TextBlock>();
+                    textBlock = AdaptiveTypedElementConverter.CreateElement<AdaptiveTextBlock>();
                     textBlock.Text = (input.Value == (input.ValueOn ?? "true")) ? input.ValueOn ?? "selected" : input.ValueOff ?? "not selected";
-                    textBlock.Color = TextColor.Accent;
+                    textBlock.Color = AdaptiveTextColor.Accent;
                     textBlock.Wrap = true;
                     container.Items.Add(textBlock);
                 }

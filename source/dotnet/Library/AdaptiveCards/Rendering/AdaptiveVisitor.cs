@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 namespace AdaptiveCards.Rendering
 {
     /// <summary>
@@ -5,47 +7,50 @@ namespace AdaptiveCards.Rendering
     /// </summary>
     public class AdaptiveVisitor
     {
-        public virtual void Visit(CardElement cardElement)
+        public virtual void Visit(AdaptiveElement adaptiveElement)
         {
-            if (cardElement is Image)
-                Visit((Image) cardElement);
+            if (adaptiveElement is AdaptiveImage image)
+                Visit(image);
 
-            if (cardElement is TextBlock)
-                Visit((TextBlock) cardElement);
+            if (adaptiveElement is AdaptiveTextBlock textBlock)
+                Visit(textBlock);
 
             // includes Column
-            if (cardElement is Container)
-                Visit((Container)cardElement);
-            
-            if (cardElement is ColumnSet)
-                Visit((ColumnSet) cardElement);
+            if (adaptiveElement is AdaptiveContainer container)
+                Visit(container);
 
-            if (cardElement is ImageSet)
-                Visit((ImageSet) cardElement);
+            if (adaptiveElement is AdaptiveColumnSet set)
+                Visit(set);
 
-            if (cardElement is FactSet)
-                Visit((FactSet) cardElement);
+            if (adaptiveElement is AdaptiveImageSet imageSet)
+                Visit(imageSet);
 
-            if (cardElement is ActionSet)
-                Visit((ActionSet)cardElement);
+            if (adaptiveElement is AdaptiveFactSet factSet)
+                Visit(factSet);
 
-            if (cardElement is ChoiceSet)
-                Visit((ChoiceSet) cardElement);
+            if (adaptiveElement is AdaptiveChoiceSetInput input)
+                Visit(input);
 
-            if (cardElement is TextInput)
-                Visit((TextInput) cardElement);
+            if (adaptiveElement is AdaptiveTextInput textInput)
+                Visit(textInput);
 
-            if (cardElement is NumberInput)
-                Visit((NumberInput) cardElement);
+            if (adaptiveElement is AdaptiveNumberInput numberInput)
+                Visit(numberInput);
 
-            if (cardElement is DateInput)
-                Visit((DateInput) cardElement);
+            if (adaptiveElement is AdaptiveDateInput dateInput)
+                Visit(dateInput);
 
-            if (cardElement is TimeInput)
-                Visit((TimeInput) cardElement);
+            if (adaptiveElement is AdaptiveTimeInput timeInput)
+                Visit(timeInput);
 
-            if (cardElement is ToggleInput)
-                Visit((ToggleInput) cardElement);
+            if (adaptiveElement is AdaptiveToggleInput toggleInput)
+                Visit(toggleInput);
+
+            if (adaptiveElement is AdaptiveMedia media)
+                Visit(media);
+
+            if (adaptiveElement is AdaptiveActionSet actionSet)
+                Visit(actionSet);
         }
 
         public virtual void Visit(AdaptiveCard card)
@@ -57,99 +62,102 @@ namespace AdaptiveCards.Rendering
                 Visit(action);
         }
 
-        public virtual void Visit(Container container)
+        public virtual void Visit(AdaptiveContainer container)
         {
             foreach (var item in container.Items)
                 Visit(item);
         }
 
-        public virtual void Visit(ColumnSet columnSet)
+        public virtual void Visit(AdaptiveColumnSet columnSet)
         {
             foreach (var column in columnSet.Columns)
                 Visit(column);
         }
 
-        public virtual void Visit(ActionSet actionSet)
-        {
-            foreach (var action in actionSet.Actions)
-                Visit(action);
-        }
-
-        public virtual void Visit(FactSet factSet)
+        public virtual void Visit(AdaptiveFactSet factSet)
         {
             foreach (var fact in factSet.Facts)
                 Visit(fact);
         }
 
-        public virtual void Visit(ImageSet imageSet)
+        public virtual void Visit(AdaptiveImageSet imageSet)
         {
             foreach (var image in imageSet.Images)
                 Visit(image);
         }
 
-        public virtual void Visit(TextBlock textBlock)
+        public virtual void Visit(AdaptiveTextBlock textBlock)
         {
         }
 
-        public virtual void Visit(Image image)
+        public virtual void Visit(AdaptiveImage image)
         {
         }
 
-        public virtual void Visit(Fact fact)
+        public virtual void Visit(AdaptiveFact fact)
         {
         }
 
-        public virtual void Visit(TextInput inputText)
+        public virtual void Visit(AdaptiveTextInput inputText)
         {
         }
 
-        public virtual void Visit(DateInput inputDate)
+        public virtual void Visit(AdaptiveDateInput inputDate)
         {
         }
 
-        public virtual void Visit(NumberInput inputNumber)
+        public virtual void Visit(AdaptiveNumberInput inputNumber)
         {
         }
 
-        public virtual void Visit(TimeInput inputTime)
+        public virtual void Visit(AdaptiveTimeInput inputTime)
         {
         }
 
-        public virtual void Visit(ToggleInput inputToggle)
+        public virtual void Visit(AdaptiveToggleInput inputToggle)
         {
         }
 
-        public virtual void Visit(ChoiceSet choiceSet)
+        public virtual void Visit(AdaptiveChoiceSetInput adaptiveChoiceSetInput)
         {
         }
 
-        public virtual void Visit(ActionBase action)
+        public virtual void Visit(AdaptiveActionSet actionSet)
         {
-            if (action is HttpAction)
-                Visit((HttpAction) action);
-            if (action is OpenUrlAction)
-                Visit((OpenUrlAction) action);
-            if (action is SubmitAction)
-                Visit((SubmitAction) action);
-            if (action is ShowCardAction)
-                Visit((ShowCardAction) action);
+            foreach (var action in actionSet.Actions)
+                Visit(action);
         }
 
-        public virtual void Visit(HttpAction action)
+        public virtual void Visit(AdaptiveAction action)
+        {
+            if (action is AdaptiveOpenUrlAction urlAction)
+                Visit(urlAction);
+
+            if (action is AdaptiveSubmitAction submitAction)
+                Visit(submitAction);
+
+            if (action is AdaptiveShowCardAction cardAction)
+                Visit(cardAction);
+
+            if (action is AdaptiveToggleVisibilityAction toggleVisibilityAction)
+                Visit(toggleVisibilityAction);
+        }
+
+        public virtual void Visit(AdaptiveSubmitAction action)
         {
         }
 
-        public virtual void Visit(SubmitAction action)
+        public virtual void Visit(AdaptiveOpenUrlAction action)
         {
         }
 
-        public virtual void Visit(OpenUrlAction action)
-        {
-        }
-
-        public virtual void Visit(ShowCardAction action)
+        public virtual void Visit(AdaptiveShowCardAction action)
         {
             Visit(action.Card);
+        }
+
+        public virtual void Visit(AdaptiveMedia media)
+        {
         }
     }
 }

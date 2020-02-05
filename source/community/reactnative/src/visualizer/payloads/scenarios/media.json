@@ -1,0 +1,22 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.1",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "This is a media element which specifies a poster:",
+			"wrap": true
+		},
+		{
+			"type": "Media",
+			"poster": "http://adaptivecards.io/content/cats/1.png",
+			"sources": [
+				{
+					"mimeType": "video/mp4",
+					"url": "https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4"
+				}
+			]
+		}
+	]
+}

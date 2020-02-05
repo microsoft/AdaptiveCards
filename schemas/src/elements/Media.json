@@ -1,0 +1,24 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+  "extends": "Element",
+  "description": "Displays a media player for audio or video content.",
+  "version": "1.1",
+  "features": [
+    196
+  ],
+  "properties": {
+    "sources": {
+      "type": "MediaSource[]",
+      "description": "Array of media sources to attempt to play.",
+      "required": true
+    },
+    "poster": {
+      "type": "uri-reference",
+      "description": "URL of an image to display before playing. Supports data URI in version 1.2+"
+    },
+    "altText": {
+      "type": "string",
+      "description": "Alternate text describing the audio or video."
+    }
+  }
+}

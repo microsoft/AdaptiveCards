@@ -1,0 +1,20 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+  "extends": "Element",
+  "description": "Defines an array of inlines, allowing for inline text formatting.",
+  "version": "1.2",
+  "features": [
+    1933
+  ],
+  "properties": {
+    "inlines": {
+      "type": "Inline[]",
+      "description": "The array of inlines.",
+      "required": true
+    },
+    "horizontalAlignment": {
+      "type": "HorizontalAlignment",
+      "description": "Controls the horizontal text alignment."
+    }
+  }
+}

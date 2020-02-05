@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{249AF8AE-1007-4F6C-BDBE-7F6B57496565}</ProjectGuid>
+    <ProjectGuid>{E859FD3C-DA91-4091-A8BB-15CA61F96F18}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AdaptiveCards.Sample.BotClient.UWP</RootNamespace>
-    <AssemblyName>AdaptiveCards.Sample.BotClient.UWP</AssemblyName>
+    <RootNamespace>App1</RootNamespace>
+    <AssemblyName>App1</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.18362.0</TargetPlatformVersion>
@@ -159,7 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AdaptiveCards.Sample.BotClient\AdaptiveCards.Sample.BotClient.csproj">
-      <Project>{ac638ff4-8e90-44e1-9f6d-9089f6d14dd4}</Project>
+      <Project>{fc31df54-5da6-46ca-86f5-817b351af60f}</Project>
       <Name>AdaptiveCards.Sample.BotClient</Name>
     </ProjectReference>
   </ItemGroup>

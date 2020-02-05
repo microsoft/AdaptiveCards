@@ -1,96 +1,96 @@
 {
-  "name": "vscode-adaptivecards",
-  "displayName": "Adaptive Card Viewer",
-  "description": "Adaptive Card Viewer for Visual Studio Code.",
-  "version": "1.0.7",
-  "publisher": "tomlm",
-  "engines": {
-    "vscode": "^1.9.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [
-    "onLanguage:json",
-    "onCommand:adaptivecardviewer.open",
-    "*"
-  ],
-  "main": "./out/src/extension",
-  "contributes": {
-    "commands": [
-      {
-        "command": "adaptivecardviewer.open",
-        "title": "AdaptiveCard Viewer: View Card",
-        "icon": {
-          "light": "./media/preview-darkgray.svg",
-          "dark": "./media/preview-lightgray.svg"
-        }
-      }
-    ],
-    "menus": {
-      "editor/title": [
-        {
-          "when": "resourceLangId == json",
-          "command": "adaptivecardviewer.open",
-          "group": "navigation"
-        }
-      ]
-    },
-    "keybindings": [
-      {
-        "command": "adaptivecardviewer.open",
-        "key": "ctrl+shift+v a"
-      }
-    ],
-    "configuration": {
-      "type": "object",
-      "title": "Adaptive Card Viewer configuration",
-      "properties": {
-        "adaptivecardviewer.enableautopreview": {
-          "type": "boolean",
-          "default": false,
-          "description": "Open the preview automatically"
-        }
-      }
-    }
-  },
-  "scripts": {
-    "vscode:prepublish": "tsc -p ./",
-    "compile": "tsc -watch -p ./",
-    "postinstall": "node ./node_modules/vscode/bin/install"
-  },
-  "devDependencies": {
-    "@types/mocha": "2.2.39",
-    "@types/node": "^7.0.5",
-    "typescript": "^2.2.1",
-    "vscode": "^1.0.4"
-  },
-  "dependencies": {
-    "microsoft-adaptivecards": "^0.5.4"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Microsoft/AdaptiveCards.git"
-  },
-  "license": "MIT",
-  "icon": "icon.png",
-  "galleryBanner": {
-    "color": "#93E4D5",
-    "theme": "light"
-  },
-  "bugs": {
-    "url": "https://github.com/Microsoft/AdaptiveCards/issues"
-  },
-  "homepage": "http://adaptivecards.io",
-  "keywords": [
-    "adaptivecards",
-    "adaptive",
-    "cards",
-    "viewer",
-    "preview"
-  ],
-  "galleryBanner": {
-    "color":"#404040",
-    "theme":"dark"
-  }
+	"name": "vscode-adaptivecards",
+	"displayName": "Adaptive Card Viewer",
+	"description": "Adaptive Card Viewer for Visual Studio Code.",
+	"version": "1.0.7",
+	"publisher": "tomlm",
+	"engines": {
+		"vscode": "^1.9.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onLanguage:json",
+		"onCommand:adaptivecardviewer.open",
+		"*"
+	],
+	"main": "./out/src/extension",
+	"contributes": {
+		"commands": [
+			{
+				"command": "adaptivecardviewer.open",
+				"title": "AdaptiveCard Viewer: View Card",
+				"icon": {
+					"light": "./media/preview-darkgray.svg",
+					"dark": "./media/preview-lightgray.svg"
+				}
+			}
+		],
+		"menus": {
+			"editor/title": [
+				{
+					"when": "resourceLangId == json",
+					"command": "adaptivecardviewer.open",
+					"group": "navigation"
+				}
+			]
+		},
+		"keybindings": [
+			{
+				"command": "adaptivecardviewer.open",
+				"key": "ctrl+shift+v a"
+			}
+		],
+		"configuration": {
+			"type": "object",
+			"title": "Adaptive Card Viewer configuration",
+			"properties": {
+				"adaptivecardviewer.enableautopreview": {
+					"type": "boolean",
+					"default": false,
+					"description": "Open the preview automatically"
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "tsc -p ./",
+		"compile": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install"
+	},
+	"devDependencies": {
+		"@types/mocha": "2.2.39",
+		"@types/node": "^7.0.5",
+		"typescript": "^2.2.1",
+		"vscode": "^1.0.4"
+	},
+	"dependencies": {
+		"microsoft-adaptivecards": "^0.5.4"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Microsoft/AdaptiveCards.git"
+	},
+	"license": "MIT",
+	"icon": "icon.png",
+	"galleryBanner": {
+		"color": "#93E4D5",
+		"theme": "light"
+	},
+	"bugs": {
+		"url": "https://github.com/Microsoft/AdaptiveCards/issues"
+	},
+	"homepage": "https://adaptivecards.io",
+	"keywords": [
+		"adaptivecards",
+		"adaptive",
+		"cards",
+		"viewer",
+		"preview"
+	],
+	"galleryBanner": {
+		"color":"#404040",
+		"theme":"dark"
+	}
 }

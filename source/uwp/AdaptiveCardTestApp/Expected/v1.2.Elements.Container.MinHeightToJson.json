@@ -1,0 +1,1 @@
+{"actions":[],"body":[{"items":[{"text":"This textblock is inside a container with a min height of 100px","type":"TextBlock","wrap":true}],"minHeight":"100px","style":"Emphasis","type":"Container"}],"type":"AdaptiveCard","version":"1.2"}

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows;
 using System.Threading.Tasks;
 using AdaptiveCards.Rendering;
@@ -15,9 +15,9 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlFactSet
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(AdaptiveTypedElement element, RenderContext context)
         {
-            FactSet factSet = (FactSet)element;
+            AdaptiveFactSet factSet = (AdaptiveFactSet)element;
             var uiFactSet = new Grid();
             // grid.Margin = factSet.Theme.FactSetMargins;
             uiFactSet.Style = context.GetStyle("Adaptive.FactSet");
@@ -27,7 +27,7 @@ namespace AdaptiveCards.Rendering
             int iRow = 0;
             foreach (var fact in factSet.Facts)
             {
-                var uiTitle = context.Render(new TextBlock()
+                var uiTitle = context.Render(new AdaptiveTextBlock()
                 {
                     Size = context.Config.FactSet.Title.Size,
                     Color = context.Config.FactSet.Title.Color,
@@ -43,7 +43,7 @@ namespace AdaptiveCards.Rendering
                 //TODO
 #endif
 
-                var uiValue = context.Render(new TextBlock()
+                var uiValue = context.Render(new AdaptiveTextBlock()
                 {
                     Size = context.Config.FactSet.Value.Size,
                     Color = context.Config.FactSet.Value.Color,

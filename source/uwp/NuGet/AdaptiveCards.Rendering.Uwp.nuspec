@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>AdaptiveCards.Rendering.Uwp</id>
+        <version>1.0.0</version>
+        <authors>Microsoft</authors>
+        <summary>Adaptive Cards library for UWP</summary>
+        <description>Used to render Adaptive Cards into UWP XAML or to work with the object model for C++ projects</description>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <tags>adaptivecards;adaptive-cards</tags>
+        <projectUrl>https://adaptivecards.io</projectUrl>
+        <iconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</iconUrl>
+        <licenseUrl>https://raw.githubusercontent.com/Microsoft/AdaptiveCards/master/LICENSE</licenseUrl>
+        <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    </metadata>
+    <files>
+        <file src="..\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.winmd" target="lib\uap10.0"/>
+        <file src="..\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.winmd" target="lib\native"/>
+
+        <file src="..\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.dll" target="runtimes\win10-x86\native"/>
+        <file src="..\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.lib" target="runtimes\win10-x86\native"/>
+        <file src="..\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.pri" target="runtimes\win10-x86\native"/>
+        <file src="..\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.pdb" target="runtimes\win10-x86\native"/>
+
+        <file src="..\x64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.dll" target="runtimes\win10-x64\native"/>
+        <file src="..\x64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.lib" target="runtimes\win10-x64\native"/>
+        <file src="..\x64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.pri" target="runtimes\win10-x64\native"/>
+        <file src="..\x64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.pdb" target="runtimes\win10-x64\native"/>
+
+        <file src="..\ARM\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.dll" target="runtimes\win10-arm\native"/>
+        <file src="..\ARM\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.lib" target="runtimes\win10-arm\native"/>
+        <file src="..\ARM\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.pri" target="runtimes\win10-arm\native"/>
+        <file src="..\ARM\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.pdb" target="runtimes\win10-arm\native"/>
+
+        <file src="..\ARM64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.dll" target="runtimes\win10-arm64\native"/>
+        <file src="..\ARM64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.lib" target="runtimes\win10-arm64\native"/>
+        <file src="..\ARM64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.pri" target="runtimes\win10-arm64\native"/>
+        <file src="..\ARM64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.pdb" target="runtimes\win10-arm64\native"/>
+
+        <file src="AdaptiveCards.Rendering.Uwp.targets" target="build\uap10.0"/>
+        <file src="AdaptiveCards.Rendering.Uwp.native.targets" target="build\native\AdaptiveCards.Rendering.Uwp.targets"/>
+    </files>
+</package>

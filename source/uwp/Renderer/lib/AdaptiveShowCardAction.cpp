@@ -1,70 +1,76 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
+
 #include "AdaptiveCard.h"
 #include "AdaptiveShowCardAction.h"
-#include "Util.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveNamespace;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveShowCardAction::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveShowCardAction::RuntimeClassInitialize() noexcept
+    try
     {
-        m_sharedShowCardAction = std::make_shared<ShowCardAction>();
-        return S_OK;
-    } CATCH_RETURN;
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveShowCardAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ShowCardAction>& sharedShowCardAction)
-    {
-        m_sharedShowCardAction = sharedShowCardAction;
-        return S_OK;
+        std::shared_ptr<AdaptiveSharedNamespace::ShowCardAction> showCardAction =
+            std::make_shared<AdaptiveSharedNamespace::ShowCardAction>();
+        return RuntimeClassInitialize(showCardAction);
     }
+    CATCH_RETURN;
 
-    IFACEMETHODIMP AdaptiveShowCardAction::get_Card(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard** card)
+    HRESULT AdaptiveShowCardAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ShowCardAction>& sharedShowCardAction)
+    try
     {
-        return MakeAndInitialize<AdaptiveCard>(card, m_sharedShowCardAction->GetCard());
-    }
+        if (sharedShowCardAction == nullptr)
+        {
+            return E_INVALIDARG;
+        }
 
-    IFACEMETHODIMP AdaptiveShowCardAction::put_Card(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* card)
-    {
-        return E_NOTIMPL;
-    }
+        std::shared_ptr<AdaptiveCards::AdaptiveCard> card = sharedShowCardAction->GetCard();
+        if (card != nullptr)
+        {
+            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCard>(&m_card, sharedShowCardAction->GetCard()));
+        }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveShowCardAction::get_Title(HSTRING* title)
-    {
-        return UTF8ToHString(m_sharedShowCardAction->GetTitle(), title);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveShowCardAction::put_Title(HSTRING title)
-    {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(title, out));
-        m_sharedShowCardAction->SetTitle(out);
+        InitializeBaseElement(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(sharedShowCardAction));
         return S_OK;
     }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveShowCardAction::get_ActionType(ABI::AdaptiveCards::XamlCardRenderer::ActionType* actionType)
+    IFACEMETHODIMP AdaptiveShowCardAction::get_Card(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCard** card)
     {
-        *actionType = ABI::AdaptiveCards::XamlCardRenderer::ActionType::ShowCard;
+        return m_card.CopyTo(card);
+    }
+
+    IFACEMETHODIMP AdaptiveShowCardAction::put_Card(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* card)
+    {
+        m_card = card;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveShowCardAction::get_Speak(HSTRING* speak)
+    HRESULT AdaptiveShowCardAction::get_ActionType(_Out_ ABI::AdaptiveNamespace::ActionType* actionType)
     {
-        return UTF8ToHString(m_sharedShowCardAction->GetSpeak(), speak);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveShowCardAction::put_Speak(HSTRING speak)
-    {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedShowCardAction->SetSpeak(out);
+        *actionType = ABI::AdaptiveNamespace::ActionType::ShowCard;
         return S_OK;
     }
-}}
+
+    HRESULT AdaptiveShowCardAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel)
+    try
+    {
+        std::shared_ptr<AdaptiveSharedNamespace::ShowCardAction> showCardAction =
+            std::make_shared<AdaptiveSharedNamespace::ShowCardAction>();
+        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(showCardAction)));
+
+        ComPtr<AdaptiveNamespace::AdaptiveCard> card = PeekInnards<AdaptiveNamespace::AdaptiveCard>(m_card);
+
+        std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> sharedCard;
+        RETURN_IF_FAILED(card->GetSharedModel(sharedCard));
+
+        showCardAction->SetCard(sharedCard);
+
+        sharedModel = showCardAction;
+        return S_OK;
+    }
+    CATCH_RETURN;
+}

@@ -1,0 +1,16 @@
+{
+  "version": "independent",
+  "packages": [
+    "adaptivecards*/**",
+    "spec-generator/**",
+    "ac-typed-schema/**"
+  ],
+  "command": {
+    "publish": {
+      "ignoreChanges": [
+        "**/__tests__/**",
+        "*.md"
+      ]
+    }
+  }
+}

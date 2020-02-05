@@ -1,0 +1,33 @@
+- Cards:
+  - AdaptiveCard
+- Card Elements:
+  - TextBlock
+  - Image
+  - Media
+  - MediaSource
+  - RichTextBlock
+  - TextRun
+- Containers:
+  - ActionSet
+  - Container
+  - ColumnSet
+  - Column
+  - FactSet
+  - Fact
+  - ImageSet
+- Actions:
+  - Action.OpenUrl
+  - Action.Submit
+  - Action.ShowCard
+  - Action.ToggleVisibility
+  - TargetElement
+- Inputs:
+  - Input.Text
+  - Input.Number
+  - Input.Date
+  - Input.Time
+  - Input.Toggle
+  - Input.ChoiceSet
+  - Input.Choice
+- Types:
+  - BackgroundImage

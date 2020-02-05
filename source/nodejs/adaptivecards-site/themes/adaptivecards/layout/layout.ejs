@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<%- partial('_partial/head', null, {cache: false}) %>
+
+	<body>
+
+		<%- partial('_partial/header', null, {cache: false}) %>
+
+		<div id="main" role="main" class="main-container <% if (!page.hideBreadcrumb) { %>uhf-container<% } %>">
+			<%- body %>
+		</div>
+
+		<% if(!page.hideFooter) { %>
+			<%- partial('_partial/footer', null, {cache: false}) %>
+		<% } %>
+
+	</body>
+
+</html>

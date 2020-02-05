@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
@@ -21,24 +21,24 @@ namespace AdaptiveCards.Rendering
             grid.SetBackgroundImage(new Uri(url));
         }
 
-        public static void SetImageProperties(this Xamarin.Forms.Image imageview, Image image, RenderContext context)
+        public static void SetImageProperties(this Xamarin.Forms.Image imageview, AdaptiveImage image, RenderContext context)
         {
             switch (image.Size)
             {
-                case ImageSize.Auto:
-                case ImageSize.Stretch:
+                case AdaptiveImageSize.Auto:
+                case AdaptiveImageSize.Stretch:
                     imageview.VerticalOptions = LayoutOptions.FillAndExpand;
                     imageview.HorizontalOptions = LayoutOptions.FillAndExpand;
                     break;
-                case ImageSize.Small:
+                case AdaptiveImageSize.Small:
                     imageview.WidthRequest = context.Config.ImageSizes.Small;
                     imageview.HeightRequest = context.Config.ImageSizes.Small;
                     break;
-                case ImageSize.Medium:
+                case AdaptiveImageSize.Medium:
                     imageview.WidthRequest = context.Config.ImageSizes.Medium;
                     imageview.HeightRequest = context.Config.ImageSizes.Medium;
                     break;
-                case ImageSize.Large:
+                case AdaptiveImageSize.Large:
                     imageview.WidthRequest = context.Config.ImageSizes.Large;
                     imageview.HeightRequest = context.Config.ImageSizes.Large;
                     break;

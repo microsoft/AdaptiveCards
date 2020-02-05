@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.IO;
@@ -21,7 +21,7 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlAdaptiveCard
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(AdaptiveTypedElement element, RenderContext context)
         {
             AdaptiveCard card = (AdaptiveCard)element;
             var outerGrid = new Grid();
@@ -31,14 +31,11 @@ namespace AdaptiveCards.Rendering
             outerGrid.Background = context.GetColorBrush(context.Config.AdaptiveCard.BackgroundColor);
 #endif
 
-            outerGrid.SetBackgroundSource(card.BackgroundImage,context);
+            // outerGrid.SetBackgroundSource(card.BackgroundImage.UrlString, context);
 
             var grid = new Grid();
             grid.Style = context.GetStyle("Adaptive.InnerCard");
-            grid.Margin = new Thickness(context.Config.AdaptiveCard.Padding.Left,
-                context.Config.AdaptiveCard.Padding.Top,
-                context.Config.AdaptiveCard.Padding.Right,
-                context.Config.AdaptiveCard.Padding.Bottom);
+            grid.Margin = new Thickness(context.Config.Spacing.Padding);
 
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
 

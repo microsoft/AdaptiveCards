@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Text;
 using System.Collections.Generic;
 using System.Windows;
@@ -14,9 +14,9 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlChoiceSet
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(AdaptiveTypedElement element, RenderContext context)
         {
-            ChoiceSet choiceSet = (ChoiceSet)element;
+            AdaptiveChoiceSetInput choiceSet = (AdaptiveChoiceSetInput)element;
 #if WPF
             if (context.Config.SupportsInteractivity)
             {
@@ -131,7 +131,7 @@ namespace AdaptiveCards.Rendering
             if (choiceText == null)
             {
                 List<string> choices = choiceSet.Choices.Select(choice => choice.Title).ToList();
-                if (choiceSet.Style == ChoiceInputStyle.Compact)
+                if (choiceSet.Style == AdaptiveChoiceInputStyle.Compact)
                 {
                     if (choiceSet.IsMultiSelect)
                     {
@@ -147,16 +147,17 @@ namespace AdaptiveCards.Rendering
                     choiceText = $"* {RendererUtilities.JoinString(choices, "\n* ", "\n* ")}";
                 }
             }
-            Container container = TypedElementConverter.CreateElement<Container>();
-            container.Separation = choiceSet.Separation;
-            TextBlock textBlock = TypedElementConverter.CreateElement<TextBlock>();
+            AdaptiveContainer container = AdaptiveTypedElementConverter.CreateElement<AdaptiveContainer>();
+            container.Spacing = choiceSet.Spacing;
+            container.Separator = choiceSet.Separator;
+            AdaptiveTextBlock textBlock = AdaptiveTypedElementConverter.CreateElement<AdaptiveTextBlock>();
             textBlock.Text = choiceText;
             textBlock.Wrap = true;
             container.Items.Add(textBlock);
 
-            textBlock = TypedElementConverter.CreateElement<TextBlock>();
+            textBlock = AdaptiveTypedElementConverter.CreateElement<AdaptiveTextBlock>();
             textBlock.Text = RendererUtilities.JoinString(choiceSet.Choices.Where(c => c.IsSelected).Select(c => c.Title).ToList(), ", ", " and ");
-            textBlock.Color = TextColor.Accent;
+            textBlock.Color = AdaptiveTextColor.Accent;
             textBlock.Wrap = true;
             container.Items.Add(textBlock);
             return context.Render(container);

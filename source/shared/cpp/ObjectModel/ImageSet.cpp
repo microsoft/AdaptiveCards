@@ -1,31 +1,16 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+#include "pch.h"
 #include "ImageSet.h"
 #include "ParseUtil.h"
 #include "Image.h"
+#include "Util.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespace;
 
-ImageSet::ImageSet() : 
-    BaseCardElement(CardElementType::ImageSet),
-    m_imageSize(ImageSize::Auto)
+ImageSet::ImageSet() : BaseCardElement(CardElementType::ImageSet), m_imageSize(ImageSize::None)
 {
-}
-
-ImageSet::ImageSet(
-    SeparationStyle separation,
-    std::string speak,
-    std::vector<std::shared_ptr<Image>>& images) :
-    BaseCardElement(CardElementType::ImageSet, separation, speak),
-    m_images(images),
-    m_imageSize(ImageSize::Default)
-{
-}
-
-ImageSet::ImageSet(
-    SeparationStyle separation,
-    std::string speak) :
-    BaseCardElement(CardElementType::ImageSet, separation, speak),
-    m_imageSize(ImageSize::Auto)
-{
+    PopulateKnownPropertiesSet();
 }
 
 ImageSize ImageSet::GetImageSize() const
@@ -48,35 +33,63 @@ std::vector<std::shared_ptr<Image>>& ImageSet::GetImages()
     return m_images;
 }
 
-std::string ImageSet::Serialize()
+Json::Value ImageSet::SerializeToJsonValue() const
 {
-    return "";
+    Json::Value root = BaseCardElement::SerializeToJsonValue();
+
+    if (m_imageSize != ImageSize::None)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ImageSize)] = ImageSizeToString(GetImageSize());
+    }
+
+    std::string const& itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Images);
+    root[itemsPropertyName] = Json::Value(Json::arrayValue);
+    for (const auto& image : m_images)
+    {
+        root[itemsPropertyName].append(image->SerializeToJsonValue());
+    }
+
+    return root;
 }
 
-std::shared_ptr<ImageSet> ImageSet::Deserialize(const Json::Value& value)
+std::shared_ptr<BaseCardElement> ImageSetParser::Deserialize(ParseContext& context, const Json::Value& value)
 {
     ParseUtil::ExpectTypeString(value, CardElementType::ImageSet);
 
-    auto imageSet = BaseCardElement::Deserialize<ImageSet>(value);
-
+    auto imageSet = BaseCardElement::Deserialize<ImageSet>(context, value);
     // Get ImageSize
-    imageSet->m_imageSize = ParseUtil::GetEnumValue<ImageSize>(value, AdaptiveCardSchemaKey::ImageSize, ImageSize::Auto, ImageSizeFromString);
+    imageSet->m_imageSize =
+        ParseUtil::GetEnumValue<ImageSize>(value, AdaptiveCardSchemaKey::ImageSize, ImageSize::None, ImageSizeFromString);
 
     // Parse Images
-    auto imagesArray = ParseUtil::GetArray(value, AdaptiveCardSchemaKey::Images);
-    std::vector<std::shared_ptr<Image>> images;
+    auto images = ParseUtil::GetElementCollection<Image>(
+        true, context, value, AdaptiveCardSchemaKey::Images, true, CardElementTypeToString(CardElementType::Image));
 
-    // Deserialize every image in the array
-    for (const Json::Value& element : imagesArray)
+    for (auto image : images)
     {
-        auto image = Image::Deserialize(element);
-        if (image != nullptr)
-        {
-            images.push_back(image);
-        }
+        imageSet->m_images.push_back(std::static_pointer_cast<Image>(image));
     }
 
-    imageSet->m_images = std::move(images);
-
     return imageSet;
+}
+
+std::shared_ptr<BaseCardElement> ImageSetParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
+{
+    return ImageSetParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
+}
+
+void ImageSet::PopulateKnownPropertiesSet()
+{
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Images),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ImageSize)});
+}
+
+void ImageSet::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
+{
+    auto images = GetImages();
+    for (auto image : images)
+    {
+        image->GetResourceInformation(resourceInfo);
+    }
+    return;
 }

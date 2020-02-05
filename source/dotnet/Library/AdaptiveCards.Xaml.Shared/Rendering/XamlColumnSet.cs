@@ -1,9 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using AdaptiveCards.Rendering;
-using AdaptiveCards.Rendering.Config;
 #if WPF
 using System.Windows.Controls;
 using System.Windows.Shapes;
@@ -16,9 +15,9 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlColumnSet 
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(AdaptiveTypedElement element, RenderContext context)
         {
-            ColumnSet columnSet = (ColumnSet)element;
+            AdaptiveColumnSet columnSet = (AdaptiveColumnSet)element;
             var uiColumnSet = new Grid();
             uiColumnSet.Style = context.GetStyle($"Adaptive.{columnSet.Type}");
 
@@ -29,7 +28,7 @@ namespace AdaptiveCards.Rendering
                 // Add vertical Seperator
                 if (uiColumnSet.ColumnDefinitions.Count > 0)
                 {
-                    if (column.Separation != SeparationStyle.None)
+                    if (column.Spacing != AdaptiveSpacing.None)
                     {
 
                         var uiSep = new Grid();
@@ -40,8 +39,11 @@ namespace AdaptiveCards.Rendering
                         // TOOD: check xamarin separator visual
                         //sep.VerticalAlignment = VerticalAlignment.Stretch;
 #endif
-                        SeparationConfig sepStyle;
-                        switch (column.Separation)
+
+                        SpacingsConfig sepStyle = context.Config.Spacing;
+                        /*
+                         * HERE GOES THE CODE FOR SPACING BETWEEN COLUMNS
+                        switch (column.Spacing)
                         {
                             case SeparationStyle.Strong:
                                 sepStyle = context.Config.GetSeparationForElement(element, true);
@@ -52,7 +54,9 @@ namespace AdaptiveCards.Rendering
                                 sepStyle = context.Config.GetSeparationForElement(element, false);
                                 break;
                         }
-                        uiSep.Margin = new Thickness(sepStyle.Spacing / 2, 0, sepStyle.Spacing / 2, 0);
+                        */
+
+                        // uiSep.Margin = new Thickness(sepStyle.Spacing / 2, 0, sepStyle.Spacing / 2, 0);
 #if WPF
                     uiSep.Width = sepStyle.LineThickness;
                     if (sepStyle.LineColor != null)
@@ -70,9 +74,9 @@ namespace AdaptiveCards.Rendering
 
                 // do some sizing magic using the magic GridUnitType.Star
                 var size = column.Size?.ToLower();
-                if (size == null || size == ColumnSize.Stretch.ToLower())
+                if (size == null || size == AdaptiveColumnSize.Stretch.ToLower())
                     uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-                else if (size == ColumnSize.Auto.ToLower())
+                else if (size == AdaptiveColumnSize.Auto.ToLower())
                     uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
                 else
                 {

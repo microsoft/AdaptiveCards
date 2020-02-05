@@ -1,0 +1,40 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.2",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "This card's action will open a URL"
+		}
+	],
+	"actions": [
+		{
+			"type": "redAction",
+			"backwardString": "!esuom wolley ,uoy esoohc I"
+		},
+		{
+			"type": "greenAction",
+			"title": "Action.OpenUrl"
+		},
+		{
+			"type": "Action.ShowCard",
+			"title": "Action.ShowCard",
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "TextBlock",
+						"text": "What do you think?"
+					}
+				],
+				"actions": [
+					{
+						"type": "Action.Submit",
+						"title": "Neat!"
+					}
+				]
+			}
+		}
+	]
+}

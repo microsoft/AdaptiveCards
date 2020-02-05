@@ -1,41 +1,17 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+#include "pch.h"
 #include "Container.h"
-#include "ParseUtil.h"
-#include "Image.h"
 #include "TextBlock.h"
 #include "ColumnSet.h"
-#include "FactSet.h"
-#include "ImageSet.h"
+#include "ParseUtil.h"
+#include "Util.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespace;
 
-const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>, EnumHash> Container::CardElementParsers =
+Container::Container() : CollectionTypeElement(CardElementType::Container)
 {
-    { CardElementType::Container, Container::Deserialize },
-    { CardElementType::ColumnSet, ColumnSet::Deserialize },
-    { CardElementType::FactSet, FactSet::Deserialize },
-    { CardElementType::Image, Image::Deserialize },
-    { CardElementType::ImageSet, ImageSet::Deserialize },
-    { CardElementType::TextBlock, TextBlock::Deserialize },
-};
-
-Container::Container() : BaseCardElement(CardElementType::Container)
-{
-}
-
-Container::Container(
-    SeparationStyle separation,
-    std::string speak,
-    std::vector<std::shared_ptr<BaseCardElement>>& items) :
-    BaseCardElement(CardElementType::Container, separation, speak),
-    m_items(items)
-{
-}
-
-Container::Container(
-    SeparationStyle separation,
-    std::string speak) :
-    BaseCardElement(CardElementType::Container, separation, speak)
-{
+    PopulateKnownPropertiesSet();
 }
 
 const std::vector<std::shared_ptr<BaseCardElement>>& Container::GetItems() const
@@ -48,32 +24,56 @@ std::vector<std::shared_ptr<BaseCardElement>>& Container::GetItems()
     return m_items;
 }
 
-void Container::SetItems(std::vector<std::shared_ptr<BaseCardElement>>& items)
+Json::Value Container::SerializeToJsonValue() const
 {
-    m_items = items;
+    Json::Value root = CollectionTypeElement::SerializeToJsonValue();
+    std::string const& itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
+    root[itemsPropertyName] = Json::Value(Json::arrayValue);
+    for (const auto& cardElement : m_items)
+    {
+        root[itemsPropertyName].append(cardElement->SerializeToJsonValue());
+    }
+
+    return root;
 }
 
-
-std::string Container::Serialize()
-{
-    return "";
-}
-
-std::shared_ptr<Container> Container::Deserialize(const Json::Value& value)
+std::shared_ptr<BaseCardElement> ContainerParser::Deserialize(ParseContext& context, const Json::Value& value)
 {
     ParseUtil::ExpectTypeString(value, CardElementType::Container);
 
-    auto container = BaseCardElement::Deserialize<Container>(value);
+    auto container = CollectionTypeElement::Deserialize<Container>(context, value);
 
-    // Parse Items
-    auto cardElements = ParseUtil::GetElementCollection<BaseCardElement>(value, AdaptiveCardSchemaKey::Items, Container::CardElementParsers);
-    container->m_items = std::move(cardElements);
     return container;
 }
 
-std::shared_ptr<Container> Container::DeserializeFromString(const std::string& jsonString)
+void Container::DeserializeChildren(ParseContext& context, const Json::Value& value)
 {
-    Json::Value jsonValue(jsonString);
+    // Parse items
+    auto cardElements = ParseUtil::GetElementCollection<BaseCardElement>(true, // isTopToBottomContainer
+                                                                         context,
+                                                                         value,
+                                                                         AdaptiveCardSchemaKey::Items,
+                                                                         false); // isRequired
+    m_items = std::move(cardElements);
+}
 
-    return Container::Deserialize(jsonValue);
+std::shared_ptr<BaseCardElement> ContainerParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
+{
+    return ContainerParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
+}
+
+void Container::PopulateKnownPropertiesSet()
+{
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Bleed),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items)});
+}
+
+void Container::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
+{
+    auto items = GetItems();
+    CollectionTypeElement::GetResourceInformation<BaseCardElement>(resourceInfo, items);
+    return;
 }

@@ -1,0 +1,1 @@
+{"actions":[{"title":"OK","type":"Action.Submit"},{"ignoreInputValidation":true,"title":"Cancel","type":"Action.Submit"}],"body":[{"text":"Here are some required inputs","type":"TextBlock"},{"id":"input1","isRequired":true,"type":"Input.Text"},{"id":"input2","isRequired":true,"type":"Input.Text"}],"type":"AdaptiveCard","version":"1.3"}

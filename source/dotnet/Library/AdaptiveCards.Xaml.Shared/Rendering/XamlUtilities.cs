@@ -1,5 +1,5 @@
-﻿
-using AdaptiveCards.Rendering.Config;
+
+using AdaptiveCards.Rendering;
 using System;
 using System.Linq;
 using System.Windows;
@@ -18,9 +18,9 @@ namespace AdaptiveCards.Rendering
     public class XamlUtilities
     {
 
-        public static Button CreateActionButton(ActionBase action, RenderContext context)
+        public static Button CreateActionButton(AdaptiveAction action, RenderContext context)
         {
-            ActionConfig styling = context.Config.Actions;
+            ActionsConfig styling = context.Config.Actions;
             var uiButton = new Button()
             {
 #if WPF
@@ -28,19 +28,19 @@ namespace AdaptiveCards.Rendering
 #endif
             };
 
-            uiButton.SetBackgroundColor(styling.BackgroundColor, context);
-            uiButton.SetBorderColor(styling.BackgroundColor, context);
-            uiButton.SetThickness(context.Config.Actions.BorderThickness);
+            // uiButton.SetBackgroundColor(styling.BackgroundColor, context);
+            // uiButton.SetBorderColor(styling.BackgroundColor, context);
+            // uiButton.SetThickness(context.Config.Actions.BorderThickness);
             uiButton.Style = context.GetStyle($"Adaptive.{action.Type}");
 
             xaml.TextBlock uiTitle = new xaml.TextBlock()
             {
                 Text = action.Title,                
-                FontSize = styling.FontSize,
-                Margin = new Thickness(styling.Padding.Left, styling.Padding.Top, styling.Padding.Right, styling.Padding.Bottom) ,
+                // FontSize = styling.FontSize,
+                // Margin = new Thickness(styling.Padding.Left, styling.Padding.Top, styling.Padding.Right, styling.Padding.Bottom) ,
             };
-            uiTitle.SetFontWeight(styling.FontWeight);
-            uiTitle.SetColor(styling.TextColor, context);
+            // uiTitle.SetFontWeight(styling.FontWeight);
+            // uiTitle.SetColor(styling.TextColor, context);
             uiTitle.Style = context.GetStyle($"Adaptive.Action.Title");
             uiButton.Content = uiTitle;
             string name = context.GetType().Name.Replace("Action", String.Empty);
@@ -53,7 +53,7 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public static string GetFallbackText(CardElement cardElement)
+        public static string GetFallbackText(AdaptiveElement cardElement)
         {
 #if WPF
             if (!string.IsNullOrEmpty(cardElement.Speak))

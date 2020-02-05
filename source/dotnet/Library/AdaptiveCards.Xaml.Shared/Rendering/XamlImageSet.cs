@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using AdaptiveCards.Rendering;
 #if WPF
 using System.Windows.Controls;
@@ -11,9 +11,9 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlImageSet
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(AdaptiveTypedElement element, RenderContext context)
         {
-            ImageSet imageSet = (ImageSet)element;
+            AdaptiveImageSet imageSet = (AdaptiveImageSet)element;
 #if WPF
             var uiImageSet = new ListBox();
             ScrollViewer.SetHorizontalScrollBarVisibility(uiImageSet, ScrollBarVisibility.Disabled);
@@ -29,8 +29,8 @@ namespace AdaptiveCards.Rendering
             uiImageSet.Style = context.GetStyle("Adaptive.ImageSet");
             foreach (var image in imageSet.Images)
             {
-                if (image.Size == ImageSize.Auto)
-                    if (imageSet.ImageSize != ImageSize.Auto)
+                if (image.Size == AdaptiveImageSize.Auto)
+                    if (imageSet.ImageSize != AdaptiveImageSize.Auto)
                         image.Size = imageSet.ImageSize;
                     else
                         image.Size = context.Config.ImageSet.ImageSize;

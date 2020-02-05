@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+      signType indicates which certificates are used to sign the output
+      signType = "StrongName = 72 , Authenticode = 10006 , Both = 72 & 10006"
+-->
+<SignConfigXML>
+  <!-- Release sign job -->
+  <job platform="x64" configuration="release" dest="__RELBINPATH__\..\..\..\a\signed" jobname="Adaptive Cards UWP Nuget" approvers="">
+    <!-- AdaptiveCards -->
+    <file src="__RELBINPATH__\..\..\..\a\AdaptiveCards.*.nupkg" signType="Nuget"  />
+  </job>
+</SignConfigXML>

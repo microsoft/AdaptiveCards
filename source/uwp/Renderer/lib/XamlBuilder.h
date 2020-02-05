@@ -1,150 +1,99 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.XamlCardRenderer.h"
 #include "ImageLoadTracker.h"
 #include "IXamlBuilderListener.h"
 #include "IImageLoadTrackerListener.h"
-#include <windows.storage.h>
+#include "InputValue.h"
+#include "RenderedAdaptiveCard.h"
+#include "AdaptiveRenderContext.h"
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveNamespace
 {
-    class XamlBuilder : public Microsoft::WRL::RuntimeClass<
-        Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        Microsoft::WRL::FtmBase,
-        AdaptiveCards::XamlCardRenderer::IImageLoadTrackerListener>
+    class AdaptiveCardRenderer;
+
+    class XamlBuilder
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, Microsoft::WRL::FtmBase, AdaptiveNamespace::IImageLoadTrackerListener>
     {
-        InspectableClass(L"AdaptiveCards.XamlCardRenderer.XamlBuilder", BaseTrust)
+        friend HRESULT Microsoft::WRL::Details::MakeAndInitialize<AdaptiveNamespace::XamlBuilder, AdaptiveNamespace::XamlBuilder>(
+            AdaptiveNamespace::XamlBuilder**);
+
+        AdaptiveRuntimeStringClass(XamlBuilder);
+
     public:
-        XamlBuilder();
-
         // IImageLoadTrackerListener
-        STDMETHODIMP AllImagesLoaded();
+        STDMETHODIMP AllImagesLoaded() noexcept;
+        STDMETHODIMP ImagesLoadingHadError() noexcept;
 
-        void BuildXamlTreeFromAdaptiveCard(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* adaptiveCard, _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** xamlTreeRoot, boolean isOuterCard = true);
+        static HRESULT BuildXamlTreeFromAdaptiveCard(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
+                                                     _COM_Outptr_ ABI::Windows::UI::Xaml::IFrameworkElement** xamlTreeRoot,
+                                                     _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                                     Microsoft::WRL::ComPtr<XamlBuilder> xamlBuilder,
+                                                     ABI::AdaptiveNamespace::ContainerStyle defaultContainerStyle =
+                                                         ABI::AdaptiveNamespace::ContainerStyle::Default) noexcept;
         HRESULT AddListener(_In_ IXamlBuilderListener* listener) noexcept;
         HRESULT RemoveListener(_In_ IXamlBuilderListener* listener) noexcept;
-        HRESULT SetFixedDimensions(_In_ UINT width, _In_ UINT height) noexcept;
-        HRESULT SetRenderOptions(_In_ ABI::AdaptiveCards::XamlCardRenderer::RenderOptions renderOptions) noexcept;
-        HRESULT SetEnableXamlImageHandling(_In_ bool enableXamlImageHandling) noexcept;
-        HRESULT SetBackgroundImageUri(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUri) noexcept;
-        HRESULT SetOverrideDictionary(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* overrideDictionary) noexcept;
-        HRESULT SetHostOptions(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostOptions* hostOptions) noexcept;
+        void SetFixedDimensions(UINT width, UINT height) noexcept;
+        void SetEnableXamlImageHandling(bool enableXamlImageHandling) noexcept;
+
+        static HRESULT BuildPanelChildren(
+            _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveCardElement*>* children,
+            _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,
+            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* context,
+            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+            std::function<void(ABI::Windows::UI::Xaml::IUIElement* child)> childCreatedCallback) noexcept;
+
+        HRESULT BuildImage(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* adaptiveCardElement,
+                           _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                           _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+                           _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** imageControl);
 
     private:
-        std::unordered_map<ABI::AdaptiveCards::XamlCardRenderer::ElementType, 
-            std::function<void(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*,
-                ABI::Windows::UI::Xaml::IUIElement**)>> m_adaptiveElementBuilder;
+        XamlBuilder();
 
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IPropertyValueStatics> m_propertyValueStatics;
         ImageLoadTracker m_imageLoadTracker;
         std::set<Microsoft::WRL::ComPtr<IXamlBuilderListener>> m_listeners;
         Microsoft::WRL::ComPtr<ABI::Windows::Storage::Streams::IRandomAccessStreamStatics> m_randomAccessStreamStatics;
-std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWithProgress<ABI::Windows::Storage::Streams::IInputStream*, ABI::Windows::Web::Http::HttpProgress>>> m_getStreamOperations;
+        std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWithProgress<ABI::Windows::Storage::Streams::IInputStream*, ABI::Windows::Web::Http::HttpProgress>>> m_getStreamOperations;
         std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWithProgress<UINT64, UINT64>>> m_copyStreamOperations;
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_mergedResourceDictionary;
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_defaultResourceDictionary;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostOptions> m_hostOptions;
+        std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWithProgress<UINT32, UINT32>>> m_writeAsyncOperations;
 
         UINT m_fixedWidth = 0;
         UINT m_fixedHeight = 0;
         bool m_fixedDimensions = false;
-        ABI::AdaptiveCards::XamlCardRenderer::RenderOptions m_renderOptions = ABI::AdaptiveCards::XamlCardRenderer::RenderOptions::None;
         bool m_enableXamlImageHandling = false;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers> m_resourceResolvers;
 
-        static Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> CreateSeparator(
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparationOptions* separationOptions,
-            _In_ bool isHorizontal = true);
-        static void ApplyMarginToXamlElement(
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveBoundaryOptions* boundaryOptions,
-            _Inout_ ABI::Windows::UI::Xaml::IFrameworkElement* element);
+        static HRESULT CreateRootCardElement(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
+                                             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+                                             Microsoft::WRL::ComPtr<XamlBuilder> xamlBuilder,
+                                             _COM_Outptr_ ABI::Windows::UI::Xaml::Controls::IPanel** bodyElementContainer,
+                                             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** rootUIElement) noexcept;
 
-        void StyleXamlTextBlock(
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::TextSize size,
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::TextColor color,
-            _In_ bool isSubtle,
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::TextWeight weight,
-            _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock);
-        void StyleXamlTextBlock(
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextOptions* textOptions,
-            _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock);
-        void InitializeDefaultResourceDictionary();
         template<typename T>
-        HRESULT TryGetResoureFromResourceDictionaries(
-            _In_ std::wstring resourceName,
-            _COM_Outptr_result_maybenull_ T** resource);
+        void SetAutoSize(T* destination, IInspectable* parentElement, IInspectable* imageContainer, bool isVisible, bool imageFiresOpenEvent);
+
         template<typename T>
-        bool TryGetValueResourceFromResourceDictionaries(
-            _In_ std::wstring styleName,
-            _Out_ T* valueResource);
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> CreateRootCardElement(
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* adaptiveCard,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::Controls::IPanel** childElementContainer);
-        void ApplyBackgroundToRoot(_In_ ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel, _In_ ABI::Windows::Foundation::IUriRuntimeClass* uri);
+        void SetImageSource(T* destination,
+                            ABI::Windows::UI::Xaml::Media::IImageSource* imageSource,
+                            ABI::Windows::UI::Xaml::Media::Stretch stretch = Stretch_UniformToFill);
         template<typename T>
-        void SetImageSource(T* destination, ABI::Windows::UI::Xaml::Media::IImageSource* imageSource);
+        void SetImageOnUIElement(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl,
+                                 T* uiElement,
+                                 ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers* resolvers,
+                                 bool isSizeAuto,
+                                 IInspectable* parentElement,
+                                 IInspectable* imageContainer,
+                                 bool isVisible,
+                                 _Out_ bool* mustHideElement,
+                                 ABI::Windows::UI::Xaml::Media::Stretch stretch = Stretch_UniformToFill);
+
         template<typename T>
-        void SetImageOnUIElement(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl, T* uiElement);
-        template<typename T>
-        void PopulateImageFromUrlAsync(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl, T* imageControl);
+        void PopulateImageFromUrlAsync(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl, _In_ T* imageControl);
+
         void FireAllImagesLoaded();
-        void BuildPanelChildren(
-            _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>* children,
-            _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,
-            _In_ std::function<void(ABI::Windows::UI::Xaml::IUIElement* child)> childCreatedCallback);
-        void BuildActions(
-            _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement*>* children,
-            _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel);
-        void GetSeparationOptionsForElement(
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* element,
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation,
-            _COM_Outptr_result_maybenull_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparationOptions** separationOptions);
-        template<typename T>
-        void SetContent(T* item, HSTRING contentString);
-        template<typename T>
-        void SetToggleValue(T* item, boolean isChecked);
-
-        void BuildTextBlock(
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** textBlockControl);
-        void BuildImage(
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** imageControl);
-        void BuildContainer(
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** containerControl);
-        void BuildColumnSet(
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** columnControl);
-        void BuildFactSet(
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** factSetControl);
-        void BuildImageSet(
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** imageSetControl);
-        void BuildCompactInputChoiceSet(
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputChoiceSet* adaptiveInputChoiceSet,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** inputChoiceSetControl);
-        void BuildExpandedInputChoiceSet(
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputChoiceSet* adaptiveInputChoiceSet,
-            boolean isMultiSelect,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** inputChoiceSetControl);
-        void BuildInputChoiceSet(
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** inputChoiceSetControl);
-        void BuildInputDate(
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** inputDateControl);
-        void BuildInputNumber(
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** inputDateControl);
-        void BuildInputText(
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** inputTextControl);
-        void BuildInputTime(
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** inputTimeControl);
-        void BuildInputToggle(
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** inputToggleControl);
+        void FireImagesLoadingHadError();
     };
-}}
+}

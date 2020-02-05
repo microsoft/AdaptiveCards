@@ -1,20 +1,23 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 
 #include "pch.h"
 
-namespace AdaptiveCards
+namespace AdaptiveSharedNamespace
 {
+    class AdaptiveCardParseException : public std::exception
+    {
+    public:
+        AdaptiveCardParseException(AdaptiveSharedNamespace::ErrorStatusCode statusCode, const std::string& message);
 
-class AdaptiveCardParseException : public std::exception
-{
-public:
-    AdaptiveCardParseException(const std::string& message);
-    ~AdaptiveCardParseException();
+        virtual const char* what() const throw();
+        AdaptiveSharedNamespace::ErrorStatusCode GetStatusCode() const;
+        const std::string& GetReason() const;
 
-    virtual const char* what() const throw();
-
-private:
-    const std::string m_message;
-};
+    private:
+        const AdaptiveSharedNamespace::ErrorStatusCode m_statusCode;
+        const std::string m_message;
+    };
 
 }

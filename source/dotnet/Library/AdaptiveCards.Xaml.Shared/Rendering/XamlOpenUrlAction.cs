@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using AdaptiveCards.Rendering;
 #if WPF
 using System.Windows.Controls;
@@ -13,9 +13,9 @@ namespace AdaptiveCards.Rendering
 
     public static class XamlOpenUrlAction
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(AdaptiveTypedElement element, RenderContext context)
         {
-            OpenUrlAction action = (OpenUrlAction)element;
+            AdaptiveOpenUrlAction action = (AdaptiveOpenUrlAction)element;
             if (context.Config.SupportsInteractivity)
             {
                 Button uiButton = XamlUtilities.CreateActionButton(action, context); // content);

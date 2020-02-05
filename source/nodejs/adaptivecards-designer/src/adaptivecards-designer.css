@@ -1,0 +1,847 @@
+@font-face {
+    font-family: 'FabricMDL2Icons';
+    src: url("https://appsforoffice.microsoft.com/fabric/fonts/icons/FabricMDL2Icons.woff") format("woff"), url("https://appsforoffice.microsoft.com/fabric/fonts/icons/FabricMDL2Icons.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+.acd-designer-cardArea {
+    flex: 1 1 70%;
+    background-color: #F6F6F6;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.acd-designersurface {
+	outline: none;
+}
+
+.acd-hidden {
+    display: none !important;
+}
+
+.acd-toolPalette-pane {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    background-color: white;
+    border-right: 1px solid #D2D2D2;
+}
+
+.acd-treeView-pane {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    width: 360px;
+    background-color: white;
+}
+
+.acd-treeView-host {
+    flex: 1 1 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-top: 6px;
+    background-color: white;
+}
+
+.acd-propertySheet-pane {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    width: 360px;
+    background-color: #F9F9F9;
+}
+
+.acd-propertySheet-host {
+    flex: 1 1 100%;
+    overflow: auto;
+}
+
+.acd-vertical-splitter {
+    flex: 0 0 6px;
+    background-color: #EEEEEE;
+    border-left: 1px solid #D2D2D2;
+    border-right: 1px solid #D2D2D2;
+    cursor: ew-resize;
+}
+
+.acd-horizontal-splitter {
+    flex: 0 0 6px;
+    background-color: #EEEEEE;
+    border-top: 1px solid #D2D2D2;
+    border-bottom: 1px solid #D2D2D2;
+    cursor: ns-resize;
+}
+
+.acd-json-editor-pane {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    height: 360px;
+}
+
+.acd-json-editor-host {
+    flex: 1 1 100%;
+}
+
+.acd-error-pane {
+    flex: 0 0 65px;
+    color: white;
+    background-color: #3a96dd;
+    border-top: 1px solid #D2D2D2;
+    overflow-x: hidden;
+    overflow-y: auto;
+    white-space: nowrap;
+}
+
+.acd-error-pane-message {
+    padding: 1px 4px 2px 4px;
+    cursor: default;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.acd-error-pane-message.selectable {
+    cursor: pointer;
+}
+
+.acd-error-pane-message.selectable:hover {
+    background-color: navy;
+}
+
+/*
+    In-place editors
+*/
+
+.acd-inplace-editor-host {
+    box-sizing: content-box;
+    position: absolute;
+    display: flex;
+    margin: -1px;
+    border: 1px dashed red;
+    background-color: white;
+}
+
+.acd-inplace-editor {
+    flex: 1 1 100%;
+    align-items: stretch;
+}
+
+.acd-textBlock-inplace-editor {
+    border: none;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    resize: none;
+    color: black !important;
+}
+
+.acd-dialog-overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.acd-dialog-frame {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 50px -5px rgba(0, 0, 0, 0.4);
+}
+
+.acd-sample-picker-message {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    word-wrap: break-word;
+}
+
+/*
+    Icons
+*/
+
+.acd-icon {
+    font-family: 'FabricMDL2Icons';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: normal;
+}
+
+.acd-toolPalette-icon {
+    color: #3a96dd;
+}
+
+.acd-treeView-icon {
+    color: #3a96dd;
+}
+
+.acd-icon-bolt::before {
+    content: "\E945";
+}
+
+.acd-icon-addColumn::before {
+    content: "\F1D6";
+}
+
+.acd-icon-remove::before {
+    content: "\E711";
+}
+
+.acd-icon-drag::before {
+    content: "\E7C2";
+}
+
+.acd-icon-image::before {
+    content: "\ECAB";
+}
+
+.acd-icon-adaptiveCard::before {
+    content: "\EEBD";
+}
+
+.acd-icon-column::before {
+    content: "\E799";
+}
+
+.acd-icon-columnSet::before {
+    content: "\F1D5";
+}
+
+.acd-icon-container::before {
+    content: "\E739";
+}
+
+.acd-icon-factSet::before {
+    content: "\F2A2";
+}
+
+.acd-icon-actionSet::before {
+    content: "\E945";
+}
+
+.acd-icon-image::before {
+    content: "\EB9F";
+}
+
+.acd-icon-imageSet::before {
+    content: "\E7AA";
+}
+
+.acd-icon-inputChoiceSet::before {
+    content: "\F2C7";
+}
+
+.acd-icon-inputDate::before {
+    content: "\E787";
+}
+
+.acd-icon-inputNumber::before {
+    content: "\EDC4";
+}
+
+.acd-icon-inputText::before {
+    content: "\EDC3";
+}
+
+.acd-icon-inputTime::before {
+    content: "\E917";
+}
+
+.acd-icon-inputToggle::before {
+    content: "\E73A";
+}
+
+.acd-icon-textBlock::before {
+    content: "\E8E9";
+}
+
+.acd-icon-richTextBlock::before {
+    content: "\EDC2";
+}
+
+.acd-icon-chevronDown::before {
+    content: "\E70D";
+}
+
+.acd-icon-chevronUp::before {
+    content: "\E70E";
+}
+
+.acd-icon-chevronRight::before {
+    content: "\E76C";
+}
+
+.acd-icon-chevronLeft::before {
+    content: "\E76B";
+}
+
+.acd-icon-newCard::before {
+    content: "\F321";
+}
+
+.acd-icon-fullScreen::before {
+    content: "\E740";
+}
+
+.acd-icon-actionShowCard::before {
+    content: "\EEBD";
+}
+
+.acd-icon-actionOpenUrl::before {
+    content: "\E71B";
+}
+
+.acd-icon-actionSubmit::before {
+    content: "\E73E";
+}
+
+.acd-icon-actionToggleVisibility::before {
+    content: "\E7B3";
+}
+
+.acd-icon-actionHttp::before {
+    content: "\E774";
+}
+
+.acd-icon-copy::before {
+    content: "\E8C8";
+}
+
+.acd-icon-header-expanded::before {
+    content: "\F166";
+}
+
+.acd-icon-header-collapsed::before {
+    content: "\F164";
+}
+
+.acd-icon-undo::before {
+    content: "\E7A7";
+}
+
+.acd-icon-redo::before {
+    content: "\E7A6";
+}
+
+.acd-icon-media::before {
+    content: "\EB1C";
+}
+
+.acd-icon-dot::before {
+    content: "\E915";
+}
+
+.acd-icon-dataStructure::before {
+    content: "\EC8D";
+}
+
+.acd-icon-preview::before {
+    content: "\E8A1";
+}
+
+.acd-icon-open::before {
+    content: "\ED25";
+}
+
+.acd-icon-customPaletteItem::before {
+    content: "\ECAA";
+}
+
+/*
+    Side panes
+*/
+
+.acd-verticalCollapsedTabContainer {
+    max-width: 32px;
+    overflow-x: hidden;
+}
+
+.acd-horizontalCollapsedTabContainer {
+    display: flex;
+    flex: 0 0 auto;
+}
+
+.acd-horizontalCollapsedTabContainer > .acd-toolbox-header {
+    border-right: 1px solid #D2D2D2;
+}
+
+.acd-verticalCollapsedTabContainer.acd-dockedLeft > .acd-toolbox-header {
+    width: 32px;
+    height: 170px;
+    border-bottom: 1px solid #D2D2D2;
+}
+
+.acd-verticalCollapsedTabContainer.acd-dockedLeft .acd-toolbox-header-content {
+    width: 170px;
+    height: 32px;
+    transform-origin: 0 0;
+    transform: rotate(-90deg) translate(-170px, 0px);
+}
+
+
+.acd-verticalCollapsedTabContainer.acd-dockedRight > .acd-toolbox-header {
+    width: 32px;
+    height: 170px;
+    border-bottom: 1px solid #D2D2D2;
+}
+
+.acd-verticalCollapsedTabContainer.acd-dockedRight .acd-toolbox-header-content {
+    width: 170px;
+    height: 32px;
+    transform-origin: 0 100%;
+    transform: rotate(90deg) translate(-32px, 0px);
+}
+
+.acd-toolbox-header {
+    height: 32px;
+    background-color: #EEEEEE;
+    cursor: default;
+    flex: 0 0 auto;
+}
+
+.acd-toolbox-header-content {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.acd-toolbox-header-title {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    padding: 4px 8px;
+    font-weight: 500;
+}
+
+.acd-toolbox-header-commandButton {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    height: 100%;
+    padding: 4px 8px;
+}
+
+.acd-toolbox-header-commandButton:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.acd-toolbox-header-commandButton:active {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.acd-toolbox-header-commandsHost {
+    display: flex;
+    height: 100%;
+}
+
+.acd-designersurface.dragging {
+    cursor: move;
+}
+
+.acd-designersurface.dragging > .acd-peer:hover {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+/*
+    Designer peers
+*/
+
+.acd-peer {
+    border: 1px solid transparent;
+}
+
+.acd-peer.invisible {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjEuNv1OCegAAAAwSURBVChTY/j//z8cA0EDOh+vJJjGJwll45YE81E4WBTjlQTT+CShbNyS////ZwAAVxKXcckJBiYAAAAASUVORK5CYII=');
+    background-repeat: repeat;
+    background-color: white;
+    opacity: 0.4;
+}
+
+.acd-peer:hover {
+    border: 1px solid blue;
+}
+
+.acd-peer.selected {
+    border: solid 1px red;
+}
+
+.acd-peer.dragover {
+    border: 1px dashed green !important;
+}
+
+.acd-peer.dragover:hover {
+    background-color: none;
+}
+
+.acd-peer.dragging {
+    border: 1px solid red !important;
+}
+
+.acd-peerButton {
+    width: 20px;
+    height: 20px;
+    font-family: 'FabricMDL2Icons';
+    font-size: 14px;
+    font-weight: bold;
+    font-style: normal;
+    font-weight: normal;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid red;
+    color: red;
+    background-color: white;
+    cursor: default;
+    user-select: none;
+}
+
+.acd-peerButton:hover {
+    background-color: red;
+    color: white;
+}
+
+/*
+    Tool box
+*/
+
+.acd-palette-category {
+    align-items: center;
+    color: #4a4a4a;
+    display: flex;
+    font-size: 14px;
+    font-weight: 600;
+    list-style-type: none;
+    position: relative;
+    white-space: nowrap;
+    padding: 4px 16px 4px 16px;
+    cursor: default;
+}
+
+.acd-palette-category::after {
+    border-bottom: 1px solid #e0e0e0;
+    content: "";
+    margin-bottom: -3px;
+    margin-left: 8px;
+    width: 100%;
+}
+
+.acd-palette-item {
+    cursor: move;
+    display: flex;
+    align-items: center;
+    padding: 4px 16px 4px 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.acd-palette-item-label {
+    font-size: 14px;
+    white-space: nowrap;
+    margin-left: 8px;
+    flex: 1 1 100%;
+}
+
+.acd-palette-item:hover {
+    background-color: #EEEEEE;
+}
+
+/*
+    Visual tree view
+*/
+
+.acd-tree-item {
+    cursor: pointer;
+}
+
+.acd-tree-item.selected {
+    background-color: #BCE2FF;
+}
+
+.acd-tree-item:hover {
+    background-color: #EEEEEE;
+}
+
+.acd-tree-item.selected:hover {
+    background-color: #A3D8FF;
+}
+
+.acd-tree-item-expandCollapseButton {
+    font-family: 'FabricMDL2Icons';
+    font-size: 10px;
+}
+
+.acd-tree-item-text {
+    user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    padding: 4px 4px 4px 8px;
+}
+
+.acd-tree-item-typeName {
+    margin-left: 8px;
+}
+
+.acd-tree-item-additionalText {
+    color: #757575;
+    margin-left: 8px;
+}
+
+.acd-data-tree-item-additionalText {
+    color: #3a96dd;
+    margin-left: 8px;
+}
+
+/*
+    Toolbar
+*/
+
+.acd-toolbar {
+    display: flex;
+    flex: 0 0 auto;
+    background-color: #F1F1F1;
+    align-items: center;
+    border-bottom: 1px solid #D2D2D2;
+}
+
+.acd-toolbar-separator {
+    width: 1px;
+    height: 30px;
+    border-left: 1px solid #D2D2D2;
+}
+
+.acd-toolbar-label {
+    color: black;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.acd-toolbar-choicePicker {
+    flex: 0 0 auto;
+    margin: 0px 8px 0px 8px;
+}
+
+.acd-toolbar-button {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    padding: 10px;
+    border: 1px solid transparent;
+    font-style: normal;
+    font-weight: normal;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+    user-select: none;
+    background-color: transparent;
+}
+
+.acd-toolbar-button:hover {
+    background-color: white;
+}
+
+.acd-toolbar-button:active {
+    border: 1px solid black;
+}
+
+.acd-toolbar-button:disabled {
+    color: lightgray;
+    background-color: transparent;
+}
+
+.acd-toolbar-button.acd-toolbar-button-toggled {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.acd-toolbar-button-iconOnly::before {
+    margin-right: 0 !important;
+}
+
+.acd-toolbar-button::before {
+    font-family: 'FabricMDL2Icons';
+    font-size: 20px;
+    margin-right: 8px;
+}
+
+.default-ac-image.default-ac-selectable {
+    cursor: pointer;
+}
+
+.default-ac-media-poster {
+}
+
+.default-ac-media-poster.empty {
+    height: 200px;
+    background-color: #F2F2F2;
+}
+
+.default-ac-media-playButton {
+    width: 56px;
+    height: 56px;
+    border: 1px solid #EEEEEE;
+    border-radius: 28px;
+    box-shadow: 0px 0px 10px #EEEEEE;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: black;
+    cursor: pointer;
+}
+
+.default-ac-media-playButton-arrow {
+    color: black;
+}
+
+.default-ac-media-playButton:hover {
+    background-color: white;
+}
+
+a.default-ac-anchor {
+    text-decoration: none;
+}
+
+a.default-ac-anchor:link {
+    color: #005A9E;
+}
+
+a.default-ac-anchor:visited {
+    color: #005A9E;
+}
+
+a.default-ac-anchor:link:active {
+    color: #004D84;
+}
+
+a.default-ac-anchor:visited:active {
+    color: #004D84;
+}
+
+.default-ac-container.default-ac-selectable,
+.default-ac-columnSet.default-ac-selectable {
+    padding: 0;
+}
+
+.default-ac-container.default-ac-selectable:hover,
+.default-ac-columnSet.default-ac-selectable:hover {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.default-ac-container.default-ac-selectable:active,
+.default-ac-columnSet.default-ac-selectable:active {
+    background-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+.default-ac-pushButton {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    vertical-align: middle;
+    cursor: default;
+    font-family: "Segoe UI", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 4px 10px 5px 10px;
+    -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+    height: 31px;
+    background-color: white;
+    color: #0078D7;
+    border: 1px solid #B2E0FF;
+}
+
+.default-ac-pushButton:hover {
+    background-color: #0078D7;
+    color: white;
+    border: 1px solid #73C1FD;
+}
+
+.default-ac-pushButton:active {
+    background-color: #464B93;
+    color: white;
+    border: 1px solid #464B93;
+}
+
+.default-ac-pushButton.subdued {
+    color: #666666;
+    border: 1px solid #EEEEEE;
+}
+
+.default-ac-pushButton.subdued:hover {
+    background-color: #0078D7;
+    color: white;
+    border: 1px solid #0078D7;
+}
+
+.default-ac-pushButton.expanded {
+    background-color: #0078D7;
+    color: white;
+    border: 1px solid #0078D7;
+}
+
+.default-ac-pushButton.expandable:after {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    font-family: 'FabricMDL2Icons';
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 900;
+    margin: auto 0px auto 6px;
+    content: '\E70D';
+}
+
+.default-ac-pushButton.expandable.expanded:after {
+    content: '\E70E';
+}
+
+.default-ac-input {
+    font-family: "Segoe UI", sans-serif;
+    font-size: 14px;
+    color: black;
+}
+
+.default-ac-input.default-ac-textInput {
+    resize: none;
+}
+
+.default-ac-input.default-ac-textInput.default-ac-multiline {
+    height: 72px;
+}
+
+.default-ac-input.default-ac-textInput,
+.default-ac-input.default-ac-numberInput,
+.default-ac-input.default-ac-dateInput,
+.default-ac-input.default-ac-timeInput {
+    height: 31px;
+}
+
+.default-ac-input.default-ac-textInput,
+.default-ac-input.default-ac-numberInput,
+.default-ac-input.default-ac-dateInput,
+.default-ac-input.default-ac-timeInput,
+.default-ac-input.default-ac-multichoiceInput {
+    border: 1px solid #DDDDDD;
+    padding: 4px 8px 4px 8px;
+}
+
+.default-ac-textBlock {
+    cursor: default;
+}
+
+.default-ac-textBlock.default-ac-selectable:hover {
+    color: #3A96DD !important;
+    cursor: pointer;
+}

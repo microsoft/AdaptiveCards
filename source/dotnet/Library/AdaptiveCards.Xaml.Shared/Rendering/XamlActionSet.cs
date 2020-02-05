@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using AdaptiveCards.Rendering;
@@ -20,9 +20,9 @@ namespace AdaptiveCards.Rendering
 {
     public static partial class XamlActionSet 
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(AdaptiveTypedElement element, RenderContext context)
         {
-            ActionSet actionSet = (ActionSet)element;
+            AdaptiveActionSet actionSet = (AdaptiveActionSet)element;
             var uiContainer = new Grid();
             uiContainer.Style = context.GetStyle("Adaptive.ActionSet");
 

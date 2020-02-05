@@ -1,15 +1,19 @@
-﻿<Window xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"  x:Class="WpfVisualizer.MainWindow"
+﻿<!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. -->
+<Window xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"  x:Class="WpfVisualizer.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WpfVisualizer"
         xmlns:avalon="http://icsharpcode.net/sharpdevelop/avalonedit"
-        xmlns:core="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d" Loaded="Window_Loaded" 
-        Title="MainWindow" Height="1000" Width="1000">
+        Title="Adaptive Cards WPF Visualizer" Height="1000" Width="1000">
 
     <Window.Resources>
+
+        <Style x:Key="Warning" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="Orange"/>
+        </Style>
         <Style x:Key="Error" TargetType="TextBlock">
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="Foreground" Value="DarkRed"/>
@@ -19,37 +23,6 @@
             <Setter Property="Visibility" Value="Collapsed"/>
         </Style>
 
-        <Style x:Key="Adaptive.Action.Tap" TargetType="Button">
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Cursor" Value="Hand" />
-                </Trigger>
-                <EventTrigger RoutedEvent="UIElement.MouseEnter">
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Opacity" To="0.7" />
-                        </Storyboard>
-                    </BeginStoryboard>
-                </EventTrigger>
-                <EventTrigger RoutedEvent="UIElement.MouseLeave">
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Opacity" To="1.0" />
-                        </Storyboard>
-                    </BeginStoryboard>
-                </EventTrigger>
-
-            </Style.Triggers>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="Transparent">
-                            <ContentPresenter/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </Window.Resources>
 
     <Grid Margin="8" >
@@ -70,8 +43,8 @@
             <Button Name="loadButton" Click="loadButton_Click" Content="Load Card..." Margin="4"/>
             <Button Name="viewImage" Click="viewImage_Click" Content="View as Image" Margin="4"/>
             <Button Name="speak" Click="speak_Click" Content="Speak" Margin="4"/>
-            <Button Name="toJson" Content="To JSON" Margin="4" Click="toJson_Click"/>
-            <Button Name="toXml" Content="To XML" Margin="4" Click="toXml_Click"/>
+            <CheckBox Name ="xceedCheckbox" Margin="4,4,1,4" Unchecked="XceedCheckBox_Unchecked" Checked="XceedCheckBox_Checked"></CheckBox>
+            <TextBlock Margin="1,4,1,4">Use Xceed Renderers</TextBlock>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.ColumnSpan="5" HorizontalAlignment="Right">
             <Label>HostConfig:</Label>
@@ -81,27 +54,50 @@
             <Button Name="toggleOptions" Content="Edit" Margin="4" Click="toggleOptions_Click" HorizontalAlignment="Right"/>
         </StackPanel>
 
-        <!--<TextBox Grid.Row="1" AcceptsReturn="True" AcceptsTab="True" Name="textBox" TextChanged="textBox_TextChanged"></TextBox>-->
-        <avalon:TextEditor Grid.Row="1" Name="textBox" SyntaxHighlighting="Json" FontFamily="Consolas" FontSize="10pt"
-                            ShowLineNumbers="true" TextChanged="textBox_TextChanged"/>
-
+        <avalon:TextEditor
+            Grid.Row="1"
+            x:Name="textBox"
+            FontFamily="Consolas"
+            FontSize="10pt"
+            ShowLineNumbers="true"
+            TextChanged="textBox_TextChanged"/>
+        
         <GridSplitter Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" ResizeDirection="Columns"/>
 
-        <Grid Grid.Row="1" Grid.Column="2" Background="LightGray">
-            <Grid Name="cardGrid" MaxWidth="700" VerticalAlignment="Top" Margin="10"  />
-        </Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="2" >
+
+            <Grid Background="LightGray">
+
+                <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="104*"/>
+                <ColumnDefinition Width="311*"/>
+                </Grid.ColumnDefinitions>
+                <Grid Name="cardGrid" MaxWidth="700" VerticalAlignment="Top" Margin="10,10,10,0" Background="WhiteSmoke" Grid.ColumnSpan="2" >
+                    <Grid.Effect>
+                        <DropShadowEffect BlurRadius="15" ShadowDepth="2" RenderingBias="Quality" Direction="-90"/>
+                    </Grid.Effect>
+
+                </Grid>
+
+            
+            </Grid>
+
+        </ScrollViewer>
 
         <GridSplitter Grid.Row="1" Grid.Column="3" HorizontalAlignment="Stretch" ResizeDirection="Columns"/>
 
 
         <GridSplitter Grid.Row="1" Grid.Column="4" VerticalAlignment="Stretch" ResizeDirection="Columns" Name="optionsSplitter" />
 
-        <!--<avalon:TextEditor Grid.Row="1" Grid.Column="5" Name="options" SyntaxHighlighting="Json" FontFamily="Consolas" FontSize="10pt"
-                            ShowLineNumbers="true" TextChanged="options_TextChanged" Visibility="Collapsed"/>-->
-        <xctk:PropertyGrid Grid.Row="1" Grid.Column="5"  SelectedObject="{Binding}" Name="hostConfigEditor" PropertyChanged="options_PropertyChanged" Visibility="Collapsed" >
+        <xctk:PropertyGrid Grid.Row="1" Grid.Column="4"  Name="hostConfigEditor" PropertyValueChanged="HostConfigEditor_OnPropertyValueChanged"  Visibility="Visible" >
         </xctk:PropertyGrid>
 
-        <Grid Grid.Row="2" Name="cardError" />
+        <ScrollViewer Grid.Row="2" Grid.Column="0" MaxHeight="200">
+            <StackPanel Name="cardError" />
+        </ScrollViewer>
+        
+
+        <StackPanel Grid.Row="2" Grid.Column="4" Name="hostConfigerror" />
 
     </Grid>
 </Window>

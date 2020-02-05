@@ -1,0 +1,21 @@
+{
+	// See https://go.microsoft.com/fwlink/?LinkId=733558
+	// for the documentation about the tasks.json format
+	"version": "2.0.0",
+	"options": {
+		"cwd": "./adaptivecards"
+	},
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "build:debug",
+			"label": "Build Debug",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"isBackground": true,
+			"problemMatcher": "$tsc-watch"
+		}
+	]
+}

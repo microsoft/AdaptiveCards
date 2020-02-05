@@ -1,0 +1,520 @@
+{
+	"definitions": {
+		"ActionsConfig": {
+			"type": "object",
+			"description": "Options for `Action`s",
+			"properties": {
+				"actionsOrientation": {
+					"type": "string",
+					"description": "Controls how buttons are laid out",
+					"default": "horizontal",
+					"enum": [
+						"horizontal",
+						"vertical"
+					]
+				},
+				"actionAlignment": {
+					"type": "string",
+					"description": "Control layout of buttons",
+					"default": "stretch",
+					"enum": [
+						"left",
+						"center",
+						"right",
+						"stretch"
+					]
+				},
+				"buttonSpacing": {
+					"type": "integer",
+					"description": "Controls how much spacing to use between buttons",
+					"default": 10
+				},
+				"maxActions": {
+					"type": "integer",
+					"description": "Controls how many actions are allowed in total",
+					"default": 5
+				},
+				"spacing": {
+					"type": "string",
+					"description": "Controls overall spacing of action element",
+					"default": "default",
+					"enum": [
+						"default",
+						"none",
+						"small",
+						"medium",
+						"large",
+						"extraLarge",
+						"padding"
+					]
+				},
+				"showCard": {
+					"$ref": "#/definitions/ShowCardConfig"
+				},
+				"iconPlacement": {
+					"type": "string",
+					"description": "Controls where to place the action icon",
+					"default": "aboveTitle",
+					"enum": [
+						"aboveTitle",
+						"leftOfTitle"
+					]
+				},
+				"iconSize": {
+					"type": "integer",
+					"description": "Controls size of action icon",
+					"default": 30
+				}
+			}
+		},
+		"AdaptiveCardConfig": {
+			"type": "object",
+			"description": "Toplevel options for `AdaptiveCards`",
+			"properties": {
+				"allowCustomStyle": {
+					"type": "boolean",
+					"description": "Controls whether custom styling is allowed",
+					"default": true
+				}
+			}
+		},
+		"ContainerStyleConfig": {
+			"type": "object",
+			"description": "Controls styling of a container",
+			"properties": {
+				"backgroundColor": {
+					"type": [
+						"string",
+						"null"
+					],
+					"default": "#FFFFFFFF"
+				},
+				"foregroundColors": {
+					"$ref": "#/definitions/ForegroundColorsConfig"
+				}
+			}
+		},
+		"ContainerStylesConfig": {
+			"type": "object",
+			"description": "Controls styling for default and emphasis containers",
+			"properties": {
+				"default": {
+					"$ref": "#/definitions/ContainerStyleConfig",
+					"description": "Default container style"
+				},
+				"emphasis": {
+					"$ref": "#/definitions/ContainerStyleConfig",
+					"description": "Container style to use for emphasis"
+				}
+			}
+		},
+		"FactSetConfig": {
+			"type": "object",
+			"description": "Controls the display of `FactSet`s",
+			"properties": {
+				"title": {
+					"$ref": "#/definitions/TextBlockConfig",
+					"default": {
+						"weight": "bolder",
+						"size": "default",
+						"color": "default",
+						"isSubtle": false,
+						"wrap": true,
+						"maxWidth": 150
+					}
+				},
+				"value": {
+					"$ref": "#/definitions/TextBlockConfig",
+					"default": {
+						"weight": "default",
+						"size": "default",
+						"color": "default",
+						"isSubtle": false,
+						"wrap": true,
+						"maxWidth": 0
+					}
+				},
+				"spacing": {
+					"type": "integer",
+					"default": 10
+				}
+			}
+		},
+		"FontColorConfig": {
+			"type": "object",
+			"properties": {
+				"default": {
+					"type": [
+						"string",
+						"null"
+					],
+					"description": "Color to use when displaying default text"
+				},
+				"subtle": {
+					"type": [
+						"string",
+						"null"
+					],
+					"description": "Color to use when displaying subtle text"
+				}
+			}
+		},
+		"FontSizesConfig": {
+			"type": "object",
+			"description": "Controls font size metrics for different text styles",
+			"properties": {
+				"small": {
+					"type": "integer",
+					"description": "Small font size",
+					"default": 10
+				},
+				"default": {
+					"type": "integer",
+					"description": "Default font size",
+					"default": 12
+				},
+				"medium": {
+					"type": "integer",
+					"description": "Medium font size",
+					"default": 14
+				},
+				"large": {
+					"type": "integer",
+					"description": "Large font size",
+					"default": 17
+				},
+				"extraLarge": {
+					"type": "integer",
+					"description": "Extra large font size",
+					"default": 20
+				}
+			}
+		},
+		"FontWeightsConfig": {
+			"type": "object",
+			"description": "Controls font weight metrics",
+			"properties": {
+				"lighter": {
+					"type": "integer",
+					"default": 200
+				},
+				"default": {
+					"type": "integer",
+					"default": 400
+				},
+				"bolder": {
+					"type": "integer",
+					"default": 800
+				}
+			}
+		},
+		"ForegroundColorsConfig": {
+			"type": "object",
+			"description": "Controls various font colors",
+			"properties": {
+				"default": {
+					"$ref": "#/definitions/FontColorConfig",
+					"default": {
+						"default": "#FF000000",
+						"subtle": "#B2000000"
+					}
+				},
+				"accent": {
+					"$ref": "#/definitions/FontColorConfig",
+					"default": {
+						"default": "#FF0000FF",
+						"subtle": "#B20000FF"
+					}
+				},
+				"dark": {
+					"$ref": "#/definitions/FontColorConfig",
+					"default": {
+						"default": "#FF101010",
+						"subtle": "#B2101010"
+					}
+				},
+				"light": {
+					"$ref": "#/definitions/FontColorConfig",
+					"default": {
+						"default": "#FFFFFFFF",
+						"subtle": "#B2FFFFFF"
+					}
+				},
+				"good": {
+					"$ref": "#/definitions/FontColorConfig",
+					"default": {
+						"default": "#FF008000",
+						"subtle": "#B2008000"
+					}
+				},
+				"warning": {
+					"$ref": "#/definitions/FontColorConfig",
+					"default": {
+						"default": "#FFFFD700",
+						"subtle": "#B2FFD700"
+					}
+				},
+				"attention": {
+					"$ref": "#/definitions/FontColorConfig",
+					"default": {
+						"default": "#FF8B0000",
+						"subtle": "#B28B0000"
+					}
+				}
+			}
+		},
+		"ImageSetConfig": {
+			"type": "object",
+			"description": "Controls how `ImageSet`s are displayed",
+			"properties": {
+				"imageSize": {
+					"type": "string",
+					"description": "Controls individual image sizing",
+					"enum": [
+						"auto",
+						"stretch",
+						"small",
+						"medium",
+						"large"
+					],
+					"default": "auto"
+				},
+				"maxImageHeight": {
+					"type": "integer",
+					"description": "Constrain image height to this value",
+					"default": 100
+				}
+			}
+		},
+		"ImageSizesConfig": {
+			"type": "object",
+			"description": "Controls `Image` sizes",
+			"properties": {
+				"small": {
+					"type": "integer",
+					"description": "Small image size value",
+					"default": 80
+				},
+				"medium": {
+					"type": "integer",
+					"description": "Medium image size value",
+					"default": 120
+				},
+				"large": {
+					"type": "integer",
+					"description": "Large image size value",
+					"default": 180
+				}
+			}
+		},
+		"MediaConfig": {
+			"type": "object",
+			"version": "1.1",
+			"description": "Controls the display and behavior of `Media` elements",
+			"properties": {
+				"defaultPoster": {
+					"type": "string",
+					"format": "uri",
+					"description": "URI to image to display when play button hasn't been invoked"
+				},
+				"playButton": {
+					"type": "string",
+					"format": "uri",
+					"description": "Image to display as play button"
+				},
+				"allowInlinePlayback": {
+					"type": "boolean",
+					"description": "Whether to display media inline or invoke externally",
+					"default": true
+				}
+			}
+		},
+		"SeparatorConfig": {
+			"type": "object",
+			"description": "Controls how separators are displayed",
+			"properties": {
+				"lineThickness": {
+					"type": "integer",
+					"description": "Thickness of separator line",
+					"default": 1
+				},
+				"lineColor": {
+					"type": [
+						"string",
+						"null"
+					],
+					"description": "Color to use when drawing separator line",
+					"default": "#B2000000"
+				}
+			}
+		},
+		"ShowCardConfig": {
+			"type": "object",
+			"description": "Controls behavior and styling of `Action.ShowCard`",
+			"properties": {
+				"actionMode": {
+					"type": "string",
+					"description": "Controls how the card is displayed",
+					"enum": [
+						"inline",
+						"popup"
+					],
+					"default": "inline"
+				},
+				"style": {
+					"$ref": "#/definitions/ContainerStyleConfig",
+					"default": "emphasis"
+				},
+				"inlineTopMargin": {
+					"type": "integer",
+					"description": "Amount of margin to use when displaying the card",
+					"default": 16
+				}
+			}
+		},
+		"SpacingsConfig": {
+			"type": "object",
+			"description": "Controls how elements are to be laid out",
+			"properties": {
+				"small": {
+					"type": "integer",
+					"description": "Small spacing value",
+					"default": 3
+				},
+				"default": {
+					"type": "integer",
+					"description": "Default spacing value",
+					"default": 8
+				},
+				"medium": {
+					"type": "integer",
+					"description": "Medium spacing value",
+					"default": 20
+				},
+				"large": {
+					"type": "integer",
+					"description": "Large spacing value",
+					"default": 30
+				},
+				"extraLarge": {
+					"type": "integer",
+					"description": "Extra large spacing value",
+					"default": 40
+				},
+				"padding": {
+					"type": "integer",
+					"description": "Padding value",
+					"default": 20
+				}
+			}
+		},
+		"TextBlockConfig": {
+			"type": "object",
+			"description": "Parameters controlling the display of text",
+			"properties": {
+				"size": {
+					"type": "string",
+					"description": "Font size to use when a card doesn't specify",
+					"enum": [
+						"default",
+						"small",
+						"medium",
+						"large",
+						"extraLarge"
+					],
+					"default": "default"
+				},
+				"weight": {
+					"type": "string",
+					"description": "Font weight to use when a card doesn't specify",
+					"enum": [
+						"normal",
+						"lighter",
+						"bolder"
+					],
+					"default": "normal"
+				},
+				"color": {
+					"type": "string",
+					"description": "Font color to use when a card doesn't specify",
+					"enum": [
+						"default",
+						"dark",
+						"light",
+						"accent",
+						"good",
+						"warning",
+						"attention"
+					],
+					"default": "default"
+				},
+				"isSubtle": {
+					"type": "boolean",
+					"description": "Should text be subtle if a card doesn't specify",
+					"default": false
+				},
+				"wrap": {
+					"type": "boolean",
+					"description": "Should text wrap if a card doesn't specify",
+					"default": true
+				},
+				"maxWidth": {
+					"type": "integer",
+					"description": "Maximum width to use if a card doesn't specify",
+					"default": 0
+				}
+			}
+		}
+	},
+	"type": "object",
+	"properties": {
+		"supportsInteractivity": {
+			"type": "boolean",
+			"description": "Control whether interactive `Action`s are allowed to be invoke",
+			"default": true
+		},
+		"imageBaseUrl": {
+			"type": "string",
+			"format": "uri",
+			"description": "Base URL to be used when loading resources"
+		},
+		"fontFamily": {
+			"type": "string",
+			"description": "Font face to use when rendering text",
+			"default": "Calibri"
+		},
+		"actions": {
+			"$ref": "#/definitions/ActionsConfig"
+		},
+		"adaptiveCard": {
+			"$ref": "#/definitions/AdaptiveCardConfig"
+		},
+		"containerStyles": {
+			"$ref": "#/definitions/ContainerStylesConfig"
+		},
+		"imageSizes": {
+			"$ref": "#/definitions/ImageSizesConfig"
+		},
+		"imageSet": {
+			"$ref": "#/definitions/ImageSetConfig"
+		},
+		"factSet": {
+			"$ref": "#/definitions/FactSetConfig"
+		},
+		"fontSizes": {
+			"$ref": "#/definitions/FontSizesConfig"
+		},
+		"fontWeights": {
+			"$ref": "#/definitions/FontWeightsConfig"
+		},
+		"spacing": {
+			"$ref": "#/definitions/SpacingsConfig"
+		},
+		"separator": {
+			"$ref": "#/definitions/SeparatorConfig"
+		},
+		"media": {
+			"$ref": "#/definitions/MediaConfig"
+		}
+	}
+}

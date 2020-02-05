@@ -7,14 +7,14 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="fe1d49af-204d-4725-9a72-cfe1761df72a"
+    Name="dd8eb083-ab8e-4ca3-adaf-5626b8e454ac"
     Publisher="CN=almedina"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="fe1d49af-204d-4725-9a72-cfe1761df72a" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="dd8eb083-ab8e-4ca3-adaf-5626b8e454ac" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>AdaptiveCards.Sample.BotClient.UWP</DisplayName>
+    <DisplayName>App1</DisplayName>
     <PublisherDisplayName>almedina</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -30,12 +30,12 @@
   <Applications>
     <Application Id="App"
       Executable="$targetnametoken$.exe"
-      EntryPoint="AdaptiveCards.Sample.BotClient.UWP.App">
+      EntryPoint="App1.App">
       <uap:VisualElements
-        DisplayName="AdaptiveCards.Sample.BotClient.UWP"
+        DisplayName="App1"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="AdaptiveCards.Sample.BotClient.UWP"
+        Description="App1"
         BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />

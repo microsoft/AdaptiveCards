@@ -1,0 +1,64 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "This cards shows that action set will have scroll bar when it has more buttons than it can show",
+	"wrap": true
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.OpenUrl",
+			"title": "button 1",
+			"url": "https://adaptivecards.io"
+		},
+		{
+			"type": "Action.OpenUrl",
+			"title": "button 2",
+			"url": "https://adaptivecards.io"
+		},
+		{
+			"type": "Action.OpenUrl",
+			"title": "button 3",
+			"url": "https://adaptivecards.io"
+		},
+		{
+			"type": "Action.OpenUrl",
+			"title": "button 4",
+			"url": "https://adaptivecards.io"
+		},
+		{
+			"type": "Action.OpenUrl",
+			"title": "button 5",
+			"url": "https://adaptivecards.io"
+		},
+		{
+			"type": "Action.OpenUrl",
+			"title": "button 6",
+			"url": "https://adaptivecards.io"
+		},
+		{
+			"type": "Action.OpenUrl",
+			"title": "button 7",
+			"url": "https://adaptivecards.io"
+		},
+		{
+			"type": "Action.OpenUrl",
+			"title": "button 8",
+			"url": "https://adaptivecards.io"
+		},
+		{
+			"type": "Action.OpenUrl",
+			"title": "button 9",
+			"url": "https://adaptivecards.io"
+		},
+		{
+			"type": "Action.OpenUrl",
+			"title": "button 10",
+			"url": "https://adaptivecards.io"
+		}
+	]
+}

@@ -1,27 +1,16 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+#include "pch.h"
 #include "FactSet.h"
 #include "ParseUtil.h"
 #include "Fact.h"
+#include "Util.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespace;
 
 FactSet::FactSet() : BaseCardElement(CardElementType::FactSet)
 {
-}
-
-FactSet::FactSet(
-    SeparationStyle separation,
-    std::string speak,
-    std::vector<std::shared_ptr<Fact>>& facts) :
-    BaseCardElement(CardElementType::FactSet, separation, speak),
-    m_facts(facts)
-{
-}
-
-FactSet::FactSet(
-    SeparationStyle separation,
-    std::string speak) :
-    BaseCardElement(CardElementType::FactSet, separation, speak)
-{
+    PopulateKnownPropertiesSet();
 }
 
 const std::vector<std::shared_ptr<Fact>>& FactSet::GetFacts() const
@@ -34,38 +23,40 @@ std::vector<std::shared_ptr<Fact>>& FactSet::GetFacts()
     return m_facts;
 }
 
-std::string FactSet::Serialize()
+Json::Value FactSet::SerializeToJsonValue() const
 {
-    return "";
+    Json::Value root = BaseCardElement::SerializeToJsonValue();
+
+    std::string factsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Facts);
+    root[factsPropertyName] = Json::Value(Json::arrayValue);
+    for (const auto& fact : GetFacts())
+    {
+        root[factsPropertyName].append(fact->SerializeToJsonValue());
+    }
+
+    return root;
 }
 
-std::shared_ptr<FactSet> FactSet::Deserialize(const Json::Value& value)
+std::shared_ptr<BaseCardElement> FactSetParser::Deserialize(ParseContext& context, const Json::Value& value)
 {
     ParseUtil::ExpectTypeString(value, CardElementType::FactSet);
 
-    auto factSet = BaseCardElement::Deserialize<FactSet>(value);
+    auto factSet = BaseCardElement::Deserialize<FactSet>(context, value);
 
     // Parse Facts
-    auto factsArray = ParseUtil::GetArray(value, AdaptiveCardSchemaKey::Facts);
-    std::vector<std::shared_ptr<Fact>> facts;
-
-    // Deserialize every fact in the array
-    for (const Json::Value& element : factsArray)
-    {
-        auto fact = Fact::Deserialize(element);
-        if (fact != nullptr)
-        {
-            facts.push_back(fact);
-        }
-    }
-
+    auto facts =
+        ParseUtil::GetElementCollectionOfSingleType<Fact>(context, value, AdaptiveCardSchemaKey::Facts, Fact::Deserialize, true);
     factSet->m_facts = std::move(facts);
+
     return factSet;
 }
 
-std::shared_ptr<FactSet> FactSet::DeserializeFromString(const std::string& jsonString)
+std::shared_ptr<BaseCardElement> FactSetParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
 {
-    Json::Value jsonValue(jsonString);
+    return FactSetParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
+}
 
-    return FactSet::Deserialize(jsonValue);
+void FactSet::PopulateKnownPropertiesSet()
+{
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Facts)});
 }

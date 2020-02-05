@@ -1,0 +1,19 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.2",
+	"body": [
+		{
+			"type": "Container",
+			"minHeight": "100px",
+			"style": "emphasis",
+			"items": [
+				{
+					"type": "TextBlock",
+					"wrap": true,
+					"text": "This textblock is inside a container with a min height of 100px"
+				}
+			]
+		}
+	]
+}

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -88,14 +88,14 @@ namespace AdaptiveCards
         {
             if (control is TextBox tb)
             {
-                var input = control.BindingContext as TextInput;
+                var input = control.BindingContext as AdaptiveTextInput;
                 tb.Text = input.Value;
                 return;
             }
 
             if (control is DatePicker dp)
             {
-                var input = control.BindingContext as TextInput;
+                var input = control.BindingContext as AdaptiveTextInput;
                 DateTime.TryParse(input.Value, out var date);
                 dp.Date = date;
                 return;
@@ -103,7 +103,7 @@ namespace AdaptiveCards
 
             if (control is TimePicker tp)
             {
-                var input = control.BindingContext as TextInput;
+                var input = control.BindingContext as AdaptiveTextInput;
                 TimeSpan.TryParse(input.Value, out var time);
                 tp.Time = time;
                 return;
@@ -144,7 +144,7 @@ namespace AdaptiveCards
 
             if (control is Picker comboBox)
             {
-                var choiceInput = comboBox.BindingContext as ChoiceSet;
+                var choiceInput = comboBox.BindingContext as AdaptiveChoiceSetInput;
                 comboBox.SelectedIndex = 0;
                 return;
             }

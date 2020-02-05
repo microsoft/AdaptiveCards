@@ -10,47 +10,295 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.microsoft.adaptivecards.adaptivecardssample.MainActivityAdaptiveCardsSample"
+    tools:context="io.adaptivecards.adaptivecardssample.MainActivityAdaptiveCardsSample"
     tools:showIn="@layout/activity_main_adaptive_cards_sample"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <Button
+        android:id="@+id/buttonScanQr"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="onScanQrClicked"
+        android:text="Connect via QR Code"/>
+
+    <Button
+        android:id="@+id/buttonDisconnect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onDisconnectClicked"
+        android:visibility="gone"
+        android:text="Connected! Click to disconnect"/>
+
+    <LinearLayout
+        android:id="@+id/adaptiveCardPickerGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
 
         <TextView
-            android:text="Choose JSON File"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/textView"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:labelFor="@+id/spinnerJsonFileList" />
+            android:text="@string/load_card"/>
 
-        <Spinner
-            android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:id="@+id/spinnerJsonFileList"
-            android:dropDownWidth="match_parent"
-            android:layout_row="1"
-            android:layout_column="0"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_centerHorizontal="true" />
+        <EditText
+            android:id="@+id/fileEditText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight = "1"
+            android:ellipsize="end"
+            android:focusable="false"
+            android:inputType="textUri"
+            android:text="" />
 
+        <Button
+            android:id="@+id/loadCardButton"
+            android:layout_width="60dp"
+            android:layout_weight = "0"
+            android:layout_height="wrap_content"
+            android:onClick="onClickFileBrowser"
+            android:text="..." />
     </LinearLayout>
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/hostConfigPickerGroup"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/load_config" />
+
+        <EditText
+            android:id="@+id/hostConfigFileEditText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight = "1"
+            android:ellipsize="end"
+            android:focusable="false"
+            android:inputType="textUri"
+            android:text="" />
+
+        <Button
+            android:id="@+id/hostConfigLoadButton"
+            android:layout_width="60dp"
+            android:layout_weight = "0"
+            android:layout_height="wrap_content"
+            android:onClick="onClickFileBrowser"
+            android:text="..." />
+    </LinearLayout>
+
+    <TabHost
+        android:id="@+id/tabHost"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/layoutAdaptiveCard" />
-    </ScrollView>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/Visual"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="20px"
+                    android:orientation="vertical">
+
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <LinearLayout
+                            android:id="@+id/visualAdaptiveCardLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/border"
+                            android:orientation="vertical"
+                            ></LinearLayout>
+                    </ScrollView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/JSON"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <LinearLayout
+                            android:id="@+id/jsonAdaptiveCardLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <EditText
+                                android:id="@+id/jsonAdaptiveCard"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textMultiLine" />
+                        </LinearLayout>
+                    </ScrollView>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/config"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <LinearLayout
+                            android:id="@+id/hostConfigLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <EditText
+                                android:id="@+id/hostConfig"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textMultiLine" />
+                        </LinearLayout>
+                    </ScrollView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/options"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical" >
+
+                            <Switch
+                                android:id="@+id/customActions"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Use custom actions" />
+
+                            <TextView
+                                android:id="@+id/cardsCustomActions"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="15dp"
+                                android:text="CustomActionRenderingTest.json"
+                                android:visibility="gone" />
+
+                            <Switch
+                                android:id="@+id/customElements"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Use custom elements" />
+
+                            <TextView
+                                android:id="@+id/cardsCustomElements"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="15dp"
+                                android:text="CustomElement.json"
+                                android:visibility="gone" />
+
+                            <Switch
+                                android:id="@+id/customFeatureReg"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Register Feature Registration" />
+
+                            <TextView
+                                android:id="@+id/cardsCustomFeature"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="15dp"
+                                android:text="Element.Requires.json"
+                                android:visibility="gone" />
+
+                            <Switch
+                                android:id="@+id/svgSupport"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Support SVG images" />
+
+                            <TextView
+                                android:id="@+id/cardsSvgSupport"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="15dp"
+                                android:text="Image.SvgDataUri.json"
+                                android:visibility="gone" />
+
+                            <Switch
+                                android:id="@+id/customImageLoader"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Custom Image Loaders" />
+
+                            <TextView
+                                android:id="@+id/cardsCustomImageLoader"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="15dp"
+                                android:text="Image.ResourceResolver.json"
+                                android:visibility="gone" />
+
+                            <Switch
+                                android:id="@+id/customMediaLoader"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Use custom media loader" />
+
+                            <TextView
+                                android:id="@+id/cardsCustomMediaLoader"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="15dp"
+                                android:text="Media.json"
+                                android:visibility="gone" />
+
+                            <Switch
+                                android:id="@+id/onlineImageLoader"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="OnlineImageLoader" />
+
+                            <TextView
+                                android:id="@+id/cardsCustomOnlineImageLoader"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="15dp"
+                                android:text="Image.json"
+                                android:visibility="gone" />
+                        </LinearLayout>
+                    </ScrollView>
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
 </LinearLayout>

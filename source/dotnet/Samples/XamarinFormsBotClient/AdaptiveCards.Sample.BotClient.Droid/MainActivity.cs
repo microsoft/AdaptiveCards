@@ -1,4 +1,6 @@
-﻿using System;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+using System;
 
 using Android.App;
 using Android.Content.PM;
@@ -24,4 +26,3 @@ namespace AdaptiveCards.XamarinForms.BotClient.Droid
         }
     }
 }
-

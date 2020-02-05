@@ -1,0 +1,20 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "This is some text"
+				},
+				{
+					"type": "Image",
+					"url": "https://adaptivecards.io/content/cats/1.png"
+				}
+			]
+		}
+	]
+}

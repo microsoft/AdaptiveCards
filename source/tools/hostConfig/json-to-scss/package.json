@@ -1,0 +1,19 @@
+{
+  "name": "microsoft-adaptivecards-json-to-scss",
+  "version": "1.0.0",
+  "description": "Convert AdaptiveCards HostConfig from JSON to an SCSS map",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc ./index.ts --module CommonJS --target es2015",
+    "test": "node test.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@types/node": "^7.0.18",
+    "color-string": "^1.5.2"
+  },
+  "devDependencies": {
+    "typescript": "^2.1.5"
+  }
+}

@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 #if WPF
 using System.Windows.Controls;
 using WPF = System.Windows.Controls;
@@ -15,7 +15,7 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlHttpAction
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(AdaptiveTypedElement element, RenderContext context)
         {
             HttpAction action = (HttpAction)element;
             if (context.Config.SupportsInteractivity)

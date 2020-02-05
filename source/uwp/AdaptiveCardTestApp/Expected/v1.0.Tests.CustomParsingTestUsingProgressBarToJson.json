@@ -1,0 +1,1 @@
+{"actions":[],"body":[{"horizontalAlignment":"center","text":"Custom parsing allows a custom type","type":"TextBlock","wrap":true},{"horizontalAlignment":"center","text":"**Progress Bar**","type":"TextBlock"},{"payload":[{"alpha":1,"blue":209,"green":160,"progress":0.95,"red":187,"thickness":1}],"type":"ProgressBar"}],"type":"AdaptiveCard","version":"1.0"}

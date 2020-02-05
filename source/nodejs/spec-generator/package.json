@@ -1,0 +1,33 @@
+{
+	"name": "spec-generator",
+	"version": "0.5.4",
+	"private": true,
+	"description": "Generates the element/property tables for our specs based on the schema file.",
+	"author": "AdaptiveCards",
+	"license": "MIT",
+	"main": "lib/spec-generator.js",
+	"types": "lib/spec-generator.d.ts",
+	"files": [
+		"lib",
+		"src"
+	],
+	"scripts": {
+		"clean": "rimraf build lib dist",
+		"build": "tsc",
+		"run": "node ./lib/spec-generator-script.js",
+		"lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
+		"release": "npm run build-all && webpack --mode=production",
+		"run-release": "node ./dist/spec-generator-script.0.5.0.0.min.js",
+		"build-all": "cd ../ac-typed-schema && npm run build && cd ../spec-generator && npm run build",
+		"build-all-and-run": "npm run build-all && npm run run"
+	},
+	"devDependencies": {
+		"ac-typed-schema": "^0.5.3",
+		"marked-schema": "^0.1.4",
+		"p-iteration": "^1.1.8",
+		"rimraf": "^2.6.2",
+		"typescript": "^3.2.2",
+		"webpack": "^4.27.1",
+		"webpack-cli": "^3.1.2"
+	}
+}
