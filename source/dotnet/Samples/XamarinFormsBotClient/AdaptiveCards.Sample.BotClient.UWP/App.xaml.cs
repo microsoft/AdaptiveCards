@@ -1,5 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,7 +15,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-namespace AdaptiveCards.Sample.BotClient.UWP
+namespace AdaptiveCards.XamarinForms.BotClient.UWP
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.

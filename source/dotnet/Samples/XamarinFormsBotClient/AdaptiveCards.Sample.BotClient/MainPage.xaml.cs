@@ -10,7 +10,6 @@ using Newtonsoft.Json;
 using Xamarin.Forms;
 using Newtonsoft.Json.Linq;
 using AdaptiveCards.Rendering;
-using AdaptiveCards.Rendering.Config;
 using System.Xml.Serialization;
 
 namespace AdaptiveCards.XamarinForms.BotClient
@@ -39,59 +38,60 @@ namespace AdaptiveCards.XamarinForms.BotClient
         {
             base.OnAppearing();
 
-            _card = new AdaptiveCard
+            _card = new AdaptiveCard("1.0")
             {
-                Body = new List<CardElement> { 
-                    new TextBlock
+                Body = new List<AdaptiveElement> {
+                    new AdaptiveTextBlock
                     {
                         Text = "This is a textblock",
                     },
-                    new TextBlock
+                    new AdaptiveTextBlock
                     {
                         Text = "This textblock is subtle",
-                        Separation = SeparationStyle.Strong,
+                        Spacing = AdaptiveSpacing.Default,
+                        Separator = true,
                         IsSubtle = true
                     }
                 }
             };
 
-            _card = new AdaptiveCard
+            _card = new AdaptiveCard("1.0")
             {
-                Body = new List<CardElement>
+                Body = new List<AdaptiveElement>
                 {
-                    new TextBlock
+                    new AdaptiveTextBlock
                     {
                         Text = "Publish Adaptive Card schema",
-                        Weight = TextWeight.Bolder,
-                        Size = TextSize.Medium
+                        Weight = AdaptiveTextWeight.Bolder,
+                        Size = AdaptiveTextSize.Medium
                     },
-                    new ColumnSet
+                    new AdaptiveColumnSet
                     {
-                        Columns = new List<Column>
+                        Columns = new List<AdaptiveColumn>
                         {
-                            new Column
+                            new AdaptiveColumn
                             {
-                                Items = new List<CardElement>
+                                Items = new List<AdaptiveElement>
                                 {
-                                    new Image
+                                    new AdaptiveImage
                                     {
-                                        Url = "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
-                                        Size = ImageSize.Small,
-                                        Style = ImageStyle.Person
+                                        Url = new Uri("https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"),
+                                        Size = AdaptiveImageSize.Small,
+                                        Style = AdaptiveImageStyle.Person
                                     }
                                 }
                             },
-                            new Column
+                            new AdaptiveColumn
                             {
-                                Items = new List<CardElement>
+                                Items = new List<AdaptiveElement>
                                 {
-                                    new TextBlock
+                                    new AdaptiveTextBlock
                                     {
                                         Text = "Matt Hidinger",
-                                        Weight = TextWeight.Bolder,
+                                        Weight = AdaptiveTextWeight.Bolder,
                                         Wrap = true
                                     },
-                                    new TextBlock
+                                    new AdaptiveTextBlock
                                     {
                                         Text = "Created <a random date>",
                                         IsSubtle = true,
@@ -101,31 +101,31 @@ namespace AdaptiveCards.XamarinForms.BotClient
                             }
                         }
                     },
-                    new TextBlock
+                    new AdaptiveTextBlock
                     {
                         Text = "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
                         Wrap = true
                     },
-                    new FactSet
+                    new AdaptiveFactSet
                     {
-                        Facts = new List<Fact>
+                        Facts = new List<AdaptiveFact>
                         {
-                            new Fact
+                            new AdaptiveFact
                             {
                                 Title = "Board: ",
                                 Value = "Adaptive Card"
                             },
-                            new Fact
+                            new AdaptiveFact
                             {
                                 Title = "List: ",
                                 Value = "Backlog"
                             },
-                            new Fact
+                            new AdaptiveFact
                             {
                                 Title = "Assigned to: ",
                                 Value = "Matt Hidinger"
                             },
-                            new Fact
+                            new AdaptiveFact
                             {
                                 Title = "Due date: ",
                                 Value = "Not set"
@@ -133,46 +133,46 @@ namespace AdaptiveCards.XamarinForms.BotClient
                         }
                     }
                 },
-                Actions = new List<ActionBase>
+                Actions = new List<AdaptiveAction>
                 {
-                    new ShowCardAction
+                    new AdaptiveShowCardAction
                     {
                         Title = "Set due date",
-                        Card = new AdaptiveCard
+                        Card = new AdaptiveCard("1.0")
                         {
-                            Body = new List<CardElement>
+                            Body = new List<AdaptiveElement>
                             {
-                                new DateInput
+                                new AdaptiveDateInput
                                 {
                                     Id = "dueDate"
                                 }
                             },
-                            Actions = new List<ActionBase>
+                            Actions = new List<AdaptiveAction>
                             {
-                                new SubmitAction
+                                new AdaptiveSubmitAction
                                 {
                                     Title = "Ok!"
                                 }
                             }
                         }
                     }, 
-                    new ShowCardAction
+                    new AdaptiveShowCardAction
                     {
                         Title = "Comment",
-                        Card = new AdaptiveCard
+                        Card = new AdaptiveCard("1.0")
                         {
-                            Body = new List<CardElement>
+                            Body = new List<AdaptiveElement>
                             {
-                                new TextInput
+                                new AdaptiveTextInput
                                 {
                                     Id = "comment",
                                     IsMultiline = true,
                                     Placeholder = "Enter your comment"
                                 }
                             },
-                            Actions = new List<ActionBase>
+                            Actions = new List<AdaptiveAction>
                             {
-                                new SubmitAction
+                                new AdaptiveSubmitAction
                                 {
                                     Title = "Ok!"
                                 }
@@ -182,8 +182,8 @@ namespace AdaptiveCards.XamarinForms.BotClient
                 }
             };
 
-            _renderer = new XamlRenderer(new HostConfig(), Application.Current.Resources, _onAction, _onMissingInput);
-            _renderer = new AdaptiveCardRenderer(new HostConfig());
+            _renderer = new XamlRenderer(new AdaptiveHostConfig(), Application.Current.Resources, _onAction, _onMissingInput);
+            // _renderer = new XamlRenderer(new AdaptiveHostConfig());
 
             _cardContainer = this.FindByName<StackLayout>("Items");
         }
@@ -214,7 +214,7 @@ namespace AdaptiveCards.XamarinForms.BotClient
         private void Send()
         {
             _cardContainer.Children.Clear();
-            View v = _renderer.RenderAdaptiveCard(_card, null, new HostConfig());
+            View v = _renderer.RenderAdaptiveCard(_card, null, new AdaptiveHostConfig());
             _cardContainer.Children.Add(v);
         }
 
