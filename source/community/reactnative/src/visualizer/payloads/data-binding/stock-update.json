@@ -1,0 +1,76 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "speak": "Microsoft stock is trading at $62.30 a share, which is down .32%",
+    "body": [
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "{stockName}",
+                    "size": "medium",
+                    "isSubtle": true
+                },
+                {
+                    "type": "TextBlock",
+                    "text": "September 19, 4:00 PM EST",
+                    "isSubtle": true
+                }
+            ]
+        },
+        {
+            "type": "Container",
+            "spacing": "none",
+            "items": [
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "width": 1,
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "{stockValue}",
+                                    "size": "extraLarge"
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "text": "▼ 0.20 (0.32%)",
+                                    "size": "small",
+                                    "color": "attention",
+                                    "spacing": "none"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "width": 1,
+                            "items": [
+                                {
+                                    "type": "FactSet",
+                                    "facts": [
+                                        {
+                                            "title": "Open",
+                                            "value": "62.24"
+                                        },
+                                        {
+                                            "title": "High",
+                                            "value": "62.98"
+                                        },
+                                        {
+                                            "title": "Low",
+                                            "value": "62.20"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
