@@ -1,5 +1,7 @@
 # Parsing
+
 ## Parsing Strategy
+
 * templating parser builds a parsed tree for templated string
 * The parse tree's node is defined as in grammar file
 * current grammar is based on standard json grammar with the addtion to scopes that context switches to
@@ -17,6 +19,33 @@ string would be a good option. If the string is deserialized into objects, it's 
 
 * repeating objects
 
+## Translation Strategy
+
+* visit each child node and append its text bottom up
+* as data is found add to memory list 
+* bound data as the data is available 
+* when this simple strategy fails 
+* check if it's array type
+* check if the data is in parent
+* if 'YES', don't bind it yet, defer it to the parent node which host the data
+* if 'NO', first bind all non-array types, and bind array-type data to the appended string of the current node for available elems in the array-type data.
+* return the appended string 
+* 
+## Memory
+
+global look up table for data objects
+key is path to data 
+value json object
+type bool arary type? YES or NO
+
+## Result Type
+string = ((expanded string)? (non-expanded string)?)*; 
+templated-strings =  list of paths to data + properties
+first elem in the list is path to data
+each subsequent element is property
+
+## Post Translation
+append all string, once result is returned from the root node
 ## Data Source
 
 ### Types
