@@ -48,7 +48,9 @@ Registry.getManager().removeComponent('Input.Date');
 ```
 
 ## DataBinding
-The [adaptivecards-templating](https://www.npmjs.com/package/adaptivecards-templating) library is available on npm.  Please refer the link for full documentation.
+The [adaptivecards-templating](https://www.npmjs.com/package/adaptivecards-templating) library is used for DataBinding.
+
+[![Version](https://img.shields.io/npm/v/adaptivecards-templating.svg)](https://www.npmjs.com/package/adaptivecards-templating)
 
 **Usage**
 ```jsx
