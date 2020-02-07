@@ -156,7 +156,7 @@ interface EvaluationContextState {
 }
 
 export class EvaluationContext {
-    private static readonly _reservedFields = ["$data", "$root", "$index"];
+    private static readonly _reservedFields = ["$data", "$root", "$index", "$when"];
     private static _builtInFunctions: FunctionDictionary = {}
 
     static init() {

@@ -15,7 +15,11 @@ export function appendChild(node: Node, child: Node | undefined) {
 }
 
 export function parseString(obj: any, defaultValue?: string): string | undefined {
-    return typeof obj === "string" ? obj : defaultValue;
+    if (obj === undefined || obj === null) {
+        return defaultValue;
+    }
+
+    return obj.toString();
 }
 
 export function parseNumber(obj: any, defaultValue?: number): number | undefined {
