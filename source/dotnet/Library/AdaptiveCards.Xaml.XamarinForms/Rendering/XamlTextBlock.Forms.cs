@@ -1,3 +1,4 @@
+using AdaptiveCards.Rendering.Wpf;
 using Xamarin.Forms;
 
 using FrameworkElement = Xamarin.Forms.View;
@@ -7,7 +8,7 @@ namespace AdaptiveCards.Rendering
 
     public static partial class XamlTextBlock
     {
-        public static Xamarin.Forms.TextBlock CreateControl(AdaptiveTextBlock textBlock, RenderContext context)
+        public static Xamarin.Forms.TextBlock CreateControl(AdaptiveTextBlock textBlock, AdaptiveRenderContext context)
         {
             var uiTextBlock = new Xamarin.Forms.TextBlock();
             uiTextBlock.Text = RendererUtilities.ApplyTextFunctions(textBlock.Text, "en");

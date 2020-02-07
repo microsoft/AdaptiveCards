@@ -26,7 +26,7 @@ namespace AdaptiveCards.Rendering
             var uiContainer = new Grid();
             uiContainer.Style = context.GetStyle("Adaptive.Column");
 
-            XamlContainer.AddContainerElements(uiContainer, column.Items, context);
+            AdaptiveContainerRenderer.AddContainerElements(uiContainer, column.Items, context);
 
             if (column.SelectAction != null)
             {

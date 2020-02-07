@@ -42,7 +42,7 @@ namespace AdaptiveCards.Rendering
 
         // public Dictionary<FrameworkElement, RenderContext> ElementRenderers = new Dictionary<FrameworkElement, RenderContext>();
 
-
+        public FrameworkElement CardRoot { get; set; }
 
 #if WPF
         public BitmapImage ResolveImageSource(string url)

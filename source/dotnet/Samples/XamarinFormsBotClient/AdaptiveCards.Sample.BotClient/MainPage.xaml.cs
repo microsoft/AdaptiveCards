@@ -11,6 +11,7 @@ using Xamarin.Forms;
 using Newtonsoft.Json.Linq;
 using AdaptiveCards.Rendering;
 using System.Xml.Serialization;
+using AdaptiveCards.Rendering.Wpf;
 
 namespace AdaptiveCards.XamarinForms.BotClient
 {
@@ -20,9 +21,9 @@ namespace AdaptiveCards.XamarinForms.BotClient
         // private Conversation _conversation;
         private string _watermark;
 
-        private Action<object, MissingInputEventArgs> _onMissingInput = (s, e) => { };
+        // private Action<object, MissingInputEventArgs> _onMissingInput = (s, e) => { };
         private Action<object, ActionEventArgs> _onAction = (s, a) => { };
-        private XamlRenderer _renderer;
+        private AdaptiveCards.Rendering.Wpf.AdaptiveCardRenderer _renderer;
         AdaptiveCard _card;
 
         StackLayout _cardContainer = null;
@@ -182,7 +183,7 @@ namespace AdaptiveCards.XamarinForms.BotClient
                 }
             };
 
-            _renderer = new XamlRenderer(new AdaptiveHostConfig(), Application.Current.Resources, _onAction, _onMissingInput);
+            _renderer = new AdaptiveCards.Rendering.Wpf.AdaptiveCardRenderer(new AdaptiveHostConfig());
             // _renderer = new XamlRenderer(new AdaptiveHostConfig());
 
             _cardContainer = this.FindByName<StackLayout>("Items");
@@ -214,7 +215,8 @@ namespace AdaptiveCards.XamarinForms.BotClient
         private void Send()
         {
             _cardContainer.Children.Clear();
-            View v = _renderer.RenderAdaptiveCard(_card, null, new AdaptiveHostConfig());
+            RenderedAdaptiveCard renderedCard = _renderer.RenderCard(_card);
+            View v = renderedCard.FrameworkElement;
             _cardContainer.Children.Add(v);
         }
 

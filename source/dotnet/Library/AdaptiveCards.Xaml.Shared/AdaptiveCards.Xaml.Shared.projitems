@@ -9,27 +9,39 @@
     <Import_RootNamespace>AdaptiveCards</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\AdaptiveActionEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\AdaptiveActionRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\AdaptiveChoiceSetRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\AdaptiveColumnRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\AdaptiveDateInputRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\AdaptiveFactSetRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\AdaptiveImageRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\AdaptiveImageSetRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\AdaptiveMediaEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\AdaptiveNumberInputRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\AdaptiveRenderContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\AdaptiveTextBlockRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\AdaptiveTextInputRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\AdaptiveTimeInputRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\AdaptiveToggleInputRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\AdaptiveXamlMarkdownRenderer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlContainer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlActionSet.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlUtilities.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlOpenUrlAction.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlShowCardAction.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlSubmitAction.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlAdaptiveCard.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlColumnSet.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlColumn.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlFactSet.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlImageSet.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlImage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlChoiceSet.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlDateInput.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlNumberInput.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlTextInput.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlTimeInput.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlToggleInput.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlTextBlock.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\AdaptiveContainerRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\AdaptiveActionSetRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\ControlExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\ImageExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\MissingInputEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\MissingInputException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\PreFetchImageVisitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\RenderedAdaptiveCard.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\RenderedAdaptiveCardImage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\RendererUtil.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\ResourceResolver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\SelectActionHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\StaTaskSchedule.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\TagContent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\TaskExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\AdaptiveColumnSetRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\RenderContext.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\AdaptiveCardRenderer.cs" />
   </ItemGroup>
 </Project>

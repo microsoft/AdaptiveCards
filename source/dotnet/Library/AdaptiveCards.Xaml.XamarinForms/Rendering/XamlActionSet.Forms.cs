@@ -5,9 +5,9 @@ using Xamarin.Forms;
 
 namespace AdaptiveCards.Rendering
 {
-    public static partial class XamlActionSet 
+    public static partial class AdaptiveActionSetRenderer 
     {
-        public static void AddActions(Grid uiContainer, List<AdaptiveAction> actions, RenderContext context)
+        public static void AddActions(Grid uiContainer, List<AdaptiveAction> actions, RenderContext context, AdaptiveInternalID iid)
         {
             var actionsToProcess = actions
                 .Take(context.Config.Actions.MaxActions).ToList();
