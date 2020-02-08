@@ -23,14 +23,25 @@ string would be a good option. If the string is deserialized into objects, it's 
 
 * visit each child node and append its text bottom up
 * as data is found add to memory list 
-* bound data as the data is available 
-* when this simple strategy fails 
-* check if it's array type
+* --> problem is performance and efficiency
+* --> before moving down to childre, check for data node?
+* --> this is sensible strategy considering how much complidation it would incurrs without it
+* --> perhaps I should implement listener, all memory is parsed and known
+* check asked data is array type
 * check if the data is in parent
 * if 'YES', don't bind it yet, defer it to the parent node which host the data
 * if 'NO', first bind all non-array types, and bind array-type data to the appended string of the current node for available elems in the array-type data.
 * return the appended string 
-* 
+* corner case, what happens when the data type is not avaialbe, and the data type is array?
+* the problem is that we repeat the element that is the owner of the data 
+* what is the most straitforward way of user expectation?
+* this is not really hard problem if we allow them to pare it again,
+* it's less than optimal compared to the case where we know that there will be deffered expansion, then we probably felt that building the parse tree twice seems to be wasteful.
+* it's also possible that the unbound data is user mistake.
+* returning the json as it is is the right behavioer, i.e
+* that's their choice
+* we appends the text as we move bottom up, when the templated text is encountered,
+we add it list in the result 
 ## Memory
 
 global look up table for data objects
