@@ -46,6 +46,68 @@ Registry.getManager().registerComponent('Rating',RatingComponent);
 ```
 Registry.getManager().removeComponent('Input.Date');
 ```
+
+## DataBinding
+The [adaptivecards-templating](https://www.npmjs.com/package/adaptivecards-templating) library is used for DataBinding.
+
+[![Version](https://img.shields.io/npm/v/adaptivecards-templating.svg)](https://www.npmjs.com/package/adaptivecards-templating)
+
+**Usage**
+```jsx
+import AdaptiveCard from '../adaptive-card';
+import * as ACData from 'adaptivecards-templating';
+
+// Sample template payload
+var templatePayload = {
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "2.0",
+    "type": "AdaptiveCard",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Hi {employee.name}! Here's a bit about your organisation"
+        },
+        {
+            "type": "TextBlock",
+            "text": "Your manager is: {employee.manager.name}"
+        },
+        {
+            "type": "TextBlock",
+            "text": "2 of your peers are: {employee.peers[0].name}, {employee.peers[1].name}"
+        }
+    ]
+};
+        
+// Create a Template instance from the template payload
+var template = new ACData.Template(templatePayload);
+
+// Create a data binding context, and set its $root property to the
+// data object to bind the template to
+var context = new ACData.EvaluationContext();
+context.$root = {
+    "employee": {
+        "name": "David Claux",
+        "manager": {
+            "name": "Matt Hidinger"
+        },
+        "peers": [
+            {
+                "name": "Andrew Leader"
+            },
+            {
+                "name": "Shalini Joshi"
+            }
+        ]
+    }
+}
+
+// "Expand" the template - this generates the final payload for the Adaptive Card,
+templatePayload = template.expand(context);
+
+//Render the adaptive card with templatePayload
+<AdaptiveCard payload={templatePayload}/>
+```
+
 ## Theme Config
 * For customising UI styles of elements, Host App can pass styles (plain JSON object) as an optional prop to root element `<AdaptiveCard/>`.
 
