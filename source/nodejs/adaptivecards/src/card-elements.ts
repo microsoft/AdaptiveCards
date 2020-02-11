@@ -2238,7 +2238,7 @@ export class Media extends CardElement {
         return element;
     }
 
-    static onPlay: (sender: Media) => void;
+    static onPlay: (sender: Media) => void = null;
 
     getJsonTypeName(): string {
         return "Media";
@@ -5872,6 +5872,7 @@ export interface IMarkdownProcessingResult {
     outputHtml?: any;
 }
 
+// @dynamic
 export class AdaptiveCard extends ContainerWithActions {
     static readonly schemaUrl = "http://adaptivecards.io/schemas/adaptive-card.json";
 

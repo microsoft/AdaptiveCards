@@ -154,6 +154,16 @@ export class Template {
     private _context: EvaluationContext;
 
     private expandSingleObject(node: object): any {
+        let when = node["$when"];
+
+        if (when instanceof TemplatizedString) {
+            let whenValue = when.evaluate(this._context);
+
+            if (typeof whenValue === "boolean" && !whenValue) {
+                return null;
+            }
+        }
+
         let result = {};
         let keys = Object.keys(node);
 
@@ -201,51 +211,35 @@ export class Template {
             }
         }
         else if (typeof node === "object" && node != null) {
-            let dropObject = false;
-            let when = node["$when"];
+            let dataContext = node["$data"];
 
-            if (when instanceof TemplatizedString) {
-                let whenValue = when.evaluate(this._context);
-
-                if (typeof whenValue === "boolean") {
-                    dropObject = !whenValue;
+            if (dataContext != undefined) {
+                if (dataContext instanceof TemplatizedString) {
+                    dataContext = dataContext.evaluate(this._context);
                 }
-            }
 
-            if (!dropObject) {
-                let dataContext = node["$data"];
+                if (Array.isArray(dataContext)) {
+                    result = [];
 
-                if (dataContext != undefined) {
-                    if (dataContext instanceof TemplatizedString) {
-                        dataContext = dataContext.evaluate(this._context);
-                    }
+                    for (let i = 0; i < dataContext.length; i++) {
+                        this._context.$data = dataContext[i];
+                        this._context.$index = i;
 
-                    if (Array.isArray(dataContext)) {
-                        result = [];
+                        let expandedObject = this.expandSingleObject(node);
 
-                        for (let i = 0; i < dataContext.length; i++) {
-                            this._context.$data = dataContext[i];
-                            this._context.$index = i;
-
-                            let expandedObject = this.expandSingleObject(node);
-
-                            if (expandedObject != null) {
-                                result.push(expandedObject);
-                            }
+                        if (expandedObject != null) {
+                            result.push(expandedObject);
                         }
-                    }
-                    else {
-                        this._context.$data = dataContext;
-
-                        result = this.expandSingleObject(node);
                     }
                 }
                 else {
+                    this._context.$data = dataContext;
+
                     result = this.expandSingleObject(node);
                 }
             }
             else {
-                result = null;
+                result = this.expandSingleObject(node);
             }
         }
         else {
