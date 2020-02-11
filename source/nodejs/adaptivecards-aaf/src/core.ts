@@ -2,6 +2,21 @@ import * as Adaptive from "adaptivecards";
 import * as Templating from "adaptivecards-templating";
 import { ChannelAdapter } from "./channel-adapter";
 
+export class ExecuteAction extends Adaptive.SubmitAction {
+    //#region Schema
+
+    static readonly verbProperty = new Adaptive.StringProperty(Adaptive.Versions.v1_2, "verb");
+
+    @Adaptive.property(ExecuteAction.dataProperty)
+    verb?: string;
+
+    //#endregion
+
+    getJsonTypeName(): string {
+        return "Action.Execute";
+    }
+}
+
 export class AdaptiveAppHost {
     private _card: Adaptive.AdaptiveCard | undefined;
     private _cardPayload: any;
@@ -84,3 +99,10 @@ export class AdaptiveAppHost {
         }
     }
 }
+
+function initialize() {
+    Adaptive.GlobalRegistry.actions.unregister("Action.Submit");
+    Adaptive.GlobalRegistry.actions.register("Action.Execute", ExecuteAction, Adaptive.Versions.v1_2);
+}
+
+initialize();
