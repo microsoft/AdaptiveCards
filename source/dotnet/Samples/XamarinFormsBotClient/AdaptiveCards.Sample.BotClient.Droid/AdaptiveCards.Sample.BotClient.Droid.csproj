@@ -211,11 +211,68 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CardsReaderImpl.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidAsset Include="..\..\..\..\..\samples\v1.0\scenarios\ActivityUpdate.json">
+      <Link>Assets\ActivityUpdate.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\..\..\..\samples\v1.0\scenarios\CalendarReminder.json">
+      <Link>Assets\CalendarReminder.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\..\..\..\samples\v1.0\scenarios\FlightItinerary.json">
+      <Link>Assets\FlightItinerary.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\..\..\..\samples\v1.0\scenarios\FlightUpdate.json">
+      <Link>Assets\FlightUpdate.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\..\..\..\samples\v1.0\scenarios\FoodOrder.json">
+      <Link>Assets\FoodOrder.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\..\..\..\samples\v1.0\scenarios\ImageGallery.json">
+      <Link>Assets\ImageGallery.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\..\..\..\samples\v1.0\scenarios\InputForm.json">
+      <Link>Assets\InputForm.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\..\..\..\samples\v1.0\scenarios\Inputs.json">
+      <Link>Assets\Inputs.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\..\..\..\samples\v1.0\scenarios\Restaurant.json">
+      <Link>Assets\Restaurant.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\..\..\..\samples\v1.0\scenarios\Solitaire.json">
+      <Link>Assets\Solitaire.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\..\..\..\samples\v1.0\scenarios\SportingEvent.json">
+      <Link>Assets\SportingEvent.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\..\..\..\samples\v1.0\scenarios\StockUpdate.json">
+      <Link>Assets\StockUpdate.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\..\..\..\samples\v1.0\scenarios\WeatherCompact.json">
+      <Link>Assets\WeatherCompact.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\..\..\..\samples\v1.0\scenarios\WeatherLarge.json">
+      <Link>Assets\WeatherLarge.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
@@ -241,6 +298,9 @@
       <Project>{ac638ff4-8e90-44e1-9f6d-9089f6d14dd4}</Project>
       <Name>AdaptiveCards.Sample.BotClient</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets\Raw\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\..\AdaptiveCards.XamarinForms.Renderer\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\build\Xamarin.Android.Support.Vector.Drawable.targets" Condition="Exists('..\..\AdaptiveCards.XamarinForms.Renderer\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\build\Xamarin.Android.Support.Vector.Drawable.targets')" />

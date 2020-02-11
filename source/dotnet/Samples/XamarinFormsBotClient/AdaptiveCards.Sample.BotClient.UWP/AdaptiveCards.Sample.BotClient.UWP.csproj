@@ -119,6 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CardsReaderImpl.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -162,6 +163,90 @@
       <Project>{fc31df54-5da6-46ca-86f5-817b351af60f}</Project>
       <Name>AdaptiveCards.Sample.BotClient</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\..\..\samples\v1.0\scenarios\ActivityUpdate.json">
+      <Link>Samples\ActivityUpdate.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\..\..\samples\v1.0\scenarios\CalendarReminder.json">
+      <Link>Samples\CalendarReminder.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\..\..\samples\v1.0\scenarios\FlightItinerary.json">
+      <Link>Samples\FlightItinerary.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\..\..\samples\v1.0\scenarios\FlightUpdate.json">
+      <Link>Samples\FlightUpdate.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\..\..\samples\v1.0\scenarios\FoodOrder.json">
+      <Link>Samples\FoodOrder.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\..\..\samples\v1.0\scenarios\ImageGallery.json">
+      <Link>Samples\ImageGallery.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\..\..\samples\v1.0\scenarios\InputForm.json">
+      <Link>Samples\InputForm.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\..\..\samples\v1.0\scenarios\Inputs.json">
+      <Link>Samples\Inputs.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\..\..\samples\v1.0\scenarios\Restaurant.json">
+      <Link>Samples\Restaurant.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\..\..\samples\v1.0\scenarios\Solitaire.json">
+      <Link>Samples\Solitaire.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\..\..\samples\v1.0\scenarios\SportingEvent.json">
+      <Link>Samples\SportingEvent.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\..\..\samples\v1.0\scenarios\StockUpdate.json">
+      <Link>Samples\StockUpdate.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\..\..\samples\v1.0\scenarios\WeatherCompact.json">
+      <Link>Samples\WeatherCompact.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\..\..\samples\v1.0\scenarios\WeatherLarge.json">
+      <Link>Samples\WeatherLarge.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

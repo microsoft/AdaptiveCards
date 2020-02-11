@@ -13,6 +13,8 @@ using AdaptiveCards.Rendering;
 using System.Xml.Serialization;
 using AdaptiveCards.Rendering.Wpf;
 
+using AdaptiveCards.Sample.BotClient;
+
 namespace AdaptiveCards.XamarinForms.BotClient
 {
     public partial class MainPage : ContentPage
@@ -24,7 +26,8 @@ namespace AdaptiveCards.XamarinForms.BotClient
         // private Action<object, MissingInputEventArgs> _onMissingInput = (s, e) => { };
         private Action<object, ActionEventArgs> _onAction = (s, a) => { };
         private AdaptiveCards.Rendering.Wpf.AdaptiveCardRenderer _renderer;
-        AdaptiveCard _card;
+
+        CardStorage CardsReader = new CardStorage();
 
         StackLayout _cardContainer = null;
 
@@ -33,12 +36,11 @@ namespace AdaptiveCards.XamarinForms.BotClient
             InitializeComponent();
         }
 
-
-
         protected override async void OnAppearing()
         {
             base.OnAppearing();
 
+            /*
             _card = new AdaptiveCard("1.0")
             {
                 Body = new List<AdaptiveElement> {
@@ -182,11 +184,14 @@ namespace AdaptiveCards.XamarinForms.BotClient
                     }
                 }
             };
-
+            */
             _renderer = new AdaptiveCards.Rendering.Wpf.AdaptiveCardRenderer(new AdaptiveHostConfig());
             // _renderer = new XamlRenderer(new AdaptiveHostConfig());
 
             _cardContainer = this.FindByName<StackLayout>("Items");
+
+            ReadCards();
+            Send();
         }
 
         private void _textBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -214,10 +219,17 @@ namespace AdaptiveCards.XamarinForms.BotClient
 
         private void Send()
         {
+            
             _cardContainer.Children.Clear();
-            RenderedAdaptiveCard renderedCard = _renderer.RenderCard(_card);
-            View v = renderedCard.FrameworkElement;
-            _cardContainer.Children.Add(v);
+            for (int i = 0; i < 30; ++i)
+            {
+                AdaptiveCard adaptiveCard = CardsReader.Get(i);
+                Stopwatch stopwatch = Stopwatch.StartNew();
+                RenderedAdaptiveCard renderedCard = _renderer.RenderCard(adaptiveCard);
+                _cardContainer.Children.Add(renderedCard.FrameworkElement);
+                stopwatch.Stop();
+                System.Diagnostics.Debug.WriteLine(stopwatch.ElapsedMilliseconds);
+            }
         }
 
         private async Task Send(string message)
@@ -246,6 +258,15 @@ namespace AdaptiveCards.XamarinForms.BotClient
         private void Current_VoiceInputStarted(object sender, EventArgs e)
         {
             Message.IsEnabled = false;
+        }
+
+        private void ReadCards()
+        {
+            String[] cardFileNames = { "ActivityUpdate.json", "CalendarReminder.json", "FlightItinerary.json", "FlightUpdate.json", "FoodOrder.json",
+                                       "ImageGallery.json", "InputForm.json", "Inputs.json", "Restaurant.json", "Solitaire.json", "SportingEvent.json",
+                                       "StockUpdate.json", "WeatherCompact.json", "WeatherLarge.json" };
+
+            CardsReader.ReadAdaptiveCards(cardFileNames);
         }
     }
 }
