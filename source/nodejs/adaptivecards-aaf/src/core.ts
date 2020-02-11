@@ -1,6 +1,6 @@
 import * as Adaptive from "adaptivecards";
 import * as Templating from "adaptivecards-templating";
-import { ProxyAdapter } from "./aaf-proxy-adapter";
+import { ChannelAdapter } from "./channel-adapter";
 
 export class AdaptiveAppHost {
     private _card: Adaptive.AdaptiveCard | undefined;
@@ -13,8 +13,8 @@ export class AdaptiveAppHost {
 
     private internalExecuteAction(action: Adaptive.Action) {
         if (action instanceof Adaptive.SubmitAction) {
-            if (this.proxyAdapter) {
-                let result = this.proxyAdapter.executeAction(action);
+            if (this.channelAdapter) {
+                let result = this.channelAdapter.executeAction(action);
                 let parsedResult: any = undefined;
 
                 try {
@@ -42,7 +42,7 @@ export class AdaptiveAppHost {
 
     readonly renderedElement: HTMLElement;
 
-    proxyAdapter: ProxyAdapter | undefined = undefined;
+    channelAdapter: ChannelAdapter | undefined = undefined;
 
     constructor() {
         this.renderedElement = document.createElement("div");

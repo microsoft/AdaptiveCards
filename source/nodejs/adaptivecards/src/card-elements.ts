@@ -2238,7 +2238,7 @@ export class Media extends CardElement {
         return element;
     }
 
-    static onPlay: (sender: Media) => void = null;
+    static onPlay?: (sender: Media) => void;
 
     getJsonTypeName(): string {
         return "Media";

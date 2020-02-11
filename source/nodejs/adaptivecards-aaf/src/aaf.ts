@@ -1,2 +1,2 @@
-export * from "./aaf-core";
-export * from "./aaf-proxy-adapter";
+export * from "./core";
+export * from "./channel-adapter";
