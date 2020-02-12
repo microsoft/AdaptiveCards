@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
@@ -104,6 +105,22 @@ namespace AdaptiveCards.Templating
                         output.Append(word);
                     }
                     output.Append('}');
+                }
+                else
+                {
+                    output.Append(elem.StringResult);
+                }
+            }
+            return output.ToString();
+        }
+        public string Expand(JSONTemplateVisitor evaluator, JObject data)
+        {
+            StringBuilder output = new StringBuilder() ;
+            foreach (var elem in partialResultLinkedList)
+            {
+                if (elem.IsExpanded == false)
+                {
+                    output.Append(evaluator.Expand(elem.Keys, data));
                 }
                 else
                 {

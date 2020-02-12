@@ -21,7 +21,7 @@ namespace AdaptiveCards.Templating
                 if (token is JArray)
                 {
                     templateDataArray = JArray.Parse(text);
-                    IsArrayType = true; 
+                    IsArrayType = true;
                 }
                 else
                 {
@@ -95,7 +95,8 @@ namespace AdaptiveCards.Templating
 
         public override JSONTemplateVisitorResult VisitObj([NotNull] JSONParser.ObjContext context)
         {
-            var HasDataContext = false;
+            var hasDataContext = false;
+            var isArrayType = false;
             // vist the first data context availble, the rest ignored
             // data context node is the first node that has to be acquired amongst the children
             for (var i = 0; i < context.ChildCount; i++)
@@ -104,7 +105,8 @@ namespace AdaptiveCards.Templating
                 if (child is JSONParser.TemplateDataContext)
                 {
                     Visit(child);
-                    HasDataContext = true;
+                    hasDataContext = true;
+                    isArrayType = GetCurrentDataContext().IsArrayType;
                     break;
                 }
             }
@@ -125,11 +127,33 @@ namespace AdaptiveCards.Templating
                 }
             }
 
+            if (isArrayType)
+            {
+                var dataContext = GetCurrentDataContext();
+                var repeatsCounts = dataContext.templateDataArray.Count;
+                JSONTemplateVisitorResult oldResult = result;
+                result = new JSONTemplateVisitorResult();
+                for (int i = 0; i < repeatsCounts; i++)
+                {
+                    JToken token = dataContext.templateDataArray[i];
+                    if (token is JObject)
+                    {
+                        result.Append(oldResult.Expand(this, token as JObject));
+                        if (i != repeatsCounts - 1)
+                        {
+                            result.Append(",");
+                        }
+                    }
+                    // produce warning if it's not JObject type
+                }
+            }
+
             // restore data context
-            if (HasDataContext)
+            if (hasDataContext)
             {
                 PopDataContext();
             }
+
             return result; 
         }
 
@@ -158,24 +182,12 @@ namespace AdaptiveCards.Templating
                     DataContext currentDataContext = GetCurrentDataContext();
                     if (currentDataContext.IsArrayType)
                     {
+                        return new JSONTemplateVisitorResult("", false, processed);
                     }
                     else
                     {
                         JObject data = GetCurrentDataContext().templateData;
-                        var obj = data[processed.Keys[0]];
-                        for (var idx = 1; idx < processed.Keys.Count; idx++)
-                        {
-                            var val = processed.Keys[idx];
-                            if (int.TryParse(val, out int arrayIdx))
-                            {
-                                obj = obj[arrayIdx];
-                            }
-                            else
-                            {
-                                obj = obj[val];
-                            }
-                        }
-                        return new JSONTemplateVisitorResult(obj.ToString());
+                        return new JSONTemplateVisitorResult(Expand(processed, data));
                     }
                 }
             }
@@ -186,6 +198,25 @@ namespace AdaptiveCards.Templating
             }
 
             return new JSONTemplateVisitorResult(node.GetText());
+        }
+
+        public string Expand(AdaptiveCardsTemplatingVisitorResult processed, JObject data)
+        {
+            var obj = data[processed.Keys[0]];
+            for (var idx = 1; idx < processed.Keys.Count; idx++)
+            {
+                var val = processed.Keys[idx];
+                if (int.TryParse(val, out int arrayIdx))
+                {
+                    obj = obj[arrayIdx];
+                }
+                else
+                {
+                    obj = obj[val];
+                }
+            }
+
+            return obj.ToString();
         }
 
         public override JSONTemplateVisitorResult VisitValueTemplateString([NotNull] JSONParser.ValueTemplateStringContext context)

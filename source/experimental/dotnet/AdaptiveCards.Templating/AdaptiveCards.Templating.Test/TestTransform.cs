@@ -128,14 +128,14 @@ namespace AdaptiveCards.Templating.Test
                     ""type"": ""AdaptiveCard"",
                     ""body"": [
                       {
-                          ""type"": ""container"",
+                          ""type"": ""Container"",
                           ""items"": [
                               {
-                                  ""type"": ""textblock"",
+                                  ""type"": ""TextBlock"",
                                   ""$data"": [
-                                      { ""name"": ""matt"" }, 
-                                      { ""name"": ""david"" }, 
-                                      { ""name"": ""thomas"" }
+                                      { ""name"": ""Matt"" }, 
+                                      { ""name"": ""David"" }, 
+                                      { ""name"": ""Thomas"" }
                                   ],
                                   ""text"": ""{name}""
                               }
@@ -145,6 +145,8 @@ namespace AdaptiveCards.Templating.Test
                 }";
             var expectedString =
                 @"{
+                    ""type"": ""AdaptiveCard"",
+                    ""body"": [
                     {
                         ""type"": ""Container"",
                         ""items"": [ 
@@ -155,17 +157,18 @@ namespace AdaptiveCards.Templating.Test
                             {
                                 ""type"": ""TextBlock"",
                                 ""text"": ""David""
-                            }
+                            },
                             {
                                 ""type"": ""TextBlock"",
                                 ""text"": ""Thomas""
                             }
                         ]
                     }
+                ]
             }";
 
             string cardJson = transformer.Transform(testString, null);
-            AssertJsonEqual(cardJson, expectedString);
+            AssertJsonEqual(expectedString, cardJson);
         }
 
         [TestMethod]
