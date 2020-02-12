@@ -2,47 +2,72 @@ using Antlr4.Runtime;
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using Newtonsoft.Json.Linq;
-using System.Text.RegularExpressions;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Text;
 
 namespace AdaptiveCards.Templating
 {
     public class JSONTemplateVisitor : JSONParserBaseVisitor<string>
     {
-        public ArrayList<JObject> data = new ArrayList<JObject>();
+        public class DataContext
+        {
+            public JObject templateData;
+            public JArray templateDataArray;
+            public bool IsArrayType = false;
 
-        public JSONTemplateVisitor(JObject data = null)
+            public DataContext (string text)
+            {
+                JToken token = JToken.Parse(text);
+                if (token is JArray)
+                {
+                    templateDataArray = JArray.Parse(text);
+                    IsArrayType = true; 
+                }
+                else
+                {
+                    templateData = JObject.Parse(text);
+                }
+            }
+        }
+
+        private Stack<DataContext> _dataContext = new Stack<DataContext>();
+
+        private DataContext GetCurrentDataContext()
+        { 
+            return _dataContext.Count == 0 ? null : _dataContext.Peek();
+        }
+
+        private void PushDataContext(string stringToParse)
+        {
+            _dataContext.Push(new DataContext(stringToParse));
+        }
+
+        private void PopDataContext()
+        {
+            _dataContext.Pop();
+        }
+
+        private bool HasDataContext()
+        {
+            return _dataContext.Count != 0;
+        }
+
+        public JSONTemplateVisitor(string data = null)
         {
             if(data != null)
             {
-                this.data.Add(data);
+                PushDataContext(data);
             }
         }
 
         public override string VisitTemplateData([NotNull] JSONParser.TemplateDataContext context)
         {
+            // when this node is visited, the children of this node is shown as below: 
+            // this node is visited only when parsing was correctly done
+            // [ '{', '$data', ':', ',', 'val'] 
             IParseTree templateDataValueNode = context.GetChild(4);
-            if (templateDataValueNode is JSONParser.ValueArrayContext)
-            {
-                var arrayParseTree = templateDataValueNode.GetChild(0);
-                for(var i = 0; i < arrayParseTree.ChildCount; i++)
-                {
-                    var child = arrayParseTree.GetChild(i);
-                    if (child is JSONParser.ValueObjectContext)
-                    {
-                        var o = JObject.Parse(child.GetText());
-                            data.Add(o);
-                    }
-                }
-            }
-            else
-            {
-                string childJson = templateDataValueNode.GetText();
-                data.Add(JObject.Parse(childJson));
-            }
+            string childJson = templateDataValueNode.GetText();
+            PushDataContext(childJson);
             return null;
         }
 
@@ -69,11 +94,25 @@ namespace AdaptiveCards.Templating
 
         public override string VisitObj([NotNull] JSONParser.ObjContext context)
         {
-            StringBuilder sb = new StringBuilder();            
+            StringBuilder sb = new StringBuilder();
+            var HasDataContext = false;
+
+            // vist the first data context availble, the rest ignored
+            // data context node is the first node that has to be acquired amongst the children
+            for (var i = 0; i < context.ChildCount; i++)
+            { 
+                var child = context.children[i];
+                if (child is JSONParser.TemplateDataContext)
+                {
+                    Visit(child);
+                    HasDataContext = true;
+                    break;
+                }
+            }
+
             for(var i = 0; i < context.ChildCount; i++)
             {
                 var child = context.children[i];
-                var parsedJson = Visit(child);
                 // if it's data context, skip nex terminal token
                 if (child is JSONParser.TemplateDataContext)
                 {
@@ -81,8 +120,15 @@ namespace AdaptiveCards.Templating
                 }
                 else
                 {
+                    var parsedJson = Visit(child);
                     sb.Append(parsedJson);
                 }
+            }
+
+            // restore data context
+            if (HasDataContext)
+            {
+                PopDataContext();
             }
             return sb.ToString();
         }
@@ -92,6 +138,7 @@ namespace AdaptiveCards.Templating
             var tokenType = node.Symbol.Type;
             if (node.Symbol.Type == JSONLexer.TEMPLATELITERAL)
             {
+                // This is the code where we replace it with CEL
                 ICharStream stream = CharStreams.fromstring(node.GetText());
                 AdaptiveCardsTemplatingLexer lexer = new AdaptiveCardsTemplatingLexer(stream);
                 ITokenStream tokens = new CommonTokenStream(lexer);
@@ -104,27 +151,33 @@ namespace AdaptiveCards.Templating
                 var processed = eval.Visit(tree);
 
                 // nice place to add error handling
-                if (this.data != null && processed != null && processed.Keys.Count > 0)
+                if (HasDataContext() && processed != null && processed.Keys.Count > 0)
                 {
                     // need a error handling when user put template with no matching data
                     // continuing as need to finish skelectal codes
-                    var obj = data[0][processed.Keys[0]];
-                    for (var idx = 1; idx < processed.Keys.Count; idx++)
+                    DataContext currentDataContext = GetCurrentDataContext();
+                    if (currentDataContext.IsArrayType)
                     {
-                        var val = processed.Keys[idx];
-                        if (int.TryParse(val, out int arrayIdx))
-                        {
-                            obj = obj[arrayIdx];
-                        }
-                        else
-                        {
-                            obj = obj[val];
-                        }
                     }
-
-                    return obj.ToString();
+                    else
+                    {
+                        JObject data = GetCurrentDataContext().templateData;
+                        var obj = data[processed.Keys[0]];
+                        for (var idx = 1; idx < processed.Keys.Count; idx++)
+                        {
+                            var val = processed.Keys[idx];
+                            if (int.TryParse(val, out int arrayIdx))
+                            {
+                                obj = obj[arrayIdx];
+                            }
+                            else
+                            {
+                                obj = obj[val];
+                            }
+                        }
+                        return obj.ToString();
+                    }
                 }
-
             }
 
             if (tokenType == JSONLexer.TemplateOpen || tokenType == JSONLexer.TEMPLATECLOSE)

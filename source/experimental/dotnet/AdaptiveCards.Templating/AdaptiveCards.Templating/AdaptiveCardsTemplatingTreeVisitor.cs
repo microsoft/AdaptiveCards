@@ -6,7 +6,7 @@ using Antlr4.Runtime.Tree;
 
 namespace AdaptiveCards.Templating
 {
-    class AdaptiveCardsTemplatingTreeVisitor : AdaptiveCardsTemplatingBaseVisitor<AdaptiveCardsTemplatingVisitorResult>
+    public class AdaptiveCardsTemplatingTreeVisitor : AdaptiveCardsTemplatingBaseVisitor<AdaptiveCardsTemplatingVisitorResult>
     {
         public override AdaptiveCardsTemplatingVisitorResult VisitPropArray([NotNull] AdaptiveCardsTemplatingParser.PropArrayContext context)
         {

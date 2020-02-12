@@ -1,4 +1,5 @@
-using System;
+using Antlr4.Runtime;
+using Antlr4.Runtime.Tree;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 
@@ -165,6 +166,192 @@ namespace AdaptiveCards.Templating.Test
 
             string cardJson = transformer.Transform(testString, null);
             AssertJsonEqual(cardJson, expectedString);
+        }
+
+        [TestMethod]
+        public void TestInlineMemoryScope()
+        {
+            AdaptiveTransformer transformer = new AdaptiveTransformer();
+            var testString =
+                @"{
+                    ""type"": ""AdaptiveCard"",
+                    ""version"": ""1.0"",
+                    ""body"": [
+                      {
+                          ""type"": ""Container"",
+                          ""items"": [
+                              {
+                                  ""type"": ""TextBlock"",
+                                  ""$data"": { ""name"": ""Matt"" }, 
+                                  ""text"": ""{name}""
+                              }
+                          ]
+                      }
+                    ]
+                }";
+            var expectedString =
+                @"{
+    ""type"": ""AdaptiveCard"",
+    ""version"": ""1.0"",
+    ""body"": [
+      {
+          ""type"": ""Container"",
+          ""items"": [
+            {
+              ""type"": ""TextBlock"",
+              ""text"": ""Matt""
+            }
+            ]
+        }
+    ]
+}"; 
+
+            string cardJson = transformer.Transform(testString, null);
+            AssertJsonEqual(cardJson, expectedString);
+        }
+        [TestMethod]
+        public void TestInlineMemoryScope2()
+        {
+            AdaptiveTransformer transformer = new AdaptiveTransformer();
+            var testString =
+                @"{
+                    ""type"": ""AdaptiveCard"",
+                    ""version"": ""1.0"",
+                    ""body"": [
+                      {
+                          ""type"": ""Container"",
+                          ""$data"": { ""name"": ""Matt"" }, 
+                          ""items"": [
+                              {
+                                  ""type"": ""TextBlock"",
+                                  ""text"": ""{name}""
+                              }
+                          ]
+                      }
+                    ]
+                }";
+            var expectedString =
+                @"{
+    ""type"": ""AdaptiveCard"",
+    ""version"": ""1.0"",
+    ""body"": [
+      {
+          ""type"": ""Container"",
+          ""items"": [
+            {
+              ""type"": ""TextBlock"",
+              ""text"": ""Matt""
+            }
+            ]
+        }
+    ]
+}"; 
+
+            string cardJson = transformer.Transform(testString, null);
+            AssertJsonEqual(cardJson, expectedString);
+        }
+
+        [TestMethod]
+        public void TestInlineMemoryScope3()
+        {
+            AdaptiveTransformer transformer = new AdaptiveTransformer();
+            var testString =
+                @"{
+                    ""type"": ""AdaptiveCard"",
+                    ""version"": ""1.0"",
+                    ""body"": [
+                      {
+                          ""type"": ""Container"",
+                          ""$data"": { ""name"": ""Andrew"" }, 
+                          ""items"": [
+                              {
+                                  ""type"": ""TextBlock"",
+                                  ""$data"": { ""name"": ""Matt"" }, 
+                                  ""text"": ""{name}""
+                              }
+                          ]
+                      }
+                    ]
+                }";
+            var expectedString =
+                @"{
+    ""type"": ""AdaptiveCard"",
+    ""version"": ""1.0"",
+    ""body"": [
+      {
+          ""type"": ""Container"",
+          ""items"": [
+            {
+              ""type"": ""TextBlock"",
+              ""text"": ""Matt""
+            }
+            ]
+        }
+    ]
+}"; 
+
+            string cardJson = transformer.Transform(testString, null);
+            AssertJsonEqual(expectedString, cardJson);
+        }
+    }
+    [TestClass]
+    public class TestPartialResult
+    {
+        [TestMethod]
+        public void TestCreation()
+        {
+            JSONTemplateVisitorResult result = new JSONTemplateVisitorResult();
+            result.Append("hello world");
+            Assert.AreEqual(result.ToString(), "hello world");
+        }
+
+        [TestMethod]
+        public void TestMerging()
+        {
+            JSONTemplateVisitorResult result1 = new JSONTemplateVisitorResult();
+            result1.Append("hello");
+
+            JSONTemplateVisitorResult result2 = new JSONTemplateVisitorResult();
+            result2.Append(" world");
+
+
+            JSONTemplateVisitorResult result3 = new JSONTemplateVisitorResult();
+            result3.Append("!");
+
+            result1.Append(result2);
+            result1.Append(result3);
+
+            Assert.AreEqual(result1.ToString(), "hello world!");
+        }
+
+        [TestMethod]
+        public void TestCreationOfPartialResult()
+        {
+            ICharStream stream = CharStreams.fromstring("{name}");
+            AdaptiveCardsTemplatingLexer lexer = new AdaptiveCardsTemplatingLexer(stream);
+            ITokenStream tokens = new CommonTokenStream(lexer);
+            AdaptiveCardsTemplatingParser parser = new AdaptiveCardsTemplatingParser(tokens)
+            {
+                BuildParseTree = true
+            };
+
+            IParseTree tree = parser.template();
+            AdaptiveCardsTemplatingTreeVisitor eval = new AdaptiveCardsTemplatingTreeVisitor();
+            var processed = eval.Visit(tree);
+
+            JSONTemplateVisitorResult result1 = new JSONTemplateVisitorResult();
+            result1.Append("hello");
+
+            JSONTemplateVisitorResult result2 = new JSONTemplateVisitorResult();
+            result2.Append("", false, processed);
+
+            JSONTemplateVisitorResult result3 = new JSONTemplateVisitorResult();
+            result3.Append("!");
+
+            result1.Append(result2);
+            result1.Append(result3);
+
+            Assert.AreEqual(result1.ToString(), "hello world!");
         }
     }
 }
