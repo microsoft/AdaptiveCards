@@ -7,7 +7,7 @@ using System.Text;
 
 namespace AdaptiveCards.Templating
 {
-    public class JSONTemplateVisitor : JSONParserBaseVisitor<string>
+    public class JSONTemplateVisitor : JSONParserBaseVisitor<JSONTemplateVisitorResult>
     {
         public class DataContext
         {
@@ -60,7 +60,7 @@ namespace AdaptiveCards.Templating
             }
         }
 
-        public override string VisitTemplateData([NotNull] JSONParser.TemplateDataContext context)
+        public override  JSONTemplateVisitorResult VisitTemplateData([NotNull] JSONParser.TemplateDataContext context)
         {
             // when this node is visited, the children of this node is shown as below: 
             // this node is visited only when parsing was correctly done
@@ -71,32 +71,31 @@ namespace AdaptiveCards.Templating
             return null;
         }
 
-        public override string VisitJsonPair([NotNull] JSONParser.JsonPairContext context)
+        public override JSONTemplateVisitorResult VisitJsonPair([NotNull] JSONParser.JsonPairContext context)
         {
-            StringBuilder sb = new StringBuilder();
+            JSONTemplateVisitorResult result = new JSONTemplateVisitorResult();
             foreach (var child in context.children)
             {
-                 var returnedJson = Visit(child);
-                sb.Append(returnedJson);
+                result.Append(Visit(child));
             }
-            return sb.ToString();
+            return result; 
         }
 
-        public override string VisitArray([NotNull] JSONParser.ArrayContext context)
+        public override JSONTemplateVisitorResult VisitArray([NotNull] JSONParser.ArrayContext context)
         {
-            string json = "";
+            JSONTemplateVisitorResult result = new JSONTemplateVisitorResult();
+
             foreach (var child in context.children)
             {
-                json += Visit(child);
+                result.Append(Visit(child));
             }
-            return json;
+
+            return result;
         }
 
-        public override string VisitObj([NotNull] JSONParser.ObjContext context)
+        public override JSONTemplateVisitorResult VisitObj([NotNull] JSONParser.ObjContext context)
         {
-            StringBuilder sb = new StringBuilder();
             var HasDataContext = false;
-
             // vist the first data context availble, the rest ignored
             // data context node is the first node that has to be acquired amongst the children
             for (var i = 0; i < context.ChildCount; i++)
@@ -110,6 +109,8 @@ namespace AdaptiveCards.Templating
                 }
             }
 
+            JSONTemplateVisitorResult result = new JSONTemplateVisitorResult();
+
             for(var i = 0; i < context.ChildCount; i++)
             {
                 var child = context.children[i];
@@ -120,8 +121,7 @@ namespace AdaptiveCards.Templating
                 }
                 else
                 {
-                    var parsedJson = Visit(child);
-                    sb.Append(parsedJson);
+                    result.Append(Visit(child));
                 }
             }
 
@@ -130,10 +130,10 @@ namespace AdaptiveCards.Templating
             {
                 PopDataContext();
             }
-            return sb.ToString();
+            return result; 
         }
 
-        public override string VisitTerminal(ITerminalNode node)
+        public override JSONTemplateVisitorResult VisitTerminal(ITerminalNode node)
         {
             var tokenType = node.Symbol.Type;
             if (node.Symbol.Type == JSONLexer.TEMPLATELITERAL)
@@ -175,39 +175,41 @@ namespace AdaptiveCards.Templating
                                 obj = obj[val];
                             }
                         }
-                        return obj.ToString();
+                        return new JSONTemplateVisitorResult(obj.ToString());
                     }
                 }
             }
 
             if (tokenType == JSONLexer.TemplateOpen || tokenType == JSONLexer.TEMPLATECLOSE)
             {
-                return "";
+                return new JSONTemplateVisitorResult("");
             }
 
-            return node.GetText();
+            return new JSONTemplateVisitorResult(node.GetText());
         }
 
-        public override string VisitValueTemplateString([NotNull] JSONParser.ValueTemplateStringContext context)
+        public override JSONTemplateVisitorResult VisitValueTemplateString([NotNull] JSONParser.ValueTemplateStringContext context)
         {
-            StringBuilder sb = new StringBuilder("\"");
-            sb.Append(Visit(context.children[1])).Append("\"");
-            return sb.ToString(); 
+           
+            JSONTemplateVisitorResult result = new JSONTemplateVisitorResult("\"");
+            result.Append(Visit(context.children[1]));
+            result.Append("\"");
+            return result; 
         }
 
-        public override string VisitValueString([NotNull] JSONParser.ValueStringContext context)
+        public override JSONTemplateVisitorResult VisitValueString([NotNull] JSONParser.ValueStringContext context)
         {
-            return context.GetText(); 
+            return new JSONTemplateVisitorResult(context.GetText()); 
         }
 
-        public override string VisitTemplateString([NotNull] JSONParser.TemplateStringContext context)
+        public override JSONTemplateVisitorResult VisitTemplateString([NotNull] JSONParser.TemplateStringContext context)
         {
-            StringBuilder sb = new StringBuilder();
+            JSONTemplateVisitorResult result = new JSONTemplateVisitorResult();
             foreach (var child in context.children)
             {
-                sb.Append(Visit(child));
+                result.Append(Visit(child));
             }
-            return sb.ToString(); 
+            return result; 
         }
     }
 }

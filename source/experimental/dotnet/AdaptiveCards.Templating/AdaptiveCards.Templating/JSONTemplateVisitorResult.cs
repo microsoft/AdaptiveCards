@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml.XPath;
 
 namespace AdaptiveCards.Templating
@@ -29,10 +30,23 @@ namespace AdaptiveCards.Templating
             partialResultLinkedList.AddLast(new TemplatePartialResult());
         }
 
+        public JSONTemplateVisitorResult(string capturedString = "", bool isExpanded = true, AdaptiveCardsTemplatingVisitorResult templateExpansionResult = null)
+        {
+            partialResultLinkedList.AddLast(new TemplatePartialResult());
+            Append(capturedString, isExpanded, templateExpansionResult);
+        }
+
+        public JSONTemplateVisitorResult(JSONTemplateVisitorResult result)
+        {
+            partialResultLinkedList.AddLast(new TemplatePartialResult());
+            Append(result);
+        }
+
         private LinkedListNode<TemplatePartialResult> GetHead()
         {
             return partialResultLinkedList.First;
         }
+
         private LinkedListNode<TemplatePartialResult> GetTail()
         {
             return partialResultLinkedList.Last;
