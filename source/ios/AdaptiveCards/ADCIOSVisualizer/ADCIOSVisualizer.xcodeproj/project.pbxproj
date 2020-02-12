@@ -7,46 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		30860BC220C9B5C9009F9D99 /* (null) in Resources */ = {isa = PBXBuildFile; };
-		30860BC420C9B5C9009F9D99 /* (null) in Resources */ = {isa = PBXBuildFile; };
-		6B055764233EC53D000EE24A /* RichTextBlock.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B055763233EC53D000EE24A /* RichTextBlock.json */; };
-		6B14FC5D2113BC2200A11CC5 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		6B1509FE22FC98AE00046B3A /* samples in Resources */ = {isa = PBXBuildFile; fileRef = 6B1509FD22FC98AE00046B3A /* samples */; };
-		6B150A0022FCE49600046B3A /* AdaptiveFileBrowserSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B1509FF22FCE49600046B3A /* AdaptiveFileBrowserSource.mm */; };
-		6B150A042302415000046B3A /* sample.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A032302415000046B3A /* sample.json */; };
-		6B150A0623033D6C00046B3A /* filebrowserHostConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A0523033D6B00046B3A /* filebrowserHostConfig.json */; };
 		6B150A0F23034F2800046B3A /* Feedback.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A0923034F2800046B3A /* Feedback.json */; };
-		6B150A1023034F2800046B3A /* Input.ChoiceSet.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A0A23034F2800046B3A /* Input.ChoiceSet.json */; };
 		6B150A1123034F2800046B3A /* FoodOrder.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A0B23034F2800046B3A /* FoodOrder.json */; };
 		6B150A1223034F2800046B3A /* Restaurant.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A0C23034F2800046B3A /* Restaurant.json */; };
 		6B150A1323034F2800046B3A /* ActivityUpdate.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A0D23034F2800046B3A /* ActivityUpdate.json */; };
-		6B150A1423034F2800046B3A /* Image.ImageBaseUrl.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A0E23034F2800046B3A /* Image.ImageBaseUrl.json */; };
-		6B150A20230353AB00046B3A /* TextBlock.Color.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A15230353AA00046B3A /* TextBlock.Color.json */; };
-		6B150A21230353AB00046B3A /* TextBlock.DateTimeFormatting.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A16230353AB00046B3A /* TextBlock.DateTimeFormatting.json */; };
-		6B150A22230353AB00046B3A /* TextBlock.Markdown.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A17230353AB00046B3A /* TextBlock.Markdown.json */; };
-		6B150A23230353AB00046B3A /* TextBlock.MaxLines.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A18230353AB00046B3A /* TextBlock.MaxLines.json */; };
-		6B150A24230353AB00046B3A /* TextBlock.Size.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A19230353AB00046B3A /* TextBlock.Size.json */; };
-		6B150A25230353AB00046B3A /* TextBlock.Lists.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A1A230353AB00046B3A /* TextBlock.Lists.json */; };
-		6B150A26230353AB00046B3A /* TextBlock.Wrap.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A1B230353AB00046B3A /* TextBlock.Wrap.json */; };
-		6B150A27230353AB00046B3A /* TextBlock.HorizontalAlignment.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A1C230353AB00046B3A /* TextBlock.HorizontalAlignment.json */; };
-		6B150A28230353AB00046B3A /* TextBlock.Weight.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A1D230353AB00046B3A /* TextBlock.Weight.json */; };
-		6B150A29230353AB00046B3A /* TextBlock.Spacing.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A1E230353AB00046B3A /* TextBlock.Spacing.json */; };
-		6B150A2A230353AB00046B3A /* TextBlock.IsSubtle.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A1F230353AB00046B3A /* TextBlock.IsSubtle.json */; };
-		6B150A36230354F200046B3A /* Image.Size.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A2B230354F100046B3A /* Image.Size.json */; };
-		6B150A37230354F200046B3A /* ColumnSet.Spacing.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A2C230354F100046B3A /* ColumnSet.Spacing.json */; };
-		6B150A38230354F200046B3A /* Image.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A2D230354F100046B3A /* Image.Style.json */; };
-		6B150A39230354F200046B3A /* Image.Spacing.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A2E230354F100046B3A /* Image.Spacing.json */; };
-		6B150A3A230354F200046B3A /* ColumnSet.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A2F230354F100046B3A /* ColumnSet.json */; };
-		6B150A3B230354F200046B3A /* Column.Spacing.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A30230354F200046B3A /* Column.Spacing.json */; };
-		6B150A3C230354F200046B3A /* Column.Width.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A31230354F200046B3A /* Column.Width.json */; };
-		6B150A3D230354F200046B3A /* Column.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A32230354F200046B3A /* Column.json */; };
-		6B150A3E230354F200046B3A /* Column.Size.Ratio.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A33230354F200046B3A /* Column.Size.Ratio.json */; };
-		6B150A3F230354F200046B3A /* Column.Width.Ratio.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A34230354F200046B3A /* Column.Width.Ratio.json */; };
-		6B150A40230354F200046B3A /* Image.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A35230354F200046B3A /* Image.json */; };
-		6B22426621E92AF9000ACDA1 /* CustomActionNewType.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B22426521E92AF9000ACDA1 /* CustomActionNewType.mm */; };
 		6B22426A21FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B22426921FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm */; };
-		6B268FE320CEF19400D99C1B /* (null) in Resources */ = {isa = PBXBuildFile; };
-		6B268FE520CEF89100D99C1B /* (null) in Resources */ = {isa = PBXBuildFile; };
 		6B2D8605211143BD008DD972 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B2D8604211143BD008DD972 /* AdaptiveCards.framework */; };
 		6B696CDB2321AC1C00E1D607 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980933215AE6EC0024B79B /* UIKit.framework */; };
 		6B980936215AE8780024B79B /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980935215AE8780024B79B /* AdaptiveCards.framework */; };
@@ -55,8 +21,6 @@
 		6B9BDF7020E18E5B00F13155 /* CustomImageRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B9BDF6F20E18E5B00F13155 /* CustomImageRenderer.mm */; };
 		6B9BDFCC20F6D11F00F13155 /* ADCResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9BDFCB20F6D11F00F13155 /* ADCResolver.m */; };
 		6BA9091B23985CB5009421CA /* Adaptive1.0.png in Resources */ = {isa = PBXBuildFile; fileRef = 6BA9091A23985CB5009421CA /* Adaptive1.0.png */; };
-		6BBE841D23CD1A4900ECA586 /* Action.ShowCard.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BBE841C23CD1A4900ECA586 /* Action.ShowCard.Style.json */; };
-		6BF339D620A665E600DA5973 /* CustomTextBlockRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BF339D420A665E600DA5973 /* CustomTextBlockRenderer.mm */; };
 		6BF339E320A66A3F00DA5973 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; };
 		6BF339E420A66A4D00DA5973 /* AdaptiveCards.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F423C0771EE1FB6100905679 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C0761EE1FB6100905679 /* main.m */; };
@@ -68,9 +32,6 @@
 		F423C0881EE1FB6100905679 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F423C0861EE1FB6100905679 /* LaunchScreen.storyboard */; };
 		F423C0931EE1FB6100905679 /* ADCIOSVisualizerTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = F423C0921EE1FB6100905679 /* ADCIOSVisualizerTests.mm */; };
 		F4D33E861F04705800941E44 /* ACVTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4D33E851F04705800941E44 /* ACVTableViewController.m */; };
-		F4F255721F993CD200A80D39 /* CustomActionOpenURLRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4F255711F993CD200A80D39 /* CustomActionOpenURLRenderer.mm */; };
-		F4F44B75203FE73D00A2F24C /* CustomInputNumberRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4F44B73203FE73D00A2F24C /* CustomInputNumberRenderer.mm */; };
-		F4F44BAA204CF98900A2F24C /* CustomProgressBarRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4F44BA9204CF98900A2F24C /* CustomProgressBarRenderer.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,42 +66,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		6B055763233EC53D000EE24A /* RichTextBlock.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RichTextBlock.json; sourceTree = "<group>"; };
 		6B1509FD22FC98AE00046B3A /* samples */ = {isa = PBXFileReference; lastKnownFileType = folder; name = samples; path = ../../../../samples; sourceTree = "<group>"; };
-		6B1509FF22FCE49600046B3A /* AdaptiveFileBrowserSource.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AdaptiveFileBrowserSource.mm; sourceTree = "<group>"; };
-		6B150A0122FCE4BA00046B3A /* AdaptiveFileBrowserSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdaptiveFileBrowserSource.h; sourceTree = "<group>"; };
 		6B150A032302415000046B3A /* sample.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = sample.json; path = resources/sample.json; sourceTree = SOURCE_ROOT; };
-		6B150A0523033D6B00046B3A /* filebrowserHostConfig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = filebrowserHostConfig.json; path = resources/filebrowserHostConfig.json; sourceTree = SOURCE_ROOT; };
 		6B150A0923034F2800046B3A /* Feedback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Feedback.json; sourceTree = "<group>"; };
-		6B150A0A23034F2800046B3A /* Input.ChoiceSet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Input.ChoiceSet.json; sourceTree = "<group>"; };
 		6B150A0B23034F2800046B3A /* FoodOrder.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FoodOrder.json; sourceTree = "<group>"; };
 		6B150A0C23034F2800046B3A /* Restaurant.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Restaurant.json; sourceTree = "<group>"; };
 		6B150A0D23034F2800046B3A /* ActivityUpdate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ActivityUpdate.json; sourceTree = "<group>"; };
-		6B150A0E23034F2800046B3A /* Image.ImageBaseUrl.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Image.ImageBaseUrl.json; sourceTree = "<group>"; };
-		6B150A15230353AA00046B3A /* TextBlock.Color.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TextBlock.Color.json; sourceTree = "<group>"; };
-		6B150A16230353AB00046B3A /* TextBlock.DateTimeFormatting.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TextBlock.DateTimeFormatting.json; sourceTree = "<group>"; };
-		6B150A17230353AB00046B3A /* TextBlock.Markdown.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TextBlock.Markdown.json; sourceTree = "<group>"; };
-		6B150A18230353AB00046B3A /* TextBlock.MaxLines.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TextBlock.MaxLines.json; sourceTree = "<group>"; };
-		6B150A19230353AB00046B3A /* TextBlock.Size.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TextBlock.Size.json; sourceTree = "<group>"; };
-		6B150A1A230353AB00046B3A /* TextBlock.Lists.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TextBlock.Lists.json; sourceTree = "<group>"; };
-		6B150A1B230353AB00046B3A /* TextBlock.Wrap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TextBlock.Wrap.json; sourceTree = "<group>"; };
-		6B150A1C230353AB00046B3A /* TextBlock.HorizontalAlignment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TextBlock.HorizontalAlignment.json; sourceTree = "<group>"; };
-		6B150A1D230353AB00046B3A /* TextBlock.Weight.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TextBlock.Weight.json; sourceTree = "<group>"; };
-		6B150A1E230353AB00046B3A /* TextBlock.Spacing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TextBlock.Spacing.json; sourceTree = "<group>"; };
-		6B150A1F230353AB00046B3A /* TextBlock.IsSubtle.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TextBlock.IsSubtle.json; sourceTree = "<group>"; };
-		6B150A2B230354F100046B3A /* Image.Size.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Image.Size.json; sourceTree = "<group>"; };
-		6B150A2C230354F100046B3A /* ColumnSet.Spacing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ColumnSet.Spacing.json; sourceTree = "<group>"; };
-		6B150A2D230354F100046B3A /* Image.Style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Image.Style.json; sourceTree = "<group>"; };
-		6B150A2E230354F100046B3A /* Image.Spacing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Image.Spacing.json; sourceTree = "<group>"; };
-		6B150A2F230354F100046B3A /* ColumnSet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ColumnSet.json; sourceTree = "<group>"; };
-		6B150A30230354F200046B3A /* Column.Spacing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Column.Spacing.json; sourceTree = "<group>"; };
-		6B150A31230354F200046B3A /* Column.Width.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Column.Width.json; sourceTree = "<group>"; };
-		6B150A32230354F200046B3A /* Column.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Column.json; sourceTree = "<group>"; };
-		6B150A33230354F200046B3A /* Column.Size.Ratio.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Column.Size.Ratio.json; sourceTree = "<group>"; };
-		6B150A34230354F200046B3A /* Column.Width.Ratio.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Column.Width.Ratio.json; sourceTree = "<group>"; };
-		6B150A35230354F200046B3A /* Image.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Image.json; sourceTree = "<group>"; };
-		6B22426421E92AF9000ACDA1 /* CustomActionNewType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomActionNewType.h; sourceTree = "<group>"; };
-		6B22426521E92AF9000ACDA1 /* CustomActionNewType.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomActionNewType.mm; sourceTree = "<group>"; };
 		6B22426921FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ADCIOSVisualizerUITests.mm; sourceTree = "<group>"; };
 		6B2D8604211143BD008DD972 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B980930215AE4310024B79B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -151,9 +82,6 @@
 		6B9BDFCB20F6D11F00F13155 /* ADCResolver.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADCResolver.m; sourceTree = "<group>"; };
 		6B9BDFCD20F6D16E00F13155 /* ADCResolver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADCResolver.h; sourceTree = "<group>"; };
 		6BA9091A23985CB5009421CA /* Adaptive1.0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Adaptive1.0.png; path = ../../../../../assets/Adaptive1.0.png; sourceTree = "<group>"; };
-		6BBE841C23CD1A4900ECA586 /* Action.ShowCard.Style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.ShowCard.Style.json; path = ../../../../../samples/v1.0/Elements/Action.ShowCard.Style.json; sourceTree = "<group>"; };
-		6BF339D420A665E600DA5973 /* CustomTextBlockRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomTextBlockRenderer.mm; sourceTree = "<group>"; };
-		6BF339D520A665E600DA5973 /* CustomTextBlockRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTextBlockRenderer.h; sourceTree = "<group>"; };
 		6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F423C0721EE1FB6100905679 /* ADCIOSVisualizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ADCIOSVisualizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F423C0761EE1FB6100905679 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -172,14 +100,6 @@
 		F423C0991EE1FB6100905679 /* ADCIOSVisualizerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ADCIOSVisualizerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F423C09F1EE1FB6100905679 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F49CECBF1F62412E00D7FB55 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F4D33E841F04705800941E44 /* ACVTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACVTableViewController.h; sourceTree = "<group>"; };
-		F4D33E851F04705800941E44 /* ACVTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACVTableViewController.m; sourceTree = "<group>"; };
-		F4F255711F993CD200A80D39 /* CustomActionOpenURLRenderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomActionOpenURLRenderer.mm; sourceTree = "<group>"; };
-		F4F255731F9946B200A80D39 /* CustomActionOpenURLRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomActionOpenURLRenderer.h; sourceTree = "<group>"; };
-		F4F44B73203FE73D00A2F24C /* CustomInputNumberRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomInputNumberRenderer.mm; sourceTree = "<group>"; };
-		F4F44B74203FE73D00A2F24C /* CustomInputNumberRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomInputNumberRenderer.h; sourceTree = "<group>"; };
-		F4F44BA8204CF98900A2F24C /* CustomProgressBarRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomProgressBarRenderer.h; sourceTree = "<group>"; };
-		F4F44BA9204CF98900A2F24C /* CustomProgressBarRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomProgressBarRenderer.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -225,36 +145,10 @@
 		6B150A0823034DAB00046B3A /* TestFiles */ = {
 			isa = PBXGroup;
 			children = (
-				6BBE841C23CD1A4900ECA586 /* Action.ShowCard.Style.json */,
 				6B150A0D23034F2800046B3A /* ActivityUpdate.json */,
-				6B150A32230354F200046B3A /* Column.json */,
-				6B150A33230354F200046B3A /* Column.Size.Ratio.json */,
-				6B150A30230354F200046B3A /* Column.Spacing.json */,
-				6B150A31230354F200046B3A /* Column.Width.json */,
-				6B150A34230354F200046B3A /* Column.Width.Ratio.json */,
-				6B150A2F230354F100046B3A /* ColumnSet.json */,
-				6B150A2C230354F100046B3A /* ColumnSet.Spacing.json */,
 				6B150A0923034F2800046B3A /* Feedback.json */,
 				6B150A0B23034F2800046B3A /* FoodOrder.json */,
-				6B150A0E23034F2800046B3A /* Image.ImageBaseUrl.json */,
-				6B150A35230354F200046B3A /* Image.json */,
-				6B150A2B230354F100046B3A /* Image.Size.json */,
-				6B150A2E230354F100046B3A /* Image.Spacing.json */,
-				6B150A2D230354F100046B3A /* Image.Style.json */,
-				6B150A0A23034F2800046B3A /* Input.ChoiceSet.json */,
 				6B150A0C23034F2800046B3A /* Restaurant.json */,
-				6B055763233EC53D000EE24A /* RichTextBlock.json */,
-				6B150A15230353AA00046B3A /* TextBlock.Color.json */,
-				6B150A16230353AB00046B3A /* TextBlock.DateTimeFormatting.json */,
-				6B150A1C230353AB00046B3A /* TextBlock.HorizontalAlignment.json */,
-				6B150A1F230353AB00046B3A /* TextBlock.IsSubtle.json */,
-				6B150A1A230353AB00046B3A /* TextBlock.Lists.json */,
-				6B150A17230353AB00046B3A /* TextBlock.Markdown.json */,
-				6B150A18230353AB00046B3A /* TextBlock.MaxLines.json */,
-				6B150A19230353AB00046B3A /* TextBlock.Size.json */,
-				6B150A1E230353AB00046B3A /* TextBlock.Spacing.json */,
-				6B150A1D230353AB00046B3A /* TextBlock.Weight.json */,
-				6B150A1B230353AB00046B3A /* TextBlock.Wrap.json */,
 			);
 			path = TestFiles;
 			sourceTree = "<group>";
@@ -307,28 +201,14 @@
 		F423C0741EE1FB6100905679 /* ADCIOSVisualizer */ = {
 			isa = PBXGroup;
 			children = (
-				F4D33E841F04705800941E44 /* ACVTableViewController.h */,
-				F4D33E851F04705800941E44 /* ACVTableViewController.m */,
 				F423C0811EE1FB6100905679 /* ADCIOSVisualizer.xcdatamodeld */,
 				6B9BDFCD20F6D16E00F13155 /* ADCResolver.h */,
 				6B9BDFCB20F6D11F00F13155 /* ADCResolver.m */,
 				F423C0781EE1FB6100905679 /* AppDelegate.h */,
 				F423C0791EE1FB6100905679 /* AppDelegate.m */,
 				F423C0841EE1FB6100905679 /* Assets.xcassets */,
-				F4F255731F9946B200A80D39 /* CustomActionOpenURLRenderer.h */,
-				F4F255711F993CD200A80D39 /* CustomActionOpenURLRenderer.mm */,
-				6B22426421E92AF9000ACDA1 /* CustomActionNewType.h */,
-				6B22426521E92AF9000ACDA1 /* CustomActionNewType.mm */,
-				6B1509FF22FCE49600046B3A /* AdaptiveFileBrowserSource.mm */,
-				6B150A0122FCE4BA00046B3A /* AdaptiveFileBrowserSource.h */,
 				6B9BDF6E20E18E5B00F13155 /* CustomImageRenderer.h */,
 				6B9BDF6F20E18E5B00F13155 /* CustomImageRenderer.mm */,
-				F4F44B74203FE73D00A2F24C /* CustomInputNumberRenderer.h */,
-				F4F44B73203FE73D00A2F24C /* CustomInputNumberRenderer.mm */,
-				F4F44BA8204CF98900A2F24C /* CustomProgressBarRenderer.h */,
-				F4F44BA9204CF98900A2F24C /* CustomProgressBarRenderer.mm */,
-				6BF339D520A665E600DA5973 /* CustomTextBlockRenderer.h */,
-				6BF339D420A665E600DA5973 /* CustomTextBlockRenderer.mm */,
 				F423C0891EE1FB6100905679 /* Info.plist */,
 				6BA9091A23985CB5009421CA /* Adaptive1.0.png */,
 				F423C0861EE1FB6100905679 /* LaunchScreen.storyboard */,
@@ -476,48 +356,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6B150A36230354F200046B3A /* Image.Size.json in Resources */,
 				6B150A1123034F2800046B3A /* FoodOrder.json in Resources */,
-				6B268FE520CEF89100D99C1B /* (null) in Resources */,
-				6B150A37230354F200046B3A /* ColumnSet.Spacing.json in Resources */,
 				6B1509FE22FC98AE00046B3A /* samples in Resources */,
-				6B268FE320CEF19400D99C1B /* (null) in Resources */,
-				6B150A2A230353AB00046B3A /* TextBlock.IsSubtle.json in Resources */,
-				6B150A29230353AB00046B3A /* TextBlock.Spacing.json in Resources */,
-				6B14FC5D2113BC2200A11CC5 /* (null) in Resources */,
-				6B150A3E230354F200046B3A /* Column.Size.Ratio.json in Resources */,
 				6B150A40230354F200046B3A /* Image.json in Resources */,
-				6B150A042302415000046B3A /* sample.json in Resources */,
-				30860BC220C9B5C9009F9D99 /* (null) in Resources */,
-				6B150A3C230354F200046B3A /* Column.Width.json in Resources */,
-				6B150A20230353AB00046B3A /* TextBlock.Color.json in Resources */,
-				6B150A25230353AB00046B3A /* TextBlock.Lists.json in Resources */,
 				F423C0881EE1FB6100905679 /* LaunchScreen.storyboard in Resources */,
 				6BA9091B23985CB5009421CA /* Adaptive1.0.png in Resources */,
-				6B150A1423034F2800046B3A /* Image.ImageBaseUrl.json in Resources */,
-				6B150A26230353AB00046B3A /* TextBlock.Wrap.json in Resources */,
-				6B150A39230354F200046B3A /* Image.Spacing.json in Resources */,
-				6B150A24230353AB00046B3A /* TextBlock.Size.json in Resources */,
-				6B150A3B230354F200046B3A /* Column.Spacing.json in Resources */,
-				6B150A38230354F200046B3A /* Image.Style.json in Resources */,
 				F423C0851EE1FB6100905679 /* Assets.xcassets in Resources */,
-				6B055764233EC53D000EE24A /* RichTextBlock.json in Resources */,
-				6B150A1023034F2800046B3A /* Input.ChoiceSet.json in Resources */,
-				6B150A22230353AB00046B3A /* TextBlock.Markdown.json in Resources */,
-				6B150A0623033D6C00046B3A /* filebrowserHostConfig.json in Resources */,
-				6B150A3A230354F200046B3A /* ColumnSet.json in Resources */,
-				6B150A28230353AB00046B3A /* TextBlock.Weight.json in Resources */,
 				6B150A1323034F2800046B3A /* ActivityUpdate.json in Resources */,
-				6B150A21230353AB00046B3A /* TextBlock.DateTimeFormatting.json in Resources */,
-				6B150A3D230354F200046B3A /* Column.json in Resources */,
 				F423C0801EE1FB6100905679 /* Main.storyboard in Resources */,
-				6B150A3F230354F200046B3A /* Column.Width.Ratio.json in Resources */,
-				6B150A23230353AB00046B3A /* TextBlock.MaxLines.json in Resources */,
 				6B150A1223034F2800046B3A /* Restaurant.json in Resources */,
 				6B150A0F23034F2800046B3A /* Feedback.json in Resources */,
-				30860BC420C9B5C9009F9D99 /* (null) in Resources */,
-				6BBE841D23CD1A4900ECA586 /* Action.ShowCard.Style.json in Resources */,
-				6B150A27230353AB00046B3A /* TextBlock.HorizontalAlignment.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -543,18 +391,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				6B9BDFCC20F6D11F00F13155 /* ADCResolver.m in Sources */,
-				F4F44BAA204CF98900A2F24C /* CustomProgressBarRenderer.mm in Sources */,
 				F4D33E861F04705800941E44 /* ACVTableViewController.m in Sources */,
-				6BF339D620A665E600DA5973 /* CustomTextBlockRenderer.mm in Sources */,
 				6B9BDF7020E18E5B00F13155 /* CustomImageRenderer.mm in Sources */,
 				F423C07D1EE1FB6100905679 /* ViewController.m in Sources */,
 				F423C07A1EE1FB6100905679 /* AppDelegate.m in Sources */,
-				6B22426621E92AF9000ACDA1 /* CustomActionNewType.mm in Sources */,
-				F4F255721F993CD200A80D39 /* CustomActionOpenURLRenderer.mm in Sources */,
-				6B150A0022FCE49600046B3A /* AdaptiveFileBrowserSource.mm in Sources */,
 				F423C0831EE1FB6100905679 /* ADCIOSVisualizer.xcdatamodeld in Sources */,
 				F423C0771EE1FB6100905679 /* main.m in Sources */,
-				F4F44B75203FE73D00A2F24C /* CustomInputNumberRenderer.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

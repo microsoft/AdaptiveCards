@@ -12,18 +12,13 @@
 
 @interface ViewController : UIViewController <ACVTableViewControllerDelegate, ACRActionDelegate, ACRMediaDelegate, ACRIBaseActionSetRenderer>
 
-@property (strong, nonatomic) ACVTableViewController *ACVTabVC;
-@property (strong, nonatomic) UITextView *editView;
-@property (strong, nonatomic) UIStackView *buttonLayout;
-@property (strong, nonatomic) UIStackView *compositeFileBrowserView;
-@property (strong, nonatomic) UIButton *tryButton;
-@property (strong, nonatomic) UIButton *applyButton;
-@property (strong, nonatomic) UIButton *enableCustomRendererButton;
-@property (strong, nonatomic) NSString *editableStr;
-@property (strong, nonatomic) NSString *hostconfig;
 @property (strong, nonatomic) ACOHostConfig *config;
 @property (strong, nonatomic) UILabel *userResponseLabel;
 @property ACRView *curView;
 @property UIScrollView *scrView;
+
+@property (strong, nonatomic) NSMutableArray *adaptiveCards;
+
+@property (strong, nonatomic) UIView *lastRenderedView;
 
 @end
