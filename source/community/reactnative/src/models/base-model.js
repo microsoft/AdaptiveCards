@@ -24,16 +24,13 @@ export class BaseModel {
         if (payload.selectAction) {
             this.selectAction = payload.selectAction;
         }
-        if (payload.isVisible){
-            this.isVisible = payload.isVisible;
-        }
-        if (payload.fallback){
-            if (payload.fallback == "drop"){
+        this.isVisible = payload.isVisible !== undefined ? payload.isVisible : true;
+        if (payload.fallback) {
+            if (payload.fallback == "drop") {
                 this.fallbackType = "drop"
-            }else{
+            } else {
                 this.fallback = ModelFactory.createElement(payload.fallback, parent);
             }
         }
-        
     }
 }
