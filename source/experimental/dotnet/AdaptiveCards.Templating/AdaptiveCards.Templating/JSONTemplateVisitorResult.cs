@@ -84,10 +84,12 @@ namespace AdaptiveCards.Templating
             {
                 if (elem.IsExpanded == false)
                 {
+                    output.Append('{');
                     foreach (var word in elem.Keys.Keys)
                     {
                         output.Append(word);
                     }
+                    output.Append('}');
                 }
                 else
                 {

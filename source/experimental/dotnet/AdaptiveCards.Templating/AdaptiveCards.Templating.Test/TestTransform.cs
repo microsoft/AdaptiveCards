@@ -351,7 +351,7 @@ namespace AdaptiveCards.Templating.Test
             result1.Append(result2);
             result1.Append(result3);
 
-            Assert.AreEqual(result1.ToString(), "hello world!");
+            Assert.AreEqual(result1.ToString(), "hello{name}!");
         }
     }
 }
