@@ -71,8 +71,20 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <Content Include="..\..\..\samples\**\Scenarios\*.json">
-      <Link>Samples\%(Filename).json</Link>
+    <Content Include="..\..\..\samples\v1.1\Scenarios\ProductVideo.json">
+      <Link>Samples\ProductVideo.json</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Scenarios\Agenda.json">
+      <Link>Samples\Agenda.json</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Scenarios\ExpenseReport.json">
+      <Link>Samples\ExpenseReport.json</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Scenarios\FlightDetails.json">
+      <Link>Samples\FlightDetails.json</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Scenarios\SimpleFallback.json">
+      <Link>Samples\SimpleFallback.json</Link>
     </Content>
     <Content Include="..\..\..\schemas\**\adaptive-card.json">
       <Link>Schemas\%(RecursiveDir)adaptive-card.json</Link>
@@ -102,6 +114,48 @@
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
     <Content Include="HostConfigs\DefaultHostConfig.json" />
     <None Include="AdaptiveCardVisualizer_TemporaryKey.pfx" />
+    <Content Include="Samples\ActivityUpdate.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\CalendarReminder.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\FlightItinerary.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\FlightUpdate.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\FoodOrder.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\ImageGallery.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\InputForm.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\Inputs.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\Restaurant.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\Solitaire.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\SportingEvent.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\StockUpdate.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\WeatherCompact.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\WeatherLarge.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Symbols\down.png" />

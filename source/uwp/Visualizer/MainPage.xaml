@@ -15,137 +15,22 @@
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-        <!--Top buttons-->
-        <CommandBar Opening="CommandBar_Opening" Closing="CommandBar_Closing">
-            <CommandBar.Content>
-                <StackPanel x:Name="StackPanelMainAppBarButtons" Orientation="Horizontal">
-                    <AppBarButton
-                        Icon="Add"
-                        Label="New card"
-                        x:Name="AppBarNew"
-                        Click="AppBarNew_Click"
-                        IsCompact="True"/>
-                    <AppBarButton
-                        x:Name="AppBarOpen"
-                        Icon="OpenFile"
-                        Label="Open file"
-                        Click="AppBarOpen_Click"
-                        IsCompact="True"/>
-                    <AppBarButton
-                        x:Name="AppBarSave"
-                        Icon="Save"
-                        Label="Save file"
-                        Click="AppBarSave_Click"
-                        IsCompact="True"/>
-                    <AppBarToggleButton
-                        x:Name="AppBarHostConfigEditor"
-                        Icon="Setting"
-                        Label="Host config"
-                        IsCompact="True"
-                        Click="AppBarHostConfigEditor_Click"/>
-                </StackPanel>
-            </CommandBar.Content>
-            <CommandBar.SecondaryCommands>
-                <AppBarToggleButton
-                    Label="Use fixed dimensions"
-                    IsChecked="{Binding UseFixedDimensions, Mode=TwoWay}"/>
-            </CommandBar.SecondaryCommands>
-        </CommandBar>
-
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="140"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            
-            <!--Tabs-->
-            <ListView
-                x:Name="ListViewTabs"
-                ItemsSource="{Binding OpenDocuments}"
-                SelectedItem="{Binding CurrentDocument, Mode=TwoWay}"
-                Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}"
-                ItemContainerStyle="{StaticResource HorizontalListViewItemContainerStyle}"
-                AllowDrop="True"
-                CanReorderItems="True">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <local:TabView />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-
-            <!--Tab page-->
-            <local:DocumentView
-                Grid.Column="1"
-                DataContext="{Binding CurrentDocument}"
-                Visibility="{Binding CurrentDocument, Converter={StaticResource NotNullToVisibilityConverter}}"/>
-
-        </Grid>
-        
-        <!--Host config editor-->
-        <Grid
-            Grid.Row="1"
-            x:Name="HostConfigEditorView"
-            Visibility="Collapsed">
-            
-            <Rectangle
-                Fill="Black"
-                Opacity="0.3"
-                Tapped="HostConfigTransparentBackdrop_Tapped"/>
-
-            <!--We apply padding on right to keep the preview visible-->
-            <Grid
-                Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-                BorderThickness="0,0,8,0"
-                BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}"
-                Margin="0,0,320,0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <TextBlock
-                    Text="Host config"
-                    Style="{ThemeResource SubtitleTextBlockStyle}"
-                    Margin="6"/>
-                <local:GenericDocumentView
-                    Grid.Row="1"
-                    DataContext="{Binding HostConfigEditor}"/>
-            </Grid>
-        </Grid>
-
-
-
-
-
-
-
-
-
-        <!-- JSON input panel-->
-        <!--<Grid Grid.Column="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="5"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <TextBlock Text="JSON:" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Row="0"/>
-            <RichEditBox x:Name="adaptiveJson" Grid.Row="2"/>
-        </Grid>-->
-
-        <!-- Render outputs-->
-        <!--<Grid Grid.Column="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <TextBlock Text="Rendered As Xaml Output:" Grid.Row="0"/>
-            <ContentPresenter x:Name="renderedXamlPresenter" Grid.Row="1"/>
-        </Grid>-->
+        <ScrollViewer x:Name="ScrollViewLayout" 
+                      Grid.Row="1"
+                      Grid.Column="1" 
+                      HorizontalScrollBarVisibility="Disabled" 
+                      VerticalScrollBarVisibility="Visible">
+            <StackPanel x:Name="Layout">
+                
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
-    
 </Page>

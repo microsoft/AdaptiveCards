@@ -19,6 +19,11 @@ using Windows.UI.Xaml.Navigation;
 
 using AdaptiveCards.Rendering.Uwp;
 using AdaptiveCardVisualizer.ViewModel;
+using System.Threading.Tasks;
+
+using Newtonsoft.Json;
+using Windows.Data.Json;
+using System.Diagnostics;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -29,101 +34,109 @@ namespace AdaptiveCardVisualizer
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        public MainPageViewModel ViewModel { get; set; }
+        // public MainPageViewModel ViewModel { get; set; }
+
+        private AdaptiveCardRenderer _renderer;
+
+
+        private ScrollViewer _scrollView;
+        private StackPanel _layout;
+        
+        private RenderedAdaptiveCard _renderedAdaptiveCard;
+        private List<AdaptiveCard> _parsedAdaptiveCards = new List<AdaptiveCard>();
 
         public MainPage()
         {
             this.InitializeComponent();
 
-            Load();
+            _scrollView = (ScrollViewer)this.FindName("ScrollViewLayout");
+            _layout = (StackPanel)this.FindName("Layout");
+
+            InitializeRenderer(new AdaptiveHostConfig());
+
+            DoEverything();
         }
 
-        private async void Load()
+        private async Task DoEverything()
         {
-            IsEnabled = false;
-
-            ViewModel = await MainPageViewModel.LoadAsync();
-            DataContext = ViewModel;
-
-            IsEnabled = true;
+            await LoadAllCardsAsync();
+            RenderCards();
         }
 
-        private void loadFileButton_Clicked(object sender, RoutedEventArgs args)
+        private async Task LoadAllCardsAsync()
         {
-            ViewModel.OpenDocument();
-        }
+            StorageFolder installationFolder = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFolderAsync("Samples");
+            var files = await installationFolder.GetFilesAsync();
 
-        private void ButtonNewCard_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.NewDocument();
-        }
-
-        private void AppBarNew_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.NewDocument();
-        }
-
-        private void AppBarOpen_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.OpenDocument();
-        }
-
-        private async void AppBarSave_Click(object sender, RoutedEventArgs e)
-        {
-            if (ViewModel.CurrentDocument == null)
+            foreach (var file in files)
             {
-                return;
-            }
-
-            IsEnabled = false;
-            await ViewModel.CurrentDocument.SaveAsync();
-            IsEnabled = true;
-        }
-
-        private void CommandBar_Opening(object sender, object e)
-        {
-            SetIsCompactOnAppBarButtons(false);
-        }
-
-        private void CommandBar_Closing(object sender, object e)
-        {
-            SetIsCompactOnAppBarButtons(true);
-        }
-
-        private void SetIsCompactOnAppBarButtons(bool isCompact)
-        {
-            foreach (var button in StackPanelMainAppBarButtons.Children.OfType<ICommandBarElement>())
-            {
-                button.IsCompact = isCompact;
-            }
-        }
-
-        private void AppBarHostConfigEditor_Click(object sender, RoutedEventArgs e)
-        {
-            SetIsInHostConfigEditor(!IsInHostConfigEditor);
-        }
-
-        public bool IsInHostConfigEditor { get; private set; }
-
-        private void SetIsInHostConfigEditor(bool isInHostConfigEditor)
-        {
-            IsInHostConfigEditor = isInHostConfigEditor;
-
-            foreach (var button in StackPanelMainAppBarButtons.Children.OfType<ButtonBase>())
-            {
-                if (button != AppBarHostConfigEditor)
+                if (File.Exists(file.Path))
                 {
-                    button.IsEnabled = !isInHostConfigEditor;
+                    string contents = File.ReadAllText(file.Path);
+
+                    JsonObject jsonObject;
+                    if (JsonObject.TryParse(contents, out jsonObject))
+                    {
+                        AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(jsonObject);
+                        _parsedAdaptiveCards.Add(parseResult.AdaptiveCard);
+
+
+                    }
                 }
             }
-
-            HostConfigEditorView.Visibility = isInHostConfigEditor ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        private void HostConfigTransparentBackdrop_Tapped(object sender, TappedRoutedEventArgs e)
+        private void RenderCards()
         {
-            AppBarHostConfigEditor.IsChecked = false;
-            SetIsInHostConfigEditor(false);
+
+            for (int i = 0; i < 30; ++i)
+            {
+                AdaptiveCard adaptiveCard = _parsedAdaptiveCards[i % _parsedAdaptiveCards.Count];
+
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
+                RenderedAdaptiveCard renderedAdaptiveCard = _renderer.RenderAdaptiveCard(adaptiveCard);
+                stopwatch.Stop();
+                Debug.WriteLine("Elapsed " + stopwatch.ElapsedMilliseconds);
+
+                FrameworkElement visualAdaptiveCard = renderedAdaptiveCard.FrameworkElement;
+                _layout.Children.Add(visualAdaptiveCard);
+            }
+        }
+        
+        public string SerializeActionEventArgsToString(AdaptiveActionEventArgs args)
+        {
+            string answer = "Action invoked!";
+
+            answer += "\nType: " + args.Action.ActionType;
+
+            if (args.Action is AdaptiveSubmitAction)
+            {
+                answer += "\nData: " + (args.Action as AdaptiveSubmitAction).DataJson?.Stringify();
+            }
+            else if (args.Action is AdaptiveOpenUrlAction)
+            {
+                answer += "\nUrl: " + (args.Action as AdaptiveOpenUrlAction).Url;
+            }
+
+            answer += "\nInputs: " + args.Inputs.AsJson().Stringify();
+
+            return answer;
+        }
+
+        public void InitializeRenderer(AdaptiveHostConfig hostConfig)
+        {
+            _renderer = new AdaptiveCardRenderer();
+            if (hostConfig != null)
+            {
+                _renderer.HostConfig = hostConfig;
+            }
+            
+            if (Settings.UseFixedDimensions)
+            {
+                _renderer.SetFixedDimensions(320, 180);
+            }
+
         }
     }
 }
