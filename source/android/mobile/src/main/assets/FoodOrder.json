@@ -20,15 +20,15 @@
 			"images": [
 				{
 					"type": "Image",
-					"url": "https://contososcubademo.azurewebsites.net/assets/steak.jpg"
+					"url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNUjn1UDwAD8AHjVSWUxQAAAABJRU5ErkJggg=="
 				},
 				{
 					"type": "Image",
-					"url": "https://contososcubademo.azurewebsites.net/assets/chicken.jpg"
+					"url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNUjn1UDwAD8AHjVSWUxQAAAABJRU5ErkJggg=="
 				},
 				{
 					"type": "Image",
-					"url": "https://contososcubademo.azurewebsites.net/assets/tofu.jpg"
+					"url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNUjn1UDwAD8AHjVSWUxQAAAABJRU5ErkJggg=="
 				}
 			]
 		}

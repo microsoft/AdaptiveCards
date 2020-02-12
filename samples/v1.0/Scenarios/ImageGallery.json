@@ -20,39 +20,39 @@
 			"images": [
 				{
 					"type": "Image",
-					"url": "https://picsum.photos/200/200?image=100"
+					"url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNUjn1UDwAD8AHjVSWUxQAAAABJRU5ErkJggg=="
 				},
 				{
 					"type": "Image",
-					"url": "https://picsum.photos/300/200?image=200"
+					"url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNUjn1UDwAD8AHjVSWUxQAAAABJRU5ErkJggg=="
 				},
 				{
 					"type": "Image",
-					"url": "https://picsum.photos/300/200?image=301"
+					"url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNUjn1UDwAD8AHjVSWUxQAAAABJRU5ErkJggg=="
 				},
 				{
 					"type": "Image",
-					"url": "https://picsum.photos/200/200?image=400"
+					"url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNUjn1UDwAD8AHjVSWUxQAAAABJRU5ErkJggg=="
 				},
 				{
 					"type": "Image",
-					"url": "https://picsum.photos/300/200?image=500"
+					"url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNUjn1UDwAD8AHjVSWUxQAAAABJRU5ErkJggg=="
 				},
 				{
 					"type": "Image",
-					"url": "https://picsum.photos/200/200?image=600"
+					"url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNUjn1UDwAD8AHjVSWUxQAAAABJRU5ErkJggg=="
 				},
 				{
 					"type": "Image",
-					"url": "https://picsum.photos/300/200?image=700"
+					"url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNUjn1UDwAD8AHjVSWUxQAAAABJRU5ErkJggg=="
 				},
 				{
 					"type": "Image",
-					"url": "https://picsum.photos/300/200?image=800"
+					"url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNUjn1UDwAD8AHjVSWUxQAAAABJRU5ErkJggg=="
 				},
 				{
 					"type": "Image",
-					"url": "https://picsum.photos/300/200?image=900"
+					"url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNUjn1UDwAD8AHjVSWUxQAAAABJRU5ErkJggg=="
 				}
 			]
 		}

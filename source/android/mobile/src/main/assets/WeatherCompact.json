@@ -24,7 +24,7 @@
 					"items": [
 						{
 							"type": "Image",
-							"url": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png",
+							"url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNUjn1UDwAD8AHjVSWUxQAAAABJRU5ErkJggg==",
 							"size": "small"
 						}
 					]

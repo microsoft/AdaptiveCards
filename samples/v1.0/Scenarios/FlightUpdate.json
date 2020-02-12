@@ -14,7 +14,7 @@
 						{
 							"type": "Image",
 							"size": "small",
-							"url": "https://adaptivecards.io/content/airplane.png"
+							"url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNUjn1UDwAD8AHjVSWUxQAAAABJRU5ErkJggg=="
 						}
 					]
 				},
@@ -204,7 +204,7 @@
 						},
 						{
 							"type": "Image",
-							"url": "https://adaptivecards.io/content/airplane.png",
+							"url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNUjn1UDwAD8AHjVSWUxQAAAABJRU5ErkJggg==",
 							"size": "small"
 						}
 					]

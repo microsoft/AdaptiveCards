@@ -2,7 +2,7 @@
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"version": "0.5",
-	"backgroundImage": "https://download-ssl.msgamestudios.com/content/mgs/ce/production/SolitaireWin10/dev/adapative_card_assets/v1/card_background.png",
+	"backgroundImage": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNUjn1UDwAD8AHjVSWUxQAAAABJRU5ErkJggg==",
 	"body": [
 		{
 			"type": "ColumnSet",
@@ -13,7 +13,7 @@
 					"items": [
 						{
 							"type": "Image",
-							"url": "https://download-ssl.msgamestudios.com/content/mgs/ce/production/SolitaireWin10/dev/adapative_card_assets/v1/tile_spider.png",
+							"url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNUjn1UDwAD8AHjVSWUxQAAAABJRU5ErkJggg==",
 							"size": "stretch"
 						}
 					]

@@ -41,7 +41,7 @@
 					"items": [
 						{
 							"type": "Image",
-							"url": "https://picsum.photos/300?image=882",
+							"url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNUjn1UDwAD8AHjVSWUxQAAAABJRU5ErkJggg==",
 							"size": "auto"
 						}
 					]
