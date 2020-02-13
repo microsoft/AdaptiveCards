@@ -22,8 +22,46 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Antlr4.Runtime.Standard" Version="4.7.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <Compile Remove="AdaptiveCardsTemplatingBaseVisitor.cs" />
+    <Compile Remove="AdaptiveCardsTemplatingLexer.cs" />
+    <Compile Remove="AdaptiveCardsTemplatingParser.cs" />
+    <Compile Remove="AdaptiveCardsTemplatingVisitor.cs" />
+    <Compile Remove="JSONLexer.cs" />
+    <Compile Remove="JSONParser.cs" />
+    <Compile Remove="JSONParserBaseVisitor.cs" />
+    <Compile Remove="JSONParserVisitor.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="AdaptiveCardsTemplating.interp" />
+    <None Remove="AdaptiveCardsTemplating.tokens" />
+    <None Remove="AdaptiveCardsTemplatingLexer.interp" />
+    <None Remove="AdaptiveCardsTemplatingLexer.tokens" />
+    <None Remove="JSONLexer.interp" />
+    <None Remove="JSONLexer.tokens" />
+    <None Remove="JSONParser.interp" />
+    <None Remove="JSONParser.tokens" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Antlr4" Version="4.6.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Bot.Expressions" Version="4.7.2-preview" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Antlr4 Update="AdaptiveCardsTemplating.g4">
+      <Listener>false</Listener>
+    </Antlr4>
+    <Antlr4 Update="JSONLexer.g4">
+      <Listener>false</Listener>
+    </Antlr4>
+    <Antlr4 Update="JSONParser.g4">
+      <Listener>false</Listener>
+    </Antlr4>
   </ItemGroup>
 
 </Project>

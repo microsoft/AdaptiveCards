@@ -2,6 +2,7 @@ using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
+using Microsoft.Bot.Expressions;
 
 namespace AdaptiveCards.Templating.Test
 {
@@ -330,7 +331,7 @@ namespace AdaptiveCards.Templating.Test
         [TestMethod]
         public void TestCreationOfPartialResult()
         {
-            ICharStream stream = CharStreams.fromstring("{name}");
+            AntlrInputStream stream = new AntlrInputStream("{name}");
             AdaptiveCardsTemplatingLexer lexer = new AdaptiveCardsTemplatingLexer(stream);
             ITokenStream tokens = new CommonTokenStream(lexer);
             AdaptiveCardsTemplatingParser parser = new AdaptiveCardsTemplatingParser(tokens)
@@ -355,6 +356,45 @@ namespace AdaptiveCards.Templating.Test
             result1.Append(result3);
 
             Assert.AreEqual(result1.ToString(), "hello{name}!");
+        }
+    }
+
+    [TestClass]
+    public class TestCEL
+    {
+        [TestMethod]
+        public void TestCreation()
+        {
+            string jsonData = @"{
+            ""person"": {
+                ""firstName"": ""Super"",
+                ""lastName"": ""man""
+                }
+            }";
+
+            JToken token = JToken.Parse(jsonData);
+            var engine = new ExpressionEngine();
+            var expr = engine.Parse("person.firstName");
+            var result = expr.TryEvaluate(token);
+            Assert.AreEqual("Super", result.value);
+        }
+
+        [TestMethod]
+        public void TestSimpleToString()
+        {
+            string jsonData = @"{
+            ""person"": {
+                ""firstName"": ""Super"",
+                ""lastName"": ""man"",
+                ""age"" : 79 
+                }
+            }";
+
+            JToken token = JToken.Parse(jsonData);
+            var engine = new ExpressionEngine();
+            var expr = engine.Parse("string(person.age)");
+            var result = expr.TryEvaluate(token);
+            Assert.AreEqual("79", result.value);
         }
     }
 }

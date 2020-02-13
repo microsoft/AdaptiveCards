@@ -163,7 +163,7 @@ namespace AdaptiveCards.Templating
             if (node.Symbol.Type == JSONLexer.TEMPLATELITERAL)
             {
                 // This is the code where we replace it with CEL
-                ICharStream stream = CharStreams.fromstring(node.GetText());
+                AntlrInputStream stream = new AntlrInputStream(node.GetText());
                 AdaptiveCardsTemplatingLexer lexer = new AdaptiveCardsTemplatingLexer(stream);
                 ITokenStream tokens = new CommonTokenStream(lexer);
                 AdaptiveCardsTemplatingParser parser = new AdaptiveCardsTemplatingParser(tokens)

@@ -15,11 +15,13 @@ namespace AdaptiveCards.Templating
         // does this api handles the case where json template also has data in it?
         public string Transform(string jsonTemplate, string jsonData)
         {
-            ICharStream stream = CharStreams.fromstring(jsonTemplate);
+            AntlrInputStream stream = new AntlrInputStream(jsonTemplate);
             ITokenSource lexer = new JSONLexer(stream);
             ITokenStream tokens = new CommonTokenStream(lexer);
-            JSONParser parser = new JSONParser(tokens);
-            parser.BuildParseTree = true;
+            JSONParser parser = new JSONParser(tokens)
+            {
+                BuildParseTree = true
+            };
             IParseTree tree = parser.json();
             JSONTemplateVisitor eval = new JSONTemplateVisitor();
             return eval.Visit(tree).ToString();
