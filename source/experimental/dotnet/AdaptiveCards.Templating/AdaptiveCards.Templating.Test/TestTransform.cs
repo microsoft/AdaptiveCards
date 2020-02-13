@@ -189,7 +189,8 @@ namespace AdaptiveCards.Templating.Test
     ""body"": [
         {
             ""type"": ""TextBlock"",
-            ""text"": ""Your computer has been up for {machines.uptime}""
+            ""text"": ""{machines.id}"",
+            ""color"": ""{if(machines.uptime >= 3000, 'good', 'attention')}""
         }
     ]
 }";
@@ -202,7 +203,8 @@ namespace AdaptiveCards.Templating.Test
     ""body"": [
         {
             ""type"": ""TextBlock"",
-            ""text"": ""Hello Andrew""
+            ""text"": ""primary"",
+            ""color"": ""attention""
         }
     ]
 }", cardJson);
