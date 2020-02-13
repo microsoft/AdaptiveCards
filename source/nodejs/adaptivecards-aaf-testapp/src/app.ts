@@ -7,9 +7,17 @@ import "adaptivecards-aaf/dist/adaptivecards.css";
 import { LocalChannelAdapter } from "./local-channel-adapter";
 
 window.onload = function() {
-    let host = new AAF.AdaptiveAppHost();
-    host.channelAdapter = new LocalChannelAdapter();
-    host.initialize(Shared.sampleCard, Shared.sampleData);
+    let sampleCardAndData = Shared.sampleCard;
+    sampleCardAndData["$data"] = Shared.sampleData;
 
-    document.getElementById("appHost").appendChild(host.renderedElement);
+    let applet = new AAF.AdaptiveApplet();
+    applet.channelAdapter = new LocalChannelAdapter();
+    applet.setCard(sampleCardAndData);
+    applet.onActivityRequestCompleted = (sender, response) => {
+        if (response.status === AAF.ActivityStatus.Failure) {
+            return 2000;
+        }
+    }
+
+    document.getElementById("appHost").appendChild(applet.renderedElement);
 }

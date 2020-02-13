@@ -1,5 +1,5 @@
-import * as Adaptive from "adaptivecards";
+import { ActivityResponse, ActivityRequest } from "./invoke-activity";
 
 export abstract class ChannelAdapter {
-    abstract executeAction(action: Adaptive.SubmitAction): string;
+    abstract async sendRequestAsync(activity: ActivityRequest): Promise<ActivityResponse>;
 }
