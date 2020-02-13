@@ -53,9 +53,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Antlr4 Update="AdaptiveCardsTemplating.g4">
-      <Listener>false</Listener>
-    </Antlr4>
     <Antlr4 Update="JSONLexer.g4">
       <Listener>false</Listener>
     </Antlr4>

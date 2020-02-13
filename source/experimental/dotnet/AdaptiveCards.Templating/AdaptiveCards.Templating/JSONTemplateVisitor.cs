@@ -3,6 +3,7 @@ using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using Microsoft.Bot.Expressions;
 using System.Text;
 
 namespace AdaptiveCards.Templating
@@ -31,6 +32,7 @@ namespace AdaptiveCards.Templating
         }
 
         private Stack<DataContext> _dataContext = new Stack<DataContext>();
+        private ExpressionEngine _expressionEngine = new ExpressionEngine();
 
         private DataContext GetCurrentDataContext()
         { 
@@ -162,32 +164,21 @@ namespace AdaptiveCards.Templating
             var tokenType = node.Symbol.Type;
             if (node.Symbol.Type == JSONLexer.TEMPLATELITERAL)
             {
-                // This is the code where we replace it with CEL
-                AntlrInputStream stream = new AntlrInputStream(node.GetText());
-                AdaptiveCardsTemplatingLexer lexer = new AdaptiveCardsTemplatingLexer(stream);
-                ITokenStream tokens = new CommonTokenStream(lexer);
-                AdaptiveCardsTemplatingParser parser = new AdaptiveCardsTemplatingParser(tokens)
-                {
-                    BuildParseTree = true
-                };
-                IParseTree tree = parser.template();
-                AdaptiveCardsTemplatingTreeVisitor eval = new AdaptiveCardsTemplatingTreeVisitor();
-                var processed = eval.Visit(tree);
-
                 // nice place to add error handling
-                if (HasDataContext() && processed != null && processed.Keys.Count > 0)
+                if (HasDataContext())
                 {
                     // need a error handling when user put template with no matching data
                     // continuing as need to finish skelectal codes
                     DataContext currentDataContext = GetCurrentDataContext();
+                    string templateString = node.GetText();
                     if (currentDataContext.IsArrayType)
                     {
-                        return new JSONTemplateVisitorResult("", false, processed);
+                        return new JSONTemplateVisitorResult(templateString, false);
                     }
                     else
                     {
                         JObject data = GetCurrentDataContext().templateData;
-                        return new JSONTemplateVisitorResult(Expand(processed, data));
+                        return new JSONTemplateVisitorResult(Expand(templateString, data));
                     }
                 }
             }
@@ -200,23 +191,10 @@ namespace AdaptiveCards.Templating
             return new JSONTemplateVisitorResult(node.GetText());
         }
 
-        public string Expand(AdaptiveCardsTemplatingVisitorResult processed, JObject data)
+        public string Expand(string unboundString, JObject data)
         {
-            var obj = data[processed.Keys[0]];
-            for (var idx = 1; idx < processed.Keys.Count; idx++)
-            {
-                var val = processed.Keys[idx];
-                if (int.TryParse(val, out int arrayIdx))
-                {
-                    obj = obj[arrayIdx];
-                }
-                else
-                {
-                    obj = obj[val];
-                }
-            }
-
-            return obj.ToString();
+            var result = _expressionEngine.Parse(unboundString).TryEvaluate(data);
+            return result.value.ToString();
         }
 
         public override JSONTemplateVisitorResult VisitValueTemplateString([NotNull] JSONParser.ValueTemplateStringContext context)

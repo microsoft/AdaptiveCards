@@ -26,7 +26,7 @@ namespace AdaptiveCards.Templating.Test
     ""body"": [
         {
             ""type"": ""TextBlock"",
-            ""text"": ""{person.firstName}""
+            ""text"": ""Hello {person.firstName}""
         }
     ]
 }";
@@ -46,7 +46,7 @@ namespace AdaptiveCards.Templating.Test
     ""body"": [
         {
             ""type"": ""TextBlock"",
-            ""text"": ""Andrew""
+            ""text"": ""Hello Andrew""
         }
     ]
 }", cardJson);
@@ -170,6 +170,42 @@ namespace AdaptiveCards.Templating.Test
 
             string cardJson = transformer.Transform(testString, null);
             AssertJsonEqual(expectedString, cardJson);
+        }
+
+        [TestMethod]
+        public void TestExpression()
+        {
+            AdaptiveTransformer transformer = new AdaptiveTransformer();
+
+            string jsonTemplate = @"{
+    ""type"": ""AdaptiveCard"",
+    ""version"": ""1.0"",
+    ""$data"": {
+                ""machines"": {
+                    ""id"": ""primary"",
+                    ""uptime"": 2231
+                }
+     },
+    ""body"": [
+        {
+            ""type"": ""TextBlock"",
+            ""text"": ""Your computer has been up for {machines.uptime}""
+        }
+    ]
+}";
+
+            string cardJson = transformer.Transform(jsonTemplate, null);
+
+            AssertJsonEqual(@"{
+    ""type"": ""AdaptiveCard"",
+    ""version"": ""1.0"",
+    ""body"": [
+        {
+            ""type"": ""TextBlock"",
+            ""text"": ""Hello Andrew""
+        }
+    ]
+}", cardJson);
         }
 
         [TestMethod]
@@ -331,23 +367,11 @@ namespace AdaptiveCards.Templating.Test
         [TestMethod]
         public void TestCreationOfPartialResult()
         {
-            AntlrInputStream stream = new AntlrInputStream("{name}");
-            AdaptiveCardsTemplatingLexer lexer = new AdaptiveCardsTemplatingLexer(stream);
-            ITokenStream tokens = new CommonTokenStream(lexer);
-            AdaptiveCardsTemplatingParser parser = new AdaptiveCardsTemplatingParser(tokens)
-            {
-                BuildParseTree = true
-            };
-
-            IParseTree tree = parser.template();
-            AdaptiveCardsTemplatingTreeVisitor eval = new AdaptiveCardsTemplatingTreeVisitor();
-            var processed = eval.Visit(tree);
-
             JSONTemplateVisitorResult result1 = new JSONTemplateVisitorResult();
             result1.Append("hello");
 
             JSONTemplateVisitorResult result2 = new JSONTemplateVisitorResult();
-            result2.Append("", false, processed);
+            result2.Append("name", false);
 
             JSONTemplateVisitorResult result3 = new JSONTemplateVisitorResult();
             result3.Append("!");

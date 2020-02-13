@@ -14,13 +14,11 @@ namespace AdaptiveCards.Templating
         {
             public StringBuilder StringResult { get; set; }
             public bool IsExpanded { get; set; }
-            public AdaptiveCardsTemplatingVisitorResult Keys { get; set; }
 
-            public TemplatePartialResult(string a = "", bool b = true, AdaptiveCardsTemplatingVisitorResult c = null)
+            public TemplatePartialResult(string a = "", bool b = true)
             {
                 StringResult = new StringBuilder(a);
                 IsExpanded = b;
-                Keys = c;
             }
         }
 
@@ -31,10 +29,16 @@ namespace AdaptiveCards.Templating
             partialResultLinkedList.AddLast(new TemplatePartialResult());
         }
 
-        public JSONTemplateVisitorResult(string capturedString = "", bool isExpanded = true, AdaptiveCardsTemplatingVisitorResult templateExpansionResult = null)
+        public JSONTemplateVisitorResult(string capturedString)
         {
             partialResultLinkedList.AddLast(new TemplatePartialResult());
-            Append(capturedString, isExpanded, templateExpansionResult);
+            Append(capturedString, true);
+        }
+
+        public JSONTemplateVisitorResult(string capturedString = "", bool isExpanded = true)
+        {
+            partialResultLinkedList.AddLast(new TemplatePartialResult());
+            Append(capturedString, isExpanded);
         }
 
         public JSONTemplateVisitorResult(JSONTemplateVisitorResult result)
@@ -63,7 +67,7 @@ namespace AdaptiveCards.Templating
             return partialResultLinkedList.Count;
         }
 
-        public void Append(string capturedString = "", bool isExpanded = true, AdaptiveCardsTemplatingVisitorResult templateExpansionResult = null)
+        public void Append(string capturedString = "", bool isExpanded = true)
         {
             var tail = GetTail().Value; 
             if (tail.IsExpanded && isExpanded)
@@ -72,7 +76,7 @@ namespace AdaptiveCards.Templating
             }
             else
             {
-                partialResultLinkedList.AddLast(new TemplatePartialResult(capturedString, isExpanded, templateExpansionResult));
+                partialResultLinkedList.AddLast(new TemplatePartialResult(capturedString, isExpanded));
             }
         }
 
@@ -100,10 +104,7 @@ namespace AdaptiveCards.Templating
                 if (elem.IsExpanded == false)
                 {
                     output.Append('{');
-                    foreach (var word in elem.Keys.Keys)
-                    {
-                        output.Append(word);
-                    }
+                    output.Append(elem.StringResult);
                     output.Append('}');
                 }
                 else
@@ -120,7 +121,7 @@ namespace AdaptiveCards.Templating
             {
                 if (elem.IsExpanded == false)
                 {
-                    output.Append(evaluator.Expand(elem.Keys, data));
+                    output.Append(evaluator.Expand(elem.StringResult.ToString(), data));
                 }
                 else
                 {
