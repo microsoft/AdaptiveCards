@@ -130,6 +130,58 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\..\samples\v1.0\Scenarios\CalendarReminder.json">
+      <Link>Samples\CalendarReminder.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\..\samples\v1.0\Scenarios\FlightItinerary.json">
+      <Link>Samples\FlightItinerary.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\..\samples\v1.0\Scenarios\FlightUpdate.json">
+      <Link>Samples\FlightUpdate.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\..\samples\v1.0\Scenarios\FoodOrder.json">
+      <Link>Samples\FoodOrder.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\..\samples\v1.0\Scenarios\ImageGallery.json">
+      <Link>Samples\ImageGallery.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\..\samples\v1.0\Scenarios\InputForm.json">
+      <Link>Samples\InputForm.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\..\samples\v1.0\Scenarios\Inputs.json">
+      <Link>Samples\Inputs.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\..\samples\v1.0\Scenarios\Restaurant.json">
+      <Link>Samples\Restaurant.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\..\samples\v1.0\Scenarios\Solitaire.json">
+      <Link>Samples\Solitaire.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\..\samples\v1.0\Scenarios\SportingEvent.json">
+      <Link>Samples\SportingEvent.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\..\samples\v1.0\Scenarios\StockUpdate.json">
+      <Link>Samples\StockUpdate.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\..\samples\v1.0\Scenarios\WeatherCompact.json">
+      <Link>Samples\WeatherCompact.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\..\samples\v1.0\Scenarios\WeatherLarge.json">
+      <Link>Samples\WeatherLarge.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>

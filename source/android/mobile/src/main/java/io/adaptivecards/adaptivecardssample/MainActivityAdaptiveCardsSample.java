@@ -64,6 +64,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     }
 
     private List<AdaptiveCard> m_adaptiveCards = new ArrayList<>();
+    private List<String> m_adaptiveCardsNames = new ArrayList<>();
     HostConfig m_hostConfig = new HostConfig();
 
     private LinearLayout m_layout;
@@ -99,6 +100,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
                     ParseResult parseResult = AdaptiveCard.DeserializeFromString(text, AdaptiveCardRenderer.VERSION);
                     m_adaptiveCards.add(parseResult.GetAdaptiveCard());
+                    m_adaptiveCardsNames.add(fileName);
                 }
             }
         }
@@ -132,7 +134,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     {
         try
         {
-            for (int i = 0; i < 30; ++i)
+            for (int i = 0; i < 70; ++i)
             {
                 AdaptiveCard adaptiveCard = m_adaptiveCards.get(i % m_adaptiveCards.size());
 
@@ -140,7 +142,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
                 RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(this, getSupportFragmentManager(), adaptiveCard, this, m_hostConfig);
 
-                timings.addSplit("FinishedRendering");
+                timings.addSplit("Card: " + m_adaptiveCardsNames.get(i % m_adaptiveCardsNames.size()) + " - Time Elapsed: ");
                 timings.dumpToLog();
 
                 m_layout.addView(renderedCard.getView());

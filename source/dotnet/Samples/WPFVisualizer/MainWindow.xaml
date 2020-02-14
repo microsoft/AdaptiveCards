@@ -27,77 +27,14 @@
 
     <Grid Margin="8" >
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="5"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="5"/>
-            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Orientation="Horizontal" Grid.ColumnSpan="5">
-            <Button Name="loadButton" Click="loadButton_Click" Content="Load Card..." Margin="4"/>
-            <Button Name="viewImage" Click="viewImage_Click" Content="View as Image" Margin="4"/>
-            <Button Name="speak" Click="speak_Click" Content="Speak" Margin="4"/>
-            <CheckBox Name ="xceedCheckbox" Margin="4,4,1,4" Unchecked="XceedCheckBox_Unchecked" Checked="XceedCheckBox_Checked"></CheckBox>
-            <TextBlock Margin="1,4,1,4">Use Xceed Renderers</TextBlock>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Grid.ColumnSpan="5" HorizontalAlignment="Right">
-            <Label>HostConfig:</Label>
-            <Button Name="loadConfig" Content="Load..." Margin="4" Click="loadConfig_Click" HorizontalAlignment="Right"/>
-            <Button Name="saveConfig" Content="Save..." Margin="4" Click="saveConfig_Click" HorizontalAlignment="Right"/>
-            <ComboBox Name="hostConfigs" IsEditable="False" Width="150" SelectionChanged="hostConfigs_Selected" HorizontalAlignment="Right"/>
-            <Button Name="toggleOptions" Content="Edit" Margin="4" Click="toggleOptions_Click" HorizontalAlignment="Right"/>
-        </StackPanel>
-
-        <avalon:TextEditor
-            Grid.Row="1"
-            x:Name="textBox"
-            FontFamily="Consolas"
-            FontSize="10pt"
-            ShowLineNumbers="true"
-            TextChanged="textBox_TextChanged"/>
-        
-        <GridSplitter Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" ResizeDirection="Columns"/>
-
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="2" >
-
-            <Grid Background="LightGray">
-
-                <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="104*"/>
-                <ColumnDefinition Width="311*"/>
-                </Grid.ColumnDefinitions>
-                <Grid Name="cardGrid" MaxWidth="700" VerticalAlignment="Top" Margin="10,10,10,0" Background="WhiteSmoke" Grid.ColumnSpan="2" >
-                    <Grid.Effect>
-                        <DropShadowEffect BlurRadius="15" ShadowDepth="2" RenderingBias="Quality" Direction="-90"/>
-                    </Grid.Effect>
-
-                </Grid>
-
-            
-            </Grid>
-
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="1" >
+            <StackPanel x:Name="layout"></StackPanel>
         </ScrollViewer>
-
-        <GridSplitter Grid.Row="1" Grid.Column="3" HorizontalAlignment="Stretch" ResizeDirection="Columns"/>
-
-
-        <GridSplitter Grid.Row="1" Grid.Column="4" VerticalAlignment="Stretch" ResizeDirection="Columns" Name="optionsSplitter" />
-
-        <xctk:PropertyGrid Grid.Row="1" Grid.Column="4"  Name="hostConfigEditor" PropertyValueChanged="HostConfigEditor_OnPropertyValueChanged"  Visibility="Visible" >
-        </xctk:PropertyGrid>
-
-        <ScrollViewer Grid.Row="2" Grid.Column="0" MaxHeight="200">
-            <StackPanel Name="cardError" />
-        </ScrollViewer>
-        
-
-        <StackPanel Grid.Row="2" Grid.Column="4" Name="hostConfigerror" />
-
     </Grid>
 </Window>

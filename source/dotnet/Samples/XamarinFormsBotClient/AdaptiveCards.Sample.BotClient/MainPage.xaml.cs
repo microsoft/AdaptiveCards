@@ -31,6 +31,10 @@ namespace AdaptiveCards.XamarinForms.BotClient
 
         StackLayout _cardContainer = null;
 
+        String[] cardFileNames = { "ActivityUpdate.json", "CalendarReminder.json", "FlightItinerary.json", "FlightUpdate.json", "FoodOrder.json",
+                                       "ImageGallery.json", "InputForm.json", "Inputs.json", "Restaurant.json", "Solitaire.json", "SportingEvent.json",
+                                       "StockUpdate.json", "WeatherCompact.json", "WeatherLarge.json" };
+
         public MainPage()
         {
             InitializeComponent();
@@ -40,151 +44,6 @@ namespace AdaptiveCards.XamarinForms.BotClient
         {
             base.OnAppearing();
 
-            /*
-            _card = new AdaptiveCard("1.0")
-            {
-                Body = new List<AdaptiveElement> {
-                    new AdaptiveTextBlock
-                    {
-                        Text = "This is a textblock",
-                    },
-                    new AdaptiveTextBlock
-                    {
-                        Text = "This textblock is subtle",
-                        Spacing = AdaptiveSpacing.Default,
-                        Separator = true,
-                        IsSubtle = true
-                    }
-                }
-            };
-
-            _card = new AdaptiveCard("1.0")
-            {
-                Body = new List<AdaptiveElement>
-                {
-                    new AdaptiveTextBlock
-                    {
-                        Text = "Publish Adaptive Card schema",
-                        Weight = AdaptiveTextWeight.Bolder,
-                        Size = AdaptiveTextSize.Medium
-                    },
-                    new AdaptiveColumnSet
-                    {
-                        Columns = new List<AdaptiveColumn>
-                        {
-                            new AdaptiveColumn
-                            {
-                                Items = new List<AdaptiveElement>
-                                {
-                                    new AdaptiveImage
-                                    {
-                                        Url = new Uri("https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"),
-                                        Size = AdaptiveImageSize.Small,
-                                        Style = AdaptiveImageStyle.Person
-                                    }
-                                }
-                            },
-                            new AdaptiveColumn
-                            {
-                                Items = new List<AdaptiveElement>
-                                {
-                                    new AdaptiveTextBlock
-                                    {
-                                        Text = "Matt Hidinger",
-                                        Weight = AdaptiveTextWeight.Bolder,
-                                        Wrap = true
-                                    },
-                                    new AdaptiveTextBlock
-                                    {
-                                        Text = "Created <a random date>",
-                                        IsSubtle = true,
-                                        Wrap = true
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    new AdaptiveTextBlock
-                    {
-                        Text = "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
-                        Wrap = true
-                    },
-                    new AdaptiveFactSet
-                    {
-                        Facts = new List<AdaptiveFact>
-                        {
-                            new AdaptiveFact
-                            {
-                                Title = "Board: ",
-                                Value = "Adaptive Card"
-                            },
-                            new AdaptiveFact
-                            {
-                                Title = "List: ",
-                                Value = "Backlog"
-                            },
-                            new AdaptiveFact
-                            {
-                                Title = "Assigned to: ",
-                                Value = "Matt Hidinger"
-                            },
-                            new AdaptiveFact
-                            {
-                                Title = "Due date: ",
-                                Value = "Not set"
-                            }
-                        }
-                    }
-                },
-                Actions = new List<AdaptiveAction>
-                {
-                    new AdaptiveShowCardAction
-                    {
-                        Title = "Set due date",
-                        Card = new AdaptiveCard("1.0")
-                        {
-                            Body = new List<AdaptiveElement>
-                            {
-                                new AdaptiveDateInput
-                                {
-                                    Id = "dueDate"
-                                }
-                            },
-                            Actions = new List<AdaptiveAction>
-                            {
-                                new AdaptiveSubmitAction
-                                {
-                                    Title = "Ok!"
-                                }
-                            }
-                        }
-                    }, 
-                    new AdaptiveShowCardAction
-                    {
-                        Title = "Comment",
-                        Card = new AdaptiveCard("1.0")
-                        {
-                            Body = new List<AdaptiveElement>
-                            {
-                                new AdaptiveTextInput
-                                {
-                                    Id = "comment",
-                                    IsMultiline = true,
-                                    Placeholder = "Enter your comment"
-                                }
-                            },
-                            Actions = new List<AdaptiveAction>
-                            {
-                                new AdaptiveSubmitAction
-                                {
-                                    Title = "Ok!"
-                                }
-                            }
-                        }
-                    }
-                }
-            };
-            */
             _renderer = new AdaptiveCards.Rendering.Wpf.AdaptiveCardRenderer(new AdaptiveHostConfig());
             // _renderer = new XamlRenderer(new AdaptiveHostConfig());
 
@@ -221,14 +80,15 @@ namespace AdaptiveCards.XamarinForms.BotClient
         {
             
             _cardContainer.Children.Clear();
-            for (int i = 0; i < 30; ++i)
+            for (int i = 0; i < 14; ++i)
             {
                 AdaptiveCard adaptiveCard = CardsReader.Get(i);
                 Stopwatch stopwatch = Stopwatch.StartNew();
                 RenderedAdaptiveCard renderedCard = _renderer.RenderCard(adaptiveCard);
                 _cardContainer.Children.Add(renderedCard.FrameworkElement);
                 stopwatch.Stop();
-                System.Diagnostics.Debug.WriteLine(stopwatch.ElapsedMilliseconds);
+
+                System.Diagnostics.Debug.WriteLine("Card: " + cardFileNames[i % cardFileNames.Length] + " - Time elapsed: " + stopwatch.ElapsedMilliseconds);
             }
         }
 
@@ -262,10 +122,6 @@ namespace AdaptiveCards.XamarinForms.BotClient
 
         private void ReadCards()
         {
-            String[] cardFileNames = { "ActivityUpdate.json", "CalendarReminder.json", "FlightItinerary.json", "FlightUpdate.json", "FoodOrder.json",
-                                       "ImageGallery.json", "InputForm.json", "Inputs.json", "Restaurant.json", "Solitaire.json", "SportingEvent.json",
-                                       "StockUpdate.json", "WeatherCompact.json", "WeatherLarge.json" };
-
             CardsReader.ReadAdaptiveCards(cardFileNames);
         }
     }

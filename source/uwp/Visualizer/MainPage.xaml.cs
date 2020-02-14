@@ -44,7 +44,7 @@ namespace AdaptiveCardVisualizer
         
         private RenderedAdaptiveCard _renderedAdaptiveCard;
         private List<AdaptiveCard> _parsedAdaptiveCards = new List<AdaptiveCard>();
-
+        private List<string> _adaptiveCardsNames = new List<string>();
         public MainPage()
         {
             this.InitializeComponent();
@@ -80,7 +80,7 @@ namespace AdaptiveCardVisualizer
                         AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(jsonObject);
                         _parsedAdaptiveCards.Add(parseResult.AdaptiveCard);
 
-
+                        _adaptiveCardsNames.Add(file.Name);
                     }
                 }
             }
@@ -89,7 +89,7 @@ namespace AdaptiveCardVisualizer
         private void RenderCards()
         {
 
-            for (int i = 0; i < 30; ++i)
+            for (int i = 0; i < 14; ++i)
             {
                 AdaptiveCard adaptiveCard = _parsedAdaptiveCards[i % _parsedAdaptiveCards.Count];
 
@@ -97,7 +97,7 @@ namespace AdaptiveCardVisualizer
                 stopwatch.Start();
                 RenderedAdaptiveCard renderedAdaptiveCard = _renderer.RenderAdaptiveCard(adaptiveCard);
                 stopwatch.Stop();
-                Debug.WriteLine("Elapsed " + stopwatch.ElapsedMilliseconds);
+                Debug.WriteLine("Card: " + _adaptiveCardsNames[i % _adaptiveCardsNames.Count] + " - Time Elapsed: " + stopwatch.ElapsedMilliseconds);
 
                 FrameworkElement visualAdaptiveCard = renderedAdaptiveCard.FrameworkElement;
                 _layout.Children.Add(visualAdaptiveCard);
