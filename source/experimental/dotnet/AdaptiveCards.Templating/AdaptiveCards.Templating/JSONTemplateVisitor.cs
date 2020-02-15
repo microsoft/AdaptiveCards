@@ -1,10 +1,8 @@
-using Antlr4.Runtime;
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using Microsoft.Bot.Expressions;
-using System.Text;
 
 namespace AdaptiveCards.Templating
 {
@@ -197,6 +195,12 @@ namespace AdaptiveCards.Templating
         {
             var result = _expressionEngine.Parse(unboundString).TryEvaluate(data);
             return result.value.ToString();
+        }
+
+        public bool IsTrue(string predicate, JObject data)
+        {
+            var result = _expressionEngine.Parse(predicate).TryEvaluate(data);
+            return (bool)result.value;
         }
 
         public override JSONTemplateVisitorResult VisitValueTemplateString([NotNull] JSONParser.ValueTemplateStringContext context)

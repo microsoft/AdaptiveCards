@@ -20,6 +20,40 @@ namespace AdaptiveCards.Templating
                 StringResult = new StringBuilder(a);
                 IsExpanded = b;
             }
+            public string Expand(JSONTemplateVisitor evaluator, JObject data)
+            {
+                if (IsExpanded)
+                {
+                    return StringResult.ToString(); 
+                }
+                else
+                {
+                    return evaluator.Expand(StringResult.ToString(), data);
+                }
+            }
+        }
+
+        class ConditionalTemplateParitalResult : TemplatePartialResult
+        { 
+            // need to think more about when 
+            // keeping the other tokens such as "$when" : {} when data binding fails
+            // need to keep $when's value 
+            public string Predicate { get; set; }
+            private JSONTemplateVisitorResult partialResult;
+
+            public ConditionalTemplateParitalResult(JSONTemplateVisitorResult parentResult)
+            {
+                partialResult = parentResult;
+            }
+            public new string Expand(JSONTemplateVisitor evaluator, JObject data)
+            {
+                if (evaluator.IsTrue(Predicate.ToString(), data))
+                {
+                    return partialResult.Expand(evaluator, data);
+                }
+                return "";
+            }
+
         }
 
         private readonly LinkedList<TemplatePartialResult> partialResultLinkedList = new LinkedList<TemplatePartialResult>();
@@ -113,19 +147,13 @@ namespace AdaptiveCards.Templating
             }
             return output.ToString();
         }
+
         public string Expand(JSONTemplateVisitor evaluator, JObject data)
         {
             StringBuilder output = new StringBuilder() ;
             foreach (var elem in partialResultLinkedList)
             {
-                if (elem.IsExpanded == false)
-                {
-                    output.Append(evaluator.Expand(elem.StringResult.ToString(), data));
-                }
-                else
-                {
-                    output.Append(elem.StringResult);
-                }
+                output.Append(elem.Expand(evaluator, data));
             }
             return output.ToString();
         }

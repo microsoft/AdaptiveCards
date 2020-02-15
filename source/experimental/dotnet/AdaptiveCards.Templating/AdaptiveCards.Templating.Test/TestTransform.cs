@@ -1,8 +1,8 @@
-using Antlr4.Runtime;
-using Antlr4.Runtime.Tree;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using Microsoft.Bot.Expressions;
+using System.Diagnostics;
+using System;
 
 namespace AdaptiveCards.Templating.Test
 {
@@ -427,6 +427,22 @@ namespace AdaptiveCards.Templating.Test
 
             Assert.AreEqual(result1.ToString(), "hello{name}!");
         }
+        public void TestCreationOfWhen()
+        {
+            JSONTemplateVisitorResult result1 = new JSONTemplateVisitorResult();
+            result1.Append("hello");
+
+            JSONTemplateVisitorResult result2 = new JSONTemplateVisitorResult();
+            result2.Append("name", false);
+
+            JSONTemplateVisitorResult result3 = new JSONTemplateVisitorResult();
+            result3.Append("!");
+
+            result1.Append(result2);
+            result1.Append(result3);
+
+            Assert.AreEqual(result1.ToString(), "hello{name}!");
+        }
     }
 
     [TestClass]
@@ -444,9 +460,7 @@ namespace AdaptiveCards.Templating.Test
 
             JToken token = JToken.Parse(jsonData);
             var engine = new ExpressionEngine();
-            var expr = engine.Parse("person.firstName");
-            var result = expr.TryEvaluate(token);
-            Assert.AreEqual("Super", result.value);
+            Assert.AreEqual("Super", engine.Parse("person.firstName").TryEvaluate(token as JObject).value);
         }
 
         [TestMethod]
@@ -460,11 +474,16 @@ namespace AdaptiveCards.Templating.Test
                 }
             }";
 
+            Stopwatch.StartNew();
+            var beginTime0 = Stopwatch.GetTimestamp();
             JToken token = JToken.Parse(jsonData);
+            var endTime0 = Stopwatch.GetTimestamp();
+            var beginTime1 = Stopwatch.GetTimestamp();
             var engine = new ExpressionEngine();
-            var expr = engine.Parse("string(person.age)");
-            var result = expr.TryEvaluate(token);
-            Assert.AreEqual("79", result.value);
+            var endTime1 = Stopwatch.GetTimestamp();
+            Console.WriteLine("time0 took: " + (endTime0 - beginTime0));
+            Console.WriteLine("time1 took: " + (endTime1 - beginTime1));
+            Assert.AreEqual("79", engine.Parse("string(person.age)").TryEvaluate(token as JObject).value);
         }
     }
 }
