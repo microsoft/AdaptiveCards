@@ -23,27 +23,31 @@ namespace AdaptiveCards.Templating
         }
 
         private readonly LinkedList<TemplatePartialResult> partialResultLinkedList = new LinkedList<TemplatePartialResult>();
+        private bool isExpanded { get; set; }
+
+        public bool IsExpanded
+        {
+            get { return partialResultLinkedList.Count <= 1 && partialResultLinkedList.Count >= 0;  }
+        }
+
 
         public JSONTemplateVisitorResult()
         {
             partialResultLinkedList.AddLast(new TemplatePartialResult());
         }
 
-        public JSONTemplateVisitorResult(string capturedString)
+        public JSONTemplateVisitorResult(string capturedString) : this()
         {
-            partialResultLinkedList.AddLast(new TemplatePartialResult());
             Append(capturedString, true);
         }
 
-        public JSONTemplateVisitorResult(string capturedString = "", bool isExpanded = true)
+        public JSONTemplateVisitorResult(string capturedString = "", bool isExpanded = true) : this()
         {
-            partialResultLinkedList.AddLast(new TemplatePartialResult());
             Append(capturedString, isExpanded);
         }
 
-        public JSONTemplateVisitorResult(JSONTemplateVisitorResult result)
+        public JSONTemplateVisitorResult(JSONTemplateVisitorResult result) : this()
         {
-            partialResultLinkedList.AddLast(new TemplatePartialResult());
             Append(result);
         }
 
@@ -60,11 +64,6 @@ namespace AdaptiveCards.Templating
         private void RemoveHead()
         {
             partialResultLinkedList.RemoveFirst();
-        }
-
-        private int GetCount()
-        {
-            return partialResultLinkedList.Count;
         }
 
         public void Append(string capturedString = "", bool isExpanded = true)

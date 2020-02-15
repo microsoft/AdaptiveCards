@@ -115,6 +115,7 @@ namespace AdaptiveCards.Templating
 
             JSONTemplateVisitorResult result = new JSONTemplateVisitorResult();
 
+            // capture json string in object
             for(var i = 0; i < context.ChildCount; i++)
             {
                 var child = context.children[i];
@@ -129,7 +130,8 @@ namespace AdaptiveCards.Templating
                 }
             }
 
-            if (isArrayType)
+            // if the current data context is array type, repeat
+            if (isArrayType && !result.IsExpanded)
             {
                 var dataContext = GetCurrentDataContext();
                 var repeatsCounts = dataContext.templateDataArray.Count;

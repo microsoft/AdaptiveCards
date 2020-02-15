@@ -173,6 +173,50 @@ namespace AdaptiveCards.Templating.Test
         }
 
         [TestMethod]
+        public void TestIteratioinFalsePositive()
+        {
+            AdaptiveTransformer transformer = new AdaptiveTransformer();
+            var testString =
+                @"{
+                    ""type"": ""AdaptiveCard"",
+                    ""body"": [
+                      {
+                          ""type"": ""Container"",
+                          ""items"": [
+                              {
+                                  ""type"": ""TextBlock"",
+                                  ""$data"": [
+                                      { ""name"": ""Matt"" }, 
+                                      { ""name"": ""David"" }, 
+                                      { ""name"": ""Thomas"" }
+                                  ],
+                                  ""text"": ""Hello World!""
+                              }
+                          ]
+                      }
+                    ]
+                }";
+            var expectedString =
+                @"{
+                    ""type"": ""AdaptiveCard"",
+                    ""body"": [
+                    {
+                        ""type"": ""Container"",
+                        ""items"": [ 
+                            {
+                                ""type"": ""TextBlock"",
+                                ""text"": ""Hello World!""
+                            }
+                        ]
+                    }
+                ]
+            }";
+
+            string cardJson = transformer.Transform(testString, null);
+            AssertJsonEqual(expectedString, cardJson);
+        }
+
+        [TestMethod]
         public void TestExpression()
         {
             AdaptiveTransformer transformer = new AdaptiveTransformer();
