@@ -244,7 +244,7 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
     }
 
     // By default, this function keeps the bitmap as is
-    protected Bitmap styleBitmap(Bitmap bitmap)
+    public Bitmap styleBitmap(Bitmap bitmap)
     {
         return bitmap;
     }
