@@ -96,6 +96,8 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         m_jsonEditText = (EditText) findViewById(R.id.jsonAdaptiveCard);
         m_configEditText = (EditText) findViewById(R.id.hostConfig);
 
+        CardRendererRegistration.getInstance().registerResourceResolver("http", new CustomImageLoaderForButtons());
+
         TextWatcher watcher = new TextWatcher()
         {
             @Override
