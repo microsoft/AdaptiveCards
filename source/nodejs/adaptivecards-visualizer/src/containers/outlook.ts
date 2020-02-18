@@ -53,7 +53,7 @@ export class OutlookContainer extends HostContainer {
     }
 
     public parseElement(element: Adaptive.CardElement, source: any, context: Adaptive.SerializationContext) {
-        if (element instanceof Adaptive.Container && source["rtl"] != undefined) {
+        if (element instanceof Adaptive.Container && typeof source["rtl"] === "boolean") {
             element.rtl = source["rtl"];
         }
 
