@@ -2669,7 +2669,7 @@ export class Media extends CardElement {
         return element;
     }
 
-    static onPlay: (sender: Media) => void;
+    static onPlay: (sender: Media) => void = null;
 
     sources: Array<MediaSource> = [];
     poster: string;
@@ -6608,6 +6608,7 @@ export interface IMarkdownProcessingResult {
     outputHtml?: any;
 }
 
+// @dynamic
 export class AdaptiveCard extends ContainerWithActions {
     private static currentVersion: HostConfig.Version = new HostConfig.Version(1, 2);
 
