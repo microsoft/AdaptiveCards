@@ -26,7 +26,7 @@ export default class AdaptiveCard extends React.Component {
 
 	// Input elements with its identifier and value
 	inputArray = {};
-	version = "1.2"; // client supported version
+	version = "2.0"; // client supported version
 	resourceInformationArray = [];
 	constructor(props) {
 		super(props);

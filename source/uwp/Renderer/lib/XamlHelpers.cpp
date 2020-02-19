@@ -334,6 +334,12 @@ namespace AdaptiveNamespace::XamlHelpers
         // Creates the background image for all fill modes
         ComPtr<TileControl> tileControl;
         THROW_IF_FAILED(MakeAndInitialize<TileControl>(&tileControl));
+
+        // Set IsEnabled to false to avoid generating a tab stop for the background image tile control
+        ComPtr<IControl> tileControlAsControl;
+        THROW_IF_FAILED(tileControl.As(&tileControlAsControl));
+        THROW_IF_FAILED(tileControlAsControl->put_IsEnabled(false));
+
         THROW_IF_FAILED(tileControl->put_BackgroundImage(backgroundImage));
 
         ComPtr<IFrameworkElement> rootElement;
