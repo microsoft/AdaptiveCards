@@ -420,6 +420,13 @@ static int kToggleVisibilityContext;
 
 - (void)increaseIntrinsicContentSize:(UIView *)view
 {
+    if (!view.isHidden) {
+        [self increaseIntrinsicContentSizeBySize:[view intrinsicContentSize]];
+    }
+}
+
+- (void)increaseIntrinsicContentSizeBySize:(CGSize)size
+{
 }
 
 - (void)decreaseIntrinsicContentSize:(UIView *)view

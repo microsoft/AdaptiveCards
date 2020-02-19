@@ -60,26 +60,25 @@
     ACRRegistration *reg = [ACRRegistration getInstance];
     ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
 
-    UIView<ACRIContentHoldingView> *childview = nil;
+    ACRContentStackView *contentview = nil;
     AdaptiveCards::ActionsConfig adaptiveActionConfig = [config getHostConfig] -> GetActions();
     NSDictionary<NSString *, NSNumber *> *attributes =
         @{@"spacing" : [NSNumber numberWithInt:adaptiveActionConfig.buttonSpacing],
           @"distribution" : [NSNumber numberWithInt:UIStackViewDistributionFillProportionally]};
 
     if (ActionsOrientation::Horizontal == adaptiveActionConfig.actionsOrientation) {
-        childview = [[ACRColumnSetView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, superview.frame.size.height) attributes:attributes];
-        ((ACRColumnSetView *)childview).isActionSet = YES;
+        contentview = [[ACRColumnSetView alloc] initWithFrame:CGRectZero attributes:attributes];
+        ((ACRColumnSetView *)contentview).isActionSet = YES;
     } else {
-        childview = [[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, superview.frame.size.height) attributes:attributes];
-        ((ACRColumnView *)childview).isActionSet = YES;
+        contentview = [[ACRColumnView alloc] initWithFrame:CGRectZero attributes:attributes];
+        ((ACRColumnView *)contentview).isActionSet = YES;
     }
 
     ACOBaseActionElement *acoElem = [[ACOBaseActionElement alloc] init];
-    ACRContentHoldingUIScrollView *containingView = [[ACRContentHoldingUIScrollView alloc] init];
-    [superview addArrangedSubview:containingView];
-    float accumulatedWidth = 0, accumulatedHeight = 0, spacing = adaptiveActionConfig.buttonSpacing, maxWidth = 0, maxHeight = 0;
+    ACRContentHoldingUIScrollView *scrollview = [[ACRContentHoldingUIScrollView alloc] init];
+    float spacing = adaptiveActionConfig.buttonSpacing;
     if (elems.empty()) {
-        return containingView;
+        return scrollview;
     }
 
     unsigned long uMaxActionsToRender = MIN(adaptiveActionConfig.maxActions, elems.size());
@@ -88,6 +87,7 @@
         [rootView addWarnings:ACRWarningStatusCode::ACRMaxActionsExceeded mesage:@"Some actions were not rendered due to exceeding the maximum number of actions allowed"];
     }
 
+    [superview addArrangedSubview:scrollview];
     for (auto i = 0; i < uMaxActionsToRender; i++) {
         const auto &elem = elems.at(i);
         ACRBaseActionElementRenderer *actionRenderer =
@@ -100,7 +100,7 @@
 
         [acoElem setElem:elem];
 
-        NSUInteger numElem = [childview subviewsCounts];
+        NSUInteger numElem = [contentview subviewsCounts];
 
         UIButton *button = nil;
 
@@ -109,7 +109,7 @@
                 @throw [ACOFallbackException fallbackException];
             }
             button = [actionRenderer renderButton:rootView inputs:inputs superview:superview baseActionElement:acoElem hostConfig:config];
-            [childview addArrangedSubview:button];
+            [contentview addArrangedSubview:button];
         } @catch (ACOFallbackException *exception) {
             handleActionFallbackException(exception,
                                           superview,
@@ -117,65 +117,58 @@
                                           inputs,
                                           acoElem,
                                           config,
-                                          childview);
-            NSUInteger count = [childview subviewsCounts];
+                                          contentview);
+            NSUInteger count = [contentview subviewsCounts];
             if (count > numElem) {
-                UIView *view = [childview getLastSubview];
+                UIView *view = [contentview getLastSubview];
                 if (view && [view isKindOfClass:[UIButton class]]) {
                     button = (UIButton *)view;
                 }
             }
         }
-
-        accumulatedWidth += [button intrinsicContentSize].width;
-        accumulatedHeight += [button intrinsicContentSize].height;
-        maxWidth = MAX(maxWidth, [button intrinsicContentSize].width);
-        maxHeight = MAX(maxHeight, [button intrinsicContentSize].height);
     }
 
-    float contentWidth = accumulatedWidth, contentHeight = accumulatedHeight;
-    [childview adjustHuggingForLastElement];
+    [contentview adjustHuggingForLastElement];
+
+    CGSize spacingSize = CGSizeMake(0, 0);
     if (ActionsOrientation::Horizontal == adaptiveActionConfig.actionsOrientation) {
-        contentWidth += (elems.size() - 1) * spacing;
-        contentHeight = maxHeight;
+        spacingSize.width = (elems.size() - 1) * spacing;
     } else {
-        contentHeight += (elems.size() - 1) * spacing;
-        contentWidth = maxWidth;
+        spacingSize.height = (elems.size() - 1) * spacing;
     }
-    childview.frame = CGRectMake(0, 0, contentWidth, contentHeight);
-    containingView.frame = CGRectMake(0, 0, superview.frame.size.width, contentHeight);
-    containingView.translatesAutoresizingMaskIntoConstraints = NO;
-    [containingView addSubview:childview];
-    [NSLayoutConstraint constraintWithItem:containingView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:childview attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
-    [NSLayoutConstraint constraintWithItem:containingView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:childview attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
-    [NSLayoutConstraint constraintWithItem:containingView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:childview attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0].active = YES;
-    [NSLayoutConstraint constraintWithItem:containingView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:childview attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0].active = YES;
-    NSLayoutConstraint *hConstraint = [NSLayoutConstraint constraintWithItem:childview attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:containingView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0];
-    NSLayoutConstraint *vConstraint = [NSLayoutConstraint constraintWithItem:childview attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:containingView attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0];
+
+    [contentview increaseIntrinsicContentSizeBySize:spacingSize];
+
+    CGSize contentviewIntrinsicContentSize = [contentview intrinsicContentSize];
+    scrollview.translatesAutoresizingMaskIntoConstraints = NO;
+    [scrollview addSubview:contentview];
+    scrollview.contentSize = contentviewIntrinsicContentSize;
+    [(ACRContentStackView *)superview increaseIntrinsicContentSizeBySize:[scrollview intrinsicContentSize]];
+
+    [NSLayoutConstraint constraintWithItem:scrollview attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:contentview attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
+    [NSLayoutConstraint constraintWithItem:scrollview attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:contentview attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0].active = YES;
+    NSLayoutConstraint *hConstraint = [NSLayoutConstraint constraintWithItem:contentview attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:scrollview attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0];
+    NSLayoutConstraint *vConstraint = [NSLayoutConstraint constraintWithItem:contentview attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:scrollview attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0];
 
     hConstraint.active = YES;
     vConstraint.active = YES;
 
     if (ActionsOrientation::Horizontal == adaptiveActionConfig.actionsOrientation) {
         hConstraint.priority = UILayoutPriorityDefaultLow;
-        if (contentWidth > superview.frame.size.width) {
-            containingView.showsHorizontalScrollIndicator = YES;
-        } else {
-            if (adaptiveActionConfig.actionAlignment == ActionAlignment::Stretch) {
-                [NSLayoutConstraint constraintWithItem:containingView
-                                             attribute:NSLayoutAttributeWidth
-                                             relatedBy:NSLayoutRelationEqual
-                                                toItem:childview
-                                             attribute:NSLayoutAttributeWidth
-                                            multiplier:1.0
-                                              constant:0]
-                    .active = YES;
-            }
+        if (adaptiveActionConfig.actionAlignment == ActionAlignment::Stretch) {
+            [NSLayoutConstraint constraintWithItem:scrollview
+                                         attribute:NSLayoutAttributeWidth
+                                         relatedBy:NSLayoutRelationEqual
+                                            toItem:contentview
+                                         attribute:NSLayoutAttributeWidth
+                                        multiplier:1.0
+                                          constant:0]
+                .active = YES;
         }
     } else {
         vConstraint.priority = UILayoutPriorityDefaultLow;
     }
-    return containingView;
+    return scrollview;
 }
 
 @end

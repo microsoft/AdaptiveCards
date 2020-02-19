@@ -50,6 +50,8 @@
 
 - (void)increaseIntrinsicContentSize:(UIView *)view;
 
+- (void)increaseIntrinsicContentSizeBySize:(CGSize)size;
+
 - (void)decreaseIntrinsicContentSize:(UIView *)view;
 
 - (void)hideIfSubviewsAreAllHidden;

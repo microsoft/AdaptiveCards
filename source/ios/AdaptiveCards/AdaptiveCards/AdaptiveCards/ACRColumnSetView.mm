@@ -24,14 +24,11 @@
     [self increaseIntrinsicContentSize:view];
 }
 
-- (void)increaseIntrinsicContentSize:(UIView *)view
+- (void)increaseIntrinsicContentSizeBySize:(CGSize)size
 {
-    if (!view.isHidden) {
-        CGSize size = [view intrinsicContentSize];
-        if (size.width >= 0 && size.height >= 0) {
-            CGSize combinedSize = CGSizeMake(self.combinedContentSize.width + size.width, MAX(self.combinedContentSize.height, size.height));
-            self.combinedContentSize = combinedSize;
-        }
+    if (size.width >= 0 && size.height >= 0) {
+        CGSize combinedSize = CGSizeMake(self.combinedContentSize.width + size.width, MAX(self.combinedContentSize.height, size.height));
+        self.combinedContentSize = combinedSize;
     }
 }
 
