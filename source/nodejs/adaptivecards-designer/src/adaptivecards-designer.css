@@ -5,6 +5,19 @@
     font-style: normal;
 }
 
+.acd-designer-root *::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+.acd-designer-root *::-webkit-scrollbar-thumb {
+    background-color: transparent;
+}
+
+.acd-designer-root *:hover::-webkit-scrollbar-thumb {
+    background-color: #CDCDCD;
+}
+
 .acd-designer-cardArea {
     flex: 1 1 70%;
     background-color: #F6F6F6;
@@ -59,19 +72,25 @@
 }
 
 .acd-vertical-splitter {
-    flex: 0 0 6px;
-    background-color: #EEEEEE;
     border-left: 1px solid #D2D2D2;
-    border-right: 1px solid #D2D2D2;
     cursor: ew-resize;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 100%;
+    z-index: 1;
 }
 
 .acd-horizontal-splitter {
-    flex: 0 0 6px;
-    background-color: #EEEEEE;
     border-top: 1px solid #D2D2D2;
-    border-bottom: 1px solid #D2D2D2;
     cursor: ns-resize;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    z-index: 1;
 }
 
 .acd-json-editor-pane {
@@ -486,7 +505,6 @@
 
 .acd-toolbox-header {
     height: 32px;
-    background-color: #EEEEEE;
     cursor: default;
     flex: 0 0 auto;
 }
@@ -503,7 +521,8 @@
     text-overflow: ellipsis;
     overflow: hidden;
     padding: 4px 8px;
-    font-weight: 500;
+    font-size: 12px;
+    color: gray;
 }
 
 .acd-toolbox-header-commandButton {
@@ -512,6 +531,7 @@
     cursor: pointer;
     height: 100%;
     padding: 4px 8px;
+    color: gray;
 }
 
 .acd-toolbox-header-commandButton:hover {
@@ -633,30 +653,22 @@
 
 .acd-palette-category {
     align-items: center;
-    color: #4a4a4a;
     display: flex;
     font-size: 14px;
     font-weight: 600;
     list-style-type: none;
     position: relative;
     white-space: nowrap;
-    padding: 4px 16px 4px 16px;
+    padding: 6px 16px 6px 16px;
     cursor: default;
-}
-
-.acd-palette-category::after {
-    border-bottom: 1px solid #e0e0e0;
-    content: "";
-    margin-bottom: -3px;
-    margin-left: 8px;
-    width: 100%;
+    background-color: #EEEEEE;
 }
 
 .acd-palette-item {
     cursor: move;
     display: flex;
     align-items: center;
-    padding: 4px 16px 4px 16px;
+    padding: 6px 16px 6px 16px;
     overflow: hidden;
     text-overflow: ellipsis;
 }
