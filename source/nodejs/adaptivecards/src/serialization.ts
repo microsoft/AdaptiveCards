@@ -718,6 +718,8 @@ export function property(property: PropertyDefinition) {
 export type PropertyBag = { [propertyName: string]: any };
 
 export abstract class SerializableObject {
+    static onRegisterCustomProperties?: (sender: SerializableObject, schema: SerializableObjectSchema) => void;
+
     private static readonly _schemaCache: { [typeName: string]: SerializableObjectSchema } = {};
 
     private _propertyBag: PropertyBag = {};
@@ -740,6 +742,10 @@ export abstract class SerializableObject {
                 // If a property happens to have a getter function and
                 // it throws an exception, we need to catch it here
             }
+        }
+
+        if (SerializableObject.onRegisterCustomProperties) {
+            SerializableObject.onRegisterCustomProperties(this, schema);
         }
     }
 

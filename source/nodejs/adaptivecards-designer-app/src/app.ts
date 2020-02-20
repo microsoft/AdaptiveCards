@@ -49,9 +49,6 @@ window.onload = function() {
 	designer.sampleCatalogueUrl = window.location.origin + "/sample-catalogue.json";
 	designer.attachTo(document.getElementById("designerRootHost"));
 
-    designer.sampleCatalogueUrl = window.location.origin + "/sample-catalogue.json";
-    designer.attachTo(document.getElementById("designerRootHost"));
-
     /* Uncomment to test a custom palette item example
     let exampleSnippet = new ACDesigner.SnippetPaletteItem("Custom", "Example");
     exampleSnippet.snippet = {

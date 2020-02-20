@@ -922,6 +922,7 @@ export class CardDesigner extends Designer.DesignContext {
             this._hostContainer = new DefaultContainer("Default", "adaptivecards-defaulthost.css");
         }
 
+        root.classList.add("acd-designer-root");
         root.style.flex = "1 1 auto";
         root.style.display = "flex";
         root.style.flexDirection = "column";
