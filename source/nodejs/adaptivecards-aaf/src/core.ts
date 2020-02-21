@@ -76,7 +76,7 @@ export class AdaptiveApplet {
 
                         done = true;
 
-                        alert("Something went wrong...");
+                        alert("Something went wrong: " + error);
                     }
 
                     if (response) {

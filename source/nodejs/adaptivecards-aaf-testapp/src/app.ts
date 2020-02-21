@@ -11,7 +11,11 @@ window.onload = function() {
     sampleCardAndData["$data"] = Shared.sampleData;
 
     let applet = new AAF.AdaptiveApplet();
-    applet.channelAdapter = new LocalChannelAdapter();
+
+    // applet.channelAdapter = new LocalChannelAdapter();
+
+    applet.channelAdapter = new AAF.HttpChannelAdapter("https://aaftestbot.azurewebsites.net/aaftestbot/invoke");
+
     applet.setCard(sampleCardAndData);
     applet.onActivityRequestCompleted = (sender, response) => {
         if (response.status === AAF.ActivityStatus.Failure) {
