@@ -188,64 +188,11 @@ In VisitObj method, it filters through the method's current context's children w
 (*Do we use first one we see, or do we have to see all of them?*) Current design tentatively uses the first one it sees for the performance reason.  
 When a data context node is encountered, it call a base visit method with the node, then the method resolved into VisitTemplateData method.
 The method, creates a data context object with a field that indicates Array if set. The data context object parse the value in the pair of the data context node into JArray object if it's array, otherwise into JObject
-The newly created data context object is set to current context. In current design, it uses a stack for this purpose. When the method returns to the VisitObj method, data context is set, and translation can continue. Please refer to Figure 4
+The newly created data context object is set to current context. In current design, it uses a stack for this purpose. When the method returns to the VisitObj method, data context is set, and translation can continue. Please refer to **Figure 4**
 
-## Result Type
-string = ((expanded string)? (non-expanded string)?)*; 
-templated-strings =  list of paths to data + properties
-first elem in the list is path to data
-each subsequent element is property
-
-## Post Translation
-append all string, once result is returned from the root node
-## Data Source
-
-### Types
-
-### Catergory by Placement of Data in json
-##### inline
-Data is provided as part of adaptive cards
-```json
-{
-    "type": "AdaptiveCard",
-    "$data": {
-        "employee": {
-            "name": "Matt"
-        }
-    },
-    "body": [
-        {
-            "type": "TextBlock",
-            "text": "Hi {employee.name}! Here's a bit about your org..."
-        }
-    ]
-}
-```
-
-##### reference
-Data is provided as a separate json, and is provided to a parser as a parsing context.
-
-```json
-var dataContext = new ACData.EvaluationContext();
-dataContext.$root = {
-    "employee": {
-        "name": "Matt"
-    }
-};
-
-```json
-{
-    "type": "AdaptivCard",
-    "body": [
-        {
-            "type": "TextBlock",
-            "text": "Hi {employee.name}! Here's a bit about your org..."
-        }
-    ]
-}
-```
-
-### Catergory by Accessor Type 
+## Translation
+### Expansion in Basic Form
+This is the most basic form of expansion that involves templated string and dictionary type data context 
 ##### property 
 Data is accessed via '.' 
 ```json
@@ -274,34 +221,114 @@ Data is accessed via '[]' with index
     ]
 }
 ```
+The distinction in accessors type was important before the use of AEL. It's not important anymore since the job of expansion is delegated to AEL.
+### Parsing Strategy
+Terminal Nodes or leaf nodes contain the templated string, so the default VisitTerminal method is overridden. When the method sees that given parse context is a TEMPLATELITERAL, it tries to expand using AEL & given data context. Since our data context is JToken type which implements IDictionary, AEL can expand it. When expansion fails, the method indicate that the literal has been expanded, so when the result is returned, the unaltered literal will be included in the result     
 
-
-## Parsing value of $data key entry
-As the visitor visits the nodes in a Parse tree.
-Data object is parsed to JSON object.
-The object is kept in a Trie.
-The prefix used for matching is Adaptive Element's Type string.
-This works for both DFS and BFS since it's tree siblings share a parent
-When templated string is encountered, the trie is used to find the entry that matches the most prefix
-
-should we try to find the best match even when there is no matches in the nearest data object?
-how de we handle in repeating context
-texts in array, but some properties of the text block's data object is arrary, which array of data to follow?
-need example
-
+### Expansion with Array Data Context                                                                                                                         
+When data context type is an array, there is an adaptive element that uses the data context. Template lagunage specifies that the adaptive element that hosts the data context repeats the subtree that has itself the root node.  
 
 ```json
 {
-    "{<property>}": "Implicitly binds to `$data.<property>`",
-    "$data": "The current data object",
-    "$root": "The root data object. Useful when iterating to escape to parent object",
-    "$index": "The current index when iterating",
-    "$host": "Access properties of the host *(not working yet)*"
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "Header"
+                },
+                {
+                    "$data": [
+                        {
+                            "name": "Star",
+                            "nickname": "Dust"
+                        },
+                        {
+                            "name": "Death",
+                            "nickname": "Star"
+                        }
+                    ],
+                    "type": "FactSet",
+                    "facts": [
+                        {
+                            "title": "{name}",
+                            "value": "{nickname}"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
 }
 ```
-#### Binding
-## binds to all templated string when condition is satified
-list of allowed attributes to be bound
+**Figure 5**  
+![](arrayType1.png)
 
+```json
+{
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "Container",
+            "$data": [
+                {
+                    "name": "Star",
+                    "nickname": "Dust"
+                },
+                {
+                    "name": "Death",
+                    "nickname": "Star"
+                }
+            ],
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "Header"
+                },
+                {
+                    "type": "FactSet",
+                    "facts": [
+                        {
+                            "title": "{name}",
+                            "value": "{nickname}"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+}
+```  
+**Figure 6**  
+![](arrayType2.png)  
 
-### Parsing Strategy For each catergories 
+Notice what's being repeated in **Figure 5** & **Figure 6**. In **Figure 5**, the FactSet is repeated since the data context is set at the FactSet. In **Figure 6**, the Container is repeated as the data context is sent at the Container.
+
+### Parsing Strategy
+It is obvious from the examples that simply returning the string or StringBuilder is not sufficient. We need ability to delay the expansion until the walker explores all of a subtree where the root has data context and its type is array. And check that one of its child node makes reference to the data context.  
+
+#### Result 
+- ANTLR allows Visitor to define a custom return type
+- new JSONTemplateVisitorResult  
+- It has a linked list inside
+- It supports two operations, join and expand
+- join is used to merge results returned from other nodes
+ - when joining two results if the joint (tail and head) are already expanded, then their nodes are merged to one
+ - if they have templated string that needs to be expanded, then they are linked as linked lists 
+- In the VisitObj method, once visit to children finishes, we have one merged result object
+- if data context object was discovered, and it's array type, expansion happens
+ - it expand the result with data context. 
+ - it repeats n times where n is number of elements in data context
+ - the result is merged and returned from the method.
+- if data context object wasn't discovered in this node, simply return the current result without expanding.
+
+## When
+* Work in progress 
+* Similar concept to Array Type
+* basic concept is that result is expanded to have branching point
