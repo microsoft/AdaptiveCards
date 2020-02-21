@@ -1,52 +1,74 @@
 # Overview
 ## Templating
-Templating addresses one of the pain points for the AdaptiveCards users. We have very good user experience going from AdaptiveCards json to 
-a rendered AdaptiveCards UI component. Creationg of AdaptiveCards json is also great, but it's not to easy to modify AdaptiveCards json. 
-Consider this example of  
+![](img1.png)
+
+Template allows users to define where data binding occurs.
+
+```json
+{
+    "type": "TextBlock",
+    "text": "{latestPrice} ",
+    "size": "ExtraLarge"
+}
+```
+
+Once binding is defined, adaptive cards will be updated by changing only the data.
+```json
+{
+  "latestPrice": 128.9,
+}
+```
+# Syntax
+- Binding syntax starts with { and ends with }. E.g., {myProperty}
+- Dot-notation to access sub-objects
+ - {employee.manager.name}
+- Indexer syntax to retrieve properties by key or items in an array
+ - {employee.peers[0].name}
+- $data assigns data context to current element
+- $when conditional expression that determiens if current element to be included.
+- functions are provided to help SDK users
+
 # Parsing
+- We use ANTLR to generate parser and lexer
+
+## ANTLR
+From a grammar, ANTLR generates a parser that can build parse trees and also generates a listener interface (or visitor) that makes it easy to respond to the recognition of phrases of interest.
+It has two components. 
+ANTLR is really two things: a tool that translates your grammar to a parser/lexer in Java (or other target language) and the runtime needed by the generated parsers/lexers.
+Once parsers and lexers are generated, the tool is no longer needed. CEL uses ANTLR, so CEL SDK already includes ANTRL runtime. There is no additional penaly of using ANTLR.
 
 ## Parsing Strategy
+* current grammar is based on standard json grammar with the addtional rules to handle adaptive card template language
+```json
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "**wrap: true** Lorem ipsum dolor sit amet",
+			"wrap": true
+		}
+	]
+}
+```
+The above json will be parsed into a parse tree
 
-* templating parser builds a parsed tree for templated string
-* The parse tree's node is defined as in grammar file
-* current grammar is based on standard json grammar with the addtion to scopes that context switches to
-* template parser
-* when token '{' is encoutnered, the mode context switched to templating parsing, upto that moment, it's closely following json parsing
-* key, value pairs, arrays, and etc.
-* Simple direct substitutions of text is not sufficient we need a some way to capture the text in the value block.
-* At this point, we could deserialize the json into objects, and return the objects to the parent node. However, this way we have difficulties  
-* implementing the defferred parsing of templated string. for example, if one wants to parse in muti-pass, leaving the templated string, as templated
-string would be a good option. If the string is deserialized into objects, it's not obvious which proceses to use in our current disposal.
-* in essence, we are converting templated json into a tree, and as we are binding the data, we are flattening the tree into a json.
-* for performance reason, we can have a option to leave the paresed tree only replacing the node with fully bounded terminal node.
-* at second pass, we only parses the nodes that have not been bound, and all fully bound or non templated node would have been turned to terminal node
-* the operation will be merging the nodes to a terminal node.
+![](antlr4_parse_tree_1.png)
 
-* repeating objects
 
-## Translation Strategy
+![](antlr4_parse_tree_2.png)
+* notice that templateString node has been added, likewise other template keywords such as $data, $when, $root, $index, and etc can be parsed by the generated parser and lexer
+* these special nodes can be then recongnized, and being acted upon.
+* ANTLR provides two approches in translation phase,visitor and listener.
+* visitor visits the tree as ANTLR's walker walk the tree
+* We utilizes the visitor
+* parser and lexer can be used on other platforms
+* only visitor is needed to be implemented on other platforms
 
-* visit each child node and append its text bottom up
-* as data is found add to memory list 
-* --> problem is performance and efficiency
-* --> before moving down to childre, check for data node?
-* --> this is sensible strategy considering how much complidation it would incurrs without it
-* --> perhaps I should implement listener, all memory is parsed and known
-* check asked data is array type
-* check if the data is in parent
-* if 'YES', don't bind it yet, defer it to the parent node which host the data
-* if 'NO', first bind all non-array types, and bind array-type data to the appended string of the current node for available elems in the array-type data.
-* return the appended string 
-* corner case, what happens when the data type is not avaialbe, and the data type is array?
-* the problem is that we repeat the element that is the owner of the data 
-* what is the most straitforward way of user expectation?
-* this is not really hard problem if we allow them to pare it again,
-* it's less than optimal compared to the case where we know that there will be deffered expansion, then we probably felt that building the parse tree twice seems to be wasteful.
-* it's also possible that the unbound data is user mistake.
-* returning the json as it is is the right behavioer, i.e
-* that's their choice
-* we appends the text as we move bottom up, when the templated text is encountered,
-we add it list in the result 
+## Adaptive Expression Language
+
 ## Memory
 
 global look up table for data objects
@@ -180,6 +202,10 @@ Templating string is bound to the nearest data when AdaptiveCard is viewed as a 
     "version": "{key}"
 }
 ```
+
+The above json will be parsed as below image. First TextBlock will have "3", and the next "2"
+
+![](antlr4_parse_tree_3.png)
 
 ## Parsing value of $data key entry
 As the visitor visits the nodes in a Parse tree.
