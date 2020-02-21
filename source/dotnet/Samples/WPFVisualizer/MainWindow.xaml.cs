@@ -27,7 +27,6 @@ using ICSharpCode.AvalonEdit.Document;
 using System.Collections.ObjectModel;
 using System.Threading;
 
-using System.IO;
 using System.Windows.Documents;
 using System.Collections.Generic;
 
@@ -35,8 +34,6 @@ namespace WpfVisualizer
 {
     public partial class MainWindow : Window
     {
-        private bool _dirty;
-        private DocumentLine _errorLine;
         /*
         // This variable exists so the sample styles are not added twice
         private bool _stylesAdded = false;
@@ -120,10 +117,10 @@ namespace WpfVisualizer
 
                 renderedCard.OnMediaClicked += OnMediaClick;
             }
-            catch (AdaptiveRenderException ex)
+            catch (AdaptiveRenderException)
             {
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
         }
@@ -229,13 +226,11 @@ namespace WpfVisualizer
         private void XceedCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             Renderer.UseDefaultElementRenderers();
-            _dirty = true;
         }
 
         private void XceedCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             Renderer.UseXceedElementRenderers();
-            _dirty = true;
         }
     }
 }
