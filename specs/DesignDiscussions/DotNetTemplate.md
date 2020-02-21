@@ -1,3 +1,8 @@
+# Overview
+## Templating
+Templating addresses one of the pain points for the AdaptiveCards users. We have very good user experience going from AdaptiveCards json to 
+a rendered AdaptiveCards UI component. Creationg of AdaptiveCards json is also great, but it's not to easy to modify AdaptiveCards json. 
+Consider this example of  
 # Parsing
 
 ## Parsing Strategy
