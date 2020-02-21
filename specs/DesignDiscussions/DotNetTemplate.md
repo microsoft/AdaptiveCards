@@ -29,7 +29,7 @@ Once binding is defined, adaptive cards will be updated by changing only the dat
 - functions are provided to help SDK users
 
 # Parsing
-- We use ANTLR to generate parser and lexer
+We use ANTLR to generate parser and lexer
 
 ## ANTLR
 From a grammar, ANTLR generates a parser that can build parse trees and also generates a listener interface (or visitor) that makes it easy to respond to the recognition of phrases of interest.
@@ -37,7 +37,7 @@ ANTLR is really two things: a tool that translates your grammar to a parser/lexe
 Once parsers and lexers are generated, the tool is no longer needed, so it won't be part of template SDK. CEL uses ANTLR, so CEL SDK already includes ANTRL runtime. There will be no additional penaly of using ANTLR with careful planning
 
 ## Parsing Strategy
-Current grammar is based on standard json grammar with the addtional rules to handle adaptive card template language
+Current grammar is based on standard json grammar with addtional rules to handle adaptive card template language
 ```json
 {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
@@ -63,7 +63,7 @@ pair
    ;
 ```
 
-From this grammar snippet, the parser generation tool will create a pairVisit method to a base visitor we have to implement. By overriding this method, when walker visit the pair node, it calls the visit method of the node. We can do our own work such as translation in the visit method.
+From this grammar snippet, the parser generation tool will create a pairVisit method to a base visitor that we have to implement. By overriding this method, when walker visit the pair node, it calls the visit method of the node. We can do our own work such as translation in the visit method.
 
 **Figure 2**
 ![](antlr4_parse_tree_1.png)
@@ -190,10 +190,10 @@ When a data context node is encountered, it call a base visit method with the no
 The method, creates a data context object with a field that indicates Array if set. The data context object parse the value in the pair of the data context node into JArray object if it's array, otherwise into JObject
 The newly created data context object is set to current context. In current design, it uses a stack for this purpose. When the method returns to the VisitObj method, data context is set, and translation can continue. Please refer to **Figure 4**
 
-## Translation
-### Expansion in Basic Form
+# Translation
+## Expansion in Basic Form
 This is the most basic form of expansion that involves templated string and dictionary type data context 
-##### property 
+#### property 
 Data is accessed via '.' 
 ```json
 {
@@ -207,7 +207,7 @@ Data is accessed via '.'
 }
 ```
 
-##### array 
+#### array 
 Data is accessed via '[]' with index 
 
 ```json
@@ -222,11 +222,11 @@ Data is accessed via '[]' with index
 }
 ```
 The distinction in accessors type was important before the use of AEL. It's not important anymore since the job of expansion is delegated to AEL.
-### Parsing Strategy
+## Parsing Strategy
 Terminal Nodes or leaf nodes contain the templated string, so the default VisitTerminal method is overridden. When the method sees that given parse context is a TEMPLATELITERAL, it tries to expand using AEL & given data context. Since our data context is JToken type which implements IDictionary, AEL can expand it. When expansion fails, the method indicate that the literal has been expanded, so when the result is returned, the unaltered literal will be included in the result     
 
-### Expansion with Array Data Context                                                                                                                         
-When data context type is an array, there is an adaptive element that uses the data context. Template lagunage specifies that the adaptive element that hosts the data context repeats the subtree that has itself the root node.  
+## Expansion with Array Data Context                                                                                                                         
+When data context type is an array and there is an adaptive element that uses the data context. Template lagunage specifies that the adaptive element that hosts the data context repeats the subtree that has itself the root node.  
 
 ```json
 {
@@ -310,22 +310,26 @@ When data context type is an array, there is an adaptive element that uses the d
 
 Notice what's being repeated in **Figure 5** & **Figure 6**. In **Figure 5**, the FactSet is repeated since the data context is set at the FactSet. In **Figure 6**, the Container is repeated as the data context is sent at the Container.
 
-### Parsing Strategy
-It is obvious from the examples that simply returning the string or StringBuilder is not sufficient. We need ability to delay the expansion until the walker explores all of a subtree where the root has data context and its type is array. And check that one of its child node makes reference to the data context.  
+## Parsing Strategy
+It is obvious from the examples that simply returning the string or StringBuilder is not sufficient. We need ability to delay the expansion until the walker explores all of a subtree where the root has data context and its type is array, and one of its child node makes reference to the data context.  
 
-#### Result 
+### Result 
 - ANTLR allows Visitor to define a custom return type
-- new JSONTemplateVisitorResult  
+```dotnet
+public class JSONTemplateVisitor : JSONParserBaseVisitor<JSONTemplateVisitorResult>
+```
+- JSONTemplateVisitorResult  
 - It has a linked list inside
 - It supports two operations, join and expand
 - join is used to merge results returned from other nodes
- - when joining two results if the joint (tail and head) are already expanded, then their nodes are merged to one
- - if they have templated string that needs to be expanded, then they are linked as linked lists 
+ - when joining two results, if the joint (tail and head) are already expanded, then their linked list nodes are merged to one
+ - if they have templated string that needs to be expanded, then they are linked as linked lists without merging
 - In the VisitObj method, once visit to children finishes, we have one merged result object
-- if data context object was discovered, and it's array type, expansion happens
- - it expand the result with data context. 
- - it repeats n times where n is number of elements in data context
- - the result is merged and returned from the method.
+- if data context object was discovered in the current node, and it's array type, expansion happens with the merged result object
+ - it repeats the following steps n times where n is number of elements in data context
+ - it expands the result with data context. 
+ - the expanded result is merged
+- the result is returned from the method.
 - if data context object wasn't discovered in this node, simply return the current result without expanding.
 
 ## When
