@@ -77,6 +77,8 @@
     ACOBaseActionElement *acoElem = [[ACOBaseActionElement alloc] init];
     ACRContentHoldingUIScrollView *containingView = [[ACRContentHoldingUIScrollView alloc] init];
     [superview addArrangedSubview:containingView];
+[containingView.widthAnchor constraintLessThanOrEqualToAnchor:superview.widthAnchor multiplier:1.0 constant:0].active = YES;
+
     float accumulatedWidth = 0, accumulatedHeight = 0, spacing = adaptiveActionConfig.buttonSpacing, maxWidth = 0, maxHeight = 0;
     if (elems.empty()) {
         return containingView;
@@ -134,7 +136,7 @@
     }
 
     float contentWidth = accumulatedWidth, contentHeight = accumulatedHeight;
-    [childview adjustHuggingForLastElement];
+    //[childview adjustHuggingForLastElement];
     if (ActionsOrientation::Horizontal == adaptiveActionConfig.actionsOrientation) {
         contentWidth += (elems.size() - 1) * spacing;
         contentHeight = maxHeight;
@@ -152,7 +154,7 @@
     [NSLayoutConstraint constraintWithItem:containingView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:childview attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0].active = YES;
     NSLayoutConstraint *hConstraint = [NSLayoutConstraint constraintWithItem:childview attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:containingView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0];
     NSLayoutConstraint *vConstraint = [NSLayoutConstraint constraintWithItem:childview attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:containingView attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0];
-
+[containingView.heightAnchor constraintLessThanOrEqualToConstant:maxHeight].active = YES;
     hConstraint.active = YES;
     vConstraint.active = YES;
 
