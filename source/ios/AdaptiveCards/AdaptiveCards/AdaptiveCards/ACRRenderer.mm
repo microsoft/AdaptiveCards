@@ -138,11 +138,11 @@ using namespace AdaptiveCards;
     [ACRRenderer render:verticalView rootView:rootView inputs:inputs withCardElems:body andHostConfig:config];
 
     // Dont add the trailing space if the vertical content alignment is top/default
-    if((adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center) ||
-       (adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Top &&
-        !(verticalView.hasStretchableView))){
-        trailingBlankSpace = [verticalView addPaddingSpace];
-    }
+//    if((adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center) ||
+//       (adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Top &&
+//        !(verticalView.hasStretchableView))){
+//        trailingBlankSpace = [verticalView addPaddingSpace];
+//    }
 
     [[rootView card] setInputs:inputs];
 

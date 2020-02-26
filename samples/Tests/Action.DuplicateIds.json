@@ -1,27 +1,54 @@
 {
-	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-	"type": "AdaptiveCard",
-	"version": "1.0",
-	"body": [
-		{
-			"type": "TextBlock",
-			"text": "This card as duplicate ids and shouldn't render!"
-		},
-		{
-			"type": "Input.Text",
-			"id": "duplicate",
-			"placeholder": "uh-oh"
-		},
-		{
-			"type": "Input.Text",
-			"id": "duplicate",
-			"placeholder": "not again!"
-		}
-	],
-	"actions": [
-		{
-			"type": "Action.Submit",
-			"title": "Action.Submit"
-		}
-	]
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "This card's action will open a URL"
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.OpenUrl",
+            "title": "Action.OpenUrl1",
+            "url": "https://adaptivecards.io"
+        },
+            {
+            "type": "Action.OpenUrl",
+            "title": "Action.OpenUrl2",
+            "url": "https://adaptivecards.io"
+        },
+        {
+            "type": "Action.OpenUrl",
+            "title": "Action.OpenUrl3",
+            "url": "https://adaptivecards.io"
+        },
+        {
+            "type": "Action.OpenUrl",
+            "title": "Action.OpenUrl4",
+            "url": "https://adaptivecards.io"
+        },
+        {
+            "type": "Action.OpenUrl",
+            "title": "Action.OpenUrl5",
+            "url": "https://adaptivecards.io"
+        },
+        {
+            "type": "Action.OpenUrl",
+            "title": "Action.OpenUrl6",
+            "url": "https://adaptivecards.io"
+        },
+        {
+            "type": "Action.OpenUrl",
+            "title": "Action.OpenUrl7",
+            "url": "https://adaptivecards.io"
+        },
+        {
+            "type": "Action.OpenUrl",
+            "title": "Action.OpenUrl8",
+            "url": "https://adaptivecards.io"
+        }
+    ]
 }
+
