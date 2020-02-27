@@ -72,6 +72,10 @@ export default payloads = [
     "json": require('./Bleed.json')
   },
   {
+    "title": "Content.To.Fit.json",
+    "json": require('./Content-to-fit.json')
+  },
+  {
     "title": "Container.Style.json",
     "json": require('./Container.Style.json')
   },
