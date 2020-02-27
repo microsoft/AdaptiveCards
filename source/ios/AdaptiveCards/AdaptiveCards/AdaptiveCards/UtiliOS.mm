@@ -303,7 +303,7 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
                 isDeficientInHeight = YES;
             }
 
-            if (isDeficientInWidth and isDeficientInWidth) {
+            if (isDeficientInWidth and isDeficientInHeight) {
                 CGFloat widthDeficiencyRaito = targetViewSize.width / sourceSize.width;
                 CGFloat heightDifficiencyRaito = targetViewSize.height / sourceSize.height;
                 // we choose one with bigger difficienty in ratio, and by increasing the

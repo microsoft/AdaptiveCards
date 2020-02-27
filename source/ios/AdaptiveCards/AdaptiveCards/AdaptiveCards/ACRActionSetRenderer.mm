@@ -67,10 +67,6 @@
     UIStackView *childview = [[UIStackView alloc] init];
     childview.distribution = UIStackViewDistributionFillProportionally;
     AdaptiveCards::ActionsConfig adaptiveActionConfig = [config getHostConfig] -> GetActions();
-    NSDictionary<NSString *, NSNumber *> *attributes = @{
-        @"spacing" : [NSNumber numberWithInt:adaptiveActionConfig.buttonSpacing],
-        @"distribution" : [NSNumber numberWithInt:UIStackViewDistributionFillProportionally]
-    };
 
     if (ActionsOrientation::Horizontal == adaptiveActionConfig.actionsOrientation) {
         childview.axis = UILayoutConstraintAxisHorizontal;
@@ -174,10 +170,9 @@
     }
     // childview.frame = CGRectMake(0, 0, contentWidth, contentHeight);
     // containingView.frame = CGRectMake(0, 0, superview.frame.size.width, contentHeight);
-
-    [containingView.heightAnchor constraintEqualToConstant:maxHeight].active = YES;
-    containingView.translatesAutoresizingMaskIntoConstraints = NO;
     [containingView addSubview:childview];
+    [containingView.heightAnchor constraintEqualToAnchor:childview.heightAnchor].active = YES;
+    containingView.translatesAutoresizingMaskIntoConstraints = NO;
     [NSLayoutConstraint constraintWithItem:containingView
                                  attribute:NSLayoutAttributeTop
                                  relatedBy:NSLayoutRelationEqual
@@ -246,6 +241,8 @@
     //} else {
     //    vConstraint.priority = UILayoutPriorityDefaultLow;
     //}
+    
+//    [containingView setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     return containingView;
 }
 
