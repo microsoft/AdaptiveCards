@@ -34,7 +34,7 @@ We use ANTLR to generate parser and lexer
 ## ANTLR
 From a grammar, ANTLR generates a parser that can build parse trees and also generates a listener interface (or visitor) that makes it easy to respond to the recognition of phrases of interest.
 ANTLR is really two things: a tool that translates your grammar to a parser/lexer in Java (or other target language) and the runtime needed by the generated parsers/lexers.
-Once parsers and lexers are generated, the tool is no longer needed, so it won't be part of template SDK. CEL uses ANTLR, so CEL SDK already includes ANTRL runtime. There will be no additional penaly of using ANTLR with careful planning
+Once parsers and lexers are generated, the tool is no longer needed, so it won't be part of template SDK. AEL uses ANTLR, so AEL SDK already includes ANTRL runtime. There will be no additional penaly of using ANTLR with careful planning
 
 ## Parsing Strategy
 Current grammar is based on standard json grammar with addtional rules to handle adaptive card template language
@@ -46,7 +46,7 @@ Current grammar is based on standard json grammar with addtional rules to handle
 	"body": [
 		{
 			"type": "TextBlock",
-			"text": "**wrap: true** Lorem ipsum dolor sit amet",
+			"text": "Lorem ipsum dolor sit amet",
 			"wrap": true
 		}
 	]
@@ -63,7 +63,7 @@ pair
    ;
 ```
 
-From this grammar snippet, the parser generation tool will create a pairVisit method to a base visitor that we have to implement. By overriding this method, when walker visit the pair node, it calls the visit method of the node. We can do our own work such as translation in the visit method.
+From this grammar snippet, the parser generation tool will create a pairVisit method to a base visitor that we have to implement. By overriding this method, when a walker visits the pair node, it calls the visit method of the node. We can do our own work such as translation in the visit method.
 
 **Figure 2**
 ![](antlr4_parse_tree_1.png)
@@ -77,7 +77,7 @@ From this grammar snippet, the parser generation tool will create a pairVisit me
 	"body": [
 		{
 			"type": "TextBlock",
-			"text": "**wrap: true** {content}",
+			"text": "{content}",
 			"wrap": true
 		}
 	]
