@@ -514,6 +514,11 @@ namespace AdaptiveNamespace
         THROW_IF_FAILED(MakeAndInitialize<TileControl>(&tileControl));
         THROW_IF_FAILED(tileControl->put_BackgroundImage(backgroundImage));
 
+        // Set IsEnabled to false to avoid generating a tab stop for the background image tile control
+        ComPtr<IControl> tileControlAsControl;
+        THROW_IF_FAILED(tileControl.As(&tileControlAsControl));
+        THROW_IF_FAILED(tileControlAsControl->put_IsEnabled(false));
+
         ComPtr<IFrameworkElement> rootElement;
         THROW_IF_FAILED(rootPanel->QueryInterface(rootElement.GetAddressOf()));
         THROW_IF_FAILED(tileControl->put_RootElement(rootElement.Get()));
