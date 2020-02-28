@@ -183,12 +183,13 @@ Data can be either dictionary type or array type
 ],
 ```
 ### Parsing Strategy
-Since introduction of a new data context happens only in a pair and only an obj can include the pair, the Obj is the natural place to handle the data context. 
+Since the introduction of a new data context happens only in a pair, and only an obj can include the pair, the Obj is the natural place to handle the data context. 
 In VisitObj method, it filters through the method's current context's children which are pairs, and tries to catch a data context node. 
-(*Do we use first one we see, or do we have to see all of them?*) Current design tentatively uses the first one it sees for the performance reason.  
+ Current design tentatively uses the first one it sees for the performance reason.  
 When a data context node is encountered, it call a base visit method with the node, then the method resolved into VisitTemplateData method.
 The method, creates a data context object with a field that indicates Array if set. The data context object parse the value in the pair of the data context node into JArray object if it's array, otherwise into JObject
 The newly created data context object is set to current context. In current design, it uses a stack for this purpose. When the method returns to the VisitObj method, data context is set, and translation can continue. Please refer to **Figure 4**
+* Do we use first data context we see, or do we have to see all of them?
 
 # Translation
 ## Expansion in Basic Form
@@ -223,11 +224,17 @@ Data is accessed via '[]' with index
 ```
 The distinction in accessors type was important before the use of AEL. It's not important anymore since the job of expansion is delegated to AEL.
 ## Parsing Strategy
-Terminal Nodes or leaf nodes contain the templated string, so the default VisitTerminal method is overridden. When the method sees that given parse context is a TEMPLATELITERAL, it tries to expand using AEL & given data context. Since our data context is JToken type which implements IDictionary, AEL can expand it. When expansion fails, the method indicate that the literal has been expanded, so when the result is returned, the unaltered literal will be included in the result     
+Terminal Nodes or leaf nodes contain the templated string, so the default VisitTerminal method is overridden. When the method sees that given parse context is a TEMPLATELITERAL, it tries to expand using AEL & given data context. Since our data context is JObject or JArray type that implement IDictionary, AEL can expand it. When expansion fails, the method indicate that the literal has been expanded, so when the result is returned, the unaltered literal will be included in the result     
+* Including the unaltered literal when the expansion fails allows 2nd pass when data becomes avaialable, should this be default behavior? 
 
 ## Expansion with Array Data Context                                                                                                                         
-When data context type is an array and there is an adaptive element that uses the data context. Template lagunage specifies that the adaptive element that hosts the data context repeats the subtree that has itself the root node.  
-
+When data context type is an array and there is an adaptive element that uses the data context. Template lagunage specifies that the adaptive element that hosts the data context repeats its subtree of which root node is iteslf.  
+  
+**Figure 5**  
+![](Drawing1.png)  
+  
+**Figure 6**  
+![](Drawing2.png)   
 ```json
 {
     "type": "AdaptiveCard",
@@ -265,7 +272,8 @@ When data context type is an array and there is an adaptive element that uses th
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
 }
 ```
-**Figure 5**  
+
+**Figure 6**  
 ![](arrayType1.png)
 
 ```json
@@ -305,34 +313,36 @@ When data context type is an array and there is an adaptive element that uses th
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
 }
 ```  
-**Figure 6**  
+**Figure 7**  
 ![](arrayType2.png)  
 
-Notice what's being repeated in **Figure 5** & **Figure 6**. In **Figure 5**, the FactSet is repeated since the data context is set at the FactSet. In **Figure 6**, the Container is repeated as the data context is sent at the Container.
+Notice what's being repeated in **Figure 6** & **Figure 7**. In **Figure 6**, the FactSet is repeated since the data context is set at the FactSet. In **Figure 7**, the Container is repeated as the data context is sent at the Container.
 
 ## Parsing Strategy
-It is obvious from the examples that simply returning the string or StringBuilder is not sufficient. We need ability to delay the expansion until the walker explores all of a subtree where the root has data context and its type is array, and one of its child node makes reference to the data context.  
+It is obvious from the examples that simply returning the string or StringBuilder is not sufficient. We need ability to delay the expansion until the walker explores all of a subtree when its current data context is array, and one of its children makes reference to the data context.  
 
 ### Result 
-- ANTLR allows Visitor to define a custom return type
+- ANTLR allows Visitor to define a custom return object
 ```dotnet
 public class JSONTemplateVisitor : JSONParserBaseVisitor<JSONTemplateVisitorResult>
 ```
-- JSONTemplateVisitorResult  
+- All of the Visitor methods will return this type once declared
+
+- .NET SDK will have JSONTemplateVisitorResult  
 - It has a linked list inside
 - It supports two operations, join and expand
 - join is used to merge results returned from other nodes
- - when joining two results, if the joint (tail and head) are already expanded, then their linked list nodes are merged to one
- - if they have templated string that needs to be expanded, then they are linked as linked lists without merging
+ - when joining two results, if the joint (tail and head) are already expanded meaning no templated strings in them, then their linked list nodes are merged to one
+ - if they have templated string that needs to be expanded, then they are linked as linked lists without merging the nodes
 - In the VisitObj method, once visit to children finishes, we have one merged result object
 - if data context object was discovered in the current node, and it's array type, expansion happens with the merged result object
  - it repeats the following steps n times where n is number of elements in data context
  - it expands the result with data context. 
  - the expanded result is merged
 - the result is returned from the method.
-- if data context object wasn't discovered in this node, simply return the current result without expanding.
+- if data context object wasn't discovered in this node, simply return the current result without expanding, so it can be handled by a parent node which will have the data context
 
-## When
+## $when
 * Work in progress 
 * Similar concept to Array Type
-* basic concept is that result is expanded to have branching point
+* basic concept is that result is expanded to have branching point 
