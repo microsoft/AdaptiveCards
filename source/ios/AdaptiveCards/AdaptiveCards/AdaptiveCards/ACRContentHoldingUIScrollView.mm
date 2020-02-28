@@ -12,7 +12,17 @@
 - (CGSize)intrinsicContentSize
 {
     return [super intrinsicContentSize];
-//    return self.frame.size;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+
+    if (self.contentview && self.frame.size.width > self.contentWidth && self.stretch) {
+        [self.contentview.widthAnchor constraintEqualToAnchor:self.widthAnchor multiplier:1.0]
+                .active = YES;
+        [self.contentview setNeedsUpdateConstraints];
+    }
 }
 
 @end

@@ -497,7 +497,7 @@ void handleActionFallbackException(ACOFallbackException *exception,
                                    UIView<ACRIContentHoldingView> *view, ACRView *rootView,
                                    NSMutableArray *inputs, ACOBaseActionElement *acoElem,
                                    ACOHostConfig *config,
-                                   UIView<ACRIContentHoldingView> *actionSet)
+                                   UIStackView *actionSet)
 {
     std::shared_ptr<BaseElement> fallbackBaseElement = nullptr;
     std::shared_ptr<BaseActionElement> elem = acoElem.element;

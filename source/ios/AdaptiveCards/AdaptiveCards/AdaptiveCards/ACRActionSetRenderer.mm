@@ -63,25 +63,14 @@
     ACRRegistration *reg = [ACRRegistration getInstance];
     ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
 
-    // UIView<ACRIContentHoldingView> *childview = nil;
     UIStackView *childview = [[UIStackView alloc] init];
     childview.distribution = UIStackViewDistributionFillProportionally;
     AdaptiveCards::ActionsConfig adaptiveActionConfig = [config getHostConfig] -> GetActions();
 
     if (ActionsOrientation::Horizontal == adaptiveActionConfig.actionsOrientation) {
         childview.axis = UILayoutConstraintAxisHorizontal;
-        // childview = [[alloc]
-        //    initWithFrame:CGRectMake(0, 0, superview.frame.size.width,
-        //    superview.frame.size.height)
-        //       attributes:attributes];
-        //((ACRColumnSetView *)childview).isActionSet = YES;
     } else {
         childview.axis = UILayoutConstraintAxisVertical;
-        // childview = [[ACRColumnView alloc]
-        //    initWithFrame:CGRectMake(0, 0, superview.frame.size.width,
-        //    superview.frame.size.height)
-        //       attributes:attributes];
-        //((ACRColumnView *)childview).isActionSet = YES;
     }
 
     ACOBaseActionElement *acoElem = [[ACOBaseActionElement alloc] init];
@@ -92,10 +81,6 @@
                                                        multiplier:1.0
                                                          constant:0]
         .active = YES;
-    //[containingView.leadingAnchor
-    // constraintEqualToAnchor:superview.layoutMarginsGuide.leadingAnchor
-    //                                             constant:0]
-    //    .active = YES;
 
     float accumulatedWidth = 0, accumulatedHeight = 0, spacing = adaptiveActionConfig.buttonSpacing,
           maxWidth = 0, maxHeight = 0;
@@ -141,16 +126,15 @@
                                        hostConfig:config];
             [childview addArrangedSubview:button];
         } @catch (ACOFallbackException *exception) {
-            //            handleActionFallbackException(exception, superview, rootView, inputs,
-            //            acoElem, config,
-            //                                          childview);
-            //            NSUInteger count = [childview subviewsCounts];
-            //            if (count > numElem) {
-            //                UIView *view = [childview getLastSubview];
-            //                if (view && [view isKindOfClass:[UIButton class]]) {
-            //                    button = (UIButton *)view;
-            //                }
-            //            }
+            handleActionFallbackException(exception, superview, rootView, inputs, acoElem, config,
+                                          childview);
+            NSUInteger count = [childview.arrangedSubviews count];
+            if (count > numElem) {
+                UIView *view = [childview.arrangedSubviews lastObject];
+                if (view && [view isKindOfClass:[UIButton class]]) {
+                    button = (UIButton *)view;
+                }
+            }
         }
 
         accumulatedWidth += [button intrinsicContentSize].width;
@@ -159,90 +143,59 @@
         maxHeight = MAX(maxHeight, [button intrinsicContentSize].height);
     }
 
-    float contentWidth = accumulatedWidth, contentHeight = accumulatedHeight;
-    //[childview adjustHuggingForLastElement];
+    float contentWidth = accumulatedWidth;
     if (ActionsOrientation::Horizontal == adaptiveActionConfig.actionsOrientation) {
         contentWidth += (elems.size() - 1) * spacing;
-        contentHeight = maxHeight;
     } else {
-        contentHeight += (elems.size() - 1) * spacing;
         contentWidth = maxWidth;
     }
-    // childview.frame = CGRectMake(0, 0, contentWidth, contentHeight);
-    // containingView.frame = CGRectMake(0, 0, superview.frame.size.width, contentHeight);
+   
     [containingView addSubview:childview];
+    
+    containingView.contentview = childview;
+    containingView.contentWidth = contentWidth;
+    
     [containingView.heightAnchor constraintEqualToAnchor:childview.heightAnchor].active = YES;
     containingView.translatesAutoresizingMaskIntoConstraints = NO;
-    [NSLayoutConstraint constraintWithItem:containingView
-                                 attribute:NSLayoutAttributeTop
-                                 relatedBy:NSLayoutRelationEqual
-                                    toItem:childview
-                                 attribute:NSLayoutAttributeTop
-                                multiplier:1.0
-                                  constant:0]
-        .active = YES;
-    [NSLayoutConstraint constraintWithItem:containingView
-                                 attribute:NSLayoutAttributeBottom
-                                 relatedBy:NSLayoutRelationEqual
-                                    toItem:childview
-                                 attribute:NSLayoutAttributeBottom
-                                multiplier:1.0
-                                  constant:0]
-        .active = YES;
-    [NSLayoutConstraint constraintWithItem:containingView
-                                 attribute:NSLayoutAttributeLeading
-                                 relatedBy:NSLayoutRelationEqual
-                                    toItem:childview
-                                 attribute:NSLayoutAttributeLeading
-                                multiplier:1.0
-                                  constant:0]
-        .active = YES;
-    [NSLayoutConstraint constraintWithItem:containingView
-                                 attribute:NSLayoutAttributeTrailing
-                                 relatedBy:NSLayoutRelationEqual
-                                    toItem:childview
-                                 attribute:NSLayoutAttributeTrailing
-                                multiplier:1.0
-                                  constant:0]
-        .active = YES;
-    NSLayoutConstraint *hConstraint = [NSLayoutConstraint constraintWithItem:childview
-                                                                   attribute:NSLayoutAttributeWidth
-                                                                   relatedBy:NSLayoutRelationEqual
-                                                                      toItem:containingView
-                                                                   attribute:NSLayoutAttributeWidth
-                                                                  multiplier:1.0
-                                                                    constant:0];
-    // NSLayoutConstraint *vConstraint = [NSLayoutConstraint constraintWithItem:childview
-    //                                                               attribute:NSLayoutAttributeHeight
-    //                                                               relatedBy:NSLayoutRelationEqual
-    //                                                                  toItem:containingView
-    //                                                               attribute:NSLayoutAttributeHeight
-    //                                                              multiplier:1.0
-    //                                                                constant:0];
-    // hConstraint.active = YES;
-    // vConstraint.active = YES;
-
-    // if (ActionsOrientation::Horizontal == adaptiveActionConfig.actionsOrientation) {
-    //    hConstraint.priority = UILayoutPriorityDefaultLow;
-    //    if (contentWidth > superview.frame.size.width) {
-    //        containingView.showsHorizontalScrollIndicator = YES;
-    //    } else {
-    //        if (adaptiveActionConfig.actionAlignment == ActionAlignment::Stretch) {
-    //            [NSLayoutConstraint constraintWithItem:containingView
-    //                                         attribute:NSLayoutAttributeWidth
-    //                                         relatedBy:NSLayoutRelationEqual
-    //                                            toItem:childview
-    //                                         attribute:NSLayoutAttributeWidth
-    //                                        multiplier:1.0
-    //                                          constant:0]
-    //                .active = YES;
-    //        }
-    //    }
-    //} else {
-    //    vConstraint.priority = UILayoutPriorityDefaultLow;
-    //}
     
-//    [containingView setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+    [NSLayoutConstraint constraintWithItem:containingView
+                                 attribute:NSLayoutAttributeTop
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:childview
+                                 attribute:NSLayoutAttributeTop
+                                multiplier:1.0
+                                  constant:0]
+        .active = YES;
+    [NSLayoutConstraint constraintWithItem:containingView
+                                 attribute:NSLayoutAttributeBottom
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:childview
+                                 attribute:NSLayoutAttributeBottom
+                                multiplier:1.0
+                                  constant:0]
+        .active = YES;
+    [NSLayoutConstraint constraintWithItem:containingView
+                                 attribute:NSLayoutAttributeLeading
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:childview
+                                 attribute:NSLayoutAttributeLeading
+                                multiplier:1.0
+                                  constant:0]
+        .active = YES;
+    [NSLayoutConstraint constraintWithItem:containingView
+                                 attribute:NSLayoutAttributeTrailing
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:childview
+                                 attribute:NSLayoutAttributeTrailing
+                                multiplier:1.0
+                                  constant:0]
+        .active = YES;
+
+     if (ActionsOrientation::Horizontal == adaptiveActionConfig.actionsOrientation) {
+         containingView.stretch = true;
+     }
+
+
     return containingView;
 }
 
