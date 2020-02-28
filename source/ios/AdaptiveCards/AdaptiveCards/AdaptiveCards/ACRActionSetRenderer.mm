@@ -149,15 +149,15 @@
     } else {
         contentWidth = maxWidth;
     }
-   
+
     [containingView addSubview:childview];
-    
+
     containingView.contentview = childview;
     containingView.contentWidth = contentWidth;
-    
+
     [containingView.heightAnchor constraintEqualToConstant:maxHeight].active = YES;
     containingView.translatesAutoresizingMaskIntoConstraints = NO;
-    
+
     [NSLayoutConstraint constraintWithItem:containingView
                                  attribute:NSLayoutAttributeTop
                                  relatedBy:NSLayoutRelationEqual
@@ -191,10 +191,10 @@
                                   constant:0]
         .active = YES;
 
-     if (ActionsOrientation::Horizontal == adaptiveActionConfig.actionsOrientation) {
-         containingView.stretch = true;
-     }
-    
+    if (ActionsOrientation::Horizontal == adaptiveActionConfig.actionsOrientation) {
+        containingView.stretch = true;
+    }
+
     return containingView;
 }
 

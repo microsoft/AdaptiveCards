@@ -1,56 +1,23 @@
 {
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "type": "AdaptiveCard",
-    "version": "1.0",
-    "body": [
-        {
-            "type": "TextBlock",
-            "text": "This card's action will open a URL"
-        }
-    ],
-    "actions": [
-        {
-            "type": "Action.ShowCard",
-            "title": "Action.ShowCard",
-            "card": {
-                "type": "AdaptiveCard",
-                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
-            }
-        },
-            {
-            "type": "Action.OpenUrl",
-            "title": "Action.OpenUrl2",
-            "url": "https://adaptivecards.io"
-        },
-        {
-            "type": "Action.OpenUrl",
-            "title": "Action.OpenUrl3",
-            "url": "https://adaptivecards.io"
-        },
-        {
-            "type": "Action.OpenUrl",
-            "title": "Action.OpenUrl4",
-            "url": "https://adaptivecards.io"
-        },
-        {
-            "type": "Action.OpenUrl",
-            "title": "Action.OpenUrl5",
-            "url": "https://adaptivecards.io"
-        },
-        {
-            "type": "Action.OpenUrl",
-            "title": "Action.OpenUrl6",
-            "url": "https://adaptivecards.io"
-        },
-        {
-            "type": "Action.OpenUrl",
-            "title": "Action.OpenUrl7",
-            "url": "https://adaptivecards.io"
-        },
-        {
-            "type": "Action.OpenUrl",
-            "title": "Action.OpenUrl8",
-            "url": "https://adaptivecards.io"
-        }
-    ]
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "This card has a custom action. If renderer can render the custom type, it will render a button. try clicking the button.",
+			"wrap": true
+		}
+	],
+	"actions": [
+		{
+			"type": "NewStyle",
+			"title": "New Button Type ",
+			"Red":150,
+			"Green":100,
+			"Blue":100,
+			"CornerRadius":10,
+			"alertMessage": "Add Custom Message Here"
+		}
+	]
 }
