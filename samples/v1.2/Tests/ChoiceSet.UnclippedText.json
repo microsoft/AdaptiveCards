@@ -1,0 +1,28 @@
+{
+    "type": "AdaptiveCard",
+    "version": "1.2"
+    "body": [
+        {
+            "type": "Container",
+            "style": "emphasis",
+            "items": [
+                {
+                    "type": "Input.ChoiceSet",
+                    "id": "0",
+                    "style": "expanded",
+                    "wrap": true,
+                    "choices": [
+                        {
+                            "title": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. End.",
+                            "value": "0"
+                        },
+                        {
+                            "title": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. End.",
+                            "value": "1"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
