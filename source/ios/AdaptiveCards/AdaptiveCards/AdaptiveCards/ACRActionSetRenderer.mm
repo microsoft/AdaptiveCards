@@ -155,7 +155,7 @@
     containingView.contentview = childview;
     containingView.contentWidth = contentWidth;
 
-    [containingView.heightAnchor constraintEqualToConstant:maxHeight].active = YES;
+    [containingView.heightAnchor constraintEqualToAnchor:childview.heightAnchor multiplier:1.0].active = YES;
     containingView.translatesAutoresizingMaskIntoConstraints = NO;
 
     [NSLayoutConstraint constraintWithItem:containingView
@@ -191,7 +191,7 @@
                                   constant:0]
         .active = YES;
 
-    if (ActionsOrientation::Horizontal == adaptiveActionConfig.actionsOrientation) {
+    if (adaptiveActionConfig.actionAlignment == ActionAlignment::Stretch) {
         containingView.stretch = true;
     }
 
