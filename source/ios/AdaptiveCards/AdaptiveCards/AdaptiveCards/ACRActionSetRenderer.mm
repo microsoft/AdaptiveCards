@@ -191,7 +191,7 @@
                                   constant:0]
         .active = YES;
 
-    if (ActionsOrientation::Horizontal == adaptiveActionConfig.actionsOrientation) {
+    if (adaptiveActionConfig.actionAlignment == ActionAlignment::Stretch) {
         containingView.stretch = true;
     }
 
