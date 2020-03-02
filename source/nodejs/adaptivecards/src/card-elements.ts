@@ -288,10 +288,6 @@ export abstract class CardElement extends CardObject {
         this._padding = value;
     }
 
-    protected shouldSerialize(context: SerializationContext): boolean {
-        return context.elementRegistry.findByName(this.getJsonTypeName()) !== undefined;
-    }
-
     protected get useDefaultSizing(): boolean {
         return true;
     }
@@ -3361,10 +3357,6 @@ export abstract class Action extends CardObject {
         return result;
     }
 
-    protected shouldSerialize(context: SerializationContext): boolean {
-        return context.actionRegistry.findByName(this.getJsonTypeName()) !== undefined;
-    }
-
     onExecute: (sender: Action) => void;
 
     getHref(): string | undefined {
@@ -5321,10 +5313,6 @@ export class Column extends Container {
         }
     }
 
-    protected shouldSerialize(context: SerializationContext): boolean {
-        return true;
-    }
-
     protected get separatorOrientation(): Enums.Orientation {
         return Enums.Orientation.Vertical;
     }
@@ -6026,10 +6014,6 @@ export class AdaptiveCard extends ContainerWithActions {
             Enums.Spacing.Padding);
     }
 
-    protected shouldSerialize(context: SerializationContext): boolean {
-        return true;
-    }
-
     protected get renderIfEmpty(): boolean {
         return true;
     }
@@ -6308,6 +6292,18 @@ export class SerializationContext extends BaseSerializationContext {
 
     onParseAction?: (action: Action, source: any, context: SerializationContext) => void;
     onParseElement?: (element: CardElement, source: any, context: SerializationContext) => void;
+
+    shouldSerialize(o: SerializableObject): boolean {
+        if (o instanceof Action) {
+            return this.actionRegistry.findByName(o.getJsonTypeName()) !== undefined;
+        }
+        else if (o instanceof CardElement) {
+            return this.elementRegistry.findByName(o.getJsonTypeName()) !== undefined;
+        }
+        else {
+            return true;
+        }
+    }
 
     parseCardObject<T extends CardObject>(
         parent: CardElement | undefined,

@@ -11,6 +11,13 @@ window.onload = function() {
     sampleCardAndData["$data"] = Shared.sampleData;
 
     let applet = new AAF.AdaptiveApplet();
+    applet.onCardChanged = (sender: AAF.AdaptiveApplet) => {
+        if (sender.card) {
+            if (sender.card.autoRefresh) {
+                alert(JSON.stringify(sender.card.autoRefresh.toJSON()));
+            }
+        }
+    };
 
     // applet.channelAdapter = new LocalChannelAdapter();
 

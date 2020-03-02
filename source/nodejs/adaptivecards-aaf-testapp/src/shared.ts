@@ -17,6 +17,14 @@ export const sampleData = {
 
 export const sampleCard = {
     type: "AdaptiveCard",
+    autoRefresh: {
+        displayCurrentCardWhileRefreshing: false,
+        action: {
+            type: "Action.Execute",
+            verb: "autoRefresh",
+            title: "Automatic refresh"
+        }
+    },
     body: [
         {
             type: "TextBlock",

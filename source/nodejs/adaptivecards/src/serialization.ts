@@ -127,6 +127,8 @@ export function isVersionLessOrEqual(version: TargetVersion, targetVersion: Targ
 export abstract class BaseSerializationContext {
     private _validationEvents: IValidationEvent[] = [];
 
+    constructor(public targetVersion: Version = Versions.latest) {}
+
     serializeValue(target: { [key: string]: any }, propertyName: string, propertyValue: any, defaultValue: any = undefined) {
         if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue) {
             delete target[propertyName];
@@ -231,7 +233,9 @@ export abstract class BaseSerializationContext {
         return this._validationEvents[index];
     }
 
-    constructor(public targetVersion: Version = Versions.latest) {}
+    shouldSerialize(o: SerializableObject): boolean {
+        return true;
+    }
 
     get eventCount(): number {
         return this._validationEvents.length;
@@ -579,12 +583,13 @@ export class SerializableObjectProperty extends PropertyDefinition {
     constructor(
         readonly targetVersion: Version,
         readonly name: string,
-        readonly objectType: SerializableObjectType) {
+        readonly objectType: SerializableObjectType,
+        readonly nullable: boolean = false) {
         super(
             targetVersion,
             name,
             undefined,
-            (sender: SerializableObject) => { return new this.objectType(); });
+            (sender: SerializableObject) => { return this.nullable ? undefined : new this.objectType(); });
     }
 }
 
@@ -812,10 +817,6 @@ export abstract class SerializableObject {
         }
     }
 
-    protected shouldSerialize(context: BaseSerializationContext): boolean {
-        return true;
-    }
-
     maxVersion: Version = Versions.latest;
 
     constructor() {
@@ -837,7 +838,7 @@ export abstract class SerializableObject {
     toJSON(context?: BaseSerializationContext): PropertyBag | undefined {
         let effectiveContext = context ? context : new SimpleSerializationContext();
 
-        if (this.shouldSerialize(effectiveContext)) {
+        if (effectiveContext.shouldSerialize(this)) {
             let result: PropertyBag;
 
             if (GlobalSettings.enableFullJsonRoundTrip && this._rawProperties && typeof this._rawProperties === "object") {

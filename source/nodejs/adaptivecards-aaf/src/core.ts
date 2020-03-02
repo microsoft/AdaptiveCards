@@ -1,7 +1,8 @@
 import * as Adaptive from "adaptivecards";
 import * as Templating from "adaptivecards-templating";
 import { ChannelAdapter } from "./channel-adapter";
-import { InvokeActivity, ActivityStatus, ActivityResponse, ActivityRequest } from "./invoke-activity";
+import { ActivityStatus, ActivityResponse, ActivityRequest } from "./invoke-activity";
+import { CardElement } from "adaptivecards";
 
 export class ExecuteAction extends Adaptive.SubmitAction {
     //#region Schema
@@ -18,11 +19,97 @@ export class ExecuteAction extends Adaptive.SubmitAction {
     }
 }
 
+export class AutoRefreshActionProperty extends Adaptive.PropertyDefinition {
+    parse(sender: AutoRefreshDefinition, source: Adaptive.PropertyBag, context: Adaptive.SerializationContext): ExecuteAction | undefined {
+        let action = context.parseAction(
+            sender.parent,
+            source[this.name],
+            [],
+            false);
+
+        if (action && action instanceof ExecuteAction) {
+            return action;
+        }
+        else {
+            context.logParseEvent(
+                Adaptive.ValidationEvent.ActionTypeNotAllowed,
+                "\"autoRefresh\" must have its \"action\" property defined as an Action.Execute object",
+                sender);
+
+            return undefined;
+        }
+    }
+
+    toJSON(sender: Adaptive.SerializableObject, target: Adaptive.PropertyBag, value: ExecuteAction | undefined, context: Adaptive.SerializationContext) {
+        context.serializeValue(target, this.name, value ? value.toJSON(context) : undefined);
+    }
+
+    constructor(readonly targetVersion: Adaptive.Version, readonly name: string) {
+        super(targetVersion, name, undefined);
+    }
+}
+
+export class AutoRefreshDefinition extends Adaptive.SerializableObject {
+    //#region Schema
+
+    static readonly displayCurrentCardWhileRefreshingProperty = new Adaptive.BoolProperty(Adaptive.Versions.v1_0, "displayCurrentCardWhileRefreshing", true);
+    static readonly actionProperty = new AutoRefreshActionProperty(Adaptive.Versions.v1_0, "action");
+
+    @Adaptive.property(AutoRefreshDefinition.displayCurrentCardWhileRefreshingProperty)
+    displayCurrentCardWhileRefreshing: boolean;
+
+    @Adaptive.property(AutoRefreshDefinition.actionProperty)
+    get action(): ExecuteAction {
+        return this.getValue(AutoRefreshDefinition.actionProperty);
+    }
+
+    set action(value: ExecuteAction) {
+        this.setValue(AutoRefreshDefinition.actionProperty, value);
+
+        if (value) {
+            value.setParent(this.parent);
+        }
+    }
+
+    protected getSchemaKey(): string {
+        return "AutoRefreshDefinition";
+    }
+
+    //#endregion
+
+    parent: CardElement;
+}
+
+export class AdaptiveAppletCard extends Adaptive.AdaptiveCard {
+    //#region Schema
+
+    static readonly autoRefreshProperty = new Adaptive.SerializableObjectProperty(Adaptive.Versions.v1_0, "autoRefresh", AutoRefreshDefinition, true);
+
+    @Adaptive.property(AdaptiveAppletCard.autoRefreshProperty)
+    get autoRefresh(): AutoRefreshDefinition | undefined {
+        return this.getValue(AdaptiveAppletCard.autoRefreshProperty);
+    }
+
+    set autoRefresh(value: AutoRefreshDefinition | undefined) {
+        this.setValue(AdaptiveAppletCard.autoRefreshProperty, value);
+
+        if (value) {
+            value.parent = this;
+        }
+    }
+
+    protected getSchemaKey(): string {
+        return "AdaptiveAppletCard";
+    }
+
+    //#endregion
+}
+
 export class AdaptiveApplet {
     static maximumRequestAttempts: number = 3;
     static defaultTimeBetweenAttempts: number = 3000; // 3 seconds
 
-    private _card: Adaptive.AdaptiveCard | undefined;
+    private _card: AdaptiveAppletCard | undefined;
     private _cardPayload: any;
     private _cardData: any;
 
@@ -189,7 +276,7 @@ export class AdaptiveApplet {
 
         if (this._cardPayload) {
             try {
-                let card = new Adaptive.AdaptiveCard();
+                let card = new AdaptiveAppletCard();
 
                 if (this._cardData) {
                     let evaluationContext = new Templating.EvaluationContext();
@@ -232,6 +319,10 @@ export class AdaptiveApplet {
                 console.error("setCard: " + error);
             }
         }
+    }
+
+    get card(): AdaptiveAppletCard | undefined {
+        return this._card;
     }
 }
 
