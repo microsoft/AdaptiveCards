@@ -52,8 +52,12 @@ export class AutoRefreshActionProperty extends Adaptive.PropertyDefinition {
 export class AutoRefreshDefinition extends Adaptive.SerializableObject {
     //#region Schema
 
+    static readonly userIdsProperty = new Adaptive.StringArrayProperty(Adaptive.Versions.v1_0, "userIds");
     static readonly displayCurrentCardWhileRefreshingProperty = new Adaptive.BoolProperty(Adaptive.Versions.v1_0, "displayCurrentCardWhileRefreshing", true);
     static readonly actionProperty = new AutoRefreshActionProperty(Adaptive.Versions.v1_0, "action");
+
+    @Adaptive.property(AutoRefreshDefinition.userIdsProperty)
+    userIds: string[];
 
     @Adaptive.property(AutoRefreshDefinition.displayCurrentCardWhileRefreshingProperty)
     displayCurrentCardWhileRefreshing: boolean;
@@ -247,6 +251,7 @@ export class AdaptiveApplet {
 
     readonly renderedElement: HTMLElement;
 
+    userId?: string;
     channelAdapter: ChannelAdapter | undefined = undefined;
 
     onCardChanging?: (sender: AdaptiveApplet, card: any) => boolean;
@@ -310,6 +315,10 @@ export class AdaptiveApplet {
 
                         if (this.onCardChanged) {
                             this.onCardChanged(this);
+                        }
+
+                        if (this._card.autoRefresh) {
+                            this.internalExecuteActionAsync(this._card.autoRefresh.action);
                         }
                     }
                 }

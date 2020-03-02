@@ -377,6 +377,44 @@ export interface IVersionedValue<TValue> {
     targetVersion?: Version;
 }
 
+export class StringArrayProperty extends PropertyDefinition {
+    parse(sender: SerializableObject, source: PropertyBag, context: BaseSerializationContext): string[] | undefined {
+        let sourceValue = source[this.name];
+
+        if (sourceValue === undefined || !Array.isArray(sourceValue)) {
+            return this.defaultValue;
+        }
+
+        let result: string[] = [];
+
+        for (let value of sourceValue) {
+            if (typeof value === "string") {
+                result.push(value);
+            }
+            else {
+                context.logParseEvent(
+                    Enums.ValidationEvent.InvalidPropertyValue,
+                    `Invalid array value "${value}" of type "${typeof value}" ignored for "${this.name}".`,
+                    sender);
+            }
+        }
+
+        return result;
+    }
+
+    toJSON(sender: SerializableObject, target: PropertyBag, value: string[] | undefined, context: BaseSerializationContext) {
+        context.serializeArray(target, this.name, value);
+    }
+
+    constructor(
+        readonly targetVersion: Version,
+        readonly name: string,
+        readonly defaultValue?: string[],
+        readonly onGetInitialValue?: (sender: SerializableObject) => string[] | undefined) {
+        super(targetVersion, name, defaultValue, onGetInitialValue);
+    }
+}
+
 export class ValueSetProperty extends PropertyDefinition {
     parse(sender: SerializableObject, source: PropertyBag, context: BaseSerializationContext): string | undefined {
         let sourceValue = source[this.name];

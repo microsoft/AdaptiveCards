@@ -18,12 +18,13 @@ export const sampleData = {
 export const sampleCard = {
     type: "AdaptiveCard",
     autoRefresh: {
+        userIds: [ "john@contoso.com", "jane@contoso.com" ],
         displayCurrentCardWhileRefreshing: false,
         action: {
             type: "Action.Execute",
-            verb: "autoRefresh",
-            title: "Automatic refresh"
-        }
+            verb: "succeedReturnCard",
+            title: "Auto-refresh"
+        },
     },
     body: [
         {
