@@ -3,6 +3,9 @@ using Antlr4.Runtime.Tree;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using Microsoft.Bot.Expressions;
+using System;
+using System.Runtime.InteropServices;
+using System.Xml.Serialization;
 
 namespace AdaptiveCards.Templating
 {
@@ -71,6 +74,41 @@ namespace AdaptiveCards.Templating
             return null;
         }
 
+        /// <summary>
+        /// return the parsed result of $when from pair context
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public override JSONTemplateVisitorResult VisitTemplateWhen([NotNull] JSONParser.TemplateWhenContext context)
+        {
+            // when this node is visited, the children of this node is shown as below: 
+            // this node is visited only when parsing was correctly done
+            // [ '{', '$when', ':', ',', 'expression'] 
+            var result = Visit(context.GetChild(4));
+            result.IsPair = true;
+            return result;
+        }
+        public override JSONTemplateVisitorResult VisitValueTemplateExpression([NotNull] JSONParser.ValueTemplateExpressionContext context)
+        {
+            JSONTemplateVisitorResult result = new JSONTemplateVisitorResult(context.GetText());
+            result.IsWhen = true;
+            // when this node is visited, the children of this node is shown as below: 
+            // this node is visited only when parsing was correctly done
+            // ['"', '{', 'expression'] 
+            result.Predicate = context.GetChild(2).GetText();
+            DataContext dataContext = GetCurrentDataContext();
+            if (dataContext != null && !dataContext.IsArrayType)
+            {
+                result.EvaluationResult = IsTrue(result.Predicate, dataContext.templateData);
+            }
+            return result;
+        }
+
+        public override JSONTemplateVisitorResult VisitTemplateExpression([NotNull] JSONParser.TemplateExpressionContext context)
+        {
+            return base.VisitTemplateExpression(context);
+        }
+
         public override JSONTemplateVisitorResult VisitJsonPair([NotNull] JSONParser.JsonPairContext context)
         {
             JSONTemplateVisitorResult result = new JSONTemplateVisitorResult();
@@ -114,22 +152,70 @@ namespace AdaptiveCards.Templating
             JSONTemplateVisitorResult result = new JSONTemplateVisitorResult();
 
             // capture json string in object
+            bool removeComma = false;
             for(var i = 0; i < context.ChildCount; i++)
             {
                 var child = context.children[i];
                 // if it's data context, skip nex terminal token
                 if (child is JSONParser.TemplateDataContext)
                 {
-                    i++;
+                    removeComma = true;
+                }
+                else if (removeComma)
+                {
+                    // a, b, c {a} {a, b} {b, a} { a } {b, a, c}
+                    removeComma = false;
+                    continue;
                 }
                 else
                 {
-                    result.Append(Visit(child));
+                    var returnedResult = Visit(child);
+                    // handling of $when starts here
+                    if (returnedResult.IsWhen)
+                    {
+                        // This Obj we are translating get this $when attirbute
+                        if (returnedResult.IsPair)
+                        {
+                            if (!GetCurrentDataContext().IsArrayType)
+                            {
+                                // if evaluation fails, we drops from current context
+                                if (!returnedResult.EvaluationResult)
+                                {
+                                    return new JSONTemplateVisitorResult();
+                                }
+                                else
+                                {
+                                    removeComma = true;
+                                    continue;
+                                }
+                            }
+                            // if it's Array Type we defer the evaluation, so store predicate and return
+                            else
+                            {
+                                result.IsWhen = true;
+                                result.IsPair = false;
+                                result.Predicate = returnedResult.Predicate;
+                                removeComma = true;
+                                // we don't keep what's returned from $when pair
+                                continue;
+                            }
+                        }
+                        // this means that an object with when has been returned
+                        // we add this object to our when list
+                        else
+                        {
+                            result.Whens.Add(returnedResult);
+                        }
+                    }
+
+                    result.Append(returnedResult);
                 }
             }
 
             // if the current data context is array type, repeat
-            if (isArrayType && !result.IsExpanded)
+            // template accessing array can expand only at the node
+            // that contains the data context the template is acessing.
+            if (isArrayType && hasDataContext && !result.IsExpanded)
             {
                 var dataContext = GetCurrentDataContext();
                 var repeatsCounts = dataContext.templateDataArray.Count;
@@ -201,11 +287,11 @@ namespace AdaptiveCards.Templating
         {
             var result = _expressionEngine.Parse(predicate).TryEvaluate(data);
             return (bool)result.value;
-        }
+        }    
 
         public override JSONTemplateVisitorResult VisitValueTemplateString([NotNull] JSONParser.ValueTemplateStringContext context)
         {
-           
+            // I just need to evaluation result and return
             JSONTemplateVisitorResult result = new JSONTemplateVisitorResult("\"");
             result.Append(Visit(context.children[1]));
             result.Append("\"");

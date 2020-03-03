@@ -217,6 +217,85 @@ namespace AdaptiveCards.Templating.Test
         }
 
         [TestMethod]
+        public void TestIteratioinRealDdata()
+        {
+            AdaptiveTransformer transformer = new AdaptiveTransformer();
+            var testString =
+                @"{
+    ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+    ""type"": ""AdaptiveCard"",
+    ""version"": ""1.0"",
+    ""body"": [
+        {
+            ""type"": ""Container"",
+            ""$data"": [
+                { ""name"": ""Object-1"", ""lastPrice"": 1.10762, ""changePriceRatio"": -0.17 },
+                { ""name"": ""Object-2"", ""lastPrice"": 1578.205, ""changePriceRatio"": -0.68 },
+                { ""name"": ""Object-3"", ""lastPrice"": 51.475, ""changePriceRatio"": -0.23 },
+                { ""name"": ""Object-4"", ""lastPrice"": 28324, ""changePriceRatio"": 0.35 },
+                { ""name"": ""Object-5"", ""lastPrice"": 9338.87, ""changePriceRatio"": -1.04 }
+            ],
+            ""items"": [
+                {
+                    ""type"": ""ColumnSet"",
+                    ""columns"": [
+                        {
+                            ""type"": ""Column"",
+                            ""width"": ""auto"",
+                            ""items"": [
+                                {
+                                    ""type"": ""TextBlock"",
+                                    ""text"": ""{if(changePriceRatio >= 0, '▲', '▼')}"",
+                                    ""color"": ""{if(changePriceRatio >= 0, 'good', 'attention')}""
+                                }
+                            ]
+                        },
+                        {
+                            ""type"": ""Column"",
+                            ""width"": ""stretch"",
+                            ""items"": [
+                                {
+                                    ""type"": ""TextBlock"",
+                                    ""text"": ""{name}""
+                                } ]
+                        },
+                        {
+                            ""type"": ""Column"",
+                            ""width"": ""stretch"",
+                            ""items"": [
+                                {
+                                    ""type"": ""TextBlock"",
+                                    ""text"": ""{lastPrice} "",
+                                    ""horizontalAlignment"": ""Center""
+                                }
+                            ],
+                            ""horizontalAlignment"": ""Center""
+                        },
+                        {
+                            ""type"": ""Column"",
+                            ""width"": ""auto"",
+                            ""items"": [
+                                {
+                                    ""type"": ""TextBlock"",
+                                    ""text"": ""{changePriceRatio}%"",
+                                    ""color"": ""{if(changePriceRatio >= 0, 'good', 'attention')}""
+                                }
+                            ],
+                            ""horizontalAlignment"": ""Right""
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}";
+        var expectedString =
+        @"{ ""$schema"":""http://adaptivecards.io/schemas/adaptive-card.json"",""type"":""AdaptiveCard"",""version"":""1.0"",""body"":[{""type"":""Container"",""items"":[{""type"":""ColumnSet"",""columns"":[{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""▼"",""color"":""attention""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""Object-1""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""1.10762 "",""horizontalAlignment"":""Center""}],""horizontalAlignment"":""Center""},{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""-0.17%"",""color"":""attention""}],""horizontalAlignment"":""Right""}]}]},{""type"":""Container"",""items"":[{""type"":""ColumnSet"",""columns"":[{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""▼"",""color"":""attention""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""Object-2""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""1578.205 "",""horizontalAlignment"":""Center""}],""horizontalAlignment"":""Center""},{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""-0.68%"",""color"":""attention""}],""horizontalAlignment"":""Right""}]}]},{""type"":""Container"",""items"":[{""type"":""ColumnSet"",""columns"":[{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""▼"",""color"":""attention""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""Object-3""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""51.475 "",""horizontalAlignment"":""Center""}],""horizontalAlignment"":""Center""},{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""-0.23%"",""color"":""attention""}],""horizontalAlignment"":""Right""}]}]},{""type"":""Container"",""items"":[{""type"":""ColumnSet"",""columns"":[{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""▲"",""color"":""good""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""Object-4""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""28324 "",""horizontalAlignment"":""Center""}],""horizontalAlignment"":""Center""},{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""0.35%"",""color"":""good""}],""horizontalAlignment"":""Right""}]}]},{""type"":""Container"",""items"":[{""type"":""ColumnSet"",""columns"":[{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""▼"",""color"":""attention""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""Object-5""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""9338.87 "",""horizontalAlignment"":""Center""}],""horizontalAlignment"":""Center""},{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""-1.04%"",""color"":""attention""}],""horizontalAlignment"":""Right""}]}]}]}"; 
+            string cardJson = transformer.Transform(testString, null);
+            AssertJsonEqual(expectedString, cardJson);
+        }
+
+        [TestMethod]
         public void TestExpression()
         {
             AdaptiveTransformer transformer = new AdaptiveTransformer();
@@ -249,6 +328,86 @@ namespace AdaptiveCards.Templating.Test
             ""type"": ""TextBlock"",
             ""text"": ""primary"",
             ""color"": ""attention""
+        }
+    ]
+}", cardJson);
+        }
+
+        [TestMethod]
+        public void TestWhen()
+        {
+            AdaptiveTransformer transformer = new AdaptiveTransformer();
+
+            string jsonTemplate = @"{
+    ""type"": ""AdaptiveCard"",
+    ""version"": ""1.0"",
+    ""$data"": {
+                ""machines"": {
+                    ""id"": ""primary"",
+                    ""uptime"": 3231
+                }
+     },
+    ""body"": [
+        {
+            ""$when"": ""{(machines.uptime >= 3000)}"",
+            ""type"": ""TextBlock"",
+            ""text"": ""{machines.id}""
+        }
+    ]
+}";
+
+            string cardJson = transformer.Transform(jsonTemplate, null);
+
+            AssertJsonEqual(@"{
+    ""type"": ""AdaptiveCard"",
+    ""version"": ""1.0"",
+    ""body"": [
+        {
+            ""type"": ""TextBlock"",
+            ""text"": ""primary""
+        }
+    ]
+}", cardJson);
+        }
+        [TestMethod]
+        public void TestWhenWithArray()
+        {
+            AdaptiveTransformer transformer = new AdaptiveTransformer();
+
+            string jsonTemplate = @"{
+            ""type"": ""AdaptiveCard"",
+            ""body"": [
+              {
+                ""type"": ""Container"",
+                ""items"": [
+                  {
+                    ""$data"": [{""Milage"" : 1}, {""Milage"" : 10}],
+                    ""type"": ""TextBlock"",
+                    ""$when"": ""{Milage > 0}"",
+                    ""text"": ""{Milage}""
+                  }
+                ]
+              }
+            ]
+        }";
+
+            string cardJson = transformer.Transform(jsonTemplate, null);
+
+            AssertJsonEqual(@"{
+    ""type"": ""AdaptiveCard"",
+    ""body"": [
+              {
+                ""type"": ""Container"",
+                ""items"": [
+                {
+                    ""type"": ""TextBlock"",
+                    ""text"": ""1""
+                },
+                {
+                    ""type"": ""TextBlock"",
+                    ""text"": ""10""
+                }
+            ]
         }
     ]
 }", cardJson);

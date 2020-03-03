@@ -48,9 +48,14 @@ CLOSE
    : '"' -> popMode
    ;
 
-TEMPLKEYWRD
+TEMPLATEDATA
    : '$data'
    ;
+
+TEMPLATEWHEN
+   : '$when'
+   ;
+
 TemplateOpen
    : '{' -> pushMode(TEMPLATEINSIDE)
    ;

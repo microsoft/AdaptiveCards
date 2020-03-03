@@ -15,7 +15,8 @@ obj
 
 pair
    : StringDeclOpen STRING CLOSE COLON value    # jsonPair
-   | StringDeclOpen TEMPLKEYWRD CLOSE COLON value # templateData
+   | StringDeclOpen TEMPLATEDATA CLOSE COLON value # templateData
+   | StringDeclOpen TEMPLATEWHEN CLOSE COLON templateExpression # templateWhen
    ;
 
 array
@@ -36,4 +37,8 @@ value
 
 templateString
    : (STRING? TemplateOpen TEMPLATELITERAL TEMPLATECLOSE STRING?)+ 
+   ;
+
+templateExpression
+   : StringDeclOpen TemplateOpen TEMPLATELITERAL TEMPLATECLOSE CLOSE # valueTemplateExpression
    ;
