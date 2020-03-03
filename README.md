@@ -34,8 +34,13 @@ The following SDKs are lovingly maintained by the Adaptive Cards community. Thei
 
 |Platform|Install|Build|Docs|Status|Maintainer|
 |---|---|---|---|---|---|
-| ReactNative | [![npm install](https://img.shields.io/npm/v/adaptivecards-reactnative.svg)](https://www.npmjs.com/package/adaptivecards-reactnative) | [Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/community/reactnative)| [Docs](https://github.com/Microsoft/AdaptiveCards/blob/master/source/community/reactnative/README.md) | [![Build status](https://dev.azure.com/microsoft/AdaptiveCards/_apis/build/status/PR%20Validation/AdaptiveCards-ReactNative-Android-CI)](https://dev.azure.com/microsoft/AdaptiveCards/_build/latest?definitionId=38416) | [Imaginea](https://github.com/Microsoft/AdaptiveCards/blob/master/source/community/reactnative/Contributors.md)
+| ReactNative | [![npm install](https://img.shields.io/npm/v/adaptivecards-reactnative.svg)](https://www.npmjs.com/package/adaptivecards-reactnative) | [Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/community/renderer/reactnative)| [Docs](https://github.com/Microsoft/AdaptiveCards/blob/master/source/community/renderer/reactnative/README.md) | [![Build status](https://dev.azure.com/microsoft/AdaptiveCards/_apis/build/status/PR%20Validation/AdaptiveCards-ReactNative-Android-CI)](https://dev.azure.com/microsoft/AdaptiveCards/_build/latest?definitionId=38416) | [Imaginea](https://github.com/Microsoft/AdaptiveCards/blob/master/source/community/renderer/reactnative/Contributors.md)
 
+
+### Community Utilities
+|Platform|Install|Docs|Status|Maintainer|
+|---|---|---|---|---|
+| Vue.js | [![npm install](https://img.shields.io/npm/v/adaptivecards-vue.svg)](https://www.npmjs.com/package/adaptivecards-vue) | [Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/community/packages/vuejs/)| [Docs](https://github.com/Microsoft/AdaptiveCards/blob/master/source/community/packages/vuejs/README.md) | [DeeJayTC](https://github.com/Microsoft/AdaptiveCards/blob/master/source/community/packages/vuejs/Contributors.md)
 
 ## Contribute
 
