@@ -84,8 +84,7 @@ void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage>
 
         if (imgView) {
             imgView.translatesAutoresizingMaskIntoConstraints = NO;
-            [containerView addSubview:imgView];
-            [containerView sendSubviewToBack:imgView];
+            [containerView insertSubview:imgView atIndex:0];
 
             if (img) {
                 // apply now if image is ready, otherwise wait until it is loaded
@@ -303,7 +302,7 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
                 isDeficientInHeight = YES;
             }
 
-            if (isDeficientInWidth and isDeficientInWidth) {
+            if (isDeficientInWidth and isDeficientInHeight) {
                 CGFloat widthDeficiencyRaito = targetViewSize.width / sourceSize.width;
                 CGFloat heightDifficiencyRaito = targetViewSize.height / sourceSize.height;
                 // we choose one with bigger difficienty in ratio, and by increasing the
