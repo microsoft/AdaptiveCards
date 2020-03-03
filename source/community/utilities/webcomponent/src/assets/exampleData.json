@@ -1,0 +1,28 @@
+{
+    "title": "Publish Adaptive Card Schema",
+    "description": "Lets use an Adaptive Card to tell you how to install things",
+    "creator": {
+        "name": "Matt Hidinger",
+        "profileImage": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+    },
+    "createdUtc": "2017-02-14T06:08:39Z",
+    "viewUrl": "https://adaptivecards.io",
+    "properties": [
+        {
+            "key": "Install",
+            "value": "npm install adaptivecards-vue"
+        },
+        {
+            "key": "Use 1",
+            "value": "import AdaptiveCards from 'adaptivecards-vue"
+        },
+        {
+            "key": "Use 2",
+            "value": "vue.use(AdaptiveCards)"
+        },
+        {
+            "key": "Use anywhere",
+            "value": "'<adaptive-card :card='card' :data='data' :useTemplating='true'  />"
+        }
+    ]
+}

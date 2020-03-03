@@ -1,0 +1,74 @@
+{
+  "name": "adaptivecards-vue",
+  "description": "Render cards in vue easily",
+  "version": "0.8.0",
+  "author": "Tim Cadenbach <tim.cadenbach@tcdev.de>",
+  "license": "MIT",
+  "main": "dist/adaptive-cards.js",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DeeJayTC/adaptivecards-vue.git"
+  },
+  "homepage": "https://github.com/DeeJayTC/adaptivecards-vue",
+  "keywords": [
+    "vue",
+    "vue-component",
+    "adaptive cards",
+    "adaptive cards in vue"
+  ],
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --hot --open --config webpack.config.dev.js",
+    "build:demo": "cross-env NODE_ENV=production webpack --progress --hide-modules --config webpack.config.dev.js",
+    "build:lib": "cross-env NODE_ENV=production webpack --progress --hide-modules --config webpack.config.prod.js",
+    "lint": "eslint --ext .js,.vue ."
+  },
+  "dependencies": {
+    "adaptivecards": "^1.2.5",
+    "adaptivecards-templating": "^0.1.1-alpha.0",
+    "axios": "^0.19.2",
+    "path-to-regexp": "^1.7.0",
+    "vue": "^2.5.21"
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ],
+  "devDependencies": {
+    "autoprefixer": "^9.4.4",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-stage-3": "^6.24.1",
+    "cross-env": "^5.0.5",
+    "css-loader": "^2.1.1",
+    "eslint": "^5.14.1",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-node": "^8.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "eslint-plugin-vue": "^5.2.2",
+    "file-loader": "^1.1.4",
+    "mini-css-extract-plugin": "^0.5.0",
+    "node-sass": "^4.12.0",
+    "postcss-loader": "^3.0.0",
+    "sass-loader": "^6.0.6",
+    "vue-loader": "^15.5.0",
+    "vue-router": "^3.0.2",
+    "vue-template-compiler": "^2.5.21",
+    "webpack": "^4.28.3",
+    "webpack-cli": "^3.2.0",
+    "webpack-dev-server": "^3.3.1",
+    "webpack-merge": "^4.2.1"
+  }
+}

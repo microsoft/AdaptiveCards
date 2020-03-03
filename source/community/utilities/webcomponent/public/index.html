@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hello</title>
+</head>
+
+<script type='text/javascript'>
+
+  var cardConfigOptions = {
+    useTemplating: true
+  }
+
+</script>
+<body>
+  <h3>Adaptive Card Component:</h3>
+  <div style='float:left;width:550px;margin-left:25px;'>
+    <adaptive-card 
+      mode="dark"
+      src="https://deejaytc.github.io/adaptivecards-wc/formsample.json"
+      />
+  </div>
+
+  <div id='cardResult'></div>
+  <script>
+    var cards = document.querySelectorAll('adaptive-card')
+
+    cards.forEach(function(card){
+      card.addEventListener('onActionClicked', (data) => {
+      var html = "";
+      data.detail.forEach(function(val) {
+        var keys = Object.keys(val);
+        html += "<div class = 'cat'>";
+        keys.forEach(function(key) {
+          html += "<strong>" + key + "</strong>: " + val[key] + "<br>";
+        });
+        html += "</div><br>";
+      });
+
+      document.getElementById('cardResult').innerHTML = html;
+      })
+    });
+
+  </script>
+</body>
+
+</html>

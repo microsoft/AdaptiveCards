@@ -40,7 +40,7 @@ The following SDKs are lovingly maintained by the Adaptive Cards community. Thei
 ### Community Utilities
 |Platform|Install|Docs|Status|Maintainer|
 |---|---|---|---|---|
-| Vue.js | [![npm install](https://img.shields.io/npm/v/adaptivecards-vue.svg)](https://www.npmjs.com/package/adaptivecards-vue) | [Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/community/packages/vuejs/)| [Docs](https://github.com/Microsoft/AdaptiveCards/blob/master/source/community/packages/vuejs/README.md) | [DeeJayTC](https://github.com/deejaytc)
+| Vue.js | [![npm install](https://img.shields.io/npm/v/adaptivecards-vue.svg)](https://www.npmjs.com/package/adaptivecards-vue) | [Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/community/utilities/vuejs/)| [Docs](https://github.com/Microsoft/AdaptiveCards/blob/master/source/community/utilities/vuejs/README.md) | [DeeJayTC](https://github.com/deejaytc)
 
 ## Contribute
 
