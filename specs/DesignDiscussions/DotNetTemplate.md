@@ -112,8 +112,8 @@ var result = _expressionEngine.Parse(unboundString).TryEvaluate(data);
 /// <returns>Computed value and an error string.  If the string is non-null, then there was an evaluation error.</returns>
 public (object value, string error) TryEvaluate(object state)
 ```
-[1](https://github.com/microsoft/BotBuilder-Samples/blob/master/experimental/common-expression-language/api-reference.md)
 We just need to ensure our data implement IDictionary interface to be able to use this API for templated string expansion purposes.
+For complete API list and the latest update, please visit [AEL's git repo](https://github.com/microsoft/BotBuilder-Samples/blob/master/experimental/common-expression-language/api-reference.md)
 
 ## Data Context
 - Data context is a data object adaptive element can use
@@ -317,7 +317,7 @@ When data context type is an array and there is an adaptive element that uses th
 **Figure 7**  
 ![](arrayType2.png)  
 
-Notice what's being repeated in **Figure 6** & **Figure 7**. In **Figure 6**, the FactSet is repeated since the data context is set at the FactSet. In **Figure 7**, the Container is repeated as the data context is sent at the Container.
+Notice what's being repeated in **Figure 6** & **Figure 7**. In **Figure 6**, the FactSet is repeated since the data context is set at the FactSet. In **Figure 7**, the Container is repeated as the data context is set at the Container.
 Users won't likely to repeat FactSets. Instead, the common scenario is repeating Facts. To accomplish it, data context can be placed within Facts.
 ```json
 {
@@ -374,7 +374,7 @@ public class JSONTemplateVisitor : JSONParserBaseVisitor<JSONTemplateVisitorResu
  - when joining two results, if the joint (tail and head) are already expanded meaning no templated strings in them, then their linked list nodes are merged to one
  - if they have templated string that needs to be expanded, then they are linked as linked lists without merging the nodes
 - In the VisitObj method, once visit to children finishes, we have one merged result object
-- if data context object was discovered in the current node, and it's array type, expansion happens with the merged result object
+- if data context object was discovered in the current node, and it's an array type, expansion happens with the merged result object
  - it repeats the following steps n times where n is number of elements in data context
  - it expands the result with data context. 
  - the expanded result is merged
@@ -382,7 +382,7 @@ public class JSONTemplateVisitor : JSONParserBaseVisitor<JSONTemplateVisitorResu
 - if data context object wasn't discovered in this node, simply return the current result without expanding, so it can be handled by a parent node which will have the data context
 
 ## $when
-- $when is a pair, key : value. The value part is a predicate. When the predicate evaluates to rue, a Adaptive element or a json object will be kept; otherwise, they will be dropped.
+- $when is a pair, key : value. The value part is a predicate. When the predicate evaluates to true, an Adaptive element or a json object will be kept; otherwise, they will be dropped.
 ```json
 {
   "type": "AdaptiveCard",
@@ -402,14 +402,14 @@ public class JSONTemplateVisitor : JSONParserBaseVisitor<JSONTemplateVisitorResu
 }
 ```
 - If the above json's data context is non Array type, if {Milage > 0} evaluates to true, TextBlock in the payload will be kept, otherwise, there will be no TextBlock. 
-- If the above json's data context is Array type, the predicate is evaluated for each element in the array, and expanded as before.
+- If the above json's data context is Array type with n elements, the predicate is evaluated with each element in the array sequentially from the first element, and expanded and will have n TextBlocks.
 ## Parsing Strategy
 - If $when is parsed in a pair context, JSONTemplateVisitorResult is marked as when and pair.
-- at the VisitObj method, if a returned result from its child is a pair, the current obj become a conditional layer element.
-- if evaluation is possible such as data context is not array, $when's predicate is evaluated. If the predicate is true, $when pair is dropped, else JSONTemplateVisitorResult with empty string is returned
+- at the VisitObj method, if a returned result from its child is a pair, the current obj becomes a conditional layer element.
+- if evaluation is possible such as data context is not array, $when's predicate is evaluated. If the predicate is true, simply the $when pair is dropped, else JSONTemplateVisitorResult with empty string is returned
 - if returned result is $when but not pair, then this result is added into Whens list where all results from $when are stored.
-- At expansion with Array data context, JSONTemplateVisitorResult expand itself. If Whens list is not empty, we expand elements in Whens.
-- Evaluate predicate of the elements, if true, we expand the element which is a JSONTemplateVisitorResult recursively, and the result is appended. 
+- At expansion with Array data context, JSONTemplateVisitorResult expands itself. If Whens list is not empty, we expand elements in Whens.
+- Evaluate predicate of the when result, if true, we expand the when result recursively, and the expanded result is merged. 
 - If predicate evaluate to false, we skip the expansion of the element.
-- The rest is same as repeating elements.
+- Expands remaining elements in the linked list
 
