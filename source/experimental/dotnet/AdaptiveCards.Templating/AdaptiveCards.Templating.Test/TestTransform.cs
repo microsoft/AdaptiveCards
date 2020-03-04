@@ -121,6 +121,81 @@ namespace AdaptiveCards.Templating.Test
         }
 
         [TestMethod]
+        public void TestIteratioinWithFacts()
+        {
+            AdaptiveTransformer transformer = new AdaptiveTransformer();
+            var testString =
+                @"{
+                    ""type"": ""AdaptiveCard"",
+                    ""version"": ""1.0"",
+                    ""body"": [
+                        {
+                            ""type"": ""Container"",
+                            ""items"": [
+                                {
+                                    ""type"": ""TextBlock"",
+                                    ""text"": ""Header""
+                                },
+                                {
+                                    ""type"": ""FactSet"",
+                                    ""facts"": [
+                                        {
+                                            ""$data"": [
+                                                {
+                                                    ""name"": ""Star"",
+                                                    ""nickname"": ""Dust""
+                                                },
+                                                {
+                                                    ""name"": ""Death"",
+                                                    ""nickname"": ""Star""
+                                                }
+                                            ],
+                                            ""title"": ""{name}"",
+                                            ""value"": ""{nickname}""
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json""
+}";
+            var expectedString =
+                @"{
+                    ""type"": ""AdaptiveCard"",
+                    ""version"": ""1.0"",
+                    ""body"": [
+                        {
+                            ""type"": ""Container"",
+                            ""items"": [
+                                {
+                                    ""type"": ""TextBlock"",
+                                    ""text"": ""Header""
+                                },
+                                {
+                                    ""type"": ""FactSet"",
+                                    ""facts"": [
+                                        {
+                                            ""title"": ""Star"",
+                                            ""value"": ""Dust""
+                                        },
+                                        {
+                                            ""title"": ""Death"",
+                                            ""value"": ""Star""
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json""
+}";
+
+            string cardJson = transformer.Transform(testString, null);
+            AssertJsonEqual(expectedString, cardJson);
+        }
+
+        [TestMethod]
         public void TestIteratioin()
         {
             AdaptiveTransformer transformer = new AdaptiveTransformer();
