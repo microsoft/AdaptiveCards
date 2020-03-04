@@ -15,8 +15,7 @@ export const sampleData = {
     ]
 };
 
-export const sampleCard = {
-    type: "AdaptiveCard",
+/*
     autoRefresh: {
         userIds: [ "john@contoso.com", "jane@contoso.com" ],
         displayCurrentCardWhileRefreshing: false,
@@ -26,6 +25,10 @@ export const sampleCard = {
             title: "Auto-refresh"
         },
     },
+*/
+
+export const sampleCard = {
+    type: "AdaptiveCard",
     body: [
         {
             type: "TextBlock",

@@ -1,8 +1,7 @@
 import * as Adaptive from "adaptivecards";
 import * as Templating from "adaptivecards-templating";
 import { ChannelAdapter } from "./channel-adapter";
-import { ActivityStatus, ActivityResponse, ActivityRequest } from "./invoke-activity";
-import { CardElement } from "adaptivecards";
+import { ActivityStatus, ActivityResponse, ActivityRequest, ActivityInvocationContext } from "./invoke-activity";
 
 export class ExecuteAction extends Adaptive.SubmitAction {
     //#region Schema
@@ -81,7 +80,7 @@ export class AutoRefreshDefinition extends Adaptive.SerializableObject {
 
     //#endregion
 
-    parent: CardElement;
+    parent: Adaptive.CardElement;
 }
 
 export class AdaptiveAppletCard extends Adaptive.AdaptiveCard {
@@ -117,8 +116,9 @@ export class AdaptiveApplet {
     private _cardPayload: any;
     private _cardData: any;
 
-    private createActivityRequest(action: ExecuteAction): ActivityRequest | undefined {
+    private createActivityRequest(action: ExecuteAction, context: ActivityInvocationContext): ActivityRequest | undefined {
         let request: ActivityRequest = {
+            context: context,
             activity: {
                 type: "invoke",
                 name: "adaptiveCard/action",
@@ -141,12 +141,12 @@ export class AdaptiveApplet {
         return cancel ? undefined : request;
     }
 
-    private async internalExecuteActionAsync(action: Adaptive.Action) {
+    private async internalExecuteActionAsync(action: Adaptive.Action, context: ActivityInvocationContext) {
         if (action instanceof ExecuteAction && this.channelAdapter) {
-            let request = this.createActivityRequest(action);
+            let request = this.createActivityRequest(action, context);
 
             if (request) {
-                let overlay = this.createOverlay();
+                let overlay = this.createProgressOverlay(context);
 
                 this.renderedElement.appendChild(overlay);
 
@@ -237,14 +237,24 @@ export class AdaptiveApplet {
         }
     }
 
-    private createOverlay(): HTMLElement {
-        let overlay = document.createElement("div");
-        overlay.style.position = "absolute";
-        overlay.style.left = "0";
-        overlay.style.top = "0";
-        overlay.style.width = "100%";
-        overlay.style.height = "100%";
-        overlay.style.backgroundColor = "rgba(255, 0, 0, 0.5)";
+    private createProgressOverlay(context: ActivityInvocationContext): HTMLElement {
+        let overlay: HTMLElement | undefined = undefined;
+
+        if (this.onCreateProgressOverlay) {
+            overlay = this.onCreateProgressOverlay(this, context);
+        }
+
+        if (!overlay) {
+            overlay = document.createElement("div");
+            overlay.className = "aaf-progress-overlay";
+
+            let spinner = document.createElement("div");
+            spinner.className = "aaf-spinner";
+            spinner.style.width = "28px";
+            spinner.style.height = "28px";
+
+            overlay.appendChild(spinner);
+        }
 
         return overlay;
     }
@@ -258,6 +268,7 @@ export class AdaptiveApplet {
     onCardChanged?: (sender: AdaptiveApplet) => void;
     onPrepareActivityRequest?: (sender: AdaptiveApplet, action: ExecuteAction, request: ActivityRequest) => boolean;
     onActivityRequestCompleted?: (sender: AdaptiveApplet, response: ActivityResponse) => number;
+    onCreateProgressOverlay?: (sender: AdaptiveApplet, actionExecutionContext: ActivityInvocationContext) => HTMLElement | undefined;
 
     constructor() {
         this.renderedElement = document.createElement("div");
@@ -301,7 +312,7 @@ export class AdaptiveApplet {
                 if (doChangeCard) {
                     this._card = card;
                     this._card.onExecuteAction = (action: Adaptive.Action) => {
-                        this.internalExecuteActionAsync(action);
+                        this.internalExecuteActionAsync(action, ActivityInvocationContext.UserInteraction);
                     }
 
                     while (this.renderedElement.firstChild) {
@@ -318,7 +329,7 @@ export class AdaptiveApplet {
                         }
 
                         if (this._card.autoRefresh) {
-                            this.internalExecuteActionAsync(this._card.autoRefresh.action);
+                            this.internalExecuteActionAsync(this._card.autoRefresh.action, ActivityInvocationContext.AutoRefresh);
                         }
                     }
                 }

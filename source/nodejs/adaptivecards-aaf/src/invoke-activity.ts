@@ -25,8 +25,14 @@ export interface InvokeActivity {
     relatesTo?: string
 }
 
+export enum ActivityInvocationContext {
+    AutoRefresh,
+    UserInteraction
+}
+
 export interface ActivityRequest {
     readonly activity: InvokeActivity,
+    readonly context: ActivityInvocationContext,
     attemptNumber: number
 }
 

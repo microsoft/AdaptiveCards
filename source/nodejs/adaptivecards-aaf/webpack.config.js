@@ -38,18 +38,21 @@ module.exports = (env, argv) => {
 					use: [
 						'style-loader',
 						MiniCssExtractPlugin.loader,
-						'css-loader',
-						//'typings-for-css-modules-loader?modules&namedExport&camelCase'
+						'css-loader'
 					]
 				}
 			]
         },
 		plugins: [
-			new CopyWebpackPlugin([{
-				from: 'src/adaptivecards.css',
-				to: '.',
-				flatten: true
-            }])
+			new CopyWebpackPlugin(
+				[
+					{
+						from: 'src/*.css',
+						to: '.',
+						flatten: true
+					}
+				]
+			)
             /*
 			new HtmlWebpackPlugin({
 				title: "Adaptive Cards Example",
