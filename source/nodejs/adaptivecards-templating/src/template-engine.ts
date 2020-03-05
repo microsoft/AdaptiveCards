@@ -205,11 +205,22 @@ export class Template {
             let when = node["$when"];
 
             if (when instanceof TemplatizedString) {
-                let whenValue = when.evaluate(this._context);
+                let whenValue: any;
+                
+                try {
+                    whenValue = when.evaluate(this._context);
 
-                if (typeof whenValue === "boolean") {
-                    dropObject = !whenValue;
+                    // If $when doesn't evaluate to a boolean, consider it is false
+                    if (typeof whenValue !== "boolean") {
+                        whenValue = false;
+                    }
                 }
+                catch {
+                    // If we hit an exception, consider $when to be false
+                    whenValue = false;
+                }
+
+                dropObject = !whenValue;
             }
 
             if (!dropObject) {
