@@ -295,7 +295,7 @@ window.onload = function() {
     */
 
 	designer.dataStructure = ACDesigner.FieldDefinition.parse(sampleDataStructure);
-    designer.lockDataStructure = true;
+    // designer.lockDataStructure = true;
     designer.sampleData = sampleData;
     designer.bindingPreviewMode = ACDesigner.BindingPreviewMode.SampleData;
 }
