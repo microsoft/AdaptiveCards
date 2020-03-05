@@ -52,6 +52,94 @@ namespace AdaptiveCards.Templating.Test
 }", cardJson);
         }
 
+        [TestMethod]
+        public void TestExternalDataContext()
+        {
+            AdaptiveTransformer transformer = new AdaptiveTransformer();
+
+            string jsonTemplate = @"{
+    ""type"": ""AdaptiveCard"",
+    ""version"": ""1.0"",
+    ""body"": [
+        {
+            ""type"": ""TextBlock"",
+            ""text"": ""Hello {person.firstName}""
+        }
+    ]
+}";
+
+            string jsonData = @"{
+    ""person"": {
+        ""firstName"": ""Andrew"",
+        ""lastName"": ""Leader""
+    }
+}";
+
+            string cardJson = transformer.Transform(jsonTemplate, jsonData);
+
+            AssertJsonEqual(@"{
+    ""type"": ""AdaptiveCard"",
+    ""version"": ""1.0"",
+    ""body"": [
+        {
+            ""type"": ""TextBlock"",
+            ""text"": ""Hello Andrew""
+        }
+    ]
+}", cardJson);
+        }
+
+        [TestMethod]
+        public void TestExternalDataContextInternalReference()
+        {
+            AdaptiveTransformer transformer = new AdaptiveTransformer();
+
+            string jsonTemplate = @"{
+            ""type"": ""AdaptiveCard"",
+            ""body"": [
+              {
+                ""type"": ""Container"",
+                ""items"": [
+                  {
+                    ""$data"": ""{LineItems}"",
+                    ""type"": ""TextBlock"",
+                    ""$when"": ""{Milage > 0}"",
+                    ""text"": ""{Milage}""
+                  }
+                ]
+              }
+            ]
+        }";
+
+            string jsonData = @"{
+              ""LineItems"": [
+                {
+                    ""Milage"": 10
+                },
+                {
+                    ""Milage"": 0
+                }
+              ]
+            }";
+
+            string cardJson = transformer.Transform(jsonTemplate, jsonData);
+
+            AssertJsonEqual(@"{
+    ""type"": ""AdaptiveCard"",
+    ""body"": [
+              {
+                ""type"": ""Container"",
+                ""items"": [
+                {
+                    ""type"": ""TextBlock"",
+                    ""text"": ""10""
+                }
+            ]
+        }
+    ]
+}", cardJson);
+        }
+
         private static void AssertJsonEqual(string jsonExpected, string jsonActual)
         {
             var expected = JObject.Parse(jsonExpected);
@@ -480,6 +568,52 @@ namespace AdaptiveCards.Templating.Test
                 },
                 {
                     ""type"": ""TextBlock"",
+                    ""text"": ""10""
+                }
+            ]
+        }
+    ]
+}", cardJson);
+        }
+
+        [TestMethod]
+        public void TestIndex()
+        {
+            AdaptiveTransformer transformer = new AdaptiveTransformer();
+
+            string jsonTemplate = @"{
+            ""type"": ""AdaptiveCard"",
+            ""body"": [
+              {
+                ""type"": ""Container"",
+                ""items"": [
+                  {
+                    ""$data"": [{""Milage"" : 1}, {""Milage"" : 10}],
+                    ""type"": ""TextBlock"",
+                    ""id"": ""ReceiptRequired{$index}"",
+                    ""text"": ""{Milage}""
+                  }
+                ]
+              }
+            ]
+        }";
+
+            string cardJson = transformer.Transform(jsonTemplate, null);
+
+            AssertJsonEqual(@"{
+    ""type"": ""AdaptiveCard"",
+    ""body"": [
+              {
+                ""type"": ""Container"",
+                ""items"": [
+                {
+                    ""type"": ""TextBlock"",
+                    ""id"": ""ReceiptRequired0"",
+                    ""text"": ""1""
+                },
+                {
+                    ""type"": ""TextBlock"",
+                    ""id"": ""ReceiptRequired1"",
                     ""text"": ""10""
                 }
             ]

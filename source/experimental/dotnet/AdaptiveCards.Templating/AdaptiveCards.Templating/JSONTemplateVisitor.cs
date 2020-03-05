@@ -30,6 +30,18 @@ namespace AdaptiveCards.Templating
                     templateData = JObject.Parse(text);
                 }
             }
+            public DataContext (JToken jtoken)
+            {
+                if (jtoken is JArray)
+                {
+                    templateDataArray = jtoken as JArray;
+                    IsArrayType = true;
+                }
+                else
+                {
+                    templateData = jtoken as JObject;
+                }
+            }
         }
 
         private Stack<DataContext> _dataContext = new Stack<DataContext>();
@@ -43,6 +55,30 @@ namespace AdaptiveCards.Templating
         private void PushDataContext(string stringToParse)
         {
             _dataContext.Push(new DataContext(stringToParse));
+        }
+
+        private void PushDataContext(string jpath, DataContext parentDataContext)
+        {
+            if (jpath == null || parentDataContext == null)
+            {
+                return;
+            }
+
+            JToken jtoken;
+            if (parentDataContext.IsArrayType)
+            {
+                jtoken = parentDataContext.templateDataArray.SelectToken(jpath);
+            }
+            else
+            {
+                jtoken = parentDataContext.templateData.SelectToken("LineItems");
+            }
+
+            if (jtoken == null)
+            {
+                return;
+            }
+            _dataContext.Push(new DataContext(jtoken));
         }
 
         private void PopDataContext()
@@ -69,8 +105,30 @@ namespace AdaptiveCards.Templating
             // this node is visited only when parsing was correctly done
             // [ '{', '$data', ':', ',', 'val'] 
             IParseTree templateDataValueNode = context.GetChild(4);
-            string childJson = templateDataValueNode.GetText();
-            PushDataContext(childJson);
+            if (templateDataValueNode is JSONParser.ValueObjectContext || templateDataValueNode is JSONParser.ValueArrayContext)
+            {
+                string childJson = templateDataValueNode.GetText();
+                PushDataContext(childJson);
+            }
+            else if (templateDataValueNode is JSONParser.ValueTemplateStringContext)
+            {
+                var datacontext = GetCurrentDataContext();
+                for(int i = 0; i < templateDataValueNode.ChildCount; i++)
+                {
+                    var child = templateDataValueNode.GetChild(i);
+                    if (child is JSONParser.TemplateStringContext)
+                    {
+                        // template string context is { val }
+                        PushDataContext(child.GetChild(1).GetText(), datacontext);
+                        break;
+                    }
+                }
+            }
+            else
+            {
+
+            }
+
             return null;
         }
 
@@ -226,7 +284,9 @@ namespace AdaptiveCards.Templating
                     JToken token = dataContext.templateDataArray[i];
                     if (token is JObject)
                     {
-                        result.Append(oldResult.Expand(this, token as JObject));
+                        JObject jobject = token as JObject;
+                        jobject["$index"] = i;
+                        result.Append(oldResult.Expand(this, jobject));
                         if (i != repeatsCounts - 1)
                         {
                             result.Append(",");
