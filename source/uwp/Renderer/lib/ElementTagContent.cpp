@@ -11,6 +11,8 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
+    HRESULT ElementTagContent::RuntimeClassInitialize() { return S_OK; }
+
     HRESULT ElementTagContent::RuntimeClassInitialize(_In_ IAdaptiveCardElement* cardElement,
                                                       _In_ IPanel* parentPanel,
                                                       _In_ IUIElement* separator,

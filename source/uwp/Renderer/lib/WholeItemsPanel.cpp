@@ -408,16 +408,18 @@ namespace AdaptiveNamespace
         ComPtr<IElementTagContent> elementTagContent;
         if (tagAsInspectable != nullptr)
         {
-            tagAsInspectable.As(&elementTagContent);
-            elementTagContent->put_IsStretchable(true);
+            THROW_IF_FAILED(tagAsInspectable.As(&elementTagContent));
+            THROW_IF_FAILED(elementTagContent->put_IsStretchable(true));
         }
         else
         {
             ComPtr<IElementTagContent> tagContent;
-            THROW_IF_FAILED(MakeAndInitialize<ElementTagContent>(&tagContent, nullptr, nullptr, nullptr, nullptr, false, true));
+            THROW_IF_FAILED(MakeAndInitialize<ElementTagContent>(&tagContent));
 
-            tagContent.As(&tagAsInspectable);
-            elementAsFrameworkElement->put_Tag(tagAsInspectable.Get());
+            THROW_IF_FAILED(tagContent->put_IsStretchable(true));
+
+            THROW_IF_FAILED(tagContent.As(&tagAsInspectable));
+            THROW_IF_FAILED(elementAsFrameworkElement->put_Tag(tagAsInspectable.Get()));
         }
 
         ++m_stretchableItemCount;

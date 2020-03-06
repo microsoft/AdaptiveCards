@@ -25,6 +25,10 @@ namespace AdaptiveNamespace
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, IElementTagContent>
     {
     public:
+        ElementTagContent() : m_expectedVisibility (true), m_isStretchable(false) {}
+
+        HRESULT RuntimeClassInitialize();
+
         HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* cardElement,
                                        _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,
                                        _In_ ABI::Windows::UI::Xaml::IUIElement* separator,
