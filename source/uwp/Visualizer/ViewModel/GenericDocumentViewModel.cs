@@ -125,7 +125,9 @@ namespace AdaptiveCardVisualizer.ViewModel
             }
             catch (Exception ex)
             {
-                var dontWait = new MessageDialog(ex.ToString()).ShowAsync();
+                var dontWait = new MessageDialog(ex.ToString());
+                dontWait.CancelCommandIndex = 0;
+                await dontWait.ShowAsync();
             }
         }
 
