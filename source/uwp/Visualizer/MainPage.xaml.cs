@@ -122,7 +122,6 @@ namespace AdaptiveCardVisualizer
 
         private void HostConfigTransparentBackdrop_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            AppBarHostConfigEditor.IsChecked = false;
             SetIsInHostConfigEditor(false);
         }
     }

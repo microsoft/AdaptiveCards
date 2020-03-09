@@ -42,7 +42,7 @@
                         Label="Save file"
                         Click="AppBarSave_Click"
                         IsCompact="True"/>
-                    <AppBarToggleButton
+                    <AppBarButton
                         x:Name="AppBarHostConfigEditor"
                         Icon="Setting"
                         Label="Host config"
