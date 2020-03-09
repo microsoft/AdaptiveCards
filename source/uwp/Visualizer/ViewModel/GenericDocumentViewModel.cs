@@ -8,6 +8,9 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI.Popups;
+using Windows.Storage.Pickers;
+using Windows.UI.Xaml;
+using Windows.Storage.Provider;
 
 namespace AdaptiveCardVisualizer.ViewModel
 {
@@ -117,17 +120,58 @@ namespace AdaptiveCardVisualizer.ViewModel
             }
         }
 
+        private async Task CreateMessageDialog(string text)
+        {
+            var dontWait = new MessageDialog(text);
+            dontWait.CancelCommandIndex = 0;
+            await dontWait.ShowAsync();
+        }
+
+        private async Task SaveNewFile()
+        {
+            var savePicker = new FileSavePicker();
+            savePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+            savePicker.FileTypeChoices.Add("Plain Text", new List<string>() { ".json" });
+            savePicker.SuggestedFileName = "NewAdaptiveCard.json";
+
+            File = await savePicker.PickSaveFileAsync();
+            if (File != null)
+            {
+                CachedFileManager.DeferUpdates(File);
+                await FileIO.WriteTextAsync(File, File.Name);
+                FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(File);
+                if (status == FileUpdateStatus.Complete)
+                {
+                    this.Name = File.Name;
+                    await CreateMessageDialog("File " + File.Name + " was saved");
+                }
+                else
+                {
+                    await CreateMessageDialog("File " + File.Name + " couldn't be saved");
+                }
+            }
+            else
+            {
+                await CreateMessageDialog("Save new file was cancelled");
+            }
+        }
+
         public async Task SaveAsync()
         {
-            try
+            if (File == null)
             {
-                await FileIO.WriteTextAsync(File, Payload);
+                await SaveNewFile();
             }
-            catch (Exception ex)
+            else
             {
-                var dontWait = new MessageDialog(ex.ToString());
-                dontWait.CancelCommandIndex = 0;
-                await dontWait.ShowAsync();
+                try
+                {
+                    await FileIO.WriteTextAsync(File, Payload);
+                }
+                catch (Exception ex)
+                {
+                    await CreateMessageDialog(ex.ToString());
+                }
             }
         }
 
