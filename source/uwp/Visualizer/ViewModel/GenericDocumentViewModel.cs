@@ -129,7 +129,7 @@ namespace AdaptiveCardVisualizer.ViewModel
             var dontWait = messageDialog.ShowAsync();
         }
 
-        private async Task SaveNewFile()
+        private async Task SaveNewFileAsync()
         {
             var savePicker = new FileSavePicker();
             savePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
@@ -157,7 +157,7 @@ namespace AdaptiveCardVisualizer.ViewModel
         {
             if (File == null)
             {
-                await SaveNewFile();
+                await SaveNewFileAsync();
             }
             else
             {
