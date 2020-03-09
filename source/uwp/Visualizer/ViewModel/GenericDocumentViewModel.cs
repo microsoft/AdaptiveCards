@@ -120,7 +120,7 @@ namespace AdaptiveCardVisualizer.ViewModel
             }
         }
 
-        private async Task CreateMessageDialog(string text)
+        private void CreateMessageDialog(string text)
         {
             var messageDialog = new MessageDialog(text);
             // Set the index of the command to be used as cancel (when ESC is pressed)
@@ -145,16 +145,11 @@ namespace AdaptiveCardVisualizer.ViewModel
                 if (status == FileUpdateStatus.Complete)
                 {
                     this.Name = File.Name;
-                    await CreateMessageDialog("File " + File.Name + " was saved");
                 }
                 else
                 {
-                    await CreateMessageDialog("File " + File.Name + " couldn't be saved");
+                    CreateMessageDialog("File " + File.Name + " couldn't be saved");
                 }
-            }
-            else
-            {
-                await CreateMessageDialog("Save new file was cancelled");
             }
         }
 
@@ -172,7 +167,7 @@ namespace AdaptiveCardVisualizer.ViewModel
                 }
                 catch (Exception ex)
                 {
-                    await CreateMessageDialog(ex.ToString());
+                    CreateMessageDialog(ex.ToString());
                 }
             }
         }
