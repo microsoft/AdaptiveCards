@@ -126,7 +126,7 @@ namespace AdaptiveCardVisualizer.ViewModel
             // Set the index of the command to be used as cancel (when ESC is pressed)
             // As there's only one command, command 0 is selected
             messageDialog.CancelCommandIndex = 0;
-            await messageDialog.ShowAsync();
+            var dontWait = messageDialog.ShowAsync();
         }
 
         private async Task SaveNewFile()
