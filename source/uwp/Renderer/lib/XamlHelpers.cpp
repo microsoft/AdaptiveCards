@@ -532,12 +532,14 @@ namespace AdaptiveNamespace::XamlHelpers
                 RETURN_IF_FAILED(newControlAsFrameworkElement->put_Name(id.Get()));
             }
 
-            ComPtr<ElementTagContent> tagContent;
-            RETURN_IF_FAILED(MakeAndInitialize<ElementTagContent>(&tagContent, element, parentPanel, separator, columnDefinition, isVisible));
-            RETURN_IF_FAILED(newControlAsFrameworkElement->put_Tag(tagContent.Get()));
-
             ABI::AdaptiveNamespace::HeightType heightType{};
             RETURN_IF_FAILED(element->get_Height(&heightType));
+
+            ComPtr<ElementTagContent> tagContent;
+            RETURN_IF_FAILED(MakeAndInitialize<ElementTagContent>(
+                &tagContent, element, parentPanel, separator, columnDefinition, isVisible, heightType == HeightType_Stretch));
+            RETURN_IF_FAILED(newControlAsFrameworkElement->put_Tag(tagContent.Get()));
+
             XamlHelpers::AppendXamlElementToPanel(newControl, parentPanel, heightType);
 
             childCreatedCallback(newControl);
