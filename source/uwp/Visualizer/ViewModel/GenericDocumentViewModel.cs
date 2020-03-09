@@ -122,9 +122,11 @@ namespace AdaptiveCardVisualizer.ViewModel
 
         private async Task CreateMessageDialog(string text)
         {
-            var dontWait = new MessageDialog(text);
-            dontWait.CancelCommandIndex = 0;
-            await dontWait.ShowAsync();
+            var messageDialog = new MessageDialog(text);
+            // Set the index of the command to be used as cancel (when ESC is pressed)
+            // As there's only one command, command 0 is selected
+            messageDialog.CancelCommandIndex = 0;
+            await messageDialog.ShowAsync();
         }
 
         private async Task SaveNewFile()
