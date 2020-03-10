@@ -35,7 +35,8 @@
             HorizontalAlignment="Right"
             Click="ButtonClose_Click"
             Visibility="Collapsed"
-            Margin="9,0,12,0">
+            Margin="9,0,12,0"
+            AutomationProperties.Name="Close">
             <Viewbox Width="10" Height="10">
             <SymbolIcon
                 Symbol="Cancel"/>
