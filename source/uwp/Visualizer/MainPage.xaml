@@ -81,6 +81,7 @@
 
             <!--Tab page-->
             <local:DocumentView
+                x:Name="AdaptiveCardDocumentView"
                 Grid.Column="1"
                 DataContext="{Binding CurrentDocument}"
                 Visibility="{Binding CurrentDocument, Converter={StaticResource NotNullToVisibilityConverter}}"/>

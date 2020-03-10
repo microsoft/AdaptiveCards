@@ -109,6 +109,8 @@ namespace AdaptiveCardVisualizer
         {
             IsInHostConfigEditor = isInHostConfigEditor;
 
+            AdaptiveCardDocumentView.IsEnabled = !isInHostConfigEditor;
+
             foreach (var button in StackPanelMainAppBarButtons.Children.OfType<ButtonBase>())
             {
                 if (button != AppBarHostConfigEditor)
