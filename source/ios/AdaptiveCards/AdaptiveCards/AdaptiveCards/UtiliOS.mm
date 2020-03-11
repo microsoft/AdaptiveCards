@@ -88,7 +88,6 @@ void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage>
 
             if (img) {
                 // apply now if image is ready, otherwise wait until it is loaded
-                // (ACRView::observeValueForKeyPath)
                 applyBackgroundImageConstraints(backgroundImage.get(), imgView, img);
             }
         }
