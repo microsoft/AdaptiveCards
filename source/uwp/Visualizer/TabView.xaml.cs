@@ -42,12 +42,10 @@ namespace AdaptiveCardVisualizer
 
         private void OnPointerEntered()
         {
-            ButtonClose.Visibility = Visibility.Visible;
         }
 
         private void OnPointerExited()
         {
-            ButtonClose.Visibility = Visibility.Collapsed;
         }
 
         private void Grid_PointerEntered(object sender, PointerRoutedEventArgs e)
