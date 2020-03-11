@@ -121,6 +121,7 @@ const CGFloat kAdaptiveCardsWidth = 330;
     ADCResolver *resolver = [[ADCResolver alloc] init];
     [_resolvers setResourceResolver:resolver scheme:@"http"];
     [_resolvers setResourceResolver:resolver scheme:@"https"];
+    [_resolvers setResourceResolver:resolver scheme:@"data"];
     _enableCustomRenderer = NO;
     self.curView = nil;
 
