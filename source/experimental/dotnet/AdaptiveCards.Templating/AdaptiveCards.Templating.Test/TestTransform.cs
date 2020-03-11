@@ -7,7 +7,7 @@ using System;
 namespace AdaptiveCards.Templating.Test
 {
     [TestClass]
-    public class TestTransform
+    public class TestTemplate
     {
         [TestMethod]
         public void TestBasic()
@@ -140,7 +140,7 @@ namespace AdaptiveCards.Templating.Test
 }", cardJson);
         }
 
-        private static void AssertJsonEqual(string jsonExpected, string jsonActual)
+        public static void AssertJsonEqual(string jsonExpected, string jsonActual)
         {
             var expected = JObject.Parse(jsonExpected);
             var actual = JObject.Parse(jsonActual);
@@ -383,21 +383,22 @@ namespace AdaptiveCards.Templating.Test
         public void TestIteratioinRealDdata()
         {
             AdaptiveTransformer transformer = new AdaptiveTransformer();
-            var testString =
-                @"{
-    ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
-    ""type"": ""AdaptiveCard"",
-    ""version"": ""1.0"",
-    ""body"": [
+            var templateData =
+                @" [
+                        { ""name"": ""Object-1"", ""lastPrice"": 1.10762, ""changePriceRatio"": -0.17 },
+                        { ""name"": ""Object-2"", ""lastPrice"": 1578.205, ""changePriceRatio"": -0.68 },
+                        { ""name"": ""Object-3"", ""lastPrice"": 51.475, ""changePriceRatio"": -0.23 },
+                        { ""name"": ""Object-4"", ""lastPrice"": 28324, ""changePriceRatio"": 0.35 },
+                        { ""name"": ""Object-5"", ""lastPrice"": 9338.87, ""changePriceRatio"": -1.04 }
+                    ]";
+                var testString =
+                    @"{
+        ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+        ""type"": ""AdaptiveCard"",
+        ""version"": ""1.0"",
+        ""body"": [
         {
             ""type"": ""Container"",
-            ""$data"": [
-                { ""name"": ""Object-1"", ""lastPrice"": 1.10762, ""changePriceRatio"": -0.17 },
-                { ""name"": ""Object-2"", ""lastPrice"": 1578.205, ""changePriceRatio"": -0.68 },
-                { ""name"": ""Object-3"", ""lastPrice"": 51.475, ""changePriceRatio"": -0.23 },
-                { ""name"": ""Object-4"", ""lastPrice"": 28324, ""changePriceRatio"": 0.35 },
-                { ""name"": ""Object-5"", ""lastPrice"": 9338.87, ""changePriceRatio"": -1.04 }
-            ],
             ""items"": [
                 {
                     ""type"": ""ColumnSet"",
@@ -448,13 +449,14 @@ namespace AdaptiveCards.Templating.Test
                         }
                     ]
                 }
-            ]
+            ] ,
+            ""$data"":""{$root}""
         }
     ]
 }";
         var expectedString =
         @"{ ""$schema"":""http://adaptivecards.io/schemas/adaptive-card.json"",""type"":""AdaptiveCard"",""version"":""1.0"",""body"":[{""type"":""Container"",""items"":[{""type"":""ColumnSet"",""columns"":[{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""▼"",""color"":""attention""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""Object-1""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""1.10762 "",""horizontalAlignment"":""Center""}],""horizontalAlignment"":""Center""},{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""-0.17%"",""color"":""attention""}],""horizontalAlignment"":""Right""}]}]},{""type"":""Container"",""items"":[{""type"":""ColumnSet"",""columns"":[{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""▼"",""color"":""attention""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""Object-2""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""1578.205 "",""horizontalAlignment"":""Center""}],""horizontalAlignment"":""Center""},{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""-0.68%"",""color"":""attention""}],""horizontalAlignment"":""Right""}]}]},{""type"":""Container"",""items"":[{""type"":""ColumnSet"",""columns"":[{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""▼"",""color"":""attention""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""Object-3""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""51.475 "",""horizontalAlignment"":""Center""}],""horizontalAlignment"":""Center""},{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""-0.23%"",""color"":""attention""}],""horizontalAlignment"":""Right""}]}]},{""type"":""Container"",""items"":[{""type"":""ColumnSet"",""columns"":[{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""▲"",""color"":""good""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""Object-4""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""28324 "",""horizontalAlignment"":""Center""}],""horizontalAlignment"":""Center""},{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""0.35%"",""color"":""good""}],""horizontalAlignment"":""Right""}]}]},{""type"":""Container"",""items"":[{""type"":""ColumnSet"",""columns"":[{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""▼"",""color"":""attention""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""Object-5""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""9338.87 "",""horizontalAlignment"":""Center""}],""horizontalAlignment"":""Center""},{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""-1.04%"",""color"":""attention""}],""horizontalAlignment"":""Right""}]}]}]}"; 
-            string cardJson = transformer.Transform(testString, null);
+            string cardJson = transformer.Transform(testString, templateData);
             AssertJsonEqual(expectedString, cardJson);
         }
 
@@ -544,7 +546,7 @@ namespace AdaptiveCards.Templating.Test
                 ""type"": ""Container"",
                 ""items"": [
                   {
-                    ""$data"": [{""Milage"" : 1}, {""Milage"" : 10}],
+                    ""$data"": ""{LineItems}"",
                     ""type"": ""TextBlock"",
                     ""$when"": ""{Milage > 0}"",
                     ""text"": ""{Milage}""
@@ -554,7 +556,14 @@ namespace AdaptiveCards.Templating.Test
             ]
         }";
 
-            string cardJson = transformer.Transform(jsonTemplate, null);
+            string jsonData = @"{
+              ""LineItems"": [
+                    {""Milage"" : 1},
+                    {""Milage"" : 10}
+                ]
+            }";
+
+            string cardJson = transformer.Transform(jsonTemplate, jsonData);
 
             AssertJsonEqual(@"{
     ""type"": ""AdaptiveCard"",
@@ -748,6 +757,114 @@ namespace AdaptiveCards.Templating.Test
             AssertJsonEqual(expectedString, cardJson);
         }
     }
+    [TestClass]
+    public class TestRoot
+    {
+        [TestMethod]
+        public void TestRootInDataContext()
+        {
+            AdaptiveTransformer transformer = new AdaptiveTransformer();
+
+            string jsonTemplate = @"{
+            ""type"": ""AdaptiveCard"",
+            ""body"": [
+              {
+                ""type"": ""Container"",
+                ""items"": [
+                  {
+                    ""$data"": ""{$root.LineItems}"",
+                    ""type"": ""TextBlock"",
+                    ""id"": ""ReceiptRequired{$index}"",
+                    ""text"": ""{Milage}""
+                  }
+                ]
+              }
+            ]
+        }";
+            string jsonData = @"{
+              ""LineItems"": [
+                    {""Milage"" : 1},
+                    {""Milage"" : 10}
+                ]
+            }";
+
+            string cardJson = transformer.Transform(jsonTemplate, jsonData);
+
+            TestTemplate.AssertJsonEqual(@"{
+    ""type"": ""AdaptiveCard"",
+    ""body"": [
+              {
+                ""type"": ""Container"",
+                ""items"": [
+                {
+                    ""type"": ""TextBlock"",
+                    ""id"": ""ReceiptRequired0"",
+                    ""text"": ""1""
+                },
+                {
+                    ""type"": ""TextBlock"",
+                    ""id"": ""ReceiptRequired1"",
+                    ""text"": ""10""
+                }
+            ]
+        }
+    ]
+}", cardJson);
+        }
+
+        [TestMethod]
+        public void TestCanAccessByAEL()
+        {
+            AdaptiveTransformer transformer = new AdaptiveTransformer();
+
+            string jsonTemplate = @"{
+            ""type"": ""AdaptiveCard"",
+            ""body"": [
+              {
+                ""type"": ""Container"",
+                ""items"": [
+                  {
+                    ""type"": ""TextBlock"",
+                    ""text"": ""{$root.LineItems[0].Milage}""
+                  },
+                  {
+                    ""type"": ""TextBlock"",
+                    ""text"": ""{$root.LineItems[1].Milage}""
+                  }
+                ]
+              }
+            ]
+        }";
+            string jsonData = @"{
+              ""LineItems"": [
+                    {""Milage"" : 1},
+                    {""Milage"" : 10}
+                ]
+            }";
+
+            string cardJson = transformer.Transform(jsonTemplate, jsonData);
+
+            TestTemplate.AssertJsonEqual(@"{
+    ""type"": ""AdaptiveCard"",
+    ""body"": [
+              {
+                ""type"": ""Container"",
+                ""items"": [
+                {
+                    ""type"": ""TextBlock"",
+                    ""text"": ""1""
+                },
+                {
+                    ""type"": ""TextBlock"",
+                    ""text"": ""10""
+                }
+            ]
+        }
+    ]
+}", cardJson);
+        }
+    }
+
     [TestClass]
     public class TestPartialResult
     {

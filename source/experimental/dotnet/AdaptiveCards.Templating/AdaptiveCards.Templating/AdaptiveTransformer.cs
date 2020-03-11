@@ -12,7 +12,6 @@ namespace AdaptiveCards.Templating
         {
         }
 
-        // does this api handles the case where json template also has data in it?
         public string Transform(string jsonTemplate, string jsonData)
         {
             AntlrInputStream stream = new AntlrInputStream(jsonTemplate);

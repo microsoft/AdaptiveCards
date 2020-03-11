@@ -9,7 +9,6 @@ class TemplatizedString {
         let result = new TemplatizedString();
         let i = 0;
 
-        // this is main loop looks for template data, separated by "{}"
         do {
             let expressionFound = false;
             let start = i;
@@ -43,7 +42,6 @@ class TemplatizedString {
                     let part: string | Binding;
 
                     try {
-                        // once expression is found feed into parser
                         part = ExpressionParser.parseBinding(bindngExpression);
                     }
                     catch (e) {

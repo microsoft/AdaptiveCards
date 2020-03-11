@@ -11,15 +11,16 @@ namespace AdaptiveCards.Templating
 {
     public class JSONTemplateVisitor : JSONParserBaseVisitor<JSONTemplateVisitorResult>
     {
-        public class DataContext
+        public class DataContext : ICloneable
         {
+            public JToken token;
             public JObject templateData;
             public JArray templateDataArray;
             public bool IsArrayType = false;
 
             public DataContext (string text)
             {
-                JToken token = JToken.Parse(text);
+                token = JToken.Parse(text);
                 if (token is JArray)
                 {
                     templateDataArray = JArray.Parse(text);
@@ -32,6 +33,7 @@ namespace AdaptiveCards.Templating
             }
             public DataContext (JToken jtoken)
             {
+                token = jtoken;
                 if (jtoken is JArray)
                 {
                     templateDataArray = jtoken as JArray;
@@ -42,10 +44,16 @@ namespace AdaptiveCards.Templating
                     templateData = jtoken as JObject;
                 }
             }
+
+            public object Clone()
+            {
+                return new DataContext(token.DeepClone());
+            }
         }
 
         private Stack<DataContext> _dataContext = new Stack<DataContext>();
         private ExpressionEngine _expressionEngine = new ExpressionEngine();
+        private DataContext root;
 
         private DataContext GetCurrentDataContext()
         { 
@@ -71,7 +79,7 @@ namespace AdaptiveCards.Templating
             }
             else
             {
-                jtoken = parentDataContext.templateData.SelectToken("LineItems");
+                jtoken = parentDataContext.templateData.SelectToken(jpath);
             }
 
             if (jtoken == null)
@@ -79,6 +87,11 @@ namespace AdaptiveCards.Templating
                 return;
             }
             _dataContext.Push(new DataContext(jtoken));
+        }
+        private void PushRootDataContext(string stringToParse)
+        {
+            var jpath = stringToParse.Replace("$root", "");
+            _dataContext.Push(new DataContext(root.token.SelectToken(jpath)));
         }
 
         private void PopDataContext()
@@ -96,6 +109,7 @@ namespace AdaptiveCards.Templating
             if(data != null)
             {
                 PushDataContext(data);
+                root = GetCurrentDataContext().Clone() as DataContext;
             }
         }
 
@@ -113,7 +127,7 @@ namespace AdaptiveCards.Templating
             else if (templateDataValueNode is JSONParser.ValueTemplateStringContext)
             {
                 var datacontext = GetCurrentDataContext();
-                for(int i = 0; i < templateDataValueNode.ChildCount; i++)
+                for (int i = 0; i < templateDataValueNode.ChildCount; i++)
                 {
                     var child = templateDataValueNode.GetChild(i);
                     if (child is JSONParser.TemplateStringContext)
@@ -124,9 +138,9 @@ namespace AdaptiveCards.Templating
                     }
                 }
             }
-            else
+            else if (templateDataValueNode is JSONParser.ValueTemplateRootDataContext)
             {
-
+                Visit(templateDataValueNode);
             }
 
             return null;
@@ -209,21 +223,15 @@ namespace AdaptiveCards.Templating
 
             JSONTemplateVisitorResult result = new JSONTemplateVisitorResult();
 
-            // capture json string in object
             bool removeComma = false;
+            // capture json string in object
             for(var i = 0; i < context.ChildCount; i++)
             {
                 var child = context.children[i];
                 // if it's data context, skip nex terminal token
                 if (child is JSONParser.TemplateDataContext)
                 {
-                    removeComma = true;
-                }
-                else if (removeComma)
-                {
-                    // a, b, c {a} {a, b} {b, a} { a } {b, a, c}
-                    removeComma = false;
-                    continue;
+                    removeComma  = !result.TryRemoveACommaAtEnd ();
                 }
                 else
                 {
@@ -243,7 +251,7 @@ namespace AdaptiveCards.Templating
                                 }
                                 else
                                 {
-                                    removeComma = true;
+                                    removeComma = !result.TryRemoveACommaAtEnd();
                                     continue;
                                 }
                             }
@@ -253,7 +261,7 @@ namespace AdaptiveCards.Templating
                                 result.IsWhen = true;
                                 result.IsPair = false;
                                 result.Predicate = returnedResult.Predicate;
-                                removeComma = true;
+                                removeComma = !result.TryRemoveACommaAtEnd();
                                 // we don't keep what's returned from $when pair
                                 continue;
                             }
@@ -267,6 +275,12 @@ namespace AdaptiveCards.Templating
                     }
 
                     result.Append(returnedResult);
+                    // if removed pair was the first pair in the obj, comma is needed to be removed after it was added to the result
+                    if (removeComma)
+                    {
+                        result.TryRemoveACommaAtEnd();
+                        removeComma = false;
+                    }
                 }
             }
 
@@ -291,6 +305,8 @@ namespace AdaptiveCards.Templating
                         {
                             result.Append(",");
                         }
+                        _ = jobject.Remove("$index");
+
                     }
                     // produce warning if it's not JObject type
                 }
@@ -371,6 +387,12 @@ namespace AdaptiveCards.Templating
                 result.Append(Visit(child));
             }
             return result; 
+        }
+
+        public override JSONTemplateVisitorResult VisitValueTemplateRootDataContext([NotNull] JSONParser.ValueTemplateRootDataContextContext context)
+        {
+            PushRootDataContext(context.GetChild(1).GetText());
+            return null;
         }
     }
 }

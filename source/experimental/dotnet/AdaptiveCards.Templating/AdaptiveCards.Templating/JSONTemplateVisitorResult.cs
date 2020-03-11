@@ -90,6 +90,24 @@ namespace AdaptiveCards.Templating
             partialResultLinkedList.RemoveFirst();
         }
 
+        /// <summary>
+        /// Remove a comma if the comma exists at the end
+        /// returns true if the comma removed
+        /// </summary>
+        public bool TryRemoveACommaAtEnd()
+        {
+            return TryRemoveCharAtEnd(',');
+        }
+        public bool TryRemoveCharAtEnd(char ch)
+        {
+            var chars = partialResultLinkedList.Last.Value.StringResult;
+            if (chars.Length > 0 && chars[chars.Length - 1] == ch)
+            {
+                _ = chars.Remove(chars.Length - 1, 1);
+                return true;
+            }
+            return false;
+        }
         public void Append(string capturedString = "", bool isExpanded = true)
         {
             var tail = GetTail().Value; 

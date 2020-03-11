@@ -26,6 +26,7 @@ array
 
 value
    : StringDeclOpen STRING CLOSE # valueString
+   | StringDeclOpen templateRootDataContext CLOSE # valueTemplateRootData
    | StringDeclOpen templateString CLOSE # valueTemplateString
    | NUMBER # valueNumber
    | obj    # valueObject
@@ -35,6 +36,11 @@ value
    | NULL  # valueNull
    ;
 
+templateRootDataContext
+   : TemplateOpen TEMPLATEROOT TEMPLATECLOSE # valueTemplateRootDataContext
+   ;
+
+
 templateString
    : (STRING? TemplateOpen TEMPLATELITERAL TEMPLATECLOSE STRING?)+ 
    ;
@@ -42,3 +48,4 @@ templateString
 templateExpression
    : StringDeclOpen TemplateOpen TEMPLATELITERAL TEMPLATECLOSE CLOSE # valueTemplateExpression
    ;
+
