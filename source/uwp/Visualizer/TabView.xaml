@@ -34,7 +34,6 @@
             Grid.Column="1"
             HorizontalAlignment="Right"
             Click="ButtonClose_Click"
-            Visibility="Collapsed"
             Margin="9,0,12,0">
             <Viewbox Width="10" Height="10">
             <SymbolIcon
