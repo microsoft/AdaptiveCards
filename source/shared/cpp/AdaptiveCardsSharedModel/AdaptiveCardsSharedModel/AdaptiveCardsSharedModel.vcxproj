@@ -292,6 +292,7 @@
     <ClInclude Include="..\..\ObjectModel\CollectionTypeElement.h" />
     <ClInclude Include="..\..\ObjectModel\FeatureRegistration.h" />
     <ClInclude Include="..\..\ObjectModel\Inline.h" />
+    <ClInclude Include="..\..\ObjectModel\InternalId.h" />
     <ClInclude Include="..\..\ObjectModel\RichTextElementProperties.h" />
     <ClInclude Include="..\..\ObjectModel\TextElementProperties.h" />
     <ClInclude Include="..\..\ObjectModel\TextRun.h" />

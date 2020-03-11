@@ -4,13 +4,16 @@
 
 #include "pch.h"
 #include "AdaptiveCardParseException.h"
+#include "BackgroundImage.h"
 #include "ParseContext.h"
 
 namespace AdaptiveSharedNamespace
 {
+    class BaseElement;
     class BaseCardElement;
     class BaseActionElement;
     class BackgroundImage;
+    class ParseContext;
 
     namespace ParseUtil
     {
@@ -99,19 +102,21 @@ namespace AdaptiveSharedNamespace
 
         template<typename T>
         std::vector<std::shared_ptr<T>> GetElementCollectionOfSingleType(
-            ParseContext& context,
+            ParseContext & context,
             const Json::Value& json,
             AdaptiveCardSchemaKey key,
-            const std::function<std::shared_ptr<T>(ParseContext& context, const Json::Value&)>& deserializer,
+            const std::function<std::shared_ptr<T>(ParseContext & context, const Json::Value&)>& deserializer,
             bool isRequired = false);
 
-        std::vector<std::shared_ptr<BaseActionElement>> GetActionCollection(ParseContext& context,
+        std::vector<std::shared_ptr<BaseActionElement>> GetActionCollection(ParseContext & context,
                                                                             const Json::Value& json,
                                                                             AdaptiveCardSchemaKey key,
                                                                             bool isRequired = false);
 
-        std::shared_ptr<BaseActionElement>
-        GetAction(ParseContext& context, const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired = false);
+        std::shared_ptr<BaseActionElement> GetAction(ParseContext & context,
+                                                     const Json::Value& json,
+                                                     AdaptiveCardSchemaKey key,
+                                                     bool isRequired = false);
 
         template<typename T>
         T ExtractJsonValueAndMergeWithDefault(const Json::Value& rootJson,
@@ -119,7 +124,7 @@ namespace AdaptiveSharedNamespace
                                               const T& defaultValue,
                                               const std::function<T(const Json::Value&, const T&)>& deserializer);
 
-        std::shared_ptr<BaseActionElement> GetActionFromJsonValue(ParseContext& context, const Json::Value& json);
+        std::shared_ptr<BaseActionElement> GetActionFromJsonValue(ParseContext & context, const Json::Value& json);
 
         void ExpectTypeString(const Json::Value& json, CardElementType bodyType);
         void ExpectTypeString(const Json::Value& json, const std::string& expectedTypeStr);
@@ -255,9 +260,7 @@ namespace AdaptiveSharedNamespace
     // A little template jiu-jitsu here -- given the provided parameters, we need BaseElement::ParseJsonObject to
     // call either BaseCardElement::ParseJsonObject or BaseActionElement::ParseJsonObject.
     template<typename T>
-    static void ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context,
-                                const Json::Value& json,
-                                std::shared_ptr<BaseElement>& baseElement)
+    static void ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context, const Json::Value& json, std::shared_ptr<BaseElement>& baseElement)
     {
         T::ParseJsonObject(context, json, baseElement);
     }

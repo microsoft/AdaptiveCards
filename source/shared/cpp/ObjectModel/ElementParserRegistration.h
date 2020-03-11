@@ -8,7 +8,6 @@ namespace AdaptiveSharedNamespace
 {
     class BaseCardElement;
     class ParseContext;
-    class InternalId;
 
     class BaseCardElementParser
     {
