@@ -155,20 +155,20 @@ namespace AdaptiveCardVisualizer.ViewModel
 
         public async Task SaveAsync()
         {
-            if (File == null)
+            try
             {
-                await SaveNewFileAsync();
+                if (File == null)
+                {
+                    await SaveNewFileAsync();
+                }
+                else
+                {
+                    await FileIO.WriteTextAsync(File, Payload);      
+                }
             }
-            else
+            catch (Exception ex)
             {
-                try
-                {
-                    await FileIO.WriteTextAsync(File, Payload);
-                }
-                catch (Exception ex)
-                {
-                    CreateMessageDialog(ex.ToString());
-                }
+                CreateMessageDialog(ex.ToString());
             }
         }
 
