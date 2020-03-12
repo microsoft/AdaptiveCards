@@ -31,7 +31,6 @@ import io.adaptivecards.objectmodel.ActionMode;
 import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseInputElement;
-import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 
 import io.adaptivecards.renderer.AdaptiveWarning;
@@ -39,7 +38,6 @@ import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
-import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
@@ -49,6 +47,9 @@ import io.adaptivecards.objectmodel.TextInput;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.TextInputStyle;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.inputhandler.validation.IInputValidator;
+import io.adaptivecards.renderer.inputhandler.validation.TextInputRegexValidator;
+import io.adaptivecards.renderer.inputhandler.validation.TextInputRequiredValidator;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 
@@ -148,6 +149,47 @@ public class TextInputRenderer extends BaseCardElementRenderer
         private BaseActionElement m_action = null;
     }
 
+    private class TextWatcherImpl implements TextWatcher
+    {
+
+        public TextWatcherImpl(TextInputHandler inputHandler, IInputValidator inputValidator)
+        {
+            m_textInputHandler = inputHandler;
+            m_inputValidator = inputValidator;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after)
+        {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count)
+        {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s)
+        {
+            if (m_inputValidator.isValid())
+            {
+                // Change border color to green or whatever
+                CardRendererRegistration.getInstance().notifyInputChange(m_textInputHandler.getId(), m_textInputHandler.getInput());
+            }
+            else
+            {
+                // Change border to red
+            }
+        }
+
+        private TextInputHandler m_textInputHandler;
+        private IInputValidator m_inputValidator;
+    }
+
+
+
     protected EditText renderInternal(
             RenderedAdaptiveCard renderedCard,
             Context context,
@@ -172,26 +214,14 @@ public class TextInputRenderer extends BaseCardElementRenderer
         {
             editText.setHint(placeHolder);
         }
-        editText.addTextChangedListener(new TextWatcher()
-        {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after)
-            {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s)
-            {
-                CardRendererRegistration.getInstance().notifyInputChange(textInputHandler.getId(), textInputHandler.getInput());
-            }
-        });
+        editText.addTextChangedListener(new TextWatcherImpl(textInputHandler,
+                                                            new TextInputRegexValidator(
+                                                                new TextInputRequiredValidator(
+                                                                    false,
+                                                                    editText),
+                                                                editText,
+                                                                "*")));
 
         LinearLayout textInputViewGroup = null;
 

@@ -2,6 +2,7 @@ package io.adaptivecards.renderer.layout;
 
 import android.content.Context;
 import android.widget.TextView;
+import io.adaptivecards.renderer.inputhandler.validation.IInputValidator;
 
 public class StretchableInputLayout extends StretchableElementLayout
 {
@@ -10,10 +11,7 @@ public class StretchableInputLayout extends StretchableElementLayout
         super(context);
     }
 
-
-
     private TextView m_failLabel = null;
 
     private IInputValidator m_inputValidator = null;
-    private IInputIsRequiredValidator m_isRequiredValidator = null;
 }

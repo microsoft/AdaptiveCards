@@ -1,4 +1,4 @@
-package io.adaptivecards.renderer.inputhandler;
+package io.adaptivecards.renderer.inputhandler.validation;
 
 public interface IInputValidator
 {
