@@ -105,11 +105,11 @@ class Tokenizer {
                         throw new Error("A tokenizer rule matched more than one group.");
                     }
 
-                    if (rule.tokenType != undefined) {
+                    if (rule.tokenType !== undefined) {
                         result.push(
                             {
                                 type: rule.tokenType,
-                                value: matches[matches.length == 1 ? 0 : 1],
+                                value: matches[matches.length === 1 ? 0 : 1],
                                 originalPosition: i
                             }
                         )
@@ -367,7 +367,7 @@ export class EvaluationContext {
     }
 
     restoreLastState() {
-        if (this._stateStack.length == 0) {
+        if (this._stateStack.length === 0) {
             throw new Error("There is no evaluation context state to restore.");
         }
 
@@ -378,7 +378,7 @@ export class EvaluationContext {
     }
 
     get currentDataContext(): any {
-        return this.$data != undefined ? this.$data : this.$root;
+        return this.$data !== undefined ? this.$data : this.$root;
     }
 }
 
@@ -444,10 +444,10 @@ class ExpressionNode extends EvaluationNode {
 
                     switch (node.operator) {
                         case "==":
-                            result = left == right;
+                            result = left === right;
                             break;
                         case "!=":
-                            result = left != right;
+                            result = left !== right;
                             break;
                         case "<":
                             result = left < right;
@@ -501,7 +501,7 @@ class FunctionCallNode extends EvaluationNode {
     evaluate(context: EvaluationContext): LiteralValue {
         let callback = context.getFunction(this.functionName);
 
-        if (callback != undefined) {
+        if (callback !== undefined) {
             let evaluatedParams = [];
 
             for (let param of this.parameters) {
@@ -548,7 +548,7 @@ class PathNode extends EvaluationNode {
             let part = this.parts[index];
 
             try {
-                if (part instanceof IdentifierNode && index == 0) {
+                if (part instanceof IdentifierNode && index === 0) {
                     switch (part.identifier) {
                         case "$root":
                             result = context.$root;
@@ -571,7 +571,7 @@ class PathNode extends EvaluationNode {
                 else {
                     let partValue = part.evaluate(context);
 
-                    if (index == 0) {
+                    if (index === 0) {
                         result = partValue;
                     }
                     else {
@@ -698,7 +698,7 @@ export class ExpressionParser {
 
             switch (this.current.type) {
                 case "(":
-                    if (result.parts.length == 0) {
+                    if (result.parts.length === 0) {
                         this.moveNext();
     
                         result.parts.push(this.parseExpression());
@@ -713,7 +713,7 @@ export class ExpressionParser {
                                 this.unexpectedToken();
                             }
 
-                            if (functionName != "") {
+                            if (functionName !== "") {
                                 functionName += ".";
                             }
 
@@ -761,7 +761,7 @@ export class ExpressionParser {
 
         while (!this.eoe) {
             if (expectedNextTokenTypes.indexOf(this.current.type) < 0) {
-                if (result.nodes.length == 0) {
+                if (result.nodes.length === 0) {
                     this.unexpectedToken();
                 }
 
@@ -779,10 +779,10 @@ export class ExpressionParser {
                 case "string":
                 case "number":
                 case "boolean":
-                    if (this.current.type == "string") {
+                    if (this.current.type === "string") {
                         result.nodes.push(new LiteralNode(this.current.value));
                     }
-                    else if (this.current.type == "number") {
+                    else if (this.current.type === "number") {
                         result.nodes.push(new LiteralNode(parseFloat(this.current.value)));
                     }
                     else {
@@ -795,7 +795,7 @@ export class ExpressionParser {
 
                     break;
                 case "-":
-                    if (result.nodes.length == 0) {
+                    if (result.nodes.length === 0) {
                         result.nodes.push(new LiteralNode(-1));
                         result.nodes.push(new OperatorNode("*"));
 
@@ -811,7 +811,7 @@ export class ExpressionParser {
 
                     break;
                 case "+":
-                    if (result.nodes.length == 0) {
+                    if (result.nodes.length === 0) {
                         expectedNextTokenTypes = literals.concat("(");
                     }
                     else {
@@ -854,8 +854,8 @@ export class ExpressionParser {
         return this._tokens[this._index];
     }
 
-    static parseBinding(bindingExpression: string): Binding {
-        let parser = new ExpressionParser(Tokenizer.parse(bindingExpression));
+    static parseBinding(expressionString: string): Binding {
+        let parser = new ExpressionParser(Tokenizer.parse(expressionString));
         parser.parseToken("{");
 
         let allowNull = !parser.parseOptionalToken("?#");
@@ -863,7 +863,7 @@ export class ExpressionParser {
 
         parser.parseToken("}");
 
-        return new Binding(expression, allowNull);
+        return new Binding(expressionString, expression, allowNull);
     }
 
     constructor(tokens: Token[]) {
@@ -872,7 +872,7 @@ export class ExpressionParser {
 }
 
 export class Binding {
-    constructor(private readonly expression: EvaluationNode, readonly allowNull: boolean = true) {}
+    constructor(readonly expressionString: string, private readonly expression: EvaluationNode, readonly allowNull: boolean = true) {}
 
     evaluate(context: EvaluationContext): LiteralValue {
         return this.expression.evaluate(context);
