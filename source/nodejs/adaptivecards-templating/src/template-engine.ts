@@ -111,7 +111,7 @@ class TemplatizedString {
                     let evaluatedPart = this.evalExpression(<Binding>part, context);
 
                     if (evaluatedPart === undefined) {
-                        evaluatedPart = Shared.GlobalSettings.undefinedExpressionValueSubstitutionString ?? (<Binding>part).expressionString;
+                        evaluatedPart = Shared.GlobalSettings.undefinedExpressionValueSubstitutionString ? Shared.GlobalSettings.undefinedExpressionValueSubstitutionString : (<Binding>part).expressionString;
                     }
 
                     s += evaluatedPart;
