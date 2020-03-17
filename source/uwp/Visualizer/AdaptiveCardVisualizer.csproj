@@ -46,6 +46,9 @@
     <Compile Include="DocumentView.xaml.cs">
       <DependentUpon>DocumentView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ErrorTabView.xaml.cs">
+      <DependentUpon>ErrorTabView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GenericDocumentView.xaml.cs">
       <DependentUpon>GenericDocumentView.xaml</DependentUpon>
     </Compile>
@@ -119,6 +122,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="DocumentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ErrorTabView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
