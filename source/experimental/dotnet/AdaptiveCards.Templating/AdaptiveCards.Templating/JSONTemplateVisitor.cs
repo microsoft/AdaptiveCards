@@ -2,10 +2,8 @@ using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
-using Microsoft.Bot.Expressions;
 using System;
-using System.Runtime.InteropServices;
-using System.Xml.Serialization;
+using AdaptiveExpressions.Properties;
 
 namespace AdaptiveCards.Templating
 {
@@ -17,6 +15,7 @@ namespace AdaptiveCards.Templating
             public JObject templateData;
             public JArray templateDataArray;
             public bool IsArrayType = false;
+            public bool hasRootDataContext = false;
 
             public DataContext (string text)
             {
@@ -49,10 +48,28 @@ namespace AdaptiveCards.Templating
             {
                 return new DataContext(token.DeepClone());
             }
+
+            public bool AddDataContext(string key, DataContext dataContext)
+            {
+                if (IsArrayType || hasRootDataContext || dataContext == null)
+                {
+                    return false;
+                }
+
+                if (dataContext.IsArrayType)
+                {
+                    templateData[key] = dataContext.templateDataArray;
+                }
+                else
+                {
+                    templateData[key] = dataContext.templateData;
+                }
+                return true;
+            }
+
         }
 
         private Stack<DataContext> _dataContext = new Stack<DataContext>();
-        private ExpressionEngine _expressionEngine = new ExpressionEngine();
         private DataContext root;
 
         private DataContext GetCurrentDataContext()
@@ -72,26 +89,30 @@ namespace AdaptiveCards.Templating
                 return;
             }
 
-            JToken jtoken;
             if (parentDataContext.IsArrayType)
             {
-                jtoken = parentDataContext.templateDataArray.SelectToken(jpath);
+                var (value, error) = new ValueExpression(jpath).TryGetValue(parentDataContext.templateDataArray);
+                _dataContext.Push(new DataContext(value as string));
             }
             else
             {
-                jtoken = parentDataContext.templateData.SelectToken(jpath);
+                var (value, error) = new ValueExpression(jpath).TryGetValue(parentDataContext.templateData);
+                _dataContext.Push(new DataContext(value as string));
             }
-
-            if (jtoken == null)
-            {
-                return;
-            }
-            _dataContext.Push(new DataContext(jtoken));
         }
         private void PushRootDataContext(string stringToParse)
         {
             var jpath = stringToParse.Replace("$root", "");
             _dataContext.Push(new DataContext(root.token.SelectToken(jpath)));
+        }
+
+        private void AddRootDataContextToCurrentDataContext()
+        {
+            var dataContext = GetCurrentDataContext();
+            if (!dataContext.hasRootDataContext)
+            {
+                dataContext.hasRootDataContext = dataContext.AddDataContext("$root", root);
+            }
         }
 
         private void PopDataContext()
@@ -124,21 +145,7 @@ namespace AdaptiveCards.Templating
                 string childJson = templateDataValueNode.GetText();
                 PushDataContext(childJson);
             }
-            else if (templateDataValueNode is JSONParser.ValueTemplateStringContext)
-            {
-                var datacontext = GetCurrentDataContext();
-                for (int i = 0; i < templateDataValueNode.ChildCount; i++)
-                {
-                    var child = templateDataValueNode.GetChild(i);
-                    if (child is JSONParser.TemplateStringContext)
-                    {
-                        // template string context is { val }
-                        PushDataContext(child.GetChild(1).GetText(), datacontext);
-                        break;
-                    }
-                }
-            }
-            else if (templateDataValueNode is JSONParser.ValueTemplateRootDataContext)
+            else if (templateDataValueNode is JSONParser.ValueTemplateStringWithRootContext)
             {
                 Visit(templateDataValueNode);
             }
@@ -160,47 +167,31 @@ namespace AdaptiveCards.Templating
             result.IsPair = true;
             return result;
         }
+
         public override JSONTemplateVisitorResult VisitValueTemplateExpression([NotNull] JSONParser.ValueTemplateExpressionContext context)
-        {
+        {                 
             JSONTemplateVisitorResult result = new JSONTemplateVisitorResult(context.GetText());
             result.IsWhen = true;
             // when this node is visited, the children of this node is shown as below: 
             // this node is visited only when parsing was correctly done
-            // ['"', '{', 'expression'] 
-            result.Predicate = context.GetChild(2).GetText();
+            // ['"', 'templated expression'] 
+            result.Predicate = context.GetChild(1).GetText();
             DataContext dataContext = GetCurrentDataContext();
             if (dataContext != null && !dataContext.IsArrayType)
-            {
+            {             
                 result.EvaluationResult = IsTrue(result.Predicate, dataContext.templateData);
             }
             return result;
         }
 
-        public override JSONTemplateVisitorResult VisitTemplateExpression([NotNull] JSONParser.TemplateExpressionContext context)
-        {
-            return base.VisitTemplateExpression(context);
-        }
-
         public override JSONTemplateVisitorResult VisitJsonPair([NotNull] JSONParser.JsonPairContext context)
         {
-            JSONTemplateVisitorResult result = new JSONTemplateVisitorResult();
-            foreach (var child in context.children)
-            {
-                result.Append(Visit(child));
-            }
-            return result; 
+            return VisitChildren(context);
         }
 
         public override JSONTemplateVisitorResult VisitArray([NotNull] JSONParser.ArrayContext context)
         {
-            JSONTemplateVisitorResult result = new JSONTemplateVisitorResult();
-
-            foreach (var child in context.children)
-            {
-                result.Append(Visit(child));
-            }
-
-            return result;
+            return VisitChildren(context);
         }
 
         public override JSONTemplateVisitorResult VisitObj([NotNull] JSONParser.ObjContext context)
@@ -278,7 +269,7 @@ namespace AdaptiveCards.Templating
                     // if removed pair was the first pair in the obj, comma is needed to be removed after it was added to the result
                     if (removeComma)
                     {
-                        result.TryRemoveACommaAtEnd();
+                        _ = result.TryRemoveACommaAtEnd();
                         removeComma = false;
                     }
                 }
@@ -324,7 +315,7 @@ namespace AdaptiveCards.Templating
         public override JSONTemplateVisitorResult VisitTerminal(ITerminalNode node)
         {
             var tokenType = node.Symbol.Type;
-            if (node.Symbol.Type == JSONLexer.TEMPLATELITERAL)
+            if (node.Symbol.Type == JSONLexer.TEMPLATELITERAL || node.Symbol.Type == JSONLexer.TEMPLATEROOT)
             {
                 // nice place to add error handling
                 if (HasDataContext())
@@ -345,24 +336,28 @@ namespace AdaptiveCards.Templating
                 }
             }
 
-            if (tokenType == JSONLexer.TemplateOpen || tokenType == JSONLexer.TEMPLATECLOSE)
-            {
-                return new JSONTemplateVisitorResult("");
-            }
-
             return new JSONTemplateVisitorResult(node.GetText());
         }
 
         public string Expand(string unboundString, JObject data)
         {
-            var result = _expressionEngine.Parse(unboundString).TryEvaluate(data);
-            return result.value.ToString();
+            var (value, error) = new ValueExpression(unboundString).TryGetValue(data);
+            return value.ToString();
         }
 
         public bool IsTrue(string predicate, JObject data)
         {
-            var result = _expressionEngine.Parse(predicate).TryEvaluate(data);
-            return (bool)result.value;
+            var (value, error) = new ValueExpression(predicate).TryGetValue(data);
+
+            try
+            {
+                return bool.Parse(value as string);
+            }
+            catch
+            {
+                // TODO log erros here
+                return true;
+            }
         }    
 
         public override JSONTemplateVisitorResult VisitValueTemplateString([NotNull] JSONParser.ValueTemplateStringContext context)
@@ -373,25 +368,35 @@ namespace AdaptiveCards.Templating
             result.Append("\"");
             return result; 
         }
-
-        public override JSONTemplateVisitorResult VisitValueString([NotNull] JSONParser.ValueStringContext context)
+        public override JSONTemplateVisitorResult VisitTemplateStringWithRoot([NotNull] JSONParser.TemplateStringWithRootContext context)
         {
-            return new JSONTemplateVisitorResult(context.GetText()); 
+            AddRootDataContextToCurrentDataContext();
+            return Visit(context.GetChild(0)); 
         }
 
-        public override JSONTemplateVisitorResult VisitTemplateString([NotNull] JSONParser.TemplateStringContext context)
+        public override JSONTemplateVisitorResult VisitValueTemplateStringWithRoot([NotNull] JSONParser.ValueTemplateStringWithRootContext context)
+        {
+            return VisitChildren(context);
+        }
+
+        public override JSONTemplateVisitorResult VisitChildren([NotNull] IRuleNode node)
         {
             JSONTemplateVisitorResult result = new JSONTemplateVisitorResult();
-            foreach (var child in context.children)
+
+            for(int i = 0; i < node.ChildCount; i++)
             {
-                result.Append(Visit(child));
+                result.Append(Visit(node.GetChild(i)));
             }
-            return result; 
+
+            return result;
         }
 
-        public override JSONTemplateVisitorResult VisitValueTemplateRootDataContext([NotNull] JSONParser.ValueTemplateRootDataContextContext context)
+        public override JSONTemplateVisitorResult VisitTemplateRootData([NotNull] JSONParser.TemplateRootDataContext context)
         {
-            PushRootDataContext(context.GetChild(1).GetText());
+            var datacontext = GetCurrentDataContext();
+            var child = context.GetChild<JSONParser.TemplateStringWithRootContext>(0);
+            AddRootDataContextToCurrentDataContext();
+            PushDataContext(child.GetText(), datacontext);
             return null;
         }
     }

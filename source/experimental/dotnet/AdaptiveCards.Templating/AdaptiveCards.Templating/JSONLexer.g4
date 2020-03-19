@@ -55,12 +55,21 @@ TEMPLATEWHEN
    : '$when'
    ;
 
-TemplateOpen
-   : '{' -> pushMode(TEMPLATEINSIDE)
+JPATH
+   : ('.' STRING | '[' INT ']')+ '}'
+   ;
+
+TEMPLATEROOT
+   : '${$root' JPATH
+   ;
+
+TEMPLATELITERAL
+   : '${' ~ ["]* '}'
    ;
 
 STRING
    : (ESC | SAFECODEPOINT)+
+   | '$'
    ;
 
 fragment ESC
@@ -73,23 +82,5 @@ fragment HEX
    : [0-9a-fA-F]
    ;
 fragment SAFECODEPOINT
-   : ~ ["\\\u0000-\u001F{}]
+   : ~ ["\\\u0000-\u001F$]
    ;
-
-
-mode TEMPLATEINSIDE;
-
-TEMPLATEROOT
-   : ' '* '$root' ('.' STRING | '[' INT ']')*
-   ;
-
-TEMPLATECLOSE
-   : '}' -> popMode
-   ;
-
-TEMPLATELITERAL
-   : ~["}]+
-   ;
-
-
-

@@ -44,11 +44,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AdaptiveExpressions" Version="4.8.0-rc4-preview" />
     <PackageReference Include="Antlr4" Version="4.6.6">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Bot.Expressions" Version="4.7.2-preview" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 

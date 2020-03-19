@@ -1,0 +1,18 @@
+{
+    "type": "AdaptiveCard",
+    "body": [
+      {
+        "type": "Container",
+        "items": [
+          {
+            "type": "TextBlock",
+            "text": "{$root.LineItems[0].Milage}"
+          },
+          {
+            "type": "TextBlock",
+            "text": "{$root.LineItems[1].Milage}"
+          }
+        ]
+      }
+    ]
+}

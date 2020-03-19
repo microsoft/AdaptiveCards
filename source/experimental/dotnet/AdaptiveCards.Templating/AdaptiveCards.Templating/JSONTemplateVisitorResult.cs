@@ -1,11 +1,6 @@
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Xml.XPath;
 
 namespace AdaptiveCards.Templating
 {
@@ -123,6 +118,10 @@ namespace AdaptiveCards.Templating
 
         public void Append(JSONTemplateVisitorResult result)
         {
+            if (result == null)
+            {
+                return;
+            }
             var tail = GetTail().Value;
             var headOfResult = result.GetHead().Value;
             if (tail.IsExpanded && headOfResult.IsExpanded)

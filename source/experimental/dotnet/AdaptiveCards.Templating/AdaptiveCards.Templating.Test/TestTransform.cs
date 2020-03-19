@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
-using Microsoft.Bot.Expressions;
+using AdaptiveExpressions.Properties;
 using System.Diagnostics;
 using System;
 
@@ -26,7 +26,7 @@ namespace AdaptiveCards.Templating.Test
     ""body"": [
         {
             ""type"": ""TextBlock"",
-            ""text"": ""Hello {person.firstName}""
+            ""text"": ""Hello ${person.firstName}""
         }
     ]
 }";
@@ -63,7 +63,7 @@ namespace AdaptiveCards.Templating.Test
     ""body"": [
         {
             ""type"": ""TextBlock"",
-            ""text"": ""Hello {person.firstName}""
+            ""text"": ""Hello ${person.firstName}""
         }
     ]
 }";
@@ -101,10 +101,10 @@ namespace AdaptiveCards.Templating.Test
                 ""type"": ""Container"",
                 ""items"": [
                   {
-                    ""$data"": ""{LineItems}"",
+                    ""$data"": ""${LineItems}"",
                     ""type"": ""TextBlock"",
-                    ""$when"": ""{Milage > 0}"",
-                    ""text"": ""{Milage}""
+                    ""$when"": ""${Milage > 0}"",
+                    ""text"": ""${Milage}""
                   }
                 ]
               }
@@ -173,15 +173,15 @@ namespace AdaptiveCards.Templating.Test
                 ""body"": [
                     {
                         ""type"": ""TextBlock"",
-                        ""text"": ""Hi {employee.name}! Here's a bit about your org...""
+                        ""text"": ""Hi ${employee.name}! Here's a bit about your org...""
                     },
                     {
                         ""type"": ""TextBlock"",
-                        ""text"": ""Your manager is: {employee.manager.name}""
+                        ""text"": ""Your manager is: ${employee.manager.name}""
                     },
                     {
                         ""type"": ""TextBlock"",
-                        ""text"": ""3 of your peers are: {employee.peers[0].name}, {employee.peers[1].name}, {employee.peers[2].name}""
+                        ""text"": ""3 of your peers are: ${employee.peers[0].name}, ${employee.peers[1].name}, ${employee.peers[2].name}""
                     }
                 ]
             }";
@@ -205,7 +205,7 @@ namespace AdaptiveCards.Templating.Test
             }";
 
             string cardJson = transformer.Transform(testString, null);
-            AssertJsonEqual(cardJson, expectedString);
+            AssertJsonEqual(expectedString, cardJson);
         }
 
         [TestMethod]
@@ -238,8 +238,8 @@ namespace AdaptiveCards.Templating.Test
                                                     ""nickname"": ""Star""
                                                 }
                                             ],
-                                            ""title"": ""{name}"",
-                                            ""value"": ""{nickname}""
+                                            ""title"": ""${name}"",
+                                            ""value"": ""${nickname}""
                                         }
                                     ]
                                 }
@@ -301,7 +301,7 @@ namespace AdaptiveCards.Templating.Test
                                       { ""name"": ""David"" }, 
                                       { ""name"": ""Thomas"" }
                                   ],
-                                  ""text"": ""{name}""
+                                  ""text"": ""${name}""
                               }
                           ]
                       }
@@ -409,8 +409,8 @@ namespace AdaptiveCards.Templating.Test
                             ""items"": [
                                 {
                                     ""type"": ""TextBlock"",
-                                    ""text"": ""{if(changePriceRatio >= 0, '▲', '▼')}"",
-                                    ""color"": ""{if(changePriceRatio >= 0, 'good', 'attention')}""
+                                    ""text"": ""${if(changePriceRatio >= 0, '▲', '▼')}"",
+                                    ""color"": ""${if(changePriceRatio >= 0, 'good', 'attention')}""
                                 }
                             ]
                         },
@@ -420,7 +420,7 @@ namespace AdaptiveCards.Templating.Test
                             ""items"": [
                                 {
                                     ""type"": ""TextBlock"",
-                                    ""text"": ""{name}""
+                                    ""text"": ""${name}""
                                 } ]
                         },
                         {
@@ -429,7 +429,7 @@ namespace AdaptiveCards.Templating.Test
                             ""items"": [
                                 {
                                     ""type"": ""TextBlock"",
-                                    ""text"": ""{lastPrice} "",
+                                    ""text"": ""${lastPrice} "",
                                     ""horizontalAlignment"": ""Center""
                                 }
                             ],
@@ -441,8 +441,8 @@ namespace AdaptiveCards.Templating.Test
                             ""items"": [
                                 {
                                     ""type"": ""TextBlock"",
-                                    ""text"": ""{changePriceRatio}%"",
-                                    ""color"": ""{if(changePriceRatio >= 0, 'good', 'attention')}""
+                                    ""text"": ""${changePriceRatio}%"",
+                                    ""color"": ""${if(changePriceRatio >= 0, 'good', 'attention')}""
                                 }
                             ],
                             ""horizontalAlignment"": ""Right""
@@ -477,8 +477,8 @@ namespace AdaptiveCards.Templating.Test
     ""body"": [
         {
             ""type"": ""TextBlock"",
-            ""text"": ""{machines.id}"",
-            ""color"": ""{if(machines.uptime >= 3000, 'good', 'attention')}""
+            ""text"": ""${machines.id}"",
+            ""color"": ""${if(machines.uptime >= 3000, 'good', 'attention')}""
         }
     ]
 }";
@@ -514,9 +514,9 @@ namespace AdaptiveCards.Templating.Test
      },
     ""body"": [
         {
-            ""$when"": ""{(machines.uptime >= 3000)}"",
+            ""$when"": ""${(machines.uptime >= 3000)}"",
             ""type"": ""TextBlock"",
-            ""text"": ""{machines.id}""
+            ""text"": ""${machines.id}""
         }
     ]
 }";
@@ -546,10 +546,10 @@ namespace AdaptiveCards.Templating.Test
                 ""type"": ""Container"",
                 ""items"": [
                   {
-                    ""$data"": ""{LineItems}"",
+                    ""$data"": ""${LineItems}"",
                     ""type"": ""TextBlock"",
-                    ""$when"": ""{Milage > 0}"",
-                    ""text"": ""{Milage}""
+                    ""$when"": ""${Milage > 0}"",
+                    ""text"": ""${Milage}""
                   }
                 ]
               }
@@ -599,8 +599,8 @@ namespace AdaptiveCards.Templating.Test
                   {
                     ""$data"": [{""Milage"" : 1}, {""Milage"" : 10}],
                     ""type"": ""TextBlock"",
-                    ""id"": ""ReceiptRequired{$index}"",
-                    ""text"": ""{Milage}""
+                    ""id"": ""ReceiptRequired${$index}"",
+                    ""text"": ""${Milage}""
                   }
                 ]
               }
@@ -646,7 +646,7 @@ namespace AdaptiveCards.Templating.Test
                               {
                                   ""type"": ""TextBlock"",
                                   ""$data"": { ""name"": ""Matt"" }, 
-                                  ""text"": ""{name}""
+                                  ""text"": ""${name}""
                               }
                           ]
                       }
@@ -687,7 +687,7 @@ namespace AdaptiveCards.Templating.Test
                           ""items"": [
                               {
                                   ""type"": ""TextBlock"",
-                                  ""text"": ""{name}""
+                                  ""text"": ""${name}""
                               }
                           ]
                       }
@@ -730,7 +730,7 @@ namespace AdaptiveCards.Templating.Test
                               {
                                   ""type"": ""TextBlock"",
                                   ""$data"": { ""name"": ""Matt"" }, 
-                                  ""text"": ""{name}""
+                                  ""text"": ""${name}""
                               }
                           ]
                       }
@@ -772,10 +772,10 @@ namespace AdaptiveCards.Templating.Test
                 ""type"": ""Container"",
                 ""items"": [
                   {
-                    ""$data"": ""{$root.LineItems}"",
+                    ""$data"": ""${$root.LineItems}"",
                     ""type"": ""TextBlock"",
-                    ""id"": ""ReceiptRequired{$index}"",
-                    ""text"": ""{Milage}""
+                    ""id"": ""ReceiptRequired${$index}"",
+                    ""text"": ""${Milage}""
                   }
                 ]
               }
@@ -825,11 +825,11 @@ namespace AdaptiveCards.Templating.Test
                 ""items"": [
                   {
                     ""type"": ""TextBlock"",
-                    ""text"": ""{$root.LineItems[0].Milage}""
+                    ""text"": ""${$root.LineItems[0].Milage}""
                   },
                   {
                     ""type"": ""TextBlock"",
-                    ""text"": ""{$root.LineItems[1].Milage}""
+                    ""text"": ""${$root.LineItems[1].Milage}""
                   }
                 ]
               }
@@ -854,6 +854,52 @@ namespace AdaptiveCards.Templating.Test
                     ""type"": ""TextBlock"",
                     ""text"": ""1""
                 },
+                {
+                    ""type"": ""TextBlock"",
+                    ""text"": ""10""
+                }
+            ]
+        }
+    ]
+}", cardJson);
+        }
+
+        [TestMethod]
+        public void TestWorkWithRepeatingItems()
+        {
+            AdaptiveTransformer transformer = new AdaptiveTransformer();
+
+            string jsonTemplate = @"{
+            ""type"": ""AdaptiveCard"",
+            ""body"": [
+              {
+                ""type"": ""Container"",
+                ""items"": [
+                  {
+                    ""$data"": ""${$root.LineItems}"",
+                    ""type"": ""TextBlock"",
+                    ""text"": ""Class: ${$root.Class}, Mileage: ${Mileage}""
+                  }
+                ]
+              }
+            ]
+        }";
+            string jsonData = @"{
+              ""Class"" : ""Ship"",
+              ""LineItems"": [
+                    {""Mileage"" : 1},
+                    {""Mileage"" : 10}
+                ]
+            }";
+
+            string cardJson = transformer.Transform(jsonTemplate, jsonData);
+
+            TestTemplate.AssertJsonEqual(@"{
+    ""type"": ""AdaptiveCard"",
+    ""body"": [
+              {
+                ""type"": ""Container"",
+                ""items"": [
                 {
                     ""type"": ""TextBlock"",
                     ""text"": ""10""
@@ -944,8 +990,8 @@ namespace AdaptiveCards.Templating.Test
             }";
 
             JToken token = JToken.Parse(jsonData);
-            var engine = new ExpressionEngine();
-            Assert.AreEqual("Super", engine.Parse("person.firstName").TryEvaluate(token as JObject).value);
+            var (value, error) = new ValueExpression("${person.firstName}man").TryGetValue(token as JObject);
+            Assert.AreEqual("Superman", value);
         }
 
         [TestMethod]
@@ -963,12 +1009,12 @@ namespace AdaptiveCards.Templating.Test
             var beginTime0 = Stopwatch.GetTimestamp();
             JToken token = JToken.Parse(jsonData);
             var endTime0 = Stopwatch.GetTimestamp();
-            var beginTime1 = Stopwatch.GetTimestamp();
-            var engine = new ExpressionEngine();
-            var endTime1 = Stopwatch.GetTimestamp();
             Console.WriteLine("time0 took: " + (endTime0 - beginTime0));
+            var beginTime1 = Stopwatch.GetTimestamp();
+            var (value, error) = new ValueExpression("${string(person.age)}").TryGetValue(token as JObject);
+            var endTime1 = Stopwatch.GetTimestamp();
             Console.WriteLine("time1 took: " + (endTime1 - beginTime1));
-            Assert.AreEqual("79", engine.Parse("string(person.age)").TryEvaluate(token as JObject).value);
+            Assert.AreEqual("79", value);
         }
     }
 }

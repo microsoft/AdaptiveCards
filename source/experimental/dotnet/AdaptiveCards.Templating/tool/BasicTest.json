@@ -1,0 +1,17 @@
+{
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "$data": {
+                "person": {
+                    "firstName": "Andrew",
+                    "lastName": "Leader"
+                }
+     },
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Hello ${person.firstName}"
+        }
+    ]
+}
+
