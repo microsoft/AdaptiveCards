@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import { Binding, ExpressionParser, EvaluationContext } from "./expression-parser";
+import * as Shared from "./shared";
 
 class TemplatizedString {
     private _parts: Array<string | Binding> = [];
@@ -20,7 +21,7 @@ class TemplatizedString {
                 start = s.indexOf("{", start);
 
                 if (start >= 0) {
-                    if (start + 1 < s.length && s[start + 1] == "{") {
+                    if (start + 1 < s.length && s[start + 1] === "{") {
                         start += 2;
 
                         loop = true;
@@ -61,7 +62,7 @@ class TemplatizedString {
             }
         } while (i < s.length);
 
-        if (result._parts.length == 1 && typeof result._parts[0] === "string") {
+        if (result._parts.length === 1 && typeof result._parts[0] === "string") {
             return <string>result._parts[0];
         }
         else {
@@ -74,7 +75,7 @@ class TemplatizedString {
     private evalExpression(bindingExpression: Binding, context: EvaluationContext): any {
         let result = bindingExpression.evaluate(context);
 
-        if (result == undefined) {
+        if (result === undefined) {
             this._shouldDropOwner = this._shouldDropOwner || !bindingExpression.allowNull;
         }
 
@@ -82,10 +83,12 @@ class TemplatizedString {
     }
 
     private internalEvaluate(context: EvaluationContext): any {
-        if (this._parts.length == 0) {
+        if (this._parts.length === 0) {
             return undefined;
         }
-        else if (this._parts.length == 1) {
+        else if (this._parts.length === 1) {
+            // If the templatized string only has 1 part, we want it to evaluate
+            // to same the type as produced by the expression
             if (typeof this._parts[0] === "string") {
                 return this._parts[0];
             }
@@ -94,6 +97,10 @@ class TemplatizedString {
             }
         }
         else {
+            // If the templatized string has multiple parts, we want it to evaluate
+            // to a string. In that context, each part that evaluates to undefined
+            // gets replaced by the original expression by default or by a resource
+            // string provided by the application
             let s = "";
 
             for (let part of this._parts) {
@@ -101,7 +108,13 @@ class TemplatizedString {
                     s += part;
                 }
                 else {
-                    s += this.evalExpression(<Binding>part, context);
+                    let evaluatedPart = this.evalExpression(<Binding>part, context);
+
+                    if (evaluatedPart === undefined) {
+                        evaluatedPart = Shared.GlobalSettings.undefinedExpressionValueSubstitutionString ? Shared.GlobalSettings.undefinedExpressionValueSubstitutionString : (<Binding>part).expressionString;
+                    }
+
+                    s += evaluatedPart;
                 }
             }
 
@@ -125,7 +138,7 @@ export class Template {
         if (typeof node === "string") {
             return TemplatizedString.parse(node);
         }
-        else if (typeof node === "object" && node != null) {
+        else if (typeof node === "object" && node !== null) {
             if (Array.isArray(node)) {
                 let result: any[] = [];
 
@@ -161,7 +174,7 @@ export class Template {
             if (!this._context.isReservedField(key)) {
                 let value = this.internalExpand(node[key]);
 
-                if (value != undefined) {
+                if (value !== undefined) {
                     result[key] = value;
                 }
             }
@@ -181,7 +194,7 @@ export class Template {
             for (let item of node) {
                 let expandedItem = this.internalExpand(item);
 
-                if (expandedItem != null) {
+                if (expandedItem !== null) {
                     if (Array.isArray(expandedItem)) {
                         itemArray = itemArray.concat(expandedItem);
                     }
@@ -200,22 +213,33 @@ export class Template {
                 result = null;
             }
         }
-        else if (typeof node === "object" && node != null) {
+        else if (typeof node === "object" && node !== null) {
             let dropObject = false;
             let when = node["$when"];
 
             if (when instanceof TemplatizedString) {
-                let whenValue = when.evaluate(this._context);
+                let whenValue: any;
+                
+                try {
+                    whenValue = when.evaluate(this._context);
 
-                if (typeof whenValue === "boolean") {
-                    dropObject = !whenValue;
+                    // If $when doesn't evaluate to a boolean, consider it is false
+                    if (typeof whenValue !== "boolean") {
+                        whenValue = false;
+                    }
                 }
+                catch {
+                    // If we hit an exception, consider $when to be false
+                    whenValue = false;
+                }
+
+                dropObject = !whenValue;
             }
 
             if (!dropObject) {
                 let dataContext = node["$data"];
 
-                if (dataContext != undefined) {
+                if (dataContext !== undefined) {
                     if (dataContext instanceof TemplatizedString) {
                         dataContext = dataContext.evaluate(this._context);
                     }
@@ -229,7 +253,7 @@ export class Template {
 
                             let expandedObject = this.expandSingleObject(node);
 
-                            if (expandedObject != null) {
+                            if (expandedObject !== null) {
                                 result.push(expandedObject);
                             }
                         }

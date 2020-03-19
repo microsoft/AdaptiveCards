@@ -6,6 +6,7 @@
 #include "pch.h"
 #include "WholeItemsPanel.h"
 #include "XamlHelpers.h"
+#include "ElementTagContent.h"
 
 using namespace std;
 using namespace Microsoft::WRL;
@@ -251,12 +252,11 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(children->get_Size(&m_measuredCount));
 
         float extraPaddingPerItem{};
-        if (!m_stretchableItems.empty())
+        if (m_stretchableItemCount != 0)
         {
-            extraPaddingPerItem = floor((finalSize.Height - m_calculatedSize) / m_stretchableItems.size());
+            extraPaddingPerItem = floor((finalSize.Height - m_calculatedSize) / m_stretchableItemCount);
         }
-
-        if (m_stretchableItems.empty())
+        else
         {
             if (m_verticalContentAlignment == ABI::AdaptiveNamespace::VerticalContentAlignment::Center)
             {
@@ -399,35 +399,50 @@ namespace AdaptiveNamespace
     void WholeItemsPanel::AddElementToStretchablesList(_In_ IUIElement* element)
     {
         ComPtr<IUIElement> localElement(element);
-        ComPtr<IUIElement4> elementWithAccessKey;
-        if (SUCCEEDED(localElement.As(&elementWithAccessKey)))
-        {
-            std::string elementAccessKey = std::to_string(m_accessKeyCount);
-            ++m_accessKeyCount;
+        ComPtr<IFrameworkElement> elementAsFrameworkElement;
+        THROW_IF_FAILED(localElement.As(&elementAsFrameworkElement));
 
-            HString accessKey;
-            if (SUCCEEDED(UTF8ToHString(elementAccessKey, accessKey.GetAddressOf())))
-            {
-                elementWithAccessKey->put_AccessKey(accessKey.Get());
-                m_stretchableItems.insert(std::move(elementAccessKey));
-            }
+        ComPtr<IInspectable> tagAsInspectable;
+        THROW_IF_FAILED(elementAsFrameworkElement->get_Tag(&tagAsInspectable));
+
+        ComPtr<IElementTagContent> elementTagContent;
+        if (tagAsInspectable != nullptr)
+        {
+            THROW_IF_FAILED(tagAsInspectable.As(&elementTagContent));
+            THROW_IF_FAILED(elementTagContent->put_IsStretchable(true));
         }
+        else
+        {
+            ComPtr<IElementTagContent> tagContent;
+            THROW_IF_FAILED(MakeAndInitialize<ElementTagContent>(&tagContent));
+
+            THROW_IF_FAILED(tagContent->put_IsStretchable(true));
+
+            THROW_IF_FAILED(tagContent.As(&tagAsInspectable));
+            THROW_IF_FAILED(elementAsFrameworkElement->put_Tag(tagAsInspectable.Get()));
+        }
+
+        ++m_stretchableItemCount;
     }
 
     bool WholeItemsPanel::IsUIElementInStretchableList(_In_ IUIElement* element)
     {
-        ComPtr<IUIElement> localElement(element);
-        ComPtr<IUIElement4> elementWithAccessKey;
-        if (SUCCEEDED(localElement.As(&elementWithAccessKey)))
+        ComPtr<IUIElement> localUIElement(element);
+        ComPtr<IFrameworkElement> uiElementAsFrameworkElement;
+        THROW_IF_FAILED(localUIElement.As(&uiElementAsFrameworkElement));
+
+        ComPtr<IInspectable> tagAsInspectable;
+        THROW_IF_FAILED(uiElementAsFrameworkElement->get_Tag(&tagAsInspectable));
+
+        boolean isStretchable = false;
+        if (tagAsInspectable != nullptr)
         {
-            HString elementAccessKey;
-            if (SUCCEEDED(elementWithAccessKey->get_AccessKey(elementAccessKey.GetAddressOf())))
-            {
-                return (m_stretchableItems.find(HStringToUTF8(elementAccessKey.Get())) != m_stretchableItems.end());
-            }
+            ComPtr<AdaptiveNamespace::IElementTagContent> tagContent;
+            THROW_IF_FAILED(tagAsInspectable.As(&tagContent));
+            THROW_IF_FAILED(tagContent->get_IsStretchable(&isStretchable));
         }
 
-        return false; // Couldn't get access key, weird, so it wasnt found
+        return isStretchable;
     }
 
     void WholeItemsPanel::SetVerticalContentAlignment(_In_ ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment)

@@ -3,6 +3,7 @@
 import * as monaco from "monaco-editor";
 import * as markdownit from "markdown-it";
 import * as ACDesigner from "adaptivecards-designer";
+import * as ACTemplating from "adaptivecards-templating";
 import * as Adaptive from "adaptivecards";
 import "adaptivecards-designer/dist/adaptivecards-designer.css";
 import "./app.css";
@@ -11,14 +12,13 @@ import "./app.css";
 // import "adaptivecards-designer/dist/adaptivecards-defaulthost.css";
 
 window.onload = function() {
-    // Uncomment to enabled preview features such as data binding
-    /*
+    ACTemplating.GlobalSettings.undefinedExpressionValueSubstitutionString = "<undefined value>";
+
     ACDesigner.GlobalSettings.showVersionPicker = true;
     ACDesigner.GlobalSettings.enableDataBindingSupport = true;
     // Note the below two flags are ignored if enableDataBindingSupport is set to false
     ACDesigner.GlobalSettings.showDataStructureToolbox = true;
     ACDesigner.GlobalSettings.showSampleDataEditorToolbox = true;
-    */
 
     // Uncomment to configure default toolbox titles
     /*
@@ -29,8 +29,6 @@ window.onload = function() {
     ACDesigner.Strings.toolboxes.sampleDataEditor.title = "Custom title";
     ACDesigner.Strings.toolboxes.toolPalette.title = "Custom title";
     */
-
-
 
 	ACDesigner.CardDesigner.onProcessMarkdown = (text: string, result: { didProcess: boolean, outputHtml: string }) => {
 		result.outputHtml = new markdownit().render(text);
