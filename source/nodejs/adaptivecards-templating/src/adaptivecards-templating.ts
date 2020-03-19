@@ -2,3 +2,4 @@
 // Licensed under the MIT License.
 export * from "./expression-parser";
 export * from "./template-engine";
+export * from "./shared";

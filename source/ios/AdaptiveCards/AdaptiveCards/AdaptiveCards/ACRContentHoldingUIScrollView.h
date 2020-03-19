@@ -9,4 +9,8 @@
 
 @interface ACRContentHoldingUIScrollView : UIScrollView
 
+@property bool stretch;
+@property UIView *contentview;
+@property CGFloat contentWidth;
+
 @end
