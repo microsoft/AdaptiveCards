@@ -995,6 +995,18 @@ namespace AdaptiveCards.Templating.Test
         }
 
         [TestMethod]
+        public void TestIndex()
+        {
+            string jsonData = @"{
+            ""$index"": 0
+            }";
+
+            JToken token = JToken.Parse(jsonData);
+            var (value, error) = new ValueExpression("${$index}}").TryGetValue(token as JObject);
+            Assert.AreEqual("0", value);
+        }
+
+        [TestMethod]
         public void TestSimpleToString()
         {
             string jsonData = @"{

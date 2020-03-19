@@ -100,11 +100,6 @@ namespace AdaptiveCards.Templating
                 _dataContext.Push(new DataContext(value as string));
             }
         }
-        private void PushRootDataContext(string stringToParse)
-        {
-            var jpath = stringToParse.Replace("$root", "");
-            _dataContext.Push(new DataContext(root.token.SelectToken(jpath)));
-        }
 
         private void AddRootDataContextToCurrentDataContext()
         {
@@ -148,6 +143,10 @@ namespace AdaptiveCards.Templating
             else if (templateDataValueNode is JSONParser.ValueTemplateStringWithRootContext)
             {
                 Visit(templateDataValueNode);
+            }
+            else if (templateDataValueNode is JSONParser.ValueTemplateStringContext)
+            {
+                PushDataContext(templateDataValueNode.GetChild(1).GetText(), GetCurrentDataContext());
             }
 
             return null;

@@ -1,0 +1,35 @@
+{
+     "type": "AdaptiveCard",
+     "version": "1.0",
+     "body": [
+         {
+             "type": "Container",
+             "items": [
+                 {
+                     "type": "TextBlock",
+                     "text": "Header"
+                 },
+                 {
+                     "type": "FactSet",
+                     "facts": [
+                         {
+                             "$data": [
+                                 {
+                                     "name": "Star",
+                                     "nickname": "Dust"
+                                 },
+                                 {
+                                     "name": "Death",
+                                     "nickname": "Star"
+                                 }
+                             ],
+                             "title": "${name}",
+                             "value": "${nickname}"
+                         }
+                     ]
+                 }
+             ]
+         }
+     ],
+     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+}

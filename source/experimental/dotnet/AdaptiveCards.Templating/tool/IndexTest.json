@@ -1,0 +1,16 @@
+{
+    "type": "AdaptiveCard",
+    "body": [
+      {
+        "type": "Container",
+        "items": [
+          {
+            "$data": [{"Milage" : 1}, {"Milage" : 10}],
+            "type": "TextBlock",
+            "id": "ReceiptRequired${$index}",
+            "text": "${Milage}"
+          }
+        ]
+      }
+    ]
+}
