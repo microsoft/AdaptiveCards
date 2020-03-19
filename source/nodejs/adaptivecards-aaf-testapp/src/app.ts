@@ -4,13 +4,14 @@ import * as AAF from "adaptivecards-aaf";
 import * as Shared from "./shared";
 import "adaptivecards-aaf/dist/aaf.css";
 import "adaptivecards-aaf/dist/adaptivecards.css";
-import { LocalChannelAdapter } from "./local-channel-adapter";
+import { TestHttpChannelAdapter } from "./test-http-channel-adapter";
 
 window.onload = function() {
     let sampleCardAndData = Shared.sampleCard;
     sampleCardAndData["$data"] = Shared.sampleData;
 
     let applet = new AAF.AdaptiveApplet();
+    /*
     applet.onCardChanged = (sender: AAF.AdaptiveApplet) => {
         if (sender.card) {
             if (sender.card.autoRefresh) {
@@ -18,17 +19,20 @@ window.onload = function() {
             }
         }
     };
+    */
 
     // applet.channelAdapter = new LocalChannelAdapter();
 
-    applet.channelAdapter = new AAF.HttpChannelAdapter("https://aaftestbot.azurewebsites.net/aaftestbot/invoke");
+    applet.channelAdapter = new TestHttpChannelAdapter("https://aaftestbot2.azurewebsites.net/aaftestbot/invoke");
 
     applet.setCard(sampleCardAndData);
+    /*
     applet.onActivityRequestCompleted = (sender, response) => {
         if (response.status === AAF.ActivityStatus.Failure) {
             return 2000;
         }
     }
+    */
 
     document.getElementById("appHost").appendChild(applet.renderedElement);
 }

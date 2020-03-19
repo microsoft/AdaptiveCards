@@ -86,7 +86,11 @@ export class AutoRefreshDefinition extends Adaptive.SerializableObject {
 export class AdaptiveAppletCard extends Adaptive.AdaptiveCard {
     //#region Schema
 
+    static readonly appIdProperty = new Adaptive.StringProperty(Adaptive.Versions.v1_0, "appId", true);
     static readonly autoRefreshProperty = new Adaptive.SerializableObjectProperty(Adaptive.Versions.v1_0, "autoRefresh", AutoRefreshDefinition, true);
+
+    @Adaptive.property(AdaptiveAppletCard.appIdProperty)
+    appId?: string;
 
     @Adaptive.property(AdaptiveAppletCard.autoRefreshProperty)
     get autoRefresh(): AutoRefreshDefinition | undefined {
@@ -111,17 +115,20 @@ export class AdaptiveAppletCard extends Adaptive.AdaptiveCard {
 export class AdaptiveApplet {
     static maximumRequestAttempts: number = 3;
     static defaultTimeBetweenAttempts: number = 3000; // 3 seconds
+    static authPromptWidth: number = 400;
+    static authPromptHeight: number = 600;
 
     private _card: AdaptiveAppletCard | undefined;
     private _cardPayload: any;
     private _cardData: any;
 
-    private createActivityRequest(action: ExecuteAction, context: ActivityInvocationContext): ActivityRequest | undefined {
+    private createActivityRequest(appId: string, action: ExecuteAction, context: ActivityInvocationContext): ActivityRequest | undefined {
         let request: ActivityRequest = {
             context: context,
             activity: {
                 type: "invoke",
                 name: "adaptiveCard/action",
+                appId: appId,
                 localTimezone: "",
                 localTimestamp: "",
                 value: {
@@ -141,9 +148,9 @@ export class AdaptiveApplet {
         return cancel ? undefined : request;
     }
 
-    private async internalExecuteActionAsync(action: Adaptive.Action, context: ActivityInvocationContext) {
+    private async internalExecuteActionAsync(appId: string, action: Adaptive.Action, context: ActivityInvocationContext) {
         if (action instanceof ExecuteAction && this.channelAdapter) {
-            let request = this.createActivityRequest(action, context);
+            let request = this.createActivityRequest(appId, action, context);
 
             if (request) {
                 let overlay = this.createProgressOverlay(context);
@@ -190,7 +197,34 @@ export class AdaptiveApplet {
                                     alert(parsedResult);
                                 }
                                 else if (typeof parsedResult === "object") {
-                                    this.setCard(parsedResult);
+                                    switch (parsedResult["type"]) {
+                                        case "AdaptiveCard":
+                                            this.setCard(parsedResult);
+                                            break;
+                                        case "Activity.InvocationError.Unauthorized":
+                                            let loginUrl: URL;
+
+                                            try {
+                                                loginUrl = new URL(parsedResult["loginUrl"]);
+                                            }
+                                            catch (e) {
+                                                console.error("Invalid loginUrl: " + parsedResult["loginUrl"]);
+
+                                                throw e;
+                                            }
+
+                                            console.log("Login required at " + loginUrl.toString());
+
+                                            let left = window.screenX + (window.outerWidth - AdaptiveApplet.authPromptWidth) / 2;
+                                            let top = window.screenY + (window.outerHeight - AdaptiveApplet.authPromptHeight) / 2;
+
+                                            // scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
+                                            window.open(loginUrl.toString(), "Login", `width=${AdaptiveApplet.authPromptWidth},height=${AdaptiveApplet.authPromptHeight},left=${left},top=${top}`);
+
+                                            break;
+                                        default:
+                                            throw new Error("Action.Execute result is of unsupported type (" + typeof parsedResult + ")");
+                                    }                                    
                                 }
                                 else {
                                     throw new Error("Action.Execute result is of unsupported type (" + typeof parsedResult + ")");
@@ -307,12 +341,16 @@ export class AdaptiveApplet {
                     card.parse(this._cardPayload);
                 }
 
+                if (!card.appId) {
+                    throw new Error("Invalid card payload. The appId property is missing.")
+                }
+
                 let doChangeCard = this.onCardChanging ? this.onCardChanging(this, this._cardPayload) : true;
 
                 if (doChangeCard) {
                     this._card = card;
                     this._card.onExecuteAction = (action: Adaptive.Action) => {
-                        this.internalExecuteActionAsync(action, ActivityInvocationContext.UserInteraction);
+                        this.internalExecuteActionAsync(<string>card.appId, action, ActivityInvocationContext.UserInteraction);
                     }
 
                     while (this.renderedElement.firstChild) {
@@ -329,7 +367,7 @@ export class AdaptiveApplet {
                         }
 
                         if (this._card.autoRefresh) {
-                            this.internalExecuteActionAsync(this._card.autoRefresh.action, ActivityInvocationContext.AutoRefresh);
+                            this.internalExecuteActionAsync(card.appId, this._card.autoRefresh.action, ActivityInvocationContext.AutoRefresh);
                         }
                     }
                 }

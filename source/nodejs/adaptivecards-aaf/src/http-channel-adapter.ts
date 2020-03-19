@@ -8,8 +8,36 @@ export class HttpChannelAdapter extends ChannelAdapter {
     }
 
     async sendRequestAsync(request: ActivityRequest): Promise<ActivityResponse> {
+        let response = await fetch(
+            this.url,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(request.activity)
+            }
+        )
+
+        if (response.status === 200) {
+            return {
+                request: request,
+                status: ActivityStatus.Success,
+                content: await response.text()
+            };
+        }
+        else {
+            return {
+                request: request,
+                status: ActivityStatus.Failure,
+                content: response.statusText
+            }
+        }
+
+        /*
         switch (request.activity.value.action.verb) {
             case "succeedReturnCard":
+            case "actionWithAuth":
                 let response = await fetch(
                     this.url,
                     {
@@ -51,5 +79,6 @@ export class HttpChannelAdapter extends ChannelAdapter {
             default:
                 throw new Error("It didn't work!");
         }
+        */
     }
 }

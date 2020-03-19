@@ -29,6 +29,7 @@ export const sampleData = {
 
 export const sampleCard = {
     type: "AdaptiveCard",
+    appId: "abcd",
     body: [
         {
             type: "TextBlock",
@@ -91,22 +92,27 @@ export const sampleCard = {
     actions: [
         {
             type: "Action.Execute",
-            verb: "succeedReturnCard",
+            verb: "remoteSucceedReturnCard",
             title: "Succeed in 3 attempts with card"
         },
         {
             type: "Action.Execute",
-            verb: "succeedReturnString",
+            verb: "remoteSucceedReturnString",
             title: "Succeed with string"
         },
         {
             type: "Action.Execute",
-            verb: "fail",
+            verb: "remoteFailedUnrecoverable",
             title: "Fail"
         },
         {
             type: "Action.Execute",
-            verb: "exception",
+            verb: "remoteFailedUnauthenticated",
+            title: "Fail with auth"
+        },
+        {
+            type: "Action.Execute",
+            verb: "localException",
             title: "Fail with exception"
         }
     ],
