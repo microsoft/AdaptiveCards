@@ -53,7 +53,7 @@ To load the designer component you have 2 options:
 		let hostContainers = [];
 
 		// Optional: add the default Microsoft Host Apps (see docs below)
-		// hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
+		// hostContainers = ACDesigner.defaultMicrosoftHosts;
 		 
 		let designer = new ACDesigner.CardDesigner(hostContainers);
 
@@ -111,7 +111,9 @@ window.onload = function() {
 	}
 
 	let hostContainers = [];
-	hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
+	
+	// Optional: add the default Microsoft Host Apps (see docs below)
+	// hostContainers = ACDesigner.defaultMicrosoftHosts;
 
 	let designer = new ACDesigner.CardDesigner(hostContainers);
 	designer.attachTo(document.getElementById("designerRootHost"));
@@ -212,16 +214,6 @@ For advanced configuration of the designer use the following APIs.
     ACDesigner.Strings.toolboxes.sampleDataEditor.title = "Custom sample data editor title";
     ACDesigner.Strings.toolboxes.toolPalette.title = "Custom tool palette title";
 
-    /* Add the default Microsoft Host Apps 	*/ 
-    hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
-    hostContainers.push(new ACDesigner.CortanaContainer("Cortana Skills", "containers/cortana-container.css"));
-    hostContainers.push(new ACDesigner.OutlookContainer("Outlook Actionable Messages", "containers/outlook-container.css"));
-    hostContainers.push(new ACDesigner.TimelineContainer("Windows Timeline", "containers/timeline-container.css"));
-    hostContainers.push(new ACDesigner.DarkTeamsContainer("Microsoft Teams - Dark", "containers/teams-container-dark.css"));
-    hostContainers.push(new ACDesigner.LightTeamsContainer("Microsoft Teams - Light", "containers/teams-container-light.css"));
-    hostContainers.push(new ACDesigner.BotFrameworkContainer("Bot Framework Other Channels (Image render)", "containers/bf-image-container.css"));
-    hostContainers.push(new ACDesigner.ToastContainer("Windows Notifications (Preview)", "containers/toast-container.css"));
-    
     /* Modify the Element toolbox (BEFORE designer attached) */ 
     Adaptive.GlobalRegistry.elements.unregister("RichTextBlock");
     ACDesigner.CardDesignerSurface.cardElementPeerRegistry.unregisterPeer(Adaptive.RichTextBlock);
@@ -230,7 +222,22 @@ For advanced configuration of the designer use the following APIs.
     Adaptive.GlobalRegistry.actions.unregister("Action.ToggleVisibility");
     ACDesigner.CardDesignerSurface.actionPeerRegistry.unregisterPeer(Adaptive.ToggleVisibilityAction);
     
-    /* Modify the toolbar (BEFORE designer attached) */
+    /* Include all built-in host apps */
+    let hostContainers: ACDesigner.HostContainer[] = ACDesigner.defaultMicrosoftHosts;
+
+    /* Or pick and choose which built-in host apps to include, and/or add your custom host app
+    
+    let hostContainers: ACDesigner.HostContainer[] = [
+        new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"),
+        new ACDesigner.OutlookContainer("Outlook Actionable Messages", "containers/outlook-container.css"),
+        new MyCustomContainerClass("My Custom Container", "path-to-my-custom-container-stylesheet.css")
+    ];
+    */
+    
+	/* Instantiate the designer component */
+	let designer = new ACDesigner.CardDesigner(hostContainers);
+
+	/* Modify the toolbar */
     let myButton = new Designer.ToolbarButton(
         "myButton",
         "My button",

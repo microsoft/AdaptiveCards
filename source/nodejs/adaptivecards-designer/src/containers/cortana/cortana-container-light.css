@@ -1,0 +1,184 @@
+.ac-media-poster {}
+
+.ac-media-poster.empty {
+    height: 200px;
+    background-color: #F2F2F2;
+}
+
+.ac-media-playButton {
+    width: 56px;
+    height: 56px;
+    border: 1px solid #EEEEEE;
+    border-radius: 28px;
+    box-shadow: 0px 0px 10px #EEEEEE;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: black;
+    cursor: pointer;
+}
+
+.ac-media-playButton-arrow {
+    color: black;
+}
+
+.ac-media-playButton:hover {
+    background-color: white;
+}
+
+.ac-image.ac-selectable {
+    cursor: pointer;
+}
+
+.ac-image.ac-selectable:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.ac-image.ac-selectable:active {
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+a.ac-anchor {
+    text-decoration: none;
+}
+
+a.ac-anchor:link {
+    color: #6264A7;
+}
+
+a.ac-anchor:visited {
+    color: #6264A7;
+}
+
+a.ac-anchor:link:active {
+    color: #6264A7;
+}
+
+a.ac-anchor:visited:active {
+    color: #6264A7;
+}
+
+.ac-container.ac-selectable, .ac-columnSet.ac-selectable {
+    padding: 0px;
+}
+
+.ac-container.ac-selectable:hover, .ac-columnSet.ac-selectable:hover {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.ac-container.ac-selectable:active, .ac-columnSet.ac-selectable:active {
+    background-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+.ac-pushButton {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    vertical-align: middle;
+    cursor: default;
+    font-family: "Segoe UI", sans-serif;
+    font-size: 14px;
+    padding: 4px 10px 5px 10px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    height: 32px;
+    background-color: white;
+    color: #6264A7;
+    border: 2px solid #BFC0DA;
+    border-radius: 4px;
+}
+
+.ac-pushButton:hover {
+    background-color: #6264A7;
+    border: 2px solid #6264A7;
+    color: white;
+}
+
+.ac-pushButton:active {
+    background-color: #6264A7;
+    border: 2px solid #6264A7;
+    color: white;
+}
+
+.ac-pushButton.expanded {
+    background-color: #6264A7;
+    border: 2px solid #6264A7;
+    color: white;
+}
+
+.ac-pushButton.style-emphasis {
+    background-color: #6264A7;
+    border: 2px solid #6264A7;
+    color: white;
+}
+
+.ac-input {
+    font-family: "Segoe UI", sans-serif;
+    font-size: 14px;
+    color: black;
+}
+
+.ac-input.ac-input-required {
+    background-image: linear-gradient(45deg, transparent, transparent 50%, red 50%, red 100%);
+    background-position: top right;
+    background-size: .5em .5em;
+    background-repeat: no-repeat;
+}
+
+.ac-input.ac-input-validation-failed {
+    border: 1px solid red !important;
+}
+
+.ac-input.ac-textInput {
+    resize: none;
+}
+
+.ac-input.ac-textInput.ac-multiline {
+    height: 72px;
+}
+
+.ac-input.ac-textInput, .ac-input.ac-numberInput, .ac-input.ac-dateInput, .ac-input.ac-timeInput {
+    height: 31px;
+}
+
+.ac-input.ac-textInput, .ac-input.ac-numberInput, .ac-input.ac-dateInput, .ac-input.ac-timeInput, .ac-input.ac-multichoiceInput {
+    background-color: #F3F2F1;
+    border: 1px solid #F3F2F1;
+    border-radius: 4px;
+    padding: 4px 8px 4px 8px;
+}
+
+/* ac-inlineActionButton should set height to the same as ac-input.ac-textInput */
+
+.ac-inlineActionButton {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    font-family: "Segoe UI", sans-serif;
+    font-size: 14px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: none;
+    background-color: transparent;
+    height: 31px;
+}
+
+.ac-inlineActionButton.textOnly {
+    padding: 0 8px;
+}
+
+.ac-inlineActionButton.iconOnly {
+    padding: 0;
+}
+
+.ac-inlineActionButton:hover {
+    background-color: #EEEEEE;
+}
+
+.ac-inlineActionButton:active {
+    background-color: #CCCCCC;
+}
