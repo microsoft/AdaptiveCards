@@ -22,6 +22,9 @@ import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.DateInput;
 import io.adaptivecards.objectmodel.HostConfig;
+import io.adaptivecards.renderer.inputhandler.validation.IInputValidator;
+import io.adaptivecards.renderer.inputhandler.validation.TextInputRequiredValidator;
+import io.adaptivecards.renderer.inputhandler.validation.TextInputValidator;
 import io.adaptivecards.renderer.readonly.RendererUtil;
 
 import java.text.DateFormat;
@@ -47,6 +50,27 @@ public class DateInputRenderer extends TextInputRenderer
         }
 
         return s_instance;
+    }
+
+    public IInputValidator generateValidator(DateInput dateInput)
+    {
+        IInputValidator textInputValidator = new TextInputValidator();
+
+        if (dateInput.GetIsRequired())
+        {
+            textInputValidator = new TextInputRequiredValidator(textInputValidator);
+        }
+
+        return textInputValidator;
+    }
+
+    public boolean requiresValidation(DateInput dateInput)
+    {
+        boolean requiresValidation = false;
+
+        requiresValidation = dateInput.GetIsRequired();
+
+        return requiresValidation;
     }
 
     @Override
@@ -83,6 +107,13 @@ public class DateInputRenderer extends TextInputRenderer
 
         String dateString = DateFormat.getDateInstance().format(RendererUtil.getDate(dateInput.GetValue()).getTime());
 
+        boolean requiresValidation = requiresValidation(dateInput);
+        IInputValidator inputValidator = null;
+        if (requiresValidation)
+        {
+            inputValidator = generateValidator(dateInput);
+        }
+
         TagContent tagContent = new TagContent(dateInput, dateInputHandler, separator, viewGroup);
         EditText editText = renderInternal(
                 renderedCard,
@@ -93,7 +124,10 @@ public class DateInputRenderer extends TextInputRenderer
                 dateInput.GetPlaceholder(),
                 dateInputHandler,
                 hostConfig,
-                tagContent);
+                tagContent,
+                renderArgs,
+                requiresValidation,
+                inputValidator);
         editText.setRawInputType(TYPE_NULL);
         editText.setFocusable(false);
         editText.setOnClickListener(new View.OnClickListener()

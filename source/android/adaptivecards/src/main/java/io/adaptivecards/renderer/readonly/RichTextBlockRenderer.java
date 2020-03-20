@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseCardElement;
+import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.Inline;
@@ -71,6 +72,33 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
         private BaseActionElementRenderer.SelectActionOnClickListener m_actionListener;
     }
 
+    public static SpannableStringBuilder setColor(SpannableStringBuilder paragraph,
+                                                  int spanStart,
+                                                  int spanEnd,
+                                                  ForegroundColor textColor,
+                                                  boolean isSubtle,
+                                                  HostConfig hostConfig,
+                                                  RenderArgs renderArgs)
+    {
+        int color = getColor(TextRendererUtil.getTextColor(textColor, hostConfig, isSubtle, renderArgs.getContainerStyle()));
+        paragraph.setSpan(new ForegroundColorSpan(color), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        return paragraph;
+    }
+
+    public static TextRun castInlineToTextRun(Inline inline)
+    {
+        TextRun textRun = null;
+        if (inline instanceof TextRun)
+        {
+            textRun = (TextRun) inline;
+        }
+        else if ((textRun = TextRun.dynamic_cast(inline)) == null)
+        {
+            throw new InternalError("Unable to convert BaseCardElement to TextBlock object model.");
+        }
+        return textRun;
+    }
+
     private SpannableStringBuilder buildSpannableParagraph(
                 RenderedAdaptiveCard renderedCard,
                 InlineVector inlines,
@@ -85,15 +113,7 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
             Inline inline = inlines.get(i);
             if(inline.GetInlineType() == InlineElementType.TextRun)
             {
-                TextRun textRun = null;
-                if (inline instanceof TextRun)
-                {
-                    textRun = (TextRun) inline;
-                }
-                else if ((textRun = TextRun.dynamic_cast(inline)) == null)
-                {
-                    throw new InternalError("Unable to convert BaseCardElement to TextBlock object model.");
-                }
+                TextRun textRun = RichTextBlockRenderer.castInlineToTextRun(inline);
 
                 DateTimeParser parser = new DateTimeParser(textRun.GetLanguage());
                 String textWithFormattedDates = parser.GenerateString(textRun.GetTextForDateParsing());
@@ -104,8 +124,7 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
                 int spanStart = lastStringLength;
                 int spanEnd = lastStringLength + text.length();
 
-                int color = getColor(TextRendererUtil.getTextColor(textRun.GetTextColor(), hostConfig, textRun.GetIsSubtle(), renderArgs.getContainerStyle()));
-                paragraph.setSpan(new ForegroundColorSpan(color), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                paragraph = RichTextBlockRenderer.setColor(paragraph, spanStart, spanEnd, textRun.GetTextColor(), textRun.GetIsSubtle(), hostConfig, renderArgs);
 
                 if (textRun.GetHighlight())
                 {

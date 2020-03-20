@@ -11,13 +11,17 @@ import io.adaptivecards.renderer.TagContent;
 * */
 public class StretchableElementLayout extends LinearLayout
 {
-    public StretchableElementLayout(Context context) {
+    public StretchableElementLayout(Context context, boolean mustStretch) {
         super(context);
-        setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+
+        if (mustStretch)
+        {
+            setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT, 1));
+        }
     }
 
-    public StretchableElementLayout(Context context, TagContent tag) {
-        this(context);
+    public StretchableElementLayout(Context context, TagContent tag, boolean mustStretch) {
+        this(context, mustStretch);
         setTag(tag);
     }
 

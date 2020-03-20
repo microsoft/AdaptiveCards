@@ -10,12 +10,14 @@ public abstract class InputRequiredValidator implements IInputValidator
      */
     public abstract boolean compliesRequired();
 
-    public InputRequiredValidator(boolean isRequired) {
+    public InputRequiredValidator(boolean isRequired)
+    {
         m_isRequired = isRequired;
     }
 
     @Override
-    public boolean isValid() {
+    public boolean isValid()
+    {
         if (!m_isRequired)
         {
             return true;

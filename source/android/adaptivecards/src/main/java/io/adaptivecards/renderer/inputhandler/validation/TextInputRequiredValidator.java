@@ -2,24 +2,23 @@ package io.adaptivecards.renderer.inputhandler.validation;
 
 import android.widget.EditText;
 
-public class TextInputRequiredValidator extends InputRequiredValidator
+public class TextInputRequiredValidator extends ActualValidator
 {
-    public TextInputRequiredValidator(boolean isRequired) {
-        super(isRequired);
-    }
-
-    public TextInputRequiredValidator(boolean isRequired, EditText editText)
+    public TextInputRequiredValidator(IInputValidator inputValidator)
     {
-        super(isRequired);
-        m_editText = editText;
+        super(inputValidator);
     }
 
     @Override
-    public boolean compliesRequired()
+    public boolean isValid()
     {
-        String text = m_editText.getText().toString();
-        return !(text.trim().isEmpty());
+        return compliesRequired() && m_inputValidator.isValid();
     }
 
-    private EditText m_editText;
+    public boolean compliesRequired()
+    {
+        EditText editText = (EditText)m_inputValidator.getViewsForValidation().get(0);
+        String text = editText.getText().toString();
+        return !(text.trim().isEmpty());
+    }
 }

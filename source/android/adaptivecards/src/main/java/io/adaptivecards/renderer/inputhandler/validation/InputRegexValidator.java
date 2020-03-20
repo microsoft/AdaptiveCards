@@ -1,6 +1,6 @@
 package io.adaptivecards.renderer.inputhandler.validation;
 
-public abstract class InputRegexValidator extends InputValidator
+public abstract class InputRegexValidator extends ActualValidator
 {
     public InputRegexValidator(IInputValidator inputValidator) {
         super(inputValidator);
@@ -11,7 +11,6 @@ public abstract class InputRegexValidator extends InputValidator
     {
         return super.isValid() && fulfillsRegex();
     }
-
 
     public abstract boolean fulfillsRegex();
 }

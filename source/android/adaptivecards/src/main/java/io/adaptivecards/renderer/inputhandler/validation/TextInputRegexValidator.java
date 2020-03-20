@@ -5,25 +5,30 @@ import android.widget.EditText;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class TextInputRegexValidator extends InputRegexValidator
-{
-    public TextInputRegexValidator(IInputValidator inputValidator) {
+public class TextInputRegexValidator extends ActualValidator
+    {
+    public TextInputRegexValidator(IInputValidator inputValidator)
+    {
         super(inputValidator);
     }
 
-    public TextInputRegexValidator(IInputValidator inputValidator, EditText editText, String regex)
+    public TextInputRegexValidator(IInputValidator inputValidator, String regex)
     {
-        super(inputValidator);
-        m_editText = editText;
+        this(inputValidator);
         m_regex = regex;
     }
 
     @Override
-    public boolean fulfillsRegex()
+    public boolean isValid()
     {
-        return Pattern.matches(m_regex, m_editText.getText());
+        return fulfillsRegex() && m_inputValidator.isValid();
     }
 
-    private EditText m_editText;
+    public boolean fulfillsRegex()
+    {
+        EditText editText = (EditText)m_inputValidator.getViewsForValidation().get(0);
+        return Pattern.matches(m_regex, editText.getText());
+    }
+
     private String m_regex;
 }

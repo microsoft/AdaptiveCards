@@ -20,6 +20,10 @@ import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.NumberInput;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.renderer.inputhandler.TextInputHandler;
+import io.adaptivecards.renderer.inputhandler.validation.IInputValidator;
+import io.adaptivecards.renderer.inputhandler.validation.TextInputRangeValidator;
+import io.adaptivecards.renderer.inputhandler.validation.TextInputRequiredValidator;
+import io.adaptivecards.renderer.inputhandler.validation.TextInputValidator;
 
 import java.util.Vector;
 
@@ -37,6 +41,62 @@ public class NumberInputRenderer extends TextInputRenderer
         }
 
         return s_instance;
+    }
+
+    private class NumberInputRangeValidator extends TextInputRangeValidator
+    {
+        public NumberInputRangeValidator(IInputValidator inputValidator, Object min, Object max) {
+            super(inputValidator, min, max);
+        }
+
+        @Override
+        public boolean isInRange(String value, Object min, Object max)
+        {
+            try
+            {
+                Integer intValue = Integer.parseInt(value);
+                return (((int)min <= intValue) && (intValue <= (int)max));
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+    }
+
+    public boolean requiresValidation(NumberInput numberInput)
+    {
+        boolean requiresValidation = numberInput.GetIsRequired();
+
+        if (numberInput.GetMin() != Integer.MIN_VALUE)
+        {
+            requiresValidation = true;
+        }
+
+        if (numberInput.GetMax() != Integer.MAX_VALUE)
+        {
+            requiresValidation = true;
+        }
+
+        return requiresValidation;
+    }
+
+    public IInputValidator generateValidator(NumberInput numberInput)
+    {
+        IInputValidator inputValidator = new TextInputValidator();
+
+        if (numberInput.GetIsRequired())
+        {
+            inputValidator = new TextInputRequiredValidator(inputValidator);
+        }
+
+        int min = numberInput.GetMin(), max = numberInput.GetMax();
+        if (min != Integer.MIN_VALUE || max != Integer.MAX_VALUE)
+        {
+            inputValidator = new NumberInputRangeValidator(inputValidator, min, max);
+        }
+
+        return inputValidator;
     }
 
     @Override
@@ -69,6 +129,14 @@ public class NumberInputRenderer extends TextInputRenderer
 
         TextInputHandler numberInputHandler = new TextInputHandler(numberInput);
         TagContent tagContent = new TagContent(numberInput, numberInputHandler, separator, viewGroup);
+
+        boolean requiresValidation = requiresValidation(numberInput);
+        IInputValidator inputValidator = null;
+        if (requiresValidation)
+        {
+            inputValidator = generateValidator(numberInput);
+        }
+
         EditText editText = renderInternal(
                 renderedCard,
                 context,
@@ -78,7 +146,11 @@ public class NumberInputRenderer extends TextInputRenderer
                 String.valueOf(numberInput.GetPlaceholder()),
                 numberInputHandler,
                 hostConfig,
-                tagContent);
+                tagContent,
+                renderArgs,
+                requiresValidation,
+                inputValidator);
+
         editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
         editText.setTag(tagContent);
