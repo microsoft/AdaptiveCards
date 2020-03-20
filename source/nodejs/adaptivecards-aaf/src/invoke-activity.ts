@@ -21,7 +21,8 @@ export interface InvokeActivity {
             id?: string,
             verb: string,
             data?: object
-        }
+        },
+        magicCode?: string
     },
     relatesTo?: string
 }

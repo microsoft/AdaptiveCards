@@ -90,7 +90,7 @@ export class AdaptiveAppletCard extends Adaptive.AdaptiveCard {
     static readonly autoRefreshProperty = new Adaptive.SerializableObjectProperty(Adaptive.Versions.v1_0, "autoRefresh", AutoRefreshDefinition, true);
 
     @Adaptive.property(AdaptiveAppletCard.appIdProperty)
-    appId?: string;
+    appId: string;
 
     @Adaptive.property(AdaptiveAppletCard.autoRefreshProperty)
     get autoRefresh(): AutoRefreshDefinition | undefined {
@@ -113,161 +113,315 @@ export class AdaptiveAppletCard extends Adaptive.AdaptiveCard {
 }
 
 export class AdaptiveApplet {
+    private static _elementsRegistry = new Adaptive.CardObjectRegistry<Adaptive.CardElement>();
+    private static _actionsRegistry = new Adaptive.CardObjectRegistry<Adaptive.Action>();
+
     static maximumRequestAttempts: number = 3;
     static defaultTimeBetweenAttempts: number = 3000; // 3 seconds
     static authPromptWidth: number = 400;
     static authPromptHeight: number = 600;
 
-    private _card: AdaptiveAppletCard | undefined;
+    static initialize() {
+        Adaptive.GlobalRegistry.populateWithDefaultElements(AdaptiveApplet._elementsRegistry);
+        Adaptive.GlobalRegistry.populateWithDefaultActions(AdaptiveApplet._actionsRegistry);
+
+        AdaptiveApplet._actionsRegistry.unregister("Action.Submit");
+        AdaptiveApplet._actionsRegistry.register("Action.Execute", ExecuteAction, Adaptive.Versions.v1_2);
+    }
+
+    private _card?: AdaptiveAppletCard;
     private _cardPayload: any;
     private _cardData: any;
 
-    private createActivityRequest(appId: string, action: ExecuteAction, context: ActivityInvocationContext): ActivityRequest | undefined {
-        let request: ActivityRequest = {
-            context: context,
-            activity: {
-                type: "invoke",
-                name: "adaptiveCard/action",
-                appId: appId,
-                localTimezone: "",
-                localTimestamp: "",
-                value: {
-                    action: {
-                        type: "Action.Execute",
-                        id: action.id,
-                        verb: action.verb,
-                        data: action.data
-                    }
-                }
-            },
-            attemptNumber: 0
-        };
+    private displayCard(card: Adaptive.AdaptiveCard) {
+        if (card.renderedElement) {
+            while (this.renderedElement.firstChild) {
+                this.renderedElement.removeChild(this.renderedElement.firstChild);
+            }
 
-        let cancel = this.onPrepareActivityRequest ? !this.onPrepareActivityRequest(this, action, request) : false;
-
-        return cancel ? undefined : request;
+            this.renderedElement.appendChild(card.renderedElement);
+        }
+        else {
+            throw new Error("displayCard: undefined card.");
+        }
     }
 
-    private async internalExecuteActionAsync(appId: string, action: Adaptive.Action, context: ActivityInvocationContext) {
-        if (action instanceof ExecuteAction && this.channelAdapter) {
-            let request = this.createActivityRequest(appId, action, context);
-
-            if (request) {
-                let overlay = this.createProgressOverlay(context);
-
-                this.renderedElement.appendChild(overlay);
-
-                let done = false;
-
-                while (!done) {
-                    let response: ActivityResponse | undefined = undefined;
-
-                    console.log("Sending activity request to channel (attempt " + (request.attemptNumber + 1) + ")");
-
-                    try {
-                        response = await this.channelAdapter.sendRequestAsync(request);
-                    }
-                    catch (error) {
-                        console.log("Activity request failed: " + error);
-
-                        this.renderedElement.removeChild(overlay);
-
-                        done = true;
-
-                        alert("Something went wrong: " + error);
-                    }
-
-                    if (response) {
-                        switch (response.status) {
-                            case ActivityStatus.Success:
-                                console.log("Activity request succeeded in " + (request.attemptNumber + 1) + " attempt(s)");
-
-                                this.renderedElement.removeChild(overlay);
-
-                                let parsedResult: any = undefined;
-
-                                try {
-                                    parsedResult = JSON.parse(response.content);
-                                }
-                                catch {
-                                    parsedResult = response.content;
-                                }
-
-                                if (typeof parsedResult === "string") {
-                                    alert(parsedResult);
-                                }
-                                else if (typeof parsedResult === "object") {
-                                    switch (parsedResult["type"]) {
-                                        case "AdaptiveCard":
-                                            this.setCard(parsedResult);
-                                            break;
-                                        case "Activity.InvocationError.Unauthorized":
-                                            let loginUrl: URL;
-
-                                            try {
-                                                loginUrl = new URL(parsedResult["loginUrl"]);
-                                            }
-                                            catch (e) {
-                                                console.error("Invalid loginUrl: " + parsedResult["loginUrl"]);
-
-                                                throw e;
-                                            }
-
-                                            console.log("Login required at " + loginUrl.toString());
-
-                                            let left = window.screenX + (window.outerWidth - AdaptiveApplet.authPromptWidth) / 2;
-                                            let top = window.screenY + (window.outerHeight - AdaptiveApplet.authPromptHeight) / 2;
-
-                                            // scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
-                                            window.open(loginUrl.toString(), "Login", `width=${AdaptiveApplet.authPromptWidth},height=${AdaptiveApplet.authPromptHeight},left=${left},top=${top}`);
-
-                                            break;
-                                        default:
-                                            throw new Error("Action.Execute result is of unsupported type (" + typeof parsedResult + ")");
-                                    }                                    
-                                }
-                                else {
-                                    throw new Error("Action.Execute result is of unsupported type (" + typeof parsedResult + ")");
-                                }
-
-                                done = true;
-
-                                break;
-                            case ActivityStatus.Failure:
-                            default:
-                                let retryIn: number = this.onActivityRequestCompleted ? this.onActivityRequestCompleted(this, response) : AdaptiveApplet.defaultTimeBetweenAttempts;
-
-                                if (retryIn >= 0 && (request.attemptNumber + 1) < AdaptiveApplet.maximumRequestAttempts) {
-                                    console.log("Activity request failed. Retrying in " + retryIn + "ms");
-
-                                    request.attemptNumber++;
-
-                                    await new Promise(
-                                        (resolve, reject) => {
-                                            window.setTimeout(
-                                                () => { resolve(); },
-                                                retryIn
-                                            )
-                                        });
-                                }
-                                else {
-                                    console.log("Activity request failed. Giving up after " + (request.attemptNumber + 1) + " attempt(s)");
-
-                                    this.renderedElement.removeChild(overlay);
-
-                                    done = true;
-
-                                    alert(response.content);
-                                }
-
-                                break;
+    private createActivityRequest(action: ExecuteAction, context: ActivityInvocationContext): ActivityRequest | undefined {
+        if (this.card) {
+            let request: ActivityRequest = {
+                context: context,
+                activity: {
+                    type: "invoke",
+                    name: "adaptiveCard/action",
+                    appId: this.card.appId,
+                    localTimezone: "",
+                    localTimestamp: "",
+                    value: {
+                        action: {
+                            type: "Action.Execute",
+                            id: action.id,
+                            verb: action.verb,
+                            data: action.data
                         }
                     }
+                },
+                attemptNumber: 0
+            };
+
+            let cancel = this.onPrepareActivityRequest ? !this.onPrepareActivityRequest(this, action, request) : false;
+
+            return cancel ? undefined : request;
+        }
+        else {
+            throw new Error("createActivityRequest: no card has been set.");
+        }
+    }
+
+    private createMagicCodeInputCard(attemptNumber: number): Adaptive.AdaptiveCard {
+        let payload = {
+            type: "AdaptiveCard",
+            version: "1.0",
+            body: [
+                {
+                    type: "TextBlock",
+                    color: "attention",
+                    text: attemptNumber === 0 ? undefined : "That didn't work... let's try again.",
+                    wrap: true,
+                    horizontalAlignment: "center"
+                },
+                {
+                    type: "TextBlock",
+                    text: "Please login in the popup. You will obtain a magic code. Paste that code below and select \"Submit\"",
+                    wrap: true,
+                    horizontalAlignment: "center"
+                },
+                {
+                    type: "Input.Text",
+                    id: "magicCode",
+                    placeholder: "Enter magic code"
+                },
+                {
+                    type: "ActionSet",
+                    horizontalAlignment: "center",
+                    actions: [
+                        {
+                            type: "Action.Submit",
+                            id: "submitMagicCode",
+                            title: "Submit"
+                        },
+                        {
+                            type: "Action.Submit",
+                            id: "cancel",
+                            title: "Cancel"
+                        },
+                        {
+                            type: "Action.Submit",
+                            id: "wontWork",
+                            title: "This won't work"
+                        }
+                    ]
                 }
+            ]
+        };
+
+        let card = new Adaptive.AdaptiveCard();
+        card.parse(payload);
+
+        return card;
+    }
+
+    private internalExecuteAction(action: Adaptive.Action, context: ActivityInvocationContext) {
+        if (this.channelAdapter) {
+            if (action instanceof ExecuteAction) {
+                let request = this.createActivityRequest(action, context);
+
+                if (request) {
+                    this.internalSendActivityRequestAsync(request);
+                }
+            }
+            else {
+                throw new Error("internalExecuteAction: Unsupported action type.");
             }
         }
         else {
-            throw new Error("No channel adapter set.");
+            throw new Error("internalExecuteAction: No channel adapter set.");
+        }
+    }
+
+    private async internalSendActivityRequestAsync(request: ActivityRequest) {
+        if (!this.channelAdapter) {
+            throw new Error("internalSendActivityRequestAsync: channelAdapter is not set.")
+        }
+
+        let overlay = this.createProgressOverlay(request.context);
+
+        this.renderedElement.appendChild(overlay);
+
+        let done = false;
+
+        while (!done) {
+            let response: ActivityResponse | undefined = undefined;
+
+            if (request.attemptNumber === 0) {
+                console.log("Sending activity request to channel (attempt " + (request.attemptNumber + 1) + ")");
+            }
+            else {
+                console.log("Re-sending activity request to channel (attempt " + (request.attemptNumber + 1) + ")");
+            }
+
+            try {
+                response = await this.channelAdapter.sendRequestAsync(request);
+            }
+            catch (error) {
+                console.error("Activity request failed: " + error);
+
+                this.renderedElement.removeChild(overlay);
+                
+                done = true;
+
+                alert("Something went wrong: " + error);
+            }
+
+            if (response) {
+                switch (response.status) {
+                    case ActivityStatus.Success:
+                        this.renderedElement.removeChild(overlay);
+                
+                        let parsedResult: any = undefined;
+
+                        try {
+                            parsedResult = JSON.parse(response.content);
+                        }
+                        catch {
+                            parsedResult = response.content;
+                        }
+
+                        if (typeof parsedResult === "string") {
+                            console.log("The activity request returned a string after " + (request.attemptNumber + 1) + " attempt(s).");
+
+                            alert(parsedResult);
+                        }
+                        else if (typeof parsedResult === "object") {
+                            switch (parsedResult["type"]) {
+                                case "AdaptiveCard":
+                                    console.log("The activity request returned an Adaptive Card after " + (request.attemptNumber + 1) + " attempt(s).");
+
+                                    this.setCard(parsedResult);
+
+                                    break;
+                                case "Activity.InvocationError.Unauthorized":
+                                    console.log("The activity request returned Activity.InvocationError.Unauthorized after " + (request.attemptNumber + 1) + " attempt(s).");
+
+                                    if ((request.attemptNumber + 1) <= AdaptiveApplet.maximumRequestAttempts) {
+                                        let loginUrl: URL;
+
+                                        try {
+                                            loginUrl = new URL(parsedResult["loginUrl"]);
+                                        }
+                                        catch (e) {
+                                            console.error("Invalid loginUrl: " + parsedResult["loginUrl"]);
+
+                                            throw e;
+                                        }
+
+                                        console.log("Login required at " + loginUrl.toString());
+
+                                        let magicCodeInputCard = this.createMagicCodeInputCard(request.attemptNumber);
+                                        magicCodeInputCard.render();
+                                        magicCodeInputCard.onExecuteAction = (submitMagicCodeAction: Adaptive.Action) => {
+                                            if (this.card && submitMagicCodeAction instanceof Adaptive.SubmitAction) {
+                                                switch (submitMagicCodeAction.id) {
+                                                    case "submitMagicCode":
+                                                        let magicCode: string | undefined = undefined;
+
+                                                        if (submitMagicCodeAction.data && typeof (<any>submitMagicCodeAction.data)["magicCode"] === "string") {
+                                                            magicCode = (<any>submitMagicCodeAction.data)["magicCode"];
+                                                        }
+
+                                                        if (magicCode) {
+                                                            this.displayCard(this.card);
+
+                                                            request.activity.value.magicCode = magicCode;
+                                                            request.attemptNumber++;
+
+                                                            this.internalSendActivityRequestAsync(request);
+                                                        }
+                                                        else {
+                                                            alert("Please enter the magic code you received.");
+                                                        }
+
+                                                        break;
+                                                    case "cancel":
+                                                        console.warn("Authentication cancelled by user.");
+
+                                                        this.displayCard(this.card);
+
+                                                        break;
+                                                    default:
+                                                        console.error("Unespected action taken from magic code input card (id = " + submitMagicCodeAction.id + ")");
+
+                                                        alert("Something went wrong. This action can't be handled.");
+
+                                                        break;
+                                                }
+                                            }
+                                        }
+
+                                        this.displayCard(magicCodeInputCard);
+
+                                        let left = window.screenX + (window.outerWidth - AdaptiveApplet.authPromptWidth) / 2;
+                                        let top = window.screenY + (window.outerHeight - AdaptiveApplet.authPromptHeight) / 2;
+
+                                        window.open(loginUrl.toString(), "Login", `width=${AdaptiveApplet.authPromptWidth},height=${AdaptiveApplet.authPromptHeight},left=${left},top=${top}`);
+                                    }
+                                    else {
+                                        console.error("Authentication failed. Giving up after " + (request.attemptNumber + 1) + " attempt(s)");
+
+                                        alert("Authentication failed.");
+                                    }
+
+                                    break;
+                                default:
+                                    throw new Error("internalSendActivityRequestAsync: Action.Execute result is of unsupported type (" + typeof parsedResult + ")");
+                            }                                    
+                        }
+                        else {
+                            throw new Error("internalSendActivityRequestAsync: Action.Execute result is of unsupported type (" + typeof parsedResult + ")");
+                        }
+
+                        done = true;
+
+                        break;
+                    case ActivityStatus.Failure:
+                    default:
+                        let retryIn: number = this.onActivityRequestCompleted ? this.onActivityRequestCompleted(this, response) : AdaptiveApplet.defaultTimeBetweenAttempts;
+
+                        if (retryIn >= 0 && (request.attemptNumber + 1) < AdaptiveApplet.maximumRequestAttempts) {
+                            console.warn("Activity request failed. Retrying in " + retryIn + "ms");
+
+                            request.attemptNumber++;
+
+                            await new Promise(
+                                (resolve, reject) => {
+                                    window.setTimeout(
+                                        () => { resolve(); },
+                                        retryIn
+                                    )
+                                });
+                        }
+                        else {
+                            console.error("Activity request failed. Giving up after " + (request.attemptNumber + 1) + " attempt(s)");
+
+                            this.renderedElement.removeChild(overlay);
+
+                            done = true;
+
+                            alert(response.content);
+                        }
+
+                        break;
+                }
+            }
         }
     }
 
@@ -328,6 +482,10 @@ export class AdaptiveApplet {
             try {
                 let card = new AdaptiveAppletCard();
 
+                let serializationContext = new Adaptive.SerializationContext();
+                serializationContext.setElementRegistry(AdaptiveApplet._elementsRegistry);
+                serializationContext.setActionRegistry(AdaptiveApplet._actionsRegistry);
+
                 if (this._cardData) {
                     let evaluationContext = new Templating.EvaluationContext();
                     evaluationContext.$root = this._cardData;
@@ -335,10 +493,10 @@ export class AdaptiveApplet {
                     let template = new Templating.Template(this._cardPayload)
                     let expandedCardPayload = template.expand(evaluationContext);
 
-                    card.parse(expandedCardPayload);
+                    card.parse(expandedCardPayload, serializationContext);
                 }
                 else {
-                    card.parse(this._cardPayload);
+                    card.parse(this._cardPayload, serializationContext);
                 }
 
                 if (!card.appId) {
@@ -350,24 +508,20 @@ export class AdaptiveApplet {
                 if (doChangeCard) {
                     this._card = card;
                     this._card.onExecuteAction = (action: Adaptive.Action) => {
-                        this.internalExecuteActionAsync(<string>card.appId, action, ActivityInvocationContext.UserInteraction);
-                    }
-
-                    while (this.renderedElement.firstChild) {
-                        this.renderedElement.removeChild(this.renderedElement.firstChild);
+                        this.internalExecuteAction(action, ActivityInvocationContext.UserInteraction);
                     }
 
                     this._card.render();
 
                     if (this._card.renderedElement) {
-                        this.renderedElement.appendChild(this._card.renderedElement)
+                        this.displayCard(this._card);
 
                         if (this.onCardChanged) {
                             this.onCardChanged(this);
                         }
 
                         if (this._card.autoRefresh) {
-                            this.internalExecuteActionAsync(card.appId, this._card.autoRefresh.action, ActivityInvocationContext.AutoRefresh);
+                            this.internalExecuteAction(this._card.autoRefresh.action, ActivityInvocationContext.AutoRefresh);
                         }
                     }
                 }
@@ -384,9 +538,4 @@ export class AdaptiveApplet {
     }
 }
 
-function initialize() {
-    Adaptive.GlobalRegistry.actions.unregister("Action.Submit");
-    Adaptive.GlobalRegistry.actions.register("Action.Execute", ExecuteAction, Adaptive.Versions.v1_2);
-}
-
-initialize();
+AdaptiveApplet.initialize();
