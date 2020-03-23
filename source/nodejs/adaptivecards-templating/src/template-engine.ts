@@ -25,9 +25,6 @@ export class TemplateBinding {
 }
 
 class TemplatizedString {
-    private static expressionStartMarker = "${";
-    private static expressionEndMarker = "}";
-
     private _parts: Array<string | TemplateBinding> = [];
 
     static parse(s: string): string | TemplatizedString {
@@ -42,13 +39,13 @@ class TemplatizedString {
             do {
                 loop = false;
 
-                start = s.indexOf(TemplatizedString.expressionStartMarker, start);
+                start = s.indexOf(Shared.GlobalSettings.expressionStartMarker, start);
 
                 if (start >= 0) {
                     // This handles the {{...}} syntax used for DATE and TIME functions in the AC renderer
                     // Should probably be removed if we can find a way to migrate DATE and TIME to the
                     // expression language.
-                    if (start + TemplatizedString.expressionStartMarker.length < s.length && s[start + TemplatizedString.expressionStartMarker.length] === "{") {
+                    if (start + Shared.GlobalSettings.expressionStartMarker.length < s.length && s[start + Shared.GlobalSettings.expressionStartMarker.length] === "{") {
                         start += 2;
 
                         loop = true;
@@ -57,7 +54,7 @@ class TemplatizedString {
             } while (loop);
 
             if (start >= 0) {
-                let end = s.indexOf(TemplatizedString.expressionEndMarker, start);
+                let end = s.indexOf(Shared.GlobalSettings.expressionEndMarker, start);
 
                 if (end >= 0) {
                     expressionFound = true;
@@ -66,7 +63,7 @@ class TemplatizedString {
                         result._parts.push(s.substring(i, start));
                     }
 
-                    let bindngExpression = s.substring(start + TemplatizedString.expressionStartMarker.length, end);
+                    let bindngExpression = s.substring(start + Shared.GlobalSettings.expressionStartMarker.length, end);
                     let part: string | TemplateBinding;
 
                     try {
