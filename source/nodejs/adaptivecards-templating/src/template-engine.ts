@@ -1,10 +1,35 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import { Binding, ExpressionParser, EvaluationContext } from "./expression-parser";
+// import { Binding, ExpressionParser, EvaluationContext } from "./expression-parser";
 import * as Shared from "./shared";
+import * as CEL from "adaptive-expressions";
+
+export class TemplateBinding {
+    static parse(expressionString: string): TemplateBinding {
+        let expression = CEL.Expression.parse(expressionString);
+
+        // NOTE: Planned syntax ?# isn't supported yet
+        return new TemplateBinding(expressionString, expression, true /* allowNull */);
+    }
+
+    private constructor(readonly expressionString: string, private readonly expression: CEL.Expression, readonly allowNull: boolean = true) {}
+
+    evaluate(context: EvaluationContext): any {
+        let evaluationResult = this.expression.tryEvaluate(context);
+
+        if (!evaluationResult.error) {
+            return evaluationResult.value;
+        }
+
+        throw new Error(evaluationResult.error);
+    }
+}
 
 class TemplatizedString {
-    private _parts: Array<string | Binding> = [];
+    private static expressionStartMarker = "${";
+    private static expressionEndMarker = "}";
+
+    private _parts: Array<string | TemplateBinding> = [];
 
     static parse(s: string): string | TemplatizedString {
         let result = new TemplatizedString();
@@ -18,10 +43,13 @@ class TemplatizedString {
             do {
                 loop = false;
 
-                start = s.indexOf("{", start);
+                start = s.indexOf(TemplatizedString.expressionStartMarker, start);
 
                 if (start >= 0) {
-                    if (start + 1 < s.length && s[start + 1] === "{") {
+                    // This handles the {{...}} syntax used for DATE and TIME functions in the AC renderer
+                    // Should probably be removed if we can find a way to migrate DATE and TIME to the
+                    // expression language.
+                    if (start + TemplatizedString.expressionStartMarker.length < s.length && s[start + TemplatizedString.expressionStartMarker.length] === "{") {
                         start += 2;
 
                         loop = true;
@@ -30,7 +58,7 @@ class TemplatizedString {
             } while (loop);
 
             if (start >= 0) {
-                let end = s.indexOf("}", start);
+                let end = s.indexOf(TemplatizedString.expressionEndMarker, start);
 
                 if (end >= 0) {
                     expressionFound = true;
@@ -39,11 +67,11 @@ class TemplatizedString {
                         result._parts.push(s.substring(i, start));
                     }
 
-                    let bindngExpression = s.substring(start, end + 1);
-                    let part: string | Binding;
+                    let bindngExpression = s.substring(start + TemplatizedString.expressionStartMarker.length, end);
+                    let part: string | TemplateBinding;
 
                     try {
-                        part = ExpressionParser.parseBinding(bindngExpression);
+                        part = TemplateBinding.parse(bindngExpression);
                     }
                     catch (e) {
                         part = bindngExpression;
@@ -72,11 +100,11 @@ class TemplatizedString {
 
     private _shouldDropOwner: boolean = false;
 
-    private evalExpression(bindingExpression: Binding, context: EvaluationContext): any {
-        let result = bindingExpression.evaluate(context);
+    private evalExpression(binding: TemplateBinding, context: EvaluationContext): any {
+        let result = binding.evaluate(context);
 
         if (result === undefined) {
-            this._shouldDropOwner = this._shouldDropOwner || !bindingExpression.allowNull;
+            this._shouldDropOwner = this._shouldDropOwner || !binding.allowNull;
         }
 
         return result;
@@ -93,7 +121,7 @@ class TemplatizedString {
                 return this._parts[0];
             }
             else {
-                return this.evalExpression(<Binding>this._parts[0], context);
+                return this.evalExpression(<TemplateBinding>this._parts[0], context);
             }
         }
         else {
@@ -108,10 +136,10 @@ class TemplatizedString {
                     s += part;
                 }
                 else {
-                    let evaluatedPart = this.evalExpression(<Binding>part, context);
+                    let evaluatedPart = this.evalExpression(<TemplateBinding>part, context);
 
                     if (evaluatedPart === undefined) {
-                        evaluatedPart = Shared.GlobalSettings.undefinedExpressionValueSubstitutionString ? Shared.GlobalSettings.undefinedExpressionValueSubstitutionString : (<Binding>part).expressionString;
+                        evaluatedPart = Shared.GlobalSettings.undefinedExpressionValueSubstitutionString ? Shared.GlobalSettings.undefinedExpressionValueSubstitutionString : (<TemplateBinding>part).expressionString;
                     }
 
                     s += evaluatedPart;
@@ -130,6 +158,48 @@ class TemplatizedString {
 
     get shouldDropOwner(): boolean {
         return this._shouldDropOwner;
+    }
+}
+
+interface EvaluationContextState {
+    $data: any;
+    $index: any;
+}
+
+export class EvaluationContext {
+    private static readonly _reservedFields = ["$data", "$root", "$index"];
+
+    private _stateStack: EvaluationContextState[] = [];
+
+    $root: any;
+    $data: any;
+    $index: number;
+    stringProp: string = "It works";
+    numberProp: number = 53;
+    boolProp: boolean = true;
+    arrayProp: any[] = [ "abc", 25, false ];
+
+    isReservedField(name: string): boolean {
+        return EvaluationContext._reservedFields.indexOf(name) >= 0;
+    }
+
+    saveState() {
+        this._stateStack.push({ $data: this.$data, $index: this.$index });
+    }
+
+    restoreLastState() {
+        if (this._stateStack.length === 0) {
+            throw new Error("There is no evaluation context state to restore.");
+        }
+
+        let savedContext = this._stateStack.pop();
+
+        this.$data = savedContext.$data;
+        this.$index = savedContext.$index;
+    }
+
+    get currentDataContext(): any {
+        return this.$data !== undefined ? this.$data : this.$root;
     }
 }
 

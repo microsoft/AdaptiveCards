@@ -28,5 +28,8 @@
 		"webpack-cli": "^3.3.6",
 		"webpack-concat-plugin": "^3.0.0",
 		"webpack-dev-server": "^3.7.2"
+	},
+	"dependencies": {
+		"adaptive-expressions": "^4.8.0-preview"
 	}
 }
