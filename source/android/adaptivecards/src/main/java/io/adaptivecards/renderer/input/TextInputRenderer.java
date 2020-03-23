@@ -58,6 +58,7 @@ import io.adaptivecards.renderer.inputhandler.validation.TextInputValidator;
 import io.adaptivecards.renderer.layout.StretchableInputLayout;
 import io.adaptivecards.renderer.readonly.RendererUtil;
 import io.adaptivecards.renderer.readonly.RichTextBlockRenderer;
+import io.adaptivecards.renderer.readonly.TextRendererUtil;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 public class TextInputRenderer extends BaseCardElementRenderer
@@ -241,7 +242,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
 
         if (requiresValidation)
         {
-            editText = new ValidatedEditText(context, inputValidator);
+            editText = new ValidatedEditText(context, new Color(), textInputHandler, inputValidator);
             inputValidator.setViewForValidation(editText);
         }
         else
