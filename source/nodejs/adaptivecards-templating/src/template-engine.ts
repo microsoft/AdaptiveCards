@@ -170,6 +170,8 @@ export class EvaluationContext {
     $root: any;
     $data: any;
     $index: number;
+    // Below dummy propeties for testing purposes only
+    // Will be removed once https://github.com/microsoft/botbuilder-dotnet/pull/3597 is merged
     stringProp: string = "It works";
     numberProp: number = 53;
     boolProp: boolean = true;
