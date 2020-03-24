@@ -11,23 +11,21 @@ export class EvaluationContext {
     private static readonly _reservedFields = ["$data", "$root", "$index"];
 
     private _stateStack: EvaluationContextState[] = [];
+    private _$data: any;
 
     $root: any;
-    $data: any;
     $index: number;
-    // Below dummy propeties for testing purposes only
-    // Will be removed once https://github.com/microsoft/botbuilder-dotnet/pull/3597 is merged
-    stringProp: string = "It works";
-    numberProp: number = 53;
-    boolProp: boolean = true;
-    arrayProp: any[] = [ "abc", 25, false ];
 
     isReservedField(name: string): boolean {
         return EvaluationContext._reservedFields.indexOf(name) >= 0;
     }
 
     saveState() {
-        this._stateStack.push({ $data: this.$data, $index: this.$index });
+        this._stateStack.push(
+            {
+                $data: this.$data,
+                $index: this.$index
+            });
     }
 
     restoreLastState() {
@@ -41,8 +39,38 @@ export class EvaluationContext {
         this.$index = savedContext.$index;
     }
 
-    get currentDataContext(): any {
-        return this.$data !== undefined ? this.$data : this.$root;
+    get $data(): any {
+        return this._$data !== undefined ? this._$data : this.$root;
+    }
+
+    set $data(value: any) {
+        this._$data = value;
+    }
+}
+
+export class TemplateObjectMemory implements CEL.MemoryInterface {
+    private _memory: CEL.MemoryInterface;
+
+    $root: any;
+    $data: any;
+    $index: any;
+
+    constructor() {
+        this._memory = new CEL.SimpleObjectMemory(this);
+    }
+
+    getValue(path: string): any {
+        let actualPath = (path.length > 0 && path[0] !== "$") ? "$data." + path : path;
+
+        return this._memory.getValue(actualPath);
+    }
+
+    setValue(path: string, input: any) {
+        this._memory.setValue(path, input);
+    }
+
+    version(): string {
+        return this._memory.version();
     }
 }
 
@@ -101,6 +129,15 @@ export class Template {
 
     private _context: EvaluationContext;
 
+    private createEvaluationState(): TemplateObjectMemory {
+        let memory = new TemplateObjectMemory();
+        memory.$root = this._context.$root;
+        memory.$data = this._context.$data;
+        memory.$index = this._context.$index;
+
+        return memory;
+    }
+
     private expandSingleObject(node: object): any {
         let result = {};
         let keys = Object.keys(node);
@@ -142,7 +179,7 @@ export class Template {
             result = itemArray;
         }
         else if (node instanceof CEL.Expression) {
-            let evaluationResult = node.tryEvaluate(this._context);
+            let evaluationResult = node.tryEvaluate(this.createEvaluationState());
 
             if (!evaluationResult.error) {
                 result = evaluationResult.value;
@@ -156,7 +193,7 @@ export class Template {
             let when = node["$when"];
 
             if (when instanceof CEL.Expression) {
-                let evaluationResult = when.tryEvaluate(this._context);
+                let evaluationResult = when.tryEvaluate(this.createEvaluationState());
                 let whenValue: boolean = false;
                 
                 // If $when fails to evaluate or evaluates to anything but a boolean, consider it is false
@@ -171,7 +208,7 @@ export class Template {
 
                 if (dataContext !== undefined) {
                     if (dataContext instanceof CEL.Expression) {
-                        let evaluationResult = dataContext.tryEvaluate(this._context);
+                        let evaluationResult = dataContext.tryEvaluate(this.createEvaluationState());
 
                         if (!evaluationResult.error) {
                             dataContext = evaluationResult.value;
