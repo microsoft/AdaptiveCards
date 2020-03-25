@@ -335,4 +335,42 @@ public class TextInputPropertiesTest
         }
     }
 
+
+    @Test
+    public void LabelTest() throws Exception
+    {
+        {
+            final String inputTextDefaultPlaceholder = "{\"id\":\"id\",\"type\":\"Input.Text\"}\n";
+
+            TextInput textInput = TestUtil.createMockTextInput();
+            textInput.SetLabel("");
+            Assert.assertEquals(inputTextDefaultPlaceholder, textInput.Serialize());
+
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(inputTextDefaultPlaceholder), "1.0");
+            TextInput parsedTextInput = TestUtil.castToTextInput(result.GetAdaptiveCard().GetBody().get(0));
+            Assert.assertEquals("", parsedTextInput.GetLabel());
+        }
+
+        {
+            final String inputTextPlaceholderTemplate = "{\"id\":\"id\",\"label\":\"%s\",\"type\":\"Input.Text\"}\n";
+            String tests[] = {"Sample text",
+                "This is just a little bit tiny teeny bit larger than the one before this one a.k.a. index [0]",
+                "The quick brown fox jumps over the lazy dog",
+                "This is some **bold** text"};
+
+            for (int i = 0; i < tests.length; ++i)
+            {
+                String inputTextPlaceholderJson = String.format(inputTextPlaceholderTemplate, tests[i]);
+
+                TextInput textInput = TestUtil.createMockTextInput();
+                textInput.SetLabel(tests[i]);
+                Assert.assertEquals(inputTextPlaceholderJson, textInput.Serialize());
+
+                ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(inputTextPlaceholderJson), "1.0");
+                TextInput parsedTextInput = TestUtil.castToTextInput(result.GetAdaptiveCard().GetBody().get(0));
+                Assert.assertEquals(tests[i], parsedTextInput.GetLabel());
+            }
+        }
+    }
+
 }

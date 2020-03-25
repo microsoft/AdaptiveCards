@@ -1,6 +1,7 @@
 package io.adaptivecards.renderer.layout;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
@@ -14,6 +15,7 @@ public class StretchableElementLayout extends LinearLayout
     public StretchableElementLayout(Context context, boolean mustStretch) {
         super(context);
 
+        setOrientation(VERTICAL);
         if (mustStretch)
         {
             setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT, 1));

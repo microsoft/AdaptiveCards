@@ -191,6 +191,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
         SpannableStringBuilder paragraph = new SpannableStringBuilder();
         CharSequence text = RendererUtil.handleSpecialText(label);
         paragraph.append(text);
+        paragraph = RichTextBlockRenderer.setColor(paragraph, 0, text.length(), ForegroundColor.Default, false, hostConfig, renderArgs);
 
         if (isRequired)
         {
@@ -354,7 +355,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
             if (!inputLabel.isEmpty())
             {
                 View view = TextInputRenderer.RenderInputLabel(inputLabel, isRequired, context, hostConfig, renderArgs);
-                inputLayout.setInputView(view);
+                inputLayout.setLabel(view);
             }
 
             // TextInputViewGroup is only used when there's an inline action
@@ -372,7 +373,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
             if (!errorMessage.isEmpty())
             {
                 View view = TextInputRenderer.RenderErrorMessage(errorMessage, context, hostConfig, renderArgs);
-                inputLayout.setInputView(view);
+                inputLayout.setValidationLabel(view);
             }
 
             viewGroup.addView(inputLayout);
