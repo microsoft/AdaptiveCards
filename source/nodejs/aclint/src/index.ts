@@ -67,6 +67,7 @@ class TestResult
 async function testFileOrDir(fsitem : string) : Promise<TestResult[]> {
     return new Promise((resolve, reject) => {
         setImmediate(() => {
+            // determine if fsitem is a dir or a file, and test accordingly
             fs.promises.stat(fsitem).then(async (fileNode) => {
                 if (fileNode.isDirectory()) {
                     if (verbose) console.log(chalk.grey(`${fsitem} is a directory`));
@@ -76,6 +77,7 @@ async function testFileOrDir(fsitem : string) : Promise<TestResult[]> {
                     return testFile(fsitem);
                 }
             }).then((results) => {
+                // cast as TestResult[] since testFile returns a scalar
                 resolve(results as TestResult[]);
             }).catch((err) => {
                 reject(err);
@@ -93,12 +95,15 @@ async function testFileOrDir(fsitem : string) : Promise<TestResult[]> {
 async function testFile(filename : string) : Promise<TestResult> {
     return new Promise((resolve) => {
         setImmediate(() => {
+            // only test files that end in .json
             if (path.extname(filename) !== ".json") {
-                if (verbose) console.log(chalk.grey(`rejecting non-card file: ${filename}`));
+                if (verbose) console.log(chalk.grey(`skipping non-card file: ${filename}`));
                 resolve(new TestResult(filename, TestState.Skipped));
                 return;
             }
             if (verbose) console.log(chalk.grey(`Testing ${filename}`));
+
+            // load and test card
             fs.promises.readFile(filename).then((cardBuffer) => {
                 let cardJson = JSON.parse(cardBuffer.toString());
                 let testCard = new ac.AdaptiveCard();
@@ -106,6 +111,7 @@ async function testFile(filename : string) : Promise<TestResult> {
                 let validateProperties = testCard.validateProperties();
                 return validateProperties.failures;
             }).then((validationErrors) => {
+                // determine pass state from warnings (errors are caught in .catch() below)
                 let testState : TestState;
                 if (validationErrors.length === 0) {
                     testState = TestState.Passed;
@@ -128,12 +134,15 @@ async function testFile(filename : string) : Promise<TestResult> {
 async function testDir(dirname : string) : Promise<TestResult[]> {
     return new Promise((resolve, reject) => {
         setImmediate(() => {
-            if (verbose) {
-                console.log(`Testing directory: ${dirname}`);
-            }
+            if (verbose) console.log(chalk.grey(`Testing directory: ${dirname}`));
+
+            // enumerate items in the supplied directory
             fs.promises.readdir(dirname).then((currDir) => {
                 let futureResults : Promise<TestResult[]>[] = [];
-                currDir.forEach(async item => {
+
+                // for every item in the current dir
+                currDir.forEach(item => {
+                    // kick off test of item
                     let currentItem = path.join(dirname, item);
                     if (verbose) console.log(chalk.grey(currentItem));
                     futureResults.push(testFileOrDir(path.normalize(currentItem)));
@@ -148,9 +157,7 @@ async function testDir(dirname : string) : Promise<TestResult[]> {
                 results.forEach((result) => {
                     finalResults = finalResults.concat(result);
                 });
-                return finalResults;
-            }).then((results) => {
-                resolve(results);
+                resolve(finalResults);
             }).catch((err) => {
                 reject(err);
             });
@@ -166,9 +173,14 @@ async function testItemsInArgv() : Promise<TestResult[]> {
     return new Promise(resolve => {
         setImmediate(() => {
             let futureResults : Promise<TestResult[]>[] = [];
+
+            // iterate through paths passed on commandline
             argv._.forEach(fileOrPath => {
+                // and then kick off tests for same
                 futureResults.push(testFileOrDir(fileOrPath));
             });
+
+            // once all of the tests have completed, merge the results into a single array
             Promise.all(futureResults).then((results) => {
                 let finalResults : TestResult[] = [];
                 results.forEach((result) => {
@@ -187,50 +199,58 @@ async function main()
     return testItemsInArgv();
 }
 
-main().then((results) => {
-    if (results.length === 0) {
-        console.log("No test results found.");
+main().then((testResults) => {
+    if (testResults.length === 0) {
+        console.log("No files were tested.");
     }
 
-    let statsCount : number[] = [];
+    // testResultCount tracks count of results per result type
+    let testResultCount : number[] = [];
     for (let i = 0; i < TestState.__LENGTH; ++i) {
-        statsCount[i] = 0;
+        testResultCount[i] = 0;
     }
 
-    results.sort((left, right) => {
+    // sort results to put skipped/passed results at the top of output
+    testResults.sort((left, right) => {
         return left.result - right.result;
     });
-    for (let result of results) {
-        statsCount[result.result]++;
 
-        let fileString = `${iconFromTestState(result.result)} ${result.filename}`;
-        if (result.result === TestState.Passed) {
+    for (let testResult of testResults) {
+        // track result count
+        testResultCount[testResult.result]++;
+
+        let fileString = `${iconFromTestState(testResult.result)} ${testResult.filename}`;
+        if (testResult.result === TestState.Passed) {
             console.log(chalk.grey(fileString));
         } else {
             console.log(fileString);
         }
 
-        if (result.error) {
-            console.log(chalk.red(`▶\tERROR: ${result.error.message}`));
+        // print error state for failed tests
+        if (testResult.error) {
+            console.log(chalk.red(`▶\tERROR: ${testResult.error.message}`));
         }
 
-        if (result.validationErrors?.length) {
-            result.validationErrors.forEach((errorCollections) => {
+        // print any warnings associated with this result
+        if (testResult.validationErrors?.length) {
+            testResult.validationErrors.forEach((errorCollections) => {
                 errorCollections.errors.forEach((error) => {
                     console.log(chalk.yellow(`▶\twarning: ${error.message}`));
                 });
             });
         }
 
-        if (result.result !== TestState.Passed) {
+        // newline to make it easier to read non-passing tests
+        if (testResult.result !== TestState.Passed) {
             console.log();
         }
     }
 
+    // finally, print summary
     for (let i = 0; i < TestState.__LENGTH; ++i) {
-        console.log(`${TestState[i]} ${iconFromTestState(i as TestState)}:\t${statsCount[i]}`);
+        console.log(`${TestState[i]} ${iconFromTestState(i as TestState)}:\t${testResultCount[i]}`);
     }
-    console.log(`Total ⬡:\t${results.length}`);
+    console.log(`Total ⬡:\t${testResults.length}`);
 }).catch((err) => {
     console.log(chalk.red("Unhandled error: " + err));
 });
