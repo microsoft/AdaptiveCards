@@ -10,7 +10,9 @@
     d:DesignHeight="300"
     d:DesignWidth="400"
     xmlns:converters="using:AdaptiveCardVisualizer.Converters"
-    AutomationProperties.Name="{Binding Message}" >
+    AutomationProperties.Name="{Binding Message}" 
+    IsTapEnabled="True"
+    IsTabStop="True">
 
     <UserControl.Resources>
 

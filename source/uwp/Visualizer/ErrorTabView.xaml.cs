@@ -22,6 +22,12 @@ namespace AdaptiveCardVisualizer
         public ErrorTabView()
         {
             this.InitializeComponent();
+            this.Loaded += ErrorTabView_Loaded;
+        }
+
+        private void ErrorTabView_Loaded(object sender, RoutedEventArgs e)
+        {
+            Focus(FocusState.Keyboard);
         }
     }
 }
