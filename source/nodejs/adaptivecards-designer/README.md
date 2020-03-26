@@ -38,11 +38,15 @@ To load the designer component you have 2 options:
 <!-- REQUIRED: monaco-editor is required for the designer to work -->
 <script src="https://unpkg.com/monaco-editor@0.17.1/min/vs/loader.js"></script>
 
-<!-- DESIGNER OPTION A: Card Designer + Standard Hosts -->
-<script src="https://unpkg.com/adaptivecards-designer@0.7.0/dist/adaptivecards-designer.min.js"></script>
+<!-- DESIGNER OPTION A: Card Designer + Standard Hosts 
+	(replace <VERSION> with the version you want to load, or "latest" for latest)
+-->
+<script src="https://unpkg.com/adaptivecards-designer@<VERSION>/dist/adaptivecards-designer.min.js"></script>
 
-<!-- DESIGNER OPTION B: Standalone Card Designer, without standard Hosts -->
-<!--<script src="https://unpkg.com/adaptivecards-designer@0.7.0/dist/adaptivecards-designer-standalone.min.js"></script>-->
+<!-- DESIGNER OPTION B: Standalone Card Designer, without standard Hosts 
+	(replace <VERSION> with the version you want to load, or "latest" for latest)
+	<script src="https://unpkg.com/adaptivecards-designer@<VERSION>/dist/adaptivecards-designer-standalone.min.js"></script>
+-->
 
 <script type="text/javascript">
 	window.onload = function() {
@@ -50,13 +54,14 @@ To load the designer component you have 2 options:
 		let hostContainers = [];
 
 		// Optional: add the default Microsoft Host Apps (see docs below)
-		// hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
+		// hostContainers = ACDesigner.defaultMicrosoftHosts;
 		 
 		let designer = new ACDesigner.CardDesigner(hostContainers);
 
 		// The designer requires various CSS and image assets to work properly, 
 		// If you've loaded the script from a CDN it needs to know where these assets are located
-		designer.assetPath = "https://unpkg.com/adaptivecards-designer@0.7.0/dist";
+		// Use the same <VERSION> that you used above
+		designer.assetPath = "https://unpkg.com/adaptivecards-designer@<VERSION>/dist";
 
 		// Initialize monaco-editor for the JSON-editor pane. The simplest way to do this is use the code below
 		require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@0.17.1/min/vs' } });
@@ -108,7 +113,9 @@ window.onload = function() {
 	}
 
 	let hostContainers = [];
-	hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
+	
+	// Optional: add the default Microsoft Host Apps (see docs below)
+	// hostContainers = ACDesigner.defaultMicrosoftHosts;
 
 	let designer = new ACDesigner.CardDesigner(hostContainers);
 	designer.attachTo(document.getElementById("designerRootHost"));
@@ -188,16 +195,20 @@ For advanced configuration of the designer use the following APIs.
 
 ```js
 
-	/* Add the default Microsoft Host Apps 	*/ 
- 
+    // Configure toolbox titles
+    ACDesigner.Strings.toolboxes.cardEditor.title = "Custom card editor title";
+    ACDesigner.Strings.toolboxes.cardStructure.title = "Custom card structure title";
+    ACDesigner.Strings.toolboxes.dataStructure.title = "Custom data structure title";
+    ACDesigner.Strings.toolboxes.propertySheet.title = "Custom property sheet title";
+    ACDesigner.Strings.toolboxes.sampleDataEditor.title = "Custom sample data editor title";
+    ACDesigner.Strings.toolboxes.toolPalette.title = "Custom tool palette title";
+
+	/* Add a custom Host Container to the drop-down at the top */
 	hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
-	hostContainers.push(new ACDesigner.CortanaContainer("Cortana Skills", "containers/cortana-container.css"));
-	hostContainers.push(new ACDesigner.OutlookContainer("Outlook Actionable Messages", "containers/outlook-container.css"));
-	hostContainers.push(new ACDesigner.TimelineContainer("Windows Timeline", "containers/timeline-container.css"));
-	hostContainers.push(new ACDesigner.DarkTeamsContainer("Microsoft Teams - Dark", "containers/teams-container-dark.css"));
-	hostContainers.push(new ACDesigner.LightTeamsContainer("Microsoft Teams - Light", "containers/teams-container-light.css"));
-	hostContainers.push(new ACDesigner.BotFrameworkContainer("Bot Framework Other Channels (Image render)", "containers/bf-image-container.css"));
-	hostContainers.push(new ACDesigner.ToastContainer("Windows Notifications (Preview)", "containers/toast-container.css"));
+
+	/* Add the default Microsoft Host Apps
+	If you want to add the default Microsoft apps, use this const in the CardDesigner constructor */
+	let designer = new ACDesigner.CardDesigner(ACDesigner.defaultMicrosoftHosts);
 
 
 	/* Modify the toolbar */
@@ -227,5 +238,20 @@ For advanced configuration of the designer use the following APIs.
 			]
 		}
 	);
+
+	/* Modify the Element toolbox (BEFORE designer attached) */ 
+	Adaptive.AdaptiveCard.elementTypeRegistry.unregisterType("RichTextBlock");
+	ACDesigner.CardDesignerSurface.cardElementPeerRegistry.unregisterPeer(Adaptive.RichTextBlock);
+
+	/* Modify the Actions flyout (AFTER designer attached) */
+	Adaptive.AdaptiveCard.actionTypeRegistry.unregisterType("Action.ToggleVisibility");
+	ACDesigner.CardDesignerSurface.actionPeerRegistry.unregisterPeer(Adaptive.ToggleVisibilityAction);	
+
+
+	/* Try experimental preview features that are in progress */
+	ACDesigner.GlobalSettings.enableDataBindingSupport = true;
+	ACDesigner.GlobalSettings.showDataStructureTooklbox = true;
+	ACDesigner.GlobalSettings.showSampleDataEditorToolbox = true;
+	ACDesigner.GlobalSettings.showVersionPicker = true;
 };
 ```

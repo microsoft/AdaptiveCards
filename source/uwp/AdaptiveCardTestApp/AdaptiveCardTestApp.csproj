@@ -18,7 +18,7 @@
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>AdaptiveCardTestApp_TemporaryKey.pfx</PackageCertificateKeyFile>
     <RuntimeIdentifiers>win10-arm;win10-arm-aot;win10-x86;win10-x86-aot;win10-x64;win10-x64-aot</RuntimeIdentifiers>
-    <PackageCertificateThumbprint>7DF59BF73D990455B63DFF7735D301D0BB319CD2</PackageCertificateThumbprint>
+    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -170,6 +170,9 @@
     <Content Include="..\..\..\samples\v1.2\Elements\*.json">
       <Link>LinkedCards\v1.2\Elements\%(FileName)</Link>
     </Content>
+    <Content Include="..\..\..\samples\v1.3\Elements\*.json">
+      <Link>LinkedCards\v1.3\Elements\%(FileName)</Link>
+    </Content>
     <Content Include="..\..\..\samples\v1.0\Tests\*.json">
       <Link>LinkedCards\v1.0\Tests\%(FileName)</Link>
     </Content>
@@ -221,6 +224,9 @@
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="System.Private.Uri">
+      <Version>4.3.2</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

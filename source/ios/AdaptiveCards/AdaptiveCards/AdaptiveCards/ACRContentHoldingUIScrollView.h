@@ -7,6 +7,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ACRContentHoldingUIScrollView: UIScrollView
+@interface ACRContentHoldingUIScrollView : UIScrollView
+
+@property bool stretch;
+@property UIView *contentview;
+@property CGFloat contentWidth;
 
 @end

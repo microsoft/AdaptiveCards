@@ -2,10 +2,6 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.Uwp.h"
-#include <windows.foundation.h>
-#include "Enums.h"
-
 namespace AdaptiveNamespace
 {
     class DECLSPEC_UUID("CDCCC115-7C53-4A04-9F5B-754BBC00C80E") AdaptiveActionElementBase : public IUnknown

@@ -15,13 +15,16 @@ namespace AdaptiveSharedNamespace
         RichTextElementProperties(RichTextElementProperties&&) = default;
         RichTextElementProperties& operator=(const RichTextElementProperties&) = default;
         RichTextElementProperties& operator=(RichTextElementProperties&&) = default;
-        ~RichTextElementProperties() = default;
+        virtual ~RichTextElementProperties() = default;
 
         bool GetItalic() const;
         void SetItalic(const bool value);
 
         bool GetStrikethrough() const;
         void SetStrikethrough(const bool value);
+
+        bool GetUnderline() const;
+        void SetUnderline (const bool value);
 
         Json::Value SerializeToJsonValue(Json::Value& root) const override;
         void Deserialize(const ParseContext& context, const Json::Value& root) override;
@@ -30,5 +33,6 @@ namespace AdaptiveSharedNamespace
     private:
         bool m_italic;
         bool m_strikethrough;
+        bool m_underline;
     };
 }

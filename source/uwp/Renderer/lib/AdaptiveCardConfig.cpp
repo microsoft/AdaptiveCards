@@ -10,7 +10,8 @@ using namespace ABI::Windows::UI;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveCardConfig::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveCardConfig::RuntimeClassInitialize() noexcept
+    try
     {
         AdaptiveSharedNamespace::AdaptiveCardConfig cardConfig;
         return RuntimeClassInitialize(cardConfig);

@@ -9,7 +9,7 @@
 
 using namespace AdaptiveCards;
 
-@interface ACOBaseCardElement()
+@interface ACOBaseCardElement ()
 
 - (instancetype)initWithBaseCardElement:(std::shared_ptr<BaseCardElement> const &)element;
 - (std::shared_ptr<BaseCardElement>)element;

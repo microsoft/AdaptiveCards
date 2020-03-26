@@ -6,15 +6,15 @@
 //
 
 #import "ACRContainerRenderer.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
 #import "ACRColumnView.h"
+#import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACRRendererPrivate.h"
+#import "ACRViewPrivate.h"
 #import "Container.h"
 #import "SharedAdaptiveCard.h"
-#import "ACRLongPressGestureRecognizerFactory.h"
-#import "ACOHostConfigPrivate.h"
-#import "ACOBaseCardElementPrivate.h"
-#import "ACRViewPrivate.h"
-#import "Util.h"
+#import "UtiliOS.h"
 
 @implementation ACRContainerRenderer
 
@@ -30,16 +30,18 @@
 }
 
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
-          rootView:(ACRView *)rootView
-            inputs:(NSMutableArray *)inputs
-   baseCardElement:(ACOBaseCardElement *)acoElem
-        hostConfig:(ACOHostConfig *)acoConfig;
+           rootView:(ACRView *)rootView
+             inputs:(NSMutableArray *)inputs
+    baseCardElement:(ACOBaseCardElement *)acoElem
+         hostConfig:(ACOHostConfig *)acoConfig;
 {
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<Container> containerElem = std::dynamic_pointer_cast<Container>(elem);
 
     ACRColumnView *container = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)containerElem->GetStyle()
-                                                        parentStyle:[viewGroup style] hostConfig:acoConfig superview:viewGroup];
+                                                        parentStyle:[viewGroup style]
+                                                         hostConfig:acoConfig
+                                                          superview:viewGroup];
     [viewGroup addArrangedSubview:container];
 
     configBleed(rootView, elem, container, acoConfig);
@@ -59,13 +61,14 @@
           withCardElems:containerElem->GetItems()
           andHostConfig:acoConfig];
 
+    const VerticalContentAlignment adaptiveVAlignment = containerElem->GetVerticalContentAlignment();
     // Dont add the trailing space if the vertical content alignment is top/default
-    if (containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top && !(container.hasStretchableView))) {
+    if (adaptiveVAlignment == VerticalContentAlignment::Center || (adaptiveVAlignment == VerticalContentAlignment::Top && !(container.hasStretchableView))) {
         trailingBlankSpace = [container addPaddingSpace];
     }
 
     [container setClipsToBounds:TRUE];
-    
+
     if (containerElem->GetMinHeight() > 0) {
         [NSLayoutConstraint constraintWithItem:container
                                      attribute:NSLayoutAttributeHeight
@@ -73,7 +76,8 @@
                                         toItem:nil
                                      attribute:NSLayoutAttributeNotAnAttribute
                                     multiplier:1
-                                      constant:containerElem->GetMinHeight()].active = YES;
+                                      constant:containerElem->GetMinHeight()]
+            .active = YES;
     }
 
     if (leadingBlankSpace != nil && trailingBlankSpace != nil) {
@@ -83,7 +87,8 @@
                                         toItem:trailingBlankSpace
                                      attribute:NSLayoutAttributeHeight
                                     multiplier:1.0
-                                      constant:0].active = YES;
+                                      constant:0]
+            .active = YES;
     }
 
     std::shared_ptr<BaseActionElement> selectAction = containerElem->GetSelectAction();
@@ -95,6 +100,8 @@
                                                                      hostConfig:acoConfig];
 
     configVisibility(container, elem);
+
+    [container hideIfSubviewsAreAllHidden];
 
     return viewGroup;
 }

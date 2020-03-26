@@ -11,7 +11,7 @@
 
 - (void)config:(nullable NSDictionary<NSString *, id> *)attributes
 {
-    self.stackView.axis = UILayoutConstraintAxisVertical;
+    self.axis = UILayoutConstraintAxisVertical;
     [super config:attributes];
     self.isLastColumn = NO;
 }
@@ -19,7 +19,7 @@
 - (void)addArrangedSubview:(UIView *)view
 {
     // if auto, maintain content size whenever possible
-    if([self.columnWidth isEqualToString:@"auto"]){        
+    if ([self.columnWidth isEqualToString:@"auto"]) {
 
         NSInteger priority = ACRColumnWidthPriorityAuto;
         if (self.isLastColumn) {
@@ -28,16 +28,43 @@
 
         [view setContentHuggingPriority:priority forAxis:UILayoutConstraintAxisHorizontal];
         [view setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-      // if columnWidth is set to stretch or number, allow column to fill the available space
-    } else if([self.columnWidth isEqualToString:@"stretch"]){ 
+        // if columnWidth is set to stretch or number, allow column to fill the available space
+    } else if ([self.columnWidth isEqualToString:@"stretch"]) {
         [view setContentHuggingPriority:ACRColumnWidthPriorityStretch forAxis:UILayoutConstraintAxisHorizontal];
         [view setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     } else {
         [view setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-        [view setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+        [view setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     }
 
-    [self.stackView addArrangedSubview:view];
+    [super addArrangedSubview:view];
+
+    [self increaseIntrinsicContentSize:view];
+}
+
+- (void)increaseIntrinsicContentSize:(UIView *)view
+{
+    if (view.isHidden) {
+        return;
+    }
+    CGSize size = [view intrinsicContentSize];
+    if (size.width >= 0 and size.height >= 0) {
+        self.combinedContentSize = CGSizeMake(MAX(self.combinedContentSize.width, size.width), self.combinedContentSize.height + size.height);
+    }
+}
+
+- (void)decreaseIntrinsicContentSize:(UIView *)view
+{
+    CGFloat maxWidthExcludingTheView = [self getMaxWidthOfSubviewsAfterExcluding:view];
+    CGSize size = [view intrinsicContentSize];
+    // there are three possible cases
+    // 1. possibleMaxWidthExcludingTheView is equal to the height of the view
+    // 2. possibleMaxWidthExcludingTheView is bigger than the the height of the view
+    // 3. possibleMaxWidthExcludingTheView is smaller than the the height of the view
+    // only #3 changes the current height, when the view's height is no longer in considreation
+    // for dimension
+    CGFloat newWidth = (maxWidthExcludingTheView < size.width) ? maxWidthExcludingTheView : self.combinedContentSize.width;
+    self.combinedContentSize = CGSizeMake(newWidth, self.combinedContentSize.height - size.height);
 }
 
 - (UIView *)addPaddingSpace

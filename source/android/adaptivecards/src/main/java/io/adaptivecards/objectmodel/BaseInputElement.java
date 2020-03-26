@@ -58,6 +58,14 @@ public class BaseInputElement extends BaseCardElement {
     AdaptiveCardObjectModelJNI.BaseInputElement_SetIsRequired(swigCPtr, this, isRequired);
   }
 
+  public String GetErrorMessage() {
+    return AdaptiveCardObjectModelJNI.BaseInputElement_GetErrorMessage(swigCPtr, this);
+  }
+
+  public void SetErrorMessage(String errorMessage) {
+    AdaptiveCardObjectModelJNI.BaseInputElement_SetErrorMessage(swigCPtr, this, errorMessage);
+  }
+
   public JsonValue SerializeToJsonValue() {
     return new JsonValue(AdaptiveCardObjectModelJNI.BaseInputElement_SerializeToJsonValue(swigCPtr, this), true);
   }

@@ -21,14 +21,16 @@ namespace AdaptiveNamespace
         m_items = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
     }
 
-    HRESULT AdaptiveColumn::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveColumn::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::Column> column = std::make_shared<AdaptiveSharedNamespace::Column>();
         return RuntimeClassInitialize(column);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveColumn::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Column>& sharedColumn) try
+    HRESULT AdaptiveColumn::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Column>& sharedColumn)
+    try
     {
         GenerateContainedElementsProjection(sharedColumn->GetItems(), m_items.Get());
         GenerateActionProjection(sharedColumn->GetSelectAction(), &m_selectAction);
@@ -157,15 +159,24 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveColumn::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
+    HRESULT AdaptiveColumn::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::Column> column = std::make_shared<AdaptiveSharedNamespace::Column>();
         RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(column)));
 
         column->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
         column->SetVerticalContentAlignment(static_cast<AdaptiveSharedNamespace::VerticalContentAlignment>(m_verticalAlignment));
-        column->SetWidth(HStringToUTF8(m_width.Get()));
-        column->SetPixelWidth(m_pixelWidth);
+
+        if (m_pixelWidth)
+        {
+            column->SetPixelWidth(m_pixelWidth);
+        }
+        else
+        {
+            column->SetWidth(HStringToUTF8(m_width.Get()));
+        }
+
         column->SetMinHeight(m_minHeight);
         column->SetBleed(m_bleed);
 

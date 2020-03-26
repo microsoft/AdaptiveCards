@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.Uwp.h"
-#include "Enums.h"
 #include "TextRun.h"
 #include "AdaptiveTextElement.h"
 
@@ -35,6 +33,9 @@ namespace AdaptiveNamespace
 
         IFACEMETHODIMP get_Strikethrough(_Out_ boolean* strikethrough);
         IFACEMETHODIMP put_Strikethrough(boolean strikethrough);
+
+        IFACEMETHODIMP get_Underline(_Out_ boolean* underline);
+        IFACEMETHODIMP put_Underline(boolean underline);
 
         // IAdaptiveTextElement
         IFACEMETHODIMP get_Text(_Outptr_ HSTRING* text) { return AdaptiveTextElement::get_Text(text); }
@@ -92,6 +93,7 @@ namespace AdaptiveNamespace
         boolean m_highlight;
         boolean m_italic;
         boolean m_strikethrough;
+        boolean m_underline;
     };
 
     ActivatableClass(AdaptiveTextRun);

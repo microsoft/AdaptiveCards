@@ -26,7 +26,7 @@ import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 public class AdaptiveCardRenderer
 {
-    public static final String VERSION = "1.2";
+    public static final String VERSION = "1.3";
 
     protected AdaptiveCardRenderer()
     {
@@ -96,7 +96,8 @@ public class AdaptiveCardRenderer
         layout.setClipChildren(false);
         layout.setClipToPadding(false);
 
-        if (adaptiveCard.GetHeight() == HeightType.Stretch)
+        boolean cardHasMinHeightSet = (adaptiveCard.GetMinHeight() != 0);
+        if ((adaptiveCard.GetHeight() == HeightType.Stretch) || cardHasMinHeightSet)
         {
             layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
         }
@@ -105,7 +106,7 @@ public class AdaptiveCardRenderer
             layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         }
 
-        if (adaptiveCard.GetMinHeight() != 0)
+        if (cardHasMinHeightSet)
         {
             rootLayout.setMinimumHeight(Util.dpToPixels(context, (int)adaptiveCard.GetMinHeight()));
         }

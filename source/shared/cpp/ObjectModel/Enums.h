@@ -51,6 +51,7 @@ namespace AdaptiveSharedNamespace
         DefaultPoster,
         ElementId,
         Emphasis,
+        ErrorMessage,
         ExtraLarge,
         FactSet,
         Facts,
@@ -74,6 +75,7 @@ namespace AdaptiveSharedNamespace
         IconSize,
         IconUrl,
         Id,
+        IgnoreInputValidation,
         Image,
         ImageBaseUrl,
         ImageSet,
@@ -83,6 +85,7 @@ namespace AdaptiveSharedNamespace
         InlineAction,
         Inlines,
         InlineTopMargin,
+        InputNecessityIndicators,
         IsMultiSelect,
         IsMultiline,
         IsRequired,
@@ -116,6 +119,7 @@ namespace AdaptiveSharedNamespace
         Placeholder,
         PlayButton,
         Poster,
+        Regex,
         Repeat,
         RepeatHorizontally,
         RepeatVertically,
@@ -150,6 +154,7 @@ namespace AdaptiveSharedNamespace
         ToggleInput,
         Top,
         Type,
+        Underline,
         Url,
         Value,
         ValueOff,
@@ -366,7 +371,8 @@ namespace AdaptiveSharedNamespace
         RequiredPropertyMissing,
         InvalidPropertyValue,
         UnsupportedParserOverride,
-        IdCollision
+        IdCollision,
+        CustomError,
     };
     // No mapping to string needed
 
@@ -386,6 +392,8 @@ namespace AdaptiveSharedNamespace
         InvalidColorFormat,
         InvalidDimensionSpecified,
         InvalidLanguage,
+        InvalidValue,
+        CustomWarning,
     };
     // No mapping to string needed
 
@@ -404,22 +412,22 @@ namespace AdaptiveSharedNamespace
     // allowed unless they have been explicitly declared (i.e. 0x0101 wouldn't be valid as it was not part of the declared values)
     enum class ContainerBleedDirection
     {
-        BleedRestricted =    0x0000,
-        BleedLeft =          0x0001,
-        BleedRight =         0x0010,
-        BleedLeftRight =     0x0011,
-        BleedUp =            0x0100,
-        BleedLeftUp =        0x0101,
-        BleedRightUp =       0x0110,
-        BleedLeftRightUp =   0x0111,
-        BleedDown =          0x1000,
-        BleedLeftDown =      0x1001,
-        BleedRightDown =     0x1010,
+        BleedRestricted = 0x0000,
+        BleedLeft = 0x0001,
+        BleedRight = 0x0010,
+        BleedLeftRight = 0x0011,
+        BleedUp = 0x0100,
+        BleedLeftUp = 0x0101,
+        BleedRightUp = 0x0110,
+        BleedLeftRightUp = 0x0111,
+        BleedDown = 0x1000,
+        BleedLeftDown = 0x1001,
+        BleedRightDown = 0x1010,
         BleedLeftRightDown = 0x1011,
-        BleedUpDown =        0x1100,
-        BleedLeftUpDown =    0x1101,
-        BleedRightUpDown =   0x1110,
-        BleedAll =           0x1111
+        BleedUpDown = 0x1100,
+        BleedLeftUpDown = 0x1101,
+        BleedRightUpDown = 0x1110,
+        BleedAll = 0x1111
     };
 
     // Define bit operators so we can use ContainerBleedDirection as a bitmask
@@ -472,4 +480,12 @@ namespace AdaptiveSharedNamespace
         Drop,
         Content
     };
+
+    enum class InputNecessityIndicators
+    {
+        None,
+        RequiredInputs,
+        OptionalInputs
+    };
+    DECLARE_ADAPTIVECARD_ENUM(InputNecessityIndicators);
 }

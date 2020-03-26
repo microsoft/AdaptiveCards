@@ -4,18 +4,77 @@
 
 # Site
 title: Adaptive Cards
-subtitle:
-description:
-author: Microsoft
+subtitle: A new way for developers to exchange card content in a common and consistent way.
+description: 
+author: Adaptive Cards
 language:
 timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://adaptivecards.io
+url: /
 root: /
-permalink: blog/:year/:month/:day/:title/
+permalink: blog/:title/
 permalink_defaults:
+
+# Home page
+home:
+  made_for:
+    - title: Android
+      fa: fab fa-android
+      href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/android/getting-started
+    - title: iOS
+      fa: fab fa-apple
+      href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/ios/getting-started
+    - title: JavaScript
+      fa: fab fa-js
+      href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/javascript/getting-started
+    - title: ASP.NET
+      fa: fab fa-html5
+      href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/net-html/getting-started
+    - title: .NET WPF
+      fa: far fa-window-maximize
+      href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/net-wpf/getting-started
+    - title: Windows
+      fa: fab fa-windows
+      href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/uwp/getting-started
+    - title: ReactNative
+      fa: fab fa-react
+      href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/react-native/getting-started
+  releases:
+    - title: v1.2
+      href: https://github.com/microsoft/AdaptiveCards/releases/tag/v1.2.0
+      fa: fas fa-download
+      tag: 
+      tag_class: ac-blue
+    - title: Roadmap
+      href: https://portal.productboard.com/adaptivecards/1-adaptive-cards-features/tabs/5-roadmap
+      fa: far fa-calendar-alt
+      tag: 
+      tag_class: w3-light-gray
+
+# Footer
+footer:
+  learn_links:
+    - title: Check out sample cards
+      href: /samples
+    - title: Explore the schema
+      href: /explorer
+    - title: Embed the designer
+      href: https://docs.microsoft.com/adaptive-cards/sdk/designer
+    - title: Host App Status
+      href: https://docs.microsoft.com/en-us/adaptive-cards/resources/partners
+    - title: Take advantage of Templating
+      href: https://docs.microsoft.com/en-us/adaptive-cards/templating/
+    - title: Join our monthly Community Calls
+      href: /community-calls
+    - title: Find us on GitHub
+      href: https://github.com/Microsoft/AdaptiveCards
+    - title: Roadmap
+      href: https://portal.productboard.com/adaptivecards/1-adaptive-cards-features/tabs/5-roadmap
+    - title: Latest Build conference recording
+      href: https://www.youtube.com/watch?v=wT1yFr_j6IM
+      
 
 # Directory
 source_dir: pages
@@ -25,7 +84,7 @@ archive_dir: blog
 category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
-skip_render:
+skip_render: _posts/**/*.json
 
 # Writing
 new_post_name: :title.md # File name of new posts
@@ -34,14 +93,14 @@ titlecase: false # Transform title into titlecase
 external_link: true # Open external links in new tab
 filename_case: 0
 render_drafts: false
-post_asset_folder: false
+post_asset_folder: true
 relative_link: false
 future: true
 highlight:
-  enable: true
-  line_number: true
+  enable: false # Use plugin instead
+  line_number: false
   auto_detect: false
-  tab_replace:
+  tab_replace: '  '
   
 # Home page setting
 # path: Root path for your blogs index page. (default = '')
@@ -61,7 +120,7 @@ tag_map:
 ## Hexo uses Moment.js to parse and display date
 ## You can customize the date format as defined in
 ## http://momentjs.com/docs/#/displaying/format/
-date_format: YYYY-MM-DD
+date_format: LL
 time_format: HH:mm:ss
 
 # Pagination
@@ -69,8 +128,14 @@ time_format: HH:mm:ss
 per_page: 0
 pagination_dir: page
 
+
 # Extensions
 ## Plugins: https://hexo.io/plugins/
+plugins: 
+  hexo-generator-feed
+  hexo-featured-image
+  hexo-server
+
 ## Themes: https://hexo.io/themes/
 theme: adaptivecards
 
@@ -78,3 +143,39 @@ theme: adaptivecards
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type:
+
+# hexo-generator-feed
+feed:
+  type: atom
+  path: blog/atom.xml
+  limit: 0
+  hub:
+  content: true
+  content_limit: 
+  order_by: -date
+  icon: themes/adaptivecards/source/content/icons/favicon-32x32.png
+
+image_minifier:
+  enable: false
+  interlaced: false
+  multipass: false
+  optimizationLevel: 2
+  pngquant: false
+  progressive: false
+  silent: false
+
+js_minifier:
+  enable: false
+
+
+html_minifier:
+  enable: false
+  ignore_error: false
+  silent: false
+  exclude:
+
+css_minifier:
+  enable: false
+  silent: false
+  exclude: 
+    - '*.min.css'

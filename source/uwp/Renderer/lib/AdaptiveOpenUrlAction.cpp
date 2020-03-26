@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
+
 #include "AdaptiveOpenUrlAction.h"
-#include "Util.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -11,7 +11,8 @@ using namespace ABI::Windows::Foundation;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveOpenUrlAction::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveOpenUrlAction::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::OpenUrlAction> openUrlAction =
             std::make_shared<AdaptiveSharedNamespace::OpenUrlAction>();
@@ -19,7 +20,8 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveOpenUrlAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::OpenUrlAction>& sharedOpenUrlAction) try
+    HRESULT AdaptiveOpenUrlAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::OpenUrlAction>& sharedOpenUrlAction)
+    try
     {
         if (sharedOpenUrlAction == nullptr)
         {
@@ -28,11 +30,12 @@ namespace AdaptiveNamespace
 
         ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
         RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(), &uriActivationFactory));
-        std::wstring imageUri = StringToWstring(sharedOpenUrlAction->GetUrl());
+        HString asHstring;
+        RETURN_IF_FAILED(UTF8ToHString(sharedOpenUrlAction->GetUrl(), asHstring.GetAddressOf()));
 
-        if (!imageUri.empty())
+        if (asHstring.IsValid())
         {
-            RETURN_IF_FAILED(uriActivationFactory->CreateUri(HStringReference(imageUri.c_str()).Get(), m_url.GetAddressOf()));
+            RETURN_IF_FAILED(uriActivationFactory->CreateUri(asHstring.Get(), m_url.GetAddressOf()));
         }
 
         InitializeBaseElement(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(sharedOpenUrlAction));
@@ -42,7 +45,8 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveOpenUrlAction::get_Url(_COM_Outptr_ IUriRuntimeClass** url) { return m_url.CopyTo(url); }
 
-    HRESULT AdaptiveOpenUrlAction::put_Url(_In_ IUriRuntimeClass* url) try
+    HRESULT AdaptiveOpenUrlAction::put_Url(_In_ IUriRuntimeClass* url)
+    try
     {
         m_url = url;
         return S_OK;
@@ -55,7 +59,8 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveOpenUrlAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel) try
+    HRESULT AdaptiveOpenUrlAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::OpenUrlAction> openUrlAction =
             std::make_shared<AdaptiveSharedNamespace::OpenUrlAction>();

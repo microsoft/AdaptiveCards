@@ -143,6 +143,14 @@ public class TextRun extends Inline {
     return AdaptiveCardObjectModelJNI.TextRun_GetLanguage(swigCPtr, this);
   }
 
+  public boolean GetUnderline() {
+    return AdaptiveCardObjectModelJNI.TextRun_GetUnderline(swigCPtr, this);
+  }
+
+  public void SetUnderline(boolean value) {
+    AdaptiveCardObjectModelJNI.TextRun_SetUnderline(swigCPtr, this, value);
+  }
+
   public BaseActionElement GetSelectAction() {
     long cPtr = AdaptiveCardObjectModelJNI.TextRun_GetSelectAction(swigCPtr, this);
     return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);

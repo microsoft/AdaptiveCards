@@ -5,16 +5,16 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <AVFoundation/AVFoundation.h>
-#import "ACRView.h"
 #import "ACOMediaEvent.h"
 #import "ACRLongPressGestureRecognizerEventHandler.h"
+#import "ACRView.h"
+#import <AVFoundation/AVFoundation.h>
+#import <Foundation/Foundation.h>
 
 extern const int playIconTag;
 extern const int posterTag;
 
-@interface ACRMediaTarget:NSObject<ACRSelectActionDelegate>
+@interface ACRMediaTarget : NSObject <ACRSelectActionDelegate>
 
 - (instancetype)initWithMediaEvent:(ACOMediaEvent *)mediaEvent rootView:(ACRView *)rootView config:(ACOHostConfig *)config;
 

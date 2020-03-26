@@ -1,0 +1,1 @@
+{"actions":[{"title":"OK","type":"Action.Submit"}],"body":[{"text":"Two required inputs and one optional","type":"TextBlock"},{"id":"input1","isRequired":true,"type":"Input.Text"},{"id":"input2","isRequired":true,"type":"Input.Text"},{"id":"input3","type":"Input.Text"}],"inputNecessityIndicators":"RequiredInputs","type":"AdaptiveCard","version":"1.3"}

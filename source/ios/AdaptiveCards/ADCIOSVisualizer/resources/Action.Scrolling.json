@@ -13,52 +13,52 @@
 		{
 			"type": "Action.OpenUrl",
 			"title": "button 1",
-			"url": "http://adaptivecards.io"
+			"url": "https://adaptivecards.io"
 		},
 		{
 			"type": "Action.OpenUrl",
 			"title": "button 2",
-			"url": "http://adaptivecards.io"
+			"url": "https://adaptivecards.io"
 		},
 		{
 			"type": "Action.OpenUrl",
 			"title": "button 3",
-			"url": "http://adaptivecards.io"
+			"url": "https://adaptivecards.io"
 		},
 		{
 			"type": "Action.OpenUrl",
 			"title": "button 4",
-			"url": "http://adaptivecards.io"
+			"url": "https://adaptivecards.io"
 		},
 		{
 			"type": "Action.OpenUrl",
 			"title": "button 5",
-			"url": "http://adaptivecards.io"
+			"url": "https://adaptivecards.io"
 		},
 		{
 			"type": "Action.OpenUrl",
 			"title": "button 6",
-			"url": "http://adaptivecards.io"
+			"url": "https://adaptivecards.io"
 		},
 		{
 			"type": "Action.OpenUrl",
 			"title": "button 7",
-			"url": "http://adaptivecards.io"
+			"url": "https://adaptivecards.io"
 		},
 		{
 			"type": "Action.OpenUrl",
 			"title": "button 8",
-			"url": "http://adaptivecards.io"
+			"url": "https://adaptivecards.io"
 		},
 		{
 			"type": "Action.OpenUrl",
 			"title": "button 9",
-			"url": "http://adaptivecards.io"
+			"url": "https://adaptivecards.io"
 		},
 		{
 			"type": "Action.OpenUrl",
 			"title": "button 10",
-			"url": "http://adaptivecards.io"
+			"url": "https://adaptivecards.io"
 		}
 	]
 }

@@ -346,6 +346,9 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long getHeightTypeEnum();
   public final static native String HeightTypeToString(int jarg1);
   public final static native int HeightTypeFromString(String jarg1);
+  public final static native long getInputNecessityIndicatorsEnum();
+  public final static native String InputNecessityIndicatorsToString(int jarg1);
+  public final static native int InputNecessityIndicatorsFromString(String jarg1);
   public final static native long AdaptiveBase64Util_Decode(String jarg1);
   public final static native String AdaptiveBase64Util_Encode(long jarg1, CharVector jarg1_);
   public final static native String AdaptiveBase64Util_ExtractDataFromUri(String jarg1);
@@ -389,8 +392,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long BaseElement_GetRequirements(long jarg1, BaseElement jarg1_);
   public final static native void BaseElement_GetResourceInformation(long jarg1, BaseElement jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native void BaseElement_GetResourceInformationSwigExplicitBaseElement(long jarg1, BaseElement jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
-  public final static native void BaseElement_PopulateKnownPropertiesSet(long jarg1, BaseElement jarg1_);
-  public final static native void BaseElement_PopulateKnownPropertiesSetSwigExplicitBaseElement(long jarg1, BaseElement jarg1_);
   public final static native void BaseElement_director_connect(BaseElement obj, long cptr, boolean mem_own, boolean weak_global);
   public final static native void BaseElement_change_ownership(BaseElement obj, long cptr, boolean take_or_release);
   public final static native void HandleUnknownProperties(long jarg1, JsonValue jarg1_, long jarg2, long jarg3, JsonValue jarg3_);
@@ -418,8 +419,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native int BaseCardElement_GetElementType(long jarg1, BaseCardElement jarg1_);
   public final static native int BaseCardElement_GetElementTypeSwigExplicitBaseCardElement(long jarg1, BaseCardElement jarg1_);
   public final static native void BaseCardElement_ParseJsonObject(long jarg1, ParseContext jarg1_, long jarg2, JsonValue jarg2_, long jarg3, BaseElement jarg3_);
-  public final static native void BaseCardElement_PopulateKnownPropertiesSet(long jarg1, BaseCardElement jarg1_);
-  public final static native void BaseCardElement_PopulateKnownPropertiesSetSwigExplicitBaseCardElement(long jarg1, BaseCardElement jarg1_);
   public final static native Object BaseCardElement_swigOriginalObject(long jarg1, BaseCardElement jarg1_);
   public final static native long BaseCardElement_dynamic_cast(long jarg1, BaseElement jarg1_);
   public final static native void BaseCardElement_director_connect(BaseCardElement obj, long cptr, boolean mem_own, boolean weak_global);
@@ -447,8 +446,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long BaseActionElement_SerializeToJsonValue(long jarg1, BaseActionElement jarg1_);
   public final static native long BaseActionElement_SerializeToJsonValueSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_);
   public final static native void BaseActionElement_ParseJsonObject(long jarg1, ParseContext jarg1_, long jarg2, JsonValue jarg2_, long jarg3, BaseElement jarg3_);
-  public final static native void BaseActionElement_PopulateKnownPropertiesSet(long jarg1, BaseActionElement jarg1_);
-  public final static native void BaseActionElement_PopulateKnownPropertiesSetSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_);
   public final static native Object BaseActionElement_swigOriginalObject(long jarg1, BaseActionElement jarg1_);
   public final static native long BaseActionElement_dynamic_cast(long jarg1, BaseElement jarg1_);
   public final static native void BaseActionElement_director_connect(BaseActionElement obj, long cptr, boolean mem_own, boolean weak_global);
@@ -457,6 +454,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long new_BaseInputElement__SWIG_1(int jarg1, int jarg2, boolean jarg3, int jarg4);
   public final static native boolean BaseInputElement_GetIsRequired(long jarg1, BaseInputElement jarg1_);
   public final static native void BaseInputElement_SetIsRequired(long jarg1, BaseInputElement jarg1_, boolean jarg2);
+  public final static native String BaseInputElement_GetErrorMessage(long jarg1, BaseInputElement jarg1_);
+  public final static native void BaseInputElement_SetErrorMessage(long jarg1, BaseInputElement jarg1_, String jarg2);
   public final static native long BaseInputElement_SerializeToJsonValue(long jarg1, BaseInputElement jarg1_);
   public final static native void delete_BaseInputElement(long jarg1);
   public final static native long new_BackgroundImage__SWIG_0();
@@ -534,6 +533,10 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long ElementParserRegistration_GetParser(long jarg1, ElementParserRegistration jarg1_, String jarg2);
   public final static native void delete_ElementParserRegistration(long jarg1);
   public final static native String c_adaptiveCardsFeature_get();
+  public final static native long new_CaseInsensitiveKeyHash();
+  public final static native void delete_CaseInsensitiveKeyHash(long jarg1);
+  public final static native long new_CaseInsensitiveKeyEquals();
+  public final static native void delete_CaseInsensitiveKeyEquals(long jarg1);
   public final static native long new_FeatureRegistration();
   public final static native void FeatureRegistration_AddFeature(long jarg1, FeatureRegistration jarg1_, String jarg2, String jarg3);
   public final static native void FeatureRegistration_RemoveFeature(long jarg1, FeatureRegistration jarg1_, String jarg2);
@@ -608,7 +611,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long Column_SerializeToJsonValue(long jarg1, Column jarg1_);
   public final static native void Column_DeserializeChildren(long jarg1, Column jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
   public final static native String Column_GetWidth(long jarg1, Column jarg1_);
-  public final static native void Column_SetWidth(long jarg1, Column jarg1_, String jarg2);
+  public final static native void Column_SetWidth__SWIG_0(long jarg1, Column jarg1_, String jarg2);
+  public final static native void Column_SetWidth__SWIG_1(long jarg1, Column jarg1_, String jarg2, long jarg3, AdaptiveCardParseWarningVector jarg3_);
   public final static native int Column_GetPixelWidth(long jarg1, Column jarg1_);
   public final static native void Column_SetPixelWidth(long jarg1, Column jarg1_, int jarg2);
   public final static native long Column_GetItems__SWIG_0(long jarg1, Column jarg1_);
@@ -715,6 +719,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void TextInput_SetTextInputStyle(long jarg1, TextInput jarg1_, int jarg2);
   public final static native long TextInput_GetInlineAction(long jarg1, TextInput jarg1_);
   public final static native void TextInput_SetInlineAction(long jarg1, TextInput jarg1_, long jarg2, BaseActionElement jarg2_);
+  public final static native String TextInput_GetRegex(long jarg1, TextInput jarg1_);
+  public final static native void TextInput_SetRegex(long jarg1, TextInput jarg1_, String jarg2);
   public final static native long TextInput_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native long new_TextInputParser__SWIG_0();
   public final static native long new_TextInputParser__SWIG_1(long jarg1, TextInputParser jarg1_);
@@ -792,6 +798,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long SubmitAction_GetDataJsonAsValue(long jarg1, SubmitAction jarg1_);
   public final static native void SubmitAction_SetDataJson__SWIG_0(long jarg1, SubmitAction jarg1_, long jarg2, JsonValue jarg2_);
   public final static native void SubmitAction_SetDataJson__SWIG_1(long jarg1, SubmitAction jarg1_, String jarg2);
+  public final static native boolean SubmitAction_GetIgnoreInputValidation(long jarg1, SubmitAction jarg1_);
+  public final static native void SubmitAction_SetIgnoreInputValidation(long jarg1, SubmitAction jarg1_, boolean jarg2);
   public final static native long SubmitAction_SerializeToJsonValue(long jarg1, SubmitAction jarg1_);
   public final static native long SubmitAction_dynamic_cast(long jarg1, BaseActionElement jarg1_);
   public final static native long new_SubmitActionParser__SWIG_0();
@@ -850,6 +858,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void AdaptiveCard_SetHeight(long jarg1, AdaptiveCard jarg1_, int jarg2);
   public final static native long AdaptiveCard_GetMinHeight(long jarg1, AdaptiveCard jarg1_);
   public final static native void AdaptiveCard_SetMinHeight(long jarg1, AdaptiveCard jarg1_, long jarg2);
+  public final static native int AdaptiveCard_GetInputNecessityIndicators(long jarg1, AdaptiveCard jarg1_);
+  public final static native void AdaptiveCard_SetInputNecessityIndicators(long jarg1, AdaptiveCard jarg1_, int jarg2);
   public final static native long AdaptiveCard_GetSelectAction(long jarg1, AdaptiveCard jarg1_);
   public final static native void AdaptiveCard_SetSelectAction(long jarg1, AdaptiveCard jarg1_, long jarg2, BaseActionElement jarg2_);
   public final static native long AdaptiveCard_GetBody__SWIG_0(long jarg1, AdaptiveCard jarg1_);
@@ -864,6 +874,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long AdaptiveCard_MakeFallbackTextCard(String jarg1, String jarg2, String jarg3) throws java.io.IOException;
   public final static native long AdaptiveCard_SerializeToJsonValue(long jarg1, AdaptiveCard jarg1_);
   public final static native String AdaptiveCard_Serialize(long jarg1, AdaptiveCard jarg1_);
+  public final static native long AdaptiveCard_GetInternalId(long jarg1, AdaptiveCard jarg1_);
   public final static native void delete_AdaptiveCard(long jarg1);
   public final static native long new_AdaptiveCardParseException(int jarg1, String jarg2);
   public final static native String AdaptiveCardParseException_what(long jarg1, AdaptiveCardParseException jarg1_);
@@ -1341,6 +1352,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void TextRun_SetHighlight(long jarg1, TextRun jarg1_, boolean jarg2);
   public final static native void TextRun_SetLanguage(long jarg1, TextRun jarg1_, String jarg2);
   public final static native String TextRun_GetLanguage(long jarg1, TextRun jarg1_);
+  public final static native boolean TextRun_GetUnderline(long jarg1, TextRun jarg1_);
+  public final static native void TextRun_SetUnderline(long jarg1, TextRun jarg1_, boolean jarg2);
   public final static native long TextRun_GetSelectAction(long jarg1, TextRun jarg1_);
   public final static native void TextRun_SetSelectAction(long jarg1, TextRun jarg1_, long jarg2, BaseActionElement jarg2_);
   public final static native long TextRun_dynamic_cast(long jarg1, Inline jarg1_);
@@ -1352,6 +1365,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void RichTextElementProperties_SetItalic(long jarg1, RichTextElementProperties jarg1_, boolean jarg2);
   public final static native boolean RichTextElementProperties_GetStrikethrough(long jarg1, RichTextElementProperties jarg1_);
   public final static native void RichTextElementProperties_SetStrikethrough(long jarg1, RichTextElementProperties jarg1_, boolean jarg2);
+  public final static native boolean RichTextElementProperties_GetUnderline(long jarg1, RichTextElementProperties jarg1_);
+  public final static native void RichTextElementProperties_SetUnderline(long jarg1, RichTextElementProperties jarg1_, boolean jarg2);
   public final static native long RichTextElementProperties_SerializeToJsonValue(long jarg1, RichTextElementProperties jarg1_, long jarg2, JsonValue jarg2_);
   public final static native void RichTextElementProperties_Deserialize(long jarg1, RichTextElementProperties jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
   public final static native void RichTextElementProperties_PopulateKnownPropertiesSet(long jarg1, RichTextElementProperties jarg1_, long jarg2);
@@ -1423,9 +1438,6 @@ public class AdaptiveCardObjectModelJNI {
   public static void SwigDirector_BaseElement_GetResourceInformation(BaseElement jself, long resourceUris) {
     jself.GetResourceInformation(new RemoteResourceInformationVector(resourceUris, false));
   }
-  public static void SwigDirector_BaseElement_PopulateKnownPropertiesSet(BaseElement jself) {
-    jself.PopulateKnownPropertiesSet();
-  }
   public static String SwigDirector_BaseCardElement_GetId(BaseCardElement jself) {
     return jself.GetId();
   }
@@ -1440,9 +1452,6 @@ public class AdaptiveCardObjectModelJNI {
   }
   public static void SwigDirector_BaseCardElement_GetResourceInformation(BaseCardElement jself, long resourceUris) {
     jself.GetResourceInformation(new RemoteResourceInformationVector(resourceUris, false));
-  }
-  public static void SwigDirector_BaseCardElement_PopulateKnownPropertiesSet(BaseCardElement jself) {
-    jself.PopulateKnownPropertiesSet();
   }
   public static boolean SwigDirector_BaseCardElement_GetSeparator(BaseCardElement jself) {
     return jself.GetSeparator();
@@ -1479,9 +1488,6 @@ public class AdaptiveCardObjectModelJNI {
   }
   public static void SwigDirector_BaseActionElement_GetResourceInformation(BaseActionElement jself, long resourceUris) {
     jself.GetResourceInformation(new RemoteResourceInformationVector(resourceUris, false));
-  }
-  public static void SwigDirector_BaseActionElement_PopulateKnownPropertiesSet(BaseActionElement jself) {
-    jself.PopulateKnownPropertiesSet();
   }
   public static String SwigDirector_BaseActionElement_GetTitle(BaseActionElement jself) {
     return jself.GetTitle();

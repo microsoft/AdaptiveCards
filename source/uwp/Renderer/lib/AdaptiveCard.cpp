@@ -25,8 +25,8 @@ using namespace Microsoft::WRL::Wrappers;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveCardStaticsImpl::FromJsonString(_In_ HSTRING adaptiveJson,
-                                                    _COM_Outptr_ IAdaptiveCardParseResult** parseResult) noexcept try
+    HRESULT AdaptiveCardStaticsImpl::FromJsonString(_In_ HSTRING adaptiveJson, _COM_Outptr_ IAdaptiveCardParseResult** parseResult) noexcept
+    try
     {
         return FromJsonStringWithParserRegistration(adaptiveJson, nullptr, nullptr, parseResult);
     }
@@ -35,7 +35,8 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveCardStaticsImpl::FromJsonStringWithParserRegistration(_In_ HSTRING adaptiveJson,
                                                                           _In_ IAdaptiveElementParserRegistration* elementParserRegistration,
                                                                           _In_ IAdaptiveActionParserRegistration* actionParserRegistration,
-                                                                          _COM_Outptr_ IAdaptiveCardParseResult** parseResult) noexcept try
+                                                                          _COM_Outptr_ IAdaptiveCardParseResult** parseResult) noexcept
+    try
     {
         *parseResult = nullptr;
 
@@ -46,8 +47,8 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveCardStaticsImpl::FromJson(_In_ IJsonObject* adaptiveJson,
-                                              _COM_Outptr_ IAdaptiveCardParseResult** parseResult) noexcept try
+    HRESULT AdaptiveCardStaticsImpl::FromJson(_In_ IJsonObject* adaptiveJson, _COM_Outptr_ IAdaptiveCardParseResult** parseResult) noexcept
+    try
     {
         return FromJsonWithParserRegistration(adaptiveJson, nullptr, nullptr, parseResult);
     }
@@ -56,7 +57,8 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveCardStaticsImpl::FromJsonWithParserRegistration(_In_ IJsonObject* adaptiveJson,
                                                                     _In_ IAdaptiveElementParserRegistration* elementParserRegistration,
                                                                     _In_ IAdaptiveActionParserRegistration* actionParserRegistration,
-                                                                    _COM_Outptr_ IAdaptiveCardParseResult** parseResult) noexcept try
+                                                                    _COM_Outptr_ IAdaptiveCardParseResult** parseResult) noexcept
+    try
     {
         *parseResult = nullptr;
 
@@ -99,7 +101,7 @@ namespace AdaptiveNamespace
         try
         {
             ParseContext context(sharedModelElementParserRegistration, sharedModelActionParserRegistration);
-            const std::string c_rendererVersion = "1.2";
+            const std::string c_rendererVersion = "1.3";
             std::shared_ptr<AdaptiveSharedNamespace::ParseResult> sharedParseResult =
                 AdaptiveSharedNamespace::AdaptiveCard::DeserializeFromString(jsonString, c_rendererVersion, context);
             ComPtr<IAdaptiveCard> adaptiveCard;
@@ -163,12 +165,16 @@ namespace AdaptiveNamespace
             static_cast<ABI::AdaptiveNamespace::VerticalContentAlignment>(sharedAdaptiveCard->GetVerticalContentAlignment());
         m_height = static_cast<ABI::AdaptiveNamespace::HeightType>(sharedAdaptiveCard->GetHeight());
         m_minHeight = sharedAdaptiveCard->GetMinHeight();
+        m_inputNecessityIndicators =
+            static_cast<ABI::AdaptiveNamespace::InputNecessityIndicators>(sharedAdaptiveCard->GetInputNecessityIndicators());
 
         auto backgroundImage = sharedAdaptiveCard->GetBackgroundImage();
         if (backgroundImage != nullptr && !backgroundImage->GetUrl().empty())
         {
             RETURN_IF_FAILED(MakeAndInitialize<AdaptiveBackgroundImage>(m_backgroundImage.GetAddressOf(), backgroundImage));
         }
+
+        m_internalId = sharedAdaptiveCard->GetInternalId();
 
         return S_OK;
     }
@@ -275,6 +281,18 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    IFACEMETHODIMP AdaptiveCard::get_InputNecessityIndicators(ABI::AdaptiveNamespace::InputNecessityIndicators* inputNecessityIndicators)
+    {
+        *inputNecessityIndicators = m_inputNecessityIndicators;
+        return S_OK;
+    }
+
+    IFACEMETHODIMP AdaptiveCard::put_InputNecessityIndicators(ABI::AdaptiveNamespace::InputNecessityIndicators inputNecessityIndicators)
+    {
+        m_inputNecessityIndicators = inputNecessityIndicators;
+        return S_OK;
+    }
+
     HRESULT AdaptiveCard::ToJson(_COM_Outptr_ IJsonObject** result)
     {
         std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> sharedModel;
@@ -304,6 +322,8 @@ namespace AdaptiveNamespace
 
         adaptiveCard->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
         adaptiveCard->SetVerticalContentAlignment(static_cast<AdaptiveSharedNamespace::VerticalContentAlignment>(m_verticalAlignment));
+        adaptiveCard->SetInputNecessityIndicators(
+            static_cast<AdaptiveSharedNamespace::InputNecessityIndicators>(m_inputNecessityIndicators));
 
         if (m_selectAction != nullptr)
         {

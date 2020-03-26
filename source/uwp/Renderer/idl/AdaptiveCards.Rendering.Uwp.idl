@@ -292,7 +292,8 @@ AdaptiveNamespaceStart
         RenderFailed,
         RequiredPropertyMissing,
         InvalidPropertyValue,
-        UnsupportedParserOverride
+        UnsupportedParserOverride,
+        CustomError,
     } ErrorStatusCode;
 
     [version(NTDDI_WIN10_RS1)]
@@ -312,8 +313,10 @@ AdaptiveNamespaceStart
         UnsupportedSchemaVersion,
         UnsupportedMediaType,
         InvalidMediaMix,
+        InvalidValue,
         UnsupportedValue,
-        PerformingFallback
+        PerformingFallback,
+        CustomWarning,
     } WarningStatusCode;
 
     [version(NTDDI_WIN10_RS1)]
@@ -383,6 +386,16 @@ AdaptiveNamespaceStart
         All = Left | Right | Up | Down
     } BleedDirection;
 
+    [version(NTDDI_WIN10_RS1), flags]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)][internal]
+#endif
+    typedef[v1_enum] enum InputNecessityIndicators {
+        None = 0,
+        RequiredInputs,
+        OptionalInputs
+    } InputNecessityIndicators;
+
     declare
     {
         interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
@@ -399,6 +412,7 @@ AdaptiveNamespaceStart
         interface Windows.Foundation.Collections.IVector<AdaptiveRemoteResourceInformation*>;
         interface Windows.Foundation.Collections.IVector<AdaptiveToggleVisibilityTarget*>;
         interface Windows.Foundation.Collections.IVector<AdaptiveImage*>;
+        interface Windows.Foundation.Collections.IVector<AdaptiveRequirement*>;
     }
 
     [
@@ -421,8 +435,8 @@ AdaptiveNamespaceStart
         FallbackType FallbackType;
         IAdaptiveCardElement FallbackContent;
         Windows.Data.Json.JsonObject AdditionalProperties;
+        Windows.Foundation.Collections.IVector<AdaptiveRequirement> Requirements { get; };
 
-        Boolean MeetsRequirements(AdaptiveFeatureRegistration featureRegistration);
         Windows.Data.Json.JsonObject ToJson();
     };
 
@@ -530,6 +544,7 @@ AdaptiveNamespaceStart
         Boolean Italic;
         Boolean Strikethrough;
         Boolean Highlight;
+        Boolean Underline;
         IAdaptiveActionElement SelectAction;
     };
 
@@ -622,6 +637,7 @@ AdaptiveNamespaceStart
         VerticalContentAlignment VerticalContentAlignment;
         HeightType Height;
         UInt32 MinHeight;
+        InputNecessityIndicators InputNecessityIndicators;
 
         Windows.Data.Json.JsonObject ToJson();
         Windows.Foundation.Collections.IVectorView<AdaptiveRemoteResourceInformation> GetResourceInformation();
@@ -706,6 +722,7 @@ AdaptiveNamespaceStart
     interface IAdaptiveInputElement 
     {
         Boolean IsRequired;
+        String ErrorMessage;
     };
 
     [
@@ -793,6 +810,7 @@ AdaptiveNamespaceStart
         String Value;
         TextInputStyle TextInputStyle;
         IAdaptiveActionElement InlineAction;
+        String Regex;
     };
 
     [
@@ -1462,6 +1480,7 @@ AdaptiveNamespaceStart
         AdaptiveSubmitAction();
 
         Windows.Data.Json.JsonValue DataJson;
+        Boolean IgnoreInputValidation;
     };
 
     [
@@ -1574,6 +1593,21 @@ AdaptiveNamespaceStart
         Windows.Data.Json.JsonObject AsJson();
         Windows.Foundation.Collections.ValueSet AsValueSet();
     };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveRequirement", 45B7321F-BB3C-48B8-B98E-6483927C47D7),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass AdaptiveRequirement
+    {
+        AdaptiveRequirement(String requirementName, String requirementversion);
+
+        String Name;
+        String Version;
+    }
 
     [
 #ifdef ADAPTIVE_CARDS_WINDOWS
@@ -1749,7 +1783,7 @@ AdaptiveNamespaceStart
 
         void AddInputValue(IAdaptiveInputValue inputValue);
 
-        void AddInlineShowCard(AdaptiveActionSet inputValue,
+        void AddInlineShowCard(AdaptiveActionSet actionSet,
                                AdaptiveShowCardAction showCardAction,
                                Windows.UI.Xaml.UIElement showCardUIElement);
 
@@ -2043,10 +2077,10 @@ AdaptiveNamespaceStart
     ]
     runtimeclass AdaptiveError 
     {
-        AdaptiveError();
+        AdaptiveError(ErrorStatusCode statusCode, String message);
 
-        ErrorStatusCode StatusCode { get; };
-        String Message { get; };
+        ErrorStatusCode StatusCode;
+        String Message;
     };
 
     [
@@ -2058,10 +2092,10 @@ AdaptiveNamespaceStart
     ]
     runtimeclass AdaptiveWarning
     {
-        AdaptiveWarning();
+        AdaptiveWarning(WarningStatusCode statusCode, String message);
 
-        WarningStatusCode StatusCode { get; };
-        String Message { get; };
+        WarningStatusCode StatusCode;
+        String Message;
     };
 
     [
@@ -2089,8 +2123,8 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal
 #endif
-    ]
-    runtimeclass WholeItemsPanel
+    ] 
+    runtimeclass WholeItemsPanel : Windows.UI.Xaml.Controls.Panel
     {
         String GetAltText();
         Boolean IsAllContentClippedOut();

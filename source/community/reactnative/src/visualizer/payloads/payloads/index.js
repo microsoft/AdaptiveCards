@@ -64,8 +64,20 @@ export default payloads = [
     "json": require('./BackgroungImage.RepeatHorizontally.json')
   },
   {
+    "title": "Bleeding.ColumnSet.json",
+    "json": require('./Bleeding.ColumnSet.json')
+  },
+  {
     "title": "Bleed.json",
     "json": require('./Bleed.json')
+  },
+  {
+    "title": "Container.Style.json",
+    "json": require('./Container.Style.json')
+  },
+  {
+    "title": "Container.MinHeight.json",
+    "json": require('./Container.MinHeight.json')
   },
   {
     "title": "Container.BackgroundImageRepeatHorizontally.json",

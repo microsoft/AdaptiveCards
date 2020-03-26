@@ -19,7 +19,7 @@ namespace AdaptiveSharedNamespace
         TextElementProperties(TextElementProperties&&) = default;
         TextElementProperties& operator=(const TextElementProperties&) = default;
         TextElementProperties& operator=(TextElementProperties&&) = default;
-        ~TextElementProperties() = default;
+        virtual ~TextElementProperties() = default;
 
         virtual Json::Value SerializeToJsonValue(Json::Value& root) const;
 

@@ -296,15 +296,15 @@ export abstract class CardElement extends CardObject {
             if (AdaptiveCard.alwaysBleedSeparators && renderedSeparator && this.separatorOrientation == Enums.Orientation.Horizontal) {
                 // Adjust separator's margins if the option to always bleed separators is turned on
                 let parentContainer = this.getParentContainer();
-    
+
                 if (parentContainer && parentContainer.getEffectivePadding()) {
                     let parentPhysicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(parentContainer.getEffectivePadding());
-    
+
                     renderedSeparator.style.marginLeft = "-" + parentPhysicalPadding.left + "px";
                     renderedSeparator.style.marginRight = "-" + parentPhysicalPadding.right + "px";
                 }
             }
-    
+
             return renderedSeparator;
     }
 
@@ -1336,7 +1336,7 @@ export class TextBlock extends BaseTextBlock {
         let result = super.toJSON();
 
         Utils.setProperty(result, "wrap", this.wrap, false);
-        Utils.setProperty(result, "maxLines", this.maxLines, 0);
+        Utils.setNumberProperty(result, "maxLines", this.maxLines);
 
         return result;
     }
@@ -1393,10 +1393,7 @@ export class TextBlock extends BaseTextBlock {
         super.parse(json, errors);
 
         this.wrap = Utils.getBoolValue(json["wrap"], this.wrap);
-
-        if (typeof json["maxLines"] === "number") {
-            this.maxLines = json["maxLines"];
-        }
+        this.maxLines = Utils.getNumberValue(json["maxLines"]);
     }
 
     getJsonTypeName(): string {
@@ -1423,7 +1420,7 @@ class Label extends TextBlock {
     protected internalRender(): HTMLElement {
         let renderedElement = <HTMLLabelElement>super.internalRender();
 
-        if (!Utils.isNullOrEmpty(this.forElementId)) {
+        if (renderedElement && !Utils.isNullOrEmpty(this.forElementId)) {
             renderedElement.htmlFor = this.forElementId;
         }
 
@@ -1575,15 +1572,24 @@ export class RichTextBlock extends CardElement {
                     break;
             }
 
+            let renderedInlines: number = 0;
+
             for (let inline of this._inlines) {
-                element.appendChild(inline.render());
+                let renderedInline = inline.render();
+
+                if (renderedInline) {
+                    element.appendChild(renderedInline);
+
+                    renderedInlines++;
+                }
             }
 
-            return element;
+            if (renderedInlines > 0) {
+                return element;
+            }
         }
-        else {
-            return null;
-        }
+
+        return null;
     }
 
     asString(): string {
@@ -1744,7 +1750,7 @@ export class FactSet extends CardElement {
 
                 let textBlock = new TextBlock();
                 textBlock.setParent(this);
-                textBlock.text = Utils.isNullOrEmpty(this.facts[i].name) ? "Title" : this.facts[i].name;
+                textBlock.text = (Utils.isNullOrEmpty(this.facts[i].name) && this.isDesignMode()) ? "Title" : this.facts[i].name;
                 textBlock.size = hostConfig.factSet.title.size;
                 textBlock.color = hostConfig.factSet.title.color;
                 textBlock.isSubtle = hostConfig.factSet.title.isSubtle;
@@ -2662,7 +2668,7 @@ export class Media extends CardElement {
         return element;
     }
 
-    static onPlay: (sender: Media) => void;
+    static onPlay: (sender: Media) => void = null;
 
     sources: Array<MediaSource> = [];
     poster: string;
@@ -2946,7 +2952,7 @@ export class TextInput extends Input {
                 textareaElement.value = this.defaultValue;
             }
 
-            if (this.maxLength > 0) {
+            if (this.maxLength && this.maxLength > 0) {
                 textareaElement.maxLength = this.maxLength;
             }
 
@@ -2976,7 +2982,7 @@ export class TextInput extends Input {
                 inputElement.value = this.defaultValue;
             }
 
-            if (this.maxLength > 0) {
+            if (this.maxLength && this.maxLength > 0) {
                 inputElement.maxLength = this.maxLength;
             }
 
@@ -3069,7 +3075,7 @@ export class TextInput extends Input {
         let result = super.toJSON();
 
         Utils.setProperty(result, "placeholder", this.placeholder);
-        Utils.setProperty(result, "maxLength", this.maxLength, 0);
+        Utils.setNumberProperty(result, "maxLength", this.maxLength);
         Utils.setProperty(result, "isMultiline", this.isMultiline, false);
         Utils.setEnumProperty(Enums.InputTextStyle, result, "style", this.style, Enums.InputTextStyle.Text);
 
@@ -3083,7 +3089,7 @@ export class TextInput extends Input {
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
-        this.maxLength = json["maxLength"];
+        this.maxLength = Utils.getNumberValue(json["maxLength"]);
         this.isMultiline = Utils.getBoolValue(json["isMultiline"], this.isMultiline);
         this.placeholder = Utils.getStringValue(json["placeholder"]);
         this.style = Utils.getEnumValue(Enums.InputTextStyle, json["style"], this.style);
@@ -3433,21 +3439,7 @@ export class ChoiceSetInput extends Input {
         let result = super.toJSON();
 
         Utils.setProperty(result, "placeholder", this.placeholder);
-
-        /*
-        let choices = [];
-
-        if (this.choices) {
-            for (let choice of this.choices) {
-                choices.push(choice.toJSON());
-            }
-        }
-
-        Utils.setProperty(result, "choices", choices);
-        */
-
         Utils.setArrayProperty(result, "choices", this.choices);
-
         Utils.setProperty(result, "style", this.isCompact ? null : "expanded");
         Utils.setProperty(result, "isMultiSelect", this.isMultiSelect, false);
         Utils.setProperty(result, "wrap", this.wrap, false);
@@ -3547,14 +3539,21 @@ export class ChoiceSetInput extends Input {
 
 export class NumberInput extends Input {
     private _numberInputElement: HTMLInputElement;
-    private _min: string;
-    private _max: string;
+    private _min: number;
+    private _max: number;
 
     protected internalRender(): HTMLElement {
         this._numberInputElement = document.createElement("input");
         this._numberInputElement.setAttribute("type", "number");
-        this._numberInputElement.setAttribute("min", this.min);
-        this._numberInputElement.setAttribute("max", this.max);
+
+        if (this.min) {
+            this._numberInputElement.setAttribute("min", this.min.toString());
+        }
+
+        if (this.max) {
+            this._numberInputElement.setAttribute("max", this.max.toString());
+        }
+
         this._numberInputElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-numberInput");
         this._numberInputElement.style.width = "100%";
         this._numberInputElement.tabIndex = 0;
@@ -3583,8 +3582,8 @@ export class NumberInput extends Input {
         let result = super.toJSON();
 
         Utils.setProperty(result, "placeholder", this.placeholder);
-        Utils.setProperty(result, "min", this.min);
-        Utils.setProperty(result, "max", this.max);
+        Utils.setNumberProperty(result, "min", this.min);
+        Utils.setNumberProperty(result, "max", this.max);
 
         return result;
     }
@@ -3593,28 +3592,32 @@ export class NumberInput extends Input {
         super.parse(json, errors);
 
         this.placeholder = Utils.getStringValue(json["placeholder"]);
-        this.min = Utils.getStringValue(json["min"]);
-        this.max = Utils.getStringValue(json["max"]);
+        this.min = Utils.getNumberValue(json["min"]);
+        this.max = Utils.getNumberValue(json["max"]);
     }
 
-    get min(): string {
+    get min(): number {
         return this._min;
     }
 
-    set min(value: string) {
-        this._min = this.parseInputValue(value);
+    set min(value: number) {
+        this._min = value;
     }
 
-    get max(): string {
+    get max(): number {
         return this._max;
     }
 
-    set max(value: string) {
-        this._max = this.parseInputValue(value);
+    set max(value: number) {
+        this._max = value;
     }
 
     get value(): string {
-        return this._numberInputElement ? this._numberInputElement.value : null;
+        return this._numberInputElement ? this._numberInputElement.value : undefined;
+    }
+
+    get valueAsNumber(): number {
+        return this._numberInputElement ? this._numberInputElement.valueAsNumber : undefined;
     }
 }
 
@@ -3806,9 +3809,8 @@ class ActionButton {
 
     onClick: (actionButton: ActionButton) => void = null;
 
-    render(alignment: Enums.ActionAlignment) {
+    render() {
         this.action.render();
-        this.action.renderedElement.style.flex = alignment === Enums.ActionAlignment.Stretch ? "0 1 100%" : "0 1 auto";
         this.action.renderedElement.onclick = (e) => {
             e.preventDefault();
             e.cancelBubble = true;
@@ -4076,7 +4078,9 @@ export abstract class Action extends CardObject {
 }
 
 export class SubmitAction extends Action {
-    static readonly JsonTypeName = "Action.Submit";
+    // Note the "weird" way this field is declared is to work around a breaking
+    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
+    static readonly JsonTypeName: "Action.Submit" = "Action.Submit";
 
     private _isPrepared: boolean = false;
     private _originalData: Object;
@@ -4151,7 +4155,9 @@ export class SubmitAction extends Action {
 }
 
 export class OpenUrlAction extends Action {
-    static readonly JsonTypeName = "Action.OpenUrl";
+    // Note the "weird" way this field is declared is to work around a breaking
+    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
+    static readonly JsonTypeName: "Action.OpenUrl" = "Action.OpenUrl";
 
     url: string;
 
@@ -4192,7 +4198,9 @@ export class OpenUrlAction extends Action {
 }
 
 export class ToggleVisibilityAction extends Action {
-    static readonly JsonTypeName = "Action.ToggleVisibility";
+    // Note the "weird" way this field is declared is to work around a breaking
+    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
+    static readonly JsonTypeName: "Action.ToggleVisibility" = "Action.ToggleVisibility";
 
     targetElements = {}
 
@@ -4317,7 +4325,9 @@ export class HttpHeader extends SerializableObject {
 }
 
 export class HttpAction extends Action {
-    static readonly JsonTypeName = "Action.Http";
+    // Note the "weird" way this field is declared is to work around a breaking
+    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
+    static readonly JsonTypeName: "Action.Http" = "Action.Http";
 
     private _url = new Shared.StringWithSubstitutions();
     private _body = new Shared.StringWithSubstitutions();
@@ -4367,17 +4377,6 @@ export class HttpAction extends Action {
         Utils.setProperty(result, "url", this._url.getOriginal());
         Utils.setProperty(result, "body", this._body.getOriginal());
         Utils.setProperty(result, "ignoreInputValidation", this.ignoreInputValidation, false);
-
-        /*
-        let headers = [];
-
-        for (let header of this.headers) {
-            headers.push(header.toJSON());
-        }
-
-        Utils.setProperty(result, "headers", headers);
-        */
-
         Utils.setArrayProperty(result, "headers", this.headers);
 
         return result;
@@ -4463,7 +4462,9 @@ export class HttpAction extends Action {
 }
 
 export class ShowCardAction extends Action {
-    static readonly JsonTypeName = "Action.ShowCard";
+    // Note the "weird" way this field is declared is to work around a breaking
+    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
+    static readonly JsonTypeName: "Action.ShowCard" = "Action.ShowCard";
 
     protected addCssClasses(element: HTMLElement) {
         super.addCssClasses(element);
@@ -4603,7 +4604,7 @@ class ActionCollection {
 
         (<InlineAdaptiveCard>action.card).suppressStyle = suppressStyle;
 
-        var renderedCard = action.card.render();
+        var renderedCard = action.card.renderedElement ? action.card.renderedElement : action.card.render();
 
         this._actionCard = renderedCard;
         this._expandedAction = action;
@@ -4772,30 +4773,33 @@ class ActionCollection {
     }
 
     render(orientation: Enums.Orientation, isDesignMode: boolean): HTMLElement {
-        if (!this._owner.hostConfig.supportsInteractivity) {
+        // Cache hostConfig for better perf
+        let hostConfig = this._owner.hostConfig;
+
+        if (!hostConfig.supportsInteractivity) {
             return null;
         }
 
         let element = document.createElement("div");
-        let maxActions = this._owner.hostConfig.actions.maxActions ? Math.min(this._owner.hostConfig.actions.maxActions, this.items.length) : this.items.length;
+        let maxActions = hostConfig.actions.maxActions ? Math.min(hostConfig.actions.maxActions, this.items.length) : this.items.length;
         let forbiddenActionTypes = this._owner.getForbiddenActionTypes();
 
         this._actionCardContainer = document.createElement("div");
         this._renderedActionCount = 0;
 
-        if (this._owner.hostConfig.actions.preExpandSingleShowCardAction && maxActions == 1 && this.items[0] instanceof ShowCardAction && isActionAllowed(this.items[0], forbiddenActionTypes)) {
+        if (hostConfig.actions.preExpandSingleShowCardAction && maxActions == 1 && this.items[0] instanceof ShowCardAction && isActionAllowed(this.items[0], forbiddenActionTypes)) {
             this.showActionCard(<ShowCardAction>this.items[0], true);
             this._renderedActionCount = 1;
         }
         else {
             let buttonStrip = document.createElement("div");
-            buttonStrip.className = this._owner.hostConfig.makeCssClassName("ac-actionSet");
+            buttonStrip.className = hostConfig.makeCssClassName("ac-actionSet");
             buttonStrip.style.display = "flex";
 
             if (orientation == Enums.Orientation.Horizontal) {
                 buttonStrip.style.flexDirection = "row";
 
-                if (this._owner.horizontalAlignment && this._owner.hostConfig.actions.actionAlignment != Enums.ActionAlignment.Stretch) {
+                if (this._owner.horizontalAlignment && hostConfig.actions.actionAlignment != Enums.ActionAlignment.Stretch) {
                     switch (this._owner.horizontalAlignment) {
                         case Enums.HorizontalAlignment.Center:
                             buttonStrip.style.justifyContent = "center";
@@ -4809,7 +4813,7 @@ class ActionCollection {
                     }
                 }
                 else {
-                    switch (this._owner.hostConfig.actions.actionAlignment) {
+                    switch (hostConfig.actions.actionAlignment) {
                         case Enums.ActionAlignment.Center:
                             buttonStrip.style.justifyContent = "center";
                             break;
@@ -4825,7 +4829,7 @@ class ActionCollection {
             else {
                 buttonStrip.style.flexDirection = "column";
 
-                if (this._owner.horizontalAlignment && this._owner.hostConfig.actions.actionAlignment != Enums.ActionAlignment.Stretch) {
+                if (this._owner.horizontalAlignment && hostConfig.actions.actionAlignment != Enums.ActionAlignment.Stretch) {
                     switch (this._owner.horizontalAlignment) {
                         case Enums.HorizontalAlignment.Center:
                             buttonStrip.style.alignItems = "center";
@@ -4839,7 +4843,7 @@ class ActionCollection {
                     }
                 }
                 else {
-                    switch (this._owner.hostConfig.actions.actionAlignment) {
+                    switch (hostConfig.actions.actionAlignment) {
                         case Enums.ActionAlignment.Center:
                             buttonStrip.style.alignItems = "center";
                             break;
@@ -4869,24 +4873,31 @@ class ActionCollection {
                         this.buttons.push(actionButton);
                     }
 
-                    actionButton.render(this._owner.hostConfig.actions.actionAlignment);
+                    actionButton.render();
+
+                    if (hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal && hostConfig.actions.actionAlignment == Enums.ActionAlignment.Stretch) {
+                        actionButton.action.renderedElement.style.flex = "0 1 100%";
+                    }
+                    else {
+                        actionButton.action.renderedElement.style.flex = "0 1 auto";
+                    }
 
                     buttonStrip.appendChild(actionButton.action.renderedElement);
 
                     this._renderedActionCount++;
 
-                    if (this._renderedActionCount >= this._owner.hostConfig.actions.maxActions || i == this.items.length - 1) {
+                    if (this._renderedActionCount >= hostConfig.actions.maxActions || i == this.items.length - 1) {
                         break;
                     }
-                    else if (this._owner.hostConfig.actions.buttonSpacing > 0) {
+                    else if (hostConfig.actions.buttonSpacing > 0) {
                         var spacer = document.createElement("div");
 
                         if (orientation === Enums.Orientation.Horizontal) {
                             spacer.style.flex = "0 0 auto";
-                            spacer.style.width = this._owner.hostConfig.actions.buttonSpacing + "px";
+                            spacer.style.width = hostConfig.actions.buttonSpacing + "px";
                         }
                         else {
-                            spacer.style.height = this._owner.hostConfig.actions.buttonSpacing + "px";
+                            spacer.style.height = hostConfig.actions.buttonSpacing + "px";
                         }
 
                         Utils.appendChild(buttonStrip, spacer);
@@ -5827,9 +5838,9 @@ export class Column extends Container {
         return Enums.Orientation.Vertical;
     }
 
-    width: ColumnWidth = "auto";
+    width: ColumnWidth = "stretch";
 
-    constructor(width: ColumnWidth = "auto") {
+    constructor(width: ColumnWidth = "stretch") {
         super();
 
         this.width = width;
@@ -5847,7 +5858,7 @@ export class Column extends Container {
                 Utils.setProperty(result, "width", this.width.physicalSize + "px");
             }
             else {
-                Utils.setProperty(result, "width", this.width.physicalSize);
+                Utils.setNumberProperty(result, "width", this.width.physicalSize);
             }
         }
         else {
@@ -6140,7 +6151,9 @@ export class ColumnSet extends StylableCardElementContainer {
             for (let i = 0; i < jsonColumns.length; i++) {
                 let column = this.createColumnInstance(jsonColumns[i], errors);
 
-                this._columns.push(column);
+                if (column) {
+                    this._columns.push(column);
+                }
             }
         }
 
@@ -6594,6 +6607,7 @@ export interface IMarkdownProcessingResult {
     outputHtml?: any;
 }
 
+// @dynamic
 export class AdaptiveCard extends ContainerWithActions {
     private static currentVersion: HostConfig.Version = new HostConfig.Version(1, 2);
 

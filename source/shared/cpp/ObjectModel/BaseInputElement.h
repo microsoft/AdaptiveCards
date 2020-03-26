@@ -19,13 +19,21 @@ namespace AdaptiveSharedNamespace
         bool GetIsRequired() const;
         void SetIsRequired(const bool isRequired);
 
+        std::string GetErrorMessage() const;
+        void SetErrorMessage(const std::string errorMessage);
+
         Json::Value SerializeToJsonValue() const override;
+
+    protected:
+        void PopulateKnownPropertiesSet();
 
     private:
         bool m_isRequired;
+        std::string m_errorMessage;
     };
 
-    template<typename T> std::shared_ptr<T> BaseInputElement::Deserialize(ParseContext &context, const Json::Value& json)
+    template<typename T>
+    std::shared_ptr<T> BaseInputElement::Deserialize(ParseContext& context, const Json::Value& json)
     {
         std::shared_ptr<T> baseInputElement = BaseCardElement::Deserialize<T>(context, json);
 
@@ -33,6 +41,7 @@ namespace AdaptiveSharedNamespace
 
         baseInputElement->SetId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id, true));
         baseInputElement->SetIsRequired(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsRequired, false));
+        baseInputElement->SetErrorMessage(ParseUtil::GetString(json, AdaptiveCardSchemaKey::ErrorMessage));
 
         return baseInputElement;
     }

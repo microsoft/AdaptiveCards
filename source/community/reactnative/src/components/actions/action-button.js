@@ -204,8 +204,8 @@ const styles = StyleSheet.create({
 		justifyContent: Constants.CenterString,
 		padding: 10,
 		marginBottom: 10,
-		marginRight: 10,
 		flexGrow: 1,
+		marginHorizontal: 5
 	},
 	buttonIcon: {
 		marginLeft: 5,

@@ -2,7 +2,7 @@
 //  ACRContentStackView
 //  ACRContentStackView.mm
 //
-//  Copyright © 2017 Microsoft. All rights reserved.
+//  Copyright © 2020 Microsoft. All rights reserved.
 //
 
 #include "ACRContentStackView.h"
@@ -11,11 +11,14 @@
 
 using namespace AdaptiveCards;
 
-@implementation ACRContentStackView
-{
-    NSMutableArray* _targets;
-    NSMutableArray<ACRShowCardTarget *>* _showcardTargets;
+static int kToggleVisibilityContext;
+
+@implementation ACRContentStackView {
+    NSMutableArray *_targets;
+    NSMutableArray<ACRShowCardTarget *> *_showcardTargets;
     ACRContainerStyle _style;
+    UIStackView *_stackView;
+    NSMutableSet<UIView *> *_hiddenSubviews;
 }
 
 - (instancetype)initWithStyle:(ACRContainerStyle)style
@@ -24,10 +27,10 @@ using namespace AdaptiveCards;
                     superview:(UIView *)superview
 {
     self = [self initWithFrame:superview.frame];
-    if(self){
+    if (self) {
 
         _style = style;
-        if(style != ACRNone &&
+        if (style != ACRNone &&
             style != parentStyle) {
             std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
             self.backgroundColor = [acoConfig getBackgroundColorForContainerStyle:_style];
@@ -40,10 +43,13 @@ using namespace AdaptiveCards;
     return self;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame attributes:(nullable NSDictionary<NSString *, id> *)attributes{
-    self = [super initWithFrame:CGRectMake(0,0,frame.size.width, frame.size.height)];
-    if(self) {
-        _stackView = [[UIStackView alloc] initWithFrame:frame];
+// this is the dedicated initializer
+- (instancetype)initWithFrame:(CGRect)frame attributes:(nullable NSDictionary<NSString *, id> *)attributes
+{
+    self = [super initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+    if (self) {
+        _stackView = [[UIStackView alloc] init];
+        _hiddenSubviews = [[NSMutableSet alloc] init];
         [self config:attributes];
     }
     return self;
@@ -51,17 +57,16 @@ using namespace AdaptiveCards;
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
-    self = [self initWithFrame:CGRectMake(0,0,frame.size.width, frame.size.height) attributes:nil];
-    return self;
+    return [self initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height) attributes:nil];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
 
-    if (self)
-    {
+    if (self) {
         _stackView = [[UIStackView alloc] init];
+        _hiddenSubviews = [[NSMutableSet alloc] init];
         [self config:nil];
     }
 
@@ -78,14 +83,44 @@ using namespace AdaptiveCards;
     _style = style;
 }
 
-+ (UIColor *)colorFromString:(const std::string&)colorString
+- (UIStackViewAlignment)alignment
+{
+    return _stackView.alignment;
+}
+
+- (void)setAlignment:(UIStackViewAlignment)alignment
+{
+    _stackView.alignment = alignment;
+}
+
+- (UIStackViewDistribution)distribution
+{
+    return _stackView.distribution;
+}
+
+- (void)setDistribution:(UIStackViewDistribution)distribution
+{
+    _stackView.distribution = distribution;
+}
+
+- (UILayoutConstraintAxis)axis
+{
+    return _stackView.axis;
+}
+
+- (void)setAxis:(UILayoutConstraintAxis)axis
+{
+    _stackView.axis = axis;
+}
+
++ (UIColor *)colorFromString:(const std::string &)colorString
 {
     long num = std::stoul(colorString.substr(1), nullptr, 16);
 
     return [UIColor colorWithRed:((num & 0x00FF0000) >> 16) / 255.0
-                    green:((num & 0x0000FF00) >>  8) / 255.0
-                     blue:((num & 0x000000FF)) / 255.0
-                    alpha:((num & 0xFF000000) >> 24) / 255.0];
+                           green:((num & 0x0000FF00) >> 8) / 255.0
+                            blue:((num & 0x000000FF)) / 255.0
+                           alpha:((num & 0xFF000000) >> 24) / 255.0];
 }
 
 - (void)setBackgroundColorWithHostConfig:(std::shared_ptr<HostConfig> const &)config
@@ -114,13 +149,16 @@ using namespace AdaptiveCards;
 
 - (void)config:(nullable NSDictionary<NSString *, id> *)attributes
 {
-    if (!self.stackView) {
+    if (!_stackView) {
         return;
     }
 
-    [self addSubview:self.stackView];
-    self.stackView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:_stackView];
+    _stackView.translatesAutoresizingMaskIntoConstraints = NO;
     self.translatesAutoresizingMaskIntoConstraints = NO;
+    _stackView.axis = self.axis;
+    _stackView.distribution = self.distribution;
+    _stackView.alignment = self.alignment;
 
     _targets = [[NSMutableArray alloc] init];
     _showcardTargets = [[NSMutableArray alloc] init];
@@ -130,17 +168,17 @@ using namespace AdaptiveCards;
     if (attributes) {
         NSNumber *distribAttrib = attributes[@"distribution"];
         if ([distribAttrib boolValue]) {
-            self.stackView.distribution = (UIStackViewDistribution)[distribAttrib integerValue];
+            _stackView.distribution = (UIStackViewDistribution)[distribAttrib integerValue];
         }
 
         NSNumber *alignAttrib = attributes[@"alignment"];
         if ([alignAttrib boolValue]) {
-            self.stackView.alignment = (UIStackViewAlignment)[alignAttrib integerValue];
+            _stackView.alignment = (UIStackViewAlignment)[alignAttrib integerValue];
         }
 
         NSNumber *spacingAttrib = attributes[@"spacing"];
         if ([spacingAttrib boolValue]) {
-            self.stackView.spacing = [spacingAttrib floatValue];
+            _stackView.spacing = [spacingAttrib floatValue];
         }
 
         NSNumber *topPaddingAttrib = attributes[@"padding-top"];
@@ -149,19 +187,67 @@ using namespace AdaptiveCards;
         }
     }
 
-    [self applyPaddingToTop:top left:left
-        bottom:bottom right:right
-        priority:1000 location:ACRBleedToAll];
+    [self applyPaddingToTop:top
+                       left:left
+                     bottom:bottom
+                      right:right
+                   priority:1000
+                   location:ACRBleedToAll];
 }
 
 - (CGSize)intrinsicContentSize
 {
-    return self.frame.size;
+    return self.combinedContentSize;
 }
 
 - (void)addArrangedSubview:(UIView *)view
 {
-    [self.stackView addArrangedSubview:view];
+    [_stackView addArrangedSubview:view];
+    // if view is hidden before observer is added, we update hidden view count manually
+    if (view.hidden) {
+        [_hiddenSubviews addObject:view];
+    }
+    [view addObserver:self forKeyPath:@"hidden" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:&kToggleVisibilityContext];
+}
+
+// it's hard to know collection to know when filling the collection is done, this method
+// signals that the filling is done, and do the final visibility adjustment
+- (void)hideIfSubviewsAreAllHidden
+{
+    NSInteger count = [_hiddenSubviews count];
+    if (count and count == [_stackView.arrangedSubviews count]) {
+        self.hidden = YES;
+    }
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context
+{
+    if (context == &kToggleVisibilityContext) {
+        if ([object isKindOfClass:[UIView class]]) {
+            UIView *view = (UIView *)object;
+            BOOL isHidden = view.hidden;
+            if (isHidden == YES and ![_hiddenSubviews containsObject:view]) {
+                [_hiddenSubviews addObject:view];
+                [self decreaseIntrinsicContentSize:view];
+                if ([_hiddenSubviews count] == [_stackView.arrangedSubviews count]) {
+                    self.hidden = YES;
+                }
+            } else {
+                if ([_hiddenSubviews containsObject:view]) {
+                    [self increaseIntrinsicContentSize:view];
+                    [_hiddenSubviews removeObject:view];
+                    if (self.hidden) {
+                        self.hidden = NO;
+                    }
+                }
+            }
+        }
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
 }
 
 - (void)removeLastViewFromArrangedSubview
@@ -176,7 +262,13 @@ using namespace AdaptiveCards;
 
 - (void)removeViewFromContentStackView:(UIView *)view
 {
-    [self.stackView removeArrangedSubview:view];
+    if (view.hidden) {
+        if ([_hiddenSubviews containsObject:view]) {
+            [_hiddenSubviews removeObject:view];
+        }
+    }
+    [view removeObserver:self forKeyPath:@"hidden"];
+    [_stackView removeArrangedSubview:view];
     [view removeFromSuperview];
 }
 
@@ -185,14 +277,24 @@ using namespace AdaptiveCards;
     UIView *view = nil;
     const NSUInteger subviewsCounts = [self subviewsCounts];
     if (subviewsCounts) {
-        view = self.stackView.subviews[subviewsCounts - 1];
+        view = _stackView.subviews[subviewsCounts - 1];
+    }
+    return view;
+}
+
+- (UIView *)getLastArrangedSubview
+{
+    UIView *view = nil;
+    const NSUInteger arrangedSubviewsCounts = [_stackView.arrangedSubviews count];
+    if (arrangedSubviewsCounts) {
+        view = _stackView.arrangedSubviews[arrangedSubviewsCounts - 1];
     }
     return view;
 }
 
 - (NSUInteger)subviewsCounts
 {
-    return [self.stackView.subviews count];
+    return [_stackView.subviews count];
 }
 
 - (void)addTarget:(NSObject *)target
@@ -214,10 +316,10 @@ using namespace AdaptiveCards;
 // let the last element to strech
 - (void)adjustHuggingForLastElement
 {
-    if ([self.stackView.arrangedSubviews count])
-         [[self.stackView.arrangedSubviews objectAtIndex:[self.stackView.arrangedSubviews count ] -1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-    if ([self.stackView.arrangedSubviews count])
-         [[self.stackView.arrangedSubviews objectAtIndex:[self.stackView.arrangedSubviews count ] -1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+    if ([_stackView.arrangedSubviews count])
+        [[_stackView.arrangedSubviews objectAtIndex:[_stackView.arrangedSubviews count] - 1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+    if ([_stackView.arrangedSubviews count])
+        [[_stackView.arrangedSubviews objectAtIndex:[_stackView.arrangedSubviews count] - 1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
 }
 
 - (void)applyPadding:(unsigned int)padding priority:(unsigned int)priority
@@ -231,25 +333,27 @@ using namespace AdaptiveCards;
 }
 
 - (void)applyPaddingToTop:(CGFloat)top left:(CGFloat)left
-     bottom:(CGFloat)bottom right:(CGFloat)right
-     priority:(unsigned int)priority location:(ACRBleedDirection)location
- {
+                   bottom:(CGFloat)bottom
+                    right:(CGFloat)right
+                 priority:(unsigned int)priority
+                 location:(ACRBleedDirection)location
+{
     CGFloat leadingPadding = (location & ACRBleedToLeadingEdge) ? left : 0;
     CGFloat trailingPadding = (location & ACRBleedToTrailingEdge) ? right : 0;
     CGFloat topPadding = (location & ACRBleedToTopEdge) ? top : 0;
     CGFloat bottomPadding = (location & ACRBleedToBottomEdge) ? bottom : 0;
 
     NSString *horString = [[NSString alloc] initWithFormat:@"H:|-(%f@%u)-[_stackView]-(%f@%u)-|",
-                           leadingPadding, priority, trailingPadding, priority];
+                                                           leadingPadding, priority, trailingPadding, priority];
     NSString *verString = [[NSString alloc] initWithFormat:@"V:|-(%f@%u)-[_stackView]-(%f@%u)-|",
-                           topPadding, priority, bottomPadding, 999];
+                                                           topPadding, priority, bottomPadding, priority];
 
     NSDictionary *dictionary = NSDictionaryOfVariableBindings(_stackView);
 
     _widthconstraint = [NSLayoutConstraint constraintsWithVisualFormat:horString
-                                                                options:0
-                                                                metrics:nil
-                                                                  views:dictionary];
+                                                               options:0
+                                                               metrics:nil
+                                                                 views:dictionary];
     _heightconstraint = [NSLayoutConstraint constraintsWithVisualFormat:verString
                                                                 options:0
                                                                 metrics:nil
@@ -262,7 +366,8 @@ using namespace AdaptiveCards;
 // target is the background view, it will be pinned to parent according to the direction set by bleed,
 // constraints that are specified by the direction, those will be set to the view that is bleeding
 - (void)bleed:(unsigned int)padding priority:(unsigned int)priority target:(UIView *)target
-    direction:(ACRBleedDirection)direction parentView:(UIView *)parent
+     direction:(ACRBleedDirection)direction
+    parentView:(UIView *)parent
 {
     // remove existing constraints
     [self removeConstraints:_widthconstraint];
@@ -284,19 +389,14 @@ using namespace AdaptiveCards;
     [self applyPadding:padding priority:1000 location:(ACRBleedDirection)bleedDirection];
 }
 
-- (UILayoutConstraintAxis)getAxis
-{
-    return self.stackView.axis;
-}
-
 - (void)layoutSubviews
 {
     [super layoutSubviews];
 
     if (_isActionSet) {
-        float accumulatedWidth = 0, accumulatedHeight = 0, spacing = self.stackView.spacing, maxWidth = 0, maxHeight = 0;
+        float accumulatedWidth = 0, accumulatedHeight = 0, spacing = _stackView.spacing, maxWidth = 0, maxHeight = 0;
 
-        for(UIView *view in self.stackView.subviews){
+        for (UIView *view in _stackView.subviews) {
             accumulatedWidth += [view intrinsicContentSize].width;
             accumulatedHeight += [view intrinsicContentSize].height;
             maxWidth = MAX(maxWidth, [view intrinsicContentSize].width);
@@ -304,17 +404,59 @@ using namespace AdaptiveCards;
         }
 
         float contentWidth = accumulatedWidth, contentHeight = accumulatedHeight;
-        if(self.stackView.axis == UILayoutConstraintAxisHorizontal) {
-            contentWidth += (self.stackView.subviews.count - 1) * spacing;
+        if (_stackView.axis == UILayoutConstraintAxisHorizontal) {
+            contentWidth += (_stackView.subviews.count - 1) * spacing;
             contentHeight = maxHeight;
         } else {
-            contentHeight += (self.stackView.subviews.count - 1) * spacing;
+            contentHeight += (_stackView.subviews.count - 1) * spacing;
             contentWidth = maxWidth;
         }
 
         if (contentWidth > self.frame.size.width) {
             [self removeConstraints:_widthconstraint];
         }
+    }
+}
+
+- (void)increaseIntrinsicContentSize:(UIView *)view
+{
+}
+
+- (void)decreaseIntrinsicContentSize:(UIView *)view
+{
+}
+
+- (CGFloat)getMaxHeightOfSubviewsAfterExcluding:(UIView *)view
+{
+    return [self getViewWithMaxDimensionAfterExcluding:view
+                                             dimension:^CGFloat(UIView *v) {
+                                                 return [v intrinsicContentSize].height;
+                                             }];
+}
+
+- (CGFloat)getMaxWidthOfSubviewsAfterExcluding:(UIView *)view
+{
+    return [self getViewWithMaxDimensionAfterExcluding:view
+                                             dimension:^CGFloat(UIView *v) {
+                                                 return [v intrinsicContentSize].width;
+                                             }];
+}
+
+- (CGFloat)getViewWithMaxDimensionAfterExcluding:(UIView *)view dimension:(CGFloat (^)(UIView *view))dimension
+{
+    CGFloat currentBest = 0.0;
+    for (UIView *v in _stackView.arrangedSubviews) {
+        if (![v isEqual:view]) {
+            currentBest = MAX(currentBest, dimension(view));
+        }
+    }
+    return currentBest;
+}
+
+- (void)dealloc
+{
+    for (UIView *view in _stackView.arrangedSubviews) {
+        [view removeObserver:self forKeyPath:@"hidden"];
     }
 }
 

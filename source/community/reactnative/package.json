@@ -1,7 +1,7 @@
 {
   "name": "adaptivecards-reactnative",
   "description": "AdaptiveCards implementation in ReactNative",
-  "version": "1.2.1",
+  "version": "2.0.1",
   "keywords": [
     "adaptivecards",
     "cards",
@@ -27,20 +27,21 @@
     "src/components",
     "src/styles",
     "src/utils",
-		"src/models",
+    "src/models",
     "src/adaptive-card.js"
   ],
   "main": "./src/adaptive-card",
   "devDependencies": {
-    "babel-jest": "23.6.0",
-    "jest": "23.6.0",
+    "babel-jest": "24.0.0",
+    "jest": "24.0.0",
     "metro-react-native-babel-preset": "0.48.1",
     "react": "16.6.0-alpha.8af6728",
     "react-native": "0.57.4",
     "react-test-renderer": "16.6.0-alpha.8af6728",
-    "rnpm-plugin-windows": "^0.2.8"
+    "rnpm-plugin-windows": "^0.2.11"
   },
   "dependencies": {
+    "adaptivecards-templating": "^0.1.1-alpha.0",
     "react-native-video": "^4.2.0",
     "react-native-windows": "0.57.1"
   },

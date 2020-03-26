@@ -132,6 +132,14 @@ public class AdaptiveCard {
     AdaptiveCardObjectModelJNI.AdaptiveCard_SetMinHeight(swigCPtr, this, value);
   }
 
+  public InputNecessityIndicators GetInputNecessityIndicators() {
+    return InputNecessityIndicators.swigToEnum(AdaptiveCardObjectModelJNI.AdaptiveCard_GetInputNecessityIndicators(swigCPtr, this));
+  }
+
+  public void SetInputNecessityIndicators(InputNecessityIndicators value) {
+    AdaptiveCardObjectModelJNI.AdaptiveCard_SetInputNecessityIndicators(swigCPtr, this, value.swigValue());
+  }
+
   public BaseActionElement GetSelectAction() {
     long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_GetSelectAction(swigCPtr, this);
     return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
@@ -193,6 +201,10 @@ public class AdaptiveCard {
 
   public String Serialize() {
     return AdaptiveCardObjectModelJNI.AdaptiveCard_Serialize(swigCPtr, this);
+  }
+
+  public InternalId GetInternalId() {
+    return new InternalId(AdaptiveCardObjectModelJNI.AdaptiveCard_GetInternalId(swigCPtr, this), true);
   }
 
 }

@@ -19,13 +19,14 @@
 		</div>
 	</nav>
 
-	<div class="w3-main" style="margin-left: 220px">
+	<div class="w3-main" style="margin-left: 200px">
 		<div class="w3-container">
 			<h1><%= page.title %></h1>
 
 			<!-- mobile nav -->
 			<div class="w3-hide-large">
-				<select id="menu-nav">
+				<span>Choose element: </span>
+				<select id="menu-nav" class="w3-select w3-border w3-margin-bottom">
 					<% page.schema.forEach(function(root) { %>
 					<optgroup class="noLink" label='<%= root.title %>'>
 						<% root.children.forEach(function(child) { %>
@@ -35,7 +36,6 @@
 						<% } else { %>
 						<option value='<%- url_for(child.htmlPath) %>'><%= child.name %></option>
 						<% } %>
-						>>>>>>> Stashed changes
 
 						<% }) %>
 					</optgroup>
@@ -47,7 +47,7 @@
 
 			<p><%= page.element.description %></p>
 
-			<div class="ac-properties w3-margin-top">
+			<div class="ac-properties w3-margin-top w3-responsive">
 				<%- markdown(page.propertiesSummary) %>
 			</div>
 
@@ -57,11 +57,12 @@
 		<% page.element.examples.forEach(function (example, i) { %>
 		<% if(i == 0) { %>
 		<h2 class="w3-container">Example</h2>
-		<%- partial("_partial/code-example", { examplePath: example }) %>
+
+		<%- code_and_card(example) %>
 		<% }}) %>
 
 
-		<%- propertiesDetails(page.element.properties, page.element.version) %>
+		<%- properties_details(page.element.properties, page.element.version) %>
 
 	</div>
 </div>

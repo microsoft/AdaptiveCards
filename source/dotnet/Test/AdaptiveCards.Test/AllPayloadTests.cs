@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Microsoft.DotNet.PlatformAbstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
@@ -14,7 +13,7 @@ namespace AdaptiveCards.Test
     [TestClass]
     public class AllPayloadTests
     {
-        public static string SamplesPath => Path.Combine(ApplicationEnvironment.ApplicationBasePath, "..", "..", "..", "..", "..", "..", "..", "samples");
+        public static string SamplesPath => Path.Combine(System.AppContext.BaseDirectory, "..", "..", "..", "..", "..", "..", "..", "samples");
 
         private void TestPayloadsInDirectory(string path, string[] excludedCards)
         {

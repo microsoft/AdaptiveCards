@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -5,7 +7,7 @@ using System.Collections.Generic;
 
 namespace AdaptiveCards
 {
-    public class AdaptiveFallbackConverter : JsonConverter, ILogWarnings
+    public class AdaptiveFallbackConverter : AdaptiveTypedBaseElementConverter, ILogWarnings
     {
         public List<AdaptiveWarning> Warnings { get; set; } = new List<AdaptiveWarning>();
 
@@ -103,7 +105,7 @@ namespace AdaptiveCards
             return result;
         }
 
-        public static AdaptiveFallbackElement ParseFallback(JToken fallbackJSON, JsonSerializer serializer, string objectId, AdaptiveInternalID internalId)
+        public AdaptiveFallbackElement ParseFallback(JToken fallbackJSON, JsonSerializer serializer, string objectId, AdaptiveInternalID internalId)
         {
             // Handle fallback as a string ("drop")
             if (fallbackJSON.Type == JTokenType.String)

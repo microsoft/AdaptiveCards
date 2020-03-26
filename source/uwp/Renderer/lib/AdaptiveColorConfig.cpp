@@ -11,7 +11,8 @@ using namespace ABI::Windows::UI;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveColorConfig::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveColorConfig::RuntimeClassInitialize() noexcept
+    try
     {
         ColorConfig colorConfig;
         return RuntimeClassInitialize(colorConfig);
@@ -56,7 +57,6 @@ namespace AdaptiveNamespace
     {
         return m_highlightColors.CopyTo(highlightColors);
     }
-
 
     HRESULT AdaptiveColorConfig::put_HighlightColors(_In_ IAdaptiveHighlightColorConfig* highlightColors)
     {

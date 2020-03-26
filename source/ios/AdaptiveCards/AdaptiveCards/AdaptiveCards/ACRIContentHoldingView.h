@@ -5,9 +5,9 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "ACOBaseCardElement.h"
 #import "ACOHostConfig.h"
+#import <UIKit/UIKit.h>
 @protocol ACRIContentHoldingView
 
 - (instancetype)initWithStyle:(ACRContainerStyle)style
@@ -16,7 +16,6 @@
                     superview:(UIView<ACRIContentHoldingView> *)superview;
 - (void)addArrangedSubview:(UIView *)view;
 - (void)removeLastViewFromArrangedSubview;
-- (UILayoutConstraintAxis)getAxis;
 - (void)addTarget:(NSObject *)target;
 - (void)adjustHuggingForLastElement;
 - (ACRContainerStyle)style;

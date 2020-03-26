@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
+
 #include "AdaptiveTextRun.h"
-#include "Util.h"
-#include <windows.foundation.collections.h>
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -14,18 +13,21 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveTextRun::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveTextRun::RuntimeClassInitialize() noexcept
+    try
     {
         RuntimeClassInitialize(std::make_shared<TextRun>());
         return S_OK;
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveTextRun::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TextRun>& sharedTextRun) noexcept try
+    HRESULT AdaptiveTextRun::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TextRun>& sharedTextRun) noexcept
+    try
     {
         m_highlight = sharedTextRun->GetHighlight();
         m_italic = sharedTextRun->GetItalic();
         m_strikethrough = sharedTextRun->GetStrikethrough();
+        m_underline = sharedTextRun->GetUnderline();
 
         RETURN_IF_FAILED(GenerateActionProjection(sharedTextRun->GetSelectAction(), &m_selectAction));
         RETURN_IF_FAILED(AdaptiveTextElement::InitializeTextElement(sharedTextRun));
@@ -80,8 +82,20 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    IFACEMETHODIMP AdaptiveTextRun::get_Underline(boolean* underline)
+    {
+        *underline = m_underline;
+        return S_OK;
+    }
 
-    HRESULT AdaptiveTextRun::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::TextRun>& sharedModel) noexcept try
+    IFACEMETHODIMP AdaptiveTextRun::put_Underline(boolean underline)
+    {
+        m_underline = underline;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveTextRun::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::TextRun>& sharedModel) noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::TextRun> textRun = std::make_shared<AdaptiveSharedNamespace::TextRun>();
         RETURN_IF_FAILED(AdaptiveTextElement::SetTextElementProperties(textRun));
@@ -89,6 +103,7 @@ namespace AdaptiveNamespace
         textRun->SetItalic(m_italic);
         textRun->SetStrikethrough(m_strikethrough);
         textRun->SetHighlight(m_highlight);
+        textRun->SetUnderline(m_underline);
 
         if (m_selectAction != nullptr)
         {
