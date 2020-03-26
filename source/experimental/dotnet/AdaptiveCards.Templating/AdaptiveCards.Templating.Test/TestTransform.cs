@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using AdaptiveExpressions.Properties;
+using AdaptiveExpressions;
 using System.Diagnostics;
 using System;
 
@@ -461,6 +462,536 @@ namespace AdaptiveCards.Templating.Test
         }
 
         [TestMethod]
+        public void TestIteratioinRealDdata2()
+        {
+            AdaptiveTransformer transformer = new AdaptiveTransformer();
+            var templateData =
+                @"{
+    ""attribution"": {
+                ""iconAltText"": ""more in Outlook"",
+        ""linkLabel"": ""more in Outlook"",
+        ""linkAltText"": ""more in Outlook"",
+        ""linkUrl"": ""https://outlook.office365.com/owa/""
+    },
+    ""emails"": [
+        {
+            ""name"": ""Jim Kirk"",
+            ""flag"": true,
+            ""date"": ""6/2/2017"",
+            ""attachment"": false,
+            ""link"": ""https://outlook.office365.com/owa/?ItemID=1"",
+            ""linkTitle"": ""Email from Jim Kirk about RE: First Email Subject"",
+            ""subject"": ""RE: First Email Subject"",
+            ""preview"": ""First Email Preview""
+        },
+        {
+            ""name"": ""Jim Kirk"",
+            ""flag"": false,
+            ""date"": ""6/1/2017"",
+            ""attachment"": true,
+            ""link"": ""https://outlook.office365.com/owa/?ItemID=1"",
+            ""linkTitle"": ""Email from Jim Kirk about Second Email Subject"",
+            ""subject"": ""Second Email Subject"",
+            ""preview"": ""Second Email Preview""
+        }
+    ]
+}";
+                var testString =
+                @"{
+    ""type"": ""AdaptiveCard"",
+    ""speak"": ""${speak}"",
+    ""body"": [
+        {
+            ""type"": ""Container"",
+            ""items"": [
+                {
+                    ""type"": ""ColumnSet"",
+                    ""$data"": ""${emails}"",
+                    ""columns"": [
+                        {
+                            ""type"": ""Column"",
+                            ""width"": ""auto"",
+                            ""items"": [
+                                {
+                                    ""type"": ""Image"",
+                                    ""altText"": ""Envelope"",
+                                    ""url"": ""data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAAAXNSR0IArs4c6QAAAyNJREFUeAHt2OtqE0EYBuB3WksiqEnVCxBEEOqlpZUewOqvFTxEaBLb5NIMCCJ4AWpS9UdCSdaZXb80Wbe7O5k2mYR3IUwO++1+82SOC/CgAAUoQAEKUIACFKAABShAAQpQgAIUoAAFKEABClCAAusvoHKrePwpzD1nnU+oP8s02ljnui+ibgR0VCagI+At63ilfiJUTWxvnOHF09/W8T4GBF/uYXixh3B8oNPbtkkxc4CMLnTVJLIOkB8+30VvvAcVHiAM76fC5Uwi8wPK3VYRsgic1O/GAeVGBhJooLrZ9rZr28BJvXIA55hEVACFvlx/UpouEIZv0R99w8vuK5hkfTlMLiYnkxvGb1K7a1QnXTfLwx6wvvMalduPgBWAnIYzf27aOCdwpk6mbpaH/Rg43aTrXys4HzwHwn2EqKbeW6kf+rcGymgj2PmTes51f2ng+qNdfdnDVDRzvxiuhUr5FMePzycpJCfN6fpOTrp84wYo1/EF0sD1RjWNc3QlHNCDUh//g5O6LAVQbm7WU4OhbpHY16/09dRNtMigewcD7Go40+IeSDqJsqc/t1AunSJ48ivx2+XHpQJKGouCLAqnNpoobZ1lwknuXgBKMkVW+KZFAicooVN4jDRwQ9R0nOmq6S0uWlapVmE4ydkrQEkqapEXuotlrPiLQBaFM1vN8paetDK6quSWLL0ElCSjQT5n6wT1XY9ljZkWaQPnukf3GnAaMm+ZYSARnsQh6ki/fyjhM+V174AsAe2fxsxkP+eH+CnOO71baf9br5nNfGIsi8Dq8R1SHorHXb657K3jcgDFfRoyXr9lLUPiKFkGVTc7Puy5lws4C/keQbeNgUpfzxWZZOR6Cyz9AJQKx1u9GHKoanoLeBj9lJxU5HwPSr8ABSSGrOsW2Ym+WtQeWu5vUfoJKBXwGE5StH+cJZEsIwECOjYEAhLQUcAxnC2QgI4CjuFsgQR0FHAMZwskoKOAYzhbIAEdBRzD7R8mJB95Oyaw6uHswo7/IAEJ6CjAcApQgAIUoAAFKEABClCAAhSgAAUoQAEKUIACFKAABShAgVyBvyaVcRhWOA8BAAAAAElFTkSuQmCC"",
+                                    ""width"": ""20px"",
+                                    ""horizontalAlignment"": ""Center""
+                                }
+                            ]
+                        },
+                        {
+                            ""type"": ""Column"",
+                            ""width"": ""stretch"",
+                            ""items"": [
+                                {
+                                    ""type"": ""ColumnSet"",
+                                    ""columns"": [
+                                        {
+                                            ""type"": ""Column"",
+                                            ""width"": ""stretch"",
+                                            ""items"": [
+                                                {
+                                                    ""type"": ""TextBlock"",
+                                                    ""text"": ""${name}"",
+                                                    ""weight"": ""Bolder"",
+                                                    ""horizontalAlignment"": ""Left""
+                                                }
+                                            ],
+                                            ""spacing"": ""None"",
+                                            ""verticalContentAlignment"": ""Center""
+                                        },
+                                        {
+                                            ""type"": ""Column"",
+                                            ""$when"": ""${attachment == true}"",
+                                            ""width"": ""auto"",
+                                            ""items"": [
+                                                {
+                                                    ""type"": ""Image"",
+                                                    ""altText"": ""Paperclip"",
+                                                    ""url"": ""data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAUKADAAQAAAABAAAAUAAAAAAx4ExPAAAEv0lEQVR4Ae2cTUhUURTHZ8aR0NB9tbWlNKDOpogIqU0tWgtDCSI6s2vRrkjaFLSbGTGVJIiWhbopIsZFUH6Q2ta17TWRwXGm/xnevdx3eeLoee/dgc6Dxz333HPuu+c35773BM9LJOQQAkJACAgBISAEhIAQ+B8JJNsh6EajkSqXy8Nos8lkchDtkLeudbRr0K1OTk5+RVtvh/Waa3AOsFQq9QHYAhZ13VxYgPwdAB/m8/mdgDFnqpSzK+PCyLo8mi2cp8GjZZLNludD/bY4nGUggajX68XzUEilUgVs6dJ5fMP2cQKQti0C2cLW7VYBYXs2IM8BziLODdID8MDx8fF9jI3B1lzrAXSZdtjOaRVAXC1ApABwAdfT8CDvAtrIxMREBbJ5LKOzPD09/QEg30O+7A1epPsmzpsA6fTBYv6q5sIjkwHvDgL/rC5AmQd4twPgKZNmC4i3kJHf4KvXDN+7yMIvPsOYO7E/RAAga8aI/uxp8MiebMjW8vXNZY7FJccOEIGpd7xmjB0dHUutBhtg65ur1XnCtHMBcNAMQD0wTN1JcoCtb66T/KLUuwCoHgTNuMbHx/+0GmCArW+uVucJ084FwDDX73yu2F9joo64WCzS+6Q+CoWCfmprZYiCZCATpgAUgEwCTPe2uwfGfQ9j8kvIFmYSFIACkEmA6S4ZKACZBJjukoECkEmA6S4ZKACZBJjukoECkEmA6S4ZKACZBJjukoECkEmA6S4ZKACZBJjukoECkEmA6S4ZKACZBJjukoECkEmA6S4ZKACZBJjukoECkEmA6S4ZKACZBJjukoECkEmA6S4ZKACZBJjusWcg6tv+mmuen5/31Xpg3Fc3gho5Xc5lyjSHbRswl+9a5nXDkl38iy8BuqoCqFarVG20qPqoh6NS13uqjwLD1wD3mPokKz21nq1WHR4e2qVfvh9DG4YoxJ6BWPuutX5f0MgqDZPsAOkGSl1/0kmy6WvbohTMLv2yr2W6hyLHDhAQVsyVo6+3KOlRiT6HpkLyKUfFs9Vm9lz2tbRhiELsAFFx+clcP4IcxhbV30xAVjW6urpGYFMx7Sy5QjZkq/Q0B82l+tRi/KPZj0KOtAzqpAWjlGEbY/1qHIHu9PT0ZHK53IHSAUYSUMZw36OS/wHSQ7eBbbqE2uFZE97MzEx3rVajTwj0KX+Mb6MY+5rqR9W6eIgkAOERwPxAUM3rU+B7e3sv0S+oQD1Ab9Cn03dg6/r6R0dHr6DQ8CDX4D/qM4qo4yQDKRZk4XM0T1VcBAxHube394mZiWo8qKXM8+DR51PMYwpFhs9MRVRy7PdAFUhnZ+cLQNtUfcCjHzO/v7+/ad4T1bjdkg1tW/Ixx2hOmtvURSk7y0AKChnUjwxag3jBCrIOEPSpp1Vs9XU8MMgm4b0zDgF2FucwVHYCVHF7yGKL0z02lsMpQIqQICKT3gFIhhMxZV46nc6hqv03Z56z+tq/4Fn92fYUMAKnd8EpnLVzTEg+UzRH3PBorc4z0ASGz0ENYMu+hU6/4pjjtoys28Y5ii1Lf/45OdoKoCKAj/NksKUfoE9fJrqC9pI3Rn/b7mJshV7I8T74y9NLIwSEgBAQAkJACAgBISAEYiXwDzdEhNQ/vBCCAAAAAElFTkSuQmCC"",
+                                                    ""width"": ""20px""
+                                                }
+                                            ],
+                                            ""spacing"": ""None""
+                                        },
+                                        {
+                                            ""type"": ""Column"",
+                                            ""$when"": ""${flag == true}"",
+                                            ""width"": ""auto"",
+                                            ""items"": [
+                                                {
+                                                    ""type"": ""Image"",
+                                                    ""altText"": ""Flag"",
+                                                    ""url"": ""data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAUKADAAQAAAABAAAAUAAAAAAx4ExPAAABkklEQVR4Ae3ZQY7CQAxEUQbNcXOc3Bf2Kam/Sm5QRvPZxeUm4aVjIXg8fCmggAIKKKCAAgr8R4Gf6Yc+z/M1fY9m/XEc42tuzke9T2owXwsIuPbBVEAkWjf8ruM+3T2jvj1j20/sDmzFLv0CXkDaQwFbsUv/9hl4ef/th5+eie0MdwcOb7GAAg4Fhsv/3AxsZxT5TGeqjzAJQy4gAFEsIAlBLiAAUSwgCUEuIABRLCAJQS4gAFEsIAlBLiAAUSwgCUEuIABRLCAJQS4gAFEsIAlBvv33wOnva3C9t4vdgcNbIqCAQ4Hh8u0z8G7/WQx9cLmPMBKtGwRc+2AqIBKtG7bPwPXp5undvme6A4f3VEABhwLD5befgbu/Vw69YrmPcJB0BQE7r+gWMEi6goCdV3QLGCRdQcDOK7oFDJKuIGDnFd0CBklXELDzim4Bg6QrCNh5RbeAQdIVBOy8olvAIOkKAnZe0S1gkHQFATuv6BYwSLqCgJ1XdAsYJF1BwM4rugUMEgsKKKCAAgoooIACCrDAG3AuG0nc+SeBAAAAAElFTkSuQmCC"",
+                                                    ""width"": ""20px""
+                                                }
+                                            ],
+                                            ""spacing"": ""Small""
+                                        }
+                                    ]
+                                },
+                                {
+                                    ""type"": ""ColumnSet"",
+                                    ""columns"": [
+                                        {
+                                            ""type"": ""Column"",
+                                            ""width"": ""stretch"",
+                                            ""items"": [
+                                                {
+                                                    ""type"": ""TextBlock"",
+                                                    ""text"": ""${subject}"",
+                                                    ""spacing"": ""None"",
+                                                    ""size"": ""default""
+                                                }
+                                            ],
+                                            ""verticalContentAlignment"": ""Center""
+                                        },
+                                        {
+                                            ""type"": ""Column"",
+                                            ""width"": ""auto"",
+                                            ""items"": [
+                                                {
+                                                    ""type"": ""TextBlock"",
+                                                    ""text"": ""${date}"",
+                                                    ""spacing"": ""None"",
+                                                    ""isSubtle"": true,
+                                                    ""size"": ""Small"",
+                                                    ""horizontalAlignment"": ""Right""
+                                                }
+                                            ],
+                                            ""verticalContentAlignment"": ""Center""
+                                        }
+                                    ],
+                                    ""spacing"": ""None""
+                                },
+                                {
+                                    ""type"": ""TextBlock"",
+                                    ""text"": ""${preview}"",
+                                    ""spacing"": ""None"",
+                                    ""isSubtle"": true,
+                                    ""size"": ""default""
+                                }
+                            ]
+                        }
+                    ],
+                    ""selectAction"": {
+                        ""type"": ""Action.OpenUrl"",
+                        ""title"": ""${linkTitle}"",
+                        ""url"": ""${link}""
+                    },
+                    ""spacing"": ""ExtraLarge"",
+                    ""separator"": true
+                }
+            ]
+        },
+        {
+            ""type"": ""Container"",
+            ""spacing"": ""Padding""
+        },
+        {
+            ""type"": ""Container"",
+            ""separator"": true,
+            ""spacing"": ""None""
+        },
+        {
+            ""type"": ""ColumnSet"",
+            ""columns"": [
+                {
+                    ""type"": ""Column"",
+                    ""width"": ""auto"",
+                    ""items"": [
+                        {
+                            ""type"": ""Image"",
+                            ""altText"": ""${attribution.iconAltText}"",
+                            ""url"": ""data:image/png;base64,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"",
+                            ""spacing"": ""None"",
+                            ""width"": ""16px"",
+                            ""horizontalAlignment"": ""Left""
+                        }
+                    ],
+                    ""spacing"": ""None"",
+                    ""verticalContentAlignment"": ""Center""
+                },
+                {
+                    ""type"": ""Column"",
+                    ""width"": ""stretch"",
+                    ""items"": [
+                        {
+                            ""type"": ""TextBlock"",
+                            ""text"": ""Outlook"",
+                            ""horizontalAlignment"": ""Left"",
+                            ""size"": ""Small"",
+                            ""spacing"": ""None""
+                        }
+                    ],
+                    ""verticalContentAlignment"": ""Center""
+                },
+                {
+                    ""type"": ""Column"",
+                    ""width"": ""auto"",
+                    ""items"": [
+                        {
+                            ""type"": ""RichTextBlock"",
+                            ""horizontalAlignment"": ""Right"",
+                            ""inlines"": [
+                                {
+                                    ""type"": ""TextRun"",
+                                    ""text"": ""${attribution.linkLabel}"",
+                                    ""size"": ""Small"",
+                                    ""selectAction"": {
+                                        ""title"": ""${attribution.linkAltText}"",
+                                        ""type"": ""Action.OpenUrl"",
+                                        ""url"": ""${attribution.linkUrl}""
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    ""verticalContentAlignment"": ""Center""
+                }
+            ],
+            ""spacing"": ""Medium""
+        }
+    ],
+    ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+    ""version"": ""1.2""
+}";
+            var expectedString = @"{
+      ""type"": ""AdaptiveCard"",
+      ""speak"": """",
+      ""body"": [
+        {
+          ""type"": ""Container"",
+          ""items"": [
+            {
+              ""type"": ""ColumnSet"",
+              ""columns"": [
+                {
+                  ""type"": ""Column"",
+                  ""width"": ""auto"",
+                  ""items"": [
+                    {
+                      ""type"": ""Image"",
+                      ""altText"": ""Envelope"",
+                      ""url"": ""data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAAAXNSR0IArs4c6QAAAyNJREFUeAHt2OtqE0EYBuB3WksiqEnVCxBEEOqlpZUewOqvFTxEaBLb5NIMCCJ4AWpS9UdCSdaZXb80Wbe7O5k2mYR3IUwO++1+82SOC/CgAAUoQAEKUIACFKAABShAAQpQgAIUoAAFKEABClCAAusvoHKrePwpzD1nnU+oP8s02ljnui+ibgR0VCagI+At63ilfiJUTWxvnOHF09/W8T4GBF/uYXixh3B8oNPbtkkxc4CMLnTVJLIOkB8+30VvvAcVHiAM76fC5Uwi8wPK3VYRsgic1O/GAeVGBhJooLrZ9rZr28BJvXIA55hEVACFvlx/UpouEIZv0R99w8vuK5hkfTlMLiYnkxvGb1K7a1QnXTfLwx6wvvMalduPgBWAnIYzf27aOCdwpk6mbpaH/Rg43aTrXys4HzwHwn2EqKbeW6kf+rcGymgj2PmTes51f2ng+qNdfdnDVDRzvxiuhUr5FMePzycpJCfN6fpOTrp84wYo1/EF0sD1RjWNc3QlHNCDUh//g5O6LAVQbm7WU4OhbpHY16/09dRNtMigewcD7Go40+IeSDqJsqc/t1AunSJ48ivx2+XHpQJKGouCLAqnNpoobZ1lwknuXgBKMkVW+KZFAicooVN4jDRwQ9R0nOmq6S0uWlapVmE4ydkrQEkqapEXuotlrPiLQBaFM1vN8paetDK6quSWLL0ElCSjQT5n6wT1XY9ljZkWaQPnukf3GnAaMm+ZYSARnsQh6ki/fyjhM+V174AsAe2fxsxkP+eH+CnOO71baf9br5nNfGIsi8Dq8R1SHorHXb657K3jcgDFfRoyXr9lLUPiKFkGVTc7Puy5lws4C/keQbeNgUpfzxWZZOR6Cyz9AJQKx1u9GHKoanoLeBj9lJxU5HwPSr8ABSSGrOsW2Ym+WtQeWu5vUfoJKBXwGE5StH+cJZEsIwECOjYEAhLQUcAxnC2QgI4CjuFsgQR0FHAMZwskoKOAYzhbIAEdBRzD7R8mJB95Oyaw6uHswo7/IAEJ6CjAcApQgAIUoAAFKEABClCAAhSgAAUoQAEKUIACFKAABShAgVyBvyaVcRhWOA8BAAAAAElFTkSuQmCC"",
+                      ""width"": ""20px"",
+                      ""horizontalAlignment"": ""Center""
+                    }
+                  ]
+                },
+                {
+                  ""type"": ""Column"",
+                  ""width"": ""stretch"",
+                  ""items"": [
+                    {
+                      ""type"": ""ColumnSet"",
+                      ""columns"": [
+                        {
+                          ""type"": ""Column"",
+                          ""width"": ""stretch"",
+                          ""items"": [
+                            {
+                              ""type"": ""TextBlock"",
+                              ""text"": ""Jim Kirk"",
+                              ""weight"": ""Bolder"",
+                              ""horizontalAlignment"": ""Left""
+                            }
+                          ],
+                          ""spacing"": ""None"",
+                          ""verticalContentAlignment"": ""Center""
+                        },
+                        {
+                          ""type"": ""Column"",
+                          ""width"": ""auto"",
+                          ""items"": [
+                            {
+                              ""type"": ""Image"",
+                              ""altText"": ""Flag"",
+                              ""url"": ""data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAUKADAAQAAAABAAAAUAAAAAAx4ExPAAABkklEQVR4Ae3ZQY7CQAxEUQbNcXOc3Bf2Kam/Sm5QRvPZxeUm4aVjIXg8fCmggAIKKKCAAgr8R4Gf6Yc+z/M1fY9m/XEc42tuzke9T2owXwsIuPbBVEAkWjf8ruM+3T2jvj1j20/sDmzFLv0CXkDaQwFbsUv/9hl4ef/th5+eie0MdwcOb7GAAg4Fhsv/3AxsZxT5TGeqjzAJQy4gAFEsIAlBLiAAUSwgCUEuIABRLCAJQS4gAFEsIAlBLiAAUSwgCUEuIABRLCAJQS4gAFEsIAlBvv33wOnva3C9t4vdgcNbIqCAQ4Hh8u0z8G7/WQx9cLmPMBKtGwRc+2AqIBKtG7bPwPXp5undvme6A4f3VEABhwLD5befgbu/Vw69YrmPcJB0BQE7r+gWMEi6goCdV3QLGCRdQcDOK7oFDJKuIGDnFd0CBklXELDzim4Bg6QrCNh5RbeAQdIVBOy8olvAIOkKAnZe0S1gkHQFATuv6BYwSLqCgJ1XdAsYJF1BwM4rugUMEgsKKKCAAgoooIACCrDAG3AuG0nc+SeBAAAAAElFTkSuQmCC"",
+                              ""width"": ""20px""
+                            }
+                          ],
+                          ""spacing"": ""Small""
+                        }
+                      ]
+                    },
+                    {
+                      ""type"": ""ColumnSet"",
+                      ""columns"": [
+                        {
+                          ""type"": ""Column"",
+                          ""width"": ""stretch"",
+                          ""items"": [
+                            {
+                              ""type"": ""TextBlock"",
+                              ""text"": ""RE: First Email Subject"",
+                              ""spacing"": ""None"",
+                              ""size"": ""default""
+                            }
+                          ],
+                          ""verticalContentAlignment"": ""Center""
+                        },
+                        {
+                          ""type"": ""Column"",
+                          ""width"": ""auto"",
+                          ""items"": [
+                            {
+                              ""type"": ""TextBlock"",
+                              ""text"": ""6/2/2017"",
+                              ""spacing"": ""None"",
+                              ""isSubtle"": true,
+                              ""size"": ""Small"",
+                              ""horizontalAlignment"": ""Right""
+                            }
+                          ],
+                          ""verticalContentAlignment"": ""Center""
+                        }
+                      ],
+                      ""spacing"": ""None""
+                    },
+                    {
+                      ""type"": ""TextBlock"",
+                      ""text"": ""First Email Preview"",
+                      ""spacing"": ""None"",
+                      ""isSubtle"": true,
+                      ""size"": ""default""
+                    }
+                  ]
+                }
+              ],
+              ""selectAction"": {
+                ""type"": ""Action.OpenUrl"",
+                ""title"": ""Email from Jim Kirk about RE: First Email Subject"",
+                ""url"": ""https://outlook.office365.com/owa/?ItemID=1""
+              },
+              ""spacing"": ""ExtraLarge"",
+              ""separator"": true
+            },
+            {
+              ""type"": ""ColumnSet"",
+              ""columns"": [
+                {
+                  ""type"": ""Column"",
+                  ""width"": ""auto"",
+                  ""items"": [
+                    {
+                      ""type"": ""Image"",
+                      ""altText"": ""Envelope"",
+                      ""url"": ""data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAAAXNSR0IArs4c6QAAAyNJREFUeAHt2OtqE0EYBuB3WksiqEnVCxBEEOqlpZUewOqvFTxEaBLb5NIMCCJ4AWpS9UdCSdaZXb80Wbe7O5k2mYR3IUwO++1+82SOC/CgAAUoQAEKUIACFKAABShAAQpQgAIUoAAFKEABClCAAusvoHKrePwpzD1nnU+oP8s02ljnui+ibgR0VCagI+At63ilfiJUTWxvnOHF09/W8T4GBF/uYXixh3B8oNPbtkkxc4CMLnTVJLIOkB8+30VvvAcVHiAM76fC5Uwi8wPK3VYRsgic1O/GAeVGBhJooLrZ9rZr28BJvXIA55hEVACFvlx/UpouEIZv0R99w8vuK5hkfTlMLiYnkxvGb1K7a1QnXTfLwx6wvvMalduPgBWAnIYzf27aOCdwpk6mbpaH/Rg43aTrXys4HzwHwn2EqKbeW6kf+rcGymgj2PmTes51f2ng+qNdfdnDVDRzvxiuhUr5FMePzycpJCfN6fpOTrp84wYo1/EF0sD1RjWNc3QlHNCDUh//g5O6LAVQbm7WU4OhbpHY16/09dRNtMigewcD7Go40+IeSDqJsqc/t1AunSJ48ivx2+XHpQJKGouCLAqnNpoobZ1lwknuXgBKMkVW+KZFAicooVN4jDRwQ9R0nOmq6S0uWlapVmE4ydkrQEkqapEXuotlrPiLQBaFM1vN8paetDK6quSWLL0ElCSjQT5n6wT1XY9ljZkWaQPnukf3GnAaMm+ZYSARnsQh6ki/fyjhM+V174AsAe2fxsxkP+eH+CnOO71baf9br5nNfGIsi8Dq8R1SHorHXb657K3jcgDFfRoyXr9lLUPiKFkGVTc7Puy5lws4C/keQbeNgUpfzxWZZOR6Cyz9AJQKx1u9GHKoanoLeBj9lJxU5HwPSr8ABSSGrOsW2Ym+WtQeWu5vUfoJKBXwGE5StH+cJZEsIwECOjYEAhLQUcAxnC2QgI4CjuFsgQR0FHAMZwskoKOAYzhbIAEdBRzD7R8mJB95Oyaw6uHswo7/IAEJ6CjAcApQgAIUoAAFKEABClCAAhSgAAUoQAEKUIACFKAABShAgVyBvyaVcRhWOA8BAAAAAElFTkSuQmCC"",
+                      ""width"": ""20px"",
+                      ""horizontalAlignment"": ""Center""
+                    }
+                  ]
+                },
+                {
+                  ""type"": ""Column"",
+                  ""width"": ""stretch"",
+                  ""items"": [
+                    {
+                      ""type"": ""ColumnSet"",
+                      ""columns"": [
+                        {
+                          ""type"": ""Column"",
+                          ""width"": ""stretch"",
+                          ""items"": [
+                            {
+                              ""type"": ""TextBlock"",
+                              ""text"": ""Jim Kirk"",
+                              ""weight"": ""Bolder"",
+                              ""horizontalAlignment"": ""Left""
+                            }
+                          ],
+                          ""spacing"": ""None"",
+                          ""verticalContentAlignment"": ""Center""
+                        },
+                        {
+                          ""type"": ""Column"",
+                          ""width"": ""auto"",
+                          ""items"": [
+                            {
+                              ""type"": ""Image"",
+                              ""altText"": ""Paperclip"",
+                              ""url"": ""data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAUKADAAQAAAABAAAAUAAAAAAx4ExPAAAEv0lEQVR4Ae2cTUhUURTHZ8aR0NB9tbWlNKDOpogIqU0tWgtDCSI6s2vRrkjaFLSbGTGVJIiWhbopIsZFUH6Q2ta17TWRwXGm/xnevdx3eeLoee/dgc6Dxz333HPuu+c35773BM9LJOQQAkJACAgBISAEhIAQ+B8JJNsh6EajkSqXy8Nos8lkchDtkLeudbRr0K1OTk5+RVtvh/Waa3AOsFQq9QHYAhZ13VxYgPwdAB/m8/mdgDFnqpSzK+PCyLo8mi2cp8GjZZLNludD/bY4nGUggajX68XzUEilUgVs6dJ5fMP2cQKQti0C2cLW7VYBYXs2IM8BziLODdID8MDx8fF9jI3B1lzrAXSZdtjOaRVAXC1ApABwAdfT8CDvAtrIxMREBbJ5LKOzPD09/QEg30O+7A1epPsmzpsA6fTBYv6q5sIjkwHvDgL/rC5AmQd4twPgKZNmC4i3kJHf4KvXDN+7yMIvPsOYO7E/RAAga8aI/uxp8MiebMjW8vXNZY7FJccOEIGpd7xmjB0dHUutBhtg65ur1XnCtHMBcNAMQD0wTN1JcoCtb66T/KLUuwCoHgTNuMbHx/+0GmCArW+uVucJ084FwDDX73yu2F9joo64WCzS+6Q+CoWCfmprZYiCZCATpgAUgEwCTPe2uwfGfQ9j8kvIFmYSFIACkEmA6S4ZKACZBJjukoECkEmA6S4ZKACZBJjukoECkEmA6S4ZKACZBJjukoECkEmA6S4ZKACZBJjukoECkEmA6S4ZKACZBJjukoECkEmA6S4ZKACZBJjukoECkEmA6S4ZKACZBJjukoECkEmA6S4ZKACZBJjusWcg6tv+mmuen5/31Xpg3Fc3gho5Xc5lyjSHbRswl+9a5nXDkl38iy8BuqoCqFarVG20qPqoh6NS13uqjwLD1wD3mPokKz21nq1WHR4e2qVfvh9DG4YoxJ6BWPuutX5f0MgqDZPsAOkGSl1/0kmy6WvbohTMLv2yr2W6hyLHDhAQVsyVo6+3KOlRiT6HpkLyKUfFs9Vm9lz2tbRhiELsAFFx+clcP4IcxhbV30xAVjW6urpGYFMx7Sy5QjZkq/Q0B82l+tRi/KPZj0KOtAzqpAWjlGEbY/1qHIHu9PT0ZHK53IHSAUYSUMZw36OS/wHSQ7eBbbqE2uFZE97MzEx3rVajTwj0KX+Mb6MY+5rqR9W6eIgkAOERwPxAUM3rU+B7e3sv0S+oQD1Ab9Cn03dg6/r6R0dHr6DQ8CDX4D/qM4qo4yQDKRZk4XM0T1VcBAxHube394mZiWo8qKXM8+DR51PMYwpFhs9MRVRy7PdAFUhnZ+cLQNtUfcCjHzO/v7+/ad4T1bjdkg1tW/Ixx2hOmtvURSk7y0AKChnUjwxag3jBCrIOEPSpp1Vs9XU8MMgm4b0zDgF2FucwVHYCVHF7yGKL0z02lsMpQIqQICKT3gFIhhMxZV46nc6hqv03Z56z+tq/4Fn92fYUMAKnd8EpnLVzTEg+UzRH3PBorc4z0ASGz0ENYMu+hU6/4pjjtoys28Y5ii1Lf/45OdoKoCKAj/NksKUfoE9fJrqC9pI3Rn/b7mJshV7I8T74y9NLIwSEgBAQAkJACAgBISAEYiXwDzdEhNQ/vBCCAAAAAElFTkSuQmCC"",
+                              ""width"": ""20px""
+                            }
+                          ],
+                          ""spacing"": ""None""
+                        }
+                      ]
+                    },
+                    {
+                      ""type"": ""ColumnSet"",
+                      ""columns"": [
+                        {
+                          ""type"": ""Column"",
+                          ""width"": ""stretch"",
+                          ""items"": [
+                            {
+                              ""type"": ""TextBlock"",
+                              ""text"": ""Second Email Subject"",
+                              ""spacing"": ""None"",
+                              ""size"": ""default""
+                            }
+                          ],
+                          ""verticalContentAlignment"": ""Center""
+                        },
+                        {
+                          ""type"": ""Column"",
+                          ""width"": ""auto"",
+                          ""items"": [
+                            {
+                              ""type"": ""TextBlock"",
+                              ""text"": ""6/1/2017"",
+                              ""spacing"": ""None"",
+                              ""isSubtle"": true,
+                              ""size"": ""Small"",
+                              ""horizontalAlignment"": ""Right""
+                            }
+                          ],
+                          ""verticalContentAlignment"": ""Center""
+                        }
+                      ],
+                      ""spacing"": ""None""
+                    },
+                    {
+                      ""type"": ""TextBlock"",
+                      ""text"": ""Second Email Preview"",
+                      ""spacing"": ""None"",
+                      ""isSubtle"": true,
+                      ""size"": ""default""
+                    }
+                  ]
+                }
+              ],
+              ""selectAction"": {
+                ""type"": ""Action.OpenUrl"",
+                ""title"": ""Email from Jim Kirk about Second Email Subject"",
+                ""url"": ""https://outlook.office365.com/owa/?ItemID=1""
+              },
+              ""spacing"": ""ExtraLarge"",
+              ""separator"": true
+            }
+          ]
+        },
+        {
+          ""type"": ""Container"",
+          ""spacing"": ""Padding""
+        },
+        {
+          ""type"": ""Container"",
+          ""separator"": true,
+          ""spacing"": ""None""
+        },
+        {
+          ""type"": ""ColumnSet"",
+          ""columns"": [
+            {
+              ""type"": ""Column"",
+              ""width"": ""auto"",
+              ""items"": [
+                {
+                  ""type"": ""Image"",
+                  ""altText"": ""more in Outlook"",
+                  ""url"": ""data:image/png;base64,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"",
+                  ""spacing"": ""None"",
+                  ""width"": ""16px"",
+                  ""horizontalAlignment"": ""Left""
+                }
+              ],
+              ""spacing"": ""None"",
+              ""verticalContentAlignment"": ""Center""
+            },
+            {
+              ""type"": ""Column"",
+              ""width"": ""stretch"",
+              ""items"": [
+                {
+                  ""type"": ""TextBlock"",
+                  ""text"": ""Outlook"",
+                  ""horizontalAlignment"": ""Left"",
+                  ""size"": ""Small"",
+                  ""spacing"": ""None""
+                }
+              ],
+              ""verticalContentAlignment"": ""Center""
+            },
+            {
+              ""type"": ""Column"",
+              ""width"": ""auto"",
+              ""items"": [
+                {
+                  ""type"": ""RichTextBlock"",
+                  ""horizontalAlignment"": ""Right"",
+                  ""inlines"": [
+                    {
+                      ""type"": ""TextRun"",
+                      ""text"": ""more in Outlook"",
+                      ""size"": ""Small"",
+                      ""selectAction"": {
+                        ""title"": ""more in Outlook"",
+                        ""type"": ""Action.OpenUrl"",
+                        ""url"": ""https://outlook.office365.com/owa/""
+                      }
+                    }
+                  ]
+                }
+              ],
+              ""verticalContentAlignment"": ""Center""
+            }
+          ],
+          ""spacing"": ""Medium""
+        }
+      ],
+      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+      ""version"": ""1.2""
+}";
+            string cardJson = transformer.Transform(testString, templateData);
+            AssertJsonEqual(expectedString, cardJson);
+        }
+
+        [TestMethod]
         public void TestExpression()
         {
             AdaptiveTransformer transformer = new AdaptiveTransformer();
@@ -902,7 +1433,11 @@ namespace AdaptiveCards.Templating.Test
                 ""items"": [
                 {
                     ""type"": ""TextBlock"",
-                    ""text"": ""10""
+                    ""text"": ""Class: Ship, Mileage: 1""
+                },
+                {
+                    ""type"": ""TextBlock"",
+                    ""text"": ""Class: Ship, Mileage: 10""
                 }
             ]
         }
@@ -1002,8 +1537,22 @@ namespace AdaptiveCards.Templating.Test
             }";
 
             JToken token = JToken.Parse(jsonData);
-            var (value, error) = new ValueExpression("${$index}}").TryGetValue(token as JObject);
+            var (value, error) = new ValueExpression("${$index}").TryGetValue(token as JObject);
             Assert.AreEqual("0", value);
+        }
+
+        [TestMethod]
+        public void TestEqual()
+        {
+            string jsonData = @"{
+            ""attachment"": false 
+            }";
+
+            JToken token = JToken.Parse(jsonData);
+            var expr = Expression.Parse("attachment == true");
+            var result =  expr.TryEvaluate(token); 
+            Assert.IsNull(result.error);
+            Assert.AreEqual(false, result.value);
         }
 
         [TestMethod]

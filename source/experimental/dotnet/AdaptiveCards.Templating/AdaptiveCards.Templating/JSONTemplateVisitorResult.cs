@@ -1,23 +1,82 @@
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Text;
+using System;
 
 namespace AdaptiveCards.Templating
 {
     public class JSONTemplateVisitorResult
     {
+        public enum EvaluationResult
+        {
+            NotEvaluated = 0,
+            EvaluatedToTrue,
+            EvaluatedToFalse
+        }
         class TemplatePartialResult
         {
             public StringBuilder StringResult { get; set; }
             public bool IsExpanded { get; set; }
 
+            public List<LinkedList<TemplatePartialResult>> whens;
+            public bool isWhen;
+            public string predicate;
+            public EvaluationResult whenEvaluationResult;
+
             public TemplatePartialResult(string a = "", bool b = true)
             {
                 StringResult = new StringBuilder(a);
                 IsExpanded = b;
+                whens = new List<LinkedList<TemplatePartialResult>> ();
+                whenEvaluationResult = EvaluationResult.NotEvaluated;
             }
+
+            public TemplatePartialResult(string predicateString, string a = "", bool b = true) : this (a, b)
+            {
+                isWhen = true;
+                predicate = predicateString;
+            }
+
             public string Expand(JSONTemplateVisitor evaluator, JObject data)
             {
+                if (isWhen)
+                {
+                    // object is "$when" type and its evaluation failes, so return
+                    if (!evaluator.IsTrue(predicate, data))
+                    {
+                        whenEvaluationResult = EvaluationResult.EvaluatedToFalse;
+                        return "";
+                    }
+
+                    whenEvaluationResult = EvaluationResult.EvaluatedToTrue;
+
+                    StringBuilder output = new StringBuilder();
+                    // expands results in When
+
+                    bool allWhenIsExpanded = true;
+                    foreach (var when in whens)
+                    {
+                        var headOfWhen = when.First.Value;
+                        headOfWhen.IsExpanded = true;
+                        bool areAllElementsExpanded = true;
+                        if (evaluator.IsTrue(headOfWhen.predicate, data))
+                        {
+                            foreach (var elem in when)
+                            {
+                                output.Append(elem.Expand(evaluator, data));
+                                areAllElementsExpanded &= elem.IsExpanded;
+                            }
+                        }
+
+                        allWhenIsExpanded &= areAllElementsExpanded;
+
+                        StringResult.Append(output);
+                    }
+
+                    IsExpanded = allWhenIsExpanded;
+                }
+
+
                 if (IsExpanded)
                 {
                     return StringResult.ToString(); 
@@ -35,18 +94,25 @@ namespace AdaptiveCards.Templating
         private bool isWhen;
         private string predicate;
         private bool isPair;
-        private bool evaluationResult;
+        private EvaluationResult whenEvaluationResult;
 
         public bool IsExpanded
         {
-            get { return partialResultLinkedList.Count <= 1 && partialResultLinkedList.Count >= 0;  }
+            get
+            {
+                if (isWhen)
+                {
+                    return !(whenEvaluationResult == EvaluationResult.NotEvaluated);
+                }
+                return partialResultLinkedList.Count == 0 || partialResultLinkedList.Count == 1;
+            }
         }
         // lists parsed result from the current node which has $when 
         public List<JSONTemplateVisitorResult> Whens { get => whens; set => whens = value; }
         public bool IsWhen { get => isWhen; set => isWhen = value; }
         public string Predicate { get => predicate; set => predicate = value; }
         public bool IsPair { get => isPair; set => isPair = value; }
-        public bool EvaluationResult { get => evaluationResult; set => evaluationResult = value; }
+        public EvaluationResult WhenEvaluationResult { get => whenEvaluationResult; set => whenEvaluationResult = value; }
 
         public JSONTemplateVisitorResult()
         {
@@ -62,6 +128,19 @@ namespace AdaptiveCards.Templating
 
         public JSONTemplateVisitorResult(string capturedString = "", bool isExpanded = true) : this()
         {
+            Append(capturedString, isExpanded);
+        }
+        public JSONTemplateVisitorResult(string capturedString, string predicate) : this()
+        {
+            bool isExpanded = false;
+            if (predicate.Length == 0)
+            {
+                isExpanded = true;
+            }
+
+            IsWhen = true;
+            Predicate = predicate;
+            WhenEvaluationResult = EvaluationResult.NotEvaluated; 
             Append(capturedString, isExpanded);
         }
 
@@ -103,6 +182,30 @@ namespace AdaptiveCards.Templating
             }
             return false;
         }
+        public void TryRemoveCharAtEndFromStringBuilder(StringBuilder input)
+        {
+            if (input.Length <= 0)
+            {
+                return;
+            }
+
+            for (int i = input.Length - 1; i >= 0; i--)
+            {
+                if (Char.IsWhiteSpace(input[i]))
+                {
+                    input.Remove(i, 1);
+                    continue;
+                }
+
+                if (input[i] == ',')
+                {
+                    input.Remove(i, 1);
+                    break;
+                }
+
+                return;
+            }
+        }
         public void Append(string capturedString = "", bool isExpanded = true)
         {
             var tail = GetTail().Value; 
@@ -124,6 +227,16 @@ namespace AdaptiveCards.Templating
             }
             var tail = GetTail().Value;
             var headOfResult = result.GetHead().Value;
+
+            if (result.isWhen && !result.IsPair)
+            {
+                tail.IsExpanded = false;
+                tail.whens.Add(result.partialResultLinkedList);
+                tail.isWhen = true;
+                tail.predicate = result.predicate;
+                return;
+            }
+
             if (tail.IsExpanded && headOfResult.IsExpanded)
             {
                 tail.StringResult.Append(headOfResult.StringResult);
@@ -175,7 +288,12 @@ namespace AdaptiveCards.Templating
 
             foreach (var elem in partialResultLinkedList)
             {
-                output.Append(elem.Expand(evaluator, data));
+                var partialResultString = elem.Expand(evaluator, data);
+                if (elem.isWhen && elem.whenEvaluationResult == EvaluationResult.EvaluatedToFalse)
+                {
+                    TryRemoveCharAtEndFromStringBuilder(output);
+                }
+                output.Append(partialResultString);
             }
             return output.ToString();
         }

@@ -67,6 +67,22 @@ namespace AdaptiveCards.Templating
                 return true;
             }
 
+            public static void AddDataContext(string key, JObject targetJObj, DataContext sourceDataContext)
+            {
+                if (sourceDataContext == null)
+                {
+                    return;
+                }
+
+                if (sourceDataContext.IsArrayType)
+                {
+                    targetJObj[key] = sourceDataContext.templateDataArray;
+                }
+                else
+                {
+                    targetJObj[key] = sourceDataContext.templateData;
+                }
+            }
         }
 
         private Stack<DataContext> _dataContext = new Stack<DataContext>();
@@ -169,16 +185,23 @@ namespace AdaptiveCards.Templating
 
         public override JSONTemplateVisitorResult VisitValueTemplateExpression([NotNull] JSONParser.ValueTemplateExpressionContext context)
         {                 
-            JSONTemplateVisitorResult result = new JSONTemplateVisitorResult(context.GetText());
-            result.IsWhen = true;
             // when this node is visited, the children of this node is shown as below: 
             // this node is visited only when parsing was correctly done
             // ['"', 'templated expression'] 
-            result.Predicate = context.GetChild(1).GetText();
+            JSONTemplateVisitorResult result = new JSONTemplateVisitorResult(context.GetText(), context.GetChild(1).GetText());
+
             DataContext dataContext = GetCurrentDataContext();
+
+            if (dataContext.IsArrayType)
+            {
+                return result;
+            }
+
             if (dataContext != null && !dataContext.IsArrayType)
-            {             
-                result.EvaluationResult = IsTrue(result.Predicate, dataContext.templateData);
+            {
+                result.WhenEvaluationResult = IsTrue(result.Predicate, dataContext.templateData) ?
+                    JSONTemplateVisitorResult.EvaluationResult.EvaluatedToTrue :
+                    JSONTemplateVisitorResult.EvaluationResult.EvaluatedToFalse;
             }
             return result;
         }
@@ -202,7 +225,7 @@ namespace AdaptiveCards.Templating
             for (var i = 0; i < context.ChildCount; i++)
             { 
                 var child = context.children[i];
-                if (child is JSONParser.TemplateDataContext)
+                if (child is JSONParser.TemplateDataContext || child is JSONParser.TemplateRootDataContext)
                 {
                     Visit(child);
                     hasDataContext = true;
@@ -219,7 +242,7 @@ namespace AdaptiveCards.Templating
             {
                 var child = context.children[i];
                 // if it's data context, skip nex terminal token
-                if (child is JSONParser.TemplateDataContext)
+                if (child is JSONParser.TemplateDataContext || child is JSONParser.TemplateRootDataContext)
                 {
                     removeComma  = !result.TryRemoveACommaAtEnd ();
                 }
@@ -235,7 +258,8 @@ namespace AdaptiveCards.Templating
                             if (!GetCurrentDataContext().IsArrayType)
                             {
                                 // if evaluation fails, we drops from current context
-                                if (!returnedResult.EvaluationResult)
+                                if (returnedResult.WhenEvaluationResult ==
+                                    JSONTemplateVisitorResult.EvaluationResult.EvaluatedToFalse)
                                 {
                                     return new JSONTemplateVisitorResult();
                                 }
@@ -289,6 +313,7 @@ namespace AdaptiveCards.Templating
                     if (token is JObject)
                     {
                         JObject jobject = token as JObject;
+                        DataContext.AddDataContext("$root", jobject, root);
                         jobject["$index"] = i;
                         result.Append(oldResult.Expand(this, jobject));
                         if (i != repeatsCounts - 1)
@@ -329,6 +354,7 @@ namespace AdaptiveCards.Templating
                     }
                     else
                     {
+                        AddRootDataContextToCurrentDataContext();
                         JObject data = GetCurrentDataContext().templateData;
                         return new JSONTemplateVisitorResult(Expand(templateString, data));
                     }
