@@ -12,7 +12,7 @@ import "./app.css";
 // import "adaptivecards-designer/dist/adaptivecards-defaulthost.css";
 
 window.onload = function() {
-    ACTemplating.GlobalSettings.undefinedExpressionValueSubstitutionString = "<undefined value>";
+    ACTemplating.GlobalSettings.getUndefinedFieldValueSubstitutionString = (path: string) => { return "<" + path + "is undefined>" };
 
     ACDesigner.GlobalSettings.showVersionPicker = true;
     ACDesigner.GlobalSettings.enableDataBindingSupport = true;

@@ -1,6 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import * as CEL from "adaptive-expressions";
+import * as AEL from "adaptive-expressions";
+
+export class GlobalSettings {
+    static getUndefinedFieldValueSubstitutionString?: (path: string) => string | undefined = undefined;
+}
 
 interface EvaluationContextState {
     $data: any;
@@ -48,21 +52,37 @@ export class EvaluationContext {
     }
 }
 
-export class TemplateObjectMemory implements CEL.MemoryInterface {
-    private _memory: CEL.MemoryInterface;
+export class TemplateObjectMemory implements AEL.MemoryInterface {
+    private static processPathValue(path: string, value: any): string {
+        let substitutionValue: string | undefined = undefined;
+
+        if (GlobalSettings.getUndefinedFieldValueSubstitutionString) {
+            substitutionValue = GlobalSettings.getUndefinedFieldValueSubstitutionString(path);    
+        }
+
+        return substitutionValue ? substitutionValue : "${" + path + "}";
+    }
+
+    private _memory: AEL.MemoryInterface;
 
     $root: any;
     $data: any;
     $index: any;
 
     constructor() {
-        this._memory = new CEL.SimpleObjectMemory(this);
+        this._memory = new AEL.SimpleObjectMemory(this);
     }
 
     getValue(path: string): any {
         let actualPath = (path.length > 0 && path[0] !== "$") ? "$data." + path : path;
 
-        return this._memory.getValue(actualPath);
+        let value = this._memory.getValue(actualPath);
+
+        if (value === undefined) {
+            value = TemplateObjectMemory.processPathValue(path, value);
+        }
+
+        return value;
     }
 
     setValue(path: string, input: any) {
@@ -95,11 +115,11 @@ export class Template {
             }
             // If the entire string is enclosed in a single ${}, extract the enclosed expression
             else if (matchCount === 1 && lastMatch[0].length === node.length) {
-                return CEL.Expression.parse(lastMatch[1]);
+                return AEL.Expression.parse(lastMatch[1]);
             }
 
             // Otherwise, it's an interpolated string with multiple embedded expressions
-            return CEL.Expression.parse("`" + node + "`");
+            return AEL.Expression.parse("`" + node + "`");
         }
         else if (typeof node === "object" && node !== null) {
             if (Array.isArray(node)) {
@@ -178,7 +198,7 @@ export class Template {
 
             result = itemArray;
         }
-        else if (node instanceof CEL.Expression) {
+        else if (node instanceof AEL.Expression) {
             let evaluationResult = node.tryEvaluate(this.createEvaluationState());
 
             if (!evaluationResult.error) {
@@ -192,7 +212,7 @@ export class Template {
             let dropObject = false;
             let when = node["$when"];
 
-            if (when instanceof CEL.Expression) {
+            if (when instanceof AEL.Expression) {
                 let evaluationResult = when.tryEvaluate(this.createEvaluationState());
                 let whenValue: boolean = false;
                 
@@ -207,7 +227,7 @@ export class Template {
                 let dataContext = node["$data"];
 
                 if (dataContext !== undefined) {
-                    if (dataContext instanceof CEL.Expression) {
+                    if (dataContext instanceof AEL.Expression) {
                         let evaluationResult = dataContext.tryEvaluate(this.createEvaluationState());
 
                         if (!evaluationResult.error) {
