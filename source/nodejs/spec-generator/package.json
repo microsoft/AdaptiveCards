@@ -1,6 +1,6 @@
 {
 	"name": "spec-generator",
-	"version": "0.5.4",
+	"version": "0.5.5",
 	"private": true,
 	"description": "Generates the element/property tables for our specs based on the schema file.",
 	"author": "AdaptiveCards",
