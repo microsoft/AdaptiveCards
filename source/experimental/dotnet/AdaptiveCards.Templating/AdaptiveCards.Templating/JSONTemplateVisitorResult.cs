@@ -31,7 +31,7 @@ namespace AdaptiveCards.Templating
                 whenEvaluationResult = EvaluationResult.NotEvaluated;
             }
 
-            public TemplatePartialResult(string predicateString, string a = "", bool b = true) : this (a, b)
+            public TemplatePartialResult(string predicateString, string a = "", bool b = false) : this (a, b)
             {
                 isWhen = true;
                 predicate = predicateString;
@@ -47,78 +47,86 @@ namespace AdaptiveCards.Templating
                         whenEvaluationResult = EvaluationResult.EvaluatedToFalse;
                         return "";
                     }
-
-                    whenEvaluationResult = EvaluationResult.EvaluatedToTrue;
-
-                    StringBuilder output = new StringBuilder();
-                    // expands results in When
-
-                    bool allWhenIsExpanded = true;
-                    foreach (var when in whens)
-                    {
-                        var headOfWhen = when.First.Value;
-                        headOfWhen.IsExpanded = true;
-                        bool areAllElementsExpanded = true;
-                        if (evaluator.IsTrue(headOfWhen.predicate, data))
-                        {
-                            foreach (var elem in when)
-                            {
-                                output.Append(elem.Expand(evaluator, data));
-                                areAllElementsExpanded &= elem.IsExpanded;
-                            }
-                        }
-
-                        allWhenIsExpanded &= areAllElementsExpanded;
-
-                        StringResult.Append(output);
-                    }
-
-                    IsExpanded = allWhenIsExpanded;
                 }
 
+                whenEvaluationResult = EvaluationResult.EvaluatedToTrue;
+
+                StringBuilder output = new StringBuilder();
+                // expands results in When
+
+                bool allWhenIsExpanded = true;
+
+                foreach (var when in whens)
+                {
+                    var enumerator =  when.GetEnumerator();
+                    enumerator.MoveNext();
+                    var headOfWhen = enumerator.Current;
+                    bool areAllElementsExpanded = true;
+                    if (evaluator.IsTrue(headOfWhen.predicate, data))
+                    {
+                        while(enumerator.MoveNext())
+                        {
+                            var elem = enumerator.Current;
+                            output.Append(elem.Expand(evaluator, data));
+                            areAllElementsExpanded &= elem.IsExpanded;
+                        }
+                    }
+
+                    allWhenIsExpanded &= areAllElementsExpanded;
+                }
+
+                IsExpanded &= allWhenIsExpanded;
+                StringBuilder expandedStringResult = new StringBuilder();
 
                 if (IsExpanded)
                 {
-                    return StringResult.ToString(); 
+                    expandedStringResult.Append(StringResult).Append(output);
                 }
                 else
                 {
-                    return evaluator.Expand(StringResult.ToString(), data);
+                    expandedStringResult.Append(evaluator.Expand(StringResult.ToString(), data)).Append(output);
                 }
+
+                return expandedStringResult.ToString(); 
             }
         }
 
         private readonly LinkedList<TemplatePartialResult> partialResultLinkedList = new LinkedList<TemplatePartialResult>();
-        private bool isExpanded { get; set; }
-        private List<JSONTemplateVisitorResult> whens;
-        private bool isWhen;
-        private string predicate;
         private bool isPair;
-        private EvaluationResult whenEvaluationResult;
 
+
+        public bool ShouldTryRemoveComman;
         public bool IsExpanded
         {
             get
             {
-                if (isWhen)
+                if (IsWhen)
                 {
-                    return !(whenEvaluationResult == EvaluationResult.NotEvaluated);
+                    return !(WhenEvaluationResult == EvaluationResult.NotEvaluated);
                 }
                 return partialResultLinkedList.Count == 0 || partialResultLinkedList.Count == 1;
             }
         }
         // lists parsed result from the current node which has $when 
-        public List<JSONTemplateVisitorResult> Whens { get => whens; set => whens = value; }
-        public bool IsWhen { get => isWhen; set => isWhen = value; }
-        public string Predicate { get => predicate; set => predicate = value; }
+        public bool IsWhen { get => partialResultLinkedList.Count == 0 ? false : partialResultLinkedList.First.Value.isWhen; }
+        public string Predicate { get => IsWhen && partialResultLinkedList.Count != 0 ? partialResultLinkedList.First.Value.predicate : ""; }
         public bool IsPair { get => isPair; set => isPair = value; }
-        public EvaluationResult WhenEvaluationResult { get => whenEvaluationResult; set => whenEvaluationResult = value; }
+        public EvaluationResult WhenEvaluationResult
+        {
+            get => IsWhen && partialResultLinkedList.Count != 0 ? partialResultLinkedList.First.Value.whenEvaluationResult : EvaluationResult.NotEvaluated;
+            set
+            {
+                if (IsWhen && partialResultLinkedList.Count != 0)
+                {
+                    partialResultLinkedList.First.Value.whenEvaluationResult = value;
+                }
+            }
+        }
 
         public JSONTemplateVisitorResult()
         {
+            ShouldTryRemoveComman = false;
             partialResultLinkedList.AddLast(new TemplatePartialResult());
-            Whens = new List<JSONTemplateVisitorResult>();
-
         }
 
         public JSONTemplateVisitorResult(string capturedString) : this()
@@ -130,7 +138,7 @@ namespace AdaptiveCards.Templating
         {
             Append(capturedString, isExpanded);
         }
-        public JSONTemplateVisitorResult(string capturedString, string predicate) : this()
+        public JSONTemplateVisitorResult(string capturedString, string predicate)
         {
             bool isExpanded = false;
             if (predicate.Length == 0)
@@ -138,10 +146,9 @@ namespace AdaptiveCards.Templating
                 isExpanded = true;
             }
 
-            IsWhen = true;
-            Predicate = predicate;
-            WhenEvaluationResult = EvaluationResult.NotEvaluated; 
-            Append(capturedString, isExpanded);
+            var partialResult = new TemplatePartialResult(predicate, capturedString, isExpanded);
+            partialResultLinkedList.AddLast(partialResult);
+            ShouldTryRemoveComman = false;
         }
 
         public JSONTemplateVisitorResult(JSONTemplateVisitorResult result) : this()
@@ -164,6 +171,14 @@ namespace AdaptiveCards.Templating
             partialResultLinkedList.RemoveFirst();
         }
 
+        public void RemoveWhen()
+        {
+            if (IsWhen && partialResultLinkedList.Count > 0)
+            {
+                RemoveHead();
+            }
+        }
+
         /// <summary>
         /// Remove a comma if the comma exists at the end
         /// returns true if the comma removed
@@ -182,7 +197,7 @@ namespace AdaptiveCards.Templating
             }
             return false;
         }
-        public void TryRemoveCharAtEndFromStringBuilder(StringBuilder input)
+        public void TryRemoveCommarAtTheEndFromStringBuilder(StringBuilder input)
         {
             if (input.Length <= 0)
             {
@@ -221,6 +236,11 @@ namespace AdaptiveCards.Templating
 
         public void Append(JSONTemplateVisitorResult result)
         {
+            if (result.ShouldTryRemoveComman)
+            {
+                TryRemoveACommaAtEnd();
+            }
+
             if (result == null)
             {
                 return;
@@ -228,16 +248,31 @@ namespace AdaptiveCards.Templating
             var tail = GetTail().Value;
             var headOfResult = result.GetHead().Value;
 
-            if (result.isWhen && !result.IsPair)
+            if (result.IsWhen)
             {
-                tail.IsExpanded = false;
-                tail.whens.Add(result.partialResultLinkedList);
-                tail.isWhen = true;
-                tail.predicate = result.predicate;
-                return;
+                // if result is pair, result is captured as such "$when" : "${expression}"
+                // we are adding this pair to the existing result which is an object since only objects
+                // can have pairs in json
+                // we then make entir object as when object, a conditional object with predicate defined in ${expression} of $when pair
+                // depending on the evaluation result of predicate, we decide whether to keep the object or not
+                // make the when the head of the partial results of result to ensure that the object correctly behaves
+                if (result.IsPair)
+                {
+                    TryRemoveACommaAtEnd();
+                    partialResultLinkedList.AddFirst(headOfResult);
+                    return;
+                }
+                else
+                {
+                    // result is returned as object
+                    // we put the result to when lists
+                    tail.whens.Add(result.partialResultLinkedList);
+                    return;
+                }
             }
 
-            if (tail.IsExpanded && headOfResult.IsExpanded)
+
+            if (tail.IsExpanded && headOfResult.IsExpanded && tail.whens.Count == 0 && headOfResult.whens.Count == 0)
             {
                 tail.StringResult.Append(headOfResult.StringResult);
                 result.RemoveHead();
@@ -270,30 +305,46 @@ namespace AdaptiveCards.Templating
 
         public string Expand(JSONTemplateVisitor evaluator, JObject data)
         {
+            var enumerator =  partialResultLinkedList.GetEnumerator();
             if (IsWhen)
             {
                 // object is "$when" type and its evaluation failes, so return
-                if(!evaluator.IsTrue(predicate, data))
+                if(!evaluator.IsTrue(Predicate, data))
                 {
                     return "";
                 }
+                enumerator.MoveNext();
             }
 
             StringBuilder output = new StringBuilder() ;
-            // expands results in When
-            foreach (var when in Whens)
-            {
-                output.Append(when.Expand(evaluator, data));
-            }
 
-            foreach (var elem in partialResultLinkedList)
+            while(enumerator.MoveNext())
             {
-                var partialResultString = elem.Expand(evaluator, data);
-                if (elem.isWhen && elem.whenEvaluationResult == EvaluationResult.EvaluatedToFalse)
+                var elem = enumerator.Current;
+                char ch = '\0';
+                if (output.Length != 0)
                 {
-                    TryRemoveCharAtEndFromStringBuilder(output);
+                    ch = output[output.Length - 1];
                 }
-                output.Append(partialResultString);
+
+                var elemLength = elem.StringResult.Length;
+                var wasElemEmptyBeforeExpansion = false;
+                var hasCommandAtTheEnd = ch == ',';
+
+                if (hasCommandAtTheEnd)
+                {
+                    wasElemEmptyBeforeExpansion = elemLength == 0 && elem.whens.Count == 0;
+                }
+
+                var partialResult = elem.Expand(evaluator, data);
+                var isElemEmptyAfterExpansion = partialResult.Length == 0;
+
+                if (!wasElemEmptyBeforeExpansion && isElemEmptyAfterExpansion && hasCommandAtTheEnd)
+                {
+                    // then remove commad at the end;
+                    TryRemoveCommarAtTheEndFromStringBuilder(output);
+                }
+                output.Append(partialResult);
             }
             return output.ToString();
         }

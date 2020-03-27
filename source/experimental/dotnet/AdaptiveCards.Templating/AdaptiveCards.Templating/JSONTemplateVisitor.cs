@@ -272,19 +272,8 @@ namespace AdaptiveCards.Templating
                             // if it's Array Type we defer the evaluation, so store predicate and return
                             else
                             {
-                                result.IsWhen = true;
-                                result.IsPair = false;
-                                result.Predicate = returnedResult.Predicate;
                                 removeComma = !result.TryRemoveACommaAtEnd();
-                                // we don't keep what's returned from $when pair
-                                continue;
                             }
-                        }
-                        // this means that an object with when has been returned
-                        // we add this object to our when list
-                        else
-                        {
-                            result.Whens.Add(returnedResult);
                         }
                     }
 
@@ -295,6 +284,14 @@ namespace AdaptiveCards.Templating
                         _ = result.TryRemoveACommaAtEnd();
                         removeComma = false;
                     }
+                }
+            }
+
+            if (result.IsWhen)
+            {
+                if (result.WhenEvaluationResult == JSONTemplateVisitorResult.EvaluationResult.EvaluatedToTrue)
+                {
+                    result.RemoveWhen();
                 }
             }
 
@@ -387,7 +384,7 @@ namespace AdaptiveCards.Templating
 
         public override JSONTemplateVisitorResult VisitValueTemplateString([NotNull] JSONParser.ValueTemplateStringContext context)
         {
-            // I just need to evaluation result and return
+            // I just need to evaluate result and return
             JSONTemplateVisitorResult result = new JSONTemplateVisitorResult("\"");
             result.Append(Visit(context.children[1]));
             result.Append("\"");
