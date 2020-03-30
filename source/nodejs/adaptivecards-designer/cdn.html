@@ -39,11 +39,7 @@
 				console.log("Local storage is not available.");
 			}
 
-			let hostContainers = [];
-			hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
-			hostContainers.push(new ACDesigner.CortanaContainer("Cortana Skills", "containers/cortana-container.css"));
-
-			let designer = new ACDesigner.CardDesigner(hostContainers);
+			let designer = new ACDesigner.CardDesigner(ACDesigner.defaultMicrosoftHosts);
 			designer.assetPath = "https://unpkg.com/adaptivecards-designer@latest/dist";
 			designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.OpenPayload).isVisible = false;
 

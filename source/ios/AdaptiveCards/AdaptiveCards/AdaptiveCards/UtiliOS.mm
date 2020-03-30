@@ -84,12 +84,10 @@ void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage>
 
         if (imgView) {
             imgView.translatesAutoresizingMaskIntoConstraints = NO;
-            [containerView addSubview:imgView];
-            [containerView sendSubviewToBack:imgView];
+            [containerView insertSubview:imgView atIndex:0];
 
             if (img) {
                 // apply now if image is ready, otherwise wait until it is loaded
-                // (ACRView::observeValueForKeyPath)
                 applyBackgroundImageConstraints(backgroundImage.get(), imgView, img);
             }
         }
