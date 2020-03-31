@@ -43,7 +43,7 @@ templateRoot
 
 
 templateString
-   : (STRING? TEMPLATELITERAL STRING?)+ 
+   : (STRING? TEMPLATELITERAL STRING?)+ # templatedString
    ;
 
 templateExpression

@@ -4,6 +4,8 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System;
 using AdaptiveExpressions.Properties;
+using AdaptiveExpressions;
+using System.Text;
 
 namespace AdaptiveCards.Templating
 {
@@ -335,7 +337,6 @@ namespace AdaptiveCards.Templating
 
         public override JSONTemplateVisitorResult VisitTerminal(ITerminalNode node)
         {
-            var tokenType = node.Symbol.Type;
             if (node.Symbol.Type == JSONLexer.TEMPLATELITERAL || node.Symbol.Type == JSONLexer.TEMPLATEROOT)
             {
                 // nice place to add error handling
@@ -361,10 +362,41 @@ namespace AdaptiveCards.Templating
             return new JSONTemplateVisitorResult(node.GetText());
         }
 
-        public string Expand(string unboundString, JObject data)
+        public string Expand(string unboundString, JObject data, bool isTemplatedString = false)
         {
-            var (value, error) = new ValueExpression(unboundString).TryGetValue(data);
-            return value.ToString();
+            if (isTemplatedString)
+            {
+                var exp = Expression.Parse(unboundString.Substring(2, unboundString.Length - 3));
+                var aelEvalResult = exp.TryEvaluate(data);
+                StringBuilder result = new StringBuilder();
+                if (aelEvalResult.error == null)
+                {
+                    if (aelEvalResult.value == null)
+                    {
+                        // when AEL expansion fails, it returns ""
+                        // this is temporary fix until AEL get patched
+                        return result.Append("\"\"").ToString();
+                    }
+
+                    if (aelEvalResult.value is string)
+                    {
+                        result.Append("\"");
+                    }
+
+                    result.Append(aelEvalResult.value.ToString());
+
+                    if (aelEvalResult.value is string)
+                    {
+                        result.Append("\"");
+                    }
+                }
+                return result.ToString(); 
+            }
+            else
+            {
+                var aelEvalResult = new ValueExpression(unboundString).TryGetValue(data);
+                return aelEvalResult.Value.ToString();
+            }
         }
 
         public bool IsTrue(string predicate, JObject data)
@@ -385,10 +417,53 @@ namespace AdaptiveCards.Templating
         public override JSONTemplateVisitorResult VisitValueTemplateString([NotNull] JSONParser.ValueTemplateStringContext context)
         {
             // I just need to evaluate result and return
-            JSONTemplateVisitorResult result = new JSONTemplateVisitorResult("\"");
-            result.Append(Visit(context.children[1]));
+            return Visit(context.children[1]);
+        }
+        /// <summary>
+        /// It's value template string version of VisitChildren method
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public override JSONTemplateVisitorResult VisitTemplatedString([NotNull] JSONParser.TemplatedStringContext context)
+        {
+            JSONTemplateVisitorResult result = new JSONTemplateVisitorResult();
+            var children = context.children;
+
+            // this is a special case, this is an expression, this form tells parser that 
+            // user wants to use innate value of the data
+            if (children.Count == 1)
+            {
+                if (HasDataContext())
+                {
+                    var expressionAsString = context.GetChild(0).GetText();
+                    // need a error handling when user put template with no matching data
+                    // continuing as need to finish skelectal codes
+                    DataContext currentDataContext = GetCurrentDataContext();
+                    if (currentDataContext.IsArrayType)
+                    {
+                        return new JSONTemplateVisitorResult(expressionAsString, false, true);
+                    }
+                    else
+                    {
+                        AddRootDataContextToCurrentDataContext();
+                        JObject data = GetCurrentDataContext().templateData;
+                        // in this context, if parsed and passed to here, it passed the check of the form ${ string }
+                        result.Append(Expand(expressionAsString, data, true));
+                    }
+                }
+                return result;
+            }
+
             result.Append("\"");
-            return result; 
+
+            for (int i = 0; i < children.Count; i++)
+            {
+                result.Append(Visit(context.GetChild(i)));
+            }
+
+            result.Append("\"");
+
+            return result;
         }
         public override JSONTemplateVisitorResult VisitTemplateStringWithRoot([NotNull] JSONParser.TemplateStringWithRootContext context)
         {

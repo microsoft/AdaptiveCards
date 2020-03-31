@@ -20,18 +20,20 @@ namespace AdaptiveCards.Templating
 
             public List<LinkedList<TemplatePartialResult>> whens;
             public bool isWhen;
+            public bool isTemplatedString;
             public string predicate;
             public EvaluationResult whenEvaluationResult;
 
-            public TemplatePartialResult(string a = "", bool b = true)
+            public TemplatePartialResult(string a = "", bool b = true, bool c = false)
             {
                 StringResult = new StringBuilder(a);
                 IsExpanded = b;
+                isTemplatedString = c;
                 whens = new List<LinkedList<TemplatePartialResult>> ();
                 whenEvaluationResult = EvaluationResult.NotEvaluated;
             }
 
-            public TemplatePartialResult(string predicateString, string a = "", bool b = false) : this (a, b)
+            public TemplatePartialResult(string predicateString, string a = "", bool b = false) : this (a, b, false)
             {
                 isWhen = true;
                 predicate = predicateString;
@@ -84,7 +86,7 @@ namespace AdaptiveCards.Templating
                 }
                 else
                 {
-                    expandedStringResult.Append(evaluator.Expand(StringResult.ToString(), data)).Append(output);
+                    expandedStringResult.Append(evaluator.Expand(StringResult.ToString(), data, isTemplatedString)).Append(output);
                 }
 
                 return expandedStringResult.ToString(); 
@@ -127,6 +129,12 @@ namespace AdaptiveCards.Templating
         {
             ShouldTryRemoveComman = false;
             partialResultLinkedList.AddLast(new TemplatePartialResult());
+        }
+
+        public JSONTemplateVisitorResult(string capturedString = "", bool isExpanded = false, bool isTemplatedString = false)
+        {
+            ShouldTryRemoveComman = false;
+            partialResultLinkedList.AddLast(new TemplatePartialResult(capturedString, isExpanded, isTemplatedString));
         }
 
         public JSONTemplateVisitorResult(string capturedString) : this()

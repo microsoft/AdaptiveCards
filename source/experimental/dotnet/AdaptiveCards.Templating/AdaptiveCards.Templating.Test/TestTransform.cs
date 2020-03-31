@@ -54,6 +54,65 @@ namespace AdaptiveCards.Templating.Test
         }
 
         [TestMethod]
+        public void TestIntInExpression()
+        {
+            AdaptiveTransformer transformer = new AdaptiveTransformer();
+
+            string jsonTemplate = @"{
+        ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+        ""type"": ""AdaptiveCard"",
+        ""version"": ""1.0"",
+        ""body"": [
+                {
+                    ""type"": ""Input.Number"",
+                    ""id"": ""number"",
+                    ""placeholder"": ""Enter Estimated Mileage"",
+                    ""min"": 1,
+                    ""max"": 10,
+                    ""value"": ""${car_type_1.average_mileage}"" 
+                }
+        ],
+        ""actions"": [
+              {
+                  ""type"": ""Action.Submit"",
+                  ""title"": ""OK""
+              }
+        ]
+}";
+
+            string jsonData = @"{
+    ""car_type_1"": {
+        ""average_mileage"": 120000, 
+        ""average_mpg"" : 28.5
+    }
+}";
+
+            string cardJson = transformer.Transform(jsonTemplate, jsonData);
+
+            AssertJsonEqual(@"{
+        ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+        ""type"": ""AdaptiveCard"",
+        ""version"": ""1.0"",
+        ""body"": [
+                {
+                    ""type"": ""Input.Number"",
+                    ""id"": ""number"",
+                    ""placeholder"": ""Enter Estimated Mileage"",
+                    ""min"": 1,
+                    ""max"": 10,
+                    ""value"": 120000
+                }
+        ],
+        ""actions"": [
+              {
+                  ""type"": ""Action.Submit"",
+                  ""title"": ""OK""
+              }
+        ]
+}", cardJson);
+        }
+
+        [TestMethod]
         public void TestExternalDataContext()
         {
             AdaptiveTransformer transformer = new AdaptiveTransformer();
@@ -133,7 +192,7 @@ namespace AdaptiveCards.Templating.Test
                 ""items"": [
                 {
                     ""type"": ""TextBlock"",
-                    ""text"": ""10""
+                    ""text"": 10
                 }
             ]
         }
@@ -1104,11 +1163,11 @@ namespace AdaptiveCards.Templating.Test
                 ""items"": [
                 {
                     ""type"": ""TextBlock"",
-                    ""text"": ""1""
+                    ""text"": 1
                 },
                 {
                     ""type"": ""TextBlock"",
-                    ""text"": ""10""
+                    ""text"": 10
                 }
             ]
         }
@@ -1149,12 +1208,12 @@ namespace AdaptiveCards.Templating.Test
                 {
                     ""type"": ""TextBlock"",
                     ""id"": ""ReceiptRequired0"",
-                    ""text"": ""1""
+                    ""text"": 1
                 },
                 {
                     ""type"": ""TextBlock"",
                     ""id"": ""ReceiptRequired1"",
-                    ""text"": ""10""
+                    ""text"": 10
                 }
             ]
         }
@@ -1306,7 +1365,7 @@ namespace AdaptiveCards.Templating.Test
                     ""$data"": ""${$root.LineItems}"",
                     ""type"": ""TextBlock"",
                     ""id"": ""ReceiptRequired${$index}"",
-                    ""text"": ""${Milage}""
+                    ""text"": ""${string(Milage)}""
                   }
                 ]
               }
