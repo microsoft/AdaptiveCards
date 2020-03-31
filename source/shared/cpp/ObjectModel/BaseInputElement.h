@@ -20,6 +20,9 @@ namespace AdaptiveSharedNamespace
         std::string GetLabel() const;
         void SetLabel(const std::string label);
 
+        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> GetLabelCardElement() const;
+        void SetLabelCardElement(const std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> label);
+
         bool GetIsRequired() const;
         void SetIsRequired(const bool isRequired);
 
@@ -36,6 +39,7 @@ namespace AdaptiveSharedNamespace
         bool m_isRequired;
         std::string m_errorMessage;
         std::string m_label;
+        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> m_labelCardElement;
     };
 
     template<typename T>
@@ -48,7 +52,17 @@ namespace AdaptiveSharedNamespace
         baseInputElement->SetId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id, true));
         baseInputElement->SetIsRequired(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsRequired, false));
         baseInputElement->SetErrorMessage(ParseUtil::GetString(json, AdaptiveCardSchemaKey::ErrorMessage));
-        baseInputElement->SetLabel(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Label));
+
+        // Label may be of types string, TextBlock or RichTextBlock
+        try
+        {
+            baseInputElement->SetLabel(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Label));
+        }
+        catch (std::exception /*e*/)
+        {
+            baseInputElement->SetLabelCardElement(ParseUtil::GetLabel(context, json, AdaptiveCardSchemaKey::Label));
+        }
+
 
         return baseInputElement;
     }

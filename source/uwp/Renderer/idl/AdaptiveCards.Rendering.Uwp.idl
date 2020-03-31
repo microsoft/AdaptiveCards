@@ -724,6 +724,7 @@ AdaptiveNamespaceStart
         Boolean IsRequired;
         String ErrorMessage;
         String Label;
+        IAdaptiveCardElement LabelCardElement;
     };
 
     [
