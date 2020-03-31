@@ -24,7 +24,7 @@
 
 ## actions
 
-The array of `Image` elements to show.
+The array of `Action` elements to show.
 
 * **Type**: `Action[]`
 * **Required**: Yes

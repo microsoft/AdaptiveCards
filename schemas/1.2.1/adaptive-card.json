@@ -277,7 +277,7 @@
           "items": {
             "$ref": "#/definitions/ImplementationsOf.Action"
           },
-          "description": "The array of `Image` elements to show."
+          "description": "The array of `Action` elements to show."
         },
         "fallback": {},
         "height": {},
