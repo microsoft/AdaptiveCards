@@ -178,6 +178,10 @@ We could also possibly add a specific named feature to the requires dictionary t
 ```
 Either of these approaches would allow card authors who know their cards will be hitting platforms targeting both 1.2 and 1.3 to take advantage of the labels for accessibility or interactivity purposes in 1.3 without breaking their experience on 1.2 clients. That said, needing to add fallback to the card defeats the conciseness benefits of this approach, and will not help card authors who are targeting 1.0 or 1.1 hosts. Card authors who know their hosts support version 1.3 (or any future version) will not need to worry about this concern.
 
+> Question: Labels can be of three types: string, TextBlock and RichTextBlock, this leads to a rendering issue where string labels will not be able to define the spacing between the label and the input. We can define that information in the host config, will that be a good option?
+> 
+> We have to also make clear that the spacing property in the input element will refer to the spacing between the label and the rendered input. Card authors may think the spacing is between the label and the previous element as the actual element is the input element and the label is a just a property of it.   
+
 ### Option 2 – LabelFor Property on TextBlocks/RichTextBlocks
 An alternative option would be to have labels as separate text elements, but provide an id that links the inputs to the labels:
 ``` json
@@ -272,6 +276,10 @@ Similarly to option 1, a card author could use fallback to address this if they 
 	}
 }
 ```
+
+> ### Conclusion 
+> It was decided that the approach to follow was the one presented in the Option 1: Providing the "label" property in all Input elements. isRequired hints will also only be rendered in label elements.
+
 ## Placeholders
 Our primary input scenario card uses placeholders to label the inputs. With either of the approached above, how do we support scenarios where the desired behavior is for the inputs to be labeled by their placeholder text?
 
@@ -463,3 +471,55 @@ This document has primarily focused on `Input.Text` in it's examples, but the la
 
 ## Accessibility Labels
 Both Xaml and HTML have accessibility labels which can be used to address accessibility issues related to inputs (AutomationProperties and aria- properties respectively). In both cases, setting these properties addresses accessibility issues, but does not semantically associate the label with the input for interactivity behavior. Additionally, these properties are not input specific, and can be used on other elements as well as inputs. We should consider whether we want generic accessibility labels such as these, but such a feature should apply to all elements and is outside the scope of this document.
+
+## Rendering for string labels
+
+The default rendering for labels should be performed with the default values for all of the following properties:
+* spacing
+* fontFamily
+* fontSizes
+* fontWeights
+* foregroundColors
+
+This would allow authors to emulate writing a simple TextBlock element which only non-default property would be the text, making the string version look like this
+
+```json
+{
+	"type": "Input.Text",
+	"id": "textInput",
+	"label": "Label for Input"
+}
+```
+
+While the TextBlock version would look like this
+
+```json
+{
+	"type": "Input.Text",
+	"id": "textInput",
+	"label": {
+		"type": "TextBlock",
+		"text": "Label for Input"
+	}
+}
+```
+
+Both of the afore mentioned cards would produce the same rendered result that would look like this:
+
+![img](assets/InputLabels/LabelDefault.PNG)
+
+
+### Host side styling
+
+The previously mentioned approach limits how a label can look to the most basic TextBlock, because of this we need to support host app styling to support most of the needs any host may need: 
+
+| Property | HostConfig | Native |
+| --- | --- | --- |
+| isRequiredHintPosition | X | |
+| spacing | X | |
+| fontFamily | X | X |
+| fontSize | X | X |
+| fontWeight | X | X |
+| foregroundColor | X | X |
+
+> Question: The table is just representative, I couldn't find more options to modify in the forms that I investigated. Also, no samples are presented to produce them once we get a clearer picture of the styling options to be allowed
