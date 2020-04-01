@@ -72,6 +72,43 @@ This conflict speaks to a general tension inherent in the design of Adaptive Car
 
 In order to gather more data to help us balance the needs of the card authors and hosts, we will send a survey to customers who have expressed an interest in improving out input story. The following options are under consideration, and will be evaluated against survey data to determine which if any will be included in our v1 implementation.
 
+> ## Rendering for string labels
+>
+> The default rendering for labels should be performed with the default values for all of the following properties:
+> * spacing
+> * fontFamily
+> * fontSizes
+> * fontWeights
+> * foregroundColors
+>
+> This would allow authors to emulate writing a simple TextBlock element which only non-default property would be the text, making the string version look like this
+>
+> ```json
+> {
+>	"type": "Input.Text",
+>	"id": "textInput",
+>	"label": "Label for Input"
+> }
+> ```
+>
+> While the TextBlock version would look like this
+>
+> ```json
+> {
+>	"type": "Input.Text",
+>	"id": "textInput",
+>	"label": {
+>		"type": "TextBlock",
+>		"text": "Label for Input"
+>	}
+> }
+> ```
+>
+> Both of the afore mentioned cards would produce the same rendered result that would look like  this:
+> 
+> ![img](assets/InputLabels/LabelDefault.PNG)
+>
+
 ### Host Formatting
 
 If we want to allow the host to control formatting of the labels, either in general or for required inputs, we need a way for them to specify the desired format. There are two main things we may want to include:
@@ -90,6 +127,20 @@ If we want to allow the host to control formatting of the labels, either in gene
 }
 ```
 Another option is to not put this in host config, and instead control this styling via support of native styling on required and optional labels (i.e. CSS, Xaml Styles, etc). This decision speaks to a larger discussion of the direction of host config that is beyond the scope of this document.
+
+> ### Host side styling
+> 
+> The previously mentioned approach limits how a label can look to the most basic TextBlock, because of this we need to support host app styling to support most of the needs any host may need: 
+> 
+> | Property | HostConfig | Native |
+> | --- | --- | --- |
+> | spacing | X | |
+> | fontFamily | X | X |
+> | fontSize | X | X |
+> | fontWeight | X | X |
+> | foregroundColor | X | X |
+> 
+> Open discussion: The table is just representative, I couldn't find more options to modify in the forms that I investigated. Once this properties have been discussed I can add them to the sample above
 
 #### Required and Optional indicators
 
@@ -223,6 +274,9 @@ We could also possibly add a specific named feature to the requires dictionary t
 Either of these approaches would allow card authors who know their cards will be hitting platforms targeting both 1.2 and 1.3 to take advantage of the labels for accessibility or interactivity purposes in 1.3 without breaking their experience on 1.2 clients. That this will not help card authors who are targeting 1.0 or 1.1 hosts where fallback is not supported. Card authors who know their hosts support version 1.3 (or any future version) will not need to worry about this concern.
 
 In the case of a host using the `labelFor` property there would be no negative impact on down-level platforms other than not providing the association. Because the TextBlock will still exist, only the association will be dropped when rendered on a platform that doesn't support this feature.
+
+> ### Conclusion 
+> It was decided that the approach to follow was the one presented in the Option 1: Providing the "label" property in all Input elements. isRequired hints will also only be rendered in label elements.
 
 ## Placeholders
 Our primary input scenario card uses placeholders to label the inputs. Is any additional functionality required to support scenarios where the desired behavior is for the inputs to be labeled by their placeholder text?
