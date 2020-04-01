@@ -232,10 +232,10 @@ Terminal Nodes or leaf nodes contain the templated string, so the default VisitT
 When data context type is an array and there is an adaptive element that uses the data context. Template lagunage specifies that the adaptive element that hosts the data context repeats its subtree of which root node is iteslf.  
   
 **Figure 5**  
-![](Drawing1.png)  
+![](RepeatingElement1.png)  
   
 **Figure 6**  
-![](Drawing2.png)   
+![](RepeatingElement2.png)   
 ```json
 {
     "type": "AdaptiveCard",
