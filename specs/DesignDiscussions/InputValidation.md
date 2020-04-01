@@ -101,7 +101,7 @@ With the advent of this input validation feature, those platforms which do not s
 |Input.Time|min, max|Existing Properties
 |**All inputs** |isRequired |New for this feature
 
-> Question: Should Input.Number also validate for integer or floating point numbers? No request was made in the survey, should we leave it out of this version spec?
+> Open for consideration: Should Input.Number also validate for integer or floating point numbers? No request was made in the survey, should we leave it out of this version spec?
 
 ### Which Inputs to Validate
 The primary purpose of client side input validation is to validate a users inputs before they submit them. In this case, the card author would want us to validate all inputs before they are submitted:
