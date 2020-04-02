@@ -53,16 +53,6 @@ export class EvaluationContext {
 }
 
 export class TemplateObjectMemory implements AEL.MemoryInterface {
-    private static processPathValue(path: string, value: any): string {
-        let substitutionValue: string | undefined = undefined;
-
-        if (GlobalSettings.getUndefinedFieldValueSubstitutionString) {
-            substitutionValue = GlobalSettings.getUndefinedFieldValueSubstitutionString(path);    
-        }
-
-        return substitutionValue ? substitutionValue : "${" + path + "}";
-    }
-
     private _memory: AEL.MemoryInterface;
 
     $root: any;
@@ -76,13 +66,7 @@ export class TemplateObjectMemory implements AEL.MemoryInterface {
     getValue(path: string): any {
         let actualPath = (path.length > 0 && path[0] !== "$") ? "$data." + path : path;
 
-        let value = this._memory.getValue(actualPath);
-
-        if (value === undefined) {
-            value = TemplateObjectMemory.processPathValue(path, value);
-        }
-
-        return value;
+        return this._memory.getValue(actualPath);
     }
 
     setValue(path: string, input: any) {
@@ -109,17 +93,31 @@ export class Template {
                 matchCount++;
             };
 
+            let lookup: AEL.EvaluatorLookup = (type: string) => {
+                let standardFunction = AEL.ExpressionFunctions.standardFunctions.get(type);
+
+                if (standardFunction) {
+                    return standardFunction;
+                }
+                else {
+                    return new AEL.ExpressionEvaluator(
+                        type,
+                        (expression: AEL.Expression, state: AEL.MemoryInterface, options: AEL.Options) => { throw new Error("Unknown function"); },
+                        AEL.ReturnType.String);
+                }
+            }
+
             // If there are none, it's just a string
             if (matchCount === 0) {
                 return node;
             }
             // If the entire string is enclosed in a single ${}, extract the enclosed expression
             else if (matchCount === 1 && lastMatch[0].length === node.length) {
-                return AEL.Expression.parse(lastMatch[1]);
+                return AEL.Expression.parse(lastMatch[1], lookup);
             }
 
             // Otherwise, it's an interpolated string with multiple embedded expressions
-            return AEL.Expression.parse("`" + node + "`");
+            return AEL.Expression.parse("`" + node + "`", lookup);
         }
         else if (typeof node === "object" && node !== null) {
             if (Array.isArray(node)) {
@@ -149,13 +147,55 @@ export class Template {
 
     private _context: EvaluationContext;
 
-    private createEvaluationState(): TemplateObjectMemory {
+    private tryEvaluateExpression(expression: AEL.Expression, allowSubstitutions: boolean): { value: any; error: string } {
         let memory = new TemplateObjectMemory();
         memory.$root = this._context.$root;
         memory.$data = this._context.$data;
         memory.$index = this._context.$index;
 
-        return memory;
+        let options: AEL.Options | undefined = undefined;
+
+        if (allowSubstitutions) {
+            options = new AEL.Options();
+            options.nullSubstitution = (path: string) => {
+                let substitutionValue: string | undefined = undefined;
+
+                if (GlobalSettings.getUndefinedFieldValueSubstitutionString) {
+                    substitutionValue = GlobalSettings.getUndefinedFieldValueSubstitutionString(path);    
+                }
+        
+                return substitutionValue ? substitutionValue : "${" + path + "}";
+            }
+        }
+
+        // The root of an expression coming from an interpolated string is of type Concat.
+        // In that case, and if the caller allows it, we're doing our own concatenation
+        // in order to catch each individual expression evaluation error and substitute in
+        // the final string
+        if (expression.type === AEL.ExpressionType.Concat && allowSubstitutions) {
+            let result = "";
+
+            for (let childExpression of expression.children) {
+                let evaluationResult: { value: any; error: string };
+                
+                try {
+                    evaluationResult = childExpression.tryEvaluate(memory, options);
+                }
+                catch (ex) {
+                    // We'll swallow all exceptions here
+                    evaluationResult = {
+                        value: "${" + childExpression.toString() + "}",
+                        error: undefined
+                    };
+                }
+
+                result += evaluationResult.value.toString();
+            }
+
+            return { value: result, error: undefined };
+        }
+        
+        return expression.tryEvaluate(memory, options);
     }
 
     private expandSingleObject(node: object): any {
@@ -199,7 +239,7 @@ export class Template {
             result = itemArray;
         }
         else if (node instanceof AEL.Expression) {
-            let evaluationResult = node.tryEvaluate(this.createEvaluationState());
+            let evaluationResult = this.tryEvaluateExpression(node, true);
 
             if (!evaluationResult.error) {
                 result = evaluationResult.value;
@@ -213,7 +253,7 @@ export class Template {
             let when = node["$when"];
 
             if (when instanceof AEL.Expression) {
-                let evaluationResult = when.tryEvaluate(this.createEvaluationState());
+                let evaluationResult = this.tryEvaluateExpression(when, false);
                 let whenValue: boolean = false;
                 
                 // If $when fails to evaluate or evaluates to anything but a boolean, consider it is false
@@ -228,7 +268,7 @@ export class Template {
 
                 if (dataContext !== undefined) {
                     if (dataContext instanceof AEL.Expression) {
-                        let evaluationResult = dataContext.tryEvaluate(this.createEvaluationState());
+                        let evaluationResult = this.tryEvaluateExpression(dataContext, true);
 
                         if (!evaluationResult.error) {
                             dataContext = evaluationResult.value;
