@@ -597,9 +597,12 @@ export class CardDesignerSurface {
         this._card.onInlineCardExpanded = (action: Adaptive.ShowCardAction, isExpanded: boolean) => { this.inlineCardExpanded(action, isExpanded); };
         this._card.onPreProcessPropertyValue = (sender: Adaptive.CardObject, property: Adaptive.PropertyDefinition, value: any) => {
             if (Shared.GlobalSettings.enableDataBindingSupport && typeof value === "string" && this.context.sampleData && this.context.bindingPreviewMode !== BindingPreviewMode.NoPreview) {
-                let templatizedString = ACData.TemplatizedString.parse(value);
+                let expression = ACData.Template.parseExpression(value);
 
-                if (templatizedString instanceof ACData.TemplatizedString) {
+                if (typeof expression === "string") {
+                    return expression;
+                }
+                else {
                     let evaluationContext = new ACData.EvaluationContext();
 
                     if (this.context.bindingPreviewMode === BindingPreviewMode.SampleData) {
@@ -609,17 +612,9 @@ export class CardDesignerSurface {
                         evaluationContext.$root = this.context.dataStructure.dataType.generateSampleData();
                     }
 
-                    let evaluatedValue = templatizedString.evaluate(evaluationContext);
+                    let evaluationResult = ACData.Template.tryEvaluateExpression(expression, evaluationContext, true);
 
-                    if (evaluatedValue !== undefined) {
-                        return typeof evaluatedValue === "string" ? evaluatedValue : value;
-                    }
-                    else {
-                        return value;
-                    }
-                }
-                else {
-                    return templatizedString;
+                    return typeof evaluationResult.value === "string" ? evaluationResult.value : value;
                 }
             }
 

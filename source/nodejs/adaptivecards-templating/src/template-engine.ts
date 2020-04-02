@@ -1,142 +1,127 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import { Binding, ExpressionParser, EvaluationContext } from "./expression-parser";
-import * as Shared from "./shared";
+import * as AEL from "adaptive-expressions";
 
-export class TemplatizedString {
-    private _parts: Array<string | Binding> = [];
+export class GlobalSettings {
+    static getUndefinedFieldValueSubstitutionString?: (path: string) => string | undefined = undefined;
+}
 
-    static parse(s: string): string | TemplatizedString {
-        let result = new TemplatizedString();
-        let i = 0;
+interface EvaluationContextState {
+    $data: any;
+    $index: any;
+}
 
-        do {
-            let expressionFound = false;
-            let start = i;
-            let loop;
+export class EvaluationContext {
+    private static readonly _reservedFields = ["$data", "$root", "$index"];
 
-            do {
-                loop = false;
+    private _stateStack: EvaluationContextState[] = [];
+    private _$data: any;
 
-                start = s.indexOf("{", start);
+    $root: any;
+    $index: number;
 
-                if (start >= 0) {
-                    if (start + 1 < s.length && s[start + 1] === "{") {
-                        start += 2;
-
-                        loop = true;
-                    }
-                }
-            } while (loop);
-
-            if (start >= 0) {
-                let end = s.indexOf("}", start);
-
-                if (end >= 0) {
-                    expressionFound = true;
-
-                    if (start > i) {
-                        result._parts.push(s.substring(i, start));
-                    }
-
-                    let bindngExpression = s.substring(start, end + 1);
-                    let part: string | Binding;
-
-                    try {
-                        part = ExpressionParser.parseBinding(bindngExpression);
-                    }
-                    catch (e) {
-                        part = bindngExpression;
-                    }
-
-                    result._parts.push(part);
-
-                    i = end + 1;
-                }
-            }
-
-            if (!expressionFound) {
-                result._parts.push(s.substr(i));
-
-                break;
-            }
-        } while (i < s.length);
-
-        if (result._parts.length === 1 && typeof result._parts[0] === "string") {
-            return <string>result._parts[0];
-        }
-        else {
-            return result;
-        }
+    isReservedField(name: string): boolean {
+        return EvaluationContext._reservedFields.indexOf(name) >= 0;
     }
 
-    private _shouldDropOwner: boolean = false;
-
-    private evalExpression(bindingExpression: Binding, context: EvaluationContext): any {
-        let result = bindingExpression.evaluate(context);
-
-        if (result === undefined) {
-            this._shouldDropOwner = this._shouldDropOwner || !bindingExpression.allowNull;
-        }
-
-        return result;
+    saveState() {
+        this._stateStack.push(
+            {
+                $data: this.$data,
+                $index: this.$index
+            });
     }
 
-    private internalEvaluate(context: EvaluationContext): any {
-        if (this._parts.length === 0) {
-            return undefined;
+    restoreLastState() {
+        if (this._stateStack.length === 0) {
+            throw new Error("There is no evaluation context state to restore.");
         }
-        else if (this._parts.length === 1) {
-            // If the templatized string only has 1 part, we want it to evaluate
-            // to same the type as produced by the expression
-            if (typeof this._parts[0] === "string") {
-                return this._parts[0];
-            }
-            else {
-                return this.evalExpression(<Binding>this._parts[0], context);
-            }
-        }
-        else {
-            // If the templatized string has multiple parts, we want it to evaluate
-            // to a string. In that context, each part that evaluates to undefined
-            // gets replaced by the original expression by default or by a resource
-            // string provided by the application
-            let s = "";
 
-            for (let part of this._parts) {
-                if (typeof part === "string") {
-                    s += part;
-                }
-                else {
-                    let evaluatedPart = this.evalExpression(<Binding>part, context);
+        let savedContext = this._stateStack.pop();
 
-                    if (evaluatedPart === undefined) {
-                        evaluatedPart = Shared.GlobalSettings.undefinedExpressionValueSubstitutionString ? Shared.GlobalSettings.undefinedExpressionValueSubstitutionString : (<Binding>part).expressionString;
-                    }
-
-                    s += evaluatedPart;
-                }
-            }
-
-            return s;
-        }
+        this.$data = savedContext.$data;
+        this.$index = savedContext.$index;
     }
 
-    evaluate(context: EvaluationContext): any {
-        this._shouldDropOwner = false;
-
-        return this.internalEvaluate(context);
+    get $data(): any {
+        return this._$data !== undefined ? this._$data : this.$root;
     }
 
-    get shouldDropOwner(): boolean {
-        return this._shouldDropOwner;
+    set $data(value: any) {
+        this._$data = value;
+    }
+}
+
+export class TemplateObjectMemory implements AEL.MemoryInterface {
+    private _memory: AEL.MemoryInterface;
+
+    $root: any;
+    $data: any;
+    $index: any;
+
+    constructor() {
+        this._memory = new AEL.SimpleObjectMemory(this);
+    }
+
+    getValue(path: string): any {
+        let actualPath = (path.length > 0 && path[0] !== "$") ? "$data." + path : path;
+
+        return this._memory.getValue(actualPath);
+    }
+
+    setValue(path: string, input: any) {
+        this._memory.setValue(path, input);
+    }
+
+    version(): string {
+        return this._memory.version();
     }
 }
 
 export class Template {
     private static prepare(node: any): any {
         if (typeof node === "string") {
-            return TemplatizedString.parse(node);
+            /*
+            let regExp = /\${([^}]*)}/g;
+            let matches: RegExpExecArray = null;
+            let lastMatch: RegExpExecArray;
+            let matchCount = 0;
+
+            // Determine if the string contains any ${<expression>}
+            while (matchCount <= 1 && (matches = regExp.exec(node)) != null) {
+                lastMatch = matches;
+
+                matchCount++;
+            };
+
+            let lookup: AEL.EvaluatorLookup = (type: string) => {
+                let standardFunction = AEL.ExpressionFunctions.standardFunctions.get(type);
+
+                if (standardFunction) {
+                    return standardFunction;
+                }
+                else {
+                    return new AEL.ExpressionEvaluator(
+                        type,
+                        (expression: AEL.Expression, state: AEL.MemoryInterface, options: AEL.Options) => { throw new Error("Unknown function " + type); },
+                        AEL.ReturnType.String);
+                }
+            }
+
+            // If there are none, it's just a string
+            if (matchCount === 0) {
+                return node;
+            }
+            // If the entire string is enclosed in a single ${}, extract the enclosed expression
+            else if (matchCount === 1 && lastMatch[0].length === node.length) {
+                return AEL.Expression.parse(lastMatch[1], lookup);
+            }
+
+            // Otherwise, it's an interpolated string with multiple embedded expressions
+            return AEL.Expression.parse("`" + node + "`", lookup);
+            */
+
+            return Template.parseExpression(node);
         }
         else if (typeof node === "object" && node !== null) {
             if (Array.isArray(node)) {
@@ -164,33 +149,100 @@ export class Template {
         }
     }
 
-    private _context: EvaluationContext;
+    public static parseExpression(expression: string): AEL.Expression | string {
+        let regExp = /\${([^}]*)}/g;
+        let matches: RegExpExecArray = null;
+        let lastMatch: RegExpExecArray;
+        let matchCount = 0;
 
-    private expandSingleObject(node: object): any {
-        let when = node["$when"];
+        // Determine if the string contains any ${<expression>}
+        while (matchCount <= 1 && (matches = regExp.exec(expression)) != null) {
+            lastMatch = matches;
 
-        if (when instanceof TemplatizedString) {
-            let whenValue: any;
-            
-            try {
-                whenValue = when.evaluate(this._context);
+            matchCount++;
+        };
 
-                // If $when doesn't evaluate to a boolean, consider it is false
-                if (typeof whenValue !== "boolean") {
-                    whenValue = false;
-                }
+        let lookup: AEL.EvaluatorLookup = (type: string) => {
+            let standardFunction = AEL.ExpressionFunctions.standardFunctions.get(type);
+
+            if (standardFunction) {
+                return standardFunction;
             }
-            catch {
-                // If we hit an exception, consider $when to be false
-                whenValue = false;
-            }
-
-            if (!whenValue) {
-                return null;
+            else {
+                return new AEL.ExpressionEvaluator(
+                    type,
+                    (expression: AEL.Expression, state: AEL.MemoryInterface, options: AEL.Options) => { throw new Error("Unknown function " + type); },
+                    AEL.ReturnType.String);
             }
         }
 
+        // If there are none, it's just a string
+        if (matchCount === 0) {
+            return expression;
+        }
+        // If the entire string is enclosed in a single ${}, extract the enclosed expression
+        else if (matchCount === 1 && lastMatch[0].length === expression.length) {
+            return AEL.Expression.parse(lastMatch[1], lookup);
+        }
 
+        // Otherwise, it's an interpolated string with multiple embedded expressions
+        return AEL.Expression.parse("`" + expression + "`", lookup);
+    }
+
+    public static tryEvaluateExpression(expression: AEL.Expression, context: EvaluationContext, allowSubstitutions: boolean): { value: any; error: string } {
+        let memory = new TemplateObjectMemory();
+        memory.$root = context.$root;
+        memory.$data = context.$data;
+        memory.$index = context.$index;
+
+        let options: AEL.Options | undefined = undefined;
+
+        if (allowSubstitutions) {
+            options = new AEL.Options();
+            options.nullSubstitution = (path: string) => {
+                let substitutionValue: string | undefined = undefined;
+
+                if (GlobalSettings.getUndefinedFieldValueSubstitutionString) {
+                    substitutionValue = GlobalSettings.getUndefinedFieldValueSubstitutionString(path);    
+                }
+        
+                return substitutionValue ? substitutionValue : "${" + path + "}";
+            }
+        }
+
+        // The root of an expression coming from an interpolated string is of type Concat.
+        // In that case, and if the caller allows it, we're doing our own concatenation
+        // in order to catch each individual expression evaluation error and substitute in
+        // the final string
+        if (expression.type === AEL.ExpressionType.Concat && allowSubstitutions) {
+            let result = "";
+
+            for (let childExpression of expression.children) {
+                let evaluationResult: { value: any; error: string };
+                
+                try {
+                    evaluationResult = childExpression.tryEvaluate(memory, options);
+                }
+                catch (ex) {
+                    // We'll swallow all exceptions here
+                    evaluationResult = {
+                        value: "${" + childExpression.toString() + "}",
+                        error: ex
+                    };
+                }
+
+                result += evaluationResult.value.toString();
+            }
+
+            return { value: result, error: undefined };
+        }
+        
+        return expression.tryEvaluate(memory, options);
+    }
+
+    private _context: EvaluationContext;
+
+    private expandSingleObject(node: object): any {
         let result = {};
         let keys = Object.keys(node);
 
@@ -230,43 +282,72 @@ export class Template {
 
             result = itemArray;
         }
-        else if (node instanceof TemplatizedString) {
-            result = node.evaluate(this._context);
+        else if (node instanceof AEL.Expression) {
+            let evaluationResult = Template.tryEvaluateExpression(node, this._context, true);
 
-            if (node.shouldDropOwner) {
-                result = null;
+            if (!evaluationResult.error) {
+                result = evaluationResult.value;
+            }
+            else {
+                throw new Error(evaluationResult.error);
             }
         }
-        else if (typeof node === "object" && node != null) {
-            let dataContext = node["$data"];
+        else if (typeof node === "object" && node !== null) {
+            let dropObject = false;
+            let when = node["$when"];
 
-            if (dataContext != undefined) {
-                if (dataContext instanceof TemplatizedString) {
-                    dataContext = dataContext.evaluate(this._context);
+            if (when instanceof AEL.Expression) {
+                let evaluationResult = Template.tryEvaluateExpression(when, this._context, false);
+                let whenValue: boolean = false;
+                
+                // If $when fails to evaluate or evaluates to anything but a boolean, consider it is false
+                if (!evaluationResult.error) {
+                    whenValue = typeof evaluationResult.value === "boolean" && evaluationResult.value;
                 }
+                dropObject = !whenValue;
+            }
 
-                if (Array.isArray(dataContext)) {
-                    result = [];
+            if (!dropObject) {
+                let dataContext = node["$data"];
 
-                    for (let i = 0; i < dataContext.length; i++) {
-                        this._context.$data = dataContext[i];
-                        this._context.$index = i;
+                if (dataContext !== undefined) {
+                    if (dataContext instanceof AEL.Expression) {
+                        let evaluationResult = Template.tryEvaluateExpression(dataContext, this._context, true);
 
-                        let expandedObject = this.expandSingleObject(node);
-
-                        if (expandedObject != null) {
-                            result.push(expandedObject);
+                        if (!evaluationResult.error) {
+                            dataContext = evaluationResult.value;
                         }
+                        else {
+                            throw new Error(evaluationResult.error);
+                        }
+                    }
+
+                    if (Array.isArray(dataContext)) {
+                        result = [];
+
+                        for (let i = 0; i < dataContext.length; i++) {
+                            this._context.$data = dataContext[i];
+                            this._context.$index = i;
+
+                            let expandedObject = this.expandSingleObject(node);
+
+                            if (expandedObject !== null) {
+                                result.push(expandedObject);
+                            }
+                        }
+                    }
+                    else {
+                        this._context.$data = dataContext;
+
+                        result = this.expandSingleObject(node);
                     }
                 }
                 else {
-                    this._context.$data = dataContext;
-
                     result = this.expandSingleObject(node);
                 }
             }
             else {
-                result = this.expandSingleObject(node);
+                result = null;
             }
         }
         else {
