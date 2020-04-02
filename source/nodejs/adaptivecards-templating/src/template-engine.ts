@@ -102,7 +102,7 @@ export class Template {
                 else {
                     return new AEL.ExpressionEvaluator(
                         type,
-                        (expression: AEL.Expression, state: AEL.MemoryInterface, options: AEL.Options) => { throw new Error("Unknown function"); },
+                        (expression: AEL.Expression, state: AEL.MemoryInterface, options: AEL.Options) => { throw new Error("Unknown function " + type); },
                         AEL.ReturnType.String);
                 }
             }
@@ -185,7 +185,7 @@ export class Template {
                     // We'll swallow all exceptions here
                     evaluationResult = {
                         value: "${" + childExpression.toString() + "}",
-                        error: undefined
+                        error: ex
                     };
                 }
 
