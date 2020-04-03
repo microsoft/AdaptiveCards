@@ -68,8 +68,11 @@ namespace AdaptiveNamespace
         sharedCardElement->SetLabel(HStringToUTF8(m_label.Get()));
 
         std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> labelCardElement;
-        RETURN_IF_FAILED(GenerateSharedElement(m_labelCardElement.Get(), labelCardElement));
-        sharedCardElement->SetLabelCardElement(labelCardElement);
+        if (m_labelCardElement != nullptr)
+        {
+            RETURN_IF_FAILED(GenerateSharedElement(m_labelCardElement.Get(), labelCardElement));
+            sharedCardElement->SetLabelCardElement(labelCardElement);
+        }
 
         return S_OK;
     }
