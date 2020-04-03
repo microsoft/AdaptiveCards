@@ -27,24 +27,46 @@ The error text and invalid indication will be rendered in the host's `attention`
 
 ![img](assets/InputValidation/InputValidationExample.png)
 
-### Host side  styling
-
-As has been proposed, the error message is a string property which is rendered in the `attention` color, card hosts may need more control over how this messages and the visual representation of an error appear. As can be seen in the [Annex] there's a wide array on how error messages are represented in different websites. The table below details the proposed set of properties that host apps will be able to modify based on the examples located in the annex as well as if they are going to be modified through the host config or the native styling in each platform. It's important to note that some of this properties will act on the input element rather than the error message.
-
-| Property | HostConfig | Native Styling |
-| --- | ---- | --- |
-| color (hex value) | X | X |
-| textSize | X | X |
-| weight | X | X |
-| backgroundColor | X | X |
-| spacing | X | | 
-| errorMessagePosition | X (aboveInput, belowInput) | |
-| borderColor (input) | X | |
-| borderWidth (input) | X | | 
-
-Finally, the proposed name for the native style to override for labels would be ```Adaptive.ErrorMessage```.
-
-> Open Discussion: The table is just representative, I couldn't find more options to modify in the forms that I investigated.
+>
+> ### Host side  styling
+>
+> As has been proposed, the error message is a string property which is rendered in the `attention` color, card hosts may need more control over how this messages and the visual representation of an error appear. As can be seen in the [Annex] there's a wide array on how error messages are represented in different websites. The table below details the proposed set of properties that host apps will be able to modify based on the examples located in the annex as well as if they are going to be modified through the host config or the native styling in each platform. It's important to note that some of this properties will act on the input element rather than the error message.
+>
+> | Property | Default value | HostConfig | Native Styling |
+> | --- | ---- | --- | --- |
+> | spacing | "default" | X | |
+> | fontType | "default" | X | X |
+> | size | "default" | X | X |
+> | weight | "default" | X | X |
+> | color | "attention" | X | X |
+> | backgroundColor | TBD | X | X |
+> | isSubtle | false | X | |
+> | position | "belowInput" | X "aboveInput" or "belowInput" | |
+> | borderColor (input) | "attention" | X | |
+> | borderWidth (input) | TBD | X | | 
+>
+> ```json
+> {
+>   "validationFormatting": {
+>       "errorMessage": {
+>           "spacing": "small",
+>           "fontType": "monospace",
+>           "size": "small",
+>           "weight": "lighter",
+>           "color": "attention",
+>           "isSubtle": true,
+>           "position": "aboveInput"
+>       },
+>       "inputBorder": {
+>           "color": "attention",
+>           "width": 8
+>       }
+>    }
+> }
+> ```
+>
+> Finally, the proposed name for the native style to override for labels would be ```Adaptive.ErrorMessage```.
+>
 
 ## Input Validation Behavior
 

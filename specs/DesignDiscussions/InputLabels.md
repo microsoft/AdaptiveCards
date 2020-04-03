@@ -115,11 +115,12 @@ If we want to allow the host to control formatting of the labels, either in gene
 
 #### Text formatting
  We can introduce the option to specify formatting of input labels for required and optional inputs. This could include things such as bold, italics, size, etc. We could either allow full text formatting (as in the formatting properties on a text block) or a subset specified as an enum. Since this would be host control, full formatting is probably fine here. For example:
+
  ```json
 "inputLabelFormatting": 
 {
 	"requiredInputs": {
-		"weight": "Bolder",
+		"weight": "Bolder"
 	},
 	"optionalInputs": {
 		"isSubtle":true
@@ -130,17 +131,39 @@ Another option is to not put this in host config, and instead control this styli
 
 > ### Host side styling
 > 
-> The previously mentioned approach limits how a label can look to the most basic TextBlock, because of this we need to support host app styling to support most of the needs any host may need: 
+> Following the previously mentioned text formatting the proposed set of properties we could allow the host application to override would be almost the same set of properties we provide for configuring a TextBlock: 
 > 
-> | Property | HostConfig | Native |
-> | --- | --- | --- |
-> | spacing | X | |
-> | fontFamily | X | X |
-> | fontSize | X | X |
-> | fontWeight | X | X |
-> | foregroundColor | X | X |
-> 
-> Open discussion: The table is just representative, I couldn't find more options to modify in the forms that I investigated. Once this properties have been discussed I can add them to the sample above
+> | Property | Default Value |HostConfig | Native |
+> | --- | --- | --- | --- |
+> | spacing | "default" | X | |
+> | fontType | "default" | X | X |
+> | size | "default" | X | X |
+> | weight | "default" | X | X |
+> | color | "default" | X | X |
+> | isSubtle | false | X | |
+> | separator | false | X | |
+>
+> ```json
+> "inputLabelFormatting": 
+> {
+>	"requiredInputs": {
+>		"spacing": "large",
+>		"weight": "Bolder",
+>		"fontType": "monospace",
+>		"size": "medium",
+>		"color": "good"
+>	},
+>	"optionalInputs": {
+>		"isSubtle": true
+>	}	
+> }
+> ```
+>
+> While it's mentioned that we should allow almost all TextBlock properties to be modified by the label property, some of them must stay out of bounds for hosts as they would provide a bad user experience:
+> * maxLines and wrap: Labels should be descriptive enough so users can provide the information needed, if the user can't read the whole question the information they will not be able to provide a correct answer
+> * isVisible: labels should always be visible as long as the associated input is
+> * height: input elements should control the height for the whole set of label, input and error message 
+>
 
 #### Required and Optional indicators
 
