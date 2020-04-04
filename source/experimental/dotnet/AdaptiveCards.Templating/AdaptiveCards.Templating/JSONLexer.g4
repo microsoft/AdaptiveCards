@@ -59,12 +59,12 @@ JPATH
    : ('.' STRING | '[' INT ']')+ '}'
    ;
 
-TEMPLATEROOT
-   : '${$root' JPATH
+TEMPLATELITERAL
+   : '${' ~ ["]*? '}'
    ;
 
-TEMPLATELITERAL
-   : '${' ~ ["]* '}'
+TEMPLATEROOT
+   : '${$root' JPATH
    ;
 
 STRING

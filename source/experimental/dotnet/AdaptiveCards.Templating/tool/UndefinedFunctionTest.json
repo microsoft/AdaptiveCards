@@ -1,0 +1,15 @@
+{
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "$data": {
+                "firstname": "David",
+                "lastName" : "Claux"
+    },
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "${firstName} ${if(unknownFunction(lastName), 'yes', 'no'}"
+        }
+    ]
+}
+

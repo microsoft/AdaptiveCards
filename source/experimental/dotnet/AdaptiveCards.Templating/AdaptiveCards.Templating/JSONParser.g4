@@ -26,8 +26,8 @@ array
    ;
 
 value
-   : StringDeclOpen templateRoot  CLOSE # valueTemplateStringWithRoot
-   | StringDeclOpen templateString CLOSE # valueTemplateString
+   : StringDeclOpen templateString (templateString)* CLOSE # valueTemplateString
+   | StringDeclOpen templateRoot  CLOSE # valueTemplateStringWithRoot
    | StringDeclOpen STRING* CLOSE # valueString
    | NUMBER # valueNumber
    | obj    # valueObject
@@ -37,13 +37,12 @@ value
    | NULL  # valueNull
    ;
 
-templateRoot
-   :  TEMPLATEROOT # templateStringWithRoot
+templateString
+   : (STRING? TEMPLATELITERAL STRING?) # templatedString
    ;
 
-
-templateString
-   : (STRING? TEMPLATELITERAL STRING?)+ # templatedString
+templateRoot
+   :  TEMPLATEROOT # templateStringWithRoot
    ;
 
 templateExpression

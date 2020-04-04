@@ -759,7 +759,7 @@ namespace AdaptiveCards.Templating.Test
 }";
             var expectedString = @"{
       ""type"": ""AdaptiveCard"",
-      ""speak"": """",
+      ""speak"": ""${speak}"",
       ""body"": [
         {
           ""type"": ""Container"",
@@ -1088,6 +1088,83 @@ namespace AdaptiveCards.Templating.Test
 }", cardJson);
         }
 
+        /// <summary>
+        /// Test that when expression fails to evaluate, it leaves the expression stirng untouched
+        /// </summary>
+        [TestMethod]
+        public void TestCanHandleFailedExpressionEvaluation()
+        {
+            AdaptiveTransformer transformer = new AdaptiveTransformer();
+
+            string jsonTemplate = @"{
+    ""type"": ""AdaptiveCard"",
+    ""version"": ""1.0"",
+    ""$data"": {
+                ""machines"": {
+                    ""id"": ""primary""
+                }
+     },
+    ""body"": [
+        {
+            ""type"": ""TextBlock"",
+            ""text"": ""${machines.id}"",
+            ""color"": ""${if(machines.uptime >= 3000, 'good', 'attention')}""
+        }
+    ]
+}";
+
+            string cardJson = transformer.Transform(jsonTemplate, null);
+
+            AssertJsonEqual(@"{
+    ""type"": ""AdaptiveCard"",
+    ""version"": ""1.0"",
+    ""body"": [
+        {
+            ""type"": ""TextBlock"",
+            ""text"": ""primary"",
+            ""color"": ""attention""
+        }
+    ]
+}", cardJson);
+        }
+
+        /// <summary>
+        /// Test that when expression fails to evaluate, it leaves the expression stirng untouched
+        /// </summary>
+        [TestMethod]
+        public void TestCanHandleUndefinedFunctions()
+        {
+            AdaptiveTransformer transformer = new AdaptiveTransformer();
+
+            string jsonTemplate = @"{
+    ""type"": ""AdaptiveCard"",
+    ""version"": ""1.0"",
+    ""$data"": {
+                ""firstname"": ""David"",
+                ""lastName"" : ""Claux""
+    },
+    ""body"": [
+        {
+            ""type"": ""TextBlock"",
+            ""text"": ""${firstName} ${if(unknownFunction(lastName), 'yes', 'no'}""
+        }
+    ]
+}";
+
+            string cardJson = transformer.Transform(jsonTemplate, null);
+
+            AssertJsonEqual(@"{
+    ""type"": ""AdaptiveCard"",
+    ""version"": ""1.0"",
+    ""body"": [
+        {
+            ""type"": ""TextBlock"",
+            ""text"": ""David ${if(unknownFunction(lastName), 'yes', 'no'}""
+        }
+    ]
+}", cardJson);
+        }
+
         [TestMethod]
         public void TestWhen()
         {
@@ -1348,7 +1425,7 @@ namespace AdaptiveCards.Templating.Test
         }
     }
     [TestClass]
-    public class TestRoot
+    public class TestRootKeyword
     {
         [TestMethod]
         public void TestRootInDataContext()
@@ -1442,11 +1519,11 @@ namespace AdaptiveCards.Templating.Test
                 ""items"": [
                 {
                     ""type"": ""TextBlock"",
-                    ""text"": ""1""
+                    ""text"": 1
                 },
                 {
                     ""type"": ""TextBlock"",
-                    ""text"": ""10""
+                    ""text"": 10
                 }
             ]
         }
@@ -1506,12 +1583,213 @@ namespace AdaptiveCards.Templating.Test
     }
 
     [TestClass]
+    public class TestDataKeyword
+    {
+        [TestMethod]
+        public void TestBasic()
+        {
+            AdaptiveTransformer transformer = new AdaptiveTransformer();
+
+            string jsonTemplate = @"{
+    ""type"": ""AdaptiveCard"",
+    ""version"": ""1.0"",
+    ""$data"": {
+                ""person"": {
+                    ""firstName"": ""Andrew"",
+                    ""lastName"": ""Leader""
+                }
+     },
+    ""body"": [
+        {
+            ""type"": ""TextBlock"",
+            ""text"": ""Hello ${$data.person.firstName}""
+        }
+    ]
+}";
+
+            string jsonData = @"{
+    ""person"": {
+        ""firstName"": ""Andrew"",
+        ""lastName"": ""Leader""
+    }
+}";
+
+            string cardJson = transformer.Transform(jsonTemplate, jsonData);
+
+            TestTemplate.AssertJsonEqual(@"{
+    ""type"": ""AdaptiveCard"",
+    ""version"": ""1.0"",
+    ""body"": [
+        {
+            ""type"": ""TextBlock"",
+            ""text"": ""Hello Andrew""
+        }
+    ]
+}", cardJson);
+        }
+
+        [TestMethod]
+        public void TestKeywordDataInRepeatingItems()
+        {
+            AdaptiveTransformer transformer = new AdaptiveTransformer();
+
+            string jsonTemplate = @"{
+            ""type"": ""AdaptiveCard"",
+            ""body"": [
+              {
+                ""type"": ""Container"",
+                ""items"": [
+                  {
+                    ""$data"": ""${$root.LineItems}"",
+                    ""type"": ""TextBlock"",
+                    ""id"": ""ReceiptRequired${$index}"",
+                    ""text"": ""${string($data.Milage)}""
+                  }
+                ]
+              }
+            ]
+        }";
+            string jsonData = @"{
+              ""LineItems"": [
+                    {""Milage"" : 1},
+                    {""Milage"" : 10}
+                ]
+            }";
+
+            string cardJson = transformer.Transform(jsonTemplate, jsonData);
+
+            TestTemplate.AssertJsonEqual(@"{
+    ""type"": ""AdaptiveCard"",
+    ""body"": [
+              {
+                ""type"": ""Container"",
+                ""items"": [
+                {
+                    ""type"": ""TextBlock"",
+                    ""id"": ""ReceiptRequired0"",
+                    ""text"": ""1""
+                },
+                {
+                    ""type"": ""TextBlock"",
+                    ""id"": ""ReceiptRequired1"",
+                    ""text"": ""10""
+                }
+            ]
+        }
+    ]
+}", cardJson);
+        }
+
+        [TestMethod]
+        public void TestCanAccessByAEL()
+        {
+            AdaptiveTransformer transformer = new AdaptiveTransformer();
+
+            string jsonTemplate = @"{
+            ""type"": ""AdaptiveCard"",
+            ""body"": [
+              {
+                ""type"": ""Container"",
+                ""items"": [
+                  {
+                    ""type"": ""TextBlock"",
+                    ""text"": ""${$data.LineItems[0].Milage}""
+                  },
+                  {
+                    ""type"": ""TextBlock"",
+                    ""text"": ""${$data.LineItems[1].Milage}""
+                  }
+                ]
+              }
+            ]
+        }";
+            string jsonData = @"{
+              ""LineItems"": [
+                    {""Milage"" : 1},
+                    {""Milage"" : 10}
+                ]
+            }";
+
+            string cardJson = transformer.Transform(jsonTemplate, jsonData);
+
+            TestTemplate.AssertJsonEqual(@"{
+    ""type"": ""AdaptiveCard"",
+    ""body"": [
+              {
+                ""type"": ""Container"",
+                ""items"": [
+                {
+                    ""type"": ""TextBlock"",
+                    ""text"": 1
+                },
+                {
+                    ""type"": ""TextBlock"",
+                    ""text"": 10
+                }
+            ]
+        }
+    ]
+}", cardJson);
+        }
+
+        [TestMethod]
+        public void TestRootAndDataWorkInRepeatingItems()
+        {
+            AdaptiveTransformer transformer = new AdaptiveTransformer();
+
+            string jsonTemplate = @"{
+            ""type"": ""AdaptiveCard"",
+            ""body"": [
+              {
+                ""type"": ""Container"",
+                ""items"": [
+                  {
+                    ""$data"": ""${$root.LineItems}"",
+                    ""type"": ""TextBlock"",
+                    ""text"": ""Class: ${$root.Class}, Mileage: ${$data.Mileage}""
+                  }
+                ]
+              }
+            ]
+        }";
+            string jsonData = @"{
+              ""Class"" : ""Ship"",
+              ""LineItems"": [
+                    {""Mileage"" : 1},
+                    {""Mileage"" : 10}
+                ]
+            }";
+
+            string cardJson = transformer.Transform(jsonTemplate, jsonData);
+
+            TestTemplate.AssertJsonEqual(@"{
+    ""type"": ""AdaptiveCard"",
+    ""body"": [
+              {
+                ""type"": ""Container"",
+                ""items"": [
+                {
+                    ""type"": ""TextBlock"",
+                    ""text"": ""Class: Ship, Mileage: 1""
+                },
+                {
+                    ""type"": ""TextBlock"",
+                    ""text"": ""Class: Ship, Mileage: 10""
+                }
+            ]
+        }
+    ]
+}", cardJson);
+        }
+    }
+
+    [TestClass]
     public class TestPartialResult
     {
         [TestMethod]
         public void TestCreation()
         {
-            JSONTemplateVisitorResult result = new JSONTemplateVisitorResult();
+            TemplateResult result = new TemplateResult();
             result.Append("hello world");
             Assert.AreEqual(result.ToString(), "hello world");
         }
@@ -1519,14 +1797,14 @@ namespace AdaptiveCards.Templating.Test
         [TestMethod]
         public void TestMerging()
         {
-            JSONTemplateVisitorResult result1 = new JSONTemplateVisitorResult();
+            TemplateResult result1 = new TemplateResult();
             result1.Append("hello");
 
-            JSONTemplateVisitorResult result2 = new JSONTemplateVisitorResult();
+            TemplateResult result2 = new TemplateResult();
             result2.Append(" world");
 
 
-            JSONTemplateVisitorResult result3 = new JSONTemplateVisitorResult();
+            TemplateResult result3 = new TemplateResult();
             result3.Append("!");
 
             result1.Append(result2);
@@ -1538,13 +1816,13 @@ namespace AdaptiveCards.Templating.Test
         [TestMethod]
         public void TestCreationOfPartialResult()
         {
-            JSONTemplateVisitorResult result1 = new JSONTemplateVisitorResult();
+            TemplateResult result1 = new TemplateResult();
             result1.Append("hello");
 
-            JSONTemplateVisitorResult result2 = new JSONTemplateVisitorResult();
+            TemplateResult result2 = new TemplateResult();
             result2.Append("name", false);
 
-            JSONTemplateVisitorResult result3 = new JSONTemplateVisitorResult();
+            TemplateResult result3 = new TemplateResult();
             result3.Append("!");
 
             result1.Append(result2);
@@ -1554,13 +1832,13 @@ namespace AdaptiveCards.Templating.Test
         }
         public void TestCreationOfWhen()
         {
-            JSONTemplateVisitorResult result1 = new JSONTemplateVisitorResult();
+            TemplateResult result1 = new TemplateResult();
             result1.Append("hello");
 
-            JSONTemplateVisitorResult result2 = new JSONTemplateVisitorResult();
+            TemplateResult result2 = new TemplateResult();
             result2.Append("name", false);
 
-            JSONTemplateVisitorResult result3 = new JSONTemplateVisitorResult();
+            TemplateResult result3 = new TemplateResult();
             result3.Append("!");
 
             result1.Append(result2);

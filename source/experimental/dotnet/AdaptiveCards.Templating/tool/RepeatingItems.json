@@ -1,0 +1,15 @@
+{
+  "type": "AdaptiveCard",
+            "body": [
+              {
+                "type": "Container",
+                "items": [
+                  {
+                    "$data": "${$root.LineItems}",
+                    "type": "TextBlock",
+                    "text": "Class: ${$root.Class}, Mileage: ${Mileage}"
+                  }
+                ]
+              }
+            ]
+}

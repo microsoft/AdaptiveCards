@@ -22,7 +22,7 @@ namespace AdaptiveCards.Templating
                 BuildParseTree = true
             };
             IParseTree tree = parser.json();
-            JSONTemplateVisitor eval = new JSONTemplateVisitor(jsonData);
+            Visitor eval = new Visitor(jsonData);
             return eval.Visit(tree).ToString();
         }
     }
