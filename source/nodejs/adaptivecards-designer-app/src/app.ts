@@ -3,6 +3,7 @@
 import * as monaco from "monaco-editor";
 import * as markdownit from "markdown-it";
 import * as ACDesigner from "adaptivecards-designer";
+import * as ACTemplating from "adaptivecards-templating";
 import * as Adaptive from "adaptivecards";
 import "adaptivecards-designer/dist/adaptivecards-designer.css";
 import "./app.css";
@@ -11,14 +12,13 @@ import "./app.css";
 // import "adaptivecards-designer/dist/adaptivecards-defaulthost.css";
 
 window.onload = function() {
-    // Uncomment to enabled preview features such as data binding
-    /*
+    ACTemplating.GlobalSettings.undefinedExpressionValueSubstitutionString = "<undefined value>";
+
     ACDesigner.GlobalSettings.showVersionPicker = true;
     ACDesigner.GlobalSettings.enableDataBindingSupport = true;
     // Note the below two flags are ignored if enableDataBindingSupport is set to false
     ACDesigner.GlobalSettings.showDataStructureToolbox = true;
     ACDesigner.GlobalSettings.showSampleDataEditorToolbox = true;
-    */
 
     // Uncomment to configure default toolbox titles
     /*
@@ -30,8 +30,6 @@ window.onload = function() {
     ACDesigner.Strings.toolboxes.toolPalette.title = "Custom title";
     */
 
-
-
 	ACDesigner.CardDesigner.onProcessMarkdown = (text: string, result: { didProcess: boolean, outputHtml: string }) => {
 		result.outputHtml = new markdownit().render(text);
 		result.didProcess = true;
@@ -41,17 +39,7 @@ window.onload = function() {
 		console.log("Local storage is not available.");
 	}
 
-	let hostContainers: Array<ACDesigner.HostContainer> = [];
-	hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
-	hostContainers.push(new ACDesigner.CortanaContainer("Cortana Skills", "containers/cortana-container.css"));
-	hostContainers.push(new ACDesigner.OutlookContainer("Outlook Actionable Messages", "containers/outlook-container.css"));
-	hostContainers.push(new ACDesigner.TimelineContainer("Windows Timeline", "containers/timeline-container.css"));
-	hostContainers.push(new ACDesigner.DarkTeamsContainer("Microsoft Teams - Dark", "containers/teams-container-dark.css"));
-	hostContainers.push(new ACDesigner.LightTeamsContainer("Microsoft Teams - Light", "containers/teams-container-light.css"));
-	hostContainers.push(new ACDesigner.BotFrameworkContainer("Bot Framework Other Channels (Image render)", "containers/bf-image-container.css"));
-	hostContainers.push(new ACDesigner.ToastContainer("Windows Notifications (Preview)", "containers/toast-container.css"));
-
-	let designer = new ACDesigner.CardDesigner(hostContainers);
+	let designer = new ACDesigner.CardDesigner(ACDesigner.defaultMicrosoftHosts);
 	designer.sampleCatalogueUrl = window.location.origin + "/sample-catalogue.json";
 	designer.attachTo(document.getElementById("designerRootHost"));
 

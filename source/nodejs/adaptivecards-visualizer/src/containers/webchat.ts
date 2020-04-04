@@ -4,14 +4,6 @@ import { HostContainer } from "./host-container";
 import {
     AdaptiveCard,
     HostConfig,
-    Size,
-    TextSize,
-    TextColor,
-    TextWeight,
-    Spacing,
-    ShowCardActionMode,
-    Orientation,
-    ActionAlignment,
 } from "adaptivecards";
 import * as webChatConfiguration from "../../../../../samples/HostConfig/webchat.json";
 

@@ -39,7 +39,7 @@
         </ScrollViewer>
 
         <!--Error info-->
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" MaxHeight="200">
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" MaxHeight="200" IsEnabled="False">
             <ItemsControl ItemsSource="{Binding Errors}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
