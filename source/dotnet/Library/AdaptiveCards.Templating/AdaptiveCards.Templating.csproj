@@ -1,0 +1,64 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>0.1.0-alpha1</Version>
+    <Authors>Microsoft</Authors>
+    <Product>Adaptive Cards</Product>
+    <Summary>JSON templating library</Summary>
+    <Description>This library implements a JSON-to-JSON templating/data-binding engine. While it is designed to be used with Adaptive Cards, it is not dependent on Adaptive Cards and can therefore be used in many contexts and applications.</Description>
+    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
+    <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
+    <PackageIconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</PackageIconUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/microsoft/AdaptiveCards/issues/2448</PackageProjectUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="js\**" />
+    <EmbeddedResource Remove="js\**" />
+    <None Remove="js\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="AdaptiveCardsTemplatingBaseVisitor.cs" />
+    <Compile Remove="AdaptiveCardsTemplatingLexer.cs" />
+    <Compile Remove="AdaptiveCardsTemplatingParser.cs" />
+    <Compile Remove="AdaptiveCardsTemplatingVisitor.cs" />
+    <Compile Remove="JSONLexer.cs" />
+    <Compile Remove="JSONParser.cs" />
+    <Compile Remove="JSONParserBaseVisitor.cs" />
+    <Compile Remove="JSONParserVisitor.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="AdaptiveCardsTemplating.interp" />
+    <None Remove="AdaptiveCardsTemplating.tokens" />
+    <None Remove="AdaptiveCardsTemplatingLexer.interp" />
+    <None Remove="AdaptiveCardsTemplatingLexer.tokens" />
+    <None Remove="JSONLexer.interp" />
+    <None Remove="JSONLexer.tokens" />
+    <None Remove="JSONParser.interp" />
+    <None Remove="JSONParser.tokens" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AdaptiveExpressions" Version="4.9.0-preview-200331-116684" />
+    <PackageReference Include="Antlr4" Version="4.6.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Antlr4 Update="JSONLexer.g4">
+      <Listener>false</Listener>
+    </Antlr4>
+    <Antlr4 Update="JSONParser.g4">
+      <Listener>false</Listener>
+    </Antlr4>
+  </ItemGroup>
+
+</Project>
