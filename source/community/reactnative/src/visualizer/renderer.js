@@ -36,6 +36,8 @@ export default class Renderer extends React.Component {
     }
 
     customHostConfig = {
+        hostCapabilities: {
+        },
         fontFamily: "Helvetica",
         supportsInteractivity: true,
         fontSizes: {

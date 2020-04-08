@@ -1,9 +1,28 @@
 import * as Models from './index'
 import { ElementType } from '../utils/enums'
 import * as Utils from '../utils/util'
+import { HostConfigManager, HostCapabilities } from '../utils/host-config';
 
 export class ModelFactory {
     static createElement(payload, parent) {
+        if (!payload) {
+            return undefined;
+        }
+        if(payload.requires) {
+            let requirements = new HostCapabilities(payload.requires)
+            let hostCapabilities = HostConfigManager.getHostConfig().getHostCapabilities()
+            if(requirements.satisfied(hostCapabilities)) {
+                return this.getElement(payload, parent)
+            } else {
+                return ModelFactory.checkForFallBack(payload, parent);
+            }
+        } else {
+            return this.getElement(payload, parent)
+        }
+        
+    }
+
+    static getElement(payload, parent) {
         if (!payload) {
             return undefined;
         }

@@ -33,6 +33,16 @@ export default class AdaptiveCard extends React.Component {
 
 		this.payload = props.payload;
 
+		// hostConfig
+		if (props.hostConfig) {
+			HostConfigManager.setHostConfig(props.hostConfig);
+		}
+
+		// themeConfig
+		if (props.themeConfig) {
+			ThemeConfigManager.setThemeConfig(props.themeConfig);
+		}
+
 		if (this.props.isActionShowCard) {
 			this.cardModel = props.payload;
 		} else {
@@ -42,16 +52,6 @@ export default class AdaptiveCard extends React.Component {
 			showErrors: false,
 			payload: this.payload,
 			cardModel: this.cardModel
-		}
-
-		// hostConfig
-		if (props.hostConfig) {
-			HostConfigManager.setHostConfig(props.hostConfig);
-		}
-
-		// themeConfig
-		if (props.themeConfig) {
-			ThemeConfigManager.setThemeConfig(props.themeConfig);
 		}
 
 		// commonly used styles
