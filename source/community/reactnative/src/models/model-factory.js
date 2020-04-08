@@ -94,10 +94,8 @@ export class ModelFactory {
             else{
                 return undefined;
             }  
-        }
-        else{
-                parent.isFallbackActivated = true;
-                return undefined;
-            }  
+        } else {
+            return undefined;
+        }  
     }
 }
