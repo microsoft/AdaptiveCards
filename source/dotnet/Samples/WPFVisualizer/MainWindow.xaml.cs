@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 using AdaptiveCards;
+using AdaptiveCards.Templating;
 using AdaptiveCards.Rendering;
 using AdaptiveCards.Rendering.Wpf;
 using Microsoft.Win32;
@@ -26,6 +27,7 @@ using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Document;
 using System.Collections.ObjectModel;
 using System.Threading;
+using ICSharpCode.AvalonEdit;
 
 namespace WpfVisualizer
 {
@@ -34,6 +36,8 @@ namespace WpfVisualizer
         private bool _dirty;
         private readonly SpeechSynthesizer _synth;
         private DocumentLine _errorLine;
+        private string templateData;
+
         /*
         // This variable exists so the sample styles are not added twice
         private bool _stylesAdded = false;
@@ -121,7 +125,9 @@ namespace WpfVisualizer
 
             try
             {
-                AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(CardPayload);
+                var tranformer = new AdaptiveTransformer();
+                var transformedPaylaod = tranformer.Transform(CardPayload, templateData);
+                AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(transformedPaylaod);
 
                 AdaptiveCard card = parseResult.Card;
 
@@ -438,6 +444,13 @@ namespace WpfVisualizer
         private void XceedCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             Renderer.UseXceedElementRenderers();
+            _dirty = true;
+        }
+
+        private void templateData_Added(object sender, EventArgs e)
+        {
+            var textEditor = sender as TextEditor;
+            templateData = textEditor.Text;
             _dirty = true;
         }
     }
