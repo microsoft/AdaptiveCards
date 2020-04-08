@@ -136,10 +136,10 @@ This is the question where there's not a majority of voters who picked one optio
 
 ### Host Formatting
 
-If we want to allow the host to control formatting of the labels, either in general or for required inputs, we need a way for them to specify the desired format. There are two main things we may want to include:
+Based on the results from Q7 of the survey, we will add the option to allow the host to control formatting of the labels, either in general or for required inputs, we need a way for them to specify the desired format. There are two main things we may want to include:
 
 #### Text formatting
- We can introduce the option to specify formatting of input labels for required and optional inputs. This could include things such as bold, italics, size, etc. We could either allow full text formatting (as in the formatting properties on a text block) or a subset specified as an enum. Since this would be host control, full formatting is probably fine here. For example:
+ We are introducing the option to specify formatting of input labels for required and optional inputs. We will allow full text formatting (as in the formatting properties of a TextBlock) For example:
 
  ```json
 "inputLabelFormatting": 
@@ -152,43 +152,26 @@ If we want to allow the host to control formatting of the labels, either in gene
 	}
 }
 ```
-Another option is to not put this in host config, and instead control this styling via support of native styling on required and optional labels (i.e. CSS, Xaml Styles, etc). This decision speaks to a larger discussion of the direction of host config that is beyond the scope of this document.
 
-> ### Host side styling
-> 
-> Following the previously mentioned topic of text formatting, the proposed set of properties we could allow the host application to override would be almost the same set of properties we provide for configuring a TextBlock: 
-> 
-> | Property | Default Value |HostConfig | Native |
-> | --- | --- | --- | --- |
-> | spacing | "default" | X | |
-> | fontType | "default" | X | X |
-> | size | "default" | X | X |
-> | weight | "default" | X | X |
-> | color | "default" | X | X |
-> | isSubtle | false | X | |
-> | separator | false | X | |
->
-> ```json
-> "inputLabelFormatting": 
-> {
->	"requiredInputs": {
->		"spacing": "large",
->		"weight": "Bolder",
->		"fontType": "monospace",
->		"size": "medium",
->		"color": "good"
->	},
->	"optionalInputs": {
->		"isSubtle": true
->	}	
-> }
-> ```
->
-> While it's mentioned that we should allow almost all TextBlock properties to be modified by the label property, some of them must stay out of bounds for hosts as they would provide a bad user experience:
-> * maxLines and wrap: Labels should be descriptive enough so users can provide the information needed, if the user can't read the whole question the information they will not be able to provide a correct answer
-> * isVisible: labels should always be visible as long as the associated input is
-> * height: input elements should control the height for the whole set of label, input and error message 
->
+The full set of properties to be modified using full text formatting will be:
+
+| Property | Default Value |
+| --- | --- | --- | --- |
+| spacing | "default" | 
+| fontType | "default" | 
+| size | "default" | 
+| weight | "default" | 
+| color | "default" | 
+| isSubtle | false | 
+| separator | false |
+| horizontalAlignment | "left" |
+
+While it's mentioned that we should allow almost all TextBlock properties to be modified by the label property, some of them must stay out of bounds for hosts as they would provide a bad user experience:
+* maxLines and wrap: Labels should be descriptive enough so users can provide the information needed, if the user can't read the whole question the information they will not be able to provide a correct answer
+* isVisible: labels should always be visible as long as the associated input is
+* height: input elements should control the height for the whole set of label, input and error message 
+
+Allowing the control of this styling via support of native styling on required and optional labels (i.e. CSS, Xaml Styles, etc) may also be required but will be set out of scope for v1 of this feature. This decision speaks to a larger discussion of the direction of host config that is beyond the scope of this document.
 
 #### Required and Optional indicators
 
