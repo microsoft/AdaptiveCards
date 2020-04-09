@@ -17,6 +17,13 @@ import AdaptiveCard from 'adaptivecards-reactnative'
                themeConfig={}
                onExecuteAction={} 
                onParseError={} 
+               containerStyle={{
+                    width:100, 
+                    height: 100, 
+                    flexGrow:1, 
+                    backgroundColor:'lightblue'
+               }}
+               contentHeight={500} 
                ref="referenceVariable"/>
 ```
 
@@ -27,6 +34,8 @@ Prop | Type | Description | Required
 **themeConfig** | `{object}` | JSON Theme Config to customize styles | NO
 **onExecuteAction** | `{Event Handler}` | Method to be executed on card actions | NO
 **onParseError** | `{Event Handler}` | Method to be executed on JSON parse errors | NO
+**containerStyle** | `{object}` | Style used to override the adaptive card container style | NO
+**contentHeight** | `{number}` | Value used to override the adaptive card height | NO
 **ref** | `React.createRef()` |  Reference variable used to invoke the methods exposed by AdaptiveCards.(Example: In order to fetch the image & media URLs across the payload, one can use like this `this.refs.referenceVariable.getResourceInformation()`  | NO
 
 ## Extensibility
