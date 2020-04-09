@@ -65,8 +65,5 @@ ios/Podfile.lock
 # Bundle artifact
 *.jsbundle
 
-# CocoaPods
-/ios/Pods/
-
 # VSCode
 .vscode
