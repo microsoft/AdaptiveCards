@@ -1,0 +1,29 @@
+{
+	"name": "aclint",
+	"version": "0.1.0",
+	"description": "Adaptive Cards Linting Tool",
+	"main": "dist/src/index.js",
+	"bin": {
+		"aclint": "./dist/src/index.js"
+	},
+	"scripts": {
+		"build": "tsc",
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"lint": "eslint . --ext ts"
+	},
+	"author": "paulcam",
+	"license": "MIT",
+	"dependencies": {
+		"@types/node": "^13.9.3",
+		"adaptivecards": "^1.3.0-alpha.4",
+		"chalk": "^3.0.0",
+		"yargs": "^15.3.1"
+	},
+	"devDependencies": {
+		"@types/yargs": "^15.0.4",
+		"@typescript-eslint/eslint-plugin": "^2.25.0",
+		"@typescript-eslint/parser": "^2.25.0",
+		"eslint": "^6.8.0",
+		"typescript": "^3.8.3"
+	}
+}
