@@ -133,7 +133,7 @@ namespace AdaptiveCardVisualizer.ViewModel
         {
             var savePicker = new FileSavePicker();
             savePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
-            savePicker.FileTypeChoices.Add("Plain Text", new List<string>() { ".json" });
+            savePicker.FileTypeChoices.Add("Adaptive Card JSON", new List<string>() { ".json" });
             savePicker.SuggestedFileName = "NewAdaptiveCard.json";
 
             File = await savePicker.PickSaveFileAsync();
