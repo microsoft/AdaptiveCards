@@ -23,7 +23,7 @@ namespace AdaptiveNamespace
         auto labelCardElement = sharedModel->GetLabelCardElement();
         if (labelCardElement != nullptr)
         {
-            // RETURN_IF_FAILED(MakeAndInitialize<IAdaptiveCardElement>(m_labelCardElement.GetAddressOf(), labelCardElement));
+            RETURN_IF_FAILED(GenerateLabelProjection(labelCardElement, m_labelCardElement.GetAddressOf()));
         }
 
         return S_OK;

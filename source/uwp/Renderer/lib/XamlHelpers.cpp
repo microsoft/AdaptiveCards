@@ -642,9 +642,87 @@ namespace AdaptiveNamespace::XamlHelpers
         return S_OK;
     }
 
+    // TextBlock and RichTextBlock xaml types both support inlines, so we reuse the same method for rendering the " *" hint in both cases
+    HRESULT AddRequiredHintInline(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                  IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
+    {
+        ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> xamlInlines(inlines);
+
+        // Create an inline for the *
+        ComPtr<IRun> starRun = XamlHelpers::CreateXamlClass<IRun>(HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Run));
+
+        HString starString;
+        UTF8ToHString(" *", starString.GetAddressOf());
+
+        RETURN_IF_FAILED(starRun->put_Text(starString.Get()));
+
+        // Set the color to Attention color
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+
+        ABI::Windows::UI::Color attentionColor;
+        RETURN_IF_FAILED(
+            GetColorFromAdaptiveColor(hostConfig.Get(), ForegroundColor_Attention, ContainerStyle_Default, false, false, &attentionColor));
+
+        ComPtr<ABI::Windows::UI::Xaml::Documents::ITextElement> starRunAsTextElement;
+        RETURN_IF_FAILED(starRun.As(&starRunAsTextElement));
+
+        RETURN_IF_FAILED(starRunAsTextElement->put_Foreground(XamlHelpers::GetSolidColorBrush(attentionColor).Get()));
+
+        ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> starRunAsInline;
+        RETURN_IF_FAILED(starRun.As(&starRunAsInline));
+
+        RETURN_IF_FAILED(xamlInlines->Append(starRunAsInline.Get()));
+
+        return S_OK;
+    }
+
+    // Retrieves the inlines from a TextBlock or RichTextBlock so we can append the " *" (required indicator) to the rendered label 
+    HRESULT SetRequiredHint(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                            _In_ ABI::Windows::UI::Xaml::IUIElement* uiElement)
+    {
+        ComPtr<IUIElement> xamlUIElement(uiElement);
+        ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> xamlInlines;
+
+        ComPtr<ITextBlock> textBlock;
+        if (SUCCEEDED(xamlUIElement.As(&textBlock)))
+        {
+            RETURN_IF_FAILED(textBlock->get_Inlines(xamlInlines.GetAddressOf()));
+        }
+        else
+        {
+            ComPtr<IRichTextBlock> richTextBlock;
+            if (SUCCEEDED(xamlUIElement.As(&richTextBlock)))
+            {
+                // As we're retrieving the inlines from a previously rendered RichTextBlock we have to do the
+                // opposite process as when crerating the label as a string
+                ComPtr<IVector<Block*>> xamlBlocks;
+                RETURN_IF_FAILED(richTextBlock->get_Blocks(xamlBlocks.GetAddressOf()));
+
+                UINT blockCount{};
+                RETURN_IF_FAILED(xamlBlocks->get_Size(&blockCount));
+
+                // Get the last block from the RichTextBlock
+                ComPtr<IBlock> xamlBlock;
+                RETURN_IF_FAILED(xamlBlocks->GetAt(blockCount - 1, xamlBlock.GetAddressOf()));
+
+                // Convert the Block to a Paragraph to 
+                ComPtr<IParagraph> blockAsParagraph;
+                RETURN_IF_FAILED(xamlBlock.As(&blockAsParagraph));
+
+                RETURN_IF_FAILED(blockAsParagraph->get_Inlines(xamlInlines.GetAddressOf()));
+            }
+        }
+
+        RETURN_IF_FAILED(AddRequiredHintInline(renderContext, xamlInlines.Get()));
+
+        return S_OK;
+    }
+
+
     HRESULT RenderInputLabel(_In_ ABI::AdaptiveNamespace::IAdaptiveInputElement* adaptiveInputElement,
                              _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* /*renderArgs*/,
+                             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
                              _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** labelControl)
     {
         HString inputLabel;
@@ -687,35 +765,50 @@ namespace AdaptiveNamespace::XamlHelpers
 
             if (isRequired)
             {
-                // Create an inline for the *
-                ComPtr<IRun> starRun =
-                    XamlHelpers::CreateXamlClass<IRun>(HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Run));
-
-                HString starString;
-                UTF8ToHString(" *", starString.GetAddressOf());
-
-                RETURN_IF_FAILED(starRun->put_Text(starString.Get()));
-
-                // Set the color to Attention color
-                ComPtr<IAdaptiveHostConfig> hostConfig;
-                RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-
-                ABI::Windows::UI::Color attentionColor;
-                RETURN_IF_FAILED(GetColorFromAdaptiveColor(
-                    hostConfig.Get(), ForegroundColor_Attention, ContainerStyle_Default, false, false, &attentionColor));
-
-                ComPtr<ABI::Windows::UI::Xaml::Documents::ITextElement> starRunAsTextElement;
-                RETURN_IF_FAILED(starRun.As(&starRunAsTextElement));
-
-                RETURN_IF_FAILED(starRunAsTextElement->put_Foreground(XamlHelpers::GetSolidColorBrush(attentionColor).Get()));
-
-                ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> starRunAsInline;
-                RETURN_IF_FAILED(starRun.As(&starRunAsInline));
-
-                RETURN_IF_FAILED(xamlInlines->Append(starRunAsInline.Get()));
+                RETURN_IF_FAILED(AddRequiredHintInline(renderContext, xamlInlines.Get()));
             }
 
             RETURN_IF_FAILED(xamlRichTextBlock.CopyTo(labelControl));
+        }
+        else
+        {
+            ComPtr<IAdaptiveCardElement> labelCardElement;
+            RETURN_IF_FAILED(adaptiveInputElement->get_LabelCardElement(labelCardElement.GetAddressOf()));
+
+            if (labelCardElement != nullptr)
+            {
+                ComPtr<IAdaptiveElementRenderer> labelRenderer;
+                if (labelCardElement != nullptr)
+                {
+                    ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
+                    THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
+
+                    ComPtr<IAdaptiveTextBlock> textBlock;
+                    if (SUCCEEDED(labelCardElement.As(&textBlock)))
+                    {
+                        RETURN_IF_FAILED(elementRenderers->Get(HStringReference(L"TextBlock").Get(), &labelRenderer));
+                    }
+                    else
+                    {
+                        ComPtr<IAdaptiveRichTextBlock> richTextBlock;
+                        if (SUCCEEDED(labelCardElement.As(&richTextBlock)))
+                        {
+                            RETURN_IF_FAILED(elementRenderers->Get(HStringReference(L"RichTextBlock").Get(), &labelRenderer));
+                        }
+                    }
+                }
+
+                ComPtr<IUIElement> renderedLabel;
+                if (labelRenderer != nullptr)
+                {
+                    RETURN_IF_FAILED(
+                        labelRenderer->Render(labelCardElement.Get(), renderContext, renderArgs, renderedLabel.GetAddressOf()));
+                }
+
+                RETURN_IF_FAILED(SetRequiredHint(renderContext, renderedLabel.Get()));
+
+                RETURN_IF_FAILED(renderedLabel.CopyTo(labelControl));
+            }
         }
 
         return S_OK;
