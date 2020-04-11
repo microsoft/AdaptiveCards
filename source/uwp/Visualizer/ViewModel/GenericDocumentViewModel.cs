@@ -8,6 +8,9 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI.Popups;
+using Windows.Storage.Pickers;
+using Windows.UI.Xaml;
+using Windows.Storage.Provider;
 
 namespace AdaptiveCardVisualizer.ViewModel
 {
@@ -117,15 +120,55 @@ namespace AdaptiveCardVisualizer.ViewModel
             }
         }
 
+        private void CreateMessageDialog(string text)
+        {
+            var messageDialog = new MessageDialog(text);
+            // Set the index of the command to be used as cancel (when ESC is pressed)
+            // As there's only one command, command 0 is selected
+            messageDialog.CancelCommandIndex = 0;
+            var dontWait = messageDialog.ShowAsync();
+        }
+
+        private async Task SaveNewFileAsync()
+        {
+            var savePicker = new FileSavePicker();
+            savePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+            savePicker.FileTypeChoices.Add("Adaptive Card JSON", new List<string>() { ".json" });
+            savePicker.SuggestedFileName = "NewAdaptiveCard.json";
+
+            File = await savePicker.PickSaveFileAsync();
+            if (File != null)
+            {
+                CachedFileManager.DeferUpdates(File);
+                await FileIO.WriteTextAsync(File, File.Name);
+                FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(File);
+                if (status == FileUpdateStatus.Complete)
+                {
+                    this.Name = File.Name;
+                }
+                else
+                {
+                    CreateMessageDialog("File " + File.Name + " couldn't be saved");
+                }
+            }
+        }
+
         public async Task SaveAsync()
         {
             try
             {
-                await FileIO.WriteTextAsync(File, Payload);
+                if (File == null)
+                {
+                    await SaveNewFileAsync();
+                }
+                else
+                {
+                    await FileIO.WriteTextAsync(File, Payload);      
+                }
             }
             catch (Exception ex)
             {
-                var dontWait = new MessageDialog(ex.ToString()).ShowAsync();
+                CreateMessageDialog(ex.ToString());
             }
         }
 
