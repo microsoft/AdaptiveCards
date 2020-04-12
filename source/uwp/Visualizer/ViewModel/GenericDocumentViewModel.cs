@@ -11,6 +11,8 @@ using Windows.UI.Popups;
 
 namespace AdaptiveCardVisualizer.ViewModel
 {
+    
+
     public abstract class GenericDocumentViewModel : BindableBase
     {
         public MainPageViewModel MainPageViewModel { get; private set; }
@@ -24,9 +26,12 @@ namespace AdaptiveCardVisualizer.ViewModel
             set { SetProperty(ref _name, value); }
         }
 
+        protected KeyboardPressTimeCounter TimeCounter;
+
         public GenericDocumentViewModel(MainPageViewModel model)
         {
             MainPageViewModel = model;
+            TimeCounter = new KeyboardPressTimeCounter(this);
         }
 
         public bool IsOutdated { get; set; } = true;
@@ -51,7 +56,6 @@ namespace AdaptiveCardVisualizer.ViewModel
             }
 
             SetProperty(ref _payload, value);
-
             Reload();
         }
 
@@ -63,11 +67,13 @@ namespace AdaptiveCardVisualizer.ViewModel
             {
                 IsLoading = true;
 
-                await Task.Delay(1000);
+                await Task.Delay(TimeSpan.FromSeconds(1));
 
                 IsLoading = false;
                 NotifyPropertyChanged(DelayedUpdatePayload);
                 Load();
+
+                TimeCounter.ResetCounter();
             }
         }
 
@@ -150,14 +156,16 @@ namespace AdaptiveCardVisualizer.ViewModel
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.ToString());
-                MakeErrorsLike(new List<ErrorViewModel>()
+                errors = new List<ErrorViewModel>()
                 {
                     new ErrorViewModel()
                     {
                         Message = "Loading failed",
                         Type = ErrorViewModelType.Error
                     }
-                });
+                };
+
+                TimeCounter.ResetCounter();
             }
 
             IsOutdated = false;
@@ -167,13 +175,19 @@ namespace AdaptiveCardVisualizer.ViewModel
 
         protected void SetSingleError(ErrorViewModel error)
         {
-            MakeErrorsLike(new List<ErrorViewModel>() { error });
+            errors = new List<ErrorViewModel>() { error };
+            TimeCounter.ResetCounter();
         }
 
-        protected void MakeErrorsLike(List<ErrorViewModel> errors)
+        public void MakeErrorsLike()
         {
-            errors.Sort();
-            Errors.MakeListLike(errors);
+            if (errors != null)
+            {
+                errors.Sort();
+                Errors.MakeListLike(errors);
+            }
         }
+
+        protected List<ErrorViewModel> errors = new List<ErrorViewModel>();
     }
 }
