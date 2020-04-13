@@ -6,7 +6,9 @@ import React from 'react';
 import {
 	StyleSheet,
 	Text,
-	ScrollView
+	ScrollView,
+	KeyboardAvoidingView,
+	Platform
 } from 'react-native';
 
 import { Registry } from './components/registration/registry';
@@ -169,17 +171,21 @@ export default class AdaptiveCard extends React.Component {
 		this.props.contentHeight && containerStyles.push({ height: this.props.contentHeight })
 		var adaptiveCardContent =
 			(
-				<ContainerWrapper style={containerStyles} json={this.state.cardModel}>
-					<ScrollView
-						showsHorizontalScrollIndicator={true}
-						showsVerticalScrollIndicator={true}
-						alwaysBounceVertical={false}
-						alwaysBounceHorizontal={false}>
-						{this.parsePayload()}
-						{!Utils.isNullOrEmpty(this.state.cardModel.actions) &&
-							<ActionWrapper actions={this.state.cardModel.actions} />}
-					</ScrollView>
-				</ContainerWrapper>
+				<KeyboardAvoidingView behavior={Platform.OS === 'ios'
+					? 'padding'
+					: undefined}>
+					<ContainerWrapper style={containerStyles} json={this.state.cardModel}>
+						<ScrollView
+							showsHorizontalScrollIndicator={true}
+							showsVerticalScrollIndicator={true}
+							alwaysBounceVertical={false}
+							alwaysBounceHorizontal={false}>
+							{this.parsePayload()}
+							{!Utils.isNullOrEmpty(this.state.cardModel.actions) &&
+								<ActionWrapper actions={this.state.cardModel.actions} />}
+						</ScrollView>
+					</ContainerWrapper>
+				</KeyboardAvoidingView>
 			);
 
 		// checks if selectAction option is available for adaptive card
