@@ -67,6 +67,7 @@
     <Compile Include="ViewModel\ErrorViewModel.cs" />
     <Compile Include="ViewModel\GenericDocumentViewModel.cs" />
     <Compile Include="ViewModel\HostConfigEditorViewModel.cs" />
+    <Compile Include="ViewModel\KeyboardPressTimeCounter.cs" />
     <Compile Include="ViewModel\MainPageViewModel.cs" />
     <Compile Include="ViewModel\DocumentViewModel.cs" />
   </ItemGroup>
