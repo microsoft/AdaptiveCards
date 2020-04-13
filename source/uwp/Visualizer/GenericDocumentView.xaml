@@ -19,6 +19,7 @@
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <TextBox
                     Text="{Binding Payload, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    AutomationProperties.Name="AdaptiveCardDocumentView"
                     AcceptsReturn="True"
                     VerticalAlignment="Stretch"
                     TextWrapping="Wrap"
