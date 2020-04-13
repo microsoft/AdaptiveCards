@@ -39,33 +39,5 @@ namespace AdaptiveCardVisualizer
                 ViewModel.MainPageViewModel.CloseDocument(ViewModel);
             }
         }
-
-        private void OnPointerEntered()
-        {
-        }
-
-        private void OnPointerExited()
-        {
-        }
-
-        private void Grid_PointerEntered(object sender, PointerRoutedEventArgs e)
-        {
-            OnPointerEntered();
-        }
-
-        private void Grid_PointerCaptureLost(object sender, PointerRoutedEventArgs e)
-        {
-            OnPointerExited();
-        }
-
-        private void Grid_PointerCanceled(object sender, PointerRoutedEventArgs e)
-        {
-            OnPointerExited();
-        }
-
-        private void Grid_PointerExited(object sender, PointerRoutedEventArgs e)
-        {
-            OnPointerExited();
-        }
     }
 }
