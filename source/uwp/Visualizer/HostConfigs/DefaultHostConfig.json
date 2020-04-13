@@ -9,7 +9,7 @@
 	},
 	"separator": {
 		"lineThickness": 1,
-		"lineColor": "#66000000"
+		"lineColor": "#6C000000"
 	},
 	"supportsInteractivity": true,
 	"imageBaseUrl": "ms-appx:///",
