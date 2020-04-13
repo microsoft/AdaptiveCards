@@ -56,7 +56,8 @@ namespace AdaptiveCardVisualizer.ViewModel
             var newErrors = await PayloadValidator.ValidateAsync(payload);
             if (newErrors.Any(i => i.Type == ErrorViewModelType.Error))
             {
-                MakeErrorsLike(newErrors);
+                errors = newErrors;
+                TimeCounter.ResetCounter();
                 return;
             }
 
@@ -74,7 +75,8 @@ namespace AdaptiveCardVisualizer.ViewModel
                     Message = "Initializing renderer error: " + ex.ToString(),
                     Type = ErrorViewModelType.Error
                 });
-                MakeErrorsLike(newErrors);
+                errors = newErrors;
+                TimeCounter.ResetCounter();
                 return;
             }
 
@@ -185,7 +187,8 @@ namespace AdaptiveCardVisualizer.ViewModel
                 {
                     (RenderedCard as FrameworkElement).VerticalAlignment = Windows.UI.Xaml.VerticalAlignment.Top;
                 }
-                MakeErrorsLike(newErrors);
+                errors = newErrors;
+                TimeCounter.ResetCounter();
             }
             catch (Exception ex)
             {
@@ -195,7 +198,8 @@ namespace AdaptiveCardVisualizer.ViewModel
                     Message = "Rendering failed",
                     Type = ErrorViewModelType.Error
                 });
-                MakeErrorsLike(newErrors);
+                errors = newErrors;
+                TimeCounter.ResetCounter();
             }
         }
 

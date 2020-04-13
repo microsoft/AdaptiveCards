@@ -9,7 +9,7 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
-    AutomationProperties.Name="{Binding Name, FallbackValue=[name]}" >
+    AutomationProperties.Name="{Binding Name}" >
 
     <Grid
         Background="Transparent"
