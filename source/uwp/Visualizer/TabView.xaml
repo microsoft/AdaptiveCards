@@ -13,10 +13,6 @@
 
     <Grid
         Background="Transparent"
-        PointerEntered="Grid_PointerEntered"
-        PointerCaptureLost="Grid_PointerCaptureLost"
-        PointerCanceled="Grid_PointerCanceled"
-        PointerExited="Grid_PointerExited"
         Height="24"
         Padding="12,0,0,0">
         <Grid.ColumnDefinitions>
@@ -36,7 +32,6 @@
             Grid.Column="1"
             HorizontalAlignment="Right"
             Click="ButtonClose_Click"
-            Visibility="Collapsed"
             Margin="9,0,12,0"
             AutomationProperties.Name="Close">
             <Viewbox Width="10" Height="10">
