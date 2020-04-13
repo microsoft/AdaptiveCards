@@ -13,13 +13,23 @@ import {
     Linking,
     ScrollView
 } from 'react-native';
-
+import PropTypes from 'prop-types';
+import * as ACData from 'adaptivecards-templating';
 import AdaptiveCard from '../adaptive-card';
 import { RatingRenderer } from './rating-renderer';
 import { Registry } from '../components/registration/registry';
 import * as Utils from '../utils/util';
+import * as Constants from './constants';
 
 export default class Renderer extends React.Component {
+
+    static propTypes = {
+        isDataBinding: PropTypes.bool
+    };
+
+    static defaultProps = {
+        isDataBinding: false
+    };
 
     state = {
         isJSONVisible: false
@@ -48,10 +58,30 @@ export default class Renderer extends React.Component {
         this.onModalClose = props.onModalClose;
     }
 
+    bindPayloadWithData() {
+        // Create a Template instance from the template payload
+        var template = new ACData.Template(this.payload);
+
+        // Create a data binding context, and set its $root property to the
+        // data object to bind the template to
+        var context = new ACData.EvaluationContext();
+        context.$root = {
+            name: "Matt Hidinger",
+            stockName: "Microsoft Corp (NASDAQ: MSFT)",
+            stockValue: "75.30"
+        }
+
+        // "Expand" the template - this generates the final payload for the Adaptive Card,
+        // ready to render with this payload
+        this.payload = template.expand(context);
+    }
+
     render() {
         Registry.getManager().registerComponent('RatingBlock', RatingRenderer);
-
         let { isJSONVisible } = this.state;
+
+        //We will update the payload with method bindPayloadWithData, if isDataBinding is true.
+        this.props.isDataBinding && this.bindPayloadWithData()
 
         return (
             <View style={styles.container}>
@@ -63,7 +93,7 @@ export default class Renderer extends React.Component {
                 {isJSONVisible ?
                     <ScrollView contentContainerStyle={styles.jsonContainer}>
                         <Text style={{ fontFamily: 'Courier New' }}>
-                            {JSON.stringify(this.payload, null, '  ')}
+                            {JSON.stringify(this.props.payload, null, '  ')}
                         </Text>
                     </ScrollView>
                     :
@@ -73,6 +103,7 @@ export default class Renderer extends React.Component {
                         hostConfig={this.customHostConfig}
                         themeConfig={this.customThemeConfig}
                         onParseError={this.onParseError}
+                        // contentHeight={500} //we can also set the height of the adaptive card
                         ref="adaptiveCardRef" />
                 }
             </View>
@@ -145,11 +176,11 @@ export default class Renderer extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         padding: 10,
         ...Platform.select({
             ios: {
                 paddingTop: 50,
+                marginBottom: Constants.IosBottomMargin, //Adaptive card starts from 84 pixel so we gave margin bottom as 84. Its purely for our renderer app, it will not impact adaptive card.
             }
         }),
     },

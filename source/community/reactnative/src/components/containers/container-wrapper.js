@@ -45,8 +45,9 @@ export class ContainerWrapper extends React.PureComponent {
                 url: this.payload.backgroundImage
             }
         }
+        const backgroundImageStyle = this.payload.type === Constants.TypeAdaptiveCard ? styles.backgroundImage : [styles.backgroundImage, { flex: 1 }];
         return (
-            <View style={styles.backgroundImage}>
+            <View style={backgroundImageStyle}>
                 <BackgroundImage backgroundImage={this.payload.backgroundImage} />
                 {this.props.children}
             </View >
@@ -78,11 +79,14 @@ export class ContainerWrapper extends React.PureComponent {
                 computedStyles.push({ justifyContent: Constants.FlexStart });
                 break;
         }
+        computedStyles.push({ backgroundColor: Constants.TransparentString });
 
         // container BG style
         let backgroundStyle;
-        let styleDefinition = hostConfig.containerStyles.getStyleByName(this.payload["style"], hostConfig.containerStyles.getStyleByName("default"));
-        if (!Utils.isNullOrEmpty(styleDefinition.backgroundColor)) {
+        const styleDefinition = hostConfig.containerStyles.getStyleByName(this.payload["style"], hostConfig.containerStyles.getStyleByName("default"));
+        //we won't apply the background color for the container which has backgroundImage. Even we won't apply color if its parent container having backgroundImage
+        const hasBackgroundImage = !Utils.isNullOrEmpty(this.payload.backgroundImage) || (this.payload.parent && !Utils.isNullOrEmpty(this.payload.parent.backgroundImage)) || (!Utils.isNullOrEmpty(this.props.hasBackgroundImage))
+        if (!hasBackgroundImage && !Utils.isNullOrEmpty(styleDefinition.backgroundColor)) {
             backgroundStyle = { backgroundColor: Utils.hexToRGB(styleDefinition.backgroundColor) };
         }
         computedStyles.push(backgroundStyle);
@@ -90,39 +94,39 @@ export class ContainerWrapper extends React.PureComponent {
         // border
         const borderThickness = styleDefinition.borderThickness || 0;
         const borderColor = styleDefinition.borderColor;
-        computedStyles.push({borderWidth: borderThickness, borderColor: Utils.hexToRGB(borderColor)});
+        computedStyles.push({ borderWidth: borderThickness, borderColor: Utils.hexToRGB(borderColor) });
 
-        // padding & bleed
-        if (this.canApplyPadding()) {
-            const padding = hostConfig.getEffectiveSpacing(Enums.Spacing.Padding);
-            computedStyles.push({ padding: padding });
+        // padding
+        const padding = hostConfig.getEffectiveSpacing(Enums.Spacing.Padding);
+        computedStyles.push({ padding: padding });
 
-            // bleed
-            if (this.payload.bleed && this.props.containerStyle) {
-                computedStyles.push({ marginHorizontal: -padding });
-            }
+        // bleed
+        if (this.payload.bleed && this.props.containerStyle) {
+            const { isFirst, isLast } = this.props;
+            const marginLeft = isFirst ? -padding : 0;
+            const marginRight = isLast ? -padding : 0;
+
+            computedStyles.push({ marginVertical: -padding, marginLeft, marginRight });
+        }
+
+        // height 
+        const payloadHeight = this.payload.height || false;
+        if (payloadHeight) {
+            const heightEnumValue = Utils.parseHostConfigEnum(
+                Enums.Height,
+                this.payload.height,
+                Enums.Height.Auto);
+            const height = hostConfig.getEffectiveHeight(heightEnumValue);
+            computedStyles.push({ flex: height });
+            !this.payload["verticalContentAlignment"] && height && computedStyles.push({ justifyContent: Constants.SpaceBetween })
         }
 
         return computedStyles;
-    }
-
-    /**
-     * @description Determing whether padding can be applied to container 
-     * @returns {boolean}
-     */
-    canApplyPadding = () => {
-        //Removing the default padding applied to Adaptive card root element
-        /* if (this.payload.type === 'AdaptiveCard') {
-            return true;
-        } */
-        const parentContainerStyle = this.props.containerStyle;
-        return this.payload.style && parentContainerStyle != this.payload.style;
     }
 }
 
 const styles = StyleSheet.create({
     backgroundImage: {
-        width: Constants.FullWidth,
-        flex: 1
+        width: Constants.FullWidth
     }
 });
