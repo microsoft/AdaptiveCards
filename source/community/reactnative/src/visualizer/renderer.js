@@ -36,6 +36,10 @@ export default class Renderer extends React.Component {
     }
 
     customHostConfig = {
+        hostCapabilities: {
+            adaptiveCards:'1.2',
+            acTest:'1.3'
+        },
         fontFamily: "Helvetica",
         supportsInteractivity: true,
         fontSizes: {

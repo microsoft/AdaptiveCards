@@ -16,6 +16,10 @@ export default payloads = [
     "json": require('./Action.ToggleVisibility.json')
   },
   {
+    "title": "AdaptiveCard.Requires.Fallback.json",
+    "json": require('./AdaptiveCard.Requires.Fallback.json')
+  },
+  {
     "title": "AdaptiveCard.MinVersion.json",
     "json": require('./AdaptiveCard.MinVersion.json')
   },
