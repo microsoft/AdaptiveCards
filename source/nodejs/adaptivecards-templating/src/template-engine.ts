@@ -81,46 +81,6 @@ export class TemplateObjectMemory implements AEL.MemoryInterface {
 export class Template {
     private static prepare(node: any): any {
         if (typeof node === "string") {
-            /*
-            let regExp = /\${([^}]*)}/g;
-            let matches: RegExpExecArray = null;
-            let lastMatch: RegExpExecArray;
-            let matchCount = 0;
-
-            // Determine if the string contains any ${<expression>}
-            while (matchCount <= 1 && (matches = regExp.exec(node)) != null) {
-                lastMatch = matches;
-
-                matchCount++;
-            };
-
-            let lookup: AEL.EvaluatorLookup = (type: string) => {
-                let standardFunction = AEL.ExpressionFunctions.standardFunctions.get(type);
-
-                if (standardFunction) {
-                    return standardFunction;
-                }
-                else {
-                    return new AEL.ExpressionEvaluator(
-                        type,
-                        (expression: AEL.Expression, state: AEL.MemoryInterface, options: AEL.Options) => { throw new Error("Unknown function " + type); },
-                        AEL.ReturnType.String);
-                }
-            }
-
-            // If there are none, it's just a string
-            if (matchCount === 0) {
-                return node;
-            }
-            // If the entire string is enclosed in a single ${}, extract the enclosed expression
-            else if (matchCount === 1 && lastMatch[0].length === node.length) {
-                return AEL.Expression.parse(lastMatch[1], lookup);
-            }
-
-            // Otherwise, it's an interpolated string with multiple embedded expressions
-            return AEL.Expression.parse("`" + node + "`", lookup);
-            */
-
             return Template.parseExpression(node);
         }
         else if (typeof node === "object" && node !== null) {
