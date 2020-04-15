@@ -123,10 +123,29 @@ namespace WpfVisualizer
             cardError.Children.Clear();
             cardGrid.Opacity = 0.65;
 
+            if (templateData != null && templateData.Length == 0)
+            {
+                templateData = null;
+            }
+
             try
             {
-                var tranformer = new AdaptiveTransformer();
-                var transformedPaylaod = tranformer.Transform(CardPayload, templateData);
+                // don't throw error, but should affect work flow and performance.
+                // transformer -> has to have errors
+                var tranformer = new AdaptiveCardsTemplate(CardPayload);
+                var context = new AdaptiveCardEvaluationContext
+                {
+                    Root = templateData
+                };
+
+                // Create a data binding context, and set its $root property to the
+                // data object to bind the template to
+                // var context = new ACData.EvaluationContext();
+                // context.$root = {
+                //     "name": "Mickey Mouse"
+                // };
+
+                var transformedPaylaod = tranformer.Expand(context);
                 AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(transformedPaylaod);
 
                 AdaptiveCard card = parseResult.Card;
@@ -276,14 +295,10 @@ namespace WpfVisualizer
 
         private void loadButton_Click(object sender, RoutedEventArgs e)
         {
-            var dlg = new OpenFileDialog();
-            dlg.DefaultExt = ".json";
-            dlg.Filter = "Json documents (*.json)|*.json";
-            var result = dlg.ShowDialog();
-            if (result == true)
+            string cardPayload;
+            if (OpenFileDialogForJson(out cardPayload))
             {
-                CardPayload = File.ReadAllText(dlg.FileName).Replace("\t", "  ");
-                _dirty = true;
+                CardPayload = cardPayload;
             }
         }
 
@@ -452,6 +467,33 @@ namespace WpfVisualizer
             var textEditor = sender as TextEditor;
             templateData = textEditor.Text;
             _dirty = true;
+        }
+
+        private bool OpenFileDialogForJson(out string output)
+        {
+            var dlg = new OpenFileDialog();
+            dlg.DefaultExt = ".json";
+            dlg.Filter = "Json documents (*.json)|*.json";
+            var result = dlg.ShowDialog();
+            output = "";
+
+            if (result == true)
+            {
+                output = File.ReadAllText(dlg.FileName).Replace("\t", "  ");
+                _dirty = true;
+                return true;
+            }
+            return false;
+        }
+
+        private void loadTemplateDataButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialogForJson(out templateData);
+            if (templateData.Length == 0)
+            {
+                templateData = null;
+            }
+            templateDataTextBox.Text = templateData;
         }
     }
 }

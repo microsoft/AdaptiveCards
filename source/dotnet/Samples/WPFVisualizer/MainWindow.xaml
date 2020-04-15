@@ -41,6 +41,7 @@
 
         <StackPanel Orientation="Horizontal" Grid.ColumnSpan="5">
             <Button Name="loadButton" Click="loadButton_Click" Content="Load Card" Margin="4" Padding="4"/>
+            <Button Name="loadTemplateDataButton" Click="loadTemplateDataButton_Click" Content="Load Template Data" Margin="4" Padding="4"/>
             <Button Name="viewImage" Click="viewImage_Click" Content="View as Image" Margin="4" Padding="4"/>
             <Button Name="speak" Click="speak_Click" Content="Speak" Margin="4" Padding="4"/>
             <CheckBox Name ="xceedCheckbox" Margin="4,5,4,4" Unchecked="XceedCheckBox_Unchecked" Checked="XceedCheckBox_Checked" VerticalAlignment="Center"></CheckBox>
@@ -71,7 +72,7 @@
                 TextChanged="textBox_TextChanged"/>
             <avalon:TextEditor
                 Grid.Row="1"
-                x:Name="templdateDataTextBox"
+                x:Name="templateDataTextBox"
                 FontFamily="Consolas"
                 FontSize="10pt"
                 ShowLineNumbers="true"
