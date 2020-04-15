@@ -4,6 +4,9 @@ import * as Enums from "./enums";
 import * as Shared from "./shared";
 import { HostConfig } from "./host-config";
 
+/**
+ * Generate a UUID prepended with "__ac-"
+ */
 export function generateUniqueId(): string {
     return "__ac-" + Shared.UUID.generate();
 }
