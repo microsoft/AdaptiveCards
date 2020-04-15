@@ -273,11 +273,7 @@ export class CardDesignerSurface {
 
                     try {
                         let template = new ACData.Template(cardPayload);
-            
-                        let context = new ACData.EvaluationContext();
-                        context.$root = this.sampleData;
-
-                        let expandedCardPayload = template.expand(context);
+                        let expandedCardPayload = template.expand({ $root: this.sampleData });
 
                         cardToRender = new Adaptive.AdaptiveCard();
                         cardToRender.hostConfig = this.card.hostConfig;

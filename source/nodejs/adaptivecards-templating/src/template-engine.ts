@@ -2,19 +2,10 @@
 // Licensed under the MIT License.
 import * as AEL from "adaptive-expressions";
 
-export class GlobalSettings {
-    static getUndefinedFieldValueSubstitutionString?: (path: string) => string | undefined = undefined;
-}
-
-interface EvaluationContextState {
-    $data: any;
-    $index: any;
-}
-
-export class EvaluationContext {
+class EvaluationContext {
     private static readonly _reservedFields = ["$data", "$root", "$index"];
 
-    private _stateStack: EvaluationContextState[] = [];
+    private _stateStack: Array<{ $data: any, $index: any }> = [];
     private _$data: any;
 
     $root: any;
@@ -52,7 +43,7 @@ export class EvaluationContext {
     }
 }
 
-export class TemplateObjectMemory implements AEL.MemoryInterface {
+class TemplateObjectMemory implements AEL.MemoryInterface {
     private _memory: AEL.MemoryInterface;
 
     $root: any;
@@ -78,6 +69,52 @@ export class TemplateObjectMemory implements AEL.MemoryInterface {
     }
 }
 
+/***
+ * Holds global settings that can be used to customize the way templates are expanded.
+ */
+export class GlobalSettings {
+    /**
+     * Callback invoked when expression evaluation needs the value of a field in the source data object
+     * and that field is undefined or null. By default, expression evaluation will substitute an undefined
+     * field with its binding expression (e.g. `${field}`). This callback makes it possible to customize that
+     * behavior.
+     * 
+     * **Example**
+     * Given this data object:
+     * 
+     * ```json
+     * {
+     *     firstName: "David"
+     * }
+     * ```
+     * 
+     * The expression `${firstName} ${lastName}` will evaluate to "David ${lastName}" because the `lastName`
+     * field is undefined.
+     * 
+     * Now let's set the callback:
+     * ```typescript
+     * GlobalSettings.getUndefinedFieldValueSubstitutionString = (path: string) => { return "<undefined value>"; }
+     * ```
+     * 
+     * With that, the above expression will evaluate to "David <undefined value>"
+     */
+    static getUndefinedFieldValueSubstitutionString?: (path: string) => string | undefined = undefined;
+}
+
+/**
+ * Holds the context used to expand a template.
+ */
+export interface IEvaluationContext {
+    /**
+     * The root data object the template will bind to. Expressions that refer to $root in the template payload
+     * map to this field. Initially, $data also maps to $root.
+     */
+    $root: any
+}
+
+/**
+ * Represents a template that can be bound to data.
+ */
 export class Template {
     private static prepare(node: any): any {
         if (typeof node === "string") {
@@ -146,6 +183,7 @@ export class Template {
     }
 
     private _context: EvaluationContext;
+    private _preparedPayload: any;
 
     private tryEvaluateExpression(expression: AEL.Expression, allowSubstitutions: boolean): { value: any; error: string } {
         let memory = new TemplateObjectMemory();
@@ -315,15 +353,87 @@ export class Template {
         return result;
     }
 
-    preparedPayload: any;
-
+    /**
+     * Initializes a new Template instance based on the provided payload.
+     * Once created, the instance can be bound to different data objects
+     * in a loop.
+     * 
+     * @param payload The template payload.  
+     */
     constructor(payload: any) {
-        this.preparedPayload = Template.prepare(payload);
+        this._preparedPayload = Template.prepare(payload);
     }
 
-    expand(context: EvaluationContext): any {
-        this._context = context;
+    /**
+     * Expands the template using the provided context. Template expansion involves
+     * evaluating the expressions used in the original template payload, as well as
+     * repeating (expanding) parts of the original payload when those parts are bound
+     * to array fields.
+     * 
+     * Example:
+     * 
+     * ```
+     * let context = {
+     *     $root: {
+     *         firstName: "John",
+     *         lastName: "Doe",
+     *         children: [
+     *             { fullName: "Jane Doe", age: 9 },
+     *             { fullName: "Alex Doe", age: 12 }
+     *         ]
+     *     }
+     * }
+     * 
+     * let templatePayload = {
+     *     type: "AdaptiveCard",
+     *     version: "1.2",
+     *     body: [
+     *         {
+     *             type: "TextBlock",
+     *             text: "${firstName} ${lastName}"
+     *         },
+     *         {
+     *             type: "TextBlock",
+     *             $data: "${children}",
+     *             text: "${fullName} (${age})"
+     *         }
+     *     ]
+     * }
+     * 
+     * let template = new Template(templatePayload);
+     * 
+     * let expandedTemplate = template.expand(context);
+     * ```
+     * 
+     * With the above code, the value of `expandedTemplate` will be
+     * 
+     * ```
+     * {
+     *     type: "AdaptiveCard",
+     *     version: "1.2",
+     *     body: [
+     *         {
+     *             type: "TextBlock",
+     *             text: "John Doe"
+     *         },
+     *         {
+     *             type: "TextBlock",
+     *             text: "Jane Doe (9)"
+     *         },
+     *         {
+     *             type: "TextBlock",
+     *             text: "Alex Doe (12)"
+     *         }
+     *     ]
+     * }
+     * ```
+     * 
+     * @param context The context to bind the template to. 
+     */
+    expand(context: IEvaluationContext): any {
+        this._context = new EvaluationContext();
+        this._context.$root = context.$root;
 
-        return this.internalExpand(this.preparedPayload);
+        return this.internalExpand(this._preparedPayload);
     }
 }

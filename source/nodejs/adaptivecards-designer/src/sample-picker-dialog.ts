@@ -47,14 +47,10 @@ export class SamplePickerDialog extends Dialog {
         };
 
         let template = new ACData.Template(templatePayload);
-        
-        let context = new ACData.EvaluationContext();
-        context.$root = {
-            title: this.title,
-            message: message
-        };
-
-        let expandedCardPayload = template.expand(context);
+        let expandedCardPayload = template.expand(
+            {
+                $root: { title: this.title, message: message }
+            });
 
         let card = new Adaptive.AdaptiveCard();
         card.hostConfig = defaultHostConfig;
@@ -125,14 +121,10 @@ export class SamplePickerDialog extends Dialog {
         };
 
         let template = new ACData.Template(templatePayload);
-        
-        let context = new ACData.EvaluationContext();
-        context.$root = {
-            title: this.title,
-            catalogue: catalogue
-        };
-
-        let expandedCardPayload = template.expand(context);
+        let expandedCardPayload = template.expand(
+            {
+                $root: { title: this.title, catalogue: catalogue }
+            });
 
         let card = new Adaptive.AdaptiveCard();
         card.hostConfig = defaultHostConfig;
