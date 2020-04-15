@@ -1,4 +1,4 @@
-lexer grammar JSONLexer;
+lexer grammar AdaptiveCardsTemplateLexer;
 
 COMMA : ',';
 

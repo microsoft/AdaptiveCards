@@ -53,10 +53,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Antlr4 Update="JSONLexer.g4">
+    <Antlr4 Update="AdaptiveCardsTemplateLexer.g4">
       <Listener>false</Listener>
     </Antlr4>
-    <Antlr4 Update="JSONParser.g4">
+    <Antlr4 Update="AdaptiveCardsTemplateParser.g4">
       <Listener>false</Listener>
     </Antlr4>
   </ItemGroup>

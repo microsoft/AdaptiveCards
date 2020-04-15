@@ -5,7 +5,7 @@ using System;
 
 namespace AdaptiveCards.Templating
 {
-    public class TemplateResult
+    public class AdaptiveCardsTemplateResult
     {
         public enum EvaluationResult
         {
@@ -13,33 +13,34 @@ namespace AdaptiveCards.Templating
             EvaluatedToTrue,
             EvaluatedToFalse
         }
-        class TemplatePartialResult
+
+        private class AdaptiveCardsTemplatePartialResult
         {
             public StringBuilder StringResult { get; set; }
             public bool IsExpanded { get; set; }
 
-            public List<LinkedList<TemplatePartialResult>> whens;
+            public List<LinkedList<AdaptiveCardsTemplatePartialResult>> whens;
             public bool isWhen;
             public bool isTemplatedString;
             public string predicate;
             public EvaluationResult whenEvaluationResult;
 
-            public TemplatePartialResult(string a = "", bool b = true, bool c = false)
+            public AdaptiveCardsTemplatePartialResult(string a = "", bool b = true, bool c = false)
             {
                 StringResult = new StringBuilder(a);
                 IsExpanded = b;
                 isTemplatedString = c;
-                whens = new List<LinkedList<TemplatePartialResult>> ();
+                whens = new List<LinkedList<AdaptiveCardsTemplatePartialResult>> ();
                 whenEvaluationResult = EvaluationResult.NotEvaluated;
             }
 
-            public TemplatePartialResult(string predicateString, string a = "", bool b = false) : this (a, b, false)
+            public AdaptiveCardsTemplatePartialResult(string predicateString, string a = "", bool b = false) : this (a, b, false)
             {
                 isWhen = true;
                 predicate = predicateString;
             }
 
-            public string Expand(Visitor evaluator, JObject data)
+            public string Expand(AdaptiveCardsTemplateVisitor evaluator, JObject data)
             {
                 if (isWhen)
                 {
@@ -93,7 +94,7 @@ namespace AdaptiveCards.Templating
             }
         }
 
-        private readonly LinkedList<TemplatePartialResult> partialResultLinkedList = new LinkedList<TemplatePartialResult>();
+        private readonly LinkedList<AdaptiveCardsTemplatePartialResult> partialResultLinkedList = new LinkedList<AdaptiveCardsTemplatePartialResult>();
         private bool isPair;
 
 
@@ -125,28 +126,28 @@ namespace AdaptiveCards.Templating
             }
         }
 
-        public TemplateResult()
+        public AdaptiveCardsTemplateResult()
         {
             ShouldTryRemoveComman = false;
-            partialResultLinkedList.AddLast(new TemplatePartialResult());
+            partialResultLinkedList.AddLast(new AdaptiveCardsTemplatePartialResult());
         }
 
-        public TemplateResult(string capturedString = "", bool isExpanded = false, bool isTemplatedString = false)
+        public AdaptiveCardsTemplateResult(string capturedString = "", bool isExpanded = false, bool isTemplatedString = false)
         {
             ShouldTryRemoveComman = false;
-            partialResultLinkedList.AddLast(new TemplatePartialResult(capturedString, isExpanded, isTemplatedString));
+            partialResultLinkedList.AddLast(new AdaptiveCardsTemplatePartialResult(capturedString, isExpanded, isTemplatedString));
         }
 
-        public TemplateResult(string capturedString) : this()
+        public AdaptiveCardsTemplateResult(string capturedString) : this()
         {
             Append(capturedString, true);
         }
 
-        public TemplateResult(string capturedString = "", bool isExpanded = true) : this()
+        public AdaptiveCardsTemplateResult(string capturedString = "", bool isExpanded = true) : this()
         {
             Append(capturedString, isExpanded);
         }
-        public TemplateResult(string capturedString, string predicate)
+        public AdaptiveCardsTemplateResult(string capturedString, string predicate)
         {
             bool isExpanded = false;
             if (predicate.Length == 0)
@@ -154,22 +155,22 @@ namespace AdaptiveCards.Templating
                 isExpanded = true;
             }
 
-            var partialResult = new TemplatePartialResult(predicate, capturedString, isExpanded);
+            var partialResult = new AdaptiveCardsTemplatePartialResult(predicate, capturedString, isExpanded);
             partialResultLinkedList.AddLast(partialResult);
             ShouldTryRemoveComman = false;
         }
 
-        public TemplateResult(TemplateResult result) : this()
+        public AdaptiveCardsTemplateResult(AdaptiveCardsTemplateResult result) : this()
         {
             Append(result);
         }
 
-        private LinkedListNode<TemplatePartialResult> GetHead()
+        private LinkedListNode<AdaptiveCardsTemplatePartialResult> GetHead()
         {
             return partialResultLinkedList.First;
         }
 
-        private LinkedListNode<TemplatePartialResult> GetTail()
+        private LinkedListNode<AdaptiveCardsTemplatePartialResult> GetTail()
         {
             return partialResultLinkedList.Last;
         }
@@ -238,11 +239,11 @@ namespace AdaptiveCards.Templating
             }
             else
             {
-                partialResultLinkedList.AddLast(new TemplatePartialResult(capturedString, isExpanded));
+                partialResultLinkedList.AddLast(new AdaptiveCardsTemplatePartialResult(capturedString, isExpanded));
             }
         }
 
-        public void Append(TemplateResult result)
+        public void Append(AdaptiveCardsTemplateResult result)
         {
             if (result.ShouldTryRemoveComman)
             {
@@ -311,7 +312,7 @@ namespace AdaptiveCards.Templating
             return output.ToString();
         }
 
-        public string Expand(Visitor evaluator, JObject data)
+        public string Expand(AdaptiveCardsTemplateVisitor evaluator, JObject data)
         {
             var enumerator =  partialResultLinkedList.GetEnumerator();
             if (IsWhen)

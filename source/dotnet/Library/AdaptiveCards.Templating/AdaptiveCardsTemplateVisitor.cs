@@ -9,7 +9,7 @@ using System.Text;
 
 namespace AdaptiveCards.Templating
 {
-    public class Visitor : JSONParserBaseVisitor<TemplateResult>
+    public class AdaptiveCardsTemplateVisitor : AdaptiveCardsTemplateParserBaseVisitor<AdaptiveCardsTemplateResult>
     {
         class DataContext
         {
@@ -109,46 +109,46 @@ namespace AdaptiveCards.Templating
             return _dataContext.Count != 0;
         }
 
-        public Visitor(string data = null)
+        public AdaptiveCardsTemplateVisitor(string data = null)
         {
-            if(data != null)
+            if(data != null && data.Length != 0)
             {
                 root = JToken.Parse(data);
                 PushDataContext(data, root);
             }
         }
 
-        public override  TemplateResult VisitTemplateData([NotNull] JSONParser.TemplateDataContext context)
+        public override  AdaptiveCardsTemplateResult VisitTemplateData([NotNull] AdaptiveCardsTemplateParser.TemplateDataContext context)
         {
             // when this node is visited, the children of this node is shown as below: 
             // this node is visited only when parsing was correctly done
             // [ '{', '$data', ':', ',', 'val'] 
             IParseTree templateDataValueNode = context.value();
-            if (templateDataValueNode is JSONParser.ValueObjectContext || templateDataValueNode is JSONParser.ValueArrayContext)
+            if (templateDataValueNode is AdaptiveCardsTemplateParser.ValueObjectContext || templateDataValueNode is AdaptiveCardsTemplateParser.ValueArrayContext)
             {
                 string childJson = templateDataValueNode.GetText();
                 PushDataContext(childJson, root);
             }
-            else if (templateDataValueNode is JSONParser.ValueTemplateStringWithRootContext)
+            else if (templateDataValueNode is AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext)
             {
                 Visit(templateDataValueNode);
             }
-            else if (templateDataValueNode is JSONParser.ValueTemplateStringContext)
+            else if (templateDataValueNode is AdaptiveCardsTemplateParser.ValueTemplateStringContext)
             {
-                var templateString = (templateDataValueNode as JSONParser.ValueTemplateStringContext).templateString(0);
-                var templateLiteral = (templateString as JSONParser.TemplatedStringContext).TEMPLATELITERAL();
+                var templateString = (templateDataValueNode as AdaptiveCardsTemplateParser.ValueTemplateStringContext).templateString(0);
+                var templateLiteral = (templateString as AdaptiveCardsTemplateParser.TemplatedStringContext).TEMPLATELITERAL();
                 PushTemplatedDataContext(templateLiteral.GetText());
             }
 
             return null;
         }
 
-        public override TemplateResult VisitTemplateStringWithRoot([NotNull] JSONParser.TemplateStringWithRootContext context)
+        public override AdaptiveCardsTemplateResult VisitTemplateStringWithRoot([NotNull] AdaptiveCardsTemplateParser.TemplateStringWithRootContext context)
         {
             return Visit(context.TEMPLATEROOT());
         }
 
-        public override TemplateResult VisitTemplateRootData([NotNull] JSONParser.TemplateRootDataContext context)
+        public override AdaptiveCardsTemplateResult VisitTemplateRootData([NotNull] AdaptiveCardsTemplateParser.TemplateRootDataContext context)
         {
             var child = context.templateRoot();
             PushTemplatedDataContext(child.GetText());
@@ -156,12 +156,12 @@ namespace AdaptiveCards.Templating
         }
 
 
-        public override TemplateResult VisitValueTemplateExpression([NotNull] JSONParser.ValueTemplateExpressionContext context)
+        public override AdaptiveCardsTemplateResult VisitValueTemplateExpression([NotNull] AdaptiveCardsTemplateParser.ValueTemplateExpressionContext context)
         {                 
             // when this node is visited, the children of this node is shown as below: 
             // this node is visited only when parsing was correctly done
             // ['"', 'templated expression'] 
-            TemplateResult result = new TemplateResult(context.GetText(), context.TEMPLATELITERAL().GetText());
+            AdaptiveCardsTemplateResult result = new AdaptiveCardsTemplateResult(context.GetText(), context.TEMPLATELITERAL().GetText());
 
             DataContext dataContext = GetCurrentDataContext();
 
@@ -173,18 +173,18 @@ namespace AdaptiveCards.Templating
             if (dataContext != null && !dataContext.IsArrayType)
             {
                 result.WhenEvaluationResult = IsTrue(result.Predicate, dataContext.token) ?
-                    TemplateResult.EvaluationResult.EvaluatedToTrue :
-                    TemplateResult.EvaluationResult.EvaluatedToFalse;
+                    AdaptiveCardsTemplateResult.EvaluationResult.EvaluatedToTrue :
+                    AdaptiveCardsTemplateResult.EvaluationResult.EvaluatedToFalse;
             }
             return result;
         }
-        public override TemplateResult VisitValueTemplateString([NotNull] JSONParser.ValueTemplateStringContext context)
+        public override AdaptiveCardsTemplateResult VisitValueTemplateString([NotNull] AdaptiveCardsTemplateParser.ValueTemplateStringContext context)
         {
-            TemplateResult result = new TemplateResult();
+            AdaptiveCardsTemplateResult result = new AdaptiveCardsTemplateResult();
             var templateStringContexts = context.templateString();
             if (templateStringContexts.Length == 1)
             {
-                var templatedStringContext = templateStringContexts.GetValue(0) as JSONParser.TemplatedStringContext;
+                var templatedStringContext = templateStringContexts.GetValue(0) as AdaptiveCardsTemplateParser.TemplatedStringContext;
                 // strictly, this check is not needed since the only children the context can have is this type
                 if (templatedStringContext != null)
                 {
@@ -211,7 +211,7 @@ namespace AdaptiveCards.Templating
 
         }
 
-        public override TemplateResult VisitObj([NotNull] JSONParser.ObjContext context)
+        public override AdaptiveCardsTemplateResult VisitObj([NotNull] AdaptiveCardsTemplateParser.ObjContext context)
         {
             var hasDataContext = false;
             var isArrayType = false;
@@ -220,7 +220,7 @@ namespace AdaptiveCards.Templating
             for (var i = 0; i < context.ChildCount; i++)
             { 
                 var child = context.children[i];
-                if (child is JSONParser.TemplateDataContext || child is JSONParser.TemplateRootDataContext)
+                if (child is AdaptiveCardsTemplateParser.TemplateDataContext || child is AdaptiveCardsTemplateParser.TemplateRootDataContext)
                 {
                     Visit(child);
                     hasDataContext = true;
@@ -229,7 +229,7 @@ namespace AdaptiveCards.Templating
                 }
             }
 
-            TemplateResult result = new TemplateResult();
+            AdaptiveCardsTemplateResult result = new AdaptiveCardsTemplateResult();
 
             bool removeComma = false;
             // capture json string in object
@@ -237,7 +237,7 @@ namespace AdaptiveCards.Templating
             {
                 var child = context.children[i];
                 // if it's data context, skip nex terminal token
-                if (child is JSONParser.TemplateDataContext || child is JSONParser.TemplateRootDataContext)
+                if (child is AdaptiveCardsTemplateParser.TemplateDataContext || child is AdaptiveCardsTemplateParser.TemplateRootDataContext)
                 {
                     removeComma  = !result.TryRemoveACommaAtEnd ();
                 }
@@ -254,9 +254,9 @@ namespace AdaptiveCards.Templating
                             {
                                 // if evaluation fails, we drops from current context
                                 if (returnedResult.WhenEvaluationResult ==
-                                    TemplateResult.EvaluationResult.EvaluatedToFalse)
+                                    AdaptiveCardsTemplateResult.EvaluationResult.EvaluatedToFalse)
                                 {
-                                    return new TemplateResult();
+                                    return new AdaptiveCardsTemplateResult();
                                 }
                                 else
                                 {
@@ -268,6 +268,8 @@ namespace AdaptiveCards.Templating
                             else
                             {
                                 removeComma = !result.TryRemoveACommaAtEnd();
+                                result.Append(returnedResult);
+                                continue;
                             }
                         }
                     }
@@ -284,7 +286,7 @@ namespace AdaptiveCards.Templating
 
             if (result.IsWhen)
             {
-                if (result.WhenEvaluationResult == TemplateResult.EvaluationResult.EvaluatedToTrue)
+                if (result.WhenEvaluationResult == AdaptiveCardsTemplateResult.EvaluationResult.EvaluatedToTrue)
                 {
                     result.RemoveWhen();
                 }
@@ -298,17 +300,29 @@ namespace AdaptiveCards.Templating
                 var dataContext = GetCurrentDataContext();
                 var jarray = dataContext.token as JArray;
                 var repeatsCounts = jarray.Count;
-                TemplateResult oldResult = result;
-                result = new TemplateResult();
+                AdaptiveCardsTemplateResult oldResult = result;
+                result = new AdaptiveCardsTemplateResult();
                 for (int i = 0; i < repeatsCounts; i++)
                 {
                     JObject jobject = dataContext.GetDataAtIndex(i);
                     if (jobject != null)
                     {
-                        result.Append(oldResult.Expand(this, jobject));
+                        var expaded = oldResult.Expand(this, jobject);
+                        result.Append(expaded);
                         if (i != repeatsCounts - 1)
                         {
-                            result.Append(",");
+                            if (oldResult.IsWhen)
+                            {
+                                if (expaded.Length != 0)
+                                {
+                                    result.Append(",");
+                                }
+                            }
+                            else
+                            {
+                                result.Append(",");
+                            }
+
                         }
                     }
                     // produce warning if it's not JObject type
@@ -324,17 +338,17 @@ namespace AdaptiveCards.Templating
             return result; 
         }
 
-        public override TemplateResult VisitTerminal(ITerminalNode node)
+        public override AdaptiveCardsTemplateResult VisitTerminal(ITerminalNode node)
         {
-            if (node.Symbol.Type == JSONLexer.TEMPLATELITERAL || node.Symbol.Type == JSONLexer.TEMPLATEROOT)
+            if (node.Symbol.Type == AdaptiveCardsTemplateLexer.TEMPLATELITERAL || node.Symbol.Type == AdaptiveCardsTemplateLexer.TEMPLATEROOT)
             {
                 return ExpandTemplatedString(node);
             }
 
-            return new TemplateResult(node.GetText());
+            return new AdaptiveCardsTemplateResult(node.GetText());
         }
 
-        public TemplateResult ExpandTemplatedString(ITerminalNode node, bool isTemplatedString = false)
+        public AdaptiveCardsTemplateResult ExpandTemplatedString(ITerminalNode node, bool isTemplatedString = false)
         {
             if (HasDataContext())
             {
@@ -342,15 +356,15 @@ namespace AdaptiveCards.Templating
                 string templateString = node.GetText();
                 if (currentDataContext.IsArrayType)
                 {
-                    return new TemplateResult(templateString, false, isTemplatedString);
+                    return new AdaptiveCardsTemplateResult(templateString, false, isTemplatedString);
                 }
                 else
                 {
-                    return new TemplateResult(Expand(templateString, currentDataContext.token, isTemplatedString));
+                    return new AdaptiveCardsTemplateResult(Expand(templateString, currentDataContext.token, isTemplatedString));
                 }
             }
 
-            return new TemplateResult(node.GetText());
+            return new AdaptiveCardsTemplateResult(node.GetText());
         }
 
         public string Expand(string unboundString, JToken data, bool isTemplatedString = false)
@@ -402,7 +416,7 @@ namespace AdaptiveCards.Templating
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public override TemplateResult VisitTemplateWhen([NotNull] JSONParser.TemplateWhenContext context)
+        public override AdaptiveCardsTemplateResult VisitTemplateWhen([NotNull] AdaptiveCardsTemplateParser.TemplateWhenContext context)
         {
             // when this node is visited, the children of this node is shown as below: 
             // this node is visited only when parsing was correctly done
@@ -430,9 +444,9 @@ namespace AdaptiveCards.Templating
             }
         }    
 
-        public override TemplateResult VisitChildren([NotNull] IRuleNode node)
+        public override AdaptiveCardsTemplateResult VisitChildren([NotNull] IRuleNode node)
         {
-            TemplateResult result = new TemplateResult();
+            AdaptiveCardsTemplateResult result = new AdaptiveCardsTemplateResult();
 
             for(int i = 0; i < node.ChildCount; i++)
             {

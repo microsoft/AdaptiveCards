@@ -13,8 +13,6 @@ namespace AdaptiveCards.Templating.Test
         [TestMethod]
         public void TestBasic()
         {
-            AdaptiveTransformer transformer = new AdaptiveTransformer();
-
             string jsonTemplate = @"{
     ""type"": ""AdaptiveCard"",
     ""version"": ""1.0"",
@@ -39,7 +37,13 @@ namespace AdaptiveCards.Templating.Test
     }
 }";
 
-            string cardJson = transformer.Transform(jsonTemplate, jsonData);
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
+            var context = new AdaptiveCardEvaluationContext
+            {
+                Root = jsonData
+            };
+
+            string cardJson = transformer.Expand(context);
 
             AssertJsonEqual(@"{
     ""type"": ""AdaptiveCard"",
@@ -56,8 +60,6 @@ namespace AdaptiveCards.Templating.Test
         [TestMethod]
         public void TestIntInExpression()
         {
-            AdaptiveTransformer transformer = new AdaptiveTransformer();
-
             string jsonTemplate = @"{
         ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
         ""type"": ""AdaptiveCard"",
@@ -87,7 +89,13 @@ namespace AdaptiveCards.Templating.Test
     }
 }";
 
-            string cardJson = transformer.Transform(jsonTemplate, jsonData);
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
+            var context = new AdaptiveCardEvaluationContext
+            {
+                Root = jsonData
+            };
+
+            string cardJson = transformer.Expand(context);
 
             AssertJsonEqual(@"{
         ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
@@ -115,8 +123,6 @@ namespace AdaptiveCards.Templating.Test
         [TestMethod]
         public void TestExternalDataContext()
         {
-            AdaptiveTransformer transformer = new AdaptiveTransformer();
-
             string jsonTemplate = @"{
     ""type"": ""AdaptiveCard"",
     ""version"": ""1.0"",
@@ -134,9 +140,13 @@ namespace AdaptiveCards.Templating.Test
         ""lastName"": ""Leader""
     }
 }";
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
+            var context = new AdaptiveCardEvaluationContext
+            {
+                Root = jsonData
+            };
 
-            string cardJson = transformer.Transform(jsonTemplate, jsonData);
-
+            string cardJson = transformer.Expand(context);
             AssertJsonEqual(@"{
     ""type"": ""AdaptiveCard"",
     ""version"": ""1.0"",
@@ -152,8 +162,6 @@ namespace AdaptiveCards.Templating.Test
         [TestMethod]
         public void TestExternalDataContextInternalReference()
         {
-            AdaptiveTransformer transformer = new AdaptiveTransformer();
-
             string jsonTemplate = @"{
             ""type"": ""AdaptiveCard"",
             ""body"": [
@@ -182,8 +190,13 @@ namespace AdaptiveCards.Templating.Test
               ]
             }";
 
-            string cardJson = transformer.Transform(jsonTemplate, jsonData);
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
+            var context = new AdaptiveCardEvaluationContext
+            {
+                Root = jsonData
+            };
 
+            string cardJson = transformer.Expand(context);
             AssertJsonEqual(@"{
     ""type"": ""AdaptiveCard"",
     ""body"": [
@@ -211,7 +224,6 @@ namespace AdaptiveCards.Templating.Test
         [TestMethod]
         public void TestArray()
         {
-            AdaptiveTransformer transformer = new AdaptiveTransformer();
             var testString =
                 @"{
                 ""type"": ""AdaptiveCard"",
@@ -264,14 +276,16 @@ namespace AdaptiveCards.Templating.Test
                 ]
             }";
 
-            string cardJson = transformer.Transform(testString, null);
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(testString);
+            var context = new AdaptiveCardEvaluationContext();
+
+            string cardJson = transformer.Expand(context);
             AssertJsonEqual(expectedString, cardJson);
         }
 
         [TestMethod]
         public void TestIteratioinWithFacts()
         {
-            AdaptiveTransformer transformer = new AdaptiveTransformer();
             var testString =
                 @"{
                     ""type"": ""AdaptiveCard"",
@@ -339,14 +353,16 @@ namespace AdaptiveCards.Templating.Test
                     ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json""
 }";
 
-            string cardJson = transformer.Transform(testString, null);
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(testString);
+            var context = new AdaptiveCardEvaluationContext();
+
+            string cardJson = transformer.Expand(context);
             AssertJsonEqual(expectedString, cardJson);
         }
 
         [TestMethod]
         public void TestIteratioin()
         {
-            AdaptiveTransformer transformer = new AdaptiveTransformer();
             var testString =
                 @"{
                     ""type"": ""AdaptiveCard"",
@@ -391,14 +407,16 @@ namespace AdaptiveCards.Templating.Test
                 ]
             }";
 
-            string cardJson = transformer.Transform(testString, null);
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(testString);
+            var context = new AdaptiveCardEvaluationContext();
+
+            string cardJson = transformer.Expand(context);
             AssertJsonEqual(expectedString, cardJson);
         }
 
         [TestMethod]
         public void TestIteratioinFalsePositive()
         {
-            AdaptiveTransformer transformer = new AdaptiveTransformer();
             var testString =
                 @"{
                     ""type"": ""AdaptiveCard"",
@@ -435,14 +453,16 @@ namespace AdaptiveCards.Templating.Test
                 ]
             }";
 
-            string cardJson = transformer.Transform(testString, null);
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(testString);
+            var context = new AdaptiveCardEvaluationContext();
+            string cardJson = transformer.Expand(context);
+
             AssertJsonEqual(expectedString, cardJson);
         }
 
         [TestMethod]
         public void TestIteratioinRealDdata()
         {
-            AdaptiveTransformer transformer = new AdaptiveTransformer();
             var templateData =
                 @" [
                         { ""name"": ""Object-1"", ""lastPrice"": 1.10762, ""changePriceRatio"": -0.17 },
@@ -516,14 +536,20 @@ namespace AdaptiveCards.Templating.Test
 }";
         var expectedString =
         @"{ ""$schema"":""http://adaptivecards.io/schemas/adaptive-card.json"",""type"":""AdaptiveCard"",""version"":""1.0"",""body"":[{""type"":""Container"",""items"":[{""type"":""ColumnSet"",""columns"":[{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""▼"",""color"":""attention""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""Object-1""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""1.10762 "",""horizontalAlignment"":""Center""}],""horizontalAlignment"":""Center""},{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""-0.17%"",""color"":""attention""}],""horizontalAlignment"":""Right""}]}]},{""type"":""Container"",""items"":[{""type"":""ColumnSet"",""columns"":[{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""▼"",""color"":""attention""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""Object-2""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""1578.205 "",""horizontalAlignment"":""Center""}],""horizontalAlignment"":""Center""},{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""-0.68%"",""color"":""attention""}],""horizontalAlignment"":""Right""}]}]},{""type"":""Container"",""items"":[{""type"":""ColumnSet"",""columns"":[{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""▼"",""color"":""attention""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""Object-3""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""51.475 "",""horizontalAlignment"":""Center""}],""horizontalAlignment"":""Center""},{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""-0.23%"",""color"":""attention""}],""horizontalAlignment"":""Right""}]}]},{""type"":""Container"",""items"":[{""type"":""ColumnSet"",""columns"":[{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""▲"",""color"":""good""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""Object-4""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""28324 "",""horizontalAlignment"":""Center""}],""horizontalAlignment"":""Center""},{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""0.35%"",""color"":""good""}],""horizontalAlignment"":""Right""}]}]},{""type"":""Container"",""items"":[{""type"":""ColumnSet"",""columns"":[{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""▼"",""color"":""attention""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""Object-5""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""9338.87 "",""horizontalAlignment"":""Center""}],""horizontalAlignment"":""Center""},{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""-1.04%"",""color"":""attention""}],""horizontalAlignment"":""Right""}]}]}]}"; 
-            string cardJson = transformer.Transform(testString, templateData);
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(testString);
+            var context = new AdaptiveCardEvaluationContext
+            {
+                Root = templateData
+            };
+
+            string cardJson = transformer.Expand(context);
+
             AssertJsonEqual(expectedString, cardJson);
         }
 
         [TestMethod]
         public void TestIteratioinRealDdata2()
         {
-            AdaptiveTransformer transformer = new AdaptiveTransformer();
             var templateData =
                 @"{
     ""attribution"": {
@@ -1046,15 +1072,20 @@ namespace AdaptiveCards.Templating.Test
       ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
       ""version"": ""1.2""
 }";
-            string cardJson = transformer.Transform(testString, templateData);
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(testString);
+            var context = new AdaptiveCardEvaluationContext
+            {
+                Root = templateData
+            };
+
+            string cardJson = transformer.Expand(context);
+
             AssertJsonEqual(expectedString, cardJson);
         }
 
         [TestMethod]
         public void TestExpression()
         {
-            AdaptiveTransformer transformer = new AdaptiveTransformer();
-
             string jsonTemplate = @"{
     ""type"": ""AdaptiveCard"",
     ""version"": ""1.0"",
@@ -1073,7 +1104,9 @@ namespace AdaptiveCards.Templating.Test
     ]
 }";
 
-            string cardJson = transformer.Transform(jsonTemplate, null);
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
+            var context = new AdaptiveCardEvaluationContext();
+            string cardJson = transformer.Expand(context);
 
             AssertJsonEqual(@"{
     ""type"": ""AdaptiveCard"",
@@ -1094,8 +1127,6 @@ namespace AdaptiveCards.Templating.Test
         [TestMethod]
         public void TestCanHandleFailedExpressionEvaluation()
         {
-            AdaptiveTransformer transformer = new AdaptiveTransformer();
-
             string jsonTemplate = @"{
     ""type"": ""AdaptiveCard"",
     ""version"": ""1.0"",
@@ -1113,7 +1144,9 @@ namespace AdaptiveCards.Templating.Test
     ]
 }";
 
-            string cardJson = transformer.Transform(jsonTemplate, null);
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
+            var context = new AdaptiveCardEvaluationContext();
+            string cardJson = transformer.Expand(context);
 
             AssertJsonEqual(@"{
     ""type"": ""AdaptiveCard"",
@@ -1134,8 +1167,6 @@ namespace AdaptiveCards.Templating.Test
         [TestMethod]
         public void TestCanHandleUndefinedFunctions()
         {
-            AdaptiveTransformer transformer = new AdaptiveTransformer();
-
             string jsonTemplate = @"{
     ""type"": ""AdaptiveCard"",
     ""version"": ""1.0"",
@@ -1151,7 +1182,9 @@ namespace AdaptiveCards.Templating.Test
     ]
 }";
 
-            string cardJson = transformer.Transform(jsonTemplate, null);
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
+            var context = new AdaptiveCardEvaluationContext();
+            string cardJson = transformer.Expand(context);
 
             AssertJsonEqual(@"{
     ""type"": ""AdaptiveCard"",
@@ -1168,8 +1201,6 @@ namespace AdaptiveCards.Templating.Test
         [TestMethod]
         public void TestWhen()
         {
-            AdaptiveTransformer transformer = new AdaptiveTransformer();
-
             string jsonTemplate = @"{
     ""type"": ""AdaptiveCard"",
     ""version"": ""1.0"",
@@ -1188,7 +1219,9 @@ namespace AdaptiveCards.Templating.Test
     ]
 }";
 
-            string cardJson = transformer.Transform(jsonTemplate, null);
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
+            var context = new AdaptiveCardEvaluationContext();
+            string cardJson = transformer.Expand(context);
 
             AssertJsonEqual(@"{
     ""type"": ""AdaptiveCard"",
@@ -1204,8 +1237,6 @@ namespace AdaptiveCards.Templating.Test
         [TestMethod]
         public void TestWhenWithArray()
         {
-            AdaptiveTransformer transformer = new AdaptiveTransformer();
-
             string jsonTemplate = @"{
             ""type"": ""AdaptiveCard"",
             ""body"": [
@@ -1230,7 +1261,13 @@ namespace AdaptiveCards.Templating.Test
                 ]
             }";
 
-            string cardJson = transformer.Transform(jsonTemplate, jsonData);
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
+            var context = new AdaptiveCardEvaluationContext
+            {
+                Root = jsonData
+            };
+
+            string cardJson = transformer.Expand(context);
 
             AssertJsonEqual(@"{
     ""type"": ""AdaptiveCard"",
@@ -1253,10 +1290,106 @@ namespace AdaptiveCards.Templating.Test
         }
 
         [TestMethod]
+        public void TestWhenWithArrayWithPropoerCommanRemoval()
+        {
+            string jsonTemplate =
+                @"{
+                     ""type"": ""AdaptiveCard"",
+                     ""body"": [
+                         {
+                             ""type"": ""TextBlock"",
+                             ""size"": ""Medium"",
+                             ""weight"": ""Bolder"",
+                             ""text"": ""${title}""
+                         },
+                         {
+                             ""type"": ""FactSet"",
+                             ""facts"": [
+                                 {
+                                     ""$data"": ""${people}"",
+                                     ""$when"": ""${age > 12}"",
+                                     ""title"": ""${firstName} ${lastName}"",
+                                     ""value"": ""${string(age)}""
+                                 }
+                             ]
+                         }
+                     ],
+                     ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                     ""version"": ""1.0""
+                 }";
+
+            string jsonData =
+                @"{
+                    ""title"": ""My list of people:"",
+                    ""count"": 4,
+                    ""people"": [
+                        {
+                            ""firstName"": ""Micky"",
+                            ""lastName"": ""Mouse"",
+                            ""age"": 44
+                        },
+                        {
+                            ""firstName"": ""Donald"",
+                            ""lastName"": ""Duck"",
+                            ""age"": 12
+                        },
+                        {
+                            ""firstName"": ""Harry"",
+                            ""lastName"": ""Potter"",
+                            ""age"": 18
+                        },
+                        {
+                            ""firstName"": ""Matt"",
+                            ""lastName"": ""Hidinger"",
+                            ""age"": ""28""
+                        }
+                    ]
+            }";
+
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
+            var context = new AdaptiveCardEvaluationContext
+            {
+                Root = jsonData
+            };
+
+            string cardJson = transformer.Expand(context);
+
+            AssertJsonEqual(@"{
+    ""type"": ""AdaptiveCard"",
+    ""body"": [
+                 {
+                     ""type"": ""TextBlock"",
+                     ""size"": ""Medium"",
+                     ""weight"": ""Bolder"",
+                     ""text"": ""My list of people:""
+                 },
+                 {
+                     ""type"": ""FactSet"",
+                     ""facts"": [
+                         {
+                             ""title"": ""Micky Mouse"",
+                             ""value"": ""44""
+                         },
+                         {
+                             ""title"": ""Harry Potter"",
+                             ""value"": ""18""
+                         },
+                         {
+                             ""title"": ""Matt Hidinger"",
+                             ""value"": ""28""
+                         }
+                     ]
+                 }
+            ],
+     ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+     ""version"": ""1.0""
+
+}", cardJson);
+        }
+
+        [TestMethod]
         public void TestIndex()
         {
-            AdaptiveTransformer transformer = new AdaptiveTransformer();
-
             string jsonTemplate = @"{
             ""type"": ""AdaptiveCard"",
             ""body"": [
@@ -1274,7 +1407,9 @@ namespace AdaptiveCards.Templating.Test
             ]
         }";
 
-            string cardJson = transformer.Transform(jsonTemplate, null);
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
+            var context = new AdaptiveCardEvaluationContext();
+            string cardJson = transformer.Expand(context);
 
             AssertJsonEqual(@"{
     ""type"": ""AdaptiveCard"",
@@ -1301,7 +1436,6 @@ namespace AdaptiveCards.Templating.Test
         [TestMethod]
         public void TestInlineMemoryScope()
         {
-            AdaptiveTransformer transformer = new AdaptiveTransformer();
             var testString =
                 @"{
                     ""type"": ""AdaptiveCard"",
@@ -1336,13 +1470,14 @@ namespace AdaptiveCards.Templating.Test
     ]
 }"; 
 
-            string cardJson = transformer.Transform(testString, null);
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(testString);
+            var context = new AdaptiveCardEvaluationContext();
+            string cardJson = transformer.Expand(context);
             AssertJsonEqual(cardJson, expectedString);
         }
         [TestMethod]
         public void TestInlineMemoryScope2()
         {
-            AdaptiveTransformer transformer = new AdaptiveTransformer();
             var testString =
                 @"{
                     ""type"": ""AdaptiveCard"",
@@ -1377,14 +1512,15 @@ namespace AdaptiveCards.Templating.Test
     ]
 }"; 
 
-            string cardJson = transformer.Transform(testString, null);
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(testString);
+            var context = new AdaptiveCardEvaluationContext();
+            string cardJson = transformer.Expand(context);
             AssertJsonEqual(cardJson, expectedString);
         }
 
         [TestMethod]
         public void TestInlineMemoryScope3()
         {
-            AdaptiveTransformer transformer = new AdaptiveTransformer();
             var testString =
                 @"{
                     ""type"": ""AdaptiveCard"",
@@ -1420,7 +1556,9 @@ namespace AdaptiveCards.Templating.Test
     ]
 }"; 
 
-            string cardJson = transformer.Transform(testString, null);
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(testString);
+            var context = new AdaptiveCardEvaluationContext();
+            string cardJson = transformer.Expand(context);
             AssertJsonEqual(expectedString, cardJson);
         }
     }
@@ -1430,8 +1568,6 @@ namespace AdaptiveCards.Templating.Test
         [TestMethod]
         public void TestRootInDataContext()
         {
-            AdaptiveTransformer transformer = new AdaptiveTransformer();
-
             string jsonTemplate = @"{
             ""type"": ""AdaptiveCard"",
             ""body"": [
@@ -1455,7 +1591,13 @@ namespace AdaptiveCards.Templating.Test
                 ]
             }";
 
-            string cardJson = transformer.Transform(jsonTemplate, jsonData);
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
+            var context = new AdaptiveCardEvaluationContext
+            {
+                Root = jsonData
+            };
+
+            string cardJson = transformer.Expand(context);
 
             TestTemplate.AssertJsonEqual(@"{
     ""type"": ""AdaptiveCard"",
@@ -1482,8 +1624,6 @@ namespace AdaptiveCards.Templating.Test
         [TestMethod]
         public void TestCanAccessByAEL()
         {
-            AdaptiveTransformer transformer = new AdaptiveTransformer();
-
             string jsonTemplate = @"{
             ""type"": ""AdaptiveCard"",
             ""body"": [
@@ -1509,7 +1649,13 @@ namespace AdaptiveCards.Templating.Test
                 ]
             }";
 
-            string cardJson = transformer.Transform(jsonTemplate, jsonData);
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
+            var context = new AdaptiveCardEvaluationContext
+            {
+                Root = jsonData
+            };
+
+            string cardJson = transformer.Expand(context);
 
             TestTemplate.AssertJsonEqual(@"{
     ""type"": ""AdaptiveCard"",
@@ -1534,8 +1680,6 @@ namespace AdaptiveCards.Templating.Test
         [TestMethod]
         public void TestWorkWithRepeatingItems()
         {
-            AdaptiveTransformer transformer = new AdaptiveTransformer();
-
             string jsonTemplate = @"{
             ""type"": ""AdaptiveCard"",
             ""body"": [
@@ -1559,7 +1703,13 @@ namespace AdaptiveCards.Templating.Test
                 ]
             }";
 
-            string cardJson = transformer.Transform(jsonTemplate, jsonData);
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
+            var context = new AdaptiveCardEvaluationContext
+            {
+                Root = jsonData
+            };
+
+            string cardJson = transformer.Expand(context);
 
             TestTemplate.AssertJsonEqual(@"{
     ""type"": ""AdaptiveCard"",
@@ -1588,8 +1738,6 @@ namespace AdaptiveCards.Templating.Test
         [TestMethod]
         public void TestBasic()
         {
-            AdaptiveTransformer transformer = new AdaptiveTransformer();
-
             string jsonTemplate = @"{
     ""type"": ""AdaptiveCard"",
     ""version"": ""1.0"",
@@ -1614,7 +1762,13 @@ namespace AdaptiveCards.Templating.Test
     }
 }";
 
-            string cardJson = transformer.Transform(jsonTemplate, jsonData);
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
+            var context = new AdaptiveCardEvaluationContext
+            {
+                Root = jsonData
+            };
+
+            string cardJson = transformer.Expand(context);
 
             TestTemplate.AssertJsonEqual(@"{
     ""type"": ""AdaptiveCard"",
@@ -1631,8 +1785,6 @@ namespace AdaptiveCards.Templating.Test
         [TestMethod]
         public void TestKeywordDataInRepeatingItems()
         {
-            AdaptiveTransformer transformer = new AdaptiveTransformer();
-
             string jsonTemplate = @"{
             ""type"": ""AdaptiveCard"",
             ""body"": [
@@ -1640,10 +1792,10 @@ namespace AdaptiveCards.Templating.Test
                 ""type"": ""Container"",
                 ""items"": [
                   {
-                    ""$data"": ""${$root.LineItems}"",
+                    ""$data"": ""${LineItems}"",
                     ""type"": ""TextBlock"",
                     ""id"": ""ReceiptRequired${$index}"",
-                    ""text"": ""${string($data.Milage)}""
+                    ""text"": ""${string(Milage)}""
                   }
                 ]
               }
@@ -1656,7 +1808,13 @@ namespace AdaptiveCards.Templating.Test
                 ]
             }";
 
-            string cardJson = transformer.Transform(jsonTemplate, jsonData);
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
+            var context = new AdaptiveCardEvaluationContext
+            {
+                Root = jsonData
+            };
+
+            string cardJson = transformer.Expand(context);
 
             TestTemplate.AssertJsonEqual(@"{
     ""type"": ""AdaptiveCard"",
@@ -1683,8 +1841,6 @@ namespace AdaptiveCards.Templating.Test
         [TestMethod]
         public void TestCanAccessByAEL()
         {
-            AdaptiveTransformer transformer = new AdaptiveTransformer();
-
             string jsonTemplate = @"{
             ""type"": ""AdaptiveCard"",
             ""body"": [
@@ -1710,7 +1866,13 @@ namespace AdaptiveCards.Templating.Test
                 ]
             }";
 
-            string cardJson = transformer.Transform(jsonTemplate, jsonData);
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
+            var context = new AdaptiveCardEvaluationContext
+            {
+                Root = jsonData
+            };
+
+            string cardJson = transformer.Expand(context);
 
             TestTemplate.AssertJsonEqual(@"{
     ""type"": ""AdaptiveCard"",
@@ -1735,8 +1897,6 @@ namespace AdaptiveCards.Templating.Test
         [TestMethod]
         public void TestRootAndDataWorkInRepeatingItems()
         {
-            AdaptiveTransformer transformer = new AdaptiveTransformer();
-
             string jsonTemplate = @"{
             ""type"": ""AdaptiveCard"",
             ""body"": [
@@ -1760,7 +1920,13 @@ namespace AdaptiveCards.Templating.Test
                 ]
             }";
 
-            string cardJson = transformer.Transform(jsonTemplate, jsonData);
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
+            var context = new AdaptiveCardEvaluationContext
+            {
+                Root = jsonData
+            };
+
+            string cardJson = transformer.Expand(context);
 
             TestTemplate.AssertJsonEqual(@"{
     ""type"": ""AdaptiveCard"",
@@ -1789,7 +1955,7 @@ namespace AdaptiveCards.Templating.Test
         [TestMethod]
         public void TestCreation()
         {
-            TemplateResult result = new TemplateResult();
+            AdaptiveCardsTemplateResult result = new AdaptiveCardsTemplateResult();
             result.Append("hello world");
             Assert.AreEqual(result.ToString(), "hello world");
         }
@@ -1797,14 +1963,14 @@ namespace AdaptiveCards.Templating.Test
         [TestMethod]
         public void TestMerging()
         {
-            TemplateResult result1 = new TemplateResult();
+            AdaptiveCardsTemplateResult result1 = new AdaptiveCardsTemplateResult();
             result1.Append("hello");
 
-            TemplateResult result2 = new TemplateResult();
+            AdaptiveCardsTemplateResult result2 = new AdaptiveCardsTemplateResult();
             result2.Append(" world");
 
 
-            TemplateResult result3 = new TemplateResult();
+            AdaptiveCardsTemplateResult result3 = new AdaptiveCardsTemplateResult();
             result3.Append("!");
 
             result1.Append(result2);
@@ -1816,13 +1982,13 @@ namespace AdaptiveCards.Templating.Test
         [TestMethod]
         public void TestCreationOfPartialResult()
         {
-            TemplateResult result1 = new TemplateResult();
+            AdaptiveCardsTemplateResult result1 = new AdaptiveCardsTemplateResult();
             result1.Append("hello");
 
-            TemplateResult result2 = new TemplateResult();
+            AdaptiveCardsTemplateResult result2 = new AdaptiveCardsTemplateResult();
             result2.Append("name", false);
 
-            TemplateResult result3 = new TemplateResult();
+            AdaptiveCardsTemplateResult result3 = new AdaptiveCardsTemplateResult();
             result3.Append("!");
 
             result1.Append(result2);
@@ -1832,13 +1998,13 @@ namespace AdaptiveCards.Templating.Test
         }
         public void TestCreationOfWhen()
         {
-            TemplateResult result1 = new TemplateResult();
+            AdaptiveCardsTemplateResult result1 = new AdaptiveCardsTemplateResult();
             result1.Append("hello");
 
-            TemplateResult result2 = new TemplateResult();
+            AdaptiveCardsTemplateResult result2 = new AdaptiveCardsTemplateResult();
             result2.Append("name", false);
 
-            TemplateResult result3 = new TemplateResult();
+            AdaptiveCardsTemplateResult result3 = new AdaptiveCardsTemplateResult();
             result3.Append("!");
 
             result1.Append(result2);

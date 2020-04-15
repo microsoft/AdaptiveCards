@@ -1,8 +1,8 @@
 /** Taken from "The Definitive ANTLR 4 Reference" by Terence Parr */
 
 // Derived from http://json.org
-parser grammar JSONParser;
-options { tokenVocab=JSONLexer; }
+parser grammar AdaptiveCardsTemplateParser;
+options { tokenVocab=AdaptiveCardsTemplateLexer; }
 
 json
    : value
