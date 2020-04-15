@@ -71,7 +71,8 @@
 							"type": "Image",
 							"url": "https://adaptivecards.io/content/airplane.png",
 							"size": "small",
-							"spacing": "none"
+							"spacing": "none",
+							"altText": "Airplane icon"
 						}
 					]
 				},
@@ -143,7 +144,8 @@
 							"type": "Image",
 							"url": "https://adaptivecards.io/content/airplane.png",
 							"size": "small",
-							"spacing": "none"
+							"spacing": "none",
+							"altText": "Airplane icon"
 						}
 					]
 				},
