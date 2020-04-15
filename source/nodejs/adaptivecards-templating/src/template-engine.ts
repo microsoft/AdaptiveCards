@@ -367,12 +367,11 @@ export class Template {
     /**
      * Expands the template using the provided context. Template expansion involves
      * evaluating the expressions used in the original template payload, as well as
-     * repeating (expanding) parts of the original payload when those parts are bound
-     * to array fields.
+     * repeating (expanding) parts of that payload that are bound to arrays.
      * 
      * Example:
      * 
-     * ```
+     * ```typescript
      * let context = {
      *     $root: {
      *         firstName: "John",
@@ -407,7 +406,7 @@ export class Template {
      * 
      * With the above code, the value of `expandedTemplate` will be
      * 
-     * ```
+     * ```json
      * {
      *     type: "AdaptiveCard",
      *     version: "1.2",
