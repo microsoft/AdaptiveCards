@@ -132,8 +132,7 @@ The full set of properties to be modified using full text formatting will be:
 | --- | --- | --- | --- |
 | spacing | "default" | 
 | size | "default" | 
-| color | "default" | 
-| isSubtle | false | 
+| color | "default" |
 
 While it's mentioned that we should allow almost all TextBlock properties to be modified by the label property, some of them must stay out of bounds for hosts as they would provide a bad user experience:
 * maxLines and wrap: Labels should be descriptive enough so users can provide the information needed, if the user can't read the whole question the information they will not be able to provide a correct answer

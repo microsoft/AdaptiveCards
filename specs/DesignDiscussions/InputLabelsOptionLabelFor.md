@@ -85,8 +85,6 @@ Based on the results from Q7 of the survey, we will add the option to allow the 
 
 #### Required and Optional indicators
 
-> What do we expect to do here? Are we expecting authors to put their own required indicator? If so, then that's allowing authors to make bad cards, otherwise, the removal of styling must actually be performed for the indicator.
-
  By default, we will mark required inputs with a `*`. We may want, however, to provide the option for the host to configure a suffix to the label for required or optional inputs. This allows the host to add a `*` to required labels, or to add the words "required" or "optional". Consider a host config similar to the below:
 
   ```json
@@ -119,7 +117,11 @@ This card is another possible example of a use case for non-adjacent labels, whe
 
 ![img](assets/InputLabels/AdditionalLabelContent.png)
 
->This scenario could be covered by a RichTextBlock that contains both pieces of text being used as the label (arguably the entire text should be read as the accessibility label for the input). Are there scenarios where we would want something else (an image?) between the label and the input?
+This scenario could be covered by a RichTextBlock that contains both pieces of text being used as the label (arguably the entire text should be read as the accessibility label for the input); this scenario also opens the doors to cards where there may be elements between the label and the card, just in the prior example card authors may want to have the required hint in the first line rather than having it next to the hint on how to fill in the field:
+
+![img](assets/InputLabels/InputLabelWithMiddleElement.png)
+
+This scenario is possible but it would break the accessibility story of the form as people using a screen reader would not know the extra piece of information that is not part of the label. This type of behaviors should not be encouraged as it would provoke a big issue with the accessibility story of our product.
 
 ## Backwards Compatibility
 
