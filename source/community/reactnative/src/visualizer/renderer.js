@@ -36,6 +36,10 @@ export default class Renderer extends React.Component {
     }
 
     customHostConfig = {
+        hostCapabilities: {
+            adaptiveCards:'1.2',
+            acTest:'1.3'
+        },
         fontFamily: "Helvetica",
         supportsInteractivity: true,
         fontSizes: {
@@ -137,6 +141,7 @@ export default class Renderer extends React.Component {
                         hostConfig={this.customHostConfig}
                         themeConfig={this.customThemeConfig}
                         onParseError={this.onParseError}
+                        // containerStyle={{width:100, height: 100, flexGrow:1, backgroundColor: 'lightblue'}} //we can also set the style for the adaptive card
                         // contentHeight={500} //we can also set the height of the adaptive card
                         ref="adaptiveCardRef" />
                 }

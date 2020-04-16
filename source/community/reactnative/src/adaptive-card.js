@@ -6,7 +6,9 @@ import React from 'react';
 import {
 	StyleSheet,
 	Text,
-	ScrollView
+	ScrollView,
+	KeyboardAvoidingView,
+	Platform
 } from 'react-native';
 
 import { Registry } from './components/registration/registry';
@@ -33,6 +35,16 @@ export default class AdaptiveCard extends React.Component {
 
 		this.payload = props.payload;
 
+		// hostConfig
+		if (props.hostConfig) {
+			HostConfigManager.setHostConfig(props.hostConfig);
+		}
+
+		// themeConfig
+		if (props.themeConfig) {
+			ThemeConfigManager.setThemeConfig(props.themeConfig);
+		}
+
 		if (this.props.isActionShowCard) {
 			this.cardModel = props.payload;
 		} else {
@@ -42,16 +54,6 @@ export default class AdaptiveCard extends React.Component {
 			showErrors: false,
 			payload: this.payload,
 			cardModel: this.cardModel
-		}
-
-		// hostConfig
-		if (props.hostConfig) {
-			HostConfigManager.setHostConfig(props.hostConfig);
-		}
-
-		// themeConfig
-		if (props.themeConfig) {
-			ThemeConfigManager.setThemeConfig(props.themeConfig);
 		}
 
 		// commonly used styles
@@ -165,21 +167,27 @@ export default class AdaptiveCard extends React.Component {
 
 	getAdaptiveCardContent() {
 		let containerStyles = [styles.container]
+		//If containerStyle is passed by the user from adaptive card via props, we will override this style
+		this.props.containerStyle && containerStyles.push( this.props.containerStyle )
 		//If contentHeight is passed by the user from adaptive card via props, we will set this as height
 		this.props.contentHeight && containerStyles.push({ height: this.props.contentHeight })
 		var adaptiveCardContent =
 			(
-				<ContainerWrapper style={containerStyles} json={this.state.cardModel}>
-					<ScrollView
-						showsHorizontalScrollIndicator={true}
-						showsVerticalScrollIndicator={true}
-						alwaysBounceVertical={false}
-						alwaysBounceHorizontal={false}>
-						{this.parsePayload()}
-						{!Utils.isNullOrEmpty(this.state.cardModel.actions) &&
-							<ActionWrapper actions={this.state.cardModel.actions} />}
-					</ScrollView>
-				</ContainerWrapper>
+				<KeyboardAvoidingView behavior={Platform.OS === 'ios'
+					? 'padding'
+					: undefined}>
+					<ContainerWrapper style={containerStyles} json={this.state.cardModel}>
+						<ScrollView
+							showsHorizontalScrollIndicator={true}
+							showsVerticalScrollIndicator={true}
+							alwaysBounceVertical={false}
+							alwaysBounceHorizontal={false}>
+							{this.parsePayload()}
+							{!Utils.isNullOrEmpty(this.state.cardModel.actions) &&
+								<ActionWrapper actions={this.state.cardModel.actions} />}
+						</ScrollView>
+					</ContainerWrapper>
+				</KeyboardAvoidingView>
 			);
 
 		// checks if selectAction option is available for adaptive card
@@ -279,7 +287,8 @@ AdaptiveCard.propTypes = {
 	themeConfig: PropTypes.object,
 	onExecuteAction: PropTypes.func,
 	onParseError: PropTypes.func,
-	contentHeight: PropTypes.number
+	contentHeight: PropTypes.number,
+	containerStyle: PropTypes.object
 };
 
 const styles = StyleSheet.create({
