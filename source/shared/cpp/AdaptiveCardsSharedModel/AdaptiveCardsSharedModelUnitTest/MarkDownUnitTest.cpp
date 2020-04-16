@@ -17,6 +17,20 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual<bool>(false, parser.HasHtmlTags());
         }
 
+        TEST_METHOD(MarkDownBasicSanityTest_CanHandleEmphasisTest)
+        {
+            MarkDownParser parser("*");
+            Assert::AreEqual<std::string>("<p>*</p>", parser.TransformToHtml());
+            Assert::AreEqual<bool>(false, parser.HasHtmlTags());
+        }
+
+        TEST_METHOD(MarkDownBasicSanityTest_CanHandleStrongEmphasisTest)
+        {
+            MarkDownParser parser("**");
+            Assert::AreEqual<std::string>("<p>**</p>", parser.TransformToHtml());
+            Assert::AreEqual<bool>(false, parser.HasHtmlTags());
+        }
+
         TEST_METHOD(EmphasisLeftDelimiterTest_LeftDelimiterTest)
         {
             MarkDownParser parser("*foo bar*");

@@ -32,7 +32,8 @@ namespace AdaptiveCardVisualizer.ViewModel
 
                     HostConfigChanged?.Invoke(this, HostConfig);
 
-                    MakeErrorsLike(new List<ErrorViewModel>());
+                    errors = new List<ErrorViewModel>();
+                    TimeCounter.ResetCounter();
                 }
                 else
                 {
