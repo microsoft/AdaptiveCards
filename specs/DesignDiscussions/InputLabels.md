@@ -72,33 +72,7 @@ This conflict speaks to a general tension inherent in the design of Adaptive Car
 
 In order to gather more data to help us balance the needs of the card authors and hosts, we sent a survey to customers who have expressed an interest in improving out input story. The following options are under consideration, and will be evaluated against survey data to determine which if any will be included in our v1 implementation.
 
-The survey sent included 10 questions including the topics of input validation and input labels, for this spec we will only review the 4 questions that focus on the former topic. The results for this questions were used to leverage on some of the decisions taken on this spec document.
-
-### Survey results
-
-#### Q6. How would you expect a user to know trhe difference between required and optional inputs?
-
-![img](assets/InputLabels/Survey1.png)
-
-Most of the voters are fine with using an asterisk next to the inputs or labels. The options under other vary from card authors "thinking an asterisk is a bit crude" or adding the asterisk by themselves.
-
-#### Q7. How do you currently label your input fields?
-
-![img](assets/InputLabels/Survey2.png)
-
-Most of the voters use a text label and a placeholder for labeling their input text. The remaining voters only use a TextBlock on top of the input to label them. It's important to note that none of the voters only use placeholders for labeling.
-
-#### Q8. If you use a TextBlock to label your input, how frequently do you change the default TextBlock style? (size, weight, color, etc.)
-
-![img](assets/InputLabels/Survey3.png)
-
-Most of the voters "Rarely" change the default style for TextBlocks that label their inputs. A thing to note here is that no voter commented that they never style the TextBlocks.
-
-#### Q9. If you are a Host App that renders Adaptive Cards authored by others in your own app, how important to you is the ability to control the following?
-
-![img](assets/InputLabels/Survey4.png)
-
-This is the question where there's not a majority of voters who picked one option. People are very divisive on whether to have a reasonable default behavior and configuring the labels to keep consistency with other UI in their apps.  
+The survey sent included 10 questions including the topics of input validation and input labels, for this spec we will only review the 4 questions that focus on the former topic. The results for this questions were used to leverage on some of the decisions taken on this spec document and can be found in the [Appendix](Appendix).
 
 > ### Default formatting for labels
 >
@@ -136,7 +110,7 @@ This is the question where there's not a majority of voters who picked one optio
 
 ### Host Formatting
 
-Based on the results from Q7 of the survey, we will add the option to allow the host to control formatting of the labels, either in general or for required inputs, we need a way for them to specify the desired format. There are two main things we may want to include:
+Based on the results from Q9 of the survey, we will add the option to allow the host to control formatting of the labels, either in general or for required inputs, we need a way for them to specify the desired format. There are two main things we may want to include:
 
 #### Text formatting
  We are introducing the option to specify formatting of input labels for required and optional inputs. We will allow full text formatting (as in the formatting properties of a TextBlock) For example:
@@ -158,13 +132,8 @@ The full set of properties to be modified using full text formatting will be:
 | Property | Default Value |
 | --- | --- | --- | --- |
 | spacing | "default" | 
-| fontType | "default" | 
 | size | "default" | 
-| weight | "default" | 
-| color | "default" | 
-| isSubtle | false | 
-| separator | false |
-| horizontalAlignment | "left" |
+| color | "default" |
 
 While it's mentioned that we should allow almost all TextBlock properties to be modified by the label property, some of them must stay out of bounds for hosts as they would provide a bad user experience:
 * maxLines and wrap: Labels should be descriptive enough so users can provide the information needed, if the user can't read the whole question the information they will not be able to provide a correct answer
@@ -267,8 +236,11 @@ This card is another possible example of a use case for non-adjacent labels, whe
 
 ![img](assets/InputLabels/AdditionalLabelContent.png)
 
->This scenario could be covered by a RichTextBlock that contains both pieces of text being used as the label (arguably the entire text should be read as the accessibility label for the input). Are there scenarios where we would want something else (an image?) between the label and the input?
+This scenario could be covered by a RichTextBlock that contains both pieces of text being used as the label (arguably the entire text should be read as the accessibility label for the input); this scenario also opens the doors to cards where there may be elements between the label and the card, just in the prior example card authors may want to have the required hint in the first line rather than having it next to the hint on how to fill in the field:
 
+![img](assets/InputLabels/InputLabelWithMiddleElement.png)
+
+This scenario is possible but it would break the accessibility story of the form as people using a screen reader would not know the extra piece of information that is not part of the label. This type of behaviors should not be encouraged as it would provoke a big issue with the accessibility story of our product.
 
 ## Backwards Compatibility
 On earlier versions of renderers the label would be completely dropped, leading to a bad user experience. The card may be completely unusable if without the labels the user cannot deduce what information is meant to be provided in the unlabeled inputs.
@@ -308,107 +280,13 @@ Either of these approaches would allow card authors who know their cards will be
 
 In the case of a host using the `labelFor` property there would be no negative impact on down-level platforms other than not providing the association. Because the TextBlock will still exist, only the association will be dropped when rendered on a platform that doesn't support this feature.
 
-> ### Conclusion 
-> It was decided that the approach to follow was the one presented in the Option 1: Providing the "label" property in all Input elements. isRequired hints will also only be rendered in label elements.
-
 ## Placeholders
-Our primary input scenario card uses placeholders to label the inputs. Is any additional functionality required to support scenarios where the desired behavior is for the inputs to be labeled by their placeholder text?
 
-``` json
-{
-	"type": "AdaptiveCard",
-	"version": "1.0",
-	"body": [
-		{
-			"type": "Input.Text",
-			"placeholder": "Name",
-			"style": "text",
-			"id": "SimpleVal"
-		},
-		{
-			"type": "Input.Text",
-			"placeholder": "Homepage",
-			"style": "Url",
-			"id": "UrlVal"
-		},
-		{
-			"type": "Input.Text",
-			"placeholder": "Email",
-			"style": "Email",
-			"id": "EmailVal"
-		}
-	],
-	"actions": [
-		{
-			"type": "Action.Submit",
-			"title": "Submit"
-		}
-	]
-}
-```
-
-![img](assets/InputLabels/Placeholders.png)
-
-> Possible Options:
-> 1. Card author can determine if the label should be put in the placeholder text (`"useLabelAsPlaceholder": true`, `"labelPosition": "Placeholder"`)
-    - What do we do if they set a non-label placeholder and set useLabelAsPlaceholder to true? (spec who wins - placeholder probably)
-	- A placeholder with formatting wouldn't make sense, so if they add formatting to their label and then position it as the placeholder that formatting will be lost.
-> 2. Host decides via host-config (`"labelPosition": "Placeholder"`).
-    - Same issues as above if an explicit placeholder is set by the card author. On option for the case with both a label and a placeholder would be to only respect this if no inputs have placeholders (precedent from button icon placement). 
-> 3. Do nothing (in the schema)
-    - Card author can set placeholder instead of label if they want a placeholder to be the label. Undercuts our ability to reason over the card (we don’t know if the placeholder text is being used as the input’s label) but I’m not sure that has any practical negative consequences:
-        - Placeholder will serve as accessibility name in the absence of a label
-        - Are there responsiveness scenarios where we’d want to pull the label out of the placeholder to expand the card? (I’d guess not?)
-        - We don’t have a good place to put the “(optional)” indicator in this scenario. That said, the same will be true of any input that doesn’t use the features spec’d in this document to associate the labels. In the case of a card without labels, the required input indicator (`*`) will need to be placed on the input itself.
->
-> 4. Use labels as placeholders only as part of a future responsiveness feature. If we're condensing the space of the card, and there are no placeholders, consolidating labels into placeholders would be one way to adapt to limited space. This could be combined with 1, 2, or 3.
-> 
-> As there doesn't seem to be a strong reason to do so, for now, we will not make any changes to allow card authors to indicate that their placeholders are actually labels.
+Based on the answers from Q7, no users answered to using placeholders only for labeling their inputs. We also got in touch with the Accessibility team which recommended us not to use labels as placeholders as that is detrimental for all people. For v1 of this feature we decided to not modify placeholders.
 
 ## Label Position
-As alluded to above, we should consider how the label position is determined. One of the goals of this feature is to allow us to someday intelligently reflow inputs, so it may be the case that we want to maintain control of label positioning. Today we would always draw the label above the input, but in the future we may put it to the side if our rendering space is wide enough, or push it into placeholders if our space is constrained.
 
-That said, it may be desirable let either the card author or the host configure the position of the label. The tradeoff is more layout power to the card author or host, and less flexibility to us to reflow in the future. Because of this, we will not introduce this with v1 of this feature, and consider it only if we get customer feedback or requests to allow positioning of labels.
-
-##### Label Above
-```json
-{
-	"type": "Input.Text",
-	"id": "nameInput",
-	"label": "Please enter your name:",
-	"labelPosition": "Above",
-	"placeholder": "Last, First"
-}
-```
-![img](assets/InputLabels/LabelPositionAbove.PNG)
-
-##### Label to the Side
-
-```json
-{
-	"type": "Input.Text",
-	"id": "nameInput",
-	"label": "Please enter your name:",
-	"labelPosition": "Side",
-	"placeholder": "Last, First"
-}
-```
-![img](assets/InputLabels/LabelPositionSide.PNG)
-
-> Note on side positioning: With a form full of labels a card author likely would want the inputs to be lined up, which by default would not happen if the labels were different lengths. To properly support side labels we might need a way to group them so that all labels in a group are formatted consistently. Alternatively, we could consider whether we could devise an algorithm for lining up input labels.
-
-##### Label as Placeholder
-
-```json
-{
-	"type": "Input.Text",
-	"id": "nameInput",
-	"label": "Please enter your name",
-	"labelPosition": "Placeholder",
-	"placeholder": "Last, First"
-}
-```
-![img](assets/InputLabels/LabelPositionPlaceholder.PNG)
+As alluded to above, we should consider how the label position is determined. One of the goals of this feature is to allow us to someday intelligently reflow inputs, so it may be the case that we want to maintain control of label positioning. Today we would always draw the label above the input, but in the future we may put it to the side if our rendering space is wide enough, or push it into placeholders if our space is constrained. For the time being, we can consider label position to be work for the future so it can line with intelligent reflowing so on v1 it's not going to be considered. 
 
 ## Other Input Types
 
@@ -501,6 +379,33 @@ This document has primarily focused on `Input.Text` in it's examples, but the la
 ![img](assets/InputLabels/Input.Toggle.PNG)
 
 # Appendix
+
+## Survey results
+
+#### Q6. How would you expect a user to know trhe difference between required and optional inputs?
+
+![img](assets/InputLabels/Survey1.png)
+
+Most of the voters are fine with using an asterisk next to the inputs or labels. The options under other vary from card authors "thinking an asterisk is a bit crude" or adding the asterisk by themselves.
+
+#### Q7. How do you currently label your input fields?
+
+![img](assets/InputLabels/Survey2.png)
+
+Most of the voters use a text label and a placeholder for labeling their input text. The remaining voters only use a TextBlock on top of the input to label them. It's important to note that none of the voters only use placeholders for labeling.
+
+#### Q8. If you use a TextBlock to label your input, how frequently do you change the default TextBlock style? (size, weight, color, etc.)
+
+![img](assets/InputLabels/Survey3.png)
+
+Most of the voters "Rarely" change the default style for TextBlocks that label their inputs. A thing to note here is that no voter commented that they never style the TextBlocks.
+
+#### Q9. If you are a Host App that renders Adaptive Cards authored by others in your own app, how important to you is the ability to control the following?
+
+![img](assets/InputLabels/Survey4.png)
+
+This is the question where there's not a majority of voters who picked one option. People are very divisive on whether to have a reasonable default behavior and configuring the labels to keep consistency with other UI in their apps.  
+
 
  ## Comparisons to other platforms
 For guidance, consider how labels and inputs are associated in XAML and HTML:
