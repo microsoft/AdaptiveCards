@@ -41,6 +41,7 @@ export const LightGreyColor = 'lightgrey';
 export const EmphasisColor = '#dcdcdc';
 export const WhiteColor = 'white';
 export const BlackColor = 'black';
+export const buttonDefaultColor = "#1D9BF6";
 
 export const TrueString = "true";
 export const FalseString = "false";

@@ -178,3 +178,10 @@ export const ElementType = Object.freeze({
 	ActionToggleVisibility: 'Action.ToggleVisibility',
 	ActionSet: 'ActionSet'
 });
+
+export const ThemeElement = Object.freeze({
+	Input: "input",
+	Button: "button",
+	InputDate: "inputDate",
+	InputTime: "inputTime",
+});
