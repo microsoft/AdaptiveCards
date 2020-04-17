@@ -33,6 +33,9 @@ class ThemeConfig {
         this.input = new Config(ThemeElement.Input, obj);
         this.inputDate = new Config(ThemeElement.InputDate, obj);
         this.inputTime = new Config(ThemeElement.InputTime, obj);
+        this.radioButton = new Config(ThemeElement.RadioButton, obj);
+        this.checkBox = new Config(ThemeElement.CheckBox, obj);
+        this.choiceSetTitle = new Config(ThemeElement.ChoiceSetTitle, obj);
     }
 }
 
@@ -104,6 +107,18 @@ const defaultThemeConfig = {
         backgroundColor: Constants.WhiteColor,
         borderColor: Constants.LightGreyColor,
         borderRadius: 5,
+    },
+    radioButton: {
+        width: 28,
+        height: 28
+    },
+    checkBox: {
+        width: 28,
+        height: 28
+    },
+    choiceSetTitle: {
+        marginLeft: 8,
+        flexShrink: 1
     },
 
 }

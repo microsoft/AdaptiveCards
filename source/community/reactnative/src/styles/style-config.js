@@ -68,5 +68,14 @@ export class StyleManager {
 		inputTime: {
 			...this.themeConfig.inputTime[Platform.OS]
 		},
+		radioButton: {
+			...this.themeConfig.radioButton[Platform.OS]
+		},
+		checkBox: {
+			...this.themeConfig.checkBox[Platform.OS]
+		},
+		choiceSetTitle: {
+			...this.themeConfig.choiceSetTitle[Platform.OS]
+		},
 	});
 }

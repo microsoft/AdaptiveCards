@@ -184,4 +184,7 @@ export const ThemeElement = Object.freeze({
 	Button: "button",
 	InputDate: "inputDate",
 	InputTime: "inputTime",
+	RadioButton: "radioButton",
+	CheckBox: "checkBox",
+	ChoiceSetTitle: "choiceSetTitle",
 });
