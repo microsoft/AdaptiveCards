@@ -221,9 +221,7 @@ export class ChoiceSetInput extends React.Component {
 						key={index}
 						isRadioButtonType={true}
 						index={index}
-						labelStyle={[styles.labelStyle, this.styleConfig.defaultFontConfig]}
 						wrapText={this.wrapText}
-						iconSize={28}
 						checked={this.state.activeIndex == undefined ?
 							index == this.getRadioButtonIndex(this.value,
 								this.choices, addInputItem) :
@@ -250,9 +248,7 @@ export class ChoiceSetInput extends React.Component {
 						key={index}
 						isRadioButtonType={false}
 						index={index}
-						labelStyle={[styles.labelStyle, this.styleConfig.defaultFontConfig]}
 						wrapText={this.wrapText}
-						iconSize={28}
 						checked={this.state.checkedValues == undefined ?
 							this.setInitialCheckedValues(this.value,
 								addInputItem).includes(item.value) :
@@ -355,8 +351,4 @@ const styles = StyleSheet.create({
 		marginBottom: 8,
 		marginRight: 8,
 	},
-	labelStyle: {
-		marginLeft: 8,
-		flexShrink: 1,
-	}
 });

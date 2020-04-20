@@ -91,7 +91,7 @@ export class PickerInput extends React.Component {
 							{/* added extra view to fix touch event in ios . */}
 							<View pointerEvents='none' style={this.getComputedStyles(showErrors)}>
 								<TextInput
-									style={[styles.input, this.styleConfig.defaultFontConfig]}
+									style={[this.props.style, this.styleConfig.defaultFontConfig]}
 									autoCapitalize={Constants.NoneString}
 									autoCorrect={false}
 									placeholder={placeholder}
@@ -150,15 +150,6 @@ const styles = StyleSheet.create({
 	inputWrapper: {
 		width: Constants.FullWidth,
 		marginTop: 15,
-	},
-	input: {
-		width: Constants.FullWidth,
-		height: 44,
-		padding: 5,
-		borderWidth: 1,
-		backgroundColor: Constants.WhiteColor,
-		borderColor: Constants.LightGreyColor,
-		borderRadius: 5,
 	},
 	overlay: {
 		flex: 1,
